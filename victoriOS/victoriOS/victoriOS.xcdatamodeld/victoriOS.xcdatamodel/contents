@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="3401" systemVersion="13A603" minimumToolsVersion="Automatic" macOSVersion="Automatic" iOSVersion="Automatic">
+    <entity name="Action" representedClassName="Action" syncable="YES">
+        <attribute name="goto_node" optional="YES" attributeType="Integer 32" minValueString="0" defaultValueString="0" syncable="YES"/>
+        <attribute name="lost_goto_node" optional="YES" attributeType="Integer 32" minValueString="0" defaultValueString="0" syncable="YES"/>
+        <attribute name="won_goto_node" optional="YES" attributeType="Integer 32" minValueString="0" defaultValueString="0" syncable="YES"/>
+        <relationship name="answer" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Answer" inverseName="action" inverseEntity="Answer" syncable="YES"/>
+        <relationship name="node" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Node" inverseName="actions" inverseEntity="Node" syncable="YES"/>
+    </entity>
+    <entity name="Answer" representedClassName="Answer" syncable="YES">
+        <attribute name="answer_id" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <attribute name="currency" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <attribute name="is_correct" attributeType="Boolean" syncable="YES"/>
+        <attribute name="label" attributeType="String" syncable="YES"/>
+        <attribute name="points" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <relationship name="action" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="Action" inverseName="answer" inverseEntity="Action" syncable="YES"/>
+        <relationship name="interaction" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Interaction" inverseName="answers" inverseEntity="Interaction" syncable="YES"/>
+    </entity>
+    <entity name="Asset" representedClassName="Asset" syncable="YES">
+        <attribute name="data" attributeType="String" syncable="YES"/>
+        <attribute name="node_id" attributeType="Integer 32" minValueString="0" defaultValueString="0" syncable="YES"/>
+        <attribute name="type" attributeType="String" syncable="YES"/>
+        <relationship name="node" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Node" inverseName="assets" inverseEntity="Node" syncable="YES"/>
+    </entity>
+    <entity name="Comment" representedClassName="Comment" syncable="YES">
+        <attribute name="id" attributeType="Integer 32" minValueString="0" defaultValueString="0" syncable="YES"/>
+        <attribute name="media_type" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="media_url" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="parent_id" optional="YES" attributeType="Integer 32" minValueString="0" defaultValueString="0" syncable="YES"/>
+        <attribute name="posted_at" optional="YES" attributeType="Date" syncable="YES"/>
+        <attribute name="sequence_id" attributeType="Integer 32" minValueString="0" defaultValueString="0" syncable="YES"/>
+        <attribute name="text" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="sequence" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Sequence" inverseName="comments" inverseEntity="Sequence" syncable="YES"/>
+    </entity>
+    <entity name="Interaction" representedClassName="Interaction" syncable="YES">
+        <attribute name="interaction_id" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <attribute name="node_id" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <attribute name="question" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="start_time" optional="YES" attributeType="Integer 32" minValueString="0" defaultValueString="0" syncable="YES"/>
+        <attribute name="type" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="answers" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="Answer" inverseName="interaction" inverseEntity="Answer" syncable="YES"/>
+        <relationship name="node" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Node" inverseName="interactions" inverseEntity="Node" syncable="YES"/>
+    </entity>
+    <entity name="Node" representedClassName="Node" syncable="YES">
+        <attribute name="node_id" attributeType="Integer 32" minValueString="0" defaultValueString="0" syncable="YES"/>
+        <relationship name="actions" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="Action" inverseName="node" inverseEntity="Action" syncable="YES"/>
+        <relationship name="assets" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="Asset" inverseName="node" inverseEntity="Asset" syncable="YES"/>
+        <relationship name="interactions" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="Interaction" inverseName="node" inverseEntity="Interaction" syncable="YES"/>
+        <relationship name="sequence" maxCount="1" deletionRule="Nullify" destinationEntity="Sequence" inverseName="nodes" inverseEntity="Sequence" syncable="YES"/>
+    </entity>
+    <entity name="Sequence" representedClassName="Sequence" syncable="YES">
+        <attribute name="category" attributeType="String" syncable="YES"/>
+        <attribute name="display_order" optional="YES" attributeType="Integer 16" minValueString="0" syncable="YES"/>
+        <attribute name="id" attributeType="Integer 32" minValueString="0" defaultValueString="0" syncable="YES"/>
+        <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="preview_image" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="sequence_description" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="status" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="comments" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="Comment" inverseName="sequence" inverseEntity="Comment" syncable="YES"/>
+        <relationship name="nodes" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="Node" inverseName="sequence" inverseEntity="Node" syncable="YES"/>
+    </entity>
+    <elements>
+        <element name="Action" positionX="450" positionY="-370" width="128" height="118"/>
+        <element name="Answer" positionX="477" positionY="-216" width="128" height="148"/>
+        <element name="Asset" positionX="61" positionY="-180" width="128" height="103"/>
+        <element name="Comment" positionX="556" positionY="-585" width="128" height="163"/>
+        <element name="Interaction" positionX="241" positionY="-190" width="128" height="148"/>
+        <element name="Node" positionX="70" positionY="-441" width="128" height="118"/>
+        <element name="Sequence" positionX="324" positionY="-594" width="128" height="178"/>
+    </elements>
+</model>
