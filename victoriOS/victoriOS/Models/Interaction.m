@@ -8,6 +8,7 @@
 
 #import "Interaction.h"
 #import "Answer.h"
+#import "InteractionAction.h"
 #import "Node.h"
 #import "Rule.h"
 
@@ -23,5 +24,6 @@
 @dynamic answers;
 @dynamic node;
 @dynamic rules;
+@dynamic interaction_action;
 
 @end

@@ -9,7 +9,7 @@
 #import <Foundation/Foundation.h>
 #import <CoreData/CoreData.h>
 
-@class Answer, Node, Rule;
+@class Answer, InteractionAction, Node, Rule;
 
 @interface Interaction : NSManagedObject
 
@@ -22,6 +22,7 @@
 @property (nonatomic, retain) NSSet *answers;
 @property (nonatomic, retain) Node *node;
 @property (nonatomic, retain) NSSet *rules;
+@property (nonatomic, retain) InteractionAction *interaction_action;
 @end
 
 @interface Interaction (CoreDataGeneratedAccessors)

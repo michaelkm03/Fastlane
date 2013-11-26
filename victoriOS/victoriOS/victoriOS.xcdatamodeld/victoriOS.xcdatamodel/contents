@@ -11,7 +11,7 @@
         <relationship name="interaction" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Interaction" inverseName="answers" inverseEntity="Interaction" syncable="YES"/>
     </entity>
     <entity name="AnswerAction" representedClassName="Action" syncable="YES">
-        <attribute name="goto_node" optional="YES" attributeType="Integer 32" minValueString="0" defaultValueString="0" syncable="YES"/>
+        <attribute name="goto_node" attributeType="Integer 64" minValueString="0" defaultValueString="0" syncable="YES"/>
         <relationship name="answer" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Answer" inverseName="answer_action" inverseEntity="Answer" syncable="YES"/>
     </entity>
     <entity name="Asset" representedClassName="Asset" syncable="YES">
@@ -51,8 +51,15 @@
         <attribute name="start_time" optional="YES" attributeType="Integer 32" minValueString="0" defaultValueString="0" syncable="YES"/>
         <attribute name="type" optional="YES" attributeType="Transformable" syncable="YES"/>
         <relationship name="answers" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="Answer" inverseName="interaction" inverseEntity="Answer" syncable="YES"/>
+        <relationship name="interaction_action" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="InteractionAction" inverseName="relationship" inverseEntity="InteractionAction" syncable="YES"/>
         <relationship name="node" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Node" inverseName="interactions" inverseEntity="Node" syncable="YES"/>
         <relationship name="rules" toMany="YES" deletionRule="Cascade" destinationEntity="Rule" inverseName="interaction" inverseEntity="Rule" syncable="YES"/>
+    </entity>
+    <entity name="InteractionAction" representedClassName="InteractionAction" syncable="YES">
+        <attribute name="correct_goto_node" optional="YES" attributeType="Integer 64" minValueString="0" defaultValueString="0" syncable="YES"/>
+        <attribute name="incorrect_goto_node" optional="YES" attributeType="Integer 64" minValueString="0" defaultValueString="0" syncable="YES"/>
+        <attribute name="timeout_goto_node" optional="YES" attributeType="Integer 64" minValueString="0" defaultValueString="0.0" syncable="YES"/>
+        <relationship name="relationship" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Interaction" inverseName="interaction_action" inverseEntity="Interaction" syncable="YES"/>
     </entity>
     <entity name="Node" representedClassName="Node" syncable="YES">
         <attribute name="display_order" attributeType="Integer 32" minValueString="0" defaultValueString="0" syncable="YES"/>
@@ -63,8 +70,8 @@
         <relationship name="sequence" maxCount="1" deletionRule="Nullify" destinationEntity="Sequence" inverseName="nodes" inverseEntity="Sequence" syncable="YES"/>
     </entity>
     <entity name="NodeAction" representedClassName="NodeAction" syncable="YES">
-        <attribute name="lost_goto_node" optional="YES" attributeType="Integer 32" minValueString="0" defaultValueString="0" syncable="YES"/>
-        <attribute name="won_goto_node" optional="YES" attributeType="Integer 32" minValueString="0" defaultValueString="0" syncable="YES"/>
+        <attribute name="lost_goto_node" optional="YES" attributeType="Integer 64" minValueString="0" defaultValueString="0" syncable="YES"/>
+        <attribute name="won_goto_node" optional="YES" attributeType="Integer 64" minValueString="0" defaultValueString="0" syncable="YES"/>
         <relationship name="node" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Node" inverseName="result_action" inverseEntity="Node" syncable="YES"/>
     </entity>
     <entity name="Rule" representedClassName="Rule" syncable="YES">
@@ -122,13 +129,13 @@
         <attribute name="token" optional="YES" attributeType="String" syncable="YES"/>
     </entity>
     <elements>
-        <element name="Answer" positionX="565" positionY="-441" width="128" height="163"/>
-        <element name="AnswerAction" positionX="565" positionY="-595" width="128" height="73"/>
+        <element name="Answer" positionX="709" positionY="-468" width="128" height="163"/>
+        <element name="AnswerAction" positionX="709" positionY="-622" width="128" height="73"/>
         <element name="Asset" positionX="403" positionY="-702" width="128" height="118"/>
         <element name="Categories" positionX="351" positionY="-774" width="128" height="58"/>
         <element name="Category" positionX="540" positionY="-784" width="128" height="73"/>
         <element name="Comment" positionX="27" positionY="-550" width="128" height="238"/>
-        <element name="Interaction" positionX="394" positionY="-549" width="128" height="178"/>
+        <element name="Interaction" positionX="394" positionY="-549" width="128" height="193"/>
         <element name="Node" positionX="207" positionY="-729" width="128" height="133"/>
         <element name="NodeAction" positionX="207" positionY="-531" width="128" height="88"/>
         <element name="Rule" positionX="360" positionY="-342" width="128" height="73"/>
@@ -137,5 +144,6 @@
         <element name="StatInteraction" positionX="387" positionY="-241" width="128" height="178"/>
         <element name="StatSequence" positionX="198" positionY="-243" width="128" height="193"/>
         <element name="User" positionX="205" positionY="-405" width="128" height="118"/>
+        <element name="InteractionAction" positionX="558" positionY="-562" width="128" height="103"/>
     </elements>
 </model>
