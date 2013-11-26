@@ -22,8 +22,8 @@
 @dynamic start_time;
 @dynamic type;
 @dynamic answers;
+@dynamic interaction_action;
 @dynamic node;
 @dynamic rules;
-@dynamic interaction_action;
 
 @end

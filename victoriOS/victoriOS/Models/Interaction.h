@@ -18,11 +18,11 @@
 @property (nonatomic, retain) NSNumber * node_id;
 @property (nonatomic, retain) NSString * question;
 @property (nonatomic, retain) NSNumber * start_time;
-@property (nonatomic, retain) id type;
+@property (nonatomic, retain) NSString * type;
 @property (nonatomic, retain) NSSet *answers;
+@property (nonatomic, retain) InteractionAction *interaction_action;
 @property (nonatomic, retain) Node *node;
 @property (nonatomic, retain) NSSet *rules;
-@property (nonatomic, retain) InteractionAction *interaction_action;
 @end
 
 @interface Interaction (CoreDataGeneratedAccessors)
