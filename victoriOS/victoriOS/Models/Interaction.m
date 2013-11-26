@@ -7,6 +7,8 @@
 //
 
 #import "Interaction.h"
+#import "Answer.h"
+#import "Node.h"
 
 
 @implementation Interaction

@@ -9,6 +9,7 @@
 #import <Foundation/Foundation.h>
 #import <CoreData/CoreData.h>
 
+@class Answer, Node;
 
 @interface Interaction : NSManagedObject
 
@@ -18,13 +19,13 @@
 @property (nonatomic, retain) NSNumber * start_time;
 @property (nonatomic, retain) NSString * type;
 @property (nonatomic, retain) NSSet *answers;
-@property (nonatomic, retain) NSManagedObject *node;
+@property (nonatomic, retain) Node *node;
 @end
 
 @interface Interaction (CoreDataGeneratedAccessors)
 
-- (void)addAnswersObject:(NSManagedObject *)value;
-- (void)removeAnswersObject:(NSManagedObject *)value;
+- (void)addAnswersObject:(Answer *)value;
+- (void)removeAnswersObject:(Answer *)value;
 - (void)addAnswers:(NSSet *)values;
 - (void)removeAnswers:(NSSet *)values;
 

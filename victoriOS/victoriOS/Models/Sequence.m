@@ -7,6 +7,7 @@
 //
 
 #import "Sequence.h"
+#import "Comment.h"
 #import "Node.h"
 
 

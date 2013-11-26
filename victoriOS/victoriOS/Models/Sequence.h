@@ -9,7 +9,7 @@
 #import <Foundation/Foundation.h>
 #import <CoreData/CoreData.h>
 
-@class Node;
+@class Comment, Node;
 
 @interface Sequence : NSManagedObject
 
@@ -17,7 +17,7 @@
 @property (nonatomic, retain) NSNumber * display_order;
 @property (nonatomic, retain) NSNumber * id;
 @property (nonatomic, retain) NSString * name;
-@property (nonatomic, retain) NSString * preview_image;
+@property (nonatomic, retain) id preview_image;
 @property (nonatomic, retain) NSString * sequence_description;
 @property (nonatomic, retain) NSString * status;
 @property (nonatomic, retain) NSSet *comments;
@@ -26,8 +26,8 @@
 
 @interface Sequence (CoreDataGeneratedAccessors)
 
-- (void)addCommentsObject:(NSManagedObject *)value;
-- (void)removeCommentsObject:(NSManagedObject *)value;
+- (void)addCommentsObject:(Comment *)value;
+- (void)removeCommentsObject:(Comment *)value;
 - (void)addComments:(NSSet *)values;
 - (void)removeComments:(NSSet *)values;
 

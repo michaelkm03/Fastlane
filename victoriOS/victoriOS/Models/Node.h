@@ -9,7 +9,7 @@
 #import <Foundation/Foundation.h>
 #import <CoreData/CoreData.h>
 
-@class Interaction;
+@class Action, Asset, Interaction, Sequence;
 
 @interface Node : NSManagedObject
 
@@ -17,18 +17,18 @@
 @property (nonatomic, retain) NSSet *actions;
 @property (nonatomic, retain) NSSet *assets;
 @property (nonatomic, retain) NSSet *interactions;
-@property (nonatomic, retain) NSManagedObject *sequence;
+@property (nonatomic, retain) Sequence *sequence;
 @end
 
 @interface Node (CoreDataGeneratedAccessors)
 
-- (void)addActionsObject:(NSManagedObject *)value;
-- (void)removeActionsObject:(NSManagedObject *)value;
+- (void)addActionsObject:(Action *)value;
+- (void)removeActionsObject:(Action *)value;
 - (void)addActions:(NSSet *)values;
 - (void)removeActions:(NSSet *)values;
 
-- (void)addAssetsObject:(NSManagedObject *)value;
-- (void)removeAssetsObject:(NSManagedObject *)value;
+- (void)addAssetsObject:(Asset *)value;
+- (void)removeAssetsObject:(Asset *)value;
 - (void)addAssets:(NSSet *)values;
 - (void)removeAssets:(NSSet *)values;
 

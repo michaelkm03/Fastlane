@@ -9,7 +9,7 @@
 #import <Foundation/Foundation.h>
 #import <CoreData/CoreData.h>
 
-@class Interaction;
+@class Action, Interaction;
 
 @interface Answer : NSManagedObject
 
@@ -24,8 +24,8 @@
 
 @interface Answer (CoreDataGeneratedAccessors)
 
-- (void)addActionObject:(NSManagedObject *)value;
-- (void)removeActionObject:(NSManagedObject *)value;
+- (void)addActionObject:(Action *)value;
+- (void)removeActionObject:(Action *)value;
 - (void)addAction:(NSSet *)values;
 - (void)removeAction:(NSSet *)values;
 

@@ -15,7 +15,7 @@
 
 @property (nonatomic, retain) NSNumber * id;
 @property (nonatomic, retain) NSString * media_type;
-@property (nonatomic, retain) NSString * media_url;
+@property (nonatomic, retain) id media_url;
 @property (nonatomic, retain) NSNumber * parent_id;
 @property (nonatomic, retain) NSDate * posted_at;
 @property (nonatomic, retain) NSNumber * sequence_id;

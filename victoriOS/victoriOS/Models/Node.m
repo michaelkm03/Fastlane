@@ -7,7 +7,10 @@
 //
 
 #import "Node.h"
+#import "Action.h"
+#import "Asset.h"
 #import "Interaction.h"
+#import "Sequence.h"
 
 
 @implementation Node

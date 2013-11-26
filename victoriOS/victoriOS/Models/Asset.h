@@ -13,7 +13,7 @@
 
 @interface Asset : NSManagedObject
 
-@property (nonatomic, retain) NSString * data;
+@property (nonatomic, retain) id data;
 @property (nonatomic, retain) NSNumber * node_id;
 @property (nonatomic, retain) NSString * type;
 @property (nonatomic, retain) Node *node;
