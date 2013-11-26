@@ -21,6 +21,13 @@
         <attribute name="type" attributeType="String" syncable="YES"/>
         <relationship name="node" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Node" inverseName="assets" inverseEntity="Node" syncable="YES"/>
     </entity>
+    <entity name="Categories" representedClassName="Categories" syncable="YES">
+        <relationship name="categories" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="Category" inverseName="categories" inverseEntity="Category" syncable="YES"/>
+    </entity>
+    <entity name="Category" representedClassName="Category" syncable="YES">
+        <attribute name="name" attributeType="String" syncable="YES"/>
+        <relationship name="categories" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Categories" inverseName="categories" inverseEntity="Categories" syncable="YES"/>
+    </entity>
     <entity name="Comment" representedClassName="Comment" syncable="YES">
         <attribute name="dislikes" optional="YES" attributeType="Integer 32" minValueString="0" defaultValueString="0" syncable="YES"/>
         <attribute name="display_order" attributeType="Integer 32" minValueString="0" defaultValueString="0" syncable="YES"/>
@@ -114,18 +121,20 @@
         <attribute name="name" attributeType="String" syncable="YES"/>
     </entity>
     <elements>
-        <element name="AnswerAction" positionX="565" positionY="-595" width="128" height="73"/>
         <element name="Answer" positionX="565" positionY="-441" width="128" height="163"/>
+        <element name="AnswerAction" positionX="565" positionY="-595" width="128" height="73"/>
         <element name="Asset" positionX="403" positionY="-702" width="128" height="118"/>
         <element name="Comment" positionX="27" positionY="-550" width="128" height="238"/>
         <element name="Interaction" positionX="394" positionY="-549" width="128" height="178"/>
         <element name="Node" positionX="207" positionY="-729" width="128" height="133"/>
+        <element name="NodeAction" positionX="207" positionY="-531" width="128" height="88"/>
+        <element name="Rule" positionX="360" positionY="-342" width="128" height="73"/>
         <element name="Sequence" positionX="9" positionY="-792" width="128" height="193"/>
         <element name="StatAnswer" positionX="477" positionY="-187" width="128" height="133"/>
         <element name="StatInteraction" positionX="279" positionY="-214" width="128" height="178"/>
         <element name="StatSequence" positionX="81" positionY="-214" width="128" height="193"/>
         <element name="User" positionX="205" positionY="-369" width="128" height="103"/>
-        <element name="NodeAction" positionX="207" positionY="-531" width="128" height="88"/>
-        <element name="Rule" positionX="360" positionY="-342" width="128" height="73"/>
+        <element name="Category" positionX="540" positionY="-784" width="128" height="73"/>
+        <element name="Categories" positionX="351" positionY="-774" width="128" height="58"/>
     </elements>
 </model>

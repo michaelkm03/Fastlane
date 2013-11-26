@@ -18,9 +18,9 @@
 @dynamic id;
 @dynamic name;
 @dynamic preview_image;
+@dynamic released_at;
 @dynamic sequence_description;
 @dynamic status;
-@dynamic released_at;
 @dynamic comments;
 @dynamic nodes;
 

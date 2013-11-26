@@ -15,10 +15,10 @@
 
 @property (nonatomic, retain) NSNumber * answer_id;
 @property (nonatomic, retain) NSNumber * currency;
+@property (nonatomic, retain) NSNumber * display_order;
 @property (nonatomic, retain) NSNumber * is_correct;
 @property (nonatomic, retain) NSString * label;
 @property (nonatomic, retain) NSNumber * points;
-@property (nonatomic, retain) NSNumber * display_order;
 @property (nonatomic, retain) Action *answer_action;
 @property (nonatomic, retain) Interaction *interaction;
 

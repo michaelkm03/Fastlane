@@ -12,8 +12,8 @@
 
 @implementation NodeAction
 
-@dynamic won_goto_node;
 @dynamic lost_goto_node;
+@dynamic won_goto_node;
 @dynamic node;
 
 @end

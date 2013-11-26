@@ -14,13 +14,13 @@
 
 @dynamic completed_at;
 @dynamic correct_answers;
+@dynamic id;
 @dynamic name;
 @dynamic num_questions_answered;
 @dynamic outcome;
 @dynamic possible_points;
 @dynamic total_points;
 @dynamic total_questions;
-@dynamic id;
 @dynamic interaction_details;
 
 @end

@@ -13,9 +13,9 @@
 @implementation Asset
 
 @dynamic data;
+@dynamic display_order;
 @dynamic node_id;
 @dynamic type;
-@dynamic display_order;
 @dynamic node;
 
 @end

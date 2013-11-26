@@ -15,11 +15,11 @@
 
 @implementation Node
 
-@dynamic node_id;
 @dynamic display_order;
+@dynamic node_id;
 @dynamic assets;
 @dynamic interactions;
-@dynamic sequence;
 @dynamic result_action;
+@dynamic sequence;
 
 @end

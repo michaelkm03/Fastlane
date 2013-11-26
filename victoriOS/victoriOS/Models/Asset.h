@@ -14,9 +14,9 @@
 @interface Asset : NSManagedObject
 
 @property (nonatomic, retain) id data;
+@property (nonatomic, retain) NSNumber * display_order;
 @property (nonatomic, retain) NSNumber * node_id;
 @property (nonatomic, retain) NSString * type;
-@property (nonatomic, retain) NSNumber * display_order;
 @property (nonatomic, retain) Node *node;
 
 @end

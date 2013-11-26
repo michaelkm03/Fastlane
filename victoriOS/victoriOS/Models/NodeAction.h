@@ -13,8 +13,8 @@
 
 @interface NodeAction : NSManagedObject
 
-@property (nonatomic, retain) NSNumber * won_goto_node;
 @property (nonatomic, retain) NSNumber * lost_goto_node;
+@property (nonatomic, retain) NSNumber * won_goto_node;
 @property (nonatomic, retain) Node *node;
 
 @end

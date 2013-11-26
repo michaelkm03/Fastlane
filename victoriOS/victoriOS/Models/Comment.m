@@ -12,18 +12,18 @@
 
 @implementation Comment
 
+@dynamic dislikes;
+@dynamic display_order;
+@dynamic flags;
 @dynamic id;
+@dynamic likes;
 @dynamic media_type;
 @dynamic media_url;
 @dynamic parent_id;
 @dynamic posted_at;
 @dynamic sequence_id;
-@dynamic text;
-@dynamic display_order;
-@dynamic likes;
 @dynamic shares;
-@dynamic flags;
-@dynamic dislikes;
+@dynamic text;
 @dynamic sequence;
 
 @end

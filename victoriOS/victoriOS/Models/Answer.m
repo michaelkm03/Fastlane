@@ -15,10 +15,10 @@
 
 @dynamic answer_id;
 @dynamic currency;
+@dynamic display_order;
 @dynamic is_correct;
 @dynamic label;
 @dynamic points;
-@dynamic display_order;
 @dynamic answer_action;
 @dynamic interaction;
 

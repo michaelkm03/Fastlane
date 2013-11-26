@@ -13,12 +13,12 @@
 
 @interface Node : NSManagedObject
 
-@property (nonatomic, retain) NSNumber * node_id;
 @property (nonatomic, retain) NSNumber * display_order;
+@property (nonatomic, retain) NSNumber * node_id;
 @property (nonatomic, retain) NSSet *assets;
 @property (nonatomic, retain) NSSet *interactions;
-@property (nonatomic, retain) Sequence *sequence;
 @property (nonatomic, retain) NodeAction *result_action;
+@property (nonatomic, retain) Sequence *sequence;
 @end
 
 @interface Node (CoreDataGeneratedAccessors)
