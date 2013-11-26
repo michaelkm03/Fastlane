@@ -15,5 +15,6 @@
 @dynamic email;
 @dynamic id;
 @dynamic name;
+@dynamic token;
 
 @end

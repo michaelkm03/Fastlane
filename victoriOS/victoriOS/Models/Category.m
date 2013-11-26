@@ -7,6 +7,7 @@
 //
 
 #import "Category.h"
+#import "Categories.h"
 
 
 @implementation Category

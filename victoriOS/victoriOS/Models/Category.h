@@ -9,10 +9,11 @@
 #import <Foundation/Foundation.h>
 #import <CoreData/CoreData.h>
 
+@class Categories;
 
 @interface Category : NSManagedObject
 
 @property (nonatomic, retain) NSString * name;
-@property (nonatomic, retain) NSManagedObject *categories;
+@property (nonatomic, retain) Categories *categories;
 
 @end

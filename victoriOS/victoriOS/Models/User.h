@@ -16,5 +16,6 @@
 @property (nonatomic, retain) NSString * email;
 @property (nonatomic, retain) NSNumber * id;
 @property (nonatomic, retain) NSString * name;
+@property (nonatomic, retain) NSString * token;
 
 @end
