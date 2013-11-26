@@ -2,7 +2,7 @@
 //  User.m
 //  victoriOS
 //
-//  Created by Will Long on 11/25/13.
+//  Created by Will Long on 11/26/13.
 //  Copyright (c) 2013 Will Long. All rights reserved.
 //
 
@@ -11,9 +11,9 @@
 
 @implementation User
 
-@dynamic email;
-@dynamic name;
 @dynamic access_level;
+@dynamic email;
 @dynamic id;
+@dynamic name;
 
 @end

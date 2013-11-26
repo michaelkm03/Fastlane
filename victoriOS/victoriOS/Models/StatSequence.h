@@ -2,7 +2,7 @@
 //  StatSequence.h
 //  victoriOS
 //
-//  Created by Will Long on 11/25/13.
+//  Created by Will Long on 11/26/13.
 //  Copyright (c) 2013 Will Long. All rights reserved.
 //
 
@@ -13,14 +13,14 @@
 
 @interface StatSequence : NSManagedObject
 
-@property (nonatomic, retain) NSNumber * possible_points;
-@property (nonatomic, retain) NSNumber * total_questions;
-@property (nonatomic, retain) NSNumber * total_points;
-@property (nonatomic, retain) NSNumber * correct_answers;
-@property (nonatomic, retain) NSNumber * num_questions_answered;
-@property (nonatomic, retain) NSString * name;
-@property (nonatomic, retain) NSString * outcome;
 @property (nonatomic, retain) NSDate * completed_at;
+@property (nonatomic, retain) NSNumber * correct_answers;
+@property (nonatomic, retain) NSString * name;
+@property (nonatomic, retain) NSNumber * num_questions_answered;
+@property (nonatomic, retain) NSString * outcome;
+@property (nonatomic, retain) NSNumber * possible_points;
+@property (nonatomic, retain) NSNumber * total_points;
+@property (nonatomic, retain) NSNumber * total_questions;
 @property (nonatomic, retain) NSSet *interaction_details;
 @end
 

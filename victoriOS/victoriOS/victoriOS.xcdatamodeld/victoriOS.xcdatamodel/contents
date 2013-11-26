@@ -8,11 +8,11 @@
         <relationship name="node" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Node" inverseName="actions" inverseEntity="Node" syncable="YES"/>
     </entity>
     <entity name="Answer" representedClassName="Answer" syncable="YES">
-        <attribute name="answer_id" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
-        <attribute name="currency" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <attribute name="answer_id" attributeType="Integer 32" minValueString="0" defaultValueString="0" syncable="YES"/>
+        <attribute name="currency" optional="YES" attributeType="Integer 32" minValueString="0" defaultValueString="0" syncable="YES"/>
         <attribute name="is_correct" attributeType="Boolean" syncable="YES"/>
         <attribute name="label" attributeType="String" syncable="YES"/>
-        <attribute name="points" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <attribute name="points" optional="YES" attributeType="Integer 32" minValueString="0" defaultValueString="0" syncable="YES"/>
         <relationship name="action" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="Action" inverseName="answer" inverseEntity="Action" syncable="YES"/>
         <relationship name="interaction" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Interaction" inverseName="answers" inverseEntity="Interaction" syncable="YES"/>
     </entity>
@@ -33,8 +33,8 @@
         <relationship name="sequence" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Sequence" inverseName="comments" inverseEntity="Sequence" syncable="YES"/>
     </entity>
     <entity name="Interaction" representedClassName="Interaction" syncable="YES">
-        <attribute name="interaction_id" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
-        <attribute name="node_id" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <attribute name="interaction_id" attributeType="Integer 32" minValueString="0" defaultValueString="0" syncable="YES"/>
+        <attribute name="node_id" attributeType="Integer 32" minValueString="0" defaultValueString="0" syncable="YES"/>
         <attribute name="question" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="start_time" optional="YES" attributeType="Integer 32" minValueString="0" defaultValueString="0" syncable="YES"/>
         <attribute name="type" optional="YES" attributeType="String" syncable="YES"/>
@@ -50,7 +50,7 @@
     </entity>
     <entity name="Sequence" representedClassName="Sequence" syncable="YES">
         <attribute name="category" attributeType="String" syncable="YES"/>
-        <attribute name="display_order" optional="YES" attributeType="Integer 16" minValueString="0" syncable="YES"/>
+        <attribute name="display_order" attributeType="Integer 16" minValueString="0" syncable="YES"/>
         <attribute name="id" attributeType="Integer 32" minValueString="0" defaultValueString="0" syncable="YES"/>
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="preview_image" optional="YES" attributeType="Transformable" syncable="YES"/>
@@ -92,8 +92,8 @@
     <entity name="User" representedClassName="User" syncable="YES">
         <attribute name="access_level" attributeType="String" syncable="YES"/>
         <attribute name="email" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="id" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
-        <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="id" attributeType="Integer 32" minValueString="0" defaultValueString="0" syncable="YES"/>
+        <attribute name="name" attributeType="String" syncable="YES"/>
     </entity>
     <elements>
         <element name="Action" positionX="396" positionY="-396" width="128" height="118"/>
@@ -101,11 +101,11 @@
         <element name="Asset" positionX="97" positionY="-252" width="128" height="103"/>
         <element name="Comment" positionX="502" positionY="-594" width="128" height="163"/>
         <element name="Interaction" positionX="268" positionY="-256" width="128" height="148"/>
-        <element name="Node" positionX="106" positionY="-567" width="128" height="118"/>
+        <element name="Node" positionX="117" positionY="-531" width="128" height="118"/>
         <element name="Sequence" positionX="324" positionY="-594" width="128" height="178"/>
-        <element name="User" positionX="549" positionY="-369" width="128" height="103"/>
-        <element name="StatSequence" positionX="99" positionY="-7" width="128" height="178"/>
-        <element name="StatInteraction" positionX="297" positionY="-7" width="128" height="178"/>
         <element name="StatAnswer" positionX="495" positionY="20" width="128" height="133"/>
+        <element name="StatInteraction" positionX="297" positionY="-7" width="128" height="178"/>
+        <element name="StatSequence" positionX="99" positionY="-7" width="128" height="178"/>
+        <element name="User" positionX="549" positionY="-369" width="128" height="103"/>
     </elements>
 </model>

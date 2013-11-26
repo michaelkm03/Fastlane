@@ -2,7 +2,7 @@
 //  User.h
 //  victoriOS
 //
-//  Created by Will Long on 11/25/13.
+//  Created by Will Long on 11/26/13.
 //  Copyright (c) 2013 Will Long. All rights reserved.
 //
 
@@ -12,9 +12,9 @@
 
 @interface User : NSManagedObject
 
-@property (nonatomic, retain) NSString * email;
-@property (nonatomic, retain) NSString * name;
 @property (nonatomic, retain) NSString * access_level;
+@property (nonatomic, retain) NSString * email;
 @property (nonatomic, retain) NSNumber * id;
+@property (nonatomic, retain) NSString * name;
 
 @end

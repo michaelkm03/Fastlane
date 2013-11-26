@@ -2,7 +2,7 @@
 //  StatAnswer.m
 //  victoriOS
 //
-//  Created by Will Long on 11/25/13.
+//  Created by Will Long on 11/26/13.
 //  Copyright (c) 2013 Will Long. All rights reserved.
 //
 
@@ -12,11 +12,11 @@
 
 @implementation StatAnswer
 
-@dynamic id;
 @dynamic answer_id;
-@dynamic label;
-@dynamic is_correct;
 @dynamic currency;
+@dynamic id;
+@dynamic is_correct;
+@dynamic label;
 @dynamic interaction;
 
 @end

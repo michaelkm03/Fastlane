@@ -2,7 +2,7 @@
 //  StatSequence.m
 //  victoriOS
 //
-//  Created by Will Long on 11/25/13.
+//  Created by Will Long on 11/26/13.
 //  Copyright (c) 2013 Will Long. All rights reserved.
 //
 
@@ -12,14 +12,14 @@
 
 @implementation StatSequence
 
-@dynamic possible_points;
-@dynamic total_questions;
-@dynamic total_points;
-@dynamic correct_answers;
-@dynamic num_questions_answered;
-@dynamic name;
-@dynamic outcome;
 @dynamic completed_at;
+@dynamic correct_answers;
+@dynamic name;
+@dynamic num_questions_answered;
+@dynamic outcome;
+@dynamic possible_points;
+@dynamic total_points;
+@dynamic total_questions;
 @dynamic interaction_details;
 
 @end
