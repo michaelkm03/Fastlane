@@ -9,7 +9,7 @@
 #import <Foundation/Foundation.h>
 #import <CoreData/CoreData.h>
 
-@class Category;
+@class VCategory;
 
 @interface Categories : NSManagedObject
 
@@ -18,8 +18,8 @@
 
 @interface Categories (CoreDataGeneratedAccessors)
 
-- (void)addCategoriesObject:(Category *)value;
-- (void)removeCategoriesObject:(Category *)value;
+- (void)addCategoriesObject:(VCategory *)value;
+- (void)removeCategoriesObject:(VCategory *)value;
 - (void)addCategories:(NSSet *)values;
 - (void)removeCategories:(NSSet *)values;
 

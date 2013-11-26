@@ -1,5 +1,5 @@
 //
-//  Category.h
+//  VCategory.h
 //  victoriOS
 //
 //  Created by Will Long on 11/26/13.
@@ -11,7 +11,7 @@
 
 @class Categories;
 
-@interface Category : NSManagedObject
+@interface VCategory : NSManagedObject
 
 @property (nonatomic, retain) NSString * name;
 @property (nonatomic, retain) Categories *categories;
