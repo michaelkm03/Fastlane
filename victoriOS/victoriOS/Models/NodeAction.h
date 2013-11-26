@@ -1,5 +1,5 @@
 //
-//  Asset.h
+//  NodeAction.h
 //  victoriOS
 //
 //  Created by Will Long on 11/26/13.
@@ -11,12 +11,10 @@
 
 @class Node;
 
-@interface Asset : NSManagedObject
+@interface NodeAction : NSManagedObject
 
-@property (nonatomic, retain) id data;
-@property (nonatomic, retain) NSNumber * node_id;
-@property (nonatomic, retain) NSString * type;
-@property (nonatomic, retain) NSNumber * display_order;
+@property (nonatomic, retain) NSNumber * won_goto_node;
+@property (nonatomic, retain) NSNumber * lost_goto_node;
 @property (nonatomic, retain) Node *node;
 
 @end

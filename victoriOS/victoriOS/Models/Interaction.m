@@ -18,7 +18,9 @@
 @dynamic question;
 @dynamic start_time;
 @dynamic type;
+@dynamic display_order;
 @dynamic answers;
 @dynamic node;
+@dynamic rules;
 
 @end

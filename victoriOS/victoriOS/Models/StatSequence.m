@@ -20,6 +20,7 @@
 @dynamic possible_points;
 @dynamic total_points;
 @dynamic total_questions;
+@dynamic id;
 @dynamic interaction_details;
 
 @end

@@ -19,6 +19,11 @@
 @dynamic posted_at;
 @dynamic sequence_id;
 @dynamic text;
+@dynamic display_order;
+@dynamic likes;
+@dynamic shares;
+@dynamic flags;
+@dynamic dislikes;
 @dynamic sequence;
 
 @end

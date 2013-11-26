@@ -1,18 +1,18 @@
 //
-//  Action.m
+//  Rule.m
 //  victoriOS
 //
 //  Created by Will Long on 11/26/13.
 //  Copyright (c) 2013 Will Long. All rights reserved.
 //
 
-#import "Action.h"
-#import "Answer.h"
+#import "Rule.h"
+#import "Interaction.h"
 
 
-@implementation Action
+@implementation Rule
 
-@dynamic goto_node;
-@dynamic answer;
+@dynamic name;
+@dynamic interaction;
 
 @end

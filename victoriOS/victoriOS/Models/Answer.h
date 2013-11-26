@@ -18,15 +18,8 @@
 @property (nonatomic, retain) NSNumber * is_correct;
 @property (nonatomic, retain) NSString * label;
 @property (nonatomic, retain) NSNumber * points;
-@property (nonatomic, retain) NSSet *action;
+@property (nonatomic, retain) NSNumber * display_order;
+@property (nonatomic, retain) Action *answer_action;
 @property (nonatomic, retain) Interaction *interaction;
-@end
-
-@interface Answer (CoreDataGeneratedAccessors)
-
-- (void)addActionObject:(Action *)value;
-- (void)removeActionObject:(Action *)value;
-- (void)addAction:(NSSet *)values;
-- (void)removeAction:(NSSet *)values;
 
 @end

@@ -1,61 +1,78 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="3401" systemVersion="13A603" minimumToolsVersion="Automatic" macOSVersion="Automatic" iOSVersion="Automatic">
-    <entity name="Action" representedClassName="Action" syncable="YES">
-        <attribute name="goto_node" optional="YES" attributeType="Integer 32" minValueString="0" defaultValueString="0" syncable="YES"/>
-        <attribute name="lost_goto_node" optional="YES" attributeType="Integer 32" minValueString="0" defaultValueString="0" syncable="YES"/>
-        <attribute name="won_goto_node" optional="YES" attributeType="Integer 32" minValueString="0" defaultValueString="0" syncable="YES"/>
-        <relationship name="answer" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Answer" inverseName="action" inverseEntity="Answer" syncable="YES"/>
-        <relationship name="node" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Node" inverseName="actions" inverseEntity="Node" syncable="YES"/>
-    </entity>
     <entity name="Answer" representedClassName="Answer" syncable="YES">
         <attribute name="answer_id" attributeType="Integer 32" minValueString="0" defaultValueString="0" syncable="YES"/>
         <attribute name="currency" optional="YES" attributeType="Integer 32" minValueString="0" defaultValueString="0" syncable="YES"/>
+        <attribute name="display_order" attributeType="Integer 32" minValueString="0" defaultValueString="0" syncable="YES"/>
         <attribute name="is_correct" attributeType="Boolean" syncable="YES"/>
         <attribute name="label" attributeType="String" syncable="YES"/>
-        <attribute name="points" optional="YES" attributeType="Integer 32" minValueString="0" defaultValueString="0" syncable="YES"/>
-        <relationship name="action" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="Action" inverseName="answer" inverseEntity="Action" syncable="YES"/>
+        <attribute name="points" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <relationship name="answer_action" maxCount="1" deletionRule="Cascade" destinationEntity="AnswerAction" inverseName="answer" inverseEntity="AnswerAction" syncable="YES"/>
         <relationship name="interaction" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Interaction" inverseName="answers" inverseEntity="Interaction" syncable="YES"/>
+    </entity>
+    <entity name="AnswerAction" representedClassName="Action" syncable="YES">
+        <attribute name="goto_node" optional="YES" attributeType="Integer 32" minValueString="0" defaultValueString="0" syncable="YES"/>
+        <relationship name="answer" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Answer" inverseName="answer_action" inverseEntity="Answer" syncable="YES"/>
     </entity>
     <entity name="Asset" representedClassName="Asset" syncable="YES">
         <attribute name="data" attributeType="Transformable" syncable="YES"/>
+        <attribute name="display_order" attributeType="Integer 32" minValueString="0" defaultValueString="0" syncable="YES"/>
         <attribute name="node_id" attributeType="Integer 32" minValueString="0" defaultValueString="0" syncable="YES"/>
         <attribute name="type" attributeType="String" syncable="YES"/>
         <relationship name="node" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Node" inverseName="assets" inverseEntity="Node" syncable="YES"/>
     </entity>
     <entity name="Comment" representedClassName="Comment" syncable="YES">
+        <attribute name="dislikes" optional="YES" attributeType="Integer 32" minValueString="0" defaultValueString="0" syncable="YES"/>
+        <attribute name="display_order" attributeType="Integer 32" minValueString="0" defaultValueString="0" syncable="YES"/>
+        <attribute name="flags" attributeType="Integer 32" minValueString="0" defaultValueString="0" syncable="YES"/>
         <attribute name="id" attributeType="Integer 32" minValueString="0" defaultValueString="0" syncable="YES"/>
+        <attribute name="likes" attributeType="Integer 32" minValueString="0" defaultValueString="0" syncable="YES"/>
         <attribute name="media_type" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="media_url" optional="YES" attributeType="Transformable" syncable="YES"/>
         <attribute name="parent_id" optional="YES" attributeType="Integer 32" minValueString="0" defaultValueString="0" syncable="YES"/>
         <attribute name="posted_at" optional="YES" attributeType="Date" syncable="YES"/>
         <attribute name="sequence_id" attributeType="Integer 32" minValueString="0" defaultValueString="0" syncable="YES"/>
+        <attribute name="shares" attributeType="Integer 32" minValueString="0" defaultValueString="0" syncable="YES"/>
         <attribute name="text" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="sequence" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Sequence" inverseName="comments" inverseEntity="Sequence" syncable="YES"/>
     </entity>
     <entity name="Interaction" representedClassName="Interaction" syncable="YES">
+        <attribute name="display_order" attributeType="Integer 32" minValueString="0" defaultValueString="0" syncable="YES"/>
         <attribute name="interaction_id" attributeType="Integer 32" minValueString="0" defaultValueString="0" syncable="YES"/>
         <attribute name="node_id" attributeType="Integer 32" minValueString="0" defaultValueString="0" syncable="YES"/>
         <attribute name="question" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="start_time" optional="YES" attributeType="Integer 32" minValueString="0" defaultValueString="0" syncable="YES"/>
-        <attribute name="type" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="type" optional="YES" attributeType="Transformable" syncable="YES"/>
         <relationship name="answers" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="Answer" inverseName="interaction" inverseEntity="Answer" syncable="YES"/>
         <relationship name="node" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Node" inverseName="interactions" inverseEntity="Node" syncable="YES"/>
+        <relationship name="rules" toMany="YES" deletionRule="Cascade" destinationEntity="Rule" inverseName="interaction" inverseEntity="Rule" syncable="YES"/>
     </entity>
     <entity name="Node" representedClassName="Node" syncable="YES">
+        <attribute name="display_order" attributeType="Integer 32" minValueString="0" defaultValueString="0" syncable="YES"/>
         <attribute name="node_id" attributeType="Integer 32" minValueString="0" defaultValueString="0" syncable="YES"/>
-        <relationship name="actions" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="Action" inverseName="node" inverseEntity="Action" syncable="YES"/>
         <relationship name="assets" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="Asset" inverseName="node" inverseEntity="Asset" syncable="YES"/>
         <relationship name="interactions" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="Interaction" inverseName="node" inverseEntity="Interaction" syncable="YES"/>
+        <relationship name="result_action" maxCount="1" deletionRule="Cascade" destinationEntity="NodeAction" inverseName="node" inverseEntity="NodeAction" syncable="YES"/>
         <relationship name="sequence" maxCount="1" deletionRule="Nullify" destinationEntity="Sequence" inverseName="nodes" inverseEntity="Sequence" syncable="YES"/>
     </entity>
+    <entity name="NodeAction" representedClassName="NodeAction" syncable="YES">
+        <attribute name="lost_goto_node" optional="YES" attributeType="Integer 32" minValueString="0" defaultValueString="0" syncable="YES"/>
+        <attribute name="won_goto_node" optional="YES" attributeType="Integer 32" minValueString="0" defaultValueString="0" syncable="YES"/>
+        <relationship name="node" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Node" inverseName="result_action" inverseEntity="Node" syncable="YES"/>
+    </entity>
+    <entity name="Rule" representedClassName="Rule" syncable="YES">
+        <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="interaction" maxCount="1" deletionRule="Nullify" destinationEntity="Interaction" inverseName="rules" inverseEntity="Interaction" syncable="YES"/>
+    </entity>
     <entity name="Sequence" representedClassName="Sequence" syncable="YES">
-        <attribute name="category" attributeType="String" syncable="YES"/>
+        <attribute name="category" attributeType="Date" syncable="YES"/>
         <attribute name="display_order" attributeType="Integer 16" minValueString="0" syncable="YES"/>
         <attribute name="id" attributeType="Integer 32" minValueString="0" defaultValueString="0" syncable="YES"/>
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="preview_image" optional="YES" attributeType="Transformable" syncable="YES"/>
+        <attribute name="released_at" optional="YES" attributeType="Date" syncable="YES"/>
         <attribute name="sequence_description" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="status" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="status" optional="YES" attributeType="Transformable" syncable="YES"/>
         <relationship name="comments" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="Comment" inverseName="sequence" inverseEntity="Comment" syncable="YES"/>
         <relationship name="nodes" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="Node" inverseName="sequence" inverseEntity="Node" syncable="YES"/>
     </entity>
@@ -65,27 +82,28 @@
         <attribute name="id" attributeType="Integer 32" minValueString="0" defaultValueString="0" syncable="YES"/>
         <attribute name="is_correct" attributeType="Boolean" syncable="YES"/>
         <attribute name="label" attributeType="String" syncable="YES"/>
-        <relationship name="interaction" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="StatInteraction" inverseName="answers" inverseEntity="StatInteraction" syncable="YES"/>
+        <relationship name="interaction" maxCount="1" deletionRule="Nullify" destinationEntity="StatInteraction" inverseName="answers" inverseEntity="StatInteraction" syncable="YES"/>
     </entity>
     <entity name="StatInteraction" representedClassName="StatInteraction" syncable="YES">
         <attribute name="answered_at" attributeType="Integer 32" minValueString="0" defaultValueString="0" syncable="YES"/>
         <attribute name="currency" attributeType="Integer 32" minValueString="0" defaultValueString="0" syncable="YES"/>
         <attribute name="id" attributeType="Integer 32" minValueString="0" defaultValueString="0" syncable="YES"/>
         <attribute name="interaction_id" attributeType="Integer 32" minValueString="0" defaultValueString="0" syncable="YES"/>
-        <attribute name="points" attributeType="Integer 32" minValueString="0" defaultValueString="0" syncable="YES"/>
+        <attribute name="points" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
         <attribute name="question" attributeType="String" syncable="YES"/>
         <attribute name="type" attributeType="String" syncable="YES"/>
         <relationship name="answers" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="StatAnswer" inverseName="interaction" inverseEntity="StatAnswer" syncable="YES"/>
-        <relationship name="stat_sequence" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="StatSequence" inverseName="interaction_details" inverseEntity="StatSequence" syncable="YES"/>
+        <relationship name="stat_sequence" maxCount="1" deletionRule="Nullify" destinationEntity="StatSequence" inverseName="interaction_details" inverseEntity="StatSequence" syncable="YES"/>
     </entity>
     <entity name="StatSequence" representedClassName="StatSequence" syncable="YES">
         <attribute name="completed_at" attributeType="Date" syncable="YES"/>
         <attribute name="correct_answers" attributeType="Integer 32" minValueString="0" defaultValueString="0" syncable="YES"/>
+        <attribute name="id" attributeType="Integer 32" minValueString="0" defaultValueString="0" syncable="YES"/>
         <attribute name="name" attributeType="String" syncable="YES"/>
         <attribute name="num_questions_answered" attributeType="Integer 32" minValueString="0" defaultValueString="0" syncable="YES"/>
         <attribute name="outcome" attributeType="String" syncable="YES"/>
-        <attribute name="possible_points" attributeType="Integer 32" minValueString="0" defaultValueString="0" syncable="YES"/>
-        <attribute name="total_points" attributeType="Integer 32" minValueString="0" defaultValueString="0" syncable="YES"/>
+        <attribute name="possible_points" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <attribute name="total_points" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
         <attribute name="total_questions" attributeType="Integer 32" minValueString="0" defaultValueString="0" syncable="YES"/>
         <relationship name="interaction_details" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="StatInteraction" inverseName="stat_sequence" inverseEntity="StatInteraction" syncable="YES"/>
     </entity>
@@ -96,16 +114,18 @@
         <attribute name="name" attributeType="String" syncable="YES"/>
     </entity>
     <elements>
-        <element name="Action" positionX="396" positionY="-396" width="128" height="118"/>
-        <element name="Answer" positionX="486" positionY="-175" width="128" height="148"/>
-        <element name="Asset" positionX="97" positionY="-252" width="128" height="103"/>
-        <element name="Comment" positionX="502" positionY="-594" width="128" height="163"/>
-        <element name="Interaction" positionX="268" positionY="-256" width="128" height="148"/>
-        <element name="Node" positionX="117" positionY="-531" width="128" height="118"/>
-        <element name="Sequence" positionX="324" positionY="-594" width="128" height="178"/>
-        <element name="StatAnswer" positionX="495" positionY="20" width="128" height="133"/>
-        <element name="StatInteraction" positionX="297" positionY="-7" width="128" height="178"/>
-        <element name="StatSequence" positionX="99" positionY="-7" width="128" height="178"/>
-        <element name="User" positionX="549" positionY="-369" width="128" height="103"/>
+        <element name="AnswerAction" positionX="565" positionY="-595" width="128" height="73"/>
+        <element name="Answer" positionX="565" positionY="-441" width="128" height="163"/>
+        <element name="Asset" positionX="403" positionY="-702" width="128" height="118"/>
+        <element name="Comment" positionX="27" positionY="-550" width="128" height="238"/>
+        <element name="Interaction" positionX="394" positionY="-549" width="128" height="178"/>
+        <element name="Node" positionX="207" positionY="-729" width="128" height="133"/>
+        <element name="Sequence" positionX="9" positionY="-792" width="128" height="193"/>
+        <element name="StatAnswer" positionX="477" positionY="-187" width="128" height="133"/>
+        <element name="StatInteraction" positionX="279" positionY="-214" width="128" height="178"/>
+        <element name="StatSequence" positionX="81" positionY="-214" width="128" height="193"/>
+        <element name="User" positionX="205" positionY="-369" width="128" height="103"/>
+        <element name="NodeAction" positionX="207" positionY="-531" width="128" height="88"/>
+        <element name="Rule" positionX="360" positionY="-342" width="128" height="73"/>
     </elements>
 </model>

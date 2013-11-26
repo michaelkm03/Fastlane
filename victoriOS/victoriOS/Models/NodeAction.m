@@ -1,21 +1,19 @@
 //
-//  Asset.m
+//  NodeAction.m
 //  victoriOS
 //
 //  Created by Will Long on 11/26/13.
 //  Copyright (c) 2013 Will Long. All rights reserved.
 //
 
-#import "Asset.h"
+#import "NodeAction.h"
 #import "Node.h"
 
 
-@implementation Asset
+@implementation NodeAction
 
-@dynamic data;
-@dynamic node_id;
-@dynamic type;
-@dynamic display_order;
+@dynamic won_goto_node;
+@dynamic lost_goto_node;
 @dynamic node;
 
 @end

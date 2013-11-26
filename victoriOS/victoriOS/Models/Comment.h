@@ -20,6 +20,11 @@
 @property (nonatomic, retain) NSDate * posted_at;
 @property (nonatomic, retain) NSNumber * sequence_id;
 @property (nonatomic, retain) NSString * text;
+@property (nonatomic, retain) NSNumber * display_order;
+@property (nonatomic, retain) NSNumber * likes;
+@property (nonatomic, retain) NSNumber * shares;
+@property (nonatomic, retain) NSNumber * flags;
+@property (nonatomic, retain) NSNumber * dislikes;
 @property (nonatomic, retain) Sequence *sequence;
 
 @end

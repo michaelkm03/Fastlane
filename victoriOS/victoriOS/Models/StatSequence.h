@@ -21,6 +21,7 @@
 @property (nonatomic, retain) NSNumber * possible_points;
 @property (nonatomic, retain) NSNumber * total_points;
 @property (nonatomic, retain) NSNumber * total_questions;
+@property (nonatomic, retain) NSNumber * id;
 @property (nonatomic, retain) NSSet *interaction_details;
 @end
 

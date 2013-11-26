@@ -20,6 +20,7 @@
 @dynamic preview_image;
 @dynamic sequence_description;
 @dynamic status;
+@dynamic released_at;
 @dynamic comments;
 @dynamic nodes;
 

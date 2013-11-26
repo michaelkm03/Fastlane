@@ -7,18 +7,19 @@
 //
 
 #import "Node.h"
-#import "Action.h"
 #import "Asset.h"
 #import "Interaction.h"
+#import "NodeAction.h"
 #import "Sequence.h"
 
 
 @implementation Node
 
 @dynamic node_id;
-@dynamic actions;
+@dynamic display_order;
 @dynamic assets;
 @dynamic interactions;
 @dynamic sequence;
+@dynamic result_action;
 
 @end

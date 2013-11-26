@@ -18,7 +18,8 @@
 @dynamic is_correct;
 @dynamic label;
 @dynamic points;
-@dynamic action;
+@dynamic display_order;
+@dynamic answer_action;
 @dynamic interaction;
 
 @end

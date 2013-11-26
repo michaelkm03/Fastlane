@@ -13,13 +13,14 @@
 
 @interface Sequence : NSManagedObject
 
-@property (nonatomic, retain) NSString * category;
+@property (nonatomic, retain) NSDate * category;
 @property (nonatomic, retain) NSNumber * display_order;
 @property (nonatomic, retain) NSNumber * id;
 @property (nonatomic, retain) NSString * name;
 @property (nonatomic, retain) id preview_image;
 @property (nonatomic, retain) NSString * sequence_description;
-@property (nonatomic, retain) NSString * status;
+@property (nonatomic, retain) id status;
+@property (nonatomic, retain) NSDate * released_at;
 @property (nonatomic, retain) NSSet *comments;
 @property (nonatomic, retain) NSSet *nodes;
 @end
