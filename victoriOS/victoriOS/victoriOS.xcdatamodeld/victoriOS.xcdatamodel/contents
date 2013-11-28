@@ -10,7 +10,7 @@
         <relationship name="answer_action" maxCount="1" deletionRule="Cascade" destinationEntity="AnswerAction" inverseName="answer" inverseEntity="AnswerAction" syncable="YES"/>
         <relationship name="interaction" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Interaction" inverseName="answers" inverseEntity="Interaction" syncable="YES"/>
     </entity>
-    <entity name="AnswerAction" representedClassName="Action" syncable="YES">
+    <entity name="AnswerAction" representedClassName="AnswerAction" syncable="YES">
         <attribute name="goto_node" attributeType="Integer 64" minValueString="0" defaultValueString="0" syncable="YES"/>
         <relationship name="answer" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Answer" inverseName="answer_action" inverseEntity="Answer" syncable="YES"/>
     </entity>
@@ -123,6 +123,7 @@
         <attribute name="id" attributeType="Integer 64" minValueString="0" defaultValueString="0" syncable="YES"/>
         <attribute name="name" attributeType="String" syncable="YES"/>
         <attribute name="token" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="token_updated_at" optional="YES" attributeType="Date" syncable="YES"/>
     </entity>
     <entity name="VCategory" representedClassName="VCategory" syncable="YES">
         <attribute name="name" attributeType="String" syncable="YES"/>
@@ -133,7 +134,6 @@
         <element name="AnswerAction" positionX="709" positionY="-622" width="128" height="73"/>
         <element name="Asset" positionX="403" positionY="-702" width="128" height="118"/>
         <element name="Categories" positionX="351" positionY="-774" width="128" height="58"/>
-        <element name="VCategory" positionX="540" positionY="-784" width="128" height="73"/>
         <element name="Comment" positionX="27" positionY="-550" width="128" height="238"/>
         <element name="Interaction" positionX="394" positionY="-558" width="128" height="193"/>
         <element name="InteractionAction" positionX="558" positionY="-562" width="128" height="103"/>
@@ -144,6 +144,7 @@
         <element name="StatAnswer" positionX="585" positionY="-214" width="128" height="133"/>
         <element name="StatInteraction" positionX="387" positionY="-241" width="128" height="178"/>
         <element name="StatSequence" positionX="198" positionY="-243" width="128" height="193"/>
-        <element name="User" positionX="205" positionY="-405" width="128" height="118"/>
+        <element name="User" positionX="205" positionY="-405" width="128" height="133"/>
+        <element name="VCategory" positionX="540" positionY="-784" width="128" height="73"/>
     </elements>
 </model>
