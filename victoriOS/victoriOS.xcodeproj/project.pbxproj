@@ -28,6 +28,7 @@
 		BE4E753C1846BF0700344677 /* VLoginManager.m in Sources */ = {isa = PBXBuildFile; fileRef = BE4E753B1846BF0700344677 /* VLoginManager.m */; };
 		BE4E753F1846C00D00344677 /* RKObjectManager+Headers.m in Sources */ = {isa = PBXBuildFile; fileRef = BE4E753E1846C00D00344677 /* RKObjectManager+Headers.m */; };
 		BE4E75451846D92A00344677 /* User.m in Sources */ = {isa = PBXBuildFile; fileRef = BE4E75441846D92A00344677 /* User.m */; };
+		BE4E754818493C0800344677 /* NSManagedObject+EasyFetching.m in Sources */ = {isa = PBXBuildFile; fileRef = BE4E754718493C0800344677 /* NSManagedObject+EasyFetching.m */; };
 		BEA4F2291843F097001F5B15 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BEA4F2281843F097001F5B15 /* Foundation.framework */; };
 		BEA4F22B1843F097001F5B15 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BEA4F22A1843F097001F5B15 /* CoreGraphics.framework */; };
 		BEA4F22D1843F097001F5B15 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BEA4F22C1843F097001F5B15 /* UIKit.framework */; };
@@ -98,6 +99,8 @@
 		BE4E753E1846C00D00344677 /* RKObjectManager+Headers.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "RKObjectManager+Headers.m"; path = "Categories/RKObjectManager+Headers.m"; sourceTree = "<group>"; };
 		BE4E75431846D92A00344677 /* User.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = User.h; path = Models/User.h; sourceTree = "<group>"; };
 		BE4E75441846D92A00344677 /* User.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = User.m; path = Models/User.m; sourceTree = "<group>"; };
+		BE4E754618493C0800344677 /* NSManagedObject+EasyFetching.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSManagedObject+EasyFetching.h"; path = "Categories/Models/NSManagedObject+EasyFetching.h"; sourceTree = "<group>"; };
+		BE4E754718493C0800344677 /* NSManagedObject+EasyFetching.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSManagedObject+EasyFetching.m"; path = "Categories/Models/NSManagedObject+EasyFetching.m"; sourceTree = "<group>"; };
 		BEA4F2251843F097001F5B15 /* victoriOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = victoriOS.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		BEA4F2281843F097001F5B15 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		BEA4F22A1843F097001F5B15 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -162,6 +165,8 @@
 				BE4E74C81846A11200344677 /* Sequence+RestKit.m */,
 				BE4E75331846BB6500344677 /* User+RestKit.h */,
 				BE4E75341846BB6500344677 /* User+RestKit.m */,
+				BE4E754618493C0800344677 /* NSManagedObject+EasyFetching.h */,
+				BE4E754718493C0800344677 /* NSManagedObject+EasyFetching.m */,
 			);
 			name = Models;
 			sourceTree = "<group>";
@@ -441,6 +446,7 @@
 				BE4E753F1846C00D00344677 /* RKObjectManager+Headers.m in Sources */,
 				BEA4F23E1843F097001F5B15 /* victoriOS.xcdatamodeld in Sources */,
 				BE4E75111846B78000344677 /* Node.m in Sources */,
+				BE4E754818493C0800344677 /* NSManagedObject+EasyFetching.m in Sources */,
 				BE4E74F31846B76900344677 /* StatSequence.m in Sources */,
 				BEA4F23B1843F097001F5B15 /* VAppDelegate.m in Sources */,
 				BE4E75051846B76900344677 /* Rule.m in Sources */,

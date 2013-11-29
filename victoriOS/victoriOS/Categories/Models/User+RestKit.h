@@ -7,6 +7,7 @@
 //
 
 #import "User.h"
+#import "NSManagedObject+EasyFetching.h"
 
 @interface User (RestKit)
 

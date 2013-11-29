@@ -15,8 +15,6 @@
 {
     AFHTTPClient* client = [self HTTPClient];
     
-    //[client setDefaultHeader:@"User-Agent" value:userAgent];
-    
     NSString *currentDate = [self rFC2822DateTimeString];
     NSString* userAgent = [client.defaultHeaders objectForKey:@"User-Agent"];
     
