@@ -29,6 +29,9 @@
 		BE4E753F1846C00D00344677 /* RKObjectManager+Headers.m in Sources */ = {isa = PBXBuildFile; fileRef = BE4E753E1846C00D00344677 /* RKObjectManager+Headers.m */; };
 		BE4E75451846D92A00344677 /* User.m in Sources */ = {isa = PBXBuildFile; fileRef = BE4E75441846D92A00344677 /* User.m */; };
 		BE4E754818493C0800344677 /* NSManagedObject+EasyFetching.m in Sources */ = {isa = PBXBuildFile; fileRef = BE4E754718493C0800344677 /* NSManagedObject+EasyFetching.m */; };
+		BE4E754B184942F100344677 /* VSequenceManager.m in Sources */ = {isa = PBXBuildFile; fileRef = BE4E754A184942F100344677 /* VSequenceManager.m */; };
+		BE4E754E1849456200344677 /* VCategory+RestKit.m in Sources */ = {isa = PBXBuildFile; fileRef = BE4E754D1849456200344677 /* VCategory+RestKit.m */; };
+		BE4E75511849471F00344677 /* Categories+RestKit.m in Sources */ = {isa = PBXBuildFile; fileRef = BE4E75501849471F00344677 /* Categories+RestKit.m */; };
 		BEA4F2291843F097001F5B15 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BEA4F2281843F097001F5B15 /* Foundation.framework */; };
 		BEA4F22B1843F097001F5B15 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BEA4F22A1843F097001F5B15 /* CoreGraphics.framework */; };
 		BEA4F22D1843F097001F5B15 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BEA4F22C1843F097001F5B15 /* UIKit.framework */; };
@@ -101,6 +104,12 @@
 		BE4E75441846D92A00344677 /* User.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = User.m; path = Models/User.m; sourceTree = "<group>"; };
 		BE4E754618493C0800344677 /* NSManagedObject+EasyFetching.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSManagedObject+EasyFetching.h"; path = "Categories/Models/NSManagedObject+EasyFetching.h"; sourceTree = "<group>"; };
 		BE4E754718493C0800344677 /* NSManagedObject+EasyFetching.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSManagedObject+EasyFetching.m"; path = "Categories/Models/NSManagedObject+EasyFetching.m"; sourceTree = "<group>"; };
+		BE4E7549184942F100344677 /* VSequenceManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VSequenceManager.h; path = Managers/VSequenceManager.h; sourceTree = "<group>"; };
+		BE4E754A184942F100344677 /* VSequenceManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VSequenceManager.m; path = Managers/VSequenceManager.m; sourceTree = "<group>"; };
+		BE4E754C1849456200344677 /* VCategory+RestKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "VCategory+RestKit.h"; path = "Categories/Models/VCategory+RestKit.h"; sourceTree = "<group>"; };
+		BE4E754D1849456200344677 /* VCategory+RestKit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "VCategory+RestKit.m"; path = "Categories/Models/VCategory+RestKit.m"; sourceTree = "<group>"; };
+		BE4E754F1849471F00344677 /* Categories+RestKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "Categories+RestKit.h"; path = "Categories/Models/Categories+RestKit.h"; sourceTree = "<group>"; };
+		BE4E75501849471F00344677 /* Categories+RestKit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "Categories+RestKit.m"; path = "Categories/Models/Categories+RestKit.m"; sourceTree = "<group>"; };
 		BEA4F2251843F097001F5B15 /* victoriOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = victoriOS.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		BEA4F2281843F097001F5B15 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		BEA4F22A1843F097001F5B15 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -167,6 +176,10 @@
 				BE4E75341846BB6500344677 /* User+RestKit.m */,
 				BE4E754618493C0800344677 /* NSManagedObject+EasyFetching.h */,
 				BE4E754718493C0800344677 /* NSManagedObject+EasyFetching.m */,
+				BE4E754C1849456200344677 /* VCategory+RestKit.h */,
+				BE4E754D1849456200344677 /* VCategory+RestKit.m */,
+				BE4E754F1849471F00344677 /* Categories+RestKit.h */,
+				BE4E75501849471F00344677 /* Categories+RestKit.m */,
 			);
 			name = Models;
 			sourceTree = "<group>";
@@ -176,6 +189,8 @@
 			children = (
 				BE4E753A1846BF0700344677 /* VLoginManager.h */,
 				BE4E753B1846BF0700344677 /* VLoginManager.m */,
+				BE4E7549184942F100344677 /* VSequenceManager.h */,
+				BE4E754A184942F100344677 /* VSequenceManager.m */,
 			);
 			name = Managers;
 			sourceTree = "<group>";
@@ -430,6 +445,7 @@
 				BE4E751A1846B78000344677 /* Interaction.m in Sources */,
 				BE4E74ED1846B76900344677 /* StatInteraction.m in Sources */,
 				BE4E75261846B7CE00344677 /* Asset.m in Sources */,
+				BE4E754E1849456200344677 /* VCategory+RestKit.m in Sources */,
 				BE4E752C1846B7CE00344677 /* AnswerAction.m in Sources */,
 				BE4E74C91846A11200344677 /* Sequence+RestKit.m in Sources */,
 				BE4E752F1846B7CF00344677 /* Comment.m in Sources */,
@@ -450,6 +466,8 @@
 				BE4E74F31846B76900344677 /* StatSequence.m in Sources */,
 				BEA4F23B1843F097001F5B15 /* VAppDelegate.m in Sources */,
 				BE4E75051846B76900344677 /* Rule.m in Sources */,
+				BE4E75511849471F00344677 /* Categories+RestKit.m in Sources */,
+				BE4E754B184942F100344677 /* VSequenceManager.m in Sources */,
 				BE4E75231846B7CE00344677 /* Answer.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

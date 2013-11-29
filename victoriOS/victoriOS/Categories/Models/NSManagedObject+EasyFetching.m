@@ -33,4 +33,16 @@
     }
     return results;
 }
+
++(RKEntityMapping*)entityMapping
+{
+    return nil;
+}
+
++(RKResponseDescriptor*)descriptor
+{
+    return nil;
+}
+
+
 @end
