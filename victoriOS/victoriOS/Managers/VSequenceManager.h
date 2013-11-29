@@ -10,4 +10,6 @@
 
 @interface VSequenceManager : NSObject
 
++(void)loadSequenceCategories;
+
 @end

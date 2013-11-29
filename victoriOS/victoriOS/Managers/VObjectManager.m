@@ -1,41 +1,49 @@
 //
-//  RKObjectManager+Headers.m
+//  VObjectManager.m
 //  victoriOS
 //
-//  Created by Will Long on 11/27/13.
+//  Created by Will Long on 11/29/13.
 //  Copyright (c) 2013 Will Long. All rights reserved.
 //
 
-#import "RKObjectManager+Headers.h"
+#import "VObjectManager.h"
 #import "NSString+SHA1Digest.h"
+#import "User+RestKit.h"
 
-@implementation RKObjectManager (Headers)
+@implementation VObjectManager
 
--(void)refreshHeaders
+- (id)appropriateObjectRequestOperationWithObject:(id)object
+                                           method:(RKRequestMethod)method
+                                             path:(NSString *)path
+                                       parameters:(NSDictionary *)parameters
 {
+    
     AFHTTPClient* client = [self HTTPClient];
     
     NSString *currentDate = [self rFC2822DateTimeString];
     NSString* userAgent = [client.defaultHeaders objectForKey:@"User-Agent"];
     
-    NSString* baseURL = self.baseURL;
-    NSString* urlPath = @"";
-    //[URLString substringFromIndex:[baseURL length]];//we use api/blah not full URL for sha
+    User* mainUser = [[User findAllObjects] firstObject];
     
     // Build string to be hashed.
     NSString *sha1String = [[NSString stringWithFormat:@"%@%@%@%@%@",
                              currentDate,
-                             urlPath,
+                             path,
                              userAgent,
-                             @"", //[VSessionInfo sharedInfo].loginToken,
-                             @"GET"] SHA1HexDigest];
+                             mainUser.token,
+                             RKStringFromRequestMethod(method)] SHA1HexDigest];
     
-    int userID = 0;//[VSessionInfo sharedInfo].user.userID;
-    sha1String = [NSString stringWithFormat:@"Basic %i:%@", userID, sha1String];
+    NSNumber* userID = mainUser.id;
+    sha1String = [NSString stringWithFormat:@"Basic %@:%@", userID, sha1String];
     
     [client setDefaultHeader:@"Authorization" value:sha1String];
     [client setDefaultHeader:@"Date" value:currentDate];
     
+
+    return [super appropriateObjectRequestOperationWithObject:object
+                                                       method:method
+                                                         path:path
+                                                   parameters:parameters];
 }
 
 - (NSString *)rFC2822DateTimeString {
@@ -50,5 +58,4 @@
     
     return [sRFC2822DateFormatter stringFromDate:[NSDate date]];
 }
-
 @end

@@ -22,8 +22,8 @@
     
     mapping.identificationAttributes = @[ @"name" ];
 
-    [mapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"category"
-                                                                            toKeyPath:@"category"
+    [mapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"payload"
+                                                                            toKeyPath:@"categories"
                                                                           withMapping:[VCategory entityMapping]]];
     
     [mapping addAttributeMappingsFromDictionary:propertyMap];

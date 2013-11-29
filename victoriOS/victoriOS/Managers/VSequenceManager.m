@@ -10,4 +10,24 @@
 
 @implementation VSequenceManager
 
++(void)loadSequenceCategories
+{
+    RKManagedObjectRequestOperation* requestOperation = [[RKObjectManager sharedManager]
+                                                         appropriateObjectRequestOperationWithObject:nil
+                                                         method:RKRequestMethodPOST
+                                                         path:@"/api/sequence/categories"
+                                                         parameters:nil];
+    
+    [requestOperation setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation,
+                                                      RKMappingResult *mappingResult)
+     {
+         RKLogInfo(@"Load collection of Articles: %@", mappingResult.array);
+     } failure:^(RKObjectRequestOperation *operation, NSError *error)
+     {
+         RKLogError(@"Operation failed with error: %@", error);
+     }];
+    
+    [requestOperation start];
+}
+
 @end

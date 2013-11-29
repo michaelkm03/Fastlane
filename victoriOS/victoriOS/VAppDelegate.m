@@ -6,9 +6,9 @@
 //  Copyright (c) 2013 Will Long. All rights reserved.
 //
 
-#import <RestKit/RestKit.h>
 #import "VAppDelegate.h"
 #import "VLoginManager.h"
+#import "VObjectManager.h"
 #import "User+RestKit.h"
 
 @implementation VAppDelegate
@@ -74,7 +74,7 @@
     RKLogConfigureByName("RestKit/ObjectMapping", RKLogLevelTrace);
 #endif
     
-    RKObjectManager *manager = [RKObjectManager managerWithBaseURL:[NSURL URLWithString:VBASEURL]];
+    RKObjectManager *manager = [VObjectManager managerWithBaseURL:[NSURL URLWithString:VBASEURL]];
     
     //Add the App ID to the User-Agent field
     //(this is the only non-dynamic header, so set it now)
