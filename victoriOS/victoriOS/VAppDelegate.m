@@ -122,13 +122,8 @@
                                              pathPattern:nil
                                              keyPath:@"message"
                                              statusCodes:RKStatusCodeIndexSetForClass(RKStatusCodeClassClientError)];
-
-    RKResponseDescriptor* userDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:[User entityMapping]
-                                                                                        method:RKRequestMethodPOST
-                                                                                   pathPattern:nil
-                                                                                       keyPath:@"payload"                                         statusCodes:RKStatusCodeIndexSetForClass(RKStatusCodeClassSuccessful)];
     
-    [[RKObjectManager sharedManager] addResponseDescriptorsFromArray:@[errorDescriptor, userDescriptor]];
+    [[RKObjectManager sharedManager] addResponseDescriptorsFromArray:@[errorDescriptor, [User descriptor]]];
 }
 
 @end

@@ -11,5 +11,6 @@
 @interface User (RestKit)
 
 +(RKEntityMapping*)entityMapping;
++(RKResponseDescriptor*)descriptor;
 
 @end

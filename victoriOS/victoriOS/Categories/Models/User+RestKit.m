@@ -38,4 +38,12 @@
     return mapping;
 }
 
++(RKResponseDescriptor*)descriptor
+{
+    return [RKResponseDescriptor responseDescriptorWithMapping:[User entityMapping]
+                                                        method:RKRequestMethodPOST
+                                                   pathPattern:nil
+                                                       keyPath:@"payload"                                         statusCodes:RKStatusCodeIndexSetForClass(RKStatusCodeClassSuccessful)];
+}
+
 @end
