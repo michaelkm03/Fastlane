@@ -1,29 +1,23 @@
 //
-//  Sequence+RestKit.m
+//  AnswerAction+RestKit.m
 //  victoriOS
 //
-//  Created by Will Long on 11/27/13.
+//  Created by Will Long on 11/30/13.
 //  Copyright (c) 2013 Will Long. All rights reserved.
 //
 
-#import "VAppDelegate.h"
-#import "Sequence+RestKit.h"
+#import "AnswerAction+RestKit.h"
 
-@implementation Sequence (RestKit)
+@implementation AnswerAction (RestKit)
 
 +(RKEntityMapping*)entityMapping
 {
     NSDictionary *propertyMap = @{
-                                  @"access_level" : @"access_level",
-                                  @"email" : @"email",
-                                  @"id" : @"id",
-                                  @"name" : @"name",
-                                  @"token" : @"token",
-                                  @"token_updated_at" : @"token_updated_at"
+                                  @"goto_node" : @"goto_node"
                                   };
     
     RKEntityMapping *mapping = [RKEntityMapping
-                                mappingForEntityForName:NSStringFromClass([Sequence class])
+                                mappingForEntityForName:NSStringFromClass([AnswerAction class])
                                 inManagedObjectStore:[RKObjectManager sharedManager].managedObjectStore];
     
     mapping.identificationAttributes = @[ @"id" ];
@@ -35,10 +29,11 @@
 
 +(RKResponseDescriptor*)descriptor
 {
-    return [RKResponseDescriptor responseDescriptorWithMapping:[Sequence entityMapping]
+    return [RKResponseDescriptor responseDescriptorWithMapping:[AnswerAction entityMapping]
                                                         method:RKRequestMethodPOST
                                                    pathPattern:nil
                                                        keyPath:@"payload"                                         statusCodes:RKStatusCodeIndexSetForClass(RKStatusCodeClassSuccessful)];
 }
+
 
 @end

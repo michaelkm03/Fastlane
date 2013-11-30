@@ -9,12 +9,6 @@
 #import "User+RestKit.h"
 
 @implementation User (RestKit)
-/*
- @property (nonatomic, retain) NSString * access_level;
- @property (nonatomic, retain) NSString * email;
- @property (nonatomic, retain) NSNumber * id;
- @property (nonatomic, retain) NSString * name;
- @property (nonatomic, retain) NSString * token;*/
 
 +(RKEntityMapping*)entityMapping
 {

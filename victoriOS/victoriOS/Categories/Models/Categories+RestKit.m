@@ -10,23 +10,17 @@
 #import "VCategory+RestKit.h"
 
 @implementation Categories (RestKit)
+
+
 +(RKEntityMapping*)entityMapping
 {
-    NSDictionary *propertyMap = @{
-                                  @"name" : @"name"
-                                  };
-    
     RKEntityMapping *mapping = [RKEntityMapping
                                 mappingForEntityForName:NSStringFromClass([Categories class])
                                 inManagedObjectStore:[RKObjectManager sharedManager].managedObjectStore];
     
-    mapping.identificationAttributes = @[ @"name" ];
-
-    [mapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"payload"
-                                                                            toKeyPath:@"categories"
-                                                                          withMapping:[VCategory entityMapping]]];
+    RKRelationshipMapping* relationMapping = [RKRelationshipMapping relationshipMappingFromKeyPath:@"" toKeyPath:@"categories" withMapping:[VCategory entityMapping]];
     
-    [mapping addAttributeMappingsFromDictionary:propertyMap];
+    [mapping addPropertyMapping:relationMapping];
     
     return mapping;
 }
@@ -34,8 +28,9 @@
 +(RKResponseDescriptor*)descriptor
 {
     return [RKResponseDescriptor responseDescriptorWithMapping:[Categories entityMapping]
-                                                        method:RKRequestMethodPOST
+                                                        method:RKRequestMethodGET
                                                    pathPattern:nil
                                                        keyPath:@"payload"                                         statusCodes:RKStatusCodeIndexSetForClass(RKStatusCodeClassSuccessful)];
 }
+
 @end

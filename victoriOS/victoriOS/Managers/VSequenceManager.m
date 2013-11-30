@@ -14,7 +14,7 @@
 {
     RKManagedObjectRequestOperation* requestOperation = [[RKObjectManager sharedManager]
                                                          appropriateObjectRequestOperationWithObject:nil
-                                                         method:RKRequestMethodPOST
+                                                         method:RKRequestMethodGET
                                                          path:@"/api/sequence/categories"
                                                          parameters:nil];
     

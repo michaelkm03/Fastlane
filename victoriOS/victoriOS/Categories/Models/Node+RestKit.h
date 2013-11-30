@@ -1,13 +1,13 @@
 //
-//  VCategory+RestKit.h
+//  Node+RestKit.h
 //  victoriOS
 //
 //  Created by Will Long on 11/30/13.
 //  Copyright (c) 2013 Will Long. All rights reserved.
 //
 
-#import "VCategory.h"
+#import "Node.h"
 
-@interface VCategory (RestKit)
+@interface Node (RestKit)
 
 @end

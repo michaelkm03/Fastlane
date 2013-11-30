@@ -10,6 +10,4 @@
 
 @interface Sequence (RestKit)
 
-+(void)loadWithRestKit;
-
 @end

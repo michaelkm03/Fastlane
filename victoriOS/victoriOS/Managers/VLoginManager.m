@@ -9,7 +9,7 @@
 #import "VLoginManager.h"
 #import "FBAccessTokenData.h"
 #import "User+RestKit.h"
-
+#import "VSequenceManager.h"
 
 @implementation VLoginManager
 
@@ -48,6 +48,7 @@
                                                       RKMappingResult *mappingResult)
     {
         RKLogInfo(@"Load collection of Articles: %@", mappingResult.array);
+        [VSequenceManager loadSequenceCategories];
     } failure:^(RKObjectRequestOperation *operation, NSError *error)
     {
         RKLogError(@"Operation failed with error: %@", error);

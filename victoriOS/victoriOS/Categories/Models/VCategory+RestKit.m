@@ -2,7 +2,7 @@
 //  VCategory+RestKit.m
 //  victoriOS
 //
-//  Created by Will Long on 11/29/13.
+//  Created by Will Long on 11/30/13.
 //  Copyright (c) 2013 Will Long. All rights reserved.
 //
 
@@ -10,12 +10,10 @@
 
 @implementation VCategory (RestKit)
 
-//@property (nonatomic, retain) NSString * name;
-//@property (nonatomic, retain) Categories *categories;
 +(RKEntityMapping*)entityMapping
 {
     NSDictionary *propertyMap = @{
-                                  @"name" : @"name"
+                                  @"" : @"name"
                                   };
     
     RKEntityMapping *mapping = [RKEntityMapping
@@ -27,14 +25,6 @@
     [mapping addAttributeMappingsFromDictionary:propertyMap];
     
     return mapping;
-}
-
-+(RKResponseDescriptor*)descriptor
-{
-    return [RKResponseDescriptor responseDescriptorWithMapping:[VCategory entityMapping]
-                                                        method:RKRequestMethodPOST
-                                                   pathPattern:nil
-                                                       keyPath:@"payload"                                         statusCodes:RKStatusCodeIndexSetForClass(RKStatusCodeClassSuccessful)];
 }
 
 @end

@@ -7,6 +7,7 @@
 //
 
 #import "Categories.h"
+#import "NSManagedObject+EasyFetching.h"
 
 @interface Categories (RestKit)
 

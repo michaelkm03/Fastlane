@@ -1,13 +1,13 @@
 //
-//  VCategory+RestKit.h
+//  Comment+RestKit.h
 //  victoriOS
 //
 //  Created by Will Long on 11/30/13.
 //  Copyright (c) 2013 Will Long. All rights reserved.
 //
 
-#import "VCategory.h"
+#import "Comment.h"
 
-@interface VCategory (RestKit)
+@interface Comment (RestKit)
 
 @end
