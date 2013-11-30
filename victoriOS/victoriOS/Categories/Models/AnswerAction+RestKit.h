@@ -7,6 +7,7 @@
 //
 
 #import "AnswerAction.h"
+#import "NSManagedObject+EasyFetching.h"
 
 @interface AnswerAction (RestKit)
 

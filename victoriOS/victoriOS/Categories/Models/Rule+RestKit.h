@@ -7,6 +7,7 @@
 //
 
 #import "Rule.h"
+#import "NSManagedObject+EasyFetching.h"
 
 @interface Rule (RestKit)
 

@@ -7,6 +7,9 @@
 //
 
 #import "Interaction.h"
+#import "InteractionAction+RestKit.h"
+#import "Rule+RestKit.h"
+#import "Answer+RestKit.h"
 
 @interface Interaction (RestKit)
 

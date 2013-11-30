@@ -7,6 +7,7 @@
 //
 
 #import "Answer.h"
+#import "AnswerAction+RestKit.h"
 
 @interface Answer (RestKit)
 

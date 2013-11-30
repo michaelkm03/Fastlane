@@ -7,6 +7,7 @@
 //
 
 #import "VCategory.h"
+#import "NSManagedObject+EasyFetching.h"
 
 @interface VCategory (RestKit)
 

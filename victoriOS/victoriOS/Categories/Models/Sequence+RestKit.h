@@ -7,6 +7,8 @@
 //
 
 #import "Sequence.h"
+#import "Comment+RestKit.h"
+#import "Node+RestKit.h"
 
 @interface Sequence (RestKit)
 

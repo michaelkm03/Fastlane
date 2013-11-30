@@ -7,6 +7,7 @@
 //
 
 #import "Asset.h"
+#import "NSManagedObject+EasyFetching.h"
 
 @interface Asset (RestKit)
 

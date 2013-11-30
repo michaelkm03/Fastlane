@@ -7,6 +7,9 @@
 //
 
 #import "Node.h"
+#import "NodeAction+RestKit.h"
+#import "Asset+RestKit.h"
+#import "Interaction+RestKit.h"
 
 @interface Node (RestKit)
 

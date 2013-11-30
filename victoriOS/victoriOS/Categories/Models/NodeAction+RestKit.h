@@ -7,6 +7,7 @@
 //
 
 #import "NodeAction.h"
+#import "NSManagedObject+EasyFetching.h"
 
 @interface NodeAction (RestKit)
 

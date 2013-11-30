@@ -7,6 +7,7 @@
 //
 
 #import "InteractionAction.h"
+#import "NSManagedObject+EasyFetching.h"
 
 @interface InteractionAction (RestKit)
 

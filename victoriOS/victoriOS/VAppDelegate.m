@@ -11,6 +11,8 @@
 #import "VObjectManager.h"
 #import "User+RestKit.h"
 #import "Categories+RestKit.h"
+#import "Sequence+RestKit.h"
+#import "StatSequence+RestKit.h"
 
 @implementation VAppDelegate
 
@@ -124,7 +126,11 @@
                                              keyPath:@"message"
                                              statusCodes:RKStatusCodeIndexSetForClass(RKStatusCodeClassClientError)];
     
-    [[RKObjectManager sharedManager] addResponseDescriptorsFromArray:@[errorDescriptor, [User descriptor], [Categories descriptor]]];
+    [[RKObjectManager sharedManager] addResponseDescriptorsFromArray:@[errorDescriptor,
+                                                                       [User descriptor],
+                                                                       [Categories descriptor],
+                                                                       [Sequence descriptor],
+                                                                       [StatSequence descriptor]]];
 }
 
 @end
