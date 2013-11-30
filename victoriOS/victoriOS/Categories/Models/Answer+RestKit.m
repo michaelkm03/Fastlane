@@ -10,4 +10,26 @@
 
 @implementation Answer (RestKit)
 
++(RKEntityMapping*)entityMapping
+{
+    NSDictionary *propertyMap = @{
+                                  @"answer_id" : @"answer_id",
+                                  @"currency" : @"currency",
+                                  @"display_order" : @"display_order",
+                                  @"is_correct" : @"is_correct",
+                                  @"label" : @"label",
+                                  @"points" : @"points"
+                                  };
+    
+    RKEntityMapping *mapping = [RKEntityMapping
+                                mappingForEntityForName:NSStringFromClass([Answer class])
+                                inManagedObjectStore:[RKObjectManager sharedManager].managedObjectStore];
+    
+    mapping.identificationAttributes = @[ @"answer_id" ];
+
+    [mapping addAttributeMappingsFromDictionary:propertyMap];
+    
+    return mapping;
+}
+
 @end

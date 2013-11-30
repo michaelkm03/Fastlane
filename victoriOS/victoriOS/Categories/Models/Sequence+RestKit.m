@@ -14,12 +14,14 @@
 +(RKEntityMapping*)entityMapping
 {
     NSDictionary *propertyMap = @{
-                                  @"access_level" : @"access_level",
-                                  @"email" : @"email",
+                                  @"category" : @"category",
+                                  @"display_order" : @"display_order",
                                   @"id" : @"id",
                                   @"name" : @"name",
-                                  @"token" : @"token",
-                                  @"token_updated_at" : @"token_updated_at"
+                                  @"preview_image" : @"preview_image",
+                                  @"released_at" : @"released_at",
+                                  @"sequence_description" : @"sequence_description",
+                                  @"status" : @"status"
                                   };
     
     RKEntityMapping *mapping = [RKEntityMapping
@@ -36,7 +38,7 @@
 +(RKResponseDescriptor*)descriptor
 {
     return [RKResponseDescriptor responseDescriptorWithMapping:[Sequence entityMapping]
-                                                        method:RKRequestMethodPOST
+                                                        method:RKRequestMethodGET
                                                    pathPattern:nil
                                                        keyPath:@"payload"                                         statusCodes:RKStatusCodeIndexSetForClass(RKStatusCodeClassSuccessful)];
 }

@@ -1,28 +1,27 @@
 //
-//  Node+RestKit.m
+//  Rule+RestKit.m
 //  victoriOS
 //
 //  Created by Will Long on 11/30/13.
 //  Copyright (c) 2013 Will Long. All rights reserved.
 //
 
-#import "Node+RestKit.h"
+#import "Rule+RestKit.h"
 
-@implementation Node (RestKit)
+@implementation Rule (RestKit)
 
 +(RKEntityMapping*)entityMapping
 {
     NSDictionary *propertyMap = @{
-                                  @"display_order" : @"display_order",
-                                  @"node_id" : @"node_id"
+                                  @"name" : @"name"
                                   };
     
     RKEntityMapping *mapping = [RKEntityMapping
-                                mappingForEntityForName:NSStringFromClass([Node class])
+                                mappingForEntityForName:NSStringFromClass([Rule class])
                                 inManagedObjectStore:[RKObjectManager sharedManager].managedObjectStore];
     
-    mapping.identificationAttributes = @[ @"node_id" ];
-    
+    mapping.identificationAttributes = @[ @"name" ];
+
     [mapping addAttributeMappingsFromDictionary:propertyMap];
     
     return mapping;

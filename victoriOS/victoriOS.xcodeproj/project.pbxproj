@@ -31,6 +31,9 @@
 		BE4E754B184942F100344677 /* VSequenceManager.m in Sources */ = {isa = PBXBuildFile; fileRef = BE4E754A184942F100344677 /* VSequenceManager.m */; };
 		BE4E75511849471F00344677 /* Categories+RestKit.m in Sources */ = {isa = PBXBuildFile; fileRef = BE4E75501849471F00344677 /* Categories+RestKit.m */; };
 		BE4E7554184955BE00344677 /* VObjectManager.m in Sources */ = {isa = PBXBuildFile; fileRef = BE4E7553184955BE00344677 /* VObjectManager.m */; };
+		BE5AC26C184A846500121126 /* InteractionAction+RestKit.m in Sources */ = {isa = PBXBuildFile; fileRef = BE5AC26B184A846500121126 /* InteractionAction+RestKit.m */; };
+		BE5AC26F184A84CD00121126 /* Rule+RestKit.m in Sources */ = {isa = PBXBuildFile; fileRef = BE5AC26E184A84CD00121126 /* Rule+RestKit.m */; };
+		BE5AC272184A858000121126 /* NodeAction+RestKit.m in Sources */ = {isa = PBXBuildFile; fileRef = BE5AC271184A858000121126 /* NodeAction+RestKit.m */; };
 		BE98AA521849DDD300777916 /* VCategory+RestKit.m in Sources */ = {isa = PBXBuildFile; fileRef = BE98AA511849DDD300777916 /* VCategory+RestKit.m */; };
 		BE98AA551849DE4200777916 /* Interaction+RestKit.m in Sources */ = {isa = PBXBuildFile; fileRef = BE98AA541849DE4200777916 /* Interaction+RestKit.m */; };
 		BE98AA581849DE5800777916 /* Comment+RestKit.m in Sources */ = {isa = PBXBuildFile; fileRef = BE98AA571849DE5800777916 /* Comment+RestKit.m */; };
@@ -114,6 +117,12 @@
 		BE4E75501849471F00344677 /* Categories+RestKit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "Categories+RestKit.m"; path = "Categories/Models/Categories+RestKit.m"; sourceTree = "<group>"; };
 		BE4E7552184955BE00344677 /* VObjectManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VObjectManager.h; path = Managers/VObjectManager.h; sourceTree = "<group>"; };
 		BE4E7553184955BE00344677 /* VObjectManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VObjectManager.m; path = Managers/VObjectManager.m; sourceTree = "<group>"; };
+		BE5AC26A184A846500121126 /* InteractionAction+RestKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "InteractionAction+RestKit.h"; path = "Categories/Models/InteractionAction+RestKit.h"; sourceTree = "<group>"; };
+		BE5AC26B184A846500121126 /* InteractionAction+RestKit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "InteractionAction+RestKit.m"; path = "Categories/Models/InteractionAction+RestKit.m"; sourceTree = "<group>"; };
+		BE5AC26D184A84CD00121126 /* Rule+RestKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "Rule+RestKit.h"; path = "Categories/Models/Rule+RestKit.h"; sourceTree = "<group>"; };
+		BE5AC26E184A84CD00121126 /* Rule+RestKit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "Rule+RestKit.m"; path = "Categories/Models/Rule+RestKit.m"; sourceTree = "<group>"; };
+		BE5AC270184A858000121126 /* NodeAction+RestKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NodeAction+RestKit.h"; path = "Categories/Models/NodeAction+RestKit.h"; sourceTree = "<group>"; };
+		BE5AC271184A858000121126 /* NodeAction+RestKit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NodeAction+RestKit.m"; path = "Categories/Models/NodeAction+RestKit.m"; sourceTree = "<group>"; };
 		BE98AA501849DDD300777916 /* VCategory+RestKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "VCategory+RestKit.h"; path = "Categories/Models/VCategory+RestKit.h"; sourceTree = "<group>"; };
 		BE98AA511849DDD300777916 /* VCategory+RestKit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "VCategory+RestKit.m"; path = "Categories/Models/VCategory+RestKit.m"; sourceTree = "<group>"; };
 		BE98AA531849DE4200777916 /* Interaction+RestKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "Interaction+RestKit.h"; path = "Categories/Models/Interaction+RestKit.h"; sourceTree = "<group>"; };
@@ -208,6 +217,12 @@
 				BE98AA601849DF3400777916 /* Answer+RestKit.m */,
 				BE98AA621849DF4100777916 /* AnswerAction+RestKit.h */,
 				BE98AA631849DF4100777916 /* AnswerAction+RestKit.m */,
+				BE5AC26A184A846500121126 /* InteractionAction+RestKit.h */,
+				BE5AC26B184A846500121126 /* InteractionAction+RestKit.m */,
+				BE5AC26D184A84CD00121126 /* Rule+RestKit.h */,
+				BE5AC26E184A84CD00121126 /* Rule+RestKit.m */,
+				BE5AC270184A858000121126 /* NodeAction+RestKit.h */,
+				BE5AC271184A858000121126 /* NodeAction+RestKit.m */,
 			);
 			name = Models;
 			sourceTree = "<group>";
@@ -476,6 +491,7 @@
 				BE4E74ED1846B76900344677 /* StatInteraction.m in Sources */,
 				BE98AA5B1849DE9400777916 /* Node+RestKit.m in Sources */,
 				BE4E75261846B7CE00344677 /* Asset.m in Sources */,
+				BE5AC272184A858000121126 /* NodeAction+RestKit.m in Sources */,
 				BE98AA5E1849DEA500777916 /* Asset+RestKit.m in Sources */,
 				BE4E7554184955BE00344677 /* VObjectManager.m in Sources */,
 				BE4E752C1846B7CE00344677 /* AnswerAction.m in Sources */,
@@ -483,6 +499,7 @@
 				BE4E752F1846B7CF00344677 /* Comment.m in Sources */,
 				BE4E74FC1846B76900344677 /* Sequence.m in Sources */,
 				BE4E75141846B78000344677 /* InteractionAction.m in Sources */,
+				BE5AC26C184A846500121126 /* InteractionAction+RestKit.m in Sources */,
 				BE98AA641849DF4100777916 /* AnswerAction+RestKit.m in Sources */,
 				BE4E74FF1846B76900344677 /* VCategory.m in Sources */,
 				BE98AA611849DF3400777916 /* Answer+RestKit.m in Sources */,
@@ -503,6 +520,7 @@
 				BEA4F23B1843F097001F5B15 /* VAppDelegate.m in Sources */,
 				BE4E75051846B76900344677 /* Rule.m in Sources */,
 				BE4E75511849471F00344677 /* Categories+RestKit.m in Sources */,
+				BE5AC26F184A84CD00121126 /* Rule+RestKit.m in Sources */,
 				BE4E754B184942F100344677 /* VSequenceManager.m in Sources */,
 				BE4E75231846B7CE00344677 /* Answer.m in Sources */,
 			);

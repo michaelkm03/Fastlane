@@ -20,20 +20,9 @@
                                 mappingForEntityForName:NSStringFromClass([AnswerAction class])
                                 inManagedObjectStore:[RKObjectManager sharedManager].managedObjectStore];
     
-    mapping.identificationAttributes = @[ @"id" ];
-    
     [mapping addAttributeMappingsFromDictionary:propertyMap];
     
     return mapping;
 }
-
-+(RKResponseDescriptor*)descriptor
-{
-    return [RKResponseDescriptor responseDescriptorWithMapping:[AnswerAction entityMapping]
-                                                        method:RKRequestMethodPOST
-                                                   pathPattern:nil
-                                                       keyPath:@"payload"                                         statusCodes:RKStatusCodeIndexSetForClass(RKStatusCodeClassSuccessful)];
-}
-
 
 @end

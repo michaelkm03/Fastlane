@@ -10,4 +10,41 @@
 
 @implementation Comment (RestKit)
 
++(RKEntityMapping*)entityMapping
+{
+    NSDictionary *propertyMap = @{
+                                  @"dislikes" : @"dislikes",
+                                  @"display_order" : @"display_order",
+                                  @"flags" : @"flags",
+                                  @"id" : @"id",
+                                  @"likes" : @"likes",
+                                  @"media_type" : @"media_type",
+                                  @"media_url" : @"media_url",
+                                  @"parent_id" : @"parent_id",
+                                  @"posted_at" : @"posted_at",
+                                  @"sequence_id" : @"sequence_id",
+                                  @"shares" : @"shares",
+                                  @"text" : @"text"
+                                  };
+    
+    RKEntityMapping *mapping = [RKEntityMapping
+                                mappingForEntityForName:NSStringFromClass([Comment class])
+                                inManagedObjectStore:[RKObjectManager sharedManager].managedObjectStore];
+    
+    mapping.identificationAttributes = @[ @"id" ];
+    
+    [mapping addAttributeMappingsFromDictionary:propertyMap];
+    
+    return mapping;
+}
+
++(RKResponseDescriptor*)descriptor
+{
+    return [RKResponseDescriptor responseDescriptorWithMapping:[Comment entityMapping]
+                                                        method:RKRequestMethodGET
+                                                   pathPattern:nil
+                                                       keyPath:@"payload"                                         statusCodes:RKStatusCodeIndexSetForClass(RKStatusCodeClassSuccessful)];
+}
+
+
 @end
