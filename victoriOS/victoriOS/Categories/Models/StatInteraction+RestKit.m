@@ -26,7 +26,7 @@
                                 mappingForEntityForName:NSStringFromClass([StatInteraction class])
                                 inManagedObjectStore:[RKObjectManager sharedManager].managedObjectStore];
     
-    mapping.identificationAttributes = @[ @"interaction_id" ];
+    mapping.identificationAttributes = @[ @"id" ];
     
     [mapping addAttributeMappingsFromDictionary:propertyMap];
     

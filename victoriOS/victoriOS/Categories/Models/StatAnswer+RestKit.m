@@ -24,7 +24,7 @@
                                 mappingForEntityForName:NSStringFromClass([StatAnswer class])
                                 inManagedObjectStore:[RKObjectManager sharedManager].managedObjectStore];
     
-    mapping.identificationAttributes = @[ @"answer_id" ];
+    mapping.identificationAttributes = @[ @"id" ];
     
     [mapping addAttributeMappingsFromDictionary:propertyMap];
     
