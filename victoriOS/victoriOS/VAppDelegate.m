@@ -87,12 +87,14 @@
     userAgent = [NSString stringWithFormat:@"%@ aid:%@", userAgent, @"1"];
     [[manager HTTPClient] setDefaultHeader:@"User-Agent" value:userAgent];
 
+    //TODO: we need to grab the momd manually by URL
     NSManagedObjectModel *managedObjectModel = [NSManagedObjectModel mergedModelFromBundles:nil];
     RKManagedObjectStore *managedObjectStore = [[RKManagedObjectStore alloc] initWithManagedObjectModel:managedObjectModel];
     manager.managedObjectStore = managedObjectStore;
     
     [managedObjectStore createPersistentStoreCoordinator];
     
+    //TODO: don't create
     NSString *storePath = [RKApplicationDataDirectory() stringByAppendingPathComponent:@"Victorious.sqlite"];
     
     NSError *error;

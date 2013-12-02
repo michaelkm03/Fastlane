@@ -59,13 +59,13 @@
         <attribute name="node_id" attributeType="Integer 64" minValueString="0" defaultValueString="0" syncable="YES"/>
         <relationship name="assets" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="Asset" inverseName="node" inverseEntity="Asset" syncable="YES"/>
         <relationship name="interactions" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="Interaction" inverseName="node" inverseEntity="Interaction" syncable="YES"/>
-        <relationship name="result_action" maxCount="1" deletionRule="Cascade" destinationEntity="NodeAction" inverseName="node" inverseEntity="NodeAction" syncable="YES"/>
+        <relationship name="node_action" maxCount="1" deletionRule="Cascade" destinationEntity="NodeAction" inverseName="node" inverseEntity="NodeAction" syncable="YES"/>
         <relationship name="sequence" maxCount="1" deletionRule="Nullify" destinationEntity="Sequence" inverseName="nodes" inverseEntity="Sequence" syncable="YES"/>
     </entity>
     <entity name="NodeAction" representedClassName="NodeAction" syncable="YES">
         <attribute name="lost_goto_node" optional="YES" attributeType="Integer 64" minValueString="0" defaultValueString="0" syncable="YES"/>
         <attribute name="won_goto_node" optional="YES" attributeType="Integer 64" minValueString="0" defaultValueString="0" syncable="YES"/>
-        <relationship name="node" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Node" inverseName="result_action" inverseEntity="Node" syncable="YES"/>
+        <relationship name="node" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Node" inverseName="node_action" inverseEntity="Node" syncable="YES"/>
     </entity>
     <entity name="Rule" representedClassName="Rule" syncable="YES">
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>

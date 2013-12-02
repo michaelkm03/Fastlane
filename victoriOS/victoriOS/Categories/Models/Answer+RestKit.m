@@ -28,6 +28,13 @@
     mapping.identificationAttributes = @[ @"answer_id" ];
 
     [mapping addAttributeMappingsFromDictionary:propertyMap];
+
+    //Now add relationships
+    RKRelationshipMapping* actionMapping = [RKRelationshipMapping
+                                            relationshipMappingFromKeyPath:@"answer_action"
+                                            toKeyPath:@"answer_action"
+                                            withMapping:[AnswerAction entityMapping]];
+    [mapping addPropertyMapping:actionMapping];
     
     return mapping;
 }

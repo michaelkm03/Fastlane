@@ -32,6 +32,13 @@
     
     [mapping addAttributeMappingsFromDictionary:propertyMap];
     
+    //Now add relationships
+    RKRelationshipMapping* nodeMapping = [RKRelationshipMapping
+                                                 relationshipMappingFromKeyPath:@"nodes"
+                                                 toKeyPath:@"nodes"
+                                                 withMapping:[Node entityMapping]];
+    [mapping addPropertyMapping:nodeMapping];
+    
     return mapping;
 }
 

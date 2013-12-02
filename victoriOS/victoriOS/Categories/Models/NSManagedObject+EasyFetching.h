@@ -13,6 +13,6 @@
 + (NSArray *)findAllObjects;
 + (NSArray *)findAllObjectsInContext:(NSManagedObjectContext *)context;
 
-+(RKEntityMapping*)entityMapping;
++ (RKEntityMapping*)entityMapping;
 
 @end

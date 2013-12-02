@@ -34,7 +34,7 @@
     return results;
 }
 
-+(RKEntityMapping*)entityMapping
++ (RKEntityMapping*)entityMapping
 {
     return nil;
 }

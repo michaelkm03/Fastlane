@@ -2,7 +2,7 @@
 //  Node.h
 //  victoriOS
 //
-//  Created by Will Long on 11/27/13.
+//  Created by Will Long on 12/2/13.
 //  Copyright (c) 2013 Will Long. All rights reserved.
 //
 
@@ -17,7 +17,7 @@
 @property (nonatomic, retain) NSNumber * node_id;
 @property (nonatomic, retain) NSSet *assets;
 @property (nonatomic, retain) NSSet *interactions;
-@property (nonatomic, retain) NodeAction *result_action;
+@property (nonatomic, retain) NodeAction *node_action;
 @property (nonatomic, retain) Sequence *sequence;
 @end
 
