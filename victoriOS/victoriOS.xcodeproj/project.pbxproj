@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		9CB09319D7334D91B4DED878 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B15D4A5304A04D16AD420BCD /* libPods.a */; };
-		BE4E74C91846A11200344677 /* Sequence+RestKit.m in Sources */ = {isa = PBXBuildFile; fileRef = BE4E74C81846A11200344677 /* Sequence+RestKit.m */; };
 		BE4E74ED1846B76900344677 /* StatInteraction.m in Sources */ = {isa = PBXBuildFile; fileRef = BE4E74EC1846B76900344677 /* StatInteraction.m */; };
 		BE4E74F31846B76900344677 /* StatSequence.m in Sources */ = {isa = PBXBuildFile; fileRef = BE4E74F21846B76900344677 /* StatSequence.m */; };
 		BE4E74FC1846B76900344677 /* Sequence.m in Sources */ = {isa = PBXBuildFile; fileRef = BE4E74FB1846B76900344677 /* Sequence.m */; };
@@ -20,28 +19,29 @@
 		BE4E75261846B7CE00344677 /* Asset.m in Sources */ = {isa = PBXBuildFile; fileRef = BE4E75251846B7CE00344677 /* Asset.m */; };
 		BE4E752C1846B7CE00344677 /* AnswerAction.m in Sources */ = {isa = PBXBuildFile; fileRef = BE4E752B1846B7CE00344677 /* AnswerAction.m */; };
 		BE4E752F1846B7CF00344677 /* Comment.m in Sources */ = {isa = PBXBuildFile; fileRef = BE4E752E1846B7CF00344677 /* Comment.m */; };
-		BE4E75351846BB6500344677 /* User+RestKit.m in Sources */ = {isa = PBXBuildFile; fileRef = BE4E75341846BB6500344677 /* User+RestKit.m */; };
 		BE4E753C1846BF0700344677 /* VLoginManager.m in Sources */ = {isa = PBXBuildFile; fileRef = BE4E753B1846BF0700344677 /* VLoginManager.m */; };
 		BE4E75451846D92A00344677 /* User.m in Sources */ = {isa = PBXBuildFile; fileRef = BE4E75441846D92A00344677 /* User.m */; };
-		BE4E754818493C0800344677 /* NSManagedObject+EasyFetching.m in Sources */ = {isa = PBXBuildFile; fileRef = BE4E754718493C0800344677 /* NSManagedObject+EasyFetching.m */; };
 		BE4E754B184942F100344677 /* VSequenceManager.m in Sources */ = {isa = PBXBuildFile; fileRef = BE4E754A184942F100344677 /* VSequenceManager.m */; };
 		BE4E7554184955BE00344677 /* VObjectManager.m in Sources */ = {isa = PBXBuildFile; fileRef = BE4E7553184955BE00344677 /* VObjectManager.m */; };
-		BE5AC26C184A846500121126 /* InteractionAction+RestKit.m in Sources */ = {isa = PBXBuildFile; fileRef = BE5AC26B184A846500121126 /* InteractionAction+RestKit.m */; };
-		BE5AC26F184A84CD00121126 /* Rule+RestKit.m in Sources */ = {isa = PBXBuildFile; fileRef = BE5AC26E184A84CD00121126 /* Rule+RestKit.m */; };
-		BE5AC272184A858000121126 /* NodeAction+RestKit.m in Sources */ = {isa = PBXBuildFile; fileRef = BE5AC271184A858000121126 /* NodeAction+RestKit.m */; };
-		BE5AC275184A870A00121126 /* StatAnswer+RestKit.m in Sources */ = {isa = PBXBuildFile; fileRef = BE5AC274184A870A00121126 /* StatAnswer+RestKit.m */; };
-		BE5AC278184A871600121126 /* StatInteraction+RestKit.m in Sources */ = {isa = PBXBuildFile; fileRef = BE5AC277184A871600121126 /* StatInteraction+RestKit.m */; };
-		BE5AC27B184A872100121126 /* StatSequence+RestKit.m in Sources */ = {isa = PBXBuildFile; fileRef = BE5AC27A184A872100121126 /* StatSequence+RestKit.m */; };
 		BE5AC27E184C80D000121126 /* VCategory.m in Sources */ = {isa = PBXBuildFile; fileRef = BE5AC27D184C80D000121126 /* VCategory.m */; };
 		BE5AC287184D194900121126 /* Node.m in Sources */ = {isa = PBXBuildFile; fileRef = BE5AC286184D194900121126 /* Node.m */; };
 		BE5AC28A184D194A00121126 /* NodeAction.m in Sources */ = {isa = PBXBuildFile; fileRef = BE5AC289184D194A00121126 /* NodeAction.m */; };
-		BE98AA521849DDD300777916 /* VCategory+RestKit.m in Sources */ = {isa = PBXBuildFile; fileRef = BE98AA511849DDD300777916 /* VCategory+RestKit.m */; };
-		BE98AA551849DE4200777916 /* Interaction+RestKit.m in Sources */ = {isa = PBXBuildFile; fileRef = BE98AA541849DE4200777916 /* Interaction+RestKit.m */; };
-		BE98AA581849DE5800777916 /* Comment+RestKit.m in Sources */ = {isa = PBXBuildFile; fileRef = BE98AA571849DE5800777916 /* Comment+RestKit.m */; };
-		BE98AA5B1849DE9400777916 /* Node+RestKit.m in Sources */ = {isa = PBXBuildFile; fileRef = BE98AA5A1849DE9400777916 /* Node+RestKit.m */; };
-		BE98AA5E1849DEA500777916 /* Asset+RestKit.m in Sources */ = {isa = PBXBuildFile; fileRef = BE98AA5D1849DEA500777916 /* Asset+RestKit.m */; };
-		BE98AA611849DF3400777916 /* Answer+RestKit.m in Sources */ = {isa = PBXBuildFile; fileRef = BE98AA601849DF3400777916 /* Answer+RestKit.m */; };
-		BE98AA641849DF4100777916 /* AnswerAction+RestKit.m in Sources */ = {isa = PBXBuildFile; fileRef = BE98AA631849DF4100777916 /* AnswerAction+RestKit.m */; };
+		BE5AC2AC184D298900121126 /* Answer+RestKit.m in Sources */ = {isa = PBXBuildFile; fileRef = BE5AC28D184D298900121126 /* Answer+RestKit.m */; };
+		BE5AC2AD184D298900121126 /* AnswerAction+RestKit.m in Sources */ = {isa = PBXBuildFile; fileRef = BE5AC28F184D298900121126 /* AnswerAction+RestKit.m */; };
+		BE5AC2AE184D298900121126 /* Asset+RestKit.m in Sources */ = {isa = PBXBuildFile; fileRef = BE5AC291184D298900121126 /* Asset+RestKit.m */; };
+		BE5AC2AF184D298900121126 /* Comment+RestKit.m in Sources */ = {isa = PBXBuildFile; fileRef = BE5AC293184D298900121126 /* Comment+RestKit.m */; };
+		BE5AC2B0184D298900121126 /* Interaction+RestKit.m in Sources */ = {isa = PBXBuildFile; fileRef = BE5AC295184D298900121126 /* Interaction+RestKit.m */; };
+		BE5AC2B1184D298900121126 /* InteractionAction+RestKit.m in Sources */ = {isa = PBXBuildFile; fileRef = BE5AC297184D298900121126 /* InteractionAction+RestKit.m */; };
+		BE5AC2B2184D298900121126 /* Node+RestKit.m in Sources */ = {isa = PBXBuildFile; fileRef = BE5AC299184D298900121126 /* Node+RestKit.m */; };
+		BE5AC2B3184D298900121126 /* NodeAction+RestKit.m in Sources */ = {isa = PBXBuildFile; fileRef = BE5AC29B184D298900121126 /* NodeAction+RestKit.m */; };
+		BE5AC2B4184D298900121126 /* Rule+RestKit.m in Sources */ = {isa = PBXBuildFile; fileRef = BE5AC29D184D298900121126 /* Rule+RestKit.m */; };
+		BE5AC2B5184D298900121126 /* Sequence+RestKit.m in Sources */ = {isa = PBXBuildFile; fileRef = BE5AC29F184D298900121126 /* Sequence+RestKit.m */; };
+		BE5AC2B6184D298900121126 /* StatAnswer+RestKit.m in Sources */ = {isa = PBXBuildFile; fileRef = BE5AC2A1184D298900121126 /* StatAnswer+RestKit.m */; };
+		BE5AC2B7184D298900121126 /* StatInteraction+RestKit.m in Sources */ = {isa = PBXBuildFile; fileRef = BE5AC2A3184D298900121126 /* StatInteraction+RestKit.m */; };
+		BE5AC2B8184D298900121126 /* StatSequence+RestKit.m in Sources */ = {isa = PBXBuildFile; fileRef = BE5AC2A5184D298900121126 /* StatSequence+RestKit.m */; };
+		BE5AC2B9184D298900121126 /* User+RestKit.m in Sources */ = {isa = PBXBuildFile; fileRef = BE5AC2A7184D298900121126 /* User+RestKit.m */; };
+		BE5AC2BA184D298900121126 /* VCategory+RestKit.m in Sources */ = {isa = PBXBuildFile; fileRef = BE5AC2A9184D298900121126 /* VCategory+RestKit.m */; };
+		BE5AC2BB184D298900121126 /* NSManagedObject+EasyFetching.m in Sources */ = {isa = PBXBuildFile; fileRef = BE5AC2AB184D298900121126 /* NSManagedObject+EasyFetching.m */; };
 		BEA4F2291843F097001F5B15 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BEA4F2281843F097001F5B15 /* Foundation.framework */; };
 		BEA4F22B1843F097001F5B15 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BEA4F22A1843F097001F5B15 /* CoreGraphics.framework */; };
 		BEA4F22D1843F097001F5B15 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BEA4F22C1843F097001F5B15 /* UIKit.framework */; };
@@ -72,8 +72,6 @@
 /* Begin PBXFileReference section */
 		4F627C2BF55A46F299155184 /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = "<group>"; };
 		B15D4A5304A04D16AD420BCD /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
-		BE4E74C71846A11200344677 /* Sequence+RestKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "Sequence+RestKit.h"; path = "Categories/Models/Sequence+RestKit.h"; sourceTree = "<group>"; };
-		BE4E74C81846A11200344677 /* Sequence+RestKit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "Sequence+RestKit.m"; path = "Categories/Models/Sequence+RestKit.m"; sourceTree = "<group>"; };
 		BE4E74EB1846B76900344677 /* StatInteraction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = StatInteraction.h; path = Models/StatInteraction.h; sourceTree = "<group>"; };
 		BE4E74EC1846B76900344677 /* StatInteraction.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = StatInteraction.m; path = Models/StatInteraction.m; sourceTree = "<group>"; };
 		BE4E74F11846B76900344677 /* StatSequence.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = StatSequence.h; path = Models/StatSequence.h; sourceTree = "<group>"; };
@@ -96,50 +94,52 @@
 		BE4E752B1846B7CE00344677 /* AnswerAction.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AnswerAction.m; path = Models/AnswerAction.m; sourceTree = "<group>"; };
 		BE4E752D1846B7CF00344677 /* Comment.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Comment.h; path = Models/Comment.h; sourceTree = "<group>"; };
 		BE4E752E1846B7CF00344677 /* Comment.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Comment.m; path = Models/Comment.m; sourceTree = "<group>"; };
-		BE4E75331846BB6500344677 /* User+RestKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "User+RestKit.h"; path = "Categories/Models/User+RestKit.h"; sourceTree = "<group>"; };
-		BE4E75341846BB6500344677 /* User+RestKit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "User+RestKit.m"; path = "Categories/Models/User+RestKit.m"; sourceTree = "<group>"; };
 		BE4E753A1846BF0700344677 /* VLoginManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VLoginManager.h; path = Managers/VLoginManager.h; sourceTree = "<group>"; };
 		BE4E753B1846BF0700344677 /* VLoginManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VLoginManager.m; path = Managers/VLoginManager.m; sourceTree = "<group>"; };
 		BE4E75431846D92A00344677 /* User.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = User.h; path = Models/User.h; sourceTree = "<group>"; };
 		BE4E75441846D92A00344677 /* User.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = User.m; path = Models/User.m; sourceTree = "<group>"; };
-		BE4E754618493C0800344677 /* NSManagedObject+EasyFetching.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSManagedObject+EasyFetching.h"; path = "Categories/Models/NSManagedObject+EasyFetching.h"; sourceTree = "<group>"; };
-		BE4E754718493C0800344677 /* NSManagedObject+EasyFetching.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSManagedObject+EasyFetching.m"; path = "Categories/Models/NSManagedObject+EasyFetching.m"; sourceTree = "<group>"; };
 		BE4E7549184942F100344677 /* VSequenceManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VSequenceManager.h; path = Managers/VSequenceManager.h; sourceTree = "<group>"; };
 		BE4E754A184942F100344677 /* VSequenceManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VSequenceManager.m; path = Managers/VSequenceManager.m; sourceTree = "<group>"; };
 		BE4E7552184955BE00344677 /* VObjectManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VObjectManager.h; path = Managers/VObjectManager.h; sourceTree = "<group>"; };
 		BE4E7553184955BE00344677 /* VObjectManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VObjectManager.m; path = Managers/VObjectManager.m; sourceTree = "<group>"; };
-		BE5AC26A184A846500121126 /* InteractionAction+RestKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "InteractionAction+RestKit.h"; path = "Categories/Models/InteractionAction+RestKit.h"; sourceTree = "<group>"; };
-		BE5AC26B184A846500121126 /* InteractionAction+RestKit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "InteractionAction+RestKit.m"; path = "Categories/Models/InteractionAction+RestKit.m"; sourceTree = "<group>"; };
-		BE5AC26D184A84CD00121126 /* Rule+RestKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "Rule+RestKit.h"; path = "Categories/Models/Rule+RestKit.h"; sourceTree = "<group>"; };
-		BE5AC26E184A84CD00121126 /* Rule+RestKit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "Rule+RestKit.m"; path = "Categories/Models/Rule+RestKit.m"; sourceTree = "<group>"; };
-		BE5AC270184A858000121126 /* NodeAction+RestKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NodeAction+RestKit.h"; path = "Categories/Models/NodeAction+RestKit.h"; sourceTree = "<group>"; };
-		BE5AC271184A858000121126 /* NodeAction+RestKit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NodeAction+RestKit.m"; path = "Categories/Models/NodeAction+RestKit.m"; sourceTree = "<group>"; };
-		BE5AC273184A870A00121126 /* StatAnswer+RestKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "StatAnswer+RestKit.h"; path = "Categories/Models/StatAnswer+RestKit.h"; sourceTree = "<group>"; };
-		BE5AC274184A870A00121126 /* StatAnswer+RestKit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "StatAnswer+RestKit.m"; path = "Categories/Models/StatAnswer+RestKit.m"; sourceTree = "<group>"; };
-		BE5AC276184A871600121126 /* StatInteraction+RestKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "StatInteraction+RestKit.h"; path = "Categories/Models/StatInteraction+RestKit.h"; sourceTree = "<group>"; };
-		BE5AC277184A871600121126 /* StatInteraction+RestKit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "StatInteraction+RestKit.m"; path = "Categories/Models/StatInteraction+RestKit.m"; sourceTree = "<group>"; };
-		BE5AC279184A872100121126 /* StatSequence+RestKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "StatSequence+RestKit.h"; path = "Categories/Models/StatSequence+RestKit.h"; sourceTree = "<group>"; };
-		BE5AC27A184A872100121126 /* StatSequence+RestKit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "StatSequence+RestKit.m"; path = "Categories/Models/StatSequence+RestKit.m"; sourceTree = "<group>"; };
 		BE5AC27C184C80D000121126 /* VCategory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VCategory.h; path = Models/VCategory.h; sourceTree = "<group>"; };
 		BE5AC27D184C80D000121126 /* VCategory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VCategory.m; path = Models/VCategory.m; sourceTree = "<group>"; };
 		BE5AC285184D194900121126 /* Node.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Node.h; path = Models/Node.h; sourceTree = "<group>"; };
 		BE5AC286184D194900121126 /* Node.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Node.m; path = Models/Node.m; sourceTree = "<group>"; };
 		BE5AC288184D194A00121126 /* NodeAction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NodeAction.h; path = Models/NodeAction.h; sourceTree = "<group>"; };
 		BE5AC289184D194A00121126 /* NodeAction.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NodeAction.m; path = Models/NodeAction.m; sourceTree = "<group>"; };
-		BE98AA501849DDD300777916 /* VCategory+RestKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "VCategory+RestKit.h"; path = "Categories/Models/VCategory+RestKit.h"; sourceTree = "<group>"; };
-		BE98AA511849DDD300777916 /* VCategory+RestKit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "VCategory+RestKit.m"; path = "Categories/Models/VCategory+RestKit.m"; sourceTree = "<group>"; };
-		BE98AA531849DE4200777916 /* Interaction+RestKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "Interaction+RestKit.h"; path = "Categories/Models/Interaction+RestKit.h"; sourceTree = "<group>"; };
-		BE98AA541849DE4200777916 /* Interaction+RestKit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "Interaction+RestKit.m"; path = "Categories/Models/Interaction+RestKit.m"; sourceTree = "<group>"; };
-		BE98AA561849DE5800777916 /* Comment+RestKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "Comment+RestKit.h"; path = "Categories/Models/Comment+RestKit.h"; sourceTree = "<group>"; };
-		BE98AA571849DE5800777916 /* Comment+RestKit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "Comment+RestKit.m"; path = "Categories/Models/Comment+RestKit.m"; sourceTree = "<group>"; };
-		BE98AA591849DE9400777916 /* Node+RestKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "Node+RestKit.h"; path = "Categories/Models/Node+RestKit.h"; sourceTree = "<group>"; };
-		BE98AA5A1849DE9400777916 /* Node+RestKit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "Node+RestKit.m"; path = "Categories/Models/Node+RestKit.m"; sourceTree = "<group>"; };
-		BE98AA5C1849DEA500777916 /* Asset+RestKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "Asset+RestKit.h"; path = "Categories/Models/Asset+RestKit.h"; sourceTree = "<group>"; };
-		BE98AA5D1849DEA500777916 /* Asset+RestKit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "Asset+RestKit.m"; path = "Categories/Models/Asset+RestKit.m"; sourceTree = "<group>"; };
-		BE98AA5F1849DF3400777916 /* Answer+RestKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "Answer+RestKit.h"; path = "Categories/Models/Answer+RestKit.h"; sourceTree = "<group>"; };
-		BE98AA601849DF3400777916 /* Answer+RestKit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "Answer+RestKit.m"; path = "Categories/Models/Answer+RestKit.m"; sourceTree = "<group>"; };
-		BE98AA621849DF4100777916 /* AnswerAction+RestKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "AnswerAction+RestKit.h"; path = "Categories/Models/AnswerAction+RestKit.h"; sourceTree = "<group>"; };
-		BE98AA631849DF4100777916 /* AnswerAction+RestKit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "AnswerAction+RestKit.m"; path = "Categories/Models/AnswerAction+RestKit.m"; sourceTree = "<group>"; };
+		BE5AC28C184D298900121126 /* Answer+RestKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Answer+RestKit.h"; sourceTree = "<group>"; };
+		BE5AC28D184D298900121126 /* Answer+RestKit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "Answer+RestKit.m"; sourceTree = "<group>"; };
+		BE5AC28E184D298900121126 /* AnswerAction+RestKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "AnswerAction+RestKit.h"; sourceTree = "<group>"; };
+		BE5AC28F184D298900121126 /* AnswerAction+RestKit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "AnswerAction+RestKit.m"; sourceTree = "<group>"; };
+		BE5AC290184D298900121126 /* Asset+RestKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Asset+RestKit.h"; sourceTree = "<group>"; };
+		BE5AC291184D298900121126 /* Asset+RestKit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "Asset+RestKit.m"; sourceTree = "<group>"; };
+		BE5AC292184D298900121126 /* Comment+RestKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Comment+RestKit.h"; sourceTree = "<group>"; };
+		BE5AC293184D298900121126 /* Comment+RestKit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "Comment+RestKit.m"; sourceTree = "<group>"; };
+		BE5AC294184D298900121126 /* Interaction+RestKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Interaction+RestKit.h"; sourceTree = "<group>"; };
+		BE5AC295184D298900121126 /* Interaction+RestKit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "Interaction+RestKit.m"; sourceTree = "<group>"; };
+		BE5AC296184D298900121126 /* InteractionAction+RestKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "InteractionAction+RestKit.h"; sourceTree = "<group>"; };
+		BE5AC297184D298900121126 /* InteractionAction+RestKit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "InteractionAction+RestKit.m"; sourceTree = "<group>"; };
+		BE5AC298184D298900121126 /* Node+RestKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Node+RestKit.h"; sourceTree = "<group>"; };
+		BE5AC299184D298900121126 /* Node+RestKit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "Node+RestKit.m"; sourceTree = "<group>"; };
+		BE5AC29A184D298900121126 /* NodeAction+RestKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NodeAction+RestKit.h"; sourceTree = "<group>"; };
+		BE5AC29B184D298900121126 /* NodeAction+RestKit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NodeAction+RestKit.m"; sourceTree = "<group>"; };
+		BE5AC29C184D298900121126 /* Rule+RestKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Rule+RestKit.h"; sourceTree = "<group>"; };
+		BE5AC29D184D298900121126 /* Rule+RestKit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "Rule+RestKit.m"; sourceTree = "<group>"; };
+		BE5AC29E184D298900121126 /* Sequence+RestKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Sequence+RestKit.h"; sourceTree = "<group>"; };
+		BE5AC29F184D298900121126 /* Sequence+RestKit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "Sequence+RestKit.m"; sourceTree = "<group>"; };
+		BE5AC2A0184D298900121126 /* StatAnswer+RestKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "StatAnswer+RestKit.h"; sourceTree = "<group>"; };
+		BE5AC2A1184D298900121126 /* StatAnswer+RestKit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "StatAnswer+RestKit.m"; sourceTree = "<group>"; };
+		BE5AC2A2184D298900121126 /* StatInteraction+RestKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "StatInteraction+RestKit.h"; sourceTree = "<group>"; };
+		BE5AC2A3184D298900121126 /* StatInteraction+RestKit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "StatInteraction+RestKit.m"; sourceTree = "<group>"; };
+		BE5AC2A4184D298900121126 /* StatSequence+RestKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "StatSequence+RestKit.h"; sourceTree = "<group>"; };
+		BE5AC2A5184D298900121126 /* StatSequence+RestKit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "StatSequence+RestKit.m"; sourceTree = "<group>"; };
+		BE5AC2A6184D298900121126 /* User+RestKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "User+RestKit.h"; sourceTree = "<group>"; };
+		BE5AC2A7184D298900121126 /* User+RestKit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "User+RestKit.m"; sourceTree = "<group>"; };
+		BE5AC2A8184D298900121126 /* VCategory+RestKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "VCategory+RestKit.h"; sourceTree = "<group>"; };
+		BE5AC2A9184D298900121126 /* VCategory+RestKit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "VCategory+RestKit.m"; sourceTree = "<group>"; };
+		BE5AC2AA184D298900121126 /* NSManagedObject+EasyFetching.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSManagedObject+EasyFetching.h"; path = "Categories/NSManagedObject+EasyFetching.h"; sourceTree = "<group>"; };
+		BE5AC2AB184D298900121126 /* NSManagedObject+EasyFetching.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSManagedObject+EasyFetching.m"; path = "Categories/NSManagedObject+EasyFetching.m"; sourceTree = "<group>"; };
 		BEA4F2251843F097001F5B15 /* victoriOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = victoriOS.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		BEA4F2281843F097001F5B15 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		BEA4F22A1843F097001F5B15 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -190,48 +190,11 @@
 		BE4E74C21846953F00344677 /* Categories */ = {
 			isa = PBXGroup;
 			children = (
-				BE4E754618493C0800344677 /* NSManagedObject+EasyFetching.h */,
-				BE4E754718493C0800344677 /* NSManagedObject+EasyFetching.m */,
-				BE4E74C31846954800344677 /* Mappings */,
+				BE5AC28B184D298900121126 /* Mappings */,
+				BE5AC2AA184D298900121126 /* NSManagedObject+EasyFetching.h */,
+				BE5AC2AB184D298900121126 /* NSManagedObject+EasyFetching.m */,
 			);
 			name = Categories;
-			sourceTree = "<group>";
-		};
-		BE4E74C31846954800344677 /* Mappings */ = {
-			isa = PBXGroup;
-			children = (
-				BE98AA5F1849DF3400777916 /* Answer+RestKit.h */,
-				BE98AA601849DF3400777916 /* Answer+RestKit.m */,
-				BE98AA621849DF4100777916 /* AnswerAction+RestKit.h */,
-				BE98AA631849DF4100777916 /* AnswerAction+RestKit.m */,
-				BE98AA5C1849DEA500777916 /* Asset+RestKit.h */,
-				BE98AA5D1849DEA500777916 /* Asset+RestKit.m */,
-				BE98AA561849DE5800777916 /* Comment+RestKit.h */,
-				BE98AA571849DE5800777916 /* Comment+RestKit.m */,
-				BE98AA531849DE4200777916 /* Interaction+RestKit.h */,
-				BE98AA541849DE4200777916 /* Interaction+RestKit.m */,
-				BE5AC26A184A846500121126 /* InteractionAction+RestKit.h */,
-				BE5AC26B184A846500121126 /* InteractionAction+RestKit.m */,
-				BE98AA591849DE9400777916 /* Node+RestKit.h */,
-				BE98AA5A1849DE9400777916 /* Node+RestKit.m */,
-				BE5AC270184A858000121126 /* NodeAction+RestKit.h */,
-				BE5AC271184A858000121126 /* NodeAction+RestKit.m */,
-				BE5AC26D184A84CD00121126 /* Rule+RestKit.h */,
-				BE5AC26E184A84CD00121126 /* Rule+RestKit.m */,
-				BE4E74C71846A11200344677 /* Sequence+RestKit.h */,
-				BE4E74C81846A11200344677 /* Sequence+RestKit.m */,
-				BE5AC273184A870A00121126 /* StatAnswer+RestKit.h */,
-				BE5AC274184A870A00121126 /* StatAnswer+RestKit.m */,
-				BE5AC276184A871600121126 /* StatInteraction+RestKit.h */,
-				BE5AC277184A871600121126 /* StatInteraction+RestKit.m */,
-				BE5AC279184A872100121126 /* StatSequence+RestKit.h */,
-				BE5AC27A184A872100121126 /* StatSequence+RestKit.m */,
-				BE4E75331846BB6500344677 /* User+RestKit.h */,
-				BE4E75341846BB6500344677 /* User+RestKit.m */,
-				BE98AA501849DDD300777916 /* VCategory+RestKit.h */,
-				BE98AA511849DDD300777916 /* VCategory+RestKit.m */,
-			);
-			name = Mappings;
 			sourceTree = "<group>";
 		};
 		BE4E75361846BDE100344677 /* Managers */ = {
@@ -245,6 +208,44 @@
 				BE4E7553184955BE00344677 /* VObjectManager.m */,
 			);
 			name = Managers;
+			sourceTree = "<group>";
+		};
+		BE5AC28B184D298900121126 /* Mappings */ = {
+			isa = PBXGroup;
+			children = (
+				BE5AC28C184D298900121126 /* Answer+RestKit.h */,
+				BE5AC28D184D298900121126 /* Answer+RestKit.m */,
+				BE5AC28E184D298900121126 /* AnswerAction+RestKit.h */,
+				BE5AC28F184D298900121126 /* AnswerAction+RestKit.m */,
+				BE5AC290184D298900121126 /* Asset+RestKit.h */,
+				BE5AC291184D298900121126 /* Asset+RestKit.m */,
+				BE5AC292184D298900121126 /* Comment+RestKit.h */,
+				BE5AC293184D298900121126 /* Comment+RestKit.m */,
+				BE5AC294184D298900121126 /* Interaction+RestKit.h */,
+				BE5AC295184D298900121126 /* Interaction+RestKit.m */,
+				BE5AC296184D298900121126 /* InteractionAction+RestKit.h */,
+				BE5AC297184D298900121126 /* InteractionAction+RestKit.m */,
+				BE5AC298184D298900121126 /* Node+RestKit.h */,
+				BE5AC299184D298900121126 /* Node+RestKit.m */,
+				BE5AC29A184D298900121126 /* NodeAction+RestKit.h */,
+				BE5AC29B184D298900121126 /* NodeAction+RestKit.m */,
+				BE5AC29C184D298900121126 /* Rule+RestKit.h */,
+				BE5AC29D184D298900121126 /* Rule+RestKit.m */,
+				BE5AC29E184D298900121126 /* Sequence+RestKit.h */,
+				BE5AC29F184D298900121126 /* Sequence+RestKit.m */,
+				BE5AC2A0184D298900121126 /* StatAnswer+RestKit.h */,
+				BE5AC2A1184D298900121126 /* StatAnswer+RestKit.m */,
+				BE5AC2A2184D298900121126 /* StatInteraction+RestKit.h */,
+				BE5AC2A3184D298900121126 /* StatInteraction+RestKit.m */,
+				BE5AC2A4184D298900121126 /* StatSequence+RestKit.h */,
+				BE5AC2A5184D298900121126 /* StatSequence+RestKit.m */,
+				BE5AC2A6184D298900121126 /* User+RestKit.h */,
+				BE5AC2A7184D298900121126 /* User+RestKit.m */,
+				BE5AC2A8184D298900121126 /* VCategory+RestKit.h */,
+				BE5AC2A9184D298900121126 /* VCategory+RestKit.m */,
+			);
+			name = Mappings;
+			path = Categories/Mappings;
 			sourceTree = "<group>";
 		};
 		BEA4F21C1843F097001F5B15 = {
@@ -492,42 +493,42 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BE5AC2B9184D298900121126 /* User+RestKit.m in Sources */,
 				BE4E751A1846B78000344677 /* Interaction.m in Sources */,
+				BE5AC2B0184D298900121126 /* Interaction+RestKit.m in Sources */,
 				BE4E74ED1846B76900344677 /* StatInteraction.m in Sources */,
-				BE98AA5B1849DE9400777916 /* Node+RestKit.m in Sources */,
 				BE4E75261846B7CE00344677 /* Asset.m in Sources */,
-				BE5AC272184A858000121126 /* NodeAction+RestKit.m in Sources */,
-				BE98AA5E1849DEA500777916 /* Asset+RestKit.m in Sources */,
 				BE4E7554184955BE00344677 /* VObjectManager.m in Sources */,
-				BE5AC278184A871600121126 /* StatInteraction+RestKit.m in Sources */,
 				BE5AC27E184C80D000121126 /* VCategory.m in Sources */,
 				BE4E752C1846B7CE00344677 /* AnswerAction.m in Sources */,
-				BE4E74C91846A11200344677 /* Sequence+RestKit.m in Sources */,
 				BE4E752F1846B7CF00344677 /* Comment.m in Sources */,
+				BE5AC2AD184D298900121126 /* AnswerAction+RestKit.m in Sources */,
 				BE4E74FC1846B76900344677 /* Sequence.m in Sources */,
 				BE4E75141846B78000344677 /* InteractionAction.m in Sources */,
-				BE5AC26C184A846500121126 /* InteractionAction+RestKit.m in Sources */,
-				BE98AA641849DF4100777916 /* AnswerAction+RestKit.m in Sources */,
-				BE98AA611849DF3400777916 /* Answer+RestKit.m in Sources */,
-				BE98AA581849DE5800777916 /* Comment+RestKit.m in Sources */,
+				BE5AC2B8184D298900121126 /* StatSequence+RestKit.m in Sources */,
+				BE5AC2AF184D298900121126 /* Comment+RestKit.m in Sources */,
+				BE5AC2B6184D298900121126 /* StatAnswer+RestKit.m in Sources */,
+				BE5AC2BA184D298900121126 /* VCategory+RestKit.m in Sources */,
+				BE5AC2B4184D298900121126 /* Rule+RestKit.m in Sources */,
 				BE4E753C1846BF0700344677 /* VLoginManager.m in Sources */,
-				BE5AC27B184A872100121126 /* StatSequence+RestKit.m in Sources */,
 				BEA4F2371843F097001F5B15 /* main.m in Sources */,
 				BE4E75451846D92A00344677 /* User.m in Sources */,
 				BE5AC28A184D194A00121126 /* NodeAction.m in Sources */,
 				BE4E75021846B76900344677 /* StatAnswer.m in Sources */,
-				BE98AA521849DDD300777916 /* VCategory+RestKit.m in Sources */,
-				BE4E75351846BB6500344677 /* User+RestKit.m in Sources */,
-				BE98AA551849DE4200777916 /* Interaction+RestKit.m in Sources */,
+				BE5AC2BB184D298900121126 /* NSManagedObject+EasyFetching.m in Sources */,
 				BEA4F23E1843F097001F5B15 /* victoriOS.xcdatamodeld in Sources */,
-				BE4E754818493C0800344677 /* NSManagedObject+EasyFetching.m in Sources */,
 				BE5AC287184D194900121126 /* Node.m in Sources */,
+				BE5AC2AC184D298900121126 /* Answer+RestKit.m in Sources */,
+				BE5AC2B2184D298900121126 /* Node+RestKit.m in Sources */,
+				BE5AC2B3184D298900121126 /* NodeAction+RestKit.m in Sources */,
 				BE4E74F31846B76900344677 /* StatSequence.m in Sources */,
+				BE5AC2B1184D298900121126 /* InteractionAction+RestKit.m in Sources */,
+				BE5AC2AE184D298900121126 /* Asset+RestKit.m in Sources */,
 				BEA4F23B1843F097001F5B15 /* VAppDelegate.m in Sources */,
+				BE5AC2B7184D298900121126 /* StatInteraction+RestKit.m in Sources */,
 				BE4E75051846B76900344677 /* Rule.m in Sources */,
-				BE5AC26F184A84CD00121126 /* Rule+RestKit.m in Sources */,
 				BE4E754B184942F100344677 /* VSequenceManager.m in Sources */,
-				BE5AC275184A870A00121126 /* StatAnswer+RestKit.m in Sources */,
+				BE5AC2B5184D298900121126 /* Sequence+RestKit.m in Sources */,
 				BE4E75231846B7CE00344677 /* Answer.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
