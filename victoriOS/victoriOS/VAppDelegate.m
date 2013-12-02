@@ -125,6 +125,7 @@
                                                                        [User descriptor],
                                                                        [VCategory descriptor],
                                                                        [Sequence sequenceListDescriptor]]];
+                                                                       //[Sequence sequenceFullDataDescriptor]]];
                                                                        //[StatSequence descriptor]]];
 }
 

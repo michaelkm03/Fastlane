@@ -8,6 +8,7 @@
 
 #import "VSequenceManager.h"
 #import "VCategory+RestKit.h"
+#import "Sequence+RestKit.h"
 
 @implementation VSequenceManager
 
@@ -22,7 +23,7 @@
     [requestOperation setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation,
                                                       RKMappingResult *mappingResult)
      {
-         RKLogInfo(@"Load collection of Articles: %@", mappingResult.array);
+         RKLogInfo(@"Load collection of categories: %@", mappingResult.array);
          [self loadSequencesForAllCategories];
      } failure:^(RKObjectRequestOperation *operation, NSError *error)
      {
@@ -52,12 +53,14 @@
         [requestOperation setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation,
                                                           RKMappingResult *mappingResult)
          {
-             RKLogInfo(@"Load collection of Articles: %@", mappingResult.array);
+             RKLogInfo(@"Load collection of sequences: %@", mappingResult.array);
              returned++;
              
              if(returned == launched)
              {
                  //todo: send out message to tell app we're loaded
+                 //Todo: remove this test code
+                 //[self loadFullDataForSequence:[[Sequence findAllObjects]firstObject]];
              }
              
          } failure:^(RKObjectRequestOperation *operation, NSError *error)
@@ -73,6 +76,27 @@
         
         [requestOperation start];
     }
+}
+
++ (void)loadFullDataForSequence:(Sequence*)sequence
+{
+    NSString* path = [NSString stringWithFormat:@"%@/%@", @"/api/sequence", sequence.id];
+    RKManagedObjectRequestOperation* requestOperation = [[RKObjectManager sharedManager]
+                                                         appropriateObjectRequestOperationWithObject:sequence
+                                                         method:RKRequestMethodGET
+                                                         path:path
+                                                         parameters:nil];
+    
+    [requestOperation setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation,
+                                                      RKMappingResult *mappingResult)
+     {
+         RKLogInfo(@"Load full sequence data: %@", mappingResult.array);
+     } failure:^(RKObjectRequestOperation *operation, NSError *error)
+     {
+         RKLogError(@"Operation failed with error: %@", error);
+     }];
+    
+    [requestOperation start];
 }
 
 @end

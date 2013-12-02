@@ -50,7 +50,7 @@
                                                        keyPath:@"payload"                                         statusCodes:RKStatusCodeIndexSetForClass(RKStatusCodeClassSuccessful)];
 }
 
-+ (RKResponseDescriptor*)sequenceInfoDescriptor
++ (RKResponseDescriptor*)sequenceFullDataDescriptor
 {
     return [RKResponseDescriptor responseDescriptorWithMapping:[Sequence entityMapping]
                                                         method:RKRequestMethodGET
