@@ -16,12 +16,6 @@
 
 @implementation VAppDelegate
 
-//@synthesize managedObjectContext = _managedObjectContext;
-/*TODO: remove once RestKit is working
-@synthesize managedObjectModel = _managedObjectModel;
-@synthesize persistentStoreCoordinator = _persistentStoreCoordinator;
-*/
-
 + (VAppDelegate*) sharedAppDelegate
 {
     return (VAppDelegate*)[[UIApplication sharedApplication] delegate];
@@ -86,23 +80,22 @@
     //TODO: use real app id once we set that up
     userAgent = [NSString stringWithFormat:@"%@ aid:%@", userAgent, @"1"];
     [[manager HTTPClient] setDefaultHeader:@"User-Agent" value:userAgent];
-
-    //TODO: we need to grab the momd manually by URL
-    NSManagedObjectModel *managedObjectModel = [NSManagedObjectModel mergedModelFromBundles:nil];
-    RKManagedObjectStore *managedObjectStore = [[RKManagedObjectStore alloc] initWithManagedObjectModel:managedObjectModel];
-    manager.managedObjectStore = managedObjectStore;
     
+    NSURL *modelURL = [NSURL fileURLWithPath:[[NSBundle mainBundle] pathForResource:@"victoriOS" ofType:@"momd"]];
+
+    NSManagedObjectModel *managedObjectModel = [[[NSManagedObjectModel alloc] initWithContentsOfURL:modelURL] mutableCopy];
+
+    RKManagedObjectStore *managedObjectStore = [[RKManagedObjectStore alloc] initWithManagedObjectModel:managedObjectModel];
+    
+    manager.managedObjectStore = managedObjectStore;
+
+    // Initialize the Core Data stack
+    NSError *error;
     [managedObjectStore createPersistentStoreCoordinator];
     
-    //TODO: don't create
-    NSString *storePath = [RKApplicationDataDirectory() stringByAppendingPathComponent:@"Victorious.sqlite"];
-    
-    NSError *error;
-    
-    NSPersistentStore *persistentStore = [managedObjectStore addSQLitePersistentStoreAtPath:storePath fromSeedDatabaseAtPath:nil withConfiguration:nil options:@{NSMigratePersistentStoresAutomaticallyOption:@YES, NSInferMappingModelAutomaticallyOption:@YES} error:&error];
-    
-    NSAssert(persistentStore, @"Failed to add persistent store with error: %@", error);
-    
+    NSPersistentStore __unused *persistentStore = [managedObjectStore addInMemoryPersistentStore:&error];
+    NSAssert(persistentStore, @"Failed to add persistent store: %@", error);
+
     [managedObjectStore createManagedObjectContexts];
     
     // Configure a managed object cache to ensure we do not create duplicate objects
