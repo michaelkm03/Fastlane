@@ -12,7 +12,6 @@
 		BE4E74ED1846B76900344677 /* StatInteraction.m in Sources */ = {isa = PBXBuildFile; fileRef = BE4E74EC1846B76900344677 /* StatInteraction.m */; };
 		BE4E74F31846B76900344677 /* StatSequence.m in Sources */ = {isa = PBXBuildFile; fileRef = BE4E74F21846B76900344677 /* StatSequence.m */; };
 		BE4E74FC1846B76900344677 /* Sequence.m in Sources */ = {isa = PBXBuildFile; fileRef = BE4E74FB1846B76900344677 /* Sequence.m */; };
-		BE4E74FF1846B76900344677 /* VCategory.m in Sources */ = {isa = PBXBuildFile; fileRef = BE4E74FE1846B76900344677 /* VCategory.m */; };
 		BE4E75021846B76900344677 /* StatAnswer.m in Sources */ = {isa = PBXBuildFile; fileRef = BE4E75011846B76900344677 /* StatAnswer.m */; };
 		BE4E75051846B76900344677 /* Rule.m in Sources */ = {isa = PBXBuildFile; fileRef = BE4E75041846B76900344677 /* Rule.m */; };
 		BE4E75111846B78000344677 /* Node.m in Sources */ = {isa = PBXBuildFile; fileRef = BE4E75101846B78000344677 /* Node.m */; };
@@ -21,7 +20,6 @@
 		BE4E751A1846B78000344677 /* Interaction.m in Sources */ = {isa = PBXBuildFile; fileRef = BE4E75191846B78000344677 /* Interaction.m */; };
 		BE4E75231846B7CE00344677 /* Answer.m in Sources */ = {isa = PBXBuildFile; fileRef = BE4E75221846B7CE00344677 /* Answer.m */; };
 		BE4E75261846B7CE00344677 /* Asset.m in Sources */ = {isa = PBXBuildFile; fileRef = BE4E75251846B7CE00344677 /* Asset.m */; };
-		BE4E75291846B7CE00344677 /* Categories.m in Sources */ = {isa = PBXBuildFile; fileRef = BE4E75281846B7CE00344677 /* Categories.m */; };
 		BE4E752C1846B7CE00344677 /* AnswerAction.m in Sources */ = {isa = PBXBuildFile; fileRef = BE4E752B1846B7CE00344677 /* AnswerAction.m */; };
 		BE4E752F1846B7CF00344677 /* Comment.m in Sources */ = {isa = PBXBuildFile; fileRef = BE4E752E1846B7CF00344677 /* Comment.m */; };
 		BE4E75351846BB6500344677 /* User+RestKit.m in Sources */ = {isa = PBXBuildFile; fileRef = BE4E75341846BB6500344677 /* User+RestKit.m */; };
@@ -29,7 +27,6 @@
 		BE4E75451846D92A00344677 /* User.m in Sources */ = {isa = PBXBuildFile; fileRef = BE4E75441846D92A00344677 /* User.m */; };
 		BE4E754818493C0800344677 /* NSManagedObject+EasyFetching.m in Sources */ = {isa = PBXBuildFile; fileRef = BE4E754718493C0800344677 /* NSManagedObject+EasyFetching.m */; };
 		BE4E754B184942F100344677 /* VSequenceManager.m in Sources */ = {isa = PBXBuildFile; fileRef = BE4E754A184942F100344677 /* VSequenceManager.m */; };
-		BE4E75511849471F00344677 /* Categories+RestKit.m in Sources */ = {isa = PBXBuildFile; fileRef = BE4E75501849471F00344677 /* Categories+RestKit.m */; };
 		BE4E7554184955BE00344677 /* VObjectManager.m in Sources */ = {isa = PBXBuildFile; fileRef = BE4E7553184955BE00344677 /* VObjectManager.m */; };
 		BE5AC26C184A846500121126 /* InteractionAction+RestKit.m in Sources */ = {isa = PBXBuildFile; fileRef = BE5AC26B184A846500121126 /* InteractionAction+RestKit.m */; };
 		BE5AC26F184A84CD00121126 /* Rule+RestKit.m in Sources */ = {isa = PBXBuildFile; fileRef = BE5AC26E184A84CD00121126 /* Rule+RestKit.m */; };
@@ -37,6 +34,7 @@
 		BE5AC275184A870A00121126 /* StatAnswer+RestKit.m in Sources */ = {isa = PBXBuildFile; fileRef = BE5AC274184A870A00121126 /* StatAnswer+RestKit.m */; };
 		BE5AC278184A871600121126 /* StatInteraction+RestKit.m in Sources */ = {isa = PBXBuildFile; fileRef = BE5AC277184A871600121126 /* StatInteraction+RestKit.m */; };
 		BE5AC27B184A872100121126 /* StatSequence+RestKit.m in Sources */ = {isa = PBXBuildFile; fileRef = BE5AC27A184A872100121126 /* StatSequence+RestKit.m */; };
+		BE5AC27E184C80D000121126 /* VCategory.m in Sources */ = {isa = PBXBuildFile; fileRef = BE5AC27D184C80D000121126 /* VCategory.m */; };
 		BE98AA521849DDD300777916 /* VCategory+RestKit.m in Sources */ = {isa = PBXBuildFile; fileRef = BE98AA511849DDD300777916 /* VCategory+RestKit.m */; };
 		BE98AA551849DE4200777916 /* Interaction+RestKit.m in Sources */ = {isa = PBXBuildFile; fileRef = BE98AA541849DE4200777916 /* Interaction+RestKit.m */; };
 		BE98AA581849DE5800777916 /* Comment+RestKit.m in Sources */ = {isa = PBXBuildFile; fileRef = BE98AA571849DE5800777916 /* Comment+RestKit.m */; };
@@ -82,8 +80,6 @@
 		BE4E74F21846B76900344677 /* StatSequence.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = StatSequence.m; path = Models/StatSequence.m; sourceTree = "<group>"; };
 		BE4E74FA1846B76900344677 /* Sequence.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Sequence.h; path = Models/Sequence.h; sourceTree = "<group>"; };
 		BE4E74FB1846B76900344677 /* Sequence.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Sequence.m; path = Models/Sequence.m; sourceTree = "<group>"; };
-		BE4E74FD1846B76900344677 /* VCategory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VCategory.h; path = Models/VCategory.h; sourceTree = "<group>"; };
-		BE4E74FE1846B76900344677 /* VCategory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VCategory.m; path = Models/VCategory.m; sourceTree = "<group>"; };
 		BE4E75001846B76900344677 /* StatAnswer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = StatAnswer.h; path = Models/StatAnswer.h; sourceTree = "<group>"; };
 		BE4E75011846B76900344677 /* StatAnswer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = StatAnswer.m; path = Models/StatAnswer.m; sourceTree = "<group>"; };
 		BE4E75031846B76900344677 /* Rule.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Rule.h; path = Models/Rule.h; sourceTree = "<group>"; };
@@ -100,8 +96,6 @@
 		BE4E75221846B7CE00344677 /* Answer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Answer.m; path = Models/Answer.m; sourceTree = "<group>"; };
 		BE4E75241846B7CE00344677 /* Asset.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Asset.h; path = Models/Asset.h; sourceTree = "<group>"; };
 		BE4E75251846B7CE00344677 /* Asset.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Asset.m; path = Models/Asset.m; sourceTree = "<group>"; };
-		BE4E75271846B7CE00344677 /* Categories.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Categories.h; path = Models/Categories.h; sourceTree = "<group>"; };
-		BE4E75281846B7CE00344677 /* Categories.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Categories.m; path = Models/Categories.m; sourceTree = "<group>"; };
 		BE4E752A1846B7CE00344677 /* AnswerAction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AnswerAction.h; path = Models/AnswerAction.h; sourceTree = "<group>"; };
 		BE4E752B1846B7CE00344677 /* AnswerAction.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AnswerAction.m; path = Models/AnswerAction.m; sourceTree = "<group>"; };
 		BE4E752D1846B7CF00344677 /* Comment.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Comment.h; path = Models/Comment.h; sourceTree = "<group>"; };
@@ -116,8 +110,6 @@
 		BE4E754718493C0800344677 /* NSManagedObject+EasyFetching.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSManagedObject+EasyFetching.m"; path = "Categories/Models/NSManagedObject+EasyFetching.m"; sourceTree = "<group>"; };
 		BE4E7549184942F100344677 /* VSequenceManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VSequenceManager.h; path = Managers/VSequenceManager.h; sourceTree = "<group>"; };
 		BE4E754A184942F100344677 /* VSequenceManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VSequenceManager.m; path = Managers/VSequenceManager.m; sourceTree = "<group>"; };
-		BE4E754F1849471F00344677 /* Categories+RestKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "Categories+RestKit.h"; path = "Categories/Models/Categories+RestKit.h"; sourceTree = "<group>"; };
-		BE4E75501849471F00344677 /* Categories+RestKit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "Categories+RestKit.m"; path = "Categories/Models/Categories+RestKit.m"; sourceTree = "<group>"; };
 		BE4E7552184955BE00344677 /* VObjectManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VObjectManager.h; path = Managers/VObjectManager.h; sourceTree = "<group>"; };
 		BE4E7553184955BE00344677 /* VObjectManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VObjectManager.m; path = Managers/VObjectManager.m; sourceTree = "<group>"; };
 		BE5AC26A184A846500121126 /* InteractionAction+RestKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "InteractionAction+RestKit.h"; path = "Categories/Models/InteractionAction+RestKit.h"; sourceTree = "<group>"; };
@@ -132,6 +124,8 @@
 		BE5AC277184A871600121126 /* StatInteraction+RestKit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "StatInteraction+RestKit.m"; path = "Categories/Models/StatInteraction+RestKit.m"; sourceTree = "<group>"; };
 		BE5AC279184A872100121126 /* StatSequence+RestKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "StatSequence+RestKit.h"; path = "Categories/Models/StatSequence+RestKit.h"; sourceTree = "<group>"; };
 		BE5AC27A184A872100121126 /* StatSequence+RestKit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "StatSequence+RestKit.m"; path = "Categories/Models/StatSequence+RestKit.m"; sourceTree = "<group>"; };
+		BE5AC27C184C80D000121126 /* VCategory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VCategory.h; path = Models/VCategory.h; sourceTree = "<group>"; };
+		BE5AC27D184C80D000121126 /* VCategory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VCategory.m; path = Models/VCategory.m; sourceTree = "<group>"; };
 		BE98AA501849DDD300777916 /* VCategory+RestKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "VCategory+RestKit.h"; path = "Categories/Models/VCategory+RestKit.h"; sourceTree = "<group>"; };
 		BE98AA511849DDD300777916 /* VCategory+RestKit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "VCategory+RestKit.m"; path = "Categories/Models/VCategory+RestKit.m"; sourceTree = "<group>"; };
 		BE98AA531849DE4200777916 /* Interaction+RestKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "Interaction+RestKit.h"; path = "Categories/Models/Interaction+RestKit.h"; sourceTree = "<group>"; };
@@ -210,8 +204,8 @@
 				BE98AA631849DF4100777916 /* AnswerAction+RestKit.m */,
 				BE98AA5C1849DEA500777916 /* Asset+RestKit.h */,
 				BE98AA5D1849DEA500777916 /* Asset+RestKit.m */,
-				BE4E754F1849471F00344677 /* Categories+RestKit.h */,
-				BE4E75501849471F00344677 /* Categories+RestKit.m */,
+				BE98AA501849DDD300777916 /* VCategory+RestKit.h */,
+				BE98AA511849DDD300777916 /* VCategory+RestKit.m */,
 				BE98AA561849DE5800777916 /* Comment+RestKit.h */,
 				BE98AA571849DE5800777916 /* Comment+RestKit.m */,
 				BE98AA531849DE4200777916 /* Interaction+RestKit.h */,
@@ -236,8 +230,6 @@
 				BE5AC27A184A872100121126 /* StatSequence+RestKit.m */,
 				BE4E75331846BB6500344677 /* User+RestKit.h */,
 				BE4E75341846BB6500344677 /* User+RestKit.m */,
-				BE98AA501849DDD300777916 /* VCategory+RestKit.h */,
-				BE98AA511849DDD300777916 /* VCategory+RestKit.m */,
 			);
 			name = Models;
 			sourceTree = "<group>";
@@ -341,8 +333,6 @@
 				BE4E752B1846B7CE00344677 /* AnswerAction.m */,
 				BE4E75241846B7CE00344677 /* Asset.h */,
 				BE4E75251846B7CE00344677 /* Asset.m */,
-				BE4E75271846B7CE00344677 /* Categories.h */,
-				BE4E75281846B7CE00344677 /* Categories.m */,
 				BE4E752D1846B7CF00344677 /* Comment.h */,
 				BE4E752E1846B7CF00344677 /* Comment.m */,
 				BE4E75181846B78000344677 /* Interaction.h */,
@@ -363,10 +353,10 @@
 				BE4E74EC1846B76900344677 /* StatInteraction.m */,
 				BE4E74F11846B76900344677 /* StatSequence.h */,
 				BE4E74F21846B76900344677 /* StatSequence.m */,
-				BE4E74FD1846B76900344677 /* VCategory.h */,
-				BE4E74FE1846B76900344677 /* VCategory.m */,
 				BE4E75431846D92A00344677 /* User.h */,
 				BE4E75441846D92A00344677 /* User.m */,
+				BE5AC27C184C80D000121126 /* VCategory.h */,
+				BE5AC27D184C80D000121126 /* VCategory.m */,
 			);
 			name = Models;
 			sourceTree = "<group>";
@@ -510,6 +500,7 @@
 				BE98AA5E1849DEA500777916 /* Asset+RestKit.m in Sources */,
 				BE4E7554184955BE00344677 /* VObjectManager.m in Sources */,
 				BE5AC278184A871600121126 /* StatInteraction+RestKit.m in Sources */,
+				BE5AC27E184C80D000121126 /* VCategory.m in Sources */,
 				BE4E752C1846B7CE00344677 /* AnswerAction.m in Sources */,
 				BE4E74C91846A11200344677 /* Sequence+RestKit.m in Sources */,
 				BE4E752F1846B7CF00344677 /* Comment.m in Sources */,
@@ -517,7 +508,6 @@
 				BE4E75141846B78000344677 /* InteractionAction.m in Sources */,
 				BE5AC26C184A846500121126 /* InteractionAction+RestKit.m in Sources */,
 				BE98AA641849DF4100777916 /* AnswerAction+RestKit.m in Sources */,
-				BE4E74FF1846B76900344677 /* VCategory.m in Sources */,
 				BE98AA611849DF3400777916 /* Answer+RestKit.m in Sources */,
 				BE98AA581849DE5800777916 /* Comment+RestKit.m in Sources */,
 				BE4E75171846B78000344677 /* NodeAction.m in Sources */,
@@ -529,14 +519,12 @@
 				BE98AA521849DDD300777916 /* VCategory+RestKit.m in Sources */,
 				BE4E75351846BB6500344677 /* User+RestKit.m in Sources */,
 				BE98AA551849DE4200777916 /* Interaction+RestKit.m in Sources */,
-				BE4E75291846B7CE00344677 /* Categories.m in Sources */,
 				BEA4F23E1843F097001F5B15 /* victoriOS.xcdatamodeld in Sources */,
 				BE4E75111846B78000344677 /* Node.m in Sources */,
 				BE4E754818493C0800344677 /* NSManagedObject+EasyFetching.m in Sources */,
 				BE4E74F31846B76900344677 /* StatSequence.m in Sources */,
 				BEA4F23B1843F097001F5B15 /* VAppDelegate.m in Sources */,
 				BE4E75051846B76900344677 /* Rule.m in Sources */,
-				BE4E75511849471F00344677 /* Categories+RestKit.m in Sources */,
 				BE5AC26F184A84CD00121126 /* Rule+RestKit.m in Sources */,
 				BE4E754B184942F100344677 /* VSequenceManager.m in Sources */,
 				BE5AC275184A870A00121126 /* StatAnswer+RestKit.m in Sources */,

@@ -21,9 +21,6 @@
         <attribute name="type" attributeType="String" syncable="YES"/>
         <relationship name="node" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Node" inverseName="assets" inverseEntity="Node" syncable="YES"/>
     </entity>
-    <entity name="Categories" representedClassName="Categories" syncable="YES">
-        <relationship name="categories" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="VCategory" inverseName="categories" inverseEntity="VCategory" syncable="YES"/>
-    </entity>
     <entity name="Comment" representedClassName="Comment" syncable="YES">
         <attribute name="dislikes" optional="YES" attributeType="Integer 32" minValueString="0" defaultValueString="0" syncable="YES"/>
         <attribute name="display_order" attributeType="Integer 32" minValueString="0" defaultValueString="0" syncable="YES"/>
@@ -127,13 +124,11 @@
     </entity>
     <entity name="VCategory" representedClassName="VCategory" syncable="YES">
         <attribute name="name" attributeType="String" syncable="YES"/>
-        <relationship name="categories" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Categories" inverseName="categories" inverseEntity="Categories" syncable="YES"/>
     </entity>
     <elements>
         <element name="Answer" positionX="709" positionY="-468" width="128" height="163"/>
         <element name="AnswerAction" positionX="709" positionY="-622" width="128" height="73"/>
         <element name="Asset" positionX="403" positionY="-702" width="128" height="118"/>
-        <element name="Categories" positionX="351" positionY="-774" width="128" height="58"/>
         <element name="Comment" positionX="27" positionY="-550" width="128" height="238"/>
         <element name="Interaction" positionX="394" positionY="-558" width="128" height="193"/>
         <element name="InteractionAction" positionX="558" positionY="-562" width="128" height="103"/>
@@ -145,6 +140,6 @@
         <element name="StatInteraction" positionX="387" positionY="-241" width="128" height="178"/>
         <element name="StatSequence" positionX="198" positionY="-243" width="128" height="193"/>
         <element name="User" positionX="205" positionY="-405" width="128" height="133"/>
-        <element name="VCategory" positionX="540" positionY="-784" width="128" height="73"/>
+        <element name="VCategory" positionX="378" positionY="-784" width="128" height="58"/>
     </elements>
 </model>

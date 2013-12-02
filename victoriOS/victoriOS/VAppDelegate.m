@@ -10,7 +10,7 @@
 #import "VLoginManager.h"
 #import "VObjectManager.h"
 #import "User+RestKit.h"
-#import "Categories+RestKit.h"
+#import "VCategory+RestKit.h"
 #import "Sequence+RestKit.h"
 #import "StatSequence+RestKit.h"
 
@@ -128,9 +128,9 @@
     
     [[RKObjectManager sharedManager] addResponseDescriptorsFromArray:@[errorDescriptor,
                                                                        [User descriptor],
-                                                                       [Categories descriptor],
-                                                                       [Sequence descriptor],
-                                                                       [StatSequence descriptor]]];
+                                                                       [VCategory descriptor]]];
+                                                                       //[Sequence descriptor]]];
+                                                                       //[StatSequence descriptor]]];
 }
 
 @end

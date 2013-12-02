@@ -12,9 +12,6 @@
 
 +(RKEntityMapping*)entityMapping
 {
-    NSDictionary *propertyMap = @{
-                                  @"" : @"name"
-                                  };
     
     RKEntityMapping *mapping = [RKEntityMapping
                                 mappingForEntityForName:NSStringFromClass([VCategory class])
@@ -22,9 +19,18 @@
     
     mapping.identificationAttributes = @[ @"name" ];
     
-    [mapping addAttributeMappingsFromDictionary:propertyMap];
+    [mapping addPropertyMapping:[RKAttributeMapping attributeMappingFromKeyPath:nil
+                                                                      toKeyPath:@"name"]];
     
     return mapping;
+}
+
++(RKResponseDescriptor*)descriptor
+{
+    return [RKResponseDescriptor responseDescriptorWithMapping:[VCategory entityMapping]
+                                                        method:RKRequestMethodGET
+                                                   pathPattern:nil
+                                                       keyPath:@"payload"                                         statusCodes:RKStatusCodeIndexSetForClass(RKStatusCodeClassSuccessful)];
 }
 
 @end
