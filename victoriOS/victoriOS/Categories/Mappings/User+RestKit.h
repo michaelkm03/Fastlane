@@ -11,6 +11,6 @@
 
 @interface User (RestKit)
 
-+(RKResponseDescriptor*)descriptor;
++ (RKResponseDescriptor*)descriptor;
 
 @end

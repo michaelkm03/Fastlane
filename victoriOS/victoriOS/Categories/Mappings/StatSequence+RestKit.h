@@ -11,6 +11,6 @@
 
 @interface StatSequence (RestKit)
 
-+(RKResponseDescriptor*)descriptor;
++ (RKResponseDescriptor*)descriptor;
 
 @end

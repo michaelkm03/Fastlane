@@ -10,7 +10,7 @@
 
 @implementation StatInteraction (RestKit)
 
-+(RKEntityMapping*)entityMapping
++ (RKEntityMapping*)entityMapping
 {
     NSDictionary *propertyMap = @{
                                   @"answered_at" : @"answered_at",

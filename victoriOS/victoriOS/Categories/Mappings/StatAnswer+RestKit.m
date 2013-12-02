@@ -10,7 +10,7 @@
 
 @implementation StatAnswer (RestKit)
 
-+(RKEntityMapping*)entityMapping
++ (RKEntityMapping*)entityMapping
 {
     NSDictionary *propertyMap = @{
                                   @"answer_id" : @"answer_id",

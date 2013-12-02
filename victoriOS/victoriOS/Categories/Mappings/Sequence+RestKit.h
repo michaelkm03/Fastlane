@@ -12,7 +12,7 @@
 
 @interface Sequence (RestKit)
 
-+(RKResponseDescriptor*)sequenceListDescriptor;
-+(RKResponseDescriptor*)sequenceInfoDescriptor;
++ (RKResponseDescriptor*)sequenceListDescriptor;
++ (RKResponseDescriptor*)sequenceInfoDescriptor;
 
 @end

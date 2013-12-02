@@ -10,7 +10,7 @@
 
 @implementation Node (RestKit)
 
-+(RKEntityMapping*)entityMapping
++ (RKEntityMapping*)entityMapping
 {
     NSDictionary *propertyMap = @{
                                   @"display_order" : @"display_order",

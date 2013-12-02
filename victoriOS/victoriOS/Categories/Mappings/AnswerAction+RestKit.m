@@ -10,7 +10,7 @@
 
 @implementation AnswerAction (RestKit)
 
-+(RKEntityMapping*)entityMapping
++ (RKEntityMapping*)entityMapping
 {
     NSDictionary *propertyMap = @{
                                   @"goto_node" : @"goto_node"

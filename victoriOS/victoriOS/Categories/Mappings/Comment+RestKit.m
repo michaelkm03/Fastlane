@@ -10,7 +10,7 @@
 
 @implementation Comment (RestKit)
 
-+(RKEntityMapping*)entityMapping
++ (RKEntityMapping*)entityMapping
 {
     NSDictionary *propertyMap = @{
                                   @"dislikes" : @"dislikes",
@@ -38,7 +38,7 @@
     return mapping;
 }
 
-+(RKResponseDescriptor*)descriptor
++ (RKResponseDescriptor*)descriptor
 {
     return [RKResponseDescriptor responseDescriptorWithMapping:[Comment entityMapping]
                                                         method:RKRequestMethodGET

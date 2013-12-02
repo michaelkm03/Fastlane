@@ -10,7 +10,7 @@
 
 @implementation User (RestKit)
 
-+(RKEntityMapping*)entityMapping
++ (RKEntityMapping*)entityMapping
 {
     NSDictionary *propertyMap = @{
                                           @"access_level" : @"access_level",
@@ -32,7 +32,7 @@
     return mapping;
 }
 
-+(RKResponseDescriptor*)descriptor
++ (RKResponseDescriptor*)descriptor
 {
     return [RKResponseDescriptor responseDescriptorWithMapping:[User entityMapping]
                                                         method:RKRequestMethodPOST

@@ -10,7 +10,7 @@
 
 @implementation Asset (RestKit)
 
-+(RKEntityMapping*)entityMapping
++ (RKEntityMapping*)entityMapping
 {
     NSDictionary *propertyMap = @{
                                   @"data" : @"data",

@@ -10,7 +10,7 @@
 
 @implementation Answer (RestKit)
 
-+(RKEntityMapping*)entityMapping
++ (RKEntityMapping*)entityMapping
 {
     NSDictionary *propertyMap = @{
                                   @"answer_id" : @"answer_id",

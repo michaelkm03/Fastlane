@@ -63,7 +63,7 @@
 }
 
 #pragma mark - RestKit Methods
--(void)setupRestKit
+- (void)setupRestKit
 {
     
 #if DEBUG
@@ -81,7 +81,7 @@
     userAgent = [NSString stringWithFormat:@"%@ aid:%@", userAgent, @"1"];
     [[manager HTTPClient] setDefaultHeader:@"User-Agent" value:userAgent];
     
-    NSURL *modelURL = [NSURL fileURLWithPath:[[NSBundle mainBundle] pathForResource:@"victoriOS" ofType:@"momd"]];
+    NSURL *modelURL = [[NSBundle mainBundle] URLForResource:@"victoriOS" withExtension:@"momd"];
 
     NSManagedObjectModel *managedObjectModel = [[[NSManagedObjectModel alloc] initWithContentsOfURL:modelURL] mutableCopy];
 
@@ -107,7 +107,7 @@
     [RKObjectManager setSharedManager:manager];
 }
 
--(void)declareDescriptors
+- (void)declareDescriptors
 {
 
     //Should one of our requests to get data fail, RestKit will use this mapping and send us an NSError object with the error message of the response as the string.

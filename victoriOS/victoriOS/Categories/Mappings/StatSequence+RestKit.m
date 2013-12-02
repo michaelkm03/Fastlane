@@ -10,7 +10,7 @@
 
 @implementation StatSequence (RestKit)
 
-+(RKEntityMapping*)entityMapping
++ (RKEntityMapping*)entityMapping
 {
     NSDictionary *propertyMap = @{
                                   @"completed_at" : @"completed_at",
@@ -35,7 +35,7 @@
     return mapping;
 }
 
-+(RKResponseDescriptor*)descriptor
++ (RKResponseDescriptor*)descriptor
 {
     return [RKResponseDescriptor responseDescriptorWithMapping:[StatSequence entityMapping]
                                                         method:RKRequestMethodGET

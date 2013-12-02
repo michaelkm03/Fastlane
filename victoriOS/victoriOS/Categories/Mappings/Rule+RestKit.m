@@ -10,7 +10,7 @@
 
 @implementation Rule (RestKit)
 
-+(RKEntityMapping*)entityMapping
++ (RKEntityMapping*)entityMapping
 {
     NSDictionary *propertyMap = @{
                                   @"name" : @"name"

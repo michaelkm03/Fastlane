@@ -11,6 +11,6 @@
 
 @interface Comment (RestKit)
 
-+(RKResponseDescriptor*)descriptor;
++ (RKResponseDescriptor*)descriptor;
 
 @end

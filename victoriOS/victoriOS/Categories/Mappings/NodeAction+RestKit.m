@@ -10,7 +10,7 @@
 
 @implementation NodeAction (RestKit)
 
-+(RKEntityMapping*)entityMapping
++ (RKEntityMapping*)entityMapping
 {
     NSDictionary *propertyMap = @{
                                   @"lost_goto_node" : @"lost_goto_node",

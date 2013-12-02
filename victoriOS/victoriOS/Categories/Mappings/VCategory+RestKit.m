@@ -10,7 +10,7 @@
 
 @implementation VCategory (RestKit)
 
-+(RKEntityMapping*)entityMapping
++ (RKEntityMapping*)entityMapping
 {
     
     RKEntityMapping *mapping = [RKEntityMapping
@@ -25,7 +25,7 @@
     return mapping;
 }
 
-+(RKResponseDescriptor*)descriptor
++ (RKResponseDescriptor*)descriptor
 {
     return [RKResponseDescriptor responseDescriptorWithMapping:[VCategory entityMapping]
                                                         method:RKRequestMethodGET

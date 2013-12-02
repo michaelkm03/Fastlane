@@ -11,7 +11,7 @@
 
 @implementation Sequence (RestKit)
 
-+(RKEntityMapping*)entityMapping
++ (RKEntityMapping*)entityMapping
 {
     NSDictionary *propertyMap = @{
                                   @"category" : @"category",
@@ -42,7 +42,7 @@
     return mapping;
 }
 
-+(RKResponseDescriptor*)sequenceListDescriptor
++ (RKResponseDescriptor*)sequenceListDescriptor
 {
     return [RKResponseDescriptor responseDescriptorWithMapping:[Sequence entityMapping]
                                                         method:RKRequestMethodGET
@@ -50,7 +50,7 @@
                                                        keyPath:@"payload"                                         statusCodes:RKStatusCodeIndexSetForClass(RKStatusCodeClassSuccessful)];
 }
 
-+(RKResponseDescriptor*)sequenceInfoDescriptor
++ (RKResponseDescriptor*)sequenceInfoDescriptor
 {
     return [RKResponseDescriptor responseDescriptorWithMapping:[Sequence entityMapping]
                                                         method:RKRequestMethodGET
