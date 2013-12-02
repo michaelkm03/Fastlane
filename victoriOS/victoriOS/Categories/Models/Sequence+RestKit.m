@@ -39,7 +39,7 @@
 {
     return [RKResponseDescriptor responseDescriptorWithMapping:[Sequence entityMapping]
                                                         method:RKRequestMethodGET
-                                                   pathPattern:@"/api/sequence/list_by_category"
+                                                   pathPattern:@"/api/sequence/list_by_category/:category"
                                                        keyPath:@"payload"                                         statusCodes:RKStatusCodeIndexSetForClass(RKStatusCodeClassSuccessful)];
 }
 

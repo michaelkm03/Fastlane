@@ -23,7 +23,7 @@
                                                       RKMappingResult *mappingResult)
      {
          RKLogInfo(@"Load collection of Articles: %@", mappingResult.array);
-         //[self loadSequencesForAllCategories];
+         [self loadSequencesForAllCategories];
      } failure:^(RKObjectRequestOperation *operation, NSError *error)
      {
          RKLogError(@"Operation failed with error: %@", error);
@@ -41,7 +41,7 @@
     
     for (VCategory* category in categories)
     {
-        NSString* path = [NSString stringWithFormat:@"%@/%@", @"/api/sequence/categories", category.name];
+        NSString* path = [NSString stringWithFormat:@"%@/%@", @"/api/sequence/list_by_category", category.name];
         RKManagedObjectRequestOperation* requestOperation = [[RKObjectManager sharedManager]
                                                              appropriateObjectRequestOperationWithObject:nil
                                                              method:RKRequestMethodGET
