@@ -14,6 +14,5 @@
 + (NSArray *)findAllObjectsInContext:(NSManagedObjectContext *)context;
 
 +(RKEntityMapping*)entityMapping;
-+(RKResponseDescriptor*)descriptor;
 
 @end

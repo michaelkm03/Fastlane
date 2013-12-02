@@ -35,11 +35,19 @@
     return mapping;
 }
 
-+(RKResponseDescriptor*)descriptor
++(RKResponseDescriptor*)sequenceListDescriptor
 {
     return [RKResponseDescriptor responseDescriptorWithMapping:[Sequence entityMapping]
                                                         method:RKRequestMethodGET
-                                                   pathPattern:nil
+                                                   pathPattern:@"/api/sequence/list_by_category"
+                                                       keyPath:@"payload"                                         statusCodes:RKStatusCodeIndexSetForClass(RKStatusCodeClassSuccessful)];
+}
+
++(RKResponseDescriptor*)sequenceInfoDescriptor
+{
+    return [RKResponseDescriptor responseDescriptorWithMapping:[Sequence entityMapping]
+                                                        method:RKRequestMethodGET
+                                                   pathPattern:@"/api/sequence/:sequence_id"
                                                        keyPath:@"payload"                                         statusCodes:RKStatusCodeIndexSetForClass(RKStatusCodeClassSuccessful)];
 }
 

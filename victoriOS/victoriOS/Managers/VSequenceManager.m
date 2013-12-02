@@ -7,6 +7,7 @@
 //
 
 #import "VSequenceManager.h"
+#import "VCategory+RestKit.h"
 
 @implementation VSequenceManager
 
@@ -22,6 +23,7 @@
                                                       RKMappingResult *mappingResult)
      {
          RKLogInfo(@"Load collection of Articles: %@", mappingResult.array);
+         //[self loadSequencesForAllCategories];
      } failure:^(RKObjectRequestOperation *operation, NSError *error)
      {
          RKLogError(@"Operation failed with error: %@", error);
@@ -29,4 +31,48 @@
     
     [requestOperation start];
 }
+
++(void)loadSequencesForAllCategories
+{
+    NSArray* categories = [VCategory findAllObjects];
+    
+    __block int launched = [categories count];
+    __block int returned = 0;
+    
+    for (VCategory* category in categories)
+    {
+        NSString* path = [NSString stringWithFormat:@"%@/%@", @"/api/sequence/categories", category.name];
+        RKManagedObjectRequestOperation* requestOperation = [[RKObjectManager sharedManager]
+                                                             appropriateObjectRequestOperationWithObject:nil
+                                                             method:RKRequestMethodGET
+                                                             path:path
+                                                             parameters:nil];
+        
+        
+        [requestOperation setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation,
+                                                          RKMappingResult *mappingResult)
+         {
+             RKLogInfo(@"Load collection of Articles: %@", mappingResult.array);
+             returned++;
+             
+             if(returned == launched)
+             {
+                 //todo: send out message to tell app we're loaded
+             }
+             
+         } failure:^(RKObjectRequestOperation *operation, NSError *error)
+         {
+             RKLogError(@"Operation failed with error: %@", error);
+             returned++;
+             
+             if(returned == launched)
+             {
+                 //todo: send out message to tell app we're loaded
+             }
+         }];
+        
+        [requestOperation start];
+    }
+}
+
 @end

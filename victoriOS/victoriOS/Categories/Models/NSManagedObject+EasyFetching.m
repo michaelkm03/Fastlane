@@ -39,10 +39,4 @@
     return nil;
 }
 
-+(RKResponseDescriptor*)descriptor
-{
-    return nil;
-}
-
-
 @end

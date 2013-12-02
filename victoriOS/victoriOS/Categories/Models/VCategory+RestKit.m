@@ -29,7 +29,7 @@
 {
     return [RKResponseDescriptor responseDescriptorWithMapping:[VCategory entityMapping]
                                                         method:RKRequestMethodGET
-                                                   pathPattern:nil
+                                                   pathPattern:@"/api/sequence/categories"
                                                        keyPath:@"payload"                                         statusCodes:RKStatusCodeIndexSetForClass(RKStatusCodeClassSuccessful)];
 }
 

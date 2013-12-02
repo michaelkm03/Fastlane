@@ -204,8 +204,6 @@
 				BE98AA631849DF4100777916 /* AnswerAction+RestKit.m */,
 				BE98AA5C1849DEA500777916 /* Asset+RestKit.h */,
 				BE98AA5D1849DEA500777916 /* Asset+RestKit.m */,
-				BE98AA501849DDD300777916 /* VCategory+RestKit.h */,
-				BE98AA511849DDD300777916 /* VCategory+RestKit.m */,
 				BE98AA561849DE5800777916 /* Comment+RestKit.h */,
 				BE98AA571849DE5800777916 /* Comment+RestKit.m */,
 				BE98AA531849DE4200777916 /* Interaction+RestKit.h */,
@@ -230,6 +228,8 @@
 				BE5AC27A184A872100121126 /* StatSequence+RestKit.m */,
 				BE4E75331846BB6500344677 /* User+RestKit.h */,
 				BE4E75341846BB6500344677 /* User+RestKit.m */,
+				BE98AA501849DDD300777916 /* VCategory+RestKit.h */,
+				BE98AA511849DDD300777916 /* VCategory+RestKit.m */,
 			);
 			name = Models;
 			sourceTree = "<group>";

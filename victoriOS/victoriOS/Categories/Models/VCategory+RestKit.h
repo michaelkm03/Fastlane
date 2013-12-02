@@ -11,4 +11,6 @@
 
 @interface VCategory (RestKit)
 
++(RKResponseDescriptor*)descriptor;
+
 @end
