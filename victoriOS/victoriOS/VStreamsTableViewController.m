@@ -36,7 +36,7 @@
     // self.navigationItem.rightBarButtonItem = self.editButtonItem;
 
     NSError *error;
-	if (![[self fetchedResultsController] performFetch:&error])
+	if (![self.fetchedResultsController performFetch:&error])
     {
 		// Update to handle the error appropriately.
 		NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
@@ -53,7 +53,7 @@
 - (IBAction)refresh:(UIRefreshControl *)sender
 {
     NSError *error;
-    if (![[self fetchedResultsController] performFetch:&error])
+    if (![self.fetchedResultsController performFetch:&error])
     {
         // Update to handle the error appropriately.
         NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
@@ -67,19 +67,19 @@
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    return [[_fetchedResultsController sections] count];
+    return [[self.fetchedResultsController sections] count];
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     // Return the number of rows in the section.
-    id  sectionInfo = [[_fetchedResultsController sections] objectAtIndex:section];
+    id  sectionInfo = [[self.fetchedResultsController sections] objectAtIndex:section];
     return [sectionInfo numberOfObjects];
 }
 
 - (void)configureCell:(UITableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath
 {
-    Sequence *info = [_fetchedResultsController objectAtIndexPath:indexPath];
+    Sequence *info = [self.fetchedResultsController objectAtIndexPath:indexPath];
     cell.textLabel.text = info.name;
 }
 
