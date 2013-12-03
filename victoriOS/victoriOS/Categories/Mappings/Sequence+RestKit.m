@@ -34,10 +34,16 @@
     
     //Now add relationships
     RKRelationshipMapping* nodeMapping = [RKRelationshipMapping
-                                                 relationshipMappingFromKeyPath:@"nodes"
-                                                 toKeyPath:@"nodes"
-                                                 withMapping:[Node entityMapping]];
+                                          relationshipMappingFromKeyPath:@"nodes"
+                                          toKeyPath:@"nodes"
+                                          withMapping:[Node entityMapping]];
     [mapping addPropertyMapping:nodeMapping];
+    
+    RKRelationshipMapping* commentMapping = [RKRelationshipMapping
+                                             relationshipMappingFromKeyPath:@"comments"
+                                             toKeyPath:@"comments"
+                                             withMapping:[Node entityMapping]];
+    [mapping addPropertyMapping:commentMapping];
     
     return mapping;
 }
@@ -54,8 +60,15 @@
 {
     return [RKResponseDescriptor responseDescriptorWithMapping:[Sequence entityMapping]
                                                         method:RKRequestMethodGET
-                                                   pathPattern:@"/api/sequence/:sequence_id"
+                                                   pathPattern:@"/api/sequence/item/:sequence_id"
                                                        keyPath:@"payload"                                         statusCodes:RKStatusCodeIndexSetForClass(RKStatusCodeClassSuccessful)];
 }
 
++ (RKResponseDescriptor*)sequenceCommentDescriptor
+{
+    return [RKResponseDescriptor responseDescriptorWithMapping:[Sequence entityMapping]
+                                                        method:RKRequestMethodGET
+                                                   pathPattern:@"/api/comment/all/:sequence_id"
+                                                       keyPath:@"payload"                                         statusCodes:RKStatusCodeIndexSetForClass(RKStatusCodeClassSuccessful)];
+}
 @end

@@ -124,8 +124,9 @@
     [[RKObjectManager sharedManager] addResponseDescriptorsFromArray:@[errorDescriptor,
                                                                        [User descriptor],
                                                                        [VCategory descriptor],
-                                                                       [Sequence sequenceListDescriptor]]];
-                                                                       //[Sequence sequenceFullDataDescriptor]]];
+                                                                       [Sequence sequenceListDescriptor],
+                                                                       //[Sequence sequenceCommentDescriptor]]];
+                                                                       [Sequence sequenceFullDataDescriptor]]];
                                                                        //[StatSequence descriptor]]];
 }
 

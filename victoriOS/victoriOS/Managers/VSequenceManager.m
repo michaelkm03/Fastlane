@@ -60,7 +60,7 @@
              {
                  //todo: send out message to tell app we're loaded
                  //Todo: remove this test code
-                 //[self loadFullDataForSequence:[[Sequence findAllObjects]firstObject]];
+                 [self loadFullDataForSequence:[[Sequence findAllObjects]firstObject]];
              }
              
          } failure:^(RKObjectRequestOperation *operation, NSError *error)
@@ -80,7 +80,7 @@
 
 + (void)loadFullDataForSequence:(Sequence*)sequence
 {
-    NSString* path = [NSString stringWithFormat:@"%@/%@", @"/api/sequence", sequence.id];
+    NSString* path = [NSString stringWithFormat:@"%@/%@", @"/api/sequence/item", sequence.id];
     RKManagedObjectRequestOperation* requestOperation = [[RKObjectManager sharedManager]
                                                          appropriateObjectRequestOperationWithObject:sequence
                                                          method:RKRequestMethodGET
@@ -97,6 +97,29 @@
      }];
     
     [requestOperation start];
+}
+
++ (void)loadCommentsForSequence:(Sequence*)sequence
+{
+    
+    NSString* path = [NSString stringWithFormat:@"%@/%@", @"/api/comment/all", sequence.id];
+    RKManagedObjectRequestOperation* requestOperation = [[RKObjectManager sharedManager]
+                                                         appropriateObjectRequestOperationWithObject:sequence
+                                                         method:RKRequestMethodGET
+                                                         path:path
+                                                         parameters:nil];
+    
+    [requestOperation setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation,
+                                                      RKMappingResult *mappingResult)
+     {
+         RKLogInfo(@"Load sequence comments: %@", mappingResult.array);
+     } failure:^(RKObjectRequestOperation *operation, NSError *error)
+     {
+         RKLogError(@"Operation failed with error: %@", error);
+     }];
+    
+    [requestOperation start];
+
 }
 
 @end
