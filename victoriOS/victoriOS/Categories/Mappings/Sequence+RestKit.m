@@ -33,17 +33,9 @@
     [mapping addAttributeMappingsFromDictionary:propertyMap];
     
     //Now add relationships
-    RKRelationshipMapping* nodeMapping = [RKRelationshipMapping
-                                          relationshipMappingFromKeyPath:@"nodes"
-                                          toKeyPath:@"nodes"
-                                          withMapping:[Node entityMapping]];
-    [mapping addPropertyMapping:nodeMapping];
-    
-    RKRelationshipMapping* commentMapping = [RKRelationshipMapping
-                                             relationshipMappingFromKeyPath:@"comments"
-                                             toKeyPath:@"comments"
-                                             withMapping:[Node entityMapping]];
-    [mapping addPropertyMapping:commentMapping];
+    //This is equivilent to the above except it also checks for camelCase ect. versions of the keyPath
+    [mapping addRelationshipMappingWithSourceKeyPath:@"nodes" mapping:[Node entityMapping]];
+    [mapping addRelationshipMappingWithSourceKeyPath:@"comments" mapping:[Comment entityMapping]];
     
     return mapping;
 }

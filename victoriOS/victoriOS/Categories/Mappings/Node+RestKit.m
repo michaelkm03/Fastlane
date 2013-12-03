@@ -26,23 +26,9 @@
     [mapping addAttributeMappingsFromDictionary:propertyMap];
     
     //Now add relationships
-    RKRelationshipMapping* assetMapping = [RKRelationshipMapping
-                                          relationshipMappingFromKeyPath:@"assets"
-                                          toKeyPath:@"assets"
-                                          withMapping:[Asset entityMapping]];
-    [mapping addPropertyMapping:assetMapping];
-    
-    RKRelationshipMapping* interactionsMapping = [RKRelationshipMapping
-                                          relationshipMappingFromKeyPath:@"interactions"
-                                          toKeyPath:@"interactions"
-                                          withMapping:[Interaction entityMapping]];
-    [mapping addPropertyMapping:interactionsMapping];
-    
-    RKRelationshipMapping* actionMapping = [RKRelationshipMapping
-                                          relationshipMappingFromKeyPath:@"node_action"
-                                          toKeyPath:@"node_action"
-                                          withMapping:[NodeAction entityMapping]];
-    [mapping addPropertyMapping:actionMapping];
+    [mapping addRelationshipMappingWithSourceKeyPath:@"assets" mapping:[Asset entityMapping]];
+    [mapping addRelationshipMappingWithSourceKeyPath:@"interactions" mapping:[Interaction entityMapping]];
+    [mapping addRelationshipMappingWithSourceKeyPath:@"node_action" mapping:[NodeAction entityMapping]];
     
     return mapping;
 }

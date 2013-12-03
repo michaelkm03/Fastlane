@@ -11,7 +11,8 @@
 @interface NSManagedObject (EasyFetching)
 
 + (NSArray *)findAllObjects;
-+ (NSArray *)findAllObjectsInContext:(NSManagedObjectContext *)context;
++ (NSArray *)findAllObjectsWithSortKey:(NSString*)sortKey;
++ (NSArray *)findAllObjectsInContext:(NSManagedObjectContext *)context withSortKey:(NSString*)sortKey;
 
 + (RKEntityMapping*)entityMapping;
 

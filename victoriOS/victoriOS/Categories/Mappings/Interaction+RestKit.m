@@ -32,25 +32,10 @@
     
     [mapping addAttributeMappingsFromDictionary:propertyMap];
     
-    //Now add relationships
-    RKRelationshipMapping* answerMapping = [RKRelationshipMapping
-                                           relationshipMappingFromKeyPath:@"answers"
-                                           toKeyPath:@"answers"
-                                           withMapping:[Answer entityMapping]];
-    [mapping addPropertyMapping:answerMapping];
-    
-    RKRelationshipMapping* ruleMapping = [RKRelationshipMapping
-                                                  relationshipMappingFromKeyPath:@"rules"
-                                                  toKeyPath:@"rules"
-                                                  withMapping:[Rule entityMapping]];
-    [mapping addPropertyMapping:ruleMapping];
-    
-    RKRelationshipMapping* actionMapping = [RKRelationshipMapping
-                                            relationshipMappingFromKeyPath:@"interaction_action"
-                                            toKeyPath:@"interaction_action"
-                                            withMapping:[InteractionAction entityMapping]];
-    [mapping addPropertyMapping:actionMapping];
-    
+    [mapping addRelationshipMappingWithSourceKeyPath:@"interaction_action" mapping:[InteractionAction entityMapping]];
+    [mapping addRelationshipMappingWithSourceKeyPath:@"rules" mapping:[Rule entityMapping]];
+    [mapping addRelationshipMappingWithSourceKeyPath:@"answers" mapping:[Answer entityMapping]];
+
     return mapping;
 }
 

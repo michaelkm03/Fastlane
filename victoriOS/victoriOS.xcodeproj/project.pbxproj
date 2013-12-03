@@ -26,7 +26,6 @@
 		BE4E754B184942F100344677 /* VSequenceManager.m in Sources */ = {isa = PBXBuildFile; fileRef = BE4E754A184942F100344677 /* VSequenceManager.m */; };
 		BE4E7554184955BE00344677 /* VObjectManager.m in Sources */ = {isa = PBXBuildFile; fileRef = BE4E7553184955BE00344677 /* VObjectManager.m */; };
 		BE5AC27E184C80D000121126 /* VCategory.m in Sources */ = {isa = PBXBuildFile; fileRef = BE5AC27D184C80D000121126 /* VCategory.m */; };
-		BE5AC287184D194900121126 /* Node.m in Sources */ = {isa = PBXBuildFile; fileRef = BE5AC286184D194900121126 /* Node.m */; };
 		BE5AC28A184D194A00121126 /* NodeAction.m in Sources */ = {isa = PBXBuildFile; fileRef = BE5AC289184D194A00121126 /* NodeAction.m */; };
 		BE5AC2AC184D298900121126 /* Answer+RestKit.m in Sources */ = {isa = PBXBuildFile; fileRef = BE5AC28D184D298900121126 /* Answer+RestKit.m */; };
 		BE5AC2AD184D298900121126 /* AnswerAction+RestKit.m in Sources */ = {isa = PBXBuildFile; fileRef = BE5AC28F184D298900121126 /* AnswerAction+RestKit.m */; };
@@ -44,6 +43,7 @@
 		BE5AC2B9184D298900121126 /* User+RestKit.m in Sources */ = {isa = PBXBuildFile; fileRef = BE5AC2A7184D298900121126 /* User+RestKit.m */; };
 		BE5AC2BA184D298900121126 /* VCategory+RestKit.m in Sources */ = {isa = PBXBuildFile; fileRef = BE5AC2A9184D298900121126 /* VCategory+RestKit.m */; };
 		BE5AC2BB184D298900121126 /* NSManagedObject+EasyFetching.m in Sources */ = {isa = PBXBuildFile; fileRef = BE5AC2AB184D298900121126 /* NSManagedObject+EasyFetching.m */; };
+		BE5AC2BE184D69B100121126 /* Node.m in Sources */ = {isa = PBXBuildFile; fileRef = BE5AC2BD184D69B100121126 /* Node.m */; };
 		BEA4F2291843F097001F5B15 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BEA4F2281843F097001F5B15 /* Foundation.framework */; };
 		BEA4F22B1843F097001F5B15 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BEA4F22A1843F097001F5B15 /* CoreGraphics.framework */; };
 		BEA4F22D1843F097001F5B15 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BEA4F22C1843F097001F5B15 /* UIKit.framework */; };
@@ -109,8 +109,6 @@
 		BE4E7553184955BE00344677 /* VObjectManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VObjectManager.m; path = Managers/VObjectManager.m; sourceTree = "<group>"; };
 		BE5AC27C184C80D000121126 /* VCategory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VCategory.h; path = Models/VCategory.h; sourceTree = "<group>"; };
 		BE5AC27D184C80D000121126 /* VCategory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VCategory.m; path = Models/VCategory.m; sourceTree = "<group>"; };
-		BE5AC285184D194900121126 /* Node.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Node.h; path = Models/Node.h; sourceTree = "<group>"; };
-		BE5AC286184D194900121126 /* Node.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Node.m; path = Models/Node.m; sourceTree = "<group>"; };
 		BE5AC288184D194A00121126 /* NodeAction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NodeAction.h; path = Models/NodeAction.h; sourceTree = "<group>"; };
 		BE5AC289184D194A00121126 /* NodeAction.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NodeAction.m; path = Models/NodeAction.m; sourceTree = "<group>"; };
 		BE5AC28C184D298900121126 /* Answer+RestKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Answer+RestKit.h"; sourceTree = "<group>"; };
@@ -145,6 +143,8 @@
 		BE5AC2A9184D298900121126 /* VCategory+RestKit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "VCategory+RestKit.m"; sourceTree = "<group>"; };
 		BE5AC2AA184D298900121126 /* NSManagedObject+EasyFetching.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSManagedObject+EasyFetching.h"; path = "Categories/NSManagedObject+EasyFetching.h"; sourceTree = "<group>"; };
 		BE5AC2AB184D298900121126 /* NSManagedObject+EasyFetching.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSManagedObject+EasyFetching.m"; path = "Categories/NSManagedObject+EasyFetching.m"; sourceTree = "<group>"; };
+		BE5AC2BC184D69B100121126 /* Node.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Node.h; path = Models/Node.h; sourceTree = "<group>"; };
+		BE5AC2BD184D69B100121126 /* Node.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Node.m; path = Models/Node.m; sourceTree = "<group>"; };
 		BEA4F2251843F097001F5B15 /* victoriOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = victoriOS.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		BEA4F2281843F097001F5B15 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		BEA4F22A1843F097001F5B15 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -370,10 +370,10 @@
 				BE4E75441846D92A00344677 /* User.m */,
 				BE5AC27C184C80D000121126 /* VCategory.h */,
 				BE5AC27D184C80D000121126 /* VCategory.m */,
-				BE5AC285184D194900121126 /* Node.h */,
-				BE5AC286184D194900121126 /* Node.m */,
 				BE5AC288184D194A00121126 /* NodeAction.h */,
 				BE5AC289184D194A00121126 /* NodeAction.m */,
+				BE5AC2BC184D69B100121126 /* Node.h */,
+				BE5AC2BD184D69B100121126 /* Node.m */,
 			);
 			name = Models;
 			sourceTree = "<group>";
@@ -534,10 +534,10 @@
 				BE4E75021846B76900344677 /* StatAnswer.m in Sources */,
 				BE5AC2BB184D298900121126 /* NSManagedObject+EasyFetching.m in Sources */,
 				BEA4F23E1843F097001F5B15 /* victoriOS.xcdatamodeld in Sources */,
-				BE5AC287184D194900121126 /* Node.m in Sources */,
 				BE5AC2AC184D298900121126 /* Answer+RestKit.m in Sources */,
 				BE5AC2B2184D298900121126 /* Node+RestKit.m in Sources */,
 				BE5AC2B3184D298900121126 /* NodeAction+RestKit.m in Sources */,
+				BE5AC2BE184D69B100121126 /* Node.m in Sources */,
 				BE4E74F31846B76900344677 /* StatSequence.m in Sources */,
 				BE5AC2B1184D298900121126 /* InteractionAction+RestKit.m in Sources */,
 				BE5AC2AE184D298900121126 /* Asset+RestKit.m in Sources */,

@@ -60,7 +60,7 @@
              {
                  //todo: send out message to tell app we're loaded
                  //Todo: remove this test code
-                 [self loadFullDataForSequence:[[Sequence findAllObjects]firstObject]];
+                 [self loadFullDataForSequence:[[Sequence findAllObjectsWithSortKey:@"id"] firstObject]];
              }
              
          } failure:^(RKObjectRequestOperation *operation, NSError *error)
@@ -91,6 +91,10 @@
                                                       RKMappingResult *mappingResult)
      {
          RKLogInfo(@"Load full sequence data: %@", mappingResult.array);
+         Sequence* newSequence = [[Sequence findAllObjectsWithSortKey:@"id"] firstObject];
+         NSArray* allnodes = [Node findAllObjects];
+         NSSet* nodes = newSequence.nodes;
+
      } failure:^(RKObjectRequestOperation *operation, NSError *error)
      {
          RKLogError(@"Operation failed with error: %@", error);
