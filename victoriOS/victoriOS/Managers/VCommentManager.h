@@ -27,4 +27,6 @@
 +(void)likeComment:(Comment*)comment;
 +(void)dislikeComment:(Comment*)comment;
 
++ (void) testCommentSystem:(Comment*)comment;
+
 @end

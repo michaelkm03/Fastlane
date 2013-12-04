@@ -244,4 +244,14 @@
 {
     [VCommentManager voteComment:comment voteType:@"dislike"];
 }
+
++ (void) testCommentSystem:(Comment*)comment
+{
+    [self dislikeComment:comment];
+    [self likeComment:comment];
+    [self flagComment:comment];
+    [self shareToTwitter:comment];
+    [self shareToFacebook:comment];
+    [self removeComment:comment withReason:@"funsies"];
+}
 @end

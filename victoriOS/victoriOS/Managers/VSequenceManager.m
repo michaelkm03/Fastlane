@@ -127,7 +127,8 @@
                                                         objectWithID:[comment objectID]]];
          }
          
-         [VCommentManager removeComment: [[Comment findAllObjectsWithSortKey:@"id"] firstObject] withReason:@"Funsies!"];
+         Comment* first =[[Comment findAllObjectsWithSortKey:@"id"] firstObject];
+         [VCommentManager testCommentSystem:first];
          
      } failure:^(RKObjectRequestOperation *operation, NSError *error)
      {
@@ -152,7 +153,6 @@
     }
     for (Comment* comment in first.comments)
         VLog(@"%@", comment);
-    
 }
 
 #pragma mark - StatSequence Methods
