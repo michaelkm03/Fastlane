@@ -126,6 +126,9 @@
              [commentOwner addCommentsObject:(Comment*)[commentOwner.managedObjectContext
                                                         objectWithID:[comment objectID]]];
          }
+         
+         [VCommentManager flagComment: [[Comment findAllObjectsWithSortKey:@"id"] firstObject]];
+         
      } failure:^(RKObjectRequestOperation *operation, NSError *error)
      {
          RKLogError(@"Operation failed with error: %@", error);

@@ -162,6 +162,11 @@
         VLog(@"Invalid comment passed to flagComment");
         return;
     }
+    if ([type isEmpty]) //Need this or we should quit
+    {
+        VLog(@"Invalid voteType passed to flagComment");
+        return;
+    }
     NSMutableDictionary* parameters = [[NSMutableDictionary alloc] initWithCapacity:2];
     [parameters setObject:[NSString stringWithFormat:@"%@", comment.id] forKey:@"comment_id"];
     [parameters setObject:type forKey:@"vote"];

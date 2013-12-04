@@ -60,11 +60,11 @@
 #pragma mark - RestKit Methods
 - (void)setupRestKit
 {
-    /*
+    
 #if DEBUG
     RKLogConfigureByName("RestKit/Network", RKLogLevelTrace);
     RKLogConfigureByName("RestKit/ObjectMapping", RKLogLevelTrace);
-#endif*/
+#endif
     
     RKObjectManager *manager = [VObjectManager managerWithBaseURL:[NSURL URLWithString:VBASEURL]];
     
