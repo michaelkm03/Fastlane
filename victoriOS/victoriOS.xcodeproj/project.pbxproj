@@ -44,6 +44,8 @@
 		BE5AC2BA184D298900121126 /* VCategory+RestKit.m in Sources */ = {isa = PBXBuildFile; fileRef = BE5AC2A9184D298900121126 /* VCategory+RestKit.m */; };
 		BE5AC2BB184D298900121126 /* NSManagedObject+EasyFetching.m in Sources */ = {isa = PBXBuildFile; fileRef = BE5AC2AB184D298900121126 /* NSManagedObject+EasyFetching.m */; };
 		BE5AC2BE184D69B100121126 /* Node.m in Sources */ = {isa = PBXBuildFile; fileRef = BE5AC2BD184D69B100121126 /* Node.m */; };
+		BE5AC2C2184E6CB300121126 /* VCommentManager.m in Sources */ = {isa = PBXBuildFile; fileRef = BE5AC2C1184E6CB300121126 /* VCommentManager.m */; };
+		BE5AC2C5184E733800121126 /* NSString+VParseHelp.m in Sources */ = {isa = PBXBuildFile; fileRef = BE5AC2C4184E733800121126 /* NSString+VParseHelp.m */; };
 		BEA4F2291843F097001F5B15 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BEA4F2281843F097001F5B15 /* Foundation.framework */; };
 		BEA4F22B1843F097001F5B15 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BEA4F22A1843F097001F5B15 /* CoreGraphics.framework */; };
 		BEA4F22D1843F097001F5B15 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BEA4F22C1843F097001F5B15 /* UIKit.framework */; };
@@ -145,6 +147,10 @@
 		BE5AC2AB184D298900121126 /* NSManagedObject+EasyFetching.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSManagedObject+EasyFetching.m"; path = "Categories/NSManagedObject+EasyFetching.m"; sourceTree = "<group>"; };
 		BE5AC2BC184D69B100121126 /* Node.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Node.h; path = Models/Node.h; sourceTree = "<group>"; };
 		BE5AC2BD184D69B100121126 /* Node.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Node.m; path = Models/Node.m; sourceTree = "<group>"; };
+		BE5AC2C0184E6CB300121126 /* VCommentManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VCommentManager.h; path = Managers/VCommentManager.h; sourceTree = "<group>"; };
+		BE5AC2C1184E6CB300121126 /* VCommentManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VCommentManager.m; path = Managers/VCommentManager.m; sourceTree = "<group>"; };
+		BE5AC2C3184E733800121126 /* NSString+VParseHelp.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSString+VParseHelp.h"; path = "Categories/NSString+VParseHelp.h"; sourceTree = "<group>"; };
+		BE5AC2C4184E733800121126 /* NSString+VParseHelp.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSString+VParseHelp.m"; path = "Categories/NSString+VParseHelp.m"; sourceTree = "<group>"; };
 		BEA4F2251843F097001F5B15 /* victoriOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = victoriOS.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		BEA4F2281843F097001F5B15 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		BEA4F22A1843F097001F5B15 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -208,6 +214,8 @@
 				BE5AC28B184D298900121126 /* Mappings */,
 				BE5AC2AA184D298900121126 /* NSManagedObject+EasyFetching.h */,
 				BE5AC2AB184D298900121126 /* NSManagedObject+EasyFetching.m */,
+				BE5AC2C3184E733800121126 /* NSString+VParseHelp.h */,
+				BE5AC2C4184E733800121126 /* NSString+VParseHelp.m */,
 			);
 			name = Categories;
 			sourceTree = "<group>";
@@ -221,6 +229,8 @@
 				BE4E754A184942F100344677 /* VSequenceManager.m */,
 				BE4E7552184955BE00344677 /* VObjectManager.h */,
 				BE4E7553184955BE00344677 /* VObjectManager.m */,
+				BE5AC2C0184E6CB300121126 /* VCommentManager.h */,
+				BE5AC2C1184E6CB300121126 /* VCommentManager.m */,
 			);
 			name = Managers;
 			sourceTree = "<group>";
@@ -522,6 +532,7 @@
 				BE5AC2AD184D298900121126 /* AnswerAction+RestKit.m in Sources */,
 				BE4E74FC1846B76900344677 /* Sequence.m in Sources */,
 				BE4E75141846B78000344677 /* InteractionAction.m in Sources */,
+				BE5AC2C2184E6CB300121126 /* VCommentManager.m in Sources */,
 				BE5AC2B8184D298900121126 /* StatSequence+RestKit.m in Sources */,
 				BE5AC2AF184D298900121126 /* Comment+RestKit.m in Sources */,
 				BE5AC2B6184D298900121126 /* StatAnswer+RestKit.m in Sources */,
@@ -530,6 +541,7 @@
 				BE4E753C1846BF0700344677 /* VLoginManager.m in Sources */,
 				BEA4F2371843F097001F5B15 /* main.m in Sources */,
 				BE4E75451846D92A00344677 /* User.m in Sources */,
+				BE5AC2C5184E733800121126 /* NSString+VParseHelp.m in Sources */,
 				BE5AC28A184D194A00121126 /* NodeAction.m in Sources */,
 				BE4E75021846B76900344677 /* StatAnswer.m in Sources */,
 				BE5AC2BB184D298900121126 /* NSManagedObject+EasyFetching.m in Sources */,

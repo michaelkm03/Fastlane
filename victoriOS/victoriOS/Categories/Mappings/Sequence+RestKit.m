@@ -55,12 +55,12 @@
                                                    pathPattern:@"/api/sequence/item/:sequence_id"
                                                        keyPath:@"payload"                                         statusCodes:RKStatusCodeIndexSetForClass(RKStatusCodeClassSuccessful)];
 }
-
+/*
 + (RKResponseDescriptor*)sequenceCommentDescriptor
 {
     return [RKResponseDescriptor responseDescriptorWithMapping:[Sequence entityMapping]
                                                         method:RKRequestMethodGET
                                                    pathPattern:@"/api/comment/all/:sequence_id"
                                                        keyPath:@"payload"                                         statusCodes:RKStatusCodeIndexSetForClass(RKStatusCodeClassSuccessful)];
-}
+}*/
 @end

@@ -7,6 +7,7 @@
 //
 
 #import "VSequenceManager.h"
+#import "VCommentManager.h"
 #import "VCategory+RestKit.h"
 #import "Sequence+RestKit.h"
 
@@ -60,7 +61,9 @@
              {
                  //todo: send out message to tell app we're loaded
                  //Todo: remove this test code
-                 [self loadFullDataForSequence:[[Sequence findAllObjectsWithSortKey:@"id"] firstObject]];
+                 //[self loadFullDataForSequence:[[Sequence findAllObjectsWithSortKey:@"id"] firstObject]];
+                 Sequence* first = [[Sequence findAllObjectsWithSortKey:@"id"] firstObject];
+                 [self loadCommentsForSequence:first];
              }
              
          } failure:^(RKObjectRequestOperation *operation, NSError *error)
@@ -91,9 +94,7 @@
                                                       RKMappingResult *mappingResult)
      {
          RKLogInfo(@"Load full sequence data: %@", mappingResult.array);
-         Sequence* newSequence = [[Sequence findAllObjectsWithSortKey:@"id"] firstObject];
-         NSArray* allnodes = [Node findAllObjects];
-         NSSet* nodes = newSequence.nodes;
+         [self testSequenceData];
 
      } failure:^(RKObjectRequestOperation *operation, NSError *error)
      {
@@ -108,15 +109,25 @@
     
     NSString* path = [NSString stringWithFormat:@"%@/%@", @"/api/comment/all", sequence.id];
     RKManagedObjectRequestOperation* requestOperation = [[RKObjectManager sharedManager]
-                                                         appropriateObjectRequestOperationWithObject:sequence
+                                                         appropriateObjectRequestOperationWithObject:nil
                                                          method:RKRequestMethodGET
                                                          path:path
                                                          parameters:nil];
+    
+    __block Sequence* commentOwner = sequence;
     
     [requestOperation setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation,
                                                       RKMappingResult *mappingResult)
      {
          RKLogInfo(@"Load sequence comments: %@", mappingResult.array);
+         
+         for (Comment* comment in [mappingResult array])
+         {
+             [commentOwner addCommentsObject:(Comment*)[commentOwner.managedObjectContext
+                                                        objectWithID:[comment objectID]]];
+         }
+         
+         NSSet* thecomments = commentOwner.comments;
      } failure:^(RKObjectRequestOperation *operation, NSError *error)
      {
          RKLogError(@"Operation failed with error: %@", error);
@@ -124,6 +135,23 @@
     
     [requestOperation start];
 
+}
+
++ (void)testSequenceData
+{
+    Sequence* first = [[Sequence findAllObjectsWithSortKey:@"id"] firstObject];
+    for (Node* node in first.nodes)
+    {
+        VLog(@"%@", node);
+        for(Asset* asset in node.assets)
+            VLog(@"%@", asset);
+        
+        for (Interaction* interaction in node.interactions)
+            VLog(@"%@", interaction);
+    }
+    for (Comment* comment in first.comments)
+        VLog(@"%@", comment);
+    
 }
 
 @end
