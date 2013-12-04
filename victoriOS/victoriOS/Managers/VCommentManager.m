@@ -12,7 +12,7 @@
 @implementation VCommentManager
 
 
-+(void)addCommentText:(NSString*)text
++ (void)addCommentText:(NSString*)text
          commentData:(NSData*)data
             mediaExtension:(NSString*)extension
            toSequence:(Sequence*)sequence
@@ -70,7 +70,7 @@
     [requestOperation start];
 }
 
-+(void)removeComment:(Comment*)comment withReason:(NSString*)removalReason
++ (void)removeComment:(Comment*)comment withReason:(NSString*)removalReason
 {
     //TODO: check if user has remove permissions (once those are a Thing)
     if (!comment.id) //Need this or we should quit
@@ -123,7 +123,7 @@
     [requestOperation start];
 }
 
-+(void)flagComment:(Comment*)comment
++ (void)flagComment:(Comment*)comment
 {
     
     if (!comment.id) //Need this or we should quit
@@ -153,7 +153,7 @@
 }
 
 #pragma mark - Share Methods
-+(void)shareComment:(Comment*)comment
++ (void)shareComment:(Comment*)comment
          toPlatform:(NSString*)platform
 {
     
@@ -190,18 +190,18 @@
     [requestOperation start];
 }
 
-+(void)shareToFacebook:(Comment*)comment
++ (void)shareToFacebook:(Comment*)comment
 {
     [self shareComment:comment toPlatform:@"facebook"];
 }
 
-+(void)shareToTwitter:(Comment*)comment
++ (void)shareToTwitter:(Comment*)comment
 {
     [self shareComment:comment toPlatform:@"twitter"];
 }
 
 #pragma mark - Vote Methods
-+(void)voteComment:(Comment*)comment voteType:(NSString*)type
++ (void)voteComment:(Comment*)comment voteType:(NSString*)type
 {
     
     if (!comment.id) //Need this or we should quit
@@ -209,7 +209,11 @@
         VLog(@"Invalid comment passed to flagComment");
         return;
     }
-    if ([type isEmpty]) //Need this or we should quit
+    if ([type isEmpty] &&
+        ([type isEqualToString:@"like"] ||
+         [type isEqualToString:@"dislike"] ||
+         [type isEqualToString:@"unvote"]
+        ))
     {
         VLog(@"Invalid voteType passed to flagComment");
         return;
@@ -236,13 +240,17 @@
     [requestOperation start];
 }
 
-+(void)likeComment:(Comment*)comment
++ (void)likeComment:(Comment*)comment
 {
     [VCommentManager voteComment:comment voteType:@"like"];
 }
-+(void)dislikeComment:(Comment*)comment
++ (void)dislikeComment:(Comment*)comment
 {
     [VCommentManager voteComment:comment voteType:@"dislike"];
+}
++ (void)unvoteComment:(Comment*)comment
+{
+    [VCommentManager voteComment:comment voteType:@"unvote"];
 }
 
 + (void) testCommentSystem:(Comment*)comment

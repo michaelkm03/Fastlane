@@ -11,21 +11,22 @@
 
 @interface VCommentManager : NSObject
 
-+(void)addCommentText:(NSString*)text
++ (void)addCommentText:(NSString*)text
          commentData:(NSData*)media
        mediaExtension:(NSString*)extension
            toSequence:(Sequence*)sequence
             andParent:(Comment*)parent;
 
-+(void)removeComment:(Comment*)comment withReason:(NSString*)removalReason;
++ (void)removeComment:(Comment*)comment withReason:(NSString*)removalReason;
 
-+(void)shareToFacebook:(Comment*)comment;
-+(void)shareToTwitter:(Comment*)comment;
++ (void)shareToFacebook:(Comment*)comment;
++ (void)shareToTwitter:(Comment*)comment;
 
-+(void)flagComment:(Comment*)comment;
++ (void)flagComment:(Comment*)comment;
 
-+(void)likeComment:(Comment*)comment;
-+(void)dislikeComment:(Comment*)comment;
++ (void)likeComment:(Comment*)comment;
++ (void)dislikeComment:(Comment*)comment;
++ (void)unvoteComment:(Comment*)comment;
 
 + (void) testCommentSystem:(Comment*)comment;
 
