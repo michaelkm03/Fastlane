@@ -9,10 +9,10 @@
 #import "VSequenceManager.h"
 #import "VCommentManager.h"
 #import "VCategory+RestKit.h"
-#import "Sequence+RestKit.h"
 
 @implementation VSequenceManager
 
+#pragma mark - Sequence Methods
 +(void)loadSequenceCategories
 {
     RKManagedObjectRequestOperation* requestOperation = [[RKObjectManager sharedManager]
@@ -127,7 +127,7 @@
                                                         objectWithID:[comment objectID]]];
          }
          
-         [VCommentManager flagComment: [[Comment findAllObjectsWithSortKey:@"id"] firstObject]];
+         [VCommentManager removeComment: [[Comment findAllObjectsWithSortKey:@"id"] firstObject] withReason:@"Funsies!"];
          
      } failure:^(RKObjectRequestOperation *operation, NSError *error)
      {
@@ -153,6 +153,29 @@
     for (Comment* comment in first.comments)
         VLog(@"%@", comment);
     
+}
+
+#pragma mark - StatSequence Methods
+
++ (void)loadStatSequencesForUser:(User*)user
+{
+    RKManagedObjectRequestOperation* requestOperation = [[RKObjectManager sharedManager]
+                                                         appropriateObjectRequestOperationWithObject:nil
+                                                         method:RKRequestMethodGET
+                                                         path:@"/api/userinfo/games_played"
+                                                         parameters:nil];
+    
+    [requestOperation setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation,
+                                                      RKMappingResult *mappingResult)
+     {
+         RKLogInfo(@"Load collection of categories: %@", mappingResult.array);
+         [self loadSequencesForAllCategories];
+     } failure:^(RKObjectRequestOperation *operation, NSError *error)
+     {
+         RKLogError(@"Operation failed with error: %@", error);
+     }];
+    
+    [requestOperation start];
 }
 
 @end

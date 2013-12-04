@@ -70,10 +70,57 @@
     [requestOperation start];
 }
 
-+(void)removeComment:(Comment*)comment
++(void)removeComment:(Comment*)comment withReason:(NSString*)removalReason
 {
-    //TODO: look into RestKit and see how it handles removing data... this could be bad.
-
+    //TODO: check if user has remove permissions (once those are a Thing)
+    if (!comment.id) //Need this or we should quit
+    {
+        VLog(@"Invalid comment passed to removeComment");
+        return;
+    }
+    if ([removalReason isEmpty])
+    {
+        VLog(@"Invalid removal reason in removeComment");
+        return;
+    }
+    NSMutableDictionary* parameters = [[NSMutableDictionary alloc] initWithCapacity:1];
+    [parameters setObject:[NSString stringWithFormat:@"%@", comment.id] forKey:@"comment_id"];
+    [parameters setObject:removalReason forKey:@"removal_reason"];
+    
+    __block Comment* commentToRemove = comment;//keep the comment in memory til we get the response back
+    
+    RKManagedObjectRequestOperation* requestOperation = [[RKObjectManager sharedManager]
+                                                         appropriateObjectRequestOperationWithObject:commentToRemove
+                                                         method:RKRequestMethodPOST
+                                                         path:@"/api/comment/remove"
+                                                         parameters:parameters];
+    
+    [requestOperation setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation,
+                                                      RKMappingResult *mappingResult)
+     {
+         //Since this is a POST not a DELETE we need to manually verify the result and remove the comment.
+         NSError* e = [[NSError alloc] init];
+         NSDictionary *JSON =
+         [NSJSONSerialization JSONObjectWithData: [operation.HTTPRequestOperation.responseString
+                                                   dataUsingEncoding:NSUTF8StringEncoding]
+                                         options: NSJSONReadingMutableContainers
+                                           error: &e];
+         if (e.code || !JSON)
+             return;
+         
+         NSInteger removedcomment_id = [[[JSON objectForKey:@"payload"] objectForKey:@"removedcomment_id"] integerValue];
+         
+         if (removedcomment_id)
+         {
+             RKLogInfo(@"Removing comment %@ from core data because of /api/comment/remove", commentToRemove.id);
+             [commentToRemove.managedObjectContext deleteObject:commentToRemove];
+         }
+     } failure:^(RKObjectRequestOperation *operation, NSError *error)
+     {
+         RKLogError(@"Operation failed with error: %@", error);
+     }];
+    
+    [requestOperation start];
 }
 
 +(void)flagComment:(Comment*)comment

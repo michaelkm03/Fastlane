@@ -17,7 +17,7 @@
            toSequence:(Sequence*)sequence
             andParent:(Comment*)parent;
 
-+(void)removeComment:(Comment*)comment;
++(void)removeComment:(Comment*)comment withReason:(NSString*)removalReason;
 
 +(void)shareToFacebook:(Comment*)comment;
 +(void)shareToTwitter:(Comment*)comment;

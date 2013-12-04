@@ -7,9 +7,14 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "Sequence+RestKit.h"
+#import "User+RestKit.h"
 
 @interface VSequenceManager : NSObject
 
-+(void)loadSequenceCategories;
++ (void)loadSequenceCategories;
++ (void)loadCommentsForSequence:(Sequence*)sequence;
+
++ (void)loadStatSequencesForUser:(User*)user;
 
 @end
