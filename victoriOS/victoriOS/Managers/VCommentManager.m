@@ -62,8 +62,6 @@
              [commentOwner addCommentsObject:(Comment*)[commentOwner.managedObjectContext
                                                         objectWithID:[comment objectID]]];
          }
-         
-         NSSet* thecomments = commentOwner.comments;
      } failure:^(RKObjectRequestOperation *operation, NSError *error)
      {
          RKLogError(@"Operation failed with error: %@", error);

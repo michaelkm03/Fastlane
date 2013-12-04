@@ -12,5 +12,6 @@
 @interface Comment (RestKit)
 
 + (RKResponseDescriptor*)descriptor;
++ (RKResponseDescriptor*)getAllDescriptor;
 
 @end

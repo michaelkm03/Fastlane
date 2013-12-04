@@ -122,7 +122,8 @@
                                                                        [Sequence sequenceListDescriptor],
                                                                        //[Sequence sequenceCommentDescriptor],
                                                                        [Sequence sequenceFullDataDescriptor],
-                                                                       [Comment descriptor]]];
+                                                                       [Comment descriptor],
+                                                                       [Comment getAllDescriptor]]];
                                                                        //[StatSequence descriptor]]];
 }
 

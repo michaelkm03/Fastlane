@@ -48,4 +48,12 @@
 }
 
 
++ (RKResponseDescriptor*)getAllDescriptor
+{
+    return [RKResponseDescriptor responseDescriptorWithMapping:[Comment entityMapping]
+                                                        method:RKRequestMethodPOST | RKRequestMethodGET
+                                                   pathPattern:@"/api/comment/all/:sequenceid"
+                                                       keyPath:@"payload"
+                                                   statusCodes:RKStatusCodeIndexSetForClass(RKStatusCodeClassSuccessful)];
+}
 @end
