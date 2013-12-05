@@ -180,6 +180,30 @@
          }
          
          RKLogInfo(@"Load collection of stat sequences: %@", statSequences);
+         [self loadFullDataForStatSequence:[mappingResult firstObject]];
+         
+     } failure:^(RKObjectRequestOperation *operation, NSError *error)
+     {
+         RKLogError(@"Operation failed with error: %@", error);
+     }];
+    
+    [requestOperation start];
+}
+
++ (void)loadFullDataForStatSequence:(StatSequence*)statSequence
+{
+    NSString* path = [NSString stringWithFormat:@"%@/%@", @"/api/userinfo/game_stats", statSequence.id];
+    RKManagedObjectRequestOperation* requestOperation = [[RKObjectManager sharedManager]
+                                                         appropriateObjectRequestOperationWithObject:statSequence
+                                                         method:RKRequestMethodGET
+                                                         path:path
+                                                         parameters:nil];
+    
+    [requestOperation setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation,
+                                                      RKMappingResult *mappingResult)
+     {
+         RKLogInfo(@"Load full sequence data: %@", mappingResult.array);
+         //[self testSequenceData];
          
      } failure:^(RKObjectRequestOperation *operation, NSError *error)
      {

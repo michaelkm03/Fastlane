@@ -13,8 +13,10 @@
 @interface VSequenceManager : NSObject
 
 + (void)loadSequenceCategories;
++ (void)loadFullDataForSequence:(Sequence*)sequence;
 + (void)loadCommentsForSequence:(Sequence*)sequence;
 
 + (void)loadStatSequencesForUser:(User*)user;
++ (void)loadFullDataForStatSequence:(StatSequence*)statSequence;
 
 @end
