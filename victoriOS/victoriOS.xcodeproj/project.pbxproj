@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		5F3B4950184E6B8D0062DB55 /* VLoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F3B494F184E6B8D0062DB55 /* VLoginViewController.m */; };
 		5F8AAA5E184D43C600301783 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5F8AAA5D184D43C600301783 /* Main.storyboard */; };
 		5F8AAAA5184D467300301783 /* VStreamsTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F8AAAA4184D467300301783 /* VStreamsTableViewController.m */; };
 		9CB09319D7334D91B4DED878 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B15D4A5304A04D16AD420BCD /* libPods.a */; };
@@ -75,6 +76,8 @@
 
 /* Begin PBXFileReference section */
 		4F627C2BF55A46F299155184 /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = "<group>"; };
+		5F3B494E184E6B8D0062DB55 /* VLoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VLoginViewController.h; path = UI/VLoginViewController.h; sourceTree = "<group>"; };
+		5F3B494F184E6B8D0062DB55 /* VLoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VLoginViewController.m; path = UI/VLoginViewController.m; sourceTree = "<group>"; };
 		5F8AAA5D184D43C600301783 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
 		5F8AAAA3184D467300301783 /* VStreamsTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VStreamsTableViewController.h; sourceTree = "<group>"; };
 		5F8AAAA4184D467300301783 /* VStreamsTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VStreamsTableViewController.m; sourceTree = "<group>"; };
@@ -201,9 +204,11 @@
 		5F8AAA5A184D439000301783 /* UI */ = {
 			isa = PBXGroup;
 			children = (
-				5F8AAA5D184D43C600301783 /* Main.storyboard */,
 				5F8AAAA3184D467300301783 /* VStreamsTableViewController.h */,
 				5F8AAAA4184D467300301783 /* VStreamsTableViewController.m */,
+				5F3B494E184E6B8D0062DB55 /* VLoginViewController.h */,
+				5F3B494F184E6B8D0062DB55 /* VLoginViewController.m */,
+				5F8AAA5D184D43C600301783 /* Main.storyboard */,
 			);
 			name = UI;
 			sourceTree = "<group>";
@@ -526,6 +531,7 @@
 				BE5AC2B0184D298900121126 /* Interaction+RestKit.m in Sources */,
 				BE4E74ED1846B76900344677 /* StatInteraction.m in Sources */,
 				BE4E75261846B7CE00344677 /* Asset.m in Sources */,
+				5F3B4950184E6B8D0062DB55 /* VLoginViewController.m in Sources */,
 				BE4E7554184955BE00344677 /* VObjectManager.m in Sources */,
 				BE5AC27E184C80D000121126 /* VCategory.m in Sources */,
 				BE4E752C1846B7CE00344677 /* AnswerAction.m in Sources */,
