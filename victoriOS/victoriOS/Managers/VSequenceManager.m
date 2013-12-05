@@ -203,8 +203,6 @@
                                                       RKMappingResult *mappingResult)
      {
          RKLogInfo(@"Load full sequence data: %@", mappingResult.array);
-         //[self testSequenceData];
-         
      } failure:^(RKObjectRequestOperation *operation, NSError *error)
      {
          RKLogError(@"Operation failed with error: %@", error);

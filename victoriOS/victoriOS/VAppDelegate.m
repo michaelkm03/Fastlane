@@ -25,7 +25,8 @@
 {
     [self setupRestKit];
     
-    [VLoginManager loginToFacebook];
+    //[VLoginManager createVictoriousAccountWithEmail:@"a" password:@"a" name:@"a"];
+    [VLoginManager loginToVictoriousWithEmail:@"a" andPassword:@"a"];
     
     return YES;
 }

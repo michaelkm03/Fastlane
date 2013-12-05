@@ -10,6 +10,10 @@
 
 @interface VLoginManager : NSObject
 
-+(void)loginToFacebook;
++ (void)loginToFacebook;
+
++ (void)loginToVictoriousWithEmail:(NSString*)email andPassword:(NSString*)password;
++ (void)createVictoriousAccountWithEmail:(NSString*)email password:(NSString*)password name:(NSString*)name;
++ (void)updateVictoriousAccountWithEmail:(NSString*)email password:(NSString*)password name:(NSString*)name;
 
 @end
