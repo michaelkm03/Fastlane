@@ -62,7 +62,8 @@
                  //todo: send out message to tell app we're loaded
                  //Todo: remove this test code
                  Sequence* first = [[Sequence findAllObjectsWithSortKey:@"id"] firstObject];
-                 [self createStatSequenceForSequence:first];
+                 [self loadCommentsForSequence:first];
+                 //[self createStatSequenceForSequence:first];
              }
              
          } failure:^(RKObjectRequestOperation *operation, NSError *error)
