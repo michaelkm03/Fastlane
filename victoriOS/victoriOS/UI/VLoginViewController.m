@@ -68,30 +68,7 @@
               ACAccountCredential*  fbCredential = [facebookAccount credential];
               NSString* accessToken = [fbCredential oauthToken];
               NSLog(@"Facebook Access Token: %@", accessToken);
-
-              RKManagedObjectRequestOperation* requestOperation;
-              if(accessToken)
-              {
-                  requestOperation = [[RKObjectManager sharedManager]
-                                      appropriateObjectRequestOperationWithObject:nil
-                                      method:RKRequestMethodPOST
-                                      path:@"/api/login/facebook"
-                                      parameters:@{@"facebook_access_token": accessToken}];
-              }
-              
-              [requestOperation setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation,
-                                                                RKMappingResult *mappingResult)
-               {
-                   RKLogInfo(@"Login with User: %@", mappingResult.array);
-                   [VSequenceManager loadSequenceCategories];
-               }
-                                                      failure:^(RKObjectRequestOperation *operation, NSError *error)
-               {
-                   RKLogError(@"Operation failed with error: %@", error);
-               }];
-              
-              [requestOperation start];
-}
+          }
           else
           {
               //    [self performSegueWithIdentifier:@"facebook" sender:self];
