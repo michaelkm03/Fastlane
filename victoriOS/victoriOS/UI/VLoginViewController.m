@@ -114,7 +114,7 @@
         }
         else
         {
-            [self performSegueWithIdentifier:@"twitter" sender:self];
+//            [self performSegueWithIdentifier:@"twitter" sender:self];
         }
     }];
 }
