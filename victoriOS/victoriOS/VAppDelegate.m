@@ -26,6 +26,8 @@
 {
     [self setupRestKit];
     
+    //[VLoginManager createVictoriousAccountWithEmail:@"a" password:@"a" name:@"a"];
+    //[VLoginManager loginToVictoriousWithEmail:@"a" andPassword:@"a"];
     [VLoginManager loginToFacebook];
 //    [self performSelector:@selector(login) withObject:nil afterDelay:1.0];
     
@@ -67,11 +69,11 @@
 #pragma mark - RestKit Methods
 - (void)setupRestKit
 {
-    
+    /*
 #if DEBUG
     RKLogConfigureByName("RestKit/Network", RKLogLevelTrace);
     RKLogConfigureByName("RestKit/ObjectMapping", RKLogLevelTrace);
-#endif
+#endif*/
     
     RKObjectManager *manager = [VObjectManager managerWithBaseURL:[NSURL URLWithString:VBASEURL]];
     
@@ -127,9 +129,11 @@
                                                                        [User descriptor],
                                                                        [VCategory descriptor],
                                                                        [Sequence sequenceListDescriptor],
-                                                                       //[Sequence sequenceCommentDescriptor]]];
-                                                                       [Sequence sequenceFullDataDescriptor]]];
-                                                                       //[StatSequence descriptor]]];
+                                                                       [Sequence sequenceFullDataDescriptor],
+                                                                       [Comment descriptor],
+                                                                       [Comment getAllDescriptor],
+                                                                       [StatSequence gamesPlayedDescriptor],
+                                                                       [StatSequence gameStatsDescriptor]]];
 }
 
 @end

@@ -10,10 +10,11 @@
 #import "FBAccessTokenData.h"
 #import "User+RestKit.h"
 #import "VSequenceManager.h"
+#import "NSString+VParseHelp.h"
 
 @implementation VLoginManager
 
-+(void)loginToFacebook
++ (void)loginToFacebook
 {
     [FBSession openActiveSessionWithReadPermissions:@[ @"basic_info", @"email" ]
                                        allowLoginUI:YES
@@ -31,7 +32,7 @@
 
 }
 
-+(void)launchLoginToFBCall
++ (void)launchLoginToFBCall
 {
     NSString* token =[[[FBSession activeSession] accessTokenData] accessToken];
     
@@ -47,7 +48,7 @@
     [requestOperation setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation,
                                                       RKMappingResult *mappingResult)
     {
-        RKLogInfo(@"Load collection of Articles: %@", mappingResult.array);
+        RKLogInfo(@"Login with User: %@", mappingResult.array);
         [VSequenceManager loadSequenceCategories];
     } failure:^(RKObjectRequestOperation *operation, NSError *error)
     {
@@ -57,4 +58,85 @@
     [requestOperation start];
 }
 
++ (void)loginToVictoriousWithEmail:(NSString*)email andPassword:(NSString*)password
+{
+    
+    if ([email isEmpty] || [password isEmpty])
+    {
+        VLog(@"Invalid parameters in api/login");
+        return;
+    }
+    
+    RKManagedObjectRequestOperation* requestOperation = [[RKObjectManager sharedManager]
+                                                         appropriateObjectRequestOperationWithObject:nil
+                                                         method:RKRequestMethodPOST
+                                                         path:@"/api/login"
+                                                         parameters:@{@"email": email,
+                                                                      @"password": password}];
+
+    [requestOperation setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation,
+                                                      RKMappingResult *mappingResult)
+     {
+         RKLogInfo(@"Login with User: %@", mappingResult.array);
+     } failure:^(RKObjectRequestOperation *operation, NSError *error)
+     {
+         RKLogError(@"Operation failed with error: %@", error);
+     }];
+    
+    [requestOperation start];
+}
+
++ (void)modifyVictoriousAccountWithEmail:(NSString*)email
+                                password:(NSString*)password
+                                    name:(NSString*)name
+                              modifyType:(NSString*)modifyType
+{
+    
+    if ([email isEmpty] ||
+        [password isEmpty] ||
+        [name isEmpty] ||
+        [modifyType isEmpty])
+    {
+        VLog(@"Invalid parameters in api/account/%@", modifyType);
+        return;
+    }
+    
+    NSString* path = [NSString stringWithFormat:@"/api/account/%@", modifyType];
+    
+    RKManagedObjectRequestOperation* requestOperation = [[RKObjectManager sharedManager]
+                                                         appropriateObjectRequestOperationWithObject:nil
+                                                         method:RKRequestMethodPOST
+                                                         path:path
+                                                         parameters:@{@"email" : email,
+                                                                      @"password" : password,
+                                                                      @"name" : name}];
+    
+    [requestOperation setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation,
+                                                      RKMappingResult *mappingResult)
+     {
+         RKLogInfo(@"Login in with user: %@", mappingResult.array);
+         [self updateVictoriousAccountWithEmail:@"a" password:@"a" name:@"a"];
+     } failure:^(RKObjectRequestOperation *operation, NSError *error)
+     {
+         RKLogError(@"Operation failed with error: %@", error);
+     }];
+    
+    [requestOperation start];
+}
+
++ (void)updateVictoriousAccountWithEmail:(NSString*)email password:(NSString*)password name:(NSString*)name
+{
+    [self modifyVictoriousAccountWithEmail:email
+                                  password:password
+                                      name:name
+                                modifyType:@"update"];
+}
+
++ (void)createVictoriousAccountWithEmail:(NSString*)email password:(NSString*)password name:(NSString*)name
+{
+    [self modifyVictoriousAccountWithEmail:email
+                                  password:password
+                                      name:name
+                                modifyType:@"create"];
+}
 @end

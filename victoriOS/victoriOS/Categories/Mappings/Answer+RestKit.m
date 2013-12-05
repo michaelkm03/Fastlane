@@ -30,11 +30,8 @@
     [mapping addAttributeMappingsFromDictionary:propertyMap];
 
     //Now add relationships
-    RKRelationshipMapping* actionMapping = [RKRelationshipMapping
-                                            relationshipMappingFromKeyPath:@"answer_action"
-                                            toKeyPath:@"answer_action"
-                                            withMapping:[AnswerAction entityMapping]];
-    [mapping addPropertyMapping:actionMapping];
+    [mapping addRelationshipMappingWithSourceKeyPath:@"answer_action" mapping:[AnswerAction entityMapping]];
+
     
     return mapping;
 }

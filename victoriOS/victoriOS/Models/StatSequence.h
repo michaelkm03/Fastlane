@@ -2,14 +2,14 @@
 //  StatSequence.h
 //  victoriOS
 //
-//  Created by Will Long on 11/27/13.
+//  Created by Will Long on 12/4/13.
 //  Copyright (c) 2013 Will Long. All rights reserved.
 //
 
 #import <Foundation/Foundation.h>
 #import <CoreData/CoreData.h>
 
-@class StatInteraction;
+@class StatInteraction, User;
 
 @interface StatSequence : NSManagedObject
 
@@ -23,6 +23,7 @@
 @property (nonatomic, retain) NSNumber * total_points;
 @property (nonatomic, retain) NSNumber * total_questions;
 @property (nonatomic, retain) NSSet *interaction_details;
+@property (nonatomic, retain) User *user;
 @end
 
 @interface StatSequence (CoreDataGeneratedAccessors)

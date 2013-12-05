@@ -2,12 +2,13 @@
 //  StatSequence.m
 //  victoriOS
 //
-//  Created by Will Long on 11/27/13.
+//  Created by Will Long on 12/4/13.
 //  Copyright (c) 2013 Will Long. All rights reserved.
 //
 
 #import "StatSequence.h"
 #import "StatInteraction.h"
+#import "User.h"
 
 
 @implementation StatSequence
@@ -22,5 +23,6 @@
 @dynamic total_points;
 @dynamic total_questions;
 @dynamic interaction_details;
+@dynamic user;
 
 @end

@@ -12,7 +12,6 @@
 		5F8AAAA5184D467300301783 /* VStreamsTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F8AAAA4184D467300301783 /* VStreamsTableViewController.m */; };
 		9CB09319D7334D91B4DED878 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B15D4A5304A04D16AD420BCD /* libPods.a */; };
 		BE4E74ED1846B76900344677 /* StatInteraction.m in Sources */ = {isa = PBXBuildFile; fileRef = BE4E74EC1846B76900344677 /* StatInteraction.m */; };
-		BE4E74F31846B76900344677 /* StatSequence.m in Sources */ = {isa = PBXBuildFile; fileRef = BE4E74F21846B76900344677 /* StatSequence.m */; };
 		BE4E74FC1846B76900344677 /* Sequence.m in Sources */ = {isa = PBXBuildFile; fileRef = BE4E74FB1846B76900344677 /* Sequence.m */; };
 		BE4E75021846B76900344677 /* StatAnswer.m in Sources */ = {isa = PBXBuildFile; fileRef = BE4E75011846B76900344677 /* StatAnswer.m */; };
 		BE4E75051846B76900344677 /* Rule.m in Sources */ = {isa = PBXBuildFile; fileRef = BE4E75041846B76900344677 /* Rule.m */; };
@@ -23,11 +22,9 @@
 		BE4E752C1846B7CE00344677 /* AnswerAction.m in Sources */ = {isa = PBXBuildFile; fileRef = BE4E752B1846B7CE00344677 /* AnswerAction.m */; };
 		BE4E752F1846B7CF00344677 /* Comment.m in Sources */ = {isa = PBXBuildFile; fileRef = BE4E752E1846B7CF00344677 /* Comment.m */; };
 		BE4E753C1846BF0700344677 /* VLoginManager.m in Sources */ = {isa = PBXBuildFile; fileRef = BE4E753B1846BF0700344677 /* VLoginManager.m */; };
-		BE4E75451846D92A00344677 /* User.m in Sources */ = {isa = PBXBuildFile; fileRef = BE4E75441846D92A00344677 /* User.m */; };
 		BE4E754B184942F100344677 /* VSequenceManager.m in Sources */ = {isa = PBXBuildFile; fileRef = BE4E754A184942F100344677 /* VSequenceManager.m */; };
 		BE4E7554184955BE00344677 /* VObjectManager.m in Sources */ = {isa = PBXBuildFile; fileRef = BE4E7553184955BE00344677 /* VObjectManager.m */; };
 		BE5AC27E184C80D000121126 /* VCategory.m in Sources */ = {isa = PBXBuildFile; fileRef = BE5AC27D184C80D000121126 /* VCategory.m */; };
-		BE5AC287184D194900121126 /* Node.m in Sources */ = {isa = PBXBuildFile; fileRef = BE5AC286184D194900121126 /* Node.m */; };
 		BE5AC28A184D194A00121126 /* NodeAction.m in Sources */ = {isa = PBXBuildFile; fileRef = BE5AC289184D194A00121126 /* NodeAction.m */; };
 		BE5AC2AC184D298900121126 /* Answer+RestKit.m in Sources */ = {isa = PBXBuildFile; fileRef = BE5AC28D184D298900121126 /* Answer+RestKit.m */; };
 		BE5AC2AD184D298900121126 /* AnswerAction+RestKit.m in Sources */ = {isa = PBXBuildFile; fileRef = BE5AC28F184D298900121126 /* AnswerAction+RestKit.m */; };
@@ -45,6 +42,9 @@
 		BE5AC2B9184D298900121126 /* User+RestKit.m in Sources */ = {isa = PBXBuildFile; fileRef = BE5AC2A7184D298900121126 /* User+RestKit.m */; };
 		BE5AC2BA184D298900121126 /* VCategory+RestKit.m in Sources */ = {isa = PBXBuildFile; fileRef = BE5AC2A9184D298900121126 /* VCategory+RestKit.m */; };
 		BE5AC2BB184D298900121126 /* NSManagedObject+EasyFetching.m in Sources */ = {isa = PBXBuildFile; fileRef = BE5AC2AB184D298900121126 /* NSManagedObject+EasyFetching.m */; };
+		BE5AC2BE184D69B100121126 /* Node.m in Sources */ = {isa = PBXBuildFile; fileRef = BE5AC2BD184D69B100121126 /* Node.m */; };
+		BE5AC2C2184E6CB300121126 /* VCommentManager.m in Sources */ = {isa = PBXBuildFile; fileRef = BE5AC2C1184E6CB300121126 /* VCommentManager.m */; };
+		BE5AC2C5184E733800121126 /* NSString+VParseHelp.m in Sources */ = {isa = PBXBuildFile; fileRef = BE5AC2C4184E733800121126 /* NSString+VParseHelp.m */; };
 		BEA4F2291843F097001F5B15 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BEA4F2281843F097001F5B15 /* Foundation.framework */; };
 		BEA4F22B1843F097001F5B15 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BEA4F22A1843F097001F5B15 /* CoreGraphics.framework */; };
 		BEA4F22D1843F097001F5B15 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BEA4F22C1843F097001F5B15 /* UIKit.framework */; };
@@ -60,6 +60,8 @@
 		BEA4F24A1843F097001F5B15 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BEA4F22E1843F097001F5B15 /* CoreData.framework */; };
 		BEA4F2521843F097001F5B15 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = BEA4F2501843F097001F5B15 /* InfoPlist.strings */; };
 		BEA4F2541843F097001F5B15 /* victoriOSTests.m in Sources */ = {isa = PBXBuildFile; fileRef = BEA4F2531843F097001F5B15 /* victoriOSTests.m */; };
+		BECAFFD3184FDAD20096E370 /* StatSequence.m in Sources */ = {isa = PBXBuildFile; fileRef = BECAFFD2184FDAD20096E370 /* StatSequence.m */; };
+		BECAFFD6184FDAD20096E370 /* User.m in Sources */ = {isa = PBXBuildFile; fileRef = BECAFFD5184FDAD20096E370 /* User.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -82,8 +84,6 @@
 		B15D4A5304A04D16AD420BCD /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		BE4E74EB1846B76900344677 /* StatInteraction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = StatInteraction.h; path = Models/StatInteraction.h; sourceTree = "<group>"; };
 		BE4E74EC1846B76900344677 /* StatInteraction.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = StatInteraction.m; path = Models/StatInteraction.m; sourceTree = "<group>"; };
-		BE4E74F11846B76900344677 /* StatSequence.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = StatSequence.h; path = Models/StatSequence.h; sourceTree = "<group>"; };
-		BE4E74F21846B76900344677 /* StatSequence.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = StatSequence.m; path = Models/StatSequence.m; sourceTree = "<group>"; };
 		BE4E74FA1846B76900344677 /* Sequence.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Sequence.h; path = Models/Sequence.h; sourceTree = "<group>"; };
 		BE4E74FB1846B76900344677 /* Sequence.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Sequence.m; path = Models/Sequence.m; sourceTree = "<group>"; };
 		BE4E75001846B76900344677 /* StatAnswer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = StatAnswer.h; path = Models/StatAnswer.h; sourceTree = "<group>"; };
@@ -104,16 +104,12 @@
 		BE4E752E1846B7CF00344677 /* Comment.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Comment.m; path = Models/Comment.m; sourceTree = "<group>"; };
 		BE4E753A1846BF0700344677 /* VLoginManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VLoginManager.h; path = Managers/VLoginManager.h; sourceTree = "<group>"; };
 		BE4E753B1846BF0700344677 /* VLoginManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VLoginManager.m; path = Managers/VLoginManager.m; sourceTree = "<group>"; };
-		BE4E75431846D92A00344677 /* User.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = User.h; path = Models/User.h; sourceTree = "<group>"; };
-		BE4E75441846D92A00344677 /* User.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = User.m; path = Models/User.m; sourceTree = "<group>"; };
 		BE4E7549184942F100344677 /* VSequenceManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VSequenceManager.h; path = Managers/VSequenceManager.h; sourceTree = "<group>"; };
 		BE4E754A184942F100344677 /* VSequenceManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VSequenceManager.m; path = Managers/VSequenceManager.m; sourceTree = "<group>"; };
 		BE4E7552184955BE00344677 /* VObjectManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VObjectManager.h; path = Managers/VObjectManager.h; sourceTree = "<group>"; };
 		BE4E7553184955BE00344677 /* VObjectManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VObjectManager.m; path = Managers/VObjectManager.m; sourceTree = "<group>"; };
 		BE5AC27C184C80D000121126 /* VCategory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VCategory.h; path = Models/VCategory.h; sourceTree = "<group>"; };
 		BE5AC27D184C80D000121126 /* VCategory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VCategory.m; path = Models/VCategory.m; sourceTree = "<group>"; };
-		BE5AC285184D194900121126 /* Node.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Node.h; path = Models/Node.h; sourceTree = "<group>"; };
-		BE5AC286184D194900121126 /* Node.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Node.m; path = Models/Node.m; sourceTree = "<group>"; };
 		BE5AC288184D194A00121126 /* NodeAction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NodeAction.h; path = Models/NodeAction.h; sourceTree = "<group>"; };
 		BE5AC289184D194A00121126 /* NodeAction.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NodeAction.m; path = Models/NodeAction.m; sourceTree = "<group>"; };
 		BE5AC28C184D298900121126 /* Answer+RestKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Answer+RestKit.h"; sourceTree = "<group>"; };
@@ -148,6 +144,12 @@
 		BE5AC2A9184D298900121126 /* VCategory+RestKit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "VCategory+RestKit.m"; sourceTree = "<group>"; };
 		BE5AC2AA184D298900121126 /* NSManagedObject+EasyFetching.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSManagedObject+EasyFetching.h"; path = "Categories/NSManagedObject+EasyFetching.h"; sourceTree = "<group>"; };
 		BE5AC2AB184D298900121126 /* NSManagedObject+EasyFetching.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSManagedObject+EasyFetching.m"; path = "Categories/NSManagedObject+EasyFetching.m"; sourceTree = "<group>"; };
+		BE5AC2BC184D69B100121126 /* Node.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Node.h; path = Models/Node.h; sourceTree = "<group>"; };
+		BE5AC2BD184D69B100121126 /* Node.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Node.m; path = Models/Node.m; sourceTree = "<group>"; };
+		BE5AC2C0184E6CB300121126 /* VCommentManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VCommentManager.h; path = Managers/VCommentManager.h; sourceTree = "<group>"; };
+		BE5AC2C1184E6CB300121126 /* VCommentManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VCommentManager.m; path = Managers/VCommentManager.m; sourceTree = "<group>"; };
+		BE5AC2C3184E733800121126 /* NSString+VParseHelp.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSString+VParseHelp.h"; path = "Categories/NSString+VParseHelp.h"; sourceTree = "<group>"; };
+		BE5AC2C4184E733800121126 /* NSString+VParseHelp.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSString+VParseHelp.m"; path = "Categories/NSString+VParseHelp.m"; sourceTree = "<group>"; };
 		BEA4F2251843F097001F5B15 /* victoriOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = victoriOS.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		BEA4F2281843F097001F5B15 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		BEA4F22A1843F097001F5B15 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -166,6 +168,10 @@
 		BEA4F24F1843F097001F5B15 /* victoriOSTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "victoriOSTests-Info.plist"; sourceTree = "<group>"; };
 		BEA4F2511843F097001F5B15 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		BEA4F2531843F097001F5B15 /* victoriOSTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = victoriOSTests.m; sourceTree = "<group>"; };
+		BECAFFD1184FDAD20096E370 /* StatSequence.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = StatSequence.h; path = Models/StatSequence.h; sourceTree = "<group>"; };
+		BECAFFD2184FDAD20096E370 /* StatSequence.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = StatSequence.m; path = Models/StatSequence.m; sourceTree = "<group>"; };
+		BECAFFD4184FDAD20096E370 /* User.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = User.h; path = Models/User.h; sourceTree = "<group>"; };
+		BECAFFD5184FDAD20096E370 /* User.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = User.m; path = Models/User.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -213,6 +219,8 @@
 				BE5AC28B184D298900121126 /* Mappings */,
 				BE5AC2AA184D298900121126 /* NSManagedObject+EasyFetching.h */,
 				BE5AC2AB184D298900121126 /* NSManagedObject+EasyFetching.m */,
+				BE5AC2C3184E733800121126 /* NSString+VParseHelp.h */,
+				BE5AC2C4184E733800121126 /* NSString+VParseHelp.m */,
 			);
 			name = Categories;
 			sourceTree = "<group>";
@@ -226,6 +234,8 @@
 				BE4E754A184942F100344677 /* VSequenceManager.m */,
 				BE4E7552184955BE00344677 /* VObjectManager.h */,
 				BE4E7553184955BE00344677 /* VObjectManager.m */,
+				BE5AC2C0184E6CB300121126 /* VCommentManager.h */,
+				BE5AC2C1184E6CB300121126 /* VCommentManager.m */,
 			);
 			name = Managers;
 			sourceTree = "<group>";
@@ -369,16 +379,16 @@
 				BE4E75011846B76900344677 /* StatAnswer.m */,
 				BE4E74EB1846B76900344677 /* StatInteraction.h */,
 				BE4E74EC1846B76900344677 /* StatInteraction.m */,
-				BE4E74F11846B76900344677 /* StatSequence.h */,
-				BE4E74F21846B76900344677 /* StatSequence.m */,
-				BE4E75431846D92A00344677 /* User.h */,
-				BE4E75441846D92A00344677 /* User.m */,
 				BE5AC27C184C80D000121126 /* VCategory.h */,
 				BE5AC27D184C80D000121126 /* VCategory.m */,
-				BE5AC285184D194900121126 /* Node.h */,
-				BE5AC286184D194900121126 /* Node.m */,
 				BE5AC288184D194A00121126 /* NodeAction.h */,
 				BE5AC289184D194A00121126 /* NodeAction.m */,
+				BE5AC2BC184D69B100121126 /* Node.h */,
+				BE5AC2BD184D69B100121126 /* Node.m */,
+				BECAFFD1184FDAD20096E370 /* StatSequence.h */,
+				BECAFFD2184FDAD20096E370 /* StatSequence.m */,
+				BECAFFD4184FDAD20096E370 /* User.h */,
+				BECAFFD5184FDAD20096E370 /* User.m */,
 			);
 			name = Models;
 			sourceTree = "<group>";
@@ -515,6 +525,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BECAFFD6184FDAD20096E370 /* User.m in Sources */,
 				BE5AC2B9184D298900121126 /* User+RestKit.m in Sources */,
 				BE4E751A1846B78000344677 /* Interaction.m in Sources */,
 				BE5AC2B0184D298900121126 /* Interaction+RestKit.m in Sources */,
@@ -528,23 +539,24 @@
 				BE5AC2AD184D298900121126 /* AnswerAction+RestKit.m in Sources */,
 				BE4E74FC1846B76900344677 /* Sequence.m in Sources */,
 				BE4E75141846B78000344677 /* InteractionAction.m in Sources */,
+				BE5AC2C2184E6CB300121126 /* VCommentManager.m in Sources */,
 				BE5AC2B8184D298900121126 /* StatSequence+RestKit.m in Sources */,
+				BECAFFD3184FDAD20096E370 /* StatSequence.m in Sources */,
 				BE5AC2AF184D298900121126 /* Comment+RestKit.m in Sources */,
 				BE5AC2B6184D298900121126 /* StatAnswer+RestKit.m in Sources */,
 				BE5AC2BA184D298900121126 /* VCategory+RestKit.m in Sources */,
 				BE5AC2B4184D298900121126 /* Rule+RestKit.m in Sources */,
 				BE4E753C1846BF0700344677 /* VLoginManager.m in Sources */,
 				BEA4F2371843F097001F5B15 /* main.m in Sources */,
-				BE4E75451846D92A00344677 /* User.m in Sources */,
+				BE5AC2C5184E733800121126 /* NSString+VParseHelp.m in Sources */,
 				BE5AC28A184D194A00121126 /* NodeAction.m in Sources */,
 				BE4E75021846B76900344677 /* StatAnswer.m in Sources */,
 				BE5AC2BB184D298900121126 /* NSManagedObject+EasyFetching.m in Sources */,
 				BEA4F23E1843F097001F5B15 /* victoriOS.xcdatamodeld in Sources */,
-				BE5AC287184D194900121126 /* Node.m in Sources */,
 				BE5AC2AC184D298900121126 /* Answer+RestKit.m in Sources */,
 				BE5AC2B2184D298900121126 /* Node+RestKit.m in Sources */,
 				BE5AC2B3184D298900121126 /* NodeAction+RestKit.m in Sources */,
-				BE4E74F31846B76900344677 /* StatSequence.m in Sources */,
+				BE5AC2BE184D69B100121126 /* Node.m in Sources */,
 				BE5AC2B1184D298900121126 /* InteractionAction+RestKit.m in Sources */,
 				BE5AC2AE184D298900121126 /* Asset+RestKit.m in Sources */,
 				BEA4F23B1843F097001F5B15 /* VAppDelegate.m in Sources */,

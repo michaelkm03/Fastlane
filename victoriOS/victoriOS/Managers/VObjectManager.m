@@ -33,6 +33,13 @@
                              mainUser.token,
                              RKStringFromRequestMethod(method)] SHA1HexDigest];
     
+    VLog(@"sha1String before sha1: %@", [NSString stringWithFormat:@"%@%@%@%@%@",
+                                         currentDate,
+                                         path,
+                                         userAgent,
+                                         mainUser.token,
+                                         RKStringFromRequestMethod(method)]);
+    
     NSNumber* userID = mainUser.id;
     sha1String = [NSString stringWithFormat:@"Basic %@:%@", userID, sha1String];
     

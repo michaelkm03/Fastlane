@@ -2,11 +2,12 @@
 //  User.m
 //  victoriOS
 //
-//  Created by Will Long on 11/27/13.
+//  Created by Will Long on 12/4/13.
 //  Copyright (c) 2013 Will Long. All rights reserved.
 //
 
 #import "User.h"
+#import "StatSequence.h"
 
 
 @implementation User
@@ -17,5 +18,6 @@
 @dynamic name;
 @dynamic token;
 @dynamic token_updated_at;
+@dynamic stat_sequences;
 
 @end
