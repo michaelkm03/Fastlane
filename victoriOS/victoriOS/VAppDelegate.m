@@ -13,6 +13,7 @@
 #import "VCategory+RestKit.h"
 #import "Sequence+RestKit.h"
 #import "StatSequence+RestKit.h"
+#import "VLoginViewController.h"
 
 @implementation VAppDelegate
 
@@ -26,8 +27,14 @@
     [self setupRestKit];
     
     [VLoginManager loginToFacebook];
+//    [self performSelector:@selector(login) withObject:nil afterDelay:1.0];
     
     return YES;
+}
+
+- (void)login
+{
+    [self.window.rootViewController presentViewController:[VLoginViewController sharedLoginViewController] animated:YES completion:NULL];
 }
 
 - (void)applicationWillResignActive:(UIApplication *)application
