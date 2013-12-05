@@ -9,6 +9,7 @@
 #import <Foundation/Foundation.h>
 #import "Sequence+RestKit.h"
 #import "User+RestKit.h"
+#import "StatSequence+RestKit.h"
 
 @interface VSequenceManager : NSObject
 
@@ -18,5 +19,9 @@
 
 + (void)loadStatSequencesForUser:(User*)user;
 + (void)loadFullDataForStatSequence:(StatSequence*)statSequence;
+
++ (void)createStatSequenceForSequence:(Sequence*)sequence;
++ (void)addStatInterationToStatSequence:(StatSequence*)sequence;
++ (void)addStatAnswerToStatInteraction:(StatInteraction*)interaction;
 
 @end

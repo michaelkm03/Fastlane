@@ -13,5 +13,6 @@
 
 + (RKResponseDescriptor*)gamesPlayedDescriptor;
 + (RKResponseDescriptor*)gameStatsDescriptor;
++ (RKResponseDescriptor*)createGameDescriptor;
 
 @end

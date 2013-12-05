@@ -9,7 +9,6 @@
 #import "VSequenceManager.h"
 #import "VCommentManager.h"
 #import "VCategory+RestKit.h"
-#import "StatSequence+RestKit.h"
 
 @implementation VSequenceManager
 
@@ -62,9 +61,8 @@
              {
                  //todo: send out message to tell app we're loaded
                  //Todo: remove this test code
-                 //[self loadFullDataForSequence:[[Sequence findAllObjectsWithSortKey:@"id"] firstObject]];
                  Sequence* first = [[Sequence findAllObjectsWithSortKey:@"id"] firstObject];
-                 [self loadCommentsForSequence:first];
+                 [self createStatSequenceForSequence:first];
              }
              
          } failure:^(RKObjectRequestOperation *operation, NSError *error)
@@ -211,4 +209,50 @@
     [requestOperation start];
 }
 
+#pragma mark - StatSequence Creation
++ (void)createStatSequenceForSequence:(Sequence*)sequence
+{
+    if (!sequence || !sequence.id)
+    {
+        VLog(@"Invalid sequence or id in api/game/create");
+        return;
+    }
+    
+    RKManagedObjectRequestOperation* requestOperation = [[RKObjectManager sharedManager]
+                                                         appropriateObjectRequestOperationWithObject:nil
+                                                         method:RKRequestMethodPOST
+                                                         path:@"api/game/create"
+                                                         parameters:@{ @"sequence_id" : sequence.id}];
+
+    [requestOperation setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation,
+                                                      RKMappingResult *mappingResult)
+     {
+         RKLogInfo(@"Load full sequence data: %@", mappingResult.array);
+         //TODO: we may need to change this when we start dealing with many users
+         User* mainUser = [[User findAllObjectsWithSortKey:@"id"] firstObject];
+         
+         //Just in case we ever return multiple
+         for (StatSequence* statSequence in mappingResult.array)
+         {
+             [mainUser addStat_sequencesObject:(StatSequence*)[mainUser.managedObjectContext
+                                                               objectWithID:[statSequence objectID]]];
+         }
+
+         
+     } failure:^(RKObjectRequestOperation *operation, NSError *error)
+     {
+         RKLogError(@"Operation failed with error: %@", error);
+     }];
+    
+    [requestOperation start];
+
+}
++ (void)addStatInterationToStatSequence:(StatSequence*)sequence
+{
+    
+}
++ (void)addStatAnswerToStatInteraction:(StatInteraction*)interaction
+{
+    
+}
 @end

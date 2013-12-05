@@ -38,7 +38,7 @@
     NSArray *results = [context executeFetchRequest:request error:&error];
     if (error != nil)
     {
-        //TODO: log error
+        VLog(@"Error occured in findAllObjects: %@", error);
     }
     return results;
 }

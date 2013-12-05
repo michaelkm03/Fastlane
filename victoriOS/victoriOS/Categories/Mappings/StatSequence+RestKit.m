@@ -43,7 +43,6 @@
                                                        keyPath:@"payload"                                         statusCodes:RKStatusCodeIndexSetForClass(RKStatusCodeClassSuccessful)];
 }
 
-
 + (RKResponseDescriptor*)gameStatsDescriptor
 {
     return [RKResponseDescriptor responseDescriptorWithMapping:[StatSequence entityMapping]
@@ -52,4 +51,11 @@
                                                        keyPath:@"payload"                                         statusCodes:RKStatusCodeIndexSetForClass(RKStatusCodeClassSuccessful)];
 }
 
++ (RKResponseDescriptor*)createGameDescriptor
+{
+    return [RKResponseDescriptor responseDescriptorWithMapping:[StatSequence entityMapping]
+                                                        method:RKRequestMethodPOST
+                                                   pathPattern:@"api/game/create"
+                                                       keyPath:@"payload"                                         statusCodes:RKStatusCodeIndexSetForClass(RKStatusCodeClassSuccessful)];
+}
 @end
