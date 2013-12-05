@@ -48,7 +48,7 @@
                                                       RKMappingResult *mappingResult)
     {
         RKLogInfo(@"Load collection of Articles: %@", mappingResult.array);
-        [VSequenceManager loadSequenceCategories];
+        [VSequenceManager loadStatSequencesForUser:[mappingResult firstObject]];
     } failure:^(RKObjectRequestOperation *operation, NSError *error)
     {
         RKLogError(@"Operation failed with error: %@", error);

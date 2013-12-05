@@ -9,6 +9,7 @@
 #import "VSequenceManager.h"
 #import "VCommentManager.h"
 #import "VCategory+RestKit.h"
+#import "StatSequence+RestKit.h"
 
 @implementation VSequenceManager
 
@@ -159,17 +160,27 @@
 
 + (void)loadStatSequencesForUser:(User*)user
 {
+    NSString* path = [NSString stringWithFormat:@"%@/%@", @"/api/userinfo/games_played", user.id];
     RKManagedObjectRequestOperation* requestOperation = [[RKObjectManager sharedManager]
                                                          appropriateObjectRequestOperationWithObject:nil
                                                          method:RKRequestMethodGET
-                                                         path:@"/api/userinfo/games_played"
+                                                         path:path
                                                          parameters:nil];
     
+    __block User* statSequenceOwner = user;// keep the user in memory until we get back from the block.
     [requestOperation setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation,
                                                       RKMappingResult *mappingResult)
      {
-         RKLogInfo(@"Load collection of categories: %@", mappingResult.array);
-         [self loadSequencesForAllCategories];
+         NSArray* statSequences = [mappingResult array];
+
+         for (StatSequence* statSequence in statSequences)
+         {
+             [statSequenceOwner addStat_sequencesObject:(StatSequence*)[statSequenceOwner.managedObjectContext
+                                                         objectWithID:[statSequence objectID]]];
+         }
+         
+         RKLogInfo(@"Load collection of stat sequences: %@", statSequences);
+         
      } failure:^(RKObjectRequestOperation *operation, NSError *error)
      {
          RKLogError(@"Operation failed with error: %@", error);

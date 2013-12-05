@@ -14,6 +14,5 @@
 
 + (RKResponseDescriptor*)sequenceListDescriptor;
 + (RKResponseDescriptor*)sequenceFullDataDescriptor;
-+ (RKResponseDescriptor*)sequenceCommentDescriptor;
 
 @end

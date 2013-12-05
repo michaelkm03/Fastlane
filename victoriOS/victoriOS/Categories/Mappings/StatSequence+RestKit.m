@@ -35,11 +35,20 @@
     return mapping;
 }
 
-+ (RKResponseDescriptor*)descriptor
++ (RKResponseDescriptor*)gamesPlayedDescriptor
 {
     return [RKResponseDescriptor responseDescriptorWithMapping:[StatSequence entityMapping]
                                                         method:RKRequestMethodGET
-                                                   pathPattern:nil
+                                                   pathPattern:@"/api/userinfo/games_played/:id"
+                                                       keyPath:@"payload"                                         statusCodes:RKStatusCodeIndexSetForClass(RKStatusCodeClassSuccessful)];
+}
+
+
++ (RKResponseDescriptor*)gameStatsDescriptor
+{
+    return [RKResponseDescriptor responseDescriptorWithMapping:[StatSequence entityMapping]
+                                                        method:RKRequestMethodGET
+                                                   pathPattern:@"/api/userinfo/game_stats/:id"
                                                        keyPath:@"payload"                                         statusCodes:RKStatusCodeIndexSetForClass(RKStatusCodeClassSuccessful)];
 }
 

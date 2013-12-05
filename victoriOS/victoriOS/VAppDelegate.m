@@ -123,8 +123,9 @@
                                                                        //[Sequence sequenceCommentDescriptor],
                                                                        [Sequence sequenceFullDataDescriptor],
                                                                        [Comment descriptor],
-                                                                       [Comment getAllDescriptor]]];
-                                                                       //[StatSequence descriptor]]];
+                                                                       [Comment getAllDescriptor],
+                                                                       [StatSequence gamesPlayedDescriptor],
+                                                                       [StatSequence gameStatsDescriptor]]];
 }
 
 @end

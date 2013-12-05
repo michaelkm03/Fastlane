@@ -11,6 +11,7 @@
 
 @interface StatSequence (RestKit)
 
-+ (RKResponseDescriptor*)descriptor;
++ (RKResponseDescriptor*)gamesPlayedDescriptor;
++ (RKResponseDescriptor*)gameStatsDescriptor;
 
 @end
