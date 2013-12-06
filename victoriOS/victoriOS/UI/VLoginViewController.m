@@ -69,6 +69,7 @@
 
 - (void)didLogin
 {
+    self.authorized =   YES;
     [self dismissViewControllerAnimated:YES completion:NULL];
 }
 
