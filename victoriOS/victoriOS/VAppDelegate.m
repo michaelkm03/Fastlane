@@ -14,6 +14,7 @@
 #import "Sequence+RestKit.h"
 #import "StatSequence+RestKit.h"
 #import "VLoginViewController.h"
+#import <TestFlightSDK/TestFlight.h>
 
 @implementation VAppDelegate
 
@@ -25,6 +26,8 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     [self setupRestKit];
+    
+    [TestFlight takeOff:@"4467aa06-d174-479e-b009-f1945f3d6532"];
     
     //[VLoginManager createVictoriousAccountWithEmail:@"a" password:@"a" name:@"a"];
     //[VLoginManager loginToVictoriousWithEmail:@"a" andPassword:@"a"];
