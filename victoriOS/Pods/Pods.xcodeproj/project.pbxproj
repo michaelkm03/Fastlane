@@ -169,7 +169,6 @@
 		680E80A2E531457A91F42534 /* FBLoginDialogParams.h in Headers */ = {isa = PBXBuildFile; fileRef = 5E5D822A0C3840B9BCE82CD4 /* FBLoginDialogParams.h */; };
 		68555D35100742059C4C92B0 /* Facebook.m in Sources */ = {isa = PBXBuildFile; fileRef = 2EA40F16AB2D4A52A792D2B2 /* Facebook.m */; };
 		6938C9D646A54E7EBA760AA3 /* NSString+SHA1Digest.h in Headers */ = {isa = PBXBuildFile; fileRef = 1A7F2002AEA840A299BA7D2F /* NSString+SHA1Digest.h */; };
-		69CAE2534B92424B8D3F8670 /* RestKit.h in Headers */ = {isa = PBXBuildFile; fileRef = 4F0B85498D97453F9DDEA093 /* RestKit.h */; };
 		69F871C49CD748E7AA3E6EE2 /* FBGraphObjectPagingLoader.m in Sources */ = {isa = PBXBuildFile; fileRef = 6241AD70E06A4265A9EABDBD /* FBGraphObjectPagingLoader.m */; };
 		6A9B8F9E93C242B882BC612E /* RKManagedObjectCaching.h in Headers */ = {isa = PBXBuildFile; fileRef = 968D33AE30EC442B9EDC8B9A /* RKManagedObjectCaching.h */; };
 		6B79EA7008504EB9BF29250D /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D821F219CF9A44C6A92C0B7E /* Foundation.framework */; };
@@ -298,6 +297,7 @@
 		BAF73EEED9324D78A4FB8D2D /* NSData+SHA256Digest.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A19AE0054E24B9C8CFABA18 /* NSData+SHA256Digest.m */; settings = {COMPILER_FLAGS = "-fobjc-arc -DOS_OBJECT_USE_OBJC=0"; }; };
 		BAFED2240EE744D498B6655E /* RKManagedObjectStore.m in Sources */ = {isa = PBXBuildFile; fileRef = 50D431163E3F434CB4E67EAE /* RKManagedObjectStore.m */; settings = {COMPILER_FLAGS = "-fobjc-arc -DOS_OBJECT_USE_OBJC=0"; }; };
 		BB3B21AA48B64CE0A05678DF /* RKObjectMapping.h in Headers */ = {isa = PBXBuildFile; fileRef = 7298C92420A94EE7A894D0DB /* RKObjectMapping.h */; };
+		BE2BA7CD185253CE00CA71AC /* RestKit.h in Headers */ = {isa = PBXBuildFile; fileRef = 4F0B85498D97453F9DDEA093 /* RestKit.h */; };
 		BE9A20A685B14EF389C97CB6 /* RKNSJSONSerialization.m in Sources */ = {isa = PBXBuildFile; fileRef = 9B91D4EF2A7B4A77A68D92A5 /* RKNSJSONSerialization.m */; settings = {COMPILER_FLAGS = "-fobjc-arc -DOS_OBJECT_USE_OBJC=0"; }; };
 		BEF54163EECF4324ADE02D61 /* RKConnectionDescription.h in Headers */ = {isa = PBXBuildFile; fileRef = 336820D69CAE44F4A2D997FC /* RKConnectionDescription.h */; };
 		BF6DFA49228A473C96B8905B /* RKPropertyMapping.m in Sources */ = {isa = PBXBuildFile; fileRef = 2E9847FDC3F04D8F9FDAD991 /* RKPropertyMapping.m */; settings = {COMPILER_FLAGS = "-fobjc-arc -DOS_OBJECT_USE_OBJC=0"; }; };
@@ -486,13 +486,6 @@
 			proxyType = 1;
 			remoteGlobalIDString = 2A8AA3CEF2AD4C31945AEB80;
 			remoteInfo = "Pods-RestKit";
-		};
-		BE2BA7CB185251BC00CA71AC /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 908C102AC739473E9833C11C /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = B73E915B05F2462DB9749BE8;
-			remoteInfo = Pods;
 		};
 		E658A26E8D364C23BB15DAF5 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -1870,6 +1863,7 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BE2BA7CD185253CE00CA71AC /* RestKit.h in Headers */,
 				E7A7BF3A4E13419AAC4DA154 /* CoreData.h in Headers */,
 				A8F5BC40EF72424AA9FB1105 /* LCLNSLog_RK.h in Headers */,
 				436041EA4E2A4FB18BBC0621 /* NSManagedObject+RKAdditions.h in Headers */,
@@ -1933,7 +1927,6 @@
 				A74E0535BDE34D2997EE261E /* RKSerialization.h in Headers */,
 				4D29708AB40B486597B781E8 /* RKStringTokenizer.h in Headers */,
 				63DA40217F51431EA72F7791 /* RKURLEncodedSerialization.h in Headers */,
-				69CAE2534B92424B8D3F8670 /* RestKit.h in Headers */,
 				8BD126E304674F4EAA349086 /* Support.h in Headers */,
 				94816511384E4042BBE6EAD8 /* lcl_RK.h in Headers */,
 				C80FEF213F8B43148C25A17E /* lcl_config_components_RK.h in Headers */,
@@ -1990,7 +1983,6 @@
 			buildRules = (
 			);
 			dependencies = (
-				BE2BA7CC185251BC00CA71AC /* PBXTargetDependency */,
 				7EE09E4012BD498A9981B518 /* PBXTargetDependency */,
 				44509A9BD5E146C69511AFF1 /* PBXTargetDependency */,
 				1295A8B3208F4F6E96E56163 /* PBXTargetDependency */,
@@ -2429,11 +2421,6 @@
 			isa = PBXTargetDependency;
 			target = 28831DADCDD5497FA1DB9B5E /* Pods-AFNetworking */;
 			targetProxy = 0F6D6B980E744F8BA7095574 /* PBXContainerItemProxy */;
-		};
-		BE2BA7CC185251BC00CA71AC /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = B73E915B05F2462DB9749BE8 /* Pods */;
-			targetProxy = BE2BA7CB185251BC00CA71AC /* PBXContainerItemProxy */;
 		};
 		CB2923C1A5624A0E8D41F3CF /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
