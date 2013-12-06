@@ -38,8 +38,8 @@
 {
     NSArray* categories = [VCategory findAllObjects];
     
-    __block int launched = [categories count];
-    __block int returned = 0;
+    __block NSInteger launched = [categories count];
+    __block NSInteger returned = 0;
     
     for (VCategory* category in categories)
     {
