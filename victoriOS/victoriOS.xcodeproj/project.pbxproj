@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3F543C4118512C6700A1F2FC /* VSignUpViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F543C4018512C6700A1F2FC /* VSignUpViewController.m */; };
 		5F3B4950184E6B8D0062DB55 /* VLoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F3B494F184E6B8D0062DB55 /* VLoginViewController.m */; };
 		5F8AAA5E184D43C600301783 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5F8AAA5D184D43C600301783 /* Main.storyboard */; };
 		5F8AAAA5184D467300301783 /* VStreamsTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F8AAAA4184D467300301783 /* VStreamsTableViewController.m */; };
@@ -75,6 +76,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		3F543C3F18512C6700A1F2FC /* VSignUpViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VSignUpViewController.h; path = UI/VSignUpViewController.h; sourceTree = "<group>"; };
+		3F543C4018512C6700A1F2FC /* VSignUpViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VSignUpViewController.m; path = UI/VSignUpViewController.m; sourceTree = "<group>"; };
 		4F627C2BF55A46F299155184 /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = "<group>"; };
 		5F3B494E184E6B8D0062DB55 /* VLoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VLoginViewController.h; path = UI/VLoginViewController.h; sourceTree = "<group>"; };
 		5F3B494F184E6B8D0062DB55 /* VLoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VLoginViewController.m; path = UI/VLoginViewController.m; sourceTree = "<group>"; };
@@ -208,6 +211,8 @@
 				5F8AAAA4184D467300301783 /* VStreamsTableViewController.m */,
 				5F3B494E184E6B8D0062DB55 /* VLoginViewController.h */,
 				5F3B494F184E6B8D0062DB55 /* VLoginViewController.m */,
+				3F543C3F18512C6700A1F2FC /* VSignUpViewController.h */,
+				3F543C4018512C6700A1F2FC /* VSignUpViewController.m */,
 				5F8AAA5D184D43C600301783 /* Main.storyboard */,
 			);
 			name = UI;
@@ -441,8 +446,11 @@
 			attributes = {
 				CLASSPREFIX = V;
 				LastUpgradeCheck = 0500;
-				ORGANIZATIONNAME = "Will Long";
+				ORGANIZATIONNAME = "Victorious, Inc.";
 				TargetAttributes = {
+					BEA4F2241843F097001F5B15 = {
+						DevelopmentTeam = 82T26U698A;
+					};
 					BEA4F2441843F097001F5B15 = {
 						TestTargetID = BEA4F2241843F097001F5B15;
 					};
@@ -563,6 +571,7 @@
 				BE5AC2B7184D298900121126 /* StatInteraction+RestKit.m in Sources */,
 				BE4E75051846B76900344677 /* Rule.m in Sources */,
 				BE4E754B184942F100344677 /* VSequenceManager.m in Sources */,
+				3F543C4118512C6700A1F2FC /* VSignUpViewController.m in Sources */,
 				BE5AC2B5184D298900121126 /* Sequence+RestKit.m in Sources */,
 				5F8AAAA5184D467300301783 /* VStreamsTableViewController.m in Sources */,
 				BE4E75231846B7CE00344677 /* Answer.m in Sources */,
@@ -685,10 +694,13 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "victoriOS/victoriOS-Prefix.pch";
 				INFOPLIST_FILE = "victoriOS/victoriOS-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -699,10 +711,13 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "victoriOS/victoriOS-Prefix.pch";
 				INFOPLIST_FILE = "victoriOS/victoriOS-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;

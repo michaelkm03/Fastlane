@@ -154,29 +154,26 @@
 
 - (NSFetchedResultsController *)fetchedResultsController
 {
-    if (_fetchedResultsController != nil)
+    if (nil == _fetchedResultsController)
     {
-        return _fetchedResultsController;
+          RKObjectManager* manager = [RKObjectManager sharedManager];
+          NSManagedObjectContext *context = manager.managedObjectStore.persistentStoreManagedObjectContext;
+          
+          NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+          NSEntityDescription *entity = [NSEntityDescription entityForName:@"Sequence" inManagedObjectContext:context];
+          [fetchRequest setEntity:entity];
+          
+          NSSortDescriptor *sort = [[NSSortDescriptor alloc] initWithKey:@"display_order" ascending:YES];
+          [fetchRequest setSortDescriptors:@[sort]];
+          [fetchRequest setFetchBatchSize:50];
+          
+          self.fetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:fetchRequest
+                                                                              managedObjectContext:context
+                                                                                sectionNameKeyPath:nil
+                                                                                         cacheName:@"Streams"];
+          self.fetchedResultsController.delegate = self;
     }
     
-    RKObjectManager* manager = [RKObjectManager sharedManager];
-    NSManagedObjectContext *context = manager.managedObjectStore.persistentStoreManagedObjectContext;
-
-    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
-    NSEntityDescription *entity = [NSEntityDescription entityForName:@"Sequence" inManagedObjectContext:context];
-    [fetchRequest setEntity:entity];
-    
-    NSSortDescriptor *sort = [[NSSortDescriptor alloc] initWithKey:@"display_order" ascending:YES];
-    [fetchRequest setSortDescriptors:@[sort]];
-    [fetchRequest setFetchBatchSize:50];
-    
-    NSFetchedResultsController *theFetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:fetchRequest
-                                                                                                  managedObjectContext:context
-                                                                                                    sectionNameKeyPath:nil
-                                                                                                             cacheName:@"Streams"];
-    self.fetchedResultsController = theFetchedResultsController;
-    self.fetchedResultsController.delegate = self;
-
     return _fetchedResultsController;
 }
 
@@ -226,7 +223,6 @@
             break;
     }
 }
-
 
 - (void)controllerDidChangeContent:(NSFetchedResultsController *)controller
 {
