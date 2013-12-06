@@ -7,8 +7,14 @@
 //
 
 #import "VLoginViewController.h"
+#import "VSequenceManager.h"
 @import Accounts;
 @import Social;
+
+@interface      VLoginViewController    ()
+@property (weak, nonatomic) IBOutlet UITextField *username;
+@property (weak, nonatomic) IBOutlet UITextField *password;
+@end
 
 @implementation VLoginViewController
 
@@ -47,9 +53,68 @@
     // Dispose of any resources that can be recreated.
 }
 
+#pragma mark -
+
+- (BOOL)shouldLoginWithUsername:(NSString *)username password:(NSString *)password
+{
+    if (!username || (0 == username.length) || !password || (0 == password.length))
+    {
+        UIAlertView*    alert   =   [[UIAlertView alloc] initWithTitle:@"Invalid E-mail or password" message:@"You must enter an email and password." delegate:self cancelButtonTitle:@"Understood" otherButtonTitles:nil];
+        [alert show];
+        return NO;
+    }
+    
+    return YES;
+}
+
+- (void)didLogin
+{
+    [self dismissViewControllerAnimated:YES completion:NULL];
+}
+
+- (void)didFailToLogIn
+{
+    UIAlertView*    alert   =   [[UIAlertView alloc] initWithTitle:@"Login Failed" message:@"Unable to log in." delegate:self cancelButtonTitle:@"Understood" otherButtonTitles:nil];
+    [alert show];
+    [self dismissViewControllerAnimated:YES completion:NULL];
+}
+
+- (void)didCancelLogin
+{
+    [self dismissViewControllerAnimated:YES completion:NULL];
+}
+
+#pragma mark -
+
+- (IBAction)login:(id)sender
+{
+    if ([self shouldLoginWithUsername:self.username.text password:self.password.text])
+    {
+        RKManagedObjectRequestOperation* requestOperation = [[RKObjectManager sharedManager]
+                                                             appropriateObjectRequestOperationWithObject:nil
+                                                             method:RKRequestMethodPOST
+                                                             path:@"/api/login"
+                                                             parameters:@{@"email": self.username.text,
+                                                                          @"password": self.password.text}];
+        
+        [requestOperation setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation,
+                                                          RKMappingResult *mappingResult)
+         {
+             RKLogInfo(@"Login with User: %@", mappingResult.array);
+             [self didLogin];
+         } failure:^(RKObjectRequestOperation *operation, NSError *error)
+         {
+             RKLogError(@"Operation failed with error: %@", error);
+             [self didFailToLogIn];
+         }];
+        
+        [requestOperation start];
+    }
+}
+
+
 - (IBAction)facebookClicked:(id)sender
 {
-    __block ACAccount*  facebookAccount;
     ACAccountStore* accountStore = [[ACAccountStore alloc] init];
     ACAccountType *facebookAccountType = [accountStore accountTypeWithAccountTypeIdentifier:ACAccountTypeIdentifierFacebook];
     
@@ -58,21 +123,51 @@
                               ACFacebookAppIdKey: @"012345678912345",
                               };
     
+    UIActivityIndicatorView *spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+    spinner.center = CGPointMake(160, 240);
+    spinner.hidesWhenStopped = YES;
+    [self.view addSubview:spinner];
+    [spinner startAnimating];
+
     [accountStore requestAccessToAccountsWithType:facebookAccountType options:options completion:^(BOOL granted, NSError *e)
     {
           if (granted)
           {
               NSArray *accounts = [accountStore accountsWithAccountType:facebookAccountType];
-              facebookAccount = [accounts lastObject];
+              ACAccount*    facebookAccount = [accounts lastObject];
 
               ACAccountCredential*  fbCredential = [facebookAccount credential];
               NSString* accessToken = [fbCredential oauthToken];
               NSLog(@"Facebook Access Token: %@", accessToken);
+
+              RKManagedObjectRequestOperation* requestOperation;
+              if(accessToken)
+              {
+                  requestOperation = [[RKObjectManager sharedManager]
+                                      appropriateObjectRequestOperationWithObject:nil
+                                      method:RKRequestMethodPOST
+                                      path:@"/api/login/facebook"
+                                      parameters:@{@"facebook_access_token": accessToken}];
+              }
+              
+              [requestOperation setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation,
+                                                                RKMappingResult *mappingResult)
+               {
+                   RKLogInfo(@"Login with User: %@", mappingResult.array);
+                   [VSequenceManager loadSequenceCategories];
+               } failure:^(RKObjectRequestOperation *operation, NSError *error)
+               {
+                   RKLogError(@"Operation failed with error: %@", error);
+               }];
+              
+              [requestOperation start];
           }
           else
           {
               //    [self performSegueWithIdentifier:@"facebook" sender:self];
           }
+        
+        [self didLogin];
     }];
 }
 
@@ -91,42 +186,31 @@
             ACAccountCredential*  ftwCredential = [twitterAccount credential];
             NSString* accessToken = [ftwCredential oauthToken];
             NSLog(@"Twitter Access Token: %@", accessToken);
-
-//                NSDictionary *message = @{@"status": @”My First Twitter post from iOS6”};
-//                
-//                NSURL *requestURL = [NSURL
-//                                     URLWithString:@"http://api.twitter.com/1/statuses/update.json"];
-//                
-//                SLRequest *postRequest = [SLRequest
-//                                          requestForServiceType:SLServiceTypeTwitter
-//                                          requestMethod:SLRequestMethodPOST
-//                                          URL:requestURL parameters:message];
-//                
-//                postRequest.account = twitterAccount;
-//                
-//                [postRequest performRequestWithHandler:^(NSData *responseData,
-//                                                         NSHTTPURLResponse *urlResponse, NSError *error)
-//                 {
-//                     NSLog(@"Twitter HTTP response: %i", [urlResponse 
-//                                                          statusCode]);
-//                 }];
-//            }
         }
         else
         {
 //            [self performSegueWithIdentifier:@"twitter" sender:self];
         }
+        
+        [self didLogin];
     }];
 }
 
-- (IBAction)emailClicked:(id)sender
+- (IBAction)cancelClicked:(id)sender
 {
-    [self performSegueWithIdentifier:@"email" sender:self];
+    [self didCancelLogin];
 }
 
-- (IBAction)dismiss:(id)sender
+#pragma mark -
+
+- (void) touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
 {
-    [self dismissViewControllerAnimated:YES completion:NULL];
+    [[self view] endEditing:YES];
+}
+
+-(IBAction)unwindToLoginVC:(UIStoryboardSegue *)segue
+{
+    
 }
 
 @end

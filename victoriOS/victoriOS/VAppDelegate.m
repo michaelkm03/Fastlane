@@ -28,8 +28,8 @@
     
     //[VLoginManager createVictoriousAccountWithEmail:@"a" password:@"a" name:@"a"];
     //[VLoginManager loginToVictoriousWithEmail:@"a" andPassword:@"a"];
-    [VLoginManager loginToFacebook];
-//    [self performSelector:@selector(login) withObject:nil afterDelay:1.0];
+//    [VLoginManager loginToFacebook];
+    [self performSelector:@selector(login) withObject:nil afterDelay:1.0];
     
     return YES;
 }
@@ -82,9 +82,7 @@
     [[manager HTTPClient] setDefaultHeader:@"User-Agent" value:userAgent];
     
     NSURL *modelURL = [[NSBundle mainBundle] URLForResource:@"victoriOS" withExtension:@"momd"];
-
-    NSManagedObjectModel *managedObjectModel = [[[NSManagedObjectModel alloc] initWithContentsOfURL:modelURL] mutableCopy];
-
+    NSManagedObjectModel *managedObjectModel = [[NSManagedObjectModel alloc] initWithContentsOfURL:modelURL];
     RKManagedObjectStore *managedObjectStore = [[RKManagedObjectStore alloc] initWithManagedObjectModel:managedObjectModel];
     
     manager.managedObjectStore = managedObjectStore;
@@ -92,10 +90,7 @@
     // Initialize the Core Data stack
     NSError *error;
     [managedObjectStore createPersistentStoreCoordinator];
-    
-    NSPersistentStore __unused *persistentStore = [managedObjectStore addInMemoryPersistentStore:&error];
-    NSAssert(persistentStore, @"Failed to add persistent store: %@", error);
-
+    [managedObjectStore addInMemoryPersistentStore:&error];
     [managedObjectStore createManagedObjectContexts];
     
     // Configure a managed object cache to ensure we do not create duplicate objects

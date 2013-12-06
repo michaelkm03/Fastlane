@@ -16,19 +16,23 @@
 
 + (void)loginToFacebook
 {
+    @try {
     [FBSession openActiveSessionWithReadPermissions:@[ @"basic_info", @"email" ]
                                        allowLoginUI:YES
                                   completionHandler:^(FBSession *session, FBSessionState status, NSError *error) {
                                       if (error)
                                       {
                                           // Log it.
-                                          //VLog(@"Error in opening FB Session: %@", error);
+                                          VLog(@"Error in opening FB Session: %@", error);
                                       }
                                       else
                                       {
                                           [VLoginManager launchLoginToFBCall];
                                       }
                                   }];
+    } @catch (NSException* exception) {
+        VLog(@"exception: %@", exception);
+    }
 
 }
 
