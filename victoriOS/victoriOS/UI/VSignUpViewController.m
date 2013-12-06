@@ -48,11 +48,6 @@
     [self dismissViewControllerAnimated:YES completion:NULL];
 }
 
-- (void)didCancelSignUp
-{
-    [self dismissViewControllerAnimated:YES completion:NULL];
-}
-
 #pragma mark -
 
 - (IBAction)signup:(id)sender
@@ -92,8 +87,6 @@
 //     }];
 //    
 //    [requestOperation start];
-    
-    [self dismissViewControllerAnimated:YES completion:NULL];
 }
 
 @end

@@ -69,6 +69,7 @@
 
 - (void)didLogin
 {
+    self.authorized =   YES;
     [self dismissViewControllerAnimated:YES completion:NULL];
 }
 
@@ -154,46 +155,42 @@
                                                                 RKMappingResult *mappingResult)
                {
                    RKLogInfo(@"Login with User: %@", mappingResult.array);
-                   [VSequenceManager loadSequenceCategories];
+                   [self didLogin];
+                  [VSequenceManager loadSequenceCategories];
                } failure:^(RKObjectRequestOperation *operation, NSError *error)
                {
                    RKLogError(@"Operation failed with error: %@", error);
+                   [self didFailToLogIn];
                }];
               
               [requestOperation start];
           }
-          else
-          {
-              //    [self performSegueWithIdentifier:@"facebook" sender:self];
-          }
-        
-        [self didLogin];
     }];
 }
 
 - (IBAction)twitterClicked:(id)sender
 {
-    ACAccountStore* account = [[ACAccountStore alloc] init];
-    ACAccountType* accountType = [account accountTypeWithAccountTypeIdentifier:ACAccountTypeIdentifierTwitter];
-    
-    [account requestAccessToAccountsWithType:accountType options:nil completion:^(BOOL granted, NSError *error)
-    {
-        if (granted == YES)
-        {
-            NSArray *accounts = [account accountsWithAccountType:accountType];
-            ACAccount *twitterAccount = [accounts lastObject];
-                
-            ACAccountCredential*  ftwCredential = [twitterAccount credential];
-            NSString* accessToken = [ftwCredential oauthToken];
-            NSLog(@"Twitter Access Token: %@", accessToken);
-        }
-        else
-        {
-//            [self performSegueWithIdentifier:@"twitter" sender:self];
-        }
-        
-        [self didLogin];
-    }];
+//    ACAccountStore* account = [[ACAccountStore alloc] init];
+//    ACAccountType* accountType = [account accountTypeWithAccountTypeIdentifier:ACAccountTypeIdentifierTwitter];
+//    
+//    [account requestAccessToAccountsWithType:accountType options:nil completion:^(BOOL granted, NSError *error)
+//    {
+//        if (granted == YES)
+//        {
+//            NSArray *accounts = [account accountsWithAccountType:accountType];
+//            ACAccount *twitterAccount = [accounts lastObject];
+//                
+//            ACAccountCredential*  ftwCredential = [twitterAccount credential];
+//            NSString* accessToken = [ftwCredential oauthToken];
+//            NSLog(@"Twitter Access Token: %@", accessToken);
+//        }
+//        else
+//        {
+////            [self performSegueWithIdentifier:@"twitter" sender:self];
+//        }
+//        
+//        [self didLogin];
+//    }];
 }
 
 - (IBAction)cancelClicked:(id)sender
