@@ -248,12 +248,15 @@
     [requestOperation start];
 
 }
+    
 + (void)addStatInterationToStatSequence:(StatSequence*)sequence
 {
     
 }
+    
 + (void)addStatAnswerToStatInteraction:(StatInteraction*)interaction
 {
     
 }
+    
 @end

@@ -45,7 +45,8 @@
     return [RKResponseDescriptor responseDescriptorWithMapping:[Sequence entityMapping]
                                                         method:RKRequestMethodGET
                                                    pathPattern:@"/api/sequence/list_by_category/:category"
-                                                       keyPath:@"payload"                                         statusCodes:RKStatusCodeIndexSetForClass(RKStatusCodeClassSuccessful)];
+                                                       keyPath:@"payload"
+                                                   statusCodes:RKStatusCodeIndexSetForClass(RKStatusCodeClassSuccessful)];
 }
 
 + (RKResponseDescriptor*)sequenceFullDataDescriptor
@@ -53,7 +54,8 @@
     return [RKResponseDescriptor responseDescriptorWithMapping:[Sequence entityMapping]
                                                         method:RKRequestMethodGET
                                                    pathPattern:@"/api/sequence/fetch/:sequence_id"
-                                                       keyPath:@"payload"                                         statusCodes:RKStatusCodeIndexSetForClass(RKStatusCodeClassSuccessful)];
+                                                       keyPath:@"payload"
+                                                   statusCodes:RKStatusCodeIndexSetForClass(RKStatusCodeClassSuccessful)];
 }
 
 @end
