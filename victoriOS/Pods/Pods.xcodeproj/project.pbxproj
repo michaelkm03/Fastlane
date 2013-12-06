@@ -487,6 +487,13 @@
 			remoteGlobalIDString = 2A8AA3CEF2AD4C31945AEB80;
 			remoteInfo = "Pods-RestKit";
 		};
+		BE2BA7C918524EB000CA71AC /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 908C102AC739473E9833C11C /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = B73E915B05F2462DB9749BE8;
+			remoteInfo = Pods;
+		};
 		E658A26E8D364C23BB15DAF5 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 908C102AC739473E9833C11C /* Project object */;
@@ -1983,6 +1990,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				BE2BA7CA18524EB000CA71AC /* PBXTargetDependency */,
 				7EE09E4012BD498A9981B518 /* PBXTargetDependency */,
 				44509A9BD5E146C69511AFF1 /* PBXTargetDependency */,
 				1295A8B3208F4F6E96E56163 /* PBXTargetDependency */,
@@ -2421,6 +2429,11 @@
 			isa = PBXTargetDependency;
 			target = 28831DADCDD5497FA1DB9B5E /* Pods-AFNetworking */;
 			targetProxy = 0F6D6B980E744F8BA7095574 /* PBXContainerItemProxy */;
+		};
+		BE2BA7CA18524EB000CA71AC /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = B73E915B05F2462DB9749BE8 /* Pods */;
+			targetProxy = BE2BA7C918524EB000CA71AC /* PBXContainerItemProxy */;
 		};
 		CB2923C1A5624A0E8D41F3CF /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;

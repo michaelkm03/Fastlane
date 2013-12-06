@@ -85,6 +85,7 @@
 		5F8AAAA3184D467300301783 /* VStreamsTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VStreamsTableViewController.h; sourceTree = "<group>"; };
 		5F8AAAA4184D467300301783 /* VStreamsTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VStreamsTableViewController.m; sourceTree = "<group>"; };
 		B15D4A5304A04D16AD420BCD /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		BE20A10218524D6A003D0E8C /* libPods-RestKit.a */ = {isa = PBXFileReference; lastKnownFileType = file; name = "libPods-RestKit.a"; path = "Pods/build/TestFlight-iphoneos/libPods-RestKit.a"; sourceTree = "<group>"; };
 		BE4E74EB1846B76900344677 /* StatInteraction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = StatInteraction.h; path = Models/StatInteraction.h; sourceTree = "<group>"; };
 		BE4E74EC1846B76900344677 /* StatInteraction.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = StatInteraction.m; path = Models/StatInteraction.m; sourceTree = "<group>"; };
 		BE4E74FA1846B76900344677 /* Sequence.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Sequence.h; path = Models/Sequence.h; sourceTree = "<group>"; };
@@ -175,8 +176,8 @@
 		BECAFFD2184FDAD20096E370 /* StatSequence.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = StatSequence.m; path = Models/StatSequence.m; sourceTree = "<group>"; };
 		BECAFFD4184FDAD20096E370 /* User.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = User.h; path = Models/User.h; sourceTree = "<group>"; };
 		BECAFFD5184FDAD20096E370 /* User.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = User.m; path = Models/User.m; sourceTree = "<group>"; };
-		BED5590218515734007FD3E6 /* libPods.a */ = {isa = PBXFileReference; lastKnownFileType = file; name = libPods.a; path = "Pods/build/Release-iphoneos/libPods.a"; sourceTree = "<group>"; };
-		BED55904185157DE007FD3E6 /* libPods.a */ = {isa = PBXFileReference; lastKnownFileType = file; name = libPods.a; path = "Pods/build/Release-iphoneos/libPods.a"; sourceTree = "<group>"; };
+		BED5590218515734007FD3E6 /* libPods.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libPods.a; path = "Pods/build/Release-iphoneos/libPods.a"; sourceTree = "<group>"; };
+		BED55904185157DE007FD3E6 /* libPods.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libPods.a; path = "Pods/build/Release-iphoneos/libPods.a"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -308,6 +309,7 @@
 		BEA4F2271843F097001F5B15 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				BE20A10218524D6A003D0E8C /* libPods-RestKit.a */,
 				BED55904185157DE007FD3E6 /* libPods.a */,
 				BED5590218515734007FD3E6 /* libPods.a */,
 				BEA4F2281843F097001F5B15 /* Foundation.framework */,
