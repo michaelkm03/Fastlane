@@ -25,7 +25,7 @@
 #endif
 
 // Make RestKit globally available
-#import <RestKit/RestKit.h>
+#import "RestKit.h"
 
 #ifdef DEBUG
 #define VBASEURL @"http://dev.getvictorious.com"
