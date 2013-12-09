@@ -19,9 +19,6 @@
 
 + (void)removeComment:(VComment*)comment withReason:(NSString*)removalReason;
 
-+ (void)shareToFacebook:(VComment*)comment;
-+ (void)shareToTwitter:(VComment*)comment;
-
 + (void)flagComment:(VComment*)comment;
 
 + (void)likeComment:(VComment*)comment;

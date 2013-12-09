@@ -42,7 +42,7 @@
     manager.managedObjectStore = managedObjectStore;
 
     // Initialize the Core Data stack
-    NSError *error;
+    NSError *error = nil;
     [managedObjectStore createPersistentStoreCoordinator];
     [managedObjectStore addInMemoryPersistentStore:&error];
     [managedObjectStore createManagedObjectContexts];
