@@ -23,38 +23,10 @@
 		5F8AAA5E184D43C600301783 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5F8AAA5D184D43C600301783 /* Main.storyboard */; };
 		5F8AAAA5184D467300301783 /* VStreamsTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F8AAAA4184D467300301783 /* VStreamsTableViewController.m */; };
 		BE2BA7CF1852593700CA71AC /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = BE2BA7CE1852593700CA71AC /* libPods.a */; };
-		BE4E74ED1846B76900344677 /* StatInteraction.m in Sources */ = {isa = PBXBuildFile; fileRef = BE4E74EC1846B76900344677 /* StatInteraction.m */; };
-		BE4E74FC1846B76900344677 /* Sequence.m in Sources */ = {isa = PBXBuildFile; fileRef = BE4E74FB1846B76900344677 /* Sequence.m */; };
-		BE4E75021846B76900344677 /* StatAnswer.m in Sources */ = {isa = PBXBuildFile; fileRef = BE4E75011846B76900344677 /* StatAnswer.m */; };
-		BE4E75051846B76900344677 /* Rule.m in Sources */ = {isa = PBXBuildFile; fileRef = BE4E75041846B76900344677 /* Rule.m */; };
-		BE4E75141846B78000344677 /* InteractionAction.m in Sources */ = {isa = PBXBuildFile; fileRef = BE4E75131846B78000344677 /* InteractionAction.m */; };
-		BE4E751A1846B78000344677 /* Interaction.m in Sources */ = {isa = PBXBuildFile; fileRef = BE4E75191846B78000344677 /* Interaction.m */; };
-		BE4E75231846B7CE00344677 /* Answer.m in Sources */ = {isa = PBXBuildFile; fileRef = BE4E75221846B7CE00344677 /* Answer.m */; };
-		BE4E75261846B7CE00344677 /* Asset.m in Sources */ = {isa = PBXBuildFile; fileRef = BE4E75251846B7CE00344677 /* Asset.m */; };
-		BE4E752C1846B7CE00344677 /* AnswerAction.m in Sources */ = {isa = PBXBuildFile; fileRef = BE4E752B1846B7CE00344677 /* AnswerAction.m */; };
-		BE4E752F1846B7CF00344677 /* Comment.m in Sources */ = {isa = PBXBuildFile; fileRef = BE4E752E1846B7CF00344677 /* Comment.m */; };
 		BE4E753C1846BF0700344677 /* VLoginManager.m in Sources */ = {isa = PBXBuildFile; fileRef = BE4E753B1846BF0700344677 /* VLoginManager.m */; };
 		BE4E754B184942F100344677 /* VSequenceManager.m in Sources */ = {isa = PBXBuildFile; fileRef = BE4E754A184942F100344677 /* VSequenceManager.m */; };
 		BE4E7554184955BE00344677 /* VObjectManager.m in Sources */ = {isa = PBXBuildFile; fileRef = BE4E7553184955BE00344677 /* VObjectManager.m */; };
-		BE5AC27E184C80D000121126 /* VCategory.m in Sources */ = {isa = PBXBuildFile; fileRef = BE5AC27D184C80D000121126 /* VCategory.m */; };
-		BE5AC28A184D194A00121126 /* NodeAction.m in Sources */ = {isa = PBXBuildFile; fileRef = BE5AC289184D194A00121126 /* NodeAction.m */; };
-		BE5AC2AC184D298900121126 /* Answer+RestKit.m in Sources */ = {isa = PBXBuildFile; fileRef = BE5AC28D184D298900121126 /* Answer+RestKit.m */; };
-		BE5AC2AD184D298900121126 /* AnswerAction+RestKit.m in Sources */ = {isa = PBXBuildFile; fileRef = BE5AC28F184D298900121126 /* AnswerAction+RestKit.m */; };
-		BE5AC2AE184D298900121126 /* Asset+RestKit.m in Sources */ = {isa = PBXBuildFile; fileRef = BE5AC291184D298900121126 /* Asset+RestKit.m */; };
-		BE5AC2AF184D298900121126 /* Comment+RestKit.m in Sources */ = {isa = PBXBuildFile; fileRef = BE5AC293184D298900121126 /* Comment+RestKit.m */; };
-		BE5AC2B0184D298900121126 /* Interaction+RestKit.m in Sources */ = {isa = PBXBuildFile; fileRef = BE5AC295184D298900121126 /* Interaction+RestKit.m */; };
-		BE5AC2B1184D298900121126 /* InteractionAction+RestKit.m in Sources */ = {isa = PBXBuildFile; fileRef = BE5AC297184D298900121126 /* InteractionAction+RestKit.m */; };
-		BE5AC2B2184D298900121126 /* Node+RestKit.m in Sources */ = {isa = PBXBuildFile; fileRef = BE5AC299184D298900121126 /* Node+RestKit.m */; };
-		BE5AC2B3184D298900121126 /* NodeAction+RestKit.m in Sources */ = {isa = PBXBuildFile; fileRef = BE5AC29B184D298900121126 /* NodeAction+RestKit.m */; };
-		BE5AC2B4184D298900121126 /* Rule+RestKit.m in Sources */ = {isa = PBXBuildFile; fileRef = BE5AC29D184D298900121126 /* Rule+RestKit.m */; };
-		BE5AC2B5184D298900121126 /* Sequence+RestKit.m in Sources */ = {isa = PBXBuildFile; fileRef = BE5AC29F184D298900121126 /* Sequence+RestKit.m */; };
-		BE5AC2B6184D298900121126 /* StatAnswer+RestKit.m in Sources */ = {isa = PBXBuildFile; fileRef = BE5AC2A1184D298900121126 /* StatAnswer+RestKit.m */; };
-		BE5AC2B7184D298900121126 /* StatInteraction+RestKit.m in Sources */ = {isa = PBXBuildFile; fileRef = BE5AC2A3184D298900121126 /* StatInteraction+RestKit.m */; };
-		BE5AC2B8184D298900121126 /* StatSequence+RestKit.m in Sources */ = {isa = PBXBuildFile; fileRef = BE5AC2A5184D298900121126 /* StatSequence+RestKit.m */; };
-		BE5AC2B9184D298900121126 /* User+RestKit.m in Sources */ = {isa = PBXBuildFile; fileRef = BE5AC2A7184D298900121126 /* User+RestKit.m */; };
-		BE5AC2BA184D298900121126 /* VCategory+RestKit.m in Sources */ = {isa = PBXBuildFile; fileRef = BE5AC2A9184D298900121126 /* VCategory+RestKit.m */; };
 		BE5AC2BB184D298900121126 /* NSManagedObject+EasyFetching.m in Sources */ = {isa = PBXBuildFile; fileRef = BE5AC2AB184D298900121126 /* NSManagedObject+EasyFetching.m */; };
-		BE5AC2BE184D69B100121126 /* Node.m in Sources */ = {isa = PBXBuildFile; fileRef = BE5AC2BD184D69B100121126 /* Node.m */; };
 		BE5AC2C2184E6CB300121126 /* VCommentManager.m in Sources */ = {isa = PBXBuildFile; fileRef = BE5AC2C1184E6CB300121126 /* VCommentManager.m */; };
 		BE5AC2C5184E733800121126 /* NSString+VParseHelp.m in Sources */ = {isa = PBXBuildFile; fileRef = BE5AC2C4184E733800121126 /* NSString+VParseHelp.m */; };
 		BEA4F2291843F097001F5B15 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BEA4F2281843F097001F5B15 /* Foundation.framework */; };
@@ -72,8 +44,36 @@
 		BEA4F24A1843F097001F5B15 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BEA4F22E1843F097001F5B15 /* CoreData.framework */; };
 		BEA4F2521843F097001F5B15 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = BEA4F2501843F097001F5B15 /* InfoPlist.strings */; };
 		BEA4F2541843F097001F5B15 /* victoriOSTests.m in Sources */ = {isa = PBXBuildFile; fileRef = BEA4F2531843F097001F5B15 /* victoriOSTests.m */; };
-		BECAFFD3184FDAD20096E370 /* StatSequence.m in Sources */ = {isa = PBXBuildFile; fileRef = BECAFFD2184FDAD20096E370 /* StatSequence.m */; };
-		BECAFFD6184FDAD20096E370 /* User.m in Sources */ = {isa = PBXBuildFile; fileRef = BECAFFD5184FDAD20096E370 /* User.m */; };
+		BEBDC4961857B2C50013DEF1 /* VAnswer.m in Sources */ = {isa = PBXBuildFile; fileRef = BEBDC4791857B2C50013DEF1 /* VAnswer.m */; };
+		BEBDC4971857B2C50013DEF1 /* VAnswerAction.m in Sources */ = {isa = PBXBuildFile; fileRef = BEBDC47B1857B2C50013DEF1 /* VAnswerAction.m */; };
+		BEBDC4981857B2C50013DEF1 /* VAsset.m in Sources */ = {isa = PBXBuildFile; fileRef = BEBDC47D1857B2C50013DEF1 /* VAsset.m */; };
+		BEBDC4991857B2C50013DEF1 /* VCategory.m in Sources */ = {isa = PBXBuildFile; fileRef = BEBDC47F1857B2C50013DEF1 /* VCategory.m */; };
+		BEBDC49A1857B2C50013DEF1 /* VComment.m in Sources */ = {isa = PBXBuildFile; fileRef = BEBDC4811857B2C50013DEF1 /* VComment.m */; };
+		BEBDC49B1857B2C50013DEF1 /* VInteraction.m in Sources */ = {isa = PBXBuildFile; fileRef = BEBDC4831857B2C50013DEF1 /* VInteraction.m */; };
+		BEBDC49C1857B2C50013DEF1 /* VInteractionAction.m in Sources */ = {isa = PBXBuildFile; fileRef = BEBDC4851857B2C50013DEF1 /* VInteractionAction.m */; };
+		BEBDC49D1857B2C50013DEF1 /* VNode.m in Sources */ = {isa = PBXBuildFile; fileRef = BEBDC4871857B2C50013DEF1 /* VNode.m */; };
+		BEBDC49E1857B2C50013DEF1 /* VNodeAction.m in Sources */ = {isa = PBXBuildFile; fileRef = BEBDC4891857B2C50013DEF1 /* VNodeAction.m */; };
+		BEBDC49F1857B2C50013DEF1 /* VRule.m in Sources */ = {isa = PBXBuildFile; fileRef = BEBDC48B1857B2C50013DEF1 /* VRule.m */; };
+		BEBDC4A01857B2C50013DEF1 /* VSequence.m in Sources */ = {isa = PBXBuildFile; fileRef = BEBDC48D1857B2C50013DEF1 /* VSequence.m */; };
+		BEBDC4A11857B2C50013DEF1 /* VStatAnswer.m in Sources */ = {isa = PBXBuildFile; fileRef = BEBDC48F1857B2C50013DEF1 /* VStatAnswer.m */; };
+		BEBDC4A21857B2C50013DEF1 /* VStatInteraction.m in Sources */ = {isa = PBXBuildFile; fileRef = BEBDC4911857B2C50013DEF1 /* VStatInteraction.m */; };
+		BEBDC4A31857B2C50013DEF1 /* VStatSequence.m in Sources */ = {isa = PBXBuildFile; fileRef = BEBDC4931857B2C50013DEF1 /* VStatSequence.m */; };
+		BEBDC4A41857B2C50013DEF1 /* VUser.m in Sources */ = {isa = PBXBuildFile; fileRef = BEBDC4951857B2C50013DEF1 /* VUser.m */; };
+		BEBDC4C41857B2E30013DEF1 /* VAnswer+RestKit.m in Sources */ = {isa = PBXBuildFile; fileRef = BEBDC4A71857B2E30013DEF1 /* VAnswer+RestKit.m */; };
+		BEBDC4C51857B2E30013DEF1 /* VAnswerAction+RestKit.m in Sources */ = {isa = PBXBuildFile; fileRef = BEBDC4A91857B2E30013DEF1 /* VAnswerAction+RestKit.m */; };
+		BEBDC4C61857B2E30013DEF1 /* VAsset+RestKit.m in Sources */ = {isa = PBXBuildFile; fileRef = BEBDC4AB1857B2E30013DEF1 /* VAsset+RestKit.m */; };
+		BEBDC4C71857B2E30013DEF1 /* VCategory+RestKit.m in Sources */ = {isa = PBXBuildFile; fileRef = BEBDC4AD1857B2E30013DEF1 /* VCategory+RestKit.m */; };
+		BEBDC4C81857B2E30013DEF1 /* VComment+RestKit.m in Sources */ = {isa = PBXBuildFile; fileRef = BEBDC4AF1857B2E30013DEF1 /* VComment+RestKit.m */; };
+		BEBDC4C91857B2E30013DEF1 /* VInteraction+RestKit.m in Sources */ = {isa = PBXBuildFile; fileRef = BEBDC4B11857B2E30013DEF1 /* VInteraction+RestKit.m */; };
+		BEBDC4CA1857B2E30013DEF1 /* VInteractionAction+RestKit.m in Sources */ = {isa = PBXBuildFile; fileRef = BEBDC4B31857B2E30013DEF1 /* VInteractionAction+RestKit.m */; };
+		BEBDC4CB1857B2E30013DEF1 /* VNode+RestKit.m in Sources */ = {isa = PBXBuildFile; fileRef = BEBDC4B51857B2E30013DEF1 /* VNode+RestKit.m */; };
+		BEBDC4CC1857B2E30013DEF1 /* VNodeAction+RestKit.m in Sources */ = {isa = PBXBuildFile; fileRef = BEBDC4B71857B2E30013DEF1 /* VNodeAction+RestKit.m */; };
+		BEBDC4CD1857B2E30013DEF1 /* VRule+RestKit.m in Sources */ = {isa = PBXBuildFile; fileRef = BEBDC4B91857B2E30013DEF1 /* VRule+RestKit.m */; };
+		BEBDC4CE1857B2E30013DEF1 /* VSequence+RestKit.m in Sources */ = {isa = PBXBuildFile; fileRef = BEBDC4BB1857B2E30013DEF1 /* VSequence+RestKit.m */; };
+		BEBDC4CF1857B2E30013DEF1 /* VStatAnswer+RestKit.m in Sources */ = {isa = PBXBuildFile; fileRef = BEBDC4BD1857B2E30013DEF1 /* VStatAnswer+RestKit.m */; };
+		BEBDC4D01857B2E30013DEF1 /* VStatInteraction+RestKit.m in Sources */ = {isa = PBXBuildFile; fileRef = BEBDC4BF1857B2E30013DEF1 /* VStatInteraction+RestKit.m */; };
+		BEBDC4D11857B2E30013DEF1 /* VStatSequence+RestKit.m in Sources */ = {isa = PBXBuildFile; fileRef = BEBDC4C11857B2E30013DEF1 /* VStatSequence+RestKit.m */; };
+		BEBDC4D21857B2E30013DEF1 /* VUser+RestKit.m in Sources */ = {isa = PBXBuildFile; fileRef = BEBDC4C31857B2E30013DEF1 /* VUser+RestKit.m */; };
 		BED55905185157DE007FD3E6 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = BED55904185157DE007FD3E6 /* libPods.a */; };
 /* End PBXBuildFile section */
 
@@ -116,70 +116,14 @@
 		B15D4A5304A04D16AD420BCD /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		BE20A10218524D6A003D0E8C /* libPods-RestKit.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libPods-RestKit.a"; path = "Pods/build/TestFlight-iphoneos/libPods-RestKit.a"; sourceTree = "<group>"; };
 		BE2BA7CE1852593700CA71AC /* libPods.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libPods.a; path = "Pods/build/TestFlight-iphoneos/libPods.a"; sourceTree = "<group>"; };
-		BE4E74EB1846B76900344677 /* StatInteraction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = StatInteraction.h; path = Models/StatInteraction.h; sourceTree = "<group>"; };
-		BE4E74EC1846B76900344677 /* StatInteraction.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = StatInteraction.m; path = Models/StatInteraction.m; sourceTree = "<group>"; };
-		BE4E74FA1846B76900344677 /* Sequence.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Sequence.h; path = Models/Sequence.h; sourceTree = "<group>"; };
-		BE4E74FB1846B76900344677 /* Sequence.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Sequence.m; path = Models/Sequence.m; sourceTree = "<group>"; };
-		BE4E75001846B76900344677 /* StatAnswer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = StatAnswer.h; path = Models/StatAnswer.h; sourceTree = "<group>"; };
-		BE4E75011846B76900344677 /* StatAnswer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = StatAnswer.m; path = Models/StatAnswer.m; sourceTree = "<group>"; };
-		BE4E75031846B76900344677 /* Rule.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Rule.h; path = Models/Rule.h; sourceTree = "<group>"; };
-		BE4E75041846B76900344677 /* Rule.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Rule.m; path = Models/Rule.m; sourceTree = "<group>"; };
-		BE4E75121846B78000344677 /* InteractionAction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = InteractionAction.h; path = Models/InteractionAction.h; sourceTree = "<group>"; };
-		BE4E75131846B78000344677 /* InteractionAction.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = InteractionAction.m; path = Models/InteractionAction.m; sourceTree = "<group>"; };
-		BE4E75181846B78000344677 /* Interaction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Interaction.h; path = Models/Interaction.h; sourceTree = "<group>"; };
-		BE4E75191846B78000344677 /* Interaction.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Interaction.m; path = Models/Interaction.m; sourceTree = "<group>"; };
-		BE4E75211846B7CE00344677 /* Answer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Answer.h; path = Models/Answer.h; sourceTree = "<group>"; };
-		BE4E75221846B7CE00344677 /* Answer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Answer.m; path = Models/Answer.m; sourceTree = "<group>"; };
-		BE4E75241846B7CE00344677 /* Asset.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Asset.h; path = Models/Asset.h; sourceTree = "<group>"; };
-		BE4E75251846B7CE00344677 /* Asset.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Asset.m; path = Models/Asset.m; sourceTree = "<group>"; };
-		BE4E752A1846B7CE00344677 /* AnswerAction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AnswerAction.h; path = Models/AnswerAction.h; sourceTree = "<group>"; };
-		BE4E752B1846B7CE00344677 /* AnswerAction.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AnswerAction.m; path = Models/AnswerAction.m; sourceTree = "<group>"; };
-		BE4E752D1846B7CF00344677 /* Comment.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Comment.h; path = Models/Comment.h; sourceTree = "<group>"; };
-		BE4E752E1846B7CF00344677 /* Comment.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Comment.m; path = Models/Comment.m; sourceTree = "<group>"; };
 		BE4E753A1846BF0700344677 /* VLoginManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VLoginManager.h; path = Managers/VLoginManager.h; sourceTree = "<group>"; };
 		BE4E753B1846BF0700344677 /* VLoginManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VLoginManager.m; path = Managers/VLoginManager.m; sourceTree = "<group>"; };
 		BE4E7549184942F100344677 /* VSequenceManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VSequenceManager.h; path = Managers/VSequenceManager.h; sourceTree = "<group>"; };
 		BE4E754A184942F100344677 /* VSequenceManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VSequenceManager.m; path = Managers/VSequenceManager.m; sourceTree = "<group>"; };
 		BE4E7552184955BE00344677 /* VObjectManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VObjectManager.h; path = Managers/VObjectManager.h; sourceTree = "<group>"; };
 		BE4E7553184955BE00344677 /* VObjectManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VObjectManager.m; path = Managers/VObjectManager.m; sourceTree = "<group>"; };
-		BE5AC27C184C80D000121126 /* VCategory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VCategory.h; path = Models/VCategory.h; sourceTree = "<group>"; };
-		BE5AC27D184C80D000121126 /* VCategory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VCategory.m; path = Models/VCategory.m; sourceTree = "<group>"; };
-		BE5AC288184D194A00121126 /* NodeAction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NodeAction.h; path = Models/NodeAction.h; sourceTree = "<group>"; };
-		BE5AC289184D194A00121126 /* NodeAction.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NodeAction.m; path = Models/NodeAction.m; sourceTree = "<group>"; };
-		BE5AC28C184D298900121126 /* Answer+RestKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Answer+RestKit.h"; sourceTree = "<group>"; };
-		BE5AC28D184D298900121126 /* Answer+RestKit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "Answer+RestKit.m"; sourceTree = "<group>"; };
-		BE5AC28E184D298900121126 /* AnswerAction+RestKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "AnswerAction+RestKit.h"; sourceTree = "<group>"; };
-		BE5AC28F184D298900121126 /* AnswerAction+RestKit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "AnswerAction+RestKit.m"; sourceTree = "<group>"; };
-		BE5AC290184D298900121126 /* Asset+RestKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Asset+RestKit.h"; sourceTree = "<group>"; };
-		BE5AC291184D298900121126 /* Asset+RestKit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "Asset+RestKit.m"; sourceTree = "<group>"; };
-		BE5AC292184D298900121126 /* Comment+RestKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Comment+RestKit.h"; sourceTree = "<group>"; };
-		BE5AC293184D298900121126 /* Comment+RestKit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "Comment+RestKit.m"; sourceTree = "<group>"; };
-		BE5AC294184D298900121126 /* Interaction+RestKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Interaction+RestKit.h"; sourceTree = "<group>"; };
-		BE5AC295184D298900121126 /* Interaction+RestKit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "Interaction+RestKit.m"; sourceTree = "<group>"; };
-		BE5AC296184D298900121126 /* InteractionAction+RestKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "InteractionAction+RestKit.h"; sourceTree = "<group>"; };
-		BE5AC297184D298900121126 /* InteractionAction+RestKit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "InteractionAction+RestKit.m"; sourceTree = "<group>"; };
-		BE5AC298184D298900121126 /* Node+RestKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Node+RestKit.h"; sourceTree = "<group>"; };
-		BE5AC299184D298900121126 /* Node+RestKit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "Node+RestKit.m"; sourceTree = "<group>"; };
-		BE5AC29A184D298900121126 /* NodeAction+RestKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NodeAction+RestKit.h"; sourceTree = "<group>"; };
-		BE5AC29B184D298900121126 /* NodeAction+RestKit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NodeAction+RestKit.m"; sourceTree = "<group>"; };
-		BE5AC29C184D298900121126 /* Rule+RestKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Rule+RestKit.h"; sourceTree = "<group>"; };
-		BE5AC29D184D298900121126 /* Rule+RestKit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "Rule+RestKit.m"; sourceTree = "<group>"; };
-		BE5AC29E184D298900121126 /* Sequence+RestKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Sequence+RestKit.h"; sourceTree = "<group>"; };
-		BE5AC29F184D298900121126 /* Sequence+RestKit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "Sequence+RestKit.m"; sourceTree = "<group>"; };
-		BE5AC2A0184D298900121126 /* StatAnswer+RestKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "StatAnswer+RestKit.h"; sourceTree = "<group>"; };
-		BE5AC2A1184D298900121126 /* StatAnswer+RestKit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "StatAnswer+RestKit.m"; sourceTree = "<group>"; };
-		BE5AC2A2184D298900121126 /* StatInteraction+RestKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "StatInteraction+RestKit.h"; sourceTree = "<group>"; };
-		BE5AC2A3184D298900121126 /* StatInteraction+RestKit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "StatInteraction+RestKit.m"; sourceTree = "<group>"; };
-		BE5AC2A4184D298900121126 /* StatSequence+RestKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "StatSequence+RestKit.h"; sourceTree = "<group>"; };
-		BE5AC2A5184D298900121126 /* StatSequence+RestKit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "StatSequence+RestKit.m"; sourceTree = "<group>"; };
-		BE5AC2A6184D298900121126 /* User+RestKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "User+RestKit.h"; sourceTree = "<group>"; };
-		BE5AC2A7184D298900121126 /* User+RestKit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "User+RestKit.m"; sourceTree = "<group>"; };
-		BE5AC2A8184D298900121126 /* VCategory+RestKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "VCategory+RestKit.h"; sourceTree = "<group>"; };
-		BE5AC2A9184D298900121126 /* VCategory+RestKit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "VCategory+RestKit.m"; sourceTree = "<group>"; };
 		BE5AC2AA184D298900121126 /* NSManagedObject+EasyFetching.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSManagedObject+EasyFetching.h"; path = "Categories/NSManagedObject+EasyFetching.h"; sourceTree = "<group>"; };
 		BE5AC2AB184D298900121126 /* NSManagedObject+EasyFetching.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSManagedObject+EasyFetching.m"; path = "Categories/NSManagedObject+EasyFetching.m"; sourceTree = "<group>"; };
-		BE5AC2BC184D69B100121126 /* Node.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Node.h; path = Models/Node.h; sourceTree = "<group>"; };
-		BE5AC2BD184D69B100121126 /* Node.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Node.m; path = Models/Node.m; sourceTree = "<group>"; };
 		BE5AC2C0184E6CB300121126 /* VCommentManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VCommentManager.h; path = Managers/VCommentManager.h; sourceTree = "<group>"; };
 		BE5AC2C1184E6CB300121126 /* VCommentManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VCommentManager.m; path = Managers/VCommentManager.m; sourceTree = "<group>"; };
 		BE5AC2C3184E733800121126 /* NSString+VParseHelp.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSString+VParseHelp.h"; path = "Categories/NSString+VParseHelp.h"; sourceTree = "<group>"; };
@@ -202,10 +146,66 @@
 		BEA4F24F1843F097001F5B15 /* victoriOSTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "victoriOSTests-Info.plist"; sourceTree = "<group>"; };
 		BEA4F2511843F097001F5B15 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		BEA4F2531843F097001F5B15 /* victoriOSTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = victoriOSTests.m; sourceTree = "<group>"; };
-		BECAFFD1184FDAD20096E370 /* StatSequence.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = StatSequence.h; path = Models/StatSequence.h; sourceTree = "<group>"; };
-		BECAFFD2184FDAD20096E370 /* StatSequence.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = StatSequence.m; path = Models/StatSequence.m; sourceTree = "<group>"; };
-		BECAFFD4184FDAD20096E370 /* User.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = User.h; path = Models/User.h; sourceTree = "<group>"; };
-		BECAFFD5184FDAD20096E370 /* User.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = User.m; path = Models/User.m; sourceTree = "<group>"; };
+		BEBDC4781857B2C50013DEF1 /* VAnswer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VAnswer.h; sourceTree = "<group>"; };
+		BEBDC4791857B2C50013DEF1 /* VAnswer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VAnswer.m; sourceTree = "<group>"; };
+		BEBDC47A1857B2C50013DEF1 /* VAnswerAction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VAnswerAction.h; sourceTree = "<group>"; };
+		BEBDC47B1857B2C50013DEF1 /* VAnswerAction.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VAnswerAction.m; sourceTree = "<group>"; };
+		BEBDC47C1857B2C50013DEF1 /* VAsset.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VAsset.h; sourceTree = "<group>"; };
+		BEBDC47D1857B2C50013DEF1 /* VAsset.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VAsset.m; sourceTree = "<group>"; };
+		BEBDC47E1857B2C50013DEF1 /* VCategory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VCategory.h; sourceTree = "<group>"; };
+		BEBDC47F1857B2C50013DEF1 /* VCategory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VCategory.m; sourceTree = "<group>"; };
+		BEBDC4801857B2C50013DEF1 /* VComment.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VComment.h; sourceTree = "<group>"; };
+		BEBDC4811857B2C50013DEF1 /* VComment.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VComment.m; sourceTree = "<group>"; };
+		BEBDC4821857B2C50013DEF1 /* VInteraction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VInteraction.h; sourceTree = "<group>"; };
+		BEBDC4831857B2C50013DEF1 /* VInteraction.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VInteraction.m; sourceTree = "<group>"; };
+		BEBDC4841857B2C50013DEF1 /* VInteractionAction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VInteractionAction.h; sourceTree = "<group>"; };
+		BEBDC4851857B2C50013DEF1 /* VInteractionAction.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VInteractionAction.m; sourceTree = "<group>"; };
+		BEBDC4861857B2C50013DEF1 /* VNode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VNode.h; sourceTree = "<group>"; };
+		BEBDC4871857B2C50013DEF1 /* VNode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VNode.m; sourceTree = "<group>"; };
+		BEBDC4881857B2C50013DEF1 /* VNodeAction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VNodeAction.h; sourceTree = "<group>"; };
+		BEBDC4891857B2C50013DEF1 /* VNodeAction.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VNodeAction.m; sourceTree = "<group>"; };
+		BEBDC48A1857B2C50013DEF1 /* VRule.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VRule.h; sourceTree = "<group>"; };
+		BEBDC48B1857B2C50013DEF1 /* VRule.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VRule.m; sourceTree = "<group>"; };
+		BEBDC48C1857B2C50013DEF1 /* VSequence.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VSequence.h; sourceTree = "<group>"; };
+		BEBDC48D1857B2C50013DEF1 /* VSequence.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VSequence.m; sourceTree = "<group>"; };
+		BEBDC48E1857B2C50013DEF1 /* VStatAnswer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VStatAnswer.h; sourceTree = "<group>"; };
+		BEBDC48F1857B2C50013DEF1 /* VStatAnswer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VStatAnswer.m; sourceTree = "<group>"; };
+		BEBDC4901857B2C50013DEF1 /* VStatInteraction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VStatInteraction.h; sourceTree = "<group>"; };
+		BEBDC4911857B2C50013DEF1 /* VStatInteraction.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VStatInteraction.m; sourceTree = "<group>"; };
+		BEBDC4921857B2C50013DEF1 /* VStatSequence.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VStatSequence.h; sourceTree = "<group>"; };
+		BEBDC4931857B2C50013DEF1 /* VStatSequence.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VStatSequence.m; sourceTree = "<group>"; };
+		BEBDC4941857B2C50013DEF1 /* VUser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VUser.h; sourceTree = "<group>"; };
+		BEBDC4951857B2C50013DEF1 /* VUser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VUser.m; sourceTree = "<group>"; };
+		BEBDC4A61857B2E30013DEF1 /* VAnswer+RestKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "VAnswer+RestKit.h"; sourceTree = "<group>"; };
+		BEBDC4A71857B2E30013DEF1 /* VAnswer+RestKit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "VAnswer+RestKit.m"; sourceTree = "<group>"; };
+		BEBDC4A81857B2E30013DEF1 /* VAnswerAction+RestKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "VAnswerAction+RestKit.h"; sourceTree = "<group>"; };
+		BEBDC4A91857B2E30013DEF1 /* VAnswerAction+RestKit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "VAnswerAction+RestKit.m"; sourceTree = "<group>"; };
+		BEBDC4AA1857B2E30013DEF1 /* VAsset+RestKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "VAsset+RestKit.h"; sourceTree = "<group>"; };
+		BEBDC4AB1857B2E30013DEF1 /* VAsset+RestKit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "VAsset+RestKit.m"; sourceTree = "<group>"; };
+		BEBDC4AC1857B2E30013DEF1 /* VCategory+RestKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "VCategory+RestKit.h"; sourceTree = "<group>"; };
+		BEBDC4AD1857B2E30013DEF1 /* VCategory+RestKit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "VCategory+RestKit.m"; sourceTree = "<group>"; };
+		BEBDC4AE1857B2E30013DEF1 /* VComment+RestKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "VComment+RestKit.h"; sourceTree = "<group>"; };
+		BEBDC4AF1857B2E30013DEF1 /* VComment+RestKit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "VComment+RestKit.m"; sourceTree = "<group>"; };
+		BEBDC4B01857B2E30013DEF1 /* VInteraction+RestKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "VInteraction+RestKit.h"; sourceTree = "<group>"; };
+		BEBDC4B11857B2E30013DEF1 /* VInteraction+RestKit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "VInteraction+RestKit.m"; sourceTree = "<group>"; };
+		BEBDC4B21857B2E30013DEF1 /* VInteractionAction+RestKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "VInteractionAction+RestKit.h"; sourceTree = "<group>"; };
+		BEBDC4B31857B2E30013DEF1 /* VInteractionAction+RestKit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "VInteractionAction+RestKit.m"; sourceTree = "<group>"; };
+		BEBDC4B41857B2E30013DEF1 /* VNode+RestKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "VNode+RestKit.h"; sourceTree = "<group>"; };
+		BEBDC4B51857B2E30013DEF1 /* VNode+RestKit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "VNode+RestKit.m"; sourceTree = "<group>"; };
+		BEBDC4B61857B2E30013DEF1 /* VNodeAction+RestKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "VNodeAction+RestKit.h"; sourceTree = "<group>"; };
+		BEBDC4B71857B2E30013DEF1 /* VNodeAction+RestKit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "VNodeAction+RestKit.m"; sourceTree = "<group>"; };
+		BEBDC4B81857B2E30013DEF1 /* VRule+RestKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "VRule+RestKit.h"; sourceTree = "<group>"; };
+		BEBDC4B91857B2E30013DEF1 /* VRule+RestKit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "VRule+RestKit.m"; sourceTree = "<group>"; };
+		BEBDC4BA1857B2E30013DEF1 /* VSequence+RestKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "VSequence+RestKit.h"; sourceTree = "<group>"; };
+		BEBDC4BB1857B2E30013DEF1 /* VSequence+RestKit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "VSequence+RestKit.m"; sourceTree = "<group>"; };
+		BEBDC4BC1857B2E30013DEF1 /* VStatAnswer+RestKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "VStatAnswer+RestKit.h"; sourceTree = "<group>"; };
+		BEBDC4BD1857B2E30013DEF1 /* VStatAnswer+RestKit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "VStatAnswer+RestKit.m"; sourceTree = "<group>"; };
+		BEBDC4BE1857B2E30013DEF1 /* VStatInteraction+RestKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "VStatInteraction+RestKit.h"; sourceTree = "<group>"; };
+		BEBDC4BF1857B2E30013DEF1 /* VStatInteraction+RestKit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "VStatInteraction+RestKit.m"; sourceTree = "<group>"; };
+		BEBDC4C01857B2E30013DEF1 /* VStatSequence+RestKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "VStatSequence+RestKit.h"; sourceTree = "<group>"; };
+		BEBDC4C11857B2E30013DEF1 /* VStatSequence+RestKit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "VStatSequence+RestKit.m"; sourceTree = "<group>"; };
+		BEBDC4C21857B2E30013DEF1 /* VUser+RestKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "VUser+RestKit.h"; sourceTree = "<group>"; };
+		BEBDC4C31857B2E30013DEF1 /* VUser+RestKit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "VUser+RestKit.m"; sourceTree = "<group>"; };
 		BED5590218515734007FD3E6 /* libPods.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libPods.a; path = "Pods/build/Release-iphoneos/libPods.a"; sourceTree = "<group>"; };
 		BED55904185157DE007FD3E6 /* libPods.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libPods.a; path = "Pods/build/Release-iphoneos/libPods.a"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -267,7 +267,7 @@
 		BE4E74C21846953F00344677 /* Categories */ = {
 			isa = PBXGroup;
 			children = (
-				BE5AC28B184D298900121126 /* Mappings */,
+				BEBDC4A51857B2E30013DEF1 /* Mappings */,
 				BE5AC2AA184D298900121126 /* NSManagedObject+EasyFetching.h */,
 				BE5AC2AB184D298900121126 /* NSManagedObject+EasyFetching.m */,
 				BE5AC2C3184E733800121126 /* NSString+VParseHelp.h */,
@@ -289,44 +289,6 @@
 				BE5AC2C1184E6CB300121126 /* VCommentManager.m */,
 			);
 			name = Managers;
-			sourceTree = "<group>";
-		};
-		BE5AC28B184D298900121126 /* Mappings */ = {
-			isa = PBXGroup;
-			children = (
-				BE5AC28C184D298900121126 /* Answer+RestKit.h */,
-				BE5AC28D184D298900121126 /* Answer+RestKit.m */,
-				BE5AC28E184D298900121126 /* AnswerAction+RestKit.h */,
-				BE5AC28F184D298900121126 /* AnswerAction+RestKit.m */,
-				BE5AC290184D298900121126 /* Asset+RestKit.h */,
-				BE5AC291184D298900121126 /* Asset+RestKit.m */,
-				BE5AC292184D298900121126 /* Comment+RestKit.h */,
-				BE5AC293184D298900121126 /* Comment+RestKit.m */,
-				BE5AC294184D298900121126 /* Interaction+RestKit.h */,
-				BE5AC295184D298900121126 /* Interaction+RestKit.m */,
-				BE5AC296184D298900121126 /* InteractionAction+RestKit.h */,
-				BE5AC297184D298900121126 /* InteractionAction+RestKit.m */,
-				BE5AC298184D298900121126 /* Node+RestKit.h */,
-				BE5AC299184D298900121126 /* Node+RestKit.m */,
-				BE5AC29A184D298900121126 /* NodeAction+RestKit.h */,
-				BE5AC29B184D298900121126 /* NodeAction+RestKit.m */,
-				BE5AC29C184D298900121126 /* Rule+RestKit.h */,
-				BE5AC29D184D298900121126 /* Rule+RestKit.m */,
-				BE5AC29E184D298900121126 /* Sequence+RestKit.h */,
-				BE5AC29F184D298900121126 /* Sequence+RestKit.m */,
-				BE5AC2A0184D298900121126 /* StatAnswer+RestKit.h */,
-				BE5AC2A1184D298900121126 /* StatAnswer+RestKit.m */,
-				BE5AC2A2184D298900121126 /* StatInteraction+RestKit.h */,
-				BE5AC2A3184D298900121126 /* StatInteraction+RestKit.m */,
-				BE5AC2A4184D298900121126 /* StatSequence+RestKit.h */,
-				BE5AC2A5184D298900121126 /* StatSequence+RestKit.m */,
-				BE5AC2A6184D298900121126 /* User+RestKit.h */,
-				BE5AC2A7184D298900121126 /* User+RestKit.m */,
-				BE5AC2A8184D298900121126 /* VCategory+RestKit.h */,
-				BE5AC2A9184D298900121126 /* VCategory+RestKit.m */,
-			);
-			name = Mappings;
-			path = Categories/Mappings;
 			sourceTree = "<group>";
 		};
 		BEA4F21C1843F097001F5B15 = {
@@ -372,7 +334,7 @@
 				5F8AAA5A184D439000301783 /* UI */,
 				BE4E75361846BDE100344677 /* Managers */,
 				BE4E74C21846953F00344677 /* Categories */,
-				BEA4F27218440A2B001F5B15 /* Models */,
+				BEBDC4771857B2C50013DEF1 /* Models */,
 				BEA4F2391843F097001F5B15 /* VAppDelegate.h */,
 				BEA4F23A1843F097001F5B15 /* VAppDelegate.m */,
 				BEA4F23F1843F097001F5B15 /* Images.xcassets */,
@@ -416,41 +378,79 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
-		BEA4F27218440A2B001F5B15 /* Models */ = {
+		BEBDC4771857B2C50013DEF1 /* Models */ = {
 			isa = PBXGroup;
 			children = (
-				BE4E75211846B7CE00344677 /* Answer.h */,
-				BE4E75221846B7CE00344677 /* Answer.m */,
-				BE4E752A1846B7CE00344677 /* AnswerAction.h */,
-				BE4E752B1846B7CE00344677 /* AnswerAction.m */,
-				BE4E75241846B7CE00344677 /* Asset.h */,
-				BE4E75251846B7CE00344677 /* Asset.m */,
-				BE4E752D1846B7CF00344677 /* Comment.h */,
-				BE4E752E1846B7CF00344677 /* Comment.m */,
-				BE4E75181846B78000344677 /* Interaction.h */,
-				BE4E75191846B78000344677 /* Interaction.m */,
-				BE4E75121846B78000344677 /* InteractionAction.h */,
-				BE4E75131846B78000344677 /* InteractionAction.m */,
-				BE4E75031846B76900344677 /* Rule.h */,
-				BE4E75041846B76900344677 /* Rule.m */,
-				BE4E74FA1846B76900344677 /* Sequence.h */,
-				BE4E74FB1846B76900344677 /* Sequence.m */,
-				BE4E75001846B76900344677 /* StatAnswer.h */,
-				BE4E75011846B76900344677 /* StatAnswer.m */,
-				BE4E74EB1846B76900344677 /* StatInteraction.h */,
-				BE4E74EC1846B76900344677 /* StatInteraction.m */,
-				BE5AC27C184C80D000121126 /* VCategory.h */,
-				BE5AC27D184C80D000121126 /* VCategory.m */,
-				BE5AC288184D194A00121126 /* NodeAction.h */,
-				BE5AC289184D194A00121126 /* NodeAction.m */,
-				BE5AC2BC184D69B100121126 /* Node.h */,
-				BE5AC2BD184D69B100121126 /* Node.m */,
-				BECAFFD1184FDAD20096E370 /* StatSequence.h */,
-				BECAFFD2184FDAD20096E370 /* StatSequence.m */,
-				BECAFFD4184FDAD20096E370 /* User.h */,
-				BECAFFD5184FDAD20096E370 /* User.m */,
+				BEBDC4781857B2C50013DEF1 /* VAnswer.h */,
+				BEBDC4791857B2C50013DEF1 /* VAnswer.m */,
+				BEBDC47A1857B2C50013DEF1 /* VAnswerAction.h */,
+				BEBDC47B1857B2C50013DEF1 /* VAnswerAction.m */,
+				BEBDC47C1857B2C50013DEF1 /* VAsset.h */,
+				BEBDC47D1857B2C50013DEF1 /* VAsset.m */,
+				BEBDC47E1857B2C50013DEF1 /* VCategory.h */,
+				BEBDC47F1857B2C50013DEF1 /* VCategory.m */,
+				BEBDC4801857B2C50013DEF1 /* VComment.h */,
+				BEBDC4811857B2C50013DEF1 /* VComment.m */,
+				BEBDC4821857B2C50013DEF1 /* VInteraction.h */,
+				BEBDC4831857B2C50013DEF1 /* VInteraction.m */,
+				BEBDC4841857B2C50013DEF1 /* VInteractionAction.h */,
+				BEBDC4851857B2C50013DEF1 /* VInteractionAction.m */,
+				BEBDC4861857B2C50013DEF1 /* VNode.h */,
+				BEBDC4871857B2C50013DEF1 /* VNode.m */,
+				BEBDC4881857B2C50013DEF1 /* VNodeAction.h */,
+				BEBDC4891857B2C50013DEF1 /* VNodeAction.m */,
+				BEBDC48A1857B2C50013DEF1 /* VRule.h */,
+				BEBDC48B1857B2C50013DEF1 /* VRule.m */,
+				BEBDC48C1857B2C50013DEF1 /* VSequence.h */,
+				BEBDC48D1857B2C50013DEF1 /* VSequence.m */,
+				BEBDC48E1857B2C50013DEF1 /* VStatAnswer.h */,
+				BEBDC48F1857B2C50013DEF1 /* VStatAnswer.m */,
+				BEBDC4901857B2C50013DEF1 /* VStatInteraction.h */,
+				BEBDC4911857B2C50013DEF1 /* VStatInteraction.m */,
+				BEBDC4921857B2C50013DEF1 /* VStatSequence.h */,
+				BEBDC4931857B2C50013DEF1 /* VStatSequence.m */,
+				BEBDC4941857B2C50013DEF1 /* VUser.h */,
+				BEBDC4951857B2C50013DEF1 /* VUser.m */,
 			);
-			name = Models;
+			path = Models;
+			sourceTree = "<group>";
+		};
+		BEBDC4A51857B2E30013DEF1 /* Mappings */ = {
+			isa = PBXGroup;
+			children = (
+				BEBDC4A61857B2E30013DEF1 /* VAnswer+RestKit.h */,
+				BEBDC4A71857B2E30013DEF1 /* VAnswer+RestKit.m */,
+				BEBDC4A81857B2E30013DEF1 /* VAnswerAction+RestKit.h */,
+				BEBDC4A91857B2E30013DEF1 /* VAnswerAction+RestKit.m */,
+				BEBDC4AA1857B2E30013DEF1 /* VAsset+RestKit.h */,
+				BEBDC4AB1857B2E30013DEF1 /* VAsset+RestKit.m */,
+				BEBDC4AC1857B2E30013DEF1 /* VCategory+RestKit.h */,
+				BEBDC4AD1857B2E30013DEF1 /* VCategory+RestKit.m */,
+				BEBDC4AE1857B2E30013DEF1 /* VComment+RestKit.h */,
+				BEBDC4AF1857B2E30013DEF1 /* VComment+RestKit.m */,
+				BEBDC4B01857B2E30013DEF1 /* VInteraction+RestKit.h */,
+				BEBDC4B11857B2E30013DEF1 /* VInteraction+RestKit.m */,
+				BEBDC4B21857B2E30013DEF1 /* VInteractionAction+RestKit.h */,
+				BEBDC4B31857B2E30013DEF1 /* VInteractionAction+RestKit.m */,
+				BEBDC4B41857B2E30013DEF1 /* VNode+RestKit.h */,
+				BEBDC4B51857B2E30013DEF1 /* VNode+RestKit.m */,
+				BEBDC4B61857B2E30013DEF1 /* VNodeAction+RestKit.h */,
+				BEBDC4B71857B2E30013DEF1 /* VNodeAction+RestKit.m */,
+				BEBDC4B81857B2E30013DEF1 /* VRule+RestKit.h */,
+				BEBDC4B91857B2E30013DEF1 /* VRule+RestKit.m */,
+				BEBDC4BA1857B2E30013DEF1 /* VSequence+RestKit.h */,
+				BEBDC4BB1857B2E30013DEF1 /* VSequence+RestKit.m */,
+				BEBDC4BC1857B2E30013DEF1 /* VStatAnswer+RestKit.h */,
+				BEBDC4BD1857B2E30013DEF1 /* VStatAnswer+RestKit.m */,
+				BEBDC4BE1857B2E30013DEF1 /* VStatInteraction+RestKit.h */,
+				BEBDC4BF1857B2E30013DEF1 /* VStatInteraction+RestKit.m */,
+				BEBDC4C01857B2E30013DEF1 /* VStatSequence+RestKit.h */,
+				BEBDC4C11857B2E30013DEF1 /* VStatSequence+RestKit.m */,
+				BEBDC4C21857B2E30013DEF1 /* VUser+RestKit.h */,
+				BEBDC4C31857B2E30013DEF1 /* VUser+RestKit.m */,
+			);
+			name = Mappings;
+			path = Categories/Mappings;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -593,54 +593,54 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BEBDC49F1857B2C50013DEF1 /* VRule.m in Sources */,
 				3F90DD6A18569B9300C8F312 /* VNavigationController.m in Sources */,
-				BECAFFD6184FDAD20096E370 /* User.m in Sources */,
-				BE5AC2B9184D298900121126 /* User+RestKit.m in Sources */,
-				BE4E751A1846B78000344677 /* Interaction.m in Sources */,
-				BE5AC2B0184D298900121126 /* Interaction+RestKit.m in Sources */,
-				BE4E74ED1846B76900344677 /* StatInteraction.m in Sources */,
-				BE4E75261846B7CE00344677 /* Asset.m in Sources */,
+				BEBDC4A11857B2C50013DEF1 /* VStatAnswer.m in Sources */,
 				5F3B4950184E6B8D0062DB55 /* VLoginViewController.m in Sources */,
+				BEBDC4C51857B2E30013DEF1 /* VAnswerAction+RestKit.m in Sources */,
 				BE4E7554184955BE00344677 /* VObjectManager.m in Sources */,
-				BE5AC27E184C80D000121126 /* VCategory.m in Sources */,
-				BE4E752C1846B7CE00344677 /* AnswerAction.m in Sources */,
-				BE4E752F1846B7CF00344677 /* Comment.m in Sources */,
-				BE5AC2AD184D298900121126 /* AnswerAction+RestKit.m in Sources */,
-				BE4E74FC1846B76900344677 /* Sequence.m in Sources */,
-				BE4E75141846B78000344677 /* InteractionAction.m in Sources */,
+				BEBDC4981857B2C50013DEF1 /* VAsset.m in Sources */,
 				BE5AC2C2184E6CB300121126 /* VCommentManager.m in Sources */,
-				BE5AC2B8184D298900121126 /* StatSequence+RestKit.m in Sources */,
-				BECAFFD3184FDAD20096E370 /* StatSequence.m in Sources */,
-				BE5AC2AF184D298900121126 /* Comment+RestKit.m in Sources */,
+				BEBDC4CD1857B2E30013DEF1 /* VRule+RestKit.m in Sources */,
 				3F90DD6D18569EB400C8F312 /* VMenuController.m in Sources */,
-				BE5AC2B6184D298900121126 /* StatAnswer+RestKit.m in Sources */,
-				BE5AC2BA184D298900121126 /* VCategory+RestKit.m in Sources */,
-				BE5AC2B4184D298900121126 /* Rule+RestKit.m in Sources */,
+				BEBDC49C1857B2C50013DEF1 /* VInteractionAction.m in Sources */,
+				BEBDC4991857B2C50013DEF1 /* VCategory.m in Sources */,
 				BE4E753C1846BF0700344677 /* VLoginManager.m in Sources */,
+				BEBDC4CA1857B2E30013DEF1 /* VInteractionAction+RestKit.m in Sources */,
+				BEBDC4961857B2C50013DEF1 /* VAnswer.m in Sources */,
 				BEA4F2371843F097001F5B15 /* main.m in Sources */,
+				BEBDC4C91857B2E30013DEF1 /* VInteraction+RestKit.m in Sources */,
 				BE5AC2C5184E733800121126 /* NSString+VParseHelp.m in Sources */,
-				BE5AC28A184D194A00121126 /* NodeAction.m in Sources */,
-				BE4E75021846B76900344677 /* StatAnswer.m in Sources */,
+				BEBDC4A01857B2C50013DEF1 /* VSequence.m in Sources */,
 				BE5AC2BB184D298900121126 /* NSManagedObject+EasyFetching.m in Sources */,
+				BEBDC49A1857B2C50013DEF1 /* VComment.m in Sources */,
+				BEBDC4C61857B2E30013DEF1 /* VAsset+RestKit.m in Sources */,
 				3F90DD761856A44F00C8F312 /* VForumsViewController.m in Sources */,
 				BEA4F23E1843F097001F5B15 /* victoriOS.xcdatamodeld in Sources */,
-				BE5AC2AC184D298900121126 /* Answer+RestKit.m in Sources */,
-				BE5AC2B2184D298900121126 /* Node+RestKit.m in Sources */,
+				BEBDC4C41857B2E30013DEF1 /* VAnswer+RestKit.m in Sources */,
+				BEBDC4C71857B2E30013DEF1 /* VCategory+RestKit.m in Sources */,
+				BEBDC4CC1857B2E30013DEF1 /* VNodeAction+RestKit.m in Sources */,
+				BEBDC4CF1857B2E30013DEF1 /* VStatAnswer+RestKit.m in Sources */,
+				BEBDC4C81857B2E30013DEF1 /* VComment+RestKit.m in Sources */,
+				BEBDC4D11857B2E30013DEF1 /* VStatSequence+RestKit.m in Sources */,
+				BEBDC4CB1857B2E30013DEF1 /* VNode+RestKit.m in Sources */,
 				3F90DD811856A59B00C8F312 /* VInboxViewController.m in Sources */,
-				BE5AC2B3184D298900121126 /* NodeAction+RestKit.m in Sources */,
-				BE5AC2BE184D69B100121126 /* Node.m in Sources */,
-				BE5AC2B1184D298900121126 /* InteractionAction+RestKit.m in Sources */,
-				BE5AC2AE184D298900121126 /* Asset+RestKit.m in Sources */,
+				BEBDC4D21857B2E30013DEF1 /* VUser+RestKit.m in Sources */,
+				BEBDC49D1857B2C50013DEF1 /* VNode.m in Sources */,
+				BEBDC4D01857B2E30013DEF1 /* VStatInteraction+RestKit.m in Sources */,
+				BEBDC4A31857B2C50013DEF1 /* VStatSequence.m in Sources */,
+				BEBDC49B1857B2C50013DEF1 /* VInteraction.m in Sources */,
+				BEBDC4971857B2C50013DEF1 /* VAnswerAction.m in Sources */,
+				BEBDC4CE1857B2E30013DEF1 /* VSequence+RestKit.m in Sources */,
 				BEA4F23B1843F097001F5B15 /* VAppDelegate.m in Sources */,
+				BEBDC4A21857B2C50013DEF1 /* VStatInteraction.m in Sources */,
+				BEBDC4A41857B2C50013DEF1 /* VUser.m in Sources */,
 				3F90DD6718569ACA00C8F312 /* VRootViewController.m in Sources */,
-				BE5AC2B7184D298900121126 /* StatInteraction+RestKit.m in Sources */,
 				3F90DD841856A66F00C8F312 /* VProfileViewController.m in Sources */,
-				BE4E75051846B76900344677 /* Rule.m in Sources */,
 				BE4E754B184942F100344677 /* VSequenceManager.m in Sources */,
+				BEBDC49E1857B2C50013DEF1 /* VNodeAction.m in Sources */,
 				3F543C4118512C6700A1F2FC /* VSignUpViewController.m in Sources */,
-				BE5AC2B5184D298900121126 /* Sequence+RestKit.m in Sources */,
 				5F8AAAA5184D467300301783 /* VStreamsTableViewController.m in Sources */,
-				BE4E75231846B7CE00344677 /* Answer.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

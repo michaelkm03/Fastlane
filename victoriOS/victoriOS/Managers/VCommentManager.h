@@ -7,27 +7,27 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "Sequence+RestKit.h"
+#import "VSequence+RestKit.h"
 
 @interface VCommentManager : NSObject
 
 + (void)addCommentText:(NSString*)text
          commentData:(NSData*)media
        mediaExtension:(NSString*)extension
-           toSequence:(Sequence*)sequence
-            andParent:(Comment*)parent;
+           toSequence:(VSequence*)sequence
+            andParent:(VComment*)parent;
 
-+ (void)removeComment:(Comment*)comment withReason:(NSString*)removalReason;
++ (void)removeComment:(VComment*)comment withReason:(NSString*)removalReason;
 
-+ (void)shareToFacebook:(Comment*)comment;
-+ (void)shareToTwitter:(Comment*)comment;
++ (void)shareToFacebook:(VComment*)comment;
++ (void)shareToTwitter:(VComment*)comment;
 
-+ (void)flagComment:(Comment*)comment;
++ (void)flagComment:(VComment*)comment;
 
-+ (void)likeComment:(Comment*)comment;
-+ (void)dislikeComment:(Comment*)comment;
-+ (void)unvoteComment:(Comment*)comment;
++ (void)likeComment:(VComment*)comment;
++ (void)dislikeComment:(VComment*)comment;
++ (void)unvoteComment:(VComment*)comment;
 
-+ (void) testCommentSystem:(Comment*)comment;
++ (void) testCommentSystem:(VComment*)comment;
 
 @end

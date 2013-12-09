@@ -61,7 +61,7 @@
              {
                  //todo: send out message to tell app we're loaded
                  //Todo: remove this test code
-                 Sequence* first = [[Sequence findAllObjectsWithSortKey:@"id"] firstObject];
+                 VSequence* first = [[VSequence findAllObjectsWithSortKey:@"id"] firstObject];
                  [self loadCommentsForSequence:first];
                  //[self createStatSequenceForSequence:first];
              }
@@ -81,7 +81,7 @@
     }
 }
 
-+ (void)loadFullDataForSequence:(Sequence*)sequence
++ (void)loadFullDataForSequence:(VSequence*)sequence
 {
     NSString* path = [NSString stringWithFormat:@"%@/%@", @"/api/sequence/item", sequence.id];
     RKManagedObjectRequestOperation* requestOperation = [[RKObjectManager sharedManager]
@@ -104,7 +104,7 @@
     [requestOperation start];
 }
 
-+ (void)loadCommentsForSequence:(Sequence*)sequence
++ (void)loadCommentsForSequence:(VSequence*)sequence
 {
     
     NSString* path = [NSString stringWithFormat:@"%@/%@", @"/api/comment/all", sequence.id];
@@ -114,20 +114,20 @@
                                                          path:path
                                                          parameters:nil];
     
-    __block Sequence* commentOwner = sequence;
+    __block VSequence* commentOwner = sequence;
     
     [requestOperation setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation,
                                                       RKMappingResult *mappingResult)
      {
          RKLogInfo(@"Load sequence comments: %@", mappingResult.array);
          
-         for (Comment* comment in [mappingResult array])
+         for (VComment* comment in [mappingResult array])
          {
-             [commentOwner addCommentsObject:(Comment*)[commentOwner.managedObjectContext
+             [commentOwner addCommentsObject:(VComment*)[commentOwner.managedObjectContext
                                                         objectWithID:[comment objectID]]];
          }
          
-         Comment* first =[[Comment findAllObjectsWithSortKey:@"id"] firstObject];
+         VComment* first =[[VComment findAllObjectsWithSortKey:@"id"] firstObject];
          [VCommentManager testCommentSystem:first];
          
      } failure:^(RKObjectRequestOperation *operation, NSError *error)
@@ -141,23 +141,23 @@
 
 + (void)testSequenceData
 {
-    Sequence* first = [[Sequence findAllObjectsWithSortKey:@"id"] firstObject];
-    for (Node* node in first.nodes)
+    VSequence* first = [[VSequence findAllObjectsWithSortKey:@"id"] firstObject];
+    for (VNode* node in first.nodes)
     {
         VLog(@"%@", node);
-        for(Asset* asset in node.assets)
+        for(VAsset* asset in node.assets)
             VLog(@"%@", asset);
         
-        for (Interaction* interaction in node.interactions)
+        for (VInteraction* interaction in node.interactions)
             VLog(@"%@", interaction);
     }
-    for (Comment* comment in first.comments)
+    for (VComment* comment in first.comments)
         VLog(@"%@", comment);
 }
 
 #pragma mark - StatSequence Methods
 
-+ (void)loadStatSequencesForUser:(User*)user
++ (void)loadStatSequencesForUser:(VUser*)user
 {
     NSString* path = [NSString stringWithFormat:@"%@/%@", @"/api/userinfo/games_played", user.id];
     RKManagedObjectRequestOperation* requestOperation = [[RKObjectManager sharedManager]
@@ -166,15 +166,15 @@
                                                          path:path
                                                          parameters:nil];
     
-    __block User* statSequenceOwner = user;// keep the user in memory until we get back from the block.
+    __block VUser* statSequenceOwner = user;// keep the user in memory until we get back from the block.
     [requestOperation setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation,
                                                       RKMappingResult *mappingResult)
      {
          NSArray* statSequences = [mappingResult array];
 
-         for (StatSequence* statSequence in statSequences)
+         for (VStatSequence* statSequence in statSequences)
          {
-             [statSequenceOwner addStat_sequencesObject:(StatSequence*)[statSequenceOwner.managedObjectContext
+             [statSequenceOwner addStat_sequencesObject:(VStatSequence*)[statSequenceOwner.managedObjectContext
                                                          objectWithID:[statSequence objectID]]];
          }
          
@@ -189,7 +189,7 @@
     [requestOperation start];
 }
 
-+ (void)loadFullDataForStatSequence:(StatSequence*)statSequence
++ (void)loadFullDataForStatSequence:(VStatSequence*)statSequence
 {
     NSString* path = [NSString stringWithFormat:@"%@/%@", @"/api/userinfo/game_stats", statSequence.id];
     RKManagedObjectRequestOperation* requestOperation = [[RKObjectManager sharedManager]
@@ -211,7 +211,7 @@
 }
 
 #pragma mark - StatSequence Creation
-+ (void)createStatSequenceForSequence:(Sequence*)sequence
++ (void)createStatSequenceForSequence:(VSequence*)sequence
 {
     if (!sequence || !sequence.id)
     {
@@ -230,12 +230,12 @@
      {
          RKLogInfo(@"Load full sequence data: %@", mappingResult.array);
          //TODO: we may need to change this when we start dealing with many users
-         User* mainUser = [[User findAllObjectsWithSortKey:@"id"] firstObject];
+         VUser* mainUser = [[VUser findAllObjectsWithSortKey:@"id"] firstObject];
          
          //Just in case we ever return multiple
-         for (StatSequence* statSequence in mappingResult.array)
+         for (VStatSequence* statSequence in mappingResult.array)
          {
-             [mainUser addStat_sequencesObject:(StatSequence*)[mainUser.managedObjectContext
+             [mainUser addStat_sequencesObject:(VStatSequence*)[mainUser.managedObjectContext
                                                                objectWithID:[statSequence objectID]]];
          }
 
@@ -249,12 +249,12 @@
 
 }
     
-+ (void)addStatInterationToStatSequence:(StatSequence*)sequence
++ (void)addStatInterationToStatSequence:(VStatSequence*)sequence
 {
     
 }
     
-+ (void)addStatAnswerToStatInteraction:(StatInteraction*)interaction
++ (void)addStatAnswerToStatInteraction:(VStatInteraction*)interaction
 {
     
 }
