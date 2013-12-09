@@ -26,6 +26,7 @@
 		833AD46C185652E00009F327 /* VStatInteraction.m in Sources */ = {isa = PBXBuildFile; fileRef = 833AD45B185652E00009F327 /* VStatInteraction.m */; };
 		833AD46D185652E00009F327 /* VStatSequence.m in Sources */ = {isa = PBXBuildFile; fileRef = 833AD45D185652E00009F327 /* VStatSequence.m */; };
 		833AD46E185652E00009F327 /* VUser.m in Sources */ = {isa = PBXBuildFile; fileRef = 833AD45F185652E00009F327 /* VUser.m */; };
+		833AD47118565DE70009F327 /* VAPIManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 833AD47018565DE70009F327 /* VAPIManager.m */; };
 		BE2BA7CF1852593700CA71AC /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = BE2BA7CE1852593700CA71AC /* libPods.a */; };
 		BE4E753C1846BF0700344677 /* VLoginManager.m in Sources */ = {isa = PBXBuildFile; fileRef = BE4E753B1846BF0700344677 /* VLoginManager.m */; };
 		BE4E754B184942F100344677 /* VSequenceManager.m in Sources */ = {isa = PBXBuildFile; fileRef = BE4E754A184942F100344677 /* VSequenceManager.m */; };
@@ -115,6 +116,8 @@
 		833AD45D185652E00009F327 /* VStatSequence.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VStatSequence.m; sourceTree = "<group>"; };
 		833AD45E185652E00009F327 /* VUser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VUser.h; sourceTree = "<group>"; };
 		833AD45F185652E00009F327 /* VUser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VUser.m; sourceTree = "<group>"; };
+		833AD46F18565DE70009F327 /* VAPIManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VAPIManager.h; path = Managers/VAPIManager.h; sourceTree = "<group>"; };
+		833AD47018565DE70009F327 /* VAPIManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VAPIManager.m; path = Managers/VAPIManager.m; sourceTree = "<group>"; };
 		B15D4A5304A04D16AD420BCD /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		BE20A10218524D6A003D0E8C /* libPods-RestKit.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libPods-RestKit.a"; path = "Pods/build/TestFlight-iphoneos/libPods-RestKit.a"; sourceTree = "<group>"; };
 		BE2BA7CE1852593700CA71AC /* libPods.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libPods.a; path = "Pods/build/TestFlight-iphoneos/libPods.a"; sourceTree = "<group>"; };
@@ -239,6 +242,8 @@
 		BE4E75361846BDE100344677 /* Managers */ = {
 			isa = PBXGroup;
 			children = (
+				833AD46F18565DE70009F327 /* VAPIManager.h */,
+				833AD47018565DE70009F327 /* VAPIManager.m */,
 				BE4E753A1846BF0700344677 /* VLoginManager.h */,
 				BE4E753B1846BF0700344677 /* VLoginManager.m */,
 				BE4E7549184942F100344677 /* VSequenceManager.h */,
@@ -583,6 +588,7 @@
 				833AD46A185652E00009F327 /* VSequence.m in Sources */,
 				3F543C4118512C6700A1F2FC /* VSignUpViewController.m in Sources */,
 				BE5AC2B5184D298900121126 /* VSequence+RestKit.m in Sources */,
+				833AD47118565DE70009F327 /* VAPIManager.m in Sources */,
 				5F8AAAA5184D467300301783 /* VStreamsTableViewController.m in Sources */,
 				833AD467185652E00009F327 /* VNode.m in Sources */,
 			);
