@@ -7,7 +7,7 @@
 //
 
 #import "VStreamsTableViewController.h"
-#import "Sequence.h"
+#import "VSequence.h"
 
 @interface VStreamsTableViewController ()
 @property (nonatomic, strong) NSFetchedResultsController* fetchedResultsController;
@@ -79,7 +79,7 @@
 
 - (void)configureCell:(UITableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath
 {
-    Sequence *info = [self.fetchedResultsController objectAtIndexPath:indexPath];
+    VSequence *info = [self.fetchedResultsController objectAtIndexPath:indexPath];
     cell.textLabel.text = info.name;
 }
 

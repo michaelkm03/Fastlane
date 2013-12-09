@@ -15,8 +15,8 @@
 + (void)addCommentText:(NSString*)text
          commentData:(NSData*)data
             mediaExtension:(NSString*)extension
-           toSequence:(Sequence*)sequence
-            andParent:(Comment*)parent
+           toSequence:(VSequence*)sequence
+            andParent:(VComment*)parent
 {
 
     if (!sequence.id) //Need this or we should quit
@@ -44,7 +44,7 @@
     }
     
     //keep the comment owner in memory til we get this response back.
-    __block Sequence* commentOwner = sequence;
+    __block VSequence* commentOwner = sequence;
 
     RKManagedObjectRequestOperation* requestOperation = [[RKObjectManager sharedManager]
                                                          appropriateObjectRequestOperationWithObject:nil
@@ -57,9 +57,9 @@
      {
          RKLogInfo(@"Load comment data from add: %@", mappingResult.array);
          
-         for (Comment* comment in [mappingResult array])
+         for (VComment* comment in [mappingResult array])
          {
-             [commentOwner addCommentsObject:(Comment*)[commentOwner.managedObjectContext
+             [commentOwner addCommentsObject:(VComment*)[commentOwner.managedObjectContext
                                                         objectWithID:[comment objectID]]];
          }
      } failure:^(RKObjectRequestOperation *operation, NSError *error)
@@ -70,7 +70,7 @@
     [requestOperation start];
 }
 
-+ (void)removeComment:(Comment*)comment withReason:(NSString*)removalReason
++ (void)removeComment:(VComment*)comment withReason:(NSString*)removalReason
 {
     //TODO: check if user has remove permissions (once those are a Thing)
     if (!comment.id) //Need this or we should quit
@@ -87,7 +87,7 @@
     [parameters setObject:[NSString stringWithFormat:@"%@", comment.id] forKey:@"comment_id"];
     [parameters setObject:removalReason forKey:@"removal_reason"];
     
-    __block Comment* commentToRemove = comment;//keep the comment in memory til we get the response back
+    __block VComment* commentToRemove = comment;//keep the comment in memory til we get the response back
     
     RKManagedObjectRequestOperation* requestOperation = [[RKObjectManager sharedManager]
                                                          appropriateObjectRequestOperationWithObject:commentToRemove
@@ -123,7 +123,7 @@
     [requestOperation start];
 }
 
-+ (void)flagComment:(Comment*)comment
++ (void)flagComment:(VComment*)comment
 {
     
     if (!comment.id) //Need this or we should quit
@@ -153,7 +153,7 @@
 }
 
 #pragma mark - Share Methods
-+ (void)shareComment:(Comment*)comment
++ (void)shareComment:(VComment*)comment
          toPlatform:(NSString*)platform
 {
     
@@ -190,18 +190,18 @@
     [requestOperation start];
 }
 
-+ (void)shareToFacebook:(Comment*)comment
++ (void)shareToFacebook:(VComment*)comment
 {
     [self shareComment:comment toPlatform:@"facebook"];
 }
 
-+ (void)shareToTwitter:(Comment*)comment
++ (void)shareToTwitter:(VComment*)comment
 {
     [self shareComment:comment toPlatform:@"twitter"];
 }
 
 #pragma mark - Vote Methods
-+ (void)voteComment:(Comment*)comment voteType:(NSString*)type
++ (void)voteComment:(VComment*)comment voteType:(NSString*)type
 {
     
     if (!comment.id) //Need this or we should quit
@@ -240,20 +240,20 @@
     [requestOperation start];
 }
 
-+ (void)likeComment:(Comment*)comment
++ (void)likeComment:(VComment*)comment
 {
     [VCommentManager voteComment:comment voteType:@"like"];
 }
-+ (void)dislikeComment:(Comment*)comment
++ (void)dislikeComment:(VComment*)comment
 {
     [VCommentManager voteComment:comment voteType:@"dislike"];
 }
-+ (void)unvoteComment:(Comment*)comment
++ (void)unvoteComment:(VComment*)comment
 {
     [VCommentManager voteComment:comment voteType:@"unvote"];
 }
 
-+ (void) testCommentSystem:(Comment*)comment
++ (void) testCommentSystem:(VComment*)comment
 {
     [self dislikeComment:comment];
     [self likeComment:comment];

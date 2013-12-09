@@ -1,5 +1,5 @@
 //
-//  VCategory.h
+//  VRule.h
 //  victoriOS
 //
 //  Created by David Keegan on 12/9/13.
@@ -9,9 +9,11 @@
 #import <Foundation/Foundation.h>
 #import <CoreData/CoreData.h>
 
+@class VInteraction;
 
-@interface VCategory : NSManagedObject
+@interface VRule : NSManagedObject
 
 @property (nonatomic, retain) NSString * name;
+@property (nonatomic, retain) VInteraction *interaction;
 
 @end

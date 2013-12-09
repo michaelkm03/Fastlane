@@ -8,7 +8,7 @@
 
 #import "VObjectManager.h"
 #import "NSString+SHA1Digest.h"
-#import "User+RestKit.h"
+#import "VUser+RestKit.h"
 
 @implementation VObjectManager
 
@@ -23,7 +23,7 @@
     NSString *currentDate = [self rFC2822DateTimeString];
     NSString* userAgent = [client.defaultHeaders objectForKey:@"User-Agent"];
     
-    User* mainUser = [[User findAllObjects] firstObject];
+    VUser* mainUser = [[VUser findAllObjects] firstObject];
     
     // Build string to be hashed.
     NSString *sha1String = [[NSString stringWithFormat:@"%@%@%@%@%@",

@@ -9,10 +9,10 @@
 #import "VAppDelegate.h"
 #import "VLoginManager.h"
 #import "VObjectManager.h"
-#import "User+RestKit.h"
+#import "VUser+RestKit.h"
 #import "VCategory+RestKit.h"
-#import "Sequence+RestKit.h"
-#import "StatSequence+RestKit.h"
+#import "VSequence+RestKit.h"
+#import "VStatSequence+RestKit.h"
 #import "VLoginViewController.h"
 #import <TestFlightSDK/TestFlight.h>
 
@@ -120,14 +120,14 @@
                                              statusCodes:RKStatusCodeIndexSetForClass(RKStatusCodeClassClientError)];
     
     [[RKObjectManager sharedManager] addResponseDescriptorsFromArray:@[errorDescriptor,
-                                                                       [User descriptor],
+                                                                       [VUser descriptor],
                                                                        [VCategory descriptor],
-                                                                       [Sequence sequenceListDescriptor],
-                                                                       [Sequence sequenceFullDataDescriptor],
-                                                                       [Comment descriptor],
-                                                                       [Comment getAllDescriptor],
-                                                                       [StatSequence gamesPlayedDescriptor],
-                                                                       [StatSequence gameStatsDescriptor]]];
+                                                                       [VSequence sequenceListDescriptor],
+                                                                       [VSequence sequenceFullDataDescriptor],
+                                                                       [VComment descriptor],
+                                                                       [VComment getAllDescriptor],
+                                                                       [VStatSequence gamesPlayedDescriptor],
+                                                                       [VStatSequence gameStatsDescriptor]]];
 }
 
 - (void)login

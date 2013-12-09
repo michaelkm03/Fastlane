@@ -8,7 +8,7 @@
 
 #import "VLoginManager.h"
 #import "FBAccessTokenData.h"
-#import "User+RestKit.h"
+#import "VUser+RestKit.h"
 #import "VSequenceManager.h"
 #import "NSString+VParseHelp.h"
 
