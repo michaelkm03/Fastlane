@@ -152,54 +152,6 @@
     [requestOperation start];
 }
 
-#pragma mark - Share Methods
-+ (void)shareComment:(VComment*)comment
-         toPlatform:(NSString*)platform
-{
-    
-    if (!comment.id) //Need this or we should quit
-    {
-        VLog(@"Invalid comment passed to shareComment");
-        return;
-    }
-    if ([platform isEmpty]) //Need this or we should quit
-    {
-        VLog(@"No platform passed to shareComment");
-        return;
-    }
-    
-    NSMutableDictionary* parameters = [[NSMutableDictionary alloc] initWithCapacity:2];
-    [parameters setObject:[NSString stringWithFormat:@"%@", comment.id] forKey:@"comment_id"];
-    [parameters setObject:platform forKey:@"shared_to"];
-    
-    RKManagedObjectRequestOperation* requestOperation = [[RKObjectManager sharedManager]
-                                                         appropriateObjectRequestOperationWithObject:comment
-                                                         method:RKRequestMethodPOST
-                                                         path:@"/api/comment/share"
-                                                         parameters:parameters];
-    
-    [requestOperation setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation,
-                                                      RKMappingResult *mappingResult)
-     {
-         RKLogInfo(@"Load comment data from share: %@", mappingResult.array);
-     } failure:^(RKObjectRequestOperation *operation, NSError *error)
-     {
-         RKLogError(@"Operation failed with error: %@", error);
-     }];
-    
-    [requestOperation start];
-}
-
-+ (void)shareToFacebook:(VComment*)comment
-{
-    [self shareComment:comment toPlatform:@"facebook"];
-}
-
-+ (void)shareToTwitter:(VComment*)comment
-{
-    [self shareComment:comment toPlatform:@"twitter"];
-}
-
 #pragma mark - Vote Methods
 + (void)voteComment:(VComment*)comment voteType:(NSString*)type
 {
@@ -258,8 +210,6 @@
     [self dislikeComment:comment];
     [self likeComment:comment];
     [self flagComment:comment];
-    [self shareToTwitter:comment];
-    [self shareToFacebook:comment];
     [self removeComment:comment withReason:@"funsies"];
 }
 @end
