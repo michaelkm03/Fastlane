@@ -9,4 +9,12 @@
 #import <UIKit/UIKit.h>
 
 @interface VStreamsTableViewController : UITableViewController  <NSFetchedResultsControllerDelegate>
+
+
+- (IBAction)filterAll:(id)sender;
+- (IBAction)filterVideoForums:(id)sender;
+- (IBAction)filterPolls:(id)sender;
+- (IBAction)filterImages:(id)sender;
+- (IBAction)filterVideos:(id)sender;
+
 @end

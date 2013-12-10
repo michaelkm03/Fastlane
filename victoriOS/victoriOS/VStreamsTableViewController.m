@@ -9,8 +9,17 @@
 #import "VStreamsTableViewController.h"
 #import "Sequence.h"
 
+typedef NS_ENUM(NSInteger, VStreamFilterType) {
+    VStreamFilterAll,
+    VStreamFilterVideoForums,
+    VStreamFilterPolls,
+    VStreamFilterImages,
+    VStreamFilterVideos
+};
+
 @interface VStreamsTableViewController ()
 @property (nonatomic, strong) NSFetchedResultsController* fetchedResultsController;
+@property (nonatomic) VStreamFilterType filter;
 @end
 
 @implementation VStreamsTableViewController
@@ -21,6 +30,7 @@
     if (self)
     {
         // Custom initialization
+        _filter = VStreamFilterAll;
     }
     return self;
 }
@@ -156,22 +166,16 @@
 {
     if (nil == _fetchedResultsController)
     {
-          RKObjectManager* manager = [RKObjectManager sharedManager];
-          NSManagedObjectContext *context = manager.managedObjectStore.persistentStoreManagedObjectContext;
-          
-          NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
-          NSEntityDescription *entity = [NSEntityDescription entityForName:@"Sequence" inManagedObjectContext:context];
-          [fetchRequest setEntity:entity];
-          
-          NSSortDescriptor *sort = [[NSSortDescriptor alloc] initWithKey:@"display_order" ascending:YES];
-          [fetchRequest setSortDescriptors:@[sort]];
-          [fetchRequest setFetchBatchSize:50];
-          
-          self.fetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:fetchRequest
-                                                                              managedObjectContext:context
-                                                                                sectionNameKeyPath:nil
-                                                                                         cacheName:@"Streams"];
-          self.fetchedResultsController.delegate = self;
+        RKObjectManager* manager = [RKObjectManager sharedManager];
+        NSManagedObjectContext *context = manager.managedObjectStore.persistentStoreManagedObjectContext;
+        
+        NSFetchRequest *fetchRequest = [self filteredFetchRequestForContext:context];
+        
+        self.fetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:fetchRequest
+                                                                            managedObjectContext:context
+                                                                              sectionNameKeyPath:nil
+                                                                                       cacheName:@"Streams"];
+        self.fetchedResultsController.delegate = self;
     }
     
     return _fetchedResultsController;
@@ -227,6 +231,90 @@
 {
     // The fetch controller has sent all current change notifications, so tell the table view to process all updates.
     [self.tableView endUpdates];
+}
+
+#pragma mark - Stream Filters
+
+- (IBAction)filterAll:(id)sender
+{
+    _filter = VStreamFilterAll;
+    
+    _fetchedResultsController = nil;
+    [self.tableView reloadData];
+}
+
+- (IBAction)filterVideoForums:(id)sender
+{
+    _filter = VStreamFilterVideoForums;
+    
+    _fetchedResultsController = nil;
+    [self.tableView reloadData];
+}
+
+- (IBAction)filterPolls:(id)sender
+{
+    _filter = VStreamFilterPolls;
+    
+    _fetchedResultsController = nil;
+    [self.tableView reloadData];
+}
+
+- (IBAction)filterImages:(id)sender
+{
+    _filter = VStreamFilterImages;
+    
+    _fetchedResultsController = nil;
+    [self.tableView reloadData];
+}
+
+- (IBAction)filterVideos:(id)sender
+{
+    _filter = VStreamFilterVideos;
+    
+    _fetchedResultsController = nil;
+    [self.tableView reloadData];
+}
+
+- (NSFetchRequest*)filteredFetchRequestForContext:(NSManagedObjectContext*)context
+{
+    
+    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+    NSEntityDescription *entity = [NSEntityDescription entityForName:@"Sequence" inManagedObjectContext:context];
+    [fetchRequest setEntity:entity];
+    
+    NSSortDescriptor *sort = [[NSSortDescriptor alloc] initWithKey:@"display_order" ascending:YES];
+    [fetchRequest setSortDescriptors:@[sort]];
+    [fetchRequest setFetchBatchSize:50];
+    
+    //Define the appropriate filter
+    NSPredicate* filterPredicate;
+    
+    switch (_filter)
+    {
+        case VStreamFilterVideoForums:
+            filterPredicate = [NSPredicate predicateWithFormat:@"category == 'video_forum'"];
+            break;
+            
+        case VStreamFilterPolls:
+            filterPredicate = [NSPredicate predicateWithFormat:@"category == 'poll'"];
+            break;
+            
+        case VStreamFilterImages:
+            filterPredicate = [NSPredicate predicateWithFormat:@"category == 'image'"];
+            break;
+            
+        case VStreamFilterVideos:
+            filterPredicate = [NSPredicate predicateWithFormat:@"category == 'video'"];
+            break;
+            
+        default:
+            break;
+    }
+    
+    
+    [fetchRequest setPredicate:filterPredicate];
+    
+    return fetchRequest;
 }
 
 @end
