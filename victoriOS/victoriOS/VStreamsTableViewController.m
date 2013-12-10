@@ -11,17 +11,18 @@
 #import "REFrostedViewController.h"
 
 typedef NS_ENUM(NSInteger, VStreamFilterType) {
-    VStreamFilterAll,
-    VStreamFilterVideoForums,
-    VStreamFilterPolls,
+    VStreamFilterAll = 0,
     VStreamFilterImages,
-    VStreamFilterVideos
+    VStreamFilterVideos,
+    VStreamFilterVideoForums,
+    VStreamFilterPolls
 };
 
 @interface VStreamsTableViewController ()
 @property (strong, nonatomic) IBOutlet UISearchDisplayController *searchBarController;
 @property (nonatomic, strong) NSFetchedResultsController* fetchedResultsController;
-@property (nonatomic) VStreamFilterType filter;
+@property (nonatomic) VStreamFilterType filterType;
+@property (strong, nonatomic) NSString* filterText;
 @end
 
 @implementation VStreamsTableViewController
@@ -32,7 +33,7 @@ typedef NS_ENUM(NSInteger, VStreamFilterType) {
     if (self)
     {
         // Custom initialization
-        _filter = VStreamFilterAll;
+        _filterType = VStreamFilterAll;
     }
     return self;
 }
@@ -243,47 +244,7 @@ typedef NS_ENUM(NSInteger, VStreamFilterType) {
     [self.tableView endUpdates];
 }
 
-#pragma mark - Stream Filters
-
-- (IBAction)filterAll:(id)sender
-{
-    _filter = VStreamFilterAll;
-    
-    _fetchedResultsController = nil;
-    [self.tableView reloadData];
-}
-
-- (IBAction)filterVideoForums:(id)sender
-{
-    _filter = VStreamFilterVideoForums;
-    
-    _fetchedResultsController = nil;
-    [self.tableView reloadData];
-}
-
-- (IBAction)filterPolls:(id)sender
-{
-    _filter = VStreamFilterPolls;
-    
-    _fetchedResultsController = nil;
-    [self.tableView reloadData];
-}
-
-- (IBAction)filterImages:(id)sender
-{
-    _filter = VStreamFilterImages;
-    
-    _fetchedResultsController = nil;
-    [self.tableView reloadData];
-}
-
-- (IBAction)filterVideos:(id)sender
-{
-    _filter = VStreamFilterVideos;
-    
-    _fetchedResultsController = nil;
-    [self.tableView reloadData];
-}
+#pragma mark - Stream Filter
 
 - (NSFetchRequest*)filteredFetchRequestForContext:(NSManagedObjectContext*)context
 {
@@ -297,35 +258,69 @@ typedef NS_ENUM(NSInteger, VStreamFilterType) {
     [fetchRequest setFetchBatchSize:50];
     
     //Define the appropriate filter
-    NSPredicate* filterPredicate;
+    NSPredicate* typeFilter;
     
-    switch (_filter)
+    //Start by filtering by type
+    switch (_filterType)
     {
         case VStreamFilterVideoForums:
-            filterPredicate = [NSPredicate predicateWithFormat:@"category == 'video_forum'"];
+            typeFilter = [NSPredicate predicateWithFormat:@"category == 'video_forum'"];
             break;
             
         case VStreamFilterPolls:
-            filterPredicate = [NSPredicate predicateWithFormat:@"category == 'poll'"];
+            typeFilter = [NSPredicate predicateWithFormat:@"category == 'poll'"];
             break;
             
         case VStreamFilterImages:
-            filterPredicate = [NSPredicate predicateWithFormat:@"category == 'image'"];
+            typeFilter = [NSPredicate predicateWithFormat:@"category == 'image'"];
             break;
             
         case VStreamFilterVideos:
-            filterPredicate = [NSPredicate predicateWithFormat:@"category == 'video'"];
+            typeFilter = [NSPredicate predicateWithFormat:@"category == 'video'"];
             break;
             
         default:
             break;
     }
     
+    //And filter by the search text
+    NSPredicate* textFilter = [NSPredicate predicateWithFormat:@"SELF.name CONTAINS[cd] %@", _filterText];
+
+    NSMutableArray* allFilters = [[NSMutableArray alloc] init];
+    if (typeFilter)
+        [allFilters addObject:typeFilter];
+    if (textFilter)
+        [allFilters addObject:textFilter];
+    
+    NSPredicate* filterPredicate = [NSCompoundPredicate andPredicateWithSubpredicates:allFilters];
+    
     
     [fetchRequest setPredicate:filterPredicate];
     
     return fetchRequest;
 }
+
+#pragma mark - UISearchBarDelegate
+
+- (void)searchBar:(UISearchBar *)searchBar selectedScopeButtonIndexDidChange:(NSInteger)selectedScope
+{
+    //This relies on the scope buttons being in the same order as the VStreamFilterType enum
+    _filterType = selectedScope;
+    
+    _fetchedResultsController = nil;
+    [self.tableView reloadData];
+    [self.searchBarController.searchResultsTableView reloadData];
+}
+
+- (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText
+{
+    _filterText = searchText;
+    
+    _fetchedResultsController = nil;
+    [self.tableView reloadData];
+    [self.searchBarController.searchResultsTableView reloadData];
+}
+
 
 #pragma mark -
 
