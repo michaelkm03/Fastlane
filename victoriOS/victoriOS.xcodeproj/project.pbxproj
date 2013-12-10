@@ -74,6 +74,8 @@
 		BEBDC4D11857B2E30013DEF1 /* VStatSequence+RestKit.m in Sources */ = {isa = PBXBuildFile; fileRef = BEBDC4C11857B2E30013DEF1 /* VStatSequence+RestKit.m */; };
 		BEBDC4D21857B2E30013DEF1 /* VUser+RestKit.m in Sources */ = {isa = PBXBuildFile; fileRef = BEBDC4C31857B2E30013DEF1 /* VUser+RestKit.m */; };
 		BEBDC4D81857B4CA0013DEF1 /* VAPIManager.m in Sources */ = {isa = PBXBuildFile; fileRef = BEBDC4D71857B4CA0013DEF1 /* VAPIManager.m */; };
+		BEBDC4DC1857B80D0013DEF1 /* VLoginManagerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = BEBDC4D91857B80D0013DEF1 /* VLoginManagerTests.m */; };
+		BEBDC4DD1857B80D0013DEF1 /* VSequenceManagerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = BEBDC4DA1857B80D0013DEF1 /* VSequenceManagerTests.m */; };
 		BED55905185157DE007FD3E6 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = BED55904185157DE007FD3E6 /* libPods.a */; };
 /* End PBXBuildFile section */
 
@@ -207,6 +209,9 @@
 		BEBDC4C31857B2E30013DEF1 /* VUser+RestKit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "VUser+RestKit.m"; sourceTree = "<group>"; };
 		BEBDC4D61857B4CA0013DEF1 /* VAPIManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VAPIManager.h; path = Managers/VAPIManager.h; sourceTree = "<group>"; };
 		BEBDC4D71857B4CA0013DEF1 /* VAPIManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VAPIManager.m; path = Managers/VAPIManager.m; sourceTree = "<group>"; };
+		BEBDC4D91857B80D0013DEF1 /* VLoginManagerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VLoginManagerTests.m; sourceTree = "<group>"; };
+		BEBDC4DA1857B80D0013DEF1 /* VSequenceManagerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VSequenceManagerTests.m; sourceTree = "<group>"; };
+		BEBDC4DB1857B80D0013DEF1 /* XCTestRestKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XCTestRestKit.h; sourceTree = "<group>"; };
 		BED5590218515734007FD3E6 /* libPods.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libPods.a; path = "Pods/build/Release-iphoneos/libPods.a"; sourceTree = "<group>"; };
 		BED55904185157DE007FD3E6 /* libPods.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libPods.a; path = "Pods/build/Release-iphoneos/libPods.a"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -366,6 +371,9 @@
 		BEA4F24D1843F097001F5B15 /* victoriOSTests */ = {
 			isa = PBXGroup;
 			children = (
+				BEBDC4D91857B80D0013DEF1 /* VLoginManagerTests.m */,
+				BEBDC4DA1857B80D0013DEF1 /* VSequenceManagerTests.m */,
+				BEBDC4DB1857B80D0013DEF1 /* XCTestRestKit.h */,
 				BEA4F24E1843F097001F5B15 /* Supporting Files */,
 			);
 			path = victoriOSTests;
@@ -651,6 +659,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BEBDC4DC1857B80D0013DEF1 /* VLoginManagerTests.m in Sources */,
+				BEBDC4DD1857B80D0013DEF1 /* VSequenceManagerTests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
