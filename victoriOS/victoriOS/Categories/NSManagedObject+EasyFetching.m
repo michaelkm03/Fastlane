@@ -24,7 +24,7 @@
 }
 + (NSArray *)findAllObjectsInContext:(NSManagedObjectContext *)context withSortKey:(NSString*)sortKey
 {
-    NSEntityDescription *entity = [NSEntityDescription entityForName:NSStringFromClass(self)
+    NSEntityDescription *entity = [NSEntityDescription entityForName:[self entityName]
                                               inManagedObjectContext:context];
     
     NSFetchRequest *request = [[NSFetchRequest alloc] init];
@@ -41,6 +41,11 @@
         VLog(@"Error occured in findAllObjects: %@", error);
     }
     return results;
+}
+
++ (NSString *)entityName
+{
+    return nil;
 }
 
 + (RKEntityMapping*)entityMapping
