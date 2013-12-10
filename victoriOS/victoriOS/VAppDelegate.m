@@ -10,7 +10,7 @@
 #import "VAPIManager.h"
 #import "VLoginViewController.h"
 #import <TestFlightSDK/TestFlight.h>
-
+#import "VSequenceManager.h"
 @implementation VAppDelegate
 
 + (VAppDelegate*) sharedAppDelegate
@@ -21,7 +21,7 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     [VAPIManager setupRestKit];
-    
+
     [TestFlight takeOff:@"4467aa06-d174-479e-b009-f1945f3d6532"];
     
     //[VLoginManager createVictoriousAccountWithEmail:@"a" password:@"a" name:@"a"];

@@ -13,7 +13,8 @@
 
 @interface VSequenceManager : NSObject
 
-+ (void)loadSequenceCategories;
++ (RKManagedObjectRequestOperation *)loadSequenceCategoriesWithBlock:(void(^)(NSArray *categories, NSError *error))block;
+
 + (void)loadFullDataForSequence:(VSequence*)sequence;
 + (void)loadCommentsForSequence:(VSequence*)sequence;
 
