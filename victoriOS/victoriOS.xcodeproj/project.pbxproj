@@ -74,6 +74,7 @@
 		BEBDC4D01857B2E30013DEF1 /* VStatInteraction+RestKit.m in Sources */ = {isa = PBXBuildFile; fileRef = BEBDC4BF1857B2E30013DEF1 /* VStatInteraction+RestKit.m */; };
 		BEBDC4D11857B2E30013DEF1 /* VStatSequence+RestKit.m in Sources */ = {isa = PBXBuildFile; fileRef = BEBDC4C11857B2E30013DEF1 /* VStatSequence+RestKit.m */; };
 		BEBDC4D21857B2E30013DEF1 /* VUser+RestKit.m in Sources */ = {isa = PBXBuildFile; fileRef = BEBDC4C31857B2E30013DEF1 /* VUser+RestKit.m */; };
+		BEBDC4D81857B4CA0013DEF1 /* VAPIManager.m in Sources */ = {isa = PBXBuildFile; fileRef = BEBDC4D71857B4CA0013DEF1 /* VAPIManager.m */; };
 		BED55905185157DE007FD3E6 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = BED55904185157DE007FD3E6 /* libPods.a */; };
 /* End PBXBuildFile section */
 
@@ -206,6 +207,8 @@
 		BEBDC4C11857B2E30013DEF1 /* VStatSequence+RestKit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "VStatSequence+RestKit.m"; sourceTree = "<group>"; };
 		BEBDC4C21857B2E30013DEF1 /* VUser+RestKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "VUser+RestKit.h"; sourceTree = "<group>"; };
 		BEBDC4C31857B2E30013DEF1 /* VUser+RestKit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "VUser+RestKit.m"; sourceTree = "<group>"; };
+		BEBDC4D61857B4CA0013DEF1 /* VAPIManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VAPIManager.h; path = Managers/VAPIManager.h; sourceTree = "<group>"; };
+		BEBDC4D71857B4CA0013DEF1 /* VAPIManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VAPIManager.m; path = Managers/VAPIManager.m; sourceTree = "<group>"; };
 		BED5590218515734007FD3E6 /* libPods.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libPods.a; path = "Pods/build/Release-iphoneos/libPods.a"; sourceTree = "<group>"; };
 		BED55904185157DE007FD3E6 /* libPods.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libPods.a; path = "Pods/build/Release-iphoneos/libPods.a"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -279,6 +282,8 @@
 		BE4E75361846BDE100344677 /* Managers */ = {
 			isa = PBXGroup;
 			children = (
+				BEBDC4D61857B4CA0013DEF1 /* VAPIManager.h */,
+				BEBDC4D71857B4CA0013DEF1 /* VAPIManager.m */,
 				BE4E753A1846BF0700344677 /* VLoginManager.h */,
 				BE4E753B1846BF0700344677 /* VLoginManager.m */,
 				BE4E7549184942F100344677 /* VSequenceManager.h */,
@@ -619,6 +624,7 @@
 				BEA4F23E1843F097001F5B15 /* victoriOS.xcdatamodeld in Sources */,
 				BEBDC4C41857B2E30013DEF1 /* VAnswer+RestKit.m in Sources */,
 				BEBDC4C71857B2E30013DEF1 /* VCategory+RestKit.m in Sources */,
+				BEBDC4D81857B4CA0013DEF1 /* VAPIManager.m in Sources */,
 				BEBDC4CC1857B2E30013DEF1 /* VNodeAction+RestKit.m in Sources */,
 				BEBDC4CF1857B2E30013DEF1 /* VStatAnswer+RestKit.m in Sources */,
 				BEBDC4C81857B2E30013DEF1 /* VComment+RestKit.m in Sources */,
