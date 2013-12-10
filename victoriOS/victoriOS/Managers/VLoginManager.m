@@ -14,22 +14,24 @@
 
 @implementation VLoginManager
 
+#pragma mark - Facebook
+
 + (void)loginToFacebook
 {
     @try {
-    [FBSession openActiveSessionWithReadPermissions:@[ @"basic_info", @"email" ]
-                                       allowLoginUI:YES
-                                  completionHandler:^(FBSession *session, FBSessionState status, NSError *error) {
-                                      if (error)
-                                      {
-                                          // Log it.
-                                          VLog(@"Error in opening FB Session: %@", error);
-                                      }
-                                      else
-                                      {
-                                          [VLoginManager launchLoginToFBCall];
-                                      }
-                                  }];
+        [FBSession openActiveSessionWithReadPermissions:@[ @"basic_info", @"email" ]
+                                           allowLoginUI:YES
+                                      completionHandler:^(FBSession *session, FBSessionState status, NSError *error) {
+                                          if (error)
+                                          {
+                                              // Log it.
+                                              VLog(@"Error in opening FB Session: %@", error);
+                                          }
+                                          else
+                                          {
+                                              [VLoginManager launchLoginToFBCall];
+                                          }
+                                      }];
     } @catch (NSException* exception) {
         VLog(@"exception: %@", exception);
     }
@@ -39,7 +41,7 @@
 + (void)launchLoginToFBCall
 {
     NSString* token =[[[FBSession activeSession] accessTokenData] accessToken];
-    
+
     RKManagedObjectRequestOperation* requestOperation;
     if(token) {
         requestOperation = [[RKObjectManager sharedManager]
@@ -48,99 +50,104 @@
                             path:@"/api/login/facebook"
                             parameters:@{@"facebook_access_token": token}];
     }
-    
-    [requestOperation setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation,
-                                                      RKMappingResult *mappingResult)
-    {
-        RKLogInfo(@"Login with User: %@", mappingResult.array);
-//        [VSequenceManager loadSequenceCategories];
-    } failure:^(RKObjectRequestOperation *operation, NSError *error)
-    {
-        RKLogError(@"Operation failed with error: %@", error);
-    }];
-    
-    [requestOperation start];
-}
-
-+ (void)loginToVictoriousWithEmail:(NSString*)email andPassword:(NSString*)password
-{
-    
-    if ([email isEmpty] || [password isEmpty])
-    {
-        VLog(@"Invalid parameters in api/login");
-        return;
-    }
-    
-    RKManagedObjectRequestOperation* requestOperation = [[RKObjectManager sharedManager]
-                                                         appropriateObjectRequestOperationWithObject:nil
-                                                         method:RKRequestMethodPOST
-                                                         path:@"/api/login"
-                                                         parameters:@{@"email": email,
-                                                                      @"password": password}];
 
     [requestOperation setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation,
                                                       RKMappingResult *mappingResult)
      {
          RKLogInfo(@"Login with User: %@", mappingResult.array);
+         //        [VSequenceManager loadSequenceCategories];
      } failure:^(RKObjectRequestOperation *operation, NSError *error)
      {
          RKLogError(@"Operation failed with error: %@", error);
      }];
-    
+
     [requestOperation start];
 }
 
-+ (void)modifyVictoriousAccountWithEmail:(NSString*)email
-                                password:(NSString*)password
-                                    name:(NSString*)name
-                              modifyType:(NSString*)modifyType
+#pragma mark - Victorious
+
++ (RKManagedObjectRequestOperation *)loginToVictoriousWithEmail:(NSString*)email password:(NSString*)password block:(void(^)(NSArray *categories, NSError *error))block
 {
-    
-    if ([email isEmpty] ||
-        [password isEmpty] ||
-        [name isEmpty] ||
-        [modifyType isEmpty])
-    {
-        VLog(@"Invalid parameters in api/account/%@", modifyType);
-        return;
-    }
-    
-    NSString* path = [NSString stringWithFormat:@"/api/account/%@", modifyType];
-    
-    RKManagedObjectRequestOperation* requestOperation = [[RKObjectManager sharedManager]
-                                                         appropriateObjectRequestOperationWithObject:nil
-                                                         method:RKRequestMethodPOST
-                                                         path:path
-                                                         parameters:@{@"email" : email,
-                                                                      @"password" : password,
-                                                                      @"name" : name}];
-    
+
+    // TODO: return error to block
+    //    if ([email isEmpty] || [password isEmpty])
+    //    {
+    //        VLog(@"Invalid parameters in api/login");
+    //        return;
+    //    }
+
+    RKManagedObjectRequestOperation *requestOperation =
+    [[RKObjectManager sharedManager]
+     appropriateObjectRequestOperationWithObject:nil
+     method:RKRequestMethodPOST path:@"/api/login"
+     parameters:@{@"email": email, @"password": password}];
+
     [requestOperation setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation,
                                                       RKMappingResult *mappingResult)
      {
-         RKLogInfo(@"Login in with user: %@", mappingResult.array);
-         [self updateVictoriousAccountWithEmail:@"a" password:@"a" name:@"a"];
+         if(block){
+             block(mappingResult.array, nil);
+         }
      } failure:^(RKObjectRequestOperation *operation, NSError *error)
      {
-         RKLogError(@"Operation failed with error: %@", error);
+         if(block){
+             block(nil, error);
+         }
      }];
-    
-    [requestOperation start];
+
+    return requestOperation;
 }
 
-+ (void)updateVictoriousAccountWithEmail:(NSString*)email password:(NSString*)password name:(NSString*)name
++ (RKManagedObjectRequestOperation *)modifyVictoriousAccountWithEmail:(NSString*)email
+                                                             password:(NSString*)password
+                                                                 name:(NSString*)name
+                                                           modifyType:(NSString*)modifyType
+                                                                block:(void(^)(NSArray *categories, NSError *error))block
 {
-    [self modifyVictoriousAccountWithEmail:email
-                                  password:password
-                                      name:name
-                                modifyType:@"update"];
+
+    // TODO: return error to block
+//    if ([email isEmpty] ||
+//        [password isEmpty] ||
+//        [name isEmpty] ||
+//        [modifyType isEmpty])
+//    {
+//        VLog(@"Invalid parameters in api/account/%@", modifyType);
+//        return;
+//    }
+
+    NSString *path = [NSString stringWithFormat:@"/api/account/%@", modifyType];
+
+    RKManagedObjectRequestOperation* requestOperation =
+    [[RKObjectManager sharedManager]
+     appropriateObjectRequestOperationWithObject:nil
+     method:RKRequestMethodPOST path:path
+     parameters:@{@"email" : email, @"password" : password, @"name" : name}];
+
+    [requestOperation setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation,
+                                                      RKMappingResult *mappingResult)
+     {
+         if(block){
+             block(mappingResult.array, nil);
+         }
+     } failure:^(RKObjectRequestOperation *operation, NSError *error)
+     {
+         if(block){
+             block(nil, error);
+         }
+     }];
+
+    return requestOperation;
 }
 
-+ (void)createVictoriousAccountWithEmail:(NSString*)email password:(NSString*)password name:(NSString*)name
++ (RKManagedObjectRequestOperation *)updateVictoriousAccountWithEmail:(NSString*)email password:(NSString*)password name:(NSString*)name block:(void(^)(NSArray *categories, NSError *error))block
 {
-    [self modifyVictoriousAccountWithEmail:email
-                                  password:password
-                                      name:name
-                                modifyType:@"create"];
+    return [self modifyVictoriousAccountWithEmail:email password:password name:name
+                                       modifyType:@"update" block:block];
+}
+
++ (RKManagedObjectRequestOperation *)createVictoriousAccountWithEmail:(NSString*)email password:(NSString*)password name:(NSString*)name block:(void(^)(NSArray *categories, NSError *error))block
+{
+    return [self modifyVictoriousAccountWithEmail:email password:password name:name
+                                       modifyType:@"create" block:block];
 }
 @end

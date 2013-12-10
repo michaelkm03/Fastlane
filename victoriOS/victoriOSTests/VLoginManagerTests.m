@@ -1,5 +1,5 @@
 //
-//  VSequenceManagerTests.m
+//  VLoginManagerTests.m
 //  victoriOS
 //
 //  Created by David Keegan on 12/9/13.
@@ -8,26 +8,26 @@
 
 #import <XCTest/XCTest.h>
 #import "VAPIManager.h"
-#import "VSequenceManager.h"
+#import "VLoginManager.h"
 #import "XCTestRestKit.h"
 
-@interface VSequenceManagerTests : XCTestCase
+@interface VLoginManagerTests : XCTestCase
 @end
 
-@implementation VSequenceManagerTests
+@implementation VLoginManagerTests
 
 + (void)setUp
 {
     [super setUp];
 
-    [VAPIManager setupRestKit];    
+    [VAPIManager setupRestKit];
 }
 
-- (void)testLoadSequenceCategories
+- (void)testCreateAccount
 {
     __block NSError *resultError;
     __block NSArray *resultArray;
-    XCTestRestKitStartOperation([VSequenceManager loadSequenceCategoriesWithBlock:^(NSArray *categories, NSError *error){
+    XCTestRestKitStartOperation([VLoginManager createVictoriousAccountWithEmail:@"c" password:@"c" name:@"b" block:^(NSArray *categories, NSError *error){
         resultError = error;
         resultArray = categories;
         XCTestRestKitEndOperation();

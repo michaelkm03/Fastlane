@@ -12,8 +12,8 @@
 
 + (void)loginToFacebook;
 
-+ (void)loginToVictoriousWithEmail:(NSString*)email andPassword:(NSString*)password;
-+ (void)createVictoriousAccountWithEmail:(NSString*)email password:(NSString*)password name:(NSString*)name;
-+ (void)updateVictoriousAccountWithEmail:(NSString*)email password:(NSString*)password name:(NSString*)name;
++ (RKManagedObjectRequestOperation *)loginToVictoriousWithEmail:(NSString*)email password:(NSString*)password block:(void(^)(NSArray *categories, NSError *error))block;
++ (RKManagedObjectRequestOperation *)createVictoriousAccountWithEmail:(NSString*)email password:(NSString*)password name:(NSString*)name block:(void(^)(NSArray *categories, NSError *error))block;
++ (RKManagedObjectRequestOperation *)updateVictoriousAccountWithEmail:(NSString*)email password:(NSString*)password name:(NSString*)name block:(void(^)(NSArray *categories, NSError *error))block;
 
 @end

@@ -28,6 +28,7 @@
 		833AD46E185652E00009F327 /* VUser.m in Sources */ = {isa = PBXBuildFile; fileRef = 833AD45F185652E00009F327 /* VUser.m */; };
 		833AD47118565DE70009F327 /* VAPIManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 833AD47018565DE70009F327 /* VAPIManager.m */; };
 		833AD47518568E590009F327 /* VSequenceManagerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 833AD47418568E590009F327 /* VSequenceManagerTests.m */; };
+		83ACBB771856B32700C0266B /* VLoginManagerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 83ACBB761856B32700C0266B /* VLoginManagerTests.m */; };
 		BE2BA7CF1852593700CA71AC /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = BE2BA7CE1852593700CA71AC /* libPods.a */; };
 		BE4E753C1846BF0700344677 /* VLoginManager.m in Sources */ = {isa = PBXBuildFile; fileRef = BE4E753B1846BF0700344677 /* VLoginManager.m */; };
 		BE4E754B184942F100344677 /* VSequenceManager.m in Sources */ = {isa = PBXBuildFile; fileRef = BE4E754A184942F100344677 /* VSequenceManager.m */; };
@@ -120,6 +121,7 @@
 		833AD47018565DE70009F327 /* VAPIManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VAPIManager.m; path = Managers/VAPIManager.m; sourceTree = "<group>"; };
 		833AD47418568E590009F327 /* VSequenceManagerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VSequenceManagerTests.m; sourceTree = "<group>"; };
 		83ACBB751856AB6500C0266B /* XCTestRestKit.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = XCTestRestKit.h; sourceTree = "<group>"; };
+		83ACBB761856B32700C0266B /* VLoginManagerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VLoginManagerTests.m; sourceTree = "<group>"; };
 		B15D4A5304A04D16AD420BCD /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		BE20A10218524D6A003D0E8C /* libPods-RestKit.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libPods-RestKit.a"; path = "Pods/build/TestFlight-iphoneos/libPods-RestKit.a"; sourceTree = "<group>"; };
 		BE2BA7CE1852593700CA71AC /* libPods.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libPods.a; path = "Pods/build/TestFlight-iphoneos/libPods.a"; sourceTree = "<group>"; };
@@ -363,6 +365,7 @@
 			isa = PBXGroup;
 			children = (
 				83ACBB751856AB6500C0266B /* XCTestRestKit.h */,
+				83ACBB761856B32700C0266B /* VLoginManagerTests.m */,
 				833AD47418568E590009F327 /* VSequenceManagerTests.m */,
 				BEA4F24E1843F097001F5B15 /* Supporting Files */,
 			);
@@ -600,6 +603,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				83ACBB771856B32700C0266B /* VLoginManagerTests.m in Sources */,
 				833AD47518568E590009F327 /* VSequenceManagerTests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
