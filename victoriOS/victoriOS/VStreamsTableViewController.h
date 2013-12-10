@@ -8,5 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface VStreamsTableViewController : UITableViewController  <NSFetchedResultsControllerDelegate>
+@interface VStreamsTableViewController : UITableViewController  <NSFetchedResultsControllerDelegate,
+                                                                UISearchBarDelegate,
+                                                                UISearchDisplayDelegate>
 @end

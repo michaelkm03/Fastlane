@@ -8,8 +8,10 @@
 
 #import "VStreamsTableViewController.h"
 #import "Sequence.h"
+#import "REFrostedViewController.h"
 
 @interface VStreamsTableViewController ()
+@property (strong, nonatomic) IBOutlet UISearchDisplayController *searchBarController;
 @property (nonatomic, strong) NSFetchedResultsController* fetchedResultsController;
 @end
 
@@ -42,6 +44,14 @@
 		NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
 		exit(-1);  // Fail
 	}
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{    
+    // scroll the search bar off-screen
+    CGRect newBounds = self.tableView.bounds;
+    newBounds.origin.y = newBounds.origin.y + self.searchBarController.searchBar.bounds.size.height;
+    self.tableView.bounds = newBounds;
 }
 
 - (void)didReceiveMemoryWarning
@@ -227,6 +237,37 @@
 {
     // The fetch controller has sent all current change notifications, so tell the table view to process all updates.
     [self.tableView endUpdates];
+}
+
+#pragma mark -
+
+- (IBAction)showMenu
+{
+    [self.frostedViewController presentMenuViewController];
+}
+
+- (IBAction)displaySearchBar:(id)sender
+{
+    [self.tableView scrollRectToVisible:CGRectMake(0, 0, 1, 1) animated:YES];
+    
+    NSTimeInterval delay;
+    if (self.tableView.contentOffset.y >1000)
+        delay = 0.4;
+    else
+        delay = 0.1;
+    [self performSelector:@selector(activateSearch) withObject:nil afterDelay:delay];
+}
+
+- (void)activateSearch
+{
+    [self.tableView scrollRectToVisible:CGRectMake(0, 0, 1, 1) animated:NO];
+    [self.searchBarController.searchBar becomeFirstResponder];
+    
+}
+
+- (void)searchBarCancelButtonClicked:(UISearchBar *)searchBar
+{
+    [self viewWillAppear:YES];
 }
 
 @end

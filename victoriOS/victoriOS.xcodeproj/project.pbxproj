@@ -8,6 +8,17 @@
 
 /* Begin PBXBuildFile section */
 		3F543C4118512C6700A1F2FC /* VSignUpViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F543C4018512C6700A1F2FC /* VSignUpViewController.m */; };
+		3F90DD6718569ACA00C8F312 /* VRootViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F90DD6618569ACA00C8F312 /* VRootViewController.m */; };
+		3F90DD6A18569B9300C8F312 /* VNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F90DD6918569B9300C8F312 /* VNavigationController.m */; };
+		3F90DD6D18569EB400C8F312 /* VMenuController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F90DD6C18569EB400C8F312 /* VMenuController.m */; };
+		3F90DD731856A37000C8F312 /* avatar.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 3F90DD721856A37000C8F312 /* avatar.jpg */; };
+		3F90DD761856A44F00C8F312 /* VForumsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F90DD751856A44F00C8F312 /* VForumsViewController.m */; };
+		3F90DD7B1856A56B00C8F312 /* btn_menu@1x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3F90DD771856A56B00C8F312 /* btn_menu@1x.png */; };
+		3F90DD7C1856A56B00C8F312 /* btn_menu@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3F90DD781856A56B00C8F312 /* btn_menu@2x.png */; };
+		3F90DD7D1856A56B00C8F312 /* btn_search@1x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3F90DD791856A56B00C8F312 /* btn_search@1x.png */; };
+		3F90DD7E1856A56B00C8F312 /* btn_search@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3F90DD7A1856A56B00C8F312 /* btn_search@2x.png */; };
+		3F90DD811856A59B00C8F312 /* VInboxViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F90DD801856A59B00C8F312 /* VInboxViewController.m */; };
+		3F90DD841856A66F00C8F312 /* VProfileViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F90DD831856A66F00C8F312 /* VProfileViewController.m */; };
 		5F3B4950184E6B8D0062DB55 /* VLoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F3B494F184E6B8D0062DB55 /* VLoginViewController.m */; };
 		5F8AAA5E184D43C600301783 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5F8AAA5D184D43C600301783 /* Main.storyboard */; };
 		5F8AAAA5184D467300301783 /* VStreamsTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F8AAAA4184D467300301783 /* VStreamsTableViewController.m */; };
@@ -79,6 +90,23 @@
 /* Begin PBXFileReference section */
 		3F543C3F18512C6700A1F2FC /* VSignUpViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VSignUpViewController.h; path = UI/VSignUpViewController.h; sourceTree = "<group>"; };
 		3F543C4018512C6700A1F2FC /* VSignUpViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VSignUpViewController.m; path = UI/VSignUpViewController.m; sourceTree = "<group>"; };
+		3F90DD6518569ACA00C8F312 /* VRootViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VRootViewController.h; path = UI/VRootViewController.h; sourceTree = "<group>"; };
+		3F90DD6618569ACA00C8F312 /* VRootViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VRootViewController.m; path = UI/VRootViewController.m; sourceTree = "<group>"; };
+		3F90DD6818569B9300C8F312 /* VNavigationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VNavigationController.h; path = UI/VNavigationController.h; sourceTree = "<group>"; };
+		3F90DD6918569B9300C8F312 /* VNavigationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VNavigationController.m; path = UI/VNavigationController.m; sourceTree = "<group>"; };
+		3F90DD6B18569EB400C8F312 /* VMenuController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VMenuController.h; path = UI/VMenuController.h; sourceTree = "<group>"; };
+		3F90DD6C18569EB400C8F312 /* VMenuController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VMenuController.m; path = UI/VMenuController.m; sourceTree = "<group>"; };
+		3F90DD721856A37000C8F312 /* avatar.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = avatar.jpg; sourceTree = "<group>"; };
+		3F90DD741856A44F00C8F312 /* VForumsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VForumsViewController.h; path = UI/VForumsViewController.h; sourceTree = "<group>"; };
+		3F90DD751856A44F00C8F312 /* VForumsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VForumsViewController.m; path = UI/VForumsViewController.m; sourceTree = "<group>"; };
+		3F90DD771856A56B00C8F312 /* btn_menu@1x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "btn_menu@1x.png"; sourceTree = "<group>"; };
+		3F90DD781856A56B00C8F312 /* btn_menu@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "btn_menu@2x.png"; sourceTree = "<group>"; };
+		3F90DD791856A56B00C8F312 /* btn_search@1x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "btn_search@1x.png"; sourceTree = "<group>"; };
+		3F90DD7A1856A56B00C8F312 /* btn_search@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "btn_search@2x.png"; sourceTree = "<group>"; };
+		3F90DD7F1856A59B00C8F312 /* VInboxViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VInboxViewController.h; path = UI/VInboxViewController.h; sourceTree = "<group>"; };
+		3F90DD801856A59B00C8F312 /* VInboxViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VInboxViewController.m; path = UI/VInboxViewController.m; sourceTree = "<group>"; };
+		3F90DD821856A66F00C8F312 /* VProfileViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VProfileViewController.h; path = UI/VProfileViewController.h; sourceTree = "<group>"; };
+		3F90DD831856A66F00C8F312 /* VProfileViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VProfileViewController.m; path = UI/VProfileViewController.m; sourceTree = "<group>"; };
 		4F627C2BF55A46F299155184 /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = "<group>"; };
 		5F3B494E184E6B8D0062DB55 /* VLoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VLoginViewController.h; path = UI/VLoginViewController.h; sourceTree = "<group>"; };
 		5F3B494F184E6B8D0062DB55 /* VLoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VLoginViewController.m; path = UI/VLoginViewController.m; sourceTree = "<group>"; };
@@ -213,8 +241,20 @@
 		5F8AAA5A184D439000301783 /* UI */ = {
 			isa = PBXGroup;
 			children = (
+				3F90DD6518569ACA00C8F312 /* VRootViewController.h */,
+				3F90DD6618569ACA00C8F312 /* VRootViewController.m */,
+				3F90DD6818569B9300C8F312 /* VNavigationController.h */,
+				3F90DD6918569B9300C8F312 /* VNavigationController.m */,
+				3F90DD6B18569EB400C8F312 /* VMenuController.h */,
+				3F90DD6C18569EB400C8F312 /* VMenuController.m */,
 				5F8AAAA3184D467300301783 /* VStreamsTableViewController.h */,
 				5F8AAAA4184D467300301783 /* VStreamsTableViewController.m */,
+				3F90DD741856A44F00C8F312 /* VForumsViewController.h */,
+				3F90DD751856A44F00C8F312 /* VForumsViewController.m */,
+				3F90DD7F1856A59B00C8F312 /* VInboxViewController.h */,
+				3F90DD801856A59B00C8F312 /* VInboxViewController.m */,
+				3F90DD821856A66F00C8F312 /* VProfileViewController.h */,
+				3F90DD831856A66F00C8F312 /* VProfileViewController.m */,
 				5F3B494E184E6B8D0062DB55 /* VLoginViewController.h */,
 				5F3B494F184E6B8D0062DB55 /* VLoginViewController.m */,
 				3F543C3F18512C6700A1F2FC /* VSignUpViewController.h */,
@@ -336,6 +376,11 @@
 				BEA4F2391843F097001F5B15 /* VAppDelegate.h */,
 				BEA4F23A1843F097001F5B15 /* VAppDelegate.m */,
 				BEA4F23F1843F097001F5B15 /* Images.xcassets */,
+				3F90DD771856A56B00C8F312 /* btn_menu@1x.png */,
+				3F90DD781856A56B00C8F312 /* btn_menu@2x.png */,
+				3F90DD791856A56B00C8F312 /* btn_search@1x.png */,
+				3F90DD7A1856A56B00C8F312 /* btn_search@2x.png */,
+				3F90DD721856A37000C8F312 /* avatar.jpg */,
 				BEA4F23C1843F097001F5B15 /* victoriOS.xcdatamodeld */,
 				BEA4F2311843F097001F5B15 /* Supporting Files */,
 			);
@@ -489,9 +534,14 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3F90DD7C1856A56B00C8F312 /* btn_menu@2x.png in Resources */,
 				5F8AAA5E184D43C600301783 /* Main.storyboard in Resources */,
 				BEA4F2351843F097001F5B15 /* InfoPlist.strings in Resources */,
 				BEA4F2401843F097001F5B15 /* Images.xcassets in Resources */,
+				3F90DD731856A37000C8F312 /* avatar.jpg in Resources */,
+				3F90DD7B1856A56B00C8F312 /* btn_menu@1x.png in Resources */,
+				3F90DD7D1856A56B00C8F312 /* btn_search@1x.png in Resources */,
+				3F90DD7E1856A56B00C8F312 /* btn_search@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -543,6 +593,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3F90DD6A18569B9300C8F312 /* VNavigationController.m in Sources */,
 				BECAFFD6184FDAD20096E370 /* User.m in Sources */,
 				BE5AC2B9184D298900121126 /* User+RestKit.m in Sources */,
 				BE4E751A1846B78000344677 /* Interaction.m in Sources */,
@@ -561,6 +612,7 @@
 				BE5AC2B8184D298900121126 /* StatSequence+RestKit.m in Sources */,
 				BECAFFD3184FDAD20096E370 /* StatSequence.m in Sources */,
 				BE5AC2AF184D298900121126 /* Comment+RestKit.m in Sources */,
+				3F90DD6D18569EB400C8F312 /* VMenuController.m in Sources */,
 				BE5AC2B6184D298900121126 /* StatAnswer+RestKit.m in Sources */,
 				BE5AC2BA184D298900121126 /* VCategory+RestKit.m in Sources */,
 				BE5AC2B4184D298900121126 /* Rule+RestKit.m in Sources */,
@@ -570,15 +622,19 @@
 				BE5AC28A184D194A00121126 /* NodeAction.m in Sources */,
 				BE4E75021846B76900344677 /* StatAnswer.m in Sources */,
 				BE5AC2BB184D298900121126 /* NSManagedObject+EasyFetching.m in Sources */,
+				3F90DD761856A44F00C8F312 /* VForumsViewController.m in Sources */,
 				BEA4F23E1843F097001F5B15 /* victoriOS.xcdatamodeld in Sources */,
 				BE5AC2AC184D298900121126 /* Answer+RestKit.m in Sources */,
 				BE5AC2B2184D298900121126 /* Node+RestKit.m in Sources */,
+				3F90DD811856A59B00C8F312 /* VInboxViewController.m in Sources */,
 				BE5AC2B3184D298900121126 /* NodeAction+RestKit.m in Sources */,
 				BE5AC2BE184D69B100121126 /* Node.m in Sources */,
 				BE5AC2B1184D298900121126 /* InteractionAction+RestKit.m in Sources */,
 				BE5AC2AE184D298900121126 /* Asset+RestKit.m in Sources */,
 				BEA4F23B1843F097001F5B15 /* VAppDelegate.m in Sources */,
+				3F90DD6718569ACA00C8F312 /* VRootViewController.m in Sources */,
 				BE5AC2B7184D298900121126 /* StatInteraction+RestKit.m in Sources */,
+				3F90DD841856A66F00C8F312 /* VProfileViewController.m in Sources */,
 				BE4E75051846B76900344677 /* Rule.m in Sources */,
 				BE4E754B184942F100344677 /* VSequenceManager.m in Sources */,
 				3F543C4118512C6700A1F2FC /* VSignUpViewController.m in Sources */,
