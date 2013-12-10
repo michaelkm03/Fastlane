@@ -9,6 +9,7 @@
 #import <XCTest/XCTest.h>
 #import "VAPIManager.h"
 #import "VSequenceManager.h"
+#import "XCTestRestKit.h"
 
 @interface VSequenceManagerTests : XCTestCase
 
@@ -16,33 +17,24 @@
 
 @implementation VSequenceManagerTests
 
-- (void)setUp
++ (void)setUp
 {
     [super setUp];
 
     [VAPIManager setupRestKit];    
 }
 
-- (void)tearDown
+- (void)testLoadSequenceCategoriesWithBlock
 {
-    // Put teardown code here; it will be run once, after the last test case.
-    [super tearDown];
-}
+    __block NSError *resultError;
+    __block NSArray *resultArray;
+    XCTestRestKitStartOperation([VSequenceManager loadSequenceCategoriesWithBlock:^(NSArray *categories, NSError *error){
+        resultError = error;
+        resultArray = categories;
+        XCTestRestKitEndOperation();
+    }]);
 
-//+ (void)loadSequenceCategories;
-//+ (void)loadFullDataForSequence:(VSequence*)sequence;
-//+ (void)loadCommentsForSequence:(VSequence*)sequence;
-//
-//+ (void)loadStatSequencesForUser:(VUser*)user;
-//+ (void)loadFullDataForStatSequence:(VStatSequence*)statSequence;
-//
-//+ (void)createStatSequenceForSequence:(VSequence*)sequence;
-//+ (void)addStatInterationToStatSequence:(VStatSequence*)sequence;
-//+ (void)addStatAnswerToStatInteraction:(VStatInteraction*)interaction;
-
-- (void)testLoadSequenceCategories
-{
-    [VSequenceManager loadSequenceCategories];
+    XCTAssertNil(resultError, @"Error: %@", resultError);
 }
 
 @end

@@ -43,7 +43,6 @@
 		BEA4F2491843F097001F5B15 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BEA4F22C1843F097001F5B15 /* UIKit.framework */; };
 		BEA4F24A1843F097001F5B15 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BEA4F22E1843F097001F5B15 /* CoreData.framework */; };
 		BEA4F2521843F097001F5B15 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = BEA4F2501843F097001F5B15 /* InfoPlist.strings */; };
-		BEA4F2541843F097001F5B15 /* victoriOSTests.m in Sources */ = {isa = PBXBuildFile; fileRef = BEA4F2531843F097001F5B15 /* victoriOSTests.m */; };
 		BEBDC4961857B2C50013DEF1 /* VAnswer.m in Sources */ = {isa = PBXBuildFile; fileRef = BEBDC4791857B2C50013DEF1 /* VAnswer.m */; };
 		BEBDC4971857B2C50013DEF1 /* VAnswerAction.m in Sources */ = {isa = PBXBuildFile; fileRef = BEBDC47B1857B2C50013DEF1 /* VAnswerAction.m */; };
 		BEBDC4981857B2C50013DEF1 /* VAsset.m in Sources */ = {isa = PBXBuildFile; fileRef = BEBDC47D1857B2C50013DEF1 /* VAsset.m */; };
@@ -146,7 +145,6 @@
 		BEA4F2461843F097001F5B15 /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
 		BEA4F24F1843F097001F5B15 /* victoriOSTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "victoriOSTests-Info.plist"; sourceTree = "<group>"; };
 		BEA4F2511843F097001F5B15 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
-		BEA4F2531843F097001F5B15 /* victoriOSTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = victoriOSTests.m; sourceTree = "<group>"; };
 		BEBDC4781857B2C50013DEF1 /* VAnswer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VAnswer.h; sourceTree = "<group>"; };
 		BEBDC4791857B2C50013DEF1 /* VAnswer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VAnswer.m; sourceTree = "<group>"; };
 		BEBDC47A1857B2C50013DEF1 /* VAnswerAction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VAnswerAction.h; sourceTree = "<group>"; };
@@ -368,7 +366,6 @@
 		BEA4F24D1843F097001F5B15 /* victoriOSTests */ = {
 			isa = PBXGroup;
 			children = (
-				BEA4F2531843F097001F5B15 /* victoriOSTests.m */,
 				BEA4F24E1843F097001F5B15 /* Supporting Files */,
 			);
 			path = victoriOSTests;
@@ -654,7 +651,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				BEA4F2541843F097001F5B15 /* victoriOSTests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

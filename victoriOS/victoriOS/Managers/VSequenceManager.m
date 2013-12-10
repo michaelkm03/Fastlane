@@ -13,34 +13,34 @@
 @implementation VSequenceManager
 
 #pragma mark - Sequence Methods
-+(void)loadSequenceCategories
+
++ (RKManagedObjectRequestOperation *)loadSequenceCategoriesWithBlock:(void(^)(NSArray *categories, NSError *error))block
 {
-    RKManagedObjectRequestOperation* requestOperation = [[RKObjectManager sharedManager]
-                                                         appropriateObjectRequestOperationWithObject:nil
-                                                         method:RKRequestMethodGET
-                                                         path:@"/api/sequence/categories"
-                                                         parameters:nil];
+    RKManagedObjectRequestOperation *requestOperation =
+    [[RKObjectManager sharedManager]
+     appropriateObjectRequestOperationWithObject:nil
+     method:RKRequestMethodGET path:@"/api/sequence/categories" parameters:nil];
+
+    [requestOperation setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult){
+        if(block){
+            block(mappingResult.array, nil);
+        }
+    } failure:^(RKObjectRequestOperation *operation, NSError *error){
+        if(block){
+            block(nil, error);
+        }
+    }];
     
-    [requestOperation setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation,
-                                                      RKMappingResult *mappingResult)
-     {
-         RKLogInfo(@"Load collection of categories: %@", mappingResult.array);
-         [self loadSequencesForAllCategories];
-     } failure:^(RKObjectRequestOperation *operation, NSError *error)
-     {
-         RKLogError(@"Operation failed with error: %@", error);
-     }];
-    
-    [requestOperation start];
+    return requestOperation;
 }
 
 +(void)loadSequencesForAllCategories
 {
     NSArray* categories = [VCategory findAllObjects];
-    
+
     __block NSInteger launched = [categories count];
     __block NSInteger returned = 0;
-    
+
     for (VCategory* category in categories)
     {
         NSString* path = [NSString stringWithFormat:@"%@/%@", @"/api/sequence/list_by_category", category.name];
