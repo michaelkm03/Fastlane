@@ -10,6 +10,7 @@
 #import "REFrostedViewController.h"
 #import "VStreamsTableViewController.h"
 #import "VForumsViewController.h"
+#import "VLoginViewController.h"
 
 @implementation VMenuController
 
@@ -87,21 +88,35 @@
     {
         VStreamsTableViewController*    streamsViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"streams"];
         navigationController.viewControllers = @[streamsViewController];
+        navigationController.toolbarHidden = YES;
     }
     else if (indexPath.section == 0 && indexPath.row == 1)
     {
         VForumsViewController*  forumsViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"forums"];
         navigationController.viewControllers = @[forumsViewController];
+        navigationController.toolbarHidden = YES;
     }
     else if (indexPath.section == 0 && indexPath.row == 2)
     {
-        VForumsViewController*  forumsViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"inbox"];
-        navigationController.viewControllers = @[forumsViewController];
+//        if (![VLoginViewController sharedLoginViewController].authorized)
+//            [self presentViewController:[VLoginViewController sharedLoginViewController] animated:YES completion:NULL];
+//        else
+        {
+            VForumsViewController*  forumsViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"inbox"];
+            navigationController.viewControllers = @[forumsViewController];
+            navigationController.toolbarHidden = NO;
+        }
     }
     else if (indexPath.section == 0 && indexPath.row == 3)
     {
-        VForumsViewController*  forumsViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"profile"];
-        navigationController.viewControllers = @[forumsViewController];
+//        if (![VLoginViewController sharedLoginViewController].authorized)
+//            [self presentViewController:[VLoginViewController sharedLoginViewController] animated:YES completion:NULL];
+//        else
+        {
+            VForumsViewController*  forumsViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"profile"];
+            navigationController.viewControllers = @[forumsViewController];
+            navigationController.toolbarHidden = YES;
+        }
     }
     else if (indexPath.section == 0 && indexPath.row == 4)
     {

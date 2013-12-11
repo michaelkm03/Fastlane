@@ -8,6 +8,5 @@
 
 #import <UIKit/UIKit.h>
 
-@interface VForumsViewController : UIViewController
-
+@interface VForumsViewController : UITableViewController  <NSFetchedResultsControllerDelegate, UISearchBarDelegate, UISearchDisplayDelegate>
 @end

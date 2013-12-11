@@ -8,6 +8,5 @@
 
 #import <UIKit/UIKit.h>
 
-@interface VInboxViewController : UIViewController
-
+@interface VInboxViewController : UITableViewController <NSFetchedResultsControllerDelegate, UISearchBarDelegate, UISearchDisplayDelegate>
 @end

@@ -27,7 +27,6 @@
     //[VLoginManager createVictoriousAccountWithEmail:@"a" password:@"a" name:@"a"];
     //[VLoginManager loginToVictoriousWithEmail:@"a" andPassword:@"a"];
 //    [VLoginManager loginToFacebook];
-    [self performSelector:@selector(login) withObject:nil afterDelay:1.0];
     
     return YES;
 }
@@ -57,11 +56,6 @@
 - (void)applicationWillTerminate:(UIApplication *)application
 {
     // Saves changes in the application's managed object context before the application terminates.
-}
-
-- (void)login
-{
-    [self.window.rootViewController presentViewController:[VLoginViewController sharedLoginViewController] animated:YES completion:NULL];
 }
 
 @end
