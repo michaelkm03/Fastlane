@@ -20,8 +20,10 @@
     [[RKObjectManager sharedManager]
      appropriateObjectRequestOperationWithObject:nil
      method:RKRequestMethodGET path:@"/api/sequence/categories" parameters:nil];
-
+    
     [requestOperation setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult){
+        [self loadSequencesForAllCategories];
+
         if(block){
             block(mappingResult.array, nil);
         }
@@ -61,8 +63,8 @@
              {
                  //todo: send out message to tell app we're loaded
                  //Todo: remove this test code
-                 VSequence* first = [[VSequence findAllObjectsWithSortKey:@"id"] firstObject];
-                 [self loadCommentsForSequence:first];
+                 //VSequence* first = [[VSequence findAllObjectsWithSortKey:@"id"] firstObject];
+                 //[self loadCommentsForSequence:first];
                  //[self createStatSequenceForSequence:first];
              }
              

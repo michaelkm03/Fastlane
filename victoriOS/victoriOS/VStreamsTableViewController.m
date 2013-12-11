@@ -9,19 +9,25 @@
 #import "VStreamsTableViewController.h"
 #import "VSequence.h"
 #import "REFrostedViewController.h"
+#import "NSString+VParseHelp.h"
 
-typedef NS_ENUM(NSInteger, VStreamFilterType) {
-    VStreamFilterAll,
-    VStreamFilterVideoForums,
-    VStreamFilterPolls,
+typedef NS_ENUM(NSInteger, VStreamScope) {
+    VStreamFilterAll = 0,
     VStreamFilterImages,
-    VStreamFilterVideos
+    VStreamFilterVideos,
+    VStreamFilterVideoForums,
+    VStreamFilterPolls
 };
 
 @interface VStreamsTableViewController ()
 @property (nonatomic, strong) NSFetchedResultsController* fetchedResultsController;
-@property (nonatomic) VStreamFilterType filter;
+@property (nonatomic, strong) NSFetchedResultsController* searchFetchedResultsController;
+@property (nonatomic) VStreamScope scopeType;
+@property (strong, nonatomic) NSString* filterText;
 @end
+
+const NSString* StreamCache = @"StreamCache";
+const NSString* SearchCache = @"SearchCache";
 
 @implementation VStreamsTableViewController
 
@@ -31,7 +37,7 @@ typedef NS_ENUM(NSInteger, VStreamFilterType) {
     if (self)
     {
         // Custom initialization
-        _filter = VStreamFilterAll;
+        _scopeType = VStreamFilterAll;
     }
     return self;
 }
@@ -84,22 +90,36 @@ typedef NS_ENUM(NSInteger, VStreamFilterType) {
 
 #pragma mark - Table view data source
 
+//The follow 2 methods and the majority of the rest of the file was based on the following stack overflow article:
+//http://stackoverflow.com/questions/4471289/how-to-filter-nsfetchedresultscontroller-coredata-with-uisearchdisplaycontroll
+- (NSFetchedResultsController *)fetchedResultsControllerForTableView:(UITableView *)tableView
+{
+    return tableView == self.tableView ? self.fetchedResultsController : self.searchFetchedResultsController;
+}
+
+- (UITableView*)tableViewForFetchedResultsController:(NSFetchedResultsController*)controller
+{
+    return controller == self.fetchedResultsController ? self.tableView
+                            : self.searchDisplayController.searchResultsTableView;
+}
+
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    return [[self.fetchedResultsController sections] count];
+    return [[[self fetchedResultsControllerForTableView:tableView] sections] count];
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     // Return the number of rows in the section.
-    id  sectionInfo = [[self.fetchedResultsController sections] objectAtIndex:section];
+    id  sectionInfo = [[[self fetchedResultsControllerForTableView:tableView] sections] objectAtIndex:section];
     return [sectionInfo numberOfObjects];
 }
 
-- (void)configureCell:(UITableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath
+- (void)configureCell:(UITableViewCell *)theCell atIndexPath:(NSIndexPath *)theIndexPath
+    forFetchedResultsController:(NSFetchedResultsController *)fetchedResultsController
 {
-    VSequence *info = [self.fetchedResultsController objectAtIndexPath:indexPath];
-    cell.textLabel.text = info.name;
+    VSequence *info = [fetchedResultsController objectAtIndexPath:theIndexPath];
+    theCell.textLabel.text = info.name;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -113,7 +133,8 @@ typedef NS_ENUM(NSInteger, VStreamFilterType) {
     }
     
     // Configure the cell...
-    [self configureCell:cell atIndexPath:indexPath];
+    [self configureCell:cell atIndexPath:indexPath
+        forFetchedResultsController:[self fetchedResultsControllerForTableView:tableView]];
     
     return cell;
 }
@@ -169,7 +190,68 @@ typedef NS_ENUM(NSInteger, VStreamFilterType) {
 
  */
 
-#pragma mark - FetchedResultsController
+#pragma mark - NSFetchedResultsControllers
+
+- (void)updatePredicateForFetchedResultsController:(NSFetchedResultsController*)controller
+{
+    //We must clear the cache before modifying anything.
+    NSString* cacheName = controller == _fetchedResultsController ? StreamCache : SearchCache;
+    [NSFetchedResultsController deleteCacheWithName:cacheName];
+
+    NSFetchRequest* fetchRequest = controller.fetchRequest;
+
+    //Define the appropriate filter
+    NSPredicate* typeFilter;
+    
+    //Start by filtering by type
+    switch (_scopeType)
+    {
+        case VStreamFilterVideoForums:
+            typeFilter = [NSPredicate predicateWithFormat:@"category == 'video_forum'"];
+            break;
+            
+        case VStreamFilterPolls:
+            typeFilter = [NSPredicate predicateWithFormat:@"category == 'poll'"];
+            break;
+            
+        case VStreamFilterImages:
+            typeFilter = [NSPredicate predicateWithFormat:@"category == 'image'"];
+            break;
+            
+        case VStreamFilterVideos:
+            typeFilter = [NSPredicate predicateWithFormat:@"category == 'video'"];
+            break;
+            
+        default:
+            //TODO: remove "|| general " from this filter.
+            typeFilter = [NSPredicate predicateWithFormat:@"category == 'video_forum' || category == 'poll' || category == 'image' || category == 'video' || category == 'general'"];
+            break;
+    }
+    
+    //And filter by the search text
+    
+    NSMutableArray* allFilters = [[NSMutableArray alloc] init];
+    if (typeFilter)
+        [allFilters addObject:typeFilter];
+    if (_filterText && ![_filterText isEmpty])
+        [allFilters addObject:[NSPredicate predicateWithFormat:@"SELF.name CONTAINS[cd] %@", _filterText]];
+    
+    NSPredicate* filterPredicate = [NSCompoundPredicate andPredicateWithSubpredicates:allFilters];
+    
+    [fetchRequest setPredicate:filterPredicate];
+
+    //We need to perform the fetch again
+    NSError *error;
+	if (![controller performFetch:&error])
+    {
+		// Update to handle the error appropriately.
+		NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+		exit(-1);  // Fail
+	}
+    
+    //Then reload the data
+    [[self tableViewForFetchedResultsController:controller] reloadData];
+}
 
 - (NSFetchedResultsController *)fetchedResultsController
 {
@@ -178,28 +260,60 @@ typedef NS_ENUM(NSInteger, VStreamFilterType) {
         RKObjectManager* manager = [RKObjectManager sharedManager];
         NSManagedObjectContext *context = manager.managedObjectStore.persistentStoreManagedObjectContext;
         
-        NSFetchRequest *fetchRequest = [self filteredFetchRequestForContext:context];
+        NSFetchRequest *fetchRequest = [self fetchRequestForContext:context];
         
         self.fetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:fetchRequest
                                                                             managedObjectContext:context
                                                                               sectionNameKeyPath:nil
-                                                                                       cacheName:@"Streams"];
+                                                                                       cacheName:StreamCache];
         self.fetchedResultsController.delegate = self;
     }
     
     return _fetchedResultsController;
 }
 
+- (NSFetchedResultsController *)searchFetchedResultsController
+{
+    if (nil == _searchFetchedResultsController)
+    {
+        RKObjectManager* manager = [RKObjectManager sharedManager];
+        NSManagedObjectContext *context = manager.managedObjectStore.persistentStoreManagedObjectContext;
+        
+        NSFetchRequest *fetchRequest = [self fetchRequestForContext:context];
+        
+        self.searchFetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:fetchRequest
+                                                                            managedObjectContext:context
+                                                                              sectionNameKeyPath:nil
+                                                                                       cacheName:SearchCache];
+        self.searchFetchedResultsController.delegate = self;
+    }
+    
+    return _searchFetchedResultsController;
+}
+
+- (NSFetchRequest*)fetchRequestForContext:(NSManagedObjectContext*)context
+{
+    
+    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+    NSEntityDescription *entity = [NSEntityDescription entityForName:@"Sequence" inManagedObjectContext:context];
+    [fetchRequest setEntity:entity];
+    
+    NSSortDescriptor *sort = [[NSSortDescriptor alloc] initWithKey:@"display_order" ascending:YES];
+    [fetchRequest setSortDescriptors:@[sort]];
+    [fetchRequest setFetchBatchSize:50];
+    
+    return fetchRequest;
+}
+
 - (void)controllerWillChangeContent:(NSFetchedResultsController *)controller
 {
     // The fetch controller is about to start sending change notifications, so prepare the table view for updates.
-    [self.tableView beginUpdates];
+    [[self tableViewForFetchedResultsController:controller] beginUpdates];
 }
-
 
 - (void)controller:(NSFetchedResultsController *)controller didChangeObject:(id)anObject atIndexPath:(NSIndexPath *)indexPath forChangeType:(NSFetchedResultsChangeType)type newIndexPath:(NSIndexPath *)newIndexPath
 {
-    UITableView *tableView = self.tableView;
+    UITableView *tableView = [self tableViewForFetchedResultsController:controller];
     
     switch(type)
     {
@@ -212,7 +326,7 @@ typedef NS_ENUM(NSInteger, VStreamFilterType) {
             break;
             
         case NSFetchedResultsChangeUpdate:
-            [self configureCell:[tableView cellForRowAtIndexPath:indexPath] atIndexPath:indexPath];
+            [self configureCell:[tableView cellForRowAtIndexPath:indexPath] atIndexPath:indexPath forFetchedResultsController:[self fetchedResultsControllerForTableView:tableView]];
             break;
             
         case NSFetchedResultsChangeMove:
@@ -239,94 +353,25 @@ typedef NS_ENUM(NSInteger, VStreamFilterType) {
 - (void)controllerDidChangeContent:(NSFetchedResultsController *)controller
 {
     // The fetch controller has sent all current change notifications, so tell the table view to process all updates.
-    [self.tableView endUpdates];
+    [[self tableViewForFetchedResultsController:controller] endUpdates];
 }
 
-#pragma mark - Stream Filters
+#pragma mark - UISearchBarDelegate
 
-- (IBAction)filterAll:(id)sender
+- (void)searchBar:(UISearchBar *)searchBar selectedScopeButtonIndexDidChange:(NSInteger)selectedScope
 {
-    _filter = VStreamFilterAll;
-    
-    _fetchedResultsController = nil;
-    [self.tableView reloadData];
+    //This relies on the scope buttons being in the same order as the VStreamScope enum
+    _scopeType = selectedScope;
+    [self updatePredicateForFetchedResultsController:_searchFetchedResultsController];
 }
 
-- (IBAction)filterVideoForums:(id)sender
+- (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText
 {
-    _filter = VStreamFilterVideoForums;
-    
-    _fetchedResultsController = nil;
-    [self.tableView reloadData];
+    _filterText = searchText;
+    [self updatePredicateForFetchedResultsController:_searchFetchedResultsController];
 }
 
-- (IBAction)filterPolls:(id)sender
-{
-    _filter = VStreamFilterPolls;
-    
-    _fetchedResultsController = nil;
-    [self.tableView reloadData];
-}
-
-- (IBAction)filterImages:(id)sender
-{
-    _filter = VStreamFilterImages;
-    
-    _fetchedResultsController = nil;
-    [self.tableView reloadData];
-}
-
-- (IBAction)filterVideos:(id)sender
-{
-    _filter = VStreamFilterVideos;
-    
-    _fetchedResultsController = nil;
-    [self.tableView reloadData];
-}
-
-- (NSFetchRequest*)filteredFetchRequestForContext:(NSManagedObjectContext*)context
-{
-    
-    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
-    NSEntityDescription *entity = [NSEntityDescription entityForName:@"Sequence" inManagedObjectContext:context];
-    [fetchRequest setEntity:entity];
-    
-    NSSortDescriptor *sort = [[NSSortDescriptor alloc] initWithKey:@"display_order" ascending:YES];
-    [fetchRequest setSortDescriptors:@[sort]];
-    [fetchRequest setFetchBatchSize:50];
-    
-    //Define the appropriate filter
-    NSPredicate* filterPredicate;
-    
-    switch (_filter)
-    {
-        case VStreamFilterVideoForums:
-            filterPredicate = [NSPredicate predicateWithFormat:@"category == 'video_forum'"];
-            break;
-            
-        case VStreamFilterPolls:
-            filterPredicate = [NSPredicate predicateWithFormat:@"category == 'poll'"];
-            break;
-            
-        case VStreamFilterImages:
-            filterPredicate = [NSPredicate predicateWithFormat:@"category == 'image'"];
-            break;
-            
-        case VStreamFilterVideos:
-            filterPredicate = [NSPredicate predicateWithFormat:@"category == 'video'"];
-            break;
-            
-        default:
-            break;
-    }
-    
-    
-    [fetchRequest setPredicate:filterPredicate];
-    
-    return fetchRequest;
-}
-
-#pragma mark -
+#pragma mark - Search Display
 
 - (IBAction)showMenu
 {
@@ -355,6 +400,7 @@ typedef NS_ENUM(NSInteger, VStreamFilterType) {
 - (void)searchBarCancelButtonClicked:(UISearchBar *)searchBar
 {
     [self viewWillAppear:YES];
+    [self updatePredicateForFetchedResultsController:_fetchedResultsController];
 }
 
 @end

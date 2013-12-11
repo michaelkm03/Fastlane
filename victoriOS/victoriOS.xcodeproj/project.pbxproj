@@ -17,6 +17,7 @@
 		3F90DD841856A66F00C8F312 /* VProfileViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F90DD831856A66F00C8F312 /* VProfileViewController.m */; };
 		3F90DE4A1857D9F100C8F312 /* VMessageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F90DE491857D9F100C8F312 /* VMessageViewController.m */; };
 		3F90DE4D1857DA0200C8F312 /* VComposeMessageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F90DE4C1857DA0200C8F312 /* VComposeMessageViewController.m */; };
+		3F90DE501857F34D00C8F312 /* VValidatingTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F90DE4F1857F34D00C8F312 /* VValidatingTextField.m */; };
 		5F3B4950184E6B8D0062DB55 /* VLoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F3B494F184E6B8D0062DB55 /* VLoginViewController.m */; };
 		5F8AAA5E184D43C600301783 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5F8AAA5D184D43C600301783 /* Main.storyboard */; };
 		5F8AAAA5184D467300301783 /* VStreamsTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F8AAAA4184D467300301783 /* VStreamsTableViewController.m */; };
@@ -107,6 +108,8 @@
 		3F90DE491857D9F100C8F312 /* VMessageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VMessageViewController.m; path = UI/VMessageViewController.m; sourceTree = "<group>"; };
 		3F90DE4B1857DA0200C8F312 /* VComposeMessageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VComposeMessageViewController.h; path = UI/VComposeMessageViewController.h; sourceTree = "<group>"; };
 		3F90DE4C1857DA0200C8F312 /* VComposeMessageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VComposeMessageViewController.m; path = UI/VComposeMessageViewController.m; sourceTree = "<group>"; };
+		3F90DE4E1857F34D00C8F312 /* VValidatingTextField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VValidatingTextField.h; path = UI/VValidatingTextField.h; sourceTree = "<group>"; };
+		3F90DE4F1857F34D00C8F312 /* VValidatingTextField.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VValidatingTextField.m; path = UI/VValidatingTextField.m; sourceTree = "<group>"; };
 		4F627C2BF55A46F299155184 /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = "<group>"; };
 		5F3B494E184E6B8D0062DB55 /* VLoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VLoginViewController.h; path = UI/VLoginViewController.h; sourceTree = "<group>"; };
 		5F3B494F184E6B8D0062DB55 /* VLoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VLoginViewController.m; path = UI/VLoginViewController.m; sourceTree = "<group>"; };
@@ -266,6 +269,8 @@
 				5F3B494F184E6B8D0062DB55 /* VLoginViewController.m */,
 				3F543C3F18512C6700A1F2FC /* VSignUpViewController.h */,
 				3F543C4018512C6700A1F2FC /* VSignUpViewController.m */,
+				3F90DE4E1857F34D00C8F312 /* VValidatingTextField.h */,
+				3F90DE4F1857F34D00C8F312 /* VValidatingTextField.m */,
 				5F8AAA5D184D43C600301783 /* Main.storyboard */,
 			);
 			name = UI;
@@ -622,6 +627,8 @@
 				BEA4F23E1843F097001F5B15 /* victoriOS.xcdatamodeld in Sources */,
 				BEBDC4C41857B2E30013DEF1 /* VAnswer+RestKit.m in Sources */,
 				BEBDC4C71857B2E30013DEF1 /* VCategory+RestKit.m in Sources */,
+				3F90DE501857F34D00C8F312 /* VValidatingTextField.m in Sources */,
+				BEBDC4D81857B4CA0013DEF1 /* VAPIManager.m in Sources */,
 				BEBDC4CC1857B2E30013DEF1 /* VNodeAction+RestKit.m in Sources */,
 				838F41EA1857F26900882F1D /* VObjectManager+Login.m in Sources */,
 				BEBDC4CF1857B2E30013DEF1 /* VStatAnswer+RestKit.m in Sources */,
