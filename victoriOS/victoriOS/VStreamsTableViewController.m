@@ -331,7 +331,7 @@ const NSString* StreamCache = @"Streams";
     
     _fetchedResultsController = nil;
     [self.tableView reloadData];
-    [self.searchBarController.searchResultsTableView reloadData];
+    [self.searchDisplayController.searchResultsTableView reloadData];
 }
 
 - (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText
@@ -340,7 +340,7 @@ const NSString* StreamCache = @"Streams";
     
     _fetchedResultsController = nil;
     [self.tableView reloadData];
-    [self.searchBarController.searchResultsTableView reloadData];
+    [self.searchDisplayController.searchResultsTableView reloadData];
 }
 
 #pragma mark -
