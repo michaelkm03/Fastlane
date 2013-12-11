@@ -66,12 +66,12 @@
 + (RKManagedObjectRequestOperation *)loginToVictoriousWithEmail:(NSString*)email password:(NSString*)password block:(void(^)(VUser *user, NSError *error))block
 {
     NSDictionary *paramiters = @{@"email": email ?: [NSNull null], @"password": password ?: [NSNull null]};
-    return [self POST:@"/api/login" parameters:paramiters block:^(id result, NSError *error){
+    return [self POST:@"/api/login" parameters:paramiters block:^(NSUInteger page, NSUInteger perPage, NSArray *results, NSError *error){
         if(block){
             if(error){
                 block(nil, error);
             }else{
-                block([(NSArray *)result firstObject], nil);
+                block([results firstObject], nil);
             }
         }
     }];
@@ -80,12 +80,12 @@
 + (RKManagedObjectRequestOperation *)updateVictoriousAccountWithEmail:(NSString*)email password:(NSString*)password name:(NSString*)name block:(void(^)(VUser *user, NSError *error))block
 {
     NSDictionary *paramiters = @{@"email" : email ?: [NSNull null], @"password" : password ?: [NSNull null], @"name" : name ?: [NSNull null]};
-    return [self POST:@"/api/account/update" parameters:paramiters block:^(id result, NSError *error){
+    return [self POST:@"/api/account/update" parameters:paramiters block:^(NSUInteger page, NSUInteger perPage, NSArray *results, NSError *error){
         if(block){
             if(error){
                 block(nil, error);
             }else{
-                block([(NSArray *)result firstObject], nil);
+                block([results firstObject], nil);
             }
         }
     }];
@@ -94,12 +94,12 @@
 + (RKManagedObjectRequestOperation *)createVictoriousAccountWithEmail:(NSString*)email password:(NSString*)password name:(NSString*)name block:(void(^)(VUser *user, NSError *error))block
 {
     NSDictionary *paramiters = @{@"email" : email ?: [NSNull null], @"password" : password ?: [NSNull null], @"name" : name ?: [NSNull null]};
-    return [self POST:@"/api/account/create" parameters:paramiters block:^(id result, NSError *error){
+    return [self POST:@"/api/account/create" parameters:paramiters block:^(NSUInteger page, NSUInteger perPage, NSArray *results, NSError *error){
         if(block){
             if(error){
                 block(nil, error);
             }else{
-                block([(NSArray *)result firstObject], nil);
+                block([results firstObject], nil);
             }
         }
     }];

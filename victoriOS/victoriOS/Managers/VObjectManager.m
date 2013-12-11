@@ -80,8 +80,9 @@
 
 #pragma mark - operation
 
-+ (RKManagedObjectRequestOperation *)requestMethod:(RKRequestMethod)method path:(NSString *)path parameters:(NSDictionary *)parameters block:(void(^)(id result, NSError *error))block
++ (RKManagedObjectRequestOperation *)requestMethod:(RKRequestMethod)method path:(NSString *)path parameters:(NSDictionary *)parameters block:(void(^)(NSUInteger page, NSUInteger perPage, NSArray *results, NSError *error))block
 {
+    // TODO: return accurate page and perPage
     RKManagedObjectRequestOperation *requestOperation =
     [[self sharedManager] appropriateObjectRequestOperationWithObject:nil method:method path:path parameters:parameters];
 
@@ -90,22 +91,27 @@
             if([[mappingResult firstObject] isKindOfClass:[RKErrorMessage class]]){
                 RKErrorMessage *errorMessage = (RKErrorMessage *)[mappingResult firstObject];
                 // TODO: create better error object
-                block(nil, [NSError errorWithDomain:@"com.getvictorious.victoriOS" code:0
+                block(0, 0, nil, [NSError errorWithDomain:@"com.getvictorious.victoriOS" code:0
                                            userInfo:@{NSLocalizedDescriptionKey: errorMessage.errorMessage}]);
             }else{
-                block(nil, nil);
+                block(0, 0, mappingResult.array, nil);
             }
         }
     } failure:^(RKObjectRequestOperation *operation, NSError *error){
         if(block){
-            block(nil, error);
+            block(0, 0, nil, error);
         }
     }];
 
     return requestOperation;
 }
 
-+ (RKManagedObjectRequestOperation *)POST:(NSString *)path parameters:(NSDictionary *)parameters block:(void(^)(id result, NSError *error))block
++ (RKManagedObjectRequestOperation *)GET:(NSString *)path parameters:(NSDictionary *)parameters block:(void(^)(NSUInteger page, NSUInteger perPage, NSArray *results, NSError *error))block
+{
+    return [self requestMethod:RKRequestMethodGET path:path parameters:parameters block:block];
+}
+
++ (RKManagedObjectRequestOperation *)POST:(NSString *)path parameters:(NSDictionary *)parameters block:(void(^)(NSUInteger page, NSUInteger perPage, NSArray *results, NSError *error))block
 {
     return [self requestMethod:RKRequestMethodPOST path:path parameters:parameters block:block];
 }
