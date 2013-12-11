@@ -55,7 +55,7 @@
                                                       RKMappingResult *mappingResult)
      {
          RKLogInfo(@"Login with User: %@", mappingResult.array);
-         //        [VSequenceManager loadSequenceCategories];
+         [[VSequenceManager loadSequenceCategoriesWithBlock:nil] start];
      } failure:^(RKObjectRequestOperation *operation, NSError *error)
      {
          RKLogError(@"Operation failed with error: %@", error);

@@ -8,6 +8,8 @@
 
 #import "VLoginViewController.h"
 #import "VSequenceManager.h"
+#import "VLoginManager.h"
+
 @import Accounts;
 @import Social;
 
@@ -116,56 +118,58 @@
 
 - (IBAction)facebookClicked:(id)sender
 {
-    ACAccountStore* accountStore = [[ACAccountStore alloc] init];
-    ACAccountType *facebookAccountType = [accountStore accountTypeWithAccountTypeIdentifier:ACAccountTypeIdentifierFacebook];
+    [VLoginManager loginToFacebook];
     
-    // Specify App ID and permissions
-    NSDictionary *options = @{
-                              ACFacebookAppIdKey: @"012345678912345",
-                              };
-    
-    UIActivityIndicatorView *spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
-    spinner.center = CGPointMake(160, 240);
-    spinner.hidesWhenStopped = YES;
-    [self.view addSubview:spinner];
-    [spinner startAnimating];
-
-    [accountStore requestAccessToAccountsWithType:facebookAccountType options:options completion:^(BOOL granted, NSError *e)
-    {
-          if (granted)
-          {
-              NSArray *accounts = [accountStore accountsWithAccountType:facebookAccountType];
-              ACAccount*    facebookAccount = [accounts lastObject];
-
-              ACAccountCredential*  fbCredential = [facebookAccount credential];
-              NSString* accessToken = [fbCredential oauthToken];
-              NSLog(@"Facebook Access Token: %@", accessToken);
-
-              RKManagedObjectRequestOperation* requestOperation;
-              if(accessToken)
-              {
-                  requestOperation = [[RKObjectManager sharedManager]
-                                      appropriateObjectRequestOperationWithObject:nil
-                                      method:RKRequestMethodPOST
-                                      path:@"/api/login/facebook"
-                                      parameters:@{@"facebook_access_token": accessToken}];
-              }
-              
-              [requestOperation setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation,
-                                                                RKMappingResult *mappingResult)
-               {
-                   RKLogInfo(@"Login with User: %@", mappingResult.array);
-                   [self didLogin];
-//                  [VSequenceManager loadSequenceCategories];
-               } failure:^(RKObjectRequestOperation *operation, NSError *error)
-               {
-                   RKLogError(@"Operation failed with error: %@", error);
-                   [self didFailToLogIn];
-               }];
-              
-              [requestOperation start];
-          }
-    }];
+//    ACAccountStore* accountStore = [[ACAccountStore alloc] init];
+//    ACAccountType *facebookAccountType = [accountStore accountTypeWithAccountTypeIdentifier:ACAccountTypeIdentifierFacebook];
+//    
+//    // Specify App ID and permissions
+//    NSDictionary *options = @{
+//                              ACFacebookAppIdKey: @"012345678912345",
+//                              };
+//    
+//    UIActivityIndicatorView *spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+//    spinner.center = CGPointMake(160, 240);
+//    spinner.hidesWhenStopped = YES;
+//    [self.view addSubview:spinner];
+//    [spinner startAnimating];
+//
+//    [accountStore requestAccessToAccountsWithType:facebookAccountType options:options completion:^(BOOL granted, NSError *e)
+//    {
+//          if (granted)
+//          {
+//              NSArray *accounts = [accountStore accountsWithAccountType:facebookAccountType];
+//              ACAccount*    facebookAccount = [accounts lastObject];
+//
+//              ACAccountCredential*  fbCredential = [facebookAccount credential];
+//              NSString* accessToken = [fbCredential oauthToken];
+//              NSLog(@"Facebook Access Token: %@", accessToken);
+//
+//              RKManagedObjectRequestOperation* requestOperation;
+//              if(accessToken)
+//              {
+//                  requestOperation = [[RKObjectManager sharedManager]
+//                                      appropriateObjectRequestOperationWithObject:nil
+//                                      method:RKRequestMethodPOST
+//                                      path:@"/api/login/facebook"
+//                                      parameters:@{@"facebook_access_token": accessToken}];
+//              }
+//              
+//              [requestOperation setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation,
+//                                                                RKMappingResult *mappingResult)
+//               {
+//                   RKLogInfo(@"Login with User: %@", mappingResult.array);
+//                   [self didLogin];
+////                  [VSequenceManager loadSequenceCategories];
+//               } failure:^(RKObjectRequestOperation *operation, NSError *error)
+//               {
+//                   RKLogError(@"Operation failed with error: %@", error);
+//                   [self didFailToLogIn];
+//               }];
+//              
+//              [requestOperation start];
+//          }
+//    }];
 }
 
 - (IBAction)twitterClicked:(id)sender

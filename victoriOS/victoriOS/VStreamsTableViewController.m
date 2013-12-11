@@ -9,6 +9,7 @@
 #import "VStreamsTableViewController.h"
 #import "VSequence.h"
 #import "REFrostedViewController.h"
+#import "NSString+VParseHelp.h"
 
 typedef NS_ENUM(NSInteger, VStreamFilterType) {
     VStreamFilterAll = 0,
@@ -24,6 +25,8 @@ typedef NS_ENUM(NSInteger, VStreamFilterType) {
 @property (nonatomic) VStreamFilterType filterType;
 @property (strong, nonatomic) NSString* filterText;
 @end
+
+const NSString* StreamCache = @"Streams";
 
 @implementation VStreamsTableViewController
 
@@ -173,6 +176,66 @@ typedef NS_ENUM(NSInteger, VStreamFilterType) {
 
 #pragma mark - FetchedResultsController
 
+- (void)updatePredicateForFetchedResultsController:(NSFetchedResultsController*)controller
+{
+    //We must clear the cache before modifying anything.
+    [NSFetchedResultsController deleteCacheWithName:StreamCache];
+
+    NSFetchRequest* fetchRequest = controller.fetchRequest;
+
+    //Define the appropriate filter
+    NSPredicate* typeFilter;
+    
+    //Start by filtering by type
+    switch (_filterType)
+    {
+        case VStreamFilterVideoForums:
+            typeFilter = [NSPredicate predicateWithFormat:@"category == 'video_forum'"];
+            break;
+            
+        case VStreamFilterPolls:
+            typeFilter = [NSPredicate predicateWithFormat:@"category == 'poll'"];
+            break;
+            
+        case VStreamFilterImages:
+            typeFilter = [NSPredicate predicateWithFormat:@"category == 'image'"];
+            break;
+            
+        case VStreamFilterVideos:
+            typeFilter = [NSPredicate predicateWithFormat:@"category == 'video'"];
+            break;
+            
+        default:
+            //TODO: remove "|| general " from this filter.
+            typeFilter = [NSPredicate predicateWithFormat:@"category == 'video_forum' || category == 'poll' || category == 'image' || category == 'video' || category == 'general'"];
+            break;
+    }
+    
+    //And filter by the search text
+    
+    NSMutableArray* allFilters = [[NSMutableArray alloc] init];
+    if (typeFilter)
+        [allFilters addObject:typeFilter];
+    if (_filterText && ![_filterText isEmpty])
+        [allFilters addObject:[NSPredicate predicateWithFormat:@"SELF.name CONTAINS[cd] %@", _filterText]];
+    
+    NSPredicate* filterPredicate = [NSCompoundPredicate andPredicateWithSubpredicates:allFilters];
+    
+    [fetchRequest setPredicate:filterPredicate];
+
+    //We need to perform the fetch again
+    NSError *error;
+	if (![controller performFetch:&error])
+    {
+		// Update to handle the error appropriately.
+		NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+		exit(-1);  // Fail
+	}
+    
+    //Then reload the data
+    [self.tableView reloadData];
+}
+
 - (NSFetchedResultsController *)fetchedResultsController
 {
     if (nil == _fetchedResultsController)
@@ -185,7 +248,7 @@ typedef NS_ENUM(NSInteger, VStreamFilterType) {
         self.fetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:fetchRequest
                                                                             managedObjectContext:context
                                                                               sectionNameKeyPath:nil
-                                                                                       cacheName:@"Streams"];
+                                                                                       cacheName:StreamCache];
         self.fetchedResultsController.delegate = self;
     }
     
@@ -257,46 +320,6 @@ typedef NS_ENUM(NSInteger, VStreamFilterType) {
     [fetchRequest setSortDescriptors:@[sort]];
     [fetchRequest setFetchBatchSize:50];
     
-    //Define the appropriate filter
-    NSPredicate* typeFilter;
-    
-    //Start by filtering by type
-    switch (_filterType)
-    {
-        case VStreamFilterVideoForums:
-            typeFilter = [NSPredicate predicateWithFormat:@"category == 'video_forum'"];
-            break;
-            
-        case VStreamFilterPolls:
-            typeFilter = [NSPredicate predicateWithFormat:@"category == 'poll'"];
-            break;
-            
-        case VStreamFilterImages:
-            typeFilter = [NSPredicate predicateWithFormat:@"category == 'image'"];
-            break;
-            
-        case VStreamFilterVideos:
-            typeFilter = [NSPredicate predicateWithFormat:@"category == 'video'"];
-            break;
-            
-        default:
-            break;
-    }
-    
-    //And filter by the search text
-    NSPredicate* textFilter = [NSPredicate predicateWithFormat:@"SELF.name CONTAINS[cd] %@", _filterText];
-
-    NSMutableArray* allFilters = [[NSMutableArray alloc] init];
-    if (typeFilter)
-        [allFilters addObject:typeFilter];
-    if (textFilter)
-        [allFilters addObject:textFilter];
-    
-    NSPredicate* filterPredicate = [NSCompoundPredicate andPredicateWithSubpredicates:allFilters];
-    
-    
-    [fetchRequest setPredicate:filterPredicate];
-    
     return fetchRequest;
 }
 
@@ -320,7 +343,6 @@ typedef NS_ENUM(NSInteger, VStreamFilterType) {
     [self.tableView reloadData];
     [self.searchBarController.searchResultsTableView reloadData];
 }
-
 
 #pragma mark -
 
@@ -351,6 +373,7 @@ typedef NS_ENUM(NSInteger, VStreamFilterType) {
 - (void)searchBarCancelButtonClicked:(UISearchBar *)searchBar
 {
     [self viewWillAppear:YES];
+    [self updatePredicateForFetchedResultsController:_fetchedResultsController];
 }
 
 @end
