@@ -90,6 +90,8 @@ const NSString* SearchCache = @"SearchCache";
 
 #pragma mark - Table view data source
 
+//The follow 2 methods and the majority of the rest of the file was based on the following stack overflow article:
+//http://stackoverflow.com/questions/4471289/how-to-filter-nsfetchedresultscontroller-coredata-with-uisearchdisplaycontroll
 - (NSFetchedResultsController *)fetchedResultsControllerForTableView:(UITableView *)tableView
 {
     return tableView == self.tableView ? self.fetchedResultsController : self.searchFetchedResultsController;
