@@ -3,7 +3,7 @@
 //  victoriOS
 //
 //  Created by goWorld on 12/3/13.
-//  Copyright (c) 2013 Will Long. All rights reserved.
+//  Copyright (c) 2013 Victorious Inc. All rights reserved.
 //
 
 #import <UIKit/UIKit.h>
