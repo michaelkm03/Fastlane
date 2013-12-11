@@ -7,7 +7,7 @@
 //
 
 #import <XCTest/XCTest.h>
-#import "VAPIManager.h"
+#import "VObjectManager.h"
 #import "VSequenceManager.h"
 #import "XCTestRestKit.h"
 
@@ -20,7 +20,7 @@
 {
     [super setUp];
 
-    [VAPIManager setupRestKit];    
+    [VObjectManager setupObjectManager];
 }
 
 - (void)testLoadSequenceCategories

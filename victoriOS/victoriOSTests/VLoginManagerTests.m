@@ -7,9 +7,9 @@
 //
 
 #import <XCTest/XCTest.h>
-#import "VAPIManager.h"
-#import "VLoginManager.h"
+#import "VObjectManager+Login.h"
 #import "XCTestRestKit.h"
+#import "VUser+RestKit.h"
 
 @interface VLoginManagerTests : XCTestCase
 @end
@@ -20,16 +20,16 @@
 {
     [super setUp];
 
-    [VAPIManager setupRestKit];
+    [VObjectManager setupObjectManager];
 }
 
 - (void)testCreateAccount
 {
+    __block VUser *resultUser;
     __block NSError *resultError;
-    __block NSArray *resultArray;
-    XCTestRestKitStartOperation([VLoginManager createVictoriousAccountWithEmail:@"c" password:@"c" name:@"b" block:^(NSArray *categories, NSError *error){
+    XCTestRestKitStartOperation([VObjectManager createVictoriousAccountWithEmail:@"aa@a.com" password:@"a" name:@"a" block:^(VUser *user, NSError *error){
+        resultUser = user;
         resultError = error;
-        resultArray = categories;
         XCTestRestKitEndOperation();
     }]);
 

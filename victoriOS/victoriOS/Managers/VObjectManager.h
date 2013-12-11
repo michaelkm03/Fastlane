@@ -10,4 +10,6 @@
 
 @interface VObjectManager : RKObjectManager
 
++ (void)setupObjectManager;
+
 @end

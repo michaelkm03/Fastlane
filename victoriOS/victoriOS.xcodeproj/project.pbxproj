@@ -20,8 +20,9 @@
 		5F3B4950184E6B8D0062DB55 /* VLoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F3B494F184E6B8D0062DB55 /* VLoginViewController.m */; };
 		5F8AAA5E184D43C600301783 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5F8AAA5D184D43C600301783 /* Main.storyboard */; };
 		5F8AAAA5184D467300301783 /* VStreamsTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F8AAAA4184D467300301783 /* VStreamsTableViewController.m */; };
+		838F41EA1857F26900882F1D /* VObjectManager+Login.m in Sources */ = {isa = PBXBuildFile; fileRef = 838F41E91857F26900882F1D /* VObjectManager+Login.m */; };
+		838F41F91857F63900882F1D /* VObjectManager+Private.m in Sources */ = {isa = PBXBuildFile; fileRef = 838F41F81857F63900882F1D /* VObjectManager+Private.m */; };
 		BE2BA7CF1852593700CA71AC /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = BE2BA7CE1852593700CA71AC /* libPods.a */; };
-		BE4E753C1846BF0700344677 /* VLoginManager.m in Sources */ = {isa = PBXBuildFile; fileRef = BE4E753B1846BF0700344677 /* VLoginManager.m */; };
 		BE4E754B184942F100344677 /* VSequenceManager.m in Sources */ = {isa = PBXBuildFile; fileRef = BE4E754A184942F100344677 /* VSequenceManager.m */; };
 		BE4E7554184955BE00344677 /* VObjectManager.m in Sources */ = {isa = PBXBuildFile; fileRef = BE4E7553184955BE00344677 /* VObjectManager.m */; };
 		BE5AC2BB184D298900121126 /* NSManagedObject+EasyFetching.m in Sources */ = {isa = PBXBuildFile; fileRef = BE5AC2AB184D298900121126 /* NSManagedObject+EasyFetching.m */; };
@@ -71,7 +72,6 @@
 		BEBDC4D01857B2E30013DEF1 /* VStatInteraction+RestKit.m in Sources */ = {isa = PBXBuildFile; fileRef = BEBDC4BF1857B2E30013DEF1 /* VStatInteraction+RestKit.m */; };
 		BEBDC4D11857B2E30013DEF1 /* VStatSequence+RestKit.m in Sources */ = {isa = PBXBuildFile; fileRef = BEBDC4C11857B2E30013DEF1 /* VStatSequence+RestKit.m */; };
 		BEBDC4D21857B2E30013DEF1 /* VUser+RestKit.m in Sources */ = {isa = PBXBuildFile; fileRef = BEBDC4C31857B2E30013DEF1 /* VUser+RestKit.m */; };
-		BEBDC4D81857B4CA0013DEF1 /* VAPIManager.m in Sources */ = {isa = PBXBuildFile; fileRef = BEBDC4D71857B4CA0013DEF1 /* VAPIManager.m */; };
 		BEBDC4DC1857B80D0013DEF1 /* VLoginManagerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = BEBDC4D91857B80D0013DEF1 /* VLoginManagerTests.m */; };
 		BEBDC4DD1857B80D0013DEF1 /* VSequenceManagerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = BEBDC4DA1857B80D0013DEF1 /* VSequenceManagerTests.m */; };
 		BED55905185157DE007FD3E6 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = BED55904185157DE007FD3E6 /* libPods.a */; };
@@ -113,11 +113,13 @@
 		5F8AAA5D184D43C600301783 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
 		5F8AAAA3184D467300301783 /* VStreamsTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VStreamsTableViewController.h; sourceTree = "<group>"; };
 		5F8AAAA4184D467300301783 /* VStreamsTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VStreamsTableViewController.m; sourceTree = "<group>"; };
+		838F41E81857F26900882F1D /* VObjectManager+Login.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "VObjectManager+Login.h"; path = "Managers/VObjectManager+Login.h"; sourceTree = "<group>"; };
+		838F41E91857F26900882F1D /* VObjectManager+Login.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "VObjectManager+Login.m"; path = "Managers/VObjectManager+Login.m"; sourceTree = "<group>"; };
+		838F41F71857F63900882F1D /* VObjectManager+Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "VObjectManager+Private.h"; path = "Managers/VObjectManager+Private.h"; sourceTree = "<group>"; };
+		838F41F81857F63900882F1D /* VObjectManager+Private.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "VObjectManager+Private.m"; path = "Managers/VObjectManager+Private.m"; sourceTree = "<group>"; };
 		B15D4A5304A04D16AD420BCD /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		BE20A10218524D6A003D0E8C /* libPods-RestKit.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libPods-RestKit.a"; path = "Pods/build/TestFlight-iphoneos/libPods-RestKit.a"; sourceTree = "<group>"; };
 		BE2BA7CE1852593700CA71AC /* libPods.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libPods.a; path = "Pods/build/TestFlight-iphoneos/libPods.a"; sourceTree = "<group>"; };
-		BE4E753A1846BF0700344677 /* VLoginManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VLoginManager.h; path = Managers/VLoginManager.h; sourceTree = "<group>"; };
-		BE4E753B1846BF0700344677 /* VLoginManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VLoginManager.m; path = Managers/VLoginManager.m; sourceTree = "<group>"; };
 		BE4E7549184942F100344677 /* VSequenceManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VSequenceManager.h; path = Managers/VSequenceManager.h; sourceTree = "<group>"; };
 		BE4E754A184942F100344677 /* VSequenceManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VSequenceManager.m; path = Managers/VSequenceManager.m; sourceTree = "<group>"; };
 		BE4E7552184955BE00344677 /* VObjectManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VObjectManager.h; path = Managers/VObjectManager.h; sourceTree = "<group>"; };
@@ -205,8 +207,6 @@
 		BEBDC4C11857B2E30013DEF1 /* VStatSequence+RestKit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "VStatSequence+RestKit.m"; sourceTree = "<group>"; };
 		BEBDC4C21857B2E30013DEF1 /* VUser+RestKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "VUser+RestKit.h"; sourceTree = "<group>"; };
 		BEBDC4C31857B2E30013DEF1 /* VUser+RestKit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "VUser+RestKit.m"; sourceTree = "<group>"; };
-		BEBDC4D61857B4CA0013DEF1 /* VAPIManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VAPIManager.h; path = Managers/VAPIManager.h; sourceTree = "<group>"; };
-		BEBDC4D71857B4CA0013DEF1 /* VAPIManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VAPIManager.m; path = Managers/VAPIManager.m; sourceTree = "<group>"; };
 		BEBDC4D91857B80D0013DEF1 /* VLoginManagerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VLoginManagerTests.m; sourceTree = "<group>"; };
 		BEBDC4DA1857B80D0013DEF1 /* VSequenceManagerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VSequenceManagerTests.m; sourceTree = "<group>"; };
 		BEBDC4DB1857B80D0013DEF1 /* XCTestRestKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XCTestRestKit.h; sourceTree = "<group>"; };
@@ -287,14 +287,14 @@
 		BE4E75361846BDE100344677 /* Managers */ = {
 			isa = PBXGroup;
 			children = (
-				BEBDC4D61857B4CA0013DEF1 /* VAPIManager.h */,
-				BEBDC4D71857B4CA0013DEF1 /* VAPIManager.m */,
-				BE4E753A1846BF0700344677 /* VLoginManager.h */,
-				BE4E753B1846BF0700344677 /* VLoginManager.m */,
-				BE4E7549184942F100344677 /* VSequenceManager.h */,
-				BE4E754A184942F100344677 /* VSequenceManager.m */,
 				BE4E7552184955BE00344677 /* VObjectManager.h */,
 				BE4E7553184955BE00344677 /* VObjectManager.m */,
+				838F41F71857F63900882F1D /* VObjectManager+Private.h */,
+				838F41F81857F63900882F1D /* VObjectManager+Private.m */,
+				838F41E81857F26900882F1D /* VObjectManager+Login.h */,
+				838F41E91857F26900882F1D /* VObjectManager+Login.m */,
+				BE4E7549184942F100344677 /* VSequenceManager.h */,
+				BE4E754A184942F100344677 /* VSequenceManager.m */,
 				BE5AC2C0184E6CB300121126 /* VCommentManager.h */,
 				BE5AC2C1184E6CB300121126 /* VCommentManager.m */,
 			);
@@ -369,9 +369,9 @@
 		BEA4F24D1843F097001F5B15 /* victoriOSTests */ = {
 			isa = PBXGroup;
 			children = (
+				BEBDC4DB1857B80D0013DEF1 /* XCTestRestKit.h */,
 				BEBDC4D91857B80D0013DEF1 /* VLoginManagerTests.m */,
 				BEBDC4DA1857B80D0013DEF1 /* VSequenceManagerTests.m */,
-				BEBDC4DB1857B80D0013DEF1 /* XCTestRestKit.h */,
 				BEA4F24E1843F097001F5B15 /* Supporting Files */,
 			);
 			path = victoriOSTests;
@@ -609,7 +609,6 @@
 				3F90DD6D18569EB400C8F312 /* VMenuController.m in Sources */,
 				BEBDC49C1857B2C50013DEF1 /* VInteractionAction.m in Sources */,
 				BEBDC4991857B2C50013DEF1 /* VCategory.m in Sources */,
-				BE4E753C1846BF0700344677 /* VLoginManager.m in Sources */,
 				BEBDC4CA1857B2E30013DEF1 /* VInteractionAction+RestKit.m in Sources */,
 				BEBDC4961857B2C50013DEF1 /* VAnswer.m in Sources */,
 				BEA4F2371843F097001F5B15 /* main.m in Sources */,
@@ -624,12 +623,13 @@
 				BEA4F23E1843F097001F5B15 /* victoriOS.xcdatamodeld in Sources */,
 				BEBDC4C41857B2E30013DEF1 /* VAnswer+RestKit.m in Sources */,
 				BEBDC4C71857B2E30013DEF1 /* VCategory+RestKit.m in Sources */,
-				BEBDC4D81857B4CA0013DEF1 /* VAPIManager.m in Sources */,
 				BEBDC4CC1857B2E30013DEF1 /* VNodeAction+RestKit.m in Sources */,
+				838F41EA1857F26900882F1D /* VObjectManager+Login.m in Sources */,
 				BEBDC4CF1857B2E30013DEF1 /* VStatAnswer+RestKit.m in Sources */,
 				BEBDC4C81857B2E30013DEF1 /* VComment+RestKit.m in Sources */,
 				BEBDC4D11857B2E30013DEF1 /* VStatSequence+RestKit.m in Sources */,
 				BEBDC4CB1857B2E30013DEF1 /* VNode+RestKit.m in Sources */,
+				838F41F91857F63900882F1D /* VObjectManager+Private.m in Sources */,
 				3F90DD811856A59B00C8F312 /* VInboxViewController.m in Sources */,
 				BEBDC4D21857B2E30013DEF1 /* VUser+RestKit.m in Sources */,
 				BEBDC49D1857B2C50013DEF1 /* VNode.m in Sources */,
