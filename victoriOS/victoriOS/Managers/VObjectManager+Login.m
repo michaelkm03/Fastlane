@@ -6,7 +6,6 @@
 //  Copyright (c) 2013 Victorious, Inc. All rights reserved.
 //
 
-#import "VObjectManager+Login.h"
 #import "VObjectManager+Private.h"
 #import "VUser+RestKit.h"
 

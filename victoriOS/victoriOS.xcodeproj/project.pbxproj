@@ -21,7 +21,6 @@
 		5F8AAA5E184D43C600301783 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5F8AAA5D184D43C600301783 /* Main.storyboard */; };
 		5F8AAAA5184D467300301783 /* VStreamsTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F8AAAA4184D467300301783 /* VStreamsTableViewController.m */; };
 		838F41EA1857F26900882F1D /* VObjectManager+Login.m in Sources */ = {isa = PBXBuildFile; fileRef = 838F41E91857F26900882F1D /* VObjectManager+Login.m */; };
-		838F41F91857F63900882F1D /* VObjectManager+Private.m in Sources */ = {isa = PBXBuildFile; fileRef = 838F41F81857F63900882F1D /* VObjectManager+Private.m */; };
 		BE2BA7CF1852593700CA71AC /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = BE2BA7CE1852593700CA71AC /* libPods.a */; };
 		BE4E754B184942F100344677 /* VSequenceManager.m in Sources */ = {isa = PBXBuildFile; fileRef = BE4E754A184942F100344677 /* VSequenceManager.m */; };
 		BE4E7554184955BE00344677 /* VObjectManager.m in Sources */ = {isa = PBXBuildFile; fileRef = BE4E7553184955BE00344677 /* VObjectManager.m */; };
@@ -113,10 +112,8 @@
 		5F8AAA5D184D43C600301783 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
 		5F8AAAA3184D467300301783 /* VStreamsTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VStreamsTableViewController.h; sourceTree = "<group>"; };
 		5F8AAAA4184D467300301783 /* VStreamsTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VStreamsTableViewController.m; sourceTree = "<group>"; };
-		838F41E81857F26900882F1D /* VObjectManager+Login.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "VObjectManager+Login.h"; path = "Managers/VObjectManager+Login.h"; sourceTree = "<group>"; };
 		838F41E91857F26900882F1D /* VObjectManager+Login.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "VObjectManager+Login.m"; path = "Managers/VObjectManager+Login.m"; sourceTree = "<group>"; };
 		838F41F71857F63900882F1D /* VObjectManager+Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "VObjectManager+Private.h"; path = "Managers/VObjectManager+Private.h"; sourceTree = "<group>"; };
-		838F41F81857F63900882F1D /* VObjectManager+Private.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "VObjectManager+Private.m"; path = "Managers/VObjectManager+Private.m"; sourceTree = "<group>"; };
 		B15D4A5304A04D16AD420BCD /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		BE20A10218524D6A003D0E8C /* libPods-RestKit.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libPods-RestKit.a"; path = "Pods/build/TestFlight-iphoneos/libPods-RestKit.a"; sourceTree = "<group>"; };
 		BE2BA7CE1852593700CA71AC /* libPods.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libPods.a; path = "Pods/build/TestFlight-iphoneos/libPods.a"; sourceTree = "<group>"; };
@@ -290,8 +287,6 @@
 				BE4E7552184955BE00344677 /* VObjectManager.h */,
 				BE4E7553184955BE00344677 /* VObjectManager.m */,
 				838F41F71857F63900882F1D /* VObjectManager+Private.h */,
-				838F41F81857F63900882F1D /* VObjectManager+Private.m */,
-				838F41E81857F26900882F1D /* VObjectManager+Login.h */,
 				838F41E91857F26900882F1D /* VObjectManager+Login.m */,
 				BE4E7549184942F100344677 /* VSequenceManager.h */,
 				BE4E754A184942F100344677 /* VSequenceManager.m */,
@@ -629,7 +624,6 @@
 				BEBDC4C81857B2E30013DEF1 /* VComment+RestKit.m in Sources */,
 				BEBDC4D11857B2E30013DEF1 /* VStatSequence+RestKit.m in Sources */,
 				BEBDC4CB1857B2E30013DEF1 /* VNode+RestKit.m in Sources */,
-				838F41F91857F63900882F1D /* VObjectManager+Private.m in Sources */,
 				3F90DD811856A59B00C8F312 /* VInboxViewController.m in Sources */,
 				BEBDC4D21857B2E30013DEF1 /* VUser+RestKit.m in Sources */,
 				BEBDC49D1857B2C50013DEF1 /* VNode.m in Sources */,

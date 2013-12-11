@@ -27,13 +27,24 @@
 {
     __block VUser *resultUser;
     __block NSError *resultError;
-    XCTestRestKitStartOperation([VObjectManager createVictoriousAccountWithEmail:@"aa@a.com" password:@"a" name:@"a" block:^(VUser *user, NSError *error){
+
+    dispatch_semaphore_t semaphore = dispatch_semaphore_create(0);
+    dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
+
+    RKManagedObjectRequestOperation *o =
+    [VObjectManager createVictoriousAccountWithEmail:@"aa@a.com" password:@"a" name:@"a" block:^(VUser *user, NSError *error){
         resultUser = user;
         resultError = error;
-        XCTestRestKitEndOperation();
-    }]);
+        dispatch_semaphore_signal(semaphore);
+    }];
 
-    XCTAssertNil(resultError, @"Error: %@", resultError);
+    o.failureCallbackQueue = queue;
+    o.successCallbackQueue = queue;
+    [o start];
+    dispatch_semaphore_wait(semaphore, DISPATCH_TIME_FOREVER);
+
+    XCTFail(@"Fail");
+//    XCTAssertNil(resultError, @"Error: %@", resultError);
 }
 
 @end

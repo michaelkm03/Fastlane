@@ -11,7 +11,7 @@
 #import "VLoginViewController.h"
 #import <TestFlightSDK/TestFlight.h>
 #import "VSequenceManager.h"
-#import "VObjectManager+Login.h"
+#import "VObjectManager.h"
 
 @implementation VAppDelegate
 
@@ -23,6 +23,11 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     [VObjectManager setupObjectManager];
+
+    [[VObjectManager createVictoriousAccountWithEmail:@"aa@a.com" password:@"a" name:@"a" block:^(VUser *user, NSError *error){
+        NSLog(@"%@", user);
+        NSLog(@"%@", error);
+    }] start];
 
     [TestFlight takeOff:@"4467aa06-d174-479e-b009-f1945f3d6532"];
     
