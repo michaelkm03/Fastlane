@@ -93,24 +93,17 @@
 {
     if ([self shouldLoginWithUsername:self.username.text password:self.password.text])
     {
-        RKManagedObjectRequestOperation* requestOperation = [[RKObjectManager sharedManager]
-                                                             appropriateObjectRequestOperationWithObject:nil
-                                                             method:RKRequestMethodPOST
-                                                             path:@"/api/login"
-                                                             parameters:@{@"email": self.username.text,
-                                                                          @"password": self.password.text}];
-        
-        [requestOperation setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation,
-                                                          RKMappingResult *mappingResult)
-         {
-             RKLogInfo(@"Login with User: %@", mappingResult.array);
-             [self didLogin];
-         } failure:^(RKObjectRequestOperation *operation, NSError *error)
-         {
-             RKLogError(@"Operation failed with error: %@", error);
-             [self didFailToLogIn];
-         }];
-        
+        SuccessBlock success = ^(NSArray* objects) {
+            [objects firstObject];
+        };
+        FailBlock fail = ^(NSError* error) {
+            VLog(@"Error in victorious Login: %@", error);
+        };
+        RKManagedObjectRequestOperation* requestOperation =
+            [[VObjectManager sharedManager] loginToVictoriousWithEmail:self.username.text
+                                                              password:self.password.text
+                                                          successBlock:success
+                                                             failBlock:fail];
         [requestOperation start];
     }
 }

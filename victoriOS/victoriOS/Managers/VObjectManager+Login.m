@@ -36,6 +36,22 @@
 
 #pragma mark - Victorious
 
+
+- (RKManagedObjectRequestOperation *)loginToVictoriousWithEmail:(NSString *)email
+                                                       password:(NSString *)password
+                                                   successBlock:(SuccessBlock)success
+                                                      failBlock:(FailBlock)fail
+{
+    NSDictionary *parameters = @{@"email": email ?: [NSNull null], @"password": password ?: [NSNull null]};
+
+    
+    return [self POST:@"/api/login"
+           parameters:parameters
+         successBlock:success
+            failBlock:fail
+      paginationBlock:nil];
+}
+
 - (RKManagedObjectRequestOperation *)loginToVictoriousWithEmail:(NSString*)email password:(NSString*)password block:(void(^)(VUser *user, NSError *error))block
 {
     NSDictionary *paramiters = @{@"email": email ?: [NSNull null], @"password": password ?: [NSNull null]};

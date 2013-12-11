@@ -132,7 +132,6 @@
                                          failBlock:(FailBlock)failBlock
                                    paginationBlock:(PaginationBlock)paginationBlock
 {
-    // TODO: return accurate page and perPage
     RKManagedObjectRequestOperation *requestOperation =
     [self  appropriateObjectRequestOperationWithObject:nil method:method path:path parameters:parameters];
     
@@ -151,7 +150,7 @@
                  successBlock(mappingResult.array);
 
              if(paginationBlock)
-                 paginationBlock(0, 0); //TODO: make this do real things
+                 paginationBlock(0, 0); //TODO: pass in real page / totalPages
          }
          
      } failure:^(RKObjectRequestOperation *operation, NSError *error)

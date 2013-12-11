@@ -52,8 +52,11 @@ typedef NS_ENUM(NSUInteger, VObjectManagerSequenceStatusType){
 - (RKManagedObjectRequestOperation *)loginToFacebookWithSuccessBlock:(SuccessBlock)success
                                                            failBlock:(FailBlock)failed;
 
-- (RKManagedObjectRequestOperation *)loginToVictoriousWithEmail:(NSString *)email password:(NSString *)password
-                                                          block:(void(^)(VUser *user, NSError *error))block;
+- (RKManagedObjectRequestOperation *)loginToVictoriousWithEmail:(NSString *)email
+                                                       password:(NSString *)password
+                                                   successBlock:(SuccessBlock)success
+                                                      failBlock:(FailBlock)fail;
+
 - (RKManagedObjectRequestOperation *)createVictoriousAccountWithEmail:(NSString *)email password:(NSString *)password
                                                                  name:(NSString *)name block:(void(^)(VUser *user, NSError *error))block;
 - (RKManagedObjectRequestOperation *)updateVictoriousAccountWithEmail:(NSString *)email password:(NSString *)password
