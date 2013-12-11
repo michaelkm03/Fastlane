@@ -20,7 +20,6 @@ typedef NS_ENUM(NSInteger, VStreamFilterType) {
 };
 
 @interface VStreamsTableViewController ()
-@property (strong, nonatomic) IBOutlet UISearchDisplayController *searchBarController;
 @property (nonatomic, strong) NSFetchedResultsController* fetchedResultsController;
 @property (nonatomic) VStreamFilterType filterType;
 @property (strong, nonatomic) NSString* filterText;
@@ -64,7 +63,7 @@ const NSString* StreamCache = @"Streams";
 {    
     // scroll the search bar off-screen
     CGRect newBounds = self.tableView.bounds;
-    newBounds.origin.y = newBounds.origin.y + self.searchBarController.searchBar.bounds.size.height;
+    newBounds.origin.y = newBounds.origin.y + self.searchDisplayController.searchBar.bounds.size.height;
     self.tableView.bounds = newBounds;
 }
 
@@ -366,7 +365,7 @@ const NSString* StreamCache = @"Streams";
 - (void)activateSearch
 {
     [self.tableView scrollRectToVisible:CGRectMake(0, 0, 1, 1) animated:NO];
-    [self.searchBarController.searchBar becomeFirstResponder];
+    [self.searchDisplayController.searchBar becomeFirstResponder];
     
 }
 
