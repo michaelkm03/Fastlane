@@ -11,7 +11,7 @@
 #import "REFrostedViewController.h"
 #import "NSString+VParseHelp.h"
 
-typedef NS_ENUM(NSInteger, VStreamFilterType) {
+typedef NS_ENUM(NSInteger, VStreamScope) {
     VStreamFilterAll = 0,
     VStreamFilterImages,
     VStreamFilterVideos,
@@ -21,11 +21,13 @@ typedef NS_ENUM(NSInteger, VStreamFilterType) {
 
 @interface VStreamsTableViewController ()
 @property (nonatomic, strong) NSFetchedResultsController* fetchedResultsController;
-@property (nonatomic) VStreamFilterType filterType;
+@property (nonatomic, strong) NSFetchedResultsController* searchFetchedResultsController;
+@property (nonatomic) VStreamScope scopeType;
 @property (strong, nonatomic) NSString* filterText;
 @end
 
-const NSString* StreamCache = @"Streams";
+const NSString* StreamCache = @"StreamCache";
+const NSString* SearchCache = @"SearchCache";
 
 @implementation VStreamsTableViewController
 
@@ -35,7 +37,7 @@ const NSString* StreamCache = @"Streams";
     if (self)
     {
         // Custom initialization
-        _filterType = VStreamFilterAll;
+        _scopeType = VStreamFilterAll;
     }
     return self;
 }
@@ -88,22 +90,34 @@ const NSString* StreamCache = @"Streams";
 
 #pragma mark - Table view data source
 
+- (NSFetchedResultsController *)fetchedResultsControllerForTableView:(UITableView *)tableView
+{
+    return tableView == self.tableView ? self.fetchedResultsController : self.searchFetchedResultsController;
+}
+
+- (UITableView*)tableViewForFetchedResultsController:(NSFetchedResultsController*)controller
+{
+    return controller == self.fetchedResultsController ? self.tableView
+                            : self.searchDisplayController.searchResultsTableView;
+}
+
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    return [[self.fetchedResultsController sections] count];
+    return [[[self fetchedResultsControllerForTableView:tableView] sections] count];
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     // Return the number of rows in the section.
-    id  sectionInfo = [[self.fetchedResultsController sections] objectAtIndex:section];
+    id  sectionInfo = [[[self fetchedResultsControllerForTableView:tableView] sections] objectAtIndex:section];
     return [sectionInfo numberOfObjects];
 }
 
-- (void)configureCell:(UITableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath
+- (void)configureCell:(UITableViewCell *)theCell atIndexPath:(NSIndexPath *)theIndexPath
+    forFetchedResultsController:(NSFetchedResultsController *)fetchedResultsController
 {
-    VSequence *info = [self.fetchedResultsController objectAtIndexPath:indexPath];
-    cell.textLabel.text = info.name;
+    VSequence *info = [fetchedResultsController objectAtIndexPath:theIndexPath];
+    theCell.textLabel.text = info.name;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -117,7 +131,8 @@ const NSString* StreamCache = @"Streams";
     }
     
     // Configure the cell...
-    [self configureCell:cell atIndexPath:indexPath];
+    [self configureCell:cell atIndexPath:indexPath
+        forFetchedResultsController:[self fetchedResultsControllerForTableView:tableView]];
     
     return cell;
 }
@@ -173,12 +188,13 @@ const NSString* StreamCache = @"Streams";
 
  */
 
-#pragma mark - FetchedResultsController
+#pragma mark - NSFetchedResultsControllers
 
 - (void)updatePredicateForFetchedResultsController:(NSFetchedResultsController*)controller
 {
     //We must clear the cache before modifying anything.
-    [NSFetchedResultsController deleteCacheWithName:StreamCache];
+    NSString* cacheName = controller == _fetchedResultsController ? StreamCache : SearchCache;
+    [NSFetchedResultsController deleteCacheWithName:cacheName];
 
     NSFetchRequest* fetchRequest = controller.fetchRequest;
 
@@ -186,7 +202,7 @@ const NSString* StreamCache = @"Streams";
     NSPredicate* typeFilter;
     
     //Start by filtering by type
-    switch (_filterType)
+    switch (_scopeType)
     {
         case VStreamFilterVideoForums:
             typeFilter = [NSPredicate predicateWithFormat:@"category == 'video_forum'"];
@@ -232,7 +248,7 @@ const NSString* StreamCache = @"Streams";
 	}
     
     //Then reload the data
-    [self.tableView reloadData];
+    [[self tableViewForFetchedResultsController:controller] reloadData];
 }
 
 - (NSFetchedResultsController *)fetchedResultsController
@@ -242,7 +258,7 @@ const NSString* StreamCache = @"Streams";
         RKObjectManager* manager = [RKObjectManager sharedManager];
         NSManagedObjectContext *context = manager.managedObjectStore.persistentStoreManagedObjectContext;
         
-        NSFetchRequest *fetchRequest = [self filteredFetchRequestForContext:context];
+        NSFetchRequest *fetchRequest = [self fetchRequestForContext:context];
         
         self.fetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:fetchRequest
                                                                             managedObjectContext:context
@@ -254,16 +270,48 @@ const NSString* StreamCache = @"Streams";
     return _fetchedResultsController;
 }
 
+- (NSFetchedResultsController *)searchFetchedResultsController
+{
+    if (nil == _searchFetchedResultsController)
+    {
+        RKObjectManager* manager = [RKObjectManager sharedManager];
+        NSManagedObjectContext *context = manager.managedObjectStore.persistentStoreManagedObjectContext;
+        
+        NSFetchRequest *fetchRequest = [self fetchRequestForContext:context];
+        
+        self.searchFetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:fetchRequest
+                                                                            managedObjectContext:context
+                                                                              sectionNameKeyPath:nil
+                                                                                       cacheName:SearchCache];
+        self.searchFetchedResultsController.delegate = self;
+    }
+    
+    return _searchFetchedResultsController;
+}
+
+- (NSFetchRequest*)fetchRequestForContext:(NSManagedObjectContext*)context
+{
+    
+    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+    NSEntityDescription *entity = [NSEntityDescription entityForName:@"Sequence" inManagedObjectContext:context];
+    [fetchRequest setEntity:entity];
+    
+    NSSortDescriptor *sort = [[NSSortDescriptor alloc] initWithKey:@"display_order" ascending:YES];
+    [fetchRequest setSortDescriptors:@[sort]];
+    [fetchRequest setFetchBatchSize:50];
+    
+    return fetchRequest;
+}
+
 - (void)controllerWillChangeContent:(NSFetchedResultsController *)controller
 {
     // The fetch controller is about to start sending change notifications, so prepare the table view for updates.
-    [self.tableView beginUpdates];
+    [[self tableViewForFetchedResultsController:controller] beginUpdates];
 }
-
 
 - (void)controller:(NSFetchedResultsController *)controller didChangeObject:(id)anObject atIndexPath:(NSIndexPath *)indexPath forChangeType:(NSFetchedResultsChangeType)type newIndexPath:(NSIndexPath *)newIndexPath
 {
-    UITableView *tableView = self.tableView;
+    UITableView *tableView = [self tableViewForFetchedResultsController:controller];
     
     switch(type)
     {
@@ -276,7 +324,7 @@ const NSString* StreamCache = @"Streams";
             break;
             
         case NSFetchedResultsChangeUpdate:
-            [self configureCell:[tableView cellForRowAtIndexPath:indexPath] atIndexPath:indexPath];
+            [self configureCell:[tableView cellForRowAtIndexPath:indexPath] atIndexPath:indexPath forFetchedResultsController:[self fetchedResultsControllerForTableView:tableView]];
             break;
             
         case NSFetchedResultsChangeMove:
@@ -303,47 +351,25 @@ const NSString* StreamCache = @"Streams";
 - (void)controllerDidChangeContent:(NSFetchedResultsController *)controller
 {
     // The fetch controller has sent all current change notifications, so tell the table view to process all updates.
-    [self.tableView endUpdates];
-}
-
-#pragma mark - Stream Filter
-
-- (NSFetchRequest*)filteredFetchRequestForContext:(NSManagedObjectContext*)context
-{
-    
-    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
-    NSEntityDescription *entity = [NSEntityDescription entityForName:@"Sequence" inManagedObjectContext:context];
-    [fetchRequest setEntity:entity];
-    
-    NSSortDescriptor *sort = [[NSSortDescriptor alloc] initWithKey:@"display_order" ascending:YES];
-    [fetchRequest setSortDescriptors:@[sort]];
-    [fetchRequest setFetchBatchSize:50];
-    
-    return fetchRequest;
+    [[self tableViewForFetchedResultsController:controller] endUpdates];
 }
 
 #pragma mark - UISearchBarDelegate
 
 - (void)searchBar:(UISearchBar *)searchBar selectedScopeButtonIndexDidChange:(NSInteger)selectedScope
 {
-    //This relies on the scope buttons being in the same order as the VStreamFilterType enum
-    _filterType = selectedScope;
-    
-    _fetchedResultsController = nil;
-    [self.tableView reloadData];
-    [self.searchDisplayController.searchResultsTableView reloadData];
+    //This relies on the scope buttons being in the same order as the VStreamScope enum
+    _scopeType = selectedScope;
+    [self updatePredicateForFetchedResultsController:_searchFetchedResultsController];
 }
 
 - (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText
 {
     _filterText = searchText;
-    
-    _fetchedResultsController = nil;
-    [self.tableView reloadData];
-    [self.searchDisplayController.searchResultsTableView reloadData];
+    [self updatePredicateForFetchedResultsController:_searchFetchedResultsController];
 }
 
-#pragma mark -
+#pragma mark - Search Display
 
 - (IBAction)showMenu
 {

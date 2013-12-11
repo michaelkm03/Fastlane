@@ -98,9 +98,9 @@
     }
     else if (indexPath.section == 0 && indexPath.row == 2)
     {
-//        if (![VLoginViewController sharedLoginViewController].authorized)
-//            [self presentViewController:[VLoginViewController sharedLoginViewController] animated:YES completion:NULL];
-//        else
+        if (![VLoginViewController sharedLoginViewController].authorized)
+            [self presentViewController:[VLoginViewController sharedLoginViewController] animated:YES completion:NULL];
+        else
         {
             VForumsViewController*  forumsViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"inbox"];
             navigationController.viewControllers = @[forumsViewController];
@@ -109,9 +109,9 @@
     }
     else if (indexPath.section == 0 && indexPath.row == 3)
     {
-//        if (![VLoginViewController sharedLoginViewController].authorized)
-//            [self presentViewController:[VLoginViewController sharedLoginViewController] animated:YES completion:NULL];
-//        else
+        if (![VLoginViewController sharedLoginViewController].authorized)
+            [self presentViewController:[VLoginViewController sharedLoginViewController] animated:YES completion:NULL];
+        else
         {
             VForumsViewController*  forumsViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"profile"];
             navigationController.viewControllers = @[forumsViewController];
