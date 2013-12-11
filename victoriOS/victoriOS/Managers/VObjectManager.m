@@ -86,25 +86,32 @@
     RKManagedObjectRequestOperation *requestOperation =
     [self  appropriateObjectRequestOperationWithObject:nil method:method path:path parameters:parameters];
 
-    [requestOperation setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult){
-        if(block){
-            if([[mappingResult firstObject] isKindOfClass:[RKErrorMessage class]]){
+    [requestOperation setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult)
+    {
+        if(block)
+        {
+            if([[mappingResult firstObject] isKindOfClass:[RKErrorMessage class]])
+            {
                 RKErrorMessage *errorMessage = (RKErrorMessage *)[mappingResult firstObject];
                 // TODO: create better error object
                 block(0, 0, nil, [NSError errorWithDomain:@"com.getvictorious.victoriOS" code:0
                                            userInfo:@{NSLocalizedDescriptionKey: errorMessage.errorMessage}]);
-            }else{
+            }else
+            {
                 block(0, 0, mappingResult.array, nil);
             }
         }
-    } failure:^(RKObjectRequestOperation *operation, NSError *error){
-        if(block){
+    } failure:^(RKObjectRequestOperation *operation, NSError *error)
+    {
+        if(block)
+        {
             block(0, 0, nil, error);
         }
     }];
 
     return requestOperation;
 }
+
 
 - (RKManagedObjectRequestOperation *)GET:(NSString *)path parameters:(NSDictionary *)parameters block:(void(^)(NSUInteger page, NSUInteger perPage, NSArray *results, NSError *error))block
 {
@@ -114,6 +121,74 @@
 - (RKManagedObjectRequestOperation *)POST:(NSString *)path parameters:(NSDictionary *)parameters block:(void(^)(NSUInteger page, NSUInteger perPage, NSArray *results, NSError *error))block
 {
     return [self requestMethod:RKRequestMethodPOST path:path parameters:parameters block:block];
+}
+
+
+
+- (RKManagedObjectRequestOperation *)requestMethod:(RKRequestMethod)method
+                                              path:(NSString *)path
+                                        parameters:(NSDictionary *)parameters
+                                      successBlock:(SuccessBlock)successBlock
+                                         failBlock:(FailBlock)failBlock
+                                   paginationBlock:(PaginationBlock)paginationBlock
+{
+    // TODO: return accurate page and perPage
+    RKManagedObjectRequestOperation *requestOperation =
+    [self  appropriateObjectRequestOperationWithObject:nil method:method path:path parameters:parameters];
+    
+    [requestOperation setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult)
+     {
+         if([[mappingResult firstObject] isKindOfClass:[RKErrorMessage class]])
+         {
+             RKErrorMessage *errorMessage = (RKErrorMessage *)[mappingResult firstObject];
+             // TODO: create better error object
+             if (failBlock)
+                 failBlock([NSError errorWithDomain:@"com.getvictorious.victoriOS" code:0
+                                           userInfo:@{NSLocalizedDescriptionKey: errorMessage.errorMessage}]);
+         } else
+         {
+             if (successBlock)
+                 successBlock(mappingResult.array);
+
+             if(paginationBlock)
+                 paginationBlock(0, 0); //TODO: make this do real things
+         }
+         
+     } failure:^(RKObjectRequestOperation *operation, NSError *error)
+     {
+         if(failBlock)
+             failBlock(error);
+     }];
+    
+    return requestOperation;
+}
+
+- (RKManagedObjectRequestOperation *)GET:(NSString *)path
+                              parameters:(NSDictionary *)parameters
+                            successBlock:(SuccessBlock)successBlock
+                               failBlock:(FailBlock)failBlock
+                         paginationBlock:(PaginationBlock)paginationBlock
+{
+    return [self requestMethod:RKRequestMethodGET
+                   path:path
+             parameters:parameters
+           successBlock:successBlock
+              failBlock:failBlock
+        paginationBlock:paginationBlock];
+}
+
+- (RKManagedObjectRequestOperation *)POST:(NSString *)path
+                              parameters:(NSDictionary *)parameters
+                            successBlock:(SuccessBlock)successBlock
+                               failBlock:(FailBlock)failBlock
+                         paginationBlock:(PaginationBlock)paginationBlock
+{
+    return [self requestMethod:RKRequestMethodPOST
+                   path:path
+             parameters:parameters
+           successBlock:successBlock
+              failBlock:failBlock
+        paginationBlock:paginationBlock];
 }
 
 #pragma mark - Subclass

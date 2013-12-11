@@ -13,4 +13,16 @@
 - (RKManagedObjectRequestOperation *)GET:(NSString *)path parameters:(NSDictionary *)parameters block:(void(^)(NSUInteger page, NSUInteger perPage, id result, NSError *error))block;
 - (RKManagedObjectRequestOperation *)POST:(NSString *)path parameters:(NSDictionary *)parameters block:(void(^)(NSUInteger page, NSUInteger perPage, id result, NSError *error))block;
 
+
+- (RKManagedObjectRequestOperation *)GET:(NSString *)path
+                              parameters:(NSDictionary *)parameters
+                            successBlock:(SuccessBlock)successBlock
+                               failBlock:(FailBlock)failBlock
+                         paginationBlock:(PaginationBlock)paginationBlock;
+
+- (RKManagedObjectRequestOperation *)POST:(NSString *)path
+                               parameters:(NSDictionary *)parameters
+                             successBlock:(SuccessBlock)successBlock
+                                failBlock:(FailBlock)failBlock
+                          paginationBlock:(PaginationBlock)paginationBlock;
 @end

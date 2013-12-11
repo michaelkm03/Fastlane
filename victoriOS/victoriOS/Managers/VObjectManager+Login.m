@@ -8,57 +8,30 @@
 
 #import "VObjectManager+Private.h"
 #import "VUser+RestKit.h"
+@import Accounts;
 
 @implementation VObjectManager (Login)
 
 #pragma mark - Facebook
 
-- (void)loginToFacebook
+- (RKManagedObjectRequestOperation *)loginToFacebookWithSuccessBlock:(SuccessBlock)success
+                                                           failBlock:(FailBlock)failed
 {
-//    @try {
-//        [FBSession openActiveSessionWithReadPermissions:@[ @"basic_info", @"email" ]
-//                                           allowLoginUI:YES
-//                                      completionHandler:^(FBSession *session, FBSessionState status, NSError *error) {
-//                                          if (error)
-//                                          {
-//                                              // Log it.
-//                                              VLog(@"Error in opening FB Session: %@", error);
-//                                          }
-//                                          else
-//                                          {
-//                                              [VLoginManager launchLoginToFBCall];
-//                                          }
-//                                      }];
-//    } @catch (NSException* exception) {
-//        VLog(@"exception: %@", exception);
-//    }
-
-}
-
-- (void)launchLoginToFBCall
-{
-//    NSString* token =[[[FBSession activeSession] accessTokenData] accessToken];
-//
-//    RKManagedObjectRequestOperation* requestOperation;
-//    if(token) {
-//        requestOperation = [[RKObjectManager sharedManager]
-//                            appropriateObjectRequestOperationWithObject:nil
-//                            method:RKRequestMethodPOST
-//                            path:@"/api/login/facebook"
-//                            parameters:@{@"facebook_access_token": token}];
-//    }
-//
-//    [requestOperation setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation,
-//                                                      RKMappingResult *mappingResult)
-//     {
-//         RKLogInfo(@"Login with User: %@", mappingResult.array);
-//         //        [VSequenceManager loadSequenceCategories];
-//     } failure:^(RKObjectRequestOperation *operation, NSError *error)
-//     {
-//         RKLogError(@"Operation failed with error: %@", error);
-//     }];
-//
-//    [requestOperation start];
+    ACAccountStore* store = [[ACAccountStore alloc]init];
+    ACAccountType *FBaccountType= [store accountTypeWithAccountTypeIdentifier:ACAccountTypeIdentifierFacebook];
+    NSArray *accounts = [store accountsWithAccountType:FBaccountType];
+    //it will always be the last object with single sign on
+    ACAccount* facebookAccount = [accounts lastObject];
+    ACAccountCredential *fbCredential = [facebookAccount credential];
+    NSString *accessToken = [fbCredential oauthToken];
+    
+    NSDictionary *parameters = @{@"facebook_access_token": accessToken ?: [NSNull null]};
+    
+    return [self POST:@"/api/login/facebook"
+           parameters:parameters
+         successBlock:success
+            failBlock:failed
+      paginationBlock:nil];
 }
 
 #pragma mark - Victorious

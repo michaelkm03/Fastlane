@@ -8,6 +8,7 @@
 
 #import "VLoginViewController.h"
 #import "VSequenceManager.h"
+#import "VObjectManager.h"
 
 @import Accounts;
 @import Social;
@@ -117,59 +118,50 @@
 
 - (IBAction)facebookClicked:(id)sender
 {
-    // TODO: add login to facebook to the VObjectManager
-//    [VLoginManager loginToFacebook];
-
-//    ACAccountStore* accountStore = [[ACAccountStore alloc] init];
-//    ACAccountType *facebookAccountType = [accountStore accountTypeWithAccountTypeIdentifier:ACAccountTypeIdentifierFacebook];
-//    
-//    // Specify App ID and permissions
-//    NSDictionary *options = @{
-//                              ACFacebookAppIdKey: @"012345678912345",
-//                              };
-//    
-//    UIActivityIndicatorView *spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
-//    spinner.center = CGPointMake(160, 240);
-//    spinner.hidesWhenStopped = YES;
-//    [self.view addSubview:spinner];
-//    [spinner startAnimating];
-//
-//    [accountStore requestAccessToAccountsWithType:facebookAccountType options:options completion:^(BOOL granted, NSError *e)
-//    {
-//          if (granted)
-//          {
-//              NSArray *accounts = [accountStore accountsWithAccountType:facebookAccountType];
-//              ACAccount*    facebookAccount = [accounts lastObject];
-//
-//              ACAccountCredential*  fbCredential = [facebookAccount credential];
-//              NSString* accessToken = [fbCredential oauthToken];
-//              NSLog(@"Facebook Access Token: %@", accessToken);
-//
-//              RKManagedObjectRequestOperation* requestOperation;
-//              if(accessToken)
-//              {
-//                  requestOperation = [[RKObjectManager sharedManager]
-//                                      appropriateObjectRequestOperationWithObject:nil
-//                                      method:RKRequestMethodPOST
-//                                      path:@"/api/login/facebook"
-//                                      parameters:@{@"facebook_access_token": accessToken}];
-//              }
-//              
-//              [requestOperation setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation,
-//                                                                RKMappingResult *mappingResult)
-//               {
-//                   RKLogInfo(@"Login with User: %@", mappingResult.array);
-//                   [self didLogin];
-////                  [VSequenceManager loadSequenceCategories];
-//               } failure:^(RKObjectRequestOperation *operation, NSError *error)
-//               {
-//                   RKLogError(@"Operation failed with error: %@", error);
-//                   [self didFailToLogIn];
-//               }];
-//              
-//              [requestOperation start];
-//          }
-//    }];
+    ACAccountStore * const accountStore = [ACAccountStore new];
+    ACAccountType * const accountType = [accountStore accountTypeWithAccountTypeIdentifier:ACAccountTypeIdentifierFacebook];
+    
+    [accountStore requestAccessToAccountsWithType:accountType
+                                          options:@{
+                                                    ACFacebookAppIdKey: @"1374328719478033"
+                                                    }
+                                       completion:^(BOOL granted, NSError *error) {
+                                           if (!granted)
+                                           {
+                                               switch (error.code)
+                                               {
+                                                   case ACErrorAccountNotFound:
+                                                   {
+                                                       dispatch_async(dispatch_get_main_queue(), ^
+                                                       {
+                                                           SLComposeViewController *composeViewController = [SLComposeViewController composeViewControllerForServiceType:SLServiceTypeFacebook];
+                                                           [self presentViewController:composeViewController animated:NO completion:^{
+                                                               [composeViewController dismissViewControllerAnimated:NO completion:nil];
+                                                           }];
+                                                       });
+                                                       break;
+                                                   }
+                                                   default:
+                                                   {
+                                                       [[[UIAlertView alloc] initWithTitle:@"D:" message:error.localizedFailureReason delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil] show];
+                                                       break;
+                                                   }
+                                               }
+                                               return;
+                                           }
+                                           else {
+                                               SuccessBlock success = ^(NSArray* objects) {
+                                                   [objects firstObject];
+                                               };
+                                               FailBlock failed = ^(NSError* error) {
+                                                   VLog(@"Error in FB Login: %@", error);
+                                               };
+                                               
+                                               [[[VObjectManager sharedManager]
+                                                 loginToFacebookWithSuccessBlock:success
+                                                                       failBlock:failed] start];
+                                           }
+                                       }];
 }
 
 - (IBAction)twitterClicked:(id)sender

@@ -8,6 +8,21 @@
 
 #import "RKObjectManager.h"
 
+/*! Block that executes when the API succeeds. 
+ *  Block is given NSArray of objects RestKit created from response. */
+typedef void (^SuccessBlock) (NSArray*);
+
+/*! Block that executes when the API fails.
+ * Block is given NSError* that RestKit returned. */
+typedef void (^FailBlock) (NSError*);
+/*! Block that will be given Pagination information from API Response.
+ *  Block is given NSUInteger for page and NSUInteger for totalPages
+ *  NOTE: VObjectManager does not keep track of Pagination Logic.*/
+typedef void (^PaginationBlock) (NSUInteger, NSUInteger);
+
+
+typedef float (^MyBlockType)(float, float);
+
 @class VUser;
 @class VSequence;
 typedef NS_ENUM(NSUInteger, VObjectManagerSequenceCategoryType){
@@ -24,11 +39,18 @@ typedef NS_ENUM(NSUInteger, VObjectManagerSequenceStatusType){
 
 @interface VObjectManager : RKObjectManager
 
+/*! Sets up [VObjectManager sharedManager] and declares RK entities and descriptors
+ */
 + (void)setupObjectManager;
 
 @end
 
 @interface VObjectManager (Login)
+
+
+
+- (RKManagedObjectRequestOperation *)loginToFacebookWithSuccessBlock:(SuccessBlock)success
+                                                           failBlock:(FailBlock)failed;
 
 - (RKManagedObjectRequestOperation *)loginToVictoriousWithEmail:(NSString *)email password:(NSString *)password
                                                           block:(void(^)(VUser *user, NSError *error))block;
