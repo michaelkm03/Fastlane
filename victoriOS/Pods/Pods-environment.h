@@ -30,6 +30,12 @@
 #define COCOAPODS_VERSION_MINOR_ISO8601DateFormatterValueTransformer 5
 #define COCOAPODS_VERSION_PATCH_ISO8601DateFormatterValueTransformer 0
 
+// REFrostedViewController
+#define COCOAPODS_POD_AVAILABLE_REFrostedViewController
+#define COCOAPODS_VERSION_MAJOR_REFrostedViewController 2
+#define COCOAPODS_VERSION_MINOR_REFrostedViewController 3
+#define COCOAPODS_VERSION_PATCH_REFrostedViewController 2
+
 // RKValueTransformers
 #define COCOAPODS_POD_AVAILABLE_RKValueTransformers
 #define COCOAPODS_VERSION_MAJOR_RKValueTransformers 1
