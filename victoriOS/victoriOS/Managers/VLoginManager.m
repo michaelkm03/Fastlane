@@ -68,19 +68,12 @@
 
 + (RKManagedObjectRequestOperation *)loginToVictoriousWithEmail:(NSString*)email password:(NSString*)password block:(void(^)(NSArray *categories, NSError *error))block
 {
-
-    // TODO: return error to block
-    //    if ([email isEmpty] || [password isEmpty])
-    //    {
-    //        VLog(@"Invalid parameters in api/login");
-    //        return;
-    //    }
-
     RKManagedObjectRequestOperation *requestOperation =
     [[RKObjectManager sharedManager]
      appropriateObjectRequestOperationWithObject:nil
      method:RKRequestMethodPOST path:@"/api/login"
-     parameters:@{@"email": email, @"password": password}];
+     parameters:@{@"email": email ?: [NSNull null],
+                  @"password": password ?: [NSNull null]}];
 
     [requestOperation setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation,
                                                       RKMappingResult *mappingResult)
@@ -104,24 +97,15 @@
                                                            modifyType:(NSString*)modifyType
                                                                 block:(void(^)(NSArray *categories, NSError *error))block
 {
-
-    // TODO: return error to block
-//    if ([email isEmpty] ||
-//        [password isEmpty] ||
-//        [name isEmpty] ||
-//        [modifyType isEmpty])
-//    {
-//        VLog(@"Invalid parameters in api/account/%@", modifyType);
-//        return;
-//    }
-
     NSString *path = [NSString stringWithFormat:@"/api/account/%@", modifyType];
 
     RKManagedObjectRequestOperation* requestOperation =
     [[RKObjectManager sharedManager]
      appropriateObjectRequestOperationWithObject:nil
      method:RKRequestMethodPOST path:path
-     parameters:@{@"email" : email, @"password" : password, @"name" : name}];
+     parameters:@{@"email" : email ?: [NSNull null],
+                  @"password" : password ?: [NSNull null],
+                  @"name" : name ?: [NSNull null]}];
 
     [requestOperation setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation,
                                                       RKMappingResult *mappingResult)

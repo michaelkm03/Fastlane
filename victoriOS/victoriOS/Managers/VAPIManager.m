@@ -50,35 +50,34 @@
     // Configure a managed object cache to ensure we do not create duplicate objects
     managedObjectStore.managedObjectCache = [[RKInMemoryManagedObjectCache alloc] initWithManagedObjectContext:managedObjectStore.persistentStoreManagedObjectContext];
 
-    [self declareDescriptors];
+    [[RKObjectManager sharedManager] addResponseDescriptorsFromArray:[self descriptors]];
 
     //This will allow us to call this manager with [RKObjectManager sharedManager]
     [RKObjectManager setSharedManager:manager];
 }
 
-+ (void)declareDescriptors
++ (NSArray *)descriptors
 {
-
     //Should one of our requests to get data fail, RestKit will use this mapping and send us an NSError object with the error message of the response as the string.
-    RKObjectMapping *errorMapping = [RKObjectMapping mappingForClass:[RKErrorMessage class]];
-    [errorMapping addPropertyMapping:
-     [RKAttributeMapping attributeMappingFromKeyPath:nil toKeyPath:@"errorMessage"]];
-    RKResponseDescriptor *errorDescriptor = [RKResponseDescriptor
-                                             responseDescriptorWithMapping:errorMapping
-                                             method:RKRequestMethodAny
-                                             pathPattern:nil
-                                             keyPath:@"message"
-                                             statusCodes:RKStatusCodeIndexSetForClass(RKStatusCodeClassClientError)];
+    NSMutableIndexSet *statusCodes = [RKStatusCodeIndexSetForClass(RKStatusCodeClassClientError) mutableCopy];
+    [statusCodes addIndexes:RKStatusCodeIndexSetForClass(RKStatusCodeClassSuccessful)];
 
-    [[RKObjectManager sharedManager] addResponseDescriptorsFromArray:@[errorDescriptor,
-                                                                       [VUser descriptor],
-                                                                       [VCategory descriptor],
-                                                                       [VSequence sequenceListDescriptor],
-                                                                       [VSequence sequenceFullDataDescriptor],
-                                                                       [VComment descriptor],
-                                                                       [VComment getAllDescriptor],
-                                                                       [VStatSequence gamesPlayedDescriptor],
-                                                                       [VStatSequence gameStatsDescriptor]]];
+    RKObjectMapping *errorMapping = [RKObjectMapping mappingForClass:[RKErrorMessage class]];
+    [errorMapping addPropertyMapping:[RKAttributeMapping attributeMappingFromKeyPath:@"message"
+                                                                           toKeyPath:@"errorMessage"]];
+    RKResponseDescriptor *errorDescriptor =
+    [RKResponseDescriptor responseDescriptorWithMapping:errorMapping method:RKRequestMethodAny
+                                            pathPattern:nil keyPath:nil statusCodes:statusCodes];
+
+    return @[errorDescriptor,
+             [VUser descriptor],
+             [VCategory descriptor],
+             [VSequence sequenceListDescriptor],
+             [VSequence sequenceFullDataDescriptor],
+             [VComment descriptor],
+             [VComment getAllDescriptor],
+             [VStatSequence gamesPlayedDescriptor],
+             [VStatSequence gameStatsDescriptor]];
 }
 
 @end
