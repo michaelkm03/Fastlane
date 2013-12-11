@@ -13,7 +13,7 @@
 
 @implementation VObjectManager (Sequence)
 
-+ (RKManagedObjectRequestOperation *)loadSequenceWithId:(NSNumber *)sequenceId withBlock:(void(^)(VSequence *sequence, NSError *error))block{
+- (RKManagedObjectRequestOperation *)loadSequenceWithId:(NSNumber *)sequenceId withBlock:(void(^)(VSequence *sequence, NSError *error))block{
     NSString *path = [NSString stringWithFormat:@"/api/sequence/item/%@", sequenceId];
     return [self GET:path parameters:nil block:^(NSUInteger page, NSUInteger perPage, id result, NSError *error){
         if(block){
@@ -22,7 +22,7 @@
     }];
 }
 
-+ (RKManagedObjectRequestOperation *)loadSequenceCategories:(VObjectManagerSequenceCategoryType)type withBlock:(void(^)(NSArray *categories, NSError *error))block
+- (RKManagedObjectRequestOperation *)loadSequenceCategories:(VObjectManagerSequenceCategoryType)type withBlock:(void(^)(NSArray *categories, NSError *error))block
 {
     NSString *path = @"/api/sequence/categories";
     switch(type){
@@ -42,7 +42,7 @@
     }];
 }
 
-+ (RKManagedObjectRequestOperation *)loadSequencesForStatus:(VObjectManagerSequenceStatusType)type page:(NSUInteger)page perPage:(NSUInteger)perPage withBlock:(void(^)(NSUInteger page, NSUInteger perPage, NSArray *sequences, NSError *error))block{
+- (RKManagedObjectRequestOperation *)loadSequencesForStatus:(VObjectManagerSequenceStatusType)type page:(NSUInteger)page perPage:(NSUInteger)perPage withBlock:(void(^)(NSUInteger page, NSUInteger perPage, NSArray *sequences, NSError *error))block{
     NSString *path = @"/api/sequence/list";
     switch(type){
         case VObjectManagerSequenceStatusTypeNone:
@@ -59,7 +59,7 @@
     return [self GET:path parameters:nil block:block];
 }
 
-+ (RKManagedObjectRequestOperation *)loadSequencesForCategory:(VObjectManagerSequenceCategoryType)categoryType status:(VObjectManagerSequenceStatusType)statusType page:(NSUInteger)page perPage:(NSUInteger)perPage withBlock:(void(^)(NSUInteger page, NSUInteger perPage, NSArray *sequences, NSError *error))block{
+- (RKManagedObjectRequestOperation *)loadSequencesForCategory:(VObjectManagerSequenceCategoryType)categoryType status:(VObjectManagerSequenceStatusType)statusType page:(NSUInteger)page perPage:(NSUInteger)perPage withBlock:(void(^)(NSUInteger page, NSUInteger perPage, NSArray *sequences, NSError *error))block{
     NSString *path = @"/api/sequence/list_by_category";
 
     switch(categoryType){
@@ -90,7 +90,7 @@
     return [self GET:path parameters:nil block:block];
 }
 
-//+ (RKManagedObjectRequestOperation *)loadSequenceMaxScoreWithId:(NSNumber *)sequenceId withBlock:(void(^)(VSequence *sequence, NSError *error))block{
+//- (RKManagedObjectRequestOperation *)loadSequenceMaxScoreWithId:(NSNumber *)sequenceId withBlock:(void(^)(VSequence *sequence, NSError *error))block{
 //    NSString *path = [NSString stringWithFormat:@"/api/sequence/max_score/%@", sequenceId];
 //    return [self GET:path parameters:nil block:^(NSUInteger page, NSUInteger perPage, NSArray *results, NSError *error){
 //        if(block){

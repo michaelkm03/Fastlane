@@ -30,23 +30,23 @@ typedef NS_ENUM(NSUInteger, VObjectManagerSequenceStatusType){
 
 @interface VObjectManager (Login)
 
-+ (RKManagedObjectRequestOperation *)loginToVictoriousWithEmail:(NSString *)email password:(NSString *)password
+- (RKManagedObjectRequestOperation *)loginToVictoriousWithEmail:(NSString *)email password:(NSString *)password
                                                           block:(void(^)(VUser *user, NSError *error))block;
-+ (RKManagedObjectRequestOperation *)createVictoriousAccountWithEmail:(NSString *)email password:(NSString *)password
+- (RKManagedObjectRequestOperation *)createVictoriousAccountWithEmail:(NSString *)email password:(NSString *)password
                                                                  name:(NSString *)name block:(void(^)(VUser *user, NSError *error))block;
-+ (RKManagedObjectRequestOperation *)updateVictoriousAccountWithEmail:(NSString *)email password:(NSString *)password
+- (RKManagedObjectRequestOperation *)updateVictoriousAccountWithEmail:(NSString *)email password:(NSString *)password
                                                                  name:(NSString *)name block:(void(^)(VUser *user, NSError *error))block;
 
 @end
 
 @interface VObjectManager (Sequence)
 
-+ (RKManagedObjectRequestOperation *)loadSequenceWithId:(NSNumber *)sequenceId withBlock:(void(^)(VSequence *sequence, NSError *error))block;
-+ (RKManagedObjectRequestOperation *)loadSequenceCategories:(VObjectManagerSequenceCategoryType)type
+- (RKManagedObjectRequestOperation *)loadSequenceWithId:(NSNumber *)sequenceId withBlock:(void(^)(VSequence *sequence, NSError *error))block;
+- (RKManagedObjectRequestOperation *)loadSequenceCategories:(VObjectManagerSequenceCategoryType)type
                                                   withBlock:(void(^)(NSArray *categories, NSError *error))block;
-+ (RKManagedObjectRequestOperation *)loadSequencesForStatus:(VObjectManagerSequenceStatusType)type page:(NSUInteger)page perPage:(NSUInteger)perPage
+- (RKManagedObjectRequestOperation *)loadSequencesForStatus:(VObjectManagerSequenceStatusType)type page:(NSUInteger)page perPage:(NSUInteger)perPage
                                                  withBlock:(void(^)(NSUInteger page, NSUInteger perPage, NSArray *sequences, NSError *error))block;
-+ (RKManagedObjectRequestOperation *)loadSequencesForCategory:(VObjectManagerSequenceCategoryType)categoryType
+- (RKManagedObjectRequestOperation *)loadSequencesForCategory:(VObjectManagerSequenceCategoryType)categoryType
                                                       status:(VObjectManagerSequenceStatusType)statusType
                                                         page:(NSUInteger)page perPage:(NSUInteger)perPage
                                                    withBlock:(void(^)(NSUInteger page, NSUInteger perPage, NSArray *sequences, NSError *error))block;

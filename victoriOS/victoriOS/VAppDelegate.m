@@ -24,7 +24,7 @@
 {
     [VObjectManager setupObjectManager];
 
-    [[VObjectManager createVictoriousAccountWithEmail:@"aa@a.com" password:@"a" name:@"a" block:^(VUser *user, NSError *error){
+    [[[VObjectManager sharedManager] createVictoriousAccountWithEmail:@"ab@a.com" password:@"a" name:@"a" block:^(VUser *user, NSError *error){
         NSLog(@"%@", user);
         NSLog(@"%@", error);
     }] start];

@@ -13,7 +13,7 @@
 
 #pragma mark - Facebook
 
-+ (void)loginToFacebook
+- (void)loginToFacebook
 {
 //    @try {
 //        [FBSession openActiveSessionWithReadPermissions:@[ @"basic_info", @"email" ]
@@ -35,7 +35,7 @@
 
 }
 
-+ (void)launchLoginToFBCall
+- (void)launchLoginToFBCall
 {
 //    NSString* token =[[[FBSession activeSession] accessTokenData] accessToken];
 //
@@ -63,7 +63,7 @@
 
 #pragma mark - Victorious
 
-+ (RKManagedObjectRequestOperation *)loginToVictoriousWithEmail:(NSString*)email password:(NSString*)password block:(void(^)(VUser *user, NSError *error))block
+- (RKManagedObjectRequestOperation *)loginToVictoriousWithEmail:(NSString*)email password:(NSString*)password block:(void(^)(VUser *user, NSError *error))block
 {
     NSDictionary *paramiters = @{@"email": email ?: [NSNull null], @"password": password ?: [NSNull null]};
     return [self POST:@"/api/login" parameters:paramiters block:^(NSUInteger page, NSUInteger perPage, NSArray *results, NSError *error){
@@ -77,7 +77,7 @@
     }];
 }
 
-+ (RKManagedObjectRequestOperation *)updateVictoriousAccountWithEmail:(NSString*)email password:(NSString*)password name:(NSString*)name block:(void(^)(VUser *user, NSError *error))block
+- (RKManagedObjectRequestOperation *)updateVictoriousAccountWithEmail:(NSString*)email password:(NSString*)password name:(NSString*)name block:(void(^)(VUser *user, NSError *error))block
 {
     NSDictionary *paramiters = @{@"email" : email ?: [NSNull null], @"password" : password ?: [NSNull null], @"name" : name ?: [NSNull null]};
     return [self POST:@"/api/account/update" parameters:paramiters block:^(NSUInteger page, NSUInteger perPage, NSArray *results, NSError *error){
@@ -91,7 +91,7 @@
     }];
 }
 
-+ (RKManagedObjectRequestOperation *)createVictoriousAccountWithEmail:(NSString*)email password:(NSString*)password name:(NSString*)name block:(void(^)(VUser *user, NSError *error))block
+- (RKManagedObjectRequestOperation *)createVictoriousAccountWithEmail:(NSString*)email password:(NSString*)password name:(NSString*)name block:(void(^)(VUser *user, NSError *error))block
 {
     NSDictionary *paramiters = @{@"email" : email ?: [NSNull null], @"password" : password ?: [NSNull null], @"name" : name ?: [NSNull null]};
     return [self POST:@"/api/account/create" parameters:paramiters block:^(NSUInteger page, NSUInteger perPage, NSArray *results, NSError *error){

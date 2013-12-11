@@ -47,13 +47,13 @@
     // Configure a managed object cache to ensure we do not create duplicate objects
     managedObjectStore.managedObjectCache = [[RKInMemoryManagedObjectCache alloc] initWithManagedObjectContext:managedObjectStore.persistentStoreManagedObjectContext];
 
-    [manager addResponseDescriptorsFromArray:[self descriptors]];
+    [manager addVictoriousDescriptors];
 
     //This will allow us to call this manager with [RKObjectManager sharedManager]
     [self setSharedManager:manager];
 }
 
-+ (NSArray *)descriptors
+- (void)addVictoriousDescriptors
 {
     //Should one of our requests to get data fail, RestKit will use this mapping and send us an NSError object with the error message of the response as the string.
     NSMutableIndexSet *statusCodes = [RKStatusCodeIndexSetForClass(RKStatusCodeClassClientError) mutableCopy];
@@ -67,7 +67,7 @@
     [RKResponseDescriptor responseDescriptorWithMapping:errorMapping method:RKRequestMethodAny
                                             pathPattern:nil keyPath:nil statusCodes:statusCodes];
 
-    return @[errorDescriptor,
+    [self addResponseDescriptorsFromArray: @[errorDescriptor,
              [VUser descriptor],
              [VCategory descriptor],
              [VSequence sequenceListDescriptor],
@@ -75,16 +75,16 @@
              [VComment descriptor],
              [VComment getAllDescriptor],
              [VStatSequence gamesPlayedDescriptor],
-             [VStatSequence gameStatsDescriptor]];
+             [VStatSequence gameStatsDescriptor]]];
 }
 
 #pragma mark - operation
 
-+ (RKManagedObjectRequestOperation *)requestMethod:(RKRequestMethod)method path:(NSString *)path parameters:(NSDictionary *)parameters block:(void(^)(NSUInteger page, NSUInteger perPage, NSArray *results, NSError *error))block
+- (RKManagedObjectRequestOperation *)requestMethod:(RKRequestMethod)method path:(NSString *)path parameters:(NSDictionary *)parameters block:(void(^)(NSUInteger page, NSUInteger perPage, NSArray *results, NSError *error))block
 {
     // TODO: return accurate page and perPage
     RKManagedObjectRequestOperation *requestOperation =
-    [[self sharedManager] appropriateObjectRequestOperationWithObject:nil method:method path:path parameters:parameters];
+    [self  appropriateObjectRequestOperationWithObject:nil method:method path:path parameters:parameters];
 
     [requestOperation setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult){
         if(block){
@@ -106,12 +106,12 @@
     return requestOperation;
 }
 
-+ (RKManagedObjectRequestOperation *)GET:(NSString *)path parameters:(NSDictionary *)parameters block:(void(^)(NSUInteger page, NSUInteger perPage, NSArray *results, NSError *error))block
+- (RKManagedObjectRequestOperation *)GET:(NSString *)path parameters:(NSDictionary *)parameters block:(void(^)(NSUInteger page, NSUInteger perPage, NSArray *results, NSError *error))block
 {
     return [self requestMethod:RKRequestMethodGET path:path parameters:parameters block:block];
 }
 
-+ (RKManagedObjectRequestOperation *)POST:(NSString *)path parameters:(NSDictionary *)parameters block:(void(^)(NSUInteger page, NSUInteger perPage, NSArray *results, NSError *error))block
+- (RKManagedObjectRequestOperation *)POST:(NSString *)path parameters:(NSDictionary *)parameters block:(void(^)(NSUInteger page, NSUInteger perPage, NSArray *results, NSError *error))block
 {
     return [self requestMethod:RKRequestMethodPOST path:path parameters:parameters block:block];
 }
