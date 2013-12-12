@@ -15,12 +15,14 @@
 
 
 - (RKManagedObjectRequestOperation *)GET:(NSString *)path
+                                  object:(id)object
                               parameters:(NSDictionary *)parameters
                             successBlock:(SuccessBlock)successBlock
                                failBlock:(FailBlock)failBlock
                          paginationBlock:(PaginationBlock)paginationBlock;
 
 - (RKManagedObjectRequestOperation *)POST:(NSString *)path
+                                   object:(id)object
                                parameters:(NSDictionary *)parameters
                              successBlock:(SuccessBlock)successBlock
                                 failBlock:(FailBlock)failBlock

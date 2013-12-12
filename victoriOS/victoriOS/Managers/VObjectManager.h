@@ -60,22 +60,25 @@ typedef NS_ENUM(NSUInteger, VObjectManagerSequenceStatusType){
                                                    successBlock:(SuccessBlock)success
                                                       failBlock:(FailBlock)fail;
 
-- (RKManagedObjectRequestOperation *)createToVictoriousWithEmail:(NSString *)email
-                                                       password:(NSString *)password
-                                                   successBlock:(SuccessBlock)success
-                                                      failBlock:(FailBlock)fail;
+- (RKManagedObjectRequestOperation *)createVictoriousWithEmail:(NSString *)email
+                                                      password:(NSString *)password
+                                                      username:(NSString *)username
+                                                  successBlock:(SuccessBlock)success
+                                                     failBlock:(FailBlock)fail;
 
-- (RKManagedObjectRequestOperation *)updateToVictoriousWithEmail:(NSString *)email
-                                                       password:(NSString *)password
-                                                   successBlock:(SuccessBlock)success
-                                                      failBlock:(FailBlock)fail;
+- (RKManagedObjectRequestOperation *)updateVictoriousWithEmail:(NSString *)email
+                                                      password:(NSString *)password
+                                                      username:(NSString *)username
+                                                  successBlock:(SuccessBlock)success
+                                                     failBlock:(FailBlock)fail;
 
+//- (RKManagedObjectRequestOperation *)logOutWithSuccessBlock:(SuccessBlock)success
+//                                                  failBlock:(FailBlock)failed;
 - (RKManagedObjectRequestOperation *)logout;
-
-- (RKManagedObjectRequestOperation *)createVictoriousAccountWithEmail:(NSString *)email password:(NSString *)password
-                                                                 name:(NSString *)name block:(void(^)(VUser *user, NSError *error))block;
-- (RKManagedObjectRequestOperation *)updateVictoriousAccountWithEmail:(NSString *)email password:(NSString *)password
-                                                                 name:(NSString *)name block:(void(^)(VUser *user, NSError *error))block;
+//
+//- (BOOL)isLoggedIn;
+//- (BOOL)isSuperUser;
+- (VUser *)loggedInUser;
 
 @end
 

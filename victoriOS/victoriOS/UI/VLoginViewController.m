@@ -85,7 +85,6 @@
 {
     UIAlertView*    alert   =   [[UIAlertView alloc] initWithTitle:@"Login Failed" message:error.localizedDescription delegate:self cancelButtonTitle:@"Understood" otherButtonTitles:nil];
     [alert show];
-    [self dismissViewControllerAnimated:YES completion:NULL];
 }
 
 - (void)didCancelLogin

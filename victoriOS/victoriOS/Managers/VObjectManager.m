@@ -127,6 +127,7 @@
 
 
 - (RKManagedObjectRequestOperation *)requestMethod:(RKRequestMethod)method
+                                            object:(id)object
                                               path:(NSString *)path
                                         parameters:(NSDictionary *)parameters
                                       successBlock:(SuccessBlock)successBlock
@@ -134,7 +135,7 @@
                                    paginationBlock:(PaginationBlock)paginationBlock
 {
     RKManagedObjectRequestOperation *requestOperation =
-    [self  appropriateObjectRequestOperationWithObject:nil method:method path:path parameters:parameters];
+    [self  appropriateObjectRequestOperationWithObject:object method:method path:path parameters:parameters];
     
     [requestOperation setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult)
      {
@@ -164,35 +165,38 @@
 }
 
 - (RKManagedObjectRequestOperation *)GET:(NSString *)path
+                                  object:(id)object
                               parameters:(NSDictionary *)parameters
                             successBlock:(SuccessBlock)successBlock
                                failBlock:(FailBlock)failBlock
                          paginationBlock:(PaginationBlock)paginationBlock
 {
     return [self requestMethod:RKRequestMethodGET
-                   path:path
-             parameters:parameters
-           successBlock:successBlock
-              failBlock:failBlock
-        paginationBlock:paginationBlock];
+                        object:object
+                          path:path
+                    parameters:parameters
+                  successBlock:successBlock
+                     failBlock:failBlock
+               paginationBlock:paginationBlock];
 }
 
 - (RKManagedObjectRequestOperation *)POST:(NSString *)path
-                              parameters:(NSDictionary *)parameters
-                            successBlock:(SuccessBlock)successBlock
-                               failBlock:(FailBlock)failBlock
-                         paginationBlock:(PaginationBlock)paginationBlock
+                                   object:(id)object
+                               parameters:(NSDictionary *)parameters
+                             successBlock:(SuccessBlock)successBlock
+                                failBlock:(FailBlock)failBlock
+                          paginationBlock:(PaginationBlock)paginationBlock
 {
     return [self requestMethod:RKRequestMethodPOST
-                   path:path
-             parameters:parameters
-           successBlock:successBlock
-              failBlock:failBlock
-        paginationBlock:paginationBlock];
+                        object:object
+                          path:path
+                    parameters:parameters
+                  successBlock:successBlock
+                     failBlock:failBlock
+               paginationBlock:paginationBlock];
 }
 
 #pragma mark - Subclass
-
 - (id)appropriateObjectRequestOperationWithObject:(id)object
                                            method:(RKRequestMethod)method
                                              path:(NSString *)path
