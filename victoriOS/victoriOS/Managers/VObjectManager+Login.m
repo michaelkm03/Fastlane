@@ -7,6 +7,7 @@
 //
 
 #import "VObjectManager+Private.h"
+#import "VObjectManager+Login.h"
 #import "VUser+RestKit.h"
 
 @implementation VObjectManager (Login)

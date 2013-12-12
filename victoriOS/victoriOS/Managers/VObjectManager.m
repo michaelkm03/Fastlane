@@ -7,13 +7,15 @@
 //
 
 #import "VObjectManager.h"
+#import "VObjectManager+Login.h"
+
 #import "NSString+SHA1Digest.h"
+#import "VErrorMessage.h"
+
 #import "VUser+RestKit.h"
 #import "VCategory+RestKit.h"
 #import "VSequence+RestKit.h"
 #import "VStatSequence+RestKit.h"
-#import "VLoginViewController.h"
-#import "VErrorMessage.h"
 
 
 @implementation VObjectManager

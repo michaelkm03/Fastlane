@@ -7,40 +7,163 @@
 //
 
 #import "VObjectManager+Private.h"
+
 #import "VUser+RestKit.h"
 #import "VCategory+RestKit.h"
 #import "VSequence+RestKit.h"
+#import "VStatSequence+RestKit.h"
 
 @implementation VObjectManager (Sequence)
 
-- (RKManagedObjectRequestOperation *)loadSequenceWithId:(NSNumber *)sequenceId withBlock:(void(^)(VSequence *sequence, NSError *error))block{
-    NSString *path = [NSString stringWithFormat:@"/api/sequence/item/%@", sequenceId];
-    return [self GET:path parameters:nil block:^(NSUInteger page, NSUInteger perPage, id result, NSError *error){
-        if(block){
-            block([(NSArray *)result firstObject], error);
-        }
-    }];
+#pragma mark - Sequences
+
+- (RKManagedObjectRequestOperation *)loadSequenceCategoriesWithSuccessBlock:(SuccessBlock)success
+                                                                  failBlock:(FailBlock)fail
+{
+    return [self GET:@"/api/sequence/categories"
+               object:nil
+           parameters:nil
+         successBlock:success
+            failBlock:fail
+      paginationBlock:nil];
 }
 
-- (RKManagedObjectRequestOperation *)loadSequenceCategories:(VObjectManagerSequenceCategoryType)type withBlock:(void(^)(NSArray *categories, NSError *error))block
+- (RKManagedObjectRequestOperation *)loadSequencesForCategory:(VCategory*)category
+                                                 successBlock:(SuccessBlock)success
+                                                    failBlock:(FailBlock)fail
 {
-    NSString *path = @"/api/sequence/categories";
-    switch(type){
-        case VObjectManagerSequenceCategoryTypeAll:
-            break;
-        case VObjectManagerSequenceCategoryTypeGeneral:
-            path = [path stringByAppendingPathComponent:@"general"];
-            break;
-        case VObjectManagerSequenceCategoryTypeFeatured:
-            path = [path stringByAppendingPathComponent:@"featured"];
-            break;
-    }
-    return [self GET:path parameters:nil block:^(NSUInteger page, NSUInteger perPage, NSArray *results, NSError *error){
-        if(block){
-            block(results, error);
-        }
-    }];
+    NSString* path = [NSString stringWithFormat:@"/api/sequence/list_by_category/%@", category.name];
+    
+    return [self GET:path
+              object:nil
+          parameters:nil
+        successBlock:success
+           failBlock:fail
+     paginationBlock:nil];
 }
+
+- (RKManagedObjectRequestOperation *)loadFullDataForSequence:(VSequence*)sequence
+                                                successBlock:(SuccessBlock)success
+                                                   failBlock:(FailBlock)fail
+{
+    NSString* path = [NSString stringWithFormat:@"/api/sequence/item/%@", sequence.id];
+    
+    return [self GET:path
+              object:sequence
+          parameters:nil
+        successBlock:success
+           failBlock:fail
+     paginationBlock:nil];
+}
+
+- (RKManagedObjectRequestOperation *)loadCommentsForSequence:(VSequence*)sequence
+                                                successBlock:(SuccessBlock)success
+                                                   failBlock:(FailBlock)fail
+{
+    NSString* path = [NSString stringWithFormat:@"/api/comment/item/%@", sequence.id];
+    
+    __block VSequence* commentOwner = sequence; //Keep the sequence around until the block gets called
+    
+    SuccessBlock fullSuccessBlock = ^(NSArray* comments)
+    {
+        for (VComment* comment in comments)
+        {
+            [commentOwner addCommentsObject:(VComment*)[commentOwner.managedObjectContext
+                                                        objectWithID:[comment objectID]]];
+        }
+        success(comments);
+    };
+    
+    return [self GET:path
+              object:nil
+          parameters:nil
+        successBlock:fullSuccessBlock
+           failBlock:fail
+     paginationBlock:nil];
+}
+
+- (void)testSequenceData
+{
+    VSequence* first = [[VSequence findAllObjectsWithSortKey:@"id"] firstObject];
+    for (VNode* node in first.nodes)
+    {
+        VLog(@"%@", node);
+        for(VAsset* asset in node.assets)
+            VLog(@"%@", asset);
+        
+        for (VInteraction* interaction in node.interactions)
+            VLog(@"%@", interaction);
+    }
+    for (VComment* comment in first.comments)
+        VLog(@"%@", comment);
+}
+
+#pragma mark - StatSequence Methods
+
+- (RKManagedObjectRequestOperation *)loadStatSequencesForUser:(VUser*)user
+                                                 successBlock:(SuccessBlock)success
+                                                    failBlock:(FailBlock)fail
+{
+    NSString* path = [NSString stringWithFormat:@"/api/userinfo/games_played/%@", user.id];
+    
+    __block VUser* statSequenceOwner = user;// keep the user in memory until we get back from the block.
+    
+    SuccessBlock fullSuccessBlock = ^(NSArray* statSequences)
+    {
+        for (VStatSequence* statSequence in statSequences)
+        {
+            [statSequenceOwner addStat_sequencesObject:(VStatSequence*)[statSequenceOwner.managedObjectContext
+                                                        objectWithID:[statSequence objectID]]];
+        }
+        success(statSequences);
+    };
+    
+    return [self GET:path
+              object:nil
+          parameters:nil
+        successBlock:fullSuccessBlock
+           failBlock:fail
+     paginationBlock:nil];
+}
+
+- (RKManagedObjectRequestOperation *)loadFullDataForStatSequence:(VStatSequence*)statSequence
+                                                    successBlock:(SuccessBlock)success
+                                                       failBlock:(FailBlock)fail
+{
+    NSString* path = [NSString stringWithFormat:@"/api/userinfo/game_stats/%@", statSequence.id];
+    
+    return [self GET:path
+              object:statSequence
+          parameters:nil
+        successBlock:success
+           failBlock:fail
+     paginationBlock:nil];
+}
+
+#pragma mark - StatSequence Creation
+
+- (RKManagedObjectRequestOperation *)createStatSequenceForSequence:(VSequence*)sequence
+                                                    successBlock:(SuccessBlock)success
+                                                       failBlock:(FailBlock)fail
+{
+    return [self GET:@"api/game/create"
+              object:nil
+          parameters:@{ @"sequence_id" : sequence.id}
+        successBlock:success
+           failBlock:fail
+     paginationBlock:nil];
+}
+
++ (void)addStatInterationToStatSequence:(VStatSequence*)sequence
+{
+    
+}
+
++ (void)addStatAnswerToStatInteraction:(VStatInteraction*)interaction
+{
+    
+}
+
 
 - (RKManagedObjectRequestOperation *)loadSequencesForStatus:(VObjectManagerSequenceStatusType)type page:(NSUInteger)page perPage:(NSUInteger)perPage withBlock:(void(^)(NSUInteger page, NSUInteger perPage, NSArray *sequences, NSError *error))block{
     NSString *path = @"/api/sequence/list";

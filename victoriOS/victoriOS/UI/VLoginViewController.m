@@ -8,7 +8,7 @@
 
 #import "VLoginViewController.h"
 #import "VSequenceManager.h"
-#import "VObjectManager.h"
+#import "VObjectManager+Login.h"
 
 @import Accounts;
 @import Social;
@@ -77,7 +77,6 @@
 
 - (void)didLoginWithUser:(VUser*)mainUser
 {
-    BOOL auth = [VObjectManager sharedManager].authorized;
     [self dismissViewControllerAnimated:YES completion:NULL];
 }
 

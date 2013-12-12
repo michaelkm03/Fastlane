@@ -11,7 +11,7 @@
 #import "VStreamsTableViewController.h"
 #import "VForumsViewController.h"
 #import "VLoginViewController.h"
-#import "VObjectManager.h"
+#import "VObjectManager+Login.h"
 
 @implementation VMenuController
 

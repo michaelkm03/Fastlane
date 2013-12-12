@@ -135,6 +135,8 @@
 		BE5AC2C4184E733800121126 /* NSString+VParseHelp.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSString+VParseHelp.m"; path = "Categories/NSString+VParseHelp.m"; sourceTree = "<group>"; };
 		BE7A39B8185A52D70009000C /* VErrorMessage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VErrorMessage.h; path = Managers/VErrorMessage.h; sourceTree = "<group>"; };
 		BE7A39B9185A52D70009000C /* VErrorMessage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VErrorMessage.m; path = Managers/VErrorMessage.m; sourceTree = "<group>"; };
+		BE7A39BB185A7C7D0009000C /* VObjectManager+Login.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "VObjectManager+Login.h"; path = "Managers/VObjectManager+Login.h"; sourceTree = "<group>"; };
+		BE7A39BE185A7D110009000C /* VObjectManager+Sequence.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "VObjectManager+Sequence.h"; path = "Managers/VObjectManager+Sequence.h"; sourceTree = "<group>"; };
 		BEA4F2251843F097001F5B15 /* victoriOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = victoriOS.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		BEA4F2281843F097001F5B15 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		BEA4F22A1843F097001F5B15 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -345,7 +347,9 @@
 				BE4E7552184955BE00344677 /* VObjectManager.h */,
 				BE4E7553184955BE00344677 /* VObjectManager.m */,
 				838F41F71857F63900882F1D /* VObjectManager+Private.h */,
+				BE7A39BB185A7C7D0009000C /* VObjectManager+Login.h */,
 				838F41E91857F26900882F1D /* VObjectManager+Login.m */,
+				BE7A39BE185A7D110009000C /* VObjectManager+Sequence.h */,
 				83A41917185803A400CBC150 /* VObjectManager+Sequence.m */,
 				BE4E7549184942F100344677 /* VSequenceManager.h */,
 				BE4E754A184942F100344677 /* VSequenceManager.m */,
