@@ -13,6 +13,8 @@
 #import "VSequence+RestKit.h"
 #import "VStatSequence+RestKit.h"
 #import "VLoginViewController.h"
+#import "VErrorMessage.h"
+
 
 @implementation VObjectManager
 
@@ -60,15 +62,32 @@
     NSMutableIndexSet *statusCodes = [RKStatusCodeIndexSetForClass(RKStatusCodeClassClientError) mutableCopy];
     [statusCodes addIndexes:RKStatusCodeIndexSetForClass(RKStatusCodeClassSuccessful)];
 
-    // TODO: store more of the error information in a RKObjectMapping subclass, like the error code
+//    // TODO: store more of the error information in a RKObjectMapping subclass, like the error code
+//    RKObjectMapping *errorMapping = [RKObjectMapping mappingForClass:[VErrorMessage class]];
+//    [errorMapping addPropertyMapping:[RKAttributeMapping attributeMappingFromKeyPath:@"message"
+//                                                                           toKeyPath:@"errorMessage"]];
+//    
+//    RKResponseDescriptor *errorDescriptor =
+//    [RKResponseDescriptor responseDescriptorWithMapping:errorMapping method:RKRequestMethodAny
+//                                            pathPattern:nil keyPath:nil statusCodes:statusCodes];
+//    
     RKObjectMapping *errorMapping = [RKObjectMapping mappingForClass:[RKErrorMessage class]];
-    [errorMapping addPropertyMapping:[RKAttributeMapping attributeMappingFromKeyPath:@"message"
-                                                                           toKeyPath:@"errorMessage"]];
-    RKResponseDescriptor *errorDescriptor =
-    [RKResponseDescriptor responseDescriptorWithMapping:errorMapping method:RKRequestMethodAny
-                                            pathPattern:nil keyPath:nil statusCodes:statusCodes];
+    [errorMapping addPropertyMapping:
+    [RKAttributeMapping attributeMappingFromKeyPath:nil toKeyPath:@"errorMessage"]];
+    RKResponseDescriptor *errorDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:errorMapping
+                                                                                         method:RKRequestMethodAny
+                                                                                    pathPattern:nil
+                                                                                        keyPath:@"error"
+                                                                                    statusCodes:RKStatusCodeIndexSetForClass(RKStatusCodeClassClientError)];
+    
+    RKResponseDescriptor *verrorDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:[VErrorMessage objectMapping]
+                                                                                          method:RKRequestMethodAny
+                                                                                     pathPattern:nil
+                                                                                         keyPath:nil
+                                                                                     statusCodes:RKStatusCodeIndexSetForClass(RKStatusCodeClassSuccessful)];
 
     [self addResponseDescriptorsFromArray: @[errorDescriptor,
+                                             verrorDescriptor,
              [VUser descriptor],
              [VCategory descriptor],
              [VSequence sequenceListDescriptor],
@@ -127,6 +146,7 @@
 
 
 - (RKManagedObjectRequestOperation *)requestMethod:(RKRequestMethod)method
+                                            object:(id)object
                                               path:(NSString *)path
                                         parameters:(NSDictionary *)parameters
                                       successBlock:(SuccessBlock)successBlock
@@ -134,24 +154,36 @@
                                    paginationBlock:(PaginationBlock)paginationBlock
 {
     RKManagedObjectRequestOperation *requestOperation =
-    [self  appropriateObjectRequestOperationWithObject:nil method:method path:path parameters:parameters];
+    [self  appropriateObjectRequestOperationWithObject:object method:method path:path parameters:parameters];
     
     [requestOperation setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult)
      {
-         if([[mappingResult firstObject] isKindOfClass:[RKErrorMessage class]])
+         VErrorMessage *errorMessage;
+         NSArray* mappedObjects;
+         if([[mappingResult firstObject] isKindOfClass:[VErrorMessage class]])
          {
-             RKErrorMessage *errorMessage = (RKErrorMessage *)[mappingResult firstObject];
-             // TODO: create better error object
-             if (failBlock)
-                 failBlock([NSError errorWithDomain:@"com.getvictorious.victoriOS" code:0
-                                           userInfo:@{NSLocalizedDescriptionKey: errorMessage.errorMessage}]);
-         } else
+             errorMessage = (VErrorMessage *)[mappingResult firstObject];
+             
+             //mappedObjects should not contain the VErrorMessage.
+             NSArray* allObjects = mappingResult.array;
+             NSRange range = NSMakeRange(1, [allObjects count]-1);
+             mappedObjects = [allObjects subarrayWithRange:range];
+         }
+         else
+         {
+             mappedObjects = mappingResult.array;
+         }
+         
+         if (errorMessage.error && failBlock)
+             failBlock([NSError errorWithDomain:@"com.getvictorious.victoriOS" code:errorMessage.error
+                                       userInfo:@{NSLocalizedDescriptionKey: errorMessage.message}]);
+         else
          {
              if (successBlock)
-                 successBlock(mappingResult.array);
-
+                 successBlock(mappedObjects);
+         
              if(paginationBlock)
-                 paginationBlock(0, 0); //TODO: pass in real page / totalPages
+                 paginationBlock(errorMessage.page, errorMessage.total_pages); //TODO: pass in real page / totalPages
          }
          
      } failure:^(RKObjectRequestOperation *operation, NSError *error)
@@ -164,35 +196,38 @@
 }
 
 - (RKManagedObjectRequestOperation *)GET:(NSString *)path
+                                  object:(id)object
                               parameters:(NSDictionary *)parameters
                             successBlock:(SuccessBlock)successBlock
                                failBlock:(FailBlock)failBlock
                          paginationBlock:(PaginationBlock)paginationBlock
 {
     return [self requestMethod:RKRequestMethodGET
-                   path:path
-             parameters:parameters
-           successBlock:successBlock
-              failBlock:failBlock
-        paginationBlock:paginationBlock];
+                        object:object
+                          path:path
+                    parameters:parameters
+                  successBlock:successBlock
+                     failBlock:failBlock
+               paginationBlock:paginationBlock];
 }
 
 - (RKManagedObjectRequestOperation *)POST:(NSString *)path
-                              parameters:(NSDictionary *)parameters
-                            successBlock:(SuccessBlock)successBlock
-                               failBlock:(FailBlock)failBlock
-                         paginationBlock:(PaginationBlock)paginationBlock
+                                   object:(id)object
+                               parameters:(NSDictionary *)parameters
+                             successBlock:(SuccessBlock)successBlock
+                                failBlock:(FailBlock)failBlock
+                          paginationBlock:(PaginationBlock)paginationBlock
 {
     return [self requestMethod:RKRequestMethodPOST
-                   path:path
-             parameters:parameters
-           successBlock:successBlock
-              failBlock:failBlock
-        paginationBlock:paginationBlock];
+                        object:object
+                          path:path
+                    parameters:parameters
+                  successBlock:successBlock
+                     failBlock:failBlock
+               paginationBlock:paginationBlock];
 }
 
 #pragma mark - Subclass
-
 - (id)appropriateObjectRequestOperationWithObject:(id)object
                                            method:(RKRequestMethod)method
                                              path:(NSString *)path
@@ -204,7 +239,7 @@
     NSString *currentDate = [self rFC2822DateTimeString];
     NSString* userAgent = [client.defaultHeaders objectForKey:@"User-Agent"];
     
-    VUser* mainUser = [VLoginViewController sharedLoginViewController].mainUser;
+    VUser* mainUser = [VObjectManager sharedManager].mainUser;
     
     // Build string to be hashed.
     NSString *sha1String = [[NSString stringWithFormat:@"%@%@%@%@%@",

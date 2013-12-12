@@ -15,12 +15,17 @@
 
 - (BOOL)isAuthorized
 {
-    return YES;
+    return !!self.mainUser.token;
 }
 
 - (BOOL)isOwner
 {
-    return YES;
+    return YES;//[self.mainUser.access_level isEqualToString:@"superuser"] ;
+}
+
+- (VUser *)mainUser
+{
+    return [[VUser findAllObjects] firstObject];
 }
 
 - (RKManagedObjectRequestOperation *)loginToFacebookWithToken:(NSString*)accessToken
@@ -31,6 +36,7 @@
     NSDictionary *parameters = @{@"facebook_access_token": accessToken ?: [NSNull null]};
     
     return [self POST:@"/api/login/facebook"
+               object:nil
            parameters:parameters
          successBlock:success
             failBlock:failed
@@ -47,6 +53,7 @@
     NSDictionary *parameters = @{@"twitter_access_token": accessToken ?: [NSNull null]};
     
     return [self POST:@"/api/login/twitter"
+               object:nil
            parameters:parameters
          successBlock:success
             failBlock:failed
@@ -64,65 +71,71 @@
 
     
     return [self POST:@"/api/login"
+               object:nil
            parameters:parameters
          successBlock:success
             failBlock:fail
       paginationBlock:nil];
 }
 
-- (RKManagedObjectRequestOperation *)loginToVictoriousWithEmail:(NSString*)email password:(NSString*)password block:(void(^)(VUser *user, NSError *error))block
+- (RKManagedObjectRequestOperation *)createVictoriousWithEmail:(NSString *)email
+                                                      password:(NSString *)password
+                                                      username:(NSString *)username
+                                                  successBlock:(SuccessBlock)success
+                                                     failBlock:(FailBlock)fail
 {
-    NSDictionary *paramiters = @{@"email": email ?: [NSNull null], @"password": password ?: [NSNull null]};
-    return [self POST:@"/api/login" parameters:paramiters block:^(NSUInteger page, NSUInteger perPage, NSArray *results, NSError *error){
-        if(block){
-            if(error){
-                block(nil, error);
-            }else{
-                block([results firstObject], nil);
-            }
-        }
-    }];
+    NSDictionary *parameters = @{@"email": email ?: [NSNull null],
+                                 @"password": password ?: [NSNull null],
+                                 @"name": username ?: [NSNull null]};
+    
+    return [self POST:@"/api/account/create"
+               object:nil
+           parameters:parameters
+         successBlock:success
+            failBlock:fail
+      paginationBlock:nil];
 }
 
-- (RKManagedObjectRequestOperation *)updateVictoriousAccountWithEmail:(NSString*)email password:(NSString*)password name:(NSString*)name block:(void(^)(VUser *user, NSError *error))block
+- (RKManagedObjectRequestOperation *)updateVictoriousWithEmail:(NSString *)email
+                                                      password:(NSString *)password
+                                                      username:(NSString *)username
+                                                  successBlock:(SuccessBlock)success
+                                                     failBlock:(FailBlock)fail
 {
-    NSDictionary *paramiters = @{@"email" : email ?: [NSNull null], @"password" : password ?: [NSNull null], @"name" : name ?: [NSNull null]};
-    return [self POST:@"/api/account/update" parameters:paramiters block:^(NSUInteger page, NSUInteger perPage, NSArray *results, NSError *error){
-        if(block){
-            if(error){
-                block(nil, error);
-            }else{
-                block([results firstObject], nil);
-            }
-        }
-    }];
-}
+    NSDictionary *parameters = @{@"email": email ?: [NSNull null],
+                                 @"password": password ?: [NSNull null],
+                                 @"name": username ?: [NSNull null]};
 
-- (RKManagedObjectRequestOperation *)createVictoriousAccountWithEmail:(NSString*)email password:(NSString*)password name:(NSString*)name block:(void(^)(VUser *user, NSError *error))block
-{
-    NSDictionary *paramiters = @{@"email" : email ?: [NSNull null], @"password" : password ?: [NSNull null], @"name" : name ?: [NSNull null]};
-    return [self POST:@"/api/account/create" parameters:paramiters block:^(NSUInteger page, NSUInteger perPage, NSArray *results, NSError *error){
-        if(block){
-            if(error){
-                block(nil, error);
-            }else{
-                block([results firstObject], nil);
-            }
-        }
-    }];
+    return [self POST:@"/api/account/update"
+               object:nil
+           parameters:parameters
+         successBlock:success
+            failBlock:fail
+      paginationBlock:nil];
 }
 
 #pragma mark - Logout
 
-- (RKManagedObjectRequestOperation *)logOutWithSuccessBlock:(SuccessBlock)success
-                                                  failBlock:(FailBlock)failed
+//- (RKManagedObjectRequestOperation *)logOutWithSuccessBlock:(SuccessBlock)success
+//                                                  failBlock:(FailBlock)failed
+- (RKManagedObjectRequestOperation *)logout
 {
+    SuccessBlock success = ^(NSArray* objects){
+        NSManagedObjectContext* context = self.managedObjectStore.persistentStoreManagedObjectContext;
+        [context  deleteObject:[self loggedInUser]];
+    };
     
     return [self GET:@"/api/logout"
+              object:[self loggedInUser]
            parameters:nil
          successBlock:success
-            failBlock:failed
+            failBlock:nil
       paginationBlock:nil];
+}
+
+- (VUser *)loggedInUser
+{
+    return [[VUser findAllObjects] firstObject];
 }
 
 

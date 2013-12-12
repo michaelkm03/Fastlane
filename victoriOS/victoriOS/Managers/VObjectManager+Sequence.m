@@ -28,11 +28,11 @@
     switch(type){
         case VObjectManagerSequenceCategoryTypeAll:
             break;
-        case VObjectManagerSequenceCategoryTypePublic:
-            path = [path stringByAppendingPathComponent:@"public"];
+        case VObjectManagerSequenceCategoryTypeGeneral:
+            path = [path stringByAppendingPathComponent:@"general"];
             break;
-        case VObjectManagerSequenceCategoryTypePrivate:
-            path = [path stringByAppendingPathComponent:@"private"];
+        case VObjectManagerSequenceCategoryTypeFeatured:
+            path = [path stringByAppendingPathComponent:@"featured"];
             break;
     }
     return [self GET:path parameters:nil block:^(NSUInteger page, NSUInteger perPage, NSArray *results, NSError *error){
@@ -66,11 +66,11 @@
         case VObjectManagerSequenceCategoryTypeAll:
             path = [path stringByAppendingPathComponent:@"0"];
             break;
-        case VObjectManagerSequenceCategoryTypePublic:
-            path = [path stringByAppendingPathComponent:@"public"];
+        case VObjectManagerSequenceCategoryTypeGeneral:
+            path = [path stringByAppendingPathComponent:@"general"];
             break;
-        case VObjectManagerSequenceCategoryTypePrivate:
-            path = [path stringByAppendingPathComponent:@"private"];
+        case VObjectManagerSequenceCategoryTypeFeatured:
+            path = [path stringByAppendingPathComponent:@"featured"];
             break;
     }
 

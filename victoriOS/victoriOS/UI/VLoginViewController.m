@@ -77,7 +77,7 @@
 
 - (void)didLoginWithUser:(VUser*)mainUser
 {
-    _mainUser = mainUser;
+    BOOL auth = [VObjectManager sharedManager].authorized;
     [self dismissViewControllerAnimated:YES completion:NULL];
 }
 
@@ -85,7 +85,6 @@
 {
     UIAlertView*    alert   =   [[UIAlertView alloc] initWithTitle:@"Login Failed" message:error.localizedDescription delegate:self cancelButtonTitle:@"Understood" otherButtonTitles:nil];
     [alert show];
-    [self dismissViewControllerAnimated:YES completion:NULL];
 }
 
 - (void)didCancelLogin

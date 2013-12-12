@@ -27,8 +27,8 @@ typedef float (^MyBlockType)(float, float);
 @class VSequence;
 typedef NS_ENUM(NSUInteger, VObjectManagerSequenceCategoryType){
     VObjectManagerSequenceCategoryTypeAll,
-    VObjectManagerSequenceCategoryTypePublic,
-    VObjectManagerSequenceCategoryTypePrivate
+    VObjectManagerSequenceCategoryTypeGeneral,
+    VObjectManagerSequenceCategoryTypeFeatured
 };
 
 typedef NS_ENUM(NSUInteger, VObjectManagerSequenceStatusType){
@@ -49,6 +49,7 @@ typedef NS_ENUM(NSUInteger, VObjectManagerSequenceStatusType){
 
 @property (nonatomic, readonly, getter = isAuthorized)  BOOL    authorized;
 @property (nonatomic, readonly, getter = isOwner)       BOOL    owner;
+@property (nonatomic, readonly, getter = mainUser)      VUser*  mainUser;
 
 - (RKManagedObjectRequestOperation *)loginToFacebookWithToken:(NSString*)accessToken
                                                  SuccessBlock:(SuccessBlock)success
@@ -63,22 +64,22 @@ typedef NS_ENUM(NSUInteger, VObjectManagerSequenceStatusType){
                                                    successBlock:(SuccessBlock)success
                                                       failBlock:(FailBlock)fail;
 
-- (RKManagedObjectRequestOperation *)createToVictoriousWithEmail:(NSString *)email
-                                                       password:(NSString *)password
-                                                   successBlock:(SuccessBlock)success
-                                                      failBlock:(FailBlock)fail;
+- (RKManagedObjectRequestOperation *)createVictoriousWithEmail:(NSString *)email
+                                                      password:(NSString *)password
+                                                      username:(NSString *)username
+                                                  successBlock:(SuccessBlock)success
+                                                     failBlock:(FailBlock)fail;
 
-- (RKManagedObjectRequestOperation *)updateToVictoriousWithEmail:(NSString *)email
-                                                       password:(NSString *)password
-                                                   successBlock:(SuccessBlock)success
-                                                      failBlock:(FailBlock)fail;
+- (RKManagedObjectRequestOperation *)updateVictoriousWithEmail:(NSString *)email
+                                                      password:(NSString *)password
+                                                      username:(NSString *)username
+                                                  successBlock:(SuccessBlock)success
+                                                     failBlock:(FailBlock)fail;
 
+//- (RKManagedObjectRequestOperation *)logOutWithSuccessBlock:(SuccessBlock)success
+//                                                  failBlock:(FailBlock)failed;
 - (RKManagedObjectRequestOperation *)logout;
-
-- (RKManagedObjectRequestOperation *)createVictoriousAccountWithEmail:(NSString *)email password:(NSString *)password
-                                                                 name:(NSString *)name block:(void(^)(VUser *user, NSError *error))block;
-- (RKManagedObjectRequestOperation *)updateVictoriousAccountWithEmail:(NSString *)email password:(NSString *)password
-                                                                 name:(NSString *)name block:(void(^)(VUser *user, NSError *error))block;
+- (VUser *)loggedInUser;
 
 @end
 
