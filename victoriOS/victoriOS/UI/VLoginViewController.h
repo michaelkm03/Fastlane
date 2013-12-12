@@ -13,7 +13,7 @@
 
 + (VLoginViewController *)sharedLoginViewController;
 
-@property (nonatomic, readwrite, assign) BOOL    authorized;
+@property (nonatomic, readonly) BOOL    authorized;
 @property (nonatomic, readonly, strong) VUser* mainUser;
 
 @end

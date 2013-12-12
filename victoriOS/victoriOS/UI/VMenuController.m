@@ -11,6 +11,7 @@
 #import "VStreamsTableViewController.h"
 #import "VForumsViewController.h"
 #import "VLoginViewController.h"
+#import "VObjectManager.h"
 
 @implementation VMenuController
 
@@ -120,7 +121,10 @@
     }
     else if (indexPath.section == 0 && indexPath.row == 4)
     {
-        // Sign out
+        if([VLoginViewController sharedLoginViewController].authorized)
+        {
+            [[VObjectManager sharedManager] logout];
+        }
     }
 
     [self.frostedViewController hideMenuViewController];

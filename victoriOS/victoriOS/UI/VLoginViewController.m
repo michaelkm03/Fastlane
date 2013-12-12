@@ -38,7 +38,7 @@
     self    =   [super initWithCoder:aDecoder];
     if (self)
     {
-        _authorized =   NO;
+
     }
     
     return self;
@@ -54,6 +54,11 @@
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+- (BOOL) authorized
+{
+    return (_mainUser != nil && (NSNull*)_mainUser != [NSNull null]);
 }
 
 #pragma mark -
@@ -73,7 +78,6 @@
 - (void)didLoginWithUser:(VUser*)mainUser
 {
     _mainUser = mainUser;
-    self.authorized =   YES;
     [self dismissViewControllerAnimated:YES completion:NULL];
 }
 

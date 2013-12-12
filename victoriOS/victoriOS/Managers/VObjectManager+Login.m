@@ -102,4 +102,18 @@
     }];
 }
 
+#pragma mark - Logout
+
+- (RKManagedObjectRequestOperation *)logOutWithSuccessBlock:(SuccessBlock)success
+                                                  failBlock:(FailBlock)failed
+{
+    
+    return [self GET:@"/api/logout"
+           parameters:nil
+         successBlock:success
+            failBlock:failed
+      paginationBlock:nil];
+}
+
+
 @end
