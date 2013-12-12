@@ -12,6 +12,7 @@
 #import "VCategory+RestKit.h"
 #import "VSequence+RestKit.h"
 #import "VStatSequence+RestKit.h"
+#import "VLoginViewController.h"
 
 @implementation VObjectManager
 
@@ -203,7 +204,7 @@
     NSString *currentDate = [self rFC2822DateTimeString];
     NSString* userAgent = [client.defaultHeaders objectForKey:@"User-Agent"];
     
-    VUser* mainUser = [[VUser findAllObjects] firstObject];
+    VUser* mainUser = [VLoginViewController sharedLoginViewController].mainUser;
     
     // Build string to be hashed.
     NSString *sha1String = [[NSString stringWithFormat:@"%@%@%@%@%@",

@@ -8,22 +8,15 @@
 
 #import "VObjectManager+Private.h"
 #import "VUser+RestKit.h"
-@import Accounts;
 
 @implementation VObjectManager (Login)
 
 #pragma mark - Facebook
 
-- (RKManagedObjectRequestOperation *)loginToFacebookWithSuccessBlock:(SuccessBlock)success
-                                                           failBlock:(FailBlock)failed
+- (RKManagedObjectRequestOperation *)loginToFacebookWithToken:(NSString*)accessToken
+                                                 SuccessBlock:(SuccessBlock)success
+                                                    failBlock:(FailBlock)failed
 {
-    ACAccountStore* store = [[ACAccountStore alloc]init];
-    ACAccountType *FBaccountType= [store accountTypeWithAccountTypeIdentifier:ACAccountTypeIdentifierFacebook];
-    NSArray *accounts = [store accountsWithAccountType:FBaccountType];
-    //it will always be the last object with single sign on
-    ACAccount* facebookAccount = [accounts lastObject];
-    ACAccountCredential *fbCredential = [facebookAccount credential];
-    NSString *accessToken = [fbCredential oauthToken];
     
     NSDictionary *parameters = @{@"facebook_access_token": accessToken ?: [NSNull null]};
     
@@ -34,8 +27,23 @@
       paginationBlock:nil];
 }
 
-#pragma mark - Victorious
+#pragma mark - Twitter
 
+- (RKManagedObjectRequestOperation *)loginToTwitterWithToken:(NSString*)accessToken
+                                                SuccessBlock:(SuccessBlock)success
+                                                   failBlock:(FailBlock)failed
+{
+    
+    NSDictionary *parameters = @{@"twitter_access_token": accessToken ?: [NSNull null]};
+    
+    return [self POST:@"/api/login/twitter"
+           parameters:parameters
+         successBlock:success
+            failBlock:failed
+      paginationBlock:nil];
+}
+
+#pragma mark - Victorious
 
 - (RKManagedObjectRequestOperation *)loginToVictoriousWithEmail:(NSString *)email
                                                        password:(NSString *)password

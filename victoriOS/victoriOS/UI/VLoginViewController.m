@@ -16,6 +16,7 @@
 @interface      VLoginViewController    ()
 @property (weak, nonatomic) IBOutlet UITextField *username;
 @property (weak, nonatomic) IBOutlet UITextField *password;
+@property (nonatomic, readwrite, weak) VUser* mainUser;
 @end
 
 @implementation VLoginViewController
@@ -69,15 +70,16 @@
     return YES;
 }
 
-- (void)didLogin
+- (void)didLoginWithUser:(VUser*)mainUser
 {
+    _mainUser = mainUser;
     self.authorized =   YES;
     [self dismissViewControllerAnimated:YES completion:NULL];
 }
 
-- (void)didFailToLogIn
+- (void)didFailToLogin:(NSError*)error
 {
-    UIAlertView*    alert   =   [[UIAlertView alloc] initWithTitle:@"Login Failed" message:@"Unable to log in." delegate:self cancelButtonTitle:@"Understood" otherButtonTitles:nil];
+    UIAlertView*    alert   =   [[UIAlertView alloc] initWithTitle:@"Login Failed" message:error.localizedDescription delegate:self cancelButtonTitle:@"Understood" otherButtonTitles:nil];
     [alert show];
     [self dismissViewControllerAnimated:YES completion:NULL];
 }
@@ -87,6 +89,17 @@
     [self dismissViewControllerAnimated:YES completion:NULL];
 }
 
+- (void)requestAccessFailed
+{
+    dispatch_async(dispatch_get_main_queue(), ^
+                   {
+                       SLComposeViewController *composeViewController = [SLComposeViewController composeViewControllerForServiceType:SLServiceTypeFacebook];
+                       [self presentViewController:composeViewController animated:NO completion:^{
+                           [composeViewController dismissViewControllerAnimated:NO completion:nil];
+                       }];
+                   });
+}
+
 #pragma mark -
 
 - (IBAction)login:(id)sender
@@ -94,9 +107,10 @@
     if ([self shouldLoginWithUsername:self.username.text password:self.password.text])
     {
         SuccessBlock success = ^(NSArray* objects) {
-            [objects firstObject];
+            [self didLoginWithUser:[objects firstObject]];
         };
         FailBlock fail = ^(NSError* error) {
+            [self didFailToLogin:error];
             VLog(@"Error in victorious Login: %@", error);
         };
         RKManagedObjectRequestOperation* requestOperation =
@@ -125,61 +139,87 @@
                                                {
                                                    case ACErrorAccountNotFound:
                                                    {
-                                                       dispatch_async(dispatch_get_main_queue(), ^
-                                                       {
-                                                           SLComposeViewController *composeViewController = [SLComposeViewController composeViewControllerForServiceType:SLServiceTypeFacebook];
-                                                           [self presentViewController:composeViewController animated:NO completion:^{
-                                                               [composeViewController dismissViewControllerAnimated:NO completion:nil];
-                                                           }];
-                                                       });
+                                                       [self requestAccessFailed];
                                                        break;
                                                    }
                                                    default:
                                                    {
-                                                       [[[UIAlertView alloc] initWithTitle:@"D:" message:error.localizedFailureReason delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil] show];
+                                                       [self didFailToLogin:error];
                                                        break;
                                                    }
                                                }
                                                return;
                                            }
                                            else {
+                                               
+                                               NSArray *accounts = [accountStore accountsWithAccountType:accountType];
+                                               //it will always be the last object with single sign on
+                                               ACAccount* facebookAccount = [accounts lastObject];
+                                               ACAccountCredential *fbCredential = [facebookAccount credential];
+                                               NSString *accessToken = [fbCredential oauthToken];
+                                               
                                                SuccessBlock success = ^(NSArray* objects) {
-                                                   [objects firstObject];
+                                                   [self didLoginWithUser:[objects firstObject]];
                                                };
                                                FailBlock failed = ^(NSError* error) {
+                                                   [self didFailToLogin:error];
                                                    VLog(@"Error in FB Login: %@", error);
                                                };
                                                
                                                [[[VObjectManager sharedManager]
-                                                 loginToFacebookWithSuccessBlock:success
-                                                                       failBlock:failed] start];
+                                                 loginToFacebookWithToken:accessToken
+                                                             SuccessBlock:success
+                                                                failBlock:failed] start];
                                            }
                                        }];
 }
 
 - (IBAction)twitterClicked:(id)sender
 {
-//    ACAccountStore* account = [[ACAccountStore alloc] init];
-//    ACAccountType* accountType = [account accountTypeWithAccountTypeIdentifier:ACAccountTypeIdentifierTwitter];
-//    
-//    [account requestAccessToAccountsWithType:accountType options:nil completion:^(BOOL granted, NSError *error)
-//    {
-//        if (granted == YES)
-//        {
-//            NSArray *accounts = [account accountsWithAccountType:accountType];
-//            ACAccount *twitterAccount = [accounts lastObject];
-//                
-//            ACAccountCredential*  ftwCredential = [twitterAccount credential];
-//            NSString* accessToken = [ftwCredential oauthToken];
-//            NSLog(@"Twitter Access Token: %@", accessToken);
-//        }
-//        else
-//        {
-////            [self performSegueWithIdentifier:@"twitter" sender:self];
-//        }
-//        
-//        [self didLogin];
-//    }];
+    ACAccountStore* account = [[ACAccountStore alloc] init];
+    ACAccountType* accountType = [account accountTypeWithAccountTypeIdentifier:ACAccountTypeIdentifierTwitter];
+    
+    [account requestAccessToAccountsWithType:accountType options:nil completion:^(BOOL granted, NSError *error)
+    {
+        if (!granted)
+        {
+            switch (error.code)
+            {
+                case ACErrorAccountNotFound:
+                {
+                    [self requestAccessFailed];
+                    break;
+                }
+                default:
+                {
+                    [self didFailToLogin:error];
+                    break;
+                }
+            }
+            return;
+        }
+        else {
+            SuccessBlock success = ^(NSArray* objects) {
+                [self didLoginWithUser:[objects firstObject]];
+            };
+            FailBlock failed = ^(NSError* error) {
+                [self didFailToLogin:error];
+                VLog(@"Error in Twitter Login: %@", error);
+            };
+            
+            NSArray *accounts = [account accountsWithAccountType:accountType];
+            ACAccount *twitterAccount = [accounts lastObject];
+            
+            ACAccountCredential*  ftwCredential = [twitterAccount credential];
+            NSString* accessToken = [ftwCredential oauthToken];
+            NSLog(@"Twitter Access Token: %@", accessToken);
+            
+            [[[VObjectManager sharedManager]
+              loginToTwitterWithToken:accessToken
+                         SuccessBlock:success
+                            failBlock:failed] start];
+        }
+    }];
 }
 
 - (IBAction)cancelClicked:(id)sender
