@@ -15,12 +15,17 @@
 
 - (BOOL)isAuthorized
 {
-    return NO;
+    return !!self.mainUser.token;
 }
 
 - (BOOL)isOwner
 {
-    return NO;
+    return YES;//[self.mainUser.access_level isEqualToString:@"superuser"] ;
+}
+
+- (VUser *)mainUser
+{
+    return [[VUser findAllObjects] firstObject];
 }
 
 - (RKManagedObjectRequestOperation *)loginToFacebookWithToken:(NSString*)accessToken

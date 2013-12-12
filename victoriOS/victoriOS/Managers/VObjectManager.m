@@ -239,7 +239,7 @@
     NSString *currentDate = [self rFC2822DateTimeString];
     NSString* userAgent = [client.defaultHeaders objectForKey:@"User-Agent"];
     
-    VUser* mainUser = [VLoginViewController sharedLoginViewController].mainUser;
+    VUser* mainUser = [VObjectManager sharedManager].mainUser;
     
     // Build string to be hashed.
     NSString *sha1String = [[NSString stringWithFormat:@"%@%@%@%@%@",

@@ -77,7 +77,7 @@
 
 - (void)didLoginWithUser:(VUser*)mainUser
 {
-    _mainUser = mainUser;
+    BOOL auth = [VObjectManager sharedManager].authorized;
     [self dismissViewControllerAnimated:YES completion:NULL];
 }
 

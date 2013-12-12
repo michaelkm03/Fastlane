@@ -127,7 +127,7 @@
         }
         else
         {
-            if([VLoginViewController sharedLoginViewController].authorized)
+            if([VObjectManager sharedManager].authorized)
             {
                 [[VObjectManager sharedManager] logout];
             }
@@ -135,7 +135,7 @@
     }
     else if (indexPath.section == 0 && indexPath.row == 4)
     {
-        if([VLoginViewController sharedLoginViewController].authorized)
+        if([VObjectManager sharedManager].authorized)
         {
             [[VObjectManager sharedManager] logout];
         }
