@@ -99,7 +99,7 @@
     }
     else if (indexPath.section == 0 && indexPath.row == 2)
     {
-        if (![VLoginViewController sharedLoginViewController].authorized)
+        if (![VObjectManager sharedManager].authorized)
             [self presentViewController:[VLoginViewController sharedLoginViewController] animated:YES completion:NULL];
         else
         {
@@ -110,13 +110,27 @@
     }
     else if (indexPath.section == 0 && indexPath.row == 3)
     {
-        if (![VLoginViewController sharedLoginViewController].authorized)
+        if (![VObjectManager sharedManager].authorized)
             [self presentViewController:[VLoginViewController sharedLoginViewController] animated:YES completion:NULL];
         else
         {
             VForumsViewController*  forumsViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"profile"];
             navigationController.viewControllers = @[forumsViewController];
-            navigationController.toolbarHidden = YES;
+            navigationController.toolbarHidden = NO;
+        }
+    }
+    else if (indexPath.section == 0 && indexPath.row == 4)
+    {
+        if ([VObjectManager sharedManager].isOwner)
+        {
+            //  Create Poll
+        }
+        else
+        {
+            if([VLoginViewController sharedLoginViewController].authorized)
+            {
+                [[VObjectManager sharedManager] logout];
+            }
         }
     }
     else if (indexPath.section == 0 && indexPath.row == 4)
@@ -126,7 +140,7 @@
             [[VObjectManager sharedManager] logout];
         }
     }
-
+    
     [self.frostedViewController hideMenuViewController];
 }
 
