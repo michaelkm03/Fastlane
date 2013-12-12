@@ -99,7 +99,7 @@
     }
     else if (indexPath.section == 0 && indexPath.row == 2)
     {
-        if (![VLoginViewController sharedLoginViewController].authorized)
+        if (![VObjectManager sharedManager].authorized)
             [self presentViewController:[VLoginViewController sharedLoginViewController] animated:YES completion:NULL];
         else
         {
@@ -110,13 +110,27 @@
     }
     else if (indexPath.section == 0 && indexPath.row == 3)
     {
-        if (![VLoginViewController sharedLoginViewController].authorized)
+        if (![VObjectManager sharedManager].authorized)
             [self presentViewController:[VLoginViewController sharedLoginViewController] animated:YES completion:NULL];
         else
         {
             VForumsViewController*  forumsViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"profile"];
             navigationController.viewControllers = @[forumsViewController];
-            navigationController.toolbarHidden = YES;
+            navigationController.toolbarHidden = NO;
+        }
+    }
+    else if (indexPath.section == 0 && indexPath.row == 4)
+    {
+        if ([VObjectManager sharedManager].isOwner)
+        {
+            //  Create Poll
+        }
+        else
+        {
+            if([VLoginViewController sharedLoginViewController].authorized)
+            {
+                [[VObjectManager sharedManager] logout];
+            }
         }
     }
     else if (indexPath.section == 0 && indexPath.row == 4)
@@ -126,7 +140,7 @@
             [[VObjectManager sharedManager] logout];
         }
     }
-
+    
     [self.frostedViewController hideMenuViewController];
 }
 
@@ -138,39 +152,54 @@
     return 54;
 }
 
-//- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
-//{
-//    return 2;
-//}
-//
-//- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)sectionIndex
-//{
-//    if (0 == sectionIndex)
-//        return 4;
-//
-//    return 1;
-//}
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
+{
+    return 2;
+}
 
-//- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
-//{
-//    static NSString *cellIdentifier = @"Cell";
-//    
-//    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
-//    
-//    if (cell == nil)
-//    {
-//        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentifier];
-//    }
-//    
-//    if (indexPath.section == 0) {
-//        NSArray *titles = @[@"Streams", @"Forums", @"Inbox", @"Profile"];
-//        cell.textLabel.text = titles[indexPath.row];
-//    } else {
-//        NSArray *titles = @[@"Sign out"];
-//        cell.textLabel.text = titles[indexPath.row];
-//    }
-//    
-//    return cell;
-//}
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)sectionIndex
+{
+    if (0 == sectionIndex)
+    {
+        if ([VObjectManager sharedManager].isOwner)
+            return 5;
+        else
+            return 4;
+    }
+
+    return 1;
+}
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    static NSString *cellIdentifier = @"Cell";
+    
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
+    
+    if (cell == nil)
+    {
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentifier];
+    }
+    
+    if (indexPath.section == 0)
+    {
+        if ([VObjectManager sharedManager].isOwner)
+        {
+            NSArray *titles = @[@"Streams", @"Forums", @"Inbox", @"Profile", @"Create Poll"];
+            cell.textLabel.text = titles[indexPath.row];
+       }
+        else
+        {
+            NSArray *titles = @[@"Streams", @"Forums", @"Inbox", @"Profile"];
+            cell.textLabel.text = titles[indexPath.row];
+        }
+    }
+    else
+    {
+        cell.textLabel.text = @"Sign out";
+    }
+    
+    return cell;
+}
 
 @end

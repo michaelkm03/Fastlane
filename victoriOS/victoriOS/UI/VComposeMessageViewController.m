@@ -35,4 +35,14 @@
     // Dispose of any resources that can be recreated.
 }
 
+- (IBAction)cancel:(id)sender
+{
+    [self dismissViewControllerAnimated:YES completion:NULL];
+}
+
+- (IBAction)compose:(id)sender
+{
+    [self dismissViewControllerAnimated:YES completion:NULL];
+}
+
 @end
