@@ -15,12 +15,12 @@
 
 - (BOOL)isAuthorized
 {
-    return YES;
+    return NO;
 }
 
 - (BOOL)isOwner
 {
-    return YES;
+    return NO;
 }
 
 - (RKManagedObjectRequestOperation *)loginToFacebookWithToken:(NSString*)accessToken

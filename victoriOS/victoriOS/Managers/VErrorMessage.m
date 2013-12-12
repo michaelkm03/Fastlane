@@ -18,7 +18,9 @@
                                   @"api_version" : @"api_version",
                                   @"app_id" : @"app_id",
                                   @"user_id" : @"user_id",
-                                  @"message" : @"message"
+                                  @"message" : @"message",
+                                  @"page" : @"page",
+                                  @"total_pages" : @"total_pages"
                                   };
     
     RKObjectMapping *mapping = [RKObjectMapping mappingForClass:[VErrorMessage class]];

@@ -7,7 +7,6 @@
 //
 
 #import "VUser+RestKit.h"
-#import "NSManagedObject+Validation.h"
 
 @implementation VUser (RestKit)
 
@@ -48,31 +47,4 @@
                                                        keyPath:@"payload"
                                                    statusCodes:RKStatusCodeIndexSetForClass(RKStatusCodeClassSuccessful)];
 }
-
-#pragma mark - Validation
-
-- (BOOL)validateAccess_level:(id *)ioValue error:(NSError **)outError {
-    return [self validateValueIsNotEmpty:ioValue error:outError];
-}
-
-- (BOOL)validateEmail:(id *)ioValue error:(NSError **)outError {
-    return [self validateValueIsNotEmpty:ioValue error:outError];
-}
-
-- (BOOL)validateId:(id *)ioValue error:(NSError **)outError {
-    return [self validateValueIsGreaterThanZero:ioValue error:outError];
-}
-
-- (BOOL)validateName:(id *)ioValue error:(NSError **)outError {
-    return [self validateValueIsNotEmpty:ioValue error:outError];
-}
-
-- (BOOL)validateToken:(id *)ioValue error:(NSError **)outError {
-    return [self validateValueIsNotEmpty:ioValue error:outError];
-}
-
-- (BOOL)validateToken_updated_at:(id *)ioValue error:(NSError **)outError {
-    return [self validateValueIsDate:ioValue error:outError];
-}
-
 @end

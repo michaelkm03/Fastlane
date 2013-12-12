@@ -159,9 +159,19 @@
     [requestOperation setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult)
      {
          VErrorMessage *errorMessage;
+         NSArray* mappedObjects;
          if([[mappingResult firstObject] isKindOfClass:[VErrorMessage class]])
          {
              errorMessage = (VErrorMessage *)[mappingResult firstObject];
+             
+             //mappedObjects should not contain the VErrorMessage.
+             NSArray* allObjects = mappingResult.array;
+             NSRange range = NSMakeRange(1, [allObjects count]-1);
+             mappedObjects = [allObjects subarrayWithRange:range];
+         }
+         else
+         {
+             mappedObjects = mappingResult.array;
          }
          
          if (errorMessage.error && failBlock)
@@ -170,10 +180,10 @@
          else
          {
              if (successBlock)
-                 successBlock(mappingResult.array);
+                 successBlock(mappedObjects);
          
              if(paginationBlock)
-                 paginationBlock(0, 0); //TODO: pass in real page / totalPages
+                 paginationBlock(errorMessage.page, errorMessage.total_pages); //TODO: pass in real page / totalPages
          }
          
      } failure:^(RKObjectRequestOperation *operation, NSError *error)

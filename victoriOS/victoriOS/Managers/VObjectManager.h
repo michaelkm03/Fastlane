@@ -27,8 +27,8 @@ typedef float (^MyBlockType)(float, float);
 @class VSequence;
 typedef NS_ENUM(NSUInteger, VObjectManagerSequenceCategoryType){
     VObjectManagerSequenceCategoryTypeAll,
-    VObjectManagerSequenceCategoryTypePublic,
-    VObjectManagerSequenceCategoryTypePrivate
+    VObjectManagerSequenceCategoryTypeGeneral,
+    VObjectManagerSequenceCategoryTypeFeatured
 };
 
 typedef NS_ENUM(NSUInteger, VObjectManagerSequenceStatusType){
@@ -78,9 +78,6 @@ typedef NS_ENUM(NSUInteger, VObjectManagerSequenceStatusType){
 //- (RKManagedObjectRequestOperation *)logOutWithSuccessBlock:(SuccessBlock)success
 //                                                  failBlock:(FailBlock)failed;
 - (RKManagedObjectRequestOperation *)logout;
-//
-//- (BOOL)isLoggedIn;
-//- (BOOL)isSuperUser;
 - (VUser *)loggedInUser;
 
 @end
