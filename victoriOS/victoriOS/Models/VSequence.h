@@ -2,7 +2,7 @@
 //  VSequence.h
 //  victoriOS
 //
-//  Created by David Keegan on 12/9/13.
+//  Created by David Keegan on 12/12/13.
 //  Copyright (c) 2013 Victorious, Inc. All rights reserved.
 //
 
@@ -14,13 +14,15 @@
 @interface VSequence : NSManagedObject
 
 @property (nonatomic, retain) NSString * category;
-@property (nonatomic, retain) NSNumber * display_order;
-@property (nonatomic, retain) NSNumber * id;
+@property (nonatomic, retain) NSNumber * displayOrder;
+@property (nonatomic, retain) NSNumber * sequenceId;
 @property (nonatomic, retain) NSString * name;
-@property (nonatomic, retain) id preview_image;
-@property (nonatomic, retain) NSDate * released_at;
-@property (nonatomic, retain) NSString * sequence_description;
+@property (nonatomic, retain) id previewImage;
+@property (nonatomic, retain) NSDate * releasedAt;
+@property (nonatomic, retain) NSString * sequenceDescription;
 @property (nonatomic, retain) NSString * status;
+@property (nonatomic, retain) NSString * isComplete;
+@property (nonatomic, retain) NSString * gameStatus;
 @property (nonatomic, retain) NSSet *comments;
 @property (nonatomic, retain) NSSet *nodes;
 @end

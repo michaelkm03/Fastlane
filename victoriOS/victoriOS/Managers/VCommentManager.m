@@ -19,7 +19,7 @@
             andParent:(VComment*)parent
 {
 
-    if (!sequence.id) //Need this or we should quit
+    if (!sequence.sequenceId) //Need this or we should quit
     {
         VLog(@"No sequenceID passed into addComment");
         return;
@@ -32,7 +32,7 @@
     }
     
     NSMutableDictionary* parameters = [[NSMutableDictionary alloc] initWithCapacity:5];
-    [parameters setObject:[NSString stringWithFormat:@"%@", sequence.id] forKey:@"sequence_id"];
+    [parameters setObject:[NSString stringWithFormat:@"%@", sequence.sequenceId] forKey:@"sequence_id"];
     if (parent.id)
         [parameters setObject:[NSString stringWithFormat:@"%@", parent.id] forKey:@"parent_id"];
     if (![text isEmpty])

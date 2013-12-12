@@ -85,7 +85,7 @@
 
 + (void)loadFullDataForSequence:(VSequence*)sequence
 {
-    NSString* path = [NSString stringWithFormat:@"%@/%@", @"/api/sequence/item", sequence.id];
+    NSString* path = [NSString stringWithFormat:@"%@/%@", @"/api/sequence/item", sequence.sequenceId];
     RKManagedObjectRequestOperation* requestOperation = [[RKObjectManager sharedManager]
                                                          appropriateObjectRequestOperationWithObject:sequence
                                                          method:RKRequestMethodGET
@@ -109,7 +109,7 @@
 + (void)loadCommentsForSequence:(VSequence*)sequence
 {
     
-    NSString* path = [NSString stringWithFormat:@"%@/%@", @"/api/comment/all", sequence.id];
+    NSString* path = [NSString stringWithFormat:@"%@/%@", @"/api/comment/all", sequence.sequenceId];
     RKManagedObjectRequestOperation* requestOperation = [[RKObjectManager sharedManager]
                                                          appropriateObjectRequestOperationWithObject:nil
                                                          method:RKRequestMethodGET
@@ -215,7 +215,7 @@
 #pragma mark - StatSequence Creation
 + (void)createStatSequenceForSequence:(VSequence*)sequence
 {
-    if (!sequence || !sequence.id)
+    if (!sequence || !sequence.sequenceId)
     {
         VLog(@"Invalid sequence or id in api/game/create");
         return;
@@ -225,7 +225,7 @@
                                                          appropriateObjectRequestOperationWithObject:nil
                                                          method:RKRequestMethodPOST
                                                          path:@"api/game/create"
-                                                         parameters:@{ @"sequence_id" : sequence.id}];
+                                                         parameters:@{ @"sequence_id" : sequence.sequenceId}];
 
     [requestOperation setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation,
                                                       RKMappingResult *mappingResult)
