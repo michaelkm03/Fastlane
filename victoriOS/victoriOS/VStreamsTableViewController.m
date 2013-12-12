@@ -26,8 +26,8 @@ typedef NS_ENUM(NSInteger, VStreamScope) {
 @property (strong, nonatomic) NSString* filterText;
 @end
 
-const NSString* StreamCache = @"StreamCache";
-const NSString* SearchCache = @"SearchCache";
+const NSString* kStreamCache = @"StreamCache";
+const NSString* kSearchCache = @"SearchCache";
 
 @implementation VStreamsTableViewController
 
@@ -195,7 +195,7 @@ const NSString* SearchCache = @"SearchCache";
 - (void)updatePredicateForFetchedResultsController:(NSFetchedResultsController*)controller
 {
     //We must clear the cache before modifying anything.
-    NSString* cacheName = controller == _fetchedResultsController ? StreamCache : SearchCache;
+    NSString* cacheName = controller == _fetchedResultsController ? kStreamCache : kSearchCache;
     [NSFetchedResultsController deleteCacheWithName:cacheName];
 
     NSFetchRequest* fetchRequest = controller.fetchRequest;
@@ -265,7 +265,7 @@ const NSString* SearchCache = @"SearchCache";
         self.fetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:fetchRequest
                                                                             managedObjectContext:context
                                                                               sectionNameKeyPath:nil
-                                                                                       cacheName:StreamCache];
+                                                                                       cacheName:kStreamCache];
         self.fetchedResultsController.delegate = self;
     }
     
@@ -284,7 +284,7 @@ const NSString* SearchCache = @"SearchCache";
         self.searchFetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:fetchRequest
                                                                             managedObjectContext:context
                                                                               sectionNameKeyPath:nil
-                                                                                       cacheName:SearchCache];
+                                                                                       cacheName:kSearchCache];
         self.searchFetchedResultsController.delegate = self;
     }
     

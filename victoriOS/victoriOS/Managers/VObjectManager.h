@@ -47,6 +47,9 @@ typedef NS_ENUM(NSUInteger, VObjectManagerSequenceStatusType){
 
 @interface VObjectManager (Login)
 
+@property (nonatomic, readonly, getter = isAuthorized)  BOOL    authorized;
+@property (nonatomic, readonly, getter = isOwner)       BOOL    owner;
+
 - (RKManagedObjectRequestOperation *)loginToFacebookWithToken:(NSString*)accessToken
                                                  SuccessBlock:(SuccessBlock)success
                                                     failBlock:(FailBlock)failed;

@@ -244,7 +244,58 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		5F8AAA5A184D439000301783 /* UI */ = {
+		3F9100F4185A4AB40005317C /* Login */ = {
+			isa = PBXGroup;
+			children = (
+				5F3B494E184E6B8D0062DB55 /* VLoginViewController.h */,
+				5F3B494F184E6B8D0062DB55 /* VLoginViewController.m */,
+				3F543C3F18512C6700A1F2FC /* VSignUpViewController.h */,
+				3F543C4018512C6700A1F2FC /* VSignUpViewController.m */,
+			);
+			name = Login;
+			sourceTree = "<group>";
+		};
+		3F9100F5185A4AC40005317C /* Inbox */ = {
+			isa = PBXGroup;
+			children = (
+				3F90DD7F1856A59B00C8F312 /* VInboxViewController.h */,
+				3F90DD801856A59B00C8F312 /* VInboxViewController.m */,
+				3F90DE481857D9F100C8F312 /* VMessageViewController.h */,
+				3F90DE491857D9F100C8F312 /* VMessageViewController.m */,
+				3F90DE4B1857DA0200C8F312 /* VComposeMessageViewController.h */,
+				3F90DE4C1857DA0200C8F312 /* VComposeMessageViewController.m */,
+			);
+			name = Inbox;
+			sourceTree = "<group>";
+		};
+		3F9100F6185A4AD80005317C /* Profile */ = {
+			isa = PBXGroup;
+			children = (
+				3F90DD821856A66F00C8F312 /* VProfileViewController.h */,
+				3F90DD831856A66F00C8F312 /* VProfileViewController.m */,
+			);
+			name = Profile;
+			sourceTree = "<group>";
+		};
+		3F9100F7185A4AEF0005317C /* Forums */ = {
+			isa = PBXGroup;
+			children = (
+				3F90DD741856A44F00C8F312 /* VForumsViewController.h */,
+				3F90DD751856A44F00C8F312 /* VForumsViewController.m */,
+			);
+			name = Forums;
+			sourceTree = "<group>";
+		};
+		3F9100F8185A4B020005317C /* Streams */ = {
+			isa = PBXGroup;
+			children = (
+				5F8AAAA3184D467300301783 /* VStreamsTableViewController.h */,
+				5F8AAAA4184D467300301783 /* VStreamsTableViewController.m */,
+			);
+			name = Streams;
+			sourceTree = "<group>";
+		};
+		3F9100F9185A4B160005317C /* Root */ = {
 			isa = PBXGroup;
 			children = (
 				3F90DD6518569ACA00C8F312 /* VRootViewController.h */,
@@ -253,22 +304,19 @@
 				3F90DD6918569B9300C8F312 /* VNavigationController.m */,
 				3F90DD6B18569EB400C8F312 /* VMenuController.h */,
 				3F90DD6C18569EB400C8F312 /* VMenuController.m */,
-				5F8AAAA3184D467300301783 /* VStreamsTableViewController.h */,
-				5F8AAAA4184D467300301783 /* VStreamsTableViewController.m */,
-				3F90DD741856A44F00C8F312 /* VForumsViewController.h */,
-				3F90DD751856A44F00C8F312 /* VForumsViewController.m */,
-				3F90DD7F1856A59B00C8F312 /* VInboxViewController.h */,
-				3F90DD801856A59B00C8F312 /* VInboxViewController.m */,
-				3F90DE481857D9F100C8F312 /* VMessageViewController.h */,
-				3F90DE491857D9F100C8F312 /* VMessageViewController.m */,
-				3F90DE4B1857DA0200C8F312 /* VComposeMessageViewController.h */,
-				3F90DE4C1857DA0200C8F312 /* VComposeMessageViewController.m */,
-				3F90DD821856A66F00C8F312 /* VProfileViewController.h */,
-				3F90DD831856A66F00C8F312 /* VProfileViewController.m */,
-				5F3B494E184E6B8D0062DB55 /* VLoginViewController.h */,
-				5F3B494F184E6B8D0062DB55 /* VLoginViewController.m */,
-				3F543C3F18512C6700A1F2FC /* VSignUpViewController.h */,
-				3F543C4018512C6700A1F2FC /* VSignUpViewController.m */,
+			);
+			name = Root;
+			sourceTree = "<group>";
+		};
+		5F8AAA5A184D439000301783 /* UI */ = {
+			isa = PBXGroup;
+			children = (
+				3F9100F9185A4B160005317C /* Root */,
+				3F9100F8185A4B020005317C /* Streams */,
+				3F9100F4185A4AB40005317C /* Login */,
+				3F9100F7185A4AEF0005317C /* Forums */,
+				3F9100F5185A4AC40005317C /* Inbox */,
+				3F9100F6185A4AD80005317C /* Profile */,
 				3F90DE4E1857F34D00C8F312 /* VValidatingTextField.h */,
 				3F90DE4F1857F34D00C8F312 /* VValidatingTextField.m */,
 				5F8AAA5D184D43C600301783 /* Main.storyboard */,
@@ -628,7 +676,6 @@
 				BEBDC4C41857B2E30013DEF1 /* VAnswer+RestKit.m in Sources */,
 				BEBDC4C71857B2E30013DEF1 /* VCategory+RestKit.m in Sources */,
 				3F90DE501857F34D00C8F312 /* VValidatingTextField.m in Sources */,
-				BEBDC4D81857B4CA0013DEF1 /* VAPIManager.m in Sources */,
 				BEBDC4CC1857B2E30013DEF1 /* VNodeAction+RestKit.m in Sources */,
 				838F41EA1857F26900882F1D /* VObjectManager+Login.m in Sources */,
 				BEBDC4CF1857B2E30013DEF1 /* VStatAnswer+RestKit.m in Sources */,

@@ -13,6 +13,16 @@
 
 #pragma mark - Facebook
 
+- (BOOL)isAuthorized
+{
+    return YES;
+}
+
+- (BOOL)isOwner
+{
+    return YES;
+}
+
 - (RKManagedObjectRequestOperation *)loginToFacebookWithToken:(NSString*)accessToken
                                                  SuccessBlock:(SuccessBlock)success
                                                     failBlock:(FailBlock)failed
