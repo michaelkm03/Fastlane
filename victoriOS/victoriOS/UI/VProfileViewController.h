@@ -9,4 +9,5 @@
 #import <UIKit/UIKit.h>
 
 @interface VProfileViewController : UITableViewController
+@property (nonatomic, readwrite)    BOOL    userIsLoggedInUser;
 @end
