@@ -7,6 +7,8 @@
 //
 
 #import "VSignUpViewController.h"
+#import "VObjectManager.h"
+#import "VUser.h"
 
 @implementation VSignUpViewController
 
@@ -41,9 +43,9 @@
     [self dismissViewControllerAnimated:YES completion:NULL];
 }
 
-- (void)didFailToSignUp
+- (void)didFailToSignUp:(NSString*)message
 {
-    UIAlertView*    alert   =   [[UIAlertView alloc] initWithTitle:@"Sign Up Failed" message:@"Unable to sign up." delegate:self cancelButtonTitle:@"Understood" otherButtonTitles:nil];
+    UIAlertView*    alert   =   [[UIAlertView alloc] initWithTitle:@"Account creation failed!" message:message delegate:self cancelButtonTitle:@"Understood" otherButtonTitles:nil];
     [alert show];
     [self dismissViewControllerAnimated:YES completion:NULL];
 }
@@ -52,41 +54,25 @@
 
 - (IBAction)signup:(id)sender
 {
-//    RKManagedObjectRequestOperation* requestOperation = [[RKObjectManager sharedManager]
-//                                                         appropriateObjectRequestOperationWithObject:nil
-//                                                         method:RKRequestMethodPOST
-//                                                         path:@"/api/account/create"
-//                                                         parameters:@{@"email" : email,
-//                                                                      @"password" : password,
-//                                                                      @"name" : name}];
+//    SuccessBlock success = ^(NSArray* objects)
+//    {
+//        if ([[objects firstObject] isKindOfClass:[VUser class]])
+//        {
+//            VLog(@"Invalid user object returned in api/account/create");
+//            [self didFailToSignUp:@"Sorry, an error has occured.  Please try again!"];
+//            return;
+//        }
+//    };
 //    
-//    [requestOperation setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation,
-//                                                      RKMappingResult *mappingResult)
-//     {
-//         RKLogInfo(@"Login in with user: %@", mappingResult.array);
-//         RKManagedObjectRequestOperation* requestOperation = [[RKObjectManager sharedManager]
-//                                                              appropriateObjectRequestOperationWithObject:nil
-//                                                              method:RKRequestMethodPOST
-//                                                              path:@"/api/login"
-//                                                              parameters:@{@"email": email,
-//                                                                           @"password": password}];
-//         
-//         [requestOperation setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation,
-//                                                           RKMappingResult *mappingResult)
-//          {
-//              RKLogInfo(@"Login with User: %@", mappingResult.array);
-//          } failure:^(RKObjectRequestOperation *operation, NSError *error)
-//          {
-//              RKLogError(@"Operation failed with error: %@", error);
-//          }];
-//         
-//         [requestOperation start];
-//     } failure:^(RKObjectRequestOperation *operation, NSError *error)
-//     {
-//         RKLogError(@"Operation failed with error: %@", error);
-//     }];
+//    FailBlock fail = ^(NSError* error)
+//    {
+//        [self didFailToSignUp:[error localizedDescription]];
+//    };
 //    
-//    [requestOperation start];
+//    [[[VObjectManager sharedManager] createToVictoriousWithEmail:self.email.text
+//                                                       password:self.password.text
+//                                                   successBlock:success
+//                                                      failBlock:fail] start];
 }
 
 @end
