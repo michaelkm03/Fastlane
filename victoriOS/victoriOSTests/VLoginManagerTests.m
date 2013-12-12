@@ -7,7 +7,7 @@
 //
 
 #import <XCTest/XCTest.h>
-#import "VObjectManager+Login.h"
+//#import "VObjectManager+Login.h"
 #import "XCTestRestKit.h"
 #import "VUser+RestKit.h"
 
