@@ -2,7 +2,7 @@
 //  VStatSequence.m
 //  victoriOS
 //
-//  Created by David Keegan on 12/9/13.
+//  Created by David Keegan on 12/13/13.
 //  Copyright (c) 2013 Victorious, Inc. All rights reserved.
 //
 
@@ -13,16 +13,17 @@
 
 @implementation VStatSequence
 
-@dynamic completed_at;
-@dynamic correct_answers;
-@dynamic id;
+@dynamic completedAt;
 @dynamic name;
-@dynamic num_questions_answered;
 @dynamic outcome;
-@dynamic possible_points;
-@dynamic total_points;
-@dynamic total_questions;
-@dynamic interaction_details;
+@dynamic possiblePoints;
+@dynamic questionsAnswered;
+@dynamic questionsAnsweredCorrectly;
+@dynamic remoteId;
+@dynamic totalPoints;
+@dynamic totalQuestions;
+@dynamic userId;
+@dynamic interactionDetails;
 @dynamic user;
 
 @end

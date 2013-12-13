@@ -2,7 +2,7 @@
 //  VStatAnswer.m
 //  victoriOS
 //
-//  Created by David Keegan on 12/9/13.
+//  Created by David Keegan on 12/13/13.
 //  Copyright (c) 2013 Victorious, Inc. All rights reserved.
 //
 
@@ -12,11 +12,14 @@
 
 @implementation VStatAnswer
 
-@dynamic answer_id;
+@dynamic answeredAt;
+@dynamic answerId;
+@dynamic createdAt;
 @dynamic currency;
-@dynamic id;
-@dynamic is_correct;
+@dynamic isCorrect;
 @dynamic label;
+@dynamic remoteId;
+@dynamic updatedAt;
 @dynamic interaction;
 
 @end

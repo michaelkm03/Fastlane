@@ -2,7 +2,7 @@
 //  VNode.h
 //  victoriOS
 //
-//  Created by David Keegan on 12/9/13.
+//  Created by David Keegan on 12/13/13.
 //  Copyright (c) 2013 Victorious, Inc. All rights reserved.
 //
 
@@ -14,10 +14,10 @@
 @interface VNode : NSManagedObject
 
 @property (nonatomic, retain) NSNumber * display_order;
-@property (nonatomic, retain) NSNumber * node_id;
+@property (nonatomic, retain) NSNumber * remoteId;
 @property (nonatomic, retain) NSSet *assets;
 @property (nonatomic, retain) NSSet *interactions;
-@property (nonatomic, retain) VNodeAction *node_action;
+@property (nonatomic, retain) VNodeAction *nodeAction;
 @property (nonatomic, retain) VSequence *sequence;
 @end
 

@@ -19,28 +19,31 @@
 + (RKEntityMapping*)entityMapping
 {
     NSDictionary *propertyMap = @{
-                                  @"category" : @"category",
-                                  @"display_order" : @"display_order",
-                                  @"id" : @"id",
-                                  @"name" : @"name",
-                                  @"preview_image" : @"preview_image",
-                                  @"released_at" : @"released_at",
-                                  @"sequence_description" : @"sequence_description",
-                                  @"status" : @"status"
+                                  @"category" : VSelectorName(category),
+                                  // for some reason this cannot be camelCase...
+                                  @"display_order" : VSelectorName(display_order),
+                                  @"id" : VSelectorName(remoteId),
+                                  @"name" : VSelectorName(name),
+                                  @"preview_image" : VSelectorName(previewImage),
+                                  @"released_at" : VSelectorName(releasedAt),
+                                  @"description" : VSelectorName(sequenceDescription),
+                                  @"status" : VSelectorName(status),
+                                  @"is_complete": VSelectorName(isComplete),
+                                  @"game_status": VSelectorName(gameStatus),
                                   };
-    
+
     RKEntityMapping *mapping = [RKEntityMapping
                                 mappingForEntityForName:[self entityName]
                                 inManagedObjectStore:[RKObjectManager sharedManager].managedObjectStore];
     
-    mapping.identificationAttributes = @[ @"id" ];
+    mapping.identificationAttributes = @[ VSelectorName(remoteId) ];
     
     [mapping addAttributeMappingsFromDictionary:propertyMap];
     
     //Now add relationships
     //This is equivilent to the above except it also checks for camelCase ect. versions of the keyPath
-    [mapping addRelationshipMappingWithSourceKeyPath:@"nodes" mapping:[VNode entityMapping]];
-    [mapping addRelationshipMappingWithSourceKeyPath:@"comments" mapping:[VComment entityMapping]];
+    [mapping addRelationshipMappingWithSourceKeyPath:VSelectorName(nodes) mapping:[VNode entityMapping]];
+    [mapping addRelationshipMappingWithSourceKeyPath:VSelectorName(comments) mapping:[VComment entityMapping]];
     
     return mapping;
 }

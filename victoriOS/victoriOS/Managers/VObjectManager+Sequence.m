@@ -94,7 +94,7 @@
                                                 successBlock:(SuccessBlock)success
                                                    failBlock:(FailBlock)fail
 {
-    NSString* path = [NSString stringWithFormat:@"/api/sequence/fetch/%@", sequence.id];
+    NSString* path = [NSString stringWithFormat:@"/api/sequence/fetch/%@", sequence.remoteId];
     
     return [self GET:path
               object:sequence
@@ -108,7 +108,7 @@
                                                 successBlock:(SuccessBlock)success
                                                    failBlock:(FailBlock)fail
 {
-    NSString* path = [NSString stringWithFormat:@"/api/comment/fetch/%@", sequence.id];
+    NSString* path = [NSString stringWithFormat:@"/api/comment/fetch/%@", sequence.remoteId];
     
     __block VSequence* commentOwner = sequence; //Keep the sequence around until the block gets called
     
@@ -152,7 +152,7 @@
                                                  successBlock:(SuccessBlock)success
                                                     failBlock:(FailBlock)fail
 {
-    NSString* path = [NSString stringWithFormat:@"/api/userinfo/games_played/%@", user.id];
+    NSString* path = [NSString stringWithFormat:@"/api/userinfo/games_played/%@", user.remoteId];
     
     __block VUser* statSequenceOwner = user;// keep the user in memory until we get back from the block.
     
@@ -160,7 +160,7 @@
     {
         for (VStatSequence* statSequence in statSequences)
         {
-            [statSequenceOwner addStat_sequencesObject:(VStatSequence*)[statSequenceOwner.managedObjectContext
+            [statSequenceOwner addStatSequencesObject:(VStatSequence*)[statSequenceOwner.managedObjectContext
                                                         objectWithID:[statSequence objectID]]];
         }
         success(statSequences);
@@ -178,7 +178,7 @@
                                                     successBlock:(SuccessBlock)success
                                                        failBlock:(FailBlock)fail
 {
-    NSString* path = [NSString stringWithFormat:@"/api/userinfo/game_stats/%@", statSequence.id];
+    NSString* path = [NSString stringWithFormat:@"/api/userinfo/game_stats/%@", statSequence.remoteId];
     
     return [self GET:path
               object:statSequence
@@ -196,7 +196,7 @@
 {
     return [self GET:@"api/game/create"
               object:nil
-          parameters:@{ @"sequence_id" : sequence.id}
+          parameters:@{ @"sequence_id" : sequence.remoteId}
         successBlock:success
            failBlock:fail
      paginationBlock:nil];
