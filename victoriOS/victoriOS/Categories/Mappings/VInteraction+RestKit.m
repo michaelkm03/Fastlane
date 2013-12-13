@@ -21,23 +21,22 @@
 + (RKEntityMapping*)entityMapping
 {
     NSDictionary *propertyMap = @{
-                                  @"node_id" : VSelectorName(nodeId),
                                   @"display_order" : VSelectorName(displayOrder),
-                                  @"start_time" : VSelectorName(startTime),
-                                  @"type" : VSelectorName(type),
-                                  @"interaction_id" : VSelectorName(remoteId),
+                                  @"interaction_id" : VSelectorName(interactionId),
+                                  @"node_id" : VSelectorName(nodeId),
                                   @"question" : VSelectorName(question),
-                                  @"timeout" : VSelectorName(timeout)
+                                  @"start_time" : VSelectorName(startTime),
+                                  @"type" : VSelectorName(type)
                                   };
-
+    
     RKEntityMapping *mapping = [RKEntityMapping
                                 mappingForEntityForName:[self entityName]
                                 inManagedObjectStore:[RKObjectManager sharedManager].managedObjectStore];
-
-    mapping.identificationAttributes = @[ VSelectorName(remoteId) ];
-
+    
+    mapping.identificationAttributes = @[ VSelectorName(interactionId) ];
+    
     [mapping addAttributeMappingsFromDictionary:propertyMap];
-
+    
     [mapping addRelationshipMappingWithSourceKeyPath:VSelectorName(interactionAction) mapping:[VInteractionAction entityMapping]];
     [mapping addRelationshipMappingWithSourceKeyPath:VSelectorName(rules) mapping:[VRule entityMapping]];
     [mapping addRelationshipMappingWithSourceKeyPath:VSelectorName(answer) mapping:[VAnswer entityMapping]];

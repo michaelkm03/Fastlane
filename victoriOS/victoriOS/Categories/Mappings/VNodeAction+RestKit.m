@@ -18,8 +18,8 @@
 + (RKEntityMapping*)entityMapping
 {
     NSDictionary *propertyMap = @{
-                                  @"won_goto_node" : VSelectorName(wonGotoNode),
-                                  @"lost_goto_node" : VSelectorName(lostGotoNode)
+                                  @"lost_goto_node" : VSelectorName(lostGotoNode),
+                                  @"won_goto_node" : VSelectorName(wonGotoNode)
                                   };
     
     RKEntityMapping *mapping = [RKEntityMapping

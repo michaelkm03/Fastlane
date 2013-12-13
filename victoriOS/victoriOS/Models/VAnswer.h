@@ -13,7 +13,7 @@
 
 @interface VAnswer : NSManagedObject
 
-@property (nonatomic, retain) NSNumber * remoteId;
+@property (nonatomic, retain) NSNumber * answerId;
 @property (nonatomic, retain) NSNumber * currency;
 @property (nonatomic, retain) NSNumber * displayOrder;
 @property (nonatomic, retain) NSNumber * isCorrect;

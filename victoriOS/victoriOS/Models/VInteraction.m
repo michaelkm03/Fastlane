@@ -16,12 +16,11 @@
 @implementation VInteraction
 
 @dynamic displayOrder;
-@dynamic remoteId;
+@dynamic interactionId;
 @dynamic nodeId;
 @dynamic question;
 @dynamic startTime;
 @dynamic type;
-@dynamic timeout;
 @dynamic answers;
 @dynamic interactionAction;
 @dynamic node;

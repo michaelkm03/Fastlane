@@ -13,7 +13,7 @@
 
 @implementation VAnswer
 
-@dynamic remoteId;
+@dynamic answerId;
 @dynamic currency;
 @dynamic displayOrder;
 @dynamic isCorrect;

@@ -15,14 +15,14 @@
 
 @property (nonatomic, retain) NSString * category;
 @property (nonatomic, retain) NSNumber * displayOrder;
-@property (nonatomic, retain) NSString * gameStatus;
-@property (nonatomic, retain) NSNumber * isComplete;
+@property (nonatomic, retain) NSNumber * sequenceId;
 @property (nonatomic, retain) NSString * name;
 @property (nonatomic, retain) id previewImage;
 @property (nonatomic, retain) NSDate * releasedAt;
 @property (nonatomic, retain) NSString * sequenceDescription;
-@property (nonatomic, retain) NSNumber * remoteId;
 @property (nonatomic, retain) NSString * status;
+@property (nonatomic, retain) NSString * isComplete;
+@property (nonatomic, retain) NSString * gameStatus;
 @property (nonatomic, retain) NSSet *comments;
 @property (nonatomic, retain) NSSet *nodes;
 @end

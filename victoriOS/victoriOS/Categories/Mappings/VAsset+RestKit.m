@@ -18,10 +18,10 @@
 + (RKEntityMapping*)entityMapping
 {
     NSDictionary *propertyMap = @{
-                                  @"node_id" : VSelectorName(nodeId),
+                                  @"data" : VSelectorName(data),
                                   @"display_order" : VSelectorName(displayOrder),
-                                  @"type" : VSelectorName(type),
-                                  @"data" : VSelectorName(data)
+                                  @"node_id" : VSelectorName(nodeId),
+                                  @"type" : VSelectorName(type)
                                   };
     
     RKEntityMapping *mapping = [RKEntityMapping

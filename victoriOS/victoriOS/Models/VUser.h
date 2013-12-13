@@ -15,10 +15,10 @@
 
 @property (nonatomic, retain) NSString * accessLevel;
 @property (nonatomic, retain) NSString * email;
+@property (nonatomic, retain) NSNumber * userId;
 @property (nonatomic, retain) NSString * name;
 @property (nonatomic, retain) NSString * token;
 @property (nonatomic, retain) NSDate * tokenUpdatedAt;
-@property (nonatomic, retain) NSNumber * remoteId;
 @property (nonatomic, retain) NSSet *statSequences;
 @end
 

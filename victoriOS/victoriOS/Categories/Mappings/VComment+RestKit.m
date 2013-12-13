@@ -18,29 +18,28 @@
 + (RKEntityMapping*)entityMapping
 {
     NSDictionary *propertyMap = @{
-                                  @"id" : VSelectorName(remoteId),
+                                  @"dislikes" : VSelectorName(dislikes),
                                   @"display_order" : VSelectorName(displayOrder),
-                                  @"sequence_id" : VSelectorName(sequenceId),
-                                  @"parent_id" : VSelectorName(parentId),
-                                  @"user_id" : VSelectorName(userId),
-                                  @"text" : VSelectorName(text),
+                                  @"flags" : VSelectorName(flags),
+                                  @"id" : VSelectorName(commentId),
+                                  @"likes" : VSelectorName(likes),
                                   @"media_type" : VSelectorName(mediaType),
                                   @"media_url" : VSelectorName(mediaUrl),
-                                  @"likes" : VSelectorName(likes),
-                                  @"dislikes" : VSelectorName(dislikes),
+                                  @"parent_id" : VSelectorName(parentId),
+                                  @"posted_at" : VSelectorName(postedAt),
+                                  @"sequence_id" : VSelectorName(sequenceId),
                                   @"shares" : VSelectorName(shares),
-                                  @"flags" : VSelectorName(flags),
-                                  @"posted_at" : VSelectorName(postedAt)
+                                  @"text" : VSelectorName(text)
                                   };
-
+    
     RKEntityMapping *mapping = [RKEntityMapping
                                 mappingForEntityForName:[self entityName]
                                 inManagedObjectStore:[RKObjectManager sharedManager].managedObjectStore];
-
-    mapping.identificationAttributes = @[ VSelectorName(remoteId) ];
-
+    
+    mapping.identificationAttributes = @[ VSelectorName(commentId) ];
+    
     [mapping addAttributeMappingsFromDictionary:propertyMap];
-
+    
     return mapping;
 }
 

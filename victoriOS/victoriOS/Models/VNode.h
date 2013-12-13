@@ -14,7 +14,7 @@
 @interface VNode : NSManagedObject
 
 @property (nonatomic, retain) NSNumber * displayOrder;
-@property (nonatomic, retain) NSNumber * remoteId;
+@property (nonatomic, retain) NSNumber * nodeId;
 @property (nonatomic, retain) NSSet *assets;
 @property (nonatomic, retain) NSSet *interactions;
 @property (nonatomic, retain) VNodeAction *nodeAction;
