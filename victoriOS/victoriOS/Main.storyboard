@@ -148,6 +148,7 @@
                         <segue destination="Xdu-qN-Fv9" kind="push" identifier="toForums" id="C81-aq-wiI"/>
                         <segue destination="WzP-A1-b9Z" kind="push" identifier="toInbox" id="vPd-Ww-HiG"/>
                         <segue destination="IFP-B3-tPj" kind="push" identifier="toProfile" id="amR-0J-mjO"/>
+                        <segue destination="fhC-h7-Ivs" kind="push" id="6JJ-rU-TRe"/>
                     </connections>
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="5T4-sf-laW" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -527,6 +528,34 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="mzW-qR-Pck" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-2254" y="1245"/>
+        </scene>
+        <!--Owner View Controller - Create Poll-->
+        <scene sceneID="vD5-aH-6vd">
+            <objects>
+                <viewController storyboardIdentifier="owner" useStoryboardIdentifierAsRestorationIdentifier="YES" id="fhC-h7-Ivs" customClass="VOwnerViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="CnX-zA-nni"/>
+                        <viewControllerLayoutGuide type="bottom" id="9d5-C9-aHv"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="cuO-Uc-xjc">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <subviews>
+                            <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="N1d-6g-80X">
+                                <rect key="frame" x="0.0" y="524" width="320" height="44"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
+                                <items>
+                                    <barButtonItem systemItem="camera" id="MJA-Fx-RXB"/>
+                                </items>
+                            </toolbar>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                    </view>
+                    <navigationItem key="navigationItem" title="Create Poll" id="oTj-9c-jse"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="n3g-3I-8YY" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-2252" y="1979"/>
         </scene>
         <!--Message View Controller - Message-->
         <scene sceneID="vrT-be-xfB">

@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3F497884185AAF0100DF80CF /* VOwnerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F497883185AAF0100DF80CF /* VOwnerViewController.m */; };
 		3F543C4118512C6700A1F2FC /* VSignUpViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F543C4018512C6700A1F2FC /* VSignUpViewController.m */; };
 		3F90DD6718569ACA00C8F312 /* VRootViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F90DD6618569ACA00C8F312 /* VRootViewController.m */; };
 		3F90DD6A18569B9300C8F312 /* VNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F90DD6918569B9300C8F312 /* VNavigationController.m */; };
@@ -93,6 +94,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		3F497882185AAF0100DF80CF /* VOwnerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VOwnerViewController.h; path = UI/VOwnerViewController.h; sourceTree = "<group>"; };
+		3F497883185AAF0100DF80CF /* VOwnerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VOwnerViewController.m; path = UI/VOwnerViewController.m; sourceTree = "<group>"; };
 		3F543C3F18512C6700A1F2FC /* VSignUpViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VSignUpViewController.h; path = UI/VSignUpViewController.h; sourceTree = "<group>"; };
 		3F543C4018512C6700A1F2FC /* VSignUpViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VSignUpViewController.m; path = UI/VSignUpViewController.m; sourceTree = "<group>"; };
 		3F90DD6518569ACA00C8F312 /* VRootViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VRootViewController.h; path = UI/VRootViewController.h; sourceTree = "<group>"; };
@@ -258,6 +261,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		3F497881185AAEE000DF80CF /* Owner */ = {
+			isa = PBXGroup;
+			children = (
+				3F497882185AAF0100DF80CF /* VOwnerViewController.h */,
+				3F497883185AAF0100DF80CF /* VOwnerViewController.m */,
+			);
+			name = Owner;
+			sourceTree = "<group>";
+		};
 		3F9100F4185A4AB40005317C /* Login */ = {
 			isa = PBXGroup;
 			children = (
@@ -337,6 +349,7 @@
 				3F9100F7185A4AEF0005317C /* Forums */,
 				3F9100F5185A4AC40005317C /* Inbox */,
 				3F9100F6185A4AD80005317C /* Profile */,
+				3F497881185AAEE000DF80CF /* Owner */,
 				3F90DE4E1857F34D00C8F312 /* VValidatingTextField.h */,
 				3F90DE4F1857F34D00C8F312 /* VValidatingTextField.m */,
 				5F8AAA5D184D43C600301783 /* Main.storyboard */,
@@ -710,6 +723,7 @@
 				BEBDC4C81857B2E30013DEF1 /* VComment+RestKit.m in Sources */,
 				BEBDC4D11857B2E30013DEF1 /* VStatSequence+RestKit.m in Sources */,
 				BEBDC4CB1857B2E30013DEF1 /* VNode+RestKit.m in Sources */,
+				3F497884185AAF0100DF80CF /* VOwnerViewController.m in Sources */,
 				3F9100FF185A8E5A0005317C /* VStickerViewController.m in Sources */,
 				3F90DD811856A59B00C8F312 /* VInboxViewController.m in Sources */,
 				BEBDC4D21857B2E30013DEF1 /* VUser+RestKit.m in Sources */,

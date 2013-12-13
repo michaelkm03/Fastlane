@@ -11,6 +11,8 @@
 #import "VStreamsTableViewController.h"
 #import "VForumsViewController.h"
 #import "VLoginViewController.h"
+#import "VOwnerViewController.h"
+
 #import "VObjectManager+Login.h"
 //TODO:remove this import, need to test
 #import "VObjectManager+Sequence.h"
@@ -131,7 +133,9 @@
     {
         if ([VObjectManager sharedManager].isOwner)
         {
-            //  Create Poll
+            VOwnerViewController*   ownerViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"owner"];
+            navigationController.viewControllers = @[ownerViewController];
+            navigationController.toolbarHidden = NO;
         }
         else
         {
