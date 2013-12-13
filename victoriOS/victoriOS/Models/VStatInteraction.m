@@ -13,13 +13,15 @@
 
 @implementation VStatInteraction
 
-@dynamic answeredAt;
 @dynamic currency;
-@dynamic statInteractionId;
 @dynamic interactionId;
 @dynamic points;
 @dynamic question;
+@dynamic remoteId;
 @dynamic type;
+@dynamic timeout;
+@dynamic createdAt;
+@dynamic updatedAt;
 @dynamic answers;
 @dynamic statSequence;
 

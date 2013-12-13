@@ -14,9 +14,12 @@
 
 @dynamic answerId;
 @dynamic currency;
-@dynamic statAnswerId;
 @dynamic isCorrect;
 @dynamic label;
+@dynamic remoteId;
+@dynamic answeredAt;
+@dynamic createdAt;
+@dynamic updatedAt;
 @dynamic interaction;
 
 @end

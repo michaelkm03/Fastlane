@@ -14,11 +14,12 @@
 @interface VInteraction : NSManagedObject
 
 @property (nonatomic, retain) NSNumber * displayOrder;
-@property (nonatomic, retain) NSNumber * interactionId;
+@property (nonatomic, retain) NSNumber * remoteId;
 @property (nonatomic, retain) NSNumber * nodeId;
 @property (nonatomic, retain) NSString * question;
 @property (nonatomic, retain) NSNumber * startTime;
 @property (nonatomic, retain) NSString * type;
+@property (nonatomic, retain) NSNumber * timeout;
 @property (nonatomic, retain) NSSet *answers;
 @property (nonatomic, retain) VInteractionAction *interactionAction;
 @property (nonatomic, retain) VNode *node;

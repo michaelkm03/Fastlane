@@ -14,14 +14,15 @@
 @implementation VStatSequence
 
 @dynamic completedAt;
-@dynamic correctAnswers;
-@dynamic statSequenceId;
+@dynamic questionsAnsweredCorrectly;
 @dynamic name;
-@dynamic questionsAnswered;
 @dynamic outcome;
 @dynamic possiblePoints;
+@dynamic questionsAnswered;
+@dynamic remoteId;
 @dynamic totalPoints;
 @dynamic totalQuestions;
+@dynamic userId;
 @dynamic interactionDetails;
 @dynamic user;
 

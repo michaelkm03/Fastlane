@@ -18,15 +18,15 @@
 + (RKEntityMapping*)entityMapping
 {
     NSDictionary *propertyMap = @{
-                                  @"display_order" : VSelectorName(displayOrder),
-                                  @"node_id" : VSelectorName(nodeId)
+                                  @"node_id" : VSelectorName(remoteId),
+                                  @"display_order" : VSelectorName(displayOrder)
                                   };
     
     RKEntityMapping *mapping = [RKEntityMapping
                                 mappingForEntityForName:[self entityName]
                                 inManagedObjectStore:[RKObjectManager sharedManager].managedObjectStore];
     
-    mapping.identificationAttributes = @[ VSelectorName(nodeId) ];
+    mapping.identificationAttributes = @[ VSelectorName(remoteId) ];
     
     [mapping addAttributeMappingsFromDictionary:propertyMap];
     

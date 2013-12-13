@@ -14,10 +14,10 @@
 
 @dynamic accessLevel;
 @dynamic email;
-@dynamic userId;
 @dynamic name;
 @dynamic token;
 @dynamic tokenUpdatedAt;
+@dynamic remoteId;
 @dynamic statSequences;
 
 @end

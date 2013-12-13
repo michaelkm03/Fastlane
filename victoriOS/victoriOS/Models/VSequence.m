@@ -15,14 +15,14 @@
 
 @dynamic category;
 @dynamic displayOrder;
-@dynamic sequenceId;
+@dynamic gameStatus;
+@dynamic isComplete;
 @dynamic name;
 @dynamic previewImage;
 @dynamic releasedAt;
 @dynamic sequenceDescription;
+@dynamic remoteId;
 @dynamic status;
-@dynamic isComplete;
-@dynamic gameStatus;
 @dynamic comments;
 @dynamic nodes;
 

@@ -8,14 +8,15 @@
 
 #import "VComment.h"
 #import "VSequence.h"
+#import "VUser.h"
 
 
 @implementation VComment
 
+@dynamic remoteId;
 @dynamic dislikes;
 @dynamic displayOrder;
 @dynamic flags;
-@dynamic commentId;
 @dynamic likes;
 @dynamic mediaType;
 @dynamic mediaUrl;
@@ -24,6 +25,8 @@
 @dynamic sequenceId;
 @dynamic shares;
 @dynamic text;
+@dynamic userId;
 @dynamic sequence;
+@dynamic user;
 
 @end

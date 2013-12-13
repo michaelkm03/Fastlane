@@ -13,7 +13,7 @@
 
 @interface VAsset : NSManagedObject
 
-@property (nonatomic, retain) id data;
+@property (nonatomic, retain) NSString * data;
 @property (nonatomic, retain) NSNumber * displayOrder;
 @property (nonatomic, retain) NSNumber * nodeId;
 @property (nonatomic, retain) NSString * type;

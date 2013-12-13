@@ -16,7 +16,7 @@
 @implementation VNode
 
 @dynamic displayOrder;
-@dynamic nodeId;
+@dynamic remoteId;
 @dynamic assets;
 @dynamic interactions;
 @dynamic nodeAction;

@@ -21,7 +21,7 @@
     NSDictionary *propertyMap = @{
                                   @"category" : VSelectorName(category),
                                   @"display_order" : VSelectorName(displayOrder),
-                                  @"id" : VSelectorName(sequenceId),
+                                  @"id" : VSelectorName(remoteId),
                                   @"name" : VSelectorName(name),
                                   @"preview_image" : VSelectorName(previewImage),
                                   @"released_at" : VSelectorName(releasedAt),
@@ -35,7 +35,7 @@
                                 mappingForEntityForName:[self entityName]
                                 inManagedObjectStore:[RKObjectManager sharedManager].managedObjectStore];
     
-    mapping.identificationAttributes = @[ VSelectorName(sequenceId) ];
+    mapping.identificationAttributes = @[ VSelectorName(remoteId) ];
     
     [mapping addAttributeMappingsFromDictionary:propertyMap];
     

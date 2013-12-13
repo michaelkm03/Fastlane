@@ -85,7 +85,7 @@
 
 + (void)loadFullDataForSequence:(VSequence*)sequence
 {
-    NSString* path = [NSString stringWithFormat:@"%@/%@", @"/api/sequence/item", sequence.sequenceId];
+    NSString* path = [NSString stringWithFormat:@"%@/%@", @"/api/sequence/item", sequence.remoteId];
     RKManagedObjectRequestOperation* requestOperation = [[RKObjectManager sharedManager]
                                                          appropriateObjectRequestOperationWithObject:sequence
                                                          method:RKRequestMethodGET
@@ -109,7 +109,7 @@
 + (void)loadCommentsForSequence:(VSequence*)sequence
 {
     
-    NSString* path = [NSString stringWithFormat:@"%@/%@", @"/api/comment/all", sequence.sequenceId];
+    NSString* path = [NSString stringWithFormat:@"%@/%@", @"/api/comment/all", sequence.remoteId];
     RKManagedObjectRequestOperation* requestOperation = [[RKObjectManager sharedManager]
                                                          appropriateObjectRequestOperationWithObject:nil
                                                          method:RKRequestMethodGET
@@ -161,7 +161,7 @@
 
 + (void)loadStatSequencesForUser:(VUser*)user
 {
-    NSString* path = [NSString stringWithFormat:@"%@/%@", @"/api/userinfo/games_played", user.userId];
+    NSString* path = [NSString stringWithFormat:@"%@/%@", @"/api/userinfo/games_played", user.remoteId];
     RKManagedObjectRequestOperation* requestOperation = [[RKObjectManager sharedManager]
                                                          appropriateObjectRequestOperationWithObject:nil
                                                          method:RKRequestMethodGET
@@ -193,7 +193,7 @@
 
 + (void)loadFullDataForStatSequence:(VStatSequence*)statSequence
 {
-    NSString* path = [NSString stringWithFormat:@"%@/%@", @"/api/userinfo/game_stats", statSequence.statSequenceId];
+    NSString* path = [NSString stringWithFormat:@"%@/%@", @"/api/userinfo/game_stats", statSequence.remoteId];
     RKManagedObjectRequestOperation* requestOperation = [[RKObjectManager sharedManager]
                                                          appropriateObjectRequestOperationWithObject:statSequence
                                                          method:RKRequestMethodGET
@@ -215,7 +215,7 @@
 #pragma mark - StatSequence Creation
 + (void)createStatSequenceForSequence:(VSequence*)sequence
 {
-    if (!sequence || !sequence.sequenceId)
+    if (!sequence || !sequence.remoteId)
     {
         VLog(@"Invalid sequence or id in api/game/create");
         return;
@@ -225,7 +225,7 @@
                                                          appropriateObjectRequestOperationWithObject:nil
                                                          method:RKRequestMethodPOST
                                                          path:@"api/game/create"
-                                                         parameters:@{ @"sequence_id" : sequence.sequenceId}];
+                                                         parameters:@{ @"sequence_id" : sequence.remoteId}];
 
     [requestOperation setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation,
                                                       RKMappingResult *mappingResult)
