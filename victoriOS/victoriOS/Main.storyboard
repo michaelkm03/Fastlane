@@ -618,8 +618,8 @@
                     </view>
                     <connections>
                         <outlet property="accessoryView" destination="9FN-tv-s1k" id="OyC-y2-Kby"/>
-                        <outlet property="textView" destination="lLd-Nk-aJn" id="yAc-qS-Z4S"/>
-                        <outlet property="textViewBottomConst" destination="H5N-Wu-9UC" id="iy4-cb-eEx"/>
+                        <outlet property="textView" destination="lLd-Nk-aJn" id="8mv-P2-0bV"/>
+                        <outlet property="view" destination="LsI-xs-V1A" id="MSM-ql-TeL"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="EIK-DT-GQK" userLabel="First Responder" sceneMemberID="firstResponder"/>
