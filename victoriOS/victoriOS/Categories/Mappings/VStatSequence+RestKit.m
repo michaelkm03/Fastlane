@@ -18,22 +18,23 @@
 + (RKEntityMapping*)entityMapping
 {
     NSDictionary *propertyMap = @{
-                                  @"completed_at" : @"completed_at",
-                                  @"correct_answers" : @"correct_answers",
-                                  @"id" : @"id",
-                                  @"name" : @"name",
-                                  @"num_questions_answered" : @"num_questions_answered",
-                                  @"outcome" : @"outcome",
-                                  @"possible_points" : @"possible_points",
-                                  @"total_points" : @"total_points",
-                                  @"total_questions" : @"total_questions"
+                                  @"possible_points" : VSelectorName(possiblePoints),
+                                  @"total_questions" : VSelectorName(totalQuestions),
+                                  @"total_points" : VSelectorName(totalPoints),
+                                  @"num_questions_answered_correctly" : VSelectorName(questionsAnsweredCorrectly),
+                                  @"num_questions_answered" : VSelectorName(questionsAnswered),
+                                  @"name" : VSelectorName(name),
+                                  @"outcome" : VSelectorName(outcome),
+                                  @"completed_at" : VSelectorName(completedAt),
+                                  @"id" : VSelectorName(remoteId),
+                                  @"user_id" : VSelectorName(userId)
                                   };
     
     RKEntityMapping *mapping = [RKEntityMapping
                                 mappingForEntityForName:[self entityName]
                                 inManagedObjectStore:[RKObjectManager sharedManager].managedObjectStore];
     
-    mapping.identificationAttributes = @[ @"id" ];
+    mapping.identificationAttributes = @[ VSelectorName(remoteId) ];
     
     [mapping addAttributeMappingsFromDictionary:propertyMap];
     

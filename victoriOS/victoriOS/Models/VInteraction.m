@@ -2,7 +2,7 @@
 //  VInteraction.m
 //  victoriOS
 //
-//  Created by David Keegan on 12/9/13.
+//  Created by David Keegan on 12/13/13.
 //  Copyright (c) 2013 Victorious, Inc. All rights reserved.
 //
 
@@ -16,13 +16,14 @@
 @implementation VInteraction
 
 @dynamic display_order;
-@dynamic interaction_id;
-@dynamic node_id;
+@dynamic nodeId;
 @dynamic question;
-@dynamic start_time;
+@dynamic remoteId;
+@dynamic startTime;
+@dynamic timeout;
 @dynamic type;
 @dynamic answers;
-@dynamic interaction_action;
+@dynamic interactionAction;
 @dynamic node;
 @dynamic rules;
 

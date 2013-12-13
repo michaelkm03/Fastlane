@@ -2,7 +2,7 @@
 //  VAsset.m
 //  victoriOS
 //
-//  Created by David Keegan on 12/9/13.
+//  Created by David Keegan on 12/13/13.
 //  Copyright (c) 2013 Victorious, Inc. All rights reserved.
 //
 
@@ -14,7 +14,7 @@
 
 @dynamic data;
 @dynamic display_order;
-@dynamic node_id;
+@dynamic nodeId;
 @dynamic type;
 @dynamic node;
 

@@ -18,7 +18,7 @@
 + (RKEntityMapping*)entityMapping
 {
     NSDictionary *propertyMap = @{
-                                  @"goto_node" : @"goto_node"
+                                  @"goto_node" : VSelectorName(gotoNode)
                                   };
     
     RKEntityMapping *mapping = [RKEntityMapping

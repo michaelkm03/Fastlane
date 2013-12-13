@@ -2,7 +2,7 @@
 //  VStatSequence.h
 //  victoriOS
 //
-//  Created by David Keegan on 12/9/13.
+//  Created by David Keegan on 12/13/13.
 //  Copyright (c) 2013 Victorious, Inc. All rights reserved.
 //
 
@@ -13,24 +13,25 @@
 
 @interface VStatSequence : NSManagedObject
 
-@property (nonatomic, retain) NSDate * completed_at;
-@property (nonatomic, retain) NSNumber * correct_answers;
-@property (nonatomic, retain) NSNumber * id;
+@property (nonatomic, retain) NSDate * completedAt;
 @property (nonatomic, retain) NSString * name;
-@property (nonatomic, retain) NSNumber * num_questions_answered;
 @property (nonatomic, retain) NSString * outcome;
-@property (nonatomic, retain) NSNumber * possible_points;
-@property (nonatomic, retain) NSNumber * total_points;
-@property (nonatomic, retain) NSNumber * total_questions;
-@property (nonatomic, retain) NSSet *interaction_details;
+@property (nonatomic, retain) NSNumber * possiblePoints;
+@property (nonatomic, retain) NSNumber * questionsAnswered;
+@property (nonatomic, retain) NSNumber * questionsAnsweredCorrectly;
+@property (nonatomic, retain) NSNumber * remoteId;
+@property (nonatomic, retain) NSNumber * totalPoints;
+@property (nonatomic, retain) NSNumber * totalQuestions;
+@property (nonatomic, retain) NSNumber * userId;
+@property (nonatomic, retain) NSSet *interactionDetails;
 @property (nonatomic, retain) VUser *user;
 @end
 
 @interface VStatSequence (CoreDataGeneratedAccessors)
 
-- (void)addInteraction_detailsObject:(VStatInteraction *)value;
-- (void)removeInteraction_detailsObject:(VStatInteraction *)value;
-- (void)addInteraction_details:(NSSet *)values;
-- (void)removeInteraction_details:(NSSet *)values;
+- (void)addInteractionDetailsObject:(VStatInteraction *)value;
+- (void)removeInteractionDetailsObject:(VStatInteraction *)value;
+- (void)addInteractionDetails:(NSSet *)values;
+- (void)removeInteractionDetails:(NSSet *)values;
 
 @end

@@ -2,7 +2,7 @@
 //  VSequence.m
 //  victoriOS
 //
-//  Created by David Keegan on 12/9/13.
+//  Created by David Keegan on 12/13/13.
 //  Copyright (c) 2013 Victorious, Inc. All rights reserved.
 //
 
@@ -15,11 +15,13 @@
 
 @dynamic category;
 @dynamic display_order;
-@dynamic id;
+@dynamic gameStatus;
+@dynamic isComplete;
 @dynamic name;
-@dynamic preview_image;
-@dynamic released_at;
-@dynamic sequence_description;
+@dynamic previewImage;
+@dynamic releasedAt;
+@dynamic remoteId;
+@dynamic sequenceDescription;
 @dynamic status;
 @dynamic comments;
 @dynamic nodes;

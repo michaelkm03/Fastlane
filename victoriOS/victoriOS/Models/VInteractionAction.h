@@ -2,7 +2,7 @@
 //  VInteractionAction.h
 //  victoriOS
 //
-//  Created by David Keegan on 12/9/13.
+//  Created by David Keegan on 12/13/13.
 //  Copyright (c) 2013 Victorious, Inc. All rights reserved.
 //
 
@@ -13,9 +13,9 @@
 
 @interface VInteractionAction : NSManagedObject
 
-@property (nonatomic, retain) NSNumber * correct_goto_node;
-@property (nonatomic, retain) NSNumber * incorrect_goto_node;
-@property (nonatomic, retain) NSNumber * timeout_goto_node;
+@property (nonatomic, retain) NSNumber * correctGotoNode;
+@property (nonatomic, retain) NSNumber * incorrectGotoNode;
+@property (nonatomic, retain) NSNumber * timeoutGotoNode;
 @property (nonatomic, retain) VInteraction *relationship;
 
 @end

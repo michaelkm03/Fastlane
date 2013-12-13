@@ -18,22 +18,22 @@
 + (RKEntityMapping*)entityMapping
 {
     NSDictionary *propertyMap = @{
-                                  @"display_order" : @"display_order",
-                                  @"node_id" : @"node_id"
+                                  @"node_id" : VSelectorName(remoteId),
+                                  @"display_order" : VSelectorName(display_order)
                                   };
     
     RKEntityMapping *mapping = [RKEntityMapping
                                 mappingForEntityForName:[self entityName]
                                 inManagedObjectStore:[RKObjectManager sharedManager].managedObjectStore];
     
-    mapping.identificationAttributes = @[ @"node_id" ];
+    mapping.identificationAttributes = @[ VSelectorName(remoteId) ];
     
     [mapping addAttributeMappingsFromDictionary:propertyMap];
     
     //Now add relationships
-    [mapping addRelationshipMappingWithSourceKeyPath:@"assets" mapping:[VAsset entityMapping]];
-    [mapping addRelationshipMappingWithSourceKeyPath:@"interactions" mapping:[VInteraction entityMapping]];
-    [mapping addRelationshipMappingWithSourceKeyPath:@"node_action" mapping:[VNodeAction entityMapping]];
+    [mapping addRelationshipMappingWithSourceKeyPath:VSelectorName(assets) mapping:[VAsset entityMapping]];
+    [mapping addRelationshipMappingWithSourceKeyPath:VSelectorName(interactions) mapping:[VInteraction entityMapping]];
+    [mapping addRelationshipMappingWithSourceKeyPath:VSelectorName(nodeAction) mapping:[VNodeAction entityMapping]];
     
     return mapping;
 }
