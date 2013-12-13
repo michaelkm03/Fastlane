@@ -11,6 +11,7 @@
 #import "VStreamsTableViewController.h"
 #import "VForumsViewController.h"
 #import "VLoginViewController.h"
+#import "VOwnerViewController.h"
 #import "VObjectManager.h"
 
 @implementation VMenuController
@@ -123,7 +124,9 @@
     {
         if ([VObjectManager sharedManager].isOwner)
         {
-            //  Create Poll
+            VOwnerViewController*   ownerViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"owner"];
+            navigationController.viewControllers = @[ownerViewController];
+            navigationController.toolbarHidden = NO;
         }
         else
         {
