@@ -10,15 +10,15 @@
 
 /*! Block that executes when the API succeeds. 
  *  Block is given NSArray of objects RestKit created from response. */
-typedef void (^SuccessBlock) (NSArray*);
+typedef void (^SuccessBlock) (NSArray* resultObjects);
 
 /*! Block that executes when the API fails.
  * Block is given NSError* that RestKit returned. */
-typedef void (^FailBlock) (NSError*);
+typedef void (^FailBlock) (NSError* error);
 /*! Block that will be given Pagination information from API Response.
  *  Block is given NSUInteger for page and NSUInteger for totalPages
  *  NOTE: VObjectManager does not keep track of Pagination Logic.*/
-typedef void (^PaginationBlock) (NSUInteger, NSUInteger);
+typedef void (^PaginationBlock) (NSUInteger page, NSUInteger page_total);
 
 
 typedef float (^MyBlockType)(float, float);

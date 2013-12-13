@@ -185,7 +185,7 @@
                  successBlock(mappedObjects);
          
              if(paginationBlock)
-                 paginationBlock(errorMessage.page, errorMessage.total_pages); //TODO: pass in real page / totalPages
+                 paginationBlock(errorMessage.page_number, errorMessage.total_pages); //TODO: pass in real page / totalPages
          }
          
      } failure:^(RKObjectRequestOperation *operation, NSError *error)

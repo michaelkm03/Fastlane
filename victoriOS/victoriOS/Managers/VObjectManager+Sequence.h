@@ -8,6 +8,10 @@
 
 #import "VObjectManager.h"
 
+#import "VCategory+RestKit.h"
+
+
+
 @interface VObjectManager (Sequence)
 
 - (RKManagedObjectRequestOperation *)loadSequenceCategoriesWithSuccessBlock:(SuccessBlock)success

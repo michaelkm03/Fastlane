@@ -12,7 +12,7 @@
 @property (nonatomic, assign) NSInteger api_version;
 @property (nonatomic, assign) NSInteger app_id;
 @property (nonatomic, assign) NSInteger user_id;
-@property (nonatomic, assign) NSInteger page;
+@property (nonatomic, assign) NSInteger page_number;
 @property (nonatomic, assign) NSInteger total_pages;
 @property (nonatomic, strong) NSString* message;
 
