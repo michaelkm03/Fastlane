@@ -7,6 +7,8 @@
 //
 
 #import "VObjectManager.h"
+
+#import "VObjectManager+Private.h"
 #import "VObjectManager+Login.h"
 
 #import "NSString+SHA1Digest.h"
@@ -52,27 +54,15 @@
     // Configure a managed object cache to ensure we do not create duplicate objects
     managedObjectStore.managedObjectCache = [[RKInMemoryManagedObjectCache alloc] initWithManagedObjectContext:managedObjectStore.persistentStoreManagedObjectContext];
 
-    [manager addVictoriousDescriptors];
+    [manager victoriousSetup];
 
     //This will allow us to call this manager with [RKObjectManager sharedManager]
     [self setSharedManager:manager];
 }
 
-- (void)addVictoriousDescriptors
+- (void)victoriousSetup
 {
     //Should one of our requests to get data fail, RestKit will use this mapping and send us an NSError object with the error message of the response as the string.
-    NSMutableIndexSet *statusCodes = [RKStatusCodeIndexSetForClass(RKStatusCodeClassClientError) mutableCopy];
-    [statusCodes addIndexes:RKStatusCodeIndexSetForClass(RKStatusCodeClassSuccessful)];
-
-//    // TODO: store more of the error information in a RKObjectMapping subclass, like the error code
-//    RKObjectMapping *errorMapping = [RKObjectMapping mappingForClass:[VErrorMessage class]];
-//    [errorMapping addPropertyMapping:[RKAttributeMapping attributeMappingFromKeyPath:@"message"
-//                                                                           toKeyPath:@"errorMessage"]];
-//    
-//    RKResponseDescriptor *errorDescriptor =
-//    [RKResponseDescriptor responseDescriptorWithMapping:errorMapping method:RKRequestMethodAny
-//                                            pathPattern:nil keyPath:nil statusCodes:statusCodes];
-//    
     RKObjectMapping *errorMapping = [RKObjectMapping mappingForClass:[RKErrorMessage class]];
     [errorMapping addPropertyMapping:
     [RKAttributeMapping attributeMappingFromKeyPath:nil toKeyPath:@"errorMessage"]];
@@ -98,54 +88,11 @@
              [VComment getAllDescriptor],
              [VStatSequence gamesPlayedDescriptor],
              [VStatSequence gameStatsDescriptor]]];
+
+    _paginationStatuses = [[NSMutableDictionary alloc] init];
 }
 
 #pragma mark - operation
-
-- (RKManagedObjectRequestOperation *)requestMethod:(RKRequestMethod)method path:(NSString *)path parameters:(NSDictionary *)parameters block:(void(^)(NSUInteger page, NSUInteger perPage, NSArray *results, NSError *error))block
-{
-    // TODO: return accurate page and perPage
-    RKManagedObjectRequestOperation *requestOperation =
-    [self  appropriateObjectRequestOperationWithObject:nil method:method path:path parameters:parameters];
-
-    [requestOperation setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult)
-    {
-        if(block)
-        {
-            if([[mappingResult firstObject] isKindOfClass:[RKErrorMessage class]])
-            {
-                RKErrorMessage *errorMessage = (RKErrorMessage *)[mappingResult firstObject];
-                // TODO: create better error object
-                block(0, 0, nil, [NSError errorWithDomain:@"com.getvictorious.victoriOS" code:0
-                                           userInfo:@{NSLocalizedDescriptionKey: errorMessage.errorMessage}]);
-            }else
-            {
-                block(0, 0, mappingResult.array, nil);
-            }
-        }
-    } failure:^(RKObjectRequestOperation *operation, NSError *error)
-    {
-        if(block)
-        {
-            block(0, 0, nil, error);
-        }
-    }];
-
-    return requestOperation;
-}
-
-
-- (RKManagedObjectRequestOperation *)GET:(NSString *)path parameters:(NSDictionary *)parameters block:(void(^)(NSUInteger page, NSUInteger perPage, NSArray *results, NSError *error))block
-{
-    return [self requestMethod:RKRequestMethodGET path:path parameters:parameters block:block];
-}
-
-- (RKManagedObjectRequestOperation *)POST:(NSString *)path parameters:(NSDictionary *)parameters block:(void(^)(NSUInteger page, NSUInteger perPage, NSArray *results, NSError *error))block
-{
-    return [self requestMethod:RKRequestMethodPOST path:path parameters:parameters block:block];
-}
-
-
 
 - (RKManagedObjectRequestOperation *)requestMethod:(RKRequestMethod)method
                                             object:(id)object

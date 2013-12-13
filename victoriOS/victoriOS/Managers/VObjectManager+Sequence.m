@@ -13,9 +13,29 @@
 #import "VSequence+RestKit.h"
 #import "VStatSequence+RestKit.h"
 
+#import "VPaginationStatus.h"
+
 @implementation VObjectManager (Sequence)
 
 #pragma mark - Sequences
+
+- (RKManagedObjectRequestOperation *)initialSequenceLoad
+{
+    return [[VObjectManager sharedManager] loadSequenceCategoriesWithSuccessBlock:^(NSArray *resultObjects)
+      {
+          for (VCategory* category in resultObjects)
+          {
+              [[self loadNextPageForCategory:category
+                               successBlock:nil
+                                  failBlock:^(NSError *error) {
+                                      VLog(@"Error in initialSequenceLoad: %@", error);
+                               }] start];
+          }
+      } failBlock:^(NSError *error)
+      {
+          nil;
+      }];
+}
 
 - (RKManagedObjectRequestOperation *)loadSequenceCategoriesWithSuccessBlock:(SuccessBlock)success
                                                                   failBlock:(FailBlock)fail
@@ -28,25 +48,53 @@
       paginationBlock:nil];
 }
 
-- (RKManagedObjectRequestOperation *)loadSequencesForCategory:(VCategory*)category
+/*! Loads the next page of sequences for the category
+ * \param category: category of sequences to load
+ * \returns RKManagedObjectRequestOperation* or nil if theres no more pages to load
+ */
+- (RKManagedObjectRequestOperation *)loadNextPageForCategory:(VCategory*)category
                                                  successBlock:(SuccessBlock)success
                                                     failBlock:(FailBlock)fail
 {
     NSString* path = [NSString stringWithFormat:@"/api/sequence/list_by_category/%@", category.name];
+    
+    __block VPaginationStatus* status = [self.paginationStatuses objectForKey:category.name];
+    if (!status)
+    {
+        status = [[VPaginationStatus alloc] init];
+    }
+    else //only add page to the path if we've looked it up before.
+    {
+        path = [path stringByAppendingFormat:@"/0/%i/%i", status.pagesLoaded + 1, status.itemsPerPage];
+    }
+    
+    if([status isFullyLoaded])
+    {
+        return nil;
+    }
+    
+    
+    
+    PaginationBlock pagination = ^(NSUInteger page_number, NSUInteger page_total)
+    {
+        status.pagesLoaded = page_number;
+        status.totalPages = page_total;
+        [self.paginationStatuses setObject:status forKey:category.name];
+    };
     
     return [self GET:path
               object:nil
           parameters:nil
         successBlock:success
            failBlock:fail
-     paginationBlock:nil];
+     paginationBlock:pagination];
 }
 
 - (RKManagedObjectRequestOperation *)loadFullDataForSequence:(VSequence*)sequence
                                                 successBlock:(SuccessBlock)success
                                                    failBlock:(FailBlock)fail
 {
-    NSString* path = [NSString stringWithFormat:@"/api/sequence/item/%@", sequence.id];
+    NSString* path = [NSString stringWithFormat:@"/api/sequence/fetch/%@", sequence.id];
     
     return [self GET:path
               object:sequence
@@ -60,7 +108,7 @@
                                                 successBlock:(SuccessBlock)success
                                                    failBlock:(FailBlock)fail
 {
-    NSString* path = [NSString stringWithFormat:@"/api/comment/item/%@", sequence.id];
+    NSString* path = [NSString stringWithFormat:@"/api/comment/fetch/%@", sequence.id];
     
     __block VSequence* commentOwner = sequence; //Keep the sequence around until the block gets called
     
@@ -163,63 +211,5 @@
 {
     
 }
-
-
-- (RKManagedObjectRequestOperation *)loadSequencesForStatus:(VObjectManagerSequenceStatusType)type page:(NSUInteger)page perPage:(NSUInteger)perPage withBlock:(void(^)(NSUInteger page, NSUInteger perPage, NSArray *sequences, NSError *error))block{
-    NSString *path = @"/api/sequence/list";
-    switch(type){
-        case VObjectManagerSequenceStatusTypeNone:
-            path = [path stringByAppendingPathComponent:@"0"];
-            break;
-        case VObjectManagerSequenceStatusTypePublic:
-            path = [path stringByAppendingPathComponent:@"public"];
-            break;
-        case VObjectManagerSequenceStatusTypePrivate:
-            path = [path stringByAppendingPathComponent:@"private"];
-            break;
-    }
-    path = [path stringByAppendingFormat:@"/%lu/%lu", (unsigned long)page, (unsigned long)perPage];
-    return [self GET:path parameters:nil block:block];
-}
-
-- (RKManagedObjectRequestOperation *)loadSequencesForCategory:(VObjectManagerSequenceCategoryType)categoryType status:(VObjectManagerSequenceStatusType)statusType page:(NSUInteger)page perPage:(NSUInteger)perPage withBlock:(void(^)(NSUInteger page, NSUInteger perPage, NSArray *sequences, NSError *error))block{
-    NSString *path = @"/api/sequence/list_by_category";
-
-    switch(categoryType){
-        case VObjectManagerSequenceCategoryTypeAll:
-            path = [path stringByAppendingPathComponent:@"0"];
-            break;
-        case VObjectManagerSequenceCategoryTypeGeneral:
-            path = [path stringByAppendingPathComponent:@"general"];
-            break;
-        case VObjectManagerSequenceCategoryTypeFeatured:
-            path = [path stringByAppendingPathComponent:@"featured"];
-            break;
-    }
-
-    switch(statusType){
-        case VObjectManagerSequenceStatusTypeNone:
-            path = [path stringByAppendingPathComponent:@"0"];
-            break;
-        case VObjectManagerSequenceStatusTypePublic:
-            path = [path stringByAppendingPathComponent:@"public"];
-            break;
-        case VObjectManagerSequenceStatusTypePrivate:
-            path = [path stringByAppendingPathComponent:@"private"];
-            break;
-    }
-
-    path = [path stringByAppendingFormat:@"/%lu/%lu", (unsigned long)page, (unsigned long)perPage];
-    return [self GET:path parameters:nil block:block];
-}
-
-//- (RKManagedObjectRequestOperation *)loadSequenceMaxScoreWithId:(NSNumber *)sequenceId withBlock:(void(^)(VSequence *sequence, NSError *error))block{
-//    NSString *path = [NSString stringWithFormat:@"/api/sequence/max_score/%@", sequenceId];
-//    return [self GET:path parameters:nil block:^(NSUInteger page, NSUInteger perPage, NSArray *results, NSError *error){
-//        if(block){
-//            block([results firstObject], error);
-//        }
-//    }];
-//}
 
 @end

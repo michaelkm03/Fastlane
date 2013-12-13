@@ -10,7 +10,6 @@
 #import "VObjectManager.h"
 #import "VLoginViewController.h"
 #import <TestFlightSDK/TestFlight.h>
-#import "VSequenceManager.h"
 #import "VObjectManager.h"
 
 @implementation VAppDelegate
@@ -23,18 +22,9 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     [VObjectManager setupObjectManager];
-/*
-    [[[VObjectManager sharedManager] createVictoriousAccountWithEmail:@"ab@a.com" password:@"a" name:@"a" block:^(VUser *user, NSError *error){
-        NSLog(@"%@", user);
-        NSLog(@"%@", error);
-    }] start];
-*/
+
     [TestFlight takeOff:@"4467aa06-d174-479e-b009-f1945f3d6532"];
     
-    //[VLoginManager createVictoriousAccountWithEmail:@"a" password:@"a" name:@"a"];
-    //[VLoginManager loginToVictoriousWithEmail:@"a" andPassword:@"a"];
-//    [VLoginManager loginToFacebook];
-
     [[AFNetworkActivityIndicatorManager sharedManager] setEnabled:YES];
 
     return YES;

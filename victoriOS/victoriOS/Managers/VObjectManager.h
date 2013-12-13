@@ -18,7 +18,7 @@ typedef void (^FailBlock) (NSError* error);
 /*! Block that will be given Pagination information from API Response.
  *  Block is given NSUInteger for page and NSUInteger for totalPages
  *  NOTE: VObjectManager does not keep track of Pagination Logic.*/
-typedef void (^PaginationBlock) (NSUInteger page, NSUInteger page_total);
+typedef void (^PaginationBlock) (NSUInteger page_number, NSUInteger page_total);
 
 
 typedef float (^MyBlockType)(float, float);

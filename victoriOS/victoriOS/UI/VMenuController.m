@@ -12,6 +12,8 @@
 #import "VForumsViewController.h"
 #import "VLoginViewController.h"
 #import "VObjectManager+Login.h"
+//TODO:remove this import, need to test
+#import "VObjectManager+Sequence.h"
 
 @implementation VMenuController
 
@@ -114,6 +116,12 @@
             [self presentViewController:[VLoginViewController sharedLoginViewController] animated:YES completion:NULL];
         else
         {
+            //TODO: get rid of this test code
+            [[[VObjectManager sharedManager] loadNextPageForCategory:[[VCategory findAllObjects] firstObject]
+                                                       successBlock:^(NSArray *resultObjects) {
+                                                           VLog(@"Objects: %@", resultObjects);
+                                                       } failBlock:nil] start];
+            
             VForumsViewController*  forumsViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"profile"];
             navigationController.viewControllers = @[forumsViewController];
             navigationController.toolbarHidden = NO;

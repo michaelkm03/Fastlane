@@ -7,7 +7,6 @@
 //
 
 #import "VLoginViewController.h"
-#import "VSequenceManager.h"
 
 #import "VObjectManager+Login.h"
 #import "VObjectManager+Sequence.h"
@@ -79,18 +78,7 @@
 
 - (void)didLoginWithUser:(VUser*)mainUser
 {
-    
-    SuccessBlock success = ^(NSArray* objects) {
-        [self didFailToLogin:nil];
-    };
-    FailBlock fail = ^(NSError* error) {
-        [self didFailToLogin:nil];
-    };
-                             
-    [[[VObjectManager sharedManager] loadSequenceCategoriesWithSuccessBlock:success
-                                                                 failBlock:fail] start];
-    
-    
+    [[[VObjectManager sharedManager] initialSequenceLoad] start];
     
     [self dismissViewControllerAnimated:YES completion:NULL];
 }

@@ -24,12 +24,12 @@
 		838F41EA1857F26900882F1D /* VObjectManager+Login.m in Sources */ = {isa = PBXBuildFile; fileRef = 838F41E91857F26900882F1D /* VObjectManager+Login.m */; };
 		83A41918185803A400CBC150 /* VObjectManager+Sequence.m in Sources */ = {isa = PBXBuildFile; fileRef = 83A41917185803A400CBC150 /* VObjectManager+Sequence.m */; };
 		BE2BA7CF1852593700CA71AC /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = BE2BA7CE1852593700CA71AC /* libPods.a */; };
-		BE4E754B184942F100344677 /* VSequenceManager.m in Sources */ = {isa = PBXBuildFile; fileRef = BE4E754A184942F100344677 /* VSequenceManager.m */; };
 		BE4E7554184955BE00344677 /* VObjectManager.m in Sources */ = {isa = PBXBuildFile; fileRef = BE4E7553184955BE00344677 /* VObjectManager.m */; };
 		BE5AC2BB184D298900121126 /* NSManagedObject+EasyFetching.m in Sources */ = {isa = PBXBuildFile; fileRef = BE5AC2AB184D298900121126 /* NSManagedObject+EasyFetching.m */; };
 		BE5AC2C2184E6CB300121126 /* VCommentManager.m in Sources */ = {isa = PBXBuildFile; fileRef = BE5AC2C1184E6CB300121126 /* VCommentManager.m */; };
 		BE5AC2C5184E733800121126 /* NSString+VParseHelp.m in Sources */ = {isa = PBXBuildFile; fileRef = BE5AC2C4184E733800121126 /* NSString+VParseHelp.m */; };
 		BE7A39BA185A52D70009000C /* VErrorMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = BE7A39B9185A52D70009000C /* VErrorMessage.m */; };
+		BE7A39C6185A9D260009000C /* VPaginationStatus.m in Sources */ = {isa = PBXBuildFile; fileRef = BE7A39C5185A9D260009000C /* VPaginationStatus.m */; };
 		BEA4F2291843F097001F5B15 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BEA4F2281843F097001F5B15 /* Foundation.framework */; };
 		BEA4F22B1843F097001F5B15 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BEA4F22A1843F097001F5B15 /* CoreGraphics.framework */; };
 		BEA4F22D1843F097001F5B15 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BEA4F22C1843F097001F5B15 /* UIKit.framework */; };
@@ -123,8 +123,6 @@
 		B15D4A5304A04D16AD420BCD /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		BE20A10218524D6A003D0E8C /* libPods-RestKit.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libPods-RestKit.a"; path = "Pods/build/TestFlight-iphoneos/libPods-RestKit.a"; sourceTree = "<group>"; };
 		BE2BA7CE1852593700CA71AC /* libPods.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libPods.a; path = "Pods/build/TestFlight-iphoneos/libPods.a"; sourceTree = "<group>"; };
-		BE4E7549184942F100344677 /* VSequenceManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VSequenceManager.h; path = Managers/VSequenceManager.h; sourceTree = "<group>"; };
-		BE4E754A184942F100344677 /* VSequenceManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VSequenceManager.m; path = Managers/VSequenceManager.m; sourceTree = "<group>"; };
 		BE4E7552184955BE00344677 /* VObjectManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VObjectManager.h; path = Managers/VObjectManager.h; sourceTree = "<group>"; };
 		BE4E7553184955BE00344677 /* VObjectManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VObjectManager.m; path = Managers/VObjectManager.m; sourceTree = "<group>"; };
 		BE5AC2AA184D298900121126 /* NSManagedObject+EasyFetching.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSManagedObject+EasyFetching.h"; path = "Categories/NSManagedObject+EasyFetching.h"; sourceTree = "<group>"; };
@@ -137,6 +135,8 @@
 		BE7A39B9185A52D70009000C /* VErrorMessage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VErrorMessage.m; path = Managers/VErrorMessage.m; sourceTree = "<group>"; };
 		BE7A39BB185A7C7D0009000C /* VObjectManager+Login.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "VObjectManager+Login.h"; path = "Managers/VObjectManager+Login.h"; sourceTree = "<group>"; };
 		BE7A39BE185A7D110009000C /* VObjectManager+Sequence.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "VObjectManager+Sequence.h"; path = "Managers/VObjectManager+Sequence.h"; sourceTree = "<group>"; };
+		BE7A39C4185A9D260009000C /* VPaginationStatus.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VPaginationStatus.h; path = Managers/VPaginationStatus.h; sourceTree = "<group>"; };
+		BE7A39C5185A9D260009000C /* VPaginationStatus.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VPaginationStatus.m; path = Managers/VPaginationStatus.m; sourceTree = "<group>"; };
 		BEA4F2251843F097001F5B15 /* victoriOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = victoriOS.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		BEA4F2281843F097001F5B15 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		BEA4F22A1843F097001F5B15 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -351,12 +351,12 @@
 				838F41E91857F26900882F1D /* VObjectManager+Login.m */,
 				BE7A39BE185A7D110009000C /* VObjectManager+Sequence.h */,
 				83A41917185803A400CBC150 /* VObjectManager+Sequence.m */,
-				BE4E7549184942F100344677 /* VSequenceManager.h */,
-				BE4E754A184942F100344677 /* VSequenceManager.m */,
 				BE5AC2C0184E6CB300121126 /* VCommentManager.h */,
 				BE5AC2C1184E6CB300121126 /* VCommentManager.m */,
 				BE7A39B8185A52D70009000C /* VErrorMessage.h */,
 				BE7A39B9185A52D70009000C /* VErrorMessage.m */,
+				BE7A39C4185A9D260009000C /* VPaginationStatus.h */,
+				BE7A39C5185A9D260009000C /* VPaginationStatus.m */,
 			);
 			name = Managers;
 			sourceTree = "<group>";
@@ -667,6 +667,7 @@
 				BEBDC4981857B2C50013DEF1 /* VAsset.m in Sources */,
 				BE5AC2C2184E6CB300121126 /* VCommentManager.m in Sources */,
 				83A41918185803A400CBC150 /* VObjectManager+Sequence.m in Sources */,
+				BE7A39C6185A9D260009000C /* VPaginationStatus.m in Sources */,
 				BEBDC4CD1857B2E30013DEF1 /* VRule+RestKit.m in Sources */,
 				3F90DD6D18569EB400C8F312 /* VMenuController.m in Sources */,
 				BEBDC49C1857B2C50013DEF1 /* VInteractionAction.m in Sources */,
@@ -706,7 +707,6 @@
 				3F90DE4A1857D9F100C8F312 /* VMessageViewController.m in Sources */,
 				3F90DD6718569ACA00C8F312 /* VRootViewController.m in Sources */,
 				3F90DD841856A66F00C8F312 /* VProfileViewController.m in Sources */,
-				BE4E754B184942F100344677 /* VSequenceManager.m in Sources */,
 				BEBDC49E1857B2C50013DEF1 /* VNodeAction.m in Sources */,
 				3F543C4118512C6700A1F2FC /* VSignUpViewController.m in Sources */,
 				5F8AAAA5184D467300301783 /* VStreamsTableViewController.m in Sources */,

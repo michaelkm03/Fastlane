@@ -8,6 +8,12 @@
 
 #import "VObjectManager.h"
 
+@interface VObjectManager ()
+
+@property (nonatomic, strong) NSMutableDictionary* paginationStatuses;
+
+@end
+
 @interface VObjectManager (Private)
 
 - (RKManagedObjectRequestOperation *)GET:(NSString *)path parameters:(NSDictionary *)parameters block:(void(^)(NSUInteger page, NSUInteger perPage, id result, NSError *error))block;
