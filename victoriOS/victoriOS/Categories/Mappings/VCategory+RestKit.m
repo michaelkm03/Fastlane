@@ -17,15 +17,17 @@
 
 + (RKEntityMapping*)entityMapping
 {
-    
+    NSDictionary *propertyMap = @{
+                                  @"name" : VSelectorName(name)
+                                  };
+
     RKEntityMapping *mapping = [RKEntityMapping
                                 mappingForEntityForName:[self entityName]
                                 inManagedObjectStore:[RKObjectManager sharedManager].managedObjectStore];
-    
-    mapping.identificationAttributes = @[ @"name" ];
-    
-    [mapping addPropertyMapping:[RKAttributeMapping attributeMappingFromKeyPath:nil
-                                                                      toKeyPath:@"name"]];
+
+    mapping.identificationAttributes = @[ VSelectorName(name) ];
+
+    [mapping addAttributeMappingsFromDictionary:propertyMap];
     
     return mapping;
 }

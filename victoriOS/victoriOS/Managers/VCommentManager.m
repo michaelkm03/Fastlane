@@ -33,8 +33,8 @@
     
     NSMutableDictionary* parameters = [[NSMutableDictionary alloc] initWithCapacity:5];
     [parameters setObject:[NSString stringWithFormat:@"%@", sequence.sequenceId] forKey:@"sequence_id"];
-    if (parent.id)
-        [parameters setObject:[NSString stringWithFormat:@"%@", parent.id] forKey:@"parent_id"];
+    if (parent.commentId)
+        [parameters setObject:[NSString stringWithFormat:@"%@", parent.commentId] forKey:@"parent_id"];
     if (![text isEmpty])
         [parameters setObject:text forKey:@"text"];
     if (data && ![extension isEmpty]) //need both asset and type otherwise its junk data
@@ -73,7 +73,7 @@
 + (void)removeComment:(VComment*)comment withReason:(NSString*)removalReason
 {
     //TODO: check if user has remove permissions (once those are a Thing)
-    if (!comment.id) //Need this or we should quit
+    if (!comment.commentId) //Need this or we should quit
     {
         VLog(@"Invalid comment passed to removeComment");
         return;
@@ -84,7 +84,7 @@
         return;
     }
     NSMutableDictionary* parameters = [[NSMutableDictionary alloc] initWithCapacity:1];
-    [parameters setObject:[NSString stringWithFormat:@"%@", comment.id] forKey:@"comment_id"];
+    [parameters setObject:[NSString stringWithFormat:@"%@", comment.commentId] forKey:@"comment_id"];
     [parameters setObject:removalReason forKey:@"removal_reason"];
     
     __block VComment* commentToRemove = comment;//keep the comment in memory til we get the response back
@@ -112,7 +112,7 @@
          
          if (removedcomment_id)
          {
-             RKLogInfo(@"Removing comment %@ from core data because of /api/comment/remove", commentToRemove.id);
+             RKLogInfo(@"Removing comment %@ from core data because of /api/comment/remove", commentToRemove.commentId);
              [commentToRemove.managedObjectContext deleteObject:commentToRemove];
          }
      } failure:^(RKObjectRequestOperation *operation, NSError *error)
@@ -126,13 +126,13 @@
 + (void)flagComment:(VComment*)comment
 {
     
-    if (!comment.id) //Need this or we should quit
+    if (!comment.commentId) //Need this or we should quit
     {
         VLog(@"Invalid comment passed to flagComment");
         return;
     }
     NSMutableDictionary* parameters = [[NSMutableDictionary alloc] initWithCapacity:1];
-    [parameters setObject:[NSString stringWithFormat:@"%@", comment.id] forKey:@"comment_id"];
+    [parameters setObject:[NSString stringWithFormat:@"%@", comment.commentId] forKey:@"comment_id"];
     
     RKManagedObjectRequestOperation* requestOperation = [[RKObjectManager sharedManager]
                                                          appropriateObjectRequestOperationWithObject:comment
@@ -156,7 +156,7 @@
 + (void)voteComment:(VComment*)comment voteType:(NSString*)type
 {
     
-    if (!comment.id) //Need this or we should quit
+    if (!comment.commentId) //Need this or we should quit
     {
         VLog(@"Invalid comment passed to flagComment");
         return;
@@ -171,7 +171,7 @@
         return;
     }
     NSMutableDictionary* parameters = [[NSMutableDictionary alloc] initWithCapacity:2];
-    [parameters setObject:[NSString stringWithFormat:@"%@", comment.id] forKey:@"comment_id"];
+    [parameters setObject:[NSString stringWithFormat:@"%@", comment.commentId] forKey:@"comment_id"];
     [parameters setObject:type forKey:@"vote"];
     
     RKManagedObjectRequestOperation* requestOperation = [[RKObjectManager sharedManager]

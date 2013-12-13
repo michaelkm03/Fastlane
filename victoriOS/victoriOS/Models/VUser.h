@@ -2,7 +2,7 @@
 //  VUser.h
 //  victoriOS
 //
-//  Created by David Keegan on 12/9/13.
+//  Created by David Keegan on 12/12/13.
 //  Copyright (c) 2013 Victorious, Inc. All rights reserved.
 //
 
@@ -13,20 +13,20 @@
 
 @interface VUser : NSManagedObject
 
-@property (nonatomic, retain) NSString * access_level;
+@property (nonatomic, retain) NSString * accessLevel;
 @property (nonatomic, retain) NSString * email;
-@property (nonatomic, retain) NSNumber * id;
+@property (nonatomic, retain) NSNumber * userId;
 @property (nonatomic, retain) NSString * name;
 @property (nonatomic, retain) NSString * token;
-@property (nonatomic, retain) NSDate * token_updated_at;
-@property (nonatomic, retain) NSSet *stat_sequences;
+@property (nonatomic, retain) NSDate * tokenUpdatedAt;
+@property (nonatomic, retain) NSSet *statSequences;
 @end
 
 @interface VUser (CoreDataGeneratedAccessors)
 
-- (void)addStat_sequencesObject:(VStatSequence *)value;
-- (void)removeStat_sequencesObject:(VStatSequence *)value;
-- (void)addStat_sequences:(NSSet *)values;
-- (void)removeStat_sequences:(NSSet *)values;
+- (void)addStatSequencesObject:(VStatSequence *)value;
+- (void)removeStatSequencesObject:(VStatSequence *)value;
+- (void)addStatSequences:(NSSet *)values;
+- (void)removeStatSequences:(NSSet *)values;
 
 @end

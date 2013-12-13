@@ -2,7 +2,7 @@
 //  VComment.m
 //  victoriOS
 //
-//  Created by David Keegan on 12/9/13.
+//  Created by David Keegan on 12/12/13.
 //  Copyright (c) 2013 Victorious, Inc. All rights reserved.
 //
 
@@ -13,15 +13,15 @@
 @implementation VComment
 
 @dynamic dislikes;
-@dynamic display_order;
+@dynamic displayOrder;
 @dynamic flags;
-@dynamic id;
+@dynamic commentId;
 @dynamic likes;
-@dynamic media_type;
-@dynamic media_url;
-@dynamic parent_id;
-@dynamic posted_at;
-@dynamic sequence_id;
+@dynamic mediaType;
+@dynamic mediaUrl;
+@dynamic parentId;
+@dynamic postedAt;
+@dynamic sequenceId;
 @dynamic shares;
 @dynamic text;
 @dynamic sequence;

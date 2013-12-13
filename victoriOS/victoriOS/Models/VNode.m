@@ -2,7 +2,7 @@
 //  VNode.m
 //  victoriOS
 //
-//  Created by David Keegan on 12/9/13.
+//  Created by David Keegan on 12/12/13.
 //  Copyright (c) 2013 Victorious, Inc. All rights reserved.
 //
 
@@ -15,11 +15,11 @@
 
 @implementation VNode
 
-@dynamic display_order;
-@dynamic node_id;
+@dynamic displayOrder;
+@dynamic nodeId;
 @dynamic assets;
 @dynamic interactions;
-@dynamic node_action;
+@dynamic nodeAction;
 @dynamic sequence;
 
 @end

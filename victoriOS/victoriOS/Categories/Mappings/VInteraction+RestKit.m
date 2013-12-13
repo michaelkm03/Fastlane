@@ -21,25 +21,25 @@
 + (RKEntityMapping*)entityMapping
 {
     NSDictionary *propertyMap = @{
-                                  @"display_order" : @"display_order",
-                                  @"interaction_id" : @"interaction_id",
-                                  @"node_id" : @"node_id",
-                                  @"question" : @"question",
-                                  @"start_time" : @"start_time",
-                                  @"type" : @"type"
+                                  @"display_order" : VSelectorName(displayOrder),
+                                  @"interaction_id" : VSelectorName(interactionId),
+                                  @"node_id" : VSelectorName(nodeId),
+                                  @"question" : VSelectorName(question),
+                                  @"start_time" : VSelectorName(startTime),
+                                  @"type" : VSelectorName(type)
                                   };
     
     RKEntityMapping *mapping = [RKEntityMapping
                                 mappingForEntityForName:[self entityName]
                                 inManagedObjectStore:[RKObjectManager sharedManager].managedObjectStore];
     
-    mapping.identificationAttributes = @[ @"interaction_id" ];
+    mapping.identificationAttributes = @[ VSelectorName(interactionId) ];
     
     [mapping addAttributeMappingsFromDictionary:propertyMap];
     
-    [mapping addRelationshipMappingWithSourceKeyPath:@"interaction_action" mapping:[VInteractionAction entityMapping]];
-    [mapping addRelationshipMappingWithSourceKeyPath:@"rules" mapping:[VRule entityMapping]];
-    [mapping addRelationshipMappingWithSourceKeyPath:@"answers" mapping:[VAnswer entityMapping]];
+    [mapping addRelationshipMappingWithSourceKeyPath:VSelectorName(interactionAction) mapping:[VInteractionAction entityMapping]];
+    [mapping addRelationshipMappingWithSourceKeyPath:VSelectorName(rules) mapping:[VRule entityMapping]];
+    [mapping addRelationshipMappingWithSourceKeyPath:VSelectorName(answer) mapping:[VAnswer entityMapping]];
 
     return mapping;
 }

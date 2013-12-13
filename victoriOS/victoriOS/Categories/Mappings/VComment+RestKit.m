@@ -18,25 +18,25 @@
 + (RKEntityMapping*)entityMapping
 {
     NSDictionary *propertyMap = @{
-                                  @"dislikes" : @"dislikes",
-                                  @"display_order" : @"display_order",
-                                  @"flags" : @"flags",
-                                  @"id" : @"id",
-                                  @"likes" : @"likes",
-                                  @"media_type" : @"media_type",
-                                  @"media_url" : @"media_url",
-                                  @"parent_id" : @"parent_id",
-                                  @"posted_at" : @"posted_at",
-                                  @"sequence_id" : @"sequence_id",
-                                  @"shares" : @"shares",
-                                  @"text" : @"text"
+                                  @"dislikes" : VSelectorName(dislikes),
+                                  @"display_order" : VSelectorName(displayOrder),
+                                  @"flags" : VSelectorName(flags),
+                                  @"id" : VSelectorName(commentId),
+                                  @"likes" : VSelectorName(likes),
+                                  @"media_type" : VSelectorName(mediaType),
+                                  @"media_url" : VSelectorName(mediaUrl),
+                                  @"parent_id" : VSelectorName(parentId),
+                                  @"posted_at" : VSelectorName(postedAt),
+                                  @"sequence_id" : VSelectorName(sequenceId),
+                                  @"shares" : VSelectorName(shares),
+                                  @"text" : VSelectorName(text)
                                   };
     
     RKEntityMapping *mapping = [RKEntityMapping
                                 mappingForEntityForName:[self entityName]
                                 inManagedObjectStore:[RKObjectManager sharedManager].managedObjectStore];
     
-    mapping.identificationAttributes = @[ @"id" ];
+    mapping.identificationAttributes = @[ VSelectorName(commentId) ];
     
     [mapping addAttributeMappingsFromDictionary:propertyMap];
     
