@@ -9,22 +9,25 @@
 #import "VProfileViewController.h"
 #import "REFrostedViewController.h"
 
+@interface      VProfileViewController  ()
+@property (strong, nonatomic) IBOutlet UIBarButtonItem *signoutButton;
+@property (strong, nonatomic) IBOutlet UIBarButtonItem *sendButton;
+@end
 @implementation VProfileViewController
-
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
-{
-    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
-    if (self) {
-        // Custom initialization
-    }
-    return self;
-}
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
     
-    self.navigationItem.rightBarButtonItem = self.editButtonItem;
+    if (self.userIsLoggedInUser)
+    {
+        self.navigationItem.rightBarButtonItem = self.editButtonItem;
+        self.navigationController.toolbarHidden = YES;
+    }
+    else
+    {
+        self.navigationController.toolbarHidden = NO;
+    }
 
     self.tableView.separatorColor = [UIColor colorWithRed:150/255.0f green:161/255.0f blue:177/255.0f alpha:1.0f];
     self.tableView.delegate = self;

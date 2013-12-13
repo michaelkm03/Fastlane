@@ -8,6 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface VComposeMessageViewController : UIViewController
+@interface VComposeMessageViewController : UIViewController <UITextViewDelegate, UIImagePickerControllerDelegate>
 
 @end

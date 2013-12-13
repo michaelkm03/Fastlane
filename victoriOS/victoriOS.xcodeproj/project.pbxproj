@@ -18,6 +18,9 @@
 		3F90DE4A1857D9F100C8F312 /* VMessageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F90DE491857D9F100C8F312 /* VMessageViewController.m */; };
 		3F90DE4D1857DA0200C8F312 /* VComposeMessageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F90DE4C1857DA0200C8F312 /* VComposeMessageViewController.m */; };
 		3F90DE501857F34D00C8F312 /* VValidatingTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F90DE4F1857F34D00C8F312 /* VValidatingTextField.m */; };
+		3F9100FC185A7C540005317C /* VFeaturedPageControllerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F9100FB185A7C540005317C /* VFeaturedPageControllerViewController.m */; };
+		3F9100FF185A8E5A0005317C /* VStickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F9100FE185A8E5A0005317C /* VStickerViewController.m */; };
+		3F910102185A97490005317C /* VStreamsSubViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F910101185A97490005317C /* VStreamsSubViewController.m */; };
 		5F3B4950184E6B8D0062DB55 /* VLoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F3B494F184E6B8D0062DB55 /* VLoginViewController.m */; };
 		5F8AAA5E184D43C600301783 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5F8AAA5D184D43C600301783 /* Main.storyboard */; };
 		5F8AAAA5184D467300301783 /* VStreamsTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F8AAAA4184D467300301783 /* VStreamsTableViewController.m */; };
@@ -111,6 +114,12 @@
 		3F90DE4C1857DA0200C8F312 /* VComposeMessageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VComposeMessageViewController.m; path = UI/VComposeMessageViewController.m; sourceTree = "<group>"; };
 		3F90DE4E1857F34D00C8F312 /* VValidatingTextField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VValidatingTextField.h; path = UI/VValidatingTextField.h; sourceTree = "<group>"; };
 		3F90DE4F1857F34D00C8F312 /* VValidatingTextField.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VValidatingTextField.m; path = UI/VValidatingTextField.m; sourceTree = "<group>"; };
+		3F9100FA185A7C540005317C /* VFeaturedPageControllerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VFeaturedPageControllerViewController.h; path = UI/VFeaturedPageControllerViewController.h; sourceTree = "<group>"; };
+		3F9100FB185A7C540005317C /* VFeaturedPageControllerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VFeaturedPageControllerViewController.m; path = UI/VFeaturedPageControllerViewController.m; sourceTree = "<group>"; };
+		3F9100FD185A8E5A0005317C /* VStickerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VStickerViewController.h; path = UI/VStickerViewController.h; sourceTree = "<group>"; };
+		3F9100FE185A8E5A0005317C /* VStickerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VStickerViewController.m; path = UI/VStickerViewController.m; sourceTree = "<group>"; };
+		3F910100185A97490005317C /* VStreamsSubViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VStreamsSubViewController.h; path = UI/VStreamsSubViewController.h; sourceTree = "<group>"; };
+		3F910101185A97490005317C /* VStreamsSubViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VStreamsSubViewController.m; path = UI/VStreamsSubViewController.m; sourceTree = "<group>"; };
 		4F627C2BF55A46F299155184 /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = "<group>"; };
 		5F3B494E184E6B8D0062DB55 /* VLoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VLoginViewController.h; path = UI/VLoginViewController.h; sourceTree = "<group>"; };
 		5F3B494F184E6B8D0062DB55 /* VLoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VLoginViewController.m; path = UI/VLoginViewController.m; sourceTree = "<group>"; };
@@ -269,6 +278,8 @@
 				3F90DE491857D9F100C8F312 /* VMessageViewController.m */,
 				3F90DE4B1857DA0200C8F312 /* VComposeMessageViewController.h */,
 				3F90DE4C1857DA0200C8F312 /* VComposeMessageViewController.m */,
+				3F9100FD185A8E5A0005317C /* VStickerViewController.h */,
+				3F9100FE185A8E5A0005317C /* VStickerViewController.m */,
 			);
 			name = Inbox;
 			sourceTree = "<group>";
@@ -296,6 +307,10 @@
 			children = (
 				5F8AAAA3184D467300301783 /* VStreamsTableViewController.h */,
 				5F8AAAA4184D467300301783 /* VStreamsTableViewController.m */,
+				3F9100FA185A7C540005317C /* VFeaturedPageControllerViewController.h */,
+				3F9100FB185A7C540005317C /* VFeaturedPageControllerViewController.m */,
+				3F910100185A97490005317C /* VStreamsSubViewController.h */,
+				3F910101185A97490005317C /* VStreamsSubViewController.m */,
 			);
 			name = Streams;
 			sourceTree = "<group>";
@@ -660,6 +675,7 @@
 				BE7A39BA185A52D70009000C /* VErrorMessage.m in Sources */,
 				BEBDC49F1857B2C50013DEF1 /* VRule.m in Sources */,
 				3F90DD6A18569B9300C8F312 /* VNavigationController.m in Sources */,
+				3F9100FC185A7C540005317C /* VFeaturedPageControllerViewController.m in Sources */,
 				BEBDC4A11857B2C50013DEF1 /* VStatAnswer.m in Sources */,
 				5F3B4950184E6B8D0062DB55 /* VLoginViewController.m in Sources */,
 				BEBDC4C51857B2E30013DEF1 /* VAnswerAction+RestKit.m in Sources */,
@@ -677,6 +693,7 @@
 				BEA4F2371843F097001F5B15 /* main.m in Sources */,
 				BEBDC4C91857B2E30013DEF1 /* VInteraction+RestKit.m in Sources */,
 				3F90DE4D1857DA0200C8F312 /* VComposeMessageViewController.m in Sources */,
+				3F910102185A97490005317C /* VStreamsSubViewController.m in Sources */,
 				BE5AC2C5184E733800121126 /* NSString+VParseHelp.m in Sources */,
 				BEBDC4A01857B2C50013DEF1 /* VSequence.m in Sources */,
 				BE5AC2BB184D298900121126 /* NSManagedObject+EasyFetching.m in Sources */,
@@ -693,6 +710,7 @@
 				BEBDC4C81857B2E30013DEF1 /* VComment+RestKit.m in Sources */,
 				BEBDC4D11857B2E30013DEF1 /* VStatSequence+RestKit.m in Sources */,
 				BEBDC4CB1857B2E30013DEF1 /* VNode+RestKit.m in Sources */,
+				3F9100FF185A8E5A0005317C /* VStickerViewController.m in Sources */,
 				3F90DD811856A59B00C8F312 /* VInboxViewController.m in Sources */,
 				BEBDC4D21857B2E30013DEF1 /* VUser+RestKit.m in Sources */,
 				BEBDC49D1857B2C50013DEF1 /* VNode.m in Sources */,
