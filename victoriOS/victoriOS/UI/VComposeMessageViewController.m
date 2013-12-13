@@ -11,6 +11,7 @@
 @interface VComposeMessageViewController ()
 @property (weak, nonatomic) IBOutlet UITextView *textView;
 @property (strong, nonatomic) IBOutlet UIView *accessoryView;
+@property (strong, nonatomic) IBOutlet NSObject *textViewBottomConst;
 @end
 
 @implementation VComposeMessageViewController
@@ -20,6 +21,7 @@
     [super viewDidLoad];
     
     self.textView.delegate  =   self;
+    self.textView.keyboardDismissMode   =   UIScrollViewKeyboardDismissModeInteractive;
 
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(keyboardWillShow:)
@@ -79,63 +81,42 @@
 
 - (void)keyboardWillShow:(NSNotification *)notification
 {
-    //     Reduce the size of the text view so that it's not obscured by the keyboard.
-    //     Animate the resize so that it's in sync with the appearance of the keyboard.
-
-    NSDictionary *userInfo = [notification userInfo];
-
-    // Get the origin of the keyboard when it's displayed.
-    NSValue *aValue = [userInfo objectForKey:UIKeyboardFrameEndUserInfoKey];
-
-    // Get the top of the keyboard as the y coordinate of its origin in self's view's
-    // coordinate system. The bottom of the text view's frame should align with the top
-    // of the keyboard's final position.
-    //
-    CGRect keyboardRect = [aValue CGRectValue];
-    keyboardRect = [self.view convertRect:keyboardRect fromView:nil];
+    //  Move textview and tool bar above keyboard
+    UIEdgeInsets insets = self.textView.contentInset;
+    insets.bottom += [notification.userInfo[UIKeyboardFrameEndUserInfoKey] CGRectValue].size.height;
+    self.textView.contentInset = insets;
     
-    CGFloat keyboardTop = keyboardRect.origin.y;
-    CGRect newTextViewFrame = self.view.bounds;
-    newTextViewFrame.size.height = keyboardTop - self.view.bounds.origin.y;
-    
-    // Get the duration of the animation.
-    NSValue *animationDurationValue = [userInfo objectForKey:UIKeyboardAnimationDurationUserInfoKey];
-    NSTimeInterval animationDuration;
-    [animationDurationValue getValue:&animationDuration];
-    
-    // Animate the resize of the text view's frame in sync with the keyboard's appearance.
-    [UIView beginAnimations:nil context:NULL];
-    [UIView setAnimationDuration:animationDuration];
-    
-    self.textView.frame = newTextViewFrame;
-    
-    [UIView commitAnimations];
+    insets = self.textView.scrollIndicatorInsets;
+    insets.bottom += [notification.userInfo[UIKeyboardFrameEndUserInfoKey] CGRectValue].size.height;
+    self.textView.scrollIndicatorInsets = insets;
 }
 
 - (void)keyboardWillHide:(NSNotification *)notification
 {
-    NSDictionary *userInfo = [notification userInfo];
-
-    //     Restore the size of the text view (fill self's view).
-    //     Animate the resize so that it's in sync with the disappearance of the keyboard.
-
-    NSValue *animationDurationValue = [userInfo objectForKey:UIKeyboardAnimationDurationUserInfoKey];
-    NSTimeInterval animationDuration;
-    [animationDurationValue getValue:&animationDuration];
+    //  Reset textview and tool bar
+    UIEdgeInsets insets = self.textView.contentInset;
+    insets.bottom -= [notification.userInfo[UIKeyboardFrameBeginUserInfoKey] CGRectValue].size.height;
+    self.textView.contentInset = insets;
     
-    [UIView beginAnimations:nil context:NULL];
-    [UIView setAnimationDuration:animationDuration];
-    
-    self.textView.frame = self.view.bounds;
-    
-    [UIView commitAnimations];
+    insets = self.textView.scrollIndicatorInsets;
+    insets.bottom -= [notification.userInfo[UIKeyboardFrameBeginUserInfoKey] CGRectValue].size.height;
+    self.textView.scrollIndicatorInsets = insets;
 }
 
 #pragma mark - Accessory view action
 
-- (IBAction)tappedAccessoryView:(id)sender
+- (IBAction)cameraButtonClicked:(id)sender
 {
+    UIImagePickerController *imagePicker = [[UIImagePickerController alloc] init];
+    if([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera])
+        [imagePicker setSourceType:UIImagePickerControllerSourceTypeCamera];
+    else
+        [imagePicker setSourceType:UIImagePickerControllerSourceTypePhotoLibrary];
 
+    [self presentViewController:imagePicker animated:YES completion:
+     ^{
+
+     }];
 }
 
 @end

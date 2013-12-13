@@ -22,11 +22,11 @@
     if (self.userIsLoggedInUser)
     {
         self.navigationItem.rightBarButtonItem = self.editButtonItem;
-        self.navigationController.toolbarHidden = NO;
+        self.navigationController.toolbarHidden = YES;
     }
     else
     {
-        self.navigationController.toolbarHidden = YES;
+        self.navigationController.toolbarHidden = NO;
     }
 
     self.tableView.separatorColor = [UIColor colorWithRed:150/255.0f green:161/255.0f blue:177/255.0f alpha:1.0f];
