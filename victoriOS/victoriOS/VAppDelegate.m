@@ -10,7 +10,9 @@
 #import "VObjectManager.h"
 #import "VLoginViewController.h"
 #import <TestFlightSDK/TestFlight.h>
+
 #import "VObjectManager.h"
+#import "VObjectManager+Sequence.h"
 
 @implementation VAppDelegate
 
@@ -22,6 +24,7 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     [VObjectManager setupObjectManager];
+    [[[VObjectManager sharedManager] initialSequenceLoad] start];
 
     [TestFlight takeOff:@"4467aa06-d174-479e-b009-f1945f3d6532"];
     

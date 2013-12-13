@@ -189,20 +189,21 @@
     NSString* userAgent = [client.defaultHeaders objectForKey:@"User-Agent"];
     
     VUser* mainUser = [VObjectManager sharedManager].mainUser;
+    NSString* token = mainUser.token ? mainUser.token : @"";
     
     // Build string to be hashed.
     NSString *sha1String = [[NSString stringWithFormat:@"%@%@%@%@%@",
                              currentDate,
                              path,
                              userAgent,
-                             mainUser.token,
+                             token,
                              RKStringFromRequestMethod(method)] SHA1HexDigest];
     
     VLog(@"sha1String before sha1: %@", [NSString stringWithFormat:@"%@%@%@%@%@",
                                          currentDate,
                                          path,
                                          userAgent,
-                                         mainUser.token,
+                                         token,
                                          RKStringFromRequestMethod(method)]);
     
     NSNumber* userID = mainUser.id;

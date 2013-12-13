@@ -9,7 +9,6 @@
 #import "VLoginViewController.h"
 
 #import "VObjectManager+Login.h"
-#import "VObjectManager+Sequence.h"
 
 @import Accounts;
 @import Social;
@@ -78,7 +77,7 @@
 
 - (void)didLoginWithUser:(VUser*)mainUser
 {
-    [[[VObjectManager sharedManager] initialSequenceLoad] start];
+    VLog(@"Succesfully logged in as: %@", mainUser);
     
     [self dismissViewControllerAnimated:YES completion:NULL];
 }
