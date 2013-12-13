@@ -34,5 +34,3 @@
 #define VBASEURL @"http://dev.getvictorious.com"
 #define VLog(...)
 #endif
-
-#define VSelectorName(s) NSStringFromSelector(@selector(s))

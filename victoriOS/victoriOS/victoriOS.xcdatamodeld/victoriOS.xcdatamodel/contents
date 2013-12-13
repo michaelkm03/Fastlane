@@ -76,15 +76,13 @@
     </entity>
     <entity name="Sequence" representedClassName="VSequence" syncable="YES">
         <attribute name="category" attributeType="String" syncable="YES"/>
-        <attribute name="displayOrder" attributeType="Integer 16" minValueString="0" syncable="YES"/>
-        <attribute name="gameStatus" attributeType="String" syncable="YES"/>
-        <attribute name="isComplete" attributeType="String" syncable="YES"/>
+        <attribute name="display_order" attributeType="Integer 16" minValueString="0" syncable="YES"/>
+        <attribute name="id" attributeType="Integer 64" minValueString="0" defaultValueString="0" syncable="YES"/>
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="previewImage" optional="YES" attributeType="Transformable" syncable="YES"/>
-        <attribute name="releasedAt" optional="YES" attributeType="Date" syncable="YES"/>
-        <attribute name="sequenceDescription" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="sequenceId" attributeType="Integer 64" minValueString="0" defaultValueString="0" syncable="YES"/>
-        <attribute name="status" attributeType="String" syncable="YES"/>
+        <attribute name="preview_image" optional="YES" attributeType="Transformable" syncable="YES"/>
+        <attribute name="released_at" optional="YES" attributeType="Date" syncable="YES"/>
+        <attribute name="sequence_description" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="status" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="comments" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="Comment" inverseName="sequence" inverseEntity="Comment" syncable="YES"/>
         <relationship name="nodes" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="Node" inverseName="sequence" inverseEntity="Node" syncable="YES"/>
     </entity>
@@ -130,20 +128,20 @@
         <relationship name="stat_sequences" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="StatSequence" inverseName="user" inverseEntity="StatSequence" syncable="YES"/>
     </entity>
     <elements>
-        <element name="Answer" positionX="0" positionY="0" width="0" height="0"/>
-        <element name="AnswerAction" positionX="0" positionY="0" width="0" height="0"/>
-        <element name="Asset" positionX="0" positionY="0" width="0" height="0"/>
-        <element name="Category" positionX="0" positionY="0" width="0" height="0"/>
-        <element name="Comment" positionX="0" positionY="0" width="0" height="0"/>
-        <element name="Interaction" positionX="0" positionY="0" width="0" height="0"/>
-        <element name="InteractionAction" positionX="0" positionY="0" width="0" height="0"/>
-        <element name="Node" positionX="0" positionY="0" width="0" height="0"/>
-        <element name="NodeAction" positionX="0" positionY="0" width="0" height="0"/>
-        <element name="Rule" positionX="0" positionY="0" width="0" height="0"/>
-        <element name="Sequence" positionX="0" positionY="0" width="0" height="0"/>
-        <element name="StatAnswer" positionX="0" positionY="0" width="0" height="0"/>
-        <element name="StatInteraction" positionX="0" positionY="0" width="0" height="0"/>
-        <element name="StatSequence" positionX="0" positionY="0" width="0" height="0"/>
-        <element name="User" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="Answer" positionX="709" positionY="-468" width="128" height="163"/>
+        <element name="AnswerAction" positionX="709" positionY="-622" width="128" height="73"/>
+        <element name="Asset" positionX="403" positionY="-702" width="128" height="118"/>
+        <element name="Comment" positionX="27" positionY="-550" width="128" height="238"/>
+        <element name="Interaction" positionX="394" positionY="-558" width="128" height="193"/>
+        <element name="InteractionAction" positionX="558" positionY="-562" width="128" height="103"/>
+        <element name="Node" positionX="207" positionY="-729" width="128" height="133"/>
+        <element name="NodeAction" positionX="207" positionY="-531" width="128" height="88"/>
+        <element name="Rule" positionX="360" positionY="-342" width="128" height="73"/>
+        <element name="Sequence" positionX="9" positionY="-792" width="128" height="193"/>
+        <element name="StatAnswer" positionX="549" positionY="-214" width="128" height="133"/>
+        <element name="StatInteraction" positionX="351" positionY="-243" width="128" height="178"/>
+        <element name="StatSequence" positionX="198" positionY="-243" width="128" height="208"/>
+        <element name="User" positionX="-9" positionY="-252" width="128" height="148"/>
+        <element name="Category" positionX="160" positionY="192" width="128" height="60"/>
     </elements>
 </model>
