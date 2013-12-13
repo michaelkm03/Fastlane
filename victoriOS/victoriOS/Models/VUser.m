@@ -2,7 +2,7 @@
 //  VUser.m
 //  victoriOS
 //
-//  Created by David Keegan on 12/12/13.
+//  Created by David Keegan on 12/9/13.
 //  Copyright (c) 2013 Victorious, Inc. All rights reserved.
 //
 
@@ -12,12 +12,12 @@
 
 @implementation VUser
 
-@dynamic accessLevel;
+@dynamic access_level;
 @dynamic email;
-@dynamic userId;
+@dynamic id;
 @dynamic name;
 @dynamic token;
-@dynamic tokenUpdatedAt;
-@dynamic statSequences;
+@dynamic token_updated_at;
+@dynamic stat_sequences;
 
 @end

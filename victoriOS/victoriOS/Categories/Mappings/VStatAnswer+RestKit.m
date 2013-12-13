@@ -18,18 +18,18 @@
 + (RKEntityMapping*)entityMapping
 {
     NSDictionary *propertyMap = @{
-                                  @"answer_id" : VSelectorName(answerId),
-                                  @"currency" : VSelectorName(currency),
-                                  @"id" : VSelectorName(statAnswerId),
-                                  @"is_correct" : VSelectorName(isCorrect),
-                                  @"label" : VSelectorName(label)
+                                  @"answer_id" : @"answer_id",
+                                  @"currency" : @"currency",
+                                  @"id" : @"id",
+                                  @"is_correct" : @"is_correct",
+                                  @"label" : @"label"
                                   };
     
     RKEntityMapping *mapping = [RKEntityMapping
                                 mappingForEntityForName:[self entityName]
                                 inManagedObjectStore:[RKObjectManager sharedManager].managedObjectStore];
     
-    mapping.identificationAttributes = @[ VSelectorName(statAnswerId) ];
+    mapping.identificationAttributes = @[ @"id" ];
     
     [mapping addAttributeMappingsFromDictionary:propertyMap];
     

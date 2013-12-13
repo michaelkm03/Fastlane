@@ -18,9 +18,9 @@
 + (RKEntityMapping*)entityMapping
 {
     NSDictionary *propertyMap = @{
-                                  @"correct_goto_node" : VSelectorName(correctGotoNode),
-                                  @"incorrect_goto_node" : VSelectorName(incorrectGotoNode),
-                                  @"timeout_goto_node" : VSelectorName(timeoutGotoNode)
+                                  @"correct_goto_node" : @"correct_goto_node",
+                                  @"incorrect_goto_node" : @"incorrect_goto_node",
+                                  @"timeout_goto_node" : @"timeout_goto_node"
                                   };
     
     RKEntityMapping *mapping = [RKEntityMapping

@@ -2,7 +2,7 @@
 //  VAnswer.m
 //  victoriOS
 //
-//  Created by David Keegan on 12/12/13.
+//  Created by David Keegan on 12/9/13.
 //  Copyright (c) 2013 Victorious, Inc. All rights reserved.
 //
 
@@ -13,13 +13,13 @@
 
 @implementation VAnswer
 
-@dynamic answerId;
+@dynamic answer_id;
 @dynamic currency;
-@dynamic displayOrder;
-@dynamic isCorrect;
+@dynamic display_order;
+@dynamic is_correct;
 @dynamic label;
 @dynamic points;
-@dynamic answerAction;
+@dynamic answer_action;
 @dynamic interaction;
 
 @end

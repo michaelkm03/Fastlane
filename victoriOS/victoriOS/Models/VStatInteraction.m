@@ -2,7 +2,7 @@
 //  VStatInteraction.m
 //  victoriOS
 //
-//  Created by David Keegan on 12/12/13.
+//  Created by David Keegan on 12/9/13.
 //  Copyright (c) 2013 Victorious, Inc. All rights reserved.
 //
 
@@ -13,14 +13,14 @@
 
 @implementation VStatInteraction
 
-@dynamic answeredAt;
+@dynamic answered_at;
 @dynamic currency;
-@dynamic statInteractionId;
-@dynamic interactionId;
+@dynamic id;
+@dynamic interaction_id;
 @dynamic points;
 @dynamic question;
 @dynamic type;
 @dynamic answers;
-@dynamic statSequence;
+@dynamic stat_sequence;
 
 @end

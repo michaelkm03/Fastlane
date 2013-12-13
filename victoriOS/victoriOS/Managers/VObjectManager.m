@@ -256,7 +256,7 @@
                                          mainUser.token,
                                          RKStringFromRequestMethod(method)]);
     
-    NSNumber* userID = mainUser.userId;
+    NSNumber* userID = mainUser.id;
     sha1String = [NSString stringWithFormat:@"Basic %@:%@", userID, sha1String];
     
     [client setDefaultHeader:@"Authorization" value:sha1String];

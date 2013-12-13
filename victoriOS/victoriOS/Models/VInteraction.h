@@ -2,7 +2,7 @@
 //  VInteraction.h
 //  victoriOS
 //
-//  Created by David Keegan on 12/12/13.
+//  Created by David Keegan on 12/9/13.
 //  Copyright (c) 2013 Victorious, Inc. All rights reserved.
 //
 
@@ -13,14 +13,14 @@
 
 @interface VInteraction : NSManagedObject
 
-@property (nonatomic, retain) NSNumber * displayOrder;
-@property (nonatomic, retain) NSNumber * interactionId;
-@property (nonatomic, retain) NSNumber * nodeId;
+@property (nonatomic, retain) NSNumber * display_order;
+@property (nonatomic, retain) NSNumber * interaction_id;
+@property (nonatomic, retain) NSNumber * node_id;
 @property (nonatomic, retain) NSString * question;
-@property (nonatomic, retain) NSNumber * startTime;
+@property (nonatomic, retain) NSNumber * start_time;
 @property (nonatomic, retain) NSString * type;
 @property (nonatomic, retain) NSSet *answers;
-@property (nonatomic, retain) VInteractionAction *interactionAction;
+@property (nonatomic, retain) VInteractionAction *interaction_action;
 @property (nonatomic, retain) VNode *node;
 @property (nonatomic, retain) NSSet *rules;
 @end

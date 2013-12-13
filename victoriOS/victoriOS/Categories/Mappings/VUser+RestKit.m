@@ -20,20 +20,20 @@
 + (RKEntityMapping*)entityMapping
 {
     NSDictionary *propertyMap = @{
-                                  @"access_level" : VSelectorName(accessLevel),
-                                  @"email" : VSelectorName(email),
-                                  @"id" : VSelectorName(userId),
-                                  @"name" : VSelectorName(name),
-                                  @"token" : VSelectorName(token),
-                                  @"token_updated_at" : VSelectorName(tokenUpdatedAt)
-                                  };
-
+                                          @"access_level" : @"access_level",
+                                          @"email" : @"email",
+                                          @"id" : @"id",
+                                          @"name" : @"name",
+                                          @"token" : @"token",
+                                          @"token_updated_at" : @"token_updated_at"
+                                          };
+    
     RKEntityMapping *mapping = [RKEntityMapping
-                                mappingForEntityForName:[self entityName]
-                                inManagedObjectStore:[RKObjectManager sharedManager].managedObjectStore];
-
-    mapping.identificationAttributes = @[ VSelectorName(userId) ];
-
+                                        mappingForEntityForName:[self entityName]
+                                        inManagedObjectStore:[RKObjectManager sharedManager].managedObjectStore];
+    
+    mapping.identificationAttributes = @[ @"id" ];
+    
     [mapping addAttributeMappingsFromDictionary:propertyMap];
 
     return mapping;

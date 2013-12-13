@@ -161,7 +161,7 @@
 
 + (void)loadStatSequencesForUser:(VUser*)user
 {
-    NSString* path = [NSString stringWithFormat:@"%@/%@", @"/api/userinfo/games_played", user.userId];
+    NSString* path = [NSString stringWithFormat:@"%@/%@", @"/api/userinfo/games_played", user.id];
     RKManagedObjectRequestOperation* requestOperation = [[RKObjectManager sharedManager]
                                                          appropriateObjectRequestOperationWithObject:nil
                                                          method:RKRequestMethodGET
@@ -176,7 +176,7 @@
 
          for (VStatSequence* statSequence in statSequences)
          {
-             [statSequenceOwner addStatSequencesObject:(VStatSequence*)[statSequenceOwner.managedObjectContext
+             [statSequenceOwner addStat_sequencesObject:(VStatSequence*)[statSequenceOwner.managedObjectContext
                                                          objectWithID:[statSequence objectID]]];
          }
          
@@ -193,7 +193,7 @@
 
 + (void)loadFullDataForStatSequence:(VStatSequence*)statSequence
 {
-    NSString* path = [NSString stringWithFormat:@"%@/%@", @"/api/userinfo/game_stats", statSequence.statSequenceId];
+    NSString* path = [NSString stringWithFormat:@"%@/%@", @"/api/userinfo/game_stats", statSequence.id];
     RKManagedObjectRequestOperation* requestOperation = [[RKObjectManager sharedManager]
                                                          appropriateObjectRequestOperationWithObject:statSequence
                                                          method:RKRequestMethodGET
@@ -237,7 +237,7 @@
          //Just in case we ever return multiple
          for (VStatSequence* statSequence in mappingResult.array)
          {
-             [mainUser addStatSequencesObject:(VStatSequence*)[mainUser.managedObjectContext
+             [mainUser addStat_sequencesObject:(VStatSequence*)[mainUser.managedObjectContext
                                                                objectWithID:[statSequence objectID]]];
          }
 

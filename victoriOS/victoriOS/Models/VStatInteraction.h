@@ -2,7 +2,7 @@
 //  VStatInteraction.h
 //  victoriOS
 //
-//  Created by David Keegan on 12/12/13.
+//  Created by David Keegan on 12/9/13.
 //  Copyright (c) 2013 Victorious, Inc. All rights reserved.
 //
 
@@ -13,15 +13,15 @@
 
 @interface VStatInteraction : NSManagedObject
 
-@property (nonatomic, retain) NSNumber * answeredAt;
+@property (nonatomic, retain) NSNumber * answered_at;
 @property (nonatomic, retain) NSNumber * currency;
-@property (nonatomic, retain) NSNumber * statInteractionId;
-@property (nonatomic, retain) NSNumber * interactionId;
+@property (nonatomic, retain) NSNumber * id;
+@property (nonatomic, retain) NSNumber * interaction_id;
 @property (nonatomic, retain) NSNumber * points;
 @property (nonatomic, retain) NSString * question;
 @property (nonatomic, retain) NSString * type;
 @property (nonatomic, retain) NSSet *answers;
-@property (nonatomic, retain) VStatSequence *statSequence;
+@property (nonatomic, retain) VStatSequence *stat_sequence;
 @end
 
 @interface VStatInteraction (CoreDataGeneratedAccessors)
