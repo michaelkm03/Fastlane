@@ -11,6 +11,8 @@
 #import "REFrostedViewController.h"
 #import "NSString+VParseHelp.h"
 
+#import "VObjectManager+Sequence.h"
+
 typedef NS_ENUM(NSInteger, VStreamScope) {
     VStreamFilterAll = 0,
     VStreamFilterImages,
@@ -74,15 +76,21 @@ const NSString* kSearchCache = @"SearchCache";
 
 - (IBAction)refresh:(UIRefreshControl *)sender
 {
-    NSError *error;
-    if (![self.fetchedResultsController performFetch:&error])
-    {
-        // Update to handle the error appropriately.
-        NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
-        exit(-1);  // Fail
-    }
-    
-    [self.refreshControl endRefreshing];
+    [[[VObjectManager sharedManager] loadNextPageForCategory:[[VCategory findAllObjects] firstObject]
+                                               successBlock:^(NSArray *resultObjects) {
+                                                   NSError *error;
+                                                   if (![self.fetchedResultsController performFetch:&error])
+                                                   {
+                                                       // Update to handle the error appropriately.
+                                                       NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+                                                       exit(-1);  // Fail
+                                                   }
+                                                   
+                                                   [self.refreshControl endRefreshing];
+                                               }
+                                                  failBlock:^(NSError *error) {
+                                                      VLog(@"Error on loadNextPage: %@", error);
+                                                  }] start];
 }
 
 #pragma mark - Table view data source
