@@ -133,8 +133,7 @@
     
     [accountStore requestAccessToAccountsWithType:accountType
                                           options:@{
-                                                    ACFacebookAppIdKey: @"1374328719478033",
-                                                    ACFacebookPermissionsKey: @[@"email"] // Needed for first login
+                                                    ACFacebookAppIdKey: @"1374328719478033"
                                                     }
                                        completion:^(BOOL granted, NSError *error) {
                                            if (!granted)
