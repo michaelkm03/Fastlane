@@ -117,12 +117,15 @@ const NSString* kSearchCache = @"SearchCache";
 {
     VSequence *info = [fetchedResultsController objectAtIndexPath:theIndexPath];
     theCell.textLabel.text = info.name;
+    theCell.imageView.image = [UIImage imageNamed:@"avatar.jpg"];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    static NSString *CellIdentifier = @"Cell";
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+    static NSString *kVideoPhotoCellIdentifier = @"VideoPhoto";
+    static NSString *kForumPollCellIdentifier = @"ForumPoll";
+    
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:kVideoPhotoCellIdentifier];
     
     // Configure the cell...
     [self configureCell:cell atIndexPath:indexPath
