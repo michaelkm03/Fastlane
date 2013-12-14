@@ -148,7 +148,7 @@
                         <segue destination="Xdu-qN-Fv9" kind="push" identifier="toForums" id="C81-aq-wiI"/>
                         <segue destination="WzP-A1-b9Z" kind="push" identifier="toInbox" id="vPd-Ww-HiG"/>
                         <segue destination="IFP-B3-tPj" kind="push" identifier="toProfile" id="amR-0J-mjO"/>
-                        <segue destination="fhC-h7-Ivs" kind="push" id="6JJ-rU-TRe"/>
+                        <segue destination="fhC-h7-Ivs" kind="push" identifier="toOwnerView" id="6JJ-rU-TRe"/>
                     </connections>
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="5T4-sf-laW" userLabel="First Responder" sceneMemberID="firstResponder"/>

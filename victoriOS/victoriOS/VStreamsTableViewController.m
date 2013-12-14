@@ -27,8 +27,8 @@ typedef NS_ENUM(NSInteger, VStreamScope) {
 @property (nonatomic, strong) UIPageViewController* pageController;
 @end
 
-const NSString* kStreamCache = @"StreamCache";
-const NSString* kSearchCache = @"SearchCache";
+static NSString* kStreamCache = @"StreamCache";
+static NSString* kSearchCache = @"SearchCache";
 
 @implementation VStreamsTableViewController
 
