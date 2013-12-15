@@ -11,10 +11,12 @@
 @interface VComposeMessageViewController ()
 @property (weak, nonatomic) IBOutlet UITextView *textView;
 @property (strong, nonatomic) IBOutlet UIView *accessoryView;
-@property (strong, nonatomic) IBOutlet NSObject *textViewBottomConst;
 @end
 
 @implementation VComposeMessageViewController
+{
+    CGSize      _keyboardSize;
+}
 
 - (void)viewDidLoad
 {
@@ -22,15 +24,21 @@
     
     self.textView.delegate  =   self;
     self.textView.keyboardDismissMode   =   UIScrollViewKeyboardDismissModeInteractive;
+    self.textView.scrollEnabled =   YES;
 
     [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(keyboardWillShow:)
-                                                 name:UIKeyboardWillShowNotification
+                                             selector:@selector(keyboardDidShow:)
+                                                 name:UIKeyboardDidShowNotification
                                                object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(keyboardWillHide:)
-                                                 name:UIKeyboardWillHideNotification
+                                             selector:@selector(keyboardDidHide:)
+                                                 name:UIKeyboardDidHideNotification
                                                object:nil];
+}
+
+- (void)dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -77,30 +85,31 @@
     return YES;
 }
 
-#pragma mark - Responding to keyboard events
-
-- (void)keyboardWillShow:(NSNotification *)notification
+- (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text
 {
-    //  Move textview and tool bar above keyboard
-    UIEdgeInsets insets = self.textView.contentInset;
-    insets.bottom += [notification.userInfo[UIKeyboardFrameEndUserInfoKey] CGRectValue].size.height;
-    self.textView.contentInset = insets;
-    
-    insets = self.textView.scrollIndicatorInsets;
-    insets.bottom += [notification.userInfo[UIKeyboardFrameEndUserInfoKey] CGRectValue].size.height;
-    self.textView.scrollIndicatorInsets = insets;
+    [textView scrollRangeToVisible:range];
+    return YES;
 }
 
-- (void)keyboardWillHide:(NSNotification *)notification
+#pragma mark - Responding to keyboard events
+
+- (void)keyboardDidShow:(NSNotification *)notification
 {
-    //  Reset textview and tool bar
-    UIEdgeInsets insets = self.textView.contentInset;
-    insets.bottom -= [notification.userInfo[UIKeyboardFrameBeginUserInfoKey] CGRectValue].size.height;
-    self.textView.contentInset = insets;
-    
-    insets = self.textView.scrollIndicatorInsets;
-    insets.bottom -= [notification.userInfo[UIKeyboardFrameBeginUserInfoKey] CGRectValue].size.height;
-    self.textView.scrollIndicatorInsets = insets;
+    _keyboardSize   =   [[notification userInfo][@"UIKeyboardFrameBeginUserInfoKey"] CGRectValue].size;
+    [self updateTextViewSize];
+}
+
+- (void)keyboardDidHide:(NSNotification *)notification
+{
+    _keyboardSize   =   CGSizeMake(0.0, 0.0);
+    [self updateTextViewSize];
+}
+
+- (void)updateTextViewSize
+{
+    UIInterfaceOrientation  orientation =   [UIApplication sharedApplication].statusBarOrientation;
+    CGFloat     keyboardHeight = UIInterfaceOrientationIsLandscape(orientation) ? _keyboardSize.width : _keyboardSize.height;
+    self.textView.frame = CGRectMake(0.0, 0.0, self.view.frame.size.width, self.view.frame.size.height - keyboardHeight);
 }
 
 #pragma mark - Accessory view action
