@@ -16,7 +16,7 @@
 
 - (BOOL)isAuthorized
 {
-    return !!self.mainUser.token;
+    return [self.mainUser.token length] != 0;
 }
 
 - (BOOL)isOwner
