@@ -121,23 +121,20 @@
 //                                                  failBlock:(FailBlock)failed
 - (RKManagedObjectRequestOperation *)logout
 {
+    if (![self isAuthorized]) //foolish mortal you need to log in to log out...
+        return nil;
+    
     SuccessBlock success = ^(NSArray* objects){
         NSManagedObjectContext* context = self.managedObjectStore.persistentStoreManagedObjectContext;
-        [context  deleteObject:[self loggedInUser]];
+        [context deleteObject:[self mainUser]];
     };
     
     return [self GET:@"/api/logout"
-              object:[self loggedInUser]
+              object:nil
            parameters:nil
          successBlock:success
             failBlock:nil
       paginationBlock:nil];
 }
-
-- (VUser *)loggedInUser
-{
-    return [[VUser findAllObjects] firstObject];
-}
-
 
 @end

@@ -130,20 +130,16 @@
             VOwnerViewController*   ownerViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"owner"];
             navigationController.viewControllers = @[ownerViewController];
             navigationController.toolbarHidden = NO;
-        }
-        else
+        } else
         {
-            if([VObjectManager sharedManager].authorized)
-            {
-                [[VObjectManager sharedManager] logout];
-            }
+            VLog(@"Warning: Non-owner user is attempting to access the ownerview");
         }
     }
-    else if (indexPath.section == 0 && indexPath.row == 4)
+    if (indexPath.section == 1 && indexPath.row == 0)
     {
         if([VObjectManager sharedManager].authorized)
         {
-            [[VObjectManager sharedManager] logout];
+            [[[VObjectManager sharedManager] logout] start];
         }
     }
     
