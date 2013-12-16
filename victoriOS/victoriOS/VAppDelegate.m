@@ -30,7 +30,22 @@
     
     [[AFNetworkActivityIndicatorManager sharedManager] setEnabled:YES];
 
+    NSURL*  openURL =   launchOptions[UIApplicationLaunchOptionsURLKey];
+    if (openURL)
+        [self handleOpenURL:openURL];
+
     return YES;
+}
+
+- (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation
+{
+    [self handleOpenURL:url];
+    return YES;
+}
+
+- (void)handleOpenURL:(NSURL *)aURL
+{
+    
 }
 
 - (void)applicationWillResignActive:(UIApplication *)application
