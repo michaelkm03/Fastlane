@@ -98,12 +98,14 @@
     {
         SuccessBlock success = ^(NSArray* objects)
         {
-        if ([[objects firstObject] isKindOfClass:[VUser class]])
-        {
-            VLog(@"Invalid user object returned in api/account/create");
-            [self didFailToSignUp];
-            return;
-        }
+            if ([[objects firstObject] isKindOfClass:[VUser class]])
+            {
+                VLog(@"Invalid user object returned in api/account/create");
+                [self didFailToSignUp];
+                return;
+            }
+            
+            [self didSignUp];
         };
 
         FailBlock fail = ^(NSError* error)
@@ -115,7 +117,6 @@
                                                           username:self.usernameTextField.text
                                                       successBlock:success
                                                          failBlock:fail] start];
-        [self didSignUp];
     }
 }
 
