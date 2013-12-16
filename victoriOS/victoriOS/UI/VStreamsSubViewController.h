@@ -8,6 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface VStreamsSubViewController : UITableViewController
+@interface VStreamsSubViewController : UITableViewController <NSFetchedResultsControllerDelegate>
 
 @end
