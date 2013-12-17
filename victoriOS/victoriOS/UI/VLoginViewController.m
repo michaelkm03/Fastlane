@@ -239,11 +239,6 @@
     [[self view] endEditing:YES];
 }
 
--(IBAction)unwindToLoginVC:(UIStoryboardSegue *)segue
-{
-    
-}
-
 @end
 
 
