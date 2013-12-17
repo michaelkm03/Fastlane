@@ -14,7 +14,8 @@
 
 #import "VObjectManager+Sequence.h"
 
-typedef NS_ENUM(NSInteger, VStreamScope) {
+typedef NS_ENUM(NSInteger, VStreamScope)
+{
     VStreamFilterAll = 0,
     VStreamFilterImages,
     VStreamFilterVideos,
@@ -77,8 +78,8 @@ static NSString* kSearchCache = @"SearchCache";
 
 - (IBAction)refresh:(UIRefreshControl *)sender
 {
-    
-    SuccessBlock success = ^(NSArray* resultObjects) {
+    SuccessBlock success = ^(NSArray* resultObjects)
+    {
         NSError *error;
         if (![self.fetchedResultsController performFetch:&error])
         {
@@ -90,7 +91,8 @@ static NSString* kSearchCache = @"SearchCache";
         [self.refreshControl endRefreshing];
     };
     
-    FailBlock fail = ^(NSError* error) {
+    FailBlock fail = ^(NSError* error)
+    {
         [self.refreshControl endRefreshing];
         VLog(@"Error on loadNextPage: %@", error);
     };
@@ -156,7 +158,7 @@ static NSString* kSearchCache = @"SearchCache";
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
-    UIView*     containerView   =   [[UIView alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.view.bounds), 120.0)];
+    UIView*     containerView   =   [[UIView alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.view.bounds), [self tableView:tableView heightForHeaderInSection:section])];
     [self addChildViewController:self.pageController];
     [containerView addSubview:self.pageController.view];
     [self.pageController didMoveToParentViewController:self];
@@ -381,14 +383,16 @@ static NSString* kSearchCache = @"SearchCache";
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
-//    if ([segue.identifier isEqualToString:...]) {
-    VStreamsSubViewController *subview = (VStreamsSubViewController *)segue.destinationViewController;
-    UITableViewCell* cell = (UITableViewCell*)sender;
+    if ([segue.identifier isEqualToString:@"toStreamDetails"])
+    {
+        VStreamsSubViewController *subview = (VStreamsSubViewController *)segue.destinationViewController;
+        UITableViewCell* cell = (UITableViewCell*)sender;
+        
+        VSequence *sequence = [_fetchedResultsController objectAtIndexPath:[self.tableView indexPathForCell:cell]];
+        
+        subview.sequence = sequence;
     
-    VSequence *sequence = [_fetchedResultsController objectAtIndexPath:[self.tableView indexPathForCell:cell]];
-    
-    subview.sequence = sequence;
-  //  }
+    }
 }
 
 @end
