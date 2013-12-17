@@ -44,7 +44,7 @@
         imageView.clipsToBounds = YES;
         
         UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(0, 150, 0, 24)];
-        label.text = [VObjectManager sharedManager].mainUser.name;
+        label.text = @"Victorious";
         label.font = [UIFont fontWithName:@"HelveticaNeue" size:21];
         label.backgroundColor = [UIColor clearColor];
         label.textColor = [UIColor colorWithRed:62/255.0f green:68/255.0f blue:75/255.0f alpha:1.0f];
@@ -116,9 +116,9 @@
     }
     else if (indexPath.section == 0 && indexPath.row == 3)
     {
-//        if (![VObjectManager sharedManager].authorized)
-//            [self presentViewController:[VLoginViewController sharedLoginViewController] animated:YES completion:NULL];
-//        else
+        if (![VObjectManager sharedManager].authorized)
+            [self presentViewController:[VLoginViewController sharedLoginViewController] animated:YES completion:NULL];
+        else
         {
             VProfileViewController*  profileViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"profile"];
             navigationController.viewControllers = @[profileViewController];
