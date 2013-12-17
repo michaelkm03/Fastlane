@@ -21,6 +21,7 @@
 
 @interface VStreamsSubViewController ()
 @property (nonatomic, strong) NSFetchedResultsController* fetchedResultsController;
+@property (nonatomic, strong) NSMutableArray* newlyReadComments;
 @end
 
 static NSString* CommentCache = @"CommentCache";
@@ -267,6 +268,15 @@ static NSString* CommentCache = @"CommentCache";
     return cell;
 }
 
+- (void)tableView:(UITableView *)tableView didEndDisplayingCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    //Add
+    VComment* comment = (VComment*)[_fetchedResultsController objectAtIndexPath:indexPath];
+    //if(!comment.read)
+    [_newlyReadComments addObject:[NSString stringWithFormat:@"%@", comment.remoteId]];
+}
+
+
 - (void)configureCell:(UITableViewCell *)theCell atIndexPath:(NSIndexPath *)theIndexPath
 {
     VComment *info = [self.fetchedResultsController objectAtIndexPath:theIndexPath];
@@ -424,7 +434,7 @@ static NSString* CommentCache = @"CommentCache";
 }
 */
 
-/*
+
 #pragma mark - Navigation
 
 // In a story board-based application, you w	ill often want to do a little preparation before navigation
@@ -432,8 +442,13 @@ static NSString* CommentCache = @"CommentCache";
 {
     // Get the new view controller using [segue destinationViewController].
     // Pass the selected object to the new view controller.
+    __block NSMutableArray* readComments = _newlyReadComments;
+    [[[VObjectManager sharedManager] readComments:readComments
+                                    successBlock:^(NSArray *resultObjects) {
+                                        [readComments removeAllObjects];
+                                    }
+                                       failBlock:^(NSError *error) {
+                                           VLog(@"Warning: failed to mark following comments as read: %@", readComments);
+                                       }] start];
 }
-
- */
-
 @end
