@@ -11,8 +11,9 @@
 #import "VSequence.h"
 #import "REFrostedViewController.h"
 #import "NSString+VParseHelp.h"
-
+#import "UIImageView+AFNetworking.h"
 #import "VObjectManager+Sequence.h"
+#import "VStreamViewCell.h"
 
 typedef NS_ENUM(NSInteger, VStreamScope)
 {
@@ -129,20 +130,26 @@ static NSString* kSearchCache = @"SearchCache";
     return [sectionInfo numberOfObjects];
 }
 
-- (void)configureCell:(UITableViewCell *)theCell atIndexPath:(NSIndexPath *)theIndexPath
+- (void)configureCell:(VStreamViewCell *)theCell atIndexPath:(NSIndexPath *)theIndexPath
     forFetchedResultsController:(NSFetchedResultsController *)fetchedResultsController
 {
     VSequence *info = [fetchedResultsController objectAtIndexPath:theIndexPath];
-    theCell.textLabel.text = info.name;
-    theCell.imageView.image = [UIImage imageNamed:@"avatar.jpg"];
+    theCell.titleLabel.text = info.name;
+    [theCell.previewImageView setImageWithURL:[NSURL URLWithString:info.previewImage]
+                             placeholderImage:[UIImage new]];
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return 240;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     static NSString *kVideoPhotoCellIdentifier = @"VideoPhoto";
-    static NSString *kForumPollCellIdentifier = @"ForumPoll";
-    
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:kVideoPhotoCellIdentifier];
+//    static NSString *kForumPollCellIdentifier = @"ForumPoll";
+
+    VStreamViewCell *cell = [tableView dequeueReusableCellWithIdentifier:kVideoPhotoCellIdentifier];
     
     // Configure the cell...
     [self configureCell:cell atIndexPath:indexPath

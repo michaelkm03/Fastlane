@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="4514" systemVersion="13B3116" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="73p-Mt-pfh">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="4514" systemVersion="13A603" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="73p-Mt-pfh">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3747"/>
     </dependencies>
@@ -208,23 +208,38 @@
                             </connections>
                         </searchBar>
                         <prototypes>
-                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" accessoryType="detailDisclosureButton" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="VideoPhoto" textLabel="5FG-9q-eEa" rowHeight="240" style="IBUITableViewCellStyleDefault" id="bEQ-ic-ddv">
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" accessoryType="detailDisclosureButton" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="VideoPhoto" rowHeight="240" id="bEQ-ic-ddv" customClass="VStreamViewCell">
                                 <rect key="frame" x="0.0" y="174" width="320" height="240"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="bEQ-ic-ddv" id="KA2-2d-tpT">
                                     <rect key="frame" x="0.0" y="0.0" width="253" height="239"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <label opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="left" text="Title" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="5FG-9q-eEa">
-                                            <rect key="frame" x="15" y="0.0" width="238" height="239"/>
-                                            <autoresizingMask key="autoresizingMask"/>
-                                            <fontDescription key="fontDescription" type="system" pointSize="18"/>
-                                            <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="nW8-Oj-im7">
+                                            <rect key="frame" x="0.0" y="0.0" width="253" height="239"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        </imageView>
+                                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="AnQ-T0-MMf">
+                                            <rect key="frame" x="20" y="198" width="213" height="21"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                            <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                     </subviews>
+                                    <constraints>
+                                        <constraint firstItem="AnQ-T0-MMf" firstAttribute="leading" secondItem="KA2-2d-tpT" secondAttribute="leading" constant="20" symbolic="YES" id="AXi-id-ngM"/>
+                                        <constraint firstItem="nW8-Oj-im7" firstAttribute="leading" secondItem="KA2-2d-tpT" secondAttribute="leading" id="cwW-LD-0a0"/>
+                                        <constraint firstAttribute="bottom" secondItem="nW8-Oj-im7" secondAttribute="bottom" id="nc5-0N-2hh"/>
+                                        <constraint firstAttribute="bottom" secondItem="AnQ-T0-MMf" secondAttribute="bottom" constant="20" symbolic="YES" id="npB-eF-9py"/>
+                                        <constraint firstAttribute="trailing" secondItem="nW8-Oj-im7" secondAttribute="trailing" id="qwp-yk-0rB"/>
+                                        <constraint firstAttribute="trailing" secondItem="AnQ-T0-MMf" secondAttribute="trailing" constant="20" symbolic="YES" id="rwb-uU-o1H"/>
+                                        <constraint firstItem="nW8-Oj-im7" firstAttribute="top" secondItem="KA2-2d-tpT" secondAttribute="top" id="wfw-YL-6lS"/>
+                                    </constraints>
                                 </tableViewCellContentView>
                                 <connections>
+                                    <outlet property="previewImageView" destination="nW8-Oj-im7" id="q1D-VL-bbp"/>
+                                    <outlet property="titleLabel" destination="AnQ-T0-MMf" id="fnK-YS-Gdr"/>
                                     <segue destination="fsf-U2-hN6" kind="push" identifier="toStreamDetails" trigger="accessoryAction" id="Q2z-MS-2KG"/>
                                 </connections>
                             </tableViewCell>
