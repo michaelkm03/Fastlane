@@ -89,6 +89,31 @@ static NSString* CommentCache = @"CommentCache";
                                              failBlock:nil] start];
 }
 
+- (IBAction)refresh:(UIRefreshControl *)sender
+{
+    
+    SuccessBlock success = ^(NSArray* resultObjects) {
+        NSError *error;
+        if (![self.fetchedResultsController performFetch:&error])
+        {
+            // Update to handle the error appropriately.
+            NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+            exit(-1);  // Fail
+        }
+        
+        [self.refreshControl endRefreshing];
+    };
+    
+    FailBlock fail = ^(NSError* error) {
+        [self.refreshControl endRefreshing];
+        VLog(@"Error on loadNextPage: %@", error);
+    };
+    
+    [[[VObjectManager sharedManager] loadNextPageOfCommentsForSequence:_sequence
+                                                          successBlock:success
+                                                             failBlock:fail] start];
+}
+
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView

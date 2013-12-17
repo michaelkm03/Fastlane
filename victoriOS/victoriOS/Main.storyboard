@@ -288,6 +288,12 @@
                         </barButtonItem>
                     </navigationItem>
                     <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
+                    <refreshControl key="refreshControl" opaque="NO" multipleTouchEnabled="YES" contentMode="center" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" id="KJa-GU-ATa">
+                        <autoresizingMask key="autoresizingMask"/>
+                        <connections>
+                            <action selector="refresh:" destination="BQm-xc-Hw8" eventType="valueChanged" id="eqh-am-hYH"/>
+                        </connections>
+                    </refreshControl>
                     <connections>
                         <outlet property="searchDisplayController" destination="ohm-Lx-FTR" id="MAo-5e-fZr"/>
                     </connections>
@@ -348,6 +354,12 @@
                             </connections>
                         </barButtonItem>
                     </navigationItem>
+                    <refreshControl key="refreshControl" opaque="NO" multipleTouchEnabled="YES" contentMode="center" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" id="DRO-Lr-29C">
+                        <autoresizingMask key="autoresizingMask"/>
+                        <connections>
+                            <action selector="refresh:" destination="fsf-U2-hN6" eventType="valueChanged" id="Oth-ht-VXg"/>
+                        </connections>
+                    </refreshControl>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="KBR-zA-ehY" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
