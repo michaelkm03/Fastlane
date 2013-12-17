@@ -18,17 +18,21 @@
 - (RKManagedObjectRequestOperation *)loadSequenceCategoriesWithSuccessBlock:(SuccessBlock)success
                                                                   failBlock:(FailBlock)fail;
 
-- (RKManagedObjectRequestOperation *)loadNextPageForCategory:(VCategory*)category
-                                                successBlock:(SuccessBlock)success
-                                                   failBlock:(FailBlock)fail;
+- (RKManagedObjectRequestOperation *)loadNextPageOfSequencesForCategory:(VCategory*)category
+                                                           successBlock:(SuccessBlock)success
+                                                              failBlock:(FailBlock)fail;
 
 - (RKManagedObjectRequestOperation *)loadFullDataForSequence:(VSequence*)sequence
                                                 successBlock:(SuccessBlock)success
                                                    failBlock:(FailBlock)fail;
 
-- (RKManagedObjectRequestOperation *)loadCommentsForSequence:(VSequence*)sequence
-                                                successBlock:(SuccessBlock)success
-                                                   failBlock:(FailBlock)fail;
+- (RKManagedObjectRequestOperation *)fetchSequence:(VSequence*)sequence
+                                      successBlock:(SuccessBlock)success
+                                         failBlock:(FailBlock)fail;
+
+- (RKManagedObjectRequestOperation *)loadNextPageOfCommentsForSequence:(VSequence*)sequence
+                                                          successBlock:(SuccessBlock)success
+                                                             failBlock:(FailBlock)fail;
 - (void)testSequenceData;
 
 #pragma mark - StatSequence Methods

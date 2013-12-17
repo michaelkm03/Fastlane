@@ -176,6 +176,18 @@
                paginationBlock:paginationBlock];
 }
 
+-(VPaginationStatus *)statusForKey:(NSString*)key
+{
+    VPaginationStatus* status = [self.paginationStatuses objectForKey:key];
+    if (!status)
+    {
+        status = [[VPaginationStatus alloc] init];
+    }
+
+    return status;
+}
+
+
 #pragma mark - Subclass
 - (id)appropriateObjectRequestOperationWithObject:(id)object
                                            method:(RKRequestMethod)method

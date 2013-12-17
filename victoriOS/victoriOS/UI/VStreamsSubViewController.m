@@ -9,6 +9,9 @@
 #import "VStreamsSubViewController.h"
 #import "VComment.h"
 
+#import "VObjectManager+Sequence.h"
+#import "VObjectManager+Comment.h"
+
 @interface VStreamsSubViewController ()
 @property (nonatomic, strong) NSFetchedResultsController* fetchedResultsController;
 @end
@@ -20,7 +23,12 @@ static NSString* CommentCache = @"CommentCache";
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-
+    
+    [self loadSequence];
+    
+    //TODO: remove the "Add a ton of comments" function when I'm done testing
+//    [self DOSAttackServer];
+    
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
  
@@ -34,16 +42,63 @@ static NSString* CommentCache = @"CommentCache";
     // Dispose of any resources that can be recreated.
 }
 
+- (void)loadSequence
+{
+    //Load new sequence
+    __block UIActivityIndicatorView* indicator = [[UIActivityIndicatorView alloc] init];
+    [self.view addSubview:indicator];
+    indicator.center = self.view.center;
+    [indicator startAnimating];
+    
+    SuccessBlock success = ^(NSArray *resultObjects) {
+        
+        [self fetchedResultsController];
+        
+        [self updatePredicate];
+        
+        [indicator stopAnimating];
+        [indicator removeFromSuperview];
+    };
+    
+    FailBlock fail = ^(NSError *error) {
+        [indicator stopAnimating];
+        [indicator removeFromSuperview];
+        UIAlertView*    alert   =   [[UIAlertView alloc] initWithTitle:@"Unable to Load Media" message:error.localizedDescription delegate:self cancelButtonTitle:@"Understood" otherButtonTitles:nil];
+        [alert show];
+    };
+    
+    [[[VObjectManager sharedManager] loadFullDataForSequence:_sequence
+                                                successBlock:success
+                                                   failBlock:fail] start];
+}
+
+-(void)DOSAttackServer
+{
+    SuccessBlock success;
+    success = ^(NSArray* objects)
+    {
+        [self DOSAttackServer];
+    };
+    
+    [[[VObjectManager sharedManager] addCommentWithText:@"Spam"
+                                                  Data:nil
+                                        mediaExtension:nil
+                                            toSequence:_sequence
+                                             andParent:nil
+                                          successBlock:success
+                                             failBlock:nil] start];
+}
+
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    return [[_fetchedResultsController sections] count];
+    return [[self.fetchedResultsController sections] count];
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    id  sectionInfo = [[_fetchedResultsController sections] objectAtIndex:section];
+    id  sectionInfo = [[self.fetchedResultsController sections] objectAtIndex:section];
     return [sectionInfo numberOfObjects];
 }
 
@@ -52,65 +107,40 @@ static NSString* CommentCache = @"CommentCache";
     static NSString *CellIdentifier = @"Cell";
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
     
-    cell.textLabel.text = @"Stuff";
+    [self configureCell:cell atIndexPath:indexPath];
     
     return cell;
 }
 
 - (void)configureCell:(UITableViewCell *)theCell atIndexPath:(NSIndexPath *)theIndexPath
-forFetchedResultsController:(NSFetchedResultsController *)fetchedResultsController
 {
-    VComment *info = [fetchedResultsController objectAtIndexPath:theIndexPath];
+    VComment *info = [self.fetchedResultsController objectAtIndexPath:theIndexPath];
+    
     theCell.textLabel.text = info.text;
     theCell.imageView.image = [UIImage imageNamed:@"avatar.jpg"];
 }
 
 #pragma mark - NSFetchedResultsControllers
 
-- (void)updatePredicateForFetchedResultsController:(NSFetchedResultsController*)controller
+- (void)updatePredicate
 {
     //We must clear the cache before modifying anything.
     [NSFetchedResultsController deleteCacheWithName:CommentCache];
     
-    NSFetchRequest* fetchRequest = controller.fetchRequest;
+    NSFetchRequest* fetchRequest = self.fetchedResultsController.fetchRequest;
     
-    //Define the appropriate filter
-    NSPredicate* typeFilter;
+    //TODO: apply filter predicate
     
-//    //Start by filtering by type
-//    switch (_scopeType)
-//    {
-//        case VStreamFilterVideoForums:
-//            typeFilter = [NSPredicate predicateWithFormat:@"category == 'video_forum'"];
-//            break;
-//            
-//        case VStreamFilterPolls:
-//            typeFilter = [NSPredicate predicateWithFormat:@"category == 'poll'"];
-//            break;
-//            
-//        case VStreamFilterImages:
-//            typeFilter = [NSPredicate predicateWithFormat:@"category == 'image'"];
-//            break;
-//            
-//        case VStreamFilterVideos:
-//            typeFilter = [NSPredicate predicateWithFormat:@"category == 'video'"];
-//            break;
-//            
-//        default:
-//            //TODO: remove "|| general " from this filter.
-//            typeFilter = [NSPredicate predicateWithFormat:@"category == 'video_forum' || category == 'poll' || category == 'image' || category == 'video' || category == 'general'"];
-//            break;
-//    }
-    
-    [fetchRequest setPredicate:typeFilter];
+    NSPredicate* sequenceFilter = [NSPredicate predicateWithFormat:@"sequenceId == %@", _sequence.remoteId];
+    [fetchRequest setPredicate:sequenceFilter];
     
     //We need to perform the fetch again
-    NSError *error;
-	if (![controller performFetch:&error])
+    NSError *error = nil;
+	if (![self.fetchedResultsController performFetch:&error])
     {
 		// Update to handle the error appropriately.
 		NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
-		exit(-1);  // Fail
+//		exit(-1);  // Fail
 	}
     
     //Then reload the data
@@ -139,7 +169,7 @@ forFetchedResultsController:(NSFetchedResultsController *)fetchedResultsControll
 - (NSFetchRequest*)fetchRequestForContext:(NSManagedObjectContext*)context
 {
     NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
-    NSEntityDescription *entity = [NSEntityDescription entityForName:@"Comment" inManagedObjectContext:context];
+    NSEntityDescription *entity = [NSEntityDescription entityForName:[VComment entityName] inManagedObjectContext:context];
     [fetchRequest setEntity:entity];
     
     NSSortDescriptor *sort = [[NSSortDescriptor alloc] initWithKey:@"display_order" ascending:YES];
@@ -169,7 +199,7 @@ forFetchedResultsController:(NSFetchedResultsController *)fetchedResultsControll
             break;
             
         case NSFetchedResultsChangeUpdate:
-            [self configureCell:[self.tableView cellForRowAtIndexPath:indexPath] atIndexPath:indexPath forFetchedResultsController:controller];
+            [self configureCell:[self.tableView cellForRowAtIndexPath:indexPath] atIndexPath:indexPath];
             break;
             
         case NSFetchedResultsChangeMove:
@@ -242,7 +272,7 @@ forFetchedResultsController:(NSFetchedResultsController *)fetchedResultsControll
 /*
 #pragma mark - Navigation
 
-// In a story board-based application, you will often want to do a little preparation before navigation
+// In a story board-based application, you w	ill often want to do a little preparation before navigation
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
     // Get the new view controller using [segue destinationViewController].

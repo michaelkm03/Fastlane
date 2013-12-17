@@ -7,7 +7,10 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "VSequence.h"
 
 @interface VStreamsSubViewController : UITableViewController <NSFetchedResultsControllerDelegate>
+
+@property (nonatomic, strong) VSequence* sequence;
 
 @end

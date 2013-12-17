@@ -25,11 +25,11 @@
       {
           for (VCategory* category in resultObjects)
           {
-              [[self loadNextPageForCategory:category
-                               successBlock:nil
-                                  failBlock:^(NSError *error) {
-                                      VLog(@"Error in initialSequenceLoad: %@", error);
-                               }] start];
+              [[self loadNextPageOfSequencesForCategory:category
+                                          successBlock:nil
+                                             failBlock:^(NSError *error) {
+                                                 VLog(@"Error in initialSequenceLoad: %@", error);
+                                             }] start];
           }
       } failBlock:^(NSError *error)
       {
@@ -52,27 +52,21 @@
  * \param category: category of sequences to load
  * \returns RKManagedObjectRequestOperation* or nil if theres no more pages to load
  */
-- (RKManagedObjectRequestOperation *)loadNextPageForCategory:(VCategory*)category
-                                                 successBlock:(SuccessBlock)success
-                                                    failBlock:(FailBlock)fail
+- (RKManagedObjectRequestOperation *)loadNextPageOfSequencesForCategory:(VCategory*)category
+                                                           successBlock:(SuccessBlock)success
+                                                              failBlock:(FailBlock)fail
 {
-    NSString* path = [NSString stringWithFormat:@"/api/sequence/list_by_category/%@", category.name];
-    
-    __block VPaginationStatus* status = [self.paginationStatuses objectForKey:category.name];
-    if (!status)
-    {
-        status = [[VPaginationStatus alloc] init];
-    }
-    else //only add page to the path if we've looked it up before.
-    {
-        path = [path stringByAppendingFormat:@"/0/%i/%i", status.pagesLoaded + 1, status.itemsPerPage];
-    }
-    
+    __block VPaginationStatus* status = [self statusForKey:category.name];
     if([status isFullyLoaded])
     {
         return nil;
     }
     
+    NSString* path = [NSString stringWithFormat:@"/api/sequence/list_by_category/%@", category.name];
+    if (status.pagesLoaded) //only add page to the path if we've looked it up before.
+    {
+        path = [path stringByAppendingFormat:@"/0/%i/%i", status.pagesLoaded + 1, status.itemsPerPage];
+    }
     
     
     PaginationBlock pagination = ^(NSUInteger page_number, NSUInteger page_total)
@@ -94,6 +88,41 @@
                                                 successBlock:(SuccessBlock)success
                                                    failBlock:(FailBlock)fail
 {
+    //If we haven't fetched the full data we load that and possibly the comments
+    if (![sequence.nodes count])
+    {
+        SuccessBlock loadCommentsBlock;
+        if (![sequence.comments count])
+        {
+            loadCommentsBlock = ^(NSArray* objects)
+            {
+                VLog(@"Objects created in loadFullData: %@", objects);
+                [[self loadNextPageOfCommentsForSequence:sequence
+                                           successBlock:success
+                                              failBlock:fail] start];
+            };
+        }
+        
+        //If we need to load the comments afterwards, we delay the success block until they are loaded
+        return [self fetchSequence:sequence
+               successBlock:loadCommentsBlock ? loadCommentsBlock : success
+                  failBlock:fail];
+    }
+    //If we dont have comments, load those
+    else if (![sequence.comments count])
+    {
+        return [self loadNextPageOfCommentsForSequence:sequence successBlock:success failBlock:fail];
+    }
+    
+    //If we don't need to load, just run the success block
+    success(nil);
+    return nil;
+}
+
+- (RKManagedObjectRequestOperation *)fetchSequence:(VSequence*)sequence
+                                      successBlock:(SuccessBlock)success
+                                         failBlock:(FailBlock)fail
+{
     NSString* path = [NSString stringWithFormat:@"/api/sequence/fetch/%@", sequence.remoteId];
     
     return [self GET:path
@@ -104,14 +133,22 @@
      paginationBlock:nil];
 }
 
-- (RKManagedObjectRequestOperation *)loadCommentsForSequence:(VSequence*)sequence
-                                                successBlock:(SuccessBlock)success
-                                                   failBlock:(FailBlock)fail
+- (RKManagedObjectRequestOperation *)loadNextPageOfCommentsForSequence:(VSequence*)sequence
+                                                          successBlock:(SuccessBlock)success
+                                                             failBlock:(FailBlock)fail
 {
-    NSString* path = [NSString stringWithFormat:@"/api/comment/fetch/%@", sequence.remoteId];
+    __block VPaginationStatus* status = [self statusForKey:
+                                         [self commentPaginationKeyForSequenceID:sequence.remoteId]];
+    if([status isFullyLoaded])
+        return nil;
+    
+    NSString* path = [NSString stringWithFormat:@"/api/comment/all/%@", sequence.remoteId];
+    if (status.pagesLoaded) //only add page to the path if we've looked it up before.
+    {
+        path = [path stringByAppendingFormat:@"/0/%i/%i", status.pagesLoaded + 1, status.itemsPerPage];
+    }
     
     __block VSequence* commentOwner = sequence; //Keep the sequence around until the block gets called
-    
     SuccessBlock fullSuccessBlock = ^(NSArray* comments)
     {
         for (VComment* comment in comments)
@@ -122,12 +159,24 @@
         success(comments);
     };
     
+    PaginationBlock pagination = ^(NSUInteger page_number, NSUInteger page_total)
+    {
+        status.pagesLoaded = page_number;
+        status.totalPages = page_total;
+        [self.paginationStatuses setObject:status forKey:path];
+    };
+    
     return [self GET:path
               object:nil
           parameters:nil
         successBlock:fullSuccessBlock
            failBlock:fail
-     paginationBlock:nil];
+     paginationBlock:pagination];
+}
+
+- (NSString *)commentPaginationKeyForSequenceID:(NSNumber *)sequenceID
+{
+    return [NSString stringWithFormat:@"commentsForSequence%@", sequenceID];
 }
 
 - (void)testSequenceData

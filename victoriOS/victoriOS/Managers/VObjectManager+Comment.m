@@ -25,12 +25,13 @@
 {
     //Set the parameters
     NSMutableDictionary* parameters = [[NSMutableDictionary alloc] initWithCapacity:5];
-    [parameters setObject:[NSString stringWithFormat:@"%@", sequence.remoteId] forKey:@"sequence_id"];
-    if (parent.remoteId)
+    if (sequence)
+        [parameters setObject:[NSString stringWithFormat:@"%@", sequence.remoteId] forKey:@"sequence_id"];
+    if (parent)
         [parameters setObject:[NSString stringWithFormat:@"%@", parent.remoteId] forKey:@"parent_id"];
-    if (![text isEmpty])
+    if (text)
         [parameters setObject:text forKey:@"text"];
-    if (data && ![extension isEmpty]) //need both asset and type otherwise its junk data
+    if (data && extension)
     {
         [parameters setObject:data forKey:@"media_data"];
         [parameters setObject:extension forKey:@"media_type"];

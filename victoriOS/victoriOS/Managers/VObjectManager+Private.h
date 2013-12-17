@@ -7,6 +7,7 @@
 //
 
 #import "VObjectManager.h"
+#import "VPaginationStatus.h"
 
 @interface VObjectManager ()
 
@@ -33,4 +34,6 @@
                              successBlock:(SuccessBlock)successBlock
                                 failBlock:(FailBlock)failBlock
                           paginationBlock:(PaginationBlock)paginationBlock;
+
+-(VPaginationStatus *)statusForKey:(NSString*)key;
 @end

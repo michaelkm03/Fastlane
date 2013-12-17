@@ -7,6 +7,7 @@
 //
 
 #import "VStreamsTableViewController.h"
+#import "VStreamsSubViewController.h"
 #import "VSequence.h"
 #import "REFrostedViewController.h"
 #import "NSString+VParseHelp.h"
@@ -76,21 +77,21 @@ static NSString* kSearchCache = @"SearchCache";
 
 - (IBAction)refresh:(UIRefreshControl *)sender
 {
-    [[[VObjectManager sharedManager] loadNextPageForCategory:[[VCategory findAllObjects] firstObject]
-                                               successBlock:^(NSArray *resultObjects) {
-                                                   NSError *error;
-                                                   if (![self.fetchedResultsController performFetch:&error])
-                                                   {
-                                                       // Update to handle the error appropriately.
-                                                       NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
-                                                       exit(-1);  // Fail
-                                                   }
-                                                   
-                                                   [self.refreshControl endRefreshing];
-                                               }
-                                                  failBlock:^(NSError *error) {
-                                                      VLog(@"Error on loadNextPage: %@", error);
-                                                  }] start];
+    [[[VObjectManager sharedManager] loadNextPageOfSequencesForCategory:[[VCategory findAllObjects] firstObject]
+                                                           successBlock:^(NSArray *resultObjects) {
+                                                              NSError *error;
+                                                              if (![self.fetchedResultsController performFetch:&error])
+                                                              {
+                                                                  // Update to handle the error appropriately.
+                                                                  NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+                                                                  exit(-1);  // Fail
+                                                              }
+                                                              
+                                                              [self.refreshControl endRefreshing];
+                                                           }
+                                                              failBlock:^(NSError *error) {
+                                                                 VLog(@"Error on loadNextPage: %@", error);
+                                                              }] start];
 }
 
 #pragma mark - Table view data source
@@ -368,6 +369,20 @@ static NSString* kSearchCache = @"SearchCache";
 {
     [self viewWillAppear:YES];
     [self updatePredicateForFetchedResultsController:_fetchedResultsController];
+}
+
+#pragma mark - Segues
+
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
+{
+//    if ([segue.identifier isEqualToString:...]) {
+    VStreamsSubViewController *subview = (VStreamsSubViewController *)segue.destinationViewController;
+    UITableViewCell* cell = (UITableViewCell*)sender;
+    
+    VSequence *sequence = [_fetchedResultsController objectAtIndexPath:[self.tableView indexPathForCell:cell]];
+    
+    subview.sequence = sequence;
+  //  }
 }
 
 @end
