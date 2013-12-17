@@ -24,6 +24,15 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     [application setMinimumBackgroundFetchInterval:UIApplicationBackgroundFetchIntervalMinimum];
+//    [application registerForRemoteNotificationTypes:(UIRemoteNotificationTypeBadge | UIRemoteNotificationTypeSound)];
+    
+//    UILocalNotification *localNotif = [launchOptions objectForKey:UIApplicationLaunchOptionsLocalNotificationKey];
+//    if (localNotif)
+//    {
+//        NSString *itemName = [localNotif.userInfo objectForKey:ToDoItemKey];
+//        [viewController displayItem:itemName];  // custom method
+//        app.applicationIconBadgeNumber = localNotif.applicationIconBadgeNumber-1;
+//    }
     
     [VObjectManager setupObjectManager];
     [[[VObjectManager sharedManager] initialSequenceLoad] start];
@@ -116,4 +125,17 @@
     // Do something with the content ID
     completionHandler(UIBackgroundFetchResultNewData);
 }
+
+- (void)application:(UIApplication *)app didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)devToken
+{
+//    const void *devTokenBytes = [devToken bytes];
+//    self.registered = YES;
+//    [self sendProviderDeviceToken:devTokenBytes]; // custom method
+}
+
+- (void)application:(UIApplication *)app didFailToRegisterForRemoteNotificationsWithError:(NSError *)err
+{
+    NSLog(@"Error in registration. Error: %@", err);
+}
+
 @end
