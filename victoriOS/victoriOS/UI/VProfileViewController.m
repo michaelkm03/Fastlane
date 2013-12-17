@@ -8,12 +8,19 @@
 
 #import "VProfileViewController.h"
 #import "REFrostedViewController.h"
+#import "VObjectManager+Login.h"
+#import "VUser.h"
+#import "VProfileEditCell.h"
 
 @interface      VProfileViewController  ()
 @property (strong, nonatomic) IBOutlet UIBarButtonItem *signoutButton;
 @property (strong, nonatomic) IBOutlet UIBarButtonItem *sendButton;
 @end
 @implementation VProfileViewController
+{
+    NSArray*    _labels;
+    NSArray*    _values;
+}
 
 - (void)viewDidLoad
 {
@@ -23,6 +30,8 @@
     {
         self.navigationItem.rightBarButtonItem = self.editButtonItem;
         self.navigationController.toolbarHidden = YES;
+     
+        self.user = [VObjectManager sharedManager].mainUser;
     }
     else
     {
@@ -48,7 +57,7 @@
         imageView.clipsToBounds = YES;
         
         UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(0, 150, 0, 24)];
-        label.text = @"Sam Rogoway";
+        label.text = self.user.name;
         label.font = [UIFont fontWithName:@"HelveticaNeue" size:21];
         label.backgroundColor = [UIColor clearColor];
         label.textColor = [UIColor colorWithRed:62/255.0f green:68/255.0f blue:75/255.0f alpha:1.0f];
@@ -59,6 +68,8 @@
         [view addSubview:label];
         view;
     });
+    
+    _labels =   @[@"Name", @"E-Mail", @"Password"];
 }
 
 - (void)didReceiveMemoryWarning
@@ -67,52 +78,83 @@
     // Dispose of any resources that can be recreated.
 }
 
-- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
+- (void)setEditing:(BOOL)editing animated:(BOOL)animated
 {
-    return YES;
+    [super setEditing:editing animated:animated];
+    [self.tableView reloadData];
+    
+    if (!editing)
+    {
+        //  commit values
+    }
 }
 
-/*
- // Override to support editing the table view.
- - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
- {
- if (editingStyle == UITableViewCellEditingStyleDelete) {
- // Delete the row from the data source
- [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
- }
- else if (editingStyle == UITableViewCellEditingStyleInsert) {
- // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
- }
- }
- */
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
+    return 3;
+}
 
-/*
- // Override to support rearranging the table view.
- - (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath
- {
- }
- */
 
-/*
- // Override to support conditional rearranging of the table view.
- - (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath
- {
- // Return NO if you do not want the item to be re-orderable.
- return YES;
- }
- */
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    UITableViewCell*    cell    =   nil;
 
-/*
- #pragma mark - Navigation
- 
- // In a story board-based application, you will often want to do a little preparation before navigation
- - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
- {
- // Get the new view controller using [segue destinationViewController].
- // Pass the selected object to the new view controller.
- }
- 
- */
+    if (self.editing)
+    {
+        static NSString *cellIdentifier = @"edit";
+        
+        VProfileEditCell*   aCell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier forIndexPath:indexPath];
+        aCell.textLabel.text = _labels[indexPath.row];
+        
+        switch (indexPath.row)
+        {
+            case 0:
+                aCell.textField.text = self.user.name;
+                break;
+                
+            case 1:
+                aCell.textField.text = self.user.email;
+                break;
+                
+            case 2:
+                aCell.textField.text = @"";
+                aCell.textField.secureTextEntry = YES;
+                break;
+        }
+        
+        cell = aCell;
+    }
+    else
+    {
+        static NSString *cellIdentifier = @"display";
+        
+        cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier forIndexPath:indexPath];
+        cell.textLabel.text = _labels[indexPath.row];
+        
+        switch (indexPath.row)
+        {
+            case 0:
+                cell.detailTextLabel.text = self.user.name;
+                break;
+                
+            case 1:
+                cell.detailTextLabel.text = self.user.email;
+                break;
+                
+            case 2:
+                cell.detailTextLabel.text = @"••••••••";
+                break;
+        }
+    }
+    
+    return cell;
+}
+
+- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return NO;
+}
+
 - (IBAction)showMenu
 {
     [self.frostedViewController presentMenuViewController];

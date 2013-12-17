@@ -12,6 +12,8 @@
 #import "VForumsViewController.h"
 #import "VLoginViewController.h"
 #import "VOwnerViewController.h"
+#import "VInboxViewController.h"
+#import "VProfileViewController.h"
 
 #import "VObjectManager+Login.h"
 //TODO:remove this import, need to test
@@ -42,7 +44,7 @@
         imageView.clipsToBounds = YES;
         
         UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(0, 150, 0, 24)];
-        label.text = @"Sam Rogoway";
+        label.text = [VObjectManager sharedManager].mainUser.name;
         label.font = [UIFont fontWithName:@"HelveticaNeue" size:21];
         label.backgroundColor = [UIColor clearColor];
         label.textColor = [UIColor colorWithRed:62/255.0f green:68/255.0f blue:75/255.0f alpha:1.0f];
@@ -107,20 +109,21 @@
             [self presentViewController:[VLoginViewController sharedLoginViewController] animated:YES completion:NULL];
         else
         {
-            VForumsViewController*  forumsViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"inbox"];
-            navigationController.viewControllers = @[forumsViewController];
+            VInboxViewController*  inboxViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"inbox"];
+            navigationController.viewControllers = @[inboxViewController];
             navigationController.toolbarHidden = NO;
         }
     }
     else if (indexPath.section == 0 && indexPath.row == 3)
     {
-        if (![VObjectManager sharedManager].authorized)
-            [self presentViewController:[VLoginViewController sharedLoginViewController] animated:YES completion:NULL];
-        else
+//        if (![VObjectManager sharedManager].authorized)
+//            [self presentViewController:[VLoginViewController sharedLoginViewController] animated:YES completion:NULL];
+//        else
         {
-            VForumsViewController*  forumsViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"profile"];
-            navigationController.viewControllers = @[forumsViewController];
-            navigationController.toolbarHidden = NO;
+            VProfileViewController*  profileViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"profile"];
+            navigationController.viewControllers = @[profileViewController];
+            navigationController.toolbarHidden = YES;
+            profileViewController.userIsLoggedInUser = YES;
         }
     }
     else if (indexPath.section == 0 && indexPath.row == 4)
@@ -130,7 +133,8 @@
             VOwnerViewController*   ownerViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"owner"];
             navigationController.viewControllers = @[ownerViewController];
             navigationController.toolbarHidden = NO;
-        } else
+        }
+        else
         {
             VLog(@"Warning: Non-owner user is attempting to access the ownerview");
         }
