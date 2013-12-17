@@ -23,6 +23,7 @@
 		3F910102185A97490005317C /* VStreamsSubViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F910101185A97490005317C /* VStreamsSubViewController.m */; };
 		3FAFD1B3185FD2D600AAF106 /* VThemeManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 3FAFD1B2185FD2D600AAF106 /* VThemeManager.m */; };
 		3FAFD1B7185FD6AE00AAF106 /* defaultTheme.plist in Resources */ = {isa = PBXBuildFile; fileRef = 3FAFD1B6185FD6AE00AAF106 /* defaultTheme.plist */; };
+		3FAFD1BA1861083D00AAF106 /* VProfileEditCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3FAFD1B91861083D00AAF106 /* VProfileEditCell.m */; };
 		5F3B4950184E6B8D0062DB55 /* VLoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F3B494F184E6B8D0062DB55 /* VLoginViewController.m */; };
 		5F8AAA5E184D43C600301783 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5F8AAA5D184D43C600301783 /* Main.storyboard */; };
 		5F8AAAA5184D467300301783 /* VStreamsTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F8AAAA4184D467300301783 /* VStreamsTableViewController.m */; };
@@ -127,6 +128,8 @@
 		3FAFD1B1185FD2D600AAF106 /* VThemeManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VThemeManager.h; path = Managers/VThemeManager.h; sourceTree = "<group>"; };
 		3FAFD1B2185FD2D600AAF106 /* VThemeManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VThemeManager.m; path = Managers/VThemeManager.m; sourceTree = "<group>"; };
 		3FAFD1B6185FD6AE00AAF106 /* defaultTheme.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = defaultTheme.plist; sourceTree = "<group>"; };
+		3FAFD1B81861083D00AAF106 /* VProfileEditCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VProfileEditCell.h; path = UI/VProfileEditCell.h; sourceTree = "<group>"; };
+		3FAFD1B91861083D00AAF106 /* VProfileEditCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VProfileEditCell.m; path = UI/VProfileEditCell.m; sourceTree = "<group>"; };
 		4F627C2BF55A46F299155184 /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = "<group>"; };
 		5F3B494E184E6B8D0062DB55 /* VLoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VLoginViewController.h; path = UI/VLoginViewController.h; sourceTree = "<group>"; };
 		5F3B494F184E6B8D0062DB55 /* VLoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VLoginViewController.m; path = UI/VLoginViewController.m; sourceTree = "<group>"; };
@@ -309,6 +312,8 @@
 			children = (
 				3F90DD821856A66F00C8F312 /* VProfileViewController.h */,
 				3F90DD831856A66F00C8F312 /* VProfileViewController.m */,
+				3FAFD1B81861083D00AAF106 /* VProfileEditCell.h */,
+				3FAFD1B91861083D00AAF106 /* VProfileEditCell.m */,
 			);
 			name = Profile;
 			sourceTree = "<group>";
@@ -738,6 +743,7 @@
 				BEBDC4C71857B2E30013DEF1 /* VCategory+RestKit.m in Sources */,
 				830B230B185B9B3200AF6D9E /* VSequence.m in Sources */,
 				BEBDC4CC1857B2E30013DEF1 /* VNodeAction+RestKit.m in Sources */,
+				3FAFD1BA1861083D00AAF106 /* VProfileEditCell.m in Sources */,
 				833C05DD185B9A9E00F46123 /* VAnswer.m in Sources */,
 				838F41EA1857F26900882F1D /* VObjectManager+Login.m in Sources */,
 				BEBDC4CF1857B2E30013DEF1 /* VStatAnswer+RestKit.m in Sources */,

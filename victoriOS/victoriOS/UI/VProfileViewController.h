@@ -7,7 +7,9 @@
 //
 
 #import <UIKit/UIKit.h>
+@class VUser;
 
 @interface VProfileViewController : UITableViewController
 @property (nonatomic, readwrite)    BOOL    userIsLoggedInUser;
+@property (nonatomic, readwrite)    VUser*  user;
 @end
