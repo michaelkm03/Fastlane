@@ -34,6 +34,10 @@ static NSString* CommentCache = @"CommentCache";
     
     [self loadSequence];
     
+    _newlyReadComments = [[NSMutableArray alloc] init];
+    
+    VLog(@"self.navigationController.delegate: %@", self.navigationController.delegate);
+    
     //TODO: remove the "Add a ton of comments" function when I'm done testing
     //[self DOSAttackServer:0];
     
@@ -268,7 +272,7 @@ static NSString* CommentCache = @"CommentCache";
     return cell;
 }
 
-- (void)tableView:(UITableView *)tableView didEndDisplayingCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
+- (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
 {
     //Add
     VComment* comment = (VComment*)[_fetchedResultsController objectAtIndexPath:indexPath];
@@ -437,18 +441,28 @@ static NSString* CommentCache = @"CommentCache";
 
 #pragma mark - Navigation
 
-// In a story board-based application, you w	ill often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
+//// In a story board-based application, you will often want to do a little preparation before navigation
+//- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
+//{
+//    // Get the new view controller using [segue destinationViewController].
+//    // Pass the selected object to the new view controller.
+//}
+
+- (void)viewWillDisappear:(BOOL)animated
 {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-    __block NSMutableArray* readComments = _newlyReadComments;
-    [[[VObjectManager sharedManager] readComments:readComments
-                                    successBlock:^(NSArray *resultObjects) {
-                                        [readComments removeAllObjects];
-                                    }
-                                       failBlock:^(NSError *error) {
-                                           VLog(@"Warning: failed to mark following comments as read: %@", readComments);
-                                       }] start];
+    //Whenever we leave this view we need to tell the server what was read.
+    if ([VObjectManager sharedManager].isAuthorized)
+    {
+        __block NSMutableArray* readComments = _newlyReadComments;
+        [[[VObjectManager sharedManager] readComments:readComments
+                                         successBlock:^(NSArray *resultObjects) {
+                                             [readComments removeAllObjects];
+                                         }
+                                            failBlock:^(NSError *error) {
+                                                VLog(@"Warning: failed to mark following comments as read: %@", readComments);
+                                            }] start];
+    }
+    [super viewWillDisappear:animated];
 }
+
 @end

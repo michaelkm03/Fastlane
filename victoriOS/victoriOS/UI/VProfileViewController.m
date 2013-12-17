@@ -85,7 +85,12 @@
     
     if (!editing)
     {
-        //  commit values
+//        //  commit values
+//        [[VObjectManager sharedManager] updateVictoriousWithEmail:<#(NSString *)#>
+//                                                         password:<#(NSString *)#>
+//                                                         username:<#(NSString *)#>
+//                                                     successBlock:<#^(NSArray *resultObjects)success#>
+//                                                        failBlock:<#^(NSError *error)fail#>];
     }
 }
 
