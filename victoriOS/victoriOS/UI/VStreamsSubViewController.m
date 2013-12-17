@@ -7,14 +7,21 @@
 //
 
 #import "VStreamsSubViewController.h"
+#import "VLoginViewController.h"
+
 #import "VComment.h"
 
+#import "VObjectManager+Login.h"
 #import "VObjectManager+Sequence.h"
 #import "VObjectManager+Comment.h"
+
 #import "VCommentViewCell.h"
+
+@import Social;
 
 @interface VStreamsSubViewController ()
 @property (nonatomic, strong) NSFetchedResultsController* fetchedResultsController;
+@property (nonatomic, strong) NSMutableArray* newlyReadComments;
 @end
 
 static NSString* CommentCache = @"CommentCache";
@@ -26,6 +33,10 @@ static NSString* CommentCache = @"CommentCache";
     [super viewDidLoad];
     
     [self loadSequence];
+    
+    _newlyReadComments = [[NSMutableArray alloc] init];
+    
+    VLog(@"self.navigationController.delegate: %@", self.navigationController.delegate);
     
     //TODO: remove the "Add a ton of comments" function when I'm done testing
     //[self DOSAttackServer:0];
@@ -99,6 +110,8 @@ static NSString* CommentCache = @"CommentCache";
                                              failBlock:nil] start];
 }
 
+#pragma mark - IBActions
+
 - (IBAction)refresh:(UIRefreshControl *)sender
 {
     
@@ -122,6 +135,113 @@ static NSString* CommentCache = @"CommentCache";
     [[[VObjectManager sharedManager] loadNextPageOfCommentsForSequence:_sequence
                                                           successBlock:success
                                                              failBlock:fail] start];
+}
+
+- (IBAction)shareSequence:(id)sender
+{
+    if (![VObjectManager sharedManager].isAuthorized)
+    {
+        [self presentViewController:[VLoginViewController sharedLoginViewController] animated:YES completion:NULL];
+        return;
+    }
+    
+    SLComposeViewController *composeViewController = [SLComposeViewController composeViewControllerForServiceType:SLServiceTypeFacebook];
+    
+    NSURL* deepLink = [NSURL URLWithString:@"www.google.com"];
+    [composeViewController addURL:deepLink];
+    
+    [composeViewController setInitialText:@"Check out this cool thingy on Victorious!"];
+    
+    [self presentViewController:composeViewController animated:YES completion:^{
+        
+    }];
+}
+
+- (IBAction)likeComment:(id)sender forEvent:(UIEvent *)event
+{
+    if (![VObjectManager sharedManager].isAuthorized)
+    {
+        [self presentViewController:[VLoginViewController sharedLoginViewController] animated:YES completion:NULL];
+        return;
+    }
+    
+    NSIndexPath *indexPath = [self.tableView indexPathForRowAtPoint:[[[event touchesForView:sender] anyObject] locationInView:self.tableView]];
+    VComment *comment = [_fetchedResultsController objectAtIndexPath:indexPath];
+    
+    //    if (comment.vote = @"dislike")
+    //    {
+    //        [self unvoteComment:comment];
+    //        return;
+    //    }
+    
+    [[[VObjectManager sharedManager] likeComment:comment
+                                   successBlock:^(NSArray *resultObjects) {
+                                       //TODO:set upvote flag
+                                       VLog(@"resultObjects: %@", resultObjects);
+                                   }
+                                      failBlock:^(NSError *error) {
+                                          VLog(@"Failed to like comment %@", comment);
+                                      }] start];
+}
+
+- (IBAction)dislikeComment:(id)sender forEvent:(UIEvent *)event
+{
+    if (![VObjectManager sharedManager].isAuthorized)
+    {
+        [self presentViewController:[VLoginViewController sharedLoginViewController] animated:YES completion:NULL];
+        return;
+    }
+    
+    NSIndexPath *indexPath = [self.tableView indexPathForRowAtPoint:[[[event touchesForView:sender] anyObject] locationInView:self.tableView]];
+    VComment *comment = [_fetchedResultsController objectAtIndexPath:indexPath];
+    
+//    if (comment.vote = @"dislike")
+//    {
+//        [self unvoteComment:comment];
+//        return;
+//    }
+    
+    [[[VObjectManager sharedManager] dislikeComment:comment
+                                   successBlock:^(NSArray *resultObjects) {
+                                       //TODO:set dislike flag)
+                                       VLog(@"resultObjects: %@", resultObjects);
+                                   }
+                                      failBlock:^(NSError *error) {
+                                          VLog(@"Failed to dislike comment %@", comment);
+                                      }] start];
+}
+
+- (void)unvoteComment:(VComment*)comment
+{
+    [[[VObjectManager sharedManager] unvoteComment:comment
+                                      successBlock:^(NSArray *resultObjects) {
+                                          //TODO:update UI)
+                                          VLog(@"resultObjects: %@", resultObjects);
+                                      }
+                                         failBlock:^(NSError *error) {
+                                             VLog(@"Failed to dislike comment %@", comment);
+                                         }] start];
+}
+
+- (IBAction)flagComment:(id)sender forEvent:(UIEvent *)event
+{
+    if (![VObjectManager sharedManager].isAuthorized)
+    {
+        [self presentViewController:[VLoginViewController sharedLoginViewController] animated:YES completion:NULL];
+        return;
+    }
+    
+    NSIndexPath *indexPath = [self.tableView indexPathForRowAtPoint:[[[event touchesForView:sender] anyObject] locationInView:self.tableView]];
+    VComment *comment = [_fetchedResultsController objectAtIndexPath:indexPath];
+    
+    [[[VObjectManager sharedManager] flagComment:comment
+                                       successBlock:^(NSArray *resultObjects) {
+                                           //TODO:set flagged flag)
+                                           VLog(@"resultObjects: %@", resultObjects);
+                                       }
+                                          failBlock:^(NSError *error) {
+                                              VLog(@"Failed to flag comment %@", comment);
+                                          }] start];
 }
 
 #pragma mark - Table view data source
@@ -151,6 +271,15 @@ static NSString* CommentCache = @"CommentCache";
     
     return cell;
 }
+
+- (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    //Add
+    VComment* comment = (VComment*)[_fetchedResultsController objectAtIndexPath:indexPath];
+    //if(!comment.read)
+    [_newlyReadComments addObject:[NSString stringWithFormat:@"%@", comment.remoteId]];
+}
+
 
 - (void)configureCell:(UITableViewCell *)theCell atIndexPath:(NSIndexPath *)theIndexPath
 {
@@ -309,16 +438,31 @@ static NSString* CommentCache = @"CommentCache";
 }
 */
 
-/*
+
 #pragma mark - Navigation
 
-// In a story board-based application, you w	ill often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
-{
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
+//// In a story board-based application, you will often want to do a little preparation before navigation
+//- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
+//{
+//    // Get the new view controller using [segue destinationViewController].
+//    // Pass the selected object to the new view controller.
+//}
 
- */
+- (void)viewWillDisappear:(BOOL)animated
+{
+    //Whenever we leave this view we need to tell the server what was read.
+    if ([VObjectManager sharedManager].isAuthorized)
+    {
+        __block NSMutableArray* readComments = _newlyReadComments;
+        [[[VObjectManager sharedManager] readComments:readComments
+                                         successBlock:^(NSArray *resultObjects) {
+                                             [readComments removeAllObjects];
+                                         }
+                                            failBlock:^(NSError *error) {
+                                                VLog(@"Warning: failed to mark following comments as read: %@", readComments);
+                                            }] start];
+    }
+    [super viewWillDisappear:animated];
+}
 
 @end

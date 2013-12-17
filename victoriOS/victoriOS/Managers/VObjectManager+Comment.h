@@ -41,4 +41,8 @@
 - (RKManagedObjectRequestOperation *)unvoteComment:(VComment*)comment
                                       successBlock:(SuccessBlock)success
                                          failBlock:(FailBlock)fail;
+
+- (RKManagedObjectRequestOperation *)readComments:(NSArray*)readComments
+                                     successBlock:(SuccessBlock)success
+                                        failBlock:(FailBlock)fail;
 @end
