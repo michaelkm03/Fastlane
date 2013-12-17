@@ -368,16 +368,25 @@
                                             <rect key="frame" x="270" y="20" width="30" height="30"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                             <state key="normal" image="Flag"/>
+                                            <connections>
+                                                <action selector="flagComment:forEvent:" destination="fsf-U2-hN6" eventType="touchUpInside" id="3ib-La-lYY"/>
+                                            </connections>
                                         </button>
                                         <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="yRc-v0-Yzw">
                                             <rect key="frame" x="232" y="20" width="30" height="30"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                             <state key="normal" image="LIke"/>
+                                            <connections>
+                                                <action selector="likeComment:forEvent:" destination="fsf-U2-hN6" eventType="touchUpInside" id="W4U-w9-hJ0"/>
+                                            </connections>
                                         </button>
                                         <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="MRh-Gj-BHH">
                                             <rect key="frame" x="194" y="20" width="30" height="30"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                             <state key="normal" image="Share"/>
+                                            <connections>
+                                                <action selector="dislikeComment:forEvent:" destination="fsf-U2-hN6" eventType="touchUpInside" id="Yu9-lN-C9w"/>
+                                            </connections>
                                         </button>
                                         <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="jhH-PL-Ofp">
                                             <rect key="frame" x="20" y="20" width="32" height="32"/>
