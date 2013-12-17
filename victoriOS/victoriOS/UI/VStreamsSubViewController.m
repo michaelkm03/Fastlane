@@ -11,6 +11,7 @@
 
 #import "VObjectManager+Sequence.h"
 #import "VObjectManager+Comment.h"
+#import "VCommentViewCell.h"
 
 @interface VStreamsSubViewController ()
 @property (nonatomic, strong) NSFetchedResultsController* fetchedResultsController;
@@ -40,6 +41,11 @@ static NSString* CommentCache = @"CommentCache";
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+- (void)setSequence:(VSequence *)sequence{
+    _sequence = sequence;
+    self.title = sequence.name;
 }
 
 - (void)loadSequence
@@ -131,10 +137,15 @@ static NSString* CommentCache = @"CommentCache";
     return [sectionInfo numberOfObjects];
 }
 
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return 240;
+}
+
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     static NSString *CellIdentifier = @"Cell";
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
+    VCommentViewCell *cell = (VCommentViewCell *)[tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
     
     [self configureCell:cell atIndexPath:indexPath];
     
