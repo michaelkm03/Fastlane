@@ -14,4 +14,8 @@ extern  NSString*   const   kVThemeManagerThemeDidChange;
 
 + (VThemeManager *)sharedThemeManager;
 
+- (void)setTheme:(NSDictionary *)dictionary;
+
+- (id)themedValueForKey:(NSString *)key;
+
 @end

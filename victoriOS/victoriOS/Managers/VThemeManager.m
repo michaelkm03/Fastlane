@@ -10,10 +10,11 @@
 
 NSString*   const   kVThemeManagerThemeDidChange    =   @"VThemeManagerThemeDidChange";
 
+@interface      VThemeManager   ()
+@property   (nonatomic, readwrite, copy)    NSDictionary*   themeValues;
+@end
+
 @implementation VThemeManager
-{
-    NSDictionary*   _themeValues;
-}
 
 + (VThemeManager *)sharedThemeManager
 {
@@ -44,15 +45,15 @@ NSString*   const   kVThemeManagerThemeDidChange    =   @"VThemeManagerThemeDidC
 
 - (void)setTheme:(NSDictionary *)dictionary
 {
-    _themeValues = [dictionary copy];
+    self.themeValues = [dictionary copy];
     [[NSNotificationCenter defaultCenter] postNotificationName:kVThemeManagerThemeDidChange object:self userInfo:nil];
 }
 
 #pragma mark -
 
-- (id)themedObjectForKey:(NSString *)key
+- (id)themedValueForKey:(NSString *)key
 {
-    return _themeValues[key];
+    return self.themeValues[key];
 }
 
 #pragma mark -
