@@ -18,10 +18,11 @@
 		3F90DD841856A66F00C8F312 /* VProfileViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F90DD831856A66F00C8F312 /* VProfileViewController.m */; };
 		3F90DE4A1857D9F100C8F312 /* VMessageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F90DE491857D9F100C8F312 /* VMessageViewController.m */; };
 		3F90DE4D1857DA0200C8F312 /* VComposeMessageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F90DE4C1857DA0200C8F312 /* VComposeMessageViewController.m */; };
-		3F90DE501857F34D00C8F312 /* VValidatingTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F90DE4F1857F34D00C8F312 /* VValidatingTextField.m */; };
 		3F9100FC185A7C540005317C /* VFeaturedPageControllerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F9100FB185A7C540005317C /* VFeaturedPageControllerViewController.m */; };
 		3F9100FF185A8E5A0005317C /* VStickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F9100FE185A8E5A0005317C /* VStickerViewController.m */; };
 		3F910102185A97490005317C /* VStreamsSubViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F910101185A97490005317C /* VStreamsSubViewController.m */; };
+		3FAFD1B3185FD2D600AAF106 /* VThemeManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 3FAFD1B2185FD2D600AAF106 /* VThemeManager.m */; };
+		3FAFD1B7185FD6AE00AAF106 /* defaultTheme.plist in Resources */ = {isa = PBXBuildFile; fileRef = 3FAFD1B6185FD6AE00AAF106 /* defaultTheme.plist */; };
 		5F3B4950184E6B8D0062DB55 /* VLoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F3B494F184E6B8D0062DB55 /* VLoginViewController.m */; };
 		5F8AAA5E184D43C600301783 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5F8AAA5D184D43C600301783 /* Main.storyboard */; };
 		5F8AAAA5184D467300301783 /* VStreamsTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F8AAAA4184D467300301783 /* VStreamsTableViewController.m */; };
@@ -115,14 +116,15 @@
 		3F90DE491857D9F100C8F312 /* VMessageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VMessageViewController.m; path = UI/VMessageViewController.m; sourceTree = "<group>"; };
 		3F90DE4B1857DA0200C8F312 /* VComposeMessageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VComposeMessageViewController.h; path = UI/VComposeMessageViewController.h; sourceTree = "<group>"; };
 		3F90DE4C1857DA0200C8F312 /* VComposeMessageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VComposeMessageViewController.m; path = UI/VComposeMessageViewController.m; sourceTree = "<group>"; };
-		3F90DE4E1857F34D00C8F312 /* VValidatingTextField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VValidatingTextField.h; path = UI/VValidatingTextField.h; sourceTree = "<group>"; };
-		3F90DE4F1857F34D00C8F312 /* VValidatingTextField.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VValidatingTextField.m; path = UI/VValidatingTextField.m; sourceTree = "<group>"; };
 		3F9100FA185A7C540005317C /* VFeaturedPageControllerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VFeaturedPageControllerViewController.h; path = UI/VFeaturedPageControllerViewController.h; sourceTree = "<group>"; };
 		3F9100FB185A7C540005317C /* VFeaturedPageControllerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VFeaturedPageControllerViewController.m; path = UI/VFeaturedPageControllerViewController.m; sourceTree = "<group>"; };
 		3F9100FD185A8E5A0005317C /* VStickerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VStickerViewController.h; path = UI/VStickerViewController.h; sourceTree = "<group>"; };
 		3F9100FE185A8E5A0005317C /* VStickerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VStickerViewController.m; path = UI/VStickerViewController.m; sourceTree = "<group>"; };
 		3F910100185A97490005317C /* VStreamsSubViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VStreamsSubViewController.h; path = UI/VStreamsSubViewController.h; sourceTree = "<group>"; };
 		3F910101185A97490005317C /* VStreamsSubViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VStreamsSubViewController.m; path = UI/VStreamsSubViewController.m; sourceTree = "<group>"; };
+		3FAFD1B1185FD2D600AAF106 /* VThemeManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VThemeManager.h; path = Managers/VThemeManager.h; sourceTree = "<group>"; };
+		3FAFD1B2185FD2D600AAF106 /* VThemeManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VThemeManager.m; path = Managers/VThemeManager.m; sourceTree = "<group>"; };
+		3FAFD1B6185FD6AE00AAF106 /* defaultTheme.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = defaultTheme.plist; sourceTree = "<group>"; };
 		4F627C2BF55A46F299155184 /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = "<group>"; };
 		5F3B494E184E6B8D0062DB55 /* VLoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VLoginViewController.h; path = UI/VLoginViewController.h; sourceTree = "<group>"; };
 		5F3B494F184E6B8D0062DB55 /* VLoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VLoginViewController.m; path = UI/VLoginViewController.m; sourceTree = "<group>"; };
@@ -350,8 +352,9 @@
 				3F9100F5185A4AC40005317C /* Inbox */,
 				3F9100F6185A4AD80005317C /* Profile */,
 				3F497881185AAEE000DF80CF /* Owner */,
-				3F90DE4E1857F34D00C8F312 /* VValidatingTextField.h */,
-				3F90DE4F1857F34D00C8F312 /* VValidatingTextField.m */,
+				3FAFD1B1185FD2D600AAF106 /* VThemeManager.h */,
+				3FAFD1B2185FD2D600AAF106 /* VThemeManager.m */,
+				3FAFD1B6185FD6AE00AAF106 /* defaultTheme.plist */,
 				5F8AAA5D184D43C600301783 /* Main.storyboard */,
 			);
 			name = UI;
@@ -601,6 +604,11 @@
 				TargetAttributes = {
 					BEA4F2241843F097001F5B15 = {
 						DevelopmentTeam = 82T26U698A;
+						SystemCapabilities = {
+							com.apple.BackgroundModes = {
+								enabled = 1;
+							};
+						};
 					};
 					BEA4F2441843F097001F5B15 = {
 						TestTargetID = BEA4F2241843F097001F5B15;
@@ -630,6 +638,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3FAFD1B7185FD6AE00AAF106 /* defaultTheme.plist in Resources */,
 				5F8AAA5E184D43C600301783 /* Main.storyboard in Resources */,
 				BEA4F2351843F097001F5B15 /* InfoPlist.strings in Resources */,
 				BEA4F2401843F097001F5B15 /* Images.xcassets in Resources */,
@@ -689,6 +698,7 @@
 				3F90DD6A18569B9300C8F312 /* VNavigationController.m in Sources */,
 				3F9100FC185A7C540005317C /* VFeaturedPageControllerViewController.m in Sources */,
 				5F3B4950184E6B8D0062DB55 /* VLoginViewController.m in Sources */,
+				3FAFD1B3185FD2D600AAF106 /* VThemeManager.m in Sources */,
 				BEBDC4C51857B2E30013DEF1 /* VAnswerAction+RestKit.m in Sources */,
 				BE4E7554184955BE00344677 /* VObjectManager.m in Sources */,
 				833C05F2185B9A9F00F46123 /* VNode.m in Sources */,
@@ -716,7 +726,6 @@
 				833C05E9185B9A9F00F46123 /* VUser.m in Sources */,
 				BEBDC4C41857B2E30013DEF1 /* VAnswer+RestKit.m in Sources */,
 				BEBDC4C71857B2E30013DEF1 /* VCategory+RestKit.m in Sources */,
-				3F90DE501857F34D00C8F312 /* VValidatingTextField.m in Sources */,
 				830B230B185B9B3200AF6D9E /* VSequence.m in Sources */,
 				BEBDC4CC1857B2E30013DEF1 /* VNodeAction+RestKit.m in Sources */,
 				833C05DD185B9A9E00F46123 /* VAnswer.m in Sources */,
