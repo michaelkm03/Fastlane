@@ -57,6 +57,15 @@
                                                    statusCodes:RKStatusCodeIndexSetForClass(RKStatusCodeClassSuccessful)];
 }
 
++ (RKResponseDescriptor*)sequenceListPaginationDescriptor
+{
+    return [RKResponseDescriptor responseDescriptorWithMapping:[VSequence entityMapping]
+                                                        method:RKRequestMethodGET
+                                                   pathPattern:@"/api/sequence/list_by_category/:category/:status/:page/:perpage"
+                                                       keyPath:@"payload"
+                                                   statusCodes:RKStatusCodeIndexSetForClass(RKStatusCodeClassSuccessful)];
+}
+
 + (RKResponseDescriptor*)sequenceFullDataDescriptor
 {
     return [RKResponseDescriptor responseDescriptorWithMapping:[VSequence entityMapping]

@@ -13,5 +13,6 @@
 
 + (RKResponseDescriptor*)descriptor;
 + (RKResponseDescriptor*)getAllDescriptor;
++ (RKResponseDescriptor*)getAllPaginationDescriptor;
 
 @end

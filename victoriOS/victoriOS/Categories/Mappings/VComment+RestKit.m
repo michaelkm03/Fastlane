@@ -62,4 +62,15 @@
                                                        keyPath:@"payload"
                                                    statusCodes:RKStatusCodeIndexSetForClass(RKStatusCodeClassSuccessful)];
 }
+
++ (RKResponseDescriptor*)getAllPaginationDescriptor
+{
+    return [RKResponseDescriptor responseDescriptorWithMapping:[self entityMapping]
+                                                        method:RKRequestMethodPOST | RKRequestMethodGET
+                                                   pathPattern:@"/api/comment/all/:sequenceid/:page/:perpage"
+                                                       keyPath:@"payload"
+                                                   statusCodes:RKStatusCodeIndexSetForClass(RKStatusCodeClassSuccessful)];
+}
+
+
 @end

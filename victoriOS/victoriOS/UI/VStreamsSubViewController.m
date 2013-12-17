@@ -27,7 +27,7 @@ static NSString* CommentCache = @"CommentCache";
     [self loadSequence];
     
     //TODO: remove the "Add a ton of comments" function when I'm done testing
-//    [self DOSAttackServer];
+    //[self DOSAttackServer:0];
     
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
@@ -72,15 +72,19 @@ static NSString* CommentCache = @"CommentCache";
                                                    failBlock:fail] start];
 }
 
--(void)DOSAttackServer
+-(void)DOSAttackServer:(int)number
 {
+    if (number > 200)
+        return;
+    
     SuccessBlock success;
     success = ^(NSArray* objects)
     {
-        [self DOSAttackServer];
+        [self DOSAttackServer:number+1];
     };
+    NSString* text = [NSString stringWithFormat:@"Spam %i", number];
     
-    [[[VObjectManager sharedManager] addCommentWithText:@"Spam"
+    [[[VObjectManager sharedManager] addCommentWithText:text
                                                   Data:nil
                                         mediaExtension:nil
                                             toSequence:_sequence

@@ -80,14 +80,17 @@
 
     [self addResponseDescriptorsFromArray: @[errorDescriptor,
                                              verrorDescriptor,
-             [VUser descriptor],
-             [VCategory descriptor],
-             [VSequence sequenceListDescriptor],
-             [VSequence sequenceFullDataDescriptor],
-             [VComment descriptor],
-             [VComment getAllDescriptor],
-             [VStatSequence gamesPlayedDescriptor],
-             [VStatSequence gameStatsDescriptor]]];
+                                             
+                                             [VUser descriptor],
+                                             [VCategory descriptor],
+                                             [VSequence sequenceListDescriptor],
+                                             [VSequence sequenceFullDataDescriptor],
+                                             [VSequence sequenceListPaginationDescriptor],
+                                             [VComment descriptor],
+                                             [VComment getAllDescriptor],
+                                             [VComment getAllPaginationDescriptor],
+                                             [VStatSequence gamesPlayedDescriptor],
+                                             [VStatSequence gameStatsDescriptor]]];
 
     _paginationStatuses = [[NSMutableDictionary alloc] init];
 }

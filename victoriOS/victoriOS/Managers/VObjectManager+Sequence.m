@@ -137,15 +137,16 @@
                                                           successBlock:(SuccessBlock)success
                                                              failBlock:(FailBlock)fail
 {
-    __block VPaginationStatus* status = [self statusForKey:
-                                         [self commentPaginationKeyForSequenceID:sequence.remoteId]];
+    
+    __block NSString* statusKey = [self commentPaginationKeyForSequenceID:sequence.remoteId];
+    __block VPaginationStatus* status = [self statusForKey:statusKey];
     if([status isFullyLoaded])
         return nil;
     
     NSString* path = [NSString stringWithFormat:@"/api/comment/all/%@", sequence.remoteId];
     if (status.pagesLoaded) //only add page to the path if we've looked it up before.
     {
-        path = [path stringByAppendingFormat:@"/0/%i/%i", status.pagesLoaded + 1, status.itemsPerPage];
+        path = [path stringByAppendingFormat:@"/%i/%i", status.pagesLoaded + 1, status.itemsPerPage];
     }
     
     __block VSequence* commentOwner = sequence; //Keep the sequence around until the block gets called
@@ -163,7 +164,7 @@
     {
         status.pagesLoaded = page_number;
         status.totalPages = page_total;
-        [self.paginationStatuses setObject:status forKey:path];
+        [self.paginationStatuses setObject:status forKey:statusKey];
     };
     
     return [self GET:path
