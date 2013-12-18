@@ -139,11 +139,11 @@ static NSString* CommentCache = @"CommentCache";
 
 - (IBAction)shareSequence:(id)sender
 {
-//    if (![VObjectManager sharedManager].isAuthorized)
-//    {
-//        [self presentViewController:[VLoginViewController sharedLoginViewController] animated:YES completion:NULL];
-//        return;
-//    }
+    if (![VObjectManager sharedManager].isAuthorized)
+    {
+        [self presentViewController:[VLoginViewController sharedLoginViewController] animated:YES completion:NULL];
+        return;
+    }
     
     NSURL* deepLink = [NSURL URLWithString:@"http://www.google.com"];
     UIImage* image = [UIImage imageNamed:@"avatar.jpg"];
