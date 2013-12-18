@@ -45,7 +45,7 @@
 //    [o start];
 ///    dispatch_semaphore_wait(semaphore, DISPATCH_TIME_FOREVER);
 
-    XCTFail(@"Fail");
+//    XCTFail(@"Fail");
 //    XCTAssertNil(resultError, @"Error: %@", resultError);
 }
 

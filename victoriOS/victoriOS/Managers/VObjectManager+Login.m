@@ -21,7 +21,7 @@
 
 - (BOOL)isOwner
 {
-    return YES;//[self.mainUser.access_level isEqualToString:@"superuser"] ;
+    return YES; //[self.mainUser.access_level isEqualToString:@"superuser"] ;
 }
 
 - (VUser *)mainUser

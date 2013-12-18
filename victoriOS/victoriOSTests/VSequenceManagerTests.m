@@ -32,7 +32,7 @@
 //        XCTestRestKitEndOperation();
 //    }]);
 //
-    XCTAssertNil(resultError, @"Error: %@", resultError);
+//    XCTAssertNil(resultError, @"Error: %@", resultError);
 }
 
 @end
