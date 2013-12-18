@@ -8,6 +8,12 @@
 
 #import <UIKit/UIKit.h>
 
+@protocol VComposeMessageDelegate <NSObject>
+- (void)didComposeWithText:(NSString*)text data:(NSData*)data extension:(NSString*)extension;
+@end
+
 @interface VComposeMessageViewController : UIViewController <UITextViewDelegate, UIImagePickerControllerDelegate>
+
+@property (nonatomic, weak) id<VComposeMessageDelegate> delegate;
 
 @end

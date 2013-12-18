@@ -157,7 +157,9 @@
             [commentOwner addCommentsObject:(VComment*)[commentOwner.managedObjectContext
                                                         objectWithID:[comment objectID]]];
         }
-        success(comments);
+        
+        if (success)
+            success(comments);
     };
     
     PaginationBlock pagination = ^(NSUInteger page_number, NSUInteger page_total)
@@ -213,7 +215,9 @@
             [statSequenceOwner addStatSequencesObject:(VStatSequence*)[statSequenceOwner.managedObjectContext
                                                         objectWithID:[statSequence objectID]]];
         }
-        success(statSequences);
+        
+        if (success)
+            success(statSequences);
     };
     
     return [self GET:path
