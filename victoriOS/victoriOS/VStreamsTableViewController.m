@@ -309,7 +309,7 @@ static NSString* kSearchCache = @"SearchCache";
             break;
             
         case NSFetchedResultsChangeUpdate:
-            [self configureCell:[tableView cellForRowAtIndexPath:indexPath] atIndexPath:indexPath forFetchedResultsController:[self fetchedResultsControllerForTableView:tableView]];
+            [self configureCell:(VStreamViewCell*)[tableView cellForRowAtIndexPath:indexPath] atIndexPath:indexPath forFetchedResultsController:[self fetchedResultsControllerForTableView:tableView]];
             break;
             
         case NSFetchedResultsChangeMove:

@@ -24,7 +24,7 @@
 
 - (void)testLoadSequenceCategories
 {
-    __block NSError *resultError;
+//    __block NSError *resultError;
 //    __block NSArray *resultArray;
 //    XCTestRestKitStartOperation([VSequenceManager loadSequenceCategoriesWithBlock:^(NSArray *categories, NSError *error){
 //        resultError = error;
