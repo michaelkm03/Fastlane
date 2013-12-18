@@ -445,15 +445,38 @@ static NSString* CommentCache = @"CommentCache";
 }
 */
 
+#pragma mark - VComposeMessageDelegate
+
+- (void)didComposeWithText:(NSString *)text data:(NSData *)data extension:(NSString *)extension
+{
+    [[[VObjectManager sharedManager] addCommentWithText:text
+                                                   Data:data
+                                         mediaExtension:extension
+                                             toSequence:_sequence
+                                              andParent:nil
+                                           successBlock:^(NSArray *resultObjects) {
+                                               VLog(@"Succeed in creating comments: %@", resultObjects);
+                                               //We need to refresh the predicate in case this is the first comment in the sequence
+                                               [self updatePredicate];
+                                           } failBlock:^(NSError *error) {
+                                               VLog(@"Failed in creating comment with error: %@", error);
+                                           }] start];
+}
+
 
 #pragma mark - Navigation
 
-//// In a story board-based application, you will often want to do a little preparation before navigation
-//- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
-//{
-//    // Get the new view controller using [segue destinationViewController].
-//    // Pass the selected object to the new view controller.
-//}
+// In a story board-based application, you will often want to do a little preparation before navigation
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
+{
+    // Get the new view controller using [segue destinationViewController].
+    // Pass the selected object to the new view controller.
+    
+    if ([segue.identifier isEqualToString:@"toComposeMessage"])
+    {
+        ((VComposeMessageViewController *)segue.destinationViewController).delegate = self;
+    }
+}
 
 - (void)viewWillDisappear:(BOOL)animated
 {

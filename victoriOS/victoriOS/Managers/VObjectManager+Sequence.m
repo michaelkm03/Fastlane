@@ -65,7 +65,7 @@
     NSString* path = [NSString stringWithFormat:@"/api/sequence/list_by_category/%@", category.name];
     if (status.pagesLoaded) //only add page to the path if we've looked it up before.
     {
-        path = [path stringByAppendingFormat:@"/0/%i/%i", status.pagesLoaded + 1, status.itemsPerPage];
+        path = [path stringByAppendingFormat:@"/0/%d/%d", status.pagesLoaded + 1, status.itemsPerPage];
     }
     
     
@@ -157,7 +157,9 @@
             [commentOwner addCommentsObject:(VComment*)[commentOwner.managedObjectContext
                                                         objectWithID:[comment objectID]]];
         }
-        success(comments);
+        
+        if (success)
+            success(comments);
     };
     
     PaginationBlock pagination = ^(NSUInteger page_number, NSUInteger page_total)
@@ -213,7 +215,9 @@
             [statSequenceOwner addStatSequencesObject:(VStatSequence*)[statSequenceOwner.managedObjectContext
                                                         objectWithID:[statSequence objectID]]];
         }
-        success(statSequences);
+        
+        if (success)
+            success(statSequences);
     };
     
     return [self GET:path

@@ -42,6 +42,5 @@
 //- (RKManagedObjectRequestOperation *)logOutWithSuccessBlock:(SuccessBlock)success
 //                                                  failBlock:(FailBlock)failed;
 - (RKManagedObjectRequestOperation *)logout;
-- (VUser *)loggedInUser;
 
 @end

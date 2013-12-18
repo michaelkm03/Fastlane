@@ -48,7 +48,8 @@
             [commentOwner addCommentsObject:(VComment*)[commentOwner.managedObjectContext
                                                         objectWithID:[comment objectID]]];
         }
-        success(comments);
+        if (success)
+            success(comments);
     };
     
     return [self POST:path
@@ -77,7 +78,8 @@
         //Since this is a POST not a DELETE we need to manually remove the comment.
         [commentToRemove.managedObjectContext deleteObject:commentToRemove];
         
-        success(comments);
+        if (success)
+            success(comments);
     };
     
     return [self POST:path

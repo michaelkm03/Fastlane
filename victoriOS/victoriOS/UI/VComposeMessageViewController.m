@@ -8,9 +8,12 @@
 
 #import "VComposeMessageViewController.h"
 
+
 @interface VComposeMessageViewController ()
 @property (weak, nonatomic) IBOutlet UITextView *textView;
 @property (strong, nonatomic) IBOutlet UIView *accessoryView;
+@property (strong, nonatomic) NSData* mediaData;
+@property (strong, nonatomic) NSString* mediaType;
 @end
 
 @implementation VComposeMessageViewController
@@ -64,6 +67,7 @@
 
 - (IBAction)compose:(id)sender
 {
+    [self.delegate didComposeWithText:self.textView.text data:_mediaData extension:_mediaType];
     [self.textView resignFirstResponder];
     [self dismissViewControllerAnimated:YES completion:NULL];
 }
@@ -125,12 +129,62 @@
     else
         [imagePicker setSourceType:UIImagePickerControllerSourceTypePhotoLibrary];
 
+    imagePicker.videoMaximumDuration = 10.0f;
+    
+//    TODO: install reachability in the codebase
+//    Reachability *reachability = [Reachability reachabilityForInternetConnection];
+//    [reachability startNotifier];
+//    NetworkStatus status = [reachability currentReachabilityStatus];
+//    //Apple documention says use medium for WIFI and low for 3g.
+//    if (status == NotReachable)
+//        return;
+//    else if (status == ReachableViaWiFi)
+//        imagePicker.videoQuality = UIImagePickerControllerQualityTypeMedium;
+//    else if (status == ReachableViaWWAN)
+//        imagePicker.videoQuality = UIImagePickerControllerQualityTypeLow;
+    
     [self presentViewController:imagePicker animated:YES completion:NULL];
 }
 
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info
 {
-//    UIImage *chosenImage = info[UIImagePickerControllerEditedImage];
+    _mediaType = [info objectForKey: UIImagePickerControllerMediaType];
+    
+    // Handle a still image capture
+    if ([_mediaType isEqualToString:(NSString *)kUTTypeImage])
+    {
+        //Use the edited image if it exists, otherwise use the original
+        UIImage* imageToSave = (UIImage *) [info objectForKey: UIImagePickerControllerEditedImage];
+        if (!imageToSave)
+            imageToSave = (UIImage *) [info objectForKey: UIImagePickerControllerOriginalImage];;
+        
+        _mediaData = [NSData dataWithData:UIImagePNGRepresentation(imageToSave)];
+        _mediaType = @"png";
+        
+        // Save the new image (original or edited) to the Camera Roll
+        UIImageWriteToSavedPhotosAlbum (imageToSave, nil, nil , nil);
+    }
+    // Handle a movie capture
+    else if ([_mediaType isEqualToString:(NSString *)kUTTypeVideo] ||
+             [_mediaType isEqualToString:(NSString *)kUTTypeMovie])
+    {
+        NSURL* videoURL = [info objectForKey: UIImagePickerControllerMediaURL];
+        
+        //this is the binary data for the video
+        _mediaData = [NSData dataWithContentsOfURL:videoURL];
+        _mediaType = [videoURL pathExtension];
+        
+        //save the data
+        if (UIVideoAtPathIsCompatibleWithSavedPhotosAlbum ([videoURL path]))
+        {
+            UISaveVideoAtPathToSavedPhotosAlbum ([videoURL path], nil, nil, nil);
+        }
+    }
+    else //We didn't get valid data, so reset it
+    {
+        _mediaType = nil;
+        _mediaData = nil;
+    }
     
     [picker dismissViewControllerAnimated:YES completion:NULL];
 }

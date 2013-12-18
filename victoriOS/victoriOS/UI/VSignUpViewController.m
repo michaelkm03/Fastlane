@@ -73,7 +73,9 @@
 
 - (void)didFailToSignUp
 {
-    [self dismissViewControllerAnimated:YES completion:NULL];
+    
+    UIAlertView*    alert   =   [[UIAlertView alloc] initWithTitle:@"Account creation failed." message:@"Please try again." delegate:self cancelButtonTitle:@"Understood" otherButtonTitles:nil];
+    [alert show];
 }
 
 #pragma mark - UITextField notifications

@@ -398,7 +398,7 @@
                     <navigationItem key="navigationItem" title="&lt;Sequence Name>" id="muf-Ug-CFn">
                         <barButtonItem key="rightBarButtonItem" systemItem="add" id="YjX-fy-ro8">
                             <connections>
-                                <segue destination="RWc-AD-HJ4" kind="modal" id="6Dc-IC-UuV"/>
+                                <segue destination="RWc-AD-HJ4" kind="modal" identifier="toComposeMessage" id="6Dc-IC-UuV"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
