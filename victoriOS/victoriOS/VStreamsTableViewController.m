@@ -149,7 +149,7 @@ static NSString* kSearchCache = @"SearchCache";
     static NSString *kVideoPhotoCellIdentifier = @"VideoPhoto";
 //    static NSString *kForumPollCellIdentifier = @"ForumPoll";
 
-    VStreamViewCell *cell = [tableView dequeueReusableCellWithIdentifier:kVideoPhotoCellIdentifier forIndexPath:indexPath];
+    VStreamViewCell *cell = [tableView dequeueReusableCellWithIdentifier:kVideoPhotoCellIdentifier];
     
     // Configure the cell...
     [self configureCell:cell atIndexPath:indexPath
