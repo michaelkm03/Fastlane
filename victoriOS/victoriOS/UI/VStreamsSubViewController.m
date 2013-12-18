@@ -139,22 +139,33 @@ static NSString* CommentCache = @"CommentCache";
 
 - (IBAction)shareSequence:(id)sender
 {
-    if (![VObjectManager sharedManager].isAuthorized)
-    {
-        [self presentViewController:[VLoginViewController sharedLoginViewController] animated:YES completion:NULL];
-        return;
-    }
+//    if (![VObjectManager sharedManager].isAuthorized)
+//    {
+//        [self presentViewController:[VLoginViewController sharedLoginViewController] animated:YES completion:NULL];
+//        return;
+//    }
     
-    SLComposeViewController *composeViewController = [SLComposeViewController composeViewControllerForServiceType:SLServiceTypeFacebook];
-    
-    NSURL* deepLink = [NSURL URLWithString:@"www.google.com"];
-    [composeViewController addURL:deepLink];
-    
-    [composeViewController setInitialText:@"Check out this cool thingy on Victorious!"];
-    
-    [self presentViewController:composeViewController animated:YES completion:^{
-        
-    }];
+    NSURL* deepLink = [NSURL URLWithString:@"http://www.google.com"];
+    UIImage* image = [UIImage imageNamed:@"avatar.jpg"];
+    NSString* text = @"Some text";
+    NSArray* itemsToShare = @[deepLink, image, text];
+
+    UIActivityViewController*   activityViewController = [[UIActivityViewController alloc] initWithActivityItems:itemsToShare
+                                                                                           applicationActivities:nil];
+    activityViewController.modalTransitionStyle =   UIModalTransitionStyleCoverVertical;
+    activityViewController.completionHandler    =   nil;
+    [self presentViewController:activityViewController animated:YES completion:nil];
+
+//    SLComposeViewController *composeViewController = [SLComposeViewController composeViewControllerForServiceType:SLServiceTypeFacebook];
+//    
+//    NSURL* deepLink = [NSURL URLWithString:@"www.google.com"];
+//    [composeViewController addURL:deepLink];
+//    
+//    [composeViewController setInitialText:@"Check out this cool thingy on Victorious!"];
+//    
+//    [self presentViewController:composeViewController animated:YES completion:^{
+//        
+//    }];
 }
 
 - (IBAction)likeComment:(id)sender forEvent:(UIEvent *)event
