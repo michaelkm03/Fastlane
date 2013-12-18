@@ -110,23 +110,24 @@
     
     [requestOperation setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult)
      {
-         VErrorMessage *errorMessage;
-         NSArray* mappedObjects;
-         if([[mappingResult firstObject] isKindOfClass:[VErrorMessage class]])
+         NSMutableArray* mappedObjects = [mappingResult.array mutableCopy];
+         NSMutableArray* errors = [[NSMutableArray alloc] init];
+         
+         for (id object in mappedObjects)
          {
-             errorMessage = (VErrorMessage *)[mappingResult firstObject];
-             
-             //mappedObjects should not contain the VErrorMessage.
-             NSArray* allObjects = mappingResult.array;
-             NSRange range = NSMakeRange(1, [allObjects count]-1);
-             mappedObjects = [allObjects subarrayWithRange:range];
+            if([object isKindOfClass:[VErrorMessage class]])
+            {
+                [errors addObject:object];
+            }
          }
-         else
+         for (VErrorMessage* error in errors)
          {
-             mappedObjects = mappingResult.array;
+             [mappedObjects removeObject:error];
          }
          
-         if (errorMessage.error && failBlock)
+         VErrorMessage* errorMessage = [errors firstObject];
+         
+         if (errorMessage.error)
              failBlock([NSError errorWithDomain:@"com.getvictorious.victoriOS" code:errorMessage.error
                                        userInfo:@{NSLocalizedDescriptionKey: errorMessage.message}]);
          else
