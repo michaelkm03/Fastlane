@@ -68,7 +68,7 @@
 
 - (void)didSignUp
 {
-    [self performSegueWithIdentifier:@"unwindToLogin" sender:self];
+    [self.presentingViewController.presentingViewController dismissViewControllerAnimated:YES completion:nil];
 }
 
 - (void)didFailToSignUp
