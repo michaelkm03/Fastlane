@@ -50,8 +50,8 @@
 
     BOOL    isValid     =   YES;
     
-    isValid &=  (username && (username.length > 8));
-    isValid &= (password && (password.length > 8));
+    isValid &=  (username && (username.length >= 8));
+    isValid &= (password && (password.length >= 8));
     
     NSPredicate*    emailTest = [NSPredicate predicateWithFormat:@"SELF MATCHES %@", emailRegEx];
     isValid &= (emailAddress && (0 != emailAddress.length) && [emailTest evaluateWithObject:emailAddress]);
@@ -98,7 +98,7 @@
     {
         SuccessBlock success = ^(NSArray* objects)
         {
-            if ([[objects firstObject] isKindOfClass:[VUser class]])
+            if (![[objects firstObject] isKindOfClass:[VUser class]])
             {
                 VLog(@"Invalid user object returned in api/account/create");
                 [self didFailToSignUp];
