@@ -14,6 +14,7 @@
 #import "UIImageView+AFNetworking.h"
 #import "VObjectManager+Sequence.h"
 #import "VStreamViewCell.h"
+#import "VFeaturedPageControllerViewController.h"
 
 typedef NS_ENUM(NSInteger, VStreamScope)
 {
@@ -52,7 +53,7 @@ static NSString* kSearchCache = @"SearchCache";
 {
     [super viewDidLoad];
 
-    self.pageController =   [self.storyboard instantiateViewControllerWithIdentifier:@"featured"];
+    self.pageController =   [self.storyboard instantiateViewControllerWithIdentifier:@"featured_pages"];
 
     NSError *error;
 	if (![self.fetchedResultsController performFetch:&error])
@@ -135,6 +136,7 @@ static NSString* kSearchCache = @"SearchCache";
 {
     VSequence *info = [fetchedResultsController objectAtIndexPath:theIndexPath];
     theCell.titleLabel.text = info.name;
+    theCell.dateLabel.text = [info.releasedAt description];
     [theCell.previewImageView setImageWithURL:[NSURL URLWithString:info.previewImage]
                              placeholderImage:[UIImage new]];
 }
@@ -309,7 +311,7 @@ static NSString* kSearchCache = @"SearchCache";
             break;
             
         case NSFetchedResultsChangeUpdate:
-            [self configureCell:[tableView cellForRowAtIndexPath:indexPath] atIndexPath:indexPath forFetchedResultsController:[self fetchedResultsControllerForTableView:tableView]];
+            [self configureCell:(VStreamViewCell *)[tableView cellForRowAtIndexPath:indexPath] atIndexPath:indexPath forFetchedResultsController:[self fetchedResultsControllerForTableView:tableView]];
             break;
             
         case NSFetchedResultsChangeMove:

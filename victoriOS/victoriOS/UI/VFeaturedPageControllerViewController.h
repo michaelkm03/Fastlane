@@ -8,5 +8,5 @@
 
 #import <UIKit/UIKit.h>
 
-@interface VFeaturedPageControllerViewController : UIPageViewController <UIPageViewControllerDelegate, UIPageViewControllerDataSource>
+@interface VFeaturedPageControllerViewController : UIPageViewController
 @end
