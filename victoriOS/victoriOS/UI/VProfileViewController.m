@@ -80,18 +80,26 @@
 
 - (void)setEditing:(BOOL)editing animated:(BOOL)animated
 {
-    [super setEditing:editing animated:animated];
-    [self.tableView reloadData];
-    
     if (!editing)
     {
-//        //  commit values
-//        [[VObjectManager sharedManager] updateVictoriousWithEmail:<#(NSString *)#>
-//                                                         password:<#(NSString *)#>
-//                                                         username:<#(NSString *)#>
-//                                                     successBlock:<#^(NSArray *resultObjects)success#>
-//                                                        failBlock:<#^(NSError *error)fail#>];
+        //TODO: for some reason these fields are not populating with the correct text... come back to this when not sleepy
+        NSString* name = ((VProfileEditCell *) [self tableView:self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]]).textField.text;
+        NSString* email = ((VProfileEditCell *) [self tableView:self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:1 inSection:0]]).textField.text;
+        NSString* password = ((VProfileEditCell *) [self tableView:self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:2 inSection:0]]).textField.text;
+        
+        [[VObjectManager sharedManager] updateVictoriousWithEmail:email
+                                                         password:password
+                                                         username:name
+                                                     successBlock:^(NSArray *resultObjects) {
+                                                         VLog(@"Updated account: %@", resultObjects);
+                                                     }
+                                                        failBlock:^(NSError *error) {
+                                                            UIAlertView*    alert   =   [[UIAlertView alloc] initWithTitle:@"Unable to update account" message:error.localizedDescription delegate:self cancelButtonTitle:@"Understood" otherButtonTitles:nil];
+                                                            [alert show];
+                                                        }];
     }
+    [super setEditing:editing animated:animated];
+    [self.tableView reloadData];
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
