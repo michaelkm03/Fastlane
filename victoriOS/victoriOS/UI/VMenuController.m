@@ -165,7 +165,10 @@
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    return 2;
+    if ([VObjectManager sharedManager].isAuthorized)
+        return 2;
+
+    return 1;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)sectionIndex
@@ -177,8 +180,10 @@
         else
             return 4;
     }
+    if ([VObjectManager sharedManager].isAuthorized)
+        return 1;
 
-    return 1;
+    return 0;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
