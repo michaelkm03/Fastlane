@@ -55,6 +55,11 @@
         [view addSubview:label];
         view;
     });
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(userLoggedIn:)
+                                                 name:LoggedInNotification
+                                               object:nil];
 }
 
 #pragma mark -
@@ -206,6 +211,14 @@
     }
     
     return cell;
+}
+
+#pragma mark - Notifications
+
+
+- (void) userLoggedIn:(NSNotification *) notification
+{
+    [self.tableView reloadData]; //Reload the tablecell, since superuse actions could be unlocked
 }
 
 @end

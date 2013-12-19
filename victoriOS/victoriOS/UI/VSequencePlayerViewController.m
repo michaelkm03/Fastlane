@@ -46,8 +46,6 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
-//    self.sequence = nil;
 	// Do any additional setup after loading the view.
 }
 
@@ -59,7 +57,7 @@
 
 - (void)goToNextNode
 {
-    //Replace with new node logic
+    //TODO: replace with next node logic.
     [self loadNode:_currentNode];
 }
 
@@ -74,8 +72,6 @@ static NSString *youTubeVideoHTML = @"<iframe width=\"%@\" height=\"%@\" src=\"/
         _imageView.hidden = YES;
         _mpController.view.hidden = YES;
         _webView.hidden = NO;
-
-        
         
         [self.webView setAllowsInlineMediaPlayback:YES];
         [self.webView setMediaPlaybackRequiresUserAction:NO];
@@ -99,11 +95,10 @@ static NSString *youTubeVideoHTML = @"<iframe width=\"%@\" height=\"%@\" src=\"/
                                </html>",
                                _webView.frame.size.width,
                                _webView.frame.size.height,
+//                               currentAsset.data];
                                @"aHjpOzsQ9YI"];
 
-        [_webView loadHTMLString:embedHTML baseURL:[[NSBundle mainBundle] resourceURL]];//[NSURL URLWithString:@"http://www.youtube.com"]];
-
-//        [_webView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:@"www.youtube.com/embed/jofNR_WkoCE"]]];//currentAsset.data]]];
+        [_webView loadHTMLString:embedHTML baseURL:[[NSBundle mainBundle] resourceURL]];
     }
     else if ([currentAsset.type isEqualToString:@"video_url"])
     {
@@ -133,10 +128,16 @@ static NSString *youTubeVideoHTML = @"<iframe width=\"%@\" height=\"%@\" src=\"/
     for (VInteraction* interaction in [VInteraction orderedInteractionsForNode:node])
     {
 //        __block VInteraction* savedInteraction = interaction;
-//        [NSTimer timerWithTimeInterval:<#(NSTimeInterval)#>
-//                            invocation:<#(NSInvocation *)#>
-//                               repeats:<#(BOOL)#>];
+        NSTimeInterval delay = NSTimeIntervalSince1970 + ([interaction.startTime integerValue]/ 1000);
+        [self performSelector:@selector(launchInteraction:) withObject:interaction afterDelay:delay];
     }
+}
+
+- (void)launchInteraction:(VInteraction*)interaction
+{
+    //TODO: Replace the alert with actual interaction logic.
+    UIAlertView*    alert   =   [[UIAlertView alloc] initWithTitle:@"There is an interaction here! " message:@"This functionality is not implemented" delegate:self cancelButtonTitle:@"Understood" otherButtonTitles:nil];
+    [alert show];
 }
 
 @end

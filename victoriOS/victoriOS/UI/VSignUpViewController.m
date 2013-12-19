@@ -68,6 +68,7 @@
 
 - (void)didSignUp
 {
+    [[NSNotificationCenter defaultCenter] postNotificationName:LoggedInNotification object:nil];
     [self.presentingViewController.presentingViewController dismissViewControllerAnimated:YES completion:nil];
 }
 
