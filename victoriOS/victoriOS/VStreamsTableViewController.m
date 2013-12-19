@@ -16,6 +16,8 @@
 #import "VFeaturedPageControllerViewController.h"
 
 #import "VStreamViewCell.h"
+#import "VStreamVideoCell.h"
+#import "VStreamPollCell.h"
 
 typedef NS_ENUM(NSInteger, VStreamScope)
 {
@@ -50,7 +52,6 @@ static NSString* kSearchCache = @"SearchCache";
     return self;
 }
 
-
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -59,10 +60,15 @@ static NSString* kSearchCache = @"SearchCache";
     
     [self.tableView registerNib:[UINib nibWithNibName:@"VStreamViewCell" bundle:[NSBundle mainBundle]]
          forCellReuseIdentifier:kStreamViewCellIdentifier];
-    [self.searchDisplayController.searchResultsTableView registerNib:[UINib nibWithNibName:@"VStreamViewCell" bundle:[NSBundle mainBundle]]
-         forCellReuseIdentifier:kStreamViewCellIdentifier];
-//    [self.searchDisplayController.searchResultsTableView registerClass:[VStreamViewCell class]
-//                                                forCellReuseIdentifier:kVideoPhotoCellIdentifier];
+    [self.searchDisplayController.searchResultsTableView registerNib:[UINib nibWithNibName:@"VStreamViewCell" bundle:[NSBundle mainBundle]] forCellReuseIdentifier:kStreamViewCellIdentifier];
+    
+    [self.tableView registerNib:[UINib nibWithNibName:@"VStreamVideoCell" bundle:[NSBundle mainBundle]]
+         forCellReuseIdentifier:kStreamVideoCellIdentifier];
+    [self.searchDisplayController.searchResultsTableView registerNib:[UINib nibWithNibName:@"VStreamVideoCell" bundle:[NSBundle mainBundle]] forCellReuseIdentifier:kStreamVideoCellIdentifier];
+    
+    [self.tableView registerNib:[UINib nibWithNibName:@"VStreamPollCell" bundle:[NSBundle mainBundle]]
+         forCellReuseIdentifier:kStreamPollCellIdentifier];
+    [self.searchDisplayController.searchResultsTableView registerNib:[UINib nibWithNibName:@"VStreamPollCell" bundle:[NSBundle mainBundle]] forCellReuseIdentifier:kStreamPollCellIdentifier];
     
     NSError *error;
 	if (![self.fetchedResultsController performFetch:&error])
@@ -154,11 +160,21 @@ static NSString* kSearchCache = @"SearchCache";
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    VSequence* sequence = (VSequence*)[[self fetchedResultsControllerForTableView:tableView] objectAtIndexPath:indexPath];
 
-    VStreamViewCell *cell = [tableView dequeueReusableCellWithIdentifier:kStreamViewCellIdentifier
-                                                            forIndexPath:indexPath];
-//    [cell addTarget:self action:@selector(presentComposeComment:) forControlEvents:UIControlEventTouchUpInside];
+    
+    VStreamViewCell *cell;
+    if ([sequence.category isEqualToString:@"video_forum"])
+        cell = [tableView dequeueReusableCellWithIdentifier:kStreamVideoCellIdentifier
+                                               forIndexPath:indexPath];
+    
+    else if ([sequence.category isEqualToString:@"poll"])
+        cell = [tableView dequeueReusableCellWithIdentifier:kStreamPollCellIdentifier
+                                               forIndexPath:indexPath];
 
+    else
+        cell = [tableView dequeueReusableCellWithIdentifier:kStreamViewCellIdentifier
+                                               forIndexPath:indexPath];
     // Configure the cell...
     [self configureCell:cell atIndexPath:indexPath
         forFetchedResultsController:[self fetchedResultsControllerForTableView:tableView]];

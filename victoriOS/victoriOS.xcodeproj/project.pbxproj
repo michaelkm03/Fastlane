@@ -94,6 +94,8 @@
 		BEE7F9581863A6ED00F2031A /* VStreamVideoCell.m in Sources */ = {isa = PBXBuildFile; fileRef = BEE7F9571863A6ED00F2031A /* VStreamVideoCell.m */; };
 		BEE7F95E1863A73800F2031A /* VStreamPollCell.m in Sources */ = {isa = PBXBuildFile; fileRef = BEE7F95D1863A73800F2031A /* VStreamPollCell.m */; };
 		BEE7F9601863B33C00F2031A /* VStreamViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = BEE7F95F1863B33C00F2031A /* VStreamViewCell.xib */; };
+		BEE7F9621863BC1E00F2031A /* VStreamVideoCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = BEE7F9611863BC1E00F2031A /* VStreamVideoCell.xib */; };
+		BEE7F9661863BC3F00F2031A /* VStreamPollCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = BEE7F9651863BC3F00F2031A /* VStreamPollCell.xib */; };
 		BEF07B4E185BBF86005F177F /* VObjectManager+Comment.m in Sources */ = {isa = PBXBuildFile; fileRef = BEF07B4D185BBF86005F177F /* VObjectManager+Comment.m */; };
 /* End PBXBuildFile section */
 
@@ -267,6 +269,8 @@
 		BEE7F95C1863A73800F2031A /* VStreamPollCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VStreamPollCell.h; path = UI/VStreamPollCell.h; sourceTree = "<group>"; };
 		BEE7F95D1863A73800F2031A /* VStreamPollCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VStreamPollCell.m; path = UI/VStreamPollCell.m; sourceTree = "<group>"; };
 		BEE7F95F1863B33C00F2031A /* VStreamViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = VStreamViewCell.xib; path = UI/VStreamViewCell.xib; sourceTree = "<group>"; };
+		BEE7F9611863BC1E00F2031A /* VStreamVideoCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = VStreamVideoCell.xib; path = UI/VStreamVideoCell.xib; sourceTree = "<group>"; };
+		BEE7F9651863BC3F00F2031A /* VStreamPollCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VStreamPollCell.xib; sourceTree = "<group>"; };
 		BEF07B4C185BBF86005F177F /* VObjectManager+Comment.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "VObjectManager+Comment.h"; path = "Managers/VObjectManager+Comment.h"; sourceTree = "<group>"; };
 		BEF07B4D185BBF86005F177F /* VObjectManager+Comment.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "VObjectManager+Comment.m"; path = "Managers/VObjectManager+Comment.m"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -630,8 +634,10 @@
 				BEE7F95F1863B33C00F2031A /* VStreamViewCell.xib */,
 				BEE7F9561863A6ED00F2031A /* VStreamVideoCell.h */,
 				BEE7F9571863A6ED00F2031A /* VStreamVideoCell.m */,
+				BEE7F9611863BC1E00F2031A /* VStreamVideoCell.xib */,
 				BEE7F95C1863A73800F2031A /* VStreamPollCell.h */,
 				BEE7F95D1863A73800F2031A /* VStreamPollCell.m */,
+				BEE7F9651863BC3F00F2031A /* VStreamPollCell.xib */,
 			);
 			name = StreamCells;
 			sourceTree = "<group>";
@@ -727,7 +733,9 @@
 				BEE7F9601863B33C00F2031A /* VStreamViewCell.xib in Resources */,
 				5F8AAA5E184D43C600301783 /* Main.storyboard in Resources */,
 				BEA4F2351843F097001F5B15 /* InfoPlist.strings in Resources */,
+				BEE7F9661863BC3F00F2031A /* VStreamPollCell.xib in Resources */,
 				BEA4F2401843F097001F5B15 /* Images.xcassets in Resources */,
+				BEE7F9621863BC1E00F2031A /* VStreamVideoCell.xib in Resources */,
 				3F90DD731856A37000C8F312 /* avatar.jpg in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
