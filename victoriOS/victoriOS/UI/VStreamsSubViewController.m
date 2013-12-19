@@ -494,4 +494,16 @@ static NSString* CommentCache = @"CommentCache";
     [super viewWillDisappear:animated];
 }
 
+- (BOOL)shouldPerformSegueWithIdentifier:(NSString *)identifier sender:(id)sender
+{
+    
+    if ([identifier isEqualToString:@"toComposeMessage"] && ![VObjectManager sharedManager].isAuthorized)
+    {
+        [self presentViewController:[VLoginViewController sharedLoginViewController] animated:YES completion:NULL];
+        return NO;
+    }
+    
+    return YES;
+}
+
 @end
