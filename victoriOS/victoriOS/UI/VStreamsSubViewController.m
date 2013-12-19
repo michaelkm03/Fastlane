@@ -16,12 +16,14 @@
 #import "VObjectManager+Comment.h"
 
 #import "VCommentViewCell.h"
+#import "VSequencePlayerViewController.h"
 
 @import Social;
 
 @interface VStreamsSubViewController ()
 @property (nonatomic, strong) NSFetchedResultsController* fetchedResultsController;
 @property (nonatomic, strong) NSMutableArray* newlyReadComments;
+@property (nonatomic, strong) VSequencePlayerViewController* sequencePlayer;
 @end
 
 static NSString* CommentCache = @"CommentCache";
@@ -35,7 +37,7 @@ static NSString* CommentCache = @"CommentCache";
     [self loadSequence];
     
     _newlyReadComments = [[NSMutableArray alloc] init];
-    
+
     VLog(@"self.navigationController.delegate: %@", self.navigationController.delegate);
     
     // Uncomment the following line to preserve selection between presentations.
@@ -72,6 +74,8 @@ static NSString* CommentCache = @"CommentCache";
         
         [indicator stopAnimating];
         [indicator removeFromSuperview];
+        
+        [self setupSequencePlayer];
     };
     
     FailBlock fail = ^(NSError *error) {
@@ -86,11 +90,20 @@ static NSString* CommentCache = @"CommentCache";
                                                    failBlock:fail] start];
 }
 
+- (void) setupSequencePlayer
+{
+    if (_sequence)
+        _sequencePlayer = [[VSequencePlayerViewController alloc] initWithSequence:_sequence];
+    else
+        _sequencePlayer = nil;
+    
+    [self.tableView reloadData]; //Need to reload to get rid of headers.
+}
+
 #pragma mark - IBActions
 
 - (IBAction)refresh:(UIRefreshControl *)sender
 {
-    
     SuccessBlock success = ^(NSArray* resultObjects) {
         NSError *error;
         if (![self.fetchedResultsController performFetch:&error])
@@ -272,6 +285,17 @@ static NSString* CommentCache = @"CommentCache";
     theCell.imageView.image = [UIImage imageNamed:@"avatar.jpg"];
 }
 
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
+{
+    return _sequencePlayer ? _sequencePlayer.view : nil;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
+{
+    return _sequencePlayer ? 180 : 0;
+}
+
+
 #pragma mark - NSFetchedResultsControllers
 
 - (void)updatePredicate
@@ -282,7 +306,6 @@ static NSString* CommentCache = @"CommentCache";
     NSFetchRequest* fetchRequest = self.fetchedResultsController.fetchRequest;
     
     //TODO: apply filter predicate
-    
     NSPredicate* sequenceFilter = [NSPredicate predicateWithFormat:@"sequenceId == %@", _sequence.remoteId];
     [fetchRequest setPredicate:sequenceFilter];
     

@@ -85,6 +85,12 @@
 		BEBDC4DC1857B80D0013DEF1 /* VLoginManagerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = BEBDC4D91857B80D0013DEF1 /* VLoginManagerTests.m */; };
 		BEBDC4DD1857B80D0013DEF1 /* VSequenceManagerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = BEBDC4DA1857B80D0013DEF1 /* VSequenceManagerTests.m */; };
 		BED55905185157DE007FD3E6 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = BED55904185157DE007FD3E6 /* libPods.a */; };
+		BEE7F93C18625FB000F2031A /* MediaPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BEE7F93B18625FB000F2031A /* MediaPlayer.framework */; };
+		BEE7F9421862822500F2031A /* VSequencePlayerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BEE7F9411862822500F2031A /* VSequencePlayerViewController.m */; };
+		BEE7F949186298BD00F2031A /* VNode+Fetcher.m in Sources */ = {isa = PBXBuildFile; fileRef = BEE7F948186298BD00F2031A /* VNode+Fetcher.m */; };
+		BEE7F94C1862B05A00F2031A /* VAsset+Fetcher.m in Sources */ = {isa = PBXBuildFile; fileRef = BEE7F94B1862B05A00F2031A /* VAsset+Fetcher.m */; };
+		BEE7F94F1862B07500F2031A /* VInteraction+Fetcher.m in Sources */ = {isa = PBXBuildFile; fileRef = BEE7F94E1862B07500F2031A /* VInteraction+Fetcher.m */; };
+		BEE7F9531862D72200F2031A /* VSequencePlayerViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = BEE7F9521862D72200F2031A /* VSequencePlayerViewController.xib */; };
 		BEF07B4E185BBF86005F177F /* VObjectManager+Comment.m in Sources */ = {isa = PBXBuildFile; fileRef = BEF07B4D185BBF86005F177F /* VObjectManager+Comment.m */; };
 /* End PBXBuildFile section */
 
@@ -243,6 +249,16 @@
 		BEBDC4DB1857B80D0013DEF1 /* XCTestRestKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XCTestRestKit.h; sourceTree = "<group>"; };
 		BED5590218515734007FD3E6 /* libPods.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libPods.a; path = "Pods/build/Release-iphoneos/libPods.a"; sourceTree = "<group>"; };
 		BED55904185157DE007FD3E6 /* libPods.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libPods.a; path = "Pods/build/Release-iphoneos/libPods.a"; sourceTree = "<group>"; };
+		BEE7F93B18625FB000F2031A /* MediaPlayer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MediaPlayer.framework; path = System/Library/Frameworks/MediaPlayer.framework; sourceTree = SDKROOT; };
+		BEE7F9401862822500F2031A /* VSequencePlayerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VSequencePlayerViewController.h; path = UI/VSequencePlayerViewController.h; sourceTree = "<group>"; };
+		BEE7F9411862822500F2031A /* VSequencePlayerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VSequencePlayerViewController.m; path = UI/VSequencePlayerViewController.m; sourceTree = "<group>"; };
+		BEE7F947186298BD00F2031A /* VNode+Fetcher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "VNode+Fetcher.h"; path = "Categories/Fetchers/VNode+Fetcher.h"; sourceTree = "<group>"; };
+		BEE7F948186298BD00F2031A /* VNode+Fetcher.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "VNode+Fetcher.m"; path = "Categories/Fetchers/VNode+Fetcher.m"; sourceTree = "<group>"; };
+		BEE7F94A1862B05A00F2031A /* VAsset+Fetcher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "VAsset+Fetcher.h"; path = "Categories/Fetchers/VAsset+Fetcher.h"; sourceTree = "<group>"; };
+		BEE7F94B1862B05A00F2031A /* VAsset+Fetcher.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "VAsset+Fetcher.m"; path = "Categories/Fetchers/VAsset+Fetcher.m"; sourceTree = "<group>"; };
+		BEE7F94D1862B07500F2031A /* VInteraction+Fetcher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "VInteraction+Fetcher.h"; path = "Categories/Fetchers/VInteraction+Fetcher.h"; sourceTree = "<group>"; };
+		BEE7F94E1862B07500F2031A /* VInteraction+Fetcher.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "VInteraction+Fetcher.m"; path = "Categories/Fetchers/VInteraction+Fetcher.m"; sourceTree = "<group>"; };
+		BEE7F9521862D72200F2031A /* VSequencePlayerViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = VSequencePlayerViewController.xib; path = UI/VSequencePlayerViewController.xib; sourceTree = "<group>"; };
 		BEF07B4C185BBF86005F177F /* VObjectManager+Comment.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "VObjectManager+Comment.h"; path = "Managers/VObjectManager+Comment.h"; sourceTree = "<group>"; };
 		BEF07B4D185BBF86005F177F /* VObjectManager+Comment.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "VObjectManager+Comment.m"; path = "Managers/VObjectManager+Comment.m"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -252,6 +268,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BEE7F93C18625FB000F2031A /* MediaPlayer.framework in Frameworks */,
 				BED55905185157DE007FD3E6 /* libPods.a in Frameworks */,
 				BEA4F22B1843F097001F5B15 /* CoreGraphics.framework in Frameworks */,
 				BEA4F22F1843F097001F5B15 /* CoreData.framework in Frameworks */,
@@ -345,6 +362,9 @@
 				83088F8918602AFD00B0808A /* VCommentViewCell.m */,
 				83088F8518601B3200B0808A /* VStreamViewCell.h */,
 				83088F8618601B3200B0808A /* VStreamViewCell.m */,
+				BEE7F9401862822500F2031A /* VSequencePlayerViewController.h */,
+				BEE7F9411862822500F2031A /* VSequencePlayerViewController.m */,
+				BEE7F9521862D72200F2031A /* VSequencePlayerViewController.xib */,
 			);
 			name = Streams;
 			sourceTree = "<group>";
@@ -383,9 +403,8 @@
 		BE4E74C21846953F00344677 /* Categories */ = {
 			isa = PBXGroup;
 			children = (
+				BEE7F9431862947F00F2031A /* Fetchers */,
 				BEBDC4A51857B2E30013DEF1 /* Mappings */,
-				BE5AC2AA184D298900121126 /* NSManagedObject+EasyFetching.h */,
-				BE5AC2AB184D298900121126 /* NSManagedObject+EasyFetching.m */,
 				BE5AC2C3184E733800121126 /* NSString+VParseHelp.h */,
 				BE5AC2C4184E733800121126 /* NSString+VParseHelp.m */,
 			);
@@ -435,6 +454,7 @@
 		BEA4F2271843F097001F5B15 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				BEE7F93B18625FB000F2031A /* MediaPlayer.framework */,
 				BE2BA7CE1852593700CA71AC /* libPods.a */,
 				BE20A10218524D6A003D0E8C /* libPods-RestKit.a */,
 				BED55904185157DE007FD3E6 /* libPods.a */,
@@ -572,6 +592,21 @@
 			path = Categories/Mappings;
 			sourceTree = "<group>";
 		};
+		BEE7F9431862947F00F2031A /* Fetchers */ = {
+			isa = PBXGroup;
+			children = (
+				BE5AC2AA184D298900121126 /* NSManagedObject+EasyFetching.h */,
+				BE5AC2AB184D298900121126 /* NSManagedObject+EasyFetching.m */,
+				BEE7F947186298BD00F2031A /* VNode+Fetcher.h */,
+				BEE7F948186298BD00F2031A /* VNode+Fetcher.m */,
+				BEE7F94A1862B05A00F2031A /* VAsset+Fetcher.h */,
+				BEE7F94B1862B05A00F2031A /* VAsset+Fetcher.m */,
+				BEE7F94D1862B07500F2031A /* VInteraction+Fetcher.h */,
+				BEE7F94E1862B07500F2031A /* VInteraction+Fetcher.m */,
+			);
+			name = Fetchers;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -659,6 +694,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				3FAFD1B7185FD6AE00AAF106 /* defaultTheme.plist in Resources */,
+				BEE7F9531862D72200F2031A /* VSequencePlayerViewController.xib in Resources */,
 				5F8AAA5E184D43C600301783 /* Main.storyboard in Resources */,
 				BEA4F2351843F097001F5B15 /* InfoPlist.strings in Resources */,
 				BEA4F2401843F097001F5B15 /* Images.xcassets in Resources */,
@@ -718,6 +754,7 @@
 				3F90DD6A18569B9300C8F312 /* VNavigationController.m in Sources */,
 				3F9100FC185A7C540005317C /* VFeaturedPageControllerViewController.m in Sources */,
 				5F3B4950184E6B8D0062DB55 /* VLoginViewController.m in Sources */,
+				BEE7F949186298BD00F2031A /* VNode+Fetcher.m in Sources */,
 				3FAFD1B3185FD2D600AAF106 /* VThemeManager.m in Sources */,
 				BEBDC4C51857B2E30013DEF1 /* VAnswerAction+RestKit.m in Sources */,
 				BE4E7554184955BE00344677 /* VObjectManager.m in Sources */,
@@ -758,14 +795,17 @@
 				BEBDC4D11857B2E30013DEF1 /* VStatSequence+RestKit.m in Sources */,
 				BEBDC4CB1857B2E30013DEF1 /* VNode+RestKit.m in Sources */,
 				83088F8718601B3200B0808A /* VStreamViewCell.m in Sources */,
+				BEE7F94C1862B05A00F2031A /* VAsset+Fetcher.m in Sources */,
 				3F497884185AAF0100DF80CF /* VOwnerViewController.m in Sources */,
 				3F9100FF185A8E5A0005317C /* VStickerViewController.m in Sources */,
+				BEE7F94F1862B07500F2031A /* VInteraction+Fetcher.m in Sources */,
 				3F90DD811856A59B00C8F312 /* VInboxViewController.m in Sources */,
 				BEBDC4D21857B2E30013DEF1 /* VUser+RestKit.m in Sources */,
 				BEBDC4D01857B2E30013DEF1 /* VStatInteraction+RestKit.m in Sources */,
 				BEBDC4CE1857B2E30013DEF1 /* VSequence+RestKit.m in Sources */,
 				833C05CB185B9A9D00F46123 /* VInteractionAction.m in Sources */,
 				83088F8A18602AFD00B0808A /* VCommentViewCell.m in Sources */,
+				BEE7F9421862822500F2031A /* VSequencePlayerViewController.m in Sources */,
 				BEA4F23B1843F097001F5B15 /* VAppDelegate.m in Sources */,
 				833C05DA185B9A9E00F46123 /* VCategory.m in Sources */,
 				3F90DE4A1857D9F100C8F312 /* VMessageViewController.m in Sources */,

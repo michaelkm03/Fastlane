@@ -709,7 +709,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="n3g-3I-8YY" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-2252" y="1979"/>
+            <point key="canvasLocation" x="-2266" y="1977"/>
         </scene>
         <!--Message View Controller - Message-->
         <scene sceneID="vrT-be-xfB">
@@ -966,6 +966,34 @@
             </objects>
             <point key="canvasLocation" x="-2964" y="-1542"/>
         </scene>
+        <!--Sequence Player View Controller-->
+        <scene sceneID="RFg-qO-JyP">
+            <objects>
+                <viewController storyboardIdentifier="sequencePlayer" id="CtH-M7-NpF" customClass="VSequencePlayerViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="guh-HX-4JO"/>
+                        <viewControllerLayoutGuide type="bottom" id="jc4-1m-z9l"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="9ZZ-2f-au7">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Ze5-VH-EiY">
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                            </imageView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                    </view>
+                    <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+                    <connections>
+                        <outlet property="imageView" destination="Ze5-VH-EiY" id="gwj-z2-Zv6"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="AzE-se-sj9" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-1266" y="-815"/>
+        </scene>
     </scenes>
     <resources>
         <image name="DownVote" width="30" height="30"/>
@@ -981,7 +1009,7 @@
         <simulatedScreenMetrics key="destination" type="retina4"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
-        <segue reference="Zz9-Bl-YgA"/>
+        <segue reference="wEs-46-MFg"/>
         <segue reference="6Dc-IC-UuV"/>
     </inferredMetricsTieBreakers>
 </document>

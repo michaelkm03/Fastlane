@@ -19,6 +19,7 @@
 @property (nonatomic, retain) NSSet *interactions;
 @property (nonatomic, retain) VNodeAction *nodeAction;
 @property (nonatomic, retain) VSequence *sequence;
+
 @end
 
 @interface VNode (CoreDataGeneratedAccessors)

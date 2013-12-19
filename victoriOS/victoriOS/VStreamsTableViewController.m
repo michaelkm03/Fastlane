@@ -36,6 +36,9 @@ typedef NS_ENUM(NSInteger, VStreamScope)
 static NSString* kStreamCache = @"StreamCache";
 static NSString* kSearchCache = @"SearchCache";
 
+static NSString *kVideoPhotoCellIdentifier = @"VideoPhoto";
+static NSString *kForumPollCellIdentifier = @"ForumPoll";
+
 @implementation VStreamsTableViewController
 
 - (id)initWithStyle:(UITableViewStyle)style
@@ -49,12 +52,17 @@ static NSString* kSearchCache = @"SearchCache";
     return self;
 }
 
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
 
     self.pageController =   [self.storyboard instantiateViewControllerWithIdentifier:@"featured_pages"];
-
+    
+//    [self.tableView registerClass:[VStreamViewCell class] forCellReuseIdentifier:kVideoPhotoCellIdentifier];
+//    [self.searchDisplayController.searchResultsTableView registerClass:[VStreamViewCell class]
+//                                                forCellReuseIdentifier:kVideoPhotoCellIdentifier];
+    
     NSError *error;
 	if (![self.fetchedResultsController performFetch:&error])
     {
@@ -148,10 +156,9 @@ static NSString* kSearchCache = @"SearchCache";
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    static NSString *kVideoPhotoCellIdentifier = @"VideoPhoto";
-//    static NSString *kForumPollCellIdentifier = @"ForumPoll";
 
-    VStreamViewCell *cell = [tableView dequeueReusableCellWithIdentifier:kVideoPhotoCellIdentifier];
+    VStreamViewCell *cell = [tableView dequeueReusableCellWithIdentifier:kVideoPhotoCellIdentifier
+                                                            forIndexPath:indexPath];
     
     // Configure the cell...
     [self configureCell:cell atIndexPath:indexPath
@@ -159,6 +166,7 @@ static NSString* kSearchCache = @"SearchCache";
 
     return cell;
 }
+
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
