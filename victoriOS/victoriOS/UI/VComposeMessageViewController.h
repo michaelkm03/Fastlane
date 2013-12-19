@@ -16,4 +16,7 @@
 
 @property (nonatomic, weak) id<VComposeMessageDelegate> delegate;
 
+@property (strong, nonatomic) NSData* mediaData;
+@property (strong, nonatomic) NSString* mediaType;
+
 @end

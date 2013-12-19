@@ -132,7 +132,7 @@
         {
             VOwnerViewController*   ownerViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"owner"];
             navigationController.viewControllers = @[ownerViewController];
-            navigationController.toolbarHidden = NO;
+            navigationController.toolbarHidden = YES;
         }
         else
         {
