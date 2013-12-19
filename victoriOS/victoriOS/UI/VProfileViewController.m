@@ -13,13 +13,12 @@
 #import "VProfileEditCell.h"
 
 @interface      VProfileViewController  ()
-@property (strong, nonatomic) IBOutlet UIBarButtonItem *signoutButton;
 @property (strong, nonatomic) IBOutlet UIBarButtonItem *sendButton;
 @end
 @implementation VProfileViewController
 {
-    NSArray*    _labels;
-    NSArray*    _values;
+    NSArray*            _labels;
+    NSMutableArray*     _values;
 }
 
 - (void)viewDidLoad
@@ -70,26 +69,19 @@
     });
     
     _labels =   @[@"Name", @"E-Mail", @"Password"];
-}
-
-- (void)didReceiveMemoryWarning
-{
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
+    _values =   [[NSMutableArray alloc] initWithObjects:self.user.name ? self.user.name : @"",
+                 self.user.email ? self.user.email : @"",
+                 @"", nil];
 }
 
 - (void)setEditing:(BOOL)editing animated:(BOOL)animated
 {
-    if (!editing)
+    if (self.editing && !editing)
     {
-        //TODO: for some reason these fields are not populating with the correct text... come back to this when not sleepy
-        NSString* name = ((VProfileEditCell *) [self tableView:self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]]).textField.text;
-        NSString* email = ((VProfileEditCell *) [self tableView:self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:1 inSection:0]]).textField.text;
-        NSString* password = ((VProfileEditCell *) [self tableView:self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:2 inSection:0]]).textField.text;
-        
-        [[VObjectManager sharedManager] updateVictoriousWithEmail:email
-                                                         password:password
-                                                         username:name
+        [self.tableView endEditing:YES];
+        [[VObjectManager sharedManager] updateVictoriousWithEmail:_values[1]
+                                                         password:_values[2]
+                                                         username:_values[0]
                                                      successBlock:^(NSArray *resultObjects) {
                                                          VLog(@"Updated account: %@", resultObjects);
                                                      }
@@ -107,7 +99,6 @@
     return 3;
 }
 
-
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     UITableViewCell*    cell    =   nil;
@@ -118,22 +109,8 @@
         
         VProfileEditCell*   aCell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier forIndexPath:indexPath];
         aCell.textLabel.text = _labels[indexPath.row];
-        
-        switch (indexPath.row)
-        {
-            case 0:
-                aCell.textField.text = self.user.name;
-                break;
-                
-            case 1:
-                aCell.textField.text = self.user.email;
-                break;
-                
-            case 2:
-                aCell.textField.text = @"";
-                aCell.textField.secureTextEntry = YES;
-                break;
-        }
+        aCell.textField.delegate = self;
+        aCell.textField.secureTextEntry = (2 == indexPath.row);
         
         cell = aCell;
     }
@@ -143,21 +120,10 @@
         
         cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier forIndexPath:indexPath];
         cell.textLabel.text = _labels[indexPath.row];
+        cell.detailTextLabel.text = _values[indexPath.row];
         
-        switch (indexPath.row)
-        {
-            case 0:
-                cell.detailTextLabel.text = self.user.name;
-                break;
-                
-            case 1:
-                cell.detailTextLabel.text = self.user.email;
-                break;
-                
-            case 2:
-                cell.detailTextLabel.text = @"••••••••";
-                break;
-        }
+        if (2 == indexPath.row)
+            cell.detailTextLabel.text = @"";
     }
     
     return cell;
@@ -166,6 +132,30 @@
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
 {
     return NO;
+}
+
+#pragma mark - UITextFieldDelegate
+
+- (void)textFieldDidBeginEditing:(UITextField*)textField
+{
+    [self.tableView scrollToRowAtIndexPath:[self cellIndexPathForField:textField] atScrollPosition:UITableViewScrollPositionMiddle animated:YES];
+}
+
+- (void)textFieldDidEndEditing:(UITextField*)textField
+{
+    [_values replaceObjectAtIndex:[self cellIndexPathForField:textField].row withObject:textField.text];
+}
+
+#pragma mark - Private
+
+- (NSIndexPath *)cellIndexPathForField:(UITextField *)textField
+{
+    UIView *view = textField;
+    while (![view isKindOfClass:[UITableViewCell class]])
+    {
+        view = [view superview];
+    }
+    return [self.tableView indexPathForCell:(UITableViewCell *)view];
 }
 
 - (IBAction)showMenu
