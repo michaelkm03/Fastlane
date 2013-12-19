@@ -7,11 +7,21 @@
 //
 
 #import <UIKit/UIKit.h>
+@class VSequence;
+
+static NSString *kStreamViewCellIdentifier = @"StreamViewCell";
 
 @interface VStreamViewCell : UITableViewCell
 
 @property (weak, nonatomic) IBOutlet UILabel *dateLabel;
 @property (weak, nonatomic) IBOutlet UILabel *titleLabel;
+
+@property (weak, nonatomic) IBOutlet UIButton *likeButton;
+@property (weak, nonatomic) IBOutlet UIButton *dislikeButton;
+@property (weak, nonatomic) IBOutlet UIButton *shareButton;
+
 @property (weak, nonatomic) IBOutlet UIImageView *previewImageView;
+
+@property (weak, nonatomic) VSequence* sequence;
 
 @end

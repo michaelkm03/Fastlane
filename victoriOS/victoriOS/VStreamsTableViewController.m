@@ -13,8 +13,9 @@
 #import "NSString+VParseHelp.h"
 #import "UIImageView+AFNetworking.h"
 #import "VObjectManager+Sequence.h"
-#import "VStreamViewCell.h"
 #import "VFeaturedPageControllerViewController.h"
+
+#import "VStreamViewCell.h"
 
 typedef NS_ENUM(NSInteger, VStreamScope)
 {
@@ -36,9 +37,6 @@ typedef NS_ENUM(NSInteger, VStreamScope)
 static NSString* kStreamCache = @"StreamCache";
 static NSString* kSearchCache = @"SearchCache";
 
-static NSString *kVideoPhotoCellIdentifier = @"VideoPhoto";
-static NSString *kForumPollCellIdentifier = @"ForumPoll";
-
 @implementation VStreamsTableViewController
 
 - (id)initWithStyle:(UITableViewStyle)style
@@ -59,7 +57,10 @@ static NSString *kForumPollCellIdentifier = @"ForumPoll";
 
     self.pageController =   [self.storyboard instantiateViewControllerWithIdentifier:@"featured_pages"];
     
-//    [self.tableView registerClass:[VStreamViewCell class] forCellReuseIdentifier:kVideoPhotoCellIdentifier];
+    [self.tableView registerNib:[UINib nibWithNibName:@"VStreamViewCell" bundle:[NSBundle mainBundle]]
+         forCellReuseIdentifier:kStreamViewCellIdentifier];
+    [self.searchDisplayController.searchResultsTableView registerNib:[UINib nibWithNibName:@"VStreamViewCell" bundle:[NSBundle mainBundle]]
+         forCellReuseIdentifier:kStreamViewCellIdentifier];
 //    [self.searchDisplayController.searchResultsTableView registerClass:[VStreamViewCell class]
 //                                                forCellReuseIdentifier:kVideoPhotoCellIdentifier];
     
@@ -143,10 +144,7 @@ static NSString *kForumPollCellIdentifier = @"ForumPoll";
     forFetchedResultsController:(NSFetchedResultsController *)fetchedResultsController
 {
     VSequence *info = [fetchedResultsController objectAtIndexPath:theIndexPath];
-    theCell.titleLabel.text = info.name;
-    theCell.dateLabel.text = [info.releasedAt description];
-    [theCell.previewImageView setImageWithURL:[NSURL URLWithString:info.previewImage]
-                             placeholderImage:[UIImage new]];
+    [theCell setSequence:info];
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -157,9 +155,10 @@ static NSString *kForumPollCellIdentifier = @"ForumPoll";
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
 
-    VStreamViewCell *cell = [tableView dequeueReusableCellWithIdentifier:kVideoPhotoCellIdentifier
+    VStreamViewCell *cell = [tableView dequeueReusableCellWithIdentifier:kStreamViewCellIdentifier
                                                             forIndexPath:indexPath];
-    
+//    [cell addTarget:self action:@selector(presentComposeComment:) forControlEvents:UIControlEventTouchUpInside];
+
     // Configure the cell...
     [self configureCell:cell atIndexPath:indexPath
         forFetchedResultsController:[self fetchedResultsControllerForTableView:tableView]];
@@ -181,6 +180,12 @@ static NSString *kForumPollCellIdentifier = @"ForumPoll";
     [self.pageController didMoveToParentViewController:self];
     
     return containerView;
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    [self performSegueWithIdentifier: @"toStreamDetails"
+                              sender: [tableView cellForRowAtIndexPath:indexPath]];
 }
 
 #pragma mark - NSFetchedResultsControllers

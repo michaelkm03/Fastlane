@@ -138,7 +138,7 @@
                                                              failBlock:(FailBlock)fail
 {
     
-    __block NSString* statusKey = [self commentPaginationKeyForSequenceID:sequence.remoteId];
+    __block NSString* statusKey = [NSString stringWithFormat:@"commentsForSequence%@", sequence.remoteId];
     __block VPaginationStatus* status = [self statusForKey:statusKey];
     if([status isFullyLoaded])
         return nil;
@@ -177,9 +177,80 @@
      paginationBlock:pagination];
 }
 
-- (NSString *)commentPaginationKeyForSequenceID:(NSNumber *)sequenceID
+- (RKManagedObjectRequestOperation *)shareSequence:(VSequence*)sequence
+                                         shareType:(NSString*)type
+                                      successBlock:(SuccessBlock)success
+                                         failBlock:(FailBlock)fail
 {
-    return [NSString stringWithFormat:@"commentsForSequence%@", sequenceID];
+    NSMutableDictionary* parameters = [[NSMutableDictionary alloc] initWithCapacity:2];
+    [parameters setObject:[NSString stringWithFormat:@"%@", sequence.remoteId] forKey:@"sequence_id"];
+    [parameters setObject:type forKey:@"shared_to"];
+    
+    NSString* path = [NSString stringWithFormat:@"/api/sequence/share"];
+    
+    return [self POST:path
+               object:nil
+           parameters:parameters
+         successBlock:success
+            failBlock:fail
+      paginationBlock:nil];
+}
+
+
+- (RKManagedObjectRequestOperation *)shareSequenceToTwitter:(VSequence*)sequence
+                                               successBlock:(SuccessBlock)success
+                                                  failBlock:(FailBlock)fail
+{
+    return [self shareSequence:sequence shareType:@"twitter" successBlock:success failBlock:fail];
+}
+
+
+- (RKManagedObjectRequestOperation *)shareSequenceToFacebook:(VSequence*)sequence
+                                                successBlock:(SuccessBlock)success
+                                                   failBlock:(FailBlock)fail
+{
+    return [self shareSequence:sequence shareType:@"facebook" successBlock:success failBlock:fail];
+}
+
+#pragma mark - Sequence Vote Methods
+- (RKManagedObjectRequestOperation *)voteSequence:(VSequence*)sequence
+                                        voteType:(NSString*)type
+                                    successBlock:(SuccessBlock)success
+                                       failBlock:(FailBlock)fail
+{
+    NSMutableDictionary* parameters = [[NSMutableDictionary alloc] initWithCapacity:2];
+    [parameters setObject:[NSString stringWithFormat:@"%@", sequence.remoteId] forKey:@"sequence_id"];
+    [parameters setObject:type forKey:@"vote"];
+    
+    NSString* path = [NSString stringWithFormat:@"/api/sequence/vote"];
+    
+    return [self POST:path
+               object:nil
+           parameters:parameters
+         successBlock:success
+            failBlock:fail
+      paginationBlock:nil];
+}
+
+- (RKManagedObjectRequestOperation *)likeSequence:(VSequence*)sequence
+                                     successBlock:(SuccessBlock)success
+                                        failBlock:(FailBlock)fail
+{
+    return [self voteSequence:sequence voteType:@"like" successBlock:success failBlock:fail];
+}
+
+- (RKManagedObjectRequestOperation *)dislikeSequence:(VSequence*)sequence
+                                        successBlock:(SuccessBlock)success
+                                           failBlock:(FailBlock)fail
+{
+    return [self voteSequence:sequence voteType:@"dislike" successBlock:success failBlock:fail];
+}
+
+- (RKManagedObjectRequestOperation *)unvoteSequence:(VSequence*)sequence
+                                       successBlock:(SuccessBlock)success
+                                          failBlock:(FailBlock)fail
+{
+    return [self voteSequence:sequence voteType:@"unvote" successBlock:success failBlock:fail];
 }
 
 - (void)testSequenceData
