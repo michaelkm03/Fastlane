@@ -116,9 +116,9 @@
     }
     else if (indexPath.section == 0 && indexPath.row == 3)
     {
-        if (![VObjectManager sharedManager].authorized)
-            [self presentViewController:[VLoginViewController sharedLoginViewController] animated:YES completion:NULL];
-        else
+//        if (![VObjectManager sharedManager].authorized)
+//            [self presentViewController:[VLoginViewController sharedLoginViewController] animated:YES completion:NULL];
+//        else
         {
             VProfileViewController*  profileViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"profile"];
             navigationController.viewControllers = @[profileViewController];
@@ -132,7 +132,7 @@
         {
             VOwnerViewController*   ownerViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"owner"];
             navigationController.viewControllers = @[ownerViewController];
-            navigationController.toolbarHidden = NO;
+            navigationController.toolbarHidden = YES;
         }
         else
         {

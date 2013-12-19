@@ -12,8 +12,6 @@
 @interface VComposeMessageViewController ()
 @property (weak, nonatomic) IBOutlet UITextView *textView;
 @property (strong, nonatomic) IBOutlet UIView *accessoryView;
-@property (strong, nonatomic) NSData* mediaData;
-@property (strong, nonatomic) NSString* mediaType;
 @end
 
 @implementation VComposeMessageViewController

@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 @class VUser;
 
-@interface VProfileViewController : UITableViewController
+@interface VProfileViewController : UITableViewController   <UITextFieldDelegate>
 @property (nonatomic, readwrite)    BOOL    userIsLoggedInUser;
 @property (nonatomic, readwrite)    VUser*  user;
 @end

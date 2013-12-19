@@ -7,7 +7,11 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "VComposeMessageViewController.h"
 
-@interface VOwnerViewController : UIViewController
+@protocol VComposePollDelegate <NSObject>
+@end
+
+@interface VOwnerViewController : VComposeMessageViewController <UITextFieldDelegate, UIImagePickerControllerDelegate>
 
 @end
