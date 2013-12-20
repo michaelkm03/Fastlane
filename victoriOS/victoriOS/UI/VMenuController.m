@@ -55,6 +55,11 @@
         [view addSubview:label];
         view;
     });
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(userLoggedIn:)
+                                                 name:LoggedInNotification
+                                               object:nil];
 }
 
 #pragma mark -
@@ -160,7 +165,10 @@
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    return 2;
+    if ([VObjectManager sharedManager].isAuthorized)
+        return 2;
+
+    return 1;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)sectionIndex
@@ -172,8 +180,10 @@
         else
             return 4;
     }
+    if ([VObjectManager sharedManager].isAuthorized)
+        return 1;
 
-    return 1;
+    return 0;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -206,6 +216,14 @@
     }
     
     return cell;
+}
+
+#pragma mark - Notifications
+
+
+- (void) userLoggedIn:(NSNotification *) notification
+{
+    [self.tableView reloadData]; //Reload the tablecell, since superuse actions could be unlocked
 }
 
 @end

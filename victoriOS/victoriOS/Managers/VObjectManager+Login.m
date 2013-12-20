@@ -12,6 +12,8 @@
 
 @implementation VObjectManager (Login)
 
+NSString *LoggedInNotification = @"LoggedInNotification";
+
 #pragma mark - Facebook
 
 - (BOOL)isAuthorized
@@ -21,7 +23,8 @@
 
 - (BOOL)isOwner
 {
-    return YES; //[self.mainUser.access_level isEqualToString:@"superuser"] ;
+    return self.isAuthorized;
+    return [self.mainUser.accessLevel isEqualToString:@"superuser"] ;
 }
 
 - (VUser *)mainUser
@@ -117,8 +120,6 @@
 
 #pragma mark - Logout
 
-//- (RKManagedObjectRequestOperation *)logOutWithSuccessBlock:(SuccessBlock)success
-//                                                  failBlock:(FailBlock)failed
 - (RKManagedObjectRequestOperation *)logout
 {
     if (![self isAuthorized]) //foolish mortal you need to log in to log out...

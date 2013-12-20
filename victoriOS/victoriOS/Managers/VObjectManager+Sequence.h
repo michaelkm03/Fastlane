@@ -33,6 +33,27 @@
 - (RKManagedObjectRequestOperation *)loadNextPageOfCommentsForSequence:(VSequence*)sequence
                                                           successBlock:(SuccessBlock)success
                                                              failBlock:(FailBlock)fail;
+
+- (RKManagedObjectRequestOperation *)shareSequenceToTwitter:(VSequence*)sequence
+                                               successBlock:(SuccessBlock)success
+                                                  failBlock:(FailBlock)fail;
+
+- (RKManagedObjectRequestOperation *)shareSequenceToFacebook:(VSequence*)sequence
+                                                successBlock:(SuccessBlock)success
+                                                   failBlock:(FailBlock)fail;
+
+- (RKManagedObjectRequestOperation *)likeSequence:(VSequence*)sequence
+                                     successBlock:(SuccessBlock)success
+                                        failBlock:(FailBlock)fail;
+
+- (RKManagedObjectRequestOperation *)dislikeSequence:(VSequence*)sequence
+                                        successBlock:(SuccessBlock)success
+                                           failBlock:(FailBlock)fail;
+
+- (RKManagedObjectRequestOperation *)unvoteSequence:(VSequence*)sequence
+                                       successBlock:(SuccessBlock)success
+                                          failBlock:(FailBlock)fail;
+
 - (void)testSequenceData;
 
 #pragma mark - StatSequence Methods

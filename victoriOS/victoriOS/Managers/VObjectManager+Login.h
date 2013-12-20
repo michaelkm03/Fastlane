@@ -8,6 +8,8 @@
 
 #import "VObjectManager.h"
 
+extern NSString *LoggedInNotification;
+
 @interface VObjectManager (Login)
 
 @property (nonatomic, readonly, getter = isAuthorized)  BOOL    authorized;

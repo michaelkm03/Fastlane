@@ -46,8 +46,6 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
-//    self.sequence = nil;
 	// Do any additional setup after loading the view.
 }
 
@@ -57,74 +55,36 @@
     // Dispose of any resources that can be recreated.
 }
 
+#pragma mark - Sequence Logic
 - (void)goToNextNode
 {
-    //Replace with new node logic
+    //TODO: replace with next node logic.
     [self loadNode:_currentNode];
 }
 
-static NSString *youTubeVideoHTML = @"<iframe width=\"%@\" height=\"%@\" src=\"//www.youtube.com/embed/%@\" frameborder=\"0\" allowfullscreen></iframe>";
-
 - (void)loadNode:(VNode*)node
 {
-    NSArray* assets = [VAsset orderedAssetsForNode:node];
-    VAsset* currentAsset = [assets firstObject];
-    if (YES || [currentAsset.type isEqualToString:@"youtube_video_url"])
+    if (!node)
     {
-        _imageView.hidden = YES;
-        _mpController.view.hidden = YES;
-        _webView.hidden = NO;
-
-        
-        
-        [self.webView setAllowsInlineMediaPlayback:YES];
-        [self.webView setMediaPlaybackRequiresUserAction:NO];
-        
-        NSString* embedHTML = [NSString stringWithFormat:@"\
-                               <html>\
-                               <body style='margin:0px;padding:0px;'>\
-                               <script type='text/javascript' src='http://www.youtube.com/iframe_api'></script>\
-                               <script type='text/javascript'>\
-                               function onYouTubeIframeAPIReady()\
-                               {\
-                               ytplayer=new YT.Player('playerId',{events:{onReady:onPlayerReady}})\
-                               }\
-                               function onPlayerReady(a)\
-                               { \
-                               a.target.playVideo(); \
-                               }\
-                               </script>\
-                               <iframe id='playerId' type='text/html' width='%f' height='%f' src='http://www.youtube.com/embed/%@?enablejsapi=1&rel=0&playsinline=1&autoplay=0' frameborder='0'>\
-                               </body>\
-                               </html>",
-                               _webView.frame.size.width,
-                               _webView.frame.size.height,
-                               @"aHjpOzsQ9YI"];
-
-        [_webView loadHTMLString:embedHTML baseURL:[[NSBundle mainBundle] resourceURL]];//[NSURL URLWithString:@"http://www.youtube.com"]];
-
-//        [_webView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:@"www.youtube.com/embed/jofNR_WkoCE"]]];//currentAsset.data]]];
-    }
-    else if ([currentAsset.type isEqualToString:@"video_url"])
-    {
-        _imageView.hidden = YES;
-        _webView.hidden = YES;
-        _mpController.view.hidden = NO;
-        [_mpController setContentURL:[NSURL URLWithString:currentAsset.data]];
-    }
-    else if ([currentAsset.type isEqualToString:@"image_url"] ||
-             [currentAsset.type isEqualToString:@"url"])
-    {
-        _mpController.view.hidden = YES;
-        _webView.hidden = YES;
-        _imageView.hidden = NO;
-        [_imageView setImageWithURL:[NSURL URLWithString:currentAsset.data]];
-    }
-    else if (!currentAsset) //This means its a Poll
-    {
-        //poll logic
+        self.view.hidden = YES;
+        return;
     }
     
+    NSArray* assets = [VAsset orderedAssetsForNode:node];
+    VAsset* currentAsset = [assets firstObject];
+    
+    if (YES || [currentAsset.type isEqualToString:@"youtube_video_url"])
+        [self playYoutubeVideo:@"aHjpOzsQ9YI"];//TODO: replace with currentAsset.data
+
+    else if ([currentAsset.type isEqualToString:@"video_url"])
+        [self playVideo:currentAsset.data];
+        
+    else if ([currentAsset.type isEqualToString:@"image_url"] || [currentAsset.type isEqualToString:@"url"])
+        [self showImage:currentAsset.data];
+
+    else if (!currentAsset) //This means its a Poll
+        [self showPoll];
+
     [self readyInteractionsForNode:node];
 }
 
@@ -132,11 +92,71 @@ static NSString *youTubeVideoHTML = @"<iframe width=\"%@\" height=\"%@\" src=\"/
 {
     for (VInteraction* interaction in [VInteraction orderedInteractionsForNode:node])
     {
-//        __block VInteraction* savedInteraction = interaction;
-//        [NSTimer timerWithTimeInterval:<#(NSTimeInterval)#>
-//                            invocation:<#(NSInvocation *)#>
-//                               repeats:<#(BOOL)#>];
+        NSTimeInterval delay = NSTimeIntervalSince1970 + ([interaction.startTime integerValue]/ 1000);
+        [self performSelector:@selector(launchInteraction:) withObject:interaction afterDelay:delay];
     }
 }
 
+- (void)launchInteraction:(VInteraction*)interaction
+{
+    //TODO: Replace the alert with actual interaction logic.
+    UIAlertView*    alert   =   [[UIAlertView alloc] initWithTitle:@"There is an interaction here! " message:@"This functionality is not implemented" delegate:self cancelButtonTitle:@"Understood" otherButtonTitles:nil];
+    [alert show];
+}
+
+#pragma mark - Media
+
+- (void)playYoutubeVideo:(NSString*)videoID
+{
+    _imageView.hidden = YES;
+    _mpController.view.hidden = YES;
+    _webView.hidden = NO;
+    
+    [self.webView setAllowsInlineMediaPlayback:YES];
+    [self.webView setMediaPlaybackRequiresUserAction:NO];
+    
+    NSString* embedHTML = [NSString stringWithFormat:@"\
+                           <html>\
+                           <body style='margin:0px;padding:0px;'>\
+                           <script type='text/javascript' src='http://www.youtube.com/iframe_api'></script>\
+                           <script type='text/javascript'>\
+                           function onYouTubeIframeAPIReady()\
+                           {\
+                           ytplayer=new YT.Player('playerId',{events:{onReady:onPlayerReady}})\
+                           }\
+                           function onPlayerReady(a)\
+                           { \
+                           a.target.playVideo(); \
+                           }\
+                           </script>\
+                           <iframe id='playerId' type='text/html' width='%f' height='%f' src='http://www.youtube.com/embed/%@?enablejsapi=1&rel=0&playsinline=1&autoplay=0' frameborder='0'>\
+                           </body>\
+                           </html>",
+                           _webView.frame.size.width,
+                           _webView.frame.size.height,
+                           videoID];
+    
+    [_webView loadHTMLString:embedHTML baseURL:[[NSBundle mainBundle] resourceURL]];
+}
+
+- (void)playVideo:(NSString*)videoUrl
+{
+    _imageView.hidden = YES;
+    _webView.hidden = YES;
+    _mpController.view.hidden = NO;
+    [_mpController setContentURL:[NSURL URLWithString:videoUrl]];
+}
+
+- (void)showImage:(NSString*)imageUrl
+{
+    _mpController.view.hidden = YES;
+    _webView.hidden = YES;
+    _imageView.hidden = NO;
+    [_imageView setImageWithURL:[NSURL URLWithString:imageUrl]];
+}
+
+- (void)showPoll
+{
+    //TODO: poll logic
+}
 @end
