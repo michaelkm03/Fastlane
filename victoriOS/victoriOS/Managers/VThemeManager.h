@@ -18,4 +18,8 @@ extern  NSString*   const   kVThemeManagerThemeDidChange;
 
 - (id)themedValueForKey:(NSString *)key;
 
+- (UIColor *)themedColorForKey:(NSString *)key;
+- (UIImage *)themedImageForKey:(NSString *)key;
+- (UIFont *)themedFontForKey:(NSString *)key;
+
 @end
