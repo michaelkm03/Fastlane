@@ -56,6 +56,37 @@ NSString*   const   kVThemeManagerThemeDidChange    =   @"VThemeManagerThemeDidC
     return self.themeValues[key];
 }
 
+- (UIColor *)themedColorForKey:(NSString *)key
+{
+    NSDictionary*   colorDictionary =   [self themedValueForKey:key];
+    CGFloat         red             =   [colorDictionary[@"red"] doubleValue] / 255.0;
+    CGFloat         green           =   [colorDictionary[@"green"] doubleValue] / 255.0;
+    CGFloat         blue            =   [colorDictionary[@"blue"] doubleValue] / 255.0;
+    CGFloat         alpha           =   [colorDictionary[@"alpha"] doubleValue];
+    UIColor*        color           =   [UIColor colorWithRed:red green:green blue:blue alpha:alpha];
+    return color;
+}
+
+- (UIImage *)themedImageForKey:(NSString *)key
+{
+    return [UIImage imageNamed:[self themedValueForKey:key]];
+}
+
+- (UIFont *)themedFontForKey:(NSString *)key
+{
+    NSDictionary*   fontDictionary = [self themedValueForKey:key];
+    NSString*       fontName    =   fontDictionary[@"fontName"];
+    CGFloat         fontSize    =   [fontDictionary[@"fontSize"] doubleValue];
+    
+    if (0 == fontSize)
+        fontSize = [UIFont systemFontSize];
+    
+    if (0 == fontName.length)
+        return [UIFont systemFontOfSize:fontSize];
+
+    return [UIFont fontWithName:fontName size:fontSize];
+}
+
 #pragma mark -
 
 @end

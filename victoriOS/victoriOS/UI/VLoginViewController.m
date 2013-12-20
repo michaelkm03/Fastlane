@@ -13,9 +13,11 @@
 @import Accounts;
 @import Social;
 
+NSString*   const   kVLoginViewControllerDomain =   @"VLoginViewControllerDomain";
+
 @interface      VLoginViewController    ()
-@property (weak, nonatomic) IBOutlet UITextField *username;
-@property (weak, nonatomic) IBOutlet UITextField *password;
+@property (weak, nonatomic) IBOutlet UITextField *usernameTextField;
+@property (weak, nonatomic) IBOutlet UITextField *passwordTextField;
 @property (nonatomic, readwrite, weak) VUser* mainUser;
 @end
 
@@ -47,25 +49,17 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-	// Do any additional setup after loading the view.
-}
-
-- (void)didReceiveMemoryWarning
-{
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
-}
-
-- (BOOL) authorized
-{
-    return (_mainUser != nil && (NSNull*)_mainUser != [NSNull null]);
+	self.usernameTextField.delegate  =   self;
+    self.passwordTextField.delegate  =   self;
 }
 
 #pragma mark -
 
 - (BOOL)shouldLoginWithUsername:(NSString *)username password:(NSString *)password
 {
-    if (!username || (0 == username.length) || !password || (0 == password.length))
+    NSError*    theError;
+
+    if (![self validateUsername:&username error:&theError] || ![self validatePassword:&password error:&theError])
     {
         UIAlertView*    alert   =   [[UIAlertView alloc] initWithTitle:@"Invalid E-mail or password" message:@"You must enter an email and password." delegate:self cancelButtonTitle:@"Understood" otherButtonTitles:nil];
         [alert show];
@@ -93,7 +87,7 @@
     [self dismissViewControllerAnimated:YES completion:NULL];
 }
 
-- (void)requestAccessFailed
+- (void)requestAccessDidFail
 {
     dispatch_async(dispatch_get_main_queue(), ^
                    {
@@ -104,25 +98,70 @@
                    });
 }
 
+-(BOOL)validateUsername:(id *)ioValue error:(NSError * __autoreleasing *)outError
+{
+    // The name must not be nil, and must be at least two characters long.
+    if ((*ioValue == nil) || ([(NSString *)*ioValue length] < 8))
+    {
+        if (outError != NULL)
+        {
+            NSString *errorString = NSLocalizedString(
+                                                      @"A Person's name must be at least two characters long",
+                                                      @"validation: Person, too short name error");
+            NSDictionary*   userInfoDict = @{ NSLocalizedDescriptionKey : errorString };
+            *outError   =   [[NSError alloc] initWithDomain:kVLoginViewControllerDomain
+                                                   code:VLoginViewControllerBadUsernameErrorCode
+                                               userInfo:userInfoDict];
+        }
+        
+        return NO;
+    }
+    
+    return YES;
+}
+
+-(BOOL)validatePassword:(id *)ioValue error:(NSError * __autoreleasing *)outError
+{
+    // The name must not be nil, and must be at least two characters long.
+    if ((*ioValue == nil) || ([(NSString *)*ioValue length] < 8))
+    {
+        if (outError != NULL)
+        {
+            NSString *errorString = NSLocalizedString(
+                                                      @"A Person's name must be at least two characters long",
+                                                      @"validation: Person, too short name error");
+            NSDictionary*   userInfoDict = @{ NSLocalizedDescriptionKey : errorString };
+            *outError   =   [[NSError alloc] initWithDomain:kVLoginViewControllerDomain
+                                                       code:VLoginViewControllerBadPasswordErrorCode
+                                                   userInfo:userInfoDict];
+        }
+        
+        return NO;
+    }
+    
+    return YES;
+}
+
 #pragma mark -
 
 - (IBAction)login:(id)sender
 {
-    if ([self shouldLoginWithUsername:self.username.text password:self.password.text])
+    if ([self shouldLoginWithUsername:self.usernameTextField.text password:self.passwordTextField.text])
     {
-        SuccessBlock success = ^(NSArray* objects) {
+        SuccessBlock success = ^(NSArray* objects)
+        {
             [self didLoginWithUser:[objects firstObject]];
         };
-        FailBlock fail = ^(NSError* error) {
+        FailBlock fail = ^(NSError* error)
+        {
             [self didFailToLogin:error];
             VLog(@"Error in victorious Login: %@", error);
         };
-        RKManagedObjectRequestOperation* requestOperation =
-            [[VObjectManager sharedManager] loginToVictoriousWithEmail:self.username.text
-                                                              password:self.password.text
-                                                          successBlock:success
-                                                             failBlock:fail];
-        [requestOperation start];
+        
+        [[[VObjectManager sharedManager] loginToVictoriousWithEmail:self.usernameTextField.text
+                                                           password:self.passwordTextField.text
+                                                       successBlock:success
+                                                          failBlock:fail] start];
     }
 }
 
@@ -137,14 +176,15 @@
                                                     ACFacebookAppIdKey: @"1374328719478033",
                                                     ACFacebookPermissionsKey: @[@"email"] // Needed for first login
                                                     }
-                                       completion:^(BOOL granted, NSError *error) {
+                                       completion:^(BOOL granted, NSError *error)
+    {
                                            if (!granted)
                                            {
                                                switch (error.code)
                                                {
                                                    case ACErrorAccountNotFound:
                                                    {
-                                                       [self requestAccessFailed];
+                                                       [self requestAccessDidFail];
                                                        break;
                                                    }
                                                    default:
@@ -155,18 +195,20 @@
                                                }
                                                return;
                                            }
-                                           else {
-                                               
+                                           else
+                                           {
                                                NSArray *accounts = [accountStore accountsWithAccountType:accountType];
                                                //it will always be the last object with single sign on
                                                ACAccount* facebookAccount = [accounts lastObject];
                                                ACAccountCredential *fbCredential = [facebookAccount credential];
                                                NSString *accessToken = [fbCredential oauthToken];
                                                
-                                               SuccessBlock success = ^(NSArray* objects) {
+                                               SuccessBlock success = ^(NSArray* objects)
+                                               {
                                                    [self didLoginWithUser:[objects firstObject]];
                                                };
-                                               FailBlock failed = ^(NSError* error) {
+                                               FailBlock failed = ^(NSError* error)
+                                               {
                                                    [self didFailToLogin:error];
                                                    VLog(@"Error in FB Login: %@", error);
                                                };
@@ -192,7 +234,7 @@
             {
                 case ACErrorAccountNotFound:
                 {
-                    [self requestAccessFailed];
+                    [self requestAccessDidFail];
                     break;
                 }
                 default:
@@ -203,11 +245,14 @@
             }
             return;
         }
-        else {
-            SuccessBlock success = ^(NSArray* objects) {
+        else
+        {
+            SuccessBlock success = ^(NSArray* objects)
+            {
                 [self didLoginWithUser:[objects firstObject]];
             };
-            FailBlock failed = ^(NSError* error) {
+            FailBlock failed = ^(NSError* error)
+            {
                 [self didFailToLogin:error];
                 VLog(@"Error in Twitter Login: %@", error);
             };
@@ -234,7 +279,22 @@
 
 #pragma mark -
 
-- (void) touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
+- (void)textFieldDidBeginEditing:(UITextField *)textField
+{
+        //  Scroll textfield into view
+}
+
+- (BOOL)textFieldShouldReturn:(UITextField *)textField
+{
+    if ([textField isEqual:self.usernameTextField])
+        [self.passwordTextField becomeFirstResponder];
+    else
+        [self.passwordTextField resignFirstResponder];
+    
+    return NO;
+}
+
+- (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
 {
     [[self view] endEditing:YES];
 }

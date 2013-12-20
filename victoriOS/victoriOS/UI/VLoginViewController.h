@@ -6,10 +6,15 @@
 //  Copyright (c) 2013 Victorious Inc. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
-#import "VUser.h"
+extern  NSString*   const   kVLoginViewControllerDomain;
 
-@interface VLoginViewController : UIViewController
+NS_ENUM(NSInteger, VLoginViewControllerErrorCode)
+{
+    VLoginViewControllerBadUsernameErrorCode,
+    VLoginViewControllerBadPasswordErrorCode
+};
+
+@interface VLoginViewController : UIViewController  <UITextFieldDelegate>
 
 + (VLoginViewController *)sharedLoginViewController;
 
