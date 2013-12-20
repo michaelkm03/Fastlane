@@ -129,6 +129,7 @@ static NSString* kSearchCache = @"SearchCache";
     return tableView == self.tableView ? self.fetchedResultsController : self.searchFetchedResultsController;
 }
 
+
 - (UITableView*)tableViewForFetchedResultsController:(NSFetchedResultsController*)controller
 {
     return controller == self.fetchedResultsController ? self.tableView
@@ -155,6 +156,13 @@ static NSString* kSearchCache = @"SearchCache";
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    VSequence* sequence = (VSequence*)[[self fetchedResultsControllerForTableView:tableView] objectAtIndexPath:indexPath];
+    
+    if ([sequence.category isEqualToString:@"video_forum"] ||
+        [sequence.category isEqualToString:@"poll"])
+        
+        return 240;
+
     return 320;
 }
 
@@ -164,7 +172,7 @@ static NSString* kSearchCache = @"SearchCache";
 
     
     VStreamViewCell *cell;
-    if (YES || [sequence.category isEqualToString:@"video_forum"])
+    if ([sequence.category isEqualToString:@"video_forum"])
         cell = [tableView dequeueReusableCellWithIdentifier:kStreamVideoCellIdentifier
                                                forIndexPath:indexPath];
     
