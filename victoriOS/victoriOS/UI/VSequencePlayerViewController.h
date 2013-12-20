@@ -17,5 +17,4 @@
 @property (nonatomic, strong) VSequence* sequence;
 
 - (instancetype)initWithSequence:(VSequence*)sequence;
-
 @end

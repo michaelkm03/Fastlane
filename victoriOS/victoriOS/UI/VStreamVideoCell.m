@@ -13,20 +13,25 @@
 
 #import "VObjectManager+Sequence.h"
 
-@import MediaPlayer;
-
 @interface VStreamVideoCell ()
-
 @property (strong, nonatomic) MPMoviePlayerController* mpController;
-
 @end
 
 @implementation VStreamVideoCell
+
+- (void)dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
 
 - (void)setSequence:(VSequence *)sequence
 {
     [super setSequence:sequence];
     
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(streamsWillSegue:)
+                                                 name:kStreamsWillSegueNotification
+                                               object:nil];
     if (_mpController)
         [_mpController.view removeFromSuperview]; //make sure to get rid of the old view
 }
@@ -59,14 +64,21 @@
     }
 }
 
+- (void)streamsWillSegue:(NSNotification *) notification
+{
+    [_mpController stop];
+}
+
 - (void)playSequence
 {
     VNode* node = [[VNode orderedNodesForSequence:self.sequence] firstObject];
     VAsset* asset = [[VAsset orderedAssetsForNode:node] firstObject];
     
-    _mpController = [[MPMoviePlayerController alloc] initWithContentURL:[NSURL URLWithString: asset.data]];
-    [self addSubview:_mpController.view];
+    _mpController = [[MPMoviePlayerController alloc] initWithContentURL:[NSURL URLWithString: @"http://d36dq0iszpjoxo.cloudfront.net/d3b9451012dc2a7e7b692b45ae93f7b4/playlist.m3u8"]];//asset.data]];
+    _mpController.view.frame = self.previewImageView.frame;
+    [self insertSubview:_mpController.view aboveSubview:self.previewImageView];
 
+    [_mpController play];
 }
 
 @end
