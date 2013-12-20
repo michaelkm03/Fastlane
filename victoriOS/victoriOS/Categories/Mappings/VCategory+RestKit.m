@@ -10,18 +10,23 @@
 
 @implementation VCategory (RestKit)
 
++ (NSString *)entityName
+{
+    return @"Category";
+}
+
 + (RKEntityMapping*)entityMapping
 {
-    
+
     RKEntityMapping *mapping = [RKEntityMapping
-                                mappingForEntityForName:NSStringFromClass([VCategory class])
+                                mappingForEntityForName:[self entityName]
                                 inManagedObjectStore:[RKObjectManager sharedManager].managedObjectStore];
-    
-    mapping.identificationAttributes = @[ @"name" ];
-    
+
+    mapping.identificationAttributes = @[ VSelectorName(name) ];
+
     [mapping addPropertyMapping:[RKAttributeMapping attributeMappingFromKeyPath:nil
-                                                                      toKeyPath:@"name"]];
-    
+                                                                      toKeyPath:VSelectorName(name)]];
+
     return mapping;
 }
 
@@ -30,7 +35,8 @@
     return [RKResponseDescriptor responseDescriptorWithMapping:[VCategory entityMapping]
                                                         method:RKRequestMethodGET
                                                    pathPattern:@"/api/sequence/categories"
-                                                       keyPath:@"payload"                                         statusCodes:RKStatusCodeIndexSetForClass(RKStatusCodeClassSuccessful)];
+                                                       keyPath:@"payload"
+                                                   statusCodes:RKStatusCodeIndexSetForClass(RKStatusCodeClassSuccessful)];
 }
 
 @end

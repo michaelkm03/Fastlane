@@ -14,6 +14,7 @@
 + (NSArray *)findAllObjectsWithSortKey:(NSString*)sortKey;
 + (NSArray *)findAllObjectsInContext:(NSManagedObjectContext *)context withSortKey:(NSString*)sortKey;
 
++ (NSString *)entityName;
 + (RKEntityMapping*)entityMapping;
 
 @end

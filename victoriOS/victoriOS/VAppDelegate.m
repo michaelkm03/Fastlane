@@ -3,18 +3,17 @@
 //  victoriOS
 //
 //  Created by Will Long on 11/25/13.
-//  Copyright (c) 2013 Will Long. All rights reserved.
+//  Copyright (c) 2013 Victorious Inc. All rights reserved.
 //
 
 #import "VAppDelegate.h"
-#import "VLoginManager.h"
 #import "VObjectManager.h"
-#import "User+RestKit.h"
-#import "VCategory+RestKit.h"
-#import "Sequence+RestKit.h"
-#import "StatSequence+RestKit.h"
 #import "VLoginViewController.h"
 #import <TestFlightSDK/TestFlight.h>
+#import "VThemeManager.h"
+
+#import "VObjectManager.h"
+#import "VObjectManager+Sequence.h"
 
 @implementation VAppDelegate
 
@@ -25,16 +24,44 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-    [self setupRestKit];
+    [application setMinimumBackgroundFetchInterval:UIApplicationBackgroundFetchIntervalMinimum];
     
+//    [application registerForRemoteNotificationTypes:(UIRemoteNotificationTypeBadge | UIRemoteNotificationTypeSound)];
+    
+//    UILocalNotification *localNotif = [launchOptions objectForKey:UIApplicationLaunchOptionsLocalNotificationKey];
+//    if (localNotif)
+//    {
+//        NSString *itemName = [localNotif.userInfo objectForKey:ToDoItemKey];
+//        [viewController displayItem:itemName];  // custom method
+//        app.applicationIconBadgeNumber = localNotif.applicationIconBadgeNumber-1;
+//    }
+    
+    [VObjectManager setupObjectManager];
+    [[[VObjectManager sharedManager] initialSequenceLoad] start];
+
     [TestFlight takeOff:@"4467aa06-d174-479e-b009-f1945f3d6532"];
     
-    //[VLoginManager createVictoriousAccountWithEmail:@"a" password:@"a" name:@"a"];
-    //[VLoginManager loginToVictoriousWithEmail:@"a" andPassword:@"a"];
-//    [VLoginManager loginToFacebook];
-    [self performSelector:@selector(login) withObject:nil afterDelay:1.0];
+    [[AFNetworkActivityIndicatorManager sharedManager] setEnabled:YES];
     
+    self.window.tintColor   =   [[VThemeManager sharedThemeManager] themedColorForKey:@"applicationTintColor"];
+
+    NSURL*  openURL =   launchOptions[UIApplicationLaunchOptionsURLKey];
+    if (openURL)
+        [self handleOpenURL:openURL];
+
     return YES;
+}
+
+- (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation
+{
+    [self handleOpenURL:url];
+    return YES;
+}
+
+//Deep link handler
+- (void)handleOpenURL:(NSURL *)aURL
+{
+    
 }
 
 - (void)applicationWillResignActive:(UIApplication *)application
@@ -64,75 +91,56 @@
     // Saves changes in the application's managed object context before the application terminates.
 }
 
-#pragma mark - RestKit Methods
-
-- (void)setupRestKit
+- (void)application:(UIApplication *)application performFetchWithCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler
 {
+    NSURLSessionConfiguration *sessionConfiguration = [NSURLSessionConfiguration defaultSessionConfiguration];
+    NSURLSession *session = [NSURLSession sessionWithConfiguration:sessionConfiguration];
     
-#if DEBUG
-    RKLogConfigureByName("RestKit/Network", RKLogLevelTrace);
-    RKLogConfigureByName("RestKit/ObjectMapping", RKLogLevelTrace);
-#endif
+    NSURL *url = [[NSURL alloc] initWithString:@"http://yourserver.com/data.json"];
+    NSURLSessionDataTask *task = [session dataTaskWithURL:url
+                                        completionHandler:^(NSData *data, NSURLResponse *response, NSError *error)
+    {
+        if (error)
+        {
+            completionHandler(UIBackgroundFetchResultFailed);
+            return;
+        }
+                                            
+        // Parse response/data and determine whether new content was available
+        BOOL hasNewData = NO;
+        if (hasNewData)
+        {
+            completionHandler(UIBackgroundFetchResultNewData);
+        }
+        else
+        {
+            completionHandler(UIBackgroundFetchResultNoData);
+        }
+    }];
     
-    RKObjectManager *manager = [VObjectManager managerWithBaseURL:[NSURL URLWithString:VBASEURL]];
-    
-    //Add the App ID to the User-Agent field
-    //(this is the only non-dynamic header, so set it now)
-    NSString* userAgent = [[manager HTTPClient].defaultHeaders objectForKey:@"User-Agent"];
-
-    //TODO: use real app id once we set that up
-    userAgent = [NSString stringWithFormat:@"%@ aid:%@", userAgent, @"1"];
-    [[manager HTTPClient] setDefaultHeader:@"User-Agent" value:userAgent];
-    
-    NSURL *modelURL = [[NSBundle mainBundle] URLForResource:@"victoriOS" withExtension:@"momd"];
-    NSManagedObjectModel *managedObjectModel = [[NSManagedObjectModel alloc] initWithContentsOfURL:modelURL];
-    RKManagedObjectStore *managedObjectStore = [[RKManagedObjectStore alloc] initWithManagedObjectModel:managedObjectModel];
-    
-    manager.managedObjectStore = managedObjectStore;
-
-    // Initialize the Core Data stack
-    NSError *error;
-    [managedObjectStore createPersistentStoreCoordinator];
-    [managedObjectStore addInMemoryPersistentStore:&error];
-    [managedObjectStore createManagedObjectContexts];
-    
-    // Configure a managed object cache to ensure we do not create duplicate objects
-    managedObjectStore.managedObjectCache = [[RKInMemoryManagedObjectCache alloc] initWithManagedObjectContext:managedObjectStore.persistentStoreManagedObjectContext];
-
-    [self declareDescriptors];
-    
-    //This will allow us to call this manager with [RKObjectManager sharedManager]
-    [RKObjectManager setSharedManager:manager];
+    // Start the task
+    [task resume];
 }
 
-- (void)declareDescriptors
+- (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo fetchCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler
 {
-
-    //Should one of our requests to get data fail, RestKit will use this mapping and send us an NSError object with the error message of the response as the string.
-    RKObjectMapping *errorMapping = [RKObjectMapping mappingForClass:[RKErrorMessage class]];
-    [errorMapping addPropertyMapping:
-     [RKAttributeMapping attributeMappingFromKeyPath:nil toKeyPath:@"errorMessage"]];
-    RKResponseDescriptor *errorDescriptor = [RKResponseDescriptor
-                                             responseDescriptorWithMapping:errorMapping
-                                             method:RKRequestMethodAny
-                                             pathPattern:nil
-                                             keyPath:@"message"
-                                             statusCodes:RKStatusCodeIndexSetForClass(RKStatusCodeClassClientError)];
+    NSLog(@"Remote Notification userInfo is %@", userInfo);
     
-    [[RKObjectManager sharedManager] addResponseDescriptorsFromArray:@[errorDescriptor,
-                                                                       [User descriptor],
-                                                                       [VCategory descriptor],
-                                                                       [Sequence sequenceListDescriptor],
-                                                                       [Sequence sequenceFullDataDescriptor],
-                                                                       [Comment descriptor],
-                                                                       [Comment getAllDescriptor],
-                                                                       [StatSequence gamesPlayedDescriptor],
-                                                                       [StatSequence gameStatsDescriptor]]];
+//    NSNumber *contentID = userInfo[@"content-id"];
+    // Do something with the content ID
+    completionHandler(UIBackgroundFetchResultNewData);
 }
 
-- (void)login
+- (void)application:(UIApplication *)app didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)devToken
 {
-    [self.window.rootViewController presentViewController:[VLoginViewController sharedLoginViewController] animated:YES completion:NULL];
+//    const void *devTokenBytes = [devToken bytes];
+//    self.registered = YES;
+//    [self sendProviderDeviceToken:devTokenBytes]; // custom method
+}
+
+- (void)application:(UIApplication *)app didFailToRegisterForRemoteNotificationsWithError:(NSError *)err
+{
+    NSLog(@"Error in registration. Error: %@", err);
 }
 
 @end

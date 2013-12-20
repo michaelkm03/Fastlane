@@ -2,8 +2,8 @@
 //  VCategory.m
 //  victoriOS
 //
-//  Created by Will Long on 12/2/13.
-//  Copyright (c) 2013 Will Long. All rights reserved.
+//  Created by David Keegan on 12/13/13.
+//  Copyright (c) 2013 Victorious, Inc. All rights reserved.
 //
 
 #import "VCategory.h"
