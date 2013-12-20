@@ -201,48 +201,6 @@
                                 <outlet property="delegate" destination="BQm-xc-Hw8" id="M6k-Wi-YLS"/>
                             </connections>
                         </searchBar>
-                        <prototypes>
-                            <tableViewCell contentMode="scaleToFill" selectionStyle="default" accessoryType="detailDisclosureButton" indentationWidth="10" reuseIdentifier="page" id="Apb-qj-K1A">
-                                <rect key="frame" x="0.0" y="174" width="320" height="44"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Apb-qj-K1A" id="goP-su-K4g">
-                                    <rect key="frame" x="0.0" y="0.0" width="253" height="43"/>
-                                    <autoresizingMask key="autoresizingMask"/>
-                                </tableViewCellContentView>
-                            </tableViewCell>
-                            <tableViewCell contentMode="scaleToFill" horizontalHuggingPriority="1" selectionStyle="default" accessoryType="detailDisclosureButton" indentationWidth="10" reuseIdentifier="ForumPoll" rowHeight="240" id="5F5-Is-hvb">
-                                <rect key="frame" x="0.0" y="218" width="320" height="240"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="5F5-Is-hvb" id="hN4-Uv-FGz">
-                                    <rect key="frame" x="0.0" y="0.0" width="253" height="239"/>
-                                    <autoresizingMask key="autoresizingMask"/>
-                                    <subviews>
-                                        <webView contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="nd3-kC-3OY">
-                                            <rect key="frame" x="0.0" y="0.0" width="253" height="174"/>
-                                            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                                            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
-                                        </webView>
-                                        <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="WO5-Nv-diR">
-                                            <rect key="frame" x="20" y="201" width="31" height="30"/>
-                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                            <state key="normal" title="Vote">
-                                                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                            </state>
-                                        </button>
-                                        <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="GbP-l5-EVs">
-                                            <rect key="frame" x="187" y="201" width="40" height="30"/>
-                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                            <state key="normal" title="Share">
-                                                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                            </state>
-                                        </button>
-                                    </subviews>
-                                </tableViewCellContentView>
-                                <connections>
-                                    <segue destination="fsf-U2-hN6" kind="push" identifier="toStreamDetails" trigger="accessoryAction" id="Zz9-Bl-YgA"/>
-                                </connections>
-                            </tableViewCell>
-                        </prototypes>
                         <connections>
                             <outlet property="dataSource" destination="BQm-xc-Hw8" id="cJE-Bv-nFd"/>
                             <outlet property="delegate" destination="BQm-xc-Hw8" id="Ilc-lu-ooq"/>
@@ -270,6 +228,7 @@
                     </refreshControl>
                     <connections>
                         <outlet property="searchDisplayController" destination="ohm-Lx-FTR" id="MAo-5e-fZr"/>
+                        <segue destination="fsf-U2-hN6" kind="push" identifier="toStreamDetails" id="hCJ-O0-Eeo"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="HnF-OA-721" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -312,17 +271,27 @@
                                         <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="yRc-v0-Yzw">
                                             <rect key="frame" x="232" y="20" width="30" height="30"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                            <state key="normal" image="LIke"/>
+                                            <state key="normal" image="UpVote"/>
                                             <connections>
                                                 <action selector="likeComment:forEvent:" destination="fsf-U2-hN6" eventType="touchUpInside" id="W4U-w9-hJ0"/>
                                             </connections>
                                         </button>
-                                        <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="MRh-Gj-BHH">
+                                        <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="MRh-Gj-BHH">
                                             <rect key="frame" x="194" y="20" width="30" height="30"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                            <state key="normal" image="Share"/>
+                                            <state key="normal" image="DownVote">
+                                                <color key="titleColor" red="0.18712583229999999" green="0.12046070759999999" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                            </state>
                                             <connections>
-                                                <action selector="shareSequence:" destination="fsf-U2-hN6" eventType="touchUpInside" id="Oa8-AJ-4Wd"/>
+                                                <action selector="dislikeComment:forEvent:" destination="fsf-U2-hN6" eventType="touchUpInside" id="VvD-Ue-gUn"/>
+                                            </connections>
+                                        </button>
+                                        <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Z7P-qA-HSg">
+                                            <rect key="frame" x="156" y="20" width="30" height="30"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                            <state key="normal" image="facebook"/>
+                                            <connections>
+                                                <action selector="shareSequence:" destination="fsf-U2-hN6" eventType="touchUpInside" id="YLd-AJ-8Af"/>
                                             </connections>
                                         </button>
                                         <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="jhH-PL-Ofp">
@@ -1007,10 +976,11 @@
         </scene>
     </scenes>
     <resources>
+        <image name="DownVote" width="30" height="30"/>
         <image name="Flag" width="30" height="30"/>
-        <image name="LIke" width="30" height="30"/>
-        <image name="Share" width="30" height="30"/>
+        <image name="UpVote" width="30" height="30"/>
         <image name="btn_menu" width="27" height="27"/>
+        <image name="facebook" width="256" height="256"/>
     </resources>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
         <simulatedStatusBarMetrics key="statusBar"/>
@@ -1018,6 +988,6 @@
         <simulatedScreenMetrics key="destination" type="retina4"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
-        <segue reference="HIU-yK-Z7T"/>
+        <segue reference="6Dc-IC-UuV"/>
     </inferredMetricsTieBreakers>
 </document>

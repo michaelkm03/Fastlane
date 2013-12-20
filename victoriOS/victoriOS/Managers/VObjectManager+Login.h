@@ -8,7 +8,7 @@
 
 #import "VObjectManager.h"
 
-extern NSString *LoggedInNotification;
+extern NSString *LoggedInChangedNotification;
 
 @interface VObjectManager (Login)
 

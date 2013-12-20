@@ -63,7 +63,7 @@
     
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(userLoggedIn:)
-                                                 name:LoggedInNotification
+                                                 name:LoggedInChangedNotification
                                                object:nil];
 }
 
