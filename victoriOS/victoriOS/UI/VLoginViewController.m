@@ -49,6 +49,7 @@ NSString*   const   kVLoginViewControllerDomain =   @"VLoginViewControllerDomain
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
 	self.usernameTextField.delegate  =   self;
     self.passwordTextField.delegate  =   self;
 }
@@ -291,7 +292,7 @@ NSString*   const   kVLoginViewControllerDomain =   @"VLoginViewControllerDomain
     if ([textField isEqual:self.usernameTextField])
         [self.passwordTextField becomeFirstResponder];
     else
-        [self.passwordTextField resignFirstResponder];
+        [self login:self];
     
     return NO;
 }
