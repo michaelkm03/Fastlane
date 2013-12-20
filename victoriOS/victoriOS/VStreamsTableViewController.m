@@ -155,7 +155,7 @@ static NSString* kSearchCache = @"SearchCache";
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return 240;
+    return 320;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -164,7 +164,7 @@ static NSString* kSearchCache = @"SearchCache";
 
     
     VStreamViewCell *cell;
-    if ([sequence.category isEqualToString:@"video_forum"])
+    if (YES || [sequence.category isEqualToString:@"video_forum"])
         cell = [tableView dequeueReusableCellWithIdentifier:kStreamVideoCellIdentifier
                                                forIndexPath:indexPath];
     
