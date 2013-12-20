@@ -391,7 +391,7 @@
 			children = (
 				3F9100F9185A4B160005317C /* Root */,
 				3F9100F8185A4B020005317C /* Streams */,
-				BEE7F9541863947C00F2031A /* Subview */,
+				BEE7F9541863947C00F2031A /* Streams Subview */,
 				3F9100F4185A4AB40005317C /* Login */,
 				3F9100F7185A4AEF0005317C /* Forums */,
 				3F9100F5185A4AC40005317C /* Inbox */,
@@ -612,7 +612,7 @@
 			name = Fetchers;
 			sourceTree = "<group>";
 		};
-		BEE7F9541863947C00F2031A /* Subview */ = {
+		BEE7F9541863947C00F2031A /* Streams Subview */ = {
 			isa = PBXGroup;
 			children = (
 				83088F8818602AFD00B0808A /* VCommentViewCell.h */,
@@ -623,7 +623,7 @@
 				BEE7F9411862822500F2031A /* VSequencePlayerViewController.m */,
 				BEE7F9521862D72200F2031A /* VSequencePlayerViewController.xib */,
 			);
-			name = Subview;
+			name = "Streams Subview";
 			sourceTree = "<group>";
 		};
 		BEE7F955186394A200F2031A /* StreamCells */ = {
