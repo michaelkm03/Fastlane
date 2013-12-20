@@ -91,6 +91,18 @@
     textField.inputAccessoryView = nil;
 }
 
+- (BOOL)textFieldShouldReturn:(UITextField *)textField
+{
+    if ([textField isEqual:self.usernameTextField])
+        [self.emailTextField becomeFirstResponder];
+    else if ([textField isEqual:self.emailTextField])
+        [self.passwordTextField becomeFirstResponder];
+    else
+        [self signup:self];
+    
+    return NO;
+}
+
 #pragma mark -
 
 - (IBAction)signup:(id)sender
