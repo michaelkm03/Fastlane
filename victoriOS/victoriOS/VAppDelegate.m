@@ -25,7 +25,10 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     [application setMinimumBackgroundFetchInterval:UIApplicationBackgroundFetchIntervalMinimum];
-    
+    application.statusBarStyle  =   UIStatusBarStyleLightContent;
+
+    self.window.tintColor   =   [[VThemeManager sharedThemeManager] themedColorForKey:@"applicationTintColor"];
+
 //    [application registerForRemoteNotificationTypes:(UIRemoteNotificationTypeBadge | UIRemoteNotificationTypeSound)];
     
 //    UILocalNotification *localNotif = [launchOptions objectForKey:UIApplicationLaunchOptionsLocalNotificationKey];
@@ -43,7 +46,6 @@
     
     [[AFNetworkActivityIndicatorManager sharedManager] setEnabled:YES];
     
-    self.window.tintColor   =   [[VThemeManager sharedThemeManager] themedColorForKey:@"applicationTintColor"];
 
     NSURL*  openURL =   launchOptions[UIApplicationLaunchOptionsURLKey];
     if (openURL)
