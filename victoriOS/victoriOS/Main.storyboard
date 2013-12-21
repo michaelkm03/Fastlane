@@ -684,7 +684,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="Ask a question..." borderStyle="roundedRect" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="vRK-FA-86j">
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Ask a question..." minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="vRK-FA-86j">
                                 <rect key="frame" x="20" y="92" width="280" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
@@ -693,7 +693,7 @@
                                     <outlet property="delegate" destination="fhC-h7-Ivs" id="8hj-4O-jFO"/>
                                 </connections>
                             </textField>
-                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="Vote" borderStyle="roundedRect" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="M2Q-mq-Xyu">
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Vote" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="M2Q-mq-Xyu">
                                 <rect key="frame" x="20" y="143" width="97" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
@@ -702,7 +702,7 @@
                                     <outlet property="delegate" destination="fhC-h7-Ivs" id="iyf-hA-z8U"/>
                                 </connections>
                             </textField>
-                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="Vote" borderStyle="roundedRect" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="g8J-FY-XtN">
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Vote" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="g8J-FY-XtN">
                                 <rect key="frame" x="203" y="143" width="97" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
@@ -737,11 +737,14 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Yvx-MG-Wk1">
-                                <rect key="frame" x="20" y="518" width="280" height="30"/>
+                                <rect key="frame" x="20" y="429" width="280" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" title="Create Poll">
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
+                                <connections>
+                                    <action selector="createPoll" destination="fhC-h7-Ivs" eventType="touchUpInside" id="0LW-P6-m1o"/>
+                                </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="E8l-4M-eZN">
                                 <rect key="frame" x="62" y="337" width="44" height="30"/>
@@ -767,9 +770,9 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
                     <navigationItem key="navigationItem" title="Create Poll" id="oTj-9c-jse">
-                        <barButtonItem key="leftBarButtonItem" title="Cancel" id="KFV-En-nYg">
+                        <barButtonItem key="leftBarButtonItem" image="btn_menu" id="KFV-En-nYg">
                             <connections>
-                                <action selector="cancel:" destination="fhC-h7-Ivs" id="Ewu-xo-PZq"/>
+                                <action selector="showMenu" destination="fhC-h7-Ivs" id="6J9-4R-hKf"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
@@ -1048,6 +1051,7 @@
         <image name="UpVote" width="30" height="30"/>
         <image name="btn_menu" width="27" height="27"/>
         <image name="facebook" width="256" height="256"/>
+        <image name="loginBackgroundIPhonePortrait.jpg" width="320" height="460"/>
     </resources>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
         <simulatedStatusBarMetrics key="statusBar"/>

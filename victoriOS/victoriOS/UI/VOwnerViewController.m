@@ -45,15 +45,19 @@
     self.questionTextField.delegate = self;
     self.leftVoteTextField.delegate = self;
     self.rightVoteTextField.delegate = self;
+    
+    // Change 'Return' to 'Next' in the text fields
+    [self.questionTextField setReturnKeyType:UIReturnKeyNext];
+    [self.leftVoteTextField setReturnKeyType:UIReturnKeyNext];
+    // Last text field should have 'Done', or 'Next'?
+    [self.rightVoteTextField setReturnKeyType:UIReturnKeyNext];
+    
 }
 
 - (void)viewWillAppear:(BOOL)animated
 {
     // make the keyboard appear when the application launches
     [super viewWillAppear:animated];
-    
-    // start editing the UITextView
-    [self.questionTextField becomeFirstResponder];
 }
 
 - (void)didReceiveMemoryWarning
@@ -76,7 +80,21 @@
 
 -(BOOL)textFieldShouldReturn:(UITextField *)textField
 {
-    [textField resignFirstResponder];
+    if (textField == self.questionTextField)
+    {
+        [textField resignFirstResponder];
+        [self.leftVoteTextField becomeFirstResponder];
+    }
+    else if (textField == self.leftVoteTextField)
+    {
+        [textField resignFirstResponder];
+        [self.rightVoteTextField becomeFirstResponder];
+    }
+    else if (textField == self.rightVoteTextField)
+    {
+        [textField resignFirstResponder];
+        NSLog(@"SEND DATA TO SERVER HERE, OR ADD A PREVIEW");
+    }
     return YES;
 }
 
@@ -110,15 +128,36 @@
     }
 }
 
-// OVERRIDE CANCEL
-- (IBAction)cancel:(id)sender
+- (void)clearAll
 {
-    // RETURN TO STREAMS FOR NOW
-    UINavigationController *navigationController = (UINavigationController *)self.frostedViewController.contentViewController;
-    VStreamsTableViewController*    streamsViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"streams"];
-    navigationController.viewControllers = @[streamsViewController];
+    // Hacky - delete twice to remove any pictures
+    [self deleteLeft];
+    [self deleteLeft];
+    // Set text fields to null and placeholder text to original
+    self.questionTextField.text = nil;
+    self.leftVoteTextField.text = nil;
+    self.rightVoteTextField.text = nil;
+    
+    self.questionTextField.placeholder = @"Ask a question...";
+    self.leftVoteTextField.placeholder = @"Vote";
+    self.rightVoteTextField.placeholder = @"Vote";
 }
 
+- (IBAction)showMenu
+{
+    [self.view endEditing:YES];
+    [self.frostedViewController presentMenuViewController];
+}
+
+- (IBAction)createPoll
+{
+//    NSString* question = self.questionTextField.text;
+//    NSString* leftVote = self.leftVoteTextField.text;
+//    NSString* rightVote = self.rightVoteTextField.text;
+    [self clearAll];
+}
+
+// Deletes the left image
 - (IBAction)deleteLeft
 {
     self.leftMediaData = self.rightMediaData;
@@ -130,6 +169,7 @@
     self.rightImage.image = nil;
 }
 
+// Deletes the right image
 - (IBAction)deleteRight
 {
     self.rightMediaData = nil;
@@ -137,5 +177,12 @@
     self.rightImage.image = nil;
 }
 
+- (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
+    for (UIView * view in self.view.subviews){
+        if ([view isKindOfClass:[UITextField class]] && [view isFirstResponder]) {
+            [view resignFirstResponder];
+        }
+    }
+}
 
 @end
