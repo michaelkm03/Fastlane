@@ -401,6 +401,7 @@
 				3FAFD1B2185FD2D600AAF106 /* VThemeManager.m */,
 				3FAFD1B6185FD6AE00AAF106 /* defaultTheme.plist */,
 				5F8AAA5D184D43C600301783 /* Main.storyboard */,
+				BE4E75361846BDE100344677 /* Managers */,
 			);
 			name = UI;
 			sourceTree = "<group>";
@@ -478,7 +479,6 @@
 			isa = PBXGroup;
 			children = (
 				5F8AAA5A184D439000301783 /* UI */,
-				BE4E75361846BDE100344677 /* Managers */,
 				BE4E74C21846953F00344677 /* Categories */,
 				BEBDC4771857B2C50013DEF1 /* Models */,
 				BEA4F2391843F097001F5B15 /* VAppDelegate.h */,
