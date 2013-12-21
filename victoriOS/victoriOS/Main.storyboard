@@ -1051,7 +1051,6 @@
         <image name="UpVote" width="30" height="30"/>
         <image name="btn_menu" width="27" height="27"/>
         <image name="facebook" width="256" height="256"/>
-        <image name="loginBackgroundIPhonePortrait.jpg" width="320" height="460"/>
     </resources>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
         <simulatedStatusBarMetrics key="statusBar"/>

@@ -29,6 +29,8 @@
 
 @implementation VOwnerViewController
 
+#warning With a Storyboard initWithCoder is used, not initWithNibName. May not even be needed
+
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
@@ -46,6 +48,7 @@
     self.leftVoteTextField.delegate = self;
     self.rightVoteTextField.delegate = self;
     
+#warning These can be set in IB, and yes, the last one should not be next, either default or Done
     // Change 'Return' to 'Next' in the text fields
     [self.questionTextField setReturnKeyType:UIReturnKeyNext];
     [self.leftVoteTextField setReturnKeyType:UIReturnKeyNext];
@@ -70,6 +73,8 @@
 
 - (BOOL)textFieldShouldBeginEditing:(UITextField *)textField
 {
+#warning This is where you could make sure the textfield is scrolled above the keyboard
+#warning This might also be where we attach an accessory view to the keyboard (if needed)
     return YES;
 }
 
@@ -80,6 +85,7 @@
 
 -(BOOL)textFieldShouldReturn:(UITextField *)textField
 {
+#warning No need to resign first responder when you call becomeFirstResponder on another field
     if (textField == self.questionTextField)
     {
         [textField resignFirstResponder];
@@ -177,7 +183,10 @@
     self.rightImage.image = nil;
 }
 
-- (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
+- (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
+{
+#warning "[self.view endEditing:YES];" is sufficient to use here instead
+    
     for (UIView * view in self.view.subviews){
         if ([view isKindOfClass:[UITextField class]] && [view isFirstResponder]) {
             [view resignFirstResponder];
