@@ -9,6 +9,8 @@
 #import <UIKit/UIKit.h>
 #import "VStreamViewCell.h"
 
+@import MediaPlayer;
+
 static NSString *kStreamVideoCellIdentifier = @"StreamVideoCell";
 
 @interface VStreamVideoCell : VStreamViewCell

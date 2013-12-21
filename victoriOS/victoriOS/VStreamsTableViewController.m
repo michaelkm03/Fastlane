@@ -425,10 +425,12 @@ static NSString* kSearchCache = @"SearchCache";
     [self updatePredicateForFetchedResultsController:_fetchedResultsController];
 }
 
-#pragma mark - Segues
+#pragma mark - Navigation
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
+    //Cells need to stop playing video for EVERY segue.
+    
     if ([segue.identifier isEqualToString:@"toStreamDetails"])
     {
         VStreamsSubViewController *subview = (VStreamsSubViewController *)segue.destinationViewController;
@@ -441,4 +443,10 @@ static NSString* kSearchCache = @"SearchCache";
     }
 }
 
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [[NSNotificationCenter defaultCenter] postNotificationName:kStreamsWillSegueNotification
+                                                        object:nil];
+    [super viewWillDisappear:animated];
+}
 @end

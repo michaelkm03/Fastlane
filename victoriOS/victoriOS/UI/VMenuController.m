@@ -21,6 +21,11 @@
 
 @implementation VMenuController
 
+- (void)dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -58,7 +63,7 @@
     
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(userLoggedIn:)
-                                                 name:LoggedInNotification
+                                                 name:LoggedInChangedNotification
                                                object:nil];
 }
 
