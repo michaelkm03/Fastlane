@@ -64,6 +64,7 @@ NSString*   const   kVLoginViewControllerDomain =   @"VLoginViewControllerDomain
     {
         UIAlertView*    alert   =   [[UIAlertView alloc] initWithTitle:@"Invalid E-mail or password" message:@"You must enter an email and password." delegate:self cancelButtonTitle:@"Understood" otherButtonTitles:nil];
         [alert show];
+        [[self view] endEditing:YES];
         return NO;
     }
     
