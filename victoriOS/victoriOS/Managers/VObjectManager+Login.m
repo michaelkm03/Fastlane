@@ -12,7 +12,7 @@
 
 @implementation VObjectManager (Login)
 
-NSString *LoggedInNotification = @"LoggedInNotification";
+NSString *LoggedInChangedNotification = @"LoggedInChangedNotification";
 
 #pragma mark - Facebook
 
@@ -128,6 +128,7 @@ NSString *LoggedInNotification = @"LoggedInNotification";
     SuccessBlock success = ^(NSArray* objects){
         NSManagedObjectContext* context = self.managedObjectStore.persistentStoreManagedObjectContext;
         [context deleteObject:[self mainUser]];
+        [[NSNotificationCenter defaultCenter] postNotificationName:LoggedInChangedNotification object:nil];
     };
     
     return [self GET:@"/api/logout"

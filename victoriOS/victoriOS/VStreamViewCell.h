@@ -11,6 +11,8 @@
 
 static NSString *kStreamViewCellIdentifier = @"StreamViewCell";
 
+extern NSString *kStreamsWillSegueNotification;
+
 @interface VStreamViewCell : UITableViewCell
 
 @property (weak, nonatomic) IBOutlet UILabel *dateLabel;

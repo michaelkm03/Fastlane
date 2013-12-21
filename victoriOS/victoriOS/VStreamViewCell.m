@@ -10,6 +10,8 @@
 #import "VSequence.h"
 #import "VObjectManager+Sequence.h"
 
+NSString* kStreamsWillSegueNotification = @"kStreamsWillSegueNotification";
+
 @implementation VStreamViewCell
 
 - (void)setSequence:(VSequence *)sequence

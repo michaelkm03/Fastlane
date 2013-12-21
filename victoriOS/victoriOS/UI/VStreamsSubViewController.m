@@ -478,7 +478,7 @@ static NSString* CommentCache = @"CommentCache";
 }
 
 - (void)viewWillDisappear:(BOOL)animated
-{
+{    
     //Whenever we leave this view we need to tell the server what was read.
     if ([VObjectManager sharedManager].isAuthorized)
     {
@@ -496,7 +496,6 @@ static NSString* CommentCache = @"CommentCache";
 
 - (BOOL)shouldPerformSegueWithIdentifier:(NSString *)identifier sender:(id)sender
 {
-    
     if ([identifier isEqualToString:@"toComposeMessage"] && ![VObjectManager sharedManager].isAuthorized)
     {
         [self presentViewController:[VLoginViewController sharedLoginViewController] animated:YES completion:NULL];

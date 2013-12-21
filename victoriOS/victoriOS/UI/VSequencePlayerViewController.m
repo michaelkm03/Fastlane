@@ -159,4 +159,12 @@
 {
     //TODO: poll logic
 }
+
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [_webView loadHTMLString:nil baseURL:nil];
+    [_mpController stop];
+    [super viewWillDisappear:animated];
+}
+
 @end
