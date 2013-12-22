@@ -13,7 +13,7 @@
 #import "NSString+VParseHelp.h"
 #import "UIImageView+AFNetworking.h"
 #import "VObjectManager+Sequence.h"
-#import "VFeaturedPageControllerViewController.h"
+#import "VFeaturedStreamsViewController.h"
 
 #import "VStreamViewCell.h"
 #import "VStreamVideoCell.h"
@@ -33,7 +33,7 @@ typedef NS_ENUM(NSInteger, VStreamScope)
 @property (nonatomic, strong) NSFetchedResultsController* searchFetchedResultsController;
 @property (nonatomic) VStreamScope scopeType;
 @property (strong, nonatomic) NSString* filterText;
-@property (nonatomic, strong) UIPageViewController* pageController;
+@property (nonatomic, strong) VFeaturedStreamsViewController* featuredStreamsViewController;
 @end
 
 static NSString* kStreamCache = @"StreamCache";
@@ -56,7 +56,7 @@ static NSString* kSearchCache = @"SearchCache";
 {
     [super viewDidLoad];
 
-    self.pageController =   [self.storyboard instantiateViewControllerWithIdentifier:@"featured_pages"];
+    self.featuredStreamsViewController =   [self.storyboard instantiateViewControllerWithIdentifier:@"featured_pages"];
     
     [self.tableView registerNib:[UINib nibWithNibName:@"VStreamViewCell" bundle:[NSBundle mainBundle]]
          forCellReuseIdentifier:kStreamViewCellIdentifier];
@@ -198,11 +198,12 @@ static NSString* kSearchCache = @"SearchCache";
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
-    UIView*     containerView   =   [[UIView alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.view.bounds), [self tableView:tableView heightForHeaderInSection:section])];
-    [self addChildViewController:self.pageController];
-    [containerView addSubview:self.pageController.view];
-    [self.pageController didMoveToParentViewController:self];
-    
+    CGRect frame = CGRectMake(0, 0, CGRectGetWidth(self.view.bounds), [self tableView:tableView heightForHeaderInSection:section]);
+    UIView* containerView = [[UIView alloc] initWithFrame:frame];
+    [self addChildViewController:self.featuredStreamsViewController];
+    [containerView addSubview:self.featuredStreamsViewController.view];
+    [self.featuredStreamsViewController didMoveToParentViewController:self];
+    self.featuredStreamsViewController.view.frame = frame;
     return containerView;
 }
 
@@ -317,7 +318,7 @@ static NSString* kSearchCache = @"SearchCache";
 {
     
     NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
-    NSEntityDescription *entity = [NSEntityDescription entityForName:@"Sequence" inManagedObjectContext:context];
+    NSEntityDescription *entity = [NSEntityDescription entityForName:[VSequence entityName] inManagedObjectContext:context];
     [fetchRequest setEntity:entity];
     
     NSSortDescriptor *sort = [[NSSortDescriptor alloc] initWithKey:@"display_order" ascending:YES];
@@ -449,4 +450,5 @@ static NSString* kSearchCache = @"SearchCache";
                                                         object:nil];
     [super viewWillDisappear:animated];
 }
+
 @end

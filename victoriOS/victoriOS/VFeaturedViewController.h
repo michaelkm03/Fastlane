@@ -2,13 +2,12 @@
 //  VFeaturedViewController.h
 //  victoriOS
 //
-//  Created by David Keegan on 12/17/13.
+//  Created by David Keegan on 12/19/13.
 //  Copyright (c) 2013 Victorious, Inc. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
+@class VSequence;
 
 @interface VFeaturedViewController : UIViewController
-@property (weak, nonatomic) IBOutlet UIImageView *imageView;
-
+@property (strong, nonatomic) VSequence *sequence;
 @end
