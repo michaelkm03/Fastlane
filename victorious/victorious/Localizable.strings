@@ -1,0 +1,15 @@
+/* 
+  Localizable.strings
+  victorious
+
+  Created by Gary Philipp on 12/23/13.
+  Copyright (c) 2013 Will Long. All rights reserved.
+*/
+
+"OKButton"              =   "OK";
+"EmailValidation"       =   "Invalid Email Address";
+"PasswordValidation"    =   "Password is less than 8 characters";
+"UsernameValidation"    =   "User name is less than 8 characters";
+"InvalidCredentials"    =   "Invalid Credentials";
+"LoginFail"             =   "Login Failed";
+"SignupFail"            =   "Account Creation Failed";
