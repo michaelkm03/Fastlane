@@ -28,6 +28,8 @@
     application.statusBarStyle  =   UIStatusBarStyleLightContent;
 
     self.window.tintColor   =   [[VThemeManager sharedThemeManager] themedColorForKey:@"applicationTintColor"];
+    
+
 
 //    [application registerForRemoteNotificationTypes:(UIRemoteNotificationTypeBadge | UIRemoteNotificationTypeSound)];
     
