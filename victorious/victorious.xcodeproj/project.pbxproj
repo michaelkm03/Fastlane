@@ -52,7 +52,6 @@
 		BE171E271868C211004E5202 /* VAsset.m in Sources */ = {isa = PBXBuildFile; fileRef = BE171DEF1868C211004E5202 /* VAsset.m */; };
 		BE171E281868C211004E5202 /* VCategory.m in Sources */ = {isa = PBXBuildFile; fileRef = BE171DF11868C211004E5202 /* VCategory.m */; };
 		BE171E291868C211004E5202 /* VComment.m in Sources */ = {isa = PBXBuildFile; fileRef = BE171DF31868C211004E5202 /* VComment.m */; };
-		BE171E2A1868C211004E5202 /* victorious.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = BE171DF41868C211004E5202 /* victorious.xcdatamodeld */; };
 		BE171E2B1868C211004E5202 /* VInteraction.m in Sources */ = {isa = PBXBuildFile; fileRef = BE171DF71868C211004E5202 /* VInteraction.m */; };
 		BE171E2C1868C211004E5202 /* VInteractionAction.m in Sources */ = {isa = PBXBuildFile; fileRef = BE171DF91868C211004E5202 /* VInteractionAction.m */; };
 		BE171E2D1868C211004E5202 /* VNode.m in Sources */ = {isa = PBXBuildFile; fileRef = BE171DFB1868C211004E5202 /* VNode.m */; };
@@ -65,6 +64,7 @@
 		BE171E341868C211004E5202 /* VUser.m in Sources */ = {isa = PBXBuildFile; fileRef = BE171E091868C211004E5202 /* VUser.m */; };
 		BE171E391868C266004E5202 /* NSManagedObject+EasyFetching.m in Sources */ = {isa = PBXBuildFile; fileRef = BE171E361868C265004E5202 /* NSManagedObject+EasyFetching.m */; };
 		BE171E3A1868C266004E5202 /* NSString+VParseHelp.m in Sources */ = {isa = PBXBuildFile; fileRef = BE171E381868C266004E5202 /* NSString+VParseHelp.m */; };
+		BE171E431868CEA0004E5202 /* victoriOS.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = BE171E411868CEA0004E5202 /* victoriOS.xcdatamodeld */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -158,7 +158,6 @@
 		BE171DF11868C211004E5202 /* VCategory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VCategory.m; sourceTree = "<group>"; };
 		BE171DF21868C211004E5202 /* VComment.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VComment.h; sourceTree = "<group>"; };
 		BE171DF31868C211004E5202 /* VComment.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VComment.m; sourceTree = "<group>"; };
-		BE171DF51868C211004E5202 /* victorious.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = victorious.xcdatamodel; sourceTree = "<group>"; };
 		BE171DF61868C211004E5202 /* VInteraction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VInteraction.h; sourceTree = "<group>"; };
 		BE171DF71868C211004E5202 /* VInteraction.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VInteraction.m; sourceTree = "<group>"; };
 		BE171DF81868C211004E5202 /* VInteractionAction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VInteractionAction.h; sourceTree = "<group>"; };
@@ -183,6 +182,8 @@
 		BE171E361868C265004E5202 /* NSManagedObject+EasyFetching.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSManagedObject+EasyFetching.m"; sourceTree = "<group>"; };
 		BE171E371868C266004E5202 /* NSString+VParseHelp.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+VParseHelp.h"; sourceTree = "<group>"; };
 		BE171E381868C266004E5202 /* NSString+VParseHelp.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+VParseHelp.m"; sourceTree = "<group>"; };
+		BE171E421868CEA0004E5202 /* victoriOS.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = victoriOS.xcdatamodel; sourceTree = "<group>"; };
+		BE171E441868CEAA004E5202 /* victoriOS 2.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = file; path = "victoriOS 2.xcdatamodel"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -254,7 +255,6 @@
 				BE171D8A1868BE64004E5202 /* VAppDelegate.h */,
 				BE171D8B1868BE64004E5202 /* VAppDelegate.m */,
 				BE171D901868BE64004E5202 /* Images.xcassets */,
-				BE171DF41868C211004E5202 /* victorious.xcdatamodeld */,
 				BE171D821868BE64004E5202 /* Supporting Files */,
 			);
 			path = victorious;
@@ -377,6 +377,7 @@
 		BE171DE91868C211004E5202 /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				BE171E411868CEA0004E5202 /* victoriOS.xcdatamodeld */,
 				BE171DEA1868C211004E5202 /* VAnswer.h */,
 				BE171DEB1868C211004E5202 /* VAnswer.m */,
 				BE171DEC1868C211004E5202 /* VAnswerAction.h */,
@@ -563,7 +564,6 @@
 				BE171E291868C211004E5202 /* VComment.m in Sources */,
 				BE171E391868C266004E5202 /* NSManagedObject+EasyFetching.m in Sources */,
 				BE171E0D1868C211004E5202 /* VAnswer+RestKit.m in Sources */,
-				BE171E2A1868C211004E5202 /* victorious.xcdatamodeld in Sources */,
 				BE171E211868C211004E5202 /* VObjectManager+Sequence.m in Sources */,
 				BE171E261868C211004E5202 /* VAnswerAction.m in Sources */,
 				BE171D8C1868BE64004E5202 /* VAppDelegate.m in Sources */,
@@ -577,6 +577,7 @@
 				BE171E1F1868C211004E5202 /* VObjectManager+Comment.m in Sources */,
 				BE171E141868C211004E5202 /* VNode+RestKit.m in Sources */,
 				BE171E121868C211004E5202 /* VInteraction+RestKit.m in Sources */,
+				BE171E431868CEA0004E5202 /* victoriOS.xcdatamodeld in Sources */,
 				BE171E341868C211004E5202 /* VUser.m in Sources */,
 				BE171E1B1868C211004E5202 /* VUser+RestKit.m in Sources */,
 				BE171E301868C211004E5202 /* VSequence.m in Sources */,
@@ -803,14 +804,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCVersionGroup section */
-		BE171DF41868C211004E5202 /* victorious.xcdatamodeld */ = {
+		BE171E411868CEA0004E5202 /* victoriOS.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
-				BE171DF51868C211004E5202 /* victorious.xcdatamodel */,
+				BE171E441868CEAA004E5202 /* victoriOS 2.xcdatamodel */,
+				BE171E421868CEA0004E5202 /* victoriOS.xcdatamodel */,
 			);
-			currentVersion = BE171DF51868C211004E5202 /* victorious.xcdatamodel */;
-			name = victorious.xcdatamodeld;
-			path = Models/victorious.xcdatamodeld;
+			currentVersion = BE171E421868CEA0004E5202 /* victoriOS.xcdatamodel */;
+			path = victoriOS.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;
 		};

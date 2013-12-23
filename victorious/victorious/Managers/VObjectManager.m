@@ -39,7 +39,7 @@
     userAgent = [NSString stringWithFormat:@"%@ aid:%@", userAgent, @"1"];
     [[manager HTTPClient] setDefaultHeader:@"User-Agent" value:userAgent];
 
-    NSURL *modelURL = [[NSBundle mainBundle] URLForResource:@"victorious" withExtension:@"momd"];
+    NSURL *modelURL = [[NSBundle mainBundle] URLForResource:@"victoriOS" withExtension:@"momd"];
     NSManagedObjectModel *managedObjectModel = [[NSManagedObjectModel alloc] initWithContentsOfURL:modelURL];
     RKManagedObjectStore *managedObjectStore = [[RKManagedObjectStore alloc] initWithManagedObjectModel:managedObjectModel];
 
