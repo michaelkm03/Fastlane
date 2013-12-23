@@ -10,4 +10,21 @@
 
 @implementation VStreamPollCell
 
+- (void)setSequence:(VSequence *)sequence
+{
+    [super setSequence:sequence];
+
+    
+}
+
+- (IBAction)pressedOptionOne:(id)sender
+{
+    
+}
+
+- (IBAction)pressedOptionTwo:(id)sender
+{
+    
+}
+
 @end

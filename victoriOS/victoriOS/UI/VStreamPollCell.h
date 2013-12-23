@@ -10,7 +10,16 @@
 #import "VStreamViewCell.h"
 
 static NSString *kStreamPollCellIdentifier = @"StreamPollCell";
+static NSString *kStreamDoublePollCellIdentifier = @"StreamDoublePollCell";
 
 @interface VStreamPollCell : VStreamViewCell
+
+@property (weak, nonatomic) IBOutlet UILabel* optionOneLabel;
+@property (weak, nonatomic) IBOutlet UILabel* optionTwoLabel;
+
+@property (weak, nonatomic) IBOutlet UIImageView* previewImageTwo;
+
+- (IBAction)pressedOptionOne:(id)sender;
+- (IBAction)pressedOptionTwo:(id)sender;
 
 @end

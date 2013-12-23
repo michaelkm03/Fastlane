@@ -70,6 +70,10 @@ static NSString* kSearchCache = @"SearchCache";
          forCellReuseIdentifier:kStreamPollCellIdentifier];
     [self.searchDisplayController.searchResultsTableView registerNib:[UINib nibWithNibName:@"VStreamPollCell" bundle:[NSBundle mainBundle]] forCellReuseIdentifier:kStreamPollCellIdentifier];
     
+    [self.tableView registerNib:[UINib nibWithNibName:@"VStreamDoublePollCell" bundle:[NSBundle mainBundle]]
+         forCellReuseIdentifier:kStreamDoublePollCellIdentifier];
+    [self.searchDisplayController.searchResultsTableView registerNib:[UINib nibWithNibName:@"VStreamDoublePollCell" bundle:[NSBundle mainBundle]] forCellReuseIdentifier:kStreamDoublePollCellIdentifier];
+    
     NSError *error;
 	if (![self.fetchedResultsController performFetch:&error])
     {

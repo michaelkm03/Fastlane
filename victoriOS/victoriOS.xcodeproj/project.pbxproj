@@ -47,6 +47,7 @@
 		83A41918185803A400CBC150 /* VObjectManager+Sequence.m in Sources */ = {isa = PBXBuildFile; fileRef = 83A41917185803A400CBC150 /* VObjectManager+Sequence.m */; };
 		83AC203718642D43008DC47F /* VFeaturedStreamsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 83AC203618642D43008DC47F /* VFeaturedStreamsViewController.m */; };
 		83AC203A18642FE2008DC47F /* VFeaturedViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 83AC203918642FE2008DC47F /* VFeaturedViewController.m */; };
+		BE171E461868F5A4004E5202 /* VStreamDoublePollCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = BE171E451868F5A4004E5202 /* VStreamDoublePollCell.xib */; };
 		BE2BA7CF1852593700CA71AC /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = BE2BA7CE1852593700CA71AC /* libPods.a */; };
 		BE4E7554184955BE00344677 /* VObjectManager.m in Sources */ = {isa = PBXBuildFile; fileRef = BE4E7553184955BE00344677 /* VObjectManager.m */; };
 		BE5AC2BB184D298900121126 /* NSManagedObject+EasyFetching.m in Sources */ = {isa = PBXBuildFile; fileRef = BE5AC2AB184D298900121126 /* NSManagedObject+EasyFetching.m */; };
@@ -188,6 +189,7 @@
 		83AC203818642FE2008DC47F /* VFeaturedViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VFeaturedViewController.h; sourceTree = "<group>"; };
 		83AC203918642FE2008DC47F /* VFeaturedViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VFeaturedViewController.m; sourceTree = "<group>"; };
 		B15D4A5304A04D16AD420BCD /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		BE171E451868F5A4004E5202 /* VStreamDoublePollCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = VStreamDoublePollCell.xib; path = UI/VStreamDoublePollCell.xib; sourceTree = "<group>"; };
 		BE20A10218524D6A003D0E8C /* libPods-RestKit.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libPods-RestKit.a"; path = "Pods/build/TestFlight-iphoneos/libPods-RestKit.a"; sourceTree = "<group>"; };
 		BE2BA7CE1852593700CA71AC /* libPods.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libPods.a; path = "Pods/build/TestFlight-iphoneos/libPods.a"; sourceTree = "<group>"; };
 		BE4E7552184955BE00344677 /* VObjectManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VObjectManager.h; path = Managers/VObjectManager.h; sourceTree = "<group>"; };
@@ -638,6 +640,7 @@
 				BEE7F95C1863A73800F2031A /* VStreamPollCell.h */,
 				BEE7F95D1863A73800F2031A /* VStreamPollCell.m */,
 				BEE7F9651863BC3F00F2031A /* VStreamPollCell.xib */,
+				BE171E451868F5A4004E5202 /* VStreamDoublePollCell.xib */,
 			);
 			name = StreamCells;
 			sourceTree = "<group>";
@@ -730,6 +733,7 @@
 			files = (
 				3FAFD1B7185FD6AE00AAF106 /* defaultTheme.plist in Resources */,
 				BEE7F9531862D72200F2031A /* VSequencePlayerViewController.xib in Resources */,
+				BE171E461868F5A4004E5202 /* VStreamDoublePollCell.xib in Resources */,
 				BEE7F9601863B33C00F2031A /* VStreamViewCell.xib in Resources */,
 				5F8AAA5E184D43C600301783 /* Main.storyboard in Resources */,
 				BEA4F2351843F097001F5B15 /* InfoPlist.strings in Resources */,
