@@ -67,9 +67,12 @@ NSString*   const   kVThemeManagerThemeDidChange    =   @"VThemeManagerThemeDidC
     return color;
 }
 
-- (UIImage *)themedImageForKey:(NSString *)key
+- (NSURL *)themedImageURLForKey:(NSString *)key
 {
-    return [UIImage imageNamed:[self themedValueForKey:key]];
+    NSURL*  url =   [NSURL URLWithString:[self themedValueForKey:key]];
+    if (nil == url)
+        url     =   [[NSBundle mainBundle] URLForResource:key withExtension:@"png"];
+    return url;
 }
 
 - (UIFont *)themedFontForKey:(NSString *)key
