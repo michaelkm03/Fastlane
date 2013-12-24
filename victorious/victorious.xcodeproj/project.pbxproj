@@ -14,6 +14,8 @@
 		3FF8B7A11868F36600806EA0 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 3FF8B7A01868F36600806EA0 /* Localizable.strings */; };
 		3FF8B7A51868FC1C00806EA0 /* defaultTheme.plist in Resources */ = {isa = PBXBuildFile; fileRef = 3FF8B7A41868FC1C00806EA0 /* defaultTheme.plist */; };
 		5D2BB9E4E1434C7B91B6C084 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 662F0867152745B2B2F08301 /* libPods.a */; };
+		8364C70B1869500D0028C1ED /* VMenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8364C70A1869500D0028C1ED /* VMenuViewController.m */; };
+		8364C70F1869557E0028C1ED /* VMenuViewControllerTransition.m in Sources */ = {isa = PBXBuildFile; fileRef = 8364C70E1869557E0028C1ED /* VMenuViewControllerTransition.m */; };
 		BE171D7A1868BE64004E5202 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BE171D791868BE64004E5202 /* Foundation.framework */; };
 		BE171D7C1868BE64004E5202 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BE171D7B1868BE64004E5202 /* CoreGraphics.framework */; };
 		BE171D7E1868BE64004E5202 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BE171D7D1868BE64004E5202 /* UIKit.framework */; };
@@ -95,6 +97,10 @@
 		3FF8B7A01868F36600806EA0 /* Localizable.strings */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; path = Localizable.strings; sourceTree = "<group>"; };
 		3FF8B7A41868FC1C00806EA0 /* defaultTheme.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = defaultTheme.plist; sourceTree = "<group>"; };
 		662F0867152745B2B2F08301 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		8364C7091869500D0028C1ED /* VMenuViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VMenuViewController.h; path = UI/VMenuViewController.h; sourceTree = "<group>"; };
+		8364C70A1869500D0028C1ED /* VMenuViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VMenuViewController.m; path = UI/VMenuViewController.m; sourceTree = "<group>"; };
+		8364C70D1869557E0028C1ED /* VMenuViewControllerTransition.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VMenuViewControllerTransition.h; path = UI/VMenuViewControllerTransition.h; sourceTree = "<group>"; };
+		8364C70E1869557E0028C1ED /* VMenuViewControllerTransition.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VMenuViewControllerTransition.m; path = UI/VMenuViewControllerTransition.m; sourceTree = "<group>"; };
 		BE171D761868BE64004E5202 /* victorious.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = victorious.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		BE171D791868BE64004E5202 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		BE171D7B1868BE64004E5202 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -241,6 +247,7 @@
 			isa = PBXGroup;
 			children = (
 				3FF8B7971868EE7E00806EA0 /* Main.storyboard */,
+				8364C70818694FF00028C1ED /* Menu */,
 				3FF8B7991868EEE800806EA0 /* Login */,
 				3F4863F71869181500F77346 /* Messages */,
 			);
@@ -256,6 +263,17 @@
 				3FF8B79D1868EF6C00806EA0 /* VSignUpViewController.m */,
 			);
 			name = Login;
+			sourceTree = "<group>";
+		};
+		8364C70818694FF00028C1ED /* Menu */ = {
+			isa = PBXGroup;
+			children = (
+				8364C7091869500D0028C1ED /* VMenuViewController.h */,
+				8364C70A1869500D0028C1ED /* VMenuViewController.m */,
+				8364C70D1869557E0028C1ED /* VMenuViewControllerTransition.h */,
+				8364C70E1869557E0028C1ED /* VMenuViewControllerTransition.m */,
+			);
+			name = Menu;
 			sourceTree = "<group>";
 		};
 		BE171D6D1868BE64004E5202 = {
@@ -639,6 +657,7 @@
 				BE171E1F1868C211004E5202 /* VObjectManager+Comment.m in Sources */,
 				BE171E141868C211004E5202 /* VNode+RestKit.m in Sources */,
 				BE171E121868C211004E5202 /* VInteraction+RestKit.m in Sources */,
+				8364C70F1869557E0028C1ED /* VMenuViewControllerTransition.m in Sources */,
 				BE171E431868CEA0004E5202 /* victoriOS.xcdatamodeld in Sources */,
 				BE171E341868C211004E5202 /* VUser.m in Sources */,
 				BE171E1B1868C211004E5202 /* VUser+RestKit.m in Sources */,
@@ -647,6 +666,7 @@
 				BE171E2D1868C211004E5202 /* VNode.m in Sources */,
 				BE171E2B1868C211004E5202 /* VInteraction.m in Sources */,
 				BE171E3A1868C266004E5202 /* NSString+VParseHelp.m in Sources */,
+				8364C70B1869500D0028C1ED /* VMenuViewController.m in Sources */,
 				BE171E2C1868C211004E5202 /* VInteractionAction.m in Sources */,
 				BE171E111868C211004E5202 /* VComment+RestKit.m in Sources */,
 				BE171E0E1868C211004E5202 /* VAnswerAction+RestKit.m in Sources */,

@@ -8,6 +8,8 @@
 
 #import "VMessagesViewController.h"
 #import "VComment+RestKit.h"
+#import "VMenuViewController.h"
+#import "VMenuViewControllerTransition.h"
 
 NS_ENUM(NSUInteger, ModeSelect)
 {
@@ -249,6 +251,12 @@ static  NSString*   kNewsCell       =   @"newsCell";
 //        VSequence *sequence = [_fetchedResultsController objectAtIndexPath:[self.tableView indexPathForCell:cell]];
 //        
 //        subview.sequence = sequence;
+    }
+    else if ([segue.destinationViewController isKindOfClass:[VMenuViewController class]])
+    {
+        VMenuViewController *menuViewController = segue.destinationViewController;
+        menuViewController.transitioningDelegate = (id <UIViewControllerTransitioningDelegate>)[VMenuViewControllerTransitionDelegate new];
+        menuViewController.modalPresentationStyle = UIModalPresentationCustom;
     }
 }
 
