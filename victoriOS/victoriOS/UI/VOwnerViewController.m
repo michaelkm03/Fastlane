@@ -162,9 +162,9 @@
 //    NSString* question = self.questionTextField.text;
 //    NSString* leftVote = self.leftVoteTextField.text;
 //    NSString* rightVote = self.rightVoteTextField.text;
-    [[VObjectManager sharedManager] createPoll:nil
+    [[[VObjectManager sharedManager] createPoll:nil
                                    description:nil
-                                      category:@"answer1_media"
+                                      category:@"ugc_poll"
                                       question:_questionTextField.text
                                      answerOne:_leftVoteTextField.text
                                      answerTwo:_rightVoteTextField.text
@@ -172,7 +172,7 @@
                                 answerTwoMedia:_rightMediaData
                                      pollMedia:nil
                                   successBlock:nil
-                                     failBlock:nil];
+                                     failBlock:nil] start];
     [self clearAll];
 }
 

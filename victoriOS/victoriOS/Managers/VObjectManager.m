@@ -110,6 +110,8 @@
     
     [requestOperation setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult)
      {
+         VLog(@"Request %@ succeeded with objects: %@", path, mappingResult.array);
+         
          NSMutableArray* mappedObjects = [mappingResult.array mutableCopy];
          NSMutableArray* errors = [[NSMutableArray alloc] init];
          
@@ -141,6 +143,7 @@
          
      } failure:^(RKObjectRequestOperation *operation, NSError *error)
      {
+         VLog(@"Request %@ failed with error: %@", path, error);
          if(failBlock)
              failBlock(error);
      }];

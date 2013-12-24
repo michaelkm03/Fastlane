@@ -351,14 +351,26 @@
                                    successBlock:(SuccessBlock)success
                                       failBlock:(FailBlock)fail
 {
-    NSDictionary* params = @{@"name":name ,
-                             @"description":description,
-                             @"category":category,
-                             @"answer1_label":answerOne,
-                             @"answer2_label":answerTwo,
-                             @"answer1_media":answerOneMedia,
-                             @"answer2_media":answerTwoMedia,
-                             @"poll_media":pollMedia};
+    
+    NSMutableDictionary* params = [[NSMutableDictionary alloc] init];
+    if (name)
+        [params setObject:name forKey:@"name"];
+    if (description)
+        [params setObject:description forKey:@"description"];
+    if (category)
+        [params setObject:category forKey:@"category"];
+    if (question)
+        [params setObject:question forKey:@"question"];
+    if (answerOne)
+        [params setObject:answerOne forKey:@"answer1_label"];
+    if (answerTwo)
+        [params setObject:answerTwo forKey:@"answer2_label"];
+    if (answerOneMedia)
+        [params setObject:answerOneMedia forKey:@"answer1_media"];
+    if (answerTwoMedia)
+        [params setObject:answerTwoMedia forKey:@"answer2_label"];
+    if (pollMedia)
+        [params setObject:pollMedia forKey:@"poll_media"];
     
     return [self POST:@"api/poll/create"
                object:nil
