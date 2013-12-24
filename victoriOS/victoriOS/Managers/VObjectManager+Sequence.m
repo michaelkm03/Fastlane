@@ -337,4 +337,35 @@
     
 }
 
+#pragma mark - Polls
+
+- (RKManagedObjectRequestOperation *)createPoll:(NSString*)name
+                                    description:(NSString*)description
+                                       category:(NSString*)category
+                                       question:(NSString*)question
+                                      answerOne:(NSString*)answerOne
+                                      answerTwo:(NSString*)answerTwo
+                                 answerOneMedia:(NSData*)answerOneMedia
+                                 answerTwoMedia:(NSData*)answerTwoMedia
+                                      pollMedia:(NSData*)pollMedia
+                                   successBlock:(SuccessBlock)success
+                                      failBlock:(FailBlock)fail
+{
+    NSDictionary* params = @{@"name":name ,
+                             @"description":description,
+                             @"category":category,
+                             @"answer1_label":answerOne,
+                             @"answer2_label":answerTwo,
+                             @"answer1_media":answerOneMedia,
+                             @"answer2_media":answerTwoMedia,
+                             @"poll_media":pollMedia};
+    
+    return [self POST:@"api/poll/create"
+               object:nil
+           parameters:params
+         successBlock:success
+            failBlock:fail
+      paginationBlock:nil];
+}
+
 @end

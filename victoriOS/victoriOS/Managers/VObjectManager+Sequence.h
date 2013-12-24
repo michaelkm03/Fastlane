@@ -70,4 +70,17 @@
                                                       successBlock:(SuccessBlock)success
                                                          failBlock:(FailBlock)fail;
 
+#pragma mark - Poll
+
+- (RKManagedObjectRequestOperation *)createPoll:(NSString*)name
+                                    description:(NSString*)description
+                                       category:(NSString*)category
+                                       question:(NSString*)question
+                                      answerOne:(NSString*)answerOne
+                                      answerTwo:(NSString*)answerTwo
+                                 answerOneMedia:(NSData*)answerOneMedia
+                                 answerTwoMedia:(NSData*)answerTwoMedia
+                                      pollMedia:(NSData*)pollMedia
+                                   successBlock:(SuccessBlock)success
+                                      failBlock:(FailBlock)fail;
 @end

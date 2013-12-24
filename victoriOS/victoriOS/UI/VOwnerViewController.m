@@ -10,6 +10,8 @@
 
 #import "REFrostedViewController.h"
 #import "VStreamsTableViewController.h"
+#import "VObjectManager+Sequence.h"
+
 
 @interface VOwnerViewController ()
 
@@ -160,6 +162,17 @@
 //    NSString* question = self.questionTextField.text;
 //    NSString* leftVote = self.leftVoteTextField.text;
 //    NSString* rightVote = self.rightVoteTextField.text;
+    [[VObjectManager sharedManager] createPoll:nil
+                                   description:nil
+                                      category:@"answer1_media"
+                                      question:_questionTextField.text
+                                     answerOne:_leftVoteTextField.text
+                                     answerTwo:_rightVoteTextField.text
+                                answerOneMedia:_leftMediaData
+                                answerTwoMedia:_rightMediaData
+                                     pollMedia:nil
+                                  successBlock:nil
+                                     failBlock:nil];
     [self clearAll];
 }
 
