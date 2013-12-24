@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3F4863FA1869184000F77346 /* VMessagesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F4863F91869184000F77346 /* VMessagesViewController.m */; };
 		3FF8B7981868EE7E00806EA0 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3FF8B7971868EE7E00806EA0 /* Main.storyboard */; };
 		3FF8B79E1868EF6C00806EA0 /* VLoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3FF8B79B1868EF6C00806EA0 /* VLoginViewController.m */; };
 		3FF8B79F1868EF6C00806EA0 /* VSignUpViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3FF8B79D1868EF6C00806EA0 /* VSignUpViewController.m */; };
@@ -84,6 +85,8 @@
 
 /* Begin PBXFileReference section */
 		33ACD3CBAF2C419D97FB901A /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = "<group>"; };
+		3F4863F81869184000F77346 /* VMessagesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VMessagesViewController.h; path = UI/VMessagesViewController.h; sourceTree = "<group>"; };
+		3F4863F91869184000F77346 /* VMessagesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VMessagesViewController.m; path = UI/VMessagesViewController.m; sourceTree = "<group>"; };
 		3FF8B7971868EE7E00806EA0 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
 		3FF8B79A1868EF6C00806EA0 /* VLoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VLoginViewController.h; path = UI/Login/VLoginViewController.h; sourceTree = "<group>"; };
 		3FF8B79B1868EF6C00806EA0 /* VLoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VLoginViewController.m; path = UI/Login/VLoginViewController.m; sourceTree = "<group>"; };
@@ -225,11 +228,21 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		3F4863F71869181500F77346 /* Messages */ = {
+			isa = PBXGroup;
+			children = (
+				3F4863F81869184000F77346 /* VMessagesViewController.h */,
+				3F4863F91869184000F77346 /* VMessagesViewController.m */,
+			);
+			name = Messages;
+			sourceTree = "<group>";
+		};
 		3FF8B7961868EE5E00806EA0 /* UI */ = {
 			isa = PBXGroup;
 			children = (
 				3FF8B7971868EE7E00806EA0 /* Main.storyboard */,
 				3FF8B7991868EEE800806EA0 /* Login */,
+				3F4863F71869181500F77346 /* Messages */,
 			);
 			name = UI;
 			sourceTree = "<group>";
@@ -606,6 +619,7 @@
 				BE171E311868C211004E5202 /* VStatAnswer.m in Sources */,
 				BE171D881868BE64004E5202 /* main.m in Sources */,
 				BE171E0A1868C211004E5202 /* VAsset+Fetcher.m in Sources */,
+				3F4863FA1869184000F77346 /* VMessagesViewController.m in Sources */,
 				BE171E171868C211004E5202 /* VSequence+RestKit.m in Sources */,
 				BE171E291868C211004E5202 /* VComment.m in Sources */,
 				BE171E391868C266004E5202 /* NSManagedObject+EasyFetching.m in Sources */,

@@ -30,7 +30,6 @@
     self.window.tintColor   =   [[VThemeManager sharedThemeManager] themedColorForKey:@"applicationTintColor"];
     
 
-
 //    [application registerForRemoteNotificationTypes:(UIRemoteNotificationTypeBadge | UIRemoteNotificationTypeSound)];
     
 //    UILocalNotification *localNotif = [launchOptions objectForKey:UIApplicationLaunchOptionsLocalNotificationKey];
@@ -41,14 +40,14 @@
 //        app.applicationIconBadgeNumber = localNotif.applicationIconBadgeNumber-1;
 //    }
     
+    [[AFNetworkActivityIndicatorManager sharedManager] setEnabled:YES];
+
     [VObjectManager setupObjectManager];
     [[[VObjectManager sharedManager] initialSequenceLoad] start];
 
     [TestFlight takeOff:@"4467aa06-d174-479e-b009-f1945f3d6532"];
-    
-    [[AFNetworkActivityIndicatorManager sharedManager] setEnabled:YES];
-    
 
+    
     NSURL*  openURL =   launchOptions[UIApplicationLaunchOptionsURLKey];
     if (openURL)
         [self handleOpenURL:openURL];
