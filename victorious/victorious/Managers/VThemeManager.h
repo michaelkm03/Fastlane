@@ -10,6 +10,8 @@
 
 extern  NSString*   const   kVThemeManagerThemeDidChange;
 
+extern  NSString*   const   kVApplicationTintColor;
+
 @interface VThemeManager : NSObject
 
 + (VThemeManager *)sharedThemeManager;

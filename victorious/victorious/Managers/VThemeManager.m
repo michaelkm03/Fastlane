@@ -10,6 +10,9 @@
 
 NSString*   const   kVThemeManagerThemeDidChange    =   @"VThemeManagerThemeDidChange";
 
+NSString*   const   kVApplicationTintColor          =   @"applicationTintColor";
+
+
 @interface      VThemeManager   ()
 @property   (nonatomic, readwrite, copy)    NSDictionary*   themeValues;
 @end
