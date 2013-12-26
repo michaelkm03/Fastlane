@@ -7,14 +7,18 @@
 //
 
 #import "VMenuTableViewController.h"
+#import "VThemeManager.h"
 
-@interface VMenuTableViewController ()
-
+@interface VMenuTableViewController()
+@property (weak, nonatomic) IBOutlet UILabel *nameLabel;
 @end
 
 @implementation VMenuTableViewController
+
 - (void)viewDidLoad{
     [super viewDidLoad];
+
+    self.nameLabel.text = [[VThemeManager sharedThemeManager] themedValueForKey:kVApplicationName];
 
     self.view.backgroundColor = [UIColor colorWithWhite:1 alpha:0.8];
     self.tableView.backgroundView.backgroundColor = [UIColor clearColor];

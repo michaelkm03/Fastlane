@@ -10,6 +10,7 @@
 
 extern  NSString*   const   kVThemeManagerThemeDidChange;
 
+extern  NSString*   const   kVApplicationName;
 extern  NSString*   const   kVApplicationTintColor;
 
 extern  NSString*   const   kVNavigationBarBackgroundTintColor;

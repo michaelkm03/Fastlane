@@ -10,6 +10,7 @@
 
 NSString*   const   kVThemeManagerThemeDidChange        =   @"VThemeManagerThemeDidChange";
 
+NSString*   const   kVApplicationName                   =   @"applicationName";
 NSString*   const   kVApplicationTintColor              =   @"applicationTintColor";
 
 NSString*   const   kVNavigationBarBackgroundTintColor  =   @"navigationBarBackgroundTintColor";
