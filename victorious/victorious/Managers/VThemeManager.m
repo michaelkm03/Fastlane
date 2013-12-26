@@ -62,6 +62,11 @@ NSString*   const   kVApplicationTintColor          =   @"applicationTintColor";
 - (UIColor *)themedColorForKey:(NSString *)key
 {
     NSDictionary*   colorDictionary =   [self themedValueForKey:key];
+    if (nil == colorDictionary)
+    {
+        return nil;
+    }
+
     CGFloat         red             =   [colorDictionary[@"red"] doubleValue] / 255.0;
     CGFloat         green           =   [colorDictionary[@"green"] doubleValue] / 255.0;
     CGFloat         blue            =   [colorDictionary[@"blue"] doubleValue] / 255.0;
