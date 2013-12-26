@@ -27,13 +27,13 @@
     [application setMinimumBackgroundFetchInterval:UIApplicationBackgroundFetchIntervalMinimum];
     application.statusBarStyle  =   UIStatusBarStyleLightContent;
 
-    self.window.tintColor   =   [[VThemeManager sharedThemeManager] themedColorForKey:@"applicationTintColor"];
+    self.window.tintColor   =   [[VThemeManager sharedThemeManager] themedColorForKey:kVApplicationTintColor];
 
-    [[UINavigationBar appearance] setTintColor:[[VThemeManager sharedThemeManager] themedColorForKey:@"navigationBarTintColor"]];
-    [[UINavigationBar appearance] setBarTintColor:[[VThemeManager sharedThemeManager] themedColorForKey:@"navigationBarBackgroundTintColor"]];
+    [[UINavigationBar appearance] setTintColor:[[VThemeManager sharedThemeManager] themedColorForKey:kVNavigationBarTintColor]];
+    [[UINavigationBar appearance] setBarTintColor:[[VThemeManager sharedThemeManager] themedColorForKey:kVNavigationBarBackgroundTintColor]];
 
     NSMutableDictionary *titleAttributes = [NSMutableDictionary dictionary];
-    UIColor *navigationBarTitleTintColor = [[VThemeManager sharedThemeManager] themedColorForKey:@"navigationBarTitleTintColor"];
+    UIColor *navigationBarTitleTintColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVNavigationBarTitleTintColor];
     if(navigationBarTitleTintColor){
         [titleAttributes setObject:navigationBarTitleTintColor forKey:NSForegroundColorAttributeName];
     }

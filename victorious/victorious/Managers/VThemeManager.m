@@ -8,10 +8,13 @@
 
 #import "VThemeManager.h"
 
-NSString*   const   kVThemeManagerThemeDidChange    =   @"VThemeManagerThemeDidChange";
+NSString*   const   kVThemeManagerThemeDidChange        =   @"VThemeManagerThemeDidChange";
 
-NSString*   const   kVApplicationTintColor          =   @"applicationTintColor";
+NSString*   const   kVApplicationTintColor              =   @"applicationTintColor";
 
+NSString*   const   kVNavigationBarBackgroundTintColor  =   @"navigationBarBackgroundTintColor";
+NSString*   const   kVNavigationBarTintColor            =   @"navigationBarTintColor";
+NSString*   const   kVNavigationBarTitleTintColor       =   @"navigationBarTitleTintColor";
 
 @interface      VThemeManager   ()
 @property   (nonatomic, readwrite, copy)    NSDictionary*   themeValues;
