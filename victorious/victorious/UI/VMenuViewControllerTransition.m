@@ -8,6 +8,7 @@
 
 #import "VMenuViewControllerTransition.h"
 #import "VMenuViewController.h"
+#import "UIImage+ImageEffects.h"
 
 @implementation VMenuViewControllerTransitionDelegate
 
@@ -32,23 +33,41 @@
     UIViewController *toViewController = [transitionContext viewControllerForKey:UITransitionContextToViewControllerKey];
     UIView *containerView = [transitionContext containerView];
 
-    if([toViewController isKindOfClass:[VMenuViewController class]]){
-        [containerView insertSubview:toViewController.view aboveSubview:fromViewController.view];
-        toViewController.view.transform = CGAffineTransformMakeTranslation(-CGRectGetWidth(containerView.bounds), 0);
+    if(self.reverse){
+        VMenuViewController *menuViewController = (VMenuViewController *)fromViewController;
+        [containerView insertSubview:toViewController.view belowSubview:menuViewController.view];
+
         [UIView animateWithDuration:animationDuration delay:0 usingSpringWithDamping:0.8 initialSpringVelocity:0.2 options:UIViewAnimationOptionCurveEaseInOut animations:^{
-            toViewController.view.transform = CGAffineTransformMakeTranslation(-40, 0);
+            menuViewController.containerView.transform = CGAffineTransformMakeTranslation(-CGRectGetMaxX(menuViewController.containerView.frame), 0);
         } completion:^(BOOL finished){
-            [transitionContext completeTransition:YES];
-        }];
-    }else if([fromViewController isKindOfClass:[VMenuViewController class]]){
-        [containerView insertSubview:toViewController.view belowSubview:fromViewController.view];
-        [UIView animateWithDuration:animationDuration delay:0 usingSpringWithDamping:0.8 initialSpringVelocity:0.2 options:UIViewAnimationOptionCurveEaseInOut animations:^{
-            fromViewController.view.transform = CGAffineTransformMakeTranslation(-CGRectGetWidth(containerView.bounds), 0);
-        } completion:^(BOOL finished){
+            [[UIApplication sharedApplication] setStatusBarHidden:NO];
             [transitionContext completeTransition:YES];
         }];
     }else{
-        [transitionContext completeTransition:YES];
+        VMenuViewController *menuViewController = (VMenuViewController *)toViewController;
+        [containerView insertSubview:menuViewController.view aboveSubview:fromViewController.view];
+
+        // Snapshot including the statusbar
+        UIView *snapshotView = [[UIScreen mainScreen] snapshotViewAfterScreenUpdates:NO];
+        [toViewController.view insertSubview:snapshotView belowSubview:menuViewController.imageView];
+        [[UIApplication sharedApplication] setStatusBarHidden:YES];
+
+        // Blur the snapshot
+        CGFloat imageScale = 0.8;
+        CGSize imageSize = snapshotView.bounds.size;
+        imageSize.width *= imageScale; imageSize.height *= imageScale;
+        UIGraphicsBeginImageContextWithOptions(imageSize, NO, 0);
+        [snapshotView drawViewHierarchyInRect:(CGRect){.size=imageSize} afterScreenUpdates:YES];
+        menuViewController.imageView.image = [UIGraphicsGetImageFromCurrentImageContext() applyLightEffect];
+
+        menuViewController.imageView.layer.mask.transform = CATransform3DMakeTranslation(-CGRectGetMaxX(menuViewController.containerView.frame), 0, 0);
+        menuViewController.containerView.transform = CGAffineTransformMakeTranslation(-CGRectGetMaxX(menuViewController.containerView.frame), 0);
+        [UIView animateWithDuration:animationDuration delay:0 usingSpringWithDamping:0.8 initialSpringVelocity:0.2 options:UIViewAnimationOptionCurveEaseInOut animations:^{
+            menuViewController.imageView.layer.mask.transform = CATransform3DIdentity;
+            menuViewController.containerView.transform = CGAffineTransformIdentity;
+        } completion:^(BOOL finished){
+            [transitionContext completeTransition:YES];
+        }];
     }
 }
 

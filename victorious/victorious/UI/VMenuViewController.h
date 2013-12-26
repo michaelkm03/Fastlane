@@ -8,6 +8,9 @@
 
 #import <UIKit/UIKit.h>
 
-@interface VMenuViewController : UITableViewController
+@interface VMenuViewController : UIViewController
+
+@property (weak, nonatomic) IBOutlet UIView *containerView;
+@property (weak, nonatomic) IBOutlet UIImageView *imageView;
 
 @end

@@ -7,16 +7,30 @@
 //
 
 #import "VMenuViewController.h"
+#import "VMenuTableViewController.h"
 
-@interface VMenuViewController ()
+@interface VMenuViewController()
 
 @end
 
 @implementation VMenuViewController
 
-#pragma mark - UITableViewDelegate
+- (void)viewDidLoad{
+    [super viewDidLoad];
 
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+    VMenuTableViewController *menuTableViewController =
+    [self.storyboard instantiateViewControllerWithIdentifier:NSStringFromClass([VMenuTableViewController class])];
+    [self addChildViewController:menuTableViewController];
+    [self.containerView addSubview:menuTableViewController.view];
+    [menuTableViewController didMoveToParentViewController:self];
+
+    CAShapeLayer *shapeMaskLayer = [CAShapeLayer layer];
+    shapeMaskLayer.path = [[UIBezierPath bezierPathWithRect:self.containerView.bounds] CGPath];
+    shapeMaskLayer.frame = self.containerView.frame;
+    self.imageView.layer.mask = shapeMaskLayer;
+}
+
+- (IBAction)tapGestureAction:(id)sender{
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="4514" systemVersion="13A603" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="27v-pQ-okR">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="4514" systemVersion="13B42" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="27v-pQ-okR">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3747"/>
     </dependencies>
@@ -240,7 +240,7 @@
                     <navigationItem key="navigationItem" title="Messages" id="xlI-t1-u13">
                         <barButtonItem key="leftBarButtonItem" image="Menu_Button" id="PB4-zP-IM9">
                             <connections>
-                                <segue destination="knF-lz-RVB" kind="modal" id="Epd-IP-Cqj"/>
+                                <segue destination="gHV-c6-eaL" kind="modal" id="Oqu-Ea-RjF"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
@@ -263,10 +263,10 @@
             </objects>
             <point key="canvasLocation" x="-3455" y="-646"/>
         </scene>
-        <!--Menu View Controller-->
+        <!--Menu Table View Controller-->
         <scene sceneID="PS8-xu-5Z3">
             <objects>
-                <tableViewController id="knF-lz-RVB" customClass="VMenuViewController" sceneMemberID="viewController">
+                <tableViewController storyboardIdentifier="VMenuTableViewController" id="knF-lz-RVB" customClass="VMenuTableViewController" sceneMemberID="viewController">
                     <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="static" style="grouped" separatorStyle="default" rowHeight="44" sectionHeaderHeight="10" sectionFooterHeight="10" id="NsB-eX-ipA">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -304,6 +304,7 @@
                                                 <constraint firstAttribute="centerY" secondItem="ITp-sH-OFa" secondAttribute="centerY" id="uyX-7l-LTe"/>
                                             </constraints>
                                         </tableViewCellContentView>
+                                        <color key="backgroundColor" white="1" alpha="0.0" colorSpace="calibratedWhite"/>
                                     </tableViewCell>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" id="x6h-5T-ggq">
                                         <rect key="frame" x="0.0" y="79" width="320" height="44"/>
@@ -334,6 +335,7 @@
                                                 <constraint firstAttribute="centerY" secondItem="1NJ-2J-Grr" secondAttribute="centerY" id="y1O-Do-SX4"/>
                                             </constraints>
                                         </tableViewCellContentView>
+                                        <color key="backgroundColor" white="1" alpha="0.0" colorSpace="calibratedWhite"/>
                                     </tableViewCell>
                                 </cells>
                             </tableViewSection>
@@ -369,6 +371,7 @@
                                                 <constraint firstItem="p90-Of-07R" firstAttribute="leading" secondItem="PCS-jq-ww0" secondAttribute="leading" constant="20" symbolic="YES" id="Qlu-uD-1vG"/>
                                             </constraints>
                                         </tableViewCellContentView>
+                                        <color key="backgroundColor" white="1" alpha="0.0" colorSpace="calibratedWhite"/>
                                     </tableViewCell>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" id="ae1-Zg-ZsY">
                                         <rect key="frame" x="0.0" y="187" width="320" height="44"/>
@@ -399,6 +402,7 @@
                                                 <constraint firstAttribute="centerY" secondItem="NK9-AO-t4g" secondAttribute="centerY" id="z2b-aY-QfC"/>
                                             </constraints>
                                         </tableViewCellContentView>
+                                        <color key="backgroundColor" white="1" alpha="0.0" colorSpace="calibratedWhite"/>
                                     </tableViewCell>
                                 </cells>
                             </tableViewSection>
@@ -434,6 +438,7 @@
                                                 <constraint firstAttribute="centerY" secondItem="qji-lM-Yff" secondAttribute="centerY" id="fLh-iP-0jS"/>
                                             </constraints>
                                         </tableViewCellContentView>
+                                        <color key="backgroundColor" white="1" alpha="0.0" colorSpace="calibratedWhite"/>
                                     </tableViewCell>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" id="6A5-LF-lpI">
                                         <rect key="frame" x="0.0" y="295" width="320" height="44"/>
@@ -464,6 +469,7 @@
                                                 <constraint firstAttribute="centerY" secondItem="EiP-ms-Q2J" secondAttribute="centerY" id="r8n-6J-PRY"/>
                                             </constraints>
                                         </tableViewCellContentView>
+                                        <color key="backgroundColor" white="1" alpha="0.0" colorSpace="calibratedWhite"/>
                                     </tableViewCell>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" id="Lsb-9Y-jnG">
                                         <rect key="frame" x="0.0" y="339" width="320" height="44"/>
@@ -494,6 +500,7 @@
                                                 <constraint firstAttribute="centerY" secondItem="MGC-S7-NsB" secondAttribute="centerY" id="hPT-9Z-vlh"/>
                                             </constraints>
                                         </tableViewCellContentView>
+                                        <color key="backgroundColor" white="1" alpha="0.0" colorSpace="calibratedWhite"/>
                                     </tableViewCell>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" id="fDk-n2-fyo">
                                         <rect key="frame" x="0.0" y="383" width="320" height="44"/>
@@ -524,6 +531,7 @@
                                                 <constraint firstItem="XMF-6Z-XZc" firstAttribute="leading" secondItem="cMp-El-RFd" secondAttribute="leading" constant="20" symbolic="YES" id="q37-Fb-vG4"/>
                                             </constraints>
                                         </tableViewCellContentView>
+                                        <color key="backgroundColor" white="1" alpha="0.0" colorSpace="calibratedWhite"/>
                                     </tableViewCell>
                                 </cells>
                             </tableViewSection>
@@ -537,7 +545,59 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="aKj-L4-nd8" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-2968" y="-680"/>
+            <point key="canvasLocation" x="-2572" y="-660"/>
+        </scene>
+        <!--Menu View Controller-->
+        <scene sceneID="Nkn-mu-2oy">
+            <objects>
+                <viewController id="gHV-c6-eaL" customClass="VMenuViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="Pev-Kw-xxR"/>
+                        <viewControllerLayoutGuide type="bottom" id="bwY-Bh-Xs3"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="ZaD-bo-5Lm">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Guj-Aq-AZF">
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                            </imageView>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="pCa-KB-WLJ">
+                                <rect key="frame" x="-20" y="0.0" width="290" height="568"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            </view>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                        <gestureRecognizers/>
+                        <constraints>
+                            <constraint firstAttribute="trailing" secondItem="Guj-Aq-AZF" secondAttribute="trailing" id="3UX-ph-1JD"/>
+                            <constraint firstAttribute="trailing" secondItem="pCa-KB-WLJ" secondAttribute="trailing" constant="50" id="3ch-8r-fHL"/>
+                            <constraint firstItem="Guj-Aq-AZF" firstAttribute="leading" secondItem="ZaD-bo-5Lm" secondAttribute="leading" id="8Go-Sc-zlk"/>
+                            <constraint firstItem="pCa-KB-WLJ" firstAttribute="bottom" secondItem="Guj-Aq-AZF" secondAttribute="bottom" id="KID-4G-rnn"/>
+                            <constraint firstItem="Guj-Aq-AZF" firstAttribute="top" secondItem="ZaD-bo-5Lm" secondAttribute="top" id="LOf-jJ-WcH"/>
+                            <constraint firstItem="pCa-KB-WLJ" firstAttribute="top" secondItem="Guj-Aq-AZF" secondAttribute="top" id="NBD-3J-yvf"/>
+                            <constraint firstAttribute="bottom" secondItem="Guj-Aq-AZF" secondAttribute="bottom" id="O1l-Y9-mnn"/>
+                            <constraint firstItem="pCa-KB-WLJ" firstAttribute="leading" secondItem="Guj-Aq-AZF" secondAttribute="leading" constant="-20" id="bzi-2w-YgH"/>
+                        </constraints>
+                        <connections>
+                            <outletCollection property="gestureRecognizers" destination="g74-IX-k5Z" appends="YES" id="Eru-iO-VzG"/>
+                        </connections>
+                    </view>
+                    <nil key="simulatedStatusBarMetrics"/>
+                    <connections>
+                        <outlet property="containerView" destination="pCa-KB-WLJ" id="7zX-KI-18m"/>
+                        <outlet property="imageView" destination="Guj-Aq-AZF" id="ekT-MY-Ce1"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="bPO-nS-5eB" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <tapGestureRecognizer id="g74-IX-k5Z">
+                    <connections>
+                        <action selector="tapGestureAction:" destination="gHV-c6-eaL" id="gEf-fe-e3Y"/>
+                    </connections>
+                </tapGestureRecognizer>
+            </objects>
+            <point key="canvasLocation" x="-2992" y="-660"/>
         </scene>
         <!--Sign Up View Controller-->
         <scene sceneID="nHE-BH-b51">

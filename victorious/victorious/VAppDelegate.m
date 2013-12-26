@@ -28,7 +28,10 @@
     application.statusBarStyle  =   UIStatusBarStyleLightContent;
 
     self.window.tintColor   =   [[VThemeManager sharedThemeManager] themedColorForKey:@"applicationTintColor"];
-    
+    [[UINavigationBar appearance] setBarTintColor:[[VThemeManager sharedThemeManager] themedColorForKey:@"applicationTintColor"]];
+    [[UINavigationBar appearance] setTintColor:[UIColor whiteColor]];
+    [[UINavigationBar appearance] setTitleTextAttributes:@{NSForegroundColorAttributeName: [UIColor whiteColor]}];
+
 
 //    [application registerForRemoteNotificationTypes:(UIRemoteNotificationTypeBadge | UIRemoteNotificationTypeSound)];
     
