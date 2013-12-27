@@ -337,6 +337,11 @@ static NSString* kSearchCache = @"SearchCache";
     [self updatePredicateForFetchedResultsController:_searchFetchedResultsController];
 }
 
+- (void)searchDisplayControllerWillEndSearch:(UISearchDisplayController *)controller
+{
+    [self updatePredicateForFetchedResultsController: _fetchedResultsController];
+}
+
 #pragma mark - Search Display
 
 - (IBAction)showMenu
@@ -366,7 +371,6 @@ static NSString* kSearchCache = @"SearchCache";
 - (void)searchBarCancelButtonClicked:(UISearchBar *)searchBar
 {
     [self viewWillAppear:YES];
-    [self updatePredicateForFetchedResultsController:_fetchedResultsController];
 }
 
 #pragma mark - Filtering
