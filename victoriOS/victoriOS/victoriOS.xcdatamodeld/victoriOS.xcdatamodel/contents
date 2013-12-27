@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="3401" systemVersion="13A603" minimumToolsVersion="Automatic" macOSVersion="Automatic" iOSVersion="Automatic">
+<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="3401" systemVersion="13B42" minimumToolsVersion="Automatic" macOSVersion="Automatic" iOSVersion="Automatic">
     <entity name="Answer" representedClassName="VAnswer" syncable="YES">
         <attribute name="currency" optional="YES" attributeType="Integer 32" minValueString="0" syncable="YES"/>
         <attribute name="display_order" attributeType="Integer 32" minValueString="0" syncable="YES"/>
@@ -46,7 +46,7 @@
         <attribute name="nodeId" attributeType="Integer 64" minValueString="0" syncable="YES"/>
         <attribute name="question" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="remoteId" attributeType="Integer 64" minValueString="0" syncable="YES"/>
-        <attribute name="startTime" optional="YES" attributeType="Integer 32" minValueString="0" syncable="YES"/>
+        <attribute name="startTime" optional="YES" attributeType="Integer 32" minValueString="-1" syncable="YES"/>
         <attribute name="timeout" optional="YES" attributeType="Integer 64" minValueString="0" syncable="YES"/>
         <attribute name="type" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="answers" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="Answer" inverseName="interaction" inverseEntity="Answer" syncable="YES"/>
@@ -140,20 +140,20 @@
         <relationship name="statSequences" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="StatSequence" inverseName="user" inverseEntity="StatSequence" syncable="YES"/>
     </entity>
     <elements>
-        <element name="Answer" positionX="0" positionY="0" width="0" height="0"/>
-        <element name="AnswerAction" positionX="0" positionY="0" width="0" height="0"/>
-        <element name="Asset" positionX="0" positionY="0" width="0" height="0"/>
-        <element name="Category" positionX="0" positionY="0" width="0" height="0"/>
-        <element name="Comment" positionX="0" positionY="0" width="0" height="0"/>
-        <element name="Interaction" positionX="0" positionY="0" width="0" height="0"/>
-        <element name="InteractionAction" positionX="0" positionY="0" width="0" height="0"/>
-        <element name="Node" positionX="0" positionY="0" width="0" height="0"/>
-        <element name="NodeAction" positionX="0" positionY="0" width="0" height="0"/>
-        <element name="Rule" positionX="0" positionY="0" width="0" height="0"/>
-        <element name="Sequence" positionX="0" positionY="0" width="0" height="0"/>
-        <element name="StatAnswer" positionX="0" positionY="0" width="0" height="0"/>
-        <element name="StatInteraction" positionX="0" positionY="0" width="0" height="0"/>
-        <element name="StatSequence" positionX="0" positionY="0" width="0" height="0"/>
-        <element name="User" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="Answer" positionX="5614" positionY="150" width="128" height="165"/>
+        <element name="AnswerAction" positionX="5526" positionY="402" width="128" height="75"/>
+        <element name="Asset" positionX="5634" positionY="504" width="128" height="120"/>
+        <element name="Category" positionX="6480" positionY="36" width="128" height="60"/>
+        <element name="Comment" positionX="6291" positionY="27" width="128" height="270"/>
+        <element name="Interaction" positionX="5841" positionY="33" width="128" height="208"/>
+        <element name="InteractionAction" positionX="6057" positionY="57" width="128" height="105"/>
+        <element name="Node" positionX="5814" positionY="423" width="128" height="135"/>
+        <element name="NodeAction" positionX="5823" positionY="639" width="128" height="90"/>
+        <element name="Rule" positionX="5985" positionY="312" width="128" height="75"/>
+        <element name="Sequence" positionX="6138" positionY="324" width="128" height="225"/>
+        <element name="StatAnswer" positionX="6057" positionY="567" width="128" height="180"/>
+        <element name="StatInteraction" positionX="6280" positionY="537" width="128" height="210"/>
+        <element name="StatSequence" positionX="6496" positionY="495" width="128" height="225"/>
+        <element name="User" positionX="6442" positionY="180" width="128" height="165"/>
     </elements>
 </model>
