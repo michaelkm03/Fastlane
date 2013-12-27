@@ -178,7 +178,6 @@ static NSString* kSearchCache = @"SearchCache";
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     VSequence* sequence = (VSequence*)[[self fetchedResultsControllerForTableView:tableView] objectAtIndexPath:indexPath];
-
     
     VStreamViewCell *cell;
     if ([sequence.category isEqualToString:@"video_forum"])
@@ -333,18 +332,22 @@ static NSString* kSearchCache = @"SearchCache";
 {
     //This relies on the scope buttons being in the same order as the VStreamScope enum
     _scopeType = selectedScope;
-    [self updatePredicateForFetchedResultsController:_searchFetchedResultsController];
+    [self refreshFetchController:_searchFetchedResultsController
+                   withPredicate:[self fetchResultsPredicate]];
 }
 
 - (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText
 {
     _filterText = searchText;
-    [self updatePredicateForFetchedResultsController:_searchFetchedResultsController];
+    
+    [self refreshFetchController:_searchFetchedResultsController
+                   withPredicate:[self fetchResultsPredicate]];
 }
 
 - (void)searchDisplayControllerWillEndSearch:(UISearchDisplayController *)controller
 {
-    [self updatePredicateForFetchedResultsController: _fetchedResultsController];
+    [self refreshFetchController:_fetchedResultsController
+                   withPredicate:[self fetchResultsPredicate]];
 }
 
 #pragma mark - Search Display
@@ -370,7 +373,8 @@ static NSString* kSearchCache = @"SearchCache";
 {
     [self.tableView scrollRectToVisible:CGRectMake(0, 0, 1, 1) animated:NO];
     [self.searchDisplayController.searchBar becomeFirstResponder];
-    [self updatePredicateForFetchedResultsController:_searchFetchedResultsController];
+    [self refreshFetchController:_searchFetchedResultsController
+                   withPredicate:[self fetchResultsPredicate]];
 }
 
 - (void)searchBarCancelButtonClicked:(UISearchBar *)searchBar
@@ -380,7 +384,7 @@ static NSString* kSearchCache = @"SearchCache";
 
 #pragma mark - Filtering
 
-- (void)updatePredicateForFetchedResultsController:(NSFetchedResultsController*)controller
+- (NSPredicate*)fetchResultsPredicate
 {
     NSMutableArray* allFilters = [[NSMutableArray alloc] init];
     //Type filter
@@ -409,10 +413,11 @@ static NSString* kSearchCache = @"SearchCache";
     
     //Search text filter
     if (_filterText && ![_filterText isEmpty])
+    {
         [allFilters addObject:[NSPredicate predicateWithFormat:@"SELF.name CONTAINS[cd] %@", _filterText]];
+    }
     
-    [self refreshFetchController:controller
-                   withPredicate:[NSCompoundPredicate andPredicateWithSubpredicates:allFilters]];
+    return [NSCompoundPredicate andPredicateWithSubpredicates:allFilters];
 }
 
 - (void)refreshFetchController:(NSFetchedResultsController*)controller
