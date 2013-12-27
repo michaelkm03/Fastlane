@@ -219,67 +219,6 @@ static NSString* kSearchCache = @"SearchCache";
 
 #pragma mark - NSFetchedResultsControllers
 
-- (void)updatePredicateForFetchedResultsController:(NSFetchedResultsController*)controller
-{
-    //We must clear the cache before modifying anything.
-    NSString* cacheName = (controller == _fetchedResultsController) ? kStreamCache : kSearchCache;
-    [NSFetchedResultsController deleteCacheWithName:cacheName];
-
-    NSFetchRequest* fetchRequest = controller.fetchRequest;
-
-    //Define the appropriate filter
-    NSPredicate* typeFilter;
-    
-    //Start by filtering by type
-    switch (_scopeType)
-    {
-        case VStreamFilterVideoForums:
-            typeFilter = [NSPredicate predicateWithFormat:@"category == 'video_forum'"];
-            break;
-            
-        case VStreamFilterPolls:
-            typeFilter = [NSPredicate predicateWithFormat:@"category == 'poll'"];
-            break;
-            
-        case VStreamFilterImages:
-            typeFilter = [NSPredicate predicateWithFormat:@"category == 'image'"];
-            break;
-            
-        case VStreamFilterVideos:
-            typeFilter = [NSPredicate predicateWithFormat:@"category == 'video'"];
-            break;
-            
-        default:
-            //TODO: remove "|| general " from this filter.
-            typeFilter = [NSPredicate predicateWithFormat:@"category == 'video_forum' || category == 'poll' || category == 'image' || category == 'video' || category == 'general'"];
-            break;
-    }
-    
-    //And filter by the search text
-    
-    NSMutableArray* allFilters = [[NSMutableArray alloc] init];
-    if (typeFilter)
-        [allFilters addObject:typeFilter];
-    if (_filterText && ![_filterText isEmpty])
-        [allFilters addObject:[NSPredicate predicateWithFormat:@"SELF.name CONTAINS[cd] %@", _filterText]];
-    
-    NSPredicate* filterPredicate = [NSCompoundPredicate andPredicateWithSubpredicates:allFilters];
-    
-    [fetchRequest setPredicate:filterPredicate];
-
-    //We need to perform the fetch again
-    NSError *error;
-	if (![controller performFetch:&error])
-    {
-		// Update to handle the error appropriately.
-		NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
-		exit(-1);  // Fail
-	}
-    
-    //Then reload the data
-    [[self tableViewForFetchedResultsController:controller] reloadData];
-}
-
 - (NSFetchedResultsController *)fetchedResultsController
 {
     if (nil == _fetchedResultsController)
@@ -421,7 +360,7 @@ static NSString* kSearchCache = @"SearchCache";
 {
     [self.tableView scrollRectToVisible:CGRectMake(0, 0, 1, 1) animated:NO];
     [self.searchDisplayController.searchBar becomeFirstResponder];
-    
+    [self updatePredicateForFetchedResultsController:_searchFetchedResultsController];
 }
 
 - (void)searchBarCancelButtonClicked:(UISearchBar *)searchBar
@@ -430,21 +369,81 @@ static NSString* kSearchCache = @"SearchCache";
     [self updatePredicateForFetchedResultsController:_fetchedResultsController];
 }
 
+#pragma mark - Filtering
+
+- (void)updatePredicateForFetchedResultsController:(NSFetchedResultsController*)controller
+{
+    NSMutableArray* allFilters = [[NSMutableArray alloc] init];
+    //Type filter
+    switch (_scopeType)
+    {
+        case VStreamFilterVideoForums:
+            [allFilters addObject:[NSPredicate predicateWithFormat:@"category == 'video_forum'"]];
+            break;
+            
+        case VStreamFilterPolls:
+            [allFilters addObject:[NSPredicate predicateWithFormat:@"category == 'owner_poll'"]];
+            break;
+            
+        case VStreamFilterImages:
+            [allFilters addObject:[NSPredicate predicateWithFormat:@"category == 'owner_image'"]];
+            break;
+            
+        case VStreamFilterVideos:
+            [allFilters addObject:[NSPredicate predicateWithFormat:@"category == 'video'"]];
+            break;
+            
+        default:
+            [allFilters addObject:[self defaultTypePredicate]];
+            break;
+    }
+    
+    //Search text filter
+    if (_filterText && ![_filterText isEmpty])
+        [allFilters addObject:[NSPredicate predicateWithFormat:@"SELF.name CONTAINS[cd] %@", _filterText]];
+    
+    [self refreshFetchController:controller
+                   withPredicate:[NSCompoundPredicate andPredicateWithSubpredicates:allFilters]];
+}
+
+- (void)refreshFetchController:(NSFetchedResultsController*)controller
+                 withPredicate:(NSPredicate*)predicate
+{
+    //We must clear the cache before modifying anything.
+    NSString* cacheName = (controller == _fetchedResultsController) ? kStreamCache : kSearchCache;
+    [NSFetchedResultsController deleteCacheWithName:cacheName];
+    
+    [controller.fetchRequest setPredicate:predicate];
+    
+    //We need to perform the fetch again
+    NSError *error;
+	if (![controller performFetch:&error])
+    {
+		// Update to handle the error appropriately.
+		NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+		exit(-1);  // Fail
+	}
+    
+    //Then reload the data
+    [[self tableViewForFetchedResultsController:controller] reloadData];
+}
+
+- (NSPredicate*)defaultTypePredicate
+{
+    return [NSPredicate predicateWithFormat:@"category == 'video_forum' || category == 'owner_poll' || category == 'owner_image' || category == 'video'"];
+}
+
 #pragma mark - Navigation
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
-    //Cells need to stop playing video for EVERY segue.
-    
     if ([segue.identifier isEqualToString:@"toStreamDetails"])
     {
         VStreamsSubViewController *subview = (VStreamsSubViewController *)segue.destinationViewController;
-        UITableViewCell* cell = (UITableViewCell*)sender;
         
-        VSequence *sequence = [_fetchedResultsController objectAtIndexPath:[self.tableView indexPathForCell:cell]];
+        VSequence *sequence = [_fetchedResultsController objectAtIndexPath:[self.tableView indexPathForCell:(UITableViewCell*)sender]];
         
         subview.sequence = sequence;
-    
     }
 }
 
