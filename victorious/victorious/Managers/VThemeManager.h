@@ -17,6 +17,8 @@ extern  NSString*   const   kVNavigationBarBackgroundTintColor;
 extern  NSString*   const   kVNavigationBarTintColor;
 extern  NSString*   const   kVNavigationBarTitleTintColor;
 
+extern  NSString*   const   kVMenuHeaderImageUrl;
+
 @interface VThemeManager : NSObject
 
 + (VThemeManager *)sharedThemeManager;

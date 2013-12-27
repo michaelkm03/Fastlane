@@ -17,6 +17,8 @@ NSString*   const   kVNavigationBarBackgroundTintColor  =   @"navigationBarBackg
 NSString*   const   kVNavigationBarTintColor            =   @"navigationBarTintColor";
 NSString*   const   kVNavigationBarTitleTintColor       =   @"navigationBarTitleTintColor";
 
+NSString*   const   kVMenuHeaderImageUrl               =   @"menuHeaderImageUrl";
+
 @interface      VThemeManager   ()
 @property   (nonatomic, readwrite, copy)    NSDictionary*   themeValues;
 @end

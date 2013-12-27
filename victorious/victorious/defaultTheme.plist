@@ -4,6 +4,8 @@
 <dict>
 	<key>applicationName</key>
 	<string>FashionToast</string>
+	<key>menuHeaderImageUrl</key>
+	<string>http://photographher.com/wp-content/uploads/2013/04/fashiontoast.png</string>
 	<key>applicationTintColor</key>
 	<dict>
 		<key>red</key>
