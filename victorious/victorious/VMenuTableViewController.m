@@ -3,7 +3,7 @@
 //  victorious
 //
 //  Created by David Keegan on 12/25/13.
-//  Copyright (c) 2013 Will Long. All rights reserved.
+//  Copyright (c) 2013 Victorious Inc. All rights reserved.
 //
 
 #import "VMenuTableViewController.h"
