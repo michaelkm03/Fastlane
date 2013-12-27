@@ -7,14 +7,13 @@
 //
 
 #import "VStreamPollCell.h"
+#import "VSequence.h"
 
 @implementation VStreamPollCell
 
 - (void)setSequence:(VSequence *)sequence
 {
     [super setSequence:sequence];
-
-    
 }
 
 - (IBAction)pressedOptionOne:(id)sender

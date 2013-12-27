@@ -26,7 +26,14 @@
           for (VCategory* category in resultObjects)
           {
               [[self loadNextPageOfSequencesForCategory:category
-                                          successBlock:nil
+                                          successBlock:^(NSArray *resultObjects) {
+                                              for (VSequence* sequence in resultObjects)
+                                              {
+                                                  [[self fetchSequence:sequence
+                                                          successBlock:nil
+                                                             failBlock:nil] start];
+                                              }
+                                          }
                                              failBlock:^(NSError *error) {
                                                  VLog(@"Error in initialSequenceLoad: %@", error);
                                              }] start];

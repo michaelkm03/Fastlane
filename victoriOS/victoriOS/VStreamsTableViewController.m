@@ -58,21 +58,7 @@ static NSString* kSearchCache = @"SearchCache";
 
     self.featuredStreamsViewController =   [self.storyboard instantiateViewControllerWithIdentifier:@"featured_pages"];
     
-    [self.tableView registerNib:[UINib nibWithNibName:@"VStreamViewCell" bundle:[NSBundle mainBundle]]
-         forCellReuseIdentifier:kStreamViewCellIdentifier];
-    [self.searchDisplayController.searchResultsTableView registerNib:[UINib nibWithNibName:@"VStreamViewCell" bundle:[NSBundle mainBundle]] forCellReuseIdentifier:kStreamViewCellIdentifier];
-    
-    [self.tableView registerNib:[UINib nibWithNibName:@"VStreamVideoCell" bundle:[NSBundle mainBundle]]
-         forCellReuseIdentifier:kStreamVideoCellIdentifier];
-    [self.searchDisplayController.searchResultsTableView registerNib:[UINib nibWithNibName:@"VStreamVideoCell" bundle:[NSBundle mainBundle]] forCellReuseIdentifier:kStreamVideoCellIdentifier];
-    
-    [self.tableView registerNib:[UINib nibWithNibName:@"VStreamPollCell" bundle:[NSBundle mainBundle]]
-         forCellReuseIdentifier:kStreamPollCellIdentifier];
-    [self.searchDisplayController.searchResultsTableView registerNib:[UINib nibWithNibName:@"VStreamPollCell" bundle:[NSBundle mainBundle]] forCellReuseIdentifier:kStreamPollCellIdentifier];
-    
-    [self.tableView registerNib:[UINib nibWithNibName:@"VStreamDoublePollCell" bundle:[NSBundle mainBundle]]
-         forCellReuseIdentifier:kStreamDoublePollCellIdentifier];
-    [self.searchDisplayController.searchResultsTableView registerNib:[UINib nibWithNibName:@"VStreamDoublePollCell" bundle:[NSBundle mainBundle]] forCellReuseIdentifier:kStreamDoublePollCellIdentifier];
+    [self registerCells];
     
     NSError *error;
 	if (![self.fetchedResultsController performFetch:&error])
@@ -123,6 +109,25 @@ static NSString* kSearchCache = @"SearchCache";
                                                               failBlock:fail] start];
 }
 
+- (void)registerCells
+{
+    [self.tableView registerNib:[UINib nibWithNibName:@"VStreamViewCell" bundle:[NSBundle mainBundle]]
+         forCellReuseIdentifier:kStreamViewCellIdentifier];
+    [self.searchDisplayController.searchResultsTableView registerNib:[UINib nibWithNibName:@"VStreamViewCell" bundle:[NSBundle mainBundle]] forCellReuseIdentifier:kStreamViewCellIdentifier];
+    
+    [self.tableView registerNib:[UINib nibWithNibName:@"VStreamVideoCell" bundle:[NSBundle mainBundle]]
+         forCellReuseIdentifier:kStreamVideoCellIdentifier];
+    [self.searchDisplayController.searchResultsTableView registerNib:[UINib nibWithNibName:@"VStreamVideoCell" bundle:[NSBundle mainBundle]] forCellReuseIdentifier:kStreamVideoCellIdentifier];
+    
+    [self.tableView registerNib:[UINib nibWithNibName:@"VStreamPollCell" bundle:[NSBundle mainBundle]]
+         forCellReuseIdentifier:kStreamPollCellIdentifier];
+    [self.searchDisplayController.searchResultsTableView registerNib:[UINib nibWithNibName:@"VStreamPollCell" bundle:[NSBundle mainBundle]] forCellReuseIdentifier:kStreamPollCellIdentifier];
+    
+    [self.tableView registerNib:[UINib nibWithNibName:@"VStreamDoublePollCell" bundle:[NSBundle mainBundle]]
+         forCellReuseIdentifier:kStreamDoublePollCellIdentifier];
+    [self.searchDisplayController.searchResultsTableView registerNib:[UINib nibWithNibName:@"VStreamDoublePollCell" bundle:[NSBundle mainBundle]] forCellReuseIdentifier:kStreamDoublePollCellIdentifier];
+}
+
 #pragma mark - Table view data source
 
 //The follow 2 methods and the majority of the rest of the file was based on the following stack overflow article:
@@ -163,7 +168,7 @@ static NSString* kSearchCache = @"SearchCache";
     VSequence* sequence = (VSequence*)[[self fetchedResultsControllerForTableView:tableView] objectAtIndexPath:indexPath];
     
     if ([sequence.category isEqualToString:@"video_forum"] ||
-        [sequence.category isEqualToString:@"poll"])
+        [sequence.category isEqualToString:@"owner_poll"])
         
         return 240;
 
@@ -180,7 +185,7 @@ static NSString* kSearchCache = @"SearchCache";
         cell = [tableView dequeueReusableCellWithIdentifier:kStreamVideoCellIdentifier
                                                forIndexPath:indexPath];
     
-    else if ([sequence.category isEqualToString:@"poll"])
+    else if ([sequence.category isEqualToString:@"owner_poll"])
         cell = [tableView dequeueReusableCellWithIdentifier:kStreamPollCellIdentifier
                                                forIndexPath:indexPath];
 
