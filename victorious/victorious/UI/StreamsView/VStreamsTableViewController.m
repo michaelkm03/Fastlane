@@ -19,6 +19,9 @@
 #import "VStreamVideoCell.h"
 #import "VStreamPollCell.h"
 
+#import "VMenuViewController.h"
+#import "VMenuViewControllerTransition.h"
+
 typedef NS_ENUM(NSInteger, VStreamScope)
 {
     VStreamFilterAll = 0,
@@ -357,11 +360,6 @@ static NSString* kSearchCache = @"SearchCache";
 
 #pragma mark - Search Display
 
-- (IBAction)showMenu
-{
-//    [self.frostedViewController presentMenuViewController];
-}
-
 - (IBAction)displaySearchBar:(id)sender
 {
     [self.tableView scrollRectToVisible:CGRectMake(0, 0, 1, 1) animated:YES];
@@ -456,6 +454,13 @@ static NSString* kSearchCache = @"SearchCache";
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
+    if ([segue.destinationViewController isKindOfClass:[VMenuViewController class]])
+    {
+        VMenuViewController *menuViewController = segue.destinationViewController;
+        menuViewController.transitioningDelegate = (id <UIViewControllerTransitioningDelegate>)[VMenuViewControllerTransitionDelegate new];
+        menuViewController.modalPresentationStyle = UIModalPresentationCustom;
+    }
+    
     if ([segue.identifier isEqualToString:@"toStreamDetails"])
     {
         VStreamsSubViewController *subview = (VStreamsSubViewController *)segue.destinationViewController;

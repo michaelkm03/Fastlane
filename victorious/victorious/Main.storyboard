@@ -189,7 +189,8 @@
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <connections>
-                        <segue destination="Odg-Le-tS1" kind="relationship" relationship="rootViewController" id="IgZ-SZ-AdG"/>
+                        <segue destination="Tfk-WC-tkh" kind="push" id="5gL-oQ-TeD"/>
+                        <segue destination="Odg-Le-tS1" kind="relationship" relationship="rootViewController" id="5l4-cL-MJW"/>
                     </connections>
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="rNN-rH-sSb" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -205,7 +206,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <view key="tableHeaderView" contentMode="scaleToFill" id="EWu-Lk-sWy">
-                            <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                            <rect key="frame" x="0.0" y="64" width="320" height="44"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <subviews>
                                 <segmentedControl opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="pYn-XB-wxD">
@@ -224,7 +225,7 @@
                         </view>
                         <prototypes>
                             <tableViewCell contentMode="scaleToFill" selectionStyle="blue" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" id="pkS-w9-Q2E">
-                                <rect key="frame" x="0.0" y="66" width="320" height="44"/>
+                                <rect key="frame" x="0.0" y="130" width="320" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="pkS-w9-Q2E" id="6FI-7K-WmA">
                                     <rect key="frame" x="0.0" y="0.0" width="287" height="43"/>
@@ -584,6 +585,7 @@
                             <outletCollection property="gestureRecognizers" destination="g74-IX-k5Z" appends="YES" id="Eru-iO-VzG"/>
                         </connections>
                     </view>
+                    <navigationItem key="navigationItem" id="cFD-Zr-cfJ"/>
                     <nil key="simulatedStatusBarMetrics"/>
                     <connections>
                         <outlet property="containerView" destination="pCa-KB-WLJ" id="7zX-KI-18m"/>
@@ -732,9 +734,9 @@
                     </tableView>
                     <toolbarItems/>
                     <navigationItem key="navigationItem" title="Streams" id="hcu-Z9-yLH">
-                        <barButtonItem key="leftBarButtonItem" image="btn_menu" id="Yxi-Xf-4YC">
+                        <barButtonItem key="leftBarButtonItem" image="Menu_Button" id="Yxi-Xf-4YC">
                             <connections>
-                                <action selector="showMenu" destination="Odg-Le-tS1" id="5QK-CM-5k8"/>
+                                <segue destination="gHV-c6-eaL" kind="modal" id="6Th-L6-qdl"/>
                             </connections>
                         </barButtonItem>
                         <barButtonItem key="rightBarButtonItem" systemItem="search" id="jzJ-pc-8k7">
@@ -861,7 +863,6 @@
         <image name="Flag" width="27" height="27"/>
         <image name="Menu_Button" width="27" height="27"/>
         <image name="UpVote" width="27" height="27"/>
-        <image name="btn_menu" width="27" height="27"/>
         <image name="facebook" width="27" height="27"/>
     </resources>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
@@ -869,4 +870,7 @@
         <simulatedOrientationMetrics key="orientation"/>
         <simulatedScreenMetrics key="destination" type="retina4"/>
     </simulatedMetricsContainer>
+    <inferredMetricsTieBreakers>
+        <segue reference="Oqu-Ea-RjF"/>
+    </inferredMetricsTieBreakers>
 </document>
