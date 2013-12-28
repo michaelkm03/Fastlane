@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="4514" systemVersion="13B3116" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="27v-pQ-okR">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="4514" systemVersion="13B42" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="27v-pQ-okR">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3747"/>
     </dependencies>
@@ -189,7 +189,7 @@
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <connections>
-                        <segue destination="Tfk-WC-tkh" kind="relationship" relationship="rootViewController" id="kSs-Ae-Ro7"/>
+                        <segue destination="Odg-Le-tS1" kind="relationship" relationship="rootViewController" id="IgZ-SZ-AdG"/>
                     </connections>
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="rNN-rH-sSb" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -205,7 +205,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <view key="tableHeaderView" contentMode="scaleToFill" id="EWu-Lk-sWy">
-                            <rect key="frame" x="0.0" y="64" width="320" height="44"/>
+                            <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <subviews>
                                 <segmentedControl opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="pYn-XB-wxD">
@@ -224,7 +224,7 @@
                         </view>
                         <prototypes>
                             <tableViewCell contentMode="scaleToFill" selectionStyle="blue" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" id="pkS-w9-Q2E">
-                                <rect key="frame" x="0.0" y="130" width="320" height="44"/>
+                                <rect key="frame" x="0.0" y="66" width="320" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="pkS-w9-Q2E" id="6FI-7K-WmA">
                                     <rect key="frame" x="0.0" y="0.0" width="287" height="43"/>
@@ -702,9 +702,167 @@
             </objects>
             <point key="canvasLocation" x="-2964" y="-1539"/>
         </scene>
+        <!--Streams Table View Controller - Streams-->
+        <scene sceneID="fdY-i8-2n7">
+            <objects>
+                <tableViewController storyboardIdentifier="streams" useStoryboardIdentifierAsRestorationIdentifier="YES" id="Odg-Le-tS1" customClass="VStreamsTableViewController" sceneMemberID="viewController">
+                    <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="hRF-Ay-eFZ">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <searchBar key="tableHeaderView" contentMode="redraw" searchBarStyle="minimal" showsCancelButton="YES" showsScopeBar="YES" id="way-0K-BHg">
+                            <rect key="frame" x="0.0" y="64" width="320" height="88"/>
+                            <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
+                            <textInputTraits key="textInputTraits" autocorrectionType="yes"/>
+                            <scopeButtonTitles>
+                                <string>All</string>
+                                <string>Photos</string>
+                                <string>Video</string>
+                                <string>Forums</string>
+                                <string>Polls</string>
+                            </scopeButtonTitles>
+                            <connections>
+                                <outlet property="delegate" destination="Odg-Le-tS1" id="7Kn-7T-02f"/>
+                            </connections>
+                        </searchBar>
+                        <connections>
+                            <outlet property="dataSource" destination="Odg-Le-tS1" id="qC4-gz-RkM"/>
+                            <outlet property="delegate" destination="Odg-Le-tS1" id="4p1-3p-oFG"/>
+                        </connections>
+                    </tableView>
+                    <toolbarItems/>
+                    <navigationItem key="navigationItem" title="Streams" id="hcu-Z9-yLH">
+                        <barButtonItem key="leftBarButtonItem" image="btn_menu" id="Yxi-Xf-4YC">
+                            <connections>
+                                <action selector="showMenu" destination="Odg-Le-tS1" id="5QK-CM-5k8"/>
+                            </connections>
+                        </barButtonItem>
+                        <barButtonItem key="rightBarButtonItem" systemItem="search" id="jzJ-pc-8k7">
+                            <connections>
+                                <action selector="displaySearchBar:" destination="Odg-Le-tS1" id="tEx-Id-khB"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
+                    <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
+                    <refreshControl key="refreshControl" opaque="NO" multipleTouchEnabled="YES" contentMode="center" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" id="YYz-y0-mA6">
+                        <autoresizingMask key="autoresizingMask"/>
+                        <connections>
+                            <action selector="refresh:" destination="Odg-Le-tS1" eventType="valueChanged" id="Xd5-Ft-nbb"/>
+                        </connections>
+                    </refreshControl>
+                    <connections>
+                        <outlet property="searchDisplayController" destination="J6V-dn-yOU" id="5qj-Xi-o2u"/>
+                        <segue destination="ZHJ-1r-35v" kind="push" identifier="toStreamDetails" id="iGZ-YA-xhf"/>
+                    </connections>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="xfw-Ye-e63" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <searchDisplayController id="J6V-dn-yOU">
+                    <connections>
+                        <outlet property="delegate" destination="Odg-Le-tS1" id="61Z-S9-b7j"/>
+                        <outlet property="searchBar" destination="way-0K-BHg" id="4b7-9F-5Vu"/>
+                        <outlet property="searchContentsController" destination="Odg-Le-tS1" id="bYH-kF-N4L"/>
+                        <outlet property="searchResultsDataSource" destination="Odg-Le-tS1" id="Rlf-FX-sjs"/>
+                        <outlet property="searchResultsDelegate" destination="Odg-Le-tS1" id="ITa-He-UL9"/>
+                    </connections>
+                </searchDisplayController>
+            </objects>
+            <point key="canvasLocation" x="-3455" y="81"/>
+        </scene>
+        <!--Streams Sub View Controller - <Sequence Name>-->
+        <scene sceneID="ziS-fc-Ov5">
+            <objects>
+                <tableViewController id="ZHJ-1r-35v" customClass="VStreamsSubViewController" sceneMemberID="viewController">
+                    <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="gQH-jk-7Rq">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <prototypes>
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="Cell" rowHeight="240" id="1BD-3b-BnA" customClass="VCommentViewCell">
+                                <rect key="frame" x="0.0" y="86" width="320" height="240"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="1BD-3b-BnA" id="T8F-2F-XPt">
+                                    <rect key="frame" x="0.0" y="0.0" width="320" height="239"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5ta-pT-yD8">
+                                            <rect key="frame" x="270" y="20" width="30" height="30"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                            <state key="normal" image="Flag"/>
+                                            <connections>
+                                                <action selector="flagComment:forEvent:" destination="ZHJ-1r-35v" eventType="touchUpInside" id="gNx-Jy-OP6"/>
+                                            </connections>
+                                        </button>
+                                        <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gMs-qD-l2A">
+                                            <rect key="frame" x="232" y="20" width="30" height="30"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                            <state key="normal" image="UpVote"/>
+                                            <connections>
+                                                <action selector="likeComment:forEvent:" destination="ZHJ-1r-35v" eventType="touchUpInside" id="qQ0-U1-sgS"/>
+                                            </connections>
+                                        </button>
+                                        <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="GdK-s0-tcI">
+                                            <rect key="frame" x="194" y="20" width="30" height="30"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                            <state key="normal" image="DownVote">
+                                                <color key="titleColor" red="0.18712583229999999" green="0.12046070759999999" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                            </state>
+                                            <connections>
+                                                <action selector="dislikeComment:forEvent:" destination="ZHJ-1r-35v" eventType="touchUpInside" id="SAo-ey-nLc"/>
+                                            </connections>
+                                        </button>
+                                        <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1VN-a8-2di">
+                                            <rect key="frame" x="156" y="20" width="30" height="30"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                            <state key="normal" image="facebook"/>
+                                            <connections>
+                                                <action selector="shareSequence:" destination="ZHJ-1r-35v" eventType="touchUpInside" id="DvU-NM-beQ"/>
+                                            </connections>
+                                        </button>
+                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="99a-MT-ia9">
+                                            <rect key="frame" x="20" y="20" width="32" height="32"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        </imageView>
+                                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="O5q-35-OaK">
+                                            <rect key="frame" x="20" y="60" width="280" height="159"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                    </subviews>
+                                </tableViewCellContentView>
+                                <connections>
+                                    <outlet property="imageView" destination="99a-MT-ia9" id="uHp-CJ-N9y"/>
+                                    <outlet property="textLabel" destination="O5q-35-OaK" id="sM2-lp-ayW"/>
+                                </connections>
+                            </tableViewCell>
+                        </prototypes>
+                        <connections>
+                            <outlet property="dataSource" destination="ZHJ-1r-35v" id="nrL-j1-l20"/>
+                            <outlet property="delegate" destination="ZHJ-1r-35v" id="MTN-2d-IMP"/>
+                        </connections>
+                    </tableView>
+                    <navigationItem key="navigationItem" title="&lt;Sequence Name>" id="ZYo-At-gWh">
+                        <barButtonItem key="rightBarButtonItem" systemItem="add" id="4Y0-gx-TU2"/>
+                    </navigationItem>
+                    <refreshControl key="refreshControl" opaque="NO" multipleTouchEnabled="YES" contentMode="center" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" id="Flu-Cf-sAP">
+                        <autoresizingMask key="autoresizingMask"/>
+                        <connections>
+                            <action selector="refresh:" destination="ZHJ-1r-35v" eventType="valueChanged" id="qx1-JW-HTf"/>
+                        </connections>
+                    </refreshControl>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="bTs-tH-vSd" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-2992" y="81"/>
+        </scene>
     </scenes>
     <resources>
+        <image name="DownVote" width="27" height="27"/>
+        <image name="Flag" width="27" height="27"/>
         <image name="Menu_Button" width="27" height="27"/>
+        <image name="UpVote" width="27" height="27"/>
+        <image name="btn_menu" width="27" height="27"/>
+        <image name="facebook" width="27" height="27"/>
     </resources>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
         <simulatedStatusBarMetrics key="statusBar"/>
