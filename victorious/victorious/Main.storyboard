@@ -549,7 +549,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="aKj-L4-nd8" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-2596" y="-660"/>
+            <point key="canvasLocation" x="-2356" y="-646"/>
         </scene>
         <!--Menu View Controller-->
         <scene sceneID="Nkn-mu-2oy">
@@ -864,6 +864,14 @@
     <resources>
         <image name="DownVote" width="27" height="27"/>
         <image name="Flag" width="27" height="27"/>
+        <image name="MenuBookmark" width="18" height="22"/>
+        <image name="MenuCommunity" width="20" height="23"/>
+        <image name="MenuForums" width="22" height="20"/>
+        <image name="MenuHelp" width="20" height="20"/>
+        <image name="MenuMessages" width="22" height="17"/>
+        <image name="MenuPolls" width="22" height="22"/>
+        <image name="MenuSettings" width="20" height="20"/>
+        <image name="MenuStar" width="27" height="25"/>
         <image name="Menu_Button" width="27" height="27"/>
         <image name="UpVote" width="27" height="27"/>
         <image name="facebook" width="27" height="27"/>
