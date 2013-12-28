@@ -10,11 +10,14 @@
 
 extern  NSString*   const   kVThemeManagerThemeDidChange;
 
+extern  NSString*   const   kVApplicationName;
 extern  NSString*   const   kVApplicationTintColor;
 
 extern  NSString*   const   kVNavigationBarBackgroundTintColor;
 extern  NSString*   const   kVNavigationBarTintColor;
 extern  NSString*   const   kVNavigationBarTitleTintColor;
+
+extern  NSString*   const   kVMenuHeaderImageUrl;
 
 @interface VThemeManager : NSObject
 

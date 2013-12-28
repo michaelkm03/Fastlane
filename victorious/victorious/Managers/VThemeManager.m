@@ -10,11 +10,14 @@
 
 NSString*   const   kVThemeManagerThemeDidChange        =   @"VThemeManagerThemeDidChange";
 
+NSString*   const   kVApplicationName                   =   @"applicationName";
 NSString*   const   kVApplicationTintColor              =   @"applicationTintColor";
 
 NSString*   const   kVNavigationBarBackgroundTintColor  =   @"navigationBarBackgroundTintColor";
 NSString*   const   kVNavigationBarTintColor            =   @"navigationBarTintColor";
 NSString*   const   kVNavigationBarTitleTintColor       =   @"navigationBarTitleTintColor";
+
+NSString*   const   kVMenuHeaderImageUrl               =   @"menuHeaderImageUrl";
 
 @interface      VThemeManager   ()
 @property   (nonatomic, readwrite, copy)    NSDictionary*   themeValues;
