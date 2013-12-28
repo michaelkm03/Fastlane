@@ -599,7 +599,7 @@
                     </connections>
                 </tapGestureRecognizer>
             </objects>
-            <point key="canvasLocation" x="-2992" y="-660"/>
+            <point key="canvasLocation" x="-2724" y="-646"/>
         </scene>
         <!--Sign Up View Controller-->
         <scene sceneID="nHE-BH-b51">
@@ -855,7 +855,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="bTs-tH-vSd" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-2992" y="81"/>
+            <point key="canvasLocation" x="-2724" y="81"/>
         </scene>
     </scenes>
     <resources>
