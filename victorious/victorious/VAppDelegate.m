@@ -30,7 +30,7 @@
     self.window.tintColor   =   [[VThemeManager sharedThemeManager] themedColorForKey:kVApplicationTintColor];
 
     [[UINavigationBar appearance] setTintColor:[[VThemeManager sharedThemeManager] themedColorForKey:kVNavigationBarTintColor]];
-    [[UINavigationBar appearance] setBarTintColor:[[VThemeManager sharedThemeManager] themedColorForKey:kVNavigationBarBackgroundTintColor]];
+    [[UINavigationBar appearance] setBarTintColor:[[VThemeManager sharedThemeManager] themedTranslucencyColorForKey:kVNavigationBarBackgroundTintColor]];
 
     NSMutableDictionary *titleAttributes = [NSMutableDictionary dictionary];
     UIColor *navigationBarTitleTintColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVNavigationBarTitleTintColor];

@@ -14,6 +14,8 @@
 @interface VMenuTableViewController()
 @property (weak, nonatomic) IBOutlet UILabel *nameLabel;
 @property (strong, nonatomic) IBOutletCollection(UIImageView) NSArray *imageViews;
+@property (strong, nonatomic) IBOutletCollection(UILabel) NSArray *labels;
+@property (strong, nonatomic) IBOutletCollection(UIView) NSArray *separatorViews;
 @end
 
 @implementation VMenuTableViewController
@@ -25,13 +27,19 @@
     [self.imageViews enumerateObjectsUsingBlock:^(UIImageView *imageView, NSUInteger idx, BOOL *stop){
         imageView.image = [imageView.image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
     }];
+    [self.labels enumerateObjectsUsingBlock:^(UILabel *label, NSUInteger idx, BOOL *stop){
+        label.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVMenuLabelFont];
+        label.textColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVMenuLabelColor];
+    }];
+    [self.separatorViews enumerateObjectsUsingBlock:^(UIView *view, NSUInteger idx, BOOL *stop){
+        view.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVMenuSeparatorColor];
+    }];
 
     self.view.backgroundColor = [UIColor clearColor];
     self.tableView.backgroundView.backgroundColor = [UIColor clearColor];
-    self.tableView.separatorInset = UIEdgeInsetsZero;
 
     CGFloat padding = 20;
-    UIView *headerView = [[UIView alloc] initWithFrame:(CGRect){.size={.height=150}}];
+    UIView *headerView = [[UIView alloc] initWithFrame:(CGRect){.size={.height=100}}];
     UIImageView *headerImageView = [UIImageView autoLayoutView];
     headerImageView.contentMode = UIViewContentModeScaleAspectFit;
     [headerImageView setImageWithURL:[[VThemeManager sharedThemeManager] themedImageURLForKey:kVMenuHeaderImageUrl]];

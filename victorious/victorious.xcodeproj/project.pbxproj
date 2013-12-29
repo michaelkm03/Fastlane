@@ -16,6 +16,7 @@
 		5D2BB9E4E1434C7B91B6C084 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 662F0867152745B2B2F08301 /* libPods.a */; };
 		8364C70B1869500D0028C1ED /* VMenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8364C70A1869500D0028C1ED /* VMenuViewController.m */; };
 		8364C70F1869557E0028C1ED /* VMenuViewControllerTransition.m in Sources */ = {isa = PBXBuildFile; fileRef = 8364C70E1869557E0028C1ED /* VMenuViewControllerTransition.m */; };
+		83ABAFAF18709DE30069556C /* Roboto-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 83ABAFA218709DE30069556C /* Roboto-Light.ttf */; };
 		83BD06FB186BE4B2007742D1 /* UIImage+ImageEffects.m in Sources */ = {isa = PBXBuildFile; fileRef = 83BD06FA186BE4B2007742D1 /* UIImage+ImageEffects.m */; };
 		83F38277186BE62300A866A1 /* VMenuTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 83F38276186BE62300A866A1 /* VMenuTableViewController.m */; };
 		BE171D7A1868BE64004E5202 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BE171D791868BE64004E5202 /* Foundation.framework */; };
@@ -115,6 +116,7 @@
 		8364C70A1869500D0028C1ED /* VMenuViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VMenuViewController.m; path = UI/VMenuViewController.m; sourceTree = "<group>"; };
 		8364C70D1869557E0028C1ED /* VMenuViewControllerTransition.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VMenuViewControllerTransition.h; path = UI/VMenuViewControllerTransition.h; sourceTree = "<group>"; };
 		8364C70E1869557E0028C1ED /* VMenuViewControllerTransition.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VMenuViewControllerTransition.m; path = UI/VMenuViewControllerTransition.m; sourceTree = "<group>"; };
+		83ABAFA218709DE30069556C /* Roboto-Light.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Roboto-Light.ttf"; sourceTree = "<group>"; };
 		83BD06F9186BE4B2007742D1 /* UIImage+ImageEffects.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+ImageEffects.h"; sourceTree = "<group>"; };
 		83BD06FA186BE4B2007742D1 /* UIImage+ImageEffects.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+ImageEffects.m"; sourceTree = "<group>"; };
 		83F38275186BE62300A866A1 /* VMenuTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VMenuTableViewController.h; sourceTree = "<group>"; };
@@ -317,6 +319,22 @@
 			name = Menu;
 			sourceTree = "<group>";
 		};
+		83ABAF9A18709DE30069556C /* Fonts */ = {
+			isa = PBXGroup;
+			children = (
+				83ABAF9B18709DE30069556C /* Roboto */,
+			);
+			path = Fonts;
+			sourceTree = SOURCE_ROOT;
+		};
+		83ABAF9B18709DE30069556C /* Roboto */ = {
+			isa = PBXGroup;
+			children = (
+				83ABAFA218709DE30069556C /* Roboto-Light.ttf */,
+			);
+			path = Roboto;
+			sourceTree = "<group>";
+		};
 		BE171D6D1868BE64004E5202 = {
 			isa = PBXGroup;
 			children = (
@@ -361,6 +379,7 @@
 				BE171D8B1868BE64004E5202 /* VAppDelegate.m */,
 				BE171D901868BE64004E5202 /* Images.xcassets */,
 				BE171D821868BE64004E5202 /* Supporting Files */,
+				83ABAF9A18709DE30069556C /* Fonts */,
 			);
 			path = victorious;
 			sourceTree = "<group>";
@@ -664,6 +683,7 @@
 				BE171D861868BE64004E5202 /* InfoPlist.strings in Resources */,
 				BE171D911868BE64004E5202 /* Images.xcassets in Resources */,
 				BE692B28186E5ED800C71336 /* VStreamVideoCell.xib in Resources */,
+				83ABAFAF18709DE30069556C /* Roboto-Light.ttf in Resources */,
 				BE692B52186E60B300C71336 /* VSequencePlayerViewController.xib in Resources */,
 				BE692B25186E5ED800C71336 /* VStreamPollCell.xib in Resources */,
 				BE692B2A186E5ED800C71336 /* VStreamViewCell.xib in Resources */,

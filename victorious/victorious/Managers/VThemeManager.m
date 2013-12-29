@@ -17,7 +17,10 @@ NSString*   const   kVNavigationBarBackgroundTintColor  =   @"navigationBarBackg
 NSString*   const   kVNavigationBarTintColor            =   @"navigationBarTintColor";
 NSString*   const   kVNavigationBarTitleTintColor       =   @"navigationBarTitleTintColor";
 
-NSString*   const   kVMenuHeaderImageUrl               =   @"menuHeaderImageUrl";
+NSString*   const   kVMenuHeaderImageUrl                =   @"menuHeaderImageUrl";
+NSString*   const   kVMenuLabelFont                     =   @"menuLabelFont";
+NSString*   const   kVMenuLabelColor                    =   @"menuLabelColor";
+NSString*   const   kVMenuSeparatorColor                =   @"menuSeparatorColor";
 
 @interface      VThemeManager   ()
 @property   (nonatomic, readwrite, copy)    NSDictionary*   themeValues;
@@ -79,6 +82,16 @@ NSString*   const   kVMenuHeaderImageUrl               =   @"menuHeaderImageUrl"
     CGFloat         alpha           =   [colorDictionary[@"alpha"] doubleValue];
     UIColor*        color           =   [UIColor colorWithRed:red green:green blue:blue alpha:alpha];
     return color;
+}
+
+- (UIColor *)themedTranslucencyColorForKey:(NSString *)key
+{
+    UIColor *color = [self themedColorForKey:key];
+
+    // From https://github.com/kgn/UIColorCategories
+    CGFloat hue = 0, saturation = 0, brightness = 0, alpha = 0;
+    [color getHue:&hue saturation:&saturation brightness:&brightness alpha:&alpha];
+    return [UIColor colorWithHue:hue saturation:saturation*1.158 brightness:brightness*0.95 alpha:alpha];
 }
 
 - (NSURL *)themedImageURLForKey:(NSString *)key

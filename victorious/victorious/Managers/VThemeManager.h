@@ -18,6 +18,9 @@ extern  NSString*   const   kVNavigationBarTintColor;
 extern  NSString*   const   kVNavigationBarTitleTintColor;
 
 extern  NSString*   const   kVMenuHeaderImageUrl;
+extern  NSString*   const   kVMenuLabelFont;
+extern  NSString*   const   kVMenuLabelColor;
+extern  NSString*   const   kVMenuSeparatorColor;
 
 @interface VThemeManager : NSObject
 
@@ -28,6 +31,12 @@ extern  NSString*   const   kVMenuHeaderImageUrl;
 - (id)themedValueForKey:(NSString *)key;
 
 - (UIColor *)themedColorForKey:(NSString *)key;
+
+/** Retrieve a color from the theme that has been modified
+ to look correct when used in a translucent view.
+ */
+- (UIColor *)themedTranslucencyColorForKey:(NSString *)key;
+
 - (NSURL *)themedImageURLForKey:(NSString *)key;
 - (UIFont *)themedFontForKey:(NSString *)key;
 

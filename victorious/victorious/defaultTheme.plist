@@ -6,6 +6,13 @@
 	<string>FashionToast</string>
 	<key>menuHeaderImageUrl</key>
 	<string>http://photographher.com/wp-content/uploads/2013/04/fashiontoast.png</string>
+	<key>menuLabelFont</key>
+	<dict>
+		<key>fontName</key>
+		<string>Roboto-Light</string>
+		<key>fontSize</key>
+		<string>17</string>
+	</dict>
 	<key>applicationTintColor</key>
 	<dict>
 		<key>red</key>
@@ -47,6 +54,28 @@
 		<integer>255</integer>
 		<key>blue</key>
 		<integer>255</integer>
+		<key>alpha</key>
+		<integer>1</integer>
+	</dict>
+	<key>menuLabelColor</key>
+	<dict>
+		<key>red</key>
+		<integer>96</integer>
+		<key>green</key>
+		<integer>99</integer>
+		<key>blue</key>
+		<integer>102</integer>
+		<key>alpha</key>
+		<integer>1</integer>
+	</dict>
+	<key>menuSeparatorColor</key>
+	<dict>
+		<key>red</key>
+		<integer>223</integer>
+		<key>green</key>
+		<integer>223</integer>
+		<key>blue</key>
+		<integer>223</integer>
 		<key>alpha</key>
 		<integer>1</integer>
 	</dict>
