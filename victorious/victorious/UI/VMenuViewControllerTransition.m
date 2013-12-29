@@ -37,10 +37,12 @@
         VMenuViewController *menuViewController = (VMenuViewController *)fromViewController;
         [containerView insertSubview:toViewController.view belowSubview:menuViewController.view];
 
+        // This seems to be needed here instead of the completion block so the height of the navigation controller does't blip,
+        // however this then shows the status bar over the menu when it's animating out
+        [[UIApplication sharedApplication] setStatusBarHidden:NO];
         [UIView animateWithDuration:animationDuration delay:0 usingSpringWithDamping:0.8 initialSpringVelocity:0.2 options:UIViewAnimationOptionCurveEaseInOut animations:^{
             menuViewController.containerView.transform = CGAffineTransformMakeTranslation(-CGRectGetMaxX(menuViewController.containerView.frame), 0);
         } completion:^(BOOL finished){
-            [[UIApplication sharedApplication] setStatusBarHidden:NO];
             [transitionContext completeTransition:YES];
         }];
     }else{
