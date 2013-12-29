@@ -8,7 +8,15 @@
 
 #import "VMenuViewControllerTransition.h"
 #import "VMenuViewController.h"
-#import "UIImage+ImageEffects.h"
+
+@implementation UINavigationBar(StatusBar)
+- (CGSize)sizeThatFits:(CGSize)size{
+    if([[UIApplication sharedApplication] isStatusBarHidden]){
+        return CGSizeMake(CGRectGetWidth(self.bounds), 64);
+    }
+    return CGSizeMake(CGRectGetWidth(self.bounds), 44);
+}
+@end
 
 @implementation VMenuViewControllerTransitionDelegate
 
@@ -40,11 +48,21 @@
         [UIView animateWithDuration:animationDuration delay:0 usingSpringWithDamping:0.8 initialSpringVelocity:0.2 options:UIViewAnimationOptionCurveEaseInOut animations:^{
             menuViewController.containerView.transform = CGAffineTransformMakeTranslation(-CGRectGetMaxX(menuViewController.containerView.frame), 0);
         } completion:^(BOOL finished){
+            // TODO: this sometimes causes the navbar to jump
+            [[UIApplication sharedApplication] setStatusBarHidden:NO];
             [transitionContext completeTransition:YES];
         }];
     }else{
         VMenuViewController *menuViewController = (VMenuViewController *)toViewController;
         [containerView insertSubview:menuViewController.view aboveSubview:fromViewController.view];
+
+        CGRect statusBarFrame = [[UIApplication sharedApplication] statusBarFrame];
+        UIView *snapshotView = [[UIScreen mainScreen] snapshotViewAfterScreenUpdates:NO];
+        UIGraphicsBeginImageContextWithOptions(statusBarFrame.size, NO, 0);
+        [snapshotView drawViewHierarchyInRect:snapshotView.bounds afterScreenUpdates:YES];
+        menuViewController.statusBarImageView.image = UIGraphicsGetImageFromCurrentImageContext();
+
+        [[UIApplication sharedApplication] setStatusBarHidden:YES];
 
         menuViewController.containerView.transform = CGAffineTransformMakeTranslation(-CGRectGetMaxX(menuViewController.containerView.frame), 0);
         [UIView animateWithDuration:animationDuration delay:0 usingSpringWithDamping:0.8 initialSpringVelocity:0.2 options:UIViewAnimationOptionCurveEaseInOut animations:^{

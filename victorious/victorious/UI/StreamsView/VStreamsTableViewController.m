@@ -457,11 +457,10 @@ static NSString* kSearchCache = @"SearchCache";
     if ([segue.destinationViewController isKindOfClass:[VMenuViewController class]])
     {
         VMenuViewController *menuViewController = segue.destinationViewController;
-        menuViewController.transitioningDelegate = (id <UIViewControllerTransitioningDelegate>)[VMenuViewControllerTransitionDelegate new];
+        menuViewController.transitioningDelegate =
+        (id <UIViewControllerTransitioningDelegate>)[VMenuViewControllerTransitionDelegate new];
         menuViewController.modalPresentationStyle = UIModalPresentationCustom;
-    }
-    
-    if ([segue.identifier isEqualToString:@"toStreamDetails"])
+    } else if ([segue.identifier isEqualToString:@"toStreamDetails"])
     {
         VStreamsSubViewController *subview = (VStreamsSubViewController *)segue.destinationViewController;
         

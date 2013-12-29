@@ -627,6 +627,13 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="8Sh-4a-sYK">
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="20"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="20" id="cJI-QR-VfO"/>
+                                </constraints>
+                            </imageView>
                             <view contentMode="scaleToFill" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="pCa-KB-WLJ" customClass="AMBlurView">
                                 <rect key="frame" x="-10" y="0.0" width="280" height="568"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -635,6 +642,9 @@
                         <gestureRecognizers/>
                         <constraints>
                             <constraint firstAttribute="trailing" secondItem="pCa-KB-WLJ" secondAttribute="trailing" constant="50" id="3ch-8r-fHL"/>
+                            <constraint firstAttribute="trailing" secondItem="8Sh-4a-sYK" secondAttribute="trailing" id="50u-ec-ctZ"/>
+                            <constraint firstItem="8Sh-4a-sYK" firstAttribute="top" secondItem="Pev-Kw-xxR" secondAttribute="bottom" id="8WH-NZ-oug"/>
+                            <constraint firstItem="8Sh-4a-sYK" firstAttribute="leading" secondItem="ZaD-bo-5Lm" secondAttribute="leading" id="SIK-bK-kAQ"/>
                         </constraints>
                         <connections>
                             <outletCollection property="gestureRecognizers" destination="g74-IX-k5Z" appends="YES" id="Eru-iO-VzG"/>
@@ -644,6 +654,7 @@
                     <nil key="simulatedStatusBarMetrics"/>
                     <connections>
                         <outlet property="containerView" destination="pCa-KB-WLJ" id="7zX-KI-18m"/>
+                        <outlet property="statusBarImageView" destination="8Sh-4a-sYK" id="wQI-DI-s0a"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="bPO-nS-5eB" userLabel="First Responder" sceneMemberID="firstResponder"/>
