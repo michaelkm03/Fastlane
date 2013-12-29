@@ -11,6 +11,5 @@
 @interface VMenuViewController : UIViewController
 
 @property (weak, nonatomic) IBOutlet UIView *containerView;
-@property (weak, nonatomic) IBOutlet UIImageView *imageView;
 
 @end

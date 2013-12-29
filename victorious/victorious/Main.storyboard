@@ -627,26 +627,14 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Guj-Aq-AZF">
-                                <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
-                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                            </imageView>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="pCa-KB-WLJ">
+                            <view contentMode="scaleToFill" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="pCa-KB-WLJ" customClass="AMBlurView">
                                 <rect key="frame" x="-10" y="0.0" width="280" height="568"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             </view>
                         </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <gestureRecognizers/>
                         <constraints>
-                            <constraint firstAttribute="trailing" secondItem="Guj-Aq-AZF" secondAttribute="trailing" id="3UX-ph-1JD"/>
                             <constraint firstAttribute="trailing" secondItem="pCa-KB-WLJ" secondAttribute="trailing" constant="50" id="3ch-8r-fHL"/>
-                            <constraint firstItem="Guj-Aq-AZF" firstAttribute="leading" secondItem="ZaD-bo-5Lm" secondAttribute="leading" id="8Go-Sc-zlk"/>
-                            <constraint firstItem="pCa-KB-WLJ" firstAttribute="bottom" secondItem="Guj-Aq-AZF" secondAttribute="bottom" id="KID-4G-rnn"/>
-                            <constraint firstItem="Guj-Aq-AZF" firstAttribute="top" secondItem="ZaD-bo-5Lm" secondAttribute="top" id="LOf-jJ-WcH"/>
-                            <constraint firstItem="pCa-KB-WLJ" firstAttribute="top" secondItem="Guj-Aq-AZF" secondAttribute="top" id="NBD-3J-yvf"/>
-                            <constraint firstAttribute="bottom" secondItem="Guj-Aq-AZF" secondAttribute="bottom" id="O1l-Y9-mnn"/>
-                            <constraint firstItem="pCa-KB-WLJ" firstAttribute="leading" secondItem="Guj-Aq-AZF" secondAttribute="leading" constant="-10" id="bzi-2w-YgH"/>
                         </constraints>
                         <connections>
                             <outletCollection property="gestureRecognizers" destination="g74-IX-k5Z" appends="YES" id="Eru-iO-VzG"/>
@@ -656,7 +644,6 @@
                     <nil key="simulatedStatusBarMetrics"/>
                     <connections>
                         <outlet property="containerView" destination="pCa-KB-WLJ" id="7zX-KI-18m"/>
-                        <outlet property="imageView" destination="Guj-Aq-AZF" id="ekT-MY-Ce1"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="bPO-nS-5eB" userLabel="First Responder" sceneMemberID="firstResponder"/>

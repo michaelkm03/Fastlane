@@ -10,7 +10,6 @@
 #import "VMenuTableViewController.h"
 
 @interface VMenuViewController()
-
 @end
 
 @implementation VMenuViewController
@@ -23,11 +22,6 @@
     [self addChildViewController:menuTableViewController];
     [self.containerView addSubview:menuTableViewController.view];
     [menuTableViewController didMoveToParentViewController:self];
-
-    CAShapeLayer *shapeMaskLayer = [CAShapeLayer layer];
-    shapeMaskLayer.path = [[UIBezierPath bezierPathWithRect:self.containerView.bounds] CGPath];
-    shapeMaskLayer.frame = self.containerView.frame;
-    self.imageView.layer.mask = shapeMaskLayer;
 }
 
 - (IBAction)tapGestureAction:(id)sender{

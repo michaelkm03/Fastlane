@@ -90,3 +90,9 @@
 #define COCOAPODS_VERSION_MINOR_UIView_Autolayout 0
 #define COCOAPODS_VERSION_PATCH_UIView_Autolayout 9
 
+// iOS-blur
+#define COCOAPODS_POD_AVAILABLE_iOS_blur
+#define COCOAPODS_VERSION_MAJOR_iOS_blur 0
+#define COCOAPODS_VERSION_MINOR_iOS_blur 0
+#define COCOAPODS_VERSION_PATCH_iOS_blur 3
+
