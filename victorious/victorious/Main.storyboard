@@ -545,6 +545,14 @@
                     <nil key="simulatedStatusBarMetrics"/>
                     <connections>
                         <outlet property="nameLabel" destination="ITp-sH-OFa" id="zTn-zq-dyw"/>
+                        <outletCollection property="imageViews" destination="o9V-VI-Pfh" id="NEP-8m-vRG"/>
+                        <outletCollection property="imageViews" destination="ska-PF-YWz" id="vNU-wd-9d2"/>
+                        <outletCollection property="imageViews" destination="p90-Of-07R" id="ols-vx-3fG"/>
+                        <outletCollection property="imageViews" destination="NK9-AO-t4g" id="tfu-pM-iNP"/>
+                        <outletCollection property="imageViews" destination="zDi-5D-LTH" id="Xt3-PG-9A7"/>
+                        <outletCollection property="imageViews" destination="EiP-ms-Q2J" id="y1N-Kn-llf"/>
+                        <outletCollection property="imageViews" destination="8Ih-79-byn" id="zj4-yp-9Gx"/>
+                        <outletCollection property="imageViews" destination="XMF-6Z-XZc" id="rlH-sv-Wla"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="aKj-L4-nd8" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -568,7 +576,7 @@
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                             </imageView>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="pCa-KB-WLJ">
-                                <rect key="frame" x="-20" y="0.0" width="290" height="568"/>
+                                <rect key="frame" x="-10" y="0.0" width="280" height="568"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             </view>
                         </subviews>
@@ -582,7 +590,7 @@
                             <constraint firstItem="Guj-Aq-AZF" firstAttribute="top" secondItem="ZaD-bo-5Lm" secondAttribute="top" id="LOf-jJ-WcH"/>
                             <constraint firstItem="pCa-KB-WLJ" firstAttribute="top" secondItem="Guj-Aq-AZF" secondAttribute="top" id="NBD-3J-yvf"/>
                             <constraint firstAttribute="bottom" secondItem="Guj-Aq-AZF" secondAttribute="bottom" id="O1l-Y9-mnn"/>
-                            <constraint firstItem="pCa-KB-WLJ" firstAttribute="leading" secondItem="Guj-Aq-AZF" secondAttribute="leading" constant="-20" id="bzi-2w-YgH"/>
+                            <constraint firstItem="pCa-KB-WLJ" firstAttribute="leading" secondItem="Guj-Aq-AZF" secondAttribute="leading" constant="-10" id="bzi-2w-YgH"/>
                         </constraints>
                         <connections>
                             <outletCollection property="gestureRecognizers" destination="g74-IX-k5Z" appends="YES" id="Eru-iO-VzG"/>
