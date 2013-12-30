@@ -19,6 +19,8 @@
 		83ABAFAF18709DE30069556C /* Roboto-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 83ABAFA218709DE30069556C /* Roboto-Light.ttf */; };
 		83BD06FB186BE4B2007742D1 /* UIImage+ImageEffects.m in Sources */ = {isa = PBXBuildFile; fileRef = 83BD06FA186BE4B2007742D1 /* UIImage+ImageEffects.m */; };
 		83F38277186BE62300A866A1 /* VMenuTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 83F38276186BE62300A866A1 /* VMenuTableViewController.m */; };
+		83F7DAAB187213E000299FA1 /* VAddActionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 83F7DAAA187213E000299FA1 /* VAddActionViewController.m */; };
+		83F7DAAF187221E600299FA1 /* VActionViewControllerTransition.m in Sources */ = {isa = PBXBuildFile; fileRef = 83F7DAAE187221E600299FA1 /* VActionViewControllerTransition.m */; };
 		BE171D7A1868BE64004E5202 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BE171D791868BE64004E5202 /* Foundation.framework */; };
 		BE171D7C1868BE64004E5202 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BE171D7B1868BE64004E5202 /* CoreGraphics.framework */; };
 		BE171D7E1868BE64004E5202 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BE171D7D1868BE64004E5202 /* UIKit.framework */; };
@@ -121,6 +123,10 @@
 		83BD06FA186BE4B2007742D1 /* UIImage+ImageEffects.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+ImageEffects.m"; sourceTree = "<group>"; };
 		83F38275186BE62300A866A1 /* VMenuTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VMenuTableViewController.h; sourceTree = "<group>"; };
 		83F38276186BE62300A866A1 /* VMenuTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VMenuTableViewController.m; sourceTree = "<group>"; };
+		83F7DAA9187213E000299FA1 /* VAddActionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VAddActionViewController.h; sourceTree = "<group>"; };
+		83F7DAAA187213E000299FA1 /* VAddActionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VAddActionViewController.m; sourceTree = "<group>"; };
+		83F7DAAD187221E600299FA1 /* VActionViewControllerTransition.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VActionViewControllerTransition.h; sourceTree = "<group>"; };
+		83F7DAAE187221E600299FA1 /* VActionViewControllerTransition.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VActionViewControllerTransition.m; sourceTree = "<group>"; };
 		BE171D761868BE64004E5202 /* victorious.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = victorious.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		BE171D791868BE64004E5202 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		BE171D7B1868BE64004E5202 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -291,6 +297,7 @@
 				8364C70818694FF00028C1ED /* Menu */,
 				3FF8B7991868EEE800806EA0 /* Login */,
 				3F4863F71869181500F77346 /* Messages */,
+				83F7DAAC187213E400299FA1 /* Actions */,
 			);
 			name = UI;
 			sourceTree = "<group>";
@@ -333,6 +340,17 @@
 				83ABAFA218709DE30069556C /* Roboto-Light.ttf */,
 			);
 			path = Roboto;
+			sourceTree = "<group>";
+		};
+		83F7DAAC187213E400299FA1 /* Actions */ = {
+			isa = PBXGroup;
+			children = (
+				83F7DAA9187213E000299FA1 /* VAddActionViewController.h */,
+				83F7DAAA187213E000299FA1 /* VAddActionViewController.m */,
+				83F7DAAD187221E600299FA1 /* VActionViewControllerTransition.h */,
+				83F7DAAE187221E600299FA1 /* VActionViewControllerTransition.m */,
+			);
+			name = Actions;
 			sourceTree = "<group>";
 		};
 		BE171D6D1868BE64004E5202 = {
@@ -743,6 +761,7 @@
 				BE171E2E1868C211004E5202 /* VNodeAction.m in Sources */,
 				BE171E321868C211004E5202 /* VStatInteraction.m in Sources */,
 				BE171E281868C211004E5202 /* VCategory.m in Sources */,
+				83F7DAAB187213E000299FA1 /* VAddActionViewController.m in Sources */,
 				BE171E1A1868C211004E5202 /* VStatSequence+RestKit.m in Sources */,
 				BE171E221868C211004E5202 /* VObjectManager.m in Sources */,
 				BE171E241868C211004E5202 /* VThemeManager.m in Sources */,
@@ -758,6 +777,7 @@
 				BE171E0A1868C211004E5202 /* VAsset+Fetcher.m in Sources */,
 				3F4863FA1869184000F77346 /* VMessagesViewController.m in Sources */,
 				BE171E171868C211004E5202 /* VSequence+RestKit.m in Sources */,
+				83F7DAAF187221E600299FA1 /* VActionViewControllerTransition.m in Sources */,
 				BE171E291868C211004E5202 /* VComment.m in Sources */,
 				BE171E391868C266004E5202 /* NSManagedObject+EasyFetching.m in Sources */,
 				BE692B53186E60B300C71336 /* VStreamsSubViewController.m in Sources */,

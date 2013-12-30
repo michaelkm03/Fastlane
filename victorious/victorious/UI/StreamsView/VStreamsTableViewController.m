@@ -22,6 +22,9 @@
 #import "VMenuViewController.h"
 #import "VMenuViewControllerTransition.h"
 
+#import "VAddActionViewController.h"
+#import "VActionViewControllerTransition.h"
+
 typedef NS_ENUM(NSInteger, VStreamScope)
 {
     VStreamFilterAll = 0,
@@ -62,7 +65,11 @@ static NSString* kSearchCache = @"SearchCache";
     
     //    TODO: uncomment featuredView
 //    self.featuredStreamsViewController =   [self.storyboard instantiateViewControllerWithIdentifier:@"featured_pages"];
-    
+
+    UIBarButtonItem *searchButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"Search"] style:UIBarButtonItemStylePlain target:self action:@selector(displaySearchBar:)];
+    UIBarButtonItem *addButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"Add"] style:UIBarButtonItemStylePlain target:self action:@selector(addButtonAction:)];
+    self.navigationItem.rightBarButtonItems= @[addButtonItem, searchButtonItem];
+
     [self registerCells];
     
     NSError *error;
@@ -131,6 +138,15 @@ static NSString* kSearchCache = @"SearchCache";
     [self.tableView registerNib:[UINib nibWithNibName:@"VStreamDoublePollCell" bundle:[NSBundle mainBundle]]
          forCellReuseIdentifier:kStreamDoublePollCellIdentifier];
     [self.searchDisplayController.searchResultsTableView registerNib:[UINib nibWithNibName:@"VStreamDoublePollCell" bundle:[NSBundle mainBundle]] forCellReuseIdentifier:kStreamDoublePollCellIdentifier];
+}
+
+- (IBAction)addButtonAction:(id)sender{
+    VAddActionViewController *viewController =
+    [self.storyboard instantiateViewControllerWithIdentifier:@"add_action"];
+    viewController.transitioningDelegate =
+    (id <UIViewControllerTransitioningDelegate>)[VActionViewControllerTransitionDelegate new];
+    viewController.modalPresentationStyle = UIModalPresentationCustom;
+    [self presentViewController:viewController animated:YES completion:nil];
 }
 
 #pragma mark - Table view data source
@@ -475,6 +491,12 @@ static NSString* kSearchCache = @"SearchCache";
     [[NSNotificationCenter defaultCenter] postNotificationName:kStreamsWillSegueNotification
                                                         object:nil];
     [super viewWillDisappear:animated];
+}
+
+#pragma mark - VAddActionViewControllerDelegate
+
+- (void)addActionViewController:(VAddActionViewController *)viewController didChooseAction:(VAddActionViewControllerType)action{
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 @end

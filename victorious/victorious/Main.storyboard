@@ -239,7 +239,7 @@
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" title="Messages" id="xlI-t1-u13">
-                        <barButtonItem key="leftBarButtonItem" image="Menu_Button" id="PB4-zP-IM9">
+                        <barButtonItem key="leftBarButtonItem" image="Menu" id="PB4-zP-IM9">
                             <connections>
                                 <segue destination="gHV-c6-eaL" kind="modal" id="Oqu-Ea-RjF"/>
                             </connections>
@@ -799,14 +799,9 @@
                     </tableView>
                     <toolbarItems/>
                     <navigationItem key="navigationItem" title="Streams" id="hcu-Z9-yLH">
-                        <barButtonItem key="leftBarButtonItem" image="Menu_Button" id="Yxi-Xf-4YC">
+                        <barButtonItem key="leftBarButtonItem" image="Menu" id="Yxi-Xf-4YC">
                             <connections>
                                 <segue destination="gHV-c6-eaL" kind="modal" id="6Th-L6-qdl"/>
-                            </connections>
-                        </barButtonItem>
-                        <barButtonItem key="rightBarButtonItem" systemItem="search" id="jzJ-pc-8k7">
-                            <connections>
-                                <action selector="displaySearchBar:" destination="Odg-Le-tS1" id="tEx-Id-khB"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
@@ -834,6 +829,123 @@
                 </searchDisplayController>
             </objects>
             <point key="canvasLocation" x="-3455" y="81"/>
+        </scene>
+        <!--Add Action View Controller-->
+        <scene sceneID="GYK-fP-9dA">
+            <objects>
+                <viewController storyboardIdentifier="add_action" id="OY3-uk-9bR" customClass="VAddActionViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="U01-HR-poG"/>
+                        <viewControllerLayoutGuide type="bottom" id="eCd-Nf-gJv"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="wWj-ge-JxY">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="8se-OJ-PJj">
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.20000000000000001" colorSpace="calibratedWhite"/>
+                            </view>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="C2e-tJ-w3I" customClass="AMBlurView">
+                                <rect key="frame" x="0.0" y="368" width="320" height="200"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                <subviews>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="QcK-fp-77X">
+                                        <rect key="frame" x="115" y="20" width="90" height="90"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <state key="normal" title="Image">
+                                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="imageButtonAction:" destination="OY3-uk-9bR" eventType="touchUpInside" id="t5u-cV-zap"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6OB-4C-5rW">
+                                        <rect key="frame" x="20" y="20" width="90" height="90"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="90" id="2n6-Ze-ETI"/>
+                                            <constraint firstAttribute="height" constant="90" id="Yi7-gO-NnG"/>
+                                        </constraints>
+                                        <state key="normal" title="Video">
+                                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="videoButtonAction:" destination="OY3-uk-9bR" eventType="touchUpInside" id="Q5G-E3-pV6"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="L8r-ti-QuW">
+                                        <rect key="frame" x="210" y="20" width="90" height="90"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <state key="normal" title="Poll">
+                                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="pollButtonAction:" destination="OY3-uk-9bR" eventType="touchUpInside" id="SIn-oD-0bV"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Aob-Fy-mtO">
+                                        <rect key="frame" x="20" y="138" width="280" height="42"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="42" id="VFz-Nu-yWg"/>
+                                        </constraints>
+                                        <state key="normal" title="Cancel">
+                                            <color key="titleColor" red="1" green="0.0" blue="0.023573720190000001" alpha="1" colorSpace="calibratedRGB"/>
+                                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="dismissAction:" destination="OY3-uk-9bR" eventType="touchUpInside" id="ayg-zk-nsV"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstItem="L8r-ti-QuW" firstAttribute="height" secondItem="QcK-fp-77X" secondAttribute="height" id="Hl9-NS-5Nm"/>
+                                    <constraint firstItem="6OB-4C-5rW" firstAttribute="width" secondItem="QcK-fp-77X" secondAttribute="width" id="I6s-80-qKc"/>
+                                    <constraint firstItem="6OB-4C-5rW" firstAttribute="top" secondItem="C2e-tJ-w3I" secondAttribute="top" constant="20" symbolic="YES" id="Ig3-lp-aHv"/>
+                                    <constraint firstAttribute="height" constant="200" id="LqR-kg-lSz"/>
+                                    <constraint firstItem="QcK-fp-77X" firstAttribute="centerX" secondItem="Aob-Fy-mtO" secondAttribute="centerX" id="Q6J-gA-L89"/>
+                                    <constraint firstItem="6OB-4C-5rW" firstAttribute="centerY" secondItem="L8r-ti-QuW" secondAttribute="centerY" id="QEq-xb-PPM"/>
+                                    <constraint firstItem="6OB-4C-5rW" firstAttribute="height" secondItem="QcK-fp-77X" secondAttribute="height" id="Qje-4v-5pB"/>
+                                    <constraint firstAttribute="trailing" secondItem="Aob-Fy-mtO" secondAttribute="trailing" constant="20" symbolic="YES" id="Ry7-LD-aie"/>
+                                    <constraint firstAttribute="bottom" secondItem="Aob-Fy-mtO" secondAttribute="bottom" constant="20" symbolic="YES" id="byE-bg-jLL"/>
+                                    <constraint firstItem="L8r-ti-QuW" firstAttribute="width" secondItem="QcK-fp-77X" secondAttribute="width" id="eYi-WK-yv3"/>
+                                    <constraint firstItem="L8r-ti-QuW" firstAttribute="trailing" secondItem="Aob-Fy-mtO" secondAttribute="trailing" id="jt9-FB-lrv"/>
+                                    <constraint firstItem="6OB-4C-5rW" firstAttribute="leading" secondItem="Aob-Fy-mtO" secondAttribute="leading" id="rxp-wY-G5D"/>
+                                    <constraint firstItem="Aob-Fy-mtO" firstAttribute="leading" secondItem="C2e-tJ-w3I" secondAttribute="leading" constant="20" symbolic="YES" id="sW7-93-Qvz"/>
+                                    <constraint firstItem="6OB-4C-5rW" firstAttribute="centerY" secondItem="QcK-fp-77X" secondAttribute="centerY" id="xPy-EB-LEa"/>
+                                </constraints>
+                            </view>
+                        </subviews>
+                        <gestureRecognizers/>
+                        <constraints>
+                            <constraint firstItem="8se-OJ-PJj" firstAttribute="top" secondItem="wWj-ge-JxY" secondAttribute="top" id="GcB-lU-slt"/>
+                            <constraint firstItem="8se-OJ-PJj" firstAttribute="trailing" secondItem="C2e-tJ-w3I" secondAttribute="trailing" id="MTr-1m-pIw"/>
+                            <constraint firstItem="8se-OJ-PJj" firstAttribute="bottom" secondItem="C2e-tJ-w3I" secondAttribute="bottom" id="QKT-gr-6zD"/>
+                            <constraint firstItem="C2e-tJ-w3I" firstAttribute="leading" secondItem="wWj-ge-JxY" secondAttribute="leading" id="SKm-OU-oJ6"/>
+                            <constraint firstAttribute="trailing" secondItem="C2e-tJ-w3I" secondAttribute="trailing" id="SZN-UE-SEa"/>
+                            <constraint firstAttribute="bottom" secondItem="C2e-tJ-w3I" secondAttribute="bottom" id="aHo-gr-mYb"/>
+                            <constraint firstItem="8se-OJ-PJj" firstAttribute="leading" secondItem="C2e-tJ-w3I" secondAttribute="leading" id="s7R-hn-G5f"/>
+                        </constraints>
+                        <connections>
+                            <outletCollection property="gestureRecognizers" destination="XpF-hQ-WwI" appends="YES" id="IYk-tw-4Sg"/>
+                        </connections>
+                    </view>
+                    <connections>
+                        <outlet property="contentView" destination="C2e-tJ-w3I" id="I4d-q3-IG4"/>
+                        <outlet property="coverView" destination="8se-OJ-PJj" id="MfG-nH-Pt0"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="GsU-Uy-J5O" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <tapGestureRecognizer id="XpF-hQ-WwI">
+                    <connections>
+                        <action selector="dismissAction:" destination="OY3-uk-9bR" id="Lqd-If-TPU"/>
+                    </connections>
+                </tapGestureRecognizer>
+            </objects>
+            <point key="canvasLocation" x="-3453" y="814"/>
         </scene>
         <!--Streams Sub View Controller - <Sequence Name>-->
         <scene sceneID="ziS-fc-Ov5">
@@ -926,6 +1038,7 @@
     <resources>
         <image name="DownVote" width="27" height="27"/>
         <image name="Flag" width="27" height="27"/>
+        <image name="Menu" width="27" height="27"/>
         <image name="MenuBookmark" width="18" height="22"/>
         <image name="MenuCommunity" width="20" height="23"/>
         <image name="MenuForums" width="22" height="20"/>
@@ -934,7 +1047,6 @@
         <image name="MenuPolls" width="22" height="22"/>
         <image name="MenuSettings" width="20" height="20"/>
         <image name="MenuStar" width="27" height="25"/>
-        <image name="Menu_Button" width="27" height="27"/>
         <image name="UpVote" width="27" height="27"/>
         <image name="facebook" width="27" height="27"/>
     </resources>
@@ -944,6 +1056,6 @@
         <simulatedScreenMetrics key="destination" type="retina4"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
-        <segue reference="Oqu-Ea-RjF"/>
+        <segue reference="6Th-L6-qdl"/>
     </inferredMetricsTieBreakers>
 </document>
