@@ -12,8 +12,7 @@
 #import "NSString+VParseHelp.h"
 #import "UIImageView+AFNetworking.h"
 #import "VObjectManager+Sequence.h"
-//    TODO: uncomment featuredView
-//#import "VFeaturedStreamsViewController.h"
+#import "VFeaturedStreamsViewController.h"
 
 #import "VStreamViewCell.h"
 #import "VStreamVideoCell.h"
@@ -39,8 +38,7 @@ typedef NS_ENUM(NSInteger, VStreamScope)
 @property (nonatomic, strong) NSFetchedResultsController* searchFetchedResultsController;
 @property (nonatomic) VStreamScope scopeType;
 @property (strong, nonatomic) NSString* filterText;
-//    TODO: uncomment featuredView
-//@property (nonatomic, strong) VFeaturedStreamsViewController* featuredStreamsViewController;
+@property (nonatomic, strong) VFeaturedStreamsViewController* featuredStreamsViewController;
 @end
 
 static NSString* kStreamCache = @"StreamCache";
@@ -62,9 +60,8 @@ static NSString* kSearchCache = @"SearchCache";
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
-    //    TODO: uncomment featuredView
-//    self.featuredStreamsViewController =   [self.storyboard instantiateViewControllerWithIdentifier:@"featured_pages"];
+
+    self.featuredStreamsViewController =   [self.storyboard instantiateViewControllerWithIdentifier:@"featured_pages"];
 
     UIBarButtonItem *searchButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"Search"] style:UIBarButtonItemStylePlain target:self action:@selector(displaySearchBar:)];
     UIBarButtonItem *addButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"Add"] style:UIBarButtonItemStylePlain target:self action:@selector(addButtonAction:)];
@@ -229,13 +226,12 @@ static NSString* kSearchCache = @"SearchCache";
 {
     CGRect frame = CGRectMake(0, 0, CGRectGetWidth(self.view.bounds), [self tableView:tableView heightForHeaderInSection:section]);
     UIView* containerView = [[UIView alloc] initWithFrame:frame];
-    
-//    TODO: uncomment featuredView
-//    [self addChildViewController:self.featuredStreamsViewController];
-//    [containerView addSubview:self.featuredStreamsViewController.view];
-//    [self.featuredStreamsViewController didMoveToParentViewController:self];
-//    self.featuredStreamsViewController.view.frame = frame;
-    
+
+    [self addChildViewController:self.featuredStreamsViewController];
+    [containerView addSubview:self.featuredStreamsViewController.view];
+    [self.featuredStreamsViewController didMoveToParentViewController:self];
+    self.featuredStreamsViewController.view.frame = frame;
+
     return containerView;
 }
 

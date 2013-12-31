@@ -16,6 +16,8 @@
 		5D2BB9E4E1434C7B91B6C084 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 662F0867152745B2B2F08301 /* libPods.a */; };
 		8364C70B1869500D0028C1ED /* VMenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8364C70A1869500D0028C1ED /* VMenuViewController.m */; };
 		8364C70F1869557E0028C1ED /* VMenuViewControllerTransition.m in Sources */ = {isa = PBXBuildFile; fileRef = 8364C70E1869557E0028C1ED /* VMenuViewControllerTransition.m */; };
+		8378622718728C89000BF84F /* VFeaturedStreamsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8378622418728C89000BF84F /* VFeaturedStreamsViewController.m */; };
+		8378622818728C89000BF84F /* VFeaturedViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8378622618728C89000BF84F /* VFeaturedViewController.m */; };
 		83ABAFAF18709DE30069556C /* Roboto-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 83ABAFA218709DE30069556C /* Roboto-Light.ttf */; };
 		83BD06FB186BE4B2007742D1 /* UIImage+ImageEffects.m in Sources */ = {isa = PBXBuildFile; fileRef = 83BD06FA186BE4B2007742D1 /* UIImage+ImageEffects.m */; };
 		83F38277186BE62300A866A1 /* VMenuTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 83F38276186BE62300A866A1 /* VMenuTableViewController.m */; };
@@ -118,6 +120,10 @@
 		8364C70A1869500D0028C1ED /* VMenuViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VMenuViewController.m; path = UI/VMenuViewController.m; sourceTree = "<group>"; };
 		8364C70D1869557E0028C1ED /* VMenuViewControllerTransition.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VMenuViewControllerTransition.h; path = UI/VMenuViewControllerTransition.h; sourceTree = "<group>"; };
 		8364C70E1869557E0028C1ED /* VMenuViewControllerTransition.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VMenuViewControllerTransition.m; path = UI/VMenuViewControllerTransition.m; sourceTree = "<group>"; };
+		8378622318728C89000BF84F /* VFeaturedStreamsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VFeaturedStreamsViewController.h; sourceTree = "<group>"; };
+		8378622418728C89000BF84F /* VFeaturedStreamsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VFeaturedStreamsViewController.m; sourceTree = "<group>"; };
+		8378622518728C89000BF84F /* VFeaturedViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VFeaturedViewController.h; sourceTree = "<group>"; };
+		8378622618728C89000BF84F /* VFeaturedViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VFeaturedViewController.m; sourceTree = "<group>"; };
 		83ABAFA218709DE30069556C /* Roboto-Light.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Roboto-Light.ttf"; sourceTree = "<group>"; };
 		83BD06F9186BE4B2007742D1 /* UIImage+ImageEffects.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+ImageEffects.h"; sourceTree = "<group>"; };
 		83BD06FA186BE4B2007742D1 /* UIImage+ImageEffects.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+ImageEffects.m"; sourceTree = "<group>"; };
@@ -552,6 +558,10 @@
 				BE692B2B186E5EE000C71336 /* Cells */,
 				BE692B1B186E5ED800C71336 /* VStreamsTableViewController.h */,
 				BE692B1C186E5ED800C71336 /* VStreamsTableViewController.m */,
+				8378622318728C89000BF84F /* VFeaturedStreamsViewController.h */,
+				8378622418728C89000BF84F /* VFeaturedStreamsViewController.m */,
+				8378622518728C89000BF84F /* VFeaturedViewController.h */,
+				8378622618728C89000BF84F /* VFeaturedViewController.m */,
 			);
 			name = Streams;
 			path = UI/StreamsView;
@@ -758,6 +768,7 @@
 			files = (
 				BE171E0F1868C211004E5202 /* VAsset+RestKit.m in Sources */,
 				BE171E131868C211004E5202 /* VInteractionAction+RestKit.m in Sources */,
+				8378622718728C89000BF84F /* VFeaturedStreamsViewController.m in Sources */,
 				BE171E2E1868C211004E5202 /* VNodeAction.m in Sources */,
 				BE171E321868C211004E5202 /* VStatInteraction.m in Sources */,
 				BE171E281868C211004E5202 /* VCategory.m in Sources */,
@@ -772,6 +783,7 @@
 				BE171E331868C211004E5202 /* VStatSequence.m in Sources */,
 				BE171E271868C211004E5202 /* VAsset.m in Sources */,
 				BE171E311868C211004E5202 /* VStatAnswer.m in Sources */,
+				8378622818728C89000BF84F /* VFeaturedViewController.m in Sources */,
 				BE171D881868BE64004E5202 /* main.m in Sources */,
 				BE692B27186E5ED800C71336 /* VStreamVideoCell.m in Sources */,
 				BE171E0A1868C211004E5202 /* VAsset+Fetcher.m in Sources */,
