@@ -22,6 +22,11 @@ extern  NSString*   const   kVMenuLabelFont;
 extern  NSString*   const   kVMenuLabelColor;
 extern  NSString*   const   kVMenuSeparatorColor;
 
+extern  NSString*   const   kVStreamCellTextColor;
+extern  NSString*   const   kVStreamCellIconColor;
+extern  NSString*   const   kVStreamCellTextFont;
+extern  NSString*   const   kVStreamCellTextUsernameFont;
+
 @interface VThemeManager : NSObject
 
 + (VThemeManager *)sharedThemeManager;

@@ -22,6 +22,11 @@ NSString*   const   kVMenuLabelFont                     =   @"menuLabelFont";
 NSString*   const   kVMenuLabelColor                    =   @"menuLabelColor";
 NSString*   const   kVMenuSeparatorColor                =   @"menuSeparatorColor";
 
+NSString*   const   kVStreamCellTextColor               =   @"streamCellTextColor";
+NSString*   const   kVStreamCellIconColor               =   @"streamCellIconColor";
+NSString*   const   kVStreamCellTextFont                =   @"streamCellTextFont";
+NSString*   const   kVStreamCellTextUsernameFont        =   @"streamCellTextUsernameFont";
+
 @interface      VThemeManager   ()
 @property   (nonatomic, readwrite, copy)    NSDictionary*   themeValues;
 @end

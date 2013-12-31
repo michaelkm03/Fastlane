@@ -190,7 +190,7 @@ static NSString* kSearchCache = @"SearchCache";
         
         return 240;
 
-    return 320;
+    return 450;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
