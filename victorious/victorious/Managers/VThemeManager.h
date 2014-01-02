@@ -10,39 +10,22 @@
 
 extern  NSString*   const   kVThemeManagerThemeDidChange;
 
-extern  NSString*   const   kVApplicationName;
-extern  NSString*   const   kVApplicationTintColor;
-
-extern  NSString*   const   kVNavigationBarBackgroundTintColor;
-extern  NSString*   const   kVNavigationBarTintColor;
-extern  NSString*   const   kVNavigationBarTitleTintColor;
-
-extern  NSString*   const   kVMenuHeaderImageUrl;
-extern  NSString*   const   kVMenuLabelFont;
-extern  NSString*   const   kVMenuLabelColor;
-extern  NSString*   const   kVMenuSeparatorColor;
-
-extern  NSString*   const   kVStreamCellTextColor;
-extern  NSString*   const   kVStreamCellIconColor;
-extern  NSString*   const   kVStreamCellTextFont;
-extern  NSString*   const   kVStreamCellTextUsernameFont;
-
 @interface VThemeManager : NSObject
 
 + (VThemeManager *)sharedThemeManager;
 
 - (void)setTheme:(NSDictionary *)dictionary;
 
-- (id)themedValueForKey:(NSString *)key;
+- (id)themedValueForKeyPath:(NSString *)keyPath;
 
-- (UIColor *)themedColorForKey:(NSString *)key;
+- (UIColor *)themedColorForKeyPath:(NSString *)keyPath;
 
 /** Retrieve a color from the theme that has been modified
  to look correct when used in a translucent view.
  */
-- (UIColor *)themedTranslucencyColorForKey:(NSString *)key;
+- (UIColor *)themedTranslucencyColorForKeyPath:(NSString *)keyPath;
 
-- (NSURL *)themedImageURLForKey:(NSString *)key;
-- (UIFont *)themedFontForKey:(NSString *)key;
+- (NSURL *)themedImageURLForKeyPath:(NSString *)keyPath;
+- (UIFont *)themedFontForKeyPath:(NSString *)keyPath;
 
 @end

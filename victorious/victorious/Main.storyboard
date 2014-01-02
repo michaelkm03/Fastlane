@@ -333,8 +333,8 @@
                                                         <constraint firstAttribute="height" constant="32" id="mwS-Tb-U9u"/>
                                                     </constraints>
                                                 </imageView>
-                                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Community" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1NJ-2J-Grr">
-                                                    <rect key="frame" x="60" y="12" width="86" height="20"/>
+                                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Community Channel" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1NJ-2J-Grr">
+                                                    <rect key="frame" x="60" y="12" width="151" height="20"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
                                                     <nil key="highlightedColor"/>
@@ -634,7 +634,7 @@
                                     <constraint firstAttribute="height" constant="20" id="cJI-QR-VfO"/>
                                 </constraints>
                             </imageView>
-                            <view contentMode="scaleToFill" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="pCa-KB-WLJ" customClass="AMBlurView">
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="pCa-KB-WLJ" customClass="AMBlurView">
                                 <rect key="frame" x="-10" y="0.0" width="280" height="568"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             </view>
@@ -644,7 +644,10 @@
                             <constraint firstAttribute="trailing" secondItem="pCa-KB-WLJ" secondAttribute="trailing" constant="50" id="3ch-8r-fHL"/>
                             <constraint firstAttribute="trailing" secondItem="8Sh-4a-sYK" secondAttribute="trailing" id="50u-ec-ctZ"/>
                             <constraint firstItem="8Sh-4a-sYK" firstAttribute="top" secondItem="Pev-Kw-xxR" secondAttribute="bottom" id="8WH-NZ-oug"/>
+                            <constraint firstItem="pCa-KB-WLJ" firstAttribute="top" secondItem="8Sh-4a-sYK" secondAttribute="top" id="MY8-vy-B3k"/>
                             <constraint firstItem="8Sh-4a-sYK" firstAttribute="leading" secondItem="ZaD-bo-5Lm" secondAttribute="leading" id="SIK-bK-kAQ"/>
+                            <constraint firstItem="pCa-KB-WLJ" firstAttribute="leading" secondItem="ZaD-bo-5Lm" secondAttribute="leading" constant="-10" id="SiV-qT-k6j"/>
+                            <constraint firstAttribute="bottom" secondItem="pCa-KB-WLJ" secondAttribute="bottom" id="UXt-zO-xkz"/>
                         </constraints>
                         <connections>
                             <outletCollection property="gestureRecognizers" destination="g74-IX-k5Z" appends="YES" id="Eru-iO-VzG"/>

@@ -10,23 +10,6 @@
 
 NSString*   const   kVThemeManagerThemeDidChange        =   @"VThemeManagerThemeDidChange";
 
-NSString*   const   kVApplicationName                   =   @"applicationName";
-NSString*   const   kVApplicationTintColor              =   @"applicationTintColor";
-
-NSString*   const   kVNavigationBarBackgroundTintColor  =   @"navigationBarBackgroundTintColor";
-NSString*   const   kVNavigationBarTintColor            =   @"navigationBarTintColor";
-NSString*   const   kVNavigationBarTitleTintColor       =   @"navigationBarTitleTintColor";
-
-NSString*   const   kVMenuHeaderImageUrl                =   @"menuHeaderImageUrl";
-NSString*   const   kVMenuLabelFont                     =   @"menuLabelFont";
-NSString*   const   kVMenuLabelColor                    =   @"menuLabelColor";
-NSString*   const   kVMenuSeparatorColor                =   @"menuSeparatorColor";
-
-NSString*   const   kVStreamCellTextColor               =   @"streamCellTextColor";
-NSString*   const   kVStreamCellIconColor               =   @"streamCellIconColor";
-NSString*   const   kVStreamCellTextFont                =   @"streamCellTextFont";
-NSString*   const   kVStreamCellTextUsernameFont        =   @"streamCellTextUsernameFont";
-
 @interface      VThemeManager   ()
 @property   (nonatomic, readwrite, copy)    NSDictionary*   themeValues;
 @end
@@ -68,14 +51,27 @@ NSString*   const   kVStreamCellTextUsernameFont        =   @"streamCellTextUser
 
 #pragma mark -
 
-- (id)themedValueForKey:(NSString *)key
+- (id)themedValueForKeyPath:(NSString *)keyPath
 {
-    return self.themeValues[key];
+    id value = self.themeValues[keyPath];
+
+    if (value)
+    {
+        return value;
+    }
+
+    NSString *newKeyPath = [keyPath stringByDeletingPathExtension];
+    if ([keyPath isEqualToString:newKeyPath])
+    {
+        return nil;
+    }
+
+    return [self themedValueForKeyPath:newKeyPath];
 }
 
-- (UIColor *)themedColorForKey:(NSString *)key
+- (UIColor *)themedColorForKeyPath:(NSString *)keyPath
 {
-    NSDictionary*   colorDictionary =   [self themedValueForKey:key];
+    NSDictionary*   colorDictionary =   [self themedValueForKeyPath:keyPath];
     if (nil == colorDictionary)
     {
         return nil;
@@ -89,9 +85,9 @@ NSString*   const   kVStreamCellTextUsernameFont        =   @"streamCellTextUser
     return color;
 }
 
-- (UIColor *)themedTranslucencyColorForKey:(NSString *)key
+- (UIColor *)themedTranslucencyColorForKeyPath:(NSString *)keyPath
 {
-    UIColor *color = [self themedColorForKey:key];
+    UIColor *color = [self themedColorForKeyPath:keyPath];
 
     // From https://github.com/kgn/UIColorCategories
     CGFloat hue = 0, saturation = 0, brightness = 0, alpha = 0;
@@ -99,17 +95,17 @@ NSString*   const   kVStreamCellTextUsernameFont        =   @"streamCellTextUser
     return [UIColor colorWithHue:hue saturation:saturation*1.158 brightness:brightness*0.95 alpha:alpha];
 }
 
-- (NSURL *)themedImageURLForKey:(NSString *)key
+- (NSURL *)themedImageURLForKeyPath:(NSString *)keyPath
 {
-    NSURL*  url =   [NSURL URLWithString:[self themedValueForKey:key]];
+    NSURL*  url =   [NSURL URLWithString:[self themedValueForKeyPath:keyPath]];
     if (nil == url)
-        url     =   [[NSBundle mainBundle] URLForResource:key withExtension:@"png"];
+        url     =   [[NSBundle mainBundle] URLForResource:keyPath withExtension:@"png"];
     return url;
 }
 
-- (UIFont *)themedFontForKey:(NSString *)key
+- (UIFont *)themedFontForKeyPath:(NSString *)keyPath
 {
-    NSDictionary*   fontDictionary = [self themedValueForKey:key];
+    NSDictionary*   fontDictionary = [self themedValueForKeyPath:keyPath];
     NSString*       fontName    =   fontDictionary[@"fontName"];
     CGFloat         fontSize    =   [fontDictionary[@"fontSize"] doubleValue];
     
