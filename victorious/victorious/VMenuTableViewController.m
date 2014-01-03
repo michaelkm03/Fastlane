@@ -10,6 +10,8 @@
 #import "VThemeManager.h"
 #import "VInboxBadgeLabel.h"
 
+NSString *const VMenuTableViewControllerDidSelectRowNotification = @"VMenuTableViewControllerDidSelectRowNotification";
+
 @interface VMenuTableViewController()
 @property (weak, nonatomic) IBOutlet VInboxBadgeLabel *inboxBadgeLabel;
 @property (weak, nonatomic) IBOutlet UILabel *nameLabel;
@@ -68,7 +70,9 @@
 #pragma mark - UITableViewDelegate
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
-    [self dismissViewControllerAnimated:YES completion:nil];
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+    [[NSNotificationCenter defaultCenter] postNotificationName:VMenuTableViewControllerDidSelectRowNotification object:@(cell.tag)];
 }
 
 @end
