@@ -21,7 +21,7 @@
     
     self.privacyPoliciesWebView.delegate    =   self;
     
-    NSURL*  privacyPoliciesURL  =   [[VThemeManager sharedThemeManager] themedURLForKeyPath:kVSettingsPrivacyPoliciesURL];
+    NSURL*  privacyPoliciesURL  =   [[VThemeManager sharedThemeManager] themedURLForKeyPath:kVChannelURLPrivacy];
     [self.privacyPoliciesWebView loadRequest:[NSURLRequest requestWithURL:privacyPoliciesURL]];
 }
 

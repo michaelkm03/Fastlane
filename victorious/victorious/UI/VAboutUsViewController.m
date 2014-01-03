@@ -21,7 +21,7 @@
     
     self.aboutUsWebView.delegate    =   self;
     
-    NSURL*  aboutUsURL  =   [[VThemeManager sharedThemeManager] themedURLForKeyPath:kVSettingsAboutUsURL];
+    NSURL*  aboutUsURL  =   [[VThemeManager sharedThemeManager] themedURLForKeyPath:kVChannelURLAbout];
     [self.aboutUsWebView loadRequest:[NSURLRequest requestWithURL:aboutUsURL]];
 }
 

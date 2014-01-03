@@ -26,21 +26,11 @@
     // TODO: connect to real data
     NSUInteger count = 8;
 
-    static dispatch_once_t onceToken;
-    static NSNumberFormatter *countFormatter = nil;
-    dispatch_once(&onceToken, ^{
-        countFormatter = [NSNumberFormatter new];
-        NSString *groupingSeparator = [[NSLocale currentLocale] objectForKey:NSLocaleGroupingSeparator];
-        [countFormatter setGroupingSeparator:groupingSeparator];
-        [countFormatter setAlwaysShowsDecimalSeparator:NO];
-        [countFormatter setUsesGroupingSeparator:YES];
-        [countFormatter setGroupingSize:3];
-    });
     if(count < 1){
         [self.inboxBadgeLabel setHidden:YES];
     }else{
         if(count < 1000){
-            self.inboxBadgeLabel.text = [countFormatter stringFromNumber:@(count)];
+            self.inboxBadgeLabel.text = [NSString stringWithFormat:@"%lu", count];
         }else{
             self.inboxBadgeLabel.text = @"+999";
         }

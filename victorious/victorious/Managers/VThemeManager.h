@@ -10,26 +10,9 @@
 
 extern  NSString*   const   kVThemeManagerThemeDidChange;
 
-extern  NSString*   const   kVApplicationName;
-extern  NSString*   const   kVApplicationTintColor;
-
-extern  NSString*   const   kVNavigationBarBackgroundTintColor;
-extern  NSString*   const   kVNavigationBarTintColor;
-extern  NSString*   const   kVNavigationBarTitleTintColor;
-
-extern  NSString*   const   kVMenuHeaderImageUrl;
-extern  NSString*   const   kVMenuLabelFont;
-extern  NSString*   const   kVMenuLabelColor;
-extern  NSString*   const   kVMenuSeparatorColor;
-
-extern  NSString*   const   kVStreamCellTextColor;
-extern  NSString*   const   kVStreamCellIconColor;
-extern  NSString*   const   kVStreamCellTextFont;
-extern  NSString*   const   kVStreamCellTextUsernameFont;
-
-extern  NSString*   const   kVSettingsAboutUsURL;
-extern  NSString*   const   kVSettingsPrivacyPoliciesURL;
-extern  NSString*   const   kVSettingsAcknowledgementsURL;
+extern  NSString*   const   kVChannelURLAbout;
+extern  NSString*   const   kVChannelURLPrivacy;
+extern  NSString*   const   kVChannelURLAcknowledgements;
 
 @interface VThemeManager : NSObject
 

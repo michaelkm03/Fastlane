@@ -4,6 +4,12 @@
 <dict>
 	<key>channel.name</key>
 	<string>Fashion Toast</string>
+	<key>channel.url.about</key>
+	<string>http://dev.getvictorious.com/api/static/about</string>
+	<key>channel.url.privacy</key>
+	<string>http://dev.getvictorious.com/api/static/privacy</string>
+	<key>channel.url.acknowledgements</key>
+	<string>http://dev.getvictorious.com/api/static/acknowledgments</string>
 	<key>theme.font</key>
 	<dict>
 		<key>fontName</key>
@@ -145,11 +151,5 @@
 		<key>alpha</key>
 		<integer>1</integer>
 	</dict>
-	<key>settingsAboutUsURL</key>
-	<string>http://dev.getvictorious.com/api/static/about</string>
-	<key>settingsPrivacyPoliciesURL</key>
-	<string>http://dev.getvictorious.com/api/static/privacy</string>
-	<key>settingsAcknowledgementsURL</key>
-	<string>http://dev.getvictorious.com/api/static/acknowledgments</string>
 </dict>
 </plist>

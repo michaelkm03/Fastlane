@@ -10,26 +10,9 @@
 
 NSString*   const   kVThemeManagerThemeDidChange        =   @"VThemeManagerThemeDidChange";
 
-NSString*   const   kVApplicationName                   =   @"applicationName";
-NSString*   const   kVApplicationTintColor              =   @"applicationTintColor";
-
-NSString*   const   kVNavigationBarBackgroundTintColor  =   @"navigationBarBackgroundTintColor";
-NSString*   const   kVNavigationBarTintColor            =   @"navigationBarTintColor";
-NSString*   const   kVNavigationBarTitleTintColor       =   @"navigationBarTitleTintColor";
-
-NSString*   const   kVMenuHeaderImageUrl                =   @"menuHeaderImageUrl";
-NSString*   const   kVMenuLabelFont                     =   @"menuLabelFont";
-NSString*   const   kVMenuLabelColor                    =   @"menuLabelColor";
-NSString*   const   kVMenuSeparatorColor                =   @"menuSeparatorColor";
-
-NSString*   const   kVStreamCellTextColor               =   @"streamCellTextColor";
-NSString*   const   kVStreamCellIconColor               =   @"streamCellIconColor";
-NSString*   const   kVStreamCellTextFont                =   @"streamCellTextFont";
-NSString*   const   kVStreamCellTextUsernameFont        =   @"streamCellTextUsernameFont";
-
-NSString*   const   kVSettingsAboutUsURL                =   @"settingsAboutUsURL";
-NSString*   const   kVSettingsPrivacyPoliciesURL        =   @"settingsPrivacyPoliciesURL";
-NSString*   const   kVSettingsAcknowledgementsURL       =   @"settingsAcknowledgementsURL";
+NSString*   const   kVChannelURLAbout                   =   @"channel.url.about";
+NSString*   const   kVChannelURLPrivacy                 =   @"channel.url.privacy";
+NSString*   const   kVChannelURLAcknowledgements        =   @"channel.url.acknowledgements";
 
 @interface      VThemeManager   ()
 @property   (nonatomic, readwrite, copy)    NSDictionary*   themeValues;
