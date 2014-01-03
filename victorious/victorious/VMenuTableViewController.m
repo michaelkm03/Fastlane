@@ -33,7 +33,7 @@ NSString *const VMenuTableViewControllerDidSelectRowNotification = @"VMenuTableV
         [self.inboxBadgeLabel setHidden:YES];
     }else{
         if(count < 1000){
-            self.inboxBadgeLabel.text = [NSString stringWithFormat:@"%lu", count];
+            self.inboxBadgeLabel.text = [NSString stringWithFormat:@"%lu", (unsigned long)count];
         }else{
             self.inboxBadgeLabel.text = @"+999";
         }
