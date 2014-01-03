@@ -10,4 +10,6 @@
 
 @interface VSettingsViewController : UITableViewController
 
++ (VSettingsViewController *)sharedSettingsViewController;
+
 @end

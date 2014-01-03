@@ -20,6 +20,18 @@
 
 @implementation VSettingsViewController
 
++ (VSettingsViewController *)sharedSettingsViewController
+{
+    static  VSettingsViewController*   settingsViewController;
+    static  dispatch_once_t         onceToken;
+    dispatch_once(&onceToken, ^{
+        UIViewController*   currentViewController = [[UIApplication sharedApplication] delegate].window.rootViewController;
+        settingsViewController = (VSettingsViewController*)[currentViewController.storyboard instantiateViewControllerWithIdentifier: @"loginSelect"];
+    });
+
+    return settingsViewController;
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];

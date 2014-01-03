@@ -6,7 +6,18 @@
 //  Copyright (c) 2013 Victorious Inc. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
+extern NSString *const VMenuTableViewControllerDidSelectRowNotification;
+
+typedef NS_ENUM(NSUInteger, VMenuTableViewControllerRow){
+    VMenuTableViewControllerRowHome,
+    VMenuTableViewControllerRowOwnerChannel,
+    VMenuTableViewControllerRowCommunityChannel,
+    VMenuTableViewControllerRowForums,
+    VMenuTableViewControllerRowInbox,
+    VMenuTableViewControllerRowProfile,
+    VMenuTableViewControllerRowSettings,
+    VMenuTableViewControllerRowHelp
+};
 
 @interface VMenuTableViewController : UITableViewController
 

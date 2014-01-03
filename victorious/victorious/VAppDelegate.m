@@ -7,12 +7,10 @@
 //
 
 #import "VAppDelegate.h"
-#import "VObjectManager.h"
 //#import "VLoginViewController.h"
 #import <TestFlightSDK/TestFlight.h>
 #import "VThemeManager.h"
 
-#import "VObjectManager.h"
 #import "VObjectManager+Sequence.h"
 
 @implementation VAppDelegate
