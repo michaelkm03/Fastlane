@@ -28,7 +28,7 @@ NSString*   const   kVChannelURLSupport                 =   @"channel.url.suppor
     
     dispatch_once(&onceToken,
                   ^{
-                      sharedThemeManager = [[VThemeManager alloc] init];
+                      sharedThemeManager = [[self alloc] init];
                   });
     
     return sharedThemeManager;
