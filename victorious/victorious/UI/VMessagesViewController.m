@@ -20,7 +20,7 @@ NS_ENUM(NSUInteger, ModeSelect)
 static  NSString*   kMessageCell    =   @"messageCell";
 static  NSString*   kNewsCell       =   @"newsCell";
 
-@interface VMessagesViewController ()
+@interface VMessagesViewController ()   <NSFetchedResultsControllerDelegate>
 @property (nonatomic, strong) NSFetchedResultsController*   fetchedResultsController;
 @property (nonatomic, assign) enum  ModeSelect              modeSelect;
 @end

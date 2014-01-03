@@ -8,6 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface VMessagesViewController : UITableViewController  <NSFetchedResultsControllerDelegate>
+@interface VMessagesViewController : UITableViewController
 
 @end

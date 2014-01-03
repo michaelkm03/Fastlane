@@ -20,7 +20,8 @@
 
 @import Social;
 
-@interface VStreamsSubViewController ()
+@interface VStreamsSubViewController () <NSFetchedResultsControllerDelegate, UINavigationControllerDelegate>//, VComposeMessageDelegate>
+
 @property (nonatomic, strong) NSFetchedResultsController* fetchedResultsController;
 @property (nonatomic, strong) NSMutableArray* newlyReadComments;
 @property (nonatomic, strong) VSequencePlayerViewController* sequencePlayer;

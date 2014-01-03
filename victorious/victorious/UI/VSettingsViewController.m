@@ -20,16 +20,6 @@
 
 @implementation VSettingsViewController
 
-- (id)initWithStyle:(UITableViewStyle)style
-{
-    self = [super initWithStyle:style];
-    if (self)
-    {
-        // Custom initialization
-    }
-    return self;
-}
-
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -54,12 +44,6 @@
     }
 }
 
-- (void)didReceiveMemoryWarning
-{
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
-}
-
 - (BOOL)textFieldShouldReturn:(UITextField *)textField
 {
     if ([textField isEqual:self.nameTextField])
@@ -77,21 +61,7 @@
     [[self view] endEditing:YES];
 }
 
-//- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
-//{
-//    if ([segue.identifier isEqualToString:@"toAboutUs"])
-//    {
-//        
-//    }
-//    else if ([segue.identifier isEqualToString:@"toPrivacyPolicies"])
-//    {
-//        
-//    }
-//    else if ([segue.identifier isEqualToString:@"toAcknowledgements"])
-//    {
-//        
-//    }
-//}
+#pragma mark - Actions
 
 - (IBAction)saveChangesClicked:(id)sender
 {

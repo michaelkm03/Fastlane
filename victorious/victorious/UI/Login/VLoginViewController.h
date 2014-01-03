@@ -14,7 +14,7 @@ NS_ENUM(NSUInteger, VLoginViewControllerErrorCode)
     VLoginViewControllerBadPasswordErrorCode
 };
 
-@interface VLoginViewController : UITableViewController  <UITextFieldDelegate>
+@interface VLoginViewController : UITableViewController
 
 + (VLoginViewController *)sharedLoginViewController;
 

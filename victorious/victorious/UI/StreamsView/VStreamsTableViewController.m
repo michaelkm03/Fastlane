@@ -33,7 +33,7 @@ typedef NS_ENUM(NSInteger, VStreamScope)
     VStreamFilterPolls
 };
 
-@interface VStreamsTableViewController ()
+@interface VStreamsTableViewController ()   <NSFetchedResultsControllerDelegate, UISearchBarDelegate, UISearchDisplayDelegate>
 @property (nonatomic, strong) NSFetchedResultsController* fetchedResultsController;
 @property (nonatomic, strong) NSFetchedResultsController* searchFetchedResultsController;
 @property (nonatomic) VStreamScope scopeType;

@@ -15,5 +15,5 @@ NS_ENUM(NSUInteger, VLoginViewControllerErrorCode)
     VSignUpViewControllerBadEmailAddressErrorCode
 };
 
-@interface VSignUpViewController : UITableViewController <UITextFieldDelegate>
+@interface VSignUpViewController : UITableViewController
 @end
