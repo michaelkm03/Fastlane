@@ -8,6 +8,10 @@
 
 /* Begin PBXBuildFile section */
 		3F4863FA1869184000F77346 /* VMessagesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F4863F91869184000F77346 /* VMessagesViewController.m */; };
+		3F919908187600720055FE37 /* VSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F919907187600720055FE37 /* VSettingsViewController.m */; };
+		3F91990B18761B0D0055FE37 /* VAboutUsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F91990A18761B0D0055FE37 /* VAboutUsViewController.m */; };
+		3F91991018761C720055FE37 /* VPrivacyPoliciesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F91990F18761C720055FE37 /* VPrivacyPoliciesViewController.m */; };
+		3F91991518761D1C0055FE37 /* VAcknowledgementsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F91991418761D1C0055FE37 /* VAcknowledgementsViewController.m */; };
 		3FF8B7981868EE7E00806EA0 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3FF8B7971868EE7E00806EA0 /* Main.storyboard */; };
 		3FF8B79E1868EF6C00806EA0 /* VLoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3FF8B79B1868EF6C00806EA0 /* VLoginViewController.m */; };
 		3FF8B79F1868EF6C00806EA0 /* VSignUpViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3FF8B79D1868EF6C00806EA0 /* VSignUpViewController.m */; };
@@ -110,6 +114,14 @@
 		33ACD3CBAF2C419D97FB901A /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = "<group>"; };
 		3F4863F81869184000F77346 /* VMessagesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VMessagesViewController.h; path = UI/VMessagesViewController.h; sourceTree = "<group>"; };
 		3F4863F91869184000F77346 /* VMessagesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VMessagesViewController.m; path = UI/VMessagesViewController.m; sourceTree = "<group>"; };
+		3F919906187600720055FE37 /* VSettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VSettingsViewController.h; path = UI/VSettingsViewController.h; sourceTree = "<group>"; };
+		3F919907187600720055FE37 /* VSettingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VSettingsViewController.m; path = UI/VSettingsViewController.m; sourceTree = "<group>"; };
+		3F91990918761B0D0055FE37 /* VAboutUsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VAboutUsViewController.h; path = UI/VAboutUsViewController.h; sourceTree = "<group>"; };
+		3F91990A18761B0D0055FE37 /* VAboutUsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VAboutUsViewController.m; path = UI/VAboutUsViewController.m; sourceTree = "<group>"; };
+		3F91990E18761C720055FE37 /* VPrivacyPoliciesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VPrivacyPoliciesViewController.h; path = UI/VPrivacyPoliciesViewController.h; sourceTree = "<group>"; };
+		3F91990F18761C720055FE37 /* VPrivacyPoliciesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VPrivacyPoliciesViewController.m; path = UI/VPrivacyPoliciesViewController.m; sourceTree = "<group>"; };
+		3F91991318761D1C0055FE37 /* VAcknowledgementsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VAcknowledgementsViewController.h; path = UI/VAcknowledgementsViewController.h; sourceTree = "<group>"; };
+		3F91991418761D1C0055FE37 /* VAcknowledgementsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VAcknowledgementsViewController.m; path = UI/VAcknowledgementsViewController.m; sourceTree = "<group>"; };
 		3FF8B7971868EE7E00806EA0 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
 		3FF8B79A1868EF6C00806EA0 /* VLoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VLoginViewController.h; path = UI/Login/VLoginViewController.h; sourceTree = "<group>"; };
 		3FF8B79B1868EF6C00806EA0 /* VLoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VLoginViewController.m; path = UI/Login/VLoginViewController.m; sourceTree = "<group>"; };
@@ -299,16 +311,32 @@
 			name = Messages;
 			sourceTree = "<group>";
 		};
+		3F919905187600460055FE37 /* Settings */ = {
+			isa = PBXGroup;
+			children = (
+				3F919906187600720055FE37 /* VSettingsViewController.h */,
+				3F919907187600720055FE37 /* VSettingsViewController.m */,
+				3F91990918761B0D0055FE37 /* VAboutUsViewController.h */,
+				3F91990A18761B0D0055FE37 /* VAboutUsViewController.m */,
+				3F91990E18761C720055FE37 /* VPrivacyPoliciesViewController.h */,
+				3F91990F18761C720055FE37 /* VPrivacyPoliciesViewController.m */,
+				3F91991318761D1C0055FE37 /* VAcknowledgementsViewController.h */,
+				3F91991418761D1C0055FE37 /* VAcknowledgementsViewController.m */,
+			);
+			name = Settings;
+			sourceTree = "<group>";
+		};
 		3FF8B7961868EE5E00806EA0 /* UI */ = {
 			isa = PBXGroup;
 			children = (
 				BE692B2C186E5FD900C71336 /* Streams Subview */,
 				BE692B16186E5ED800C71336 /* Streams */,
-				3FF8B7971868EE7E00806EA0 /* Main.storyboard */,
 				8364C70818694FF00028C1ED /* Menu */,
 				3FF8B7991868EEE800806EA0 /* Login */,
 				3F4863F71869181500F77346 /* Messages */,
+				3F919905187600460055FE37 /* Settings */,
 				83F7DAAC187213E400299FA1 /* Actions */,
+				3FF8B7971868EE7E00806EA0 /* Main.storyboard */,
 			);
 			name = UI;
 			sourceTree = "<group>";
@@ -786,6 +814,8 @@
 				BE171E221868C211004E5202 /* VObjectManager.m in Sources */,
 				BE171E241868C211004E5202 /* VThemeManager.m in Sources */,
 				BE171E201868C211004E5202 /* VObjectManager+Login.m in Sources */,
+				3F91991518761D1C0055FE37 /* VAcknowledgementsViewController.m in Sources */,
+				3F91990B18761B0D0055FE37 /* VAboutUsViewController.m in Sources */,
 				BE171E191868C211004E5202 /* VStatInteraction+RestKit.m in Sources */,
 				BE171E101868C211004E5202 /* VCategory+RestKit.m in Sources */,
 				BE171E2F1868C211004E5202 /* VRule.m in Sources */,
@@ -801,6 +831,7 @@
 				83F7DAAF187221E600299FA1 /* VActionViewControllerTransition.m in Sources */,
 				BE171E291868C211004E5202 /* VComment.m in Sources */,
 				BE171E391868C266004E5202 /* NSManagedObject+EasyFetching.m in Sources */,
+				3F919908187600720055FE37 /* VSettingsViewController.m in Sources */,
 				BE692B53186E60B300C71336 /* VStreamsSubViewController.m in Sources */,
 				BE171E0D1868C211004E5202 /* VAnswer+RestKit.m in Sources */,
 				BE171E211868C211004E5202 /* VObjectManager+Sequence.m in Sources */,
@@ -826,6 +857,7 @@
 				838511C418762DF3007E0316 /* VInboxBadgeLabel.m in Sources */,
 				BE171E341868C211004E5202 /* VUser.m in Sources */,
 				BE171E1B1868C211004E5202 /* VUser+RestKit.m in Sources */,
+				3F91991018761C720055FE37 /* VPrivacyPoliciesViewController.m in Sources */,
 				BE171E301868C211004E5202 /* VSequence.m in Sources */,
 				BE171E251868C211004E5202 /* VAnswer.m in Sources */,
 				BE171E2D1868C211004E5202 /* VNode.m in Sources */,

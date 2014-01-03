@@ -145,5 +145,11 @@
 		<key>alpha</key>
 		<integer>1</integer>
 	</dict>
+	<key>settingsAboutUsURL</key>
+	<string>http://dev.getvictorious.com/api/static/about</string>
+	<key>settingsPrivacyPoliciesURL</key>
+	<string>http://dev.getvictorious.com/api/static/privacy</string>
+	<key>settingsAcknowledgementsURL</key>
+	<string>http://dev.getvictorious.com/api/static/acknowledgments</string>
 </dict>
 </plist>

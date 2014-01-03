@@ -10,6 +10,27 @@
 
 NSString*   const   kVThemeManagerThemeDidChange        =   @"VThemeManagerThemeDidChange";
 
+NSString*   const   kVApplicationName                   =   @"applicationName";
+NSString*   const   kVApplicationTintColor              =   @"applicationTintColor";
+
+NSString*   const   kVNavigationBarBackgroundTintColor  =   @"navigationBarBackgroundTintColor";
+NSString*   const   kVNavigationBarTintColor            =   @"navigationBarTintColor";
+NSString*   const   kVNavigationBarTitleTintColor       =   @"navigationBarTitleTintColor";
+
+NSString*   const   kVMenuHeaderImageUrl                =   @"menuHeaderImageUrl";
+NSString*   const   kVMenuLabelFont                     =   @"menuLabelFont";
+NSString*   const   kVMenuLabelColor                    =   @"menuLabelColor";
+NSString*   const   kVMenuSeparatorColor                =   @"menuSeparatorColor";
+
+NSString*   const   kVStreamCellTextColor               =   @"streamCellTextColor";
+NSString*   const   kVStreamCellIconColor               =   @"streamCellIconColor";
+NSString*   const   kVStreamCellTextFont                =   @"streamCellTextFont";
+NSString*   const   kVStreamCellTextUsernameFont        =   @"streamCellTextUsernameFont";
+
+NSString*   const   kVSettingsAboutUsURL                =   @"settingsAboutUsURL";
+NSString*   const   kVSettingsPrivacyPoliciesURL        =   @"settingsPrivacyPoliciesURL";
+NSString*   const   kVSettingsAcknowledgementsURL       =   @"settingsAcknowledgementsURL";
+
 @interface      VThemeManager   ()
 @property   (nonatomic, readwrite, copy)    NSDictionary*   themeValues;
 @end
@@ -95,9 +116,14 @@ NSString*   const   kVThemeManagerThemeDidChange        =   @"VThemeManagerTheme
     return [UIColor colorWithHue:hue saturation:saturation*1.158 brightness:brightness*0.95 alpha:alpha];
 }
 
+- (NSURL *)themedURLForKeyPath:(NSString *)keyPath
+{
+    return [NSURL URLWithString:[self themedValueForKeyPath:keyPath]];
+}
+
 - (NSURL *)themedImageURLForKeyPath:(NSString *)keyPath
 {
-    NSURL*  url =   [NSURL URLWithString:[self themedValueForKeyPath:keyPath]];
+    NSURL*  url =   [self themedURLForKeyPath:keyPath];
     if (nil == url)
         url     =   [[NSBundle mainBundle] URLForResource:keyPath withExtension:@"png"];
     return url;

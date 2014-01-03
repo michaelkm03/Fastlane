@@ -10,6 +10,27 @@
 
 extern  NSString*   const   kVThemeManagerThemeDidChange;
 
+extern  NSString*   const   kVApplicationName;
+extern  NSString*   const   kVApplicationTintColor;
+
+extern  NSString*   const   kVNavigationBarBackgroundTintColor;
+extern  NSString*   const   kVNavigationBarTintColor;
+extern  NSString*   const   kVNavigationBarTitleTintColor;
+
+extern  NSString*   const   kVMenuHeaderImageUrl;
+extern  NSString*   const   kVMenuLabelFont;
+extern  NSString*   const   kVMenuLabelColor;
+extern  NSString*   const   kVMenuSeparatorColor;
+
+extern  NSString*   const   kVStreamCellTextColor;
+extern  NSString*   const   kVStreamCellIconColor;
+extern  NSString*   const   kVStreamCellTextFont;
+extern  NSString*   const   kVStreamCellTextUsernameFont;
+
+extern  NSString*   const   kVSettingsAboutUsURL;
+extern  NSString*   const   kVSettingsPrivacyPoliciesURL;
+extern  NSString*   const   kVSettingsAcknowledgementsURL;
+
 @interface VThemeManager : NSObject
 
 + (VThemeManager *)sharedThemeManager;
@@ -25,7 +46,9 @@ extern  NSString*   const   kVThemeManagerThemeDidChange;
  */
 - (UIColor *)themedTranslucencyColorForKeyPath:(NSString *)keyPath;
 
+- (NSURL *)themedURLForKeyPath:(NSString *)keyPath;
 - (NSURL *)themedImageURLForKeyPath:(NSString *)keyPath;
 - (UIFont *)themedFontForKeyPath:(NSString *)keyPath;
+
 
 @end
