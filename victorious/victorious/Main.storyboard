@@ -181,10 +181,10 @@
             </objects>
             <point key="canvasLocation" x="-4767" y="-3171"/>
         </scene>
-        <!--Navigation Controller-->
+        <!--Root Navigation Controller-->
         <scene sceneID="dq2-Q4-u7a">
             <objects>
-                <navigationController definesPresentationContext="YES" id="27v-pQ-okR" sceneMemberID="viewController">
+                <navigationController definesPresentationContext="YES" id="27v-pQ-okR" customClass="VRootNavigationController" sceneMemberID="viewController">
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="O6j-0H-5SC">
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -195,7 +195,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="rNN-rH-sSb" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-4015" y="-646"/>
+            <point key="canvasLocation" x="-4134" y="-290"/>
         </scene>
         <!--Messages View Controller - Messages-->
         <scene sceneID="ou3-rr-Ug5">

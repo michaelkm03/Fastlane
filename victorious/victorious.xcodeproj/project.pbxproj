@@ -25,6 +25,7 @@
 		838511C418762DF3007E0316 /* VInboxBadgeLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 838511C318762DF3007E0316 /* VInboxBadgeLabel.m */; };
 		83ABAFAF18709DE30069556C /* Roboto-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 83ABAFA218709DE30069556C /* Roboto-Light.ttf */; };
 		83B5A1241876447800659C73 /* Roboto-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 83188D64187386D000F17777 /* Roboto-Regular.ttf */; };
+		83B5A12C18765E1600659C73 /* VRootNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 83B5A12B18765E1600659C73 /* VRootNavigationController.m */; };
 		83BD06FB186BE4B2007742D1 /* UIImage+ImageEffects.m in Sources */ = {isa = PBXBuildFile; fileRef = 83BD06FA186BE4B2007742D1 /* UIImage+ImageEffects.m */; };
 		83F38277186BE62300A866A1 /* VMenuTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 83F38276186BE62300A866A1 /* VMenuTableViewController.m */; };
 		83F7DAAB187213E000299FA1 /* VAddActionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 83F7DAAA187213E000299FA1 /* VAddActionViewController.m */; };
@@ -142,6 +143,8 @@
 		838511C218762DF3007E0316 /* VInboxBadgeLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VInboxBadgeLabel.h; sourceTree = "<group>"; };
 		838511C318762DF3007E0316 /* VInboxBadgeLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VInboxBadgeLabel.m; sourceTree = "<group>"; };
 		83ABAFA218709DE30069556C /* Roboto-Light.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Roboto-Light.ttf"; sourceTree = "<group>"; };
+		83B5A12A18765E1600659C73 /* VRootNavigationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VRootNavigationController.h; sourceTree = "<group>"; };
+		83B5A12B18765E1600659C73 /* VRootNavigationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VRootNavigationController.m; sourceTree = "<group>"; };
 		83BD06F9186BE4B2007742D1 /* UIImage+ImageEffects.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+ImageEffects.h"; sourceTree = "<group>"; };
 		83BD06FA186BE4B2007742D1 /* UIImage+ImageEffects.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+ImageEffects.m"; sourceTree = "<group>"; };
 		83F38275186BE62300A866A1 /* VMenuTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VMenuTableViewController.h; sourceTree = "<group>"; };
@@ -329,6 +332,8 @@
 		3FF8B7961868EE5E00806EA0 /* UI */ = {
 			isa = PBXGroup;
 			children = (
+				83B5A12A18765E1600659C73 /* VRootNavigationController.h */,
+				83B5A12B18765E1600659C73 /* VRootNavigationController.m */,
 				BE692B2C186E5FD900C71336 /* Streams Subview */,
 				BE692B16186E5ED800C71336 /* Streams */,
 				8364C70818694FF00028C1ED /* Menu */,
@@ -847,6 +852,7 @@
 				BE171E161868C211004E5202 /* VRule+RestKit.m in Sources */,
 				BE171E1E1868C211004E5202 /* VErrorMessage.m in Sources */,
 				BE171E0C1868C211004E5202 /* VNode+Fetcher.m in Sources */,
+				83B5A12C18765E1600659C73 /* VRootNavigationController.m in Sources */,
 				3FF8B79E1868EF6C00806EA0 /* VLoginViewController.m in Sources */,
 				BE171E1F1868C211004E5202 /* VObjectManager+Comment.m in Sources */,
 				BE171E141868C211004E5202 /* VNode+RestKit.m in Sources */,

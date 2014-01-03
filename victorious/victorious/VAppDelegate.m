@@ -7,15 +7,11 @@
 //
 
 #import "VAppDelegate.h"
-#import "VObjectManager.h"
 //#import "VLoginViewController.h"
 #import <TestFlightSDK/TestFlight.h>
 #import "VThemeManager.h"
 
-#import "VObjectManager.h"
 #import "VObjectManager+Sequence.h"
-#import "VMenuTableViewController.h"
-#import "VSettingsViewController.h"
 
 @implementation VAppDelegate
 
@@ -68,8 +64,6 @@
     if (openURL)
         [self handleOpenURL:openURL];
 
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(menuDidSelectRow:) name:VMenuTableViewControllerDidSelectRowNotification object:nil];
-
     return YES;
 }
 
@@ -83,46 +77,6 @@
 - (void)handleOpenURL:(NSURL *)aURL
 {
     
-}
-
-- (void)menuDidSelectRow:(NSNotification *)notification{
-    UINavigationController *navigationController = (UINavigationController *)self.window.rootViewController;
-    switch((VMenuTableViewControllerRow)[notification.object integerValue]){
-        case VMenuTableViewControllerRowHome:{
-            // TODO: show home
-            [self.window.rootViewController dismissViewControllerAnimated:YES completion:nil];
-            break;
-        }case VMenuTableViewControllerRowOwnerChannel:{
-            // TODO: show owner channel
-            [self.window.rootViewController dismissViewControllerAnimated:YES completion:nil];
-            break;
-        }case VMenuTableViewControllerRowCommunityChannel:{
-            // TODO: show community channel
-            [self.window.rootViewController dismissViewControllerAnimated:YES completion:nil];
-            break;
-        }case VMenuTableViewControllerRowForums:{
-            // TODO: show forums
-            [self.window.rootViewController dismissViewControllerAnimated:YES completion:nil];
-            break;
-        }case VMenuTableViewControllerRowInbox:{
-            // TODO: show inbox
-            [self.window.rootViewController dismissViewControllerAnimated:YES completion:nil];
-            break;
-        }case VMenuTableViewControllerRowProfile:{
-            // TODO: show profile
-            [self.window.rootViewController dismissViewControllerAnimated:YES completion:nil];
-            break;
-        }case VMenuTableViewControllerRowSettings:{
-            navigationController.viewControllers = @[[VSettingsViewController sharedSettingsViewController]];
-            [self.window.rootViewController dismissViewControllerAnimated:YES completion:nil];
-            break;
-        }case VMenuTableViewControllerRowHelp:{
-            // TODO: show help
-            [self.window.rootViewController dismissViewControllerAnimated:YES completion:nil];
-            break;
-        }
-
-    }
 }
 
 - (void)applicationWillResignActive:(UIApplication *)application
