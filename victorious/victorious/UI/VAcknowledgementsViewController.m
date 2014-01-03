@@ -21,7 +21,7 @@
     
     self.acknowledgementsWebView.delegate    =   self;
     
-    NSURL*  acknowledgementURL  =   [[VThemeManager sharedThemeManager] themedURLForKey:kVSettingsAcknowledgementsURL];
+    NSURL*  acknowledgementURL  =   [[VThemeManager sharedThemeManager] themedURLForKeyPath:kVSettingsAcknowledgementsURL];
     [self.acknowledgementsWebView loadRequest:[NSURLRequest requestWithURL:acknowledgementURL]];
 }
 

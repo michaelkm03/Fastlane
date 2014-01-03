@@ -46,9 +46,9 @@ extern  NSString*   const   kVSettingsAcknowledgementsURL;
  */
 - (UIColor *)themedTranslucencyColorForKeyPath:(NSString *)keyPath;
 
+- (NSURL *)themedURLForKeyPath:(NSString *)keyPath;
 - (NSURL *)themedImageURLForKeyPath:(NSString *)keyPath;
 - (UIFont *)themedFontForKeyPath:(NSString *)keyPath;
 
-- (NSURL *)themedURLForKey:(NSString *)key;
 
 @end

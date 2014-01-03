@@ -116,14 +116,14 @@ NSString*   const   kVSettingsAcknowledgementsURL       =   @"settingsAcknowledg
     return [UIColor colorWithHue:hue saturation:saturation*1.158 brightness:brightness*0.95 alpha:alpha];
 }
 
-- (NSURL *)themedURLForKey:(NSString *)key
+- (NSURL *)themedURLForKeyPath:(NSString *)keyPath
 {
-    return [NSURL URLWithString:[self themedValueForKey:key]];
+    return [NSURL URLWithString:[self themedValueForKeyPath:keyPath]];
 }
 
-- (NSURL *)themedImageURLForKey:(NSString *)key
+- (NSURL *)themedImageURLForKeyPath:(NSString *)keyPath
 {
-    NSURL*  url =   [self themedURLForKey:key];
+    NSURL*  url =   [self themedURLForKeyPath:keyPath];
     if (nil == url)
         url     =   [[NSBundle mainBundle] URLForResource:keyPath withExtension:@"png"];
     return url;
