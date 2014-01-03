@@ -58,7 +58,7 @@ static  NSString*   kNewsCell       =   @"newsCell";
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return [[[self .fetchedResultsController sections] objectAtIndex:section] numberOfObjects];
+    return [[[self.fetchedResultsController sections] objectAtIndex:section] numberOfObjects];
 }
 
 - (void)configureCell:(UITableViewCell *)theCell atIndexPath:(NSIndexPath *)theIndexPath

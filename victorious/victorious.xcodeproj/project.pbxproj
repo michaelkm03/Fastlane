@@ -702,7 +702,7 @@
 			attributes = {
 				CLASSPREFIX = V;
 				LastUpgradeCheck = 0500;
-				ORGANIZATIONNAME = "Will Long";
+				ORGANIZATIONNAME = Victorious;
 				TargetAttributes = {
 					BE171D751868BE64004E5202 = {
 						DevelopmentTeam = 82T26U698A;
