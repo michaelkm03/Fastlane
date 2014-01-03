@@ -26,7 +26,7 @@
     static  dispatch_once_t         onceToken;
     dispatch_once(&onceToken, ^{
         UIViewController*   currentViewController = [[UIApplication sharedApplication] delegate].window.rootViewController;
-        settingsViewController = (VSettingsViewController*)[currentViewController.storyboard instantiateViewControllerWithIdentifier: @"loginSelect"];
+        settingsViewController = (VSettingsViewController*)[currentViewController.storyboard instantiateViewControllerWithIdentifier: @"settings"];
     });
 
     return settingsViewController;
