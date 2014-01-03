@@ -9,6 +9,8 @@
 #import "VSettingsViewController.h"
 #import "VObjectManager+Login.h"
 #import "VUser.h"
+#import "VMenuViewController.h"
+#import "VMenuViewControllerTransition.h"
 
 @interface VSettingsViewController ()   <UITextFieldDelegate>
 @property (weak, nonatomic) IBOutlet UITextField *nameTextField;
@@ -98,6 +100,18 @@
 - (IBAction)logout:(id)sender
 {
     [[VObjectManager sharedManager] logout];
+}
+
+#pragma mark - Navigation
+
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
+{
+    if ([segue.destinationViewController isKindOfClass:[VMenuViewController class]])
+    {
+        VMenuViewController *menuViewController = segue.destinationViewController;
+        menuViewController.transitioningDelegate = (id <UIViewControllerTransitioningDelegate>)[VMenuViewControllerTransitionDelegate new];
+        menuViewController.modalPresentationStyle = UIModalPresentationCustom;
+    }
 }
 
 @end
