@@ -17,3 +17,5 @@
 "NoEmail"               =   "Unable to E-mail";
 "NoEmailDetail"         =   "Your device is not configured to send email";
 "EmailFail"             =   "E-mail failed to send";
+
+"HelpNeeded"            =   "I need help with...";

@@ -13,6 +13,7 @@ NSString*   const   kVThemeManagerThemeDidChange        =   @"VThemeManagerTheme
 NSString*   const   kVChannelURLAbout                   =   @"channel.url.about";
 NSString*   const   kVChannelURLPrivacy                 =   @"channel.url.privacy";
 NSString*   const   kVChannelURLAcknowledgements        =   @"channel.url.acknowledgements";
+NSString*   const   kVChannelURLSupport                 =   @"channel.url.support";
 
 @interface      VThemeManager   ()
 @property   (nonatomic, readwrite, copy)    NSDictionary*   themeValues;

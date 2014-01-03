@@ -14,6 +14,8 @@ extern  NSString*   const   kVChannelURLAbout;
 extern  NSString*   const   kVChannelURLPrivacy;
 extern  NSString*   const   kVChannelURLAcknowledgements;
 
+extern  NSString*   const   kVChannelURLSupport;
+
 @interface VThemeManager : NSObject
 
 + (VThemeManager *)sharedThemeManager;

@@ -8,6 +8,7 @@
 
 #import "VRootNavigationController.h"
 #import "VSettingsViewController.h"
+#import "VThemeManager.h"
 
 @import MessageUI;
 
@@ -55,8 +56,8 @@
                 MFMailComposeViewController*    mailComposer = [[MFMailComposeViewController alloc] init];
                 mailComposer.mailComposeDelegate = self;
 
-                [mailComposer setSubject:@"Help!"];
-                [mailComposer setToRecipients:@[@"X@y.com"]];
+                [mailComposer setSubject:NSLocalizedString(@"HelpNeeded", @"Need Help")];
+                [mailComposer setToRecipients:@[[[VThemeManager sharedThemeManager] themedURLForKeyPath:kVChannelURLSupport]]];
                 
                 [self dismissViewControllerAnimated:YES completion:nil];
                 [self presentViewController:mailComposer animated:YES completion:nil];

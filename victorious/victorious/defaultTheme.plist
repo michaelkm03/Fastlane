@@ -10,6 +10,8 @@
 	<string>http://dev.getvictorious.com/api/static/privacy</string>
 	<key>channel.url.acknowledgements</key>
 	<string>http://dev.getvictorious.com/api/static/acknowledgments</string>
+	<key>channel.url.support</key>
+	<string>http://support.getvictorious.com</string>
 	<key>theme.font</key>
 	<dict>
 		<key>fontName</key>
