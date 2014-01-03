@@ -21,9 +21,12 @@ NSString* kStreamsWillSegueNotification = @"kStreamsWillSegueNotification";
 @property (weak, nonatomic) IBOutlet UILabel *dateLabel;
 @property (weak, nonatomic) IBOutlet UILabel *descriptionLabel;
 @property (weak, nonatomic) IBOutlet UIButton *shareButton;
+@property (weak, nonatomic) IBOutlet UIButton *likeButton;
+@property (weak, nonatomic) IBOutlet UIButton *commentButton;
 
 @property (strong, nonatomic) IBOutletCollection(UIImageView) NSArray *imageViews;
 @property (strong, nonatomic) IBOutletCollection(UILabel) NSArray *labels;
+@property (strong, nonatomic) IBOutletCollection(UIButton) NSArray *buttons;
 
 @end
 
@@ -42,10 +45,17 @@ NSString* kStreamsWillSegueNotification = @"kStreamsWillSegueNotification";
         label.textColor = [[VThemeManager sharedThemeManager] themedColorForKeyPath:@"theme.color.stream.text"];
     }];
     self.usernameLabel.font = [[VThemeManager sharedThemeManager] themedFontForKeyPath:@"theme.font.stream.text.username"];
+    [self.buttons enumerateObjectsUsingBlock:^(UIButton *button, NSUInteger idx, BOOL *stop){
+        button.titleLabel.font = [[VThemeManager sharedThemeManager] themedFontForKeyPath:@"theme.font.stream.button"];
+        button.tintColor = [[VThemeManager sharedThemeManager] themedColorForKeyPath:@"theme.color.stream.button"];
+    }];
 }
 
-- (void)setSequence:(VSequence *)sequence
-{
+- (void)setSequence:(VSequence *)sequence{
+    if(_sequence == sequence){
+        return;
+    }
+
     _sequence = sequence;
 
     static dispatch_once_t onceToken;
@@ -63,42 +73,23 @@ NSString* kStreamsWillSegueNotification = @"kStreamsWillSegueNotification";
                              placeholderImage:[UIImage new]];
 }
 
-//- (IBAction)pressedLike:(id)sender
-//{
-//    [[VObjectManager sharedManager] likeSequence:_sequence
-//                                    successBlock:^(NSArray *resultObjects) {
-//                                        self.likeButton.userInteractionEnabled = NO;
-//                                        self.dislikeButton.userInteractionEnabled = YES;
-//                                    }
-//                                       failBlock:^(NSError *error) {
-//                                           VLog(@"Like failed with error: %@", error);
-//                                       }];
-//}
+- (IBAction)likeButtonAction:(id)sender {
+    [[VObjectManager sharedManager]
+     likeSequence:self.sequence
+     successBlock:^(NSArray *resultObjects) {
+         self.likeButton.userInteractionEnabled = NO;
+         self.dislikeButton.userInteractionEnabled = YES;
+     } failBlock:^(NSError *error) {
+         VLog(@"Like failed with error: %@", error);
+     }];
+}
 
-//- (IBAction)pressedDislike:(id)sender
-//{
-//    [[VObjectManager sharedManager] dislikeSequence:_sequence
-//                                    successBlock:^(NSArray *resultObjects) {
-//                                        self.dislikeButton.userInteractionEnabled = NO;
-//                                        self.likeButton.userInteractionEnabled = YES;
-//                                    }
-//                                       failBlock:^(NSError *error) {
-//                                           VLog(@"Like failed with error: %@", error);
-//                                       }];
-//}
+- (IBAction)commentButtonAction:(id)sender {
 
-//- (IBAction)pressedShareToFacebook:(id)sender
-//{
-//    
-//}
+}
 
-//- (void)setSelected:(BOOL)selected animated:(BOOL)animated
-//{
-//    UIStoryboard *storyboard = [self.superview.navigationController storyboard];
-//    
-//    UIViewController *storyboardViewController = [storyboard instantiateViewControllerWithIdentifier:@"viewControllerId"];
-//    
-//    [self.navigationController pushViewController:storyboardViewController animated:YES];
-//}
+- (IBAction)shareButtonAction:(id)sender {
+}
+
 
 @end

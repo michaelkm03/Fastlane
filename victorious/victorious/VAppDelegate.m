@@ -29,11 +29,11 @@
 
     self.window.tintColor   =   [[VThemeManager sharedThemeManager] themedColorForKeyPath:@"theme.color"];
 
-    [[UINavigationBar appearance] setTintColor:[[VThemeManager sharedThemeManager] themedColorForKeyPath:@"theme.color.navigationBar.tint"]];
-    [[UINavigationBar appearance] setBarTintColor:[[VThemeManager sharedThemeManager] themedTranslucencyColorForKeyPath:@"theme.color.navigationBar.barTint"]];
+    [[UINavigationBar appearance] setTintColor:[[VThemeManager sharedThemeManager] themedColorForKeyPath:@"theme.color.navigationBar"]];
+    [[UINavigationBar appearance] setBarTintColor:[[VThemeManager sharedThemeManager] themedTranslucencyColorForKeyPath:@"theme.color.navigationBar.background"]];
 
     NSMutableDictionary *titleAttributes = [NSMutableDictionary dictionary];
-    UIColor *navigationBarTitleTintColor = [[VThemeManager sharedThemeManager] themedColorForKeyPath:@"theme.color.navigationBar.tint.title"];
+    UIColor *navigationBarTitleTintColor = [[VThemeManager sharedThemeManager] themedColorForKeyPath:@"theme.color.navigationBar.title"];
     if(navigationBarTitleTintColor){
         [titleAttributes setObject:navigationBarTitleTintColor forKey:NSForegroundColorAttributeName];
     }

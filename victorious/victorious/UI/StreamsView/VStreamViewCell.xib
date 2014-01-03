@@ -13,7 +13,7 @@
                 <rect key="frame" x="0.0" y="0.0" width="320" height="449"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="RVh-hy-y2K">
+                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="RVh-hy-y2K" userLabel="Preview Image View">
                         <rect key="frame" x="10" y="60" width="300" height="320"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <constraints>
@@ -21,7 +21,7 @@
                             <constraint firstAttribute="height" constant="320" id="rdP-RM-4Nu"/>
                         </constraints>
                     </imageView>
-                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="VIJ-SV-arN">
+                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="VIJ-SV-arN" userLabel="User Image View">
                         <rect key="frame" x="20" y="20" width="32" height="32"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <constraints>
@@ -57,63 +57,59 @@
                             <constraint firstAttribute="width" constant="11" id="hZO-Rq-n0G"/>
                         </constraints>
                     </imageView>
-                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Likes" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="l5u-wW-MZu">
-                        <rect key="frame" x="32" y="417" width="41" height="21"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                        <nil key="highlightedColor"/>
-                    </label>
-                    <imageView userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="StreamHeart" translatesAutoresizingMaskIntoConstraints="NO" id="3aV-vH-SgW">
-                        <rect key="frame" x="20" y="422" width="11" height="11"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        <constraints>
-                            <constraint firstAttribute="width" constant="11" id="5es-uF-2rE"/>
-                            <constraint firstAttribute="height" constant="11" id="A9i-qb-uYb"/>
-                        </constraints>
-                    </imageView>
-                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Comments" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="W1G-Iu-p5w">
-                        <rect key="frame" x="103" y="417" width="85" height="21"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                        <nil key="highlightedColor"/>
-                    </label>
-                    <imageView userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="StreamComments" translatesAutoresizingMaskIntoConstraints="NO" id="wDR-4I-HgR">
-                        <rect key="frame" x="91" y="422" width="11" height="11"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        <constraints>
-                            <constraint firstAttribute="width" constant="11" id="FdU-yO-kdg"/>
-                            <constraint firstAttribute="height" constant="11" id="Rac-N1-4dT"/>
-                        </constraints>
-                    </imageView>
-                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="WLo-v6-MW0">
+                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="WLo-v6-MW0" userLabel="Description">
                         <rect key="frame" x="20" y="388" width="42" height="21"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                         <nil key="highlightedColor"/>
                     </label>
-                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jGu-rr-Q06">
+                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jGu-rr-Q06" userLabel="Share Button">
                         <rect key="frame" x="278" y="410" width="32" height="32"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <constraints>
                             <constraint firstAttribute="width" constant="32" id="Cvq-Dm-mBW"/>
                             <constraint firstAttribute="height" constant="32" id="G75-w1-Nqo"/>
                         </constraints>
-                        <state key="normal" image="StreamShare">
-                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                        </state>
+                        <state key="normal" image="StreamShare"/>
+                        <connections>
+                            <action selector="shareButtonAction:" destination="ONd-u8-hug" eventType="touchUpInside" id="QBl-rY-Mgq"/>
+                        </connections>
+                    </button>
+                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="xnP-0R-e3a" userLabel="Like Button">
+                        <rect key="frame" x="20" y="415" width="66" height="22"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="66" id="8vi-TR-MbS"/>
+                            <constraint firstAttribute="height" constant="22" id="qEk-qR-ho6"/>
+                        </constraints>
+                        <state key="normal" title="123" image="StreamHeart"/>
+                        <connections>
+                            <action selector="likeButtonAction:" destination="ONd-u8-hug" eventType="touchUpInside" id="NhR-e4-GpT"/>
+                        </connections>
+                    </button>
+                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cLx-fR-OJL" userLabel="Comment Button">
+                        <rect key="frame" x="94" y="415" width="66" height="22"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="22" id="7mr-ab-Ghs"/>
+                            <constraint firstAttribute="width" constant="66" id="iUf-jV-Dy8"/>
+                        </constraints>
+                        <state key="normal" title="32" image="StreamComments"/>
+                        <connections>
+                            <action selector="commentButtonAction:" destination="ONd-u8-hug" eventType="touchUpInside" id="NTX-AX-2Xs"/>
+                        </connections>
                     </button>
                 </subviews>
                 <constraints>
-                    <constraint firstItem="W1G-Iu-p5w" firstAttribute="leading" secondItem="wDR-4I-HgR" secondAttribute="trailing" constant="1" id="0Br-a5-I12"/>
                     <constraint firstItem="VIJ-SV-arN" firstAttribute="top" secondItem="tlv-KZ-xzf" secondAttribute="top" constant="20" symbolic="YES" id="4Uu-Wx-uvX"/>
-                    <constraint firstItem="l5u-wW-MZu" firstAttribute="leading" secondItem="3aV-vH-SgW" secondAttribute="trailing" constant="1" id="E0g-0r-O5P"/>
-                    <constraint firstItem="W1G-Iu-p5w" firstAttribute="centerY" secondItem="l5u-wW-MZu" secondAttribute="centerY" id="Gzh-lp-8a4"/>
+                    <constraint firstItem="xnP-0R-e3a" firstAttribute="leading" secondItem="WLo-v6-MW0" secondAttribute="leading" id="6EK-sd-TpK"/>
+                    <constraint firstItem="xnP-0R-e3a" firstAttribute="centerY" secondItem="jGu-rr-Q06" secondAttribute="centerY" id="9Dl-LR-Wq4"/>
+                    <constraint firstItem="xnP-0R-e3a" firstAttribute="top" secondItem="WLo-v6-MW0" secondAttribute="bottom" constant="6" id="DWN-wB-flI"/>
                     <constraint firstItem="EMt-zr-EER" firstAttribute="leading" secondItem="VIJ-SV-arN" secondAttribute="trailing" constant="8" symbolic="YES" id="IJf-7A-WS6"/>
                     <constraint firstItem="VIJ-SV-arN" firstAttribute="leading" secondItem="tlv-KZ-xzf" secondAttribute="leading" constant="20" symbolic="YES" id="Kp8-FV-qoK"/>
                     <constraint firstItem="4BA-qs-0sG" firstAttribute="leading" secondItem="VIJ-SV-arN" secondAttribute="trailing" constant="8" symbolic="YES" id="LeV-Ky-0C5"/>
                     <constraint firstItem="D3j-da-Kgn" firstAttribute="centerY" secondItem="OUw-F8-xAD" secondAttribute="centerY" id="LfK-ic-9B8"/>
-                    <constraint firstItem="W1G-Iu-p5w" firstAttribute="centerY" secondItem="wDR-4I-HgR" secondAttribute="centerY" id="NRG-qS-sSy"/>
-                    <constraint firstItem="WLo-v6-MW0" firstAttribute="leading" secondItem="3aV-vH-SgW" secondAttribute="leading" id="Spw-Ao-rX9"/>
+                    <constraint firstItem="cLx-fR-OJL" firstAttribute="centerY" secondItem="xnP-0R-e3a" secondAttribute="centerY" id="LrG-DY-O2b"/>
                     <constraint firstItem="jGu-rr-Q06" firstAttribute="trailing" secondItem="RVh-hy-y2K" secondAttribute="trailing" id="Ufw-Vn-jEZ"/>
                     <constraint firstAttribute="trailing" secondItem="OUw-F8-xAD" secondAttribute="trailing" constant="20" symbolic="YES" id="Zkg-fU-SaA"/>
                     <constraint firstItem="RVh-hy-y2K" firstAttribute="top" secondItem="4BA-qs-0sG" secondAttribute="bottom" constant="22" id="cT3-SR-v9k"/>
@@ -123,29 +119,27 @@
                     <constraint firstItem="OUw-F8-xAD" firstAttribute="centerY" secondItem="VIJ-SV-arN" secondAttribute="centerY" constant="-0.5" id="fH2-rA-vEW"/>
                     <constraint firstAttribute="centerX" secondItem="RVh-hy-y2K" secondAttribute="centerX" id="fgi-ig-9wa"/>
                     <constraint firstItem="RVh-hy-y2K" firstAttribute="top" secondItem="VIJ-SV-arN" secondAttribute="bottom" constant="8" symbolic="YES" id="g2Y-Lt-IQj"/>
-                    <constraint firstItem="jGu-rr-Q06" firstAttribute="centerY" secondItem="W1G-Iu-p5w" secondAttribute="centerY" constant="-1.5" id="ihy-vy-Ysq"/>
-                    <constraint firstItem="l5u-wW-MZu" firstAttribute="top" secondItem="WLo-v6-MW0" secondAttribute="bottom" constant="8" id="q2P-tu-Tos"/>
+                    <constraint firstItem="cLx-fR-OJL" firstAttribute="leading" secondItem="xnP-0R-e3a" secondAttribute="trailing" constant="8" id="hHz-Hj-QCP"/>
                     <constraint firstItem="WLo-v6-MW0" firstAttribute="top" secondItem="RVh-hy-y2K" secondAttribute="bottom" constant="8" symbolic="YES" id="rjW-iS-fDB"/>
-                    <constraint firstItem="l5u-wW-MZu" firstAttribute="centerY" secondItem="3aV-vH-SgW" secondAttribute="centerY" id="y0L-aa-nCI"/>
-                    <constraint firstItem="wDR-4I-HgR" firstAttribute="leading" secondItem="l5u-wW-MZu" secondAttribute="trailing" constant="18" id="yZz-EP-k6u"/>
                 </constraints>
             </tableViewCellContentView>
             <connections>
+                <outlet property="commentButton" destination="cLx-fR-OJL" id="tfy-vZ-7Bb"/>
                 <outlet property="dateLabel" destination="OUw-F8-xAD" id="gfW-Td-Edg"/>
                 <outlet property="descriptionLabel" destination="WLo-v6-MW0" id="ErA-uR-QtJ"/>
+                <outlet property="likeButton" destination="xnP-0R-e3a" id="yt3-sH-wkK"/>
                 <outlet property="locationLabel" destination="EMt-zr-EER" id="lx9-tv-ZLn"/>
                 <outlet property="previewImageView" destination="RVh-hy-y2K" id="RVb-pz-KXk"/>
                 <outlet property="shareButton" destination="jGu-rr-Q06" id="SMH-4P-zeK"/>
                 <outlet property="usernameLabel" destination="4BA-qs-0sG" id="8Qv-Ho-l6f"/>
                 <outletCollection property="imageViews" destination="D3j-da-Kgn" id="Ew2-g5-VV6"/>
-                <outletCollection property="imageViews" destination="3aV-vH-SgW" id="yQ1-Gc-NkD"/>
-                <outletCollection property="imageViews" destination="wDR-4I-HgR" id="IdK-1A-mZy"/>
                 <outletCollection property="labels" destination="4BA-qs-0sG" id="q38-cp-I2c"/>
                 <outletCollection property="labels" destination="EMt-zr-EER" id="6n1-qT-T6F"/>
                 <outletCollection property="labels" destination="OUw-F8-xAD" id="Kzl-iB-bpr"/>
                 <outletCollection property="labels" destination="WLo-v6-MW0" id="8SQ-Z2-QBX"/>
-                <outletCollection property="labels" destination="l5u-wW-MZu" id="bvR-v7-hLw"/>
-                <outletCollection property="labels" destination="W1G-Iu-p5w" id="leD-RH-Lem"/>
+                <outletCollection property="buttons" destination="xnP-0R-e3a" id="Jxe-Xa-WRf"/>
+                <outletCollection property="buttons" destination="cLx-fR-OJL" id="NwA-zS-ujO"/>
+                <outletCollection property="buttons" destination="jGu-rr-Q06" id="emz-Jf-ci4"/>
             </connections>
         </tableViewCell>
     </objects>

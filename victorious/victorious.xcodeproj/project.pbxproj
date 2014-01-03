@@ -20,6 +20,7 @@
 		8378622818728C89000BF84F /* VFeaturedViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8378622618728C89000BF84F /* VFeaturedViewController.m */; };
 		838511C418762DF3007E0316 /* VInboxBadgeLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 838511C318762DF3007E0316 /* VInboxBadgeLabel.m */; };
 		83ABAFAF18709DE30069556C /* Roboto-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 83ABAFA218709DE30069556C /* Roboto-Light.ttf */; };
+		83B5A1241876447800659C73 /* Roboto-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 83188D64187386D000F17777 /* Roboto-Regular.ttf */; };
 		83BD06FB186BE4B2007742D1 /* UIImage+ImageEffects.m in Sources */ = {isa = PBXBuildFile; fileRef = 83BD06FA186BE4B2007742D1 /* UIImage+ImageEffects.m */; };
 		83F38277186BE62300A866A1 /* VMenuTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 83F38276186BE62300A866A1 /* VMenuTableViewController.m */; };
 		83F7DAAB187213E000299FA1 /* VAddActionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 83F7DAAA187213E000299FA1 /* VAddActionViewController.m */; };
@@ -717,6 +718,7 @@
 				3FF8B7A11868F36600806EA0 /* Localizable.strings in Resources */,
 				BE171D861868BE64004E5202 /* InfoPlist.strings in Resources */,
 				BE171D911868BE64004E5202 /* Images.xcassets in Resources */,
+				83B5A1241876447800659C73 /* Roboto-Regular.ttf in Resources */,
 				BE692B28186E5ED800C71336 /* VStreamVideoCell.xib in Resources */,
 				83ABAFAF18709DE30069556C /* Roboto-Light.ttf in Resources */,
 				BE692B52186E60B300C71336 /* VSequencePlayerViewController.xib in Resources */,

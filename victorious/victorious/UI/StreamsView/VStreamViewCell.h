@@ -19,7 +19,6 @@ extern NSString *kStreamsWillSegueNotification;
 @property (weak, nonatomic) VSequence* sequence;
 
 // TODO: for some reason if these are not here the cell does not show up
-@property (weak, nonatomic) IBOutlet UIButton *likeButton;
 @property (weak, nonatomic) IBOutlet UIButton *dislikeButton;
 
 @end
