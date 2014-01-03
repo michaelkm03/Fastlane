@@ -17,7 +17,7 @@ static NSString* kStreamCache = @"StreamCache";
 @property (strong, nonatomic) NSFetchedResultsController* fetchedResultsController;
 @property (weak, nonatomic) IBOutlet UIScrollView *scrollView;
 @property (weak, nonatomic) IBOutlet UIPageControl *pageControl;
-@property (strong, nonatomic) NSArray *viewControllers;
+@property (strong) NSArray *viewControllers;
 @end
 
 @implementation VFeaturedStreamsViewController

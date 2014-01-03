@@ -72,14 +72,27 @@ NSString*   const   kVSettingsAcknowledgementsURL       =   @"settingsAcknowledg
 
 #pragma mark -
 
-- (id)themedValueForKey:(NSString *)key
+- (id)themedValueForKeyPath:(NSString *)keyPath
 {
-    return self.themeValues[key];
+    id value = self.themeValues[keyPath];
+
+    if (value)
+    {
+        return value;
+    }
+
+    NSString *newKeyPath = [keyPath stringByDeletingPathExtension];
+    if ([keyPath isEqualToString:newKeyPath])
+    {
+        return nil;
+    }
+
+    return [self themedValueForKeyPath:newKeyPath];
 }
 
-- (UIColor *)themedColorForKey:(NSString *)key
+- (UIColor *)themedColorForKeyPath:(NSString *)keyPath
 {
-    NSDictionary*   colorDictionary =   [self themedValueForKey:key];
+    NSDictionary*   colorDictionary =   [self themedValueForKeyPath:keyPath];
     if (nil == colorDictionary)
     {
         return nil;
@@ -93,9 +106,9 @@ NSString*   const   kVSettingsAcknowledgementsURL       =   @"settingsAcknowledg
     return color;
 }
 
-- (UIColor *)themedTranslucencyColorForKey:(NSString *)key
+- (UIColor *)themedTranslucencyColorForKeyPath:(NSString *)keyPath
 {
-    UIColor *color = [self themedColorForKey:key];
+    UIColor *color = [self themedColorForKeyPath:keyPath];
 
     // From https://github.com/kgn/UIColorCategories
     CGFloat hue = 0, saturation = 0, brightness = 0, alpha = 0;
@@ -112,13 +125,13 @@ NSString*   const   kVSettingsAcknowledgementsURL       =   @"settingsAcknowledg
 {
     NSURL*  url =   [self themedURLForKey:key];
     if (nil == url)
-        url     =   [[NSBundle mainBundle] URLForResource:key withExtension:@"png"];
+        url     =   [[NSBundle mainBundle] URLForResource:keyPath withExtension:@"png"];
     return url;
 }
 
-- (UIFont *)themedFontForKey:(NSString *)key
+- (UIFont *)themedFontForKeyPath:(NSString *)keyPath
 {
-    NSDictionary*   fontDictionary = [self themedValueForKey:key];
+    NSDictionary*   fontDictionary = [self themedValueForKeyPath:keyPath];
     NSString*       fontName    =   fontDictionary[@"fontName"];
     CGFloat         fontSize    =   [fontDictionary[@"fontSize"] doubleValue];
     

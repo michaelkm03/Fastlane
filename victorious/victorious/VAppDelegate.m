@@ -27,15 +27,19 @@
     [application setMinimumBackgroundFetchInterval:UIApplicationBackgroundFetchIntervalMinimum];
     application.statusBarStyle  =   UIStatusBarStyleLightContent;
 
-    self.window.tintColor   =   [[VThemeManager sharedThemeManager] themedColorForKey:kVApplicationTintColor];
+    self.window.tintColor   =   [[VThemeManager sharedThemeManager] themedColorForKeyPath:@"theme.color"];
 
-    [[UINavigationBar appearance] setTintColor:[[VThemeManager sharedThemeManager] themedColorForKey:kVNavigationBarTintColor]];
-    [[UINavigationBar appearance] setBarTintColor:[[VThemeManager sharedThemeManager] themedTranslucencyColorForKey:kVNavigationBarBackgroundTintColor]];
+    [[UINavigationBar appearance] setTintColor:[[VThemeManager sharedThemeManager] themedColorForKeyPath:@"theme.color.navigationBar.tint"]];
+    [[UINavigationBar appearance] setBarTintColor:[[VThemeManager sharedThemeManager] themedTranslucencyColorForKeyPath:@"theme.color.navigationBar.barTint"]];
 
     NSMutableDictionary *titleAttributes = [NSMutableDictionary dictionary];
-    UIColor *navigationBarTitleTintColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVNavigationBarTitleTintColor];
+    UIColor *navigationBarTitleTintColor = [[VThemeManager sharedThemeManager] themedColorForKeyPath:@"theme.color.navigationBar.tint.title"];
     if(navigationBarTitleTintColor){
         [titleAttributes setObject:navigationBarTitleTintColor forKey:NSForegroundColorAttributeName];
+    }
+    UIFont *navigationBarTitleFont = [[VThemeManager sharedThemeManager] themedFontForKeyPath:@"theme.font.navigationBar.title"];
+    if(navigationBarTitleFont){
+        [titleAttributes setObject:navigationBarTitleFont forKey:NSFontAttributeName];
     }
     [[UINavigationBar appearance] setTitleTextAttributes:titleAttributes];
 

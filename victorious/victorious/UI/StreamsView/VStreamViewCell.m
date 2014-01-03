@@ -33,14 +33,15 @@ NSString* kStreamsWillSegueNotification = @"kStreamsWillSegueNotification";
     [super awakeFromNib];
 
     [[UIImageView appearanceWhenContainedIn:[self class], nil]
-     setTintColor:[[VThemeManager sharedThemeManager] themedColorForKey:kVStreamCellIconColor]];
+     setTintColor:[[VThemeManager sharedThemeManager] themedColorForKeyPath:@"theme.color.stream.icon"]];
     [self.imageViews enumerateObjectsUsingBlock:^(UIImageView *imageView, NSUInteger idx, BOOL *stop){
         imageView.image = [imageView.image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
     }];
     [self.labels enumerateObjectsUsingBlock:^(UILabel *label, NSUInteger idx, BOOL *stop){
-        label.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVStreamCellTextFont];
-        label.textColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVStreamCellTextColor];
+        label.font = [[VThemeManager sharedThemeManager] themedFontForKeyPath:@"theme.font.stream"];
+        label.textColor = [[VThemeManager sharedThemeManager] themedColorForKeyPath:@"theme.color.stream.text"];
     }];
+    self.usernameLabel.font = [[VThemeManager sharedThemeManager] themedFontForKeyPath:@"theme.font.stream.text.username"];
 }
 
 - (void)setSequence:(VSequence *)sequence
