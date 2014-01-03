@@ -9,8 +9,9 @@
 #import "VRootNavigationController.h"
 #import "VSettingsViewController.h"
 
-@interface VRootNavigationController ()
+@import MessageUI;
 
+@interface VRootNavigationController () <MFMailComposeViewControllerDelegate>
 @end
 
 @implementation VRootNavigationController
@@ -41,16 +42,35 @@
             // TODO: show profile
             [self dismissViewControllerAnimated:YES completion:nil];
             break;
-        }case VMenuTableViewControllerRowSettings:{
+        }case VMenuTableViewControllerRowSettings:
+        {
             self.viewControllers = @[[VSettingsViewController sharedSettingsViewController]];
             [self dismissViewControllerAnimated:YES completion:nil];
             break;
-        }case VMenuTableViewControllerRowHelp:{
-            // TODO: show help
-            [self dismissViewControllerAnimated:YES completion:nil];
+        }
+        case VMenuTableViewControllerRowHelp:
+        {
+//            if ([MFMailComposeViewController canSendMail])
+//            {
+//                MFMailComposeViewController*    mailComposer = [[MFMailComposeViewController alloc] init];
+//                mailComposer.mailComposeDelegate = self;
+//                
+//                [mailComposer setSubject:@"Help!"];
+//                [mailComposer setToRecipients:@[@"X@y.com"]];
+//                [self dismissViewControllerAnimated:YES completion:nil];
+//                
+//                [self presentViewController:mailComposer animated:YES completion:nil];
+//            }
+//            else
+                [self dismissViewControllerAnimated:YES completion:nil];
             break;
         }
     }
+}
+
+- (void)mailComposeController:(MFMailComposeViewController*)controller didFinishWithResult:(MFMailComposeResult)result error:(NSError*)error
+{
+    
 }
 
 @end
