@@ -128,10 +128,10 @@
 		<integer>1</integer>
 	</dict>
 	<key>settingsAboutUsURL</key>
-	<string>http://www.google.com</string>
+	<string>http://dev.getvictorious.com/api/static/about</string>
 	<key>settingsPrivacyPoliciesURL</key>
-	<string>http://www.apple.com</string>
+	<string>http://dev.getvictorious.com/api/static/privacy</string>
 	<key>settingsAcknowledgementsURL</key>
-	<string>http://www.yahoo.com</string>
+	<string>http://dev.getvictorious.com/api/static/acknowledgments</string>
 </dict>
 </plist>
