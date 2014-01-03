@@ -8,8 +8,10 @@
 
 #import "VMenuTableViewController.h"
 #import "VThemeManager.h"
+#import "VInboxBadgeLabel.h"
 
 @interface VMenuTableViewController()
+@property (weak, nonatomic) IBOutlet VInboxBadgeLabel *inboxBadgeLabel;
 @property (weak, nonatomic) IBOutlet UILabel *nameLabel;
 @property (strong, nonatomic) IBOutletCollection(UIImageView) NSArray *imageViews;
 @property (strong, nonatomic) IBOutletCollection(UILabel) NSArray *labels;
@@ -20,6 +22,33 @@
 
 - (void)viewDidLoad{
     [super viewDidLoad];
+
+    // TODO: connect to real data
+    NSUInteger count = 8;
+
+    static dispatch_once_t onceToken;
+    static NSNumberFormatter *countFormatter = nil;
+    dispatch_once(&onceToken, ^{
+        countFormatter = [NSNumberFormatter new];
+        NSString *groupingSeparator = [[NSLocale currentLocale] objectForKey:NSLocaleGroupingSeparator];
+        [countFormatter setGroupingSeparator:groupingSeparator];
+        [countFormatter setAlwaysShowsDecimalSeparator:NO];
+        [countFormatter setUsesGroupingSeparator:YES];
+        [countFormatter setGroupingSize:3];
+    });
+    if(count < 1){
+        [self.inboxBadgeLabel setHidden:YES];
+    }else{
+        if(count < 1000){
+            self.inboxBadgeLabel.text = [countFormatter stringFromNumber:@(count)];
+        }else{
+            self.inboxBadgeLabel.text = @"+999";
+        }
+        self.inboxBadgeLabel.font = [[VThemeManager sharedThemeManager] themedFontForKeyPath:@"theme.font.menu.badge"];
+        self.inboxBadgeLabel.textColor = [[VThemeManager sharedThemeManager] themedColorForKeyPath:@"theme.color.menu.badge.text"];
+        self.inboxBadgeLabel.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKeyPath:@"theme.color.menu.badge"];
+        [self.inboxBadgeLabel setHidden:NO];
+    }
 
     NSString *channelName = [[VThemeManager sharedThemeManager] themedValueForKeyPath:@"channel.name"];
     self.nameLabel.text = [NSString stringWithFormat:NSLocalizedString(@"%@ Channel", @"<CHANNEL NAME> Channel"), channelName];

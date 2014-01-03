@@ -7,30 +7,37 @@
 	<key>theme.font</key>
 	<dict>
 		<key>fontName</key>
-		<string>Roboto-Regular</string>
+		<string>Roboto</string>
 		<key>fontSize</key>
-		<string>15</string>
+		<integer>15</integer>
 	</dict>
 	<key>theme.font.menu</key>
 	<dict>
 		<key>fontName</key>
 		<string>Roboto-Light</string>
 		<key>fontSize</key>
-		<string>17</string>
+		<integer>17</integer>
+	</dict>
+	<key>theme.font.menu.badge</key>
+	<dict>
+		<key>fontName</key>
+		<string>Roboto</string>
+		<key>fontSize</key>
+		<integer>10</integer>
 	</dict>
 	<key>theme.font.stream</key>
 	<dict>
 		<key>fontName</key>
 		<string>Roboto-Light</string>
 		<key>fontSize</key>
-		<string>15</string>
+		<integer>15</integer>
 	</dict>
 	<key>theme.font.stream.text.username</key>
 	<dict>
 		<key>fontName</key>
-		<string>Roboto-Regular</string>
+		<string>Roboto</string>
 		<key>fontSize</key>
-		<string>15</string>
+		<integer>15</integer>
 	</dict>
 	<key>theme.color</key>
 	<dict>
@@ -73,6 +80,28 @@
 		<integer>223</integer>
 		<key>blue</key>
 		<integer>223</integer>
+		<key>alpha</key>
+		<integer>1</integer>
+	</dict>
+	<key>theme.color.menu.badge</key>
+	<dict>
+		<key>red</key>
+		<integer>246</integer>
+		<key>green</key>
+		<integer>187</integer>
+		<key>blue</key>
+		<integer>66</integer>
+		<key>alpha</key>
+		<integer>1</integer>
+	</dict>
+	<key>theme.color.menu.badge.text</key>
+	<dict>
+		<key>red</key>
+		<integer>255</integer>
+		<key>green</key>
+		<integer>255</integer>
+		<key>blue</key>
+		<integer>255</integer>
 		<key>alpha</key>
 		<integer>1</integer>
 	</dict>
