@@ -50,19 +50,27 @@
         }
         case VMenuTableViewControllerRowHelp:
         {
-//            if ([MFMailComposeViewController canSendMail])
-//            {
-//                MFMailComposeViewController*    mailComposer = [[MFMailComposeViewController alloc] init];
-//                mailComposer.mailComposeDelegate = self;
-//                
-//                [mailComposer setSubject:@"Help!"];
-//                [mailComposer setToRecipients:@[@"X@y.com"]];
-//                [self dismissViewControllerAnimated:YES completion:nil];
-//                
-//                [self presentViewController:mailComposer animated:YES completion:nil];
-//            }
-//            else
+            if ([MFMailComposeViewController canSendMail])
+            {
+                MFMailComposeViewController*    mailComposer = [[MFMailComposeViewController alloc] init];
+                mailComposer.mailComposeDelegate = self;
+
+                [mailComposer setSubject:@"Help!"];
+                [mailComposer setToRecipients:@[@"X@y.com"]];
+                
                 [self dismissViewControllerAnimated:YES completion:nil];
+                [self presentViewController:mailComposer animated:YES completion:nil];
+            }
+            else
+            {
+                UIAlertView*    alert   =   [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"NoEmail", @"Unable to Email")
+                                                                       message:NSLocalizedString(@"NoEmailDetail", @"Email Not Configured")
+                                                                      delegate:nil
+                                                             cancelButtonTitle:NSLocalizedString(@"OKButton", @"OK")
+                                                             otherButtonTitles:nil];
+                [alert show];
+                [self dismissViewControllerAnimated:YES completion:nil];
+            }
             break;
         }
     }
@@ -70,7 +78,17 @@
 
 - (void)mailComposeController:(MFMailComposeViewController*)controller didFinishWithResult:(MFMailComposeResult)result error:(NSError*)error
 {
+    if (MFMailComposeResultFailed == result)
+    {
+        UIAlertView*    alert   =   [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"EmailFail", @"Unable to Email")
+                                                               message:error.localizedDescription
+                                                              delegate:nil
+                                                     cancelButtonTitle:NSLocalizedString(@"OKButton", @"OK")
+                                                     otherButtonTitles:nil];
+        [alert show];
+    }
     
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 @end

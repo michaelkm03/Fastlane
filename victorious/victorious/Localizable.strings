@@ -13,3 +13,7 @@
 "InvalidCredentials"    =   "Invalid Credentials";
 "LoginFail"             =   "Login Failed";
 "SignupFail"            =   "Account Creation Failed";
+
+"NoEmail"               =   "Unable to E-mail";
+"NoEmailDetail"         =   "Your device is not configured to send email";
+"EmailFail"             =   "E-mail failed to send";
