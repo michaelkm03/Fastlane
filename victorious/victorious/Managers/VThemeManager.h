@@ -27,6 +27,10 @@ extern  NSString*   const   kVStreamCellIconColor;
 extern  NSString*   const   kVStreamCellTextFont;
 extern  NSString*   const   kVStreamCellTextUsernameFont;
 
+extern  NSString*   const   kVSettingsAboutUsURL;
+extern  NSString*   const   kVSettingsPrivacyPoliciesURL;
+extern  NSString*   const   kVSettingsAcknowledgementsURL;
+
 @interface VThemeManager : NSObject
 
 + (VThemeManager *)sharedThemeManager;
@@ -44,5 +48,7 @@ extern  NSString*   const   kVStreamCellTextUsernameFont;
 
 - (NSURL *)themedImageURLForKey:(NSString *)key;
 - (UIFont *)themedFontForKey:(NSString *)key;
+
+- (NSURL *)themedURLForKey:(NSString *)key;
 
 @end

@@ -27,6 +27,10 @@ NSString*   const   kVStreamCellIconColor               =   @"streamCellIconColo
 NSString*   const   kVStreamCellTextFont                =   @"streamCellTextFont";
 NSString*   const   kVStreamCellTextUsernameFont        =   @"streamCellTextUsernameFont";
 
+NSString*   const   kVSettingsAboutUsURL                =   @"settingsAboutUsURL";
+NSString*   const   kVSettingsPrivacyPoliciesURL        =   @"settingsPrivacyPoliciesURL";
+NSString*   const   kVSettingsAcknowledgementsURL       =   @"settingsAcknowledgementsURL";
+
 @interface      VThemeManager   ()
 @property   (nonatomic, readwrite, copy)    NSDictionary*   themeValues;
 @end
@@ -99,9 +103,14 @@ NSString*   const   kVStreamCellTextUsernameFont        =   @"streamCellTextUser
     return [UIColor colorWithHue:hue saturation:saturation*1.158 brightness:brightness*0.95 alpha:alpha];
 }
 
+- (NSURL *)themedURLForKey:(NSString *)key
+{
+    return [NSURL URLWithString:[self themedValueForKey:key]];
+}
+
 - (NSURL *)themedImageURLForKey:(NSString *)key
 {
-    NSURL*  url =   [NSURL URLWithString:[self themedValueForKey:key]];
+    NSURL*  url =   [self themedURLForKey:key];
     if (nil == url)
         url     =   [[NSBundle mainBundle] URLForResource:key withExtension:@"png"];
     return url;

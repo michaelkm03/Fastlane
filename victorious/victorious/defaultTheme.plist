@@ -115,5 +115,11 @@
 		<key>alpha</key>
 		<integer>1</integer>
 	</dict>
+	<key>settingsAboutUsURL</key>
+	<string>http://www.google.com</string>
+	<key>settingsPrivacyPoliciesURL</key>
+	<string>http://www.apple.com</string>
+	<key>settingsAcknowledgementsURL</key>
+	<string>http://www.yahoo.com</string>
 </dict>
 </plist>
