@@ -13,6 +13,7 @@
 #import "VThemeManager.h"
 #import "BBlock.h"
 #import "UIAlertView+BBlock.h"
+#import "VStreamsTableViewController.h"
 
 @import MessageUI;
 
@@ -27,25 +28,25 @@
     {
         case VMenuTableViewControllerRowHome:
         {
-            // TODO: show home
+            self.viewControllers = @[[VStreamsTableViewController sharedStreamsTableViewController]];
             [self dismissViewControllerAnimated:YES completion:nil];
             break;
         }
         case VMenuTableViewControllerRowOwnerChannel:
         {
-            // TODO: show owner channel
+            self.viewControllers = @[[VStreamsTableViewController sharedStreamsTableViewController]];
             [self dismissViewControllerAnimated:YES completion:nil];
             break;
         }
         case VMenuTableViewControllerRowCommunityChannel:
         {
-            // TODO: show community channel
+            self.viewControllers = @[[VStreamsTableViewController sharedStreamsTableViewController]];
             [self dismissViewControllerAnimated:YES completion:nil];
             break;
         }
         case VMenuTableViewControllerRowForums:
         {
-            // TODO: show forums
+            self.viewControllers = @[[VStreamsTableViewController sharedStreamsTableViewController]];
             [self dismissViewControllerAnimated:YES completion:nil];
             break;
         }

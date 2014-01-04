@@ -6,8 +6,8 @@
 //  Copyright (c) 2013 Victorious Inc. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
-
-
 @interface VStreamsTableViewController : UITableViewController
+
++ (VStreamsTableViewController *)sharedStreamsTableViewController;
+
 @end

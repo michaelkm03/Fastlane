@@ -46,6 +46,18 @@ static NSString* kSearchCache = @"SearchCache";
 
 @implementation VStreamsTableViewController
 
++ (VStreamsTableViewController *)sharedStreamsTableViewController
+{
+    static  VStreamsTableViewController*   streamsTableViewController;
+    static  dispatch_once_t         onceToken;
+    dispatch_once(&onceToken, ^{
+        UIViewController*   currentViewController = [[UIApplication sharedApplication] delegate].window.rootViewController;
+        streamsTableViewController = (VStreamsTableViewController*)[currentViewController.storyboard instantiateViewControllerWithIdentifier: @"streams"];
+    });
+
+    return streamsTableViewController;
+}
+
 - (id)initWithStyle:(UITableViewStyle)style
 {
     self = [super initWithStyle:style];
@@ -196,7 +208,7 @@ static NSString* kSearchCache = @"SearchCache";
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     VSequence* sequence = (VSequence*)[[self fetchedResultsControllerForTableView:tableView] objectAtIndexPath:indexPath];
-    
+
     VStreamViewCell *cell;
     if ([sequence.category isEqualToString:@"video_forum"])
         cell = [tableView dequeueReusableCellWithIdentifier:kStreamVideoCellIdentifier
@@ -403,7 +415,7 @@ static NSString* kSearchCache = @"SearchCache";
 {
     NSMutableArray* allFilters = [[NSMutableArray alloc] init];
     //Type filter
-    switch (_scopeType)
+    switch (self.scopeType)
     {
         case VStreamFilterVideoForums:
             [allFilters addObject:[NSPredicate predicateWithFormat:@"category == 'video_forum'"]];
