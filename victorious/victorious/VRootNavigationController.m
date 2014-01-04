@@ -84,7 +84,6 @@
                 [mailComposer setSubject:NSLocalizedString(@"HelpNeeded", @"Need Help")];
                 [mailComposer setToRecipients:@[[[VThemeManager sharedThemeManager] themedValueForKeyPath:kVChannelURLSupport]]];
                 
-                //  Dismiss the menu controller first, since we want to be a child of the root controller
                 [self presentViewController:mailComposer animated:YES completion:nil];
             }
             else
