@@ -39,12 +39,14 @@ static NSString* kStreamCache = @"StreamCache";
     [super viewWillLayoutSubviews];
 
     __block CGRect frame = self.scrollView.bounds;
-    [self.viewControllers enumerateObjectsUsingBlock:^(UIViewController *viewController, NSUInteger idx, BOOL *stop){
-        viewController.view.frame = frame;
-        [self.scrollView addSubview:viewController.view];
-        frame.origin.x += CGRectGetWidth(self.scrollView.bounds);
-    }];
-    self.scrollView.contentSize = CGSizeMake(CGRectGetMinX(frame), CGRectGetHeight(frame));
+    @synchronized(self.viewControllers){
+        [self.viewControllers enumerateObjectsUsingBlock:^(UIViewController *viewController, NSUInteger idx, BOOL *stop){
+            viewController.view.frame = frame;
+            [self.scrollView addSubview:viewController.view];
+            frame.origin.x += CGRectGetWidth(self.scrollView.bounds);
+        }];
+        self.scrollView.contentSize = CGSizeMake(CGRectGetMinX(frame), CGRectGetHeight(frame));
+    };
 }
 
 #pragma mark - NSFetchedResultsController
@@ -76,6 +78,7 @@ static NSString* kStreamCache = @"StreamCache";
     [fetchRequest setEntity:entity];
 
     NSSortDescriptor *sort = [[NSSortDescriptor alloc] initWithKey:@"display_order" ascending:YES];
+    [fetchRequest setPredicate:[NSPredicate predicateWithFormat:@"category == 'owner_image'"]];
     [fetchRequest setSortDescriptors:@[sort]];
     [fetchRequest setFetchBatchSize:5];
 
