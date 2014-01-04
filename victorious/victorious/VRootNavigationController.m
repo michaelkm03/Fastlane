@@ -24,6 +24,7 @@
 
 - (void)showViewControllerForSelectedMenuRow:(VMenuTableViewControllerRow)row
 {
+    BBlockWeakSelf wself = self;
     switch(row)
     {
         case VMenuTableViewControllerRowHome:
@@ -52,22 +53,36 @@
         }
         case VMenuTableViewControllerRowInbox:
         {
-            [self dismissViewControllerAnimated:YES completion:^{
-                if (![VObjectManager sharedManager].authorized)
-                    [self presentViewController:[VLoginViewController sharedLoginViewController] animated:YES completion:NULL];
-                else
-                    ;   //  Show Inbox
-            }];
+            if (![VObjectManager sharedManager].authorized)
+            {
+                UINavigationController *navigationController =
+                [[UINavigationController alloc] initWithRootViewController:[VLoginViewController sharedLoginViewController]];
+                [self dismissViewControllerAnimated:YES completion:^{
+                    [wself presentViewController:navigationController animated:YES completion:NULL];
+                }];
+            }
+            else
+            {
+                //  Show Inbox
+                [self dismissViewControllerAnimated:YES completion:nil];
+            }
             break;
         }
         case VMenuTableViewControllerRowProfile:
         {
-            [self dismissViewControllerAnimated:YES completion:^{
-                if (![VObjectManager sharedManager].authorized)
-                    [self presentViewController:[VLoginViewController sharedLoginViewController] animated:YES completion:NULL];
-                else
-                    ;   //  Show Profile
-            }];
+            if (![VObjectManager sharedManager].authorized)
+            {
+                UINavigationController *navigationController =
+                [[UINavigationController alloc] initWithRootViewController:[VLoginViewController sharedLoginViewController]];
+                [self dismissViewControllerAnimated:YES completion:^{
+                    [wself presentViewController:navigationController animated:YES completion:NULL];
+                }];
+            }
+            else
+            {
+                //  Show Profile
+                [self dismissViewControllerAnimated:YES completion:nil];
+            }
             break;
         }
         case VMenuTableViewControllerRowSettings:
@@ -78,7 +93,6 @@
         }
         case VMenuTableViewControllerRowHelp:
         {
-            BBlockWeakSelf wself = self;
             [self dismissViewControllerAnimated:YES completion:^{
                 if ([MFMailComposeViewController canSendMail])
                 {
