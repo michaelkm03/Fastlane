@@ -52,21 +52,22 @@
         }
         case VMenuTableViewControllerRowInbox:
         {
-            [self dismissViewControllerAnimated:NO completion:nil];
-            if (![VObjectManager sharedManager].authorized)
-                [self presentViewController:[VLoginViewController sharedLoginViewController] animated:YES completion:NULL];
-            else
-                ;   //  Show Inbox
-            [self dismissViewControllerAnimated:YES completion:nil];
+            [self dismissViewControllerAnimated:YES completion:^{
+                if (![VObjectManager sharedManager].authorized)
+                    [self presentViewController:[VLoginViewController sharedLoginViewController] animated:YES completion:NULL];
+                else
+                    ;   //  Show Inbox
+            }];
             break;
         }
         case VMenuTableViewControllerRowProfile:
         {
-            [self dismissViewControllerAnimated:NO completion:nil];
-            if (![VObjectManager sharedManager].authorized)
-                [self presentViewController:[VLoginViewController sharedLoginViewController] animated:YES completion:NULL];
-            else
-                ;   //  Show Profile
+            [self dismissViewControllerAnimated:YES completion:^{
+                if (![VObjectManager sharedManager].authorized)
+                    [self presentViewController:[VLoginViewController sharedLoginViewController] animated:YES completion:NULL];
+                else
+                    ;   //  Show Profile
+            }];
             break;
         }
         case VMenuTableViewControllerRowSettings:
@@ -100,20 +101,20 @@
                 }
                 else
                 {
-                    [[[UIAlertView alloc]
-                      initWithTitle:NSLocalizedString(@"No Email Accounts", @"Email not setup alert title")
-                      message:NSLocalizedString(@"There are no email accounts, would you like to setup one now?", @"Email not setup alert message")
-                      cancelButtonTitle:NSLocalizedString(@"Cancel", @"Cancel button label")
-                      otherButtonTitle:NSLocalizedString(@"Setup", @"Setup button label")
-                      completionBlock:^(NSInteger buttonIndex, UIAlertView *alertView){
-                          if(alertView.cancelButtonIndex != buttonIndex){
-                              // opening mailto: when there are no valid email accounts
-                              // registered will open the mail app to setup an account
-                              [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"mailto:"]];
-                          }
-                      }] show];
+                    [[[UIAlertView alloc] initWithTitle:NSLocalizedString(@"NoEmail", @"Email not setup alert title")
+                                                message:NSLocalizedString(@"NoEmailDetail", @"Email not setup alert message")
+                                      cancelButtonTitle:NSLocalizedString(@"CancelButton", @"Cancel button label")
+                                       otherButtonTitle:NSLocalizedString(@"SetupButton", @"Setup button label")
+                                        completionBlock:^(NSInteger buttonIndex, UIAlertView *alertView)
+                                          {
+                                              if(alertView.cancelButtonIndex != buttonIndex)
+                                              {
+                                                  // opening mailto: when there are no valid email accounts
+                                                  // registered will open the mail app to setup an account
+                                                  [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"mailto:"]];
+                                              }
+                                          }] show];
 
-                    [wself dismissViewControllerAnimated:YES completion:nil];
                 }
             }];
             break;

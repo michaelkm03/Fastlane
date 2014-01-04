@@ -7,6 +7,8 @@
 */
 
 "OKButton"              =   "OK";
+"CancelButton"          =   "Cancel";
+"SetupButton"           =   "Set up";
 "EmailValidation"       =   "Invalid Email Address";
 "PasswordValidation"    =   "Password is less than 8 characters";
 "UsernameValidation"    =   "User name is less than 8 characters";
@@ -14,8 +16,8 @@
 "LoginFail"             =   "Login Failed";
 "SignupFail"            =   "Account Creation Failed";
 
-"NoEmail"               =   "Unable to E-mail";
-"NoEmailDetail"         =   "Your device is not configured to send email";
+"NoEmail"               =   "No Email Accounts";
+"NoEmailDetail"         =   "There are no email accounts, would you like to setup one now?";
 "EmailFail"             =   "E-mail failed to send";
 
 "HelpNeeded"            =   "I need help with...";
