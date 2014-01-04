@@ -8,6 +8,8 @@
 
 #import "VRootNavigationController.h"
 #import "VSettingsViewController.h"
+#import "VObjectManager+Login.h"
+#import "VLoginViewController.h"
 #import "VThemeManager.h"
 
 @import MessageUI;
@@ -17,33 +19,54 @@
 
 @implementation VRootNavigationController
 
-- (void)showViewControllerForSelectedMenuRow:(VMenuTableViewControllerRow)row{
-    switch(row){
-        case VMenuTableViewControllerRowHome:{
+- (void)showViewControllerForSelectedMenuRow:(VMenuTableViewControllerRow)row
+{
+    switch(row)
+    {
+        case VMenuTableViewControllerRowHome:
+        {
             // TODO: show home
             [self dismissViewControllerAnimated:YES completion:nil];
             break;
-        }case VMenuTableViewControllerRowOwnerChannel:{
+        }
+        case VMenuTableViewControllerRowOwnerChannel:
+        {
             // TODO: show owner channel
             [self dismissViewControllerAnimated:YES completion:nil];
             break;
-        }case VMenuTableViewControllerRowCommunityChannel:{
+        }
+        case VMenuTableViewControllerRowCommunityChannel:
+        {
             // TODO: show community channel
             [self dismissViewControllerAnimated:YES completion:nil];
             break;
-        }case VMenuTableViewControllerRowForums:{
+        }
+        case VMenuTableViewControllerRowForums:
+        {
             // TODO: show forums
             [self dismissViewControllerAnimated:YES completion:nil];
             break;
-        }case VMenuTableViewControllerRowInbox:{
-            // TODO: show inbox
+        }
+        case VMenuTableViewControllerRowInbox:
+        {
+            [self dismissViewControllerAnimated:NO completion:nil];
+            if (![VObjectManager sharedManager].authorized)
+                [self presentViewController:[VLoginViewController sharedLoginViewController] animated:YES completion:NULL];
+            else
+                ;   //  Show Inbox
             [self dismissViewControllerAnimated:YES completion:nil];
             break;
-        }case VMenuTableViewControllerRowProfile:{
-            // TODO: show profile
-            [self dismissViewControllerAnimated:YES completion:nil];
+        }
+        case VMenuTableViewControllerRowProfile:
+        {
+            [self dismissViewControllerAnimated:NO completion:nil];
+            if (![VObjectManager sharedManager].authorized)
+                [self presentViewController:[VLoginViewController sharedLoginViewController] animated:YES completion:NULL];
+            else
+                ;   //  Show Profile
             break;
-        }case VMenuTableViewControllerRowSettings:
+        }
+        case VMenuTableViewControllerRowSettings:
         {
             self.viewControllers = @[[VSettingsViewController sharedSettingsViewController]];
             [self dismissViewControllerAnimated:YES completion:nil];
@@ -51,6 +74,8 @@
         }
         case VMenuTableViewControllerRowHelp:
         {
+            [self dismissViewControllerAnimated:NO completion:nil];
+
             if ([MFMailComposeViewController canSendMail])
             {
                 MFMailComposeViewController*    mailComposer = [[MFMailComposeViewController alloc] init];
@@ -60,7 +85,6 @@
                 [mailComposer setToRecipients:@[[[VThemeManager sharedThemeManager] themedValueForKeyPath:kVChannelURLSupport]]];
                 
                 //  Dismiss the menu controller first, since we want to be a child of the root controller
-                [self dismissViewControllerAnimated:YES completion:nil];
                 [self presentViewController:mailComposer animated:YES completion:nil];
             }
             else
@@ -71,7 +95,6 @@
                                                              cancelButtonTitle:NSLocalizedString(@"OKButton", @"OK")
                                                              otherButtonTitles:nil];
                 [alert show];
-                [self dismissViewControllerAnimated:YES completion:nil];
             }
             break;
         }
