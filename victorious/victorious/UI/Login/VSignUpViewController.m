@@ -17,6 +17,7 @@ NSString*   const   kSignupViewControllerDomain =   @"VSignupViewControllerDomai
 @property (weak, nonatomic) IBOutlet UITextField *usernameTextField;
 @property (weak, nonatomic) IBOutlet UITextField *emailTextField;
 @property (weak, nonatomic) IBOutlet UITextField *passwordTextField;
+@property (weak, nonatomic) IBOutlet UISwitch* agreeSwitch;
 
 @property (strong, nonatomic) IBOutlet UIView *accessoryView;
 @end
@@ -68,6 +69,18 @@ NSString*   const   kSignupViewControllerDomain =   @"VSignupViewControllerDomai
     {
         UIAlertView*    alert   =   [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"InvalidCredentials", @"")
                                                                message:theError.localizedDescription
+                                                              delegate:nil
+                                                     cancelButtonTitle:NSLocalizedString(@"OKButton", @"")
+                                                     otherButtonTitles:nil];
+        [alert show];
+        [[self view] endEditing:YES];
+        return NO;
+    }
+    
+    if (NO == self.agreeSwitch.on)
+    {
+        UIAlertView*    alert   =   [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"InvalidCredentials", @"")
+                                                               message:NSLocalizedString(@"AgreeTOS", @"")
                                                               delegate:nil
                                                      cancelButtonTitle:NSLocalizedString(@"OKButton", @"")
                                                      otherButtonTitles:nil];
