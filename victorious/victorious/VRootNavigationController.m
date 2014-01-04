@@ -11,6 +11,8 @@
 #import "VObjectManager+Login.h"
 #import "VLoginViewController.h"
 #import "VThemeManager.h"
+#import "BBlock.h"
+#import "UIAlertView+BBlock.h"
 
 @import MessageUI;
 
@@ -74,27 +76,45 @@
         }
         case VMenuTableViewControllerRowHelp:
         {
-            [self dismissViewControllerAnimated:NO completion:nil];
+            BBlockWeakSelf wself = self;
+            [self dismissViewControllerAnimated:YES completion:^{
+                if ([MFMailComposeViewController canSendMail])
+                {
+                    // The style is removed then re-applied so the mail
+                    // compose view controller has the default appearance
+                    [[VThemeManager sharedThemeManager] removeStyling];
 
-            if ([MFMailComposeViewController canSendMail])
-            {
-                MFMailComposeViewController*    mailComposer = [[MFMailComposeViewController alloc] init];
-                mailComposer.mailComposeDelegate = self;
+                    // Run on the main run loop to ensure the mail composer view gets the new styling
+                    [BBlock dispatchOnMainThread:^{
+                        MFMailComposeViewController*    mailComposer = [[MFMailComposeViewController alloc] init];
+                        mailComposer.mailComposeDelegate = wself;
 
-                [mailComposer setSubject:NSLocalizedString(@"HelpNeeded", @"Need Help")];
-                [mailComposer setToRecipients:@[[[VThemeManager sharedThemeManager] themedValueForKeyPath:kVChannelURLSupport]]];
-                
-                [self presentViewController:mailComposer animated:YES completion:nil];
-            }
-            else
-            {
-                UIAlertView*    alert   =   [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"NoEmail", @"Unable to Email")
-                                                                       message:NSLocalizedString(@"NoEmailDetail", @"Email Not Configured")
-                                                                      delegate:nil
-                                                             cancelButtonTitle:NSLocalizedString(@"OKButton", @"OK")
-                                                             otherButtonTitles:nil];
-                [alert show];
-            }
+                        [mailComposer setSubject:NSLocalizedString(@"HelpNeeded", @"Need Help")];
+                        [mailComposer setToRecipients:@[[[VThemeManager sharedThemeManager] themedValueForKeyPath:kVChannelURLSupport]]];
+
+                        //  Dismiss the menu controller first, since we want to be a child of the root controller
+                        [wself presentViewController:mailComposer animated:YES completion:nil];
+                        [[VThemeManager sharedThemeManager] applyStyling];
+                    }];
+                }
+                else
+                {
+                    [[[UIAlertView alloc]
+                      initWithTitle:NSLocalizedString(@"No Email Accounts", @"Email not setup alert title")
+                      message:NSLocalizedString(@"There are no email accounts, would you like to setup one now?", @"Email not setup alert message")
+                      cancelButtonTitle:NSLocalizedString(@"Cancel", @"Cancel button label")
+                      otherButtonTitle:NSLocalizedString(@"Setup", @"Setup button label")
+                      completionBlock:^(NSInteger buttonIndex, UIAlertView *alertView){
+                          if(alertView.cancelButtonIndex != buttonIndex){
+                              // opening mailto: when there are no valid email accounts
+                              // registered will open the mail app to setup an account
+                              [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"mailto:"]];
+                          }
+                      }] show];
+
+                    [wself dismissViewControllerAnimated:YES completion:nil];
+                }
+            }];
             break;
         }
     }

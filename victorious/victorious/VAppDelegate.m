@@ -25,22 +25,7 @@
     [application setMinimumBackgroundFetchInterval:UIApplicationBackgroundFetchIntervalMinimum];
     application.statusBarStyle  =   UIStatusBarStyleLightContent;
 
-    self.window.tintColor   =   [[VThemeManager sharedThemeManager] themedColorForKeyPath:@"theme.color"];
-
-    [[UINavigationBar appearance] setTintColor:[[VThemeManager sharedThemeManager] themedColorForKeyPath:@"theme.color.navigationBar"]];
-    [[UINavigationBar appearance] setBarTintColor:[[VThemeManager sharedThemeManager] themedTranslucencyColorForKeyPath:@"theme.color.navigationBar.background"]];
-
-    NSMutableDictionary *titleAttributes = [NSMutableDictionary dictionary];
-    UIColor *navigationBarTitleTintColor = [[VThemeManager sharedThemeManager] themedColorForKeyPath:@"theme.color.navigationBar.title"];
-    if(navigationBarTitleTintColor){
-        [titleAttributes setObject:navigationBarTitleTintColor forKey:NSForegroundColorAttributeName];
-    }
-    UIFont *navigationBarTitleFont = [[VThemeManager sharedThemeManager] themedFontForKeyPath:@"theme.font.navigationBar.title"];
-    if(navigationBarTitleFont){
-        [titleAttributes setObject:navigationBarTitleFont forKey:NSFontAttributeName];
-    }
-    [[UINavigationBar appearance] setTitleTextAttributes:titleAttributes];
-
+    [[VThemeManager sharedThemeManager] applyStyling];
 
 //    [application registerForRemoteNotificationTypes:(UIRemoteNotificationTypeBadge | UIRemoteNotificationTypeSound)];
     

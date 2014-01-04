@@ -12,6 +12,30 @@
 #define COCOAPODS_VERSION_MINOR_AFNetworking 3
 #define COCOAPODS_VERSION_PATCH_AFNetworking 3
 
+// BBlock
+#define COCOAPODS_POD_AVAILABLE_BBlock
+#define COCOAPODS_VERSION_MAJOR_BBlock 1
+#define COCOAPODS_VERSION_MINOR_BBlock 1
+#define COCOAPODS_VERSION_PATCH_BBlock 0
+
+// BBlock/Foundation
+#define COCOAPODS_POD_AVAILABLE_BBlock_Foundation
+#define COCOAPODS_VERSION_MAJOR_BBlock_Foundation 1
+#define COCOAPODS_VERSION_MINOR_BBlock_Foundation 1
+#define COCOAPODS_VERSION_PATCH_BBlock_Foundation 0
+
+// BBlock/StoreKit
+#define COCOAPODS_POD_AVAILABLE_BBlock_StoreKit
+#define COCOAPODS_VERSION_MAJOR_BBlock_StoreKit 1
+#define COCOAPODS_VERSION_MINOR_BBlock_StoreKit 1
+#define COCOAPODS_VERSION_PATCH_BBlock_StoreKit 0
+
+// BBlock/UIKit
+#define COCOAPODS_POD_AVAILABLE_BBlock_UIKit
+#define COCOAPODS_VERSION_MAJOR_BBlock_UIKit 1
+#define COCOAPODS_VERSION_MINOR_BBlock_UIKit 1
+#define COCOAPODS_VERSION_PATCH_BBlock_UIKit 0
+
 // FormatterKit
 #define COCOAPODS_POD_AVAILABLE_FormatterKit
 #define COCOAPODS_VERSION_MAJOR_FormatterKit 1

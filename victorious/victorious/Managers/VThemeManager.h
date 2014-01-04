@@ -22,6 +22,9 @@ extern  NSString*   const   kVChannelURLSupport;
 
 - (void)setTheme:(NSDictionary *)dictionary;
 
+- (void)applyStyling;
+- (void)removeStyling;
+
 - (id)themedValueForKeyPath:(NSString *)keyPath;
 
 - (UIColor *)themedColorForKeyPath:(NSString *)keyPath;

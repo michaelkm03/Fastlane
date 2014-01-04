@@ -54,6 +54,39 @@ NSString*   const   kVChannelURLSupport                 =   @"channel.url.suppor
     [[NSNotificationCenter defaultCenter] postNotificationName:kVThemeManagerThemeDidChange object:self userInfo:nil];
 }
 
+
+#pragma mark -
+
+- (void)applyStyling
+{
+    [[[[UIApplication sharedApplication] delegate] window] setTintColor:[self themedColorForKeyPath:@"theme.color"]];
+
+    [[UINavigationBar appearance] setTintColor:[self themedColorForKeyPath:@"theme.color.navigationBar"]];
+    [[UINavigationBar appearance] setBarTintColor:[self themedTranslucencyColorForKeyPath:@"theme.color.navigationBar.background"]];
+
+    NSMutableDictionary *titleAttributes = [NSMutableDictionary dictionary];
+    UIColor *navigationBarTitleTintColor = [self themedColorForKeyPath:@"theme.color.navigationBar.title"];
+    if(navigationBarTitleTintColor)
+    {
+        [titleAttributes setObject:navigationBarTitleTintColor forKey:NSForegroundColorAttributeName];
+    }
+    UIFont *navigationBarTitleFont = [self themedFontForKeyPath:@"theme.font.navigationBar.title"];
+    if(navigationBarTitleFont)
+    {
+        [titleAttributes setObject:navigationBarTitleFont forKey:NSFontAttributeName];
+    }
+    [[UINavigationBar appearance] setTitleTextAttributes:titleAttributes];
+}
+
+- (void)removeStyling
+{
+    [[[[UIApplication sharedApplication] delegate] window] setTintColor:nil];
+
+    [[UINavigationBar appearance] setTintColor:nil];
+    [[UINavigationBar appearance] setBarTintColor:nil];
+    [[UINavigationBar appearance] setTitleTextAttributes:nil];
+}
+
 #pragma mark -
 
 - (id)themedValueForKeyPath:(NSString *)keyPath
