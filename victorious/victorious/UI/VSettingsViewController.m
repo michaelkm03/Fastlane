@@ -12,6 +12,8 @@
 #import "VMenuViewController.h"
 #import "VMenuViewControllerTransition.h"
 
+NSString*   const   kAccountUpdateViewControllerDomain =   @"VAccountUpdateViewControllerDomain";
+
 @interface VSettingsViewController ()   <UITextFieldDelegate>
 @property (weak, nonatomic) IBOutlet UITextField *nameTextField;
 @property (weak, nonatomic) IBOutlet UITextField *emailAddressTextField;
@@ -77,24 +79,157 @@
 
 #pragma mark - Actions
 
+- (BOOL)shouldUpdateEmailAddress:(NSString *)emailAddress password:(NSString *)password username:(NSString *)username
+{
+    NSError*    theError;
+    
+    if (![self validateUsername:&username error:&theError])
+    {
+        UIAlertView*    alert   =   [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"InvalidCredentials", @"")
+                                                               message:theError.localizedDescription
+                                                              delegate:nil
+                                                     cancelButtonTitle:NSLocalizedString(@"OKButton", @"")
+                                                     otherButtonTitles:nil];
+        [alert show];
+        [[self view] endEditing:YES];
+        return NO;
+    }
+    
+    if (![self validateEmailAddress:&emailAddress error:&theError])
+    {
+        UIAlertView*    alert   =   [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"InvalidCredentials", @"")
+                                                               message:theError.localizedDescription
+                                                              delegate:nil
+                                                     cancelButtonTitle:NSLocalizedString(@"OKButton", @"")
+                                                     otherButtonTitles:nil];
+        [alert show];
+        [[self view] endEditing:YES];
+        return NO;
+    }
+    
+    if (![self validatePassword:&password error:&theError])
+    {
+        UIAlertView*    alert   =   [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"InvalidCredentials", @"")
+                                                               message:theError.localizedDescription
+                                                              delegate:nil
+                                                     cancelButtonTitle:NSLocalizedString(@"OKButton", @"")
+                                                     otherButtonTitles:nil];
+        [alert show];
+        [[self view] endEditing:YES];
+        return NO;
+    }
+    
+    return YES;
+}
+
+- (void)didUpdate
+{
+
+}
+
+- (void)didFailToUpdate:(NSError *)error
+{
+    UIAlertView*    alert   =   [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"AccountUpdateFail", @"")
+                                                           message:error.localizedDescription
+                                                          delegate:nil
+                                                 cancelButtonTitle:NSLocalizedString(@"OKButton", @"")
+                                                 otherButtonTitles:nil];
+    [alert show];
+}
+
+- (BOOL)validateUsername:(id *)ioValue error:(NSError * __autoreleasing *)outError
+{
+    if ((*ioValue == nil) || ([(NSString *)*ioValue length] < 8))
+    {
+        if (outError != NULL)
+        {
+            NSString *errorString = NSLocalizedString(@"UsernameValidation", @"Invalid Username");
+            NSDictionary*   userInfoDict = @{ NSLocalizedDescriptionKey : errorString };
+            *outError   =   [[NSError alloc] initWithDomain:kAccountUpdateViewControllerDomain
+                                                       code:VAccountUpdateViewControllerBadPasswordErrorCode
+                                                   userInfo:userInfoDict];
+        }
+        
+        return NO;
+    }
+    
+    return YES;
+}
+
+- (BOOL)validateEmailAddress:(id *)ioValue error:(NSError * __autoreleasing *)outError
+{
+    static  NSString *emailRegEx =
+    @"(?:[A-Za-z0-9!#$%\\&'*+/=?\\^_`{|}~-]+(?:\\.[A-Za-z0-9!#$%\\&'*+/=?\\^_`{|}"
+    @"~-]+)*|\"(?:[\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x21\\x23-\\x5b\\x5d-\\"
+    @"x7f]|\\\\[\\x01-\\x09\\x0b\\x0c\\x0e-\\x7f])*\")@(?:(?:[A-Za-z0-9](?:[a-"
+    @"z0-9-]*[A-Za-z0-9])?\\.)+[A-Za-z0-9](?:[A-Za-z0-9-]*[A-Za-z0-9])?|\\[(?:(?:25[0-5"
+    @"]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-"
+    @"9][0-9]?|[A-Za-z0-9-]*[A-Za-z0-9]:(?:[\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x21"
+    @"-\\x5a\\x53-\\x7f]|\\\\[\\x01-\\x09\\x0b\\x0c\\x0e-\\x7f])+)\\])";
+    
+    NSPredicate*  emailTest =   [NSPredicate predicateWithFormat:@"SELF MATCHES %@", emailRegEx];
+    if (!(*ioValue && [emailTest evaluateWithObject:*ioValue]))
+    {
+        if (outError != NULL)
+        {
+            NSString *errorString = NSLocalizedString(@"EmailValidation", @"Invalid Email Address");
+            NSDictionary*   userInfoDict = @{ NSLocalizedDescriptionKey : errorString };
+            *outError   =   [[NSError alloc] initWithDomain:kAccountUpdateViewControllerDomain
+                                                       code:VAccountUpdateViewControllerBadEmailAddressErrorCode
+                                                   userInfo:userInfoDict];
+        }
+        
+        return NO;
+    }
+    
+    return YES;
+}
+
+- (BOOL)validatePassword:(id *)ioValue error:(NSError * __autoreleasing *)outError
+{
+    if ((*ioValue == nil) || ([(NSString *)*ioValue length] < 8))
+    {
+        if (outError != NULL)
+        {
+            NSString *errorString = NSLocalizedString(@"PasswordValidation", @"Invalid Password");
+            NSDictionary*   userInfoDict = @{ NSLocalizedDescriptionKey : errorString };
+            *outError   =   [[NSError alloc] initWithDomain:kAccountUpdateViewControllerDomain
+                                                       code:VAccountUpdateViewControllerBadPasswordErrorCode
+                                                   userInfo:userInfoDict];
+        }
+        
+        return NO;
+    }
+    
+    return YES;
+}
+
+#pragma mark -
+
 - (IBAction)saveChangesClicked:(id)sender
 {
     [[self view] endEditing:YES];
     
-    SuccessBlock success = ^(NSArray* objects)
+    if (YES == [self shouldUpdateEmailAddress:self.emailAddressTextField.text
+                                     password:self.passwordTextField.text
+                                     username:self.passwordTextField.text])
     {
+        SuccessBlock success = ^(NSArray* objects)
+        {
+            [self didUpdate];
+        };
+        
+        FailBlock fail = ^(NSError* error)
+        {
+            [self didFailToUpdate:error];
+        };
 
-    };
-    FailBlock fail = ^(NSError* error)
-    {
-
-    };
-    
-    [[[VObjectManager sharedManager] updateVictoriousWithEmail:self.emailAddressTextField.text
-                                                      password:self.passwordTextField.text
-                                                      username:self.nameTextField.text
-                                                  successBlock:success
-                                                     failBlock:fail] start];
+        [[[VObjectManager sharedManager] updateVictoriousWithEmail:self.emailAddressTextField.text
+                                                          password:self.passwordTextField.text
+                                                          username:self.nameTextField.text
+                                                      successBlock:success
+                                                         failBlock:fail] start];
+    }
 }
 
 - (IBAction)logout:(id)sender

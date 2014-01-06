@@ -184,6 +184,8 @@ NSString*   const   kSignupViewControllerDomain =   @"VSignupViewControllerDomai
 
 - (IBAction)signup:(id)sender
 {
+    [[self view] endEditing:YES];
+
     if (YES == [self shouldSignUpWithUsername:self.usernameTextField.text
                                  emailAddress:self.emailTextField.text
                                      password:self.passwordTextField.text])
@@ -240,6 +242,5 @@ NSString*   const   kSignupViewControllerDomain =   @"VSignupViewControllerDomai
 {
     [[self view] endEditing:YES];
 }
-
 
 @end

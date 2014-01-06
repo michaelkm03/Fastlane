@@ -17,7 +17,7 @@
 
 @end
 
-@interface VProfileEditViewController : UIViewController <UITableViewDelegate, UITableViewDataSource>
+@interface VProfileEditViewController : UIViewController
 
 @property (nonatomic, weak) id <VProfileEditViewControllerDelegate> delegate;
 

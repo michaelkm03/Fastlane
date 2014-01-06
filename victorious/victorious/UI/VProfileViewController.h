@@ -10,7 +10,7 @@
 
 #import "VProfileEditViewController.h"
 
-@interface VProfileViewController : UIViewController <VProfileEditViewControllerDelegate, UIActionSheetDelegate, UITableViewDelegate, UITableViewDataSource>
+@interface VProfileViewController : UIViewController
 
 + (VProfileViewController *)sharedProfileViewController;
 
