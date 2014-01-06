@@ -8,6 +8,7 @@
 
 #import "VRootNavigationController.h"
 #import "VSettingsViewController.h"
+#import "VProfileViewController.h"
 #import "VObjectManager+Login.h"
 #import "VLoginViewController.h"
 #import "VThemeManager.h"
@@ -81,6 +82,7 @@
             else
             {
                 //  Show Profile
+                self.viewControllers = @[[VProfileViewController sharedProfileViewController]];
                 [self dismissViewControllerAnimated:YES completion:nil];
             }
             break;

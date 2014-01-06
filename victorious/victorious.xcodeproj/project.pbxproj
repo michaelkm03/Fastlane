@@ -99,6 +99,9 @@
 		BE692B51186E60B300C71336 /* VSequencePlayerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BE692B37186E60B300C71336 /* VSequencePlayerViewController.m */; };
 		BE692B52186E60B300C71336 /* VSequencePlayerViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = BE692B38186E60B300C71336 /* VSequencePlayerViewController.xib */; };
 		BE692B53186E60B300C71336 /* VStreamsSubViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BE692B3A186E60B300C71336 /* VStreamsSubViewController.m */; };
+		D1DAAA08187A43A9009ADCB0 /* VProfileViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D1DAAA07187A43A9009ADCB0 /* VProfileViewController.m */; };
+		D1DAAA0B187A43BE009ADCB0 /* VProfileEditViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D1DAAA0A187A43BE009ADCB0 /* VProfileEditViewController.m */; };
+		D1DAAA0D187A5397009ADCB0 /* avatar.jpg in Resources */ = {isa = PBXBuildFile; fileRef = D1DAAA0C187A5397009ADCB0 /* avatar.jpg */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -276,6 +279,11 @@
 		BE692B38186E60B300C71336 /* VSequencePlayerViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = VSequencePlayerViewController.xib; path = "UI/Streams Subview/VSequencePlayerViewController.xib"; sourceTree = "<group>"; };
 		BE692B39186E60B300C71336 /* VStreamsSubViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VStreamsSubViewController.h; path = "UI/Streams Subview/VStreamsSubViewController.h"; sourceTree = "<group>"; };
 		BE692B3A186E60B300C71336 /* VStreamsSubViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VStreamsSubViewController.m; path = "UI/Streams Subview/VStreamsSubViewController.m"; sourceTree = "<group>"; };
+		D1DAAA06187A43A9009ADCB0 /* VProfileViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VProfileViewController.h; path = UI/VProfileViewController.h; sourceTree = "<group>"; };
+		D1DAAA07187A43A9009ADCB0 /* VProfileViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VProfileViewController.m; path = UI/VProfileViewController.m; sourceTree = "<group>"; };
+		D1DAAA09187A43BE009ADCB0 /* VProfileEditViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VProfileEditViewController.h; path = UI/VProfileEditViewController.h; sourceTree = "<group>"; };
+		D1DAAA0A187A43BE009ADCB0 /* VProfileEditViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VProfileEditViewController.m; path = UI/VProfileEditViewController.m; sourceTree = "<group>"; };
+		D1DAAA0C187A5397009ADCB0 /* avatar.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = avatar.jpg; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -339,9 +347,11 @@
 				8364C70818694FF00028C1ED /* Menu */,
 				3FF8B7991868EEE800806EA0 /* Login */,
 				3F4863F71869181500F77346 /* Messages */,
+				D1DAAA05187A438C009ADCB0 /* Profile */,
 				3F919905187600460055FE37 /* Settings */,
 				83F7DAAC187213E400299FA1 /* Actions */,
 				3FF8B7971868EE7E00806EA0 /* Main.storyboard */,
+				D1DAAA0C187A5397009ADCB0 /* avatar.jpg */,
 			);
 			name = UI;
 			sourceTree = "<group>";
@@ -667,6 +677,17 @@
 			name = VObjectManager;
 			sourceTree = "<group>";
 		};
+		D1DAAA05187A438C009ADCB0 /* Profile */ = {
+			isa = PBXGroup;
+			children = (
+				D1DAAA06187A43A9009ADCB0 /* VProfileViewController.h */,
+				D1DAAA07187A43A9009ADCB0 /* VProfileViewController.m */,
+				D1DAAA09187A43BE009ADCB0 /* VProfileEditViewController.h */,
+				D1DAAA0A187A43BE009ADCB0 /* VProfileEditViewController.m */,
+			);
+			name = Profile;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -758,6 +779,7 @@
 				BE692B23186E5ED800C71336 /* VStreamDoublePollCell.xib in Resources */,
 				3FF8B7A11868F36600806EA0 /* Localizable.strings in Resources */,
 				BE171D861868BE64004E5202 /* InfoPlist.strings in Resources */,
+				D1DAAA0D187A5397009ADCB0 /* avatar.jpg in Resources */,
 				BE171D911868BE64004E5202 /* Images.xcassets in Resources */,
 				83B5A1241876447800659C73 /* Roboto-Regular.ttf in Resources */,
 				BE692B28186E5ED800C71336 /* VStreamVideoCell.xib in Resources */,
@@ -851,6 +873,7 @@
 				BE171E261868C211004E5202 /* VAnswerAction.m in Sources */,
 				BE171D8C1868BE64004E5202 /* VAppDelegate.m in Sources */,
 				BE171E231868C211004E5202 /* VPaginationStatus.m in Sources */,
+				D1DAAA08187A43A9009ADCB0 /* VProfileViewController.m in Sources */,
 				BE171E151868C211004E5202 /* VNodeAction+RestKit.m in Sources */,
 				BE692B24186E5ED800C71336 /* VStreamPollCell.m in Sources */,
 				BE692B26186E5ED800C71336 /* VStreamsTableViewController.m in Sources */,
@@ -871,6 +894,7 @@
 				838511C418762DF3007E0316 /* VInboxBadgeLabel.m in Sources */,
 				BE171E341868C211004E5202 /* VUser.m in Sources */,
 				BE171E1B1868C211004E5202 /* VUser+RestKit.m in Sources */,
+				D1DAAA0B187A43BE009ADCB0 /* VProfileEditViewController.m in Sources */,
 				3F91991018761C720055FE37 /* VPrivacyPoliciesViewController.m in Sources */,
 				BE171E301868C211004E5202 /* VSequence.m in Sources */,
 				BE171E251868C211004E5202 /* VAnswer.m in Sources */,
