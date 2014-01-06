@@ -11,6 +11,18 @@
 
 @implementation VCommunityStreamsTableViewController
 
++ (instancetype)sharedStreamsTableViewController
+{
+    static  VCommunityStreamsTableViewController*   streamsTableViewController;
+    static  dispatch_once_t         onceToken;
+    dispatch_once(&onceToken, ^{
+        UIViewController*   currentViewController = [[UIApplication sharedApplication] delegate].window.rootViewController;
+        streamsTableViewController = (VCommunityStreamsTableViewController*)[currentViewController.storyboard instantiateViewControllerWithIdentifier: @"communitystream"];
+    });
+    
+    return streamsTableViewController;
+}
+
 - (NSPredicate*)forumPredicate
 {
     return [NSPredicate predicateWithFormat:@"category == 'ugc_forum'"];
