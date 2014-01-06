@@ -9,7 +9,7 @@
 #import "VProfileEditViewController.h"
 #import "UIImage+ImageEffects.h"
 
-@interface VProfileEditViewController ()
+@interface VProfileEditViewController ()  <UITableViewDelegate, UITableViewDataSource>
 
 @end
 

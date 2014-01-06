@@ -11,7 +11,7 @@
 #import "VMenuViewControllerTransition.h"
 #import "UIImage+ImageEffects.h"
 
-@interface VProfileViewController ()
+@interface VProfileViewController () <VProfileEditViewControllerDelegate, UIActionSheetDelegate, UITableViewDelegate, UITableViewDataSource>
 
 @end
 
@@ -132,14 +132,6 @@
     // Dispose of any resources that can be recreated.
 }
 
-
-// Only 3 parameters for the table view
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
-{
-    return 3;
-}
-
-
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     UITableViewCell* cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
@@ -163,8 +155,6 @@
 {
     [controller dismissViewControllerAnimated:YES completion:nil];
 }
-
-#pragma mark - Navigation
 
 #pragma mark - Navigation
 
