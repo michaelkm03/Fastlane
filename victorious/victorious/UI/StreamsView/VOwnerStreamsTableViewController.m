@@ -11,6 +11,18 @@
 
 @implementation VOwnerStreamsTableViewController
 
++ (instancetype)sharedStreamsTableViewController
+{
+    static  VOwnerStreamsTableViewController*   streamsTableViewController;
+    static  dispatch_once_t         onceToken;
+    dispatch_once(&onceToken, ^{
+        UIViewController*   currentViewController = [[UIApplication sharedApplication] delegate].window.rootViewController;
+        streamsTableViewController = (VOwnerStreamsTableViewController*)[currentViewController.storyboard instantiateViewControllerWithIdentifier: @"ownerstream"];
+    });
+    
+    return streamsTableViewController;
+}
+
 - (NSPredicate*)forumPredicate
 {
     return [NSPredicate predicateWithFormat:@"category == 'owner_forum'"];

@@ -48,7 +48,7 @@ static NSString* kSearchCache = @"SearchCache";
 
 @implementation VStreamsTableViewController
 
-+ (VStreamsTableViewController *)sharedStreamsTableViewController
++ (instancetype)sharedStreamsTableViewController
 {
     static  VStreamsTableViewController*   streamsTableViewController;
     static  dispatch_once_t         onceToken;
@@ -151,7 +151,6 @@ static NSString* kSearchCache = @"SearchCache";
     return tableView == self.tableView ? self.fetchedResultsController : self.searchFetchedResultsController;
 }
 
-
 - (UITableView*)tableViewForFetchedResultsController:(NSFetchedResultsController*)controller
 {
     return controller == self.fetchedResultsController ? self.tableView
@@ -199,7 +198,6 @@ static NSString* kSearchCache = @"SearchCache";
     return cell;
 }
 
-
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
     return 120;
@@ -225,7 +223,6 @@ static NSString* kSearchCache = @"SearchCache";
 }
 
 #pragma mark - NSFetchedResultsControllers
-
 - (NSFetchedResultsController *)fetchedResultsController
 {
     if (nil == _fetchedResultsController)

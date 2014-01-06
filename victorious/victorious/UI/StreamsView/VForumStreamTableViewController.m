@@ -11,6 +11,18 @@
 
 @implementation VForumStreamTableViewController
 
++ (instancetype)sharedStreamsTableViewController
+{
+    static  VForumStreamTableViewController*   streamsTableViewController;
+    static  dispatch_once_t         onceToken;
+    dispatch_once(&onceToken, ^{
+        UIViewController*   currentViewController = [[UIApplication sharedApplication] delegate].window.rootViewController;
+        streamsTableViewController = (VForumStreamTableViewController*)[currentViewController.storyboard instantiateViewControllerWithIdentifier: @"forumstream"];
+    });
+    
+    return streamsTableViewController;
+}
+
 //#pragma mark - Segue Lifecycle
 //- (void)prepareToStreamDetailsSegue:(UIStoryboardSegue *)segue sender:(id)sender;
 //

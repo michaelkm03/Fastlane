@@ -10,6 +10,6 @@
 
 @interface VStreamsTableViewController : UITableViewController
 
-+ (VStreamsTableViewController *)sharedStreamsTableViewController;
++ (instancetype)sharedStreamsTableViewController;
 
 @end
