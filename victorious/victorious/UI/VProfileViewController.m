@@ -11,8 +11,7 @@
 #import "VMenuViewControllerTransition.h"
 #import "UIImage+ImageEffects.h"
 
-@interface VProfileViewController () <VProfileEditViewControllerDelegate, UIActionSheetDelegate, UITableViewDelegate, UITableViewDataSource>
-
+@interface VProfileViewController () <VProfileEditViewControllerDelegate, UIActionSheetDelegate, UITableViewDelegate>
 @end
 
 @implementation VProfileViewController
@@ -40,7 +39,6 @@
     // FIXME: PRESENT DATA FIELDS
     _labels =   @[@"Name", @"E-Mail", @"Password"];
     self.profileDetails.delegate = self;
-    self.profileDetails.dataSource = self;
     
     // FIXME: SET BACKGROUND
     [self.profileDetails layoutIfNeeded];
