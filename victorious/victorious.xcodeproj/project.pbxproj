@@ -617,9 +617,8 @@
 		BE692B16186E5ED800C71336 /* Streams */ = {
 			isa = PBXGroup;
 			children = (
+				BE6B957E187B311B00CED4C9 /* StreamsTables */,
 				BE692B2B186E5EE000C71336 /* Cells */,
-				BE692B1B186E5ED800C71336 /* VStreamsTableViewController.h */,
-				BE692B1C186E5ED800C71336 /* VStreamsTableViewController.m */,
 				830CC32D1877B9730024E02D /* Featured */,
 			);
 			name = Streams;
@@ -857,6 +856,7 @@
 				BE171E331868C211004E5202 /* VStatSequence.m in Sources */,
 				BE171E271868C211004E5202 /* VAsset.m in Sources */,
 				BE171E311868C211004E5202 /* VStatAnswer.m in Sources */,
+				D1DAAA21187B4476009ADCB0 /* VProfileViewController.m in Sources */,
 				8378622818728C89000BF84F /* VFeaturedViewController.m in Sources */,
 				BE171D881868BE64004E5202 /* main.m in Sources */,
 				BE692B27186E5ED800C71336 /* VStreamVideoCell.m in Sources */,
@@ -864,6 +864,7 @@
 				3F4863FA1869184000F77346 /* VMessagesViewController.m in Sources */,
 				BE171E171868C211004E5202 /* VSequence+RestKit.m in Sources */,
 				83F7DAAF187221E600299FA1 /* VActionViewControllerTransition.m in Sources */,
+				BE6B9581187B31A200CED4C9 /* VForumStreamTableViewController.m in Sources */,
 				BE171E291868C211004E5202 /* VComment.m in Sources */,
 				BE171E391868C266004E5202 /* NSManagedObject+EasyFetching.m in Sources */,
 				3F919908187600720055FE37 /* VSettingsViewController.m in Sources */,
@@ -871,11 +872,13 @@
 				BE171E0D1868C211004E5202 /* VAnswer+RestKit.m in Sources */,
 				BE171E211868C211004E5202 /* VObjectManager+Sequence.m in Sources */,
 				BE171E261868C211004E5202 /* VAnswerAction.m in Sources */,
+				BE6B9589187B35BB00CED4C9 /* VCommunityStreamsTableViewController.m in Sources */,
 				BE171D8C1868BE64004E5202 /* VAppDelegate.m in Sources */,
 				BE171E231868C211004E5202 /* VPaginationStatus.m in Sources */,
 				D1DAAA08187A43A9009ADCB0 /* VProfileViewController.m in Sources */,
 				BE171E151868C211004E5202 /* VNodeAction+RestKit.m in Sources */,
 				BE692B24186E5ED800C71336 /* VStreamPollCell.m in Sources */,
+				D1DAAA20187B4476009ADCB0 /* VProfileEditViewController.m in Sources */,
 				BE692B26186E5ED800C71336 /* VStreamsTableViewController.m in Sources */,
 				3FF8B79F1868EF6C00806EA0 /* VSignUpViewController.m in Sources */,
 				BE171E181868C211004E5202 /* VStatAnswer+RestKit.m in Sources */,

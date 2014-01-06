@@ -24,6 +24,8 @@
 #import "VAddActionViewController.h"
 #import "VActionViewControllerTransition.h"
 
+#import "VStreamsTableViewController+Protected.h"
+
 typedef NS_ENUM(NSInteger, VStreamScope)
 {
     VStreamFilterAll = 0,
@@ -130,25 +132,6 @@ static NSString* kSearchCache = @"SearchCache";
                                                               failBlock:fail] start];
 }
 
-- (void)registerCells
-{
-    [self.tableView registerNib:[UINib nibWithNibName:@"VStreamViewCell" bundle:[NSBundle mainBundle]]
-         forCellReuseIdentifier:kStreamViewCellIdentifier];
-    [self.searchDisplayController.searchResultsTableView registerNib:[UINib nibWithNibName:@"VStreamViewCell" bundle:[NSBundle mainBundle]] forCellReuseIdentifier:kStreamViewCellIdentifier];
-    
-    [self.tableView registerNib:[UINib nibWithNibName:@"VStreamVideoCell" bundle:[NSBundle mainBundle]]
-         forCellReuseIdentifier:kStreamVideoCellIdentifier];
-    [self.searchDisplayController.searchResultsTableView registerNib:[UINib nibWithNibName:@"VStreamVideoCell" bundle:[NSBundle mainBundle]] forCellReuseIdentifier:kStreamVideoCellIdentifier];
-    
-    [self.tableView registerNib:[UINib nibWithNibName:@"VStreamPollCell" bundle:[NSBundle mainBundle]]
-         forCellReuseIdentifier:kStreamPollCellIdentifier];
-    [self.searchDisplayController.searchResultsTableView registerNib:[UINib nibWithNibName:@"VStreamPollCell" bundle:[NSBundle mainBundle]] forCellReuseIdentifier:kStreamPollCellIdentifier];
-    
-    [self.tableView registerNib:[UINib nibWithNibName:@"VStreamDoublePollCell" bundle:[NSBundle mainBundle]]
-         forCellReuseIdentifier:kStreamDoublePollCellIdentifier];
-    [self.searchDisplayController.searchResultsTableView registerNib:[UINib nibWithNibName:@"VStreamDoublePollCell" bundle:[NSBundle mainBundle]] forCellReuseIdentifier:kStreamDoublePollCellIdentifier];
-}
-
 - (IBAction)addButtonAction:(id)sender{
     VAddActionViewController *viewController =
     [self.storyboard instantiateViewControllerWithIdentifier:@"add_action"];
@@ -207,20 +190,8 @@ static NSString* kSearchCache = @"SearchCache";
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    VSequence* sequence = (VSequence*)[[self fetchedResultsControllerForTableView:tableView] objectAtIndexPath:indexPath];
-
-    VStreamViewCell *cell;
-    if ([sequence.category isEqualToString:@"video_forum"])
-        cell = [tableView dequeueReusableCellWithIdentifier:kStreamVideoCellIdentifier
-                                               forIndexPath:indexPath];
+    VStreamViewCell *cell = [self tableView:tableView streamViewCellForIndex:indexPath];
     
-    else if ([sequence.category isEqualToString:@"owner_poll"])
-        cell = [tableView dequeueReusableCellWithIdentifier:kStreamPollCellIdentifier
-                                               forIndexPath:indexPath];
-
-    else
-        cell = [tableView dequeueReusableCellWithIdentifier:kStreamViewCellIdentifier
-                                               forIndexPath:indexPath];
     // Configure the cell...
     [self configureCell:cell atIndexPath:indexPath
         forFetchedResultsController:[self fetchedResultsControllerForTableView:tableView]];
@@ -414,34 +385,19 @@ static NSString* kSearchCache = @"SearchCache";
 - (NSPredicate*)fetchResultsPredicate
 {
     NSMutableArray* allFilters = [[NSMutableArray alloc] init];
+    
     //Type filter
-    switch (self.scopeType)
+    NSPredicate* scopePredicate = [self scopeTypePredicate];
+    if (scopePredicate)
     {
-        case VStreamFilterVideoForums:
-            [allFilters addObject:[NSPredicate predicateWithFormat:@"category == 'video_forum'"]];
-            break;
-            
-        case VStreamFilterPolls:
-            [allFilters addObject:[NSPredicate predicateWithFormat:@"category == 'owner_poll'"]];
-            break;
-            
-        case VStreamFilterImages:
-            [allFilters addObject:[NSPredicate predicateWithFormat:@"category == 'owner_image'"]];
-            break;
-            
-        case VStreamFilterVideos:
-            [allFilters addObject:[NSPredicate predicateWithFormat:@"category == 'video'"]];
-            break;
-            
-        default:
-            [allFilters addObject:[self defaultTypePredicate]];
-            break;
+        [allFilters addObject:scopePredicate];
     }
     
     //Search text filter
-    if (_filterText && ![_filterText isEmpty])
+    NSPredicate* searchTextPredicate = [self searchTextPredicate];
+    if (searchTextPredicate)
     {
-        [allFilters addObject:[NSPredicate predicateWithFormat:@"SELF.name CONTAINS[cd] %@", _filterText]];
+        [allFilters addObject:searchTextPredicate];
     }
     
     return [NSCompoundPredicate andPredicateWithSubpredicates:allFilters];
@@ -460,18 +416,13 @@ static NSString* kSearchCache = @"SearchCache";
     NSError *error;
 	if (![controller performFetch:&error])
     {
-		// Update to handle the error appropriately.
+		//TODO: Update to handle the error appropriately.
 		NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
 		exit(-1);  // Fail
 	}
     
     //Then reload the data
     [[self tableViewForFetchedResultsController:controller] reloadData];
-}
-
-- (NSPredicate*)defaultTypePredicate
-{
-    return [NSPredicate predicateWithFormat:@"category == 'video_forum' || category == 'owner_poll' || category == 'owner_image' || category == 'video'"];
 }
 
 #pragma mark - Navigation
@@ -486,13 +437,10 @@ static NSString* kSearchCache = @"SearchCache";
         menuViewController.modalPresentationStyle = UIModalPresentationCustom;
     } else if ([segue.identifier isEqualToString:@"toStreamDetails"])
     {
-        VStreamsSubViewController *subview = (VStreamsSubViewController *)segue.destinationViewController;
-        
-        VSequence *sequence = [_fetchedResultsController objectAtIndexPath:[self.tableView indexPathForCell:(UITableViewCell*)sender]];
-        
-        subview.sequence = sequence;
+        [self prepareToStreamDetailsSegue:segue sender:sender];
     }
 }
+
 
 - (void)viewWillDisappear:(BOOL)animated
 {
@@ -505,6 +453,134 @@ static NSString* kSearchCache = @"SearchCache";
 
 - (void)addActionViewController:(VAddActionViewController *)viewController didChooseAction:(VAddActionViewControllerType)action{
     [self dismissViewControllerAnimated:YES completion:nil];
+}
+
+#pragma mark - Segue Lifecycle
+
+- (void)prepareToStreamDetailsSegue:(UIStoryboardSegue *)segue sender:(id)sender
+{
+    VStreamsSubViewController *subview = (VStreamsSubViewController *)segue.destinationViewController;
+    
+    VSequence *sequence = [_fetchedResultsController objectAtIndexPath:[self.tableView indexPathForCell:(UITableViewCell*)sender]];
+    
+    subview.sequence = sequence;
+}
+
+#pragma mark - Predicate Lifecycle
+- (NSPredicate*)defaultTypePredicate
+{
+    NSMutableArray* allTypes = [[NSMutableArray alloc] init];
+    
+    NSPredicate* predicate = [self forumPredicate];
+    if (predicate)
+    {
+        [allTypes addObject:predicate];
+    }
+    predicate = [self imagePredicate];
+    if (predicate)
+    {
+        [allTypes addObject:predicate];
+    }
+    predicate = [self pollPredicate];
+    if (predicate)
+    {
+        [allTypes addObject:predicate];
+    }
+    predicate = [self videoPredicate];
+    if (predicate)
+    {
+        [allTypes addObject:predicate];
+    }
+    
+    return [NSCompoundPredicate andPredicateWithSubpredicates:allTypes];
+}
+
+- (NSPredicate*)forumPredicate
+{
+    return [NSPredicate predicateWithFormat:@"category == 'owner_forum' || category == 'ugc_forum'"];
+}
+
+- (NSPredicate*)imagePredicate
+{
+    return [NSPredicate predicateWithFormat:@"category == 'owner_image' || category == 'ugc_image'"];
+}
+
+- (NSPredicate*)pollPredicate
+{
+    return [NSPredicate predicateWithFormat:@"category == 'owner_poll' || category == 'ugc_poll'"];
+}
+
+- (NSPredicate*)videoPredicate
+{
+    return [NSPredicate predicateWithFormat:@"category == 'owner_video' || category == 'ugc_video'"];
+}
+
+- (NSPredicate*)scopeTypePredicate
+{
+    switch (self.scopeType)
+    {
+        case VStreamFilterVideoForums:
+            return [self forumPredicate];
+            
+        case VStreamFilterPolls:
+            return [self pollPredicate];
+            
+        case VStreamFilterImages:
+            return [self imagePredicate];
+            
+        case VStreamFilterVideos:
+            return [self videoPredicate];
+            
+        default:
+            return [self defaultTypePredicate];
+    }
+}
+
+- (NSPredicate*)searchTextPredicate
+{
+    if (!_filterText || [_filterText isEmpty])
+    {
+        return nil;
+    }
+    
+    return [NSPredicate predicateWithFormat:@"SELF.name CONTAINS[cd] %@", _filterText];
+}
+
+#pragma mark - Cell Lifecycle
+- (void)registerCells
+{
+    [self.tableView registerNib:[UINib nibWithNibName:@"VStreamViewCell" bundle:[NSBundle mainBundle]]
+         forCellReuseIdentifier:kStreamViewCellIdentifier];
+    [self.searchDisplayController.searchResultsTableView registerNib:[UINib nibWithNibName:@"VStreamViewCell" bundle:[NSBundle mainBundle]] forCellReuseIdentifier:kStreamViewCellIdentifier];
+    
+    [self.tableView registerNib:[UINib nibWithNibName:@"VStreamVideoCell" bundle:[NSBundle mainBundle]]
+         forCellReuseIdentifier:kStreamVideoCellIdentifier];
+    [self.searchDisplayController.searchResultsTableView registerNib:[UINib nibWithNibName:@"VStreamVideoCell" bundle:[NSBundle mainBundle]] forCellReuseIdentifier:kStreamVideoCellIdentifier];
+    
+    [self.tableView registerNib:[UINib nibWithNibName:@"VStreamPollCell" bundle:[NSBundle mainBundle]]
+         forCellReuseIdentifier:kStreamPollCellIdentifier];
+    [self.searchDisplayController.searchResultsTableView registerNib:[UINib nibWithNibName:@"VStreamPollCell" bundle:[NSBundle mainBundle]] forCellReuseIdentifier:kStreamPollCellIdentifier];
+    
+    [self.tableView registerNib:[UINib nibWithNibName:@"VStreamDoublePollCell" bundle:[NSBundle mainBundle]]
+         forCellReuseIdentifier:kStreamDoublePollCellIdentifier];
+    [self.searchDisplayController.searchResultsTableView registerNib:[UINib nibWithNibName:@"VStreamDoublePollCell" bundle:[NSBundle mainBundle]] forCellReuseIdentifier:kStreamDoublePollCellIdentifier];
+}
+
+- (VStreamViewCell*)tableView:(UITableView *)tableView streamViewCellForIndex:(NSIndexPath*)indexPath
+{
+    VSequence* sequence = (VSequence*)[[self fetchedResultsControllerForTableView:tableView] objectAtIndexPath:indexPath];
+    
+    if ([sequence.category isEqualToString:@"video_forum"])
+        return [tableView dequeueReusableCellWithIdentifier:kStreamVideoCellIdentifier
+                                               forIndexPath:indexPath];
+    
+    else if ([sequence.category isEqualToString:@"owner_poll"])
+        return [tableView dequeueReusableCellWithIdentifier:kStreamPollCellIdentifier
+                                               forIndexPath:indexPath];
+    
+    else
+        return [tableView dequeueReusableCellWithIdentifier:kStreamViewCellIdentifier
+                                               forIndexPath:indexPath];
 }
 
 @end

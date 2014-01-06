@@ -186,6 +186,75 @@
             </objects>
             <point key="canvasLocation" x="-4767" y="-3171"/>
         </scene>
+        <!--Profile View Controller - Profile-->
+        <scene sceneID="5gj-b3-3db">
+            <objects>
+                <viewController storyboardIdentifier="profile" useStoryboardIdentifierAsRestorationIdentifier="YES" id="Xjj-nY-4Up" customClass="VProfileViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="GzU-kG-iHe"/>
+                        <viewControllerLayoutGuide type="bottom" id="oeP-zF-PAc"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="9cu-WX-XfK">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="T4H-Ir-LXL">
+                                <rect key="frame" x="0.0" y="64" width="320" height="504"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                            </imageView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="T4H-Ir-LXL" firstAttribute="top" secondItem="GzU-kG-iHe" secondAttribute="bottom" id="H9N-OF-oow"/>
+                            <constraint firstAttribute="trailing" secondItem="T4H-Ir-LXL" secondAttribute="trailing" id="SqG-eh-XoA"/>
+                            <constraint firstItem="oeP-zF-PAc" firstAttribute="top" secondItem="T4H-Ir-LXL" secondAttribute="bottom" id="dPX-Gz-WSX"/>
+                            <constraint firstItem="T4H-Ir-LXL" firstAttribute="leading" secondItem="9cu-WX-XfK" secondAttribute="leading" id="kJY-bz-FFI"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" title="Profile" id="eRB-Ok-nu5">
+                        <barButtonItem key="leftBarButtonItem" image="Menu" id="39I-nn-HED"/>
+                        <barButtonItem key="rightBarButtonItem" systemItem="edit" id="O6y-xP-WNP">
+                            <connections>
+                                <segue destination="1fo-ro-FTD" kind="modal" identifier="toEditProfile" id="PJf-rd-fhD"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
+                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Slh-ne-M0Q" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-4568" y="-1446"/>
+        </scene>
+        <!--Profile Edit View Controller - Edit Profile-->
+        <scene sceneID="uke-KO-1SP">
+            <objects>
+                <viewController storyboardIdentifier="profileEdit" useStoryboardIdentifierAsRestorationIdentifier="YES" id="zFw-kE-MJs" customClass="VProfileEditViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="Cdj-Hx-CSO"/>
+                        <viewControllerLayoutGuide type="bottom" id="P49-nQ-EyS"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="AQt-Su-xRE">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                    </view>
+                    <navigationItem key="navigationItem" title="Edit Profile" id="3pk-aG-xDQ">
+                        <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="Lsj-zo-NA6">
+                            <connections>
+                                <action selector="cancel:" destination="zFw-kE-MJs" id="eg4-Ox-izZ"/>
+                            </connections>
+                        </barButtonItem>
+                        <barButtonItem key="rightBarButtonItem" systemItem="done" id="wLa-XR-8pc">
+                            <connections>
+                                <action selector="done:" destination="zFw-kE-MJs" id="1ye-9M-HOY"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Y5O-7U-VR5" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-3453" y="-1446"/>
+        </scene>
         <!--Root Navigation Controller-->
         <scene sceneID="dq2-Q4-u7a">
             <objects>

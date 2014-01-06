@@ -11,6 +11,7 @@
 #import "VProfileViewController.h"
 #import "VObjectManager+Login.h"
 #import "VLoginViewController.h"
+#import "VProfileViewController.h"
 #import "VThemeManager.h"
 #import "BBlock.h"
 #import "UIAlertView+BBlock.h"
