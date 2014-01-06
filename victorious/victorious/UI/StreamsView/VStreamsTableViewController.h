@@ -6,6 +6,8 @@
 //  Copyright (c) 2013 Victorious Inc. All rights reserved.
 //
 
+@class VStreamViewCell;
+
 @interface VStreamsTableViewController : UITableViewController
 
 + (VStreamsTableViewController *)sharedStreamsTableViewController;
