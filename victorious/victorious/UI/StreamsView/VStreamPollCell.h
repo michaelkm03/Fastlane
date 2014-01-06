@@ -14,8 +14,8 @@ static NSString *kStreamDoublePollCellIdentifier = @"StreamDoublePollCell";
 
 @interface VStreamPollCell : VStreamViewCell
 
-@property (weak, nonatomic) IBOutlet UILabel* optionOneLabel;
-@property (weak, nonatomic) IBOutlet UILabel* optionTwoLabel;
+@property (weak, nonatomic) IBOutlet UIButton* optionOneButton;
+@property (weak, nonatomic) IBOutlet UIButton* optionTwoButton;
 
 @property (weak, nonatomic) IBOutlet UIImageView* previewImageTwo;
 
