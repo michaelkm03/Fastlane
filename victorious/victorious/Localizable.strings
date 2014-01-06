@@ -16,6 +16,7 @@
 "InvalidCredentials"    =   "Invalid Credentials";
 "LoginFail"             =   "Login Failed";
 "SignupFail"            =   "Account Creation Failed";
+"AccountUpdateFail"     =   "Account Update Failed";
 
 "NoEmail"               =   "No Email Accounts";
 "NoEmailDetail"         =   "There are no email accounts, would you like to setup one now?";

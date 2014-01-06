@@ -42,10 +42,6 @@ NSString*   const   kVLoginViewControllerDomain =   @"VLoginViewControllerDomain
     
 	self.emailTextField.delegate  =   self;
     self.passwordTextField.delegate  =   self;
-
-    self.navigationItem.leftBarButtonItem =
-    [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"Close"] style:UIBarButtonItemStylePlain
-                                    target:self action:@selector(closeButtonAction:)];
 }
 
 - (void)closeButtonAction:(id)sender

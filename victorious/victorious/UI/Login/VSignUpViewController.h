@@ -8,7 +8,7 @@
 
 extern  NSString*   const   kSignupViewControllerDomain;
 
-NS_ENUM(NSUInteger, VLoginViewControllerErrorCode)
+NS_ENUM(NSUInteger, VSignupViewControllerErrorCode)
 {
     VSignupViewControllerBadUsernameErrorCode,
     VSignupViewControllerBadPasswordErrorCode,
