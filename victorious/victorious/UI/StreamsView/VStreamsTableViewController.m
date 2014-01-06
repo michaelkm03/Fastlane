@@ -538,6 +538,11 @@ static NSString* kSearchCache = @"SearchCache";
 
 - (NSPredicate*)searchTextPredicate
 {
+    if (!_filterText || [_filterText isEmpty])
+    {
+        return nil;
+    }
+    
     return [NSPredicate predicateWithFormat:@"SELF.name CONTAINS[cd] %@", _filterText];
 }
 
