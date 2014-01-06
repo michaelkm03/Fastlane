@@ -99,6 +99,8 @@
 		BE692B51186E60B300C71336 /* VSequencePlayerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BE692B37186E60B300C71336 /* VSequencePlayerViewController.m */; };
 		BE692B52186E60B300C71336 /* VSequencePlayerViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = BE692B38186E60B300C71336 /* VSequencePlayerViewController.xib */; };
 		BE692B53186E60B300C71336 /* VStreamsSubViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BE692B3A186E60B300C71336 /* VStreamsSubViewController.m */; };
+		D1DAAA19187B3E1B009ADCB0 /* VProfileEditViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D1DAAA16187B3E1B009ADCB0 /* VProfileEditViewController.m */; };
+		D1DAAA1A187B3E1B009ADCB0 /* VProfileViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D1DAAA18187B3E1B009ADCB0 /* VProfileViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -276,6 +278,10 @@
 		BE692B38186E60B300C71336 /* VSequencePlayerViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = VSequencePlayerViewController.xib; path = "UI/Streams Subview/VSequencePlayerViewController.xib"; sourceTree = "<group>"; };
 		BE692B39186E60B300C71336 /* VStreamsSubViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VStreamsSubViewController.h; path = "UI/Streams Subview/VStreamsSubViewController.h"; sourceTree = "<group>"; };
 		BE692B3A186E60B300C71336 /* VStreamsSubViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VStreamsSubViewController.m; path = "UI/Streams Subview/VStreamsSubViewController.m"; sourceTree = "<group>"; };
+		D1DAAA15187B3E1B009ADCB0 /* VProfileEditViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VProfileEditViewController.h; path = UI/Profile/VProfileEditViewController.h; sourceTree = "<group>"; };
+		D1DAAA16187B3E1B009ADCB0 /* VProfileEditViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VProfileEditViewController.m; path = UI/Profile/VProfileEditViewController.m; sourceTree = "<group>"; };
+		D1DAAA17187B3E1B009ADCB0 /* VProfileViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VProfileViewController.h; path = UI/Profile/VProfileViewController.h; sourceTree = "<group>"; };
+		D1DAAA18187B3E1B009ADCB0 /* VProfileViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VProfileViewController.m; path = UI/Profile/VProfileViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -337,6 +343,7 @@
 				BE692B2C186E5FD900C71336 /* Streams Subview */,
 				BE692B16186E5ED800C71336 /* Streams */,
 				8364C70818694FF00028C1ED /* Menu */,
+				D1DAAA0E187B3D21009ADCB0 /* Profile */,
 				3FF8B7991868EEE800806EA0 /* Login */,
 				3F4863F71869181500F77346 /* Messages */,
 				3F919905187600460055FE37 /* Settings */,
@@ -667,6 +674,17 @@
 			name = VObjectManager;
 			sourceTree = "<group>";
 		};
+		D1DAAA0E187B3D21009ADCB0 /* Profile */ = {
+			isa = PBXGroup;
+			children = (
+				D1DAAA17187B3E1B009ADCB0 /* VProfileViewController.h */,
+				D1DAAA18187B3E1B009ADCB0 /* VProfileViewController.m */,
+				D1DAAA15187B3E1B009ADCB0 /* VProfileEditViewController.h */,
+				D1DAAA16187B3E1B009ADCB0 /* VProfileEditViewController.m */,
+			);
+			name = Profile;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -861,6 +879,7 @@
 				BE171E1E1868C211004E5202 /* VErrorMessage.m in Sources */,
 				BE171E0C1868C211004E5202 /* VNode+Fetcher.m in Sources */,
 				83B5A12C18765E1600659C73 /* VRootNavigationController.m in Sources */,
+				D1DAAA1A187B3E1B009ADCB0 /* VProfileViewController.m in Sources */,
 				3FF8B79E1868EF6C00806EA0 /* VLoginViewController.m in Sources */,
 				BE171E1F1868C211004E5202 /* VObjectManager+Comment.m in Sources */,
 				BE171E141868C211004E5202 /* VNode+RestKit.m in Sources */,
@@ -885,6 +904,7 @@
 				BE171E111868C211004E5202 /* VComment+RestKit.m in Sources */,
 				BE171E0E1868C211004E5202 /* VAnswerAction+RestKit.m in Sources */,
 				83BD06FB186BE4B2007742D1 /* UIImage+ImageEffects.m in Sources */,
+				D1DAAA19187B3E1B009ADCB0 /* VProfileEditViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
