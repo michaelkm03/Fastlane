@@ -9,7 +9,7 @@
 #import "VProfileEditViewController.h"
 #import "UIImage+ImageEffects.h"
 
-@interface VProfileEditViewController () <UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate>
+@interface VProfileEditViewController ()  <UITableViewDelegate, UITableViewDataSource>
 
 @end
 
@@ -34,9 +34,9 @@
 	// Do any additional setup after loading the view.
     
     // FIXME: SET BACKGROUND
-    UIImage* bg = [[UIImage imageNamed:@"avatar.jpg"] applyLightEffect];
-    self.bg.image = bg;
-    self.bg.contentMode = UIViewContentModeScaleAspectFill;
+    UIImage* background = [[UIImage imageNamed:@"avatar.jpg"] applyLightEffect];
+    self.backgroundImageView.image = background;
+    self.backgroundImageView.contentMode = UIViewContentModeScaleAspectFill;
     
     
     // Set table view properties
@@ -81,7 +81,7 @@
 {
     UITableViewCell* cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
     UITextField* textField = [[UITextField alloc]initWithFrame:cell.frame];
-    textField.delegate = self;
+    // textField.delegate = self;
     textField.text = @"TEST";
     [cell addSubview:textField];
     return cell;
