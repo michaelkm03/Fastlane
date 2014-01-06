@@ -884,7 +884,7 @@
                     <navigationItem key="navigationItem" title="Profile" id="VAE-nC-pE0">
                         <barButtonItem key="leftBarButtonItem" image="Menu" id="4ul-AN-b0Y">
                             <connections>
-                                <segue destination="gHV-c6-eaL" kind="push" id="M1p-uJ-7Ga"/>
+                                <segue destination="gHV-c6-eaL" kind="modal" id="M1p-uJ-7Ga"/>
                             </connections>
                         </barButtonItem>
                         <barButtonItem key="rightBarButtonItem" title="Item" systemItem="edit" id="9yW-VL-JfH">
@@ -901,7 +901,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Xa9-kt-Q5T" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-4491" y="-1524"/>
+            <point key="canvasLocation" x="-4815" y="-1524"/>
         </scene>
         <!--Profile Edit View Controller - Edit Profile-->
         <scene sceneID="3kb-37-1bV">

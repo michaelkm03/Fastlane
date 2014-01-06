@@ -22,14 +22,14 @@
 
 + (VProfileViewController *)sharedProfileViewController
 {
-    static  VProfileViewController*   settingsViewController;
+    static  VProfileViewController*   profileViewController;
     static  dispatch_once_t         onceToken;
     dispatch_once(&onceToken, ^{
         UIViewController*   currentViewController = [[UIApplication sharedApplication] delegate].window.rootViewController;
-        settingsViewController = (VProfileViewController*)[currentViewController.storyboard instantiateViewControllerWithIdentifier: @"profile"];
+        profileViewController = (VProfileViewController*)[currentViewController.storyboard instantiateViewControllerWithIdentifier: @"profile"];
     });
     
-    return settingsViewController;
+    return profileViewController;
 }
 
 - (void)viewDidLoad
@@ -166,6 +166,8 @@
 
 #pragma mark - Navigation
 
+#pragma mark - Navigation
+
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
     if ([segue.destinationViewController isKindOfClass:[VMenuViewController class]])
@@ -174,13 +176,8 @@
         menuViewController.transitioningDelegate = (id <UIViewControllerTransitioningDelegate>)[VMenuViewControllerTransitionDelegate new];
         menuViewController.modalPresentationStyle = UIModalPresentationCustom;
     }
-    else if ([segue.identifier isEqualToString:@"toEditProfile"])
-    {
-        VProfileEditViewController *profileEditViewController = (VProfileEditViewController *)segue.destinationViewController;
-        profileEditViewController.delegate = self;
-
-    }
 }
+
 
 
 @end
