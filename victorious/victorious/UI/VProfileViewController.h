@@ -10,12 +10,16 @@
 
 #import "VProfileEditViewController.h"
 
-@interface VProfileViewController : UIViewController <VProfileEditViewControllerDelegate, UIActionSheetDelegate, UITableViewDelegate, UITableViewDataSource>
+@interface VProfileViewController : UIViewController
 
 + (VProfileViewController *)sharedProfileViewController;
 
 @property (nonatomic, readwrite) BOOL userIsLoggedInUser;
-@property (nonatomic, readwrite) IBOutlet UIImageView* bg;
-@property (nonatomic, readwrite) IBOutlet UITableView* profileDetails;
+
+@property (nonatomic, readwrite) IBOutlet UIImageView* backgroundImageView;
+
+@property (nonatomic, readwrite) IBOutlet UILabel* nameLabel;
+@property (nonatomic, readwrite) IBOutlet UILabel* descriptionLabel;
+@property (nonatomic, readwrite) IBOutlet UILabel* locationLabel;
 
 @end

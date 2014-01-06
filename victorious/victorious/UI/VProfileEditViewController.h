@@ -10,18 +10,10 @@
 
 @class VProfileEditViewController;
 
-@protocol VProfileEditViewControllerDelegate <NSObject>
+@interface VProfileEditViewController : UIViewController
 
-- (void)profileEditViewControllerDidCancel:(VProfileEditViewController *)controller;
-- (void)profileEditViewControllerDidSave:(VProfileEditViewController *)controller;
-
-@end
-
-@interface VProfileEditViewController : UIViewController <UITableViewDelegate, UITableViewDataSource>
-
-@property (nonatomic, weak) id <VProfileEditViewControllerDelegate> delegate;
-
-@property (nonatomic, readwrite) IBOutlet UIImageView* bg;
+@property (nonatomic, readwrite) IBOutlet UIImageView* backgroundImageView
+;
 @property (nonatomic, readwrite) IBOutlet UITableView* editProfileDetails;
 
 - (IBAction)cancel:(id)sender;
