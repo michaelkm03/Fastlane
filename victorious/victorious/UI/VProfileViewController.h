@@ -15,7 +15,4 @@
 + (VProfileViewController *)sharedProfileViewController;
 
 @property (nonatomic, readwrite) BOOL userIsLoggedInUser;
-@property (nonatomic, readwrite) IBOutlet UIImageView* bg;
-@property (nonatomic, readwrite) IBOutlet UITableView* profileDetails;
-
 @end

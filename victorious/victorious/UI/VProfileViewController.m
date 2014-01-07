@@ -12,6 +12,8 @@
 #import "UIImage+ImageEffects.h"
 
 @interface VProfileViewController () <VProfileEditViewControllerDelegate, UIActionSheetDelegate, UITableViewDelegate>
+@property (nonatomic, readwrite) IBOutlet UIImageView* bg;
+@property (nonatomic, readwrite) IBOutlet UITableView* profileDetails;
 @end
 
 @implementation VProfileViewController
