@@ -10,19 +10,14 @@
 
 @class VProfileEditViewController;
 
-@protocol VProfileEditViewControllerDelegate <NSObject>
+@interface VProfileEditViewController : UITableViewController
 
-- (void)profileEditViewControllerDidCancel:(VProfileEditViewController *)controller;
-- (void)profileEditViewControllerDidSave:(VProfileEditViewController *)controller;
+@property (nonatomic, readwrite) IBOutlet UIImageView* profileImageView;
 
-@end
-
-@interface VProfileEditViewController : UIViewController
-
-@property (nonatomic, weak) id <VProfileEditViewControllerDelegate> delegate;
-
-@property (nonatomic, readwrite) IBOutlet UIImageView* bg;
-@property (nonatomic, readwrite) IBOutlet UITableView* editProfileDetails;
+@property (nonatomic, readwrite) IBOutlet UITextField* nameTextField;
+@property (nonatomic, readwrite) IBOutlet UITextField* usernameTextField;
+@property (nonatomic, readwrite) IBOutlet UITextField* locationTextField;
+@property (nonatomic, readwrite) IBOutlet UITextView* longDescriptionTextField;
 
 - (IBAction)cancel:(id)sender;
 - (IBAction)done:(id)sender;
