@@ -93,7 +93,7 @@ static NSString* kStreamCache = @"StreamCache";
     NSMutableArray *viewControllers = [NSMutableArray arrayWithCapacity:self.pageControl.numberOfPages];
     for(NSUInteger i = 0; i < self.pageControl.numberOfPages; ++i){
         VFeaturedViewController *viewController = [self.storyboard instantiateViewControllerWithIdentifier:@"featured"];
-#pragma warning - This is throwing this exception: -[__NSArrayM objectAtIndex:]: index 4 beyond bounds [0 .. 3]
+#warning - This is throwing this exception: -[__NSArrayM objectAtIndex:]: index 4 beyond bounds [0 .. 3]
         @try
         {
             viewController.sequence = [controller objectAtIndexPath:[NSIndexPath indexPathForRow:i inSection:0]];

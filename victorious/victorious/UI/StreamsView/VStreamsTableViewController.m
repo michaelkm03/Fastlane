@@ -14,10 +14,6 @@
 #import "VObjectManager+Sequence.h"
 #import "VFeaturedStreamsViewController.h"
 
-#import "VStreamViewCell.h"
-#import "VStreamVideoCell.h"
-#import "VStreamPollCell.h"
-
 #import "VMenuViewController.h"
 #import "VMenuViewControllerTransition.h"
 
@@ -179,10 +175,10 @@ static NSString* kSearchCache = @"SearchCache";
 {
     VSequence* sequence = (VSequence*)[[self fetchedResultsControllerForTableView:tableView] objectAtIndexPath:indexPath];
     
-    if ([sequence.category isEqualToString:@"video_forum"] ||
-        [sequence.category isEqualToString:@"owner_poll"])
-        
+    if ([sequence isForum] || [sequence isPoll])
+    {
         return 240;
+    }
 
     return 450;
 }
@@ -494,22 +490,22 @@ static NSString* kSearchCache = @"SearchCache";
 
 - (NSPredicate*)forumPredicate
 {
-    return [NSPredicate predicateWithFormat:@"category == 'owner_forum' || category == 'ugc_forum'"];
+    return [NSPredicate predicateWithFormat:@"category == %@ || category == %@", kVOwnerForumCategory, kVUGCForumCategory];
 }
 
 - (NSPredicate*)imagePredicate
 {
-    return [NSPredicate predicateWithFormat:@"category == 'owner_image' || category == 'ugc_image'"];
+    return [NSPredicate predicateWithFormat:@"category == %@ || category == %@", kVOwnerImageCategory, kVUGCImageCategory];
 }
 
 - (NSPredicate*)pollPredicate
 {
-    return [NSPredicate predicateWithFormat:@"category == 'owner_poll' || category == 'ugc_poll'"];
+    return [NSPredicate predicateWithFormat:@"category == %@ || category == %@", kVOwnerPollCategory, kVUGCPollCategory];
 }
 
 - (NSPredicate*)videoPredicate
 {
-    return [NSPredicate predicateWithFormat:@"category == 'owner_video' || category == 'ugc_video'"];
+    return [NSPredicate predicateWithFormat:@"category == %@ || category == %@", kVOwnerVideoCategory, kVUGCVideoCategory];
 }
 
 - (NSPredicate*)scopeTypePredicate
@@ -567,11 +563,11 @@ static NSString* kSearchCache = @"SearchCache";
 {
     VSequence* sequence = (VSequence*)[[self fetchedResultsControllerForTableView:tableView] objectAtIndexPath:indexPath];
     
-    if ([sequence.category isEqualToString:@"video_forum"])
+    if ([sequence isForum])
         return [tableView dequeueReusableCellWithIdentifier:kStreamVideoCellIdentifier
                                                forIndexPath:indexPath];
     
-    else if ([sequence.category isEqualToString:@"owner_poll"])
+    else if ([sequence isPoll])
         return [tableView dequeueReusableCellWithIdentifier:kStreamPollCellIdentifier
                                                forIndexPath:indexPath];
     

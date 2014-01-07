@@ -102,6 +102,7 @@
 		BE6B95F1187B4A2C00CED4C9 /* VForumStreamTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BE6B95EA187B4A2C00CED4C9 /* VForumStreamTableViewController.m */; };
 		BE6B95F2187B4A2C00CED4C9 /* VOwnerStreamsTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BE6B95EC187B4A2C00CED4C9 /* VOwnerStreamsTableViewController.m */; };
 		BE6B95F3187B4A2C00CED4C9 /* VStreamsTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BE6B95EE187B4A2C00CED4C9 /* VStreamsTableViewController.m */; };
+		BE6B95FC187C88F700CED4C9 /* VSequence+VFetcher.m in Sources */ = {isa = PBXBuildFile; fileRef = BE6B95FB187C88F700CED4C9 /* VSequence+VFetcher.m */; };
 		D1DAAA08187A43A9009ADCB0 /* VProfileViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D1DAAA07187A43A9009ADCB0 /* VProfileViewController.m */; };
 		D1DAAA0B187A43BE009ADCB0 /* VProfileEditViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D1DAAA0A187A43BE009ADCB0 /* VProfileEditViewController.m */; };
 		D1DAAA0D187A5397009ADCB0 /* avatar.jpg in Resources */ = {isa = PBXBuildFile; fileRef = D1DAAA0C187A5397009ADCB0 /* avatar.jpg */; };
@@ -289,6 +290,8 @@
 		BE6B95ED187B4A2C00CED4C9 /* VStreamsTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VStreamsTableViewController.h; sourceTree = "<group>"; };
 		BE6B95EE187B4A2C00CED4C9 /* VStreamsTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VStreamsTableViewController.m; sourceTree = "<group>"; };
 		BE6B95EF187B4A2C00CED4C9 /* VStreamsTableViewController+Protected.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "VStreamsTableViewController+Protected.h"; sourceTree = "<group>"; };
+		BE6B95FA187C88F700CED4C9 /* VSequence+VFetcher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "VSequence+VFetcher.h"; path = "../VSequence+VFetcher.h"; sourceTree = "<group>"; };
+		BE6B95FB187C88F700CED4C9 /* VSequence+VFetcher.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "VSequence+VFetcher.m"; path = "../VSequence+VFetcher.m"; sourceTree = "<group>"; };
 		D1DAAA06187A43A9009ADCB0 /* VProfileViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VProfileViewController.h; path = UI/VProfileViewController.h; sourceTree = "<group>"; };
 		D1DAAA07187A43A9009ADCB0 /* VProfileViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VProfileViewController.m; path = UI/VProfileViewController.m; sourceTree = "<group>"; };
 		D1DAAA09187A43BE009ADCB0 /* VProfileEditViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VProfileEditViewController.h; path = UI/VProfileEditViewController.h; sourceTree = "<group>"; };
@@ -535,6 +538,8 @@
 				BE171DB31868C211004E5202 /* VInteraction+Fetcher.m */,
 				BE171DB41868C211004E5202 /* VNode+Fetcher.h */,
 				BE171DB51868C211004E5202 /* VNode+Fetcher.m */,
+				BE6B95FA187C88F700CED4C9 /* VSequence+VFetcher.h */,
+				BE6B95FB187C88F700CED4C9 /* VSequence+VFetcher.m */,
 			);
 			path = Fetchers;
 			sourceTree = "<group>";
@@ -885,6 +890,7 @@
 				8378622818728C89000BF84F /* VFeaturedViewController.m in Sources */,
 				BE171D881868BE64004E5202 /* main.m in Sources */,
 				BE692B27186E5ED800C71336 /* VStreamVideoCell.m in Sources */,
+				BE6B95FC187C88F700CED4C9 /* VSequence+VFetcher.m in Sources */,
 				BE171E0A1868C211004E5202 /* VAsset+Fetcher.m in Sources */,
 				3F4863FA1869184000F77346 /* VMessagesViewController.m in Sources */,
 				BE171E171868C211004E5202 /* VSequence+RestKit.m in Sources */,
