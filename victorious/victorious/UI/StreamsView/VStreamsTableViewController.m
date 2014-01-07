@@ -411,7 +411,7 @@ static NSString* kSearchCache = @"SearchCache";
     
     //We need to perform the fetch again
     NSError *error;
-	if (![controller performFetch:&error])
+	if (![controller performFetch:&error] && error)
     {
 		//TODO: Update to handle the error appropriately.
 		NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
@@ -489,7 +489,7 @@ static NSString* kSearchCache = @"SearchCache";
         [allTypes addObject:predicate];
     }
     
-    return [NSCompoundPredicate andPredicateWithSubpredicates:allTypes];
+    return [NSCompoundPredicate orPredicateWithSubpredicates:allTypes];
 }
 
 - (NSPredicate*)forumPredicate
