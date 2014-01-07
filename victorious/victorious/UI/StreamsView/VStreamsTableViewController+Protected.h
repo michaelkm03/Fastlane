@@ -8,6 +8,12 @@
 
 #import "VStreamsTableViewController.h"
 
+#import "VStreamViewCell.h"
+#import "VStreamVideoCell.h"
+#import "VStreamPollCell.h"
+
+#import "VSequence+VFetcher.h"
+
 @interface VStreamsTableViewController (Protected)
 
 #pragma mark - Segue Lifecycle
