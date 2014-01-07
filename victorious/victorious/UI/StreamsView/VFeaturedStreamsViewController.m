@@ -91,7 +91,8 @@ static NSString* kStreamCache = @"StreamCache";
     self.pageControl.numberOfPages = 5;
 
     NSMutableArray *viewControllers = [NSMutableArray arrayWithCapacity:self.pageControl.numberOfPages];
-    for(NSUInteger i = 0; i < self.pageControl.numberOfPages; ++i){
+    for(NSUInteger i = 0; i < self.pageControl.numberOfPages && i < [controller.fetchedObjects count]; ++i)
+    {
         VFeaturedViewController *viewController = [self.storyboard instantiateViewControllerWithIdentifier:@"featured"];
         viewController.sequence = [controller objectAtIndexPath:[NSIndexPath indexPathForRow:i inSection:0]];
         [self addChildViewController:viewController];

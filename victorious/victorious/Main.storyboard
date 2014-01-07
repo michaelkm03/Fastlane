@@ -1768,7 +1768,7 @@
                     </refreshControl>
                     <connections>
                         <outlet property="searchDisplayController" destination="J6V-dn-yOU" id="TZI-2g-5LR"/>
-                        <segue destination="ZHJ-1r-35v" kind="push" id="fCv-qj-7vN"/>
+                        <segue destination="ZHJ-1r-35v" kind="push" identifier="toStreamDetails" id="fCv-qj-7vN"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="gYD-nr-qTl" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -1829,7 +1829,7 @@
                     </refreshControl>
                     <connections>
                         <outlet property="searchDisplayController" destination="J6V-dn-yOU" id="cJb-RP-lgx"/>
-                        <segue destination="ZHJ-1r-35v" kind="push" id="Be1-Nd-9wx"/>
+                        <segue destination="ZHJ-1r-35v" kind="push" identifier="toStreamDetails" id="Be1-Nd-9wx"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="LJd-lg-Pic" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -1890,7 +1890,7 @@
                     </refreshControl>
                     <connections>
                         <outlet property="searchDisplayController" destination="J6V-dn-yOU" id="XgA-sv-8Jq"/>
-                        <segue destination="ZHJ-1r-35v" kind="push" id="3G8-xg-TDE"/>
+                        <segue destination="ZHJ-1r-35v" kind="push" identifier="toStreamDetails" id="3G8-xg-TDE"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Pec-Ts-5yc" userLabel="First Responder" sceneMemberID="firstResponder"/>

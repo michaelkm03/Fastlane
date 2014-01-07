@@ -25,22 +25,22 @@
 
 - (NSPredicate*)forumPredicate
 {
-    return [NSPredicate predicateWithFormat:@"category == 'owner_forum'"];
+    return [NSPredicate predicateWithFormat:@"category == %@", kVOwnerForumCategory];
 }
 
 - (NSPredicate*)imagePredicate
 {
-    return [NSPredicate predicateWithFormat:@"category == 'owner_image'"];
+    return [NSPredicate predicateWithFormat:@"category == %@", kVOwnerImageCategory];
 }
 
 - (NSPredicate*)pollPredicate
 {
-    return [NSPredicate predicateWithFormat:@"category == 'owner_poll'"];
+    return [NSPredicate predicateWithFormat:@"category == %@", kVOwnerPollCategory];
 }
 
 - (NSPredicate*)videoPredicate
 {
-    return [NSPredicate predicateWithFormat:@"category == 'owner_video'"];
+    return [NSPredicate predicateWithFormat:@"category == %@", kVOwnerVideoCategory];
 }
 
 @end
