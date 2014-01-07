@@ -11,13 +11,15 @@
 #import "VMenuViewControllerTransition.h"
 #import "UIImage+ImageEffects.h"
 
-@interface VProfileViewController () <VProfileEditViewControllerDelegate, UIActionSheetDelegate, UITableViewDelegate>
+@interface VProfileViewController () <UIActionSheetDelegate, UITextFieldDelegate>
+@property (nonatomic, readwrite) IBOutlet UIImageView* backgroundImageView;
+
+@property (nonatomic, readwrite) IBOutlet UILabel* nameLabel;
+@property (nonatomic, readwrite) IBOutlet UILabel* descriptionLabel;
+@property (nonatomic, readwrite) IBOutlet UILabel* locationLabel;
 @end
 
 @implementation VProfileViewController
-{
-    NSArray*            _labels;
-}
 
 + (VProfileViewController *)sharedProfileViewController
 {
@@ -33,31 +35,25 @@
 
 - (void)viewDidLoad
 {
-    // FIXME: SET USER LOGGED IN
-    self.userIsLoggedInUser = YES;
-    
-    // FIXME: PRESENT DATA FIELDS
-    _labels =   @[@"Name", @"E-Mail", @"Password"];
-    self.profileDetails.delegate = self;
-    
-    // FIXME: SET BACKGROUND
-    [self.profileDetails layoutIfNeeded];
-    UIImage* bg = [UIImage imageNamed:@"avatar.jpg"];
-    self.bg.image = bg;
-    self.bg.contentMode = UIViewContentModeScaleAspectFill;
-    self.bg.image = [self.bg.image
-                     applyDarkEffectWithMaskImage:[self maskImageWithHeight:self.profileDetails.contentSize.height]];
-    
-    
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
     
+    // FIXME: SET USER LOGGED IN
+    self.userIsLoggedInUser = YES;
     
+    // SET LABEL PROPERTIES
+    [self setLabelProperties];
+    
+    // FIXME: SET BACKGROUND
+    UIImage* background = [UIImage imageNamed:@"avatar.jpg"];
+    self.backgroundImageView.image = background;
+    self.backgroundImageView.contentMode = UIViewContentModeScaleAspectFill;
+
     if (!self.userIsLoggedInUser)
     {
         UIBarButtonItem* composeButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCompose target:self action:@selector(composeButtonPressed)];
-        UIBarButtonItem* userActionButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemReply target:self action:@selector(userActionButtonPressed)];
-        self.navigationItem.rightBarButtonItems = [NSArray arrayWithObjects:composeButton, userActionButton, nil];
+        UIBarButtonItem* userActionButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAction target:self action:@selector(userActionButtonPressed)];
+        self.navigationItem.rightBarButtonItems = @[composeButton, userActionButton];
     }
     else
     {
@@ -65,35 +61,13 @@
     }
 }
 
-- (UIImage*)maskImageWithHeight:(CGFloat)height
+- (void)setLabelProperties
 {
-    CGSize size = CGSizeMake(self.bg.frame.size.width, self.bg.frame.size.height);
-    
-    UIGraphicsBeginImageContext(size);
-    
-    // Build a context that's the same dimensions as the new size
-    CGContextRef maskContext = CGBitmapContextCreate(NULL,
-                                                     size.width,
-                                                     size.height,
-                                                     8,
-                                                     0,
-                                                     CGColorSpaceCreateDeviceGray(),
-                                                     kCGBitmapByteOrderDefault);
-    
-    // Start with a mask that's entirely transparent
-    CGContextSetFillColorWithColor(maskContext, [UIColor blackColor].CGColor);
-    CGContextFillRect(maskContext, CGRectMake(0, 0, size.width, size.height));
-    
-    [[UIColor blackColor] setFill];
-    [[UIBezierPath bezierPathWithRect:CGRectMake(0, size.height - height, size.width, height)] fill];
-    
-    UIImage *testImg =  UIGraphicsGetImageFromCurrentImageContext();
-    
-    UIGraphicsEndImageContext();
-    
-    return testImg;
+    UIColor* transparentGray = [UIColor colorWithRed:50.0/255.0 green:50.0/255.0 blue:50.0/255.0 alpha:0.6];
+    self.nameLabel.backgroundColor = transparentGray;
+    self.descriptionLabel.backgroundColor = transparentGray;
+    self.locationLabel.backgroundColor = transparentGray;
 }
-
 
 -(void)composeButtonPressed
 {
@@ -103,7 +77,8 @@
 -(void)userActionButtonPressed
 {
     UIActionSheet *popupQuery = [[UIActionSheet alloc] initWithTitle:@"Title"
-                                                            delegate:self cancelButtonTitle:@"Cancel Button"
+                                                            delegate:self
+                                                   cancelButtonTitle:@"Cancel Button"
                                               destructiveButtonTitle:@"Destructive Button"
                                                    otherButtonTitles:@"Other Button 1",
                                  @"Other Button 2", nil];
@@ -130,30 +105,6 @@
     // Dispose of any resources that can be recreated.
 }
 
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    UITableViewCell* cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
-    
-    // If we are editing, create an editable cell
-    if (YES)
-    {
-        cell.backgroundColor = [UIColor clearColor];
-        cell.textLabel.text = _labels[indexPath.row];
-        cell.textLabel.textAlignment = NSTextAlignmentCenter;
-    }
-    return cell;
-}
-
-- (void)profileEditViewControllerDidCancel:(VProfileEditViewController *)controller
-{
-    [controller dismissViewControllerAnimated:YES completion:nil];
-}
-
-- (void)profileEditViewControllerDidSave:(VProfileEditViewController *)controller
-{
-    [controller dismissViewControllerAnimated:YES completion:nil];
-}
-
 #pragma mark - Navigation
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
@@ -165,7 +116,5 @@
         menuViewController.modalPresentationStyle = UIModalPresentationCustom;
     }
 }
-
-
 
 @end
