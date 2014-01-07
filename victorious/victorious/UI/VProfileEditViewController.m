@@ -9,7 +9,7 @@
 #import "VProfileEditViewController.h"
 #import "UIImage+ImageEffects.h"
 
-@interface VProfileEditViewController ()  <UITableViewDelegate, UITableViewDataSource>
+@interface VProfileEditViewController ()  <UITextFieldDelegate, UITextViewDelegate>
 
 @end
 
@@ -18,7 +18,6 @@
 - (IBAction)cancel:(id)sender
 {
     NSLog(@"CANCEL PRESSED");
-//    [self dismissViewControllerAnimated:YES completion:nil];
     [self.navigationController popViewControllerAnimated:YES];
 }
 
@@ -34,18 +33,13 @@
 	// Do any additional setup after loading the view.
     
     // FIXME: SET BACKGROUND
-    UIImage* background = [[UIImage imageNamed:@"avatar.jpg"] applyLightEffect];
-    self.backgroundImageView.image = background;
-    self.backgroundImageView.contentMode = UIViewContentModeScaleAspectFill;
+    UIImageView* backgroundImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"avatar.jpg"]];
+    self.tableView.backgroundView = backgroundImageView;
     
+    [self setTableProperties];
     
-    // Set table view properties
-//    self.editProfileDetails.delegate = self;
-//    self.editProfileDetails.dataSource = self;
-    self.editProfileDetails.opaque = NO;
-    self.editProfileDetails.backgroundColor = [UIColor clearColor];
     // Set table view header (unneccessary)
-    self.editProfileDetails.tableHeaderView = ({
+    self.tableView.tableHeaderView = ({
         UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 0, 184.0f)];
         UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 40, 100, 100)];
         imageView.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin;
@@ -71,56 +65,41 @@
     });
 }
 
-// Only 3 parameters for the table view
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+- (void)setTableProperties
 {
-    return 3;
+    self.tableView.opaque = NO;
+    
+    UIColor* transparentWhite = [UIColor colorWithRed:200.0/255.0 green:200.0/255.0 blue:200.0/255.0 alpha:0.6];
+    self.tableView.backgroundColor = transparentWhite;
+    
+    self.nameTextField.enabled = YES;
+    self.usernameTextField.enabled = YES;
+    self.locationTextField.enabled = YES;
+//    self.longDescriptionTextField;
+    
+    self.nameTextField.delegate = self;
+    self.usernameTextField.delegate = self;
+    self.locationTextField.delegate = self;
+    self.longDescriptionTextField.delegate = self;
 }
 
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+- (BOOL)textFieldShouldReturn:(UITextField *)textField
 {
-    UITableViewCell* cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
-    UITextField* textField = [[UITextField alloc]initWithFrame:cell.frame];
-    // textField.delegate = self;
-    textField.text = @"TEST";
-    [cell addSubview:textField];
-    return cell;
+    if ([textField isEqual:self.nameTextField])
+        [self.usernameTextField becomeFirstResponder];
+    else if ([textField isEqual:self.locationTextField])
+        [self.longDescriptionTextField becomeFirstResponder];
+    else
+        // ATTEMPT TO SAVE HERE
+        return NO;
+        
+    return NO;
 }
 
-// Scroll to display text field when editing
-- (void)textFieldDidBeginEditing:(UITextField*)textField
+- (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
 {
-    [self.editProfileDetails scrollToRowAtIndexPath:[self cellIndexPathForField:textField] atScrollPosition:UITableViewScrollPositionMiddle animated:YES];
+    [[self view] endEditing:YES];
 }
-// Get the indx of the cell that we're editing
-- (NSIndexPath *)cellIndexPathForField:(UITextField *)textField
-{
-    UIView *view = textField;
-    while (![view isKindOfClass:[UITableViewCell class]])
-    {
-        view = [view superview];
-    }
-    return [self.editProfileDetails indexPathForCell:(UITableViewCell *)view];
-}
-
-
-- (BOOL)textFieldShouldEndEditing:(UITextField *)textField
-{
-    [textField resignFirstResponder];
-    return YES;
-}
-
-//- (void)textFieldDidEndEditing:(UITextField*)textField
-//{
-//    [self.editProfileDetails replaceObjectAtIndex:textField.tag withObject:textField.text];
-//}
-
--(BOOL)textFieldShouldReturn:(UITextField *)textField
-{
-    [textField resignFirstResponder];
-    return YES;
-}
-
 
 - (void)didReceiveMemoryWarning
 {

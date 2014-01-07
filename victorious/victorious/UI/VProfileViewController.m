@@ -100,30 +100,6 @@
     // Dispose of any resources that can be recreated.
 }
 
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    UITableViewCell* cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
-    
-    // If we are editing, create an editable cell
-    if (YES)
-    {
-        cell.backgroundColor = [UIColor clearColor];
-        // cell.textLabel.text = _labels[indexPath.row];
-        cell.textLabel.textAlignment = NSTextAlignmentCenter;
-    }
-    return cell;
-}
-
-- (void)profileEditViewControllerDidCancel:(VProfileEditViewController *)controller
-{
-    [controller dismissViewControllerAnimated:YES completion:nil];
-}
-
-- (void)profileEditViewControllerDidSave:(VProfileEditViewController *)controller
-{
-    [controller dismissViewControllerAnimated:YES completion:nil];
-}
-
 #pragma mark - Navigation
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender

@@ -10,11 +10,14 @@
 
 @class VProfileEditViewController;
 
-@interface VProfileEditViewController : UIViewController
+@interface VProfileEditViewController : UITableViewController
 
-@property (nonatomic, readwrite) IBOutlet UIImageView* backgroundImageView
-;
-@property (nonatomic, readwrite) IBOutlet UITableView* editProfileDetails;
+@property (nonatomic, readwrite) IBOutlet UIImageView* backgroundImageView;
+
+@property (nonatomic, readwrite) IBOutlet UITextField* nameTextField;
+@property (nonatomic, readwrite) IBOutlet UITextField* usernameTextField;
+@property (nonatomic, readwrite) IBOutlet UITextField* locationTextField;
+@property (nonatomic, readwrite) IBOutlet UITextView* longDescriptionTextField;
 
 - (IBAction)cancel:(id)sender;
 - (IBAction)done:(id)sender;
