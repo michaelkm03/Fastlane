@@ -6,7 +6,7 @@
 //  Copyright (c) 2013 Victorious Inc. All rights reserved.
 //
 
-#import "VMessagesViewController.h"
+#import "VInboxViewController.h"
 #import "VComment+RestKit.h"
 #import "VMenuViewController.h"
 #import "VMenuViewControllerTransition.h"
@@ -20,20 +20,39 @@ NS_ENUM(NSUInteger, ModeSelect)
 static  NSString*   kMessageCell    =   @"messageCell";
 static  NSString*   kNewsCell       =   @"newsCell";
 
-@interface VMessagesViewController ()   <NSFetchedResultsControllerDelegate>
+@interface VInboxViewController ()   <NSFetchedResultsControllerDelegate>
 @property (nonatomic, strong) NSFetchedResultsController*   fetchedResultsController;
+@property (weak, nonatomic) IBOutlet UISegmentedControl*    modeSelectControl;
 @property (nonatomic, assign) enum  ModeSelect              modeSelect;
 @end
 
-@implementation VMessagesViewController
+@implementation VInboxViewController
+
++ (instancetype)sharedInboxViewController
+{
+    static  VInboxViewController*   inboxViewController;
+    static  dispatch_once_t         onceToken;
+    dispatch_once(&onceToken, ^{
+        UIViewController*   currentViewController = [[UIApplication sharedApplication] delegate].window.rootViewController;
+        inboxViewController = (VInboxViewController*)[currentViewController.storyboard instantiateViewControllerWithIdentifier: @"inbox"];
+    });
+    
+    return inboxViewController;
+}
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
 
     self.clearsSelectionOnViewWillAppear = NO;
-    self.navigationItem.rightBarButtonItem = self.editButtonItem;
     
+    self.navigationItem.rightBarButtonItem = self.editButtonItem;
+    self.modeSelectControl.selectedSegmentIndex = 0;
+    
+//        [self.modeSelectControl setDividerImage:image1 forLeftSegmentState:UIControlStateNormal                   rightSegmentState:UIControlStateNormal barMetrics:barMetrics];
+//        [self.modeSelectControl setDividerImage:image2 forLeftSegmentState:UIControlStateSelected                   rightSegmentState:UIControlStateNormal barMetrics:barMetrics];
+//        [self.modeSelectControl setDividerImage:image3 forLeftSegmentState:UIControlStateNormal                   rightSegmentState:UIControlStateSelected barMetrics:barMetrics];
+
     NSError *error;
 	if (![self.fetchedResultsController performFetch:&error])
     {
@@ -118,7 +137,6 @@ static  NSString*   kNewsCell       =   @"newsCell";
     if (editingStyle == UITableViewCellEditingStyleDelete)
     {
         // Delete the row from the data source
-        [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
     }   
 }
 
@@ -232,9 +250,15 @@ static  NSString*   kNewsCell       =   @"newsCell";
 - (IBAction)modeSelected:(id)sender
 {
     if (0 == [sender selectedSegmentIndex])
+    {
         self.modeSelect = kMessageModeSelect;
+        self.navigationItem.rightBarButtonItem = self.editButtonItem;
+    }
     else
+    {
         self.modeSelect = kNewsModeSelect;
+        self.navigationItem.rightBarButtonItem = nil;
+    }
 }
 
 #pragma mark - Navigation

@@ -8,6 +8,8 @@
 
 #import <UIKit/UIKit.h>
 
-@interface VMessagesViewController : UITableViewController
+@interface VInboxViewController : UITableViewController
+
++ (instancetype)sharedInboxViewController;
 
 @end
