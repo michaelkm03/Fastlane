@@ -21,6 +21,7 @@ extern NSString* const kSearchCache;
 - (UITableView*)tableViewForFetchedResultsController:(NSFetchedResultsController*)controller;
 
 - (IBAction)displaySearchBar:(id)sender;
+- (IBAction)refresh:(UIRefreshControl *)sender;
 
 #pragma mark - Filtering
 - (NSPredicate*)fetchResultsPredicate;

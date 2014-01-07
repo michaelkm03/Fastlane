@@ -331,4 +331,5 @@ forFetchedResultsController:(NSFetchedResultsController *)fetchedResultsControll
 {
     //Define refresh action here
 }
+
 @end
