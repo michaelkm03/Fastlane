@@ -11,7 +11,7 @@
 extern NSString* const kStreamCache;
 extern NSString* const kSearchCache;
 
-@interface VAbstractStreamTableVieControllerViewController : UITableViewController <NSFetchedResultsControllerDelegate, UISearchBarDelegate, UISearchDisplayDelegate>
+@interface VAbstractStreamViewController : UITableViewController <NSFetchedResultsControllerDelegate, UISearchBarDelegate, UISearchDisplayDelegate>
 
 @property (nonatomic, strong) NSFetchedResultsController* fetchedResultsController;
 @property (nonatomic, strong) NSFetchedResultsController* searchFetchedResultsController;

@@ -6,7 +6,7 @@
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
-#import "VAbstractStreamTableVieControllerViewController.h"
+#import "VAbstractStreamViewController.h"
 
 #import "VSequence+RestKit.h"
 #import "NSString+VParseHelp.h"
@@ -14,11 +14,11 @@
 NSString* const kStreamCache = @"StreamCache";
 NSString* const kSearchCache = @"SearchCache";
 
-@interface VAbstractStreamTableVieControllerViewController ()
+@interface VAbstractStreamViewController ()
 
 @end
 
-@implementation VAbstractStreamTableVieControllerViewController
+@implementation VAbstractStreamViewController
 
 - (id)initWithStyle:(UITableViewStyle)style
 {
@@ -78,6 +78,7 @@ NSString* const kSearchCache = @"SearchCache";
 }
 
 #pragma mark - NSFetchedResultsControllers
+
 - (NSFetchedResultsController *)fetchedResultsController
 {
     if (nil == _fetchedResultsController)
@@ -122,7 +123,6 @@ NSString* const kSearchCache = @"SearchCache";
 
 - (NSFetchRequest*)fetchRequestForContext:(NSManagedObjectContext*)context
 {
-    
     NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
     NSEntityDescription *entity = [NSEntityDescription entityForName:[VSequence entityName] inManagedObjectContext:context];
     [fetchRequest setEntity:entity];
@@ -264,6 +264,7 @@ forFetchedResultsController:(NSFetchedResultsController *)fetchedResultsControll
 }
 
 #pragma mark - Filtering
+
 - (NSPredicate*)fetchResultsPredicate
 {
     NSMutableArray* allFilters = [[NSMutableArray alloc] init];
@@ -308,6 +309,7 @@ forFetchedResultsController:(NSFetchedResultsController *)fetchedResultsControll
 }
 
 #pragma mark - Predicate Lifecycle
+
 - (NSPredicate*)searchTextPredicate
 {
     if (!_filterText || [_filterText isEmpty])
@@ -332,6 +334,6 @@ forFetchedResultsController:(NSFetchedResultsController *)fetchedResultsControll
 #pragma mark - Refresh Lifecycle
 - (void)refreshAction
 {
-    //Definne refresh action here
+    //Define refresh action here
 }
 @end

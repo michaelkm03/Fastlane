@@ -89,7 +89,7 @@
 		BE171E391868C266004E5202 /* NSManagedObject+EasyFetching.m in Sources */ = {isa = PBXBuildFile; fileRef = BE171E361868C265004E5202 /* NSManagedObject+EasyFetching.m */; };
 		BE171E3A1868C266004E5202 /* NSString+VParseHelp.m in Sources */ = {isa = PBXBuildFile; fileRef = BE171E381868C266004E5202 /* NSString+VParseHelp.m */; };
 		BE171E431868CEA0004E5202 /* victoriOS.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = BE171E411868CEA0004E5202 /* victoriOS.xcdatamodeld */; };
-		BE391E50187C99E30088D902 /* VAbstractStreamTableVieControllerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BE391E4F187C99E30088D902 /* VAbstractStreamTableVieControllerViewController.m */; };
+		BE391E50187C99E30088D902 /* VAbstractStreamViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BE391E4F187C99E30088D902 /* VAbstractStreamViewController.m */; };
 		BE692B23186E5ED800C71336 /* VStreamDoublePollCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = BE692B17186E5ED800C71336 /* VStreamDoublePollCell.xib */; };
 		BE692B24186E5ED800C71336 /* VStreamPollCell.m in Sources */ = {isa = PBXBuildFile; fileRef = BE692B19186E5ED800C71336 /* VStreamPollCell.m */; };
 		BE692B25186E5ED800C71336 /* VStreamPollCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = BE692B1A186E5ED800C71336 /* VStreamPollCell.xib */; };
@@ -271,8 +271,8 @@
 		BE171E381868C266004E5202 /* NSString+VParseHelp.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+VParseHelp.m"; sourceTree = "<group>"; };
 		BE171E421868CEA0004E5202 /* victoriOS.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = victoriOS.xcdatamodel; sourceTree = "<group>"; };
 		BE171E441868CEAA004E5202 /* victoriOS 2.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "victoriOS 2.xcdatamodel"; sourceTree = "<group>"; };
-		BE391E4E187C99E30088D902 /* VAbstractStreamTableVieControllerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VAbstractStreamTableVieControllerViewController.h; sourceTree = "<group>"; };
-		BE391E4F187C99E30088D902 /* VAbstractStreamTableVieControllerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VAbstractStreamTableVieControllerViewController.m; sourceTree = "<group>"; };
+		BE391E4E187C99E30088D902 /* VAbstractStreamViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VAbstractStreamViewController.h; sourceTree = "<group>"; };
+		BE391E4F187C99E30088D902 /* VAbstractStreamViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VAbstractStreamViewController.m; sourceTree = "<group>"; };
 		BE692B17186E5ED800C71336 /* VStreamDoublePollCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VStreamDoublePollCell.xib; sourceTree = "<group>"; };
 		BE692B18186E5ED800C71336 /* VStreamPollCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VStreamPollCell.h; sourceTree = "<group>"; };
 		BE692B19186E5ED800C71336 /* VStreamPollCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VStreamPollCell.m; sourceTree = "<group>"; };
@@ -716,8 +716,8 @@
 				BE6B95EF187B4A2C00CED4C9 /* VStreamsTableViewController+Protected.h */,
 				BE6B95ED187B4A2C00CED4C9 /* VStreamsTableViewController.h */,
 				BE6B95EE187B4A2C00CED4C9 /* VStreamsTableViewController.m */,
-				BE391E4E187C99E30088D902 /* VAbstractStreamTableVieControllerViewController.h */,
-				BE391E4F187C99E30088D902 /* VAbstractStreamTableVieControllerViewController.m */,
+				BE391E4E187C99E30088D902 /* VAbstractStreamViewController.h */,
+				BE391E4F187C99E30088D902 /* VAbstractStreamViewController.m */,
 			);
 			name = StreamsTables;
 			sourceTree = "<group>";
@@ -950,7 +950,7 @@
 				BE171E301868C211004E5202 /* VSequence.m in Sources */,
 				BE171E251868C211004E5202 /* VAnswer.m in Sources */,
 				BE171E2D1868C211004E5202 /* VNode.m in Sources */,
-				BE391E50187C99E30088D902 /* VAbstractStreamTableVieControllerViewController.m in Sources */,
+				BE391E50187C99E30088D902 /* VAbstractStreamViewController.m in Sources */,
 				BE692B50186E60B300C71336 /* VCommentViewCell.m in Sources */,
 				BE171E2B1868C211004E5202 /* VInteraction.m in Sources */,
 				BE171E3A1868C266004E5202 /* NSString+VParseHelp.m in Sources */,
