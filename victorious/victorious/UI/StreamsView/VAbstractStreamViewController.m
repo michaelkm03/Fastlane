@@ -121,19 +121,6 @@ NSString* const kSearchCache = @"SearchCache";
     return _searchFetchedResultsController;
 }
 
-- (NSFetchRequest*)fetchRequestForContext:(NSManagedObjectContext*)context
-{
-    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
-    NSEntityDescription *entity = [NSEntityDescription entityForName:[VSequence entityName] inManagedObjectContext:context];
-    [fetchRequest setEntity:entity];
-    
-    NSSortDescriptor *sort = [[NSSortDescriptor alloc] initWithKey:@"display_order" ascending:YES];
-    [fetchRequest setSortDescriptors:@[sort]];
-    [fetchRequest setFetchBatchSize:50];
-    
-    return fetchRequest;
-}
-
 - (void)controllerWillChangeContent:(NSFetchedResultsController *)controller
 {
     // The fetch controller is about to start sending change notifications, so prepare the table view for updates.
@@ -327,7 +314,6 @@ forFetchedResultsController:(NSFetchedResultsController *)fetchedResultsControll
 
 - (NSFetchRequest*)fetchRequestForContext:(NSManagedObjectContext*)context
 {
-    
     NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
     NSEntityDescription *entity = [NSEntityDescription entityForName:[VSequence entityName] inManagedObjectContext:context];
     [fetchRequest setEntity:entity];
