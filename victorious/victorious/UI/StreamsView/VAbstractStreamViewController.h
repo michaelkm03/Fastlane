@@ -8,7 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-extern NSString* const kStreamCache;
 extern NSString* const kSearchCache;
 
 @interface VAbstractStreamViewController : UITableViewController <NSFetchedResultsControllerDelegate, UISearchBarDelegate, UISearchDisplayDelegate>

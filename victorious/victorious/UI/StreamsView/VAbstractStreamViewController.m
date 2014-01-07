@@ -11,23 +11,12 @@
 #import "VSequence+RestKit.h"
 #import "NSString+VParseHelp.h"
 
-NSString* const kStreamCache = @"StreamCache";
 NSString* const kSearchCache = @"SearchCache";
 
 @interface VAbstractStreamViewController ()
-
 @end
 
 @implementation VAbstractStreamViewController
-
-- (id)initWithStyle:(UITableViewStyle)style
-{
-    self = [super initWithStyle:style];
-    if (self) {
-        // Custom initialization
-    }
-    return self;
-}
 
 - (void)viewDidLoad
 {
@@ -64,6 +53,7 @@ NSString* const kSearchCache = @"SearchCache";
 }
 
 #pragma mark -
+
 //The follow 2 methods and the majority of the rest of the file was based on the following stack overflow article:
 //http://stackoverflow.com/questions/4471289/how-to-filter-nsfetchedresultscontroller-coredata-with-uisearchdisplaycontroll
 
@@ -71,6 +61,7 @@ NSString* const kSearchCache = @"SearchCache";
 {
     return tableView == self.tableView ? self.fetchedResultsController : self.searchFetchedResultsController;
 }
+
 - (UITableView*)tableViewForFetchedResultsController:(NSFetchedResultsController*)controller
 {
     return controller == self.fetchedResultsController ? self.tableView
@@ -92,7 +83,7 @@ NSString* const kSearchCache = @"SearchCache";
                                          initWithFetchRequest:fetchRequest
                                          managedObjectContext:context
                                          sectionNameKeyPath:nil
-                                         cacheName:kStreamCache];
+                                         cacheName:fetchRequest.entityName];
         
         _fetchedResultsController.delegate = self;
     }
@@ -173,6 +164,7 @@ NSString* const kSearchCache = @"SearchCache";
 }
 
 #pragma mark - Table view data source
+
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
     return [[[self fetchedResultsControllerForTableView:tableView] sections] count];
@@ -201,6 +193,7 @@ forFetchedResultsController:(NSFetchedResultsController *)fetchedResultsControll
 }
 
 #pragma mark - Search Display
+
 - (IBAction)displaySearchBar:(id)sender
 {
     [self.tableView scrollRectToVisible:CGRectMake(0, 0, 1, 1) animated:YES];
@@ -277,7 +270,7 @@ forFetchedResultsController:(NSFetchedResultsController *)fetchedResultsControll
                  withPredicate:(NSPredicate*)predicate
 {
     //We must clear the cache before modifying anything.
-    NSString* cacheName = (controller == self.fetchedResultsController) ? kStreamCache : kSearchCache;
+    NSString* cacheName = (controller == self.fetchedResultsController) ? controller.fetchRequest.entityName : kSearchCache;
     [NSFetchedResultsController deleteCacheWithName:cacheName];
     
     [controller.fetchRequest setPredicate:predicate];
@@ -326,12 +319,14 @@ forFetchedResultsController:(NSFetchedResultsController *)fetchedResultsControll
 }
 
 #pragma mark - Cell Lifecycle
+
 - (void)registerCells
 {
     //Register cells here
 }
 
 #pragma mark - Refresh Lifecycle
+
 - (void)refreshAction
 {
     //Define refresh action here
