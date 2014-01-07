@@ -91,16 +91,10 @@ static NSString* kStreamCache = @"StreamCache";
     self.pageControl.numberOfPages = 5;
 
     NSMutableArray *viewControllers = [NSMutableArray arrayWithCapacity:self.pageControl.numberOfPages];
-    for(NSUInteger i = 0; i < self.pageControl.numberOfPages; ++i){
+    for(NSUInteger i = 0; i < self.pageControl.numberOfPages && i < [controller.fetchedObjects count]; ++i)
+    {
         VFeaturedViewController *viewController = [self.storyboard instantiateViewControllerWithIdentifier:@"featured"];
-#warning - This is throwing this exception: -[__NSArrayM objectAtIndex:]: index 4 beyond bounds [0 .. 3]
-        @try
-        {
-            viewController.sequence = [controller objectAtIndexPath:[NSIndexPath indexPathForRow:i inSection:0]];
-        } @catch (NSException* e)
-        {
-            VLog(@"Exception in featuredStreams: %@", e);
-        }
+        viewController.sequence = [controller objectAtIndexPath:[NSIndexPath indexPathForRow:i inSection:0]];
         [self addChildViewController:viewController];
         [viewController didMoveToParentViewController:self];
         [viewControllers addObject:viewController];
