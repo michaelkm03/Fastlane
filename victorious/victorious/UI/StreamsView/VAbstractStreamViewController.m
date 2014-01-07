@@ -325,6 +325,20 @@ forFetchedResultsController:(NSFetchedResultsController *)fetchedResultsControll
     return nil;
 }
 
+- (NSFetchRequest*)fetchRequestForContext:(NSManagedObjectContext*)context
+{
+    
+    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+    NSEntityDescription *entity = [NSEntityDescription entityForName:[VSequence entityName] inManagedObjectContext:context];
+    [fetchRequest setEntity:entity];
+    
+    NSSortDescriptor *sort = [[NSSortDescriptor alloc] initWithKey:@"display_order" ascending:YES];
+    [fetchRequest setSortDescriptors:@[sort]];
+    [fetchRequest setFetchBatchSize:50];
+    
+    return fetchRequest;
+}
+
 #pragma mark - Cell Lifecycle
 - (void)registerCells
 {
