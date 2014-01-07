@@ -91,13 +91,12 @@
 
 -(void)userActionButtonPressed
 {
-    // TODO: Replace action buttons with 
-    UIActionSheet *popupQuery = [[UIActionSheet alloc] initWithTitle:@"Title"
+    UIActionSheet *popupQuery = [[UIActionSheet alloc] initWithTitle:@""
                                                             delegate:self
-                                                   cancelButtonTitle:@"Cancel Button"
-                                              destructiveButtonTitle:@"Destructive Button"
-                                                   otherButtonTitles:@"Other Button 1",
-                                 @"Other Button 2", nil];
+                                                   cancelButtonTitle:@"cancel"
+                                              destructiveButtonTitle:@"report innapropriate"
+                                                   otherButtonTitles:@"block user",
+                                 @"copy profile url", nil];
     
     popupQuery.actionSheetStyle = UIActionSheetStyleBlackOpaque; [popupQuery showInView:self.view];
 }
@@ -105,11 +104,11 @@
 -(void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(int)buttonIndex
 {
     if (buttonIndex == 0) {
-        NSLog(@"Destructive Button Clicked");
+        NSLog(@"Report Button Clicked");
     } else if (buttonIndex == 1) {
-        NSLog(@"Other Button 1 Clicked");
+        NSLog(@"Block button 1 Clicked");
     } else if (buttonIndex == 2) {
-        NSLog(@"Other Button 2 Clicked");
+        NSLog(@"Copy Profile Button 2 Clicked");
     } else if (buttonIndex == 3) {
         NSLog(@"Cancel Button Clicked");
     }
