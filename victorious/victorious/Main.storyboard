@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="4514" systemVersion="13B3116" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="27v-pQ-okR">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="4514" systemVersion="13B42" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="27v-pQ-okR">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3747"/>
     </dependencies>
@@ -196,11 +196,12 @@
                     <connections>
                         <segue destination="Tfk-WC-tkh" kind="push" id="5gL-oQ-TeD"/>
                         <segue destination="Odg-Le-tS1" kind="relationship" relationship="rootViewController" id="5l4-cL-MJW"/>
+                        <segue destination="V5k-Q8-Bic" kind="push" id="RgQ-Tw-o0p"/>
                     </connections>
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="rNN-rH-sSb" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-4134" y="-290"/>
+            <point key="canvasLocation" x="-4170" y="814"/>
         </scene>
         <!--Messages View Controller - Messages-->
         <scene sceneID="ou3-rr-Ug5">
@@ -691,7 +692,7 @@
                     </connections>
                 </tapGestureRecognizer>
             </objects>
-            <point key="canvasLocation" x="-2724" y="-646"/>
+            <point key="canvasLocation" x="-2824" y="-646"/>
         </scene>
         <!--Sign Up View Controller-->
         <scene sceneID="nHE-BH-b51">
@@ -1378,7 +1379,7 @@
                     </connections>
                 </tapGestureRecognizer>
             </objects>
-            <point key="canvasLocation" x="-3453" y="814"/>
+            <point key="canvasLocation" x="-4170" y="-90"/>
         </scene>
         <!--Streams Sub View Controller - <Sequence Name>-->
         <scene sceneID="ziS-fc-Ov5">
@@ -1465,7 +1466,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="bTs-tH-vSd" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-2724" y="81"/>
+            <point key="canvasLocation" x="-2528" y="1109"/>
         </scene>
         <!--Featured Streams View Controller-->
         <scene sceneID="vDS-9g-SIo">
@@ -1652,6 +1653,7 @@
         <simulatedScreenMetrics key="destination" type="retina4"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
-        <segue reference="M1p-uJ-7Ga"/>
+        <segue reference="6Th-L6-qdl"/>
+        <segue reference="iGZ-YA-xhf"/>
     </inferredMetricsTieBreakers>
 </document>

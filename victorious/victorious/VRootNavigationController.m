@@ -15,6 +15,9 @@
 #import "BBlock.h"
 #import "UIAlertView+BBlock.h"
 #import "VStreamsTableViewController.h"
+#import "VOwnerStreamsTableViewController.h"
+#import "VCommunityStreamsTableViewController.h"
+#import "VForumStreamTableViewController.h"
 
 @import MessageUI;
 
@@ -36,19 +39,19 @@
         }
         case VMenuTableViewControllerRowOwnerChannel:
         {
-            self.viewControllers = @[[VStreamsTableViewController sharedStreamsTableViewController]];
+            self.viewControllers = @[[VOwnerStreamsTableViewController sharedStreamsTableViewController]];
             [self dismissViewControllerAnimated:YES completion:nil];
             break;
         }
         case VMenuTableViewControllerRowCommunityChannel:
         {
-            self.viewControllers = @[[VStreamsTableViewController sharedStreamsTableViewController]];
+            self.viewControllers = @[[VCommunityStreamsTableViewController sharedStreamsTableViewController]];
             [self dismissViewControllerAnimated:YES completion:nil];
             break;
         }
         case VMenuTableViewControllerRowForums:
         {
-            self.viewControllers = @[[VStreamsTableViewController sharedStreamsTableViewController]];
+            self.viewControllers = @[[VForumStreamTableViewController sharedStreamsTableViewController]];
             [self dismissViewControllerAnimated:YES completion:nil];
             break;
         }

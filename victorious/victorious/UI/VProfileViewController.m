@@ -48,8 +48,8 @@
     if (!self.userIsLoggedInUser)
     {
         UIBarButtonItem* composeButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCompose target:self action:@selector(composeButtonPressed)];
-        UIBarButtonItem* userActionButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemReply target:self action:@selector(userActionButtonPressed)];
-        self.navigationItem.rightBarButtonItems = [NSArray arrayWithObjects:composeButton, userActionButton, nil];
+        UIBarButtonItem* userActionButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAction target:self action:@selector(userActionButtonPressed)];
+        self.navigationItem.rightBarButtonItems = @[composeButton, userActionButton];
     }
     else
     {
@@ -73,7 +73,8 @@
 -(void)userActionButtonPressed
 {
     UIActionSheet *popupQuery = [[UIActionSheet alloc] initWithTitle:@"Title"
-                                                            delegate:self cancelButtonTitle:@"Cancel Button"
+                                                            delegate:self
+                                                   cancelButtonTitle:@"Cancel Button"
                                               destructiveButtonTitle:@"Destructive Button"
                                                    otherButtonTitles:@"Other Button 1",
                                  @"Other Button 2", nil];
