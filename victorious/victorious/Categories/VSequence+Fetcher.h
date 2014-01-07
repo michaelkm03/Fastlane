@@ -1,5 +1,5 @@
 //
-//  VSequence+VFetcher.h
+//  VSequence+Fetcher.h
 //  victorious
 //
 //  Created by Will Long on 1/7/14.
@@ -18,7 +18,7 @@ extern  NSString*   const   kVUGCImageCategory;
 extern  NSString*   const   kVUGCVideoCategory;
 extern  NSString*   const   kVUGCForumCategory;
 
-@interface VSequence (VFetcher)
+@interface VSequence (Fetcher)
 
 - (BOOL)isPoll;
 - (BOOL)isImage;

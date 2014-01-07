@@ -12,7 +12,7 @@
 #import "VStreamVideoCell.h"
 #import "VStreamPollCell.h"
 
-#import "VSequence+VFetcher.h"
+#import "VSequence+Fetcher.h"
 
 @interface VStreamsTableViewController (Protected)
 

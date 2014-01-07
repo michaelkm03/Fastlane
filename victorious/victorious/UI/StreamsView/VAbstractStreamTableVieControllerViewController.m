@@ -311,7 +311,6 @@ forFetchedResultsController:(NSFetchedResultsController *)fetchedResultsControll
 
 - (NSFetchRequest*)fetchRequestForContext:(NSManagedObjectContext*)context
 {
-    
     NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
     NSEntityDescription *entity = [NSEntityDescription entityForName:[VSequence entityName] inManagedObjectContext:context];
     [fetchRequest setEntity:entity];
@@ -332,6 +331,6 @@ forFetchedResultsController:(NSFetchedResultsController *)fetchedResultsControll
 #pragma mark - Refresh Lifecycle
 - (void)refreshAction
 {
-    //Definne refresh action here
+    //Define refresh action here
 }
 @end

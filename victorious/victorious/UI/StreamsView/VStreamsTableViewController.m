@@ -21,6 +21,8 @@
 
 #import "VStreamsTableViewController+Protected.h"
 
+#import "VCategory+Fetcher.h"
+
 typedef NS_ENUM(NSInteger, VStreamScope)
 {
     VStreamFilterAll = 0,
@@ -253,6 +255,59 @@ typedef NS_ENUM(NSInteger, VStreamScope)
     }
 }
 
+- (NSArray*)categoriesForCurrentScope
+{
+    switch (self.scopeType)
+    {
+        case VStreamFilterVideoForums:
+            return [self forumCategories];
+            
+        case VStreamFilterPolls:
+            return [self pollCategories];
+            
+        case VStreamFilterImages:
+            return [self imageCategories];
+            
+        case VStreamFilterVideos:
+            return [self videoCategories];
+            
+        default:
+            return [self allCategories];
+    }
+}
+
+- (NSArray*)allCategories
+{
+    NSMutableArray* categories = [[NSMutableArray alloc] init];
+
+    [categories addObjectsFromArray:[self imageCategories]];
+    [categories addObjectsFromArray:[self pollCategories]];
+    [categories addObjectsFromArray:[self videoCategories]];
+    [categories addObjectsFromArray:[self forumCategories]];
+    
+    return [categories copy];
+}
+
+- (NSArray*)imageCategories
+{
+    return @[kVOwnerImageCategory, kVUGCImageCategory];
+}
+
+- (NSArray*)videoCategories
+{
+    return @[kVOwnerVideoCategory, kVUGCVideoCategory];
+}
+
+- (NSArray*)pollCategories
+{
+    return @[kVOwnerPollCategory, kVUGCPollCategory];
+}
+
+- (NSArray*)forumCategories
+{
+    return @[kVOwnerForumCategory, kVUGCForumCategory];
+}
+
 #pragma mark - Cell Lifecycle
 - (void)registerCells
 {
@@ -294,28 +349,25 @@ typedef NS_ENUM(NSInteger, VStreamScope)
 
 - (void)refreshAction
 {
-    SuccessBlock success = ^(NSArray* resultObjects)
+    NSError *error;
+    if (![self.fetchedResultsController performFetch:&error])
     {
-        NSError *error;
-        if (![self.fetchedResultsController performFetch:&error])
+        // Update to handle the error appropriately.
+        NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+        exit(-1);  // Fail
+    } else
+    {   //TODO: there has to be a better way of doing this.
+        if (![self.searchFetchedResultsController performFetch:&error])
         {
             // Update to handle the error appropriately.
             NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
             exit(-1);  // Fail
+        } else
+        {
+            
+            [self.refreshControl endRefreshing];
         }
-        
-        [self.refreshControl endRefreshing];
-    };
-    
-    FailBlock fail = ^(NSError* error)
-    {
-        [self.refreshControl endRefreshing];
-        VLog(@"Error on loadNextPage: %@", error);
-    };
-    
-    [[[VObjectManager sharedManager] loadNextPageOfSequencesForCategory:[[VCategory findAllObjects] firstObject]
-                                                           successBlock:success
-                                                              failBlock:fail] start];
+    }
 }
 
 @end
