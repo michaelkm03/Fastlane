@@ -6,7 +6,9 @@
 //  Copyright (c) 2013 Victorious Inc. All rights reserved.
 //
 
-@interface VStreamsTableViewController : UITableViewController
+#import "VAbstractStreamTableVieControllerViewController.h"
+
+@interface VStreamsTableViewController : VAbstractStreamTableVieControllerViewController
 
 + (instancetype)sharedStreamsTableViewController;
 
