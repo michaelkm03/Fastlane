@@ -34,8 +34,22 @@
 
 - (IBAction)done:(id)sender
 {
+    // TODO: Save and send profile details to the server
     NSLog(@"Done button pressed");
-    [self.navigationController popViewControllerAnimated:YES];
+    BOOL success = NO;
+    if (success)
+    {
+        [self.navigationController popViewControllerAnimated:YES];
+    }
+    else
+    {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Could not save profile data"
+                                                        message:@""
+                                                       delegate:nil
+                                              cancelButtonTitle:@"OK"
+                                              otherButtonTitles:nil];
+        [alert show];
+    }
 }
 
 - (IBAction)takePicture:(id)sender

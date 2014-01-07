@@ -38,20 +38,18 @@
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
     
-    // FIXME: SET USER LOGGED IN
-    self.userIsLoggedInUser = YES;
+    // TODO: Check if the profile belongs to the logged in user
+    self.profileBelongsToUser = YES;
     
     // Set label properties, how it looks, etc.
     [self setLabelProperties];
     
-    // FIXME: Set the background here using core data
-    UIImage* background = [UIImage imageNamed:@"avatar.jpg"];
-    self.backgroundImageView.image = background;
-    self.backgroundImageView.contentMode = UIViewContentModeScaleAspectFill;
-    // FIXME: Add code to set the labels here
-
-    if (self.userIsLoggedInUser)
+    // Set profile data - returns a BOOL
+    [self setProfileData];
+    
+    if (self.profileBelongsToUser)
     {
+        // Do nothing - edit button in Storyboard
     }
     else
     {
@@ -60,6 +58,21 @@
         UIBarButtonItem* userActionButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAction target:self action:@selector(userActionButtonPressed)];
         self.navigationItem.rightBarButtonItems = @[composeButton, userActionButton];
     }
+}
+
+- (BOOL)setProfileData
+{
+    // TODO: Set the background here using core data
+    UIImage* background = [UIImage imageNamed:@"avatar.jpg"];
+    self.backgroundImageView.image = background;
+    self.backgroundImageView.contentMode = UIViewContentModeScaleAspectFill;
+    
+    // TODO: Add code to set the labels here
+    self.nameLabel.text = @"NAME";
+    self.descriptionLabel.text = @"DESCRIPTION";
+    self.locationLabel.text = @"LOCATION";
+    
+    return YES;
 }
 
 - (void)setLabelProperties
@@ -72,11 +85,13 @@
 
 -(void)composeButtonPressed
 {
+    // TODO: Should go to compose message view
     NSLog(@"Compose Button Clicked");
 }
 
 -(void)userActionButtonPressed
 {
+    // TODO: Replace action buttons with 
     UIActionSheet *popupQuery = [[UIActionSheet alloc] initWithTitle:@"Title"
                                                             delegate:self
                                                    cancelButtonTitle:@"Cancel Button"
