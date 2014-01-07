@@ -8,10 +8,9 @@
 
 #import <UIKit/UIKit.h>
 
-extern NSString* const kStreamCache;
 extern NSString* const kSearchCache;
 
-@interface VAbstractStreamTableVieControllerViewController : UITableViewController <NSFetchedResultsControllerDelegate, UISearchBarDelegate, UISearchDisplayDelegate>
+@interface VAbstractStreamViewController : UITableViewController <NSFetchedResultsControllerDelegate, UISearchBarDelegate, UISearchDisplayDelegate>
 
 @property (nonatomic, strong) NSFetchedResultsController* fetchedResultsController;
 @property (nonatomic, strong) NSFetchedResultsController* searchFetchedResultsController;
@@ -22,6 +21,7 @@ extern NSString* const kSearchCache;
 - (UITableView*)tableViewForFetchedResultsController:(NSFetchedResultsController*)controller;
 
 - (IBAction)displaySearchBar:(id)sender;
+- (IBAction)refresh:(UIRefreshControl *)sender;
 
 #pragma mark - Filtering
 - (NSPredicate*)fetchResultsPredicate;

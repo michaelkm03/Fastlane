@@ -6,9 +6,9 @@
 //  Copyright (c) 2013 Victorious Inc. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
+#import "VAbstractStreamViewController.h"
 
-@interface VInboxViewController : UITableViewController
+@interface VInboxViewController : VAbstractStreamViewController
 
 + (instancetype)sharedInboxViewController;
 

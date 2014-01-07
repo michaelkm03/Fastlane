@@ -21,9 +21,7 @@ static  NSString*   kMessageCell    =   @"messageCell";
 static  NSString*   kNewsCell       =   @"newsCell";
 
 @interface VInboxViewController ()   <NSFetchedResultsControllerDelegate>
-@property (nonatomic, strong) NSFetchedResultsController*   fetchedResultsController;
 @property (weak, nonatomic) IBOutlet UISegmentedControl*    modeSelectControl;
-@property (nonatomic, assign) enum  ModeSelect              modeSelect;
 @end
 
 @implementation VInboxViewController
@@ -44,71 +42,46 @@ static  NSString*   kNewsCell       =   @"newsCell";
 {
     [super viewDidLoad];
 
-    self.clearsSelectionOnViewWillAppear = NO;
-    
-    self.navigationItem.rightBarButtonItem = self.editButtonItem;
     self.modeSelectControl.selectedSegmentIndex = 0;
-    
+    [self modeSelected:self];
+
+
 //        [self.modeSelectControl setDividerImage:image1 forLeftSegmentState:UIControlStateNormal                   rightSegmentState:UIControlStateNormal barMetrics:barMetrics];
 //        [self.modeSelectControl setDividerImage:image2 forLeftSegmentState:UIControlStateSelected                   rightSegmentState:UIControlStateNormal barMetrics:barMetrics];
 //        [self.modeSelectControl setDividerImage:image3 forLeftSegmentState:UIControlStateNormal                   rightSegmentState:UIControlStateSelected barMetrics:barMetrics];
-
-    NSError *error;
-	if (![self.fetchedResultsController performFetch:&error])
-    {
-		// Update to handle the error appropriately.
-		NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
-		exit(-1);  // Fail
-	}
-}
-
-- (void)didReceiveMemoryWarning
-{
-    [super didReceiveMemoryWarning];
-    self.fetchedResultsController = nil;
 }
 
 #pragma mark - Table view data source
 
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
-{
-    return [[self.fetchedResultsController sections] count];
-}
-
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
-{
-    return [[[self.fetchedResultsController sections] objectAtIndex:section] numberOfObjects];
-}
-
 - (void)configureCell:(UITableViewCell *)theCell atIndexPath:(NSIndexPath *)theIndexPath
 {
-//    id      info    =   [self.fetchedResultsController objectAtIndexPath:theIndexPath];
-
-    if (kMessageModeSelect == self.modeSelect)
-    {
-        
-    }
-    else
-    {
-        
-    }
-
-//    VSequence *info = [self.fetchedResultsController objectAtIndexPath:theIndexPath];
-//    [theCell setSequence:info];
+////    id      info    =   [self.fetchedResultsController objectAtIndexPath:theIndexPath];
+//
+//    if (kMessageModeSelect == self.modeSelect)
+//    {
+//        
+//    }
+//    else
+//    {
+//        
+//    }
+//
+////    VSequence *info = [self.fetchedResultsController objectAtIndexPath:theIndexPath];
+////    [theCell setSequence:info];
 }
 
-//- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
-//{
-//  if message, return X
-//  if message and reply, return Y
-//  if news, return Z
-//}
+////- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+////{
+////  if message, return X
+////  if message and reply, return Y
+////  if news, return Z
+////}
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     UITableViewCell*    cell;
 
-    if (kMessageModeSelect == self.modeSelect)
+    if (kMessageModeSelect == self.modeSelectControl.selectedSegmentIndex)
     {
         cell = [tableView dequeueReusableCellWithIdentifier:kMessageCell forIndexPath:indexPath];
     }
@@ -118,7 +91,7 @@ static  NSString*   kNewsCell       =   @"newsCell";
     }
     
     [self configureCell:cell atIndexPath:indexPath];
-    
+
     return cell;
 }
 
@@ -145,83 +118,39 @@ static  NSString*   kNewsCell       =   @"newsCell";
     return NO;
 }
 
-- (NSFetchedResultsController *)fetchedResultsController
+- (NSFetchRequest*)fetchRequestForContext:(NSManagedObjectContext*)context
 {
-    if (nil == _fetchedResultsController)
+    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+    NSEntityDescription*    entity;
+
+    if (kMessageModeSelect == self.modeSelectControl.selectedSegmentIndex)
     {
-        RKObjectManager* manager = [RKObjectManager sharedManager];
-        NSManagedObjectContext *context = manager.managedObjectStore.persistentStoreManagedObjectContext;
-        
-        NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
-        NSEntityDescription *entity = [NSEntityDescription entityForName:[VComment entityName] inManagedObjectContext:context];
-        [fetchRequest setEntity:entity];
-        
-        NSSortDescriptor *sort = [[NSSortDescriptor alloc] initWithKey:@"date" ascending:YES];
-        [fetchRequest setSortDescriptors:@[sort]];
-        [fetchRequest setFetchBatchSize:50];
-        
-        self.fetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:fetchRequest
-                                                                            managedObjectContext:context
-                                                                              sectionNameKeyPath:nil
-                                                                                       cacheName:@"messages"];
-        self.fetchedResultsController.delegate = self;
+//        entity = [NSEntityDescription entityForName:[VSequence entityName] inManagedObjectContext:context];
+    }
+    else if (kNewsModeSelect == self.modeSelectControl.selectedSegmentIndex)
+    {
+//        entity = [NSEntityDescription entityForName:[VSequence entityName] inManagedObjectContext:context];
     }
     
-    return _fetchedResultsController;
+    [fetchRequest setEntity:entity];
+
+    NSSortDescriptor *sort = [[NSSortDescriptor alloc] initWithKey:@"display_order" ascending:YES];
+    [fetchRequest setSortDescriptors:@[sort]];
+    [fetchRequest setFetchBatchSize:50];
+    
+    return fetchRequest;
 }
 
-#pragma mark - NSFetchResultsController Delegate
+#pragma mark - Cell Lifecycle
 
-- (void)controllerWillChangeContent:(NSFetchedResultsController *)controller
+- (void)registerCells
 {
-    [self.tableView beginUpdates];
+    //Register cells here
 }
 
-- (void)controller:(NSFetchedResultsController *)controller didChangeObject:(id)anObject atIndexPath:(NSIndexPath *)indexPath forChangeType:(NSFetchedResultsChangeType)type newIndexPath:(NSIndexPath *)newIndexPath
-{
-    switch(type)
-    {
-        case NSFetchedResultsChangeInsert:
-            [self.tableView insertRowsAtIndexPaths:@[newIndexPath] withRowAnimation:UITableViewRowAnimationFade];
-            break;
-            
-        case NSFetchedResultsChangeDelete:
-            [self.tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
-            break;
-            
-        case NSFetchedResultsChangeUpdate:
-            [self configureCell:[self.tableView cellForRowAtIndexPath:indexPath] atIndexPath:indexPath];
-             break;
-            
-        case NSFetchedResultsChangeMove:
-            [self.tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
-            [self.tableView insertRowsAtIndexPaths:@[newIndexPath] withRowAnimation:UITableViewRowAnimationFade];
-            break;
-    }
-}
+#pragma mark - Refresh Lifecycle
 
-- (void)controller:(NSFetchedResultsController *)controller didChangeSection:(id )sectionInfo atIndex:(NSUInteger)sectionIndex forChangeType:(NSFetchedResultsChangeType)type
-{
-    switch(type)
-    {
-        case NSFetchedResultsChangeInsert:
-            [self.tableView insertSections:[NSIndexSet indexSetWithIndex:sectionIndex] withRowAnimation:UITableViewRowAnimationFade];
-            break;
-            
-        case NSFetchedResultsChangeDelete:
-            [self.tableView deleteSections:[NSIndexSet indexSetWithIndex:sectionIndex] withRowAnimation:UITableViewRowAnimationFade];
-            break;
-    }
-}
-
-- (void)controllerDidChangeContent:(NSFetchedResultsController *)controller
-{
-    [self.tableView endUpdates];
-}
-
-#pragma mark - Actions
-
-- (IBAction)refresh:(id)sender
+- (void)refreshAction
 {
 //    SuccessBlock success = ^(NSArray* resultObjects)
     {
@@ -232,32 +161,31 @@ static  NSString*   kNewsCell       =   @"newsCell";
             NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
             exit(-1);  // Fail
         }
-        
+
         [self.refreshControl endRefreshing];
     };
-    
+
 //    FailBlock fail = ^(NSError* error)
-//    {
-//        [self.refreshControl endRefreshing];
+    {
+        [self.refreshControl endRefreshing];
 //        VLog(@"Error on loadNextPage: %@", error);
-//    };
-    
-//    [[[VObjectManager sharedManager] loadNextPageOfSequencesForCategory:[[VCategory findAllObjects] firstObject]
-//                                                           successBlock:success
-//                                                              failBlock:fail] start];
+    };
+
+    //    [[[VObjectManager sharedManager] loadNextPageOfSequencesForCategory:[[VCategory findAllObjects] firstObject]
+    //                                                           successBlock:success
+    //                                                              failBlock:fail] start];
 }
 
 - (IBAction)modeSelected:(id)sender
 {
     if (0 == [sender selectedSegmentIndex])
     {
-        self.modeSelect = kMessageModeSelect;
-        self.navigationItem.rightBarButtonItem = self.editButtonItem;
+        UIBarButtonItem*    searchButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemSearch target:self action:@selector(displaySearchBar:)];
+        self.navigationItem.rightBarButtonItems = @[self.editButtonItem, searchButton];
     }
     else
     {
-        self.modeSelect = kNewsModeSelect;
-        self.navigationItem.rightBarButtonItem = nil;
+        self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemSearch target:self action:@selector(displaySearchBar:)];
     }
 }
 

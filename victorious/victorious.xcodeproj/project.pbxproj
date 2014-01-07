@@ -721,8 +721,8 @@
 				BE6B95EF187B4A2C00CED4C9 /* VStreamsTableViewController+Protected.h */,
 				BE6B95ED187B4A2C00CED4C9 /* VStreamsTableViewController.h */,
 				BE6B95EE187B4A2C00CED4C9 /* VStreamsTableViewController.m */,
-				BE391E4E187C99E30088D902 /* VAbstractStreamTableVieControllerViewController.h */,
-				BE391E4F187C99E30088D902 /* VAbstractStreamTableVieControllerViewController.m */,
+				BE391E4E187C99E30088D902 /* VAbstractStreamViewController.h */,
+				BE391E4F187C99E30088D902 /* VAbstractStreamViewController.m */,
 			);
 			name = StreamsTables;
 			sourceTree = "<group>";
@@ -956,7 +956,7 @@
 				BE171E301868C211004E5202 /* VSequence.m in Sources */,
 				BE171E251868C211004E5202 /* VAnswer.m in Sources */,
 				BE171E2D1868C211004E5202 /* VNode.m in Sources */,
-				BE391E50187C99E30088D902 /* VAbstractStreamTableVieControllerViewController.m in Sources */,
+				BE391E50187C99E30088D902 /* VAbstractStreamViewController.m in Sources */,
 				BE692B50186E60B300C71336 /* VCommentViewCell.m in Sources */,
 				BE171E2B1868C211004E5202 /* VInteraction.m in Sources */,
 				BE171E3A1868C266004E5202 /* NSString+VParseHelp.m in Sources */,
