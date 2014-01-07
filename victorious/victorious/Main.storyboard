@@ -205,10 +205,10 @@
             </objects>
             <point key="canvasLocation" x="-4170" y="814"/>
         </scene>
-        <!--Messages View Controller - Messages-->
+        <!--Inbox View Controller - Inbox-->
         <scene sceneID="ou3-rr-Ug5">
             <objects>
-                <tableViewController storyboardIdentifier="messages" useStoryboardIdentifierAsRestorationIdentifier="YES" id="Tfk-WC-tkh" customClass="VMessagesViewController" sceneMemberID="viewController">
+                <tableViewController storyboardIdentifier="inbox" useStoryboardIdentifierAsRestorationIdentifier="YES" id="Tfk-WC-tkh" customClass="VInboxViewController" sceneMemberID="viewController">
                     <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="YYr-UO-Tcc">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -239,6 +239,9 @@
                                     <rect key="frame" x="0.0" y="0.0" width="287" height="43"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                 </tableViewCellContentView>
+                                <connections>
+                                    <segue destination="quD-aE-BAL" kind="push" identifier="toNews" id="eC5-3o-s4v"/>
+                                </connections>
                             </tableViewCell>
                         </prototypes>
                         <connections>
@@ -246,7 +249,7 @@
                             <outlet property="delegate" destination="Tfk-WC-tkh" id="S3f-CR-oVf"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" title="Messages" id="xlI-t1-u13">
+                    <navigationItem key="navigationItem" title="Inbox" id="xlI-t1-u13">
                         <barButtonItem key="leftBarButtonItem" image="Menu" id="PB4-zP-IM9">
                             <connections>
                                 <segue destination="gHV-c6-eaL" kind="modal" id="Oqu-Ea-RjF"/>
@@ -267,10 +270,43 @@
                             <action selector="refresh:" destination="Tfk-WC-tkh" eventType="valueChanged" id="0q5-7i-AeD"/>
                         </connections>
                     </refreshControl>
+                    <connections>
+                        <outlet property="modeSelectControl" destination="pYn-XB-wxD" id="fye-c8-N24"/>
+                        <segue destination="miw-Vy-oJ3" kind="push" identifier="toMessage" id="izi-eU-tKx"/>
+                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="h4x-AK-wgj" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-3455" y="-646"/>
+            <point key="canvasLocation" x="-4131" y="-818"/>
+        </scene>
+        <!--Message View Controller-->
+        <scene sceneID="IH3-Pz-KdZ">
+            <objects>
+                <tableViewController storyboardIdentifier="message" useStoryboardIdentifierAsRestorationIdentifier="YES" id="quD-aE-BAL" customClass="VMessageViewController" sceneMemberID="viewController">
+                    <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="pW3-fm-LgN">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <prototypes>
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" id="Utg-g9-urg">
+                                <rect key="frame" x="0.0" y="86" width="320" height="44"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Utg-g9-urg" id="CPC-WE-c9b">
+                                    <rect key="frame" x="0.0" y="0.0" width="320" height="43"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                </tableViewCellContentView>
+                            </tableViewCell>
+                        </prototypes>
+                        <connections>
+                            <outlet property="dataSource" destination="quD-aE-BAL" id="2EW-ph-6zQ"/>
+                            <outlet property="delegate" destination="quD-aE-BAL" id="5ZQ-Lf-IXK"/>
+                        </connections>
+                    </tableView>
+                    <navigationItem key="navigationItem" id="YF4-gT-XTx"/>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="ffq-o1-Z0A" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-3455" y="-1262"/>
         </scene>
         <!--Menu Table View Controller-->
         <scene sceneID="PS8-xu-5Z3">
@@ -1434,7 +1470,7 @@
                     </connections>
                 </tapGestureRecognizer>
             </objects>
-            <point key="canvasLocation" x="-4170" y="-90"/>
+            <point key="canvasLocation" x="-4542" y="26"/>
         </scene>
         <!--Streams Sub View Controller - <Sequence Name>-->
         <scene sceneID="ziS-fc-Ov5">
@@ -1870,6 +1906,35 @@
             </objects>
             <point key="canvasLocation" x="-3443" y="2509"/>
         </scene>
+        <!--News View Controller-->
+        <scene sceneID="UGQ-lZ-yeL">
+            <objects>
+                <tableViewController storyboardIdentifier="news" useStoryboardIdentifierAsRestorationIdentifier="YES" id="miw-Vy-oJ3" customClass="VNewsViewController" sceneMemberID="viewController">
+                    <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="xQM-Ba-UJP">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <prototypes>
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" id="seX-s6-NyX">
+                                <rect key="frame" x="0.0" y="86" width="320" height="44"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="seX-s6-NyX" id="tDv-xo-NzD">
+                                    <rect key="frame" x="0.0" y="0.0" width="320" height="43"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                </tableViewCellContentView>
+                            </tableViewCell>
+                        </prototypes>
+                        <connections>
+                            <outlet property="dataSource" destination="miw-Vy-oJ3" id="Qyh-gR-3xk"/>
+                            <outlet property="delegate" destination="miw-Vy-oJ3" id="92S-xt-gkW"/>
+                        </connections>
+                    </tableView>
+                    <navigationItem key="navigationItem" id="RtI-a0-zTW"/>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="QO7-vc-UdB" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-3455" y="-586"/>
+        </scene>
     </scenes>
     <resources>
         <image name="DownVote" width="27" height="27"/>
@@ -1891,7 +1956,7 @@
         <simulatedScreenMetrics key="destination" type="retina4"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
+        <segue reference="Oqu-Ea-RjF"/>
         <segue reference="3G8-xg-TDE"/>
-        <segue reference="M1p-uJ-7Ga"/>
     </inferredMetricsTieBreakers>
 </document>

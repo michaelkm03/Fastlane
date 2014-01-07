@@ -18,6 +18,7 @@
 #import "VOwnerStreamsTableViewController.h"
 #import "VCommunityStreamsTableViewController.h"
 #import "VForumStreamTableViewController.h"
+#import "VInboxViewController.h"
 
 @import MessageUI;
 
@@ -57,17 +58,17 @@
         }
         case VMenuTableViewControllerRowInbox:
         {
-            if (![VObjectManager sharedManager].authorized)
+//            if (![VObjectManager sharedManager].authorized)
+//            {
+//                UINavigationController *navigationController =
+//                [[UINavigationController alloc] initWithRootViewController:[VLoginViewController sharedLoginViewController]];
+//                [self dismissViewControllerAnimated:YES completion:^{
+//                    [wself presentViewController:navigationController animated:YES completion:NULL];
+//                }];
+//            }
+//            else
             {
-                UINavigationController *navigationController =
-                [[UINavigationController alloc] initWithRootViewController:[VLoginViewController sharedLoginViewController]];
-                [self dismissViewControllerAnimated:YES completion:^{
-                    [wself presentViewController:navigationController animated:YES completion:NULL];
-                }];
-            }
-            else
-            {
-                //  Show Inbox
+                self.viewControllers = @[[VInboxViewController sharedInboxViewController]];
                 [self dismissViewControllerAnimated:YES completion:nil];
             }
             break;
