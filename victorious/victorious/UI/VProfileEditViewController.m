@@ -11,20 +11,36 @@
 
 @interface VProfileEditViewController ()  <UITextFieldDelegate, UITextViewDelegate>
 
+@property (nonatomic, readwrite) IBOutlet UITextField* nameTextField;
+@property (nonatomic, readwrite) IBOutlet UITextField* usernameTextField;
+@property (nonatomic, readwrite) IBOutlet UITextField* locationTextField;
+@property (nonatomic, readwrite) IBOutlet UITextView* longDescriptionTextField;
+
+@property (nonatomic, readwrite) IBOutlet UIImageView* profileImageView;
+@property (nonatomic, readwrite) IBOutlet UIButton* headerButton;
+
+- (IBAction)cancel:(id)sender;
+- (IBAction)done:(id)sender;
+
 @end
 
 @implementation VProfileEditViewController
 
 - (IBAction)cancel:(id)sender
 {
-    NSLog(@"CANCEL PRESSED");
+    NSLog(@"Cancel button pressed");
     [self.navigationController popViewControllerAnimated:YES];
 }
 
 - (IBAction)done:(id)sender
 {
-    NSLog(@"DONE PRESSED");
+    NSLog(@"Done button pressed");
     [self.navigationController popViewControllerAnimated:YES];
+}
+
+- (IBAction)takePicture:(id)sender
+{
+    NSLog(@"Picture button pressed");
 }
 
 - (void)viewDidLoad
@@ -36,52 +52,45 @@
     UIImageView* backgroundImageView = [[UIImageView alloc] initWithImage:[[UIImage imageNamed:@"avatar.jpg"] applyLightEffect]];
     self.tableView.backgroundView = backgroundImageView;
     
+    [self setHeader];
     [self setTableProperties];
-//    
-//    // Set table view header (unneccessary)
-//    self.tableView.tableHeaderView = ({
-//        UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 0, 184.0f)];
-//        UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 40, 100, 100)];
-//        imageView.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin;
-//        imageView.image = [UIImage imageNamed:@"avatar.jpg"];
-//        imageView.layer.masksToBounds = YES;
-//        imageView.layer.cornerRadius = 50.0;
-////        imageView.layer.borderColor = [UIColor whiteColor].CGColor;
-////        imageView.layer.borderWidth = 3.0f;
-//        imageView.layer.rasterizationScale = [UIScreen mainScreen].scale;
-//        imageView.layer.shouldRasterize = YES;
-//        imageView.clipsToBounds = YES;
-//        
-//        UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(0, 150, 0, 24)];
-//        label.font = [UIFont fontWithName:@"HelveticaNeue" size:21];
-//        label.backgroundColor = [UIColor clearColor];
-//        label.textColor = [UIColor colorWithRed:62/255.0f green:68/255.0f blue:75/255.0f alpha:1.0f];
-//        [label sizeToFit];
-//        label.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin;
-//        
-//        [view addSubview:imageView];
-//        [view addSubview:label];
-//        view;
-//    });
+}
+
+- (void)setHeader
+{
+    // Create and set the header
+    self.profileImageView.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin;
+    self.profileImageView.image = [UIImage imageNamed:@"avatar.jpg"];
+    self.profileImageView.layer.masksToBounds = YES;
+    self.profileImageView.layer.cornerRadius = 50.0;
+    self.profileImageView.layer.rasterizationScale = [UIScreen mainScreen].scale;
+    self.profileImageView.layer.shouldRasterize = YES;
+    self.profileImageView.clipsToBounds = YES;
+    
+    self.headerButton.layer.masksToBounds = YES;
+    self.headerButton.layer.cornerRadius = 50.0;
+    self.headerButton.layer.rasterizationScale = [UIScreen mainScreen].scale;
+    self.headerButton.layer.shouldRasterize = YES;
+    self.headerButton.clipsToBounds = YES;
+    
 }
 
 - (void)setTableProperties
 {
     self.tableView.opaque = NO;
-        
-//    UIColor* transparentWhite = [UIColor colorWithRed:200.0/255.0 green:200.0/255.0 blue:200.0/255.0 alpha:1];
-//    self.tableView.backgroundColor = transparentWhite;
     
-    // hacky - fix later
-    self.nameTextField.tag = 0;
-    self.usernameTextField.tag = 1;
-    self.locationTextField.tag = 2;
-    self.longDescriptionTextField.tag = 3;
+    // hacky - (fix later)
+    // attach indices to the text fields for keyboard scroll
+//    self.profileImageView.tag = 0;
+//    self.headerButton.tag = 0;
+    self.nameTextField.tag = 1;
+    self.usernameTextField.tag = 2;
+    self.locationTextField.tag = 3;
+    self.longDescriptionTextField.tag = 4;
     
     self.nameTextField.enabled = YES;
     self.usernameTextField.enabled = YES;
     self.locationTextField.enabled = YES;
-//    self.longDescriptionTextField;
     
     self.nameTextField.delegate = self;
     self.usernameTextField.delegate = self;
@@ -101,7 +110,7 @@
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField
 {
-    // FIXME
+    // Scroll the table view to respective cell
     NSIndexPath* indexPath = [[NSIndexPath indexPathWithIndex:0] indexPathByAddingIndex:textField.tag + 1];
 
     if ([textField isEqual:self.nameTextField])
@@ -117,6 +126,7 @@
     else if ([textField isEqual:self.locationTextField])
     {
         [self.tableView scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionBottom animated:YES];
+        NSLog(@"%d", indexPath.row);
         [self.longDescriptionTextField becomeFirstResponder];
     }
     else

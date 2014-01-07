@@ -41,23 +41,24 @@
     // FIXME: SET USER LOGGED IN
     self.userIsLoggedInUser = YES;
     
-    // SET LABEL PROPERTIES
+    // Set label properties, how it looks, etc.
     [self setLabelProperties];
     
-    // FIXME: SET BACKGROUND
+    // FIXME: Set the background here using core data
     UIImage* background = [UIImage imageNamed:@"avatar.jpg"];
     self.backgroundImageView.image = background;
     self.backgroundImageView.contentMode = UIViewContentModeScaleAspectFill;
+    // FIXME: Add code to set the labels here
 
-    if (!self.userIsLoggedInUser)
+    if (self.userIsLoggedInUser)
     {
-        UIBarButtonItem* composeButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCompose target:self action:@selector(composeButtonPressed)];
-        UIBarButtonItem* userActionButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAction target:self action:@selector(userActionButtonPressed)];
-        self.navigationItem.rightBarButtonItems = @[composeButton, userActionButton];
     }
     else
     {
-        
+        // If the user is not logged in, create a compose button and user action button
+        UIBarButtonItem* composeButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCompose target:self action:@selector(composeButtonPressed)];
+        UIBarButtonItem* userActionButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAction target:self action:@selector(userActionButtonPressed)];
+        self.navigationItem.rightBarButtonItems = @[composeButton, userActionButton];
     }
 }
 
