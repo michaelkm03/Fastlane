@@ -65,7 +65,7 @@
     NSString* path = [NSString stringWithFormat:@"/api/sequence/list_by_category/%@", category.name];
     if (status.pagesLoaded) //only add page to the path if we've looked it up before.
     {
-        path = [path stringByAppendingFormat:@"/0/%d/%d", status.pagesLoaded + 1, status.itemsPerPage];
+        path = [path stringByAppendingFormat:@"/0/%lu/%lu", status.pagesLoaded + 1, status.itemsPerPage];
     }
     
     
@@ -146,7 +146,7 @@
     NSString* path = [NSString stringWithFormat:@"/api/comment/all/%@", sequence.remoteId];
     if (status.pagesLoaded) //only add page to the path if we've looked it up before.
     {
-        path = [path stringByAppendingFormat:@"/%i/%i", status.pagesLoaded + 1, status.itemsPerPage];
+        path = [path stringByAppendingFormat:@"/%lu/%lu", status.pagesLoaded + 1, status.itemsPerPage];
     }
     
     __block VSequence* commentOwner = sequence; //Keep the sequence around until the block gets called
