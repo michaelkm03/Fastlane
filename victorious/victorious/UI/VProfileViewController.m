@@ -11,9 +11,12 @@
 #import "VMenuViewControllerTransition.h"
 #import "UIImage+ImageEffects.h"
 
-@interface VProfileViewController () <VProfileEditViewControllerDelegate, UIActionSheetDelegate, UITableViewDelegate>
-@property (nonatomic, readwrite) IBOutlet UIImageView* bg;
-@property (nonatomic, readwrite) IBOutlet UITableView* profileDetails;
+@interface VProfileViewController () <UIActionSheetDelegate, UITextFieldDelegate>
+@property (nonatomic, readwrite) IBOutlet UIImageView* backgroundImageView;
+
+@property (nonatomic, readwrite) IBOutlet UILabel* nameLabel;
+@property (nonatomic, readwrite) IBOutlet UILabel* descriptionLabel;
+@property (nonatomic, readwrite) IBOutlet UILabel* locationLabel;
 @end
 
 @implementation VProfileViewController
