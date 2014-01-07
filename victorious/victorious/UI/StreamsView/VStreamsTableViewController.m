@@ -73,8 +73,16 @@ static NSString* kSearchCache = @"SearchCache";
 
     self.featuredStreamsViewController =   [self.storyboard instantiateViewControllerWithIdentifier:@"featured_pages"];
 
-    UIBarButtonItem *searchButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"Search"] style:UIBarButtonItemStylePlain target:self action:@selector(displaySearchBar:)];
-    UIBarButtonItem *addButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"Add"] style:UIBarButtonItemStylePlain target:self action:@selector(addButtonAction:)];
+    UIBarButtonItem *searchButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"Search"]
+                                                                         style:UIBarButtonItemStylePlain
+                                                                        target:self
+                                                                        action:@selector(displaySearchBar:)];
+    
+    UIBarButtonItem *addButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"Add"]
+                                                                      style:UIBarButtonItemStylePlain
+                                                                     target:self
+                                                                     action:@selector(addButtonAction:)];
+    
     self.navigationItem.rightBarButtonItems= @[addButtonItem, searchButtonItem];
 
     [self registerCells];
@@ -175,10 +183,12 @@ static NSString* kSearchCache = @"SearchCache";
 {
     VSequence* sequence = (VSequence*)[[self fetchedResultsControllerForTableView:tableView] objectAtIndexPath:indexPath];
     
-    if ([sequence isForum] || [sequence isPoll])
-    {
-        return 240;
-    }
+    if ([sequence isPoll])
+        return 344;
+    
+    
+    if ([sequence isVideo])
+        return 310;
 
     return 450;
 }
