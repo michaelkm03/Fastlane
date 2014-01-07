@@ -33,12 +33,6 @@ NSString* const kSearchCache = @"SearchCache";
 {
     [super viewDidLoad];
 
-    // Uncomment the following line to preserve selection between presentations.
-    // self.clearsSelectionOnViewWillAppear = NO;
- 
-    // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-    // self.navigationItem.rightBarButtonItem = self.editButtonItem;
-    
     NSError *error;
 	if (![self.fetchedResultsController performFetch:&error])
     {
@@ -192,8 +186,6 @@ NSString* const kSearchCache = @"SearchCache";
 }
 
 #pragma mark - Table view data source
-
-#pragma mark - Table view data source
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
     return [[[self fetchedResultsControllerForTableView:tableView] sections] count];
@@ -316,11 +308,6 @@ forFetchedResultsController:(NSFetchedResultsController *)fetchedResultsControll
 }
 
 #pragma mark - Predicate Lifecycle
-
-- (NSPredicate*)scopeTypePredicate
-{
-    return nil;
-}
 - (NSPredicate*)searchTextPredicate
 {
     if (!_filterText || [_filterText isEmpty])
@@ -329,6 +316,11 @@ forFetchedResultsController:(NSFetchedResultsController *)fetchedResultsControll
     }
     
     return [NSPredicate predicateWithFormat:@"SELF.name CONTAINS[cd] %@", _filterText];
+}
+
+- (NSPredicate*)scopeTypePredicate
+{
+    return nil;
 }
 
 #pragma mark - Cell Lifecycle
