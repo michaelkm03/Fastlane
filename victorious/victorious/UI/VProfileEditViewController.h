@@ -12,7 +12,7 @@
 
 @interface VProfileEditViewController : UITableViewController
 
-@property (nonatomic, readwrite) IBOutlet UIImageView* backgroundImageView;
+@property (nonatomic, readwrite) IBOutlet UIImageView* profileImageView;
 
 @property (nonatomic, readwrite) IBOutlet UITextField* nameTextField;
 @property (nonatomic, readwrite) IBOutlet UITextField* usernameTextField;
