@@ -70,9 +70,9 @@
     self.backgroundImageView.contentMode = UIViewContentModeScaleAspectFill;
     
     // TODO: Add code to set the labels here
-    self.nameLabel.text = @"NAME HERE";
-    self.taglineLabel.text = @"TAGLINE HERE";
-    self.locationLabel.text = @"LOCATION HERE";
+    self.nameLabel.text = @"First Last";
+    self.taglineLabel.text = @"This is my tagline.";
+    self.locationLabel.text = @"Santa Monica, CA";
     
     return YES;
 }
@@ -83,6 +83,10 @@
     self.nameLabel.backgroundColor = transparentGray;
     self.taglineLabel.backgroundColor = transparentGray;
     self.locationLabel.backgroundColor = transparentGray;
+    
+    self.nameLabel.textColor = [UIColor whiteColor];
+    self.taglineLabel.textColor = [UIColor whiteColor];
+    self.locationLabel.textColor = [UIColor whiteColor];
 }
 
 -(void)composeButtonPressed
