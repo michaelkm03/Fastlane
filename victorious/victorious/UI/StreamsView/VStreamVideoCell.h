@@ -11,7 +11,7 @@
 
 @import MediaPlayer;
 
-static NSString *kStreamVideoCellIdentifier = @"StreamVideoCell";
+static NSString *kStreamVideoCellIdentifier = @"VStreamVideoCell";
 
 @interface VStreamVideoCell : VStreamViewCell
 

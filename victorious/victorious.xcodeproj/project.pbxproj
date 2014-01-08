@@ -96,7 +96,7 @@
 		BE692B28186E5ED800C71336 /* VStreamVideoCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = BE692B1F186E5ED800C71336 /* VStreamVideoCell.xib */; };
 		BE692B29186E5ED800C71336 /* VStreamViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = BE692B21186E5ED800C71336 /* VStreamViewCell.m */; };
 		BE692B2A186E5ED800C71336 /* VStreamViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = BE692B22186E5ED800C71336 /* VStreamViewCell.xib */; };
-		BE692B50186E60B300C71336 /* VCommentViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = BE692B35186E60B300C71336 /* VCommentViewCell.m */; };
+		BE692B50186E60B300C71336 /* VCommentCell.m in Sources */ = {isa = PBXBuildFile; fileRef = BE692B35186E60B300C71336 /* VCommentCell.m */; };
 		BE692B51186E60B300C71336 /* VSequencePlayerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BE692B37186E60B300C71336 /* VSequencePlayerViewController.m */; };
 		BE692B52186E60B300C71336 /* VSequencePlayerViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = BE692B38186E60B300C71336 /* VSequencePlayerViewController.xib */; };
 		BE692B53186E60B300C71336 /* VStreamsSubViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BE692B3A186E60B300C71336 /* VStreamsSubViewController.m */; };
@@ -105,6 +105,11 @@
 		BE6B95F2187B4A2C00CED4C9 /* VOwnerStreamsTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BE6B95EC187B4A2C00CED4C9 /* VOwnerStreamsTableViewController.m */; };
 		BE6B95F3187B4A2C00CED4C9 /* VStreamsTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BE6B95EE187B4A2C00CED4C9 /* VStreamsTableViewController.m */; };
 		BE6B95FC187C88F700CED4C9 /* VSequence+Fetcher.m in Sources */ = {isa = PBXBuildFile; fileRef = BE6B95FB187C88F700CED4C9 /* VSequence+Fetcher.m */; };
+		BEB4C29B187E038C004ECEEF /* VConversationCell.m in Sources */ = {isa = PBXBuildFile; fileRef = BEB4C296187E038C004ECEEF /* VConversationCell.m */; };
+		BEB4C29C187E038C004ECEEF /* VConversationCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = BEB4C297187E038C004ECEEF /* VConversationCell.xib */; };
+		BEB4C29D187E038C004ECEEF /* VNewsCell.m in Sources */ = {isa = PBXBuildFile; fileRef = BEB4C299187E038C004ECEEF /* VNewsCell.m */; };
+		BEB4C29E187E038C004ECEEF /* VNewsCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = BEB4C29A187E038C004ECEEF /* VNewsCell.xib */; };
+		BEB4C2A0187E0778004ECEEF /* VCommentCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = BEB4C29F187E0778004ECEEF /* VCommentCell.xib */; };
 		D1DAAA08187A43A9009ADCB0 /* VProfileViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D1DAAA07187A43A9009ADCB0 /* VProfileViewController.m */; };
 		D1DAAA0B187A43BE009ADCB0 /* VProfileEditViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D1DAAA0A187A43BE009ADCB0 /* VProfileEditViewController.m */; };
 		D1DAAA0D187A5397009ADCB0 /* avatar.jpg in Resources */ = {isa = PBXBuildFile; fileRef = D1DAAA0C187A5397009ADCB0 /* avatar.jpg */; };
@@ -283,8 +288,8 @@
 		BE692B20186E5ED800C71336 /* VStreamViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VStreamViewCell.h; sourceTree = "<group>"; };
 		BE692B21186E5ED800C71336 /* VStreamViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VStreamViewCell.m; sourceTree = "<group>"; };
 		BE692B22186E5ED800C71336 /* VStreamViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VStreamViewCell.xib; sourceTree = "<group>"; };
-		BE692B34186E60B300C71336 /* VCommentViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VCommentViewCell.h; path = "UI/Streams Subview/VCommentViewCell.h"; sourceTree = "<group>"; };
-		BE692B35186E60B300C71336 /* VCommentViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VCommentViewCell.m; path = "UI/Streams Subview/VCommentViewCell.m"; sourceTree = "<group>"; };
+		BE692B34186E60B300C71336 /* VCommentCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VCommentCell.h; path = "UI/Streams Subview/VCommentCell.h"; sourceTree = "<group>"; };
+		BE692B35186E60B300C71336 /* VCommentCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VCommentCell.m; path = "UI/Streams Subview/VCommentCell.m"; sourceTree = "<group>"; };
 		BE692B36186E60B300C71336 /* VSequencePlayerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VSequencePlayerViewController.h; path = "UI/Streams Subview/VSequencePlayerViewController.h"; sourceTree = "<group>"; };
 		BE692B37186E60B300C71336 /* VSequencePlayerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VSequencePlayerViewController.m; path = "UI/Streams Subview/VSequencePlayerViewController.m"; sourceTree = "<group>"; };
 		BE692B38186E60B300C71336 /* VSequencePlayerViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = VSequencePlayerViewController.xib; path = "UI/Streams Subview/VSequencePlayerViewController.xib"; sourceTree = "<group>"; };
@@ -301,6 +306,13 @@
 		BE6B95EF187B4A2C00CED4C9 /* VStreamsTableViewController+Protected.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "VStreamsTableViewController+Protected.h"; sourceTree = "<group>"; };
 		BE6B95FA187C88F700CED4C9 /* VSequence+Fetcher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "VSequence+Fetcher.h"; path = "../VSequence+Fetcher.h"; sourceTree = "<group>"; };
 		BE6B95FB187C88F700CED4C9 /* VSequence+Fetcher.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "VSequence+Fetcher.m"; path = "../VSequence+Fetcher.m"; sourceTree = "<group>"; };
+		BEB4C295187E038C004ECEEF /* VConversationCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VConversationCell.h; path = UI/Inbox/VConversationCell.h; sourceTree = "<group>"; };
+		BEB4C296187E038C004ECEEF /* VConversationCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VConversationCell.m; path = UI/Inbox/VConversationCell.m; sourceTree = "<group>"; };
+		BEB4C297187E038C004ECEEF /* VConversationCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = VConversationCell.xib; path = UI/Inbox/VConversationCell.xib; sourceTree = "<group>"; };
+		BEB4C298187E038C004ECEEF /* VNewsCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VNewsCell.h; path = UI/Inbox/VNewsCell.h; sourceTree = "<group>"; };
+		BEB4C299187E038C004ECEEF /* VNewsCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VNewsCell.m; path = UI/Inbox/VNewsCell.m; sourceTree = "<group>"; };
+		BEB4C29A187E038C004ECEEF /* VNewsCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = VNewsCell.xib; path = UI/Inbox/VNewsCell.xib; sourceTree = "<group>"; };
+		BEB4C29F187E0778004ECEEF /* VCommentCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = VCommentCell.xib; path = "UI/Streams Subview/VCommentCell.xib"; sourceTree = "<group>"; };
 		D1DAAA06187A43A9009ADCB0 /* VProfileViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VProfileViewController.h; path = UI/VProfileViewController.h; sourceTree = "<group>"; };
 		D1DAAA07187A43A9009ADCB0 /* VProfileViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VProfileViewController.m; path = UI/VProfileViewController.m; sourceTree = "<group>"; };
 		D1DAAA09187A43BE009ADCB0 /* VProfileEditViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VProfileEditViewController.h; path = UI/VProfileEditViewController.h; sourceTree = "<group>"; };
@@ -338,6 +350,7 @@
 		3F4863F71869181500F77346 /* Inbox */ = {
 			isa = PBXGroup;
 			children = (
+				BEB4C289187DFFF4004ECEEF /* Cells */,
 				3F4863F81869184000F77346 /* VInboxViewController.h */,
 				3F4863F91869184000F77346 /* VInboxViewController.m */,
 				3F919918187CAF310055FE37 /* VMessageViewController.h */,
@@ -674,8 +687,9 @@
 		BE692B2C186E5FD900C71336 /* Streams Subview */ = {
 			isa = PBXGroup;
 			children = (
-				BE692B34186E60B300C71336 /* VCommentViewCell.h */,
-				BE692B35186E60B300C71336 /* VCommentViewCell.m */,
+				BE692B34186E60B300C71336 /* VCommentCell.h */,
+				BE692B35186E60B300C71336 /* VCommentCell.m */,
+				BEB4C29F187E0778004ECEEF /* VCommentCell.xib */,
 				BE692B36186E60B300C71336 /* VSequencePlayerViewController.h */,
 				BE692B37186E60B300C71336 /* VSequencePlayerViewController.m */,
 				BE692B38186E60B300C71336 /* VSequencePlayerViewController.xib */,
@@ -721,6 +735,19 @@
 				BE6B95EE187B4A2C00CED4C9 /* VStreamsTableViewController.m */,
 			);
 			name = StreamsTables;
+			sourceTree = "<group>";
+		};
+		BEB4C289187DFFF4004ECEEF /* Cells */ = {
+			isa = PBXGroup;
+			children = (
+				BEB4C295187E038C004ECEEF /* VConversationCell.h */,
+				BEB4C296187E038C004ECEEF /* VConversationCell.m */,
+				BEB4C297187E038C004ECEEF /* VConversationCell.xib */,
+				BEB4C298187E038C004ECEEF /* VNewsCell.h */,
+				BEB4C299187E038C004ECEEF /* VNewsCell.m */,
+				BEB4C29A187E038C004ECEEF /* VNewsCell.xib */,
+			);
+			name = Cells;
 			sourceTree = "<group>";
 		};
 		D1DAAA05187A438C009ADCB0 /* Profile */ = {
@@ -822,12 +849,15 @@
 			files = (
 				3FF8B7981868EE7E00806EA0 /* Main.storyboard in Resources */,
 				3FF8B7A51868FC1C00806EA0 /* defaultTheme.plist in Resources */,
+				BEB4C29E187E038C004ECEEF /* VNewsCell.xib in Resources */,
 				BE692B23186E5ED800C71336 /* VStreamDoublePollCell.xib in Resources */,
 				3FF8B7A11868F36600806EA0 /* Localizable.strings in Resources */,
 				BE171D861868BE64004E5202 /* InfoPlist.strings in Resources */,
+				BEB4C29C187E038C004ECEEF /* VConversationCell.xib in Resources */,
 				D1DAAA0D187A5397009ADCB0 /* avatar.jpg in Resources */,
 				BE171D911868BE64004E5202 /* Images.xcassets in Resources */,
 				83B5A1241876447800659C73 /* Roboto-Regular.ttf in Resources */,
+				BEB4C2A0187E0778004ECEEF /* VCommentCell.xib in Resources */,
 				BE692B28186E5ED800C71336 /* VStreamVideoCell.xib in Resources */,
 				83ABAFAF18709DE30069556C /* Roboto-Light.ttf in Resources */,
 				BE692B52186E60B300C71336 /* VSequencePlayerViewController.xib in Resources */,
@@ -885,6 +915,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				BE171E0F1868C211004E5202 /* VAsset+RestKit.m in Sources */,
+				BEB4C29D187E038C004ECEEF /* VNewsCell.m in Sources */,
 				BE171E131868C211004E5202 /* VInteractionAction+RestKit.m in Sources */,
 				8378622718728C89000BF84F /* VFeaturedStreamsViewController.m in Sources */,
 				BE171E2E1868C211004E5202 /* VNodeAction.m in Sources */,
@@ -951,7 +982,8 @@
 				BE171E301868C211004E5202 /* VSequence.m in Sources */,
 				BE171E251868C211004E5202 /* VAnswer.m in Sources */,
 				BE171E2D1868C211004E5202 /* VNode.m in Sources */,
-				BE692B50186E60B300C71336 /* VCommentViewCell.m in Sources */,
+				BEB4C29B187E038C004ECEEF /* VConversationCell.m in Sources */,
+				BE692B50186E60B300C71336 /* VCommentCell.m in Sources */,
 				BE171E2B1868C211004E5202 /* VInteraction.m in Sources */,
 				BE171E3A1868C266004E5202 /* NSString+VParseHelp.m in Sources */,
 				8364C70B1869500D0028C1ED /* VMenuViewController.m in Sources */,

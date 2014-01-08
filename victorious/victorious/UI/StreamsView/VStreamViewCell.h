@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 @class VSequence;
 
-static NSString *kStreamViewCellIdentifier = @"StreamViewCell";
+static NSString *kStreamViewCellIdentifier = @"VStreamViewCell";
 
 extern NSString *kStreamsWillSegueNotification;
 

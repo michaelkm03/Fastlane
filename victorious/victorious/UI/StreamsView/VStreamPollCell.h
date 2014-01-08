@@ -9,8 +9,8 @@
 #import <UIKit/UIKit.h>
 #import "VStreamViewCell.h"
 
-static NSString *kStreamPollCellIdentifier = @"StreamPollCell";
-static NSString *kStreamDoublePollCellIdentifier = @"StreamDoublePollCell";
+static NSString *kStreamPollCellIdentifier = @"VStreamPollCell";
+static NSString *kStreamDoublePollCellIdentifier = @"VStreamDoublePollCell";
 
 @interface VStreamPollCell : VStreamViewCell
 

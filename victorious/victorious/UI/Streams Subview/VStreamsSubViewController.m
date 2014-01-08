@@ -16,7 +16,7 @@
 #import "VObjectManager+Sequence.h"
 #import "VObjectManager+Comment.h"
 
-#import "VCommentViewCell.h"
+#import "VCommentCell.h"
 #import "VSequencePlayerViewController.h"
 
 @import Social;
@@ -264,7 +264,7 @@ static NSString* CommentCache = @"CommentCache";
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     static NSString *CellIdentifier = @"Cell";
-    VCommentViewCell *cell = (VCommentViewCell *)[tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
+    VCommentCell *cell = (VCommentCell *)[tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
     
     [self configureCell:cell atIndexPath:indexPath];
     

@@ -1,5 +1,5 @@
 //
-//  VCommentViewCell.h
+//  VCommentCell.h
 //  victoriOS
 //
 //  Created by David Keegan on 12/16/13.
@@ -8,7 +8,9 @@
 
 #import <UIKit/UIKit.h>
 
-@interface VCommentViewCell : UITableViewCell
+
+
+@interface VCommentCell : UITableViewCell
 
 @property (weak, nonatomic) IBOutlet UILabel *textLabel;
 @property (weak, nonatomic) IBOutlet UIImageView *imageView;
