@@ -6,12 +6,12 @@
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
-#import "VProfileEditViewController.h"
+@class  VUser;
 
 @interface VProfileViewController : UIViewController
 
 + (VProfileViewController *)sharedProfileViewController;
 
-@property (nonatomic, readwrite) BOOL profileBelongsToUser;
+@property (nonatomic, readwrite, strong) VUser*     profile;
 
 @end

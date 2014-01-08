@@ -82,30 +82,19 @@
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField
 {
-    // Scroll the table view to respective cell
-    NSIndexPath* indexPath = [[NSIndexPath indexPathWithIndex:0] indexPathByAddingIndex:textField.tag + 1];
-
     if ([textField isEqual:self.nameTextField])
-    {
-        [self.tableView scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionBottom animated:YES];
         [self.usernameTextField becomeFirstResponder];
-    }
     else if ([textField isEqual:self.usernameTextField])
-    {
-        [self.tableView scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionBottom animated:YES];
         [self.locationTextField becomeFirstResponder];
-    }
     else if ([textField isEqual:self.locationTextField])
-    {
-        [self.tableView scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionBottom animated:YES];
         [self.taglineTextField becomeFirstResponder];
-    }
     else if ([textField isEqual:self.taglineTextField])
     {
         // TODO: push profile info to the server here
         [self.view endEditing:YES];
         return YES;
     }
+
     return YES;
 }
 
