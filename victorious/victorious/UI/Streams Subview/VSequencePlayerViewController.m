@@ -14,6 +14,8 @@
 #import "VNode+Fetcher.h"
 #import "UIImageView+AFNetworking.h"
 
+#import "VConstants.h"
+
 @import MediaPlayer;
 
 @interface VSequencePlayerViewController ()
@@ -73,13 +75,13 @@
     NSArray* assets = [VAsset orderedAssetsForNode:node];
     VAsset* currentAsset = [assets firstObject];
     
-    if ([currentAsset.type isEqualToString:@"youtube_video_id"])
+    if ([currentAsset.type isEqualToString:VConstantsMediaTypeYoutube])
         [self playYoutubeVideo:currentAsset.data];
 
-    else if ([currentAsset.type isEqualToString:@"video_url"])
+    else if ([currentAsset.type isEqualToString:VConstantsMediaTypeVideo])
         [self playVideo:currentAsset.data];
         
-    else if ([currentAsset.type isEqualToString:@"image_url"] || [currentAsset.type isEqualToString:@"url"])
+    else if ([currentAsset.type isEqualToString:VConstantsMediaTypeImage] || [currentAsset.type isEqualToString:@"url"])
         [self showImage:currentAsset.data];
 
     else if (!currentAsset) //This means its a Poll

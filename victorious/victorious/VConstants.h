@@ -6,5 +6,9 @@
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
-static NSUInteger const VConstantsMessageLength = 140;
-static NSUInteger const VConstantsForumTitleLength = 65;
+static NSUInteger const VConstantsMessageLength     = 140;
+static NSUInteger const VConstantsForumTitleLength  = 65;
+
+static NSString* const VConstantsMediaTypeYoutube   = @"youtube_video_id";
+static NSString* const VConstantsMediaTypeVideo     = @"video_url";
+static NSString* const VConstantsMediaTypeImage     = @"image_url";

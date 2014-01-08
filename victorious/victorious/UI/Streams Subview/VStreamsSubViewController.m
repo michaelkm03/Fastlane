@@ -42,6 +42,9 @@ static NSString* CommentCache = @"CommentCache";
 
     VLog(@"self.navigationController.delegate: %@", self.navigationController.delegate);
     
+    [self.tableView registerNib:[UINib nibWithNibName:kCommentCellIdentifier bundle:[NSBundle mainBundle]]
+         forCellReuseIdentifier:kCommentCellIdentifier];
+    
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
  
@@ -263,9 +266,8 @@ static NSString* CommentCache = @"CommentCache";
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    static NSString *CellIdentifier = @"Cell";
-    VCommentCell *cell = (VCommentCell *)[tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
-    
+    VCommentCell *cell = (VCommentCell *)[tableView dequeueReusableCellWithIdentifier:kCommentCellIdentifier
+                                                                         forIndexPath:indexPath];
     [self configureCell:cell atIndexPath:indexPath];
     
     return cell;
@@ -282,10 +284,8 @@ static NSString* CommentCache = @"CommentCache";
 
 - (void)configureCell:(UITableViewCell *)theCell atIndexPath:(NSIndexPath *)theIndexPath
 {
-    VComment *info = [self.fetchedResultsController objectAtIndexPath:theIndexPath];
-    
-    theCell.textLabel.text = info.text;
-    theCell.imageView.image = [UIImage imageNamed:@"avatar.jpg"];
+    VComment *comment = [self.fetchedResultsController objectAtIndexPath:theIndexPath];
+    [(VCommentCell*)theCell configureCellForComment:comment];
 }
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
