@@ -847,7 +847,7 @@
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Description" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="h2b-ot-6Bn">
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Tagline" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="h2b-ot-6Bn">
                                 <rect key="frame" x="0.0" y="390" width="320" height="60"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
@@ -877,9 +877,9 @@
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
                     <connections>
                         <outlet property="backgroundImageView" destination="4hu-wW-MT9" id="Urg-Jj-i5c"/>
-                        <outlet property="descriptionLabel" destination="h2b-ot-6Bn" id="4MV-RK-BSv"/>
                         <outlet property="locationLabel" destination="whR-kI-8UO" id="O0m-Mf-S6R"/>
                         <outlet property="nameLabel" destination="Qwz-4n-OVQ" id="qOp-EG-5aX"/>
+                        <outlet property="taglineLabel" destination="h2b-ot-6Bn" id="3rW-Yo-amP"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Xa9-kt-Q5T" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -911,7 +911,7 @@
                                                 <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="w8L-kM-3rZ">
                                                     <rect key="frame" x="110" y="12" width="100" height="100"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                    <state key="normal" image="Menu">
+                                                    <state key="normal" title="Take Photo">
                                                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                                     </state>
                                                     <connections>
@@ -976,31 +976,29 @@
                                         </tableViewCellContentView>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                     </tableViewCell>
-                                    <tableViewCell opaque="NO" alpha="0.29999999999999999" contentMode="scaleToFill" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" rowHeight="100" id="FOT-Ox-peG">
-                                        <rect key="frame" x="0.0" y="339" width="320" height="100"/>
+                                    <tableViewCell opaque="NO" alpha="0.29999999999999999" contentMode="scaleToFill" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" rowHeight="50" id="FOT-Ox-peG">
+                                        <rect key="frame" x="0.0" y="339" width="320" height="50"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" alpha="0.59999999999999998" contentMode="center" tableViewCell="FOT-Ox-peG" id="WDn-tq-4Cs">
-                                            <rect key="frame" x="0.0" y="0.0" width="320" height="99"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="320" height="49"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Rcb-aP-Fxa">
-                                                    <rect key="frame" x="20" y="0.0" width="280" height="100"/>
-                                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                                                    <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
-                                                    <string key="text">Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
+                                                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="Tagline" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="u02-D9-b33">
+                                                    <rect key="frame" x="20" y="0.0" width="280" height="50"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                                    <textInputTraits key="textInputTraits" autocapitalizationType="sentences" returnKeyType="done"/>
-                                                </textView>
+                                                    <textInputTraits key="textInputTraits" returnKeyType="done"/>
+                                                </textField>
                                             </subviews>
                                             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         </tableViewCellContentView>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                     </tableViewCell>
-                                    <tableViewCell opaque="NO" alpha="0.29999999999999999" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" rowHeight="127" id="qmZ-qV-S7Y">
-                                        <rect key="frame" x="0.0" y="439" width="320" height="127"/>
+                                    <tableViewCell opaque="NO" alpha="0.29999999999999999" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" rowHeight="150" id="qmZ-qV-S7Y">
+                                        <rect key="frame" x="0.0" y="389" width="320" height="150"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" alpha="0.59999999999999998" contentMode="center" tableViewCell="qmZ-qV-S7Y" id="7BQ-rb-8jb">
-                                            <rect key="frame" x="0.0" y="0.0" width="320" height="126"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="320" height="149"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         </tableViewCellContentView>
@@ -1017,12 +1015,12 @@
                     <navigationItem key="navigationItem" title="Edit Profile" id="Elo-eR-l3V">
                         <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="UES-Zw-PeP">
                             <connections>
-                                <action selector="cancel:" destination="dbW-o9-eKz" id="OE9-A5-375"/>
+                                <action selector="cancel" destination="dbW-o9-eKz" id="P3B-MA-Wn0"/>
                             </connections>
                         </barButtonItem>
                         <barButtonItem key="rightBarButtonItem" systemItem="done" id="9YK-CB-tAB">
                             <connections>
-                                <action selector="done:" destination="dbW-o9-eKz" id="TNT-0e-Q5G"/>
+                                <action selector="done" destination="dbW-o9-eKz" id="Svw-SC-GJK"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
@@ -1030,9 +1028,9 @@
                     <connections>
                         <outlet property="headerButton" destination="w8L-kM-3rZ" id="LXX-6L-0qr"/>
                         <outlet property="locationTextField" destination="ay3-ie-U7V" id="LWk-ml-YsA"/>
-                        <outlet property="longDescriptionTextField" destination="Rcb-aP-Fxa" id="mtc-8a-ymZ"/>
                         <outlet property="nameTextField" destination="zed-dB-jv0" id="D9e-0x-DQo"/>
                         <outlet property="profileImageView" destination="25T-rT-HDN" id="p9W-Px-gnI"/>
+                        <outlet property="taglineTextField" destination="u02-D9-b33" id="afP-rU-q4j"/>
                         <outlet property="usernameTextField" destination="0JM-gr-GgX" id="KOq-lq-57o"/>
                     </connections>
                 </tableViewController>
@@ -1892,6 +1890,6 @@
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
         <segue reference="3G8-xg-TDE"/>
-        <segue reference="oAc-Ek-i14"/>
+        <segue reference="M1p-uJ-7Ga"/>
     </inferredMetricsTieBreakers>
 </document>

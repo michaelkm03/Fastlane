@@ -12,11 +12,13 @@
 #import "UIImage+ImageEffects.h"
 
 @interface VProfileViewController () <UIActionSheetDelegate, UITextFieldDelegate>
+
 @property (nonatomic, readwrite) IBOutlet UIImageView* backgroundImageView;
 
 @property (nonatomic, readwrite) IBOutlet UILabel* nameLabel;
-@property (nonatomic, readwrite) IBOutlet UILabel* descriptionLabel;
+@property (nonatomic, readwrite) IBOutlet UILabel* taglineLabel;
 @property (nonatomic, readwrite) IBOutlet UILabel* locationLabel;
+
 @end
 
 @implementation VProfileViewController
@@ -41,15 +43,15 @@
     // TODO: Check if the profile belongs to the logged in user
     self.profileBelongsToUser = YES;
     
-    // Set label properties, how it looks, etc.
+    // Set label properties: how it looks, etc.
     [self setLabelProperties];
     
-    // Set profile data - returns a BOOL
+    // Set profile data: name, username, etc. (returns a BOOL)
     [self setProfileData];
     
     if (self.profileBelongsToUser)
     {
-        // Do nothing - edit button in Storyboard
+        // Do nothing - edit button is already in Storyboard
     }
     else
     {
@@ -68,9 +70,9 @@
     self.backgroundImageView.contentMode = UIViewContentModeScaleAspectFill;
     
     // TODO: Add code to set the labels here
-    self.nameLabel.text = @"NAME";
-    self.descriptionLabel.text = @"DESCRIPTION";
-    self.locationLabel.text = @"LOCATION";
+    self.nameLabel.text = @"NAME HERE";
+    self.taglineLabel.text = @"TAGLINE HERE";
+    self.locationLabel.text = @"LOCATION HERE";
     
     return YES;
 }
@@ -79,7 +81,7 @@
 {
     UIColor* transparentGray = [UIColor colorWithRed:50.0/255.0 green:50.0/255.0 blue:50.0/255.0 alpha:0.6];
     self.nameLabel.backgroundColor = transparentGray;
-    self.descriptionLabel.backgroundColor = transparentGray;
+    self.taglineLabel.backgroundColor = transparentGray;
     self.locationLabel.backgroundColor = transparentGray;
 }
 
@@ -114,12 +116,6 @@
     }
 }
 
-- (void)didReceiveMemoryWarning
-{
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
-}
-
 #pragma mark - Navigation
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
@@ -130,6 +126,12 @@
         menuViewController.transitioningDelegate = (id <UIViewControllerTransitioningDelegate>)[VMenuViewControllerTransitionDelegate new];
         menuViewController.modalPresentationStyle = UIModalPresentationCustom;
     }
+}
+
+- (void)didReceiveMemoryWarning
+{
+    [super didReceiveMemoryWarning];
+    // Dispose of any resources that can be recreated.
 }
 
 @end
