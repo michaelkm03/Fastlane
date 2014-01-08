@@ -8,6 +8,7 @@
 
 #import "VFeaturedViewController.h"
 #import "VSequence.h"
+#import "VStreamsSubViewController.h"
 
 @interface VFeaturedViewController ()
 @property (weak, nonatomic) IBOutlet UILabel *label;
@@ -23,5 +24,24 @@
     [self.imageView setImageWithURL:[NSURL URLWithString:self.sequence.previewImage]
                    placeholderImage:[UIImage new]];
 }
+
+
+- (IBAction)selected:(id)sender
+{
+    [self performSegueWithIdentifier: @"featuredToStreamDetails" sender: self];
+}
+
+
+#pragma mark - Navigation
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
+{
+    if ([segue.identifier isEqualToString:@"featuredToStreamDetails"])
+    {
+        VStreamsSubViewController *subview = (VStreamsSubViewController *)segue.destinationViewController;
+        
+        subview.sequence = ((VFeaturedViewController *)sender).sequence;
+    }
+}
+
 
 @end

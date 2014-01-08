@@ -72,13 +72,12 @@ static NSString* kStreamCache = @"StreamCache";
 
 - (NSFetchRequest*)fetchRequestForContext:(NSManagedObjectContext*)context
 {
-
     NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
     NSEntityDescription *entity = [NSEntityDescription entityForName:[VSequence entityName] inManagedObjectContext:context];
     [fetchRequest setEntity:entity];
 
     NSSortDescriptor *sort = [[NSSortDescriptor alloc] initWithKey:@"display_order" ascending:YES];
-    [fetchRequest setPredicate:[NSPredicate predicateWithFormat:@"category == 'owner_image'"]];
+    [fetchRequest setPredicate:[NSPredicate predicateWithFormat:@"category == 'owner_video'"]];
     [fetchRequest setSortDescriptors:@[sort]];
     [fetchRequest setFetchBatchSize:5];
 
@@ -105,7 +104,8 @@ static NSString* kStreamCache = @"StreamCache";
 
 #pragma mark - UIScrollViewDelegate
 
-- (void)scrollViewDidScroll:(UIScrollView *)scrollView{
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView
+{
     self.pageControl.currentPage = round(scrollView.contentOffset.x/CGRectGetWidth(scrollView.bounds));
 }
 
