@@ -27,31 +27,22 @@
 //- (void)prepareToStreamDetailsSegue:(UIStoryboardSegue *)segue sender:(id)sender;
 //
 #pragma mark - Predicate Lifecycle
-
-//- (NSPredicate*)scopeTypePredicate
-//{
-//    
-//}
-//
-//- (NSPredicate*)searchTextPredicate
-//{
-//    
-//}
-
-//- (NSPredicate*)forumPredicate;
-
-- (NSPredicate*)imagePredicate
+- (NSArray*)imageCategories
 {
     return nil;
 }
-- (NSPredicate*)pollPredicate
+
+- (NSArray*)videoCategories
 {
     return nil;
 }
-- (NSPredicate*)videoPredicate
+
+- (NSArray*)pollCategories
 {
     return nil;
 }
+
+
 
 //#pragma mark - Cell Lifecycle
 //- (void)registerCells;

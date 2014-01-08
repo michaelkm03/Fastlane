@@ -19,11 +19,9 @@
 #pragma mark - Segue Lifecycle
 - (void)prepareToStreamDetailsSegue:(UIStoryboardSegue *)segue sender:(id)sender;
 
-- (NSPredicate*)defaultTypePredicate;
-- (NSPredicate*)forumPredicate;
-- (NSPredicate*)imagePredicate;
-- (NSPredicate*)pollPredicate;
-- (NSPredicate*)videoPredicate;
-
+- (NSArray*)imageCategories;
+- (NSArray*)videoCategories;
+- (NSArray*)pollCategories;
+- (NSArray*)forumCategories;
 
 @end

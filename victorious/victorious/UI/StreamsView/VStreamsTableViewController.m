@@ -187,73 +187,19 @@ typedef NS_ENUM(NSInteger, VStreamScope)
 }
 
 #pragma mark - Predicate Lifecycle
-- (NSPredicate*)defaultTypePredicate
-{
-    NSMutableArray* allTypes = [[NSMutableArray alloc] init];
-    
-    NSPredicate* predicate = [self forumPredicate];
-    if (predicate)
-    {
-        [allTypes addObject:predicate];
-    }
-    predicate = [self imagePredicate];
-    if (predicate)
-    {
-        [allTypes addObject:predicate];
-    }
-    predicate = [self pollPredicate];
-    if (predicate)
-    {
-        [allTypes addObject:predicate];
-    }
-    predicate = [self videoPredicate];
-    if (predicate)
-    {
-        [allTypes addObject:predicate];
-    }
-    
-    return [NSCompoundPredicate orPredicateWithSubpredicates:allTypes];
-}
-
-- (NSPredicate*)forumPredicate
-{
-    return [NSPredicate predicateWithFormat:@"category == %@ || category == %@", kVOwnerForumCategory, kVUGCForumCategory];
-}
-
-- (NSPredicate*)imagePredicate
-{
-    return [NSPredicate predicateWithFormat:@"category == %@ || category == %@", kVOwnerImageCategory, kVUGCImageCategory];
-}
-
-- (NSPredicate*)pollPredicate
-{
-    return [NSPredicate predicateWithFormat:@"category == %@ || category == %@", kVOwnerPollCategory, kVUGCPollCategory];
-}
-
-- (NSPredicate*)videoPredicate
-{
-    return [NSPredicate predicateWithFormat:@"category == %@ || category == %@", kVOwnerVideoCategory, kVUGCVideoCategory];
-}
-
 - (NSPredicate*)scopeTypePredicate
 {
-    switch (self.scopeType)
+    NSMutableArray* allPredicates = [[NSMutableArray alloc] init];
+    for (NSString* categoryName in [self categoriesForCurrentScope])
     {
-        case VStreamFilterVideoForums:
-            return [self forumPredicate];
-            
-        case VStreamFilterPolls:
-            return [self pollPredicate];
-            
-        case VStreamFilterImages:
-            return [self imagePredicate];
-            
-        case VStreamFilterVideos:
-            return [self videoPredicate];
-            
-        default:
-            return [self defaultTypePredicate];
+        [allPredicates addObject:[self categoryPredicateForString:categoryName]];
     }
+    return [NSCompoundPredicate orPredicateWithSubpredicates:allPredicates];
+}
+
+- (NSPredicate*)categoryPredicateForString:(NSString*)categoryName
+{
+    return [NSPredicate predicateWithFormat:@"category == %@", categoryName];
 }
 
 - (NSArray*)categoriesForCurrentScope
