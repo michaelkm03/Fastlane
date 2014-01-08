@@ -6,10 +6,8 @@
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
-
-@class VProfileEditViewController;
+@class VUser;
 
 @interface VProfileEditViewController : UITableViewController
-
+@property (nonatomic, readwrite, strong) VUser*     profile;
 @end

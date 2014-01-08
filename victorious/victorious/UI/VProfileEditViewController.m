@@ -28,7 +28,6 @@
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
     
-    // Set profile data - returns a BOOL
     [self setProfileData];
     [self setHeader];
     [self setTableProperties];
@@ -67,13 +66,6 @@
     self.tableView.scrollEnabled = NO;
     self.tableView.opaque = NO;
     
-    // hacky, but works
-    // attach indices to the text fields for keyboard scroll
-    self.nameTextField.tag = 1;
-    self.usernameTextField.tag = 2;
-    self.locationTextField.tag = 3;
-    self.taglineTextField.tag = 4;
-    
     self.nameTextField.delegate = self;
     self.usernameTextField.delegate = self;
     self.locationTextField.delegate = self;
@@ -82,30 +74,19 @@
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField
 {
-    // Scroll the table view to respective cell
-    NSIndexPath* indexPath = [[NSIndexPath indexPathWithIndex:0] indexPathByAddingIndex:textField.tag + 1];
-
     if ([textField isEqual:self.nameTextField])
-    {
-        [self.tableView scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionBottom animated:YES];
         [self.usernameTextField becomeFirstResponder];
-    }
     else if ([textField isEqual:self.usernameTextField])
-    {
-        [self.tableView scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionBottom animated:YES];
         [self.locationTextField becomeFirstResponder];
-    }
     else if ([textField isEqual:self.locationTextField])
-    {
-        [self.tableView scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionBottom animated:YES];
         [self.taglineTextField becomeFirstResponder];
-    }
     else if ([textField isEqual:self.taglineTextField])
     {
         // TODO: push profile info to the server here
         [self.view endEditing:YES];
         return YES;
     }
+
     return YES;
 }
 
@@ -140,21 +121,12 @@
 
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info
 {
-    NSString *mediaType = info[UIImagePickerControllerMediaType];
-    UIImage *originalImage, *editedImage, *imageToSave;
+    NSString* mediaType = info[UIImagePickerControllerMediaType];
+    UIImage* imageToSave;
     
     // Handle a still image capture
-    if (CFStringCompare ((CFStringRef) mediaType, kUTTypeImage, 0) == kCFCompareEqualTo)
-    {
-        editedImage = (UIImage *)info[UIImagePickerControllerEditedImage];
-        originalImage = (UIImage *)info[UIImagePickerControllerOriginalImage];
-        
-        if (editedImage)
-            imageToSave = editedImage;
-        else
-            imageToSave = originalImage;
-        
-    }
+    if (CFStringCompare((CFStringRef)mediaType, kUTTypeImage, 0) == kCFCompareEqualTo)
+        imageToSave = (UIImage *)info[UIImagePickerControllerEditedImage] ?: (UIImage *)info[UIImagePickerControllerOriginalImage];
     
     [[picker parentViewController] dismissViewControllerAnimated:YES completion:nil];
 }

@@ -86,7 +86,9 @@
 //            else
             {
                 //  Show Profile
-                self.viewControllers = @[[VProfileViewController sharedProfileViewController]];
+                VProfileViewController* profileViewController = [VProfileViewController sharedProfileViewController];
+                profileViewController.profile = nil;    //  We want our own profile
+                self.viewControllers = @[profileViewController];
                 [self dismissViewControllerAnimated:YES completion:nil];
             }
             break;

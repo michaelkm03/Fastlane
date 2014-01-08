@@ -9,6 +9,8 @@
 #import "VProfileViewController.h"
 #import "VMenuViewController.h"
 #import "VMenuViewControllerTransition.h"
+#import "VObjectManager+Login.h"
+#import "VProfileEditViewController.h"
 
 @interface VProfileViewController () <UIActionSheetDelegate>
 
@@ -37,16 +39,14 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-	// Do any additional setup after loading the view.
-    
-    // TODO: Check if the profile belongs to the logged in user
-    self.profileBelongsToUser = YES;
     
     // Set profile data: name, username, etc. (returns a BOOL)
     [self setProfileData];
     
-    if (self.profileBelongsToUser)
+    if (!self.profile)
     {
+        self.profile = [VObjectManager sharedManager].mainUser;
+
         self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemEdit target:self action:@selector(editButtonPressed:)];
     }
     else
@@ -121,7 +121,12 @@
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
-    if ([segue.destinationViewController isKindOfClass:[VMenuViewController class]])
+    if ([segue.identifier isEqualToString:@"toEditProfile"])
+    {
+        VProfileEditViewController* controller = segue.destinationViewController;
+        controller.profile = self.profile;
+    }
+    else if ([segue.destinationViewController isKindOfClass:[VMenuViewController class]])
     {
         VMenuViewController *menuViewController = segue.destinationViewController;
         menuViewController.transitioningDelegate = (id <UIViewControllerTransitioningDelegate>)[VMenuViewControllerTransitionDelegate new];
