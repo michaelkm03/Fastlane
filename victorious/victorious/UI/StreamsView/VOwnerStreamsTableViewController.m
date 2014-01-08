@@ -23,24 +23,24 @@
     return streamsTableViewController;
 }
 
-- (NSPredicate*)forumPredicate
+- (NSArray*)imageCategories
 {
-    return [NSPredicate predicateWithFormat:@"category == %@", kVOwnerForumCategory];
+    return @[kVOwnerImageCategory];
 }
 
-- (NSPredicate*)imagePredicate
+- (NSArray*)videoCategories
 {
-    return [NSPredicate predicateWithFormat:@"category == %@", kVOwnerImageCategory];
+    return @[kVOwnerVideoCategory];
 }
 
-- (NSPredicate*)pollPredicate
+- (NSArray*)pollCategories
 {
-    return [NSPredicate predicateWithFormat:@"category == %@", kVOwnerPollCategory];
+    return @[kVOwnerPollCategory];
 }
 
-- (NSPredicate*)videoPredicate
+- (NSArray*)forumCategories
 {
-    return [NSPredicate predicateWithFormat:@"category == %@", kVOwnerVideoCategory];
+    return @[kVOwnerForumCategory];
 }
 
 @end
