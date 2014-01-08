@@ -28,7 +28,6 @@
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
     
-    // Set profile data - returns a BOOL
     [self setProfileData];
     [self setHeader];
     [self setTableProperties];
@@ -66,13 +65,6 @@
 {
     self.tableView.scrollEnabled = NO;
     self.tableView.opaque = NO;
-    
-    // hacky, but works
-    // attach indices to the text fields for keyboard scroll
-    self.nameTextField.tag = 1;
-    self.usernameTextField.tag = 2;
-    self.locationTextField.tag = 3;
-    self.taglineTextField.tag = 4;
     
     self.nameTextField.delegate = self;
     self.usernameTextField.delegate = self;
@@ -129,21 +121,12 @@
 
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info
 {
-    NSString *mediaType = info[UIImagePickerControllerMediaType];
-    UIImage *originalImage, *editedImage, *imageToSave;
+    NSString* mediaType = info[UIImagePickerControllerMediaType];
+    UIImage* imageToSave;
     
     // Handle a still image capture
-    if (CFStringCompare ((CFStringRef) mediaType, kUTTypeImage, 0) == kCFCompareEqualTo)
-    {
-        editedImage = (UIImage *)info[UIImagePickerControllerEditedImage];
-        originalImage = (UIImage *)info[UIImagePickerControllerOriginalImage];
-        
-        if (editedImage)
-            imageToSave = editedImage;
-        else
-            imageToSave = originalImage;
-        
-    }
+    if (CFStringCompare((CFStringRef)mediaType, kUTTypeImage, 0) == kCFCompareEqualTo)
+        imageToSave = (UIImage *)info[UIImagePickerControllerEditedImage] ?: (UIImage *)info[UIImagePickerControllerOriginalImage];
     
     [[picker parentViewController] dismissViewControllerAnimated:YES completion:nil];
 }
