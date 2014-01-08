@@ -71,10 +71,10 @@
 
 - (void)playSequence
 {
-//    VNode* node = [[VNode orderedNodesForSequence:self.sequence] firstObject];
-//    VAsset* asset = [[VAsset orderedAssetsForNode:node] firstObject];
+    VNode* node = [[VNode orderedNodesForSequence:self.sequence] firstObject];
+    VAsset* asset = [[VAsset orderedAssetsForNode:node] firstObject];
     
-    _mpController = [[MPMoviePlayerController alloc] initWithContentURL:[NSURL URLWithString: @"http://d36dq0iszpjoxo.cloudfront.net/d3b9451012dc2a7e7b692b45ae93f7b4/playlist.m3u8"]];//asset.data]];
+    _mpController = [[MPMoviePlayerController alloc] initWithContentURL:[NSURL URLWithString: asset.data]];
     _mpController.view.frame = self.previewImageView.frame;
     [self insertSubview:_mpController.view aboveSubview:self.previewImageView];
 
