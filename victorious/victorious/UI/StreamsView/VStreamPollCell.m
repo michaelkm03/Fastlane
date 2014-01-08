@@ -18,9 +18,9 @@
     
     if (![self.sequence.nodes count])
     {
-        [[[VObjectManager sharedManager] fetchSequence:sequence
-                                          successBlock:nil
-                                             failBlock:nil] start];
+//        [[[VObjectManager sharedManager] fetchSequence:sequence
+//                                          successBlock:nil
+//                                             failBlock:nil] start];
     }
     else
     {

@@ -12,16 +12,12 @@
 #import "VStreamVideoCell.h"
 #import "VStreamPollCell.h"
 
-#import "VSequence+VFetcher.h"
+#import "VSequence+Fetcher.h"
 
 @interface VStreamsTableViewController (Protected)
 
 #pragma mark - Segue Lifecycle
 - (void)prepareToStreamDetailsSegue:(UIStoryboardSegue *)segue sender:(id)sender;
-
-#pragma mark - Predicate Lifecycle
-- (NSPredicate*)searchTextPredicate;
-- (NSPredicate*)scopeTypePredicate;
 
 - (NSPredicate*)defaultTypePredicate;
 - (NSPredicate*)forumPredicate;
@@ -29,8 +25,5 @@
 - (NSPredicate*)pollPredicate;
 - (NSPredicate*)videoPredicate;
 
-#pragma mark - Cell Lifecycle
-- (void)registerCells;
-- (VStreamViewCell*)tableView:(UITableView *)tableView streamViewCellForIndex:(NSIndexPath*)indexPath;
 
 @end

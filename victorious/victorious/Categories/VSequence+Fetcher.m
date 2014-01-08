@@ -1,12 +1,12 @@
 //
-//  VSequence+VFetcher.m
+//  VSequence+Fetcher.m
 //  victorious
 //
 //  Created by Will Long on 1/7/14.
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
-#import "VSequence+VFetcher.h"
+#import "VSequence+Fetcher.h"
 
 NSString*   const   kVOwnerPollCategory = @"owner_poll";
 NSString*   const   kVOwnerImageCategory = @"owner_image";
@@ -18,7 +18,7 @@ NSString*   const   kVUGCImageCategory = @"ugc_image";
 NSString*   const   kVUGCVideoCategory = @"ugc_video";
 NSString*   const   kVUGCForumCategory = @"ugc_forum";
 
-@implementation VSequence (VFetcher)
+@implementation VSequence (Fetcher)
 
 - (BOOL)isPoll
 {
