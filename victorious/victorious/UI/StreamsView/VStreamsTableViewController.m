@@ -102,17 +102,17 @@ typedef NS_ENUM(NSInteger, VStreamScope)
 
          if([[actionSheet buttonTitleAtIndex:buttonIndex] isEqualToString:videoTitle])
          {
-             VCreateViewController *createViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"create_post"];
+             VCreateViewController *createViewController = [[VCreateViewController alloc] initWithType:VCreateViewControllerTypeVideo];
              [wself presentViewController:[[UINavigationController alloc] initWithRootViewController:createViewController] animated:YES completion:nil];
          }
          else if([[actionSheet buttonTitleAtIndex:buttonIndex] isEqualToString:photoTitle])
          {
-             VCreateViewController *createViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"create_post"];
+             VCreateViewController *createViewController = [[VCreateViewController alloc] initWithType:VCreateViewControllerTypePhoto];
              [wself presentViewController:[[UINavigationController alloc] initWithRootViewController:createViewController] animated:YES completion:nil];
          }
          else if([[actionSheet buttonTitleAtIndex:buttonIndex] isEqualToString:pollTitle])
          {
-             VCreateViewController *createViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"create_post"];
+             VCreateViewController *createViewController = [[VCreateViewController alloc] initWithType:VCreateViewControllerTypePoll];
              [wself presentViewController:[[UINavigationController alloc] initWithRootViewController:createViewController] animated:YES completion:nil];
          }
      }];

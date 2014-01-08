@@ -28,6 +28,7 @@
 	<array>
 		<string>Roboto-Light.ttf</string>
 		<string>Roboto-Regular.ttf</string>
+		<string>Roboto-Black.ttf</string>
 	</array>
 	<key>UIBackgroundModes</key>
 	<array>

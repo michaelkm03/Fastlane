@@ -12,7 +12,7 @@
 
 - (CGSize)intrinsicContentSize{
     CGSize size = [super intrinsicContentSize];
-    size.width += 8;
+    size.width += self.font.lineHeight;
     return size;
 }
 
