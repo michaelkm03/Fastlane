@@ -39,6 +39,8 @@ NSString* const kSearchCache = @"SearchCache";
     CGRect newBounds = self.tableView.bounds;
     newBounds.origin.y = newBounds.origin.y + self.searchDisplayController.searchBar.bounds.size.height;
     self.tableView.bounds = newBounds;
+    
+    [self refreshFetchController:self.fetchedResultsController withPredicate:[self fetchResultsPredicate]];
 }
 
 - (void)didReceiveMemoryWarning
