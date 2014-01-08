@@ -171,7 +171,8 @@ typedef NS_ENUM(NSInteger, VStreamScope)
 }
 
 #pragma mark - VAddActionViewControllerDelegate
-- (void)addActionViewController:(VAddActionViewController *)viewController didChooseAction:(VAddActionViewControllerType)action{
+- (void)addActionViewController:(VAddActionViewController *)viewController didChooseAction:(VAddActionViewControllerType)action
+{
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
