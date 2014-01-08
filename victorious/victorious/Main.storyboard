@@ -1480,10 +1480,10 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
                             <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="Cell" rowHeight="240" id="1BD-3b-BnA" customClass="VCommentViewCell">
-                                <rect key="frame" x="0.0" y="22" width="73" height="240"/>
+                                <rect key="frame" x="0.0" y="22" width="320" height="240"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="1BD-3b-BnA" id="T8F-2F-XPt">
-                                    <rect key="frame" x="0.0" y="0.0" width="73" height="239"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="320" height="239"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5ta-pT-yD8">
@@ -1965,7 +1965,7 @@
         <simulatedScreenMetrics key="destination" type="retina4"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
-        <segue reference="3G8-xg-TDE"/>
+        <segue reference="B0c-HV-UIz"/>
         <segue reference="M1p-uJ-7Ga"/>
     </inferredMetricsTieBreakers>
 </document>

@@ -10,6 +10,7 @@
 #import "VLoginViewController.h"
 
 #import "VComment.h"
+#import "VSequence+Fetcher.h"
 
 #import "VObjectManager+Login.h"
 #import "VObjectManager+Sequence.h"
@@ -93,10 +94,7 @@ static NSString* CommentCache = @"CommentCache";
 
 - (void) setupSequencePlayer
 {
-    if (_sequence)
-        _sequencePlayer = [[VSequencePlayerViewController alloc] initWithSequence:_sequence];
-    else
-        _sequencePlayer = nil;
+    _sequencePlayer = [[VSequencePlayerViewController alloc] initWithSequence:_sequence];
     
     [self.tableView reloadData]; //Need to reload to get rid of headers.
 }
@@ -105,7 +103,8 @@ static NSString* CommentCache = @"CommentCache";
 
 - (IBAction)refresh:(UIRefreshControl *)sender
 {
-    SuccessBlock success = ^(NSArray* resultObjects) {
+    SuccessBlock success = ^(NSArray* resultObjects)
+    {
         NSError *error;
         if (![self.fetchedResultsController performFetch:&error])
         {
@@ -117,7 +116,8 @@ static NSString* CommentCache = @"CommentCache";
         [self.refreshControl endRefreshing];
     };
     
-    FailBlock fail = ^(NSError* error) {
+    FailBlock fail = ^(NSError* error)
+    {
         [self.refreshControl endRefreshing];
         VLog(@"Error on loadNextPage: %@", error);
     };
@@ -232,11 +232,13 @@ static NSString* CommentCache = @"CommentCache";
     VComment *comment = [_fetchedResultsController objectAtIndexPath:indexPath];
     
     [[[VObjectManager sharedManager] flagComment:comment
-                                       successBlock:^(NSArray *resultObjects) {
+                                       successBlock:^(NSArray *resultObjects)
+                                       {
                                            //TODO:set flagged flag)
                                            VLog(@"resultObjects: %@", resultObjects);
                                        }
-                                          failBlock:^(NSError *error) {
+                                          failBlock:^(NSError *error)
+                                          {
                                               VLog(@"Failed to flag comment %@", comment);
                                           }] start];
 }
@@ -288,12 +290,22 @@ static NSString* CommentCache = @"CommentCache";
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
-    return _sequencePlayer ? _sequencePlayer.view : nil;
+    if ([_sequence isVideo])
+    {
+        return _sequencePlayer.view;
+    }
+    
+    return nil;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
-    return _sequencePlayer ? 180 : 0;
+    if ([_sequence isVideo])
+    {
+        return 180;
+    }
+    
+    return 0;
 }
 
 
