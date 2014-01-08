@@ -9,5 +9,9 @@
 @class VSequence;
 
 @interface VFeaturedViewController : UIViewController
+
 @property (strong, nonatomic) VSequence *sequence;
+
+- (IBAction)selected:(id)sender;
+
 @end
