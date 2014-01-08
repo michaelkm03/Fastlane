@@ -87,7 +87,7 @@ static NSString* kStreamCache = @"StreamCache";
 - (void)controllerDidChangeContent:(NSFetchedResultsController *)controller
 {
     self.pageControl.currentPage = 0;
-    self.pageControl.numberOfPages = 5;
+    self.pageControl.numberOfPages = [controller.fetchedObjects count] > 5 ? 5 : [controller.fetchedObjects count];
 
     NSMutableArray *viewControllers = [NSMutableArray arrayWithCapacity:self.pageControl.numberOfPages];
     for(NSUInteger i = 0; i < self.pageControl.numberOfPages && i < [controller.fetchedObjects count]; ++i)
