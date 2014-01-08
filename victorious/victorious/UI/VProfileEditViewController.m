@@ -11,14 +11,13 @@
 
 @interface VProfileEditViewController ()  <UITextFieldDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate>
 
-@property (nonatomic, readwrite) IBOutlet UITextField* nameTextField;
-@property (nonatomic, readwrite) IBOutlet UITextField* usernameTextField;
-@property (nonatomic, readwrite) IBOutlet UITextField* locationTextField;
-@property (nonatomic, readwrite) IBOutlet UITextField* taglineTextField;
+@property (nonatomic, weak) IBOutlet UITextField* nameTextField;
+@property (nonatomic, weak) IBOutlet UITextField* usernameTextField;
+@property (nonatomic, weak) IBOutlet UITextField* locationTextField;
+@property (nonatomic, weak) IBOutlet UITextField* taglineTextField;
 
-@property (nonatomic, readwrite) IBOutlet UIImageView* profileImageView;
-@property (nonatomic, readwrite) IBOutlet UIButton* headerButton;
-@property (weak, nonatomic) IBOutlet UIButton *cameraButton;
+@property (nonatomic, weak) IBOutlet UIImageView* profileImageView;
+@property (nonatomic, weak) IBOutlet UIButton* headerButton;
 
 @end
 
@@ -29,11 +28,8 @@
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
     
-    self.cameraButton.hidden = ![UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera];
-
     // Set profile data - returns a BOOL
     [self setProfileData];
-    
     [self setHeader];
     [self setTableProperties];
 }
@@ -63,6 +59,7 @@
     self.headerButton.layer.rasterizationScale = [UIScreen mainScreen].scale;
     self.headerButton.layer.shouldRasterize = YES;
     self.headerButton.clipsToBounds = YES;
+    self.headerButton.hidden = ![UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera];
 }
 
 - (void)setTableProperties
@@ -77,24 +74,10 @@
     self.locationTextField.tag = 3;
     self.taglineTextField.tag = 4;
     
-    self.nameTextField.enabled = YES;
-    self.usernameTextField.enabled = YES;
-    self.locationTextField.enabled = YES;
-    
     self.nameTextField.delegate = self;
     self.usernameTextField.delegate = self;
     self.locationTextField.delegate = self;
     self.taglineTextField.delegate = self;
-    
-    self.nameTextField.opaque = NO;
-    self.usernameTextField.opaque = NO;
-    self.locationTextField.opaque = NO;
-    self.taglineTextField.opaque = NO;
-    
-    self.nameTextField.backgroundColor = [UIColor clearColor];
-    self.usernameTextField.backgroundColor = [UIColor clearColor];
-    self.locationTextField.backgroundColor = [UIColor clearColor];
-    self.taglineTextField.backgroundColor = [UIColor clearColor];
 }
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField
@@ -140,21 +123,7 @@
 - (IBAction)done:(id)sender
 {
     // TODO: Save and send profile details to the server
-    NSLog(@"Done button pressed");
-    BOOL success = NO;
-    if (success)
-    {
-        [self.navigationController popViewControllerAnimated:YES];
-    }
-    else
-    {
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Could not save profile data"
-                                                        message:@""
-                                                       delegate:nil
-                                              cancelButtonTitle:@"OK"
-                                              otherButtonTitles:nil];
-        [alert show];
-    }
+    [self.navigationController popViewControllerAnimated:YES];
 }
 
 - (IBAction)takePicture:(id)sender

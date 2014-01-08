@@ -16,12 +16,12 @@
 #import "VMenuViewController.h"
 #import "VMenuViewControllerTransition.h"
 
-#import "VAddActionViewController.h"
-#import "VActionViewControllerTransition.h"
-
 #import "VStreamsTableViewController+Protected.h"
 
 #import "VCategory+Fetcher.h"
+#import "UIActionSheet+BBlock.h"
+#import "BBlock.h"
+#import "VCreateViewController.h"
 
 typedef NS_ENUM(NSInteger, VStreamScope)
 {
@@ -84,12 +84,39 @@ typedef NS_ENUM(NSInteger, VStreamScope)
 
 - (IBAction)addButtonAction:(id)sender
 {
-    VAddActionViewController *viewController =
-    [self.storyboard instantiateViewControllerWithIdentifier:@"add_action"];
-    viewController.transitioningDelegate =
-    (id <UIViewControllerTransitioningDelegate>)[VActionViewControllerTransitionDelegate new];
-    viewController.modalPresentationStyle = UIModalPresentationCustom;
-    [self presentViewController:viewController animated:YES completion:nil];
+    BBlockWeakSelf wself = self;
+    NSString *videoTitle = NSLocalizedString(@"Post Video", @"Post video button");
+    NSString *photoTitle = NSLocalizedString(@"Post Photo", @"Post photo button");
+    NSString *pollTitle = NSLocalizedString(@"Post Poll", @"Post poll button");
+    UIActionSheet *actionSheet =
+    [[UIActionSheet alloc]
+     initWithTitle:nil delegate:nil
+     cancelButtonTitle:NSLocalizedString(@"Cancel", @"Cancel button")
+     destructiveButtonTitle:nil otherButtonTitles:videoTitle, photoTitle, pollTitle, nil];
+    [actionSheet setCompletionBlock:^(NSInteger buttonIndex, UIActionSheet *actionSheet)
+     {
+         if(actionSheet.cancelButtonIndex == buttonIndex)
+         {
+             return;
+         }
+
+         if([[actionSheet buttonTitleAtIndex:buttonIndex] isEqualToString:videoTitle])
+         {
+             VCreateViewController *createViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"create_post"];
+             [wself presentViewController:[[UINavigationController alloc] initWithRootViewController:createViewController] animated:YES completion:nil];
+         }
+         else if([[actionSheet buttonTitleAtIndex:buttonIndex] isEqualToString:photoTitle])
+         {
+             VCreateViewController *createViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"create_post"];
+             [wself presentViewController:[[UINavigationController alloc] initWithRootViewController:createViewController] animated:YES completion:nil];
+         }
+         else if([[actionSheet buttonTitleAtIndex:buttonIndex] isEqualToString:pollTitle])
+         {
+             VCreateViewController *createViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"create_post"];
+             [wself presentViewController:[[UINavigationController alloc] initWithRootViewController:createViewController] animated:YES completion:nil];
+         }
+     }];
+    [actionSheet showInView:self.view];
 }
 
 #pragma mark - Table view data source
@@ -168,12 +195,6 @@ typedef NS_ENUM(NSInteger, VStreamScope)
     [[NSNotificationCenter defaultCenter] postNotificationName:kStreamsWillSegueNotification
                                                         object:nil];
     [super viewWillDisappear:animated];
-}
-
-#pragma mark - VAddActionViewControllerDelegate
-- (void)addActionViewController:(VAddActionViewController *)viewController didChooseAction:(VAddActionViewControllerType)action
-{
-    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 #pragma mark - Segue Lifecycle
