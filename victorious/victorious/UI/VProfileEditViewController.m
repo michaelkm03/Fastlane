@@ -9,7 +9,7 @@
 #import "VProfileEditViewController.h"
 #import "UIImage+ImageEffects.h"
 
-@interface VProfileEditViewController ()  <UITextFieldDelegate, UITextViewDelegate>
+@interface VProfileEditViewController ()  <UITextFieldDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate>
 
 @property (nonatomic, readwrite) IBOutlet UITextField* nameTextField;
 @property (nonatomic, readwrite) IBOutlet UITextField* usernameTextField;
@@ -52,6 +52,9 @@
 - (IBAction)takePicture:(id)sender
 {
     NSLog(@"Picture button pressed");
+    UIImagePickerController* controller = [[UIImagePickerController alloc] init];
+    controller.delegate = self;
+    [self presentViewController:controller animated:YES completion:nil];
 }
 
 - (void)viewDidLoad
@@ -158,6 +161,16 @@
 - (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
 {
     [self.view endEditing:YES];
+}
+
+- (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info
+{
+    
+}
+
+- (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker
+{
+    
 }
 
 - (void)didReceiveMemoryWarning
