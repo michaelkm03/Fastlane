@@ -8,6 +8,7 @@
 
 "OKButton"              =   "OK";
 "CancelButton"          =   "Cancel";
+
 "SetupButton"           =   "Set up";
 "EmailValidation"       =   "Invalid Email Address";
 "PasswordValidation"    =   "Password is less than 8 characters";
@@ -23,3 +24,7 @@
 "EmailFail"             =   "E-mail failed to send";
 
 "HelpNeeded"            =   "I need help with...";
+
+"ReportInappropriate"   =   "Report Inappropriate";
+"BlockUser"             =   "Block User";
+"CopyProfileURL"        =   "Copy Profile URL";

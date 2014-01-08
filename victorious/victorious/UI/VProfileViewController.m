@@ -12,11 +12,11 @@
 
 @interface VProfileViewController () <UIActionSheetDelegate>
 
-@property (nonatomic, readwrite) IBOutlet UIImageView* backgroundImageView;
+@property (nonatomic, weak) IBOutlet UIImageView* backgroundImageView;
 
-@property (nonatomic, readwrite) IBOutlet UILabel* nameLabel;
-@property (nonatomic, readwrite) IBOutlet UILabel* taglineLabel;
-@property (nonatomic, readwrite) IBOutlet UILabel* locationLabel;
+@property (nonatomic, weak) IBOutlet UILabel* nameLabel;
+@property (nonatomic, weak) IBOutlet UILabel* taglineLabel;
+@property (nonatomic, weak) IBOutlet UILabel* locationLabel;
 
 @end
 
@@ -84,10 +84,10 @@
 {
     UIActionSheet *popupQuery = [[UIActionSheet alloc] initWithTitle:@""
                                                             delegate:self
-                                                   cancelButtonTitle:@"Cancel"
-                                              destructiveButtonTitle:@"Report Inappropriate"
-                                                   otherButtonTitles:@"Block User",
-                                 @"Copy Profile URL", nil];
+                                                   cancelButtonTitle:NSLocalizedString(@"CancelButton", @"")
+                                              destructiveButtonTitle:NSLocalizedString(@"ReportInappropriate", @"")
+                                                   otherButtonTitles:NSLocalizedString(@"BlockUser", @""),
+                                 NSLocalizedString(@"CopyProfileURL", @""), nil];
     
     [popupQuery showFromBarButtonItem:sender animated:YES];
 }
