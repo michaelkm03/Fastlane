@@ -1330,7 +1330,7 @@
                         </connections>
                     </refreshControl>
                     <connections>
-                        <outlet property="searchDisplayController" destination="J6V-dn-yOU" id="5qj-Xi-o2u"/>
+                        <outlet property="searchDisplayController" destination="J6V-dn-yOU" id="hN4-yw-nxD"/>
                         <segue destination="ZHJ-1r-35v" kind="push" identifier="toStreamDetails" id="iGZ-YA-xhf"/>
                     </connections>
                 </tableViewController>
@@ -1357,7 +1357,7 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
                             <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="Cell" rowHeight="240" id="1BD-3b-BnA" customClass="VCommentViewCell">
-                                <rect key="frame" x="0.0" y="22" width="320" height="240"/>
+                                <rect key="frame" x="0.0" y="86" width="320" height="240"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="1BD-3b-BnA" id="T8F-2F-XPt">
                                     <rect key="frame" x="0.0" y="0.0" width="320" height="239"/>
@@ -1751,7 +1751,7 @@
                         </connections>
                     </refreshControl>
                     <connections>
-                        <outlet property="searchDisplayController" destination="J6V-dn-yOU" id="TZI-2g-5LR"/>
+                        <outlet property="searchDisplayController" destination="GwT-4v-fOW" id="0m2-OQ-WsJ"/>
                         <segue destination="ZHJ-1r-35v" kind="push" identifier="toStreamDetails" id="fCv-qj-7vN"/>
                     </connections>
                 </tableViewController>
@@ -1812,7 +1812,7 @@
                         </connections>
                     </refreshControl>
                     <connections>
-                        <outlet property="searchDisplayController" destination="J6V-dn-yOU" id="cJb-RP-lgx"/>
+                        <outlet property="searchDisplayController" destination="d7C-Oy-OYn" id="MH9-4c-MZY"/>
                         <segue destination="ZHJ-1r-35v" kind="push" identifier="toStreamDetails" id="Be1-Nd-9wx"/>
                     </connections>
                 </tableViewController>
@@ -1873,7 +1873,7 @@
                         </connections>
                     </refreshControl>
                     <connections>
-                        <outlet property="searchDisplayController" destination="J6V-dn-yOU" id="XgA-sv-8Jq"/>
+                        <outlet property="searchDisplayController" destination="kpc-3c-ASl" id="aPc-Tt-kUB"/>
                         <segue destination="ZHJ-1r-35v" kind="push" identifier="toStreamDetails" id="3G8-xg-TDE"/>
                     </connections>
                 </tableViewController>
@@ -1941,7 +1941,7 @@
         <simulatedScreenMetrics key="destination" type="retina4"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
-        <segue reference="B0c-HV-UIz"/>
+        <segue reference="iGZ-YA-xhf"/>
         <segue reference="M1p-uJ-7Ga"/>
     </inferredMetricsTieBreakers>
 </document>
