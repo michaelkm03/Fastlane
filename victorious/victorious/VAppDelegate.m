@@ -42,7 +42,7 @@
     [VObjectManager setupObjectManager];
     [[[VObjectManager sharedManager] initialSequenceLoad] start];
 
-    [TestFlight takeOff:@"4467aa06-d174-479e-b009-f1945f3d6532"];
+    [TestFlight takeOff:@"02101c7d-4a01-4a44-8e8a-26dca03554aa"];
 
     
     NSURL*  openURL =   launchOptions[UIApplicationLaunchOptionsURLKey];

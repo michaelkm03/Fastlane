@@ -73,8 +73,8 @@
     NSArray* assets = [VAsset orderedAssetsForNode:node];
     VAsset* currentAsset = [assets firstObject];
     
-    if (YES || [currentAsset.type isEqualToString:@"youtube_video_url"])
-        [self playYoutubeVideo:@"aHjpOzsQ9YI"];//TODO: replace with currentAsset.data
+    if ([currentAsset.type isEqualToString:@"youtube_video_id"])
+        [self playYoutubeVideo:currentAsset.data];
 
     else if ([currentAsset.type isEqualToString:@"video_url"])
         [self playVideo:currentAsset.data];
