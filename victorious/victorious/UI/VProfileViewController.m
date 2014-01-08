@@ -9,9 +9,8 @@
 #import "VProfileViewController.h"
 #import "VMenuViewController.h"
 #import "VMenuViewControllerTransition.h"
-#import "UIImage+ImageEffects.h"
 
-@interface VProfileViewController () <UIActionSheetDelegate, UITextFieldDelegate>
+@interface VProfileViewController () <UIActionSheetDelegate>
 
 @property (nonatomic, readwrite) IBOutlet UIImageView* backgroundImageView;
 
@@ -43,21 +42,19 @@
     // TODO: Check if the profile belongs to the logged in user
     self.profileBelongsToUser = YES;
     
-    // Set label properties: how it looks, etc.
-    [self setLabelProperties];
-    
     // Set profile data: name, username, etc. (returns a BOOL)
     [self setProfileData];
     
     if (self.profileBelongsToUser)
     {
-        // Do nothing - edit button is already in Storyboard
+        self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemEdit target:self action:@selector(editButtonPressed:)];
     }
     else
     {
         // If the user is not logged in, create a compose button and user action button
-        UIBarButtonItem* composeButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCompose target:self action:@selector(composeButtonPressed)];
-        UIBarButtonItem* userActionButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAction target:self action:@selector(userActionButtonPressed)];
+        UIBarButtonItem* composeButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCompose target:self action:@selector(composeButtonPressed:)];
+        UIBarButtonItem* userActionButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAction target:self action:@selector(userActionButtonPressed:)];
+
         self.navigationItem.rightBarButtonItems = @[composeButton, userActionButton];
     }
 }
@@ -77,45 +74,45 @@
     return YES;
 }
 
-- (void)setLabelProperties
-{
-    UIColor* transparentGray = [UIColor colorWithRed:50.0/255.0 green:50.0/255.0 blue:50.0/255.0 alpha:0.6];
-    self.nameLabel.backgroundColor = transparentGray;
-    self.taglineLabel.backgroundColor = transparentGray;
-    self.locationLabel.backgroundColor = transparentGray;
-    
-    self.nameLabel.textColor = [UIColor whiteColor];
-    self.taglineLabel.textColor = [UIColor whiteColor];
-    self.locationLabel.textColor = [UIColor whiteColor];
-}
-
--(void)composeButtonPressed
+-(IBAction)composeButtonPressed:(id)sender
 {
     // TODO: Should go to compose message view
     NSLog(@"Compose Button Clicked");
 }
 
--(void)userActionButtonPressed
+-(IBAction)userActionButtonPressed:(id)sender
 {
     UIActionSheet *popupQuery = [[UIActionSheet alloc] initWithTitle:@""
                                                             delegate:self
-                                                   cancelButtonTitle:@"cancel"
-                                              destructiveButtonTitle:@"report innapropriate"
-                                                   otherButtonTitles:@"block user",
-                                 @"copy profile url", nil];
+                                                   cancelButtonTitle:@"Cancel"
+                                              destructiveButtonTitle:@"Report Inappropriate"
+                                                   otherButtonTitles:@"Block User",
+                                 @"Copy Profile URL", nil];
     
-    popupQuery.actionSheetStyle = UIActionSheetStyleBlackOpaque; [popupQuery showInView:self.view];
+    [popupQuery showFromBarButtonItem:sender animated:YES];
+}
+
+- (IBAction)editButtonPressed:(id)sender
+{
+    [self performSegueWithIdentifier:@"toEditProfile" sender:self];
 }
 
 -(void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(int)buttonIndex
 {
-    if (buttonIndex == 0) {
+    if (buttonIndex == 0)
+    {
         NSLog(@"Report Button Clicked");
-    } else if (buttonIndex == 1) {
+    }
+    else if (buttonIndex == 1)
+    {
         NSLog(@"Block button 1 Clicked");
-    } else if (buttonIndex == 2) {
+    }
+    else if (buttonIndex == 2)
+    {
         NSLog(@"Copy Profile Button 2 Clicked");
-    } else if (buttonIndex == 3) {
+    }
+    else if (buttonIndex == 3)
+    {
         NSLog(@"Cancel Button Clicked");
     }
 }
@@ -130,12 +127,6 @@
         menuViewController.transitioningDelegate = (id <UIViewControllerTransitioningDelegate>)[VMenuViewControllerTransitionDelegate new];
         menuViewController.modalPresentationStyle = UIModalPresentationCustom;
     }
-}
-
-- (void)didReceiveMemoryWarning
-{
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
 }
 
 @end

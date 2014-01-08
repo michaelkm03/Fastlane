@@ -18,50 +18,19 @@
 
 @property (nonatomic, readwrite) IBOutlet UIImageView* profileImageView;
 @property (nonatomic, readwrite) IBOutlet UIButton* headerButton;
+@property (weak, nonatomic) IBOutlet UIButton *cameraButton;
 
 @end
 
 @implementation VProfileEditViewController
-
-- (IBAction)cancel
-{
-    NSLog(@"Cancel button pressed");
-    [self.navigationController popViewControllerAnimated:YES];
-}
-
-- (IBAction)done
-{
-    // TODO: Save and send profile details to the server
-    NSLog(@"Done button pressed");
-    BOOL success = NO;
-    if (success)
-    {
-        [self.navigationController popViewControllerAnimated:YES];
-    }
-    else
-    {
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Could not save profile data"
-                                                        message:@""
-                                                       delegate:nil
-                                              cancelButtonTitle:@"OK"
-                                              otherButtonTitles:nil];
-        [alert show];
-    }
-}
-
-- (IBAction)takePicture:(id)sender
-{
-    NSLog(@"Picture button pressed");
-    UIImagePickerController* controller = [[UIImagePickerController alloc] init];
-    controller.delegate = self;
-    [self presentViewController:controller animated:YES completion:nil];
-}
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
     
+    self.cameraButton.hidden = ![UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera];
+
     // Set profile data - returns a BOOL
     [self setProfileData];
     
@@ -94,7 +63,6 @@
     self.headerButton.layer.rasterizationScale = [UIScreen mainScreen].scale;
     self.headerButton.layer.shouldRasterize = YES;
     self.headerButton.clipsToBounds = YES;
-    
 }
 
 - (void)setTableProperties
@@ -163,20 +131,68 @@
     [self.view endEditing:YES];
 }
 
+- (IBAction)cancel:(id)sender
+{
+    NSLog(@"Cancel button pressed");
+    [self.navigationController popViewControllerAnimated:YES];
+}
+
+- (IBAction)done:(id)sender
+{
+    // TODO: Save and send profile details to the server
+    NSLog(@"Done button pressed");
+    BOOL success = NO;
+    if (success)
+    {
+        [self.navigationController popViewControllerAnimated:YES];
+    }
+    else
+    {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Could not save profile data"
+                                                        message:@""
+                                                       delegate:nil
+                                              cancelButtonTitle:@"OK"
+                                              otherButtonTitles:nil];
+        [alert show];
+    }
+}
+
+- (IBAction)takePicture:(id)sender
+{
+    UIImagePickerController* controller = [[UIImagePickerController alloc] init];
+    
+    controller.delegate = self;
+    controller.sourceType = UIImagePickerControllerSourceTypeCamera;
+    controller.cameraCaptureMode = UIImagePickerControllerCameraCaptureModePhoto;
+    controller.allowsEditing = YES;
+    
+    [self presentViewController:controller animated:YES completion:nil];
+}
+
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info
 {
+    NSString *mediaType = info[UIImagePickerControllerMediaType];
+    UIImage *originalImage, *editedImage, *imageToSave;
     
+    // Handle a still image capture
+    if (CFStringCompare ((CFStringRef) mediaType, kUTTypeImage, 0) == kCFCompareEqualTo)
+    {
+        editedImage = (UIImage *)info[UIImagePickerControllerEditedImage];
+        originalImage = (UIImage *)info[UIImagePickerControllerOriginalImage];
+        
+        if (editedImage)
+            imageToSave = editedImage;
+        else
+            imageToSave = originalImage;
+        
+    }
+    
+    [[picker parentViewController] dismissViewControllerAnimated:YES completion:nil];
 }
 
 - (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker
 {
-    
-}
-
-- (void)didReceiveMemoryWarning
-{
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
+    [[picker parentViewController] dismissViewControllerAnimated:YES completion:nil];
 }
 
 @end
