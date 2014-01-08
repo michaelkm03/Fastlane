@@ -12,11 +12,13 @@
 #import "UIImage+ImageEffects.h"
 
 @interface VProfileViewController () <UIActionSheetDelegate, UITextFieldDelegate>
+
 @property (nonatomic, readwrite) IBOutlet UIImageView* backgroundImageView;
 
 @property (nonatomic, readwrite) IBOutlet UILabel* nameLabel;
-@property (nonatomic, readwrite) IBOutlet UILabel* descriptionLabel;
+@property (nonatomic, readwrite) IBOutlet UILabel* taglineLabel;
 @property (nonatomic, readwrite) IBOutlet UILabel* locationLabel;
+
 @end
 
 @implementation VProfileViewController
@@ -38,20 +40,18 @@
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
     
-    // FIXME: SET USER LOGGED IN
-    self.userIsLoggedInUser = YES;
+    // TODO: Check if the profile belongs to the logged in user
+    self.profileBelongsToUser = YES;
     
-    // Set label properties, how it looks, etc.
+    // Set label properties: how it looks, etc.
     [self setLabelProperties];
     
-    // FIXME: Set the background here using core data
-    UIImage* background = [UIImage imageNamed:@"avatar.jpg"];
-    self.backgroundImageView.image = background;
-    self.backgroundImageView.contentMode = UIViewContentModeScaleAspectFill;
-    // FIXME: Add code to set the labels here
-
-    if (self.userIsLoggedInUser)
+    // Set profile data: name, username, etc. (returns a BOOL)
+    [self setProfileData];
+    
+    if (self.profileBelongsToUser)
     {
+        // Do nothing - edit button is already in Storyboard
     }
     else
     {
@@ -62,27 +62,43 @@
     }
 }
 
+- (BOOL)setProfileData
+{
+    // TODO: Set the background here using core data
+    UIImage* background = [UIImage imageNamed:@"avatar.jpg"];
+    self.backgroundImageView.image = background;
+    self.backgroundImageView.contentMode = UIViewContentModeScaleAspectFill;
+    
+    // TODO: Add code to set the labels here
+    self.nameLabel.text = @"NAME HERE";
+    self.taglineLabel.text = @"TAGLINE HERE";
+    self.locationLabel.text = @"LOCATION HERE";
+    
+    return YES;
+}
+
 - (void)setLabelProperties
 {
     UIColor* transparentGray = [UIColor colorWithRed:50.0/255.0 green:50.0/255.0 blue:50.0/255.0 alpha:0.6];
     self.nameLabel.backgroundColor = transparentGray;
-    self.descriptionLabel.backgroundColor = transparentGray;
+    self.taglineLabel.backgroundColor = transparentGray;
     self.locationLabel.backgroundColor = transparentGray;
 }
 
 -(void)composeButtonPressed
 {
+    // TODO: Should go to compose message view
     NSLog(@"Compose Button Clicked");
 }
 
 -(void)userActionButtonPressed
 {
-    UIActionSheet *popupQuery = [[UIActionSheet alloc] initWithTitle:@"Title"
+    UIActionSheet *popupQuery = [[UIActionSheet alloc] initWithTitle:@""
                                                             delegate:self
-                                                   cancelButtonTitle:@"Cancel Button"
-                                              destructiveButtonTitle:@"Destructive Button"
-                                                   otherButtonTitles:@"Other Button 1",
-                                 @"Other Button 2", nil];
+                                                   cancelButtonTitle:@"cancel"
+                                              destructiveButtonTitle:@"report innapropriate"
+                                                   otherButtonTitles:@"block user",
+                                 @"copy profile url", nil];
     
     popupQuery.actionSheetStyle = UIActionSheetStyleBlackOpaque; [popupQuery showInView:self.view];
 }
@@ -90,20 +106,14 @@
 -(void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(int)buttonIndex
 {
     if (buttonIndex == 0) {
-        NSLog(@"Destructive Button Clicked");
+        NSLog(@"Report Button Clicked");
     } else if (buttonIndex == 1) {
-        NSLog(@"Other Button 1 Clicked");
+        NSLog(@"Block button 1 Clicked");
     } else if (buttonIndex == 2) {
-        NSLog(@"Other Button 2 Clicked");
+        NSLog(@"Copy Profile Button 2 Clicked");
     } else if (buttonIndex == 3) {
         NSLog(@"Cancel Button Clicked");
     }
-}
-
-- (void)didReceiveMemoryWarning
-{
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
 }
 
 #pragma mark - Navigation
@@ -116,6 +126,12 @@
         menuViewController.transitioningDelegate = (id <UIViewControllerTransitioningDelegate>)[VMenuViewControllerTransitionDelegate new];
         menuViewController.modalPresentationStyle = UIModalPresentationCustom;
     }
+}
+
+- (void)didReceiveMemoryWarning
+{
+    [super didReceiveMemoryWarning];
+    // Dispose of any resources that can be recreated.
 }
 
 @end

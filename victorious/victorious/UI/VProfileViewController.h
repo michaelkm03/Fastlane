@@ -12,6 +12,6 @@
 
 + (VProfileViewController *)sharedProfileViewController;
 
-@property (nonatomic, readwrite) BOOL userIsLoggedInUser;
+@property (nonatomic, readwrite) BOOL profileBelongsToUser;
 
 @end
