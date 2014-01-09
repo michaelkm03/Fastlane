@@ -7,7 +7,6 @@
 //
 
 #import "VMedia.h"
-#import "Message.h"
 
 
 @implementation VMedia
