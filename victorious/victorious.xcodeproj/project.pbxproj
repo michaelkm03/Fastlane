@@ -25,6 +25,7 @@
 		8378622718728C89000BF84F /* VFeaturedStreamsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8378622418728C89000BF84F /* VFeaturedStreamsViewController.m */; };
 		8378622818728C89000BF84F /* VFeaturedViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8378622618728C89000BF84F /* VFeaturedViewController.m */; };
 		838511C418762DF3007E0316 /* VInboxBadgeLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 838511C318762DF3007E0316 /* VInboxBadgeLabel.m */; };
+		838B1E9B187E871C0052FAE9 /* VCreatePollViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 838B1E9A187E871C0052FAE9 /* VCreatePollViewController.m */; };
 		83ABAFAF18709DE30069556C /* Roboto-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 83ABAFA218709DE30069556C /* Roboto-Light.ttf */; };
 		83B5A1241876447800659C73 /* Roboto-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 83188D64187386D000F17777 /* Roboto-Regular.ttf */; };
 		83B5A12C18765E1600659C73 /* VRootNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 83B5A12B18765E1600659C73 /* VRootNavigationController.m */; };
@@ -167,6 +168,9 @@
 		8378622618728C89000BF84F /* VFeaturedViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VFeaturedViewController.m; sourceTree = "<group>"; };
 		838511C218762DF3007E0316 /* VInboxBadgeLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VInboxBadgeLabel.h; sourceTree = "<group>"; };
 		838511C318762DF3007E0316 /* VInboxBadgeLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VInboxBadgeLabel.m; sourceTree = "<group>"; };
+		838B1E99187E871C0052FAE9 /* VCreatePollViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VCreatePollViewController.h; sourceTree = "<group>"; };
+		838B1E9A187E871C0052FAE9 /* VCreatePollViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VCreatePollViewController.m; sourceTree = "<group>"; };
+		838B1E9C187E87640052FAE9 /* VCreateSequenceDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VCreateSequenceDelegate.h; sourceTree = "<group>"; };
 		83ABAFA218709DE30069556C /* Roboto-Light.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Roboto-Light.ttf"; sourceTree = "<group>"; };
 		83B5A12A18765E1600659C73 /* VRootNavigationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VRootNavigationController.h; sourceTree = "<group>"; };
 		83B5A12B18765E1600659C73 /* VRootNavigationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VRootNavigationController.m; sourceTree = "<group>"; };
@@ -256,7 +260,7 @@
 		BE391E52187CBE500088D902 /* VCategory+Fetcher.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "VCategory+Fetcher.m"; sourceTree = "<group>"; };
 		BE391E54187CC4DC0088D902 /* VAbstractStreamViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VAbstractStreamViewController.h; sourceTree = "<group>"; };
 		BE391E55187CC4DC0088D902 /* VAbstractStreamViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VAbstractStreamViewController.m; sourceTree = "<group>"; };
-		BE5C733D187E348900A3340D /* victoriOS 3.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = file; path = "victoriOS 3.xcdatamodel"; sourceTree = "<group>"; };
+		BE5C733D187E348900A3340D /* victoriOS 3.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "victoriOS 3.xcdatamodel"; sourceTree = "<group>"; };
 		BE5C733E187E36CF00A3340D /* VInteraction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VInteraction.h; sourceTree = "<group>"; };
 		BE5C733F187E36CF00A3340D /* VInteraction.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VInteraction.m; sourceTree = "<group>"; };
 		BE5C7341187E36D000A3340D /* VAsset.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VAsset.h; sourceTree = "<group>"; };
@@ -474,8 +478,11 @@
 		83DC42F7187CCDCE00E768E2 /* Create */ = {
 			isa = PBXGroup;
 			children = (
+				838B1E9C187E87640052FAE9 /* VCreateSequenceDelegate.h */,
 				83DC42F8187CCE3100E768E2 /* VCreateViewController.h */,
 				83DC42F9187CCE3100E768E2 /* VCreateViewController.m */,
+				838B1E99187E871C0052FAE9 /* VCreatePollViewController.h */,
+				838B1E9A187E871C0052FAE9 /* VCreatePollViewController.m */,
 			);
 			name = Create;
 			sourceTree = "<group>";
@@ -1027,6 +1034,7 @@
 				8364C70B1869500D0028C1ED /* VMenuViewController.m in Sources */,
 				BE692B51186E60B300C71336 /* VSequencePlayerViewController.m in Sources */,
 				83F38277186BE62300A866A1 /* VMenuTableViewController.m in Sources */,
+				838B1E9B187E871C0052FAE9 /* VCreatePollViewController.m in Sources */,
 				BE5C737C187E376500A3340D /* VMessage.m in Sources */,
 				BE5C736D187E36E800A3340D /* VConversation.m in Sources */,
 				BE171E111868C211004E5202 /* VComment+RestKit.m in Sources */,

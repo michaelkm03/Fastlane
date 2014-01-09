@@ -28,14 +28,14 @@ CGFloat VCreateViewControllerLargePadding = 20;
 @property (weak, nonatomic) UILabel *characterCountLabel;
 @property (strong, nonatomic) UIImagePickerController *imagePickerController;
 @property (nonatomic) VCreateViewControllerType type;
-@property (weak, nonatomic) id<VCreateViewControllerDelegate> delegate;
+@property (weak, nonatomic) id<VCreateSequenceDelegate> delegate;
 @property (strong, nonatomic) NSData *mediaData;
 @property (strong, nonatomic) NSString *mediaType;
 @end
 
 @implementation VCreateViewController
 
-- (instancetype)initWithType:(VCreateViewControllerType)type andDelegate:(id<VCreateViewControllerDelegate>)delegate
+- (instancetype)initWithType:(VCreateViewControllerType)type andDelegate:(id<VCreateSequenceDelegate>)delegate
 {
     if(!(self = [super init]))
     {
@@ -61,12 +61,6 @@ CGFloat VCreateViewControllerLargePadding = 20;
         case VCreateViewControllerTypePhotoAndVideo:
             self.title = NSLocalizedString(@"New Post", @"New post(photo or video) title");
             break;
-        case VCreateViewControllerTypePoll:
-            self.title = NSLocalizedString(@"New Poll", @"New poll title");
-            break;
-        case VCreateViewControllerTypeForum:
-            self.title = NSLocalizedString(@"New Topic", @"New topic(forum) title");
-            break;
     }
 
     CGSize mediaViewSize = CGSizeMake(200, 200);
@@ -91,7 +85,7 @@ CGFloat VCreateViewControllerLargePadding = 20;
     self.mediaButton = mediaButton;
 
     UILabel *mediaLabel = [UILabel autoLayoutView];
-    mediaLabel.textColor = [[VThemeManager sharedThemeManager] themedColorForKeyPath:@"theme.color.post.text"];
+    mediaLabel.textColor = [[VThemeManager sharedThemeManager] themedColorForKeyPath:@"theme.color.text.post.mediaLabel"];
     [mediaView addSubview:mediaLabel];
     [mediaLabel pinEdge:NSLayoutAttributeTop toEdge:NSLayoutAttributeBottom ofItem:mediaButton inset:VCreateViewControllerLargePadding];
     [mediaLabel centerInContainerOnAxis:NSLayoutAttributeCenterX];
@@ -106,8 +100,6 @@ CGFloat VCreateViewControllerLargePadding = 20;
             mediaLabel.text = NSLocalizedString(@"Add a video", @"Add video label");
             break;
         case VCreateViewControllerTypePhotoAndVideo:
-        case VCreateViewControllerTypePoll:
-        case VCreateViewControllerTypeForum:
             mediaLabel.text = NSLocalizedString(@"Add a photo or video", @"Add photo or video label");
             break;
     }
@@ -132,8 +124,8 @@ CGFloat VCreateViewControllerLargePadding = 20;
     UITextView *textView = [UITextView autoLayoutView];
     textView.delegate = self;
     textView.returnKeyType = UIReturnKeyDone;
-    textView.textColor = [[VThemeManager sharedThemeManager] themedColorForKeyPath:@"theme.color.post.text"];
-    textView.layer.borderColor = [[[VThemeManager sharedThemeManager] themedColorForKeyPath:@"theme.color.post.text.border"] CGColor];
+    textView.textColor = [[VThemeManager sharedThemeManager] themedColorForKeyPath:@"theme.color.text.post"];
+    textView.layer.borderColor = [[[VThemeManager sharedThemeManager] themedColorForKeyPath:@"theme.color.post.input.border"] CGColor];
     textView.layer.borderWidth = 1;
     [self.view addSubview:textView];
     [textView pinEdge:NSLayoutAttributeTop toEdge:NSLayoutAttributeBottom ofItem:mediaLabel inset:VCreateViewControllerLargePadding];
@@ -145,7 +137,7 @@ CGFloat VCreateViewControllerLargePadding = 20;
     UIButton *postButton = [UIButton buttonWithType:UIButtonTypeSystem];
     [postButton addTarget:self action:@selector(postButtonAction:) forControlEvents:UIControlEventTouchUpInside];
     postButton.translatesAutoresizingMaskIntoConstraints = NO;
-    postButton.tintColor = [[VThemeManager sharedThemeManager] themedColorForKeyPath:@"theme.color.post.postButton.text"];
+    postButton.tintColor = [[VThemeManager sharedThemeManager] themedColorForKeyPath:@"theme.color.text.post.postButton"];
     postButton.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKeyPath:@"theme.color.post.postButton.background"];
     [postButton setTitle:NSLocalizedString(@"POST IT", @"Post button") forState:UIControlStateNormal];
     postButton.titleLabel.font = [[VThemeManager sharedThemeManager] themedFontForKeyPath:@"theme.font.post.postButton"];
@@ -155,7 +147,7 @@ CGFloat VCreateViewControllerLargePadding = 20;
     self.postButton = postButton;
 
     UILabel *characterCountLabel = [UILabel autoLayoutView];
-    characterCountLabel.textColor = [[VThemeManager sharedThemeManager] themedColorForKeyPath:@"theme.color.post.text"];
+    characterCountLabel.textColor = [[VThemeManager sharedThemeManager] themedColorForKeyPath:@"theme.color.text.post"];
     characterCountLabel.text = @"0";
     [self.view addSubview:characterCountLabel];
     [characterCountLabel pinEdges:JRTViewPinRightEdge toSameEdgesOfView:textView inset:VCreateViewControllerPadding];
@@ -236,8 +228,6 @@ CGFloat VCreateViewControllerLargePadding = 20;
             imagePickerController.mediaTypes = @[(NSString *)kUTTypeMovie];
             break;
         case VCreateViewControllerTypePhotoAndVideo:
-        case VCreateViewControllerTypePoll:
-        case VCreateViewControllerTypeForum:
             imagePickerController.mediaTypes = @[(NSString *)kUTTypeImage, (NSString *)kUTTypeMovie];
             break;
     }
@@ -284,11 +274,11 @@ CGFloat VCreateViewControllerLargePadding = 20;
     NSUInteger characterCount = [textView.text length];
     if(characterCount > VConstantsMessageLength)
     {
-        self.characterCountLabel.textColor = [[VThemeManager sharedThemeManager] themedColorForKeyPath:@"theme.color.post.text.count.invalid"];
+        self.characterCountLabel.textColor = [[VThemeManager sharedThemeManager] themedColorForKeyPath:@"theme.color.text.post.count.invalid"];
     }
     else
     {
-        self.characterCountLabel.textColor = [[VThemeManager sharedThemeManager] themedColorForKeyPath:@"theme.color.post.text.count"];
+        self.characterCountLabel.textColor = [[VThemeManager sharedThemeManager] themedColorForKeyPath:@"theme.color.text.post.count"];
     }
     self.characterCountLabel.text = [NSString stringWithFormat:@"%lu", (unsigned long)characterCount];
     [self validatePostButtonState];

@@ -22,6 +22,7 @@
 #import "UIActionSheet+BBlock.h"
 #import "BBlock.h"
 #import "VCreateViewController.h"
+#import "VCreatePollViewController.h"
 
 typedef NS_ENUM(NSInteger, VStreamScope)
 {
@@ -33,7 +34,7 @@ typedef NS_ENUM(NSInteger, VStreamScope)
 };
 
 @interface VStreamsTableViewController ()
-<VCreateViewControllerDelegate>
+<VCreateSequenceDelegate>
 @property (nonatomic, strong) VFeaturedStreamsViewController* featuredStreamsViewController;
 
 @end
@@ -114,8 +115,7 @@ typedef NS_ENUM(NSInteger, VStreamScope)
          }
          else if([[actionSheet buttonTitleAtIndex:buttonIndex] isEqualToString:pollTitle])
          {
-             VCreateViewController *createViewController =
-             [[VCreateViewController alloc] initWithType:VCreateViewControllerTypePoll andDelegate:self];
+             VCreatePollViewController *createViewController = [[VCreatePollViewController alloc] initWithDelegate:self];
              [wself presentViewController:[[UINavigationController alloc] initWithRootViewController:createViewController] animated:YES completion:nil];
          }
      }];
@@ -341,9 +341,9 @@ typedef NS_ENUM(NSInteger, VStreamScope)
     }
 }
 
-#pragma mark - VCreateViewControllerDelegate
+#pragma mark - VCreateSequenceDelegate
 
-- (void)createViewController:(VCreateViewController *)viewController shouldPostWithMessage:(NSString *)message data:(NSData *)data mediaType:(NSString *)mediaType
+- (void)createViewController:(UIViewController *)viewController shouldPostWithMessage:(NSString *)message data:(NSData *)data mediaType:(NSString *)mediaType
 {
     NSLog(@"%@", message);
 }
