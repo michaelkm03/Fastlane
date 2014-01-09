@@ -34,7 +34,6 @@ typedef NS_ENUM(NSInteger, VStreamScope)
 };
 
 @interface VStreamsTableViewController ()
-<VCreateSequenceDelegate>
 @property (nonatomic, strong) VFeaturedStreamsViewController* featuredStreamsViewController;
 
 @end

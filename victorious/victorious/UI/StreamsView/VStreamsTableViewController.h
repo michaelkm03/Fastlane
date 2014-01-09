@@ -7,9 +7,13 @@
 //
 
 #import "VAbstractStreamViewController.h"
+#import "VCreateSequenceDelegate.h"
 
 @interface VStreamsTableViewController : VAbstractStreamViewController
+<VCreateSequenceDelegate>
 
 + (instancetype)sharedStreamsTableViewController;
+
+- (IBAction)addButtonAction:(id)sender;
 
 @end

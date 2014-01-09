@@ -230,7 +230,7 @@ CGFloat VCreatePollViewControllerLargePadding = 20;
     leftRemoveMediaButton.tintColor = [[VThemeManager sharedThemeManager] themedColorForKeyPath:@"theme.color.post.media.remove"];
     leftRemoveMediaButton.translatesAutoresizingMaskIntoConstraints = NO;
     [leftRemoveMediaButton setImage:leftRemoveMediaButtonImage forState:UIControlStateNormal];
-    [leftRemoveMediaButton addTarget:self action:@selector(oneUpRemoveMediaButtonAction:) forControlEvents:UIControlEventTouchUpInside];
+    [leftRemoveMediaButton addTarget:self action:@selector(leftRemoveMediaButtonAction:) forControlEvents:UIControlEventTouchUpInside];
     [leftPreviewImageView addSubview:leftRemoveMediaButton];
     [leftRemoveMediaButton constrainToSize:leftRemoveMediaButtonImage.size];
     [leftRemoveMediaButton pinToSuperviewEdges:JRTViewPinTopEdge|JRTViewPinLeftEdge inset:VCreatePollViewControllerPadding];
@@ -246,7 +246,7 @@ CGFloat VCreatePollViewControllerLargePadding = 20;
     rightRemoveMediaButton.tintColor = [[VThemeManager sharedThemeManager] themedColorForKeyPath:@"theme.color.post.media.remove"];
     rightRemoveMediaButton.translatesAutoresizingMaskIntoConstraints = NO;
     [rightRemoveMediaButton setImage:rightRemoveMediaButtonImage forState:UIControlStateNormal];
-    [rightRemoveMediaButton addTarget:self action:@selector(oneUpRemoveMediaButtonAction:) forControlEvents:UIControlEventTouchUpInside];
+    [rightRemoveMediaButton addTarget:self action:@selector(rightRemoveMediaButtonAction:) forControlEvents:UIControlEventTouchUpInside];
     [rightPreviewImageView addSubview:rightRemoveMediaButton];
     [rightRemoveMediaButton constrainToSize:rightRemoveMediaButtonImage.size];
     [rightRemoveMediaButton pinToSuperviewEdges:JRTViewPinTopEdge|JRTViewPinLeftEdge inset:VCreatePollViewControllerPadding];
@@ -264,6 +264,12 @@ CGFloat VCreatePollViewControllerLargePadding = 20;
 }
 
 - (void)validatePostButtonState{
+    if(!self.leftMediaData)
+    {
+        [self.postButton setEnabled:NO];
+        return;
+    }
+
     if([self.questionTextField.text length] == 0)
     {
         [self.postButton setEnabled:NO];
@@ -342,6 +348,7 @@ CGFloat VCreatePollViewControllerLargePadding = 20;
     }
 
     [self updateViewState];
+    [self validatePostButtonState];
 }
 
 - (void)clearLeftMedia
@@ -361,6 +368,7 @@ CGFloat VCreatePollViewControllerLargePadding = 20;
     else
     {
         [self updateViewState];
+        [self validatePostButtonState];
     }
 }
 
@@ -370,6 +378,7 @@ CGFloat VCreatePollViewControllerLargePadding = 20;
     self.rightMediaType = nil;
     self.rightPreviewImageView.image = nil;
     [self updateViewState];
+    [self validatePostButtonState];
 }
 
 #pragma mark - Actions
@@ -379,12 +388,12 @@ CGFloat VCreatePollViewControllerLargePadding = 20;
     [self clearLeftMedia];
 }
 
-- (void)twoUpLeftRemoveMediaButtonAction:(id)sender
+- (void)leftRemoveMediaButtonAction:(id)sender
 {
     [self clearLeftMedia];
 }
 
-- (void)twoUpRightRemoveMediaButtonAction:(id)sender
+- (void)rightRemoveMediaButtonAction:(id)sender
 {
     [self clearRightMedia];
 }

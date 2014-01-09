@@ -8,6 +8,7 @@
 
 #import "VForumStreamTableViewController.h"
 #import "VStreamsTableViewController+Protected.h"
+#import "VCreateTopicViewController.h"
 
 @implementation VForumStreamTableViewController
 
@@ -21,6 +22,12 @@
     });
     
     return streamsTableViewController;
+}
+
+- (IBAction)addButtonAction:(id)sender
+{
+    VCreateTopicViewController *createViewController = [[VCreateTopicViewController alloc] initWithDelegate:self];
+    [self presentViewController:[[UINavigationController alloc] initWithRootViewController:createViewController] animated:YES completion:nil];
 }
 
 //#pragma mark - Segue Lifecycle
