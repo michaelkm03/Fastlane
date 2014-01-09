@@ -92,6 +92,9 @@
 		BE5C7376187E36E800A3340D /* VSequence.m in Sources */ = {isa = PBXBuildFile; fileRef = BE5C7375187E36E800A3340D /* VSequence.m */; };
 		BE5C7379187E36E800A3340D /* VNodeAction.m in Sources */ = {isa = PBXBuildFile; fileRef = BE5C7378187E36E800A3340D /* VNodeAction.m */; };
 		BE5C737C187E376500A3340D /* VMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = BE5C737B187E376500A3340D /* VMessage.m */; };
+		BE5C7382187E37C700A3340D /* VMessage+RestKit.m in Sources */ = {isa = PBXBuildFile; fileRef = BE5C7381187E37C700A3340D /* VMessage+RestKit.m */; };
+		BE5C7385187E37D400A3340D /* VMedia+RestKit.m in Sources */ = {isa = PBXBuildFile; fileRef = BE5C7384187E37D400A3340D /* VMedia+RestKit.m */; };
+		BE5C7388187E37E500A3340D /* VConversation+RestKit.m in Sources */ = {isa = PBXBuildFile; fileRef = BE5C7387187E37E500A3340D /* VConversation+RestKit.m */; };
 		BE692B23186E5ED800C71336 /* VStreamDoublePollCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = BE692B17186E5ED800C71336 /* VStreamDoublePollCell.xib */; };
 		BE692B24186E5ED800C71336 /* VStreamPollCell.m in Sources */ = {isa = PBXBuildFile; fileRef = BE692B19186E5ED800C71336 /* VStreamPollCell.m */; };
 		BE692B25186E5ED800C71336 /* VStreamPollCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = BE692B1A186E5ED800C71336 /* VStreamPollCell.xib */; };
@@ -288,6 +291,12 @@
 		BE5C7378187E36E800A3340D /* VNodeAction.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VNodeAction.m; sourceTree = "<group>"; };
 		BE5C737A187E376500A3340D /* VMessage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VMessage.h; sourceTree = "<group>"; };
 		BE5C737B187E376500A3340D /* VMessage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VMessage.m; sourceTree = "<group>"; };
+		BE5C7380187E37C700A3340D /* VMessage+RestKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "VMessage+RestKit.h"; sourceTree = "<group>"; };
+		BE5C7381187E37C700A3340D /* VMessage+RestKit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "VMessage+RestKit.m"; sourceTree = "<group>"; };
+		BE5C7383187E37D400A3340D /* VMedia+RestKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "VMedia+RestKit.h"; sourceTree = "<group>"; };
+		BE5C7384187E37D400A3340D /* VMedia+RestKit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "VMedia+RestKit.m"; sourceTree = "<group>"; };
+		BE5C7386187E37E500A3340D /* VConversation+RestKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "VConversation+RestKit.h"; sourceTree = "<group>"; };
+		BE5C7387187E37E500A3340D /* VConversation+RestKit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "VConversation+RestKit.m"; sourceTree = "<group>"; };
 		BE692B17186E5ED800C71336 /* VStreamDoublePollCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VStreamDoublePollCell.xib; sourceTree = "<group>"; };
 		BE692B18186E5ED800C71336 /* VStreamPollCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VStreamPollCell.h; sourceTree = "<group>"; };
 		BE692B19186E5ED800C71336 /* VStreamPollCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VStreamPollCell.m; sourceTree = "<group>"; };
@@ -614,6 +623,12 @@
 				BE171DD21868C211004E5202 /* VStatSequence+RestKit.m */,
 				BE171DD31868C211004E5202 /* VUser+RestKit.h */,
 				BE171DD41868C211004E5202 /* VUser+RestKit.m */,
+				BE5C7386187E37E500A3340D /* VConversation+RestKit.h */,
+				BE5C7387187E37E500A3340D /* VConversation+RestKit.m */,
+				BE5C7380187E37C700A3340D /* VMessage+RestKit.h */,
+				BE5C7381187E37C700A3340D /* VMessage+RestKit.m */,
+				BE5C7383187E37D400A3340D /* VMedia+RestKit.h */,
+				BE5C7384187E37D400A3340D /* VMedia+RestKit.m */,
 			);
 			path = Mappings;
 			sourceTree = "<group>";
@@ -943,6 +958,7 @@
 				3F91991518761D1C0055FE37 /* VAcknowledgementsViewController.m in Sources */,
 				3F91990B18761B0D0055FE37 /* VAboutUsViewController.m in Sources */,
 				BE171E191868C211004E5202 /* VStatInteraction+RestKit.m in Sources */,
+				BE5C7388187E37E500A3340D /* VConversation+RestKit.m in Sources */,
 				BE171E101868C211004E5202 /* VCategory+RestKit.m in Sources */,
 				BE5C7352187E36D000A3340D /* VCategory.m in Sources */,
 				3F91991A187CAF310055FE37 /* VMessageViewController.m in Sources */,
@@ -979,10 +995,12 @@
 				BE171E161868C211004E5202 /* VRule+RestKit.m in Sources */,
 				BE171E1E1868C211004E5202 /* VErrorMessage.m in Sources */,
 				BE171E0C1868C211004E5202 /* VNode+Fetcher.m in Sources */,
+				BE5C7382187E37C700A3340D /* VMessage+RestKit.m in Sources */,
 				BE5C7367187E36E800A3340D /* VUser.m in Sources */,
 				83B5A12C18765E1600659C73 /* VRootNavigationController.m in Sources */,
 				BE5C7361187E36E800A3340D /* VStatInteraction.m in Sources */,
 				3FF8B79E1868EF6C00806EA0 /* VLoginViewController.m in Sources */,
+				BE5C7385187E37D400A3340D /* VMedia+RestKit.m in Sources */,
 				BE5C7379187E36E800A3340D /* VNodeAction.m in Sources */,
 				BE171E1F1868C211004E5202 /* VObjectManager+Comment.m in Sources */,
 				BE171E141868C211004E5202 /* VNode+RestKit.m in Sources */,
