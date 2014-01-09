@@ -8,11 +8,12 @@
 
 #import "VProfileEditViewController.h"
 #import "UIImage+ImageEffects.h"
+#import "VUser.h"
 
 @interface VProfileEditViewController ()  <UITextFieldDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate>
 
 @property (nonatomic, weak) IBOutlet UITextField* nameTextField;
-@property (nonatomic, weak) IBOutlet UITextField* usernameTextField;
+@property (nonatomic, weak) IBOutlet UILabel* usernameLabel;
 @property (nonatomic, weak) IBOutlet UITextField* locationTextField;
 @property (nonatomic, weak) IBOutlet UITextField* taglineTextField;
 
@@ -30,23 +31,43 @@
     
     [self setProfileData];
     [self setHeader];
-    [self setTableProperties];
+    
+    [self.nameTextField becomeFirstResponder];
 }
 
-- (BOOL)setProfileData
+- (void)setProfileData
 {
-    // TODO: Set the background here using core data
-    UIImageView* backgroundImageView = [[UIImageView alloc] initWithImage:[[UIImage imageNamed:@"avatar.jpg"] applyLightEffect]];
+    //  Set background image
+    NSMutableURLRequest* imageRequest = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:self.profile.pictureUrl]];
+    [imageRequest addValue:@"image/*" forHTTPHeaderField:@"Accept"];
+    
+    UIImageView* backgroundImageView = [[UIImageView alloc] initWithFrame:self.tableView.backgroundView.frame];
+    [backgroundImageView setImageWithURLRequest:imageRequest
+                               placeholderImage:[[UIImage imageNamed:@"profile_full"] applyLightEffect]
+                                        success:^(NSURLRequest *request , NSHTTPURLResponse *response , UIImage *image )
+                                         {
+                                             [image applyLightEffect];
+                                         }
+                                        failure:nil];
     self.tableView.backgroundView = backgroundImageView;
-    // TODO: Add code to set the text data here
-    return YES;
+
+    //  Pre-populate fields
+    self.nameTextField.text = self.profile.name;
+//    self.locationTextField.text = XXX;
+//    self.taglineTextField.text = XXX;
+
+    //  Set UITextDelegates
+    self.nameTextField.delegate = self;
+    self.locationTextField.delegate = self;
+    self.taglineTextField.delegate = self;
 }
 
 - (void)setHeader
 {
     // Create and set the header
-    self.profileImageView.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin;
-    self.profileImageView.image = [UIImage imageNamed:@"avatar.jpg"];
+//    self.profileImageView.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin;
+    NSURL*  imageURL    =   [NSURL URLWithString:self.profile.pictureUrl];
+    [self.profileImageView setImageWithURL:imageURL placeholderImage:[UIImage imageNamed:@"profile_thumb"]];
     self.profileImageView.layer.masksToBounds = YES;
     self.profileImageView.layer.cornerRadius = 50.0;
     self.profileImageView.layer.rasterizationScale = [UIScreen mainScreen].scale;
@@ -59,24 +80,13 @@
     self.headerButton.layer.shouldRasterize = YES;
     self.headerButton.clipsToBounds = YES;
     self.headerButton.hidden = ![UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera];
-}
-
-- (void)setTableProperties
-{
-    self.tableView.scrollEnabled = NO;
-    self.tableView.opaque = NO;
     
-    self.nameTextField.delegate = self;
-    self.usernameTextField.delegate = self;
-    self.locationTextField.delegate = self;
-    self.taglineTextField.delegate = self;
+//    self.usernameLabel.text = self.profile.username;
 }
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField
 {
     if ([textField isEqual:self.nameTextField])
-        [self.usernameTextField becomeFirstResponder];
-    else if ([textField isEqual:self.usernameTextField])
         [self.locationTextField becomeFirstResponder];
     else if ([textField isEqual:self.locationTextField])
         [self.taglineTextField becomeFirstResponder];
@@ -121,11 +131,10 @@
 
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info
 {
-    NSString* mediaType = info[UIImagePickerControllerMediaType];
     UIImage* imageToSave;
     
     // Handle a still image capture
-    if (CFStringCompare((CFStringRef)mediaType, kUTTypeImage, 0) == kCFCompareEqualTo)
+    if (CFStringCompare((CFStringRef)info[UIImagePickerControllerMediaType], kUTTypeImage, 0) == kCFCompareEqualTo)
         imageToSave = (UIImage *)info[UIImagePickerControllerEditedImage] ?: (UIImage *)info[UIImagePickerControllerOriginalImage];
     
     [[picker parentViewController] dismissViewControllerAnimated:YES completion:nil];
