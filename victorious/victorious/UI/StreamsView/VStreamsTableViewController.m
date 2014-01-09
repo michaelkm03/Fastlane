@@ -33,7 +33,7 @@ typedef NS_ENUM(NSInteger, VStreamScope)
 };
 
 @interface VStreamsTableViewController ()
-
+<VCreateViewControllerDelegate>
 @property (nonatomic, strong) VFeaturedStreamsViewController* featuredStreamsViewController;
 
 @end
@@ -102,17 +102,20 @@ typedef NS_ENUM(NSInteger, VStreamScope)
 
          if([[actionSheet buttonTitleAtIndex:buttonIndex] isEqualToString:videoTitle])
          {
-             VCreateViewController *createViewController = [[VCreateViewController alloc] initWithType:VCreateViewControllerTypeVideo];
+             VCreateViewController *createViewController =
+             [[VCreateViewController alloc] initWithType:VCreateViewControllerTypeVideo andDelegate:self];
              [wself presentViewController:[[UINavigationController alloc] initWithRootViewController:createViewController] animated:YES completion:nil];
          }
          else if([[actionSheet buttonTitleAtIndex:buttonIndex] isEqualToString:photoTitle])
          {
-             VCreateViewController *createViewController = [[VCreateViewController alloc] initWithType:VCreateViewControllerTypePhoto];
+             VCreateViewController *createViewController =
+             [[VCreateViewController alloc] initWithType:VCreateViewControllerTypePhoto andDelegate:self];
              [wself presentViewController:[[UINavigationController alloc] initWithRootViewController:createViewController] animated:YES completion:nil];
          }
          else if([[actionSheet buttonTitleAtIndex:buttonIndex] isEqualToString:pollTitle])
          {
-             VCreateViewController *createViewController = [[VCreateViewController alloc] initWithType:VCreateViewControllerTypePoll];
+             VCreateViewController *createViewController =
+             [[VCreateViewController alloc] initWithType:VCreateViewControllerTypePoll andDelegate:self];
              [wself presentViewController:[[UINavigationController alloc] initWithRootViewController:createViewController] animated:YES completion:nil];
          }
      }];
@@ -336,6 +339,13 @@ typedef NS_ENUM(NSInteger, VStreamScope)
             [self.refreshControl endRefreshing];
         }
     }
+}
+
+#pragma mark - VCreateViewControllerDelegate
+
+- (void)createViewController:(VCreateViewController *)viewController shouldPostWithMessage:(NSString *)message data:(NSData *)data mediaType:(NSString *)mediaType
+{
+    NSLog(@"%@", message);
 }
 
 @end

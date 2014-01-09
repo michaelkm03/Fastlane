@@ -14,8 +14,18 @@ typedef NS_ENUM(NSUInteger, VCreateViewControllerType){
     VCreateViewControllerTypeForum
 };
 
+@protocol VCreateViewControllerDelegate;
+
 @interface VCreateViewController : UIViewController
 
-- (instancetype)initWithType:(VCreateViewControllerType)type;
+- (instancetype)initWithType:(VCreateViewControllerType)type andDelegate:(id<VCreateViewControllerDelegate>)delegate;
+
+@end
+
+@protocol VCreateViewControllerDelegate <NSObject>
+
+- (void)createViewController:(VCreateViewController *)viewController
+       shouldPostWithMessage:(NSString *)message data:(NSData *)data
+                   mediaType:(NSString *)mediaType;
 
 @end
