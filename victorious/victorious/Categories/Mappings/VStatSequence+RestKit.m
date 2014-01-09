@@ -63,7 +63,7 @@
 {
     return [RKResponseDescriptor responseDescriptorWithMapping:[VStatSequence entityMapping]
                                                         method:RKRequestMethodPOST
-                                                   pathPattern:@"api/game/create"
+                                                   pathPattern:@"/api/game/create"
                                                        keyPath:@"payload"
                                                    statusCodes:RKStatusCodeIndexSetForClass(RKStatusCodeClassSuccessful)];
 }

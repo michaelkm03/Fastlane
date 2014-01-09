@@ -19,18 +19,18 @@
     
     return [self loadNextPageOfConversations:^(NSArray *resultObjects)
             {
-                VLog(@"Initial Conversations Loaded:");
+                VLog(@"Initial Conversations Loaded: %@", resultObjects);
             }
                                    failBlock:^(NSError *error)
             {
-                VLog(@"Failed to load conversations");
+                VLog(@"Failed to load conversations: %@", error);
             }];
 }
 
 - (RKManagedObjectRequestOperation *)loadNextPageOfConversations:(SuccessBlock)success
                                                        failBlock:(FailBlock)fail
 {
-    NSString* path = @"api/message/conversation_list";
+    NSString* path = @"/api/message/conversation_list";
     
     //    static NSString* kConversationPaginationKey = @"conversations";
     //    __block VPaginationStatus* status = [self statusForKey:kConversationPaginationKey];
@@ -63,7 +63,7 @@
                                                               successBlock:(SuccessBlock)success
                                                                  failBlock:(FailBlock)fail
 {
-    NSString* path = [NSString stringWithFormat:@"api/message/conversation/%@", conversation.remoteId];
+    NSString* path = [NSString stringWithFormat:@"/api/message/conversation/%@", conversation.remoteId];
     
 //    NSString* statusKey = [NSString stringWithFormat:@"messagesFor%@", conversation.remoteId];
 //    
@@ -97,7 +97,7 @@
                                                successBlock:(SuccessBlock)success
                                                   failBlock:(FailBlock)fail
 {
-    return [self POST:@"api/message/mark_conversation_read"
+    return [self POST:@"/api/message/mark_conversation_read"
                object:nil
            parameters:@{@"conversations_id" : conversation.remoteId}
          successBlock:success
@@ -116,7 +116,7 @@
     //Set the parameters
     NSMutableDictionary* parameters = [[NSMutableDictionary alloc] initWithCapacity:5];
     if (user)
-        [parameters setObject:[NSString stringWithFormat:@"%@", user.remoteId] forKey:@"sequence_id"];
+        [parameters setObject:[NSString stringWithFormat:@"%@", user.remoteId] forKey:@"to_user_id"];
     if (text)
         [parameters setObject:text forKey:@"text"];
     if (data && extension)
@@ -125,7 +125,7 @@
         [parameters setObject:extension forKey:@"media_type"];
     }
     
-    NSString* path = [NSString stringWithFormat:@"api/message/send"];
+    NSString* path = [NSString stringWithFormat:@"/api/message/send"];
     
     return [self POST:path
                object:nil

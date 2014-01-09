@@ -153,7 +153,7 @@
                                      successBlock:(SuccessBlock)success
                                         failBlock:(FailBlock)fail
 {
-    return [self POST:@"api/comment/mark"
+    return [self POST:@"/api/comment/mark"
                object:nil
            parameters:@{@"comment_ids":readComments, @"mark_as":@"read"}
          successBlock:success
@@ -165,7 +165,7 @@
                                      successBlock:(SuccessBlock)success
                                         failBlock:(FailBlock)fail
 {
-    return [self POST:@"api/comment/mark"
+    return [self POST:@"/api/comment/mark"
                object:nil
            parameters:@{@"comment_ids":readComments, @"mark_as":@"unread"}
          successBlock:success
