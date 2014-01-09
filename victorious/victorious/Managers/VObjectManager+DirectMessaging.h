@@ -15,7 +15,7 @@
 - (RKManagedObjectRequestOperation *)loadNextPageOfConversations:(SuccessBlock)success
                                                        failBlock:(FailBlock)fail;
 
-- (RKManagedObjectRequestOperation *)loadNextPageOfMessagesForConversation:(VConversation*)conversations
+- (RKManagedObjectRequestOperation *)loadNextPageOfMessagesForConversation:(VConversation*)conversation
                                                               successBlock:(SuccessBlock)success
                                                                  failBlock:(FailBlock)fail;
 
