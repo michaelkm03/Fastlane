@@ -7,7 +7,8 @@
 //
 
 #import "VTableViewCell.h"
+@class VConversation;
 
 @interface VConversationCell : VTableViewCell
-
+@property (nonatomic, readwrite, strong)    VConversation*  conversation;
 @end

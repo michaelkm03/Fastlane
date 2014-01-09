@@ -65,7 +65,6 @@
 - (void)setHeader
 {
     // Create and set the header
-//    self.profileImageView.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin;
     NSURL*  imageURL    =   [NSURL URLWithString:self.profile.pictureUrl];
     [self.profileImageView setImageWithURL:imageURL placeholderImage:[UIImage imageNamed:@"profile_thumb"]];
     self.profileImageView.layer.masksToBounds = YES;

@@ -7,9 +7,11 @@
 //
 
 #import "VInboxViewController.h"
-#import "VComment+RestKit.h"
 #import "VMenuViewController.h"
 #import "VMenuViewControllerTransition.h"
+#import "VConversation+RestKit.h"
+#import "VMessageViewController.h"
+#import "VConversationCell.h"
 
 NS_ENUM(NSUInteger, ModeSelect)
 {
@@ -17,8 +19,8 @@ NS_ENUM(NSUInteger, ModeSelect)
     kNewsModeSelect
 };
 
-static  NSString*   kMessageCell    =   @"messageCell";
-static  NSString*   kNewsCell       =   @"newsCell";
+static  NSString*   kMessageCellViewIdentifier    =   @"VConversationCell";
+static  NSString*   kNewsCellViewIdentifier       =   @"VNewsCell";
 
 @interface VInboxViewController ()   <NSFetchedResultsControllerDelegate>
 @property (weak, nonatomic) IBOutlet UISegmentedControl*    modeSelectControl;
@@ -44,7 +46,8 @@ static  NSString*   kNewsCell       =   @"newsCell";
 
     self.modeSelectControl.selectedSegmentIndex = 0;
     [self modeSelected:self];
-
+    
+    self.navigationItem.rightBarButtonItem = self.editButtonItem;
 
 //        [self.modeSelectControl setDividerImage:image1 forLeftSegmentState:UIControlStateNormal                   rightSegmentState:UIControlStateNormal barMetrics:barMetrics];
 //        [self.modeSelectControl setDividerImage:image2 forLeftSegmentState:UIControlStateSelected                   rightSegmentState:UIControlStateNormal barMetrics:barMetrics];
@@ -55,19 +58,11 @@ static  NSString*   kNewsCell       =   @"newsCell";
 
 - (void)configureCell:(UITableViewCell *)theCell atIndexPath:(NSIndexPath *)theIndexPath
 {
-////    id      info    =   [self.fetchedResultsController objectAtIndexPath:theIndexPath];
-//
-//    if (kMessageModeSelect == self.modeSelect)
-//    {
-//        
-//    }
-//    else
-//    {
-//        
-//    }
-//
-////    VSequence *info = [self.fetchedResultsController objectAtIndexPath:theIndexPath];
-////    [theCell setSequence:info];
+    id      info    =   [self.fetchedResultsController objectAtIndexPath:theIndexPath];
+    if (kMessageModeSelect == self.modeSelectControl.selectedSegmentIndex)
+        [(VConversationCell *)theCell setConversation:info];
+    else
+        ;
 }
 
 ////- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -82,16 +77,11 @@ static  NSString*   kNewsCell       =   @"newsCell";
     UITableViewCell*    cell;
 
     if (kMessageModeSelect == self.modeSelectControl.selectedSegmentIndex)
-    {
-        cell = [tableView dequeueReusableCellWithIdentifier:kMessageCell forIndexPath:indexPath];
-    }
+        cell = [tableView dequeueReusableCellWithIdentifier:kMessageCellViewIdentifier forIndexPath:indexPath];
     else
-    {
-        cell = [tableView dequeueReusableCellWithIdentifier:kNewsCell forIndexPath:indexPath];
-    }
+        cell = [tableView dequeueReusableCellWithIdentifier:kNewsCellViewIdentifier forIndexPath:indexPath];
     
     [self configureCell:cell atIndexPath:indexPath];
-
     return cell;
 }
 
@@ -109,8 +99,9 @@ static  NSString*   kNewsCell       =   @"newsCell";
 {
     if (editingStyle == UITableViewCellEditingStyleDelete)
     {
-        // Delete the row from the data source
-    }   
+        VConversation* conversation = [self.fetchedResultsController objectAtIndexPath:indexPath];
+        [conversation.managedObjectContext deleteObject:conversation];
+    }
 }
 
 - (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath
@@ -121,19 +112,16 @@ static  NSString*   kNewsCell       =   @"newsCell";
 - (NSFetchRequest*)fetchRequestForContext:(NSManagedObjectContext*)context
 {
     NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
-    NSEntityDescription*    entity;
 
     if (kMessageModeSelect == self.modeSelectControl.selectedSegmentIndex)
     {
-//        entity = [NSEntityDescription entityForName:[VSequence entityName] inManagedObjectContext:context];
+//        [fetchRequest setEntity:[NSEntityDescription entityForName:[VConversation entityName] inManagedObjectContext:context]];
     }
     else if (kNewsModeSelect == self.modeSelectControl.selectedSegmentIndex)
     {
-//        entity = [NSEntityDescription entityForName:[VSequence entityName] inManagedObjectContext:context];
+//        [fetchRequest setEntity:[NSEntityDescription entityForName:[VConversation entityName] inManagedObjectContext:context]];
     }
     
-    [fetchRequest setEntity:entity];
-
     NSSortDescriptor *sort = [[NSSortDescriptor alloc] initWithKey:@"display_order" ascending:YES];
     [fetchRequest setSortDescriptors:@[sort]];
     [fetchRequest setFetchBatchSize:50];
@@ -145,7 +133,13 @@ static  NSString*   kNewsCell       =   @"newsCell";
 
 - (void)registerCells
 {
-    //Register cells here
+    [self.tableView registerNib:[UINib nibWithNibName:kMessageCellViewIdentifier bundle:[NSBundle mainBundle]]
+         forCellReuseIdentifier:kMessageCellViewIdentifier];
+    [self.searchDisplayController.searchResultsTableView registerNib:[UINib nibWithNibName:kMessageCellViewIdentifier bundle:[NSBundle mainBundle]] forCellReuseIdentifier:kMessageCellViewIdentifier];
+
+    [self.tableView registerNib:[UINib nibWithNibName:kNewsCellViewIdentifier bundle:[NSBundle mainBundle]]
+         forCellReuseIdentifier:kNewsCellViewIdentifier];
+    [self.searchDisplayController.searchResultsTableView registerNib:[UINib nibWithNibName:kNewsCellViewIdentifier bundle:[NSBundle mainBundle]] forCellReuseIdentifier:kNewsCellViewIdentifier];
 }
 
 #pragma mark - Refresh Lifecycle
@@ -197,12 +191,12 @@ static  NSString*   kNewsCell       =   @"newsCell";
     
     if ([segue.identifier isEqualToString:@"toConversation"])
     {
-//        VStreamsSubViewController *subview = (VStreamsSubViewController *)segue.destinationViewController;
-//        UITableViewCell* cell = (UITableViewCell*)sender;
-//        
-//        VSequence *sequence = [_fetchedResultsController objectAtIndexPath:[self.tableView indexPathForCell:cell]];
-//        
-//        subview.sequence = sequence;
+        VMessageViewController *subview = (VMessageViewController *)segue.destinationViewController;
+        UITableViewCell* cell = (UITableViewCell*)sender;
+
+        VConversation* conversation = [self.fetchedResultsController objectAtIndexPath:[self.tableView indexPathForCell:cell]];
+
+        subview.conversation = conversation;
     }
     else if ([segue.destinationViewController isKindOfClass:[VMenuViewController class]])
     {
