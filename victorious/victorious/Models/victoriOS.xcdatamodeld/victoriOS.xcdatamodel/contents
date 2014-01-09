@@ -69,14 +69,14 @@
         <attribute name="mediaType" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="mediaUrl" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="previewImage" optional="YES" attributeType="String" syncable="YES"/>
-        <relationship name="relationship" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Message" inverseName="media" inverseEntity="Message" syncable="YES"/>
+        <relationship name="message" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Message" inverseName="media" inverseEntity="Message" syncable="YES"/>
     </entity>
     <entity name="Message" representedClassName="VMessage" syncable="YES">
         <attribute name="isRead" optional="YES" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
         <attribute name="remoteId" attributeType="Integer 32" minValueString="0" defaultValueString="0" syncable="YES"/>
         <attribute name="text" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="conversation" maxCount="1" deletionRule="Nullify" destinationEntity="Conversation" inverseName="messages" inverseEntity="Conversation" syncable="YES"/>
-        <relationship name="media" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="Media" inverseName="relationship" inverseEntity="Media" syncable="YES"/>
+        <relationship name="media" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="Media" inverseName="message" inverseEntity="Media" syncable="YES"/>
         <relationship name="user" maxCount="1" deletionRule="Nullify" destinationEntity="User" inverseName="messages" inverseEntity="User" syncable="YES"/>
     </entity>
     <entity name="Node" representedClassName="VNode" syncable="YES">
@@ -167,8 +167,11 @@
         <element name="Asset" positionX="655" positionY="-360" width="128" height="120"/>
         <element name="Category" positionX="810" positionY="-333" width="128" height="60"/>
         <element name="Comment" positionX="1044" positionY="-45" width="128" height="268"/>
+        <element name="Conversation" positionX="1431" positionY="-477" width="128" height="88"/>
         <element name="Interaction" positionX="646" positionY="-208" width="128" height="208"/>
         <element name="InteractionAction" positionX="495" positionY="-99" width="128" height="105"/>
+        <element name="Media" positionX="1422" positionY="-135" width="128" height="103"/>
+        <element name="Message" positionX="1420" positionY="-306" width="128" height="133"/>
         <element name="Node" positionX="817" positionY="-180" width="128" height="135"/>
         <element name="NodeAction" positionX="889" positionY="45" width="128" height="90"/>
         <element name="Rule" positionX="567" positionY="99" width="128" height="75"/>
@@ -177,8 +180,5 @@
         <element name="StatInteraction" positionX="1251" positionY="150" width="128" height="210"/>
         <element name="StatSequence" positionX="1233" positionY="-90" width="128" height="225"/>
         <element name="User" positionX="1240" positionY="-414" width="128" height="208"/>
-        <element name="Conversation" positionX="1431" positionY="-477" width="128" height="88"/>
-        <element name="Message" positionX="1420" positionY="-306" width="128" height="133"/>
-        <element name="Media" positionX="1422" positionY="-135" width="128" height="103"/>
     </elements>
 </model>
