@@ -171,6 +171,17 @@
 		<key>alpha</key>
 		<integer>1</integer>
 	</dict>
+	<key>theme.color.post.text.count.invalid</key>
+	<dict>
+		<key>red</key>
+		<integer>192</integer>
+		<key>green</key>
+		<integer>57</integer>
+		<key>blue</key>
+		<integer>43</integer>
+		<key>alpha</key>
+		<integer>1</integer>
+	</dict>
 	<key>theme.color.post.background</key>
 	<dict>
 		<key>red</key>
