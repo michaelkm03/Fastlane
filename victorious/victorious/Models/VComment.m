@@ -1,9 +1,9 @@
 //
 //  VComment.m
-//  victoriOS
+//  victorious
 //
-//  Created by David Keegan on 12/13/13.
-//  Copyright (c) 2013 Victorious, Inc. All rights reserved.
+//  Created by Will Long on 1/8/14.
+//  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
 #import "VComment.h"

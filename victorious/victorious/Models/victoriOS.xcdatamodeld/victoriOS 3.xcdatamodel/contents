@@ -71,7 +71,7 @@
         <attribute name="previewImage" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="relationship" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Message" inverseName="media" inverseEntity="Message" syncable="YES"/>
     </entity>
-    <entity name="Message" representedClassName="Message" syncable="YES">
+    <entity name="Message" syncable="YES">
         <attribute name="isRead" optional="YES" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
         <attribute name="remoteId" attributeType="Integer 32" minValueString="0" defaultValueString="0" syncable="YES"/>
         <attribute name="text" optional="YES" attributeType="String" syncable="YES"/>
@@ -170,7 +170,7 @@
         <element name="Interaction" positionX="646" positionY="-208" width="128" height="208"/>
         <element name="InteractionAction" positionX="495" positionY="-99" width="128" height="105"/>
         <element name="Node" positionX="817" positionY="-180" width="128" height="135"/>
-        <element name="NodeAction" positionX="889" positionY="45" width="128" height="90"/>
+        <element name="NodeAction" positionX="828" positionY="72" width="128" height="90"/>
         <element name="Rule" positionX="567" positionY="99" width="128" height="75"/>
         <element name="Sequence" positionX="1024" positionY="-369" width="128" height="225"/>
         <element name="StatAnswer" positionX="1422" positionY="153" width="128" height="180"/>

@@ -1,13 +1,14 @@
 //
 //  VUser.m
-//  victoriOS
+//  victorious
 //
-//  Created by David Keegan on 12/13/13.
-//  Copyright (c) 2013 Victorious, Inc. All rights reserved.
+//  Created by Will Long on 1/8/14.
+//  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
 #import "VUser.h"
 #import "VComment.h"
+#import "VConversation.h"
 #import "VStatSequence.h"
 
 
@@ -19,7 +20,10 @@
 @dynamic remoteId;
 @dynamic token;
 @dynamic tokenUpdatedAt;
+@dynamic pictureUrl;
 @dynamic comments;
 @dynamic statSequences;
+@dynamic messages;
+@dynamic conversations;
 
 @end
