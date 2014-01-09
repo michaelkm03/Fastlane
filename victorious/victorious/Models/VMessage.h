@@ -1,5 +1,5 @@
 //
-//  Message.h
+//  VMessage.h
 //  victorious
 //
 //  Created by Will Long on 1/8/14.
@@ -11,7 +11,7 @@
 
 @class VConversation, VMedia, VUser;
 
-@interface Message : NSManagedObject
+@interface VMessage : NSManagedObject
 
 @property (nonatomic, retain) NSNumber * isRead;
 @property (nonatomic, retain) NSString * text;
