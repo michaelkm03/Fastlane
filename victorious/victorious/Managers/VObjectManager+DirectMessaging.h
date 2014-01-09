@@ -12,6 +12,8 @@
 
 @interface VObjectManager (DirectMessaging)
 
+- (RKManagedObjectRequestOperation *)loadInitialConversations;
+
 - (RKManagedObjectRequestOperation *)loadNextPageOfConversations:(SuccessBlock)success
                                                        failBlock:(FailBlock)fail;
 
