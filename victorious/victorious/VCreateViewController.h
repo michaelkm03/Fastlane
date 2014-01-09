@@ -6,8 +6,16 @@
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
+typedef NS_ENUM(NSUInteger, VCreateViewControllerType){
+    VCreateViewControllerTypePhoto,
+    VCreateViewControllerTypeVideo,
+    VCreateViewControllerTypePhotoAndVideo,
+    VCreateViewControllerTypePoll,
+    VCreateViewControllerTypeForum
+};
 
 @interface VCreateViewController : UIViewController
+
+- (instancetype)initWithType:(VCreateViewControllerType)type;
 
 @end
