@@ -11,6 +11,7 @@
 #import "VMenuViewControllerTransition.h"
 #import "VObjectManager+Login.h"
 #import "VProfileEditViewController.h"
+#import "VUser.h"
 
 @interface VProfileViewController () <UIActionSheetDelegate>
 
@@ -40,7 +41,6 @@
 {
     [super viewDidLoad];
     
-    // Set profile data: name, username, etc. (returns a BOOL)
     [self setProfileData];
     
     if (!self.profile)
@@ -57,21 +57,20 @@
 
         self.navigationItem.rightBarButtonItems = @[composeButton, userActionButton];
     }
+    
+//    self.navigationController.title = self.profile.username;
 }
 
-- (BOOL)setProfileData
+- (void)setProfileData
 {
-    // TODO: Set the background here using core data
-    UIImage* background = [UIImage imageNamed:@"avatar.jpg"];
-    self.backgroundImageView.image = background;
-    self.backgroundImageView.contentMode = UIViewContentModeScaleAspectFill;
+    //  Set background profile image
+    NSURL*  imageURL    =   [NSURL URLWithString:self.profile.pictureUrl];
+    [self.backgroundImageView setImageWithURL:imageURL placeholderImage:[UIImage imageNamed:@"profile_full"]];
     
-    // TODO: Add code to set the labels here
-    self.nameLabel.text = @"First Last";
-    self.taglineLabel.text = @"This is my tagline.";
+    // Set Profile data
+    self.nameLabel.text = self.profile.name;
+    self.taglineLabel.text = @"This is my tag line.";
     self.locationLabel.text = @"Santa Monica, CA";
-    
-    return YES;
 }
 
 -(IBAction)composeButtonPressed:(id)sender
