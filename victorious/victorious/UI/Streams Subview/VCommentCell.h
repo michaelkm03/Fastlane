@@ -6,14 +6,14 @@
 //  Copyright (c) 2013 Victorious, Inc. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
+#import "VTableViewCell.h"
 
 @class VComment;
 //@class VMessage;
 
 static NSString *kCommentCellIdentifier = @"VCommentCell";
 
-@interface VCommentCell : UITableViewCell
+@interface VCommentCell : VTableViewCell
 
 @property (weak, nonatomic) IBOutlet UILabel *textLabel;
 @property (weak, nonatomic) IBOutlet UIImageView *imageView;

@@ -144,9 +144,9 @@
         </tableViewCell>
     </objects>
     <resources>
-        <image name="StreamComments" width="11" height="10"/>
+        <image name="StreamComments" width="15" height="15"/>
         <image name="StreamDate" width="11" height="11"/>
-        <image name="StreamHeart" width="11" height="10"/>
-        <image name="StreamShare" width="13" height="18"/>
+        <image name="StreamHeart" width="14" height="13"/>
+        <image name="StreamShare" width="17" height="5"/>
     </resources>
 </document>

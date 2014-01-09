@@ -6,8 +6,8 @@
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
+#import "VTableViewCell.h"
 
-@interface VConversationCell : UITableViewCell
+@interface VConversationCell : VTableViewCell
 
 @end

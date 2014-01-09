@@ -6,14 +6,15 @@
 //  Copyright (c) 2013 Victorious, Inc. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
+#import "VTableViewCell.h"
+
 @class VSequence;
 
 static NSString *kStreamViewCellIdentifier = @"VStreamViewCell";
 
 extern NSString *kStreamsWillSegueNotification;
 
-@interface VStreamViewCell : UITableViewCell
+@interface VStreamViewCell : VTableViewCell
 
 @property (weak, nonatomic) IBOutlet UIImageView *previewImageView;
 @property (weak, nonatomic) VSequence* sequence;

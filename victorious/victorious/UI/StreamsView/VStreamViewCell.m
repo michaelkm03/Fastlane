@@ -24,35 +24,21 @@ NSString* kStreamsWillSegueNotification = @"kStreamsWillSegueNotification";
 @property (weak, nonatomic) IBOutlet UIButton *likeButton;
 @property (weak, nonatomic) IBOutlet UIButton *commentButton;
 
-@property (strong, nonatomic) IBOutletCollection(UIImageView) NSArray *imageViews;
-@property (strong, nonatomic) IBOutletCollection(UILabel) NSArray *labels;
-@property (strong, nonatomic) IBOutletCollection(UIButton) NSArray *buttons;
-
 @end
 
 @implementation VStreamViewCell
 
-- (void)awakeFromNib{
+- (void)awakeFromNib
+{
     [super awakeFromNib];
-
-    [[UIImageView appearanceWhenContainedIn:[self class], nil]
-     setTintColor:[[VThemeManager sharedThemeManager] themedColorForKeyPath:@"theme.color.stream.icon"]];
-    [self.imageViews enumerateObjectsUsingBlock:^(UIImageView *imageView, NSUInteger idx, BOOL *stop){
-        imageView.image = [imageView.image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
-    }];
-    [self.labels enumerateObjectsUsingBlock:^(UILabel *label, NSUInteger idx, BOOL *stop){
-        label.font = [[VThemeManager sharedThemeManager] themedFontForKeyPath:@"theme.font.stream"];
-        label.textColor = [[VThemeManager sharedThemeManager] themedColorForKeyPath:@"theme.color.stream.text"];
-    }];
+    
     self.usernameLabel.font = [[VThemeManager sharedThemeManager] themedFontForKeyPath:@"theme.font.stream.text.username"];
-    [self.buttons enumerateObjectsUsingBlock:^(UIButton *button, NSUInteger idx, BOOL *stop){
-        button.titleLabel.font = [[VThemeManager sharedThemeManager] themedFontForKeyPath:@"theme.font.stream.button"];
-        button.tintColor = [[VThemeManager sharedThemeManager] themedColorForKeyPath:@"theme.color.stream.button"];
-    }];
 }
 
-- (void)setSequence:(VSequence *)sequence{
-    if(_sequence == sequence){
+- (void)setSequence:(VSequence *)sequence
+{
+    if(_sequence == sequence)
+    {
         return;
     }
 
@@ -73,22 +59,29 @@ NSString* kStreamsWillSegueNotification = @"kStreamsWillSegueNotification";
                              placeholderImage:[UIImage new]];
 }
 
-- (IBAction)likeButtonAction:(id)sender {
+- (IBAction)likeButtonAction:(id)sender
+{
     [[VObjectManager sharedManager]
      likeSequence:self.sequence
-     successBlock:^(NSArray *resultObjects) {
+     successBlock:^(NSArray *resultObjects)
+     {
          self.likeButton.userInteractionEnabled = NO;
          self.dislikeButton.userInteractionEnabled = YES;
-     } failBlock:^(NSError *error) {
+     }
+     failBlock:^(NSError *error)
+     {
          VLog(@"Like failed with error: %@", error);
      }];
 }
 
-- (IBAction)commentButtonAction:(id)sender {
+- (IBAction)commentButtonAction:(id)sender
+{
 
 }
 
-- (IBAction)shareButtonAction:(id)sender {
+- (IBAction)shareButtonAction:(id)sender
+{
+    
 }
 
 
