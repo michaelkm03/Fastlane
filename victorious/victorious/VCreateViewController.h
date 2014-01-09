@@ -6,16 +6,17 @@
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
+#import "VCreateSequenceDelegate.h"
+
 typedef NS_ENUM(NSUInteger, VCreateViewControllerType){
     VCreateViewControllerTypePhoto,
     VCreateViewControllerTypeVideo,
-    VCreateViewControllerTypePhotoAndVideo,
-    VCreateViewControllerTypePoll,
-    VCreateViewControllerTypeForum
+    VCreateViewControllerTypePhotoAndVideo
 };
 
 @interface VCreateViewController : UIViewController
 
-- (instancetype)initWithType:(VCreateViewControllerType)type;
+- (instancetype)initWithType:(VCreateViewControllerType)type
+                 andDelegate:(id<VCreateSequenceDelegate>)delegate;
 
 @end

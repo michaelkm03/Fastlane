@@ -22,6 +22,7 @@
 #import "UIActionSheet+BBlock.h"
 #import "BBlock.h"
 #import "VCreateViewController.h"
+#import "VCreatePollViewController.h"
 
 typedef NS_ENUM(NSInteger, VStreamScope)
 {
@@ -33,7 +34,7 @@ typedef NS_ENUM(NSInteger, VStreamScope)
 };
 
 @interface VStreamsTableViewController ()
-
+<VCreateSequenceDelegate>
 @property (nonatomic, strong) VFeaturedStreamsViewController* featuredStreamsViewController;
 
 @end
@@ -102,17 +103,19 @@ typedef NS_ENUM(NSInteger, VStreamScope)
 
          if([[actionSheet buttonTitleAtIndex:buttonIndex] isEqualToString:videoTitle])
          {
-             VCreateViewController *createViewController = [[VCreateViewController alloc] initWithType:VCreateViewControllerTypeVideo];
+             VCreateViewController *createViewController =
+             [[VCreateViewController alloc] initWithType:VCreateViewControllerTypeVideo andDelegate:self];
              [wself presentViewController:[[UINavigationController alloc] initWithRootViewController:createViewController] animated:YES completion:nil];
          }
          else if([[actionSheet buttonTitleAtIndex:buttonIndex] isEqualToString:photoTitle])
          {
-             VCreateViewController *createViewController = [[VCreateViewController alloc] initWithType:VCreateViewControllerTypePhoto];
+             VCreateViewController *createViewController =
+             [[VCreateViewController alloc] initWithType:VCreateViewControllerTypePhoto andDelegate:self];
              [wself presentViewController:[[UINavigationController alloc] initWithRootViewController:createViewController] animated:YES completion:nil];
          }
          else if([[actionSheet buttonTitleAtIndex:buttonIndex] isEqualToString:pollTitle])
          {
-             VCreateViewController *createViewController = [[VCreateViewController alloc] initWithType:VCreateViewControllerTypePoll];
+             VCreatePollViewController *createViewController = [[VCreatePollViewController alloc] initWithDelegate:self];
              [wself presentViewController:[[UINavigationController alloc] initWithRootViewController:createViewController] animated:YES completion:nil];
          }
      }];
@@ -336,6 +339,13 @@ typedef NS_ENUM(NSInteger, VStreamScope)
             [self.refreshControl endRefreshing];
         }
     }
+}
+
+#pragma mark - VCreateSequenceDelegate
+
+- (void)createViewController:(UIViewController *)viewController shouldPostWithMessage:(NSString *)message data:(NSData *)data mediaType:(NSString *)mediaType
+{
+    NSLog(@"%@", message);
 }
 
 @end
