@@ -14,17 +14,83 @@
 
 @implementation VObjectManager (DirectMessaging)
 
+- (RKManagedObjectRequestOperation *)loadInitialConversations
+{
+    
+    return [self loadNextPageOfConversations:^(NSArray *resultObjects)
+            {
+                VLog(@"Initial Conversations Loaded:");
+            }
+                                   failBlock:^(NSError *error)
+            {
+                VLog(@"Failed to load conversations");
+            }];
+}
+
 - (RKManagedObjectRequestOperation *)loadNextPageOfConversations:(SuccessBlock)success
                                                        failBlock:(FailBlock)fail
 {
-    return nil;
+    NSString* path = @"api/message/conversation_list";
+    
+    //    static NSString* kConversationPaginationKey = @"conversations";
+    //    __block VPaginationStatus* status = [self statusForKey:kConversationPaginationKey];
+    //    if([status isFullyLoaded])
+    //    {
+    //        return nil;
+    //    }
+    //
+    //    if (status.pagesLoaded) //only add page to the path if we've looked it up before.
+    //    {
+    //        path = [path stringByAppendingFormat:@"/0/%lu/%lu", status.pagesLoaded + 1, (unsigned long)status.itemsPerPage];
+    //    }
+    //
+    //    PaginationBlock pagination = ^(NSUInteger page_number, NSUInteger page_total)
+    //    {
+    //        status.pagesLoaded = page_number;
+    //        status.totalPages = page_total;
+    //        [self.paginationStatuses setObject:status forKey:kConversationPaginationKey];
+    //    };
+    
+    return [self GET:path
+              object:nil
+          parameters:nil
+        successBlock:success
+           failBlock:fail
+     paginationBlock:nil];//pagination];
 }
 
-- (RKManagedObjectRequestOperation *)loadNextPageOfMessagesForConversation:(VConversation*)conversations
+- (RKManagedObjectRequestOperation *)loadNextPageOfMessagesForConversation:(VConversation*)conversation
                                                               successBlock:(SuccessBlock)success
                                                                  failBlock:(FailBlock)fail
 {
-    return nil;
+    NSString* path = [NSString stringWithFormat:@"api/message/conversation/%@", conversation.remoteId];
+    
+//    NSString* statusKey = [NSString stringWithFormat:@"messagesFor%@", conversation.remoteId];
+//    
+//    __block VPaginationStatus* status = [self statusForKey:statusKey];
+//    if([status isFullyLoaded])
+//    {
+//        return nil;
+//    }
+//    
+//    if (status.pagesLoaded) //only add page to the path if we've looked it up before.
+//    {
+//        path = [path stringByAppendingFormat:@"/0/%lu/%lu", status.pagesLoaded + 1, (unsigned long)status.itemsPerPage];
+//    }
+//    
+//    PaginationBlock pagination = ^(NSUInteger page_number, NSUInteger page_total)
+//    {
+//        status.pagesLoaded = page_number;
+//        status.totalPages = page_total;
+//        [self.paginationStatuses setObject:status forKey:statusKey];
+//    };
+    
+    return [self GET:path
+              object:nil
+          parameters:nil
+        successBlock:success
+           failBlock:fail
+     paginationBlock:nil];//pagination];
 }
 
 - (RKManagedObjectRequestOperation *)markConversationAsRead:(VConversation*)conversation
@@ -37,7 +103,7 @@
          successBlock:success
             failBlock:fail
       paginationBlock:nil];
-
+    
 }
 
 - (RKManagedObjectRequestOperation *)sendMessageToUser:(VUser*)user

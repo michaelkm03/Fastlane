@@ -36,8 +36,18 @@ CGFloat VCreatePollViewControllerLargePadding = 20;
 @property (weak, nonatomic) VCreatePollViewControllerTextField *questionTextField;
 @property (weak, nonatomic) VCreatePollViewControllerTextField *leftQuestionTextField;
 @property (weak, nonatomic) VCreatePollViewControllerTextField *rightQuestionTextField;
+@property (weak, nonatomic) UIImageView *oneUpPreviewImageView;
+@property (weak, nonatomic) UIImageView *leftPreviewImageView;
+@property (weak, nonatomic) UIImageView *rightPreviewImageView;
 @property (weak, nonatomic) UIButton *mediaButton;
 @property (weak, nonatomic) UILabel *mediaLabel;
+@property (strong, nonatomic) NSData *leftMediaData;
+@property (strong, nonatomic) NSData *rightMediaData;
+@property (strong, nonatomic) NSString *leftMediaType;
+@property (strong, nonatomic) NSString *rightMediaType;
+@property (weak, nonatomic) UIView *addMediaView;
+@property (weak, nonatomic) UIView *oneUpMediaView;
+@property (weak, nonatomic) UIView *twoUpMediaView;
 @end
 
 @implementation VCreatePollViewController
@@ -138,11 +148,12 @@ CGFloat VCreatePollViewControllerLargePadding = 20;
     [postButton constrainToHeight:postButtonHeight];
     self.postButton = postButton;
 
-    UIView *mediaView = [UIView autoLayoutView];
-    [self.view addSubview:mediaView];
-    [mediaView pinToSuperviewEdges:JRTViewPinLeftEdge|JRTViewPinRightEdge inset:VCreatePollViewControllerPadding];
-    [mediaView pinEdge:NSLayoutAttributeTop toEdge:NSLayoutAttributeBottom ofItem:questionsView inset:VCreatePollViewControllerPadding];
-    [mediaView pinEdge:NSLayoutAttributeBottom toEdge:NSLayoutAttributeTop ofItem:postButton inset:-VCreatePollViewControllerPadding];
+    UIView *addMediaView = [UIView autoLayoutView];
+    [self.view addSubview:addMediaView];
+    [addMediaView pinToSuperviewEdges:JRTViewPinLeftEdge|JRTViewPinRightEdge inset:VCreatePollViewControllerPadding];
+    [addMediaView pinEdge:NSLayoutAttributeTop toEdge:NSLayoutAttributeBottom ofItem:questionsView inset:VCreatePollViewControllerPadding];
+    [addMediaView pinEdge:NSLayoutAttributeBottom toEdge:NSLayoutAttributeTop ofItem:postButton inset:-VCreatePollViewControllerPadding];
+    self.addMediaView = addMediaView;
 
     CGSize mediaButtonSize = CGSizeMake(120, 120);
     UIButton *mediaButton = [UIButton buttonWithType:UIButtonTypeSystem];
@@ -152,7 +163,7 @@ CGFloat VCreatePollViewControllerLargePadding = 20;
     mediaButton.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKeyPath:@"theme.color.post.mediaButton.background"];
     mediaButton.translatesAutoresizingMaskIntoConstraints = NO;
     mediaButton.layer.cornerRadius = mediaButtonSize.height/2;
-    [mediaView addSubview:mediaButton];
+    [addMediaView addSubview:mediaButton];
     [mediaButton centerInContainerOnAxis:NSLayoutAttributeCenterY];
     [mediaButton centerInContainerOnAxis:NSLayoutAttributeCenterX];
     [mediaButton constrainToSize:mediaButtonSize];
@@ -161,12 +172,93 @@ CGFloat VCreatePollViewControllerLargePadding = 20;
     UILabel *mediaLabel = [UILabel autoLayoutView];
     mediaLabel.text = NSLocalizedString(@"Add a photo or video", @"Add photo or video label");
     mediaLabel.textColor = [[VThemeManager sharedThemeManager] themedColorForKeyPath:@"theme.color.text.post.mediaLabel"];
-    [mediaView addSubview:mediaLabel];
+    [addMediaView addSubview:mediaLabel];
     [mediaLabel pinEdge:NSLayoutAttributeTop toEdge:NSLayoutAttributeBottom ofItem:mediaButton inset:VCreatePollViewControllerLargePadding];
     [mediaLabel centerInContainerOnAxis:NSLayoutAttributeCenterX];
     self.mediaLabel = mediaLabel;
 
+    UIView *oneUpMediaView = [UIView autoLayoutView];
+    [self.view addSubview:oneUpMediaView];
+    [oneUpMediaView pinToSuperviewEdges:JRTViewPinLeftEdge|JRTViewPinRightEdge inset:VCreatePollViewControllerPadding];
+    [oneUpMediaView pinEdge:NSLayoutAttributeTop toEdge:NSLayoutAttributeBottom ofItem:questionsView inset:VCreatePollViewControllerPadding];
+    [oneUpMediaView pinEdge:NSLayoutAttributeBottom toEdge:NSLayoutAttributeTop ofItem:postButton inset:-VCreatePollViewControllerPadding];
+    self.oneUpMediaView = oneUpMediaView;
+
+    UIImageView *oneUpPreviewImageView = [UIImageView autoLayoutView];
+    oneUpPreviewImageView.userInteractionEnabled = YES;
+    [oneUpMediaView addSubview:oneUpPreviewImageView];
+    [oneUpPreviewImageView pinToSuperviewEdges:JRTViewPinTopEdge|JRTViewPinLeftEdge inset:0];
+    [oneUpPreviewImageView constrainToSize:CGSizeMake(200, 200)];
+    self.oneUpPreviewImageView = oneUpPreviewImageView;
+
+    UIImage *oneUpRemoveMediaButtonImage = [UIImage imageNamed:@"PostDelete"];
+    UIButton *oneUpRemoveMediaButton = [UIButton buttonWithType:UIButtonTypeSystem];
+    oneUpRemoveMediaButton.tintColor = [[VThemeManager sharedThemeManager] themedColorForKeyPath:@"theme.color.post.media.remove"];
+    oneUpRemoveMediaButton.translatesAutoresizingMaskIntoConstraints = NO;
+    [oneUpRemoveMediaButton setImage:oneUpRemoveMediaButtonImage forState:UIControlStateNormal];
+    [oneUpRemoveMediaButton addTarget:self action:@selector(oneUpRemoveMediaButtonAction:) forControlEvents:UIControlEventTouchUpInside];
+    [oneUpPreviewImageView addSubview:oneUpRemoveMediaButton];
+    [oneUpRemoveMediaButton constrainToSize:oneUpRemoveMediaButtonImage.size];
+    [oneUpRemoveMediaButton pinToSuperviewEdges:JRTViewPinTopEdge|JRTViewPinLeftEdge inset:VCreatePollViewControllerPadding];
+
+    UIImage *oneUpAddMediaButtonImage = [UIImage imageNamed:@"PostPollAdd"];
+    UIButton *oneUpAddMediaButton = [UIButton buttonWithType:UIButtonTypeSystem];
+    oneUpAddMediaButton.tintColor = [[VThemeManager sharedThemeManager] themedColorForKeyPath:@"theme.color.post.mediaButton.background"];
+    oneUpAddMediaButton.translatesAutoresizingMaskIntoConstraints = NO;
+    [oneUpAddMediaButton setImage:oneUpAddMediaButtonImage forState:UIControlStateNormal];
+    [oneUpAddMediaButton addTarget:self action:@selector(mediaButtonAction:) forControlEvents:UIControlEventTouchUpInside];
+    [oneUpMediaView addSubview:oneUpAddMediaButton];
+    [oneUpAddMediaButton pinToSuperviewEdges:JRTViewPinRightEdge|JRTViewPinTopEdge inset:0];
+    [oneUpAddMediaButton pinAttribute:NSLayoutAttributeHeight toSameAttributeOfView:oneUpPreviewImageView];
+    [oneUpAddMediaButton pinEdge:NSLayoutAttributeLeft toEdge:NSLayoutAttributeRight ofItem:oneUpPreviewImageView];
+
+    UIView *twoUpMediaView = [UIView autoLayoutView];
+    [self.view addSubview:twoUpMediaView];
+    [twoUpMediaView pinToSuperviewEdges:JRTViewPinLeftEdge|JRTViewPinRightEdge inset:VCreatePollViewControllerPadding];
+    [twoUpMediaView pinEdge:NSLayoutAttributeTop toEdge:NSLayoutAttributeBottom ofItem:questionsView inset:VCreatePollViewControllerPadding];
+    [twoUpMediaView pinEdge:NSLayoutAttributeBottom toEdge:NSLayoutAttributeTop ofItem:postButton inset:-VCreatePollViewControllerPadding];
+    self.twoUpMediaView = twoUpMediaView;
+
+    UIImageView *leftPreviewImageView = [UIImageView autoLayoutView];
+    leftPreviewImageView.userInteractionEnabled = YES;
+    [twoUpMediaView addSubview:leftPreviewImageView];
+    [leftPreviewImageView pinToSuperviewEdges:JRTViewPinTopEdge|JRTViewPinLeftEdge inset:0];
+    self.leftPreviewImageView = leftPreviewImageView;
+
+    UIImage *leftRemoveMediaButtonImage = [UIImage imageNamed:@"PostDelete"];
+    UIButton *leftRemoveMediaButton = [UIButton buttonWithType:UIButtonTypeSystem];
+    leftRemoveMediaButton.tintColor = [[VThemeManager sharedThemeManager] themedColorForKeyPath:@"theme.color.post.media.remove"];
+    leftRemoveMediaButton.translatesAutoresizingMaskIntoConstraints = NO;
+    [leftRemoveMediaButton setImage:leftRemoveMediaButtonImage forState:UIControlStateNormal];
+    [leftRemoveMediaButton addTarget:self action:@selector(oneUpRemoveMediaButtonAction:) forControlEvents:UIControlEventTouchUpInside];
+    [leftPreviewImageView addSubview:leftRemoveMediaButton];
+    [leftRemoveMediaButton constrainToSize:leftRemoveMediaButtonImage.size];
+    [leftRemoveMediaButton pinToSuperviewEdges:JRTViewPinTopEdge|JRTViewPinLeftEdge inset:VCreatePollViewControllerPadding];
+
+    UIImageView *rightPreviewImageView = [UIImageView autoLayoutView];
+    rightPreviewImageView.userInteractionEnabled = YES;
+    [twoUpMediaView addSubview:rightPreviewImageView];
+    [rightPreviewImageView pinToSuperviewEdges:JRTViewPinTopEdge|JRTViewPinRightEdge inset:0];
+    self.rightPreviewImageView = rightPreviewImageView;
+
+    UIImage *rightRemoveMediaButtonImage = [UIImage imageNamed:@"PostDelete"];
+    UIButton *rightRemoveMediaButton = [UIButton buttonWithType:UIButtonTypeSystem];
+    rightRemoveMediaButton.tintColor = [[VThemeManager sharedThemeManager] themedColorForKeyPath:@"theme.color.post.media.remove"];
+    rightRemoveMediaButton.translatesAutoresizingMaskIntoConstraints = NO;
+    [rightRemoveMediaButton setImage:rightRemoveMediaButtonImage forState:UIControlStateNormal];
+    [rightRemoveMediaButton addTarget:self action:@selector(oneUpRemoveMediaButtonAction:) forControlEvents:UIControlEventTouchUpInside];
+    [rightPreviewImageView addSubview:rightRemoveMediaButton];
+    [rightRemoveMediaButton constrainToSize:rightRemoveMediaButtonImage.size];
+    [rightRemoveMediaButton pinToSuperviewEdges:JRTViewPinTopEdge|JRTViewPinLeftEdge inset:VCreatePollViewControllerPadding];
+
+    [twoUpMediaView addConstraint:[NSLayoutConstraint constraintWithItem:leftPreviewImageView attribute:NSLayoutAttributeRight relatedBy:NSLayoutRelationEqual toItem:twoUpMediaView attribute:NSLayoutAttributeCenterX multiplier:1 constant:-VCreatePollViewControllerPadding/2]];
+    [twoUpMediaView addConstraint:[NSLayoutConstraint constraintWithItem:rightPreviewImageView attribute:NSLayoutAttributeLeft relatedBy:NSLayoutRelationEqual toItem:twoUpMediaView attribute:NSLayoutAttributeCenterX multiplier:1 constant:VCreatePollViewControllerPadding/2]];
+
+    [twoUpMediaView addConstraint:[NSLayoutConstraint constraintWithItem:leftPreviewImageView attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:leftPreviewImageView attribute:NSLayoutAttributeWidth multiplier:1.0 constant:0.0]];
+    [twoUpMediaView addConstraint:[NSLayoutConstraint constraintWithItem:rightPreviewImageView attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:rightPreviewImageView attribute:NSLayoutAttributeWidth multiplier:1.0 constant:0.0]];
+
     [self validatePostButtonState];
+    [self updateViewState];
 
     return self;        
 }
@@ -208,7 +300,94 @@ CGFloat VCreatePollViewControllerLargePadding = 20;
     [self.postButton setEnabled:YES];
 }
 
+- (void)updateViewState
+{
+    if(!self.leftMediaData && !self.rightMediaData)
+    {
+        [self.addMediaView setHidden:NO];
+        [self.oneUpMediaView setHidden:YES];
+        [self.twoUpMediaView setHidden:YES];
+    }
+    else if(self.leftMediaData || self.rightMediaData)
+    {
+        [self.addMediaView setHidden:YES];
+
+        if(self.leftMediaData && !self.rightMediaData)
+        {
+            [self.oneUpMediaView setHidden:NO];
+            [self.twoUpMediaView setHidden:YES];
+        }
+        else
+        {
+            [self.oneUpMediaView setHidden:YES];
+            [self.twoUpMediaView setHidden:NO];
+        }
+    }
+}
+
+- (void)addMediaWithImage:(UIImage *)image data:(NSData *)data andType:(NSString *)type
+{
+    if(!self.leftMediaData)
+    {
+        self.leftMediaData = data;
+        self.leftMediaType = type;
+        self.leftPreviewImageView.image = image;
+        self.oneUpPreviewImageView.image = image;
+    }
+    else
+    {
+        self.rightMediaData = data;
+        self.rightMediaType = type;
+        self.rightPreviewImageView.image = image;
+    }
+
+    [self updateViewState];
+}
+
+- (void)clearLeftMedia
+{
+    self.leftMediaData = nil;
+    self.leftMediaType = nil;
+    self.leftPreviewImageView.image = nil;
+
+    if(self.rightMediaData)
+    {
+        NSData *data = self.rightMediaData;
+        NSString *type = self.leftMediaType;
+        UIImage *image = self.rightPreviewImageView.image;
+        [self clearRightMedia];
+        [self addMediaWithImage:image data:data andType:type];
+    }
+    else
+    {
+        [self updateViewState];
+    }
+}
+
+- (void)clearRightMedia
+{
+    self.rightMediaData = nil;
+    self.rightMediaType = nil;
+    self.rightPreviewImageView.image = nil;
+    [self updateViewState];
+}
+
 #pragma mark - Actions
+
+- (void)oneUpRemoveMediaButtonAction:(id)sender
+{
+    [self clearLeftMedia];
+}
+
+- (void)twoUpLeftRemoveMediaButtonAction:(id)sender
+{
+    [self clearLeftMedia];
+}
+
+- (void)twoUpRightRemoveMediaButtonAction:(id)sender
+{
+    [self clearRightMedia];
+}
 
 - (void)mediaButtonAction:(id)sender
 {
@@ -248,6 +427,41 @@ CGFloat VCreatePollViewControllerLargePadding = 20;
 {
     [textField resignFirstResponder];
     return YES;
+}
+
+#pragma mark - UIImagePickerControllerDelegate
+
+- (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info{
+    [self dismissViewControllerAnimated:YES completion:nil];
+
+    if(UTTypeEqual((__bridge CFStringRef)(info[UIImagePickerControllerMediaType]), kUTTypeMovie))
+    {
+        NSURL *mediaURL = info[UIImagePickerControllerMediaURL];
+        AVURLAsset *asset = [[AVURLAsset alloc] initWithURL:mediaURL options:nil];
+        AVAssetImageGenerator *gen = [[AVAssetImageGenerator alloc] initWithAsset:asset];
+        gen.appliesPreferredTrackTransform = YES;
+        CMTime time = CMTimeMakeWithSeconds(0.0, 600);
+        NSError *error = nil;
+        CGImageRef image = [gen copyCGImageAtTime:time actualTime:NULL error:&error];
+        if(error)
+        {
+            NSLog(@"%@", error);
+        }
+
+        [self addMediaWithImage:[[UIImage alloc] initWithCGImage:image] data:[NSData dataWithContentsOfURL:mediaURL] andType:[mediaURL pathExtension]];
+
+        CGImageRelease(image);
+    }
+    else if(UTTypeEqual((__bridge CFStringRef)(info[UIImagePickerControllerMediaType]), kUTTypeImage))
+    {
+        UIImage *image = [info objectForKey:UIImagePickerControllerEditedImage];
+        if (image == nil)
+        {
+            image = [info objectForKey:UIImagePickerControllerOriginalImage];
+        }
+
+        [self addMediaWithImage:image data:[NSData dataWithData:UIImagePNGRepresentation(image)] andType:@"png"];
+    }
 }
 
 @end

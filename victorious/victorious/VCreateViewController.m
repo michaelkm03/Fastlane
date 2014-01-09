@@ -331,10 +331,6 @@ CGFloat VCreateViewControllerLargePadding = 20;
         self.previewImage.image = image;
         [self.previewImage setHidden:NO];
     }
-    else
-    {
-        [self clearMedia];
-    }
 }
 
 @end
