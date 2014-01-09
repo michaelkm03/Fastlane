@@ -2,7 +2,7 @@
 //  VMessage.m
 //  victorious
 //
-//  Created by Will Long on 1/8/14.
+//  Created by Will Long on 1/9/14.
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
@@ -15,8 +15,9 @@
 @implementation VMessage
 
 @dynamic isRead;
-@dynamic text;
 @dynamic remoteId;
+@dynamic text;
+@dynamic postedAt;
 @dynamic conversation;
 @dynamic media;
 @dynamic user;

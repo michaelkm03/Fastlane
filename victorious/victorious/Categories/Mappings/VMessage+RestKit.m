@@ -22,7 +22,8 @@
     NSDictionary *propertyMap = @{
                                   @"is_read" : VSelectorName(isRead),
                                   @"text" : VSelectorName(text),
-                                  @"remote_id" : VSelectorName(remoteId)
+                                  @"remote_id" : VSelectorName(remoteId),
+                                  @"posted_at" : VSelectorName(postedAt)
                                   };
     
     RKEntityMapping *mapping = [RKEntityMapping

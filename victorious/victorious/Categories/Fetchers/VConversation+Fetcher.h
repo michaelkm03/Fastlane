@@ -1,5 +1,5 @@
 //
-//  VConversation.m
+//  VConversation+Fetcher.h
 //  victorious
 //
 //  Created by Will Long on 1/9/14.
@@ -7,14 +7,9 @@
 //
 
 #import "VConversation.h"
-#import "VMessage.h"
-#import "VUser.h"
 
+@interface VConversation (Fetcher)
 
-@implementation VConversation
-
-@dynamic remoteId;
-@dynamic messages;
-@dynamic users;
+@property (nonatomic, readonly)      NSDate* lastPostDate;
 
 @end
