@@ -9,6 +9,7 @@
 #import "VLoginViewController.h"
 
 #import "VObjectManager+Login.h"
+#import "VObjectManager+DirectMessaging.h"
 
 @import Accounts;
 @import Social;
@@ -31,9 +32,19 @@ NSString*   const   kVLoginViewControllerDomain =   @"VLoginViewControllerDomain
     dispatch_once(&onceToken, ^{
         UIViewController*   currentViewController = [[UIApplication sharedApplication] delegate].window.rootViewController;
         loginViewController = (VLoginViewController*)[currentViewController.storyboard instantiateViewControllerWithIdentifier: @"loginSelect"];
+        
+        [[NSNotificationCenter defaultCenter] addObserver:loginViewController
+                                                 selector:@selector(loginChanged:)
+                                                     name:LoggedInChangedNotification
+                                                   object:nil];
     });
     
     return loginViewController;
+}
+
+- (void)dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 - (void)viewDidLoad
@@ -50,6 +61,18 @@ NSString*   const   kVLoginViewControllerDomain =   @"VLoginViewControllerDomain
 }
 
 #pragma mark -
+
+- (void)loginChanged:(NSNotification *)notification
+{
+    VUser* loggedInUser = [[VObjectManager sharedManager] mainUser];
+    if (loggedInUser)
+    { //We've logged in
+        [[[VObjectManager sharedManager] loadInitialConversations] start];
+    } else
+    { //We've logged out
+        //TODO: delete existing conversations,
+    }
+}
 
 - (BOOL)shouldLoginWithUsername:(NSString *)emailAddress password:(NSString *)password
 {

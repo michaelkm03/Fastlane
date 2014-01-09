@@ -319,7 +319,7 @@
                                                     successBlock:(SuccessBlock)success
                                                        failBlock:(FailBlock)fail
 {
-    return [self GET:@"api/game/create"
+    return [self GET:@"/api/game/create"
               object:nil
           parameters:@{ @"sequence_id" : sequence.remoteId}
         successBlock:success
