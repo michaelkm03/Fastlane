@@ -9,18 +9,11 @@
 #import "VTableViewCell.h"
 
 @class VComment;
-//@class VMessage;
 
 static NSString *kCommentCellIdentifier = @"VCommentCell";
 
 @interface VCommentCell : VTableViewCell
 
-@property (weak, nonatomic) IBOutlet UILabel *textLabel;
-@property (weak, nonatomic) IBOutlet UIImageView *imageView;
-
-@property (weak, nonatomic) id dataSource;
-
-- (void)configureCellForComment:(VComment*)comment;
-//- (void)configureCellForMessage:(VMessage*)message;
+@property (strong, nonatomic) VComment *comment;
 
 @end

@@ -7,23 +7,28 @@
 //
 
 #import "VCommentCell.h"
-
 #import "VComment.h"
 #import "UIImageView+AFNetworking.h"
-#import "VConstants.h"
+
+@interface VCommentCell()
+@property (weak, nonatomic) IBOutlet UILabel *dateLabel;
+@property (weak, nonatomic) IBOutlet UIImageView *avatarImageView;
+@property (weak, nonatomic) IBOutlet UILabel *usernameLabel;
+@property (weak, nonatomic) IBOutlet UILabel *messageLabel;
+@end
 
 @implementation VCommentCell
 
-- (void)configureCellForComment:(VComment*)comment
+- (void)setComment:(VComment *)comment
 {
-    self.dataSource = comment;
-    
-    self.textLabel.text = comment.text;
-
-    if ([comment.mediaType isEqualToString:VConstantsMediaTypeImage])
-    {   //TODO: this should be the profile image
-        [self.imageView setImageWithURL:[NSURL URLWithString: (NSString*)comment.mediaUrl]                        placeholderImage: [UIImage imageNamed:@"avatar.jpg"]];
+    if(_comment == comment)
+    {
+        return;
     }
+
+    _comment = comment;
+
+    self.messageLabel.text = self.comment.text;
 }
 
 @end
