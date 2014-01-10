@@ -9,5 +9,5 @@
 #import "VTableViewCell.h"
 
 @interface VNewsCell : VTableViewCell
-
+//@property (nonatomic, readwrite, strong)    VConversation*  conversation;
 @end

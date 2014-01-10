@@ -6,8 +6,8 @@
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
+@class VConversation;
 
 @interface VMessageViewController : UITableViewController
-
+@property (nonatomic, readwrite, strong)    VConversation*  conversation;
 @end

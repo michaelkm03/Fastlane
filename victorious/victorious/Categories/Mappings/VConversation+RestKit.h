@@ -10,6 +10,7 @@
 
 @interface VConversation (RestKit)
 
++ (NSString *)entityName;
 + (RKResponseDescriptor*)descriptor;
 
 @end

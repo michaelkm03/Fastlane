@@ -213,37 +213,24 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                        <view key="tableHeaderView" contentMode="scaleToFill" id="EWu-Lk-sWy">
+                        <view key="tableHeaderView" contentMode="scaleToFill" id="Bc3-eu-zp7">
                             <rect key="frame" x="0.0" y="64" width="320" height="44"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <subviews>
-                                <segmentedControl opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="pYn-XB-wxD">
-                                    <rect key="frame" x="60" y="8" width="200" height="29"/>
+                                <segmentedControl opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="uca-xh-1su">
+                                    <rect key="frame" x="79" y="8" width="161" height="29"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                     <segments>
                                         <segment title="Messages"/>
                                         <segment title="News"/>
                                     </segments>
                                     <connections>
-                                        <action selector="modeSelected:" destination="Tfk-WC-tkh" eventType="valueChanged" id="Bfr-PD-Mda"/>
+                                        <action selector="modeSelected:" destination="Tfk-WC-tkh" eventType="valueChanged" id="Xaf-Rs-sJ6"/>
                                     </connections>
                                 </segmentedControl>
                             </subviews>
                             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         </view>
-                        <prototypes>
-                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" id="pkS-w9-Q2E">
-                                <rect key="frame" x="0.0" y="130" width="320" height="44"/>
-                                <autoresizingMask key="autoresizingMask"/>
-                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="pkS-w9-Q2E" id="6FI-7K-WmA">
-                                    <rect key="frame" x="0.0" y="0.0" width="287" height="43"/>
-                                    <autoresizingMask key="autoresizingMask"/>
-                                </tableViewCellContentView>
-                                <connections>
-                                    <segue destination="quD-aE-BAL" kind="push" identifier="toNews" id="eC5-3o-s4v"/>
-                                </connections>
-                            </tableViewCell>
-                        </prototypes>
                         <connections>
                             <outlet property="dataSource" destination="Tfk-WC-tkh" id="ujg-52-JBd"/>
                             <outlet property="delegate" destination="Tfk-WC-tkh" id="S3f-CR-oVf"/>
@@ -271,11 +258,28 @@
                         </connections>
                     </refreshControl>
                     <connections>
-                        <outlet property="modeSelectControl" destination="pYn-XB-wxD" id="fye-c8-N24"/>
+                        <outlet property="modeSelectControl" destination="uca-xh-1su" id="EMz-Nd-q4X"/>
+                        <outlet property="searchDisplayController" destination="QRR-5I-cva" id="kbs-mg-Car"/>
                         <segue destination="miw-Vy-oJ3" kind="push" identifier="toMessage" id="izi-eU-tKx"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="h4x-AK-wgj" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <searchDisplayController id="l6Q-Uz-DMZ">
+                    <connections>
+                        <outlet property="delegate" destination="Tfk-WC-tkh" id="SoM-4Y-PHs"/>
+                        <outlet property="searchContentsController" destination="Tfk-WC-tkh" id="KBP-pn-e7T"/>
+                        <outlet property="searchResultsDataSource" destination="Tfk-WC-tkh" id="wsy-Nr-8kz"/>
+                        <outlet property="searchResultsDelegate" destination="Tfk-WC-tkh" id="V8j-vM-txk"/>
+                    </connections>
+                </searchDisplayController>
+                <searchDisplayController id="QRR-5I-cva">
+                    <connections>
+                        <outlet property="delegate" destination="Tfk-WC-tkh" id="AE6-0W-T15"/>
+                        <outlet property="searchContentsController" destination="Tfk-WC-tkh" id="2A7-uL-aye"/>
+                        <outlet property="searchResultsDataSource" destination="Tfk-WC-tkh" id="s1M-Iy-daL"/>
+                        <outlet property="searchResultsDelegate" destination="Tfk-WC-tkh" id="qIi-VE-VdA"/>
+                    </connections>
+                </searchDisplayController>
             </objects>
             <point key="canvasLocation" x="-4131" y="-818"/>
         </scene>
@@ -289,7 +293,7 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
                             <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" id="Utg-g9-urg">
-                                <rect key="frame" x="0.0" y="86" width="320" height="44"/>
+                                <rect key="frame" x="0.0" y="22" width="320" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Utg-g9-urg" id="CPC-WE-c9b">
                                     <rect key="frame" x="0.0" y="0.0" width="320" height="43"/>
@@ -1756,7 +1760,7 @@
         <simulatedScreenMetrics key="destination" type="retina4"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
+        <segue reference="Oqu-Ea-RjF"/>
         <segue reference="iGZ-YA-xhf"/>
-        <segue reference="M1p-uJ-7Ga"/>
     </inferredMetricsTieBreakers>
 </document>

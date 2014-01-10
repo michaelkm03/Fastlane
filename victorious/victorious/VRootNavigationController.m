@@ -75,15 +75,15 @@
         }
         case VMenuTableViewControllerRowProfile:
         {
-//            if (![VObjectManager sharedManager].authorized)
-//            {
-//                UINavigationController *navigationController =
-//                [[UINavigationController alloc] initWithRootViewController:[VLoginViewController sharedLoginViewController]];
-//                [self dismissViewControllerAnimated:YES completion:^{
-//                    [wself presentViewController:navigationController animated:YES completion:NULL];
-//                }];
-//            }
-//            else
+            if (![VObjectManager sharedManager].authorized)
+            {
+                UINavigationController *navigationController =
+                [[UINavigationController alloc] initWithRootViewController:[VLoginViewController sharedLoginViewController]];
+                [self dismissViewControllerAnimated:YES completion:^{
+                    [wself presentViewController:navigationController animated:YES completion:NULL];
+                }];
+            }
+            else
             {
                 //  Show Profile
                 VProfileViewController* profileViewController = [VProfileViewController sharedProfileViewController];
