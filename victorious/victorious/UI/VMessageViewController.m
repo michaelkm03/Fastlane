@@ -8,6 +8,7 @@
 
 #import "VMessageViewController.h"
 #import "VObjectManager+DirectMessaging.h"
+#import "VCommentCell.h"
 
 @interface VMessageViewController ()
 @property (nonatomic, readwrite, strong)    NSArray*    messages;
@@ -28,6 +29,9 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+
+    [self.tableView registerNib:[UINib nibWithNibName:kCommentCellIdentifier bundle:[NSBundle mainBundle]]
+         forCellReuseIdentifier:kCommentCellIdentifier];
 
     [[[VObjectManager sharedManager] loadNextPageOfConversations:^(NSArray *resultObjects)
     {
@@ -63,8 +67,7 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    static NSString *CellIdentifier = @"Cell";
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:kCommentCellIdentifier forIndexPath:indexPath];
     
     VMessage*   aMessage = self.messages[indexPath.row];
     

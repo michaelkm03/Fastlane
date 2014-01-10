@@ -117,7 +117,7 @@ static  NSString*   kNewsCellViewIdentifier       =   @"VNewsCell";
     }
     else if (kNewsModeSelect == self.modeSelectControl.selectedSegmentIndex)
     {
-//        [fetchRequest setEntity:[NSEntityDescription entityForName:[VConversation entityName] inManagedObjectContext:context]];
+//        [fetchRequest setEntity:[NSEntityDescription entityForName:[VNews entityName] inManagedObjectContext:context]];
     }
     
     NSSortDescriptor *sort = [[NSSortDescriptor alloc] initWithKey:@"lastMessage.postedAt" ascending:YES];
