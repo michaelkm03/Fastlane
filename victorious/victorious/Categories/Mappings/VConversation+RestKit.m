@@ -20,7 +20,7 @@
 + (RKEntityMapping*)entityMapping
 {
     NSDictionary *propertyMap = @{
-                                  @"remote_id" : VSelectorName(remoteId)
+                                  @"conversation_id" : VSelectorName(remoteId)
                                   };
     
     RKEntityMapping *mapping = [RKEntityMapping
@@ -30,8 +30,9 @@
     mapping.identificationAttributes = @[ VSelectorName(remoteId) ];
     
     [mapping addAttributeMappingsFromDictionary:propertyMap];
-
-    [mapping addRelationshipMappingWithSourceKeyPath:@"" mapping:[VMessage entityMapping]];
+    
+    [mapping addRelationshipMappingWithSourceKeyPath:VSelectorName(messages) mapping:[VMessage entityMapping]];
+    [mapping addRelationshipMappingWithSourceKeyPath:VSelectorName(message) mapping:[VMessage entityMapping]];
 
     return mapping;
 }
@@ -39,8 +40,8 @@
 + (RKResponseDescriptor*)descriptor
 {
     return [RKResponseDescriptor responseDescriptorWithMapping:[self entityMapping]
-                                                        method:RKRequestMethodPOST
-                                                   pathPattern:nil
+                                                        method:RKRequestMethodGET
+                                                   pathPattern:@"/api/message/conversation_list"
                                                        keyPath:@"payload"
                                                    statusCodes:RKStatusCodeIndexSetForClass(RKStatusCodeClassSuccessful)];
 }

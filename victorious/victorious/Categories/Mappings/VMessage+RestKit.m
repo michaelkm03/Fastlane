@@ -34,7 +34,7 @@
     
     [mapping addAttributeMappingsFromDictionary:propertyMap];
     
-    [mapping addRelationshipMappingWithSourceKeyPath:@"" mapping:[VMedia entityMapping]];
+    [mapping addRelationshipMappingWithSourceKeyPath:VSelectorName(media) mapping:[VMedia entityMapping]];
     
     return mapping;
 }

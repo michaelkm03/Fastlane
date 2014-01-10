@@ -20,11 +20,29 @@
     return [self loadNextPageOfConversations:^(NSArray *resultObjects)
             {
                 VLog(@"Initial Conversations Loaded: %@", resultObjects);
+                for (VConversation* convo in resultObjects)
+                {
+                    //There should only be one message.  Its the current 'last message'
+                    convo.lastMessage = [convo.messages anyObject];
+                }
             }
                                    failBlock:^(NSError *error)
             {
                 VLog(@"Failed to load conversations: %@", error);
             }];
+}
+
+- (void)testSendMessage
+{
+    for (int i=0; i <5; i++)
+    {
+        [[self sendMessageToUser:nil
+                        withText:[NSString stringWithFormat: @"Test %i", i]
+                            Data:nil
+                  mediaExtension:nil
+                    successBlock:nil
+                       failBlock:nil] start];
+    }
 }
 
 - (RKManagedObjectRequestOperation *)loadNextPageOfConversations:(SuccessBlock)success
@@ -117,6 +135,10 @@
     NSMutableDictionary* parameters = [[NSMutableDictionary alloc] initWithCapacity:5];
     if (user)
         [parameters setObject:[NSString stringWithFormat:@"%@", user.remoteId] forKey:@"to_user_id"];
+    else //TODO: remove test code
+        [parameters setObject:[NSString stringWithFormat:@"%i", 140] forKey:@"to_user_id"];
+        
+    
     if (text)
         [parameters setObject:text forKey:@"text"];
     if (data && extension)

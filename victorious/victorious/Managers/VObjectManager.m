@@ -18,6 +18,7 @@
 #import "VCategory+RestKit.h"
 #import "VSequence+RestKit.h"
 #import "VStatSequence+RestKit.h"
+#import "VConversation+RestKit.h"
 
 
 @implementation VObjectManager
@@ -90,7 +91,8 @@
                                              [VComment getAllDescriptor],
                                              [VComment getAllPaginationDescriptor],
                                              [VStatSequence gamesPlayedDescriptor],
-                                             [VStatSequence gameStatsDescriptor]]];
+                                             [VStatSequence gameStatsDescriptor],
+                                             [VConversation descriptor]]];
 
     _paginationStatuses = [[NSMutableDictionary alloc] init];
 }
