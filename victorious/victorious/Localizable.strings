@@ -28,3 +28,18 @@
 "ReportInappropriate"   =   "Report Inappropriate";
 "BlockUser"             =   "Block User";
 "CopyProfileURL"        =   "Copy Profile URL";
+
+"Now"                   =   "Just now";
+"SecondsAgo"            =   "%d seconds ago";
+"MinuteAgo"             =   "A minute ago";
+"MinutesAgo"            =   "%d minutes ago";
+"HourAgo"               =   "An hour ago";
+"HoursAgo"              =   "%d hours ago";
+"Yesterday"             =   "Yesterday";
+"DaysAgo"               =   "%d days ago";
+"LastWeek"              =   "Last week";
+"WeeksAgo"              =   "%d weeks ago";
+"LastMonth"             =   "Last month";
+"MonthsAgo"             =   "%d months ago";
+"LastYear"              =   "One year ago";
+"YearsAgo"              =   "%d years ago";

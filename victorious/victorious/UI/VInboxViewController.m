@@ -47,8 +47,6 @@ static  NSString*   kNewsCellViewIdentifier       =   @"VNewsCell";
     self.modeSelectControl.selectedSegmentIndex = 0;
     [self modeSelected:self.modeSelectControl];
     
-    self.navigationItem.rightBarButtonItem = self.editButtonItem;
-
 //        [self.modeSelectControl setDividerImage:image1 forLeftSegmentState:UIControlStateNormal                   rightSegmentState:UIControlStateNormal barMetrics:barMetrics];
 //        [self.modeSelectControl setDividerImage:image2 forLeftSegmentState:UIControlStateSelected                   rightSegmentState:UIControlStateNormal barMetrics:barMetrics];
 //        [self.modeSelectControl setDividerImage:image3 forLeftSegmentState:UIControlStateNormal                   rightSegmentState:UIControlStateSelected barMetrics:barMetrics];
@@ -122,7 +120,7 @@ static  NSString*   kNewsCellViewIdentifier       =   @"VNewsCell";
 //        [fetchRequest setEntity:[NSEntityDescription entityForName:[VConversation entityName] inManagedObjectContext:context]];
     }
     
-    NSSortDescriptor *sort = [[NSSortDescriptor alloc] initWithKey:@"lastPostDate" ascending:YES];
+    NSSortDescriptor *sort = [[NSSortDescriptor alloc] initWithKey:@"lastMessage.postedAt" ascending:YES];
     [fetchRequest setSortDescriptors:@[sort]];
     [fetchRequest setFetchBatchSize:50];
     
@@ -160,13 +158,9 @@ static  NSString*   kNewsCellViewIdentifier       =   @"VNewsCell";
 - (IBAction)modeSelected:(id)sender
 {
     if (0 == [sender selectedSegmentIndex])
-    {
         self.navigationItem.rightBarButtonItem = self.editButtonItem;
-    }
     else
-    {
         self.navigationItem.rightBarButtonItem = nil;
-    }
 }
 
 #pragma mark - Navigation

@@ -6,72 +6,52 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
-        <tableViewCell contentMode="scaleToFill" restorationIdentifier="VCommentCell" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="VCommentCell" rowHeight="109" id="X3b-iY-v4q" customClass="VCommentCell">
-            <rect key="frame" x="0.0" y="0.0" width="320" height="109"/>
+        <tableViewCell contentMode="scaleToFill" restorationIdentifier="VCommentCell" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="VCommentCell" rowHeight="98" id="X3b-iY-v4q" customClass="VCommentCell">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="98"/>
             <autoresizingMask key="autoresizingMask"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="X3b-iY-v4q" id="eAW-cc-13j">
-                <rect key="frame" x="0.0" y="0.0" width="320" height="108"/>
+                <rect key="frame" x="0.0" y="0.0" width="320" height="97"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="2kR-kx-3H9" userLabel="User Avatar">
+                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="2kR-kx-3H9" userLabel="User Avatar">
                         <rect key="frame" x="10" y="10" width="48" height="48"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        <constraints>
-                            <constraint firstAttribute="height" constant="48" id="KYH-ou-q76"/>
-                            <constraint firstAttribute="width" constant="48" id="ymU-ip-HwG"/>
-                        </constraints>
                     </imageView>
-                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ChatBubbleRight" translatesAutoresizingMaskIntoConstraints="NO" id="6J0-Gx-uGf">
-                        <rect key="frame" x="66" y="0.0" width="254" height="108"/>
+                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="ChatBubbleRight" translatesAutoresizingMaskIntoConstraints="NO" id="6J0-Gx-uGf">
+                        <rect key="frame" x="66" y="0.0" width="219" height="97"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     </imageView>
-                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="StreamDate" translatesAutoresizingMaskIntoConstraints="NO" id="LfL-cf-slY" userLabel="Time Image">
+                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="StreamDate" translatesAutoresizingMaskIntoConstraints="NO" id="LfL-cf-slY" userLabel="Time Image">
                         <rect key="frame" x="10" y="61" width="11" height="11"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        <constraints>
-                            <constraint firstAttribute="height" constant="11" id="E10-N9-8GK"/>
-                            <constraint firstAttribute="width" constant="11" id="Myg-rR-kKm"/>
-                        </constraints>
                     </imageView>
-                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="date" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mlx-Sx-ed0" userLabel="Time Label">
+                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="date" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mlx-Sx-ed0" userLabel="Time Label">
                         <rect key="frame" x="25" y="56" width="34" height="21"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                         <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                         <nil key="highlightedColor"/>
                     </label>
-                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="username" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="MGT-h7-iQu" userLabel="Username label">
+                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="username" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="MGT-h7-iQu" userLabel="Username label">
                         <rect key="frame" x="86" y="10" width="76" height="21"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                         <nil key="highlightedColor"/>
                     </label>
-                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="message" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="70" translatesAutoresizingMaskIntoConstraints="NO" id="yUe-8b-fBQ" userLabel="Message label">
-                        <rect key="frame" x="89" y="39" width="70" height="21"/>
+                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="message" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="190" translatesAutoresizingMaskIntoConstraints="NO" id="yUe-8b-fBQ" userLabel="Message label">
+                        <rect key="frame" x="86" y="39" width="190" height="49"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                         <nil key="highlightedColor"/>
                     </label>
                 </subviews>
-                <constraints>
-                    <constraint firstItem="6J0-Gx-uGf" firstAttribute="top" secondItem="eAW-cc-13j" secondAttribute="top" id="12p-cb-guY"/>
-                    <constraint firstItem="mlx-Sx-ed0" firstAttribute="leading" secondItem="LfL-cf-slY" secondAttribute="trailing" constant="4" id="DHc-Ni-loM"/>
-                    <constraint firstItem="6J0-Gx-uGf" firstAttribute="leading" secondItem="2kR-kx-3H9" secondAttribute="trailing" constant="8" id="E22-mg-cxm"/>
-                    <constraint firstAttribute="bottom" secondItem="6J0-Gx-uGf" secondAttribute="bottom" id="GJS-ne-wfm"/>
-                    <constraint firstItem="2kR-kx-3H9" firstAttribute="leading" secondItem="LfL-cf-slY" secondAttribute="leading" id="HWj-cN-uIh"/>
-                    <constraint firstItem="mlx-Sx-ed0" firstAttribute="top" secondItem="2kR-kx-3H9" secondAttribute="bottom" constant="-2" id="IHJ-rL-djT"/>
-                    <constraint firstItem="MGT-h7-iQu" firstAttribute="leading" secondItem="yUe-8b-fBQ" secondAttribute="leading" constant="-3" id="J2I-Ez-S6G"/>
-                    <constraint firstItem="yUe-8b-fBQ" firstAttribute="top" secondItem="MGT-h7-iQu" secondAttribute="bottom" constant="8" id="RR2-fG-WF8"/>
-                    <constraint firstAttribute="trailing" secondItem="6J0-Gx-uGf" secondAttribute="trailing" id="WQL-w0-bhJ"/>
-                    <constraint firstItem="2kR-kx-3H9" firstAttribute="leading" secondItem="eAW-cc-13j" secondAttribute="leading" constant="10" id="e2P-1M-vUy"/>
-                    <constraint firstItem="2kR-kx-3H9" firstAttribute="top" secondItem="eAW-cc-13j" secondAttribute="top" constant="10" id="e9s-uJ-BPC"/>
-                    <constraint firstItem="MGT-h7-iQu" firstAttribute="top" secondItem="6J0-Gx-uGf" secondAttribute="top" constant="10" id="mbc-Xb-ZEC"/>
-                    <constraint firstItem="MGT-h7-iQu" firstAttribute="leading" secondItem="6J0-Gx-uGf" secondAttribute="leading" constant="20" id="p5p-9y-JBa"/>
-                    <constraint firstItem="LfL-cf-slY" firstAttribute="top" secondItem="2kR-kx-3H9" secondAttribute="bottom" constant="3" id="sQr-Am-uVw"/>
-                </constraints>
             </tableViewCellContentView>
             <connections>
+                <outlet property="avatarImageView" destination="2kR-kx-3H9" id="7aq-3b-KnG"/>
+                <outlet property="dateLabel" destination="mlx-Sx-ed0" id="5tM-mA-JkR"/>
                 <outlet property="imageView" destination="2kR-kx-3H9" id="PnE-kL-Hc1"/>
+                <outlet property="messageLabel" destination="yUe-8b-fBQ" id="qcA-Ap-56l"/>
+                <outlet property="usernameLabel" destination="MGT-h7-iQu" id="H9B-up-ff6"/>
             </connections>
         </tableViewCell>
     </objects>
