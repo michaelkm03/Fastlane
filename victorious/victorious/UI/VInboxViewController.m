@@ -161,12 +161,11 @@ static  NSString*   kNewsCellViewIdentifier       =   @"VNewsCell";
 {
     if (0 == [sender selectedSegmentIndex])
     {
-        UIBarButtonItem*    searchButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemSearch target:self action:@selector(displaySearchBar:)];
-        self.navigationItem.rightBarButtonItems = @[self.editButtonItem, searchButton];
+        self.navigationItem.rightBarButtonItem = self.editButtonItem;
     }
     else
     {
-        self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemSearch target:self action:@selector(displaySearchBar:)];
+        self.navigationItem.rightBarButtonItem = nil;
     }
 }
 
