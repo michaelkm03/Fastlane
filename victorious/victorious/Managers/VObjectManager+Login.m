@@ -27,11 +27,6 @@ NSString *LoggedInChangedNotification = @"LoggedInChangedNotification";
     return [self.mainUser.accessLevel isEqualToString:@"superuser"] ;
 }
 
-- (VUser *)mainUser
-{
-    return [[VUser findAllObjects] firstObject];
-}
-
 - (RKManagedObjectRequestOperation *)loginToFacebookWithToken:(NSString*)accessToken
                                                  SuccessBlock:(SuccessBlock)success
                                                     failBlock:(FailBlock)failed

@@ -11,6 +11,8 @@
 #import "VObjectManager+Login.h"
 #import "VObjectManager+DirectMessaging.h"
 
+#import "VUser.h"
+
 @import Accounts;
 @import Social;
 
@@ -64,8 +66,18 @@ NSString*   const   kVLoginViewControllerDomain =   @"VLoginViewControllerDomain
 
 - (void)loginChanged:(NSNotification *)notification
 {
-    VUser* loggedInUser = [[VObjectManager sharedManager] mainUser];
-    if (loggedInUser)
+    VUser* mainuser = notification.object;
+    
+    //If the mainuser isnt a VUser just fail gracefully.
+    if (mainuser && ![mainuser isKindOfClass:[VUser class]])
+    {
+        VLog(@"Invalid object passed in loginChanged notif: %@", mainuser);
+        return;
+    }
+    
+    [VObjectManager sharedManager].mainUser = mainuser;
+    
+    if (mainuser)
     { //We've logged in
         [[[VObjectManager sharedManager] loadInitialConversations] start];
     } else
@@ -109,7 +121,8 @@ NSString*   const   kVLoginViewControllerDomain =   @"VLoginViewControllerDomain
 {
     VLog(@"Succesfully logged in as: %@", mainUser);
     
-    [[NSNotificationCenter defaultCenter] postNotificationName:LoggedInChangedNotification object:nil];
+    [[NSNotificationCenter defaultCenter] postNotificationName:LoggedInChangedNotification
+                                                        object:mainUser];
     
     [self dismissViewControllerAnimated:YES completion:NULL];
 }
@@ -196,6 +209,9 @@ NSString*   const   kVLoginViewControllerDomain =   @"VLoginViewControllerDomain
     {
         SuccessBlock success = ^(NSArray* objects)
         {
+            if (![[objects firstObject] isKindOfClass:[VUser class]])
+                [self didFailToLogin:nil];
+            
             [self didLoginWithUser:[objects firstObject]];
         };
         FailBlock fail = ^(NSError* error)
@@ -250,6 +266,9 @@ NSString*   const   kVLoginViewControllerDomain =   @"VLoginViewControllerDomain
                                                
                                                SuccessBlock success = ^(NSArray* objects)
                                                {
+                                                   if (![[objects firstObject] isKindOfClass:[VUser class]])
+                                                       [self didFailToLogin:nil];
+                                                   
                                                    [self didLoginWithUser:[objects firstObject]];
                                                };
                                                FailBlock failed = ^(NSError* error)
@@ -294,6 +313,9 @@ NSString*   const   kVLoginViewControllerDomain =   @"VLoginViewControllerDomain
         {
             SuccessBlock success = ^(NSArray* objects)
             {
+                if (![[objects firstObject] isKindOfClass:[VUser class]])
+                    [self didFailToLogin:nil];
+                
                 [self didLoginWithUser:[objects firstObject]];
             };
             FailBlock failed = ^(NSError* error)

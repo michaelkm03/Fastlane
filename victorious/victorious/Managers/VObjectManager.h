@@ -43,5 +43,7 @@ typedef NS_ENUM(NSUInteger, VObjectManagerSequenceStatusType){
  */
 + (void)setupObjectManager;
 
+@property (nonatomic, weak)                             VUser*  mainUser;
+
 @end
 
