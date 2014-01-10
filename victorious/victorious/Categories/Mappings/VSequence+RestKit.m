@@ -52,7 +52,7 @@
 {
     return [RKResponseDescriptor responseDescriptorWithMapping:[VSequence entityMapping]
                                                         method:RKRequestMethodGET
-                                                   pathPattern:@"/api/sequence/list_by_category/:category"
+                                                   pathPattern:@"/api/sequence/detail_list_by_category/:category"
                                                        keyPath:@"payload"
                                                    statusCodes:RKStatusCodeIndexSetForClass(RKStatusCodeClassSuccessful)];
 }
@@ -61,7 +61,7 @@
 {
     return [RKResponseDescriptor responseDescriptorWithMapping:[VSequence entityMapping]
                                                         method:RKRequestMethodGET
-                                                   pathPattern:@"/api/sequence/list_by_category/:category/:status/:page/:perpage"
+                                                   pathPattern:@"/api/sequence/detail_list_by_category/:category/:status/:page/:perpage"
                                                        keyPath:@"payload"
                                                    statusCodes:RKStatusCodeIndexSetForClass(RKStatusCodeClassSuccessful)];
 }

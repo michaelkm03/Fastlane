@@ -20,7 +20,8 @@
 + (RKEntityMapping*)entityMapping
 {
     NSDictionary *propertyMap = @{
-                                  @"conversation_id" : VSelectorName(remoteId)
+                                  @"conversation_id" : VSelectorName(remoteId),
+                                  @"other_interlocutor_user_id" : VSelectorName(other_interlocutor_user_id)
                                   };
     
     RKEntityMapping *mapping = [RKEntityMapping
@@ -33,6 +34,8 @@
     
     [mapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:nil toKeyPath:@"messages" withMapping:[VMessage entityMapping]]];
 
+    [mapping addConnectionForRelationship:@"users" connectedBy:@{@"other_interlocutor_user_id" : @"remoteId"}];
+    
     return mapping;
 }
 

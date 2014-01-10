@@ -14,9 +14,10 @@
 @interface VConversation : NSManagedObject
 
 @property (nonatomic, retain) NSNumber * remoteId;
+@property (nonatomic, retain) NSNumber * other_interlocutor_user_id;
+@property (nonatomic, retain) VMessage *lastMessage;
 @property (nonatomic, retain) NSSet *messages;
 @property (nonatomic, retain) NSSet *users;
-@property (nonatomic, retain) VMessage *lastMessage;
 @end
 
 @interface VConversation (CoreDataGeneratedAccessors)

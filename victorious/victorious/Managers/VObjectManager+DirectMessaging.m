@@ -7,6 +7,7 @@
 //
 
 #import "VObjectManager+DirectMessaging.h"
+#import "VObjectManager+Users.h"
 #import "VObjectManager+Private.h"
 
 #import "VMessage.h"
@@ -20,12 +21,26 @@
     return [self loadNextPageOfConversations:^(NSArray *resultObjects)
             {
                 VLog(@"Initial Conversations Loaded: %@", resultObjects);
-                for (VConversation* convo in resultObjects)
+                for (VConversation* conversation in resultObjects)
                 {
                     //There should only be one message.  Its the current 'last message'
-                    convo.lastMessage = [convo.messages anyObject];
+                    conversation.lastMessage = [conversation.messages anyObject];
+                    [conversation.managedObjectContext save:nil];
                     
-                    [convo.managedObjectContext save:nil];
+                    if (![conversation.users count])
+                    {
+                        //If we don't have the users then we need to fetch em.
+                        [[self fetchUser:conversation.other_interlocutor_user_id
+                        withSuccessBlock:^(NSArray *resultObjects)
+                        {
+                            if ([[resultObjects firstObject] isKindOfClass:[VUser class]])
+                                [conversation addUsersObject:[resultObjects firstObject]];
+                        }
+                               failBlock:^(NSError *error)
+                        {
+                                   VLog(@"error loading user: %@", error);
+                               }] start];
+                    }
                 }
             }
                                    failBlock:^(NSError *error)

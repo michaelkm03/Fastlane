@@ -42,7 +42,7 @@
 + (RKResponseDescriptor*)descriptor
 {
     return [RKResponseDescriptor responseDescriptorWithMapping:[self entityMapping]
-                                                        method:RKRequestMethodPOST
+                                                        method:RKRequestMethodAny
                                                    pathPattern:nil
                                                        keyPath:@"payload"
                                                    statusCodes:RKStatusCodeIndexSetForClass(RKStatusCodeClassSuccessful)];
