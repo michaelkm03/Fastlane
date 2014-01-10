@@ -14,8 +14,9 @@
 @implementation VConversation
 
 @dynamic remoteId;
+@dynamic other_interlocutor_user_id;
+@dynamic lastMessage;
 @dynamic messages;
 @dynamic users;
-@dynamic lastMessage;
 
 @end
