@@ -62,6 +62,8 @@
                 self.movieView.hidden = YES;
 
                 self.mpController = [[MPMoviePlayerController alloc] initWithContentURL:[NSURL URLWithString:message.media.mediaUrl]];
+                [self.mpController prepareToPlay];
+                self.mpController.view.frame = self.movieView.bounds;
                 [self.movieView addSubview:self.mpController.view];
             }
             else
