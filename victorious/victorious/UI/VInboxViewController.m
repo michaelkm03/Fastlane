@@ -179,7 +179,7 @@ static  NSString*   kNewsCellViewIdentifier       =   @"VNewsCell";
 
         VConversation* conversation = [self.fetchedResultsController objectAtIndexPath:[self.tableView indexPathForCell:cell]];
 
-        subview.conversation = conversation;
+        [subview setConversation:conversation];
     }
     else if ([segue.destinationViewController isKindOfClass:[VMenuViewController class]])
     {
