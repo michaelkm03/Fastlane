@@ -32,12 +32,15 @@
                         //If we don't have the users then we need to fetch em.
                         [[self fetchUser:conversation.other_interlocutor_user_id
                         withSuccessBlock:^(NSArray *resultObjects)
-                        {
-                            if ([[resultObjects firstObject] isKindOfClass:[VUser class]])
-                                [conversation addUsersObject:[resultObjects firstObject]];
-                        }
+                          {
+                              if ([[resultObjects firstObject] isKindOfClass:[VUser class]])
+                              {
+                                  [conversation addUsersObject:[resultObjects firstObject]];
+                                  [conversation.managedObjectContext save:nil];
+                              }
+                          }
                                failBlock:^(NSError *error)
-                        {
+                          {
                                    VLog(@"error loading user: %@", error);
                                }] start];
                     }

@@ -7,6 +7,7 @@
 //
 
 #import "VObjectManager+Private.h"
+#import "VObjectManager+Users.h"
 
 #import "VUser+RestKit.h"
 #import "VCategory+RestKit.h"
@@ -76,10 +77,36 @@
         [self.paginationStatuses setObject:status forKey:category.name];
     };
     
+    SuccessBlock fullSuccessBlock = ^(NSArray* sequences)
+    {
+        for (VSequence* sequence in sequences)
+        {
+            if (!sequence.user)
+            {
+                //If we don't have the user then we need to fetch em.
+                [[self fetchUser:sequence.createdBy
+                withSuccessBlock:^(NSArray *resultObjects)
+                  {
+                      if ([[resultObjects firstObject] isKindOfClass:[VUser class]])
+                      {
+                          sequence.user = [resultObjects firstObject];
+                          [sequence.managedObjectContext save:nil];
+                      }
+                      
+                  }
+                       failBlock:^(NSError *error)
+                  {
+                      VLog(@"error loading user: %@", error);
+                  }] start];
+            }
+        }
+        success(sequences);
+    };
+    
     return [self GET:path
               object:nil
           parameters:nil
-        successBlock:success
+        successBlock:fullSuccessBlock
            failBlock:fail
      paginationBlock:pagination];
 }

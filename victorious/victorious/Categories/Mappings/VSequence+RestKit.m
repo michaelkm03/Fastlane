@@ -23,6 +23,7 @@
                                   // for some reason this cannot be camelCase...
                                   @"display_order" : VSelectorName(display_order),
                                   @"id" : VSelectorName(remoteId),
+                                  @"created_by" : VSelectorName(createdBy),
                                   @"name" : VSelectorName(name),
                                   @"preview_image" : VSelectorName(previewImage),
                                   @"released_at" : VSelectorName(releasedAt),
@@ -45,6 +46,8 @@
     [mapping addRelationshipMappingWithSourceKeyPath:VSelectorName(nodes) mapping:[VNode entityMapping]];
     [mapping addRelationshipMappingWithSourceKeyPath:VSelectorName(comments) mapping:[VComment entityMapping]];
     
+    [mapping addConnectionForRelationship:@"user" connectedBy:@{@"created_by" : @"remoteId"}];
+
     return mapping;
 }
 

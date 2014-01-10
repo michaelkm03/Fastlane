@@ -78,17 +78,17 @@
 		BE171E3A1868C266004E5202 /* NSString+VParseHelp.m in Sources */ = {isa = PBXBuildFile; fileRef = BE171E381868C266004E5202 /* NSString+VParseHelp.m */; };
 		BE171E431868CEA0004E5202 /* victoriOS.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = BE171E411868CEA0004E5202 /* victoriOS.xcdatamodeld */; };
 		BE391E56187CC4DC0088D902 /* VAbstractStreamViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BE391E55187CC4DC0088D902 /* VAbstractStreamViewController.m */; };
+		BE4B74051880BCD90090FF84 /* VStatSequence.m in Sources */ = {isa = PBXBuildFile; fileRef = BE4B74041880BCD90090FF84 /* VStatSequence.m */; };
+		BE4B740E1880BCDA0090FF84 /* VComment.m in Sources */ = {isa = PBXBuildFile; fileRef = BE4B740D1880BCDA0090FF84 /* VComment.m */; };
+		BE4B74171880BFD30090FF84 /* VSequence.m in Sources */ = {isa = PBXBuildFile; fileRef = BE4B74161880BFD30090FF84 /* VSequence.m */; };
+		BE4B741A1880C03B0090FF84 /* VUser.m in Sources */ = {isa = PBXBuildFile; fileRef = BE4B74191880C03B0090FF84 /* VUser.m */; };
 		BE5C7340187E36CF00A3340D /* VInteraction.m in Sources */ = {isa = PBXBuildFile; fileRef = BE5C733F187E36CF00A3340D /* VInteraction.m */; };
-		BE5C7349187E36D000A3340D /* VComment.m in Sources */ = {isa = PBXBuildFile; fileRef = BE5C7348187E36D000A3340D /* VComment.m */; };
 		BE5C734C187E36D000A3340D /* VInteractionAction.m in Sources */ = {isa = PBXBuildFile; fileRef = BE5C734B187E36D000A3340D /* VInteractionAction.m */; };
 		BE5C7352187E36D000A3340D /* VCategory.m in Sources */ = {isa = PBXBuildFile; fileRef = BE5C7351187E36D000A3340D /* VCategory.m */; };
 		BE5C735B187E36E700A3340D /* VNode.m in Sources */ = {isa = PBXBuildFile; fileRef = BE5C735A187E36E700A3340D /* VNode.m */; };
 		BE5C735E187E36E800A3340D /* VStatAnswer.m in Sources */ = {isa = PBXBuildFile; fileRef = BE5C735D187E36E800A3340D /* VStatAnswer.m */; };
 		BE5C7361187E36E800A3340D /* VStatInteraction.m in Sources */ = {isa = PBXBuildFile; fileRef = BE5C7360187E36E800A3340D /* VStatInteraction.m */; };
-		BE5C7364187E36E800A3340D /* VStatSequence.m in Sources */ = {isa = PBXBuildFile; fileRef = BE5C7363187E36E800A3340D /* VStatSequence.m */; };
-		BE5C7367187E36E800A3340D /* VUser.m in Sources */ = {isa = PBXBuildFile; fileRef = BE5C7366187E36E800A3340D /* VUser.m */; };
 		BE5C736A187E36E800A3340D /* VRule.m in Sources */ = {isa = PBXBuildFile; fileRef = BE5C7369187E36E800A3340D /* VRule.m */; };
-		BE5C7376187E36E800A3340D /* VSequence.m in Sources */ = {isa = PBXBuildFile; fileRef = BE5C7375187E36E800A3340D /* VSequence.m */; };
 		BE5C7379187E36E800A3340D /* VNodeAction.m in Sources */ = {isa = PBXBuildFile; fileRef = BE5C7378187E36E800A3340D /* VNodeAction.m */; };
 		BE5C7382187E37C700A3340D /* VMessage+RestKit.m in Sources */ = {isa = PBXBuildFile; fileRef = BE5C7381187E37C700A3340D /* VMessage+RestKit.m */; };
 		BE5C7385187E37D400A3340D /* VMedia+RestKit.m in Sources */ = {isa = PBXBuildFile; fileRef = BE5C7384187E37D400A3340D /* VMedia+RestKit.m */; };
@@ -269,11 +269,17 @@
 		BE391E52187CBE500088D902 /* VCategory+Fetcher.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "VCategory+Fetcher.m"; sourceTree = "<group>"; };
 		BE391E54187CC4DC0088D902 /* VAbstractStreamViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VAbstractStreamViewController.h; sourceTree = "<group>"; };
 		BE391E55187CC4DC0088D902 /* VAbstractStreamViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VAbstractStreamViewController.m; sourceTree = "<group>"; };
+		BE4B74031880BCD90090FF84 /* VStatSequence.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VStatSequence.h; sourceTree = "<group>"; };
+		BE4B74041880BCD90090FF84 /* VStatSequence.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VStatSequence.m; sourceTree = "<group>"; };
+		BE4B740C1880BCDA0090FF84 /* VComment.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VComment.h; sourceTree = "<group>"; };
+		BE4B740D1880BCDA0090FF84 /* VComment.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VComment.m; sourceTree = "<group>"; };
+		BE4B74151880BFD30090FF84 /* VSequence.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VSequence.h; sourceTree = "<group>"; };
+		BE4B74161880BFD30090FF84 /* VSequence.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VSequence.m; sourceTree = "<group>"; };
+		BE4B74181880C03B0090FF84 /* VUser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VUser.h; sourceTree = "<group>"; };
+		BE4B74191880C03B0090FF84 /* VUser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VUser.m; sourceTree = "<group>"; };
 		BE5C733D187E348900A3340D /* victoriOS 3.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "victoriOS 3.xcdatamodel"; sourceTree = "<group>"; };
 		BE5C733E187E36CF00A3340D /* VInteraction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VInteraction.h; sourceTree = "<group>"; };
 		BE5C733F187E36CF00A3340D /* VInteraction.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VInteraction.m; sourceTree = "<group>"; };
-		BE5C7347187E36D000A3340D /* VComment.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VComment.h; sourceTree = "<group>"; };
-		BE5C7348187E36D000A3340D /* VComment.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VComment.m; sourceTree = "<group>"; };
 		BE5C734A187E36D000A3340D /* VInteractionAction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VInteractionAction.h; sourceTree = "<group>"; };
 		BE5C734B187E36D000A3340D /* VInteractionAction.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VInteractionAction.m; sourceTree = "<group>"; };
 		BE5C7350187E36D000A3340D /* VCategory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VCategory.h; sourceTree = "<group>"; };
@@ -284,14 +290,8 @@
 		BE5C735D187E36E800A3340D /* VStatAnswer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VStatAnswer.m; sourceTree = "<group>"; };
 		BE5C735F187E36E800A3340D /* VStatInteraction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VStatInteraction.h; sourceTree = "<group>"; };
 		BE5C7360187E36E800A3340D /* VStatInteraction.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VStatInteraction.m; sourceTree = "<group>"; };
-		BE5C7362187E36E800A3340D /* VStatSequence.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VStatSequence.h; sourceTree = "<group>"; };
-		BE5C7363187E36E800A3340D /* VStatSequence.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VStatSequence.m; sourceTree = "<group>"; };
-		BE5C7365187E36E800A3340D /* VUser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VUser.h; sourceTree = "<group>"; };
-		BE5C7366187E36E800A3340D /* VUser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VUser.m; sourceTree = "<group>"; };
 		BE5C7368187E36E800A3340D /* VRule.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VRule.h; sourceTree = "<group>"; };
 		BE5C7369187E36E800A3340D /* VRule.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VRule.m; sourceTree = "<group>"; };
-		BE5C7374187E36E800A3340D /* VSequence.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VSequence.h; sourceTree = "<group>"; };
-		BE5C7375187E36E800A3340D /* VSequence.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VSequence.m; sourceTree = "<group>"; };
 		BE5C7377187E36E800A3340D /* VNodeAction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VNodeAction.h; sourceTree = "<group>"; };
 		BE5C7378187E36E800A3340D /* VNodeAction.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VNodeAction.m; sourceTree = "<group>"; };
 		BE5C7380187E37C700A3340D /* VMessage+RestKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "VMessage+RestKit.h"; sourceTree = "<group>"; };
@@ -678,10 +678,12 @@
 			isa = PBXGroup;
 			children = (
 				BE171E411868CEA0004E5202 /* victoriOS.xcdatamodeld */,
+				BE4B740C1880BCDA0090FF84 /* VComment.h */,
+				BE4B740D1880BCDA0090FF84 /* VComment.m */,
+				BE4B74031880BCD90090FF84 /* VStatSequence.h */,
+				BE4B74041880BCD90090FF84 /* VStatSequence.m */,
 				BE5C733E187E36CF00A3340D /* VInteraction.h */,
 				BE5C733F187E36CF00A3340D /* VInteraction.m */,
-				BE5C7347187E36D000A3340D /* VComment.h */,
-				BE5C7348187E36D000A3340D /* VComment.m */,
 				BE5C734A187E36D000A3340D /* VInteractionAction.h */,
 				BE5C734B187E36D000A3340D /* VInteractionAction.m */,
 				BE5C7350187E36D000A3340D /* VCategory.h */,
@@ -692,14 +694,8 @@
 				BE5C735D187E36E800A3340D /* VStatAnswer.m */,
 				BE5C735F187E36E800A3340D /* VStatInteraction.h */,
 				BE5C7360187E36E800A3340D /* VStatInteraction.m */,
-				BE5C7362187E36E800A3340D /* VStatSequence.h */,
-				BE5C7363187E36E800A3340D /* VStatSequence.m */,
-				BE5C7365187E36E800A3340D /* VUser.h */,
-				BE5C7366187E36E800A3340D /* VUser.m */,
 				BE5C7368187E36E800A3340D /* VRule.h */,
 				BE5C7369187E36E800A3340D /* VRule.m */,
-				BE5C7374187E36E800A3340D /* VSequence.h */,
-				BE5C7375187E36E800A3340D /* VSequence.m */,
 				BE5C7377187E36E800A3340D /* VNodeAction.h */,
 				BE5C7378187E36E800A3340D /* VNodeAction.m */,
 				BEA5BF6C187F7C570014C3EF /* VMessage.h */,
@@ -714,6 +710,10 @@
 				BE6C152D1880A31B00469BA8 /* VConversation.m */,
 				BE6C152F1880A31B00469BA8 /* VMedia.h */,
 				BE6C15301880A31B00469BA8 /* VMedia.m */,
+				BE4B74151880BFD30090FF84 /* VSequence.h */,
+				BE4B74161880BFD30090FF84 /* VSequence.m */,
+				BE4B74181880C03B0090FF84 /* VUser.h */,
+				BE4B74191880C03B0090FF84 /* VUser.m */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -984,8 +984,6 @@
 				BE171E0F1868C211004E5202 /* VAsset+RestKit.m in Sources */,
 				BEB4C29D187E038C004ECEEF /* VNewsCell.m in Sources */,
 				BE171E131868C211004E5202 /* VInteractionAction+RestKit.m in Sources */,
-				BE5C7364187E36E800A3340D /* VStatSequence.m in Sources */,
-				BE5C7349187E36D000A3340D /* VComment.m in Sources */,
 				8378622718728C89000BF84F /* VFeaturedStreamsViewController.m in Sources */,
 				BE171E1A1868C211004E5202 /* VStatSequence+RestKit.m in Sources */,
 				BE171E221868C211004E5202 /* VObjectManager.m in Sources */,
@@ -1010,6 +1008,7 @@
 				83DC42FA187CCE3100E768E2 /* VCreateViewController.m in Sources */,
 				BEA5BF59187E7E8E0014C3EF /* VObjectManager+DirectMessaging.m in Sources */,
 				3F4863FA1869184000F77346 /* VInboxViewController.m in Sources */,
+				BE4B740E1880BCDA0090FF84 /* VComment.m in Sources */,
 				BE171E171868C211004E5202 /* VSequence+RestKit.m in Sources */,
 				BE6B95F2187B4A2C00CED4C9 /* VOwnerStreamsTableViewController.m in Sources */,
 				BE171E391868C266004E5202 /* NSManagedObject+EasyFetching.m in Sources */,
@@ -1017,7 +1016,6 @@
 				BE692B53186E60B300C71336 /* VStreamsSubViewController.m in Sources */,
 				BE171E0D1868C211004E5202 /* VAnswer+RestKit.m in Sources */,
 				BE171E211868C211004E5202 /* VObjectManager+Sequence.m in Sources */,
-				BE5C7376187E36E800A3340D /* VSequence.m in Sources */,
 				BE171D8C1868BE64004E5202 /* VAppDelegate.m in Sources */,
 				BE6B95F1187B4A2C00CED4C9 /* VForumStreamTableViewController.m in Sources */,
 				BE171E231868C211004E5202 /* VPaginationStatus.m in Sources */,
@@ -1038,7 +1036,7 @@
 				BE171E0C1868C211004E5202 /* VNode+Fetcher.m in Sources */,
 				BE5C7382187E37C700A3340D /* VMessage+RestKit.m in Sources */,
 				BEA5BF5F187F21770014C3EF /* VTableViewCell.m in Sources */,
-				BE5C7367187E36E800A3340D /* VUser.m in Sources */,
+				BE4B74051880BCD90090FF84 /* VStatSequence.m in Sources */,
 				83B5A12C18765E1600659C73 /* VRootNavigationController.m in Sources */,
 				BE5C7361187E36E800A3340D /* VStatInteraction.m in Sources */,
 				3FF8B79E1868EF6C00806EA0 /* VLoginViewController.m in Sources */,
@@ -1058,6 +1056,7 @@
 				838511C418762DF3007E0316 /* VInboxBadgeLabel.m in Sources */,
 				BE171E1B1868C211004E5202 /* VUser+RestKit.m in Sources */,
 				BE5C736A187E36E800A3340D /* VRule.m in Sources */,
+				BE4B74171880BFD30090FF84 /* VSequence.m in Sources */,
 				D1DAAA0B187A43BE009ADCB0 /* VProfileEditViewController.m in Sources */,
 				3F91991018761C720055FE37 /* VPrivacyPoliciesViewController.m in Sources */,
 				BEB4C29B187E038C004ECEEF /* VConversationCell.m in Sources */,
@@ -1067,6 +1066,7 @@
 				8364C70B1869500D0028C1ED /* VMenuViewController.m in Sources */,
 				BE692B51186E60B300C71336 /* VSequencePlayerViewController.m in Sources */,
 				83F38277186BE62300A866A1 /* VMenuTableViewController.m in Sources */,
+				BE4B741A1880C03B0090FF84 /* VUser.m in Sources */,
 				838B1E9B187E871C0052FAE9 /* VCreatePollViewController.m in Sources */,
 				BE171E111868C211004E5202 /* VComment+RestKit.m in Sources */,
 				BE171E0E1868C211004E5202 /* VAnswerAction+RestKit.m in Sources */,

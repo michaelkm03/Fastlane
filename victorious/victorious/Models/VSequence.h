@@ -2,14 +2,14 @@
 //  VSequence.h
 //  victorious
 //
-//  Created by Will Long on 1/8/14.
+//  Created by Will Long on 1/10/14.
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
 #import <Foundation/Foundation.h>
 #import <CoreData/CoreData.h>
 
-@class VComment, VNode;
+@class VComment, VNode, VUser;
 
 @interface VSequence : NSManagedObject
 
@@ -23,8 +23,10 @@
 @property (nonatomic, retain) NSNumber * remoteId;
 @property (nonatomic, retain) NSString * sequenceDescription;
 @property (nonatomic, retain) NSString * status;
+@property (nonatomic, retain) NSNumber * createdBy;
 @property (nonatomic, retain) NSSet *comments;
 @property (nonatomic, retain) NSSet *nodes;
+@property (nonatomic, retain) VUser *user;
 @end
 
 @interface VSequence (CoreDataGeneratedAccessors)
