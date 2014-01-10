@@ -40,6 +40,8 @@
 
 - (void)setConversation:(VConversation *)conversation
 {
+    _conversation = conversation;
+    
     self.usernameLabel.text  = self.conversation.lastMessage.user.name;
     self.messageLabel.text = self.conversation.lastMessage.text;
     self.dateLabel.text = [self.conversation.lastMessage.postedAt timeSince];
