@@ -9,6 +9,7 @@
 #import "VCommentCell.h"
 #import "VComment.h"
 #import "UIImageView+AFNetworking.h"
+#import "VMessage.h"
 
 @interface VCommentCell()
 @property (weak, nonatomic) IBOutlet UILabel *dateLabel;
@@ -19,16 +20,25 @@
 
 @implementation VCommentCell
 
-- (void)setComment:(VComment *)comment
+- (void)setCommentOrMessage:(id)commentOrMessage
 {
-    if(_comment == comment)
+    if(_commentOrMessage == commentOrMessage)
     {
         return;
     }
 
-    _comment = comment;
+    _commentOrMessage = commentOrMessage;
 
-    self.messageLabel.text = self.comment.text;
+    if([commentOrMessage isKindOfClass:[VComment class]])
+    {
+        VComment *comment = (VComment *)self.commentOrMessage;
+        self.messageLabel.text = comment.text;
+    }
+    else if([commentOrMessage isKindOfClass:[VMessage class]])
+    {
+        VMessage *message = (VMessage *)self.commentOrMessage;
+        self.messageLabel.text = message.text;
+    }
 }
 
 @end
