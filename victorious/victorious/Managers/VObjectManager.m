@@ -23,6 +23,8 @@
 
 @implementation VObjectManager
 
+@synthesize mainUser;
+
 + (void)setupObjectManager
 {
 #if DEBUG
