@@ -45,7 +45,7 @@ static  NSString*   kNewsCellViewIdentifier       =   @"VNewsCell";
     [super viewDidLoad];
 
     self.modeSelectControl.selectedSegmentIndex = 0;
-    [self modeSelected:self];
+    [self modeSelected:self.modeSelectControl];
     
     self.navigationItem.rightBarButtonItem = self.editButtonItem;
 
@@ -115,14 +115,14 @@ static  NSString*   kNewsCellViewIdentifier       =   @"VNewsCell";
 
     if (kMessageModeSelect == self.modeSelectControl.selectedSegmentIndex)
     {
-//        [fetchRequest setEntity:[NSEntityDescription entityForName:[VConversation entityName] inManagedObjectContext:context]];
+        [fetchRequest setEntity:[NSEntityDescription entityForName:[VConversation entityName] inManagedObjectContext:context]];
     }
     else if (kNewsModeSelect == self.modeSelectControl.selectedSegmentIndex)
     {
 //        [fetchRequest setEntity:[NSEntityDescription entityForName:[VConversation entityName] inManagedObjectContext:context]];
     }
     
-    NSSortDescriptor *sort = [[NSSortDescriptor alloc] initWithKey:@"display_order" ascending:YES];
+    NSSortDescriptor *sort = [[NSSortDescriptor alloc] initWithKey:@"lastPostDate" ascending:YES];
     [fetchRequest setSortDescriptors:@[sort]];
     [fetchRequest setFetchBatchSize:50];
     
@@ -146,28 +146,15 @@ static  NSString*   kNewsCellViewIdentifier       =   @"VNewsCell";
 
 - (void)refreshAction
 {
-//    SuccessBlock success = ^(NSArray* resultObjects)
+    NSError *error;
+    if (![self.fetchedResultsController performFetch:&error])
     {
-        NSError *error;
-        if (![self.fetchedResultsController performFetch:&error])
-        {
-            // Update to handle the error appropriately.
-            NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
-            exit(-1);  // Fail
-        }
+        // Update to handle the error appropriately.
+        NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+        exit(-1);  // Fail
+    }
 
-        [self.refreshControl endRefreshing];
-    };
-
-//    FailBlock fail = ^(NSError* error)
-    {
-        [self.refreshControl endRefreshing];
-//        VLog(@"Error on loadNextPage: %@", error);
-    };
-
-    //    [[[VObjectManager sharedManager] loadNextPageOfSequencesForCategory:[[VCategory findAllObjects] firstObject]
-    //                                                           successBlock:success
-    //                                                              failBlock:fail] start];
+    [self.refreshControl endRefreshing];
 }
 
 - (IBAction)modeSelected:(id)sender
@@ -187,8 +174,6 @@ static  NSString*   kNewsCellViewIdentifier       =   @"VNewsCell";
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
-    //Cells need to stop playing video for EVERY segue.
-    
     if ([segue.identifier isEqualToString:@"toConversation"])
     {
         VMessageViewController *subview = (VMessageViewController *)segue.destinationViewController;
