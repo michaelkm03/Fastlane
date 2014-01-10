@@ -7,23 +7,30 @@
 //
 
 #import "VConversationCell.h"
+#import "VThemeManager.h"
+@interface VConversationCell()
+@property (weak, nonatomic) IBOutlet UIView *seenView;
+@end
 
 @implementation VConversationCell
 
-- (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
+- (void)awakeFromNib
 {
-    self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
-    if (self) {
-        // Initialization code
-    }
-    return self;
+    [super awakeFromNib];
+
+    self.seenView.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKeyPath:@"theme.color.conversation.seen"];
 }
 
-- (void)setSelected:(BOOL)selected animated:(BOOL)animated
+- (void)layoutSubviews
 {
-    [super setSelected:selected animated:animated];
+    [super layoutSubviews];
 
-    // Configure the view for the selected state
+    self.seenView.layer.cornerRadius = CGRectGetHeight(self.seenView.bounds)/2;
+}
+
+- (void)setSeen:(BOOL)seen
+{
+    [self.seenView setHidden:seen];
 }
 
 @end

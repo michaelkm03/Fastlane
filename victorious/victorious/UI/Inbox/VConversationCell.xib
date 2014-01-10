@@ -1,10 +1,80 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="4447" systemVersion="13A451" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="4514" systemVersion="13B42" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3671"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3747"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="70" id="DvF-Pm-kOs" customClass="VConversationCell">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="70"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="DvF-Pm-kOs" id="kNR-aW-aiD">
+                <rect key="frame" x="0.0" y="0.0" width="320" height="69"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Uy2-JS-FPW">
+                        <rect key="frame" x="20" y="10" width="42" height="21"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="GRz-LE-4rE">
+                        <rect key="frame" x="258" y="10" width="42" height="21"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="280" translatesAutoresizingMaskIntoConstraints="NO" id="PkY-Un-gd4">
+                        <rect key="frame" x="20" y="38" width="280" height="21"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <imageView userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="StreamDate" translatesAutoresizingMaskIntoConstraints="NO" id="HXK-EH-lh6">
+                        <rect key="frame" x="244" y="15" width="11" height="11"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="11" id="97r-3B-nkA"/>
+                            <constraint firstAttribute="height" constant="11" id="uGn-tQ-ZIj"/>
+                        </constraints>
+                    </imageView>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Jvq-Ul-DJV">
+                        <rect key="frame" x="6" y="15" width="11" height="11"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="11" id="MNR-L3-eBm"/>
+                            <constraint firstAttribute="width" constant="11" id="VL9-9H-NIZ"/>
+                        </constraints>
+                    </view>
+                </subviews>
+                <constraints>
+                    <constraint firstAttribute="trailing" secondItem="PkY-Un-gd4" secondAttribute="trailing" constant="20" symbolic="YES" id="60I-vF-rEd"/>
+                    <constraint firstItem="PkY-Un-gd4" firstAttribute="leading" secondItem="kNR-aW-aiD" secondAttribute="leading" constant="20" symbolic="YES" id="CrL-Wt-2Kd"/>
+                    <constraint firstAttribute="trailing" secondItem="GRz-LE-4rE" secondAttribute="trailing" constant="20" symbolic="YES" id="Dx1-nK-jeL"/>
+                    <constraint firstItem="Uy2-JS-FPW" firstAttribute="centerY" secondItem="GRz-LE-4rE" secondAttribute="centerY" id="RNR-zK-x0J"/>
+                    <constraint firstItem="Uy2-JS-FPW" firstAttribute="top" secondItem="kNR-aW-aiD" secondAttribute="top" constant="10" id="WCe-j0-Lvx"/>
+                    <constraint firstItem="Uy2-JS-FPW" firstAttribute="leading" secondItem="kNR-aW-aiD" secondAttribute="leading" constant="20" symbolic="YES" id="a58-k4-rF9"/>
+                    <constraint firstItem="Uy2-JS-FPW" firstAttribute="centerY" secondItem="Jvq-Ul-DJV" secondAttribute="centerY" id="jLm-95-SC6"/>
+                    <constraint firstItem="GRz-LE-4rE" firstAttribute="leading" secondItem="HXK-EH-lh6" secondAttribute="trailing" constant="3" id="jjq-Jb-Xa1"/>
+                    <constraint firstAttribute="bottom" secondItem="PkY-Un-gd4" secondAttribute="bottom" constant="10" id="lpf-h4-ZOW"/>
+                    <constraint firstItem="GRz-LE-4rE" firstAttribute="centerY" secondItem="HXK-EH-lh6" secondAttribute="centerY" constant="0.5" id="nHN-1U-13t"/>
+                    <constraint firstItem="Uy2-JS-FPW" firstAttribute="leading" secondItem="Jvq-Ul-DJV" secondAttribute="trailing" constant="3" id="zMf-af-UyR"/>
+                </constraints>
+            </tableViewCellContentView>
+            <connections>
+                <outlet property="dateLabel" destination="GRz-LE-4rE" id="VuP-D1-ob5"/>
+                <outlet property="messageLabel" destination="PkY-Un-gd4" id="z8p-nK-exR"/>
+                <outlet property="seenView" destination="Jvq-Ul-DJV" id="KpO-0Q-Fc6"/>
+                <outlet property="usernameLabel" destination="Uy2-JS-FPW" id="I2f-bg-Y6c"/>
+                <outletCollection property="labels" destination="Uy2-JS-FPW" id="1tw-3f-lly"/>
+                <outletCollection property="labels" destination="PkY-Un-gd4" id="6LW-Hw-GZ8"/>
+                <outletCollection property="labels" destination="GRz-LE-4rE" id="U1x-fz-5pR"/>
+            </connections>
+        </tableViewCell>
     </objects>
+    <resources>
+        <image name="StreamDate" width="11" height="11"/>
+    </resources>
 </document>
