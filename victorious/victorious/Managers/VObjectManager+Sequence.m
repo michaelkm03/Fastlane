@@ -26,7 +26,7 @@
           for (VCategory* category in resultObjects)
           {
               [[self loadNextPageOfSequencesForCategory:category
-                                          successBlock:nil
+                                           successBlock:nil
                                              failBlock:^(NSError *error) {
                                                  VLog(@"Error in initialSequenceLoad: %@", error);
                                              }] start];
@@ -62,7 +62,7 @@
         return nil;
     }
     
-    NSString* path = [NSString stringWithFormat:@"/api/sequence/list_by_category/%@", category.name];
+    NSString* path = [NSString stringWithFormat:@"/api/sequence/detail_list_by_category/%@", category.name];
     if (status.pagesLoaded) //only add page to the path if we've looked it up before.
     {
         path = [path stringByAppendingFormat:@"/0/%lu/%lu", status.pagesLoaded + 1, (unsigned long)status.itemsPerPage];
