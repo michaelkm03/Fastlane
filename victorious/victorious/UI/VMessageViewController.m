@@ -60,7 +60,8 @@
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:kCommentCellIdentifier forIndexPath:indexPath];
     
     VMessage*   aMessage = self.messages[indexPath.row];
-    
+    [(VCommentCell *)cell setCommentOrMessage:aMessage];
+
     return cell;
 }
 
