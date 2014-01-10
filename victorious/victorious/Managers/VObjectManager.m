@@ -208,8 +208,7 @@
     NSString *currentDate = [self rFC2822DateTimeString];
     NSString* userAgent = [client.defaultHeaders objectForKey:@"User-Agent"];
     
-    VUser* mainUser = [VObjectManager sharedManager].mainUser;
-    NSString* token = mainUser.token ? mainUser.token : @"";
+    NSString* token = self.mainUser.token ? self.mainUser.token : @"";
     
     // Build string to be hashed.
     NSString *sha1String = [[NSString stringWithFormat:@"%@%@%@%@%@",

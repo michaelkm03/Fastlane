@@ -2,7 +2,7 @@
 //  VConversation.h
 //  victorious
 //
-//  Created by Will Long on 1/9/14.
+//  Created by Will Long on 1/10/14.
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
@@ -13,8 +13,8 @@
 
 @interface VConversation : NSManagedObject
 
-@property (nonatomic, retain) NSNumber * remoteId;
 @property (nonatomic, retain) NSNumber * other_interlocutor_user_id;
+@property (nonatomic, retain) NSNumber * remoteId;
 @property (nonatomic, retain) VMessage *lastMessage;
 @property (nonatomic, retain) NSSet *messages;
 @property (nonatomic, retain) NSSet *users;

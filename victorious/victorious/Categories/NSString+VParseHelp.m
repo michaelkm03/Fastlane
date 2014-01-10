@@ -10,6 +10,22 @@
 
 @implementation NSString (VParseHelp)
 
+
+- (NSString*)typeByExtension
+{
+    if ([[self pathExtension] isEqualToString:VConstantMediaExtensionM3U8])
+        return VConstantsMediaTypeVideo;
+    
+    if ([[self pathExtension] isEqualToString:VConstantMediaExtensionM3U8]
+        || [[self pathExtension] isEqualToString:VConstantMediaExtensionPNG]
+        || [[self pathExtension] isEqualToString:VConstantMediaExtensionJPEG]
+        || [[self pathExtension] isEqualToString:VConstantMediaExtensionJPG])
+        return VConstantsMediaTypeImage;
+    
+    return nil;
+}
+
+
 - (BOOL ) isEmpty
 {
     return [self isEmptyWithCleanWhiteSpace:YES];

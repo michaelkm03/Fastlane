@@ -5,6 +5,7 @@
         <attribute name="display_order" attributeType="Integer 32" minValueString="0" syncable="YES"/>
         <attribute name="isCorrect" attributeType="Boolean" syncable="YES"/>
         <attribute name="label" attributeType="String" syncable="YES"/>
+        <attribute name="mediaUrl" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="points" optional="YES" attributeType="Integer 32" minValueString="0" syncable="YES"/>
         <attribute name="remoteId" attributeType="Integer 64" minValueString="0" syncable="YES"/>
         <relationship name="answerAction" maxCount="1" deletionRule="Cascade" destinationEntity="AnswerAction" inverseName="answer" inverseEntity="AnswerAction" syncable="YES"/>
@@ -166,7 +167,7 @@
         <relationship name="statSequences" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="StatSequence" inverseName="user" inverseEntity="StatSequence" syncable="YES"/>
     </entity>
     <elements>
-        <element name="Answer" positionX="718" positionY="54" width="128" height="165"/>
+        <element name="Answer" positionX="718" positionY="54" width="128" height="178"/>
         <element name="AnswerAction" positionX="718" positionY="249" width="128" height="75"/>
         <element name="Asset" positionX="655" positionY="-360" width="128" height="120"/>
         <element name="Category" positionX="810" positionY="-333" width="128" height="60"/>

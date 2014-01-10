@@ -17,6 +17,13 @@
 #import "VAnswer.h"
 #import "VAsset.h"
 
+#import "NSString+VParseHelp.h"
+
+@interface VStreamPollCell ()
+@property (nonatomic, weak) VAnswer* firstAnswer;
+@property (nonatomic, weak) VAnswer* secondAnswer;
+@end
+
 @implementation VStreamPollCell
 
 - (void)setSequence:(VSequence *)sequence
@@ -25,44 +32,75 @@
     
     NSArray* answers = [[self.sequence firstNode] firstAnswers];
     
-    VAnswer* firstAnswer = [answers firstObject];
-    if (firstAnswer)
-        self.optionOneButton.titleLabel.text = firstAnswer.label;
+    _firstAnswer = [answers firstObject];
+    if (_firstAnswer && ![_firstAnswer.label isEmpty])
+        self.optionOneButton.titleLabel.text = _firstAnswer.label;
     
-    VAnswer* secondAnswer;
     if ([answers count] >= 2)
     {
-        secondAnswer = [answers objectAtIndex:1];
-        self.optionTwoButton.titleLabel.text = secondAnswer.label;
+        _secondAnswer = [answers objectAtIndex:1];
+        
+        if (![_secondAnswer.label isEmpty])
+            self.optionTwoButton.titleLabel.text = _secondAnswer.label;
     }
     
-    NSURL *firstImageUrl, *secondImageUrl;
+    NSString *firstUrlString, *secondUrlString;
     
     if ([self.reuseIdentifier isEqualToString:kStreamPollCellIdentifier])
     {
         //TODO: hide the cell if we fail to load the image
         VAsset* firstAsset = [self.sequence firstAsset];
-        firstImageUrl = [NSURL URLWithString:firstAsset.data];
+        firstUrlString = firstAsset.data;
     }
     else if ([self.reuseIdentifier isEqualToString:kStreamDoublePollCellIdentifier])
     {
-//        firstImageUrl = [NSURL URLWithString:firstAnswer.mediaUrl];
-//        secondImageUrl = [NSURL URLWithString:firstAsset.mediaUrl];
+        firstUrlString = _firstAnswer.mediaUrl;
+        secondUrlString = _secondAnswer.mediaUrl;
     }
     
-    [self.previewImageView setImageWithURL:firstImageUrl];
-    [self.previewImageTwo setImageWithURL:secondImageUrl];
-    
+    if ([firstUrlString.extensionType isEqualToString:VConstantsMediaTypeImage])
+        [self.previewImageView setImageWithURL:[NSURL URLWithString:firstUrlString]];
+    else
+    {
+        //TODO: Swap to video
+        self.hidden = YES;
+    }
+        
+    if ([secondUrlString.extensionType isEqualToString:VConstantsMediaTypeImage])
+        [self.previewImageTwo setImageWithURL:[NSURL URLWithString:secondUrlString]];
+    else
+    {
+        //TODO: Swap to video
+    }
 }
 
 - (IBAction)pressedOptionOne:(id)sender
 {
-    
+    [self answerPollWithAnswer:_firstAnswer];
 }
 
 - (IBAction)pressedOptionTwo:(id)sender
 {
-    
+    [self answerPollWithAnswer:_secondAnswer];
 }
 
+- (void)answerPollWithAnswer:(VAnswer*)answer
+{
+    [[[VObjectManager sharedManager] answerPollWithAnswer:answer
+                                             successBlock:^(NSArray *resultObjects)
+      {
+          VLog(@"Successfully answered: %@", resultObjects);
+          [self showResults];
+      }
+                                                failBlock:^(NSError *error)
+      {
+          VLog(@"Failed to answer with error: %@", error);
+      }] start];
+}
+
+
+- (void)showResults
+{
+    //TODO: use result object to show results.
+}
 @end

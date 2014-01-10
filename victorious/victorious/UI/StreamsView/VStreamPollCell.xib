@@ -119,6 +119,9 @@
                                 <state key="normal" title="YES">
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
+                                <connections>
+                                    <action selector="pressedOptionOne:" destination="KPi-2m-jh7" eventType="touchUpInside" id="HUV-nm-mZ9"/>
+                                </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="IGi-jH-odU">
                                 <rect key="frame" x="159" y="210" width="161" height="30"/>
@@ -127,6 +130,9 @@
                                 <state key="normal" title="NO">
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
+                                <connections>
+                                    <action selector="pressedOptionTwo:" destination="KPi-2m-jh7" eventType="touchUpInside" id="5tr-At-1af"/>
+                                </connections>
                             </button>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Fss-eh-Px9">
                                 <rect key="frame" x="0.0" y="30" width="320" height="180"/>

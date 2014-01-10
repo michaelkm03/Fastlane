@@ -255,6 +255,14 @@
 
 #pragma mark - StatSequence Methods
 
+- (RKManagedObjectRequestOperation *)answerPollWithAnswer:(VAnswer*)answer
+                                             successBlock:(SuccessBlock)success
+                                                failBlock:(FailBlock)fail
+{
+    return nil;
+}
+
+
 - (RKManagedObjectRequestOperation *)loadStatSequencesForUser:(VUser*)user
                                                  successBlock:(SuccessBlock)success
                                                     failBlock:(FailBlock)fail

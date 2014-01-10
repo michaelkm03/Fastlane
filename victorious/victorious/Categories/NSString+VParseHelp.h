@@ -7,8 +7,11 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "VConstants.h"
 
 @interface NSString (VParseHelp)
+
+@property (nonatomic, readonly, getter = typeByExtension) NSString* extensionType;
 
 - (BOOL ) isEmpty;
 - (BOOL ) isEmptyWithCleanWhiteSpace:(BOOL)cleanWhileSpace;
