@@ -9,6 +9,9 @@
 #import "VConversationCell.h"
 #import "VThemeManager.h"
 #import "NSDate+timeSince.h"
+#import "VConversation+RestKit.h"
+#import "VMessage+RestKit.h"
+#import "VUser+RestKit.h"
 
 @interface VConversationCell()
 @property (weak, nonatomic) IBOutlet UIView *seenView;
@@ -37,10 +40,10 @@
 
 - (void)setConversation:(VConversation *)conversation
 {
-    self.usernameLabel.text  =   @"Some User";   //self.conversation.XXXXXX;
-    self.messageLabel.text = @"A Messages";  //self.conversation.XXXXX;
-    NSDate* date    =   [NSDate date];
-    self.dateLabel.text = [date timeSince];
+    self.usernameLabel.text  = self.conversation.lastMessage.user.name;
+    self.messageLabel.text = self.conversation.lastMessage.text;
+    self.dateLabel.text = [self.conversation.lastMessage.postedAt timeSince];
+    self.seen = self.conversation.lastMessage.isRead.boolValue;
 }
 
 @end
