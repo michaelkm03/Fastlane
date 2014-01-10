@@ -24,6 +24,8 @@
                 {
                     //There should only be one message.  Its the current 'last message'
                     convo.lastMessage = [convo.messages anyObject];
+                    
+                    [convo.managedObjectContext save:nil];
                 }
             }
                                    failBlock:^(NSError *error)
