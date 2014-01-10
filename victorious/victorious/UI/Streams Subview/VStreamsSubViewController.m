@@ -18,6 +18,7 @@
 
 #import "VCommentCell.h"
 #import "VSequencePlayerViewController.h"
+#import "VThemeManager.h"
 
 @import Social;
 
@@ -35,7 +36,7 @@ static NSString* CommentCache = @"CommentCache";
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
+
     [self loadSequence];
     
     _newlyReadComments = [[NSMutableArray alloc] init];
@@ -44,7 +45,9 @@ static NSString* CommentCache = @"CommentCache";
     
     [self.tableView registerNib:[UINib nibWithNibName:kCommentCellIdentifier bundle:[NSBundle mainBundle]]
          forCellReuseIdentifier:kCommentCellIdentifier];
-    
+
+    self.tableView.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKeyPath:@"theme.color.messages.background"];
+
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
  
@@ -246,6 +249,15 @@ static NSString* CommentCache = @"CommentCache";
                                           }] start];
 }
 
+- (IBAction)addButtonAction:(id)sender
+{
+    [[[VObjectManager sharedManager] addCommentWithText:@"Test 1" Data:nil mediaExtension:nil toSequence:self.sequence andParent:nil successBlock:^(NSArray *resultObjects) {
+        NSLog(@"%@", resultObjects);
+    } failBlock:^(NSError *error) {
+        NSLog(@"%@", error);
+    }] start];
+}
+
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
@@ -285,7 +297,7 @@ static NSString* CommentCache = @"CommentCache";
 - (void)configureCell:(UITableViewCell *)theCell atIndexPath:(NSIndexPath *)theIndexPath
 {
     VComment *comment = [self.fetchedResultsController objectAtIndexPath:theIndexPath];
-    [(VCommentCell*)theCell configureCellForComment:comment];
+    [(VCommentCell*)theCell setComment:comment];
 }
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section

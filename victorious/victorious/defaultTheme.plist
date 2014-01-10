@@ -321,5 +321,16 @@
 		<key>alpha</key>
 		<integer>1</integer>
 	</dict>
+	<key>theme.color.messages.background</key>
+	<dict>
+		<key>red</key>
+		<integer>231</integer>
+		<key>green</key>
+		<integer>234</integer>
+		<key>blue</key>
+		<integer>233</integer>
+		<key>alpha</key>
+		<integer>1</integer>
+	</dict>
 </dict>
 </plist>
