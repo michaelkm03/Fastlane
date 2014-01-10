@@ -8,6 +8,7 @@
 
 #import "VSequencePlayerViewController.h"
 
+#import "VSequence+Fetcher.h"
 #import "VNode.h"
 #import "VAsset+Fetcher.h"
 #import "VInteraction+Fetcher.h"
@@ -30,7 +31,7 @@
 - (void)setSequence:(VSequence *)sequence
 {
     _sequence = sequence;
-    [self loadNode:[[VNode orderedNodesForSequence:_sequence] firstObject]];
+    [self loadNode:[sequence firstNode]];
 }
 
 - (instancetype)initWithSequence:(VSequence*)sequence

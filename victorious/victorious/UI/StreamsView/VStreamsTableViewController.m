@@ -306,8 +306,12 @@ typedef NS_ENUM(NSInteger, VStreamScope)
         return [tableView dequeueReusableCellWithIdentifier:kStreamVideoCellIdentifier
                                                forIndexPath:indexPath];
     
-    else if ([sequence isPoll])
+    else if ([sequence isPoll] && [sequence firstAsset])
         return [tableView dequeueReusableCellWithIdentifier:kStreamPollCellIdentifier
+                                               forIndexPath:indexPath];
+    
+    else if ([sequence isPoll])
+        return [tableView dequeueReusableCellWithIdentifier:kStreamDoublePollCellIdentifier
                                                forIndexPath:indexPath];
     
     else

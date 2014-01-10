@@ -7,8 +7,15 @@
 //
 
 #import "VStreamPollCell.h"
-#import "VSequence.h"
+
+#import "VSequence+Fetcher.h"
 #import "VObjectManager+Sequence.h"
+
+#import "VNode+Fetcher.h"
+
+#import "VInteraction.h"
+#import "VAnswer.h"
+#import "VAsset.h"
 
 @implementation VStreamPollCell
 
@@ -16,22 +23,36 @@
 {
     [super setSequence:sequence];
     
-    if (![self.sequence.nodes count])
+    NSArray* answers = [[self.sequence firstNode] firstAnswers];
+    
+    VAnswer* firstAnswer = [answers firstObject];
+    if (firstAnswer)
+        self.optionOneButton.titleLabel.text = firstAnswer.label;
+    
+    VAnswer* secondAnswer;
+    if ([answers count] >= 2)
     {
-//        [[[VObjectManager sharedManager] fetchSequence:sequence
-//                                          successBlock:nil
-//                                             failBlock:nil] start];
+        secondAnswer = [answers objectAtIndex:1];
+        self.optionTwoButton.titleLabel.text = secondAnswer.label;
     }
-    else
+    
+    NSURL *firstImageUrl, *secondImageUrl;
+    
+    if ([self.reuseIdentifier isEqualToString:kStreamPollCellIdentifier])
     {
-        [self setupView];
+        //TODO: hide the cell if we fail to load the image
+        VAsset* firstAsset = [self.sequence firstAsset];
+        firstImageUrl = [NSURL URLWithString:firstAsset.data];
     }
-}
-
-- (void)setupView
-{
-    NSURL* url = nil;
-    [self.previewImageView setImageWithURL:url];
+    else if ([self.reuseIdentifier isEqualToString:kStreamDoublePollCellIdentifier])
+    {
+//        firstImageUrl = [NSURL URLWithString:firstAnswer.mediaUrl];
+//        secondImageUrl = [NSURL URLWithString:firstAsset.mediaUrl];
+    }
+    
+    [self.previewImageView setImageWithURL:firstImageUrl];
+    [self.previewImageTwo setImageWithURL:secondImageUrl];
+    
 }
 
 - (IBAction)pressedOptionOne:(id)sender

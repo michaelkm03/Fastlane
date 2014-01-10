@@ -8,6 +8,8 @@
 
 #import "VSequence.h"
 
+@class VAsset;
+
 extern  NSString*   const   kVOwnerPollCategory;
 extern  NSString*   const   kVOwnerImageCategory;
 extern  NSString*   const   kVOwnerVideoCategory;
@@ -25,6 +27,9 @@ extern  NSString*   const   kVUGCForumCategory;
 - (BOOL)isVideo;
 - (BOOL)isForum;
 - (BOOL)isOwnerContent;
+
+- (VNode*)firstNode;
+- (VAsset*)firstAsset;
 
 
 @end

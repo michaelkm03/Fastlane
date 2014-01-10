@@ -12,4 +12,6 @@
 
 + (NSArray*)orderedNodesForSequence:(VSequence*)sequence;
 
+- (NSArray*)firstAnswers;
+
 @end

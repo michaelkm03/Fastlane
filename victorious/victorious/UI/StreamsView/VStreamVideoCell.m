@@ -10,6 +10,7 @@
 #import "VSequence.h"
 #import "VAsset+Fetcher.h"
 #import "VNode+Fetcher.h"
+#import "VSequence+Fetcher.h"
 
 #import "VObjectManager+Sequence.h"
 
@@ -71,8 +72,8 @@
 
 - (void)playSequence
 {
-    VNode* node = [[VNode orderedNodesForSequence:self.sequence] firstObject];
-    VAsset* asset = [[VAsset orderedAssetsForNode:node] firstObject];
+
+    VAsset* asset = [self.sequence firstAsset];
     
     _mpController = [[MPMoviePlayerController alloc] initWithContentURL:[NSURL URLWithString: asset.data]];
     _mpController.view.frame = self.previewImageView.frame;

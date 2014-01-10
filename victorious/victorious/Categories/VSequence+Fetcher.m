@@ -7,6 +7,7 @@
 //
 
 #import "VSequence+Fetcher.h"
+#import "VNode.h"
 
 NSString*   const   kVOwnerPollCategory = @"owner_poll";
 NSString*   const   kVOwnerImageCategory = @"owner_image";
@@ -51,4 +52,17 @@ NSString*   const   kVUGCForumCategory = @"ugc_forum";
     [self.category isEqualToString:kVOwnerPollCategory] ||
     [self.category isEqualToString:kVOwnerVideoCategory];
 }
+
+- (VNode*)firstNode
+{
+    NSSortDescriptor*   sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"display_order" ascending:YES];
+    return [[[self.nodes allObjects] sortedArrayUsingDescriptors:@[sortDescriptor]] firstObject];
+}
+
+- (VAsset*)firstAsset
+{
+    NSSortDescriptor*   sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"display_order" ascending:YES];
+    return [[[[self firstNode].assets allObjects] sortedArrayUsingDescriptors:@[sortDescriptor]] firstObject];
+}
+
 @end

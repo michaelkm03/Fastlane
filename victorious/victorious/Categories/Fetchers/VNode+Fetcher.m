@@ -40,4 +40,12 @@
     return results;
 }
 
+- (NSArray*)firstAnswers
+{
+    NSSortDescriptor*   sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"display_order" ascending:YES];
+    VInteraction* firstInteraction =  [[self.interactions sortedArrayUsingDescriptors:@[sortDescriptor]] firstObject];
+    
+    return [[firstInteraction.answers allObjects] sortedArrayUsingDescriptors:@[sortDescriptor]];
+}
+
 @end
