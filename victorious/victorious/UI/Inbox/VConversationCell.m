@@ -23,6 +23,7 @@
 {
     [super awakeFromNib];
 
+    self.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     self.seenView.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKeyPath:@"theme.color.conversation.seen"];
 }
 
@@ -40,12 +41,10 @@
 
 - (void)setConversation:(VConversation *)conversation
 {
-    _conversation = conversation;
-    
-    self.usernameLabel.text  = self.conversation.lastMessage.user.name;
-    self.messageLabel.text = self.conversation.lastMessage.text;
-    self.dateLabel.text = [self.conversation.lastMessage.postedAt timeSince];
-    self.seen = self.conversation.lastMessage.isRead.boolValue;
+    self.usernameLabel.text  = conversation.lastMessage.user.name;
+    self.messageLabel.text = conversation.lastMessage.text;
+    self.dateLabel.text = [conversation.lastMessage.postedAt timeSince];
+    self.seen = conversation.lastMessage.isRead.boolValue;
 }
 
 @end

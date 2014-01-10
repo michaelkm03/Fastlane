@@ -107,6 +107,11 @@ static  NSString*   kNewsCellViewIdentifier       =   @"VNewsCell";
     return NO;
 }
 
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    [self performSegueWithIdentifier:@"toMessage" sender:self];
+}
+
 - (NSFetchRequest*)fetchRequestForContext:(NSManagedObjectContext*)context
 {
     NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
@@ -167,7 +172,7 @@ static  NSString*   kNewsCellViewIdentifier       =   @"VNewsCell";
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
-    if ([segue.identifier isEqualToString:@"toConversation"])
+    if ([segue.identifier isEqualToString:@"toMessage"])
     {
         VMessageViewController *subview = (VMessageViewController *)segue.destinationViewController;
         UITableViewCell* cell = (UITableViewCell*)sender;

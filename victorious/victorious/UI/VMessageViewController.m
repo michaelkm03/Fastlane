@@ -16,16 +16,6 @@
 
 @implementation VMessageViewController
 
-- (id)initWithStyle:(UITableViewStyle)style
-{
-    self = [super initWithStyle:style];
-    if (self)
-    {
-        // Custom initialization
-    }
-    return self;
-}
-
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -70,7 +60,8 @@
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:kCommentCellIdentifier forIndexPath:indexPath];
     
     VMessage*   aMessage = self.messages[indexPath.row];
-    
+    [(VCommentCell *)cell setCommentOrMessage:aMessage];
+
     return cell;
 }
 

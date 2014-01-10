@@ -297,7 +297,7 @@ static NSString* CommentCache = @"CommentCache";
 - (void)configureCell:(UITableViewCell *)theCell atIndexPath:(NSIndexPath *)theIndexPath
 {
     VComment *comment = [self.fetchedResultsController objectAtIndexPath:theIndexPath];
-    [(VCommentCell*)theCell setComment:comment];
+    [(VCommentCell*)theCell setCommentOrMessage:comment];
 }
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
