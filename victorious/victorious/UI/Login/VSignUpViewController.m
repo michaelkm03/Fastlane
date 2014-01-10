@@ -92,9 +92,10 @@ NSString*   const   kSignupViewControllerDomain =   @"VSignupViewControllerDomai
     return YES;
 }
 
-- (void)didSignUp
+- (void)didSignUpWithUser:(VUser*)mainUser
 {
-    [[NSNotificationCenter defaultCenter] postNotificationName:LoggedInChangedNotification object:nil];
+    [[NSNotificationCenter defaultCenter] postNotificationName:LoggedInChangedNotification
+                                                        object:mainUser];
     [self.presentingViewController.presentingViewController dismissViewControllerAnimated:YES completion:nil];
 }
 
@@ -192,14 +193,15 @@ NSString*   const   kSignupViewControllerDomain =   @"VSignupViewControllerDomai
     {
         SuccessBlock success = ^(NSArray* objects)
         {
-            if (![[objects firstObject] isKindOfClass:[VUser class]])
+            VUser* mainUser = [objects firstObject];
+            if (![mainUser isKindOfClass:[VUser class]])
             {
                 VLog(@"Invalid user object returned in api/account/create");
                 [self didFailToSignUp:nil];
                 return;
             }
             
-            [self didSignUp];
+            [self didSignUpWithUser:mainUser];
         };
 
         FailBlock fail = ^(NSError* error)

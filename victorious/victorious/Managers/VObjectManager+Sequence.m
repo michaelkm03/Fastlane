@@ -253,22 +253,6 @@
     return [self voteSequence:sequence voteType:@"unvote" successBlock:success failBlock:fail];
 }
 
-- (void)testSequenceData
-{
-    VSequence* first = [[VSequence findAllObjectsWithSortKey:@"id"] firstObject];
-    for (VNode* node in first.nodes)
-    {
-        VLog(@"%@", node);
-        for(VAsset* asset in node.assets)
-            VLog(@"%@", asset);
-        
-        for (VInteraction* interaction in node.interactions)
-            VLog(@"%@", interaction);
-    }
-    for (VComment* comment in first.comments)
-        VLog(@"%@", comment);
-}
-
 #pragma mark - StatSequence Methods
 
 - (RKManagedObjectRequestOperation *)loadStatSequencesForUser:(VUser*)user

@@ -54,8 +54,6 @@
                                        successBlock:(SuccessBlock)success
                                           failBlock:(FailBlock)fail;
 
-- (void)testSequenceData;
-
 #pragma mark - StatSequence Methods
 
 - (RKManagedObjectRequestOperation *)loadStatSequencesForUser:(VUser*)user

@@ -11,7 +11,8 @@ extern  NSString*   const   kVLoginViewControllerDomain;
 NS_ENUM(NSUInteger, VLoginViewControllerErrorCode)
 {
     VLoginViewControllerBadEmailAddressErrorCode,
-    VLoginViewControllerBadPasswordErrorCode
+    VLoginViewControllerBadPasswordErrorCode,
+    VLoginViewControllerFailedLoginErrorCode
 };
 
 @interface VLoginViewController : UITableViewController
