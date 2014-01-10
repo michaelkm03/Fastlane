@@ -10,9 +10,11 @@
 @class VConversation;
 
 @interface VConversationCell : VTableViewCell
-@property (nonatomic, readwrite, strong)    VConversation*  conversation;
 @property (weak, nonatomic) IBOutlet UILabel *usernameLabel;
 @property (weak, nonatomic) IBOutlet UILabel *messageLabel;
 @property (weak, nonatomic) IBOutlet UILabel *dateLabel;
 @property (nonatomic) BOOL seen;
+
+- (void)setConversation:(VConversation *)conversation;
+
 @end
