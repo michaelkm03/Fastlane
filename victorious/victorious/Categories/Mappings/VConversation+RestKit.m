@@ -31,8 +31,7 @@
     
     [mapping addAttributeMappingsFromDictionary:propertyMap];
     
-    [mapping addRelationshipMappingWithSourceKeyPath:VSelectorName(messages) mapping:[VMessage entityMapping]];
-    [mapping addRelationshipMappingWithSourceKeyPath:VSelectorName(message) mapping:[VMessage entityMapping]];
+    [mapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:nil toKeyPath:@"messages" withMapping:[VMessage entityMapping]]];
 
     return mapping;
 }
