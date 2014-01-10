@@ -15,9 +15,9 @@
 @implementation VMessage
 
 @dynamic isRead;
+@dynamic postedAt;
 @dynamic remoteId;
 @dynamic text;
-@dynamic postedAt;
 @dynamic conversation;
 @dynamic media;
 @dynamic user;
