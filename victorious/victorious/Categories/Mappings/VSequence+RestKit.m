@@ -46,7 +46,7 @@
     [mapping addRelationshipMappingWithSourceKeyPath:VSelectorName(nodes) mapping:[VNode entityMapping]];
     [mapping addRelationshipMappingWithSourceKeyPath:VSelectorName(comments) mapping:[VComment entityMapping]];
     
-    [mapping addConnectionForRelationship:@"user" connectedBy:@{@"created_by" : @"remoteId"}];
+    [mapping addConnectionForRelationship:@"user" connectedBy:@{@"createdBy" : @"remoteId"}];
 
     return mapping;
 }

@@ -100,7 +100,9 @@
                   }] start];
             }
         }
-        success(sequences);
+        
+        if (success)
+            success(sequences);
     };
     
     return [self GET:path
