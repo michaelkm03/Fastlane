@@ -15,6 +15,7 @@
                               withSuccessBlock:(SuccessBlock)success
                                      failBlock:(FailBlock)fail
 {
+    return nil;
     NSString* path = userId ? [NSString stringWithFormat:@"/api/userinfo/fetch/%@", userId] : @"/api/userinfo/fetch";
 
     return [self GET:path
