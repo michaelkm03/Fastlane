@@ -80,7 +80,7 @@ NSString*   const   kVLoginViewControllerDomain =   @"VLoginViewControllerDomain
     
     if (mainuser)
     { //We've logged in
-        [[[VObjectManager sharedManager] loadInitialConversations] start];
+        [[[VObjectManager sharedManager] loadNextPageOfConversations:nil failBlock:nil] start];
     } else
     { //We've logged out
         //TODO: delete existing conversations,

@@ -92,7 +92,6 @@
                           sequence.user = [resultObjects firstObject];
                           [sequence.managedObjectContext save:nil];
                       }
-                      
                   }
                        failBlock:^(NSError *error)
                   {
