@@ -85,7 +85,7 @@
             if (!sequence.user)
             {
                 [[self fetchUser:sequence.createdBy
-           forrelationshipObject:sequence
+           forRelationshipObject:sequence
                 withSuccessBlock:nil
                        failBlock:nil] start];
             }
@@ -179,7 +179,7 @@
             {
                     __block VComment* userOwner = comment;
                     [[self fetchUser:userOwner.userId
-               forrelationshipObject:userOwner
+               forRelationshipObject:userOwner
                     withSuccessBlock:^(NSArray *resultObjects) {
                         VLog(@"Comment %@: has user: %@", userOwner, userOwner.user);
                     }
