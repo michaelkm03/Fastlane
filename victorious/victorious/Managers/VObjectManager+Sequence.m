@@ -181,10 +181,27 @@
     __block VSequence* commentOwner = sequence; //Keep the sequence around until the block gets called
     SuccessBlock fullSuccessBlock = ^(NSArray* comments)
     {
-        for (VComment* comment in comments)
+        for (__block VComment* comment in comments)
         {
             [commentOwner addCommentsObject:(VComment*)[commentOwner.managedObjectContext
                                                         objectWithID:[comment objectID]]];
+            if (!comment.user )
+            {
+                //If we don't have the users then we need to fetch em.
+                [[self fetchUser:comment.userId
+                withSuccessBlock:^(NSArray *resultObjects)
+                  {
+                      if ([[resultObjects firstObject] isKindOfClass:[VUser class]])
+                      {
+                          comment.user = [resultObjects firstObject];
+                          [comment.managedObjectContext save:nil];
+                      }
+                  }
+                       failBlock:^(NSError *error)
+                  {
+                      VLog(@"error loading user: %@", error);
+                  }] start];
+            }
         }
         
         if (success)
