@@ -64,7 +64,7 @@
             {
                 //If we don't have the users then we need to fetch em.
                 [[self fetchUser:conversation.other_interlocutor_user_id
-           forrelationshipObject:conversation
+           forRelationshipObject:conversation
                 withSuccessBlock:nil
                        failBlock:nil] start];
             }
