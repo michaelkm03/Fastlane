@@ -15,6 +15,7 @@
 @implementation VSequence
 
 @dynamic category;
+@dynamic createdBy;
 @dynamic display_order;
 @dynamic gameStatus;
 @dynamic isComplete;
@@ -24,7 +25,6 @@
 @dynamic remoteId;
 @dynamic sequenceDescription;
 @dynamic status;
-@dynamic createdBy;
 @dynamic comments;
 @dynamic nodes;
 @dynamic user;

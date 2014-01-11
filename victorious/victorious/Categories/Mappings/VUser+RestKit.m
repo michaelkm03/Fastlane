@@ -22,7 +22,11 @@
     NSDictionary *propertyMap = @{
                                   @"id" : VSelectorName(remoteId),
                                   @"email" : VSelectorName(email),
+                                  @"profile_tagline" : VSelectorName(tagline),
+                                  @"profile_image" : VSelectorName(pictureUrl),
+                                  @"profile_location" : VSelectorName(location),
                                   @"name" : VSelectorName(name),
+                                  @"short_name" : VSelectorName(shortName),
                                   @"access_level" : VSelectorName(accessLevel),
                                   @"token" : VSelectorName(token),
                                   @"token_updated_at" : VSelectorName(tokenUpdatedAt)

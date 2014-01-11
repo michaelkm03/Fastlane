@@ -15,18 +15,19 @@
 
 @property (nonatomic, retain) NSString * accessLevel;
 @property (nonatomic, retain) NSString * email;
+@property (nonatomic, retain) NSString * location;
 @property (nonatomic, retain) NSString * name;
 @property (nonatomic, retain) NSString * pictureUrl;
 @property (nonatomic, retain) NSNumber * remoteId;
+@property (nonatomic, retain) NSString * shortName;
+@property (nonatomic, retain) NSString * tagline;
 @property (nonatomic, retain) NSString * token;
 @property (nonatomic, retain) NSDate * tokenUpdatedAt;
-@property (nonatomic, retain) NSString * location;
-@property (nonatomic, retain) NSString * tagline;
 @property (nonatomic, retain) NSSet *comments;
 @property (nonatomic, retain) NSSet *conversations;
 @property (nonatomic, retain) NSSet *messages;
-@property (nonatomic, retain) NSSet *statSequences;
 @property (nonatomic, retain) NSSet *postedSequences;
+@property (nonatomic, retain) NSSet *statSequences;
 @end
 
 @interface VUser (CoreDataGeneratedAccessors)
@@ -46,14 +47,14 @@
 - (void)addMessages:(NSSet *)values;
 - (void)removeMessages:(NSSet *)values;
 
-- (void)addStatSequencesObject:(VStatSequence *)value;
-- (void)removeStatSequencesObject:(VStatSequence *)value;
-- (void)addStatSequences:(NSSet *)values;
-- (void)removeStatSequences:(NSSet *)values;
-
 - (void)addPostedSequencesObject:(VSequence *)value;
 - (void)removePostedSequencesObject:(VSequence *)value;
 - (void)addPostedSequences:(NSSet *)values;
 - (void)removePostedSequences:(NSSet *)values;
+
+- (void)addStatSequencesObject:(VStatSequence *)value;
+- (void)removeStatSequencesObject:(VStatSequence *)value;
+- (void)addStatSequences:(NSSet *)values;
+- (void)removeStatSequences:(NSSet *)values;
 
 @end

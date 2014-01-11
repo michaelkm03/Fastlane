@@ -17,9 +17,9 @@
 @dynamic display_order;
 @dynamic isCorrect;
 @dynamic label;
+@dynamic mediaUrl;
 @dynamic points;
 @dynamic remoteId;
-@dynamic mediaUrl;
 @dynamic answerAction;
 @dynamic interaction;
 

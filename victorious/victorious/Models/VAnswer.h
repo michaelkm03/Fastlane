@@ -17,9 +17,9 @@
 @property (nonatomic, retain) NSNumber * display_order;
 @property (nonatomic, retain) NSNumber * isCorrect;
 @property (nonatomic, retain) NSString * label;
+@property (nonatomic, retain) NSString * mediaUrl;
 @property (nonatomic, retain) NSNumber * points;
 @property (nonatomic, retain) NSNumber * remoteId;
-@property (nonatomic, retain) NSString * mediaUrl;
 @property (nonatomic, retain) VAnswerAction *answerAction;
 @property (nonatomic, retain) VInteraction *interaction;
 

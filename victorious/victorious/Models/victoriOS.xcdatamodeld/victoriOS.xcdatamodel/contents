@@ -162,6 +162,7 @@
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="pictureUrl" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="remoteId" attributeType="Integer 64" minValueString="0" syncable="YES"/>
+        <attribute name="shortName" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="tagline" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="token" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="tokenUpdatedAt" optional="YES" attributeType="Date" syncable="YES"/>
@@ -180,15 +181,15 @@
         <element name="Conversation" positionX="1431" positionY="-477" width="128" height="118"/>
         <element name="Interaction" positionX="646" positionY="-208" width="128" height="208"/>
         <element name="InteractionAction" positionX="495" positionY="-99" width="128" height="105"/>
-        <element name="Media" positionX="1422" positionY="-135" width="128" height="103"/>
-        <element name="Message" positionX="1431" positionY="-319" width="128" height="163"/>
+        <element name="Media" positionX="1422" positionY="-103" width="128" height="103"/>
+        <element name="Message" positionX="1447" positionY="-298" width="128" height="163"/>
         <element name="Node" positionX="817" positionY="-180" width="128" height="135"/>
-        <element name="NodeAction" positionX="846" positionY="54" width="128" height="90"/>
+        <element name="NodeAction" positionX="880" positionY="81" width="128" height="90"/>
         <element name="Rule" positionX="567" positionY="99" width="128" height="75"/>
         <element name="Sequence" positionX="1006" positionY="-202" width="128" height="253"/>
         <element name="StatAnswer" positionX="1422" positionY="153" width="128" height="180"/>
         <element name="StatInteraction" positionX="1251" positionY="150" width="128" height="210"/>
         <element name="StatSequence" positionX="1233" positionY="-90" width="128" height="225"/>
-        <element name="User" positionX="1222" positionY="-412" width="128" height="253"/>
+        <element name="User" positionX="1222" positionY="-412" width="128" height="268"/>
     </elements>
 </model>

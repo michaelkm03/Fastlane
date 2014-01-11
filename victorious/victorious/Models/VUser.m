@@ -18,17 +18,18 @@
 
 @dynamic accessLevel;
 @dynamic email;
+@dynamic location;
 @dynamic name;
 @dynamic pictureUrl;
 @dynamic remoteId;
+@dynamic shortName;
+@dynamic tagline;
 @dynamic token;
 @dynamic tokenUpdatedAt;
-@dynamic location;
-@dynamic tagline;
 @dynamic comments;
 @dynamic conversations;
 @dynamic messages;
-@dynamic statSequences;
 @dynamic postedSequences;
+@dynamic statSequences;
 
 @end

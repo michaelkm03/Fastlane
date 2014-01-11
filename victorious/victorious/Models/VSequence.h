@@ -14,6 +14,7 @@
 @interface VSequence : NSManagedObject
 
 @property (nonatomic, retain) NSString * category;
+@property (nonatomic, retain) NSNumber * createdBy;
 @property (nonatomic, retain) NSNumber * display_order;
 @property (nonatomic, retain) NSString * gameStatus;
 @property (nonatomic, retain) NSNumber * isComplete;
@@ -23,7 +24,6 @@
 @property (nonatomic, retain) NSNumber * remoteId;
 @property (nonatomic, retain) NSString * sequenceDescription;
 @property (nonatomic, retain) NSString * status;
-@property (nonatomic, retain) NSNumber * createdBy;
 @property (nonatomic, retain) NSSet *comments;
 @property (nonatomic, retain) NSSet *nodes;
 @property (nonatomic, retain) VUser *user;
