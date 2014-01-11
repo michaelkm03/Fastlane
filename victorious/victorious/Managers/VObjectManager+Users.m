@@ -17,23 +17,19 @@
 
 @implementation VObjectManager (Users)
 
-static NSMutableDictionary *userRelationships;
-
 - (RKManagedObjectRequestOperation *)fetchUser:(NSNumber*)userId
-                         forrelationshipObject:(id)relationshipObject
+                         forRelationshipObject:(id)relationshipObject
                               withSuccessBlock:(SuccessBlock)success
                                      failBlock:(FailBlock)fail
 {
+
 //    return nil;
+
+//    DISPATCH_QUEUE_SERIAL
     
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
-        userRelationships = [[NSMutableDictionary alloc] init];
-    });
-    
-    @synchronized(userRelationships)
+    @synchronized(self.userRelationships)
     {
-        NSMutableArray* relationships = [userRelationships objectForKey:userId];
+        NSMutableArray* relationships = [self.userRelationships objectForKey:userId];
 
         //There's nothing to add and we're already fetching the object
         if (!relationshipObject && relationships)
@@ -44,14 +40,15 @@ static NSMutableDictionary *userRelationships;
         {
             VLog(@"Found relationships: %@", relationships);
             [relationships addObject:relationshipObject];
-            [userRelationships setObject:userRelationships forKey:userId];
+            [self.userRelationships setObject:relationships forKey:userId];
+            
             return nil;
         }
         
         relationships = [[NSMutableArray alloc] init];
         [relationships addObject:relationshipObject];
-        [userRelationships setObject:relationships forKey:userId];
-        VLog(@"Added object: %@.  All relationships: %@ ", [relationshipObject class], userRelationships);
+        [self.userRelationships setObject:relationships forKey:userId];
+        VLog(@"Added object: %@.  All relationships: %@ ", [relationshipObject class], self.userRelationships);
     }
 
     NSString* path = userId ? [NSString stringWithFormat:@"/api/userinfo/fetch/%@", userId] : @"/api/userinfo/fetch";
@@ -73,11 +70,11 @@ static NSMutableDictionary *userRelationships;
 
 - (void)addRelationshipsForUsers:(NSArray*)users
 {
-    @synchronized(userRelationships)
+    @synchronized(self.userRelationships)
     {
         for (VUser* user in users)
         {
-            NSArray* relationships = [userRelationships objectForKey:user.remoteId];
+            NSArray* relationships = [self.userRelationships objectForKey:user.remoteId];
             for (id relationshipObject in relationships)
             {
                 if ([relationshipObject isKindOfClass:[VComment class]])
@@ -93,7 +90,7 @@ static NSMutableDictionary *userRelationships;
                     [((VConversation*)relationshipObject) addUsersObject:user];
             }
             
-            [userRelationships removeObjectForKey:user.remoteId];
+            [self.userRelationships removeObjectForKey:user.remoteId];
         }
     }
 }
