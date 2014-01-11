@@ -19,6 +19,8 @@
 #import "VCommentCell.h"
 #import "VSequencePlayerViewController.h"
 #import "VThemeManager.h"
+#import "BBlock.h"
+#import "UIActionSheet+BBlock.h"
 
 @import Social;
 
@@ -252,7 +254,7 @@ static NSString* CommentCache = @"CommentCache";
 
 - (IBAction)addButtonAction:(id)sender
 {
-    [[[VObjectManager sharedManager] addCommentWithText:@"Test 1" Data:nil mediaExtension:nil toSequence:self.sequence andParent:nil successBlock:^(NSArray *resultObjects) {
+    [[[VObjectManager sharedManager] addCommentWithText:@"Test Comment" Data:nil mediaExtension:nil toSequence:self.sequence andParent:nil successBlock:^(NSArray *resultObjects) {
         NSLog(@"%@", resultObjects);
     } failBlock:^(NSError *error) {
         NSLog(@"%@", error);
@@ -315,10 +317,75 @@ static NSString* CommentCache = @"CommentCache";
 {
     if ([_sequence isVideo])
     {
-        return 180;
+        return 160;
     }
     
     return 0;
+}
+
+#pragma mark - UITableViewDelegate
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    VComment *comment = [self.fetchedResultsController objectAtIndexPath:indexPath];
+    NSString *reportTitle = NSLocalizedString(@"Report Inappropriate", @"Comment report inappropriate button");
+    NSString *thumbUpTitle = NSLocalizedString(@"Thumbs Up", @"Comment thumbs up button");
+    NSString *thumbDownTitle = NSLocalizedString(@"Thumbs Down", @"Comment thumbs down button");
+    NSString *reply = NSLocalizedString(@"Reply", @"Comment reply button");
+    UIActionSheet *actionSheet =
+    [[UIActionSheet alloc]
+     initWithTitle:nil delegate:nil
+     cancelButtonTitle:NSLocalizedString(@"Cancel", @"Cancel button")
+     destructiveButtonTitle:reportTitle otherButtonTitles:thumbUpTitle, thumbDownTitle, reply, nil];
+    [actionSheet setCompletionBlock:^(NSInteger buttonIndex, UIActionSheet *actionSheet)
+     {
+         if(actionSheet.cancelButtonIndex == buttonIndex)
+         {
+             return;
+         }
+
+         if(actionSheet.destructiveButtonIndex == buttonIndex)
+         {
+             [[[VObjectManager sharedManager] flagComment:comment
+                                             successBlock:^(NSArray *resultObjects)
+               {
+                   //TODO:set flagged flag)
+                   VLog(@"resultObjects: %@", resultObjects);
+               }
+                                                failBlock:^(NSError *error)
+               {
+                   VLog(@"Failed to flag comment %@", comment);
+               }] start];
+         }
+         else if([[actionSheet buttonTitleAtIndex:buttonIndex] isEqualToString:thumbUpTitle])
+         {
+             [[[VObjectManager sharedManager] likeComment:comment
+                                               successBlock:^(NSArray *resultObjects) {
+                                                   //TODO:update UI)
+                                                   VLog(@"resultObjects: %@", resultObjects);
+                                               }
+                                                  failBlock:^(NSError *error) {
+                                                      VLog(@"Failed to dislike comment %@", comment);
+                                                  }] start];
+         }
+         else if([[actionSheet buttonTitleAtIndex:buttonIndex] isEqualToString:thumbDownTitle])
+         {
+             [[[VObjectManager sharedManager] dislikeComment:comment
+                                                successBlock:^(NSArray *resultObjects) {
+                                                    //TODO:set dislike flag)
+                                                    VLog(@"resultObjects: %@", resultObjects);
+                                                }
+                                                   failBlock:^(NSError *error) {
+                                                       VLog(@"Failed to dislike comment %@", comment);
+                                                   }] start];
+         }
+         else if([[actionSheet buttonTitleAtIndex:buttonIndex] isEqualToString:reply])
+         {
+             // TODO: bring up the compose dialog with @user
+         }
+     }];
+    [actionSheet showInView:self.view];
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
 
 

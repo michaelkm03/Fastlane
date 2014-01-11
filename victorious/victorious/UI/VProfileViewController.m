@@ -69,8 +69,8 @@
     
     // Set Profile data
     self.nameLabel.text = self.profile.name;
-    self.taglineLabel.text = @"This is my tag line.";
-    self.locationLabel.text = @"Santa Monica, CA";
+    self.taglineLabel.text = self.profile.tagline;
+    self.locationLabel.text = self.profile.location;
 }
 
 -(IBAction)composeButtonPressed:(id)sender
