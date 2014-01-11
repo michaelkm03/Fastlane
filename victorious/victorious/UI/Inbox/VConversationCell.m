@@ -25,6 +25,8 @@
 
     self.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     self.seenView.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKeyPath:@"theme.color.conversation.seen"];
+    
+    self.dateLabel.font = [[VThemeManager sharedThemeManager] themedFontForKeyPath:@"theme.font.stream.timeSince"];
 }
 
 - (void)layoutSubviews

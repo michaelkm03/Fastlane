@@ -35,7 +35,7 @@
                         <rect key="frame" x="203" y="15" width="11" height="11"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     </imageView>
-                    <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Jvq-Ul-DJV">
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Jvq-Ul-DJV">
                         <rect key="frame" x="6" y="15" width="11" height="11"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
@@ -45,6 +45,10 @@
                         </constraints>
                     </view>
                 </subviews>
+                <constraints>
+                    <constraint firstItem="Jvq-Ul-DJV" firstAttribute="leading" secondItem="kNR-aW-aiD" secondAttribute="leading" constant="6" id="2nY-TX-EnE"/>
+                    <constraint firstItem="Jvq-Ul-DJV" firstAttribute="top" secondItem="kNR-aW-aiD" secondAttribute="top" constant="15" id="OC4-tq-2NH"/>
+                </constraints>
             </tableViewCellContentView>
             <connections>
                 <outlet property="dateLabel" destination="GRz-LE-4rE" id="VuP-D1-ob5"/>

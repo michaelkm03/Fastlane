@@ -11,7 +11,8 @@
 
 @implementation VTableViewCell
 
-- (void)awakeFromNib{
+- (void)awakeFromNib
+{
     [super awakeFromNib];
     
     [[UIImageView appearanceWhenContainedIn:[self class], nil]
