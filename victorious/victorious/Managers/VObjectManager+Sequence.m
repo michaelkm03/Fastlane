@@ -84,20 +84,20 @@
             if (!sequence.user)
             {
                 //If we don't have the user then we need to fetch em.
-                [[self fetchUser:sequence.createdBy
-                withSuccessBlock:^(NSArray *resultObjects)
-                  {
-                      if ([[resultObjects firstObject] isKindOfClass:[VUser class]])
-                      {
-                          sequence.user = [resultObjects firstObject];
-                          [sequence.managedObjectContext save:nil];
-                      }
-                      
-                  }
-                       failBlock:^(NSError *error)
-                  {
-                      VLog(@"error loading user: %@", error);
-                  }] start];
+//                [[self fetchUser:sequence.createdBy
+//                withSuccessBlock:^(NSArray *resultObjects)
+//                  {
+//                      if ([[resultObjects firstObject] isKindOfClass:[VUser class]])
+//                      {
+//                          sequence.user = [resultObjects firstObject];
+//                          [sequence.managedObjectContext save:nil];
+//                      }
+//                      
+//                  }
+//                       failBlock:^(NSError *error)
+//                  {
+//                      VLog(@"error loading user: %@", error);
+//                  }] start];
             }
         }
         
