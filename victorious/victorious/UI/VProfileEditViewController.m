@@ -53,8 +53,8 @@
 
     //  Pre-populate fields
     self.nameTextField.text = self.profile.name;
-//    self.locationTextField.text = XXX;
-//    self.taglineTextField.text = XXX;
+    self.locationTextField.text = self.profile.location;
+    self.taglineTextField.text = self.profile.tagline;
 
     //  Set UITextDelegates
     self.nameTextField.delegate = self;
@@ -80,7 +80,7 @@
     self.headerButton.clipsToBounds = YES;
     self.headerButton.hidden = ![UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera];
     
-//    self.usernameLabel.text = self.profile.username;
+    self.usernameLabel.text = self.profile.shortName;
 }
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField
