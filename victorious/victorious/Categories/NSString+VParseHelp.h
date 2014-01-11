@@ -12,6 +12,7 @@
 @interface NSString (VParseHelp)
 
 @property (nonatomic, readonly, getter = typeByExtension) NSString* extensionType;
+- (NSString*)previewImageURLForM3U8;
 
 - (BOOL ) isEmpty;
 - (BOOL ) isEmptyWithCleanWhiteSpace:(BOOL)cleanWhileSpace;
