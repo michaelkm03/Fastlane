@@ -36,7 +36,7 @@
             return nil;
         
         //We're already fetching this ID, just add the object and return
-        if (relationships && [relationships isKindOfClass:[NSMutableArray class]])
+        if (relationships)
         {
             VLog(@"Found relationships: %@", relationships);
             [relationships addObject:relationshipObject];
@@ -44,11 +44,13 @@
             
             return nil;
         }
-        
-        relationships = [[NSMutableArray alloc] init];
-        [relationships addObject:relationshipObject];
-        [self.userRelationships setObject:relationships forKey:userId];
-        VLog(@"Added object: %@.  All relationships: %@ ", [relationshipObject class], self.userRelationships);
+        else
+        {
+            relationships = [[NSMutableArray alloc] init];
+            [relationships addObject:relationshipObject];
+            [self.userRelationships setObject:relationships forKey:userId];
+            VLog(@"Added object: %@.  All relationships: %@ ", [relationshipObject class], self.userRelationships);
+        }
     }
 
     NSString* path = userId ? [NSString stringWithFormat:@"/api/userinfo/fetch/%@", userId] : @"/api/userinfo/fetch";
