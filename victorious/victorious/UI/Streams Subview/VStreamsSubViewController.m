@@ -47,7 +47,8 @@ static NSString* CommentCache = @"CommentCache";
          forCellReuseIdentifier:kCommentCellIdentifier];
 
     self.tableView.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKeyPath:@"theme.color.messages.background"];
-
+    self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+    
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
  
@@ -273,7 +274,7 @@ static NSString* CommentCache = @"CommentCache";
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return 240;
+    return 80;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath

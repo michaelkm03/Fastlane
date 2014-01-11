@@ -9,6 +9,11 @@
 #import "VMessageViewController.h"
 #import "VObjectManager+DirectMessaging.h"
 #import "VCommentCell.h"
+#import "VMessage+RestKit.h"
+#import "VMedia+RestKit.h"
+
+const   CGFloat     kMessageRowWithMediaHeight  =   280.0;
+const   CGFloat     kMessageRowHeight           =   80;
 
 @interface VMessageViewController ()
 @property (nonatomic, readwrite, strong)    NSArray*    messages;
@@ -63,6 +68,15 @@
     [(VCommentCell *)cell setCommentOrMessage:aMessage];
 
     return cell;
+}
+
+ - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    VMessage*   aMessage = self.messages[indexPath.row];
+    if (aMessage.media.mediaUrl)
+        return kMessageRowWithMediaHeight;
+    else
+        return kMessageRowHeight;
 }
 
 @end

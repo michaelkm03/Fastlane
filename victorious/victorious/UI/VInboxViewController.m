@@ -140,9 +140,9 @@ static  NSString*   kNewsCellViewIdentifier       =   @"VNewsCell";
          forCellReuseIdentifier:kMessageCellViewIdentifier];
     [self.searchDisplayController.searchResultsTableView registerNib:[UINib nibWithNibName:kMessageCellViewIdentifier bundle:[NSBundle mainBundle]] forCellReuseIdentifier:kMessageCellViewIdentifier];
 
-    [self.tableView registerNib:[UINib nibWithNibName:kNewsCellViewIdentifier bundle:[NSBundle mainBundle]]
-         forCellReuseIdentifier:kNewsCellViewIdentifier];
-    [self.searchDisplayController.searchResultsTableView registerNib:[UINib nibWithNibName:kNewsCellViewIdentifier bundle:[NSBundle mainBundle]] forCellReuseIdentifier:kNewsCellViewIdentifier];
+//    [self.tableView registerNib:[UINib nibWithNibName:kNewsCellViewIdentifier bundle:[NSBundle mainBundle]]
+//         forCellReuseIdentifier:kNewsCellViewIdentifier];
+//    [self.searchDisplayController.searchResultsTableView registerNib:[UINib nibWithNibName:kNewsCellViewIdentifier bundle:[NSBundle mainBundle]] forCellReuseIdentifier:kNewsCellViewIdentifier];
 }
 
 #pragma mark - Refresh Lifecycle
