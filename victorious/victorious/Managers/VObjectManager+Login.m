@@ -18,7 +18,7 @@ NSString *LoggedInChangedNotification = @"LoggedInChangedNotification";
 
 - (BOOL)isAuthorized
 {
-    BOOL authorized = self.mainUser;
+    BOOL authorized = (nil != self.mainUser);
     return authorized;
 }
 

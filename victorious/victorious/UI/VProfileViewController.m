@@ -58,7 +58,7 @@
         self.navigationItem.rightBarButtonItems = @[composeButton, userActionButton];
     }
     
-//    self.navigationController.title = self.profile.username;
+    self.navigationController.title = self.profile.shortName;
 }
 
 - (void)setProfileData
