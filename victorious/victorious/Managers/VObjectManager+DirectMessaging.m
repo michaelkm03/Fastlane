@@ -15,43 +15,6 @@
 
 @implementation VObjectManager (DirectMessaging)
 
-- (RKManagedObjectRequestOperation *)loadInitialConversations
-{
-    
-    return [self loadNextPageOfConversations:^(NSArray *resultObjects)
-            {
-                VLog(@"Initial Conversations Loaded: %@", resultObjects);
-                for (VConversation* conversation in resultObjects)
-                {
-                    //There should only be one message.  Its the current 'last message'
-                    conversation.lastMessage = [conversation.messages anyObject];
-                    [conversation.managedObjectContext save:nil];
-                    
-                    if (![conversation.users count])
-                    {
-                        //If we don't have the users then we need to fetch em.
-                        [[self fetchUser:conversation.other_interlocutor_user_id
-                        withSuccessBlock:^(NSArray *resultObjects)
-                          {
-                              if ([[resultObjects firstObject] isKindOfClass:[VUser class]])
-                              {
-                                  [conversation addUsersObject:[resultObjects firstObject]];
-                                  [conversation.managedObjectContext save:nil];
-                              }
-                          }
-                               failBlock:^(NSError *error)
-                          {
-                                   VLog(@"error loading user: %@", error);
-                               }] start];
-                    }
-                }
-            }
-                                   failBlock:^(NSError *error)
-            {
-                VLog(@"Failed to load conversations: %@", error);
-            }];
-}
-
 - (void)testSendMessage
 {
     for (int i=0; i <5; i++)
@@ -89,10 +52,38 @@
     //        [self.paginationStatuses setObject:status forKey:kConversationPaginationKey];
     //    };
     
+    SuccessBlock fullSuccess = ^(NSArray* resultObjects){
+        
+        for (VConversation* conversation in resultObjects)
+        {
+            //There should only be one message.  Its the current 'last message'
+            conversation.lastMessage = [conversation.messages anyObject];
+            [conversation.managedObjectContext save:nil];
+            
+            if (![conversation.users count])
+            {
+                //If we don't have the users then we need to fetch em.
+                [[self fetchUser:conversation.other_interlocutor_user_id
+                withSuccessBlock:^(NSArray *resultObjects)
+                  {
+                      if ([[resultObjects firstObject] isKindOfClass:[VUser class]])
+                      {
+                          [conversation addUsersObject:[resultObjects firstObject]];
+                          [conversation.managedObjectContext save:nil];
+                      }
+                  }
+                       failBlock:^(NSError *error)
+                  {
+                      VLog(@"error loading user: %@", error);
+                  }] start];
+            }
+        }
+    };
+    
     return [self GET:path
               object:nil
           parameters:nil
-        successBlock:success
+        successBlock:fullSuccess
            failBlock:fail
      paginationBlock:nil];//pagination];
 }
