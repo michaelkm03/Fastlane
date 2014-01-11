@@ -41,8 +41,6 @@
 {
     [super viewDidLoad];
     
-    [self setProfileData];
-    
     if (!self.profile)
     {
         self.profile = [VObjectManager sharedManager].mainUser;
@@ -59,6 +57,8 @@
     }
     
     self.navigationController.title = self.profile.shortName;
+
+    [self setProfileData];
 }
 
 - (void)setProfileData

@@ -38,13 +38,13 @@ const   CGFloat     kMessageRowHeight           =   80;
         }
                                                       failBlock:^(NSError *error)
         {
-
+            NSLog(@"%@", error.localizedDescription);
         }] start];
         
     }
                                                        failBlock:^(NSError *error)
     {
-     
+        NSLog(@"%@", error.localizedDescription);
     }] start];
 }
 

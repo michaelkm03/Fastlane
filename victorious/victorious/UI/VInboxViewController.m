@@ -11,6 +11,7 @@
 #import "VMenuViewControllerTransition.h"
 #import "VConversation+RestKit.h"
 #import "VMessageViewController.h"
+#import "VNewsViewController.h"
 #import "VConversationCell.h"
 
 NS_ENUM(NSUInteger, ModeSelect)
@@ -179,6 +180,15 @@ static  NSString*   kNewsCellViewIdentifier       =   @"VNewsCell";
 
         VConversation* conversation = [self.fetchedResultsController objectAtIndexPath:[self.tableView indexPathForCell:cell]];
 
+        [subview setConversation:conversation];
+    }
+    else if ([segue.identifier isEqualToString:@"toNews"])
+    {
+        VNewsViewController *subview = (VNewsViewController *)segue.destinationViewController;
+        UITableViewCell* cell = (UITableViewCell*)sender;
+        
+        VConversation* conversation = [self.fetchedResultsController objectAtIndexPath:[self.tableView indexPathForCell:cell]];
+        
         [subview setConversation:conversation];
     }
     else if ([segue.destinationViewController isKindOfClass:[VMenuViewController class]])
