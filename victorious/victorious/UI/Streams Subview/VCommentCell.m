@@ -16,6 +16,7 @@
 #import "VMedia+RestKit.h"
 #import "VUser+RestKit.h"
 #import "NSDate+timeSince.h"
+#import "VThemeManager.h"
 
 @interface VCommentCell()
 @property (weak, nonatomic) IBOutlet UILabel *dateLabel;
@@ -30,6 +31,19 @@
 
 @implementation VCommentCell
 
+- (void)awakeFromNib
+{
+    self.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKeyPath:@"theme.color.messages.background"];
+    self.avatarImageView.clipsToBounds = YES;
+}
+
+- (void)layoutSubviews
+{
+    [super layoutSubviews];
+
+    self.avatarImageView.layer.cornerRadius = CGRectGetHeight(self.avatarImageView.bounds)/2;
+}
+
 - (void)setCommentOrMessage:(id)commentOrMessage
 {
     if(_commentOrMessage == commentOrMessage)
@@ -42,7 +56,36 @@
     if([commentOrMessage isKindOfClass:[VComment class]])
     {
         VComment *comment = (VComment *)self.commentOrMessage;
+
+        self.dateLabel.text = [comment.postedAt timeSince];
+        [self.avatarImageView setImageWithURL:[NSURL URLWithString:comment.user.pictureUrl]
+                             placeholderImage:[UIImage imageNamed:@"profile_thumb"]];
+        self.usernameLabel.text = comment.user.name;
         self.messageLabel.text = comment.text;
+
+        if (comment.mediaUrl)
+        {
+            if ([comment.mediaType isEqualToString:VConstantsMediaTypeVideo])
+            {
+                self.mediaPreview.hidden = NO;
+                self.movieView.hidden = YES;
+
+                self.mpController = [[MPMoviePlayerController alloc] initWithContentURL:[NSURL URLWithString:comment.mediaUrl]];
+                [self.movieView addSubview:self.mpController.view];
+            }
+            else
+            {
+                self.mediaPreview.hidden = NO;
+                self.movieView.hidden = YES;
+//                [self.mediaPreview setImageWithURL:[NSURL URLWithString:message.media.previewImage]
+//                                  placeholderImage:[UIImage imageNamed:@"MenuVideos"]];
+            }
+        }
+        else
+        {
+            self.mediaPreview.hidden = YES;
+            self.movieView.hidden = YES;
+        }
     }
     else if([commentOrMessage isKindOfClass:[VMessage class]])
     {
