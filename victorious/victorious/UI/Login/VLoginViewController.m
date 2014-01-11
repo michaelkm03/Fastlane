@@ -67,15 +67,16 @@ NSString*   const   kVLoginViewControllerDomain =   @"VLoginViewControllerDomain
 - (void)loginChanged:(NSNotification *)notification
 {
     VUser* mainuser = notification.object;
+    [VObjectManager sharedManager].mainUser = mainuser;
     
     //If the mainuser isnt a VUser just fail gracefully.
     if (mainuser && ![mainuser isKindOfClass:[VUser class]])
     {
+        [VObjectManager sharedManager].mainUser = nil;
         VLog(@"Invalid object passed in loginChanged notif: %@", mainuser);
         return;
     }
     
-    [VObjectManager sharedManager].mainUser = mainuser;
     
     if (mainuser)
     { //We've logged in

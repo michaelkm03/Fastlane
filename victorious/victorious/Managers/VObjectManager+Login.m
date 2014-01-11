@@ -18,7 +18,8 @@ NSString *LoggedInChangedNotification = @"LoggedInChangedNotification";
 
 - (BOOL)isAuthorized
 {
-    return [self.mainUser.token length] != 0;
+    BOOL authorized = self.mainUser;
+    return authorized;
 }
 
 - (BOOL)isOwner
