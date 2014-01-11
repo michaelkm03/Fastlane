@@ -63,10 +63,21 @@
     }
     
     if ([firstUrlString.extensionType isEqualToString:VConstantsMediaTypeVideo])
+    {
         firstUrlString = [firstUrlString previewImageURLForM3U8];
-    if ([secondUrlString.extensionType isEqualToString:VConstantsMediaTypeVideo])
-        secondUrlString = [secondUrlString previewImageURLForM3U8];
+        self.playOneButton.hidden = NO;
+    }
+    else
+        self.playOneButton.hidden = YES;
     
+    if ([secondUrlString.extensionType isEqualToString:VConstantsMediaTypeVideo])
+    {
+        secondUrlString = [secondUrlString previewImageURLForM3U8];
+        self.playTwoButton.hidden = NO;
+    }
+    else
+        self.playTwoButton.hidden = YES;
+        
     [self.previewImageView setImageWithURL:[NSURL URLWithString:firstUrlString]];
     [self.previewImageTwo setImageWithURL:[NSURL URLWithString:secondUrlString]];
 }
