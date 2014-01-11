@@ -36,13 +36,13 @@ const   CGFloat     kMessageRowHeight           =   80;
             self.messages = [[self.conversation.messages allObjects] sortedArrayUsingDescriptors:@[sortDescriptor]];
             [self.tableView reloadData];
         }
-                                                      failBlock:^(NSError *error)
+        failBlock:^(NSError *error)
         {
             NSLog(@"%@", error.localizedDescription);
         }] start];
         
     }
-                                                       failBlock:^(NSError *error)
+    failBlock:^(NSError *error)
     {
         NSLog(@"%@", error.localizedDescription);
     }] start];
