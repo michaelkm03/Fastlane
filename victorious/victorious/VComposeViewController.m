@@ -42,6 +42,7 @@
         } failBlock:^(NSError *error) {
             NSLog(@"%@", error);
         }] start];
+        self.textField.text = nil;
     }
 }
 
