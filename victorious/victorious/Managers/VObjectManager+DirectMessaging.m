@@ -108,10 +108,28 @@
 //        [self.paginationStatuses setObject:status forKey:statusKey];
 //    };
     
+    SuccessBlock fullSuccess = ^(NSArray* resultObjects)
+    {
+        for (VMessage* message in resultObjects)
+        {
+            if (!message.user )
+            {
+                //If we don't have the users then we need to fetch em.
+                [[self fetchUser:message.senderUserId
+           forRelationshipObject:message
+                withSuccessBlock:nil
+                       failBlock:nil] start];
+            }
+        }
+        
+        if (success)
+            success(resultObjects);
+    };
+    
     return [self GET:path
               object:nil
           parameters:nil
-        successBlock:success
+        successBlock:fullSuccess
            failBlock:fail
      paginationBlock:nil];//pagination];
 }
@@ -122,7 +140,7 @@
 {
     return [self POST:@"/api/message/mark_conversation_read"
                object:nil
-           parameters:@{@"conversations_id" : conversation.remoteId}
+           parameters:@{@"conversation_id" : conversation.remoteId}
          successBlock:success
             failBlock:fail
       paginationBlock:nil];

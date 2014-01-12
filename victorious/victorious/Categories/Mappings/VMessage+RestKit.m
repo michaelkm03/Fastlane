@@ -43,7 +43,7 @@
 {
     return [RKResponseDescriptor responseDescriptorWithMapping:[self entityMapping]
                                                         method:RKRequestMethodGET
-                                                   pathPattern:@"api/message/conversation/%@"
+                                                   pathPattern:@"/api/message/conversation/:id"
                                                        keyPath:@"payload"
                                                    statusCodes:RKStatusCodeIndexSetForClass(RKStatusCodeClassSuccessful)];
 }
