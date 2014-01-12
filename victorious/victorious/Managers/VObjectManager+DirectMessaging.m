@@ -112,6 +112,8 @@
     {
         for (VMessage* message in resultObjects)
         {
+            [conversation addMessagesObject:(VMessage*)[conversation.managedObjectContext objectWithID:[message objectID]]];
+            [conversation.managedObjectContext save:nil];
             if (!message.user )
             {
                 //If we don't have the users then we need to fetch em.
@@ -156,11 +158,8 @@
 {
     //Set the parameters
     NSMutableDictionary* parameters = [[NSMutableDictionary alloc] initWithCapacity:5];
-    if (user)
-        [parameters setObject:[NSString stringWithFormat:@"%@", user.remoteId] forKey:@"to_user_id"];
-    else //TODO: remove test code
-        [parameters setObject:[NSString stringWithFormat:@"%i", 140] forKey:@"to_user_id"];
-        
+
+    [parameters setObject:[NSString stringWithFormat:@"%@", user.remoteId] forKey:@"to_user_id"];
     
     if (text)
         [parameters setObject:text forKey:@"text"];
