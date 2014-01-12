@@ -7,7 +7,7 @@
 //
 
 #import "VStreamsTableViewController.h"
-#import "VStreamsSubViewController.h"
+#import "VStreamsCommentsController.h"
 #import "VSequence.h"
 #import "UIImageView+AFNetworking.h"
 #import "VObjectManager+Sequence.h"
@@ -202,7 +202,7 @@ typedef NS_ENUM(NSInteger, VStreamScope)
 #pragma mark - Segue Lifecycle
 - (void)prepareToStreamDetailsSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
-    VStreamsSubViewController *subview = (VStreamsSubViewController *)segue.destinationViewController;
+    VStreamsCommentsController *subview = (VStreamsCommentsController *)segue.destinationViewController;
     
     VSequence *sequence = [self.fetchedResultsController objectAtIndexPath:[self.tableView indexPathForCell:(UITableViewCell*)sender]];
     
