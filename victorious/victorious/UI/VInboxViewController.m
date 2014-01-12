@@ -110,7 +110,7 @@ static  NSString*   kNewsCellViewIdentifier       =   @"VNewsCell";
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    [self performSegueWithIdentifier:@"toMessage" sender:self];
+    [self performSegueWithIdentifier:@"toMessage" sender:[self.tableView cellForRowAtIndexPath:indexPath]];
 }
 
 - (NSFetchRequest*)fetchRequestForContext:(NSManagedObjectContext*)context
