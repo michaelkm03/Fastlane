@@ -151,9 +151,9 @@
                                 </constraints>
                             </imageView>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="eLA-aw-94c">
-                                <rect key="frame" x="69" y="108" width="22" height="23"/>
+                                <rect key="frame" x="64" y="103" width="33" height="33"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <state key="normal" image="MessageCamera">
+                                <state key="normal" image="Play">
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <connections>
@@ -161,9 +161,9 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="sXz-uG-dbs">
-                                <rect key="frame" x="229" y="108" width="22" height="23"/>
+                                <rect key="frame" x="224" y="103" width="33" height="33"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <state key="normal" image="MessageCamera">
+                                <state key="normal" image="Play">
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <connections>
@@ -237,7 +237,7 @@
         </tableViewCell>
     </objects>
     <resources>
-        <image name="MessageCamera" width="22" height="23"/>
+        <image name="Play" width="33" height="33"/>
         <image name="StreamComments" width="15" height="15"/>
         <image name="StreamDate" width="11" height="11"/>
         <image name="StreamHeart" width="14" height="13"/>
