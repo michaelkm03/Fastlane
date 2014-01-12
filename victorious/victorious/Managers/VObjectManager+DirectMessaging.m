@@ -69,6 +69,9 @@
                        failBlock:nil] start];
             }
         }
+        
+        if (success)
+            success(resultObjects);
     };
     
     return [self GET:path
