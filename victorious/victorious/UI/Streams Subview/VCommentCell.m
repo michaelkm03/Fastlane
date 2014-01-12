@@ -35,6 +35,7 @@
 {
     self.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKeyPath:@"theme.color.messages.background"];
     self.avatarImageView.clipsToBounds = YES;
+    self.dateLabel.font = [[VThemeManager sharedThemeManager] themedFontForKeyPath:@"theme.font.stream.timeSince"];
 }
 
 - (void)layoutSubviews

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="4514" systemVersion="13B42" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="27v-pQ-okR">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="4514" systemVersion="13B3116" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="27v-pQ-okR">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3747"/>
     </dependencies>
@@ -284,7 +284,7 @@
             </objects>
             <point key="canvasLocation" x="-4131" y="-818"/>
         </scene>
-        <!--Message View Controller-->
+        <!--Message View Controller - Messages-->
         <scene sceneID="IH3-Pz-KdZ">
             <objects>
                 <tableViewController storyboardIdentifier="message" useStoryboardIdentifierAsRestorationIdentifier="YES" id="quD-aE-BAL" customClass="VMessageViewController" sceneMemberID="viewController">
@@ -307,7 +307,7 @@
                             <outlet property="delegate" destination="quD-aE-BAL" id="5ZQ-Lf-IXK"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" id="YF4-gT-XTx"/>
+                    <navigationItem key="navigationItem" title="Messages" id="YF4-gT-XTx"/>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ffq-o1-Z0A" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -1795,7 +1795,7 @@
             </objects>
             <point key="canvasLocation" x="-3443" y="2509"/>
         </scene>
-        <!--News View Controller-->
+        <!--News View Controller - News-->
         <scene sceneID="UGQ-lZ-yeL">
             <objects>
                 <tableViewController storyboardIdentifier="news" useStoryboardIdentifierAsRestorationIdentifier="YES" id="miw-Vy-oJ3" customClass="VNewsViewController" sceneMemberID="viewController">
@@ -1818,7 +1818,7 @@
                             <outlet property="delegate" destination="miw-Vy-oJ3" id="92S-xt-gkW"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" id="RtI-a0-zTW"/>
+                    <navigationItem key="navigationItem" title="News" id="RtI-a0-zTW"/>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="QO7-vc-UdB" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -1844,7 +1844,7 @@
         <simulatedScreenMetrics key="destination" type="retina4"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
-        <segue reference="tz6-Ir-ECN"/>
+        <segue reference="Oqu-Ea-RjF"/>
         <segue reference="JMC-qY-BWo"/>
     </inferredMetricsTieBreakers>
 </document>
