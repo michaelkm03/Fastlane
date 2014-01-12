@@ -1313,7 +1313,7 @@
                     </refreshControl>
                     <connections>
                         <outlet property="searchDisplayController" destination="J6V-dn-yOU" id="hN4-yw-nxD"/>
-                        <segue destination="yAz-qI-kJZ" kind="push" id="3xK-dH-0sn"/>
+                        <segue destination="yAz-qI-kJZ" kind="push" identifier="toStreamDetails" id="3xK-dH-0sn"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="xfw-Ye-e63" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -1657,7 +1657,7 @@
                     </refreshControl>
                     <connections>
                         <outlet property="searchDisplayController" destination="GwT-4v-fOW" id="0m2-OQ-WsJ"/>
-                        <segue destination="yAz-qI-kJZ" kind="push" id="mRM-Ec-I9V"/>
+                        <segue destination="yAz-qI-kJZ" kind="push" identifier="toStreamDetails" id="mRM-Ec-I9V"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="gYD-nr-qTl" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -1718,7 +1718,7 @@
                     </refreshControl>
                     <connections>
                         <outlet property="searchDisplayController" destination="d7C-Oy-OYn" id="MH9-4c-MZY"/>
-                        <segue destination="yAz-qI-kJZ" kind="push" id="fO5-PP-Kl2"/>
+                        <segue destination="yAz-qI-kJZ" kind="push" identifier="toStreamDetails" id="fO5-PP-Kl2"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="LJd-lg-Pic" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -1779,7 +1779,7 @@
                     </refreshControl>
                     <connections>
                         <outlet property="searchDisplayController" destination="kpc-3c-ASl" id="aPc-Tt-kUB"/>
-                        <segue destination="yAz-qI-kJZ" kind="push" id="iyY-Ir-Prf"/>
+                        <segue destination="yAz-qI-kJZ" kind="push" identifier="toStreamDetails" id="iyY-Ir-Prf"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Pec-Ts-5yc" userLabel="First Responder" sceneMemberID="firstResponder"/>
