@@ -73,6 +73,11 @@
                             <action selector="likeButtonAction:" destination="KPi-2m-jh7" eventType="touchUpInside" id="MJV-ls-Gmd"/>
                         </connections>
                     </button>
+                    <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="deW-Wq-Ehd">
+                        <rect key="frame" x="80" y="86" width="160" height="172"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                    </view>
                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="aXF-0P-N0n" userLabel="Comment Button">
                         <rect key="frame" x="94" y="307" width="66" height="22"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>

@@ -58,9 +58,10 @@
 
 #pragma mark - StatSequence Methods
 
-- (RKManagedObjectRequestOperation *)answerPollWithAnswer:(VAnswer*)answer
-                                             successBlock:(SuccessBlock)success
-                                                failBlock:(FailBlock)fail;
+- (RKManagedObjectRequestOperation *)answerPoll:(VSequence*)poll
+                                     withAnswer:answer
+                                   successBlock:(SuccessBlock)success
+                                      failBlock:(FailBlock)fail;
 
 - (RKManagedObjectRequestOperation *)loadStatSequencesForUser:(VUser*)user
                                                  successBlock:(SuccessBlock)success
