@@ -8,7 +8,7 @@
 
 #import "VFeaturedViewController.h"
 #import "VSequence.h"
-#import "VStreamsSubViewController.h"
+#import "VStreamsCommentsController.h"
 
 @interface VFeaturedViewController ()
 @property (weak, nonatomic) IBOutlet UILabel *label;
@@ -37,7 +37,7 @@
 {
     if ([segue.identifier isEqualToString:@"featuredToStreamDetails"])
     {
-        VStreamsSubViewController *subview = (VStreamsSubViewController *)segue.destinationViewController;
+        VStreamsCommentsController *subview = (VStreamsCommentsController *)segue.destinationViewController;
         
         subview.sequence = ((VFeaturedViewController *)sender).sequence;
     }

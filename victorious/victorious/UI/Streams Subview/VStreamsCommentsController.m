@@ -6,7 +6,7 @@
 //  Copyright (c) 2013 Victorious, Inc. All rights reserved.
 //
 
-#import "VStreamsSubViewController.h"
+#import "VStreamsCommentsController.h"
 #import "VLoginViewController.h"
 
 #import "VComment.h"
@@ -24,7 +24,7 @@
 
 @import Social;
 
-@interface VStreamsSubViewController () <NSFetchedResultsControllerDelegate, UINavigationControllerDelegate>//, VComposeMessageDelegate>
+@interface VStreamsCommentsController () <NSFetchedResultsControllerDelegate, UINavigationControllerDelegate>//, VComposeMessageDelegate>
 
 @property (nonatomic, strong) NSFetchedResultsController* fetchedResultsController;
 @property (nonatomic, strong) NSMutableArray* newlyReadComments;
@@ -33,7 +33,7 @@
 
 static NSString* CommentCache = @"CommentCache";
 
-@implementation VStreamsSubViewController
+@implementation VStreamsCommentsController
 
 - (void)viewDidLoad
 {
@@ -56,6 +56,12 @@ static NSString* CommentCache = @"CommentCache";
  
     // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
     // self.navigationItem.rightBarButtonItem = self.editButtonItem;
+}
+
+- (void)viewWillLayoutSubviews
+{
+    [super viewWillLayoutSubviews];
+    self.view.frame = self.view.superview.bounds;
 }
 
 - (void)didReceiveMemoryWarning
@@ -254,11 +260,7 @@ static NSString* CommentCache = @"CommentCache";
 
 - (IBAction)addButtonAction:(id)sender
 {
-    [[[VObjectManager sharedManager] addCommentWithText:@"Test Comment" Data:nil mediaExtension:nil toSequence:self.sequence andParent:nil successBlock:^(NSArray *resultObjects) {
-        NSLog(@"%@", resultObjects);
-    } failBlock:^(NSError *error) {
-        NSLog(@"%@", error);
-    }] start];
+
 }
 
 #pragma mark - Table view data source

@@ -10,7 +10,6 @@
 #import "VSequence.h"
 //#import "VComposeMessageViewController.h"
 
-@interface VStreamsSubViewController : UITableViewController
+@interface VStreamsCommentsController : UITableViewController
 @property (nonatomic, strong) VSequence* sequence;
-
 @end
