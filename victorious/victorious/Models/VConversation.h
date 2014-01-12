@@ -2,7 +2,7 @@
 //  VConversation.h
 //  victorious
 //
-//  Created by Will Long on 1/10/14.
+//  Created by Will Long on 1/11/14.
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
@@ -17,7 +17,7 @@
 @property (nonatomic, retain) NSNumber * remoteId;
 @property (nonatomic, retain) VMessage *lastMessage;
 @property (nonatomic, retain) NSSet *messages;
-@property (nonatomic, retain) NSSet *users;
+@property (nonatomic, retain) VUser *user;
 @end
 
 @interface VConversation (CoreDataGeneratedAccessors)
@@ -26,10 +26,5 @@
 - (void)removeMessagesObject:(VMessage *)value;
 - (void)addMessages:(NSSet *)values;
 - (void)removeMessages:(NSSet *)values;
-
-- (void)addUsersObject:(VUser *)value;
-- (void)removeUsersObject:(VUser *)value;
-- (void)addUsers:(NSSet *)values;
-- (void)removeUsers:(NSSet *)values;
 
 @end

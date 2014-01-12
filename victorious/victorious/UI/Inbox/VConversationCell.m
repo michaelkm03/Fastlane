@@ -43,7 +43,7 @@
 
 - (void)setConversation:(VConversation *)conversation
 {
-    self.usernameLabel.text  = conversation.lastMessage.user.name;
+    self.usernameLabel.text  = conversation.user.name;
     self.messageLabel.text = conversation.lastMessage.text;
     self.dateLabel.text = [conversation.lastMessage.postedAt timeSince];
     self.seen = conversation.lastMessage.isRead.boolValue;

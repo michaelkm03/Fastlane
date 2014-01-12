@@ -34,7 +34,7 @@
 
     [mapping addConnectionForRelationship:@"user" connectedBy:@{@"senderUserId" : @"remoteId"}];
 
-//    [mapping addRelationshipMappingWithSourceKeyPath:VSelectorName(media) mapping:[VMedia entityMapping]];
+    [mapping addRelationshipMappingWithSourceKeyPath:VSelectorName(media) mapping:[VMedia entityMapping]];
     
     return mapping;
 }
@@ -43,7 +43,7 @@
 {
     return [RKResponseDescriptor responseDescriptorWithMapping:[self entityMapping]
                                                         method:RKRequestMethodGET
-                                                   pathPattern:@"/api/message/conversation/%@"
+                                                   pathPattern:@"api/message/conversation/%@"
                                                        keyPath:@"payload"
                                                    statusCodes:RKStatusCodeIndexSetForClass(RKStatusCodeClassSuccessful)];
 }

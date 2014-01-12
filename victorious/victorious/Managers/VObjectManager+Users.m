@@ -84,11 +84,10 @@
                 ((VSequence*)relationshipObject).user = user;
             
             else if ([relationshipObject isKindOfClass:[VConversation class]])
-                [((VConversation*)relationshipObject) addUsersObject:user];
+                ((VConversation*)relationshipObject).user = user;
         }
+        [user.managedObjectContext save:nil];
     }
-    [self.managedObjectStore.persistentStoreManagedObjectContext save:nil];
-
 }
 
 @end

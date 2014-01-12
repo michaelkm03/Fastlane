@@ -15,8 +15,8 @@
 
 @property (nonatomic, retain) NSNumber * isRead;
 @property (nonatomic, retain) NSDate * postedAt;
-@property (nonatomic, retain) NSString * text;
 @property (nonatomic, retain) NSNumber * senderUserId;
+@property (nonatomic, retain) NSString * text;
 @property (nonatomic, retain) VConversation *conversation;
 @property (nonatomic, retain) VConversation *lastMessageInverse;
 @property (nonatomic, retain) VMedia *media;

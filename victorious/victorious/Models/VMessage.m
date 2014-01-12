@@ -16,8 +16,8 @@
 
 @dynamic isRead;
 @dynamic postedAt;
-@dynamic text;
 @dynamic senderUserId;
+@dynamic text;
 @dynamic conversation;
 @dynamic lastMessageInverse;
 @dynamic media;

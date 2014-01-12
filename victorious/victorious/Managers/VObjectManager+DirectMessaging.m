@@ -60,7 +60,7 @@
             conversation.lastMessage = [conversation.messages anyObject];
             [conversation.managedObjectContext save:nil];
             
-            if (![conversation.users count])
+            if (!conversation.user )
             {
                 //If we don't have the users then we need to fetch em.
                 [[self fetchUser:conversation.other_interlocutor_user_id

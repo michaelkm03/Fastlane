@@ -34,7 +34,7 @@
     
     [mapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:nil toKeyPath:@"messages" withMapping:[VMessage entityMapping]]];
 
-    [mapping addConnectionForRelationship:@"users" connectedBy:@{@"other_interlocutor_user_id" : @"remoteId"}];
+    [mapping addConnectionForRelationship:@"user" connectedBy:@{@"other_interlocutor_user_id" : @"remoteId"}];
     
     return mapping;
 }
