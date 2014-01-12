@@ -19,6 +19,8 @@ NSString*   const   kVUGCImageCategory = @"ugc_image";
 NSString*   const   kVUGCVideoCategory = @"ugc_video";
 NSString*   const   kVUGCForumCategory = @"ugc_forum";
 
+NSString*   const   kFeaturedCategory = @"featured";
+
 @implementation VSequence (Fetcher)
 
 - (BOOL)isPoll

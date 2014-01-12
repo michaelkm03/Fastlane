@@ -20,6 +20,8 @@ extern  NSString*   const   kVUGCImageCategory;
 extern  NSString*   const   kVUGCVideoCategory;
 extern  NSString*   const   kVUGCForumCategory;
 
+extern NSString*   const   kFeaturedCategory;
+
 @interface VSequence (Fetcher)
 
 - (BOOL)isPoll;

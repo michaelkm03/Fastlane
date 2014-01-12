@@ -9,6 +9,7 @@
 #import "VFeaturedStreamsViewController.h"
 #import "VFeaturedViewController.h"
 #import "VSequence+RestKit.h"
+#import "VSequence+Fetcher.h"
 
 static NSString* kStreamCache = @"StreamCache";
 
@@ -77,7 +78,7 @@ static NSString* kStreamCache = @"StreamCache";
     [fetchRequest setEntity:entity];
 
     NSSortDescriptor *sort = [[NSSortDescriptor alloc] initWithKey:@"display_order" ascending:YES];
-    [fetchRequest setPredicate:[NSPredicate predicateWithFormat:@"category == 'owner_video'"]];
+    [fetchRequest setPredicate:[NSPredicate predicateWithFormat:@"category == %@", kFeaturedCategory]];
     [fetchRequest setSortDescriptors:@[sort]];
     [fetchRequest setFetchBatchSize:5];
 
