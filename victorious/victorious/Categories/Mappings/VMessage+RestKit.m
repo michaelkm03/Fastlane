@@ -22,7 +22,7 @@
     NSDictionary *propertyMap = @{
                                   @"is_read" : VSelectorName(isRead),
                                   @"text" : VSelectorName(text),
-                                  @"remote_id" : VSelectorName(remoteId),
+                                  @"sender_user_id" : VSelectorName(senderUserId),
                                   @"posted_at" : VSelectorName(postedAt)
                                   };
     
@@ -30,13 +30,22 @@
                                 mappingForEntityForName:[self entityName]
                                 inManagedObjectStore:[RKObjectManager sharedManager].managedObjectStore];
     
-    mapping.identificationAttributes = @[ VSelectorName(remoteId) ];
-    
     [mapping addAttributeMappingsFromDictionary:propertyMap];
-    
-    [mapping addRelationshipMappingWithSourceKeyPath:VSelectorName(media) mapping:[VMedia entityMapping]];
+
+    [mapping addConnectionForRelationship:@"user" connectedBy:@{@"senderUserId" : @"remoteId"}];
+
+//    [mapping addRelationshipMappingWithSourceKeyPath:VSelectorName(media) mapping:[VMedia entityMapping]];
     
     return mapping;
+}
+
++ (RKResponseDescriptor*)descriptor
+{
+    return [RKResponseDescriptor responseDescriptorWithMapping:[self entityMapping]
+                                                        method:RKRequestMethodGET
+                                                   pathPattern:@"/api/message/conversation/%@"
+                                                       keyPath:@"payload"
+                                                   statusCodes:RKStatusCodeIndexSetForClass(RKStatusCodeClassSuccessful)];
 }
 
 @end

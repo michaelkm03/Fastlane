@@ -19,6 +19,7 @@
 #import "VSequence+RestKit.h"
 #import "VStatSequence+RestKit.h"
 #import "VConversation+RestKit.h"
+#import "VMessage+RestKit.h"
 
 
 @implementation VObjectManager
@@ -96,7 +97,8 @@
                                              [VComment getAllPaginationDescriptor],
                                              [VStatSequence gamesPlayedDescriptor],
                                              [VStatSequence gameStatsDescriptor],
-                                             [VConversation descriptor]]];
+                                             [VConversation descriptor],
+                                             [VMessage descriptor]]];
 
     _paginationStatuses = [[NSMutableDictionary alloc] init];
 }
@@ -133,7 +135,7 @@
          
          VErrorMessage* errorMessage = [errors firstObject];
          
-         if (errorMessage.error)
+         if (errorMessage.error && failBlock)
              failBlock([NSError errorWithDomain:@"com.getvictorious.victoriOS" code:errorMessage.error
                                        userInfo:@{NSLocalizedDescriptionKey: errorMessage.message}]);
          else

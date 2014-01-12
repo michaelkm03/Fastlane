@@ -11,4 +11,6 @@
 
 @interface VMessage (RestKit)
 
++ (RKResponseDescriptor*)descriptor;
+
 @end

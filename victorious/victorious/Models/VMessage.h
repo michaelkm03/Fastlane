@@ -2,7 +2,7 @@
 //  VMessage.h
 //  victorious
 //
-//  Created by Will Long on 1/10/14.
+//  Created by Will Long on 1/11/14.
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
@@ -15,8 +15,8 @@
 
 @property (nonatomic, retain) NSNumber * isRead;
 @property (nonatomic, retain) NSDate * postedAt;
-@property (nonatomic, retain) NSNumber * remoteId;
 @property (nonatomic, retain) NSString * text;
+@property (nonatomic, retain) NSNumber * senderUserId;
 @property (nonatomic, retain) VConversation *conversation;
 @property (nonatomic, retain) VConversation *lastMessageInverse;
 @property (nonatomic, retain) VMedia *media;
