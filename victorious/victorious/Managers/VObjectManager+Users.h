@@ -11,6 +11,7 @@
 @interface VObjectManager (Users)
 
 - (RKManagedObjectRequestOperation *)fetchUser:(NSNumber*)userId
+                         forRelationshipObject:(id)relationshipObject
                               withSuccessBlock:(SuccessBlock)success
                                      failBlock:(FailBlock)fail;
 @end

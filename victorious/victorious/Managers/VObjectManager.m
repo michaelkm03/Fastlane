@@ -59,6 +59,8 @@
 
     [manager victoriousSetup];
 
+    manager.userRelationships = [[NSMutableDictionary alloc] init];
+    
     //This will allow us to call this manager with [RKObjectManager sharedManager]
     [self setSharedManager:manager];
 }

@@ -150,6 +150,26 @@
                                     <constraint firstAttribute="height" constant="180" id="w27-Z8-fJ0"/>
                                 </constraints>
                             </imageView>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="eLA-aw-94c">
+                                <rect key="frame" x="69" y="108" width="22" height="23"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" image="MessageCamera">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="pressedPlayOne:" destination="BTB-1H-fCN" eventType="touchUpInside" id="Gl1-5o-GL3"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="sXz-uG-dbs">
+                                <rect key="frame" x="229" y="108" width="22" height="23"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" image="MessageCamera">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="pressedPlayTwo:" destination="BTB-1H-fCN" eventType="touchUpInside" id="hh6-HI-q3h"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
@@ -199,6 +219,8 @@
                 <outlet property="locationLabel" destination="TL7-tG-qjN" id="7lf-C5-fgn"/>
                 <outlet property="optionOneButton" destination="gs8-J9-s3Y" id="g4C-t2-yGk"/>
                 <outlet property="optionTwoButton" destination="AUG-sZ-gAy" id="c1s-z8-udu"/>
+                <outlet property="playOneButton" destination="eLA-aw-94c" id="406-9J-ty9"/>
+                <outlet property="playTwoButton" destination="sXz-uG-dbs" id="6Xz-FZ-Z2s"/>
                 <outlet property="previewImageTwo" destination="e2G-u3-diD" id="7Il-nc-jTL"/>
                 <outlet property="previewImageView" destination="OOq-Yb-3IQ" id="Xai-kb-2mv"/>
                 <outlet property="shareButton" destination="97u-YM-R84" id="sW2-QC-tZ4"/>
@@ -215,6 +237,7 @@
         </tableViewCell>
     </objects>
     <resources>
+        <image name="MessageCamera" width="22" height="23"/>
         <image name="StreamComments" width="15" height="15"/>
         <image name="StreamDate" width="11" height="11"/>
         <image name="StreamHeart" width="14" height="13"/>

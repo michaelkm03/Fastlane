@@ -17,6 +17,9 @@ static NSString *kStreamDoublePollCellIdentifier = @"VStreamDoublePollCell";
 @property (weak, nonatomic) IBOutlet UIButton* optionOneButton;
 @property (weak, nonatomic) IBOutlet UIButton* optionTwoButton;
 
+@property (weak, nonatomic) IBOutlet UIButton* playOneButton;
+@property (weak, nonatomic) IBOutlet UIButton* playTwoButton;
+
 @property (weak, nonatomic) IBOutlet UIImageView* previewImageTwo;
 
 - (IBAction)pressedOptionOne:(id)sender;

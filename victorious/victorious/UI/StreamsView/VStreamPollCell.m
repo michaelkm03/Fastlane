@@ -19,9 +19,13 @@
 
 #import "NSString+VParseHelp.h"
 
+@import MediaPlayer;
+
 @interface VStreamPollCell ()
 @property (nonatomic, weak) VAnswer* firstAnswer;
 @property (nonatomic, weak) VAnswer* secondAnswer;
+
+@property (nonatomic, strong) MPMoviePlayerController* mpController;
 @end
 
 @implementation VStreamPollCell
@@ -58,20 +62,24 @@
         secondUrlString = _secondAnswer.mediaUrl;
     }
     
-    if ([firstUrlString.extensionType isEqualToString:VConstantsMediaTypeImage])
-        [self.previewImageView setImageWithURL:[NSURL URLWithString:firstUrlString]];
-    else
+    if ([firstUrlString.extensionType isEqualToString:VConstantsMediaTypeVideo])
     {
-        //TODO: Swap to video
-        self.hidden = YES;
+        firstUrlString = [firstUrlString previewImageURLForM3U8];
+        self.playOneButton.hidden = NO;
     }
+    else
+        self.playOneButton.hidden = YES;
+    
+    if ([secondUrlString.extensionType isEqualToString:VConstantsMediaTypeVideo])
+    {
+        secondUrlString = [secondUrlString previewImageURLForM3U8];
+        self.playTwoButton.hidden = NO;
+    }
+    else
+        self.playTwoButton.hidden = YES;
         
-    if ([secondUrlString.extensionType isEqualToString:VConstantsMediaTypeImage])
-        [self.previewImageTwo setImageWithURL:[NSURL URLWithString:secondUrlString]];
-    else
-    {
-        //TODO: Swap to video
-    }
+    [self.previewImageView setImageWithURL:[NSURL URLWithString:firstUrlString]];
+    [self.previewImageTwo setImageWithURL:[NSURL URLWithString:secondUrlString]];
 }
 
 - (IBAction)pressedOptionOne:(id)sender
@@ -82,6 +90,18 @@
 - (IBAction)pressedOptionTwo:(id)sender
 {
     [self answerPollWithAnswer:_secondAnswer];
+}
+
+- (IBAction)pressedPlayOne:(id)sender
+{
+//    self.mpController = [[MPMoviePlayerController alloc] initWithContentURL:[NSURL URLWithString:firstUrlString]];
+//    [self.mpController prepareToPlay];
+//    self.mpController.view.frame = self.previewImageTwo.bounds;
+//    [self.previewImageView addSubview:self.mpController.view];
+}
+- (IBAction)pressedPlayTwo:(id)sender
+{
+    
 }
 
 - (void)answerPollWithAnswer:(VAnswer*)answer

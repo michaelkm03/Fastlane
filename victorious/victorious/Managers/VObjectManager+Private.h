@@ -12,6 +12,7 @@
 @interface VObjectManager ()
 
 @property (nonatomic, strong) NSMutableDictionary* paginationStatuses;
+@property (nonatomic, strong) NSMutableDictionary* userRelationships;
 
 @end
 

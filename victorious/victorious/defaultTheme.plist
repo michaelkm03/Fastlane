@@ -47,6 +47,13 @@
 		<key>fontSize</key>
 		<integer>15</integer>
 	</dict>
+	<key>theme.font.stream.timeSince</key>
+	<dict>
+		<key>fontName</key>
+		<string>Roboto-Light</string>
+		<key>fontSize</key>
+		<integer>11</integer>
+	</dict>
 	<key>theme.font.stream.text.username</key>
 	<dict>
 		<key>fontName</key>
