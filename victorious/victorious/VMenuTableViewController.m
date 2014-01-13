@@ -10,6 +10,9 @@
 #import "VThemeManager.h"
 #import "VInboxBadgeLabel.h"
 #import "VRootNavigationController.h"
+#import "VObjectManager+DirectMessaging.h"
+#import "VUser+RestKit.h"
+#import "VUnreadConversation+RestKit.h"
 
 NSString *const VMenuTableViewControllerDidSelectRowNotification = @"VMenuTableViewControllerDidSelectRowNotification";
 
@@ -27,16 +30,19 @@ NSString *const VMenuTableViewControllerDidSelectRowNotification = @"VMenuTableV
     [super viewDidLoad];
 
     // TODO: connect to real data
-    NSUInteger count = 8;
+    NSUInteger count = [VObjectManager sharedManager].mainUser.unreadConversation.count.unsignedIntegerValue;
 
-    if(count < 1){
+    if(count < 1)
+    {
         [self.inboxBadgeLabel setHidden:YES];
-    }else{
-        if(count < 1000){
+    }
+    else
+    {
+        if(count < 1000)
             self.inboxBadgeLabel.text = [NSString stringWithFormat:@"%lu", (unsigned long)count];
-        }else{
+        else
             self.inboxBadgeLabel.text = @"+999";
-        }
+
         self.inboxBadgeLabel.font = [[VThemeManager sharedThemeManager] themedFontForKeyPath:@"theme.font.menu.badge"];
         self.inboxBadgeLabel.textColor = [[VThemeManager sharedThemeManager] themedColorForKeyPath:@"theme.color.menu.badge.text"];
         self.inboxBadgeLabel.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKeyPath:@"theme.color.menu.badge"];

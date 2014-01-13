@@ -87,7 +87,7 @@
     if (CFStringCompare ((CFStringRef) mediaType, kUTTypeMovie, 0) == kCFCompareEqualTo)
     {
         self.media = [NSData dataWithContentsOfURL:info[UIImagePickerControllerMediaURL]];
-//        self.mediaExtension = VConstantMediaExtensionMOV;
+        self.mediaExtension = VConstantMediaExtensionMOV;
     }
     
     [[picker parentViewController] dismissViewControllerAnimated:YES completion:nil];
