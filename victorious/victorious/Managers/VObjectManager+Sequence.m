@@ -324,12 +324,12 @@
             success(resultObjects);
     };
     
-    return [self POST:path
-               object:nil
-           parameters:nil
-         successBlock:fullSuccess
-            failBlock:fail
-      paginationBlock:nil];
+    return [self GET:path
+              object:nil
+          parameters:nil
+            successBlock:fullSuccess
+           failBlock:fail
+     paginationBlock:nil];
 }
 
 - (RKManagedObjectRequestOperation *)loadStatSequencesForUser:(VUser*)user
