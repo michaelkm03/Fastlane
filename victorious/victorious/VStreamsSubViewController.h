@@ -6,8 +6,10 @@
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
+#import "VConversationSubViewController.h"
+
 @class VSequence;
 
-@interface VStreamsSubViewController : UIViewController
+@interface VStreamsSubViewController : VConversationSubViewController
 @property (nonatomic, strong) VSequence* sequence;
 @end

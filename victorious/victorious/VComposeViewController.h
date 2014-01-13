@@ -13,7 +13,6 @@
 @end
 
 @interface VComposeViewController : UIViewController
-@property (nonatomic, strong) VSequence* sequence;
 @property (nonatomic, weak) id<VComposeMessageDelegate> delegate;
 @end
 
