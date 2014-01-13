@@ -10,4 +10,6 @@
 
 @interface VFeaturedStreamsViewController : UIViewController
 
+@property (readonly, nonatomic) NSFetchedResultsController* fetchedResultsController;
+
 @end
