@@ -6,10 +6,11 @@
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
+@class VComposeViewController;
 
 @interface VConversationSubViewController : UIViewController
 
+@property (weak, nonatomic) VComposeViewController *composeViewController;
 @property (strong, nonatomic) UITableViewController *conversationTableViewController;
 
 @end

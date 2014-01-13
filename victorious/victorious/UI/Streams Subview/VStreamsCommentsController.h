@@ -6,10 +6,11 @@
 //  Copyright (c) 2013 Victorious, Inc. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
 #import "VSequence.h"
-//#import "VComposeMessageViewController.h"
+
+@class VComposeViewController;
 
 @interface VStreamsCommentsController : UITableViewController
 @property (nonatomic, strong) VSequence* sequence;
+@property (nonatomic, weak) VComposeViewController* composeViewController;
 @end

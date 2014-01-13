@@ -21,6 +21,7 @@
         VStreamsCommentsController *streamsCommentsController =
         [self.storyboard instantiateViewControllerWithIdentifier:@"comments"];
         streamsCommentsController.sequence = self.sequence;
+        streamsCommentsController.composeViewController = self.composeViewController;
         [self addChildViewController:streamsCommentsController];
         [streamsCommentsController didMoveToParentViewController:self];
         _conversationTableViewController = streamsCommentsController;
