@@ -72,8 +72,6 @@
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info
 {
     NSString* mediaType = info[UIImagePickerControllerMediaType];
-    
-    self.mediaExtension = CFBridgingRelease(UTTypeCopyPreferredTagWithClass((__bridge CFStringRef)(mediaType), kUTTagClassFilenameExtension));
 
     if (CFStringCompare ((CFStringRef) mediaType, kUTTypeImage, 0) == kCFCompareEqualTo)
     {
