@@ -63,6 +63,10 @@
                                    successBlock:(SuccessBlock)success
                                       failBlock:(FailBlock)fail;
 
+- (RKManagedObjectRequestOperation *)pollResultsForUser:(VUser*)user
+                                           successBlock:(SuccessBlock)success
+                                              failBlock:(FailBlock)fail;
+
 - (RKManagedObjectRequestOperation *)loadStatSequencesForUser:(VUser*)user
                                                  successBlock:(SuccessBlock)success
                                                     failBlock:(FailBlock)fail;

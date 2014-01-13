@@ -20,7 +20,7 @@
 #import "VStatSequence+RestKit.h"
 #import "VConversation+RestKit.h"
 #import "VMessage+RestKit.h"
-
+#import "VPollResult+RestKit.h"
 
 @implementation VObjectManager
 
@@ -98,7 +98,8 @@
                                              [VStatSequence gamesPlayedDescriptor],
                                              [VStatSequence gameStatsDescriptor],
                                              [VConversation descriptor],
-                                             [VMessage descriptor]]];
+                                             [VMessage descriptor],
+                                             [VPollResult descriptor]]];
 
     _paginationStatuses = [[NSMutableDictionary alloc] init];
 }
