@@ -260,8 +260,8 @@
                     <connections>
                         <outlet property="modeSelectControl" destination="uca-xh-1su" id="EMz-Nd-q4X"/>
                         <outlet property="searchDisplayController" destination="QRR-5I-cva" id="kbs-mg-Car"/>
-                        <segue destination="quD-aE-BAL" kind="push" identifier="toMessage" id="g0q-ls-n8N"/>
                         <segue destination="miw-Vy-oJ3" kind="push" identifier="toNews" id="HlX-of-Z0h"/>
+                        <segue destination="acE-Yl-HFc" kind="push" identifier="toMessage" id="nH9-Zs-lk0"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="h4x-AK-wgj" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -284,17 +284,36 @@
             </objects>
             <point key="canvasLocation" x="-4131" y="-818"/>
         </scene>
+        <!--Message Sub View Controller-->
+        <scene sceneID="WQQ-cx-Z9d">
+            <objects>
+                <viewController id="acE-Yl-HFc" customClass="VMessageSubViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="apj-Bv-lmT"/>
+                        <viewControllerLayoutGuide type="bottom" id="RWl-oO-2Nk"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="wK6-zv-ecc">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                    </view>
+                    <navigationItem key="navigationItem" id="AHd-Fh-04G"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="YVI-SC-OXd" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-3455" y="-1268"/>
+        </scene>
         <!--Message View Controller - Messages-->
         <scene sceneID="IH3-Pz-KdZ">
             <objects>
-                <tableViewController storyboardIdentifier="message" useStoryboardIdentifierAsRestorationIdentifier="YES" id="quD-aE-BAL" customClass="VMessageViewController" sceneMemberID="viewController">
+                <tableViewController storyboardIdentifier="messages" useStoryboardIdentifierAsRestorationIdentifier="YES" id="quD-aE-BAL" customClass="VMessageViewController" sceneMemberID="viewController">
                     <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="pW3-fm-LgN">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
                             <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" id="Utg-g9-urg">
-                                <rect key="frame" x="0.0" y="86" width="320" height="44"/>
+                                <rect key="frame" x="0.0" y="22" width="320" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Utg-g9-urg" id="CPC-WE-c9b">
                                     <rect key="frame" x="0.0" y="0.0" width="320" height="43"/>
@@ -311,7 +330,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ffq-o1-Z0A" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-3455" y="-1262"/>
+            <point key="canvasLocation" x="-3045" y="-1268"/>
         </scene>
         <!--Menu Table View Controller-->
         <scene sceneID="PS8-xu-5Z3">

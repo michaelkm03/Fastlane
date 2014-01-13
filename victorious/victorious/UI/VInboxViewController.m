@@ -10,7 +10,7 @@
 #import "VMenuViewController.h"
 #import "VMenuViewControllerTransition.h"
 #import "VConversation+RestKit.h"
-#import "VMessageViewController.h"
+#import "VMessageSubViewController.h"
 #import "VNewsViewController.h"
 #import "VConversationCell.h"
 
@@ -175,7 +175,7 @@ static  NSString*   kNewsCellViewIdentifier       =   @"VNewsCell";
 {
     if ([segue.identifier isEqualToString:@"toMessage"])
     {
-        VMessageViewController *subview = (VMessageViewController *)segue.destinationViewController;
+        VMessageSubViewController *subview = (VMessageSubViewController *)segue.destinationViewController;
         UITableViewCell* cell = (UITableViewCell*)sender;
 
         VConversation* conversation = [self.fetchedResultsController objectAtIndexPath:[self.tableView indexPathForCell:cell]];
