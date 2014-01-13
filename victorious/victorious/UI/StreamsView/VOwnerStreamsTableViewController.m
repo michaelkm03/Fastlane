@@ -9,6 +9,8 @@
 #import "VOwnerStreamsTableViewController.h"
 #import "VStreamsTableViewController+Protected.h"
 
+#import "VConstants.h"
+
 @implementation VOwnerStreamsTableViewController
 
 + (instancetype)sharedStreamsTableViewController

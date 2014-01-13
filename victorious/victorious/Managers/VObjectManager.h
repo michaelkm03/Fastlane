@@ -7,6 +7,7 @@
 //
 
 #import "RKObjectManager.h"
+#import "VConstants.h"
 
 /*! Block that executes when the API succeeds. 
  *  Block is given NSArray of objects RestKit created from response. */

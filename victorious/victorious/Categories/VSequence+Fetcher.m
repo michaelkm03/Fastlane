@@ -8,18 +8,7 @@
 
 #import "VSequence+Fetcher.h"
 #import "VNode.h"
-
-NSString*   const   kVOwnerPollCategory = @"owner_poll";
-NSString*   const   kVOwnerImageCategory = @"owner_image";
-NSString*   const   kVOwnerVideoCategory = @"owner_video";
-NSString*   const   kVOwnerForumCategory = @"owner_forum";
-
-NSString*   const   kVUGCPollCategory = @"ugc_poll";
-NSString*   const   kVUGCImageCategory = @"ugc_image";
-NSString*   const   kVUGCVideoCategory = @"ugc_video";
-NSString*   const   kVUGCForumCategory = @"ugc_forum";
-
-NSString*   const   kFeaturedCategory = @"featured";
+#import "VConstants.h"
 
 @implementation VSequence (Fetcher)
 

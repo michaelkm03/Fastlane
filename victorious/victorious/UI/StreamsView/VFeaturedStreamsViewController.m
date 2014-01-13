@@ -10,6 +10,7 @@
 #import "VFeaturedViewController.h"
 #import "VSequence+RestKit.h"
 #import "VSequence+Fetcher.h"
+#import "VConstants.h"
 
 static NSString* kStreamCache = @"StreamCache";
 
