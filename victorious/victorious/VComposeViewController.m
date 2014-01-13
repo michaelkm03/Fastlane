@@ -9,11 +9,13 @@
 #import "VComposeViewController.h"
 #import "VObjectManager+Comment.h"
 #import "VSequence.h"
+#import "VConstants.h"
 
 @interface VComposeViewController() <UINavigationControllerDelegate, UIImagePickerControllerDelegate, UICollectionViewDataSource, UICollectionViewDelegate>
 @property (weak, nonatomic) IBOutlet UITextField *textField;
 @property (weak, nonatomic) IBOutlet UICollectionView* stickersView;
-@property (nonatomic, strong) NSURL*  mediaImageURL;
+@property (weak, nonatomic) NSData* media;
+@property (nonatomic, strong) NSString*  mediaExtension;
 @property (nonatomic, strong) NSArray* stickers;
 @property (nonatomic, strong) NSData* selectedSticker;
 @end
@@ -60,7 +62,7 @@
     [self.textField resignFirstResponder];
     if([self.textField.text length])
     {
-        [self.delegate didComposeWithText:self.textField.text data:self.selectedSticker mediaURL:self.mediaImageURL];
+        [self.delegate didComposeWithText:self.textField.text data:self.selectedSticker mediaExtension:self.mediaExtension];
         self.textField.text = nil;
     }
 }
@@ -69,7 +71,25 @@
 
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info
 {
-    self.mediaImageURL = info[UIImagePickerControllerMediaURL];
+    NSString* mediaType = info[UIImagePickerControllerMediaType];
+    
+    self.mediaExtension = CFBridgingRelease(UTTypeCopyPreferredTagWithClass((__bridge CFStringRef)(mediaType), kUTTagClassFilenameExtension));
+
+    if (CFStringCompare ((CFStringRef) mediaType, kUTTypeImage, 0) == kCFCompareEqualTo)
+    {
+        UIImage* imageToSave = (UIImage *)info[UIImagePickerControllerEditedImage] ?: (UIImage *)info[UIImagePickerControllerOriginalImage];
+
+        self.media = UIImagePNGRepresentation(imageToSave);
+        self.mediaExtension = VConstantMediaExtensionPNG;
+    }
+    
+    // Handle a movie capture
+    if (CFStringCompare ((CFStringRef) mediaType, kUTTypeMovie, 0) == kCFCompareEqualTo)
+    {
+        self.media = [NSData dataWithContentsOfURL:info[UIImagePickerControllerMediaURL]];
+//        self.mediaExtension = VConstantMediaExtensionMOV;
+    }
+    
     [[picker parentViewController] dismissViewControllerAnimated:YES completion:nil];
 }
 

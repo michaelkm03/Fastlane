@@ -83,12 +83,12 @@ const   CGFloat     kMessageRowHeight           =   80;
 
 #pragma mark - VComposeMessageDelegate
 
-- (void)didComposeWithText:(NSString *)text data:(NSData *)data mediaURL:(NSURL *)mediaURL
+- (void)didComposeWithText:(NSString *)text data:(NSData *)data mediaExtension:(NSString *)mediaExtension
 {
-    [[[VObjectManager sharedManager] sendMessageToUser:nil
+    [[[VObjectManager sharedManager] sendMessageToUser:self.conversation.lastMessage.user
                                               withText:text
                                                   Data:data
-                                        mediaExtension:mediaURL.path
+                                        mediaExtension:mediaExtension
                                           successBlock:^(NSArray *resultObjects)
                                           {
                                                VLog(@"Succeed in creating comments: %@", resultObjects);

@@ -542,11 +542,11 @@ static NSString* CommentCache = @"CommentCache";
 
 #pragma mark - VComposeMessageDelegate
 
-- (void)didComposeWithText:(NSString *)text data:(NSData *)data mediaURL:(NSURL *)mediaURL
+- (void)didComposeWithText:(NSString *)text data:(NSData *)data mediaExtension:(NSString *)mediaExtension
 {
     [[[VObjectManager sharedManager] addCommentWithText:text
                                                    Data:data
-                                         mediaExtension:mediaURL.path
+                                         mediaExtension:mediaExtension
                                              toSequence:_sequence
                                               andParent:nil
                                            successBlock:^(NSArray *resultObjects) {
