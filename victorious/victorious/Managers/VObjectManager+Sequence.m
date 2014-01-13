@@ -227,14 +227,12 @@
       paginationBlock:nil];
 }
 
-
 - (RKManagedObjectRequestOperation *)shareSequenceToTwitter:(VSequence*)sequence
                                                successBlock:(SuccessBlock)success
                                                   failBlock:(FailBlock)fail
 {
     return [self shareSequence:sequence shareType:@"twitter" successBlock:success failBlock:fail];
 }
-
 
 - (RKManagedObjectRequestOperation *)shareSequenceToFacebook:(VSequence*)sequence
                                                 successBlock:(SuccessBlock)success
@@ -287,11 +285,21 @@
 #pragma mark - StatSequence Methods
 
 - (RKManagedObjectRequestOperation *)answerPoll:(VSequence*)poll
-                                     withAnswer:answer
+                                     withAnswer:(VAnswer*)answer
                                    successBlock:(SuccessBlock)success
                                       failBlock:(FailBlock)fail;
 {
-    return nil;
+    if (!poll || !answer)
+        return nil;
+    
+    NSString* path = [NSString stringWithFormat:@"/api/pollresult/create"];
+    
+    return [self POST:path
+               object:nil
+           parameters:@{@"sequence_id" : poll.remoteId, @"answer_id" : answer.remoteId}
+         successBlock:success
+            failBlock:fail
+      paginationBlock:nil];
 }
 
 - (RKManagedObjectRequestOperation *)pollResultsForUser:(VUser*)user
