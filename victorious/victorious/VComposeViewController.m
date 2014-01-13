@@ -72,8 +72,6 @@
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info
 {
     NSString* mediaType = info[UIImagePickerControllerMediaType];
-    
-    self.mediaExtension = CFBridgingRelease(UTTypeCopyPreferredTagWithClass((__bridge CFStringRef)(mediaType), kUTTagClassFilenameExtension));
 
     if (CFStringCompare ((CFStringRef) mediaType, kUTTypeImage, 0) == kCFCompareEqualTo)
     {
@@ -87,7 +85,7 @@
     if (CFStringCompare ((CFStringRef) mediaType, kUTTypeMovie, 0) == kCFCompareEqualTo)
     {
         self.media = [NSData dataWithContentsOfURL:info[UIImagePickerControllerMediaURL]];
-//        self.mediaExtension = VConstantMediaExtensionMOV;
+        self.mediaExtension = VConstantMediaExtensionMOV;
     }
     
     [[picker parentViewController] dismissViewControllerAnimated:YES completion:nil];
