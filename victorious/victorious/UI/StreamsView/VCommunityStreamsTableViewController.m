@@ -8,6 +8,10 @@
 
 #import "VCommunityStreamsTableViewController.h"
 #import "VStreamsTableViewController+Protected.h"
+#import "UIActionSheet+BBlock.h"
+#import "BBlock.h"
+#import "VCreateViewController.h"
+#import "VCreatePollViewController.h"
 
 @implementation VCommunityStreamsTableViewController
 
@@ -21,6 +25,23 @@
     });
     
     return streamsTableViewController;
+}
+
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
+
+    UIBarButtonItem *searchButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"Search"]
+                                                                         style:UIBarButtonItemStylePlain
+                                                                        target:self
+                                                                        action:@selector(displaySearchBar:)];
+
+    UIBarButtonItem *addButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"Add"]
+                                                                      style:UIBarButtonItemStylePlain
+                                                                     target:self
+                                                                     action:@selector(addButtonAction:)];
+
+    self.navigationItem.rightBarButtonItems= @[addButtonItem, searchButtonItem];
 }
 
 - (NSArray*)imageCategories
@@ -43,5 +64,44 @@
     return @[kVUGCForumCategory];
 }
 
+- (IBAction)addButtonAction:(id)sender
+{
+    // TODO: create posts if the user is the owner of the channel
+    BBlockWeakSelf wself = self;
+    NSString *videoTitle = NSLocalizedString(@"Post Video", @"Post video button");
+    NSString *photoTitle = NSLocalizedString(@"Post Photo", @"Post photo button");
+    NSString *pollTitle = NSLocalizedString(@"Post Poll", @"Post poll button");
+    UIActionSheet *actionSheet =
+    [[UIActionSheet alloc]
+     initWithTitle:nil delegate:nil
+     cancelButtonTitle:NSLocalizedString(@"Cancel", @"Cancel button")
+     destructiveButtonTitle:nil otherButtonTitles:videoTitle, photoTitle, pollTitle, nil];
+    [actionSheet setCompletionBlock:^(NSInteger buttonIndex, UIActionSheet *actionSheet)
+     {
+         if(actionSheet.cancelButtonIndex == buttonIndex)
+         {
+             return;
+         }
+
+         if([[actionSheet buttonTitleAtIndex:buttonIndex] isEqualToString:videoTitle])
+         {
+             VCreateViewController *createViewController =
+             [[VCreateViewController alloc] initWithType:VCreateViewControllerTypeVideo andDelegate:self];
+             [wself presentViewController:[[UINavigationController alloc] initWithRootViewController:createViewController] animated:YES completion:nil];
+         }
+         else if([[actionSheet buttonTitleAtIndex:buttonIndex] isEqualToString:photoTitle])
+         {
+             VCreateViewController *createViewController =
+             [[VCreateViewController alloc] initWithType:VCreateViewControllerTypePhoto andDelegate:self];
+             [wself presentViewController:[[UINavigationController alloc] initWithRootViewController:createViewController] animated:YES completion:nil];
+         }
+         else if([[actionSheet buttonTitleAtIndex:buttonIndex] isEqualToString:pollTitle])
+         {
+             VCreatePollViewController *createViewController = [[VCreatePollViewController alloc] initWithDelegate:self];
+             [wself presentViewController:[[UINavigationController alloc] initWithRootViewController:createViewController] animated:YES completion:nil];
+         }
+     }];
+    [actionSheet showInView:self.view];
+}
 
 @end

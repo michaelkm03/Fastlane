@@ -11,11 +11,12 @@
 #import "VCommentCell.h"
 #import "VMessage+RestKit.h"
 #import "VMedia+RestKit.h"
+#import "VComposeViewController.h"
 
 const   CGFloat     kMessageRowWithMediaHeight  =   280.0;
 const   CGFloat     kMessageRowHeight           =   80;
 
-@interface VMessageViewController ()
+@interface VMessageViewController () <VComposeMessageDelegate>
 @property (nonatomic, readwrite, strong)    NSArray*    messages;
 @end
 
@@ -78,6 +79,24 @@ const   CGFloat     kMessageRowHeight           =   80;
         return kMessageRowWithMediaHeight;
     else
         return kMessageRowHeight;
+}
+
+#pragma mark - VComposeMessageDelegate
+
+- (void)didComposeWithText:(NSString *)text data:(NSData *)data mediaExtension:(NSString *)mediaExtension
+{
+    [[[VObjectManager sharedManager] sendMessageToUser:self.conversation.lastMessage.user
+                                              withText:text
+                                                  Data:data
+                                        mediaExtension:mediaExtension
+                                          successBlock:^(NSArray *resultObjects)
+                                          {
+                                               VLog(@"Succeed in creating comments: %@", resultObjects);
+                                          }
+                                             failBlock:^(NSError *error)
+                                          {
+                                               VLog(@"Failed in creating comment with error: %@", error);
+                                        }] start];
 }
 
 @end

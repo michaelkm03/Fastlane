@@ -21,10 +21,11 @@
 #import "VThemeManager.h"
 #import "BBlock.h"
 #import "UIActionSheet+BBlock.h"
+#import "VComposeViewController.h"
 
 @import Social;
 
-@interface VStreamsCommentsController () <NSFetchedResultsControllerDelegate, UINavigationControllerDelegate>//, VComposeMessageDelegate>
+@interface VStreamsCommentsController () <NSFetchedResultsControllerDelegate, UINavigationControllerDelegate, VComposeMessageDelegate>
 
 @property (nonatomic, strong) NSFetchedResultsController* fetchedResultsController;
 @property (nonatomic, strong) NSMutableArray* newlyReadComments;
@@ -541,11 +542,11 @@ static NSString* CommentCache = @"CommentCache";
 
 #pragma mark - VComposeMessageDelegate
 
-- (void)didComposeWithText:(NSString *)text data:(NSData *)data extension:(NSString *)extension
+- (void)didComposeWithText:(NSString *)text data:(NSData *)data mediaExtension:(NSString *)mediaExtension
 {
     [[[VObjectManager sharedManager] addCommentWithText:text
                                                    Data:data
-                                         mediaExtension:extension
+                                         mediaExtension:mediaExtension
                                              toSequence:_sequence
                                               andParent:nil
                                            successBlock:^(NSArray *resultObjects) {
