@@ -17,6 +17,8 @@
 #import "VAnswer.h"
 #import "VAsset.h"
 
+#import "VLoginViewController.h"
+
 #import "NSString+VParseHelp.h"
 
 @import MediaPlayer;
@@ -70,7 +72,7 @@
         [self.previewImageView setImageWithURL:[NSURL URLWithString:[_firstAssetUrl previewImageURLForM3U8]]];
         
         self.mpControllerOne = [[MPMoviePlayerController alloc] initWithContentURL:[NSURL URLWithString:_firstAssetUrl]];
-        [self.mpControllerOne prepareToPlay];
+//        [self.mpControllerOne prepareToPlay];
         self.mpControllerOne.view.frame = self.previewImageView.bounds;
         [self insertSubview:self.mpControllerOne.view belowSubview:self.previewImageView];
         self.mpControllerOne.view.hidden = YES;
@@ -87,7 +89,7 @@
         [self.previewImageTwo setImageWithURL:[NSURL URLWithString:[_secondAssetUrl previewImageURLForM3U8]]];
         
         self.mpControllerTwo = [[MPMoviePlayerController alloc] initWithContentURL:[NSURL URLWithString:_secondAssetUrl]];
-        [self.mpControllerTwo prepareToPlay];
+//        [self.mpControllerTwo prepareToPlay];
         self.mpControllerTwo.view.frame = self.previewImageTwo.bounds;
         [self.previewImageTwo insertSubview:self.mpControllerTwo.view belowSubview:self.previewImageTwo];
         self.mpControllerTwo.view.hidden = YES;
@@ -124,21 +126,36 @@
 
 - (void)answerPollWithAnswer:(VAnswer*)answer
 {
+    if(![VObjectManager sharedManager].mainUser)
+    {
+        [self.parentTableViewController presentViewController:[VLoginViewController sharedLoginViewController] animated:YES completion:NULL];
+        return;
+    }
+    
     [[[VObjectManager sharedManager] answerPoll:self.sequence
                                      withAnswer:answer
                                    successBlock:^(NSArray *resultObjects)
       {
           VLog(@"Successfully answered: %@", resultObjects);
-          [self showResults];
+          [self showResultsForAnswer:answer];
       }
                                                 failBlock:^(NSError *error)
       {
+          //Error 1005 is "Poll result was already recorded
+          if (error.code == 1005)
+              [[[UIAlertView alloc] initWithTitle:NSLocalizedString(@"PollAlreadyAnswered", @"")
+                                          message:error.localizedDescription
+                                         delegate:nil
+                                cancelButtonTitle:NSLocalizedString(@"OKButton", @"")
+                                otherButtonTitles:nil] show];
+          
           VLog(@"Failed to answer with error: %@", error);
       }] start];
 }
 
-- (void)showResults
+- (void)showResultsForAnswer:(VAnswer*)answer
 {
     //TODO: use result object to show results.
+    answer;
 }
 @end

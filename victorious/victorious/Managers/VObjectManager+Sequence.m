@@ -294,10 +294,24 @@
     
     NSString* path = [NSString stringWithFormat:@"/api/pollresult/create"];
     
+    SuccessBlock fullSuccess = ^(NSArray* resultObjects)
+    {
+        VPollResult *newPollResult = [NSEntityDescription
+                                        insertNewObjectForEntityForName:[VPollResult entityName]
+                                        inManagedObjectContext:self.mainUser.managedObjectContext];
+        newPollResult.answerId = answer.remoteId;
+        newPollResult.sequenceId = poll.remoteId;
+        [self.mainUser addPollResultsObject:newPollResult];
+        [self.mainUser.managedObjectContext save:nil];
+        
+        if (success)
+            success(resultObjects);
+    };
+    
     return [self POST:path
                object:nil
            parameters:@{@"sequence_id" : poll.remoteId, @"answer_id" : answer.remoteId}
-         successBlock:success
+         successBlock:fullSuccess
             failBlock:fail
       paginationBlock:nil];
 }

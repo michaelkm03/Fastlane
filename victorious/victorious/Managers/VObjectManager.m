@@ -99,7 +99,8 @@
                                              [VStatSequence gameStatsDescriptor],
                                              [VConversation descriptor],
                                              [VMessage descriptor],
-                                             [VPollResult descriptor]]];
+                                             [VPollResult descriptor],
+                                             [VPollResult createPollResultDescriptor]]];
 
     _paginationStatuses = [[NSMutableDictionary alloc] init];
 }

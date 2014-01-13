@@ -180,9 +180,8 @@
 }
 
 //Don't think we need this API call, but just in case...
-- (RKManagedObjectRequestOperation *)unreadCountForConversation:(VConversation*)conversation
-                                                   successBlock:(SuccessBlock)success
-                                                      failBlock:(FailBlock)fail
+- (RKManagedObjectRequestOperation *)unreadCountForConversationsWithSuccessBlock:(SuccessBlock)success
+                                                                       failBlock:(FailBlock)fail
 {
     return nil;
 }

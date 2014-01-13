@@ -126,6 +126,7 @@ typedef NS_ENUM(NSInteger, VStreamScope)
     forFetchedResultsController:(NSFetchedResultsController *)fetchedResultsController
 {
     VSequence *info = [fetchedResultsController objectAtIndexPath:theIndexPath];
+    ((VStreamViewCell*)theCell).parentTableViewController = self;
     [((VStreamViewCell*)theCell) setSequence:info];
 }
 

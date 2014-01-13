@@ -13,4 +13,6 @@
 
 + (RKResponseDescriptor*)descriptor;
 
++ (RKResponseDescriptor*)createPollResultDescriptor;
+
 @end

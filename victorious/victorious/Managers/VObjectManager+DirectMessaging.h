@@ -30,7 +30,6 @@
                                           successBlock:(SuccessBlock)success
                                              failBlock:(FailBlock)fail;
 
-- (RKManagedObjectRequestOperation *)unreadCountForConversation:(VConversation*)conversation
-                                                   successBlock:(SuccessBlock)success
-                                                      failBlock:(FailBlock)fail;
+- (RKManagedObjectRequestOperation *)unreadCountForConversationsWithSuccessBlock:(SuccessBlock)success
+                                                                       failBlock:(FailBlock)fail;
 @end
