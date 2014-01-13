@@ -8,6 +8,12 @@
 
 @class VSequence;
 
+@protocol VComposeMessageDelegate <NSObject>
+- (void)didComposeWithText:(NSString *)text data:(NSData *)data mediaURL:(NSURL *)mediaURL;
+@end
+
 @interface VComposeViewController : UIViewController
 @property (nonatomic, strong) VSequence* sequence;
+@property (nonatomic, weak) id<VComposeMessageDelegate> delegate;
 @end
+

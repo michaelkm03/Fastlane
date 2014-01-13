@@ -1487,6 +1487,7 @@
                     <nil key="simulatedStatusBarMetrics"/>
                     <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
                     <connections>
+                        <outlet property="cameraButton" destination="OoL-qH-7ZE" id="Dp7-NY-D5m"/>
                         <outlet property="textField" destination="ysg-7l-HaV" id="OrF-Qv-uU1"/>
                     </connections>
                 </viewController>

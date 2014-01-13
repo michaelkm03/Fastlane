@@ -10,8 +10,13 @@
 #import "VObjectManager+Comment.h"
 #import "VSequence.h"
 
-@interface VComposeViewController()
+@interface VComposeViewController() <UINavigationControllerDelegate, UIImagePickerControllerDelegate, UICollectionViewDataSource, UICollectionViewDelegate>
 @property (weak, nonatomic) IBOutlet UITextField *textField;
+@property (weak, nonatomic) IBOutlet UIButton* cameraButton;
+@property (weak, nonatomic) IBOutlet UICollectionView* stickersView;
+@property (nonatomic, strong) NSURL*  mediaImageURL;
+@property (nonatomic, strong) NSArray* stickers;
+@property (nonatomic, strong) NSData* selectedSticker;
 @end
 
 @implementation VComposeViewController
@@ -20,16 +25,34 @@
 {
     [super viewWillLayoutSubviews];
     self.view.frame = self.view.superview.bounds;
+    
+    self.cameraButton.hidden = ![UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera];
+    
+    // populate stickers array
 }
 
 - (IBAction)cameraButtonAction:(id)sender
 {
     [self.textField resignFirstResponder];
+    
+    UIImagePickerController* controller = [[UIImagePickerController alloc] init];
+    
+    controller.delegate = self;
+    controller.sourceType = UIImagePickerControllerSourceTypeCamera;
+    controller.mediaTypes = [UIImagePickerController availableMediaTypesForSourceType:UIImagePickerControllerSourceTypeCamera];
+    controller.allowsEditing = YES;
+    
+    [self presentViewController:controller animated:YES completion:nil];
 }
 
 - (IBAction)stickerButtonAction:(id)sender
 {
     [self.textField resignFirstResponder];
+    
+    self.stickersView.dataSource = self;
+    self.stickersView.delegate = self;
+    
+    //  Post UICollectionView populated with stickers
 }
 
 - (IBAction)sendButtonAction:(id)sender
@@ -37,13 +60,55 @@
     [self.textField resignFirstResponder];
     if([self.textField.text length])
     {
-        [[[VObjectManager sharedManager] addCommentWithText:self.textField.text Data:nil mediaExtension:nil toSequence:self.sequence andParent:nil successBlock:^(NSArray *resultObjects) {
-            NSLog(@"%@", resultObjects);
-        } failBlock:^(NSError *error) {
-            NSLog(@"%@", error);
-        }] start];
+        [self.delegate didComposeWithText:self.textField.text data:self.selectedSticker mediaURL:self.mediaImageURL];
         self.textField.text = nil;
     }
 }
+
+#pragma mark - UIImagePickerControllerDelegate
+
+- (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info
+{
+    self.mediaImageURL = info[UIImagePickerControllerMediaURL];
+    [[picker parentViewController] dismissViewControllerAnimated:YES completion:nil];
+}
+
+- (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker
+{
+    [[picker parentViewController] dismissViewControllerAnimated:YES completion:nil];
+}
+
+#pragma mark - UICollectionViewDataSource
+
+- (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
+{
+    return self.stickers.count;
+}
+
+- (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
+{
+    return nil;
+}
+
+//- (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView;
+//- (UICollectionReusableView *)collectionView:(UICollectionView *)collectionView viewForSupplementaryElementOfKind:(NSString *)kind atIndexPath:(NSIndexPath *)indexPath;
+
+#pragma mark - UICollectionViewDelegate
+
+//- (BOOL)collectionView:(UICollectionView *)collectionView shouldHighlightItemAtIndexPath:(NSIndexPath *)indexPath;
+//- (void)collectionView:(UICollectionView *)collectionView didHighlightItemAtIndexPath:(NSIndexPath *)indexPath;
+//- (void)collectionView:(UICollectionView *)collectionView didUnhighlightItemAtIndexPath:(NSIndexPath *)indexPath;
+//- (BOOL)collectionView:(UICollectionView *)collectionView shouldSelectItemAtIndexPath:(NSIndexPath *)indexPath;
+//- (BOOL)collectionView:(UICollectionView *)collectionView shouldDeselectItemAtIndexPath:(NSIndexPath *)indexPath;- (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath;
+//- (void)collectionView:(UICollectionView *)collectionView didDeselectItemAtIndexPath:(NSIndexPath *)indexPath;
+//
+//- (void)collectionView:(UICollectionView *)collectionView didEndDisplayingCell:(UICollectionViewCell *)cell forItemAtIndexPath:(NSIndexPath *)indexPath;
+//- (void)collectionView:(UICollectionView *)collectionView didEndDisplayingSupplementaryView:(UICollectionReusableView *)view forElementOfKind:(NSString *)elementKind atIndexPath:(NSIndexPath *)indexPath;
+//
+//- (BOOL)collectionView:(UICollectionView *)collectionView shouldShowMenuForItemAtIndexPath:(NSIndexPath *)indexPath;
+//- (BOOL)collectionView:(UICollectionView *)collectionView canPerformAction:(SEL)action forItemAtIndexPath:(NSIndexPath *)indexPath withSender:(id)sender;
+//- (void)collectionView:(UICollectionView *)collectionView performAction:(SEL)action forItemAtIndexPath:(NSIndexPath *)indexPath withSender:(id)sender;
+//
+//- (UICollectionViewTransitionLayout *)collectionView:(UICollectionView *)collectionView transitionLayoutForOldLayout:(UICollectionViewLayout *)fromLayout newLayout:(UICollectionViewLayout *)toLayout;
 
 @end
