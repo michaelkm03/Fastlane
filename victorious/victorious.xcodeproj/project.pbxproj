@@ -126,7 +126,9 @@
 		BEF2C29318845E7500AAE975 /* VPollResult.m in Sources */ = {isa = PBXBuildFile; fileRef = BEF2C29218845E7500AAE975 /* VPollResult.m */; };
 		BEF2C29618845EF500AAE975 /* VPollResult+RestKit.m in Sources */ = {isa = PBXBuildFile; fileRef = BEF2C29518845EF500AAE975 /* VPollResult+RestKit.m */; };
 		BEF2C29918846FAB00AAE975 /* VConversation.m in Sources */ = {isa = PBXBuildFile; fileRef = BEF2C29818846FAB00AAE975 /* VConversation.m */; };
-		BEF2C29C18846FAB00AAE975 /* VUser.m in Sources */ = {isa = PBXBuildFile; fileRef = BEF2C29B18846FAB00AAE975 /* VUser.m */; };
+		BEF2C2A5188488C000AAE975 /* VUnreadConversation+RestKit.m in Sources */ = {isa = PBXBuildFile; fileRef = BEF2C2A4188488C000AAE975 /* VUnreadConversation+RestKit.m */; };
+		BEF2C2A818848B3B00AAE975 /* VUnreadConversation.m in Sources */ = {isa = PBXBuildFile; fileRef = BEF2C2A718848B3B00AAE975 /* VUnreadConversation.m */; };
+		BEF2C2AB18848B3B00AAE975 /* VUser.m in Sources */ = {isa = PBXBuildFile; fileRef = BEF2C2AA18848B3B00AAE975 /* VUser.m */; };
 		D1DAAA08187A43A9009ADCB0 /* VProfileViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D1DAAA07187A43A9009ADCB0 /* VProfileViewController.m */; };
 		D1DAAA0B187A43BE009ADCB0 /* VProfileEditViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D1DAAA0A187A43BE009ADCB0 /* VProfileEditViewController.m */; };
 		D1DAAA0D187A5397009ADCB0 /* avatar.jpg in Resources */ = {isa = PBXBuildFile; fileRef = D1DAAA0C187A5397009ADCB0 /* avatar.jpg */; };
@@ -363,8 +365,12 @@
 		BEF2C29518845EF500AAE975 /* VPollResult+RestKit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "VPollResult+RestKit.m"; sourceTree = "<group>"; };
 		BEF2C29718846FAB00AAE975 /* VConversation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VConversation.h; sourceTree = "<group>"; };
 		BEF2C29818846FAB00AAE975 /* VConversation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VConversation.m; sourceTree = "<group>"; };
-		BEF2C29A18846FAB00AAE975 /* VUser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VUser.h; sourceTree = "<group>"; };
-		BEF2C29B18846FAB00AAE975 /* VUser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VUser.m; sourceTree = "<group>"; };
+		BEF2C2A3188488C000AAE975 /* VUnreadConversation+RestKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "VUnreadConversation+RestKit.h"; sourceTree = "<group>"; };
+		BEF2C2A4188488C000AAE975 /* VUnreadConversation+RestKit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "VUnreadConversation+RestKit.m"; sourceTree = "<group>"; };
+		BEF2C2A618848B3B00AAE975 /* VUnreadConversation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VUnreadConversation.h; sourceTree = "<group>"; };
+		BEF2C2A718848B3B00AAE975 /* VUnreadConversation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VUnreadConversation.m; sourceTree = "<group>"; };
+		BEF2C2A918848B3B00AAE975 /* VUser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VUser.h; sourceTree = "<group>"; };
+		BEF2C2AA18848B3B00AAE975 /* VUser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VUser.m; sourceTree = "<group>"; };
 		D1DAAA06187A43A9009ADCB0 /* VProfileViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VProfileViewController.h; path = UI/VProfileViewController.h; sourceTree = "<group>"; };
 		D1DAAA07187A43A9009ADCB0 /* VProfileViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VProfileViewController.m; path = UI/VProfileViewController.m; sourceTree = "<group>"; };
 		D1DAAA09187A43BE009ADCB0 /* VProfileEditViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VProfileEditViewController.h; path = UI/VProfileEditViewController.h; sourceTree = "<group>"; };
@@ -674,6 +680,8 @@
 				BE5C7384187E37D400A3340D /* VMedia+RestKit.m */,
 				BEF2C29418845EF500AAE975 /* VPollResult+RestKit.h */,
 				BEF2C29518845EF500AAE975 /* VPollResult+RestKit.m */,
+				BEF2C2A3188488C000AAE975 /* VUnreadConversation+RestKit.h */,
+				BEF2C2A4188488C000AAE975 /* VUnreadConversation+RestKit.m */,
 			);
 			path = Mappings;
 			sourceTree = "<group>";
@@ -692,8 +700,6 @@
 			isa = PBXGroup;
 			children = (
 				BE171E411868CEA0004E5202 /* victoriOS.xcdatamodeld */,
-				BEF2C29A18846FAB00AAE975 /* VUser.h */,
-				BEF2C29B18846FAB00AAE975 /* VUser.m */,
 				BEF2C29718846FAB00AAE975 /* VConversation.h */,
 				BEF2C29818846FAB00AAE975 /* VConversation.m */,
 				BE4B74031880BCD90090FF84 /* VStatSequence.h */,
@@ -730,6 +736,10 @@
 				BE83A37018827B400077EB26 /* VMessage.m */,
 				BEF2C29118845E7500AAE975 /* VPollResult.h */,
 				BEF2C29218845E7500AAE975 /* VPollResult.m */,
+				BEF2C2A618848B3B00AAE975 /* VUnreadConversation.h */,
+				BEF2C2A718848B3B00AAE975 /* VUnreadConversation.m */,
+				BEF2C2A918848B3B00AAE975 /* VUser.h */,
+				BEF2C2AA18848B3B00AAE975 /* VUser.m */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -1036,6 +1046,7 @@
 				BE692B53186E60B300C71336 /* VStreamsCommentsController.m in Sources */,
 				BE171E0D1868C211004E5202 /* VAnswer+RestKit.m in Sources */,
 				BEF2C29918846FAB00AAE975 /* VConversation.m in Sources */,
+				BEF2C2A5188488C000AAE975 /* VUnreadConversation+RestKit.m in Sources */,
 				BE171E211868C211004E5202 /* VObjectManager+Sequence.m in Sources */,
 				BE171D8C1868BE64004E5202 /* VAppDelegate.m in Sources */,
 				BE6B95F1187B4A2C00CED4C9 /* VForumStreamTableViewController.m in Sources */,
@@ -1057,11 +1068,11 @@
 				BE171E161868C211004E5202 /* VRule+RestKit.m in Sources */,
 				BE171E1E1868C211004E5202 /* VErrorMessage.m in Sources */,
 				BE171E0C1868C211004E5202 /* VNode+Fetcher.m in Sources */,
-				BEF2C29C18846FAB00AAE975 /* VUser.m in Sources */,
 				BE5C7382187E37C700A3340D /* VMessage+RestKit.m in Sources */,
 				BEA5BF5F187F21770014C3EF /* VTableViewCell.m in Sources */,
 				BE4B74051880BCD90090FF84 /* VStatSequence.m in Sources */,
 				83B5A12C18765E1600659C73 /* VRootNavigationController.m in Sources */,
+				BEF2C2A818848B3B00AAE975 /* VUnreadConversation.m in Sources */,
 				BEF2C29618845EF500AAE975 /* VPollResult+RestKit.m in Sources */,
 				BE5C7361187E36E800A3340D /* VStatInteraction.m in Sources */,
 				3FF8B79E1868EF6C00806EA0 /* VLoginViewController.m in Sources */,
@@ -1091,6 +1102,7 @@
 				BE692B51186E60B300C71336 /* VSequencePlayerViewController.m in Sources */,
 				83F38277186BE62300A866A1 /* VMenuTableViewController.m in Sources */,
 				BE4B74261880D3850090FF84 /* VAnswer.m in Sources */,
+				BEF2C2AB18848B3B00AAE975 /* VUser.m in Sources */,
 				838B1E9B187E871C0052FAE9 /* VCreatePollViewController.m in Sources */,
 				BE171E111868C211004E5202 /* VComment+RestKit.m in Sources */,
 				BE171E0E1868C211004E5202 /* VAnswerAction+RestKit.m in Sources */,

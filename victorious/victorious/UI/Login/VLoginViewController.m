@@ -82,14 +82,8 @@ NSString*   const   kVLoginViewControllerDomain =   @"VLoginViewControllerDomain
     if (mainuser)
     { //We've logged in
         [[[VObjectManager sharedManager] loadNextPageOfConversations:nil failBlock:nil] start];
-        [[[VObjectManager sharedManager] pollResultsForUser:mainuser
-                                              successBlock:^(NSArray *resultObjects)
-                                              {
-                                                  VLog(@"Succcess with objects: %@",resultObjects);
-                                              } failBlock:^(NSError *error)
-                                              {
-                                                  VLog(@"Fail with error: %@", error);
-                                              }] start];
+        [[[VObjectManager sharedManager] pollResultsForUser:mainuser successBlock:nil failBlock:nil] start];
+        [[[VObjectManager sharedManager] unreadCountForConversationsWithSuccessBlock:nil failBlock:nil] start];
     } else
     { //We've logged out
         //TODO: delete existing conversations,

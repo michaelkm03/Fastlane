@@ -13,6 +13,7 @@
 #import "VPollResult.h"
 #import "VSequence.h"
 #import "VStatSequence.h"
+#import "VUnreadConversation.h"
 
 
 @implementation VUser
@@ -33,5 +34,6 @@
 @dynamic pollResults;
 @dynamic postedSequences;
 @dynamic statSequences;
+@dynamic unreadConversation;
 
 @end

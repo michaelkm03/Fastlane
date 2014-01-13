@@ -21,6 +21,7 @@
 #import "VConversation+RestKit.h"
 #import "VMessage+RestKit.h"
 #import "VPollResult+RestKit.h"
+#import "VUnreadConversation+RestKit.h"
 
 @implementation VObjectManager
 
@@ -100,7 +101,8 @@
                                              [VConversation descriptor],
                                              [VMessage descriptor],
                                              [VPollResult descriptor],
-                                             [VPollResult createPollResultDescriptor]]];
+                                             [VPollResult createPollResultDescriptor],
+                                             [VUnreadConversation descriptor]]];
 
     _paginationStatuses = [[NSMutableDictionary alloc] init];
 }

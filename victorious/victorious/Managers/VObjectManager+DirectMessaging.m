@@ -183,7 +183,21 @@
 - (RKManagedObjectRequestOperation *)unreadCountForConversationsWithSuccessBlock:(SuccessBlock)success
                                                                        failBlock:(FailBlock)fail
 {
-    return nil;
+    
+    SuccessBlock fullSuccess = ^(NSArray* resultObjects)
+    {
+        self.mainUser.unreadConversation = (VUnreadConversation*)[self.mainUser.managedObjectContext objectWithID:[[resultObjects firstObject] objectID]];
+
+        if (success)
+            success(resultObjects);
+    };
+    
+    return [self GET:@"/api/message/unread_message_count"
+              object:nil
+          parameters:nil
+        successBlock:fullSuccess
+           failBlock:fail
+     paginationBlock:nil];
 }
 
 @end

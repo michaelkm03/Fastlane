@@ -160,6 +160,10 @@
         <relationship name="interactionDetails" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="StatInteraction" inverseName="statSequence" inverseEntity="StatInteraction" syncable="YES"/>
         <relationship name="user" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="User" inverseName="statSequences" inverseEntity="User" syncable="YES"/>
     </entity>
+    <entity name="UnreadConversation" representedClassName="VUnreadConversation" syncable="YES">
+        <attribute name="count" optional="YES" attributeType="Integer 32" minValueString="0" defaultValueString="0" syncable="YES"/>
+        <relationship name="user" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="User" inverseName="unreadConversation" inverseEntity="User" syncable="YES"/>
+    </entity>
     <entity name="User" representedClassName="VUser" syncable="YES">
         <attribute name="accessLevel" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="email" optional="YES" attributeType="String" syncable="YES"/>
@@ -177,6 +181,7 @@
         <relationship name="pollResults" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="PollResult" inverseName="user" inverseEntity="PollResult" syncable="YES"/>
         <relationship name="postedSequences" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Sequence" inverseName="user" inverseEntity="Sequence" syncable="YES"/>
         <relationship name="statSequences" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="StatSequence" inverseName="user" inverseEntity="StatSequence" syncable="YES"/>
+        <relationship name="unreadConversation" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="UnreadConversation" inverseName="user" inverseEntity="UnreadConversation" syncable="YES"/>
     </entity>
     <elements>
         <element name="Answer" positionX="718" positionY="108" width="128" height="178"/>
@@ -197,6 +202,7 @@
         <element name="StatAnswer" positionX="1422" positionY="153" width="128" height="180"/>
         <element name="StatInteraction" positionX="1278" positionY="150" width="128" height="210"/>
         <element name="StatSequence" positionX="1260" positionY="-90" width="128" height="225"/>
-        <element name="User" positionX="1222" positionY="-412" width="128" height="283"/>
+        <element name="UnreadConversation" positionX="1197" positionY="-513" width="128" height="73"/>
+        <element name="User" positionX="1222" positionY="-412" width="128" height="298"/>
     </elements>
 </model>
