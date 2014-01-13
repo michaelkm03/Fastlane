@@ -78,7 +78,6 @@
     self.headerButton.layer.rasterizationScale = [UIScreen mainScreen].scale;
     self.headerButton.layer.shouldRasterize = YES;
     self.headerButton.clipsToBounds = YES;
-    self.headerButton.hidden = ![UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera];
     
     self.usernameLabel.text = self.profile.shortName;
 }
@@ -121,7 +120,10 @@
     UIImagePickerController* controller = [[UIImagePickerController alloc] init];
     
     controller.delegate = self;
-    controller.sourceType = UIImagePickerControllerSourceTypeCamera;
+    if([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera])
+        controller.sourceType = UIImagePickerControllerSourceTypeCamera;
+    else
+        controller.sourceType= UIImagePickerControllerSourceTypePhotoLibrary;
     controller.cameraCaptureMode = UIImagePickerControllerCameraCaptureModePhoto;
     controller.allowsEditing = YES;
     

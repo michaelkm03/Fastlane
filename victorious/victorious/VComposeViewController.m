@@ -35,9 +35,9 @@
     UIImagePickerController* controller = [[UIImagePickerController alloc] init];
     
     if([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera])
-        [controller setSourceType:UIImagePickerControllerSourceTypeCamera];
+        controller.sourceType = UIImagePickerControllerSourceTypeCamera;
      else
-        [controller setSourceType:UIImagePickerControllerSourceTypePhotoLibrary];
+         controller.sourceType= UIImagePickerControllerSourceTypePhotoLibrary;
     controller.delegate = self;
     controller.mediaTypes = [UIImagePickerController availableMediaTypesForSourceType:UIImagePickerControllerSourceTypeCamera];
     controller.allowsEditing = YES;
