@@ -25,8 +25,8 @@
 @property (nonatomic, weak) VAnswer* firstAnswer;
 @property (nonatomic, weak) VAnswer* secondAnswer;
 
-@property (nonatomic, strong) NSString* firstAssetUrl;
-@property (nonatomic, strong) NSString* secondAssetUrl;
+@property (nonatomic, copy) NSString* firstAssetUrl;
+@property (nonatomic, copy) NSString* secondAssetUrl;
 
 @property (nonatomic, strong) MPMoviePlayerController* mpControllerOne;
 @property (nonatomic, strong) MPMoviePlayerController* mpControllerTwo;
@@ -97,7 +97,6 @@
         self.playTwoButton.hidden = YES;
         [self.previewImageView setImageWithURL:[NSURL URLWithString:_secondAssetUrl]];
     }
-    
 }
 
 - (IBAction)pressedOptionOne:(id)sender
