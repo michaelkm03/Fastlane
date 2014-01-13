@@ -50,6 +50,12 @@ const   CGFloat     kMessageRowHeight           =   80;
         }] start];
 }
 
+- (void)viewWillLayoutSubviews
+{
+    [super viewWillLayoutSubviews];
+    self.view.frame = self.view.superview.bounds;
+}
+
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
