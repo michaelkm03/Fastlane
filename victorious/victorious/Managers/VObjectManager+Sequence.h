@@ -56,6 +56,37 @@
                                        successBlock:(SuccessBlock)success
                                           failBlock:(FailBlock)fail;
 
+- (RKManagedObjectRequestOperation * )createPollWithName:(NSString*)name
+                                             description:(NSString*)description
+                                                question:(NSString*)question
+                                             answer1Text:(NSString*)answer1Text
+                                             answer2Text:(NSString*)answer2Text
+                                              media1Data:(NSData*)media1Data
+                                         media1Extension:(NSString*)media1Extension
+                                              media2Data:(NSData*)media2Data
+                                         media2Extension:(NSString*)media2Extension
+                                            successBlock:(SuccessBlock)success
+                                               failBlock:(FailBlock)fail;
+
+- (RKManagedObjectRequestOperation * )createVideoWithName:(NSString*)name
+                                              description:(NSString*)description
+                                                mediaData:(NSData*)mediaData
+//                                         media1Extension:(NSString*)media1Extension
+                                             successBlock:(SuccessBlock)success
+                                                failBlock:(FailBlock)fail;
+
+- (RKManagedObjectRequestOperation * )createImageWithName:(NSString*)name
+                                              description:(NSString*)description
+                                                mediaData:(NSData*)mediaData
+                                             successBlock:(SuccessBlock)success
+                                                failBlock:(FailBlock)fail;
+
+- (RKManagedObjectRequestOperation * )uploadMediaWithName:(NSString*)name
+                                              description:(NSString*)description
+                                                 category:(NSString*)category
+                                                mediaData:(NSData*)mediaData
+                                             successBlock:(SuccessBlock)success
+                                                failBlock:(FailBlock)fail;
 #pragma mark - StatSequence Methods
 
 - (RKManagedObjectRequestOperation *)answerPoll:(VSequence*)poll

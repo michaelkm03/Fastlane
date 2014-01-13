@@ -407,4 +407,55 @@
       paginationBlock:nil];
 }
 
+- (RKManagedObjectRequestOperation * )createVideoWithName:(NSString*)name
+                                              description:(NSString*)description
+                                                mediaData:(NSData*)mediaData
+//                                         media1Extension:(NSString*)media1Extension
+                                             successBlock:(SuccessBlock)success
+                                                failBlock:(FailBlock)fail
+{
+    NSString* category = self.isOwner ? kVOwnerVideoCategory : kVUGCVideoCategory;
+    return [self uploadMediaWithName:name
+                         description:description
+                            category:category
+                           mediaData:mediaData
+                        successBlock:success
+                           failBlock:fail];
+}
+
+- (RKManagedObjectRequestOperation * )createImageWithName:(NSString*)name
+                                              description:(NSString*)description
+                                                mediaData:(NSData*)mediaData
+                                             successBlock:(SuccessBlock)success
+                                                failBlock:(FailBlock)fail
+{
+    NSString* category = self.isOwner ? kVOwnerImageCategory : kVUGCImageCategory;
+    return [self uploadMediaWithName:name
+                  description:description
+                     category:category
+                    mediaData:mediaData
+                 successBlock:success
+                    failBlock:fail];
+}
+
+- (RKManagedObjectRequestOperation * )uploadMediaWithName:(NSString*)name
+                                              description:(NSString*)description
+                                                 category:(NSString*)category
+                                                mediaData:(NSData*)mediaData
+                                             successBlock:(SuccessBlock)success
+                                                failBlock:(FailBlock)fail
+{
+    NSDictionary* parameters = @{@"name":name,
+                                 @"description":description,
+                                 @"category":category,
+                                 @"media_data":mediaData};
+    
+    return [self POST:@"/api/mediaupload/create"
+               object:nil
+           parameters:parameters
+         successBlock:success
+            failBlock:fail
+      paginationBlock:nil];
+}
+
 @end
