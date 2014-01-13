@@ -12,6 +12,7 @@
 #import "VMessage+RestKit.h"
 #import "VMedia+RestKit.h"
 #import "VComposeViewController.h"
+#import "VThemeManager.h"
 
 const   CGFloat     kMessageRowWithMediaHeight  =   280.0;
 const   CGFloat     kMessageRowHeight           =   80;
@@ -26,6 +27,8 @@ const   CGFloat     kMessageRowHeight           =   80;
 {
     [super viewDidLoad];
 
+    self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+    self.tableView.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKeyPath:@"theme.color.messages.background"];
     [self.tableView registerNib:[UINib nibWithNibName:kCommentCellIdentifier bundle:[NSBundle mainBundle]]
          forCellReuseIdentifier:kCommentCellIdentifier];
 
