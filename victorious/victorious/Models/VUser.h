@@ -26,9 +26,9 @@
 @property (nonatomic, retain) NSSet *comments;
 @property (nonatomic, retain) NSSet *conversations;
 @property (nonatomic, retain) NSSet *messages;
+@property (nonatomic, retain) NSSet *pollResults;
 @property (nonatomic, retain) NSSet *postedSequences;
 @property (nonatomic, retain) NSSet *statSequences;
-@property (nonatomic, retain) NSSet *pollResults;
 @end
 
 @interface VUser (CoreDataGeneratedAccessors)
@@ -48,6 +48,11 @@
 - (void)addMessages:(NSSet *)values;
 - (void)removeMessages:(NSSet *)values;
 
+- (void)addPollResultsObject:(VPollResult *)value;
+- (void)removePollResultsObject:(VPollResult *)value;
+- (void)addPollResults:(NSSet *)values;
+- (void)removePollResults:(NSSet *)values;
+
 - (void)addPostedSequencesObject:(VSequence *)value;
 - (void)removePostedSequencesObject:(VSequence *)value;
 - (void)addPostedSequences:(NSSet *)values;
@@ -57,10 +62,5 @@
 - (void)removeStatSequencesObject:(VStatSequence *)value;
 - (void)addStatSequences:(NSSet *)values;
 - (void)removeStatSequences:(NSSet *)values;
-
-- (void)addPollResultsObject:(VPollResult *)value;
-- (void)removePollResultsObject:(VPollResult *)value;
-- (void)addPollResults:(NSSet *)values;
-- (void)removePollResults:(NSSet *)values;
 
 @end

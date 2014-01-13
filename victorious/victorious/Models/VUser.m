@@ -30,8 +30,8 @@
 @dynamic comments;
 @dynamic conversations;
 @dynamic messages;
+@dynamic pollResults;
 @dynamic postedSequences;
 @dynamic statSequences;
-@dynamic pollResults;
 
 @end

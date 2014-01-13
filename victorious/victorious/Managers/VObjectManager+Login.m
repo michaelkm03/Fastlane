@@ -124,6 +124,7 @@ NSString *LoggedInChangedNotification = @"LoggedInChangedNotification";
     SuccessBlock success = ^(NSArray* objects){
         NSManagedObjectContext* context = self.managedObjectStore.persistentStoreManagedObjectContext;
         [context deleteObject:[self mainUser]];
+        [context save:nil];
         [[NSNotificationCenter defaultCenter] postNotificationName:LoggedInChangedNotification object:nil];
     };
     
