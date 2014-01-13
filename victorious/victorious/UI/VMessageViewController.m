@@ -95,7 +95,7 @@ const   CGFloat     kMessageRowHeight           =   80;
 
 - (void)didComposeWithText:(NSString *)text data:(NSData *)data mediaExtension:(NSString *)mediaExtension
 {
-    [[[VObjectManager sharedManager] sendMessageToUser:self.conversation.lastMessage.user
+    [[[VObjectManager sharedManager] sendMessageToUser:self.conversation.user
                                               withText:text
                                                   Data:data
                                         mediaExtension:mediaExtension
