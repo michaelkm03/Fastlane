@@ -52,6 +52,8 @@ static NSString* CommentCache = @"CommentCache";
     self.tableView.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKeyPath:@"theme.color.messages.background"];
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     
+    self.composeViewController.delegate = self;
+
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
  

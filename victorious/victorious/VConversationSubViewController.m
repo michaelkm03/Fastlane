@@ -11,7 +11,6 @@
 #import "UIView+AutoLayout.h"
 
 @interface VConversationSubViewController()
-@property (weak, nonatomic) VComposeViewController *composeViewController;
 @property (weak, nonatomic) NSLayoutConstraint *bottomConstraint;
 @end
 
