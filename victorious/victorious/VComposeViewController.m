@@ -12,7 +12,6 @@
 
 @interface VComposeViewController() <UINavigationControllerDelegate, UIImagePickerControllerDelegate, UICollectionViewDataSource, UICollectionViewDelegate>
 @property (weak, nonatomic) IBOutlet UITextField *textField;
-@property (weak, nonatomic) IBOutlet UIButton* cameraButton;
 @property (weak, nonatomic) IBOutlet UICollectionView* stickersView;
 @property (nonatomic, strong) NSURL*  mediaImageURL;
 @property (nonatomic, strong) NSArray* stickers;
@@ -26,8 +25,6 @@
     [super viewWillLayoutSubviews];
     self.view.frame = self.view.superview.bounds;
     
-    self.cameraButton.hidden = ![UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera];
-    
     // populate stickers array
 }
 
@@ -37,8 +34,11 @@
     
     UIImagePickerController* controller = [[UIImagePickerController alloc] init];
     
+    if([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera])
+        [controller setSourceType:UIImagePickerControllerSourceTypeCamera];
+     else
+        [controller setSourceType:UIImagePickerControllerSourceTypePhotoLibrary];
     controller.delegate = self;
-    controller.sourceType = UIImagePickerControllerSourceTypeCamera;
     controller.mediaTypes = [UIImagePickerController availableMediaTypesForSourceType:UIImagePickerControllerSourceTypeCamera];
     controller.allowsEditing = YES;
     
