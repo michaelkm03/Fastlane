@@ -8,6 +8,7 @@
 
 #import "VObjectManager+Private.h"
 #import "VObjectManager+Users.h"
+#import "VObjectManager+Login.h"
 
 #import "VUser+RestKit.h"
 #import "VCategory+RestKit.h"
@@ -17,6 +18,8 @@
 #import "VPollResult.h"
 
 #import "VPaginationStatus.h"
+
+#import "NSString+VParseHelp.h"
 
 @implementation VObjectManager (Sequence)
 
@@ -387,6 +390,50 @@
            failBlock:fail
      paginationBlock:nil];
 }
+
+- (RKManagedObjectRequestOperation * )createPollWithName:(NSString*)name
+                                             description:(NSString*)description
+                                                question:(NSString*)question
+                                             answer1Text:(NSString*)answer1Text
+                                             answer2Text:(NSString*)answer2Text
+                                               media1Data:(NSData*)media1Data
+                                          media1Extension:(NSString*)media1Extension
+                                              media2Data:(NSData*)media2Data
+                                         media2Extension:(NSString*)media2Extension
+                                            successBlock:(SuccessBlock)success
+                                               failBlock:(FailBlock)fail
+{
+    //Required Fields
+    NSString* category = self.isOwner ? kVOwnerPollCategory : kVUGCPollCategory;
+    NSMutableDictionary* parameters = [@{@"name":name,
+                                         @"description":description,
+                                         @"question":question,
+                                         @"category":category} mutableCopy];
+    
+    //Optional fields
+    if (answer1Text)
+        [parameters setObject:answer1Text forKey:@"answer1Text"];
+    if (answer2Text)
+        [parameters setObject:answer2Text forKey:@"answer2Text"];
+    if (media1Data && ![media1Extension isEmpty])
+    {
+        [parameters setObject:media1Data forKey:@"answer1_media"];
+        [parameters setObject:media1Extension forKey:@"answer1_extension"];
+    }
+    if (media2Data && ![media2Extension isEmpty])
+    {
+        [parameters setObject:media2Data forKey:@"answer2_media"];
+        [parameters setObject:media2Extension forKey:@"answer2_extension"];
+    }
+    
+    return [self POST:@"/api/poll/create"
+               object:nil
+           parameters:parameters
+         successBlock:success
+            failBlock:fail
+      paginationBlock:nil];
+}
+
 
 #pragma mark - StatSequence Creation
 

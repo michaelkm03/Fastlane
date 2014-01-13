@@ -238,7 +238,6 @@
     
     [client setDefaultHeader:@"Authorization" value:sha1String];
     [client setDefaultHeader:@"Date" value:currentDate];
-    
 
     return [super appropriateObjectRequestOperationWithObject:object
                                                        method:method

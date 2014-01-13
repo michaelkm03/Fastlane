@@ -13,6 +13,8 @@
 #import "VCreateViewController.h"
 #import "VCreatePollViewController.h"
 
+#import "VConstants.h"
+
 @implementation VCommunityStreamsTableViewController
 
 + (instancetype)sharedStreamsTableViewController

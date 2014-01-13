@@ -10,18 +10,6 @@
 
 @class VAsset;
 
-extern  NSString*   const   kVOwnerPollCategory;
-extern  NSString*   const   kVOwnerImageCategory;
-extern  NSString*   const   kVOwnerVideoCategory;
-extern  NSString*   const   kVOwnerForumCategory;
-
-extern  NSString*   const   kVUGCPollCategory;
-extern  NSString*   const   kVUGCImageCategory;
-extern  NSString*   const   kVUGCVideoCategory;
-extern  NSString*   const   kVUGCForumCategory;
-
-extern NSString*   const   kFeaturedCategory;
-
 @interface VSequence (Fetcher)
 
 - (BOOL)isPoll;
