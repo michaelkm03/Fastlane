@@ -41,17 +41,18 @@
     [super setSequence:sequence];
     
     NSArray* answers = [[self.sequence firstNode] firstAnswers];
-    
+
+    self.optionOneButton.titleLabel.textAlignment = NSTextAlignmentCenter;
+    self.optionTwoButton.titleLabel.textAlignment = NSTextAlignmentCenter;
+
     _firstAnswer = [answers firstObject];
-    if (_firstAnswer && ![_firstAnswer.label isEmpty])
-        self.optionOneButton.titleLabel.text = _firstAnswer.label;
+    self.optionOneButton.titleLabel.text = _firstAnswer.label;
     
     if ([answers count] >= 2)
     {
         _secondAnswer = [answers objectAtIndex:1];
         
-        if (![_secondAnswer.label isEmpty])
-            self.optionTwoButton.titleLabel.text = _secondAnswer.label;
+        self.optionTwoButton.titleLabel.text = _secondAnswer.label;
     }
     
     if ([self.reuseIdentifier isEqualToString:kStreamPollCellIdentifier])
@@ -73,7 +74,7 @@
         
         self.mpControllerOne = [[MPMoviePlayerController alloc] initWithContentURL:[NSURL URLWithString:_firstAssetUrl]];
 //        [self.mpControllerOne prepareToPlay];
-        self.mpControllerOne.view.frame = self.previewImageView.bounds;
+        self.mpControllerOne.view.frame = self.previewImageView.frame;
         [self insertSubview:self.mpControllerOne.view belowSubview:self.previewImageView];
         self.mpControllerOne.view.hidden = YES;
     }
@@ -90,7 +91,7 @@
         
         self.mpControllerTwo = [[MPMoviePlayerController alloc] initWithContentURL:[NSURL URLWithString:_secondAssetUrl]];
 //        [self.mpControllerTwo prepareToPlay];
-        self.mpControllerTwo.view.frame = self.previewImageTwo.bounds;
+        self.mpControllerTwo.view.frame = self.previewImageTwo.frame;
         [self.previewImageTwo insertSubview:self.mpControllerTwo.view belowSubview:self.previewImageTwo];
         self.mpControllerTwo.view.hidden = YES;
     }

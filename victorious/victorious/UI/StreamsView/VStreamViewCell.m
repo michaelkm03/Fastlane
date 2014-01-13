@@ -9,8 +9,9 @@
 #import "VStreamViewCell.h"
 #import "VSequence.h"
 #import "VObjectManager+Sequence.h"
-#import "TTTTimeIntervalFormatter.h"
 #import "VThemeManager.h"
+#import "NSDate+timeSince.h"
+#import "VUser.h"
 
 NSString* kStreamsWillSegueNotification = @"kStreamsWillSegueNotification";
 
@@ -23,6 +24,7 @@ NSString* kStreamsWillSegueNotification = @"kStreamsWillSegueNotification";
 @property (weak, nonatomic) IBOutlet UIButton *shareButton;
 @property (weak, nonatomic) IBOutlet UIButton *likeButton;
 @property (weak, nonatomic) IBOutlet UIButton *commentButton;
+@property (weak, nonatomic) IBOutlet UIImageView *profileImageView;
 
 @end
 
@@ -35,6 +37,12 @@ NSString* kStreamsWillSegueNotification = @"kStreamsWillSegueNotification";
     self.usernameLabel.font = [[VThemeManager sharedThemeManager] themedFontForKeyPath:@"theme.font.stream.text.username"];
 }
 
+- (void)layoutSubviews
+{
+    self.profileImageView.layer.cornerRadius = CGRectGetHeight(self.profileImageView.bounds)/2;
+    self.profileImageView.clipsToBounds = YES;
+}
+
 - (void)setSequence:(VSequence *)sequence
 {
     if(_sequence == sequence)
@@ -44,19 +52,14 @@ NSString* kStreamsWillSegueNotification = @"kStreamsWillSegueNotification";
 
     _sequence = sequence;
 
-    static dispatch_once_t onceToken;
-    static TTTTimeIntervalFormatter *timeIntervalFormatter;
-    dispatch_once(&onceToken, ^{
-        timeIntervalFormatter = [TTTTimeIntervalFormatter new];
-        timeIntervalFormatter.usesAbbreviatedCalendarUnits = YES;
-        timeIntervalFormatter.pastDeicticExpression = @"";
-        timeIntervalFormatter.deicticExpressionFormat = NSLocalizedString(@"%@%@", @"Time format {time}{<null>}");
-    });
-
+    self.usernameLabel.text = self.sequence.user.name;
+    self.locationLabel.text = self.sequence.user.location;
     self.descriptionLabel.text = self.sequence.name;
-    self.dateLabel.text = [timeIntervalFormatter stringForTimeInterval:[self.sequence.releasedAt timeIntervalSinceNow]];
+    self.dateLabel.text = [self.sequence.releasedAt timeSince];
     [self.previewImageView setImageWithURL:[NSURL URLWithString:_sequence.previewImage]
                              placeholderImage:[UIImage new]];
+    [self.profileImageView setImageWithURL:[NSURL URLWithString:self.sequence.user.pictureUrl]
+                          placeholderImage:[UIImage imageNamed:@"profile_thumb"]];
 }
 
 - (IBAction)likeButtonAction:(id)sender

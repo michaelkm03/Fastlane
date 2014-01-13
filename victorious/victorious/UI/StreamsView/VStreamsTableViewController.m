@@ -99,7 +99,7 @@ typedef NS_ENUM(NSInteger, VStreamScope)
         return 344;
     
     if ([sequence isVideo])
-        return 310;
+        return 450;
 
     return 450;
 }
