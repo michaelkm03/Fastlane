@@ -63,20 +63,12 @@
                                    successBlock:(SuccessBlock)success
                                       failBlock:(FailBlock)fail;
 
+- (RKManagedObjectRequestOperation *)pollResultsForSequence:(VSequence*)sequence
+                                               successBlock:(SuccessBlock)success
+                                                  failBlock:(FailBlock)fail;
+
 - (RKManagedObjectRequestOperation *)pollResultsForUser:(VUser*)user
                                            successBlock:(SuccessBlock)success
                                               failBlock:(FailBlock)fail;
-
-- (RKManagedObjectRequestOperation *)loadStatSequencesForUser:(VUser*)user
-                                                 successBlock:(SuccessBlock)success
-                                                    failBlock:(FailBlock)fail;
-
-- (RKManagedObjectRequestOperation *)loadFullDataForStatSequence:(VStatSequence*)statSequence
-                                                    successBlock:(SuccessBlock)success
-                                                       failBlock:(FailBlock)fail;
-
-- (RKManagedObjectRequestOperation *)createStatSequenceForSequence:(VSequence*)sequence
-                                                      successBlock:(SuccessBlock)success
-                                                         failBlock:(FailBlock)fail;
 
 @end

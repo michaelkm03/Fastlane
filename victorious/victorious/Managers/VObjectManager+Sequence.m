@@ -349,55 +349,28 @@
      paginationBlock:nil];
 }
 
-- (RKManagedObjectRequestOperation *)loadStatSequencesForUser:(VUser*)user
-                                                 successBlock:(SuccessBlock)success
-                                                    failBlock:(FailBlock)fail
-{
-    NSString* path = [NSString stringWithFormat:@"/api/userinfo/games_played/%@", user.remoteId];
-    
-    __block VUser* statSequenceOwner = user;// keep the user in memory until we get back from the block.
-    
-    SuccessBlock fullSuccessBlock = ^(NSArray* statSequences)
-    {
-        for (VStatSequence* statSequence in statSequences)
-        {
-            [statSequenceOwner addStatSequencesObject:(VStatSequence*)[statSequenceOwner.managedObjectContext
-                                                        objectWithID:[statSequence objectID]]];
-        }
-        
-        if (success)
-            success(statSequences);
-    };
-    
-    return [self GET:path
-              object:nil
-          parameters:nil
-        successBlock:fullSuccessBlock
-           failBlock:fail
-     paginationBlock:nil];
-}
 
-- (RKManagedObjectRequestOperation *)loadFullDataForStatSequence:(VStatSequence*)statSequence
-                                                    successBlock:(SuccessBlock)success
-                                                       failBlock:(FailBlock)fail
+
+
+- (RKManagedObjectRequestOperation *)pollResultsForSequence:(VSequence*)sequence
+                                               successBlock:(SuccessBlock)success
+                                                  failBlock:(FailBlock)fail
 {
-    NSString* path = [NSString stringWithFormat:@"/api/userinfo/game_stats/%@", statSequence.remoteId];
     
-    return [self GET:path
-              object:statSequence
+    return [self GET:[NSString stringWithFormat:@"api/pollresult/summary_by_sequence/%@", sequence.remoteId]
+              object:nil
           parameters:nil
         successBlock:success
            failBlock:fail
-     paginationBlock:nil];
-}
+     paginationBlock:nil];}
 
 - (RKManagedObjectRequestOperation * )createPollWithName:(NSString*)name
                                              description:(NSString*)description
                                                 question:(NSString*)question
                                              answer1Text:(NSString*)answer1Text
                                              answer2Text:(NSString*)answer2Text
-                                               media1Data:(NSData*)media1Data
-                                          media1Extension:(NSString*)media1Extension
+                                              media1Data:(NSData*)media1Data
+                                         media1Extension:(NSString*)media1Extension
                                               media2Data:(NSData*)media2Data
                                          media2Extension:(NSString*)media2Extension
                                             successBlock:(SuccessBlock)success
@@ -432,31 +405,6 @@
          successBlock:success
             failBlock:fail
       paginationBlock:nil];
-}
-
-
-#pragma mark - StatSequence Creation
-
-- (RKManagedObjectRequestOperation *)createStatSequenceForSequence:(VSequence*)sequence
-                                                    successBlock:(SuccessBlock)success
-                                                       failBlock:(FailBlock)fail
-{
-    return [self GET:@"/api/game/create"
-              object:nil
-          parameters:@{ @"sequence_id" : sequence.remoteId}
-        successBlock:success
-           failBlock:fail
-     paginationBlock:nil];
-}
-
-+ (void)addStatInterationToStatSequence:(VStatSequence*)sequence
-{
-    
-}
-
-+ (void)addStatAnswerToStatInteraction:(VStatInteraction*)interaction
-{
-    
 }
 
 @end
