@@ -42,9 +42,10 @@
     if([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera])
         controller.sourceType = UIImagePickerControllerSourceTypeCamera;
      else
-         controller.sourceType= UIImagePickerControllerSourceTypePhotoLibrary;
+        controller.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
+
     controller.delegate = self;
-    controller.mediaTypes = [UIImagePickerController availableMediaTypesForSourceType:UIImagePickerControllerSourceTypeCamera];
+    controller.mediaTypes = @[(NSString *)kUTTypeImage, (NSString *)kUTTypeMovie];
     controller.allowsEditing = YES;
     
     [self presentViewController:controller animated:YES completion:nil];
@@ -92,12 +93,12 @@
         self.mediaExtension = VConstantMediaExtensionMOV;
     }
     
-    [[picker parentViewController] dismissViewControllerAnimated:YES completion:nil];
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 - (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker
 {
-    [[picker parentViewController] dismissViewControllerAnimated:YES completion:nil];
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 #pragma mark - UICollectionViewDataSource
