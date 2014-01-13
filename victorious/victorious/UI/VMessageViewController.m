@@ -12,6 +12,7 @@
 #import "VMessage+RestKit.h"
 #import "VMedia+RestKit.h"
 #import "VComposeViewController.h"
+#import "VThemeManager.h"
 
 const   CGFloat     kMessageRowWithMediaHeight  =   280.0;
 const   CGFloat     kMessageRowHeight           =   80;
