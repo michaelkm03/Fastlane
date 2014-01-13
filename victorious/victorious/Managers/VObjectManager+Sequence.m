@@ -14,6 +14,8 @@
 #import "VSequence+RestKit.h"
 #import "VStatSequence+RestKit.h"
 
+#import "VPollResult.h"
+
 #import "VPaginationStatus.h"
 
 @implementation VObjectManager (Sequence)
@@ -225,14 +227,12 @@
       paginationBlock:nil];
 }
 
-
 - (RKManagedObjectRequestOperation *)shareSequenceToTwitter:(VSequence*)sequence
                                                successBlock:(SuccessBlock)success
                                                   failBlock:(FailBlock)fail
 {
     return [self shareSequence:sequence shareType:@"twitter" successBlock:success failBlock:fail];
 }
-
 
 - (RKManagedObjectRequestOperation *)shareSequenceToFacebook:(VSequence*)sequence
                                                 successBlock:(SuccessBlock)success
@@ -284,13 +284,53 @@
 
 #pragma mark - StatSequence Methods
 
-- (RKManagedObjectRequestOperation *)answerPollWithAnswer:(VAnswer*)answer
-                                             successBlock:(SuccessBlock)success
-                                                failBlock:(FailBlock)fail
+- (RKManagedObjectRequestOperation *)answerPoll:(VSequence*)poll
+                                     withAnswer:(VAnswer*)answer
+                                   successBlock:(SuccessBlock)success
+                                      failBlock:(FailBlock)fail;
 {
-    return nil;
+    if (!poll || !answer)
+        return nil;
+    
+    NSString* path = [NSString stringWithFormat:@"/api/pollresult/create"];
+    
+    return [self POST:path
+               object:nil
+           parameters:@{@"sequence_id" : poll.remoteId, @"answer_id" : answer.remoteId}
+         successBlock:success
+            failBlock:fail
+      paginationBlock:nil];
 }
 
+- (RKManagedObjectRequestOperation *)pollResultsForUser:(VUser*)user
+                                           successBlock:(SuccessBlock)success
+                                              failBlock:(FailBlock)fail
+{
+    if (!user)
+        user = self.mainUser;
+    
+    NSString* path = [NSString stringWithFormat:@"/api/pollresult/summary_by_sequence/%@", user.remoteId];
+    
+    SuccessBlock fullSuccess = ^(NSArray* resultObjects)
+    {
+        for (VPollResult* pollResult in resultObjects)
+        {
+            VPollResult* poll = (VPollResult*)[user.managedObjectContext objectWithID:[pollResult objectID]];
+            [user addPollResultsObject: poll];
+        }
+        [user.managedObjectContext save:nil];
+        
+        if (success)
+            success(resultObjects);
+    };
+    
+    return [self GET:path
+              object:nil
+          parameters:nil
+            successBlock:fullSuccess
+           failBlock:fail
+     paginationBlock:nil];
+}
 
 - (RKManagedObjectRequestOperation *)loadStatSequencesForUser:(VUser*)user
                                                  successBlock:(SuccessBlock)success

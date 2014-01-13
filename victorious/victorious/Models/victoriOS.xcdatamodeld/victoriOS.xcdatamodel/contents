@@ -47,7 +47,7 @@
         <attribute name="remoteId" attributeType="Integer 32" minValueString="0" defaultValueString="0" syncable="YES"/>
         <relationship name="lastMessage" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Message" inverseName="lastMessageInverse" inverseEntity="Message" syncable="YES"/>
         <relationship name="messages" toMany="YES" deletionRule="Cascade" destinationEntity="Message" inverseName="conversation" inverseEntity="Message" syncable="YES"/>
-        <relationship name="user" optional="YES" minCount="2" maxCount="1" deletionRule="Nullify" destinationEntity="User" inverseName="conversations" inverseEntity="User" syncable="YES"/>
+        <relationship name="user" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="User" inverseName="conversations" inverseEntity="User" syncable="YES"/>
     </entity>
     <entity name="Interaction" representedClassName="VInteraction" syncable="YES">
         <attribute name="display_order" attributeType="Integer 32" minValueString="0" syncable="YES"/>
@@ -96,6 +96,11 @@
         <attribute name="lostGotoNode" optional="YES" attributeType="Integer 64" minValueString="0" syncable="YES"/>
         <attribute name="wonGotoNode" optional="YES" attributeType="Integer 64" minValueString="0" syncable="YES"/>
         <relationship name="node" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Node" inverseName="nodeAction" inverseEntity="Node" syncable="YES"/>
+    </entity>
+    <entity name="PollResult" representedClassName="VPollResult" syncable="YES">
+        <attribute name="answerId" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <attribute name="sequenceId" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <relationship name="user" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="User" inverseName="pollResults" inverseEntity="User" syncable="YES"/>
     </entity>
     <entity name="Rule" representedClassName="VRule" syncable="YES">
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
@@ -169,12 +174,13 @@
         <relationship name="comments" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Comment" inverseName="user" inverseEntity="Comment" syncable="YES"/>
         <relationship name="conversations" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Conversation" inverseName="user" inverseEntity="Conversation" syncable="YES"/>
         <relationship name="messages" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Message" inverseName="user" inverseEntity="Message" syncable="YES"/>
+        <relationship name="pollResults" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="PollResult" inverseName="user" inverseEntity="PollResult" syncable="YES"/>
         <relationship name="postedSequences" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Sequence" inverseName="user" inverseEntity="Sequence" syncable="YES"/>
         <relationship name="statSequences" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="StatSequence" inverseName="user" inverseEntity="StatSequence" syncable="YES"/>
     </entity>
     <elements>
-        <element name="Answer" positionX="718" positionY="54" width="128" height="178"/>
-        <element name="AnswerAction" positionX="718" positionY="249" width="128" height="75"/>
+        <element name="Answer" positionX="718" positionY="108" width="128" height="178"/>
+        <element name="AnswerAction" positionX="718" positionY="303" width="128" height="75"/>
         <element name="Asset" positionX="655" positionY="-360" width="128" height="120"/>
         <element name="Category" positionX="862" positionY="-312" width="128" height="60"/>
         <element name="Comment" positionX="1035" positionY="-513" width="128" height="268"/>
@@ -184,12 +190,13 @@
         <element name="Media" positionX="1404" positionY="-67" width="128" height="103"/>
         <element name="Message" positionX="1447" positionY="-280" width="128" height="163"/>
         <element name="Node" positionX="817" positionY="-180" width="128" height="135"/>
-        <element name="NodeAction" positionX="880" positionY="81" width="128" height="90"/>
+        <element name="NodeAction" positionX="819" positionY="0" width="128" height="90"/>
+        <element name="PollResult" positionX="1062" positionY="180" width="128" height="88"/>
         <element name="Rule" positionX="567" positionY="99" width="128" height="75"/>
-        <element name="Sequence" positionX="1006" positionY="-202" width="128" height="253"/>
+        <element name="Sequence" positionX="999" positionY="-189" width="128" height="253"/>
         <element name="StatAnswer" positionX="1422" positionY="153" width="128" height="180"/>
-        <element name="StatInteraction" positionX="1251" positionY="150" width="128" height="210"/>
-        <element name="StatSequence" positionX="1233" positionY="-90" width="128" height="225"/>
-        <element name="User" positionX="1222" positionY="-412" width="128" height="268"/>
+        <element name="StatInteraction" positionX="1278" positionY="150" width="128" height="210"/>
+        <element name="StatSequence" positionX="1260" positionY="-90" width="128" height="225"/>
+        <element name="User" positionX="1222" positionY="-412" width="128" height="283"/>
     </elements>
 </model>
