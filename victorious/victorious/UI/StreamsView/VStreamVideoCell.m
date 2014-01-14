@@ -53,13 +53,17 @@
                                              [indicator removeFromSuperview];
                                              [self playSequence];
                                          }
-                                            failBlock:^(NSError *error)
-                                            {
-                                                [indicator stopAnimating];
-                                                [indicator removeFromSuperview];
-                                                UIAlertView*    alert   =   [[UIAlertView alloc] initWithTitle:@"Error" message:error.localizedDescription delegate:self cancelButtonTitle:@"Understood" otherButtonTitles:nil];
-                                                [alert show];
-                                            }] start];
+                                        failBlock:^(NSError *error)
+                                        {
+                                            [indicator stopAnimating];
+                                            [indicator removeFromSuperview];
+                                            UIAlertView* alert = [[UIAlertView alloc] initWithTitle:@"Error"
+                                                                                            message:error.localizedDescription
+                                                                                           delegate:self
+                                                                                  cancelButtonTitle:NSLocalizedString(@"OKButton", @"")
+                                                                                  otherButtonTitles:nil];
+                                            [alert show];
+                                        }] start];
     }
     else
     {
