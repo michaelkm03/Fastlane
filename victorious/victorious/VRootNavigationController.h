@@ -8,8 +8,11 @@
 
 #import "VMenuTableViewController.h"
 
+@class VUser;
+
 @interface VRootNavigationController : UINavigationController
 
 - (void)showViewControllerForSelectedMenuRow:(VMenuTableViewControllerRow)row;
+- (void)showUserProfileForUser:(VUser *)user;
 
 @end

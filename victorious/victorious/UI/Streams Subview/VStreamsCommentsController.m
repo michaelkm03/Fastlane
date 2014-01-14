@@ -49,6 +49,8 @@ static NSString* CommentCache = @"CommentCache";
     
     [self.tableView registerNib:[UINib nibWithNibName:kCommentCellIdentifier bundle:[NSBundle mainBundle]]
          forCellReuseIdentifier:kCommentCellIdentifier];
+    [self.tableView registerNib:[UINib nibWithNibName:kOtherCommentCellIdentifier bundle:[NSBundle mainBundle]]
+         forCellReuseIdentifier:kOtherCommentCellIdentifier];
 
     self.tableView.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKeyPath:@"theme.color.messages.background"];
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;

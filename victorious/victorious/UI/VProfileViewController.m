@@ -37,9 +37,9 @@
     return profileViewController;
 }
 
-- (void)viewDidLoad
+- (void)viewWillAppear:(BOOL)animated
 {
-    [super viewDidLoad];
+    [super viewWillAppear:animated];
     
     if (!self.profile)
     {
@@ -59,6 +59,19 @@
     self.navigationController.title = self.profile.shortName;
 
     [self setProfileData];
+}
+
+- (void)showCloseNavigationButton
+{
+    self.navigationItem.leftBarButtonItem =
+    [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"Close"]
+                                     style:UIBarButtonItemStylePlain
+                                    target:self action:@selector(closeButtonAction:)];
+}
+
+- (void)closeButtonAction:(id)sender
+{
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 - (void)setProfileData
