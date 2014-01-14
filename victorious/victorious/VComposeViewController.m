@@ -83,6 +83,8 @@
     {
         [self.delegate didComposeWithText:self.textField.text data:self.selectedSticker mediaExtension:self.mediaExtension];
         self.textField.text = nil;
+        self.mediaExtension = nil;
+        self.media = nil;
     }
 }
 
@@ -91,8 +93,6 @@
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info
 {
     NSString* mediaType = info[UIImagePickerControllerMediaType];
-
-    self.mediaExtension = nil;
 
     // Handle image capture
     if (CFStringCompare ((CFStringRef)mediaType, kUTTypeImage, 0) == kCFCompareEqualTo)
