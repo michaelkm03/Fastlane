@@ -207,17 +207,20 @@
                                          parameters:parameters
                           constructingBodyWithBlock: ^(id <AFMultipartFormData>formData)
     {
-        for (NSString* key in [allData allKeys])
-        {
-            NSData* data = [allData objectForKey:key];
-            NSString* extension = [allExtensions objectForKey:key];
-            
-            NSString* mimeType = [extension isEqualToString:VConstantMediaExtensionMOV] ? @"video/quicktime" : @"image/png";
-            [formData appendPartWithFileData:data
-                                        name:key
-                                    fileName:[NSString stringWithFormat:@"awesomething.%@", extension]
-                                    mimeType:mimeType];
-        }
+        [allData enumerateKeysAndObjectsWithOptions:NSEnumerationConcurrent
+                                         usingBlock:^(id key, id obj, BOOL *stop)
+                                         {
+                                             NSString* extension = allExtensions[key];
+                                             if(extension)
+                                             {
+                                                 NSString* mimeType = [extension isEqualToString:VConstantMediaExtensionMOV]
+                                                                        ? @"video/quicktime" : @"image/png";
+                                                 [formData appendPartWithFileData:obj
+                                                                             name:key
+                                                                         fileName:[key stringByAppendingPathExtension:extension]
+                                                                         mimeType:mimeType];
+                                             }
+                                         }];
     }];
     
     VLog(@"Headers set to: %@", request.allHTTPHeaderFields);
@@ -237,7 +240,6 @@
     AFHTTPRequestOperation *operation = [self.HTTPClient HTTPRequestOperationWithRequest:request
                                                     success:afSuccessBlock
                                                     failure:afFailBlock];
-    
     [operation start];
     
     return operation;
