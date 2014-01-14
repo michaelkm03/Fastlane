@@ -52,8 +52,9 @@
     {
         allData = @{@"media_data":data};
         allExtensions = @{@"media_data":extension};
-//        NSString*
-//        [parameters setObject:<#(id)#> forKey:@"media_type"];
+//    TODO: Unhack this for stickers
+        NSString* type = [extension isEqualToString:VConstantMediaExtensionMOV] ? @"video" : @"image";
+        [parameters setObject:type forKey:@"media_type"];
     }
     
     return [self upload:allData

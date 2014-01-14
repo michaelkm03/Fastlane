@@ -13,8 +13,8 @@
 
 #import "VObjectManager+Sequence.h"
 //TODO: remove
-//#import "VObjectManager+Login.h"
-//#import "VLoginViewController.h"
+#import "VObjectManager+Login.h"
+#import "VLoginViewController.h"
 
 @implementation VAppDelegate
 
