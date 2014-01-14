@@ -18,8 +18,6 @@ NSString*   const   kSignupViewControllerDomain =   @"VSignupViewControllerDomai
 @property (weak, nonatomic) IBOutlet UITextField *emailTextField;
 @property (weak, nonatomic) IBOutlet UITextField *passwordTextField;
 @property (weak, nonatomic) IBOutlet UISwitch* agreeSwitch;
-
-@property (strong, nonatomic) IBOutlet UIView *accessoryView;
 @end
 
 @implementation VSignUpViewController
@@ -222,11 +220,6 @@ NSString*   const   kSignupViewControllerDomain =   @"VSignupViewControllerDomai
 }
 
 #pragma mark -
-
-- (void)textFieldDidBeginEditing:(UITextField *)textField
-{
-    textField.inputAccessoryView = self.accessoryView;
-}
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField
 {
