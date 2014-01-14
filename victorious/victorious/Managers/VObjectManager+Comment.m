@@ -36,8 +36,6 @@
         [parameters setObject:data forKey:@"media_data"];
         [parameters setObject:extension forKey:@"media_type"];
     }
-
-    NSString* path = [NSString stringWithFormat:@"/api/comment/add"];
     
     __block VSequence* commentOwner = sequence; //Keep the sequence around until the block gets called
     
@@ -53,7 +51,7 @@
             success(comments);
     };
     
-    return [self POST:path
+    return [self POST:@"/api/comment/add"
                object:nil
            parameters:parameters
          successBlock:fullSuccessBlock
