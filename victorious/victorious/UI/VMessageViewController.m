@@ -101,18 +101,18 @@ const   CGFloat     kMessageRowHeight           =   80;
 
 - (void)didComposeWithText:(NSString *)text data:(NSData *)data mediaExtension:(NSString *)mediaExtension
 {
-    [[[VObjectManager sharedManager] sendMessageToUser:self.conversation.user
+    [[VObjectManager sharedManager] sendMessageToUser:self.conversation.user
                                               withText:text
                                                   Data:data
                                         mediaExtension:mediaExtension
                                           successBlock:^(NSArray *resultObjects)
                                           {
-                                               VLog(@"Succeed in creating comments: %@", resultObjects);
+                                               VLog(@"Succeed in creating message: %@", resultObjects);
                                           }
                                              failBlock:^(NSError *error)
                                           {
-                                               VLog(@"Failed in creating comment with error: %@", error);
-                                        }] start];
+                                               VLog(@"Failed in creating message with error: %@", error);
+                                        }];
 }
 
 @end

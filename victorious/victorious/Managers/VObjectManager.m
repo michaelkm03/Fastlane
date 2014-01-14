@@ -192,6 +192,58 @@
                paginationBlock:paginationBlock];
 }
 
+- (AFHTTPRequestOperation*)upload:(NSDictionary*)allData
+                    fileExtension:(NSDictionary*)allExtensions
+                           toPath:(NSString*)path
+                       parameters:(NSDictionary*)parameters
+                     successBlock:(SuccessBlock)successBlock
+                        failBlock:(FailBlock)failBlock
+{
+    [self updateHTTPHeadersForPath:path method:RKRequestMethodPOST];
+    
+    NSMutableURLRequest *request =
+    [self.HTTPClient multipartFormRequestWithMethod:@"POST"
+                                               path:path
+                                         parameters:parameters
+                          constructingBodyWithBlock: ^(id <AFMultipartFormData>formData)
+    {
+        for (NSString* key in [allData allKeys])
+        {
+            NSData* data = [allData objectForKey:key];
+            NSString* extension = [allExtensions objectForKey:key];
+            
+            NSString* mimeType = [extension isEqualToString:VConstantMediaExtensionMOV] ? @"video/quicktime" : @"image/png";
+            [formData appendPartWithFileData:data
+                                        name:key
+                                    fileName:[NSString stringWithFormat:@"awesomething.%@", extension]
+                                    mimeType:mimeType];
+        }
+    }];
+    
+    VLog(@"Headers set to: %@", request.allHTTPHeaderFields);
+    
+    void(^afFailBlock)(AFHTTPRequestOperation*, NSError*) = ^(AFHTTPRequestOperation *operation, NSError *error)
+    {
+        if (failBlock)
+            failBlock(error);
+    };
+    
+    void(^afSuccessBlock)(AFHTTPRequestOperation*, id) = ^(AFHTTPRequestOperation *operation, id responseObject)
+    {
+        if (successBlock)
+            successBlock(responseObject);
+    };
+    
+    AFHTTPRequestOperation *operation = [self.HTTPClient HTTPRequestOperationWithRequest:request
+                                                    success:afSuccessBlock
+                                                    failure:afFailBlock];
+    
+    [operation start];
+    
+    return operation;
+}
+
+
 -(VPaginationStatus *)statusForKey:(NSString*)key
 {
     VPaginationStatus* status = [self.paginationStatuses objectForKey:key];
@@ -209,6 +261,16 @@
                                            method:(RKRequestMethod)method
                                              path:(NSString *)path
                                        parameters:(NSDictionary *)parameters
+{
+    [self updateHTTPHeadersForPath:path method:method];
+    
+    return [super appropriateObjectRequestOperationWithObject:object
+                                                       method:method
+                                                         path:path
+                                                   parameters:parameters];
+}
+
+- (void)updateHTTPHeadersForPath:(NSString*)path method:(RKRequestMethod)method
 {
     
     AFHTTPClient* client = [self HTTPClient];
@@ -238,11 +300,6 @@
     
     [client setDefaultHeader:@"Authorization" value:sha1String];
     [client setDefaultHeader:@"Date" value:currentDate];
-
-    return [super appropriateObjectRequestOperationWithObject:object
-                                                       method:method
-                                                         path:path
-                                                   parameters:parameters];
 }
 
 - (NSString *)rFC2822DateTimeString {
