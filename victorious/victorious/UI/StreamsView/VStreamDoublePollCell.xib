@@ -48,7 +48,7 @@
                     <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Dej-gg-Abg" userLabel="Like Button">
                         <rect key="frame" x="20" y="307" width="66" height="22"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        <state key="normal" title="123" image="StreamHeart"/>
+                        <state key="normal" title=" 123" image="StreamHeart"/>
                         <connections>
                             <action selector="likeButtonAction:" destination="BTB-1H-fCN" eventType="touchUpInside" id="S5T-hh-l2A"/>
                         </connections>
@@ -56,7 +56,7 @@
                     <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="94V-qD-H5h" userLabel="Comment Button">
                         <rect key="frame" x="94" y="307" width="66" height="22"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        <state key="normal" title="32" image="StreamComments"/>
+                        <state key="normal" title=" 32" image="StreamComments"/>
                         <connections>
                             <action selector="commentButtonAction:" destination="BTB-1H-fCN" eventType="touchUpInside" id="Jiz-Vp-CeB"/>
                         </connections>

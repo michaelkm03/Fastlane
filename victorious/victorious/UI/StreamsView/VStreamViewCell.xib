@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="4514" systemVersion="13B3116" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="4514" systemVersion="13B42" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3747"/>
     </dependencies>
@@ -58,7 +58,7 @@
                     <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="xnP-0R-e3a" userLabel="Like Button">
                         <rect key="frame" x="20" y="415" width="66" height="22"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        <state key="normal" title="123" image="StreamHeart"/>
+                        <state key="normal" title=" 123" image="StreamHeart"/>
                         <connections>
                             <action selector="likeButtonAction:" destination="ONd-u8-hug" eventType="touchUpInside" id="NhR-e4-GpT"/>
                         </connections>
@@ -66,7 +66,7 @@
                     <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cLx-fR-OJL" userLabel="Comment Button">
                         <rect key="frame" x="94" y="415" width="66" height="22"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        <state key="normal" title="32" image="StreamComments"/>
+                        <state key="normal" title=" 32" image="StreamComments"/>
                         <connections>
                             <action selector="commentButtonAction:" destination="ONd-u8-hug" eventType="touchUpInside" id="NTX-AX-2Xs"/>
                         </connections>
