@@ -13,4 +13,6 @@
 
 + (RKResponseDescriptor*)descriptor;
 
+- (BOOL)isEqualToUser:(VUser *)user;
+
 @end

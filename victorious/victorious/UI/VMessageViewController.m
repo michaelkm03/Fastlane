@@ -13,6 +13,8 @@
 #import "VMedia+RestKit.h"
 #import "VComposeViewController.h"
 #import "VThemeManager.h"
+#import "VObjectManager.h"
+#import "VUser+RestKit.h"
 
 const   CGFloat     kMessageRowWithMediaHeight  =   280.0;
 const   CGFloat     kMessageRowHeight           =   80;
@@ -32,6 +34,8 @@ const   CGFloat     kMessageRowHeight           =   80;
     self.tableView.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKeyPath:@"theme.color.messages.background"];
     [self.tableView registerNib:[UINib nibWithNibName:kCommentCellIdentifier bundle:[NSBundle mainBundle]]
          forCellReuseIdentifier:kCommentCellIdentifier];
+    [self.tableView registerNib:[UINib nibWithNibName:kOtherCommentCellIdentifier bundle:[NSBundle mainBundle]]
+         forCellReuseIdentifier:kOtherCommentCellIdentifier];
 
     [[[VObjectManager sharedManager] loadNextPageOfMessagesForConversation:self.conversation
         successBlock:^(NSArray *resultObjects)
@@ -69,9 +73,16 @@ const   CGFloat     kMessageRowHeight           =   80;
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:kCommentCellIdentifier forIndexPath:indexPath];
-    
+    UITableViewCell *cell = nil;
     VMessage*   aMessage = self.messages[indexPath.row];
+    if([aMessage.user isEqualToUser:[VObjectManager sharedManager].mainUser])
+    {
+        cell = [tableView dequeueReusableCellWithIdentifier:kOtherCommentCellIdentifier forIndexPath:indexPath];
+    }else
+    {
+        cell = [tableView dequeueReusableCellWithIdentifier:kCommentCellIdentifier forIndexPath:indexPath];
+    }
+
     [(VCommentCell *)cell setCommentOrMessage:aMessage];
 
     return cell;
