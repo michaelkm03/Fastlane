@@ -84,7 +84,7 @@ typedef NS_ENUM(NSInteger, VStreamScope)
 
 - (void)viewDidDisappear:(BOOL)animated
 {
-    [self viewDidDisappear:animated];
+    [super viewDidDisappear:animated];
 
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
