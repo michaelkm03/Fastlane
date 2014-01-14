@@ -14,6 +14,9 @@
 #import "VUser.h"
 #import "VRootNavigationController.h"
 
+#import "VSequence+Fetcher.h"
+#import "VAsset.h"
+
 NSString* kStreamsWillSegueNotification = @"kStreamsWillSegueNotification";
 NSString *kStreamsWillShareNotification = @"kStreamsWillShareNotification";
 
@@ -51,8 +54,12 @@ NSString *kStreamsWillShareNotification = @"kStreamsWillShareNotification";
     {
         return;
     }
-
     _sequence = sequence;
+    
+    if ([[_sequence firstAsset].type isEqualToString:VConstantsMediaTypeYoutube])
+        self.playButtonImage.hidden = NO;
+    else
+        self.playButtonImage.hidden = YES;
 
     self.usernameLabel.text = self.sequence.user.name;
     self.locationLabel.text = self.sequence.user.location;

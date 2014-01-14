@@ -18,6 +18,7 @@ extern NSString *kStreamsWillShareNotification;
 @interface VStreamViewCell : VTableViewCell
 
 @property (weak, nonatomic) IBOutlet UIImageView *previewImageView;
+@property (weak, nonatomic) IBOutlet UIImageView *playButtonImage;
 @property (weak, nonatomic) VSequence* sequence;
 
 // TODO: for some reason if these are not here the cell does not show up
