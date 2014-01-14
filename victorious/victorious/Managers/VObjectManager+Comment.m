@@ -45,8 +45,9 @@
     {
         for (VComment* comment in comments)
         {
-            [commentOwner addCommentsObject:(VComment*)[commentOwner.managedObjectContext
-                                                        objectWithID:[comment objectID]]];
+            VComment* commentInContext = (VComment*)[commentOwner.managedObjectContext objectWithID:[comment objectID]];
+            if (commentInContext)
+                [commentOwner addCommentsObject:commentInContext];
         }
         if (success)
             success(comments);
