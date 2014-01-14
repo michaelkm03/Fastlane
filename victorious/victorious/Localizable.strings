@@ -40,7 +40,7 @@
 "DaysAgo"               =   "%dd";
 "LastWeek"              =   "1w";
 "WeeksAgo"              =   "%dw";
-"LastMonth"             =   "1mon";
-"MonthsAgo"             =   "%dmon";
+"LastMonth"             =   "1mo";
+"MonthsAgo"             =   "%dmo";
 "LastYear"              =   "1y";
 "YearsAgo"              =   "%dy";
