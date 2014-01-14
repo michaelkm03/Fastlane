@@ -77,20 +77,24 @@
 {
     NSString* mediaType = info[UIImagePickerControllerMediaType];
 
+    self.mediaExtension = nil;
+
     // Handle image capture
     if (CFStringCompare ((CFStringRef)mediaType, kUTTypeImage, 0) == kCFCompareEqualTo)
     {
         UIImage* imageToSave = (UIImage *)info[UIImagePickerControllerEditedImage] ?: (UIImage *)info[UIImagePickerControllerOriginalImage];
 
         self.media = UIImagePNGRepresentation(imageToSave);
-        self.mediaExtension = VConstantMediaExtensionPNG;
+        if (self.media)
+            self.mediaExtension = VConstantMediaExtensionPNG;
     }
     
     // Handle a movie capture
     if (CFStringCompare ((CFStringRef)mediaType, kUTTypeMovie, 0) == kCFCompareEqualTo)
     {
         self.media = [NSData dataWithContentsOfURL:info[UIImagePickerControllerMediaURL]];
-        self.mediaExtension = VConstantMediaExtensionMOV;
+        if (self.media)
+            self.mediaExtension = VConstantMediaExtensionMOV;
     }
     
     [self dismissViewControllerAnimated:YES completion:nil];

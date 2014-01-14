@@ -17,6 +17,7 @@
 #import "VUser+RestKit.h"
 #import "NSDate+timeSince.h"
 #import "VThemeManager.h"
+#import "VProfileViewController.h"
 
 @interface VCommentCell()
 @property (weak, nonatomic) IBOutlet UILabel *dateLabel;
@@ -63,6 +64,10 @@
                              placeholderImage:[UIImage imageNamed:@"profile_thumb"]];
         self.usernameLabel.text = comment.user.name;
         self.messageLabel.text = comment.text;
+        
+        UITapGestureRecognizer *gestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleCommentGesture:)];
+        [self.avatarImageView addGestureRecognizer:gestureRecognizer];
+        gestureRecognizer.cancelsTouchesInView = NO;
 
         if (comment.mediaUrl)
         {
@@ -100,6 +105,10 @@
         self.usernameLabel.text = message.user.name;
         self.messageLabel.text = message.text;
         
+        UITapGestureRecognizer *gestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleMessageGesture:)];
+        [self.avatarImageView addGestureRecognizer:gestureRecognizer];
+        gestureRecognizer.cancelsTouchesInView = NO;
+
         if (message.media.mediaUrl)
         {
             if ([message.media.mediaType isEqualToString:VConstantsMediaTypeVideo])
@@ -131,6 +140,26 @@
 - (IBAction)displayVideoMedia:(id)sender
 {
     
+}
+
+- (void)handleCommentGesture:(UIGestureRecognizer *)gestureRecognizer
+{
+    VComment* comment = (VComment *)self.commentOrMessage;
+    VUser* user = comment.user;
+    
+    VProfileViewController* profileViewController = [VProfileViewController sharedProfileViewController];
+    profileViewController.profile = user;
+    [self.parentTableViewController presentViewController:profileViewController animated:YES completion:nil];
+}
+
+- (void)handleMessageGesture:(UIGestureRecognizer *)gestureRecognizer
+{
+    VMessage* message = (VMessage *)self.commentOrMessage;
+    VUser* user = message.user;
+
+    VProfileViewController* profileViewController = [VProfileViewController sharedProfileViewController];
+    profileViewController.profile = user;
+    [self.parentTableViewController presentViewController:profileViewController animated:YES completion:nil];
 }
 
 @end
