@@ -186,7 +186,8 @@
     
     SuccessBlock fullSuccess = ^(NSArray* resultObjects)
     {
-        self.mainUser.unreadConversation = (VUnreadConversation*)[self.mainUser.managedObjectContext objectWithID:[[resultObjects firstObject] objectID]];
+        if ([resultObjects firstObject])
+            self.mainUser.unreadConversation = (VUnreadConversation*)[self.mainUser.managedObjectContext objectWithID:[[resultObjects firstObject] objectID]];
 
         if (success)
             success(resultObjects);
