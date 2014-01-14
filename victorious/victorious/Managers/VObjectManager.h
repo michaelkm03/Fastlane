@@ -16,6 +16,10 @@ typedef void (^SuccessBlock) (NSArray* resultObjects);
 /*! Block that executes when the API fails.
  * Block is given NSError* that RestKit returned. */
 typedef void (^FailBlock) (NSError* error);
+
+typedef void (^PayloadSuccessBlock) (NSArray* resultObjects, NSDictionary* fullPayload);
+
+
 /*! Block that will be given Pagination information from API Response.
  *  Block is given NSUInteger for page and NSUInteger for totalPages
  *  NOTE: VObjectManager does not keep track of Pagination Logic.*/

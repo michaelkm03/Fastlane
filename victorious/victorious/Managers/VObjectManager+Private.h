@@ -32,6 +32,16 @@
                                 failBlock:(FailBlock)failBlock
                           paginationBlock:(PaginationBlock)paginationBlock;
 
+/*! Uses multipartFormRestquest to upload media.
+ * allData key:value must be NSString* parameterName:NSData* binaryData
+ * allExtensions must have same keys are allData, values are NSString* fileExtension */
+- (AFHTTPRequestOperation*)upload:(NSDictionary*)allData
+                    fileExtension:(NSDictionary*)allExtensions
+                           toPath:(NSString*)path
+                       parameters:(NSDictionary*)parameters
+                     successBlock:(SuccessBlock)successBlock
+                        failBlock:(FailBlock)failBlock;
+
 -(VPaginationStatus *)statusForKey:(NSString*)key;
 
 @end

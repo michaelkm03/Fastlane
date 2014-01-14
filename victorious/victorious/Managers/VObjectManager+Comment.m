@@ -15,7 +15,7 @@
 
 @implementation VObjectManager (Comment)
 
-- (RKManagedObjectRequestOperation *)addCommentWithText:(NSString*)text
+- (AFHTTPRequestOperation *)addCommentWithText:(NSString*)text
                                                     Data:(NSData*)data
                                           mediaExtension:(NSString*)extension
                                               toSequence:(VSequence*)sequence
@@ -31,32 +31,35 @@
         [parameters setObject:[NSString stringWithFormat:@"%@", parent.remoteId] forKey:@"parent_id"];
     if (text)
         [parameters setObject:text forKey:@"text"];
-    if (data && extension)
-    {
-        [parameters setObject:data forKey:@"media_data"];
-        [parameters setObject:extension forKey:@"media_type"];
-    }
     
-    __block VSequence* commentOwner = sequence; //Keep the sequence around until the block gets called
+//    __block VSequence* commentOwner = sequence; //Keep the sequence around until the block gets called
     
     SuccessBlock fullSuccessBlock = ^(NSArray* comments)
     {
-        for (VComment* comment in comments)
-        {
-            VComment* commentInContext = (VComment*)[commentOwner.managedObjectContext objectWithID:[comment objectID]];
-            if (commentInContext)
-                [commentOwner addCommentsObject:commentInContext];
-        }
+//        for (VComment* comment in comments)
+//        {
+//            VComment* commentInContext = (VComment*)[commentOwner.managedObjectContext objectWithID:[comment objectID]];
+//            if (commentInContext)
+//                [commentOwner addCommentsObject:commentInContext];
+//        }
         if (success)
             success(comments);
     };
     
-    return [self POST:@"/api/comment/add"
-               object:nil
-           parameters:parameters
-         successBlock:fullSuccessBlock
-            failBlock:fail
-      paginationBlock:nil];
+    NSDictionary *allData, *allExtensions;
+    
+    if (data && extension)
+    {
+        allData = @{@"media_data":data};
+        allExtensions = @{@"media_data":extension};
+    }
+    
+    return [self upload:allData
+          fileExtension:allExtensions
+                 toPath:@"/api/comment/add"
+             parameters:parameters
+           successBlock:fullSuccessBlock
+              failBlock:fail];
 }
 
 - (RKManagedObjectRequestOperation *)removeComment:(VComment*)comment

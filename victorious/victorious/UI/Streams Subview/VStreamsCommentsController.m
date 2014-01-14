@@ -559,7 +559,7 @@ static NSString* CommentCache = @"CommentCache";
 
 - (void)didComposeWithText:(NSString *)text data:(NSData *)data mediaExtension:(NSString *)mediaExtension
 {
-    [[[VObjectManager sharedManager] addCommentWithText:text
+    [[VObjectManager sharedManager] addCommentWithText:text
                                                    Data:data
                                          mediaExtension:mediaExtension
                                              toSequence:_sequence
@@ -570,7 +570,7 @@ static NSString* CommentCache = @"CommentCache";
                                                [self updatePredicate];
                                            } failBlock:^(NSError *error) {
                                                VLog(@"Failed in creating comment with error: %@", error);
-                                           }] start];
+                                           }];
 }
 
 

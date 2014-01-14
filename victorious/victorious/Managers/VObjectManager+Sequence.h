@@ -85,6 +85,7 @@
                                               description:(NSString*)description
                                                  category:(NSString*)category
                                                 mediaData:(NSData*)mediaData
+                                                extension:(NSString*)extension
                                              successBlock:(SuccessBlock)success
                                                 failBlock:(FailBlock)fail;
 #pragma mark - StatSequence Methods
