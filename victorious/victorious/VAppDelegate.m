@@ -46,14 +46,14 @@
     [[[VObjectManager sharedManager] initialSequenceLoad] start];
     
     //TODO: This is test code so I don't have to freakin login in every time
-    [VLoginViewController sharedLoginViewController];
-    [[[VObjectManager sharedManager] loginToVictoriousWithEmail:@"b@b.com" password:@"password"
-      
-                                                   successBlock:^(NSArray *resultObjects)
-    {
-        [[NSNotificationCenter defaultCenter] postNotificationName:LoggedInChangedNotification
-                                                            object:[resultObjects firstObject]];
-    } failBlock:nil] start];
+//    [VLoginViewController sharedLoginViewController];
+//    [[[VObjectManager sharedManager] loginToVictoriousWithEmail:@"b@b.com" password:@"password"
+//      
+//                                                   successBlock:^(NSArray *resultObjects)
+//    {
+//        [[NSNotificationCenter defaultCenter] postNotificationName:LoggedInChangedNotification
+//                                                            object:[resultObjects firstObject]];
+//    } failBlock:nil] start];
 
     [TestFlight takeOff:@"02101c7d-4a01-4a44-8e8a-26dca03554aa"];
 
