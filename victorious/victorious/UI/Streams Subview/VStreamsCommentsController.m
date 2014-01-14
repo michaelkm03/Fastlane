@@ -398,8 +398,10 @@ static NSString* CommentCache = @"CommentCache";
              // TODO: bring up the compose dialog with @user
          }
      }];
-    [actionSheet showInView:self.view];
+
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    UIWindow *window = [[[UIApplication sharedApplication] delegate] window];
+    [actionSheet showInView:window];
 }
 
 

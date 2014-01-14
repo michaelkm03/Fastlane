@@ -54,6 +54,11 @@
 
 - (BOOL)isEqualToUser:(VUser *)user
 {
+    if(!self.remoteId || !user.remoteId)
+    {
+        return NO;
+    }
+    
     return [self.remoteId isEqualToNumber:user.remoteId];
 }
 
