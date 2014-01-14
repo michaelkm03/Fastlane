@@ -69,9 +69,12 @@
     }
     
     NSString* path = [NSString stringWithFormat:@"/api/sequence/detail_list_by_category/%@", category.name];
-    if (status.pagesLoaded) //only add page to the path if we've looked it up before.
+    if (!status.pagesLoaded)
     {
-        path = [path stringByAppendingFormat:@"/0/%lu/%lu", status.pagesLoaded + 1, (unsigned long)status.itemsPerPage];
+        path = [path stringByAppendingFormat:@"/0/%lu/%lu", (unsigned long)status.pagesLoaded, (unsigned long)status.itemsPerPage];
+    } else
+    {
+        path = [path stringByAppendingFormat:@"/0/%lu/%lu", (unsigned long)status.pagesLoaded + 1, (unsigned long)status.itemsPerPage];
     }
     
     

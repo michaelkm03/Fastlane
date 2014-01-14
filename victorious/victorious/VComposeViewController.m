@@ -10,6 +10,7 @@
 #import "VObjectManager+Comment.h"
 #import "VSequence.h"
 #import "VConstants.h"
+#import "VLoginViewController.h"
 
 @interface VComposeViewController() <UINavigationControllerDelegate, UIImagePickerControllerDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout>
 @property (weak, nonatomic) IBOutlet UITextField *textField;
@@ -35,6 +36,13 @@
 
 - (IBAction)cameraButtonAction:(id)sender
 {
+    
+    if(![VObjectManager sharedManager].mainUser)
+    {
+        [self presentViewController:[VLoginViewController sharedLoginViewController] animated:YES completion:NULL];
+        return;
+    }
+    
     [self.textField resignFirstResponder];
     
     UIImagePickerController* controller = [[UIImagePickerController alloc] init];
@@ -53,6 +61,13 @@
 
 - (IBAction)stickerButtonAction:(id)sender
 {
+    
+    if(![VObjectManager sharedManager].mainUser)
+    {
+        [self presentViewController:[VLoginViewController sharedLoginViewController] animated:YES completion:NULL];
+        return;
+    }
+    
     [self.textField resignFirstResponder];
     
     self.stickersView.dataSource = self;

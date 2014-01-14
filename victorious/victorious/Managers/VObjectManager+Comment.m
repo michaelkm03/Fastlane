@@ -36,7 +36,7 @@
         [parameters setObject:data forKey:@"media_data"];
         [parameters setObject:extension forKey:@"media_type"];
     }
-    
+
     NSString* path = [NSString stringWithFormat:@"/api/comment/add"];
     
     __block VSequence* commentOwner = sequence; //Keep the sequence around until the block gets called
