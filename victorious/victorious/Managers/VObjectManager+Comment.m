@@ -73,8 +73,6 @@
     [parameters setObject:[NSString stringWithFormat:@"%@", comment.remoteId] forKey:@"comment_id"];
     [parameters setObject:removalReason forKey:@"removal_reason"];
 
-    NSString* path = [NSString stringWithFormat:@"/api/comment/remove"];
-
     __block VComment* commentToRemove = comment;//keep the comment in memory til we get the response back
     
     SuccessBlock fullSuccessBlock = ^(NSArray* comments)
@@ -86,7 +84,7 @@
             success(comments);
     };
     
-    return [self POST:path
+    return [self POST:@"/api/comment/remove"
                object:nil
            parameters:parameters
          successBlock:fullSuccessBlock
@@ -101,9 +99,7 @@
     NSMutableDictionary* parameters = [[NSMutableDictionary alloc] initWithCapacity:1];
     [parameters setObject:[NSString stringWithFormat:@"%@", comment.remoteId] forKey:@"comment_id"];
     
-    NSString* path = [NSString stringWithFormat:@"/api/comment/flag"];
-    
-    return [self POST:path
+    return [self POST:@"/api/comment/flag"
                object:nil
            parameters:parameters
          successBlock:success
@@ -121,9 +117,7 @@
     [parameters setObject:[NSString stringWithFormat:@"%@", comment.remoteId] forKey:@"comment_id"];
     [parameters setObject:type forKey:@"vote"];
     
-    NSString* path = [NSString stringWithFormat:@"/api/comment/vote"];
-    
-    return [self POST:path
+    return [self POST:@"/api/comment/vote"
                object:nil
            parameters:parameters
          successBlock:success
