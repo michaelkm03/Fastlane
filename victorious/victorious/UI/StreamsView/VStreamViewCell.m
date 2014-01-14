@@ -14,6 +14,7 @@
 #import "VUser.h"
 
 NSString* kStreamsWillSegueNotification = @"kStreamsWillSegueNotification";
+NSString *kStreamsWillShareNotification = @"kStreamsWillShareNotification";
 
 @interface VStreamViewCell()
 
@@ -84,7 +85,7 @@ NSString* kStreamsWillSegueNotification = @"kStreamsWillSegueNotification";
 
 - (IBAction)shareButtonAction:(id)sender
 {
-    
+    [[NSNotificationCenter defaultCenter] postNotificationName:kStreamsWillShareNotification object:self.sequence];
 }
 
 

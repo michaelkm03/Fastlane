@@ -13,6 +13,7 @@
 static NSString *kStreamViewCellIdentifier = @"VStreamViewCell";
 
 extern NSString *kStreamsWillSegueNotification;
+extern NSString *kStreamsWillShareNotification;
 
 @interface VStreamViewCell : VTableViewCell
 
