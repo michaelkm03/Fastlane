@@ -64,13 +64,6 @@ static  NSString*   kNewsCellViewIdentifier       =   @"VNewsCell";
         ;
 }
 
-////- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
-////{
-////  if message, return X
-////  if message and reply, return Y
-////  if news, return Z
-////}
-
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     UITableViewCell*    cell;
