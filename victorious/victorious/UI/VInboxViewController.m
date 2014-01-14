@@ -144,7 +144,8 @@ static  NSString*   kNewsCellViewIdentifier       =   @"VNewsCell";
 - (void)refreshAction
 {
     NSManagedObjectContext* context =  [RKObjectManager sharedManager].managedObjectStore.persistentStoreManagedObjectContext;
-    [context performBlockAndWait:^{
+    [context performBlockAndWait:^
+    {
         
         NSError *error;
         if (![self.fetchedResultsController performFetch:&error])

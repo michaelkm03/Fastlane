@@ -591,17 +591,16 @@ static NSString* CommentCache = @"CommentCache";
 - (void)viewWillDisappear:(BOOL)animated
 {    
     //Whenever we leave this view we need to tell the server what was read.
-    if ([VObjectManager sharedManager].isAuthorized)
+    if ([VObjectManager sharedManager].isAuthorized && [_newlyReadComments count])
     {
         __block NSMutableArray* readComments = _newlyReadComments;
         [[[VObjectManager sharedManager] readComments:readComments
-                                         successBlock:^(NSArray *resultObjects) {
-                                             [readComments removeAllObjects];
-                                         }
+                                         successBlock:nil
                                             failBlock:^(NSError *error) {
                                                 VLog(@"Warning: failed to mark following comments as read: %@", readComments);
                                             }] start];
     }
+    _newlyReadComments = nil;
     [super viewWillDisappear:animated];
 }
 
