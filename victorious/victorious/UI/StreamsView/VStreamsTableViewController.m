@@ -295,6 +295,10 @@ typedef NS_ENUM(NSInteger, VStreamScope)
     else if ([sequence isPoll])
         return [tableView dequeueReusableCellWithIdentifier:kStreamDoublePollCellIdentifier
                                                forIndexPath:indexPath];
+
+    else if ([sequence isVideo])
+        return [tableView dequeueReusableCellWithIdentifier:kStreamVideoCellIdentifier
+                                               forIndexPath:indexPath];
     
     else
         return [tableView dequeueReusableCellWithIdentifier:kStreamViewCellIdentifier

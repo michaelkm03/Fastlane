@@ -47,12 +47,14 @@
         [indicator startAnimating];
         
         [[[VObjectManager sharedManager] fetchSequence:self.sequence
-                                         successBlock:^(NSArray *resultObjects) {
+                                         successBlock:^(NSArray *resultObjects)
+                                         {
                                              [indicator stopAnimating];
                                              [indicator removeFromSuperview];
                                              [self playSequence];
                                          }
-                                            failBlock:^(NSError *error) {
+                                            failBlock:^(NSError *error)
+                                            {
                                                 [indicator stopAnimating];
                                                 [indicator removeFromSuperview];
                                                 UIAlertView*    alert   =   [[UIAlertView alloc] initWithTitle:@"Error" message:error.localizedDescription delegate:self cancelButtonTitle:@"Understood" otherButtonTitles:nil];
@@ -67,19 +69,19 @@
 
 - (void)streamsWillSegue:(NSNotification *) notification
 {
-    [_mpController stop];
+    [self.mpController stop];
 }
 
 - (void)playSequence
 {
-
     VAsset* asset = [self.sequence firstAsset];
-    
-    _mpController = [[MPMoviePlayerController alloc] initWithContentURL:[NSURL URLWithString: asset.data]];
-    _mpController.view.frame = self.previewImageView.frame;
-    [self insertSubview:_mpController.view aboveSubview:self.previewImageView];
 
-    [_mpController play];
+    self.mpController = [[MPMoviePlayerController alloc] initWithContentURL:[NSURL URLWithString:asset.data]];
+    [self.mpController prepareToPlay];
+    self.mpController.view.frame = self.previewImageView.bounds;
+    [self insertSubview:self.mpController.view aboveSubview:self.previewImageView];
+
+    [self.mpController play];
 }
 
 @end
