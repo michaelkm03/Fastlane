@@ -15,6 +15,11 @@
 #import "VSequence.h"
 #import "VUser.h"
 
+@interface VObjectManager (UserProperties)
+@property (nonatomic, strong) SuccessBlock fullSuccess;
+@property (nonatomic, strong) FailBlock fullFail;
+@end
+
 @implementation VObjectManager (Users)
 
 - (RKManagedObjectRequestOperation *)fetchUser:(NSNumber*)userId
