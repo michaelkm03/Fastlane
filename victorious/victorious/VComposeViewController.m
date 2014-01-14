@@ -79,13 +79,10 @@
 - (IBAction)sendButtonAction:(id)sender
 {
     [self.textField resignFirstResponder];
-    if([self.textField.text length])
-    {
-        [self.delegate didComposeWithText:self.textField.text data:self.media mediaExtension:self.mediaExtension];
-        self.textField.text = nil;
-        self.mediaExtension = nil;
-        self.media = nil;
-    }
+    [self.delegate didComposeWithText:self.textField.text data:self.media mediaExtension:self.mediaExtension];
+    self.textField.text = nil;
+    self.mediaExtension = nil;
+    self.media = nil;
 }
 
 #pragma mark - UIImagePickerControllerDelegate
