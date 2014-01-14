@@ -12,6 +12,7 @@
 #import "VThemeManager.h"
 #import "NSDate+timeSince.h"
 #import "VUser.h"
+#import "VRootNavigationController.h"
 
 NSString* kStreamsWillSegueNotification = @"kStreamsWillSegueNotification";
 NSString *kStreamsWillShareNotification = @"kStreamsWillShareNotification";
@@ -25,7 +26,7 @@ NSString *kStreamsWillShareNotification = @"kStreamsWillShareNotification";
 @property (weak, nonatomic) IBOutlet UIButton *shareButton;
 @property (weak, nonatomic) IBOutlet UIButton *likeButton;
 @property (weak, nonatomic) IBOutlet UIButton *commentButton;
-@property (weak, nonatomic) IBOutlet UIImageView *profileImageView;
+@property (weak, nonatomic) IBOutlet UIButton *profileImageButton;
 
 @end
 
@@ -40,8 +41,8 @@ NSString *kStreamsWillShareNotification = @"kStreamsWillShareNotification";
 
 - (void)layoutSubviews
 {
-    self.profileImageView.layer.cornerRadius = CGRectGetHeight(self.profileImageView.bounds)/2;
-    self.profileImageView.clipsToBounds = YES;
+    self.profileImageButton.layer.cornerRadius = CGRectGetHeight(self.profileImageButton.bounds)/2;
+    self.profileImageButton.clipsToBounds = YES;
 }
 
 - (void)setSequence:(VSequence *)sequence
@@ -59,8 +60,8 @@ NSString *kStreamsWillShareNotification = @"kStreamsWillShareNotification";
     self.dateLabel.text = [self.sequence.releasedAt timeSince];
     [self.previewImageView setImageWithURL:[NSURL URLWithString:_sequence.previewImage]
                              placeholderImage:[UIImage new]];
-    [self.profileImageView setImageWithURL:[NSURL URLWithString:self.sequence.user.pictureUrl]
-                          placeholderImage:[UIImage imageNamed:@"profile_thumb"]];
+//    [self.profileImageView setImageWithURL:[NSURL URLWithString:self.sequence.user.pictureUrl]
+//                          placeholderImage:[UIImage imageNamed:@"profile_thumb"]];
 }
 
 - (IBAction)likeButtonAction:(id)sender
@@ -88,5 +89,10 @@ NSString *kStreamsWillShareNotification = @"kStreamsWillShareNotification";
     [[NSNotificationCenter defaultCenter] postNotificationName:kStreamsWillShareNotification object:self.sequence];
 }
 
+- (IBAction)profileButtonAction:(id)sender {
+    VRootNavigationController *rootViewController =
+    (VRootNavigationController *)[[[[UIApplication sharedApplication] delegate] window] rootViewController];
+    [rootViewController showUserProfileForUser:self.sequence.user];
+}
 
 @end

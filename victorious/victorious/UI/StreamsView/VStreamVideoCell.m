@@ -78,7 +78,7 @@
 
     self.mpController = [[MPMoviePlayerController alloc] initWithContentURL:[NSURL URLWithString:asset.data]];
     [self.mpController prepareToPlay];
-    self.mpController.view.frame = self.previewImageView.bounds;
+    self.mpController.view.frame = self.previewImageView.frame;
     [self insertSubview:self.mpController.view aboveSubview:self.previewImageView];
 
     [self.mpController play];

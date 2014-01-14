@@ -17,10 +17,6 @@
                         <rect key="frame" x="0.0" y="60" width="320" height="320"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     </imageView>
-                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="VIJ-SV-arN" userLabel="User Image View">
-                        <rect key="frame" x="20" y="20" width="32" height="32"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                    </imageView>
                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Username" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4BA-qs-0sG">
                         <rect key="frame" x="60" y="17" width="79" height="21"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -75,6 +71,16 @@
                             <action selector="commentButtonAction:" destination="ONd-u8-hug" eventType="touchUpInside" id="NTX-AX-2Xs"/>
                         </connections>
                     </button>
+                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="sT5-hN-nDW">
+                        <rect key="frame" x="20" y="20" width="32" height="32"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <state key="normal" image="profile_thumb">
+                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                        </state>
+                        <connections>
+                            <action selector="profileButtonAction:" destination="ONd-u8-hug" eventType="touchUpInside" id="mRC-yu-lAW"/>
+                        </connections>
+                    </button>
                 </subviews>
             </tableViewCellContentView>
             <connections>
@@ -84,7 +90,7 @@
                 <outlet property="likeButton" destination="xnP-0R-e3a" id="yt3-sH-wkK"/>
                 <outlet property="locationLabel" destination="EMt-zr-EER" id="lx9-tv-ZLn"/>
                 <outlet property="previewImageView" destination="RVh-hy-y2K" id="RVb-pz-KXk"/>
-                <outlet property="profileImageView" destination="VIJ-SV-arN" id="xPU-rw-q3I"/>
+                <outlet property="profileImageButton" destination="sT5-hN-nDW" id="WuV-rF-bW7"/>
                 <outlet property="shareButton" destination="jGu-rr-Q06" id="SMH-4P-zeK"/>
                 <outlet property="usernameLabel" destination="4BA-qs-0sG" id="8Qv-Ho-l6f"/>
                 <outletCollection property="imageViews" destination="D3j-da-Kgn" id="Ew2-g5-VV6"/>
@@ -103,5 +109,6 @@
         <image name="StreamDate" width="11" height="11"/>
         <image name="StreamHeart" width="14" height="13"/>
         <image name="StreamShare" width="17" height="5"/>
+        <image name="profile_thumb" width="50" height="50"/>
     </resources>
 </document>

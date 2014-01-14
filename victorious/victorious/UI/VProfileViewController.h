@@ -14,4 +14,6 @@
 
 @property (nonatomic, readwrite, strong) VUser*     profile;
 
+- (void)showCloseNavigationButton;
+
 @end

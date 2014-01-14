@@ -144,6 +144,14 @@
     }
 }
 
+- (void)showUserProfileForUser:(VUser *)user
+{
+    VProfileViewController* profileViewController = [VProfileViewController sharedProfileViewController];
+    profileViewController.profile = user;
+    [profileViewController showCloseNavigationButton];
+    [self presentViewController:[[UINavigationController alloc] initWithRootViewController:profileViewController] animated:YES completion:nil];
+}
+
 - (void)mailComposeController:(MFMailComposeViewController*)controller didFinishWithResult:(MFMailComposeResult)result error:(NSError*)error
 {
     if (MFMailComposeResultFailed == result)
