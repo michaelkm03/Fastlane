@@ -23,6 +23,7 @@
 #import "BBlock.h"
 #import "VCreateViewController.h"
 #import "VCreatePollViewController.h"
+#import "VThemeManager.h"
 
 typedef NS_ENUM(NSInteger, VStreamScope)
 {
@@ -75,6 +76,17 @@ typedef NS_ENUM(NSInteger, VStreamScope)
                                                                          style:UIBarButtonItemStylePlain
                                                                         target:self
                                                                         action:@selector(displaySearchBar:)];
+
+    [[NSNotificationCenter defaultCenter]
+     addObserver:self selector:@selector(willShareSequence:)
+     name:kStreamsWillShareNotification object:nil];
+}
+
+- (void)viewDidDisappear:(BOOL)animated
+{
+    [super viewDidDisappear:animated];
+
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 - (IBAction)addButtonAction:(id)sender
@@ -312,6 +324,21 @@ typedef NS_ENUM(NSInteger, VStreamScope)
             [self.refreshControl endRefreshing];
         }
     }
+}
+
+#pragma mark - Notification
+
+- (void)willShareSequence:(NSNotification *)notification
+{
+    VSequence *sequence = (VSequence *)notification.object;
+    UIActivityViewController *activityViewController =
+    [[UIActivityViewController alloc] initWithActivityItems:@[sequence.name] applicationActivities:nil];
+    activityViewController.completionHandler = ^(NSString *activityType, BOOL completed){
+        [[VThemeManager sharedThemeManager] applyStyling];
+    };
+    [self presentViewController:activityViewController animated:YES completion:^{
+        [[VThemeManager sharedThemeManager] removeStyling];
+    }];
 }
 
 #pragma mark - VCreateSequenceDelegate
