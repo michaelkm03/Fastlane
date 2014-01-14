@@ -223,9 +223,7 @@
     [parameters setObject:[NSString stringWithFormat:@"%@", sequence.remoteId] forKey:@"sequence_id"];
     [parameters setObject:type forKey:@"shared_to"];
     
-    NSString* path = [NSString stringWithFormat:@"/api/sequence/share"];
-    
-    return [self POST:path
+    return [self POST:@"/api/sequence/share"
                object:nil
            parameters:parameters
          successBlock:success
@@ -257,9 +255,7 @@
     [parameters setObject:[NSString stringWithFormat:@"%@", sequence.remoteId] forKey:@"sequence_id"];
     [parameters setObject:type forKey:@"vote"];
     
-    NSString* path = [NSString stringWithFormat:@"/api/sequence/vote"];
-    
-    return [self POST:path
+    return [self POST:@"/api/sequence/vote"
                object:nil
            parameters:parameters
          successBlock:success
@@ -298,8 +294,6 @@
     if (!poll || !answer)
         return nil;
     
-    NSString* path = [NSString stringWithFormat:@"/api/pollresult/create"];
-    
     SuccessBlock fullSuccess = ^(NSArray* resultObjects)
     {
         VPollResult *newPollResult = [NSEntityDescription
@@ -314,7 +308,7 @@
             success(resultObjects);
     };
     
-    return [self POST:path
+    return [self POST:@"/api/pollresult/create"
                object:nil
            parameters:@{@"sequence_id" : poll.remoteId, @"answer_id" : answer.remoteId}
          successBlock:fullSuccess
