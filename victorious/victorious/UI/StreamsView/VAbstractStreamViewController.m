@@ -22,12 +22,16 @@ NSString* const kSearchCache = @"SearchCache";
 {
     [super viewDidLoad];
 
-    NSError *error;
-	if (![self.fetchedResultsController performFetch:&error])
-    {
-		// Update to handle the error appropriately.
-		NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
-	}
+    NSManagedObjectContext *context = [RKObjectManager sharedManager].managedObjectStore.persistentStoreManagedObjectContext;
+    [context performBlockAndWait:^()
+     {
+        NSError *error;
+        if (![self.fetchedResultsController performFetch:&error])
+        {
+            // Update to handle the error appropriately.
+            NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+        }
+     }];
     
     [self registerCells];
 }
@@ -277,13 +281,17 @@ forFetchedResultsController:(NSFetchedResultsController *)fetchedResultsControll
     [controller.fetchRequest setPredicate:predicate];
     
     //We need to perform the fetch again
-    NSError *error;
-	if (![controller performFetch:&error] && error)
-    {
-		//TODO: Update to handle the error appropriately.
-		NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
-		exit(-1);  // Fail
-	}
+    NSManagedObjectContext *context = [RKObjectManager sharedManager].managedObjectStore.persistentStoreManagedObjectContext;
+    [context performBlockAndWait:^()
+     {
+        NSError *error;
+        if (![controller performFetch:&error] && error)
+        {
+            //TODO: Update to handle the error appropriately.
+            NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+            exit(-1);  // Fail
+        }
+     }];
     
     //Then reload the data
     [[self tableViewForFetchedResultsController:controller] reloadData];

@@ -11,6 +11,7 @@
 
 #import "VComment.h"
 #import "VSequence+Fetcher.h"
+#import "VUser+RestKit.h"
 
 #import "VObjectManager+Login.h"
 #import "VObjectManager+Sequence.h"
@@ -304,7 +305,15 @@ static NSString* CommentCache = @"CommentCache";
 
 - (void)configureCell:(UITableViewCell *)theCell atIndexPath:(NSIndexPath *)theIndexPath
 {
+    UITableViewCell *cell = nil;
     VComment *comment = [self.fetchedResultsController objectAtIndexPath:theIndexPath];
+    if([comment.user isEqualToUser:[VObjectManager sharedManager].mainUser])
+    {
+        cell = [self.tableView dequeueReusableCellWithIdentifier:kOtherCommentCellIdentifier forIndexPath:theIndexPath];
+    }else
+    {
+        cell = [self.tableView dequeueReusableCellWithIdentifier:kCommentCellIdentifier forIndexPath:theIndexPath];
+    }
     [(VCommentCell*)theCell setCommentOrMessage:comment];
 }
 

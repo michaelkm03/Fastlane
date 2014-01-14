@@ -51,4 +51,10 @@
                                                        keyPath:@"payload"
                                                    statusCodes:RKStatusCodeIndexSetForClass(RKStatusCodeClassSuccessful)];
 }
+
+- (BOOL)isEqualToUser:(VUser *)user
+{
+    return [self.remoteId isEqualToNumber:user.remoteId];
+}
+
 @end

@@ -12,6 +12,7 @@
 @class VMessage;
 
 static NSString *kCommentCellIdentifier = @"VCommentCell";
+static NSString *kOtherCommentCellIdentifier = @"VOtherCommentCell";
 
 @interface VCommentCell : VTableViewCell
 

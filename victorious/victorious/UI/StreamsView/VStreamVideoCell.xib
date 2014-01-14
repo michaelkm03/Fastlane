@@ -140,6 +140,7 @@
                 <outlet property="likeButton" destination="TM2-Fl-FDk" id="fgB-he-6Wt"/>
                 <outlet property="locationLabel" destination="Ew4-W5-zBZ" id="T5G-g0-nMv"/>
                 <outlet property="previewImageView" destination="X95-hS-XNg" id="BIF-kx-KyG"/>
+                <outlet property="profileImageView" destination="Kaf-21-oQt" id="m0t-Vr-CSi"/>
                 <outlet property="shareButton" destination="0Ps-jq-4hs" id="jwM-9o-cle"/>
                 <outlet property="usernameLabel" destination="ZQB-qj-B4I" id="blV-6C-d7c"/>
                 <outletCollection property="imageViews" destination="EnC-ed-tLe" id="jUW-nk-Mhg"/>
