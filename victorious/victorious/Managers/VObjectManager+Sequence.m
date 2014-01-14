@@ -365,7 +365,8 @@
           parameters:nil
         successBlock:success
            failBlock:fail
-     paginationBlock:nil];}
+     paginationBlock:nil];
+}
 
 - (RKManagedObjectRequestOperation * )createPollWithName:(NSString*)name
                                              description:(NSString*)description
