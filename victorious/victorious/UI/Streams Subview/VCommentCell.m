@@ -134,11 +134,21 @@
     
 }
 
-- (IBAction)profileButtonAction:(id)sender {
+- (IBAction)profileButtonAction:(id)sender
+{
     VRootNavigationController *rootViewController =
     (VRootNavigationController *)[[[[UIApplication sharedApplication] delegate] window] rootViewController];
-    VUser *user = (VUser *)[self.commentOrMessage user];
-    [rootViewController showUserProfileForUser:user];
+    
+    if([self.commentOrMessage isKindOfClass:[VComment class]])
+    {
+        VComment* comment = (VComment *)self.commentOrMessage;
+        [rootViewController showUserProfileForUserID:comment.userId.integerValue];
+    }
+    else
+    {
+        VMessage* message = (VMessage *)self.commentOrMessage;
+        [rootViewController showUserProfileForUserID:message.senderUserId.integerValue];
+    }
 }
 
 @end

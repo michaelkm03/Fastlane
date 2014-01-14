@@ -1442,7 +1442,7 @@
                         <viewControllerLayoutGuide type="bottom" id="xdh-NM-TCQ"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="ONv-MK-ctL">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="120"/>
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
@@ -1863,7 +1863,7 @@
         <simulatedScreenMetrics key="destination" type="retina4"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
-        <segue reference="Oqu-Ea-RjF"/>
-        <segue reference="JMC-qY-BWo"/>
+        <segue reference="3WL-bD-3TL"/>
+        <segue reference="fO5-PP-Kl2"/>
     </inferredMetricsTieBreakers>
 </document>

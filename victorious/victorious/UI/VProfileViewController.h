@@ -12,8 +12,7 @@
 
 + (VProfileViewController *)sharedProfileViewController;
 
-@property (nonatomic, readwrite, strong) VUser*     profile;
-
 - (void)showCloseNavigationButton;
 
+@property (nonatomic, readwrite, assign) NSUInteger userID;
 @end
