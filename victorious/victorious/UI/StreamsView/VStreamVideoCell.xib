@@ -153,14 +153,6 @@
                 <outletCollection property="buttons" destination="0Ps-jq-4hs" id="HWj-fF-XEH"/>
             </connections>
         </tableViewCell>
-        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="aOb-f7-KfX">
-            <rect key="frame" x="0.0" y="0.0" width="73" height="44"/>
-            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-            <fontDescription key="fontDescription" type="system" pointSize="15"/>
-            <state key="normal" title="Button">
-                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-            </state>
-        </button>
     </objects>
     <resources>
         <image name="Play" width="33" height="33"/>
