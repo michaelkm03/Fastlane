@@ -39,7 +39,9 @@
     self = [super initWithNibName:@"VSequencePlayerViewController" bundle:[NSBundle mainBundle]];
     if (self)
     {
-        _mpController = [[MPMoviePlayerController alloc] initWithContentURL:nil];
+        self.mpController = [[MPMoviePlayerController alloc] initWithContentURL:nil];
+        [self.mpController prepareToPlay];
+        self.mpController.view.frame = self.view.frame;
         [self.view addSubview:_mpController.view];
         self.sequence = sequence;
     }
