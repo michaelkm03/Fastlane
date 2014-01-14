@@ -15,7 +15,7 @@
 @interface VComposeViewController() <UINavigationControllerDelegate, UIImagePickerControllerDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout>
 @property (weak, nonatomic) IBOutlet UITextField *textField;
 @property (weak, nonatomic) IBOutlet UICollectionView* stickersView;
-@property (weak, nonatomic) NSData* media;
+@property (strong, nonatomic) NSData* media;
 @property (nonatomic, strong) NSString*  mediaExtension;
 @property (nonatomic, strong) NSArray* stickers;
 @property (nonatomic, strong) NSData* selectedSticker;
@@ -81,7 +81,7 @@
     [self.textField resignFirstResponder];
     if([self.textField.text length])
     {
-        [self.delegate didComposeWithText:self.textField.text data:self.selectedSticker mediaExtension:self.mediaExtension];
+        [self.delegate didComposeWithText:self.textField.text data:self.media mediaExtension:self.mediaExtension];
         self.textField.text = nil;
         self.mediaExtension = nil;
         self.media = nil;
