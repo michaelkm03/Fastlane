@@ -109,9 +109,6 @@ typedef NS_ENUM(NSInteger, VStreamScope)
     
     if ([sequence isPoll])
         return 344;
-    
-    if ([sequence isVideo])
-        return 450;
 
     return 450;
 }
