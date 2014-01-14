@@ -89,10 +89,11 @@ NSString *kStreamsWillShareNotification = @"kStreamsWillShareNotification";
     [[NSNotificationCenter defaultCenter] postNotificationName:kStreamsWillShareNotification object:self.sequence];
 }
 
-- (IBAction)profileButtonAction:(id)sender {
+- (IBAction)profileButtonAction:(id)sender
+{
     VRootNavigationController *rootViewController =
     (VRootNavigationController *)[[[[UIApplication sharedApplication] delegate] window] rootViewController];
-    [rootViewController showUserProfileForUser:self.sequence.user];
+    [rootViewController showUserProfileForUserID:self.sequence.createdBy.integerValue];
 }
 
 @end

@@ -19,6 +19,7 @@
 #import "VCommunityStreamsTableViewController.h"
 #import "VForumStreamTableViewController.h"
 #import "VInboxViewController.h"
+#import "VUser+RestKit.h"
 
 @import MessageUI;
 
@@ -87,7 +88,7 @@
             {
                 //  Show Profile
                 VProfileViewController* profileViewController = [VProfileViewController sharedProfileViewController];
-                profileViewController.profile = nil;    //  We want our own profile
+                profileViewController.userID = -1;    //  We want our own profile
                 self.viewControllers = @[profileViewController];
                 [self dismissViewControllerAnimated:YES completion:nil];
             }
@@ -144,10 +145,10 @@
     }
 }
 
-- (void)showUserProfileForUser:(VUser *)user
+- (void)showUserProfileForUserID:(NSInteger)userID
 {
     VProfileViewController* profileViewController = [VProfileViewController sharedProfileViewController];
-    profileViewController.profile = user;
+    profileViewController.userID = userID;
     [profileViewController showCloseNavigationButton];
     [self presentViewController:[[UINavigationController alloc] initWithRootViewController:profileViewController] animated:YES completion:nil];
 }
