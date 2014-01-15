@@ -173,7 +173,7 @@
     NSString* path = [NSString stringWithFormat:@"/api/comment/all/%@", sequence.remoteId];
     if (status.pagesLoaded) //only add page to the path if we've looked it up before.
     {
-        path = [path stringByAppendingFormat:@"/%lu/%lu", status.pagesLoaded + 1, (unsigned long)status.itemsPerPage];
+        path = [path stringByAppendingFormat:@"/%lu/%lu", (unsigned long)status.pagesLoaded + 1, (unsigned long)status.itemsPerPage];
     }
     
     __block VSequence* commentOwner = sequence; //Keep the sequence around until the block gets called
