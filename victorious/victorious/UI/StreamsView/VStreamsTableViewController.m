@@ -115,6 +115,9 @@ typedef NS_ENUM(NSInteger, VStreamScope)
     
     if ([sequence isPoll])
         return 344;
+    
+    else if (([sequence isVideo] ||[sequence isForum]) && [[sequence firstAsset].type isEqualToString:VConstantsMediaTypeYoutube])
+        return 315;
 
     return 450;
 }
@@ -286,6 +289,10 @@ typedef NS_ENUM(NSInteger, VStreamScope)
          forCellReuseIdentifier:kStreamViewCellIdentifier];
     [self.searchDisplayController.searchResultsTableView registerNib:[UINib nibWithNibName:kStreamViewCellIdentifier bundle:[NSBundle mainBundle]] forCellReuseIdentifier:kStreamViewCellIdentifier];
     
+    [self.tableView registerNib:[UINib nibWithNibName:kStreamYoutubeCellIdentifier bundle:[NSBundle mainBundle]]
+         forCellReuseIdentifier:kStreamYoutubeCellIdentifier];
+    [self.searchDisplayController.searchResultsTableView registerNib:[UINib nibWithNibName:kStreamYoutubeCellIdentifier bundle:[NSBundle mainBundle]] forCellReuseIdentifier:kStreamYoutubeCellIdentifier];
+    
     [self.tableView registerNib:[UINib nibWithNibName:kStreamVideoCellIdentifier bundle:[NSBundle mainBundle]]
          forCellReuseIdentifier:kStreamVideoCellIdentifier];
     [self.searchDisplayController.searchResultsTableView registerNib:[UINib nibWithNibName:kStreamVideoCellIdentifier bundle:[NSBundle mainBundle]] forCellReuseIdentifier:kStreamVideoCellIdentifier];
@@ -303,7 +310,11 @@ typedef NS_ENUM(NSInteger, VStreamScope)
 {
     VSequence* sequence = (VSequence*)[[self fetchedResultsControllerForTableView:tableView] objectAtIndexPath:indexPath];
     
-    if ([sequence isForum]  && ![[sequence firstAsset].type isEqualToString:VConstantsMediaTypeYoutube])
+    if ([sequence isForum]  && [[sequence firstAsset].type isEqualToString:VConstantsMediaTypeYoutube])
+        return [tableView dequeueReusableCellWithIdentifier:kStreamYoutubeCellIdentifier
+                                               forIndexPath:indexPath];
+    
+    else if ([sequence isForum])
         return [tableView dequeueReusableCellWithIdentifier:kStreamVideoCellIdentifier
                                                forIndexPath:indexPath];
     
@@ -314,8 +325,12 @@ typedef NS_ENUM(NSInteger, VStreamScope)
     else if ([sequence isPoll])
         return [tableView dequeueReusableCellWithIdentifier:kStreamDoublePollCellIdentifier
                                                forIndexPath:indexPath];
-
-    else if ([sequence isVideo] && ![[sequence firstAsset].type isEqualToString:VConstantsMediaTypeYoutube])
+    
+    else if ([sequence isVideo] && [[sequence firstAsset].type isEqualToString:VConstantsMediaTypeYoutube])
+        return [tableView dequeueReusableCellWithIdentifier:kStreamYoutubeCellIdentifier
+                                               forIndexPath:indexPath];
+    
+    else if ([sequence isVideo])
         return [tableView dequeueReusableCellWithIdentifier:kStreamVideoCellIdentifier
                                                forIndexPath:indexPath];
     
