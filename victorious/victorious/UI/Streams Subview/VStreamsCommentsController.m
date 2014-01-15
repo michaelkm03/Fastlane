@@ -126,12 +126,16 @@ static NSString* CommentCache = @"CommentCache";
 {
     SuccessBlock success = ^(NSArray* resultObjects)
     {
-        NSError *error;
-        if (![self.fetchedResultsController performFetch:&error] && error)
-        {
-            // Update to handle the error appropriately.
-            NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
-        }
+        NSManagedObjectContext* context =  [RKObjectManager sharedManager].managedObjectStore.persistentStoreManagedObjectContext;
+        [context performBlockAndWait:^
+         {
+            NSError *error;
+            if (![self.fetchedResultsController performFetch:&error] && error)
+            {
+                // Update to handle the error appropriately.
+                NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+            }
+         }];
         
         [self.refreshControl endRefreshing];
     };
@@ -419,13 +423,17 @@ static NSString* CommentCache = @"CommentCache";
     NSPredicate* sequenceFilter = [NSPredicate predicateWithFormat:@"sequenceId == %@", _sequence.remoteId];
     [fetchRequest setPredicate:sequenceFilter];
     
-    //We need to perform the fetch again
-    NSError *error = nil;
-	if (![self.fetchedResultsController performFetch:&error] && error)
-    {
-		// Update to handle the error appropriately.
-		NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
-	}
+    NSManagedObjectContext* context =  [RKObjectManager sharedManager].managedObjectStore.persistentStoreManagedObjectContext;
+    [context performBlockAndWait:^
+     {
+        //We need to perform the fetch again
+        NSError *error = nil;
+        if (![self.fetchedResultsController performFetch:&error] && error)
+        {
+            // Update to handle the error appropriately.
+            NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+        }
+     }];
     
     //Then reload the data
     [self.tableView reloadData];

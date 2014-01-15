@@ -28,12 +28,16 @@ static NSString* kStreamCache = @"StreamCache";
 {
     [super viewDidLoad];
 
-    NSError *error;
-    if (![self.fetchedResultsController performFetch:&error] && error)
-    {
-        // Update to handle the error appropriately.
-        NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
-    }
+    NSManagedObjectContext *context = [RKObjectManager sharedManager].managedObjectStore.persistentStoreManagedObjectContext;
+    [context performBlockAndWait:^()
+     {
+         NSError *error;
+        if (![self.fetchedResultsController performFetch:&error] && error)
+        {
+            // Update to handle the error appropriately.
+            NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+        }
+     }];
 }
 
 - (void)viewWillLayoutSubviews{
