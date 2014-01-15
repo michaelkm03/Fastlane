@@ -138,7 +138,12 @@
     
     // Handle a still image capture
     if (CFStringCompare((CFStringRef)info[UIImagePickerControllerMediaType], kUTTypeImage, 0) == kCFCompareEqualTo)
+    {
         imageToSave = (UIImage *)info[UIImagePickerControllerEditedImage] ?: (UIImage *)info[UIImagePickerControllerOriginalImage];
+        UIImageWriteToSavedPhotosAlbum(imageToSave, nil, nil, nil);
+        
+        //  TODO - Upload profile to server
+    }
     
     [self dismissViewControllerAnimated:YES completion:nil];
 }

@@ -149,7 +149,7 @@ CGFloat VCreateViewControllerLargePadding = 20;
 
     UILabel *characterCountLabel = [UILabel autoLayoutView];
     characterCountLabel.textColor = [[VThemeManager sharedThemeManager] themedColorForKeyPath:@"theme.color.text.post"];
-    characterCountLabel.text = [NSString stringWithFormat:@"%lu", VConstantsMessageLength];
+    characterCountLabel.text = [NSString stringWithFormat:@"%lu", (unsigned long)VConstantsMessageLength];
     [self.view addSubview:characterCountLabel];
     [characterCountLabel pinEdges:JRTViewPinRightEdge toSameEdgesOfView:textView inset:VCreateViewControllerPadding];
     [characterCountLabel pinEdges:JRTViewPinBottomEdge toSameEdgesOfView:textView inset:VCreateViewControllerPadding];
@@ -306,6 +306,10 @@ CGFloat VCreateViewControllerLargePadding = 20;
         self.mediaData = [NSData dataWithContentsOfURL:mediaURL];
         self.mediaType = [mediaURL pathExtension];
 
+        NSString* path = (NSString *)[info[UIImagePickerControllerMediaURL] path];
+        if (UIVideoAtPathIsCompatibleWithSavedPhotosAlbum(path))
+            UISaveVideoAtPathToSavedPhotosAlbum(path, nil, nil, nil);
+        
         AVURLAsset *asset = [[AVURLAsset alloc] initWithURL:mediaURL options:nil];
         AVAssetImageGenerator *gen = [[AVAssetImageGenerator alloc] initWithAsset:asset];
         gen.appliesPreferredTrackTransform = YES;
@@ -327,6 +331,9 @@ CGFloat VCreateViewControllerLargePadding = 20;
         {
             image = [info objectForKey:UIImagePickerControllerOriginalImage];
         }
+        
+        UIImageWriteToSavedPhotosAlbum(image, nil, nil, nil);
+
         self.mediaData = [NSData dataWithData:UIImagePNGRepresentation(image)];
         self.mediaType = @"png";
 

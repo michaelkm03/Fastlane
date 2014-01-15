@@ -91,7 +91,7 @@ UIImagePickerControllerDelegate, UINavigationControllerDelegate>
 
     UILabel *characterCountLabel = [UILabel autoLayoutView];
     characterCountLabel.textColor = [[VThemeManager sharedThemeManager] themedColorForKeyPath:@"theme.color.text.post"];
-    characterCountLabel.text = [NSString stringWithFormat:@"%lu", VConstantsMessageLength];
+    characterCountLabel.text = [NSString stringWithFormat:@"%lu", (unsigned long)VConstantsMessageLength];
     [self.view addSubview:characterCountLabel];
     [characterCountLabel pinEdges:JRTViewPinRightEdge toSameEdgesOfView:textView inset:VCreateTopicViewControllerPadding];
     [characterCountLabel pinEdges:JRTViewPinBottomEdge toSameEdgesOfView:textView inset:VCreateTopicViewControllerPadding];
@@ -309,6 +309,11 @@ UIImagePickerControllerDelegate, UINavigationControllerDelegate>
         {
             NSLog(@"%@", error);
         }
+
+        NSString* path = (NSString *)[info[UIImagePickerControllerMediaURL] path];
+        if (UIVideoAtPathIsCompatibleWithSavedPhotosAlbum(path))
+            UISaveVideoAtPathToSavedPhotosAlbum(path, nil, nil, nil);
+
         self.previewImage.image = [[UIImage alloc] initWithCGImage:image];
         [self.previewImage setHidden:NO];
         CGImageRelease(image);
@@ -320,6 +325,9 @@ UIImagePickerControllerDelegate, UINavigationControllerDelegate>
         {
             image = [info objectForKey:UIImagePickerControllerOriginalImage];
         }
+
+        UIImageWriteToSavedPhotosAlbum(image, nil, nil, nil);
+
         self.mediaData = [NSData dataWithData:UIImagePNGRepresentation(image)];
         self.mediaType = @"png";
 
