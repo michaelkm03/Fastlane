@@ -50,8 +50,6 @@
         self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemEdit
                                                                                                target:self
                                                                                                action:@selector(editButtonPressed:)];
-        self.navigationItem.leftBarButtonItem = nil;
-
         self.profile = [VObjectManager sharedManager].mainUser;
         [self setProfileData];
     }
