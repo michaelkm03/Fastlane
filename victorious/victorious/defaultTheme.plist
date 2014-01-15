@@ -82,6 +82,27 @@
 		<key>fontSize</key>
 		<integer>15</integer>
 	</dict>
+	<key>theme.font.profile.username</key>
+	<dict>
+		<key>fontName</key>
+		<string>Roboto-Light</string>
+		<key>fontSize</key>
+		<integer>28</integer>
+	</dict>
+	<key>theme.font.profile.tagline</key>
+	<dict>
+		<key>fontName</key>
+		<string>Roboto-Light</string>
+		<key>fontSize</key>
+		<integer>17</integer>
+	</dict>
+	<key>theme.font.profile.location</key>
+	<dict>
+		<key>fontName</key>
+		<string>Roboto-Regular</string>
+		<key>fontSize</key>
+		<integer>17</integer>
+	</dict>
 	<key>theme.color</key>
 	<dict>
 		<key>red</key>

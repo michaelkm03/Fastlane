@@ -121,10 +121,12 @@
     
     controller.delegate = self;
     if([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera])
+    {
         controller.sourceType = UIImagePickerControllerSourceTypeCamera;
+        controller.cameraCaptureMode = UIImagePickerControllerCameraCaptureModePhoto;
+    }
     else
         controller.sourceType= UIImagePickerControllerSourceTypePhotoLibrary;
-    controller.cameraCaptureMode = UIImagePickerControllerCameraCaptureModePhoto;
     controller.allowsEditing = YES;
     
     [self presentViewController:controller animated:YES completion:nil];
@@ -138,12 +140,12 @@
     if (CFStringCompare((CFStringRef)info[UIImagePickerControllerMediaType], kUTTypeImage, 0) == kCFCompareEqualTo)
         imageToSave = (UIImage *)info[UIImagePickerControllerEditedImage] ?: (UIImage *)info[UIImagePickerControllerOriginalImage];
     
-    [[picker parentViewController] dismissViewControllerAnimated:YES completion:nil];
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 - (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker
 {
-    [[picker parentViewController] dismissViewControllerAnimated:YES completion:nil];
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 @end

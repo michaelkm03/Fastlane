@@ -13,6 +13,7 @@
 #import "VObjectManager+Users.h"
 #import "VProfileEditViewController.h"
 #import "VUser.h"
+#import "VThemeManager.h"
 
 @interface VProfileViewController () <UIActionSheetDelegate>
 
@@ -96,8 +97,11 @@
     
     // Set Profile data
     self.nameLabel.text = self.profile.name;
-    self.taglineLabel.text = self.profile.tagline;
+    self.nameLabel.font = [[VThemeManager sharedThemeManager] themedFontForKeyPath:@"theme.font.profile.username"];
+    self.taglineLabel.text = [NSString stringWithFormat:@"“%@”",self.profile.tagline];
+    self.taglineLabel.font = [[VThemeManager sharedThemeManager] themedFontForKeyPath:@"theme.font.profile.tagline"];
     self.locationLabel.text = self.profile.location;
+    self.locationLabel.font = [[VThemeManager sharedThemeManager] themedFontForKeyPath:@"theme.font.profile.location"];
 
     self.navigationController.title = self.profile.shortName;
 }
