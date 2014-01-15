@@ -124,6 +124,7 @@ CGFloat VCreateViewControllerLargePadding = 20;
     UITextView *textView = [UITextView autoLayoutView];
     textView.delegate = self;
     textView.returnKeyType = UIReturnKeyDone;
+    textView.font = [[VThemeManager sharedThemeManager] themedFontForKeyPath:@"theme.font.post"];
     textView.textColor = [[VThemeManager sharedThemeManager] themedColorForKeyPath:@"theme.color.text.post"];
     textView.layer.borderColor = [[[VThemeManager sharedThemeManager] themedColorForKeyPath:@"theme.color.post.input.border"] CGColor];
     textView.layer.borderWidth = 1;

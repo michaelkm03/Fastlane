@@ -82,6 +82,7 @@ UIImagePickerControllerDelegate, UINavigationControllerDelegate>
     UITextView *textView = [UITextView autoLayoutView];
     textView.delegate = self;
     textView.returnKeyType = UIReturnKeyDone;
+    textView.font = [[VThemeManager sharedThemeManager] themedFontForKeyPath:@"theme.font.post"];    
     textView.textColor = [[VThemeManager sharedThemeManager] themedColorForKeyPath:@"theme.color.text.post"];
     [messageView addSubview:textView];
     [textView pinToSuperviewEdges:JRTViewPinTopEdge|JRTViewPinBottomEdge inset:1];
