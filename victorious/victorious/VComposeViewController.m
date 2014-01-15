@@ -19,6 +19,7 @@
 @property (nonatomic, strong) NSString*  mediaExtension;
 @property (nonatomic, strong) NSArray* stickers;
 @property (nonatomic, strong) NSData* selectedSticker;
+@property (nonatomic, strong) NSURL* mediaURL;
 @end
 
 @implementation VComposeViewController
@@ -79,10 +80,11 @@
 - (IBAction)sendButtonAction:(id)sender
 {
     [self.textField resignFirstResponder];
-    [self.delegate didComposeWithText:self.textField.text data:self.media mediaExtension:self.mediaExtension];
+    [self.delegate didComposeWithText:self.textField.text data:self.media mediaExtension:self.mediaExtension mediaURL:self.mediaURL];
     self.textField.text = nil;
     self.mediaExtension = nil;
     self.media = nil;
+    self.mediaURL = nil;
 }
 
 #pragma mark - UIImagePickerControllerDelegate
@@ -109,6 +111,7 @@
             self.mediaExtension = VConstantMediaExtensionMOV;
     }
     
+    self.mediaURL = info[UIImagePickerControllerMediaURL];
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 

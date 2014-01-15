@@ -557,7 +557,7 @@ static NSString* CommentCache = @"CommentCache";
 
 #pragma mark - VComposeMessageDelegate
 
-- (void)didComposeWithText:(NSString *)text data:(NSData *)data mediaExtension:(NSString *)mediaExtension
+- (void)didComposeWithText:(NSString *)text data:(NSData *)data mediaExtension:(NSString *)mediaExtension mediaURL:(NSURL *)mediaURL
 {
     [[VObjectManager sharedManager] addCommentWithText:text
                                                    Data:data
