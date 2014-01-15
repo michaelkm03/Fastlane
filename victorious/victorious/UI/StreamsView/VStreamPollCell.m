@@ -23,6 +23,10 @@
 
 #import "NSString+VParseHelp.h"
 
+#import "UIView+AutoLayout.h"
+
+#import "VThemeManager.h"
+
 @import MediaPlayer;
 
 @interface VStreamPollCell ()
@@ -46,6 +50,9 @@
 
     self.optionOneButton.titleLabel.textAlignment = NSTextAlignmentCenter;
     self.optionTwoButton.titleLabel.textAlignment = NSTextAlignmentCenter;
+    
+    self.optionOneButton.tintColor = [UIColor whiteColor];
+    self.optionTwoButton.tintColor = [UIColor whiteColor];
 
     _firstAnswer = [answers firstObject];
     self.optionOneButton.titleLabel.text = _firstAnswer.label;
@@ -102,16 +109,38 @@
         self.playTwoButton.hidden = YES;
         [self.previewImageView setImageWithURL:[NSURL URLWithString:_secondAssetUrl]];
     }
+    
+    [self setupOrLabel];
 }
 
+- (void)setupOrLabel
+{
+    CGSize orLabelSize = CGSizeMake(38, 38);
+    UILabel *orLabel = [UILabel autoLayoutView];
+    orLabel.textAlignment = NSTextAlignmentCenter;
+    orLabel.layer.cornerRadius = orLabelSize.height/2;
+    orLabel.layer.borderWidth = 2;
+    orLabel.layer.borderColor = [[[VThemeManager sharedThemeManager] themedColorForKeyPath:@"theme.color.post.poll.or.border"] CGColor];
+    orLabel.textColor = [[VThemeManager sharedThemeManager] themedColorForKeyPath:@"theme.color.text.post.poll.or"];
+    orLabel.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKeyPath:@"theme.color.post.poll.or.background"];
+    orLabel.font = [[VThemeManager sharedThemeManager] themedFontForKeyPath:@"theme.font.post.poll.or"];
+    orLabel.text = NSLocalizedString(@"OR", @"Poll OR");
+    [self.answerView addSubview:orLabel];
+    [orLabel constrainToSize:orLabelSize];
+    [orLabel centerInContainerOnAxis:NSLayoutAttributeCenterX];
+    [orLabel centerInContainerOnAxis:NSLayoutAttributeCenterY];
+
+}
 - (IBAction)pressedOptionOne:(id)sender
 {
     [self answerPollWithAnswer:_firstAnswer];
+    self.optionOneButton.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKeyPath:@"theme.color.stream.text"];
 }
 
 - (IBAction)pressedOptionTwo:(id)sender
 {
     [self answerPollWithAnswer:_secondAnswer];
+    self.optionTwoButton.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKeyPath:@"theme.color.stream.text"];
 }
 
 - (IBAction)pressedPlayOne:(id)sender
