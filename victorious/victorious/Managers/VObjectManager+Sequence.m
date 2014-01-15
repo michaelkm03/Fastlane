@@ -150,7 +150,10 @@
                                       successBlock:(SuccessBlock)success
                                          failBlock:(FailBlock)fail
 {
-    NSString* path = [@"/api/sequence/fetch/%@" stringByAppendingString:sequence.remoteId.stringValue];
+    if (!sequence || !sequence.remoteId)
+        return nil;
+    
+    NSString* path = [@"/api/sequence/fetch/" stringByAppendingString:sequence.remoteId.stringValue];
     
     return [self GET:path
               object:sequence
@@ -164,7 +167,10 @@
                                           successBlock:(SuccessBlock)success
                                              failBlock:(FailBlock)fail
 {
-    NSString* path = [@"/api/sequence/fetch/%@" stringByAppendingString:sequenceID.stringValue];
+    if (!sequenceID)
+        return nil;
+    
+    NSString* path = [@"/api/sequence/fetch/" stringByAppendingString:sequenceID.stringValue];
     
     return [self GET:path
               object:nil
@@ -495,7 +501,8 @@
     
     AFSuccessBlock fullSuccess = ^(AFHTTPRequestOperation* operation, id response)
     {
-        [[self fetchSequenceByID:response[@"sequence_id"]
+        NSNumber* sequenceID = response[@"payload"][@"sequence_id"];
+        [[self fetchSequenceByID:sequenceID
                    successBlock:success
                       failBlock:fail] start];
     };
