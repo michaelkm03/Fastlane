@@ -393,16 +393,16 @@
 {
     //Required Fields
     NSString* category = self.isOwner ? kVOwnerPollCategory : kVUGCPollCategory;
-    NSMutableDictionary* parameters = [@{@"name":name,
-                                         @"description":description,
-                                         @"question":question,
+    NSMutableDictionary* parameters = [@{@"name":name ?: [NSNull null],
+                                         @"description":description ?: [NSNull null],
+                                         @"question":question ?: [NSNull null],
                                          @"category":category} mutableCopy];
 
     //Optional fields
     if (answer1Text)
-        [parameters setObject:answer1Text forKey:@"answer1Text"];
+        [parameters setObject:answer1Text ?: [NSNull null] forKey:@"answer1_label"];
     if (answer2Text)
-        [parameters setObject:answer2Text forKey:@"answer2Text"];
+        [parameters setObject:answer2Text ?: [NSNull null] forKey:@"answer2_label"];
     
     NSMutableDictionary *allData, *allExtensions;
     if (media1Data && ![media1Extension isEmpty])
@@ -472,12 +472,12 @@
     if (!mediaData || !extension)
         return nil;
     
-    NSDictionary* parameters = @{@"name":name,
-                                 @"description":description,
-                                 @"category":category};
+    NSDictionary* parameters = @{@"name":name ?: [NSNull null],
+                                 @"description":description ?: [NSNull null],
+                                 @"category":category ?: [NSNull null]};
     
-    NSDictionary* allData = @{@"media_data":mediaData};
-    NSDictionary* allExtensions = @{@"media_data":extension};
+    NSDictionary* allData = @{@"media_data":mediaData ?: [NSNull null]};
+    NSDictionary* allExtensions = @{@"media_data":extension ?: [NSNull null]};
     
     return [self upload:allData
           fileExtension:allExtensions
