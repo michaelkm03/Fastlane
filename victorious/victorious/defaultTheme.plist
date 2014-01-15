@@ -75,6 +75,13 @@
 		<key>fontSize</key>
 		<integer>13</integer>
 	</dict>
+	<key>theme.font.post</key>
+	<dict>
+		<key>fontName</key>
+		<string>Roboto-Regular</string>
+		<key>fontSize</key>
+		<integer>15</integer>
+	</dict>
 	<key>theme.color</key>
 	<dict>
 		<key>red</key>

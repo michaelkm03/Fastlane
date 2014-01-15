@@ -82,6 +82,7 @@ UIImagePickerControllerDelegate, UINavigationControllerDelegate>
     UITextView *textView = [UITextView autoLayoutView];
     textView.delegate = self;
     textView.returnKeyType = UIReturnKeyDone;
+    textView.font = [[VThemeManager sharedThemeManager] themedFontForKeyPath:@"theme.font.post"];    
     textView.textColor = [[VThemeManager sharedThemeManager] themedColorForKeyPath:@"theme.color.text.post"];
     [messageView addSubview:textView];
     [textView pinToSuperviewEdges:JRTViewPinTopEdge|JRTViewPinBottomEdge inset:1];
@@ -90,7 +91,7 @@ UIImagePickerControllerDelegate, UINavigationControllerDelegate>
 
     UILabel *characterCountLabel = [UILabel autoLayoutView];
     characterCountLabel.textColor = [[VThemeManager sharedThemeManager] themedColorForKeyPath:@"theme.color.text.post"];
-    characterCountLabel.text = @"0";
+    characterCountLabel.text = [NSString stringWithFormat:@"%lu", VConstantsMessageLength];
     [self.view addSubview:characterCountLabel];
     [characterCountLabel pinEdges:JRTViewPinRightEdge toSameEdgesOfView:textView inset:VCreateTopicViewControllerPadding];
     [characterCountLabel pinEdges:JRTViewPinBottomEdge toSameEdgesOfView:textView inset:VCreateTopicViewControllerPadding];
@@ -262,8 +263,8 @@ UIImagePickerControllerDelegate, UINavigationControllerDelegate>
 
 - (void)textViewDidChange:(UITextView *)textView
 {
-    NSUInteger characterCount = [textView.text length];
-    if(characterCount > VConstantsMessageLength)
+    NSInteger characterCount = VConstantsMessageLength-[textView.text length];
+    if(characterCount < 0)
     {
         self.characterCountLabel.textColor = [[VThemeManager sharedThemeManager] themedColorForKeyPath:@"theme.color.text.post.count.invalid"];
     }
@@ -275,8 +276,10 @@ UIImagePickerControllerDelegate, UINavigationControllerDelegate>
     [self validatePostButtonState];
 }
 
-- (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text{
-    if([text isEqualToString:@"\n"]){
+- (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text
+{
+    if([text isEqualToString:@"\n"])
+    {
         [textView resignFirstResponder];
         return NO;
     }
@@ -286,7 +289,8 @@ UIImagePickerControllerDelegate, UINavigationControllerDelegate>
 
 #pragma mark - UIImagePickerControllerDelegate
 
-- (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info{
+- (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info
+{
     [self dismissViewControllerAnimated:YES completion:nil];
 
     if(UTTypeEqual((__bridge CFStringRef)(info[UIImagePickerControllerMediaType]), kUTTypeMovie))

@@ -56,6 +56,11 @@ typedef NS_ENUM(NSInteger, VStreamScope)
     return streamsTableViewController;
 }
 
+- (void)dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
 - (id)initWithStyle:(UITableViewStyle)style
 {
     self = [super initWithStyle:style];
@@ -84,13 +89,6 @@ typedef NS_ENUM(NSInteger, VStreamScope)
     [[NSNotificationCenter defaultCenter]
      addObserver:self selector:@selector(willShareSequence:)
      name:kStreamsWillShareNotification object:nil];
-}
-
-- (void)viewDidDisappear:(BOOL)animated
-{
-    [super viewDidDisappear:animated];
-
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 - (IBAction)addButtonAction:(id)sender

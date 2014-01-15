@@ -66,6 +66,16 @@
     return nil;
 }
 
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
+{
+    return 0;
+}
+
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
+{
+    return  nil;
+}
+
 - (IBAction)addButtonAction:(id)sender
 {
     // TODO: create posts if the user is the owner of the channel
