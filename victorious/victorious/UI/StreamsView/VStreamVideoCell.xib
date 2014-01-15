@@ -95,6 +95,16 @@
                             <action selector="profileButtonAction:" destination="55v-1L-z95" eventType="touchUpInside" id="jXJ-Ev-QYh"/>
                         </connections>
                     </button>
+                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="VZg-f4-kOe" userLabel="Show Profile Button">
+                        <rect key="frame" x="45" y="21" width="87" height="30"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <state key="normal">
+                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                        </state>
+                        <connections>
+                            <action selector="profileButtonAction:" destination="55v-1L-z95" eventType="touchUpInside" id="Z67-Qc-VUs"/>
+                        </connections>
+                    </button>
                 </subviews>
                 <constraints>
                     <constraint firstItem="ClZ-8D-vSe" firstAttribute="leading" secondItem="EnC-ed-tLe" secondAttribute="trailing" constant="1" id="1sf-26-PUZ"/>
