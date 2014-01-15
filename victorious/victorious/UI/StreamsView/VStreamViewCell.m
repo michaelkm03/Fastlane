@@ -35,6 +35,17 @@ NSString *kStreamsWillCommentNotification = @"kStreamsWillCommentNotification";
 
 @implementation VStreamViewCell
 
+// HACK: useing a cache for now to keep track of liked sequences
+- (NSCache *)likeCache
+{
+    static NSCache *cache = nil;
+    static dispatch_once_t once;
+    dispatch_once(&once, ^{
+        cache = [NSCache new];
+    });
+    return cache;
+}
+
 - (void)awakeFromNib
 {
     [super awakeFromNib];
@@ -69,21 +80,36 @@ NSString *kStreamsWillCommentNotification = @"kStreamsWillCommentNotification";
                              placeholderImage:[UIImage new]];
 //    [self.profileImageView setImageWithURL:[NSURL URLWithString:self.sequence.user.pictureUrl]
 //                          placeholderImage:[UIImage imageNamed:@"profile_thumb"]];
+
+    if([[self likeCache] objectForKey:self.sequence.remoteId])
+    {
+        [self.likeButton setImage:[[UIImage imageNamed:@"StreamHeartFull"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal] forState:UIControlStateNormal];
+        [self.likeButton setTitle:@" 124" forState:UIControlStateNormal];
+    }
+    else
+    {
+        [self.likeButton setImage:[UIImage imageNamed:@"StreamHeart"] forState:UIControlStateNormal];
+        [self.likeButton setTitle:@" 123" forState:UIControlStateNormal];
+    }
 }
 
 - (IBAction)likeButtonAction:(id)sender
 {
-    [[VObjectManager sharedManager]
-     likeSequence:self.sequence
-     successBlock:^(NSArray *resultObjects)
-     {
-         self.likeButton.userInteractionEnabled = NO;
-         self.dislikeButton.userInteractionEnabled = YES;
-     }
-     failBlock:^(NSError *error)
-     {
-         VLog(@"Like failed with error: %@", error);
-     }];
+//    [[VObjectManager sharedManager]
+//     likeSequence:self.sequence
+//     successBlock:^(NSArray *resultObjects)
+//     {
+//         self.likeButton.userInteractionEnabled = NO;
+//         self.dislikeButton.userInteractionEnabled = YES;
+//     }
+//     failBlock:^(NSError *error)
+//     {
+//         VLog(@"Like failed with error: %@", error);
+//     }];
+
+    [[self likeCache] setObject:@YES forKey:self.sequence.remoteId];
+    [self.likeButton setImage:[[UIImage imageNamed:@"StreamHeartFull"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal] forState:UIControlStateNormal];
+    [self.likeButton setTitle:@" 124" forState:UIControlStateNormal];
 }
 
 - (IBAction)commentButtonAction:(id)sender

@@ -209,6 +209,17 @@
 		<key>alpha</key>
 		<integer>1</integer>
 	</dict>
+	<key>theme.color.stream.like</key>
+	<dict>
+		<key>red</key>
+		<integer>255</integer>
+		<key>green</key>
+		<integer>62</integer>
+		<key>blue</key>
+		<integer>94</integer>
+		<key>alpha</key>
+		<integer>1</integer>
+	</dict>
 	<key>theme.color.stream.icon</key>
 	<dict>
 		<key>red</key>
