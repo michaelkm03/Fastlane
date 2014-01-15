@@ -322,11 +322,11 @@
 	<key>theme.color.poll.result.default</key>
 	<dict>
 		<key>red</key>
-		<integer>101</integer>
+		<integer>175</integer>
 		<key>green</key>
-		<integer>109</integer>
+		<integer>175</integer>
 		<key>blue</key>
-		<integer>120</integer>
+		<integer>175</integer>
 		<key>alpha</key>
 		<integer>1</integer>
 	</dict>

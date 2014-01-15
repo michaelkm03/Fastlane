@@ -47,21 +47,10 @@
     [super setSequence:sequence];
     
     NSArray* answers = [[self.sequence firstNode] firstAnswers];
-
-    self.optionOneButton.titleLabel.textAlignment = NSTextAlignmentCenter;
-    self.optionTwoButton.titleLabel.textAlignment = NSTextAlignmentCenter;
-    
-    self.optionOneButton.tintColor = [UIColor whiteColor];
-    self.optionTwoButton.tintColor = [UIColor whiteColor];
-
     _firstAnswer = [answers firstObject];
-    self.optionOneButton.titleLabel.text = _firstAnswer.label;
-    
     if ([answers count] >= 2)
     {
         _secondAnswer = [answers objectAtIndex:1];
-        
-        self.optionTwoButton.titleLabel.text = _secondAnswer.label;
     }
     
     if ([self.reuseIdentifier isEqualToString:kStreamPollCellIdentifier])
@@ -112,6 +101,7 @@
     
     [self setupOrLabel];
     [self setupResultLabels];
+    [self setupOptionButtons];
 }
 
 - (void)setupOrLabel
@@ -144,6 +134,19 @@
     self.firstResultLabel.text = self.secondResultLabel.text = @"100%";
     
     self.firstResultLabel.hidden = self.secondResultLabel.hidden = YES;
+}
+
+- (void)setupOptionButtons
+{
+    self.optionOneButton.tintColor = self.optionTwoButton.tintColor = [UIColor whiteColor];
+    
+    self.optionOneButton.titleLabel.text = _firstAnswer.label;
+    self.optionTwoButton.titleLabel.text = _secondAnswer.label;
+    
+    self.optionOneButton.titleLabel.textAlignment = self.optionTwoButton.titleLabel.textAlignment = NSTextAlignmentCenter;
+    
+    self.optionOneButton.backgroundColor = self.optionTwoButton.backgroundColor =
+        [[VThemeManager sharedThemeManager] themedColorForKeyPath:@"theme.color.poll.result.default"];
 }
 
 - (IBAction)pressedOptionOne:(id)sender
@@ -220,7 +223,7 @@
     {
         VInboxBadgeLabel* label = [self resultLabelForAnswerID:result.answerId];
         
-        NSInteger percentage = (result.count.integerValue / totalVotes) * 100;
+        NSInteger percentage = (result.count.doubleValue / totalVotes) * 100;
         percentage = percentage > 100 ? 100 : percentage;
         percentage = percentage < 0 ? 0 : percentage;
         
