@@ -11,6 +11,9 @@
 #import "VCreateTopicViewController.h"
 #import "VConstants.h"
 
+#import "VObjectManager.h"
+#import "VLoginViewController.h"
+
 @implementation VForumStreamTableViewController
 
 + (instancetype)sharedStreamsTableViewController
@@ -45,6 +48,12 @@
 
 - (IBAction)addButtonAction:(id)sender
 {
+    if(![VObjectManager sharedManager].mainUser)
+    {
+        [self presentViewController:[VLoginViewController sharedLoginViewController] animated:YES completion:NULL];
+        return;
+    }
+    
     VCreateTopicViewController *createViewController = [[VCreateTopicViewController alloc] initWithDelegate:self];
     [self presentViewController:[[UINavigationController alloc] initWithRootViewController:createViewController]
                        animated:YES
