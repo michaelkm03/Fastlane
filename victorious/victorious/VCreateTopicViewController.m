@@ -271,12 +271,14 @@ UIImagePickerControllerDelegate, UINavigationControllerDelegate>
     {
         self.characterCountLabel.textColor = [[VThemeManager sharedThemeManager] themedColorForKeyPath:@"theme.color.text.post.count"];
     }
-    self.characterCountLabel.text = [NSString stringWithFormat:@"%lu", (unsigned long)characterCount];
+    self.characterCountLabel.text = [NSString stringWithFormat:@"%lu", (unsigned long)(VConstantsMessageLength - characterCount)];
     [self validatePostButtonState];
 }
 
-- (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text{
-    if([text isEqualToString:@"\n"]){
+- (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text
+{
+    if([text isEqualToString:@"\n"])
+    {
         [textView resignFirstResponder];
         return NO;
     }
@@ -286,7 +288,8 @@ UIImagePickerControllerDelegate, UINavigationControllerDelegate>
 
 #pragma mark - UIImagePickerControllerDelegate
 
-- (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info{
+- (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info
+{
     [self dismissViewControllerAnimated:YES completion:nil];
 
     if(UTTypeEqual((__bridge CFStringRef)(info[UIImagePickerControllerMediaType]), kUTTypeMovie))
