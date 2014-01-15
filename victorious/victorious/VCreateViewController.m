@@ -124,6 +124,7 @@ CGFloat VCreateViewControllerLargePadding = 20;
     UITextView *textView = [UITextView autoLayoutView];
     textView.delegate = self;
     textView.returnKeyType = UIReturnKeyDone;
+    textView.font = [[VThemeManager sharedThemeManager] themedFontForKeyPath:@"theme.font.post"];
     textView.textColor = [[VThemeManager sharedThemeManager] themedColorForKeyPath:@"theme.color.text.post"];
     textView.layer.borderColor = [[[VThemeManager sharedThemeManager] themedColorForKeyPath:@"theme.color.post.input.border"] CGColor];
     textView.layer.borderWidth = 1;
@@ -148,7 +149,7 @@ CGFloat VCreateViewControllerLargePadding = 20;
 
     UILabel *characterCountLabel = [UILabel autoLayoutView];
     characterCountLabel.textColor = [[VThemeManager sharedThemeManager] themedColorForKeyPath:@"theme.color.text.post"];
-    characterCountLabel.text = @"0";
+    characterCountLabel.text = [NSString stringWithFormat:@"%lu", VConstantsMessageLength];
     [self.view addSubview:characterCountLabel];
     [characterCountLabel pinEdges:JRTViewPinRightEdge toSameEdgesOfView:textView inset:VCreateViewControllerPadding];
     [characterCountLabel pinEdges:JRTViewPinBottomEdge toSameEdgesOfView:textView inset:VCreateViewControllerPadding];
@@ -272,8 +273,8 @@ CGFloat VCreateViewControllerLargePadding = 20;
 
 - (void)textViewDidChange:(UITextView *)textView
 {
-    NSUInteger characterCount = [textView.text length];
-    if(characterCount > VConstantsMessageLength)
+    NSInteger characterCount = VConstantsMessageLength-[textView.text length];
+    if(characterCount < 0)
     {
         self.characterCountLabel.textColor = [[VThemeManager sharedThemeManager] themedColorForKeyPath:@"theme.color.text.post.count.invalid"];
     }
