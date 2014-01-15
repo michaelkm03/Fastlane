@@ -12,5 +12,6 @@
 
 @property (weak, nonatomic) VComposeViewController *composeViewController;
 @property (strong, nonatomic) UITableViewController *conversationTableViewController;
+@property (nonatomic) BOOL showKeyboard;
 
 @end

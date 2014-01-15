@@ -24,6 +24,7 @@
 #import "VCreateViewController.h"
 #import "VCreatePollViewController.h"
 #import "VThemeManager.h"
+#import "VStreamsSubViewController.h"
 
 #import "VAsset.h"
 #import "VObjectManager+Sequence.h"
@@ -171,9 +172,14 @@ typedef NS_ENUM(NSInteger, VStreamScope)
         menuViewController.transitioningDelegate =
         (id <UIViewControllerTransitioningDelegate>)[VMenuViewControllerTransitionDelegate new];
         menuViewController.modalPresentationStyle = UIModalPresentationCustom;
-    } else if ([segue.identifier isEqualToString:@"toStreamDetails"])
+    }
+    else if ([segue.identifier isEqualToString:@"toStreamDetails"])
     {
         [self prepareToStreamDetailsSegue:segue sender:sender];
+    }
+    else if ([segue.identifier isEqualToString:@"toStreamDetailsForComment"])
+    {
+        [self prepareToStreamDetailsForCommentSegue:segue sender:sender];
     }
 }
 
@@ -187,11 +193,21 @@ typedef NS_ENUM(NSInteger, VStreamScope)
 #pragma mark - Segue Lifecycle
 - (void)prepareToStreamDetailsSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
-    VStreamsCommentsController *subview = (VStreamsCommentsController *)segue.destinationViewController;
+    VStreamsSubViewController *subview = (VStreamsSubViewController *)segue.destinationViewController;
     
     VSequence *sequence = [self.fetchedResultsController objectAtIndexPath:[self.tableView indexPathForCell:(UITableViewCell*)sender]];
     
     subview.sequence = sequence;
+}
+
+- (void)prepareToStreamDetailsForCommentSegue:(UIStoryboardSegue *)segue sender:(id)sender
+{
+    VStreamsSubViewController *subview = (VStreamsSubViewController *)segue.destinationViewController;
+
+    VSequence *sequence = [self.fetchedResultsController objectAtIndexPath:[self.tableView indexPathForCell:(UITableViewCell*)sender]];
+
+    subview.sequence = sequence;
+    subview.showKeyboard = YES;
 }
 
 #pragma mark - Predicate Lifecycle
@@ -349,7 +365,7 @@ typedef NS_ENUM(NSInteger, VStreamScope)
 - (void)willCommentSequence:(NSNotification *)notification
 {
     VStreamViewCell *cell = (VStreamViewCell *)notification.object;
-    [self performSegueWithIdentifier:@"toStreamDetails" sender:cell];
+    [self performSegueWithIdentifier:@"toStreamDetailsForComment" sender:cell];
 }
 
 #pragma mark - VCreateSequenceDelegate

@@ -13,7 +13,7 @@
 #import "VLoginViewController.h"
 
 @interface VComposeViewController() <UINavigationControllerDelegate, UIImagePickerControllerDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout>
-@property (weak, nonatomic) IBOutlet UITextField *textField;
+@property (weak, nonatomic, readwrite) IBOutlet UITextField *textField;
 @property (weak, nonatomic) IBOutlet UICollectionView* stickersView;
 @property (strong, nonatomic) NSData* media;
 @property (nonatomic, strong) NSString*  mediaExtension;

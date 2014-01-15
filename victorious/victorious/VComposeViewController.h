@@ -15,5 +15,6 @@
 
 @interface VComposeViewController : UIViewController
 @property (nonatomic, weak) id<VComposeMessageDelegate> delegate;
+@property (weak, nonatomic, readonly) IBOutlet UITextField *textField;
 @end
 
