@@ -32,6 +32,10 @@
                                       successBlock:(SuccessBlock)success
                                          failBlock:(FailBlock)fail;
 
+- (RKManagedObjectRequestOperation *)fetchSequenceByID:(NSNumber*)sequenceID
+                                          successBlock:(SuccessBlock)success
+                                             failBlock:(FailBlock)fail;
+
 - (RKManagedObjectRequestOperation *)loadNextPageOfCommentsForSequence:(VSequence*)sequence
                                                           successBlock:(SuccessBlock)success
                                                              failBlock:(FailBlock)fail;

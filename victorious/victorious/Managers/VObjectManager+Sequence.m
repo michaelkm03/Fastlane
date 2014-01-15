@@ -150,10 +150,30 @@
                                       successBlock:(SuccessBlock)success
                                          failBlock:(FailBlock)fail
 {
-    NSString* path = [NSString stringWithFormat:@"/api/sequence/fetch/%@", sequence.remoteId];
+    if (!sequence || !sequence.remoteId)
+        return nil;
+    
+    NSString* path = [@"/api/sequence/fetch/" stringByAppendingString:sequence.remoteId.stringValue];
     
     return [self GET:path
               object:sequence
+          parameters:nil
+        successBlock:success
+           failBlock:fail
+     paginationBlock:nil];
+}
+
+- (RKManagedObjectRequestOperation *)fetchSequenceByID:(NSNumber*)sequenceID
+                                          successBlock:(SuccessBlock)success
+                                             failBlock:(FailBlock)fail
+{
+    if (!sequenceID)
+        return nil;
+    
+    NSString* path = [@"/api/sequence/fetch/" stringByAppendingString:sequenceID.stringValue];
+    
+    return [self GET:path
+              object:nil
           parameters:nil
         successBlock:success
            failBlock:fail
@@ -428,8 +448,8 @@
                                      description:(NSString*)description
                                        mediaData:(NSData*)mediaData
                                         mediaUrl:(NSURL*)mediaUrl
-                                    successBlock:(AFSuccessBlock)success
-                                       failBlock:(AFFailBlock)fail
+                                    successBlock:(SuccessBlock)success
+                                       failBlock:(FailBlock)fail
 {
     NSString* category = self.isOwner ? kVOwnerVideoCategory : kVUGCVideoCategory;
     return [self uploadMediaWithName:name
@@ -446,8 +466,8 @@
                                      description:(NSString*)description
                                        mediaData:(NSData*)mediaData
                                         mediaUrl:(NSURL*)mediaUrl
-                                    successBlock:(AFSuccessBlock)success
-                                       failBlock:(AFFailBlock)fail
+                                    successBlock:(SuccessBlock)success
+                                       failBlock:(FailBlock)fail
 {
     NSString* category = self.isOwner ? kVOwnerImageCategory : kVUGCImageCategory;
     return [self uploadMediaWithName:name
@@ -466,8 +486,8 @@
                                        mediaData:(NSData*)mediaData
                                        extension:(NSString*)extension
                                         mediaUrl:(NSURL*)mediaUrl
-                                    successBlock:(AFSuccessBlock)success
-                                       failBlock:(AFFailBlock)fail
+                                    successBlock:(SuccessBlock)success
+                                       failBlock:(FailBlock)fail
 {
     if (!mediaData || !extension)
         return nil;
@@ -479,12 +499,26 @@
     NSDictionary* allData = @{@"media_data":mediaData ?: [NSNull null]};
     NSDictionary* allExtensions = @{@"media_data":extension ?: [NSNull null]};
     
+    AFSuccessBlock fullSuccess = ^(AFHTTPRequestOperation* operation, id response)
+    {
+        NSNumber* sequenceID = response[@"payload"][@"sequence_id"];
+        [[self fetchSequenceByID:sequenceID
+                   successBlock:success
+                      failBlock:fail] start];
+    };
+    
+    AFFailBlock fullFail = ^(AFHTTPRequestOperation* operation, NSError* error)
+    {
+        if (fail)
+            fail(error);
+    };
+    
     return [self upload:allData
           fileExtension:allExtensions
                  toPath:@"/api/mediaupload/create"
              parameters:parameters
-           successBlock:success
-              failBlock:fail];
+           successBlock:fullSuccess
+              failBlock:fullFail];
 }
 
 @end

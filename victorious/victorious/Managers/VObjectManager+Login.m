@@ -24,6 +24,7 @@ NSString *LoggedInChangedNotification = @"LoggedInChangedNotification";
 
 - (BOOL)isOwner
 {
+    return NO;
     return self.isAuthorized;
     return [self.mainUser.accessLevel isEqualToString:@"superuser"] ;
 }

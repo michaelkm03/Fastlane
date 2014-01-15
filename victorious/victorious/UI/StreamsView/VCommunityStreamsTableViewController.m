@@ -13,6 +13,9 @@
 #import "VCreateViewController.h"
 #import "VCreatePollViewController.h"
 
+#import "VObjectManager.h"
+#import "VLoginViewController.h"
+
 #import "VConstants.h"
 
 @implementation VCommunityStreamsTableViewController
@@ -78,6 +81,12 @@
 
 - (IBAction)addButtonAction:(id)sender
 {
+    if(![VObjectManager sharedManager].mainUser)
+    {
+        [self presentViewController:[VLoginViewController sharedLoginViewController] animated:YES completion:NULL];
+        return;
+    }
+    
     // TODO: create posts if the user is the owner of the channel
     BBlockWeakSelf wself = self;
     NSString *videoTitle = NSLocalizedString(@"Post Video", @"Post video button");
