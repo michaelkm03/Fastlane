@@ -10,7 +10,16 @@
 
 @class VComposeViewController;
 
+@protocol VStreamsCommentsControllerDelegate;
+
 @interface VStreamsCommentsController : UITableViewController
 @property (nonatomic, strong) VSequence* sequence;
 @property (nonatomic, weak) VComposeViewController* composeViewController;
+@property (nonatomic, weak) id<VStreamsCommentsControllerDelegate> delegate;
+@end
+
+@protocol VStreamsCommentsControllerDelegate <NSObject>
+
+- (void)streamsCommentsController:(VStreamsCommentsController *)viewController shouldReplyToUser:(VUser *)user;
+
 @end
