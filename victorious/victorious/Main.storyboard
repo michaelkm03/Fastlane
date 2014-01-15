@@ -1341,7 +1341,6 @@
                                 <string>All</string>
                                 <string>Photos</string>
                                 <string>Video</string>
-                                <string>Forums</string>
                                 <string>Polls</string>
                             </scopeButtonTitles>
                             <connections>
@@ -1480,7 +1479,7 @@
                         <viewControllerLayoutGuide type="bottom" id="xdh-NM-TCQ"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="ONv-MK-ctL">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="120"/>
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
@@ -1685,7 +1684,6 @@
                                 <string>All</string>
                                 <string>Photos</string>
                                 <string>Video</string>
-                                <string>Forums</string>
                                 <string>Polls</string>
                             </scopeButtonTitles>
                             <connections>
@@ -1746,7 +1744,6 @@
                                 <string>All</string>
                                 <string>Photos</string>
                                 <string>Video</string>
-                                <string>Forums</string>
                                 <string>Polls</string>
                             </scopeButtonTitles>
                             <connections>
@@ -1807,7 +1804,6 @@
                                 <string>All</string>
                                 <string>Photos</string>
                                 <string>Video</string>
-                                <string>Forums</string>
                                 <string>Polls</string>
                             </scopeButtonTitles>
                             <connections>
@@ -1884,14 +1880,14 @@
     </scenes>
     <resources>
         <image name="Menu" width="27" height="27"/>
-        <image name="MenuCommunityChannel" width="16" height="16"/>
-        <image name="MenuForums" width="20" height="16"/>
+        <image name="MenuCommunityChannel" width="19" height="19"/>
+        <image name="MenuForums" width="22" height="18"/>
         <image name="MenuHelp" width="20" height="20"/>
-        <image name="MenuHome" width="16" height="16"/>
-        <image name="MenuInbox" width="17" height="17"/>
-        <image name="MenuOwnerChannel" width="17" height="16"/>
-        <image name="MenuProfile" width="17" height="17"/>
-        <image name="MenuSettings" width="17" height="17"/>
+        <image name="MenuHome" width="19" height="19"/>
+        <image name="MenuInbox" width="20" height="19"/>
+        <image name="MenuOwnerChannel" width="20" height="19"/>
+        <image name="MenuProfile" width="20" height="20"/>
+        <image name="MenuSettings" width="20" height="20"/>
         <image name="MessageCamera" width="22" height="23"/>
         <image name="MessageStickers" width="19" height="19"/>
     </resources>
@@ -1901,7 +1897,7 @@
         <simulatedScreenMetrics key="destination" type="retina4"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
-        <segue reference="Oqu-Ea-RjF"/>
-        <segue reference="JMC-qY-BWo"/>
+        <segue reference="3WL-bD-3TL"/>
+        <segue reference="fO5-PP-Kl2"/>
     </inferredMetricsTieBreakers>
 </document>
