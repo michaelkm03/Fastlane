@@ -13,8 +13,9 @@
 
 #import "VObjectManager+Sequence.h"
 //TODO: remove
-#import "VObjectManager+Login.h"
-#import "VLoginViewController.h"
+//#import "VObjectManager+Login.h"
+//#import "VLoginViewController.h"
+
 
 @implementation VAppDelegate
 
@@ -54,7 +55,7 @@
 //        [[NSNotificationCenter defaultCenter] postNotificationName:LoggedInChangedNotification
 //                                                            object:[resultObjects firstObject]];
 //    } failBlock:nil] start];
-
+    
     [TestFlight takeOff:@"02101c7d-4a01-4a44-8e8a-26dca03554aa"];
 
     

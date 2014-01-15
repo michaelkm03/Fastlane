@@ -46,13 +46,16 @@
         return nil;
     }
     
-    relationships = [[NSMutableArray alloc] init];
-    [relationships addObject:relationshipObject];
-    [self.userRelationships setObject:relationships forKey:userId];
-    VLog(@"Added object: %@.  All relationships: %@ ", [relationshipObject class], self.userRelationships);
+    if (relationshipObject)
+    {
+        relationships = [[NSMutableArray alloc] init];
+        [relationships addObject:relationshipObject];
+        [self.userRelationships setObject:relationships forKey:userId];
+        VLog(@"Added object: %@.  All relationships: %@ ", [relationshipObject class], self.userRelationships);
+    }
     
     NSString* path = userId ? [NSString stringWithFormat:@"/api/userinfo/fetch/%@", userId] : @"/api/userinfo/fetch";
-    
+
     SuccessBlock fullSuccess = ^(NSArray* resultObjects)
     {
         [self addRelationshipsForUsers:resultObjects];
