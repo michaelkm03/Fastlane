@@ -322,9 +322,9 @@ typedef NS_ENUM(NSInteger, VStreamScope)
         {
             // Update to handle the error appropriately.
             NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
-        } else
+        }
+        else
         {
-            
             [self.refreshControl endRefreshing];
         }
     }
