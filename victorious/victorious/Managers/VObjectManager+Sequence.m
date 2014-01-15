@@ -353,11 +353,26 @@
                                                successBlock:(SuccessBlock)success
                                                   failBlock:(FailBlock)fail
 {
+    if (!sequence)
+        return nil;
+    
+    SuccessBlock fullSuccess = ^(NSArray* resultObjects)
+    {
+        for (VPollResult* result in resultObjects)
+        {
+            result.sequenceId = sequence.remoteId;
+            result.sequence = (VSequence*)[result.managedObjectContext objectWithID:[sequence objectID]];
+            [result.managedObjectContext save:nil];
+        }
+      
+        if(success)
+            success(resultObjects);
+    };
     
     return [self GET:[NSString stringWithFormat:@"/api/pollresult/summary_by_sequence/%@", sequence.remoteId]
               object:nil
           parameters:nil
-        successBlock:success
+        successBlock:fullSuccess
            failBlock:fail
      paginationBlock:nil];
 }

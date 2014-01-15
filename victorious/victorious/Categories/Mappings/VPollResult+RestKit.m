@@ -34,32 +34,12 @@
     return mapping;
 }
 
-+ (RKEntityMapping*)summaryBySequenceMapping
-{
-    NSDictionary *propertyMap = @{
-                                  @"sequence_id" : VSelectorName(sequenceId),
-                                  @"answers/answer_id" : VSelectorName(answerId),
-                                  @"answers/total_count" : VSelectorName(count)
-                                  };
-    
-    RKEntityMapping *mapping = [RKEntityMapping
-                                mappingForEntityForName:[self entityName]
-                                inManagedObjectStore:[RKObjectManager sharedManager].managedObjectStore];
-    
-    [mapping addAttributeMappingsFromDictionary:propertyMap];
-    
-    [mapping addConnectionForRelationship:@"sequence" connectedBy:@{@"sequenceId" : @"remoteId"}];
-    
-    return mapping;
-}
-
-
 + (RKResponseDescriptor*)descriptor
 {
-    return [RKResponseDescriptor responseDescriptorWithMapping:[self summaryBySequenceMapping]
+    return [RKResponseDescriptor responseDescriptorWithMapping:[self entityMapping]
                                                         method:RKRequestMethodGET
                                                    pathPattern:@"/api/pollresult/summary_by_sequence/:sequenceid"
-                                                       keyPath:@"payload/answers"
+                                                       keyPath:@"payload"
                                                    statusCodes:RKStatusCodeIndexSetForClass(RKStatusCodeClassSuccessful)];
 }
 
