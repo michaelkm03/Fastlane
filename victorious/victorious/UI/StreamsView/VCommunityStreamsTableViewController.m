@@ -61,9 +61,9 @@
     return @[kVUGCPollCategory];
 }
 
-- (NSArray*)forumCategories
+- (NSArray *)forumCategories
 {
-    return @[kVUGCForumCategory];
+    return nil;
 }
 
 - (IBAction)addButtonAction:(id)sender
