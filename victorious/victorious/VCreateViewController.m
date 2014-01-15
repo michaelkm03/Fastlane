@@ -281,7 +281,7 @@ CGFloat VCreateViewControllerLargePadding = 20;
     {
         self.characterCountLabel.textColor = [[VThemeManager sharedThemeManager] themedColorForKeyPath:@"theme.color.text.post.count"];
     }
-    self.characterCountLabel.text = [NSString stringWithFormat:@"%lu", (unsigned long)characterCount];
+    self.characterCountLabel.text = [NSString stringWithFormat:@"%lu", (unsigned long)(VConstantsMessageLength - characterCount)];
     [self validatePostButtonState];
 }
 
