@@ -146,13 +146,11 @@ static  NSString*   kNewsCellViewIdentifier       =   @"VNewsCell";
     NSManagedObjectContext* context =  [RKObjectManager sharedManager].managedObjectStore.persistentStoreManagedObjectContext;
     [context performBlockAndWait:^
     {
-        
         NSError *error;
-        if (![self.fetchedResultsController performFetch:&error])
+        if (![self.fetchedResultsController performFetch:&error] && error)
         {
             // Update to handle the error appropriately.
             NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
-            exit(-1);  // Fail
         }
         [self.refreshControl endRefreshing];
     }];

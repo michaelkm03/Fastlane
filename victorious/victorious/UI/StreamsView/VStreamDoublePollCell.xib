@@ -42,7 +42,7 @@
                         </constraints>
                     </imageView>
                     <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="97u-YM-R84" userLabel="Share Button">
-                        <rect key="frame" x="282" y="302" width="32" height="32"/>
+                        <rect key="frame" x="276" y="299" width="44" height="44"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <state key="normal" image="StreamShare"/>
                         <connections>
@@ -50,7 +50,7 @@
                         </connections>
                     </button>
                     <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Dej-gg-Abg" userLabel="Like Button">
-                        <rect key="frame" x="5" y="307" width="66" height="22"/>
+                        <rect key="frame" x="5" y="299" width="66" height="44"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <state key="normal" title=" 123" image="StreamHeart"/>
                         <connections>
@@ -58,7 +58,7 @@
                         </connections>
                     </button>
                     <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="94V-qD-H5h" userLabel="Comment Button">
-                        <rect key="frame" x="79" y="307" width="66" height="22"/>
+                        <rect key="frame" x="79" y="299" width="66" height="44"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <state key="normal" title=" 32" image="StreamComments"/>
                         <connections>

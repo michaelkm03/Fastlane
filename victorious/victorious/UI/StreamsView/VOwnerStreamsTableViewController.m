@@ -42,7 +42,7 @@
 
 - (NSArray*)forumCategories
 {
-    return @[kVOwnerForumCategory];
+    return nil;
 }
 
 @end

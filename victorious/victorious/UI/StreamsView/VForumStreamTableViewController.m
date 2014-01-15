@@ -9,6 +9,7 @@
 #import "VForumStreamTableViewController.h"
 #import "VStreamsTableViewController+Protected.h"
 #import "VCreateTopicViewController.h"
+#import "VConstants.h"
 
 @implementation VForumStreamTableViewController
 
@@ -24,32 +25,56 @@
     return streamsTableViewController;
 }
 
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
+    
+    UIBarButtonItem *searchButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"Search"]
+                                                                         style:UIBarButtonItemStylePlain
+                                                                        target:self
+                                                                        action:@selector(displaySearchBar:)];
+    
+    UIBarButtonItem *addButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"Add"]
+                                                                      style:UIBarButtonItemStylePlain
+                                                                     target:self
+                                                                     action:@selector(addButtonAction:)];
+    
+    self.navigationItem.rightBarButtonItems= @[addButtonItem, searchButtonItem];
+    self.searchDisplayController.searchBar.scopeButtonTitles = nil;
+}
+
 - (IBAction)addButtonAction:(id)sender
 {
     VCreateTopicViewController *createViewController = [[VCreateTopicViewController alloc] initWithDelegate:self];
-    [self presentViewController:[[UINavigationController alloc] initWithRootViewController:createViewController] animated:YES completion:nil];
+    [self presentViewController:[[UINavigationController alloc] initWithRootViewController:createViewController]
+                       animated:YES
+                     completion:nil];
 }
 
-//#pragma mark - Segue Lifecycle
+#pragma mark - Segue Lifecycle
 //- (void)prepareToStreamDetailsSegue:(UIStoryboardSegue *)segue sender:(id)sender;
-//
+
 #pragma mark - Predicate Lifecycle
-- (NSArray*)imageCategories
+
+- (NSArray*)categoriesForCurrentScope
 {
-    return nil;
+    return [self forumCategories];
 }
 
-- (NSArray*)videoCategories
+- (NSArray*)forumCategories
 {
-    return nil;
+    return @[kVOwnerForumCategory, kVUGCForumCategory];
 }
 
-- (NSArray*)pollCategories
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
-    return nil;
+    return 0;
 }
 
-
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
+{
+    return  nil;
+}
 
 //#pragma mark - Cell Lifecycle
 //- (void)registerCells;
