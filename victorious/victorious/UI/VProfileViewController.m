@@ -47,26 +47,34 @@
     
     if ((-1 == self.userID) || (self.userID == [VObjectManager sharedManager].mainUser.remoteId.integerValue))
     {
-        self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemEdit target:self action:@selector(editButtonPressed:)];
+        self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemEdit
+                                                                                               target:self
+                                                                                               action:@selector(editButtonPressed:)];
+        self.navigationItem.leftBarButtonItem = nil;
 
         self.profile = [VObjectManager sharedManager].mainUser;
-        
         [self setProfileData];
     }
     else
     {
         // If the user is not logged in, create a compose button and user action button
-        UIBarButtonItem* composeButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCompose target:self action:@selector(composeButtonPressed:)];
-        UIBarButtonItem* userActionButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAction target:self action:@selector(userActionButtonPressed:)];
+        UIBarButtonItem* composeButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCompose
+                                                                                       target:self
+                                                                                       action:@selector(composeButtonPressed:)];
+        UIBarButtonItem* userActionButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAction
+                                                                                          target:self
+                                                                                          action:@selector(userActionButtonPressed:)];
 
         self.navigationItem.rightBarButtonItems = @[composeButton, userActionButton];
+        self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"Close"]
+                                                                                 style:UIBarButtonItemStylePlain
+                                                                                target:self action:@selector(closeButtonAction:)];
 
         [[VObjectManager sharedManager] fetchUser:@(self.userID)
                             forRelationshipObject:nil
                                  withSuccessBlock:^(NSArray *resultObjects)
                                  {
                                      self.profile = [resultObjects firstObject];
-
                                      [self setProfileData];
                                  }
                                         failBlock:^(NSError *error)
@@ -74,14 +82,6 @@
                                             VLog("Profile failed to get User object");
                                         }];
     }
-}
-
-- (void)showCloseNavigationButton
-{
-    self.navigationItem.leftBarButtonItem =
-    [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"Close"]
-                                     style:UIBarButtonItemStylePlain
-                                    target:self action:@selector(closeButtonAction:)];
 }
 
 - (void)closeButtonAction:(id)sender

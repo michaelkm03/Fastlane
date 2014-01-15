@@ -41,6 +41,16 @@
      name:UIKeyboardWillChangeFrameNotification object:nil];
 }
 
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    if(self.showKeyboard)
+    {
+        [self.composeViewController.textField becomeFirstResponder];
+    }
+}
+
+
 - (VComposeViewController *)composeViewController
 {
     if(_composeViewController == nil)
