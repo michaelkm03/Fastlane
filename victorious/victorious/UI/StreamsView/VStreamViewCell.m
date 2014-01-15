@@ -19,7 +19,7 @@
 
 NSString* kStreamsWillSegueNotification = @"kStreamsWillSegueNotification";
 NSString *kStreamsWillShareNotification = @"kStreamsWillShareNotification";
-
+NSString *kStreamsWillCommentNotification = @"kStreamsWillCommentNotification";
 @interface VStreamViewCell()
 
 @property (weak, nonatomic) IBOutlet UILabel *usernameLabel;
@@ -88,7 +88,7 @@ NSString *kStreamsWillShareNotification = @"kStreamsWillShareNotification";
 
 - (IBAction)commentButtonAction:(id)sender
 {
-
+    [[NSNotificationCenter defaultCenter] postNotificationName:kStreamsWillCommentNotification object:self];
 }
 
 - (IBAction)shareButtonAction:(id)sender
