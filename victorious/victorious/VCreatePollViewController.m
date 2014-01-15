@@ -420,8 +420,14 @@ CGFloat VCreatePollViewControllerLargePadding = 20;
 
 - (void)postButtonAction:(id)sender
 {
-    [self.delegate createViewController:self shouldPostWithMessage:nil
-                                   data:nil mediaType:nil];
+    [self.delegate createViewController:self
+             shouldPostPollWithQuestion:self.questionTextField.text
+                            answer1Text:self.leftQuestionTextField.text
+                            answer2Text:self.rightQuestionTextField.text
+                             media1Data:self.leftMediaData
+                        media1Extension:self.leftMediaType
+                             media2Data:self.rightMediaData
+                        media2Extension:self.rightMediaType];
 
 }
 
