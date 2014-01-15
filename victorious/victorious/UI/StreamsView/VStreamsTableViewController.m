@@ -32,8 +32,8 @@ typedef NS_ENUM(NSInteger, VStreamScope)
     VStreamFilterAll = 0,
     VStreamFilterImages,
     VStreamFilterVideos,
-    VStreamFilterVideoForums,
-    VStreamFilterPolls
+    VStreamFilterPolls,
+    VStreamFilterVideoForums
 };
 
 @interface VStreamsTableViewController ()

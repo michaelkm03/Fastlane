@@ -103,6 +103,7 @@
                                              [VMessage descriptor],
                                              [VPollResult descriptor],
                                              [VPollResult createPollResultDescriptor],
+                                             [VPollResult byUserDescriptor],
                                              [VUnreadConversation descriptor]]];
 
     _paginationStatuses = [[NSMutableDictionary alloc] init];

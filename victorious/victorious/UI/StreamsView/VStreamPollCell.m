@@ -16,6 +16,8 @@
 #import "VInteraction.h"
 #import "VAnswer.h"
 #import "VAsset.h"
+#import "VPollResult.h"
+#import "VUser.h"
 
 #import "VLoginViewController.h"
 
@@ -137,10 +139,19 @@
                                      withAnswer:answer
                                    successBlock:^(NSArray *resultObjects)
       {
+          [[[VObjectManager sharedManager] pollResultsForSequence:self.sequence
+                                                    successBlock:^(NSArray *resultObjects)
+                                                    {
+                                                        [self showResultsForAnswer:answer];
+                                                    }
+                                                        failBlock:^(NSError *error)
+                                                        {
+                                                            VLog(@"Failed with error: %@", error);
+                                                        }] start];
+          
           VLog(@"Successfully answered: %@", resultObjects);
-          [self showResultsForAnswer:answer];
       }
-                                                failBlock:^(NSError *error)
+                                      failBlock:^(NSError *error)
       {
           //Error 1005 is "Poll result was already recorded
           if (error.code == 1005)
@@ -156,7 +167,19 @@
 
 - (void)showResultsForAnswer:(VAnswer*)answer
 {
-    //TODO: use result object to show results.
-    answer;
+    for( VPollResult* result in self.sequence.pollResults)
+    {
+        //unhide both flags
+        if (result.answerId == answer.remoteId && [result objectID])
+        {
+            VUser* mainUser = [VObjectManager sharedManager].mainUser;
+            VPollResult* resultInContext = (VPollResult*)[mainUser.managedObjectContext objectWithID:[result objectID]];
+            [mainUser addPollResultsObject:resultInContext];
+            [mainUser.managedObjectContext save:nil];
+            //count++ in case it didn't populate the database in time
+            //Color the flag since it was your answer
+        }
+        //else show it normally
+    }
 }
 @end

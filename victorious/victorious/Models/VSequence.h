@@ -2,14 +2,14 @@
 //  VSequence.h
 //  victorious
 //
-//  Created by Will Long on 1/10/14.
+//  Created by Will Long on 1/14/14.
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
 #import <Foundation/Foundation.h>
 #import <CoreData/CoreData.h>
 
-@class VComment, VNode, VUser;
+@class VComment, VNode, VPollResult, VUser;
 
 @interface VSequence : NSManagedObject
 
@@ -27,6 +27,7 @@
 @property (nonatomic, retain) NSSet *comments;
 @property (nonatomic, retain) NSSet *nodes;
 @property (nonatomic, retain) VUser *user;
+@property (nonatomic, retain) NSSet *pollResults;
 @end
 
 @interface VSequence (CoreDataGeneratedAccessors)
@@ -40,5 +41,10 @@
 - (void)removeNodesObject:(VNode *)value;
 - (void)addNodes:(NSSet *)values;
 - (void)removeNodes:(NSSet *)values;
+
+- (void)addPollResultsObject:(VPollResult *)value;
+- (void)removePollResultsObject:(VPollResult *)value;
+- (void)addPollResults:(NSSet *)values;
+- (void)removePollResults:(NSSet *)values;
 
 @end

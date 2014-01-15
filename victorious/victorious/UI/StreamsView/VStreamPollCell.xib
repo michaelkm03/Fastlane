@@ -172,7 +172,7 @@
     <resources>
         <image name="Play" width="33" height="33"/>
         <image name="StreamComments" width="19" height="19"/>
-        <image name="StreamDate" width="11" height="11"/>
+        <image name="StreamDate" width="13" height="13"/>
         <image name="StreamHeart" width="19" height="18"/>
         <image name="StreamShare" width="17" height="5"/>
         <image name="profile_thumb" width="50" height="50"/>

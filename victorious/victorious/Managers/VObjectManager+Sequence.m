@@ -323,7 +323,7 @@
     if (!user)
         user = self.mainUser;
     
-    NSString* path = [NSString stringWithFormat:@"/api/pollresult/summary_by_sequence/%@", user.remoteId];
+    NSString* path = [NSString stringWithFormat:@"/api/pollresult/summary_by_user/%@", user.remoteId];
     
     SuccessBlock fullSuccess = ^(NSArray* resultObjects)
     {
@@ -354,7 +354,7 @@
                                                   failBlock:(FailBlock)fail
 {
     
-    return [self GET:[NSString stringWithFormat:@"api/pollresult/summary_by_sequence/%@", sequence.remoteId]
+    return [self GET:[NSString stringWithFormat:@"/api/pollresult/summary_by_sequence/%@", sequence.remoteId]
               object:nil
           parameters:nil
         successBlock:success
