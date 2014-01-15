@@ -91,7 +91,13 @@
             else if ([relationshipObject isKindOfClass:[VConversation class]])
                 ((VConversation*)relationshipObject).user = user;
         }
-        [user.managedObjectContext save:nil];
+
+        NSError *error = nil;
+        [user.managedObjectContext save:&error];
+        if(error)
+        {
+            NSLog(@"%@", error);
+        }
     }
 }
 

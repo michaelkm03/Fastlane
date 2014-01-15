@@ -91,7 +91,7 @@ UIImagePickerControllerDelegate, UINavigationControllerDelegate>
 
     UILabel *characterCountLabel = [UILabel autoLayoutView];
     characterCountLabel.textColor = [[VThemeManager sharedThemeManager] themedColorForKeyPath:@"theme.color.text.post"];
-    characterCountLabel.text = @"0";
+    characterCountLabel.text = [NSString stringWithFormat:@"%lu", VConstantsMessageLength];
     [self.view addSubview:characterCountLabel];
     [characterCountLabel pinEdges:JRTViewPinRightEdge toSameEdgesOfView:textView inset:VCreateTopicViewControllerPadding];
     [characterCountLabel pinEdges:JRTViewPinBottomEdge toSameEdgesOfView:textView inset:VCreateTopicViewControllerPadding];
@@ -263,8 +263,8 @@ UIImagePickerControllerDelegate, UINavigationControllerDelegate>
 
 - (void)textViewDidChange:(UITextView *)textView
 {
-    NSUInteger characterCount = [textView.text length];
-    if(characterCount > VConstantsMessageLength)
+    NSInteger characterCount = VConstantsMessageLength-[textView.text length];
+    if(characterCount < 0)
     {
         self.characterCountLabel.textColor = [[VThemeManager sharedThemeManager] themedColorForKeyPath:@"theme.color.text.post.count.invalid"];
     }
@@ -272,7 +272,7 @@ UIImagePickerControllerDelegate, UINavigationControllerDelegate>
     {
         self.characterCountLabel.textColor = [[VThemeManager sharedThemeManager] themedColorForKeyPath:@"theme.color.text.post.count"];
     }
-    self.characterCountLabel.text = [NSString stringWithFormat:@"%lu", (unsigned long)characterCount];
+    self.characterCountLabel.text = [NSString stringWithFormat:@"%ld", (long)characterCount];
     [self validatePostButtonState];
 }
 

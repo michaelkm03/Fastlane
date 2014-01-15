@@ -292,8 +292,15 @@ static NSString* CommentCache = @"CommentCache";
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    VCommentCell *cell = (VCommentCell *)[tableView dequeueReusableCellWithIdentifier:kCommentCellIdentifier
-                                                                         forIndexPath:indexPath];
+    UITableViewCell *cell = nil;
+    VComment *comment = [self.fetchedResultsController objectAtIndexPath:indexPath];
+    if([comment.user isEqualToUser:[VObjectManager sharedManager].mainUser])
+    {
+        cell = [self.tableView dequeueReusableCellWithIdentifier:kOtherCommentCellIdentifier forIndexPath:indexPath];
+    }else
+    {
+        cell = [self.tableView dequeueReusableCellWithIdentifier:kCommentCellIdentifier forIndexPath:indexPath];
+    }
     [self configureCell:cell atIndexPath:indexPath];
     
     return cell;
@@ -310,15 +317,7 @@ static NSString* CommentCache = @"CommentCache";
 
 - (void)configureCell:(UITableViewCell *)theCell atIndexPath:(NSIndexPath *)theIndexPath
 {
-    UITableViewCell *cell = nil;
     VComment *comment = [self.fetchedResultsController objectAtIndexPath:theIndexPath];
-    if([comment.user isEqualToUser:[VObjectManager sharedManager].mainUser])
-    {
-        cell = [self.tableView dequeueReusableCellWithIdentifier:kOtherCommentCellIdentifier forIndexPath:theIndexPath];
-    }else
-    {
-        cell = [self.tableView dequeueReusableCellWithIdentifier:kCommentCellIdentifier forIndexPath:theIndexPath];
-    }
     [(VCommentCell*)theCell setCommentOrMessage:comment];
 }
 
