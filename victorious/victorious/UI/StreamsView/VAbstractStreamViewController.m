@@ -229,14 +229,14 @@ forFetchedResultsController:(NSFetchedResultsController *)fetchedResultsControll
 - (void)searchBar:(UISearchBar *)searchBar selectedScopeButtonIndexDidChange:(NSInteger)selectedScope
 {
     //This relies on the scope buttons being in the same order as the VStreamScope enum
-    _scopeType = selectedScope;
+    self.scopeType = selectedScope;
     [self refreshFetchController:self.searchFetchedResultsController
                    withPredicate:[self fetchResultsPredicate]];
 }
 
 - (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText
 {
-    _filterText = searchText;
+    self.filterText = searchText;
     
     [self refreshFetchController:self.searchFetchedResultsController
                    withPredicate:[self fetchResultsPredicate]];
@@ -301,7 +301,7 @@ forFetchedResultsController:(NSFetchedResultsController *)fetchedResultsControll
 
 - (NSPredicate*)searchTextPredicate
 {
-    if (!_filterText || [_filterText isEmpty])
+    if (!self.filterText || [self.filterText isEmpty])
     {
         return nil;
     }

@@ -40,12 +40,15 @@
                                                                      action:@selector(addButtonAction:)];
     
     self.navigationItem.rightBarButtonItems= @[addButtonItem, searchButtonItem];
+    self.searchDisplayController.searchBar.scopeButtonTitles = nil;
 }
 
 - (IBAction)addButtonAction:(id)sender
 {
     VCreateTopicViewController *createViewController = [[VCreateTopicViewController alloc] initWithDelegate:self];
-    [self presentViewController:[[UINavigationController alloc] initWithRootViewController:createViewController] animated:YES completion:nil];
+    [self presentViewController:[[UINavigationController alloc] initWithRootViewController:createViewController]
+                       animated:YES
+                     completion:nil];
 }
 
 #pragma mark - Segue Lifecycle
@@ -53,19 +56,9 @@
 
 #pragma mark - Predicate Lifecycle
 
-- (NSArray*)imageCategories
+- (NSArray*)categoriesForCurrentScope
 {
-    return nil;
-}
-
-- (NSArray*)videoCategories
-{
-    return nil;
-}
-
-- (NSArray*)pollCategories
-{
-    return nil;
+    return [self forumCategories];
 }
 
 - (NSArray*)forumCategories
