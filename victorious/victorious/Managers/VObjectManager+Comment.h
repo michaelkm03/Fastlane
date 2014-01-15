@@ -15,6 +15,7 @@
 - (AFHTTPRequestOperation *)addCommentWithText:(NSString*)text
                                           Data:(NSData*)data
                                 mediaExtension:(NSString*)extension
+                                      mediaUrl:(NSURL*)mediaUrl
                                     toSequence:(VSequence*)sequence
                                      andParent:(VComment*)parent
                                   successBlock:(AFSuccessBlock)success

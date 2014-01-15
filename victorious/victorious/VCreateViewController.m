@@ -238,6 +238,7 @@ CGFloat VCreateViewControllerLargePadding = 20;
 - (void)postButtonAction:(id)sender
 {
     [self.textView resignFirstResponder];
+    
     [self.delegate createViewController:self shouldPostWithMessage:self.textView.text
                                    data:self.mediaData mediaType:self.mediaType];
 

@@ -562,6 +562,7 @@ static NSString* CommentCache = @"CommentCache";
     [[VObjectManager sharedManager] addCommentWithText:text
                                                    Data:data
                                          mediaExtension:mediaExtension
+                                              mediaUrl:nil
                                              toSequence:_sequence
                                               andParent:nil
                                            successBlock:^(AFHTTPRequestOperation* operation, id response) {

@@ -27,6 +27,7 @@
                                      withText:(NSString*)text
                                          Data:(NSData*)data
                                mediaExtension:(NSString*)extension
+                                     mediaUrl:(NSURL*)mediaUrl
                                  successBlock:(AFSuccessBlock)success
                                     failBlock:(AFFailBlock)fail;
 

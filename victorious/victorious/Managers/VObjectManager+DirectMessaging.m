@@ -20,11 +20,12 @@
     for (int i=0; i <5; i++)
     {
         [self sendMessageToUser:nil
-                        withText:[NSString stringWithFormat: @"Test %i", i]
-                            Data:nil
-                  mediaExtension:nil
-                    successBlock:nil
-                       failBlock:nil] ;
+                       withText:[NSString stringWithFormat: @"Test %i", i]
+                           Data:nil
+                 mediaExtension:nil
+                       mediaUrl:nil
+                   successBlock:nil
+                      failBlock:nil] ;
     }
 }
 
@@ -153,6 +154,7 @@
                                      withText:(NSString*)text
                                          Data:(NSData*)data
                                mediaExtension:(NSString*)extension
+                                     mediaUrl:(NSURL*)mediaUrl
                                  successBlock:(AFSuccessBlock)success
                                     failBlock:(AFFailBlock)fail
 {

@@ -363,16 +363,18 @@
 }
 
 - (AFHTTPRequestOperation * )createPollWithName:(NSString*)name
-                                             description:(NSString*)description
-                                                question:(NSString*)question
-                                             answer1Text:(NSString*)answer1Text
-                                             answer2Text:(NSString*)answer2Text
-                                              media1Data:(NSData*)media1Data
-                                         media1Extension:(NSString*)media1Extension
-                                              media2Data:(NSData*)media2Data
-                                         media2Extension:(NSString*)media2Extension
-                                            successBlock:(AFSuccessBlock)success
-                                               failBlock:(AFFailBlock)fail
+                                    description:(NSString*)description
+                                       question:(NSString*)question
+                                    answer1Text:(NSString*)answer1Text
+                                    answer2Text:(NSString*)answer2Text
+                                     media1Data:(NSData*)media1Data
+                                media1Extension:(NSString*)media1Extension
+                                      media1Url:(NSURL*)media1Url
+                                     media2Data:(NSData*)media2Data
+                                media2Extension:(NSString*)media2Extension
+                                      media2Url:(NSURL*)media2Url
+                                   successBlock:(AFSuccessBlock)success
+                                      failBlock:(AFFailBlock)fail
 {
     //Required Fields
     NSString* category = self.isOwner ? kVOwnerPollCategory : kVUGCPollCategory;
@@ -410,6 +412,7 @@
 - (AFHTTPRequestOperation * )createVideoWithName:(NSString*)name
                                      description:(NSString*)description
                                        mediaData:(NSData*)mediaData
+                                        mediaUrl:(NSURL*)mediaUrl
                                     successBlock:(AFSuccessBlock)success
                                        failBlock:(AFFailBlock)fail
 {
@@ -419,6 +422,7 @@
                             category:category
                            mediaData:mediaData
                            extension:VConstantMediaExtensionMOV
+                            mediaUrl:nil
                         successBlock:success
                            failBlock:fail];
 }
@@ -426,17 +430,19 @@
 - (AFHTTPRequestOperation * )createImageWithName:(NSString*)name
                                      description:(NSString*)description
                                        mediaData:(NSData*)mediaData
+                                        mediaUrl:(NSURL*)mediaUrl
                                     successBlock:(AFSuccessBlock)success
                                        failBlock:(AFFailBlock)fail
 {
     NSString* category = self.isOwner ? kVOwnerImageCategory : kVUGCImageCategory;
     return [self uploadMediaWithName:name
-                  description:description
-                     category:category
-                    mediaData:mediaData
-            extension:VConstantMediaExtensionPNG
-                 successBlock:success
-                    failBlock:fail];
+                         description:description
+                            category:category
+                           mediaData:mediaData
+                           extension:VConstantMediaExtensionPNG
+                            mediaUrl:nil
+                        successBlock:success
+                           failBlock:fail];
 }
 
 - (AFHTTPRequestOperation * )uploadMediaWithName:(NSString*)name
@@ -444,6 +450,7 @@
                                         category:(NSString*)category
                                        mediaData:(NSData*)mediaData
                                        extension:(NSString*)extension
+                                        mediaUrl:(NSURL*)mediaUrl
                                     successBlock:(AFSuccessBlock)success
                                        failBlock:(AFFailBlock)fail
 {

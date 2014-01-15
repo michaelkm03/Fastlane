@@ -346,8 +346,12 @@ typedef NS_ENUM(NSInteger, VStreamScope)
 
 #pragma mark - VCreateSequenceDelegate
 
-- (void)createViewController:(UIViewController *)viewController shouldPostWithMessage:(NSString *)message data:(NSData *)data mediaType:(NSString *)mediaType
+- (void)createViewController:(UIViewController *)viewController
+       shouldPostWithMessage:(NSString *)message
+                        data:(NSData *)data
+                   mediaType:(NSString *)mediaType
 {
+    
     NSLog(@"%@", message);
 }
 

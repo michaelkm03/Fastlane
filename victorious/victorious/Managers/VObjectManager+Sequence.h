@@ -56,28 +56,32 @@
                                        successBlock:(SuccessBlock)success
                                           failBlock:(FailBlock)fail;
 
-- (RKManagedObjectRequestOperation * )createPollWithName:(NSString*)name
-                                             description:(NSString*)description
-                                                question:(NSString*)question
-                                             answer1Text:(NSString*)answer1Text
-                                             answer2Text:(NSString*)answer2Text
-                                              media1Data:(NSData*)media1Data
-                                         media1Extension:(NSString*)media1Extension
-                                              media2Data:(NSData*)media2Data
-                                         media2Extension:(NSString*)media2Extension
-                                            successBlock:(SuccessBlock)success
-                                               failBlock:(FailBlock)fail;
+
+- (AFHTTPRequestOperation * )createPollWithName:(NSString*)name
+                                    description:(NSString*)description
+                                       question:(NSString*)question
+                                    answer1Text:(NSString*)answer1Text
+                                    answer2Text:(NSString*)answer2Text
+                                     media1Data:(NSData*)media1Data
+                                media1Extension:(NSString*)media1Extension
+                                      media1Url:(NSURL*)media1Url
+                                     media2Data:(NSData*)media2Data
+                                media2Extension:(NSString*)media2Extension
+                                      media2Url:(NSURL*)media2Url
+                                   successBlock:(AFSuccessBlock)success
+                                      failBlock:(AFFailBlock)fail;
 
 - (RKManagedObjectRequestOperation * )createVideoWithName:(NSString*)name
                                               description:(NSString*)description
                                                 mediaData:(NSData*)mediaData
-//                                         media1Extension:(NSString*)media1Extension
+                                                mediaUrl:(NSURL*)mediaUrl
                                              successBlock:(SuccessBlock)success
                                                 failBlock:(FailBlock)fail;
 
 - (RKManagedObjectRequestOperation * )createImageWithName:(NSString*)name
                                               description:(NSString*)description
                                                 mediaData:(NSData*)mediaData
+                                                 mediaUrl:(NSURL*)mediaUrl
                                              successBlock:(SuccessBlock)success
                                                 failBlock:(FailBlock)fail;
 
@@ -86,6 +90,7 @@
                                                  category:(NSString*)category
                                                 mediaData:(NSData*)mediaData
                                                 extension:(NSString*)extension
+                                                 mediaUrl:(NSURL*)mediaUrl
                                              successBlock:(SuccessBlock)success
                                                 failBlock:(FailBlock)fail;
 #pragma mark - StatSequence Methods

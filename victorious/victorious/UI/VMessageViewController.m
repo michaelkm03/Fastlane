@@ -105,6 +105,7 @@ const   CGFloat     kMessageRowHeight           =   80;
                                               withText:text
                                                   Data:data
                                         mediaExtension:mediaExtension
+                                             mediaUrl:nil
                                           successBlock:^(AFHTTPRequestOperation* operation, id response)
                                           {
                                                VLog(@"Succeed with response: %@", response);
