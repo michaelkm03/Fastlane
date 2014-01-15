@@ -89,6 +89,13 @@
                                              successBlock:(SuccessBlock)success
                                                 failBlock:(FailBlock)fail;
 
+- (AFHTTPRequestOperation * )createForumWithName:(NSString*)name
+                                     description:(NSString*)description
+                                       mediaData:(NSData*)mediaData
+                                        mediaUrl:(NSURL*)mediaUrl
+                                    successBlock:(SuccessBlock)success
+                                       failBlock:(FailBlock)fail;
+
 - (RKManagedObjectRequestOperation * )uploadMediaWithName:(NSString*)name
                                               description:(NSString*)description
                                                  category:(NSString*)category

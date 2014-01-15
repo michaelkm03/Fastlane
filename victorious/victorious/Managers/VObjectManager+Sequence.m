@@ -480,6 +480,24 @@
                            failBlock:fail];
 }
 
+- (AFHTTPRequestOperation * )createForumWithName:(NSString*)name
+                                     description:(NSString*)description
+                                       mediaData:(NSData*)mediaData
+                                        mediaUrl:(NSURL*)mediaUrl
+                                    successBlock:(SuccessBlock)success
+                                       failBlock:(FailBlock)fail
+{
+    NSString* category = self.isOwner ? kVOwnerForumCategory : kVUGCForumCategory;
+    return [self uploadMediaWithName:name
+                         description:description
+                            category:category
+                           mediaData:mediaData
+                           extension:VConstantMediaExtensionPNG
+                            mediaUrl:nil
+                        successBlock:success
+                           failBlock:fail];
+}
+
 - (AFHTTPRequestOperation * )uploadMediaWithName:(NSString*)name
                                      description:(NSString*)description
                                         category:(NSString*)category
