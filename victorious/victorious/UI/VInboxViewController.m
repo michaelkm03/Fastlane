@@ -152,7 +152,6 @@ static  NSString*   kNewsCellViewIdentifier       =   @"VNewsCell";
         {
             // Update to handle the error appropriately.
             NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
-            exit(-1);  // Fail
         }
         [self.refreshControl endRefreshing];
     }];
