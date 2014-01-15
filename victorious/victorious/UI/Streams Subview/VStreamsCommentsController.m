@@ -345,6 +345,7 @@ static NSString* CommentCache = @"CommentCache";
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    BBlockWeakSelf wself = self;
     VComment *comment = [self.fetchedResultsController objectAtIndexPath:indexPath];
     NSString *reportTitle = NSLocalizedString(@"Report Inappropriate", @"Comment report inappropriate button");
     NSString *thumbUpTitle = NSLocalizedString(@"Thumbs Up", @"Comment thumbs up button");
@@ -399,7 +400,7 @@ static NSString* CommentCache = @"CommentCache";
          }
          else if([[actionSheet buttonTitleAtIndex:buttonIndex] isEqualToString:reply])
          {
-             // TODO: bring up the compose dialog with @user
+             [wself.delegate streamsCommentsController:wself shouldReplyToUser:comment.user];
          }
      }];
 
