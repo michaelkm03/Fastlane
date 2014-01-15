@@ -140,6 +140,20 @@
                                     <action selector="pressedPlayTwo:" destination="BTB-1H-fCN" eventType="touchUpInside" id="hh6-HI-q3h"/>
                                 </connections>
                             </button>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="100%" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hPb-pk-cPO" customClass="VInboxBadgeLabel">
+                                <rect key="frame" x="115" y="40" width="32" height="32"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="11"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="100%" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gtY-r3-PYW" customClass="VInboxBadgeLabel">
+                                <rect key="frame" x="269" y="40" width="32" height="32"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="11"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
@@ -176,6 +190,7 @@
                 <outlet property="commentButton" destination="94V-qD-H5h" id="XWe-5r-xSm"/>
                 <outlet property="dateLabel" destination="a6x-TU-Q9b" id="tpa-so-LAW"/>
                 <outlet property="descriptionLabel" destination="UIj-g6-FXe" id="Vcn-hT-aKI"/>
+                <outlet property="firstResultLabel" destination="hPb-pk-cPO" id="zjN-Z4-X6a"/>
                 <outlet property="likeButton" destination="Dej-gg-Abg" id="c1f-6o-scZ"/>
                 <outlet property="locationLabel" destination="TL7-tG-qjN" id="7lf-C5-fgn"/>
                 <outlet property="optionOneButton" destination="gs8-J9-s3Y" id="g4C-t2-yGk"/>
@@ -185,6 +200,7 @@
                 <outlet property="previewImageTwo" destination="e2G-u3-diD" id="7Il-nc-jTL"/>
                 <outlet property="previewImageView" destination="OOq-Yb-3IQ" id="Xai-kb-2mv"/>
                 <outlet property="profileImageButton" destination="dY5-Ua-yog" id="HN6-tw-orY"/>
+                <outlet property="secondResultLabel" destination="gtY-r3-PYW" id="xxH-y8-hSQ"/>
                 <outlet property="shareButton" destination="97u-YM-R84" id="sW2-QC-tZ4"/>
                 <outlet property="usernameLabel" destination="3Jw-Bn-2h0" id="Bve-n2-1cE"/>
                 <outletCollection property="imageViews" destination="BQ0-e0-bhp" id="O0R-Kb-Qzh"/>

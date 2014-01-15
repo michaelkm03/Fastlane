@@ -111,6 +111,7 @@
     }
     
     [self setupOrLabel];
+    [self setupResultLabels];
 }
 
 - (void)setupOrLabel
@@ -129,18 +130,30 @@
     [orLabel constrainToSize:orLabelSize];
     [orLabel centerInContainerOnAxis:NSLayoutAttributeCenterX];
     [orLabel centerInContainerOnAxis:NSLayoutAttributeCenterY];
-
 }
+
+- (void)setupResultLabels
+{
+    self.firstResultLabel.font = self.secondResultLabel.font =
+            [[VThemeManager sharedThemeManager] themedFontForKeyPath:@"theme.font.poll.result.badge"];
+    self.firstResultLabel.textColor = self.secondResultLabel.textColor =
+            [[VThemeManager sharedThemeManager] themedColorForKeyPath:@"theme.color.menu.badge.text"];
+    self.firstResultLabel.backgroundColor = self.secondResultLabel.backgroundColor =
+            [[VThemeManager sharedThemeManager] themedColorForKeyPath:@"theme.color.poll.result.default"];
+            //[[VThemeManager sharedThemeManager] themedColorForKeyPath:@"theme.color.post.poll.or.border"];
+    self.firstResultLabel.text = self.secondResultLabel.text = @"100%";
+    
+    self.firstResultLabel.hidden = self.secondResultLabel.hidden = YES;
+}
+
 - (IBAction)pressedOptionOne:(id)sender
 {
     [self answerPollWithAnswer:_firstAnswer];
-    self.optionOneButton.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKeyPath:@"theme.color.stream.text"];
 }
 
 - (IBAction)pressedOptionTwo:(id)sender
 {
     [self answerPollWithAnswer:_secondAnswer];
-    self.optionTwoButton.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKeyPath:@"theme.color.stream.text"];
 }
 
 - (IBAction)pressedPlayOne:(id)sender
@@ -182,13 +195,13 @@
       }
                                       failBlock:^(NSError *error)
       {
-          //Error 1005 is "Poll result was already recorded
-          if (error.code == 1005)
-              [[[UIAlertView alloc] initWithTitle:NSLocalizedString(@"PollAlreadyAnswered", @"")
-                                          message:error.localizedDescription
-                                         delegate:nil
-                                cancelButtonTitle:NSLocalizedString(@"OKButton", @"")
-                                otherButtonTitles:nil] show];
+          //Error 1005 is "Poll result was already recorded.
+          //If we get anything else... lie and say we already answered
+          [[[UIAlertView alloc] initWithTitle:NSLocalizedString(@"PollAlreadyAnswered", @"")
+                                      message:error.localizedDescription
+                                     delegate:nil
+                            cancelButtonTitle:NSLocalizedString(@"OKButton", @"")
+                            otherButtonTitles:nil] show];
           
           VLog(@"Failed to answer with error: %@", error);
       }] start];
@@ -196,19 +209,49 @@
 
 - (void)showResultsForAnswer:(VAnswer*)answer
 {
+    NSInteger totalVotes = 0;
     for( VPollResult* result in self.sequence.pollResults)
     {
+        totalVotes+= result.count.integerValue;
+    }
+    totalVotes = totalVotes ? totalVotes : 1; //dividing by 0 is bad.
+    
+    for( VPollResult* result in self.sequence.pollResults)
+    {
+        VInboxBadgeLabel* label = [self resultLabelForAnswerID:result.answerId];
+        
+        NSInteger percentage = (result.count.integerValue / totalVotes) * 100;
+        percentage = percentage > 100 ? 100 : percentage;
+        percentage = percentage < 0 ? 0 : percentage;
+        
+        label.text = [@(percentage).stringValue stringByAppendingString:@"%"];
         //unhide both flags
-        if (result.answerId == answer.remoteId && [result objectID])
+        if (result.answerId == answer.remoteId)
         {
-            VUser* mainUser = [VObjectManager sharedManager].mainUser;
-            VPollResult* resultInContext = (VPollResult*)[mainUser.managedObjectContext objectWithID:[result objectID]];
-            [mainUser addPollResultsObject:resultInContext];
-            [mainUser.managedObjectContext save:nil];
-            //count++ in case it didn't populate the database in time
-            //Color the flag since it was your answer
+            label.backgroundColor =
+                    [[VThemeManager sharedThemeManager] themedColorForKeyPath:@"theme.color"];
         }
-        //else show it normally
+    }
+    self.firstResultLabel.hidden = self.secondResultLabel.hidden = NO;
+    
+    if ([answer.remoteId isEqualToNumber:_firstAnswer.remoteId])
+    {
+        self.optionOneButton.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKeyPath:@"theme.color"];
+    }
+    else
+    {
+        self.optionTwoButton.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKeyPath:@"theme.color"];
     }
 }
+
+- (VInboxBadgeLabel*)resultLabelForAnswerID:(NSNumber*)answerID
+{
+    if ([answerID isEqualToNumber:_firstAnswer.remoteId])
+        return _firstResultLabel;
+    else if ([answerID isEqualToNumber:_secondAnswer.remoteId])
+        return  _secondResultLabel;
+    
+    return nil;
+}
+
 @end
