@@ -70,6 +70,7 @@ typedef NS_ENUM(NSInteger, VStreamScope)
 {
     [super viewDidLoad];
 
+    self.tableView.separatorInset = UIEdgeInsetsZero;
     self.featuredStreamsViewController =   [self.storyboard instantiateViewControllerWithIdentifier:@"featured_pages"];
 
     // TODO: if the user is the owner of the channel show both search and add

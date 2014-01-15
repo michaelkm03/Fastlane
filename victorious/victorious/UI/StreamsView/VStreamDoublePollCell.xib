@@ -27,18 +27,22 @@
                         <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                         <nil key="highlightedColor"/>
                     </label>
-                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="1d" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="a6x-TU-Q9b">
+                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="1d" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="a6x-TU-Q9b">
                         <rect key="frame" x="294" y="25" width="20" height="21"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                         <nil key="highlightedColor"/>
                     </label>
-                    <imageView userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="StreamDate" translatesAutoresizingMaskIntoConstraints="NO" id="BQ0-e0-bhp">
-                        <rect key="frame" x="282" y="30" width="11" height="11"/>
+                    <imageView userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="StreamDate" translatesAutoresizingMaskIntoConstraints="NO" id="BQ0-e0-bhp">
+                        <rect key="frame" x="279" y="29" width="13" height="13"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="13" id="Csl-4m-ksZ"/>
+                            <constraint firstAttribute="width" constant="13" id="upD-ZR-3mW"/>
+                        </constraints>
                     </imageView>
                     <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="97u-YM-R84" userLabel="Share Button">
-                        <rect key="frame" x="288" y="302" width="32" height="32"/>
+                        <rect key="frame" x="282" y="302" width="32" height="32"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <state key="normal" image="StreamShare"/>
                         <connections>
@@ -46,7 +50,7 @@
                         </connections>
                     </button>
                     <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Dej-gg-Abg" userLabel="Like Button">
-                        <rect key="frame" x="20" y="307" width="66" height="22"/>
+                        <rect key="frame" x="5" y="307" width="66" height="22"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <state key="normal" title=" 123" image="StreamHeart"/>
                         <connections>
@@ -54,7 +58,7 @@
                         </connections>
                     </button>
                     <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="94V-qD-H5h" userLabel="Comment Button">
-                        <rect key="frame" x="94" y="307" width="66" height="22"/>
+                        <rect key="frame" x="79" y="307" width="66" height="22"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <state key="normal" title=" 32" image="StreamComments"/>
                         <connections>
@@ -62,11 +66,11 @@
                         </connections>
                     </button>
                     <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Jd2-7P-sad">
-                        <rect key="frame" x="0.0" y="59" width="320" height="240"/>
+                        <rect key="frame" x="5" y="59" width="310" height="240"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="8iA-rZ-Qqs">
-                                <rect key="frame" x="0.0" y="0.0" width="320" height="32"/>
+                                <rect key="frame" x="0.0" y="0.0" width="310" height="32"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <subviews>
                                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="UIj-g6-FXe">
@@ -102,15 +106,15 @@
                                 </connections>
                             </button>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="OOq-Yb-3IQ">
-                                <rect key="frame" x="0.0" y="30" width="160" height="180"/>
+                                <rect key="frame" x="0.0" y="30" width="155" height="180"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             </imageView>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="e2G-u3-diD">
-                                <rect key="frame" x="160" y="30" width="160" height="180"/>
+                                <rect key="frame" x="155" y="30" width="155" height="180"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             </imageView>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="eLA-aw-94c">
-                                <rect key="frame" x="64" y="103" width="33" height="33"/>
+                                <rect key="frame" x="61" y="103" width="33" height="33"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" image="Play">
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
@@ -120,7 +124,7 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="sXz-uG-dbs">
-                                <rect key="frame" x="224" y="103" width="33" height="33"/>
+                                <rect key="frame" x="223" y="103" width="33" height="33"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" image="Play">
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
@@ -143,6 +147,12 @@
                         </connections>
                     </button>
                 </subviews>
+                <constraints>
+                    <constraint firstItem="a6x-TU-Q9b" firstAttribute="top" secondItem="727-Cq-Kk2" secondAttribute="top" constant="25" id="O27-6q-EFs"/>
+                    <constraint firstItem="a6x-TU-Q9b" firstAttribute="leading" secondItem="BQ0-e0-bhp" secondAttribute="trailing" constant="2" id="Ow6-ic-RQO"/>
+                    <constraint firstItem="BQ0-e0-bhp" firstAttribute="centerY" secondItem="a6x-TU-Q9b" secondAttribute="centerY" id="XUA-sb-ujV"/>
+                    <constraint firstAttribute="trailing" secondItem="a6x-TU-Q9b" secondAttribute="trailing" constant="6" id="dBp-09-oJ8"/>
+                </constraints>
             </tableViewCellContentView>
             <connections>
                 <outlet property="commentButton" destination="94V-qD-H5h" id="XWe-5r-xSm"/>
@@ -172,9 +182,9 @@
     </objects>
     <resources>
         <image name="Play" width="33" height="33"/>
-        <image name="StreamComments" width="15" height="15"/>
+        <image name="StreamComments" width="19" height="19"/>
         <image name="StreamDate" width="11" height="11"/>
-        <image name="StreamHeart" width="14" height="13"/>
+        <image name="StreamHeart" width="19" height="18"/>
         <image name="StreamShare" width="17" height="5"/>
         <image name="profile_thumb" width="50" height="50"/>
     </resources>

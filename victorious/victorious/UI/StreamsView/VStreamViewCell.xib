@@ -31,24 +31,28 @@
                         <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                         <nil key="highlightedColor"/>
                     </label>
-                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="1d" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="OUw-F8-xAD">
-                        <rect key="frame" x="294" y="25" width="20" height="21"/>
+                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="1d" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="OUw-F8-xAD">
+                        <rect key="frame" x="295" y="25" width="20" height="21"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                         <nil key="highlightedColor"/>
                     </label>
-                    <imageView userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="StreamDate" translatesAutoresizingMaskIntoConstraints="NO" id="D3j-da-Kgn">
-                        <rect key="frame" x="282" y="30" width="11" height="11"/>
+                    <imageView userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="StreamDate" translatesAutoresizingMaskIntoConstraints="NO" id="D3j-da-Kgn">
+                        <rect key="frame" x="278" y="29" width="13" height="13"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="13" id="2db-LT-iWG"/>
+                            <constraint firstAttribute="height" constant="13" id="g1W-nR-NWo"/>
+                        </constraints>
                     </imageView>
                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="WLo-v6-MW0" userLabel="Description">
-                        <rect key="frame" x="20" y="388" width="290" height="21"/>
+                        <rect key="frame" x="5" y="388" width="310" height="21"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                         <nil key="highlightedColor"/>
                     </label>
                     <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jGu-rr-Q06" userLabel="Share Button">
-                        <rect key="frame" x="278" y="410" width="32" height="32"/>
+                        <rect key="frame" x="283" y="410" width="32" height="32"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <state key="normal" image="StreamShare"/>
                         <connections>
@@ -56,7 +60,7 @@
                         </connections>
                     </button>
                     <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="xnP-0R-e3a" userLabel="Like Button">
-                        <rect key="frame" x="20" y="415" width="66" height="22"/>
+                        <rect key="frame" x="5" y="415" width="66" height="22"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <state key="normal" title=" 123" image="StreamHeart"/>
                         <connections>
@@ -64,7 +68,7 @@
                         </connections>
                     </button>
                     <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cLx-fR-OJL" userLabel="Comment Button">
-                        <rect key="frame" x="94" y="415" width="66" height="22"/>
+                        <rect key="frame" x="79" y="415" width="66" height="22"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <state key="normal" title=" 32" image="StreamComments"/>
                         <connections>
@@ -86,6 +90,12 @@
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     </imageView>
                 </subviews>
+                <constraints>
+                    <constraint firstAttribute="trailing" secondItem="OUw-F8-xAD" secondAttribute="trailing" constant="5" id="5Gs-eH-deG"/>
+                    <constraint firstItem="OUw-F8-xAD" firstAttribute="top" secondItem="tlv-KZ-xzf" secondAttribute="top" constant="25" id="8tQ-A5-ntJ"/>
+                    <constraint firstItem="OUw-F8-xAD" firstAttribute="centerY" secondItem="D3j-da-Kgn" secondAttribute="centerY" id="9um-jd-po1"/>
+                    <constraint firstItem="OUw-F8-xAD" firstAttribute="leading" secondItem="D3j-da-Kgn" secondAttribute="trailing" constant="4" id="ldo-0F-2KJ"/>
+                </constraints>
             </tableViewCellContentView>
             <connections>
                 <outlet property="commentButton" destination="cLx-fR-OJL" id="tfy-vZ-7Bb"/>
@@ -110,10 +120,10 @@
         </tableViewCell>
     </objects>
     <resources>
+        <image name="StreamComments" width="19" height="19"/>
         <image name="Play" width="33" height="33"/>
-        <image name="StreamComments" width="15" height="15"/>
         <image name="StreamDate" width="11" height="11"/>
-        <image name="StreamHeart" width="14" height="13"/>
+        <image name="StreamHeart" width="19" height="18"/>
         <image name="StreamShare" width="17" height="5"/>
         <image name="profile_thumb" width="50" height="50"/>
     </resources>

@@ -27,18 +27,22 @@
                         <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                         <nil key="highlightedColor"/>
                     </label>
-                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="1d" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="WZA-gK-t4u">
+                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="1d" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="WZA-gK-t4u">
                         <rect key="frame" x="294" y="25" width="20" height="21"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                         <nil key="highlightedColor"/>
                     </label>
-                    <imageView userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="StreamDate" translatesAutoresizingMaskIntoConstraints="NO" id="Xa0-nU-fXr">
-                        <rect key="frame" x="282" y="30" width="11" height="11"/>
+                    <imageView userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="StreamDate" translatesAutoresizingMaskIntoConstraints="NO" id="Xa0-nU-fXr">
+                        <rect key="frame" x="280" y="29" width="13" height="13"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="13" id="OHi-pu-TX6"/>
+                            <constraint firstAttribute="height" constant="13" id="QdV-Cp-SIf"/>
+                        </constraints>
                     </imageView>
                     <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Az4-Zy-TCh" userLabel="Share Button">
-                        <rect key="frame" x="288" y="302" width="32" height="32"/>
+                        <rect key="frame" x="282" y="302" width="32" height="32"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <state key="normal" image="StreamShare"/>
                         <connections>
@@ -46,7 +50,7 @@
                         </connections>
                     </button>
                     <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ssz-vB-Gjf" userLabel="Like Button">
-                        <rect key="frame" x="20" y="307" width="66" height="22"/>
+                        <rect key="frame" x="5" y="307" width="66" height="22"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <state key="normal" title=" 123" image="StreamHeart"/>
                         <connections>
@@ -59,7 +63,7 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
                     <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="aXF-0P-N0n" userLabel="Comment Button">
-                        <rect key="frame" x="94" y="307" width="66" height="22"/>
+                        <rect key="frame" x="79" y="307" width="66" height="22"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <state key="normal" title=" 32" image="StreamComments"/>
                         <connections>
@@ -67,15 +71,15 @@
                         </connections>
                     </button>
                     <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="W4m-fS-MU8">
-                        <rect key="frame" x="0.0" y="59" width="320" height="240"/>
+                        <rect key="frame" x="5" y="59" width="310" height="240"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="flq-eb-Zq8">
-                                <rect key="frame" x="0.0" y="0.0" width="320" height="32"/>
+                                <rect key="frame" x="0.0" y="0.0" width="310" height="32"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <subviews>
                                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ll0-oA-Gj6">
-                                        <rect key="frame" x="20" y="6" width="280" height="21"/>
+                                        <rect key="frame" x="15" y="5" width="280" height="21"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                         <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
@@ -107,22 +111,22 @@
                                 </connections>
                             </button>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Fss-eh-Px9">
-                                <rect key="frame" x="0.0" y="30" width="320" height="180"/>
+                                <rect key="frame" x="0.0" y="30" width="310" height="180"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             </imageView>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9lb-Ua-X66">
+                                <rect key="frame" x="139" y="103" width="33" height="33"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" image="Play">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="pressedPlayOne:" destination="KPi-2m-jh7" eventType="touchUpInside" id="FJz-YG-bxY"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
-                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9lb-Ua-X66">
-                        <rect key="frame" x="144" y="162" width="33" height="33"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        <state key="normal" image="Play">
-                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                        </state>
-                        <connections>
-                            <action selector="pressedPlayOne:" destination="KPi-2m-jh7" eventType="touchUpInside" id="FJz-YG-bxY"/>
-                        </connections>
-                    </button>
                     <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gPP-Fo-AmU">
                         <rect key="frame" x="5" y="20" width="32" height="32"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -134,6 +138,12 @@
                         </connections>
                     </button>
                 </subviews>
+                <constraints>
+                    <constraint firstItem="Xa0-nU-fXr" firstAttribute="centerY" secondItem="WZA-gK-t4u" secondAttribute="centerY" id="6Fv-SX-YJK"/>
+                    <constraint firstItem="WZA-gK-t4u" firstAttribute="leading" secondItem="Xa0-nU-fXr" secondAttribute="trailing" constant="1" id="J98-Z7-ojf"/>
+                    <constraint firstItem="WZA-gK-t4u" firstAttribute="top" secondItem="Avb-xT-zUM" secondAttribute="top" constant="25" id="JDN-KE-Ryo"/>
+                    <constraint firstAttribute="trailing" secondItem="WZA-gK-t4u" secondAttribute="trailing" constant="6" id="cWy-I6-cRz"/>
+                </constraints>
             </tableViewCellContentView>
             <connections>
                 <outlet property="commentButton" destination="aXF-0P-N0n" id="DfO-4T-AdQ"/>
@@ -161,9 +171,9 @@
     </objects>
     <resources>
         <image name="Play" width="33" height="33"/>
-        <image name="StreamComments" width="15" height="15"/>
+        <image name="StreamComments" width="19" height="19"/>
         <image name="StreamDate" width="11" height="11"/>
-        <image name="StreamHeart" width="14" height="13"/>
+        <image name="StreamHeart" width="19" height="18"/>
         <image name="StreamShare" width="17" height="5"/>
         <image name="profile_thumb" width="50" height="50"/>
     </resources>

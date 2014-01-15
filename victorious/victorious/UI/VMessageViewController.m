@@ -99,7 +99,7 @@ const   CGFloat     kMessageRowHeight           =   80;
 
 #pragma mark - VComposeMessageDelegate
 
-- (void)didComposeWithText:(NSString *)text data:(NSData *)data mediaExtension:(NSString *)mediaExtension
+- (void)didComposeWithText:(NSString *)text data:(NSData *)data mediaExtension:(NSString *)mediaExtension mediaURL:(NSURL *)mediaURL
 {
     [[VObjectManager sharedManager] sendMessageToUser:self.conversation.user
                                               withText:text

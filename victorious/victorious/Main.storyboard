@@ -198,7 +198,7 @@
                         <segue destination="Odg-Le-tS1" kind="relationship" relationship="rootViewController" id="5l4-cL-MJW"/>
                         <segue destination="5Y2-XB-Z25" kind="push" id="kHo-hQ-QVC"/>
                         <segue destination="78T-lZ-wNs" kind="push" id="eHb-oX-V0N"/>
-                        <segue destination="q06-BW-fjS" kind="push" id="2kT-sh-0OH"/>
+                        <segue destination="Lnd-5l-rBh" kind="push" id="xKZ-XT-ML5"/>
                     </connections>
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="rNN-rH-sSb" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -894,7 +894,6 @@
                         </connections>
                     </tableView>
                     <connections>
-                        <outlet property="accessoryView" destination="mhY-Ea-UiR" id="JbD-jo-G1k"/>
                         <outlet property="agreeSwitch" destination="fa8-ee-mKB" id="lJe-N9-bJD"/>
                         <outlet property="emailTextField" destination="CW3-gl-fXZ" id="Yim-Ul-mfb"/>
                         <outlet property="passwordTextField" destination="OUj-KD-nVq" id="k4e-qP-G3U"/>
@@ -1341,7 +1340,6 @@
                                 <string>All</string>
                                 <string>Photos</string>
                                 <string>Video</string>
-                                <string>Forums</string>
                                 <string>Polls</string>
                             </scopeButtonTitles>
                             <connections>
@@ -1685,7 +1683,6 @@
                                 <string>All</string>
                                 <string>Photos</string>
                                 <string>Video</string>
-                                <string>Forums</string>
                                 <string>Polls</string>
                             </scopeButtonTitles>
                             <connections>
@@ -1746,7 +1743,6 @@
                                 <string>All</string>
                                 <string>Photos</string>
                                 <string>Video</string>
-                                <string>Forums</string>
                                 <string>Polls</string>
                             </scopeButtonTitles>
                             <connections>
@@ -1789,68 +1785,7 @@
                     </connections>
                 </searchDisplayController>
             </objects>
-            <point key="canvasLocation" x="-3455" y="1645"/>
-        </scene>
-        <!--Forum Stream Table View Controller - Forum Stream-->
-        <scene sceneID="VxR-zg-DXU">
-            <objects>
-                <tableViewController storyboardIdentifier="forumstream" useStoryboardIdentifierAsRestorationIdentifier="YES" id="q06-BW-fjS" customClass="VForumStreamTableViewController" sceneMemberID="viewController">
-                    <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="Xod-my-Z2y">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                        <searchBar key="tableHeaderView" contentMode="redraw" searchBarStyle="minimal" showsCancelButton="YES" id="XOW-3O-Ypq">
-                            <rect key="frame" x="0.0" y="64" width="320" height="44"/>
-                            <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
-                            <textInputTraits key="textInputTraits" autocorrectionType="yes"/>
-                            <scopeButtonTitles>
-                                <string>All</string>
-                                <string>Photos</string>
-                                <string>Video</string>
-                                <string>Forums</string>
-                                <string>Polls</string>
-                            </scopeButtonTitles>
-                            <connections>
-                                <outlet property="delegate" destination="q06-BW-fjS" id="lIN-Ke-fmF"/>
-                            </connections>
-                        </searchBar>
-                        <connections>
-                            <outlet property="dataSource" destination="q06-BW-fjS" id="nSs-kU-Sk8"/>
-                            <outlet property="delegate" destination="q06-BW-fjS" id="lg1-KM-WHg"/>
-                        </connections>
-                    </tableView>
-                    <toolbarItems/>
-                    <navigationItem key="navigationItem" title="Forum Stream" id="HiV-vV-uOr">
-                        <barButtonItem key="leftBarButtonItem" image="Menu" id="wUv-45-KXL">
-                            <connections>
-                                <segue destination="gHV-c6-eaL" kind="modal" id="oAc-Ek-i14"/>
-                            </connections>
-                        </barButtonItem>
-                    </navigationItem>
-                    <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
-                    <refreshControl key="refreshControl" opaque="NO" multipleTouchEnabled="YES" contentMode="center" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" id="sor-Zu-mFe">
-                        <autoresizingMask key="autoresizingMask"/>
-                        <connections>
-                            <action selector="refresh:" destination="q06-BW-fjS" eventType="valueChanged" id="7Im-Sb-PhJ"/>
-                        </connections>
-                    </refreshControl>
-                    <connections>
-                        <outlet property="searchDisplayController" destination="kpc-3c-ASl" id="aPc-Tt-kUB"/>
-                        <segue destination="yAz-qI-kJZ" kind="push" identifier="toStreamDetails" id="iyY-Ir-Prf"/>
-                    </connections>
-                </tableViewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="Pec-Ts-5yc" userLabel="First Responder" sceneMemberID="firstResponder"/>
-                <searchDisplayController id="kpc-3c-ASl">
-                    <connections>
-                        <outlet property="delegate" destination="q06-BW-fjS" id="A7C-wW-IBX"/>
-                        <outlet property="searchBar" destination="XOW-3O-Ypq" id="e3G-xR-ldP"/>
-                        <outlet property="searchContentsController" destination="q06-BW-fjS" id="y6F-NY-BIL"/>
-                        <outlet property="searchResultsDataSource" destination="q06-BW-fjS" id="zYP-EG-B7v"/>
-                        <outlet property="searchResultsDelegate" destination="q06-BW-fjS" id="SYq-Zf-o3T"/>
-                    </connections>
-                </searchDisplayController>
-            </objects>
-            <point key="canvasLocation" x="-3443" y="2509"/>
+            <point key="canvasLocation" x="-3443" y="1693"/>
         </scene>
         <!--News View Controller - News-->
         <scene sceneID="UGQ-lZ-yeL">
@@ -1881,17 +1816,74 @@
             </objects>
             <point key="canvasLocation" x="-3455" y="-586"/>
         </scene>
+        <!--Forum Stream Table View Controller - Forum-->
+        <scene sceneID="vDr-Oc-JUM">
+            <objects>
+                <tableViewController storyboardIdentifier="forumstream" useStoryboardIdentifierAsRestorationIdentifier="YES" id="Lnd-5l-rBh" customClass="VForumStreamTableViewController" sceneMemberID="viewController">
+                    <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="8rI-VH-g9w">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <searchBar key="tableHeaderView" contentMode="redraw" searchBarStyle="minimal" showsCancelButton="YES" showsScopeBar="YES" id="a3p-Sa-dXW">
+                            <rect key="frame" x="0.0" y="64" width="320" height="88"/>
+                            <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
+                            <textInputTraits key="textInputTraits" autocorrectionType="yes"/>
+                            <scopeButtonTitles>
+                                <string>All</string>
+                                <string>Photos</string>
+                                <string>Video</string>
+                                <string>Polls</string>
+                            </scopeButtonTitles>
+                            <connections>
+                                <outlet property="delegate" destination="Lnd-5l-rBh" id="SfO-Nd-uis"/>
+                            </connections>
+                        </searchBar>
+                        <connections>
+                            <outlet property="dataSource" destination="Lnd-5l-rBh" id="dkq-sd-cZS"/>
+                            <outlet property="delegate" destination="Lnd-5l-rBh" id="tBT-xc-PcZ"/>
+                        </connections>
+                    </tableView>
+                    <toolbarItems/>
+                    <navigationItem key="navigationItem" title="Forum" id="3f1-0E-reo">
+                        <barButtonItem key="leftBarButtonItem" image="Menu" id="Hpi-8h-nGE"/>
+                    </navigationItem>
+                    <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
+                    <refreshControl key="refreshControl" opaque="NO" multipleTouchEnabled="YES" contentMode="center" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" id="gv5-Il-Ki8">
+                        <autoresizingMask key="autoresizingMask"/>
+                        <connections>
+                            <action selector="refresh:" destination="Lnd-5l-rBh" eventType="valueChanged" id="wAe-9R-gAN"/>
+                        </connections>
+                    </refreshControl>
+                    <connections>
+                        <outlet property="searchDisplayController" destination="d7C-Oy-OYn" id="vLR-Vq-MdA"/>
+                        <segue destination="yAz-qI-kJZ" kind="push" identifier="toStreamDetails" id="Lxz-FK-jrv"/>
+                        <segue destination="gHV-c6-eaL" kind="modal" id="xxa-eF-33t"/>
+                    </connections>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="BU4-ab-hQF" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <searchDisplayController id="upo-wd-ZM9">
+                    <connections>
+                        <outlet property="delegate" destination="Lnd-5l-rBh" id="2bI-75-dzQ"/>
+                        <outlet property="searchBar" destination="a3p-Sa-dXW" id="7zN-tF-aD3"/>
+                        <outlet property="searchContentsController" destination="Lnd-5l-rBh" id="Pyo-ii-4cr"/>
+                        <outlet property="searchResultsDataSource" destination="Lnd-5l-rBh" id="OQD-se-xRx"/>
+                        <outlet property="searchResultsDelegate" destination="Lnd-5l-rBh" id="0Gp-T9-WYv"/>
+                    </connections>
+                </searchDisplayController>
+            </objects>
+            <point key="canvasLocation" x="-3443" y="2389"/>
+        </scene>
     </scenes>
     <resources>
         <image name="Menu" width="27" height="27"/>
-        <image name="MenuCommunityChannel" width="16" height="16"/>
-        <image name="MenuForums" width="20" height="16"/>
+        <image name="MenuCommunityChannel" width="19" height="19"/>
+        <image name="MenuForums" width="22" height="18"/>
         <image name="MenuHelp" width="20" height="20"/>
-        <image name="MenuHome" width="16" height="16"/>
-        <image name="MenuInbox" width="17" height="17"/>
-        <image name="MenuOwnerChannel" width="17" height="16"/>
-        <image name="MenuProfile" width="17" height="17"/>
-        <image name="MenuSettings" width="17" height="17"/>
+        <image name="MenuHome" width="19" height="19"/>
+        <image name="MenuInbox" width="20" height="19"/>
+        <image name="MenuOwnerChannel" width="20" height="19"/>
+        <image name="MenuProfile" width="20" height="20"/>
+        <image name="MenuSettings" width="20" height="20"/>
         <image name="MessageCamera" width="22" height="23"/>
         <image name="MessageStickers" width="19" height="19"/>
     </resources>
@@ -1901,7 +1893,7 @@
         <simulatedScreenMetrics key="destination" type="retina4"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
-        <segue reference="3WL-bD-3TL"/>
-        <segue reference="fO5-PP-Kl2"/>
+        <segue reference="Lxz-FK-jrv"/>
+        <segue reference="xxa-eF-33t"/>
     </inferredMetricsTieBreakers>
 </document>
