@@ -81,7 +81,7 @@ static NSString* kStreamCache = @"StreamCache";
     NSEntityDescription *entity = [NSEntityDescription entityForName:[VSequence entityName] inManagedObjectContext:context];
     [fetchRequest setEntity:entity];
 
-    NSSortDescriptor *sort = [[NSSortDescriptor alloc] initWithKey:@"display_order" ascending:YES];
+    NSSortDescriptor *sort = [[NSSortDescriptor alloc] initWithKey:@"releasedAt" ascending:YES];
     [fetchRequest setPredicate:[NSPredicate predicateWithFormat:@"category == %@", kFeaturedCategory]];
     [fetchRequest setSortDescriptors:@[sort]];
     [fetchRequest setFetchBatchSize:5];

@@ -463,7 +463,7 @@ static NSString* CommentCache = @"CommentCache";
     NSEntityDescription *entity = [NSEntityDescription entityForName:[VComment entityName] inManagedObjectContext:context];
     [fetchRequest setEntity:entity];
     
-    NSSortDescriptor *sort = [[NSSortDescriptor alloc] initWithKey:@"display_order" ascending:YES];
+    NSSortDescriptor *sort = [[NSSortDescriptor alloc] initWithKey:@"postedAt" ascending:YES];
     [fetchRequest setSortDescriptors:@[sort]];
     [fetchRequest setFetchBatchSize:50];
     
