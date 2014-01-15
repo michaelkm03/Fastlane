@@ -70,10 +70,12 @@ NSString*   const   kVLoginViewControllerDomain =   @"VLoginViewControllerDomain
     VUser* mainuser = notification.object;
     [VObjectManager sharedManager].mainUser = mainuser;
     
-    //If the mainuser isnt a VUser just fail gracefully.
-    if (mainuser && ![mainuser isKindOfClass:[VUser class]])
+    //Display failed login is the blob isnt a user or if it has no token
+    if ( (mainuser && ![mainuser isKindOfClass:[VUser class]])
+        || (mainuser && !mainuser.token) )
     {
         [VObjectManager sharedManager].mainUser = nil;
+        [self didFailToLogin:nil];
         VLog(@"Invalid object passed in loginChanged notif: %@", mainuser);
         return;
     }
@@ -86,7 +88,7 @@ NSString*   const   kVLoginViewControllerDomain =   @"VLoginViewControllerDomain
         [[[VObjectManager sharedManager] unreadCountForConversationsWithSuccessBlock:nil failBlock:nil] start];
     } else
     { //We've logged out
-        //TODO: delete existing conversations,
+        [VObjectManager sharedManager].mainUser = nil;
     }
 }
 
