@@ -29,7 +29,7 @@ static NSString* kStreamCache = @"StreamCache";
     [super viewDidLoad];
 
     NSError *error;
-    if (![self.fetchedResultsController performFetch:&error])
+    if (![self.fetchedResultsController performFetch:&error] && error)
     {
         // Update to handle the error appropriately.
         NSLog(@"Unresolved error %@, %@", error, [error userInfo]);

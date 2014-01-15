@@ -127,7 +127,7 @@ static NSString* CommentCache = @"CommentCache";
     SuccessBlock success = ^(NSArray* resultObjects)
     {
         NSError *error;
-        if (![self.fetchedResultsController performFetch:&error])
+        if (![self.fetchedResultsController performFetch:&error] && error)
         {
             // Update to handle the error appropriately.
             NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
@@ -421,7 +421,7 @@ static NSString* CommentCache = @"CommentCache";
     
     //We need to perform the fetch again
     NSError *error = nil;
-	if (![self.fetchedResultsController performFetch:&error])
+	if (![self.fetchedResultsController performFetch:&error] && error)
     {
 		// Update to handle the error appropriately.
 		NSLog(@"Unresolved error %@, %@", error, [error userInfo]);

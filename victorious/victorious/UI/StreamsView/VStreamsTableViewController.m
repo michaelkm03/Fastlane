@@ -312,13 +312,13 @@ typedef NS_ENUM(NSInteger, VStreamScope)
 - (void)refreshAction
 {
     NSError *error;
-    if (![self.fetchedResultsController performFetch:&error])
+    if (![self.fetchedResultsController performFetch:&error] && error)
     {
         // Update to handle the error appropriately.
         NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
     } else
     {   //TODO: there has to be a better way of doing this.
-        if (![self.searchFetchedResultsController performFetch:&error])
+        if (![self.searchFetchedResultsController performFetch:&error] && error)
         {
             // Update to handle the error appropriately.
             NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
