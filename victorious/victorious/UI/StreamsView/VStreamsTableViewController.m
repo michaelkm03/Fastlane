@@ -378,7 +378,7 @@ typedef NS_ENUM(NSInteger, VStreamScope)
     [self dismissViewControllerAnimated:YES completion:nil];
     if ([mediaType isEqualToString:@"png"])
     {
-        [[[VObjectManager sharedManager] createImageWithName:nil description:message mediaData:data mediaUrl:nil successBlock:^(NSArray *resultObjects) {
+        [[[VObjectManager sharedManager] createImageWithName:message description:message mediaData:data mediaUrl:nil successBlock:^(NSArray *resultObjects) {
             NSLog(@"%@", resultObjects);
         } failBlock:^(NSError *error) {
             NSLog(@"%@", error);
@@ -386,7 +386,7 @@ typedef NS_ENUM(NSInteger, VStreamScope)
     }
     else
     {
-        [[[VObjectManager sharedManager] createVideoWithName:nil description:message mediaData:data mediaUrl:nil successBlock:^(NSArray *resultObjects) {
+        [[[VObjectManager sharedManager] createVideoWithName:message description:message mediaData:data mediaUrl:nil successBlock:^(NSArray *resultObjects) {
             NSLog(@"%@", resultObjects);
         } failBlock:^(NSError *error) {
             NSLog(@"%@", error);
@@ -403,7 +403,7 @@ typedef NS_ENUM(NSInteger, VStreamScope)
                   media2Data:(NSData *)media2Data
              media2Extension:(NSString *)media2Extension
 {
-    [self dismissViewControllerAnimated:YES completion:nil];    
+    [self dismissViewControllerAnimated:YES completion:nil];
     [[[VObjectManager sharedManager] createPollWithName:question description:@"<none>" question:question answer1Text:answer1Text answer2Text:answer2Text media1Data:media1Data media1Extension:media1Extension media1Url:nil media2Data:media2Data media2Extension:media2Extension media2Url:nil successBlock:^(AFHTTPRequestOperation *request, id object) {
         NSLog(@"%@", object);
     } failBlock:^(AFHTTPRequestOperation *request, NSError *error) {

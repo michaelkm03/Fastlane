@@ -472,12 +472,12 @@
     if (!mediaData || !extension)
         return nil;
     
-    NSDictionary* parameters = @{@"name":name,
-                                 @"description":description,
-                                 @"category":category};
+    NSDictionary* parameters = @{@"name":name ?: [NSNull null],
+                                 @"description":description ?: [NSNull null],
+                                 @"category":category ?: [NSNull null]};
     
-    NSDictionary* allData = @{@"media_data":mediaData};
-    NSDictionary* allExtensions = @{@"media_data":extension};
+    NSDictionary* allData = @{@"media_data":mediaData ?: [NSNull null]};
+    NSDictionary* allExtensions = @{@"media_data":extension ?: [NSNull null]};
     
     return [self upload:allData
           fileExtension:allExtensions
