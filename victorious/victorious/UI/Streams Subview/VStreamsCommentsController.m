@@ -104,8 +104,8 @@ static NSString* CommentCache = @"CommentCache";
     FailBlock fail = ^(NSError *error) {
         [indicator stopAnimating];
         [indicator removeFromSuperview];
-        UIAlertView*    alert   =   [[UIAlertView alloc] initWithTitle:@"Unable to Load Media" message:error.localizedDescription delegate:self cancelButtonTitle:@"Understood" otherButtonTitles:nil];
-        [alert show];
+//        UIAlertView*    alert   =   [[UIAlertView alloc] initWithTitle:@"Unable to Load Media" message:error.localizedDescription delegate:self cancelButtonTitle:@"Understood" otherButtonTitles:nil];
+//        [alert show];
     };
     
     [[[VObjectManager sharedManager] loadNextPageOfCommentsForSequence:self.sequence

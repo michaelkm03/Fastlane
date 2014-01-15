@@ -89,6 +89,9 @@ typedef NS_ENUM(NSInteger, VStreamScope)
     [[NSNotificationCenter defaultCenter]
      addObserver:self selector:@selector(willShareSequence:)
      name:kStreamsWillShareNotification object:nil];
+    [[NSNotificationCenter defaultCenter]
+     addObserver:self selector:@selector(willCommentSequence:)
+     name:kStreamsWillCommentNotification object:nil];
 }
 
 - (IBAction)addButtonAction:(id)sender
@@ -341,6 +344,12 @@ typedef NS_ENUM(NSInteger, VStreamScope)
     [self presentViewController:activityViewController animated:YES completion:^{
         [[VThemeManager sharedThemeManager] removeStyling];
     }];
+}
+
+- (void)willCommentSequence:(NSNotification *)notification
+{
+    VStreamViewCell *cell = (VStreamViewCell *)notification.object;
+    [self performSegueWithIdentifier:@"toStreamDetails" sender:cell];
 }
 
 #pragma mark - VCreateSequenceDelegate

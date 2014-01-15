@@ -146,6 +146,16 @@
                             <action selector="profileButtonAction:" destination="BTB-1H-fCN" eventType="touchUpInside" id="caX-g6-Vxv"/>
                         </connections>
                     </button>
+                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="SpG-zU-EoD" userLabel="Show Profile Button">
+                        <rect key="frame" x="45" y="21" width="87" height="30"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <state key="normal">
+                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                        </state>
+                        <connections>
+                            <action selector="profileButtonAction:" destination="BTB-1H-fCN" eventType="touchUpInside" id="kRh-nr-f6v"/>
+                        </connections>
+                    </button>
                 </subviews>
                 <constraints>
                     <constraint firstItem="a6x-TU-Q9b" firstAttribute="top" secondItem="727-Cq-Kk2" secondAttribute="top" constant="25" id="O27-6q-EFs"/>
