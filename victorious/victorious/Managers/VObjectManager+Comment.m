@@ -15,7 +15,7 @@
 
 @implementation VObjectManager (Comment)
 
-- (RKManagedObjectRequestOperation *)addCommentWithText:(NSString*)text
+- (AFHTTPRequestOperation *)addCommentWithText:(NSString*)text
                                                     Data:(NSData*)data
                                           mediaExtension:(NSString*)extension
                                               toSequence:(VSequence*)sequence
@@ -31,32 +31,38 @@
         [parameters setObject:[NSString stringWithFormat:@"%@", parent.remoteId] forKey:@"parent_id"];
     if (text)
         [parameters setObject:text forKey:@"text"];
-    if (data && extension)
-    {
-        [parameters setObject:data forKey:@"media_data"];
-        [parameters setObject:extension forKey:@"media_type"];
-    }
     
-    __block VSequence* commentOwner = sequence; //Keep the sequence around until the block gets called
+//    __block VSequence* commentOwner = sequence; //Keep the sequence around until the block gets called
     
     SuccessBlock fullSuccessBlock = ^(NSArray* comments)
     {
-        for (VComment* comment in comments)
-        {
-            VComment* commentInContext = (VComment*)[commentOwner.managedObjectContext objectWithID:[comment objectID]];
-            if (commentInContext)
-                [commentOwner addCommentsObject:commentInContext];
-        }
+//        for (VComment* comment in comments)
+//        {
+//            VComment* commentInContext = (VComment*)[commentOwner.managedObjectContext objectWithID:[comment objectID]];
+//            if (commentInContext)
+//                [commentOwner addCommentsObject:commentInContext];
+//        }
         if (success)
             success(comments);
     };
     
-    return [self POST:@"/api/comment/add"
-               object:nil
-           parameters:parameters
-         successBlock:fullSuccessBlock
-            failBlock:fail
-      paginationBlock:nil];
+    NSDictionary *allData, *allExtensions;
+    
+    if (data && extension)
+    {
+        allData = @{@"media_data":data};
+        allExtensions = @{@"media_data":extension};
+//    TODO: Unhack this for stickers
+        NSString* type = [extension isEqualToString:VConstantMediaExtensionMOV] ? @"video" : @"image";
+        [parameters setObject:type forKey:@"media_type"];
+    }
+    
+    return [self upload:allData
+          fileExtension:allExtensions
+                 toPath:@"/api/comment/add"
+             parameters:parameters
+           successBlock:fullSuccessBlock
+              failBlock:fail];
 }
 
 - (RKManagedObjectRequestOperation *)removeComment:(VComment*)comment
@@ -67,8 +73,6 @@
     NSMutableDictionary* parameters = [[NSMutableDictionary alloc] initWithCapacity:1];
     [parameters setObject:[NSString stringWithFormat:@"%@", comment.remoteId] forKey:@"comment_id"];
     [parameters setObject:removalReason forKey:@"removal_reason"];
-
-    NSString* path = [NSString stringWithFormat:@"/api/comment/remove"];
 
     __block VComment* commentToRemove = comment;//keep the comment in memory til we get the response back
     
@@ -81,7 +85,7 @@
             success(comments);
     };
     
-    return [self POST:path
+    return [self POST:@"/api/comment/remove"
                object:nil
            parameters:parameters
          successBlock:fullSuccessBlock
@@ -96,9 +100,7 @@
     NSMutableDictionary* parameters = [[NSMutableDictionary alloc] initWithCapacity:1];
     [parameters setObject:[NSString stringWithFormat:@"%@", comment.remoteId] forKey:@"comment_id"];
     
-    NSString* path = [NSString stringWithFormat:@"/api/comment/flag"];
-    
-    return [self POST:path
+    return [self POST:@"/api/comment/flag"
                object:nil
            parameters:parameters
          successBlock:success
@@ -116,9 +118,7 @@
     [parameters setObject:[NSString stringWithFormat:@"%@", comment.remoteId] forKey:@"comment_id"];
     [parameters setObject:type forKey:@"vote"];
     
-    NSString* path = [NSString stringWithFormat:@"/api/comment/vote"];
-    
-    return [self POST:path
+    return [self POST:@"/api/comment/vote"
                object:nil
            parameters:parameters
          successBlock:success

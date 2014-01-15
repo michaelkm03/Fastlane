@@ -9,7 +9,8 @@
 @class VSequence;
 
 @protocol VComposeMessageDelegate <NSObject>
-- (void)didComposeWithText:(NSString *)text data:(NSData *)data mediaExtension:(NSString *)mediaExtension;
+@required
+- (void)didComposeWithText:(NSString *)text data:(NSData *)data mediaExtension:(NSString *)mediaExtension mediaURL:(NSURL *)mediaURL;
 @end
 
 @interface VComposeViewController : UIViewController

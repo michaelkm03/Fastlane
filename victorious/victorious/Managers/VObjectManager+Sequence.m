@@ -223,9 +223,7 @@
     [parameters setObject:[NSString stringWithFormat:@"%@", sequence.remoteId] forKey:@"sequence_id"];
     [parameters setObject:type forKey:@"shared_to"];
     
-    NSString* path = [NSString stringWithFormat:@"/api/sequence/share"];
-    
-    return [self POST:path
+    return [self POST:@"/api/sequence/share"
                object:nil
            parameters:parameters
          successBlock:success
@@ -257,9 +255,7 @@
     [parameters setObject:[NSString stringWithFormat:@"%@", sequence.remoteId] forKey:@"sequence_id"];
     [parameters setObject:type forKey:@"vote"];
     
-    NSString* path = [NSString stringWithFormat:@"/api/sequence/vote"];
-    
-    return [self POST:path
+    return [self POST:@"/api/sequence/vote"
                object:nil
            parameters:parameters
          successBlock:success
@@ -298,8 +294,6 @@
     if (!poll || !answer)
         return nil;
     
-    NSString* path = [NSString stringWithFormat:@"/api/pollresult/create"];
-    
     SuccessBlock fullSuccess = ^(NSArray* resultObjects)
     {
         VPollResult *newPollResult = [NSEntityDescription
@@ -314,7 +308,7 @@
             success(resultObjects);
     };
     
-    return [self POST:path
+    return [self POST:@"/api/pollresult/create"
                object:nil
            parameters:@{@"sequence_id" : poll.remoteId, @"answer_id" : answer.remoteId}
          successBlock:fullSuccess
@@ -411,55 +405,62 @@
       paginationBlock:nil];
 }
 
-- (RKManagedObjectRequestOperation * )createVideoWithName:(NSString*)name
-                                              description:(NSString*)description
-                                                mediaData:(NSData*)mediaData
-//                                         media1Extension:(NSString*)media1Extension
-                                             successBlock:(SuccessBlock)success
-                                                failBlock:(FailBlock)fail
+- (AFHTTPRequestOperation * )createVideoWithName:(NSString*)name
+                                     description:(NSString*)description
+                                       mediaData:(NSData*)mediaData
+                                    successBlock:(SuccessBlock)success
+                                       failBlock:(FailBlock)fail
 {
     NSString* category = self.isOwner ? kVOwnerVideoCategory : kVUGCVideoCategory;
     return [self uploadMediaWithName:name
                          description:description
                             category:category
                            mediaData:mediaData
+                           extension:VConstantMediaExtensionMOV
                         successBlock:success
                            failBlock:fail];
 }
 
-- (RKManagedObjectRequestOperation * )createImageWithName:(NSString*)name
-                                              description:(NSString*)description
-                                                mediaData:(NSData*)mediaData
-                                             successBlock:(SuccessBlock)success
-                                                failBlock:(FailBlock)fail
+- (AFHTTPRequestOperation * )createImageWithName:(NSString*)name
+                                     description:(NSString*)description
+                                       mediaData:(NSData*)mediaData
+                                    successBlock:(SuccessBlock)success
+                                       failBlock:(FailBlock)fail
 {
     NSString* category = self.isOwner ? kVOwnerImageCategory : kVUGCImageCategory;
     return [self uploadMediaWithName:name
                   description:description
                      category:category
                     mediaData:mediaData
+            extension:VConstantMediaExtensionPNG
                  successBlock:success
                     failBlock:fail];
 }
 
-- (RKManagedObjectRequestOperation * )uploadMediaWithName:(NSString*)name
-                                              description:(NSString*)description
-                                                 category:(NSString*)category
-                                                mediaData:(NSData*)mediaData
-                                             successBlock:(SuccessBlock)success
-                                                failBlock:(FailBlock)fail
+- (AFHTTPRequestOperation * )uploadMediaWithName:(NSString*)name
+                                     description:(NSString*)description
+                                        category:(NSString*)category
+                                       mediaData:(NSData*)mediaData
+                                       extension:(NSString*)extension
+                                    successBlock:(SuccessBlock)success
+                                       failBlock:(FailBlock)fail
 {
+    if (!mediaData || !extension)
+        return nil;
+    
     NSDictionary* parameters = @{@"name":name,
                                  @"description":description,
-                                 @"category":category,
-                                 @"media_data":mediaData};
+                                 @"category":category};
     
-    return [self POST:@"/api/mediaupload/create"
-               object:nil
-           parameters:parameters
-         successBlock:success
-            failBlock:fail
-      paginationBlock:nil];
+    NSDictionary* allData = @{@"media_data":mediaData};
+    NSDictionary* allExtensions = @{@"media_data":extension};
+    
+    return [self upload:allData
+          fileExtension:allExtensions
+                 toPath:@"/api/mediaupload/create"
+             parameters:parameters
+           successBlock:success
+              failBlock:fail];
 }
 
 @end

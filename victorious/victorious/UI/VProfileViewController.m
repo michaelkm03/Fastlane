@@ -10,6 +10,7 @@
 #import "VMenuViewController.h"
 #import "VMenuViewControllerTransition.h"
 #import "VObjectManager+Login.h"
+#import "VObjectManager+Users.h"
 #import "VProfileEditViewController.h"
 #import "VUser.h"
 
@@ -20,6 +21,8 @@
 @property (nonatomic, weak) IBOutlet UILabel* nameLabel;
 @property (nonatomic, weak) IBOutlet UILabel* taglineLabel;
 @property (nonatomic, weak) IBOutlet UILabel* locationLabel;
+
+@property (nonatomic, readwrite, strong) VUser* profile;
 
 @end
 
@@ -41,11 +44,13 @@
 {
     [super viewWillAppear:animated];
     
-    if (!self.profile)
+    if ((-1 == self.userID) || (self.userID == [VObjectManager sharedManager].mainUser.remoteId.integerValue))
     {
-        self.profile = [VObjectManager sharedManager].mainUser;
-
         self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemEdit target:self action:@selector(editButtonPressed:)];
+
+        self.profile = [VObjectManager sharedManager].mainUser;
+        
+        [self setProfileData];
     }
     else
     {
@@ -54,11 +59,20 @@
         UIBarButtonItem* userActionButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAction target:self action:@selector(userActionButtonPressed:)];
 
         self.navigationItem.rightBarButtonItems = @[composeButton, userActionButton];
-    }
-    
-    self.navigationController.title = self.profile.shortName;
 
-    [self setProfileData];
+        [[VObjectManager sharedManager] fetchUser:@(self.userID)
+                            forRelationshipObject:nil
+                                 withSuccessBlock:^(NSArray *resultObjects)
+                                 {
+                                     self.profile = [resultObjects firstObject];
+
+                                     [self setProfileData];
+                                 }
+                                        failBlock:^(NSError *error)
+                                        {
+                                            VLog("Profile failed to get User object");
+                                        }];
+    }
 }
 
 - (void)showCloseNavigationButton
@@ -84,6 +98,8 @@
     self.nameLabel.text = self.profile.name;
     self.taglineLabel.text = self.profile.tagline;
     self.locationLabel.text = self.profile.location;
+
+    self.navigationController.title = self.profile.shortName;
 }
 
 -(IBAction)composeButtonPressed:(id)sender

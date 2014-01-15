@@ -25,6 +25,8 @@
 #import "VCreatePollViewController.h"
 #import "VThemeManager.h"
 
+#import "VAsset.h"
+
 typedef NS_ENUM(NSInteger, VStreamScope)
 {
     VStreamFilterAll = 0,
@@ -282,7 +284,7 @@ typedef NS_ENUM(NSInteger, VStreamScope)
 {
     VSequence* sequence = (VSequence*)[[self fetchedResultsControllerForTableView:tableView] objectAtIndexPath:indexPath];
     
-    if ([sequence isForum])
+    if ([sequence isForum]  && ![[sequence firstAsset].type isEqualToString:VConstantsMediaTypeYoutube])
         return [tableView dequeueReusableCellWithIdentifier:kStreamVideoCellIdentifier
                                                forIndexPath:indexPath];
     
@@ -294,7 +296,7 @@ typedef NS_ENUM(NSInteger, VStreamScope)
         return [tableView dequeueReusableCellWithIdentifier:kStreamDoublePollCellIdentifier
                                                forIndexPath:indexPath];
 
-    else if ([sequence isVideo])
+    else if ([sequence isVideo] && ![[sequence firstAsset].type isEqualToString:VConstantsMediaTypeYoutube])
         return [tableView dequeueReusableCellWithIdentifier:kStreamVideoCellIdentifier
                                                forIndexPath:indexPath];
     

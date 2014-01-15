@@ -64,13 +64,6 @@ static  NSString*   kNewsCellViewIdentifier       =   @"VNewsCell";
         ;
 }
 
-////- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
-////{
-////  if message, return X
-////  if message and reply, return Y
-////  if news, return Z
-////}
-
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     UITableViewCell*    cell;
@@ -150,15 +143,19 @@ static  NSString*   kNewsCellViewIdentifier       =   @"VNewsCell";
 
 - (void)refreshAction
 {
-    NSError *error;
-    if (![self.fetchedResultsController performFetch:&error])
-    {
-        // Update to handle the error appropriately.
-        NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
-        exit(-1);  // Fail
-    }
+    NSManagedObjectContext* context =  [RKObjectManager sharedManager].managedObjectStore.persistentStoreManagedObjectContext;
+    [context performBlockAndWait:^{
+        
+        NSError *error;
+        if (![self.fetchedResultsController performFetch:&error])
+        {
+            // Update to handle the error appropriately.
+            NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+            exit(-1);  // Fail
+        }
+        [self.refreshControl endRefreshing];
+    }];
 
-    [self.refreshControl endRefreshing];
 }
 
 - (IBAction)modeSelected:(id)sender

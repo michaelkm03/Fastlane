@@ -85,6 +85,10 @@
                             <action selector="profileButtonAction:" destination="ONd-u8-hug" eventType="touchUpInside" id="mRC-yu-lAW"/>
                         </connections>
                     </button>
+                    <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="Play" translatesAutoresizingMaskIntoConstraints="NO" id="m4Q-7P-wk4">
+                        <rect key="frame" x="144" y="208" width="33" height="33"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    </imageView>
                 </subviews>
                 <constraints>
                     <constraint firstAttribute="trailing" secondItem="OUw-F8-xAD" secondAttribute="trailing" constant="5" id="5Gs-eH-deG"/>
@@ -99,6 +103,7 @@
                 <outlet property="descriptionLabel" destination="WLo-v6-MW0" id="ErA-uR-QtJ"/>
                 <outlet property="likeButton" destination="xnP-0R-e3a" id="yt3-sH-wkK"/>
                 <outlet property="locationLabel" destination="EMt-zr-EER" id="lx9-tv-ZLn"/>
+                <outlet property="playButtonImage" destination="m4Q-7P-wk4" id="FLh-4N-8BL"/>
                 <outlet property="previewImageView" destination="RVh-hy-y2K" id="RVb-pz-KXk"/>
                 <outlet property="profileImageButton" destination="sT5-hN-nDW" id="WuV-rF-bW7"/>
                 <outlet property="shareButton" destination="jGu-rr-Q06" id="SMH-4P-zeK"/>
@@ -116,6 +121,7 @@
     </objects>
     <resources>
         <image name="StreamComments" width="19" height="19"/>
+        <image name="Play" width="33" height="33"/>
         <image name="StreamDate" width="11" height="11"/>
         <image name="StreamHeart" width="19" height="18"/>
         <image name="StreamShare" width="17" height="5"/>

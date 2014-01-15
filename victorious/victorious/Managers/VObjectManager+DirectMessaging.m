@@ -19,12 +19,12 @@
 {
     for (int i=0; i <5; i++)
     {
-        [[self sendMessageToUser:nil
+        [self sendMessageToUser:nil
                         withText:[NSString stringWithFormat: @"Test %i", i]
                             Data:nil
                   mediaExtension:nil
                     successBlock:nil
-                       failBlock:nil] start];
+                       failBlock:nil] ;
     }
 }
 
@@ -149,12 +149,12 @@
     
 }
 
-- (RKManagedObjectRequestOperation *)sendMessageToUser:(VUser*)user
-                                              withText:(NSString*)text
-                                                  Data:(NSData*)data
-                                        mediaExtension:(NSString*)extension
-                                          successBlock:(SuccessBlock)success
-                                             failBlock:(FailBlock)fail
+- (AFHTTPRequestOperation *)sendMessageToUser:(VUser*)user
+                                     withText:(NSString*)text
+                                         Data:(NSData*)data
+                               mediaExtension:(NSString*)extension
+                                 successBlock:(SuccessBlock)success
+                                    failBlock:(FailBlock)fail
 {
     //Set the parameters
     NSMutableDictionary* parameters = [[NSMutableDictionary alloc] initWithCapacity:5];
@@ -163,20 +163,20 @@
     
     if (text)
         [parameters setObject:text forKey:@"text"];
+    
+    NSDictionary *allData, *allExtensions;
     if (data && extension)
     {
-        [parameters setObject:data forKey:@"media_data"];
-        [parameters setObject:extension forKey:@"media_type"];
+        allData = @{@"media_data":data};
+        allExtensions = @{@"media_data":extension};
     }
     
-    NSString* path = [NSString stringWithFormat:@"/api/message/send"];
-    
-    return [self POST:path
-               object:nil
-           parameters:parameters
-         successBlock:success
-            failBlock:fail
-      paginationBlock:nil];
+    return [self upload:allData
+          fileExtension:allExtensions
+                 toPath:@"/api/message/send"
+             parameters:parameters
+           successBlock:success
+              failBlock:fail];
 }
 
 //Don't think we need this API call, but just in case...
