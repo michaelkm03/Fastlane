@@ -51,6 +51,7 @@
 
         self.profile = [VObjectManager sharedManager].mainUser;
         
+        [self setShowCloseNavigationButton:NO];
         [self setProfileData];
     }
     else
@@ -67,6 +68,7 @@
                                  {
                                      self.profile = [resultObjects firstObject];
 
+                                     [self setShowCloseNavigationButton:NO];
                                      [self setProfileData];
                                  }
                                         failBlock:^(NSError *error)
@@ -76,12 +78,14 @@
     }
 }
 
-- (void)showCloseNavigationButton
+- (void)setShowCloseNavigationButton:(BOOL)flag
 {
-    self.navigationItem.leftBarButtonItem =
-    [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"Close"]
-                                     style:UIBarButtonItemStylePlain
-                                    target:self action:@selector(closeButtonAction:)];
+    if (flag)
+        self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"Close"]
+                                                                                 style:UIBarButtonItemStylePlain
+                                                                                target:self action:@selector(closeButtonAction:)];
+    else
+        self.navigationItem.leftBarButtonItem = nil;
 }
 
 - (void)closeButtonAction:(id)sender

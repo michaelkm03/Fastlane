@@ -149,7 +149,6 @@
 {
     VProfileViewController* profileViewController = [VProfileViewController sharedProfileViewController];
     profileViewController.userID = userID;
-    [profileViewController showCloseNavigationButton];
     [self presentViewController:[[UINavigationController alloc] initWithRootViewController:profileViewController] animated:YES completion:nil];
 }
 
