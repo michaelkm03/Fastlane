@@ -272,7 +272,7 @@ UIImagePickerControllerDelegate, UINavigationControllerDelegate>
     {
         self.characterCountLabel.textColor = [[VThemeManager sharedThemeManager] themedColorForKeyPath:@"theme.color.text.post.count"];
     }
-    self.characterCountLabel.text = [NSString stringWithFormat:@"%lu", (unsigned long)(VConstantsMessageLength - characterCount)];
+    self.characterCountLabel.text = [NSString stringWithFormat:@"%lu", (unsigned long)characterCount];
     [self validatePostButtonState];
 }
 
