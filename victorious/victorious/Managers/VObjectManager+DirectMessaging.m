@@ -153,8 +153,8 @@
                                      withText:(NSString*)text
                                          Data:(NSData*)data
                                mediaExtension:(NSString*)extension
-                                 successBlock:(SuccessBlock)success
-                                    failBlock:(FailBlock)fail
+                                 successBlock:(AFSuccessBlock)success
+                                    failBlock:(AFFailBlock)fail
 {
     //Set the parameters
     NSMutableDictionary* parameters = [[NSMutableDictionary alloc] initWithCapacity:5];

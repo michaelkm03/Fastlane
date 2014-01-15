@@ -39,8 +39,8 @@
                     fileExtension:(NSDictionary*)allExtensions
                            toPath:(NSString*)path
                        parameters:(NSDictionary*)parameters
-                     successBlock:(SuccessBlock)successBlock
-                        failBlock:(FailBlock)failBlock;
+                     successBlock:(AFSuccessBlock)successBlock
+                        failBlock:(AFFailBlock)failBlock;
 
 -(VPaginationStatus *)statusForKey:(NSString*)key;
 

@@ -362,7 +362,7 @@
      paginationBlock:nil];
 }
 
-- (RKManagedObjectRequestOperation * )createPollWithName:(NSString*)name
+- (AFHTTPRequestOperation * )createPollWithName:(NSString*)name
                                              description:(NSString*)description
                                                 question:(NSString*)question
                                              answer1Text:(NSString*)answer1Text
@@ -371,8 +371,8 @@
                                          media1Extension:(NSString*)media1Extension
                                               media2Data:(NSData*)media2Data
                                          media2Extension:(NSString*)media2Extension
-                                            successBlock:(SuccessBlock)success
-                                               failBlock:(FailBlock)fail
+                                            successBlock:(AFSuccessBlock)success
+                                               failBlock:(AFFailBlock)fail
 {
     //Required Fields
     NSString* category = self.isOwner ? kVOwnerPollCategory : kVUGCPollCategory;
@@ -380,36 +380,38 @@
                                          @"description":description,
                                          @"question":question,
                                          @"category":category} mutableCopy];
-    
+
     //Optional fields
     if (answer1Text)
         [parameters setObject:answer1Text forKey:@"answer1Text"];
     if (answer2Text)
         [parameters setObject:answer2Text forKey:@"answer2Text"];
+    
+    NSMutableDictionary *allData, *allExtensions;
     if (media1Data && ![media1Extension isEmpty])
     {
-        [parameters setObject:media1Data forKey:@"answer1_media"];
-        [parameters setObject:media1Extension forKey:@"answer1_extension"];
+        [allData setObject:media1Data forKey:@"answer1_media"];
+        [allExtensions setObject:media1Extension forKey:@"answer1_media"];
     }
     if (media2Data && ![media2Extension isEmpty])
     {
-        [parameters setObject:media2Data forKey:@"answer2_media"];
-        [parameters setObject:media2Extension forKey:@"answer2_extension"];
+        [allData setObject:media2Data forKey:@"answer2_media"];
+        [allExtensions setObject:media2Extension forKey:@"answer2_media"];
     }
     
-    return [self POST:@"/api/poll/create"
-               object:nil
-           parameters:parameters
-         successBlock:success
-            failBlock:fail
-      paginationBlock:nil];
+    return [self upload:allData
+          fileExtension:allExtensions
+                 toPath:@"/api/poll/create"
+             parameters:parameters
+           successBlock:success
+              failBlock:fail];
 }
 
 - (AFHTTPRequestOperation * )createVideoWithName:(NSString*)name
                                      description:(NSString*)description
                                        mediaData:(NSData*)mediaData
-                                    successBlock:(SuccessBlock)success
-                                       failBlock:(FailBlock)fail
+                                    successBlock:(AFSuccessBlock)success
+                                       failBlock:(AFFailBlock)fail
 {
     NSString* category = self.isOwner ? kVOwnerVideoCategory : kVUGCVideoCategory;
     return [self uploadMediaWithName:name
@@ -424,8 +426,8 @@
 - (AFHTTPRequestOperation * )createImageWithName:(NSString*)name
                                      description:(NSString*)description
                                        mediaData:(NSData*)mediaData
-                                    successBlock:(SuccessBlock)success
-                                       failBlock:(FailBlock)fail
+                                    successBlock:(AFSuccessBlock)success
+                                       failBlock:(AFFailBlock)fail
 {
     NSString* category = self.isOwner ? kVOwnerImageCategory : kVUGCImageCategory;
     return [self uploadMediaWithName:name
@@ -442,8 +444,8 @@
                                         category:(NSString*)category
                                        mediaData:(NSData*)mediaData
                                        extension:(NSString*)extension
-                                    successBlock:(SuccessBlock)success
-                                       failBlock:(FailBlock)fail
+                                    successBlock:(AFSuccessBlock)success
+                                       failBlock:(AFFailBlock)fail
 {
     if (!mediaData || !extension)
         return nil;

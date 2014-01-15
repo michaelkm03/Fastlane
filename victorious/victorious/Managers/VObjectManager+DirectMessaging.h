@@ -23,12 +23,12 @@
                                                successBlock:(SuccessBlock)success
                                                   failBlock:(FailBlock)fail;
 
-- (RKManagedObjectRequestOperation *)sendMessageToUser:(VUser*)user
-                                              withText:(NSString*)text
-                                                  Data:(NSData*)data
-                                        mediaExtension:(NSString*)extension
-                                          successBlock:(SuccessBlock)success
-                                             failBlock:(FailBlock)fail;
+- (AFHTTPRequestOperation *)sendMessageToUser:(VUser*)user
+                                     withText:(NSString*)text
+                                         Data:(NSData*)data
+                               mediaExtension:(NSString*)extension
+                                 successBlock:(AFSuccessBlock)success
+                                    failBlock:(AFFailBlock)fail;
 
 - (RKManagedObjectRequestOperation *)unreadCountForConversationsWithSuccessBlock:(SuccessBlock)success
                                                                        failBlock:(FailBlock)fail;

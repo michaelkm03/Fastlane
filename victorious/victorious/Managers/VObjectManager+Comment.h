@@ -12,13 +12,13 @@
 
 @interface VObjectManager (Comment)
 
-- (RKManagedObjectRequestOperation * )addCommentWithText:(NSString*)text
-                                                    Data:(NSData*)data
-                                          mediaExtension:(NSString*)extension
-                                              toSequence:(VSequence*)sequence
-                                               andParent:(VComment*)parent
-                                            successBlock:(SuccessBlock)success
-                                               failBlock:(FailBlock)fail;
+- (AFHTTPRequestOperation *)addCommentWithText:(NSString*)text
+                                          Data:(NSData*)data
+                                mediaExtension:(NSString*)extension
+                                    toSequence:(VSequence*)sequence
+                                     andParent:(VComment*)parent
+                                  successBlock:(AFSuccessBlock)success
+                                     failBlock:(AFFailBlock)fail;
 
 
 - (RKManagedObjectRequestOperation *)removeComment:(VComment*)comment

@@ -8,20 +8,22 @@
 
 #import "VObjectManager+Comment.h"
 #import "VObjectManager+Private.h"
+#import "VObjectManager+Sequence.h"
 
 //TODO: may not need these imports once we're done
 #import "VSequence+RestKit.h"
 #import "NSString+VParseHelp.h"
+#import "VUser.h"
 
 @implementation VObjectManager (Comment)
 
 - (AFHTTPRequestOperation *)addCommentWithText:(NSString*)text
-                                                    Data:(NSData*)data
-                                          mediaExtension:(NSString*)extension
-                                              toSequence:(VSequence*)sequence
-                                               andParent:(VComment*)parent
-                                            successBlock:(SuccessBlock)success
-                                               failBlock:(FailBlock)fail
+                                          Data:(NSData*)data
+                                mediaExtension:(NSString*)extension
+                                    toSequence:(VSequence*)sequence
+                                     andParent:(VComment*)parent
+                                  successBlock:(AFSuccessBlock)success
+                                     failBlock:(AFFailBlock)fail
 {
     //Set the parameters
     NSMutableDictionary* parameters = [[NSMutableDictionary alloc] initWithCapacity:5];
@@ -33,29 +35,43 @@
         [parameters setObject:text forKey:@"text"];
     
 //    __block VSequence* commentOwner = sequence; //Keep the sequence around until the block gets called
-    
-    SuccessBlock fullSuccessBlock = ^(NSArray* comments)
-    {
-//        for (VComment* comment in comments)
-//        {
-//            VComment* commentInContext = (VComment*)[commentOwner.managedObjectContext objectWithID:[comment objectID]];
-//            if (commentInContext)
-//                [commentOwner addCommentsObject:commentInContext];
-//        }
-        if (success)
-            success(comments);
-    };
-    
+    NSString* type;
     NSDictionary *allData, *allExtensions;
-    
     if (data && extension)
     {
         allData = @{@"media_data":data};
         allExtensions = @{@"media_data":extension};
 //    TODO: Unhack this for stickers
-        NSString* type = [extension isEqualToString:VConstantMediaExtensionMOV] ? @"video" : @"image";
+        type = [extension isEqualToString:VConstantMediaExtensionMOV] ? @"video" : @"image";
         [parameters setObject:type forKey:@"media_type"];
     }
+    
+    AFSuccessBlock fullSuccessBlock = ^(AFHTTPRequestOperation* operation, id response)
+    {
+        NSDictionary* payload = response[@"payload"];
+        
+        if (![payload isKindOfClass:[NSDictionary class]])
+            return;
+        
+        [[self fetchComment:[payload[@"id"] integerValue]
+               successBlock:^(NSArray *resultObjects)
+          {
+              NSManagedObjectID* objectId = [[resultObjects firstObject] objectID];
+              if (objectId)
+              {
+                  [self.mainUser addCommentsObject:(VComment*)[self.mainUser.managedObjectContext objectWithID:objectId]];
+                  [sequence addCommentsObject:(VComment*)[sequence.managedObjectContext objectWithID:objectId]];
+              }
+              
+              if (success)
+                  success(nil, resultObjects);
+          }
+                  failBlock:^(NSError *error)
+          {
+              fail(nil, error);
+              VLog(@"Failed to fetch for reason: %@", error);
+          }] start];
+    };
     
     return [self upload:allData
           fileExtension:allExtensions
@@ -63,6 +79,19 @@
              parameters:parameters
            successBlock:fullSuccessBlock
               failBlock:fail];
+}
+
+
+- (RKManagedObjectRequestOperation *)fetchComment:(NSInteger)remoteId
+                                     successBlock:(SuccessBlock)success
+                                        failBlock:(FailBlock)fail
+{
+    return [self GET:[@"/api/comment/fetch/" stringByAppendingString:@(remoteId).stringValue]
+              object:nil
+          parameters:nil
+        successBlock:success
+           failBlock:fail
+     paginationBlock:nil];
 }
 
 - (RKManagedObjectRequestOperation *)removeComment:(VComment*)comment

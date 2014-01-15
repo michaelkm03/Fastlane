@@ -105,11 +105,11 @@ const   CGFloat     kMessageRowHeight           =   80;
                                               withText:text
                                                   Data:data
                                         mediaExtension:mediaExtension
-                                          successBlock:^(NSArray *resultObjects)
+                                          successBlock:^(AFHTTPRequestOperation* operation, id response)
                                           {
-                                               VLog(@"Succeed in creating message: %@", resultObjects);
+                                               VLog(@"Succeed with response: %@", response);
                                           }
-                                             failBlock:^(NSError *error)
+                                             failBlock:^(AFHTTPRequestOperation* operation, NSError *error)
                                           {
                                                VLog(@"Failed in creating message with error: %@", error);
                                         }];

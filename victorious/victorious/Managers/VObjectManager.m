@@ -96,6 +96,7 @@
                                              [VComment descriptor],
                                              [VComment getAllDescriptor],
                                              [VComment getAllPaginationDescriptor],
+                                             [VComment fetchDescriptor],
                                              [VStatSequence gamesPlayedDescriptor],
                                              [VStatSequence gameStatsDescriptor],
                                              [VConversation descriptor],
@@ -196,8 +197,8 @@
                     fileExtension:(NSDictionary*)allExtensions
                            toPath:(NSString*)path
                        parameters:(NSDictionary*)parameters
-                     successBlock:(SuccessBlock)successBlock
-                        failBlock:(FailBlock)failBlock
+                     successBlock:(AFSuccessBlock)successBlock
+                        failBlock:(AFFailBlock)failBlock
 {
     [self updateHTTPHeadersForPath:path method:RKRequestMethodPOST];
     
@@ -224,22 +225,10 @@
     }];
     
     VLog(@"Headers set to: %@", request.allHTTPHeaderFields);
-    
-    void(^afFailBlock)(AFHTTPRequestOperation*, NSError*) = ^(AFHTTPRequestOperation *operation, NSError *error)
-    {
-        if (failBlock)
-            failBlock(error);
-    };
-    
-    void(^afSuccessBlock)(AFHTTPRequestOperation*, id) = ^(AFHTTPRequestOperation *operation, id responseObject)
-    {
-        if (successBlock)
-            successBlock(responseObject);
-    };
-    
+
     AFHTTPRequestOperation *operation = [self.HTTPClient HTTPRequestOperationWithRequest:request
-                                                    success:afSuccessBlock
-                                                    failure:afFailBlock];
+                                                    success:successBlock
+                                                    failure:failBlock];
     [operation start];
     
     return operation;

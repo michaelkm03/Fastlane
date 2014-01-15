@@ -13,9 +13,13 @@
  *  Block is given NSArray of objects RestKit created from response. */
 typedef void (^SuccessBlock) (NSArray* resultObjects);
 
+typedef void (^AFSuccessBlock) (AFHTTPRequestOperation*, id);
+
 /*! Block that executes when the API fails.
  * Block is given NSError* that RestKit returned. */
 typedef void (^FailBlock) (NSError* error);
+
+typedef void (^AFFailBlock) (AFHTTPRequestOperation*, NSError*);
 
 typedef void (^PayloadSuccessBlock) (NSArray* resultObjects, NSDictionary* fullPayload);
 

@@ -108,9 +108,9 @@ static NSString* CommentCache = @"CommentCache";
         [alert show];
     };
     
-    [[[VObjectManager sharedManager] loadFullDataForSequence:_sequence
-                                                successBlock:success
-                                                   failBlock:fail] start];
+    [[[VObjectManager sharedManager] loadNextPageOfCommentsForSequence:self.sequence
+                                                          successBlock:success
+                                                             failBlock:fail] start];
 }
 
 - (void) setupSequencePlayer
@@ -564,11 +564,11 @@ static NSString* CommentCache = @"CommentCache";
                                          mediaExtension:mediaExtension
                                              toSequence:_sequence
                                               andParent:nil
-                                           successBlock:^(NSArray *resultObjects) {
-                                               VLog(@"Succeed in creating comments: %@", resultObjects);
+                                           successBlock:^(AFHTTPRequestOperation* operation, id response) {
+                                               VLog(@"Succeed with response: %@", response);
                                                //We need to refresh the predicate in case this is the first comment in the sequence
                                                [self updatePredicate];
-                                           } failBlock:^(NSError *error) {
+                                           } failBlock:^(AFHTTPRequestOperation* operation, NSError* error) {
                                                VLog(@"Failed in creating comment with error: %@", error);
                                            }];
 }
