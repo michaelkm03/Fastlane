@@ -416,7 +416,11 @@ typedef NS_ENUM(NSInteger, VStreamScope)
                          otherButtonTitles:nil];
         [alert show];
     };
-    
+
+    if([message length] == 0)
+    {
+        message = @" ";
+    }
     if ([mediaType isEqualToString:@"png"])
     {
         [[[VObjectManager sharedManager] createImageWithName:message description:message mediaData:data mediaUrl:nil successBlock:success failBlock:fail] start];
