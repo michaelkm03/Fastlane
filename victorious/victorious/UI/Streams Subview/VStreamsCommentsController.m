@@ -26,8 +26,8 @@
 
 @import Social;
 
-const   CGFloat     kCommentRowWithMediaHeight  =   280.0;
-const   CGFloat     kCommentRowHeight           =   80;
+const   CGFloat     kCommentRowWithMediaHeight  =   320.0;
+const   CGFloat     kCommentRowHeight           =   110;
 
 @interface VStreamsCommentsController () <NSFetchedResultsControllerDelegate, UINavigationControllerDelegate, VComposeMessageDelegate>
 

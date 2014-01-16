@@ -76,8 +76,7 @@
         if (comment.mediaUrl)
         {
             self.mediaUrl = comment.mediaUrl;
-            [self.mediaPreview setImageWithURL:[NSURL URLWithString:[self.mediaUrl  previewImageURLForM3U8]]
-                              placeholderImage:[UIImage imageNamed:@"MenuVideos"]];
+            [self.mediaPreview setImageWithURL:[NSURL URLWithString:[self.mediaUrl previewImageURLForM3U8]]];
 
             if ([comment.mediaType isEqualToString:VConstantsMediaTypeVideo])
             {
@@ -116,8 +115,7 @@
         if (message.media.mediaUrl)
         {
             self.mediaUrl = message.media.mediaUrl;
-            [self.mediaPreview setImageWithURL:[NSURL URLWithString:[self.mediaUrl  previewImageURLForM3U8]]
-                              placeholderImage:[UIImage imageNamed:@"MenuVideos"]];
+            [self.mediaPreview setImageWithURL:[NSURL URLWithString:[self.mediaUrl previewImageURLForM3U8]]];
 
             if ([message.media.mediaType isEqualToString:VConstantsMediaTypeVideo])
             {
