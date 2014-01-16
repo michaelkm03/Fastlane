@@ -31,11 +31,11 @@
       {
           for (VCategory* category in resultObjects)
           {
-              [[self loadNextPageOfSequencesForCategory:category
+              [self loadNextPageOfSequencesForCategory:category
                                            successBlock:nil
                                              failBlock:^(NSError *error) {
                                                  VLog(@"Error in initialSequenceLoad: %@", error);
-                                             }] start];
+                                             }];
           }
       } failBlock:^(NSError *error)
       {
@@ -92,10 +92,10 @@
         {
             if (!sequence.user)
             {
-                [[self fetchUser:sequence.createdBy
+                [self fetchUser:sequence.createdBy
            forRelationshipObject:sequence
                 withSuccessBlock:nil
-                       failBlock:nil] start];
+                       failBlock:nil];
             }
         }
         
@@ -124,9 +124,9 @@
             loadCommentsBlock = ^(NSArray* objects)
             {
                 VLog(@"Objects created in loadFullData: %@", objects);
-                [[self loadNextPageOfCommentsForSequence:sequence
+                [self loadNextPageOfCommentsForSequence:sequence
                                            successBlock:success
-                                              failBlock:fail] start];
+                                              failBlock:fail];
             };
         }
         
@@ -175,10 +175,10 @@
             double delayInSeconds = 2.0;
             dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
             dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-                [[self fetchSequenceByID:sequenceID
+                [self fetchSequenceByID:sequenceID
                             successBlock:success
                                failBlock:fail
-                             loadAttempt:(attemptCount+1)] start];
+                             loadAttempt:(attemptCount+1)];
             });
         }
         else if (fail)
@@ -219,12 +219,12 @@
             if (!comment.user )
             {
                     __block VComment* userOwner = comment;
-                    [[self fetchUser:userOwner.userId
+                    [self fetchUser:userOwner.userId
                forRelationshipObject:userOwner
                     withSuccessBlock:^(NSArray *resultObjects) {
                         VLog(@"Comment %@: has user: %@", userOwner, userOwner.user);
                     }
-                           failBlock:nil] start];
+                           failBlock:nil];
             }
         }
         
@@ -459,10 +459,10 @@
         if ([response[@"error"] integerValue] == 0)
         {
             NSNumber* sequenceID = response[@"payload"][@"sequence_id"];
-            [[self fetchSequenceByID:sequenceID
+            [self fetchSequenceByID:sequenceID
                         successBlock:success
                            failBlock:fail
-                         loadAttempt:0] start];
+                         loadAttempt:0];
         }
         else
         {
@@ -562,10 +562,10 @@
     AFSuccessBlock fullSuccess = ^(AFHTTPRequestOperation* operation, id response)
     {
         NSNumber* sequenceID = response[@"payload"][@"sequence_id"];
-        [[self fetchSequenceByID:sequenceID
+        [self fetchSequenceByID:sequenceID
                    successBlock:success
                       failBlock:fail
-                     loadAttempt:0] start];
+                     loadAttempt:0];
     };
     
     AFFailBlock fullFail = ^(AFHTTPRequestOperation* operation, NSError* error)

@@ -85,7 +85,7 @@
 
         self.navigationItem.rightBarButtonItems = @[composeButton, userActionButton];
 
-        [[[VObjectManager sharedManager] fetchUser:@(self.userID)
+        [[VObjectManager sharedManager] fetchUser:@(self.userID)
                                  withSuccessBlock:^(NSArray *resultObjects)
                                  {
                                      self.profile = [resultObjects firstObject];
@@ -94,7 +94,7 @@
                                         failBlock:^(NSError *error)
                                         {
                                             VLog("Profile failed to get User object");
-                                        }] start];
+                                        }];
     }
 }
 

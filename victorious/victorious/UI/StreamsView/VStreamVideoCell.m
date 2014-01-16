@@ -47,7 +47,7 @@
         [indicator startAnimating];
         indicator.hidesWhenStopped = YES;
         
-        [[[VObjectManager sharedManager] fetchSequence:self.sequence
+        [[VObjectManager sharedManager] fetchSequence:self.sequence
                                          successBlock:^(NSArray *resultObjects)
                                          {
                                              [indicator stopAnimating];
@@ -64,7 +64,7 @@
                                                                                   cancelButtonTitle:NSLocalizedString(@"OKButton", @"")
                                                                                   otherButtonTitles:nil];
                                             [alert show];
-                                        }] start];
+                                        }];
     }
     else
     {

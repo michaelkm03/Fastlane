@@ -44,7 +44,7 @@
     [[AFNetworkActivityIndicatorManager sharedManager] setEnabled:YES];
 
     [VObjectManager setupObjectManager];
-    [[[VObjectManager sharedManager] initialSequenceLoad] start];
+    [[VObjectManager sharedManager] initialSequenceLoad];
     
     //TODO: This is test code so I don't have to freakin login in every time
 //    [VLoginViewController sharedLoginViewController];
@@ -54,7 +54,7 @@
 //    {
 //        [[NSNotificationCenter defaultCenter] postNotificationName:LoggedInChangedNotification
 //                                                            object:[resultObjects firstObject]];
-//    } failBlock:nil] start];
+//    } failBlock:nil];
     
     [TestFlight takeOff:@"02101c7d-4a01-4a44-8e8a-26dca03554aa"];
 

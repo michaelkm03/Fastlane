@@ -206,11 +206,11 @@ NSString*   const   kSignupViewControllerDomain =   @"VSignupViewControllerDomai
         {
             [self didFailToSignUp:error];
         };
-        [[[VObjectManager sharedManager] createVictoriousWithEmail:self.emailTextField.text
+        [[VObjectManager sharedManager] createVictoriousWithEmail:self.emailTextField.text
                                                           password:self.passwordTextField.text
                                                           username:self.usernameTextField.text
                                                       successBlock:success
-                                                         failBlock:fail] start];
+                                                         failBlock:fail];
     }
 }
 

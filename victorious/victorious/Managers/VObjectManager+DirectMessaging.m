@@ -92,10 +92,10 @@
             if (!conversation.user )
             {
                 //If we don't have the users then we need to fetch em.
-                [[self fetchUser:conversation.other_interlocutor_user_id
+                [self fetchUser:conversation.other_interlocutor_user_id
            forRelationshipObject:conversation
                 withSuccessBlock:nil
-                       failBlock:nil] start];
+                       failBlock:nil];
             }
         }
         
@@ -146,10 +146,10 @@
             if (!message.user )
             {
                 //If we don't have the users then we need to fetch em.
-                [[self fetchUser:message.senderUserId
+                [self fetchUser:message.senderUserId
            forRelationshipObject:message
                 withSuccessBlock:nil
-                       failBlock:nil] start];
+                       failBlock:nil];
             }
         }
         

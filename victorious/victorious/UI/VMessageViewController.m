@@ -49,10 +49,10 @@ const   CGFloat     kMessageRowHeight           =   80;
 
  - (void)loadData
 {
-    [[[VObjectManager sharedManager] loadNextPageOfMessagesForConversation:self.conversation
+    [[VObjectManager sharedManager] loadNextPageOfMessagesForConversation:self.conversation
                                                               successBlock:^(NSArray *resultObjects)
       {
-          [[[VObjectManager sharedManager] markConversationAsRead:self.conversation successBlock:^(NSArray *resultObjects)
+          [[VObjectManager sharedManager] markConversationAsRead:self.conversation successBlock:^(NSArray *resultObjects)
             {
                 NSSortDescriptor*   sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"postedAt" ascending:YES];
                 self.messages = [[self.conversation.messages allObjects] sortedArrayUsingDescriptors:@[sortDescriptor]];
@@ -61,13 +61,13 @@ const   CGFloat     kMessageRowHeight           =   80;
             failBlock:^(NSError *error)
             {
                 NSLog(@"%@", error.localizedDescription);
-            }] start];
+            }];
           
       }
       failBlock:^(NSError *error)
       {
           NSLog(@"%@", error.localizedDescription);
-      }] start];
+      }];
 }
 
 #pragma mark - Table view data source

@@ -140,7 +140,7 @@
     self.firstResultLabel.backgroundColor = self.secondResultLabel.backgroundColor =
             [[VThemeManager sharedThemeManager] themedColorForKeyPath:@"theme.color.poll.result.default"];
             //[[VThemeManager sharedThemeManager] themedColorForKeyPath:@"theme.color.post.poll.or.border"];
-    self.firstResultLabel.text = self.secondResultLabel.text = @"50%";
+    self.firstResultLabel.text = self.secondResultLabel.text = @"0%";
     
     self.firstResultLabel.hidden = self.secondResultLabel.hidden = YES;
 }
@@ -232,11 +232,11 @@
         return;
     }
     
-    [[[VObjectManager sharedManager] answerPoll:self.sequence
+    [[VObjectManager sharedManager] answerPoll:self.sequence
                                      withAnswer:answer
                                    successBlock:^(NSArray *resultObjects)
       {
-          [[[VObjectManager sharedManager] pollResultsForSequence:self.sequence
+          [[VObjectManager sharedManager] pollResultsForSequence:self.sequence
                                                     successBlock:^(NSArray *resultObjects)
                                                     {
                                                         [self showResultsForAnswerId:answer.remoteId];
@@ -244,7 +244,7 @@
                                                         failBlock:^(NSError *error)
                                                         {
                                                             VLog(@"Failed with error: %@", error);
-                                                        }] start];
+                                                        }];
           
           VLog(@"Successfully answered: %@", resultObjects);
       }
@@ -259,7 +259,7 @@
                             otherButtonTitles:nil] show];
           
           VLog(@"Failed to answer with error: %@", error);
-      }] start];
+      }];
 }
 
 - (void)showResultsForAnswerId:(NSNumber*)answerId

@@ -224,11 +224,11 @@ NSString*   const   kAccountUpdateViewControllerDomain =   @"VAccountUpdateViewC
             [self didFailToUpdate:error];
         };
 
-        [[[VObjectManager sharedManager] updateVictoriousWithEmail:self.emailAddressTextField.text
+        [[VObjectManager sharedManager] updateVictoriousWithEmail:self.emailAddressTextField.text
                                                           password:self.passwordTextField.text
                                                           username:self.nameTextField.text
                                                       successBlock:success
-                                                         failBlock:fail] start];
+                                                         failBlock:fail];
     }
 }
 

@@ -424,11 +424,11 @@ typedef NS_ENUM(NSInteger, VStreamScope)
     }
     if ([mediaType isEqualToString:@"png"])
     {
-        [[[VObjectManager sharedManager] createImageWithName:message description:message mediaData:data mediaUrl:nil successBlock:success failBlock:fail] start];
+        [[VObjectManager sharedManager] createImageWithName:message description:message mediaData:data mediaUrl:nil successBlock:success failBlock:fail];
     }
     else
     {
-        [[[VObjectManager sharedManager] createVideoWithName:message description:message mediaData:data mediaUrl:nil successBlock:success failBlock:fail] start];
+        [[VObjectManager sharedManager] createVideoWithName:message description:message mediaData:data mediaUrl:nil successBlock:success failBlock:fail];
     }
 }
 
@@ -480,7 +480,7 @@ typedef NS_ENUM(NSInteger, VStreamScope)
     };
     
     [self dismissViewControllerAnimated:YES completion:nil];
-    [[[VObjectManager sharedManager] createPollWithName:question
+    [[VObjectManager sharedManager] createPollWithName:question
                                             description:@"<none>"
                                                question:question
                                             answer1Text:answer1Text
@@ -492,7 +492,7 @@ typedef NS_ENUM(NSInteger, VStreamScope)
                                         media2Extension:media2Extension
                                               media2Url:nil
                                            successBlock:success
-                                              failBlock:fail] start];
+                                              failBlock:fail];
 }
 
 - (void)createViewController:(UIViewController *)viewController
@@ -501,11 +501,11 @@ typedef NS_ENUM(NSInteger, VStreamScope)
                    mediaType:(NSString *)mediaType
 {
     [self dismissViewControllerAnimated:YES completion:nil];
-    [[[VObjectManager sharedManager] createForumWithName:title description:message mediaData:data mediaUrl:nil successBlock:^(NSArray *resultObjects) {
+    [[VObjectManager sharedManager] createForumWithName:title description:message mediaData:data mediaUrl:nil successBlock:^(NSArray *resultObjects) {
         NSLog(@"%@", resultObjects);
     } failBlock:^(NSError *error) {
         NSLog(@"%@", error);
-    }] start];
+    }];
 }
 
 @end

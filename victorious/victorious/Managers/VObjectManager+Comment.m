@@ -64,10 +64,10 @@
     {
         
         NSDictionary* payload = response[@"payload"];
-        [[self fetchCommentByID:[payload[@"id"] integerValue]
+        [self fetchCommentByID:[payload[@"id"] integerValue]
                    successBlock:fetchCommentSuccess
                       failBlock:fail
-                    loadAttempt:0] start];
+                    loadAttempt:0];
     };
     
     AFFailBlock fullFail = ^(AFHTTPRequestOperation* operation, NSError* error)
@@ -100,10 +100,10 @@
             double delayInSeconds = 2.0;
             dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
             dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-                [[self fetchCommentByID:commentID
+                [self fetchCommentByID:commentID
                            successBlock:success
                               failBlock:fail
-                            loadAttempt:(attemptCount+1)] start];
+                            loadAttempt:(attemptCount+1)];
             });
         }
         else if (fail)

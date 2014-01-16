@@ -114,9 +114,9 @@ static NSString* CommentCache = @"CommentCache";
 //        [alert show];
     };
     
-    [[[VObjectManager sharedManager] loadNextPageOfCommentsForSequence:self.sequence
+    [[VObjectManager sharedManager] loadNextPageOfCommentsForSequence:self.sequence
                                                           successBlock:success
-                                                             failBlock:fail] start];
+                                                             failBlock:fail];
 }
 
 - (void) setupSequencePlayer
@@ -152,9 +152,9 @@ static NSString* CommentCache = @"CommentCache";
         VLog(@"Error on loadNextPage: %@", error);
     };
     
-    [[[VObjectManager sharedManager] loadNextPageOfCommentsForSequence:_sequence
+    [[VObjectManager sharedManager] loadNextPageOfCommentsForSequence:_sequence
                                                           successBlock:success
-                                                             failBlock:fail] start];
+                                                             failBlock:fail];
 }
 
 - (IBAction)shareSequence:(id)sender
@@ -201,14 +201,14 @@ static NSString* CommentCache = @"CommentCache";
     //        return;
     //    }
     
-    [[[VObjectManager sharedManager] likeComment:comment
+    [[VObjectManager sharedManager] likeComment:comment
                                    successBlock:^(NSArray *resultObjects) {
                                        //TODO:set upvote flag
                                        VLog(@"resultObjects: %@", resultObjects);
                                    }
                                       failBlock:^(NSError *error) {
                                           VLog(@"Failed to like comment %@", comment);
-                                      }] start];
+                                      }];
 }
 
 - (IBAction)dislikeComment:(id)sender forEvent:(UIEvent *)event
@@ -228,26 +228,26 @@ static NSString* CommentCache = @"CommentCache";
 //        return;
 //    }
     
-    [[[VObjectManager sharedManager] dislikeComment:comment
+    [[VObjectManager sharedManager] dislikeComment:comment
                                    successBlock:^(NSArray *resultObjects) {
                                        //TODO:set dislike flag)
                                        VLog(@"resultObjects: %@", resultObjects);
                                    }
                                       failBlock:^(NSError *error) {
                                           VLog(@"Failed to dislike comment %@", comment);
-                                      }] start];
+                                      }];
 }
 
 - (void)unvoteComment:(VComment*)comment
 {
-    [[[VObjectManager sharedManager] unvoteComment:comment
+    [[VObjectManager sharedManager] unvoteComment:comment
                                       successBlock:^(NSArray *resultObjects) {
                                           //TODO:update UI)
                                           VLog(@"resultObjects: %@", resultObjects);
                                       }
                                          failBlock:^(NSError *error) {
                                              VLog(@"Failed to dislike comment %@", comment);
-                                         }] start];
+                                         }];
 }
 
 - (IBAction)flagComment:(id)sender forEvent:(UIEvent *)event
@@ -261,7 +261,7 @@ static NSString* CommentCache = @"CommentCache";
     NSIndexPath *indexPath = [self.tableView indexPathForRowAtPoint:[[[event touchesForView:sender] anyObject] locationInView:self.tableView]];
     VComment *comment = [_fetchedResultsController objectAtIndexPath:indexPath];
     
-    [[[VObjectManager sharedManager] flagComment:comment
+    [[VObjectManager sharedManager] flagComment:comment
                                        successBlock:^(NSArray *resultObjects)
                                        {
                                            //TODO:set flagged flag)
@@ -270,7 +270,7 @@ static NSString* CommentCache = @"CommentCache";
                                           failBlock:^(NSError *error)
                                           {
                                               VLog(@"Failed to flag comment %@", comment);
-                                          }] start];
+                                          }];
 }
 
 - (IBAction)addButtonAction:(id)sender
@@ -372,7 +372,7 @@ static NSString* CommentCache = @"CommentCache";
 
          if(actionSheet.destructiveButtonIndex == buttonIndex)
          {
-             [[[VObjectManager sharedManager] flagComment:comment
+             [[VObjectManager sharedManager] flagComment:comment
                                              successBlock:^(NSArray *resultObjects)
                {
                    //TODO:set flagged flag)
@@ -381,29 +381,29 @@ static NSString* CommentCache = @"CommentCache";
                                                 failBlock:^(NSError *error)
                {
                    VLog(@"Failed to flag comment %@", comment);
-               }] start];
+               }];
          }
          else if([[actionSheet buttonTitleAtIndex:buttonIndex] isEqualToString:thumbUpTitle])
          {
-             [[[VObjectManager sharedManager] likeComment:comment
+             [[VObjectManager sharedManager] likeComment:comment
                                                successBlock:^(NSArray *resultObjects) {
                                                    //TODO:update UI)
                                                    VLog(@"resultObjects: %@", resultObjects);
                                                }
                                                   failBlock:^(NSError *error) {
                                                       VLog(@"Failed to dislike comment %@", comment);
-                                                  }] start];
+                                                  }];
          }
          else if([[actionSheet buttonTitleAtIndex:buttonIndex] isEqualToString:thumbDownTitle])
          {
-             [[[VObjectManager sharedManager] dislikeComment:comment
+             [[VObjectManager sharedManager] dislikeComment:comment
                                                 successBlock:^(NSArray *resultObjects) {
                                                     //TODO:set dislike flag)
                                                     VLog(@"resultObjects: %@", resultObjects);
                                                 }
                                                    failBlock:^(NSError *error) {
                                                        VLog(@"Failed to dislike comment %@", comment);
-                                                   }] start];
+                                                   }];
          }
          else if([[actionSheet buttonTitleAtIndex:buttonIndex] isEqualToString:reply])
          {
@@ -588,16 +588,19 @@ static NSString* CommentCache = @"CommentCache";
     };
     FailBlock fail = ^(NSError* error)
     {
-        NSLog(@"%@", error);
-        [indicator stopAnimating];
+        if (error.code == 5500)
+        {
+            NSLog(@"%@", error);
+            [indicator stopAnimating];
         
-        UIAlertView*    alert   =
-        [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"TranscodingMediaTitle", @"")
-                                   message:NSLocalizedString(@"TranscodingMediaBody", @"")
-                                  delegate:nil
-                         cancelButtonTitle:NSLocalizedString(@"OKButton", @"")
-                         otherButtonTitles:nil];
-        [alert show];
+            UIAlertView*    alert   =
+            [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"TranscodingMediaTitle", @"")
+                                    message:NSLocalizedString(@"TranscodingMediaBody", @"")
+                                    delegate:nil
+                            cancelButtonTitle:NSLocalizedString(@"OKButton", @"")
+                            otherButtonTitles:nil];
+            [alert show];
+        }
     };
 
     
@@ -632,11 +635,11 @@ static NSString* CommentCache = @"CommentCache";
     if ([VObjectManager sharedManager].isAuthorized && [_newlyReadComments count])
     {
         __block NSMutableArray* readComments = _newlyReadComments;
-        [[[VObjectManager sharedManager] readComments:readComments
+        [[VObjectManager sharedManager] readComments:readComments
                                          successBlock:nil
                                             failBlock:^(NSError *error) {
                                                 VLog(@"Warning: failed to mark following comments as read: %@", readComments);
-                                            }] start];
+                                            }];
     }
     _newlyReadComments = nil;
     [super viewWillDisappear:animated];
