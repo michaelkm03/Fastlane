@@ -33,7 +33,7 @@
                         <fontDescription key="fontDescription" style="UICTFontTextStyleCaption1"/>
                         <nil key="highlightedColor"/>
                     </label>
-                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="username" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="MGT-h7-iQu" userLabel="Username label">
+                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="username" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="MGT-h7-iQu" userLabel="Username label">
                         <rect key="frame" x="86" y="12" width="214" height="21"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
@@ -71,7 +71,7 @@
                             <action selector="profileButtonAction:" destination="X3b-iY-v4q" eventType="touchUpInside" id="crZ-vw-6zm"/>
                         </connections>
                     </button>
-                    <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0Cw-Kx-Dvs" userLabel="Show Profile Button">
+                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0Cw-Kx-Dvs" userLabel="Show Profile Button">
                         <rect key="frame" x="86" y="8" width="214" height="37"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <fontDescription key="fontDescription" style="UICTFontTextStyleCaption2"/>
@@ -94,30 +94,32 @@
                     </button>
                 </subviews>
                 <constraints>
-                    <constraint firstItem="MGT-h7-iQu" firstAttribute="top" secondItem="eAW-cc-13j" secondAttribute="top" constant="12" id="2vN-Ko-OTL"/>
-                    <constraint firstItem="MGT-h7-iQu" firstAttribute="leading" secondItem="0Cw-Kx-Dvs" secondAttribute="leading" id="6W7-hj-u8f"/>
-                    <constraint firstItem="yUe-8b-fBQ" firstAttribute="leading" secondItem="MGT-h7-iQu" secondAttribute="leading" id="72I-rH-ecp"/>
+                    <constraint firstItem="MGT-h7-iQu" firstAttribute="top" secondItem="eAW-cc-13j" secondAttribute="top" constant="12" id="6Qg-oz-PBM"/>
                     <constraint firstItem="6J0-Gx-uGf" firstAttribute="leading" secondItem="mlx-Sx-ed0" secondAttribute="trailing" constant="8" symbolic="YES" id="8E1-qg-sEY"/>
                     <constraint firstItem="mlx-Sx-ed0" firstAttribute="leading" secondItem="LfL-cf-slY" secondAttribute="trailing" constant="2" id="8kF-HB-niO"/>
                     <constraint firstAttribute="bottom" secondItem="6J0-Gx-uGf" secondAttribute="bottom" id="Bxw-yM-3tn"/>
+                    <constraint firstItem="0Cw-Kx-Dvs" firstAttribute="top" secondItem="eAW-cc-13j" secondAttribute="top" constant="8" id="CKV-X3-yye"/>
                     <constraint firstAttribute="trailing" secondItem="6J0-Gx-uGf" secondAttribute="trailing" constant="10" id="CXG-R1-Nli"/>
                     <constraint firstItem="kz3-f7-Kav" firstAttribute="top" secondItem="eAW-cc-13j" secondAttribute="top" constant="5" id="Dfo-sZ-2h6"/>
+                    <constraint firstAttribute="trailing" secondItem="0Cw-Kx-Dvs" secondAttribute="trailing" constant="20" symbolic="YES" id="Gv0-au-Jwt"/>
                     <constraint firstItem="yUe-8b-fBQ" firstAttribute="top" secondItem="eAW-cc-13j" secondAttribute="top" constant="31" id="HMZ-RZ-DdV"/>
                     <constraint firstItem="wD6-xk-K18" firstAttribute="top" secondItem="yUe-8b-fBQ" secondAttribute="bottom" constant="8" id="Hf2-8y-Cz3"/>
-                    <constraint firstItem="0Cw-Kx-Dvs" firstAttribute="top" secondItem="eAW-cc-13j" secondAttribute="top" constant="8" id="Jfb-JA-882"/>
                     <constraint firstItem="sUq-fM-2Gz" firstAttribute="centerX" secondItem="wD6-xk-K18" secondAttribute="centerX" constant="0.5" id="L4k-Cm-z3m"/>
                     <constraint firstItem="mlx-Sx-ed0" firstAttribute="centerY" secondItem="LfL-cf-slY" secondAttribute="centerY" id="PCz-VF-uIJ"/>
+                    <constraint firstItem="MGT-h7-iQu" firstAttribute="leading" secondItem="0Cw-Kx-Dvs" secondAttribute="leading" id="PdG-YZ-tvS"/>
                     <constraint firstItem="6J0-Gx-uGf" firstAttribute="leading" secondItem="kz3-f7-Kav" secondAttribute="trailing" constant="8" symbolic="YES" id="QDD-Du-9h8"/>
+                    <constraint firstItem="wD6-xk-K18" firstAttribute="top" secondItem="0Cw-Kx-Dvs" secondAttribute="bottom" constant="71" id="Qa2-RO-kCe"/>
                     <constraint firstItem="LfL-cf-slY" firstAttribute="top" secondItem="kz3-f7-Kav" secondAttribute="bottom" constant="9" id="Ueg-19-IzC"/>
-                    <constraint firstAttribute="trailing" secondItem="0Cw-Kx-Dvs" secondAttribute="trailing" constant="20" symbolic="YES" id="Yem-3D-sP2"/>
                     <constraint firstItem="sUq-fM-2Gz" firstAttribute="centerY" secondItem="wD6-xk-K18" secondAttribute="centerY" constant="-0.5" id="Zid-8h-Tx4"/>
+                    <constraint firstItem="MGT-h7-iQu" firstAttribute="trailing" secondItem="yUe-8b-fBQ" secondAttribute="trailing" id="aTE-xv-oNE"/>
                     <constraint firstItem="kz3-f7-Kav" firstAttribute="leading" secondItem="eAW-cc-13j" secondAttribute="leading" constant="11" id="fAJ-Eb-m9P"/>
+                    <constraint firstItem="wD6-xk-K18" firstAttribute="top" secondItem="MGT-h7-iQu" secondAttribute="bottom" constant="83" id="p14-JQ-5wV"/>
                     <constraint firstItem="mlx-Sx-ed0" firstAttribute="top" secondItem="kz3-f7-Kav" secondAttribute="bottom" constant="5" id="pgS-Sc-KiQ"/>
-                    <constraint firstItem="MGT-h7-iQu" firstAttribute="trailing" secondItem="0Cw-Kx-Dvs" secondAttribute="trailing" id="q1s-Yg-L2s"/>
                     <constraint firstAttribute="trailing" secondItem="wD6-xk-K18" secondAttribute="trailing" constant="29" id="rc1-xO-D40"/>
                     <constraint firstItem="LfL-cf-slY" firstAttribute="leading" secondItem="eAW-cc-13j" secondAttribute="leading" constant="10" id="sC4-R9-0yF"/>
                     <constraint firstItem="6J0-Gx-uGf" firstAttribute="top" secondItem="eAW-cc-13j" secondAttribute="top" constant="2" id="sZQ-Es-TDN"/>
-                    <constraint firstItem="yUe-8b-fBQ" firstAttribute="trailing" secondItem="MGT-h7-iQu" secondAttribute="trailing" id="ypc-dC-dU0"/>
+                    <constraint firstItem="MGT-h7-iQu" firstAttribute="trailing" secondItem="0Cw-Kx-Dvs" secondAttribute="trailing" id="v8g-DS-CI0"/>
+                    <constraint firstItem="MGT-h7-iQu" firstAttribute="leading" secondItem="yUe-8b-fBQ" secondAttribute="leading" id="z9F-xr-J7Z"/>
                 </constraints>
             </tableViewCellContentView>
             <connections>
