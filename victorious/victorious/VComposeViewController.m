@@ -6,6 +6,8 @@
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
+@import AVFoundation;
+
 #import "VComposeViewController.h"
 #import "VObjectManager+Comment.h"
 #import "VSequence.h"
@@ -13,6 +15,7 @@
 #import "VLoginViewController.h"
 
 @interface VComposeViewController() <UINavigationControllerDelegate, UIImagePickerControllerDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout>
+@property (weak, nonatomic) IBOutlet UIButton *mediaButton;
 @property (weak, nonatomic, readwrite) IBOutlet UITextField *textField;
 @property (weak, nonatomic) IBOutlet UICollectionView* stickersView;
 @property (strong, nonatomic) NSData* media;
@@ -30,6 +33,8 @@
     self.view.frame = self.view.superview.bounds;
     
     [self.stickersView registerClass:[UICollectionViewCell class] forCellWithReuseIdentifier:@"stickerCell"];
+    self.mediaButton.layer.cornerRadius = 2;
+    self.mediaButton.clipsToBounds = YES;
     // populate stickers array
     
     [self.stickersView reloadData];
@@ -81,6 +86,7 @@
 {
     [self.textField resignFirstResponder];
     [self.delegate didComposeWithText:self.textField.text data:self.media mediaExtension:self.mediaExtension mediaURL:self.mediaURL];
+    [self.mediaButton setImage:[UIImage imageNamed:@"MessageCamera"] forState:UIControlStateNormal];
     self.textField.text = nil;
     self.mediaExtension = nil;
     self.media = nil;
@@ -101,14 +107,30 @@
         self.media = UIImagePNGRepresentation(imageToSave);
         if (self.media)
             self.mediaExtension = VConstantMediaExtensionPNG;
+        [self.mediaButton setImage:imageToSave forState:UIControlStateNormal];
     }
     
     // Handle a movie capture
     if (CFStringCompare ((CFStringRef)mediaType, kUTTypeMovie, 0) == kCFCompareEqualTo)
     {
-        self.media = [NSData dataWithContentsOfURL:info[UIImagePickerControllerMediaURL]];
+        NSURL *mediaURL = info[UIImagePickerControllerMediaURL];
+        self.media = [NSData dataWithContentsOfURL:mediaURL];
         if (self.media)
             self.mediaExtension = VConstantMediaExtensionMOV;
+
+        AVURLAsset *asset = [[AVURLAsset alloc] initWithURL:mediaURL options:nil];
+        AVAssetImageGenerator *gen = [[AVAssetImageGenerator alloc] initWithAsset:asset];
+        gen.appliesPreferredTrackTransform = YES;
+        CMTime time = CMTimeMakeWithSeconds(0.0, 600);
+        NSError *error = nil;
+        CGImageRef image = [gen copyCGImageAtTime:time actualTime:NULL error:&error];
+        if(error)
+        {
+            NSLog(@"%@", error);
+        }
+        UIImage *previewImage = [[UIImage alloc] initWithCGImage:image];
+        CGImageRelease(image);
+        [self.mediaButton setImage:previewImage forState:UIControlStateNormal];
     }
     
     self.mediaURL = info[UIImagePickerControllerMediaURL];

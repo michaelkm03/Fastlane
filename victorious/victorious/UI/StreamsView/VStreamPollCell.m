@@ -91,6 +91,10 @@
     
     if ([[_firstAssetUrl pathExtension] isEqualToString:VConstantMediaExtensionM3U8])
     {
+        self.mpControllerOne = [[MPMoviePlayerController alloc] initWithContentURL:[NSURL URLWithString:_firstAssetUrl]];
+        [self.mpControllerOne prepareToPlay];
+        self.mpControllerOne.view.frame = self.previewImageView.frame;
+        
         self.playOneButton.hidden = NO;
         [self.previewImageView setImageWithURL:[NSURL URLWithString:[_firstAssetUrl previewImageURLForM3U8]]];
     }
@@ -102,6 +106,10 @@
     
     if ([[_secondAssetUrl pathExtension] isEqualToString:VConstantMediaExtensionM3U8])
     {
+        self.mpControllerTwo = [[MPMoviePlayerController alloc] initWithContentURL:[NSURL URLWithString:_secondAssetUrl]];
+        [self.mpControllerTwo prepareToPlay];
+        self.mpControllerTwo.view.frame = self.previewImageTwo.frame;
+        
         self.playTwoButton.hidden = NO;
         [self.previewImageTwo setImageWithURL:[NSURL URLWithString:[_secondAssetUrl previewImageURLForM3U8]]];
     }
@@ -171,23 +179,38 @@
 
 - (IBAction)pressedPlayOne:(id)sender
 {
-    self.mpControllerOne = [[MPMoviePlayerController alloc] initWithContentURL:[NSURL URLWithString:_firstAssetUrl]];
-    [self.mpControllerOne prepareToPlay];
-    self.mpControllerOne.view.frame = self.previewImageView.frame;
+    //Only play for video
+    if (![[_firstAssetUrl pathExtension] isEqualToString:VConstantMediaExtensionM3U8])
+        return;
+    
     [self.mediaView insertSubview:self.mpControllerOne.view aboveSubview:self.previewImageView];
     
     [self.mpControllerOne play];
     self.playOneButton.hidden = YES;
+    
+    if (self.mpControllerTwo.view.superview)
+    {
+        [self.mpControllerTwo.view removeFromSuperview];
+        self.playTwoButton.hidden = NO;
+    }
 }
+
 - (IBAction)pressedPlayTwo:(id)sender
 {
-    self.mpControllerTwo = [[MPMoviePlayerController alloc] initWithContentURL:[NSURL URLWithString:_secondAssetUrl]];
-    [self.mpControllerTwo prepareToPlay];
-    self.mpControllerTwo.view.frame = self.previewImageTwo.frame;
+    //Only play for video
+    if (![[_secondAssetUrl pathExtension] isEqualToString:VConstantMediaExtensionM3U8])
+        return;
+    
     [self.mediaView insertSubview:self.mpControllerTwo.view aboveSubview:self.previewImageTwo];
     
     [self.mpControllerTwo play];
     self.playTwoButton.hidden = YES;
+    
+    if (self.mpControllerOne.view.superview)
+    {
+        [self.mpControllerOne.view removeFromSuperview];
+        self.playOneButton.hidden = NO;
+    }
 }
 
 - (void)answerPollWithAnswer:(VAnswer*)answer

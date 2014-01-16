@@ -7,10 +7,10 @@
 //
 
 #import "VConversation.h"
+#import "NSManagedObject+EasyFetching.h"
 
 @interface VConversation (RestKit)
 
-+ (NSString *)entityName;
 + (RKResponseDescriptor*)descriptor;
 
 @end

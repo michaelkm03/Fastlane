@@ -114,6 +114,11 @@ const   CGFloat     kMessageRowHeight           =   80;
                                              mediaUrl:nil
                                           successBlock:^(AFHTTPRequestOperation* operation, id response)
                                           {
+                                              if (!self.conversation.remoteId)
+                                              {
+                                                  self.conversation.remoteId = response[@"payload"][@"conversation_id"];
+                                                  [self.conversation.managedObjectContext save:nil];
+                                              }
                                               [self loadData];
                                                VLog(@"Succeed with response: %@", response);
                                           }

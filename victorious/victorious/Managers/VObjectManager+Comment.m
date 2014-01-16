@@ -23,8 +23,8 @@
                                       mediaUrl:(NSURL*)mediaUrl
                                     toSequence:(VSequence*)sequence
                                      andParent:(VComment*)parent
-                                  successBlock:(AFSuccessBlock)success
-                                     failBlock:(AFFailBlock)fail
+                                  successBlock:(SuccessBlock)success
+                                     failBlock:(FailBlock)fail
 {
     //Set the parameters
     NSMutableDictionary* parameters = [[NSMutableDictionary alloc] initWithCapacity:5];
@@ -47,39 +47,75 @@
         [parameters setObject:type forKey:@"media_type"];
     }
     
-    AFSuccessBlock fullSuccessBlock = ^(AFHTTPRequestOperation* operation, id response)
+    SuccessBlock fetchCommentSuccess = ^(NSArray* resultObjects)
     {
+        NSManagedObjectID* objectId = [[resultObjects firstObject] objectID];
+        if (objectId)
+        {
+            [self.mainUser addCommentsObject:(VComment*)[self.mainUser.managedObjectContext objectWithID:objectId]];
+            [sequence addCommentsObject:(VComment*)[sequence.managedObjectContext objectWithID:objectId]];
+        }
+        
+        if (success)
+            success(resultObjects);
+    };
+    
+    AFSuccessBlock fullSuccess = ^(AFHTTPRequestOperation* operation, id response)
+    {
+        
         NSDictionary* payload = response[@"payload"];
-        
-        if (![payload isKindOfClass:[NSDictionary class]])
-            return;
-        
-        [[self fetchComment:[payload[@"id"] integerValue]
-               successBlock:^(NSArray *resultObjects)
-          {
-              NSManagedObjectID* objectId = [[resultObjects firstObject] objectID];
-              if (objectId)
-              {
-                  [self.mainUser addCommentsObject:(VComment*)[self.mainUser.managedObjectContext objectWithID:objectId]];
-                  [sequence addCommentsObject:(VComment*)[sequence.managedObjectContext objectWithID:objectId]];
-              }
-              
-              if (success)
-                  success(nil, resultObjects);
-          }
-                  failBlock:^(NSError *error)
-          {
-              fail(nil, error);
-              VLog(@"Failed to fetch for reason: %@", error);
-          }] start];
+        [[self fetchCommentByID:[payload[@"id"] integerValue]
+                   successBlock:fetchCommentSuccess
+                      failBlock:fail
+                    loadAttempt:0] start];
+    };
+    
+    AFFailBlock fullFail = ^(AFHTTPRequestOperation* operation, NSError* error)
+    {
+        if (fail)
+            fail(error);
     };
     
     return [self upload:allData
           fileExtension:allExtensions
                  toPath:@"/api/comment/add"
              parameters:parameters
-           successBlock:fullSuccessBlock
-              failBlock:fail];
+           successBlock:fullSuccess
+              failBlock:fullFail];
+}
+
+- (RKManagedObjectRequestOperation *)fetchCommentByID:(NSInteger)commentID
+                                         successBlock:(SuccessBlock)success
+                                            failBlock:(FailBlock)fail
+                                          loadAttempt:(NSInteger)attemptCount
+{
+    if (!commentID)
+        return nil;
+    
+    FailBlock fullFail = ^(NSError* error)
+    {
+        //keep trying until we are done transcoding
+        if (error.code == 5500 && attemptCount < 15)
+        {
+            double delayInSeconds = 2.0;
+            dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
+            dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+                [[self fetchCommentByID:commentID
+                           successBlock:success
+                              failBlock:fail
+                            loadAttempt:(attemptCount+1)] start];
+            });
+        }
+        else if (fail)
+            fail(error);
+    };
+    
+    return [self GET:[@"/api/comment/fetch/" stringByAppendingString:@(commentID).stringValue]
+              object:nil
+          parameters:nil
+        successBlock:success
+           failBlock:fullFail
+     paginationBlock:nil];
 }
 
 

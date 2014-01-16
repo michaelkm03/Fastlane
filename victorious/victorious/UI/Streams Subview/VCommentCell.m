@@ -35,6 +35,9 @@
 
 - (void)awakeFromNib
 {
+    [super awakeFromNib];
+    
+    self.usernameLabel.font = [[VThemeManager sharedThemeManager] themedFontForKeyPath:@"theme.font.stream.text.username"];
     self.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKeyPath:@"theme.color.messages.background"];
     self.dateLabel.font = [[VThemeManager sharedThemeManager] themedFontForKeyPath:@"theme.font.stream.timeSince"];
     self.profileImageButton.clipsToBounds = YES;
@@ -76,18 +79,18 @@
         if (comment.mediaUrl)
         {
             self.mediaUrl = comment.mediaUrl;
-            [self.mediaPreview setImageWithURL:[NSURL URLWithString:[self.mediaUrl  previewImageURLForM3U8]]
-                              placeholderImage:[UIImage imageNamed:@"MenuVideos"]];
 
             if ([comment.mediaType isEqualToString:VConstantsMediaTypeVideo])
             {
                 self.playButton.hidden = NO;
                 self.mediaPreview.hidden = NO;
+                [self.mediaPreview setImageWithURL:[NSURL URLWithString:[self.mediaUrl previewImageURLForM3U8]]];
             }
             else
             {
                 self.playButton.hidden = YES;
                 self.mediaPreview.hidden = NO;
+                [self.mediaPreview setImageWithURL:[NSURL URLWithString:self.mediaUrl]];
             }
         }
         else
@@ -116,18 +119,18 @@
         if (message.media.mediaUrl)
         {
             self.mediaUrl = message.media.mediaUrl;
-            [self.mediaPreview setImageWithURL:[NSURL URLWithString:[self.mediaUrl  previewImageURLForM3U8]]
-                              placeholderImage:[UIImage imageNamed:@"MenuVideos"]];
 
             if ([message.media.mediaType isEqualToString:VConstantsMediaTypeVideo])
             {
                 self.playButton.hidden = NO;
                 self.mediaPreview.hidden = NO;
+                [self.mediaPreview setImageWithURL:[NSURL URLWithString:[self.mediaUrl previewImageURLForM3U8]]];
             }
             else
             {
                 self.playButton.hidden = YES;
                 self.mediaPreview.hidden = NO;
+                [self.mediaPreview setImageWithURL:[NSURL URLWithString:self.mediaUrl]];
             }
         }
         else

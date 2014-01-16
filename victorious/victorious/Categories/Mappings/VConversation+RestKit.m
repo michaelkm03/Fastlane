@@ -7,7 +7,6 @@
 //
 
 #import "VConversation+RestKit.h"
-#import "NSManagedObject+EasyFetching.h"
 #import "VMessage+RestKit.h"
 
 @implementation VConversation (RestKit)

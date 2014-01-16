@@ -22,6 +22,21 @@
 
 @implementation VObjectManager (Users)
 
+
+- (RKManagedObjectRequestOperation *)fetchUser:(NSNumber*)userId
+                              withSuccessBlock:(SuccessBlock)success
+                                     failBlock:(FailBlock)fail
+{
+    NSString* path = userId ? [NSString stringWithFormat:@"/api/userinfo/fetch/%@", userId] : @"/api/userinfo/fetch";
+    
+    return [self GET:path
+              object:nil
+          parameters:nil
+        successBlock:success
+           failBlock:fail
+     paginationBlock:nil];
+}
+
 - (RKManagedObjectRequestOperation *)fetchUser:(NSNumber*)userId
                          forRelationshipObject:(id)relationshipObject
                               withSuccessBlock:(SuccessBlock)success
@@ -35,7 +50,7 @@
     //There's nothing to add and we're already fetching the object
     if (!relationshipObject && relationships)
         return nil;
-    
+
     //We're already fetching this ID, just add the object and return
     if (relationships && [relationships isKindOfClass:[NSMutableArray class]])
     {
