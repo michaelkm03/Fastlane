@@ -73,6 +73,7 @@
     [self setupOrLabel];
     [self setupResultLabels];
     [self setupOptionButtons];
+    [self checkIfAnswered];
 }
 
 - (void)setupMedia
@@ -167,6 +168,17 @@
         [[VThemeManager sharedThemeManager] themedColorForKeyPath:@"theme.color.poll.result.default"];
 }
 
+- (void)checkIfAnswered
+{
+    for (VPollResult* result in [VObjectManager sharedManager].mainUser.pollResults)
+    {
+        if ([result.sequenceId isEqualToNumber: self.sequence.remoteId])
+        {
+            [self showResultsForAnswerId:result.answerId];
+        }
+    }
+}
+
 - (IBAction)pressedOptionOne:(id)sender
 {
     [self answerPollWithAnswer:_firstAnswer];
@@ -228,7 +240,7 @@
           [[[VObjectManager sharedManager] pollResultsForSequence:self.sequence
                                                     successBlock:^(NSArray *resultObjects)
                                                     {
-                                                        [self showResultsForAnswer:answer];
+                                                        [self showResultsForAnswerId:answer.remoteId];
                                                     }
                                                         failBlock:^(NSError *error)
                                                         {
@@ -251,7 +263,7 @@
       }] start];
 }
 
-- (void)showResultsForAnswer:(VAnswer*)answer
+- (void)showResultsForAnswerId:(NSNumber*)answerId
 {
     NSInteger totalVotes = 0;
     for( VPollResult* result in self.sequence.pollResults)
@@ -264,13 +276,13 @@
     {
         VInboxBadgeLabel* label = [self resultLabelForAnswerID:result.answerId];
         
-        NSInteger percentage = (result.count.doubleValue / totalVotes) * 100;
+        NSInteger percentage = (result.count.doubleValue + 1.0 / totalVotes) * 100;
         percentage = percentage > 100 ? 100 : percentage;
         percentage = percentage < 0 ? 0 : percentage;
         
         label.text = [@(percentage).stringValue stringByAppendingString:@"%"];
         //unhide both flags
-        if (result.answerId == answer.remoteId)
+        if (result.answerId == answerId)
         {
             label.backgroundColor =
                     [[VThemeManager sharedThemeManager] themedColorForKeyPath:@"theme.color"];
@@ -278,11 +290,11 @@
     }
     self.firstResultLabel.hidden = self.secondResultLabel.hidden = NO;
     
-    if ([answer.remoteId isEqualToNumber:_firstAnswer.remoteId])
+    if ([answerId isEqualToNumber:_firstAnswer.remoteId])
     {
         self.optionOneButton.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKeyPath:@"theme.color"];
     }
-    else
+    else if ([answerId isEqualToNumber:_secondAnswer.remoteId])
     {
         self.optionTwoButton.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKeyPath:@"theme.color"];
     }
