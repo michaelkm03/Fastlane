@@ -148,7 +148,7 @@
     self.firstResultLabel.backgroundColor = self.secondResultLabel.backgroundColor =
             [[VThemeManager sharedThemeManager] themedColorForKeyPath:@"theme.color.poll.result.default"];
             //[[VThemeManager sharedThemeManager] themedColorForKeyPath:@"theme.color.post.poll.or.border"];
-    self.firstResultLabel.text = self.secondResultLabel.text = @"100%";
+    self.firstResultLabel.text = self.secondResultLabel.text = @"50%";
     
     self.firstResultLabel.hidden = self.secondResultLabel.hidden = YES;
 }
