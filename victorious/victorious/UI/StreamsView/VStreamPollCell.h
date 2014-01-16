@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "VStreamViewCell.h"
-#import "VInboxBadgeLabel.h"
+#import "VBadgeLabel.h"
 
 static NSString *kStreamPollCellIdentifier = @"VStreamPollCell";
 static NSString *kStreamDoublePollCellIdentifier = @"VStreamDoublePollCell";
@@ -25,8 +25,8 @@ static NSString *kStreamDoublePollCellIdentifier = @"VStreamDoublePollCell";
 
 @property (weak, nonatomic) IBOutlet UIView* answerView;
 
-@property (weak, nonatomic) IBOutlet VInboxBadgeLabel* firstResultLabel;
-@property (weak, nonatomic) IBOutlet VInboxBadgeLabel* secondResultLabel;
+@property (weak, nonatomic) IBOutlet VBadgeLabel* firstResultLabel;
+@property (weak, nonatomic) IBOutlet VBadgeLabel* secondResultLabel;
 
 @property (weak, nonatomic) IBOutlet UIView* mediaView;
 

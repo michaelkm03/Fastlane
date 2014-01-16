@@ -273,7 +273,7 @@
     
     for( VPollResult* result in self.sequence.pollResults)
     {
-        VInboxBadgeLabel* label = [self resultLabelForAnswerID:result.answerId];
+        VBadgeLabel* label = [self resultLabelForAnswerID:result.answerId];
         
         NSInteger percentage = (result.count.doubleValue + 1.0 / totalVotes) * 100;
         percentage = percentage > 100 ? 100 : percentage;
@@ -299,7 +299,7 @@
     }
 }
 
-- (VInboxBadgeLabel*)resultLabelForAnswerID:(NSNumber*)answerID
+- (VBadgeLabel*)resultLabelForAnswerID:(NSNumber*)answerID
 {
     if ([answerID isEqualToNumber:self.firstAnswer.remoteId])
         return self.firstResultLabel;

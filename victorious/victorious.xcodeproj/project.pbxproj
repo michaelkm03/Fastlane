@@ -27,7 +27,7 @@
 		8364C70F1869557E0028C1ED /* VMenuViewControllerTransition.m in Sources */ = {isa = PBXBuildFile; fileRef = 8364C70E1869557E0028C1ED /* VMenuViewControllerTransition.m */; };
 		8378622718728C89000BF84F /* VFeaturedStreamsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8378622418728C89000BF84F /* VFeaturedStreamsViewController.m */; };
 		8378622818728C89000BF84F /* VFeaturedViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8378622618728C89000BF84F /* VFeaturedViewController.m */; };
-		838511C418762DF3007E0316 /* VInboxBadgeLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 838511C318762DF3007E0316 /* VInboxBadgeLabel.m */; };
+		838511C418762DF3007E0316 /* VBadgeLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 838511C318762DF3007E0316 /* VBadgeLabel.m */; };
 		838B1E9B187E871C0052FAE9 /* VCreatePollViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 838B1E9A187E871C0052FAE9 /* VCreatePollViewController.m */; };
 		83ABAFAF18709DE30069556C /* Roboto-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 83ABAFA218709DE30069556C /* Roboto-Light.ttf */; };
 		83AD58FC187F6172001EB7BA /* VCreateTopicViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 83AD58FB187F6172001EB7BA /* VCreateTopicViewController.m */; };
@@ -186,8 +186,8 @@
 		8378622418728C89000BF84F /* VFeaturedStreamsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VFeaturedStreamsViewController.m; sourceTree = "<group>"; };
 		8378622518728C89000BF84F /* VFeaturedViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VFeaturedViewController.h; sourceTree = "<group>"; };
 		8378622618728C89000BF84F /* VFeaturedViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VFeaturedViewController.m; sourceTree = "<group>"; };
-		838511C218762DF3007E0316 /* VInboxBadgeLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VInboxBadgeLabel.h; sourceTree = "<group>"; };
-		838511C318762DF3007E0316 /* VInboxBadgeLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VInboxBadgeLabel.m; sourceTree = "<group>"; };
+		838511C218762DF3007E0316 /* VBadgeLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VBadgeLabel.h; sourceTree = "<group>"; };
+		838511C318762DF3007E0316 /* VBadgeLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VBadgeLabel.m; sourceTree = "<group>"; };
 		838B1E99187E871C0052FAE9 /* VCreatePollViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VCreatePollViewController.h; sourceTree = "<group>"; };
 		838B1E9A187E871C0052FAE9 /* VCreatePollViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VCreatePollViewController.m; sourceTree = "<group>"; };
 		838B1E9C187E87640052FAE9 /* VCreateSequenceDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VCreateSequenceDelegate.h; sourceTree = "<group>"; };
@@ -465,6 +465,8 @@
 			children = (
 				BE171DE71868C211004E5202 /* VThemeManager.h */,
 				BE171DE81868C211004E5202 /* VThemeManager.m */,
+				838511C218762DF3007E0316 /* VBadgeLabel.h */,
+				838511C318762DF3007E0316 /* VBadgeLabel.m */,
 			);
 			name = Common;
 			sourceTree = "<group>";
@@ -557,8 +559,6 @@
 		8364C70818694FF00028C1ED /* Menu */ = {
 			isa = PBXGroup;
 			children = (
-				838511C218762DF3007E0316 /* VInboxBadgeLabel.h */,
-				838511C318762DF3007E0316 /* VInboxBadgeLabel.m */,
 				8364C7091869500D0028C1ED /* VMenuViewController.h */,
 				8364C70A1869500D0028C1ED /* VMenuViewController.m */,
 				83F38275186BE62300A866A1 /* VMenuTableViewController.h */,
@@ -1173,7 +1173,7 @@
 				BE692B29186E5ED800C71336 /* VStreamViewCell.m in Sources */,
 				83FE10C4188480F400E83039 /* VConversationSubViewController.m in Sources */,
 				BE171E431868CEA0004E5202 /* victoriOS.xcdatamodeld in Sources */,
-				838511C418762DF3007E0316 /* VInboxBadgeLabel.m in Sources */,
+				838511C418762DF3007E0316 /* VBadgeLabel.m in Sources */,
 				BE171E1B1868C211004E5202 /* VUser+RestKit.m in Sources */,
 				BE5C736A187E36E800A3340D /* VRule.m in Sources */,
 				BE83A37118827B400077EB26 /* VMessage.m in Sources */,

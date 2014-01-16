@@ -6,17 +6,19 @@
 //  Copyright (c) 2014 Will Long. All rights reserved.
 //
 
-#import "VInboxBadgeLabel.h"
+#import "VBadgeLabel.h"
 
-@implementation VInboxBadgeLabel
+@implementation VBadgeLabel
 
-- (CGSize)intrinsicContentSize{
+- (CGSize)intrinsicContentSize
+{
     CGSize size = [super intrinsicContentSize];
     size.width += self.font.lineHeight;
     return size;
 }
 
-- (void)layoutSubviews{
+- (void)layoutSubviews
+{
     [super layoutSubviews];
     
     self.layer.cornerRadius = CGRectGetHeight(self.bounds)/2;
