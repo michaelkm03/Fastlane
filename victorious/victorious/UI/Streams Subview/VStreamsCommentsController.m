@@ -291,20 +291,20 @@ static NSString* CommentCache = @"CommentCache";
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     VComment *comment = [self.fetchedResultsController objectAtIndexPath:indexPath];
-    return comment.mediaUrl ? kCommentRowWithMediaHeight : kCommentRowHeight;
+    return [comment.mediaUrl length] ? kCommentRowWithMediaHeight : kCommentRowHeight;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     UITableViewCell *cell = nil;
-    VComment *comment = [self.fetchedResultsController objectAtIndexPath:indexPath];
-    if([comment.user isEqualToUser:[VObjectManager sharedManager].mainUser])
-    {
-        cell = [self.tableView dequeueReusableCellWithIdentifier:kOtherCommentCellIdentifier forIndexPath:indexPath];
-    }else
-    {
+//    VComment *comment = [self.fetchedResultsController objectAtIndexPath:indexPath];
+//    if([comment.user isEqualToUser:[VObjectManager sharedManager].mainUser])
+//    {
+//        cell = [self.tableView dequeueReusableCellWithIdentifier:kOtherCommentCellIdentifier forIndexPath:indexPath];
+//    }else
+//    {
         cell = [self.tableView dequeueReusableCellWithIdentifier:kCommentCellIdentifier forIndexPath:indexPath];
-    }
+//    }
     [self configureCell:cell atIndexPath:indexPath];
     
     return cell;
