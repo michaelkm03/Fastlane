@@ -397,6 +397,7 @@ typedef NS_ENUM(NSInteger, VStreamScope)
     [self.view addSubview:indicator];
     indicator.center = self.view.center;
     [indicator startAnimating];
+    indicator.hidesWhenStopped = YES;
     
     SuccessBlock success = ^(NSArray* resultObjects)
     {
@@ -446,6 +447,7 @@ typedef NS_ENUM(NSInteger, VStreamScope)
     [self.view addSubview:indicator];
     indicator.center = self.view.center;
     [indicator startAnimating];
+    indicator.hidesWhenStopped = YES;
     
     SuccessBlock success = ^(NSArray* resultObjects)
     {

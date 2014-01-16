@@ -23,6 +23,8 @@
 #import "BBlock.h"
 #import "UIActionSheet+BBlock.h"
 #import "VComposeViewController.h"
+#import "VSequence+Fetcher.h"
+#import "VAsset.h"
 
 @import Social;
 
@@ -91,6 +93,7 @@ static NSString* CommentCache = @"CommentCache";
     [self.view addSubview:indicator];
     indicator.center = self.view.center;
     [indicator startAnimating];
+    indicator.hidesWhenStopped = YES;
     
     SuccessBlock success = ^(NSArray *resultObjects) {
         
@@ -327,7 +330,7 @@ static NSString* CommentCache = @"CommentCache";
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
-    if ([_sequence isVideo])
+    if ([_sequence isVideo] && [[_sequence firstAsset].type isEqualToString:VConstantsMediaTypeYoutube])
     {
         return _sequencePlayer.view;
     }
@@ -337,7 +340,7 @@ static NSString* CommentCache = @"CommentCache";
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
-    if ([_sequence isVideo])
+    if ([_sequence isVideo] && [[_sequence firstAsset].type isEqualToString:VConstantsMediaTypeYoutube])
     {
         return 160;
     }
@@ -572,6 +575,7 @@ static NSString* CommentCache = @"CommentCache";
     
     __block UIActivityIndicatorView *indicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
     indicator.frame = CGRectMake(0, 0, 24, 24);
+    indicator.hidesWhenStopped = YES;
     [self.view addSubview:indicator];
     indicator.center = self.view.center;
     [indicator startAnimating];
