@@ -13,7 +13,24 @@
 #import "VMessage.h"
 #import "VUser.h"
 
+#import "VConversation+RestKit.h"
+
 @implementation VObjectManager (DirectMessaging)
+
+- (VConversation*)conversationWithUserID:(NSNumber*)userID
+{
+    for (VConversation* conversation in self.mainUser.conversations)
+    {
+        if ([conversation.user.remoteId isEqualToNumber:userID])
+            return conversation;
+    }
+    
+    VConversation *newConversation = [NSEntityDescription
+                                  insertNewObjectForEntityForName:[VConversation entityName]
+                                  inManagedObjectContext:self.mainUser.managedObjectContext];
+    newConversation.other_interlocutor_user_id = userID;
+    return newConversation;
+}
 
 - (void)testSendMessage
 {
