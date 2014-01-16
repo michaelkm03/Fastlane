@@ -31,7 +31,9 @@
 "CopyProfileURL"        =   "Copy Profile URL";
 
 "TranscodingMediaTitle" =   "Transcoding Upload";
-"TranscodingMediaBody"  =   "Your upload is taking longer than usual to transcode.  It will appear once we've finished!";
+"TranscodingMediaBody"  =   "Your upload is taking longer than usual to transcode.  It will appear once we've finished";
+"PollUploadTitle"       =   "Poll Upload Failed";
+"PollUploadBody"        =   "Unable to upload Poll to server";
 
 "Now"                   =   "Just now";
 "SecondsAgo"            =   "%ds";

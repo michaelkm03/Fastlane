@@ -437,25 +437,38 @@
     if (answer2Text)
         [parameters setObject:answer2Text ?: [NSNull null] forKey:@"answer2_label"];
     
-    NSMutableDictionary *allData, *allExtensions;
-    if (media1Data && ![media1Extension isEmpty])
+    NSMutableDictionary *allData = [[NSMutableDictionary alloc] init];
+    NSMutableDictionary *allExtensions = [[NSMutableDictionary alloc] init];
+
+    if (media1Data && ![media1Extension isEmpty] && media2Data && ![media2Extension isEmpty])
     {
         [allData setObject:media1Data forKey:@"answer1_media"];
         [allExtensions setObject:media1Extension forKey:@"answer1_media"];
-    }
-    if (media2Data && ![media2Extension isEmpty])
-    {
         [allData setObject:media2Data forKey:@"answer2_media"];
         [allExtensions setObject:media2Extension forKey:@"answer2_media"];
+    }
+    else if (media1Data && ![media1Extension isEmpty] )
+    {
+        [allData setObject:media1Data forKey:@"poll_media"];
+        [allExtensions setObject:media1Extension forKey:@"poll_media"];
     }
     
     AFSuccessBlock fullSuccess = ^(AFHTTPRequestOperation* operation, id response)
     {
-        NSNumber* sequenceID = response[@"payload"][@"sequence_id"];
-        [[self fetchSequenceByID:sequenceID
-                    successBlock:success
-                       failBlock:fail
-                     loadAttempt:0] start];
+        if ([response[@"error"] integerValue] == 0)
+        {
+            NSNumber* sequenceID = response[@"payload"][@"sequence_id"];
+            [[self fetchSequenceByID:sequenceID
+                        successBlock:success
+                           failBlock:fail
+                         loadAttempt:0] start];
+        }
+        else
+        {
+            NSError*    error = [NSError errorWithDomain:NSCocoaErrorDomain code:[response[@"error"] integerValue] userInfo:nil];
+            if (fail)
+                fail(error);
+        }
     };
     
     AFFailBlock fullFail = ^(AFHTTPRequestOperation* operation, NSError* error)
