@@ -61,8 +61,8 @@
         VComment *comment = (VComment *)self.commentOrMessage;
 
         self.dateLabel.text = [comment.postedAt timeSince];
-//        [self.avatarImageView setImageWithURL:[NSURL URLWithString:comment.user.pictureUrl]
-//                             placeholderImage:[UIImage imageNamed:@"profile_thumb"]];
+        [self.profileImageButton.imageView setImageWithURL:[NSURL URLWithString:comment.user.pictureUrl]
+                                          placeholderImage:[UIImage imageNamed:@"profile_thumb"]];
         if(![comment.user.shortName isEmpty])
         {
             self.usernameLabel.text = comment.user.shortName;
@@ -76,8 +76,7 @@
         if (comment.mediaUrl)
         {
             self.mediaUrl = comment.mediaUrl;
-            [self.mediaPreview setImageWithURL:[NSURL URLWithString:[self.mediaUrl  previewImageURLForM3U8]]
-                              placeholderImage:[UIImage imageNamed:@"MenuVideos"]];
+            [self.mediaPreview setImageWithURL:[NSURL URLWithString:[self.mediaUrl previewImageURLForM3U8]]];
 
             if ([comment.mediaType isEqualToString:VConstantsMediaTypeVideo])
             {
@@ -99,10 +98,10 @@
     else if([commentOrMessage isKindOfClass:[VMessage class]])
     {
         VMessage *message = (VMessage *)self.commentOrMessage;
-        
+
         self.dateLabel.text = [message.postedAt timeSince];
-//        [self.avatarImageView setImageWithURL:[NSURL URLWithString:message.user.pictureUrl]
-//                             placeholderImage:[UIImage imageNamed:@"profile_thumb"]];
+        [self.profileImageButton.imageView setImageWithURL:[NSURL URLWithString:message.user.pictureUrl]
+                                          placeholderImage:[UIImage imageNamed:@"profile_thumb"]];
         if(![message.user.shortName isEmpty])
         {
             self.usernameLabel.text = message.user.shortName;
@@ -116,8 +115,7 @@
         if (message.media.mediaUrl)
         {
             self.mediaUrl = message.media.mediaUrl;
-            [self.mediaPreview setImageWithURL:[NSURL URLWithString:[self.mediaUrl  previewImageURLForM3U8]]
-                              placeholderImage:[UIImage imageNamed:@"MenuVideos"]];
+            [self.mediaPreview setImageWithURL:[NSURL URLWithString:[self.mediaUrl previewImageURLForM3U8]]];
 
             if ([message.media.mediaType isEqualToString:VConstantsMediaTypeVideo])
             {
@@ -149,14 +147,14 @@
 
 - (IBAction)displayVideoMedia:(id)sender
 {
-    
+
 }
 
 - (IBAction)profileButtonAction:(id)sender
 {
     VRootNavigationController *rootViewController =
     (VRootNavigationController *)[[[[UIApplication sharedApplication] delegate] window] rootViewController];
-    
+
     if([self.commentOrMessage isKindOfClass:[VComment class]])
     {
         VComment* comment = (VComment *)self.commentOrMessage;

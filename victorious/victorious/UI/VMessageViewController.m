@@ -81,13 +81,13 @@ const   CGFloat     kMessageRowHeight           =   80;
 {
     UITableViewCell *cell = nil;
     VMessage*   aMessage = self.messages[indexPath.row];
-    if([aMessage.user isEqualToUser:[VObjectManager sharedManager].mainUser])
-    {
-        cell = [tableView dequeueReusableCellWithIdentifier:kOtherCommentCellIdentifier forIndexPath:indexPath];
-    }else
-    {
+//    if([aMessage.user isEqualToUser:[VObjectManager sharedManager].mainUser])
+//    {
+//        cell = [tableView dequeueReusableCellWithIdentifier:kOtherCommentCellIdentifier forIndexPath:indexPath];
+//    }else
+//    {
         cell = [tableView dequeueReusableCellWithIdentifier:kCommentCellIdentifier forIndexPath:indexPath];
-    }
+//    }
 
     [(VCommentCell *)cell setCommentOrMessage:aMessage];
 
