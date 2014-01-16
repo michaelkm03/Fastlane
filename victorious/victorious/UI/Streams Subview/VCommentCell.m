@@ -99,7 +99,7 @@
     else if([commentOrMessage isKindOfClass:[VMessage class]])
     {
         VMessage *message = (VMessage *)self.commentOrMessage;
-        
+
         self.dateLabel.text = [message.postedAt timeSince];
         [self.profileImageButton.imageView setImageWithURL:[NSURL URLWithString:message.user.pictureUrl]
                                           placeholderImage:[UIImage imageNamed:@"profile_thumb"]];
@@ -149,14 +149,14 @@
 
 - (IBAction)displayVideoMedia:(id)sender
 {
-    
+
 }
 
 - (IBAction)profileButtonAction:(id)sender
 {
     VRootNavigationController *rootViewController =
     (VRootNavigationController *)[[[[UIApplication sharedApplication] delegate] window] rootViewController];
-    
+
     if([self.commentOrMessage isKindOfClass:[VComment class]])
     {
         VComment* comment = (VComment *)self.commentOrMessage;
