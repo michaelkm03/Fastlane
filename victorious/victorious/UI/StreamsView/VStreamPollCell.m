@@ -57,17 +57,17 @@
                                                object:nil];
     
     NSArray* answers = [[self.sequence firstNode] firstAnswers];
-    _firstAnswer = [answers firstObject];
+    self.firstAnswer = [answers firstObject];
     if ([answers count] >= 2)
     {
-        _secondAnswer = [answers objectAtIndex:1];
+        self.secondAnswer = answers[1];
     }
     
-    if (_mpControllerOne)
-        [_mpControllerOne.view removeFromSuperview]; //make sure to get rid of the old view
+    if (self.mpControllerOne)
+        [self.mpControllerOne.view removeFromSuperview]; //make sure to get rid of the old view
     
-    if (_mpControllerTwo)
-        [_mpControllerTwo.view removeFromSuperview]; //make sure to get rid of the old view
+    if (self.mpControllerTwo)
+        [self.mpControllerTwo.view removeFromSuperview]; //make sure to get rid of the old view
     
     [self setupMedia];
     [self setupOrLabel];
@@ -82,34 +82,34 @@
     if (firstAsset)
     {
         //TODO: hide the cell if we fail to load the image
-        _firstAssetUrl = firstAsset.data;
+        self.firstAssetUrl = firstAsset.data;
     }
     else
     {
-        _firstAssetUrl = _firstAnswer.mediaUrl;
-        _secondAssetUrl = _secondAnswer.mediaUrl;
+        self.firstAssetUrl = self.firstAnswer.mediaUrl;
+        self.secondAssetUrl = self.secondAnswer.mediaUrl;
     }
     
-    if ([[_firstAssetUrl pathExtension] isEqualToString:VConstantMediaExtensionM3U8])
+    if ([[self.firstAssetUrl pathExtension] isEqualToString:VConstantMediaExtensionM3U8])
     {
         self.playOneButton.hidden = NO;
-        [self.previewImageView setImageWithURL:[NSURL URLWithString:[_firstAssetUrl previewImageURLForM3U8]]];
+        [self.previewImageView setImageWithURL:[NSURL URLWithString:[self.firstAssetUrl previewImageURLForM3U8]]];
     }
     else
     {
         self.playOneButton.hidden = YES;
-        [self.previewImageView setImageWithURL:[NSURL URLWithString:_firstAssetUrl]];
+        [self.previewImageView setImageWithURL:[NSURL URLWithString:self.firstAssetUrl]];
     }
     
-    if ([[_secondAssetUrl pathExtension] isEqualToString:VConstantMediaExtensionM3U8])
+    if ([[self.secondAssetUrl pathExtension] isEqualToString:VConstantMediaExtensionM3U8])
     {
         self.playTwoButton.hidden = NO;
-        [self.previewImageTwo setImageWithURL:[NSURL URLWithString:[_secondAssetUrl previewImageURLForM3U8]]];
+        [self.previewImageTwo setImageWithURL:[NSURL URLWithString:[self.secondAssetUrl previewImageURLForM3U8]]];
     }
     else
     {
         self.playTwoButton.hidden = YES;
-        [self.previewImageTwo setImageWithURL:[NSURL URLWithString:_secondAssetUrl]];
+        [self.previewImageTwo setImageWithURL:[NSURL URLWithString:self.secondAssetUrl]];
     }
 }
 
@@ -149,10 +149,10 @@
 {
     self.optionOneButton.tintColor = self.optionTwoButton.tintColor = [UIColor whiteColor];
     
-    if (_firstAnswer.label)
-        self.optionOneButton.titleLabel.text = _firstAnswer.label;
-    if (_secondAnswer.label)
-        self.optionTwoButton.titleLabel.text = _secondAnswer.label;
+    if (self.firstAnswer.label)
+        self.optionOneButton.titleLabel.text = self.firstAnswer.label;
+    if (self.secondAnswer.label)
+        self.optionTwoButton.titleLabel.text = self.secondAnswer.label;
     
     self.optionOneButton.titleLabel.textAlignment = self.optionTwoButton.titleLabel.textAlignment = NSTextAlignmentCenter;
     
@@ -173,21 +173,21 @@
 
 - (IBAction)pressedOptionOne:(id)sender
 {
-    [self answerPollWithAnswer:_firstAnswer];
+    [self answerPollWithAnswer:self.firstAnswer];
 }
 
 - (IBAction)pressedOptionTwo:(id)sender
 {
-    [self answerPollWithAnswer:_secondAnswer];
+    [self answerPollWithAnswer:self.secondAnswer];
 }
 
 - (IBAction)pressedPlayOne:(id)sender
 {
     //Only play for video
-    if (![[_firstAssetUrl pathExtension] isEqualToString:VConstantMediaExtensionM3U8])
+    if (![[self.firstAssetUrl pathExtension] isEqualToString:VConstantMediaExtensionM3U8])
         return;
     
-    self.mpControllerOne = [[MPMoviePlayerController alloc] initWithContentURL:[NSURL URLWithString:_firstAssetUrl]];
+    self.mpControllerOne = [[MPMoviePlayerController alloc] initWithContentURL:[NSURL URLWithString:self.firstAssetUrl]];
     [self.mpControllerOne prepareToPlay];
     self.mpControllerOne.view.frame = self.previewImageView.frame;
     [self.mediaView insertSubview:self.mpControllerOne.view aboveSubview:self.previewImageView];
@@ -205,11 +205,11 @@
 - (IBAction)pressedPlayTwo:(id)sender
 {
     //Only play for video
-    if (![[_secondAssetUrl pathExtension] isEqualToString:VConstantMediaExtensionM3U8])
+    if (![[self.secondAssetUrl pathExtension] isEqualToString:VConstantMediaExtensionM3U8])
         return;
     
     
-    self.mpControllerTwo = [[MPMoviePlayerController alloc] initWithContentURL:[NSURL URLWithString:_secondAssetUrl]];
+    self.mpControllerTwo = [[MPMoviePlayerController alloc] initWithContentURL:[NSURL URLWithString:self.secondAssetUrl]];
     [self.mpControllerTwo prepareToPlay];
     self.mpControllerTwo.view.frame = self.previewImageTwo.frame;
     [self.mediaView insertSubview:self.mpControllerTwo.view aboveSubview:self.previewImageTwo];
@@ -289,11 +289,11 @@
     }
     self.firstResultLabel.hidden = self.secondResultLabel.hidden = NO;
     
-    if ([answerId isEqualToNumber:_firstAnswer.remoteId])
+    if ([answerId isEqualToNumber:self.firstAnswer.remoteId])
     {
         self.optionOneButton.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKeyPath:@"theme.color"];
     }
-    else if ([answerId isEqualToNumber:_secondAnswer.remoteId])
+    else if ([answerId isEqualToNumber:self.secondAnswer.remoteId])
     {
         self.optionTwoButton.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKeyPath:@"theme.color"];
     }
@@ -301,10 +301,10 @@
 
 - (VInboxBadgeLabel*)resultLabelForAnswerID:(NSNumber*)answerID
 {
-    if ([answerID isEqualToNumber:_firstAnswer.remoteId])
-        return _firstResultLabel;
-    else if ([answerID isEqualToNumber:_secondAnswer.remoteId])
-        return  _secondResultLabel;
+    if ([answerID isEqualToNumber:self.firstAnswer.remoteId])
+        return self.firstResultLabel;
+    else if ([answerID isEqualToNumber:self.secondAnswer.remoteId])
+        return  self.secondResultLabel;
     
     return nil;
 }
