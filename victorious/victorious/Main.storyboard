@@ -971,6 +971,7 @@
                         <outlet property="nameLabel" destination="Qwz-4n-OVQ" id="qOp-EG-5aX"/>
                         <outlet property="taglineLabel" destination="h2b-ot-6Bn" id="3rW-Yo-amP"/>
                         <segue destination="dbW-o9-eKz" kind="push" identifier="toEditProfile" id="FLb-cb-8VQ"/>
+                        <segue destination="acE-Yl-HFc" kind="modal" identifier="toComposeMessage" id="Sho-vj-RuM"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Xa9-kt-Q5T" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -1926,7 +1927,8 @@
         <simulatedScreenMetrics key="destination" type="retina4"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
+        <segue reference="Sho-vj-RuM"/>
+        <segue reference="M1p-uJ-7Ga"/>
         <segue reference="Sdv-hN-brc"/>
-        <segue reference="6Th-L6-qdl"/>
     </inferredMetricsTieBreakers>
 </document>
