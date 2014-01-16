@@ -135,19 +135,19 @@ typedef NS_ENUM(NSInteger, VStreamScope)
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
-    if (self.featuredStreamsViewController && !self.featuredStreamsViewController.view.hidden)
+//    if (self.featuredStreamsViewController && !self.featuredStreamsViewController.view.hidden)
         return 120;
 
-    return 0;
+//    return 0;
 }
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
-    if (![self.featuredStreamsViewController.fetchedResultsController.fetchedObjects count])
-        self.featuredStreamsViewController.view.hidden = YES;
-    else
-        self.featuredStreamsViewController.view.hidden = NO;
-        
+//    if (![self.featuredStreamsViewController.fetchedResultsController.fetchedObjects count])
+//        self.featuredStreamsViewController.view.hidden = YES;
+//    else
+//        self.featuredStreamsViewController.view.hidden = NO;
+    
     CGRect frame = CGRectMake(0, 0, CGRectGetWidth(self.view.bounds), [self tableView:tableView heightForHeaderInSection:section]);
     UIView* containerView = [[UIView alloc] initWithFrame:frame];
 
