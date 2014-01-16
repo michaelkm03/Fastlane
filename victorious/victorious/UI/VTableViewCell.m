@@ -11,9 +11,9 @@
 
 @implementation VTableViewCell
 
-- (void)awakeFromNib
+- (void)layoutSubviews
 {
-    [super awakeFromNib];
+    [super layoutSubviews];
     
     [[UIImageView appearanceWhenContainedIn:[self class], nil]
      setTintColor:[[VThemeManager sharedThemeManager] themedColorForKeyPath:@"theme.color.stream.icon"]];
@@ -28,7 +28,6 @@
          label.font = [[VThemeManager sharedThemeManager] themedFontForKeyPath:@"theme.font.stream"];
          label.textColor = [[VThemeManager sharedThemeManager] themedColorForKeyPath:@"theme.color.stream.text"];
      }];
-    
     
     [self.buttons enumerateObjectsUsingBlock:^(UIButton *button, NSUInteger idx, BOOL *stop)
      {
