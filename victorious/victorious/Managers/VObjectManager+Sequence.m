@@ -150,33 +150,41 @@
                                       successBlock:(SuccessBlock)success
                                          failBlock:(FailBlock)fail
 {
-    if (!sequence || !sequence.remoteId)
-        return nil;
-    
-    NSString* path = [@"/api/sequence/fetch/" stringByAppendingString:sequence.remoteId.stringValue];
-    
-    return [self GET:path
-              object:sequence
-          parameters:nil
-        successBlock:success
-           failBlock:fail
-     paginationBlock:nil];
+    return [self fetchSequenceByID:sequence.remoteId
+                      successBlock:success
+                         failBlock:fail
+                       loadAttempt:0];
 }
 
 - (RKManagedObjectRequestOperation *)fetchSequenceByID:(NSNumber*)sequenceID
                                           successBlock:(SuccessBlock)success
                                              failBlock:(FailBlock)fail
+                                           loadAttempt:(NSInteger)attemptCount
 {
     if (!sequenceID)
         return nil;
     
     NSString* path = [@"/api/sequence/fetch/" stringByAppendingString:sequenceID.stringValue];
     
+    FailBlock fullFail = ^(NSError* error)
+    {
+        //keep trying until we are done transcoding
+        if (error.code == 5500 && attemptCount < 15)
+        {
+            [[self fetchSequenceByID:sequenceID
+                        successBlock:success
+                           failBlock:fail
+                         loadAttempt:(attemptCount+1)] start];
+        }
+        else if (fail)
+            fail(error);
+    };
+    
     return [self GET:path
               object:nil
           parameters:nil
         successBlock:success
-           failBlock:fail
+           failBlock:fullFail
      paginationBlock:nil];
 }
 
@@ -522,7 +530,8 @@
         NSNumber* sequenceID = response[@"payload"][@"sequence_id"];
         [[self fetchSequenceByID:sequenceID
                    successBlock:success
-                      failBlock:fail] start];
+                      failBlock:fail
+                     loadAttempt:0] start];
     };
     
     AFFailBlock fullFail = ^(AFHTTPRequestOperation* operation, NSError* error)

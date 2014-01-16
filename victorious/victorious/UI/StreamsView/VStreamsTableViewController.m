@@ -391,21 +391,39 @@ typedef NS_ENUM(NSInteger, VStreamScope)
                    mediaType:(NSString *)mediaType
 {
     [self dismissViewControllerAnimated:YES completion:nil];
+    
+    __block UIActivityIndicatorView *indicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+    indicator.frame = CGRectMake(0, 0, 24, 24);
+    [self.view addSubview:indicator];
+    indicator.center = self.view.center;
+    [indicator startAnimating];
+    
+    SuccessBlock success = ^(NSArray* resultObjects)
+    {
+        NSLog(@"%@", resultObjects);
+        [indicator stopAnimating];
+    };
+    FailBlock fail = ^(NSError* error)
+    {
+        NSLog(@"%@", error);
+        [indicator stopAnimating];
+        
+        UIAlertView*    alert   =
+        [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"TranscodingMediaTitle", @"")
+                                   message:NSLocalizedString(@"TranscodingMediaBody", @"")
+                                  delegate:nil
+                         cancelButtonTitle:NSLocalizedString(@"OKButton", @"")
+                         otherButtonTitles:nil];
+        [alert show];
+    };
+    
     if ([mediaType isEqualToString:@"png"])
     {
-        [[[VObjectManager sharedManager] createImageWithName:message description:message mediaData:data mediaUrl:nil successBlock:^(NSArray *resultObjects) {
-            NSLog(@"%@", resultObjects);
-        } failBlock:^(NSError *error) {
-            NSLog(@"%@", error);
-        }] start];
+        [[[VObjectManager sharedManager] createImageWithName:message description:message mediaData:data mediaUrl:nil successBlock:success failBlock:fail] start];
     }
     else
     {
-        [[[VObjectManager sharedManager] createVideoWithName:message description:message mediaData:data mediaUrl:nil successBlock:^(NSArray *resultObjects) {
-            NSLog(@"%@", resultObjects);
-        } failBlock:^(NSError *error) {
-            NSLog(@"%@", error);
-        }] start];
+        [[[VObjectManager sharedManager] createVideoWithName:message description:message mediaData:data mediaUrl:nil successBlock:success failBlock:fail] start];
     }
 }
 

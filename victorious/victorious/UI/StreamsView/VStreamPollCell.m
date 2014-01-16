@@ -53,6 +53,15 @@
         _secondAnswer = [answers objectAtIndex:1];
     }
     
+    
+    [self setupMedia];
+    [self setupOrLabel];
+    [self setupResultLabels];
+    [self setupOptionButtons];
+}
+
+- (void)setupMedia
+{
     if ([self.reuseIdentifier isEqualToString:kStreamPollCellIdentifier])
     {
         //TODO: hide the cell if we fail to load the image
@@ -67,14 +76,15 @@
     
     if ([_firstAssetUrl.extensionType isEqualToString:VConstantsMediaTypeVideo])
     {
-        self.playOneButton.hidden = NO;
-        [self.previewImageView setImageWithURL:[NSURL URLWithString:[_firstAssetUrl previewImageURLForM3U8]]];
-        
         self.mpControllerOne = [[MPMoviePlayerController alloc] initWithContentURL:[NSURL URLWithString:_firstAssetUrl]];
-//        [self.mpControllerOne prepareToPlay];
+        [self.mpControllerOne prepareToPlay];
         self.mpControllerOne.view.frame = self.previewImageView.frame;
-        [self insertSubview:self.mpControllerOne.view belowSubview:self.previewImageView];
+        
+        [self insertSubview:self.mpControllerOne.view aboveSubview:self.previewImageView];
+        [self.previewImageView setImageWithURL:[NSURL URLWithString:[_firstAssetUrl previewImageURLForM3U8]]];
+
         self.mpControllerOne.view.hidden = YES;
+        self.playOneButton.hidden = NO;
     }
     else
     {
@@ -82,15 +92,16 @@
         [self.previewImageView setImageWithURL:[NSURL URLWithString:_firstAssetUrl]];
     }
     
+    
     if ([_secondAssetUrl.extensionType isEqualToString:VConstantsMediaTypeVideo])
     {
         self.playTwoButton.hidden = NO;
         [self.previewImageTwo setImageWithURL:[NSURL URLWithString:[_secondAssetUrl previewImageURLForM3U8]]];
         
         self.mpControllerTwo = [[MPMoviePlayerController alloc] initWithContentURL:[NSURL URLWithString:_secondAssetUrl]];
-//        [self.mpControllerTwo prepareToPlay];
+        //        [self.mpControllerTwo prepareToPlay];
         self.mpControllerTwo.view.frame = self.previewImageTwo.frame;
-        [self.previewImageTwo insertSubview:self.mpControllerTwo.view belowSubview:self.previewImageTwo];
+        [self insertSubview:self.mpControllerTwo.view aboveSubview:self.previewImageTwo];
         self.mpControllerTwo.view.hidden = YES;
     }
     else
@@ -98,10 +109,6 @@
         self.playTwoButton.hidden = YES;
         [self.previewImageView setImageWithURL:[NSURL URLWithString:_secondAssetUrl]];
     }
-    
-    [self setupOrLabel];
-    [self setupResultLabels];
-    [self setupOptionButtons];
 }
 
 - (void)setupOrLabel
