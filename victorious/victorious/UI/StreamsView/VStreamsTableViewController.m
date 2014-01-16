@@ -115,6 +115,9 @@ typedef NS_ENUM(NSInteger, VStreamScope)
     
     if ([sequence isPoll])
         return 344;
+    
+    else if (([sequence isVideo] ||[sequence isForum]) && [[sequence firstAsset].type isEqualToString:VConstantsMediaTypeYoutube])
+        return 315;
 
     return 450;
 }
@@ -132,19 +135,19 @@ typedef NS_ENUM(NSInteger, VStreamScope)
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
-    if (self.featuredStreamsViewController && !self.featuredStreamsViewController.view.hidden)
+//    if (self.featuredStreamsViewController && !self.featuredStreamsViewController.view.hidden)
         return 120;
 
-    return 0;
+//    return 0;
 }
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
-    if (![self.featuredStreamsViewController.fetchedResultsController.fetchedObjects count])
-        self.featuredStreamsViewController.view.hidden = YES;
-    else
-        self.featuredStreamsViewController.view.hidden = NO;
-        
+//    if (![self.featuredStreamsViewController.fetchedResultsController.fetchedObjects count])
+//        self.featuredStreamsViewController.view.hidden = YES;
+//    else
+//        self.featuredStreamsViewController.view.hidden = NO;
+    
     CGRect frame = CGRectMake(0, 0, CGRectGetWidth(self.view.bounds), [self tableView:tableView heightForHeaderInSection:section]);
     UIView* containerView = [[UIView alloc] initWithFrame:frame];
 
@@ -286,6 +289,10 @@ typedef NS_ENUM(NSInteger, VStreamScope)
          forCellReuseIdentifier:kStreamViewCellIdentifier];
     [self.searchDisplayController.searchResultsTableView registerNib:[UINib nibWithNibName:kStreamViewCellIdentifier bundle:[NSBundle mainBundle]] forCellReuseIdentifier:kStreamViewCellIdentifier];
     
+    [self.tableView registerNib:[UINib nibWithNibName:kStreamYoutubeCellIdentifier bundle:[NSBundle mainBundle]]
+         forCellReuseIdentifier:kStreamYoutubeCellIdentifier];
+    [self.searchDisplayController.searchResultsTableView registerNib:[UINib nibWithNibName:kStreamYoutubeCellIdentifier bundle:[NSBundle mainBundle]] forCellReuseIdentifier:kStreamYoutubeCellIdentifier];
+    
     [self.tableView registerNib:[UINib nibWithNibName:kStreamVideoCellIdentifier bundle:[NSBundle mainBundle]]
          forCellReuseIdentifier:kStreamVideoCellIdentifier];
     [self.searchDisplayController.searchResultsTableView registerNib:[UINib nibWithNibName:kStreamVideoCellIdentifier bundle:[NSBundle mainBundle]] forCellReuseIdentifier:kStreamVideoCellIdentifier];
@@ -303,7 +310,11 @@ typedef NS_ENUM(NSInteger, VStreamScope)
 {
     VSequence* sequence = (VSequence*)[[self fetchedResultsControllerForTableView:tableView] objectAtIndexPath:indexPath];
     
-    if ([sequence isForum]  && ![[sequence firstAsset].type isEqualToString:VConstantsMediaTypeYoutube])
+    if ([sequence isForum]  && [[sequence firstAsset].type isEqualToString:VConstantsMediaTypeYoutube])
+        return [tableView dequeueReusableCellWithIdentifier:kStreamYoutubeCellIdentifier
+                                               forIndexPath:indexPath];
+    
+    else if ([sequence isForum])
         return [tableView dequeueReusableCellWithIdentifier:kStreamVideoCellIdentifier
                                                forIndexPath:indexPath];
     
@@ -314,8 +325,12 @@ typedef NS_ENUM(NSInteger, VStreamScope)
     else if ([sequence isPoll])
         return [tableView dequeueReusableCellWithIdentifier:kStreamDoublePollCellIdentifier
                                                forIndexPath:indexPath];
-
-    else if ([sequence isVideo] && ![[sequence firstAsset].type isEqualToString:VConstantsMediaTypeYoutube])
+    
+    else if ([sequence isVideo] && [[sequence firstAsset].type isEqualToString:VConstantsMediaTypeYoutube])
+        return [tableView dequeueReusableCellWithIdentifier:kStreamYoutubeCellIdentifier
+                                               forIndexPath:indexPath];
+    
+    else if ([sequence isVideo])
         return [tableView dequeueReusableCellWithIdentifier:kStreamVideoCellIdentifier
                                                forIndexPath:indexPath];
     
@@ -376,21 +391,39 @@ typedef NS_ENUM(NSInteger, VStreamScope)
                    mediaType:(NSString *)mediaType
 {
     [self dismissViewControllerAnimated:YES completion:nil];
+    
+    __block UIActivityIndicatorView *indicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+    indicator.frame = CGRectMake(0, 0, 24, 24);
+    [self.view addSubview:indicator];
+    indicator.center = self.view.center;
+    [indicator startAnimating];
+    
+    SuccessBlock success = ^(NSArray* resultObjects)
+    {
+        NSLog(@"%@", resultObjects);
+        [indicator stopAnimating];
+    };
+    FailBlock fail = ^(NSError* error)
+    {
+        NSLog(@"%@", error);
+        [indicator stopAnimating];
+        
+        UIAlertView*    alert   =
+        [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"TranscodingMediaTitle", @"")
+                                   message:NSLocalizedString(@"TranscodingMediaBody", @"")
+                                  delegate:nil
+                         cancelButtonTitle:NSLocalizedString(@"OKButton", @"")
+                         otherButtonTitles:nil];
+        [alert show];
+    };
+    
     if ([mediaType isEqualToString:@"png"])
     {
-        [[[VObjectManager sharedManager] createImageWithName:message description:message mediaData:data mediaUrl:nil successBlock:^(NSArray *resultObjects) {
-            NSLog(@"%@", resultObjects);
-        } failBlock:^(NSError *error) {
-            NSLog(@"%@", error);
-        }] start];
+        [[[VObjectManager sharedManager] createImageWithName:message description:message mediaData:data mediaUrl:nil successBlock:success failBlock:fail] start];
     }
     else
     {
-        [[[VObjectManager sharedManager] createVideoWithName:message description:message mediaData:data mediaUrl:nil successBlock:^(NSArray *resultObjects) {
-            NSLog(@"%@", resultObjects);
-        } failBlock:^(NSError *error) {
-            NSLog(@"%@", error);
-        }] start];
+        [[[VObjectManager sharedManager] createVideoWithName:message description:message mediaData:data mediaUrl:nil successBlock:success failBlock:fail] start];
     }
 }
 
@@ -403,12 +436,46 @@ typedef NS_ENUM(NSInteger, VStreamScope)
                   media2Data:(NSData *)media2Data
              media2Extension:(NSString *)media2Extension
 {
-    [self dismissViewControllerAnimated:YES completion:nil];
-    [[[VObjectManager sharedManager] createPollWithName:question description:@"<none>" question:question answer1Text:answer1Text answer2Text:answer2Text media1Data:media1Data media1Extension:media1Extension media1Url:nil media2Data:media2Data media2Extension:media2Extension media2Url:nil successBlock:^(AFHTTPRequestOperation *request, id object) {
-        NSLog(@"%@", object);
-    } failBlock:^(AFHTTPRequestOperation *request, NSError *error) {
+    
+    __block UIActivityIndicatorView *indicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+    indicator.frame = CGRectMake(0, 0, 24, 24);
+    [self.view addSubview:indicator];
+    indicator.center = self.view.center;
+    [indicator startAnimating];
+    
+    SuccessBlock success = ^(NSArray* resultObjects)
+    {
+        NSLog(@"%@", resultObjects);
+        [indicator stopAnimating];
+    };
+    FailBlock fail = ^(NSError* error)
+    {
         NSLog(@"%@", error);
-    }] start];
+        [indicator stopAnimating];
+        
+        UIAlertView*    alert   =
+        [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"TranscodingMediaTitle", @"")
+                                   message:NSLocalizedString(@"TranscodingMediaBody", @"")
+                                  delegate:nil
+                         cancelButtonTitle:NSLocalizedString(@"OKButton", @"")
+                         otherButtonTitles:nil];
+        [alert show];
+    };
+    
+    [self dismissViewControllerAnimated:YES completion:nil];
+    [[[VObjectManager sharedManager] createPollWithName:question
+                                            description:@"<none>"
+                                               question:question
+                                            answer1Text:answer1Text
+                                            answer2Text:answer2Text
+                                             media1Data:media1Data
+                                        media1Extension:media1Extension
+                                              media1Url:nil
+                                             media2Data:media2Data
+                                        media2Extension:media2Extension
+                                              media2Url:nil
+                                           successBlock:success
+                                              failBlock:fail] start];
 }
 
 - (void)createViewController:(UIViewController *)viewController

@@ -30,6 +30,9 @@
 "BlockUser"             =   "Block User";
 "CopyProfileURL"        =   "Copy Profile URL";
 
+"TranscodingMediaTitle" =   "Transcoding Upload";
+"TranscodingMediaBody"  =   "Your upload is taking longer than usual to transcode.  It will appear once we've finished!";
+
 "Now"                   =   "Just now";
 "SecondsAgo"            =   "%ds";
 "MinuteAgo"             =   "1m";
