@@ -17,18 +17,22 @@
 
 @implementation VObjectManager (DirectMessaging)
 
-- (VConversation*)conversationWithUserID:(NSNumber*)userID
+- (VConversation*)conversationWithUser:(VUser*)user
 {
-    for (VConversation* conversation in self.mainUser.conversations)
+    //TODO: rethink this.  Another user has multiple conversations but can only have one conversation with you?
+    for (VConversation* conversation in user.conversations)
     {
-        if ([conversation.user.remoteId isEqualToNumber:userID])
+        if ([conversation.user.remoteId isEqualToNumber:user.remoteId])
             return conversation;
     }
     
     VConversation *newConversation = [NSEntityDescription
                                   insertNewObjectForEntityForName:[VConversation entityName]
                                   inManagedObjectContext:self.mainUser.managedObjectContext];
-    newConversation.other_interlocutor_user_id = userID;
+    
+    newConversation.other_interlocutor_user_id = user.remoteId;
+    newConversation.user = user;
+    
     return newConversation;
 }
 
@@ -76,6 +80,7 @@
         {
             //There should only be one message.  Its the current 'last message'
             conversation.lastMessage = [conversation.messages anyObject];
+
             [conversation.managedObjectContext save:nil];
             
             if (!conversation.user )
