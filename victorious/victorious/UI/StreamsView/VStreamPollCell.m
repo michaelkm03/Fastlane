@@ -74,7 +74,7 @@
         _secondAssetUrl = _secondAnswer.mediaUrl;
     }
     
-    if ([_firstAssetUrl.extensionType isEqualToString:VConstantsMediaTypeVideo])
+    if ([_firstAssetUrl.extensionType isEqualToString:VConstantMediaExtensionM3U8])
     {
         self.mpControllerOne = [[MPMoviePlayerController alloc] initWithContentURL:[NSURL URLWithString:_firstAssetUrl]];
         [self.mpControllerOne prepareToPlay];
@@ -93,7 +93,7 @@
     }
     
     
-    if ([_secondAssetUrl.extensionType isEqualToString:VConstantsMediaTypeVideo])
+    if ([_secondAssetUrl.extensionType isEqualToString:VConstantMediaExtensionM3U8])
     {
         self.playTwoButton.hidden = NO;
         [self.previewImageTwo setImageWithURL:[NSURL URLWithString:[_secondAssetUrl previewImageURLForM3U8]]];
