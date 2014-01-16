@@ -187,7 +187,14 @@
     
     [self.mpControllerOne play];
     self.playOneButton.hidden = YES;
+    
+    if (self.mpControllerTwo.view.superview)
+    {
+        [self.mpControllerTwo.view removeFromSuperview];
+        self.playTwoButton.hidden = NO;
+    }
 }
+
 - (IBAction)pressedPlayTwo:(id)sender
 {
     //Only play for video
@@ -198,6 +205,12 @@
     
     [self.mpControllerTwo play];
     self.playTwoButton.hidden = YES;
+    
+    if (self.mpControllerOne.view.superview)
+    {
+        [self.mpControllerOne.view removeFromSuperview];
+        self.playOneButton.hidden = NO;
+    }
 }
 
 - (void)answerPollWithAnswer:(VAnswer*)answer
