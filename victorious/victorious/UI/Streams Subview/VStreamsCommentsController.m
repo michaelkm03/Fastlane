@@ -26,6 +26,9 @@
 
 @import Social;
 
+const   CGFloat     kCommentRowWithMediaHeight  =   280.0;
+const   CGFloat     kCommentRowHeight           =   80;
+
 @interface VStreamsCommentsController () <NSFetchedResultsControllerDelegate, UINavigationControllerDelegate, VComposeMessageDelegate>
 
 @property (nonatomic, strong) NSFetchedResultsController* fetchedResultsController;
@@ -287,7 +290,8 @@ static NSString* CommentCache = @"CommentCache";
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return 80;
+    VComment *comment = [self.fetchedResultsController objectAtIndexPath:indexPath];
+    return comment.mediaUrl ? kCommentRowWithMediaHeight : kCommentRowHeight;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath

@@ -42,9 +42,19 @@
 
 @implementation VStreamPollCell
 
+- (void)dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
 - (void)setSequence:(VSequence *)sequence
 {
     [super setSequence:sequence];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(streamsWillSegue:)
+                                                 name:kStreamsWillSegueNotification
+                                               object:nil];
     
     NSArray* answers = [[self.sequence firstNode] firstAnswers];
     _firstAnswer = [answers firstObject];
@@ -53,6 +63,11 @@
         _secondAnswer = [answers objectAtIndex:1];
     }
     
+    if (_mpControllerOne)
+        [_mpControllerOne.view removeFromSuperview]; //make sure to get rid of the old view
+    
+    if (_mpControllerTwo)
+        [_mpControllerTwo.view removeFromSuperview]; //make sure to get rid of the old view
     
     [self setupMedia];
     [self setupOrLabel];
@@ -62,29 +77,22 @@
 
 - (void)setupMedia
 {
-    if ([self.reuseIdentifier isEqualToString:kStreamPollCellIdentifier])
+    VAsset* firstAsset = [self.sequence firstAsset];
+    if (firstAsset)
     {
         //TODO: hide the cell if we fail to load the image
-        VAsset* firstAsset = [self.sequence firstAsset];
         _firstAssetUrl = firstAsset.data;
     }
-    else if ([self.reuseIdentifier isEqualToString:kStreamDoublePollCellIdentifier])
+    else
     {
         _firstAssetUrl = _firstAnswer.mediaUrl;
         _secondAssetUrl = _secondAnswer.mediaUrl;
     }
     
-    if ([_firstAssetUrl.extensionType isEqualToString:VConstantsMediaTypeVideo])
+    if ([[_firstAssetUrl pathExtension] isEqualToString:VConstantMediaExtensionM3U8])
     {
-        self.mpControllerOne = [[MPMoviePlayerController alloc] initWithContentURL:[NSURL URLWithString:_firstAssetUrl]];
-        [self.mpControllerOne prepareToPlay];
-        self.mpControllerOne.view.frame = self.previewImageView.frame;
-        
-        [self insertSubview:self.mpControllerOne.view aboveSubview:self.previewImageView];
-        [self.previewImageView setImageWithURL:[NSURL URLWithString:[_firstAssetUrl previewImageURLForM3U8]]];
-
-        self.mpControllerOne.view.hidden = YES;
         self.playOneButton.hidden = NO;
+        [self.previewImageView setImageWithURL:[NSURL URLWithString:[_firstAssetUrl previewImageURLForM3U8]]];
     }
     else
     {
@@ -92,22 +100,15 @@
         [self.previewImageView setImageWithURL:[NSURL URLWithString:_firstAssetUrl]];
     }
     
-    
-    if ([_secondAssetUrl.extensionType isEqualToString:VConstantsMediaTypeVideo])
+    if ([[_secondAssetUrl pathExtension] isEqualToString:VConstantMediaExtensionM3U8])
     {
         self.playTwoButton.hidden = NO;
         [self.previewImageTwo setImageWithURL:[NSURL URLWithString:[_secondAssetUrl previewImageURLForM3U8]]];
-        
-        self.mpControllerTwo = [[MPMoviePlayerController alloc] initWithContentURL:[NSURL URLWithString:_secondAssetUrl]];
-        //        [self.mpControllerTwo prepareToPlay];
-        self.mpControllerTwo.view.frame = self.previewImageTwo.frame;
-        [self insertSubview:self.mpControllerTwo.view aboveSubview:self.previewImageTwo];
-        self.mpControllerTwo.view.hidden = YES;
     }
     else
     {
         self.playTwoButton.hidden = YES;
-        [self.previewImageView setImageWithURL:[NSURL URLWithString:_secondAssetUrl]];
+        [self.previewImageTwo setImageWithURL:[NSURL URLWithString:_secondAssetUrl]];
     }
 }
 
@@ -147,8 +148,10 @@
 {
     self.optionOneButton.tintColor = self.optionTwoButton.tintColor = [UIColor whiteColor];
     
-    self.optionOneButton.titleLabel.text = _firstAnswer.label;
-    self.optionTwoButton.titleLabel.text = _secondAnswer.label;
+    if (_firstAnswer.label)
+        self.optionOneButton.titleLabel.text = _firstAnswer.label;
+    if (_secondAnswer.label)
+        self.optionTwoButton.titleLabel.text = _secondAnswer.label;
     
     self.optionOneButton.titleLabel.textAlignment = self.optionTwoButton.titleLabel.textAlignment = NSTextAlignmentCenter;
     
@@ -168,15 +171,23 @@
 
 - (IBAction)pressedPlayOne:(id)sender
 {
-    self.mpControllerOne.view.hidden = NO;
-    self.previewImageView.hidden = YES;
-    [_mpControllerOne play];
+    self.mpControllerOne = [[MPMoviePlayerController alloc] initWithContentURL:[NSURL URLWithString:_firstAssetUrl]];
+    [self.mpControllerOne prepareToPlay];
+    self.mpControllerOne.view.frame = self.previewImageView.frame;
+    [self.mediaView insertSubview:self.mpControllerOne.view aboveSubview:self.previewImageView];
+    
+    [self.mpControllerOne play];
+    self.playOneButton.hidden = YES;
 }
 - (IBAction)pressedPlayTwo:(id)sender
 {
-    self.mpControllerTwo.view.hidden = NO;
-    self.previewImageView.hidden = YES;
-    [_mpControllerTwo play];
+    self.mpControllerTwo = [[MPMoviePlayerController alloc] initWithContentURL:[NSURL URLWithString:_secondAssetUrl]];
+    [self.mpControllerTwo prepareToPlay];
+    self.mpControllerTwo.view.frame = self.previewImageTwo.frame;
+    [self.mediaView insertSubview:self.mpControllerTwo.view aboveSubview:self.previewImageTwo];
+    
+    [self.mpControllerTwo play];
+    self.playTwoButton.hidden = YES;
 }
 
 - (void)answerPollWithAnswer:(VAnswer*)answer
@@ -262,6 +273,12 @@
         return  _secondResultLabel;
     
     return nil;
+}
+
+- (void)streamsWillSegue:(NSNotification *) notification
+{
+    [self.mpControllerOne stop];
+    [self.mpControllerTwo stop];
 }
 
 @end

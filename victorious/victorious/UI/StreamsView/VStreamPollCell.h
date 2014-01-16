@@ -28,6 +28,8 @@ static NSString *kStreamDoublePollCellIdentifier = @"VStreamDoublePollCell";
 @property (weak, nonatomic) IBOutlet VInboxBadgeLabel* firstResultLabel;
 @property (weak, nonatomic) IBOutlet VInboxBadgeLabel* secondResultLabel;
 
+@property (weak, nonatomic) IBOutlet UIView* mediaView;
+
 - (IBAction)pressedOptionOne:(id)sender;
 - (IBAction)pressedOptionTwo:(id)sender;
 

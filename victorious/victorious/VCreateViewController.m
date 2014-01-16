@@ -175,11 +175,6 @@ CGFloat VCreateViewControllerLargePadding = 20;
         [self.postButton setEnabled:NO];
         return;
     }
-    if([self.textView.text length] == 0)
-    {
-        [self.postButton setEnabled:NO];
-        return;
-    }
     [self.postButton setEnabled:YES];
 }
 

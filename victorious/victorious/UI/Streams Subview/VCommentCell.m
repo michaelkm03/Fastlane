@@ -18,6 +18,7 @@
 #import "NSDate+timeSince.h"
 #import "VThemeManager.h"
 #import "VRootNavigationController.h"
+#import "NSString+VParseHelp.h"
 
 @interface VCommentCell()
 @property (weak, nonatomic) IBOutlet UILabel *dateLabel;
@@ -25,9 +26,9 @@
 @property (weak, nonatomic) IBOutlet UILabel *usernameLabel;
 @property (weak, nonatomic) IBOutlet UILabel *messageLabel;
 @property (weak, nonatomic) IBOutlet UIImageView *mediaPreview;
-@property (weak, nonatomic) IBOutlet UIView* movieView;
-
+@property (weak, nonatomic) IBOutlet UIButton *playButton;
 @property (nonatomic, strong) MPMoviePlayerController* mpController;
+@property (strong, nonatomic) NSString *mediaUrl;
 @end
 
 @implementation VCommentCell
@@ -35,8 +36,8 @@
 - (void)awakeFromNib
 {
     self.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKeyPath:@"theme.color.messages.background"];
-    self.profileImageButton.clipsToBounds = YES;
     self.dateLabel.font = [[VThemeManager sharedThemeManager] themedFontForKeyPath:@"theme.font.stream.timeSince"];
+    self.profileImageButton.clipsToBounds = YES;
 }
 
 - (void)layoutSubviews
@@ -62,33 +63,37 @@
         self.dateLabel.text = [comment.postedAt timeSince];
 //        [self.avatarImageView setImageWithURL:[NSURL URLWithString:comment.user.pictureUrl]
 //                             placeholderImage:[UIImage imageNamed:@"profile_thumb"]];
-        self.usernameLabel.text = comment.user.shortName;
+        if(![comment.user.shortName isEmpty])
+        {
+            self.usernameLabel.text = comment.user.shortName;
+        }
+        else
+        {
+            self.usernameLabel.text = comment.user.name;
+        }
         self.messageLabel.text = comment.text;
 
         if (comment.mediaUrl)
         {
+            self.mediaUrl = comment.mediaUrl;
+            [self.mediaPreview setImageWithURL:[NSURL URLWithString:[self.mediaUrl  previewImageURLForM3U8]]
+                              placeholderImage:[UIImage imageNamed:@"MenuVideos"]];
+
             if ([comment.mediaType isEqualToString:VConstantsMediaTypeVideo])
             {
+                self.playButton.hidden = NO;
                 self.mediaPreview.hidden = NO;
-                self.movieView.hidden = YES;
-
-                self.mpController = [[MPMoviePlayerController alloc] initWithContentURL:[NSURL URLWithString:comment.mediaUrl]];
-                [self.mpController prepareToPlay];
-                self.mpController.view.frame = self.movieView.bounds;
-                [self.movieView addSubview:self.mpController.view];
             }
             else
             {
+                self.playButton.hidden = YES;
                 self.mediaPreview.hidden = NO;
-                self.movieView.hidden = YES;
-//                [self.mediaPreview setImageWithURL:[NSURL URLWithString:message.media.previewImage]
-//                                  placeholderImage:[UIImage imageNamed:@"MenuVideos"]];
             }
         }
         else
         {
             self.mediaPreview.hidden = YES;
-            self.movieView.hidden = YES;
+            self.playButton.hidden = YES;
         }
     }
     else if([commentOrMessage isKindOfClass:[VMessage class]])
@@ -98,35 +103,48 @@
         self.dateLabel.text = [message.postedAt timeSince];
 //        [self.avatarImageView setImageWithURL:[NSURL URLWithString:message.user.pictureUrl]
 //                             placeholderImage:[UIImage imageNamed:@"profile_thumb"]];
-        self.usernameLabel.text = message.user.shortName;
+        if(![message.user.shortName isEmpty])
+        {
+            self.usernameLabel.text = message.user.shortName;
+        }
+        else
+        {
+            self.usernameLabel.text = message.user.name;
+        }
         self.messageLabel.text = message.text;
 
         if (message.media.mediaUrl)
         {
+            self.mediaUrl = message.media.mediaUrl;
+            [self.mediaPreview setImageWithURL:[NSURL URLWithString:[self.mediaUrl  previewImageURLForM3U8]]
+                              placeholderImage:[UIImage imageNamed:@"MenuVideos"]];
+
             if ([message.media.mediaType isEqualToString:VConstantsMediaTypeVideo])
             {
+                self.playButton.hidden = NO;
                 self.mediaPreview.hidden = NO;
-                self.movieView.hidden = YES;
-
-                self.mpController = [[MPMoviePlayerController alloc] initWithContentURL:[NSURL URLWithString:message.media.mediaUrl]];
-                [self.mpController prepareToPlay];
-                self.mpController.view.frame = self.movieView.bounds;
-                [self.movieView addSubview:self.mpController.view];
             }
             else
             {
+                self.playButton.hidden = YES;
                 self.mediaPreview.hidden = NO;
-                self.movieView.hidden = YES;
-                [self.mediaPreview setImageWithURL:[NSURL URLWithString:message.media.previewImage]
-                                  placeholderImage:[UIImage imageNamed:@"MenuVideos"]];
             }
         }
         else
         {
             self.mediaPreview.hidden = YES;
-            self.movieView.hidden = YES;
+            self.playButton.hidden = YES;
         }
     }
+}
+
+- (IBAction)playVideo:(id)sender
+{
+    self.mpController = [[MPMoviePlayerController alloc] initWithContentURL:[NSURL URLWithString:self.mediaUrl]];
+    [self.mpController prepareToPlay];
+    self.mpController.view.frame = self.mediaPreview.frame;
+    [self insertSubview:self.mpController.view aboveSubview:self.mediaPreview];
+    [self.mpController play];
 }
 
 - (IBAction)displayVideoMedia:(id)sender
