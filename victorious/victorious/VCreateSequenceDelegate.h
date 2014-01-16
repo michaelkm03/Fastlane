@@ -21,4 +21,9 @@
                   media2Data:(NSData *)media2Data
              media2Extension:(NSString *)media2Extension;
 
+- (void)createViewController:(UIViewController *)viewController
+    shouldPostTopicWithTitle:(NSString *)title
+                     message:(NSString *)message data:(NSData *)data
+                   mediaType:(NSString *)mediaType;
+
 @end

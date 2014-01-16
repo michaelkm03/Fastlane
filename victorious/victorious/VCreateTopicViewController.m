@@ -236,7 +236,8 @@ UIImagePickerControllerDelegate, UINavigationControllerDelegate>
 - (void)postButtonAction:(id)sender
 {
     [self.textView resignFirstResponder];
-    [self.delegate createViewController:self shouldPostWithMessage:self.textView.text
+    [self.delegate createViewController:self
+               shouldPostTopicWithTitle:self.titleTextField.text message:self.textView.text
                                    data:self.mediaData mediaType:self.mediaType];
 
 }
