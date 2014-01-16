@@ -63,8 +63,8 @@
         _secondAnswer = [answers objectAtIndex:1];
     }
     
-    if (_mpControllerTwo)
-        [_mpControllerTwo.view removeFromSuperview]; //make sure to get rid of the old view
+    if (_mpControllerOne)
+        [_mpControllerOne.view removeFromSuperview]; //make sure to get rid of the old view
     
     if (_mpControllerTwo)
         [_mpControllerTwo.view removeFromSuperview]; //make sure to get rid of the old view
