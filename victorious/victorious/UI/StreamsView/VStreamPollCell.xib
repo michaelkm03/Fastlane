@@ -184,6 +184,7 @@
                 <outlet property="firstResultLabel" destination="ePE-BC-3Rr" id="223-fb-lgw"/>
                 <outlet property="likeButton" destination="ssz-vB-Gjf" id="GgS-qu-xH7"/>
                 <outlet property="locationLabel" destination="z4I-Va-SOo" id="e62-7b-Y3P"/>
+                <outlet property="mediaView" destination="W4m-fS-MU8" id="G1M-ys-K1d"/>
                 <outlet property="optionOneButton" destination="IrI-Zu-yIz" id="UGl-VZ-OZY"/>
                 <outlet property="optionTwoButton" destination="IGi-jH-odU" id="c2x-dU-t98"/>
                 <outlet property="playOneButton" destination="9lb-Ua-X66" id="SNN-Ny-ffM"/>
