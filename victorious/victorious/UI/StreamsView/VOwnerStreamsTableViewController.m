@@ -8,6 +8,7 @@
 
 #import "VOwnerStreamsTableViewController.h"
 #import "VStreamsTableViewController+Protected.h"
+#import "VThemeManager.h"
 
 #import "VConstants.h"
 
@@ -23,6 +24,14 @@
     });
     
     return streamsTableViewController;
+}
+
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
+    
+    NSString *channelName = [[VThemeManager sharedThemeManager] themedValueForKeyPath:@"channel.name"];
+    self.navigationItem.title = [NSString stringWithFormat:NSLocalizedString(@"%@ Channel", @"<CHANNEL NAME> Channel"), channelName];
 }
 
 - (NSArray*)imageCategories

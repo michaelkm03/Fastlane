@@ -1326,7 +1326,7 @@
             </objects>
             <point key="canvasLocation" x="-3652" y="-2410"/>
         </scene>
-        <!--Streams Table View Controller - Streams-->
+        <!--Streams Table View Controller - Home-->
         <scene sceneID="fdY-i8-2n7">
             <objects>
                 <tableViewController storyboardIdentifier="streams" useStoryboardIdentifierAsRestorationIdentifier="YES" id="Odg-Le-tS1" customClass="VStreamsTableViewController" sceneMemberID="viewController">
@@ -1354,7 +1354,7 @@
                         </connections>
                     </tableView>
                     <toolbarItems/>
-                    <navigationItem key="navigationItem" title="Streams" id="hcu-Z9-yLH">
+                    <navigationItem key="navigationItem" title="Home" id="hcu-Z9-yLH">
                         <barButtonItem key="leftBarButtonItem" image="Menu" id="Yxi-Xf-4YC">
                             <connections>
                                 <segue destination="gHV-c6-eaL" kind="modal" id="6Th-L6-qdl"/>
@@ -1926,7 +1926,7 @@
         <simulatedScreenMetrics key="destination" type="retina4"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
-        <segue reference="mRM-Ec-I9V"/>
-        <segue reference="tz6-Ir-ECN"/>
+        <segue reference="Sdv-hN-brc"/>
+        <segue reference="6Th-L6-qdl"/>
     </inferredMetricsTieBreakers>
 </document>
