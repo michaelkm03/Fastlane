@@ -328,7 +328,7 @@ static NSString* CommentCache = @"CommentCache";
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
-    if ([_sequence isVideo])
+    if ([_sequence isVideo] && VConstantsMediaTypeYoutube)
     {
         return _sequencePlayer.view;
     }
