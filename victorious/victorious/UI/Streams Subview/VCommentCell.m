@@ -35,6 +35,9 @@
 
 - (void)awakeFromNib
 {
+    [super awakeFromNib];
+    
+    self.usernameLabel.font = [[VThemeManager sharedThemeManager] themedFontForKeyPath:@"theme.font.stream.text.username"];
     self.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKeyPath:@"theme.color.messages.background"];
     self.dateLabel.font = [[VThemeManager sharedThemeManager] themedFontForKeyPath:@"theme.font.stream.timeSince"];
     self.profileImageButton.clipsToBounds = YES;
