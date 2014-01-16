@@ -91,6 +91,7 @@ static NSString* CommentCache = @"CommentCache";
     [self.view addSubview:indicator];
     indicator.center = self.view.center;
     [indicator startAnimating];
+    indicator.hidesWhenStopped = YES;
     
     SuccessBlock success = ^(NSArray *resultObjects) {
         
@@ -572,6 +573,7 @@ static NSString* CommentCache = @"CommentCache";
     
     __block UIActivityIndicatorView *indicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
     indicator.frame = CGRectMake(0, 0, 24, 24);
+    indicator.hidesWhenStopped = YES;
     [self.view addSubview:indicator];
     indicator.center = self.view.center;
     [indicator startAnimating];

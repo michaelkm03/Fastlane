@@ -45,6 +45,7 @@
         [self addSubview:indicator];
         indicator.center = self.center;
         [indicator startAnimating];
+        indicator.hidesWhenStopped = YES;
         
         [[[VObjectManager sharedManager] fetchSequence:self.sequence
                                          successBlock:^(NSArray *resultObjects)
