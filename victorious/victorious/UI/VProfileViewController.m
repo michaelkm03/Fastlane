@@ -41,6 +41,22 @@
     return profileViewController;
 }
 
++ (VProfileViewController *)sharedModalProfileViewController
+{
+    static  VProfileViewController*   profileViewController;
+    static  dispatch_once_t         onceToken;
+    dispatch_once(&onceToken, ^{
+        UIViewController*   currentViewController = [[UIApplication sharedApplication] delegate].window.rootViewController;
+        profileViewController = (VProfileViewController*)[currentViewController.storyboard instantiateViewControllerWithIdentifier: @"profile"];
+        profileViewController.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"Close"]
+                                                                                                  style:UIBarButtonItemStylePlain
+                                                                                                 target:profileViewController
+                                                                                                 action:@selector(closeButtonAction:)];
+    });
+
+    return profileViewController;
+}
+
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
@@ -64,9 +80,6 @@
                                                                                           action:@selector(userActionButtonPressed:)];
 
         self.navigationItem.rightBarButtonItems = @[composeButton, userActionButton];
-        self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"Close"]
-                                                                                 style:UIBarButtonItemStylePlain
-                                                                                target:self action:@selector(closeButtonAction:)];
 
         [[VObjectManager sharedManager] fetchUser:@(self.userID)
                             forRelationshipObject:nil

@@ -147,7 +147,7 @@
 
 - (void)showUserProfileForUserID:(NSInteger)userID
 {
-    VProfileViewController* profileViewController = [self.storyboard instantiateViewControllerWithIdentifier: @"profile"];
+    VProfileViewController* profileViewController = [VProfileViewController sharedModalProfileViewController];
     profileViewController.userID = userID;
     [self presentViewController:[[UINavigationController alloc] initWithRootViewController:profileViewController] animated:YES completion:nil];
 }

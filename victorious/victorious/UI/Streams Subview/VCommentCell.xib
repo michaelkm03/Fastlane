@@ -14,7 +14,7 @@
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ChatBubbleRight" translatesAutoresizingMaskIntoConstraints="NO" id="6J0-Gx-uGf">
-                        <rect key="frame" x="67" y="0.0" width="218" height="279"/>
+                        <rect key="frame" x="67" y="2" width="218" height="277"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <constraints>
                             <constraint firstAttribute="width" constant="218" id="Yc7-49-4PV"/>
@@ -94,7 +94,7 @@
                     <constraint firstItem="VS0-8S-nxO" firstAttribute="leading" secondItem="wD6-xk-K18" secondAttribute="leading" id="7HA-9C-wdq"/>
                     <constraint firstItem="VS0-8S-nxO" firstAttribute="leading" secondItem="yUe-8b-fBQ" secondAttribute="leading" id="8lw-JV-zbG"/>
                     <constraint firstItem="kz3-f7-Kav" firstAttribute="top" secondItem="eAW-cc-13j" secondAttribute="top" constant="5" id="Dfo-sZ-2h6"/>
-                    <constraint firstItem="6J0-Gx-uGf" firstAttribute="top" secondItem="eAW-cc-13j" secondAttribute="top" id="GlS-JR-cML"/>
+                    <constraint firstItem="6J0-Gx-uGf" firstAttribute="top" secondItem="eAW-cc-13j" secondAttribute="top" constant="2" id="GlS-JR-cML"/>
                     <constraint firstAttribute="trailing" secondItem="6J0-Gx-uGf" secondAttribute="trailing" constant="35" id="Ofb-kR-2kG"/>
                     <constraint firstItem="yUe-8b-fBQ" firstAttribute="top" secondItem="MGT-h7-iQu" secondAttribute="bottom" constant="8" symbolic="YES" id="P9e-Ql-ZoS"/>
                     <constraint firstItem="MGT-h7-iQu" firstAttribute="top" secondItem="eAW-cc-13j" secondAttribute="top" constant="12" id="PN7-Wh-qnG"/>

@@ -11,6 +11,7 @@
 @interface VProfileViewController : UIViewController
 
 + (VProfileViewController *)sharedProfileViewController;
++ (VProfileViewController *)sharedModalProfileViewController;
 
 @property (nonatomic, readwrite, assign) NSUInteger userID;
 @end
