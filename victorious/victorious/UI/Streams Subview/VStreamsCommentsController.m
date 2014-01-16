@@ -569,19 +569,42 @@ static NSString* CommentCache = @"CommentCache";
 
 - (void)didComposeWithText:(NSString *)text data:(NSData *)data mediaExtension:(NSString *)mediaExtension mediaURL:(NSURL *)mediaURL
 {
+    
+    __block UIActivityIndicatorView *indicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+    indicator.frame = CGRectMake(0, 0, 24, 24);
+    [self.view addSubview:indicator];
+    indicator.center = self.view.center;
+    [indicator startAnimating];
+    
+    SuccessBlock success = ^(NSArray* resultObjects)
+    {
+        NSLog(@"%@", resultObjects);
+        [indicator stopAnimating];
+        [self updatePredicate];
+    };
+    FailBlock fail = ^(NSError* error)
+    {
+        NSLog(@"%@", error);
+        [indicator stopAnimating];
+        
+        UIAlertView*    alert   =
+        [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"TranscodingMediaTitle", @"")
+                                   message:NSLocalizedString(@"TranscodingMediaBody", @"")
+                                  delegate:nil
+                         cancelButtonTitle:NSLocalizedString(@"OKButton", @"")
+                         otherButtonTitles:nil];
+        [alert show];
+    };
+
+    
     [[VObjectManager sharedManager] addCommentWithText:text
                                                    Data:data
                                          mediaExtension:mediaExtension
                                               mediaUrl:nil
                                              toSequence:_sequence
                                               andParent:nil
-                                           successBlock:^(AFHTTPRequestOperation* operation, id response) {
-                                               VLog(@"Succeed with response: %@", response);
-                                               //We need to refresh the predicate in case this is the first comment in the sequence
-                                               [self updatePredicate];
-                                           } failBlock:^(AFHTTPRequestOperation* operation, NSError* error) {
-                                               VLog(@"Failed in creating comment with error: %@", error);
-                                           }];
+                                           successBlock:success
+                                             failBlock:fail];
 }
 
 

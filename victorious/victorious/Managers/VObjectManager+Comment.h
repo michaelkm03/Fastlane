@@ -18,8 +18,8 @@
                                       mediaUrl:(NSURL*)mediaUrl
                                     toSequence:(VSequence*)sequence
                                      andParent:(VComment*)parent
-                                  successBlock:(AFSuccessBlock)success
-                                     failBlock:(AFFailBlock)fail;
+                                  successBlock:(SuccessBlock)success
+                                     failBlock:(FailBlock)fail;
 
 
 - (RKManagedObjectRequestOperation *)removeComment:(VComment*)comment
