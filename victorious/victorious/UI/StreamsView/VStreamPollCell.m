@@ -171,6 +171,10 @@
 
 - (IBAction)pressedPlayOne:(id)sender
 {
+    //Only play for video
+    if (![[_firstAssetUrl pathExtension] isEqualToString:VConstantMediaExtensionM3U8])
+        return;
+    
     self.mpControllerOne = [[MPMoviePlayerController alloc] initWithContentURL:[NSURL URLWithString:_firstAssetUrl]];
     [self.mpControllerOne prepareToPlay];
     self.mpControllerOne.view.frame = self.previewImageView.frame;
@@ -181,6 +185,10 @@
 }
 - (IBAction)pressedPlayTwo:(id)sender
 {
+    //Only play for video
+    if (![[_secondAssetUrl pathExtension] isEqualToString:VConstantMediaExtensionM3U8])
+        return;
+    
     self.mpControllerTwo = [[MPMoviePlayerController alloc] initWithContentURL:[NSURL URLWithString:_secondAssetUrl]];
     [self.mpControllerTwo prepareToPlay];
     self.mpControllerTwo.view.frame = self.previewImageTwo.frame;
