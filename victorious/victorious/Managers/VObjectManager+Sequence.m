@@ -433,24 +433,25 @@
 
     //Optional fields
     if (answer1Text)
-        [parameters setObject:answer1Text ?: [NSNull null] forKey:@"answer1_label"];
+        parameters[@"answer1_label"] = answer1Text ?: [NSNull null];
     if (answer2Text)
-        [parameters setObject:answer2Text ?: [NSNull null] forKey:@"answer2_label"];
+        parameters[@"answer2_label"] = answer2Text ?: [NSNull null];
     
     NSMutableDictionary *allData = [[NSMutableDictionary alloc] init];
     NSMutableDictionary *allExtensions = [[NSMutableDictionary alloc] init];
 
     if (media1Data && ![media1Extension isEmpty] && media2Data && ![media2Extension isEmpty])
     {
-        [allData setObject:media1Data forKey:@"answer1_media"];
-        [allExtensions setObject:media1Extension forKey:@"answer1_media"];
-        [allData setObject:media2Data forKey:@"answer2_media"];
-        [allExtensions setObject:media2Extension forKey:@"answer2_media"];
+        allData[@"answer1_media"] = media1Data;
+        allExtensions[@"answer1_media"] = media1Extension;
+
+        allData[@"answer2_media"] = media2Data;
+        allExtensions[@"answer2_media"] = media2Extension;
     }
     else if (media1Data && ![media1Extension isEmpty] )
     {
-        [allData setObject:media1Data forKey:@"poll_media"];
-        [allExtensions setObject:media1Extension forKey:@"poll_media"];
+        allData[@"poll_media"] = media1Data;
+        allExtensions[@"poll_media"] = media1Extension;
     }
     
     AFSuccessBlock fullSuccess = ^(AFHTTPRequestOperation* operation, id response)

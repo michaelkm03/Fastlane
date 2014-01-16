@@ -209,8 +209,7 @@
                                          parameters:parameters
                           constructingBodyWithBlock: ^(id <AFMultipartFormData>formData)
     {
-        [allData enumerateKeysAndObjectsWithOptions:NSEnumerationConcurrent
-                                         usingBlock:^(id key, id obj, BOOL *stop)
+        [allData enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop)
                                          {
                                              NSString* extension = allExtensions[key];
                                              if(extension)
