@@ -30,6 +30,7 @@ const   CGFloat     kMessageRowHeight           =   80;
     [super viewDidLoad];
 
     self.composeViewController.delegate = self;
+
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     self.tableView.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKeyPath:@"theme.color.messages.background"];
     [self.tableView registerNib:[UINib nibWithNibName:kCommentCellIdentifier bundle:[NSBundle mainBundle]]
@@ -37,10 +38,21 @@ const   CGFloat     kMessageRowHeight           =   80;
     [self.tableView registerNib:[UINib nibWithNibName:kOtherCommentCellIdentifier bundle:[NSBundle mainBundle]]
          forCellReuseIdentifier:kOtherCommentCellIdentifier];
 
+    [self loadData];
+}
+
+- (void)viewWillLayoutSubviews
+{
+    [super viewWillLayoutSubviews];
+    self.view.frame = self.view.superview.bounds;
+}
+
+ - (void)loadData
+{
     [[[VObjectManager sharedManager] loadNextPageOfMessagesForConversation:self.conversation
-        successBlock:^(NSArray *resultObjects)
-        {
-            [[[VObjectManager sharedManager] markConversationAsRead:self.conversation successBlock:^(NSArray *resultObjects)
+                                                              successBlock:^(NSArray *resultObjects)
+      {
+          [[[VObjectManager sharedManager] markConversationAsRead:self.conversation successBlock:^(NSArray *resultObjects)
             {
                 NSSortDescriptor*   sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"postedAt" ascending:YES];
                 self.messages = [[self.conversation.messages allObjects] sortedArrayUsingDescriptors:@[sortDescriptor]];
@@ -50,18 +62,12 @@ const   CGFloat     kMessageRowHeight           =   80;
             {
                 NSLog(@"%@", error.localizedDescription);
             }] start];
-            
-        }
-        failBlock:^(NSError *error)
-        {
-            NSLog(@"%@", error.localizedDescription);
-        }] start];
-}
-
-- (void)viewWillLayoutSubviews
-{
-    [super viewWillLayoutSubviews];
-    self.view.frame = self.view.superview.bounds;
+          
+      }
+      failBlock:^(NSError *error)
+      {
+          NSLog(@"%@", error.localizedDescription);
+      }] start];
 }
 
 #pragma mark - Table view data source
@@ -108,6 +114,7 @@ const   CGFloat     kMessageRowHeight           =   80;
                                              mediaUrl:nil
                                           successBlock:^(AFHTTPRequestOperation* operation, id response)
                                           {
+                                              [self loadData];
                                                VLog(@"Succeed with response: %@", response);
                                           }
                                              failBlock:^(AFHTTPRequestOperation* operation, NSError *error)

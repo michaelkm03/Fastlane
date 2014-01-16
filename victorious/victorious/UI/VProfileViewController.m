@@ -12,6 +12,8 @@
 #import "VObjectManager+Login.h"
 #import "VObjectManager+Users.h"
 #import "VProfileEditViewController.h"
+#import "VMessageSubViewController.h"
+#import "VConversation.h"
 #import "VUser.h"
 #import "VThemeManager.h"
 
@@ -119,8 +121,7 @@
 
 -(IBAction)composeButtonPressed:(id)sender
 {
-    // TODO: Should go to compose message view
-    NSLog(@"Compose Button Clicked");
+    [self performSegueWithIdentifier:@"toComposeMessage" sender:self];
 }
 
 -(IBAction)userActionButtonPressed:(id)sender
@@ -166,7 +167,7 @@
 {
     if ([segue.identifier isEqualToString:@"toEditProfile"])
     {
-        VProfileEditViewController* controller = segue.destinationViewController;
+        VProfileEditViewController* controller = (VProfileEditViewController *)segue.destinationViewController;
         controller.profile = self.profile;
     }
     else if ([segue.destinationViewController isKindOfClass:[VMenuViewController class]])
@@ -174,6 +175,11 @@
         VMenuViewController *menuViewController = segue.destinationViewController;
         menuViewController.transitioningDelegate = (id <UIViewControllerTransitioningDelegate>)[VMenuViewControllerTransitionDelegate new];
         menuViewController.modalPresentationStyle = UIModalPresentationCustom;
+    }
+    else if ([segue.identifier isEqualToString:@"toComposeMessage"])
+    {
+        VMessageSubViewController *subview = (VMessageSubViewController *)segue.destinationViewController;
+        subview.conversation = nil; // userID = self.profile.remoteID;
     }
 }
 
