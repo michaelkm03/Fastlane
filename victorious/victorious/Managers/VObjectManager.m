@@ -217,7 +217,7 @@
                                                  NSString* mimeType = [extension isEqualToString:VConstantMediaExtensionMOV]
                                                                         ? @"video/quicktime" : @"image/png";
                                                  [formData appendPartWithFileData:obj
-                                                                             name:key
+                                                                             name:@"files"
                                                                          fileName:[key stringByAppendingPathExtension:extension]
                                                                          mimeType:mimeType];
                                              }
