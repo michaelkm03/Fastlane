@@ -56,7 +56,6 @@
                                        successBlock:(SuccessBlock)success
                                           failBlock:(FailBlock)fail;
 
-
 - (AFHTTPRequestOperation * )createPollWithName:(NSString*)name
                                     description:(NSString*)description
                                        question:(NSString*)question
@@ -68,8 +67,8 @@
                                      media2Data:(NSData*)media2Data
                                 media2Extension:(NSString*)media2Extension
                                       media2Url:(NSURL*)media2Url
-                                   successBlock:(AFSuccessBlock)success
-                                      failBlock:(AFFailBlock)fail;
+                                   successBlock:(SuccessBlock)success
+                                      failBlock:(FailBlock)fail;
 
 - (RKManagedObjectRequestOperation * )createVideoWithName:(NSString*)name
                                               description:(NSString*)description

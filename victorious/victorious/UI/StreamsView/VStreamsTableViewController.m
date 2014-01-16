@@ -436,12 +436,46 @@ typedef NS_ENUM(NSInteger, VStreamScope)
                   media2Data:(NSData *)media2Data
              media2Extension:(NSString *)media2Extension
 {
-    [self dismissViewControllerAnimated:YES completion:nil];
-    [[[VObjectManager sharedManager] createPollWithName:question description:@"<none>" question:question answer1Text:answer1Text answer2Text:answer2Text media1Data:media1Data media1Extension:media1Extension media1Url:nil media2Data:media2Data media2Extension:media2Extension media2Url:nil successBlock:^(AFHTTPRequestOperation *request, id object) {
-        NSLog(@"%@", object);
-    } failBlock:^(AFHTTPRequestOperation *request, NSError *error) {
+    
+    __block UIActivityIndicatorView *indicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+    indicator.frame = CGRectMake(0, 0, 24, 24);
+    [self.view addSubview:indicator];
+    indicator.center = self.view.center;
+    [indicator startAnimating];
+    
+    SuccessBlock success = ^(NSArray* resultObjects)
+    {
+        NSLog(@"%@", resultObjects);
+        [indicator stopAnimating];
+    };
+    FailBlock fail = ^(NSError* error)
+    {
         NSLog(@"%@", error);
-    }] start];
+        [indicator stopAnimating];
+        
+        UIAlertView*    alert   =
+        [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"TranscodingMediaTitle", @"")
+                                   message:NSLocalizedString(@"TranscodingMediaBody", @"")
+                                  delegate:nil
+                         cancelButtonTitle:NSLocalizedString(@"OKButton", @"")
+                         otherButtonTitles:nil];
+        [alert show];
+    };
+    
+    [self dismissViewControllerAnimated:YES completion:nil];
+    [[[VObjectManager sharedManager] createPollWithName:question
+                                            description:@"<none>"
+                                               question:question
+                                            answer1Text:answer1Text
+                                            answer2Text:answer2Text
+                                             media1Data:media1Data
+                                        media1Extension:media1Extension
+                                              media1Url:nil
+                                             media2Data:media2Data
+                                        media2Extension:media2Extension
+                                              media2Url:nil
+                                           successBlock:success
+                                              failBlock:fail] start];
 }
 
 @end

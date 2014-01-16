@@ -416,8 +416,8 @@
                                      media2Data:(NSData*)media2Data
                                 media2Extension:(NSString*)media2Extension
                                       media2Url:(NSURL*)media2Url
-                                   successBlock:(AFSuccessBlock)success
-                                      failBlock:(AFFailBlock)fail
+                                   successBlock:(SuccessBlock)success
+                                      failBlock:(FailBlock)fail
 {
     //Required Fields
     NSString* category = self.isOwner ? kVOwnerPollCategory : kVUGCPollCategory;
@@ -444,12 +444,28 @@
         [allExtensions setObject:media2Extension forKey:@"answer2_media"];
     }
     
+    
+    AFSuccessBlock fullSuccess = ^(AFHTTPRequestOperation* operation, id response)
+    {
+        NSNumber* sequenceID = response[@"payload"][@"sequence_id"];
+        [[self fetchSequenceByID:sequenceID
+                    successBlock:success
+                       failBlock:fail
+                     loadAttempt:0] start];
+    };
+    
+    AFFailBlock fullFail = ^(AFHTTPRequestOperation* operation, NSError* error)
+    {
+        if (fail)
+            fail(error);
+    };
+    
     return [self upload:allData
           fileExtension:allExtensions
                  toPath:@"/api/poll/create"
              parameters:parameters
-           successBlock:success
-              failBlock:fail];
+           successBlock:fullSuccess
+              failBlock:fullFail];
 }
 
 - (AFHTTPRequestOperation * )createVideoWithName:(NSString*)name
