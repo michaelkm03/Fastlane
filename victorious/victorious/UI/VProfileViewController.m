@@ -11,6 +11,7 @@
 #import "VMenuViewControllerTransition.h"
 #import "VObjectManager+Login.h"
 #import "VObjectManager+Users.h"
+#import "VObjectManager+DirectMessaging.h"
 #import "VProfileEditViewController.h"
 #import "VMessageSubViewController.h"
 #import "VConversation.h"
@@ -179,7 +180,7 @@
     else if ([segue.identifier isEqualToString:@"toComposeMessage"])
     {
         VMessageSubViewController *subview = (VMessageSubViewController *)segue.destinationViewController;
-        subview.conversation = nil; // userID = self.profile.remoteID;
+        subview.conversation = [[VObjectManager sharedManager] conversationWithUser:self.profile];
     }
 }
 
