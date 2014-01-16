@@ -78,8 +78,8 @@ NSString *kStreamsWillCommentNotification = @"kStreamsWillCommentNotification";
     self.dateLabel.text = [self.sequence.releasedAt timeSince];
     [self.previewImageView setImageWithURL:[NSURL URLWithString:_sequence.previewImage]
                              placeholderImage:[UIImage new]];
-//    [self.profileImageView setImageWithURL:[NSURL URLWithString:self.sequence.user.pictureUrl]
-//                          placeholderImage:[UIImage imageNamed:@"profile_thumb"]];
+    [self.profileImageButton.imageView setImageWithURL:[NSURL URLWithString:self.sequence.user.pictureUrl]
+                                      placeholderImage:[UIImage imageNamed:@"profile_thumb"]];
 
     if([[self likeCache] objectForKey:self.sequence.remoteId])
     {

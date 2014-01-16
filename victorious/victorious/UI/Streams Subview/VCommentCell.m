@@ -61,8 +61,8 @@
         VComment *comment = (VComment *)self.commentOrMessage;
 
         self.dateLabel.text = [comment.postedAt timeSince];
-//        [self.avatarImageView setImageWithURL:[NSURL URLWithString:comment.user.pictureUrl]
-//                             placeholderImage:[UIImage imageNamed:@"profile_thumb"]];
+        [self.profileImageButton.imageView setImageWithURL:[NSURL URLWithString:comment.user.pictureUrl]
+                                          placeholderImage:[UIImage imageNamed:@"profile_thumb"]];
         if(![comment.user.shortName isEmpty])
         {
             self.usernameLabel.text = comment.user.shortName;
@@ -101,8 +101,8 @@
         VMessage *message = (VMessage *)self.commentOrMessage;
         
         self.dateLabel.text = [message.postedAt timeSince];
-//        [self.avatarImageView setImageWithURL:[NSURL URLWithString:message.user.pictureUrl]
-//                             placeholderImage:[UIImage imageNamed:@"profile_thumb"]];
+        [self.profileImageButton.imageView setImageWithURL:[NSURL URLWithString:message.user.pictureUrl]
+                                          placeholderImage:[UIImage imageNamed:@"profile_thumb"]];
         if(![message.user.shortName isEmpty])
         {
             self.usernameLabel.text = message.user.shortName;
