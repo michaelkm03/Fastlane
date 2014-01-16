@@ -101,8 +101,6 @@
         self.media = UIImagePNGRepresentation(imageToSave);
         if (self.media)
             self.mediaExtension = VConstantMediaExtensionPNG;
-        
-        UIImageWriteToSavedPhotosAlbum(imageToSave, nil, nil, nil);
     }
     
     // Handle a movie capture
@@ -111,10 +109,6 @@
         self.media = [NSData dataWithContentsOfURL:info[UIImagePickerControllerMediaURL]];
         if (self.media)
             self.mediaExtension = VConstantMediaExtensionMOV;
-        
-        NSString* path = (NSString *)[info[UIImagePickerControllerMediaURL] path];
-        if (UIVideoAtPathIsCompatibleWithSavedPhotosAlbum(path))
-            UISaveVideoAtPathToSavedPhotosAlbum(path, nil, nil, nil);
     }
     
     self.mediaURL = info[UIImagePickerControllerMediaURL];

@@ -306,10 +306,6 @@ CGFloat VCreateViewControllerLargePadding = 20;
         self.mediaData = [NSData dataWithContentsOfURL:mediaURL];
         self.mediaType = [mediaURL pathExtension];
 
-        NSString* path = (NSString *)[info[UIImagePickerControllerMediaURL] path];
-        if (UIVideoAtPathIsCompatibleWithSavedPhotosAlbum(path))
-            UISaveVideoAtPathToSavedPhotosAlbum(path, nil, nil, nil);
-        
         AVURLAsset *asset = [[AVURLAsset alloc] initWithURL:mediaURL options:nil];
         AVAssetImageGenerator *gen = [[AVAssetImageGenerator alloc] initWithAsset:asset];
         gen.appliesPreferredTrackTransform = YES;
@@ -332,8 +328,6 @@ CGFloat VCreateViewControllerLargePadding = 20;
             image = [info objectForKey:UIImagePickerControllerOriginalImage];
         }
         
-        UIImageWriteToSavedPhotosAlbum(image, nil, nil, nil);
-
         self.mediaData = [NSData dataWithData:UIImagePNGRepresentation(image)];
         self.mediaType = @"png";
 

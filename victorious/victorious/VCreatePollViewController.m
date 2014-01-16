@@ -463,10 +463,6 @@ CGFloat VCreatePollViewControllerLargePadding = 20;
             NSLog(@"%@", error);
         }
 
-        NSString* path = (NSString *)[info[UIImagePickerControllerMediaURL] path];
-        if (UIVideoAtPathIsCompatibleWithSavedPhotosAlbum(path))
-            UISaveVideoAtPathToSavedPhotosAlbum(path, nil, nil, nil);
-        
         [self addMediaWithImage:[[UIImage alloc] initWithCGImage:image] data:[NSData dataWithContentsOfURL:mediaURL] andType:[mediaURL pathExtension]];
 
         CGImageRelease(image);
@@ -479,8 +475,6 @@ CGFloat VCreatePollViewControllerLargePadding = 20;
             image = [info objectForKey:UIImagePickerControllerOriginalImage];
         }
         
-        UIImageWriteToSavedPhotosAlbum(image, nil, nil, nil);
-
         [self addMediaWithImage:image data:[NSData dataWithData:UIImagePNGRepresentation(image)] andType:@"png"];
     }
 }

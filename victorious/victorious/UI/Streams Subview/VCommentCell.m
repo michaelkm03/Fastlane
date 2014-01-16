@@ -62,7 +62,7 @@
         self.dateLabel.text = [comment.postedAt timeSince];
 //        [self.avatarImageView setImageWithURL:[NSURL URLWithString:comment.user.pictureUrl]
 //                             placeholderImage:[UIImage imageNamed:@"profile_thumb"]];
-        self.usernameLabel.text = comment.user.name;
+        self.usernameLabel.text = comment.user.shortName;
         self.messageLabel.text = comment.text;
 
         if (comment.mediaUrl)
@@ -98,7 +98,7 @@
         self.dateLabel.text = [message.postedAt timeSince];
 //        [self.avatarImageView setImageWithURL:[NSURL URLWithString:message.user.pictureUrl]
 //                             placeholderImage:[UIImage imageNamed:@"profile_thumb"]];
-        self.usernameLabel.text = message.user.name;
+        self.usernameLabel.text = message.user.shortName;
         self.messageLabel.text = message.text;
 
         if (message.media.mediaUrl)
