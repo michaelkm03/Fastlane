@@ -10,8 +10,8 @@ static NSUInteger const VConstantsMessageLength     = 140;
 static NSUInteger const VConstantsForumTitleLength  = 65;
 
 static NSString* const VConstantsMediaTypeYoutube   = @"youtube_video_id";
-static NSString* const VConstantsMediaTypeVideo     = @"video_url";
-static NSString* const VConstantsMediaTypeImage     = @"image_url";
+static NSString* const VConstantsMediaTypeVideo     = @"video";
+static NSString* const VConstantsMediaTypeImage     = @"image";
 
 static NSString* const VConstantMediaExtensionM3U8      = @"m3u8";
 static NSString* const VConstantMediaExtensionPNG       = @"png";

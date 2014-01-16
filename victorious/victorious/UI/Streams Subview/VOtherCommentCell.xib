@@ -67,15 +67,6 @@
                             <constraint firstAttribute="height" constant="190" id="VnC-Fy-O1h"/>
                         </constraints>
                     </imageView>
-                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="VS0-8S-nxO">
-                        <rect key="frame" x="25" y="78" width="190" height="190"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
-                        <constraints>
-                            <constraint firstAttribute="width" constant="190" id="3r3-bT-D7H"/>
-                            <constraint firstAttribute="height" constant="190" id="kT8-6U-umq"/>
-                        </constraints>
-                    </view>
                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="CJX-gU-fJU">
                         <rect key="frame" x="260" y="7" width="48" height="48"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -90,10 +81,21 @@
                             <action selector="profileButtonAction:" destination="X3b-iY-v4q" eventType="touchUpInside" id="Ugk-eA-70e"/>
                         </connections>
                     </button>
+                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="CWw-hg-GSB">
+                        <rect key="frame" x="104" y="156" width="33" height="33"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <state key="normal" image="Play">
+                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                        </state>
+                        <connections>
+                            <action selector="playVideo:" destination="X3b-iY-v4q" eventType="touchUpInside" id="o4j-XQ-oec"/>
+                        </connections>
+                    </button>
                 </subviews>
                 <constraints>
                     <constraint firstItem="MGT-h7-iQu" firstAttribute="leading" secondItem="eAW-cc-13j" secondAttribute="leading" constant="20" id="0qf-uH-b7x"/>
                     <constraint firstAttribute="bottom" secondItem="wD6-xk-K18" secondAttribute="bottom" constant="11" id="14E-dN-wGf"/>
+                    <constraint firstItem="CWw-hg-GSB" firstAttribute="centerX" secondItem="wD6-xk-K18" secondAttribute="centerX" constant="0.5" id="1vT-nx-Te0"/>
                     <constraint firstItem="CJX-gU-fJU" firstAttribute="top" secondItem="eAW-cc-13j" secondAttribute="top" constant="7" id="6DH-HR-L8b"/>
                     <constraint firstAttribute="trailing" secondItem="mlx-Sx-ed0" secondAttribute="trailing" constant="11" id="6Zn-cG-FCl"/>
                     <constraint firstItem="MGT-h7-iQu" firstAttribute="top" secondItem="eAW-cc-13j" secondAttribute="top" constant="10" id="8Ii-xd-dm8"/>
@@ -109,8 +111,7 @@
                     <constraint firstItem="CJX-gU-fJU" firstAttribute="leading" secondItem="6J0-Gx-uGf" secondAttribute="trailing" constant="10" id="ZPv-mm-rln"/>
                     <constraint firstItem="mlx-Sx-ed0" firstAttribute="top" secondItem="CJX-gU-fJU" secondAttribute="bottom" constant="1" id="dYz-6X-I46"/>
                     <constraint firstItem="LfL-cf-slY" firstAttribute="top" secondItem="CJX-gU-fJU" secondAttribute="bottom" constant="5" id="eZN-A3-tqj"/>
-                    <constraint firstItem="VS0-8S-nxO" firstAttribute="leading" secondItem="eAW-cc-13j" secondAttribute="leading" constant="25" id="kpv-08-9hn"/>
-                    <constraint firstAttribute="bottom" secondItem="VS0-8S-nxO" secondAttribute="bottom" constant="11" id="leC-Zy-Y3i"/>
+                    <constraint firstItem="CWw-hg-GSB" firstAttribute="centerY" secondItem="wD6-xk-K18" secondAttribute="centerY" constant="-0.5" id="j5S-rp-j3c"/>
                     <constraint firstItem="wD6-xk-K18" firstAttribute="leading" secondItem="eAW-cc-13j" secondAttribute="leading" constant="25" id="qxU-ia-jO2"/>
                     <constraint firstItem="LfL-cf-slY" firstAttribute="leading" secondItem="CJX-gU-fJU" secondAttribute="leading" id="rTm-OK-RXd"/>
                     <constraint firstItem="CJX-gU-fJU" firstAttribute="leading" secondItem="MGT-h7-iQu" secondAttribute="trailing" constant="38" id="uTY-qd-vmC"/>
@@ -121,7 +122,7 @@
                 <outlet property="dateLabel" destination="mlx-Sx-ed0" id="5tM-mA-JkR"/>
                 <outlet property="mediaPreview" destination="wD6-xk-K18" id="CZf-He-aUK"/>
                 <outlet property="messageLabel" destination="yUe-8b-fBQ" id="qcA-Ap-56l"/>
-                <outlet property="movieView" destination="VS0-8S-nxO" id="lAY-qT-MpV"/>
+                <outlet property="playButton" destination="CWw-hg-GSB" id="XYy-DD-ERz"/>
                 <outlet property="profileImageButton" destination="CJX-gU-fJU" id="cZt-Ff-JZ5"/>
                 <outlet property="usernameLabel" destination="MGT-h7-iQu" id="H9B-up-ff6"/>
             </connections>
@@ -129,6 +130,7 @@
     </objects>
     <resources>
         <image name="ChatBubbleLeft" width="97" height="51"/>
+        <image name="Play" width="33" height="33"/>
         <image name="StreamDate" width="13" height="13"/>
         <image name="profile_thumb" width="50" height="50"/>
     </resources>
