@@ -457,13 +457,24 @@ typedef NS_ENUM(NSInteger, VStreamScope)
         NSLog(@"%@", error);
         [indicator stopAnimating];
         
-        UIAlertView*    alert   =
-        [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"TranscodingMediaTitle", @"")
-                                   message:NSLocalizedString(@"TranscodingMediaBody", @"")
-                                  delegate:nil
-                         cancelButtonTitle:NSLocalizedString(@"OKButton", @"")
-                         otherButtonTitles:nil];
-        [alert show];
+        if (5500 == error.code)
+        {
+            UIAlertView*    alert   = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"TranscodingMediaTitle", @"")
+                                                                 message:NSLocalizedString(@"TranscodingMediaBody", @"")
+                                                                delegate:nil
+                                                       cancelButtonTitle:nil
+                                                       otherButtonTitles:NSLocalizedString(@"OKButton", @""), nil];
+            [alert show];
+        }
+        else
+        {
+            UIAlertView* alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"PollUploadTitle", @"")
+                                                            message:NSLocalizedString(@"PollUploadBody", @"")
+                                                           delegate:nil
+                                                  cancelButtonTitle:nil
+                                                  otherButtonTitles:NSLocalizedString(@"OKButton", @""), nil];
+            [alert show];
+        }
     };
     
     [self dismissViewControllerAnimated:YES completion:nil];
