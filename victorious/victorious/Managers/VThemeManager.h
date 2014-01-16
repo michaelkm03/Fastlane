@@ -27,16 +27,11 @@ extern  NSString*   const   kVChannelURLSupport;
 
 - (id)themedValueForKeyPath:(NSString *)keyPath;
 
+- (NSString *)themedStringForPath:(NSString *)keyPath;
 - (UIColor *)themedColorForKeyPath:(NSString *)keyPath;
-
-/** Retrieve a color from the theme that has been modified
- to look correct when used in a translucent view.
- */
 - (UIColor *)themedTranslucencyColorForKeyPath:(NSString *)keyPath;
-
 - (NSURL *)themedURLForKeyPath:(NSString *)keyPath;
 - (NSURL *)themedImageURLForKeyPath:(NSString *)keyPath;
 - (UIFont *)themedFontForKeyPath:(NSString *)keyPath;
-
 
 @end

@@ -276,8 +276,8 @@
 		BE171DE41868C211004E5202 /* VObjectManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VObjectManager.m; sourceTree = "<group>"; };
 		BE171DE51868C211004E5202 /* VPaginationStatus.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VPaginationStatus.h; sourceTree = "<group>"; };
 		BE171DE61868C211004E5202 /* VPaginationStatus.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VPaginationStatus.m; sourceTree = "<group>"; };
-		BE171DE71868C211004E5202 /* VThemeManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VThemeManager.h; sourceTree = "<group>"; };
-		BE171DE81868C211004E5202 /* VThemeManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VThemeManager.m; sourceTree = "<group>"; };
+		BE171DE71868C211004E5202 /* VThemeManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VThemeManager.h; path = Managers/VThemeManager.h; sourceTree = "<group>"; };
+		BE171DE81868C211004E5202 /* VThemeManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VThemeManager.m; path = Managers/VThemeManager.m; sourceTree = "<group>"; };
 		BE171E351868C265004E5202 /* NSManagedObject+EasyFetching.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSManagedObject+EasyFetching.h"; sourceTree = "<group>"; };
 		BE171E361868C265004E5202 /* NSManagedObject+EasyFetching.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSManagedObject+EasyFetching.m"; sourceTree = "<group>"; };
 		BE171E371868C266004E5202 /* NSString+VParseHelp.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+VParseHelp.h"; sourceTree = "<group>"; };
@@ -446,7 +446,72 @@
 			name = Settings;
 			sourceTree = "<group>";
 		};
-		3FF8B7961868EE5E00806EA0 /* UI */ = {
+		3F9B665B188878C60046F826 /* UI */ = {
+			isa = PBXGroup;
+			children = (
+				3F9B665C188878D00046F826 /* Common */,
+				3F9B665D188878DB0046F826 /* Login */,
+				3F9B665E188878EC0046F826 /* Menu */,
+				3F9B665F188879060046F826 /* Streams */,
+				3F9B6660188879130046F826 /* Inbox */,
+				3F9B6661188879200046F826 /* Profile */,
+				3F9B66621888792B0046F826 /* Settings */,
+			);
+			name = UI;
+			sourceTree = "<group>";
+		};
+		3F9B665C188878D00046F826 /* Common */ = {
+			isa = PBXGroup;
+			children = (
+				BE171DE71868C211004E5202 /* VThemeManager.h */,
+				BE171DE81868C211004E5202 /* VThemeManager.m */,
+			);
+			name = Common;
+			sourceTree = "<group>";
+		};
+		3F9B665D188878DB0046F826 /* Login */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Login;
+			sourceTree = "<group>";
+		};
+		3F9B665E188878EC0046F826 /* Menu */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Menu;
+			sourceTree = "<group>";
+		};
+		3F9B665F188879060046F826 /* Streams */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Streams;
+			sourceTree = "<group>";
+		};
+		3F9B6660188879130046F826 /* Inbox */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Inbox;
+			sourceTree = "<group>";
+		};
+		3F9B6661188879200046F826 /* Profile */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Profile;
+			sourceTree = "<group>";
+		};
+		3F9B66621888792B0046F826 /* Settings */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Settings;
+			sourceTree = "<group>";
+		};
+		3FF8B7961868EE5E00806EA0 /* UI 0.5 */ = {
 			isa = PBXGroup;
 			children = (
 				83B5A12A18765E1600659C73 /* VRootNavigationController.h */,
@@ -464,7 +529,7 @@
 				BEA5BF5D187F21770014C3EF /* VTableViewCell.h */,
 				BEA5BF5E187F21770014C3EF /* VTableViewCell.m */,
 			);
-			name = UI;
+			name = "UI 0.5";
 			sourceTree = "<group>";
 		};
 		3FF8B7991868EEE800806EA0 /* Login */ = {
@@ -572,7 +637,8 @@
 		BE171D811868BE64004E5202 /* victorious */ = {
 			isa = PBXGroup;
 			children = (
-				3FF8B7961868EE5E00806EA0 /* UI */,
+				3F9B665B188878C60046F826 /* UI */,
+				3FF8B7961868EE5E00806EA0 /* UI 0.5 */,
 				BE171DD91868C211004E5202 /* Managers */,
 				BE171DAE1868C211004E5202 /* Categories */,
 				BE171DE91868C211004E5202 /* Models */,
@@ -702,8 +768,6 @@
 			isa = PBXGroup;
 			children = (
 				BE692B5F186E626800C71336 /* VObjectManager */,
-				BE171DE71868C211004E5202 /* VThemeManager.h */,
-				BE171DE81868C211004E5202 /* VThemeManager.m */,
 			);
 			path = Managers;
 			sourceTree = "<group>";
