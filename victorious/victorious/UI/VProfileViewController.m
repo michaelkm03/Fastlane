@@ -17,6 +17,7 @@
 #import "VConversation.h"
 #import "VUser.h"
 #import "VThemeManager.h"
+#import "VLoginViewController.h"
 
 @interface VProfileViewController () <UIActionSheetDelegate>
 
@@ -84,8 +85,7 @@
 
         self.navigationItem.rightBarButtonItems = @[composeButton, userActionButton];
 
-        [[VObjectManager sharedManager] fetchUser:@(self.userID)
-                            forRelationshipObject:nil
+        [[[VObjectManager sharedManager] fetchUser:@(self.userID)
                                  withSuccessBlock:^(NSArray *resultObjects)
                                  {
                                      self.profile = [resultObjects firstObject];
@@ -94,7 +94,7 @@
                                         failBlock:^(NSError *error)
                                         {
                                             VLog("Profile failed to get User object");
-                                        }];
+                                        }] start];
     }
 }
 
@@ -122,6 +122,12 @@
 
 -(IBAction)composeButtonPressed:(id)sender
 {
+    if (![VObjectManager sharedManager].mainUser)
+    {
+        [self presentViewController:[VLoginViewController sharedLoginViewController] animated:YES completion:NULL];
+        return;
+    }
+    
     [self performSegueWithIdentifier:@"toComposeMessage" sender:self];
 }
 

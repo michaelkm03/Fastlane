@@ -28,10 +28,16 @@
     
     VConversation *newConversation = [NSEntityDescription
                                   insertNewObjectForEntityForName:[VConversation entityName]
-                                  inManagedObjectContext:self.mainUser.managedObjectContext];
+                                  inManagedObjectContext:self.managedObjectStore.persistentStoreManagedObjectContext];
     
-    newConversation.other_interlocutor_user_id = user.remoteId;
-    newConversation.user = user;
+    NSManagedObjectID* objectID = [user objectID];
+    if (objectID)
+    {
+        VUser* userInContext = (VUser*)[newConversation.managedObjectContext objectWithID:objectID];
+    
+        newConversation.other_interlocutor_user_id = userInContext.remoteId;
+        newConversation.user = userInContext;
+    }
     
     return newConversation;
 }
