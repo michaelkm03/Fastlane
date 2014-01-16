@@ -171,10 +171,15 @@
         //keep trying until we are done transcoding
         if (error.code == 5500 && attemptCount < 15)
         {
-            [[self fetchSequenceByID:sequenceID
-                        successBlock:success
-                           failBlock:fail
-                         loadAttempt:(attemptCount+1)] start];
+            
+            double delayInSeconds = 2.0;
+            dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
+            dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+                [[self fetchSequenceByID:sequenceID
+                            successBlock:success
+                               failBlock:fail
+                             loadAttempt:(attemptCount+1)] start];
+            });
         }
         else if (fail)
             fail(error);
@@ -443,7 +448,6 @@
         [allData setObject:media2Data forKey:@"answer2_media"];
         [allExtensions setObject:media2Extension forKey:@"answer2_media"];
     }
-    
     
     AFSuccessBlock fullSuccess = ^(AFHTTPRequestOperation* operation, id response)
     {
