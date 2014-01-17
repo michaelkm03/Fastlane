@@ -16,6 +16,8 @@
 		3F91991D187CAF620055FE37 /* VNewsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F91991C187CAF620055FE37 /* VNewsViewController.m */; };
 		3F9B6657187F80780046F826 /* NSDate+timeSince.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F9B6656187F80780046F826 /* NSDate+timeSince.m */; };
 		3F9B665A18848B750046F826 /* VMessageSubViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F9B665918848B750046F826 /* VMessageSubViewController.m */; };
+		3F9B666818887D910046F826 /* VFetchedResultsTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F9B666718887D910046F826 /* VFetchedResultsTableViewController.m */; };
+		3F9B666B1888BE6A0046F826 /* VStreamTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F9B666A1888BE6A0046F826 /* VStreamTableViewController.m */; };
 		3FF8B7981868EE7E00806EA0 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3FF8B7971868EE7E00806EA0 /* Main.storyboard */; };
 		3FF8B79E1868EF6C00806EA0 /* VLoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3FF8B79B1868EF6C00806EA0 /* VLoginViewController.m */; };
 		3FF8B79F1868EF6C00806EA0 /* VSignUpViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3FF8B79D1868EF6C00806EA0 /* VSignUpViewController.m */; };
@@ -168,6 +170,10 @@
 		3F9B6656187F80780046F826 /* NSDate+timeSince.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDate+timeSince.m"; sourceTree = "<group>"; };
 		3F9B665818848B750046F826 /* VMessageSubViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VMessageSubViewController.h; path = UI/VMessageSubViewController.h; sourceTree = "<group>"; };
 		3F9B665918848B750046F826 /* VMessageSubViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VMessageSubViewController.m; path = UI/VMessageSubViewController.m; sourceTree = "<group>"; };
+		3F9B666618887D910046F826 /* VFetchedResultsTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VFetchedResultsTableViewController.h; path = "UI/Base Classes/VFetchedResultsTableViewController.h"; sourceTree = "<group>"; };
+		3F9B666718887D910046F826 /* VFetchedResultsTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VFetchedResultsTableViewController.m; path = "UI/Base Classes/VFetchedResultsTableViewController.m"; sourceTree = "<group>"; };
+		3F9B66691888BE6A0046F826 /* VStreamTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VStreamTableViewController.h; path = "UI/Base Classes/VStreamTableViewController.h"; sourceTree = "<group>"; };
+		3F9B666A1888BE6A0046F826 /* VStreamTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VStreamTableViewController.m; path = "UI/Base Classes/VStreamTableViewController.m"; sourceTree = "<group>"; };
 		3FF8B7971868EE7E00806EA0 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
 		3FF8B79A1868EF6C00806EA0 /* VLoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VLoginViewController.h; path = UI/Login/VLoginViewController.h; sourceTree = "<group>"; };
 		3FF8B79B1868EF6C00806EA0 /* VLoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VLoginViewController.m; path = UI/Login/VLoginViewController.m; sourceTree = "<group>"; };
@@ -463,6 +469,7 @@
 		3F9B665C188878D00046F826 /* Common */ = {
 			isa = PBXGroup;
 			children = (
+				83DC42FC187CDDE600E768E2 /* VConstants.h */,
 				3F9B666518887D000046F826 /* Management */,
 				3F9B666418887CF40046F826 /* UI Elements */,
 				3F9B666318887CE50046F826 /* Base Classes */,
@@ -517,6 +524,10 @@
 			children = (
 				BEA5BF5D187F21770014C3EF /* VTableViewCell.h */,
 				BEA5BF5E187F21770014C3EF /* VTableViewCell.m */,
+				3F9B666618887D910046F826 /* VFetchedResultsTableViewController.h */,
+				3F9B666718887D910046F826 /* VFetchedResultsTableViewController.m */,
+				3F9B66691888BE6A0046F826 /* VStreamTableViewController.h */,
+				3F9B666A1888BE6A0046F826 /* VStreamTableViewController.m */,
 			);
 			name = "Base Classes";
 			sourceTree = "<group>";
@@ -535,6 +546,7 @@
 			children = (
 				BE171DE71868C211004E5202 /* VThemeManager.h */,
 				BE171DE81868C211004E5202 /* VThemeManager.m */,
+				3FF8B7A41868FC1C00806EA0 /* defaultTheme.plist */,
 			);
 			name = Management;
 			sourceTree = "<group>";
@@ -683,8 +695,6 @@
 				BE171D871868BE64004E5202 /* main.m */,
 				BE171D891868BE64004E5202 /* victorious-Prefix.pch */,
 				3FF8B7A01868F36600806EA0 /* Localizable.strings */,
-				3FF8B7A41868FC1C00806EA0 /* defaultTheme.plist */,
-				83DC42FC187CDDE600E768E2 /* VConstants.h */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -1198,6 +1208,7 @@
 				83FE10C4188480F400E83039 /* VConversationSubViewController.m in Sources */,
 				BE171E431868CEA0004E5202 /* victoriOS.xcdatamodeld in Sources */,
 				838511C418762DF3007E0316 /* VBadgeLabel.m in Sources */,
+				3F9B666818887D910046F826 /* VFetchedResultsTableViewController.m in Sources */,
 				BE171E1B1868C211004E5202 /* VUser+RestKit.m in Sources */,
 				BE5C736A187E36E800A3340D /* VRule.m in Sources */,
 				BE83A37118827B400077EB26 /* VMessage.m in Sources */,
@@ -1207,6 +1218,7 @@
 				BE5C734C187E36D000A3340D /* VInteractionAction.m in Sources */,
 				BE692B50186E60B300C71336 /* VCommentCell.m in Sources */,
 				BE171E3A1868C266004E5202 /* NSString+VParseHelp.m in Sources */,
+				3F9B666B1888BE6A0046F826 /* VStreamTableViewController.m in Sources */,
 				8364C70B1869500D0028C1ED /* VMenuViewController.m in Sources */,
 				BE692B51186E60B300C71336 /* VSequencePlayerViewController.m in Sources */,
 				83F38277186BE62300A866A1 /* VMenuTableViewController.m in Sources */,
