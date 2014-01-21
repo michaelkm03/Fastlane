@@ -19,10 +19,9 @@ typedef void (^AFSuccessBlock) (AFHTTPRequestOperation*, id);
  * Block is given NSError* that RestKit returned. */
 typedef void (^FailBlock) (NSError* error);
 
+/*! Block that executes when the API fails.
+ * Block is given NSError* that RestKit returned. */
 typedef void (^AFFailBlock) (AFHTTPRequestOperation*, NSError*);
-
-typedef void (^PayloadSuccessBlock) (NSArray* resultObjects, NSDictionary* fullPayload);
-
 
 /*! Block that will be given Pagination information from API Response.
  *  Block is given NSUInteger for page and NSUInteger for totalPages
@@ -34,17 +33,6 @@ typedef float (^MyBlockType)(float, float);
 
 @class VUser;
 @class VSequence;
-typedef NS_ENUM(NSUInteger, VObjectManagerSequenceCategoryType){
-    VObjectManagerSequenceCategoryTypeAll,
-    VObjectManagerSequenceCategoryTypeGeneral,
-    VObjectManagerSequenceCategoryTypeFeatured
-};
-
-typedef NS_ENUM(NSUInteger, VObjectManagerSequenceStatusType){
-    VObjectManagerSequenceStatusTypeNone,
-    VObjectManagerSequenceStatusTypePublic,
-    VObjectManagerSequenceStatusTypePrivate
-};
 
 @interface VObjectManager : RKObjectManager
 
