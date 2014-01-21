@@ -48,13 +48,13 @@
         indicator.hidesWhenStopped = YES;
         
         [[VObjectManager sharedManager] fetchSequence:self.sequence
-                                         successBlock:^(NSArray *resultObjects)
+                                         successBlock:^(NSOperation* operation, id fullResponse, NSArray* rkObjects)
                                          {
                                              [indicator stopAnimating];
                                              [indicator removeFromSuperview];
                                              [self playSequence];
                                          }
-                                        failBlock:^(NSError *error)
+                                            failBlock:^(NSOperation* operation, NSError* error)
                                         {
                                             [indicator stopAnimating];
                                             [indicator removeFromSuperview];

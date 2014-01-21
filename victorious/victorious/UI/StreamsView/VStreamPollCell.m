@@ -234,21 +234,21 @@
     
     [[VObjectManager sharedManager] answerPoll:self.sequence
                                      withAnswer:answer
-                                   successBlock:^(NSArray *resultObjects)
+                                  successBlock:^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
       {
           [[VObjectManager sharedManager] pollResultsForSequence:self.sequence
-                                                    successBlock:^(NSArray *resultObjects)
+                                                    successBlock:^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
                                                     {
                                                         [self showResultsForAnswerId:answer.remoteId];
                                                     }
-                                                        failBlock:^(NSError *error)
+                                                       failBlock:^(NSOperation* operation, NSError* error)
                                                         {
                                                             VLog(@"Failed with error: %@", error);
                                                         }];
           
           VLog(@"Successfully answered: %@", resultObjects);
       }
-                                      failBlock:^(NSError *error)
+                                     failBlock:^(NSOperation* operation, NSError* error)
       {
           //Error 1005 is "Poll result was already recorded.
           //If we get anything else... lie and say we already answered

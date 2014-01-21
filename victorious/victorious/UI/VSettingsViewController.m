@@ -214,12 +214,12 @@ NSString*   const   kAccountUpdateViewControllerDomain =   @"VAccountUpdateViewC
                                      password:self.passwordTextField.text
                                      username:self.passwordTextField.text])
     {
-        SuccessBlock success = ^(NSArray* objects)
+        VSuccessBlock success = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
         {
             [self didUpdate];
         };
         
-        FailBlock fail = ^(NSError* error)
+        VFailBlock fail = ^(NSOperation* operation, NSError* error)
         {
             [self didFailToUpdate:error];
         };

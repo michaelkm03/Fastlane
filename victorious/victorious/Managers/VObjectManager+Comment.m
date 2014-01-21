@@ -23,8 +23,8 @@
                                       mediaUrl:(NSURL*)mediaUrl
                                     toSequence:(VSequence*)sequence
                                      andParent:(VComment*)parent
-                                  successBlock:(SuccessBlock)success
-                                     failBlock:(FailBlock)fail
+                                  successBlock:(VSuccessBlock)success
+                                     failBlock:(VFailBlock)fail
 {
     //Set the parameters
     NSMutableDictionary* parameters = [[NSMutableDictionary alloc] initWithCapacity:5];
@@ -47,7 +47,7 @@
         [parameters setObject:type forKey:@"media_type"];
     }
     
-    SuccessBlock fetchCommentSuccess = ^(NSArray* resultObjects)
+    VSuccessBlock fetchCommentSuccess = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
     {
         NSManagedObjectID* objectId = [[resultObjects firstObject] objectID];
         if (objectId)
@@ -57,23 +57,15 @@
         }
         
         if (success)
-            success(resultObjects);
+            success(operation, fullResponse, resultObjects);
     };
     
-    AFSuccessBlock fullSuccess = ^(AFHTTPRequestOperation* operation, id response)
+    VSuccessBlock fullSuccess = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
     {
-        
-        NSDictionary* payload = response[@"payload"];
-        [self fetchCommentByID:[payload[@"id"] integerValue]
+        [self fetchCommentByID:[fullResponse[@"payload"][@"id"] integerValue]
                    successBlock:fetchCommentSuccess
                       failBlock:fail
                     loadAttempt:0];
-    };
-    
-    AFFailBlock fullFail = ^(AFHTTPRequestOperation* operation, NSError* error)
-    {
-        if (fail)
-            fail(error);
     };
     
     return [self upload:allData
@@ -81,18 +73,18 @@
                  toPath:@"/api/comment/add"
              parameters:parameters
            successBlock:fullSuccess
-              failBlock:fullFail];
+              failBlock:fail];
 }
 
 - (RKManagedObjectRequestOperation *)fetchCommentByID:(NSInteger)commentID
-                                         successBlock:(SuccessBlock)success
-                                            failBlock:(FailBlock)fail
+                                         successBlock:(VSuccessBlock)success
+                                            failBlock:(VFailBlock)fail
                                           loadAttempt:(NSInteger)attemptCount
 {
     if (!commentID)
         return nil;
     
-    FailBlock fullFail = ^(NSError* error)
+    VFailBlock fullFail = ^(NSOperation* operation, NSError* error)
     {
         //keep trying until we are done transcoding
         if (error.code == 5500 && attemptCount < 15)
@@ -107,34 +99,32 @@
             });
         }
         else if (fail)
-            fail(error);
+            fail(operation, error);
     };
     
     return [self GET:[@"/api/comment/fetch/" stringByAppendingString:@(commentID).stringValue]
               object:nil
           parameters:nil
         successBlock:success
-           failBlock:fullFail
-     paginationBlock:nil];
+           failBlock:fullFail];
 }
 
 
 - (RKManagedObjectRequestOperation *)fetchComment:(NSInteger)remoteId
-                                     successBlock:(SuccessBlock)success
-                                        failBlock:(FailBlock)fail
+                                     successBlock:(VSuccessBlock)success
+                                        failBlock:(VFailBlock)fail
 {
     return [self GET:[@"/api/comment/fetch/" stringByAppendingString:@(remoteId).stringValue]
               object:nil
           parameters:nil
         successBlock:success
-           failBlock:fail
-     paginationBlock:nil];
+           failBlock:fail];
 }
 
 - (RKManagedObjectRequestOperation *)removeComment:(VComment*)comment
                                         withReason:(NSString*)removalReason
-                                      successBlock:(SuccessBlock)success
-                                         failBlock:(FailBlock)fail
+                                      successBlock:(VSuccessBlock)success
+                                         failBlock:(VFailBlock)fail
 {
     NSMutableDictionary* parameters = [[NSMutableDictionary alloc] initWithCapacity:1];
     [parameters setObject:[NSString stringWithFormat:@"%@", comment.remoteId] forKey:@"comment_id"];
@@ -142,26 +132,25 @@
 
     __block VComment* commentToRemove = comment;//keep the comment in memory til we get the response back
     
-    SuccessBlock fullSuccessBlock = ^(NSArray* comments)
+    VSuccessBlock fullSuccessBlock = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
     {
         //Since this is a POST not a DELETE we need to manually remove the comment.
         [commentToRemove.managedObjectContext deleteObject:commentToRemove];
         
         if (success)
-            success(comments);
+            success(operation, fullResponse, resultObjects);
     };
     
     return [self POST:@"/api/comment/remove"
                object:nil
            parameters:parameters
          successBlock:fullSuccessBlock
-            failBlock:fail
-      paginationBlock:nil];
+            failBlock:fail];
 }
 
 - (RKManagedObjectRequestOperation *)flagComment:(VComment*)comment
-                                    successBlock:(SuccessBlock)success
-                                       failBlock:(FailBlock)fail
+                                    successBlock:(VSuccessBlock)success
+                                       failBlock:(VFailBlock)fail
 {
     NSMutableDictionary* parameters = [[NSMutableDictionary alloc] initWithCapacity:1];
     [parameters setObject:[NSString stringWithFormat:@"%@", comment.remoteId] forKey:@"comment_id"];
@@ -170,15 +159,14 @@
                object:nil
            parameters:parameters
          successBlock:success
-            failBlock:fail
-      paginationBlock:nil];
+            failBlock:fail];
 }
 
 #pragma mark - Vote Methods
 - (RKManagedObjectRequestOperation *)voteComment:(VComment*)comment
                                         voteType:(NSString*)type
-                                    successBlock:(SuccessBlock)success
-                                       failBlock:(FailBlock)fail
+                                    successBlock:(VSuccessBlock)success
+                                       failBlock:(VFailBlock)fail
 {
     NSMutableDictionary* parameters = [[NSMutableDictionary alloc] initWithCapacity:2];
     [parameters setObject:[NSString stringWithFormat:@"%@", comment.remoteId] forKey:@"comment_id"];
@@ -188,54 +176,51 @@
                object:nil
            parameters:parameters
          successBlock:success
-            failBlock:fail
-      paginationBlock:nil];
+            failBlock:fail];
 }
 
 - (RKManagedObjectRequestOperation *)likeComment:(VComment*)comment
-                                    successBlock:(SuccessBlock)success
-                                       failBlock:(FailBlock)fail
+                                    successBlock:(VSuccessBlock)success
+                                       failBlock:(VFailBlock)fail
 {
     return [self voteComment:comment voteType:@"like" successBlock:success failBlock:fail];
 }
 
 - (RKManagedObjectRequestOperation *)dislikeComment:(VComment*)comment
-                                       successBlock:(SuccessBlock)success
-                                          failBlock:(FailBlock)fail
+                                       successBlock:(VSuccessBlock)success
+                                          failBlock:(VFailBlock)fail
 {
     return [self voteComment:comment voteType:@"dislike" successBlock:success failBlock:fail];
 }
 
 - (RKManagedObjectRequestOperation *)unvoteComment:(VComment*)comment
-                                      successBlock:(SuccessBlock)success
-                                         failBlock:(FailBlock)fail
+                                      successBlock:(VSuccessBlock)success
+                                         failBlock:(VFailBlock)fail
 {
     return [self voteComment:comment voteType:@"unvote" successBlock:success failBlock:fail];
 }
 
 #pragma mark -
 - (RKManagedObjectRequestOperation *)readComments:(NSArray*)readComments
-                                     successBlock:(SuccessBlock)success
-                                        failBlock:(FailBlock)fail
+                                     successBlock:(VSuccessBlock)success
+                                        failBlock:(VFailBlock)fail
 {
     return [self POST:@"/api/comment/mark"
                object:nil
            parameters:@{@"comment_ids":readComments, @"mark_as":@"read"}
          successBlock:success
-            failBlock:fail
-      paginationBlock:nil];
+            failBlock:fail];
 }
 
 - (RKManagedObjectRequestOperation *)unreadComments:(NSArray*)readComments
-                                     successBlock:(SuccessBlock)success
-                                        failBlock:(FailBlock)fail
+                                     successBlock:(VSuccessBlock)success
+                                        failBlock:(VFailBlock)fail
 {
     return [self POST:@"/api/comment/mark"
                object:nil
            parameters:@{@"comment_ids":readComments, @"mark_as":@"unread"}
          successBlock:success
-            failBlock:fail
-      paginationBlock:nil];
+            failBlock:fail];
 }
 
 @end

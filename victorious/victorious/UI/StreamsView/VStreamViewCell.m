@@ -17,6 +17,8 @@
 #import "VSequence+Fetcher.h"
 #import "VAsset.h"
 
+#import "VConstants.h"
+
 NSString* kStreamsWillSegueNotification = @"kStreamsWillSegueNotification";
 NSString *kStreamsWillShareNotification = @"kStreamsWillShareNotification";
 NSString *kStreamsWillCommentNotification = @"kStreamsWillCommentNotification";

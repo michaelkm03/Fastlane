@@ -29,6 +29,8 @@
 #import "VAsset.h"
 #import "VObjectManager+Sequence.h"
 
+#import "VConstants.h"
+
 typedef NS_ENUM(NSInteger, VStreamScope)
 {
     VStreamFilterAll = 0,
@@ -399,12 +401,12 @@ typedef NS_ENUM(NSInteger, VStreamScope)
     [indicator startAnimating];
     indicator.hidesWhenStopped = YES;
     
-    SuccessBlock success = ^(NSArray* resultObjects)
+    VSuccessBlock success = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
     {
         NSLog(@"%@", resultObjects);
         [indicator stopAnimating];
     };
-    FailBlock fail = ^(NSError* error)
+    VFailBlock fail = ^(NSOperation* operation, NSError* error)
     {
         NSLog(@"%@", error);
         [indicator stopAnimating];
@@ -449,12 +451,12 @@ typedef NS_ENUM(NSInteger, VStreamScope)
     [indicator startAnimating];
     indicator.hidesWhenStopped = YES;
     
-    SuccessBlock success = ^(NSArray* resultObjects)
+    VSuccessBlock success = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
     {
         NSLog(@"%@", resultObjects);
         [indicator stopAnimating];
     };
-    FailBlock fail = ^(NSError* error)
+    VFailBlock fail = ^(NSOperation* operation, NSError* error)
     {
         NSLog(@"%@", error);
         [indicator stopAnimating];
@@ -501,9 +503,11 @@ typedef NS_ENUM(NSInteger, VStreamScope)
                    mediaType:(NSString *)mediaType
 {
     [self dismissViewControllerAnimated:YES completion:nil];
-    [[VObjectManager sharedManager] createForumWithName:title description:message mediaData:data mediaUrl:nil successBlock:^(NSArray *resultObjects) {
+    [[VObjectManager sharedManager] createForumWithName:title description:message mediaData:data mediaUrl:nil successBlock:^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
+    {
         NSLog(@"%@", resultObjects);
-    } failBlock:^(NSError *error) {
+    } failBlock:^(NSOperation* operation, NSError* error)
+    {
         NSLog(@"%@", error);
     }];
 }

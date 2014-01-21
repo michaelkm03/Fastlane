@@ -26,6 +26,8 @@
 #import "VSequence+Fetcher.h"
 #import "VAsset.h"
 
+#import "VConstants.h"
+
 @import Social;
 
 const   CGFloat     kCommentRowWithMediaHeight  =   320.0;
@@ -95,7 +97,8 @@ static NSString* CommentCache = @"CommentCache";
     [indicator startAnimating];
     indicator.hidesWhenStopped = YES;
     
-    SuccessBlock success = ^(NSArray *resultObjects) {
+    VSuccessBlock success = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
+    {
         
         [self fetchedResultsController];
         
@@ -107,7 +110,8 @@ static NSString* CommentCache = @"CommentCache";
         [self setupSequencePlayer];
     };
     
-    FailBlock fail = ^(NSError *error) {
+    VFailBlock fail = ^(NSOperation* operation, NSError* error)
+    {
         [indicator stopAnimating];
         [indicator removeFromSuperview];
 //        UIAlertView*    alert   =   [[UIAlertView alloc] initWithTitle:@"Unable to Load Media" message:error.localizedDescription delegate:self cancelButtonTitle:@"Understood" otherButtonTitles:nil];
@@ -130,7 +134,7 @@ static NSString* CommentCache = @"CommentCache";
 
 - (IBAction)refresh:(UIRefreshControl *)sender
 {
-    SuccessBlock success = ^(NSArray* resultObjects)
+    VSuccessBlock success = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
     {
         NSManagedObjectContext* context =  [RKObjectManager sharedManager].managedObjectStore.persistentStoreManagedObjectContext;
         [context performBlockAndWait:^
@@ -146,7 +150,7 @@ static NSString* CommentCache = @"CommentCache";
         [self.refreshControl endRefreshing];
     };
     
-    FailBlock fail = ^(NSError* error)
+    VFailBlock fail = ^(NSOperation* operation, NSError* error)
     {
         [self.refreshControl endRefreshing];
         VLog(@"Error on loadNextPage: %@", error);
@@ -202,11 +206,13 @@ static NSString* CommentCache = @"CommentCache";
     //    }
     
     [[VObjectManager sharedManager] likeComment:comment
-                                   successBlock:^(NSArray *resultObjects) {
+                                   successBlock:^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
+                                   {
                                        //TODO:set upvote flag
                                        VLog(@"resultObjects: %@", resultObjects);
                                    }
-                                      failBlock:^(NSError *error) {
+                                      failBlock:^(NSOperation* operation, NSError* error)
+                                      {
                                           VLog(@"Failed to like comment %@", comment);
                                       }];
 }
@@ -229,11 +235,13 @@ static NSString* CommentCache = @"CommentCache";
 //    }
     
     [[VObjectManager sharedManager] dislikeComment:comment
-                                   successBlock:^(NSArray *resultObjects) {
+                                      successBlock:^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
+                                   {
                                        //TODO:set dislike flag)
                                        VLog(@"resultObjects: %@", resultObjects);
                                    }
-                                      failBlock:^(NSError *error) {
+                                         failBlock:^(NSOperation* operation, NSError* error)
+                                      {
                                           VLog(@"Failed to dislike comment %@", comment);
                                       }];
 }
@@ -241,11 +249,13 @@ static NSString* CommentCache = @"CommentCache";
 - (void)unvoteComment:(VComment*)comment
 {
     [[VObjectManager sharedManager] unvoteComment:comment
-                                      successBlock:^(NSArray *resultObjects) {
+                                     successBlock:^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
+                                      {
                                           //TODO:update UI)
                                           VLog(@"resultObjects: %@", resultObjects);
                                       }
-                                         failBlock:^(NSError *error) {
+                                        failBlock:^(NSOperation* operation, NSError* error)
+                                         {
                                              VLog(@"Failed to dislike comment %@", comment);
                                          }];
 }
@@ -262,17 +272,18 @@ static NSString* CommentCache = @"CommentCache";
     VComment *comment = [_fetchedResultsController objectAtIndexPath:indexPath];
     
     [[VObjectManager sharedManager] flagComment:comment
-                                       successBlock:^(NSArray *resultObjects)
+                                   successBlock:^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
                                        {
                                            //TODO:set flagged flag)
                                            VLog(@"resultObjects: %@", resultObjects);
                                        }
-                                          failBlock:^(NSError *error)
+                                      failBlock:^(NSOperation* operation, NSError* error)
                                           {
                                               VLog(@"Failed to flag comment %@", comment);
                                           }];
 }
 
+//TODO: why is this here?
 - (IBAction)addButtonAction:(id)sender
 {
 
@@ -373,12 +384,12 @@ static NSString* CommentCache = @"CommentCache";
          if(actionSheet.destructiveButtonIndex == buttonIndex)
          {
              [[VObjectManager sharedManager] flagComment:comment
-                                             successBlock:^(NSArray *resultObjects)
+                                            successBlock:^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
                {
                    //TODO:set flagged flag)
                    VLog(@"resultObjects: %@", resultObjects);
                }
-                                                failBlock:^(NSError *error)
+                                                failBlock:^(NSOperation* operation, NSError* error)
                {
                    VLog(@"Failed to flag comment %@", comment);
                }];
@@ -386,22 +397,26 @@ static NSString* CommentCache = @"CommentCache";
          else if([[actionSheet buttonTitleAtIndex:buttonIndex] isEqualToString:thumbUpTitle])
          {
              [[VObjectManager sharedManager] likeComment:comment
-                                               successBlock:^(NSArray *resultObjects) {
+                                               successBlock:^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
+                                               {
                                                    //TODO:update UI)
                                                    VLog(@"resultObjects: %@", resultObjects);
                                                }
-                                                  failBlock:^(NSError *error) {
+                                                  failBlock:^(NSOperation* operation, NSError* error)
+                                                  {
                                                       VLog(@"Failed to dislike comment %@", comment);
                                                   }];
          }
          else if([[actionSheet buttonTitleAtIndex:buttonIndex] isEqualToString:thumbDownTitle])
          {
              [[VObjectManager sharedManager] dislikeComment:comment
-                                                successBlock:^(NSArray *resultObjects) {
+                                                successBlock:^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
+                                                {
                                                     //TODO:set dislike flag)
                                                     VLog(@"resultObjects: %@", resultObjects);
                                                 }
-                                                   failBlock:^(NSError *error) {
+                                                   failBlock:^(NSOperation* operation, NSError* error)
+                                                   {
                                                        VLog(@"Failed to dislike comment %@", comment);
                                                    }];
          }
@@ -580,13 +595,13 @@ static NSString* CommentCache = @"CommentCache";
     indicator.center = self.view.center;
     [indicator startAnimating];
     
-    SuccessBlock success = ^(NSArray* resultObjects)
+    VSuccessBlock success = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
     {
         NSLog(@"%@", resultObjects);
         [indicator stopAnimating];
         [self updatePredicate];
     };
-    FailBlock fail = ^(NSError* error)
+    VFailBlock fail = ^(NSOperation* operation, NSError* error)
     {
         if (error.code == 5500)
         {
@@ -637,7 +652,8 @@ static NSString* CommentCache = @"CommentCache";
         __block NSMutableArray* readComments = _newlyReadComments;
         [[VObjectManager sharedManager] readComments:readComments
                                          successBlock:nil
-                                            failBlock:^(NSError *error) {
+                                            failBlock:^(NSOperation* operation, NSError* error)
+                                            {
                                                 VLog(@"Warning: failed to mark following comments as read: %@", readComments);
                                             }];
     }

@@ -189,9 +189,9 @@ NSString*   const   kSignupViewControllerDomain =   @"VSignupViewControllerDomai
                                  emailAddress:self.emailTextField.text
                                      password:self.passwordTextField.text])
     {
-        SuccessBlock success = ^(NSArray* objects)
+        VSuccessBlock success = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
         {
-            VUser* mainUser = [objects firstObject];
+            VUser* mainUser = [resultObjects firstObject];
             if (![mainUser isKindOfClass:[VUser class]])
             {
                 VLog(@"Invalid user object returned in api/account/create");
@@ -202,7 +202,7 @@ NSString*   const   kSignupViewControllerDomain =   @"VSignupViewControllerDomai
             [self didSignUpWithUser:mainUser];
         };
 
-        FailBlock fail = ^(NSError* error)
+        VFailBlock fail = ^(NSOperation* operation, NSError* error)
         {
             [self didFailToSignUp:error];
         };

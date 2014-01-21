@@ -18,32 +18,32 @@
                                       mediaUrl:(NSURL*)mediaUrl
                                     toSequence:(VSequence*)sequence
                                      andParent:(VComment*)parent
-                                  successBlock:(SuccessBlock)success
-                                     failBlock:(FailBlock)fail;
+                                  successBlock:(VSuccessBlock)success
+                                     failBlock:(VFailBlock)fail;
 
 
 - (RKManagedObjectRequestOperation *)removeComment:(VComment*)comment
                                         withReason:(NSString*)removalReason
-                                      successBlock:(SuccessBlock)success
-                                         failBlock:(FailBlock)fail;
+                                      successBlock:(VSuccessBlock)success
+                                         failBlock:(VFailBlock)fail;
 
 - (RKManagedObjectRequestOperation *)flagComment:(VComment*)comment
-                                    successBlock:(SuccessBlock)success
-                                       failBlock:(FailBlock)fail;
+                                    successBlock:(VSuccessBlock)success
+                                       failBlock:(VFailBlock)fail;
 
 - (RKManagedObjectRequestOperation *)likeComment:(VComment*)comment
-                                    successBlock:(SuccessBlock)success
-                                       failBlock:(FailBlock)fail;
+                                    successBlock:(VSuccessBlock)success
+                                       failBlock:(VFailBlock)fail;
 
 - (RKManagedObjectRequestOperation *)dislikeComment:(VComment*)comment
-                                       successBlock:(SuccessBlock)success
-                                          failBlock:(FailBlock)fail;
+                                       successBlock:(VSuccessBlock)success
+                                          failBlock:(VFailBlock)fail;
 
 - (RKManagedObjectRequestOperation *)unvoteComment:(VComment*)comment
-                                      successBlock:(SuccessBlock)success
-                                         failBlock:(FailBlock)fail;
+                                      successBlock:(VSuccessBlock)success
+                                         failBlock:(VFailBlock)fail;
 
 - (RKManagedObjectRequestOperation *)readComments:(NSArray*)readComments
-                                     successBlock:(SuccessBlock)success
-                                        failBlock:(FailBlock)fail;
+                                     successBlock:(VSuccessBlock)success
+                                        failBlock:(VFailBlock)fail;
 @end

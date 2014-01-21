@@ -30,8 +30,8 @@ NSString *LoggedInChangedNotification = @"LoggedInChangedNotification";
 }
 
 - (RKManagedObjectRequestOperation *)loginToFacebookWithToken:(NSString*)accessToken
-                                                 SuccessBlock:(SuccessBlock)success
-                                                    failBlock:(FailBlock)failed
+                                                 SuccessBlock:(VSuccessBlock)success
+                                                    failBlock:(VFailBlock)failed
 {
     
     NSDictionary *parameters = @{@"facebook_access_token": accessToken ?: [NSNull null]};
@@ -40,15 +40,14 @@ NSString *LoggedInChangedNotification = @"LoggedInChangedNotification";
                object:nil
            parameters:parameters
          successBlock:success
-            failBlock:failed
-      paginationBlock:nil];
+            failBlock:failed];
 }
 
 #pragma mark - Twitter
 
 - (RKManagedObjectRequestOperation *)loginToTwitterWithToken:(NSString*)accessToken
-                                                SuccessBlock:(SuccessBlock)success
-                                                   failBlock:(FailBlock)failed
+                                                SuccessBlock:(VSuccessBlock)success
+                                                   failBlock:(VFailBlock)failed
 {
     
     NSDictionary *parameters = @{@"twitter_access_token": accessToken ?: [NSNull null]};
@@ -57,16 +56,15 @@ NSString *LoggedInChangedNotification = @"LoggedInChangedNotification";
                object:nil
            parameters:parameters
          successBlock:success
-            failBlock:failed
-      paginationBlock:nil];
+            failBlock:failed];
 }
 
 #pragma mark - Victorious
 
 - (RKManagedObjectRequestOperation *)loginToVictoriousWithEmail:(NSString *)email
                                                        password:(NSString *)password
-                                                   successBlock:(SuccessBlock)success
-                                                      failBlock:(FailBlock)fail
+                                                   successBlock:(VSuccessBlock)success
+                                                      failBlock:(VFailBlock)fail
 {
     NSDictionary *parameters = @{@"email": email ?: [NSNull null], @"password": password ?: [NSNull null]};
 
@@ -75,15 +73,14 @@ NSString *LoggedInChangedNotification = @"LoggedInChangedNotification";
                object:nil
            parameters:parameters
          successBlock:success
-            failBlock:fail
-      paginationBlock:nil];
+            failBlock:fail];
 }
 
 - (RKManagedObjectRequestOperation *)createVictoriousWithEmail:(NSString *)email
                                                       password:(NSString *)password
                                                       username:(NSString *)username
-                                                  successBlock:(SuccessBlock)success
-                                                     failBlock:(FailBlock)fail
+                                                  successBlock:(VSuccessBlock)success
+                                                     failBlock:(VFailBlock)fail
 {
     NSDictionary *parameters = @{@"email": email ?: [NSNull null],
                                  @"password": password ?: [NSNull null],
@@ -93,15 +90,14 @@ NSString *LoggedInChangedNotification = @"LoggedInChangedNotification";
                object:nil
            parameters:parameters
          successBlock:success
-            failBlock:fail
-      paginationBlock:nil];
+            failBlock:fail];
 }
 
 - (RKManagedObjectRequestOperation *)updateVictoriousWithEmail:(NSString *)email
                                                       password:(NSString *)password
                                                       username:(NSString *)username
-                                                  successBlock:(SuccessBlock)success
-                                                     failBlock:(FailBlock)fail
+                                                  successBlock:(VSuccessBlock)success
+                                                     failBlock:(VFailBlock)fail
 {
     NSDictionary *parameters = @{@"email": email ?: [NSNull null],
                                  @"password": password ?: [NSNull null],
@@ -111,8 +107,7 @@ NSString *LoggedInChangedNotification = @"LoggedInChangedNotification";
                object:nil
            parameters:parameters
          successBlock:success
-            failBlock:fail
-      paginationBlock:nil];
+            failBlock:fail];
 }
 
 #pragma mark - Logout
@@ -122,19 +117,21 @@ NSString *LoggedInChangedNotification = @"LoggedInChangedNotification";
     if (![self isAuthorized]) //foolish mortal you need to log in to log out...
         return nil;
     
-    SuccessBlock success = ^(NSArray* objects){
+    VSuccessBlock success = ^(NSOperation* operation, id fullResponse, NSArray* rkObjects)
+    {
+        //Warning: Sometimes empty payloads will appear as Array objects. Use the following line at your own risk.
+        //NSDictionary* payload = fullResponse[@"payload"];
         NSManagedObjectContext* context = self.managedObjectStore.persistentStoreManagedObjectContext;
         [context deleteObject:[self mainUser]];
         [context save:nil];
         [[NSNotificationCenter defaultCenter] postNotificationName:LoggedInChangedNotification object:nil];
     };
-    
+
     return [self GET:@"/api/logout"
               object:nil
            parameters:nil
          successBlock:success
-            failBlock:nil
-      paginationBlock:nil];
+            failBlock:nil];
 }
 
 @end

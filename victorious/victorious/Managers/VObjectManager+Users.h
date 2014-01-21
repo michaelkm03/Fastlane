@@ -11,11 +11,10 @@
 @interface VObjectManager (Users)
 
 - (RKManagedObjectRequestOperation *)fetchUser:(NSNumber*)userId
-                              withSuccessBlock:(SuccessBlock)success
-                                     failBlock:(FailBlock)fail;
+                              withSuccessBlock:(VSuccessBlock)success
+                                     failBlock:(VFailBlock)fail;
 
-- (RKManagedObjectRequestOperation *)fetchUser:(NSNumber*)userId
-                         forRelationshipObject:(id)relationshipObject
-                              withSuccessBlock:(SuccessBlock)success
-                                     failBlock:(FailBlock)fail;
+- (RKManagedObjectRequestOperation *)fetchUsers:(NSArray*)userIds
+                              withSuccessBlock:(VSuccessBlock)success
+                                     failBlock:(VFailBlock)fail;
 @end

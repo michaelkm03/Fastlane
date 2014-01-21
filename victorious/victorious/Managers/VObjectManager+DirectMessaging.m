@@ -56,8 +56,8 @@
     }
 }
 
-- (RKManagedObjectRequestOperation *)loadNextPageOfConversations:(SuccessBlock)success
-                                                       failBlock:(FailBlock)fail
+- (RKManagedObjectRequestOperation *)loadNextPageOfConversations:(VSuccessBlock)success
+                                                       failBlock:(VFailBlock)fail
 {
     NSString* path = @"/api/message/conversation_list";
     
@@ -80,7 +80,10 @@
     //        [self.paginationStatuses setObject:status forKey:kConversationPaginationKey];
     //    };
     
-    SuccessBlock fullSuccess = ^(NSArray* resultObjects){
+    VSuccessBlock fullSuccess = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
+    {
+        //Warning: Sometimes empty payloads will appear as Array objects. Use the following line at your own risk.
+        //NSDictionary* payload = fullResponse[@"payload"];
         
         for (VConversation* conversation in resultObjects)
         {
@@ -93,27 +96,25 @@
             {
                 //If we don't have the users then we need to fetch em.
                 [self fetchUser:conversation.other_interlocutor_user_id
-           forRelationshipObject:conversation
                 withSuccessBlock:nil
                        failBlock:nil];
             }
         }
         
         if (success)
-            success(resultObjects);
+            success(operation, fullResponse, resultObjects);
     };
     
     return [self GET:path
               object:nil
           parameters:nil
         successBlock:fullSuccess
-           failBlock:fail
-     paginationBlock:nil];//pagination];
+           failBlock:fail];
 }
 
 - (RKManagedObjectRequestOperation *)loadNextPageOfMessagesForConversation:(VConversation*)conversation
-                                                              successBlock:(SuccessBlock)success
-                                                                 failBlock:(FailBlock)fail
+                                                              successBlock:(VSuccessBlock)success
+                                                                 failBlock:(VFailBlock)fail
 {
     NSString* path = [NSString stringWithFormat:@"/api/message/conversation/%@", conversation.remoteId];
     
@@ -137,7 +138,7 @@
 //        [self.paginationStatuses setObject:status forKey:statusKey];
 //    };
     
-    SuccessBlock fullSuccess = ^(NSArray* resultObjects)
+    VSuccessBlock fullSuccess = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
     {
         for (VMessage* message in resultObjects)
         {
@@ -147,34 +148,31 @@
             {
                 //If we don't have the users then we need to fetch em.
                 [self fetchUser:message.senderUserId
-           forRelationshipObject:message
                 withSuccessBlock:nil
                        failBlock:nil];
             }
         }
         
         if (success)
-            success(resultObjects);
+            success(operation, fullResponse, resultObjects);
     };
     
     return [self GET:path
               object:nil
           parameters:nil
         successBlock:fullSuccess
-           failBlock:fail
-     paginationBlock:nil];//pagination];
+           failBlock:fail];
 }
 
 - (RKManagedObjectRequestOperation *)markConversationAsRead:(VConversation*)conversation
-                                               successBlock:(SuccessBlock)success
-                                                  failBlock:(FailBlock)fail
+                                               successBlock:(VSuccessBlock)success
+                                                  failBlock:(VFailBlock)fail
 {
     return [self POST:@"/api/message/mark_conversation_read"
                object:nil
            parameters:@{@"conversation_id" : conversation.remoteId}
          successBlock:success
-            failBlock:fail
-      paginationBlock:nil];
+            failBlock:fail];
     
 }
 
@@ -183,8 +181,8 @@
                                          Data:(NSData*)data
                                mediaExtension:(NSString*)extension
                                      mediaUrl:(NSURL*)mediaUrl
-                                 successBlock:(AFSuccessBlock)success
-                                    failBlock:(AFFailBlock)fail
+                                 successBlock:(VSuccessBlock)success
+                                    failBlock:(VFailBlock)fail
 {
     //Set the parameters
     NSMutableDictionary* parameters = [[NSMutableDictionary alloc] initWithCapacity:5];
@@ -210,25 +208,24 @@
 }
 
 //Don't think we need this API call, but just in case...
-- (RKManagedObjectRequestOperation *)unreadCountForConversationsWithSuccessBlock:(SuccessBlock)success
-                                                                       failBlock:(FailBlock)fail
+- (RKManagedObjectRequestOperation *)unreadCountForConversationsWithSuccessBlock:(VSuccessBlock)success
+                                                                       failBlock:(VFailBlock)fail
 {
     
-    SuccessBlock fullSuccess = ^(NSArray* resultObjects)
+    VSuccessBlock fullSuccess = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
     {
         if ([resultObjects firstObject])
             self.mainUser.unreadConversation = (VUnreadConversation*)[self.mainUser.managedObjectContext objectWithID:[[resultObjects firstObject] objectID]];
 
         if (success)
-            success(resultObjects);
+            success(operation, fullResponse, resultObjects);
     };
     
     return [self GET:@"/api/message/unread_message_count"
               object:nil
           parameters:nil
         successBlock:fullSuccess
-           failBlock:fail
-     paginationBlock:nil];
+           failBlock:fail];
 }
 
 @end

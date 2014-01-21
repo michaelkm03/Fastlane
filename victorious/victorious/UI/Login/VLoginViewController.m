@@ -213,14 +213,14 @@ NSString*   const   kVLoginViewControllerDomain =   @"VLoginViewControllerDomain
 {
     if ([self shouldLoginWithUsername:self.emailTextField.text password:self.passwordTextField.text])
     {
-        SuccessBlock success = ^(NSArray* objects)
+        VSuccessBlock success = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
         {
-            if (![[objects firstObject] isKindOfClass:[VUser class]])
+            if (![[resultObjects firstObject] isKindOfClass:[VUser class]])
                 [self didFailToLogin:nil];
             
-            [self didLoginWithUser:[objects firstObject]];
+            [self didLoginWithUser:[resultObjects firstObject]];
         };
-        FailBlock fail = ^(NSError* error)
+        VFailBlock fail = ^(NSOperation* operation, NSError* error)
         {
             [self didFailToLogin:error];
             VLog(@"Error in victorious Login: %@", error);
@@ -270,14 +270,14 @@ NSString*   const   kVLoginViewControllerDomain =   @"VLoginViewControllerDomain
                                                ACAccountCredential *fbCredential = [facebookAccount credential];
                                                NSString *accessToken = [fbCredential oauthToken];
                                                
-                                               SuccessBlock success = ^(NSArray* objects)
+                                               VSuccessBlock success = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
                                                {
-                                                   if (![[objects firstObject] isKindOfClass:[VUser class]])
+                                                   if (![[resultObjects firstObject] isKindOfClass:[VUser class]])
                                                        [self didFailToLogin:nil];
                                                    
-                                                   [self didLoginWithUser:[objects firstObject]];
+                                                   [self didLoginWithUser:[resultObjects firstObject]];
                                                };
-                                               FailBlock failed = ^(NSError* error)
+                                               VFailBlock failed = ^(NSOperation* operation, NSError* error)
                                                {
                                                    [self didFailToLogin:error];
                                                    VLog(@"Error in FB Login: %@", error);
@@ -317,14 +317,14 @@ NSString*   const   kVLoginViewControllerDomain =   @"VLoginViewControllerDomain
         }
         else
         {
-            SuccessBlock success = ^(NSArray* objects)
+            VSuccessBlock success = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
             {
-                if (![[objects firstObject] isKindOfClass:[VUser class]])
+                if (![[resultObjects firstObject] isKindOfClass:[VUser class]])
                     [self didFailToLogin:nil];
                 
-                [self didLoginWithUser:[objects firstObject]];
+                [self didLoginWithUser:[resultObjects firstObject]];
             };
-            FailBlock failed = ^(NSError* error)
+            VFailBlock failed = ^(NSOperation* operation, NSError* error)
             {
                 [self didFailToLogin:error];
                 VLog(@"Error in Twitter Login: %@", error);
