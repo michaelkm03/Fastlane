@@ -17,7 +17,7 @@
     {
         _pagesLoaded = 0;
         _totalPages = 1;
-        _itemsPerPage = 10;
+        _itemsPerPage = 20;
     }
     return self;
 }
