@@ -352,16 +352,18 @@ typedef NS_ENUM(NSInteger, VStreamScope)
         NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
     } else
     {   //TODO: there has to be a better way of doing this.
-        if (![self.searchFetchedResultsController performFetch:&error] && error)
-        {
-            // Update to handle the error appropriately.
-            NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
-        }
-        else
-        {
-            [self.refreshControl endRefreshing];
-        }
+        VLog(@"");
+        [self.refreshControl endRefreshing];
     }
+//    [[VObjectManager sharedManager] loadNextPageOfSequencesForCategory:nil
+//                                                          successBlock:^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
+//     {
+//         [self.refreshControl endRefreshing];
+//     }
+//                                                             failBlock:^(NSOperation* operation, NSError* error)
+//    {
+//        [self.refreshControl endRefreshing];
+//    }];
 }
 
 #pragma mark - Notification

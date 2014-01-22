@@ -48,7 +48,7 @@
                                withSuccessBlock:(VSuccessBlock)success
                                       failBlock:(VFailBlock)fail
 {
-    for (NSNumber* userID in userIds)
+    for (NSNumber* userID in [[NSSet setWithArray:userIds] allObjects])
     {
         [self fetchUser:userID
        withSuccessBlock:success
