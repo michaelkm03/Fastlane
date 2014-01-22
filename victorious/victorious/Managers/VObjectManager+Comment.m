@@ -18,7 +18,6 @@
 
 @implementation VObjectManager (Comment)
 
-
 - (VComment*)commentForID:(NSInteger)commentId
 {
     VComment* comment = [self.objectCache objectForKey:[@"comment" stringByAppendingString:@(commentId).stringValue]];
@@ -36,7 +35,7 @@
     comment = [[context executeFetchRequest:request error:&error] firstObject];
     if (error != nil)
     {
-        VLog(@"Error occured in user objectsForEntity: %@", error);
+        VLog(@"Error occured in commentForId: %@", error);
     }
     
     if (comment)
@@ -50,7 +49,7 @@
                                          successBlock:(VSuccessBlock)success
                                             failBlock:(VFailBlock)fail
 {
-    VComment* comment = [self commentForID:commentID];
+    VComment* comment = (VComment*)[self objectForID:@(commentID) idKey:kRemoteIdKey entityName:[VComment entityName]];
     if (comment)
     {
         if (success)

@@ -104,10 +104,20 @@
            failBlock:fail];
 }
 
-- (RKManagedObjectRequestOperation *)fetchSequence:(VSequence*)sequence
+- (RKManagedObjectRequestOperation *)fetchSequence:(NSNumber*)sequenceId
                                       successBlock:(VSuccessBlock)success
                                          failBlock:(VFailBlock)fail
 {
+    
+    VSequence* sequence = (VSequence*)[self objectForID:sequenceId idKey:kRemoteIdKey entityName:[VSequence entityName]];
+    if (sequence)
+    {
+        if (success)
+            success(nil, nil, @[sequence]);
+        
+        return nil;
+    }
+    
     return [self fetchSequenceByID:sequence.remoteId
                       successBlock:success
                          failBlock:fail
@@ -400,10 +410,9 @@
         if ([fullResponse[@"error"] integerValue] == 0)
         {
             NSNumber* sequenceID = fullResponse[@"payload"][@"sequence_id"];
-            [self fetchSequenceByID:sequenceID
-                        successBlock:success
-                           failBlock:fail
-                         loadAttempt:0];
+            [self fetchSequence:sequenceID
+                   successBlock:success
+                      failBlock:fail];
         }
         else
         {
@@ -497,10 +506,9 @@
     VSuccessBlock fullSuccess = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
     {
         NSNumber* sequenceID = fullResponse[@"payload"][@"sequence_id"];
-        [self fetchSequenceByID:sequenceID
-                   successBlock:success
-                      failBlock:fail
-                     loadAttempt:0];
+        [self fetchSequence:sequenceID
+               successBlock:success
+                  failBlock:fail];
     };
     
     return [self upload:allData

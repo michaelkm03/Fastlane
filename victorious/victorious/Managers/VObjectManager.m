@@ -228,6 +228,34 @@
     return status;
 }
 
+- (NSManagedObject*)objectForID:(NSNumber*)objectID
+                          idKey:(NSString*)idKey
+                     entityName:(NSString*)entityName
+{
+    NSManagedObject* object = [self.objectCache objectForKey:[entityName stringByAppendingString:objectID.stringValue]];
+    if (object)
+        return object;
+    
+    NSManagedObjectContext* context = self.managedObjectStore.persistentStoreManagedObjectContext;
+    NSEntityDescription *entity = [NSEntityDescription entityForName:entityName
+                                              inManagedObjectContext:context];
+    NSFetchRequest *request = [[NSFetchRequest alloc] init];
+    [request setEntity:entity];
+    NSPredicate* idFilter = [NSPredicate predicateWithFormat:@"%K == %@", idKey, objectID];
+    [request setPredicate:idFilter];
+    NSError *error = nil;
+    object = [[context executeFetchRequest:request error:&error] firstObject];
+    if (error != nil)
+    {
+        VLog(@"Error occured in commentForId: %@", error);
+    }
+    
+    if (object)
+        [self.objectCache setObject:object forKey:[entityName stringByAppendingString:objectID.stringValue]];
+    
+    return object;
+}
+
 #pragma mark - Subclass
 - (id)appropriateObjectRequestOperationWithObject:(id)object
                                            method:(RKRequestMethod)method

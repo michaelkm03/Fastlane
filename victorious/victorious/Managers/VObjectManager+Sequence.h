@@ -21,7 +21,7 @@
                                                            successBlock:(VSuccessBlock)success
                                                               failBlock:(VFailBlock)fail;
 
-- (RKManagedObjectRequestOperation *)fetchSequence:(VSequence*)sequence
+- (RKManagedObjectRequestOperation *)fetchSequence:(NSNumber*)sequenceId
                                       successBlock:(VSuccessBlock)success
                                          failBlock:(VFailBlock)fail;
 

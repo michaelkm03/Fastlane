@@ -9,6 +9,9 @@
 static NSUInteger const VConstantsMessageLength     = 140;
 static NSUInteger const VConstantsForumTitleLength  = 65;
 
+
+static NSString*   const   kRemoteIdKey = @"remoteId";
+
 static NSString* const VConstantsMediaTypeYoutube   = @"youtube_video_id";
 static NSString* const VConstantsMediaTypeVideo     = @"video";
 static NSString* const VConstantsMediaTypeImage     = @"image";

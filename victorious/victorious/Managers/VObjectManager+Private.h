@@ -20,6 +20,10 @@
 
 @interface VObjectManager (Private)
 
+- (NSManagedObject*)objectForID:(NSNumber*)objectID
+                          idKey:(NSString*)idKey
+                     entityName:(NSString*)entityName;
+
 - (RKManagedObjectRequestOperation *)GET:(NSString *)path
                                   object:(id)object
                               parameters:(NSDictionary *)parameters

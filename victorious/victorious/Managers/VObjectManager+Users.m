@@ -13,7 +13,9 @@
 #import "VComment+RestKit.h"
 #import "VMessage+RestKit.h"
 #import "VSequence+RestKit.h"
-#import "VUser.h"
+#import "VUser+RestKit.h"
+
+#import "VConstants.h"
 
 @interface VObjectManager (UserProperties)
 @property (nonatomic, strong) VSuccessBlock fullSuccess;
@@ -22,37 +24,13 @@
 
 @implementation VObjectManager (Users)
 
-- (VUser*)userForID:(NSNumber*)userId
-{
-    VUser* user = [self.objectCache objectForKey:[@"user" stringByAppendingString:userId.stringValue]];
-    if (user)
-        return user;
-    
-    NSManagedObjectContext* context = self.managedObjectStore.persistentStoreManagedObjectContext;
-    NSEntityDescription *entity = [NSEntityDescription entityForName:[VUser entityName]
-                                              inManagedObjectContext:context];
-    NSFetchRequest *request = [[NSFetchRequest alloc] init];
-    [request setEntity:entity];
-    NSPredicate* idFilter = [NSPredicate predicateWithFormat:@"remoteId == %@", userId];
-    [request setPredicate:idFilter];
-    NSError *error = nil;
-    user = [[context executeFetchRequest:request error:&error] firstObject];
-    if (error != nil)
-    {
-        VLog(@"Error occured in user objectsForEntity: %@", error);
-    }
-    
-    if (user)
-        [self.objectCache setObject:user forKey:[@"user" stringByAppendingString:user.remoteId.stringValue]];
-    
-    return user;
-}
-
 - (RKManagedObjectRequestOperation *)fetchUser:(NSNumber*)userId
                               withSuccessBlock:(VSuccessBlock)success
                                      failBlock:(VFailBlock)fail
 {
-    VUser* user = [self userForID:userId];
+    VUser* user = (VUser*)[self objectForID:userId
+                                      idKey:kRemoteIdKey
+                                 entityName:[VUser entityName]];
     if (user)
     {
         if (success)

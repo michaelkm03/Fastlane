@@ -47,7 +47,7 @@
         [indicator startAnimating];
         indicator.hidesWhenStopped = YES;
         
-        [[VObjectManager sharedManager] fetchSequence:self.sequence
+        [[VObjectManager sharedManager] fetchSequence:self.sequence.remoteId
                                          successBlock:^(NSOperation* operation, id fullResponse, NSArray* rkObjects)
                                          {
                                              [indicator stopAnimating];
