@@ -140,7 +140,7 @@
     self.firstResultLabel.backgroundColor = self.secondResultLabel.backgroundColor =
             [[VThemeManager sharedThemeManager] themedColorForKeyPath:@"theme.color.poll.result.default"];
             //[[VThemeManager sharedThemeManager] themedColorForKeyPath:@"theme.color.post.poll.or.border"];
-    self.firstResultLabel.text = self.secondResultLabel.text = @"50%";
+    self.firstResultLabel.text = self.secondResultLabel.text = @"0%";
     
     self.firstResultLabel.hidden = self.secondResultLabel.hidden = YES;
 }
@@ -232,23 +232,23 @@
         return;
     }
     
-    [[[VObjectManager sharedManager] answerPoll:self.sequence
+    [[VObjectManager sharedManager] answerPoll:self.sequence
                                      withAnswer:answer
-                                   successBlock:^(NSArray *resultObjects)
+                                  successBlock:^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
       {
-          [[[VObjectManager sharedManager] pollResultsForSequence:self.sequence
-                                                    successBlock:^(NSArray *resultObjects)
+          [[VObjectManager sharedManager] pollResultsForSequence:self.sequence
+                                                    successBlock:^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
                                                     {
                                                         [self showResultsForAnswerId:answer.remoteId];
                                                     }
-                                                        failBlock:^(NSError *error)
+                                                       failBlock:^(NSOperation* operation, NSError* error)
                                                         {
                                                             VLog(@"Failed with error: %@", error);
-                                                        }] start];
+                                                        }];
           
           VLog(@"Successfully answered: %@", resultObjects);
       }
-                                      failBlock:^(NSError *error)
+                                     failBlock:^(NSOperation* operation, NSError* error)
       {
           //Error 1005 is "Poll result was already recorded.
           //If we get anything else... lie and say we already answered
@@ -259,7 +259,7 @@
                             otherButtonTitles:nil] show];
           
           VLog(@"Failed to answer with error: %@", error);
-      }] start];
+      }];
 }
 
 - (void)showResultsForAnswerId:(NSNumber*)answerId

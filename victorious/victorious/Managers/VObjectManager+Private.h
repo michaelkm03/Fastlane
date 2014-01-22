@@ -1,18 +1,19 @@
 //
 //  VObjectManager+Private.h
-//  victoriOS
+//  victorious
 //
-//  Created by David Keegan on 12/10/13.
-//  Copyright (c) 2013 Victorious, Inc. All rights reserved.
+//  Created by Will Long on 1/21/14.
+//  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
 #import "VObjectManager.h"
-#import "VPaginationStatus.h"
+
+@class VPaginationStatus;
+
 
 @interface VObjectManager ()
 
 @property (nonatomic, strong) NSMutableDictionary* paginationStatuses;
-@property (nonatomic, strong) NSMutableDictionary* userRelationships;
 
 @end
 
@@ -21,16 +22,14 @@
 - (RKManagedObjectRequestOperation *)GET:(NSString *)path
                                   object:(id)object
                               parameters:(NSDictionary *)parameters
-                            successBlock:(SuccessBlock)successBlock
-                               failBlock:(FailBlock)failBlock
-                         paginationBlock:(PaginationBlock)paginationBlock;
+                            successBlock:(VSuccessBlock)successBlock
+                               failBlock:(VFailBlock)failBlock;
 
 - (RKManagedObjectRequestOperation *)POST:(NSString *)path
                                    object:(id)object
                                parameters:(NSDictionary *)parameters
-                             successBlock:(SuccessBlock)successBlock
-                                failBlock:(FailBlock)failBlock
-                          paginationBlock:(PaginationBlock)paginationBlock;
+                             successBlock:(VSuccessBlock)successBlock
+                                failBlock:(VFailBlock)failBlock;
 
 /*! Uses multipartFormRestquest to upload media.
  * allData key:value must be NSString* parameterName:NSData* binaryData
@@ -39,8 +38,8 @@
                     fileExtension:(NSDictionary*)allExtensions
                            toPath:(NSString*)path
                        parameters:(NSDictionary*)parameters
-                     successBlock:(AFSuccessBlock)successBlock
-                        failBlock:(AFFailBlock)failBlock;
+                     successBlock:(VSuccessBlock)successBlock
+                        failBlock:(VFailBlock)failBlock;
 
 -(VPaginationStatus *)statusForKey:(NSString*)key;
 

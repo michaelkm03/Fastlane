@@ -83,9 +83,9 @@ NSString*   const   kVLoginViewControllerDomain =   @"VLoginViewControllerDomain
     
     if (mainuser)
     { //We've logged in
-        [[[VObjectManager sharedManager] loadNextPageOfConversations:nil failBlock:nil] start];
-        [[[VObjectManager sharedManager] pollResultsForUser:mainuser successBlock:nil failBlock:nil] start];
-        [[[VObjectManager sharedManager] unreadCountForConversationsWithSuccessBlock:nil failBlock:nil] start];
+        [[VObjectManager sharedManager] loadNextPageOfConversations:nil failBlock:nil];
+        [[VObjectManager sharedManager] pollResultsForUser:mainuser successBlock:nil failBlock:nil];
+        [[VObjectManager sharedManager] unreadCountForConversationsWithSuccessBlock:nil failBlock:nil];
     } else
     { //We've logged out
         [VObjectManager sharedManager].mainUser = nil;
@@ -213,23 +213,23 @@ NSString*   const   kVLoginViewControllerDomain =   @"VLoginViewControllerDomain
 {
     if ([self shouldLoginWithUsername:self.emailTextField.text password:self.passwordTextField.text])
     {
-        SuccessBlock success = ^(NSArray* objects)
+        VSuccessBlock success = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
         {
-            if (![[objects firstObject] isKindOfClass:[VUser class]])
+            if (![[resultObjects firstObject] isKindOfClass:[VUser class]])
                 [self didFailToLogin:nil];
             
-            [self didLoginWithUser:[objects firstObject]];
+            [self didLoginWithUser:[resultObjects firstObject]];
         };
-        FailBlock fail = ^(NSError* error)
+        VFailBlock fail = ^(NSOperation* operation, NSError* error)
         {
             [self didFailToLogin:error];
             VLog(@"Error in victorious Login: %@", error);
         };
         
-        [[[VObjectManager sharedManager] loginToVictoriousWithEmail:self.emailTextField.text
+        [[VObjectManager sharedManager] loginToVictoriousWithEmail:self.emailTextField.text
                                                            password:self.passwordTextField.text
                                                        successBlock:success
-                                                          failBlock:fail] start];
+                                                          failBlock:fail];
     }
 }
 
@@ -270,23 +270,23 @@ NSString*   const   kVLoginViewControllerDomain =   @"VLoginViewControllerDomain
                                                ACAccountCredential *fbCredential = [facebookAccount credential];
                                                NSString *accessToken = [fbCredential oauthToken];
                                                
-                                               SuccessBlock success = ^(NSArray* objects)
+                                               VSuccessBlock success = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
                                                {
-                                                   if (![[objects firstObject] isKindOfClass:[VUser class]])
+                                                   if (![[resultObjects firstObject] isKindOfClass:[VUser class]])
                                                        [self didFailToLogin:nil];
                                                    
-                                                   [self didLoginWithUser:[objects firstObject]];
+                                                   [self didLoginWithUser:[resultObjects firstObject]];
                                                };
-                                               FailBlock failed = ^(NSError* error)
+                                               VFailBlock failed = ^(NSOperation* operation, NSError* error)
                                                {
                                                    [self didFailToLogin:error];
                                                    VLog(@"Error in FB Login: %@", error);
                                                };
                                                
-                                               [[[VObjectManager sharedManager]
+                                               [[VObjectManager sharedManager]
                                                  loginToFacebookWithToken:accessToken
                                                              SuccessBlock:success
-                                                                failBlock:failed] start];
+                                                                failBlock:failed];
                                            }
                                        }];
 }
@@ -317,14 +317,14 @@ NSString*   const   kVLoginViewControllerDomain =   @"VLoginViewControllerDomain
         }
         else
         {
-            SuccessBlock success = ^(NSArray* objects)
+            VSuccessBlock success = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
             {
-                if (![[objects firstObject] isKindOfClass:[VUser class]])
+                if (![[resultObjects firstObject] isKindOfClass:[VUser class]])
                     [self didFailToLogin:nil];
                 
-                [self didLoginWithUser:[objects firstObject]];
+                [self didLoginWithUser:[resultObjects firstObject]];
             };
-            FailBlock failed = ^(NSError* error)
+            VFailBlock failed = ^(NSOperation* operation, NSError* error)
             {
                 [self didFailToLogin:error];
                 VLog(@"Error in Twitter Login: %@", error);
@@ -337,10 +337,10 @@ NSString*   const   kVLoginViewControllerDomain =   @"VLoginViewControllerDomain
             NSString* accessToken = [ftwCredential oauthToken];
             VLog(@"Twitter Access Token: %@", accessToken);
             
-            [[[VObjectManager sharedManager]
+            [[VObjectManager sharedManager]
               loginToTwitterWithToken:accessToken
                          SuccessBlock:success
-                            failBlock:failed] start];
+                            failBlock:failed];
         }
     }];
 }

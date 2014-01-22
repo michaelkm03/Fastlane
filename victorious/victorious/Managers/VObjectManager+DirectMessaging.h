@@ -14,26 +14,26 @@
 
 - (VConversation*)conversationWithUser:(VUser*)user;
 
-- (RKManagedObjectRequestOperation *)loadNextPageOfConversations:(SuccessBlock)success
-                                                       failBlock:(FailBlock)fail;
+- (RKManagedObjectRequestOperation *)loadNextPageOfConversations:(VSuccessBlock)success
+                                                       failBlock:(VFailBlock)fail;
 
 - (RKManagedObjectRequestOperation *)loadNextPageOfMessagesForConversation:(VConversation*)conversation
-                                                              successBlock:(SuccessBlock)success
-                                                                 failBlock:(FailBlock)fail;
+                                                              successBlock:(VSuccessBlock)success
+                                                                 failBlock:(VFailBlock)fail;
 
 - (RKManagedObjectRequestOperation *)markConversationAsRead:(VConversation*)conversation
-                                               successBlock:(SuccessBlock)success
-                                                  failBlock:(FailBlock)fail;
+                                               successBlock:(VSuccessBlock)success
+                                                  failBlock:(VFailBlock)fail;
 
 - (AFHTTPRequestOperation *)sendMessageToUser:(VUser*)user
                                      withText:(NSString*)text
                                          Data:(NSData*)data
                                mediaExtension:(NSString*)extension
                                      mediaUrl:(NSURL*)mediaUrl
-                                 successBlock:(AFSuccessBlock)success
-                                    failBlock:(AFFailBlock)fail;
+                                 successBlock:(VSuccessBlock)success
+                                    failBlock:(VFailBlock)fail;
 
-- (RKManagedObjectRequestOperation *)unreadCountForConversationsWithSuccessBlock:(SuccessBlock)success
-                                                                       failBlock:(FailBlock)fail;
+- (RKManagedObjectRequestOperation *)unreadCountForConversationsWithSuccessBlock:(VSuccessBlock)success
+                                                                       failBlock:(VFailBlock)fail;
 
 @end

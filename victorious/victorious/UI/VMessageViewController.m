@@ -49,25 +49,25 @@ const   CGFloat     kMessageRowHeight           =   80;
 
  - (void)loadData
 {
-    [[[VObjectManager sharedManager] loadNextPageOfMessagesForConversation:self.conversation
-                                                              successBlock:^(NSArray *resultObjects)
-      {
-          [[[VObjectManager sharedManager] markConversationAsRead:self.conversation successBlock:^(NSArray *resultObjects)
-            {
-                NSSortDescriptor*   sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"postedAt" ascending:YES];
-                self.messages = [[self.conversation.messages allObjects] sortedArrayUsingDescriptors:@[sortDescriptor]];
-                [self.tableView reloadData];
-            }
-            failBlock:^(NSError *error)
-            {
-                NSLog(@"%@", error.localizedDescription);
-            }] start];
-          
-      }
-      failBlock:^(NSError *error)
-      {
-          NSLog(@"%@", error.localizedDescription);
-      }] start];
+    [[VObjectManager sharedManager] loadNextPageOfMessagesForConversation:self.conversation
+                                                             successBlock:^(NSOperation* operation, id fullResponse, NSArray* rkObjects)
+     {
+         [[VObjectManager sharedManager] markConversationAsRead:self.conversation successBlock:^(NSOperation* operation, id fullResponse, NSArray* rkObjects)
+          {
+              NSSortDescriptor*   sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"postedAt" ascending:YES];
+              self.messages = [[self.conversation.messages allObjects] sortedArrayUsingDescriptors:@[sortDescriptor]];
+              [self.tableView reloadData];
+          }
+                                                      failBlock:^(NSOperation* operation, NSError* error)
+          {
+              NSLog(@"%@", error.localizedDescription);
+          }];
+         
+     }
+                                                                failBlock:^(NSOperation* operation, NSError* error)
+     {
+         NSLog(@"%@", error.localizedDescription);
+     }];
 }
 
 #pragma mark - Table view data source
@@ -112,22 +112,23 @@ const   CGFloat     kMessageRowHeight           =   80;
                                                   Data:data
                                         mediaExtension:mediaExtension
                                              mediaUrl:nil
-                                          successBlock:^(AFHTTPRequestOperation* operation, id response)
-                                          {
+                                         successBlock:^(NSOperation* operation, id fullResponse, NSArray* rkObjects)
+                                        {
+                                              NSDictionary* payload = fullResponse[@"payload"];
                                               if (!self.conversation.remoteId)
                                               {
-                                                  self.conversation.remoteId = response[@"payload"][@"conversation_id"];
+                                                  self.conversation.remoteId = payload[@"conversation_id"];
                                                   [self.conversation.managedObjectContext save:nil];
                                               }
                                               
                                               [self loadData];
                                               
-                                               VLog(@"Succeed with response: %@", response);
-                                          }
-                                             failBlock:^(AFHTTPRequestOperation* operation, NSError *error)
+                                               VLog(@"Succeed with response: %@", fullResponse);
+                                        }
+                                            failBlock:^(NSOperation* operation, NSError* error)
                                           {
                                                VLog(@"Failed in creating message with error: %@", error);
-                                        }];
+                                          }];
 }
 
 @end

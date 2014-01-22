@@ -8,53 +8,50 @@
 
 #import "VObjectManager.h"
 
-#import "VCategory+RestKit.h"
-#import "VStatSequence+RestKit.h"
-
-@class VAnswer;
+@class VAnswer, VSequence, VCategory;
 
 @interface VObjectManager (Sequence)
 
 - (RKManagedObjectRequestOperation *)initialSequenceLoad;
 
-- (RKManagedObjectRequestOperation *)loadSequenceCategoriesWithSuccessBlock:(SuccessBlock)success
-                                                                  failBlock:(FailBlock)fail;
+- (RKManagedObjectRequestOperation *)loadSequenceCategoriesWithSuccessBlock:(VSuccessBlock)success
+                                                                  failBlock:(VFailBlock)fail;
 
 - (RKManagedObjectRequestOperation *)loadNextPageOfSequencesForCategory:(VCategory*)category
-                                                           successBlock:(SuccessBlock)success
-                                                              failBlock:(FailBlock)fail;
+                                                           successBlock:(VSuccessBlock)success
+                                                              failBlock:(VFailBlock)fail;
 
 - (RKManagedObjectRequestOperation *)loadFullDataForSequence:(VSequence*)sequence
-                                                successBlock:(SuccessBlock)success
-                                                   failBlock:(FailBlock)fail;
+                                                successBlock:(VSuccessBlock)success
+                                                   failBlock:(VFailBlock)fail;
 
 - (RKManagedObjectRequestOperation *)fetchSequence:(VSequence*)sequence
-                                      successBlock:(SuccessBlock)success
-                                         failBlock:(FailBlock)fail;
+                                      successBlock:(VSuccessBlock)success
+                                         failBlock:(VFailBlock)fail;
 
 - (RKManagedObjectRequestOperation *)loadNextPageOfCommentsForSequence:(VSequence*)sequence
-                                                          successBlock:(SuccessBlock)success
-                                                             failBlock:(FailBlock)fail;
+                                                          successBlock:(VSuccessBlock)success
+                                                             failBlock:(VFailBlock)fail;
 
 - (RKManagedObjectRequestOperation *)shareSequenceToTwitter:(VSequence*)sequence
-                                               successBlock:(SuccessBlock)success
-                                                  failBlock:(FailBlock)fail;
+                                               successBlock:(VSuccessBlock)success
+                                                  failBlock:(VFailBlock)fail;
 
 - (RKManagedObjectRequestOperation *)shareSequenceToFacebook:(VSequence*)sequence
-                                                successBlock:(SuccessBlock)success
-                                                   failBlock:(FailBlock)fail;
+                                                successBlock:(VSuccessBlock)success
+                                                   failBlock:(VFailBlock)fail;
 
 - (RKManagedObjectRequestOperation *)likeSequence:(VSequence*)sequence
-                                     successBlock:(SuccessBlock)success
-                                        failBlock:(FailBlock)fail;
+                                     successBlock:(VSuccessBlock)success
+                                        failBlock:(VFailBlock)fail;
 
 - (RKManagedObjectRequestOperation *)dislikeSequence:(VSequence*)sequence
-                                        successBlock:(SuccessBlock)success
-                                           failBlock:(FailBlock)fail;
+                                        successBlock:(VSuccessBlock)success
+                                           failBlock:(VFailBlock)fail;
 
 - (RKManagedObjectRequestOperation *)unvoteSequence:(VSequence*)sequence
-                                       successBlock:(SuccessBlock)success
-                                          failBlock:(FailBlock)fail;
+                                       successBlock:(VSuccessBlock)success
+                                          failBlock:(VFailBlock)fail;
 
 - (AFHTTPRequestOperation * )createPollWithName:(NSString*)name
                                     description:(NSString*)description
@@ -67,29 +64,29 @@
                                      media2Data:(NSData*)media2Data
                                 media2Extension:(NSString*)media2Extension
                                       media2Url:(NSURL*)media2Url
-                                   successBlock:(SuccessBlock)success
-                                      failBlock:(FailBlock)fail;
+                                   successBlock:(VSuccessBlock)success
+                                      failBlock:(VFailBlock)fail;
 
 - (RKManagedObjectRequestOperation * )createVideoWithName:(NSString*)name
                                               description:(NSString*)description
                                                 mediaData:(NSData*)mediaData
                                                 mediaUrl:(NSURL*)mediaUrl
-                                             successBlock:(SuccessBlock)success
-                                                failBlock:(FailBlock)fail;
+                                             successBlock:(VSuccessBlock)success
+                                                failBlock:(VFailBlock)fail;
 
 - (RKManagedObjectRequestOperation * )createImageWithName:(NSString*)name
                                               description:(NSString*)description
                                                 mediaData:(NSData*)mediaData
                                                  mediaUrl:(NSURL*)mediaUrl
-                                             successBlock:(SuccessBlock)success
-                                                failBlock:(FailBlock)fail;
+                                             successBlock:(VSuccessBlock)success
+                                                failBlock:(VFailBlock)fail;
 
 - (AFHTTPRequestOperation * )createForumWithName:(NSString*)name
                                      description:(NSString*)description
                                        mediaData:(NSData*)mediaData
                                         mediaUrl:(NSURL*)mediaUrl
-                                    successBlock:(SuccessBlock)success
-                                       failBlock:(FailBlock)fail;
+                                    successBlock:(VSuccessBlock)success
+                                       failBlock:(VFailBlock)fail;
 
 - (RKManagedObjectRequestOperation * )uploadMediaWithName:(NSString*)name
                                               description:(NSString*)description
@@ -97,21 +94,21 @@
                                                 mediaData:(NSData*)mediaData
                                                 extension:(NSString*)extension
                                                  mediaUrl:(NSURL*)mediaUrl
-                                             successBlock:(SuccessBlock)success
-                                                failBlock:(FailBlock)fail;
+                                             successBlock:(VSuccessBlock)success
+                                                failBlock:(VFailBlock)fail;
 #pragma mark - StatSequence Methods
 
 - (RKManagedObjectRequestOperation *)answerPoll:(VSequence*)poll
-                                     withAnswer:answer
-                                   successBlock:(SuccessBlock)success
-                                      failBlock:(FailBlock)fail;
+                                     withAnswer:(VAnswer*)answer
+                                   successBlock:(VSuccessBlock)success
+                                      failBlock:(VFailBlock)fail;
 
 - (RKManagedObjectRequestOperation *)pollResultsForSequence:(VSequence*)sequence
-                                               successBlock:(SuccessBlock)success
-                                                  failBlock:(FailBlock)fail;
+                                               successBlock:(VSuccessBlock)success
+                                                  failBlock:(VFailBlock)fail;
 
 - (RKManagedObjectRequestOperation *)pollResultsForUser:(VUser*)user
-                                           successBlock:(SuccessBlock)success
-                                              failBlock:(FailBlock)fail;
+                                           successBlock:(VSuccessBlock)success
+                                              failBlock:(VFailBlock)fail;
 
 @end

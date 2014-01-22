@@ -27,31 +27,25 @@
 
 - (RKManagedObjectRequestOperation *)initialSequenceLoad
 {
-    return [[VObjectManager sharedManager] loadSequenceCategoriesWithSuccessBlock:^(NSArray *resultObjects)
+    return [[VObjectManager sharedManager] loadSequenceCategoriesWithSuccessBlock:^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
       {
           for (VCategory* category in resultObjects)
           {
-              [[self loadNextPageOfSequencesForCategory:category
-                                           successBlock:nil
-                                             failBlock:^(NSError *error) {
-                                                 VLog(@"Error in initialSequenceLoad: %@", error);
-                                             }] start];
+              [self loadNextPageOfSequencesForCategory:category
+                                          successBlock:nil
+                                             failBlock:nil];
           }
-      } failBlock:^(NSError *error)
-      {
-          nil;
-      }];
+      } failBlock:nil];
 }
 
-- (RKManagedObjectRequestOperation *)loadSequenceCategoriesWithSuccessBlock:(SuccessBlock)success
-                                                                  failBlock:(FailBlock)fail
+- (RKManagedObjectRequestOperation *)loadSequenceCategoriesWithSuccessBlock:(VSuccessBlock)success
+                                                                  failBlock:(VFailBlock)fail
 {
     return [self GET:@"/api/sequence/categories"
                object:nil
            parameters:nil
          successBlock:success
-            failBlock:fail
-      paginationBlock:nil];
+            failBlock:fail];
 }
 
 /*! Loads the next page of sequences for the category
@@ -59,8 +53,8 @@
  * \returns RKManagedObjectRequestOperation* or nil if theres no more pages to load
  */
 - (RKManagedObjectRequestOperation *)loadNextPageOfSequencesForCategory:(VCategory*)category
-                                                           successBlock:(SuccessBlock)success
-                                                              failBlock:(FailBlock)fail
+                                                           successBlock:(VSuccessBlock)success
+                                                              failBlock:(VFailBlock)fail
 {
     __block VPaginationStatus* status = [self statusForKey:category.name];
     if([status isFullyLoaded])
@@ -77,56 +71,51 @@
         path = [path stringByAppendingFormat:@"/0/%lu/%lu", (unsigned long)status.pagesLoaded + 1, (unsigned long)status.itemsPerPage];
     }
     
-    
-    PaginationBlock pagination = ^(NSUInteger page_number, NSUInteger page_total)
-    {
-        status.pagesLoaded = page_number;
-        status.totalPages = page_total;
-        [self.paginationStatuses setObject:status forKey:category.name];
-    };
-    
-    SuccessBlock fullSuccessBlock = ^(NSArray* sequences)
+    VSuccessBlock fullSuccessBlock = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
     {
         //If we don't have the user then we need to fetch em.
-        for (VSequence* sequence in sequences)
+        for (VSequence* sequence in resultObjects)
         {
             if (!sequence.user)
             {
-                [[self fetchUser:sequence.createdBy
-           forRelationshipObject:sequence
+                [self fetchUser:sequence.createdBy
                 withSuccessBlock:nil
-                       failBlock:nil] start];
+                       failBlock:nil];
             }
         }
         
+        status.pagesLoaded = [fullResponse[@"page_number"] integerValue];
+        status.totalPages = [fullResponse[@"page_total"] integerValue];
+        [self.paginationStatuses setObject:status forKey:category.name];
+        
         if (success)
-            success(sequences);
+            success(operation, fullResponse, resultObjects);
     };
     
     return [self GET:path
               object:nil
           parameters:nil
         successBlock:fullSuccessBlock
-           failBlock:fail
-     paginationBlock:pagination];
+           failBlock:fail];
 }
 
+//TODO: I don't think we need this anymore...
 - (RKManagedObjectRequestOperation *)loadFullDataForSequence:(VSequence*)sequence
-                                                successBlock:(SuccessBlock)success
-                                                   failBlock:(FailBlock)fail
+                                                successBlock:(VSuccessBlock)success
+                                                   failBlock:(VFailBlock)fail
 {
     //If we haven't fetched the full data we load that and possibly the comments
     if (![sequence.nodes count])
     {
-        SuccessBlock loadCommentsBlock;
+        VSuccessBlock loadCommentsBlock;
         if (![sequence.comments count])
         {
-            loadCommentsBlock = ^(NSArray* objects)
+            loadCommentsBlock = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
             {
-                VLog(@"Objects created in loadFullData: %@", objects);
-                [[self loadNextPageOfCommentsForSequence:sequence
+                VLog(@"Objects created in loadFullData: %@", resultObjects);
+                [self loadNextPageOfCommentsForSequence:sequence
                                            successBlock:success
-                                              failBlock:fail] start];
+                                              failBlock:fail];
             };
         }
         
@@ -142,13 +131,13 @@
     }
     
     //If we don't need to load, just run the success block
-    success(nil);
+    success(nil, nil, nil);
     return nil;
 }
 
 - (RKManagedObjectRequestOperation *)fetchSequence:(VSequence*)sequence
-                                      successBlock:(SuccessBlock)success
-                                         failBlock:(FailBlock)fail
+                                      successBlock:(VSuccessBlock)success
+                                         failBlock:(VFailBlock)fail
 {
     return [self fetchSequenceByID:sequence.remoteId
                       successBlock:success
@@ -157,8 +146,8 @@
 }
 
 - (RKManagedObjectRequestOperation *)fetchSequenceByID:(NSNumber*)sequenceID
-                                          successBlock:(SuccessBlock)success
-                                             failBlock:(FailBlock)fail
+                                          successBlock:(VSuccessBlock)success
+                                             failBlock:(VFailBlock)fail
                                            loadAttempt:(NSInteger)attemptCount
 {
     if (!sequenceID)
@@ -166,7 +155,7 @@
     
     NSString* path = [@"/api/sequence/fetch/" stringByAppendingString:sequenceID.stringValue];
     
-    FailBlock fullFail = ^(NSError* error)
+    VFailBlock fullFail = ^(NSOperation* operation, NSError* error)
     {
         //keep trying until we are done transcoding
         if (error.code == 5500 && attemptCount < 15)
@@ -175,27 +164,26 @@
             double delayInSeconds = 2.0;
             dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
             dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-                [[self fetchSequenceByID:sequenceID
+                [self fetchSequenceByID:sequenceID
                             successBlock:success
                                failBlock:fail
-                             loadAttempt:(attemptCount+1)] start];
+                             loadAttempt:(attemptCount+1)];
             });
         }
         else if (fail)
-            fail(error);
+            fail(operation, error);
     };
     
     return [self GET:path
               object:nil
           parameters:nil
         successBlock:success
-           failBlock:fullFail
-     paginationBlock:nil];
+           failBlock:fullFail];
 }
 
 - (RKManagedObjectRequestOperation *)loadNextPageOfCommentsForSequence:(VSequence*)sequence
-                                                          successBlock:(SuccessBlock)success
-                                                             failBlock:(FailBlock)fail
+                                                          successBlock:(VSuccessBlock)success
+                                                             failBlock:(VFailBlock)fail
 {
     
     __block NSString* statusKey = [NSString stringWithFormat:@"commentsForSequence%@", sequence.remoteId];
@@ -210,47 +198,43 @@
     }
     
     __block VSequence* commentOwner = sequence; //Keep the sequence around until the block gets called
-    SuccessBlock fullSuccessBlock = ^(NSArray* comments)
+    VSuccessBlock fullSuccessBlock = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
     {
-        for (VComment* comment in comments)
+        for (VComment* comment in resultObjects)
         {
             [commentOwner addCommentsObject:(VComment*)[commentOwner.managedObjectContext
                                                         objectWithID:[comment objectID]]];
             if (!comment.user )
             {
                     __block VComment* userOwner = comment;
-                    [[self fetchUser:userOwner.userId
-               forRelationshipObject:userOwner
-                    withSuccessBlock:^(NSArray *resultObjects) {
+                    [self fetchUser:userOwner.userId
+                    withSuccessBlock:^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
+                    {
                         VLog(@"Comment %@: has user: %@", userOwner, userOwner.user);
                     }
-                           failBlock:nil] start];
+                           failBlock:nil];
             }
         }
         
-        if (success)
-            success(comments);
-    };
-    
-    PaginationBlock pagination = ^(NSUInteger page_number, NSUInteger page_total)
-    {
-        status.pagesLoaded = page_number;
-        status.totalPages = page_total;
+        status.pagesLoaded = [fullResponse[@"page_number"] integerValue];
+        status.totalPages = [fullResponse[@"page_total"] integerValue];
         [self.paginationStatuses setObject:status forKey:statusKey];
+        
+        if (success)
+            success(operation, fullResponse, resultObjects);
     };
     
     return [self GET:path
               object:nil
           parameters:nil
         successBlock:fullSuccessBlock
-           failBlock:fail
-     paginationBlock:pagination];
+           failBlock:fail];
 }
 
 - (RKManagedObjectRequestOperation *)shareSequence:(VSequence*)sequence
                                          shareType:(NSString*)type
-                                      successBlock:(SuccessBlock)success
-                                         failBlock:(FailBlock)fail
+                                      successBlock:(VSuccessBlock)success
+                                         failBlock:(VFailBlock)fail
 {
     NSMutableDictionary* parameters = [[NSMutableDictionary alloc] initWithCapacity:2];
     [parameters setObject:[NSString stringWithFormat:@"%@", sequence.remoteId] forKey:@"sequence_id"];
@@ -260,20 +244,19 @@
                object:nil
            parameters:parameters
          successBlock:success
-            failBlock:fail
-      paginationBlock:nil];
+            failBlock:fail];
 }
 
 - (RKManagedObjectRequestOperation *)shareSequenceToTwitter:(VSequence*)sequence
-                                               successBlock:(SuccessBlock)success
-                                                  failBlock:(FailBlock)fail
+                                               successBlock:(VSuccessBlock)success
+                                                  failBlock:(VFailBlock)fail
 {
     return [self shareSequence:sequence shareType:@"twitter" successBlock:success failBlock:fail];
 }
 
 - (RKManagedObjectRequestOperation *)shareSequenceToFacebook:(VSequence*)sequence
-                                                successBlock:(SuccessBlock)success
-                                                   failBlock:(FailBlock)fail
+                                                successBlock:(VSuccessBlock)success
+                                                   failBlock:(VFailBlock)fail
 {
     return [self shareSequence:sequence shareType:@"facebook" successBlock:success failBlock:fail];
 }
@@ -281,8 +264,8 @@
 #pragma mark - Sequence Vote Methods
 - (RKManagedObjectRequestOperation *)voteSequence:(VSequence*)sequence
                                         voteType:(NSString*)type
-                                    successBlock:(SuccessBlock)success
-                                       failBlock:(FailBlock)fail
+                                    successBlock:(VSuccessBlock)success
+                                       failBlock:(VFailBlock)fail
 {
     NSMutableDictionary* parameters = [[NSMutableDictionary alloc] initWithCapacity:2];
     [parameters setObject:[NSString stringWithFormat:@"%@", sequence.remoteId] forKey:@"sequence_id"];
@@ -292,27 +275,26 @@
                object:nil
            parameters:parameters
          successBlock:success
-            failBlock:fail
-      paginationBlock:nil];
+            failBlock:fail];
 }
 
 - (RKManagedObjectRequestOperation *)likeSequence:(VSequence*)sequence
-                                     successBlock:(SuccessBlock)success
-                                        failBlock:(FailBlock)fail
+                                     successBlock:(VSuccessBlock)success
+                                        failBlock:(VFailBlock)fail
 {
     return [self voteSequence:sequence voteType:@"like" successBlock:success failBlock:fail];
 }
 
 - (RKManagedObjectRequestOperation *)dislikeSequence:(VSequence*)sequence
-                                        successBlock:(SuccessBlock)success
-                                           failBlock:(FailBlock)fail
+                                        successBlock:(VSuccessBlock)success
+                                           failBlock:(VFailBlock)fail
 {
     return [self voteSequence:sequence voteType:@"dislike" successBlock:success failBlock:fail];
 }
 
 - (RKManagedObjectRequestOperation *)unvoteSequence:(VSequence*)sequence
-                                       successBlock:(SuccessBlock)success
-                                          failBlock:(FailBlock)fail
+                                       successBlock:(VSuccessBlock)success
+                                          failBlock:(VFailBlock)fail
 {
     return [self voteSequence:sequence voteType:@"unvote" successBlock:success failBlock:fail];
 }
@@ -321,13 +303,13 @@
 
 - (RKManagedObjectRequestOperation *)answerPoll:(VSequence*)poll
                                      withAnswer:(VAnswer*)answer
-                                   successBlock:(SuccessBlock)success
-                                      failBlock:(FailBlock)fail;
+                                   successBlock:(VSuccessBlock)success
+                                      failBlock:(VFailBlock)fail;
 {
     if (!poll || !answer)
         return nil;
     
-    SuccessBlock fullSuccess = ^(NSArray* resultObjects)
+    VSuccessBlock fullSuccess = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
     {
         VPollResult *newPollResult = [NSEntityDescription
                                         insertNewObjectForEntityForName:[VPollResult entityName]
@@ -338,27 +320,26 @@
         [self.mainUser.managedObjectContext save:nil];
         
         if (success)
-            success(resultObjects);
+            success(operation, fullResponse, resultObjects);
     };
     
     return [self POST:@"/api/pollresult/create"
                object:nil
            parameters:@{@"sequence_id" : poll.remoteId, @"answer_id" : answer.remoteId}
          successBlock:fullSuccess
-            failBlock:fail
-      paginationBlock:nil];
+            failBlock:fail];
 }
 
 - (RKManagedObjectRequestOperation *)pollResultsForUser:(VUser*)user
-                                           successBlock:(SuccessBlock)success
-                                              failBlock:(FailBlock)fail
+                                           successBlock:(VSuccessBlock)success
+                                              failBlock:(VFailBlock)fail
 {
     if (!user)
         user = self.mainUser;
     
     NSString* path = [NSString stringWithFormat:@"/api/pollresult/summary_by_user/%@", user.remoteId];
     
-    SuccessBlock fullSuccess = ^(NSArray* resultObjects)
+    VSuccessBlock fullSuccess = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
     {
         for (VPollResult* pollResult in resultObjects)
         {
@@ -368,28 +349,27 @@
         [user.managedObjectContext save:nil];
         
         if (success)
-            success(resultObjects);
+            success(operation, fullResponse, resultObjects);
     };
     
     return [self GET:path
               object:nil
           parameters:nil
             successBlock:fullSuccess
-           failBlock:fail
-     paginationBlock:nil];
+           failBlock:fail];
 }
 
 
 
 
 - (RKManagedObjectRequestOperation *)pollResultsForSequence:(VSequence*)sequence
-                                               successBlock:(SuccessBlock)success
-                                                  failBlock:(FailBlock)fail
+                                               successBlock:(VSuccessBlock)success
+                                                  failBlock:(VFailBlock)fail
 {
     if (!sequence)
         return nil;
     
-    SuccessBlock fullSuccess = ^(NSArray* resultObjects)
+    VSuccessBlock fullSuccess = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
     {
         for (VPollResult* result in resultObjects)
         {
@@ -399,15 +379,14 @@
         }
       
         if(success)
-            success(resultObjects);
+            success(operation, fullResponse, resultObjects);
     };
     
     return [self GET:[NSString stringWithFormat:@"/api/pollresult/summary_by_sequence/%@", sequence.remoteId]
               object:nil
           parameters:nil
         successBlock:fullSuccess
-           failBlock:fail
-     paginationBlock:nil];
+           failBlock:fail];
 }
 
 - (AFHTTPRequestOperation * )createPollWithName:(NSString*)name
@@ -421,8 +400,8 @@
                                      media2Data:(NSData*)media2Data
                                 media2Extension:(NSString*)media2Extension
                                       media2Url:(NSURL*)media2Url
-                                   successBlock:(SuccessBlock)success
-                                      failBlock:(FailBlock)fail
+                                   successBlock:(VSuccessBlock)success
+                                      failBlock:(VFailBlock)fail
 {
     //Required Fields
     NSString* category = self.isOwner ? kVOwnerPollCategory : kVUGCPollCategory;
@@ -454,28 +433,22 @@
         allExtensions[@"poll_media"] = media1Extension;
     }
     
-    AFSuccessBlock fullSuccess = ^(AFHTTPRequestOperation* operation, id response)
+    VSuccessBlock fullSuccess = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
     {
-        if ([response[@"error"] integerValue] == 0)
+        if ([fullResponse[@"error"] integerValue] == 0)
         {
-            NSNumber* sequenceID = response[@"payload"][@"sequence_id"];
-            [[self fetchSequenceByID:sequenceID
+            NSNumber* sequenceID = fullResponse[@"payload"][@"sequence_id"];
+            [self fetchSequenceByID:sequenceID
                         successBlock:success
                            failBlock:fail
-                         loadAttempt:0] start];
+                         loadAttempt:0];
         }
         else
         {
-            NSError*    error = [NSError errorWithDomain:NSCocoaErrorDomain code:[response[@"error"] integerValue] userInfo:nil];
+            NSError*    error = [NSError errorWithDomain:NSCocoaErrorDomain code:[fullResponse[@"error"] integerValue] userInfo:nil];
             if (fail)
-                fail(error);
+                fail(operation, error);
         }
-    };
-    
-    AFFailBlock fullFail = ^(AFHTTPRequestOperation* operation, NSError* error)
-    {
-        if (fail)
-            fail(error);
     };
     
     return [self upload:allData
@@ -483,15 +456,15 @@
                  toPath:@"/api/poll/create"
              parameters:parameters
            successBlock:fullSuccess
-              failBlock:fullFail];
+              failBlock:fail];
 }
 
 - (AFHTTPRequestOperation * )createVideoWithName:(NSString*)name
                                      description:(NSString*)description
                                        mediaData:(NSData*)mediaData
                                         mediaUrl:(NSURL*)mediaUrl
-                                    successBlock:(SuccessBlock)success
-                                       failBlock:(FailBlock)fail
+                                    successBlock:(VSuccessBlock)success
+                                       failBlock:(VFailBlock)fail
 {
     NSString* category = self.isOwner ? kVOwnerVideoCategory : kVUGCVideoCategory;
     return [self uploadMediaWithName:name
@@ -508,8 +481,8 @@
                                      description:(NSString*)description
                                        mediaData:(NSData*)mediaData
                                         mediaUrl:(NSURL*)mediaUrl
-                                    successBlock:(SuccessBlock)success
-                                       failBlock:(FailBlock)fail
+                                    successBlock:(VSuccessBlock)success
+                                       failBlock:(VFailBlock)fail
 {
     NSString* category = self.isOwner ? kVOwnerImageCategory : kVUGCImageCategory;
     return [self uploadMediaWithName:name
@@ -526,8 +499,8 @@
                                      description:(NSString*)description
                                        mediaData:(NSData*)mediaData
                                         mediaUrl:(NSURL*)mediaUrl
-                                    successBlock:(SuccessBlock)success
-                                       failBlock:(FailBlock)fail
+                                    successBlock:(VSuccessBlock)success
+                                       failBlock:(VFailBlock)fail
 {
     NSString* category = self.isOwner ? kVOwnerForumCategory : kVUGCForumCategory;
     return [self uploadMediaWithName:name
@@ -546,8 +519,8 @@
                                        mediaData:(NSData*)mediaData
                                        extension:(NSString*)extension
                                         mediaUrl:(NSURL*)mediaUrl
-                                    successBlock:(SuccessBlock)success
-                                       failBlock:(FailBlock)fail
+                                    successBlock:(VSuccessBlock)success
+                                       failBlock:(VFailBlock)fail
 {
     if (!mediaData || !extension)
         return nil;
@@ -559,19 +532,13 @@
     NSDictionary* allData = @{@"media_data":mediaData ?: [NSNull null]};
     NSDictionary* allExtensions = @{@"media_data":extension ?: [NSNull null]};
     
-    AFSuccessBlock fullSuccess = ^(AFHTTPRequestOperation* operation, id response)
+    VSuccessBlock fullSuccess = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
     {
-        NSNumber* sequenceID = response[@"payload"][@"sequence_id"];
-        [[self fetchSequenceByID:sequenceID
+        NSNumber* sequenceID = fullResponse[@"payload"][@"sequence_id"];
+        [self fetchSequenceByID:sequenceID
                    successBlock:success
                       failBlock:fail
-                     loadAttempt:0] start];
-    };
-    
-    AFFailBlock fullFail = ^(AFHTTPRequestOperation* operation, NSError* error)
-    {
-        if (fail)
-            fail(error);
+                     loadAttempt:0];
     };
     
     return [self upload:allData
@@ -579,7 +546,7 @@
                  toPath:@"/api/mediaupload/create"
              parameters:parameters
            successBlock:fullSuccess
-              failBlock:fullFail];
+              failBlock:fail];
 }
 
 @end

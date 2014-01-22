@@ -8,13 +8,15 @@
 
 #import "VErrorMessage.h"
 
+NSString* const kVictoriousDomain = @"com.getvictorious.victoriOS";
+
 @implementation VErrorMessage
 
 + (RKObjectMapping *)objectMapping
 {
     
     NSDictionary *propertyMap = @{
-                                  @"error" : @"error",
+                                  @"error" : @"errorCode",
                                   @"api_version" : @"api_version",
                                   @"app_id" : @"app_id",
                                   @"user_id" : @"user_id",

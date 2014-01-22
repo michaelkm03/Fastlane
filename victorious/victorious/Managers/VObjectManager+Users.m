@@ -16,107 +16,59 @@
 #import "VUser.h"
 
 @interface VObjectManager (UserProperties)
-@property (nonatomic, strong) SuccessBlock fullSuccess;
-@property (nonatomic, strong) FailBlock fullFail;
+@property (nonatomic, strong) VSuccessBlock fullSuccess;
+@property (nonatomic, strong) VFailBlock fullFail;
 @end
 
 @implementation VObjectManager (Users)
 
-
 - (RKManagedObjectRequestOperation *)fetchUser:(NSNumber*)userId
-                              withSuccessBlock:(SuccessBlock)success
-                                     failBlock:(FailBlock)fail
+                              withSuccessBlock:(VSuccessBlock)success
+                                     failBlock:(VFailBlock)fail
 {
     NSString* path = userId ? [NSString stringWithFormat:@"/api/userinfo/fetch/%@", userId] : @"/api/userinfo/fetch";
     
-    return [self GET:path
-              object:nil
-          parameters:nil
-        successBlock:success
-           failBlock:fail
-     paginationBlock:nil];
-}
-
-- (RKManagedObjectRequestOperation *)fetchUser:(NSNumber*)userId
-                         forRelationshipObject:(id)relationshipObject
-                              withSuccessBlock:(SuccessBlock)success
-                                     failBlock:(FailBlock)fail
-{
-    //    return nil;
-    //    DISPATCH_QUEUE_SERIAL
-    
-    NSMutableArray* relationships = [self.userRelationships objectForKey:userId];
-    
-    //There's nothing to add and we're already fetching the object
-    if (!relationshipObject && relationships)
-        return nil;
-
-    //We're already fetching this ID, just add the object and return
-    if (relationships && [relationships isKindOfClass:[NSMutableArray class]])
+    VSuccessBlock fullSuccess = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
     {
-        VLog(@"Found relationships: %@", relationships);
-        [relationships addObject:relationshipObject];
-        [self.userRelationships setObject:relationships forKey:userId];
+        for (VUser* user in resultObjects)
+            [self addRelationshipsForUser:user];
         
-        return nil;
-    }
-    
-    if (relationshipObject)
-    {
-        relationships = [[NSMutableArray alloc] init];
-        [relationships addObject:relationshipObject];
-        [self.userRelationships setObject:relationships forKey:userId];
-        VLog(@"Added object: %@.  All relationships: %@ ", [relationshipObject class], self.userRelationships);
-    }
-    
-    NSString* path = userId ? [NSString stringWithFormat:@"/api/userinfo/fetch/%@", userId] : @"/api/userinfo/fetch";
-
-    SuccessBlock fullSuccess = ^(NSArray* resultObjects)
-    {
-        [self addRelationshipsForUsers:resultObjects];
         if (success)
-        {
-            success(resultObjects);
-        }
-        VUser* user = [resultObjects firstObject];
-        VLog(@"posted sequences: %@", user.postedSequences);
+            success(operation, fullResponse, resultObjects);
     };
-
+    
     return [self GET:path
               object:nil
           parameters:nil
         successBlock:fullSuccess
-           failBlock:fail
-     paginationBlock:nil];
+           failBlock:fail];
 }
 
-- (void)addRelationshipsForUsers:(NSArray*)users
+
+- (RKManagedObjectRequestOperation *)fetchUsers:(NSArray*)userIds
+                               withSuccessBlock:(VSuccessBlock)success
+                                      failBlock:(VFailBlock)fail
 {
-    for (VUser* user in users)
+    NSString* path = @"/api/userinfo/fetch";
+    
+    VSuccessBlock fullSuccess = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
     {
-        NSArray* relationships = [self.userRelationships objectForKey:user.remoteId];
-        for (id relationshipObject in relationships)
-        {
-            if ([relationshipObject isKindOfClass:[VComment class]])
-                ((VComment*)relationshipObject).user = user;
-            
-            else if ([relationshipObject isKindOfClass:[VMessage class]])
-                ((VMessage*)relationshipObject).user = user;
-            
-            else if ([relationshipObject isKindOfClass:[VSequence class]])
-                ((VSequence*)relationshipObject).user = user;
-            
-            else if ([relationshipObject isKindOfClass:[VConversation class]])
-                ((VConversation*)relationshipObject).user = user;
-        }
-
-        NSError *error = nil;
-        [user.managedObjectContext save:&error];
-        if(error)
-        {
-            NSLog(@"%@", error);
-        }
-    }
+        for (VUser* user in resultObjects)
+            [self addRelationshipsForUser:user];
+        
+        if (success)
+            success(operation, fullResponse, resultObjects);
+    };
+    
+    return [self GET:path
+              object:nil
+          parameters:@{@"user_ids":userIds?:[NSNull null]}
+        successBlock:fullSuccess
+           failBlock:fail];
 }
 
+- (void)addRelationshipsForUser:(VUser*)user
+{
+//    NSFetchRequest
+}
 @end
