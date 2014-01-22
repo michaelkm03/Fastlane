@@ -21,6 +21,9 @@
                                   successBlock:(VSuccessBlock)success
                                      failBlock:(VFailBlock)fail;
 
+- (RKManagedObjectRequestOperation *)fetchCommentByID:(NSInteger)commentID
+                                         successBlock:(VSuccessBlock)success
+                                            failBlock:(VFailBlock)fail;
 
 - (RKManagedObjectRequestOperation *)removeComment:(VComment*)comment
                                         withReason:(NSString*)removalReason

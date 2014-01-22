@@ -55,7 +55,9 @@
     VUser* user = [self userForID:userId];
     if (user)
     {
-        success(nil, nil, @[user]);
+        if (success)
+            success(nil, nil, @[user]);
+        
         return nil;
     }
     

@@ -14,7 +14,89 @@
 #import "VUser.h"
 #import "VConstants.h"
 
+#import "VComment+RestKit.h"
+
 @implementation VObjectManager (Comment)
+
+
+- (VComment*)commentForID:(NSInteger)commentId
+{
+    VComment* comment = [self.objectCache objectForKey:[@"comment" stringByAppendingString:@(commentId).stringValue]];
+    if (comment)
+        return comment;
+    
+    NSManagedObjectContext* context = self.managedObjectStore.persistentStoreManagedObjectContext;
+    NSEntityDescription *entity = [NSEntityDescription entityForName:[VComment entityName]
+                                              inManagedObjectContext:context];
+    NSFetchRequest *request = [[NSFetchRequest alloc] init];
+    [request setEntity:entity];
+    NSPredicate* idFilter = [NSPredicate predicateWithFormat:@"remoteId == %@", commentId];
+    [request setPredicate:idFilter];
+    NSError *error = nil;
+    comment = [[context executeFetchRequest:request error:&error] firstObject];
+    if (error != nil)
+    {
+        VLog(@"Error occured in user objectsForEntity: %@", error);
+    }
+    
+    if (comment)
+        [self.objectCache setObject:comment forKey:[@"comment" stringByAppendingString:comment.remoteId.stringValue]];
+    
+    return comment;
+}
+
+
+- (RKManagedObjectRequestOperation *)fetchCommentByID:(NSInteger)commentID
+                                         successBlock:(VSuccessBlock)success
+                                            failBlock:(VFailBlock)fail
+{
+    VComment* comment = [self commentForID:commentID];
+    if (comment)
+    {
+        if (success)
+            success(nil, nil, @[comment]);
+        
+        return nil;
+    }
+    
+    return [self fetchCommentByID:commentID
+                     successBlock:success
+                        failBlock:fail
+                      loadAttempt:0];
+}
+
+- (RKManagedObjectRequestOperation *)fetchCommentByID:(NSInteger)commentID
+                                         successBlock:(VSuccessBlock)success
+                                            failBlock:(VFailBlock)fail
+                                          loadAttempt:(NSInteger)attemptCount
+{
+    if (!commentID)
+        return nil;
+    
+    VFailBlock fullFail = ^(NSOperation* operation, NSError* error)
+    {
+        //keep trying until we are done transcoding
+        if (error.code == 5500 && attemptCount < 15)
+        {
+            double delayInSeconds = 2.0;
+            dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
+            dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+                [self fetchCommentByID:commentID
+                          successBlock:success
+                             failBlock:fail
+                           loadAttempt:(attemptCount+1)];
+            });
+        }
+        else if (fail)
+            fail(operation, error);
+    };
+    
+    return [self GET:[@"/api/comment/fetch/" stringByAppendingString:@(commentID).stringValue]
+              object:nil
+          parameters:nil
+        successBlock:success
+           failBlock:fullFail];
+}
 
 - (AFHTTPRequestOperation *)addCommentWithText:(NSString*)text
                                           Data:(NSData*)data
@@ -56,8 +138,7 @@
     {
         [self fetchCommentByID:[fullResponse[@"payload"][@"id"] integerValue]
                    successBlock:fetchCommentSuccess
-                      failBlock:fail
-                    loadAttempt:0];
+                      failBlock:fail];
     };
     
     return [self upload:allData
@@ -66,51 +147,6 @@
              parameters:parameters
            successBlock:fullSuccess
               failBlock:fail];
-}
-
-- (RKManagedObjectRequestOperation *)fetchCommentByID:(NSInteger)commentID
-                                         successBlock:(VSuccessBlock)success
-                                            failBlock:(VFailBlock)fail
-                                          loadAttempt:(NSInteger)attemptCount
-{
-    if (!commentID)
-        return nil;
-    
-    VFailBlock fullFail = ^(NSOperation* operation, NSError* error)
-    {
-        //keep trying until we are done transcoding
-        if (error.code == 5500 && attemptCount < 15)
-        {
-            double delayInSeconds = 2.0;
-            dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
-            dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-                [self fetchCommentByID:commentID
-                           successBlock:success
-                              failBlock:fail
-                            loadAttempt:(attemptCount+1)];
-            });
-        }
-        else if (fail)
-            fail(operation, error);
-    };
-    
-    return [self GET:[@"/api/comment/fetch/" stringByAppendingString:@(commentID).stringValue]
-              object:nil
-          parameters:nil
-        successBlock:success
-           failBlock:fullFail];
-}
-
-
-- (RKManagedObjectRequestOperation *)fetchComment:(NSInteger)remoteId
-                                     successBlock:(VSuccessBlock)success
-                                        failBlock:(VFailBlock)fail
-{
-    return [self GET:[@"/api/comment/fetch/" stringByAppendingString:@(remoteId).stringValue]
-              object:nil
-          parameters:nil
-        successBlock:success
-           failBlock:fail];
 }
 
 - (RKManagedObjectRequestOperation *)removeComment:(VComment*)comment
