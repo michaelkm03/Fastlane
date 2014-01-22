@@ -56,7 +56,8 @@
                                                            successBlock:(VSuccessBlock)success
                                                               failBlock:(VFailBlock)fail
 {
-    __block VPaginationStatus* status = [self statusForKey:category ?: @"nocategory"];
+    __block NSString* statusKey = category ?: @"nocategory";
+    __block VPaginationStatus* status = [self statusForKey:statusKey];
     if([status isFullyLoaded])
     {
         return nil;
@@ -75,7 +76,7 @@
     {
         status.pagesLoaded = [fullResponse[@"page_number"] integerValue];
         status.totalPages = [fullResponse[@"page_total"] integerValue];
-        [self.paginationStatuses setObject:status forKey:category];
+        [self.paginationStatuses setObject:status forKey:statusKey];
         
         //If we don't have the user then we need to fetch em.
         NSMutableArray* nonExistantUsers = [[NSMutableArray alloc] init];

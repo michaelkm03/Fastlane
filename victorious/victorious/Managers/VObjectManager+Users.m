@@ -22,10 +22,43 @@
 
 @implementation VObjectManager (Users)
 
+- (VUser*)userForID:(NSNumber*)userId
+{
+    VUser* user = [self.objectCache objectForKey:[@"user" stringByAppendingString:userId.stringValue]];
+    if (user)
+        return user;
+    
+    NSManagedObjectContext* context = self.managedObjectStore.persistentStoreManagedObjectContext;
+    NSEntityDescription *entity = [NSEntityDescription entityForName:[VUser entityName]
+                                              inManagedObjectContext:context];
+    NSFetchRequest *request = [[NSFetchRequest alloc] init];
+    [request setEntity:entity];
+    NSPredicate* idFilter = [NSPredicate predicateWithFormat:@"remoteId == %@", userId];
+    [request setPredicate:idFilter];
+    NSError *error = nil;
+    user = [[context executeFetchRequest:request error:&error] firstObject];
+    if (error != nil)
+    {
+        VLog(@"Error occured in user objectsForEntity: %@", error);
+    }
+    
+    if (user)
+        [self.objectCache setObject:user forKey:[@"user" stringByAppendingString:user.remoteId.stringValue]];
+    
+    return user;
+}
+
 - (RKManagedObjectRequestOperation *)fetchUser:(NSNumber*)userId
                               withSuccessBlock:(VSuccessBlock)success
                                      failBlock:(VFailBlock)fail
 {
+    VUser* user = [self userForID:userId];
+    if (user)
+    {
+        success(nil, nil, @[user]);
+        return nil;
+    }
+    
     NSString* path = userId ? [@"/api/userinfo/fetch/" stringByAppendingString: userId.stringValue] : @"/api/userinfo/fetch";
     
     VSuccessBlock fullSuccess = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
@@ -48,6 +81,41 @@
                                withSuccessBlock:(VSuccessBlock)success
                                       failBlock:(VFailBlock)fail
 {
+//    __block NSMutableArray* loadedUsers = [[NSMutableArray alloc] init];
+//    NSMutableArray* unloadedUserIDs = [[NSMutableArray alloc] init];
+//    for (NSNumber* userID in [[NSSet setWithArray:userIds] allObjects])
+//    {
+//        VUser* user = [self userForID:userID];
+//        if (user)
+//            [loadedUsers addObject:user];
+//        else
+//            [unloadedUserIDs addObject:userID];
+//    }
+//    
+//    if (![unloadedUserIDs count])
+//    {
+//        success(nil, nil, loadedUsers);
+//        return nil;
+//    }
+//    
+//    VSuccessBlock fullSuccess = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
+//    {
+//        for (VUser* user in resultObjects)
+//        {
+//            [self addRelationshipsForUser:user];
+//            [loadedUsers addObject:user];
+//        }
+//        
+//        if (success)
+//            success(operation, fullResponse, loadedUsers);
+//    };
+//    
+//    return [self GET:@"/api/userinfo/fetchmany"
+//              object:nil
+//          parameters:@{@"user_ids":unloadedUserIDs}
+//        successBlock:fullSuccess
+//           failBlock:fail];
+    
     for (NSNumber* userID in [[NSSet setWithArray:userIds] allObjects])
     {
         [self fetchUser:userID

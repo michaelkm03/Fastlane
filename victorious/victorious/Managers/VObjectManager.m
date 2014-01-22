@@ -25,12 +25,6 @@
 
 #import "VPaginationStatus.h"
 
-@interface VObjectManager ()
-
-@property (nonatomic, strong) NSCache* objectCache;
-
-@end
-
 @implementation VObjectManager
 
 @synthesize mainUser;
@@ -111,8 +105,8 @@
                                              [VUnreadConversation descriptor]
                                              ]];
     
-    _objectCache = [[NSCache alloc] init];
-//    _paginationStatuses = [[NSMutableDictionary alloc] init];
+    self.objectCache = [[NSCache alloc] init];
+    self.paginationStatuses = [[NSMutableDictionary alloc] init];
 }
 
 #pragma mark - operation
