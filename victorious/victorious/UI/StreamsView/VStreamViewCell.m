@@ -63,10 +63,6 @@ NSString *kStreamsWillCommentNotification = @"kStreamsWillCommentNotification";
 
 - (void)setSequence:(VSequence *)sequence
 {
-    if(_sequence == sequence)
-    {
-        return;
-    }
     _sequence = sequence;
     
     if ([[_sequence firstAsset].type isEqualToString:VConstantsMediaTypeYoutube])
@@ -82,7 +78,7 @@ NSString *kStreamsWillCommentNotification = @"kStreamsWillCommentNotification";
                              placeholderImage:[UIImage new]];
     [self.profileImageButton.imageView setImageWithURL:[NSURL URLWithString:self.sequence.user.pictureUrl]
                                       placeholderImage:[UIImage imageNamed:@"profile_thumb"]];
-
+    
     if([[self likeCache] objectForKey:self.sequence.remoteId])
     {
         [self.likeButton setImage:[[UIImage imageNamed:@"StreamHeartFull"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal] forState:UIControlStateNormal];
