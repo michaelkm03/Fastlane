@@ -63,7 +63,7 @@
         return nil;
     }
     
-    NSString* path = [NSString stringWithFormat:@"/api/sequence/detail_list_by_category/%@", category ?: @"0"];
+    NSString* path = [@"/api/sequence/detail_list_by_category/" stringByAppendingString: category ?: @"0"];
     if (!status.pagesLoaded)
     {
         path = [path stringByAppendingFormat:@"/0/%lu/%lu", (unsigned long)status.pagesLoaded, (unsigned long)status.itemsPerPage];
@@ -155,12 +155,12 @@
                                                              failBlock:(VFailBlock)fail
 {
     
-    __block NSString* statusKey = [NSString stringWithFormat:@"commentsForSequence%@", sequence.remoteId];
+    __block NSString* statusKey = [@"commentsForSequence%@" stringByAppendingString:sequence.remoteId.stringValue];
     __block VPaginationStatus* status = [self statusForKey:statusKey];
     if([status isFullyLoaded])
         return nil;
     
-    NSString* path = [NSString stringWithFormat:@"/api/comment/all/%@", sequence.remoteId];
+    NSString* path = [@"/api/comment/all/" stringByAppendingString:sequence.remoteId.stringValue];
     if (status.pagesLoaded) //only add page to the path if we've looked it up before.
     {
         path = [path stringByAppendingFormat:@"/%lu/%lu", (unsigned long)status.pagesLoaded + 1, (unsigned long)status.itemsPerPage];
@@ -200,9 +200,9 @@
                                       successBlock:(VSuccessBlock)success
                                          failBlock:(VFailBlock)fail
 {
-    NSMutableDictionary* parameters = [[NSMutableDictionary alloc] initWithCapacity:2];
-    [parameters setObject:[NSString stringWithFormat:@"%@", sequence.remoteId] forKey:@"sequence_id"];
-    [parameters setObject:type forKey:@"shared_to"];
+    NSDictionary* parameters = @{@"sequence_id": sequence.remoteId.stringValue ?: [NSNull null],
+                                 @"shared_to":type ?: [NSNull null]
+                                 };
     
     return [self POST:@"/api/sequence/share"
                object:nil
@@ -231,9 +231,9 @@
                                     successBlock:(VSuccessBlock)success
                                        failBlock:(VFailBlock)fail
 {
-    NSMutableDictionary* parameters = [[NSMutableDictionary alloc] initWithCapacity:2];
-    [parameters setObject:[NSString stringWithFormat:@"%@", sequence.remoteId] forKey:@"sequence_id"];
-    [parameters setObject:type forKey:@"vote"];
+    NSDictionary* parameters = @{@"sequence_id":sequence.remoteId.stringValue ?: [NSNull null],
+                                 @"vote": type ?: [NSNull null]
+                                 };
     
     return [self POST:@"/api/sequence/vote"
                object:nil
@@ -289,7 +289,9 @@
     
     return [self POST:@"/api/pollresult/create"
                object:nil
-           parameters:@{@"sequence_id" : poll.remoteId, @"answer_id" : answer.remoteId}
+           parameters:@{@"sequence_id" : poll.remoteId ?: [NSNull null],
+                        @"answer_id" : answer.remoteId ?: [NSNull null]
+                        }
          successBlock:fullSuccess
             failBlock:fail];
 }
@@ -301,7 +303,7 @@
     if (!user)
         user = self.mainUser;
     
-    NSString* path = [NSString stringWithFormat:@"/api/pollresult/summary_by_user/%@", user.remoteId];
+    NSString* path = [@"/api/pollresult/summary_by_user/" stringByAppendingString: user.remoteId.stringValue];
     
     VSuccessBlock fullSuccess = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
     {
@@ -346,7 +348,7 @@
             success(operation, fullResponse, resultObjects);
     };
     
-    return [self GET:[NSString stringWithFormat:@"/api/pollresult/summary_by_sequence/%@", sequence.remoteId]
+    return [self GET:[@"/api/pollresult/summary_by_sequence/" stringByAppendingString:sequence.remoteId.stringValue]
               object:nil
           parameters:nil
         successBlock:fullSuccess
@@ -369,17 +371,13 @@
 {
     //Required Fields
     NSString* category = self.isOwner ? kVOwnerPollCategory : kVUGCPollCategory;
-    NSMutableDictionary* parameters = [@{@"name":name ?: [NSNull null],
-                                         @"description":description ?: [NSNull null],
-                                         @"question":question ?: [NSNull null],
-                                         @"category":category} mutableCopy];
+    NSDictionary* parameters = @{@"name":name ?: [NSNull null],
+                                 @"description":description ?: [NSNull null],
+                                 @"question":question ?: [NSNull null],
+                                 @"category":category ?: [NSNull null],
+                                 @"answer1_label" : answer1Text ?: [NSNull null],
+                                 @"answer2_label" : answer2Text ?: [NSNull null]};
 
-    //Optional fields
-    if (answer1Text)
-        parameters[@"answer1_label"] = answer1Text ?: [NSNull null];
-    if (answer2Text)
-        parameters[@"answer2_label"] = answer2Text ?: [NSNull null];
-    
     NSMutableDictionary *allData = [[NSMutableDictionary alloc] init];
     NSMutableDictionary *allExtensions = [[NSMutableDictionary alloc] init];
 
