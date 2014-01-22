@@ -103,8 +103,6 @@
                                              [VComment getAllDescriptor],
                                              [VComment getAllPaginationDescriptor],
                                              [VComment fetchDescriptor],
-//                                             [VStatSequence gamesPlayedDescriptor],
-//                                             [VStatSequence gameStatsDescriptor],
                                              [VConversation descriptor],
                                              [VMessage descriptor],
                                              [VPollResult descriptor],

@@ -125,44 +125,6 @@
         <relationship name="pollResults" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="PollResult" inverseName="sequence" inverseEntity="PollResult" syncable="YES"/>
         <relationship name="user" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="User" inverseName="postedSequences" inverseEntity="User" syncable="YES"/>
     </entity>
-    <entity name="StatAnswer" representedClassName="VStatAnswer" syncable="YES">
-        <attribute name="answeredAt" optional="YES" attributeType="Integer 64" minValueString="0" syncable="YES"/>
-        <attribute name="answerId" attributeType="Integer 64" minValueString="0" syncable="YES"/>
-        <attribute name="createdAt" optional="YES" attributeType="Date" syncable="YES"/>
-        <attribute name="currency" optional="YES" attributeType="Integer 32" minValueString="0" syncable="YES"/>
-        <attribute name="isCorrect" attributeType="Boolean" syncable="YES"/>
-        <attribute name="label" attributeType="String" syncable="YES"/>
-        <attribute name="remoteId" attributeType="Integer 64" minValueString="0" syncable="YES"/>
-        <attribute name="updatedAt" optional="YES" attributeType="Date" syncable="YES"/>
-        <relationship name="interaction" maxCount="1" deletionRule="Nullify" destinationEntity="StatInteraction" inverseName="answers" inverseEntity="StatInteraction" syncable="YES"/>
-    </entity>
-    <entity name="StatInteraction" representedClassName="VStatInteraction" syncable="YES">
-        <attribute name="createdAt" optional="YES" attributeType="Date" syncable="YES"/>
-        <attribute name="currency" optional="YES" attributeType="Integer 32" minValueString="0" syncable="YES"/>
-        <attribute name="interactionId" attributeType="Integer 32" minValueString="0" syncable="YES"/>
-        <attribute name="points" attributeType="Integer 32" minValueString="0" syncable="YES"/>
-        <attribute name="question" attributeType="String" syncable="YES"/>
-        <attribute name="remoteId" attributeType="Integer 64" minValueString="0" syncable="YES"/>
-        <attribute name="timeout" optional="YES" attributeType="Integer 64" minValueString="0" syncable="YES"/>
-        <attribute name="type" attributeType="String" syncable="YES"/>
-        <attribute name="updatedAt" optional="YES" attributeType="Date" syncable="YES"/>
-        <relationship name="answers" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="StatAnswer" inverseName="interaction" inverseEntity="StatAnswer" syncable="YES"/>
-        <relationship name="statSequence" maxCount="1" deletionRule="Nullify" destinationEntity="StatSequence" inverseName="interactionDetails" inverseEntity="StatSequence" syncable="YES"/>
-    </entity>
-    <entity name="StatSequence" representedClassName="VStatSequence" syncable="YES">
-        <attribute name="completedAt" attributeType="Date" syncable="YES"/>
-        <attribute name="name" attributeType="String" syncable="YES"/>
-        <attribute name="outcome" attributeType="String" syncable="YES"/>
-        <attribute name="possiblePoints" attributeType="Integer 32" minValueString="0" syncable="YES"/>
-        <attribute name="questionsAnswered" attributeType="Integer 32" minValueString="0" syncable="YES"/>
-        <attribute name="questionsAnsweredCorrectly" attributeType="Integer 32" minValueString="0" syncable="YES"/>
-        <attribute name="remoteId" attributeType="Integer 64" minValueString="0" syncable="YES"/>
-        <attribute name="totalPoints" attributeType="Integer 32" minValueString="0" syncable="YES"/>
-        <attribute name="totalQuestions" attributeType="Integer 32" minValueString="0" syncable="YES"/>
-        <attribute name="userId" attributeType="Integer 64" minValueString="0" syncable="YES"/>
-        <relationship name="interactionDetails" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="StatInteraction" inverseName="statSequence" inverseEntity="StatInteraction" syncable="YES"/>
-        <relationship name="user" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="User" inverseName="statSequences" inverseEntity="User" syncable="YES"/>
-    </entity>
     <entity name="UnreadConversation" representedClassName="VUnreadConversation" syncable="YES">
         <attribute name="count" optional="YES" attributeType="Integer 32" minValueString="0" defaultValueString="0" syncable="YES"/>
         <relationship name="user" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="User" inverseName="unreadConversation" inverseEntity="User" syncable="YES"/>
@@ -183,7 +145,6 @@
         <relationship name="messages" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Message" inverseName="user" inverseEntity="Message" syncable="YES"/>
         <relationship name="pollResults" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="PollResult" inverseName="user" inverseEntity="PollResult" syncable="YES"/>
         <relationship name="postedSequences" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Sequence" inverseName="user" inverseEntity="Sequence" syncable="YES"/>
-        <relationship name="statSequences" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="StatSequence" inverseName="user" inverseEntity="StatSequence" syncable="YES"/>
         <relationship name="unreadConversation" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="UnreadConversation" inverseName="user" inverseEntity="UnreadConversation" syncable="YES"/>
     </entity>
     <elements>
@@ -202,10 +163,7 @@
         <element name="PollResult" positionX="1053" positionY="125" width="128" height="118"/>
         <element name="Rule" positionX="567" positionY="99" width="128" height="75"/>
         <element name="Sequence" positionX="1015" positionY="-208" width="128" height="268"/>
-        <element name="StatAnswer" positionX="1422" positionY="153" width="128" height="180"/>
-        <element name="StatInteraction" positionX="1278" positionY="150" width="128" height="210"/>
-        <element name="StatSequence" positionX="1260" positionY="-90" width="128" height="225"/>
-        <element name="UnreadConversation" positionX="1197" positionY="-513" width="128" height="73"/>
+        <element name="UnreadConversation" positionX="1206" positionY="-513" width="128" height="73"/>
         <element name="User" positionX="1222" positionY="-412" width="128" height="298"/>
     </elements>
 </model>

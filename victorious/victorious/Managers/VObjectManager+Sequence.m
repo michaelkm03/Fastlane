@@ -13,7 +13,6 @@
 #import "VUser+RestKit.h"
 #import "VCategory+RestKit.h"
 #import "VSequence+RestKit.h"
-#import "VStatSequence+RestKit.h"
 
 #import "VPollResult.h"
 
@@ -263,7 +262,7 @@
     return [self voteSequence:sequence voteType:@"unvote" successBlock:success failBlock:fail];
 }
 
-#pragma mark - StatSequence Methods
+#pragma mark - Poll Methods
 
 - (RKManagedObjectRequestOperation *)answerPoll:(VSequence*)poll
                                      withAnswer:(VAnswer*)answer

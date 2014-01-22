@@ -92,7 +92,7 @@
                                                  mediaUrl:(NSURL*)mediaUrl
                                              successBlock:(VSuccessBlock)success
                                                 failBlock:(VFailBlock)fail;
-#pragma mark - StatSequence Methods
+#pragma mark - Poll Methods
 
 - (RKManagedObjectRequestOperation *)answerPoll:(VSequence*)poll
                                      withAnswer:(VAnswer*)answer

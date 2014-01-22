@@ -9,7 +9,7 @@
 #import <Foundation/Foundation.h>
 #import <CoreData/CoreData.h>
 
-@class VComment, VConversation, VMessage, VPollResult, VSequence, VStatSequence, VUnreadConversation;
+@class VComment, VConversation, VMessage, VPollResult, VSequence, VUnreadConversation;
 
 @interface VUser : NSManagedObject
 
@@ -28,7 +28,6 @@
 @property (nonatomic, retain) NSSet *messages;
 @property (nonatomic, retain) NSSet *pollResults;
 @property (nonatomic, retain) NSSet *postedSequences;
-@property (nonatomic, retain) NSSet *statSequences;
 @property (nonatomic, retain) VUnreadConversation *unreadConversation;
 @end
 
@@ -58,10 +57,5 @@
 - (void)removePostedSequencesObject:(VSequence *)value;
 - (void)addPostedSequences:(NSSet *)values;
 - (void)removePostedSequences:(NSSet *)values;
-
-- (void)addStatSequencesObject:(VStatSequence *)value;
-- (void)removeStatSequencesObject:(VStatSequence *)value;
-- (void)addStatSequences:(NSSet *)values;
-- (void)removeStatSequences:(NSSet *)values;
 
 @end

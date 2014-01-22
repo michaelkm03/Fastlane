@@ -12,7 +12,6 @@
 #import "VMessage.h"
 #import "VPollResult.h"
 #import "VSequence.h"
-#import "VStatSequence.h"
 #import "VUnreadConversation.h"
 
 
@@ -33,7 +32,6 @@
 @dynamic messages;
 @dynamic pollResults;
 @dynamic postedSequences;
-@dynamic statSequences;
 @dynamic unreadConversation;
 
 @end
