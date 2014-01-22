@@ -42,20 +42,6 @@
     return newConversation;
 }
 
-- (void)testSendMessage
-{
-    for (int i=0; i <5; i++)
-    {
-        [self sendMessageToUser:nil
-                       withText:[NSString stringWithFormat: @"Test %i", i]
-                           Data:nil
-                 mediaExtension:nil
-                       mediaUrl:nil
-                   successBlock:nil
-                      failBlock:nil] ;
-    }
-}
-
 - (RKManagedObjectRequestOperation *)loadNextPageOfConversations:(VSuccessBlock)success
                                                        failBlock:(VFailBlock)fail
 {
@@ -82,8 +68,6 @@
     
     VSuccessBlock fullSuccess = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
     {
-        //Warning: Sometimes empty payloads will appear as Array objects. Use the following line at your own risk.
-        //NSDictionary* payload = fullResponse[@"payload"];
         NSMutableArray* nonExistantUsers = [[NSMutableArray alloc] init];
         for (VConversation* conversation in resultObjects)
         {
@@ -118,7 +102,7 @@
                                                               successBlock:(VSuccessBlock)success
                                                                  failBlock:(VFailBlock)fail
 {
-    NSString* path = [NSString stringWithFormat:@"/api/message/conversation/%@", conversation.remoteId];
+    NSString* path = [@"/api/message/conversation/" stringByAppendingString:conversation.remoteId.stringValue];
     
 //    NSString* statusKey = [NSString stringWithFormat:@"messagesFor%@", conversation.remoteId];
 //    
@@ -142,20 +126,20 @@
     
     VSuccessBlock fullSuccess = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
     {
+        NSMutableArray* nonExistantUsers = [[NSMutableArray alloc] init];
         for (VMessage* message in resultObjects)
         {
             [conversation addMessagesObject:(VMessage*)[conversation.managedObjectContext objectWithID:[message objectID]]];
-            [conversation.managedObjectContext save:nil];
             if (!message.user )
-            {
-                //If we don't have the users then we need to fetch em.
-                [self fetchUser:message.senderUserId
-                withSuccessBlock:nil
-                       failBlock:nil];
-            }
+                [nonExistantUsers addObject:message.senderUserId];
         }
+        [conversation.managedObjectContext save:nil];
         
-        if (success)
+        if (nonExistantUsers)
+            [[VObjectManager sharedManager] fetchUsers:nonExistantUsers
+                                      withSuccessBlock:success
+                                             failBlock:fail];
+        else if (success)
             success(operation, fullResponse, resultObjects);
     };
     
@@ -172,7 +156,7 @@
 {
     return [self POST:@"/api/message/mark_conversation_read"
                object:nil
-           parameters:@{@"conversation_id" : conversation.remoteId}
+           parameters:@{@"conversation_id" : conversation.remoteId ?: [NSNull null]}
          successBlock:success
             failBlock:fail];
     
@@ -187,13 +171,9 @@
                                     failBlock:(VFailBlock)fail
 {
     //Set the parameters
-    NSMutableDictionary* parameters = [[NSMutableDictionary alloc] initWithCapacity:5];
-
-    [parameters setObject:[NSString stringWithFormat:@"%@", user.remoteId] forKey:@"to_user_id"];
-    
-    if (text)
-        [parameters setObject:text forKey:@"text"];
-    
+    NSDictionary* parameters = @{@"to_user_id" : user.remoteId.stringValue ?: [NSNull null],
+                                 @"text" : text ?: [NSNull null]
+                                 };
     NSDictionary *allData, *allExtensions;
     if (data && extension)
     {
