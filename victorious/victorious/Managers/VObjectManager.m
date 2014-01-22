@@ -14,7 +14,14 @@
 
 #import "NSString+SHA1Digest.h"
 
-#import "VUser.h"
+#import "VUser+RestKit.h"
+#import "VSequence+RestKit.h"
+#import "VCategory+RestKit.h"
+#import "VComment+RestKit.h"
+#import "VConversation+RestKit.h"
+#import "VPollResult+RestKit.h"
+#import "VMessage+RestKit.h"
+#import "VUnreadConversation+RestKit.h"
 
 #import "VPaginationStatus.h"
 
@@ -86,24 +93,24 @@
     
     [self addResponseDescriptorsFromArray: @[errorDescriptor,
                                              verrorDescriptor,
-//                                             
-//                                             [VUser descriptor],
-//                                             [VCategory descriptor],
-//                                             [VSequence sequenceListDescriptor],
-//                                             [VSequence sequenceFullDataDescriptor],
-//                                             [VSequence sequenceListPaginationDescriptor],
-//                                             [VComment descriptor],
-//                                             [VComment getAllDescriptor],
-//                                             [VComment getAllPaginationDescriptor],
-//                                             [VComment fetchDescriptor],
+                                             
+                                             [VUser descriptor],
+                                             [VCategory descriptor],
+                                             [VSequence sequenceListDescriptor],
+                                             [VSequence sequenceFullDataDescriptor],
+                                             [VSequence sequenceListPaginationDescriptor],
+                                             [VComment descriptor],
+                                             [VComment getAllDescriptor],
+                                             [VComment getAllPaginationDescriptor],
+                                             [VComment fetchDescriptor],
 //                                             [VStatSequence gamesPlayedDescriptor],
 //                                             [VStatSequence gameStatsDescriptor],
-//                                             [VConversation descriptor],
-//                                             [VMessage descriptor],
-//                                             [VPollResult descriptor],
-//                                             [VPollResult createPollResultDescriptor],
-//                                             [VPollResult byUserDescriptor],
-//                                             [VUnreadConversation descriptor]
+                                             [VConversation descriptor],
+                                             [VMessage descriptor],
+                                             [VPollResult descriptor],
+                                             [VPollResult createPollResultDescriptor],
+                                             [VPollResult byUserDescriptor],
+                                             [VUnreadConversation descriptor]
                                              ]];
     
     _objectCache = [[NSCache alloc] init];
