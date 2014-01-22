@@ -9,5 +9,4 @@
 #import "VFetchedResultsTableViewController.h"
 
 @interface VStreamTableViewController : VFetchedResultsTableViewController
-
 @end

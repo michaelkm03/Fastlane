@@ -10,16 +10,14 @@
 
 @interface VFetchedResultsTableViewController : UITableViewController
 
-@property (nonatomic,strong) NSManagedObjectContext* managedObjectContext;
-@property (nonatomic, copy) NSString* entityName;
-@property (nonatomic, strong) NSPredicate* predicate;
-@property (nonatomic, strong) NSArray* sortDescriptors;
-@property (nonatomic, assign) NSUInteger batchSize;
-
 @property (nonatomic, copy) NSString* cellIdentifier;
 
-- (void)registerCells;
+- (void)performFetch;
 
+- (NSFetchedResultsController *)makeFetchedResultsController;
+- (NSFetchedResultsController *)makeSearchFetchedResultsController;
+
+- (void)registerCells;
 - (void)refreshAction;
 
 - (NSPredicate*)searchPredicateForString:(NSString *)searchString;

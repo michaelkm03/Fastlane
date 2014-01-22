@@ -38,42 +38,18 @@
 {
     if (nil == _fetchedResultsController)
     {
-        NSFetchRequest* fetchRequest = [[NSFetchRequest alloc] init];
-        NSEntityDescription*    entity = [NSEntityDescription entityForName:self.entityName
-                                                     inManagedObjectContext:self.managedObjectContext];
-        [fetchRequest setEntity:entity];
-        [fetchRequest setPredicate:self.predicate];
-        [fetchRequest setSortDescriptors:self.sortDescriptors];
-        if (self.batchSize > 0)
-            [fetchRequest setFetchBatchSize:self.batchSize];
-
-        self.fetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:fetchRequest
-                                                                            managedObjectContext:self.managedObjectContext
-                                                                              sectionNameKeyPath:nil
-                                                                                       cacheName:self.entityName];
-        _fetchedResultsController.delegate = self;
+        self.fetchedResultsController = [self makeFetchedResultsController];
+        self.fetchedResultsController.delegate = self;
     }
     
     return _fetchedResultsController;
-}
-
- - (void)setPredicate:(NSPredicate *)predicate
-{
-    [NSFetchedResultsController deleteCacheWithName:self.fetchedResultsController.cacheName];
-    _predicate = predicate;
-}
-
-- (void)setSortDescriptors:(NSArray *)sortDescriptors
-{
-    [NSFetchedResultsController deleteCacheWithName:self.fetchedResultsController.cacheName];
-    _sortDescriptors = sortDescriptors;
 }
 
 #pragma mark - Actions
 
 - (void)performFetch
 {
-    [self.managedObjectContext performBlockAndWait:^{
+    [self.fetchedResultsController.managedObjectContext performBlockAndWait:^{
         NSError *error;
         if (![[self fetchedResultsController] performFetch:&error])
         {
@@ -86,20 +62,9 @@
 }
 
 - (void)reloadSearchFetchRequestControllerForPredicate:(NSPredicate*)predicate
-                                            withEntity:(NSString*)entity
-                                             inContext:(NSManagedObjectContext*)context
-                                   withSortDescriptors:(NSArray*)sortDescriptors
-                                withSectionNameKeyPath:(NSString*)sectionNameKeyPath
 {
-    NSFetchRequest *request = [[NSFetchRequest alloc] initWithEntityName:entity];
-    request.sortDescriptors = sortDescriptors;
-    request.predicate = predicate;
-    request.fetchBatchSize = 15;
-    
-    self.searchFetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:request
-                                                                              managedObjectContext:context
-                                                                                sectionNameKeyPath:sectionNameKeyPath
-                                                                                         cacheName:@"search.cache.getVictorious.com"];
+    self.searchFetchedResultsController = [self makeSearchFetchedResultsController];
+    self.searchFetchedResultsController.fetchRequest.predicate = predicate;
     self.searchFetchedResultsController.delegate = self;
     
     [self.searchFetchedResultsController.managedObjectContext performBlockAndWait:^{
@@ -113,7 +78,6 @@
 
 - (void)hideSearchBar
 {
-    // scroll search bar out of sight
     CGRect newBounds = self.tableView.bounds;
     if (self.tableView.bounds.origin.y < 44)
     {
@@ -169,9 +133,7 @@
     return [[self fetchedResultsControllerForTableView:tableView] sectionIndexTitles];
 }
 
-- (NSInteger)tableView:(UITableView *)tableView
-sectionForSectionIndexTitle:(NSString *)title
-               atIndex:(NSInteger)index
+- (NSInteger)tableView:(UITableView *)tableView sectionForSectionIndexTitle:(NSString *)title atIndex:(NSInteger)index
 {
     return [[self fetchedResultsControllerForTableView:tableView] sectionForSectionIndexTitle:title atIndex:index];
 }
@@ -282,11 +244,7 @@ sectionForSectionIndexTitle:(NSString *)title
     if (searchString.length > 0)
     {
         [self reloadSearchFetchRequestControllerForPredicate:[self fetchResultsPredicateForString:searchString
-                                                                                           option:self.searchDisplayController.searchBar.selectedScopeButtonIndex]
-                                                  withEntity:self.entityName
-                                                   inContext:self.managedObjectContext
-                                         withSortDescriptors:self.sortDescriptors
-                                      withSectionNameKeyPath:nil];
+                                                                                           option:self.searchDisplayController.searchBar.selectedScopeButtonIndex]];
     }
     else
     {
@@ -299,11 +257,7 @@ sectionForSectionIndexTitle:(NSString *)title
 -(BOOL)searchDisplayController:(UISearchDisplayController *)controller shouldReloadTableForSearchScope:(NSInteger)searchOption
 {
     [self reloadSearchFetchRequestControllerForPredicate:[self fetchResultsPredicateForString:self.searchDisplayController.searchBar.text
-                                                                                       option:searchOption]
-                                              withEntity:self.entityName
-                                               inContext:self.managedObjectContext
-                                     withSortDescriptors:self.sortDescriptors
-                                  withSectionNameKeyPath:nil];
+                                                                                       option:searchOption]];
     
     return YES;
 }
@@ -328,6 +282,16 @@ sectionForSectionIndexTitle:(NSString *)title
 }
 
 #pragma mark - Overrides
+
+- (NSFetchedResultsController *)makeFetchedResultsController
+{
+    return nil;
+}
+
+- (NSFetchedResultsController *)makeSearchFetchedResultsController
+{
+    return nil;
+}
 
 - (void)registerCells
 {

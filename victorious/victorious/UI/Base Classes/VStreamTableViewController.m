@@ -13,9 +13,24 @@
 
 @implementation VStreamTableViewController
 
+- (NSFetchedResultsController *)makeFetchedResultsController
+{
+    return nil;
+}
+
+- (NSFetchedResultsController *)makeSearchFetchedResultsController
+{
+    return nil;
+}
+
 - (void)registerCells
 {
     
+}
+
+- (void)refreshAction
+{
+    [self performFetch];
 }
 
 - (NSPredicate*)searchPredicateForString:(NSString *)searchString
