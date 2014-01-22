@@ -29,12 +29,13 @@
 {
     return [[VObjectManager sharedManager] loadSequenceCategoriesWithSuccessBlock:^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
       {
-          for (VCategory* category in resultObjects)
-          {
-              [self loadNextPageOfSequencesForCategory:nil
-                                          successBlock:nil
-                                             failBlock:nil];
-          }
+          
+          [self loadNextPageOfSequencesForCategory:nil
+                                      successBlock:nil
+                                         failBlock:nil];
+          [self loadNextPageOfSequencesForCategory:kFeaturedCategory
+                                      successBlock:nil
+                                         failBlock:nil];
       } failBlock:nil];
 }
 
@@ -52,17 +53,17 @@
  * \param category: category of sequences to load
  * \returns RKManagedObjectRequestOperation* or nil if theres no more pages to load
  */
-- (RKManagedObjectRequestOperation *)loadNextPageOfSequencesForCategory:(VCategory*)category
+- (RKManagedObjectRequestOperation *)loadNextPageOfSequencesForCategory:(NSString*)category
                                                            successBlock:(VSuccessBlock)success
                                                               failBlock:(VFailBlock)fail
 {
-    __block VPaginationStatus* status = [self statusForKey:category.name ?: @"nocategory"];
+    __block VPaginationStatus* status = [self statusForKey:category ?: @"nocategory"];
     if([status isFullyLoaded])
     {
         return nil;
     }
     
-    NSString* path = [NSString stringWithFormat:@"/api/sequence/detail_list_by_category/%@", category.name ?: @"0"];
+    NSString* path = [NSString stringWithFormat:@"/api/sequence/detail_list_by_category/%@", category ?: @"0"];
     if (!status.pagesLoaded)
     {
         path = [path stringByAppendingFormat:@"/0/%lu/%lu", (unsigned long)status.pagesLoaded, (unsigned long)status.itemsPerPage];
@@ -75,7 +76,7 @@
     {
         status.pagesLoaded = [fullResponse[@"page_number"] integerValue];
         status.totalPages = [fullResponse[@"page_total"] integerValue];
-        [self.paginationStatuses setObject:status forKey:category.name];
+        [self.paginationStatuses setObject:status forKey:category];
         
         //If we don't have the user then we need to fetch em.
         NSMutableArray* nonExistantUsers = [[NSMutableArray alloc] init];
@@ -101,42 +102,6 @@
           parameters:nil
         successBlock:fullSuccessBlock
            failBlock:fail];
-}
-
-//TODO: I don't think we need this anymore...
-- (RKManagedObjectRequestOperation *)loadFullDataForSequence:(VSequence*)sequence
-                                                successBlock:(VSuccessBlock)success
-                                                   failBlock:(VFailBlock)fail
-{
-    //If we haven't fetched the full data we load that and possibly the comments
-    if (![sequence.nodes count])
-    {
-        VSuccessBlock loadCommentsBlock;
-        if (![sequence.comments count])
-        {
-            loadCommentsBlock = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
-            {
-                VLog(@"Objects created in loadFullData: %@", resultObjects);
-                [self loadNextPageOfCommentsForSequence:sequence
-                                           successBlock:success
-                                              failBlock:fail];
-            };
-        }
-        
-        //If we need to load the comments afterwards, we delay the success block until they are loaded
-        return [self fetchSequence:sequence
-               successBlock:loadCommentsBlock ? loadCommentsBlock : success
-                  failBlock:fail];
-    }
-    //If we dont have comments, load those
-    else if (![sequence.comments count])
-    {
-        return [self loadNextPageOfCommentsForSequence:sequence successBlock:success failBlock:fail];
-    }
-    
-    //If we don't need to load, just run the success block
-    success(nil, nil, nil);
-    return nil;
 }
 
 - (RKManagedObjectRequestOperation *)fetchSequence:(VSequence*)sequence

@@ -87,7 +87,6 @@
         return;
     }
     
-    // TODO: create posts if the user is the owner of the channel
     BBlockWeakSelf wself = self;
     NSString *videoTitle = NSLocalizedString(@"Post Video", @"Post video button");
     NSString *photoTitle = NSLocalizedString(@"Post Photo", @"Post photo button");

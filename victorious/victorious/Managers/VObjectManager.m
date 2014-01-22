@@ -142,10 +142,11 @@
              failBlock(operation, [NSError errorWithDomain:kVictoriousDomain code:error.errorCode
                                        userInfo:@{NSLocalizedDescriptionKey: error.message}]);
          else if (successBlock)
-             //TODO: pass back the full response object
-             successBlock(operation, nil, mappedObjects);
+         {
+             NSDictionary *JSON = [NSJSONSerialization JSONObjectWithData:operation.HTTPRequestOperation.responseData options:0 error:nil];
+             successBlock(operation, JSON, mappedObjects);
+         }
      }
-                                            //TODO: may need to wrap fail block to match RKFailBlock?
                                             failure:failBlock];
     
     [requestOperation start];

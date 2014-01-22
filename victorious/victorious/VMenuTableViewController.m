@@ -29,7 +29,6 @@ NSString *const VMenuTableViewControllerDidSelectRowNotification = @"VMenuTableV
 - (void)viewDidLoad{
     [super viewDidLoad];
 
-    // TODO: connect to real data
     NSUInteger count = [VObjectManager sharedManager].mainUser.unreadConversation.count.unsignedIntegerValue;
 
     if(count < 1)

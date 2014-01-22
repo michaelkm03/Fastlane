@@ -10,10 +10,9 @@
 #import "VObjectManager+Private.h"
 #import "VObjectManager+Sequence.h"
 
-//TODO: may not need these imports once we're done
-#import "VSequence+RestKit.h"
-#import "NSString+VParseHelp.h"
+#import "VSequence.h"
 #import "VUser.h"
+#import "VConstants.h"
 
 @implementation VObjectManager (Comment)
 

@@ -17,13 +17,9 @@
 - (RKManagedObjectRequestOperation *)loadSequenceCategoriesWithSuccessBlock:(VSuccessBlock)success
                                                                   failBlock:(VFailBlock)fail;
 
-- (RKManagedObjectRequestOperation *)loadNextPageOfSequencesForCategory:(VCategory*)category
+- (RKManagedObjectRequestOperation *)loadNextPageOfSequencesForCategory:(NSString*)category
                                                            successBlock:(VSuccessBlock)success
                                                               failBlock:(VFailBlock)fail;
-
-- (RKManagedObjectRequestOperation *)loadFullDataForSequence:(VSequence*)sequence
-                                                successBlock:(VSuccessBlock)success
-                                                   failBlock:(VFailBlock)fail;
 
 - (RKManagedObjectRequestOperation *)fetchSequence:(VSequence*)sequence
                                       successBlock:(VSuccessBlock)success
