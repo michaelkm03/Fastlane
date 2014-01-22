@@ -59,41 +59,29 @@
 
 - (void)addRelationshipsForUser:(VUser*)user
 {
-    NSArray* sequences = [self objectsForEntity:[VSequence entityName]
-                                      userIdKey:@"createdBy"
-                                         userId:user.remoteId
-                                      inContext:user.managedObjectContext];
-    for (VSequence* sequence in sequences)
-    {
-        sequence.user = user;
-    }
+    NSSet* sequences = [NSSet setWithArray:[self objectsForEntity:[VSequence entityName]
+                                                        userIdKey:@"createdBy"
+                                                           userId:user.remoteId
+                                                        inContext:user.managedObjectContext]];
+    [user addPostedSequences:sequences];
     
-    NSArray* comments = [self objectsForEntity:[VComment entityName]
-                                     userIdKey:@"userId"
-                                        userId:user.remoteId
-                                     inContext:user.managedObjectContext];
-    for (VComment* comment in comments)
-    {
-        comment.user = user;
-    }
+    NSSet* commments = [NSSet setWithArray:[self objectsForEntity:[VComment entityName]
+                                                        userIdKey:@"userId"
+                                                           userId:user.remoteId
+                                                        inContext:user.managedObjectContext]];
+    [user addComments:commments];
     
-    NSArray* conversations = [self objectsForEntity:[VConversation entityName]
-                                          userIdKey:@"other_interlocutor_user_id"
-                                             userId:user.remoteId
-                                          inContext:user.managedObjectContext];
-    for (VConversation* conversation in conversations)
-    {
-        conversation.user = user;
-    }
+    NSSet* conversations = [NSSet setWithArray:[self objectsForEntity:[VConversation entityName]
+                                                            userIdKey:@"other_interlocutor_user_id"
+                                                               userId:user.remoteId
+                                                            inContext:user.managedObjectContext]];
+    [user addConversations:conversations];
     
-    NSArray* messages = [self objectsForEntity:[VConversation entityName]
-                                          userIdKey:@"senderUserId"
-                                             userId:user.remoteId
-                                          inContext:user.managedObjectContext];
-    for (VConversation* message in messages)
-    {
-        message.user = user;
-    }
+    NSSet* messages = [NSSet setWithArray:[self objectsForEntity:[VMessage entityName]
+                                                       userIdKey:@"senderUserId"
+                                                          userId:user.remoteId
+                                                       inContext:user.managedObjectContext]];
+    [user addMessages:messages];
     
     [user.managedObjectContext save:nil];
     
