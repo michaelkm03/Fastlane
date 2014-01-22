@@ -9,10 +9,10 @@
 #import "VObjectManager+Users.h"
 #import "VObjectManager+Private.h"
 
-#import "VConversation.h"
-#import "VComment.h"
-#import "VMessage.h"
-#import "VSequence.h"
+#import "VConversation+RestKit.h"
+#import "VComment+RestKit.h"
+#import "VMessage+RestKit.h"
+#import "VSequence+RestKit.h"
 #import "VUser.h"
 
 @interface VObjectManager (UserProperties)
@@ -59,6 +59,67 @@
 
 - (void)addRelationshipsForUser:(VUser*)user
 {
-//    NSFetchRequest
+    NSArray* sequences = [self objectsForEntity:[VSequence entityName]
+                                      userIdKey:@"createdBy"
+                                         userId:user.remoteId
+                                      inContext:user.managedObjectContext];
+    for (VSequence* sequence in sequences)
+    {
+        sequence.user = user;
+    }
+    
+    NSArray* comments = [self objectsForEntity:[VComment entityName]
+                                     userIdKey:@"userId"
+                                        userId:user.remoteId
+                                     inContext:user.managedObjectContext];
+    for (VComment* comment in comments)
+    {
+        comment.user = user;
+    }
+    
+    NSArray* conversations = [self objectsForEntity:[VConversation entityName]
+                                          userIdKey:@"other_interlocutor_user_id"
+                                             userId:user.remoteId
+                                          inContext:user.managedObjectContext];
+    for (VConversation* conversation in conversations)
+    {
+        conversation.user = user;
+    }
+    
+    NSArray* messages = [self objectsForEntity:[VConversation entityName]
+                                          userIdKey:@"senderUserId"
+                                             userId:user.remoteId
+                                          inContext:user.managedObjectContext];
+    for (VConversation* message in messages)
+    {
+        message.user = user;
+    }
+    
+    [user.managedObjectContext save:nil];
+    
+    VLog(@"User sequences: %@", user.postedSequences);
 }
+
+- (NSArray*)objectsForEntity:(NSString*)entityName
+                   userIdKey:(NSString*)idKey
+                      userId:(NSNumber*)userId
+                   inContext:(NSManagedObjectContext*)context
+{
+    NSEntityDescription *entity = [NSEntityDescription entityForName:entityName
+                                              inManagedObjectContext:context];
+    NSFetchRequest *request = [[NSFetchRequest alloc] init];
+    [request setEntity:entity];
+    
+    NSPredicate* idFilter = [NSPredicate predicateWithFormat:@"%K == %@", idKey, userId];
+    [request setPredicate:idFilter];
+    
+    NSError *error = nil;
+    NSArray *results = [context executeFetchRequest:request error:&error];
+    if (error != nil)
+    {
+        VLog(@"Error occured in user objectsForEntity: %@", error);
+    }
+    return results;
+}
+
 @end

@@ -99,7 +99,6 @@ static NSString* CommentCache = @"CommentCache";
     
     VSuccessBlock success = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
     {
-        
         [self fetchedResultsController];
         
         [self updatePredicate];
