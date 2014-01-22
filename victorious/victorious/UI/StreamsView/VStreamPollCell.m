@@ -81,7 +81,6 @@
     VAsset* firstAsset = [self.sequence firstAsset];
     if (firstAsset)
     {
-        //TODO: hide the cell if we fail to load the image
         self.firstAssetUrl = firstAsset.data;
     }
     else
