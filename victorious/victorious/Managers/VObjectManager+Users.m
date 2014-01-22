@@ -44,27 +44,17 @@
            failBlock:fail];
 }
 
-
 - (RKManagedObjectRequestOperation *)fetchUsers:(NSArray*)userIds
                                withSuccessBlock:(VSuccessBlock)success
                                       failBlock:(VFailBlock)fail
 {
-    NSString* path = @"/api/userinfo/fetch";
-    
-    VSuccessBlock fullSuccess = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
+    for (NSNumber* userID in userIds)
     {
-        for (VUser* user in resultObjects)
-            [self addRelationshipsForUser:user];
-        
-        if (success)
-            success(operation, fullResponse, resultObjects);
-    };
-    
-    return [self GET:path
-              object:nil
-          parameters:@{@"user_ids":userIds?:[NSNull null]}
-        successBlock:fullSuccess
-           failBlock:fail];
+        [self fetchUser:userID
+       withSuccessBlock:success
+              failBlock:fail];
+    }
+    return nil;
 }
 
 - (void)addRelationshipsForUser:(VUser*)user

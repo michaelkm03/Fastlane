@@ -84,24 +84,26 @@
     {
         //Warning: Sometimes empty payloads will appear as Array objects. Use the following line at your own risk.
         //NSDictionary* payload = fullResponse[@"payload"];
-        
+        NSMutableArray* nonExistantUsers = [[NSMutableArray alloc] init];
         for (VConversation* conversation in resultObjects)
         {
             //There should only be one message.  Its the current 'last message'
             conversation.lastMessage = [conversation.messages anyObject];
-
             [conversation.managedObjectContext save:nil];
             
             if (!conversation.user )
             {
                 //If we don't have the users then we need to fetch em.
-                [self fetchUser:conversation.other_interlocutor_user_id
-                withSuccessBlock:nil
-                       failBlock:nil];
+                [nonExistantUsers addObject:conversation.other_interlocutor_user_id];
             }
         }
         
-        if (success)
+        if ([nonExistantUsers count])
+            [[VObjectManager sharedManager] fetchUsers:nonExistantUsers
+                                      withSuccessBlock:success
+                                             failBlock:fail];
+        
+        else if (success)
             success(operation, fullResponse, resultObjects);
     };
     

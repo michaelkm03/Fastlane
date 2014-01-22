@@ -31,7 +31,7 @@
       {
           for (VCategory* category in resultObjects)
           {
-              [self loadNextPageOfSequencesForCategory:category
+              [self loadNextPageOfSequencesForCategory:nil
                                           successBlock:nil
                                              failBlock:nil];
           }
@@ -56,13 +56,13 @@
                                                            successBlock:(VSuccessBlock)success
                                                               failBlock:(VFailBlock)fail
 {
-    __block VPaginationStatus* status = [self statusForKey:category.name];
+    __block VPaginationStatus* status = [self statusForKey:category.name ?: @"nocategory"];
     if([status isFullyLoaded])
     {
         return nil;
     }
     
-    NSString* path = [NSString stringWithFormat:@"/api/sequence/detail_list_by_category/%@", category.name];
+    NSString* path = [NSString stringWithFormat:@"/api/sequence/detail_list_by_category/%@", category.name ?: @"0"];
     if (!status.pagesLoaded)
     {
         path = [path stringByAppendingFormat:@"/0/%lu/%lu", (unsigned long)status.pagesLoaded, (unsigned long)status.itemsPerPage];
@@ -73,22 +73,26 @@
     
     VSuccessBlock fullSuccessBlock = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
     {
-        //If we don't have the user then we need to fetch em.
-        for (VSequence* sequence in resultObjects)
-        {
-            if (!sequence.user)
-            {
-                [self fetchUser:sequence.createdBy
-                withSuccessBlock:nil
-                       failBlock:nil];
-            }
-        }
-        
         status.pagesLoaded = [fullResponse[@"page_number"] integerValue];
         status.totalPages = [fullResponse[@"page_total"] integerValue];
         [self.paginationStatuses setObject:status forKey:category.name];
         
-        if (success)
+        //If we don't have the user then we need to fetch em.
+        NSMutableArray* nonExistantUsers = [[NSMutableArray alloc] init];
+        for (VSequence* sequence in resultObjects)
+        {
+            if (!sequence.user)
+            {
+                [nonExistantUsers addObject:sequence.createdBy];
+            }
+        }
+        
+        if ([nonExistantUsers count])
+            [[VObjectManager sharedManager] fetchUsers:nonExistantUsers
+                                      withSuccessBlock:success
+                                             failBlock:fail];
+        
+        else if (success)
             success(operation, fullResponse, resultObjects);
     };
     
@@ -200,27 +204,22 @@
     __block VSequence* commentOwner = sequence; //Keep the sequence around until the block gets called
     VSuccessBlock fullSuccessBlock = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
     {
+        status.pagesLoaded = [fullResponse[@"page_number"] integerValue];
+        status.totalPages = [fullResponse[@"page_total"] integerValue];
+        [self.paginationStatuses setObject:status forKey:statusKey];
+        
+        NSMutableArray* nonExistantUsers = [[NSMutableArray alloc] init];
         for (VComment* comment in resultObjects)
         {
             [commentOwner addCommentsObject:(VComment*)[commentOwner.managedObjectContext
                                                         objectWithID:[comment objectID]]];
             if (!comment.user )
-            {
-                    __block VComment* userOwner = comment;
-                    [self fetchUser:userOwner.userId
-                    withSuccessBlock:^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
-                    {
-                        VLog(@"Comment %@: has user: %@", userOwner, userOwner.user);
-                    }
-                           failBlock:nil];
-            }
+                [nonExistantUsers addObject:comment.userId];
         }
         
-        status.pagesLoaded = [fullResponse[@"page_number"] integerValue];
-        status.totalPages = [fullResponse[@"page_total"] integerValue];
-        [self.paginationStatuses setObject:status forKey:statusKey];
-        
-        if (success)
+        if ([nonExistantUsers count])
+            [[VObjectManager sharedManager] fetchUsers:nonExistantUsers withSuccessBlock:success failBlock:fail];
+        else if (success)
             success(operation, fullResponse, resultObjects);
     };
     
