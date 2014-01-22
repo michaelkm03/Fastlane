@@ -25,25 +25,18 @@
                                   successBlock:(VSuccessBlock)success
                                      failBlock:(VFailBlock)fail
 {
-    //Set the parameters
-    NSMutableDictionary* parameters = [[NSMutableDictionary alloc] initWithCapacity:5];
-    if (sequence)
-        [parameters setObject:[NSString stringWithFormat:@"%@", sequence.remoteId] forKey:@"sequence_id"];
-    if (parent)
-        [parameters setObject:[NSString stringWithFormat:@"%@", parent.remoteId] forKey:@"parent_id"];
-    if (text)
-        [parameters setObject:text forKey:@"text"];
+    //    TODO: Unhack this for stickers
+    NSString* type = [extension isEqualToString:VConstantMediaExtensionMOV] ? @"video" : @"image";
+    NSDictionary* parameters = @{@"sequence_id" : sequence.remoteId.stringValue ?: [NSNull null],
+                                 @"parent_id" : parent.remoteId.stringValue ?: [NSNull null],
+                                 @"text" : text ?: [NSNull null],
+                                 @"media_type" : type ?: [NSNull null]};
     
-//    __block VSequence* commentOwner = sequence; //Keep the sequence around until the block gets called
-    NSString* type;
     NSDictionary *allData, *allExtensions;
     if (data && extension)
     {
         allData = @{@"media_data":data};
         allExtensions = @{@"media_data":extension};
-//    TODO: Unhack this for stickers
-        type = [extension isEqualToString:VConstantMediaExtensionMOV] ? @"video" : @"image";
-        [parameters setObject:type forKey:@"media_type"];
     }
     
     VSuccessBlock fetchCommentSuccess = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
@@ -125,10 +118,6 @@
                                       successBlock:(VSuccessBlock)success
                                          failBlock:(VFailBlock)fail
 {
-    NSMutableDictionary* parameters = [[NSMutableDictionary alloc] initWithCapacity:1];
-    [parameters setObject:[NSString stringWithFormat:@"%@", comment.remoteId] forKey:@"comment_id"];
-    [parameters setObject:removalReason forKey:@"removal_reason"];
-
     __block VComment* commentToRemove = comment;//keep the comment in memory til we get the response back
     
     VSuccessBlock fullSuccessBlock = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
@@ -142,7 +131,9 @@
     
     return [self POST:@"/api/comment/remove"
                object:nil
-           parameters:parameters
+           parameters:@{ @"comment_id" : comment.remoteId.stringValue ?: [NSNull null],
+                         @"removal_reason" : removalReason ?: [NSNull null]
+                       }
          successBlock:fullSuccessBlock
             failBlock:fail];
 }
@@ -151,12 +142,9 @@
                                     successBlock:(VSuccessBlock)success
                                        failBlock:(VFailBlock)fail
 {
-    NSMutableDictionary* parameters = [[NSMutableDictionary alloc] initWithCapacity:1];
-    [parameters setObject:[NSString stringWithFormat:@"%@", comment.remoteId] forKey:@"comment_id"];
-    
     return [self POST:@"/api/comment/flag"
                object:nil
-           parameters:parameters
+           parameters:@{@"comment_id" : comment.remoteId.stringValue ?: [NSNull null]}
          successBlock:success
             failBlock:fail];
 }
@@ -167,13 +155,11 @@
                                     successBlock:(VSuccessBlock)success
                                        failBlock:(VFailBlock)fail
 {
-    NSMutableDictionary* parameters = [[NSMutableDictionary alloc] initWithCapacity:2];
-    [parameters setObject:[NSString stringWithFormat:@"%@", comment.remoteId] forKey:@"comment_id"];
-    [parameters setObject:type forKey:@"vote"];
-    
     return [self POST:@"/api/comment/vote"
                object:nil
-           parameters:parameters
+           parameters:@{ @"comment_id" : comment.remoteId.stringValue ?: [NSNull null],
+                         @"vote" : type ?: [NSNull null]
+                         }
          successBlock:success
             failBlock:fail];
 }
