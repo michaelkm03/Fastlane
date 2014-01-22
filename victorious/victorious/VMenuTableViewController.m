@@ -8,7 +8,7 @@
 
 #import "VMenuTableViewController.h"
 #import "VThemeManager.h"
-#import "VInboxBadgeLabel.h"
+#import "VBadgeLabel.h"
 #import "VRootNavigationController.h"
 #import "VObjectManager+DirectMessaging.h"
 #import "VUser+RestKit.h"
@@ -17,7 +17,7 @@
 NSString *const VMenuTableViewControllerDidSelectRowNotification = @"VMenuTableViewControllerDidSelectRowNotification";
 
 @interface VMenuTableViewController()
-@property (weak, nonatomic) IBOutlet VInboxBadgeLabel *inboxBadgeLabel;
+@property (weak, nonatomic) IBOutlet VBadgeLabel *inboxBadgeLabel;
 @property (weak, nonatomic) IBOutlet UILabel *nameLabel;
 @property (strong, nonatomic) IBOutletCollection(UIImageView) NSArray *imageViews;
 @property (strong, nonatomic) IBOutletCollection(UILabel) NSArray *labels;

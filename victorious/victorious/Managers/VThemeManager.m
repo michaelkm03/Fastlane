@@ -94,26 +94,25 @@ NSString*   const   kVChannelURLSupport                 =   @"channel.url.suppor
     id value = self.themeValues[keyPath];
 
     if (value)
-    {
         return value;
-    }
 
     NSString *newKeyPath = [keyPath stringByDeletingPathExtension];
     if ([keyPath isEqualToString:newKeyPath])
-    {
         return nil;
-    }
 
     return [self themedValueForKeyPath:newKeyPath];
+}
+
+- (NSString *)themedStringForPath:(NSString *)keyPath
+{
+    return (NSString *)[self themedValueForKeyPath:keyPath];
 }
 
 - (UIColor *)themedColorForKeyPath:(NSString *)keyPath
 {
     NSDictionary*   colorDictionary =   [self themedValueForKeyPath:keyPath];
     if (nil == colorDictionary)
-    {
         return nil;
-    }
 
     CGFloat         red             =   [colorDictionary[@"red"] doubleValue] / 255.0;
     CGFloat         green           =   [colorDictionary[@"green"] doubleValue] / 255.0;
@@ -129,6 +128,7 @@ NSString*   const   kVChannelURLSupport                 =   @"channel.url.suppor
 
     // From https://github.com/kgn/UIColorCategories
     CGFloat hue = 0, saturation = 0, brightness = 0, alpha = 0;
+
     [color getHue:&hue saturation:&saturation brightness:&brightness alpha:&alpha];
     return [UIColor colorWithHue:hue saturation:saturation*1.158 brightness:brightness*0.95 alpha:alpha];
 }
@@ -160,7 +160,5 @@ NSString*   const   kVChannelURLSupport                 =   @"channel.url.suppor
 
     return [UIFont fontWithName:fontName size:fontSize];
 }
-
-#pragma mark -
 
 @end

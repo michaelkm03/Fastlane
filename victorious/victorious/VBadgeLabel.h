@@ -6,6 +6,5 @@
 //  Copyright (c) 2014 Will Long. All rights reserved.
 //
 
-@interface VInboxBadgeLabel : UILabel
-
+@interface VBadgeLabel : UILabel
 @end
