@@ -35,7 +35,7 @@
 "PollUploadTitle"       =   "Poll Upload Failed";
 "PollUploadBody"        =   "Unable to upload Poll to server";
 
-"Now"                   =   "Just now";
+"Now"                   =   "Now";
 "SecondsAgo"            =   "%ds";
 "MinuteAgo"             =   "1m";
 "MinutesAgo"            =   "%dm";

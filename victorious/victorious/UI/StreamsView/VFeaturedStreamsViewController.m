@@ -63,7 +63,7 @@ static NSString* kStreamCache = @"StreamCache";
         RKObjectManager* manager = [RKObjectManager sharedManager];
         NSManagedObjectContext *context = manager.managedObjectStore.persistentStoreManagedObjectContext;
 
-        NSFetchRequest *fetchRequest = [self fetchRequestForContext:context];
+        NSFetchRequest *fetchRequest = [self fetchRequest];
 
         self.fetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:fetchRequest
                                                                             managedObjectContext:context
@@ -75,11 +75,9 @@ static NSString* kStreamCache = @"StreamCache";
     return _fetchedResultsController;
 }
 
-- (NSFetchRequest*)fetchRequestForContext:(NSManagedObjectContext*)context
+- (NSFetchRequest*)fetchRequest
 {
-    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
-    NSEntityDescription *entity = [NSEntityDescription entityForName:[VSequence entityName] inManagedObjectContext:context];
-    [fetchRequest setEntity:entity];
+    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] initWithEntityName:[VSequence entityName]];
 
     NSSortDescriptor *sort = [[NSSortDescriptor alloc] initWithKey:@"releasedAt" ascending:YES];
     [fetchRequest setPredicate:[NSPredicate predicateWithFormat:@"category == %@", kFeaturedCategory]];

@@ -82,7 +82,7 @@ NSString* const kSearchCache = @"SearchCache";
         RKObjectManager* manager = [RKObjectManager sharedManager];
         NSManagedObjectContext *context = manager.managedObjectStore.persistentStoreManagedObjectContext;
         
-        NSFetchRequest *fetchRequest = [self fetchRequestForContext:context];
+        NSFetchRequest *fetchRequest = [self fetchRequest];
         
         self.fetchedResultsController = [[NSFetchedResultsController alloc]
                                          initWithFetchRequest:fetchRequest
@@ -103,7 +103,7 @@ NSString* const kSearchCache = @"SearchCache";
         RKObjectManager* manager = [RKObjectManager sharedManager];
         NSManagedObjectContext *context = manager.managedObjectStore.persistentStoreManagedObjectContext;
         
-        NSFetchRequest *fetchRequest = [self fetchRequestForContext:context];
+        NSFetchRequest *fetchRequest = [self fetchRequest];
         
         _searchFetchedResultsController = [[NSFetchedResultsController alloc]
                                                initWithFetchRequest:fetchRequest
@@ -313,11 +313,9 @@ forFetchedResultsController:(NSFetchedResultsController *)fetchedResultsControll
     return nil;
 }
 
-- (NSFetchRequest*)fetchRequestForContext:(NSManagedObjectContext*)context
+- (NSFetchRequest*)fetchRequest
 {
-    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
-    NSEntityDescription *entity = [NSEntityDescription entityForName:[VSequence entityName] inManagedObjectContext:context];
-    [fetchRequest setEntity:entity];
+    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] initWithEntityName:[VSequence entityName]];
     
     NSSortDescriptor *sort = [[NSSortDescriptor alloc] initWithKey:@"releasedAt" ascending:NO];
     [fetchRequest setSortDescriptors:@[sort]];

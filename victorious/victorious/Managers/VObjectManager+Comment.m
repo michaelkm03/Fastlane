@@ -25,10 +25,7 @@
         return comment;
     
     NSManagedObjectContext* context = self.managedObjectStore.persistentStoreManagedObjectContext;
-    NSEntityDescription *entity = [NSEntityDescription entityForName:[VComment entityName]
-                                              inManagedObjectContext:context];
-    NSFetchRequest *request = [[NSFetchRequest alloc] init];
-    [request setEntity:entity];
+    NSFetchRequest *request = [[NSFetchRequest alloc] initWithEntityName:[VComment entityName]];
     NSPredicate* idFilter = [NSPredicate predicateWithFormat:@"remoteId == %@", commentId];
     [request setPredicate:idFilter];
     NSError *error = nil;
