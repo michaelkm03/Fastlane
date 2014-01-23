@@ -467,7 +467,7 @@ static NSString* CommentCache = @"CommentCache";
         RKObjectManager* manager = [RKObjectManager sharedManager];
         NSManagedObjectContext *context = manager.managedObjectStore.persistentStoreManagedObjectContext;
         
-        NSFetchRequest *fetchRequest = [self fetchRequestForContext:context];
+        NSFetchRequest *fetchRequest = [self fetchRequest];
         
         self.fetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:fetchRequest
                                                                             managedObjectContext:context
@@ -479,12 +479,9 @@ static NSString* CommentCache = @"CommentCache";
     return _fetchedResultsController;
 }
 
-- (NSFetchRequest*)fetchRequestForContext:(NSManagedObjectContext*)context
+- (NSFetchRequest*)fetchRequest
 {
-    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
-    NSEntityDescription *entity = [NSEntityDescription entityForName:[VComment entityName] inManagedObjectContext:context];
-    [fetchRequest setEntity:entity];
-    
+    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] initWithEntityName:[VComment entityName]];
     NSSortDescriptor *sort = [[NSSortDescriptor alloc] initWithKey:@"postedAt" ascending:NO];
     [fetchRequest setSortDescriptors:@[sort]];
     [fetchRequest setFetchBatchSize:50];

@@ -16,10 +16,7 @@
 {
     NSManagedObjectContext *context = [RKObjectManager sharedManager].managedObjectStore.persistentStoreManagedObjectContext;
     
-    NSEntityDescription *entity = [NSEntityDescription entityForName:[VInteraction entityName]
-                                              inManagedObjectContext:context];
-    NSFetchRequest *request = [[NSFetchRequest alloc] init];
-    [request setEntity:entity];
+    NSFetchRequest *request = [[NSFetchRequest alloc] initWithEntityName:[VInteraction entityName]];
     
     NSSortDescriptor *sort = [[NSSortDescriptor alloc] initWithKey:@"display_order" ascending:YES];
     [request setSortDescriptors:@[sort]];

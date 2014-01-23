@@ -22,13 +22,10 @@
     
     return [self findAllObjectsInContext:context withSortKey:sortKey];
 }
+
 + (NSArray *)findAllObjectsInContext:(NSManagedObjectContext *)context withSortKey:(NSString*)sortKey
 {
-    NSEntityDescription *entity = [NSEntityDescription entityForName:[self entityName]
-                                              inManagedObjectContext:context];
-    
-    NSFetchRequest *request = [[NSFetchRequest alloc] init];
-    [request setEntity:entity];
+    NSFetchRequest *request = [[NSFetchRequest alloc] initWithEntityName:[self entityName]];
     
     NSSortDescriptor *sort = [[NSSortDescriptor alloc] initWithKey:sortKey ascending:YES];
     [request setSortDescriptors:@[sort]];
