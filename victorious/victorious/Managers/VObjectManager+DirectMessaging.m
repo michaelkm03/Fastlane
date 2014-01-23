@@ -75,11 +75,13 @@
             conversation.lastMessage = [conversation.messages anyObject];
             [conversation.managedObjectContext save:nil];
             
-            if (!conversation.user )
-            {
-                //If we don't have the users then we need to fetch em.
+            if (!conversation.lastMessage.user && [conversation.lastMessage.senderUserId isEqual: @(-1)])
+                conversation.lastMessage.user = self.mainUser;
+            else if (!conversation.lastMessage.user)
+                [nonExistantUsers addObject:conversation.lastMessage.senderUserId];
+            
+            if (!conversation.user)
                 [nonExistantUsers addObject:conversation.other_interlocutor_user_id];
-            }
         }
         
         if ([nonExistantUsers count])
@@ -130,7 +132,9 @@
         for (VMessage* message in resultObjects)
         {
             [conversation addMessagesObject:(VMessage*)[conversation.managedObjectContext objectWithID:[message objectID]]];
-            if (!message.user )
+            if (!message.user && [message.senderUserId  isEqual: @(-1)])
+                message.user = self.mainUser;
+            else if (!message.user)
                 [nonExistantUsers addObject:message.senderUserId];
         }
         [conversation.managedObjectContext save:nil];
