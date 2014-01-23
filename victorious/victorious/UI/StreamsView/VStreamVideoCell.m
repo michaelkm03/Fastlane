@@ -33,8 +33,8 @@
                                              selector:@selector(streamsWillSegue:)
                                                  name:kStreamsWillSegueNotification
                                                object:nil];
-    if (_mpController)
-        [_mpController.view removeFromSuperview]; //make sure to get rid of the old view
+    if (self.mpController)
+        [self.mpController.view removeFromSuperview]; //make sure to get rid of the old view
 }
 
 - (IBAction)pressedPlay:(id)sender
