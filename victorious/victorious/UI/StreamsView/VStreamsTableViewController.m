@@ -345,25 +345,15 @@ typedef NS_ENUM(NSInteger, VStreamScope)
 
 - (void)refreshAction
 {
-    NSError *error;
-    if (![self.fetchedResultsController performFetch:&error] && error)
+    [[VObjectManager sharedManager] loadNextPageOfSequencesForCategory:nil
+                                                          successBlock:^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
+     {
+         [self.refreshControl endRefreshing];
+     }
+                                                             failBlock:^(NSOperation* operation, NSError* error)
     {
-        // Update to handle the error appropriately.
-        NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
-    } else
-    {   //TODO: there has to be a better way of doing this.
-        VLog(@"");
         [self.refreshControl endRefreshing];
-    }
-//    [[VObjectManager sharedManager] loadNextPageOfSequencesForCategory:nil
-//                                                          successBlock:^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
-//     {
-//         [self.refreshControl endRefreshing];
-//     }
-//                                                             failBlock:^(NSOperation* operation, NSError* error)
-//    {
-//        [self.refreshControl endRefreshing];
-//    }];
+    }];
 }
 
 #pragma mark - Notification

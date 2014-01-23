@@ -60,6 +60,8 @@
     __block VPaginationStatus* status = [self statusForKey:statusKey];
     if([status isFullyLoaded])
     {
+        if (success)
+            success(nil, nil, nil);
         return nil;
     }
     
@@ -75,7 +77,7 @@
     VSuccessBlock fullSuccessBlock = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
     {
         status.pagesLoaded = [fullResponse[@"page_number"] integerValue];
-        status.totalPages = [fullResponse[@"page_total"] integerValue];
+        status.totalPages = [fullResponse[@"total_pages"] integerValue];
         [self.paginationStatuses setObject:status forKey:statusKey];
         
         //If we don't have the user then we need to fetch em.
@@ -168,7 +170,11 @@
     __block NSString* statusKey = [@"commentsForSequence%@" stringByAppendingString:sequence.remoteId.stringValue];
     __block VPaginationStatus* status = [self statusForKey:statusKey];
     if([status isFullyLoaded])
+    {
+        if (success)
+            success(nil, nil, nil);
         return nil;
+    }
     
     NSString* path = [@"/api/comment/all/" stringByAppendingString:sequence.remoteId.stringValue];
     if (status.pagesLoaded) //only add page to the path if we've looked it up before.
@@ -180,7 +186,7 @@
     VSuccessBlock fullSuccessBlock = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
     {
         status.pagesLoaded = [fullResponse[@"page_number"] integerValue];
-        status.totalPages = [fullResponse[@"page_total"] integerValue];
+        status.totalPages = [fullResponse[@"total_pages"] integerValue];
         [self.paginationStatuses setObject:status forKey:statusKey];
         
         NSMutableArray* nonExistantUsers = [[NSMutableArray alloc] init];

@@ -59,10 +59,10 @@
     //        path = [path stringByAppendingFormat:@"/0/%lu/%lu", status.pagesLoaded + 1, (unsigned long)status.itemsPerPage];
     //    }
     //
-    //    PaginationBlock pagination = ^(NSUInteger page_number, NSUInteger page_total)
+    //    PaginationBlock pagination = ^(NSUInteger page_number, NSUInteger total_pages)
     //    {
     //        status.pagesLoaded = page_number;
-    //        status.totalPages = page_total;
+    //        status.totalPages = total_pages;
     //        [self.paginationStatuses setObject:status forKey:kConversationPaginationKey];
     //    };
     
@@ -117,10 +117,10 @@
 //        path = [path stringByAppendingFormat:@"/0/%lu/%lu", status.pagesLoaded + 1, (unsigned long)status.itemsPerPage];
 //    }
 //    
-//    PaginationBlock pagination = ^(NSUInteger page_number, NSUInteger page_total)
+//    PaginationBlock pagination = ^(NSUInteger page_number, NSUInteger total_pages)
 //    {
 //        status.pagesLoaded = page_number;
-//        status.totalPages = page_total;
+//        status.totalPages = total_pages;
 //        [self.paginationStatuses setObject:status forKey:statusKey];
 //    };
     
