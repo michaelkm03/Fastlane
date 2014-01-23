@@ -7,7 +7,7 @@
 //
 
 #import "VRule.h"
-#import "NSManagedObject+EasyFetching.h"
+#import "NSManagedObject+RestKit.h"
 
 @interface VRule (RestKit)
 

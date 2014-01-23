@@ -7,7 +7,7 @@
 //
 
 #import "VMedia.h"
-#import "NSManagedObject+EasyFetching.h"
+#import "NSManagedObject+RestKit.h"
 
 @interface VMedia (RestKit)
 

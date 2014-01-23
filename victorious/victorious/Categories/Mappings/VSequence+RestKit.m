@@ -6,8 +6,9 @@
 //  Copyright (c) 2013 Victorious Inc. All rights reserved.
 //
 
-#import "VAppDelegate.h"
 #import "VSequence+RestKit.h"
+#import "VComment+RestKit.h"
+#import "VNode+RestKit.h"
 
 @implementation VSequence (RestKit)
 

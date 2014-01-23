@@ -10,8 +10,6 @@
 
 @interface VNode (Fetcher)
 
-+ (NSArray*)orderedNodesForSequence:(VSequence*)sequence;
-
 - (NSArray*)firstAnswers;
 
 @end

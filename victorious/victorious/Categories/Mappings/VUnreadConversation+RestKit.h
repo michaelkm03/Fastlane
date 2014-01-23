@@ -7,6 +7,7 @@
 //
 
 #import "VUnreadConversation.h"
+#import "NSManagedObject+RestKit.h"
 
 @interface VUnreadConversation (RestKit)
 

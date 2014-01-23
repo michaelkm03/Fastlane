@@ -7,7 +7,7 @@
 //
 
 #import "VMessage.h"
-#import "NSManagedObject+EasyFetching.h"
+#import "NSManagedObject+RestKit.h"
 
 @interface VMessage (RestKit)
 

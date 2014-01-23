@@ -7,7 +7,7 @@
 //
 
 #import "VComment.h"
-#import "NSManagedObject+EasyFetching.h"
+#import "NSManagedObject+RestKit.h"
 
 @interface VComment (RestKit)
 

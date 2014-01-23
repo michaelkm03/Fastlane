@@ -7,7 +7,7 @@
 //
 
 #import "VPollResult.h"
-#import "NSManagedObject+EasyFetching.h"
+#import "NSManagedObject+RestKit.h"
 
 @interface VPollResult (RestKit)
 

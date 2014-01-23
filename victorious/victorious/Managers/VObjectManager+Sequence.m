@@ -10,9 +10,11 @@
 #import "VObjectManager+Users.h"
 #import "VObjectManager+Login.h"
 
-#import "VUser+RestKit.h"
-#import "VCategory+RestKit.h"
+#import "VUser.h"
+#import "VCategory.h"
 #import "VSequence+RestKit.h"
+#import "VAnswer.h"
+#import "VComment.h"
 
 #import "VPollResult.h"
 

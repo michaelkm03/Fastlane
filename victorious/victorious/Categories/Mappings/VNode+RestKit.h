@@ -7,9 +7,7 @@
 //
 
 #import "VNode.h"
-#import "VNodeAction+RestKit.h"
-#import "VAsset+RestKit.h"
-#import "VInteraction+RestKit.h"
+#import "NSManagedObject+RestKit.h"
 
 @interface VNode (RestKit)
 

@@ -7,7 +7,7 @@
 //
 
 #import "VUser.h"
-#import "NSManagedObject+EasyFetching.h"
+#import "NSManagedObject+RestKit.h"
 
 @interface VUser (RestKit)
 

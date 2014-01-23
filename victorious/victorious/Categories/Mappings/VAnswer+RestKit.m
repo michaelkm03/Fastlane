@@ -7,6 +7,7 @@
 //
 
 #import "VAnswer+RestKit.h"
+#import "VAnswerAction+RestKit.h"
 
 @implementation VAnswer (RestKit)
 

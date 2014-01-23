@@ -7,7 +7,7 @@
 //
 
 #import "VAsset.h"
-#import "NSManagedObject+EasyFetching.h"
+#import "NSManagedObject+RestKit.h"
 
 @interface VAsset (RestKit)
 
