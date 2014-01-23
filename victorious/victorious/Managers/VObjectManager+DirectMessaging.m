@@ -47,6 +47,7 @@
 {
     NSString* path = @"/api/message/conversation_list";
     
+    //    TODO: waiting for pagination to work on backend
     //    static NSString* kConversationPaginationKey = @"conversations";
     //    __block VPaginationStatus* status = [self statusForKey:kConversationPaginationKey];
     //    if([status isFullyLoaded])
@@ -107,6 +108,7 @@
 {
     NSString* path = [@"/api/message/conversation/" stringByAppendingString:conversation.remoteId.stringValue];
     
+//    TODO: waiting for pagination to work on backend
 //    NSString* statusKey = [NSString stringWithFormat:@"messagesFor%@", conversation.remoteId];
 //    
 //    __block VPaginationStatus* status = [self statusForKey:statusKey];
@@ -196,7 +198,6 @@
               failBlock:fail];
 }
 
-//Don't think we need this API call, but just in case...
 - (RKManagedObjectRequestOperation *)unreadCountForConversationsWithSuccessBlock:(VSuccessBlock)success
                                                                        failBlock:(VFailBlock)fail
 {

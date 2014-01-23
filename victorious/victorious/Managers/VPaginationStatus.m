@@ -15,16 +15,16 @@
     self = [super init];
     if (self)
     {
-        _pagesLoaded = 0;
-        _totalPages = 1;
-        _itemsPerPage = 20;
+        self.pagesLoaded = 0;
+        self.totalPages = 1;
+        self.itemsPerPage = 20;
     }
     return self;
 }
 
 - (BOOL)isFullyLoaded
 {
-    return _pagesLoaded >= _totalPages;
+    return self.pagesLoaded >= self.totalPages;
 }
 
 @end

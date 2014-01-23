@@ -305,7 +305,7 @@ forFetchedResultsController:(NSFetchedResultsController *)fetchedResultsControll
         return nil;
     }
     
-    return [NSPredicate predicateWithFormat:@"SELF.name CONTAINS[cd] %@", _filterText];
+    return [NSPredicate predicateWithFormat:@"SELF.name CONTAINS[cd] %@", self.filterText];
 }
 
 - (NSPredicate*)scopeTypePredicate

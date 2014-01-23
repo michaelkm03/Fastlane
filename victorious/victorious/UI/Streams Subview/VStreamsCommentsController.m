@@ -50,7 +50,7 @@ static NSString* CommentCache = @"CommentCache";
 
     [self loadSequence];
     
-    _newlyReadComments = [[NSMutableArray alloc] init];
+    self.newlyReadComments = [[NSMutableArray alloc] init];
 
     VLog(@"self.navigationController.delegate: %@", self.navigationController.delegate);
     
@@ -124,7 +124,7 @@ static NSString* CommentCache = @"CommentCache";
 
 - (void) setupSequencePlayer
 {
-    _sequencePlayer = [[VSequencePlayerViewController alloc] initWithSequence:_sequence];
+    self.sequencePlayer = [[VSequencePlayerViewController alloc] initWithSequence:self.sequence];
     
     [self.tableView reloadData]; //Need to reload to get rid of headers.
 }
@@ -155,7 +155,7 @@ static NSString* CommentCache = @"CommentCache";
         VLog(@"Error on loadNextPage: %@", error);
     };
     
-    [[VObjectManager sharedManager] loadNextPageOfCommentsForSequence:_sequence
+    [[VObjectManager sharedManager] loadNextPageOfCommentsForSequence:self.sequence
                                                           successBlock:success
                                                              failBlock:fail];
 }
@@ -196,7 +196,7 @@ static NSString* CommentCache = @"CommentCache";
     }
     
     NSIndexPath *indexPath = [self.tableView indexPathForRowAtPoint:[[[event touchesForView:sender] anyObject] locationInView:self.tableView]];
-    VComment *comment = [_fetchedResultsController objectAtIndexPath:indexPath];
+    VComment *comment = [self.fetchedResultsController objectAtIndexPath:indexPath];
     
     //    if (comment.vote = @"dislike")
     //    {
@@ -225,7 +225,7 @@ static NSString* CommentCache = @"CommentCache";
     }
     
     NSIndexPath *indexPath = [self.tableView indexPathForRowAtPoint:[[[event touchesForView:sender] anyObject] locationInView:self.tableView]];
-    VComment *comment = [_fetchedResultsController objectAtIndexPath:indexPath];
+    VComment *comment = [self.fetchedResultsController objectAtIndexPath:indexPath];
     
 //    if (comment.vote = @"dislike")
 //    {
@@ -268,7 +268,7 @@ static NSString* CommentCache = @"CommentCache";
     }
     
     NSIndexPath *indexPath = [self.tableView indexPathForRowAtPoint:[[[event touchesForView:sender] anyObject] locationInView:self.tableView]];
-    VComment *comment = [_fetchedResultsController objectAtIndexPath:indexPath];
+    VComment *comment = [self.fetchedResultsController objectAtIndexPath:indexPath];
     
     [[VObjectManager sharedManager] flagComment:comment
                                    successBlock:^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
@@ -326,9 +326,9 @@ static NSString* CommentCache = @"CommentCache";
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
 {
     //Add
-    VComment* comment = (VComment*)[_fetchedResultsController objectAtIndexPath:indexPath];
+    VComment* comment = (VComment*)[self.fetchedResultsController objectAtIndexPath:indexPath];
     //if(!comment.read)
-    [_newlyReadComments addObject:[NSString stringWithFormat:@"%@", comment.remoteId]];
+    [self.newlyReadComments addObject:[NSString stringWithFormat:@"%@", comment.remoteId]];
 }
 
 
@@ -340,9 +340,9 @@ static NSString* CommentCache = @"CommentCache";
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
-    if ([_sequence isVideo] && [[_sequence firstAsset].type isEqualToString:VConstantsMediaTypeYoutube])
+    if ([self.sequence isVideo] && [[self.sequence firstAsset].type isEqualToString:VConstantsMediaTypeYoutube])
     {
-        return _sequencePlayer.view;
+        return self.sequencePlayer.view;
     }
     
     return nil;
@@ -350,7 +350,7 @@ static NSString* CommentCache = @"CommentCache";
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
-    if ([_sequence isVideo] && [[_sequence firstAsset].type isEqualToString:VConstantsMediaTypeYoutube])
+    if ([self.sequence isVideo] && [[self.sequence firstAsset].type isEqualToString:VConstantsMediaTypeYoutube])
     {
         return 160;
     }
@@ -441,7 +441,7 @@ static NSString* CommentCache = @"CommentCache";
     NSFetchRequest* fetchRequest = self.fetchedResultsController.fetchRequest;
     
     //TODO: apply filter predicate
-    NSPredicate* sequenceFilter = [NSPredicate predicateWithFormat:@"sequenceId == %@", _sequence.remoteId];
+    NSPredicate* sequenceFilter = [NSPredicate predicateWithFormat:@"sequenceId == %@", self.sequence.remoteId];
     [fetchRequest setPredicate:sequenceFilter];
     
     NSManagedObjectContext* context =  [RKObjectManager sharedManager].managedObjectStore.persistentStoreManagedObjectContext;
@@ -646,9 +646,9 @@ static NSString* CommentCache = @"CommentCache";
 - (void)viewWillDisappear:(BOOL)animated
 {    
     //Whenever we leave this view we need to tell the server what was read.
-    if ([VObjectManager sharedManager].isAuthorized && [_newlyReadComments count])
+    if ([VObjectManager sharedManager].isAuthorized && [self.newlyReadComments count])
     {
-        __block NSMutableArray* readComments = _newlyReadComments;
+        __block NSMutableArray* readComments = self.newlyReadComments;
         [[VObjectManager sharedManager] readComments:readComments
                                          successBlock:nil
                                             failBlock:^(NSOperation* operation, NSError* error)
@@ -656,7 +656,7 @@ static NSString* CommentCache = @"CommentCache";
                                                 VLog(@"Warning: failed to mark following comments as read: %@", readComments);
                                             }];
     }
-    _newlyReadComments = nil;
+    self.newlyReadComments = nil;
     [super viewWillDisappear:animated];
 }
 

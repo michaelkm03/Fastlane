@@ -98,6 +98,7 @@
 //        successBlock:fullSuccess
 //           failBlock:fail];
     
+    //TODO: replace with fetchUsers API call once its implemented on the backend
     for (NSNumber* userID in [[NSSet setWithArray:userIds] allObjects])
     {
         [self fetchUser:userID
