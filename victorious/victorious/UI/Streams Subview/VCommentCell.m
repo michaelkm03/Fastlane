@@ -52,11 +52,6 @@
 
 - (void)setCommentOrMessage:(id)commentOrMessage
 {
-    if(_commentOrMessage == commentOrMessage)
-    {
-        return;
-    }
-
     _commentOrMessage = commentOrMessage;
 
     if([commentOrMessage isKindOfClass:[VComment class]])
