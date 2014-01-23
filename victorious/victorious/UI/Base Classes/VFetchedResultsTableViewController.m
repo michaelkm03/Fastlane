@@ -10,7 +10,7 @@
 
 #import "VFetchedResultsTableViewController.h"
 
-@interface VFetchedResultsTableViewController ()    <NSFetchedResultsControllerDelegate, UISearchBarDelegate, UISearchDisplayDelegate>
+@interface VFetchedResultsTableViewController ()    <UISearchBarDelegate, UISearchDisplayDelegate>
 @property (nonatomic, strong)   NSFetchedResultsController*     fetchedResultsController;
 @property (nonatomic, strong)   NSFetchedResultsController*     searchFetchedResultsController;
 @end
@@ -142,15 +142,6 @@
 {
 }
 
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:self.cellIdentifier forIndexPath:indexPath];
-    
-    [self configureCell:cell atIndexPath:indexPath];
-    
-    return cell;
-}
-
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
     if (floor(NSFoundationVersionNumber) <= NSFoundationVersionNumber_iOS_6_1)
@@ -197,7 +188,15 @@
             break;
             
         case NSFetchedResultsChangeUpdate:
-            [self configureCell:[tableView cellForRowAtIndexPath:indexPath] atIndexPath:indexPath];
+            if (!newIndexPath)
+            {
+                [tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
+            }
+            else
+            {
+                [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
+                [tableView insertRowsAtIndexPaths:@[newIndexPath] withRowAnimation:UITableViewRowAnimationNone];
+            }
             break;
             
         case NSFetchedResultsChangeMove:

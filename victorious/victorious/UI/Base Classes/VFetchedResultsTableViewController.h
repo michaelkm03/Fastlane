@@ -8,9 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface VFetchedResultsTableViewController : UITableViewController
-
-@property (nonatomic, copy) NSString* cellIdentifier;
+@interface VFetchedResultsTableViewController : UITableViewController   <NSFetchedResultsControllerDelegate>
 
 - (void)performFetch;
 
