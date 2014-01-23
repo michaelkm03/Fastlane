@@ -11,5 +11,6 @@
 @interface VNode (Fetcher)
 
 - (NSArray*)firstAnswers;
+- (VAsset*)firstAsset;
 
 @end

@@ -10,10 +10,11 @@
 
 #import "VSequence+Fetcher.h"
 #import "VNode.h"
-#import "VAsset+Fetcher.h"
-#import "VInteraction+Fetcher.h"
 #import "VNode+Fetcher.h"
 #import "UIImageView+AFNetworking.h"
+
+#import "VInteraction.h"
+#import "VAsset.h"
 
 #import "VConstants.h"
 
@@ -75,8 +76,7 @@
         return;
     }
     
-    NSArray* assets = [VAsset orderedAssetsForNode:node];
-    VAsset* currentAsset = [assets firstObject];
+    VAsset* currentAsset = [node firstAsset];
     
     if ([currentAsset.type isEqualToString:VConstantsMediaTypeYoutube])
         [self playYoutubeVideo:currentAsset.data];
@@ -95,7 +95,10 @@
 
 - (void)readyInteractionsForNode:(VNode*)node
 {
-    for (VInteraction* interaction in [VInteraction orderedInteractionsForNode:node])
+    NSSortDescriptor *sort = [[NSSortDescriptor alloc] initWithKey:@"display_order" ascending:YES];
+    NSArray* interactions = [[node.interactions allObjects] sortedArrayUsingDescriptors:@[sort]];
+    
+    for (VInteraction* interaction in interactions)
     {
         NSTimeInterval delay = NSTimeIntervalSince1970 + ([interaction.startTime integerValue]/ 1000);
         [self performSelector:@selector(launchInteraction:) withObject:interaction afterDelay:delay];

@@ -23,7 +23,10 @@
 #import "BBlock.h"
 #import "UIActionSheet+BBlock.h"
 #import "VComposeViewController.h"
+
 #import "VSequence+Fetcher.h"
+#import "VNode+Fetcher.h"
+
 #import "VAsset.h"
 
 #import "VConstants.h"
@@ -340,7 +343,7 @@ static NSString* CommentCache = @"CommentCache";
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
-    if ([self.sequence isVideo] && [[self.sequence firstAsset].type isEqualToString:VConstantsMediaTypeYoutube])
+    if ([self.sequence isVideo] && [[[self.sequence firstNode] firstAsset].type isEqualToString:VConstantsMediaTypeYoutube])
     {
         return self.sequencePlayer.view;
     }
@@ -350,7 +353,7 @@ static NSString* CommentCache = @"CommentCache";
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
-    if ([self.sequence isVideo] && [[self.sequence firstAsset].type isEqualToString:VConstantsMediaTypeYoutube])
+    if ([self.sequence isVideo] && [[[self.sequence firstNode] firstAsset].type isEqualToString:VConstantsMediaTypeYoutube])
     {
         return 160;
     }

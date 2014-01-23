@@ -78,7 +78,7 @@
 
 - (void)setupMedia
 {
-    VAsset* firstAsset = [self.sequence firstAsset];
+    VAsset* firstAsset = [[self.sequence firstNode] firstAsset];
     if (firstAsset)
     {
         self.firstAssetUrl = firstAsset.data;

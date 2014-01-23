@@ -22,4 +22,11 @@
     return [[firstInteraction.answers allObjects] sortedArrayUsingDescriptors:@[sortDescriptor]];
 }
 
+- (VAsset*)firstAsset
+{
+    NSSortDescriptor*   sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"display_order" ascending:YES];
+    return [[[self.assets allObjects] sortedArrayUsingDescriptors:@[sortDescriptor]] firstObject];
+}
+
+
 @end

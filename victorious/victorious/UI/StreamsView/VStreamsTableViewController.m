@@ -18,7 +18,6 @@
 
 #import "VStreamsTableViewController+Protected.h"
 
-#import "VCategory+Fetcher.h"
 #import "UIActionSheet+BBlock.h"
 #import "BBlock.h"
 #import "VCreateViewController.h"
@@ -28,6 +27,9 @@
 
 #import "VAsset.h"
 #import "VObjectManager+Sequence.h"
+
+#import "VNode+Fetcher.h"
+#import "VSequence+Fetcher.h"
 
 #import "VConstants.h"
 
@@ -118,7 +120,7 @@ typedef NS_ENUM(NSInteger, VStreamScope)
     if ([sequence isPoll])
         return 344;
     
-    else if (([sequence isVideo] ||[sequence isForum]) && [[sequence firstAsset].type isEqualToString:VConstantsMediaTypeYoutube])
+    else if (([sequence isVideo] ||[sequence isForum]) && [[[sequence firstNode] firstAsset].type isEqualToString:VConstantsMediaTypeYoutube])
         return 315;
 
     return 450;
@@ -312,7 +314,7 @@ typedef NS_ENUM(NSInteger, VStreamScope)
 {
     VSequence* sequence = (VSequence*)[[self fetchedResultsControllerForTableView:tableView] objectAtIndexPath:indexPath];
     
-    if ([sequence isForum]  && [[sequence firstAsset].type isEqualToString:VConstantsMediaTypeYoutube])
+    if ([sequence isForum]  && [[[sequence firstNode] firstAsset].type isEqualToString:VConstantsMediaTypeYoutube])
         return [tableView dequeueReusableCellWithIdentifier:kStreamYoutubeCellIdentifier
                                                forIndexPath:indexPath];
     
@@ -320,7 +322,7 @@ typedef NS_ENUM(NSInteger, VStreamScope)
         return [tableView dequeueReusableCellWithIdentifier:kStreamVideoCellIdentifier
                                                forIndexPath:indexPath];
     
-    else if ([sequence isPoll] && [sequence firstAsset])
+    else if ([sequence isPoll] && [[sequence firstNode] firstAsset])
         return [tableView dequeueReusableCellWithIdentifier:kStreamPollCellIdentifier
                                                forIndexPath:indexPath];
     
@@ -328,7 +330,7 @@ typedef NS_ENUM(NSInteger, VStreamScope)
         return [tableView dequeueReusableCellWithIdentifier:kStreamDoublePollCellIdentifier
                                                forIndexPath:indexPath];
     
-    else if ([sequence isVideo] && [[sequence firstAsset].type isEqualToString:VConstantsMediaTypeYoutube])
+    else if ([sequence isVideo] && [[[sequence firstNode] firstAsset].type isEqualToString:VConstantsMediaTypeYoutube])
         return [tableView dequeueReusableCellWithIdentifier:kStreamYoutubeCellIdentifier
                                                forIndexPath:indexPath];
     

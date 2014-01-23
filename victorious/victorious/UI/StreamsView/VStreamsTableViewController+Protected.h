@@ -12,8 +12,6 @@
 #import "VStreamVideoCell.h"
 #import "VStreamPollCell.h"
 
-#import "VSequence+Fetcher.h"
-
 @interface VStreamsTableViewController (Protected)
 
 #pragma mark - Segue Lifecycle
