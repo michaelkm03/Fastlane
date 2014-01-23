@@ -135,7 +135,7 @@
         }
         [conversation.managedObjectContext save:nil];
         
-        if (nonExistantUsers)
+        if ([nonExistantUsers count])
             [[VObjectManager sharedManager] fetchUsers:nonExistantUsers
                                       withSuccessBlock:success
                                              failBlock:fail];

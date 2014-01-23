@@ -49,25 +49,31 @@ const   CGFloat     kMessageRowHeight           =   80;
 
  - (void)loadData
 {
+    VFailBlock fail = ^(NSOperation* operation, NSError* error)
+    {
+        NSLog(@"%@", error.localizedDescription);
+    };
+    
+    VSuccessBlock success = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
+    {
+        NSSortDescriptor*   sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"postedAt" ascending:YES];
+        self.messages = [[self.conversation.messages allObjects] sortedArrayUsingDescriptors:@[sortDescriptor]];
+        [self.tableView reloadData];
+        
+        [[VObjectManager sharedManager] markConversationAsRead:self.conversation
+                                                  successBlock:nil
+                                                     failBlock:fail];
+    };
+    
+    //If we have more than 1 message we've already loaded at least 1 page
+    if ([self.conversation.messages count] > 1)
+    {
+        success (nil, nil, nil);
+        return;
+    }
+    
     [[VObjectManager sharedManager] loadNextPageOfMessagesForConversation:self.conversation
-                                                             successBlock:^(NSOperation* operation, id fullResponse, NSArray* rkObjects)
-     {
-         [[VObjectManager sharedManager] markConversationAsRead:self.conversation successBlock:^(NSOperation* operation, id fullResponse, NSArray* rkObjects)
-          {
-              NSSortDescriptor*   sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"postedAt" ascending:YES];
-              self.messages = [[self.conversation.messages allObjects] sortedArrayUsingDescriptors:@[sortDescriptor]];
-              [self.tableView reloadData];
-          }
-                                                      failBlock:^(NSOperation* operation, NSError* error)
-          {
-              NSLog(@"%@", error.localizedDescription);
-          }];
-         
-     }
-                                                                failBlock:^(NSOperation* operation, NSError* error)
-     {
-         NSLog(@"%@", error.localizedDescription);
-     }];
+                                                             successBlock:success                                                                failBlock:fail];
 }
 
 #pragma mark - Table view data source

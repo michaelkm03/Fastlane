@@ -102,6 +102,9 @@
        withSuccessBlock:success
               failBlock:fail];
     }
+    if (success && ![userIds count])
+        success(nil, nil, nil);
+    
     return nil;
 }
 
