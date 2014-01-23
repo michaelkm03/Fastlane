@@ -124,10 +124,15 @@
     [requestOperation setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult)
      {
          NSMutableArray* mappedObjects = [mappingResult.array mutableCopy];
-         VErrorMessage* error = [mappedObjects firstObject];
-         if(error && [error isKindOfClass:[VErrorMessage class]])
+         VErrorMessage* error;
+         for (id object in mappedObjects)
          {
-             [mappedObjects removeObject:error];
+             if([object isKindOfClass:[VErrorMessage class]])
+             {
+                 error = object;
+                 [mappedObjects removeObject:object];
+                 break;
+             }
          }
          
          if (error.errorCode && failBlock)
