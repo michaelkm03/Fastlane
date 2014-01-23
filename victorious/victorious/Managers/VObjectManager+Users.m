@@ -63,6 +63,8 @@
 {
 //    __block NSMutableArray* loadedUsers = [[NSMutableArray alloc] init];
 //    NSMutableArray* unloadedUserIDs = [[NSMutableArray alloc] init];
+//    
+//    //this removes duplicates
 //    for (NSNumber* userID in [[NSSet setWithArray:userIds] allObjects])
 //    {
 //        VUser* user = [self userForID:userID];

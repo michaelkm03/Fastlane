@@ -75,6 +75,7 @@
             conversation.lastMessage = [conversation.messages anyObject];
             [conversation.managedObjectContext save:nil];
             
+            //Sometimes we get -1 for the current logged in user
             if (!conversation.lastMessage.user && [conversation.lastMessage.senderUserId isEqual: @(-1)])
                 conversation.lastMessage.user = self.mainUser;
             else if (!conversation.lastMessage.user)
@@ -132,6 +133,8 @@
         for (VMessage* message in resultObjects)
         {
             [conversation addMessagesObject:(VMessage*)[conversation.managedObjectContext objectWithID:[message objectID]]];
+            
+            //Sometimes we get -1 for the current logged in user
             if (!message.user && [message.senderUserId  isEqual: @(-1)])
                 message.user = self.mainUser;
             else if (!message.user)
