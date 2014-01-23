@@ -7,7 +7,7 @@
 //
 
 #import "VInteractionAction.h"
-#import "NSManagedObject+EasyFetching.h"
+#import "NSManagedObject+RestKit.h"
 
 @interface VInteractionAction (RestKit)
 

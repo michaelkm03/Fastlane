@@ -50,10 +50,4 @@
     return [[[self.nodes allObjects] sortedArrayUsingDescriptors:@[sortDescriptor]] firstObject];
 }
 
-- (VAsset*)firstAsset
-{
-    NSSortDescriptor*   sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"display_order" ascending:YES];
-    return [[[[self firstNode].assets allObjects] sortedArrayUsingDescriptors:@[sortDescriptor]] firstObject];
-}
-
 @end

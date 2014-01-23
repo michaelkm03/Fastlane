@@ -8,6 +8,10 @@
 
 #import "VNode+RestKit.h"
 
+#import "VNodeAction+RestKit.h"
+#import "VAsset+RestKit.h"
+#import "VInteraction+RestKit.h"
+
 @implementation VNode (RestKit)
 
 + (NSString *)entityName

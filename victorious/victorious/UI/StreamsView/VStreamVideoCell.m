@@ -7,8 +7,9 @@
 //
 
 #import "VStreamVideoCell.h"
-#import "VSequence.h"
-#import "VAsset+Fetcher.h"
+
+#import "VAsset.h"
+
 #import "VNode+Fetcher.h"
 #import "VSequence+Fetcher.h"
 
@@ -33,8 +34,8 @@
                                              selector:@selector(streamsWillSegue:)
                                                  name:kStreamsWillSegueNotification
                                                object:nil];
-    if (_mpController)
-        [_mpController.view removeFromSuperview]; //make sure to get rid of the old view
+    if (self.mpController)
+        [self.mpController.view removeFromSuperview]; //make sure to get rid of the old view
 }
 
 - (IBAction)pressedPlay:(id)sender
@@ -79,7 +80,7 @@
 
 - (void)playSequence
 {
-    VAsset* asset = [self.sequence firstAsset];
+    VAsset* asset = [[self.sequence firstNode] firstAsset];
 
     self.mpController = [[MPMoviePlayerController alloc] initWithContentURL:[NSURL URLWithString:asset.data]];
     [self.mpController prepareToPlay];

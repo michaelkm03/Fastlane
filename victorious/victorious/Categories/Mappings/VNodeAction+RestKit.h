@@ -7,7 +7,7 @@
 //
 
 #import "VNodeAction.h"
-#import "NSManagedObject+EasyFetching.h"
+#import "NSManagedObject+RestKit.h"
 
 @interface VNodeAction (RestKit)
 

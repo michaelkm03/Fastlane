@@ -19,7 +19,5 @@
 - (BOOL)isOwnerContent;
 
 - (VNode*)firstNode;
-- (VAsset*)firstAsset;
-
 
 @end

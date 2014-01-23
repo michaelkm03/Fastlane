@@ -7,9 +7,7 @@
 //
 
 #import "VInteraction.h"
-#import "VInteractionAction+RestKit.h"
-#import "VRule+RestKit.h"
-#import "VAnswer+RestKit.h"
+#import "NSManagedObject+RestKit.h"
 
 @interface VInteraction (RestKit)
 

@@ -15,6 +15,7 @@
 #import "VRootNavigationController.h"
 
 #import "VSequence+Fetcher.h"
+#import "VNode+Fetcher.h"
 #import "VAsset.h"
 
 #import "VConstants.h"
@@ -65,7 +66,7 @@ NSString *kStreamsWillCommentNotification = @"kStreamsWillCommentNotification";
 {
     _sequence = sequence;
     
-    if ([[_sequence firstAsset].type isEqualToString:VConstantsMediaTypeYoutube])
+    if ([[[_sequence firstNode] firstAsset].type isEqualToString:VConstantsMediaTypeYoutube])
         self.playButtonImage.hidden = NO;
     else
         self.playButtonImage.hidden = YES;

@@ -7,8 +7,9 @@
 //
 
 #import "VInteraction+RestKit.h"
-#import "VRule+RestKit.h"
+
 #import "VInteractionAction+RestKit.h"
+#import "VRule+RestKit.h"
 #import "VAnswer+RestKit.h"
 
 @implementation VInteraction (RestKit)

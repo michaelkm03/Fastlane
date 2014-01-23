@@ -34,6 +34,11 @@
                                     successBlock:(VSuccessBlock)success
                                        failBlock:(VFailBlock)fail;
 
+- (RKManagedObjectRequestOperation *)readComments:(NSArray*)readComments
+                                     successBlock:(VSuccessBlock)success
+                                        failBlock:(VFailBlock)fail;
+
+#pragma mark - Vote Methods
 - (RKManagedObjectRequestOperation *)likeComment:(VComment*)comment
                                     successBlock:(VSuccessBlock)success
                                        failBlock:(VFailBlock)fail;
@@ -46,7 +51,4 @@
                                       successBlock:(VSuccessBlock)success
                                          failBlock:(VFailBlock)fail;
 
-- (RKManagedObjectRequestOperation *)readComments:(NSArray*)readComments
-                                     successBlock:(VSuccessBlock)success
-                                        failBlock:(VFailBlock)fail;
 @end

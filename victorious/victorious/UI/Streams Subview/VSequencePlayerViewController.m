@@ -10,10 +10,11 @@
 
 #import "VSequence+Fetcher.h"
 #import "VNode.h"
-#import "VAsset+Fetcher.h"
-#import "VInteraction+Fetcher.h"
 #import "VNode+Fetcher.h"
 #import "UIImageView+AFNetworking.h"
+
+#import "VInteraction.h"
+#import "VAsset.h"
 
 #import "VConstants.h"
 
@@ -75,8 +76,7 @@
         return;
     }
     
-    NSArray* assets = [VAsset orderedAssetsForNode:node];
-    VAsset* currentAsset = [assets firstObject];
+    VAsset* currentAsset = [node firstAsset];
     
     if ([currentAsset.type isEqualToString:VConstantsMediaTypeYoutube])
         [self playYoutubeVideo:currentAsset.data];
@@ -95,7 +95,10 @@
 
 - (void)readyInteractionsForNode:(VNode*)node
 {
-    for (VInteraction* interaction in [VInteraction orderedInteractionsForNode:node])
+    NSSortDescriptor *sort = [[NSSortDescriptor alloc] initWithKey:@"display_order" ascending:YES];
+    NSArray* interactions = [[node.interactions allObjects] sortedArrayUsingDescriptors:@[sort]];
+    
+    for (VInteraction* interaction in interactions)
     {
         NSTimeInterval delay = NSTimeIntervalSince1970 + ([interaction.startTime integerValue]/ 1000);
         [self performSelector:@selector(launchInteraction:) withObject:interaction afterDelay:delay];
@@ -113,9 +116,9 @@
 
 - (void)playYoutubeVideo:(NSString*)videoID
 {
-    _imageView.hidden = YES;
-    _mpController.view.hidden = YES;
-    _webView.hidden = NO;
+    self.imageView.hidden = YES;
+    self.mpController.view.hidden = YES;
+    self.webView.hidden = NO;
     
     [self.webView setAllowsInlineMediaPlayback:YES];
     [self.webView setMediaPlaybackRequiresUserAction:NO];
@@ -137,27 +140,27 @@
                            <iframe id='playerId' type='text/html' width='%f' height='%f' src='http://www.youtube.com/embed/%@?enablejsapi=1&rel=0&playsinline=1&autoplay=0' frameborder='0'>\
                            </body>\
                            </html>",
-                           _webView.frame.size.width,
-                           _webView.frame.size.height,
+                           self.webView.frame.size.width,
+                           self.webView.frame.size.height,
                            videoID];
     
-    [_webView loadHTMLString:embedHTML baseURL:[[NSBundle mainBundle] resourceURL]];
+    [self.webView loadHTMLString:embedHTML baseURL:[[NSBundle mainBundle] resourceURL]];
 }
 
 - (void)playVideo:(NSString*)videoUrl
 {
-    _imageView.hidden = YES;
-    _webView.hidden = YES;
-    _mpController.view.hidden = NO;
-    [_mpController setContentURL:[NSURL URLWithString:videoUrl]];
+    self.imageView.hidden = YES;
+    self.webView.hidden = YES;
+    self.mpController.view.hidden = NO;
+    [self.mpController setContentURL:[NSURL URLWithString:videoUrl]];
 }
 
 - (void)showImage:(NSString*)imageUrl
 {
-    _mpController.view.hidden = YES;
-    _webView.hidden = YES;
-    _imageView.hidden = NO;
-    [_imageView setImageWithURL:[NSURL URLWithString:imageUrl]];
+    self.mpController.view.hidden = YES;
+    self.webView.hidden = YES;
+    self.imageView.hidden = NO;
+    [self.imageView setImageWithURL:[NSURL URLWithString:imageUrl]];
 }
 
 - (void)showPoll
@@ -167,8 +170,8 @@
 
 - (void)viewWillDisappear:(BOOL)animated
 {
-    [_webView loadHTMLString:nil baseURL:nil];
-    [_mpController stop];
+    [self.webView loadHTMLString:nil baseURL:nil];
+    [self.mpController stop];
     [super viewWillDisappear:animated];
 }
 

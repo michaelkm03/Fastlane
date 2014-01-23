@@ -7,7 +7,7 @@
 //
 
 #import "VAnswerAction.h"
-#import "NSManagedObject+EasyFetching.h"
+#import "NSManagedObject+RestKit.h"
 
 @interface VAnswerAction (RestKit)
 

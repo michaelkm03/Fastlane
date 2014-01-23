@@ -7,8 +7,7 @@
 //
 
 #import "VSequence.h"
-#import "VComment+RestKit.h"
-#import "VNode+RestKit.h"
+#import "NSManagedObject+RestKit.h"
 
 @interface VSequence (RestKit)
 
