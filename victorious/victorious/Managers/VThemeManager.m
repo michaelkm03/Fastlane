@@ -15,6 +15,10 @@ NSString*   const   kVChannelURLPrivacy                 =   @"channel.url.privac
 NSString*   const   kVChannelURLAcknowledgements        =   @"channel.url.acknowledgements";
 NSString*   const   kVChannelURLSupport                 =   @"channel.url.support";
 
+NSString*   const   kVStreamLocationFont                =   @"theme.font.stream.text.location";
+NSString*   const   kVStreamUsernameFont                =   @"theme.font.stream.text.username";
+
+
 @interface      VThemeManager   ()
 @property   (nonatomic, readwrite, copy)    NSDictionary*   themeValues;
 @end

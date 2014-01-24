@@ -59,7 +59,14 @@
 		<key>fontName</key>
 		<string>Roboto-Regular</string>
 		<key>fontSize</key>
-		<integer>15</integer>
+		<integer>14</integer>
+	</dict>
+	<key>theme.font.stream.text.location</key>
+	<dict>
+		<key>fontName</key>
+		<string>Roboto-Light</string>
+		<key>fontSize</key>
+		<integer>14</integer>
 	</dict>
 	<key>theme.font.post.postButton</key>
 	<dict>

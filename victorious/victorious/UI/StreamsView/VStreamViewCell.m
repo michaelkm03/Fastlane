@@ -53,7 +53,8 @@ NSString *kStreamsWillCommentNotification = @"kStreamsWillCommentNotification";
 {
     [super awakeFromNib];
     
-    self.usernameLabel.font = [[VThemeManager sharedThemeManager] themedFontForKeyPath:@"theme.font.stream.text.username"];
+    self.usernameLabel.font = [[VThemeManager sharedThemeManager] themedFontForKeyPath:kVStreamUsernameFont];
+    self.locationLabel.font = [[VThemeManager sharedThemeManager] themedFontForKeyPath:kVStreamLocationFont];
 }
 
 - (void)layoutSubviews

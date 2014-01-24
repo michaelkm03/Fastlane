@@ -16,6 +16,9 @@ extern  NSString*   const   kVChannelURLAcknowledgements;
 
 extern  NSString*   const   kVChannelURLSupport;
 
+extern  NSString*   const   kVStreamLocationFont;
+extern  NSString*   const   kVStreamUsernameFont;
+
 @interface VThemeManager : NSObject
 
 + (VThemeManager *)sharedThemeManager;
