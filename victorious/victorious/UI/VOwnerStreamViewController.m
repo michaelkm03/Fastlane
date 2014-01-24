@@ -7,6 +7,7 @@
 //
 
 #import "VOwnerStreamViewController.h"
+#import "VConstants.h"
 
 @interface VOwnerStreamViewController ()
 
@@ -14,4 +15,21 @@
 
 @implementation VOwnerStreamViewController
 
+- (NSArray*)categoriesForOption:(NSUInteger)searchOption
+{
+    switch (searchOption)
+    {
+        case VStreamFilterPolls:
+            return @[kVOwnerPollCategory];
+            
+        case VStreamFilterImages:
+            return @[kVOwnerImageCategory];
+            
+        case VStreamFilterVideos:
+            return @[kVOwnerVideoCategory];
+            
+        default:
+            return @[kVOwnerPollCategory, kVOwnerImageCategory, kVOwnerVideoCategory];
+    }
+}
 @end

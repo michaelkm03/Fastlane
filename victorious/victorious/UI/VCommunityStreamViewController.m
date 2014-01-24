@@ -7,6 +7,7 @@
 //
 
 #import "VCommunityStreamViewController.h"
+#import "VConstants.h"
 
 @interface VCommunityStreamViewController ()
 
@@ -14,4 +15,21 @@
 
 @implementation VCommunityStreamViewController
 
+- (NSArray*)categoriesForOption:(NSUInteger)searchOption
+{
+    switch (searchOption)
+    {
+        case VStreamFilterPolls:
+            return @[kVUGCPollCategory];
+            
+        case VStreamFilterImages:
+            return @[kVUGCImageCategory];
+            
+        case VStreamFilterVideos:
+            return @[kVUGCVideoCategory];
+            
+        default:
+            return @[kVUGCPollCategory, kVUGCImageCategory, kVUGCVideoCategory];
+    }
+}
 @end

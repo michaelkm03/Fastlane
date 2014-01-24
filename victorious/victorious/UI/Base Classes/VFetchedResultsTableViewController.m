@@ -85,7 +85,7 @@
         self.tableView.bounds = newBounds;
     }
 
-    [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForItem:0 inSection:0] atScrollPosition:0 animated:YES];
+    [self.tableView scrollRectToVisible:CGRectMake(0, 0, 1, 1) animated:YES];
 }
 
 - (IBAction)displaySearchBar:(id)sender

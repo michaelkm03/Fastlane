@@ -7,11 +7,31 @@
 //
 
 #import "VHomeStreamViewController.h"
+#import "VConstants.h"
 
 @interface VHomeStreamViewController ()
 
 @end
 
 @implementation VHomeStreamViewController
+
+- (NSArray*)categoriesForOption:(NSUInteger)searchOption
+{
+    switch (searchOption)
+    {
+        case VStreamFilterPolls:
+            return @[kVOwnerPollCategory, kVUGCPollCategory];
+            
+        case VStreamFilterImages:
+            return @[kVOwnerImageCategory, kVUGCImageCategory];
+            
+        case VStreamFilterVideos:
+            return @[kVOwnerVideoCategory, kVUGCVideoCategory];
+            
+        default:
+            return @[kVOwnerPollCategory, kVUGCPollCategory, kVOwnerImageCategory,
+                     kVUGCImageCategory, kVOwnerVideoCategory, kVUGCVideoCategory];
+    }
+}
 
 @end
