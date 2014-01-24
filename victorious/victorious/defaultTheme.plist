@@ -54,6 +54,13 @@
 		<key>fontSize</key>
 		<integer>11</integer>
 	</dict>
+	<key>theme.font.comment.text.username</key>
+	<dict>
+		<key>fontName</key>
+		<string>Roboto-Regular</string>
+		<key>fontSize</key>
+		<integer>14</integer>
+	</dict>
 	<key>theme.font.stream.text.username</key>
 	<dict>
 		<key>fontName</key>
@@ -67,6 +74,20 @@
 		<string>Roboto-Light</string>
 		<key>fontSize</key>
 		<integer>14</integer>
+	</dict>
+	<key>theme.font.stream.text.description</key>
+	<dict>
+		<key>fontName</key>
+		<string>Roboto-Light</string>
+		<key>fontSize</key>
+		<integer>14</integer>
+	</dict>
+	<key>theme.font.stream.text.date</key>
+	<dict>
+		<key>fontName</key>
+		<string>Roboto-Light</string>
+		<key>fontSize</key>
+		<integer>13</integer>
 	</dict>
 	<key>theme.font.post.postButton</key>
 	<dict>

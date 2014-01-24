@@ -55,6 +55,9 @@ NSString *kStreamsWillCommentNotification = @"kStreamsWillCommentNotification";
     
     self.usernameLabel.font = [[VThemeManager sharedThemeManager] themedFontForKeyPath:kVStreamUsernameFont];
     self.locationLabel.font = [[VThemeManager sharedThemeManager] themedFontForKeyPath:kVStreamLocationFont];
+    self.dateLabel.font = [[VThemeManager sharedThemeManager] themedFontForKeyPath:kVStreamDateFont];
+    self.descriptionLabel.font = [[VThemeManager sharedThemeManager] themedFontForKeyPath:kVStreamDescriptionFont];
+    
 }
 
 - (void)layoutSubviews

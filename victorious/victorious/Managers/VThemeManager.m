@@ -17,6 +17,10 @@ NSString*   const   kVChannelURLSupport                 =   @"channel.url.suppor
 
 NSString*   const   kVStreamLocationFont                =   @"theme.font.stream.text.location";
 NSString*   const   kVStreamUsernameFont                =   @"theme.font.stream.text.username";
+NSString*   const   kVStreamDateFont                    =   @"theme.font.stream.text.date";
+NSString*   const   kVStreamDescriptionFont             =   @"theme.font.stream.text.description";
+
+NSString*   const   kVCommentUsernameFont               =   @"theme.font.comment.text.username";
 
 
 @interface      VThemeManager   ()

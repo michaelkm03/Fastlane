@@ -18,6 +18,10 @@ extern  NSString*   const   kVChannelURLSupport;
 
 extern  NSString*   const   kVStreamLocationFont;
 extern  NSString*   const   kVStreamUsernameFont;
+extern  NSString*   const   kVStreamDateFont;
+extern  NSString*   const   kVStreamDescriptionFont;
+
+extern  NSString*   const   kVCommentUsernameFont;
 
 @interface VThemeManager : NSObject
 
