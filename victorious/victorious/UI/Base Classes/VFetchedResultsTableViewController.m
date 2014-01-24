@@ -11,8 +11,6 @@
 #import "VFetchedResultsTableViewController.h"
 
 @interface VFetchedResultsTableViewController ()    <UISearchBarDelegate, UISearchDisplayDelegate>
-@property (nonatomic, strong)   NSFetchedResultsController*     fetchedResultsController;
-@property (nonatomic, strong)   NSFetchedResultsController*     searchFetchedResultsController;
 @end
 
 @implementation VFetchedResultsTableViewController

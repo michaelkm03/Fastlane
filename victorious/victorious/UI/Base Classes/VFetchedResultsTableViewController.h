@@ -9,6 +9,8 @@
 #import <UIKit/UIKit.h>
 
 @interface VFetchedResultsTableViewController : UITableViewController   <NSFetchedResultsControllerDelegate>
+@property (nonatomic, strong)   NSFetchedResultsController*     fetchedResultsController;
+@property (nonatomic, strong)   NSFetchedResultsController*     searchFetchedResultsController;
 
 - (void)performFetch;
 
