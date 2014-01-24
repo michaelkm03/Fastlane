@@ -8,6 +8,8 @@
 
 #import "VStreamTableViewController.h"
 
+#import "VObjectManager+Sequence.h"
+
 @interface VStreamTableViewController ()
 @end
 
@@ -30,7 +32,15 @@
 
 - (void)refreshAction
 {
-    [self performFetch];
+    [[VObjectManager sharedManager] loadNextPageOfSequencesForCategory:nil
+                                                          successBlock:^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
+     {
+         [self.refreshControl endRefreshing];
+     }
+                                                             failBlock:^(NSOperation* operation, NSError* error)
+     {
+         [self.refreshControl endRefreshing];
+     }];
 }
 
 - (NSPredicate*)searchPredicateForString:(NSString *)searchString
