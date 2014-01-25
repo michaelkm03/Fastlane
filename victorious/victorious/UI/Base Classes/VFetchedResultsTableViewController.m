@@ -42,6 +42,16 @@
     
     return _fetchedResultsController;
 }
+- (NSFetchedResultsController *)searchFetchedResultsController
+{
+    if (nil == _searchFetchedResultsController)
+    {
+        self.searchFetchedResultsController = [self makeSearchFetchedResultsController];
+        self.searchFetchedResultsController.delegate = self;
+    }
+    
+    return _searchFetchedResultsController;
+}
 
 #pragma mark - Actions
 
@@ -59,20 +69,28 @@
     }];
 }
 
-- (void)reloadSearchFetchRequestControllerForPredicate:(NSPredicate*)predicate
+- (void)refreshFetchController:(NSFetchedResultsController*)controller
+                 withPredicate:(NSPredicate*)predicate
 {
-    self.searchFetchedResultsController = [self makeSearchFetchedResultsController];
-    self.searchFetchedResultsController.fetchRequest.predicate = predicate;
-    self.searchFetchedResultsController.delegate = self;
+    //We must clear the cache before modifying anything.
+    [NSFetchedResultsController deleteCacheWithName:controller.cacheName];
     
-    [self.searchFetchedResultsController.managedObjectContext performBlockAndWait:^{
-        NSError *error;
-        if (![self.searchFetchedResultsController performFetch:&error])
-        {
-            VLog(@"Unresolved Search Fetch Error %@, %@", error, [error userInfo]);
-        }
-    }];
+    [controller.fetchRequest setPredicate:predicate];
+    
+    //We need to perform the fetch again
+    NSManagedObjectContext *context = [RKObjectManager sharedManager].managedObjectStore.persistentStoreManagedObjectContext;
+    [context performBlockAndWait:^()
+     {
+         NSError *error;
+         if (![controller performFetch:&error] && error)
+         {
+             //TODO: Update to handle the error appropriately.
+             NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+         }
+     }];
 }
+
+
 
 - (void)hideSearchBar
 {
@@ -238,23 +256,15 @@
 
 - (BOOL)searchDisplayController:(UISearchDisplayController *)controller shouldReloadTableForSearchString:(NSString *)searchString
 {
-    if (searchString.length > 0)
-    {
-        [self reloadSearchFetchRequestControllerForPredicate:[self fetchResultsPredicateForString:searchString
-                                                                                           option:self.searchDisplayController.searchBar.selectedScopeButtonIndex]];
-    }
-    else
-    {
-        return NO;
-    }
+    [self refreshFetchController:self.searchFetchedResultsController withPredicate:[self fetchResultsPredicateForString:searchString option:self.searchDisplayController.searchBar.selectedScopeButtonIndex]];
 
     return YES;
 }
 
 -(BOOL)searchDisplayController:(UISearchDisplayController *)controller shouldReloadTableForSearchScope:(NSInteger)searchOption
 {
-    [self reloadSearchFetchRequestControllerForPredicate:[self fetchResultsPredicateForString:self.searchDisplayController.searchBar.text
-                                                                                       option:searchOption]];
+    
+    [self refreshFetchController:self.searchFetchedResultsController withPredicate:[self fetchResultsPredicateForString:self.searchDisplayController.searchBar.text option:searchOption]];
     
     return YES;
 }

@@ -32,4 +32,7 @@ static NSString*   const   kVUGCImageCategory = @"ugc_image";
 static NSString*   const   kVUGCVideoCategory = @"ugc_video";
 static NSString*   const   kVUGCForumCategory = @"ugc_forum";
 
+static NSString*   const   kSearchCache = @"SearchCache";
+
+
 static NSString*   const   kFeaturedCategory = @"featured";

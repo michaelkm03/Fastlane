@@ -54,7 +54,19 @@
 
 - (NSFetchedResultsController *)makeSearchFetchedResultsController
 {
-    return nil;
+    RKObjectManager* manager = [RKObjectManager sharedManager];
+    NSManagedObjectContext *context = manager.managedObjectStore.persistentStoreManagedObjectContext;
+    
+    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] initWithEntityName:[VSequence entityName]];
+    NSSortDescriptor *sort = [[NSSortDescriptor alloc] initWithKey:@"releasedAt" ascending:NO];
+    [fetchRequest setSortDescriptors:@[sort]];
+    [fetchRequest setFetchBatchSize:50];
+    
+    return  [[NSFetchedResultsController alloc] initWithFetchRequest:fetchRequest
+                                                managedObjectContext:context
+                                                  sectionNameKeyPath:nil
+                                                           cacheName:kSearchCache];
+
 }
 
 #pragma mark - Cells

@@ -11,8 +11,6 @@
 #import "VSequence+RestKit.h"
 #import "NSString+VParseHelp.h"
 
-NSString* const kSearchCache = @"SearchCache";
-
 @interface VAbstractStreamViewController ()
 @end
 

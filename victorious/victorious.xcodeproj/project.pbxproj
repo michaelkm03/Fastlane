@@ -480,6 +480,7 @@
 		3F9B665F188879060046F826 /* Streams */ = {
 			isa = PBXGroup;
 			children = (
+				BE692B2B186E5EE000C71336 /* Cells */,
 				3F9B666C1888C4390046F826 /* VHomeStreamViewController.h */,
 				3F9B666D1888C4390046F826 /* VHomeStreamViewController.m */,
 				3F9B666F1888C4940046F826 /* VOwnerStreamViewController.h */,
@@ -834,7 +835,6 @@
 			isa = PBXGroup;
 			children = (
 				BE6B95E6187B4A2000CED4C9 /* StreamsTables */,
-				BE692B2B186E5EE000C71336 /* Cells */,
 				830CC32D1877B9730024E02D /* Featured */,
 			);
 			name = Streams;
@@ -857,6 +857,7 @@
 				BEF8D37A188755C1004919CA /* VStreamYoutubeCell.xib */,
 			);
 			name = Cells;
+			path = UI/StreamsView;
 			sourceTree = "<group>";
 		};
 		BE692B2C186E5FD900C71336 /* Streams Subview */ = {
