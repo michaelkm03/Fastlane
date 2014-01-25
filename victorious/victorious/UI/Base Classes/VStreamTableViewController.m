@@ -7,6 +7,7 @@
 //
 
 #import "VStreamTableViewController.h"
+#import "UIViewController+VSideMenuViewController.h"
 #import "VConstants.h"
 
 //Cells
@@ -22,9 +23,6 @@
 #import "VSequence+Fetcher.h"
 #import "VNode+Fetcher.h"
 #import "VAsset.h"
-
-@interface VFetchedResultsTableViewController ()    <UISearchBarDelegate, UISearchDisplayDelegate>
-@end
 
 @implementation VStreamTableViewController
 
@@ -189,6 +187,13 @@ forFetchedResultsController:(NSFetchedResultsController *)fetchedResultsControll
 - (NSArray*)categoriesForOption:(NSUInteger)searchOption
 {
     return nil;
+}
+
+#pragma mark - Actions
+
+- (IBAction)showMenu
+{
+    [self.sideMenuViewController presentMenuViewController];
 }
 
 @end

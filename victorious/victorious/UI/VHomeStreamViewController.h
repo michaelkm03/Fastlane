@@ -10,4 +10,6 @@
 
 @interface VHomeStreamViewController : VStreamTableViewController
 
++ (VHomeStreamViewController *)sharedInstance;
+
 @end

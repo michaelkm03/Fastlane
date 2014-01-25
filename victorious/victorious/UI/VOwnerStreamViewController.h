@@ -10,4 +10,6 @@
 
 @interface VOwnerStreamViewController : VStreamTableViewController
 
++ (VOwnerStreamViewController *)sharedInstance;
+
 @end

@@ -10,4 +10,6 @@
 
 @interface VForumStreamViewController : VStreamTableViewController
 
++ (VForumStreamViewController *)sharedInstance;
+
 @end

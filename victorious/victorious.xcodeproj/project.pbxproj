@@ -28,6 +28,11 @@
 		3FF8B7A11868F36600806EA0 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 3FF8B7A01868F36600806EA0 /* Localizable.strings */; };
 		3FF8B7A51868FC1C00806EA0 /* defaultTheme.plist in Resources */ = {isa = PBXBuildFile; fileRef = 3FF8B7A41868FC1C00806EA0 /* defaultTheme.plist */; };
 		5D2BB9E4E1434C7B91B6C084 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 662F0867152745B2B2F08301 /* libPods.a */; };
+		5FF9BE7C1893137D0054694B /* VSideMenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FF9BE7B1893137D0054694B /* VSideMenuViewController.m */; };
+		5FF9BE7F1893143D0054694B /* UIViewController+VSideMenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FF9BE7E1893143D0054694B /* UIViewController+VSideMenuViewController.m */; };
+		5FF9BE83189318CD0054694B /* VRootViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FF9BE82189318CD0054694B /* VRootViewController.m */; };
+		5FF9BE86189319730054694B /* VMenuController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FF9BE85189319730054694B /* VMenuController.m */; };
+		5FF9BE89189325C30054694B /* VTestViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FF9BE88189325C30054694B /* VTestViewController.m */; };
 		831C58F81884BD11007C167C /* VOtherCommentCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 831C58F71884BD11007C167C /* VOtherCommentCell.xib */; };
 		8364C70B1869500D0028C1ED /* VMenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8364C70A1869500D0028C1ED /* VMenuViewController.m */; };
 		8364C70F1869557E0028C1ED /* VMenuViewControllerTransition.m in Sources */ = {isa = PBXBuildFile; fileRef = 8364C70E1869557E0028C1ED /* VMenuViewControllerTransition.m */; };
@@ -185,6 +190,16 @@
 		3FF8B79D1868EF6C00806EA0 /* VSignUpViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VSignUpViewController.m; path = UI/Login/VSignUpViewController.m; sourceTree = "<group>"; };
 		3FF8B7A01868F36600806EA0 /* Localizable.strings */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; path = Localizable.strings; sourceTree = "<group>"; };
 		3FF8B7A41868FC1C00806EA0 /* defaultTheme.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = defaultTheme.plist; sourceTree = "<group>"; };
+		5FF9BE7A1893137D0054694B /* VSideMenuViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VSideMenuViewController.h; path = UI/Menu/VSideMenuViewController.h; sourceTree = "<group>"; };
+		5FF9BE7B1893137D0054694B /* VSideMenuViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VSideMenuViewController.m; path = UI/Menu/VSideMenuViewController.m; sourceTree = "<group>"; };
+		5FF9BE7D1893143D0054694B /* UIViewController+VSideMenuViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "UIViewController+VSideMenuViewController.h"; path = "UI/Menu/UIViewController+VSideMenuViewController.h"; sourceTree = "<group>"; };
+		5FF9BE7E1893143D0054694B /* UIViewController+VSideMenuViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "UIViewController+VSideMenuViewController.m"; path = "UI/Menu/UIViewController+VSideMenuViewController.m"; sourceTree = "<group>"; };
+		5FF9BE81189318CD0054694B /* VRootViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VRootViewController.h; path = UI/Menu/VRootViewController.h; sourceTree = "<group>"; };
+		5FF9BE82189318CD0054694B /* VRootViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VRootViewController.m; path = UI/Menu/VRootViewController.m; sourceTree = "<group>"; };
+		5FF9BE84189319730054694B /* VMenuController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VMenuController.h; path = UI/Menu/VMenuController.h; sourceTree = "<group>"; };
+		5FF9BE85189319730054694B /* VMenuController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VMenuController.m; path = UI/Menu/VMenuController.m; sourceTree = "<group>"; };
+		5FF9BE87189325C30054694B /* VTestViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VTestViewController.h; path = UI/Menu/VTestViewController.h; sourceTree = "<group>"; };
+		5FF9BE88189325C30054694B /* VTestViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VTestViewController.m; path = UI/Menu/VTestViewController.m; sourceTree = "<group>"; };
 		662F0867152745B2B2F08301 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		83188D64187386D000F17777 /* Roboto-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Roboto-Regular.ttf"; sourceTree = "<group>"; };
 		831C58F71884BD11007C167C /* VOtherCommentCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = VOtherCommentCell.xib; path = "UI/Streams Subview/VOtherCommentCell.xib"; sourceTree = "<group>"; };
@@ -459,6 +474,7 @@
 				3F9B666518887D000046F826 /* Management */,
 				3F9B666418887CF40046F826 /* UI Elements */,
 				3F9B666318887CE50046F826 /* Base Classes */,
+				5FF9BE801893188A0054694B /* Menu */,
 			);
 			name = Common;
 			sourceTree = "<group>";
@@ -473,6 +489,12 @@
 		3F9B665E188878EC0046F826 /* Menu */ = {
 			isa = PBXGroup;
 			children = (
+				5FF9BE81189318CD0054694B /* VRootViewController.h */,
+				5FF9BE82189318CD0054694B /* VRootViewController.m */,
+				5FF9BE84189319730054694B /* VMenuController.h */,
+				5FF9BE85189319730054694B /* VMenuController.m */,
+				5FF9BE87189325C30054694B /* VTestViewController.h */,
+				5FF9BE88189325C30054694B /* VTestViewController.m */,
 			);
 			name = Menu;
 			sourceTree = "<group>";
@@ -572,6 +594,17 @@
 				3FF8B79D1868EF6C00806EA0 /* VSignUpViewController.m */,
 			);
 			name = Login;
+			sourceTree = "<group>";
+		};
+		5FF9BE801893188A0054694B /* Menu */ = {
+			isa = PBXGroup;
+			children = (
+				5FF9BE7A1893137D0054694B /* VSideMenuViewController.h */,
+				5FF9BE7B1893137D0054694B /* VSideMenuViewController.m */,
+				5FF9BE7D1893143D0054694B /* UIViewController+VSideMenuViewController.h */,
+				5FF9BE7E1893143D0054694B /* UIViewController+VSideMenuViewController.m */,
+			);
+			name = Menu;
 			sourceTree = "<group>";
 		};
 		830CC32D1877B9730024E02D /* Featured */ = {
@@ -1105,6 +1138,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				BE171E0F1868C211004E5202 /* VAsset+RestKit.m in Sources */,
+				5FF9BE83189318CD0054694B /* VRootViewController.m in Sources */,
 				BEB4C29D187E038C004ECEEF /* VNewsCell.m in Sources */,
 				BE171E131868C211004E5202 /* VInteractionAction+RestKit.m in Sources */,
 				8378622718728C89000BF84F /* VFeaturedStreamsViewController.m in Sources */,
@@ -1114,11 +1148,13 @@
 				BEF2C2B1188620EE00AAE975 /* VUser.m in Sources */,
 				BEF2C2B71886211000AAE975 /* VPollResult.m in Sources */,
 				BE171E201868C211004E5202 /* VObjectManager+Login.m in Sources */,
+				5FF9BE7F1893143D0054694B /* UIViewController+VSideMenuViewController.m in Sources */,
 				3F91991518761D1C0055FE37 /* VAcknowledgementsViewController.m in Sources */,
 				BE6C15281880A31B00469BA8 /* VAsset.m in Sources */,
 				3F91990B18761B0D0055FE37 /* VAboutUsViewController.m in Sources */,
 				BE55CD15188F316900FE619F /* VObjectManager.m in Sources */,
 				BE5C7388187E37E500A3340D /* VConversation+RestKit.m in Sources */,
+				5FF9BE7C1893137D0054694B /* VSideMenuViewController.m in Sources */,
 				BE171E101868C211004E5202 /* VCategory+RestKit.m in Sources */,
 				BE5C7352187E36D000A3340D /* VCategory.m in Sources */,
 				3F91991A187CAF310055FE37 /* VMessageViewController.m in Sources */,
@@ -1130,6 +1166,7 @@
 				BE6B95FC187C88F700CED4C9 /* VSequence+Fetcher.m in Sources */,
 				83DC42FA187CCE3100E768E2 /* VCreateViewController.m in Sources */,
 				BEA5BF59187E7E8E0014C3EF /* VObjectManager+DirectMessaging.m in Sources */,
+				5FF9BE89189325C30054694B /* VTestViewController.m in Sources */,
 				3F4863FA1869184000F77346 /* VInboxViewController.m in Sources */,
 				BE4B74231880D3850090FF84 /* VComment.m in Sources */,
 				BE171E171868C211004E5202 /* VSequence+RestKit.m in Sources */,
@@ -1156,6 +1193,7 @@
 				83D897451882213F00BD5B8B /* VComposeViewController.m in Sources */,
 				3F9B6657187F80780046F826 /* NSDate+timeSince.m in Sources */,
 				BE6B95F0187B4A2C00CED4C9 /* VCommunityStreamsTableViewController.m in Sources */,
+				5FF9BE86189319730054694B /* VMenuController.m in Sources */,
 				BE6B95F3187B4A2C00CED4C9 /* VStreamsTableViewController.m in Sources */,
 				BE171E161868C211004E5202 /* VRule+RestKit.m in Sources */,
 				3F9B66741888C4B20046F826 /* VCommunityStreamViewController.m in Sources */,

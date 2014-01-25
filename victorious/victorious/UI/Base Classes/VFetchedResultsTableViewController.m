@@ -10,7 +10,7 @@
 
 #import "VFetchedResultsTableViewController.h"
 
-@interface VFetchedResultsTableViewController ()    <UISearchBarDelegate, UISearchDisplayDelegate>
+@interface VFetchedResultsTableViewController ()
 @end
 
 @implementation VFetchedResultsTableViewController
