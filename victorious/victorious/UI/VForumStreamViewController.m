@@ -28,11 +28,11 @@
 
 + (VForumStreamViewController *)sharedInstance
 {
-    static  VForumStreamViewController*  sharedInstance;
-    static  dispatch_once_t              onceToken;
-    
+    static  VForumStreamViewController*   sharedInstance;
+    static  dispatch_once_t         onceToken;
     dispatch_once(&onceToken, ^{
-        sharedInstance = [[self alloc] init];
+        UIViewController*   currentViewController = [[UIApplication sharedApplication] delegate].window.rootViewController;
+        sharedInstance = (VForumStreamViewController*)[currentViewController.storyboard instantiateViewControllerWithIdentifier: kForumStreamStoryboardID];
     });
     
     return sharedInstance;

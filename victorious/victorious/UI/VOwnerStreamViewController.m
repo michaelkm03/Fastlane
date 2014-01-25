@@ -17,11 +17,11 @@
 
 + (VOwnerStreamViewController *)sharedInstance
 {
-    static  VOwnerStreamViewController*  sharedInstance;
-    static  dispatch_once_t             onceToken;
-    
+    static  VOwnerStreamViewController*   sharedInstance;
+    static  dispatch_once_t         onceToken;
     dispatch_once(&onceToken, ^{
-        sharedInstance = [[self alloc] init];
+        UIViewController*   currentViewController = [[UIApplication sharedApplication] delegate].window.rootViewController;
+        sharedInstance = (VOwnerStreamViewController*)[currentViewController.storyboard instantiateViewControllerWithIdentifier: kOwnerStreamStoryboardID];
     });
     
     return sharedInstance;

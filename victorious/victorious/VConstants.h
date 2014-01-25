@@ -32,7 +32,12 @@ static NSString*   const   kVUGCImageCategory = @"ugc_image";
 static NSString*   const   kVUGCVideoCategory = @"ugc_video";
 static NSString*   const   kVUGCForumCategory = @"ugc_forum";
 
+static NSString*   const   kFeaturedCategory = @"featured";
+
 static NSString*   const   kSearchCache = @"SearchCache";
 
+static NSString*   const   kHomeStreamStoryboardID      = @"homestream";
+static NSString*   const   kOwnerStreamStoryboardID     = @"ownerstream";
+static NSString*   const   kCommunityStreamStoryboardID = @"communitystream";
+static NSString*   const   kForumStreamStoryboardID     = @"forumstream";
 
-static NSString*   const   kFeaturedCategory = @"featured";

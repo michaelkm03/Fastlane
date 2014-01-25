@@ -17,7 +17,7 @@
 #import "VStreamsTableViewController.h"
 #import "VOwnerStreamsTableViewController.h"
 #import "VCommunityStreamsTableViewController.h"
-#import "VForumStreamTableViewController.h"
+//#import "VForumStreamTableViewController.h"
 #import "VInboxViewController.h"
 #import "VUser+RestKit.h"
 
@@ -53,7 +53,7 @@
         }
         case VMenuTableViewControllerRowForums:
         {
-            self.viewControllers = @[[VForumStreamTableViewController sharedStreamsTableViewController]];
+//            self.viewControllers = @[[VForumStreamTableViewController sharedStreamsTableViewController]];
             [self dismissViewControllerAnimated:YES completion:nil];
             break;
         }

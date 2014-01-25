@@ -16,11 +16,11 @@
 
 + (VHomeStreamViewController *)sharedInstance
 {
-    static  VHomeStreamViewController*  sharedInstance;
-    static  dispatch_once_t             onceToken;
-    
+    static  VHomeStreamViewController*   sharedInstance;
+    static  dispatch_once_t         onceToken;
     dispatch_once(&onceToken, ^{
-        sharedInstance = [[self alloc] init];
+        UIViewController*   currentViewController = [[UIApplication sharedApplication] delegate].window.rootViewController;
+        sharedInstance = (VHomeStreamViewController*)[currentViewController.storyboard instantiateViewControllerWithIdentifier: kHomeStreamStoryboardID];
     });
     
     return sharedInstance;

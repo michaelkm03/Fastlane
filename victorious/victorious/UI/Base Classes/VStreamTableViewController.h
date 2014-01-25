@@ -20,4 +20,6 @@ typedef NS_ENUM(NSInteger, VStreamScope)
 
 - (NSArray*)categoriesForOption:(NSUInteger)searchOption;
 
+- (IBAction)showMenu;
+
 @end
