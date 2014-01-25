@@ -10,4 +10,6 @@
 
 @interface VCommunityStreamViewController : VStreamTableViewController
 
++ (VCommunityStreamViewController *)sharedInstance;
+
 @end

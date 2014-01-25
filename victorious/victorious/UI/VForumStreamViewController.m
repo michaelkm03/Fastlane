@@ -26,6 +26,18 @@
 
 @implementation VForumStreamViewController
 
++ (VForumStreamViewController *)sharedInstance
+{
+    static  VForumStreamViewController*  sharedInstance;
+    static  dispatch_once_t              onceToken;
+    
+    dispatch_once(&onceToken, ^{
+        sharedInstance = [[self alloc] init];
+    });
+    
+    return sharedInstance;
+}
+
 - (NSArray*)categoriesForOption:(NSUInteger)searchOption
 {
     switch (searchOption)
