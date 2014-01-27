@@ -2388,25 +2388,25 @@
                         <autoresizingMask key="autoresizingMask"/>
                     </refreshControl>
                     <connections>
-                        <outlet property="searchDisplayController" destination="LLG-Yy-0No" id="A7I-tA-nd7"/>
+                        <outlet property="searchDisplayController" destination="80c-EB-aFz" id="TjW-Gz-Jol"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="2Lw-PB-MOR" userLabel="First Responder" sceneMemberID="firstResponder"/>
-                <searchBar contentMode="redraw" id="jpm-8Q-0Ka">
+                <searchBar contentMode="redraw" id="auZ-Mh-d3t">
                     <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                     <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
                     <textInputTraits key="textInputTraits"/>
                     <connections>
-                        <outlet property="delegate" destination="4ED-ga-v4l" id="Bo3-Mm-L2G"/>
+                        <outlet property="delegate" destination="4ED-ga-v4l" id="Van-bJ-xSG"/>
                     </connections>
                 </searchBar>
-                <searchDisplayController id="LLG-Yy-0No">
+                <searchDisplayController id="80c-EB-aFz">
                     <connections>
-                        <outlet property="delegate" destination="4ED-ga-v4l" id="ekb-Ii-2PK"/>
-                        <outlet property="searchBar" destination="jpm-8Q-0Ka" id="Ao4-N2-RCR"/>
-                        <outlet property="searchContentsController" destination="4ED-ga-v4l" id="vgu-tK-Vyc"/>
-                        <outlet property="searchResultsDataSource" destination="4ED-ga-v4l" id="vQj-0r-skd"/>
-                        <outlet property="searchResultsDelegate" destination="4ED-ga-v4l" id="ISZ-jy-b1b"/>
+                        <outlet property="delegate" destination="4ED-ga-v4l" id="e20-7f-SAH"/>
+                        <outlet property="searchBar" destination="auZ-Mh-d3t" id="q6s-V0-K5g"/>
+                        <outlet property="searchContentsController" destination="4ED-ga-v4l" id="qkM-Is-Qeg"/>
+                        <outlet property="searchResultsDataSource" destination="4ED-ga-v4l" id="1lU-NT-ZSd"/>
+                        <outlet property="searchResultsDelegate" destination="4ED-ga-v4l" id="mRh-s6-nA5"/>
                     </connections>
                 </searchDisplayController>
             </objects>
@@ -2453,7 +2453,7 @@
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="L2T-aI-YsL" userLabel="First Responder" sceneMemberID="firstResponder"/>
-                <searchBar contentMode="redraw" id="wTQ-yK-MZy">
+                <searchBar contentMode="redraw" translucent="NO" id="wTQ-yK-MZy">
                     <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                     <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
                     <textInputTraits key="textInputTraits"/>

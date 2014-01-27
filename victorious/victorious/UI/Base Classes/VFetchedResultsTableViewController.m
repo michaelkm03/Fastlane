@@ -10,6 +10,7 @@
 
 #import "VFetchedResultsTableViewController.h"
 #import "NSString+VParseHelp.h"
+#import "VThemeManager.h"
 
 @interface VFetchedResultsTableViewController ()
 @end
@@ -24,14 +25,12 @@
     [self registerCells];
     [self performFetch];
     
-    
+    self.searchDisplayController.searchBar.barTintColor = [[VThemeManager sharedThemeManager] themedColorForKeyPath:kVStreamSearchBarColor];
     UIBarButtonItem *searchButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"Search"]
                                                                          style:UIBarButtonItemStylePlain
                                                                         target:self
                                                                         action:@selector(displaySearchBar:)];
-    self.navigationItem.rightBarButtonItems= @[searchButtonItem];
-
-}
+    self.navigationItem.rightBarButtonItems= @[searchButtonItem];}
 
 - (void)viewWillAppear:(BOOL)animated
 {
@@ -110,13 +109,21 @@
 
 - (void)hideSearchBar
 {
-        [self.searchDisplayController.searchBar removeFromSuperview];
+    [self.searchDisplayController.searchBar removeFromSuperview];
 }
 
 - (IBAction)displaySearchBar:(id)sender
 {
-    [self.view addSubview: self.searchDisplayController.searchBar];
+    [self.view addSubview:self.searchDisplayController.searchBar];
     [self.searchDisplayController.searchBar becomeFirstResponder];
+
+//    self.searchDisplayController.displaysSearchBarInNavigationBar = YES;
+    
+//    [self viewWillAppear:NO];
+//    [UIView animateWithDuration:.4f animations:^{
+//
+//    }];
+//    [self.view addSubview: self.searchDisplayController.searchBar];
 }
 
 - (IBAction)refresh:(UIRefreshControl *)sender

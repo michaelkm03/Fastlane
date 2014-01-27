@@ -182,6 +182,28 @@
 		<key>alpha</key>
 		<integer>1</integer>
 	</dict>
+	<key>theme.color.stream.searchbar</key>
+	<dict>
+		<key>red</key>
+		<integer>72</integer>
+		<key>green</key>
+		<integer>207</integer>
+		<key>blue</key>
+		<integer>173</integer>
+		<key>alpha</key>
+		<integer>1</integer>
+	</dict>
+	<key>theme.color.stream.searchbar.cancel</key>
+	<dict>
+		<key>red</key>
+		<integer>255</integer>
+		<key>green</key>
+		<integer>255</integer>
+		<key>blue</key>
+		<integer>255</integer>
+		<key>alpha</key>
+		<integer>1</integer>
+	</dict>
 	<key>theme.color.menu.label</key>
 	<dict>
 		<key>red</key>
