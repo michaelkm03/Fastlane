@@ -23,6 +23,14 @@
     [self hideSearchBar];
     [self registerCells];
     [self performFetch];
+    
+    
+    UIBarButtonItem *searchButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"Search"]
+                                                                         style:UIBarButtonItemStylePlain
+                                                                        target:self
+                                                                        action:@selector(displaySearchBar:)];
+    self.navigationItem.rightBarButtonItems= @[searchButtonItem];
+
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -100,35 +108,14 @@
      }];
 }
 
-
-
 - (void)hideSearchBar
 {
-    CGRect newBounds = self.tableView.bounds;
-    if (self.tableView.bounds.origin.y < 44)
-    {
-        newBounds.origin.y = newBounds.origin.y + self.searchDisplayController.searchBar.bounds.size.height;
-        self.tableView.bounds = newBounds;
-    }
-
-    [self.tableView scrollRectToVisible:CGRectMake(0, 0, 1, 1) animated:YES];
+        [self.searchDisplayController.searchBar removeFromSuperview];
 }
 
 - (IBAction)displaySearchBar:(id)sender
 {
-    [self.tableView scrollRectToVisible:CGRectMake(0, 0, 1, 1) animated:YES];
-
-    NSTimeInterval delay;
-    if (self.tableView.contentOffset.y >1000)
-        delay = 0.4;
-    else
-        delay = 0.1;
-    [self performSelector:@selector(activateSearch) withObject:nil afterDelay:delay];
-}
-
-- (void)activateSearch
-{
-    [self.tableView scrollRectToVisible:CGRectMake(0, 0, 1, 1) animated:NO];
+    [self.view addSubview: self.searchDisplayController.searchBar];
     [self.searchDisplayController.searchBar becomeFirstResponder];
 }
 
@@ -262,6 +249,7 @@
 {
     self.searchFetchedResultsController.delegate = nil;
     self.searchFetchedResultsController = nil;
+    [self hideSearchBar];
 }
 
 - (BOOL)searchDisplayController:(UISearchDisplayController *)controller shouldReloadTableForSearchString:(NSString *)searchString
@@ -281,6 +269,7 @@
 
 - (void)searchBarCancelButtonClicked:(UISearchBar *)searchBar
 {
+    [self hideSearchBar];
     [self viewWillAppear:YES];
 }
 

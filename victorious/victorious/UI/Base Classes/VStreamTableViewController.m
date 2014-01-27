@@ -34,6 +34,36 @@
     [super viewWillDisappear:animated];
 }
 
+#pragma mark - Search Bar
+
+- (void)hideSearchBar
+{
+    [self.searchDisplayController.searchBar removeFromSuperview];
+//    CGRect newBounds = self.tableView.bounds;
+//    if (self.tableView.bounds.origin.y < 44)
+//    {
+//        newBounds.origin.y = newBounds.origin.y + self.searchDisplayController.searchBar.bounds.size.height;
+//        self.tableView.bounds = newBounds;
+//    }
+//    
+//    [self.tableView scrollRectToVisible:CGRectMake(0, 0, 1, 1) animated:YES];
+}
+
+- (IBAction)displaySearchBar:(id)sender
+{
+    [self.view addSubview: self.searchDisplayController.searchBar];
+    [self.searchDisplayController.searchBar becomeFirstResponder];
+    
+//    [self.tableView scrollRectToVisible:CGRectMake(0, 0, 1, 1) animated:YES];
+//    
+//    NSTimeInterval delay;
+//    if (self.tableView.contentOffset.y >1000)
+//        delay = 0.4;
+//    else
+//        delay = 0.1;
+//    [self performSelector:@selector(activateSearch) withObject:nil afterDelay:delay];
+}
+
 #pragma mark - FetchedResultsControllers
 - (NSFetchedResultsController *)makeFetchedResultsController
 {

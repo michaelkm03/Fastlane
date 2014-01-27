@@ -17,6 +17,9 @@
 - (NSFetchedResultsController *)makeFetchedResultsController;
 - (NSFetchedResultsController *)makeSearchFetchedResultsController;
 
+- (IBAction)displaySearchBar:(id)sender;
+- (void)hideSearchBar;
+
 - (void)registerCells;
 - (void)refreshAction;
 
