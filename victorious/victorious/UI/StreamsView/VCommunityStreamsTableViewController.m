@@ -14,7 +14,7 @@
 #import "VCreatePollViewController.h"
 
 #import "VObjectManager.h"
-#import "VLoginViewController.h"
+#import "VSimpleLoginViewController.h"
 
 #import "VConstants.h"
 
@@ -83,7 +83,7 @@
 {
     if(![VObjectManager sharedManager].mainUser)
     {
-        [self presentViewController:[VLoginViewController sharedLoginViewController] animated:YES completion:NULL];
+        [self presentViewController:[VSimpleLoginViewController sharedLoginViewController] animated:YES completion:NULL];
         return;
     }
     

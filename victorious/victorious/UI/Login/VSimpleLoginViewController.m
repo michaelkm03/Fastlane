@@ -6,7 +6,7 @@
 //  Copyright (c) 2013 Victorious Inc. All rights reserved.
 //
 
-#import "VLoginViewController.h"
+#import "VSimpleLoginViewController.h"
 
 #import "VObjectManager+Login.h"
 #import "VObjectManager+DirectMessaging.h"
@@ -19,22 +19,22 @@
 
 NSString*   const   kVLoginViewControllerDomain =   @"VLoginViewControllerDomain";
 
-@interface      VLoginViewController    ()  <UITextFieldDelegate>
+@interface      VSimpleLoginViewController    ()  <UITextFieldDelegate>
 @property (weak, nonatomic) IBOutlet UITextField *emailTextField;
 @property (weak, nonatomic) IBOutlet UITextField *passwordTextField;
 
 @property (nonatomic, readwrite, weak) VUser* mainUser;
 @end
 
-@implementation VLoginViewController
+@implementation VSimpleLoginViewController
 
-+ (VLoginViewController *)sharedLoginViewController
++ (VSimpleLoginViewController *)sharedLoginViewController
 {
-    static  VLoginViewController*   loginViewController;
+    static  VSimpleLoginViewController*   loginViewController;
     static  dispatch_once_t         onceToken;
     dispatch_once(&onceToken, ^{
         UIViewController*   currentViewController = [[UIApplication sharedApplication] delegate].window.rootViewController;
-        loginViewController = (VLoginViewController*)[currentViewController.storyboard instantiateViewControllerWithIdentifier: @"loginSelect"];
+        loginViewController = (VSimpleLoginViewController*)[currentViewController.storyboard instantiateViewControllerWithIdentifier: @"loginSelect"];
         
         [[NSNotificationCenter defaultCenter] addObserver:loginViewController
                                                  selector:@selector(loginChanged:)

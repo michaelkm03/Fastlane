@@ -12,7 +12,7 @@
 #import "VObjectManager+Comment.h"
 #import "VSequence.h"
 #import "VConstants.h"
-#import "VLoginViewController.h"
+#import "VSimpleLoginViewController.h"
 
 @interface VComposeViewController() <UINavigationControllerDelegate, UIImagePickerControllerDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout>
 @property (weak, nonatomic) IBOutlet UIButton *mediaButton;
@@ -45,7 +45,7 @@
     
     if(![VObjectManager sharedManager].mainUser)
     {
-        [self presentViewController:[VLoginViewController sharedLoginViewController] animated:YES completion:NULL];
+        [self presentViewController:[VSimpleLoginViewController sharedLoginViewController] animated:YES completion:NULL];
         return;
     }
     
@@ -70,7 +70,7 @@
     
     if(![VObjectManager sharedManager].mainUser)
     {
-        [self presentViewController:[VLoginViewController sharedLoginViewController] animated:YES completion:NULL];
+        [self presentViewController:[VSimpleLoginViewController sharedLoginViewController] animated:YES completion:NULL];
         return;
     }
     

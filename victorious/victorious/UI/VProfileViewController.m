@@ -17,7 +17,7 @@
 #import "VConversation.h"
 #import "VUser.h"
 #import "VThemeManager.h"
-#import "VLoginViewController.h"
+#import "VSimpleLoginViewController.h"
 
 @interface VProfileViewController () <UIActionSheetDelegate>
 
@@ -124,7 +124,7 @@
 {
     if (![VObjectManager sharedManager].mainUser)
     {
-        [self presentViewController:[VLoginViewController sharedLoginViewController] animated:YES completion:NULL];
+        [self presentViewController:[VSimpleLoginViewController sharedLoginViewController] animated:YES completion:NULL];
         return;
     }
     

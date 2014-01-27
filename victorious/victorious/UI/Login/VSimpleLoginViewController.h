@@ -15,8 +15,8 @@ NS_ENUM(NSUInteger, VLoginViewControllerErrorCode)
     VLoginViewControllerFailedLoginErrorCode
 };
 
-@interface VLoginViewController : UITableViewController
+@interface VSimpleLoginViewController : UITableViewController
 
-+ (VLoginViewController *)sharedLoginViewController;
++ (VSimpleLoginViewController *)sharedLoginViewController;
 
 @end
