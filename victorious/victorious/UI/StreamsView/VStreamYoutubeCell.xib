@@ -113,7 +113,6 @@
                 </constraints>
             </tableViewCellContentView>
             <connections>
-                <outlet property="commentButton" destination="3Ib-2E-Yyp" id="iTF-ZK-EmF"/>
                 <outlet property="dateLabel" destination="MDX-WX-1q9" id="gV1-pj-U9Z"/>
                 <outlet property="descriptionLabel" destination="chv-Tp-6jM" id="lGu-gN-ANj"/>
                 <outlet property="likeButton" destination="jIh-VC-gEZ" id="XTj-CC-eWv"/>
@@ -121,7 +120,6 @@
                 <outlet property="playButtonImage" destination="1Th-Nk-1DK" id="UWq-Oj-ULM"/>
                 <outlet property="previewImageView" destination="mjU-tR-SNj" id="Qow-Oc-1KN"/>
                 <outlet property="profileImageButton" destination="wXE-0g-SfP" id="B9x-x6-e3r"/>
-                <outlet property="shareButton" destination="i5S-SV-wEy" id="aeL-yw-4Ni"/>
                 <outlet property="usernameLabel" destination="UC9-59-BIh" id="ZSA-rh-Qub"/>
                 <outletCollection property="imageViews" destination="o52-uI-ix9" id="otg-6O-7vW"/>
                 <outletCollection property="labels" destination="UC9-59-BIh" id="08g-Vm-Qfn"/>

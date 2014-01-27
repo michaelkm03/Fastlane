@@ -9,11 +9,8 @@
 #import "VStreamVideoCell.h"
 
 #import "VAsset.h"
-
 #import "VNode+Fetcher.h"
 #import "VSequence+Fetcher.h"
-
-#import "VObjectManager+Sequence.h"
 
 @interface VStreamVideoCell ()
 @property (strong, nonatomic) MPMoviePlayerController* mpController;
@@ -40,54 +37,19 @@
 
 - (IBAction)pressedPlay:(id)sender
 {
-    if (![self.sequence.nodes count]) //If theres no nodes we need to fetch
-    {
-        __block UIActivityIndicatorView* indicator = [[UIActivityIndicatorView alloc] init];
-        [self addSubview:indicator];
-        indicator.center = self.center;
-        [indicator startAnimating];
-        indicator.hidesWhenStopped = YES;
-        
-        [[VObjectManager sharedManager] fetchSequence:self.sequence.remoteId
-                                         successBlock:^(NSOperation* operation, id fullResponse, NSArray* rkObjects)
-                                         {
-                                             [indicator stopAnimating];
-                                             [indicator removeFromSuperview];
-                                             [self playSequence];
-                                         }
-                                            failBlock:^(NSOperation* operation, NSError* error)
-                                        {
-                                            [indicator stopAnimating];
-                                            [indicator removeFromSuperview];
-                                            UIAlertView* alert = [[UIAlertView alloc] initWithTitle:@"Error"
-                                                                                            message:error.localizedDescription
-                                                                                           delegate:self
-                                                                                  cancelButtonTitle:NSLocalizedString(@"OKButton", @"")
-                                                                                  otherButtonTitles:nil];
-                                            [alert show];
-                                        }];
-    }
-    else
-    {
-        [self playSequence];
-    }
+    VAsset* asset = [[self.sequence firstNode] firstAsset];
+    
+    self.mpController = [[MPMoviePlayerController alloc] initWithContentURL:[NSURL URLWithString:asset.data]];
+    [self.mpController prepareToPlay];
+    self.mpController.view.frame = self.previewImageView.frame;
+    [self insertSubview:self.mpController.view aboveSubview:self.previewImageView];
+    
+    [self.mpController play];
 }
 
 - (void)streamsWillSegue:(NSNotification *) notification
 {
     [self.mpController stop];
-}
-
-- (void)playSequence
-{
-    VAsset* asset = [[self.sequence firstNode] firstAsset];
-
-    self.mpController = [[MPMoviePlayerController alloc] initWithContentURL:[NSURL URLWithString:asset.data]];
-    [self.mpController prepareToPlay];
-    self.mpController.view.frame = self.previewImageView.frame;
-    [self insertSubview:self.mpController.view aboveSubview:self.previewImageView];
-
-    [self.mpController play];
 }
 
 @end
