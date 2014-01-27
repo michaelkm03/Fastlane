@@ -10,6 +10,7 @@
 #import "UIViewController+VSideMenuViewController.h"
 #import "VConstants.h"
 
+#import "NSString+VParseHelp.h"
 //Cells
 #import "VStreamViewCell.h"
 #import "VStreamVideoCell.h"
@@ -166,6 +167,11 @@ forFetchedResultsController:(NSFetchedResultsController *)fetchedResultsControll
 #pragma mark - Predicates
 - (NSPredicate*)searchPredicateForString:(NSString *)searchString
 {
+    if (!searchString || [searchString isEmpty])
+    {
+        return nil;
+    }
+    
     return [NSPredicate predicateWithFormat:@"name CONTAINS[cd] %@", searchString];
 }
 

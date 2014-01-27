@@ -9,6 +9,7 @@
 @import CoreData;
 
 #import "VFetchedResultsTableViewController.h"
+#import "NSString+VParseHelp.h"
 
 @interface VFetchedResultsTableViewController ()
 @end
@@ -22,6 +23,13 @@
     [self hideSearchBar];
     [self registerCells];
     [self performFetch];
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    
+    [self refreshFetchController:self.fetchedResultsController withPredicate:[self fetchResultsPredicateForString:nil option:0]];
 }
 
 - (void)didReceiveMemoryWarning
@@ -87,6 +95,8 @@
              //TODO: Update to handle the error appropriately.
              NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
          }
+         
+         [self.tableView reloadData];
      }];
 }
 
@@ -312,6 +322,11 @@
 
 - (NSPredicate*)searchPredicateForString:(NSString *)searchString
 {
+    if (!searchString || [searchString isEmpty])
+    {
+        return nil;
+    }
+    
     return [NSPredicate predicateWithFormat:@"name CONTAINS[cd] %@", searchString];
 }
 
