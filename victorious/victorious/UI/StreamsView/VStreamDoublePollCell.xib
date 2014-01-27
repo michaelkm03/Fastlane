@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="4514" systemVersion="13B3116" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="4514" systemVersion="13B42" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3747"/>
     </dependencies>
@@ -203,7 +203,6 @@
             </tableViewCellContentView>
             <connections>
                 <outlet property="answerView" destination="i22-9N-ifD" id="UXL-wx-sT2"/>
-                <outlet property="commentButton" destination="94V-qD-H5h" id="XWe-5r-xSm"/>
                 <outlet property="dateLabel" destination="a6x-TU-Q9b" id="tpa-so-LAW"/>
                 <outlet property="descriptionLabel" destination="UIj-g6-FXe" id="Vcn-hT-aKI"/>
                 <outlet property="firstResultLabel" destination="hPb-pk-cPO" id="zjN-Z4-X6a"/>
@@ -218,7 +217,6 @@
                 <outlet property="previewImageView" destination="OOq-Yb-3IQ" id="Xai-kb-2mv"/>
                 <outlet property="profileImageButton" destination="dY5-Ua-yog" id="HN6-tw-orY"/>
                 <outlet property="secondResultLabel" destination="gtY-r3-PYW" id="xxH-y8-hSQ"/>
-                <outlet property="shareButton" destination="97u-YM-R84" id="sW2-QC-tZ4"/>
                 <outlet property="usernameLabel" destination="3Jw-Bn-2h0" id="Bve-n2-1cE"/>
                 <outletCollection property="imageViews" destination="BQ0-e0-bhp" id="O0R-Kb-Qzh"/>
                 <outletCollection property="labels" destination="3Jw-Bn-2h0" id="f5B-uC-Pxw"/>

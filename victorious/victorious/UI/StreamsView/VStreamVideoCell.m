@@ -9,11 +9,8 @@
 #import "VStreamVideoCell.h"
 
 #import "VAsset.h"
-
 #import "VNode+Fetcher.h"
 #import "VSequence+Fetcher.h"
-
-#import "VObjectManager+Sequence.h"
 
 @interface VStreamVideoCell ()
 @property (strong, nonatomic) MPMoviePlayerController* mpController;
