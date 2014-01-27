@@ -32,7 +32,6 @@
 		5FF9BE7F1893143D0054694B /* UIViewController+VSideMenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FF9BE7E1893143D0054694B /* UIViewController+VSideMenuViewController.m */; };
 		5FF9BE83189318CD0054694B /* VRootViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FF9BE82189318CD0054694B /* VRootViewController.m */; };
 		5FF9BE86189319730054694B /* VMenuController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FF9BE85189319730054694B /* VMenuController.m */; };
-		5FF9BE89189325C30054694B /* VTestViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FF9BE88189325C30054694B /* VTestViewController.m */; };
 		831C58F81884BD11007C167C /* VOtherCommentCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 831C58F71884BD11007C167C /* VOtherCommentCell.xib */; };
 		8364C70B1869500D0028C1ED /* VMenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8364C70A1869500D0028C1ED /* VMenuViewController.m */; };
 		8364C70F1869557E0028C1ED /* VMenuViewControllerTransition.m in Sources */ = {isa = PBXBuildFile; fileRef = 8364C70E1869557E0028C1ED /* VMenuViewControllerTransition.m */; };
@@ -197,8 +196,6 @@
 		5FF9BE82189318CD0054694B /* VRootViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VRootViewController.m; path = UI/Menu/VRootViewController.m; sourceTree = "<group>"; };
 		5FF9BE84189319730054694B /* VMenuController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VMenuController.h; path = UI/Menu/VMenuController.h; sourceTree = "<group>"; };
 		5FF9BE85189319730054694B /* VMenuController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VMenuController.m; path = UI/Menu/VMenuController.m; sourceTree = "<group>"; };
-		5FF9BE87189325C30054694B /* VTestViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VTestViewController.h; path = UI/Menu/VTestViewController.h; sourceTree = "<group>"; };
-		5FF9BE88189325C30054694B /* VTestViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VTestViewController.m; path = UI/Menu/VTestViewController.m; sourceTree = "<group>"; };
 		662F0867152745B2B2F08301 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		83188D64187386D000F17777 /* Roboto-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Roboto-Regular.ttf"; sourceTree = "<group>"; };
 		831C58F71884BD11007C167C /* VOtherCommentCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = VOtherCommentCell.xib; path = "UI/Streams Subview/VOtherCommentCell.xib"; sourceTree = "<group>"; };
@@ -490,8 +487,6 @@
 				5FF9BE82189318CD0054694B /* VRootViewController.m */,
 				5FF9BE84189319730054694B /* VMenuController.h */,
 				5FF9BE85189319730054694B /* VMenuController.m */,
-				5FF9BE87189325C30054694B /* VTestViewController.h */,
-				5FF9BE88189325C30054694B /* VTestViewController.m */,
 			);
 			name = Menu;
 			sourceTree = "<group>";
@@ -1161,7 +1156,6 @@
 				BE6B95FC187C88F700CED4C9 /* VSequence+Fetcher.m in Sources */,
 				83DC42FA187CCE3100E768E2 /* VCreateViewController.m in Sources */,
 				BEA5BF59187E7E8E0014C3EF /* VObjectManager+DirectMessaging.m in Sources */,
-				5FF9BE89189325C30054694B /* VTestViewController.m in Sources */,
 				3F4863FA1869184000F77346 /* VInboxViewController.m in Sources */,
 				BE4B74231880D3850090FF84 /* VComment.m in Sources */,
 				BE171E171868C211004E5202 /* VSequence+RestKit.m in Sources */,

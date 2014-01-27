@@ -2229,40 +2229,6 @@
             </objects>
             <point key="canvasLocation" x="-1512" y="-2766"/>
         </scene>
-        <!--Test View Controller - A-->
-        <scene sceneID="aE1-Hp-PRa">
-            <objects>
-                <viewController storyboardIdentifier="A" id="OcY-4b-1at" customClass="VTestViewController" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="cjC-hp-4hi"/>
-                        <viewControllerLayoutGuide type="bottom" id="Ug1-u6-l2h"/>
-                    </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="lhf-GQ-Yip">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        <subviews>
-                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Stuff" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="B0W-T4-1xb">
-                                <rect key="frame" x="130" y="217" width="36" height="21"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                        </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
-                    </view>
-                    <navigationItem key="navigationItem" title="A" id="mJp-GC-SvD">
-                        <barButtonItem key="leftBarButtonItem" image="Menu" id="29x-PI-fG2">
-                            <connections>
-                                <action selector="showMenu" destination="OcY-4b-1at" id="Zei-pz-lRh"/>
-                            </connections>
-                        </barButtonItem>
-                    </navigationItem>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="mNp-vx-QKe" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="-738" y="-2907"/>
-        </scene>
         <!--Navigation Controller-->
         <scene sceneID="YV9-l0-kDH">
             <objects>
