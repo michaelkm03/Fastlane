@@ -14,6 +14,12 @@ NSString*   const   kVChannelURLAbout                   =   @"channel.url.about"
 NSString*   const   kVChannelURLPrivacy                 =   @"channel.url.privacy";
 NSString*   const   kVChannelURLAcknowledgements        =   @"channel.url.acknowledgements";
 NSString*   const   kVChannelURLSupport                 =   @"channel.url.support";
+NSString*   const   kVChannelName                       =   @"channel.name";
+
+NSString*   const   kVMenuBackgroundImage               =   @"LaunchImage-700";
+NSString*   const   kVMenuBackgroundImage5              =   @"LaunchImage-700-568h";
+NSString*   const   kMenuTextFont                       =   @"theme.font.menu";
+NSString*   const   kMenuTextColor                      =   @"theme.color.menu.label";
 
 NSString*   const   kVStreamLocationFont                =   @"theme.font.stream.text.location";
 NSString*   const   kVStreamUsernameFont                =   @"theme.font.stream.text.username";
@@ -152,6 +158,11 @@ NSString*   const   kVCommentUsernameFont               =   @"theme.font.comment
     if (nil == url)
         url     =   [[NSBundle mainBundle] URLForResource:keyPath withExtension:@"png"];
     return url;
+}
+
+- (UIImage *)themedImageForKeyPath:(NSString *)keyPath
+{
+    return [UIImage imageNamed:keyPath];
 }
 
 - (UIFont *)themedFontForKeyPath:(NSString *)keyPath

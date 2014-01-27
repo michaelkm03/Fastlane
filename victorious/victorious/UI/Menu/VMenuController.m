@@ -55,24 +55,29 @@ NSString *const VMenuControllerDidSelectRowNotification = @"VMenuTableViewContro
         [self.inboxBadgeLabel setHidden:NO];
     }
     
-    NSString *channelName = [[VThemeManager sharedThemeManager] themedValueForKeyPath:@"channel.name"];
+    NSString *channelName = [[VThemeManager sharedThemeManager] themedValueForKeyPath:kVChannelName];
     self.nameLabel.text = [NSString stringWithFormat:NSLocalizedString(@"%@ Channel", @"<CHANNEL NAME> Channel"), channelName];
     
     [[UIImageView appearanceWhenContainedIn:[self class], nil]
      setTintColor:[[VThemeManager sharedThemeManager] themedColorForKeyPath:@"theme.color.menu.icon"]];
-    [self.imageViews enumerateObjectsUsingBlock:^(UIImageView *imageView, NSUInteger idx, BOOL *stop){
+    [self.imageViews enumerateObjectsUsingBlock:^(UIImageView *imageView, NSUInteger idx, BOOL *stop)
+    {
         imageView.image = [imageView.image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
     }];
-    [self.labels enumerateObjectsUsingBlock:^(UILabel *label, NSUInteger idx, BOOL *stop){
-        label.font = [[VThemeManager sharedThemeManager] themedFontForKeyPath:@"theme.font.menu"];
-        label.textColor = [[VThemeManager sharedThemeManager] themedColorForKeyPath:@"theme.color.menu.label"];
+    [self.labels enumerateObjectsUsingBlock:^(UILabel *label, NSUInteger idx, BOOL *stop)
+    {
+        label.font = [[VThemeManager sharedThemeManager] themedFontForKeyPath:kMenuTextFont];
+//        label.textColor = [[VThemeManager sharedThemeManager] themedColorForKeyPath:kMenuTextColor];
     }];
-    [self.separatorViews enumerateObjectsUsingBlock:^(UIView *view, NSUInteger idx, BOOL *stop){
+    [self.separatorViews enumerateObjectsUsingBlock:^(UIView *view, NSUInteger idx, BOOL *stop)
+    {
         view.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKeyPath:@"theme.color.menu.separator"];
     }];
     
     self.view.backgroundColor = [UIColor clearColor];
     self.tableView.backgroundView.backgroundColor = [UIColor clearColor];
+    
+    self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
 }
 
 - (void)viewWillLayoutSubviews
