@@ -8,6 +8,8 @@
 
 #import "VObjectManager.h"
 
+extern NSString* const VFeaturedVideosLoadedNotif;
+
 @class VAnswer, VSequence, VCategory;
 
 @interface VObjectManager (Sequence)

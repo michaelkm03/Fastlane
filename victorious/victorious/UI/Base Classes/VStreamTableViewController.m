@@ -10,6 +10,7 @@
 #import "UIViewController+VSideMenuViewController.h"
 #import "VConstants.h"
 
+#import "VFeaturedStreamsViewController.h"
 #import "NSString+VParseHelp.h"
 //Cells
 #import "VStreamViewCell.h"
@@ -25,6 +26,9 @@
 #import "VNode+Fetcher.h"
 #import "VAsset.h"
 
+@interface VStreamTableViewController()
+@property (nonatomic, strong) VFeaturedStreamsViewController* featuredStreamsViewController;
+@end
 @implementation VStreamTableViewController
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -32,6 +36,100 @@
     [[NSNotificationCenter defaultCenter] postNotificationName:kStreamsWillSegueNotification
                                                         object:nil];
     [super viewWillDisappear:animated];
+}
+
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
+    
+    if (self.usesFeaturedVideos)
+    {
+        self.featuredStreamsViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"featured_pages"];
+        self.featuredStreamsViewController.superController = self;
+        [self.featuredStreamsViewController performFetch];
+        
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(featureVideosDidLoad)
+                                                     name:VFeaturedVideosLoadedNotif
+                                                   object:nil];
+    }
+}
+
+- (void)featureVideosDidLoad
+{
+    [self.tableView reloadData];
+}
+
+- (BOOL)canSeeFeaturedVideos
+{
+    //TODO: Featured videos are not a tablecell, so the logic currently crashes.
+    return NO;
+    return (self.usesFeaturedVideos &&
+            [self.featuredStreamsViewController.fetchedResultsController.fetchedObjects count]);
+}
+
+#pragma mark - Table view data source
+
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
+{
+    int count =[[[self fetchedResultsControllerForTableView:tableView] sections] count];
+    
+    if ([self canSeeFeaturedVideos])
+        return count++;
+    
+    return count;
+}
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
+    //Logic to handle the extra section for featured videos
+    if ([self canSeeFeaturedVideos])
+    {
+        if (!section)
+            return 1;
+        
+        section--;//we have an extra section for feature videos
+    }
+    
+    return [[[[self fetchedResultsControllerForTableView:tableView] sections] objectAtIndex:section] numberOfObjects];
+}
+
+- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
+{
+    //Logic to handle the extra section for featured videos
+    if ([self canSeeFeaturedVideos])
+    {
+        if (!section)
+            return kFeaturedCategory;
+        
+        section--;//we have an extra section for feature videos
+    }
+    
+    return [[[[self fetchedResultsControllerForTableView:tableView] sections] objectAtIndex:section] name];
+}
+
+- (NSArray *)sectionIndexTitlesForTableView:(UITableView *)tableView
+{
+    if ([self canSeeFeaturedVideos])
+        return [@[kFeaturedCategory] arrayByAddingObjectsFromArray:[[self fetchedResultsControllerForTableView:tableView] sectionIndexTitles]];
+                
+    return [[self fetchedResultsControllerForTableView:tableView] sectionIndexTitles];
+}
+
+- (NSInteger)tableView:(UITableView *)tableView sectionForSectionIndexTitle:(NSString *)title atIndex:(NSInteger)index
+{
+    //TODO: how do I make this work with the feature videos without crashing (slash will it crash)
+    return [[self fetchedResultsControllerForTableView:tableView] sectionForSectionIndexTitle:title atIndex:index];
+}
+
+- (void)configureCell:(UITableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath
+{
+    
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
+{
+    return 0;
 }
 
 #pragma mark - FetchedResultsControllers
@@ -72,6 +170,10 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    if ([self canSeeFeaturedVideos] && [indexPath indexAtPosition:0] == 0)
+        return 180;
+
+    //TODO: this is gonna be off because of ze featured video
     VSequence* sequence = (VSequence*)[self.fetchedResultsController objectAtIndexPath:indexPath];
     
     if ([sequence isPoll])
@@ -111,6 +213,24 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    if ([self canSeeFeaturedVideos] && [indexPath indexAtPosition:0] == 0)
+    {
+        if (![self.featuredStreamsViewController.fetchedResultsController.fetchedObjects count])
+            self.featuredStreamsViewController.view.hidden = YES;
+        else
+            self.featuredStreamsViewController.view.hidden = NO;
+        
+        CGRect frame = CGRectMake(0, 0, CGRectGetWidth(self.view.bounds), [self tableView:tableView heightForRowAtIndexPath:indexPath]);
+        UIView* containerView = [[UIView alloc] initWithFrame:frame];
+        
+        [self addChildViewController:self.featuredStreamsViewController];
+        [containerView addSubview:self.featuredStreamsViewController.view];
+        [self.featuredStreamsViewController didMoveToParentViewController:self];
+        self.featuredStreamsViewController.view.frame = frame;
+        
+        return containerView;
+    }
+    
     VStreamViewCell *cell = [self tableView:tableView streamViewCellForIndex:indexPath];
     
     // Configure the cell...

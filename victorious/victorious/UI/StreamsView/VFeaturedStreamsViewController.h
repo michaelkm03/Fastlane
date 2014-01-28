@@ -11,5 +11,8 @@
 @interface VFeaturedStreamsViewController : UIViewController
 
 @property (readonly, nonatomic) NSFetchedResultsController* fetchedResultsController;
+@property (nonatomic, weak) UITableViewController* superController;
+
+- (void)performFetch;
 
 @end

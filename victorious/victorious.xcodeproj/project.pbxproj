@@ -87,6 +87,7 @@
 		BE171E391868C266004E5202 /* NSManagedObject+RestKit.m in Sources */ = {isa = PBXBuildFile; fileRef = BE171E361868C265004E5202 /* NSManagedObject+RestKit.m */; };
 		BE171E3A1868C266004E5202 /* NSString+VParseHelp.m in Sources */ = {isa = PBXBuildFile; fileRef = BE171E381868C266004E5202 /* NSString+VParseHelp.m */; };
 		BE171E431868CEA0004E5202 /* victoriOS.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = BE171E411868CEA0004E5202 /* victoriOS.xcdatamodeld */; };
+		BE24324618982F3C0098D00C /* VFeaturedVideoCell.m in Sources */ = {isa = PBXBuildFile; fileRef = BE24324518982F3C0098D00C /* VFeaturedVideoCell.m */; };
 		BE391E56187CC4DC0088D902 /* VAbstractStreamViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BE391E55187CC4DC0088D902 /* VAbstractStreamViewController.m */; };
 		BE4B74231880D3850090FF84 /* VComment.m in Sources */ = {isa = PBXBuildFile; fileRef = BE4B74221880D3850090FF84 /* VComment.m */; };
 		BE4B74261880D3850090FF84 /* VAnswer.m in Sources */ = {isa = PBXBuildFile; fileRef = BE4B74251880D3850090FF84 /* VAnswer.m */; };
@@ -295,6 +296,8 @@
 		BE171E381868C266004E5202 /* NSString+VParseHelp.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+VParseHelp.m"; sourceTree = "<group>"; };
 		BE171E421868CEA0004E5202 /* victoriOS.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = victoriOS.xcdatamodel; sourceTree = "<group>"; };
 		BE171E441868CEAA004E5202 /* victoriOS 2.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "victoriOS 2.xcdatamodel"; sourceTree = "<group>"; };
+		BE24324418982F3C0098D00C /* VFeaturedVideoCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VFeaturedVideoCell.h; sourceTree = "<group>"; };
+		BE24324518982F3C0098D00C /* VFeaturedVideoCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VFeaturedVideoCell.m; sourceTree = "<group>"; };
 		BE391E54187CC4DC0088D902 /* VAbstractStreamViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VAbstractStreamViewController.h; sourceTree = "<group>"; };
 		BE391E55187CC4DC0088D902 /* VAbstractStreamViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VAbstractStreamViewController.m; sourceTree = "<group>"; };
 		BE4B74211880D3850090FF84 /* VComment.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VComment.h; sourceTree = "<group>"; };
@@ -500,6 +503,7 @@
 			isa = PBXGroup;
 			children = (
 				BE692B2B186E5EE000C71336 /* Cells */,
+				830CC32D1877B9730024E02D /* Featured */,
 				3F9B666C1888C4390046F826 /* VHomeStreamViewController.h */,
 				3F9B666D1888C4390046F826 /* VHomeStreamViewController.m */,
 				3F9B666F1888C4940046F826 /* VOwnerStreamViewController.h */,
@@ -610,8 +614,11 @@
 				8378622418728C89000BF84F /* VFeaturedStreamsViewController.m */,
 				8378622518728C89000BF84F /* VFeaturedViewController.h */,
 				8378622618728C89000BF84F /* VFeaturedViewController.m */,
+				BE24324418982F3C0098D00C /* VFeaturedVideoCell.h */,
+				BE24324518982F3C0098D00C /* VFeaturedVideoCell.m */,
 			);
 			name = Featured;
+			path = UI/StreamsView;
 			sourceTree = "<group>";
 		};
 		8364C70818694FF00028C1ED /* Menu */ = {
@@ -865,7 +872,6 @@
 			isa = PBXGroup;
 			children = (
 				BE6B95E6187B4A2000CED4C9 /* StreamsTables */,
-				830CC32D1877B9730024E02D /* Featured */,
 			);
 			name = Streams;
 			path = UI/StreamsView;
@@ -1160,6 +1166,7 @@
 				BE692B27186E5ED800C71336 /* VStreamVideoCell.m in Sources */,
 				BE6B95FC187C88F700CED4C9 /* VSequence+Fetcher.m in Sources */,
 				83DC42FA187CCE3100E768E2 /* VCreateViewController.m in Sources */,
+				BE24324618982F3C0098D00C /* VFeaturedVideoCell.m in Sources */,
 				BEA5BF59187E7E8E0014C3EF /* VObjectManager+DirectMessaging.m in Sources */,
 				5FF9BE89189325C30054694B /* VTestViewController.m in Sources */,
 				3F4863FA1869184000F77346 /* VInboxViewController.m in Sources */,

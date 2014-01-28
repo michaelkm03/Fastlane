@@ -28,24 +28,33 @@ static NSString* kStreamCache = @"StreamCache";
 {
     [super viewDidLoad];
 
+    [self performFetch];
+}
+
+- (void)performFetch
+{
     NSManagedObjectContext *context = [RKObjectManager sharedManager].managedObjectStore.persistentStoreManagedObjectContext;
     [context performBlockAndWait:^()
      {
          NSError *error;
-        if (![self.fetchedResultsController performFetch:&error] && error)
-        {
-            // Update to handle the error appropriately.
-            NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
-        }
+         if (![self.fetchedResultsController performFetch:&error] && error)
+         {
+             // Update to handle the error appropriately.
+             NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+         }
+         [self.superController.tableView reloadData];
      }];
 }
 
-- (void)viewWillLayoutSubviews{
+- (void)viewWillLayoutSubviews
+{
     [super viewWillLayoutSubviews];
 
     __block CGRect frame = self.scrollView.bounds;
-    @synchronized(self.viewControllers){
-        [self.viewControllers enumerateObjectsUsingBlock:^(UIViewController *viewController, NSUInteger idx, BOOL *stop){
+    @synchronized(self.viewControllers)
+    {
+        [self.viewControllers enumerateObjectsUsingBlock:^(UIViewController *viewController, NSUInteger idx, BOOL *stop)
+        {
             viewController.view.frame = frame;
             [self.scrollView addSubview:viewController.view];
             frame.origin.x += CGRectGetWidth(self.scrollView.bounds);
@@ -95,7 +104,7 @@ static NSString* kStreamCache = @"StreamCache";
     NSMutableArray *viewControllers = [NSMutableArray arrayWithCapacity:self.pageControl.numberOfPages];
     for(NSUInteger i = 0; i < self.pageControl.numberOfPages && i < [controller.fetchedObjects count]; ++i)
     {
-        VFeaturedViewController *viewController = [self.storyboard instantiateViewControllerWithIdentifier:@"featured"];
+        VFeaturedViewController *viewController = [self.storyboard instantiateViewControllerWithIdentifier:kFeaturedCategory];
         viewController.sequence = [controller objectAtIndexPath:[NSIndexPath indexPathForRow:i inSection:0]];
         [self addChildViewController:viewController];
         [viewController didMoveToParentViewController:self];
@@ -103,6 +112,7 @@ static NSString* kStreamCache = @"StreamCache";
     }
     self.viewControllers = [viewControllers copy];
     [self.view setNeedsLayout];
+    [self.superController.tableView reloadData];
 }
 
 #pragma mark - UIScrollViewDelegate

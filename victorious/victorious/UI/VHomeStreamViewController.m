@@ -8,6 +8,7 @@
 
 #import "VHomeStreamViewController.h"
 #import "VConstants.h"
+#import "VFeaturedStreamsViewController.h"
 
 @interface VHomeStreamViewController ()
 @end
@@ -24,6 +25,12 @@
     });
     
     return sharedInstance;
+}
+
+- (void) viewDidLoad
+{
+    self.usesFeaturedVideos = YES;
+    [super viewDidLoad];
 }
 
 - (NSArray*)categoriesForOption:(NSUInteger)searchOption
