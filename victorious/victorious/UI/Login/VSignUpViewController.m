@@ -92,7 +92,7 @@ NSString*   const   kSignupViewControllerDomain =   @"VSignupViewControllerDomai
 
 - (void)didSignUpWithUser:(VUser*)mainUser
 {
-    [[NSNotificationCenter defaultCenter] postNotificationName:LoggedInChangedNotification
+    [[NSNotificationCenter defaultCenter] postNotificationName:kLoggedInChangedNotification
                                                         object:mainUser];
     [self.presentingViewController.presentingViewController dismissViewControllerAnimated:YES completion:nil];
 }

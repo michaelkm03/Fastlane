@@ -38,7 +38,7 @@ NSString*   const   kVLoginViewControllerDomain =   @"VLoginViewControllerDomain
         
         [[NSNotificationCenter defaultCenter] addObserver:loginViewController
                                                  selector:@selector(loginChanged:)
-                                                     name:LoggedInChangedNotification
+                                                     name:kLoggedInChangedNotification
                                                    object:nil];
     });
     
@@ -127,7 +127,7 @@ NSString*   const   kVLoginViewControllerDomain =   @"VLoginViewControllerDomain
 {
     VLog(@"Succesfully logged in as: %@", mainUser);
     
-    [[NSNotificationCenter defaultCenter] postNotificationName:LoggedInChangedNotification
+    [[NSNotificationCenter defaultCenter] postNotificationName:kLoggedInChangedNotification
                                                         object:mainUser];
     
     [self dismissViewControllerAnimated:YES completion:NULL];
