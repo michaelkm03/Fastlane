@@ -23,16 +23,23 @@
 		3F9B66741888C4B20046F826 /* VCommunityStreamViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F9B66731888C4B20046F826 /* VCommunityStreamViewController.m */; };
 		3F9B66771888C4DD0046F826 /* VForumStreamViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F9B66761888C4DD0046F826 /* VForumStreamViewController.m */; };
 		3FF8B7981868EE7E00806EA0 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3FF8B7971868EE7E00806EA0 /* Main.storyboard */; };
-		3FF8B79E1868EF6C00806EA0 /* VLoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3FF8B79B1868EF6C00806EA0 /* VLoginViewController.m */; };
+		3FF8B79E1868EF6C00806EA0 /* VSimpleLoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3FF8B79B1868EF6C00806EA0 /* VSimpleLoginViewController.m */; };
 		3FF8B79F1868EF6C00806EA0 /* VSignUpViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3FF8B79D1868EF6C00806EA0 /* VSignUpViewController.m */; };
 		3FF8B7A11868F36600806EA0 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 3FF8B7A01868F36600806EA0 /* Localizable.strings */; };
 		3FF8B7A51868FC1C00806EA0 /* defaultTheme.plist in Resources */ = {isa = PBXBuildFile; fileRef = 3FF8B7A41868FC1C00806EA0 /* defaultTheme.plist */; };
 		5D2BB9E4E1434C7B91B6C084 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 662F0867152745B2B2F08301 /* libPods.a */; };
+		5FC4DA5E18970A9F006BA107 /* login.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5FC4DA5D18970A9F006BA107 /* login.storyboard */; };
+		5FC4DA671897111B006BA107 /* VLoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FC4DA661897111B006BA107 /* VLoginViewController.m */; };
+		5FC4DA6A18971155006BA107 /* VLoginWithEmailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FC4DA6918971155006BA107 /* VLoginWithEmailViewController.m */; };
+		5FC4DA6D1897119C006BA107 /* VProfileWithSocialViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FC4DA6C1897119C006BA107 /* VProfileWithSocialViewController.m */; };
+		5FC4DA70189711EA006BA107 /* VInviteWithSocialViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FC4DA6F189711EA006BA107 /* VInviteWithSocialViewController.m */; };
+		5FC4DA731897121F006BA107 /* VSignupWithEmailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FC4DA721897121F006BA107 /* VSignupWithEmailViewController.m */; };
+		5FC4DA76189712B3006BA107 /* VProfileWithEmailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FC4DA75189712B3006BA107 /* VProfileWithEmailViewController.m */; };
+		5FC4DA7918971311006BA107 /* VInviteWithEmailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FC4DA7818971311006BA107 /* VInviteWithEmailViewController.m */; };
 		5FF9BE7C1893137D0054694B /* VSideMenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FF9BE7B1893137D0054694B /* VSideMenuViewController.m */; };
 		5FF9BE7F1893143D0054694B /* UIViewController+VSideMenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FF9BE7E1893143D0054694B /* UIViewController+VSideMenuViewController.m */; };
 		5FF9BE83189318CD0054694B /* VRootViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FF9BE82189318CD0054694B /* VRootViewController.m */; };
 		5FF9BE86189319730054694B /* VMenuController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FF9BE85189319730054694B /* VMenuController.m */; };
-		5FF9BE89189325C30054694B /* VTestViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FF9BE88189325C30054694B /* VTestViewController.m */; };
 		831C58F81884BD11007C167C /* VOtherCommentCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 831C58F71884BD11007C167C /* VOtherCommentCell.xib */; };
 		8364C70B1869500D0028C1ED /* VMenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8364C70A1869500D0028C1ED /* VMenuViewController.m */; };
 		8364C70F1869557E0028C1ED /* VMenuViewControllerTransition.m in Sources */ = {isa = PBXBuildFile; fileRef = 8364C70E1869557E0028C1ED /* VMenuViewControllerTransition.m */; };
@@ -184,12 +191,27 @@
 		3F9B66751888C4DD0046F826 /* VForumStreamViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VForumStreamViewController.h; path = UI/VForumStreamViewController.h; sourceTree = "<group>"; };
 		3F9B66761888C4DD0046F826 /* VForumStreamViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VForumStreamViewController.m; path = UI/VForumStreamViewController.m; sourceTree = "<group>"; };
 		3FF8B7971868EE7E00806EA0 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
-		3FF8B79A1868EF6C00806EA0 /* VLoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VLoginViewController.h; path = UI/Login/VLoginViewController.h; sourceTree = "<group>"; };
-		3FF8B79B1868EF6C00806EA0 /* VLoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VLoginViewController.m; path = UI/Login/VLoginViewController.m; sourceTree = "<group>"; };
+		3FF8B79A1868EF6C00806EA0 /* VSimpleLoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VSimpleLoginViewController.h; path = UI/Login/VSimpleLoginViewController.h; sourceTree = "<group>"; };
+		3FF8B79B1868EF6C00806EA0 /* VSimpleLoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VSimpleLoginViewController.m; path = UI/Login/VSimpleLoginViewController.m; sourceTree = "<group>"; };
 		3FF8B79C1868EF6C00806EA0 /* VSignUpViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VSignUpViewController.h; path = UI/Login/VSignUpViewController.h; sourceTree = "<group>"; };
 		3FF8B79D1868EF6C00806EA0 /* VSignUpViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VSignUpViewController.m; path = UI/Login/VSignUpViewController.m; sourceTree = "<group>"; };
 		3FF8B7A01868F36600806EA0 /* Localizable.strings */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; path = Localizable.strings; sourceTree = "<group>"; };
 		3FF8B7A41868FC1C00806EA0 /* defaultTheme.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = defaultTheme.plist; sourceTree = "<group>"; };
+		5FC4DA5D18970A9F006BA107 /* login.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = login.storyboard; path = UI/Login/login.storyboard; sourceTree = "<group>"; };
+		5FC4DA651897111B006BA107 /* VLoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VLoginViewController.h; path = UI/Login/VLoginViewController.h; sourceTree = "<group>"; };
+		5FC4DA661897111B006BA107 /* VLoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VLoginViewController.m; path = UI/Login/VLoginViewController.m; sourceTree = "<group>"; };
+		5FC4DA6818971155006BA107 /* VLoginWithEmailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VLoginWithEmailViewController.h; path = UI/Login/VLoginWithEmailViewController.h; sourceTree = "<group>"; };
+		5FC4DA6918971155006BA107 /* VLoginWithEmailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VLoginWithEmailViewController.m; path = UI/Login/VLoginWithEmailViewController.m; sourceTree = "<group>"; };
+		5FC4DA6B1897119C006BA107 /* VProfileWithSocialViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VProfileWithSocialViewController.h; path = UI/Login/VProfileWithSocialViewController.h; sourceTree = "<group>"; };
+		5FC4DA6C1897119C006BA107 /* VProfileWithSocialViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VProfileWithSocialViewController.m; path = UI/Login/VProfileWithSocialViewController.m; sourceTree = "<group>"; };
+		5FC4DA6E189711EA006BA107 /* VInviteWithSocialViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VInviteWithSocialViewController.h; path = UI/Login/VInviteWithSocialViewController.h; sourceTree = "<group>"; };
+		5FC4DA6F189711EA006BA107 /* VInviteWithSocialViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VInviteWithSocialViewController.m; path = UI/Login/VInviteWithSocialViewController.m; sourceTree = "<group>"; };
+		5FC4DA711897121F006BA107 /* VSignupWithEmailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VSignupWithEmailViewController.h; path = UI/Login/VSignupWithEmailViewController.h; sourceTree = "<group>"; };
+		5FC4DA721897121F006BA107 /* VSignupWithEmailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VSignupWithEmailViewController.m; path = UI/Login/VSignupWithEmailViewController.m; sourceTree = "<group>"; };
+		5FC4DA74189712B2006BA107 /* VProfileWithEmailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VProfileWithEmailViewController.h; path = UI/Login/VProfileWithEmailViewController.h; sourceTree = "<group>"; };
+		5FC4DA75189712B3006BA107 /* VProfileWithEmailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VProfileWithEmailViewController.m; path = UI/Login/VProfileWithEmailViewController.m; sourceTree = "<group>"; };
+		5FC4DA7718971311006BA107 /* VInviteWithEmailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VInviteWithEmailViewController.h; path = UI/Login/VInviteWithEmailViewController.h; sourceTree = "<group>"; };
+		5FC4DA7818971311006BA107 /* VInviteWithEmailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VInviteWithEmailViewController.m; path = UI/Login/VInviteWithEmailViewController.m; sourceTree = "<group>"; };
 		5FF9BE7A1893137D0054694B /* VSideMenuViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VSideMenuViewController.h; path = UI/Menu/VSideMenuViewController.h; sourceTree = "<group>"; };
 		5FF9BE7B1893137D0054694B /* VSideMenuViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VSideMenuViewController.m; path = UI/Menu/VSideMenuViewController.m; sourceTree = "<group>"; };
 		5FF9BE7D1893143D0054694B /* UIViewController+VSideMenuViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "UIViewController+VSideMenuViewController.h"; path = "UI/Menu/UIViewController+VSideMenuViewController.h"; sourceTree = "<group>"; };
@@ -198,8 +220,6 @@
 		5FF9BE82189318CD0054694B /* VRootViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VRootViewController.m; path = UI/Menu/VRootViewController.m; sourceTree = "<group>"; };
 		5FF9BE84189319730054694B /* VMenuController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VMenuController.h; path = UI/Menu/VMenuController.h; sourceTree = "<group>"; };
 		5FF9BE85189319730054694B /* VMenuController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VMenuController.m; path = UI/Menu/VMenuController.m; sourceTree = "<group>"; };
-		5FF9BE87189325C30054694B /* VTestViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VTestViewController.h; path = UI/Menu/VTestViewController.h; sourceTree = "<group>"; };
-		5FF9BE88189325C30054694B /* VTestViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VTestViewController.m; path = UI/Menu/VTestViewController.m; sourceTree = "<group>"; };
 		662F0867152745B2B2F08301 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		83188D64187386D000F17777 /* Roboto-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Roboto-Regular.ttf"; sourceTree = "<group>"; };
 		831C58F71884BD11007C167C /* VOtherCommentCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = VOtherCommentCell.xib; path = "UI/Streams Subview/VOtherCommentCell.xib"; sourceTree = "<group>"; };
@@ -482,6 +502,21 @@
 		3F9B665D188878DB0046F826 /* Login */ = {
 			isa = PBXGroup;
 			children = (
+				5FC4DA5D18970A9F006BA107 /* login.storyboard */,
+				5FC4DA651897111B006BA107 /* VLoginViewController.h */,
+				5FC4DA661897111B006BA107 /* VLoginViewController.m */,
+				5FC4DA6818971155006BA107 /* VLoginWithEmailViewController.h */,
+				5FC4DA6918971155006BA107 /* VLoginWithEmailViewController.m */,
+				5FC4DA6B1897119C006BA107 /* VProfileWithSocialViewController.h */,
+				5FC4DA6C1897119C006BA107 /* VProfileWithSocialViewController.m */,
+				5FC4DA6E189711EA006BA107 /* VInviteWithSocialViewController.h */,
+				5FC4DA6F189711EA006BA107 /* VInviteWithSocialViewController.m */,
+				5FC4DA711897121F006BA107 /* VSignupWithEmailViewController.h */,
+				5FC4DA721897121F006BA107 /* VSignupWithEmailViewController.m */,
+				5FC4DA74189712B2006BA107 /* VProfileWithEmailViewController.h */,
+				5FC4DA75189712B3006BA107 /* VProfileWithEmailViewController.m */,
+				5FC4DA7718971311006BA107 /* VInviteWithEmailViewController.h */,
+				5FC4DA7818971311006BA107 /* VInviteWithEmailViewController.m */,
 			);
 			name = Login;
 			sourceTree = "<group>";
@@ -493,8 +528,6 @@
 				5FF9BE82189318CD0054694B /* VRootViewController.m */,
 				5FF9BE84189319730054694B /* VMenuController.h */,
 				5FF9BE85189319730054694B /* VMenuController.m */,
-				5FF9BE87189325C30054694B /* VTestViewController.h */,
-				5FF9BE88189325C30054694B /* VTestViewController.m */,
 			);
 			name = Menu;
 			sourceTree = "<group>";
@@ -588,8 +621,8 @@
 		3FF8B7991868EEE800806EA0 /* Login */ = {
 			isa = PBXGroup;
 			children = (
-				3FF8B79A1868EF6C00806EA0 /* VLoginViewController.h */,
-				3FF8B79B1868EF6C00806EA0 /* VLoginViewController.m */,
+				3FF8B79A1868EF6C00806EA0 /* VSimpleLoginViewController.h */,
+				3FF8B79B1868EF6C00806EA0 /* VSimpleLoginViewController.m */,
 				3FF8B79C1868EF6C00806EA0 /* VSignUpViewController.h */,
 				3FF8B79D1868EF6C00806EA0 /* VSignUpViewController.m */,
 			);
@@ -1076,6 +1109,7 @@
 				3FF8B7A11868F36600806EA0 /* Localizable.strings in Resources */,
 				BE171D861868BE64004E5202 /* InfoPlist.strings in Resources */,
 				BEB4C29C187E038C004ECEEF /* VConversationCell.xib in Resources */,
+				5FC4DA5E18970A9F006BA107 /* login.storyboard in Resources */,
 				D1DAAA0D187A5397009ADCB0 /* avatar.jpg in Resources */,
 				BE171D911868BE64004E5202 /* Images.xcassets in Resources */,
 				83B5A1241876447800659C73 /* Roboto-Regular.ttf in Resources */,
@@ -1150,6 +1184,7 @@
 				BEF2C2B71886211000AAE975 /* VPollResult.m in Sources */,
 				BE171E201868C211004E5202 /* VObjectManager+Login.m in Sources */,
 				5FF9BE7F1893143D0054694B /* UIViewController+VSideMenuViewController.m in Sources */,
+				5FC4DA76189712B3006BA107 /* VProfileWithEmailViewController.m in Sources */,
 				3F91991518761D1C0055FE37 /* VAcknowledgementsViewController.m in Sources */,
 				BE6C15281880A31B00469BA8 /* VAsset.m in Sources */,
 				3F91990B18761B0D0055FE37 /* VAboutUsViewController.m in Sources */,
@@ -1168,8 +1203,9 @@
 				83DC42FA187CCE3100E768E2 /* VCreateViewController.m in Sources */,
 				BE24324618982F3C0098D00C /* VFeaturedVideoCell.m in Sources */,
 				BEA5BF59187E7E8E0014C3EF /* VObjectManager+DirectMessaging.m in Sources */,
-				5FF9BE89189325C30054694B /* VTestViewController.m in Sources */,
+				5FC4DA7918971311006BA107 /* VInviteWithEmailViewController.m in Sources */,
 				3F4863FA1869184000F77346 /* VInboxViewController.m in Sources */,
+				5FC4DA731897121F006BA107 /* VSignupWithEmailViewController.m in Sources */,
 				BE4B74231880D3850090FF84 /* VComment.m in Sources */,
 				BE171E171868C211004E5202 /* VSequence+RestKit.m in Sources */,
 				BE6B95F2187B4A2C00CED4C9 /* VOwnerStreamsTableViewController.m in Sources */,
@@ -1180,10 +1216,12 @@
 				BEF2C29918846FAB00AAE975 /* VConversation.m in Sources */,
 				BEF2C2A5188488C000AAE975 /* VUnreadConversation+RestKit.m in Sources */,
 				BE171E211868C211004E5202 /* VObjectManager+Sequence.m in Sources */,
+				5FC4DA6A18971155006BA107 /* VLoginWithEmailViewController.m in Sources */,
 				3F9B66711888C4940046F826 /* VOwnerStreamViewController.m in Sources */,
 				BE171D8C1868BE64004E5202 /* VAppDelegate.m in Sources */,
 				BE171E231868C211004E5202 /* VPaginationStatus.m in Sources */,
 				BE391E56187CC4DC0088D902 /* VAbstractStreamViewController.m in Sources */,
+				5FC4DA671897111B006BA107 /* VLoginViewController.m in Sources */,
 				83AD58FC187F6172001EB7BA /* VCreateTopicViewController.m in Sources */,
 				D1DAAA08187A43A9009ADCB0 /* VProfileViewController.m in Sources */,
 				83D897421881F19D00BD5B8B /* VStreamsSubViewController.m in Sources */,
@@ -1206,7 +1244,8 @@
 				83B5A12C18765E1600659C73 /* VRootNavigationController.m in Sources */,
 				BEF2C2A818848B3B00AAE975 /* VUnreadConversation.m in Sources */,
 				BEF2C29618845EF500AAE975 /* VPollResult+RestKit.m in Sources */,
-				3FF8B79E1868EF6C00806EA0 /* VLoginViewController.m in Sources */,
+				3FF8B79E1868EF6C00806EA0 /* VSimpleLoginViewController.m in Sources */,
+				5FC4DA70189711EA006BA107 /* VInviteWithSocialViewController.m in Sources */,
 				BE5C7385187E37D400A3340D /* VMedia+RestKit.m in Sources */,
 				BE6C15311880A31B00469BA8 /* VMedia.m in Sources */,
 				3F9B666E1888C4390046F826 /* VHomeStreamViewController.m in Sources */,
@@ -1230,6 +1269,7 @@
 				BEB4C29B187E038C004ECEEF /* VConversationCell.m in Sources */,
 				BE5C734C187E36D000A3340D /* VInteractionAction.m in Sources */,
 				BE692B50186E60B300C71336 /* VCommentCell.m in Sources */,
+				5FC4DA6D1897119C006BA107 /* VProfileWithSocialViewController.m in Sources */,
 				BE171E3A1868C266004E5202 /* NSString+VParseHelp.m in Sources */,
 				3F9B666B1888BE6A0046F826 /* VStreamTableViewController.m in Sources */,
 				8364C70B1869500D0028C1ED /* VMenuViewController.m in Sources */,

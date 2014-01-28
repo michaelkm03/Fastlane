@@ -19,7 +19,7 @@
 #import "VPollResult.h"
 #import "VUser.h"
 
-#import "VLoginViewController.h"
+#import "VSimpleLoginViewController.h"
 
 #import "NSString+VParseHelp.h"
 
@@ -227,7 +227,7 @@
 {
     if(![VObjectManager sharedManager].mainUser)
     {
-        [self.parentTableViewController presentViewController:[VLoginViewController sharedLoginViewController] animated:YES completion:NULL];
+        [self.parentTableViewController presentViewController:[VSimpleLoginViewController sharedLoginViewController] animated:YES completion:NULL];
         return;
     }
     

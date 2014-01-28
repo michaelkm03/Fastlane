@@ -1,22 +1,20 @@
 //
 //  VLoginViewController.h
-//  victoriOS
+//  victorious
 //
-//  Created by goWorld on 12/3/13.
-//  Copyright (c) 2013 Victorious Inc. All rights reserved.
+//  Created by Gary Philipp on 1/27/14.
+//  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
-extern  NSString*   const   kVLoginViewControllerDomain;
-
-NS_ENUM(NSUInteger, VLoginViewControllerErrorCode)
+typedef NS_ENUM(NSUInteger, VLoginType)
 {
-    VLoginViewControllerBadEmailAddressErrorCode,
-    VLoginViewControllerBadPasswordErrorCode,
-    VLoginViewControllerFailedLoginErrorCode
+    kVLoginTypeEmail,
+    kVLoginTypeFaceBook,
+    kVLoginTypeTwitter
 };
 
-@interface VLoginViewController : UITableViewController
+@interface VLoginViewController : UIViewController
 
-+ (VLoginViewController *)sharedLoginViewController;
++ (VLoginViewController *)loginViewController;
 
 @end

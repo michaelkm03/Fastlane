@@ -10,7 +10,7 @@
 #import "VSettingsViewController.h"
 #import "VProfileViewController.h"
 #import "VObjectManager+Login.h"
-#import "VLoginViewController.h"
+#import "VSimpleLoginViewController.h"
 #import "VThemeManager.h"
 #import "BBlock.h"
 #import "UIAlertView+BBlock.h"
@@ -62,7 +62,7 @@
             if (![VObjectManager sharedManager].authorized)
             {
                 UINavigationController *navigationController =
-                [[UINavigationController alloc] initWithRootViewController:[VLoginViewController sharedLoginViewController]];
+                [[UINavigationController alloc] initWithRootViewController:[VSimpleLoginViewController sharedLoginViewController]];
                 [self dismissViewControllerAnimated:YES completion:^{
                     [wself presentViewController:navigationController animated:YES completion:NULL];
                 }];
@@ -79,7 +79,7 @@
             if (![VObjectManager sharedManager].authorized)
             {
                 UINavigationController *navigationController =
-                [[UINavigationController alloc] initWithRootViewController:[VLoginViewController sharedLoginViewController]];
+                [[UINavigationController alloc] initWithRootViewController:[VSimpleLoginViewController sharedLoginViewController]];
                 [self dismissViewControllerAnimated:YES completion:^{
                     [wself presentViewController:navigationController animated:YES completion:NULL];
                 }];

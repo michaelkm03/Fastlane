@@ -13,8 +13,14 @@ extern  NSString*   const   kVThemeManagerThemeDidChange;
 extern  NSString*   const   kVChannelURLAbout;
 extern  NSString*   const   kVChannelURLPrivacy;
 extern  NSString*   const   kVChannelURLAcknowledgements;
-
 extern  NSString*   const   kVChannelURLSupport;
+extern  NSString*   const   kVChannelName;
+
+extern  NSString*   const   kVMenuBackgroundImage;
+extern  NSString*   const   kVMenuBackgroundImage5;
+extern  NSString*   const   kMenuTextFont;
+extern  NSString*   const   kMenuTextColor;
+
 
 //Fonts
 extern  NSString*   const   kVStreamLocationFont;
@@ -43,6 +49,7 @@ extern  NSString*   const   kVStreamSearchBarColor;
 - (UIColor *)themedTranslucencyColorForKeyPath:(NSString *)keyPath;
 - (NSURL *)themedURLForKeyPath:(NSString *)keyPath;
 - (NSURL *)themedImageURLForKeyPath:(NSString *)keyPath;
+- (UIImage *)themedImageForKeyPath:(NSString *)keyPath;
 - (UIFont *)themedFontForKeyPath:(NSString *)keyPath;
 
 @end

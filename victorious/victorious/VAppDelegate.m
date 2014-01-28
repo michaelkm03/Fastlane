@@ -38,7 +38,7 @@
     [[AFNetworkActivityIndicatorManager sharedManager] setEnabled:YES];
 
     [VObjectManager setupObjectManager];
-    [[VObjectManager sharedManager] initialSequenceLoad];
+    (void)[[VObjectManager sharedManager] initialSequenceLoad];
     
     //TODO: This is test code so I don't have to freakin login in every time
 //    [VLoginViewController sharedLoginViewController];

@@ -8,7 +8,9 @@
 
 #import "VRootViewController.h"
 #import "VMenuController.h"
+#import "VThemeManager.h"
 #import "UIImage+ImageEffects.h"
+#import "VConstants.h"
 
 @interface  VRootViewController ()
 @end
@@ -17,7 +19,11 @@
 
 - (void)awakeFromNib
 {
-    self.backgroundImage = [[UIImage imageNamed:@"avatar.jpg"] applyLightEffect];
+    if (IS_IPHONE_5)
+        self.backgroundImage = [[[VThemeManager sharedThemeManager] themedImageForKeyPath:kVMenuBackgroundImage5] applyLightEffect];
+    else
+        self.backgroundImage = [[[VThemeManager sharedThemeManager] themedImageForKeyPath:kVMenuBackgroundImage] applyLightEffect];
+
     self.menuViewController = [self.storyboard instantiateViewControllerWithIdentifier:NSStringFromClass([VMenuController class])];
     self.contentViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"contentController"];
 }
