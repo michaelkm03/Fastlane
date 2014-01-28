@@ -37,9 +37,6 @@
                                 <state key="normal" title="Login Facebook">
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
-                                <connections>
-                                    <segue destination="cOv-Kv-HJq" kind="push" id="PB1-Sm-irs"/>
-                                </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="HhC-PP-xy6">
                                 <rect key="frame" x="20" y="140" width="280" height="30"/>
@@ -47,9 +44,6 @@
                                 <state key="normal" title="Login Twitter">
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
-                                <connections>
-                                    <segue destination="cOv-Kv-HJq" kind="push" id="fQM-bi-iXw"/>
-                                </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hsa-x2-05W">
                                 <rect key="frame" x="20" y="178" width="280" height="30"/>
@@ -58,7 +52,7 @@
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <connections>
-                                    <segue destination="iZ7-hd-8dA" kind="push" id="Y4R-81-IKo"/>
+                                    <segue destination="iZ7-hd-8dA" kind="push" identifier="toLoginWithEmail" id="Y4R-81-IKo"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="wYy-zp-4kG">
@@ -75,6 +69,10 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
                     <navigationItem key="navigationItem" title="Login" id="isi-ni-Mut"/>
+                    <connections>
+                        <segue destination="cOv-Kv-HJq" kind="push" identifier="toProfileWithFacebook" id="oVh-ou-v3z"/>
+                        <segue destination="cOv-Kv-HJq" kind="push" identifier="toProfileWithTwitter" id="LA7-QA-cv0"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Yr7-SB-k6z" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -130,7 +128,7 @@
         <!--Profile With Social View Controller - Create Profile-->
         <scene sceneID="RJE-fM-aqU">
             <objects>
-                <tableViewController storyboardIdentifier="å" useStoryboardIdentifierAsRestorationIdentifier="YES" id="cOv-Kv-HJq" customClass="VProfileWithSocialViewController" sceneMemberID="viewController">
+                <tableViewController storyboardIdentifier="profileWithSocial" useStoryboardIdentifierAsRestorationIdentifier="YES" id="cOv-Kv-HJq" customClass="VProfileWithSocialViewController" sceneMemberID="viewController">
                     <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="static" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="K0K-50-0rS">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -564,6 +562,6 @@
         <simulatedScreenMetrics key="destination" type="retina4"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
-        <segue reference="fQM-bi-iXw"/>
+        <segue reference="LA7-QA-cv0"/>
     </inferredMetricsTieBreakers>
 </document>

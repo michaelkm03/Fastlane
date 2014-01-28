@@ -6,14 +6,10 @@
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
-typedef NS_ENUM(NSUInteger, VSocialType)
-{
-    kVSocialTypeFaceBook,
-    kVSocialTypeTwitter
-};
+#import "VLoginViewController.h"
 
 @interface VProfileWithSocialViewController : UITableViewController
 
-@property (nonatomic, assign)   VSocialType     socialType;
+@property (nonatomic, assign)   VLoginType     loginType;
 
 @end
