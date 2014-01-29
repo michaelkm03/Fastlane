@@ -55,7 +55,7 @@
 		83D897451882213F00BD5B8B /* VComposeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 83D897441882213F00BD5B8B /* VComposeViewController.m */; };
 		83DC42FA187CCE3100E768E2 /* VCreateViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 83DC42F9187CCE3100E768E2 /* VCreateViewController.m */; };
 		83F38277186BE62300A866A1 /* VMenuTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 83F38276186BE62300A866A1 /* VMenuTableViewController.m */; };
-		83FE10C4188480F400E83039 /* VConversationSubViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 83FE10C3188480F400E83039 /* VConversationSubViewController.m */; };
+		83FE10C4188480F400E83039 /* VComposeContainerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 83FE10C3188480F400E83039 /* VComposeContainerViewController.m */; };
 		BE171D7A1868BE64004E5202 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BE171D791868BE64004E5202 /* Foundation.framework */; };
 		BE171D7C1868BE64004E5202 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BE171D7B1868BE64004E5202 /* CoreGraphics.framework */; };
 		BE171D7E1868BE64004E5202 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BE171D7D1868BE64004E5202 /* UIKit.framework */; };
@@ -250,8 +250,8 @@
 		83DC42FC187CDDE600E768E2 /* VConstants.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VConstants.h; sourceTree = "<group>"; };
 		83F38275186BE62300A866A1 /* VMenuTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VMenuTableViewController.h; sourceTree = "<group>"; };
 		83F38276186BE62300A866A1 /* VMenuTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VMenuTableViewController.m; sourceTree = "<group>"; };
-		83FE10C2188480F400E83039 /* VConversationSubViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VConversationSubViewController.h; sourceTree = "<group>"; };
-		83FE10C3188480F400E83039 /* VConversationSubViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VConversationSubViewController.m; sourceTree = "<group>"; };
+		83FE10C2188480F400E83039 /* VComposeContainerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VComposeContainerViewController.h; sourceTree = "<group>"; };
+		83FE10C3188480F400E83039 /* VComposeContainerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VComposeContainerViewController.m; sourceTree = "<group>"; };
 		BE171D761868BE64004E5202 /* victorious.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = victorious.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		BE171D791868BE64004E5202 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		BE171D7B1868BE64004E5202 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -908,6 +908,8 @@
 				BE5D799418989A0800DC752A /* VImagePickerViewController.m */,
 				83D897431882213F00BD5B8B /* VComposeViewController.h */,
 				83D897441882213F00BD5B8B /* VComposeViewController.m */,
+				83FE10C2188480F400E83039 /* VComposeContainerViewController.h */,
+				83FE10C3188480F400E83039 /* VComposeContainerViewController.m */,
 			);
 			name = Create;
 			sourceTree = "<group>";
@@ -951,8 +953,6 @@
 				BE692B36186E60B300C71336 /* VSequencePlayerViewController.h */,
 				BE692B37186E60B300C71336 /* VSequencePlayerViewController.m */,
 				BE692B38186E60B300C71336 /* VSequencePlayerViewController.xib */,
-				83FE10C2188480F400E83039 /* VConversationSubViewController.h */,
-				83FE10C3188480F400E83039 /* VConversationSubViewController.m */,
 				83D897401881F19D00BD5B8B /* VStreamsSubViewController.h */,
 				83D897411881F19D00BD5B8B /* VStreamsSubViewController.m */,
 				BE692B39186E60B300C71336 /* VStreamsCommentsController.h */,
@@ -1267,7 +1267,7 @@
 				3F91991D187CAF620055FE37 /* VNewsViewController.m in Sources */,
 				8364C70F1869557E0028C1ED /* VMenuViewControllerTransition.m in Sources */,
 				BE692B29186E5ED800C71336 /* VStreamViewCell.m in Sources */,
-				83FE10C4188480F400E83039 /* VConversationSubViewController.m in Sources */,
+				83FE10C4188480F400E83039 /* VComposeContainerViewController.m in Sources */,
 				BE171E431868CEA0004E5202 /* victoriOS.xcdatamodeld in Sources */,
 				838511C418762DF3007E0316 /* VBadgeLabel.m in Sources */,
 				3F9B666818887D910046F826 /* VFetchedResultsTableViewController.m in Sources */,

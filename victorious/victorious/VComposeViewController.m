@@ -10,8 +10,10 @@
 
 #import "VComposeViewController.h"
 #import "VObjectManager+Comment.h"
+
 //#import "VSequence.h"
 //#import "VConstants.h"
+
 #import "VSimpleLoginViewController.h"
 
 @interface VComposeViewController() //<UICollectionViewDataSource, UICollectionViewDelegateFlowLayout>
@@ -53,22 +55,6 @@
     [super cameraButtonAction:sender];
 }
 
-//- (IBAction)stickerButtonAction:(id)sender
-//{
-//    
-//    if(![VObjectManager sharedManager].mainUser)
-//    {
-//        [self presentViewController:[VSimpleLoginViewController sharedLoginViewController] animated:YES completion:NULL];
-//        return;
-//    }
-//    [self.textField resignFirstResponder];
-//    
-//    self.stickersView.dataSource = self;
-//    self.stickersView.delegate = self;
-//    
-//    //  Post UICollectionView populated with stickers
-//}
-
 - (IBAction)sendButtonAction:(id)sender
 {
     [self.textField resignFirstResponder];
@@ -93,6 +79,22 @@
 }
 
 
+//- (IBAction)stickerButtonAction:(id)sender
+//{
+//
+//    if(![VObjectManager sharedManager].mainUser)
+//    {
+//        [self presentViewController:[VSimpleLoginViewController sharedLoginViewController] animated:YES completion:NULL];
+//        return;
+//    }
+//    [self.textField resignFirstResponder];
+//
+//    self.stickersView.dataSource = self;
+//    self.stickersView.delegate = self;
+//
+//    //  Post UICollectionView populated with stickers
+//}
+//
 //#pragma mark - UICollectionViewDataSource
 //
 //- (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section

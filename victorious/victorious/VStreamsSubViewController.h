@@ -6,10 +6,10 @@
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
-#import "VConversationSubViewController.h"
+#import "VComposeContainerViewController.h"
 
 @class VSequence;
 
-@interface VStreamsSubViewController : VConversationSubViewController
+@interface VStreamsSubViewController : VComposeContainerViewController
 @property (nonatomic, strong) VSequence* sequence;
 @end
