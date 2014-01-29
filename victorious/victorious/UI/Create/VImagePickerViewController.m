@@ -1,19 +1,17 @@
 //
-//  UIViewController+VImagePicker.m
+//  VImagePickerViewController.m
 //  victorious
 //
-//  Created by Will Long on 1/29/14.
+//  Created by Will Long on 1/28/14.
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
 @import AVFoundation;
 
-#import "UIViewController+VImagePicker.h"
-#import "VImagePickerController.h"
-
+#import "VImagePickerViewController.h"
 #import "VConstants.h"
 
-@implementation UIViewController (VImagePicker)
+@implementation VImagePickerViewController
 
 #pragma mark - UIImagePickerControllerDelegate
 
@@ -53,15 +51,10 @@
         CGImageRelease(image);
     }
     
-    //Typecheck just to be safe...
-    if ([picker.delegate conformsToProtocol:@protocol(VImagePickerControllerDelegate)])
-    {
-            [(UIViewController<VImagePickerControllerDelegate>*)picker.delegate
-             imagePickerFinishedWithData:mediaData
-             extension:mediaType
-             previewImage:previewImage
-             mediaURL:mediaURL];
-    }
+    [self imagePickerFinishedWithData:mediaData
+                            extension:mediaType
+                         previewImage:previewImage
+                             mediaURL:mediaURL];
     
     [self dismissViewControllerAnimated:YES completion:nil];
 }
@@ -70,4 +63,31 @@
 {
     [self dismissViewControllerAnimated:YES completion:nil];
 }
+
+#pragma mark - Button Actions
+- (IBAction)cameraButtonAction:(id)sender
+{
+    UIImagePickerController* controller = [[UIImagePickerController alloc] init];
+    
+    if([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera])
+        controller.sourceType = UIImagePickerControllerSourceTypeCamera;
+    else
+        controller.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
+    
+    controller.delegate = self;
+    controller.mediaTypes = @[(NSString *)kUTTypeImage, (NSString *)kUTTypeMovie];
+    controller.allowsEditing = YES;
+    
+    [self presentViewController:controller animated:YES completion:nil];
+}
+
+#pragma mark - Overrides
+- (void)imagePickerFinishedWithData:(NSData*)data
+                          extension:(NSString*)extension
+                       previewImage:(UIImage*)previewImage
+                           mediaURL:(NSURL*)mediaURL
+{
+
+}
+
 @end

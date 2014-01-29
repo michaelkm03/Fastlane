@@ -108,8 +108,7 @@
 		BE5C7382187E37C700A3340D /* VMessage+RestKit.m in Sources */ = {isa = PBXBuildFile; fileRef = BE5C7381187E37C700A3340D /* VMessage+RestKit.m */; };
 		BE5C7385187E37D400A3340D /* VMedia+RestKit.m in Sources */ = {isa = PBXBuildFile; fileRef = BE5C7384187E37D400A3340D /* VMedia+RestKit.m */; };
 		BE5C7388187E37E500A3340D /* VConversation+RestKit.m in Sources */ = {isa = PBXBuildFile; fileRef = BE5C7387187E37E500A3340D /* VConversation+RestKit.m */; };
-		BE5D799518989A0800DC752A /* VImagePickerController.m in Sources */ = {isa = PBXBuildFile; fileRef = BE5D799418989A0800DC752A /* VImagePickerController.m */; };
-		BE5D799B1899ABB600DC752A /* UIViewController+VImagePicker.m in Sources */ = {isa = PBXBuildFile; fileRef = BE5D799A1899ABB600DC752A /* UIViewController+VImagePicker.m */; };
+		BE5D799518989A0800DC752A /* VImagePickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BE5D799418989A0800DC752A /* VImagePickerViewController.m */; };
 		BE692B23186E5ED800C71336 /* VStreamDoublePollCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = BE692B17186E5ED800C71336 /* VStreamDoublePollCell.xib */; };
 		BE692B24186E5ED800C71336 /* VStreamPollCell.m in Sources */ = {isa = PBXBuildFile; fileRef = BE692B19186E5ED800C71336 /* VStreamPollCell.m */; };
 		BE692B25186E5ED800C71336 /* VStreamPollCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = BE692B1A186E5ED800C71336 /* VStreamPollCell.xib */; };
@@ -347,10 +346,8 @@
 		BE5C7384187E37D400A3340D /* VMedia+RestKit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "VMedia+RestKit.m"; sourceTree = "<group>"; };
 		BE5C7386187E37E500A3340D /* VConversation+RestKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "VConversation+RestKit.h"; sourceTree = "<group>"; };
 		BE5C7387187E37E500A3340D /* VConversation+RestKit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "VConversation+RestKit.m"; sourceTree = "<group>"; };
-		BE5D799318989A0800DC752A /* VImagePickerController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VImagePickerController.h; path = UI/Create/VImagePickerController.h; sourceTree = "<group>"; };
-		BE5D799418989A0800DC752A /* VImagePickerController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VImagePickerController.m; path = UI/Create/VImagePickerController.m; sourceTree = "<group>"; };
-		BE5D79991899ABB600DC752A /* UIViewController+VImagePicker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "UIViewController+VImagePicker.h"; path = "UI/Create/UIViewController+VImagePicker.h"; sourceTree = "<group>"; };
-		BE5D799A1899ABB600DC752A /* UIViewController+VImagePicker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "UIViewController+VImagePicker.m"; path = "UI/Create/UIViewController+VImagePicker.m"; sourceTree = "<group>"; };
+		BE5D799318989A0800DC752A /* VImagePickerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VImagePickerViewController.h; path = UI/Create/VImagePickerViewController.h; sourceTree = "<group>"; };
+		BE5D799418989A0800DC752A /* VImagePickerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VImagePickerViewController.m; path = UI/Create/VImagePickerViewController.m; sourceTree = "<group>"; };
 		BE692B17186E5ED800C71336 /* VStreamDoublePollCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VStreamDoublePollCell.xib; sourceTree = "<group>"; };
 		BE692B18186E5ED800C71336 /* VStreamPollCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VStreamPollCell.h; sourceTree = "<group>"; };
 		BE692B19186E5ED800C71336 /* VStreamPollCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VStreamPollCell.m; sourceTree = "<group>"; };
@@ -907,14 +904,12 @@
 		BE5D798F1898961500DC752A /* Create */ = {
 			isa = PBXGroup;
 			children = (
-				BE5D799318989A0800DC752A /* VImagePickerController.h */,
-				BE5D799418989A0800DC752A /* VImagePickerController.m */,
+				BE5D799318989A0800DC752A /* VImagePickerViewController.h */,
+				BE5D799418989A0800DC752A /* VImagePickerViewController.m */,
 				83D897431882213F00BD5B8B /* VComposeViewController.h */,
 				83D897441882213F00BD5B8B /* VComposeViewController.m */,
 				83FE10C2188480F400E83039 /* VComposeContainerViewController.h */,
 				83FE10C3188480F400E83039 /* VComposeContainerViewController.m */,
-				BE5D79991899ABB600DC752A /* UIViewController+VImagePicker.h */,
-				BE5D799A1899ABB600DC752A /* UIViewController+VImagePicker.m */,
 			);
 			name = Create;
 			sourceTree = "<group>";
@@ -1273,12 +1268,11 @@
 				8364C70F1869557E0028C1ED /* VMenuViewControllerTransition.m in Sources */,
 				BE692B29186E5ED800C71336 /* VStreamViewCell.m in Sources */,
 				83FE10C4188480F400E83039 /* VComposeContainerViewController.m in Sources */,
-				BE5D799B1899ABB600DC752A /* UIViewController+VImagePicker.m in Sources */,
 				BE171E431868CEA0004E5202 /* victoriOS.xcdatamodeld in Sources */,
 				838511C418762DF3007E0316 /* VBadgeLabel.m in Sources */,
 				3F9B666818887D910046F826 /* VFetchedResultsTableViewController.m in Sources */,
 				BE171E1B1868C211004E5202 /* VUser+RestKit.m in Sources */,
-				BE5D799518989A0800DC752A /* VImagePickerController.m in Sources */,
+				BE5D799518989A0800DC752A /* VImagePickerViewController.m in Sources */,
 				BE5C736A187E36E800A3340D /* VRule.m in Sources */,
 				BE83A37118827B400077EB26 /* VMessage.m in Sources */,
 				D1DAAA0B187A43BE009ADCB0 /* VProfileEditViewController.m in Sources */,
