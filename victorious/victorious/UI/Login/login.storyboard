@@ -472,6 +472,9 @@
                                                     <state key="normal" title="Take Photo">
                                                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                                     </state>
+                                                    <connections>
+                                                        <action selector="takePicture:" destination="OfB-TP-5WK" eventType="touchUpInside" id="tnv-eH-doM"/>
+                                                    </connections>
                                                 </button>
                                             </subviews>
                                         </tableViewCellContentView>
@@ -542,6 +545,13 @@
                             </connections>
                         </barButtonItem>
                     </navigationItem>
+                    <connections>
+                        <outlet property="cameraButton" destination="ctI-rh-by5" id="E4K-Ig-0Ul"/>
+                        <outlet property="locationTextField" destination="sMi-f4-uhA" id="AH5-gE-czc"/>
+                        <outlet property="profileImageView" destination="KAa-Ch-CFZ" id="wZ3-lg-csD"/>
+                        <outlet property="taglineTextView" destination="2xa-uD-zzz" id="Mbn-wU-sn8"/>
+                        <outlet property="usernameTextField" destination="1lg-pp-TSz" id="Ksp-dc-THa"/>
+                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="CjS-13-ik6" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
