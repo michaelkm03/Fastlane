@@ -2,11 +2,11 @@
 //  VComposeViewController.h
 //  victorious
 //
-//  Created by David Keegan on 1/11/14.
+//  Created by Will Long on 1/28/14.
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
-#import "VImagePickerController.h"
+@class VSequence;
 
 @protocol VComposeMessageDelegate <NSObject>
 @required

@@ -1,20 +1,20 @@
 //
-//  VConversationSubViewController.m
+//  VComposeContainerViewController.m
 //  victorious
 //
 //  Created by David Keegan on 1/13/14.
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
-#import "VConversationSubViewController.h"
+#import "VComposeContainerViewController.h"
 #import "VComposeViewController.h"
 #import "UIView+AutoLayout.h"
 
-@interface VConversationSubViewController()
+@interface VComposeContainerViewController()
 @property (weak, nonatomic) NSLayoutConstraint *bottomConstraint;
 @end
 
-@implementation VConversationSubViewController
+@implementation VComposeContainerViewController
 
 - (void)viewDidLoad
 {

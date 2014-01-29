@@ -10,19 +10,22 @@
 
 #import "VComposeViewController.h"
 #import "VObjectManager+Comment.h"
-#import "VSequence.h"
-#import "VConstants.h"
+
+//#import "VSequence.h"
+//#import "VConstants.h"
+
 #import "VSimpleLoginViewController.h"
 
-@interface VComposeViewController() <UINavigationControllerDelegate, UIImagePickerControllerDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout>
-@property (weak, nonatomic) IBOutlet UIButton *mediaButton;
+@interface VComposeViewController() //<UICollectionViewDataSource, UICollectionViewDelegateFlowLayout>
 @property (weak, nonatomic, readwrite) IBOutlet UITextField *textField;
-@property (weak, nonatomic) IBOutlet UICollectionView* stickersView;
+@property (weak, nonatomic) IBOutlet UIButton *mediaButton;
 @property (strong, nonatomic) NSData* media;
 @property (nonatomic, strong) NSString*  mediaExtension;
-@property (nonatomic, strong) NSArray* stickers;
-@property (nonatomic, strong) NSData* selectedSticker;
 @property (nonatomic, strong) NSURL* mediaURL;
+
+//@property (weak, nonatomic) IBOutlet UICollectionView* stickersView;
+//@property (nonatomic, strong) NSArray* stickers;
+//@property (nonatomic, strong) NSData* selectedSticker;
 @end
 
 @implementation VComposeViewController
@@ -32,54 +35,24 @@
     [super viewWillLayoutSubviews];
     self.view.frame = self.view.superview.bounds;
     
-    [self.stickersView registerClass:[UICollectionViewCell class] forCellWithReuseIdentifier:@"stickerCell"];
+//    [self.stickersView registerClass:[UICollectionViewCell class] forCellWithReuseIdentifier:@"stickerCell"];
     self.mediaButton.layer.cornerRadius = 2;
     self.mediaButton.clipsToBounds = YES;
     // populate stickers array
     
-    [self.stickersView reloadData];
+//    [self.stickersView reloadData];
 }
 
 - (IBAction)cameraButtonAction:(id)sender
 {
-    
     if(![VObjectManager sharedManager].mainUser)
     {
         [self presentViewController:[VSimpleLoginViewController sharedLoginViewController] animated:YES completion:NULL];
         return;
     }
-    
     [self.textField resignFirstResponder];
     
-    UIImagePickerController* controller = [[UIImagePickerController alloc] init];
-    
-    if([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera])
-        controller.sourceType = UIImagePickerControllerSourceTypeCamera;
-     else
-        controller.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
-
-    controller.delegate = self;
-    controller.mediaTypes = @[(NSString *)kUTTypeImage, (NSString *)kUTTypeMovie];
-    controller.allowsEditing = YES;
-    
-    [self presentViewController:controller animated:YES completion:nil];
-}
-
-- (IBAction)stickerButtonAction:(id)sender
-{
-    
-    if(![VObjectManager sharedManager].mainUser)
-    {
-        [self presentViewController:[VSimpleLoginViewController sharedLoginViewController] animated:YES completion:NULL];
-        return;
-    }
-    
-    [self.textField resignFirstResponder];
-    
-    self.stickersView.dataSource = self;
-    self.stickersView.delegate = self;
-    
-    //  Post UICollectionView populated with stickers
+//    [super cameraButtonAction:sender];
 }
 
 - (IBAction)sendButtonAction:(id)sender
@@ -93,105 +66,85 @@
     self.mediaURL = nil;
 }
 
-#pragma mark - UIImagePickerControllerDelegate
-
-- (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info
+#pragma mark - Overrides
+- (void)imagePickerFinishedWithData:(NSData*)data
+                          extension:(NSString*)extension
+                       previewImage:(UIImage*)previewImage
+                           mediaURL:(NSURL*)mediaURL
 {
-    NSString* mediaType = info[UIImagePickerControllerMediaType];
-
-    // Handle image capture
-    if (CFStringCompare ((CFStringRef)mediaType, kUTTypeImage, 0) == kCFCompareEqualTo)
-    {
-        UIImage* imageToSave = (UIImage *)info[UIImagePickerControllerEditedImage] ?: (UIImage *)info[UIImagePickerControllerOriginalImage];
-
-        self.media = UIImagePNGRepresentation(imageToSave);
-        if (self.media)
-            self.mediaExtension = VConstantMediaExtensionPNG;
-        [self.mediaButton setImage:imageToSave forState:UIControlStateNormal];
-    }
-    
-    // Handle a movie capture
-    if (CFStringCompare ((CFStringRef)mediaType, kUTTypeMovie, 0) == kCFCompareEqualTo)
-    {
-        NSURL *mediaURL = info[UIImagePickerControllerMediaURL];
-        self.media = [NSData dataWithContentsOfURL:mediaURL];
-        if (self.media)
-            self.mediaExtension = VConstantMediaExtensionMOV;
-
-        AVURLAsset *asset = [[AVURLAsset alloc] initWithURL:mediaURL options:nil];
-        AVAssetImageGenerator *gen = [[AVAssetImageGenerator alloc] initWithAsset:asset];
-        gen.appliesPreferredTrackTransform = YES;
-        CMTime time = CMTimeMakeWithSeconds(0.0, 600);
-        NSError *error = nil;
-        CGImageRef image = [gen copyCGImageAtTime:time actualTime:NULL error:&error];
-        if(error)
-        {
-            NSLog(@"%@", error);
-        }
-        UIImage *previewImage = [[UIImage alloc] initWithCGImage:image];
-        CGImageRelease(image);
-        [self.mediaButton setImage:previewImage forState:UIControlStateNormal];
-    }
-    
-    self.mediaURL = info[UIImagePickerControllerMediaURL];
-    [self dismissViewControllerAnimated:YES completion:nil];
+    self.media = data;
+    self.mediaExtension = extension;
+    [self.mediaButton setImage:previewImage forState:UIControlStateNormal];
+    self.mediaURL = mediaURL;
 }
 
-- (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker
-{
-    [self dismissViewControllerAnimated:YES completion:nil];
-}
 
-#pragma mark - UICollectionViewDataSource
-
-- (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
-{
-    return self.stickers.count;
-}
-
-- (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
-{
-    UICollectionViewCell* cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"stickerCell" forIndexPath:indexPath];
-    cell.backgroundColor = [UIColor whiteColor];
-    return cell;
-}
-
-//- (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView;
-//- (UICollectionReusableView *)collectionView:(UICollectionView *)collectionView viewForSupplementaryElementOfKind:(NSString *)kind atIndexPath:(NSIndexPath *)indexPath;
-
-#pragma mark - UICollectionViewDelegate
-
-//- (BOOL)collectionView:(UICollectionView *)collectionView shouldHighlightItemAtIndexPath:(NSIndexPath *)indexPath;
-//- (void)collectionView:(UICollectionView *)collectionView didHighlightItemAtIndexPath:(NSIndexPath *)indexPath;
-//- (void)collectionView:(UICollectionView *)collectionView didUnhighlightItemAtIndexPath:(NSIndexPath *)indexPath;
-//- (BOOL)collectionView:(UICollectionView *)collectionView shouldSelectItemAtIndexPath:(NSIndexPath *)indexPath;
-//- (BOOL)collectionView:(UICollectionView *)collectionView shouldDeselectItemAtIndexPath:(NSIndexPath *)indexPath;
-
-- (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
-{
-    
-}
-
-//- (void)collectionView:(UICollectionView *)collectionView didDeselectItemAtIndexPath:(NSIndexPath *)indexPath;
+//- (IBAction)stickerButtonAction:(id)sender
+//{
 //
-//- (void)collectionView:(UICollectionView *)collectionView didEndDisplayingCell:(UICollectionViewCell *)cell forItemAtIndexPath:(NSIndexPath *)indexPath;
-//- (void)collectionView:(UICollectionView *)collectionView didEndDisplayingSupplementaryView:(UICollectionReusableView *)view forElementOfKind:(NSString *)elementKind atIndexPath:(NSIndexPath *)indexPath;
+//    if(![VObjectManager sharedManager].mainUser)
+//    {
+//        [self presentViewController:[VSimpleLoginViewController sharedLoginViewController] animated:YES completion:NULL];
+//        return;
+//    }
+//    [self.textField resignFirstResponder];
 //
-//- (BOOL)collectionView:(UICollectionView *)collectionView shouldShowMenuForItemAtIndexPath:(NSIndexPath *)indexPath;
-//- (BOOL)collectionView:(UICollectionView *)collectionView canPerformAction:(SEL)action forItemAtIndexPath:(NSIndexPath *)indexPath withSender:(id)sender;
-//- (void)collectionView:(UICollectionView *)collectionView performAction:(SEL)action forItemAtIndexPath:(NSIndexPath *)indexPath withSender:(id)sender;
+//    self.stickersView.dataSource = self;
+//    self.stickersView.delegate = self;
 //
-//- (UICollectionViewTransitionLayout *)collectionView:(UICollectionView *)collectionView transitionLayoutForOldLayout:(UICollectionViewLayout *)fromLayout newLayout:(UICollectionViewLayout *)toLayout;
-
-- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath
-{
-    return CGSizeMake(100.0, 100.0);
-}
-
-// 3
-- (UIEdgeInsets)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout insetForSectionAtIndex:(NSInteger)section
-{
-    return UIEdgeInsetsMake(50, 20, 50, 20);
-}
+//    //  Post UICollectionView populated with stickers
+//}
+//
+//#pragma mark - UICollectionViewDataSource
+//
+//- (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
+//{
+//    return self.stickers.count;
+//}
+//
+//- (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
+//{
+//    UICollectionViewCell* cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"stickerCell" forIndexPath:indexPath];
+//    cell.backgroundColor = [UIColor whiteColor];
+//    return cell;
+//}
+//
+////- (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView;
+////- (UICollectionReusableView *)collectionView:(UICollectionView *)collectionView viewForSupplementaryElementOfKind:(NSString *)kind atIndexPath:(NSIndexPath *)indexPath;
+//
+//#pragma mark - UICollectionViewDelegate
+//
+////- (BOOL)collectionView:(UICollectionView *)collectionView shouldHighlightItemAtIndexPath:(NSIndexPath *)indexPath;
+////- (void)collectionView:(UICollectionView *)collectionView didHighlightItemAtIndexPath:(NSIndexPath *)indexPath;
+////- (void)collectionView:(UICollectionView *)collectionView didUnhighlightItemAtIndexPath:(NSIndexPath *)indexPath;
+////- (BOOL)collectionView:(UICollectionView *)collectionView shouldSelectItemAtIndexPath:(NSIndexPath *)indexPath;
+////- (BOOL)collectionView:(UICollectionView *)collectionView shouldDeselectItemAtIndexPath:(NSIndexPath *)indexPath;
+//
+//- (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
+//{
+//    
+//}
+//
+////- (void)collectionView:(UICollectionView *)collectionView didDeselectItemAtIndexPath:(NSIndexPath *)indexPath;
+////
+////- (void)collectionView:(UICollectionView *)collectionView didEndDisplayingCell:(UICollectionViewCell *)cell forItemAtIndexPath:(NSIndexPath *)indexPath;
+////- (void)collectionView:(UICollectionView *)collectionView didEndDisplayingSupplementaryView:(UICollectionReusableView *)view forElementOfKind:(NSString *)elementKind atIndexPath:(NSIndexPath *)indexPath;
+////
+////- (BOOL)collectionView:(UICollectionView *)collectionView shouldShowMenuForItemAtIndexPath:(NSIndexPath *)indexPath;
+////- (BOOL)collectionView:(UICollectionView *)collectionView canPerformAction:(SEL)action forItemAtIndexPath:(NSIndexPath *)indexPath withSender:(id)sender;
+////- (void)collectionView:(UICollectionView *)collectionView performAction:(SEL)action forItemAtIndexPath:(NSIndexPath *)indexPath withSender:(id)sender;
+////
+////- (UICollectionViewTransitionLayout *)collectionView:(UICollectionView *)collectionView transitionLayoutForOldLayout:(UICollectionViewLayout *)fromLayout newLayout:(UICollectionViewLayout *)toLayout;
+//
+//- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath
+//{
+//    return CGSizeMake(100.0, 100.0);
+//}
+//
+//// 3
+//- (UIEdgeInsets)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout insetForSectionAtIndex:(NSInteger)section
+//{
+//    return UIEdgeInsetsMake(50, 20, 50, 20);
+//}
 
 @end

@@ -1,5 +1,5 @@
 //
-//  VConversationSubViewController.h
+//  VComposeContainerViewController.h
 //  victorious
 //
 //  Created by David Keegan on 1/13/14.
@@ -8,7 +8,7 @@
 
 @class VComposeViewController;
 
-@interface VConversationSubViewController : UIViewController
+@interface VComposeContainerViewController : UIViewController
 
 @property (weak, nonatomic) VComposeViewController *composeViewController;
 @property (strong, nonatomic) UITableViewController *conversationTableViewController;
