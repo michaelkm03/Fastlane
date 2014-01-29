@@ -13,6 +13,22 @@
 
 @implementation VInviteWithSocialViewController
 
+#pragma mark - UITableViewDataSource
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
+    return 0;
+}
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    UITableViewCell*    cell    =   [self.tableView dequeueReusableCellWithIdentifier:@"" forIndexPath:indexPath];
+    
+    return cell;
+}
+
+#pragma mark - Actions
+
 - (IBAction)done:(id)sender
 {
     [self.navigationController popViewControllerAnimated:NO];

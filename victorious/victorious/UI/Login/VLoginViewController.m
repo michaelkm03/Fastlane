@@ -16,6 +16,7 @@
 
 @interface VLoginViewController ()
 @property (nonatomic, assign) VLoginType    loginType;
+@property (nonatomic, strong) VUser*        profile;
 @end
 
 @implementation VLoginViewController
@@ -25,6 +26,11 @@
     UIStoryboard*   storyboard  =   [UIStoryboard storyboardWithName:@"login" bundle:nil];
     
     return [storyboard instantiateInitialViewController];
+}
+
+- (void)viewDidLoad
+{
+    self.view.layer.contents = (id)[UIImage imageNamed:@"loginBackground"].CGImage;    
 }
 
 - (void)facebookAccessDidFail
@@ -161,6 +167,8 @@
 {
     VLog(@"Succesfully logged in as: %@", mainUser);
     
+    self.profile = mainUser;
+    
     [[NSNotificationCenter defaultCenter] postNotificationName:kLoggedInChangedNotification object:mainUser];
 
     if (NO) //  priorUser
@@ -192,6 +200,8 @@
     {
         profileViewController.loginType = kVLoginTypeTwitter;
     }
+    
+    profileViewController.profile = self.profile;
 }
 
 - (IBAction)cancel:(id)sender

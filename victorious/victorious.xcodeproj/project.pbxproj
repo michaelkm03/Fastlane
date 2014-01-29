@@ -35,7 +35,6 @@
 		5FC4DA70189711EA006BA107 /* VInviteWithSocialViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FC4DA6F189711EA006BA107 /* VInviteWithSocialViewController.m */; };
 		5FC4DA731897121F006BA107 /* VSignupWithEmailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FC4DA721897121F006BA107 /* VSignupWithEmailViewController.m */; };
 		5FC4DA76189712B3006BA107 /* VProfileWithEmailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FC4DA75189712B3006BA107 /* VProfileWithEmailViewController.m */; };
-		5FC4DA7918971311006BA107 /* VInviteWithEmailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FC4DA7818971311006BA107 /* VInviteWithEmailViewController.m */; };
 		5FF9BE7C1893137D0054694B /* VSideMenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FF9BE7B1893137D0054694B /* VSideMenuViewController.m */; };
 		5FF9BE7F1893143D0054694B /* UIViewController+VSideMenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FF9BE7E1893143D0054694B /* UIViewController+VSideMenuViewController.m */; };
 		5FF9BE83189318CD0054694B /* VRootViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FF9BE82189318CD0054694B /* VRootViewController.m */; };
@@ -210,8 +209,6 @@
 		5FC4DA721897121F006BA107 /* VSignupWithEmailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VSignupWithEmailViewController.m; path = UI/Login/VSignupWithEmailViewController.m; sourceTree = "<group>"; };
 		5FC4DA74189712B2006BA107 /* VProfileWithEmailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VProfileWithEmailViewController.h; path = UI/Login/VProfileWithEmailViewController.h; sourceTree = "<group>"; };
 		5FC4DA75189712B3006BA107 /* VProfileWithEmailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VProfileWithEmailViewController.m; path = UI/Login/VProfileWithEmailViewController.m; sourceTree = "<group>"; };
-		5FC4DA7718971311006BA107 /* VInviteWithEmailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VInviteWithEmailViewController.h; path = UI/Login/VInviteWithEmailViewController.h; sourceTree = "<group>"; };
-		5FC4DA7818971311006BA107 /* VInviteWithEmailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VInviteWithEmailViewController.m; path = UI/Login/VInviteWithEmailViewController.m; sourceTree = "<group>"; };
 		5FF9BE7A1893137D0054694B /* VSideMenuViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VSideMenuViewController.h; path = UI/Menu/VSideMenuViewController.h; sourceTree = "<group>"; };
 		5FF9BE7B1893137D0054694B /* VSideMenuViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VSideMenuViewController.m; path = UI/Menu/VSideMenuViewController.m; sourceTree = "<group>"; };
 		5FF9BE7D1893143D0054694B /* UIViewController+VSideMenuViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "UIViewController+VSideMenuViewController.h"; path = "UI/Menu/UIViewController+VSideMenuViewController.h"; sourceTree = "<group>"; };
@@ -514,8 +511,6 @@
 				5FC4DA721897121F006BA107 /* VSignupWithEmailViewController.m */,
 				5FC4DA74189712B2006BA107 /* VProfileWithEmailViewController.h */,
 				5FC4DA75189712B3006BA107 /* VProfileWithEmailViewController.m */,
-				5FC4DA7718971311006BA107 /* VInviteWithEmailViewController.h */,
-				5FC4DA7818971311006BA107 /* VInviteWithEmailViewController.m */,
 			);
 			name = Login;
 			sourceTree = "<group>";
@@ -1199,7 +1194,6 @@
 				BE6B95FC187C88F700CED4C9 /* VSequence+Fetcher.m in Sources */,
 				83DC42FA187CCE3100E768E2 /* VCreateViewController.m in Sources */,
 				BEA5BF59187E7E8E0014C3EF /* VObjectManager+DirectMessaging.m in Sources */,
-				5FC4DA7918971311006BA107 /* VInviteWithEmailViewController.m in Sources */,
 				3F4863FA1869184000F77346 /* VInboxViewController.m in Sources */,
 				5FC4DA731897121F006BA107 /* VSignupWithEmailViewController.m in Sources */,
 				BE4B74231880D3850090FF84 /* VComment.m in Sources */,

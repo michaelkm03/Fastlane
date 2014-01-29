@@ -7,16 +7,19 @@
 //
 
 #import "VProfileWithSocialViewController.h"
+#import "VInviteWithSocialViewController.h"
+#import "VUser.h"
+#import "VConstants.h"
 #import "VThemeManager.h"
 #import "UIImage+ImageEffects.h"
 
-@interface VProfileWithSocialViewController ()
+@interface VProfileWithSocialViewController ()  <UITextFieldDelegate, UITextViewDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate>
 @property (nonatomic, weak) IBOutlet    UITextField*    nameTextField;
-@property (nonatomic, weak) IBOutlet    UITextField*    locationTextField;
 @property (nonatomic, weak) IBOutlet    UITextField*    usernameTextField;
+@property (nonatomic, weak) IBOutlet    UITextField*    locationTextField;
 @property (nonatomic, weak) IBOutlet    UITextView*     taglineTextView;
 @property (nonatomic, weak) IBOutlet    UIImageView*    profileImageView;
-@property (nonatomic, weak) IBOutlet    UIButton*       headerButton;
+@property (nonatomic, weak) IBOutlet    UIButton*       cameraButton;
 @property (nonatomic, weak) IBOutlet    UISwitch*       agreeSwitch;
 @end
 
@@ -26,40 +29,105 @@
 {
     [super viewDidLoad];
 
+    self.nameTextField.delegate = self;
+    self.usernameTextField.delegate = self;
+    self.locationTextField.delegate = self;
+    self.taglineTextView.delegate = self;
+    
+    NSURL*  imageURL    =   [NSURL URLWithString:self.profile.pictureUrl];
+    [self.profileImageView setImageWithURL:imageURL placeholderImage:[UIImage imageNamed:@"profile_thumb"]];
+    self.profileImageView.layer.masksToBounds = YES;
+    self.profileImageView.layer.cornerRadius = 50.0;
+    self.profileImageView.layer.rasterizationScale = [UIScreen mainScreen].scale;
+    self.profileImageView.layer.shouldRasterize = YES;
+    self.profileImageView.clipsToBounds = YES;
+
+    self.cameraButton.layer.masksToBounds = YES;
+    self.cameraButton.layer.cornerRadius = 50.0;
+    self.cameraButton.layer.rasterizationScale = [UIScreen mainScreen].scale;
+    self.cameraButton.layer.shouldRasterize = YES;
+    self.cameraButton.clipsToBounds = YES;
+    
+    UIImageView* backgroundImageView = [[UIImageView alloc] initWithFrame:self.tableView.backgroundView.frame];
+    [backgroundImageView setImageWithURL:imageURL placeholderImage:[UIImage imageNamed:@"profile_thumb"]];
+    self.tableView.backgroundView = backgroundImageView;
 }
 
-//- (void)setupHeader
-//{
-    // Create and set the header
-//    NSURL*  imageURL    =   [NSURL URLWithString:self.profile.pictureUrl];
-//    [self.profileImageView setImageWithURL:imageURL placeholderImage:[UIImage imageNamed:@"profile_thumb"]];
-//    self.profileImageView.layer.masksToBounds = YES;
-//    self.profileImageView.layer.cornerRadius = 50.0;
-//    self.profileImageView.layer.rasterizationScale = [UIScreen mainScreen].scale;
-//    self.profileImageView.layer.shouldRasterize = YES;
-//    self.profileImageView.clipsToBounds = YES;
-//    
-//    self.headerButton.layer.masksToBounds = YES;
-//    self.headerButton.layer.cornerRadius = 50.0;
-//    self.headerButton.layer.rasterizationScale = [UIScreen mainScreen].scale;
-//    self.headerButton.layer.shouldRasterize = YES;
-//    self.headerButton.clipsToBounds = YES;
-//    
-//    self.usernameLabel.text = self.profile.shortName;
-//}
-//
-//- (void)setupProfile
-//{
-//    UIImageView* backgroundImageView = [[UIImageView alloc] initWithFrame:self.tableView.backgroundView.frame];
-//    backgroundImageView.image = [[UIImage imageNamed:@"profile_full"] applyLightEffect];
-//    self.tableView.backgroundView = backgroundImageView;
-//
-//    self.nameLabel.text = self.profile.name;
-//    self.nameLabel.font = [[VThemeManager sharedThemeManager] themedFontForKeyPath:@"theme.font.profile.username"];
-//    self.taglineLabel.text = [NSString stringWithFormat:@"“%@”",self.profile.tagline];
-//    self.taglineLabel.font = [[VThemeManager sharedThemeManager] themedFontForKeyPath:@"theme.font.profile.tagline"];
-//    self.locationLabel.text = self.profile.location;
-//    self.locationLabel.font = [[VThemeManager sharedThemeManager] themedFontForKeyPath:@"theme.font.profile.location"];
-//}
+#pragma mark - Actions
+
+- (IBAction)takePicture:(id)sender
+{
+    UIImagePickerController*    picker = [[UIImagePickerController alloc] init];
+    
+    if([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera])
+    {
+        picker.sourceType = UIImagePickerControllerSourceTypeCamera;
+        picker.cameraCaptureMode = UIImagePickerControllerCameraCaptureModePhoto;
+    }
+    else
+    {
+        picker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
+    }
+    
+    picker.delegate = self;
+    picker.allowsEditing = YES;
+    
+    [self presentViewController:picker animated:YES completion:nil];
+}
+
+#pragma mark - UITextFieldDelegate
+
+- (BOOL)textFieldShouldReturn:(UITextField *)textField
+{
+    if ([textField isEqual:self.nameTextField])
+        [self.locationTextField becomeFirstResponder];
+    else if ([textField isEqual:self.locationTextField])
+        [self.nameTextField becomeFirstResponder];
+    else if ([textField isEqual:self.nameTextField])
+        [self.taglineTextView becomeFirstResponder];
+    else
+        [self.taglineTextView resignFirstResponder];
+    
+    return YES;
+}
+
+- (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
+{
+    [[self view] endEditing:YES];
+}
+
+#pragma mark - UIImagePickerControllerDelegate
+
+- (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info
+{
+    UIImage* imageToSave = (UIImage *)info[UIImagePickerControllerEditedImage] ?: (UIImage *)info[UIImagePickerControllerOriginalImage];
+    self.profileImageView.image = imageToSave;
+    
+    NSString*   mediaType   =   nil;
+    NSData*     media = UIImagePNGRepresentation(imageToSave);
+    if (media)
+        mediaType = VConstantMediaExtensionPNG;
+    
+    [self dismissViewControllerAnimated:YES completion:nil];
+}
+
+- (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker
+{
+    [self dismissViewControllerAnimated:YES completion:nil];
+}
+
+#pragma mark - Actions
+
+- (IBAction)next:(id)sender
+{
+    
+    [self performSegueWithIdentifier:@"" sender:self];
+}
+
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
+{
+    VInviteWithSocialViewController*   inviteViewController = (VInviteWithSocialViewController *)segue.destinationViewController;
+    inviteViewController.profile = self.profile;
+}
 
 @end

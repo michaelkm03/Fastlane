@@ -30,6 +30,13 @@ NSString*   const   kVLoginErrorDomain =   @"VLoginErrorDomain";
 {
     [super viewDidLoad];
 
+    self.view.layer.contents = (id)[UIImage imageNamed:@"loginBackground"].CGImage;
+    
+    self.usernameTextField.leftView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"emailImage"]];
+    self.usernameTextField.leftViewMode = UITextFieldViewModeAlways;
+    self.passwordTextField.leftView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"passwordImage"]];
+    self.passwordTextField.leftViewMode = UITextFieldViewModeAlways;
+
     self.usernameTextField.delegate  =   self;
     self.passwordTextField.delegate  =   self;
 

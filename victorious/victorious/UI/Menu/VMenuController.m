@@ -15,6 +15,7 @@
 #import "VUser+RestKit.h"
 #import "VUnreadConversation+RestKit.h"
 
+#import "VLoginViewController.h"
 #import "VHomeStreamViewController.h"
 #import "VOwnerStreamViewController.h"
 #import "VCommunityStreamViewController.h"
@@ -122,6 +123,7 @@ NSString *const VMenuControllerDidSelectRowNotification = @"VMenuTableViewContro
         break;
         
         case VMenuRowProfile:
+            [self presentViewController:[VLoginViewController loginViewController] animated:YES completion:nil];
         //            navigationController.viewControllers = @[[self.storyboard instantiateViewControllerWithIdentifier:@"aController"]];
         //            [self.sideMenuViewController hideMenuViewController];
         break;
