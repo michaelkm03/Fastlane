@@ -27,7 +27,6 @@ typedef NS_ENUM(NSUInteger, VImagePickerControllerType)
 @interface VImagePickerController :  UIImagePickerController
 
 @property (nonatomic, weak) UIViewController<VImagePickerControllerDelegate, UINavigationControllerDelegate, UIImagePickerControllerDelegate> *delegate;
-
-@property (nonatomic, setter = setType:) VImagePickerControllerType type;
+@property (nonatomic) VImagePickerControllerType type;
 
 @end

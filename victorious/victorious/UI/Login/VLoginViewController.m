@@ -195,13 +195,13 @@
     if ([segue.identifier isEqualToString:@"toProfileWithFacebook"])
     {
         profileViewController.loginType = kVLoginTypeFaceBook;
+        profileViewController.profile = self.profile;
     }
     else if ([segue.identifier isEqualToString:@"toProfileWithTwitter"])
     {
         profileViewController.loginType = kVLoginTypeTwitter;
+        profileViewController.profile = self.profile;
     }
-    
-    profileViewController.profile = self.profile;
 }
 
 - (IBAction)cancel:(id)sender

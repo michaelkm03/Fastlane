@@ -17,6 +17,7 @@ NSString*   const   kVLoginErrorDomain =   @"VLoginErrorDomain";
 @interface VLoginWithEmailViewController () <UITextFieldDelegate>
 @property   (nonatomic, weak)   IBOutlet    UITextField*    usernameTextField;
 @property   (nonatomic, weak)   IBOutlet    UITextField*    passwordTextField;
+@property   (nonatomic, strong)             VUser*          profile;
 @end
 
 @implementation VLoginWithEmailViewController
@@ -161,6 +162,8 @@ NSString*   const   kVLoginErrorDomain =   @"VLoginErrorDomain";
 {
     VLog(@"Succesfully logged in as: %@", mainUser);
     
+    self.profile = mainUser;
+
     [[NSNotificationCenter defaultCenter] postNotificationName:kLoggedInChangedNotification object:mainUser];
     
     [self.navigationController popToRootViewControllerAnimated:NO];

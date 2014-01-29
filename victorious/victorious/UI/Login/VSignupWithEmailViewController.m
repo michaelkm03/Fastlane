@@ -7,6 +7,7 @@
 //
 
 #import "VSignupWithEmailViewController.h"
+#import "VProfileWithEmailViewController.h"
 #import "VObjectManager+Login.h"
 #import "VUser.h"
 
@@ -17,6 +18,7 @@ NSString*   const   kSignupErrorDomain =   @"VSignupErrorDomain";
 @property (weak, nonatomic) IBOutlet UITextField *emailTextField;
 @property (weak, nonatomic) IBOutlet UITextField *passwordTextField;
 @property (weak, nonatomic) IBOutlet UISwitch* agreeSwitch;
+@property (nonatomic, strong)   VUser*  profile;
 @end
 
 @implementation VSignupWithEmailViewController
@@ -161,9 +163,10 @@ NSString*   const   kSignupErrorDomain =   @"VSignupErrorDomain";
 - (void)didSignUpWithUser:(VUser*)mainUser
 {
     [[NSNotificationCenter defaultCenter] postNotificationName:kLoggedInChangedNotification object:mainUser];
+    
+    self.profile = mainUser;
 
-    [self.navigationController popToRootViewControllerAnimated:NO];
-    [self dismissViewControllerAnimated:YES completion:nil];
+    [self performSegueWithIdentifier:@"toProfileWithEmail" sender:self];
 }
 
 - (void)didFailWithError:(NSError*)error
@@ -178,7 +181,7 @@ NSString*   const   kSignupErrorDomain =   @"VSignupErrorDomain";
 
 #pragma mark - Actions
 
-- (IBAction)signup:(id)sender
+- (IBAction)next:(id)sender
 {
     [[self view] endEditing:YES];
 
@@ -229,6 +232,17 @@ NSString*   const   kSignupErrorDomain =   @"VSignupErrorDomain";
 - (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
 {
     [[self view] endEditing:YES];
+}
+
+#pragma mark - Navigation
+
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
+{
+    if ([segue.identifier isEqualToString:@"toProfileWithEmail"])
+    {
+        VProfileWithEmailViewController* profileViewController = (VProfileWithEmailViewController *)segue.destinationViewController;
+        profileViewController.profile = self.profile;
+    }
 }
 
 @end
