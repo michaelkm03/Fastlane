@@ -22,8 +22,6 @@
 
 #import "NSString+VParseHelp.h"
 
-NSString* const VFeaturedVideosLoadedNotif = @"VFeaturedVideosLoadedNotif";
-
 @implementation VObjectManager (Sequence)
 
 #pragma mark - Sequences
@@ -37,10 +35,7 @@ NSString* const VFeaturedVideosLoadedNotif = @"VFeaturedVideosLoadedNotif";
                                       successBlock:nil
                                          failBlock:nil];
           [self loadNextPageOfSequencesForCategory:kFeaturedCategory
-                                      successBlock:^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
-                                    {
-                                        [[NSNotificationCenter defaultCenter] postNotificationName:VFeaturedVideosLoadedNotif object:nil];
-                                    }
+                                      successBlock:nil
                                          failBlock:nil];
       } failBlock:nil];
 }

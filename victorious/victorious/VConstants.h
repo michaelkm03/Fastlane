@@ -13,6 +13,10 @@
 static NSUInteger const VConstantsMessageLength     = 140;
 static NSUInteger const VConstantsForumTitleLength  = 65;
 
+static NSUInteger const kFeaturedTableCellHeight = 180;
+static NSUInteger const kStreamPollCellHeight = 344;
+static NSUInteger const kStreamYoutubeCellHeight = 315;
+static NSUInteger const kStreamViewCellHeight = 450;
 
 static NSString*   const   kRemoteIdKey = @"remoteId";
 
@@ -39,6 +43,7 @@ static NSString*   const   kVUGCForumCategory = @"ugc_forum";
 static NSString*   const   kFeaturedCategory = @"featured";
 
 static NSString*   const   kSearchCache = @"SearchCache";
+static NSString*   const   kVPagedFetchCache = @"PagedFetchCache";
 
 static NSString*   const   kHomeStreamStoryboardID      = @"homestream";
 static NSString*   const   kOwnerStreamStoryboardID     = @"ownerstream";
