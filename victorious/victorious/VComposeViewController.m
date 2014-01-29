@@ -52,7 +52,7 @@
     }
     [self.textField resignFirstResponder];
     
-    [super cameraButtonAction:sender];
+//    [super cameraButtonAction:sender];
 }
 
 - (IBAction)sendButtonAction:(id)sender
