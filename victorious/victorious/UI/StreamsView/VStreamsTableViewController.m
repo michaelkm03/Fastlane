@@ -11,7 +11,7 @@
 #import "VSequence.h"
 #import "UIImageView+AFNetworking.h"
 #import "VObjectManager+Sequence.h"
-#import "VFeaturedStreamsViewController.h"
+//#import "VFeaturedStreamsViewController.h"
 
 #import "VMenuViewController.h"
 #import "VMenuViewControllerTransition.h"
@@ -43,7 +43,7 @@ typedef NS_ENUM(NSInteger, VStreamScope)
 };
 
 @interface VStreamsTableViewController ()
-@property (nonatomic, strong) VFeaturedStreamsViewController* featuredStreamsViewController;
+//@property (nonatomic, strong) VFeaturedStreamsViewController* featuredStreamsViewController;
 
 @end
 
@@ -82,7 +82,7 @@ typedef NS_ENUM(NSInteger, VStreamScope)
     [super viewDidLoad];
 
     self.tableView.separatorInset = UIEdgeInsetsZero;
-    self.featuredStreamsViewController =   [self.storyboard instantiateViewControllerWithIdentifier:@"featured_pages"];
+//    self.featuredStreamsViewController =   [self.storyboard instantiateViewControllerWithIdentifier:@"featured_pages"];
 
     // TODO: if the user is the owner of the channel show both search and add
 
@@ -155,10 +155,10 @@ typedef NS_ENUM(NSInteger, VStreamScope)
     CGRect frame = CGRectMake(0, 0, CGRectGetWidth(self.view.bounds), [self tableView:tableView heightForHeaderInSection:section]);
     UIView* containerView = [[UIView alloc] initWithFrame:frame];
 
-    [self addChildViewController:self.featuredStreamsViewController];
-    [containerView addSubview:self.featuredStreamsViewController.view];
-    [self.featuredStreamsViewController didMoveToParentViewController:self];
-    self.featuredStreamsViewController.view.frame = frame;
+//    [self addChildViewController:self.featuredStreamsViewController];
+//    [containerView addSubview:self.featuredStreamsViewController.view];
+//    [self.featuredStreamsViewController didMoveToParentViewController:self];
+//    self.featuredStreamsViewController.view.frame = frame;
 
     return containerView;
 }

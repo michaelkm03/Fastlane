@@ -21,12 +21,16 @@ NSString*   const   kVMenuBackgroundImage5              =   @"LaunchImage-700-56
 NSString*   const   kMenuTextFont                       =   @"theme.font.menu";
 NSString*   const   kMenuTextColor                      =   @"theme.color.menu.label";
 
+#pragma mark - Fonts
 NSString*   const   kVStreamLocationFont                =   @"theme.font.stream.text.location";
 NSString*   const   kVStreamUsernameFont                =   @"theme.font.stream.text.username";
 NSString*   const   kVStreamDateFont                    =   @"theme.font.stream.text.date";
 NSString*   const   kVStreamDescriptionFont             =   @"theme.font.stream.text.description";
 
 NSString*   const   kVCommentUsernameFont               =   @"theme.font.comment.text.username";
+
+#pragma mark - Colors
+NSString*   const   kVStreamSearchBarColor               =   @"theme.color.stream.searchbar";
 
 
 @interface      VThemeManager   ()

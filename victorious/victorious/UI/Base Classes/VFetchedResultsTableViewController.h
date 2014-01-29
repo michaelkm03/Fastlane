@@ -17,6 +17,12 @@
 - (NSFetchedResultsController *)makeFetchedResultsController;
 - (NSFetchedResultsController *)makeSearchFetchedResultsController;
 
+- (NSFetchedResultsController *)fetchedResultsControllerForTableView:(UITableView *)tableView;
+- (UITableView *)tableViewForFetchedResultsController:(NSFetchedResultsController *)fetchedResultsController;
+
+- (IBAction)displaySearchBar:(id)sender;
+- (void)hideSearchBar;
+
 - (void)registerCells;
 - (void)refreshAction;
 

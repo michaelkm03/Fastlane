@@ -75,12 +75,12 @@
     VSequence* sequence = (VSequence*)[self.fetchedResultsController objectAtIndexPath:indexPath];
     
     if ([sequence isPoll])
-        return 344;
+        return kStreamPollCellHeight;
     
     else if (([sequence isVideo] ||[sequence isForum]) && [[[sequence firstNode] firstAsset].type isEqualToString:VConstantsMediaTypeYoutube])
-        return 315;
+        return kStreamYoutubeCellHeight;
     
-    return 450;
+    return kStreamViewCellHeight;
 }
 
 - (VStreamViewCell*)tableView:(UITableView *)tableView streamViewCellForIndex:(NSIndexPath*)indexPath

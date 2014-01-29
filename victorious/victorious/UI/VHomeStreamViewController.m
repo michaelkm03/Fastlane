@@ -26,6 +26,12 @@
     return sharedInstance;
 }
 
+- (void) viewDidLoad
+{
+    self.usesFeaturedVideos = YES;
+    [super viewDidLoad];
+}
+
 - (NSArray*)categoriesForOption:(NSUInteger)searchOption
 {
     switch (searchOption)

@@ -22,12 +22,16 @@ extern  NSString*   const   kMenuTextFont;
 extern  NSString*   const   kMenuTextColor;
 
 
+//Fonts
 extern  NSString*   const   kVStreamLocationFont;
 extern  NSString*   const   kVStreamUsernameFont;
 extern  NSString*   const   kVStreamDateFont;
 extern  NSString*   const   kVStreamDescriptionFont;
 
 extern  NSString*   const   kVCommentUsernameFont;
+
+//Colors
+extern  NSString*   const   kVStreamSearchBarColor;
 
 @interface VThemeManager : NSObject
 

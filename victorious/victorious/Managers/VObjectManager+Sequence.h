@@ -8,6 +8,7 @@
 
 #import "VObjectManager.h"
 
+
 @class VAnswer, VSequence, VCategory;
 
 @interface VObjectManager (Sequence)
