@@ -221,7 +221,7 @@ NSString*   const   kSignupErrorDomain =   @"VSignupErrorDomain";
     else if ([textField isEqual:self.emailTextField])
         [self.passwordTextField becomeFirstResponder];
     else
-        [self.self.passwordTextField resignFirstResponder];
+        [self.passwordTextField resignFirstResponder];
     
     return YES;
 }
