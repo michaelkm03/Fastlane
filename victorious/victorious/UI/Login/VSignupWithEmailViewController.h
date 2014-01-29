@@ -6,5 +6,14 @@
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
-@interface VSignupWithEmailViewController : UIViewController
+extern  NSString*   const   kSignupErrorDomain;
+
+NS_ENUM(NSUInteger, VSignupErrorCode)
+{
+    VSignupBadUsernameErrorCode,
+    VSignupBadPasswordErrorCode,
+    VSignUpBadEmailAddressErrorCode
+};
+
+@interface VSignupWithEmailViewController : UITableViewController
 @end

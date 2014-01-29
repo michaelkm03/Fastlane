@@ -71,8 +71,6 @@
         else
         {
             NSArray *accounts = [accountStore accountsWithAccountType:accountType];
-            
-            // It will always be the last object with single sign on
             ACAccount* facebookAccount = [accounts lastObject];
             ACAccountCredential *fbCredential = [facebookAccount credential];
             NSString *accessToken = [fbCredential oauthToken];
@@ -138,8 +136,7 @@
              ACAccount *twitterAccount = [accounts lastObject];
              ACAccountCredential*  ftwCredential = [twitterAccount credential];
              NSString* accessToken = [ftwCredential oauthToken];
-             VLog(@"Twitter Access Token: %@", accessToken);
-
+ 
              VSuccessBlock success = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
              {
                  if (![[resultObjects firstObject] isKindOfClass:[VUser class]])
@@ -195,6 +192,11 @@
     {
         profileViewController.loginType = kVLoginTypeTwitter;
     }
+}
+
+- (IBAction)cancel:(id)sender
+{
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 @end
