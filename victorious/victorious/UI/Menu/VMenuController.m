@@ -6,6 +6,8 @@
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
+@import MessageUI;
+
 #import "VMenuController.h"
 #import "VSideMenuViewController.h"
 #import "UIViewController+VSideMenuViewController.h"
@@ -25,12 +27,11 @@
 
 NSString *const VMenuControllerDidSelectRowNotification = @"VMenuTableViewControllerDidSelectRowNotification";
 
-@interface VMenuController ()
+@interface VMenuController ()   <MFMailComposeViewControllerDelegate, UIAlertViewDelegate>
 @property (weak, nonatomic) IBOutlet VBadgeLabel *inboxBadgeLabel;
 @property (weak, nonatomic) IBOutlet UILabel *nameLabel;
 @property (strong, nonatomic) IBOutletCollection(UIImageView) NSArray *imageViews;
 @property (strong, nonatomic) IBOutletCollection(UILabel) NSArray *labels;
-@property (strong, nonatomic) IBOutletCollection(UIView) NSArray *separatorViews;
 @end
 
 @implementation VMenuController
@@ -71,10 +72,6 @@ NSString *const VMenuControllerDidSelectRowNotification = @"VMenuTableViewContro
     {
         label.font = [[VThemeManager sharedThemeManager] themedFontForKeyPath:kMenuTextFont];
 //        label.textColor = [[VThemeManager sharedThemeManager] themedColorForKeyPath:kMenuTextColor];
-    }];
-    [self.separatorViews enumerateObjectsUsingBlock:^(UIView *view, NSUInteger idx, BOOL *stop)
-    {
-        view.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKeyPath:@"theme.color.menu.separator"];
     }];
     
     self.view.backgroundColor = [UIColor clearColor];
@@ -153,16 +150,70 @@ NSString *const VMenuControllerDidSelectRowNotification = @"VMenuTableViewContro
         break;
         
         case VMenuRowHelp:
-        //            navigationController.viewControllers = @[[self.storyboard instantiateViewControllerWithIdentifier:@"aController"]];
+            [self sendHelp:self];
             [self.sideMenuViewController hideMenuViewController];
         break;
 
         default:
             break;
     }
+}
+
+- (IBAction)sendHelp:(id)sender
+{
+    if ([MFMailComposeViewController canSendMail])
+    {
+        // The style is removed then re-applied so the mail compose view controller has the default appearance
+        [[VThemeManager sharedThemeManager] removeStyling];
+
+        MFMailComposeViewController*    mailComposer = [[MFMailComposeViewController alloc] init];
+        mailComposer.mailComposeDelegate = self;
+        
+        [mailComposer setSubject:NSLocalizedString(@"HelpNeeded", @"Need Help")];
+        [mailComposer setToRecipients:@[[[VThemeManager sharedThemeManager] themedValueForKeyPath:kVChannelURLSupport]]];
+
+        //  Dismiss the menu controller first, since we want to be a child of the root controller
+        [self presentViewController:mailComposer animated:YES completion:nil];
+        [[VThemeManager sharedThemeManager] applyStyling];
+    }
+    else
+    {
+        UIAlertView*    alert   =   [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"NoEmail", @"Email not setup title")
+                                                               message:NSLocalizedString(@"NoEmailDetail", @"Email not setup")
+                                                              delegate:self
+                                                     cancelButtonTitle:NSLocalizedString(@"CancelButton", @"Cancel")
+                                                     otherButtonTitles:NSLocalizedString(@"SetupButton", @"Setup"), nil];
+        [alert show];
+    }
+}
+
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    if(alertView.cancelButtonIndex != buttonIndex)
+    {
+        // opening mailto: when there are no valid email accounts registered will open the mail app to setup an account
+        [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"mailto:"]];
+    }
+}
     
-    
-    
+#pragma mark - MFMailComposeViewControllerDelegate
+
+- (void)mailComposeController:(MFMailComposeViewController*)controller didFinishWithResult:(MFMailComposeResult)result error:(NSError*)error
+{
+    if (MFMailComposeResultFailed == result)
+    {
+        UIAlertView*    alert   =   [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"EmailFail", @"Unable to Email")
+                                                               message:error.localizedDescription
+                                                              delegate:nil
+                                                     cancelButtonTitle:NSLocalizedString(@"OKButton", @"OK")
+                                                     otherButtonTitles:nil];
+        [alert show];
+    }
+
+    [self dismissViewControllerAnimated:YES completion:nil];
+}
+
+
 //        case VMenuTableViewControllerRowInbox:
 //        {
 //            if (![VObjectManager sharedManager].authorized)
@@ -208,49 +259,10 @@ NSString *const VMenuControllerDidSelectRowNotification = @"VMenuTableViewContro
 //        }
 //        case VMenuTableViewControllerRowHelp:
 //        {
-//            [self dismissViewControllerAnimated:YES completion:^{
-//                if ([MFMailComposeViewController canSendMail])
-//                {
-//                    // The style is removed then re-applied so the mail
-//                    // compose view controller has the default appearance
-//                    [[VThemeManager sharedThemeManager] removeStyling];
-//                    
-//                    // Run on the main run loop to ensure the mail composer view gets the new styling
-//                    [BBlock dispatchOnMainThread:^{
-//                        MFMailComposeViewController*    mailComposer = [[MFMailComposeViewController alloc] init];
-//                        mailComposer.mailComposeDelegate = wself;
-//                        
-//                        [mailComposer setSubject:NSLocalizedString(@"HelpNeeded", @"Need Help")];
-//                        [mailComposer setToRecipients:@[[[VThemeManager sharedThemeManager] themedValueForKeyPath:kVChannelURLSupport]]];
-//                        
-//                        //  Dismiss the menu controller first, since we want to be a child of the root controller
-//                        [wself presentViewController:mailComposer animated:YES completion:nil];
-//                        [[VThemeManager sharedThemeManager] applyStyling];
-//                    }];
-//                }
-//                else
-//                {
-//                    [[[UIAlertView alloc] initWithTitle:NSLocalizedString(@"NoEmail", @"Email not setup alert title")
-//                                                message:NSLocalizedString(@"NoEmailDetail", @"Email not setup alert message")
-//                                      cancelButtonTitle:NSLocalizedString(@"CancelButton", @"Cancel button label")
-//                                       otherButtonTitle:NSLocalizedString(@"SetupButton", @"Setup button label")
-//                                        completionBlock:^(NSInteger buttonIndex, UIAlertView *alertView)
-//                      {
-//                          if(alertView.cancelButtonIndex != buttonIndex)
-//                          {
-//                              // opening mailto: when there are no valid email accounts
-//                              // registered will open the mail app to setup an account
-//                              [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"mailto:"]];
-//                          }
-//                      }] show];
-//                    
-//                }
-//            }];
 //            break;
 //        }
 //    }
 
-}
 
 //- (void)showUserProfileForUserID:(NSInteger)userID
 //{
@@ -263,25 +275,5 @@ NSString *const VMenuControllerDidSelectRowNotification = @"VMenuTableViewContro
 {
     return UIStatusBarStyleLightContent;
 }
-
-#pragma mark - VSideMenuDelegate
-
-
-#pragma mark - MFMailComposeViewControllerDelegate
-
-//- (void)mailComposeController:(MFMailComposeViewController*)controller didFinishWithResult:(MFMailComposeResult)result error:(NSError*)error
-//{
-//    if (MFMailComposeResultFailed == result)
-//    {
-//        UIAlertView*    alert   =   [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"EmailFail", @"Unable to Email")
-//                                                               message:error.localizedDescription
-//                                                              delegate:nil
-//                                                     cancelButtonTitle:NSLocalizedString(@"OKButton", @"OK")
-//                                                     otherButtonTitles:nil];
-//        [alert show];
-//    }
-//    
-//    [self dismissViewControllerAnimated:YES completion:nil];
-//}
 
 @end
