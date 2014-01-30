@@ -166,7 +166,6 @@ NSString*   const   kVLoginErrorDomain =   @"VLoginErrorDomain";
 
     [[NSNotificationCenter defaultCenter] postNotificationName:kLoggedInChangedNotification object:mainUser];
     
-    [self.navigationController popToRootViewControllerAnimated:NO];
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
