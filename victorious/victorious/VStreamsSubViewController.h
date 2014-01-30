@@ -6,10 +6,10 @@
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
-#import "VComposeContainerViewController.h"
+#import "VKeyboardBarContainerViewController.h"
 
 @class VSequence;
 
-@interface VStreamsSubViewController : VComposeContainerViewController
+@interface VStreamsSubViewController : VKeyboardBarContainerViewController
 @property (nonatomic, strong) VSequence* sequence;
 @end

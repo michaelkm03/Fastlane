@@ -8,7 +8,7 @@
 
 #import "VStreamsSubViewController.h"
 #import "VStreamsCommentsController.h"
-#import "VComposeViewController.h"
+#import "VKeyboardBarViewController.h"
 #import "VSequence.h"
 #import "VUser.h"
 

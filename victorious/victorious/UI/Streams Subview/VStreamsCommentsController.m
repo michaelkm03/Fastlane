@@ -22,7 +22,7 @@
 #import "VThemeManager.h"
 #import "BBlock.h"
 #import "UIActionSheet+BBlock.h"
-#import "VComposeViewController.h"
+#import "VKeyboardBarViewController.h"
 
 #import "VSequence+Fetcher.h"
 #import "VNode+Fetcher.h"

@@ -7,9 +7,9 @@
 //
 
 @class VConversation;
-@class VComposeViewController;
+@class VKeyboardBarViewController;
 
 @interface VMessageViewController : UITableViewController
 @property (nonatomic, readwrite, strong)    VConversation*  conversation;
-@property (nonatomic, weak) VComposeViewController* composeViewController;
+@property (nonatomic, weak) VKeyboardBarViewController* composeViewController;
 @end

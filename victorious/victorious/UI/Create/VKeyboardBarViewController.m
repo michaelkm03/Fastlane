@@ -1,5 +1,5 @@
 //
-//  VComposeViewController.m
+//  VKeyboardBarViewController.m
 //  victorious
 //
 //  Created by David Keegan on 1/11/14.
@@ -8,15 +8,16 @@
 
 @import AVFoundation;
 
-#import "VComposeViewController.h"
 #import "VObjectManager+Comment.h"
+
+#import "VKeyboardBarViewController.h"
 
 //#import "VSequence.h"
 //#import "VConstants.h"
 
 #import "VLoginViewController.h"
 
-@interface VComposeViewController() //<UICollectionViewDataSource, UICollectionViewDelegateFlowLayout>
+@interface VKeyboardBarViewController() //<UICollectionViewDataSource, UICollectionViewDelegateFlowLayout>
 @property (weak, nonatomic, readwrite) IBOutlet UITextField *textField;
 @property (weak, nonatomic) IBOutlet UIButton *mediaButton;
 @property (strong, nonatomic) NSData* media;
@@ -28,7 +29,7 @@
 //@property (nonatomic, strong) NSData* selectedSticker;
 @end
 
-@implementation VComposeViewController
+@implementation VKeyboardBarViewController
 
 - (void)viewWillLayoutSubviews
 {

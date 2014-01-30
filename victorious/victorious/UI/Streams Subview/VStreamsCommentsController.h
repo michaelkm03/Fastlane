@@ -8,13 +8,13 @@
 
 #import "VSequence.h"
 
-@class VComposeViewController;
+@class VKeyboardBarViewController;
 
 @protocol VStreamsCommentsControllerDelegate;
 
 @interface VStreamsCommentsController : UITableViewController
 @property (nonatomic, strong) VSequence* sequence;
-@property (nonatomic, weak) VComposeViewController* composeViewController;
+@property (nonatomic, weak) VKeyboardBarViewController* composeViewController;
 @property (nonatomic, weak) id<VStreamsCommentsControllerDelegate> delegate;
 @end
 
