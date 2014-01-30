@@ -12,6 +12,7 @@
 #import "VThemeManager.h"
 #import "UIView+AutoLayout.h"
 #import "VConstants.h"
+#import "NSString+VParseHelp.h"
 
 CGFloat VCreateViewControllerPadding = 8;
 CGFloat VCreateViewControllerLargePadding = 20;
@@ -27,142 +28,39 @@ CGFloat VCreateViewControllerLargePadding = 20;
 
 @implementation VCreateViewController
 
-- (instancetype)initWithType:(VImagePickerViewControllerType)type andDelegate:(id<VCreateSequenceDelegate>)delegate
-{
-    if(!(self = [super initWithType:type]))
-    {
-        return nil;
-    }
-
-    self.delegate = delegate;
-
-    self.view.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKeyPath:@"theme.color.post.background"];
-    
-//    self.navigationItem.leftBarButtonItem =
-//    [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"Close"]
-//                                     style:UIBarButtonItemStylePlain target:self action:@selector(closeButtonAction:)];
-
-//    CGSize mediaViewSize = CGSizeMake(200, 200);
-//    UIView *mediaView = [UIView autoLayoutView];
-//    [self.view addSubview:mediaView];
-//    [mediaView constrainToSize:mediaViewSize];
-//    [mediaView centerInContainerOnAxis:NSLayoutAttributeCenterX];
-//    self.contentTopConstraint = [mediaView pinEdge:NSLayoutAttributeTop toEdge:NSLayoutAttributeBottom ofItem:self.topLayoutGuide inset:VCreateViewControllerLargePadding];
-
-    self.mediaButton.tintColor = [UIColor whiteColor];[[VThemeManager sharedThemeManager] themedColorForKeyPath:@"theme.color.post.mediaButton.icon"];
-    self.mediaButton.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKeyPath:@"theme.color.post.mediaButton.background"];
-    self.mediaButton.layer.cornerRadius = self.mediaButton.frame.size.height/2;
-    self.mediaButton.translatesAutoresizingMaskIntoConstraints = NO;
-
-//    [self.mediaButton centerInContainerOnAxis:NSLayoutAttributeCenterY];
-//    [self.mediaButton centerInContainerOnAxis:NSLayoutAttributeCenterX];
-//    [self.mediaButton constrainToSize:mediaButtonSize];
-//
-//    UIImageView *previewImage = [UIImageView autoLayoutView];
-//    previewImage.userInteractionEnabled = YES;
-//    [mediaView addSubview:previewImage];
-//    [previewImage pinToSuperviewEdgesWithInset:UIEdgeInsetsZero];
-//    [self.previewImage setHidden:YES];
-//    self.previewImage = previewImage;
-
-    
-    self.removeMediaButton.tintColor = [[VThemeManager sharedThemeManager] themedColorForKeyPath:@"theme.color.post.media.remove"];
-    self.removeMediaButton.translatesAutoresizingMaskIntoConstraints = NO;
-    [self.previewImage addSubview:self.removeMediaButton];
-    [self.removeMediaButton pinToSuperviewEdges:JRTViewPinTopEdge|JRTViewPinLeftEdge inset:VCreateViewControllerPadding];
-    
-    self.mediaLabel.textColor = [[VThemeManager sharedThemeManager] themedColorForKeyPath:@"theme.color.text.post.mediaLabel"];
-    [self.mediaLabel pinEdge:NSLayoutAttributeTop toEdge:NSLayoutAttributeBottom ofItem:self.mediaButton inset:VCreateViewControllerLargePadding];
-    [self.mediaLabel centerInContainerOnAxis:NSLayoutAttributeCenterX];
-    
-    switch(type)
-    {
-        case VImagePickerViewControllerPhoto:
-            self.mediaLabel.text = NSLocalizedString(@"Add a photo", @"Add photo label");
-            self.title = NSLocalizedString(@"New Photo", @"New photo title");
-            break;
-        case VImagePickerViewControllerVideo:
-            self.mediaLabel.text = NSLocalizedString(@"Add a video", @"Add video label");
-            self.title = NSLocalizedString(@"New Video", @"New video title");
-            break;
-        case VImagePickerViewControllerPhotoAndVideo:
-            self.mediaLabel.text = NSLocalizedString(@"Add a photo or video", @"Add photo or video label");
-            self.title = NSLocalizedString(@"New Post", @"New post(photo or video) title");
-            break;
-    }
-    
-//    UITextView *textView = [UITextView autoLayoutView];
-//    textView.delegate = self;
-//    textView.returnKeyType = UIReturnKeyDone;
-    self.textView.font = [[VThemeManager sharedThemeManager] themedFontForKeyPath:@"theme.font.post"];
-    self.textView.textColor = [[VThemeManager sharedThemeManager] themedColorForKeyPath:@"theme.color.text.post"];
-    self.textView.layer.borderColor = [[[VThemeManager sharedThemeManager] themedColorForKeyPath:@"theme.color.post.input.border"] CGColor];
-    self.textView.layer.borderWidth = 1;
-//    [self.view addSubview:textView];
-//    [textView pinEdge:NSLayoutAttributeTop toEdge:NSLayoutAttributeBottom ofItem:self.mediaLabel inset:VCreateViewControllerLargePadding];
-//    [textView pinToSuperviewEdges:JRTViewPinLeftEdge|JRTViewPinRightEdge inset:VCreateViewControllerPadding];
-//    [textView constrainToHeight:120];
-//    self.textView = textView;
-
-//    CGFloat postButtonHeight = 44;
-//    UIButton *postButton = [UIButton buttonWithType:UIButtonTypeSystem];
-//    [postButton addTarget:self action:@selector(postButtonAction:) forControlEvents:UIControlEventTouchUpInside];
-//    postButton.translatesAutoresizingMaskIntoConstraints = NO;
-    self.postButton.tintColor = [[VThemeManager sharedThemeManager] themedColorForKeyPath:@"theme.color.text.post.postButton"];
-    self.postButton.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKeyPath:@"theme.color.post.postButton.background"];
-    [self.postButton setTitle:NSLocalizedString(@"POST IT", @"Post button") forState:UIControlStateNormal];
-    self.postButton.titleLabel.font = [[VThemeManager sharedThemeManager] themedFontForKeyPath:@"theme.font.post.postButton"];
-//    [self.view addSubview:postButton];
-//    [postButton pinToSuperviewEdges:JRTViewPinLeftEdge|JRTViewPinBottomEdge|JRTViewPinRightEdge inset:VCreateViewControllerPadding];
-//    [postButton constrainToHeight:postButtonHeight];
-//    self.postButton = postButton;
-
-//    UILabel *characterCountLabel = [UILabel autoLayoutView];
-    self.characterCountLabel.textColor = [[VThemeManager sharedThemeManager] themedColorForKeyPath:@"theme.color.text.post"];
-    self.characterCountLabel.text = @(VConstantsMessageLength).stringValue;
-//    [self.view addSubview:characterCountLabel];
-//    [characterCountLabel pinEdges:JRTViewPinRightEdge toSameEdgesOfView:textView inset:VCreateViewControllerPadding];
-    [self.characterCountLabel pinEdges:JRTViewPinBottomEdge toSameEdgesOfView:self.textView inset:VCreateViewControllerPadding];
-//    self.characterCountLabel = characterCountLabel;
-
-    [self validatePostButtonState];
-
-    [[NSNotificationCenter defaultCenter]
-     addObserver:self selector:@selector(keyboardFrameChanged:)
-     name:UIKeyboardWillChangeFrameNotification object:nil];
-
-    return self;
-}
-
 - (void)viewDidLoad
 {
     [super viewDidLoad];
     
     [self setType:self.type];
     
+    
+    [self.mediaView constrainToSize:self.mediaView.frame.size];
+    [self.mediaView centerInContainerOnAxis:NSLayoutAttributeCenterX];
+    self.contentTopConstraint = [self.mediaView pinEdge:NSLayoutAttributeTop toEdge:NSLayoutAttributeBottom ofItem:self.topLayoutGuide inset:VCreateViewControllerLargePadding];
+    
     self.view.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKeyPath:@"theme.color.post.background"];
     
-    UIColor* color = [[VThemeManager sharedThemeManager] themedColorForKeyPath:@"theme.color.post.mediaButton.icon"];
-    
-//    self.mediaButton.imageView.renderingMode =
-    self.mediaButton.tintColor = [UIColor blueColor];
+    UIImage* newImage = [self.mediaButton.imageView.image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+    [self.mediaButton setImage:newImage forState:UIControlStateNormal];
+    self.mediaButton.tintColor = [[VThemeManager sharedThemeManager] themedColorForKeyPath:@"theme.color.post.mediaButton.icon"];
     self.mediaButton.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKeyPath:@"theme.color.post.mediaButton.background"];
     self.mediaButton.layer.cornerRadius = self.mediaButton.frame.size.height/2;
-    self.mediaButton.translatesAutoresizingMaskIntoConstraints = NO;
     
+    newImage = [self.removeMediaButton.imageView.image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+    [self.removeMediaButton setImage:newImage forState:UIControlStateNormal];
     self.removeMediaButton.tintColor = [[VThemeManager sharedThemeManager] themedColorForKeyPath:@"theme.color.post.media.remove"];
-    self.removeMediaButton.translatesAutoresizingMaskIntoConstraints = NO;
     [self.previewImage addSubview:self.removeMediaButton];
     [self.removeMediaButton pinToSuperviewEdges:JRTViewPinTopEdge|JRTViewPinLeftEdge inset:VCreateViewControllerPadding];
     
     self.mediaLabel.textColor = [[VThemeManager sharedThemeManager] themedColorForKeyPath:@"theme.color.text.post.mediaLabel"];
-    [self.mediaLabel pinEdge:NSLayoutAttributeTop toEdge:NSLayoutAttributeBottom ofItem:self.mediaButton inset:VCreateViewControllerLargePadding];
     [self.mediaLabel centerInContainerOnAxis:NSLayoutAttributeCenterX];
     
     self.textView.font = [[VThemeManager sharedThemeManager] themedFontForKeyPath:@"theme.font.post"];
     self.textView.textColor = [[VThemeManager sharedThemeManager] themedColorForKeyPath:@"theme.color.text.post"];
     self.textView.layer.borderColor = [[[VThemeManager sharedThemeManager] themedColorForKeyPath:@"theme.color.post.input.border"] CGColor];
     self.textView.layer.borderWidth = 1;
+    [self.textView constrainToHeight:self.textView.frame.size.height];
     
     self.postButton.tintColor = [[VThemeManager sharedThemeManager] themedColorForKeyPath:@"theme.color.text.post.postButton"];
     self.postButton.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKeyPath:@"theme.color.post.postButton.background"];
@@ -210,7 +108,8 @@ CGFloat VCreateViewControllerLargePadding = 20;
         [self.postButton setEnabled:NO];
         return;
     }
-    if([self.textView.text length] > VConstantsMessageLength)
+    if([self.textView.text length] > VConstantsMessageLength
+       || [self.textView.text isEmpty])
     {
         [self.postButton setEnabled:NO];
         return;
