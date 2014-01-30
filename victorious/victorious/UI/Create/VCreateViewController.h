@@ -8,15 +8,25 @@
 
 #import "VCreateSequenceDelegate.h"
 
-typedef NS_ENUM(NSUInteger, VCreateViewControllerType){
-    VCreateViewControllerTypePhoto,
-    VCreateViewControllerTypeVideo,
-    VCreateViewControllerTypePhotoAndVideo
-};
+#import "VImagePickerViewController.h"
+#import "VCreateSequenceDelegate.h"
 
-@interface VCreateViewController : UIViewController
+@interface VCreateViewController : VImagePickerViewController
 
-- (instancetype)initWithType:(VCreateViewControllerType)type
+- (instancetype)initWithType:(VImagePickerViewControllerType)type
                  andDelegate:(id<VCreateSequenceDelegate>)delegate;
+
+@property (weak, nonatomic) IBOutlet UILabel *characterCountLabel;
+@property (weak, nonatomic) IBOutlet UILabel *mediaLabel;
+
+@property (weak, nonatomic) IBOutlet UIButton *mediaButton;
+@property (weak, nonatomic) IBOutlet UIButton *removeMediaButton;
+@property (weak, nonatomic) IBOutlet UIButton *postButton;
+
+@property (weak, nonatomic) IBOutlet UIImageView *previewImage;
+@property (weak, nonatomic) IBOutlet UITextView *textView;
+
+
+@property (weak, nonatomic) id<VCreateSequenceDelegate> delegate;
 
 @end

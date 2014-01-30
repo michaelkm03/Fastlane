@@ -17,8 +17,13 @@ typedef NS_ENUM(NSUInteger, VImagePickerViewControllerType){
 
 @interface VImagePickerViewController : UIViewController <UINavigationControllerDelegate, UIImagePickerControllerDelegate>
 
-#pragma mark - Button Actions
-- (void)mediaButtonAction:(id)sender;
+
+- (id)initWithType:(VImagePickerViewControllerType)type;
+
+@property (nonatomic, setter = setType:) VImagePickerViewControllerType type;
+
+//#pragma mark - Button Actions
+//- (void)mediaButtonAction:(id)sender;
 
 #pragma mark - Overrides
 - (void)imagePickerFinishedWithData:(NSData*)data
