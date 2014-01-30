@@ -6,8 +6,7 @@
 //  Copyright (c) 2014 Will Long. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
+#import "VWebContentViewController.h"
 
-@interface VPrivacyPoliciesViewController : UIViewController
-
+@interface VPrivacyPoliciesViewController : VWebContentViewController
 @end

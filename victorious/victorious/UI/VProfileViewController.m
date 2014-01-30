@@ -7,8 +7,7 @@
 //
 
 #import "VProfileViewController.h"
-#import "VMenuViewController.h"
-#import "VMenuViewControllerTransition.h"
+#import "UIViewController+VSideMenuViewController.h"
 #import "VObjectManager+Login.h"
 #import "VObjectManager+Users.h"
 #import "VObjectManager+DirectMessaging.h"
@@ -17,7 +16,7 @@
 #import "VConversation.h"
 #import "VUser.h"
 #import "VThemeManager.h"
-#import "VSimpleLoginViewController.h"
+#import "VLoginViewController.h"
 
 @interface VProfileViewController () <UIActionSheetDelegate>
 
@@ -124,7 +123,7 @@
 {
     if (![VObjectManager sharedManager].mainUser)
     {
-        [self presentViewController:[VSimpleLoginViewController sharedLoginViewController] animated:YES completion:NULL];
+        [self presentViewController:[VLoginViewController loginViewController] animated:YES completion:NULL];
         return;
     }
     
@@ -170,18 +169,17 @@
 
 #pragma mark - Navigation
 
+- (IBAction)showMenu
+{
+    [self.sideMenuViewController presentMenuViewController];
+}
+
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
     if ([segue.identifier isEqualToString:@"toEditProfile"])
     {
         VProfileEditViewController* controller = (VProfileEditViewController *)segue.destinationViewController;
         controller.profile = self.profile;
-    }
-    else if ([segue.destinationViewController isKindOfClass:[VMenuViewController class]])
-    {
-        VMenuViewController *menuViewController = segue.destinationViewController;
-        menuViewController.transitioningDelegate = (id <UIViewControllerTransitioningDelegate>)[VMenuViewControllerTransitionDelegate new];
-        menuViewController.modalPresentationStyle = UIModalPresentationCustom;
     }
     else if ([segue.identifier isEqualToString:@"toComposeMessage"])
     {

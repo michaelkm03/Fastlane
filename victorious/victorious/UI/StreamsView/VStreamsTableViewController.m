@@ -13,8 +13,7 @@
 #import "VObjectManager+Sequence.h"
 //#import "VFeaturedStreamsViewController.h"
 
-#import "VMenuViewController.h"
-#import "VMenuViewControllerTransition.h"
+#import "UIViewController+VSideMenuViewController.h"
 
 #import "VStreamsTableViewController+Protected.h"
 
@@ -171,16 +170,14 @@ typedef NS_ENUM(NSInteger, VStreamScope)
 
 #pragma mark - Navigation
 
+- (IBAction)showMenu
+{
+    [self.sideMenuViewController presentMenuViewController];
+}
+
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
-    if ([segue.destinationViewController isKindOfClass:[VMenuViewController class]])
-    {
-        VMenuViewController *menuViewController = segue.destinationViewController;
-        menuViewController.transitioningDelegate =
-        (id <UIViewControllerTransitioningDelegate>)[VMenuViewControllerTransitionDelegate new];
-        menuViewController.modalPresentationStyle = UIModalPresentationCustom;
-    }
-    else if ([segue.identifier isEqualToString:@"toStreamDetails"])
+    if ([segue.identifier isEqualToString:@"toStreamDetails"])
     {
         [self prepareToStreamDetailsSegue:segue sender:sender];
     }

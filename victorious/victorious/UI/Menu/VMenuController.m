@@ -12,6 +12,7 @@
 #import "VBadgeLabel.h"
 #import "VThemeManager.h"
 #import "VObjectManager+DirectMessaging.h"
+#import "VObjectManager+Login.h"
 #import "VUser+RestKit.h"
 #import "VUnreadConversation+RestKit.h"
 
@@ -20,6 +21,7 @@
 #import "VOwnerStreamViewController.h"
 #import "VCommunityStreamViewController.h"
 #import "VForumStreamViewController.h"
+#import "VSettingsViewController.h"
 
 NSString *const VMenuControllerDidSelectRowNotification = @"VMenuTableViewControllerDidSelectRowNotification";
 
@@ -95,6 +97,8 @@ NSString *const VMenuControllerDidSelectRowNotification = @"VMenuTableViewContro
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     UINavigationController* navigationController = (UINavigationController *)self.sideMenuViewController.contentViewController;
 
+//    __typeof__(self) __weak     weakSelf = self;
+
     switch (indexPath.row)
     {
         case VMenuRowHome:
@@ -118,24 +122,39 @@ NSString *const VMenuControllerDidSelectRowNotification = @"VMenuTableViewContro
         break;
         
         case VMenuRowInbox:
-        //            navigationController.viewControllers = @[[self.storyboard instantiateViewControllerWithIdentifier:@"aController"]];
-        //            [self.sideMenuViewController hideMenuViewController];
+            if (![VObjectManager sharedManager].authorized)
+            {
+                [self presentViewController:[VLoginViewController loginViewController] animated:YES completion:nil];
+                [self.sideMenuViewController hideMenuViewController];
+            }
+            else
+            {
+//                navigationController.viewControllers = @[[VInboxViewController sharedInboxViewController]];
+                [self.sideMenuViewController hideMenuViewController];
+            }
         break;
         
         case VMenuRowProfile:
-            [self presentViewController:[VLoginViewController loginViewController] animated:YES completion:nil];
-        //            navigationController.viewControllers = @[[self.storyboard instantiateViewControllerWithIdentifier:@"aController"]];
-        //            [self.sideMenuViewController hideMenuViewController];
+            if (![VObjectManager sharedManager].authorized)
+            {
+                [self presentViewController:[VLoginViewController loginViewController] animated:YES completion:nil];
+                [self.sideMenuViewController hideMenuViewController];
+            }
+            else
+            {
+//                navigationController.viewControllers = @[[VProfileViewController sharedInboxViewController]];
+                [self.sideMenuViewController hideMenuViewController];
+            }
         break;
         
         case VMenuRowSettings:
-        //            navigationController.viewControllers = @[[self.storyboard instantiateViewControllerWithIdentifier:@"aController"]];
-        //            [self.sideMenuViewController hideMenuViewController];
+            navigationController.viewControllers = @[[VSettingsViewController settingsViewController]];
+            [self.sideMenuViewController hideMenuViewController];
         break;
         
         case VMenuRowHelp:
         //            navigationController.viewControllers = @[[self.storyboard instantiateViewControllerWithIdentifier:@"aController"]];
-        //            [self.sideMenuViewController hideMenuViewController];
+            [self.sideMenuViewController hideMenuViewController];
         break;
 
         default:
@@ -144,9 +163,6 @@ NSString *const VMenuControllerDidSelectRowNotification = @"VMenuTableViewContro
     
     
     
-//    BBlockWeakSelf wself = self;
-//    switch(row)
-//    {
 //        case VMenuTableViewControllerRowInbox:
 //        {
 //            if (![VObjectManager sharedManager].authorized)

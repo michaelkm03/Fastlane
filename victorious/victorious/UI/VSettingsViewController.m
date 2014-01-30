@@ -7,10 +7,11 @@
 //
 
 #import "VSettingsViewController.h"
+#import "UIViewController+VSideMenuViewController.h"
+#import "VWebContentViewController.h"
+#import "VThemeManager.h"
 #import "VObjectManager+Login.h"
 #import "VUser.h"
-#import "VMenuViewController.h"
-#import "VMenuViewControllerTransition.h"
 
 NSString*   const   kAccountUpdateViewControllerDomain =   @"VAccountUpdateViewControllerDomain";
 
@@ -24,16 +25,11 @@ NSString*   const   kAccountUpdateViewControllerDomain =   @"VAccountUpdateViewC
 
 @implementation VSettingsViewController
 
-+ (VSettingsViewController *)sharedSettingsViewController
++ (VSettingsViewController *)settingsViewController
 {
-    static  VSettingsViewController*   settingsViewController;
-    static  dispatch_once_t         onceToken;
-    dispatch_once(&onceToken, ^{
-        UIViewController*   currentViewController = [[UIApplication sharedApplication] delegate].window.rootViewController;
-        settingsViewController = (VSettingsViewController*)[currentViewController.storyboard instantiateViewControllerWithIdentifier: @"settings"];
-    });
-
-    return settingsViewController;
+    UIStoryboard*   storyboard  =   [UIStoryboard storyboardWithName:@"settings" bundle:nil];
+    
+    return [storyboard instantiateInitialViewController];
 }
 
 - (void)viewDidLoad
@@ -60,24 +56,7 @@ NSString*   const   kAccountUpdateViewControllerDomain =   @"VAccountUpdateViewC
     }
 }
 
-- (BOOL)textFieldShouldReturn:(UITextField *)textField
-{
-    if ([textField isEqual:self.nameTextField])
-        [self.emailAddressTextField becomeFirstResponder];
-    else if ([textField isEqual:self.emailAddressTextField])
-        [self.passwordTextField becomeFirstResponder];
-    else
-        [self saveChangesClicked:self];
-    
-    return NO;
-}
-
-- (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
-{
-    [[self view] endEditing:YES];
-}
-
-#pragma mark - Actions
+#pragma mark - Validation
 
 - (BOOL)shouldUpdateEmailAddress:(NSString *)emailAddress password:(NSString *)password username:(NSString *)username
 {
@@ -120,21 +99,6 @@ NSString*   const   kAccountUpdateViewControllerDomain =   @"VAccountUpdateViewC
     }
     
     return YES;
-}
-
-- (void)didUpdate
-{
-
-}
-
-- (void)didFailToUpdate:(NSError *)error
-{
-    UIAlertView*    alert   =   [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"AccountUpdateFail", @"")
-                                                           message:error.localizedDescription
-                                                          delegate:nil
-                                                 cancelButtonTitle:NSLocalizedString(@"OKButton", @"")
-                                                 otherButtonTitles:nil];
-    [alert show];
 }
 
 - (BOOL)validateUsername:(id *)ioValue error:(NSError * __autoreleasing *)outError
@@ -204,7 +168,24 @@ NSString*   const   kAccountUpdateViewControllerDomain =   @"VAccountUpdateViewC
     return YES;
 }
 
-#pragma mark -
+#pragma mark - State
+
+- (void)didUpdate
+{
+
+}
+
+- (void)didFailToUpdate:(NSError *)error
+{
+    UIAlertView*    alert   =   [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"AccountUpdateFail", @"")
+                                                           message:error.localizedDescription
+                                                          delegate:nil
+                                                 cancelButtonTitle:NSLocalizedString(@"OKButton", @"")
+                                                 otherButtonTitles:nil];
+    [alert show];
+}
+
+#pragma mark - Actions
 
 - (IBAction)saveChangesClicked:(id)sender
 {
@@ -237,16 +218,49 @@ NSString*   const   kAccountUpdateViewControllerDomain =   @"VAccountUpdateViewC
     [[VObjectManager sharedManager] logout];
 }
 
+- (IBAction)showMenu
+{
+    [self.sideMenuViewController presentMenuViewController];
+}
+
 #pragma mark - Navigation
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
-    if ([segue.destinationViewController isKindOfClass:[VMenuViewController class]])
+    VWebContentViewController*  viewController = segue.destinationViewController;
+    
+    if ([segue.identifier isEqualToString:@"toAboutUs"])
     {
-        VMenuViewController *menuViewController = segue.destinationViewController;
-        menuViewController.transitioningDelegate = (id <UIViewControllerTransitioningDelegate>)[VMenuViewControllerTransitionDelegate new];
-        menuViewController.modalPresentationStyle = UIModalPresentationCustom;
+        viewController.urlKeyPath = kVChannelURLAbout;
+    }
+    else if ([segue.identifier isEqualToString:@"toPrivacyPolicies"])
+    {
+        viewController.urlKeyPath = kVChannelURLPrivacy;
+    }
+    else if ([segue.identifier isEqualToString:@"toAcknowledgements"])
+    {
+        viewController.urlKeyPath = kVChannelURLAcknowledgements;
     }
 }
+
+#pragma mark - UITextFieldDelegate
+
+- (BOOL)textFieldShouldReturn:(UITextField *)textField
+{
+    if ([textField isEqual:self.nameTextField])
+        [self.emailAddressTextField becomeFirstResponder];
+    else if ([textField isEqual:self.emailAddressTextField])
+        [self.passwordTextField becomeFirstResponder];
+    else
+        [self.passwordTextField resignFirstResponder];
+    
+    return YES;
+}
+
+- (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
+{
+    [[self view] endEditing:YES];
+}
+
 
 @end
