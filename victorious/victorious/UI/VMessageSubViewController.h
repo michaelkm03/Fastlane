@@ -6,10 +6,10 @@
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
-#import "VComposeContainerViewController.h"
+#import "VKeyboardBarContainerViewController.h"
 
 @class VConversation;
 
-@interface VMessageSubViewController : VComposeContainerViewController
+@interface VMessageSubViewController : VKeyboardBarContainerViewController
 @property (nonatomic, readwrite, strong)    VConversation*  conversation;
 @end

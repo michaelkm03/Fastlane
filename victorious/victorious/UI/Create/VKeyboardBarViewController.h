@@ -1,5 +1,5 @@
 //
-//  VComposeViewController.h
+//  VKeyboardBarViewController.h
 //  victorious
 //
 //  Created by David Keegan on 1/11/14.
@@ -13,7 +13,7 @@
 - (void)didComposeWithText:(NSString *)text data:(NSData *)data mediaExtension:(NSString *)mediaExtension mediaURL:(NSURL *)mediaURL;
 @end
 
-@interface VComposeViewController : VImagePickerViewController
+@interface VKeyboardBarViewController : VImagePickerViewController
 @property (nonatomic, weak) id<VComposeMessageDelegate> delegate;
 @property (weak, nonatomic, readonly) IBOutlet UITextField *textField;
 @end

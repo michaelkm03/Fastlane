@@ -1,20 +1,20 @@
 //
-//  VComposeContainerViewController.m
+//  VKeyboardBarContainerViewController.m
 //  victorious
 //
 //  Created by David Keegan on 1/13/14.
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
-#import "VComposeContainerViewController.h"
-#import "VComposeViewController.h"
+#import "VKeyboardBarContainerViewController.h"
+#import "VKeyboardBarViewController.h"
 #import "UIView+AutoLayout.h"
 
-@interface VComposeContainerViewController()
+@interface VKeyboardBarContainerViewController()
 @property (weak, nonatomic) NSLayoutConstraint *bottomConstraint;
 @end
 
-@implementation VComposeContainerViewController
+@implementation VKeyboardBarContainerViewController
 
 - (void)viewDidLoad
 {
@@ -51,7 +51,7 @@
 }
 
 
-- (VComposeViewController *)composeViewController
+- (VKeyboardBarViewController *)composeViewController
 {
     if(_composeViewController == nil)
     {

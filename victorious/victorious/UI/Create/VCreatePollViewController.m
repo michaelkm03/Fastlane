@@ -398,21 +398,6 @@ CGFloat VCreatePollViewControllerLargePadding = 20;
     [self clearRightMedia];
 }
 
-- (void)mediaButtonAction:(id)sender
-{
-    UIImagePickerController *imagePickerController = [[UIImagePickerController alloc] init];
-    imagePickerController.delegate = self;
-    imagePickerController.allowsEditing = YES;
-    imagePickerController.videoMaximumDuration = 10.0f;
-    if([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]){
-        [imagePickerController setSourceType:UIImagePickerControllerSourceTypeCamera];
-    }else{
-        [imagePickerController setSourceType:UIImagePickerControllerSourceTypePhotoLibrary];
-    }
-    imagePickerController.mediaTypes = @[(NSString *)kUTTypeImage, (NSString *)kUTTypeMovie];
-    [self presentViewController:imagePickerController animated:YES completion:nil];
-}
-
 - (void)closeButtonAction:(id)sender
 {
     [self dismissViewControllerAnimated:YES completion:nil];
@@ -442,41 +427,6 @@ CGFloat VCreatePollViewControllerLargePadding = 20;
 {
     [textField resignFirstResponder];
     return YES;
-}
-
-#pragma mark - UIImagePickerControllerDelegate
-
-- (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info{
-    [self dismissViewControllerAnimated:YES completion:nil];
-
-    if(UTTypeEqual((__bridge CFStringRef)(info[UIImagePickerControllerMediaType]), kUTTypeMovie))
-    {
-        NSURL *mediaURL = info[UIImagePickerControllerMediaURL];
-        AVURLAsset *asset = [[AVURLAsset alloc] initWithURL:mediaURL options:nil];
-        AVAssetImageGenerator *gen = [[AVAssetImageGenerator alloc] initWithAsset:asset];
-        gen.appliesPreferredTrackTransform = YES;
-        CMTime time = CMTimeMakeWithSeconds(0.0, 600);
-        NSError *error = nil;
-        CGImageRef image = [gen copyCGImageAtTime:time actualTime:NULL error:&error];
-        if(error)
-        {
-            NSLog(@"%@", error);
-        }
-
-        [self addMediaWithImage:[[UIImage alloc] initWithCGImage:image] data:[NSData dataWithContentsOfURL:mediaURL] andType:[mediaURL pathExtension]];
-
-        CGImageRelease(image);
-    }
-    else if(UTTypeEqual((__bridge CFStringRef)(info[UIImagePickerControllerMediaType]), kUTTypeImage))
-    {
-        UIImage *image = [info objectForKey:UIImagePickerControllerEditedImage];
-        if (image == nil)
-        {
-            image = [info objectForKey:UIImagePickerControllerOriginalImage];
-        }
-        
-        [self addMediaWithImage:image data:[NSData dataWithData:UIImagePNGRepresentation(image)] andType:@"png"];
-    }
 }
 
 @end

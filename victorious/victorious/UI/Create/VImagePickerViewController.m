@@ -11,7 +11,50 @@
 #import "VImagePickerViewController.h"
 #import "VConstants.h"
 
+@interface VImagePickerViewController () <UIImagePickerControllerDelegate, UINavigationControllerDelegate>
+
+@property (strong, nonatomic) UIImagePickerController* imagePicker;
+@property (nonatomic) VImagePickerViewControllerType type;
+
+@end
+
 @implementation VImagePickerViewController
+
+- (id)initWithType:(VImagePickerViewControllerType)type
+{
+    self = [super init];
+    if (self)
+    {
+        self.type = type;
+    }
+    return self;
+}
+
+- (UIImagePickerController*) imagePicker
+{
+    if (!_imagePicker)
+    {
+        _imagePicker = [[UIImagePickerController alloc] init];
+        
+        if([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera])
+            _imagePicker.sourceType = UIImagePickerControllerSourceTypeCamera;
+        else
+            _imagePicker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
+        
+        _imagePicker.delegate = self;
+        _imagePicker.allowsEditing = YES;
+        _imagePicker.videoMaximumDuration  = 10.0f;
+        
+        if (self.type == VImagePickerViewControllerPhoto)
+            _imagePicker.mediaTypes = @[(NSString *)kUTTypeImage];
+        else if (self.type == VImagePickerViewControllerVideo)
+            _imagePicker.mediaTypes = @[(NSString *)kUTTypeMovie];
+        else
+            _imagePicker.mediaTypes = @[(NSString *)kUTTypeImage, (NSString *)kUTTypeMovie];
+    }
+    
+    return _imagePicker;
+}
 
 #pragma mark - UIImagePickerControllerDelegate
 
@@ -65,20 +108,9 @@
 }
 
 #pragma mark - Button Actions
-- (IBAction)cameraButtonAction:(id)sender
+- (void)mediaButtonAction:(id)sender
 {
-    UIImagePickerController* controller = [[UIImagePickerController alloc] init];
-    
-    if([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera])
-        controller.sourceType = UIImagePickerControllerSourceTypeCamera;
-    else
-        controller.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
-    
-    controller.delegate = self;
-    controller.mediaTypes = @[(NSString *)kUTTypeImage, (NSString *)kUTTypeMovie];
-    controller.allowsEditing = YES;
-    
-    [self presentViewController:controller animated:YES completion:nil];
+    [self presentViewController:self.imagePicker animated:YES completion:nil];
 }
 
 #pragma mark - Overrides

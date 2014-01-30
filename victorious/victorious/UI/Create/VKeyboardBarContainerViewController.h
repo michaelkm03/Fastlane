@@ -1,16 +1,16 @@
 //
-//  VComposeContainerViewController.h
+//  VKeyboardBarContainerViewController.h
 //  victorious
 //
 //  Created by David Keegan on 1/13/14.
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
-@class VComposeViewController;
+@class VKeyboardBarViewController;
 
-@interface VComposeContainerViewController : UIViewController
+@interface VKeyboardBarContainerViewController : UIViewController
 
-@property (weak, nonatomic) VComposeViewController *composeViewController;
+@property (weak, nonatomic) VKeyboardBarViewController *composeViewController;
 @property (strong, nonatomic) UITableViewController *conversationTableViewController;
 @property (nonatomic) BOOL showKeyboard;
 

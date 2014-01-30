@@ -204,40 +204,12 @@ CGFloat VCreateViewControllerLargePadding = 20;
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
-- (void)mediaButtonAction:(id)sender
-{
-    UIImagePickerController *imagePickerController = [[UIImagePickerController alloc] init];
-    imagePickerController.delegate = self;
-    imagePickerController.allowsEditing = YES;
-    imagePickerController.videoMaximumDuration = 10.0f;
-    if([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]){
-        [imagePickerController setSourceType:UIImagePickerControllerSourceTypeCamera];
-    }else{
-        [imagePickerController setSourceType:UIImagePickerControllerSourceTypePhotoLibrary];
-    }
-    switch(self.type)
-    {
-        case VCreateViewControllerTypePhoto:
-            imagePickerController.mediaTypes = @[(NSString *)kUTTypeImage];
-            break;
-        case VCreateViewControllerTypeVideo:
-            imagePickerController.mediaTypes = @[(NSString *)kUTTypeMovie];
-            break;
-        case VCreateViewControllerTypePhotoAndVideo:
-            imagePickerController.mediaTypes = @[(NSString *)kUTTypeImage, (NSString *)kUTTypeMovie];
-            break;
-    }
-
-    [self presentViewController:imagePickerController animated:YES completion:nil];
-}
-
 - (void)postButtonAction:(id)sender
 {
     [self.textView resignFirstResponder];
     
     [self.delegate createViewController:self shouldPostWithMessage:self.textView.text
                                    data:self.mediaData mediaType:self.mediaType];
-
 }
 
 - (void)removeMediaButtonAction:(id)sender
@@ -290,45 +262,5 @@ CGFloat VCreateViewControllerLargePadding = 20;
     return YES;
 }
 
-#pragma mark - UIImagePickerControllerDelegate
-
-- (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info{
-    [self dismissViewControllerAnimated:YES completion:nil];
-
-    if(UTTypeEqual((__bridge CFStringRef)(info[UIImagePickerControllerMediaType]), kUTTypeMovie))
-    {
-        NSURL *mediaURL = info[UIImagePickerControllerMediaURL];
-        self.mediaData = [NSData dataWithContentsOfURL:mediaURL];
-        self.mediaType = [mediaURL pathExtension];
-
-        AVURLAsset *asset = [[AVURLAsset alloc] initWithURL:mediaURL options:nil];
-        AVAssetImageGenerator *gen = [[AVAssetImageGenerator alloc] initWithAsset:asset];
-        gen.appliesPreferredTrackTransform = YES;
-        CMTime time = CMTimeMakeWithSeconds(0.0, 600);
-        NSError *error = nil;
-        CGImageRef image = [gen copyCGImageAtTime:time actualTime:NULL error:&error];
-        if(error)
-        {
-            NSLog(@"%@", error);
-        }
-        self.previewImage.image = [[UIImage alloc] initWithCGImage:image];
-        [self.previewImage setHidden:NO];
-        CGImageRelease(image);
-    }
-    else if(UTTypeEqual((__bridge CFStringRef)(info[UIImagePickerControllerMediaType]), kUTTypeImage))
-    {
-        UIImage *image = [info objectForKey:UIImagePickerControllerEditedImage];
-        if (image == nil)
-        {
-            image = [info objectForKey:UIImagePickerControllerOriginalImage];
-        }
-        
-        self.mediaData = [NSData dataWithData:UIImagePNGRepresentation(image)];
-        self.mediaType = @"png";
-
-        self.previewImage.image = image;
-        [self.previewImage setHidden:NO];
-    }
-}
 
 @end

@@ -11,7 +11,7 @@
 #import "VCommentCell.h"
 #import "VMessage+RestKit.h"
 #import "VMedia+RestKit.h"
-#import "VComposeViewController.h"
+#import "VKeyboardBarViewController.h"
 #import "VThemeManager.h"
 #import "VObjectManager.h"
 #import "VUser+RestKit.h"

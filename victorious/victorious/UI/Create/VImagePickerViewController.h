@@ -8,10 +8,17 @@
 
 #import <UIKit/UIKit.h>
 
+
+typedef NS_ENUM(NSUInteger, VImagePickerViewControllerType){
+    VImagePickerViewControllerPhoto,
+    VImagePickerViewControllerVideo,
+    VImagePickerViewControllerPhotoAndVideo
+};
+
 @interface VImagePickerViewController : UIViewController <UINavigationControllerDelegate, UIImagePickerControllerDelegate>
 
 #pragma mark - Button Actions
-- (IBAction)cameraButtonAction:(id)sender;
+- (void)mediaButtonAction:(id)sender;
 
 #pragma mark - Overrides
 - (void)imagePickerFinishedWithData:(NSData*)data
