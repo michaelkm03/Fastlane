@@ -21,6 +21,7 @@
 @property (nonatomic, weak) IBOutlet    UITextField*    usernameTextField;
 @property (nonatomic, weak) IBOutlet    UITextField*    locationTextField;
 @property (nonatomic, weak) IBOutlet    UITextView*     taglineTextView;
+@property (nonatomic, weak) IBOutlet    UILabel*        tagLinePlaceholderLabel;
 @end
 
 @implementation VProfileWithEmailViewController
@@ -88,6 +89,18 @@
 - (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
 {
     [[self view] endEditing:YES];
+}
+
+#pragma mark - UITextViewDelegate
+
+- (void)textViewDidChange:(UITextView *)textView
+{
+    self.tagLinePlaceholderLabel.hidden = ([textView.text length] > 0);
+}
+
+- (void)textViewDidEndEditing:(UITextView *)textView
+{
+    self.tagLinePlaceholderLabel.hidden = ([textView.text length] > 0);
 }
 
 #pragma mark - CCLocationManagerDelegate

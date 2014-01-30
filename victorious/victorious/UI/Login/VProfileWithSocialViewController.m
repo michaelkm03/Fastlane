@@ -21,6 +21,7 @@
 @property (nonatomic, weak) IBOutlet    UIImageView*    profileImageView;
 @property (nonatomic, weak) IBOutlet    UIButton*       cameraButton;
 @property (nonatomic, weak) IBOutlet    UISwitch*       agreeSwitch;
+@property (nonatomic, weak) IBOutlet    UILabel*        tagLinePlaceholderLabel;
 @end
 
 @implementation VProfileWithSocialViewController
@@ -95,6 +96,19 @@
 {
     [[self view] endEditing:YES];
 }
+
+#pragma mark - UITextViewDelegate
+
+- (void)textViewDidChange:(UITextView *)textView
+{
+    self.tagLinePlaceholderLabel.hidden = ([textView.text length] > 0);
+}
+
+- (void)textViewDidEndEditing:(UITextView *)textView
+{
+    self.tagLinePlaceholderLabel.hidden = ([textView.text length] > 0);
+}
+
 
 #pragma mark - UIImagePickerControllerDelegate
 
