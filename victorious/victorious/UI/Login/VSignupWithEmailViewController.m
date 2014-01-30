@@ -183,6 +183,9 @@ NSString*   const   kSignupErrorDomain =   @"VSignupErrorDomain";
 
 - (IBAction)next:(id)sender
 {
+    [self didSignUpWithUser:nil];
+    return;
+    
     [[self view] endEditing:YES];
 
     if (YES == [self shouldSignUpWithUsername:self.usernameTextField.text
