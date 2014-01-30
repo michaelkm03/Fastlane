@@ -14,7 +14,6 @@
 @interface VImagePickerViewController () <UIImagePickerControllerDelegate, UINavigationControllerDelegate>
 
 @property (strong, nonatomic) UIImagePickerController* imagePicker;
-@property (nonatomic, setter = setType:) VImagePickerViewControllerType type;
 
 @end
 
