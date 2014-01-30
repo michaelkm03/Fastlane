@@ -17,7 +17,6 @@
 #import "VUser+RestKit.h"
 #import "NSDate+timeSince.h"
 #import "VThemeManager.h"
-#import "VRootNavigationController.h"
 #import "NSString+VParseHelp.h"
 
 @interface VCommentCell()
@@ -147,19 +146,19 @@
 
 - (IBAction)profileButtonAction:(id)sender
 {
-    VRootNavigationController *rootViewController =
-    (VRootNavigationController *)[[[[UIApplication sharedApplication] delegate] window] rootViewController];
-
-    if([self.commentOrMessage isKindOfClass:[VComment class]])
-    {
-        VComment* comment = (VComment *)self.commentOrMessage;
-        [rootViewController showUserProfileForUserID:comment.userId.integerValue];
-    }
-    else
-    {
-        VMessage* message = (VMessage *)self.commentOrMessage;
-        [rootViewController showUserProfileForUserID:message.senderUserId.integerValue];
-    }
+//    VRootNavigationController *rootViewController =
+//    (VRootNavigationController *)[[[[UIApplication sharedApplication] delegate] window] rootViewController];
+//
+//    if([self.commentOrMessage isKindOfClass:[VComment class]])
+//    {
+//        VComment* comment = (VComment *)self.commentOrMessage;
+//        [rootViewController showUserProfileForUserID:comment.userId.integerValue];
+//    }
+//    else
+//    {
+//        VMessage* message = (VMessage *)self.commentOrMessage;
+//        [rootViewController showUserProfileForUserID:message.senderUserId.integerValue];
+//    }
 }
 
 @end

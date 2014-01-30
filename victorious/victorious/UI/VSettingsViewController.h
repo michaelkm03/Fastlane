@@ -19,6 +19,6 @@ NS_ENUM(NSUInteger, VAccountUpdateViewControllerErrorCode)
 
 @interface VSettingsViewController : UITableViewController
 
-+ (VSettingsViewController *)sharedSettingsViewController;
++ (VSettingsViewController *)settingsViewController;
 
 @end

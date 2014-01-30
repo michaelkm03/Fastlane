@@ -7,7 +7,7 @@
 //
 
 #import "VStreamsCommentsController.h"
-#import "VSimpleLoginViewController.h"
+#import "VLoginViewController.h"
 
 #import "VComment.h"
 #import "VSequence+Fetcher.h"
@@ -167,7 +167,7 @@ static NSString* CommentCache = @"CommentCache";
 {
     if (![VObjectManager sharedManager].isAuthorized)
     {
-        [self presentViewController:[VSimpleLoginViewController sharedLoginViewController] animated:YES completion:NULL];
+        [self presentViewController:[VLoginViewController loginViewController] animated:YES completion:NULL];
         return;
     }
     
@@ -194,7 +194,7 @@ static NSString* CommentCache = @"CommentCache";
 {
     if (![VObjectManager sharedManager].isAuthorized)
     {
-        [self presentViewController:[VSimpleLoginViewController sharedLoginViewController] animated:YES completion:NULL];
+        [self presentViewController:[VLoginViewController loginViewController] animated:YES completion:NULL];
         return;
     }
     
@@ -223,7 +223,7 @@ static NSString* CommentCache = @"CommentCache";
 {
     if (![VObjectManager sharedManager].isAuthorized)
     {
-        [self presentViewController:[VSimpleLoginViewController sharedLoginViewController] animated:YES completion:NULL];
+        [self presentViewController:[VLoginViewController loginViewController] animated:YES completion:NULL];
         return;
     }
     
@@ -266,7 +266,7 @@ static NSString* CommentCache = @"CommentCache";
 {
     if (![VObjectManager sharedManager].isAuthorized)
     {
-        [self presentViewController:[VSimpleLoginViewController sharedLoginViewController] animated:YES completion:NULL];
+        [self presentViewController:[VLoginViewController loginViewController] animated:YES completion:NULL];
         return;
     }
     
@@ -664,7 +664,7 @@ static NSString* CommentCache = @"CommentCache";
 {
     if ([identifier isEqualToString:@"toComposeMessage"] && ![VObjectManager sharedManager].isAuthorized)
     {
-        [self presentViewController:[VSimpleLoginViewController sharedLoginViewController] animated:YES completion:NULL];
+        [self presentViewController:[VLoginViewController loginViewController] animated:YES completion:NULL];
         return NO;
     }
     

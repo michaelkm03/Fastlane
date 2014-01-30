@@ -8,8 +8,11 @@
 
 #import "VLoginViewController.h"
 
+@class VUser;
+
 @interface VProfileWithSocialViewController : UITableViewController
 
-@property (nonatomic, assign)   VLoginType     loginType;
+@property (nonatomic, assign)   VLoginType      loginType;
+@property (nonatomic, strong)   VUser*          profile;
 
 @end

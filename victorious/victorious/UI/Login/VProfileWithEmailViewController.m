@@ -7,6 +7,7 @@
 //
 
 #import "VProfileWithEmailViewController.h"
+#import "VUser.h"
 #import "VConstants.h"
 
 @import CoreLocation;
@@ -36,8 +37,10 @@
     }
     
     self.usernameTextField.delegate = self;
+    self.usernameTextField.text = self.profile.shortName;
     self.locationTextField.delegate = self;
     self.taglineTextView.delegate = self;
+    self.taglineTextView.text = self.profile.tagline;
 }
 
 #pragma mark - Actions
@@ -60,6 +63,12 @@
     picker.allowsEditing = YES;
  
     [self presentViewController:picker animated:YES completion:nil];
+}
+
+- (IBAction)done:(id)sender
+{
+    [self.navigationController popViewControllerAnimated:NO];
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 #pragma mark - UITextFieldDelegate

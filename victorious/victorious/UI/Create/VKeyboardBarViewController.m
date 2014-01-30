@@ -15,7 +15,7 @@
 //#import "VSequence.h"
 //#import "VConstants.h"
 
-#import "VSimpleLoginViewController.h"
+#import "VLoginViewController.h"
 
 @interface VKeyboardBarViewController() //<UICollectionViewDataSource, UICollectionViewDelegateFlowLayout>
 @property (weak, nonatomic, readwrite) IBOutlet UITextField *textField;
@@ -48,7 +48,7 @@
 {
     if(![VObjectManager sharedManager].mainUser)
     {
-        [self presentViewController:[VSimpleLoginViewController sharedLoginViewController] animated:YES completion:NULL];
+        [self presentViewController:[VLoginViewController loginViewController] animated:YES completion:NULL];
         return;
     }
     [self.textField resignFirstResponder];

@@ -7,8 +7,7 @@
 //
 
 #import "VInboxViewController.h"
-#import "VMenuViewController.h"
-#import "VMenuViewControllerTransition.h"
+#import "UIViewController+VSideMenuViewController.h"
 #import "VConversation+RestKit.h"
 #import "VMessageSubViewController.h"
 #import "VNewsViewController.h"
@@ -167,6 +166,11 @@ static  NSString*   kNewsCellViewIdentifier       =   @"VNewsCell";
 
 #pragma mark - Navigation
 
+- (IBAction)showMenu
+{
+    [self.sideMenuViewController presentMenuViewController];
+}
+
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
     if ([segue.identifier isEqualToString:@"toMessage"])
@@ -186,12 +190,6 @@ static  NSString*   kNewsCellViewIdentifier       =   @"VNewsCell";
         VConversation* conversation = [self.fetchedResultsController objectAtIndexPath:[self.tableView indexPathForCell:cell]];
         
         [subview setConversation:conversation];
-    }
-    else if ([segue.destinationViewController isKindOfClass:[VMenuViewController class]])
-    {
-        VMenuViewController *menuViewController = segue.destinationViewController;
-        menuViewController.transitioningDelegate = (id <UIViewControllerTransitioningDelegate>)[VMenuViewControllerTransitionDelegate new];
-        menuViewController.modalPresentationStyle = UIModalPresentationCustom;
     }
 }
 

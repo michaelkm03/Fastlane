@@ -17,6 +17,7 @@ NSString*   const   kVLoginErrorDomain =   @"VLoginErrorDomain";
 @interface VLoginWithEmailViewController () <UITextFieldDelegate>
 @property   (nonatomic, weak)   IBOutlet    UITextField*    usernameTextField;
 @property   (nonatomic, weak)   IBOutlet    UITextField*    passwordTextField;
+@property   (nonatomic, strong)             VUser*          profile;
 @end
 
 @implementation VLoginWithEmailViewController
@@ -29,6 +30,13 @@ NSString*   const   kVLoginErrorDomain =   @"VLoginErrorDomain";
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+
+    self.view.layer.contents = (id)[UIImage imageNamed:@"loginBackground"].CGImage;
+    
+    self.usernameTextField.leftView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"emailImage"]];
+    self.usernameTextField.leftViewMode = UITextFieldViewModeAlways;
+    self.passwordTextField.leftView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"passwordImage"]];
+    self.passwordTextField.leftViewMode = UITextFieldViewModeAlways;
 
     self.usernameTextField.delegate  =   self;
     self.passwordTextField.delegate  =   self;
@@ -154,6 +162,8 @@ NSString*   const   kVLoginErrorDomain =   @"VLoginErrorDomain";
 {
     VLog(@"Succesfully logged in as: %@", mainUser);
     
+    self.profile = mainUser;
+
     [[NSNotificationCenter defaultCenter] postNotificationName:kLoggedInChangedNotification object:mainUser];
     
     [self.navigationController popToRootViewControllerAnimated:NO];
