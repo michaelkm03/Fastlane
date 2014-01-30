@@ -13,7 +13,7 @@
 #import "VThemeManager.h"
 #import "UIImage+ImageEffects.h"
 
-@interface VProfileWithSocialViewController ()  <UITextFieldDelegate, UITextViewDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate>
+@interface VProfileWithSocialViewController ()
 @property (nonatomic, weak) IBOutlet    UITextField*    nameTextField;
 @property (nonatomic, weak) IBOutlet    UITextField*    usernameTextField;
 @property (nonatomic, weak) IBOutlet    UITextField*    locationTextField;
@@ -135,7 +135,7 @@
 - (IBAction)next:(id)sender
 {
     
-    [self performSegueWithIdentifier:@"" sender:self];
+    [self performSegueWithIdentifier:@"toInviteWithSocial" sender:self];
 }
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender

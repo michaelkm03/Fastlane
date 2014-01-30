@@ -2,7 +2,7 @@
 //  VStreamsTableViewController.m
 //  victoriOS
 //
-//  Created by goWorld on 12/2/13.
+//  Created by Gary Philipp on 12/2/13.
 //  Copyright (c) 2013 Victorious Inc. All rights reserved.
 //
 

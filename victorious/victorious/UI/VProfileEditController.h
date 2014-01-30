@@ -8,6 +8,6 @@
 
 @class VUser;
 
-@interface VProfileEditViewController : UITableViewController
+@interface VProfileEditController : UITableViewController
 @property (nonatomic, readwrite, strong) VUser*     profile;
 @end

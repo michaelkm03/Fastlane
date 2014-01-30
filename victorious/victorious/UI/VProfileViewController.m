@@ -11,7 +11,7 @@
 #import "VObjectManager+Login.h"
 #import "VObjectManager+Users.h"
 #import "VObjectManager+DirectMessaging.h"
-#import "VProfileEditViewController.h"
+#import "VProfileEditController.h"
 #import "VMessageSubViewController.h"
 #import "VConversation.h"
 #import "VUser.h"
@@ -178,7 +178,7 @@
 {
     if ([segue.identifier isEqualToString:@"toEditProfile"])
     {
-        VProfileEditViewController* controller = (VProfileEditViewController *)segue.destinationViewController;
+        VProfileEditController* controller = (VProfileEditController *)segue.destinationViewController;
         controller.profile = self.profile;
     }
     else if ([segue.identifier isEqualToString:@"toComposeMessage"])

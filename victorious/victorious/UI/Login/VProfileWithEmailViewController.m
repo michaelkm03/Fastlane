@@ -12,7 +12,7 @@
 
 @import CoreLocation;
 
-@interface VProfileWithEmailViewController ()   <UITextFieldDelegate, UITextViewDelegate, CLLocationManagerDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate>
+@interface VProfileWithEmailViewController ()   <CLLocationManagerDelegate>
 @property (nonatomic, strong) CLLocationManager*    locationManager;
 @property (nonatomic, strong) CLGeocoder*           geoCoder;
 

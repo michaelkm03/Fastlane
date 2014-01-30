@@ -2,7 +2,7 @@
 //  VWebContentViewController.h
 //  victorious
 //
-//  Created by goWorld on 1/29/14.
+//  Created by Gary Philipp on 1/29/14.
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
