@@ -1,5 +1,5 @@
 //
-//  VCreateTopicViewController.h
+//  VCreateForumViewController.h
 //  victorious
 //
 //  Created by David Keegan on 1/9/14.
@@ -10,8 +10,8 @@
 
 #import "VCreateViewController.h"
 
-@interface VCreateTopicViewController : VCreateViewController
+@interface VCreateForumViewController : VCreateViewController
 
-- (instancetype)initWithDelegate:(id<VCreateSequenceDelegate>)delegate;
+@property (weak, nonatomic) IBOutlet UITextField* titleTextField;
 
 @end

@@ -34,10 +34,9 @@ CGFloat VCreateViewControllerLargePadding = 20;
     
     [self setType:self.type];
     
-    
     [self.mediaView constrainToSize:self.mediaView.frame.size];
     [self.mediaView centerInContainerOnAxis:NSLayoutAttributeCenterX];
-    self.contentTopConstraint = [self.mediaView pinEdge:NSLayoutAttributeTop toEdge:NSLayoutAttributeBottom ofItem:self.topLayoutGuide inset:VCreateViewControllerLargePadding];
+    [self.mediaView pinEdge:NSLayoutAttributeTop toEdge:NSLayoutAttributeBottom ofItem:self.topLayoutGuide inset:VCreateViewControllerLargePadding];
     
     self.view.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKeyPath:@"theme.color.post.background"];
     
@@ -60,7 +59,6 @@ CGFloat VCreateViewControllerLargePadding = 20;
     self.textView.textColor = [[VThemeManager sharedThemeManager] themedColorForKeyPath:@"theme.color.text.post"];
     self.textView.layer.borderColor = [[[VThemeManager sharedThemeManager] themedColorForKeyPath:@"theme.color.post.input.border"] CGColor];
     self.textView.layer.borderWidth = 1;
-    [self.textView constrainToHeight:self.textView.frame.size.height];
     
     self.postButton.tintColor = [[VThemeManager sharedThemeManager] themedColorForKeyPath:@"theme.color.text.post.postButton"];
     self.postButton.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKeyPath:@"theme.color.post.postButton.background"];
@@ -144,8 +142,9 @@ CGFloat VCreateViewControllerLargePadding = 20;
 {
     [self.textView resignFirstResponder];
     
-    [self.delegate createViewController:self shouldPostWithMessage:self.textView.text
-                                   data:self.mediaData mediaType:self.mediaType];
+    [self.delegate createPostWithMessage:self.textView.text
+                                    data:self.mediaData
+                               mediaType:self.mediaType];
 }
 
 #pragma mark - Notifications
