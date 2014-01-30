@@ -151,7 +151,7 @@ UIImagePickerControllerDelegate, UINavigationControllerDelegate>
     removeMediaButton.tintColor = [[VThemeManager sharedThemeManager] themedColorForKeyPath:@"theme.color.post.media.remove"];
     removeMediaButton.translatesAutoresizingMaskIntoConstraints = NO;
     [removeMediaButton setImage:removeMediaButtonImage forState:UIControlStateNormal];
-    [removeMediaButton addTarget:self action:@selector(removeMediaButtonAction:) forControlEvents:UIControlEventTouchUpInside];
+    [removeMediaButton addTarget:self action:@selector(clearMedia) forControlEvents:UIControlEventTouchUpInside];
     [previewImage addSubview:removeMediaButton];
     [removeMediaButton constrainToSize:removeMediaButtonImage.size];
     [removeMediaButton pinToSuperviewEdges:JRTViewPinTopEdge|JRTViewPinLeftEdge inset:VCreateTopicViewControllerPadding];
@@ -193,7 +193,8 @@ UIImagePickerControllerDelegate, UINavigationControllerDelegate>
     [self.postButton setEnabled:YES];
 }
 
-- (void)clearMedia{
+- (IBAction)clearMedia:(id)sender
+{
     self.mediaData = nil;
     self.mediaType = nil;
     self.previewImage.image = nil;
@@ -213,25 +214,14 @@ UIImagePickerControllerDelegate, UINavigationControllerDelegate>
 
 #pragma mark - Actions
 
-- (IBAction)closeButtonAction:(id)sender
-{
-    [self.textView resignFirstResponder];
-    [self dismissViewControllerAnimated:YES completion:nil];
-}
-
-- (void)postButtonAction:(id)sender
-{
-    [self.textView resignFirstResponder];
-    [self.delegate createViewController:self
-               shouldPostTopicWithTitle:self.titleTextField.text message:self.textView.text
-                                   data:self.mediaData mediaType:self.mediaType];
-
-}
-
-- (void)removeMediaButtonAction:(id)sender
-{
-    [self clearMedia];
-}
+//- (void)postButtonAction:(id)sender
+//{
+//    [self.textView resignFirstResponder];
+//    [self.delegate createViewController:self
+//               shouldPostTopicWithTitle:self.titleTextField.text message:self.textView.text
+//                                   data:self.mediaData mediaType:self.mediaType];
+//
+//}
 
 - (void)textFieldDidChange:(UITextField *)textField
 {
@@ -243,34 +233,6 @@ UIImagePickerControllerDelegate, UINavigationControllerDelegate>
 - (BOOL)textFieldShouldReturn:(UITextField *)textField
 {
     [textField resignFirstResponder];
-    return YES;
-}
-
-#pragma mark - UITextViewDelegate
-
-- (void)textViewDidChange:(UITextView *)textView
-{
-    NSInteger characterCount = VConstantsMessageLength-[textView.text length];
-    if(characterCount < 0)
-    {
-        self.characterCountLabel.textColor = [[VThemeManager sharedThemeManager] themedColorForKeyPath:@"theme.color.text.post.count.invalid"];
-    }
-    else
-    {
-        self.characterCountLabel.textColor = [[VThemeManager sharedThemeManager] themedColorForKeyPath:@"theme.color.text.post.count"];
-    }
-    self.characterCountLabel.text = [NSString stringWithFormat:@"%lu", (unsigned long)characterCount];
-    [self validatePostButtonState];
-}
-
-- (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text
-{
-    if([text isEqualToString:@"\n"])
-    {
-        [textView resignFirstResponder];
-        return NO;
-    }
-
     return YES;
 }
 

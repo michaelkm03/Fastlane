@@ -14,7 +14,7 @@
 @interface VImagePickerViewController () <UIImagePickerControllerDelegate, UINavigationControllerDelegate>
 
 @property (strong, nonatomic) UIImagePickerController* imagePicker;
-@property (nonatomic) VImagePickerViewControllerType type;
+@property (nonatomic, setter = setType:) VImagePickerViewControllerType type;
 
 @end
 
@@ -28,6 +28,16 @@
         self.type = type;
     }
     return self;
+}
+
+- (void)setType:(VImagePickerViewControllerType)type
+{
+    if (self.type == VImagePickerViewControllerPhoto)
+        self.imagePicker.mediaTypes = @[(NSString *)kUTTypeImage];
+    else if (self.type == VImagePickerViewControllerVideo)
+        self.imagePicker.mediaTypes = @[(NSString *)kUTTypeMovie];
+    else
+        self.imagePicker.mediaTypes = @[(NSString *)kUTTypeImage, (NSString *)kUTTypeMovie];
 }
 
 - (UIImagePickerController*) imagePicker
@@ -44,13 +54,6 @@
         _imagePicker.delegate = self;
         _imagePicker.allowsEditing = YES;
         _imagePicker.videoMaximumDuration  = 10.0f;
-        
-        if (self.type == VImagePickerViewControllerPhoto)
-            _imagePicker.mediaTypes = @[(NSString *)kUTTypeImage];
-        else if (self.type == VImagePickerViewControllerVideo)
-            _imagePicker.mediaTypes = @[(NSString *)kUTTypeMovie];
-        else
-            _imagePicker.mediaTypes = @[(NSString *)kUTTypeImage, (NSString *)kUTTypeMovie];
     }
     
     return _imagePicker;
@@ -108,7 +111,7 @@
 }
 
 #pragma mark - Button Actions
-- (void)mediaButtonAction:(id)sender
+- (IBAction)mediaButtonAction:(id)sender
 {
     [self presentViewController:self.imagePicker animated:YES completion:nil];
 }

@@ -8,7 +8,9 @@
 
 #import "VCreateSequenceDelegate.h"
 
-@interface VCreateTopicViewController : UIViewController
+#import "VCreateViewController.h"
+
+@interface VCreateTopicViewController : VCreateViewController
 
 - (instancetype)initWithDelegate:(id<VCreateSequenceDelegate>)delegate;
 
