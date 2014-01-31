@@ -1,5 +1,5 @@
 //
-//  VLoginWithSocialViewController.h
+//  VProfileWithSocialViewController.h
 //  victorious
 //
 //  Created by Gary Philipp on 1/27/14.
