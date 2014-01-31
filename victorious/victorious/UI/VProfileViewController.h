@@ -14,6 +14,6 @@ typedef NS_ENUM(NSInteger, VProfileUserID)
 @interface VProfileViewController : UIViewController
 
 + (instancetype)profileWithSelf;
-+ (instancetype)profileWithUser:(VProfileUserID)aUserID;
++ (instancetype)profileWithUserID:(VProfileUserID)aUserID;
 
 @end

@@ -44,7 +44,7 @@
     return profileViewController;
 }
 
-+ (instancetype)profileWithUser:(VProfileUserID)aUserID
++ (instancetype)profileWithUserID:(VProfileUserID)aUserID
 {
     UIViewController*   currentViewController = [[UIApplication sharedApplication] delegate].window.rootViewController;
     VProfileViewController* profileViewController = (VProfileViewController*)[currentViewController.storyboard instantiateViewControllerWithIdentifier: @"profile"];
