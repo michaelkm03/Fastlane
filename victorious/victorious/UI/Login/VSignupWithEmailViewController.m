@@ -11,6 +11,7 @@
 #import "VObjectManager+Login.h"
 #import "VUser.h"
 #import "TTTAttributedLabel.h"
+#import "VThemeManager.h"
 
 NSString*   const   kSignupErrorDomain =   @"VSignupErrorDomain";
 
@@ -36,11 +37,11 @@ NSString*   const   kSignupErrorDomain =   @"VSignupErrorDomain";
     [self.usernameTextField becomeFirstResponder];
 
     self.agreementText.delegate = self;
-    [self.agreementText setText:@"I'm at least 13 years old and agree to Terms of Service"];
-    NSRange linkRange = [self.agreementText.text rangeOfString:@"Terms of Service"];
+    [self.agreementText setText:[[VThemeManager sharedThemeManager] themedStringForPath:kVAgreementText]];
+    NSRange linkRange = [self.agreementText.text rangeOfString:[[VThemeManager sharedThemeManager] themedStringForPath:kVAgreementLinkText]];
     if (linkRange.length > 0)
     {
-        NSURL *url = [NSURL URLWithString:@"http://en.wikipedia.org/wiki/"];
+        NSURL *url = [NSURL URLWithString:[[VThemeManager sharedThemeManager] themedStringForPath:kVAgreementLink]];
         [self.agreementText addLinkToURL:url withRange:linkRange];
     }
 }

@@ -16,6 +16,10 @@ extern  NSString*   const   kVChannelURLAcknowledgements;
 extern  NSString*   const   kVChannelURLSupport;
 extern  NSString*   const   kVChannelName;
 
+extern  NSString*   const   kVAgreementText;
+extern  NSString*   const   kVAgreementLinkText;
+extern  NSString*   const   kVAgreementLink;
+
 extern  NSString*   const   kVMenuBackgroundImage;
 extern  NSString*   const   kVMenuBackgroundImage5;
 extern  NSString*   const   kMenuTextFont;

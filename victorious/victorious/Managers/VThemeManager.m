@@ -16,6 +16,10 @@ NSString*   const   kVChannelURLAcknowledgements        =   @"channel.url.acknow
 NSString*   const   kVChannelURLSupport                 =   @"channel.url.support";
 NSString*   const   kVChannelName                       =   @"channel.name";
 
+NSString*   const   kVAgreementText                     =   @"agreement.text";
+NSString*   const   kVAgreementLinkText                 =   @"agreement.linkText";
+NSString*   const   kVAgreementLink                     =   @"agreement.link";
+
 NSString*   const   kVMenuBackgroundImage               =   @"LaunchImage-700";
 NSString*   const   kVMenuBackgroundImage5              =   @"LaunchImage-700-568h";
 NSString*   const   kMenuTextFont                       =   @"theme.font.menu";
