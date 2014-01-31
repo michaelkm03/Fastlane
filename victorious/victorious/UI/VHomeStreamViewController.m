@@ -9,7 +9,7 @@
 #import "VHomeStreamViewController.h"
 #import "VConstants.h"
 
-#import "VCreateViewController.h"
+#import "VCreatePollViewController.h"
 
 @interface VHomeStreamViewController ()
 @end
@@ -34,7 +34,7 @@
     [super viewDidLoad];
     
     UIViewController*   currentViewController = [[UIApplication sharedApplication] delegate].window.rootViewController;
-    VCreateViewController* createView = (VCreateViewController*)[currentViewController.storyboard instantiateViewControllerWithIdentifier: NSStringFromClass([VCreateViewController class])];
+    VCreatePollViewController* createView = (VCreatePollViewController*)[currentViewController.storyboard instantiateViewControllerWithIdentifier: NSStringFromClass([VCreatePollViewController class])];
     createView.delegate = self;
     createView.type = VImagePickerViewControllerPhoto;
     [self presentViewController:[[UINavigationController alloc] initWithRootViewController:createView] animated:YES completion:nil];

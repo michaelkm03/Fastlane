@@ -49,7 +49,6 @@ CGFloat VCreateViewControllerLargePadding = 20;
     newImage = [self.removeMediaButton.imageView.image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
     [self.removeMediaButton setImage:newImage forState:UIControlStateNormal];
     self.removeMediaButton.tintColor = [[VThemeManager sharedThemeManager] themedColorForKeyPath:@"theme.color.post.media.remove"];
-    [self.previewImageView addSubview: self.removeMediaButton];
     
     self.mediaLabel.textColor = [[VThemeManager sharedThemeManager] themedColorForKeyPath:@"theme.color.text.post.mediaLabel"];
     [self.mediaLabel centerInContainerOnAxis:NSLayoutAttributeCenterX];
@@ -128,7 +127,9 @@ CGFloat VCreateViewControllerLargePadding = 20;
     self.mediaData = nil;
     self.mediaType = nil;
     self.previewImageView.image = nil;
-    [self.previewImageView setHidden:YES];
+    self.previewImageView.hidden = YES;;
+    self.removeMediaButton.hidden = YES;
+
 }
 
 - (IBAction)closeButtonAction:(id)sender
@@ -206,5 +207,6 @@ CGFloat VCreateViewControllerLargePadding = 20;
     [self.previewImageView setImage: previewImage];
     
     self.previewImageView.hidden = NO;
+    self.removeMediaButton.hidden = NO;
 }
 @end

@@ -117,8 +117,8 @@
          }
          else if([[actionSheet buttonTitleAtIndex:buttonIndex] isEqualToString:pollTitle])
          {
-             VCreatePollViewController *createViewController = [[VCreatePollViewController alloc] initWithDelegate:self];
-             [wself presentViewController:[[UINavigationController alloc] initWithRootViewController:createViewController] animated:YES completion:nil];
+//             VCreatePollViewController *createViewController = [[VCreatePollViewController alloc] initWithDelegate:self];
+//             [wself presentViewController:[[UINavigationController alloc] initWithRootViewController:createViewController] animated:YES completion:nil];
          }
      }];
     [actionSheet showInView:self.view];
