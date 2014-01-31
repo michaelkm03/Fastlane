@@ -36,7 +36,7 @@ CGFloat VCreateViewControllerLargePadding = 20;
     
     [self.mediaView constrainToSize:self.mediaView.frame.size];
     [self.mediaView centerInContainerOnAxis:NSLayoutAttributeCenterX];
-    [self.mediaView pinEdge:NSLayoutAttributeTop toEdge:NSLayoutAttributeBottom ofItem:self.topLayoutGuide inset:VCreateViewControllerLargePadding];
+//    [self.mediaView pinEdge:NSLayoutAttributeTop toEdge:NSLayoutAttributeBottom ofItem:self.topLayoutGuide inset:VCreateViewControllerLargePadding];
     
     self.view.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKeyPath:@"theme.color.post.background"];
     
@@ -45,22 +45,10 @@ CGFloat VCreateViewControllerLargePadding = 20;
     self.mediaButton.tintColor = [[VThemeManager sharedThemeManager] themedColorForKeyPath:@"theme.color.post.mediaButton.icon"];
     self.mediaButton.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKeyPath:@"theme.color.post.mediaButton.background"];
     self.mediaButton.layer.cornerRadius = self.mediaButton.frame.size.height/2;
-    
-//    UIImage *removeMediaButtonImage = [UIImage imageNamed:@"PostDelete"];
-//    UIButton *removeMediaButton = [UIButton buttonWithType:UIButtonTypeSystem];
-//    removeMediaButton.tintColor = [[VThemeManager sharedThemeManager] themedColorForKeyPath:@"theme.color.post.media.remove"];
-//    removeMediaButton.translatesAutoresizingMaskIntoConstraints = NO;
-//    [removeMediaButton setImage:removeMediaButtonImage forState:UIControlStateNormal];
-//    [removeMediaButton addTarget:self action:@selector(clearMedia) forControlEvents:UIControlEventTouchUpInside];
-//    [previewImage addSubview:removeMediaButton];
-//    [removeMediaButton constrainToSize:removeMediaButtonImage.size];
-//    [removeMediaButton pinToSuperviewEdges:JRTViewPinTopEdge|JRTViewPinLeftEdge inset:VCreateForumViewControllerPadding];
 
     newImage = [self.removeMediaButton.imageView.image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
     [self.removeMediaButton setImage:newImage forState:UIControlStateNormal];
     self.removeMediaButton.tintColor = [[VThemeManager sharedThemeManager] themedColorForKeyPath:@"theme.color.post.media.remove"];
-//    [self.previewImage addSubview:self.removeMediaButton];
-//    [self.removeMediaButton pinToSuperviewEdges:JRTViewPinTopEdge|JRTViewPinLeftEdge inset:VCreateViewControllerPadding];
     
     self.mediaLabel.textColor = [[VThemeManager sharedThemeManager] themedColorForKeyPath:@"theme.color.text.post.mediaLabel"];
     [self.mediaLabel centerInContainerOnAxis:NSLayoutAttributeCenterX];
