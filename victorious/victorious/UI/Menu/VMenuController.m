@@ -252,25 +252,7 @@ NSString *const VMenuControllerDidSelectRowNotification = @"VMenuTableViewContro
 //            }
 //            break;
 //        }
-//        case VMenuTableViewControllerRowSettings:
-//        {
-//            self.viewControllers = @[[VSettingsViewController sharedSettingsViewController]];
-//            [self dismissViewControllerAnimated:YES completion:nil];
-//            break;
-//        }
-//        case VMenuTableViewControllerRowHelp:
-//        {
-//            break;
-//        }
 //    }
-
-
-//- (void)showUserProfileForUserID:(NSInteger)userID
-//{
-//    VProfileViewController* profileViewController = [VProfileViewController sharedModalProfileViewController];
-//    profileViewController.userID = userID;
-//    [self presentViewController:[[UINavigationController alloc] initWithRootViewController:profileViewController] animated:YES completion:nil];
-//}
 
 - (UIStatusBarStyle)preferredStatusBarStyle
 {
