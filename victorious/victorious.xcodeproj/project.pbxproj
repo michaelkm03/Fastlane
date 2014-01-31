@@ -141,7 +141,7 @@
 		BEF2C2B71886211000AAE975 /* VPollResult.m in Sources */ = {isa = PBXBuildFile; fileRef = BEF2C2B61886211000AAE975 /* VPollResult.m */; };
 		BEF8D37B188755C1004919CA /* VStreamYoutubeCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = BEF8D37A188755C1004919CA /* VStreamYoutubeCell.xib */; };
 		D1DAAA08187A43A9009ADCB0 /* VProfileViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D1DAAA07187A43A9009ADCB0 /* VProfileViewController.m */; };
-		D1DAAA0B187A43BE009ADCB0 /* VProfileEditController.m in Sources */ = {isa = PBXBuildFile; fileRef = D1DAAA0A187A43BE009ADCB0 /* VProfileEditController.m */; };
+		D1DAAA0B187A43BE009ADCB0 /* VProfileEditViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D1DAAA0A187A43BE009ADCB0 /* VProfileEditViewController.m */; };
 		D1DAAA0D187A5397009ADCB0 /* avatar.jpg in Resources */ = {isa = PBXBuildFile; fileRef = D1DAAA0C187A5397009ADCB0 /* avatar.jpg */; };
 /* End PBXBuildFile section */
 
@@ -399,8 +399,8 @@
 		BEF8D37A188755C1004919CA /* VStreamYoutubeCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VStreamYoutubeCell.xib; sourceTree = "<group>"; };
 		D1DAAA06187A43A9009ADCB0 /* VProfileViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VProfileViewController.h; path = UI/VProfileViewController.h; sourceTree = "<group>"; };
 		D1DAAA07187A43A9009ADCB0 /* VProfileViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VProfileViewController.m; path = UI/VProfileViewController.m; sourceTree = "<group>"; };
-		D1DAAA09187A43BE009ADCB0 /* VProfileEditController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VProfileEditController.h; path = UI/VProfileEditController.h; sourceTree = "<group>"; };
-		D1DAAA0A187A43BE009ADCB0 /* VProfileEditController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VProfileEditController.m; path = UI/VProfileEditController.m; sourceTree = "<group>"; };
+		D1DAAA09187A43BE009ADCB0 /* VProfileEditViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VProfileEditViewController.h; path = UI/VProfileEditViewController.h; sourceTree = "<group>"; };
+		D1DAAA0A187A43BE009ADCB0 /* VProfileEditViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VProfileEditViewController.m; path = UI/VProfileEditViewController.m; sourceTree = "<group>"; };
 		D1DAAA0C187A5397009ADCB0 /* avatar.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = avatar.jpg; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -533,8 +533,8 @@
 			children = (
 				D1DAAA06187A43A9009ADCB0 /* VProfileViewController.h */,
 				D1DAAA07187A43A9009ADCB0 /* VProfileViewController.m */,
-				D1DAAA09187A43BE009ADCB0 /* VProfileEditController.h */,
-				D1DAAA0A187A43BE009ADCB0 /* VProfileEditController.m */,
+				D1DAAA09187A43BE009ADCB0 /* VProfileEditViewController.h */,
+				D1DAAA0A187A43BE009ADCB0 /* VProfileEditViewController.m */,
 			);
 			name = Profile;
 			sourceTree = "<group>";
@@ -1217,7 +1217,7 @@
 				BE5D799518989A0800DC752A /* VImagePickerViewController.m in Sources */,
 				BE5C736A187E36E800A3340D /* VRule.m in Sources */,
 				BE83A37118827B400077EB26 /* VMessage.m in Sources */,
-				D1DAAA0B187A43BE009ADCB0 /* VProfileEditController.m in Sources */,
+				D1DAAA0B187A43BE009ADCB0 /* VProfileEditViewController.m in Sources */,
 				3F91991018761C720055FE37 /* VPrivacyPoliciesViewController.m in Sources */,
 				BE5D79AF1899E47800DC752A /* VCreateViewController.m in Sources */,
 				BEB4C29B187E038C004ECEEF /* VConversationCell.m in Sources */,
