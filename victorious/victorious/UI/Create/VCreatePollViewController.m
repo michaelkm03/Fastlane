@@ -12,12 +12,9 @@
 #import "VThemeManager.h"
 #import "UIView+AutoLayout.h"
 #import "VConstants.h"
+#import "NSString+VParseHelp.h"
 
-CGFloat VCreatePollViewControllerPadding = 8;
-CGFloat VCreatePollViewControllerLargePadding = 20;
-
-@interface VCreatePollViewController()
-<UITextFieldDelegate>
+@interface VCreatePollViewController() <UITextFieldDelegate>
 
 @property (strong, nonatomic) NSData *mediaData;
 @property (strong, nonatomic) NSData *secondMediaData;
@@ -33,68 +30,24 @@ CGFloat VCreatePollViewControllerLargePadding = 20;
 {
     [super viewDidLoad];
     
-    self.questionTextField.textColor = [[VThemeManager sharedThemeManager] themedColorForKeyPath:@"theme.color.text.post.poll.question"];
-    //    [questionTextField addTarget:self action:@selector(textFieldDidChange:) forControlEvents:UIControlEventEditingChanged];
-    //    self.questionTextField.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
+    self.questionTextField.textColor = [[VThemeManager sharedThemeManager] themedColorForKeyPath:kVCreatePollQuestionColor];
     self.questionTextField.placeholder = NSLocalizedString(@"Ask a Question...", @"Poll question placeholder");
-    //    [questionTextField constrainToHeight:questionsHeight];
-    //    [questionTextField pinToSuperviewEdges:JRTViewPinLeftEdge|JRTViewPinRightEdge inset:0];
-    //    [questionTextField pinEdge:NSLayoutAttributeTop toEdge:NSLayoutAttributeBottom ofItem:self.topLayoutGuide];
+    self.questionViews.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKeyPath:kVCreatePollQuestionBorderColor];
     
-    self.questionViews.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKeyPath:@"theme.color.post.poll.questions.border"];
-    //    [questionsView constrainToHeight:questionsHeight+2];
-    //    [questionsView pinEdge:NSLayoutAttributeTop toEdge:NSLayoutAttributeBottom ofItem:questionTextField];
-    //    [questionsView pinToSuperviewEdges:JRTViewPinLeftEdge|JRTViewPinRightEdge inset:0];
-    
-    self.leftAnswerTextField.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKeyPath:@"theme.color.post.poll.questions.left.background"];
-    self.leftAnswerTextField.textColor = [[VThemeManager sharedThemeManager] themedColorForKeyPath:@"theme.color.text.post.poll.questions.left"];
-    //    self.leftAnswerTextField.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
-    self.leftAnswerTextField.textAlignment = NSTextAlignmentCenter;
+    self.leftAnswerTextField.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKeyPath:kVCreatePollQuestionLeftBGColor];
+    self.leftAnswerTextField.textColor = [[VThemeManager sharedThemeManager] themedColorForKeyPath:kVCreatePollQuestionLeftColor];
     self.leftAnswerTextField.placeholder = NSLocalizedString(@"VOTE THIS...", @"Poll left question placeholder");
-    //    [leftAnswerTextField pinToSuperviewEdges:JRTViewPinTopEdge|JRTViewPinBottomEdge inset:1];
-    //    [leftAnswerTextField pinToSuperviewEdges:JRTViewPinLeftEdge inset:0];
     
-    self.rightAnswerTextField.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKeyPath:@"theme.color.post.poll.questions.right.background"];
-    self.rightAnswerTextField.textColor = [[VThemeManager sharedThemeManager] themedColorForKeyPath:@"theme.color.text.post.poll.questions.right"];
-    //    self.rightAnswerTextField.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
+    self.rightAnswerTextField.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKeyPath:kVCreatePollQuestionRightBGColor];
+    self.rightAnswerTextField.textColor = [[VThemeManager sharedThemeManager] themedColorForKeyPath:kVCreatePollQuestionRightColor];
     self.rightAnswerTextField.placeholder = NSLocalizedString(@"VOTE THAT...", @"Poll left question placeholder");
-    //    [rightAnswerTextField pinToSuperviewEdges:JRTViewPinTopEdge|JRTViewPinBottomEdge inset:1];
-    //    [rightAnswerTextField pinToSuperviewEdges:JRTViewPinRightEdge inset:0];
-    
-    
-    //    [questionsView addConstraint:[NSLayoutConstraint constraintWithItem:leftAnswerTextField attribute:NSLayoutAttributeRight relatedBy:NSLayoutRelationEqual toItem:questionsView attribute:NSLayoutAttributeCenterX multiplier:1 constant:0]];
-    //    [questionsView addConstraint:[NSLayoutConstraint constraintWithItem:rightAnswerTextField attribute:NSLayoutAttributeLeft relatedBy:NSLayoutRelationEqual toItem:questionsView attribute:NSLayoutAttributeCenterX multiplier:1 constant:0]];
-    
-//    CGSize orLabelSize = CGSizeMake(38, 38);
-//    UILabel *orLabel = [UILabel autoLayoutView];
-//    orLabel.textAlignment = NSTextAlignmentCenter;
-//    orLabel.layer.cornerRadius = orLabelSize.height/2;
-//    orLabel.layer.borderWidth = 2;
-//    orLabel.layer.borderColor = [[[VThemeManager sharedThemeManager] themedColorForKeyPath:@"theme.color.post.poll.or.border"] CGColor];
-//    orLabel.textColor = [[VThemeManager sharedThemeManager] themedColorForKeyPath:@"theme.color.text.post.poll.or"];
-//    orLabel.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKeyPath:@"theme.color.post.poll.or.background"];
-//    orLabel.font = [[VThemeManager sharedThemeManager] themedFontForKeyPath:@"theme.font.post.poll.or"];
-//    orLabel.text = NSLocalizedString(@"OR", @"Poll OR");
-//    [self.questionView addSubview:orLabel];
-//    [orLabel constrainToSize:orLabelSize];
-//    [orLabel centerInContainerOnAxis:NSLayoutAttributeCenterX];
-//    [orLabel centerInContainerOnAxis:NSLayoutAttributeCenterY];
     
     [self setType:self.type];
-    self.mediaLabel.textColor = [[VThemeManager sharedThemeManager] themedColorForKeyPath:@"theme.color.text.post.mediaLabel"];
+    self.mediaLabel.textColor = [[VThemeManager sharedThemeManager] themedColorForKeyPath:kVCreatePostMediaLabelColor];
     
     UIImage* newImage = [self.removeMediaButton.imageView.image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
-    [self.removeMediaButton setImage:newImage forState:UIControlStateNormal];
-    self.removeMediaButton.tintColor = [[VThemeManager sharedThemeManager] themedColorForKeyPath:@"theme.color.post.media.remove"];
-    
     [self.rightRemoveButton setImage:newImage forState:UIControlStateNormal];
-    self.rightRemoveButton.tintColor = [[VThemeManager sharedThemeManager] themedColorForKeyPath:@"theme.color.post.media.remove"];
-    
-    //    [twoUpMediaView addConstraint:[NSLayoutConstraint constraintWithItem:leftPreviewImageView attribute:NSLayoutAttributeRight relatedBy:NSLayoutRelationEqual toItem:twoUpMediaView attribute:NSLayoutAttributeCenterX multiplier:1 constant:-VCreatePollViewControllerPadding/2]];
-    //    [twoUpMediaView addConstraint:[NSLayoutConstraint constraintWithItem:rightPreviewImageView attribute:NSLayoutAttributeLeft relatedBy:NSLayoutRelationEqual toItem:twoUpMediaView attribute:NSLayoutAttributeCenterX multiplier:1 constant:VCreatePollViewControllerPadding/2]];
-    //
-    //    [twoUpMediaView addConstraint:[NSLayoutConstraint constraintWithItem:leftPreviewImageView attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:leftPreviewImageView attribute:NSLayoutAttributeWidth multiplier:1.0 constant:0.0]];
-    //    [twoUpMediaView addConstraint:[NSLayoutConstraint constraintWithItem:rightPreviewImageView attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:rightPreviewImageView attribute:NSLayoutAttributeWidth multiplier:1.0 constant:0.0]];
+    self.rightRemoveButton.tintColor = [[VThemeManager sharedThemeManager] themedColorForKeyPath:KVRemoveMediaButtonColor];
     
     [self validatePostButtonState];
     [self updateViewState];
@@ -107,48 +60,30 @@ CGFloat VCreatePollViewControllerLargePadding = 20;
     self.title = NSLocalizedString(@"New Poll", @"New poll title");
 }
 
-
-- (void)validatePostButtonState{
-    if(!self.mediaData)
-    {
-        [self.postButton setEnabled:NO];
-        return;
-    }
-    
-    if([self.questionTextField.text length] == 0)
-    {
-        [self.postButton setEnabled:NO];
-        return;
-    }
-    if([self.questionTextField.text length] > VConstantsForumTitleLength)
-    {
-        [self.postButton setEnabled:NO];
-        return;
-    }
-    
-    if([self.leftAnswerTextField.text length] == 0)
-    {
-        [self.postButton setEnabled:NO];
-        return;
-    }
-    if([self.leftAnswerTextField.text length] > VConstantsForumTitleLength)
-    {
-        [self.postButton setEnabled:NO];
-        return;
-    }
-    
-    if([self.rightAnswerTextField.text length] == 0)
-    {
-        [self.postButton setEnabled:NO];
-        return;
-    }
-    if([self.rightAnswerTextField.text length] > VConstantsForumTitleLength)
-    {
-        [self.postButton setEnabled:NO];
-        return;
-    }
-    
+- (void)validatePostButtonState
+{
     [self.postButton setEnabled:YES];
+    
+    if(!self.mediaData)
+        [self.postButton setEnabled:NO];
+    
+    else if([self.questionTextField.text isEmpty])
+        [self.postButton setEnabled:NO];
+
+    else if([self.questionTextField.text length] > VConstantsForumTitleLength)
+        [self.postButton setEnabled:NO];
+    
+    else if([self.leftAnswerTextField.text isEmpty])
+        [self.postButton setEnabled:NO];
+
+    else if([self.leftAnswerTextField.text length] > VConstantsForumTitleLength)
+        [self.postButton setEnabled:NO];
+    
+    else if([self.rightAnswerTextField.text isEmpty])
+        [self.postButton setEnabled:NO];
+
+    else if([self.rightAnswerTextField.text length] > VConstantsForumTitleLength)
+        [self.postButton setEnabled:NO];
 }
 
 - (void)updateViewState
@@ -188,7 +123,9 @@ CGFloat VCreatePollViewControllerLargePadding = 20;
     }
 }
 
-- (void)clearLeftMedia
+#pragma mark - Actions
+
+- (IBAction)clearMedia:(id)sender
 {
     self.mediaData = nil;
     self.mediaType = nil;
@@ -200,7 +137,7 @@ CGFloat VCreatePollViewControllerLargePadding = 20;
         NSData *data = self.secondMediaData;
         NSString *type = self.secondMediaType;
         UIImage *image = self.rightPreviewImageView.image;
-        [self clearRightMedia];
+        [self clearRightMedia:nil];
         [self imagePickerFinishedWithData:data extension:type previewImage:image mediaURL:nil];
     }
     else
@@ -210,30 +147,13 @@ CGFloat VCreatePollViewControllerLargePadding = 20;
     }
 }
 
-- (void)clearRightMedia
+- (IBAction)clearRightMedia:(id)sender
 {
     self.secondMediaData = nil;
     self.secondMediaType = nil;
     self.rightPreviewImageView.image = nil;
     [self updateViewState];
     [self validatePostButtonState];
-}
-
-#pragma mark - Actions
-
-- (void)oneUpRemoveMediaButtonAction:(id)sender
-{
-    [self clearLeftMedia];
-}
-
-- (void)leftRemoveMediaButtonAction:(id)sender
-{
-    [self clearLeftMedia];
-}
-
-- (void)rightRemoveMediaButtonAction:(id)sender
-{
-    [self clearRightMedia];
 }
 
 - (IBAction)postButtonAction:(id)sender
@@ -248,15 +168,21 @@ CGFloat VCreatePollViewControllerLargePadding = 20;
     
 }
 
-- (void)textFieldDidChange:(UITextField *)textField
+#pragma mark - UITextFieldDelegate
+
+- (void)textFieldDidEndEditing:(UITextField *)textField
 {
     [self validatePostButtonState];
 }
 
-#pragma mark - UITextFieldDelegate
-
 - (BOOL)textFieldShouldReturn:(UITextField *)textField
 {
+    if (textField == self.questionTextField)
+        [self.leftAnswerTextField becomeFirstResponder];
+
+    if (textField == self.leftAnswerTextField)
+        [self.rightAnswerTextField becomeFirstResponder];
+
     [textField resignFirstResponder];
     return YES;
 }

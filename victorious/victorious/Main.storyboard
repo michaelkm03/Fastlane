@@ -1515,7 +1515,10 @@
                                     <constraint firstAttribute="height" constant="66" id="btJ-2D-TOh"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <textInputTraits key="textInputTraits"/>
+                                <textInputTraits key="textInputTraits" returnKeyType="next"/>
+                                <connections>
+                                    <outlet property="delegate" destination="ZDA-K5-K60" id="5cq-Xx-Vk0"/>
+                                </connections>
                             </textField>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="rJm-hU-1CC">
                                 <rect key="frame" x="0.0" y="66" width="320" height="68"/>
@@ -1529,7 +1532,10 @@
                                             <constraint firstAttribute="width" constant="160" id="FMh-Io-Fyd"/>
                                         </constraints>
                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                        <textInputTraits key="textInputTraits"/>
+                                        <textInputTraits key="textInputTraits" returnKeyType="next"/>
+                                        <connections>
+                                            <outlet property="delegate" destination="ZDA-K5-K60" id="BIW-W1-Egt"/>
+                                        </connections>
                                     </textField>
                                     <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="VOTE THAT..." textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="wTP-xr-iv8">
                                         <rect key="frame" x="160" y="1" width="160" height="66"/>
@@ -1539,7 +1545,10 @@
                                             <constraint firstAttribute="height" constant="66" id="UxI-g0-UUD"/>
                                         </constraints>
                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                        <textInputTraits key="textInputTraits"/>
+                                        <textInputTraits key="textInputTraits" returnKeyType="done"/>
+                                        <connections>
+                                            <outlet property="delegate" destination="ZDA-K5-K60" id="znJ-yj-d40"/>
+                                        </connections>
                                     </textField>
                                 </subviews>
                                 <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
@@ -1581,6 +1590,9 @@
                                 <rect key="frame" x="170" y="150" width="22" height="22"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" image="PostDelete"/>
+                                <connections>
+                                    <action selector="clearRightMedia:" destination="ZDA-K5-K60" eventType="touchUpInside" id="Ftu-6q-N5T"/>
+                                </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" adjustsImageWhenHighlighted="NO" adjustsImageWhenDisabled="NO" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="61D-XK-J2Z" userLabel="Remove button">
                                 <rect key="frame" x="16" y="150" width="22" height="22"/>

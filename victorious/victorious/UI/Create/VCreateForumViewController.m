@@ -45,7 +45,7 @@
 //    self.delegate = delegate;
 //
 //    self.title = NSLocalizedString(@"New Topic", @"New forum topic title");
-//    self.view.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKeyPath:@"theme.color.post.background"];
+//    self.view.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKeyPath:kVCreatePostBackgroundColor];
 //    self.navigationItem.leftBarButtonItem =
 //    [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"Close"]
 //                                     style:UIBarButtonItemStylePlain target:self action:@selector(closeButtonAction:)];
@@ -64,7 +64,7 @@
 //    self.titleTextField = titleTextField;
 //
 //    UIView *messageView = [UIView autoLayoutView];
-//    messageView.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKeyPath:@"theme.color.post.poll.questions.border"];
+//    messageView.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKeyPath:kVCreatePollQuestionBorderColor];
 //    [self.view addSubview:messageView];
 //    [messageView constrainToHeight:100];
 //    [messageView pinEdge:NSLayoutAttributeTop toEdge:NSLayoutAttributeBottom ofItem:titleTextField];
@@ -73,15 +73,15 @@
 //    UITextView *textView = [UITextView autoLayoutView];
 //    textView.delegate = self;
 //    textView.returnKeyType = UIReturnKeyDone;
-//    textView.font = [[VThemeManager sharedThemeManager] themedFontForKeyPath:@"theme.font.post"];    
-//    textView.textColor = [[VThemeManager sharedThemeManager] themedColorForKeyPath:@"theme.color.text.post"];
+//    textView.font = [[VThemeManager sharedThemeManager] themedFontForKeyPath:kVCreatePostFont];    
+//    textView.textColor = [[VThemeManager sharedThemeManager] themedColorForKeyPath:kVCreatePostTextColor];
 //    [messageView addSubview:textView];
 //    [textView pinToSuperviewEdges:JRTViewPinTopEdge|JRTViewPinBottomEdge inset:1];
 //    [textView pinToSuperviewEdges:JRTViewPinLeftEdge|JRTViewPinRightEdge inset:0];
 //    self.textView = textView;
 //
 //    UILabel *characterCountLabel = [UILabel autoLayoutView];
-//    characterCountLabel.textColor = [[VThemeManager sharedThemeManager] themedColorForKeyPath:@"theme.color.text.post"];
+//    characterCountLabel.textColor = [[VThemeManager sharedThemeManager] themedColorForKeyPath:kVCreatePostTextColor];
 //    characterCountLabel.text = [NSString stringWithFormat:@"%lu", (unsigned long)VConstantsMessageLength];
 //    [self.view addSubview:characterCountLabel];
 //    [characterCountLabel pinEdges:JRTViewPinRightEdge toSameEdgesOfView:textView inset:VCreateForumViewControllerPadding];
@@ -92,10 +92,10 @@
 //    UIButton *postButton = [UIButton buttonWithType:UIButtonTypeSystem];
 //    [postButton addTarget:self action:@selector(postButtonAction:) forControlEvents:UIControlEventTouchUpInside];
 //    postButton.translatesAutoresizingMaskIntoConstraints = NO;
-//    postButton.tintColor = [[VThemeManager sharedThemeManager] themedColorForKeyPath:@"theme.color.text.post.postButton"];
-//    postButton.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKeyPath:@"theme.color.post.postButton.background"];
+//    postButton.tintColor = [[VThemeManager sharedThemeManager] themedColorForKeyPath:kVCreatePostButtonTextColor];
+//    postButton.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKeyPath:kVCreatePostButtonBGColor];
 //    [postButton setTitle:NSLocalizedString(@"POST TOPIC", @"Post forum topic button") forState:UIControlStateNormal];
-//    postButton.titleLabel.font = [[VThemeManager sharedThemeManager] themedFontForKeyPath:@"theme.font.post.postButton"];
+//    postButton.titleLabel.font = [[VThemeManager sharedThemeManager] themedFontForKeyPath:kVCreatePostButtonFont];
 //    [self.view addSubview:postButton];
 //    [postButton pinToSuperviewEdges:JRTViewPinLeftEdge|JRTViewPinBottomEdge|JRTViewPinRightEdge inset:VCreateForumViewControllerPadding];
 //    [postButton constrainToHeight:postButtonHeight];
@@ -111,8 +111,8 @@
 //    UIButton *mediaButton = [UIButton buttonWithType:UIButtonTypeSystem];
 //    [mediaButton addTarget:self action:@selector(mediaButtonAction:) forControlEvents:UIControlEventTouchUpInside];
 //    [mediaButton setImage:[UIImage imageNamed:@"PostCamera"] forState:UIControlStateNormal];
-//    mediaButton.tintColor = [[VThemeManager sharedThemeManager] themedColorForKeyPath:@"theme.color.post.mediaButton.icon"];
-//    mediaButton.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKeyPath:@"theme.color.post.mediaButton.background"];
+//    mediaButton.tintColor = [[VThemeManager sharedThemeManager] themedColorForKeyPath:kVCreatePostMediaButtonColor];
+//    mediaButton.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKeyPath:kVCreatePostMediaButtonBGColor];
 //    mediaButton.translatesAutoresizingMaskIntoConstraints = NO;
 //    mediaButton.layer.cornerRadius = mediaButtonSize.height/2;
 //    [addMediaView addSubview:mediaButton];
@@ -122,7 +122,7 @@
 //
 //    UILabel *mediaLabel = [UILabel autoLayoutView];
 //    mediaLabel.text = NSLocalizedString(@"Add a photo or video", @"Add photo or video label");
-//    mediaLabel.textColor = [[VThemeManager sharedThemeManager] themedColorForKeyPath:@"theme.color.text.post.mediaLabel"];
+//    mediaLabel.textColor = [[VThemeManager sharedThemeManager] themedColorForKeyPath:kVCreatePostMediaLabelColor];
 //    [addMediaView addSubview:mediaLabel];
 //    [mediaLabel pinEdge:NSLayoutAttributeTop toEdge:NSLayoutAttributeBottom ofItem:mediaButton inset:VCreateForumViewControllerLargePadding];
 //    [mediaLabel centerInContainerOnAxis:NSLayoutAttributeCenterX];
@@ -138,7 +138,7 @@
 //
 //    UIImage *removeMediaButtonImage = [UIImage imageNamed:@"PostDelete"];
 //    UIButton *removeMediaButton = [UIButton buttonWithType:UIButtonTypeSystem];
-//    removeMediaButton.tintColor = [[VThemeManager sharedThemeManager] themedColorForKeyPath:@"theme.color.post.media.remove"];
+//    removeMediaButton.tintColor = [[VThemeManager sharedThemeManager] themedColorForKeyPath:KVRemoveMediaButtonColor];
 //    removeMediaButton.translatesAutoresizingMaskIntoConstraints = NO;
 //    [removeMediaButton setImage:removeMediaButtonImage forState:UIControlStateNormal];
 //    [removeMediaButton addTarget:self action:@selector(clearMedia) forControlEvents:UIControlEventTouchUpInside];
