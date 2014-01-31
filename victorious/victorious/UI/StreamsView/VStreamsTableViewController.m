@@ -481,13 +481,16 @@ typedef NS_ENUM(NSInteger, VStreamScope)
                                               failBlock:fail];
 }
 
-- (void)createViewController:(UIViewController *)viewController
-    shouldPostTopicWithTitle:(NSString *)title
-                     message:(NSString *)message data:(NSData *)data
-                   mediaType:(NSString *)mediaType
+- (void)createPostWithTitle:(NSString *)title
+                    message:(NSString *)message data:(NSData *)data
+                  mediaType:(NSString *)mediaType
 {
     [self dismissViewControllerAnimated:YES completion:nil];
-    [[VObjectManager sharedManager] createForumWithName:title description:message mediaData:data mediaUrl:nil successBlock:^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
+    [[VObjectManager sharedManager] createForumWithName:title
+                                            description:message
+                                              mediaData:data
+                                               mediaUrl:nil
+                                           successBlock:^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
     {
         NSLog(@"%@", resultObjects);
     } failBlock:^(NSOperation* operation, NSError* error)

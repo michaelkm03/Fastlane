@@ -37,7 +37,7 @@
     VCreateViewController* createView = (VCreateViewController*)[currentViewController.storyboard instantiateViewControllerWithIdentifier: NSStringFromClass([VCreateViewController class])];
     createView.delegate = self;
     createView.type = VImagePickerViewControllerPhoto;
-//    [self presentViewController:[[UINavigationController alloc] initWithRootViewController:createView] animated:YES completion:nil];
+    [self presentViewController:[[UINavigationController alloc] initWithRootViewController:createView] animated:YES completion:nil];
 }
 
 - (NSArray*)categoriesForOption:(NSUInteger)searchOption

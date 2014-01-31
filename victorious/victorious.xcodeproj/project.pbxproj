@@ -101,7 +101,7 @@
 		BE5C7388187E37E500A3340D /* VConversation+RestKit.m in Sources */ = {isa = PBXBuildFile; fileRef = BE5C7387187E37E500A3340D /* VConversation+RestKit.m */; };
 		BE5D799518989A0800DC752A /* VImagePickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BE5D799418989A0800DC752A /* VImagePickerViewController.m */; };
 		BE5D79AD1899E47800DC752A /* VCreatePollViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BE5D79A21899E47800DC752A /* VCreatePollViewController.m */; };
-		BE5D79AE1899E47800DC752A /* VCreateTopicViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BE5D79A51899E47800DC752A /* VCreateTopicViewController.m */; };
+		BE5D79AE1899E47800DC752A /* VCreateForumViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BE5D79A51899E47800DC752A /* VCreateForumViewController.m */; };
 		BE5D79AF1899E47800DC752A /* VCreateViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BE5D79A71899E47800DC752A /* VCreateViewController.m */; };
 		BE5D79B01899E47800DC752A /* VKeyboardBarContainerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BE5D79A91899E47800DC752A /* VKeyboardBarContainerViewController.m */; };
 		BE5D79B11899E47800DC752A /* VKeyboardBarViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BE5D79AB1899E47800DC752A /* VKeyboardBarViewController.m */; };
@@ -327,8 +327,8 @@
 		BE5D79A11899E47800DC752A /* VCreatePollViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VCreatePollViewController.h; path = UI/Create/VCreatePollViewController.h; sourceTree = "<group>"; };
 		BE5D79A21899E47800DC752A /* VCreatePollViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VCreatePollViewController.m; path = UI/Create/VCreatePollViewController.m; sourceTree = "<group>"; };
 		BE5D79A31899E47800DC752A /* VCreateSequenceDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VCreateSequenceDelegate.h; path = UI/Create/VCreateSequenceDelegate.h; sourceTree = "<group>"; };
-		BE5D79A41899E47800DC752A /* VCreateTopicViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VCreateTopicViewController.h; path = UI/Create/VCreateTopicViewController.h; sourceTree = "<group>"; };
-		BE5D79A51899E47800DC752A /* VCreateTopicViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VCreateTopicViewController.m; path = UI/Create/VCreateTopicViewController.m; sourceTree = "<group>"; };
+		BE5D79A41899E47800DC752A /* VCreateForumViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VCreateForumViewController.h; path = UI/Create/VCreateForumViewController.h; sourceTree = "<group>"; };
+		BE5D79A51899E47800DC752A /* VCreateForumViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VCreateForumViewController.m; path = UI/Create/VCreateForumViewController.m; sourceTree = "<group>"; };
 		BE5D79A61899E47800DC752A /* VCreateViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VCreateViewController.h; path = UI/Create/VCreateViewController.h; sourceTree = "<group>"; };
 		BE5D79A71899E47800DC752A /* VCreateViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VCreateViewController.m; path = UI/Create/VCreateViewController.m; sourceTree = "<group>"; };
 		BE5D79A81899E47800DC752A /* VKeyboardBarContainerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VKeyboardBarContainerViewController.h; path = UI/Create/VKeyboardBarContainerViewController.h; sourceTree = "<group>"; };
@@ -859,8 +859,8 @@
 				BE5D79A11899E47800DC752A /* VCreatePollViewController.h */,
 				BE5D79A21899E47800DC752A /* VCreatePollViewController.m */,
 				BE5D79A31899E47800DC752A /* VCreateSequenceDelegate.h */,
-				BE5D79A41899E47800DC752A /* VCreateTopicViewController.h */,
-				BE5D79A51899E47800DC752A /* VCreateTopicViewController.m */,
+				BE5D79A41899E47800DC752A /* VCreateForumViewController.h */,
+				BE5D79A51899E47800DC752A /* VCreateForumViewController.m */,
 				BE5D79A61899E47800DC752A /* VCreateViewController.h */,
 				BE5D79A71899E47800DC752A /* VCreateViewController.m */,
 				BE5D79A81899E47800DC752A /* VKeyboardBarContainerViewController.h */,
@@ -1207,7 +1207,7 @@
 				BE171E141868C211004E5202 /* VNode+RestKit.m in Sources */,
 				BE171E121868C211004E5202 /* VInteraction+RestKit.m in Sources */,
 				BE5C735B187E36E700A3340D /* VNode.m in Sources */,
-				BE5D79AE1899E47800DC752A /* VCreateTopicViewController.m in Sources */,
+				BE5D79AE1899E47800DC752A /* VCreateForumViewController.m in Sources */,
 				3F91991D187CAF620055FE37 /* VNewsViewController.m in Sources */,
 				BE692B29186E5ED800C71336 /* VStreamViewCell.m in Sources */,
 				BE171E431868CEA0004E5202 /* victoriOS.xcdatamodeld in Sources */,

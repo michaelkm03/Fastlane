@@ -105,15 +105,15 @@
 
          if([[actionSheet buttonTitleAtIndex:buttonIndex] isEqualToString:videoTitle])
          {
-             VCreateViewController *createViewController =
-             [[VCreateViewController alloc] initWithType:VImagePickerViewControllerVideo andDelegate:self];
-             [wself presentViewController:[[UINavigationController alloc] initWithRootViewController:createViewController] animated:YES completion:nil];
+//             VCreateViewController *createViewController =
+//             [[VCreateViewController alloc] initWithType:VImagePickerViewControllerVideo andDelegate:self];
+//             [wself presentViewController:[[UINavigationController alloc] initWithRootViewController:createViewController] animated:YES completion:nil];
          }
          else if([[actionSheet buttonTitleAtIndex:buttonIndex] isEqualToString:photoTitle])
          {
-             VCreateViewController *createViewController =
-             [[VCreateViewController alloc] initWithType:VImagePickerViewControllerPhoto andDelegate:self];
-             [wself presentViewController:[[UINavigationController alloc] initWithRootViewController:createViewController] animated:YES completion:nil];
+//             VCreateViewController *createViewController =
+//             [[VCreateViewController alloc] initWithType:VImagePickerViewControllerPhoto andDelegate:self];
+//             [wself presentViewController:[[UINavigationController alloc] initWithRootViewController:createViewController] animated:YES completion:nil];
          }
          else if([[actionSheet buttonTitleAtIndex:buttonIndex] isEqualToString:pollTitle])
          {

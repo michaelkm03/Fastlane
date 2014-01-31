@@ -13,9 +13,6 @@
 
 @interface VCreateViewController : VImagePickerViewController
 
-- (instancetype)initWithType:(VImagePickerViewControllerType)type
-                 andDelegate:(id<VCreateSequenceDelegate>)delegate;
-
 @property (weak, nonatomic) IBOutlet UILabel *characterCountLabel;
 @property (weak, nonatomic) IBOutlet UILabel *mediaLabel;
 
@@ -26,6 +23,7 @@
 @property (weak, nonatomic) IBOutlet UIImageView *previewImage;
 @property (weak, nonatomic) IBOutlet UITextView *textView;
 
+@property (weak, nonatomic) IBOutlet UIView *mediaView;
 
 @property (weak, nonatomic) id<VCreateSequenceDelegate> delegate;
 

@@ -8,9 +8,9 @@
 
 @protocol VCreateSequenceDelegate <NSObject>
 
-- (void)createViewController:(UIViewController *)viewController
-       shouldPostWithMessage:(NSString *)message data:(NSData *)data
-                   mediaType:(NSString *)mediaType;
+- (void)createPostWithMessage:(NSString *)message
+                         data:(NSData *)data
+                    mediaType:(NSString *)mediaType;
 
 - (void)createViewController:(UIViewController *)viewController
   shouldPostPollWithQuestion:(NSString *)question
@@ -20,10 +20,5 @@
              media1Extension:(NSString *)media1Extension
                   media2Data:(NSData *)media2Data
              media2Extension:(NSString *)media2Extension;
-
-- (void)createViewController:(UIViewController *)viewController
-    shouldPostTopicWithTitle:(NSString *)title
-                     message:(NSString *)message data:(NSData *)data
-                   mediaType:(NSString *)mediaType;
 
 @end
