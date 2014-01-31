@@ -31,7 +31,6 @@
 
 - (IBAction)done:(id)sender
 {
-    [self.navigationController popViewControllerAnimated:NO];
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 

@@ -6,8 +6,7 @@
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
-@class VUser;
+#import "VProfileEditViewController.h"
 
-@interface VProfileWithEmailViewController : UITableViewController
-@property (nonatomic, strong)   VUser*          profile;
+@interface VProfileWithEmailViewController : VProfileEditViewController
 @end

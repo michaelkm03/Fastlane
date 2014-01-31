@@ -6,11 +6,11 @@
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
-#import "VProfileEditViewController.h"
+#import "VProfileEditController.h"
 #import "UIImage+ImageEffects.h"
 #import "VUser.h"
 
-@interface VProfileEditViewController ()  <UITextFieldDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate>
+@interface VProfileEditController ()  <UITextFieldDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate>
 
 @property (nonatomic, weak) IBOutlet UITextField* nameTextField;
 @property (nonatomic, weak) IBOutlet UILabel* usernameLabel;
@@ -22,7 +22,7 @@
 
 @end
 
-@implementation VProfileEditViewController
+@implementation VProfileEditController
 
 - (void)viewDidLoad
 {
