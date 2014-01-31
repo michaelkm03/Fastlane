@@ -11,7 +11,7 @@
 #import "VObjectManager+Login.h"
 #import "VObjectManager+Users.h"
 #import "VObjectManager+DirectMessaging.h"
-#import "VProfileEditController.h"
+#import "VProfileEditViewController.h"
 #import "VMessageViewController.h"
 #import "VUser.h"
 #import "VThemeManager.h"

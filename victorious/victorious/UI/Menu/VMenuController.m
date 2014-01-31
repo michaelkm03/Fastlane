@@ -23,6 +23,7 @@
 #import "VOwnerStreamViewController.h"
 #import "VCommunityStreamViewController.h"
 #import "VForumStreamViewController.h"
+#import "VProfileViewController.h"
 #import "VSettingsViewController.h"
 
 NSString *const VMenuControllerDidSelectRowNotification = @"VMenuTableViewControllerDidSelectRowNotification";
@@ -139,7 +140,7 @@ NSString *const VMenuControllerDidSelectRowNotification = @"VMenuTableViewContro
             }
             else
             {
-//                navigationController.viewControllers = @[[VProfileViewController sharedInboxViewController]];
+                navigationController.viewControllers = @[[VProfileViewController profileWithSelf]];
                 [self.sideMenuViewController hideMenuViewController];
             }
         break;

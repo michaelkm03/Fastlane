@@ -6,7 +6,7 @@
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
-#import "VProfileEditController.h"
+#import "VProfileEditViewController.h"
 #import "UIImage+ImageEffects.h"
 #import "VUser.h"
 
