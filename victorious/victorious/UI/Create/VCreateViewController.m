@@ -49,6 +49,7 @@ CGFloat VCreateViewControllerLargePadding = 20;
     newImage = [self.removeMediaButton.imageView.image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
     [self.removeMediaButton setImage:newImage forState:UIControlStateNormal];
     self.removeMediaButton.tintColor = [[VThemeManager sharedThemeManager] themedColorForKeyPath:@"theme.color.post.media.remove"];
+    [self.previewImage addSubview: self.removeMediaButton];
     
     self.mediaLabel.textColor = [[VThemeManager sharedThemeManager] themedColorForKeyPath:@"theme.color.text.post.mediaLabel"];
     [self.mediaLabel centerInContainerOnAxis:NSLayoutAttributeCenterX];
