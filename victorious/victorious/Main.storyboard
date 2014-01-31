@@ -1482,10 +1482,10 @@
                     </navigationItem>
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" translucent="NO" prompted="NO"/>
                     <connections>
+                        <outlet property="addMediaView" destination="507-jZ-VfH" id="Rda-0p-66W"/>
                         <outlet property="characterCountLabel" destination="dbd-nd-Q9M" id="AF0-GI-DHC"/>
                         <outlet property="mediaButton" destination="I2e-fE-6HG" id="MhK-wF-fZW"/>
                         <outlet property="mediaLabel" destination="Cfp-H0-sYi" id="cJj-30-Xqt"/>
-                        <outlet property="mediaView" destination="507-jZ-VfH" id="RmJ-yI-RyZ"/>
                         <outlet property="postButton" destination="TsE-cC-LvD" id="UBG-6Y-JfT"/>
                         <outlet property="previewImage" destination="yMJ-8V-UXo" id="XKr-KX-DVv"/>
                         <outlet property="removeMediaButton" destination="N4X-LD-Vdu" id="6U0-jM-14q"/>
@@ -1495,6 +1495,149 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="gcn-Iy-Dp0" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-1471" y="-1339"/>
+        </scene>
+        <!--Create Poll View Controller - New Video-->
+        <scene sceneID="7Hk-3c-K7f">
+            <objects>
+                <viewController storyboardIdentifier="VCreatePollViewController" id="ZDA-K5-K60" customClass="VCreatePollViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="A3o-wT-u1C"/>
+                        <viewControllerLayoutGuide type="bottom" id="zRc-OV-VaM"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="h7T-CG-J0Y">
+                        <rect key="frame" x="0.0" y="64" width="320" height="504"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="c2k-EJ-2PF">
+                                <rect key="frame" x="60" y="246" width="200" height="200"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                <subviews>
+                                    <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" adjustsImageWhenHighlighted="NO" adjustsImageWhenDisabled="NO" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jG9-Bt-R9Z">
+                                        <rect key="frame" x="40" y="40" width="120" height="120"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <state key="normal" image="PostCamera">
+                                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="mediaButtonAction:" destination="ZDA-K5-K60" eventType="touchUpInside" id="liD-zZ-I7T"/>
+                                        </connections>
+                                    </button>
+                                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Add a video" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cNq-xV-0dE">
+                                        <rect key="frame" x="40" y="178" width="120" height="21"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                                        <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <imageView hidden="YES" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" image="avatar.jpg" translatesAutoresizingMaskIntoConstraints="NO" id="Esw-PC-mY0">
+                                        <rect key="frame" x="0.0" y="0.0" width="200" height="200"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                    </imageView>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" adjustsImageWhenHighlighted="NO" adjustsImageWhenDisabled="NO" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="61D-XK-J2Z">
+                                        <rect key="frame" x="0.0" y="2" width="22" height="22"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <state key="normal" image="PostDelete"/>
+                                        <connections>
+                                            <action selector="clearMedia:" destination="ZDA-K5-K60" eventType="touchUpInside" id="OvD-xN-N86"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstItem="cNq-xV-0dE" firstAttribute="top" secondItem="jG9-Bt-R9Z" secondAttribute="bottom" constant="18" id="240-6P-gIY"/>
+                                    <constraint firstAttribute="bottom" secondItem="Esw-PC-mY0" secondAttribute="bottom" id="DTs-xs-7oo"/>
+                                    <constraint firstItem="jG9-Bt-R9Z" firstAttribute="leading" secondItem="c2k-EJ-2PF" secondAttribute="leading" constant="40" id="Ds1-cO-LGo"/>
+                                    <constraint firstAttribute="bottom" secondItem="cNq-xV-0dE" secondAttribute="bottom" constant="1" id="OBy-ml-9cy"/>
+                                    <constraint firstItem="Esw-PC-mY0" firstAttribute="top" secondItem="c2k-EJ-2PF" secondAttribute="top" id="UWc-Ao-14O"/>
+                                    <constraint firstAttribute="trailing" secondItem="Esw-PC-mY0" secondAttribute="trailing" id="c0C-gU-gdL"/>
+                                    <constraint firstItem="Esw-PC-mY0" firstAttribute="centerY" secondItem="jG9-Bt-R9Z" secondAttribute="centerY" id="cie-On-fWo"/>
+                                    <constraint firstItem="61D-XK-J2Z" firstAttribute="top" secondItem="c2k-EJ-2PF" secondAttribute="top" constant="2" id="d0g-Bj-e4i"/>
+                                    <constraint firstItem="cNq-xV-0dE" firstAttribute="leading" secondItem="jG9-Bt-R9Z" secondAttribute="leading" id="g6N-5G-JGd"/>
+                                    <constraint firstItem="Esw-PC-mY0" firstAttribute="centerX" secondItem="cNq-xV-0dE" secondAttribute="centerX" id="i2o-Bj-qoH"/>
+                                    <constraint firstItem="Esw-PC-mY0" firstAttribute="leading" secondItem="61D-XK-J2Z" secondAttribute="leading" id="nOG-vR-Qc4"/>
+                                    <constraint firstItem="jG9-Bt-R9Z" firstAttribute="top" secondItem="c2k-EJ-2PF" secondAttribute="top" constant="40" id="pki-Yb-82Q"/>
+                                    <constraint firstItem="61D-XK-J2Z" firstAttribute="leading" secondItem="c2k-EJ-2PF" secondAttribute="leading" id="q88-8K-g6A"/>
+                                    <constraint firstItem="jG9-Bt-R9Z" firstAttribute="trailing" secondItem="cNq-xV-0dE" secondAttribute="trailing" id="trc-Ib-FLs"/>
+                                </constraints>
+                            </view>
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mGv-iu-R3S">
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="66"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences" returnKeyType="done"/>
+                                <connections>
+                                    <outlet property="delegate" destination="ZDA-K5-K60" id="jeI-KT-c7i"/>
+                                </connections>
+                            </textView>
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" text="VOTE THIS..." textAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="Ytj-Cr-QIl">
+                                <rect key="frame" x="0.0" y="66" width="160" height="66"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences" returnKeyType="done"/>
+                                <connections>
+                                    <outlet property="delegate" destination="ZDA-K5-K60" id="58a-eg-0qf"/>
+                                </connections>
+                            </textView>
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" text="VOTE THAT..." textAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="k2r-1q-bli">
+                                <rect key="frame" x="168" y="66" width="160" height="66"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences" returnKeyType="done"/>
+                                <connections>
+                                    <outlet property="delegate" destination="ZDA-K5-K60" id="XGb-PW-03j"/>
+                                </connections>
+                            </textView>
+                            <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ZZw-Pe-VXw">
+                                <rect key="frame" x="8" y="454" width="304" height="44"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="POST IT">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="postButtonAction:" destination="ZDA-K5-K60" eventType="touchUpInside" id="2he-JV-mSF"/>
+                                </connections>
+                            </button>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="140" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="klz-rj-NhU">
+                                <rect key="frame" x="270" y="339" width="42" height="21"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="21" id="LjS-ac-8n5"/>
+                                    <constraint firstAttribute="width" constant="42" id="ygl-Lm-e9y"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="ZZw-Pe-VXw" firstAttribute="top" secondItem="c2k-EJ-2PF" secondAttribute="bottom" constant="20" id="kP4-9L-0ka"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" title="New Video" id="18V-Wp-b3G">
+                        <barButtonItem key="leftBarButtonItem" image="Close" id="1a4-9C-toh">
+                            <connections>
+                                <action selector="closeButtonAction:" destination="ZDA-K5-K60" id="4VO-4s-biV"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
+                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" translucent="NO" prompted="NO"/>
+                    <connections>
+                        <outlet property="characterCountLabel" destination="klz-rj-NhU" id="Qkq-4e-vnc"/>
+                        <outlet property="mediaButton" destination="jG9-Bt-R9Z" id="nw7-kL-CSD"/>
+                        <outlet property="mediaLabel" destination="cNq-xV-0dE" id="9F9-Pp-wRB"/>
+                        <outlet property="mediaView" destination="c2k-EJ-2PF" id="gU0-Ci-gXm"/>
+                        <outlet property="postButton" destination="ZZw-Pe-VXw" id="HZe-8t-7Qw"/>
+                        <outlet property="previewImage" destination="Esw-PC-mY0" id="Q1s-Iy-Gdi"/>
+                        <outlet property="removeMediaButton" destination="61D-XK-J2Z" id="Nut-h3-dvQ"/>
+                        <outlet property="textView" destination="mGv-iu-R3S" id="8VC-XG-UKt"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="cZZ-Yn-Uhj" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-1828" y="-1339"/>
         </scene>
     </scenes>
     <resources>

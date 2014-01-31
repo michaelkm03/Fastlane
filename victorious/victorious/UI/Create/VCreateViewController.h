@@ -20,10 +20,10 @@
 @property (weak, nonatomic) IBOutlet UIButton *removeMediaButton;
 @property (weak, nonatomic) IBOutlet UIButton *postButton;
 
-@property (weak, nonatomic) IBOutlet UIImageView *previewImage;
+@property (weak, nonatomic) IBOutlet UIImageView *previewImageView;
 @property (weak, nonatomic) IBOutlet UITextView *textView;
 
-@property (weak, nonatomic) IBOutlet UIView *mediaView;
+@property (weak, nonatomic) IBOutlet UIView *addMediaView;
 
 @property (weak, nonatomic) id<VCreateSequenceDelegate> delegate;
 

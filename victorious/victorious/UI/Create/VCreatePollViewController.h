@@ -8,7 +8,21 @@
 
 #import "VCreateSequenceDelegate.h"
 
-@interface VCreatePollViewController : UIViewController
+#import "VCreateViewController.h"
+
+@interface VCreatePollViewController : VCreateViewController
+
+@property (weak, nonatomic) IBOutlet UIImageView *leftPreviewImageView;
+@property (weak, nonatomic) IBOutlet UIImageView *rightPreviewImageView;
+
+@property (weak, nonatomic) IBOutlet UIButton *leftRemoveButton;
+@property (weak, nonatomic) IBOutlet UIButton *rightRemoveButton;
+
+@property (weak, nonatomic) IBOutlet UITextField *questionTextField;
+@property (weak, nonatomic) IBOutlet UITextField *leftAnswerTextField;
+@property (weak, nonatomic) IBOutlet UITextField *rightAnswerTextField;
+
+@property (weak, nonatomic) IBOutlet UIView* questionView;
 
 - (instancetype)initWithDelegate:(id<VCreateSequenceDelegate>)delegate;
 

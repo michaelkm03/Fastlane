@@ -34,8 +34,8 @@ CGFloat VCreateViewControllerLargePadding = 20;
     
     [self setType:self.type];
     
-    [self.mediaView constrainToSize:self.mediaView.frame.size];
-    [self.mediaView centerInContainerOnAxis:NSLayoutAttributeCenterX];
+    [self.addMediaView constrainToSize:self.addMediaView.frame.size];
+    [self.addMediaView centerInContainerOnAxis:NSLayoutAttributeCenterX];
 //    [self.mediaView pinEdge:NSLayoutAttributeTop toEdge:NSLayoutAttributeBottom ofItem:self.topLayoutGuide inset:VCreateViewControllerLargePadding];
     
     self.view.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKeyPath:@"theme.color.post.background"];
@@ -49,7 +49,7 @@ CGFloat VCreateViewControllerLargePadding = 20;
     newImage = [self.removeMediaButton.imageView.image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
     [self.removeMediaButton setImage:newImage forState:UIControlStateNormal];
     self.removeMediaButton.tintColor = [[VThemeManager sharedThemeManager] themedColorForKeyPath:@"theme.color.post.media.remove"];
-    [self.previewImage addSubview: self.removeMediaButton];
+    [self.previewImageView addSubview: self.removeMediaButton];
     
     self.mediaLabel.textColor = [[VThemeManager sharedThemeManager] themedColorForKeyPath:@"theme.color.text.post.mediaLabel"];
     [self.mediaLabel centerInContainerOnAxis:NSLayoutAttributeCenterX];
@@ -127,8 +127,8 @@ CGFloat VCreateViewControllerLargePadding = 20;
 {
     self.mediaData = nil;
     self.mediaType = nil;
-    self.previewImage.image = nil;
-    [self.previewImage setHidden:YES];
+    self.previewImageView.image = nil;
+    [self.previewImageView setHidden:YES];
 }
 
 - (IBAction)closeButtonAction:(id)sender
@@ -203,8 +203,8 @@ CGFloat VCreateViewControllerLargePadding = 20;
 {
     self.mediaData = data;
     self.mediaType = extension;
-    [self.previewImage setImage: previewImage];
+    [self.previewImageView setImage: previewImage];
     
-    self.previewImage.hidden = NO;
+    self.previewImageView.hidden = NO;
 }
 @end
