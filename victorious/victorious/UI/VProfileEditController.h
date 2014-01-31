@@ -2,12 +2,11 @@
 //  VProfileEditViewController.h
 //  victorious
 //
-//  Created by Kevin Choi on 1/5/14.
+//  Created by Gary Philipp on 1/5/14.
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
-@class VUser;
+#import "VAbstractProfileEditViewController.h"
 
-@interface VProfileEditController : UITableViewController
-@property (nonatomic, readwrite, strong) VUser*     profile;
+@interface VProfileEditViewController : VAbstractProfileEditViewController
 @end

@@ -8,7 +8,7 @@
 
 @class VUser;
 
-@interface VProfileEditViewController : UITableViewController   <UITextFieldDelegate, UITextViewDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate>
+@interface VAbstractProfileEditViewController : UITableViewController   <UITextFieldDelegate, UITextViewDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate>
 @property (nonatomic, strong)   VUser*          profile;
 
 @property (nonatomic, weak) IBOutlet UITextField*   usernameTextField;

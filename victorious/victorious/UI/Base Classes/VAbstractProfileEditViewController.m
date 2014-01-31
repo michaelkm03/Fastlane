@@ -6,15 +6,15 @@
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
-#import "VProfileEditViewController.h"
+#import "VAbstractProfileEditViewController.h"
 #import "VConstants.h"
 #import "VUser.h"
 #import "UIImage+ImageEffects.h"
 
-@interface VProfileEditViewController ()
+@interface VAbstractProfileEditViewController ()
 @end
 
-@implementation VProfileEditViewController
+@implementation VAbstractProfileEditViewController
 
 - (void)viewDidLoad
 {

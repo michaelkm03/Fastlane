@@ -6,7 +6,7 @@
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
-#import "VProfileEditViewController.h"
+#import "VAbstractProfileEditViewController.h"
 
-@interface VProfileWithEmailViewController : VProfileEditViewController
+@interface VProfileWithEmailViewController : VAbstractProfileEditViewController
 @end

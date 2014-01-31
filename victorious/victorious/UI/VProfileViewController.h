@@ -2,16 +2,18 @@
 //  VProfileViewController.h
 //  victorious
 //
-//  Created by Kevin Choi on 1/5/14.
+//  Created by Gary Philipp on 1/5/14.
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
-@class  VUser;
+typedef NS_ENUM(NSInteger, VProfileUserID)
+{
+    kProfileUserIDSelf  =   -1
+};
 
 @interface VProfileViewController : UIViewController
 
-+ (VProfileViewController *)sharedProfileViewController;
-+ (VProfileViewController *)sharedModalProfileViewController;
++ (instancetype)profileWithSelf;
++ (instancetype)profileWithUser:(VProfileUserID)aUserID;
 
-@property (nonatomic, readwrite, assign) NSUInteger userID;
 @end

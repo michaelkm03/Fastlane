@@ -2,7 +2,7 @@
 //  VProfileViewController.m
 //  victorious
 //
-//  Created by Kevin Choi on 1/5/14.
+//  Created by Gary Philipp on 1/5/14.
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
@@ -12,13 +12,14 @@
 #import "VObjectManager+Users.h"
 #import "VObjectManager+DirectMessaging.h"
 #import "VProfileEditController.h"
-#import "VMessageSubViewController.h"
-#import "VConversation.h"
+#import "VMessageViewController.h"
 #import "VUser.h"
 #import "VThemeManager.h"
 #import "VLoginViewController.h"
 
 @interface VProfileViewController () <UIActionSheetDelegate>
+@property   (nonatomic) VProfileUserID      userID;
+@property   (nonatomic, strong) VUser*      profile;
 
 @property (nonatomic, weak) IBOutlet UIImageView* backgroundImageView;
 
@@ -26,62 +27,56 @@
 @property (nonatomic, weak) IBOutlet UILabel* taglineLabel;
 @property (nonatomic, weak) IBOutlet UILabel* locationLabel;
 
-@property (nonatomic, readwrite, strong) VUser* profile;
-
 @end
 
 @implementation VProfileViewController
 
-+ (VProfileViewController *)sharedProfileViewController
++ (instancetype)profileWithSelf
 {
-    static  VProfileViewController*   profileViewController;
-    static  dispatch_once_t         onceToken;
-    dispatch_once(&onceToken, ^{
-        UIViewController*   currentViewController = [[UIApplication sharedApplication] delegate].window.rootViewController;
-        profileViewController = (VProfileViewController*)[currentViewController.storyboard instantiateViewControllerWithIdentifier: @"profile"];
-    });
+    UIViewController*   currentViewController = [[UIApplication sharedApplication] delegate].window.rootViewController;
+    VProfileViewController* profileViewController = (VProfileViewController*)[currentViewController.storyboard instantiateViewControllerWithIdentifier: @"profile"];
     
+    profileViewController.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"Menu"]
+                                                                                              style:UIBarButtonItemStylePlain
+                                                                                             target:profileViewController
+                                                                                             action:@selector(showMenu:)];
+    profileViewController.userID = -1;
     return profileViewController;
 }
 
-+ (VProfileViewController *)sharedModalProfileViewController
++ (instancetype)profileWithUser:(VProfileUserID)aUserID
 {
-    static  VProfileViewController*   profileViewController;
-    static  dispatch_once_t         onceToken;
-    dispatch_once(&onceToken, ^{
-        UIViewController*   currentViewController = [[UIApplication sharedApplication] delegate].window.rootViewController;
-        profileViewController = (VProfileViewController*)[currentViewController.storyboard instantiateViewControllerWithIdentifier: @"profile"];
-        profileViewController.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"Close"]
-                                                                                                  style:UIBarButtonItemStylePlain
-                                                                                                 target:profileViewController
-                                                                                                 action:@selector(closeButtonAction:)];
-    });
+    UIViewController*   currentViewController = [[UIApplication sharedApplication] delegate].window.rootViewController;
+    VProfileViewController* profileViewController = (VProfileViewController*)[currentViewController.storyboard instantiateViewControllerWithIdentifier: @"profile"];
+
+    profileViewController.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"Close"]
+                                                                                              style:UIBarButtonItemStylePlain
+                                                                                             target:profileViewController
+                                                                                             action:@selector(closeButtonAction:)];
 
     return profileViewController;
 }
 
-- (void)viewWillAppear:(BOOL)animated
+- (void)viewDidLoad
 {
-    [super viewWillAppear:animated];
-    
+    [super viewDidLoad];
+
     if ((-1 == self.userID) || (self.userID == [VObjectManager sharedManager].mainUser.remoteId.integerValue))
     {
         self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemEdit
                                                                                                target:self
-                                                                                               action:@selector(editButtonPressed:)];
+                                                                                               action:@selector(editButtonAction:)];
         self.profile = [VObjectManager sharedManager].mainUser;
         [self setProfileData];
     }
     else
     {
-        // If the user is not logged in, create a compose button and user action button
         UIBarButtonItem* composeButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCompose
                                                                                        target:self
-                                                                                       action:@selector(composeButtonPressed:)];
+                                                                                       action:@selector(composeButtonAction:)];
         UIBarButtonItem* userActionButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAction
                                                                                           target:self
-                                                                                          action:@selector(userActionButtonPressed:)];
-
+                                                                                          action:@selector(actionButtonAction:)];
         self.navigationItem.rightBarButtonItems = @[composeButton, userActionButton];
 
         [[VObjectManager sharedManager] fetchUser:@(self.userID)
@@ -95,11 +90,6 @@
                                             VLog("Profile failed to get User object");
                                         }];
     }
-}
-
-- (void)closeButtonAction:(id)sender
-{
-    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 - (void)setProfileData
@@ -119,32 +109,34 @@
     self.navigationController.title = self.profile.shortName;
 }
 
--(IBAction)composeButtonPressed:(id)sender
+#pragma mark - Actions
+
+- (IBAction)editButtonAction:(id)sender
+{
+    [self performSegueWithIdentifier:@"toEditProfile" sender:self];
+}
+
+-(IBAction)composeButtonAction:(id)sender
 {
     if (![VObjectManager sharedManager].mainUser)
     {
         [self presentViewController:[VLoginViewController loginViewController] animated:YES completion:NULL];
         return;
     }
-    
+
     [self performSegueWithIdentifier:@"toComposeMessage" sender:self];
 }
 
--(IBAction)userActionButtonPressed:(id)sender
+-(IBAction)actionButtonAction:(id)sender
 {
-    UIActionSheet *popupQuery = [[UIActionSheet alloc] initWithTitle:@""
-                                                            delegate:self
-                                                   cancelButtonTitle:NSLocalizedString(@"CancelButton", @"")
-                                              destructiveButtonTitle:NSLocalizedString(@"ReportInappropriate", @"")
-                                                   otherButtonTitles:NSLocalizedString(@"BlockUser", @""),
-                                 NSLocalizedString(@"CopyProfileURL", @""), nil];
-    
-    [popupQuery showFromBarButtonItem:sender animated:YES];
-}
+    UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:@""
+                                                             delegate:self
+                                                    cancelButtonTitle:NSLocalizedString(@"CancelButton", @"")
+                                               destructiveButtonTitle:NSLocalizedString(@"ReportInappropriate", @"")
+                                                    otherButtonTitles:NSLocalizedString(@"BlockUser", @""),
+                                  NSLocalizedString(@"CopyProfileURL", @""), nil];
 
-- (IBAction)editButtonPressed:(id)sender
-{
-    [self performSegueWithIdentifier:@"toEditProfile" sender:self];
+    [actionSheet showFromBarButtonItem:sender animated:YES];
 }
 
 -(void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(int)buttonIndex
@@ -167,23 +159,28 @@
     }
 }
 
-#pragma mark - Navigation
-
-- (IBAction)showMenu
+- (IBAction)showMenu:(id)sender
 {
     [self.sideMenuViewController presentMenuViewController];
 }
+
+- (IBAction)closeButtonAction:(id)sender
+{
+    [self dismissViewControllerAnimated:YES completion:nil];
+}
+
+#pragma mark - Navigation
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
     if ([segue.identifier isEqualToString:@"toEditProfile"])
     {
-        VProfileEditController* controller = (VProfileEditController *)segue.destinationViewController;
+        VProfileEditViewController* controller = (VProfileEditViewController *)segue.destinationViewController;
         controller.profile = self.profile;
     }
     else if ([segue.identifier isEqualToString:@"toComposeMessage"])
     {
-        VMessageSubViewController *subview = (VMessageSubViewController *)segue.destinationViewController;
+        VMessageViewController *subview = (VMessageViewController *)segue.destinationViewController;
         subview.conversation = [[VObjectManager sharedManager] conversationWithUser:self.profile];
     }
 }

@@ -6,9 +6,9 @@
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
-#import "VProfileEditViewController.h"
+#import "VAbstractProfileEditViewController.h"
 #import "VLoginViewController.h"
 
-@interface VProfileWithSocialViewController : VProfileEditViewController
+@interface VProfileWithSocialViewController : VAbstractProfileEditViewController
 @property (nonatomic, assign)   VLoginType      loginType;
 @end

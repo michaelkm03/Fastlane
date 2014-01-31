@@ -81,7 +81,7 @@
                     </connections>
                 </searchDisplayController>
             </objects>
-            <point key="canvasLocation" x="-4131" y="-818"/>
+            <point key="canvasLocation" x="-4565" y="-802"/>
         </scene>
         <!--Message Sub View Controller - Messages-->
         <scene sceneID="WQQ-cx-Z9d">
@@ -100,7 +100,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="YVI-SC-OXd" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-3435" y="-1444"/>
+            <point key="canvasLocation" x="-4003" y="-1516"/>
         </scene>
         <!--Message View Controller - Messages-->
         <scene sceneID="IH3-Pz-KdZ">
@@ -129,7 +129,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ffq-o1-Z0A" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-3037" y="-1444"/>
+            <point key="canvasLocation" x="-3581" y="-1516"/>
         </scene>
         <!--Profile View Controller - Profile-->
         <scene sceneID="VlG-Uc-LUL">
@@ -184,13 +184,7 @@
                             <constraint firstAttribute="trailing" secondItem="4hu-wW-MT9" secondAttribute="trailing" id="sbD-Sy-hbj"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" title="Profile" id="VAE-nC-pE0">
-                        <barButtonItem key="leftBarButtonItem" image="Menu" id="4ul-AN-b0Y">
-                            <connections>
-                                <action selector="showMenu" destination="Q6B-uo-AQk" id="6Di-A1-dPq"/>
-                            </connections>
-                        </barButtonItem>
-                    </navigationItem>
+                    <navigationItem key="navigationItem" title="Profile" id="VAE-nC-pE0"/>
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
                     <connections>
                         <outlet property="backgroundImageView" destination="4hu-wW-MT9" id="Urg-Jj-i5c"/>
@@ -205,10 +199,10 @@
             </objects>
             <point key="canvasLocation" x="-4565" y="-2256"/>
         </scene>
-        <!--Profile Edit Controller - Edit Profile-->
+        <!--Profile Edit View Controller - Edit Profile-->
         <scene sceneID="FNl-bx-KVj">
             <objects>
-                <tableViewController storyboardIdentifier="editProfile" useStoryboardIdentifierAsRestorationIdentifier="YES" id="dbW-o9-eKz" customClass="VProfileEditController" sceneMemberID="viewController">
+                <tableViewController storyboardIdentifier="editProfile" useStoryboardIdentifierAsRestorationIdentifier="YES" id="dbW-o9-eKz" customClass="VProfileEditViewController" sceneMemberID="viewController">
                     <tableView key="view" opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="static" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="1" sectionFooterHeight="1" id="Y6R-5W-Dzl">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -230,7 +224,7 @@
                                                 <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="w8L-kM-3rZ">
                                                     <rect key="frame" x="110" y="12" width="100" height="100"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                    <state key="normal" title="Take Photo">
+                                                    <state key="normal" image="PostCamera">
                                                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                                     </state>
                                                     <connections>
@@ -255,7 +249,7 @@
                                             <rect key="frame" x="0.0" y="0.0" width="320" height="49"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Name" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="zed-dB-jv0">
+                                                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="username" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="zed-dB-jv0">
                                                     <rect key="frame" x="20" y="0.0" width="280" height="50"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
@@ -273,7 +267,7 @@
                                             <rect key="frame" x="0.0" y="0.0" width="320" height="49"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Location" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="ay3-ie-U7V">
+                                                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="location" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="ay3-ie-U7V">
                                                     <rect key="frame" x="20" y="0.0" width="280" height="50"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
@@ -284,19 +278,27 @@
                                         </tableViewCellContentView>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                     </tableViewCell>
-                                    <tableViewCell opaque="NO" alpha="0.29999999999999999" contentMode="scaleToFill" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" rowHeight="50" id="FOT-Ox-peG">
-                                        <rect key="frame" x="0.0" y="318" width="320" height="50"/>
+                                    <tableViewCell opaque="NO" alpha="0.29999999999999999" contentMode="scaleToFill" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" rowHeight="100" id="FOT-Ox-peG">
+                                        <rect key="frame" x="0.0" y="318" width="320" height="100"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" alpha="0.59999999999999998" contentMode="center" tableViewCell="FOT-Ox-peG" id="WDn-tq-4Cs">
-                                            <rect key="frame" x="0.0" y="0.0" width="320" height="49"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="320" height="99"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Tagline" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="u02-D9-b33">
-                                                    <rect key="frame" x="20" y="0.0" width="280" height="50"/>
+                                                <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="9Wi-dT-mR6">
+                                                    <rect key="frame" x="0.0" y="0.0" width="320" height="99"/>
+                                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                                    <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                    <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                                                </textView>
+                                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="tag line" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="BrO-BV-Los">
+                                                    <rect key="frame" x="23" y="7" width="47" height="17"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                                    <textInputTraits key="textInputTraits" returnKeyType="done"/>
-                                                </textField>
+                                                    <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
                                             </subviews>
                                             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         </tableViewCellContentView>
@@ -311,12 +313,7 @@
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" title="Edit Profile" id="Elo-eR-l3V">
-                        <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="UES-Zw-PeP">
-                            <connections>
-                                <action selector="cancel:" destination="dbW-o9-eKz" id="l1V-56-2T4"/>
-                            </connections>
-                        </barButtonItem>
-                        <barButtonItem key="rightBarButtonItem" style="done" systemItem="done" id="9YK-CB-tAB">
+                        <barButtonItem key="rightBarButtonItem" systemItem="save" id="9YK-CB-tAB">
                             <connections>
                                 <action selector="done:" destination="dbW-o9-eKz" id="yUA-Pn-fsC"/>
                             </connections>
@@ -326,15 +323,16 @@
                     <connections>
                         <outlet property="headerButton" destination="w8L-kM-3rZ" id="LXX-6L-0qr"/>
                         <outlet property="locationTextField" destination="ay3-ie-U7V" id="LWk-ml-YsA"/>
+                        <outlet property="nameLabel" destination="sJu-eY-fxg" id="pcx-7W-JLU"/>
                         <outlet property="nameTextField" destination="zed-dB-jv0" id="D9e-0x-DQo"/>
                         <outlet property="profileImageView" destination="25T-rT-HDN" id="p9W-Px-gnI"/>
-                        <outlet property="taglineTextField" destination="u02-D9-b33" id="afP-rU-q4j"/>
-                        <outlet property="usernameLabel" destination="sJu-eY-fxg" id="z2m-AV-nx3"/>
+                        <outlet property="tagLinePlaceholderLabel" destination="BrO-BV-Los" id="lyD-UR-dmV"/>
+                        <outlet property="taglineTextView" destination="9Wi-dT-mR6" id="ifd-np-uCI"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="bdf-u2-aDn" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-3731" y="-2248"/>
+            <point key="canvasLocation" x="-4003" y="-2256"/>
         </scene>
         <!--Home Stream View Controller - Home-->
         <scene sceneID="fdY-i8-2n7">
@@ -762,7 +760,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="QO7-vc-UdB" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-3455" y="-586"/>
+            <point key="canvasLocation" x="-4015" y="-802"/>
         </scene>
         <!--Forum Stream Table View Controller - Forum-->
         <scene sceneID="vDr-Oc-JUM">
@@ -1196,6 +1194,117 @@
                 </searchDisplayController>
             </objects>
             <point key="canvasLocation" x="-765" y="-2119"/>
+        </scene>
+        <!--Create View Controller - New Video-->
+        <scene sceneID="cp3-3O-4UV">
+            <objects>
+                <viewController storyboardIdentifier="VCreateViewController" id="VqW-2x-zZ3" customClass="VCreateViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="0EL-NC-gDR"/>
+                        <viewControllerLayoutGuide type="bottom" id="VVA-kE-vAj"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="vzy-hn-BnN">
+                        <rect key="frame" x="0.0" y="64" width="320" height="504"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="GsI-rO-7Wj">
+                                <rect key="frame" x="60" y="20" width="200" height="200"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                <subviews>
+                                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" adjustsImageWhenHighlighted="NO" adjustsImageWhenDisabled="NO" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9Kc-qw-Jet">
+                                        <rect key="frame" x="40" y="40" width="120" height="120"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <state key="normal" image="PostCamera">
+                                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="mediaButtonAction:" destination="VqW-2x-zZ3" eventType="touchUpInside" id="AA0-pb-x6V"/>
+                                        </connections>
+                                    </button>
+                                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Add a video" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Vxh-9h-RIg">
+                                        <rect key="frame" x="40" y="179" width="120" height="21"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                                        <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <imageView hidden="YES" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="avatar.jpg" translatesAutoresizingMaskIntoConstraints="NO" id="kl7-8d-c0I">
+                                        <rect key="frame" x="0.0" y="0.0" width="200" height="200"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                    </imageView>
+                                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Z1Y-FT-XBw">
+                                        <rect key="frame" x="0.0" y="2" width="22" height="22"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <state key="normal" image="PostDelete">
+                                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="clearMedia:" destination="VqW-2x-zZ3" eventType="touchUpInside" id="VO7-Sw-d2I"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                            </view>
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8aq-6j-HJB">
+                                <rect key="frame" x="8" y="239" width="304" height="120"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                <string key="text">Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences" returnKeyType="done"/>
+                                <connections>
+                                    <outlet property="delegate" destination="VqW-2x-zZ3" id="XD9-hU-zu7"/>
+                                </connections>
+                            </textView>
+                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="wcr-ba-oUW">
+                                <rect key="frame" x="8" y="454" width="304" height="44"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="POST IT">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="postButtonAction:" destination="VqW-2x-zZ3" eventType="touchUpInside" id="aol-Aj-gU7"/>
+                                </connections>
+                            </button>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" text="140" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="TbQ-e8-V5E">
+                                <rect key="frame" x="270" y="339" width="42" height="21"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstAttribute="trailing" secondItem="wcr-ba-oUW" secondAttribute="trailing" constant="8" id="8OD-J3-3xf"/>
+                            <constraint firstItem="8aq-6j-HJB" firstAttribute="top" secondItem="GsI-rO-7Wj" secondAttribute="bottom" constant="20" id="ORD-o3-gLC"/>
+                            <constraint firstItem="8aq-6j-HJB" firstAttribute="leading" secondItem="vzy-hn-BnN" secondAttribute="leading" constant="8" id="Wxo-na-On9"/>
+                            <constraint firstItem="wcr-ba-oUW" firstAttribute="leading" secondItem="vzy-hn-BnN" secondAttribute="leading" constant="8" id="ccL-93-UiR"/>
+                            <constraint firstItem="VVA-kE-vAj" firstAttribute="top" secondItem="wcr-ba-oUW" secondAttribute="bottom" constant="8" id="oVk-8Y-Z7G"/>
+                            <constraint firstAttribute="trailing" secondItem="TbQ-e8-V5E" secondAttribute="trailing" constant="8" id="pnq-qN-fka"/>
+                            <constraint firstAttribute="trailing" secondItem="8aq-6j-HJB" secondAttribute="trailing" constant="8" id="uNJ-he-Grg"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" title="New Video" id="agw-Iy-car">
+                        <barButtonItem key="leftBarButtonItem" image="Close" id="Vba-KN-xNR">
+                            <connections>
+                                <action selector="closeButtonAction:" destination="VqW-2x-zZ3" id="6mv-bh-hPe"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
+                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" translucent="NO" prompted="NO"/>
+                    <connections>
+                        <outlet property="characterCountLabel" destination="TbQ-e8-V5E" id="vSY-Gu-3yQ"/>
+                        <outlet property="mediaButton" destination="9Kc-qw-Jet" id="eNr-MO-kZz"/>
+                        <outlet property="mediaLabel" destination="Vxh-9h-RIg" id="PfJ-kH-j7m"/>
+                        <outlet property="postButton" destination="wcr-ba-oUW" id="vhu-qk-Ab8"/>
+                        <outlet property="previewImage" destination="kl7-8d-c0I" id="oRf-Hw-m80"/>
+                        <outlet property="removeMediaButton" destination="Z1Y-FT-XBw" id="ek7-cM-OKn"/>
+                        <outlet property="textView" destination="8aq-6j-HJB" id="0FQ-LO-cfz"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="LhE-el-s0s" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-1485" y="-1245"/>
         </scene>
         <!--Owner Stream View Controller - Owner-->
         <scene sceneID="Tog-zl-1Eg">
