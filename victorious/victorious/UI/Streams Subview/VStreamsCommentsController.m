@@ -7,40 +7,35 @@
 //
 
 #import "VStreamsCommentsController.h"
+#import "VConstants.h"
+#import "VThemeManager.h"
+
 #import "VLoginViewController.h"
+#import "VKeyboardBarViewController.h"
+#import "VCommentCell.h"
 
-#import "VComment.h"
-#import "VSequence+Fetcher.h"
-#import "VUser+RestKit.h"
-
-#import "VObjectManager+Login.h"
 #import "VObjectManager+Sequence.h"
 #import "VObjectManager+Comment.h"
 
-#import "VCommentCell.h"
-#import "VSequencePlayerViewController.h"
-#import "VThemeManager.h"
-#import "BBlock.h"
 #import "UIActionSheet+BBlock.h"
-#import "VKeyboardBarViewController.h"
 
 #import "VSequence+Fetcher.h"
 #import "VNode+Fetcher.h"
-
 #import "VAsset.h"
 
-#import "VConstants.h"
+//TODO:remove this
+#import "BBlock.h"
 
 @import Social;
 
 const   CGFloat     kCommentRowWithMediaHeight  =   320.0;
 const   CGFloat     kCommentRowHeight           =   110;
 
-@interface VStreamsCommentsController () <NSFetchedResultsControllerDelegate, UINavigationControllerDelegate, VComposeMessageDelegate>
+@interface VStreamsCommentsController () <UINavigationControllerDelegate, VKeyboardBarDelegate>
 
-@property (nonatomic, strong) NSFetchedResultsController* fetchedResultsController;
 @property (nonatomic, strong) NSMutableArray* newlyReadComments;
-@property (nonatomic, strong) VSequencePlayerViewController* sequencePlayer;
+@property (nonatomic, strong) NSArray* sortedComments;
+
 @end
 
 static NSString* CommentCache = @"CommentCache";
@@ -50,12 +45,8 @@ static NSString* CommentCache = @"CommentCache";
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-
-    [self loadSequence];
     
     self.newlyReadComments = [[NSMutableArray alloc] init];
-
-    VLog(@"self.navigationController.delegate: %@", self.navigationController.delegate);
     
     [self.tableView registerNib:[UINib nibWithNibName:kCommentCellIdentifier bundle:[NSBundle mainBundle]]
          forCellReuseIdentifier:kCommentCellIdentifier];
@@ -67,11 +58,7 @@ static NSString* CommentCache = @"CommentCache";
     
     self.composeViewController.delegate = self;
 
-    // Uncomment the following line to preserve selection between presentations.
-    // self.clearsSelectionOnViewWillAppear = NO;
- 
-    // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-    // self.navigationItem.rightBarButtonItem = self.editButtonItem;
+    [self sortCommentsByDate];
 }
 
 - (void)viewWillLayoutSubviews
@@ -80,56 +67,28 @@ static NSString* CommentCache = @"CommentCache";
     self.view.frame = self.view.superview.bounds;
 }
 
-- (void)didReceiveMemoryWarning
-{
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
-}
-
 - (void)setSequence:(VSequence *)sequence{
     _sequence = sequence;
     self.title = sequence.name;
+    [self sortCommentsByDate];
 }
 
-- (void)loadSequence
+#pragma mark - Comment Sorters
+- (void)sortCommentsByDate
 {
-    //Load new sequence
-    __block UIActivityIndicatorView* indicator = [[UIActivityIndicatorView alloc] init];
-    [self.view addSubview:indicator];
-    indicator.center = self.view.center;
-    [indicator startAnimating];
-    indicator.hidesWhenStopped = YES;
-    
-    VSuccessBlock success = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
-    {
-        [self fetchedResultsController];
-        
-        [self updatePredicate];
-        
-        [indicator stopAnimating];
-        [indicator removeFromSuperview];
-        
-        [self setupSequencePlayer];
-    };
-    
-    VFailBlock fail = ^(NSOperation* operation, NSError* error)
-    {
-        [indicator stopAnimating];
-        [indicator removeFromSuperview];
-//        UIAlertView*    alert   =   [[UIAlertView alloc] initWithTitle:@"Unable to Load Media" message:error.localizedDescription delegate:self cancelButtonTitle:@"Understood" otherButtonTitles:nil];
-//        [alert show];
-    };
-    
-    [[VObjectManager sharedManager] loadNextPageOfCommentsForSequence:self.sequence
-                                                          successBlock:success
-                                                             failBlock:fail];
+    NSSortDescriptor*   sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"postedAt" ascending:YES];
+    self.sortedComments = [[self.sequence.comments allObjects] sortedArrayUsingDescriptors:@[sortDescriptor]];
+    [self.tableView reloadData];
 }
 
-- (void) setupSequencePlayer
+- (void)sortCommentsByFriends
 {
-    self.sequencePlayer = [[VSequencePlayerViewController alloc] initWithSequence:self.sequence];
-    
-    [self.tableView reloadData]; //Need to reload to get rid of headers.
+    //TODO: add sort by friends
+}
+
+- (void)sortCommentsByPopular
+{
+    //TODO: add sort by popular
 }
 
 #pragma mark - IBActions
@@ -138,16 +97,7 @@ static NSString* CommentCache = @"CommentCache";
 {
     VSuccessBlock success = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
     {
-        NSManagedObjectContext* context =  [RKObjectManager sharedManager].managedObjectStore.persistentStoreManagedObjectContext;
-        [context performBlockAndWait:^
-         {
-            NSError *error;
-            if (![self.fetchedResultsController performFetch:&error] && error)
-            {
-                // Update to handle the error appropriately.
-                NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
-            }
-         }];
+        [self sortCommentsByDate];
         
         [self.refreshControl endRefreshing];
     };
@@ -165,7 +115,7 @@ static NSString* CommentCache = @"CommentCache";
 
 - (IBAction)shareSequence:(id)sender
 {
-    if (![VObjectManager sharedManager].isAuthorized)
+    if (![VObjectManager sharedManager].mainUser)
     {
         [self presentViewController:[VLoginViewController loginViewController] animated:YES completion:NULL];
         return;
@@ -192,14 +142,14 @@ static NSString* CommentCache = @"CommentCache";
 
 - (IBAction)likeComment:(id)sender forEvent:(UIEvent *)event
 {
-    if (![VObjectManager sharedManager].isAuthorized)
+    if (![VObjectManager sharedManager].mainUser)
     {
         [self presentViewController:[VLoginViewController loginViewController] animated:YES completion:NULL];
         return;
     }
     
     NSIndexPath *indexPath = [self.tableView indexPathForRowAtPoint:[[[event touchesForView:sender] anyObject] locationInView:self.tableView]];
-    VComment *comment = [self.fetchedResultsController objectAtIndexPath:indexPath];
+    VComment *comment = [self.sortedComments objectAtIndex:indexPath.row];
     
     //    if (comment.vote = @"dislike")
     //    {
@@ -221,14 +171,14 @@ static NSString* CommentCache = @"CommentCache";
 
 - (IBAction)dislikeComment:(id)sender forEvent:(UIEvent *)event
 {
-    if (![VObjectManager sharedManager].isAuthorized)
+    if (![VObjectManager sharedManager].mainUser)
     {
         [self presentViewController:[VLoginViewController loginViewController] animated:YES completion:NULL];
         return;
     }
     
     NSIndexPath *indexPath = [self.tableView indexPathForRowAtPoint:[[[event touchesForView:sender] anyObject] locationInView:self.tableView]];
-    VComment *comment = [self.fetchedResultsController objectAtIndexPath:indexPath];
+    VComment *comment = [self.sortedComments objectAtIndex:indexPath.row];
     
 //    if (comment.vote = @"dislike")
 //    {
@@ -264,14 +214,14 @@ static NSString* CommentCache = @"CommentCache";
 
 - (IBAction)flagComment:(id)sender forEvent:(UIEvent *)event
 {
-    if (![VObjectManager sharedManager].isAuthorized)
+    if (![VObjectManager sharedManager].mainUser)
     {
         [self presentViewController:[VLoginViewController loginViewController] animated:YES completion:NULL];
         return;
     }
     
     NSIndexPath *indexPath = [self.tableView indexPathForRowAtPoint:[[[event touchesForView:sender] anyObject] locationInView:self.tableView]];
-    VComment *comment = [self.fetchedResultsController objectAtIndexPath:indexPath];
+    VComment *comment = [self.sortedComments objectAtIndex:indexPath.row];
     
     [[VObjectManager sharedManager] flagComment:comment
                                    successBlock:^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
@@ -285,28 +235,20 @@ static NSString* CommentCache = @"CommentCache";
                                           }];
 }
 
-//TODO: why is this here?
-- (IBAction)addButtonAction:(id)sender
-{
-
-}
-
 #pragma mark - Table view data source
-
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    return [[self.fetchedResultsController sections] count];
+    return 1;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    id  sectionInfo = [[self.fetchedResultsController sections] objectAtIndex:section];
-    return [sectionInfo numberOfObjects];
+    return [self.sequence.comments count];
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    VComment *comment = [self.fetchedResultsController objectAtIndexPath:indexPath];
+    VComment *comment = [self.sortedComments objectAtIndex:indexPath.row];
     return [comment.mediaUrl length] ? kCommentRowWithMediaHeight : kCommentRowHeight;
 }
 
@@ -329,36 +271,15 @@ static NSString* CommentCache = @"CommentCache";
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
 {
     //Add
-    VComment* comment = (VComment*)[self.fetchedResultsController objectAtIndexPath:indexPath];
+    VComment* comment = (VComment*)[self.sortedComments objectAtIndex:indexPath.row];
     //if(!comment.read)
     [self.newlyReadComments addObject:[NSString stringWithFormat:@"%@", comment.remoteId]];
 }
 
-
 - (void)configureCell:(UITableViewCell *)theCell atIndexPath:(NSIndexPath *)theIndexPath
 {
-    VComment *comment = [self.fetchedResultsController objectAtIndexPath:theIndexPath];
+    VComment *comment = [self.sortedComments objectAtIndex:theIndexPath.row];
     [(VCommentCell*)theCell setCommentOrMessage:comment];
-}
-
-- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
-{
-    if ([self.sequence isVideo] && [[[self.sequence firstNode] firstAsset].type isEqualToString:VConstantsMediaTypeYoutube])
-    {
-        return self.sequencePlayer.view;
-    }
-    
-    return nil;
-}
-
-- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
-{
-    if ([self.sequence isVideo] && [[[self.sequence firstNode] firstAsset].type isEqualToString:VConstantsMediaTypeYoutube])
-    {
-        return 160;
-    }
-    
-    return 0;
 }
 
 #pragma mark - UITableViewDelegate
@@ -366,7 +287,7 @@ static NSString* CommentCache = @"CommentCache";
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     BBlockWeakSelf wself = self;
-    VComment *comment = [self.fetchedResultsController objectAtIndexPath:indexPath];
+    VComment *comment = [self.sortedComments objectAtIndex:indexPath.row];
     NSString *reportTitle = NSLocalizedString(@"Report Inappropriate", @"Comment report inappropriate button");
     NSString *thumbUpTitle = NSLocalizedString(@"Thumbs Up", @"Comment thumbs up button");
     NSString *thumbDownTitle = NSLocalizedString(@"Thumbs Down", @"Comment thumbs down button");
@@ -433,160 +354,16 @@ static NSString* CommentCache = @"CommentCache";
     [actionSheet showInView:window];
 }
 
-
-#pragma mark - NSFetchedResultsControllers
-
-- (void)updatePredicate
-{
-    //We must clear the cache before modifying anything.
-    [NSFetchedResultsController deleteCacheWithName:CommentCache];
-    
-    NSFetchRequest* fetchRequest = self.fetchedResultsController.fetchRequest;
-    
-    //TODO: apply filter predicate
-    NSPredicate* sequenceFilter = [NSPredicate predicateWithFormat:@"sequenceId == %@", self.sequence.remoteId];
-    [fetchRequest setPredicate:sequenceFilter];
-    
-    NSManagedObjectContext* context =  [RKObjectManager sharedManager].managedObjectStore.persistentStoreManagedObjectContext;
-    [context performBlockAndWait:^
-     {
-        //We need to perform the fetch again
-        NSError *error = nil;
-        if (![self.fetchedResultsController performFetch:&error] && error)
-        {
-            // Update to handle the error appropriately.
-            NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
-        }
-     }];
-    
-    //Then reload the data
-    [self.tableView reloadData];
-}
-
-- (NSFetchedResultsController *)fetchedResultsController
-{
-    if (nil == _fetchedResultsController)
-    {
-        RKObjectManager* manager = [RKObjectManager sharedManager];
-        NSManagedObjectContext *context = manager.managedObjectStore.persistentStoreManagedObjectContext;
-        
-        NSFetchRequest *fetchRequest = [self fetchRequest];
-        
-        self.fetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:fetchRequest
-                                                                            managedObjectContext:context
-                                                                              sectionNameKeyPath:nil
-                                                                                       cacheName:CommentCache];
-        self.fetchedResultsController.delegate = self;
-    }
-    
-    return _fetchedResultsController;
-}
-
-- (NSFetchRequest*)fetchRequest
-{
-    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] initWithEntityName:[VComment entityName]];
-    NSSortDescriptor *sort = [[NSSortDescriptor alloc] initWithKey:@"postedAt" ascending:NO];
-    [fetchRequest setSortDescriptors:@[sort]];
-    [fetchRequest setFetchBatchSize:50];
-    
-    return fetchRequest;
-}
-
-- (void)controllerWillChangeContent:(NSFetchedResultsController *)controller
-{
-    // The fetch controller is about to start sending change notifications, so prepare the table view for updates.
-    [self.tableView beginUpdates];
-}
-
-- (void)controller:(NSFetchedResultsController *)controller didChangeObject:(id)anObject atIndexPath:(NSIndexPath *)indexPath forChangeType:(NSFetchedResultsChangeType)type newIndexPath:(NSIndexPath *)newIndexPath
-{
-    
-    switch(type)
-    {
-        case NSFetchedResultsChangeInsert:
-            [self.tableView insertRowsAtIndexPaths:@[newIndexPath] withRowAnimation:UITableViewRowAnimationFade];
-            break;
-            
-        case NSFetchedResultsChangeDelete:
-            [self.tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
-            break;
-            
-        case NSFetchedResultsChangeUpdate:
-            [self configureCell:[self.tableView cellForRowAtIndexPath:indexPath] atIndexPath:indexPath];
-            break;
-            
-        case NSFetchedResultsChangeMove:
-            [self.tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
-            [self.tableView insertRowsAtIndexPaths:@[newIndexPath] withRowAnimation:UITableViewRowAnimationFade];
-            break;
-    }
-}
-
-- (void)controller:(NSFetchedResultsController *)controller didChangeSection:(id )sectionInfo atIndex:(NSUInteger)sectionIndex forChangeType:(NSFetchedResultsChangeType)type
-{
-    switch(type)
-    {
-        case NSFetchedResultsChangeInsert:
-            [self.tableView insertSections:[NSIndexSet indexSetWithIndex:sectionIndex] withRowAnimation:UITableViewRowAnimationFade];
-            break;
-            
-        case NSFetchedResultsChangeDelete:
-            [self.tableView deleteSections:[NSIndexSet indexSetWithIndex:sectionIndex] withRowAnimation:UITableViewRowAnimationFade];
-            break;
-    }
-}
-
 - (void)controllerDidChangeContent:(NSFetchedResultsController *)controller
 {
     // The fetch controller has sent all current change notifications, so tell the table view to process all updates.
     [self.tableView endUpdates];
 }
 
-
-/*
-// Override to support conditional editing of the table view.
-- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    // Return NO if you do not want the specified item to be editable.
-    return YES;
-}
-*/
-
-/*
-// Override to support editing the table view.
-- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    if (editingStyle == UITableViewCellEditingStyleDelete) {
-        // Delete the row from the data source
-        [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
-    }   
-    else if (editingStyle == UITableViewCellEditingStyleInsert) {
-        // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-    }   
-}
-*/
-
-/*
-// Override to support rearranging the table view.
-- (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath
-{
-}
-*/
-
-/*
-// Override to support conditional rearranging of the table view.
-- (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    // Return NO if you do not want the item to be re-orderable.
-    return YES;
-}
-*/
-
 #pragma mark - VComposeMessageDelegate
 
 - (void)didComposeWithText:(NSString *)text data:(NSData *)data mediaExtension:(NSString *)mediaExtension mediaURL:(NSURL *)mediaURL
 {
-    
     __block UIActivityIndicatorView *indicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
     indicator.frame = CGRectMake(0, 0, 24, 24);
     indicator.hidesWhenStopped = YES;
@@ -598,7 +375,7 @@ static NSString* CommentCache = @"CommentCache";
     {
         NSLog(@"%@", resultObjects);
         [indicator stopAnimating];
-        [self updatePredicate];
+        [self sortCommentsByDate];
     };
     VFailBlock fail = ^(NSOperation* operation, NSError* error)
     {
@@ -616,7 +393,6 @@ static NSString* CommentCache = @"CommentCache";
             [alert show];
         }
     };
-
     
     [[VObjectManager sharedManager] addCommentWithText:text
                                                    Data:data
@@ -628,9 +404,7 @@ static NSString* CommentCache = @"CommentCache";
                                              failBlock:fail];
 }
 
-
 #pragma mark - Navigation
-
 // In a story board-based application, you will often want to do a little preparation before navigation
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
@@ -646,7 +420,7 @@ static NSString* CommentCache = @"CommentCache";
 - (void)viewWillDisappear:(BOOL)animated
 {    
     //Whenever we leave this view we need to tell the server what was read.
-    if ([VObjectManager sharedManager].isAuthorized && [self.newlyReadComments count])
+    if ([VObjectManager sharedManager].mainUser && [self.newlyReadComments count])
     {
         __block NSMutableArray* readComments = self.newlyReadComments;
         [[VObjectManager sharedManager] readComments:readComments
@@ -662,7 +436,7 @@ static NSString* CommentCache = @"CommentCache";
 
 - (BOOL)shouldPerformSegueWithIdentifier:(NSString *)identifier sender:(id)sender
 {
-    if ([identifier isEqualToString:@"toComposeMessage"] && ![VObjectManager sharedManager].isAuthorized)
+    if ([identifier isEqualToString:@"toComposeMessage"] && ![VObjectManager sharedManager].mainUser)
     {
         [self presentViewController:[VLoginViewController loginViewController] animated:YES completion:NULL];
         return NO;

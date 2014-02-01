@@ -8,13 +8,12 @@
 
 #import "VImagePickerViewController.h"
 
-@protocol VComposeMessageDelegate <NSObject>
+@protocol VKeyboardBarDelegate <NSObject>
 @required
 - (void)didComposeWithText:(NSString *)text data:(NSData *)data mediaExtension:(NSString *)mediaExtension mediaURL:(NSURL *)mediaURL;
 @end
 
 @interface VKeyboardBarViewController : VImagePickerViewController
-@property (nonatomic, weak) id<VComposeMessageDelegate> delegate;
+@property (nonatomic, weak) id<VKeyboardBarDelegate> delegate;
 @property (weak, nonatomic, readonly) IBOutlet UITextField *textField;
 @end
-

@@ -19,7 +19,7 @@
 const   CGFloat     kMessageRowWithMediaHeight  =   280.0;
 const   CGFloat     kMessageRowHeight           =   80;
 
-@interface VMessageViewController () <VComposeMessageDelegate>
+@interface VMessageViewController () <VKeyboardBarDelegate>
 @property (nonatomic, readwrite, strong)    NSArray*    messages;
 @end
 

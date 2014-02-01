@@ -36,11 +36,10 @@
     [super viewWillLayoutSubviews];
     self.view.frame = self.view.superview.bounds;
     
-//    [self.stickersView registerClass:[UICollectionViewCell class] forCellWithReuseIdentifier:@"stickerCell"];
     self.mediaButton.layer.cornerRadius = 2;
     self.mediaButton.clipsToBounds = YES;
-    // populate stickers array
     
+//    [self.stickersView registerClass:[UICollectionViewCell class] forCellWithReuseIdentifier:@"stickerCell"];
 //    [self.stickersView reloadData];
 }
 
@@ -52,8 +51,6 @@
         return;
     }
     [self.textField resignFirstResponder];
-    
-//    [super cameraButtonAction:sender];
 }
 
 - (IBAction)sendButtonAction:(id)sender
