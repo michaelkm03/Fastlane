@@ -10,14 +10,17 @@
 #import "VProfileWithEmailViewController.h"
 #import "VObjectManager+Login.h"
 #import "VUser.h"
+#import "TTTAttributedLabel.h"
+#import "VThemeManager.h"
 
 NSString*   const   kSignupErrorDomain =   @"VSignupErrorDomain";
 
-@interface VSignupWithEmailViewController ()    <UITextFieldDelegate>
+@interface VSignupWithEmailViewController ()    <UITextFieldDelegate, TTTAttributedLabelDelegate>
 @property (weak, nonatomic) IBOutlet UITextField *usernameTextField;
 @property (weak, nonatomic) IBOutlet UITextField *emailTextField;
 @property (weak, nonatomic) IBOutlet UITextField *passwordTextField;
 @property (weak, nonatomic) IBOutlet UISwitch* agreeSwitch;
+@property (nonatomic, weak) IBOutlet    TTTAttributedLabel* agreementText;
 @property (nonatomic, strong)   VUser*  profile;
 @end
 
@@ -32,6 +35,15 @@ NSString*   const   kSignupErrorDomain =   @"VSignupErrorDomain";
     self.emailTextField.delegate =   self;
 
     [self.usernameTextField becomeFirstResponder];
+
+    self.agreementText.delegate = self;
+    [self.agreementText setText:[[VThemeManager sharedThemeManager] themedStringForPath:kVAgreementText]];
+    NSRange linkRange = [self.agreementText.text rangeOfString:[[VThemeManager sharedThemeManager] themedStringForPath:kVAgreementLinkText]];
+    if (linkRange.length > 0)
+    {
+        NSURL *url = [NSURL URLWithString:[[VThemeManager sharedThemeManager] themedStringForPath:kVAgreementLink]];
+        [self.agreementText addLinkToURL:url withRange:linkRange];
+    }
 }
 
 #pragma mark - Validation
@@ -183,9 +195,6 @@ NSString*   const   kSignupErrorDomain =   @"VSignupErrorDomain";
 
 - (IBAction)next:(id)sender
 {
-    [self didSignUpWithUser:nil];
-    return;
-    
     [[self view] endEditing:YES];
 
     if (YES == [self shouldSignUpWithUsername:self.usernameTextField.text
@@ -235,6 +244,13 @@ NSString*   const   kSignupErrorDomain =   @"VSignupErrorDomain";
 - (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
 {
     [[self view] endEditing:YES];
+}
+
+#pragma mark - TTTAttributedLabelDelegate
+
+- (void)attributedLabel:(TTTAttributedLabel *)label didSelectLinkWithURL:(NSURL *)url
+{
+    [[UIApplication sharedApplication] openURL:url];
 }
 
 #pragma mark - Navigation

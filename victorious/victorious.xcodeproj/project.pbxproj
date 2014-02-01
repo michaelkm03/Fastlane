@@ -597,7 +597,6 @@
 				BE692B16186E5ED800C71336 /* Streams */,
 				BE692B2C186E5FD900C71336 /* Streams Subview */,
 				3F4863F71869181500F77346 /* Inbox */,
-				83DC42F7187CCDCE00E768E2 /* Create */,
 				D1DAAA0C187A5397009ADCB0 /* avatar.jpg */,
 			);
 			name = "UI 0.5";
@@ -642,13 +641,6 @@
 				83188D64187386D000F17777 /* Roboto-Regular.ttf */,
 			);
 			path = Roboto;
-			sourceTree = "<group>";
-		};
-		83DC42F7187CCDCE00E768E2 /* Create */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			name = Create;
 			sourceTree = "<group>";
 		};
 		BE171D6D1868BE64004E5202 = {
