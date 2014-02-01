@@ -28,56 +28,53 @@ CGFloat VCreateViewControllerLargePadding = 20;
 
 @implementation VCreateViewController
 
++ (instancetype)newCreateViewControllerForType:(VImagePickerViewControllerType)type
+                                  withDelegate:(id<VCreateSequenceDelegate>)delegate
+{
+    UIViewController*   currentViewController = [[UIApplication sharedApplication] delegate].window.rootViewController;
+    VCreateViewController* createView = (VCreateViewController*)[currentViewController.storyboard instantiateViewControllerWithIdentifier: NSStringFromClass([VCreateViewController class])];
+    createView.delegate = delegate;
+    createView.type = type;
+    return createView;
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
     
     [self setType:self.type];
     
-    [self.mediaView constrainToSize:self.mediaView.frame.size];
-    [self.mediaView centerInContainerOnAxis:NSLayoutAttributeCenterX];
-    [self.mediaView pinEdge:NSLayoutAttributeTop toEdge:NSLayoutAttributeBottom ofItem:self.topLayoutGuide inset:VCreateViewControllerLargePadding];
+    [self.addMediaView constrainToSize:self.addMediaView.frame.size];
+    [self.addMediaView centerInContainerOnAxis:NSLayoutAttributeCenterX];
     
-    self.view.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKeyPath:@"theme.color.post.background"];
+    self.view.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKeyPath:kVCreatePostBackgroundColor];
     
     UIImage* newImage = [self.mediaButton.imageView.image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
     [self.mediaButton setImage:newImage forState:UIControlStateNormal];
-    self.mediaButton.tintColor = [[VThemeManager sharedThemeManager] themedColorForKeyPath:@"theme.color.post.mediaButton.icon"];
-    self.mediaButton.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKeyPath:@"theme.color.post.mediaButton.background"];
+    self.mediaButton.tintColor = [[VThemeManager sharedThemeManager] themedColorForKeyPath:kVCreatePostMediaButtonColor];
+    self.mediaButton.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKeyPath:kVCreatePostMediaButtonBGColor];
     self.mediaButton.layer.cornerRadius = self.mediaButton.frame.size.height/2;
-    
-//    UIImage *removeMediaButtonImage = [UIImage imageNamed:@"PostDelete"];
-//    UIButton *removeMediaButton = [UIButton buttonWithType:UIButtonTypeSystem];
-//    removeMediaButton.tintColor = [[VThemeManager sharedThemeManager] themedColorForKeyPath:@"theme.color.post.media.remove"];
-//    removeMediaButton.translatesAutoresizingMaskIntoConstraints = NO;
-//    [removeMediaButton setImage:removeMediaButtonImage forState:UIControlStateNormal];
-//    [removeMediaButton addTarget:self action:@selector(clearMedia) forControlEvents:UIControlEventTouchUpInside];
-//    [previewImage addSubview:removeMediaButton];
-//    [removeMediaButton constrainToSize:removeMediaButtonImage.size];
-//    [removeMediaButton pinToSuperviewEdges:JRTViewPinTopEdge|JRTViewPinLeftEdge inset:VCreateForumViewControllerPadding];
 
     newImage = [self.removeMediaButton.imageView.image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
     [self.removeMediaButton setImage:newImage forState:UIControlStateNormal];
-    self.removeMediaButton.tintColor = [[VThemeManager sharedThemeManager] themedColorForKeyPath:@"theme.color.post.media.remove"];
-//    [self.previewImage addSubview:self.removeMediaButton];
-//    [self.removeMediaButton pinToSuperviewEdges:JRTViewPinTopEdge|JRTViewPinLeftEdge inset:VCreateViewControllerPadding];
+    self.removeMediaButton.tintColor = [[VThemeManager sharedThemeManager] themedColorForKeyPath:KVRemoveMediaButtonColor];
+    self.removeMediaButton.hidden = YES;
     
-    self.mediaLabel.textColor = [[VThemeManager sharedThemeManager] themedColorForKeyPath:@"theme.color.text.post.mediaLabel"];
+    self.mediaLabel.textColor = [[VThemeManager sharedThemeManager] themedColorForKeyPath:kVCreatePostMediaLabelColor];
     [self.mediaLabel centerInContainerOnAxis:NSLayoutAttributeCenterX];
     
-    self.textView.font = [[VThemeManager sharedThemeManager] themedFontForKeyPath:@"theme.font.post"];
-    self.textView.textColor = [[VThemeManager sharedThemeManager] themedColorForKeyPath:@"theme.color.text.post"];
-    self.textView.layer.borderColor = [[[VThemeManager sharedThemeManager] themedColorForKeyPath:@"theme.color.post.input.border"] CGColor];
+    self.textView.font = [[VThemeManager sharedThemeManager] themedFontForKeyPath:kVCreatePostFont];
+    self.textView.textColor = [[VThemeManager sharedThemeManager] themedColorForKeyPath:kVCreatePostTextColor];
+    self.textView.layer.borderColor = [[[VThemeManager sharedThemeManager] themedColorForKeyPath:kVCreatePostInputBorderColor] CGColor];
     self.textView.layer.borderWidth = 1;
     
-    self.postButton.tintColor = [[VThemeManager sharedThemeManager] themedColorForKeyPath:@"theme.color.text.post.postButton"];
-    self.postButton.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKeyPath:@"theme.color.post.postButton.background"];
+    self.postButton.tintColor = [[VThemeManager sharedThemeManager] themedColorForKeyPath:kVCreatePostButtonTextColor];
+    self.postButton.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKeyPath:kVCreatePostButtonBGColor];
     [self.postButton setTitle:NSLocalizedString(@"POST IT", @"Post button") forState:UIControlStateNormal];
-    self.postButton.titleLabel.font = [[VThemeManager sharedThemeManager] themedFontForKeyPath:@"theme.font.post.postButton"];
+    self.postButton.titleLabel.font = [[VThemeManager sharedThemeManager] themedFontForKeyPath:kVCreatePostButtonFont];
     
-    self.characterCountLabel.textColor = [[VThemeManager sharedThemeManager] themedColorForKeyPath:@"theme.color.text.post"];
+    self.characterCountLabel.textColor = [[VThemeManager sharedThemeManager] themedColorForKeyPath:kVCreatePostTextColor];
     self.characterCountLabel.text = @(VConstantsMessageLength).stringValue;
-    [self.characterCountLabel pinEdges:JRTViewPinBottomEdge toSameEdgesOfView:self.textView inset:VCreateViewControllerPadding];
     
     [self validatePostButtonState];
     
@@ -138,8 +135,9 @@ CGFloat VCreateViewControllerLargePadding = 20;
 {
     self.mediaData = nil;
     self.mediaType = nil;
-    self.previewImage.image = nil;
-    [self.previewImage setHidden:YES];
+    self.previewImageView.image = nil;
+    self.previewImageView.hidden = YES;;
+    self.removeMediaButton.hidden = YES;
 }
 
 - (IBAction)closeButtonAction:(id)sender
@@ -152,7 +150,7 @@ CGFloat VCreateViewControllerLargePadding = 20;
 {
     [self.textView resignFirstResponder];
     
-    [self.delegate createPostWithMessage:self.textView.text
+    [self.delegate createPostwithMessage:self.textView.text
                                     data:self.mediaData
                                mediaType:self.mediaType];
 }
@@ -185,11 +183,11 @@ CGFloat VCreateViewControllerLargePadding = 20;
     NSInteger characterCount = VConstantsMessageLength-[textView.text length];
     if(characterCount < 0)
     {
-        self.characterCountLabel.textColor = [[VThemeManager sharedThemeManager] themedColorForKeyPath:@"theme.color.text.post.count.invalid"];
+        self.characterCountLabel.textColor = [[VThemeManager sharedThemeManager] themedColorForKeyPath:kVCreatePostCountInvalidColor];
     }
     else
     {
-        self.characterCountLabel.textColor = [[VThemeManager sharedThemeManager] themedColorForKeyPath:@"theme.color.text.post.count"];
+        self.characterCountLabel.textColor = [[VThemeManager sharedThemeManager] themedColorForKeyPath:kVCreatePostCountColor];
     }
     self.characterCountLabel.text = [NSString stringWithFormat:@"%lu", (unsigned long)characterCount];
     [self validatePostButtonState];
@@ -214,8 +212,9 @@ CGFloat VCreateViewControllerLargePadding = 20;
 {
     self.mediaData = data;
     self.mediaType = extension;
-    [self.previewImage setImage: previewImage];
+    [self.previewImageView setImage: previewImage];
     
-    self.previewImage.hidden = NO;
+    self.previewImageView.hidden = NO;
+    self.removeMediaButton.hidden = NO;
 }
 @end

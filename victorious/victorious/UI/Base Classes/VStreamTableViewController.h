@@ -18,8 +18,6 @@ typedef NS_ENUM(NSInteger, VStreamScope)
 
 @interface VStreamTableViewController : VFetchedResultsTableViewController
 
-@property (nonatomic, readwrite) BOOL usesFeaturedVideos;
-
 - (NSArray*)categoriesForOption:(NSUInteger)searchOption;
 
 - (IBAction)showMenu;

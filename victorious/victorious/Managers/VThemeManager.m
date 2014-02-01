@@ -33,10 +33,30 @@ NSString*   const   kVStreamDescriptionFont             =   @"theme.font.stream.
 
 NSString*   const   kVCommentUsernameFont               =   @"theme.font.comment.text.username";
 
+NSString*   const   kVCreatePostFont                    =   @"theme.font.post";
+NSString*   const   kVCreatePostButtonFont              =   @"theme.font.post.postButton";
+
 #pragma mark - Colors
-NSString*   const   kVStreamSearchBarColor               =   @"theme.color.stream.searchbar";
+NSString*   const   kVStreamSearchBarColor              =   @"theme.color.stream.searchbar";
 
+NSString*   const   kVCreatePollQuestionBorderColor     =   @"theme.color.post.poll.questions.border";
+NSString*   const   kVCreatePollQuestionColor           =   @"theme.color.text.post.poll.question";
+NSString*   const   kVCreatePollQuestionLeftColor       =   @"theme.color.text.post.poll.questions.left";
+NSString*   const   kVCreatePollQuestionRightColor      =   @"theme.color.text.post.poll.questions.right";
+NSString*   const   kVCreatePollQuestionLeftBGColor     =   @"theme.color.post.poll.questions.left.background";
+NSString*   const   kVCreatePollQuestionRightBGColor    =   @"theme.color.post.poll.questions.right.background";
 
+NSString*   const   kVCreatePostBackgroundColor         =   @"theme.color.post.background";
+NSString*   const   kVCreatePostMediaLabelColor         =   @"theme.color.text.post.mediaLabel";
+NSString*   const   kVCreatePostMediaButtonColor        =   @"theme.color.post.mediaButton.icon";
+NSString*   const   kVCreatePostMediaButtonBGColor      =   @"theme.color.post.mediaButton.background";
+NSString*   const   kVCreatePostTextColor               =   @"theme.color.text.post";
+NSString*   const   KVRemoveMediaButtonColor            =   @"theme.color.post.media.remove";
+NSString*   const   kVCreatePostInputBorderColor        =   @"theme.color.post.input.border";
+NSString*   const   kVCreatePostButtonTextColor         =   @"theme.color.text.post.postButton";
+NSString*   const   kVCreatePostButtonBGColor           =   @"theme.color.post.postButton.background";
+NSString*   const   kVCreatePostCountInvalidColor       =   @"theme.color.text.post.count.invalid";
+NSString*   const   kVCreatePostCountColor              =   @"theme.color.text.post.count";
 @interface      VThemeManager   ()
 @property   (nonatomic, readwrite, copy)    NSDictionary*   themeValues;
 @end
