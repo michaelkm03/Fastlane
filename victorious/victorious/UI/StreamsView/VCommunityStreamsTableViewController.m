@@ -104,20 +104,18 @@
 
          if([[actionSheet buttonTitleAtIndex:buttonIndex] isEqualToString:videoTitle])
          {
-//             VCreateViewController *createViewController =
-//             [[VCreateViewController alloc] initWithType:VImagePickerViewControllerVideo andDelegate:self];
-//             [wself presentViewController:[[UINavigationController alloc] initWithRootViewController:createViewController] animated:YES completion:nil];
+             VCreateViewController *createViewController = [VCreatePollViewController newCreatePollViewControllerForType:VImagePickerViewControllerVideo withDelegate:self];
+             [self presentViewController:[[UINavigationController alloc] initWithRootViewController:createViewController] animated:YES completion:nil];
          }
          else if([[actionSheet buttonTitleAtIndex:buttonIndex] isEqualToString:photoTitle])
          {
-//             VCreateViewController *createViewController =
-//             [[VCreateViewController alloc] initWithType:VImagePickerViewControllerPhoto andDelegate:self];
-//             [wself presentViewController:[[UINavigationController alloc] initWithRootViewController:createViewController] animated:YES completion:nil];
+             VCreateViewController *createViewController = [VCreatePollViewController newCreatePollViewControllerForType:VImagePickerViewControllerPhoto withDelegate:self];
+             [self presentViewController:[[UINavigationController alloc] initWithRootViewController:createViewController] animated:YES completion:nil];
          }
          else if([[actionSheet buttonTitleAtIndex:buttonIndex] isEqualToString:pollTitle])
          {
-//             VCreatePollViewController *createViewController = [[VCreatePollViewController alloc] initWithDelegate:self];
-//             [wself presentViewController:[[UINavigationController alloc] initWithRootViewController:createViewController] animated:YES completion:nil];
+             VCreateViewController *createViewController = [VCreatePollViewController newCreatePollViewControllerForType:VImagePickerViewControllerPhotoAndVideo withDelegate:self];
+             [self presentViewController:[[UINavigationController alloc] initWithRootViewController:createViewController] animated:YES completion:nil];
          }
      }];
     [actionSheet showInView:self.view];

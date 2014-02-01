@@ -35,6 +35,9 @@
 "PollUploadTitle"       =   "Poll Upload Failed";
 "PollUploadBody"        =   "Unable to upload Poll to server";
 
+"UploadError"           =   "Upload Error";
+"UploadErrorBody"       =   "Sorry! Something went wrong, and we are unable to complete the upload at this time.";
+
 "Now"                   =   "Now";
 "SecondsAgo"            =   "%ds";
 "MinuteAgo"             =   "1m";

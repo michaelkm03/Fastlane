@@ -211,7 +211,12 @@
     //Wrap the vsuccess block in a afsuccess block
     void (^afSuccessBlock)(AFHTTPRequestOperation *operation, id responseObject)  = ^(AFHTTPRequestOperation *operation, id responseObject)
     {
-        if (successBlock)
+        NSError* error = [self errorForResponse:responseObject];
+    
+        if (error && failBlock)
+            failBlock(operation, error);
+        
+        if (!error && successBlock)
             successBlock(operation, responseObject, nil);
     };
     
@@ -220,6 +225,15 @@
                                                                                  failure:failBlock];
     [operation start];
     return operation;
+}
+
+- (NSError*)errorForResponse:(NSDictionary*)responseObject
+{
+    if ([responseObject[@"error"] integerValue] == 0)
+        return nil;
+    
+    return [NSError errorWithDomain:kVictoriousDomain code:[responseObject[@"error"] integerValue]
+                           userInfo:@{NSLocalizedDescriptionKey: responseObject[@"message"]}];
 }
 
 -(VPaginationStatus *)statusForKey:(NSString*)key

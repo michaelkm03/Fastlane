@@ -8,10 +8,10 @@
 
 @protocol VCreateSequenceDelegate <NSObject>
 
-- (void)createPostWithTitle:(NSString *)title
-                    message:(NSString *)message
-                       data:(NSData *)data
-                  mediaType:(NSString *)mediaType;
+@optional
+- (void)createPostwithMessage:(NSString *)message
+                         data:(NSData *)data
+                    mediaType:(NSString *)mediaType;
 
 - (void)createPollWithQuestion:(NSString *)question
                    answer1Text:(NSString *)answer1Text

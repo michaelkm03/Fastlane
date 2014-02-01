@@ -75,7 +75,6 @@ CGFloat VCreateViewControllerLargePadding = 20;
     
     self.characterCountLabel.textColor = [[VThemeManager sharedThemeManager] themedColorForKeyPath:kVCreatePostTextColor];
     self.characterCountLabel.text = @(VConstantsMessageLength).stringValue;
-    [self.characterCountLabel pinEdges:JRTViewPinBottomEdge toSameEdgesOfView:self.textView inset:VCreateViewControllerPadding];
     
     [self validatePostButtonState];
     
@@ -151,10 +150,9 @@ CGFloat VCreateViewControllerLargePadding = 20;
 {
     [self.textView resignFirstResponder];
     
-    [self.delegate createPostWithTitle:nil
-                               message:self.textView.text
-                                  data:self.mediaData
-                             mediaType:self.mediaType];
+    [self.delegate createPostwithMessage:self.textView.text
+                                    data:self.mediaData
+                               mediaType:self.mediaType];
 }
 
 #pragma mark - Notifications
