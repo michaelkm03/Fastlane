@@ -28,18 +28,6 @@
     return sharedInstance;
 }
 
-- (void) viewDidLoad
-{
-    self.usesFeaturedVideos = YES;
-    [super viewDidLoad];
-    
-    UIViewController*   currentViewController = [[UIApplication sharedApplication] delegate].window.rootViewController;
-    VCreatePollViewController* createView = (VCreatePollViewController*)[currentViewController.storyboard instantiateViewControllerWithIdentifier: NSStringFromClass([VCreatePollViewController class])];
-    createView.delegate = self;
-    createView.type = VImagePickerViewControllerPhoto;
-    [self presentViewController:[[UINavigationController alloc] initWithRootViewController:createView] animated:YES completion:nil];
-}
-
 - (NSArray*)categoriesForOption:(NSUInteger)searchOption
 {
     switch (searchOption)

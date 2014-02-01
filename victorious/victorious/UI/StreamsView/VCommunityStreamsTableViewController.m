@@ -87,7 +87,6 @@
         return;
     }
     
-    BBlockWeakSelf wself = self;
     NSString *videoTitle = NSLocalizedString(@"Post Video", @"Post video button");
     NSString *photoTitle = NSLocalizedString(@"Post Photo", @"Post photo button");
     NSString *pollTitle = NSLocalizedString(@"Post Poll", @"Post poll button");

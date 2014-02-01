@@ -28,6 +28,16 @@ CGFloat VCreateViewControllerLargePadding = 20;
 
 @implementation VCreateViewController
 
++ (instancetype)newCreateViewControllerForType:(VImagePickerViewControllerType)type
+                                  withDelegate:(id<VCreateSequenceDelegate>)delegate
+{
+    UIViewController*   currentViewController = [[UIApplication sharedApplication] delegate].window.rootViewController;
+    VCreateViewController* createView = (VCreateViewController*)[currentViewController.storyboard instantiateViewControllerWithIdentifier: NSStringFromClass([VCreateViewController class])];
+    createView.delegate = delegate;
+    createView.type = type;
+    return createView;
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -48,6 +58,7 @@ CGFloat VCreateViewControllerLargePadding = 20;
     newImage = [self.removeMediaButton.imageView.image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
     [self.removeMediaButton setImage:newImage forState:UIControlStateNormal];
     self.removeMediaButton.tintColor = [[VThemeManager sharedThemeManager] themedColorForKeyPath:KVRemoveMediaButtonColor];
+    self.removeMediaButton.hidden = YES;
     
     self.mediaLabel.textColor = [[VThemeManager sharedThemeManager] themedColorForKeyPath:kVCreatePostMediaLabelColor];
     [self.mediaLabel centerInContainerOnAxis:NSLayoutAttributeCenterX];
@@ -140,9 +151,10 @@ CGFloat VCreateViewControllerLargePadding = 20;
 {
     [self.textView resignFirstResponder];
     
-    [self.delegate createPostWithMessage:self.textView.text
-                                    data:self.mediaData
-                               mediaType:self.mediaType];
+    [self.delegate createPostWithTitle:nil
+                               message:self.textView.text
+                                  data:self.mediaData
+                             mediaType:self.mediaType];
 }
 
 #pragma mark - Notifications

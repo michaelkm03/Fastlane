@@ -27,4 +27,7 @@
 
 @property (weak, nonatomic) id<VCreateSequenceDelegate> delegate;
 
++ (instancetype)newCreateViewControllerForType:(VImagePickerViewControllerType)type
+                                  withDelegate:(id<VCreateSequenceDelegate>)delegate;
+
 @end

@@ -24,4 +24,7 @@
 
 @property (weak, nonatomic) IBOutlet UIView* questionViews;
 
++ (instancetype)newCreatePollViewControllerForType:(VImagePickerViewControllerType)type
+                                      withDelegate:(id<VCreateSequenceDelegate>)delegate;
+
 @end

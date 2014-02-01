@@ -26,6 +26,16 @@
 
 @implementation VCreatePollViewController
 
++ (instancetype)newCreatePollViewControllerForType:(VImagePickerViewControllerType)type
+                                      withDelegate:(id<VCreateSequenceDelegate>)delegate
+{
+    UIViewController*   currentViewController = [[UIApplication sharedApplication] delegate].window.rootViewController;
+    VCreatePollViewController* createView = (VCreatePollViewController*)[currentViewController.storyboard instantiateViewControllerWithIdentifier: NSStringFromClass([VCreatePollViewController class])];
+    createView.delegate = delegate;
+    createView.type = type;
+    return createView;
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -158,13 +168,13 @@
 
 - (IBAction)postButtonAction:(id)sender
 {
-    [self.delegate createPostPollWithQuestion:self.questionTextField.text
-                                  answer1Text:self.leftAnswerTextField.text
-                                  answer2Text:self.rightAnswerTextField.text
-                                   media1Data:self.mediaData
-                              media1Extension:self.mediaType
-                                   media2Data:self.secondMediaData
-                              media2Extension:self.secondMediaType];
+    [self.delegate createPollWithQuestion:self.questionTextField.text
+                              answer1Text:self.leftAnswerTextField.text
+                              answer2Text:self.rightAnswerTextField.text
+                               media1Data:self.mediaData
+                          media1Extension:self.mediaType
+                               media2Data:self.secondMediaData
+                          media2Extension:self.secondMediaType];
     
 }
 
