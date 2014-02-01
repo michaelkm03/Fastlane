@@ -434,6 +434,7 @@
 		3F9B665B188878C60046F826 /* UI */ = {
 			isa = PBXGroup;
 			children = (
+				3FF8B7971868EE7E00806EA0 /* Main.storyboard */,
 				BE5D798F1898961500DC752A /* Create */,
 				3F9B665C188878D00046F826 /* Common */,
 				3F9B665D188878DB0046F826 /* Login */,
@@ -584,14 +585,14 @@
 			name = Management;
 			sourceTree = "<group>";
 		};
-		3FF8B7961868EE5E00806EA0 /* UI 0.5 */ = {
+		3FF8B7961868EE5E00806EA0 /* UI 0.5 (To be Removed) */ = {
 			isa = PBXGroup;
 			children = (
 				BE692B16186E5ED800C71336 /* Streams */,
 				BE692B2C186E5FD900C71336 /* Streams Subview */,
 				D1DAAA0C187A5397009ADCB0 /* avatar.jpg */,
 			);
-			name = "UI 0.5";
+			name = "UI 0.5 (To be Removed)";
 			sourceTree = "<group>";
 		};
 		5FF9BE801893188A0054694B /* Menu */ = {
@@ -674,8 +675,7 @@
 				BE171D8A1868BE64004E5202 /* VAppDelegate.h */,
 				BE171D8B1868BE64004E5202 /* VAppDelegate.m */,
 				3F9B665B188878C60046F826 /* UI */,
-				3FF8B7971868EE7E00806EA0 /* Main.storyboard */,
-				3FF8B7961868EE5E00806EA0 /* UI 0.5 */,
+				3FF8B7961868EE5E00806EA0 /* UI 0.5 (To be Removed) */,
 				BE171DD91868C211004E5202 /* Managers */,
 				BE171DAE1868C211004E5202 /* Categories */,
 				BE171DE91868C211004E5202 /* Models */,
