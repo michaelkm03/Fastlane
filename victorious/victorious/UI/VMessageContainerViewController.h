@@ -10,6 +10,6 @@
 
 @class VConversation;
 
-@interface VMessageSubViewController : VKeyboardBarContainerViewController
+@interface VMessageContainerViewController : VKeyboardBarContainerViewController
 @property (nonatomic, readwrite, strong)    VConversation*  conversation;
 @end

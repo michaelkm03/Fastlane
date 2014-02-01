@@ -6,13 +6,13 @@
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
-#import "VMessageSubViewController.h"
+#import "VMessageContainerViewController.h"
 #import "VMessageViewController.h"
 
-@interface VMessageSubViewController ()
+@interface VMessageContainerViewController ()
 @end
 
-@implementation VMessageSubViewController
+@implementation VMessageContainerViewController
 @synthesize conversationTableViewController = _conversationTableViewController;
 
 - (UITableViewController *)conversationTableViewController

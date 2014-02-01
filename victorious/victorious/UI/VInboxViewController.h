@@ -6,10 +6,10 @@
 //  Copyright (c) 2013 Victorious Inc. All rights reserved.
 //
 
-#import "VAbstractStreamViewController.h"
+#import "VFetchedResultsTableViewController.h"
 
-@interface VInboxViewController : VAbstractStreamViewController
+@interface VInboxViewController : VFetchedResultsTableViewController
 
-+ (instancetype)sharedInboxViewController;
++ (instancetype)inboxViewController;
 
 @end
