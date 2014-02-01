@@ -9,11 +9,11 @@
 #import "VInboxViewController.h"
 #import "UIViewController+VSideMenuViewController.h"
 #import "VConversation+RestKit.h"
-#import "VMessageSubViewController.h"
+#import "VMessageContainerViewController.h"
 #import "VNewsViewController.h"
 #import "VConversationCell.h"
 
-NS_ENUM(NSUInteger, ModeSelect)
+NS_ENUM(NSUInteger, VModeSelect)
 {
     kMessageModeSelect,
     kNewsModeSelect
@@ -28,53 +28,78 @@ static  NSString*   kNewsCellViewIdentifier       =   @"VNewsCell";
 
 @implementation VInboxViewController
 
-+ (instancetype)sharedInboxViewController
++ (instancetype)inboxViewController
 {
-    static  VInboxViewController*   inboxViewController;
-    static  dispatch_once_t         onceToken;
-    dispatch_once(&onceToken, ^{
-        UIViewController*   currentViewController = [[UIApplication sharedApplication] delegate].window.rootViewController;
-        inboxViewController = (VInboxViewController*)[currentViewController.storyboard instantiateViewControllerWithIdentifier: @"inbox"];
-    });
-    
-    return inboxViewController;
+    UIViewController*   currentViewController = [[UIApplication sharedApplication] delegate].window.rootViewController;
+    return (VInboxViewController*)[currentViewController.storyboard instantiateViewControllerWithIdentifier: @"inbox"];
 }
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
 
-    self.modeSelectControl.selectedSegmentIndex = 0;
+    self.modeSelectControl.selectedSegmentIndex = kMessageModeSelect;
     [self modeSelected:self.modeSelectControl];
-    
-//        [self.modeSelectControl setDividerImage:image1 forLeftSegmentState:UIControlStateNormal                   rightSegmentState:UIControlStateNormal barMetrics:barMetrics];
-//        [self.modeSelectControl setDividerImage:image2 forLeftSegmentState:UIControlStateSelected                   rightSegmentState:UIControlStateNormal barMetrics:barMetrics];
-//        [self.modeSelectControl setDividerImage:image3 forLeftSegmentState:UIControlStateNormal                   rightSegmentState:UIControlStateSelected barMetrics:barMetrics];
+
+//  [self.modeSelectControl setDividerImage:image1 forLeftSegmentState:UIControlStateNormal                   rightSegmentState:UIControlStateNormal barMetrics:barMetrics];
+//  [self.modeSelectControl setDividerImage:image2 forLeftSegmentState:UIControlStateSelected                   rightSegmentState:UIControlStateNormal barMetrics:barMetrics];
+//  [self.modeSelectControl setDividerImage:image3 forLeftSegmentState:UIControlStateNormal                   rightSegmentState:UIControlStateSelected barMetrics:barMetrics];
 }
 
-#pragma mark - Table view data source
+#pragma mark - Overrides
 
-- (void)configureCell:(UITableViewCell *)theCell atIndexPath:(NSIndexPath *)theIndexPath
+- (NSFetchedResultsController *)makeFetchedResultsController
 {
-    id      info    =   [self.fetchedResultsController objectAtIndexPath:theIndexPath];
+    RKObjectManager* manager = [RKObjectManager sharedManager];
+    NSManagedObjectContext *context = manager.managedObjectStore.persistentStoreManagedObjectContext;
+    
+    NSFetchRequest *fetchRequest = nil;
+    
     if (kMessageModeSelect == self.modeSelectControl.selectedSegmentIndex)
-        [(VConversationCell *)theCell setConversation:info];
-    else
-        ;
+        fetchRequest = [NSFetchRequest fetchRequestWithEntityName:[VConversation entityName]];
+//    else if (kNewsModeSelect == self.modeSelectControl.selectedSegmentIndex)
+//        fetchRequest = [NSFetchRequest fetchRequestWithEntityName:[VNews entityName]];
+
+    NSSortDescriptor *sort = [[NSSortDescriptor alloc] initWithKey:@"lastMessage.postedAt" ascending:YES];
+    [fetchRequest setSortDescriptors:@[sort]];
+    [fetchRequest setFetchBatchSize:50];
+    
+    return [[NSFetchedResultsController alloc] initWithFetchRequest:fetchRequest
+                                               managedObjectContext:context
+                                                 sectionNameKeyPath:nil
+                                                          cacheName:fetchRequest.entityName];
+ }
+
+- (void)registerCells
+{
+    [self.tableView registerNib:[UINib nibWithNibName:kMessageCellViewIdentifier bundle:[NSBundle mainBundle]] forCellReuseIdentifier:kMessageCellViewIdentifier];
+    [self.searchDisplayController.searchResultsTableView registerNib:[UINib nibWithNibName:kMessageCellViewIdentifier bundle:[NSBundle mainBundle]] forCellReuseIdentifier:kMessageCellViewIdentifier];
+
+//  [self.tableView registerNib:[UINib nibWithNibName:kNewsCellViewIdentifier bundle:[NSBundle mainBundle]] forCellReuseIdentifier:kNewsCellViewIdentifier];
+//  [self.searchDisplayController.searchResultsTableView registerNib:[UINib nibWithNibName:kNewsCellViewIdentifier bundle:[NSBundle mainBundle]] forCellReuseIdentifier:kNewsCellViewIdentifier];
 }
+
+#pragma mark - UITabvleViewDataSource
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    UITableViewCell*    cell;
+    UITableViewCell*    theCell;
 
     if (kMessageModeSelect == self.modeSelectControl.selectedSegmentIndex)
-        cell = [tableView dequeueReusableCellWithIdentifier:kMessageCellViewIdentifier forIndexPath:indexPath];
+    {
+        theCell = [tableView dequeueReusableCellWithIdentifier:kMessageCellViewIdentifier forIndexPath:indexPath];
+        VConversation*  info    =   [self.fetchedResultsController objectAtIndexPath:indexPath];
+        [(VConversationCell *)theCell setConversation:info];
+    }
     else
-        cell = [tableView dequeueReusableCellWithIdentifier:kNewsCellViewIdentifier forIndexPath:indexPath];
-    
-    [self configureCell:cell atIndexPath:indexPath];
-    return cell;
+    {
+//        cell = [tableView dequeueReusableCellWithIdentifier:kNewsCellViewIdentifier forIndexPath:indexPath];
+    }
+
+    return theCell;
 }
+
+#pragma mark - UITableViewDelegate
 
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -95,66 +120,12 @@ static  NSString*   kNewsCellViewIdentifier       =   @"VNewsCell";
     }
 }
 
-- (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    return NO;
-}
-
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     [self performSegueWithIdentifier:@"toMessage" sender:[self.tableView cellForRowAtIndexPath:indexPath]];
 }
 
-- (NSFetchRequest*)fetchRequestForContext:(NSManagedObjectContext*)context
-{
-    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
-
-    if (kMessageModeSelect == self.modeSelectControl.selectedSegmentIndex)
-    {
-        [fetchRequest setEntity:[NSEntityDescription entityForName:[VConversation entityName] inManagedObjectContext:context]];
-    }
-    else if (kNewsModeSelect == self.modeSelectControl.selectedSegmentIndex)
-    {
-//        [fetchRequest setEntity:[NSEntityDescription entityForName:[VNews entityName] inManagedObjectContext:context]];
-    }
-    
-    NSSortDescriptor *sort = [[NSSortDescriptor alloc] initWithKey:@"lastMessage.postedAt" ascending:YES];
-    [fetchRequest setSortDescriptors:@[sort]];
-    [fetchRequest setFetchBatchSize:50];
-    
-    return fetchRequest;
-}
-
-#pragma mark - Cell Lifecycle
-
-- (void)registerCells
-{
-    [self.tableView registerNib:[UINib nibWithNibName:kMessageCellViewIdentifier bundle:[NSBundle mainBundle]]
-         forCellReuseIdentifier:kMessageCellViewIdentifier];
-    [self.searchDisplayController.searchResultsTableView registerNib:[UINib nibWithNibName:kMessageCellViewIdentifier bundle:[NSBundle mainBundle]] forCellReuseIdentifier:kMessageCellViewIdentifier];
-
-//    [self.tableView registerNib:[UINib nibWithNibName:kNewsCellViewIdentifier bundle:[NSBundle mainBundle]]
-//         forCellReuseIdentifier:kNewsCellViewIdentifier];
-//    [self.searchDisplayController.searchResultsTableView registerNib:[UINib nibWithNibName:kNewsCellViewIdentifier bundle:[NSBundle mainBundle]] forCellReuseIdentifier:kNewsCellViewIdentifier];
-}
-
-#pragma mark - Refresh Lifecycle
-
-- (void)refreshAction
-{
-    NSManagedObjectContext* context =  [RKObjectManager sharedManager].managedObjectStore.persistentStoreManagedObjectContext;
-    [context performBlockAndWait:^
-    {
-        NSError *error;
-        if (![self.fetchedResultsController performFetch:&error] && error)
-        {
-            // Update to handle the error appropriately.
-            NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
-        }
-        [self.refreshControl endRefreshing];
-    }];
-
-}
+#pragma mark - Actions
 
 - (IBAction)modeSelected:(id)sender
 {
@@ -164,32 +135,32 @@ static  NSString*   kNewsCellViewIdentifier       =   @"VNewsCell";
         self.navigationItem.rightBarButtonItem = nil;
 }
 
-#pragma mark - Navigation
-
 - (IBAction)showMenu
 {
     [self.sideMenuViewController presentMenuViewController];
 }
 
+#pragma mark - Navigation
+
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
     if ([segue.identifier isEqualToString:@"toMessage"])
     {
-        VMessageSubViewController *subview = (VMessageSubViewController *)segue.destinationViewController;
-        UITableViewCell* cell = (UITableViewCell*)sender;
-
-        VConversation* conversation = [self.fetchedResultsController objectAtIndexPath:[self.tableView indexPathForCell:cell]];
-
-        [subview setConversation:conversation];
+//        VMessageSubViewController *subview = (VMessageSubViewController *)segue.destinationViewController;
+//        UITableViewCell* cell = (UITableViewCell*)sender;
+//
+//        VConversation* conversation = [self.fetchedResultsController objectAtIndexPath:[self.tableView indexPathForCell:cell]];
+//
+//        [subview setConversation:conversation];
     }
     else if ([segue.identifier isEqualToString:@"toNews"])
     {
-        VNewsViewController *subview = (VNewsViewController *)segue.destinationViewController;
-        UITableViewCell* cell = (UITableViewCell*)sender;
-        
-        VConversation* conversation = [self.fetchedResultsController objectAtIndexPath:[self.tableView indexPathForCell:cell]];
-        
-        [subview setConversation:conversation];
+//        VNewsViewController *subview = (VNewsViewController *)segue.destinationViewController;
+//        UITableViewCell* cell = (UITableViewCell*)sender;
+//        
+//        VConversation* conversation = [self.fetchedResultsController objectAtIndexPath:[self.tableView indexPathForCell:cell]];
+//        
+//        [subview setConversation:conversation];
     }
 }
 

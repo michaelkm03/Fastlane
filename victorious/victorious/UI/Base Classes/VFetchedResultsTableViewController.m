@@ -314,6 +314,7 @@
 - (void)refreshAction
 {
     [self performFetch];
+    [self.refreshControl endRefreshing];
 }
 
 - (NSPredicate*)searchPredicateForString:(NSString *)searchString

@@ -15,7 +15,7 @@
 		3F91991A187CAF310055FE37 /* VMessageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F919919187CAF310055FE37 /* VMessageViewController.m */; };
 		3F91991D187CAF620055FE37 /* VNewsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F91991C187CAF620055FE37 /* VNewsViewController.m */; };
 		3F9B6657187F80780046F826 /* NSDate+timeSince.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F9B6656187F80780046F826 /* NSDate+timeSince.m */; };
-		3F9B665A18848B750046F826 /* VMessageSubViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F9B665918848B750046F826 /* VMessageSubViewController.m */; };
+		3F9B665A18848B750046F826 /* VMessageContainerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F9B665918848B750046F826 /* VMessageContainerViewController.m */; };
 		3F9B666818887D910046F826 /* VFetchedResultsTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F9B666718887D910046F826 /* VFetchedResultsTableViewController.m */; };
 		3F9B666B1888BE6A0046F826 /* VStreamTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F9B666A1888BE6A0046F826 /* VStreamTableViewController.m */; };
 		3F9B666E1888C4390046F826 /* VHomeStreamViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F9B666D1888C4390046F826 /* VHomeStreamViewController.m */; };
@@ -173,8 +173,8 @@
 		3F91991C187CAF620055FE37 /* VNewsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VNewsViewController.m; path = UI/VNewsViewController.m; sourceTree = "<group>"; };
 		3F9B6655187F80780046F826 /* NSDate+timeSince.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDate+timeSince.h"; sourceTree = "<group>"; };
 		3F9B6656187F80780046F826 /* NSDate+timeSince.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDate+timeSince.m"; sourceTree = "<group>"; };
-		3F9B665818848B750046F826 /* VMessageSubViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VMessageSubViewController.h; path = UI/VMessageSubViewController.h; sourceTree = "<group>"; };
-		3F9B665918848B750046F826 /* VMessageSubViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VMessageSubViewController.m; path = UI/VMessageSubViewController.m; sourceTree = "<group>"; };
+		3F9B665818848B750046F826 /* VMessageContainerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VMessageContainerViewController.h; path = UI/VMessageContainerViewController.h; sourceTree = "<group>"; };
+		3F9B665918848B750046F826 /* VMessageContainerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VMessageContainerViewController.m; path = UI/VMessageContainerViewController.m; sourceTree = "<group>"; };
 		3F9B666618887D910046F826 /* VFetchedResultsTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VFetchedResultsTableViewController.h; path = "UI/Base Classes/VFetchedResultsTableViewController.h"; sourceTree = "<group>"; };
 		3F9B666718887D910046F826 /* VFetchedResultsTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VFetchedResultsTableViewController.m; path = "UI/Base Classes/VFetchedResultsTableViewController.m"; sourceTree = "<group>"; };
 		3F9B66691888BE6A0046F826 /* VStreamTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VStreamTableViewController.h; path = "UI/Base Classes/VStreamTableViewController.h"; sourceTree = "<group>"; };
@@ -431,25 +431,10 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		3F4863F71869181500F77346 /* Inbox */ = {
-			isa = PBXGroup;
-			children = (
-				BEB4C289187DFFF4004ECEEF /* Cells */,
-				3F4863F81869184000F77346 /* VInboxViewController.h */,
-				3F4863F91869184000F77346 /* VInboxViewController.m */,
-				3F9B665818848B750046F826 /* VMessageSubViewController.h */,
-				3F9B665918848B750046F826 /* VMessageSubViewController.m */,
-				3F919918187CAF310055FE37 /* VMessageViewController.h */,
-				3F919919187CAF310055FE37 /* VMessageViewController.m */,
-				3F91991B187CAF620055FE37 /* VNewsViewController.h */,
-				3F91991C187CAF620055FE37 /* VNewsViewController.m */,
-			);
-			name = Inbox;
-			sourceTree = "<group>";
-		};
 		3F9B665B188878C60046F826 /* UI */ = {
 			isa = PBXGroup;
 			children = (
+				3FF8B7971868EE7E00806EA0 /* Main.storyboard */,
 				BE5D798F1898961500DC752A /* Create */,
 				3F9B665C188878D00046F826 /* Common */,
 				3F9B665D188878DB0046F826 /* Login */,
@@ -524,6 +509,15 @@
 		3F9B6660188879130046F826 /* Inbox */ = {
 			isa = PBXGroup;
 			children = (
+				3F4863F81869184000F77346 /* VInboxViewController.h */,
+				3F4863F91869184000F77346 /* VInboxViewController.m */,
+				3F9B665818848B750046F826 /* VMessageContainerViewController.h */,
+				3F9B665918848B750046F826 /* VMessageContainerViewController.m */,
+				3F919918187CAF310055FE37 /* VMessageViewController.h */,
+				3F919919187CAF310055FE37 /* VMessageViewController.m */,
+				3F91991B187CAF620055FE37 /* VNewsViewController.h */,
+				3F91991C187CAF620055FE37 /* VNewsViewController.m */,
+				BEB4C289187DFFF4004ECEEF /* Cells */,
 			);
 			name = Inbox;
 			sourceTree = "<group>";
@@ -591,15 +585,14 @@
 			name = Management;
 			sourceTree = "<group>";
 		};
-		3FF8B7961868EE5E00806EA0 /* UI 0.5 */ = {
+		3FF8B7961868EE5E00806EA0 /* UI 0.5 (To be Removed) */ = {
 			isa = PBXGroup;
 			children = (
 				BE692B16186E5ED800C71336 /* Streams */,
 				BE692B2C186E5FD900C71336 /* Streams Subview */,
-				3F4863F71869181500F77346 /* Inbox */,
 				D1DAAA0C187A5397009ADCB0 /* avatar.jpg */,
 			);
-			name = "UI 0.5";
+			name = "UI 0.5 (To be Removed)";
 			sourceTree = "<group>";
 		};
 		5FF9BE801893188A0054694B /* Menu */ = {
@@ -679,14 +672,13 @@
 		BE171D811868BE64004E5202 /* victorious */ = {
 			isa = PBXGroup;
 			children = (
+				BE171D8A1868BE64004E5202 /* VAppDelegate.h */,
+				BE171D8B1868BE64004E5202 /* VAppDelegate.m */,
 				3F9B665B188878C60046F826 /* UI */,
-				3FF8B7971868EE7E00806EA0 /* Main.storyboard */,
-				3FF8B7961868EE5E00806EA0 /* UI 0.5 */,
+				3FF8B7961868EE5E00806EA0 /* UI 0.5 (To be Removed) */,
 				BE171DD91868C211004E5202 /* Managers */,
 				BE171DAE1868C211004E5202 /* Categories */,
 				BE171DE91868C211004E5202 /* Models */,
-				BE171D8A1868BE64004E5202 /* VAppDelegate.h */,
-				BE171D8B1868BE64004E5202 /* VAppDelegate.m */,
 				BE171D901868BE64004E5202 /* Images.xcassets */,
 				BE171D821868BE64004E5202 /* Supporting Files */,
 				83ABAF9A18709DE30069556C /* Fonts */,
@@ -1185,7 +1177,7 @@
 				BE171E0C1868C211004E5202 /* VNode+Fetcher.m in Sources */,
 				BE5C7382187E37C700A3340D /* VMessage+RestKit.m in Sources */,
 				BEA5BF5F187F21770014C3EF /* VTableViewCell.m in Sources */,
-				3F9B665A18848B750046F826 /* VMessageSubViewController.m in Sources */,
+				3F9B665A18848B750046F826 /* VMessageContainerViewController.m in Sources */,
 				5F51F81A189AEBF800A546D1 /* VAbstractProfileEditViewController.m in Sources */,
 				BEF2C2A818848B3B00AAE975 /* VUnreadConversation.m in Sources */,
 				BEF2C29618845EF500AAE975 /* VPollResult+RestKit.m in Sources */,
