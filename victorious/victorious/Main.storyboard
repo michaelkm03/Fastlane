@@ -1106,10 +1106,10 @@
             </objects>
             <point key="canvasLocation" x="-3453" y="-113"/>
         </scene>
-        <!--Create View Controller - New Video-->
+        <!--Create Content View Controller - New Video-->
         <scene sceneID="9s1-dk-h0z">
             <objects>
-                <viewController storyboardIdentifier="VCreateViewController" id="5ym-q5-gcc" customClass="VCreateViewController" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="VCreateViewController" id="5ym-q5-gcc" customClass="VCreateContentViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="HoE-Uj-iIV"/>
                         <viewControllerLayoutGuide type="bottom" id="R24-YS-BCW"/>

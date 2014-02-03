@@ -8,9 +8,9 @@
 
 #import "VCreateSequenceDelegate.h"
 
-#import "VCreateViewController.h"
+#import "VCreateContentViewController.h"
 
-@interface VCreatePollViewController : VCreateViewController
+@interface VCreatePollViewController : VCreateContentViewController
 
 @property (weak, nonatomic) IBOutlet UIImageView *leftPreviewImageView;
 @property (weak, nonatomic) IBOutlet UIImageView *rightPreviewImageView;
