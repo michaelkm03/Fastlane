@@ -36,10 +36,9 @@
 {
     [super viewDidLoad];
     
-    UIBarButtonItem *addButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"Add"]
-                                                                      style:UIBarButtonItemStylePlain
-                                                                     target:self
-                                                                     action:@selector(addButtonAction:)];
+    UIBarButtonItem *addButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd
+                                                                                   target:self
+                                                                                   action:@selector(addButtonAction:)];
     
     self.navigationItem.rightBarButtonItems= @[addButtonItem, self.navigationItem.rightBarButtonItem];
 }
@@ -74,11 +73,11 @@
     NSString *videoTitle = NSLocalizedString(@"Post Video", @"Post video button");
     NSString *photoTitle = NSLocalizedString(@"Post Photo", @"Post photo button");
     NSString *pollTitle = NSLocalizedString(@"Post Poll", @"Post poll button");
-    UIActionSheet *actionSheet =
-    [[UIActionSheet alloc]
-     initWithTitle:nil delegate:nil
-     cancelButtonTitle:NSLocalizedString(@"Cancel", @"Cancel button")
-     destructiveButtonTitle:nil otherButtonTitles:videoTitle, photoTitle, pollTitle, nil];
+    UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil
+                                                             delegate:nil
+                                                    cancelButtonTitle:NSLocalizedString(@"Cancel", @"Cancel button")
+                                               destructiveButtonTitle:nil
+                                                    otherButtonTitles:videoTitle, photoTitle, pollTitle, nil];
     [actionSheet setCompletionBlock:^(NSInteger buttonIndex, UIActionSheet *actionSheet)
      {
          if(actionSheet.cancelButtonIndex == buttonIndex)
