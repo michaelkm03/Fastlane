@@ -92,7 +92,7 @@
          }
          else if([[actionSheet buttonTitleAtIndex:buttonIndex] isEqualToString:photoTitle])
          {
-             VCreateViewController *createViewController = [VCreatePollViewController newCreateViewControllerForType:VImagePickerViewControllerPhoto withDelegate:self];
+             VCreateViewController *createViewController = [VCreateViewController newCreateViewControllerForType:VImagePickerViewControllerPhoto withDelegate:self];
              [self presentViewController:[[UINavigationController alloc] initWithRootViewController:createViewController] animated:YES completion:nil];
          }
          else if([[actionSheet buttonTitleAtIndex:buttonIndex] isEqualToString:pollTitle])
