@@ -88,17 +88,17 @@
          //TODO: share 
          if([[actionSheet buttonTitleAtIndex:buttonIndex] isEqualToString:videoTitle])
          {
-             VCreateViewController *createViewController = [VCreateViewController newCreateViewControllerForType:VImagePickerViewControllerVideo withDelegate:self];
-             [self presentViewController:createViewController animated:YES completion:nil];
+             VCreateContentViewController *createViewController = [VCreateContentViewController newCreateViewControllerForType:VImagePickerViewControllerVideo withDelegate:self];
+             [self presentViewController:[[UINavigationController alloc] initWithRootViewController:createViewController] animated:YES completion:nil];
          }
          else if([[actionSheet buttonTitleAtIndex:buttonIndex] isEqualToString:photoTitle])
          {
-             VCreateViewController *createViewController = [VCreateViewController newCreateViewControllerForType:VImagePickerViewControllerPhoto withDelegate:self];
+             VCreateContentViewController *createViewController = [VCreateContentViewController newCreateViewControllerForType:VImagePickerViewControllerPhoto withDelegate:self];
              [self presentViewController:createViewController animated:YES completion:nil];
          }
          else if([[actionSheet buttonTitleAtIndex:buttonIndex] isEqualToString:pollTitle])
          {
-             VCreateViewController *createViewController = [VCreatePollViewController newCreatePollViewControllerForType:VImagePickerViewControllerPhotoAndVideo withDelegate:self];
+             VCreatePollViewController *createViewController = [VCreatePollViewController newCreatePollViewControllerForType:VImagePickerViewControllerPhotoAndVideo withDelegate:self];
              [self presentViewController:createViewController animated:YES completion:nil];
          }
      }];
