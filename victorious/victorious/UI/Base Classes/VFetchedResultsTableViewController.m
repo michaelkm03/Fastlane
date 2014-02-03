@@ -26,10 +26,9 @@
     [self performFetch];
     
     self.searchDisplayController.searchBar.barTintColor = [[VThemeManager sharedThemeManager] themedColorForKeyPath:kVStreamSearchBarColor];
-    UIBarButtonItem *searchButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"Search"]
-                                                                         style:UIBarButtonItemStylePlain
-                                                                        target:self
-                                                                        action:@selector(displaySearchBar:)];
+    UIBarButtonItem *searchButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemSearch
+                                                                                      target:self
+                                                                                      action:@selector(displaySearchBar:)];
     self.navigationItem.rightBarButtonItems= @[searchButtonItem];}
 
 - (void)viewWillAppear:(BOOL)animated

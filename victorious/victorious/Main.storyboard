@@ -1232,7 +1232,7 @@
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="New Video" id="ygQ-sf-egf">
-                        <barButtonItem key="leftBarButtonItem" image="Close" id="zIb-1G-obb">
+                        <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="zIb-1G-obb">
                             <connections>
                                 <action selector="closeButtonAction:" destination="5ym-q5-gcc" id="jBr-IU-GqO"/>
                             </connections>
@@ -1455,7 +1455,7 @@
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="New Video" id="18V-Wp-b3G">
-                        <barButtonItem key="leftBarButtonItem" image="Close" id="1a4-9C-toh">
+                        <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="1a4-9C-toh">
                             <connections>
                                 <action selector="closeButtonAction:" destination="ZDA-K5-K60" id="4VO-4s-biV"/>
                             </connections>
@@ -1485,7 +1485,6 @@
         </scene>
     </scenes>
     <resources>
-        <image name="Close" width="27" height="27"/>
         <image name="Menu" width="27" height="27"/>
         <image name="MenuCommunityChannel" width="19" height="19"/>
         <image name="MenuForums" width="22" height="18"/>

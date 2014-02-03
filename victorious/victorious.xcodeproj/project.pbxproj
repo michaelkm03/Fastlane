@@ -806,10 +806,10 @@
 		BE5D798F1898961500DC752A /* Create */ = {
 			isa = PBXGroup;
 			children = (
-				BE5D79A11899E47800DC752A /* VCreatePollViewController.h */,
-				BE5D79A21899E47800DC752A /* VCreatePollViewController.m */,
 				BE5D79A61899E47800DC752A /* VCreateContentViewController.h */,
 				BE5D79A71899E47800DC752A /* VCreateContentViewController.m */,
+				BE5D79A11899E47800DC752A /* VCreatePollViewController.h */,
+				BE5D79A21899E47800DC752A /* VCreatePollViewController.m */,
 				BE5D79A31899E47800DC752A /* VCreateSequenceDelegate.h */,
 				BE5D79A41899E47800DC752A /* VCreateForumViewController.h */,
 				BE5D79A51899E47800DC752A /* VCreateForumViewController.m */,
