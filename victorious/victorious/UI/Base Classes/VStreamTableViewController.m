@@ -176,15 +176,6 @@ forFetchedResultsController:(NSFetchedResultsController *)fetchedResultsControll
 }
 
 #pragma mark - Predicates
-- (NSPredicate*)searchPredicateForString:(NSString *)searchString
-{
-    if (!searchString || [searchString isEmpty])
-    {
-        return nil;
-    }
-    
-    return [NSPredicate predicateWithFormat:@"name CONTAINS[cd] %@", searchString];
-}
 
 - (NSPredicate*)scopeTypePredicateForOption:(NSUInteger)searchOption
 {
