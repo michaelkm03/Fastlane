@@ -117,7 +117,6 @@
 - (IBAction)refresh:(UIRefreshControl *)sender
 {
     [self refreshAction];
-    [self.refreshControl endRefreshing];
 }
 
 #pragma mark - UITablViewDataSource
@@ -303,6 +302,7 @@
 - (void)refreshAction
 {
     [self performFetch];
+    [self.refreshControl endRefreshing];
 }
 
 - (NSPredicate*)searchPredicateForString:(NSString *)searchString
