@@ -103,7 +103,6 @@
                                   successBlock:(VSuccessBlock)success
                                      failBlock:(VFailBlock)fail
 {
-    //    TODO: Unhack this for stickers
     NSString* type = [extension isEqualToString:VConstantMediaExtensionMOV] ? @"video" : @"image";
     NSDictionary* parameters = @{@"sequence_id" : sequence.remoteId.stringValue ?: [NSNull null],
                                  @"parent_id" : parent.remoteId.stringValue ?: [NSNull null],

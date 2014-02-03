@@ -142,7 +142,6 @@ CGFloat VCreateViewControllerLargePadding = 20;
 
 - (IBAction)closeButtonAction:(id)sender
 {
-    [self.textView resignFirstResponder];
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
@@ -153,6 +152,8 @@ CGFloat VCreateViewControllerLargePadding = 20;
     [self.delegate createPostwithMessage:self.textView.text
                                     data:self.mediaData
                                mediaType:self.mediaType];
+    
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 #pragma mark - Notifications

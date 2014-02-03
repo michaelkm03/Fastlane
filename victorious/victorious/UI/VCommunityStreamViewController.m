@@ -86,20 +86,21 @@
              return;
          }
          
+         //TODO: share 
          if([[actionSheet buttonTitleAtIndex:buttonIndex] isEqualToString:videoTitle])
          {
              VCreateViewController *createViewController = [VCreateViewController newCreateViewControllerForType:VImagePickerViewControllerVideo withDelegate:self];
-             [self presentViewController:[[UINavigationController alloc] initWithRootViewController:createViewController] animated:YES completion:nil];
+             [self presentViewController:createViewController animated:YES completion:nil];
          }
          else if([[actionSheet buttonTitleAtIndex:buttonIndex] isEqualToString:photoTitle])
          {
-             VCreateViewController *createViewController = [VCreatePollViewController newCreateViewControllerForType:VImagePickerViewControllerPhoto withDelegate:self];
-             [self presentViewController:[[UINavigationController alloc] initWithRootViewController:createViewController] animated:YES completion:nil];
+             VCreateViewController *createViewController = [VCreateViewController newCreateViewControllerForType:VImagePickerViewControllerPhoto withDelegate:self];
+             [self presentViewController:createViewController animated:YES completion:nil];
          }
          else if([[actionSheet buttonTitleAtIndex:buttonIndex] isEqualToString:pollTitle])
          {
              VCreateViewController *createViewController = [VCreatePollViewController newCreatePollViewControllerForType:VImagePickerViewControllerPhotoAndVideo withDelegate:self];
-             [self presentViewController:[[UINavigationController alloc] initWithRootViewController:createViewController] animated:YES completion:nil];
+             [self presentViewController:createViewController animated:YES completion:nil];
          }
      }];
     [actionSheet showInView:self.view];
@@ -182,6 +183,7 @@
     {
         NSLog(@"%@", resultObjects);
         [indicator stopAnimating];
+        [self.tableView reloadData];
     };
     VFailBlock fail = ^(NSOperation* operation, NSError* error)
     {

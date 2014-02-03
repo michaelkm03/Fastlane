@@ -79,7 +79,6 @@
     [self.navigationController pushViewController:commentsTable animated:YES];
 }
 
-
 #pragma mark - Cells
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -176,16 +175,6 @@ forFetchedResultsController:(NSFetchedResultsController *)fetchedResultsControll
 }
 
 #pragma mark - Predicates
-- (NSPredicate*)searchPredicateForString:(NSString *)searchString
-{
-    if (!searchString || [searchString isEmpty])
-    {
-        return nil;
-    }
-    
-    return [NSPredicate predicateWithFormat:@"name CONTAINS[cd] %@", searchString];
-}
-
 - (NSPredicate*)scopeTypePredicateForOption:(NSUInteger)searchOption
 {
     NSMutableArray* allPredicates = [[NSMutableArray alloc] init];
@@ -198,6 +187,7 @@ forFetchedResultsController:(NSFetchedResultsController *)fetchedResultsControll
 
 - (NSPredicate*)categoryPredicateForString:(NSString*)categoryName
 {
+    //TODO: double check this, I think its wrong
     return [NSPredicate predicateWithFormat:@"category == %@", categoryName];
 }
 
