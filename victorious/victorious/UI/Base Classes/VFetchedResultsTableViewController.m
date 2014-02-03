@@ -92,19 +92,7 @@
     
     [controller.fetchRequest setPredicate:predicate];
     
-    //We need to perform the fetch again
-    NSManagedObjectContext *context = [RKObjectManager sharedManager].managedObjectStore.persistentStoreManagedObjectContext;
-    [context performBlockAndWait:^()
-     {
-         NSError *error;
-         if (![controller performFetch:&error] && error)
-         {
-             //TODO: Update to handle the error appropriately.
-             NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
-         }
-         
-         [self.tableView reloadData];
-     }];
+    [self performFetch];
 }
 
 - (void)hideSearchBar
@@ -129,9 +117,10 @@
 - (IBAction)refresh:(UIRefreshControl *)sender
 {
     [self refreshAction];
+    [self.refreshControl endRefreshing];
 }
 
-#pragma mark - Table view data source
+#pragma mark - UITablViewDataSource
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
@@ -162,13 +151,13 @@
 {
 }
 
-- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
-{
-    if (floor(NSFoundationVersionNumber) <= NSFoundationVersionNumber_iOS_6_1)
-        return 0;
-    else
-        return 22;
-}
+//- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
+//{
+//    if (floor(NSFoundationVersionNumber) <= NSFoundationVersionNumber_iOS_6_1)
+//        return 0;
+//    else
+//        return 22;
+//}
 
 #pragma mark - Helper Functions
 
@@ -250,7 +239,7 @@
     [[self tableViewForFetchedResultsController:controller] endUpdates];
 }
 
-#pragma mark - UISearchDisplayDelegate
+#pragma mark - UISearchDisplayControllerDelegate
 
 - (void)searchDisplayControllerDidEndSearch:(UISearchDisplayController *)controller
 {
@@ -314,7 +303,6 @@
 - (void)refreshAction
 {
     [self performFetch];
-    [self.refreshControl endRefreshing];
 }
 
 - (NSPredicate*)searchPredicateForString:(NSString *)searchString
