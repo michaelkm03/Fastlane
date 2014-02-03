@@ -23,9 +23,6 @@
 #import "VNode+Fetcher.h"
 #import "VAsset.h"
 
-//TODO:remove this
-#import "BBlock.h"
-
 @import Social;
 
 const   CGFloat     kCommentRowWithMediaHeight  =   320.0;
@@ -309,7 +306,6 @@ static NSString* CommentCache = @"CommentCache";
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    BBlockWeakSelf wself = self;
     VComment *comment = [self.sortedComments objectAtIndex:indexPath.row];
     NSString *reportTitle = NSLocalizedString(@"Report Inappropriate", @"Comment report inappropriate button");
     NSString *thumbUpTitle = NSLocalizedString(@"Thumbs Up", @"Comment thumbs up button");
@@ -368,7 +364,7 @@ static NSString* CommentCache = @"CommentCache";
          }
          else if([[actionSheet buttonTitleAtIndex:buttonIndex] isEqualToString:reply])
          {
-             [wself.delegate streamsCommentsController:wself shouldReplyToUser:comment.user];
+             [self.delegate streamsCommentsController:self shouldReplyToUser:comment.user];
          }
      }];
 

@@ -438,10 +438,10 @@
             </objects>
             <point key="canvasLocation" x="-3933" y="682"/>
         </scene>
-        <!--Compose View Controller-->
+        <!--Keyboard Bar View Controller-->
         <scene sceneID="mYy-rg-OQ6">
             <objects>
-                <viewController storyboardIdentifier="compose" id="Xnc-VI-aqb" customClass="VComposeViewController" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="keyboardbar" id="Xnc-VI-aqb" customClass="VKeyboardBarViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="LjZ-II-H8p"/>
                         <viewControllerLayoutGuide type="bottom" id="RCe-62-BGi"/>
@@ -483,7 +483,7 @@
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <connections>
-                                    <action selector="cameraButtonAction:" destination="Xnc-VI-aqb" eventType="touchUpInside" id="azV-oC-b3f"/>
+                                    <action selector="mediaButtonAction:" destination="Xnc-VI-aqb" eventType="touchUpInside" id="x1V-AC-BZ0"/>
                                 </connections>
                             </button>
                         </subviews>

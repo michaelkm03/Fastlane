@@ -11,9 +11,7 @@
 #import "VObjectManager+Comment.h"
 
 #import "VKeyboardBarViewController.h"
-
-//#import "VSequence.h"
-//#import "VConstants.h"
+#import "VConstants.h"
 
 #import "VLoginViewController.h"
 
@@ -31,6 +29,18 @@
 
 @implementation VKeyboardBarViewController
 
++ (instancetype)sharedInstance
+{
+    static  VKeyboardBarViewController*   sharedInstance;
+    static  dispatch_once_t         onceToken;
+    dispatch_once(&onceToken, ^{
+        UIViewController*   currentViewController = [[UIApplication sharedApplication] delegate].window.rootViewController;
+        sharedInstance = (VKeyboardBarViewController*)[currentViewController.storyboard instantiateViewControllerWithIdentifier: kKeyboardBarStoryboardID];
+    });
+    
+    return sharedInstance;
+}
+
 - (void)viewWillLayoutSubviews
 {
     [super viewWillLayoutSubviews];
@@ -43,14 +53,15 @@
 //    [self.stickersView reloadData];
 }
 
-- (IBAction)cameraButtonAction:(id)sender
+- (IBAction)mediaButtonAction:(id)sender
 {
     if(![VObjectManager sharedManager].mainUser)
     {
         [self presentViewController:[VLoginViewController loginViewController] animated:YES completion:NULL];
         return;
     }
-    [self.textField resignFirstResponder];
+    
+    [super mediaButtonAction:sender];
 }
 
 - (IBAction)sendButtonAction:(id)sender
