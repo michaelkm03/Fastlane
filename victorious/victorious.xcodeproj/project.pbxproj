@@ -114,7 +114,7 @@
 		BE692B50186E60B300C71336 /* VCommentCell.m in Sources */ = {isa = PBXBuildFile; fileRef = BE692B35186E60B300C71336 /* VCommentCell.m */; };
 		BE692B51186E60B300C71336 /* VSequencePlayerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BE692B37186E60B300C71336 /* VSequencePlayerViewController.m */; };
 		BE692B52186E60B300C71336 /* VSequencePlayerViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = BE692B38186E60B300C71336 /* VSequencePlayerViewController.xib */; };
-		BE692B53186E60B300C71336 /* VStreamsCommentsController.m in Sources */ = {isa = PBXBuildFile; fileRef = BE692B3A186E60B300C71336 /* VStreamsCommentsController.m */; };
+		BE692B53186E60B300C71336 /* VCommentsTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BE692B3A186E60B300C71336 /* VCommentsTableViewController.m */; };
 		BE6B95FC187C88F700CED4C9 /* VSequence+Fetcher.m in Sources */ = {isa = PBXBuildFile; fileRef = BE6B95FB187C88F700CED4C9 /* VSequence+Fetcher.m */; };
 		BE6C15251880A31A00469BA8 /* VAnswerAction.m in Sources */ = {isa = PBXBuildFile; fileRef = BE6C15241880A31A00469BA8 /* VAnswerAction.m */; };
 		BE6C15281880A31B00469BA8 /* VAsset.m in Sources */ = {isa = PBXBuildFile; fileRef = BE6C15271880A31B00469BA8 /* VAsset.m */; };
@@ -344,8 +344,8 @@
 		BE692B36186E60B300C71336 /* VSequencePlayerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VSequencePlayerViewController.h; path = "UI/Streams Subview/VSequencePlayerViewController.h"; sourceTree = "<group>"; };
 		BE692B37186E60B300C71336 /* VSequencePlayerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VSequencePlayerViewController.m; path = "UI/Streams Subview/VSequencePlayerViewController.m"; sourceTree = "<group>"; };
 		BE692B38186E60B300C71336 /* VSequencePlayerViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = VSequencePlayerViewController.xib; path = "UI/Streams Subview/VSequencePlayerViewController.xib"; sourceTree = "<group>"; };
-		BE692B39186E60B300C71336 /* VStreamsCommentsController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VStreamsCommentsController.h; path = "UI/Streams Subview/VStreamsCommentsController.h"; sourceTree = "<group>"; };
-		BE692B3A186E60B300C71336 /* VStreamsCommentsController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VStreamsCommentsController.m; path = "UI/Streams Subview/VStreamsCommentsController.m"; sourceTree = "<group>"; };
+		BE692B39186E60B300C71336 /* VCommentsTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VCommentsTableViewController.h; path = "UI/Streams Subview/VCommentsTableViewController.h"; sourceTree = "<group>"; };
+		BE692B3A186E60B300C71336 /* VCommentsTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VCommentsTableViewController.m; path = "UI/Streams Subview/VCommentsTableViewController.m"; sourceTree = "<group>"; };
 		BE6B95FA187C88F700CED4C9 /* VSequence+Fetcher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "VSequence+Fetcher.h"; path = "../VSequence+Fetcher.h"; sourceTree = "<group>"; };
 		BE6B95FB187C88F700CED4C9 /* VSequence+Fetcher.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "VSequence+Fetcher.m"; path = "../VSequence+Fetcher.m"; sourceTree = "<group>"; };
 		BE6C15231880A31A00469BA8 /* VAnswerAction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VAnswerAction.h; sourceTree = "<group>"; };
@@ -427,6 +427,7 @@
 				3F9B665D188878DB0046F826 /* Login */,
 				3F9B665E188878EC0046F826 /* Menu */,
 				3F9B665F188879060046F826 /* Streams */,
+				BE692B2C186E5FD900C71336 /* Streams Subview */,
 				3F9B6660188879130046F826 /* Inbox */,
 				3F9B6661188879200046F826 /* Profile */,
 				3F9B66621888792B0046F826 /* Settings */,
@@ -539,6 +540,8 @@
 		3F9B666318887CE50046F826 /* Base Classes */ = {
 			isa = PBXGroup;
 			children = (
+				BE5D799318989A0800DC752A /* VImagePickerViewController.h */,
+				BE5D799418989A0800DC752A /* VImagePickerViewController.m */,
 				BEA5BF5D187F21770014C3EF /* VTableViewCell.h */,
 				BEA5BF5E187F21770014C3EF /* VTableViewCell.m */,
 				3F9B666618887D910046F826 /* VFetchedResultsTableViewController.h */,
@@ -575,7 +578,6 @@
 		3FF8B7961868EE5E00806EA0 /* UI 0.5 (To be Removed) */ = {
 			isa = PBXGroup;
 			children = (
-				BE692B2C186E5FD900C71336 /* Streams Subview */,
 				D1DAAA0C187A5397009ADCB0 /* avatar.jpg */,
 			);
 			name = "UI 0.5 (To be Removed)";
@@ -824,8 +826,6 @@
 		BE5D798F1898961500DC752A /* Create */ = {
 			isa = PBXGroup;
 			children = (
-				BE5D799318989A0800DC752A /* VImagePickerViewController.h */,
-				BE5D799418989A0800DC752A /* VImagePickerViewController.m */,
 				BE5D79A11899E47800DC752A /* VCreatePollViewController.h */,
 				BE5D79A21899E47800DC752A /* VCreatePollViewController.m */,
 				BE5D79A61899E47800DC752A /* VCreateViewController.h */,
@@ -873,8 +873,8 @@
 				BE692B38186E60B300C71336 /* VSequencePlayerViewController.xib */,
 				83D897401881F19D00BD5B8B /* VStreamsSubViewController.h */,
 				83D897411881F19D00BD5B8B /* VStreamsSubViewController.m */,
-				BE692B39186E60B300C71336 /* VStreamsCommentsController.h */,
-				BE692B3A186E60B300C71336 /* VStreamsCommentsController.m */,
+				BE692B39186E60B300C71336 /* VCommentsTableViewController.h */,
+				BE692B3A186E60B300C71336 /* VCommentsTableViewController.m */,
 			);
 			name = "Streams Subview";
 			sourceTree = "<group>";
@@ -1111,7 +1111,7 @@
 				BE24324C18984DBD0098D00C /* VFeaturedTableCell.m in Sources */,
 				BE171E391868C266004E5202 /* NSManagedObject+RestKit.m in Sources */,
 				3F919908187600720055FE37 /* VSettingsViewController.m in Sources */,
-				BE692B53186E60B300C71336 /* VStreamsCommentsController.m in Sources */,
+				BE692B53186E60B300C71336 /* VCommentsTableViewController.m in Sources */,
 				BE171E0D1868C211004E5202 /* VAnswer+RestKit.m in Sources */,
 				BEF2C29918846FAB00AAE975 /* VConversation.m in Sources */,
 				BEF2C2A5188488C000AAE975 /* VUnreadConversation+RestKit.m in Sources */,

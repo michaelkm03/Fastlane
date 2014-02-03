@@ -22,8 +22,8 @@ typedef NS_ENUM(NSUInteger, VImagePickerViewControllerType){
 
 @property (nonatomic, setter = setType:) VImagePickerViewControllerType type;
 
-//#pragma mark - Button Actions
-//- (void)mediaButtonAction:(id)sender;
+#pragma mark - Button Actions
+- (IBAction)mediaButtonAction:(id)sender;
 
 #pragma mark - Overrides
 - (void)imagePickerFinishedWithData:(NSData*)data

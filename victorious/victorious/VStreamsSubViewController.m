@@ -7,13 +7,13 @@
 //
 
 #import "VStreamsSubViewController.h"
-#import "VStreamsCommentsController.h"
+#import "VCommentsTableViewController.h"
 #import "VKeyboardBarViewController.h"
 #import "VSequence.h"
 #import "VUser.h"
 
 @interface VStreamsSubViewController()
-<VStreamsCommentsControllerDelegate>
+<VCommentsTableViewControllerDelegate>
 @end
 
 @implementation VStreamsSubViewController
@@ -24,7 +24,7 @@
 {
     if(_conversationTableViewController == nil)
     {
-        VStreamsCommentsController *streamsCommentsController =
+        VCommentsTableViewController *streamsCommentsController =
         [self.storyboard instantiateViewControllerWithIdentifier:@"comments"];
         streamsCommentsController.delegate = self;
         streamsCommentsController.sequence = self.sequence;
@@ -37,9 +37,9 @@
     return _conversationTableViewController;
 }
 
-#pragma mark - VStreamsCommentsControllerDelegate
+#pragma mark - VCommentsTableViewControllerDelegate
 
-- (void)streamsCommentsController:(VStreamsCommentsController *)viewController shouldReplyToUser:(VUser *)user
+- (void)streamsCommentsController:(VCommentsTableViewController *)viewController shouldReplyToUser:(VUser *)user
 {
     self.composeViewController.textField.text = [NSString stringWithFormat:@"@%@ ", user.name];
     [self.composeViewController.textField becomeFirstResponder];
