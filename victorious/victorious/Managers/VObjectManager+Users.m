@@ -147,7 +147,7 @@
                       userId:(NSNumber*)userId
                    inContext:(NSManagedObjectContext*)context
 {
-    NSFetchRequest *request = [[NSFetchRequest alloc] initWithEntityName:entityName];    
+    NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:entityName];
     NSPredicate* idFilter = [NSPredicate predicateWithFormat:@"%K == %@", idKey, userId];
     [request setPredicate:idFilter];
     

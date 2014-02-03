@@ -40,7 +40,7 @@
     RKObjectManager* manager = [RKObjectManager sharedManager];
     NSManagedObjectContext *context = manager.managedObjectStore.persistentStoreManagedObjectContext;
     
-    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] initWithEntityName:[VSequence entityName]];
+    NSFetchRequest *fetchRequest = [NSFetchRequest fetchRequestWithEntityName:[VSequence entityName]];
     NSSortDescriptor *sort = [[NSSortDescriptor alloc] initWithKey:@"releasedAt" ascending:NO];
     [fetchRequest setSortDescriptors:@[sort]];
     [fetchRequest setFetchBatchSize:50];
@@ -56,7 +56,7 @@
     RKObjectManager* manager = [RKObjectManager sharedManager];
     NSManagedObjectContext *context = manager.managedObjectStore.persistentStoreManagedObjectContext;
     
-    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] initWithEntityName:[VSequence entityName]];
+    NSFetchRequest *fetchRequest = [NSFetchRequest fetchRequestWithEntityName:[VSequence entityName]];
     NSSortDescriptor *sort = [[NSSortDescriptor alloc] initWithKey:@"releasedAt" ascending:NO];
     [fetchRequest setSortDescriptors:@[sort]];
     [fetchRequest setFetchBatchSize:50];

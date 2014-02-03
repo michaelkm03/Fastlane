@@ -76,7 +76,7 @@ NSString*   const   kVCreatePostCountColor              =   @"theme.color.text.p
     return sharedThemeManager;
 }
 
-- (id)init
+- (instancetype)init
 {
     self    =   [super init];
     if (self)

@@ -27,9 +27,7 @@ NSString*   const   kAccountUpdateViewControllerDomain =   @"VAccountUpdateViewC
 
 + (VSettingsViewController *)settingsViewController
 {
-    UIStoryboard*   storyboard  =   [UIStoryboard storyboardWithName:@"settings" bundle:nil];
-    
-    return [storyboard instantiateInitialViewController];
+    return [[UIStoryboard storyboardWithName:@"settings" bundle:nil] instantiateInitialViewController];
 }
 
 - (void)viewDidLoad

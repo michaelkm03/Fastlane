@@ -19,7 +19,7 @@
 
 @implementation VImagePickerViewController
 
-- (id)initWithType:(VImagePickerViewControllerType)type
+- (instancetype)initWithType:(VImagePickerViewControllerType)type
 {
     self = [super init];
     if (self)
