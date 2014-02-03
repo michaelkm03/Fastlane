@@ -8,7 +8,7 @@
 
 @import AVFoundation;
 
-#import "VCreateViewController.h"
+#import "VCreateContentViewController.h"
 #import "VThemeManager.h"
 #import "UIView+AutoLayout.h"
 #import "VConstants.h"
@@ -17,7 +17,7 @@
 CGFloat VCreateViewControllerPadding = 8;
 CGFloat VCreateViewControllerLargePadding = 20;
 
-@interface VCreateViewController() <UITextViewDelegate>
+@interface VCreateContentViewController() <UITextViewDelegate>
 
 @property (weak, nonatomic) NSLayoutConstraint *contentTopConstraint;
 
@@ -26,13 +26,13 @@ CGFloat VCreateViewControllerLargePadding = 20;
 
 @end
 
-@implementation VCreateViewController
+@implementation VCreateContentViewController
 
 + (instancetype)newCreateViewControllerForType:(VImagePickerViewControllerType)type
                                   withDelegate:(id<VCreateSequenceDelegate>)delegate
 {
     UIViewController*   currentViewController = [[UIApplication sharedApplication] delegate].window.rootViewController;
-    VCreateViewController* createView = (VCreateViewController*)[currentViewController.storyboard instantiateViewControllerWithIdentifier: NSStringFromClass([VCreateViewController class])];
+    VCreateContentViewController* createView = (VCreateContentViewController*)[currentViewController.storyboard instantiateViewControllerWithIdentifier: NSStringFromClass([VCreateContentViewController class])];
     createView.delegate = delegate;
     createView.type = type;
     return createView;

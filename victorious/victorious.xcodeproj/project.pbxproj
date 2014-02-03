@@ -83,9 +83,6 @@
 		BE171E391868C266004E5202 /* NSManagedObject+RestKit.m in Sources */ = {isa = PBXBuildFile; fileRef = BE171E361868C265004E5202 /* NSManagedObject+RestKit.m */; };
 		BE171E3A1868C266004E5202 /* NSString+VParseHelp.m in Sources */ = {isa = PBXBuildFile; fileRef = BE171E381868C266004E5202 /* NSString+VParseHelp.m */; };
 		BE171E431868CEA0004E5202 /* victoriOS.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = BE171E411868CEA0004E5202 /* victoriOS.xcdatamodeld */; };
-		BE243249189849E80098D00C /* VPagedFetchTableCell.m in Sources */ = {isa = PBXBuildFile; fileRef = BE243248189849E80098D00C /* VPagedFetchTableCell.m */; };
-		BE24324C18984DBD0098D00C /* VFeaturedTableCell.m in Sources */ = {isa = PBXBuildFile; fileRef = BE24324B18984DBD0098D00C /* VFeaturedTableCell.m */; };
-		BE24324E189853890098D00C /* VFeaturedTableCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = BE24324D189853890098D00C /* VFeaturedTableCell.xib */; };
 		BE4B74231880D3850090FF84 /* VComment.m in Sources */ = {isa = PBXBuildFile; fileRef = BE4B74221880D3850090FF84 /* VComment.m */; };
 		BE4B74261880D3850090FF84 /* VAnswer.m in Sources */ = {isa = PBXBuildFile; fileRef = BE4B74251880D3850090FF84 /* VAnswer.m */; };
 		BE55CD15188F316900FE619F /* VObjectManager.m in Sources */ = {isa = PBXBuildFile; fileRef = BE55CD13188F316900FE619F /* VObjectManager.m */; };
@@ -101,7 +98,7 @@
 		BE5D799518989A0800DC752A /* VImagePickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BE5D799418989A0800DC752A /* VImagePickerViewController.m */; };
 		BE5D79AD1899E47800DC752A /* VCreatePollViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BE5D79A21899E47800DC752A /* VCreatePollViewController.m */; };
 		BE5D79AE1899E47800DC752A /* VCreateForumViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BE5D79A51899E47800DC752A /* VCreateForumViewController.m */; };
-		BE5D79AF1899E47800DC752A /* VCreateViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BE5D79A71899E47800DC752A /* VCreateViewController.m */; };
+		BE5D79AF1899E47800DC752A /* VCreateContentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BE5D79A71899E47800DC752A /* VCreateContentViewController.m */; };
 		BE5D79B01899E47800DC752A /* VKeyboardBarContainerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BE5D79A91899E47800DC752A /* VKeyboardBarContainerViewController.m */; };
 		BE5D79B11899E47800DC752A /* VKeyboardBarViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BE5D79AB1899E47800DC752A /* VKeyboardBarViewController.m */; };
 		BE692B23186E5ED800C71336 /* VStreamDoublePollCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = BE692B17186E5ED800C71336 /* VStreamDoublePollCell.xib */; };
@@ -138,7 +135,6 @@
 		BEF8D37B188755C1004919CA /* VStreamYoutubeCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = BEF8D37A188755C1004919CA /* VStreamYoutubeCell.xib */; };
 		D1DAAA08187A43A9009ADCB0 /* VProfileViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D1DAAA07187A43A9009ADCB0 /* VProfileViewController.m */; };
 		D1DAAA0B187A43BE009ADCB0 /* VProfileEditViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D1DAAA0A187A43BE009ADCB0 /* VProfileEditViewController.m */; };
-		D1DAAA0D187A5397009ADCB0 /* avatar.jpg in Resources */ = {isa = PBXBuildFile; fileRef = D1DAAA0C187A5397009ADCB0 /* avatar.jpg */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -285,11 +281,6 @@
 		BE171E381868C266004E5202 /* NSString+VParseHelp.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+VParseHelp.m"; sourceTree = "<group>"; };
 		BE171E421868CEA0004E5202 /* victoriOS.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = victoriOS.xcdatamodel; sourceTree = "<group>"; };
 		BE171E441868CEAA004E5202 /* victoriOS 2.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "victoriOS 2.xcdatamodel"; sourceTree = "<group>"; };
-		BE243247189849E80098D00C /* VPagedFetchTableCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VPagedFetchTableCell.h; sourceTree = "<group>"; };
-		BE243248189849E80098D00C /* VPagedFetchTableCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VPagedFetchTableCell.m; sourceTree = "<group>"; };
-		BE24324A18984DBD0098D00C /* VFeaturedTableCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VFeaturedTableCell.h; sourceTree = "<group>"; };
-		BE24324B18984DBD0098D00C /* VFeaturedTableCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VFeaturedTableCell.m; sourceTree = "<group>"; };
-		BE24324D189853890098D00C /* VFeaturedTableCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VFeaturedTableCell.xib; sourceTree = "<group>"; };
 		BE4B74211880D3850090FF84 /* VComment.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VComment.h; sourceTree = "<group>"; };
 		BE4B74221880D3850090FF84 /* VComment.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VComment.m; sourceTree = "<group>"; };
 		BE4B74241880D3850090FF84 /* VAnswer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VAnswer.h; sourceTree = "<group>"; };
@@ -323,8 +314,8 @@
 		BE5D79A31899E47800DC752A /* VCreateSequenceDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VCreateSequenceDelegate.h; path = UI/Create/VCreateSequenceDelegate.h; sourceTree = "<group>"; };
 		BE5D79A41899E47800DC752A /* VCreateForumViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VCreateForumViewController.h; path = UI/Create/VCreateForumViewController.h; sourceTree = "<group>"; };
 		BE5D79A51899E47800DC752A /* VCreateForumViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VCreateForumViewController.m; path = UI/Create/VCreateForumViewController.m; sourceTree = "<group>"; };
-		BE5D79A61899E47800DC752A /* VCreateViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VCreateViewController.h; path = UI/Create/VCreateViewController.h; sourceTree = "<group>"; };
-		BE5D79A71899E47800DC752A /* VCreateViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VCreateViewController.m; path = UI/Create/VCreateViewController.m; sourceTree = "<group>"; };
+		BE5D79A61899E47800DC752A /* VCreateContentViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VCreateContentViewController.h; path = UI/Create/VCreateContentViewController.h; sourceTree = "<group>"; };
+		BE5D79A71899E47800DC752A /* VCreateContentViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VCreateContentViewController.m; path = UI/Create/VCreateContentViewController.m; sourceTree = "<group>"; };
 		BE5D79A81899E47800DC752A /* VKeyboardBarContainerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VKeyboardBarContainerViewController.h; path = UI/Create/VKeyboardBarContainerViewController.h; sourceTree = "<group>"; };
 		BE5D79A91899E47800DC752A /* VKeyboardBarContainerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VKeyboardBarContainerViewController.m; path = UI/Create/VKeyboardBarContainerViewController.m; sourceTree = "<group>"; };
 		BE5D79AA1899E47800DC752A /* VKeyboardBarViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VKeyboardBarViewController.h; path = UI/Create/VKeyboardBarViewController.h; sourceTree = "<group>"; };
@@ -388,7 +379,6 @@
 		D1DAAA07187A43A9009ADCB0 /* VProfileViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VProfileViewController.m; path = UI/VProfileViewController.m; sourceTree = "<group>"; };
 		D1DAAA09187A43BE009ADCB0 /* VProfileEditViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VProfileEditViewController.h; path = UI/VProfileEditViewController.h; sourceTree = "<group>"; };
 		D1DAAA0A187A43BE009ADCB0 /* VProfileEditViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VProfileEditViewController.m; path = UI/VProfileEditViewController.m; sourceTree = "<group>"; };
-		D1DAAA0C187A5397009ADCB0 /* avatar.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = avatar.jpg; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -575,14 +565,6 @@
 			name = Management;
 			sourceTree = "<group>";
 		};
-		3FF8B7961868EE5E00806EA0 /* UI 0.5 (To be Removed) */ = {
-			isa = PBXGroup;
-			children = (
-				D1DAAA0C187A5397009ADCB0 /* avatar.jpg */,
-			);
-			name = "UI 0.5 (To be Removed)";
-			sourceTree = "<group>";
-		};
 		5FF9BE801893188A0054694B /* Menu */ = {
 			isa = PBXGroup;
 			children = (
@@ -592,18 +574,6 @@
 				5FF9BE7E1893143D0054694B /* UIViewController+VSideMenuViewController.m */,
 			);
 			name = Menu;
-			sourceTree = "<group>";
-		};
-		830CC32D1877B9730024E02D /* Featured */ = {
-			isa = PBXGroup;
-			children = (
-				BE243247189849E80098D00C /* VPagedFetchTableCell.h */,
-				BE243248189849E80098D00C /* VPagedFetchTableCell.m */,
-				BE24324A18984DBD0098D00C /* VFeaturedTableCell.h */,
-				BE24324B18984DBD0098D00C /* VFeaturedTableCell.m */,
-				BE24324D189853890098D00C /* VFeaturedTableCell.xib */,
-			);
-			name = Featured;
 			sourceTree = "<group>";
 		};
 		83ABAF9A18709DE30069556C /* Fonts */ = {
@@ -663,7 +633,6 @@
 				BE171D8A1868BE64004E5202 /* VAppDelegate.h */,
 				BE171D8B1868BE64004E5202 /* VAppDelegate.m */,
 				3F9B665B188878C60046F826 /* UI */,
-				3FF8B7961868EE5E00806EA0 /* UI 0.5 (To be Removed) */,
 				BE171DD91868C211004E5202 /* Managers */,
 				BE171DAE1868C211004E5202 /* Categories */,
 				BE171DE91868C211004E5202 /* Models */,
@@ -844,7 +813,6 @@
 		BE692B2B186E5EE000C71336 /* Cells */ = {
 			isa = PBXGroup;
 			children = (
-				830CC32D1877B9730024E02D /* Featured */,
 				BE692B17186E5ED800C71336 /* VStreamDoublePollCell.xib */,
 				BE692B18186E5ED800C71336 /* VStreamPollCell.h */,
 				BE692B19186E5ED800C71336 /* VStreamPollCell.m */,
@@ -1012,9 +980,7 @@
 				BE171D861868BE64004E5202 /* InfoPlist.strings in Resources */,
 				BEB4C29C187E038C004ECEEF /* VConversationCell.xib in Resources */,
 				5FC4DA5E18970A9F006BA107 /* login.storyboard in Resources */,
-				D1DAAA0D187A5397009ADCB0 /* avatar.jpg in Resources */,
 				BE171D911868BE64004E5202 /* Images.xcassets in Resources */,
-				BE24324E189853890098D00C /* VFeaturedTableCell.xib in Resources */,
 				83B5A1241876447800659C73 /* Roboto-Regular.ttf in Resources */,
 				BEB4C2A0187E0778004ECEEF /* VCommentCell.xib in Resources */,
 				BE692B28186E5ED800C71336 /* VStreamVideoCell.xib in Resources */,
@@ -1079,7 +1045,6 @@
 				5FF9BE83189318CD0054694B /* VRootViewController.m in Sources */,
 				BEB4C29D187E038C004ECEEF /* VNewsCell.m in Sources */,
 				BE171E131868C211004E5202 /* VInteractionAction+RestKit.m in Sources */,
-				BE243249189849E80098D00C /* VPagedFetchTableCell.m in Sources */,
 				3F9B66771888C4DD0046F826 /* VForumStreamViewController.m in Sources */,
 				BEA5BF71187FCBF10014C3EF /* VObjectManager+Users.m in Sources */,
 				BE171E241868C211004E5202 /* VThemeManager.m in Sources */,
@@ -1108,7 +1073,6 @@
 				5FC4DA731897121F006BA107 /* VSignupWithEmailViewController.m in Sources */,
 				BE4B74231880D3850090FF84 /* VComment.m in Sources */,
 				BE171E171868C211004E5202 /* VSequence+RestKit.m in Sources */,
-				BE24324C18984DBD0098D00C /* VFeaturedTableCell.m in Sources */,
 				BE171E391868C266004E5202 /* NSManagedObject+RestKit.m in Sources */,
 				3F919908187600720055FE37 /* VSettingsViewController.m in Sources */,
 				BE692B53186E60B300C71336 /* VCommentsTableViewController.m in Sources */,
@@ -1160,7 +1124,7 @@
 				BE83A37118827B400077EB26 /* VMessage.m in Sources */,
 				D1DAAA0B187A43BE009ADCB0 /* VProfileEditViewController.m in Sources */,
 				3F91991018761C720055FE37 /* VPrivacyPoliciesViewController.m in Sources */,
-				BE5D79AF1899E47800DC752A /* VCreateViewController.m in Sources */,
+				BE5D79AF1899E47800DC752A /* VCreateContentViewController.m in Sources */,
 				BEB4C29B187E038C004ECEEF /* VConversationCell.m in Sources */,
 				BE5C734C187E36D000A3340D /* VInteractionAction.m in Sources */,
 				BE692B50186E60B300C71336 /* VCommentCell.m in Sources */,

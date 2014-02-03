@@ -38,7 +38,7 @@ const   CGFloat     kMessageRowHeight           =   80;
     [self.tableView registerNib:[UINib nibWithNibName:kOtherCommentCellIdentifier bundle:[NSBundle mainBundle]]
          forCellReuseIdentifier:kOtherCommentCellIdentifier];
 
-    [self loadData];
+    [self refreshAction:self];
 }
 
 - (void)viewWillLayoutSubviews
@@ -47,7 +47,7 @@ const   CGFloat     kMessageRowHeight           =   80;
     self.view.frame = self.view.superview.bounds;
 }
 
- - (void)loadData
+ - (IBAction)refreshAction:(id)sender
 {
     VFailBlock fail = ^(NSOperation* operation, NSError* error)
     {
@@ -127,7 +127,7 @@ const   CGFloat     kMessageRowHeight           =   80;
                                                   [self.conversation.managedObjectContext save:nil];
                                               }
                                               
-                                              [self loadData];
+                                              [self refreshAction:self];
                                               
                                                VLog(@"Succeed with response: %@", fullResponse);
                                         }

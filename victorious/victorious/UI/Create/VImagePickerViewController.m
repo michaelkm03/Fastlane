@@ -12,14 +12,12 @@
 #import "VConstants.h"
 
 @interface VImagePickerViewController () <UIImagePickerControllerDelegate, UINavigationControllerDelegate>
-
 @property (strong, nonatomic) UIImagePickerController* imagePicker;
-
 @end
 
 @implementation VImagePickerViewController
 
-- (id)initWithType:(VImagePickerViewControllerType)type
+- (instancetype)initWithType:(VImagePickerViewControllerType)type
 {
     self = [super init];
     if (self)
@@ -39,7 +37,7 @@
         self.imagePicker.mediaTypes = @[(NSString *)kUTTypeImage, (NSString *)kUTTypeMovie];
 }
 
-- (UIImagePickerController*) imagePicker
+- (UIImagePickerController*)imagePicker
 {
     if (!_imagePicker)
     {

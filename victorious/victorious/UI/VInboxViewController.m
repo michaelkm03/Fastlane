@@ -133,6 +133,8 @@ static  NSString*   kNewsCellViewIdentifier       =   @"VNewsCell";
         self.navigationItem.rightBarButtonItem = self.editButtonItem;
     else
         self.navigationItem.rightBarButtonItem = nil;
+    
+    self.fetchedResultsController = nil;
 }
 
 - (IBAction)showMenu
@@ -146,12 +148,11 @@ static  NSString*   kNewsCellViewIdentifier       =   @"VNewsCell";
 {
     if ([segue.identifier isEqualToString:@"toMessage"])
     {
-//        VMessageSubViewController *subview = (VMessageSubViewController *)segue.destinationViewController;
-//        UITableViewCell* cell = (UITableViewCell*)sender;
-//
-//        VConversation* conversation = [self.fetchedResultsController objectAtIndexPath:[self.tableView indexPathForCell:cell]];
-//
-//        [subview setConversation:conversation];
+        VMessageContainerViewController *subview = (VMessageContainerViewController *)segue.destinationViewController;
+        UITableViewCell* cell = (UITableViewCell*)sender;
+
+        VConversation* conversation = [self.fetchedResultsController objectAtIndexPath:[self.tableView indexPathForCell:cell]];
+        subview.conversation = conversation;
     }
     else if ([segue.identifier isEqualToString:@"toNews"])
     {

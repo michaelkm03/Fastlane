@@ -49,10 +49,9 @@
     UIViewController*   currentViewController = [[UIApplication sharedApplication] delegate].window.rootViewController;
     VProfileViewController* profileViewController = (VProfileViewController*)[currentViewController.storyboard instantiateViewControllerWithIdentifier: @"profile"];
 
-    profileViewController.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"Close"]
-                                                                                              style:UIBarButtonItemStylePlain
-                                                                                             target:profileViewController
-                                                                                             action:@selector(closeButtonAction:)];
+    profileViewController.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemStop
+                                                                                                           target:profileViewController
+                                                                                                           action:@selector(closeButtonAction:)];
 
     return profileViewController;
 }

@@ -11,7 +11,7 @@
 #import "VImagePickerViewController.h"
 #import "VCreateSequenceDelegate.h"
 
-@interface VCreateViewController : VImagePickerViewController
+@interface VCreateContentViewController : VImagePickerViewController
 
 @property (weak, nonatomic) IBOutlet UILabel *characterCountLabel;
 @property (weak, nonatomic) IBOutlet UILabel *mediaLabel;

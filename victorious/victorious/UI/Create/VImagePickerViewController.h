@@ -8,8 +8,8 @@
 
 #import <UIKit/UIKit.h>
 
-
-typedef NS_ENUM(NSUInteger, VImagePickerViewControllerType){
+typedef NS_ENUM(NSUInteger, VImagePickerViewControllerType)
+{
     VImagePickerViewControllerPhoto,
     VImagePickerViewControllerVideo,
     VImagePickerViewControllerPhotoAndVideo
@@ -17,10 +17,9 @@ typedef NS_ENUM(NSUInteger, VImagePickerViewControllerType){
 
 @interface VImagePickerViewController : UIViewController <UINavigationControllerDelegate, UIImagePickerControllerDelegate>
 
+- (instancetype)initWithType:(VImagePickerViewControllerType)type;
 
-- (id)initWithType:(VImagePickerViewControllerType)type;
-
-@property (nonatomic, setter = setType:) VImagePickerViewControllerType type;
+@property (nonatomic) VImagePickerViewControllerType type;
 
 #pragma mark - Button Actions
 - (IBAction)mediaButtonAction:(id)sender;
