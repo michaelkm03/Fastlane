@@ -135,7 +135,6 @@
 		BEF8D37B188755C1004919CA /* VStreamYoutubeCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = BEF8D37A188755C1004919CA /* VStreamYoutubeCell.xib */; };
 		D1DAAA08187A43A9009ADCB0 /* VProfileViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D1DAAA07187A43A9009ADCB0 /* VProfileViewController.m */; };
 		D1DAAA0B187A43BE009ADCB0 /* VProfileEditViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D1DAAA0A187A43BE009ADCB0 /* VProfileEditViewController.m */; };
-		D1DAAA0D187A5397009ADCB0 /* avatar.jpg in Resources */ = {isa = PBXBuildFile; fileRef = D1DAAA0C187A5397009ADCB0 /* avatar.jpg */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -380,7 +379,6 @@
 		D1DAAA07187A43A9009ADCB0 /* VProfileViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VProfileViewController.m; path = UI/VProfileViewController.m; sourceTree = "<group>"; };
 		D1DAAA09187A43BE009ADCB0 /* VProfileEditViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VProfileEditViewController.h; path = UI/VProfileEditViewController.h; sourceTree = "<group>"; };
 		D1DAAA0A187A43BE009ADCB0 /* VProfileEditViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VProfileEditViewController.m; path = UI/VProfileEditViewController.m; sourceTree = "<group>"; };
-		D1DAAA0C187A5397009ADCB0 /* avatar.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = avatar.jpg; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -567,14 +565,6 @@
 			name = Management;
 			sourceTree = "<group>";
 		};
-		3FF8B7961868EE5E00806EA0 /* UI 0.5 (To be Removed) */ = {
-			isa = PBXGroup;
-			children = (
-				D1DAAA0C187A5397009ADCB0 /* avatar.jpg */,
-			);
-			name = "UI 0.5 (To be Removed)";
-			sourceTree = "<group>";
-		};
 		5FF9BE801893188A0054694B /* Menu */ = {
 			isa = PBXGroup;
 			children = (
@@ -643,7 +633,6 @@
 				BE171D8A1868BE64004E5202 /* VAppDelegate.h */,
 				BE171D8B1868BE64004E5202 /* VAppDelegate.m */,
 				3F9B665B188878C60046F826 /* UI */,
-				3FF8B7961868EE5E00806EA0 /* UI 0.5 (To be Removed) */,
 				BE171DD91868C211004E5202 /* Managers */,
 				BE171DAE1868C211004E5202 /* Categories */,
 				BE171DE91868C211004E5202 /* Models */,
@@ -991,7 +980,6 @@
 				BE171D861868BE64004E5202 /* InfoPlist.strings in Resources */,
 				BEB4C29C187E038C004ECEEF /* VConversationCell.xib in Resources */,
 				5FC4DA5E18970A9F006BA107 /* login.storyboard in Resources */,
-				D1DAAA0D187A5397009ADCB0 /* avatar.jpg in Resources */,
 				BE171D911868BE64004E5202 /* Images.xcassets in Resources */,
 				83B5A1241876447800659C73 /* Roboto-Regular.ttf in Resources */,
 				BEB4C2A0187E0778004ECEEF /* VCommentCell.xib in Resources */,
