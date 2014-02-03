@@ -10,6 +10,8 @@
 #import "UIViewController+VSideMenuViewController.h"
 #import "VConstants.h"
 
+#import "VCommentsTableViewController.h"
+
 #import "NSString+VParseHelp.h"
 //Cells
 #import "VStreamViewCell.h"
@@ -67,6 +69,16 @@
                                                            cacheName:kSearchCache];
 
 }
+
+#pragma mark - UITableViewDelegate
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    VCommentsTableViewController* commentsTable = [VCommentsTableViewController sharedInstance];
+    commentsTable.sequence = [[self fetchedResultsControllerForTableView:tableView] objectAtIndexPath:indexPath];
+    [self.navigationController pushViewController:commentsTable animated:YES];
+}
+
 
 #pragma mark - Cells
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath

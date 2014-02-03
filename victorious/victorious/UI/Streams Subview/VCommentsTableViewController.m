@@ -6,7 +6,7 @@
 //  Copyright (c) 2013 Victorious, Inc. All rights reserved.
 //
 
-#import "VStreamsCommentsController.h"
+#import "VCommentsTableViewController.h"
 #import "VConstants.h"
 #import "VThemeManager.h"
 
@@ -31,7 +31,7 @@
 const   CGFloat     kCommentRowWithMediaHeight  =   320.0;
 const   CGFloat     kCommentRowHeight           =   110;
 
-@interface VStreamsCommentsController () <UINavigationControllerDelegate, VKeyboardBarDelegate>
+@interface VCommentsTableViewController () <UINavigationControllerDelegate, VKeyboardBarDelegate>
 
 @property (nonatomic, strong) NSMutableArray* newlyReadComments;
 @property (nonatomic, strong) NSArray* sortedComments;
@@ -40,13 +40,23 @@ const   CGFloat     kCommentRowHeight           =   110;
 
 static NSString* CommentCache = @"CommentCache";
 
-@implementation VStreamsCommentsController
+@implementation VCommentsTableViewController
+
++ (instancetype)sharedInstance
+{
+    static  VCommentsTableViewController*   sharedInstance;
+    static  dispatch_once_t         onceToken;
+    dispatch_once(&onceToken, ^{
+        UIViewController*   currentViewController = [[UIApplication sharedApplication] delegate].window.rootViewController;
+        sharedInstance = (VCommentsTableViewController*)[currentViewController.storyboard instantiateViewControllerWithIdentifier: kCommentsControllerStoryboardID];
+    });
+    
+    return sharedInstance;
+}
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
-    self.newlyReadComments = [[NSMutableArray alloc] init];
     
     [self.tableView registerNib:[UINib nibWithNibName:kCommentCellIdentifier bundle:[NSBundle mainBundle]]
          forCellReuseIdentifier:kCommentCellIdentifier];
@@ -70,7 +80,20 @@ static NSString* CommentCache = @"CommentCache";
 - (void)setSequence:(VSequence *)sequence{
     _sequence = sequence;
     self.title = sequence.name;
-    [self sortCommentsByDate];
+    
+    if (![self.sequence.comments count]) //If we don't have comments, try to pull more.
+        [self refresh:nil];
+    else
+        [self sortCommentsByDate];
+}
+
+- (NSMutableArray *)newlyReadComments
+{
+    if (_newlyReadComments == nil)
+    {
+        _newlyReadComments = [[NSMutableArray alloc] init];
+    }
+    return _newlyReadComments;
 }
 
 #pragma mark - Comment Sorters
@@ -243,7 +266,7 @@ static NSString* CommentCache = @"CommentCache";
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return [self.sequence.comments count];
+    return [self.sortedComments count];
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
