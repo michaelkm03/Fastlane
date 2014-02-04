@@ -106,14 +106,13 @@
     NSString* type = [extension isEqualToString:VConstantMediaExtensionMOV] ? @"video" : @"image";
     NSDictionary* parameters = @{@"sequence_id" : sequence.remoteId.stringValue ?: [NSNull null],
                                  @"parent_id" : parent.remoteId.stringValue ?: [NSNull null],
-                                 @"text" : text ?: [NSNull null],
-                                 @"media_type" : type ?: [NSNull null]};
+                                 @"text" : text ?: [NSNull null]};
     
     NSDictionary *allData, *allExtensions;
     if (data && extension)
     {
         allData = @{@"media_data":data};
-        allExtensions = @{@"media_data":extension};
+        allExtensions = @{@"media_type":type};
     }
     
     VSuccessBlock fetchCommentSuccess = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
