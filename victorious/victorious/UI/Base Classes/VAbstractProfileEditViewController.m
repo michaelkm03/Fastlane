@@ -92,9 +92,7 @@
     if ([textField isEqual:self.usernameTextField])
         [self.locationTextField becomeFirstResponder];
     else if ([textField isEqual:self.locationTextField])
-        [self.taglineTextView becomeFirstResponder];
-    else
-        [self.taglineTextView resignFirstResponder];
+        [self.locationTextField resignFirstResponder];
     
     return YES;
 }
