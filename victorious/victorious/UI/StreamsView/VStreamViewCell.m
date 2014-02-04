@@ -19,6 +19,8 @@
 #import "VNode+Fetcher.h"
 #import "VAsset.h"
 
+#import "UIButton+VImageLoading.h"
+
 #import "VConstants.h"
 
 NSString* kStreamsWillSegueNotification = @"kStreamsWillSegueNotification";
@@ -79,9 +81,10 @@ NSString *kStreamsWillCommentNotification = @"kStreamsWillCommentNotification";
     self.descriptionLabel.text = self.sequence.name;
     self.dateLabel.text = [self.sequence.releasedAt timeSince];
     [self.previewImageView setImageWithURL:[NSURL URLWithString:_sequence.previewImage]
-                             placeholderImage:[UIImage new]];
-    [self.profileImageButton.imageView setImageWithURL:[NSURL URLWithString:self.sequence.user.pictureUrl]
-                                      placeholderImage:[UIImage imageNamed:@"profile_thumb"]];
+                          placeholderImage:[UIImage new]];
+    [self.profileImageButton setImageWithURL:[NSURL URLWithString:self.sequence.user.pictureUrl]
+                            placeholderImage:[UIImage imageNamed:@"profile_thumb"]
+                                    forState:UIControlStateNormal];
     
     if([[self likeCache] objectForKey:self.sequence.remoteId])
     {

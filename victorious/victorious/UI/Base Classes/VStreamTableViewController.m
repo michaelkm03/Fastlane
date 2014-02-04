@@ -205,7 +205,6 @@ forFetchedResultsController:(NSFetchedResultsController *)fetchedResultsControll
 }
 
 #pragma mark - Actions
-
 - (IBAction)showMenu
 {
     [self.sideMenuViewController presentMenuViewController];
