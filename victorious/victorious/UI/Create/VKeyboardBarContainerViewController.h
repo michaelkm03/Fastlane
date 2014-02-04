@@ -10,7 +10,7 @@
 
 @interface VKeyboardBarContainerViewController : UIViewController
 
-@property (weak, nonatomic) VKeyboardBarViewController *composeViewController;
+@property (weak, nonatomic) VKeyboardBarViewController *keyboardBarViewController;
 @property (strong, nonatomic) UITableViewController *conversationTableViewController;
 @property (nonatomic) BOOL showKeyboard;
 

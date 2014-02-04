@@ -15,7 +15,7 @@
 
 #import "VLoginViewController.h"
 
-@interface VKeyboardBarViewController()
+@interface VKeyboardBarViewController() <UITextFieldDelegate>
 @property (weak, nonatomic, readwrite) IBOutlet UITextField *textField;
 @property (weak, nonatomic) IBOutlet UIButton *mediaButton;
 @property (strong, nonatomic) NSData* media;
@@ -59,6 +59,12 @@
 
 - (IBAction)sendButtonAction:(id)sender
 {
+    if(![VObjectManager sharedManager].mainUser)
+    {
+        [self presentViewController:[VLoginViewController loginViewController] animated:YES completion:NULL];
+        return;
+    }
+    
     [self.textField resignFirstResponder];
     [self.delegate didComposeWithText:self.textField.text data:self.media mediaExtension:self.mediaExtension mediaURL:self.mediaURL];
     [self.mediaButton setImage:[UIImage imageNamed:@"MessageCamera"] forState:UIControlStateNormal];
@@ -66,6 +72,18 @@
     self.mediaExtension = nil;
     self.media = nil;
     self.mediaURL = nil;
+}
+
+#pragma mark - UITextFieldDelegate
+
+- (BOOL)textFieldShouldBeginEditing:(UITextField *)textField
+{
+    if(![VObjectManager sharedManager].mainUser)
+    {
+        [self presentViewController:[VLoginViewController loginViewController] animated:YES completion:NULL];
+        return NO;
+    }
+    return YES;
 }
 
 #pragma mark - Overrides

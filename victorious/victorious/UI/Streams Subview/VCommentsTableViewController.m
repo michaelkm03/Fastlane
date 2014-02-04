@@ -11,7 +11,6 @@
 #import "VThemeManager.h"
 
 #import "VLoginViewController.h"
-#import "VKeyboardBarViewController.h"
 #import "VCommentCell.h"
 
 #import "VObjectManager+Sequence.h"
@@ -28,7 +27,7 @@
 const   CGFloat     kCommentRowWithMediaHeight  =   320.0;
 const   CGFloat     kCommentRowHeight           =   110;
 
-@interface VCommentsTableViewController () <UINavigationControllerDelegate, VKeyboardBarDelegate>
+@interface VCommentsTableViewController () //<UINavigationControllerDelegate>
 
 @property (nonatomic, strong) NSMutableArray* newlyReadComments;
 @property (nonatomic, strong) NSArray* sortedComments;
@@ -38,18 +37,6 @@ const   CGFloat     kCommentRowHeight           =   110;
 static NSString* CommentCache = @"CommentCache";
 
 @implementation VCommentsTableViewController
-
-+ (instancetype)sharedInstance
-{
-    static  VCommentsTableViewController*   sharedInstance;
-    static  dispatch_once_t         onceToken;
-    dispatch_once(&onceToken, ^{
-        UIViewController*   currentViewController = [[UIApplication sharedApplication] delegate].window.rootViewController;
-        sharedInstance = (VCommentsTableViewController*)[currentViewController.storyboard instantiateViewControllerWithIdentifier: kCommentsControllerStoryboardID];
-    });
-    
-    return sharedInstance;
-}
 
 - (void)viewDidLoad
 {
@@ -63,9 +50,7 @@ static NSString* CommentCache = @"CommentCache";
     self.tableView.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKeyPath:@"theme.color.messages.background"];
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     
-    self.composeViewController.delegate = self;
-
-    [self sortCommentsByDate];
+    [self sortComments];
 }
 
 - (void)viewWillLayoutSubviews
@@ -81,7 +66,7 @@ static NSString* CommentCache = @"CommentCache";
     if (![self.sequence.comments count]) //If we don't have comments, try to pull more.
         [self refresh:nil];
     else
-        [self sortCommentsByDate];
+        [self sortComments];
 }
 
 - (NSMutableArray *)newlyReadComments
@@ -94,6 +79,12 @@ static NSString* CommentCache = @"CommentCache";
 }
 
 #pragma mark - Comment Sorters
+- (void)sortComments
+{
+    //TODO: choose the right sort based on filter
+    [self sortCommentsByDate];
+}
+
 - (void)sortCommentsByDate
 {
     NSSortDescriptor*   sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"postedAt" ascending:YES];
@@ -117,7 +108,7 @@ static NSString* CommentCache = @"CommentCache";
 {
     VSuccessBlock success = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
     {
-        [self sortCommentsByDate];
+        [self sortComments];
         
         [self.refreshControl endRefreshing];
     };
@@ -379,50 +370,6 @@ static NSString* CommentCache = @"CommentCache";
     [self.tableView endUpdates];
 }
 
-#pragma mark - VComposeMessageDelegate
-
-- (void)didComposeWithText:(NSString *)text data:(NSData *)data mediaExtension:(NSString *)mediaExtension mediaURL:(NSURL *)mediaURL
-{
-    __block UIActivityIndicatorView *indicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
-    indicator.frame = CGRectMake(0, 0, 24, 24);
-    indicator.hidesWhenStopped = YES;
-    [self.view addSubview:indicator];
-    indicator.center = self.view.center;
-    [indicator startAnimating];
-    
-    VSuccessBlock success = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
-    {
-        NSLog(@"%@", resultObjects);
-        [indicator stopAnimating];
-        [self sortCommentsByDate];
-    };
-    VFailBlock fail = ^(NSOperation* operation, NSError* error)
-    {
-        if (error.code == 5500)
-        {
-            NSLog(@"%@", error);
-            [indicator stopAnimating];
-        
-            UIAlertView*    alert   =
-            [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"TranscodingMediaTitle", @"")
-                                    message:NSLocalizedString(@"TranscodingMediaBody", @"")
-                                    delegate:nil
-                            cancelButtonTitle:NSLocalizedString(@"OKButton", @"")
-                            otherButtonTitles:nil];
-            [alert show];
-        }
-    };
-    
-    [[VObjectManager sharedManager] addCommentWithText:text
-                                                   Data:data
-                                         mediaExtension:mediaExtension
-                                              mediaUrl:nil
-                                             toSequence:_sequence
-                                              andParent:nil
-                                           successBlock:success
-                                             failBlock:fail];
-}
-
 #pragma mark - Navigation
 // In a story board-based application, you will often want to do a little preparation before navigation
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
@@ -463,5 +410,49 @@ static NSString* CommentCache = @"CommentCache";
     
     return YES;
 }
+
+#pragma mark - VKeyboardBarDelegate
+- (void)didComposeWithText:(NSString *)text data:(NSData *)data mediaExtension:(NSString *)mediaExtension mediaURL:(NSURL *)mediaURL
+{
+    __block UIActivityIndicatorView *indicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+    indicator.frame = CGRectMake(0, 0, 24, 24);
+    indicator.hidesWhenStopped = YES;
+    [self.view addSubview:indicator];
+    indicator.center = self.view.center;
+    [indicator startAnimating];
+    
+    VSuccessBlock success = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
+    {
+        NSLog(@"%@", resultObjects);
+        [indicator stopAnimating];
+        [(VCommentsTableViewController*)self sortComments];
+    };
+    VFailBlock fail = ^(NSOperation* operation, NSError* error)
+    {
+        if (error.code == 5500)
+        {
+            NSLog(@"%@", error);
+            [indicator stopAnimating];
+            
+            UIAlertView*    alert   =
+            [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"TranscodingMediaTitle", @"")
+                                       message:NSLocalizedString(@"TranscodingMediaBody", @"")
+                                      delegate:nil
+                             cancelButtonTitle:NSLocalizedString(@"OKButton", @"")
+                             otherButtonTitles:nil];
+            [alert show];
+        }
+    };
+    
+    [[VObjectManager sharedManager] addCommentWithText:text
+                                                  Data:data
+                                        mediaExtension:mediaExtension
+                                              mediaUrl:nil
+                                            toSequence:_sequence
+                                             andParent:nil
+                                          successBlock:success
+                                             failBlock:fail];
+}
+
 
 @end

@@ -89,7 +89,7 @@
          if([[actionSheet buttonTitleAtIndex:buttonIndex] isEqualToString:videoTitle])
          {
              VCreateContentViewController *createViewController = [VCreateContentViewController newCreateViewControllerForType:VImagePickerViewControllerVideo withDelegate:self];
-             [self presentViewController:[[UINavigationController alloc] initWithRootViewController:createViewController] animated:YES completion:nil];
+             [self presentViewController:createViewController animated:YES completion:nil];
          }
          else if([[actionSheet buttonTitleAtIndex:buttonIndex] isEqualToString:photoTitle])
          {

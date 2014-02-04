@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="4514" systemVersion="13B3116" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="L3S-Yk-w4N">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="4514" systemVersion="13B42" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="L3S-Yk-w4N">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3747"/>
     </dependencies>
@@ -425,10 +425,10 @@
             </objects>
             <point key="canvasLocation" x="-4008" y="1101"/>
         </scene>
-        <!--Streams Sub View Controller-->
+        <!--Comments Container View Controller-->
         <scene sceneID="buO-eB-P3r">
             <objects>
-                <viewController id="yAz-qI-kJZ" customClass="VStreamsSubViewController" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="commentscontainer" useStoryboardIdentifierAsRestorationIdentifier="YES" id="yAz-qI-kJZ" customClass="VCommentsContainerViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="oyc-js-kud"/>
                         <viewControllerLayoutGuide type="bottom" id="xdh-NM-TCQ"/>
@@ -457,10 +457,13 @@
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Type a reply..." minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="ysg-7l-HaV">
-                                <rect key="frame" x="53" y="7" width="162" height="30"/>
+                                <rect key="frame" x="53" y="7" width="198" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits"/>
+                                <connections>
+                                    <outlet property="delegate" destination="Xnc-VI-aqb" id="fYw-3y-G4P"/>
+                                </connections>
                             </textField>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vPi-i8-4bG">
                                 <rect key="frame" x="259" y="0.0" width="61" height="44"/>
@@ -470,16 +473,6 @@
                                 </state>
                                 <connections>
                                     <action selector="sendButtonAction:" destination="Xnc-VI-aqb" eventType="touchUpInside" id="Vc5-N6-pe0"/>
-                                </connections>
-                            </button>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ybo-rZ-EIC">
-                                <rect key="frame" x="223" y="6" width="36" height="30"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <state key="normal" image="MessageStickers">
-                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                </state>
-                                <connections>
-                                    <action selector="stickerButtonAction:" destination="Xnc-VI-aqb" eventType="touchUpInside" id="LLf-AZ-ZYO"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="OoL-qH-7ZE">
@@ -1495,7 +1488,6 @@
         <image name="MenuProfile" width="20" height="20"/>
         <image name="MenuSettings" width="20" height="20"/>
         <image name="MessageCamera" width="22" height="23"/>
-        <image name="MessageStickers" width="19" height="19"/>
         <image name="PostCamera" width="34" height="26"/>
         <image name="PostDelete" width="22" height="22"/>
         <image name="PostPollAdd" width="50" height="50"/>

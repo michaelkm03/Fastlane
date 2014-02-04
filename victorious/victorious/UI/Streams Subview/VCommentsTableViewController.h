@@ -6,18 +6,18 @@
 //  Copyright (c) 2013 Victorious, Inc. All rights reserved.
 //
 
-#import "VSequence.h"
-
-@class VKeyboardBarViewController;
+@class VSequence, VUser;
 
 @protocol VCommentsTableViewControllerDelegate;
 
-@interface VCommentsTableViewController : UITableViewController
+#import "VKeyboardBarViewController.h"
+
+@interface VCommentsTableViewController : UITableViewController <VKeyboardBarDelegate>
 @property (nonatomic, strong) VSequence* sequence;
-@property (nonatomic, weak) VKeyboardBarViewController* composeViewController;
 @property (nonatomic, weak) id<VCommentsTableViewControllerDelegate> delegate;
 
-+ (instancetype)sharedInstance;
+- (void)sortComments;
+
 @end
 
 @protocol VCommentsTableViewControllerDelegate <NSObject>

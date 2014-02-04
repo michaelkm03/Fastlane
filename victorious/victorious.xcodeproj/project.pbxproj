@@ -46,7 +46,7 @@
 		83B5A1241876447800659C73 /* Roboto-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 83188D64187386D000F17777 /* Roboto-Regular.ttf */; };
 		83BD06FB186BE4B2007742D1 /* UIImage+ImageEffects.m in Sources */ = {isa = PBXBuildFile; fileRef = 83BD06FA186BE4B2007742D1 /* UIImage+ImageEffects.m */; };
 		83CC444A187DDCA8000C480C /* Roboto-Black.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 83CC4449187DDCA8000C480C /* Roboto-Black.ttf */; };
-		83D897421881F19D00BD5B8B /* VStreamsSubViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 83D897411881F19D00BD5B8B /* VStreamsSubViewController.m */; };
+		83D897421881F19D00BD5B8B /* VCommentsContainerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 83D897411881F19D00BD5B8B /* VCommentsContainerViewController.m */; };
 		BE171D7A1868BE64004E5202 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BE171D791868BE64004E5202 /* Foundation.framework */; };
 		BE171D7C1868BE64004E5202 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BE171D7B1868BE64004E5202 /* CoreGraphics.framework */; };
 		BE171D7E1868BE64004E5202 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BE171D7D1868BE64004E5202 /* UIKit.framework */; };
@@ -217,8 +217,8 @@
 		83BD06F9186BE4B2007742D1 /* UIImage+ImageEffects.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+ImageEffects.h"; sourceTree = "<group>"; };
 		83BD06FA186BE4B2007742D1 /* UIImage+ImageEffects.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+ImageEffects.m"; sourceTree = "<group>"; };
 		83CC4449187DDCA8000C480C /* Roboto-Black.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Roboto-Black.ttf"; sourceTree = "<group>"; };
-		83D897401881F19D00BD5B8B /* VStreamsSubViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VStreamsSubViewController.h; sourceTree = "<group>"; };
-		83D897411881F19D00BD5B8B /* VStreamsSubViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VStreamsSubViewController.m; sourceTree = "<group>"; };
+		83D897401881F19D00BD5B8B /* VCommentsContainerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VCommentsContainerViewController.h; sourceTree = "<group>"; };
+		83D897411881F19D00BD5B8B /* VCommentsContainerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VCommentsContainerViewController.m; sourceTree = "<group>"; };
 		83DC42FC187CDDE600E768E2 /* VConstants.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VConstants.h; sourceTree = "<group>"; };
 		BE171D761868BE64004E5202 /* victorious.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = victorious.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		BE171D791868BE64004E5202 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -839,8 +839,8 @@
 				BE692B36186E60B300C71336 /* VSequencePlayerViewController.h */,
 				BE692B37186E60B300C71336 /* VSequencePlayerViewController.m */,
 				BE692B38186E60B300C71336 /* VSequencePlayerViewController.xib */,
-				83D897401881F19D00BD5B8B /* VStreamsSubViewController.h */,
-				83D897411881F19D00BD5B8B /* VStreamsSubViewController.m */,
+				83D897401881F19D00BD5B8B /* VCommentsContainerViewController.h */,
+				83D897411881F19D00BD5B8B /* VCommentsContainerViewController.m */,
 				BE692B39186E60B300C71336 /* VCommentsTableViewController.h */,
 				BE692B3A186E60B300C71336 /* VCommentsTableViewController.m */,
 			);
@@ -1086,7 +1086,7 @@
 				BE171E231868C211004E5202 /* VPaginationStatus.m in Sources */,
 				5FC4DA671897111B006BA107 /* VLoginViewController.m in Sources */,
 				D1DAAA08187A43A9009ADCB0 /* VProfileViewController.m in Sources */,
-				83D897421881F19D00BD5B8B /* VStreamsSubViewController.m in Sources */,
+				83D897421881F19D00BD5B8B /* VCommentsContainerViewController.m in Sources */,
 				BE171E151868C211004E5202 /* VNodeAction+RestKit.m in Sources */,
 				BE692B24186E5ED800C71336 /* VStreamPollCell.m in Sources */,
 				BE6C15251880A31A00469BA8 /* VAnswerAction.m in Sources */,

@@ -10,7 +10,7 @@
 #import "UIViewController+VSideMenuViewController.h"
 #import "VConstants.h"
 
-#import "VCommentsTableViewController.h"
+#import "VCommentsContainerViewController.h"
 
 #import "NSString+VParseHelp.h"
 //Cells
@@ -74,7 +74,7 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    VCommentsTableViewController* commentsTable = [VCommentsTableViewController sharedInstance];
+    VCommentsContainerViewController* commentsTable = [VCommentsContainerViewController commentsContainerView];
     commentsTable.sequence = [[self fetchedResultsControllerForTableView:tableView] objectAtIndexPath:indexPath];
     [self.navigationController pushViewController:commentsTable animated:YES];
 }

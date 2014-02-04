@@ -9,6 +9,7 @@
 #import "VKeyboardBarContainerViewController.h"
 #import "VKeyboardBarViewController.h"
 #import "UIView+AutoLayout.h"
+#import "VConstants.h"
 
 @interface VKeyboardBarContainerViewController()
 @property (weak, nonatomic) NSLayoutConstraint *bottomConstraint;
@@ -20,20 +21,20 @@
 {
     [super viewDidLoad];
 
-    UIView *composeContainerView = [UIView autoLayoutView];
-    composeContainerView.backgroundColor = [UIColor redColor];
-    [self.view addSubview:composeContainerView];
-    [composeContainerView constrainToHeight:44];
-    [composeContainerView pinToSuperviewEdges:JRTViewPinLeftEdge|JRTViewPinRightEdge inset:0];
-    self.bottomConstraint = [[composeContainerView pinToSuperviewEdges:JRTViewPinBottomEdge inset:0] firstObject];
-    [composeContainerView addSubview:self.composeViewController.view];
+    UIView *keyboardBarContainerView = [UIView autoLayoutView];
+    keyboardBarContainerView.backgroundColor = [UIColor redColor];
+    [self.view addSubview:keyboardBarContainerView];
+    [keyboardBarContainerView constrainToHeight:44];
+    [keyboardBarContainerView pinToSuperviewEdges:JRTViewPinLeftEdge|JRTViewPinRightEdge inset:0];
+    self.bottomConstraint = [[keyboardBarContainerView pinToSuperviewEdges:JRTViewPinBottomEdge inset:0] firstObject];
+    [keyboardBarContainerView addSubview:self.keyboardBarViewController.view];
 
     UIView *tableContainerView = [UIView autoLayoutView];
     tableContainerView.backgroundColor = [UIColor greenColor];
     [self.view addSubview:tableContainerView];
     [tableContainerView pinToSuperviewEdges:JRTViewPinLeftEdge|JRTViewPinRightEdge inset:0];
     [tableContainerView pinEdge:NSLayoutAttributeTop toEdge:NSLayoutAttributeBottom ofItem:self.topLayoutGuide];
-    [tableContainerView pinEdge:NSLayoutAttributeBottom toEdge:NSLayoutAttributeTop ofItem:composeContainerView];
+    [tableContainerView pinEdge:NSLayoutAttributeBottom toEdge:NSLayoutAttributeTop ofItem:keyboardBarContainerView];
     [tableContainerView addSubview:self.conversationTableViewController.view];
 
     [[NSNotificationCenter defaultCenter]
@@ -46,21 +47,20 @@
     [super viewDidAppear:animated];
     if(self.showKeyboard)
     {
-        [self.composeViewController.textField becomeFirstResponder];
+        [self.keyboardBarViewController.textField becomeFirstResponder];
     }
 }
 
-
-- (VKeyboardBarViewController *)composeViewController
+- (VKeyboardBarViewController *)keyboardBarViewController
 {
-    if(_composeViewController == nil)
+    if(_keyboardBarViewController == nil)
     {
-        _composeViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"compose"];
-        [self addChildViewController:_composeViewController];
-        [_composeViewController didMoveToParentViewController:self];
+        _keyboardBarViewController = [self.storyboard instantiateViewControllerWithIdentifier:kKeyboardBarStoryboardID];
+        [self addChildViewController:_keyboardBarViewController];
+        [_keyboardBarViewController didMoveToParentViewController:self];
     }
 
-    return _composeViewController;
+    return _keyboardBarViewController;
 }
 
 - (void)keyboardFrameChanged:(NSNotification *)notification
@@ -74,10 +74,13 @@
     [userInfo[UIKeyboardAnimationDurationUserInfoKey] getValue:&animationDuration];
     [userInfo[UIKeyboardFrameEndUserInfoKey] getValue:&keyboardEndFrame];
 
-    [UIView animateWithDuration:animationDuration delay:0 options:(animationCurve << 16) animations:^{
+    [UIView animateWithDuration:animationDuration delay:0
+                        options:(animationCurve << 16) animations:^
+    {
         self.bottomConstraint.constant = -(CGRectGetHeight([[UIScreen mainScreen] bounds])-CGRectGetMinY(keyboardEndFrame));
         [self.view layoutIfNeeded];
-    } completion:nil];
+    }
+                     completion:nil];
 }
 
 @end

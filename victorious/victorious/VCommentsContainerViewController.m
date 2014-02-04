@@ -6,19 +6,28 @@
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
-#import "VStreamsSubViewController.h"
+#import "VCommentsContainerViewController.h"
 #import "VCommentsTableViewController.h"
 #import "VKeyboardBarViewController.h"
 #import "VSequence.h"
 #import "VUser.h"
+#import "VConstants.h"
+#import "VObjectManager+Comment.h"
 
-@interface VStreamsSubViewController()
-<VCommentsTableViewControllerDelegate>
+@interface VCommentsContainerViewController() <VCommentsTableViewControllerDelegate>
 @end
 
-@implementation VStreamsSubViewController
+@implementation VCommentsContainerViewController
 
 @synthesize conversationTableViewController = _conversationTableViewController;
+
++ (instancetype)commentsContainerView
+{
+    UIViewController*   currentViewController = [[UIApplication sharedApplication] delegate].window.rootViewController;
+    VCommentsContainerViewController* commentsContainerViewController = (VCommentsContainerViewController*)[currentViewController.storyboard instantiateViewControllerWithIdentifier: kCommentsContainerStoryboardID];
+
+    return commentsContainerViewController;
+}
 
 - (UITableViewController *)conversationTableViewController
 {
@@ -28,7 +37,8 @@
         [self.storyboard instantiateViewControllerWithIdentifier:@"comments"];
         streamsCommentsController.delegate = self;
         streamsCommentsController.sequence = self.sequence;
-        streamsCommentsController.composeViewController = self.composeViewController;
+//        streamsCommentsController.keyboardBarViewController = self.keyboardBarViewController;
+        self.keyboardBarViewController.delegate = streamsCommentsController;
         [self addChildViewController:streamsCommentsController];
         [streamsCommentsController didMoveToParentViewController:self];
         _conversationTableViewController = streamsCommentsController;
@@ -41,8 +51,8 @@
 
 - (void)streamsCommentsController:(VCommentsTableViewController *)viewController shouldReplyToUser:(VUser *)user
 {
-    self.composeViewController.textField.text = [NSString stringWithFormat:@"@%@ ", user.name];
-    [self.composeViewController.textField becomeFirstResponder];
+    self.keyboardBarViewController.textField.text = [NSString stringWithFormat:@"@%@ ", user.name];
+    [self.keyboardBarViewController.textField becomeFirstResponder];
 }
 
 @end

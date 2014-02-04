@@ -10,6 +10,9 @@
 
 @class VSequence;
 
-@interface VStreamsSubViewController : VKeyboardBarContainerViewController
+@interface VCommentsContainerViewController : VKeyboardBarContainerViewController
 @property (nonatomic, strong) VSequence* sequence;
+
++ (instancetype)commentsContainerView;
+
 @end
