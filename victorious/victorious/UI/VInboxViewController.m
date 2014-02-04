@@ -59,8 +59,8 @@ static  NSString*   kNewsCellViewIdentifier       =   @"VNewsCell";
     
     if (kMessageModeSelect == self.modeSelectControl.selectedSegmentIndex)
         fetchRequest = [NSFetchRequest fetchRequestWithEntityName:[VConversation entityName]];
-//    else if (kNewsModeSelect == self.modeSelectControl.selectedSegmentIndex)
-//        fetchRequest = [NSFetchRequest fetchRequestWithEntityName:[VNews entityName]];
+    else if (kNewsModeSelect == self.modeSelectControl.selectedSegmentIndex)
+        fetchRequest = [NSFetchRequest fetchRequestWithEntityName:[VConversation entityName]];
 
     NSSortDescriptor *sort = [[NSSortDescriptor alloc] initWithKey:@"lastMessage.postedAt" ascending:YES];
     [fetchRequest setSortDescriptors:@[sort]];
@@ -96,6 +96,9 @@ static  NSString*   kNewsCellViewIdentifier       =   @"VNewsCell";
     else
     {
 //        cell = [tableView dequeueReusableCellWithIdentifier:kNewsCellViewIdentifier forIndexPath:indexPath];
+        theCell = [tableView dequeueReusableCellWithIdentifier:kMessageCellViewIdentifier forIndexPath:indexPath];
+        VConversation*  info    =   [self.fetchedResultsController objectAtIndexPath:indexPath];
+        [(VConversationCell *)theCell setConversation:info];
     }
 
     return theCell;
@@ -137,6 +140,7 @@ static  NSString*   kNewsCellViewIdentifier       =   @"VNewsCell";
         self.navigationItem.rightBarButtonItem = nil;
     
     self.fetchedResultsController = nil;
+    [self performFetch];
 }
 
 - (IBAction)showMenu
