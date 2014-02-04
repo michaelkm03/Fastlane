@@ -11,24 +11,27 @@
 
 @implementation NSData (SHA1Digest)
 
-+(NSData *)SHA1Digest:(NSData *)input {
++(NSData *)SHA1Digest:(NSData *)input
+{
     unsigned char result[CC_SHA1_DIGEST_LENGTH];
     
-    if (CC_SHA1(input.bytes, input.length, result)) {
+    if (CC_SHA1(input.bytes, (unsigned int)input.length, result)) {
         return [[NSData alloc] initWithBytes:result length:CC_SHA1_DIGEST_LENGTH];
     } else {
         return nil;
     }
 }
 
--(NSData *)SHA1Digest {
+-(NSData *)SHA1Digest
+{
     return [NSData SHA1Digest:self];
 }
 
-+(NSString *)SHA1HexDigest:(NSData *)input {
++(NSString *)SHA1HexDigest:(NSData *)input
+{
     unsigned char result[CC_SHA1_DIGEST_LENGTH];
     
-    if (CC_SHA1(input.bytes, input.length, result)) {
+    if (CC_SHA1(input.bytes, (unsigned int)input.length, result)) {
         NSMutableString *ret = [NSMutableString stringWithCapacity:CC_SHA1_DIGEST_LENGTH*2];
         for (int i = 0; i<CC_SHA1_DIGEST_LENGTH; i++) {
             [ret appendFormat:@"%02x",result[i]];
@@ -39,7 +42,8 @@
     }
 }
 
--(NSString *)SHA1HexDigest {
+-(NSString *)SHA1HexDigest
+{
     return [NSData SHA1HexDigest:self];
 }
 

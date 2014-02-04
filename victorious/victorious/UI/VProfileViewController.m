@@ -49,7 +49,7 @@
     UIViewController*   currentViewController = [[UIApplication sharedApplication] delegate].window.rootViewController;
     VProfileViewController* profileViewController = (VProfileViewController*)[currentViewController.storyboard instantiateViewControllerWithIdentifier: @"profile"];
 
-    profileViewController.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemStop
+    profileViewController.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone
                                                                                                            target:profileViewController
                                                                                                            action:@selector(closeButtonAction:)];
 
@@ -138,7 +138,7 @@
     [actionSheet showFromBarButtonItem:sender animated:YES];
 }
 
--(void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(int)buttonIndex
+-(void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
 {
     if (buttonIndex == 0)
     {

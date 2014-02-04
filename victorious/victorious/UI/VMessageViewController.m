@@ -115,9 +115,9 @@ const   CGFloat     kMessageRowHeight           =   80;
 - (void)didComposeWithText:(NSString *)text data:(NSData *)data mediaExtension:(NSString *)mediaExtension mediaURL:(NSURL *)mediaURL
 {
     [[VObjectManager sharedManager] sendMessageToUser:self.conversation.user
-                                              withText:text
-                                                  Data:data
-                                        mediaExtension:mediaExtension
+                                             withText:text
+                                                 Data:data
+                                       mediaExtension:mediaExtension
                                              mediaUrl:nil
                                          successBlock:^(NSOperation* operation, id fullResponse, NSArray* rkObjects)
                                         {
