@@ -15,7 +15,7 @@
 {
     unsigned char result[CC_MD5_DIGEST_LENGTH];
     
-    if (CC_MD5(input.bytes, (CC_LONG)input.length, result)) {
+    if (CC_MD5(input.bytes, (unsigned int)input.length, result)) {
         return [[NSData alloc] initWithBytes:result length:CC_MD5_DIGEST_LENGTH];
     } else {
         return nil;
@@ -31,7 +31,7 @@
 {
     unsigned char result[CC_MD5_DIGEST_LENGTH];
     
-    CC_MD5(input.bytes, (CC_LONG)input.length, result);
+    CC_MD5(input.bytes, (unsigned int)input.length, result);
     NSMutableString *ret = [NSMutableString stringWithCapacity:CC_MD5_DIGEST_LENGTH*2];
     for (int i = 0; i<CC_MD5_DIGEST_LENGTH; i++) {
         [ret appendFormat:@"%02x",result[i]];
