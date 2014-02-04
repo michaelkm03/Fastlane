@@ -65,6 +65,7 @@ const   CGFloat     kMessageRowHeight           =   80;
                                                      failBlock:fail];
     };
     
+    //TODO: get rid of this once message pagination works
     //If we have more than 1 message we've already loaded at least 1 page
     if ([self.conversation.messages count] > 1)
     {

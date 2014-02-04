@@ -12,6 +12,8 @@
 #import "VMessageContainerViewController.h"
 #import "VNewsViewController.h"
 #import "VConversationCell.h"
+#import "VObjectManager+DirectMessaging.h"
+
 
 NS_ENUM(NSUInteger, VModeSelect)
 {
@@ -68,7 +70,7 @@ static  NSString*   kNewsCellViewIdentifier       =   @"VNewsCell";
                                                managedObjectContext:context
                                                  sectionNameKeyPath:nil
                                                           cacheName:fetchRequest.entityName];
- }
+}
 
 - (void)registerCells
 {
@@ -140,6 +142,25 @@ static  NSString*   kNewsCellViewIdentifier       =   @"VNewsCell";
 - (IBAction)showMenu
 {
     [self.sideMenuViewController presentMenuViewController];
+}
+
+- (IBAction)refreshAction:(id)sender
+{
+    VFailBlock fail = ^(NSOperation* operation, NSError* error)
+    {
+        NSLog(@"%@", error.localizedDescription);
+    };
+    
+    VSuccessBlock success = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
+    {
+        [self.tableView reloadData];
+    };
+    
+    //TODO: remove this when we have conversation pagination
+    if ([self.fetchedResultsController.fetchedObjects count])
+        success(nil, nil, nil);
+    
+    [[VObjectManager sharedManager] loadNextPageOfConversations:success failBlock: fail];
 }
 
 #pragma mark - Navigation
