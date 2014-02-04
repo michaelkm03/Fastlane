@@ -24,7 +24,7 @@
     self.locationTextField.delegate = self;
     self.taglineTextView.delegate = self;
     
-    self.usernameTextField.text = self.profile.shortName;
+    self.usernameTextField.text = self.profile.name;
     self.taglineTextView.text = self.profile.tagline;
     self.locationTextField.text = self.profile.location;
 

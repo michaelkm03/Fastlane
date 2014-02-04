@@ -103,10 +103,10 @@
     self.nameLabel.font = [[VThemeManager sharedThemeManager] themedFontForKeyPath:@"theme.font.profile.username"];
     self.nameLabel.text = self.profile.name;
     self.taglineLabel.font = [[VThemeManager sharedThemeManager] themedFontForKeyPath:@"theme.font.profile.tagline"];
-    if (self.profile.tagline)
-    {
+    if (self.profile.tagline && self.profile.tagline.length)
         self.taglineLabel.text = [NSString stringWithFormat:@"“%@”",self.profile.tagline];
-    }
+    else
+        self.taglineLabel.text = @"";
 
     self.locationLabel.font = [[VThemeManager sharedThemeManager] themedFontForKeyPath:@"theme.font.profile.location"];
     self.locationLabel.text = self.profile.location;
