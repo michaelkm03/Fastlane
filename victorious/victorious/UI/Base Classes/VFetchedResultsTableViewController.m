@@ -24,6 +24,7 @@
     [self hideSearchBar];
     [self registerCells];
     
+    //TODO: rethink this flow.  You can recreate the fetchedResultsController without the predicate data: that is not a good thing.
     [self refreshFetchController:self.fetchedResultsController
                    withPredicate:[self fetchResultsPredicateForString:nil option:0]];
     
