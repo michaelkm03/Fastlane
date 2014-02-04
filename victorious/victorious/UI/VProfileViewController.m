@@ -100,12 +100,16 @@
     [self.backgroundImageView setImageWithURL:imageURL placeholderImage:[UIImage imageNamed:@"profile_full"]];
     
     // Set Profile data
-    self.nameLabel.text = self.profile.name;
     self.nameLabel.font = [[VThemeManager sharedThemeManager] themedFontForKeyPath:@"theme.font.profile.username"];
-    self.taglineLabel.text = [NSString stringWithFormat:@"“%@”",self.profile.tagline];
+    self.nameLabel.text = self.profile.name;
     self.taglineLabel.font = [[VThemeManager sharedThemeManager] themedFontForKeyPath:@"theme.font.profile.tagline"];
-    self.locationLabel.text = self.profile.location;
+    if (self.profile.tagline)
+    {
+        self.taglineLabel.text = [NSString stringWithFormat:@"“%@”",self.profile.tagline];
+    }
+
     self.locationLabel.font = [[VThemeManager sharedThemeManager] themedFontForKeyPath:@"theme.font.profile.location"];
+    self.locationLabel.text = self.profile.location;
 
     self.navigationController.title = self.profile.shortName;
 }
