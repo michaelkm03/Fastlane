@@ -40,6 +40,8 @@ NSString*   const   kVLoginErrorDomain =   @"VLoginErrorDomain";
 
     self.usernameTextField.delegate  =   self;
     self.passwordTextField.delegate  =   self;
+    
+    [self.usernameTextField becomeFirstResponder];
 
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(loginChanged:)
