@@ -1,5 +1,5 @@
 //
-//  VMessagesViewController.m
+//  VInboxViewController.m
 //  victorious
 //
 //  Created by Gary Philipp on 12/23/13.
@@ -24,7 +24,7 @@ NS_ENUM(NSUInteger, VModeSelect)
 static  NSString*   kMessageCellViewIdentifier    =   @"VConversationCell";
 static  NSString*   kNewsCellViewIdentifier       =   @"VNewsCell";
 
-@interface VInboxViewController ()   <NSFetchedResultsControllerDelegate>
+@interface VInboxViewController ()
 @property (weak, nonatomic) IBOutlet UISegmentedControl*    modeSelectControl;
 @end
 

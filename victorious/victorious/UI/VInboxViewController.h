@@ -1,5 +1,5 @@
 //
-//  VMessagesViewController.h
+//  VInboxViewController.h
 //  victorious
 //
 //  Created by Gary Philipp on 12/23/13.
