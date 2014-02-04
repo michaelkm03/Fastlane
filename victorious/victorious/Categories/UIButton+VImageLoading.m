@@ -22,7 +22,8 @@
                           placeholderImage:[UIImage imageNamed:@"profile_thumb"]
                                    success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image)
                                    {
-                                       [weakSelf setImage:image forState:state];
+                                       __strong UIButton* strongSelf = weakSelf;
+                                       [strongSelf setImage:image forState:state];
                                    } failure:nil];
 }
 
