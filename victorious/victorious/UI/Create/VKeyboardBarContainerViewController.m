@@ -55,7 +55,7 @@
 {
     if(_composeViewController == nil)
     {
-        _composeViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"compose"];
+        _composeViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"keyboardbar"];
         [self addChildViewController:_composeViewController];
         [_composeViewController didMoveToParentViewController:self];
     }
