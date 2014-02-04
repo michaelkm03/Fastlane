@@ -53,6 +53,8 @@
                                                                                                            target:profileViewController
                                                                                                            action:@selector(closeButtonAction:)];
 
+    profileViewController.userID = aUserID;
+
     return profileViewController;
 }
 
