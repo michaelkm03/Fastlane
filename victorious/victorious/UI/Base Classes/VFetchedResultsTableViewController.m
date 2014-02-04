@@ -29,7 +29,8 @@
     UIBarButtonItem *searchButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemSearch
                                                                                       target:self
                                                                                       action:@selector(displaySearchBar:)];
-    self.navigationItem.rightBarButtonItems= @[searchButtonItem];}
+    self.navigationItem.rightBarButtonItem = searchButtonItem;
+}
 
 - (void)viewWillAppear:(BOOL)animated
 {
