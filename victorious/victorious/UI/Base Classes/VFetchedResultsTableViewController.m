@@ -23,7 +23,9 @@
     
     [self hideSearchBar];
     [self registerCells];
-    [self performFetch];
+    
+    [self refreshFetchController:self.fetchedResultsController
+                   withPredicate:[self fetchResultsPredicateForString:nil option:0]];
     
     self.searchDisplayController.searchBar.barTintColor = [[VThemeManager sharedThemeManager] themedColorForKeyPath:kVStreamSearchBarColor];
     UIBarButtonItem *searchButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemSearch
@@ -34,8 +36,6 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    
-    [self refreshFetchController:self.fetchedResultsController withPredicate:[self fetchResultsPredicateForString:nil option:0]];
 }
 
 - (void)didReceiveMemoryWarning

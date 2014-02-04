@@ -36,6 +36,14 @@
     [super viewWillDisappear:animated];
 }
 
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
+    
+    if ([self.fetchedResultsController.fetchedObjects count] < 5)
+        [self refreshAction];
+}
+
 #pragma mark - FetchedResultsControllers
 - (NSFetchedResultsController *)makeFetchedResultsController
 {
