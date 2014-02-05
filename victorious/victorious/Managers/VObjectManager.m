@@ -13,6 +13,7 @@
 #import "VConstants.h"
 
 #import "NSString+SHA1Digest.h"
+#import "NSString+VParseHelp.h"
 
 #import "VUser+RestKit.h"
 #import "VSequence+RestKit.h"
@@ -118,6 +119,14 @@
                                       successBlock:(VSuccessBlock)successBlock
                                          failBlock:(VFailBlock)failBlock
 {
+    if ([path isEmpty])
+    {
+        //Something has gone horribly wrong, so fail.
+        if (failBlock)
+            failBlock(nil, nil);
+        return nil;
+    }
+    
     RKManagedObjectRequestOperation *requestOperation =
         [self  appropriateObjectRequestOperationWithObject:object method:method path:path parameters:parameters];
     
@@ -185,6 +194,14 @@
                      successBlock:(VSuccessBlock)successBlock
                         failBlock:(VFailBlock)failBlock
 {
+    if ([path isEmpty])
+    {
+        //Something has gone horribly wrong, so fail.
+        if (failBlock)
+            failBlock(nil, nil);
+        return nil;
+    }
+    
     [self updateHTTPHeadersForPath:path method:RKRequestMethodPOST];
     
     NSMutableURLRequest *request =

@@ -7,6 +7,7 @@
 //
 
 #import "UIButton+VImageLoading.h"
+#import "NSString+VParseHelp.h"
 
 @implementation UIButton (VImageLoading)
 
@@ -14,6 +15,9 @@
        placeholderImage:(UIImage *)placeholderImage
                forState:(UIControlState)state
 {
+    if (!url || [url.path isEmpty])
+        [self setImage:placeholderImage forState:state];
+        
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
     [request addValue:@"image/*" forHTTPHeaderField:@"Accept"];
     

@@ -34,9 +34,6 @@
           [self loadNextPageOfSequencesForCategory:nil
                                       successBlock:nil
                                          failBlock:nil];
-          [self loadNextPageOfSequencesForCategory:kFeaturedCategory
-                                      successBlock:nil
-                                         failBlock:nil];
       } failBlock:nil];
 }
 
@@ -134,8 +131,11 @@
                                            loadAttempt:(NSInteger)attemptCount
 {
     if (!sequenceID)
+    {
+        if (fail)
+            fail(nil, nil);
         return nil;
-    
+    }
     NSString* path = [@"/api/sequence/fetch/" stringByAppendingString:sequenceID.stringValue];
     
     VFailBlock fullFail = ^(NSOperation* operation, NSError* error)
