@@ -35,11 +35,6 @@
     self.navigationItem.rightBarButtonItem = searchButtonItem;
 }
 
-- (void)viewWillAppear:(BOOL)animated
-{
-    [super viewWillAppear:animated];
-}
-
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
@@ -146,18 +141,6 @@
 {
     return [[self fetchedResultsControllerForTableView:tableView] sectionForSectionIndexTitle:title atIndex:index];
 }
-
-- (void)configureCell:(UITableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath
-{
-}
-
-//- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
-//{
-//    if (floor(NSFoundationVersionNumber) <= NSFoundationVersionNumber_iOS_6_1)
-//        return 0;
-//    else
-//        return 22;
-//}
 
 #pragma mark - Helper Functions
 

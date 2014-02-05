@@ -33,9 +33,9 @@ const   CGFloat     kMessageRowHeight           =   80;
 
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     self.tableView.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKeyPath:@"theme.color.messages.background"];
-    [self.tableView registerNib:[UINib nibWithNibName:kCommentCellIdentifier bundle:[NSBundle mainBundle]]
+    [self.tableView registerNib:[UINib nibWithNibName:kCommentCellIdentifier bundle:nil]
          forCellReuseIdentifier:kCommentCellIdentifier];
-    [self.tableView registerNib:[UINib nibWithNibName:kOtherCommentCellIdentifier bundle:[NSBundle mainBundle]]
+    [self.tableView registerNib:[UINib nibWithNibName:kOtherCommentCellIdentifier bundle:nil]
          forCellReuseIdentifier:kOtherCommentCellIdentifier];
 
     [self refreshAction:self];

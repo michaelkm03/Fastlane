@@ -69,19 +69,19 @@
 - (void)registerCells
 {
     //TODO:replace with Forum Image Cell xib name.
-    [self.tableView registerNib:[UINib nibWithNibName:kStreamViewCellIdentifier bundle:[NSBundle mainBundle]]
+    [self.tableView registerNib:[UINib nibWithNibName:kStreamViewCellIdentifier bundle:nil]
          forCellReuseIdentifier:kStreamViewCellIdentifier];
-    [self.searchDisplayController.searchResultsTableView registerNib:[UINib nibWithNibName:kStreamViewCellIdentifier bundle:[NSBundle mainBundle]] forCellReuseIdentifier:kStreamViewCellIdentifier];
+    [self.searchDisplayController.searchResultsTableView registerNib:[UINib nibWithNibName:kStreamViewCellIdentifier bundle:nil] forCellReuseIdentifier:kStreamViewCellIdentifier];
     
     //TODO:replace with Forum Youtube Video Cell xib name
-    [self.tableView registerNib:[UINib nibWithNibName:kStreamYoutubeCellIdentifier bundle:[NSBundle mainBundle]]
+    [self.tableView registerNib:[UINib nibWithNibName:kStreamYoutubeCellIdentifier bundle:nil]
          forCellReuseIdentifier:kStreamYoutubeCellIdentifier];
-    [self.searchDisplayController.searchResultsTableView registerNib:[UINib nibWithNibName:kStreamYoutubeCellIdentifier bundle:[NSBundle mainBundle]] forCellReuseIdentifier:kStreamYoutubeCellIdentifier];
+    [self.searchDisplayController.searchResultsTableView registerNib:[UINib nibWithNibName:kStreamYoutubeCellIdentifier bundle:nil] forCellReuseIdentifier:kStreamYoutubeCellIdentifier];
     
     //TODO:replace with Forum Video Cell xib name
-    [self.tableView registerNib:[UINib nibWithNibName:kStreamVideoCellIdentifier bundle:[NSBundle mainBundle]]
+    [self.tableView registerNib:[UINib nibWithNibName:kStreamVideoCellIdentifier bundle:nil]
          forCellReuseIdentifier:kStreamVideoCellIdentifier];
-    [self.searchDisplayController.searchResultsTableView registerNib:[UINib nibWithNibName:kStreamVideoCellIdentifier bundle:[NSBundle mainBundle]] forCellReuseIdentifier:kStreamVideoCellIdentifier];
+    [self.searchDisplayController.searchResultsTableView registerNib:[UINib nibWithNibName:kStreamVideoCellIdentifier bundle:nil] forCellReuseIdentifier:kStreamVideoCellIdentifier];
 }
 
 @end

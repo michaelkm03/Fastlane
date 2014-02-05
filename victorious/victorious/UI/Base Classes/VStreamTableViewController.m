@@ -130,42 +130,34 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     VStreamViewCell *cell = [self tableView:tableView streamViewCellForIndex:indexPath];
-    
-    // Configure the cell...
-    [self configureCell:cell atIndexPath:indexPath forFetchedResultsController:self.fetchedResultsController];
-    
-    return cell;
-}
+    VSequence *info = [self.fetchedResultsController objectAtIndexPath:indexPath];
+    ((VStreamViewCell*)cell).parentTableViewController = self;
+    [((VStreamViewCell*)cell) setSequence:info];
 
-- (void)configureCell:(UITableViewCell *)theCell atIndexPath:(NSIndexPath *)theIndexPath
-forFetchedResultsController:(NSFetchedResultsController *)fetchedResultsController
-{
-    VSequence *info = [fetchedResultsController objectAtIndexPath:theIndexPath];
-    ((VStreamViewCell*)theCell).parentTableViewController = self;
-    [((VStreamViewCell*)theCell) setSequence:info];
+    return cell;
 }
 
 - (void)registerCells
 {
-    [self.tableView registerNib:[UINib nibWithNibName:kStreamViewCellIdentifier bundle:[NSBundle mainBundle]]
+    [self.tableView registerNib:[UINib nibWithNibName:kStreamViewCellIdentifier bundle:nil]
          forCellReuseIdentifier:kStreamViewCellIdentifier];
-    [self.searchDisplayController.searchResultsTableView registerNib:[UINib nibWithNibName:kStreamViewCellIdentifier bundle:[NSBundle mainBundle]] forCellReuseIdentifier:kStreamViewCellIdentifier];
+    [self.searchDisplayController.searchResultsTableView registerNib:[UINib nibWithNibName:kStreamViewCellIdentifier bundle:nil] forCellReuseIdentifier:kStreamViewCellIdentifier];
     
-    [self.tableView registerNib:[UINib nibWithNibName:kStreamYoutubeCellIdentifier bundle:[NSBundle mainBundle]]
+    [self.tableView registerNib:[UINib nibWithNibName:kStreamYoutubeCellIdentifier bundle:nil]
          forCellReuseIdentifier:kStreamYoutubeCellIdentifier];
-    [self.searchDisplayController.searchResultsTableView registerNib:[UINib nibWithNibName:kStreamYoutubeCellIdentifier bundle:[NSBundle mainBundle]] forCellReuseIdentifier:kStreamYoutubeCellIdentifier];
+    [self.searchDisplayController.searchResultsTableView registerNib:[UINib nibWithNibName:kStreamYoutubeCellIdentifier bundle:nil] forCellReuseIdentifier:kStreamYoutubeCellIdentifier];
     
-    [self.tableView registerNib:[UINib nibWithNibName:kStreamVideoCellIdentifier bundle:[NSBundle mainBundle]]
+    [self.tableView registerNib:[UINib nibWithNibName:kStreamVideoCellIdentifier bundle:nil]
          forCellReuseIdentifier:kStreamVideoCellIdentifier];
-    [self.searchDisplayController.searchResultsTableView registerNib:[UINib nibWithNibName:kStreamVideoCellIdentifier bundle:[NSBundle mainBundle]] forCellReuseIdentifier:kStreamVideoCellIdentifier];
+    [self.searchDisplayController.searchResultsTableView registerNib:[UINib nibWithNibName:kStreamVideoCellIdentifier bundle:nil] forCellReuseIdentifier:kStreamVideoCellIdentifier];
     
-    [self.tableView registerNib:[UINib nibWithNibName:kStreamPollCellIdentifier bundle:[NSBundle mainBundle]]
+    [self.tableView registerNib:[UINib nibWithNibName:kStreamPollCellIdentifier bundle:nil]
          forCellReuseIdentifier:kStreamPollCellIdentifier];
-    [self.searchDisplayController.searchResultsTableView registerNib:[UINib nibWithNibName:kStreamPollCellIdentifier bundle:[NSBundle mainBundle]] forCellReuseIdentifier:kStreamPollCellIdentifier];
+    [self.searchDisplayController.searchResultsTableView registerNib:[UINib nibWithNibName:kStreamPollCellIdentifier bundle:nil] forCellReuseIdentifier:kStreamPollCellIdentifier];
     
-    [self.tableView registerNib:[UINib nibWithNibName:kStreamDoublePollCellIdentifier bundle:[NSBundle mainBundle]]
+    [self.tableView registerNib:[UINib nibWithNibName:kStreamDoublePollCellIdentifier bundle:nil]
          forCellReuseIdentifier:kStreamDoublePollCellIdentifier];
-    [self.searchDisplayController.searchResultsTableView registerNib:[UINib nibWithNibName:kStreamDoublePollCellIdentifier bundle:[NSBundle mainBundle]] forCellReuseIdentifier:kStreamDoublePollCellIdentifier];
+    [self.searchDisplayController.searchResultsTableView registerNib:[UINib nibWithNibName:kStreamDoublePollCellIdentifier bundle:nil] forCellReuseIdentifier:kStreamDoublePollCellIdentifier];
 }
 
 #pragma mark - Refresh
