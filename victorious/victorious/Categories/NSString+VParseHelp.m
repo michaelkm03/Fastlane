@@ -29,7 +29,7 @@
 {
     //    $basename . '/playlist.m3u8';
     //    $basename . '/thumbnail-00001.png';
-    return  [[self stringByDeletingLastPathComponent] stringByAppendingString:@"/thumbnail-00001.png"];
+    return  [[[self stringByDeletingLastPathComponent] stringByAppendingPathComponent:@"thumbnail-00001"] stringByAppendingPathExtension: @"png"];
 }
 
 - (BOOL ) isEmpty
