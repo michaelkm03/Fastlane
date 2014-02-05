@@ -14,24 +14,13 @@
 
 @implementation VStreamYoutubeVideoCell
 
-- (void)dealloc
-{
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
-}
-
 - (void)setSequence:(VSequence *)sequence
 {
     [super setSequence:sequence];
     [self setYoutubeVideo];
     
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(streamsWillSegue:)
-                                                 name:kStreamsWillSegueNotification
-                                               object:nil];
-    
     self.webView.scrollView.scrollEnabled = NO;
 }
-
 
 - (void)setYoutubeVideo
 {
@@ -60,12 +49,6 @@
                            videoID];
     
     [self.webView loadHTMLString:embedHTML baseURL:[[NSBundle mainBundle] resourceURL]];
-}
-
-- (void)streamsWillSegue:(NSNotification *) notification
-{
-    //TODO: remove hack.  This should pause the video instead of resetting it.
-    [self setYoutubeVideo];
 }
 
 @end

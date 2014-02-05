@@ -41,6 +41,10 @@
 {
     [super viewDidLoad];
     
+    [[NSNotificationCenter defaultCenter]
+     addObserver:self selector:@selector(willCommentSequence:)
+     name:kStreamsWillCommentNotification object:nil];
+    
     if ([self.fetchedResultsController.fetchedObjects count] < 5)
         [self refreshAction];
 }
@@ -80,6 +84,17 @@
 }
 
 #pragma mark - UITableViewDelegate
+
+- (void)tableView:(UITableView *)tableView didEndDisplayingCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    VSequence* sequence = [[self fetchedResultsControllerForTableView:tableView] objectAtIndexPath:indexPath];
+    
+    if (([sequence isForum] || [sequence isVideo])
+        && [[[sequence firstNode] firstAsset].type isEqualToString:VConstantsMediaTypeYoutube])
+        //This will reload the youtube video so it stops playing
+        //TODO: replace this with a pause
+        [(VStreamYoutubeVideoCell*)cell setSequence:((VStreamYoutubeVideoCell*)cell).sequence];
+}
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -205,6 +220,16 @@
 - (IBAction)showMenu
 {
     [self.sideMenuViewController presentMenuViewController];
+}
+
+#pragma mark - Notifications
+
+- (void)willCommentSequence:(NSNotification *)notification
+{
+    VStreamViewCell *cell = (VStreamViewCell *)notification.object;
+    VCommentsContainerViewController* commentsTable = [VCommentsContainerViewController commentsContainerView];
+    commentsTable.sequence = cell.sequence;
+    [self.navigationController pushViewController:commentsTable animated:YES];
 }
 
 @end
