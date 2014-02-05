@@ -53,7 +53,7 @@
 {
     _animationDuration = 0.35f;
     _panGestureEnabled = YES;
-    _interactivePopGestureRecognizerEnabled = YES;
+//    _interactivePopGestureRecognizerEnabled = YES;
     
     _scaleContentView      = YES;
     _contentViewScaleValue = 0.7f;
@@ -103,12 +103,12 @@
     
     [self addMenuViewControllerMotionEffects];
     
-    if (self.panGestureEnabled)
-    {
-        UIPanGestureRecognizer *panGestureRecognizer = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(panGestureRecognized:)];
-        panGestureRecognizer.delegate = self;
-        [self.view addGestureRecognizer:panGestureRecognizer];
-    }
+//    if (self.panGestureEnabled)
+//    {
+//        UIPanGestureRecognizer *panGestureRecognizer = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(panGestureRecognized:)];
+//        panGestureRecognizer.delegate = self;
+//        [self.view addGestureRecognizer:panGestureRecognizer];
+//    }
 }
 
 #pragma mark -
@@ -244,106 +244,106 @@
 
 #pragma mark - Gesture recognizer
 
-- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(UITouch *)touch
-{
-    if (self.interactivePopGestureRecognizerEnabled && [self.contentViewController isKindOfClass:[UINavigationController class]])
-    {
-       UINavigationController *navigationController = (UINavigationController *)self.contentViewController;
-       if (navigationController.viewControllers.count > 1 && navigationController.interactivePopGestureRecognizer.enabled)
-           return NO;
-    }
-    
-    if (self.panFromEdge && [gestureRecognizer isKindOfClass:[UIPanGestureRecognizer class]] && !self.visible)
-    {
-        CGPoint point = [touch locationInView:gestureRecognizer.view];
-        if (point.x < 30)
-            return YES;
-        else
-            return NO;
-    }
-
-    return YES;
-}
-
-- (void)panGestureRecognized:(UIPanGestureRecognizer *)recognizer
-{
-    if (!self.panGestureEnabled)
-        return;
-    
-    CGPoint point = [recognizer translationInView:self.view];
-    
-    if (recognizer.state == UIGestureRecognizerStateBegan)
-    {
-        self.originalPoint = CGPointMake(self.contentViewController.view.center.x - CGRectGetWidth(self.contentViewController.view.bounds) / 2.0,
-                                         self.contentViewController.view.center.y - CGRectGetHeight(self.contentViewController.view.bounds) / 2.0);
-        self.menuViewController.view.transform = CGAffineTransformIdentity;
-        if (self.scaleBackgroundImageView)
-        {
-            self.backgroundImageView.transform = CGAffineTransformIdentity;
-            self.backgroundImageView.frame = self.view.bounds;
-        }
-        self.menuViewController.view.frame = self.view.bounds;
-        [self addContentButton];
-        [self.view.window endEditing:YES];
-    }
-    
-    if (recognizer.state == UIGestureRecognizerStateBegan || recognizer.state == UIGestureRecognizerStateChanged)
-    {
-        CGFloat delta = self.visible ? (point.x + self.originalPoint.x) / self.originalPoint.x : point.x / self.view.frame.size.width;
-        
-        CGFloat contentViewScale = self.scaleContentView ? 1 - ((1 - self.contentViewScaleValue) * delta) : 1;
-        CGFloat backgroundViewScale = 1.7f - (0.7f * delta);
-        CGFloat menuViewScale = 1.5f - (0.5f * delta);
-        
-        if (!_bouncesHorizontally)
-        {
-            contentViewScale = MAX(contentViewScale, self.contentViewScaleValue);
-            backgroundViewScale = MAX(backgroundViewScale, 1.0);
-            menuViewScale = MAX(menuViewScale, 1.0);
-        }
-        
-        self.menuViewController.view.alpha = delta;
-        if (self.scaleBackgroundImageView)
-        {
-            self.backgroundImageView.transform = CGAffineTransformMakeScale(backgroundViewScale, backgroundViewScale);
-        }
-        self.menuViewController.view.transform = CGAffineTransformMakeScale(menuViewScale, menuViewScale);
-        
-        if (self.scaleBackgroundImageView)
-        {
-            if (backgroundViewScale < 1)
-                self.backgroundImageView.transform = CGAffineTransformIdentity;
-        }
-        
-        if (contentViewScale > 1)
-        {
-            if (!self.visible)
-                self.contentViewController.view.transform = CGAffineTransformIdentity;
-
-            self.contentViewController.view.frame = self.view.bounds;
-        }
-        else
-        {
-            if (!_bouncesHorizontally && self.visible)
-            {
-                point.x = MIN(0.0, point.x);
-                [recognizer setTranslation:point inView:self.view];
-            }
-            self.contentViewController.view.transform = CGAffineTransformMakeScale(contentViewScale, contentViewScale);
-            self.contentViewController.view.transform = CGAffineTransformTranslate(self.contentViewController.view.transform, point.x, 0);
-        }
-        
-        [self updateStatusBar];
-    }
-    
-    if (recognizer.state == UIGestureRecognizerStateEnded)
-    {
-        if ([recognizer velocityInView:self.view].x > 0)
-            [self showMenuViewController];
-        else
-            [self hideMenuViewController];
-    }
-}
+//- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(UITouch *)touch
+//{
+//    if (self.interactivePopGestureRecognizerEnabled && [self.contentViewController isKindOfClass:[UINavigationController class]])
+//    {
+//       UINavigationController *navigationController = (UINavigationController *)self.contentViewController;
+//       if (navigationController.viewControllers.count > 1 && navigationController.interactivePopGestureRecognizer.enabled)
+//           return NO;
+//    }
+//    
+//    if (self.panFromEdge && [gestureRecognizer isKindOfClass:[UIPanGestureRecognizer class]] && !self.visible)
+//    {
+//        CGPoint point = [touch locationInView:gestureRecognizer.view];
+//        if (point.x < 30)
+//            return YES;
+//        else
+//            return NO;
+//    }
+//
+//    return YES;
+//}
+//
+//- (void)panGestureRecognized:(UIPanGestureRecognizer *)recognizer
+//{
+//    if (!self.panGestureEnabled)
+//        return;
+//    
+//    CGPoint point = [recognizer translationInView:self.view];
+//    
+//    if (recognizer.state == UIGestureRecognizerStateBegan)
+//    {
+//        self.originalPoint = CGPointMake(self.contentViewController.view.center.x - CGRectGetWidth(self.contentViewController.view.bounds) / 2.0,
+//                                         self.contentViewController.view.center.y - CGRectGetHeight(self.contentViewController.view.bounds) / 2.0);
+//        self.menuViewController.view.transform = CGAffineTransformIdentity;
+//        if (self.scaleBackgroundImageView)
+//        {
+//            self.backgroundImageView.transform = CGAffineTransformIdentity;
+//            self.backgroundImageView.frame = self.view.bounds;
+//        }
+//        self.menuViewController.view.frame = self.view.bounds;
+//        [self addContentButton];
+//        [self.view.window endEditing:YES];
+//    }
+//    
+//    if (recognizer.state == UIGestureRecognizerStateBegan || recognizer.state == UIGestureRecognizerStateChanged)
+//    {
+//        CGFloat delta = self.visible ? (point.x + self.originalPoint.x) / self.originalPoint.x : point.x / self.view.frame.size.width;
+//        
+//        CGFloat contentViewScale = self.scaleContentView ? 1 - ((1 - self.contentViewScaleValue) * delta) : 1;
+//        CGFloat backgroundViewScale = 1.7f - (0.7f * delta);
+//        CGFloat menuViewScale = 1.5f - (0.5f * delta);
+//        
+//        if (!_bouncesHorizontally)
+//        {
+//            contentViewScale = MAX(contentViewScale, self.contentViewScaleValue);
+//            backgroundViewScale = MAX(backgroundViewScale, 1.0);
+//            menuViewScale = MAX(menuViewScale, 1.0);
+//        }
+//        
+//        self.menuViewController.view.alpha = delta;
+//        if (self.scaleBackgroundImageView)
+//        {
+//            self.backgroundImageView.transform = CGAffineTransformMakeScale(backgroundViewScale, backgroundViewScale);
+//        }
+//        self.menuViewController.view.transform = CGAffineTransformMakeScale(menuViewScale, menuViewScale);
+//        
+//        if (self.scaleBackgroundImageView)
+//        {
+//            if (backgroundViewScale < 1)
+//                self.backgroundImageView.transform = CGAffineTransformIdentity;
+//        }
+//        
+//        if (contentViewScale > 1)
+//        {
+//            if (!self.visible)
+//                self.contentViewController.view.transform = CGAffineTransformIdentity;
+//
+//            self.contentViewController.view.frame = self.view.bounds;
+//        }
+//        else
+//        {
+//            if (!_bouncesHorizontally && self.visible)
+//            {
+//                point.x = MIN(0.0, point.x);
+//                [recognizer setTranslation:point inView:self.view];
+//            }
+//            self.contentViewController.view.transform = CGAffineTransformMakeScale(contentViewScale, contentViewScale);
+//            self.contentViewController.view.transform = CGAffineTransformTranslate(self.contentViewController.view.transform, point.x, 0);
+//        }
+//        
+//        [self updateStatusBar];
+//    }
+//    
+//    if (recognizer.state == UIGestureRecognizerStateEnded)
+//    {
+//        if ([recognizer velocityInView:self.view].x > 0)
+//            [self showMenuViewController];
+//        else
+//            [self hideMenuViewController];
+//    }
+//}
 
 #pragma mark - Setters
 

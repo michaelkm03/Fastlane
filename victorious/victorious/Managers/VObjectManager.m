@@ -119,7 +119,8 @@
                                       successBlock:(VSuccessBlock)successBlock
                                          failBlock:(VFailBlock)failBlock
 {
-    if ([path isEmpty])
+    NSURL* url = [NSURL URLWithString:path];
+    if ([path isEmpty] || !url)
     {
         //Something has gone horribly wrong, so fail.
         if (failBlock)

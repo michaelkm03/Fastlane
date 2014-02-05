@@ -28,13 +28,14 @@
 
 - (RKManagedObjectRequestOperation *)initialSequenceLoad
 {
-    return [[VObjectManager sharedManager] loadSequenceCategoriesWithSuccessBlock:^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
-      {
-          
-          [self loadNextPageOfSequencesForCategory:nil
-                                      successBlock:nil
-                                         failBlock:nil];
-      } failBlock:nil];
+    
+    return [self loadNextPageOfSequencesForCategory:nil
+                                successBlock:nil
+                                   failBlock:nil];
+//    return [[VObjectManager sharedManager] loadSequenceCategoriesWithSuccessBlock:^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
+//      {
+//          
+//      } failBlock:nil];
 }
 
 - (RKManagedObjectRequestOperation *)loadSequenceCategoriesWithSuccessBlock:(VSuccessBlock)success
