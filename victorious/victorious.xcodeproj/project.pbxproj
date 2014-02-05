@@ -84,6 +84,8 @@
 		BE171E3A1868C266004E5202 /* NSString+VParseHelp.m in Sources */ = {isa = PBXBuildFile; fileRef = BE171E381868C266004E5202 /* NSString+VParseHelp.m */; };
 		BE171E431868CEA0004E5202 /* victoriOS.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = BE171E411868CEA0004E5202 /* victoriOS.xcdatamodeld */; };
 		BE40559418A1828D00092AE1 /* UIButton+VImageLoading.m in Sources */ = {isa = PBXBuildFile; fileRef = BE40559318A1828D00092AE1 /* UIButton+VImageLoading.m */; };
+		BE40559C18A2082900092AE1 /* VStreamYoutubeVideoCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = BE40559B18A2082900092AE1 /* VStreamYoutubeVideoCell.xib */; };
+		BE40559F18A20C0F00092AE1 /* VStreamYoutubeVideoCell.m in Sources */ = {isa = PBXBuildFile; fileRef = BE40559E18A20C0F00092AE1 /* VStreamYoutubeVideoCell.m */; };
 		BE4B74231880D3850090FF84 /* VComment.m in Sources */ = {isa = PBXBuildFile; fileRef = BE4B74221880D3850090FF84 /* VComment.m */; };
 		BE4B74261880D3850090FF84 /* VAnswer.m in Sources */ = {isa = PBXBuildFile; fileRef = BE4B74251880D3850090FF84 /* VAnswer.m */; };
 		BE55CD15188F316900FE619F /* VObjectManager.m in Sources */ = {isa = PBXBuildFile; fileRef = BE55CD13188F316900FE619F /* VObjectManager.m */; };
@@ -284,6 +286,9 @@
 		BE171E441868CEAA004E5202 /* victoriOS 2.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "victoriOS 2.xcdatamodel"; sourceTree = "<group>"; };
 		BE40559218A1828D00092AE1 /* UIButton+VImageLoading.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIButton+VImageLoading.h"; sourceTree = "<group>"; };
 		BE40559318A1828D00092AE1 /* UIButton+VImageLoading.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIButton+VImageLoading.m"; sourceTree = "<group>"; };
+		BE40559B18A2082900092AE1 /* VStreamYoutubeVideoCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VStreamYoutubeVideoCell.xib; sourceTree = "<group>"; };
+		BE40559D18A20C0F00092AE1 /* VStreamYoutubeVideoCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VStreamYoutubeVideoCell.h; sourceTree = "<group>"; };
+		BE40559E18A20C0F00092AE1 /* VStreamYoutubeVideoCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VStreamYoutubeVideoCell.m; sourceTree = "<group>"; };
 		BE4B74211880D3850090FF84 /* VComment.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VComment.h; sourceTree = "<group>"; };
 		BE4B74221880D3850090FF84 /* VComment.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VComment.m; sourceTree = "<group>"; };
 		BE4B74241880D3850090FF84 /* VAnswer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VAnswer.h; sourceTree = "<group>"; };
@@ -829,6 +834,9 @@
 				BE692B21186E5ED800C71336 /* VStreamViewCell.m */,
 				BE692B22186E5ED800C71336 /* VStreamViewCell.xib */,
 				BEF8D37A188755C1004919CA /* VStreamYoutubeCell.xib */,
+				BE40559D18A20C0F00092AE1 /* VStreamYoutubeVideoCell.h */,
+				BE40559E18A20C0F00092AE1 /* VStreamYoutubeVideoCell.m */,
+				BE40559B18A2082900092AE1 /* VStreamYoutubeVideoCell.xib */,
 			);
 			name = Cells;
 			path = UI/StreamsView;
@@ -984,6 +992,7 @@
 				3FF8B7A11868F36600806EA0 /* Localizable.strings in Resources */,
 				BE171D861868BE64004E5202 /* InfoPlist.strings in Resources */,
 				BEB4C29C187E038C004ECEEF /* VConversationCell.xib in Resources */,
+				BE40559C18A2082900092AE1 /* VStreamYoutubeVideoCell.xib in Resources */,
 				5FC4DA5E18970A9F006BA107 /* login.storyboard in Resources */,
 				BE171D911868BE64004E5202 /* Images.xcassets in Resources */,
 				83B5A1241876447800659C73 /* Roboto-Regular.ttf in Resources */,
@@ -1124,6 +1133,7 @@
 				BE171E431868CEA0004E5202 /* victoriOS.xcdatamodeld in Sources */,
 				838511C418762DF3007E0316 /* VBadgeLabel.m in Sources */,
 				3F9B666818887D910046F826 /* VFetchedResultsTableViewController.m in Sources */,
+				BE40559F18A20C0F00092AE1 /* VStreamYoutubeVideoCell.m in Sources */,
 				BE171E1B1868C211004E5202 /* VUser+RestKit.m in Sources */,
 				BE5D799518989A0800DC752A /* VImagePickerViewController.m in Sources */,
 				BE5C736A187E36E800A3340D /* VRule.m in Sources */,

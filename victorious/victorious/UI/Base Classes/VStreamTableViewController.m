@@ -17,6 +17,7 @@
 #import "VStreamViewCell.h"
 #import "VStreamVideoCell.h"
 #import "VStreamPollCell.h"
+#import "VStreamYoutubeVideoCell.h"
 
 //ObjectManager
 #import "VObjectManager+Sequence.h"
@@ -107,7 +108,7 @@
     
     if (([sequence isForum] || [sequence isVideo])
         && [[[sequence firstNode] firstAsset].type isEqualToString:VConstantsMediaTypeYoutube])
-        return [tableView dequeueReusableCellWithIdentifier:kStreamYoutubeCellIdentifier
+        return [tableView dequeueReusableCellWithIdentifier:kStreamYoutubeVideoCellIdentifier
                                                forIndexPath:indexPath];
     
     else if ([sequence isPoll] && [[sequence firstNode] firstAsset])
@@ -154,6 +155,10 @@ forFetchedResultsController:(NSFetchedResultsController *)fetchedResultsControll
     [self.tableView registerNib:[UINib nibWithNibName:kStreamYoutubeCellIdentifier bundle:[NSBundle mainBundle]]
          forCellReuseIdentifier:kStreamYoutubeCellIdentifier];
     [self.searchDisplayController.searchResultsTableView registerNib:[UINib nibWithNibName:kStreamYoutubeCellIdentifier bundle:[NSBundle mainBundle]] forCellReuseIdentifier:kStreamYoutubeCellIdentifier];
+    
+    [self.tableView registerNib:[UINib nibWithNibName:kStreamYoutubeVideoCellIdentifier bundle:[NSBundle mainBundle]]
+         forCellReuseIdentifier:kStreamYoutubeVideoCellIdentifier];
+    [self.searchDisplayController.searchResultsTableView registerNib:[UINib nibWithNibName:kStreamYoutubeVideoCellIdentifier bundle:[NSBundle mainBundle]] forCellReuseIdentifier:kStreamYoutubeVideoCellIdentifier];
     
     [self.tableView registerNib:[UINib nibWithNibName:kStreamVideoCellIdentifier bundle:[NSBundle mainBundle]]
          forCellReuseIdentifier:kStreamVideoCellIdentifier];

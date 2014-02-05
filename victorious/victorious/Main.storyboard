@@ -1024,7 +1024,7 @@
         <!--Create Content View Controller - New Video-->
         <scene sceneID="9s1-dk-h0z">
             <objects>
-                <viewController storyboardIdentifier="VCreateViewController" id="5ym-q5-gcc" customClass="VCreateContentViewController" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="VCreateContentViewController" id="5ym-q5-gcc" customClass="VCreateContentViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="HoE-Uj-iIV"/>
                         <viewControllerLayoutGuide type="bottom" id="R24-YS-BCW"/>
