@@ -40,7 +40,13 @@
     [VObjectManager setupObjectManager];
     (void)[[VObjectManager sharedManager] initialSequenceLoad];
     
+#ifdef STABLE_DEBUG
+    [TestFlight takeOff:@"8734f1a7-d756-481a-9234-2be8ba841767"];
+#elif DEBUG
+    [TestFlight takeOff:@"25d004e5-9530-4969-94e9-f3182e53339b"];
+#else
     [TestFlight takeOff:@"02101c7d-4a01-4a44-8e8a-26dca03554aa"];
+#endif
     
     NSURL*  openURL =   launchOptions[UIApplicationLaunchOptionsURLKey];
     if (openURL)
