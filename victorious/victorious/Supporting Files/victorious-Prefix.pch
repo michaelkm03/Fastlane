@@ -28,11 +28,17 @@
 #import "RestKit.h"
 
 #ifdef DEBUG
-#define VBASEURL @"http://dev.getvictorious.com"
 #define VLog(fmt, ...) NSLog((@"%s [Line %d] " fmt),  __PRETTY_FUNCTION__, __LINE__, ##__VA_ARGS__);
 #else
-#define VBASEURL @"http://dev.getvictorious.com"
 #define VLog(...)
+#endif
+
+#ifdef STAGE_DEBUG
+#define VBASEURL @"http://dev.getvictorious.com"
+#elif DEBUG
+#define VBASEURL @"http://dev.getvictorious.com"
+#else
+#define VBASEURL @"http://dev.getvictorious.com"
 #endif
 
 #define VSelectorName(s) NSStringFromSelector(@selector(s))

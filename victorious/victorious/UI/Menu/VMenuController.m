@@ -97,7 +97,8 @@ NSString *const VMenuControllerDidSelectRowNotification = @"VMenuTableViewContro
     UINavigationController* navigationController = (UINavigationController *)self.sideMenuViewController.contentViewController;
 
 //    __typeof__(self) __weak     weakSelf = self;
-
+    UIViewController* currentViewController = [navigationController.viewControllers lastObject];
+    
     switch (indexPath.row)
     {
         case VMenuRowHome:
@@ -158,6 +159,12 @@ NSString *const VMenuControllerDidSelectRowNotification = @"VMenuTableViewContro
 
         default:
             break;
+    }
+    
+    //If the view controllers aren't the same notify everything a change is about to happen
+    if(currentViewController!=[navigationController.viewControllers lastObject])
+    {
+        [[NSNotificationCenter defaultCenter] postNotificationName:VMenuControllerDidSelectRowNotification object:nil];
     }
 }
 

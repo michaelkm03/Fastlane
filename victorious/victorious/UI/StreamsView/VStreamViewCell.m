@@ -25,7 +25,6 @@
 
 #import "VCommentCell.h"
 
-NSString* kStreamsWillSegueNotification = @"kStreamsWillSegueNotification";
 NSString *kStreamsWillShareNotification = @"kStreamsWillShareNotification";
 NSString *kStreamsWillCommentNotification = @"kStreamsWillCommentNotification";
 @interface VStreamViewCell()

@@ -30,13 +30,6 @@
 
 @implementation VStreamTableViewController
 
-- (void)viewWillDisappear:(BOOL)animated
-{
-    [[NSNotificationCenter defaultCenter] postNotificationName:kStreamsWillSegueNotification
-                                                        object:nil];
-    [super viewWillDisappear:animated];
-}
-
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -98,12 +91,12 @@
         [(VStreamYoutubeVideoCell*)cell setSequence:((VStreamYoutubeVideoCell*)cell).sequence];
 }
 
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    VCommentsContainerViewController* commentsTable = [VCommentsContainerViewController commentsContainerView];
-    commentsTable.sequence = [[self fetchedResultsControllerForTableView:tableView] objectAtIndexPath:indexPath];
-    [self.navigationController pushViewController:commentsTable animated:YES];
-}
+//- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+//{
+//    VCommentsContainerViewController* commentsTable = [VCommentsContainerViewController commentsContainerView];
+//    commentsTable.sequence = [[self fetchedResultsControllerForTableView:tableView] objectAtIndexPath:indexPath];
+//    [self.navigationController pushViewController:commentsTable animated:YES];
+//}
 
 #pragma mark - Cells
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
