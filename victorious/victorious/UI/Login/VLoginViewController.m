@@ -141,21 +141,26 @@
                  if (![[resultObjects firstObject] isKindOfClass:[VUser class]])
                      [self didFailWithError:nil];
                  
-                 [self didLoginWithUser:[resultObjects firstObject] withLoginType:kVLoginTypeFaceBook];
+                 [self didLoginWithUser:[resultObjects firstObject]];
              };
              VFailBlock failed = ^(NSOperation* operation, NSError* error)
              {
                  VFailBlock     blockFail = ^(NSOperation* operation, NSError* error)
                  {
+                     self.loginType = kVLoginTypeNone;
                      [self didFailWithError:error];
                  };
                  
                  if (error.code == 1003)
+                 {
+                     self.loginType = kVLoginTypeFaceBook;
                      [[VObjectManager sharedManager] loginToFacebookWithToken:accessToken SuccessBlock:success failBlock:blockFail];
+                }
                  else
                      [self didFailWithError:error];
              };
 
+            self.loginType = kVLoginTypeCreateFaceBook;
             [[VObjectManager sharedManager] createFacebookWithToken:accessToken
                                                         SuccessBlock:success
                                                            failBlock:failed];
@@ -199,21 +204,26 @@
                  if (![[resultObjects firstObject] isKindOfClass:[VUser class]])
                      [self didFailWithError:nil];
                  
-                 [self didLoginWithUser:[resultObjects firstObject] withLoginType:kVLoginTypeTwitter];
+                 [self didLoginWithUser:[resultObjects firstObject]];
              };
              VFailBlock failed = ^(NSOperation* operation, NSError* error)
              {
                  VFailBlock     blockFail = ^(NSOperation* operation, NSError* error)
                  {
+                     self.loginType = kVLoginTypeNone;
                      [self didFailWithError:error];
                  };
 
                  if (error.code == 1003)
+                 {
+                     self.loginType = kVLoginTypeTwitter;
                      [[VObjectManager sharedManager] loginToTwitterWithToken:accessToken SuccessBlock:success failBlock:blockFail];
+                 }
                  else
                      [self didFailWithError:error];
              };
              
+             self.loginType = kVLoginTypeCreateTwitter;
              [[VObjectManager sharedManager] createTwitterWithToken:accessToken
                                                         SuccessBlock:success
                                                            failBlock:failed];
@@ -221,7 +231,7 @@
     }];
 }
 
-- (void)didLoginWithUser:(VUser*)mainUser withLoginType:(VLoginType)loginType
+- (void)didLoginWithUser:(VUser*)mainUser
 {
     VLog(@"Succesfully logged in as: %@", mainUser);
     
@@ -231,9 +241,9 @@
 
     if (NO) //  priorUser
         [self dismissViewControllerAnimated:YES completion:NULL];
-    else if (kVLoginTypeFaceBook == loginType)
+    else if (kVLoginTypeCreateFaceBook == self.loginType)
         [self performSegueWithIdentifier:@"toProfileWithFacebook" sender:self];
-    else if (kVLoginTypeTwitter == loginType)
+    else if (kVLoginTypeCreateTwitter == self.loginType)
         [self performSegueWithIdentifier:@"toProfileWithTwitter" sender:self];
 }
 
