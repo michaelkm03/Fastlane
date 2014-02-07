@@ -107,7 +107,7 @@ NSString *kStreamsWillCommentNotification = @"kStreamsWillCommentNotification";
         [self.likeButton setTitle:@" 123" forState:UIControlStateNormal];
     }
     
-    [self addCommentViews];
+//    [self addCommentViews];
 }
 
 - (void)addCommentViews

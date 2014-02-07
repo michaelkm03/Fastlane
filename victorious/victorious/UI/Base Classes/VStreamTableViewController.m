@@ -123,7 +123,7 @@
     NSUInteger commentCount = MIN([sequence.comments count], 2);
     CGFloat commentHeight = commentCount ? (commentCount * kStreamCommentCellHeight) + kStreamCommentHeaderHeight : 0;
     
-    return cellHeight + commentHeight;
+    return cellHeight;// + commentHeight;
 }
 
 - (VStreamViewCell*)tableView:(UITableView *)tableView streamViewCellForIndex:(NSIndexPath*)indexPath
