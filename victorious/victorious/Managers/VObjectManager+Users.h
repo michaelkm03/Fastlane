@@ -17,4 +17,32 @@
 - (RKManagedObjectRequestOperation *)fetchUsers:(NSArray*)userIds
                               withSuccessBlock:(VSuccessBlock)success
                                      failBlock:(VFailBlock)fail;
+
+
+- (RKManagedObjectRequestOperation *)attachAccountToFacebookWithToken:(NSString*)accessToken
+                                                     withSuccessBlock:(VSuccessBlock)success
+                                                            failBlock:(VFailBlock)fail;
+
+- (RKManagedObjectRequestOperation *)attachAccountToTwitterWithToken:(NSString*)accessToken
+                                                    withSuccessBlock:(VSuccessBlock)success
+                                                           failBlock:(VFailBlock)fail;
+
+- (RKManagedObjectRequestOperation *)updateProfileWithFullName:(NSString*)FullName
+                                                      userName:(NSString*)userName
+                                                      location:(NSString*)location
+                                                       tagLine:(NSString*)newTagLine
+                                                  profileImage:(NSString*)profileImage
+                                              withSuccessBlock:(VSuccessBlock)success
+                                                     failBlock:(VFailBlock)fail;
+
+- (RKManagedObjectRequestOperation *)listOfRecommendedFriendsWithSuccessBlock:(VSuccessBlock)success
+                                                                    failBlock:(VFailBlock)fail;
+
+- (RKManagedObjectRequestOperation *)listOfFriendsWithSuccessBlock:(VSuccessBlock)success
+                                                         failBlock:(VFailBlock)fail;
+
+- (RKManagedObjectRequestOperation *)inviteFriends:(NSArray*)friendIDs
+                                  withSuccessBlock:(VSuccessBlock)success
+                                         failBlock:(VFailBlock)fail;
+
 @end
