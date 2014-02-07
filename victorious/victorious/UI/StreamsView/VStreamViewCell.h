@@ -13,7 +13,6 @@
 static NSString *kStreamViewCellIdentifier = @"VStreamViewCell";
 static NSString *kStreamYoutubeCellIdentifier = @"VStreamYoutubeCell";
 
-extern NSString *kStreamsWillSegueNotification;
 extern NSString *kStreamsWillShareNotification;
 extern NSString *kStreamsWillCommentNotification;
 

@@ -51,11 +51,6 @@
 {
     [super setSequence:sequence];
     
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(streamsWillSegue:)
-                                                 name:kStreamsWillSegueNotification
-                                               object:nil];
-    
     NSArray* answers = [[self.sequence firstNode] firstAnswers];
     self.firstAnswer = [answers firstObject];
     if ([answers count] >= 2)
@@ -187,6 +182,7 @@
         return;
     
     self.mpControllerOne = [[MPMoviePlayerController alloc] initWithContentURL:[NSURL URLWithString:self.firstAssetUrl]];
+    self.mpControllerOne.controlStyle = MPMovieControlStyleEmbedded;
     [self.mpControllerOne prepareToPlay];
     self.mpControllerOne.view.frame = self.previewImageView.frame;
     [self.mediaView insertSubview:self.mpControllerOne.view aboveSubview:self.previewImageView];
@@ -209,6 +205,7 @@
     
     
     self.mpControllerTwo = [[MPMoviePlayerController alloc] initWithContentURL:[NSURL URLWithString:self.secondAssetUrl]];
+    self.mpControllerOne.controlStyle = MPMovieControlStyleEmbedded;
     [self.mpControllerTwo prepareToPlay];
     self.mpControllerTwo.view.frame = self.previewImageTwo.frame;
     [self.mediaView insertSubview:self.mpControllerTwo.view aboveSubview:self.previewImageTwo];
@@ -313,5 +310,4 @@
     [self.mpControllerOne stop];
     [self.mpControllerTwo stop];
 }
-
 @end

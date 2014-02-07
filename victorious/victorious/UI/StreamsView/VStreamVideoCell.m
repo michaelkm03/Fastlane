@@ -11,6 +11,7 @@
 #import "VAsset.h"
 #import "VNode+Fetcher.h"
 #import "VSequence+Fetcher.h"
+#import "VMenuController.h"
 
 @interface VStreamVideoCell ()
 @property (strong, nonatomic) MPMoviePlayerController* mpController;
@@ -28,8 +29,17 @@
     [super setSequence:sequence];
     
     [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(streamsWillSegue:)
-                                                 name:kStreamsWillSegueNotification
+                                             selector:@selector(stopPlayer:)
+                                                 name:VMenuControllerDidSelectRowNotification
+                                               object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(stopPlayer:)
+                                                 name:kStreamsWillCommentNotification
+                                               object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(moviePlayerFinished:)
+                                                 name:MPMoviePlayerPlaybackDidFinishNotification
                                                object:nil];
     if (self.mpController)
         [self.mpController.view removeFromSuperview]; //make sure to get rid of the old view
@@ -40,6 +50,7 @@
     VAsset* asset = [[self.sequence firstNode] firstAsset];
     
     self.mpController = [[MPMoviePlayerController alloc] initWithContentURL:[NSURL URLWithString:asset.data]];
+    //Apple test m3u8: @"http://devimages.apple.com/iphone/samples/bipbop/gear1/prog_index.m3u8"]];
     [self.mpController prepareToPlay];
     self.mpController.view.frame = self.previewImageView.frame;
     [self insertSubview:self.mpController.view aboveSubview:self.previewImageView];
@@ -47,9 +58,16 @@
     [self.mpController play];
 }
 
-- (void)streamsWillSegue:(NSNotification *) notification
+- (void)stopPlayer:(NSNotification *) notification
 {
     [self.mpController stop];
 }
 
+- (void)moviePlayerFinished:(NSNotification *) notification
+{
+    if (notification.object == self.mpController)
+    {
+        [self.mpController.view removeFromSuperview];
+    }
+}
 @end
