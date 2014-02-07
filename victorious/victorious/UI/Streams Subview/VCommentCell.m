@@ -18,6 +18,7 @@
 #import "NSDate+timeSince.h"
 #import "VThemeManager.h"
 #import "NSString+VParseHelp.h"
+#import "UIButton+VImageLoading.h"
 
 @interface VCommentCell()
 @property (weak, nonatomic) IBOutlet UILabel *dateLabel;
@@ -53,8 +54,11 @@
         VComment *comment = (VComment *)self.commentOrMessage;
 
         self.dateLabel.text = [comment.postedAt timeSince];
-        [self.profileImageButton.imageView setImageWithURL:[NSURL URLWithString:comment.user.pictureUrl]
-                                          placeholderImage:[UIImage imageNamed:@"profile_thumb"]];
+        
+        [self.profileImageButton setImageWithURL:[NSURL URLWithString:comment.user.pictureUrl]
+                                placeholderImage:[UIImage imageNamed:@"profile_thumb"]
+                                        forState:UIControlStateNormal];
+        
         if(![comment.user.shortName isEmpty])
         {
             self.usernameLabel.text = comment.user.shortName;

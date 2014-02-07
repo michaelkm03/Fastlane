@@ -59,7 +59,8 @@ static NSString* CommentCache = @"CommentCache";
     self.view.frame = self.view.superview.bounds;
 }
 
-- (void)setSequence:(VSequence *)sequence{
+- (void)setSequence:(VSequence *)sequence
+{
     _sequence = sequence;
     self.title = sequence.name;
     
