@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		3F4863FA1869184000F77346 /* VInboxViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F4863F91869184000F77346 /* VInboxViewController.m */; };
+		3F53E0C318A485D400089C20 /* VUserManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F53E0C218A485D400089C20 /* VUserManager.m */; };
 		3F919908187600720055FE37 /* VSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F919907187600720055FE37 /* VSettingsViewController.m */; };
 		3F91990B18761B0D0055FE37 /* VAboutUsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F91990A18761B0D0055FE37 /* VAboutUsViewController.m */; };
 		3F91991018761C720055FE37 /* VPrivacyPoliciesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F91990F18761C720055FE37 /* VPrivacyPoliciesViewController.m */; };
@@ -154,6 +155,8 @@
 		33ACD3CBAF2C419D97FB901A /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = "<group>"; };
 		3F4863F81869184000F77346 /* VInboxViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VInboxViewController.h; path = UI/VInboxViewController.h; sourceTree = "<group>"; };
 		3F4863F91869184000F77346 /* VInboxViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VInboxViewController.m; path = UI/VInboxViewController.m; sourceTree = "<group>"; };
+		3F53E0C118A485D400089C20 /* VUserManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VUserManager.h; path = Managers/VUserManager.h; sourceTree = "<group>"; };
+		3F53E0C218A485D400089C20 /* VUserManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VUserManager.m; path = Managers/VUserManager.m; sourceTree = "<group>"; };
 		3F919906187600720055FE37 /* VSettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VSettingsViewController.h; path = UI/VSettingsViewController.h; sourceTree = "<group>"; };
 		3F919907187600720055FE37 /* VSettingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VSettingsViewController.m; path = UI/VSettingsViewController.m; sourceTree = "<group>"; };
 		3F91990918761B0D0055FE37 /* VAboutUsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VAboutUsViewController.h; path = UI/VAboutUsViewController.h; sourceTree = "<group>"; };
@@ -416,12 +419,22 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		3F53E0B618A469B700089C20 /* User */ = {
+			isa = PBXGroup;
+			children = (
+				3F53E0C118A485D400089C20 /* VUserManager.h */,
+				3F53E0C218A485D400089C20 /* VUserManager.m */,
+			);
+			name = User;
+			sourceTree = "<group>";
+		};
 		3F9B665B188878C60046F826 /* UI */ = {
 			isa = PBXGroup;
 			children = (
 				3FF8B7971868EE7E00806EA0 /* Main.storyboard */,
 				BE5D798F1898961500DC752A /* Create */,
 				3F9B665C188878D00046F826 /* Common */,
+				3F53E0B618A469B700089C20 /* User */,
 				3F9B665D188878DB0046F826 /* Login */,
 				3F9B665E188878EC0046F826 /* Menu */,
 				3F9B665F188879060046F826 /* Streams */,
@@ -1061,6 +1074,7 @@
 				BE171E131868C211004E5202 /* VInteractionAction+RestKit.m in Sources */,
 				3F9B66771888C4DD0046F826 /* VForumStreamViewController.m in Sources */,
 				BEA5BF71187FCBF10014C3EF /* VObjectManager+Users.m in Sources */,
+				3F53E0C318A485D400089C20 /* VUserManager.m in Sources */,
 				BE171E241868C211004E5202 /* VThemeManager.m in Sources */,
 				BEF2C2B1188620EE00AAE975 /* VUser.m in Sources */,
 				BEF2C2B71886211000AAE975 /* VPollResult.m in Sources */,

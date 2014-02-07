@@ -11,6 +11,7 @@
 #import "VThemeManager.h"
 
 #import "VObjectManager+Sequence.h"
+#import "VUserManager.h"
 
 @implementation VAppDelegate
 
@@ -41,6 +42,8 @@
     (void)[[VObjectManager sharedManager] initialSequenceLoad];
     
     [TestFlight takeOff:@"02101c7d-4a01-4a44-8e8a-26dca03554aa"];
+    
+    [[VUserManager sharedInstance] silentlyLogin];
     
     NSURL*  openURL =   launchOptions[UIApplicationLaunchOptionsURLKey];
     if (openURL)

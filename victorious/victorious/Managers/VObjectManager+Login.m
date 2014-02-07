@@ -34,7 +34,7 @@ NSString *kLoggedInChangedNotification = @"LoggedInChangedNotification";
                                                     failBlock:(VFailBlock)failed
 {
     
-    NSDictionary *parameters = @{@"facebook_access_token": accessToken ?: [NSNull null]};
+    NSDictionary *parameters = @{@"facebook_access_token": accessToken ?: @""};
     
     return [self POST:@"/api/login/facebook"
                object:nil
@@ -50,7 +50,7 @@ NSString *kLoggedInChangedNotification = @"LoggedInChangedNotification";
                                                    failBlock:(VFailBlock)failed
 {
     
-    NSDictionary *parameters = @{@"twitter_access_token": accessToken ?: [NSNull null]};
+    NSDictionary *parameters = @{@"twitter_access_token": accessToken ?: @""};
     
     return [self POST:@"/api/login/twitter"
                object:nil
@@ -66,7 +66,7 @@ NSString *kLoggedInChangedNotification = @"LoggedInChangedNotification";
                                                    successBlock:(VSuccessBlock)success
                                                       failBlock:(VFailBlock)fail
 {
-    NSDictionary *parameters = @{@"email": email ?: [NSNull null], @"password": password ?: [NSNull null]};
+    NSDictionary *parameters = @{@"email": email ?: @"", @"password": password ?: @""};
 
     
     return [self POST:@"/api/login"
@@ -82,9 +82,9 @@ NSString *kLoggedInChangedNotification = @"LoggedInChangedNotification";
                                                   successBlock:(VSuccessBlock)success
                                                      failBlock:(VFailBlock)fail
 {
-    NSDictionary *parameters = @{@"email": email ?: [NSNull null],
-                                 @"password": password ?: [NSNull null],
-                                 @"name": username ?: [NSNull null]};
+    NSDictionary *parameters = @{@"email": email ?: @"",
+                                 @"password": password ?: @"",
+                                 @"name": username ?: @""};
     
     return [self POST:@"/api/account/create"
                object:nil
@@ -99,9 +99,9 @@ NSString *kLoggedInChangedNotification = @"LoggedInChangedNotification";
                                                   successBlock:(VSuccessBlock)success
                                                      failBlock:(VFailBlock)fail
 {
-    NSDictionary *parameters = @{@"email": email ?: [NSNull null],
-                                 @"password": password ?: [NSNull null],
-                                 @"name": username ?: [NSNull null]};
+    NSDictionary *parameters = @{@"email": email ?: @"",
+                                 @"password": password ?: @"",
+                                 @"name": username ?: @""};
 
     return [self POST:@"/api/account/update"
                object:nil

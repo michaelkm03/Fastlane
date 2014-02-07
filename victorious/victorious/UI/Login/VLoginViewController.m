@@ -7,6 +7,8 @@
 //
 
 #import "VLoginViewController.h"
+#import "VConstants.h"
+#import "VThemeManager.h"
 #import "VProfileWithSocialViewController.h"
 #import "VObjectManager+Login.h"
 #import "VUser.h"
@@ -15,8 +17,14 @@
 @import Social;
 
 @interface VLoginViewController ()
-@property (nonatomic, assign) VLoginType    loginType;
-@property (nonatomic, strong) VUser*        profile;
+@property (nonatomic, weak) IBOutlet    UIView*             buttonContainer;
+@property (nonatomic, weak) IBOutlet    UIButton*           facebookButton;
+@property (nonatomic, weak) IBOutlet    UIButton*           twitterButton;
+@property (nonatomic, weak) IBOutlet    UIButton*           emailButton;
+
+@property (nonatomic, strong)           UIDynamicAnimator*  animator;
+@property (nonatomic, assign)           VLoginType          loginType;
+@property (nonatomic, strong)           VUser*              profile;
 @end
 
 @implementation VLoginViewController
@@ -30,7 +38,41 @@
 
 - (void)viewDidLoad
 {
-    self.view.layer.contents = (id)[UIImage imageNamed:@"loginBackground"].CGImage;    
+    if (IS_IPHONE_5)
+        self.view.layer.contents = (id)[[VThemeManager sharedThemeManager] themedImageForKeyPath:kVMenuBackgroundImage5].CGImage;
+    else
+        self.view.layer.contents = (id)[[VThemeManager sharedThemeManager] themedImageForKeyPath:kVMenuBackgroundImage].CGImage;
+    
+    self.animator = [[UIDynamicAnimator alloc] initWithReferenceView:self.view];
+    
+    UIGravityBehavior* gravityBehavior = [[UIGravityBehavior alloc] initWithItems:@[self.buttonContainer]];
+    [self.animator addBehavior:gravityBehavior];
+    
+    UIDynamicItemBehavior *elasticityBehavior = [[UIDynamicItemBehavior alloc] initWithItems:@[self.buttonContainer]];
+    elasticityBehavior.elasticity = 0.5f;
+    [self.animator addBehavior:elasticityBehavior];
+    
+    UICollisionBehavior* collisionBehavior = [[UICollisionBehavior alloc] initWithItems:@[self.buttonContainer]];
+    collisionBehavior.translatesReferenceBoundsIntoBoundary = YES;
+    [self.animator addBehavior:collisionBehavior];
+    
+    self.facebookButton.layer.masksToBounds = YES;
+    self.facebookButton.layer.cornerRadius = 40.0;
+    self.facebookButton.layer.rasterizationScale = [UIScreen mainScreen].scale;
+    self.facebookButton.layer.shouldRasterize = YES;
+    self.facebookButton.clipsToBounds = YES;
+    
+    self.twitterButton.layer.masksToBounds = YES;
+    self.twitterButton.layer.cornerRadius = 40.0;
+    self.twitterButton.layer.rasterizationScale = [UIScreen mainScreen].scale;
+    self.twitterButton.layer.shouldRasterize = YES;
+    self.twitterButton.clipsToBounds = YES;
+    
+    self.emailButton.layer.masksToBounds = YES;
+    self.emailButton.layer.cornerRadius = 40.0;
+    self.emailButton.layer.rasterizationScale = [UIScreen mainScreen].scale;
+    self.emailButton.layer.shouldRasterize = YES;
+    self.emailButton.clipsToBounds = YES;
 }
 
 - (void)facebookAccessDidFail
@@ -43,6 +85,19 @@
         }];
     });
 }
+
+- (void)twitterAccessDidFail
+{
+    dispatch_async(dispatch_get_main_queue(), ^
+                   {
+                       SLComposeViewController *composeViewController = [SLComposeViewController composeViewControllerForServiceType:SLServiceTypeTwitter];
+                       [self presentViewController:composeViewController animated:NO completion:^{
+                           [composeViewController dismissViewControllerAnimated:NO completion:nil];
+                       }];
+                   });
+}
+
+#pragma mark - Actions
 
 - (IBAction)facebookClicked:(id)sender
 {
@@ -99,17 +154,6 @@
                                                            failBlock:failed];
         }
     }];
-}
-
-- (void)twitterAccessDidFail
-{
-    dispatch_async(dispatch_get_main_queue(), ^
-    {
-        SLComposeViewController *composeViewController = [SLComposeViewController composeViewControllerForServiceType:SLServiceTypeTwitter];
-        [self presentViewController:composeViewController animated:NO completion:^{
-            [composeViewController dismissViewControllerAnimated:NO completion:nil];
-        }];
-    });
 }
 
 - (IBAction)twitterClicked:(id)sender

@@ -10,7 +10,9 @@ typedef NS_ENUM(NSUInteger, VLoginType)
 {
     kVLoginTypeEmail,
     kVLoginTypeFaceBook,
+    kVLoginTypeCreateFaceBook,
     kVLoginTypeTwitter
+    kVLoginTypeCreateTwitter
 };
 
 @interface VLoginViewController : UIViewController

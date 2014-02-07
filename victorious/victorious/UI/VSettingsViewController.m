@@ -12,6 +12,7 @@
 #import "VThemeManager.h"
 #import "VObjectManager+Login.h"
 #import "VUser.h"
+#import "VUserManager.h"
 
 NSString*   const   kAccountUpdateViewControllerDomain =   @"VAccountUpdateViewControllerDomain";
 
@@ -213,7 +214,7 @@ NSString*   const   kAccountUpdateViewControllerDomain =   @"VAccountUpdateViewC
 
 - (IBAction)logout:(id)sender
 {
-    [[VObjectManager sharedManager] logout];
+    [[VUserManager sharedInstance] logout];
 }
 
 - (IBAction)showMenu
