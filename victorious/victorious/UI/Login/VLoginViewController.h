@@ -11,7 +11,7 @@ typedef NS_ENUM(NSUInteger, VLoginType)
     kVLoginTypeEmail,
     kVLoginTypeFaceBook,
     kVLoginTypeCreateFaceBook,
-    kVLoginTypeTwitter
+    kVLoginTypeTwitter,
     kVLoginTypeCreateTwitter
 };
 

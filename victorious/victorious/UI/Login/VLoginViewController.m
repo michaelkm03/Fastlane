@@ -145,11 +145,18 @@
              };
              VFailBlock failed = ^(NSOperation* operation, NSError* error)
              {
-                 [self didFailWithError:error];
-                 VLog(@"Error in FB Login: %@", error);
+                 VFailBlock     blockFail = ^(NSOperation* operation, NSError* error)
+                 {
+                     [self didFailWithError:error];
+                 };
+                 
+                 if (error.code == 1003)
+                     [[VObjectManager sharedManager] loginToFacebookWithToken:accessToken SuccessBlock:success failBlock:blockFail];
+                 else
+                     [self didFailWithError:error];
              };
 
-            [[VObjectManager sharedManager] loginToFacebookWithToken:accessToken
+            [[VObjectManager sharedManager] createFacebookWithToken:accessToken
                                                         SuccessBlock:success
                                                            failBlock:failed];
         }
@@ -196,11 +203,18 @@
              };
              VFailBlock failed = ^(NSOperation* operation, NSError* error)
              {
-                 [self didFailWithError:error];
-                 VLog(@"Error in Twitter Login: %@", error);
+                 VFailBlock     blockFail = ^(NSOperation* operation, NSError* error)
+                 {
+                     [self didFailWithError:error];
+                 };
+
+                 if (error.code == 1003)
+                     [[VObjectManager sharedManager] loginToTwitterWithToken:accessToken SuccessBlock:success failBlock:blockFail];
+                 else
+                     [self didFailWithError:error];
              };
              
-             [[VObjectManager sharedManager] loginToTwitterWithToken:accessToken
+             [[VObjectManager sharedManager] createTwitterWithToken:accessToken
                                                         SuccessBlock:success
                                                            failBlock:failed];
          }
