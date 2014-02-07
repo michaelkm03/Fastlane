@@ -42,27 +42,17 @@ NSString *kLoggedInChangedNotification = @"LoggedInChangedNotification";
             failBlock:failed];
 }
 
-- (RKManagedObjectRequestOperation *)createOrLoginToFacebookWithToken:(NSString*)accessToken
-                                                         SuccessBlock:(VSuccessBlock)success
-                                                            failBlock:(VFailBlock)failed
+- (RKManagedObjectRequestOperation *)createFacebookWithToken:(NSString*)accessToken
+                                                SuccessBlock:(VSuccessBlock)success
+                                                   failBlock:(VFailBlock)failed
 {
     NSDictionary *parameters = @{@"facebook_access_token": accessToken ?: [NSNull null]};
-    __block NSString* accessTokenForFail = accessToken;
-    
-    VFailBlock fullFail = ^(NSOperation* operation, NSError* error)
-    {
-        if (error.code == 1003)
-            [self loginToFacebookWithToken:accessTokenForFail SuccessBlock:success failBlock:failed];
-        
-        else if (failed)
-            failed(operation, error);
-    };
     
     return [self POST:@"/api/account/create/via_facebook"
                object:nil
            parameters:parameters
          successBlock:success
-            failBlock:fullFail];
+            failBlock:failed];
 }
 #pragma mark - Twitter
 
@@ -70,7 +60,6 @@ NSString *kLoggedInChangedNotification = @"LoggedInChangedNotification";
                                                 SuccessBlock:(VSuccessBlock)success
                                                    failBlock:(VFailBlock)failed
 {
-    
     NSDictionary *parameters = @{@"twitter_access_token": accessToken ?: [NSNull null]};
     
     return [self POST:@"/api/login/twitter"
@@ -80,30 +69,20 @@ NSString *kLoggedInChangedNotification = @"LoggedInChangedNotification";
             failBlock:failed];
 }
 
-- (RKManagedObjectRequestOperation *)createOrLoginToTwitterWithToken:(NSString*)accessToken
+- (RKManagedObjectRequestOperation *)createTwitterWithToken:(NSString*)accessToken
                                                         SuccessBlock:(VSuccessBlock)success
                                                            failBlock:(VFailBlock)failed
 {
     NSDictionary *parameters = @{@"twitter_access_token": accessToken ?: [NSNull null]};
-    __block NSString* accessTokenForFail = accessToken;
-    
-    VFailBlock fullFail = ^(NSOperation* operation, NSError* error)
-    {
-        if (error.code == 1003)
-            [self loginToTwitterWithToken:accessTokenForFail SuccessBlock:success failBlock:failed];
-        
-        else if (failed)
-            failed(operation, error);
-    };
     
     return [self POST:@"/api/account/create/via_twitter"
                object:nil
            parameters:parameters
          successBlock:success
-            failBlock:fullFail];
+            failBlock:failed];
 }
-#pragma mark - Victorious
 
+#pragma mark - Victorious
 - (RKManagedObjectRequestOperation *)loginToVictoriousWithEmail:(NSString *)email
                                                        password:(NSString *)password
                                                    successBlock:(VSuccessBlock)success
@@ -111,7 +90,6 @@ NSString *kLoggedInChangedNotification = @"LoggedInChangedNotification";
 {
     NSDictionary *parameters = @{@"email": email ?: [NSNull null], @"password": password ?: [NSNull null]};
 
-    
     return [self POST:@"/api/login"
                object:nil
            parameters:parameters
@@ -119,32 +97,21 @@ NSString *kLoggedInChangedNotification = @"LoggedInChangedNotification";
             failBlock:fail];
 }
 
-- (RKManagedObjectRequestOperation *)createOrLoginToVictoriousWithEmail:(NSString *)email
-                                                               password:(NSString *)password
-                                                               username:(NSString *)username
-                                                           successBlock:(VSuccessBlock)success
-                                                              failBlock:(VFailBlock)fail
+- (RKManagedObjectRequestOperation *)createVictoriousWithEmail:(NSString *)email
+                                                      password:(NSString *)password
+                                                      username:(NSString *)username
+                                                  successBlock:(VSuccessBlock)success
+                                                     failBlock:(VFailBlock)fail
 {
-    __block NSString* blockEmail = email;
-    __block NSString* blockPassword = password;
     NSDictionary *parameters = @{@"email": email ?: [NSNull null],
                                  @"password": password ?: [NSNull null],
                                  @"name": username ?: [NSNull null]};
-    
-    VFailBlock fullFail = ^(NSOperation* operation, NSError* error)
-    {
-        if (error.code == 1003)
-            [self loginToVictoriousWithEmail:blockEmail password:blockPassword successBlock:success failBlock:fail];
-        
-        else if (fail)
-            fail(operation, error);
-    };
     
     return [self POST:@"/api/account/create"
                object:nil
            parameters:parameters
          successBlock:success
-            failBlock:fullFail];
+            failBlock:fail];
 }
 
 - (RKManagedObjectRequestOperation *)updateVictoriousWithEmail:(NSString *)email

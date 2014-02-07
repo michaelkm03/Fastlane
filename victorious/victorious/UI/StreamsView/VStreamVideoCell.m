@@ -49,7 +49,8 @@
 {
     VAsset* asset = [[self.sequence firstNode] firstAsset];
     
-    self.mpController = [[MPMoviePlayerController alloc] initWithContentURL:[NSURL URLWithString:@"http://devimages.apple.com/iphone/samples/bipbop/gear1/prog_index.m3u8"]];//asset.data]];
+    self.mpController = [[MPMoviePlayerController alloc] initWithContentURL:[NSURL URLWithString:asset.data]];
+    //Apple test m3u8: @"http://devimages.apple.com/iphone/samples/bipbop/gear1/prog_index.m3u8"]];
     [self.mpController prepareToPlay];
     self.mpController.view.frame = self.previewImageView.frame;
     [self insertSubview:self.mpController.view aboveSubview:self.previewImageView];

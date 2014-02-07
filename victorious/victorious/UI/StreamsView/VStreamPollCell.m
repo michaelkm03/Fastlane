@@ -51,11 +51,6 @@
 {
     [super setSequence:sequence];
     
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(moviePlayerFinished:)
-                                                 name:MPMoviePlayerPlaybackDidFinishNotification
-                                               object:nil];
-    
     NSArray* answers = [[self.sequence firstNode] firstAnswers];
     self.firstAnswer = [answers firstObject];
     if ([answers count] >= 2)
@@ -314,13 +309,5 @@
 {
     [self.mpControllerOne stop];
     [self.mpControllerTwo stop];
-}
-
-- (void)moviePlayerFinished:(NSNotification *) notification
-{
-    if (notification.object == self.mpControllerOne || notification.object == self.mpControllerTwo)
-    {
-        id notif = notification;
-    }
 }
 @end
