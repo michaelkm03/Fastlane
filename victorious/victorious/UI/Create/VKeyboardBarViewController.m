@@ -41,9 +41,6 @@
     
     self.mediaButton.layer.cornerRadius = 2;
     self.mediaButton.clipsToBounds = YES;
-    
-//    [self.stickersView registerClass:[UICollectionViewCell class] forCellWithReuseIdentifier:@"stickerCell"];
-//    [self.stickersView reloadData];
 }
 
 - (IBAction)mediaButtonAction:(id)sender
