@@ -10,4 +10,5 @@
 
 @interface VInviteWithSocialViewController : UITableViewController
 @property (nonatomic, strong)   VUser*  profile;
+
 @end
