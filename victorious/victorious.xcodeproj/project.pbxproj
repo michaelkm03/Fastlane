@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0742CD6B32FA44679FBE8716 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 662F0867152745B2B2F08301 /* libPods.a */; };
 		3F4863FA1869184000F77346 /* VInboxViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F4863F91869184000F77346 /* VInboxViewController.m */; };
 		3F53E0C318A485D400089C20 /* VUserManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F53E0C218A485D400089C20 /* VUserManager.m */; };
 		3F919908187600720055FE37 /* VSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F919907187600720055FE37 /* VSettingsViewController.m */; };
@@ -24,9 +25,7 @@
 		3F9B66741888C4B20046F826 /* VCommunityStreamViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F9B66731888C4B20046F826 /* VCommunityStreamViewController.m */; };
 		3F9B66771888C4DD0046F826 /* VForumStreamViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F9B66761888C4DD0046F826 /* VForumStreamViewController.m */; };
 		3FF8B7981868EE7E00806EA0 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3FF8B7971868EE7E00806EA0 /* Main.storyboard */; };
-		3FF8B7A11868F36600806EA0 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 3FF8B7A01868F36600806EA0 /* Localizable.strings */; };
 		3FF8B7A51868FC1C00806EA0 /* defaultTheme.plist in Resources */ = {isa = PBXBuildFile; fileRef = 3FF8B7A41868FC1C00806EA0 /* defaultTheme.plist */; };
-		5D2BB9E4E1434C7B91B6C084 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 662F0867152745B2B2F08301 /* libPods.a */; };
 		5F51F81A189AEBF800A546D1 /* VAbstractProfileEditViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F51F819189AEBF800A546D1 /* VAbstractProfileEditViewController.m */; };
 		5FC4DA5E18970A9F006BA107 /* login.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5FC4DA5D18970A9F006BA107 /* login.storyboard */; };
 		5FC4DA671897111B006BA107 /* VLoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FC4DA661897111B006BA107 /* VLoginViewController.m */; };
@@ -53,7 +52,6 @@
 		BE171D7E1868BE64004E5202 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BE171D7D1868BE64004E5202 /* UIKit.framework */; };
 		BE171D801868BE64004E5202 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BE171D7F1868BE64004E5202 /* CoreData.framework */; };
 		BE171D861868BE64004E5202 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = BE171D841868BE64004E5202 /* InfoPlist.strings */; };
-		BE171D881868BE64004E5202 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = BE171D871868BE64004E5202 /* main.m */; };
 		BE171D8C1868BE64004E5202 /* VAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = BE171D8B1868BE64004E5202 /* VAppDelegate.m */; };
 		BE171D911868BE64004E5202 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BE171D901868BE64004E5202 /* Images.xcassets */; };
 		BE171D981868BE64004E5202 /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BE171D971868BE64004E5202 /* XCTest.framework */; };
@@ -87,6 +85,8 @@
 		BE40559418A1828D00092AE1 /* UIButton+VImageLoading.m in Sources */ = {isa = PBXBuildFile; fileRef = BE40559318A1828D00092AE1 /* UIButton+VImageLoading.m */; };
 		BE40559C18A2082900092AE1 /* VStreamYoutubeVideoCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = BE40559B18A2082900092AE1 /* VStreamYoutubeVideoCell.xib */; };
 		BE40559F18A20C0F00092AE1 /* VStreamYoutubeVideoCell.m in Sources */ = {isa = PBXBuildFile; fileRef = BE40559E18A20C0F00092AE1 /* VStreamYoutubeVideoCell.m */; };
+		BE4055AC18A41F1F00092AE1 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = BE4055A618A41F1F00092AE1 /* Localizable.strings */; };
+		BE4055AD18A41F1F00092AE1 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = BE4055A718A41F1F00092AE1 /* main.m */; };
 		BE4B74231880D3850090FF84 /* VComment.m in Sources */ = {isa = PBXBuildFile; fileRef = BE4B74221880D3850090FF84 /* VComment.m */; };
 		BE4B74261880D3850090FF84 /* VAnswer.m in Sources */ = {isa = PBXBuildFile; fileRef = BE4B74251880D3850090FF84 /* VAnswer.m */; };
 		BE55CD15188F316900FE619F /* VObjectManager.m in Sources */ = {isa = PBXBuildFile; fileRef = BE55CD13188F316900FE619F /* VObjectManager.m */; };
@@ -105,6 +105,7 @@
 		BE5D79AF1899E47800DC752A /* VCreateContentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BE5D79A71899E47800DC752A /* VCreateContentViewController.m */; };
 		BE5D79B01899E47800DC752A /* VKeyboardBarContainerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BE5D79A91899E47800DC752A /* VKeyboardBarContainerViewController.m */; };
 		BE5D79B11899E47800DC752A /* VKeyboardBarViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BE5D79AB1899E47800DC752A /* VKeyboardBarViewController.m */; };
+		BE6822F018A42EC000EB7512 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = BE6822EF18A42EC000EB7512 /* libPods.a */; };
 		BE692B23186E5ED800C71336 /* VStreamDoublePollCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = BE692B17186E5ED800C71336 /* VStreamDoublePollCell.xib */; };
 		BE692B24186E5ED800C71336 /* VStreamPollCell.m in Sources */ = {isa = PBXBuildFile; fileRef = BE692B19186E5ED800C71336 /* VStreamPollCell.m */; };
 		BE692B25186E5ED800C71336 /* VStreamPollCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = BE692B1A186E5ED800C71336 /* VStreamPollCell.xib */; };
@@ -186,7 +187,6 @@
 		3F9B66751888C4DD0046F826 /* VForumStreamViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VForumStreamViewController.h; path = UI/VForumStreamViewController.h; sourceTree = "<group>"; };
 		3F9B66761888C4DD0046F826 /* VForumStreamViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VForumStreamViewController.m; path = UI/VForumStreamViewController.m; sourceTree = "<group>"; };
 		3FF8B7971868EE7E00806EA0 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
-		3FF8B7A01868F36600806EA0 /* Localizable.strings */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; path = Localizable.strings; sourceTree = "<group>"; };
 		3FF8B7A41868FC1C00806EA0 /* defaultTheme.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = defaultTheme.plist; sourceTree = "<group>"; };
 		5F51F818189AEBF800A546D1 /* VAbstractProfileEditViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VAbstractProfileEditViewController.h; path = "UI/Base Classes/VAbstractProfileEditViewController.h"; sourceTree = "<group>"; };
 		5F51F819189AEBF800A546D1 /* VAbstractProfileEditViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VAbstractProfileEditViewController.m; path = "UI/Base Classes/VAbstractProfileEditViewController.m"; sourceTree = "<group>"; };
@@ -231,10 +231,7 @@
 		BE171D7B1868BE64004E5202 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		BE171D7D1868BE64004E5202 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		BE171D7F1868BE64004E5202 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
-		BE171D831868BE64004E5202 /* victorious-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "victorious-Info.plist"; sourceTree = "<group>"; };
 		BE171D851868BE64004E5202 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
-		BE171D871868BE64004E5202 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
-		BE171D891868BE64004E5202 /* victorious-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "victorious-Prefix.pch"; sourceTree = "<group>"; };
 		BE171D8A1868BE64004E5202 /* VAppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VAppDelegate.h; sourceTree = "<group>"; };
 		BE171D8B1868BE64004E5202 /* VAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = VAppDelegate.m; sourceTree = "<group>"; };
 		BE171D901868BE64004E5202 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
@@ -292,6 +289,13 @@
 		BE40559B18A2082900092AE1 /* VStreamYoutubeVideoCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VStreamYoutubeVideoCell.xib; sourceTree = "<group>"; };
 		BE40559D18A20C0F00092AE1 /* VStreamYoutubeVideoCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VStreamYoutubeVideoCell.h; sourceTree = "<group>"; };
 		BE40559E18A20C0F00092AE1 /* VStreamYoutubeVideoCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VStreamYoutubeVideoCell.m; sourceTree = "<group>"; };
+		BE4055A618A41F1F00092AE1 /* Localizable.strings */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = Localizable.strings; path = "Supporting Files/Localizable.strings"; sourceTree = "<group>"; };
+		BE4055A718A41F1F00092AE1 /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = "Supporting Files/main.m"; sourceTree = "<group>"; };
+		BE4055A818A41F1F00092AE1 /* release-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "release-Info.plist"; path = "Supporting Files/release-Info.plist"; sourceTree = "<group>"; };
+		BE4055A918A41F1F00092AE1 /* stable-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "stable-Info.plist"; path = "Supporting Files/stable-Info.plist"; sourceTree = "<group>"; };
+		BE4055AA18A41F1F00092AE1 /* debug-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "debug-Info.plist"; path = "Supporting Files/debug-Info.plist"; sourceTree = "<group>"; };
+		BE4055AB18A41F1F00092AE1 /* victorious-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "victorious-Prefix.pch"; path = "Supporting Files/victorious-Prefix.pch"; sourceTree = "<group>"; };
+		BE4055B118A42CB100092AE1 /* libPods.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libPods.a; path = "Pods/build/Release-iphoneos/libPods.a"; sourceTree = "<group>"; };
 		BE4B74211880D3850090FF84 /* VComment.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VComment.h; sourceTree = "<group>"; };
 		BE4B74221880D3850090FF84 /* VComment.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VComment.m; sourceTree = "<group>"; };
 		BE4B74241880D3850090FF84 /* VAnswer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VAnswer.h; sourceTree = "<group>"; };
@@ -331,6 +335,7 @@
 		BE5D79A91899E47800DC752A /* VKeyboardBarContainerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VKeyboardBarContainerViewController.m; path = UI/Create/VKeyboardBarContainerViewController.m; sourceTree = "<group>"; };
 		BE5D79AA1899E47800DC752A /* VKeyboardBarViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VKeyboardBarViewController.h; path = UI/Create/VKeyboardBarViewController.h; sourceTree = "<group>"; };
 		BE5D79AB1899E47800DC752A /* VKeyboardBarViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VKeyboardBarViewController.m; path = UI/Create/VKeyboardBarViewController.m; sourceTree = "<group>"; };
+		BE6822EF18A42EC000EB7512 /* libPods.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libPods.a; path = "Pods/build/Release-iphoneos/libPods.a"; sourceTree = "<group>"; };
 		BE692B17186E5ED800C71336 /* VStreamDoublePollCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VStreamDoublePollCell.xib; sourceTree = "<group>"; };
 		BE692B18186E5ED800C71336 /* VStreamPollCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VStreamPollCell.h; sourceTree = "<group>"; };
 		BE692B19186E5ED800C71336 /* VStreamPollCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VStreamPollCell.m; sourceTree = "<group>"; };
@@ -397,11 +402,11 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BE6822F018A42EC000EB7512 /* libPods.a in Frameworks */,
 				BE171D7C1868BE64004E5202 /* CoreGraphics.framework in Frameworks */,
 				BE171D801868BE64004E5202 /* CoreData.framework in Frameworks */,
 				BE171D7E1868BE64004E5202 /* UIKit.framework in Frameworks */,
 				BE171D7A1868BE64004E5202 /* Foundation.framework in Frameworks */,
-				5D2BB9E4E1434C7B91B6C084 /* libPods.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -413,6 +418,7 @@
 				BE171D9B1868BE64004E5202 /* CoreData.framework in Frameworks */,
 				BE171D9A1868BE64004E5202 /* UIKit.framework in Frameworks */,
 				BE171D991868BE64004E5202 /* Foundation.framework in Frameworks */,
+				0742CD6B32FA44679FBE8716 /* libPods.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -432,7 +438,6 @@
 			isa = PBXGroup;
 			children = (
 				3FF8B7971868EE7E00806EA0 /* Main.storyboard */,
-				BE5D798F1898961500DC752A /* Create */,
 				3F9B665C188878D00046F826 /* Common */,
 				3F53E0B618A469B700089C20 /* User */,
 				3F9B665D188878DB0046F826 /* Login */,
@@ -638,6 +643,8 @@
 		BE171D781868BE64004E5202 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				BE6822EF18A42EC000EB7512 /* libPods.a */,
+				BE4055B118A42CB100092AE1 /* libPods.a */,
 				BE171D791868BE64004E5202 /* Foundation.framework */,
 				BE171D7B1868BE64004E5202 /* CoreGraphics.framework */,
 				BE171D7D1868BE64004E5202 /* UIKit.framework */,
@@ -667,11 +674,13 @@
 		BE171D821868BE64004E5202 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
-				BE171D831868BE64004E5202 /* victorious-Info.plist */,
+				BE4055A618A41F1F00092AE1 /* Localizable.strings */,
+				BE4055A718A41F1F00092AE1 /* main.m */,
+				BE4055A818A41F1F00092AE1 /* release-Info.plist */,
+				BE4055A918A41F1F00092AE1 /* stable-Info.plist */,
+				BE4055AA18A41F1F00092AE1 /* debug-Info.plist */,
+				BE4055AB18A41F1F00092AE1 /* victorious-Prefix.pch */,
 				BE171D841868BE64004E5202 /* InfoPlist.strings */,
-				BE171D871868BE64004E5202 /* main.m */,
-				BE171D891868BE64004E5202 /* victorious-Prefix.pch */,
-				3FF8B7A01868F36600806EA0 /* Localizable.strings */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -936,9 +945,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = BE171DAB1868BE64004E5202 /* Build configuration list for PBXNativeTarget "victoriousTests" */;
 			buildPhases = (
+				A8C1A47009FF4AB6B09AD1B6 /* Check Pods Manifest.lock */,
 				BE171D921868BE64004E5202 /* Sources */,
 				BE171D931868BE64004E5202 /* Frameworks */,
 				BE171D941868BE64004E5202 /* Resources */,
+				4E5869E4F076435495A618CD /* Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -1002,11 +1013,11 @@
 				5FCC1E4C1899CAC800EB7699 /* settings.storyboard in Resources */,
 				BEB4C29E187E038C004ECEEF /* VNewsCell.xib in Resources */,
 				BE692B23186E5ED800C71336 /* VStreamDoublePollCell.xib in Resources */,
-				3FF8B7A11868F36600806EA0 /* Localizable.strings in Resources */,
 				BE171D861868BE64004E5202 /* InfoPlist.strings in Resources */,
 				BEB4C29C187E038C004ECEEF /* VConversationCell.xib in Resources */,
 				BE40559C18A2082900092AE1 /* VStreamYoutubeVideoCell.xib in Resources */,
 				5FC4DA5E18970A9F006BA107 /* login.storyboard in Resources */,
+				BE4055AC18A41F1F00092AE1 /* Localizable.strings in Resources */,
 				BE171D911868BE64004E5202 /* Images.xcassets in Resources */,
 				83B5A1241876447800659C73 /* Roboto-Regular.ttf in Resources */,
 				BEB4C2A0187E0778004ECEEF /* VCommentCell.xib in Resources */,
@@ -1031,6 +1042,36 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		4E5869E4F076435495A618CD /* Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Pods-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		A8C1A47009FF4AB6B09AD1B6 /* Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
 		BB3B462DFC474D579D23F27C /* Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -1092,7 +1133,6 @@
 				BE5C7352187E36D000A3340D /* VCategory.m in Sources */,
 				3F91991A187CAF310055FE37 /* VMessageViewController.m in Sources */,
 				BE5C7340187E36CF00A3340D /* VInteraction.m in Sources */,
-				BE171D881868BE64004E5202 /* main.m in Sources */,
 				BEF2C2AE188620EE00AAE975 /* VSequence.m in Sources */,
 				BE692B27186E5ED800C71336 /* VStreamVideoCell.m in Sources */,
 				BE6B95FC187C88F700CED4C9 /* VSequence+Fetcher.m in Sources */,
@@ -1167,6 +1207,7 @@
 				BE171E111868C211004E5202 /* VComment+RestKit.m in Sources */,
 				BE171E0E1868C211004E5202 /* VAnswerAction+RestKit.m in Sources */,
 				BE5D79B01899E47800DC752A /* VKeyboardBarContainerViewController.m in Sources */,
+				BE4055AD18A41F1F00092AE1 /* main.m in Sources */,
 				83BD06FB186BE4B2007742D1 /* UIImage+ImageEffects.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1276,6 +1317,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				ONLY_ACTIVE_ARCH = NO;
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;
 			};
@@ -1290,9 +1332,9 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "victorious/victorious-Prefix.pch";
-				INFOPLIST_FILE = "victorious/victorious-Info.plist";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				GCC_PREFIX_HEADER = "victorious/Supporting Files/victorious-Prefix.pch";
+				INFOPLIST_FILE = "victorious/Supporting Files/debug-Info.plist";
+				PRODUCT_NAME = "debug-$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				WRAPPER_EXTENSION = app;
 			};
@@ -1307,8 +1349,8 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "victorious/victorious-Prefix.pch";
-				INFOPLIST_FILE = "victorious/victorious-Info.plist";
+				GCC_PREFIX_HEADER = "victorious/Supporting Files/victorious-Prefix.pch";
+				INFOPLIST_FILE = "victorious/Supporting Files/release-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				WRAPPER_EXTENSION = app;
@@ -1317,6 +1359,7 @@
 		};
 		BE171DAC1868BE64004E5202 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 33ACD3CBAF2C419D97FB901A /* Pods.xcconfig */;
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
 				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/victorious.app/victorious";
@@ -1340,6 +1383,7 @@
 		};
 		BE171DAD1868BE64004E5202 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 33ACD3CBAF2C419D97FB901A /* Pods.xcconfig */;
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
 				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/victorious.app/victorious";
@@ -1357,6 +1401,89 @@
 			};
 			name = Release;
 		};
+		BE4055A318A41BEE00092AE1 /* Stable Dev */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				ENABLE_NS_ASSERTIONS = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+					"STABLE_DEBUG=1",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				INFOPLIST_FILE = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+			};
+			name = "Stable Dev";
+		};
+		BE4055A418A41BEE00092AE1 /* Stable Dev */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 33ACD3CBAF2C419D97FB901A /* Pods.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "victorious/Supporting Files/victorious-Prefix.pch";
+				INFOPLIST_FILE = "victorious/Supporting Files/stable-Info.plist";
+				PRODUCT_NAME = "stable-$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
+				WRAPPER_EXTENSION = app;
+			};
+			name = "Stable Dev";
+		};
+		BE4055A518A41BEE00092AE1 /* Stable Dev */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 33ACD3CBAF2C419D97FB901A /* Pods.xcconfig */;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
+				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/victorious.app/victorious";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(inherited)",
+					"$(DEVELOPER_FRAMEWORKS_DIR)",
+				);
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "victorious/victorious-Prefix.pch";
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				INFOPLIST_FILE = "victoriousTests/victoriousTests-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUNDLE_LOADER)";
+				WRAPPER_EXTENSION = xctest;
+			};
+			name = "Stable Dev";
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -1364,6 +1491,7 @@
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				BE171DA61868BE64004E5202 /* Debug */,
+				BE4055A318A41BEE00092AE1 /* Stable Dev */,
 				BE171DA71868BE64004E5202 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
@@ -1373,6 +1501,7 @@
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				BE171DA91868BE64004E5202 /* Debug */,
+				BE4055A418A41BEE00092AE1 /* Stable Dev */,
 				BE171DAA1868BE64004E5202 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
@@ -1382,6 +1511,7 @@
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				BE171DAC1868BE64004E5202 /* Debug */,
+				BE4055A518A41BEE00092AE1 /* Stable Dev */,
 				BE171DAD1868BE64004E5202 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;

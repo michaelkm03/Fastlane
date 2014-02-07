@@ -219,11 +219,7 @@ NSString*   const   kSignupErrorDomain =   @"VSignupErrorDomain";
             [self didFailWithError:error];
         };
         
-        [[VObjectManager sharedManager] createVictoriousWithEmail:self.emailTextField.text
-                                                         password:self.passwordTextField.text
-                                                         username:self.usernameTextField.text
-                                                     successBlock:success
-                                                        failBlock:fail];
+        [[VObjectManager sharedManager] createOrLoginToVictoriousWithEmail:self.emailTextField.text password:self.passwordTextField.text username:self.usernameTextField.text successBlock:success failBlock:fail];
     }
 }
 

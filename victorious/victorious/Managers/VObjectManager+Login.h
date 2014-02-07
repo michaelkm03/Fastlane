@@ -19,20 +19,28 @@ extern NSString *kLoggedInChangedNotification;
                                                  SuccessBlock:(VSuccessBlock)success
                                                     failBlock:(VFailBlock)failed;
 
+- (RKManagedObjectRequestOperation *)createOrLoginToFacebookWithToken:(NSString*)accessToken
+                                                         SuccessBlock:(VSuccessBlock)success
+                                                            failBlock:(VFailBlock)failed;
+
 - (RKManagedObjectRequestOperation *)loginToTwitterWithToken:(NSString*)accessToken
                                                 SuccessBlock:(VSuccessBlock)success
                                                    failBlock:(VFailBlock)failed;
+
+- (RKManagedObjectRequestOperation *)createOrLoginToTwitterWithToken:(NSString*)accessToken
+                                                        SuccessBlock:(VSuccessBlock)success
+                                                           failBlock:(VFailBlock)failed;
 
 - (RKManagedObjectRequestOperation *)loginToVictoriousWithEmail:(NSString *)email
                                                        password:(NSString *)password
                                                    successBlock:(VSuccessBlock)success
                                                       failBlock:(VFailBlock)fail;
 
-- (RKManagedObjectRequestOperation *)createVictoriousWithEmail:(NSString *)email
-                                                      password:(NSString *)password
-                                                      username:(NSString *)username
-                                                  successBlock:(VSuccessBlock)success
-                                                     failBlock:(VFailBlock)fail;
+- (RKManagedObjectRequestOperation *)createOrLoginToVictoriousWithEmail:(NSString *)email
+                                                               password:(NSString *)password
+                                                               username:(NSString *)username
+                                                           successBlock:(VSuccessBlock)success
+                                                              failBlock:(VFailBlock)fail;
 
 - (RKManagedObjectRequestOperation *)updateVictoriousWithEmail:(NSString *)email
                                                       password:(NSString *)password

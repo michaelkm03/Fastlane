@@ -142,6 +142,64 @@
     VLog(@"User sequences: %@", user.postedSequences);
 }
 
+
+- (RKManagedObjectRequestOperation *)attachAccountToFacebookWithToken:(NSString*)accessToken
+                                                     withSuccessBlock:(VSuccessBlock)success
+                                                            failBlock:(VFailBlock)fail
+{
+    NSDictionary *parameters = @{@"facebook_access_token": accessToken ?: [NSNull null]};
+    
+    return [self POST:@"/api/socialconnect/facebook"
+               object:nil
+           parameters:parameters
+         successBlock:success
+            failBlock:fail];
+}
+
+- (RKManagedObjectRequestOperation *)attachAccountToTwitterWithToken:(NSString*)accessToken
+                                                    withSuccessBlock:(VSuccessBlock)success
+                                                           failBlock:(VFailBlock)fail
+{
+    NSDictionary *parameters = @{@"twitter_access_token": accessToken ?: [NSNull null]};
+    
+    return [self POST:@"/api/socialconnect/twitter"
+               object:nil
+           parameters:parameters
+         successBlock:success
+            failBlock:fail];
+}
+
+- (RKManagedObjectRequestOperation *)updateProfileWithFullName:(NSString*)FullName
+                                                      userName:(NSString*)userName
+                                                      location:(NSString*)location
+                                                       tagLine:(NSString*)newTagLine
+                                                  profileImage:(NSString*)profileImage
+                                              withSuccessBlock:(VSuccessBlock)success
+                                                     failBlock:(VFailBlock)fail
+{
+    return nil;
+}
+
+- (RKManagedObjectRequestOperation *)listOfRecommendedFriendsWithSuccessBlock:(VSuccessBlock)success
+                                                                    failBlock:(VFailBlock)fail
+{
+    return nil;
+}
+
+- (RKManagedObjectRequestOperation *)listOfFriendsWithSuccessBlock:(VSuccessBlock)success
+                                                         failBlock:(VFailBlock)fail
+{
+    return nil;
+}
+
+- (RKManagedObjectRequestOperation *)inviteFriends:(NSArray*)friendIDs
+                                  withSuccessBlock:(VSuccessBlock)success
+                                         failBlock:(VFailBlock)fail
+{
+    return nil;
+}
+
+#pragma mark - helpers
 - (NSArray*)objectsForEntity:(NSString*)entityName
                    userIdKey:(NSString*)idKey
                       userId:(NSNumber*)userId

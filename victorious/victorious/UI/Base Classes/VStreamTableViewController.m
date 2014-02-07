@@ -47,6 +47,8 @@
     
     if ([self.fetchedResultsController.fetchedObjects count] < 5)
         [self refreshAction];
+    else
+        [self.tableView reloadData]; //force a reload incase anything has changed
 }
 
 #pragma mark - FetchedResultsControllers
@@ -108,13 +110,20 @@
 {
     VSequence* sequence = (VSequence*)[self.fetchedResultsController objectAtIndexPath:indexPath];
     
+    NSUInteger cellHeight;
     if ([sequence isPoll])
-        return kStreamPollCellHeight;
+        cellHeight = kStreamPollCellHeight;
     
     else if (([sequence isVideo] ||[sequence isForum]) && [[[sequence firstNode] firstAsset].type isEqualToString:VConstantsMediaTypeYoutube])
-        return kStreamYoutubeCellHeight;
+        cellHeight = kStreamYoutubeCellHeight;
     
-    return kStreamViewCellHeight;
+    else
+        cellHeight = kStreamViewCellHeight;
+    
+    NSUInteger commentCount = MIN([sequence.comments count], 2);
+    CGFloat commentHeight = commentCount ? (commentCount * kStreamCommentCellHeight) + kStreamCommentHeaderHeight : 0;
+    
+    return cellHeight;// + commentHeight;
 }
 
 - (VStreamViewCell*)tableView:(UITableView *)tableView streamViewCellForIndex:(NSIndexPath*)indexPath
