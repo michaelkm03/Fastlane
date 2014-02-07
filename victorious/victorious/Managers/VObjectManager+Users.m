@@ -147,14 +147,26 @@
                                                      withSuccessBlock:(VSuccessBlock)success
                                                             failBlock:(VFailBlock)fail
 {
-    return nil;
+    NSDictionary *parameters = @{@"facebook_access_token": accessToken ?: [NSNull null]};
+    
+    return [self POST:@"/api/socialconnect/facebook"
+               object:nil
+           parameters:parameters
+         successBlock:success
+            failBlock:fail];
 }
 
 - (RKManagedObjectRequestOperation *)attachAccountToTwitterWithToken:(NSString*)accessToken
                                                     withSuccessBlock:(VSuccessBlock)success
                                                            failBlock:(VFailBlock)fail
 {
-    return nil;
+    NSDictionary *parameters = @{@"twitter_access_token": accessToken ?: [NSNull null]};
+    
+    return [self POST:@"/api/socialconnect/twitter"
+               object:nil
+           parameters:parameters
+         successBlock:success
+            failBlock:fail];
 }
 
 - (RKManagedObjectRequestOperation *)updateProfileWithFullName:(NSString*)FullName
