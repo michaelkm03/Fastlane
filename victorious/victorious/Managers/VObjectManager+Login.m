@@ -36,10 +36,17 @@ NSString *kLoggedInChangedNotification = @"LoggedInChangedNotification";
     
     NSDictionary *parameters = @{@"facebook_access_token": accessToken ?: @""};
     
+    VSuccessBlock fullSuccess = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
+    {
+        self.mainUser = [resultObjects firstObject];
+        if (success)
+            success(operation, fullResponse, resultObjects);
+    };
+    
     return [self POST:@"/api/login/facebook"
                object:nil
            parameters:parameters
-         successBlock:success
+         successBlock:fullSuccess
             failBlock:failed];
 }
 
@@ -49,10 +56,17 @@ NSString *kLoggedInChangedNotification = @"LoggedInChangedNotification";
 {
     NSDictionary *parameters = @{@"facebook_access_token": accessToken ?: [NSNull null]};
     
+    VSuccessBlock fullSuccess = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
+    {
+        self.mainUser = [resultObjects firstObject];
+        if (success)
+            success(operation, fullResponse, resultObjects);
+    };
+    
     return [self POST:@"/api/account/create/via_facebook"
                object:nil
            parameters:parameters
-         successBlock:success
+         successBlock:fullSuccess
             failBlock:failed];
 }
 #pragma mark - Twitter
@@ -64,10 +78,17 @@ NSString *kLoggedInChangedNotification = @"LoggedInChangedNotification";
     
     NSDictionary *parameters = @{@"twitter_access_token": accessToken ?: @""};
     
+    VSuccessBlock fullSuccess = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
+    {
+        self.mainUser = [resultObjects firstObject];
+        if (success)
+            success(operation, fullResponse, resultObjects);
+    };
+    
     return [self POST:@"/api/login/twitter"
                object:nil
            parameters:parameters
-         successBlock:success
+         successBlock:fullSuccess
             failBlock:failed];
 }
 
@@ -77,10 +98,17 @@ NSString *kLoggedInChangedNotification = @"LoggedInChangedNotification";
 {
     NSDictionary *parameters = @{@"twitter_access_token": accessToken ?: [NSNull null]};
     
+    VSuccessBlock fullSuccess = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
+    {
+        self.mainUser = [resultObjects firstObject];
+        if (success)
+            success(operation, fullResponse, resultObjects);
+    };
+    
     return [self POST:@"/api/account/create/via_twitter"
                object:nil
            parameters:parameters
-         successBlock:success
+         successBlock:fullSuccess
             failBlock:failed];
 }
 
@@ -91,11 +119,18 @@ NSString *kLoggedInChangedNotification = @"LoggedInChangedNotification";
                                                       failBlock:(VFailBlock)fail
 {
     NSDictionary *parameters = @{@"email": email ?: @"", @"password": password ?: @""};
-
+    
+    VSuccessBlock fullSuccess = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
+    {
+        self.mainUser = [resultObjects firstObject];
+        if (success)
+            success(operation, fullResponse, resultObjects);
+    };
+    
     return [self POST:@"/api/login"
                object:nil
            parameters:parameters
-         successBlock:success
+         successBlock:fullSuccess
             failBlock:fail];
 }
 
@@ -109,10 +144,17 @@ NSString *kLoggedInChangedNotification = @"LoggedInChangedNotification";
                                  @"password": password ?: @"",
                                  @"name": username ?: @""};
     
+    VSuccessBlock fullSuccess = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
+    {
+        self.mainUser = [resultObjects firstObject];
+        if (success)
+            success(operation, fullResponse, resultObjects);
+    };
+    
     return [self POST:@"/api/account/create"
                object:nil
            parameters:parameters
-         successBlock:success
+         successBlock:fullSuccess
             failBlock:fail];
 }
 
@@ -126,10 +168,17 @@ NSString *kLoggedInChangedNotification = @"LoggedInChangedNotification";
                                  @"password": password ?: @"",
                                  @"name": username ?: @""};
 
+    VSuccessBlock fullSuccess = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
+    {
+        self.mainUser = [resultObjects firstObject];
+        if (success)
+            success(operation, fullResponse, resultObjects);
+    };
+    
     return [self POST:@"/api/account/update"
                object:nil
            parameters:parameters
-         successBlock:success
+         successBlock:fullSuccess
             failBlock:fail];
 }
 
