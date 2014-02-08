@@ -239,12 +239,12 @@
     
     [[NSNotificationCenter defaultCenter] postNotificationName:kLoggedInChangedNotification object:mainUser];
 
-    if (NO) //  priorUser
-        [self dismissViewControllerAnimated:YES completion:NULL];
-    else if (kVLoginTypeCreateFaceBook == self.loginType)
+    if (kVLoginTypeCreateFaceBook == self.loginType)
         [self performSegueWithIdentifier:@"toProfileWithFacebook" sender:self];
     else if (kVLoginTypeCreateTwitter == self.loginType)
         [self performSegueWithIdentifier:@"toProfileWithTwitter" sender:self];
+    else
+        [self dismissViewControllerAnimated:YES completion:NULL];
 }
 
 - (void)didFailWithError:(NSError*)error
