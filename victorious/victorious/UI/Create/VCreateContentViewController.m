@@ -142,7 +142,7 @@ CGFloat VCreateViewControllerLargePadding = 20;
 
 - (IBAction)closeButtonAction:(id)sender
 {
-    [self dismissViewControllerAnimated:YES completion:nil];
+    [self.navigationController popViewControllerAnimated:YES];
 }
 
 - (IBAction)postButtonAction:(id)sender

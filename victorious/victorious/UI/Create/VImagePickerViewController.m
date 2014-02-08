@@ -29,9 +29,11 @@
 
 - (void)setType:(VImagePickerViewControllerType)type
 {
-    if (self.type == VImagePickerViewControllerPhoto)
+    _type = type;
+    
+    if (_type == VImagePickerViewControllerPhoto)
         self.imagePicker.mediaTypes = @[(NSString *)kUTTypeImage];
-    else if (self.type == VImagePickerViewControllerVideo)
+    else if (_type == VImagePickerViewControllerVideo)
         self.imagePicker.mediaTypes = @[(NSString *)kUTTypeMovie];
     else
         self.imagePicker.mediaTypes = @[(NSString *)kUTTypeImage, (NSString *)kUTTypeMovie];
