@@ -197,6 +197,7 @@
 		3FF8C4FD18A59EAB00812968 /* VKeyboardBarContainerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VKeyboardBarContainerViewController.h; sourceTree = "<group>"; };
 		3FF8C4FE18A59EAB00812968 /* VKeyboardBarContainerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VKeyboardBarContainerViewController.m; sourceTree = "<group>"; };
 		3FF8C4FF18A59EAB00812968 /* VKeyboardBarViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VKeyboardBarViewController.h; sourceTree = "<group>"; };
+		3FF8C50518A59F8D00812968 /* VImagePickerController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = VImagePickerController.h; path = UI/Create/VImagePickerController.h; sourceTree = "<group>"; };
 		5F51F818189AEBF800A546D1 /* VAbstractProfileEditViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VAbstractProfileEditViewController.h; path = "UI/Base Classes/VAbstractProfileEditViewController.h"; sourceTree = "<group>"; };
 		5F51F819189AEBF800A546D1 /* VAbstractProfileEditViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VAbstractProfileEditViewController.m; path = "UI/Base Classes/VAbstractProfileEditViewController.m"; sourceTree = "<group>"; };
 		5FC4DA5D18970A9F006BA107 /* login.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = login.storyboard; path = UI/Login/login.storyboard; sourceTree = "<group>"; };
@@ -565,6 +566,7 @@
 		3F9B666318887CE50046F826 /* Base Classes */ = {
 			isa = PBXGroup;
 			children = (
+				3FF8C50518A59F8D00812968 /* VImagePickerController.h */,
 				BE5D799318989A0800DC752A /* VImagePickerViewController.h */,
 				BE5D799418989A0800DC752A /* VImagePickerViewController.m */,
 				BEA5BF5D187F21770014C3EF /* VTableViewCell.h */,
@@ -922,6 +924,7 @@
 				BE171D731868BE64004E5202 /* Frameworks */,
 				BE171D741868BE64004E5202 /* Resources */,
 				BED94623E5054C5785E419C3 /* Copy Pods Resources */,
+				3FF8C50618A5A06A00812968 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -1033,6 +1036,19 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		3FF8C50618A5A06A00812968 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "#!/bin/bash\nbuildNumber=$(/usr/libexec/PlistBuddy -c \"Print CFBundleVersion\" \"$INFOPLIST_FILE\")\nbuildNumber=$(($buildNumber + 1))\n/usr/libexec/PlistBuddy -c \"Set :CFBundleVersion $buildNumber\" \"$INFOPLIST_FILE\"";
+		};
 		4E5869E4F076435495A618CD /* Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
