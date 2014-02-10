@@ -12,7 +12,6 @@
 #import "VConstants.h"
 
 @interface VImagePickerViewController () <UIImagePickerControllerDelegate, UINavigationControllerDelegate>
-@property (strong, nonatomic) UIImagePickerController* imagePicker;
 @end
 
 @implementation VImagePickerViewController
