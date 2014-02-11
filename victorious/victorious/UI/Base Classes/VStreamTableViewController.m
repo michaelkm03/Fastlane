@@ -103,8 +103,13 @@
 //    [self.navigationController pushViewController:commentsTable animated:YES];
 //}
 
-//- (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
-//{
+- (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
+{
+    if (self.tableView.contentOffset.y > (self.tableView.contentSize.height * .75))
+    {
+        [self refreshAction];
+    }
+}
 //    NSArray* visibleCells = [self.tableView visibleCells];
 //    
 //    if (![visibleCells count])
