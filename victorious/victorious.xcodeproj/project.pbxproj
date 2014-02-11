@@ -1072,7 +1072,7 @@
 				831C58F81884BD11007C167C /* VOtherCommentCell.xib in Resources */,
 				3FF8B7A51868FC1C00806EA0 /* defaultTheme.plist in Resources */,
 				5FCC1E4C1899CAC800EB7699 /* settings.storyboard in Resources */,
-				BEA73B8018A9AAD90081312F /* VStreamActionBar.xib in Resources */,
+				3FA217CF18A9BFC90066E893 /* video_thumb_mini.png in Resources */,
 				BEB4C29E187E038C004ECEEF /* VNewsCell.xib in Resources */,
 				BE692B23186E5ED800C71336 /* VStreamDoublePollCell.xib in Resources */,
 				3FA217CD18A9BFC90066E893 /* cast_solid_custom.png in Resources */,
