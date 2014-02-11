@@ -13,6 +13,7 @@
 @interface VSequence (Fetcher)
 
 - (BOOL)isPoll;
+- (BOOL)isQuiz;
 - (BOOL)isImage;
 - (BOOL)isVideo;
 - (BOOL)isForum;

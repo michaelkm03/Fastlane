@@ -13,6 +13,7 @@
 #import "VCommentsContainerViewController.h"
 
 #import "NSString+VParseHelp.h"
+
 //Cells
 #import "VStreamViewCell.h"
 #import "VStreamVideoCell.h"
@@ -27,6 +28,10 @@
 #import "VSequence+Fetcher.h"
 #import "VNode+Fetcher.h"
 #import "VAsset.h"
+
+@interface VStreamTableViewController()
+
+@end
 
 @implementation VStreamTableViewController
 
@@ -98,7 +103,56 @@
 //    [self.navigationController pushViewController:commentsTable animated:YES];
 //}
 
+//- (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
+//{
+//    NSArray* visibleCells = [self.tableView visibleCells];
+//    
+//    if (![visibleCells count])
+//        return;
+//    
+//    VSequence* sequence;
+//    if ([visibleCells count] > 2)
+//    {
+//        //The 2nd one is completely on screen, use that
+//        NSIndexPath* path = [self.tableView indexPathForCell:[visibleCells objectAtIndex:1]];
+//        sequence = [self.fetchedResultsController objectAtIndexPath:path];
+//    }
+//    else
+//    {
+//        CGFloat currentCenterY = self.tableView.contentOffset.y + self.tableView.center.y;
+//        CGFloat firstCellDiff = currentCenterY - ((UIView*)[visibleCells firstObject]).center.y;
+//        CGFloat secondCellDiff = currentCenterY - ((UIView*)[visibleCells lastObject]).center.y;
+//
+//        if (fabsf(firstCellDiff) > fabsf(secondCellDiff))
+//        {
+//            //use 2nd cell
+//            NSIndexPath* path = [self.tableView indexPathForCell:[visibleCells objectAtIndex:1]];
+//            sequence = [self.fetchedResultsController objectAtIndexPath:path];
+//        }
+//        else
+//        {
+//            //use 1st cell
+//            NSIndexPath* path = [self.tableView indexPathForCell:[visibleCells objectAtIndex:0]];
+//            sequence = [self.fetchedResultsController objectAtIndexPath:path];
+//        }
+//    }
+//    
+//    self.actionBar.currentSequence = sequence;
+//    [self showActionBar];
+//}
+//
+//- (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView
+//{
+//    [self hideActionBar];
+//}
+
 #pragma mark - Cells
+
+- (CGFloat)tableView:(UITableView *)tableView estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return kStreamViewCellHeight;
+}
+
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     VSequence* sequence = (VSequence*)[self.fetchedResultsController objectAtIndexPath:indexPath];
@@ -223,6 +277,25 @@
 {
     [self.sideMenuViewController presentMenuViewController];
 }
+
+//- (void)showActionBar
+//{
+//    [UIView animateWithDuration:1.0f
+//                     animations:^{
+//                         self.actionBar.frame = CGRectMake(0, self.view.frame.size.height - VStreamActionBarHeight, self.actionBar.frame.size.width, self.actionBar.frame.size.height);
+//                     }];
+//}
+//
+//- (void)hideActionBar
+//{
+//    if (self.actionBar.frame.origin.y >= self.view.frame.size.height)
+//        return;
+//    
+//    [UIView animateWithDuration:1.0f
+//                     animations:^{
+//                         self.actionBar.frame = CGRectMake(0, self.view.frame.size.height, self.actionBar.frame.size.width, self.actionBar.frame.size.height);
+//                     }];
+//}
 
 #pragma mark - Notifications
 

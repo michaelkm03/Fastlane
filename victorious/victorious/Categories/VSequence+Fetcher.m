@@ -18,6 +18,11 @@
         [self.category isEqualToString:kVUGCPollCategory];
 }
 
+- (BOOL)isQuiz
+{
+    return NO;
+}
+
 - (BOOL)isImage
 {
     return [self.category isEqualToString:kVOwnerImageCategory] ||

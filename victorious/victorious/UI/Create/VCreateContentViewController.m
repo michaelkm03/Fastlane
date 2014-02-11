@@ -23,6 +23,7 @@ CGFloat VCreateViewControllerLargePadding = 20;
 
 @property (strong, nonatomic) NSData *mediaData;
 @property (strong, nonatomic) NSString *mediaType;
+@property (strong, nonatomic) UIImage *previewImage;
 
 @end
 
@@ -81,6 +82,13 @@ CGFloat VCreateViewControllerLargePadding = 20;
     [[NSNotificationCenter defaultCenter]
      addObserver:self selector:@selector(keyboardFrameChanged:)
      name:UIKeyboardWillChangeFrameNotification object:nil];
+    
+    if (self.previewImage)
+    {
+        [self.previewImageView setImage: self.previewImage];
+        self.previewImageView.hidden = NO;
+        self.removeMediaButton.hidden = NO;
+    }
 }
 
 - (void)setType:(VImagePickerViewControllerType)type
@@ -213,6 +221,8 @@ CGFloat VCreateViewControllerLargePadding = 20;
 {
     self.mediaData = data;
     self.mediaType = extension;
+    self.previewImage = previewImage;
+    
     [self.previewImageView setImage: previewImage];
     
     self.previewImageView.hidden = NO;
