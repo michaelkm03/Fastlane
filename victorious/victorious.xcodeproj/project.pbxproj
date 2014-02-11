@@ -24,6 +24,17 @@
 		3F9B66711888C4940046F826 /* VOwnerStreamViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F9B66701888C4940046F826 /* VOwnerStreamViewController.m */; };
 		3F9B66741888C4B20046F826 /* VCommunityStreamViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F9B66731888C4B20046F826 /* VCommunityStreamViewController.m */; };
 		3F9B66771888C4DD0046F826 /* VForumStreamViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F9B66761888C4DD0046F826 /* VForumStreamViewController.m */; };
+		3FA217B618A9AD9B0066E893 /* GoogleCast.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3FA217B518A9AD9B0066E893 /* GoogleCast.framework */; };
+		3FA217BB18A9ADF10066E893 /* ChromecastDeviceController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3FA217BA18A9ADF10066E893 /* ChromecastDeviceController.m */; };
+		3FA217C218A9B5160066E893 /* CastViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3FA217BD18A9B5160066E893 /* CastViewController.m */; };
+		3FA217C318A9B5160066E893 /* DeviceTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3FA217BF18A9B5160066E893 /* DeviceTableViewController.m */; };
+		3FA217C418A9B5160066E893 /* VolumeChangeController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3FA217C118A9B5160066E893 /* VolumeChangeController.m */; };
+		3FA217CB18A9BFC90066E893 /* cast_outline_white.png in Resources */ = {isa = PBXBuildFile; fileRef = 3FA217C518A9BFC90066E893 /* cast_outline_white.png */; };
+		3FA217CC18A9BFC90066E893 /* cast_outline_white@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3FA217C618A9BFC90066E893 /* cast_outline_white@2x.png */; };
+		3FA217CD18A9BFC90066E893 /* cast_solid_custom.png in Resources */ = {isa = PBXBuildFile; fileRef = 3FA217C718A9BFC90066E893 /* cast_solid_custom.png */; };
+		3FA217CE18A9BFC90066E893 /* cast_solid_custom@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3FA217C818A9BFC90066E893 /* cast_solid_custom@2x.png */; };
+		3FA217CF18A9BFC90066E893 /* video_thumb_mini.png in Resources */ = {isa = PBXBuildFile; fileRef = 3FA217C918A9BFC90066E893 /* video_thumb_mini.png */; };
+		3FA217D018A9BFC90066E893 /* video_thumb_mini@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3FA217CA18A9BFC90066E893 /* video_thumb_mini@2x.png */; };
 		3FF8B7981868EE7E00806EA0 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3FF8B7971868EE7E00806EA0 /* Main.storyboard */; };
 		3FF8B7A51868FC1C00806EA0 /* defaultTheme.plist in Resources */ = {isa = PBXBuildFile; fileRef = 3FF8B7A41868FC1C00806EA0 /* defaultTheme.plist */; };
 		3FF8C50018A59EAB00812968 /* VCreateContentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3FF8C4F418A59EAB00812968 /* VCreateContentViewController.m */; };
@@ -185,6 +196,21 @@
 		3F9B66731888C4B20046F826 /* VCommunityStreamViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VCommunityStreamViewController.m; path = UI/VCommunityStreamViewController.m; sourceTree = "<group>"; };
 		3F9B66751888C4DD0046F826 /* VForumStreamViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VForumStreamViewController.h; path = UI/VForumStreamViewController.h; sourceTree = "<group>"; };
 		3F9B66761888C4DD0046F826 /* VForumStreamViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VForumStreamViewController.m; path = UI/VForumStreamViewController.m; sourceTree = "<group>"; };
+		3FA217B518A9AD9B0066E893 /* GoogleCast.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GoogleCast.framework; path = "3rd Party SDKs/GoogleCast.framework"; sourceTree = "<group>"; };
+		3FA217B918A9ADF10066E893 /* ChromecastDeviceController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ChromecastDeviceController.h; path = "3rd Party SDKs/ChromecastDeviceController.h"; sourceTree = SOURCE_ROOT; };
+		3FA217BA18A9ADF10066E893 /* ChromecastDeviceController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ChromecastDeviceController.m; path = "3rd Party SDKs/ChromecastDeviceController.m"; sourceTree = SOURCE_ROOT; };
+		3FA217BC18A9B5160066E893 /* CastViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CastViewController.h; path = "3rd Party SDKs/CastViewController.h"; sourceTree = SOURCE_ROOT; };
+		3FA217BD18A9B5160066E893 /* CastViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CastViewController.m; path = "3rd Party SDKs/CastViewController.m"; sourceTree = SOURCE_ROOT; };
+		3FA217BE18A9B5160066E893 /* DeviceTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DeviceTableViewController.h; path = "3rd Party SDKs/DeviceTableViewController.h"; sourceTree = SOURCE_ROOT; };
+		3FA217BF18A9B5160066E893 /* DeviceTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DeviceTableViewController.m; path = "3rd Party SDKs/DeviceTableViewController.m"; sourceTree = SOURCE_ROOT; };
+		3FA217C018A9B5160066E893 /* VolumeChangeController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VolumeChangeController.h; path = "3rd Party SDKs/VolumeChangeController.h"; sourceTree = SOURCE_ROOT; };
+		3FA217C118A9B5160066E893 /* VolumeChangeController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VolumeChangeController.m; path = "3rd Party SDKs/VolumeChangeController.m"; sourceTree = SOURCE_ROOT; };
+		3FA217C518A9BFC90066E893 /* cast_outline_white.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = cast_outline_white.png; path = "3rd Party SDKs/cast_outline_white.png"; sourceTree = SOURCE_ROOT; };
+		3FA217C618A9BFC90066E893 /* cast_outline_white@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "cast_outline_white@2x.png"; path = "3rd Party SDKs/cast_outline_white@2x.png"; sourceTree = SOURCE_ROOT; };
+		3FA217C718A9BFC90066E893 /* cast_solid_custom.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = cast_solid_custom.png; path = "3rd Party SDKs/cast_solid_custom.png"; sourceTree = SOURCE_ROOT; };
+		3FA217C818A9BFC90066E893 /* cast_solid_custom@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "cast_solid_custom@2x.png"; path = "3rd Party SDKs/cast_solid_custom@2x.png"; sourceTree = SOURCE_ROOT; };
+		3FA217C918A9BFC90066E893 /* video_thumb_mini.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = video_thumb_mini.png; path = "3rd Party SDKs/video_thumb_mini.png"; sourceTree = SOURCE_ROOT; };
+		3FA217CA18A9BFC90066E893 /* video_thumb_mini@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "video_thumb_mini@2x.png"; path = "3rd Party SDKs/video_thumb_mini@2x.png"; sourceTree = SOURCE_ROOT; };
 		3FF8B7971868EE7E00806EA0 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
 		3FF8B7A41868FC1C00806EA0 /* defaultTheme.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = defaultTheme.plist; sourceTree = "<group>"; };
 		3FF8C4F318A59EAB00812968 /* VCreateContentViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VCreateContentViewController.h; sourceTree = "<group>"; };
@@ -401,6 +427,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3FA217B618A9AD9B0066E893 /* GoogleCast.framework in Frameworks */,
 				BE6822F018A42EC000EB7512 /* libPods.a in Frameworks */,
 				BE171D7C1868BE64004E5202 /* CoreGraphics.framework in Frameworks */,
 				BE171D801868BE64004E5202 /* CoreData.framework in Frameworks */,
@@ -602,6 +629,35 @@
 			name = Management;
 			sourceTree = "<group>";
 		};
+		3FA217B718A9ADAA0066E893 /* SDKs */ = {
+			isa = PBXGroup;
+			children = (
+				3FA217B818A9ADB70066E893 /* ChromeCast */,
+			);
+			name = SDKs;
+			sourceTree = "<group>";
+		};
+		3FA217B818A9ADB70066E893 /* ChromeCast */ = {
+			isa = PBXGroup;
+			children = (
+				3FA217B918A9ADF10066E893 /* ChromecastDeviceController.h */,
+				3FA217BA18A9ADF10066E893 /* ChromecastDeviceController.m */,
+				3FA217BC18A9B5160066E893 /* CastViewController.h */,
+				3FA217BD18A9B5160066E893 /* CastViewController.m */,
+				3FA217BE18A9B5160066E893 /* DeviceTableViewController.h */,
+				3FA217BF18A9B5160066E893 /* DeviceTableViewController.m */,
+				3FA217C018A9B5160066E893 /* VolumeChangeController.h */,
+				3FA217C118A9B5160066E893 /* VolumeChangeController.m */,
+				3FA217C518A9BFC90066E893 /* cast_outline_white.png */,
+				3FA217C618A9BFC90066E893 /* cast_outline_white@2x.png */,
+				3FA217C718A9BFC90066E893 /* cast_solid_custom.png */,
+				3FA217C818A9BFC90066E893 /* cast_solid_custom@2x.png */,
+				3FA217C918A9BFC90066E893 /* video_thumb_mini.png */,
+				3FA217CA18A9BFC90066E893 /* video_thumb_mini@2x.png */,
+			);
+			name = ChromeCast;
+			sourceTree = "<group>";
+		};
 		5FF9BE801893188A0054694B /* Menu */ = {
 			isa = PBXGroup;
 			children = (
@@ -662,6 +718,7 @@
 				BE171D7F1868BE64004E5202 /* CoreData.framework */,
 				BE171D971868BE64004E5202 /* XCTest.framework */,
 				662F0867152745B2B2F08301 /* libPods.a */,
+				3FA217B518A9AD9B0066E893 /* GoogleCast.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -678,6 +735,7 @@
 				BE171D901868BE64004E5202 /* Images.xcassets */,
 				BE171D821868BE64004E5202 /* Supporting Files */,
 				83ABAF9A18709DE30069556C /* Fonts */,
+				3FA217B718A9ADAA0066E893 /* SDKs */,
 			);
 			path = victorious;
 			sourceTree = "<group>";
@@ -1002,16 +1060,20 @@
 			buildActionMask = 2147483647;
 			files = (
 				3FF8B7981868EE7E00806EA0 /* Main.storyboard in Resources */,
+				3FA217CC18A9BFC90066E893 /* cast_outline_white@2x.png in Resources */,
 				831C58F81884BD11007C167C /* VOtherCommentCell.xib in Resources */,
 				3FF8B7A51868FC1C00806EA0 /* defaultTheme.plist in Resources */,
 				5FCC1E4C1899CAC800EB7699 /* settings.storyboard in Resources */,
+				3FA217CF18A9BFC90066E893 /* video_thumb_mini.png in Resources */,
 				BEB4C29E187E038C004ECEEF /* VNewsCell.xib in Resources */,
 				BE692B23186E5ED800C71336 /* VStreamDoublePollCell.xib in Resources */,
+				3FA217CD18A9BFC90066E893 /* cast_solid_custom.png in Resources */,
 				BE171D861868BE64004E5202 /* InfoPlist.strings in Resources */,
 				BEB4C29C187E038C004ECEEF /* VConversationCell.xib in Resources */,
 				BE40559C18A2082900092AE1 /* VStreamYoutubeVideoCell.xib in Resources */,
 				5FC4DA5E18970A9F006BA107 /* login.storyboard in Resources */,
 				BE4055AC18A41F1F00092AE1 /* Localizable.strings in Resources */,
+				3FA217D018A9BFC90066E893 /* video_thumb_mini@2x.png in Resources */,
 				BE171D911868BE64004E5202 /* Images.xcassets in Resources */,
 				83B5A1241876447800659C73 /* Roboto-Regular.ttf in Resources */,
 				BEB4C2A0187E0778004ECEEF /* VCommentCell.xib in Resources */,
@@ -1022,6 +1084,8 @@
 				BEF8D37B188755C1004919CA /* VStreamYoutubeCell.xib in Resources */,
 				BE692B25186E5ED800C71336 /* VStreamPollCell.xib in Resources */,
 				BE692B2A186E5ED800C71336 /* VStreamViewCell.xib in Resources */,
+				3FA217CB18A9BFC90066E893 /* cast_outline_white.png in Resources */,
+				3FA217CE18A9BFC90066E893 /* cast_solid_custom@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1128,6 +1192,7 @@
 				BEF2C2B71886211000AAE975 /* VPollResult.m in Sources */,
 				BE171E201868C211004E5202 /* VObjectManager+Login.m in Sources */,
 				5FF9BE7F1893143D0054694B /* UIViewController+VSideMenuViewController.m in Sources */,
+				3FA217BB18A9ADF10066E893 /* ChromecastDeviceController.m in Sources */,
 				5FC4DA76189712B3006BA107 /* VProfileWithEmailViewController.m in Sources */,
 				3F91991518761D1C0055FE37 /* VAcknowledgementsViewController.m in Sources */,
 				BE6C15281880A31B00469BA8 /* VAsset.m in Sources */,
@@ -1136,6 +1201,7 @@
 				BE5C7388187E37E500A3340D /* VConversation+RestKit.m in Sources */,
 				5FF9BE7C1893137D0054694B /* VSideMenuViewController.m in Sources */,
 				BE171E101868C211004E5202 /* VCategory+RestKit.m in Sources */,
+				3FA217C318A9B5160066E893 /* DeviceTableViewController.m in Sources */,
 				BE5C7352187E36D000A3340D /* VCategory.m in Sources */,
 				3F91991A187CAF310055FE37 /* VMessageViewController.m in Sources */,
 				BE5C7340187E36CF00A3340D /* VInteraction.m in Sources */,
@@ -1189,6 +1255,7 @@
 				BE171E1F1868C211004E5202 /* VObjectManager+Comment.m in Sources */,
 				BE171E141868C211004E5202 /* VNode+RestKit.m in Sources */,
 				BE171E121868C211004E5202 /* VInteraction+RestKit.m in Sources */,
+				3FA217C418A9B5160066E893 /* VolumeChangeController.m in Sources */,
 				3FF8C50218A59EAB00812968 /* VCreatePollViewController.m in Sources */,
 				BE5C735B187E36E700A3340D /* VNode.m in Sources */,
 				3F91991D187CAF620055FE37 /* VNewsViewController.m in Sources */,
@@ -1200,6 +1267,7 @@
 				BE171E1B1868C211004E5202 /* VUser+RestKit.m in Sources */,
 				BE5D799518989A0800DC752A /* VImagePickerViewController.m in Sources */,
 				BE5C736A187E36E800A3340D /* VRule.m in Sources */,
+				3FA217C218A9B5160066E893 /* CastViewController.m in Sources */,
 				BE83A37118827B400077EB26 /* VMessage.m in Sources */,
 				D1DAAA0B187A43BE009ADCB0 /* VProfileEditViewController.m in Sources */,
 				3F91991018761C720055FE37 /* VPrivacyPoliciesViewController.m in Sources */,
@@ -1337,6 +1405,10 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"/Users/garyphilipp/Documents/ViOS/VictoriousiOS-Dev/victorious/3rd\\ Party\\ SDKs",
+				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "victorious/Supporting Files/victorious-Prefix.pch";
 				INFOPLIST_FILE = "victorious/Supporting Files/debug-Info.plist";
@@ -1354,6 +1426,10 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"/Users/garyphilipp/Documents/ViOS/VictoriousiOS-Dev/victorious/3rd\\ Party\\ SDKs",
+				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "victorious/Supporting Files/victorious-Prefix.pch";
 				INFOPLIST_FILE = "victorious/Supporting Files/release-Info.plist";
@@ -1457,6 +1533,10 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"/Users/garyphilipp/Documents/ViOS/VictoriousiOS-Dev/victorious/3rd\\ Party\\ SDKs",
+				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "victorious/Supporting Files/victorious-Prefix.pch";
 				INFOPLIST_FILE = "victorious/Supporting Files/stable-Info.plist";

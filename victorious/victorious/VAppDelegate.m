@@ -49,8 +49,14 @@
     [TestFlight takeOff:@"02101c7d-4a01-4a44-8e8a-26dca03554aa"];
 #endif
     
-    [[VUserManager sharedInstance] silentlyLogin];
+//    [[VUserManager sharedInstance] silentlyLogin];
     
+    // Initialize the chromecast device controller.
+    self.chromecastDeviceController = [[ChromecastDeviceController alloc] init];
+    
+    // Scan for devices.
+    [self.chromecastDeviceController performScan:YES];
+
     NSURL*  openURL =   launchOptions[UIApplicationLaunchOptionsURLKey];
     if (openURL)
         [self handleOpenURL:openURL];
