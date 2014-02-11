@@ -48,15 +48,6 @@
                      {
                          [self.navigationController setNavigationBarHidden:NO animated:YES];
                      }];
-    
-//    [self.navigationController setNavigationBarHidden:NO animated:NO];
-//    self.navigationController.viewControllers = @[[VHomeStreamViewController sharedInstance]];
-}
-
-- (void)didReceiveMemoryWarning
-{
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
 }
 
 @end
