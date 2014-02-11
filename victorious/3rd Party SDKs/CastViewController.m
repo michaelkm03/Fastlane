@@ -20,7 +20,8 @@
 #import "NSString+VParseHelp.h"
 #import "VUser.h"
 
-@interface CastViewController ()<VolumeChangeControllerDelegate> {
+@interface CastViewController ()
+{
   NSTimeInterval _mediaStartTime;
   BOOL _currentlyDraggingSlider;
   BOOL _readyToShowInterface;

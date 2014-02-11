@@ -18,7 +18,6 @@ static NSString *const kReceiverAppID = @"YOUR_APP_ID_HERE";  //Replace with you
 
 @interface ChromecastDeviceController ()
 {
-  ChromecastControllerFeatures _features;
   UIImage *_btnImage;
   UIImage *_btnImageConnected;
   dispatch_queue_t _queue;
@@ -29,7 +28,6 @@ static NSString *const kReceiverAppID = @"YOUR_APP_ID_HERE";  //Replace with you
 @property GCKDevice *selectedDevice;
 @property float deviceVolume;
 @property bool deviceMuted;
-@property(nonatomic) VolumeChangeController *volumeChangeController;
 @property(nonatomic) NSArray *idleStateToolbarButtons;
 @property(nonatomic) NSArray *playStateToolbarButtons;
 @property(nonatomic) NSArray *pauseStateToolbarButtons;
@@ -43,24 +41,9 @@ static NSString *const kReceiverAppID = @"YOUR_APP_ID_HERE";  //Replace with you
 
 - (id)init
 {
-  return [self initWithFeatures:ChromecastControllerFeaturesNone];
-}
-
-- (id)initWithFeatures:(ChromecastControllerFeatures)featureFlags
-{
   self = [super init];
   if (self)
   {
-    // Remember the features.
-    _features = featureFlags;
-
-    // Init volume change controller if its requested.
-    if (featureFlags & ChromecastControllerFeatureHWVolumeControl)
-    {
-      self.volumeChangeController = [[VolumeChangeController alloc] init];
-      self.volumeChangeController.delegate = self;
-    }
-
     // Initialize device scanner
     self.deviceScanner = [[GCKDeviceScanner alloc] init];
 
@@ -209,12 +192,6 @@ static NSString *const kReceiverAppID = @"YOUR_APP_ID_HERE";  //Replace with you
   {
     [self.delegate didConnectToDevice:self.selectedDevice];
   }
-
-  // Hook to hardware volume controls.
-  if (_features & ChromecastControllerFeatureHWVolumeControl)
-  {
-    [self.volumeChangeController captureVolumeButtons];
-  }
 }
 
 - (void)deviceManager:(GCKDeviceManager *)deviceManager didFailToLaunchCastApplicationWithError:(NSError *)error
@@ -224,10 +201,6 @@ static NSString *const kReceiverAppID = @"YOUR_APP_ID_HERE";  //Replace with you
   [self deviceDisconnected];
   [self updateCastIconButtonStates];
   // Hook to hardware volume controls.
-  if (_features & ChromecastControllerFeatureHWVolumeControl)
-  {
-    [self.volumeChangeController releaseVolumeButtons];
-  }
 }
 
 - (void)deviceManager:(GCKDeviceManager *)deviceManager didFailToConnectWithError:(GCKError *)error
@@ -237,10 +210,6 @@ static NSString *const kReceiverAppID = @"YOUR_APP_ID_HERE";  //Replace with you
   [self deviceDisconnected];
   [self updateCastIconButtonStates];
   // Hook to hardware volume controls.
-  if (_features & ChromecastControllerFeatureHWVolumeControl)
-  {
-    [self.volumeChangeController releaseVolumeButtons];
-  }
 }
 
 - (void)deviceManager:(GCKDeviceManager *)deviceManager didDisconnectWithError:(GCKError *)error
@@ -369,17 +338,6 @@ static NSString *const kReceiverAppID = @"YOUR_APP_ID_HERE";  //Replace with you
   [self.mediaControlChannel loadMedia:mediaInformation autoplay:autoPlay playPosition:startTime];
 
   return YES;
-}
-
-#pragma mark - VolumeChangeControllerDelegate
-- (void)didChangeVolumeUp
-{
-  [self changeVolumeIncrease:YES];
-}
-
-- (void)didChangeVolumeDown
-{
-  [self changeVolumeIncrease:NO];
 }
 
 #pragma mark - implementation

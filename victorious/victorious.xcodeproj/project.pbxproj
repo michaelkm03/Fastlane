@@ -28,7 +28,6 @@
 		3FA217BB18A9ADF10066E893 /* ChromecastDeviceController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3FA217BA18A9ADF10066E893 /* ChromecastDeviceController.m */; };
 		3FA217C218A9B5160066E893 /* CastViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3FA217BD18A9B5160066E893 /* CastViewController.m */; };
 		3FA217C318A9B5160066E893 /* DeviceTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3FA217BF18A9B5160066E893 /* DeviceTableViewController.m */; };
-		3FA217C418A9B5160066E893 /* VolumeChangeController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3FA217C118A9B5160066E893 /* VolumeChangeController.m */; };
 		3FA217CB18A9BFC90066E893 /* cast_outline_white.png in Resources */ = {isa = PBXBuildFile; fileRef = 3FA217C518A9BFC90066E893 /* cast_outline_white.png */; };
 		3FA217CC18A9BFC90066E893 /* cast_outline_white@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3FA217C618A9BFC90066E893 /* cast_outline_white@2x.png */; };
 		3FA217CD18A9BFC90066E893 /* cast_solid_custom.png in Resources */ = {isa = PBXBuildFile; fileRef = 3FA217C718A9BFC90066E893 /* cast_solid_custom.png */; };
@@ -140,7 +139,6 @@
 		BEA5BF5F187F21770014C3EF /* VTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = BEA5BF5E187F21770014C3EF /* VTableViewCell.m */; };
 		BEA5BF71187FCBF10014C3EF /* VObjectManager+Users.m in Sources */ = {isa = PBXBuildFile; fileRef = BEA5BF70187FCBF10014C3EF /* VObjectManager+Users.m */; };
 		BEA73B7E18A98C0A0081312F /* VStreamActionBar.m in Sources */ = {isa = PBXBuildFile; fileRef = BEA73B7D18A98C0A0081312F /* VStreamActionBar.m */; };
-		BEA73B8018A9AAD90081312F /* VStreamActionBar.xib in Resources */ = {isa = PBXBuildFile; fileRef = BEA73B7F18A9AAD90081312F /* VStreamActionBar.xib */; };
 		BEB4C29B187E038C004ECEEF /* VConversationCell.m in Sources */ = {isa = PBXBuildFile; fileRef = BEB4C296187E038C004ECEEF /* VConversationCell.m */; };
 		BEB4C29C187E038C004ECEEF /* VConversationCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = BEB4C297187E038C004ECEEF /* VConversationCell.xib */; };
 		BEB4C29D187E038C004ECEEF /* VNewsCell.m in Sources */ = {isa = PBXBuildFile; fileRef = BEB4C299187E038C004ECEEF /* VNewsCell.m */; };
@@ -209,8 +207,6 @@
 		3FA217BD18A9B5160066E893 /* CastViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CastViewController.m; path = "3rd Party SDKs/CastViewController.m"; sourceTree = SOURCE_ROOT; };
 		3FA217BE18A9B5160066E893 /* DeviceTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DeviceTableViewController.h; path = "3rd Party SDKs/DeviceTableViewController.h"; sourceTree = SOURCE_ROOT; };
 		3FA217BF18A9B5160066E893 /* DeviceTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DeviceTableViewController.m; path = "3rd Party SDKs/DeviceTableViewController.m"; sourceTree = SOURCE_ROOT; };
-		3FA217C018A9B5160066E893 /* VolumeChangeController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VolumeChangeController.h; path = "3rd Party SDKs/VolumeChangeController.h"; sourceTree = SOURCE_ROOT; };
-		3FA217C118A9B5160066E893 /* VolumeChangeController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VolumeChangeController.m; path = "3rd Party SDKs/VolumeChangeController.m"; sourceTree = SOURCE_ROOT; };
 		3FA217C518A9BFC90066E893 /* cast_outline_white.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = cast_outline_white.png; path = "3rd Party SDKs/cast_outline_white.png"; sourceTree = SOURCE_ROOT; };
 		3FA217C618A9BFC90066E893 /* cast_outline_white@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "cast_outline_white@2x.png"; path = "3rd Party SDKs/cast_outline_white@2x.png"; sourceTree = SOURCE_ROOT; };
 		3FA217C718A9BFC90066E893 /* cast_solid_custom.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = cast_solid_custom.png; path = "3rd Party SDKs/cast_solid_custom.png"; sourceTree = SOURCE_ROOT; };
@@ -662,8 +658,6 @@
 				3FA217BD18A9B5160066E893 /* CastViewController.m */,
 				3FA217BE18A9B5160066E893 /* DeviceTableViewController.h */,
 				3FA217BF18A9B5160066E893 /* DeviceTableViewController.m */,
-				3FA217C018A9B5160066E893 /* VolumeChangeController.h */,
-				3FA217C118A9B5160066E893 /* VolumeChangeController.m */,
 				3FA217C518A9BFC90066E893 /* cast_outline_white.png */,
 				3FA217C618A9BFC90066E893 /* cast_outline_white@2x.png */,
 				3FA217C718A9BFC90066E893 /* cast_solid_custom.png */,
@@ -1280,7 +1274,6 @@
 				BE171E1F1868C211004E5202 /* VObjectManager+Comment.m in Sources */,
 				BE171E141868C211004E5202 /* VNode+RestKit.m in Sources */,
 				BE171E121868C211004E5202 /* VInteraction+RestKit.m in Sources */,
-				3FA217C418A9B5160066E893 /* VolumeChangeController.m in Sources */,
 				3FF8C50218A59EAB00812968 /* VCreatePollViewController.m in Sources */,
 				BE5C735B187E36E700A3340D /* VNode.m in Sources */,
 				3F91991D187CAF620055FE37 /* VNewsViewController.m in Sources */,
