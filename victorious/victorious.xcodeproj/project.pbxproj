@@ -1426,7 +1426,7 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
-					"/Users/garyphilipp/Documents/ViOS/VictoriousiOS-Dev/victorious/3rd\\ Party\\ SDKs",
+					"$(SRCROOT)/3rd\\ Party\\ SDKs/**",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "victorious/Supporting Files/victorious-Prefix.pch";
@@ -1448,7 +1448,7 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
-					"/Users/garyphilipp/Documents/ViOS/VictoriousiOS-Dev/victorious/3rd\\ Party\\ SDKs",
+					"$(SRCROOT)/3rd\\ Party\\ SDKs/**",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "victorious/Supporting Files/victorious-Prefix.pch";
@@ -1556,7 +1556,7 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
-					"/Users/garyphilipp/Documents/ViOS/VictoriousiOS-Dev/victorious/3rd\\ Party\\ SDKs",
+					"$(SRCROOT)/3rd\\ Party\\ SDKs/**",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "victorious/Supporting Files/victorious-Prefix.pch";
