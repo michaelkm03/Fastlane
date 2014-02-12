@@ -17,6 +17,4 @@
 @property (nonatomic, weak) id<VKeyboardBarDelegate> delegate;
 @property (weak, nonatomic, readonly) IBOutlet UITextField *textField;
 
-+ (instancetype)keyboardBarViewController;
-
 @end
