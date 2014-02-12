@@ -14,13 +14,16 @@
 
 
 #import "ChromecastDeviceController.h"
-#import "VSequence.h"
+
+@class VSequence;
 
 /**
  * A view that shows the media thumbnail and controls for media playing on the
  * Chromecast device.
  */
 @interface CastViewController : UIViewController<ChromecastControllerDelegate>
+
++ (CastViewController *)castViewController;
 
 /** The media object being played on Chromecast device. Set this before presenting the view. */
 @property(strong, nonatomic) VSequence* mediaToPlay;

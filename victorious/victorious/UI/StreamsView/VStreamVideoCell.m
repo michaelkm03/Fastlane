@@ -13,6 +13,8 @@
 #import "VSequence+Fetcher.h"
 #import "VMenuController.h"
 
+#import "CastViewController.h"
+
 @interface VStreamVideoCell ()
 @property (strong, nonatomic) MPMoviePlayerController* mpController;
 @end
@@ -85,4 +87,12 @@
         [self.mpController.view removeFromSuperview];
     }
 }
+
+- (IBAction)castAction:(id)sender
+{
+    CastViewController* caster = [CastViewController castViewController];
+    [self.parentTableViewController presentViewController:caster.navigationController animated:YES completion:nil];
+    [caster setMediaToPlay:self.sequence];
+}
+
 @end

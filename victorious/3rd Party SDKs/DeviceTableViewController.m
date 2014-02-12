@@ -19,61 +19,48 @@
 NSString *const CellIdForDeviceName = @"deviceName";
 
 @interface DeviceTableViewController ()
-
 @end
 
 @implementation DeviceTableViewController
-
-- (id)initWithCoder:(NSCoder *)aDecoder {
-  self = [super initWithCoder:aDecoder];
-  if (self) {
-    // Custom initialization
-  }
-  return self;
-}
 
 - (ChromecastDeviceController *)castDeviceController
 {
     return [VAppDelegate sharedAppDelegate].chromecastDeviceController;
 }
 
-- (void)viewDidLoad {
-  [super viewDidLoad];
-}
-
-- (void)didReceiveMemoryWarning {
-  [super didReceiveMemoryWarning];
-  // Dispose of any resources that can be recreated.
-}
-
 #pragma mark - Table view data source
 
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
+{
   // Return the number of sections.
   return 1;
 }
 
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
   // Return the number of rows in the section.
-  if (self.castDeviceController.isConnected == NO) {
+  if (self.castDeviceController.isConnected == NO)
+  {
     self.title = @"Connect to";
     return self.castDeviceController.deviceScanner.devices.count;
-  } else {
-    self.title =
-        [NSString stringWithFormat:@"Connected to %@", self.castDeviceController.deviceName];
+  }
+  else
+  {
+    self.title = [NSString stringWithFormat:@"Connected to %@", self.castDeviceController.deviceName];
     return 2;
   }
 }
 
-- (UITableViewCell *)tableView:(UITableView *)tableView
-         cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
   static NSString *CellIdForDeviceName = @"deviceName";
   static NSString *CellIdForReadyStatus = @"readyStatus";
   static NSString *CellIdForDisconnectButton = @"disconnectButton";
   static NSString *CellIdForPlayerController = @"playerController";
 
   UITableViewCell *cell;
-  if (self.castDeviceController.isConnected == NO) {
+  if (self.castDeviceController.isConnected == NO)
+  {
     cell = [tableView dequeueReusableCellWithIdentifier:CellIdForDeviceName forIndexPath:indexPath];
 
     // Configure the cell...
@@ -81,22 +68,23 @@ NSString *const CellIdForDeviceName = @"deviceName";
         [self.castDeviceController.deviceScanner.devices objectAtIndex:indexPath.row];
     cell.textLabel.text = device.friendlyName;
     cell.detailTextLabel.text = device.modelName;
-  } else if (self.castDeviceController.isPlayingMedia == NO) {
-    if (indexPath.row == 0) {
-      cell =
-          [tableView dequeueReusableCellWithIdentifier:CellIdForReadyStatus forIndexPath:indexPath];
+  }
+  else if (self.castDeviceController.isPlayingMedia == NO)
+  {
+    if (indexPath.row == 0)
+    {
+      cell = [tableView dequeueReusableCellWithIdentifier:CellIdForReadyStatus forIndexPath:indexPath];
     } else {
-      cell = [tableView dequeueReusableCellWithIdentifier:CellIdForDisconnectButton
-                                             forIndexPath:indexPath];
+      cell = [tableView dequeueReusableCellWithIdentifier:CellIdForDisconnectButton forIndexPath:indexPath];
     }
-  } else {
-    if (indexPath.row == 0) {
-      cell = [tableView dequeueReusableCellWithIdentifier:CellIdForPlayerController
-                                             forIndexPath:indexPath];
-      cell.textLabel.text =
-          [self.castDeviceController.mediaInformation.metadata stringForKey:kGCKMetadataKeyTitle];
-      cell.detailTextLabel.text = [self.castDeviceController.mediaInformation.metadata
-          stringForKey:kGCKMetadataKeySubtitle];
+  }
+  else
+  {
+    if (indexPath.row == 0)
+    {
+      cell = [tableView dequeueReusableCellWithIdentifier:CellIdForPlayerController forIndexPath:indexPath];
+      cell.textLabel.text = [self.castDeviceController.mediaInformation.metadata stringForKey:kGCKMetadataKeyTitle];
+      cell.detailTextLabel.text = [self.castDeviceController.mediaInformation.metadata stringForKey:kGCKMetadataKeySubtitle];
 
       // Accessory is the play/pause button.
       BOOL playing = (self.castDeviceController.playerState == GCKMediaPlayerStatePlaying ||
@@ -106,13 +94,12 @@ NSString *const CellIdForDeviceName = @"deviceName";
       CGRect frame = CGRectMake(0, 0, playImage.size.width, playImage.size.height);
       UIButton *button = [[UIButton alloc] initWithFrame:frame];
       [button setBackgroundImage:playImage forState:UIControlStateNormal];
-      [button addTarget:self
-                    action:@selector(playPausePressed:)
-          forControlEvents:UIControlEventTouchUpInside];
+      [button addTarget:self action:@selector(playPausePressed:) forControlEvents:UIControlEventTouchUpInside];
       cell.accessoryView = button;
 
       // Asynchronously load the table view image
-      if (self.castDeviceController.mediaInformation.metadata.images.count > 0) {
+      if (self.castDeviceController.mediaInformation.metadata.images.count > 0)
+      {
         dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0);
 
         dispatch_async(queue, ^{
@@ -125,81 +112,55 @@ NSString *const CellIdForDeviceName = @"deviceName";
           });
         });
       }
-    } else {
-      cell = [tableView dequeueReusableCellWithIdentifier:CellIdForDisconnectButton
-                                             forIndexPath:indexPath];
+    }
+    else
+    {
+      cell = [tableView dequeueReusableCellWithIdentifier:CellIdForDisconnectButton forIndexPath:indexPath];
     }
   }
   return cell;
 }
 
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-  if (self.castDeviceController.isConnected == NO) {
-    if (indexPath.row < self.castDeviceController.deviceScanner.devices.count) {
-      GCKDevice *device =
-          [self.castDeviceController.deviceScanner.devices objectAtIndex:indexPath.row];
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+  if (self.castDeviceController.isConnected == NO)
+  {
+    if (indexPath.row < self.castDeviceController.deviceScanner.devices.count)
+    {
+      GCKDevice *device = [self.castDeviceController.deviceScanner.devices objectAtIndex:indexPath.row];
       NSLog(@"Selecting device:%@", device.friendlyName);
       [self.castDeviceController connectToDevice:device];
     }
-  } else if (self.castDeviceController.isPlayingMedia == YES && indexPath.row == 0) {
-    if ([self.castDeviceController.delegate
-            respondsToSelector:@selector(shouldPresentPlaybackController)]) {
+  }
+  else if (self.castDeviceController.isPlayingMedia == YES && indexPath.row == 0)
+  {
+    if ([self.castDeviceController.delegate respondsToSelector:@selector(shouldPresentPlaybackController)])
+    {
       [self.castDeviceController.delegate shouldPresentPlaybackController];
     }
   }
-  // Dismiss the view.
-  [self dismissViewControllerAnimated:YES completion:nil];
+
+    [self.navigationController popViewControllerAnimated:YES];
 }
 
-- (void)tableView:(UITableView *)tableView
-    accessoryButtonTappedForRowWithIndexPath:(NSIndexPath *)indexPath {
-  NSLog(@"Accesory button tapped");
-}
-
-- (IBAction)disconnectDevice:(id)sender {
+- (IBAction)disconnectDevice:(id)sender
+{
   [self.castDeviceController disconnectFromDevice];
 
   // Dismiss the view.
-  [self dismissViewControllerAnimated:YES completion:nil];
+    [self.navigationController popViewControllerAnimated:YES];
 }
 
-- (IBAction)dismissView:(id)sender {
-  [self dismissViewControllerAnimated:YES completion:nil];
-}
-
-- (void)playPausePressed:(id)sender {
+- (void)playPausePressed:(id)sender
+{
   BOOL playing = (self.castDeviceController.playerState == GCKMediaPlayerStatePlaying ||
                   self.castDeviceController.playerState == GCKMediaPlayerStateBuffering);
   [self.castDeviceController pauseCastMedia:playing];
 
   // change the icon.
   UIButton *button = sender;
-  UIImage *playImage =
-      (playing ? [UIImage imageNamed:@"play_black.png"] : [UIImage imageNamed:@"pause_black.png"]);
+  UIImage *playImage = (playing ? [UIImage imageNamed:@"play_black.png"] : [UIImage imageNamed:@"pause_black.png"]);
   [button setBackgroundImage:playImage forState:UIControlStateNormal];
-}
-
-#pragma mark - implementation
-- (UIImage *)scaleImage:(UIImage *)image toSize:(CGSize)newSize {
-  CGSize scaledSize = newSize;
-  float scaleFactor = 1.0;
-  if (image.size.width > image.size.height) {
-    scaleFactor = image.size.width / image.size.height;
-    scaledSize.width = newSize.width;
-    scaledSize.height = newSize.height / scaleFactor;
-  } else {
-    scaleFactor = image.size.height / image.size.width;
-    scaledSize.height = newSize.height;
-    scaledSize.width = newSize.width / scaleFactor;
-  }
-
-  UIGraphicsBeginImageContextWithOptions(scaledSize, NO, 0.0);
-  CGRect scaledImageRect = CGRectMake(0.0, 0.0, scaledSize.width, scaledSize.height);
-  [image drawInRect:scaledImageRect];
-  UIImage *scaledImage = UIGraphicsGetImageFromCurrentImageContext();
-  UIGraphicsEndImageContext();
-
-  return scaledImage;
 }
 
 @end

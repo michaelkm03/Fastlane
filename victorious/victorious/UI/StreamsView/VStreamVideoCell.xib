@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="4514" systemVersion="13B42" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="4514" systemVersion="13B3116" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3747"/>
     </dependencies>
@@ -112,6 +112,17 @@
                             <action selector="pressedPlay:" destination="55v-1L-z95" eventType="touchUpInside" id="IbZ-IH-Na1"/>
                         </connections>
                     </button>
+                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gee-cJ-e8r" userLabel="cast Button">
+                        <rect key="frame" x="246" y="416" width="27" height="22"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <state key="normal" image="cast_outline_black.png">
+                            <color key="titleColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                        </state>
+                        <connections>
+                            <action selector="castAction:" destination="55v-1L-z95" eventType="touchUpInside" id="4D0-qF-jIp"/>
+                        </connections>
+                    </button>
                 </subviews>
                 <constraints>
                     <constraint firstItem="ClZ-8D-vSe" firstAttribute="leading" secondItem="EnC-ed-tLe" secondAttribute="trailing" constant="1" id="1sf-26-PUZ"/>
@@ -145,6 +156,7 @@
         <image name="StreamDate" width="13" height="13"/>
         <image name="StreamHeart" width="19" height="18"/>
         <image name="StreamShare" width="17" height="5"/>
+        <image name="cast_outline_black.png" width="27" height="21"/>
         <image name="profile_thumb" width="50" height="50"/>
     </resources>
 </document>
