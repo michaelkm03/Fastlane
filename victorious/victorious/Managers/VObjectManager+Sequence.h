@@ -8,6 +8,7 @@
 
 #import "VObjectManager.h"
 
+extern NSString* const kInitialLoadFinishedNotification;
 
 @class VAnswer, VSequence, VCategory;
 

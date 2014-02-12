@@ -96,11 +96,32 @@
                             <action selector="profileButtonAction:" destination="ClS-Ss-SJq" eventType="touchUpInside" id="Ccm-zJ-6gV"/>
                         </connections>
                     </button>
-                    <webView contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="V03-DQ-WAX">
+                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="m9n-4Y-LID">
                         <rect key="frame" x="5" y="65" width="310" height="175"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                    </imageView>
+                    <webView hidden="YES" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="V03-DQ-WAX">
+                        <rect key="frame" x="5" y="65" width="310" height="175"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                        <connections>
+                            <outlet property="delegate" destination="ClS-Ss-SJq" id="ICE-5n-48R"/>
+                        </connections>
                     </webView>
+                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="Play" translatesAutoresizingMaskIntoConstraints="NO" id="etx-P4-KAJ">
+                        <rect key="frame" x="144" y="136" width="33" height="33"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    </imageView>
+                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="FMm-WJ-HzO">
+                        <rect key="frame" x="5" y="65" width="310" height="175"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <state key="normal">
+                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                        </state>
+                        <connections>
+                            <action selector="presssedPlay:" destination="ClS-Ss-SJq" eventType="touchUpInside" id="qbG-wP-Rma"/>
+                        </connections>
+                    </button>
                 </subviews>
                 <constraints>
                     <constraint firstItem="Rjv-Bf-7RW" firstAttribute="leading" secondItem="IxH-jt-ZWz" secondAttribute="trailing" constant="4" id="6N5-IW-fQ6"/>
@@ -114,6 +135,9 @@
                 <outlet property="descriptionLabel" destination="8D7-NY-L6L" id="Rao-5W-muv"/>
                 <outlet property="likeButton" destination="JC2-JL-F6d" id="iIU-WI-5RA"/>
                 <outlet property="locationLabel" destination="cdh-Rv-E4l" id="XbB-VF-5nt"/>
+                <outlet property="playButton" destination="FMm-WJ-HzO" id="6Tx-yx-59c"/>
+                <outlet property="playButtonImage" destination="etx-P4-KAJ" id="xXx-Wc-wRK"/>
+                <outlet property="previewImageView" destination="m9n-4Y-LID" id="p7E-AY-DS9"/>
                 <outlet property="profileImageButton" destination="gUI-hE-M7J" id="gOC-LY-s3w"/>
                 <outlet property="usernameLabel" destination="E9G-Sx-geH" id="Gbh-CD-dab"/>
                 <outlet property="webView" destination="V03-DQ-WAX" id="1zt-JG-jS9"/>
@@ -129,6 +153,7 @@
         </tableViewCell>
     </objects>
     <resources>
+        <image name="Play" width="33" height="33"/>
         <image name="StreamComments" width="19" height="19"/>
         <image name="StreamDate" width="13" height="13"/>
         <image name="StreamHeart" width="19" height="18"/>

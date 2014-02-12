@@ -12,21 +12,26 @@
 #import "VNode+Fetcher.h"
 #import "VAsset.h"
 
+@interface VStreamYoutubeVideoCell() <UIWebViewDelegate>
+@property (weak, nonatomic) IBOutlet UIButton* playButton;
+@property (weak, nonatomic) IBOutlet UIImageView* playButtonImage;
+@end
+
 @implementation VStreamYoutubeVideoCell
 
 - (void)setSequence:(VSequence *)sequence
 {
     [super setSequence:sequence];
-    [self setYoutubeVideo];
-    
-    self.webView.scrollView.scrollEnabled = NO;
+    self.webView.hidden = YES;
+    self.playButton.userInteractionEnabled = YES;
+    self.playButtonImage.hidden = NO;
 }
 
-- (void)setYoutubeVideo
+- (IBAction)presssedPlay:(id)sender
 {
     NSString* videoID = [[self.sequence firstNode] firstAsset].data;
     
-    self.webView.hidden = NO;
+    self.webView.scrollView.scrollEnabled = NO;
     
     [self.webView setAllowsInlineMediaPlayback:YES];
     [self.webView setMediaPlaybackRequiresUserAction:NO];
@@ -40,6 +45,10 @@
                            {\
                            ytplayer=new YT.Player('playerId',{events:{onReady:onPlayerReady}})\
                            }\
+                           function onPlayerReady(a)\
+                           { \
+                           a.target.playVideo(); \
+                           }\
                            </script>\
                            <iframe id='playerId' type='text/html' width='%f' height='%f' src='http://www.youtube.com/embed/%@?enablejsapi=1&rel=0&playsinline=1&autoplay=0' frameborder='0'>\
                            </body>\
@@ -49,6 +58,13 @@
                            videoID];
     
     [self.webView loadHTMLString:embedHTML baseURL:[[NSBundle mainBundle] resourceURL]];
+    self.playButton.userInteractionEnabled = NO;
+    self.playButtonImage.hidden = YES;
+}
+
+- (void)webViewDidFinishLoad:(UIWebView *)webView
+{
+    self.webView.hidden = NO;
 }
 
 @end

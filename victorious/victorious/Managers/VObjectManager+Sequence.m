@@ -22,6 +22,8 @@
 
 #import "NSString+VParseHelp.h"
 
+NSString* const kInitialLoadFinishedNotification = @"kInitialLoadFinishedNotification";
+
 @implementation VObjectManager (Sequence)
 
 #pragma mark - Sequences
@@ -30,7 +32,10 @@
 {
     
     return [self loadNextPageOfSequencesForCategory:nil
-                                successBlock:nil
+                                successBlock:^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
+            {
+                [[NSNotificationCenter defaultCenter] postNotificationName:kInitialLoadFinishedNotification object:nil];
+            }
                                    failBlock:nil];
 //    return [[VObjectManager sharedManager] loadSequenceCategoriesWithSuccessBlock:^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
 //      {

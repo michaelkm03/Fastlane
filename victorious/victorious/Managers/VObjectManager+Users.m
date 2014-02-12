@@ -61,54 +61,51 @@
                                withSuccessBlock:(VSuccessBlock)success
                                       failBlock:(VFailBlock)fail
 {
-//    __block NSMutableArray* loadedUsers = [[NSMutableArray alloc] init];
-//    NSMutableArray* unloadedUserIDs = [[NSMutableArray alloc] init];
-//    
-//    //this removes duplicates
-//    for (NSNumber* userID in [[NSSet setWithArray:userIds] allObjects])
-//    {
-//        VUser* user = [self userForID:userID];
-//        if (user)
-//            [loadedUsers addObject:user];
-//        else
-//            [unloadedUserIDs addObject:userID];
-//    }
-//    
-//    if (![unloadedUserIDs count])
-//    {
-//        success(nil, nil, loadedUsers);
-//        return nil;
-//    }
-//    
-//    VSuccessBlock fullSuccess = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
-//    {
-//        for (VUser* user in resultObjects)
-//        {
-//            [self addRelationshipsForUser:user];
-//            [loadedUsers addObject:user];
-//        }
-//        
-//        if (success)
-//            success(operation, fullResponse, loadedUsers);
-//    };
-//    
-//    return [self GET:@"/api/userinfo/fetchmany"
-//              object:nil
-//          parameters:@{@"user_ids":unloadedUserIDs}
-//        successBlock:fullSuccess
-//           failBlock:fail];
+    __block NSMutableArray* loadedUsers = [[NSMutableArray alloc] init];
+    NSMutableArray* unloadedUserIDs = [[NSMutableArray alloc] init];
     
-    //TODO: replace with fetchUsers API call once its implemented on the backend
+    //this removes duplicates
     for (NSNumber* userID in [[NSSet setWithArray:userIds] allObjects])
     {
-        [self fetchUser:userID
-       withSuccessBlock:success
-              failBlock:fail];
+        VUser* user = (VUser*)[self objectForID:userID
+                                          idKey:kRemoteIdKey
+                                     entityName:[VUser entityName]];
+        if (user)
+            [loadedUsers addObject:user];
+        else
+            [unloadedUserIDs addObject:userID.stringValue];
     }
-    if (success && ![userIds count])
-        success(nil, nil, nil);
     
-    return nil;
+    if (![unloadedUserIDs count])
+    {
+        success(nil, nil, loadedUsers);
+        return nil;
+    }
+    
+    VSuccessBlock fullSuccess = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
+    {
+        for (VUser* user in resultObjects)
+        {
+            [self addRelationshipsForUser:user];
+            [loadedUsers addObject:user];
+        }
+        
+        if (success)
+            success(operation, fullResponse, loadedUsers);
+    };
+    
+    NSString *path = [@"/api/userinfo/fetch/" stringByAppendingString:unloadedUserIDs[0]];
+    for (int i = 1; i < [unloadedUserIDs count]; i++)
+    {
+        path = [path stringByAppendingString:@","];
+        path = [path stringByAppendingString:unloadedUserIDs[i]];
+    }
+    
+    return [self GET:path
+              object:nil
+          parameters:nil
+        successBlock:fullSuccess
+           failBlock:fail];
 }
 
 - (void)addRelationshipsForUser:(VUser*)user
