@@ -362,7 +362,7 @@ static NSString *const kReceiverAppID = @"YOUR_APP_ID_HERE";  //Replace with you
 - (void)initControls
 {
   // Create chromecast bar button.
-  _btnImage = [UIImage imageNamed:@"cast_outline_white.png"];
+  _btnImage = [UIImage imageNamed:@"cast_outline_black.png"];
   _btnImageConnected = [UIImage imageNamed:@"cast_solid_custom.png"];
 
   UIButton *chromecastButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];

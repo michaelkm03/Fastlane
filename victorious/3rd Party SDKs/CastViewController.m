@@ -28,7 +28,7 @@
   BOOL _joinExistingSession;
   __weak ChromecastDeviceController* _chromecastController;
 }
-@property(strong, nonatomic) UIPopoverController* masterPopoverController;
+
 @property IBOutlet UIImageView* thumbnailImage;
 @property IBOutlet UILabel* castingToLabel;
 @property(weak, nonatomic) IBOutlet UILabel* mediaTitleLabel;
@@ -44,46 +44,99 @@
 
 @implementation CastViewController
 
-- (id)initWithCoder:(NSCoder*)decoder {
++ (CastViewController *)castViewController
+{
+    static  UINavigationController*     castViewController;
+    static  dispatch_once_t             onceToken;
+    
+    dispatch_once(&onceToken, ^{
+        castViewController = [[UIStoryboard storyboardWithName:@"ChromeCast" bundle:nil] instantiateInitialViewController];
+    });
+    
+    return (CastViewController *)(castViewController.topViewController);
+}
+
+- (id)initWithCoder:(NSCoder*)decoder
+{
   self = [super initWithCoder:decoder];
-  if (self) {
+  if (self)
+  {
     [self initControls];
   }
 
   return self;
 }
 
-- (void)dealloc {
-}
-
-- (void)viewDidLoad {
+- (void)viewDidLoad
+{
   [super viewDidLoad];
 
   // Store a reference to the chromecast controller.
   _chromecastController = [VAppDelegate sharedAppDelegate].chromecastDeviceController;
 
   self.navigationItem.rightBarButtonItem = _chromecastController.chromecastBarButton;
-
-  self.castingToLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Casting to %@", nil),
-      _chromecastController.deviceName];
-  self.mediaTitleLabel.text = self.mediaToPlay.sequenceDescription;
+    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(doneAction:)];
 }
 
-- (void)didReceiveMemoryWarning {
-  [super didReceiveMemoryWarning];
-  // Dispose of any resources that can be recreated.
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    
+    // Assign ourselves as delegate ONLY in viewWillAppear of a view controller.
+    _chromecastController.delegate = self;
+
+    // Make the navigation bar transparent.
+    [self.navigationController.navigationBar setBackgroundImage:[UIImage new] forBarMetrics:UIBarMetricsDefault];
+    self.navigationController.navigationBar.shadowImage = [UIImage new];
+    
+    // We want a transparent toolbar.
+    [self.navigationController.toolbar setBackgroundImage:[UIImage new]
+                                       forToolbarPosition:UIBarPositionBottom
+                                               barMetrics:UIBarMetricsDefault];
+    [self.navigationController.toolbar setShadowImage:[UIImage new] forToolbarPosition:UIBarPositionBottom];
+    self.navigationController.toolbarHidden = YES;
+    self.toolbarItems = self.playToolbar;
+    
+    self.totalTime.title = @"";
+    self.currTime.title = @"";
+    [self.slider setValue:0];
+    [self.castActivityIndicator startAnimating];
+    _currentlyDraggingSlider = NO;
+    self.navigationController.toolbarHidden = YES;
+    _readyToShowInterface = NO;
+    
+    if (_joinExistingSession == YES)
+    {
+        [self mediaNowPlaying];
+    }
+    
+    [self configureView];
+}
+
+- (void)viewWillDisappear:(BOOL)animated
+{
+    // I think we can safely stop the timer here
+    [self.updateStreamTimer invalidate];
+    self.updateStreamTimer = nil;
+    
+    [self.navigationController.navigationBar setBackgroundImage:nil forBarMetrics:UIBarMetricsDefault];
+    [self.navigationController.toolbar setBackgroundImage:nil
+                                       forToolbarPosition:UIBarPositionBottom
+                                               barMetrics:UIBarMetricsDefault];
 }
 
 #pragma mark - Managing the detail item
 
-- (void)setMediaToPlay:(VSequence*)newDetailItem {
+- (void)setMediaToPlay:(VSequence*)newDetailItem
+{
   [self setMediaToPlay:newDetailItem withStartingTime:0];
 }
 
 - (void)setMediaToPlay:(VSequence*)newMedia withStartingTime:(NSTimeInterval)startTime
 {
   _mediaStartTime = startTime;
-  if (_mediaToPlay != newMedia) {
+  if (_mediaToPlay != newMedia)
+  {
     _mediaToPlay = newMedia;
 
     // Update the view.
@@ -91,53 +144,50 @@
   }
 }
 
-- (void)resetInterfaceElements {
-  self.totalTime.title = @"";
-  self.currTime.title = @"";
-  [self.slider setValue:0];
-  [self.castActivityIndicator startAnimating];
-  _currentlyDraggingSlider = NO;
-  self.navigationController.toolbarHidden = YES;
-  _readyToShowInterface = NO;
-}
-
-- (void)mediaNowPlaying {
+- (void)mediaNowPlaying
+{
   _readyToShowInterface = YES;
   [self updateInterfaceFromCast:nil];
   self.navigationController.toolbarHidden = NO;
 }
 
-- (void)updateInterfaceFromCast:(NSTimer*)timer {
+- (void)updateInterfaceFromCast:(NSTimer*)timer
+{
   [_chromecastController updateStatsFromDevice];
 
   if (!_readyToShowInterface)
     return;
 
-  if (_chromecastController.playerState != GCKMediaPlayerStateBuffering) {
+  if (_chromecastController.playerState != GCKMediaPlayerStateBuffering)
+  {
     [self.castActivityIndicator stopAnimating];
-  } else {
+  }
+  else
+  {
     [self.castActivityIndicator startAnimating];
   }
 
-  if (_chromecastController.streamDuration > 0 && !_currentlyDraggingSlider) {
+  if (_chromecastController.streamDuration > 0 && !_currentlyDraggingSlider)
+  {
     self.currTime.title = [self getFormattedTime:_chromecastController.streamPosition];
     self.totalTime.title = [self getFormattedTime:_chromecastController.streamDuration];
-    [self.slider
-        setValue:(_chromecastController.streamPosition / _chromecastController.streamDuration)
-        animated:YES];
+    [self.slider setValue:(_chromecastController.streamPosition / _chromecastController.streamDuration) animated:YES];
   }
-  if (_chromecastController.playerState == GCKMediaPlayerStatePaused ||
-      _chromecastController.playerState == GCKMediaPlayerStateIdle) {
+    
+  if (_chromecastController.playerState == GCKMediaPlayerStatePaused || _chromecastController.playerState == GCKMediaPlayerStateIdle)
+  {
     self.toolbarItems = self.playToolbar;
-  } else if (_chromecastController.playerState == GCKMediaPlayerStatePlaying ||
-             _chromecastController.playerState == GCKMediaPlayerStateBuffering) {
+  }
+  else if (_chromecastController.playerState == GCKMediaPlayerStatePlaying || _chromecastController.playerState == GCKMediaPlayerStateBuffering)
+  {
     self.toolbarItems = self.pauseToolbar;
   }
 }
 
 // Little formatting option here
 
-- (NSString*)getFormattedTime:(NSTimeInterval)timeInSeconds {
+- (NSString*)getFormattedTime:(NSTimeInterval)timeInSeconds
+{
   NSInteger seconds = (NSInteger) round(timeInSeconds);
   NSInteger hours = seconds / (60 * 60);
   seconds %= (60 * 60);
@@ -154,180 +204,153 @@
 
 - (void)configureView
 {
-  if (self.mediaToPlay && _chromecastController.isConnected)
+  if (self.mediaToPlay)
   {
-    VAsset* firstAsset = [[self.mediaToPlay firstNode] firstAsset];
-    NSURL* url = [NSURL URLWithString:firstAsset.data];
-      
-    self.castingToLabel.text = [NSString stringWithFormat:@"Casting to %@", _chromecastController.deviceName];
-    self.mediaTitleLabel.text = self.mediaToPlay.sequenceDescription;
-    NSLog(@"Casting movie %@ at starting time %f", url, _mediaStartTime);
+      self.mediaTitleLabel.text = self.mediaToPlay.sequenceDescription;
 
-    //Loading thumbnail async
+      VAsset* firstAsset = [[self.mediaToPlay firstNode] firstAsset];
+      NSURL* url = [NSURL URLWithString:firstAsset.data];
+      
+      //Loading thumbnail async
       NSLog(@"Loaded thumbnail image");
       [self.thumbnailImage setImageWithURL:[NSURL URLWithString:[firstAsset.data previewImageURLForM3U8]]];
       [self.view setNeedsLayout];
+      
+      if (_chromecastController.isConnected)
+      {
+          self.castingToLabel.text = [NSString stringWithFormat:@"Casting to %@", _chromecastController.deviceName];
+          NSLog(@"Casting movie %@ at starting time %f", url, _mediaStartTime);
 
-    // If the newMedia is already playing, join the existing session.
-    if (![self.mediaToPlay.name isEqualToString:[_chromecastController.mediaInformation.metadata
-            stringForKey:kGCKMetadataKeyTitle]]) {
-      //Cast the movie!!
-      [_chromecastController loadMedia:url
-                          thumbnailURL:[NSURL URLWithString:[firstAsset.data previewImageURLForM3U8]]
-                                 title:self.mediaToPlay.sequenceDescription
-                              subtitle:self.mediaToPlay.user.name
-                              mimeType:@"application/x-mpegurl"
-                             startTime:_mediaStartTime
-                              autoPlay:YES];
-      _joinExistingSession = NO;
-    } else {
-      _joinExistingSession = YES;
-      [self mediaNowPlaying];
+          // If the newMedia is already playing, join the existing session.
+          if (![self.mediaToPlay.name isEqualToString:[_chromecastController.mediaInformation.metadata stringForKey:kGCKMetadataKeyTitle]])
+          {
+              //Cast the movie!!
+              [_chromecastController loadMedia:url
+                                  thumbnailURL:[NSURL URLWithString:[firstAsset.data previewImageURLForM3U8]]
+                                         title:self.mediaToPlay.sequenceDescription
+                                      subtitle:self.mediaToPlay.user.name
+                                      mimeType:@"application/x-mpegurl"
+                                     startTime:_mediaStartTime
+                                      autoPlay:YES];
+              _joinExistingSession = NO;
+          }
+          else
+          {
+              _joinExistingSession = YES;
+              [self mediaNowPlaying];
+          }
+
+          // Start the timer
+          if (self.updateStreamTimer)
+          {
+              [self.updateStreamTimer invalidate];
+              self.updateStreamTimer = nil;
+          }
+
+          self.updateStreamTimer = [NSTimer scheduledTimerWithTimeInterval:1.0
+                                                                    target:self
+                                                                  selector:@selector(updateInterfaceFromCast:)
+                                                                  userInfo:nil
+                                                                   repeats:YES];
+      }
+      else
+      {
+          self.castingToLabel.text = @"Not Connected";
+      }
     }
-
-    // Start the timer
-    if (self.updateStreamTimer) {
-      [self.updateStreamTimer invalidate];
-      self.updateStreamTimer = nil;
-    }
-
-    self.updateStreamTimer =
-        [NSTimer scheduledTimerWithTimeInterval:1.0
-                                         target:self
-                                       selector:@selector(updateInterfaceFromCast:)
-                                       userInfo:nil
-                                        repeats:YES];
-
-  }
-}
-
-- (void)viewWillAppear:(BOOL)animated {
-  [super viewWillAppear:animated];
-
-  if (!_chromecastController.isConnected) {
-    return;
-  }
-
-  // Assign ourselves as delegate ONLY in viewWillAppear of a view controller.
-  _chromecastController.delegate = self;
-
-  // Make the navigation bar transparent.
-  [self.navigationController.navigationBar setBackgroundImage:[UIImage new]
-                                                forBarMetrics:UIBarMetricsDefault];
-  self.navigationController.navigationBar.shadowImage = [UIImage new];
-
-  // We want a transparent toolbar.
-  [self.navigationController.toolbar setBackgroundImage:[UIImage new]
-                                     forToolbarPosition:UIBarPositionBottom
-                                             barMetrics:UIBarMetricsDefault];
-  [self.navigationController.toolbar setShadowImage:[UIImage new]
-                                 forToolbarPosition:UIBarPositionBottom];
-  self.navigationController.toolbarHidden = YES;
-  self.toolbarItems = self.playToolbar;
-
-  [self resetInterfaceElements];
-
-  if (_joinExistingSession == YES) {
-    [self mediaNowPlaying];
-  }
-
-  [self configureView];
-}
-
-- (void)viewDidDisappear:(BOOL)animated {
-  [super viewDidDisappear:animated];
-}
-
-- (void)viewDidAppear:(BOOL)animated {
-  [super viewDidAppear:animated];
-}
-
-- (void)viewWillDisappear:(BOOL)animated {
-  // I think we can safely stop the timer here
-  [self.updateStreamTimer invalidate];
-  self.updateStreamTimer = nil;
-
-  [self.navigationController.navigationBar setBackgroundImage:nil
-                                                forBarMetrics:UIBarMetricsDefault];
-  [self.navigationController.toolbar setBackgroundImage:nil
-                                     forToolbarPosition:UIBarPositionBottom
-                                             barMetrics:UIBarMetricsDefault];
 }
 
 #pragma mark - On - screen UI elements
-- (IBAction)pauseButtonClicked:(id)sender {
+
+- (IBAction)pauseButtonClicked:(id)sender
+{
   [_chromecastController pauseCastMedia:YES];
 }
 
-- (IBAction)playButtonClicked:(id)sender {
+- (IBAction)playButtonClicked:(id)sender
+{
   [_chromecastController pauseCastMedia:NO];
 }
 
 // Unsed, but if you wanted a stop, as opposed to a pause button, this is probably
 // what you would call
-- (IBAction)stopButtonClicked:(id)sender {
+- (IBAction)stopButtonClicked:(id)sender
+{
   [_chromecastController stopCastMedia];
   [self.navigationController popToRootViewControllerAnimated:YES];
 }
 
-- (IBAction)onTouchDown:(id)sender {
+- (IBAction)onTouchDown:(id)sender
+{
   _currentlyDraggingSlider = YES;
 }
 
 // This is continuous, so we can update the current/end time labels
-- (IBAction)onSliderValueChanged:(id)sender {
+- (IBAction)onSliderValueChanged:(id)sender
+{
   float pctThrough = [self.slider value];
-  if (_chromecastController.streamDuration > 0) {
-    self.currTime.title =
-        [self getFormattedTime:(pctThrough * _chromecastController.streamDuration)];
+  if (_chromecastController.streamDuration > 0)
+  {
+    self.currTime.title = [self getFormattedTime:(pctThrough * _chromecastController.streamDuration)];
   }
 }
 // This is called only on one of the two touch up events
-- (void)touchIsFinished {
+- (void)touchIsFinished
+{
   [_chromecastController setPlaybackPercent:[self.slider value]];
   _currentlyDraggingSlider = NO;
 }
 
-- (IBAction)onTouchUpInside:(id)sender {
+- (IBAction)onTouchUpInside:(id)sender
+{
   NSLog(@"Touch up inside");
   [self touchIsFinished];
 
 }
-- (IBAction)onTouchUpOutside:(id)sender {
+- (IBAction)onTouchUpOutside:(id)sender
+{
   NSLog(@"Touch up outside");
   [self touchIsFinished];
 }
 
-#pragma mark - ChromecastControllerDelegate
-
-/**
- * Called when connection to the device was closed.
- */
-- (void)didDisconnect {
-  [self.navigationController popViewControllerAnimated:YES];
+- (IBAction)doneAction:(id)sender
+{
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
-/**
- * Called when the playback state of media on the device changes.
- */
-- (void)didReceiveMediaStateChange {
+#pragma mark - ChromecastControllerDelegate
+
+- (void)didConnectToDevice:(GCKDevice *)device
+{
+    [self configureView];
+}
+
+- (void)didDisconnect
+{
+    [self configureView];
+    [self dismissViewControllerAnimated:YES completion:nil];
+}
+
+- (void)didReceiveMediaStateChange
+{
   _readyToShowInterface = YES;
   self.navigationController.toolbarHidden = NO;
 
-  if (_chromecastController.playerState == GCKMediaPlayerStateIdle) {
-    [self.navigationController popViewControllerAnimated:YES];
+  if (_chromecastController.playerState == GCKMediaPlayerStateIdle)
+  {
+      [self dismissViewControllerAnimated:YES completion:nil];
   }
 }
 
-/**
- * Called to display the modal device view controller from the cast icon.
- */
-- (void)shouldDisplayModalDeviceController {
+- (void)shouldDisplayModalDeviceController
+{
   [self performSegueWithIdentifier:@"listDevices" sender:self];
 }
 
 #pragma mark - implementation.
-- (void)initControls {
+
+- (void)initControls
+{
   UIBarButtonItem* playButton =
       [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemPlay
                                                     target:self
@@ -377,7 +400,8 @@
   self.slider.autoresizingMask = UIViewAutoresizingFlexibleWidth;
   UIBarButtonItem* sliderItem = [[UIBarButtonItem alloc] initWithCustomView:self.slider];
   sliderItem.tintColor = [UIColor yellowColor];
-  if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
+  if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad)
+  {
     sliderItem.width = 500;
   }
 
