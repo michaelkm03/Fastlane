@@ -33,8 +33,6 @@
         self.view.layer.contents = (id)[[VThemeManager sharedThemeManager] themedImageForKeyPath:kVMenuBackgroundImage].CGImage;
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(initialLoadFinished:) name:kInitialLoadFinishedNotification object:nil];
-
-	// Do any additional setup after loading the view.
 }
 
 - (void)initialLoadFinished:(NSNotification*)notif

@@ -13,6 +13,12 @@
 #import "VObjectManager+Sequence.h"
 #import "VUserManager.h"
 
+@import MediaPlayer;
+
+@interface VAppDelegate()
+@property (nonatomic) BOOL isFullscreen;
+@end
+
 @implementation VAppDelegate
 
 + (VAppDelegate*) sharedAppDelegate
@@ -60,8 +66,37 @@
     NSURL*  openURL =   launchOptions[UIApplicationLaunchOptionsURLKey];
     if (openURL)
         [self handleOpenURL:openURL];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(enteredFullscreen:)
+                                                 name:MPMoviePlayerWillEnterFullscreenNotification
+                                               object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(exitedFullscreen:)
+                                                 name:MPMoviePlayerWillExitFullscreenNotification
+                                               object:nil];
+
+    
 
     return YES;
+}
+
+- (void)enteredFullscreen:(NSNotification*)notif
+{
+    self.isFullscreen = YES;
+}
+
+- (void)exitedFullscreen:(NSNotification*)notif
+{
+    self.isFullscreen = NO;
+}
+
+-(NSUInteger)application:(UIApplication *)application supportedInterfaceOrientationsForWindow:(UIWindow *)window
+{
+    if (self.isFullscreen)
+        return UIInterfaceOrientationMaskLandscape;
+    
+    return UIInterfaceOrientationMaskPortrait;
 }
 
 - (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation

@@ -41,8 +41,22 @@
                                              selector:@selector(moviePlayerFinished:)
                                                  name:MPMoviePlayerPlaybackDidFinishNotification
                                                object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(exitedFullscreen:)
+                                                 name:MPMoviePlayerDidExitFullscreenNotification
+                                               object:self.mpController];
     if (self.mpController)
         [self.mpController.view removeFromSuperview]; //make sure to get rid of the old view
+}
+
+- (void)exitedFullscreen:(NSNotification*)notif
+{
+    [self.mpController.view removeFromSuperview];
+    self.mpController.scalingMode = MPMovieScalingModeAspectFill;
+    self.mpController.view.frame = self.previewImageView.frame;
+    [self insertSubview:self.mpController.view aboveSubview:self.previewImageView];
+    [self.mpController play];
 }
 
 - (IBAction)pressedPlay:(id)sender
