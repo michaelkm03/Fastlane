@@ -248,15 +248,18 @@
         return;
  
     [self.refreshControl beginRefreshing];
+    [self.bottomRefreshIndicator startAnimating];
     
     [[VObjectManager sharedManager] loadNextPageOfSequencesForCategory:nil
                                                           successBlock:^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
      {
          [self.refreshControl endRefreshing];
+         [self.bottomRefreshIndicator stopAnimating];
      }
                                                              failBlock:^(NSOperation* operation, NSError* error)
      {
          [self.refreshControl endRefreshing];
+         [self.bottomRefreshIndicator stopAnimating];
      }];
 }
 

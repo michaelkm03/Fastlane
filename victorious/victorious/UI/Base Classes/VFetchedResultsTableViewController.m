@@ -33,6 +33,16 @@
                                                                                       target:self
                                                                                       action:@selector(displaySearchBar:)];
     self.navigationItem.rightBarButtonItem = searchButtonItem;
+    
+    self.tableView.backgroundView = [[UIView alloc] initWithFrame:self.tableView.frame];
+    self.bottomRefreshIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+    self.bottomRefreshIndicator.frame = CGRectMake(0, 0, 24, 24);
+    self.bottomRefreshIndicator.hidesWhenStopped = YES;
+    [self.tableView.backgroundView addSubview:self.bottomRefreshIndicator];
+    float yCenter = self.tableView.backgroundView.frame.size.height - self.bottomRefreshIndicator.frame.size.height;
+    self.bottomRefreshIndicator.center = CGPointMake(self.tableView.backgroundView.center.x,
+                                                     yCenter);
+    VLog(@"centery:%f centerx:%f", self.bottomRefreshIndicator.center.y, self.bottomRefreshIndicator.center.x);
 }
 
 - (void)didReceiveMemoryWarning
