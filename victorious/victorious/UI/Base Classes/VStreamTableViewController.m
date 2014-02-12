@@ -244,6 +244,11 @@
 #pragma mark - Refresh
 - (void)refreshAction
 {
+    if (self.refreshControl.refreshing)
+        return;
+ 
+    [self.refreshControl beginRefreshing];
+    
     [[VObjectManager sharedManager] loadNextPageOfSequencesForCategory:nil
                                                           successBlock:^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
      {
