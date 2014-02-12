@@ -195,9 +195,12 @@
   NSInteger minutes = seconds / 60;
   seconds %= 60;
 
-  if (hours > 0) {
+  if (hours > 0)
+  {
     return [NSString stringWithFormat:@"%d:%02d:%02d", hours, minutes, seconds];
-  } else {
+  }
+  else
+  {
     return [NSString stringWithFormat:@"%d:%02d", minutes, seconds];
   }
 }
