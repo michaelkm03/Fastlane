@@ -17,6 +17,7 @@
 #import "VObjectManager+Comment.h"
 
 #import "UIActionSheet+BBlock.h"
+#import "NSString+VParseHelp.h"
 
 #import "VSequence+Fetcher.h"
 #import "VNode+Fetcher.h"
@@ -258,10 +259,19 @@ static NSString* CommentCache = @"CommentCache";
     return [self.sortedComments count];
 }
 
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+- (CGFloat)tableView:(UITableView *)tableView estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     VComment *comment = [self.sortedComments objectAtIndex:indexPath.row];
     return [comment.mediaUrl length] ? kCommentRowWithMediaHeight : kCommentRowHeight;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    VComment* comment = (VComment*)[self.sortedComments objectAtIndex:indexPath.row];
+    CGFloat yOffset = [comment.mediaUrl length] ? kMediaCommentCellYOffset : kCommentCellYOffset;
+
+    return [comment.text heightForViewWidth:self.tableView.frame.size.width
+                              andAttributes:nil] + yOffset;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath

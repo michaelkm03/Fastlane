@@ -12,6 +12,9 @@
 @interface NSString (VParseHelp)
 
 @property (nonatomic, readonly, getter = typeByExtension) NSString* extensionType;
+
+- (CGFloat)heightForViewWidth:(CGFloat)width andAttributes:(NSDictionary*)attributes;
+
 - (NSString*)previewImageURLForM3U8;
 
 - (BOOL ) isEmpty;

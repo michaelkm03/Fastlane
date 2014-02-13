@@ -10,6 +10,17 @@
 
 @implementation NSString (VParseHelp)
 
+- (CGFloat)heightForViewWidth:(CGFloat)width andAttributes:(NSDictionary*)attributes
+{
+    NSStringDrawingOptions options = NSStringDrawingUsesLineFragmentOrigin |
+    NSStringDrawingUsesFontLeading;
+    CGRect boundingRect = [self boundingRectWithSize:CGSizeMake(width, CGFLOAT_MAX)
+                                             options:options
+                                          attributes:attributes
+                                             context:nil];
+    
+    return (CGFloat) (ceil(boundingRect.size.height));
+}
 
 - (NSString*)typeByExtension
 {

@@ -20,6 +20,10 @@
 #import "NSString+VParseHelp.h"
 #import "UIButton+VImageLoading.h"
 
+CGFloat const kCommentCellWidth = 214;
+CGFloat const kCommentCellYOffset = 33;
+CGFloat const kMediaCommentCellYOffset = 245;
+
 @interface VCommentCell()
 @property (weak, nonatomic) IBOutlet UILabel *dateLabel;
 @property (weak, nonatomic) IBOutlet UIButton *profileImageButton;
@@ -32,6 +36,12 @@
 @end
 
 @implementation VCommentCell
+
+- (void)awakeFromNib
+{
+    [super awakeFromNib];
+    self.commentOrMessage = self.commentOrMessage;
+}
 
 - (void)layoutSubviews
 {
@@ -69,8 +79,15 @@
         }
         self.messageLabel.text = comment.text;
 
+        CGFloat height =[comment.text heightForViewWidth:self.messageLabel.frame.size.width andAttributes:nil];
+        self.messageLabel.frame = CGRectMake(self.messageLabel.frame.origin.x,
+                                             self.messageLabel.frame.origin.y,
+                                             self.messageLabel.frame.size.width,
+                                             height);
+        CGFloat yOffset;
         if (comment.mediaUrl)
         {
+            yOffset = kMediaCommentCellYOffset;
             self.mediaUrl = comment.mediaUrl;
 
             if ([comment.mediaType isEqualToString:VConstantsMediaTypeVideo])
@@ -88,9 +105,17 @@
         }
         else
         {
+            yOffset = kCommentCellYOffset;
             self.mediaPreview.hidden = YES;
             self.playButton.hidden = YES;
         }
+        
+        VLog(@"frame: %@", self.frame);
+        self.frame = CGRectMake(self.frame.origin.x,
+                                self.frame.origin.y,
+                                self.frame.size.width,
+                                height + yOffset);
+        VLog(@"newframe: %@", self.frame);
     }
     else if([commentOrMessage isKindOfClass:[VMessage class]])
     {
@@ -132,6 +157,7 @@
             self.playButton.hidden = YES;
         }
     }
+    [self layoutSubviews];
 }
 
 - (IBAction)playVideo:(id)sender
