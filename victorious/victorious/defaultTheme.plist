@@ -119,9 +119,9 @@
 	<key>theme.font.profile.username</key>
 	<dict>
 		<key>fontName</key>
-		<string>Roboto-Light</string>
+		<string>Roboto-Regular</string>
 		<key>fontSize</key>
-		<integer>28</integer>
+		<integer>22</integer>
 	</dict>
 	<key>theme.font.profile.tagline</key>
 	<dict>
@@ -133,9 +133,20 @@
 	<key>theme.font.profile.location</key>
 	<dict>
 		<key>fontName</key>
-		<string>Roboto-Regular</string>
+		<string>Roboto-Light</string>
 		<key>fontSize</key>
-		<integer>17</integer>
+		<integer>15</integer>
+	</dict>
+	<key>theme.color.profile.location</key>
+	<dict>
+		<key>red</key>
+		<integer>208</integer>
+		<key>green</key>
+		<integer>208</integer>
+		<key>blue</key>
+		<integer>208</integer>
+		<key>alpha</key>
+		<integer>1</integer>
 	</dict>
 	<key>theme.font.poll.result.badge</key>
 	<dict>

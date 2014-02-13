@@ -16,13 +16,14 @@
 #import "VUser.h"
 #import "VThemeManager.h"
 #import "VLoginViewController.h"
+#import "UIImage+ImageEffects.h"
 
 @interface VProfileViewController () <UIActionSheetDelegate>
 @property   (nonatomic) VProfileUserID      userID;
 @property   (nonatomic, strong) VUser*      profile;
 
 @property (nonatomic, weak) IBOutlet UIImageView* backgroundImageView;
-
+@property (nonatomic, weak) IBOutlet UIImageView* profileCircleImageView;
 @property (nonatomic, weak) IBOutlet UILabel* nameLabel;
 @property (nonatomic, weak) IBOutlet UILabel* taglineLabel;
 @property (nonatomic, weak) IBOutlet UILabel* locationLabel;
@@ -75,10 +76,11 @@
         UIBarButtonItem* composeButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCompose
                                                                                        target:self
                                                                                        action:@selector(composeButtonAction:)];
-        UIBarButtonItem* userActionButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAction
-                                                                                          target:self
-                                                                                          action:@selector(actionButtonAction:)];
-        self.navigationItem.rightBarButtonItems = @[composeButton, userActionButton];
+//        UIBarButtonItem* userActionButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAction
+//                                                                                          target:self
+//                                                                                          action:@selector(actionButtonAction:)];
+//        self.navigationItem.rightBarButtonItems = @[composeButton, userActionButton];
+        self.navigationItem.rightBarButtonItem = composeButton;
 
         [[VObjectManager sharedManager] fetchUser:@(self.userID)
                                  withSuccessBlock:^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
@@ -97,21 +99,45 @@
 {
     //  Set background profile image
     NSURL*  imageURL    =   [NSURL URLWithString:self.profile.pictureUrl];
-    [self.backgroundImageView setImageWithURL:imageURL placeholderImage:[UIImage imageNamed:@"profile_full"]];
-    
+    NSMutableURLRequest* imageRequest = [NSMutableURLRequest requestWithURL:imageURL];
+    [imageRequest addValue:@"image/*" forHTTPHeaderField:@"Accept"];
+
+    [self.backgroundImageView setImageWithURLRequest:imageRequest
+                                    placeholderImage:[UIImage imageNamed:@"profile_full"]
+                                             success:^(NSURLRequest *request , NSHTTPURLResponse *response , UIImage *image)
+                                             {
+                                                 self.backgroundImageView.image = [image applyBlurWithRadius:15 tintColor:nil saturationDeltaFactor:1.8 maskImage:nil];
+                                             }
+                                             failure:nil];
+
+    self.profileCircleImageView.layer.masksToBounds = YES;
+    self.profileCircleImageView.layer.cornerRadius = 50.0;
+    self.profileCircleImageView.layer.borderWidth = 2.0;
+    UIColor* tintColor = [[VThemeManager sharedThemeManager] themedColorForKeyPath:kVTintColor];
+    self.profileCircleImageView.layer.borderColor = tintColor.CGColor;
+    self.profileCircleImageView.layer.rasterizationScale = [UIScreen mainScreen].scale;
+    self.profileCircleImageView.layer.shouldRasterize = YES;
+    self.profileCircleImageView.clipsToBounds = YES;
+    [self.profileCircleImageView setImageWithURL:imageURL placeholderImage:[UIImage imageNamed:@"profile_thumb"]];
+
     // Set Profile data
-    self.nameLabel.font = [[VThemeManager sharedThemeManager] themedFontForKeyPath:@"theme.font.profile.username"];
+    self.nameLabel.font = [[VThemeManager sharedThemeManager] themedFontForKeyPath:kVProfileUsernameFont];
     self.nameLabel.text = self.profile.name;
-    self.taglineLabel.font = [[VThemeManager sharedThemeManager] themedFontForKeyPath:@"theme.font.profile.tagline"];
+    self.taglineLabel.font = [[VThemeManager sharedThemeManager] themedFontForKeyPath:kVProfileTaglineFont];
+
     if (self.profile.tagline && self.profile.tagline.length)
-        self.taglineLabel.text = [NSString stringWithFormat:@"“%@”",self.profile.tagline];
+        self.taglineLabel.text = [NSString stringWithFormat:@"%@%@%@",
+                                  [[NSLocale autoupdatingCurrentLocale] objectForKey:NSLocaleQuotationBeginDelimiterKey],
+                                  self.profile.tagline,
+                                  [[NSLocale autoupdatingCurrentLocale] objectForKey:NSLocaleQuotationEndDelimiterKey]];
     else
         self.taglineLabel.text = @"";
 
-    self.locationLabel.font = [[VThemeManager sharedThemeManager] themedFontForKeyPath:@"theme.font.profile.location"];
+    self.locationLabel.font = [[VThemeManager sharedThemeManager] themedFontForKeyPath:kVProfileLocationFont];
     self.locationLabel.text = self.profile.location;
+    self.locationLabel.textColor = [[VThemeManager sharedThemeManager] themedColorForKeyPath:kVProfileLocationColor];
 
-    self.navigationController.title = self.profile.shortName;
+    self.navigationItem.title = self.profile.shortName;
 }
 
 #pragma mark - Actions

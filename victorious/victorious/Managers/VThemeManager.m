@@ -36,7 +36,13 @@ NSString*   const   kVCommentUsernameFont               =   @"theme.font.comment
 NSString*   const   kVCreatePostFont                    =   @"theme.font.post";
 NSString*   const   kVCreatePostButtonFont              =   @"theme.font.post.postButton";
 
+NSString*   const   kVProfileUsernameFont               =   @"theme.font.profile.username";
+NSString*   const   kVProfileLocationFont               =   @"theme.font.profile.location";
+NSString*   const   kVProfileTaglineFont                =   @"theme.font.profile.tagline";
+
 #pragma mark - Colors
+
+NSString*   const   kVTintColor                         =   @"theme.color";
 NSString*   const   kVStreamSearchBarColor              =   @"theme.color.stream.searchbar";
 
 NSString*   const   kVCreatePollQuestionBorderColor     =   @"theme.color.post.poll.questions.border";
@@ -57,6 +63,11 @@ NSString*   const   kVCreatePostButtonTextColor         =   @"theme.color.text.p
 NSString*   const   kVCreatePostButtonBGColor           =   @"theme.color.post.postButton.background";
 NSString*   const   kVCreatePostCountInvalidColor       =   @"theme.color.text.post.count.invalid";
 NSString*   const   kVCreatePostCountColor              =   @"theme.color.text.post.count";
+
+NSString*   const   kVProfileLocationColor              =   @"theme.color.profile.location";
+
+
+
 @interface      VThemeManager   ()
 @property   (nonatomic, readwrite, copy)    NSDictionary*   themeValues;
 @end

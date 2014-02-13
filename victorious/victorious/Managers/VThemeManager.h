@@ -35,7 +35,14 @@ extern  NSString*   const   kVCommentUsernameFont;
 
 extern  NSString*   const   kVCreatePostFont;
 extern  NSString*   const   kVCreatePostButtonFont;
+
+extern  NSString*   const   kVProfileUsernameFont;
+extern  NSString*   const   kVProfileLocationFont;
+extern  NSString*   const   kVProfileTaglineFont;
+
 //Colors
+
+extern  NSString*   const   kVTintColor;
 extern  NSString*   const   kVStreamSearchBarColor;
 
 extern  NSString*   const   kVCreatePollQuestionBorderColor;
@@ -58,6 +65,9 @@ extern  NSString*   const   kVCreatePostButtonTextColor;
 extern  NSString*   const   kVCreatePostButtonBGColor;
 extern  NSString*   const   kVCreatePostCountInvalidColor;
 extern  NSString*   const   kVCreatePostCountColor;
+
+extern  NSString*   const   kVProfileLocationColor;
+
 @interface VThemeManager : NSObject
 
 + (VThemeManager *)sharedThemeManager;
