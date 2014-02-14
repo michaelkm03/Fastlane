@@ -9,7 +9,7 @@
 #import "VAbstractProfileEditViewController.h"
 #import "VConstants.h"
 #import "VUser.h"
-#import "UIImage+ImageEffects.h"
+#import "UIImageView+Blurring.h"
 
 @interface VAbstractProfileEditViewController ()
 @end
@@ -29,13 +29,13 @@
     self.locationTextField.text = self.profile.location;
 
     self.profileImageView.layer.masksToBounds = YES;
-    self.profileImageView.layer.cornerRadius = 50.0;
+    self.profileImageView.layer.cornerRadius = CGRectGetHeight(self.profileImageView.bounds)/2;
     self.profileImageView.layer.rasterizationScale = [UIScreen mainScreen].scale;
     self.profileImageView.layer.shouldRasterize = YES;
     self.profileImageView.clipsToBounds = YES;
     
     self.cameraButton.layer.masksToBounds = YES;
-    self.cameraButton.layer.cornerRadius = 50.0;
+    self.cameraButton.layer.cornerRadius = CGRectGetHeight(self.cameraButton.bounds)/2;
     self.cameraButton.layer.rasterizationScale = [UIScreen mainScreen].scale;
     self.cameraButton.layer.shouldRasterize = YES;
     self.cameraButton.clipsToBounds = YES;
@@ -44,17 +44,11 @@
     [self.profileImageView setImageWithURL:imageURL placeholderImage:[UIImage imageNamed:@"profile_thumb"]];
 
     //  Set background image
-    NSMutableURLRequest* imageRequest = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:self.profile.pictureUrl]];
-    [imageRequest addValue:@"image/*" forHTTPHeaderField:@"Accept"];
-    
     UIImageView* backgroundImageView = [[UIImageView alloc] initWithFrame:self.tableView.backgroundView.frame];
-    [backgroundImageView setImageWithURLRequest:imageRequest
-                               placeholderImage:[[UIImage imageNamed:@"profile_full"] applyLightEffect]
-                                        success:^(NSURLRequest *request , NSHTTPURLResponse *response , UIImage *image )
-                                         {
-                                             [image applyLightEffect];
-                                         }
-                                        failure:nil];
+    [backgroundImageView setBlurredImageWithURL:[NSURL URLWithString:self.profile.pictureUrl]
+                               placeholderImage:[UIImage imageNamed:@"profile_thumb"]
+                                      tintColor:[UIColor colorWithWhite:1.0 alpha:0.3]];
+    
     self.tableView.backgroundView = backgroundImageView;
 }
 

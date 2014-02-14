@@ -215,6 +215,12 @@ NSString*   const   kAccountUpdateViewControllerDomain =   @"VAccountUpdateViewC
 - (IBAction)logout:(id)sender
 {
     [[VUserManager sharedInstance] logout];
+
+    self.logoutButton.enabled = NO;
+    self.saveChangesButton.enabled = NO;
+    self.nameTextField.enabled = NO;
+    self.emailAddressTextField.enabled = NO;
+    self.passwordTextField.enabled = NO;
 }
 
 - (IBAction)showMenu

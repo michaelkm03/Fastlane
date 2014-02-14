@@ -17,6 +17,7 @@
 #import "VThemeManager.h"
 #import "VLoginViewController.h"
 #import "UIImage+ImageEffects.h"
+#import "UIImageView+Blurring.h"
 
 @interface VProfileViewController () <UIActionSheetDelegate>
 @property   (nonatomic) VProfileUserID      userID;
@@ -99,19 +100,12 @@
 {
     //  Set background profile image
     NSURL*  imageURL    =   [NSURL URLWithString:self.profile.pictureUrl];
-    NSMutableURLRequest* imageRequest = [NSMutableURLRequest requestWithURL:imageURL];
-    [imageRequest addValue:@"image/*" forHTTPHeaderField:@"Accept"];
-
-    [self.backgroundImageView setImageWithURLRequest:imageRequest
+    [self.backgroundImageView setBlurredImageWithURL:imageURL
                                     placeholderImage:[UIImage imageNamed:@"profile_full"]
-                                             success:^(NSURLRequest *request , NSHTTPURLResponse *response , UIImage *image)
-                                             {
-                                                 self.backgroundImageView.image = [image applyBlurWithRadius:15 tintColor:nil saturationDeltaFactor:1.8 maskImage:nil];
-                                             }
-                                             failure:nil];
+                                           tintColor:[UIColor colorWithWhite:1.0 alpha:0.3]];
 
     self.profileCircleImageView.layer.masksToBounds = YES;
-    self.profileCircleImageView.layer.cornerRadius = 50.0;
+    self.profileCircleImageView.layer.cornerRadius = CGRectGetHeight(self.profileCircleImageView.bounds)/2;
     self.profileCircleImageView.layer.borderWidth = 2.0;
     UIColor* tintColor = [[VThemeManager sharedThemeManager] themedColorForKeyPath:kVTintColor];
     self.profileCircleImageView.layer.borderColor = tintColor.CGColor;

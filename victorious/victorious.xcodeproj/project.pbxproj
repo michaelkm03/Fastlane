@@ -39,6 +39,7 @@
 		3FA217DB18AAD1F70066E893 /* ChromeCast.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3FA217DA18AAD1F70066E893 /* ChromeCast.storyboard */; };
 		3FA217DE18AAFCFE0066E893 /* cast_outline_black.png in Resources */ = {isa = PBXBuildFile; fileRef = 3FA217DC18AAFCFE0066E893 /* cast_outline_black.png */; };
 		3FA217DF18AAFCFE0066E893 /* cast_outline_black@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3FA217DD18AAFCFE0066E893 /* cast_outline_black@2x.png */; };
+		3FA217E318AD87F40066E893 /* UIImageView+Blurring.m in Sources */ = {isa = PBXBuildFile; fileRef = 3FA217E218AD87F40066E893 /* UIImageView+Blurring.m */; };
 		3FF8B7981868EE7E00806EA0 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3FF8B7971868EE7E00806EA0 /* Main.storyboard */; };
 		3FF8B7A51868FC1C00806EA0 /* defaultTheme.plist in Resources */ = {isa = PBXBuildFile; fileRef = 3FF8B7A41868FC1C00806EA0 /* defaultTheme.plist */; };
 		3FF8C50018A59EAB00812968 /* VCreateContentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3FF8C4F418A59EAB00812968 /* VCreateContentViewController.m */; };
@@ -221,6 +222,8 @@
 		3FA217DA18AAD1F70066E893 /* ChromeCast.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = ChromeCast.storyboard; path = "3rd Party SDKs/ChromeCast.storyboard"; sourceTree = SOURCE_ROOT; };
 		3FA217DC18AAFCFE0066E893 /* cast_outline_black.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = cast_outline_black.png; path = "3rd Party SDKs/cast_outline_black.png"; sourceTree = SOURCE_ROOT; };
 		3FA217DD18AAFCFE0066E893 /* cast_outline_black@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "cast_outline_black@2x.png"; path = "3rd Party SDKs/cast_outline_black@2x.png"; sourceTree = SOURCE_ROOT; };
+		3FA217E118AD87F40066E893 /* UIImageView+Blurring.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "UIImageView+Blurring.h"; path = "Categories/UIImageView+Blurring.h"; sourceTree = "<group>"; };
+		3FA217E218AD87F40066E893 /* UIImageView+Blurring.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "UIImageView+Blurring.m"; path = "Categories/UIImageView+Blurring.m"; sourceTree = "<group>"; };
 		3FF8B7971868EE7E00806EA0 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
 		3FF8B7A41868FC1C00806EA0 /* defaultTheme.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = defaultTheme.plist; sourceTree = "<group>"; };
 		3FF8C4F318A59EAB00812968 /* VCreateContentViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VCreateContentViewController.h; sourceTree = "<group>"; };
@@ -503,6 +506,7 @@
 		3F9B665C188878D00046F826 /* Common */ = {
 			isa = PBXGroup;
 			children = (
+				3FA217E018AD87B50066E893 /* Categories */,
 				83DC42FC187CDDE600E768E2 /* VConstants.h */,
 				3F9B666518887D000046F826 /* Management */,
 				3F9B666418887CF40046F826 /* UI Elements */,
@@ -679,6 +683,15 @@
 				3FA217DA18AAD1F70066E893 /* ChromeCast.storyboard */,
 			);
 			name = ChromeCast;
+			sourceTree = "<group>";
+		};
+		3FA217E018AD87B50066E893 /* Categories */ = {
+			isa = PBXGroup;
+			children = (
+				3FA217E118AD87F40066E893 /* UIImageView+Blurring.h */,
+				3FA217E218AD87F40066E893 /* UIImageView+Blurring.m */,
+			);
+			name = Categories;
 			sourceTree = "<group>";
 		};
 		5FF9BE801893188A0054694B /* Menu */ = {
@@ -1305,6 +1318,7 @@
 				5FC4DA6D1897119C006BA107 /* VProfileWithSocialViewController.m in Sources */,
 				BE171E3A1868C266004E5202 /* NSString+VParseHelp.m in Sources */,
 				3F9B666B1888BE6A0046F826 /* VStreamTableViewController.m in Sources */,
+				3FA217E318AD87F40066E893 /* UIImageView+Blurring.m in Sources */,
 				BE692B51186E60B300C71336 /* VSequencePlayerViewController.m in Sources */,
 				BE4B74261880D3850090FF84 /* VAnswer.m in Sources */,
 				BE171E111868C211004E5202 /* VComment+RestKit.m in Sources */,

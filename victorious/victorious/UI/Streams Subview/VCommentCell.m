@@ -27,7 +27,6 @@ CGFloat const kMediaCommentCellYOffset = 245;
 @interface VCommentCell()
 @property (weak, nonatomic) IBOutlet UILabel *dateLabel;
 @property (weak, nonatomic) IBOutlet UIButton *profileImageButton;
-@property (weak, nonatomic) IBOutlet UILabel *usernameLabel;
 @property (weak, nonatomic) IBOutlet UILabel *messageLabel;
 @property (weak, nonatomic) IBOutlet UIImageView *mediaPreview;
 @property (weak, nonatomic) IBOutlet UIButton *playButton;
@@ -47,8 +46,7 @@ CGFloat const kMediaCommentCellYOffset = 245;
 {
     [super layoutSubviews];
     
-    self.usernameLabel.font = [[VThemeManager sharedThemeManager] themedFontForKeyPath:kVCommentUsernameFont];
-    self.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKeyPath:@"theme.color.messages.background"];
+//    self.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKeyPath:@"theme.color.messages.background"];
     self.dateLabel.font = [[VThemeManager sharedThemeManager] themedFontForKeyPath:@"theme.font.stream.timeSince"];
     self.profileImageButton.clipsToBounds = YES;
     
@@ -68,15 +66,6 @@ CGFloat const kMediaCommentCellYOffset = 245;
         [self.profileImageButton setImageWithURL:[NSURL URLWithString:comment.user.pictureUrl]
                                 placeholderImage:[UIImage imageNamed:@"profile_thumb"]
                                         forState:UIControlStateNormal];
-        
-        if(![comment.user.shortName isEmpty])
-        {
-            self.usernameLabel.text = comment.user.shortName;
-        }
-        else
-        {
-            self.usernameLabel.text = comment.user.name;
-        }
         self.messageLabel.text = comment.text;
 
         CGFloat height =[comment.text heightForViewWidth:self.messageLabel.frame.size.width andAttributes:nil];
@@ -110,12 +99,12 @@ CGFloat const kMediaCommentCellYOffset = 245;
             self.playButton.hidden = YES;
         }
         
-        VLog(@"frame: %@", self.frame);
+        VLog(@"frame: %@", NSStringFromCGRect(self.frame));
         self.frame = CGRectMake(self.frame.origin.x,
                                 self.frame.origin.y,
                                 self.frame.size.width,
                                 height + yOffset);
-        VLog(@"newframe: %@", self.frame);
+        VLog(@"newframe: %@", NSStringFromCGRect(self.frame));
     }
     else if([commentOrMessage isKindOfClass:[VMessage class]])
     {
@@ -124,14 +113,6 @@ CGFloat const kMediaCommentCellYOffset = 245;
         self.dateLabel.text = [message.postedAt timeSince];
         [self.profileImageButton.imageView setImageWithURL:[NSURL URLWithString:message.user.pictureUrl]
                                           placeholderImage:[UIImage imageNamed:@"profile_thumb"]];
-        if(![message.user.shortName isEmpty])
-        {
-            self.usernameLabel.text = message.user.shortName;
-        }
-        else
-        {
-            self.usernameLabel.text = message.user.name;
-        }
         self.messageLabel.text = message.text;
 
         if (message.media.mediaUrl)

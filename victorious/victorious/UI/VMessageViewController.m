@@ -15,6 +15,8 @@
 #import "VThemeManager.h"
 #import "VObjectManager.h"
 #import "VUser+RestKit.h"
+#import "UIImageView+Blurring.h"
+#import "UIImage+ImageEffects.h"
 
 const   CGFloat     kMessageRowWithMediaHeight  =   280.0;
 const   CGFloat     kMessageRowHeight           =   80;
@@ -30,9 +32,15 @@ const   CGFloat     kMessageRowHeight           =   80;
     [super viewDidLoad];
 
     self.composeViewController.delegate = self;
+    
+    UIImageView* backgroundImageView = [[UIImageView alloc] initWithFrame:self.tableView.backgroundView.frame];
+    [backgroundImageView setLightBlurredImageWithURL:[NSURL URLWithString:self.conversation.user.pictureUrl]
+                                    placeholderImage:[UIImage imageNamed:@"profile_thumb"]];
+    
+    self.tableView.backgroundView = backgroundImageView;
 
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
-    self.tableView.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKeyPath:@"theme.color.messages.background"];
+//    self.tableView.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKeyPath:@"theme.color.messages.background"];
     [self.tableView registerNib:[UINib nibWithNibName:kCommentCellIdentifier bundle:nil]
          forCellReuseIdentifier:kCommentCellIdentifier];
     [self.tableView registerNib:[UINib nibWithNibName:kOtherCommentCellIdentifier bundle:nil]
@@ -88,13 +96,13 @@ const   CGFloat     kMessageRowHeight           =   80;
 {
     UITableViewCell *cell = nil;
     VMessage*   aMessage = self.messages[indexPath.row];
-//    if([aMessage.user isEqualToUser:[VObjectManager sharedManager].mainUser])
-//    {
-//        cell = [tableView dequeueReusableCellWithIdentifier:kOtherCommentCellIdentifier forIndexPath:indexPath];
-//    }else
-//    {
+    if([aMessage.user isEqualToUser:[VObjectManager sharedManager].mainUser])
+    {
+        cell = [tableView dequeueReusableCellWithIdentifier:kOtherCommentCellIdentifier forIndexPath:indexPath];
+    }else
+    {
         cell = [tableView dequeueReusableCellWithIdentifier:kCommentCellIdentifier forIndexPath:indexPath];
-//    }
+    }
 
     [(VCommentCell *)cell setCommentOrMessage:aMessage];
 
