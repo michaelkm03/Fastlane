@@ -11,7 +11,7 @@
 #import "VImagePickerViewController.h"
 #import "VConstants.h"
 
-@interface VImagePickerViewController () <UIImagePickerControllerDelegate, UINavigationControllerDelegate>
+@interface VImagePickerViewController () <UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIActionSheetDelegate>
 @end
 
 @implementation VImagePickerViewController
@@ -43,12 +43,6 @@
     if (!_imagePicker)
     {
         _imagePicker = [[UIImagePickerController alloc] init];
-        
-        if([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera])
-            _imagePicker.sourceType = UIImagePickerControllerSourceTypeCamera;
-        else
-            _imagePicker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
-        
         _imagePicker.delegate = self;
         _imagePicker.allowsEditing = YES;
         _imagePicker.videoMaximumDuration  = 10.0f;
@@ -109,12 +103,41 @@
 }
 
 #pragma mark - Button Actions
+
 - (IBAction)mediaButtonAction:(id)sender
 {
-    [self presentViewController:self.imagePicker animated:YES completion:nil];
+    if([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera])
+    {
+        UIActionSheet*  sheet = [[UIActionSheet alloc] initWithTitle:@"Select Using:"
+                                                            delegate:self
+                                                   cancelButtonTitle:@"Cancel"
+                                              destructiveButtonTitle:nil
+                                                   otherButtonTitles:@"Camera", @"Your Library", nil];
+        [sheet showInView:self.view];
+    }
+    else
+    {
+        self.imagePicker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
+        [self presentViewController:self.imagePicker animated:YES completion:nil];
+    }
+}
+
+- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    if (actionSheet.firstOtherButtonIndex == buttonIndex)
+    {
+        self.imagePicker.sourceType = UIImagePickerControllerSourceTypeCamera;
+        [self presentViewController:self.imagePicker animated:YES completion:nil];
+    }
+    else if ((actionSheet.firstOtherButtonIndex + 1) == buttonIndex)
+    {
+        self.imagePicker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
+        [self presentViewController:self.imagePicker animated:YES completion:nil];
+    }
 }
 
 #pragma mark - Overrides
+
 - (void)imagePickerFinishedWithData:(NSData*)data
                           extension:(NSString*)extension
                        previewImage:(UIImage*)previewImage

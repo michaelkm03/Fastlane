@@ -47,6 +47,12 @@
     return _conversationTableViewController;
 }
 
+- (void)viewDidAppear:(BOOL)animated
+{
+    self.showKeyboard = YES;
+    [super viewDidAppear:animated];
+}
+
 #pragma mark - VCommentsTableViewControllerDelegate
 
 - (void)streamsCommentsController:(VCommentsTableViewController *)viewController shouldReplyToUser:(VUser *)user

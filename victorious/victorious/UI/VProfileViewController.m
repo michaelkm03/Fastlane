@@ -77,10 +77,6 @@
         UIBarButtonItem* composeButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCompose
                                                                                        target:self
                                                                                        action:@selector(composeButtonAction:)];
-//        UIBarButtonItem* userActionButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAction
-//                                                                                          target:self
-//                                                                                          action:@selector(actionButtonAction:)];
-//        self.navigationItem.rightBarButtonItems = @[composeButton, userActionButton];
         self.navigationItem.rightBarButtonItem = composeButton;
 
         [[VObjectManager sharedManager] fetchUser:@(self.userID)
@@ -150,38 +146,6 @@
     }
 
     [self performSegueWithIdentifier:@"toComposeMessage" sender:self];
-}
-
--(IBAction)actionButtonAction:(id)sender
-{
-    UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:@""
-                                                             delegate:self
-                                                    cancelButtonTitle:NSLocalizedString(@"CancelButton", @"")
-                                               destructiveButtonTitle:NSLocalizedString(@"ReportInappropriate", @"")
-                                                    otherButtonTitles:NSLocalizedString(@"BlockUser", @""),
-                                  NSLocalizedString(@"CopyProfileURL", @""), nil];
-
-    [actionSheet showFromBarButtonItem:sender animated:YES];
-}
-
--(void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
-{
-    if (buttonIndex == 0)
-    {
-        NSLog(@"Report Button Clicked");
-    }
-    else if (buttonIndex == 1)
-    {
-        NSLog(@"Block button 1 Clicked");
-    }
-    else if (buttonIndex == 2)
-    {
-        NSLog(@"Copy Profile Button 2 Clicked");
-    }
-    else if (buttonIndex == 3)
-    {
-        NSLog(@"Cancel Button Clicked");
-    }
 }
 
 - (IBAction)showMenu:(id)sender

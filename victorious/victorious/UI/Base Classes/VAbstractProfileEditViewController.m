@@ -11,7 +11,7 @@
 #import "VUser.h"
 #import "UIImageView+Blurring.h"
 
-@interface VAbstractProfileEditViewController ()
+@interface VAbstractProfileEditViewController () <UIActionSheetDelegate>
 @end
 
 @implementation VAbstractProfileEditViewController
@@ -61,18 +61,41 @@
 
 - (IBAction)takePicture:(id)sender
 {
-    UIImagePickerController*    picker = [[UIImagePickerController alloc] init];
-    
     if([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera])
     {
-        picker.sourceType = UIImagePickerControllerSourceTypeCamera;
-        picker.cameraCaptureMode = UIImagePickerControllerCameraCaptureModePhoto;
+        UIActionSheet*  sheet = [[UIActionSheet alloc] initWithTitle:@"Select Picture Using:"
+                                                            delegate:self
+                                                   cancelButtonTitle:@"Cancel"
+                                              destructiveButtonTitle:nil
+                                                   otherButtonTitles:@"Camera", @"Photo Library", nil];
+        [sheet showInView:self.view];
     }
     else
     {
-        picker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
+        [self takePictureWithSource:UIImagePickerControllerSourceTypePhotoLibrary];
     }
+}
+
+- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    if (actionSheet.firstOtherButtonIndex == buttonIndex)
+    {
+        [self takePictureWithSource:UIImagePickerControllerSourceTypeCamera];
+    }
+    else if ((actionSheet.firstOtherButtonIndex + 1) == buttonIndex)
+    {
+        [self takePictureWithSource:UIImagePickerControllerSourceTypePhotoLibrary];
+    }
+}
+
+- (void)takePictureWithSource:(UIImagePickerControllerSourceType)sourceType
+{
+    UIImagePickerController*    picker = [[UIImagePickerController alloc] init];
     
+    picker.sourceType = sourceType;
+    if (UIImagePickerControllerSourceTypeCamera == sourceType)
+        picker.cameraCaptureMode = UIImagePickerControllerCameraCaptureModePhoto;
+
     picker.delegate = self;
     picker.allowsEditing = YES;
     
