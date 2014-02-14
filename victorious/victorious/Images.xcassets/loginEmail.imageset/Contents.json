@@ -3,12 +3,12 @@
     {
       "idiom" : "universal",
       "scale" : "1x",
-      "filename" : "icon-twitter-login.png"
+      "filename" : "icon-email-login.png"
     },
     {
       "idiom" : "universal",
       "scale" : "2x",
-      "filename" : "icon-twitter-login@2x.png"
+      "filename" : "icon-email-login@2x.png"
     }
   ],
   "info" : {
