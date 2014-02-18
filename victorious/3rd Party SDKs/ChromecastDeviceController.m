@@ -14,7 +14,7 @@
 
 #import "ChromecastDeviceController.h"
 
-static NSString *const kReceiverAppID = @"YOUR_APP_ID_HERE";  //Replace with your app id
+static NSString *const kReceiverAppID = @"C8A31643";  //Replace with your app id
 
 @interface ChromecastDeviceController ()
 {
