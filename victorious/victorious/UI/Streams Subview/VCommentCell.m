@@ -22,7 +22,7 @@
 #import "VProfileViewController.h"
 
 CGFloat const kCommentCellWidth = 214;
-CGFloat const kCommentCellYOffset = 63;
+CGFloat const kCommentCellYOffset = 10;
 CGFloat const kMediaCommentCellYOffset = 235;
 CGFloat const kMinCellHeight = 84;
 CGFloat const kCommentMessageLabelWidth = 214;
@@ -52,6 +52,7 @@ CGFloat const kCommentMessageLabelWidth = 214;
     
 //    self.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKeyPath:@"theme.color.messages.background"];
     self.dateLabel.font = [[VThemeManager sharedThemeManager] themedFontForKeyPath:@"theme.font.stream.timeSince"];
+
     self.profileImageButton.clipsToBounds = YES;
     
     self.profileImageButton.layer.cornerRadius = CGRectGetHeight(self.profileImageButton.bounds)/2;
@@ -151,7 +152,8 @@ CGFloat const kCommentMessageLabelWidth = 214;
                                          self.messageLabel.frame.origin.y,
                                          self.messageLabel.frame.size.width,
                                          height);
-
+    [self.messageLabel sizeToFit];
+    height = self.messageLabel.frame.size.height;
     height = MAX(height + yOffset, kMinCellHeight);
     
     self.frame = CGRectMake(self.frame.origin.x,
@@ -162,9 +164,10 @@ CGFloat const kCommentMessageLabelWidth = 214;
 
 + (CGFloat)heightForMessageText:(NSString*)text
 {
-//    NSDictionary *stringAttributes = [NSDictionary dictionaryWithObject:self.messageLabel.font forKey: NSFontAttributeName];
+    NSDictionary *stringAttributes = [NSDictionary dictionaryWithObject:[[VThemeManager sharedThemeManager] themedFontForKeyPath:@"theme.font.stream"]
+                                                                 forKey: NSFontAttributeName];
     CGFloat height = [text heightForViewWidth:kCommentMessageLabelWidth
-                               andAttributes:nil];
+                               andAttributes:stringAttributes];
     
     return height;
 }

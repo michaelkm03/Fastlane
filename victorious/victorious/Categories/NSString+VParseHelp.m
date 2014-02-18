@@ -15,8 +15,6 @@
     NSStringDrawingOptions options = NSStringDrawingUsesLineFragmentOrigin |
     NSStringDrawingUsesFontLeading;
     
-    width -= 40; //There seems to be an issue with rect this function returns.  Multiple people this -40 on the width is the "magic number" to fix it.  Worse case, this makes the bounding box a little big instead.  Link to SO: http://stackoverflow.com/questions/19398674/sizewithfont-method-is-deprecated-boundingrectwithsize-is-returning-wrong-value
-    
     CGRect boundingRect = [self boundingRectWithSize:CGSizeMake(width, CGFLOAT_MAX)
                                              options:options
                                           attributes:attributes
