@@ -155,7 +155,6 @@
 		BEF2C2AE188620EE00AAE975 /* VSequence.m in Sources */ = {isa = PBXBuildFile; fileRef = BEF2C2AD188620EE00AAE975 /* VSequence.m */; };
 		BEF2C2B1188620EE00AAE975 /* VUser.m in Sources */ = {isa = PBXBuildFile; fileRef = BEF2C2B0188620EE00AAE975 /* VUser.m */; };
 		BEF2C2B71886211000AAE975 /* VPollResult.m in Sources */ = {isa = PBXBuildFile; fileRef = BEF2C2B61886211000AAE975 /* VPollResult.m */; };
-		BEF8D37B188755C1004919CA /* VStreamYoutubeCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = BEF8D37A188755C1004919CA /* VStreamYoutubeCell.xib */; };
 		D1DAAA08187A43A9009ADCB0 /* VProfileViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D1DAAA07187A43A9009ADCB0 /* VProfileViewController.m */; };
 		D1DAAA0B187A43BE009ADCB0 /* VProfileEditViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D1DAAA0A187A43BE009ADCB0 /* VProfileEditViewController.m */; };
 /* End PBXBuildFile section */
@@ -432,7 +431,6 @@
 		BEF2C2B0188620EE00AAE975 /* VUser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VUser.m; sourceTree = "<group>"; };
 		BEF2C2B51886211000AAE975 /* VPollResult.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VPollResult.h; sourceTree = "<group>"; };
 		BEF2C2B61886211000AAE975 /* VPollResult.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VPollResult.m; sourceTree = "<group>"; };
-		BEF8D37A188755C1004919CA /* VStreamYoutubeCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VStreamYoutubeCell.xib; sourceTree = "<group>"; };
 		D1DAAA06187A43A9009ADCB0 /* VProfileViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VProfileViewController.h; path = UI/VProfileViewController.h; sourceTree = "<group>"; };
 		D1DAAA07187A43A9009ADCB0 /* VProfileViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VProfileViewController.m; path = UI/VProfileViewController.m; sourceTree = "<group>"; };
 		D1DAAA09187A43BE009ADCB0 /* VProfileEditViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VProfileEditViewController.h; path = UI/VProfileEditViewController.h; sourceTree = "<group>"; };
@@ -940,7 +938,6 @@
 				BE692B20186E5ED800C71336 /* VStreamViewCell.h */,
 				BE692B21186E5ED800C71336 /* VStreamViewCell.m */,
 				BE692B22186E5ED800C71336 /* VStreamViewCell.xib */,
-				BEF8D37A188755C1004919CA /* VStreamYoutubeCell.xib */,
 				BE40559D18A20C0F00092AE1 /* VStreamYoutubeVideoCell.h */,
 				BE40559E18A20C0F00092AE1 /* VStreamYoutubeVideoCell.m */,
 				BE40559B18A2082900092AE1 /* VStreamYoutubeVideoCell.xib */,
@@ -1120,7 +1117,6 @@
 				83ABAFAF18709DE30069556C /* Roboto-Light.ttf in Resources */,
 				BE692B52186E60B300C71336 /* VSequencePlayerViewController.xib in Resources */,
 				83CC444A187DDCA8000C480C /* Roboto-Black.ttf in Resources */,
-				BEF8D37B188755C1004919CA /* VStreamYoutubeCell.xib in Resources */,
 				3FA217DF18AAFCFE0066E893 /* cast_outline_black@2x.png in Resources */,
 				BE692B25186E5ED800C71336 /* VStreamPollCell.xib in Resources */,
 				BE692B2A186E5ED800C71336 /* VStreamViewCell.xib in Resources */,
