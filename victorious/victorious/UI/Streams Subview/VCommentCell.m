@@ -139,7 +139,12 @@ CGFloat const kMinCellHeight = 84;
 
 -(void)layoutWithText:(NSString*)text withMedia:(BOOL)hasMedia
 {
-    CGFloat height =[text heightForViewWidth:self.messageLabel.frame.size.width andAttributes:nil];
+    NSDictionary *stringAttributes = [NSDictionary dictionaryWithObject:self.messageLabel.font forKey: NSFontAttributeName];
+
+    CGFloat width = self.messageLabel.frame.size.width - 40;
+    CGFloat height =[text heightForViewWidth:width
+                               andAttributes:stringAttributes];
+    
     CGFloat yOffset = hasMedia ? kMediaCommentCellYOffset : kCommentCellYOffset;
     
     self.messageLabel.text = text;

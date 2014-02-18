@@ -449,6 +449,7 @@ static NSString* CommentCache = @"CommentCache";
                              otherButtonTitles:nil];
             [alert show];
         }
+        [indicator stopAnimating];
     };
     
     [[VObjectManager sharedManager] addCommentWithText:text
