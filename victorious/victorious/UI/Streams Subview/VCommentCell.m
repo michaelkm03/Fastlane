@@ -30,6 +30,7 @@ CGFloat const kMinCellHeight = 84;
 @property (weak, nonatomic) IBOutlet UIButton *profileImageButton;
 @property (weak, nonatomic) IBOutlet UILabel *messageLabel;
 @property (weak, nonatomic) IBOutlet UIImageView *mediaPreview;
+@property (weak, nonatomic) IBOutlet UIImageView *chatBubble;
 @property (weak, nonatomic) IBOutlet UIButton *playButton;
 @property (nonatomic, strong) MPMoviePlayerController* mpController;
 @property (strong, nonatomic) NSString *mediaUrl;
@@ -56,7 +57,6 @@ CGFloat const kMinCellHeight = 84;
 
 - (void)setCommentOrMessage:(id)commentOrMessage
 {
-    BOOL hasMedia = NO;
     _commentOrMessage = commentOrMessage;
 
     if([commentOrMessage isKindOfClass:[VComment class]])
@@ -64,15 +64,17 @@ CGFloat const kMinCellHeight = 84;
         VComment *comment = (VComment *)self.commentOrMessage;
 
         self.dateLabel.text = [comment.postedAt timeSince];
+        self.chatBubble.hidden = YES; 
         
         [self.profileImageButton setImageWithURL:[NSURL URLWithString:comment.user.pictureUrl]
                                 placeholderImage:[UIImage imageNamed:@"profile_thumb"]
                                         forState:UIControlStateNormal];
         self.messageLabel.text = comment.text;
 
-        if (comment.mediaUrl)
+        if (![comment.mediaUrl isEmpty])
         {
-            hasMedia = YES;
+            [self layoutWithText:comment.text withMedia:YES];
+
             self.mediaUrl = comment.mediaUrl;
             self.mediaPreview.hidden = NO;
             
@@ -88,6 +90,7 @@ CGFloat const kMinCellHeight = 84;
         }
         else
         {
+            [self layoutWithText:comment.text withMedia:NO];
             self.mediaPreview.hidden = YES;
             self.playButton.hidden = YES;
         }
@@ -96,14 +99,18 @@ CGFloat const kMinCellHeight = 84;
     {
         VMessage *message = (VMessage *)self.commentOrMessage;
 
+        self.chatBubble.hidden = NO;
+        
         self.dateLabel.text = [message.postedAt timeSince];
         [self.profileImageButton.imageView setImageWithURL:[NSURL URLWithString:message.user.pictureUrl]
                                           placeholderImage:[UIImage imageNamed:@"profile_thumb"]];
+        
         self.messageLabel.text = message.text;
 
-        if (message.media.mediaUrl)
+        if (![message.media.mediaUrl isEmpty])
         {
-            hasMedia = YES;
+            [self layoutWithText:message.text withMedia:YES];
+
             self.mediaUrl = message.media.mediaUrl;
             self.mediaPreview.hidden = NO;
 
@@ -120,12 +127,11 @@ CGFloat const kMinCellHeight = 84;
         }
         else
         {
+            [self layoutWithText:message.text withMedia:NO];
             self.mediaPreview.hidden = YES;
             self.playButton.hidden = YES;
         }
     }
-    
-    [self layoutWithText:self.messageLabel.text withMedia:hasMedia];
     
     [self layoutSubviews];
 }
@@ -135,13 +141,13 @@ CGFloat const kMinCellHeight = 84;
     CGFloat height =[text heightForViewWidth:self.messageLabel.frame.size.width andAttributes:nil];
     CGFloat yOffset = hasMedia ? kMediaCommentCellYOffset : kCommentCellYOffset;
     
+    self.messageLabel.text = text;
     self.messageLabel.frame = CGRectMake(self.messageLabel.frame.origin.x,
                                          self.messageLabel.frame.origin.y,
                                          self.messageLabel.frame.size.width,
                                          height);
-    
+
 //    VLog(@"frame: %@", NSStringFromCGRect(self.frame));
-    
     height = MAX(height + yOffset, kMinCellHeight);
     
     self.frame = CGRectMake(self.frame.origin.x,
