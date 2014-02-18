@@ -59,6 +59,8 @@ CGFloat const kCommentMessageLabelWidth = 214;
 
 - (void)setCommentOrMessage:(id)commentOrMessage
 {
+    self.mpController = nil;
+    
     _commentOrMessage = commentOrMessage;
 
     if([commentOrMessage isKindOfClass:[VComment class]])
