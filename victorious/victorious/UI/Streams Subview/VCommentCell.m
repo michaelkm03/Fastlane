@@ -25,6 +25,7 @@ CGFloat const kCommentCellWidth = 214;
 CGFloat const kCommentCellYOffset = 63;
 CGFloat const kMediaCommentCellYOffset = 235;
 CGFloat const kMinCellHeight = 84;
+CGFloat const kCommentMessageLabelWidth = 214;
 
 @interface VCommentCell()
 @property (weak, nonatomic) IBOutlet UILabel *dateLabel;
@@ -139,11 +140,7 @@ CGFloat const kMinCellHeight = 84;
 
 -(void)layoutWithText:(NSString*)text withMedia:(BOOL)hasMedia
 {
-    NSDictionary *stringAttributes = [NSDictionary dictionaryWithObject:self.messageLabel.font forKey: NSFontAttributeName];
-
-    CGFloat width = self.messageLabel.frame.size.width - 40;
-    CGFloat height =[text heightForViewWidth:width
-                               andAttributes:stringAttributes];
+    CGFloat height = [VCommentCell heightForMessageText:(NSString*)text];
     
     CGFloat yOffset = hasMedia ? kMediaCommentCellYOffset : kCommentCellYOffset;
     
@@ -159,6 +156,15 @@ CGFloat const kMinCellHeight = 84;
                             self.frame.origin.y,
                             self.frame.size.width,
                             height);
+}
+
++ (CGFloat)heightForMessageText:(NSString*)text
+{
+//    NSDictionary *stringAttributes = [NSDictionary dictionaryWithObject:self.messageLabel.font forKey: NSFontAttributeName];
+    CGFloat height = [text heightForViewWidth:kCommentMessageLabelWidth
+                               andAttributes:nil];
+    
+    return height;
 }
 
 - (IBAction)playVideo:(id)sender

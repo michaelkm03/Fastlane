@@ -268,10 +268,12 @@ static NSString* CommentCache = @"CommentCache";
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     VComment* comment = (VComment*)[self.sortedComments objectAtIndex:indexPath.row];
-    CGFloat yOffset = [comment.mediaUrl length] ? kMediaCommentCellYOffset : kCommentCellYOffset;
 
-    return [comment.text heightForViewWidth:self.tableView.frame.size.width
-                              andAttributes:nil] + yOffset;
+    CGFloat height = [VCommentCell heightForMessageText:comment.text];
+    CGFloat yOffset = [comment.mediaUrl isEmpty] ? kCommentCellYOffset : kMediaCommentCellYOffset;
+    height = MAX(height + yOffset, kMinCellHeight);
+
+    return height;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
