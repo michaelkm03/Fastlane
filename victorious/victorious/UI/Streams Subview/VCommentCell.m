@@ -19,6 +19,7 @@
 #import "VThemeManager.h"
 #import "NSString+VParseHelp.h"
 #import "UIButton+VImageLoading.h"
+#import "VProfileViewController.h"
 
 CGFloat const kCommentCellWidth = 214;
 CGFloat const kCommentCellYOffset = 63;
@@ -147,15 +148,12 @@ CGFloat const kMinCellHeight = 84;
                                          self.messageLabel.frame.size.width,
                                          height);
 
-//    VLog(@"frame: %@", NSStringFromCGRect(self.frame));
     height = MAX(height + yOffset, kMinCellHeight);
     
     self.frame = CGRectMake(self.frame.origin.x,
                             self.frame.origin.y,
                             self.frame.size.width,
                             height);
-    
-//    VLog(@"newframe: %@", NSStringFromCGRect(self.frame));
 }
 
 - (IBAction)playVideo:(id)sender
@@ -169,19 +167,20 @@ CGFloat const kMinCellHeight = 84;
 
 - (IBAction)profileButtonAction:(id)sender
 {
-//    VRootNavigationController *rootViewController =
-//    (VRootNavigationController *)[[[[UIApplication sharedApplication] delegate] window] rootViewController];
-//
-//    if([self.commentOrMessage isKindOfClass:[VComment class]])
-//    {
-//        VComment* comment = (VComment *)self.commentOrMessage;
-//        [rootViewController showUserProfileForUserID:comment.userId.integerValue];
-//    }
-//    else
-//    {
-//        VMessage* message = (VMessage *)self.commentOrMessage;
-//        [rootViewController showUserProfileForUserID:message.senderUserId.integerValue];
-//    }
+    NSInteger userID;
+    if([self.commentOrMessage isKindOfClass:[VComment class]])
+    {
+        VComment* comment = (VComment *)self.commentOrMessage;
+        userID = comment.userId.integerValue;
+    }
+    else
+    {
+        VMessage* message = (VMessage *)self.commentOrMessage;
+        userID = message.senderUserId.integerValue;
+    }
+    
+    VProfileViewController* profileViewController = [VProfileViewController profileWithUserID:userID];
+    [self.parentTableViewController.navigationController pushViewController:profileViewController animated:YES];
 }
 
 @end

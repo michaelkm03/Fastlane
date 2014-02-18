@@ -287,6 +287,7 @@ static NSString* CommentCache = @"CommentCache";
 //    }
     VComment *comment = [self.sortedComments objectAtIndex:indexPath.row];
     [(VCommentCell*)cell setCommentOrMessage:comment];
+    ((VCommentCell*)cell).parentTableViewController = self;
     
     return cell;
 }
