@@ -285,7 +285,8 @@ static NSString* CommentCache = @"CommentCache";
 //    {
         cell = [self.tableView dequeueReusableCellWithIdentifier:kCommentCellIdentifier forIndexPath:indexPath];
 //    }
-    [self configureCell:cell atIndexPath:indexPath];
+    VComment *comment = [self.sortedComments objectAtIndex:indexPath.row];
+    [(VCommentCell*)cell setCommentOrMessage:comment];
     
     return cell;
 }
@@ -296,12 +297,6 @@ static NSString* CommentCache = @"CommentCache";
     VComment* comment = (VComment*)[self.sortedComments objectAtIndex:indexPath.row];
     //if(!comment.read)
     [self.newlyReadComments addObject:[NSString stringWithFormat:@"%@", comment.remoteId]];
-}
-
-- (void)configureCell:(UITableViewCell *)theCell atIndexPath:(NSIndexPath *)theIndexPath
-{
-    VComment *comment = [self.sortedComments objectAtIndex:theIndexPath.row];
-    [(VCommentCell*)theCell setCommentOrMessage:comment];
 }
 
 #pragma mark - UITableViewDelegate

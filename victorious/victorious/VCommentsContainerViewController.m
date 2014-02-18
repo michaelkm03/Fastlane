@@ -47,11 +47,12 @@
     return _conversationTableViewController;
 }
 
-- (void)viewDidAppear:(BOOL)animated
-{
-    self.showKeyboard = YES;
-    [super viewDidAppear:animated];
-}
+//TODO: this is causing issues.  Need to circle back when variable comment height is finished
+//- (void)viewDidAppear:(BOOL)animated
+//{
+//    self.showKeyboard = YES;
+//    [super viewDidAppear:animated];
+//}
 
 #pragma mark - VCommentsTableViewControllerDelegate
 

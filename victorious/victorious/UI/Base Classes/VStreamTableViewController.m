@@ -172,8 +172,8 @@
     else
         cellHeight = kStreamViewCellHeight;
     
-    NSUInteger commentCount = MIN([sequence.comments count], 2);
-    CGFloat commentHeight = commentCount ? (commentCount * kStreamCommentCellHeight) + kStreamCommentHeaderHeight : 0;
+//    NSUInteger commentCount = MIN([sequence.comments count], 2);
+//    CGFloat commentHeight = commentCount ? (commentCount * kStreamCommentCellHeight) + kStreamCommentHeaderHeight : 0;
     
     
     return cellHeight;// + commentHeight;

@@ -21,8 +21,9 @@
 #import "UIButton+VImageLoading.h"
 
 CGFloat const kCommentCellWidth = 214;
-CGFloat const kCommentCellYOffset = 33;
-CGFloat const kMediaCommentCellYOffset = 245;
+CGFloat const kCommentCellYOffset = 63;
+CGFloat const kMediaCommentCellYOffset = 235;
+CGFloat const kMinCellHeight = 84;
 
 @interface VCommentCell()
 @property (weak, nonatomic) IBOutlet UILabel *dateLabel;
@@ -55,6 +56,7 @@ CGFloat const kMediaCommentCellYOffset = 245;
 
 - (void)setCommentOrMessage:(id)commentOrMessage
 {
+    BOOL hasMedia = NO;
     _commentOrMessage = commentOrMessage;
 
     if([commentOrMessage isKindOfClass:[VComment class]])
@@ -68,43 +70,27 @@ CGFloat const kMediaCommentCellYOffset = 245;
                                         forState:UIControlStateNormal];
         self.messageLabel.text = comment.text;
 
-        CGFloat height =[comment.text heightForViewWidth:self.messageLabel.frame.size.width andAttributes:nil];
-        self.messageLabel.frame = CGRectMake(self.messageLabel.frame.origin.x,
-                                             self.messageLabel.frame.origin.y,
-                                             self.messageLabel.frame.size.width,
-                                             height);
-        CGFloat yOffset;
         if (comment.mediaUrl)
         {
-            yOffset = kMediaCommentCellYOffset;
+            hasMedia = YES;
             self.mediaUrl = comment.mediaUrl;
-
+            self.mediaPreview.hidden = NO;
+            
             if ([comment.mediaType isEqualToString:VConstantsMediaTypeVideo])
             {
-                self.playButton.hidden = NO;
-                self.mediaPreview.hidden = NO;
                 [self.mediaPreview setImageWithURL:[NSURL URLWithString:[self.mediaUrl previewImageURLForM3U8]]];
             }
             else
             {
                 self.playButton.hidden = YES;
-                self.mediaPreview.hidden = NO;
                 [self.mediaPreview setImageWithURL:[NSURL URLWithString:self.mediaUrl]];
             }
         }
         else
         {
-            yOffset = kCommentCellYOffset;
             self.mediaPreview.hidden = YES;
             self.playButton.hidden = YES;
         }
-        
-        VLog(@"frame: %@", NSStringFromCGRect(self.frame));
-        self.frame = CGRectMake(self.frame.origin.x,
-                                self.frame.origin.y,
-                                self.frame.size.width,
-                                height + yOffset);
-        VLog(@"newframe: %@", NSStringFromCGRect(self.frame));
     }
     else if([commentOrMessage isKindOfClass:[VMessage class]])
     {
@@ -117,18 +103,18 @@ CGFloat const kMediaCommentCellYOffset = 245;
 
         if (message.media.mediaUrl)
         {
+            hasMedia = YES;
             self.mediaUrl = message.media.mediaUrl;
+            self.mediaPreview.hidden = NO;
 
             if ([message.media.mediaType isEqualToString:VConstantsMediaTypeVideo])
             {
                 self.playButton.hidden = NO;
-                self.mediaPreview.hidden = NO;
                 [self.mediaPreview setImageWithURL:[NSURL URLWithString:[self.mediaUrl previewImageURLForM3U8]]];
             }
             else
             {
                 self.playButton.hidden = YES;
-                self.mediaPreview.hidden = NO;
                 [self.mediaPreview setImageWithURL:[NSURL URLWithString:self.mediaUrl]];
             }
         }
@@ -138,7 +124,32 @@ CGFloat const kMediaCommentCellYOffset = 245;
             self.playButton.hidden = YES;
         }
     }
+    
+    [self layoutWithText:self.messageLabel.text withMedia:hasMedia];
+    
     [self layoutSubviews];
+}
+
+-(void)layoutWithText:(NSString*)text withMedia:(BOOL)hasMedia
+{
+    CGFloat height =[text heightForViewWidth:self.messageLabel.frame.size.width andAttributes:nil];
+    CGFloat yOffset = hasMedia ? kMediaCommentCellYOffset : kCommentCellYOffset;
+    
+    self.messageLabel.frame = CGRectMake(self.messageLabel.frame.origin.x,
+                                         self.messageLabel.frame.origin.y,
+                                         self.messageLabel.frame.size.width,
+                                         height);
+    
+//    VLog(@"frame: %@", NSStringFromCGRect(self.frame));
+    
+    height = MAX(height + yOffset, kMinCellHeight);
+    
+    self.frame = CGRectMake(self.frame.origin.x,
+                            self.frame.origin.y,
+                            self.frame.size.width,
+                            height);
+    
+//    VLog(@"newframe: %@", NSStringFromCGRect(self.frame));
 }
 
 - (IBAction)playVideo:(id)sender
@@ -148,11 +159,6 @@ CGFloat const kMediaCommentCellYOffset = 245;
     self.mpController.view.frame = self.mediaPreview.frame;
     [self insertSubview:self.mpController.view aboveSubview:self.mediaPreview];
     [self.mpController play];
-}
-
-- (IBAction)displayVideoMedia:(id)sender
-{
-
 }
 
 - (IBAction)profileButtonAction:(id)sender
