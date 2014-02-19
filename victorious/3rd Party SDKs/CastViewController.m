@@ -213,10 +213,11 @@
 
       VAsset* firstAsset = [[self.mediaToPlay firstNode] firstAsset];
       NSURL* url = [NSURL URLWithString:firstAsset.data];
+      NSURL* thumbnailURL = [NSURL URLWithString:[firstAsset.data previewImageURLForM3U8]];
       
       //Loading thumbnail async
       NSLog(@"Loaded thumbnail image");
-      [self.thumbnailImage setImageWithURL:[NSURL URLWithString:[firstAsset.data previewImageURLForM3U8]]];
+      [self.thumbnailImage setImageWithURL:thumbnailURL];
       [self.view setNeedsLayout];
       
       if (_chromecastController.isConnected)
@@ -229,10 +230,10 @@
           {
               //Cast the movie!!
               [_chromecastController loadMedia:url
-                                  thumbnailURL:[NSURL URLWithString:[firstAsset.data previewImageURLForM3U8]]
+                                  thumbnailURL:thumbnailURL
                                          title:self.mediaToPlay.sequenceDescription
                                       subtitle:self.mediaToPlay.user.name
-                                      mimeType:@"application/x-mpegurl"
+                                      mimeType:@"video/mp4"
                                      startTime:_mediaStartTime
                                       autoPlay:YES];
               _joinExistingSession = NO;

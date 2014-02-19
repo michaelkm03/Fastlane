@@ -14,14 +14,21 @@
 #import "VUser.h"
 #import "VUserManager.h"
 
+#import "VAppDelegate.h"
+#import "ChromecastDeviceController.h"
+
 NSString*   const   kAccountUpdateViewControllerDomain =   @"VAccountUpdateViewControllerDomain";
 
-@interface VSettingsViewController ()   <UITextFieldDelegate>
+@interface VSettingsViewController ()   <UITextFieldDelegate, ChromecastControllerDelegate>
 @property (weak, nonatomic) IBOutlet UITextField *nameTextField;
 @property (weak, nonatomic) IBOutlet UITextField *emailAddressTextField;
 @property (weak, nonatomic) IBOutlet UITextField *passwordTextField;
 @property (weak, nonatomic) IBOutlet UIButton *logoutButton;
 @property (weak, nonatomic) IBOutlet UIButton *saveChangesButton;
+
+@property (nonatomic, weak) ChromecastDeviceController*     chromeCastController;
+@property (nonatomic, assign) BOOL    showChromeCastButton;
+
 @end
 
 @implementation VSettingsViewController
@@ -53,6 +60,16 @@ NSString*   const   kAccountUpdateViewControllerDomain =   @"VAccountUpdateViewC
         self.nameTextField.text = mainUser.name;
         self.emailAddressTextField.text = mainUser.email;
     }
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    
+    self.chromeCastController = [VAppDelegate sharedAppDelegate].chromecastDeviceController;
+    self.chromeCastController.delegate = self;
+    
+    [self updateChromecastButton];
 }
 
 #pragma mark - Validation
@@ -267,5 +284,65 @@ NSString*   const   kAccountUpdateViewControllerDomain =   @"VAccountUpdateViewC
     [[self view] endEditing:YES];
 }
 
+#pragma mark - ChromecastControllerDelegate
+
+- (void)updateChromecastButton
+{
+    if (self.self.chromeCastController.deviceScanner.devices.count == 0)
+    {
+        self.showChromeCastButton = NO;
+    }
+    else
+    {
+        self.showChromeCastButton = YES;
+
+        UITableViewCell*    cell = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:1]];
+
+        if (self.chromeCastController.deviceManager && self.chromeCastController.deviceManager.isConnected)
+        {
+            cell.detailTextLabel.text = [NSString stringWithFormat:@"Connected to %@", self.chromeCastController.deviceName];
+        }
+        else
+        {
+            cell.detailTextLabel.text = @"Not Connected";
+        }
+    }
+    
+    [self.tableView beginUpdates];
+    [self.tableView endUpdates];
+}
+
+- (void)didDiscoverDeviceOnNetwork
+{
+    [self updateChromecastButton];
+}
+
+- (void)didLoseDeviceOnNetwork
+{
+    [self updateChromecastButton];
+}
+
+- (void)didConnectToDevice:(GCKDevice*)device
+{
+    [self updateChromecastButton];
+}
+
+- (void)didDisconnect
+{
+    [self updateChromecastButton];
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath;
+{
+    if (1 == indexPath.section && 0 == indexPath.row)
+    {
+        if (self.showChromeCastButton)
+            return self.tableView.rowHeight;
+        else
+            return 0;
+    }
+    
+    return self.tableView.rowHeight;
+}
 
 @end
