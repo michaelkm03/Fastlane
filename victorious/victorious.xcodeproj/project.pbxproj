@@ -401,6 +401,7 @@
 		BE6C15301880A31B00469BA8 /* VMedia.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VMedia.m; sourceTree = "<group>"; };
 		BE83A36F18827B400077EB26 /* VMessage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VMessage.h; sourceTree = "<group>"; };
 		BE83A37018827B400077EB26 /* VMessage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VMessage.m; sourceTree = "<group>"; };
+		BE8C6F4C18B53F2A009CFB1C /* victoriOS 4.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = file; path = "victoriOS 4.xcdatamodel"; sourceTree = "<group>"; };
 		BEA5BF57187E7E8E0014C3EF /* VObjectManager+DirectMessaging.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "VObjectManager+DirectMessaging.h"; sourceTree = "<group>"; };
 		BEA5BF58187E7E8E0014C3EF /* VObjectManager+DirectMessaging.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "VObjectManager+DirectMessaging.m"; sourceTree = "<group>"; };
 		BEA5BF5D187F21770014C3EF /* VTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VTableViewCell.h; path = UI/VTableViewCell.h; sourceTree = "<group>"; };
@@ -1650,6 +1651,7 @@
 		BE171E411868CEA0004E5202 /* victoriOS.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
+				BE8C6F4C18B53F2A009CFB1C /* victoriOS 4.xcdatamodel */,
 				BE5C733D187E348900A3340D /* victoriOS 3.xcdatamodel */,
 				BE171E441868CEAA004E5202 /* victoriOS 2.xcdatamodel */,
 				BE171E421868CEA0004E5202 /* victoriOS.xcdatamodel */,

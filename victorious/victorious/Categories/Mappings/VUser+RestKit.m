@@ -39,6 +39,12 @@
     mapping.identificationAttributes = @[ VSelectorName(remoteId) ];
 
     [mapping addAttributeMappingsFromDictionary:propertyMap];
+    
+    [mapping addConnectionForRelationship:@"comments" connectedBy:@{@"remoteId" : @"userId"}];
+    [mapping addConnectionForRelationship:@"conversations" connectedBy:@{@"remoteId" : @"other_interlocutor_user_id"}];
+    [mapping addConnectionForRelationship:@"messages" connectedBy:@{@"remoteId" : @"senderUserId"}];
+//    [mapping addConnectionForRelationship:@"pollResults" connectedBy:@{@"remoteId" : @"other_interlocutor_user_id"}];
+    [mapping addConnectionForRelationship:@"postedSequences" connectedBy:@{@"remoteId" : @"createdBy"}];
 
     return mapping;
 }

@@ -296,7 +296,11 @@ NSString* const kInitialLoadFinishedNotification = @"kInitialLoadFinishedNotific
         newPollResult.answerId = answer.remoteId;
         newPollResult.sequenceId = poll.remoteId;
         [self.mainUser addPollResultsObject:newPollResult];
-        [self.mainUser.managedObjectContext save:nil];
+        
+        [self.mainUser.managedObjectContext performBlockAndWait:^
+         {
+             [self.mainUser.managedObjectContext save:nil];
+         }];
         
         if (success)
             success(operation, fullResponse, resultObjects);
@@ -327,7 +331,11 @@ NSString* const kInitialLoadFinishedNotification = @"kInitialLoadFinishedNotific
             VPollResult* poll = (VPollResult*)[user.managedObjectContext objectWithID:[pollResult objectID]];
             [user addPollResultsObject: poll];
         }
-        [user.managedObjectContext save:nil];
+        
+        [user.managedObjectContext performBlockAndWait:^
+         {
+             [user.managedObjectContext save:nil];
+         }];
         
         if (success)
             success(operation, fullResponse, resultObjects);
@@ -352,12 +360,18 @@ NSString* const kInitialLoadFinishedNotification = @"kInitialLoadFinishedNotific
     
     VSuccessBlock fullSuccess = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
     {
+        NSManagedObjectContext* context;
         for (VPollResult* result in resultObjects)
         {
             result.sequenceId = sequence.remoteId;
             result.sequence = (VSequence*)[result.managedObjectContext objectWithID:[sequence objectID]];
-            [result.managedObjectContext save:nil];
+            context = result.managedObjectContext;
         }
+        
+        [context performBlockAndWait:^
+         {
+             [context save:nil];
+         }];
       
         if(success)
             success(operation, fullResponse, resultObjects);

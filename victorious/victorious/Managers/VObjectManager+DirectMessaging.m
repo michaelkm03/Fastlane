@@ -39,6 +39,11 @@
         newConversation.user = userInContext;
     }
     
+    [newConversation.managedObjectContext performBlockAndWait:^
+     {
+         [newConversation.managedObjectContext save:nil];
+     }];
+    
     return newConversation;
 }
 
@@ -69,12 +74,12 @@
     
     VSuccessBlock fullSuccess = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
     {
+        NSManagedObjectContext* context;
         NSMutableArray* nonExistantUsers = [[NSMutableArray alloc] init];
         for (VConversation* conversation in resultObjects)
         {
             //There should only be one message.  Its the current 'last message'
             conversation.lastMessage = [conversation.messages anyObject];
-            [conversation.managedObjectContext save:nil];
             
             //Sometimes we get -1 for the current logged in user
             if (!conversation.lastMessage.user && [conversation.lastMessage.senderUserId isEqual: @(-1)])
@@ -84,7 +89,14 @@
             
             if (!conversation.user)
                 [nonExistantUsers addObject:conversation.other_interlocutor_user_id];
+            
+            context = conversation.managedObjectContext;
         }
+        
+        [context performBlockAndWait:^
+         {
+            [context save:nil];
+         }];
         
         if ([nonExistantUsers count])
             [[VObjectManager sharedManager] fetchUsers:nonExistantUsers
@@ -142,7 +154,11 @@
             else if (!message.user)
                 [nonExistantUsers addObject:message.senderUserId];
         }
-        [conversation.managedObjectContext save:nil];
+        
+        [conversation.managedObjectContext performBlockAndWait:^
+         {
+             [conversation.managedObjectContext save:nil];
+         }];
         
         if ([nonExistantUsers count])
             [[VObjectManager sharedManager] fetchUsers:nonExistantUsers

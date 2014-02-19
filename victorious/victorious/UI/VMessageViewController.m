@@ -122,24 +122,29 @@ const   CGFloat     kMessageRowHeight           =   80;
 
 - (void)didComposeWithText:(NSString *)text data:(NSData *)data mediaExtension:(NSString *)mediaExtension mediaURL:(NSURL *)mediaURL
 {
+    VSuccessBlock success = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
+    {
+        NSDictionary* payload = fullResponse[@"payload"];
+        if (!self.conversation.remoteId)
+        {
+            self.conversation.remoteId = payload[@"conversation_id"];
+            [self.conversation.managedObjectContext performBlockAndWait:^
+             {
+                 [self.conversation.managedObjectContext save:nil];
+             }];
+        }
+        
+        [self refreshAction:self];
+        
+        VLog(@"Succeed with response: %@", fullResponse);
+    };
+    
     [[VObjectManager sharedManager] sendMessageToUser:self.conversation.user
                                              withText:text
                                                  Data:data
                                        mediaExtension:mediaExtension
                                              mediaUrl:nil
-                                         successBlock:^(NSOperation* operation, id fullResponse, NSArray* rkObjects)
-                                        {
-                                              NSDictionary* payload = fullResponse[@"payload"];
-                                              if (!self.conversation.remoteId)
-                                              {
-                                                  self.conversation.remoteId = payload[@"conversation_id"];
-                                                  [self.conversation.managedObjectContext save:nil];
-                                              }
-                                              
-                                              [self refreshAction:self];
-                                              
-                                               VLog(@"Succeed with response: %@", fullResponse);
-                                        }
+                                         successBlock:success
                                             failBlock:^(NSOperation* operation, NSError* error)
                                           {
                                                VLog(@"Failed in creating message with error: %@", error);

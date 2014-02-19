@@ -193,7 +193,12 @@ NSString *kLoggedInChangedNotification = @"LoggedInChangedNotification";
         //NSDictionary* payload = fullResponse[@"payload"];
         NSManagedObjectContext* context = self.managedObjectStore.persistentStoreManagedObjectContext;
         [context deleteObject:[context objectWithID:[self mainUser].objectID]];
-        [context save:nil];
+        
+        [context performBlockAndWait:^
+         {
+             [context save:nil];
+         }];
+        
         [[NSNotificationCenter defaultCenter] postNotificationName:kLoggedInChangedNotification object:nil];
     };
 

@@ -41,19 +41,10 @@
     
     NSString* path = userId ? [@"/api/userinfo/fetch/" stringByAppendingString: userId.stringValue] : @"/api/userinfo/fetch";
     
-    VSuccessBlock fullSuccess = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
-    {
-        for (VUser* user in resultObjects)
-            [self addRelationshipsForUser:user];
-        
-        if (success)
-            success(operation, fullResponse, resultObjects);
-    };
-    
     return [self GET:path
               object:nil
           parameters:nil
-        successBlock:fullSuccess
+        successBlock:success
            failBlock:fail];
 }
 
@@ -86,7 +77,6 @@
     {
         for (VUser* user in resultObjects)
         {
-            [self addRelationshipsForUser:user];
             [loadedUsers addObject:user];
         }
         
@@ -107,38 +97,6 @@
         successBlock:fullSuccess
            failBlock:fail];
 }
-
-- (void)addRelationshipsForUser:(VUser*)user
-{
-    NSSet* sequences = [NSSet setWithArray:[self objectsForEntity:[VSequence entityName]
-                                                        userIdKey:@"createdBy"
-                                                           userId:user.remoteId
-                                                        inContext:user.managedObjectContext]];
-    [user addPostedSequences:sequences];
-    
-    NSSet* commments = [NSSet setWithArray:[self objectsForEntity:[VComment entityName]
-                                                        userIdKey:@"userId"
-                                                           userId:user.remoteId
-                                                        inContext:user.managedObjectContext]];
-    [user addComments:commments];
-    
-    NSSet* conversations = [NSSet setWithArray:[self objectsForEntity:[VConversation entityName]
-                                                            userIdKey:@"other_interlocutor_user_id"
-                                                               userId:user.remoteId
-                                                            inContext:user.managedObjectContext]];
-    [user addConversations:conversations];
-    
-    NSSet* messages = [NSSet setWithArray:[self objectsForEntity:[VMessage entityName]
-                                                       userIdKey:@"senderUserId"
-                                                          userId:user.remoteId
-                                                       inContext:user.managedObjectContext]];
-    [user addMessages:messages];
-    
-    [user.managedObjectContext save:nil];
-    
-    VLog(@"User sequences: %@", user.postedSequences);
-}
-
 
 - (RKManagedObjectRequestOperation *)attachAccountToFacebookWithToken:(NSString*)accessToken
                                                      withSuccessBlock:(VSuccessBlock)success
@@ -206,12 +164,16 @@
     NSPredicate* idFilter = [NSPredicate predicateWithFormat:@"%K == %@", idKey, userId];
     [request setPredicate:idFilter];
     
-    NSError *error = nil;
-    NSArray *results = [context executeFetchRequest:request error:&error];
-    if (error != nil)
-    {
-        VLog(@"Error occured in user objectsForEntity: %@", error);
-    }
+    __block NSArray *results;
+    [context performBlockAndWait:^{
+        NSError *error = nil;
+        results = [context executeFetchRequest:request error:&error];
+        if (error != nil)
+        {
+            VLog(@"Error occured in user objectsForEntity: %@", error);
+        }
+    }];
+    
     return results;
 }
 

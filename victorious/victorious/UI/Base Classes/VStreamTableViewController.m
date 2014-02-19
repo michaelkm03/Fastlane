@@ -80,7 +80,6 @@
                                                 managedObjectContext:context
                                                   sectionNameKeyPath:nil
                                                            cacheName:kSearchCache];
-
 }
 
 #pragma mark - UITableViewDelegate
@@ -256,13 +255,11 @@
      {
          [self.refreshControl endRefreshing];
          [self.bottomRefreshIndicator stopAnimating];
-         [self.tableView reloadData];
      }
                                                              failBlock:^(NSOperation* operation, NSError* error)
      {
          [self.refreshControl endRefreshing];
          [self.bottomRefreshIndicator stopAnimating];
-         [self.tableView reloadData];
      }];
 }
 

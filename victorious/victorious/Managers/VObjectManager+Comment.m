@@ -124,6 +124,11 @@
             [sequence addCommentsObject:(VComment*)[sequence.managedObjectContext objectWithID:objectId]];
         }
         
+        [sequence.managedObjectContext performBlockAndWait:^
+        {
+            [sequence.managedObjectContext save:nil];
+        }];
+        
         if (success)
             success(operation, fullResponse, resultObjects);
     };
@@ -154,6 +159,11 @@
     {
         //Since this is a POST not a DELETE we need to manually remove the comment.
         [commentToRemove.managedObjectContext deleteObject:commentToRemove];
+        
+        [commentToRemove.managedObjectContext performBlockAndWait:^
+         {
+             [commentToRemove.managedObjectContext save:nil];
+         }];
         
         if (success)
             success(operation, fullResponse, resultObjects);
