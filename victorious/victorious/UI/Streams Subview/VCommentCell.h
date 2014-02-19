@@ -17,9 +17,12 @@ static NSString *kOtherCommentCellIdentifier = @"VOtherCommentCell";
 extern CGFloat const kCommentCellWidth;
 extern CGFloat const kCommentCellYOffset;
 extern CGFloat const kMediaCommentCellYOffset;
+extern CGFloat const kMinCellHeight;
 
 @interface VCommentCell : VTableViewCell
 
 @property (strong, nonatomic) id commentOrMessage;
+
++ (CGFloat)heightForMessageText:(NSString*)text;
 
 @end

@@ -25,8 +25,8 @@
 
 @import Social;
 
-const   CGFloat     kCommentRowWithMediaHeight  =   320.0;
-const   CGFloat     kCommentRowHeight           =   110;
+const   CGFloat     kCommentRowWithMediaHeight  =   256.0f;
+const   CGFloat     kCommentRowHeight           =   86.0f;
 
 @interface VCommentsTableViewController () //<UINavigationControllerDelegate>
 
@@ -268,10 +268,12 @@ static NSString* CommentCache = @"CommentCache";
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     VComment* comment = (VComment*)[self.sortedComments objectAtIndex:indexPath.row];
-    CGFloat yOffset = [comment.mediaUrl length] ? kMediaCommentCellYOffset : kCommentCellYOffset;
 
-    return [comment.text heightForViewWidth:self.tableView.frame.size.width
-                              andAttributes:nil] + yOffset;
+    CGFloat height = [VCommentCell heightForMessageText:comment.text];
+    CGFloat yOffset = [comment.mediaUrl isEmpty] ? kCommentCellYOffset : kMediaCommentCellYOffset;
+    height = MAX(height + yOffset, kMinCellHeight);
+
+    return height;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -285,7 +287,9 @@ static NSString* CommentCache = @"CommentCache";
 //    {
         cell = [self.tableView dequeueReusableCellWithIdentifier:kCommentCellIdentifier forIndexPath:indexPath];
 //    }
-    [self configureCell:cell atIndexPath:indexPath];
+    VComment *comment = [self.sortedComments objectAtIndex:indexPath.row];
+    [(VCommentCell*)cell setCommentOrMessage:comment];
+    ((VCommentCell*)cell).parentTableViewController = self;
     
     return cell;
 }
@@ -296,12 +300,6 @@ static NSString* CommentCache = @"CommentCache";
     VComment* comment = (VComment*)[self.sortedComments objectAtIndex:indexPath.row];
     //if(!comment.read)
     [self.newlyReadComments addObject:[NSString stringWithFormat:@"%@", comment.remoteId]];
-}
-
-- (void)configureCell:(UITableViewCell *)theCell atIndexPath:(NSIndexPath *)theIndexPath
-{
-    VComment *comment = [self.sortedComments objectAtIndex:theIndexPath.row];
-    [(VCommentCell*)theCell setCommentOrMessage:comment];
 }
 
 #pragma mark - UITableViewDelegate
@@ -453,6 +451,7 @@ static NSString* CommentCache = @"CommentCache";
                              otherButtonTitles:nil];
             [alert show];
         }
+        [indicator stopAnimating];
     };
     
     [[VObjectManager sharedManager] addCommentWithText:text

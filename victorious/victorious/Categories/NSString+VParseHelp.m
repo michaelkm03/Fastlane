@@ -14,6 +14,7 @@
 {
     NSStringDrawingOptions options = NSStringDrawingUsesLineFragmentOrigin |
     NSStringDrawingUsesFontLeading;
+    
     CGRect boundingRect = [self boundingRectWithSize:CGSizeMake(width, CGFLOAT_MAX)
                                              options:options
                                           attributes:attributes

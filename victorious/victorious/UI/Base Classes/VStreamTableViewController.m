@@ -87,13 +87,14 @@
 
 - (void)tableView:(UITableView *)tableView didEndDisplayingCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    VSequence* sequence = [[self fetchedResultsControllerForTableView:tableView] objectAtIndexPath:indexPath];
-    
+    VSequence* sequence = ((VStreamViewCell*)cell).sequence;
     if (([sequence isForum] || [sequence isVideo])
         && [[[sequence firstNode] firstAsset].type isEqualToString:VConstantsMediaTypeYoutube])
+    {
         //This will reload the youtube video so it stops playing
-        //TODO: replace this with a pause
-        [(VStreamYoutubeVideoCell*)cell setSequence:((VStreamYoutubeVideoCell*)cell).sequence];
+        //TODO: replace this with a pause control
+        ((VStreamViewCell*)cell).sequence = ((VStreamViewCell*)cell).sequence;
+    }
 }
 
 //- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
@@ -172,9 +173,8 @@
     else
         cellHeight = kStreamViewCellHeight;
     
-    NSUInteger commentCount = MIN([sequence.comments count], 2);
-    CGFloat commentHeight = commentCount ? (commentCount * kStreamCommentCellHeight) + kStreamCommentHeaderHeight : 0;
-    
+//    NSUInteger commentCount = MIN([sequence.comments count], 2);
+//    CGFloat commentHeight = commentCount ? (commentCount * kStreamCommentCellHeight) + kStreamCommentHeaderHeight : 0;
     
     return cellHeight;// + commentHeight;
 }
@@ -245,7 +245,7 @@
 #pragma mark - Refresh
 - (void)refreshAction
 {
-    if (self.refreshControl.refreshing)
+    if (self.bottomRefreshIndicator.isAnimating)
         return;
  
     [self.refreshControl beginRefreshing];
@@ -256,11 +256,13 @@
      {
          [self.refreshControl endRefreshing];
          [self.bottomRefreshIndicator stopAnimating];
+         [self.tableView reloadData];
      }
                                                              failBlock:^(NSOperation* operation, NSError* error)
      {
          [self.refreshControl endRefreshing];
          [self.bottomRefreshIndicator stopAnimating];
+         [self.tableView reloadData];
      }];
 }
 

@@ -19,16 +19,20 @@
 #import "VThemeManager.h"
 #import "NSString+VParseHelp.h"
 #import "UIButton+VImageLoading.h"
+#import "VProfileViewController.h"
 
 CGFloat const kCommentCellWidth = 214;
-CGFloat const kCommentCellYOffset = 33;
-CGFloat const kMediaCommentCellYOffset = 245;
+CGFloat const kCommentCellYOffset = 10;
+CGFloat const kMediaCommentCellYOffset = 235;
+CGFloat const kMinCellHeight = 84;
+CGFloat const kCommentMessageLabelWidth = 214;
 
 @interface VCommentCell()
 @property (weak, nonatomic) IBOutlet UILabel *dateLabel;
 @property (weak, nonatomic) IBOutlet UIButton *profileImageButton;
 @property (weak, nonatomic) IBOutlet UILabel *messageLabel;
 @property (weak, nonatomic) IBOutlet UIImageView *mediaPreview;
+@property (weak, nonatomic) IBOutlet UIImageView *chatBubble;
 @property (weak, nonatomic) IBOutlet UIButton *playButton;
 @property (nonatomic, strong) MPMoviePlayerController* mpController;
 @property (strong, nonatomic) NSString *mediaUrl;
@@ -48,6 +52,7 @@ CGFloat const kMediaCommentCellYOffset = 245;
     
 //    self.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKeyPath:@"theme.color.messages.background"];
     self.dateLabel.font = [[VThemeManager sharedThemeManager] themedFontForKeyPath:@"theme.font.stream.timeSince"];
+
     self.profileImageButton.clipsToBounds = YES;
     
     self.profileImageButton.layer.cornerRadius = CGRectGetHeight(self.profileImageButton.bounds)/2;
@@ -55,6 +60,8 @@ CGFloat const kMediaCommentCellYOffset = 245;
 
 - (void)setCommentOrMessage:(id)commentOrMessage
 {
+    self.mpController = nil;
+    
     _commentOrMessage = commentOrMessage;
 
     if([commentOrMessage isKindOfClass:[VComment class]])
@@ -62,83 +69,107 @@ CGFloat const kMediaCommentCellYOffset = 245;
         VComment *comment = (VComment *)self.commentOrMessage;
 
         self.dateLabel.text = [comment.postedAt timeSince];
+        self.chatBubble.hidden = YES; 
         
         [self.profileImageButton setImageWithURL:[NSURL URLWithString:comment.user.pictureUrl]
                                 placeholderImage:[UIImage imageNamed:@"profile_thumb"]
                                         forState:UIControlStateNormal];
         self.messageLabel.text = comment.text;
 
-        CGFloat height =[comment.text heightForViewWidth:self.messageLabel.frame.size.width andAttributes:nil];
-        self.messageLabel.frame = CGRectMake(self.messageLabel.frame.origin.x,
-                                             self.messageLabel.frame.origin.y,
-                                             self.messageLabel.frame.size.width,
-                                             height);
-        CGFloat yOffset;
-        if (comment.mediaUrl)
+        if (![comment.mediaUrl isEmpty])
         {
-            yOffset = kMediaCommentCellYOffset;
-            self.mediaUrl = comment.mediaUrl;
+            [self layoutWithText:comment.text withMedia:YES];
 
+            self.mediaUrl = comment.mediaUrl;
+            self.mediaPreview.hidden = NO;
+            
             if ([comment.mediaType isEqualToString:VConstantsMediaTypeVideo])
             {
-                self.playButton.hidden = NO;
-                self.mediaPreview.hidden = NO;
                 [self.mediaPreview setImageWithURL:[NSURL URLWithString:[self.mediaUrl previewImageURLForM3U8]]];
             }
             else
             {
                 self.playButton.hidden = YES;
-                self.mediaPreview.hidden = NO;
                 [self.mediaPreview setImageWithURL:[NSURL URLWithString:self.mediaUrl]];
             }
         }
         else
         {
-            yOffset = kCommentCellYOffset;
+            [self layoutWithText:comment.text withMedia:NO];
             self.mediaPreview.hidden = YES;
             self.playButton.hidden = YES;
         }
-        
-        VLog(@"frame: %@", NSStringFromCGRect(self.frame));
-        self.frame = CGRectMake(self.frame.origin.x,
-                                self.frame.origin.y,
-                                self.frame.size.width,
-                                height + yOffset);
-        VLog(@"newframe: %@", NSStringFromCGRect(self.frame));
     }
     else if([commentOrMessage isKindOfClass:[VMessage class]])
     {
         VMessage *message = (VMessage *)self.commentOrMessage;
 
+        self.chatBubble.hidden = NO;
+        
         self.dateLabel.text = [message.postedAt timeSince];
         [self.profileImageButton.imageView setImageWithURL:[NSURL URLWithString:message.user.pictureUrl]
                                           placeholderImage:[UIImage imageNamed:@"profile_thumb"]];
+        
         self.messageLabel.text = message.text;
 
-        if (message.media.mediaUrl)
+        if (![message.media.mediaUrl isEmpty])
         {
+            [self layoutWithText:message.text withMedia:YES];
+
             self.mediaUrl = message.media.mediaUrl;
+            self.mediaPreview.hidden = NO;
 
             if ([message.media.mediaType isEqualToString:VConstantsMediaTypeVideo])
             {
                 self.playButton.hidden = NO;
-                self.mediaPreview.hidden = NO;
                 [self.mediaPreview setImageWithURL:[NSURL URLWithString:[self.mediaUrl previewImageURLForM3U8]]];
             }
             else
             {
                 self.playButton.hidden = YES;
-                self.mediaPreview.hidden = NO;
                 [self.mediaPreview setImageWithURL:[NSURL URLWithString:self.mediaUrl]];
             }
         }
         else
         {
+            [self layoutWithText:message.text withMedia:NO];
             self.mediaPreview.hidden = YES;
             self.playButton.hidden = YES;
         }
     }
+    
     [self layoutSubviews];
+}
+
+-(void)layoutWithText:(NSString*)text withMedia:(BOOL)hasMedia
+{
+    CGFloat height = [VCommentCell heightForMessageText:(NSString*)text];
+    
+    CGFloat yOffset = hasMedia ? kMediaCommentCellYOffset : kCommentCellYOffset;
+    
+    self.messageLabel.text = text;
+    self.messageLabel.frame = CGRectMake(self.messageLabel.frame.origin.x,
+                                         self.messageLabel.frame.origin.y,
+                                         self.messageLabel.frame.size.width,
+                                         height);
+    [self.messageLabel sizeToFit];
+    height = self.messageLabel.frame.size.height;
+    height = MAX(height + yOffset, kMinCellHeight);
+    
+    self.frame = CGRectMake(self.frame.origin.x,
+                            self.frame.origin.y,
+                            self.frame.size.width,
+                            height);
+}
+
++ (CGFloat)heightForMessageText:(NSString*)text
+{
+    NSDictionary *stringAttributes = [NSDictionary dictionaryWithObject:[[VThemeManager sharedThemeManager] themedFontForKeyPath:@"theme.font.stream"]
+                                                                 forKey: NSFontAttributeName];
+    CGFloat height = [text heightForViewWidth:kCommentMessageLabelWidth
+                               andAttributes:stringAttributes];
+    
+    return height;
 }
 
 - (IBAction)playVideo:(id)sender
@@ -150,26 +181,22 @@ CGFloat const kMediaCommentCellYOffset = 245;
     [self.mpController play];
 }
 
-- (IBAction)displayVideoMedia:(id)sender
-{
-
-}
-
 - (IBAction)profileButtonAction:(id)sender
 {
-//    VRootNavigationController *rootViewController =
-//    (VRootNavigationController *)[[[[UIApplication sharedApplication] delegate] window] rootViewController];
-//
-//    if([self.commentOrMessage isKindOfClass:[VComment class]])
-//    {
-//        VComment* comment = (VComment *)self.commentOrMessage;
-//        [rootViewController showUserProfileForUserID:comment.userId.integerValue];
-//    }
-//    else
-//    {
-//        VMessage* message = (VMessage *)self.commentOrMessage;
-//        [rootViewController showUserProfileForUserID:message.senderUserId.integerValue];
-//    }
+    NSInteger userID;
+    if([self.commentOrMessage isKindOfClass:[VComment class]])
+    {
+        VComment* comment = (VComment *)self.commentOrMessage;
+        userID = comment.userId.integerValue;
+    }
+    else
+    {
+        VMessage* message = (VMessage *)self.commentOrMessage;
+        userID = message.senderUserId.integerValue;
+    }
+    
+    VProfileViewController* profileViewController = [VProfileViewController profileWithUserID:userID];
+    [self.parentTableViewController.navigationController pushViewController:profileViewController animated:YES];
 }
 
 @end
