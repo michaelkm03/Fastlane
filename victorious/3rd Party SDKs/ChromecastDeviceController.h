@@ -28,6 +28,8 @@
  */
 - (void)didDiscoverDeviceOnNetwork;
 
+- (void)didLoseDeviceOnNetwork;
+
 /**
  * Called when connection to the device was established.
  *

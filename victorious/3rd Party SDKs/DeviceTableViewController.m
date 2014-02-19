@@ -59,13 +59,13 @@ NSString *const CellIdForDeviceName = @"deviceName";
   static NSString *CellIdForPlayerController = @"playerController";
 
   UITableViewCell *cell;
+
   if (self.castDeviceController.isConnected == NO)
   {
     cell = [tableView dequeueReusableCellWithIdentifier:CellIdForDeviceName forIndexPath:indexPath];
 
     // Configure the cell...
-    GCKDevice *device =
-        [self.castDeviceController.deviceScanner.devices objectAtIndex:indexPath.row];
+    GCKDevice *device = [self.castDeviceController.deviceScanner.devices objectAtIndex:indexPath.row];
     cell.textLabel.text = device.friendlyName;
     cell.detailTextLabel.text = device.modelName;
   }
@@ -74,7 +74,9 @@ NSString *const CellIdForDeviceName = @"deviceName";
     if (indexPath.row == 0)
     {
       cell = [tableView dequeueReusableCellWithIdentifier:CellIdForReadyStatus forIndexPath:indexPath];
-    } else {
+    }
+    else
+    {
       cell = [tableView dequeueReusableCellWithIdentifier:CellIdForDisconnectButton forIndexPath:indexPath];
     }
   }

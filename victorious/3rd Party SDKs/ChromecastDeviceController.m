@@ -267,7 +267,11 @@ static NSString *const kReceiverAppID = @"C8A31643";  //Replace with your app id
 
 - (void)deviceDidGoOffline:(GCKDevice *)device
 {
-  [self updateCastIconButtonStates];
+    [self updateCastIconButtonStates];
+    if ([self.delegate respondsToSelector:@selector(didLoseDeviceOnNetwork)])
+    {
+        [self.delegate didLoseDeviceOnNetwork];
+    }
 }
 
 #pragma - GCKMediaControlChannelDelegate methods
