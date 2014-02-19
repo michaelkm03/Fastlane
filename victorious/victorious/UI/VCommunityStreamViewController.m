@@ -217,25 +217,14 @@
             [alert show];
         }
     };
-
-    if ([mediaType isEqualToString:VConstantMediaExtensionMOV])
-    {
-        [[VObjectManager sharedManager] createVideoWithName:message
-                                                description:message
-                                                  mediaData:data
-                                                   mediaUrl:nil
-                                               successBlock:success
-                                                  failBlock:fail];
-    }
-    else
-    {
-        [[VObjectManager sharedManager] createImageWithName:message
-                                                description:message
-                                                  mediaData:data
-                                                   mediaUrl:nil
-                                               successBlock:success
-                                                  failBlock:fail];
-    }
+    
+    [[VObjectManager sharedManager] uploadMediaWithName:message
+                                            description:message
+                                              mediaData:data
+                                              extension:mediaType
+                                               mediaUrl:nil
+                                           successBlock:success
+                                              failBlock:fail];
 }
 
 @end

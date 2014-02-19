@@ -65,20 +65,6 @@ extern NSString* const kInitialLoadFinishedNotification;
                                    successBlock:(VSuccessBlock)success
                                       failBlock:(VFailBlock)fail;
 
-- (RKManagedObjectRequestOperation * )createVideoWithName:(NSString*)name
-                                              description:(NSString*)description
-                                                mediaData:(NSData*)mediaData
-                                                mediaUrl:(NSURL*)mediaUrl
-                                             successBlock:(VSuccessBlock)success
-                                                failBlock:(VFailBlock)fail;
-
-- (RKManagedObjectRequestOperation * )createImageWithName:(NSString*)name
-                                              description:(NSString*)description
-                                                mediaData:(NSData*)mediaData
-                                                 mediaUrl:(NSURL*)mediaUrl
-                                             successBlock:(VSuccessBlock)success
-                                                failBlock:(VFailBlock)fail;
-
 - (AFHTTPRequestOperation * )createForumWithName:(NSString*)name
                                      description:(NSString*)description
                                        mediaData:(NSData*)mediaData
@@ -88,7 +74,6 @@ extern NSString* const kInitialLoadFinishedNotification;
 
 - (RKManagedObjectRequestOperation * )uploadMediaWithName:(NSString*)name
                                               description:(NSString*)description
-                                                 category:(NSString*)category
                                                 mediaData:(NSData*)mediaData
                                                 extension:(NSString*)extension
                                                  mediaUrl:(NSURL*)mediaUrl

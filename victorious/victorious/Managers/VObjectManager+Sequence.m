@@ -119,7 +119,7 @@ NSString* const kInitialLoadFinishedNotification = @"kInitialLoadFinishedNotific
         return nil;
     }
     
-    return [self fetchSequenceByID:sequence.remoteId
+    return [self fetchSequenceByID:sequenceId
                       successBlock:success
                          failBlock:fail
                        loadAttempt:0];
@@ -385,11 +385,9 @@ NSString* const kInitialLoadFinishedNotification = @"kInitialLoadFinishedNotific
                                       failBlock:(VFailBlock)fail
 {
     //Required Fields
-    NSString* category = self.isOwner ? kVOwnerPollCategory : kVUGCPollCategory;
     NSDictionary* parameters = @{@"name":name ?: [NSNull null],
                                  @"description":description ?: [NSNull null],
                                  @"question":question ?: [NSNull null],
-                                 @"category":category ?: [NSNull null],
                                  @"answer1_label" : answer1Text ?: [NSNull null],
                                  @"answer2_label" : answer2Text ?: [NSNull null]};
 
@@ -435,42 +433,6 @@ NSString* const kInitialLoadFinishedNotification = @"kInitialLoadFinishedNotific
               failBlock:fail];
 }
 
-- (AFHTTPRequestOperation * )createVideoWithName:(NSString*)name
-                                     description:(NSString*)description
-                                       mediaData:(NSData*)mediaData
-                                        mediaUrl:(NSURL*)mediaUrl
-                                    successBlock:(VSuccessBlock)success
-                                       failBlock:(VFailBlock)fail
-{
-    NSString* category = self.isOwner ? kVOwnerVideoCategory : kVUGCVideoCategory;
-    return [self uploadMediaWithName:name
-                         description:description
-                            category:category
-                           mediaData:mediaData
-                           extension:VConstantMediaExtensionMOV
-                            mediaUrl:nil
-                        successBlock:success
-                           failBlock:fail];
-}
-
-- (AFHTTPRequestOperation * )createImageWithName:(NSString*)name
-                                     description:(NSString*)description
-                                       mediaData:(NSData*)mediaData
-                                        mediaUrl:(NSURL*)mediaUrl
-                                    successBlock:(VSuccessBlock)success
-                                       failBlock:(VFailBlock)fail
-{
-    NSString* category = self.isOwner ? kVOwnerImageCategory : kVUGCImageCategory;
-    return [self uploadMediaWithName:name
-                         description:description
-                            category:category
-                           mediaData:mediaData
-                           extension:VConstantMediaExtensionPNG
-                            mediaUrl:nil
-                        successBlock:success
-                           failBlock:fail];
-}
-
 - (AFHTTPRequestOperation * )createForumWithName:(NSString*)name
                                      description:(NSString*)description
                                        mediaData:(NSData*)mediaData
@@ -478,20 +440,18 @@ NSString* const kInitialLoadFinishedNotification = @"kInitialLoadFinishedNotific
                                     successBlock:(VSuccessBlock)success
                                        failBlock:(VFailBlock)fail
 {
-    NSString* category = self.isOwner ? kVOwnerForumCategory : kVUGCForumCategory;
-    return [self uploadMediaWithName:name
-                         description:description
-                            category:category
-                           mediaData:mediaData
-                           extension:VConstantMediaExtensionPNG
-                            mediaUrl:nil
-                        successBlock:success
-                           failBlock:fail];
+    return nil;
+//    return [self uploadMediaWithName:name
+//                         description:description
+//                           mediaData:mediaData
+//                           extension:VConstantMediaExtensionPNG
+//                            mediaUrl:nil
+//                        successBlock:success
+//                           failBlock:fail];
 }
 
 - (AFHTTPRequestOperation * )uploadMediaWithName:(NSString*)name
                                      description:(NSString*)description
-                                        category:(NSString*)category
                                        mediaData:(NSData*)mediaData
                                        extension:(NSString*)extension
                                         mediaUrl:(NSURL*)mediaUrl
@@ -502,8 +462,7 @@ NSString* const kInitialLoadFinishedNotification = @"kInitialLoadFinishedNotific
         return nil;
     
     NSDictionary* parameters = @{@"name":name ?: [NSNull null],
-                                 @"description":description ?: [NSNull null],
-                                 @"category":category ?: [NSNull null]};
+                                 @"description":description ?: [NSNull null]};
     
     NSDictionary* allData = @{@"media_data":mediaData ?: [NSNull null]};
     NSDictionary* allExtensions = @{@"media_data":extension ?: [NSNull null]};

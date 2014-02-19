@@ -155,13 +155,13 @@ CGFloat VCreateViewControllerLargePadding = 20;
 
 - (IBAction)postButtonAction:(id)sender
 {
+    [self.navigationController popViewControllerAnimated:YES];
+    
     [self.textView resignFirstResponder];
     
     [self.delegate createPostwithMessage:self.textView.text
                                     data:self.mediaData
                                mediaType:self.mediaType];
-    
-    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 #pragma mark - Notifications
