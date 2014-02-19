@@ -25,8 +25,8 @@
 
 @import Social;
 
-const   CGFloat     kCommentRowWithMediaHeight  =   320.0;
-const   CGFloat     kCommentRowHeight           =   110;
+const   CGFloat     kCommentRowWithMediaHeight  =   256.0f;
+const   CGFloat     kCommentRowHeight           =   86.0f;
 
 @interface VCommentsTableViewController () //<UINavigationControllerDelegate>
 

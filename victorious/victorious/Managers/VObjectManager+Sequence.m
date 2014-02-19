@@ -71,13 +71,7 @@ NSString* const kInitialLoadFinishedNotification = @"kInitialLoadFinishedNotific
     }
     
     NSString* path = [@"/api/sequence/detail_list_by_category/" stringByAppendingString: category ?: @"0"];
-    if (!status.pagesLoaded)
-    {
-        path = [path stringByAppendingFormat:@"/0/%lu/%lu", (unsigned long)status.pagesLoaded, (unsigned long)status.itemsPerPage];
-    } else
-    {
-        path = [path stringByAppendingFormat:@"/0/%lu/%lu", (unsigned long)status.pagesLoaded + 1, (unsigned long)status.itemsPerPage];
-    }
+    path = [path stringByAppendingFormat:@"/0/%lu/%lu", (unsigned long)status.pagesLoaded + 1, (unsigned long)status.itemsPerPage];
     
     VSuccessBlock fullSuccessBlock = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
     {
@@ -185,10 +179,7 @@ NSString* const kInitialLoadFinishedNotification = @"kInitialLoadFinishedNotific
     }
     
     NSString* path = [@"/api/comment/all/" stringByAppendingString:sequence.remoteId.stringValue];
-    if (status.pagesLoaded) //only add page to the path if we've looked it up before.
-    {
-        path = [path stringByAppendingFormat:@"/%lu/%lu", (unsigned long)status.pagesLoaded + 1, (unsigned long)status.itemsPerPage];
-    }
+    path = [path stringByAppendingFormat:@"/%lu/%lu", (unsigned long)status.pagesLoaded + 1, (unsigned long)status.itemsPerPage];
     
     __block VSequence* commentOwner = sequence; //Keep the sequence around until the block gets called
     VSuccessBlock fullSuccessBlock = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
