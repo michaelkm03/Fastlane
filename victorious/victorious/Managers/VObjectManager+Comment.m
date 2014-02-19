@@ -115,28 +115,27 @@
         allExtensions = @{@"media_type":type};
     }
     
-    VSuccessBlock fetchCommentSuccess = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
-    {
-        NSManagedObjectID* objectId = [[resultObjects firstObject] objectID];
-        if (objectId)
-        {
-            [self.mainUser addCommentsObject:(VComment*)[self.mainUser.managedObjectContext objectWithID:objectId]];
-            [sequence addCommentsObject:(VComment*)[sequence.managedObjectContext objectWithID:objectId]];
-        }
-        
-        [sequence.managedObjectContext performBlockAndWait:^
-        {
-            [sequence.managedObjectContext save:nil];
-        }];
-        
-        if (success)
-            success(operation, fullResponse, resultObjects);
-    };
+//    VSuccessBlock fetchCommentSuccess = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
+//    {
+//        NSManagedObjectID* objectId = [[resultObjects firstObject] objectID];
+//        if (objectId)
+//        {
+//            [sequence addCommentsObject:(VComment*)[sequence.managedObjectContext objectWithID:objectId]];
+//        }
+//        
+//        [sequence.managedObjectContext performBlockAndWait:^
+//        {
+//            [sequence.managedObjectContext save:nil];
+//        }];
+//        
+//        if (success)
+//            success(operation, fullResponse, resultObjects);
+//    };
     
     VSuccessBlock fullSuccess = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
     {
         [self fetchCommentByID:[fullResponse[@"payload"][@"id"] integerValue]
-                   successBlock:fetchCommentSuccess
+                   successBlock:success
                       failBlock:fail];
     };
     

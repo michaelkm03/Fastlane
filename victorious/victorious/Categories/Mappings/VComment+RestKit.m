@@ -42,6 +42,7 @@
     [mapping addAttributeMappingsFromDictionary:propertyMap];
 
     [mapping addConnectionForRelationship:@"user" connectedBy:@{@"userId" : @"remoteId"}];
+    [mapping addConnectionForRelationship:@"sequence" connectedBy:@{@"sequenceId" : @"remoteId"}];
 
     return mapping;
 }
