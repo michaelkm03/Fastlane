@@ -14,9 +14,12 @@
 #import "VMenuController.h"
 
 #import "CastViewController.h"
+#import "VAppDelegate.h"
 
 @interface VStreamVideoCell ()
 @property (strong, nonatomic) MPMoviePlayerController* mpController;
+
+@property (nonatomic, weak) IBOutlet    UIButton*   castButton;
 @end
 
 @implementation VStreamVideoCell
@@ -50,6 +53,11 @@
                                                object:self.mpController];
     if (self.mpController)
         [self.mpController.view removeFromSuperview]; //make sure to get rid of the old view
+    
+    if ([VAppDelegate sharedAppDelegate].chromecastDeviceController.isConnected)
+        self.castButton.hidden = NO;
+    else
+        self.castButton.hidden = YES;
 }
 
 - (void)exitedFullscreen:(NSNotification*)notif
@@ -90,9 +98,12 @@
 
 - (IBAction)castAction:(id)sender
 {
-    CastViewController* caster = [CastViewController castViewController];
-    [self.parentTableViewController presentViewController:caster.navigationController animated:YES completion:nil];
-    [caster setMediaToPlay:self.sequence];
+    if ([VAppDelegate sharedAppDelegate].chromecastDeviceController.isConnected)
+    {
+        CastViewController* caster = [CastViewController castViewController];
+        [self.parentTableViewController presentViewController:caster animated:YES completion:nil];
+        [caster setMediaToPlay:self.sequence];
+    }
 }
 
 @end

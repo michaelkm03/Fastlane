@@ -132,6 +132,7 @@
                 </constraints>
             </tableViewCellContentView>
             <connections>
+                <outlet property="castButton" destination="gee-cJ-e8r" id="oih-Rt-apN"/>
                 <outlet property="dateLabel" destination="ClZ-8D-vSe" id="jTd-I7-vCF"/>
                 <outlet property="descriptionLabel" destination="h1o-6t-QRB" id="7KT-DS-yWE"/>
                 <outlet property="likeButton" destination="TM2-Fl-FDk" id="fgB-he-6Wt"/>

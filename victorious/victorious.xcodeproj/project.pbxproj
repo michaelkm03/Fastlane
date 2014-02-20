@@ -36,7 +36,6 @@
 		3FA217D718A9C38A0066E893 /* play_black.png in Resources */ = {isa = PBXBuildFile; fileRef = 3FA217D318A9C38A0066E893 /* play_black.png */; };
 		3FA217D818A9C38A0066E893 /* play_black@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3FA217D418A9C38A0066E893 /* play_black@2x.png */; };
 		3FA217D918AAC1960066E893 /* GoogleCast.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3FA217B518A9AD9B0066E893 /* GoogleCast.framework */; };
-		3FA217DB18AAD1F70066E893 /* ChromeCast.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3FA217DA18AAD1F70066E893 /* ChromeCast.storyboard */; };
 		3FA217DE18AAFCFE0066E893 /* cast_outline_black.png in Resources */ = {isa = PBXBuildFile; fileRef = 3FA217DC18AAFCFE0066E893 /* cast_outline_black.png */; };
 		3FA217DF18AAFCFE0066E893 /* cast_outline_black@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3FA217DD18AAFCFE0066E893 /* cast_outline_black@2x.png */; };
 		3FA217E318AD87F40066E893 /* UIImageView+Blurring.m in Sources */ = {isa = PBXBuildFile; fileRef = 3FA217E218AD87F40066E893 /* UIImageView+Blurring.m */; };
@@ -218,7 +217,6 @@
 		3FA217D218A9C38A0066E893 /* pause_black@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "pause_black@2x.png"; path = "3rd Party SDKs/pause_black@2x.png"; sourceTree = SOURCE_ROOT; };
 		3FA217D318A9C38A0066E893 /* play_black.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = play_black.png; path = "3rd Party SDKs/play_black.png"; sourceTree = SOURCE_ROOT; };
 		3FA217D418A9C38A0066E893 /* play_black@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "play_black@2x.png"; path = "3rd Party SDKs/play_black@2x.png"; sourceTree = SOURCE_ROOT; };
-		3FA217DA18AAD1F70066E893 /* ChromeCast.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = ChromeCast.storyboard; path = "3rd Party SDKs/ChromeCast.storyboard"; sourceTree = SOURCE_ROOT; };
 		3FA217DC18AAFCFE0066E893 /* cast_outline_black.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = cast_outline_black.png; path = "3rd Party SDKs/cast_outline_black.png"; sourceTree = SOURCE_ROOT; };
 		3FA217DD18AAFCFE0066E893 /* cast_outline_black@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "cast_outline_black@2x.png"; path = "3rd Party SDKs/cast_outline_black@2x.png"; sourceTree = SOURCE_ROOT; };
 		3FA217E118AD87F40066E893 /* UIImageView+Blurring.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "UIImageView+Blurring.h"; path = "Categories/UIImageView+Blurring.h"; sourceTree = "<group>"; };
@@ -678,7 +676,6 @@
 				3FA217D218A9C38A0066E893 /* pause_black@2x.png */,
 				3FA217D318A9C38A0066E893 /* play_black.png */,
 				3FA217D418A9C38A0066E893 /* play_black@2x.png */,
-				3FA217DA18AAD1F70066E893 /* ChromeCast.storyboard */,
 			);
 			name = ChromeCast;
 			sourceTree = "<group>";
@@ -1111,7 +1108,6 @@
 				BE171D911868BE64004E5202 /* Images.xcassets in Resources */,
 				3FA217DE18AAFCFE0066E893 /* cast_outline_black.png in Resources */,
 				83B5A1241876447800659C73 /* Roboto-Regular.ttf in Resources */,
-				3FA217DB18AAD1F70066E893 /* ChromeCast.storyboard in Resources */,
 				BEB4C2A0187E0778004ECEEF /* VCommentCell.xib in Resources */,
 				BE692B28186E5ED800C71336 /* VStreamVideoCell.xib in Resources */,
 				83ABAFAF18709DE30069556C /* Roboto-Light.ttf in Resources */,

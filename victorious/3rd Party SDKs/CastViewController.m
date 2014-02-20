@@ -46,14 +46,8 @@
 
 + (CastViewController *)castViewController
 {
-    static  UINavigationController*     castViewController;
-    static  dispatch_once_t             onceToken;
-    
-    dispatch_once(&onceToken, ^{
-        castViewController = [[UIStoryboard storyboardWithName:@"ChromeCast" bundle:nil] instantiateInitialViewController];
-    });
-    
-    return (CastViewController *)(castViewController.topViewController);
+    UIViewController*   currentViewController = [[UIApplication sharedApplication] delegate].window.rootViewController;
+    return (CastViewController*)[currentViewController.storyboard instantiateViewControllerWithIdentifier: @"castview"];
 }
 
 - (id)initWithCoder:(NSCoder*)decoder
@@ -229,7 +223,7 @@
           if (![self.mediaToPlay.name isEqualToString:[_chromecastController.mediaInformation.metadata stringForKey:kGCKMetadataKeyTitle]])
           {
               //Cast the movie!!
-              [_chromecastController loadMedia:url
+              [_chromecastController loadMedia:[[url URLByDeletingPathExtension] URLByAppendingPathExtension:@"mp4"]
                                   thumbnailURL:thumbnailURL
                                          title:self.mediaToPlay.sequenceDescription
                                       subtitle:self.mediaToPlay.user.name
