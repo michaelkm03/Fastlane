@@ -103,9 +103,9 @@
 //    [self.navigationController pushViewController:commentsTable animated:YES];
 //}
 
-- (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
-    if (self.tableView.contentOffset.y > (self.tableView.contentSize.height * .75))
+    if (scrollView.contentOffset.y > (scrollView.contentSize.height * .75))
     {
         [self refreshAction];
     }
