@@ -21,4 +21,6 @@
 
 - (VNode*)firstNode;
 
+- (NSArray*)initialImageURLs;
+
 @end

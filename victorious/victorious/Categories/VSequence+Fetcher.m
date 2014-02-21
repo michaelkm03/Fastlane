@@ -7,8 +7,13 @@
 //
 
 #import "VSequence+Fetcher.h"
-#import "VNode.h"
+#import "VNode+Fetcher.h"
+#import "VAsset.h"
 #import "VConstants.h"
+
+#import "NSString+VParseHelp.h"
+#import "UIImageView+AFNetworking.h"
+#import "VAnswer.h"
 
 @implementation VSequence (Fetcher)
 
@@ -53,6 +58,39 @@
 {
     NSSortDescriptor*   sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"display_order" ascending:YES];
     return [[[self.nodes allObjects] sortedArrayUsingDescriptors:@[sortDescriptor]] firstObject];
+}
+
+- (NSArray*)initialImageURLs
+{
+    NSMutableArray* urls = [[NSMutableArray alloc] initWithCapacity:10];
+    if ([self isPoll] && [[self firstNode] firstAsset])
+    {
+        NSString* data = [[self firstNode] firstAsset].data;
+        if ([[data pathExtension] isEqualToString:VConstantMediaExtensionM3U8])
+            [urls addObject:[NSURL URLWithString:[data previewImageURLForM3U8]]];
+
+        else
+            [urls addObject:[NSURL URLWithString:data]];
+    }
+    else if ([self isPoll])
+    {
+        for (VAnswer* answer in [[self firstNode] firstAnswers])
+        {
+            NSString* data = answer.mediaUrl;
+            if ([[data pathExtension] isEqualToString:VConstantMediaExtensionM3U8])
+                [urls addObject:[NSURL URLWithString:[data previewImageURLForM3U8]]];
+            
+            else
+                [urls addObject:[NSURL URLWithString:data]];
+        }
+    }
+    else if ([self isForum] || [self isVideo])
+        [urls addObject:[NSURL URLWithString:[self.previewImage previewImageURLForM3U8]]];
+    
+    else
+        [urls addObject:[NSURL URLWithString:self.previewImage]];
+    
+    return [urls copy];
 }
 
 @end

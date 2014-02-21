@@ -22,7 +22,7 @@
 - (void)setSequence:(VSequence *)sequence
 {
     [super setSequence:sequence];
-    self.webView.hidden = YES;
+    self.webView = nil;
     self.playButton.userInteractionEnabled = YES;
     self.playButtonImage.hidden = NO;
 }
@@ -31,6 +31,10 @@
 {
     NSString* videoID = [[self.sequence firstNode] firstAsset].data;
     
+    self.webView = [[UIWebView alloc] initWithFrame:self.previewImageView.frame];
+    self.webView.hidden = YES;
+    self.webView.delegate = self;
+    [self addSubview:self.webView];
     self.webView.scrollView.scrollEnabled = NO;
     
     [self.webView setAllowsInlineMediaPlayback:YES];

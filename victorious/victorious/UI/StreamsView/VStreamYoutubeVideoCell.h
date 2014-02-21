@@ -14,6 +14,6 @@ static NSString *kStreamYoutubeVideoCellIdentifier = @"VStreamYoutubeVideoCell";
 
 @interface VStreamYoutubeVideoCell : VStreamViewCell
 
-@property (nonatomic, weak) IBOutlet UIWebView* webView;
+@property (nonatomic, strong) UIWebView* webView;
 
 @end

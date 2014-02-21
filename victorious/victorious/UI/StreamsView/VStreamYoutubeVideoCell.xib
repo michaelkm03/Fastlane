@@ -100,14 +100,6 @@
                         <rect key="frame" x="5" y="65" width="310" height="175"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     </imageView>
-                    <webView hidden="YES" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="V03-DQ-WAX">
-                        <rect key="frame" x="5" y="65" width="310" height="175"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                        <connections>
-                            <outlet property="delegate" destination="ClS-Ss-SJq" id="ICE-5n-48R"/>
-                        </connections>
-                    </webView>
                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="Play" translatesAutoresizingMaskIntoConstraints="NO" id="etx-P4-KAJ">
                         <rect key="frame" x="144" y="136" width="33" height="33"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -140,7 +132,6 @@
                 <outlet property="previewImageView" destination="m9n-4Y-LID" id="p7E-AY-DS9"/>
                 <outlet property="profileImageButton" destination="gUI-hE-M7J" id="gOC-LY-s3w"/>
                 <outlet property="usernameLabel" destination="E9G-Sx-geH" id="Gbh-CD-dab"/>
-                <outlet property="webView" destination="V03-DQ-WAX" id="1zt-JG-jS9"/>
                 <outletCollection property="imageViews" destination="IxH-jt-ZWz" id="gxh-Tr-NFb"/>
                 <outletCollection property="labels" destination="E9G-Sx-geH" id="Pnd-Zi-AKF"/>
                 <outletCollection property="labels" destination="cdh-Rv-E4l" id="rnm-cL-sdZ"/>
