@@ -26,6 +26,7 @@ CGFloat const kCommentCellYOffset = 10;
 CGFloat const kMediaCommentCellYOffset = 235;
 CGFloat const kMinCellHeight = 84;
 CGFloat const kCommentMessageLabelWidth = 214;
+CGFloat const kMessageChatBubblePadding = 5;
 
 @interface VCommentCell()
 @property (weak, nonatomic) IBOutlet UILabel *dateLabel;
@@ -155,6 +156,18 @@ CGFloat const kCommentMessageLabelWidth = 214;
     [self.messageLabel sizeToFit];
     height = self.messageLabel.frame.size.height;
     height = MAX(height + yOffset, kMinCellHeight);
+    
+    if (height == kMinCellHeight)
+    {
+        self.chatBubble.frame = CGRectMake(self.messageLabel.frame.origin.x,
+                                           self.messageLabel.frame.origin.y,
+                                           self.messageLabel.frame.size.width,
+                                           self.messageLabel.frame.size.height);
+    }
+    else
+    {
+        
+    }
     
     self.frame = CGRectMake(self.frame.origin.x,
                             self.frame.origin.y,

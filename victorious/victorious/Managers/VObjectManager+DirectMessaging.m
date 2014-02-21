@@ -143,6 +143,8 @@
     
     VSuccessBlock fullSuccess = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
     {
+        //TODO: send notif if we have new messages?
+        conversation.messages = [NSSet set]; //TODO: this will need to change with pagination / messageIDs
         NSMutableArray* nonExistantUsers = [[NSMutableArray alloc] init];
         for (VMessage* message in resultObjects)
         {

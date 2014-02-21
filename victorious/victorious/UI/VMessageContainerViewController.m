@@ -8,12 +8,28 @@
 
 #import "VMessageContainerViewController.h"
 #import "VMessageViewController.h"
+#import "VConversation.h"
+#import "VUser.h"
+#import "NSString+VParseHelp.h"
 
 @interface VMessageContainerViewController ()
 @end
 
 @implementation VMessageContainerViewController
 @synthesize conversationTableViewController = _conversationTableViewController;
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    
+    VMessageViewController* messageVC = (VMessageViewController*)self.conversationTableViewController;
+    
+    VLog(@"title: %@", self.navigationItem.title);
+    NSString* title = [self.conversation.user.shortName isEmpty] ? messageVC.conversation.user.name
+                                                                 : messageVC.conversation.user.shortName;
+    self.navigationItem.title = title;
+    VLog(@"title: %@", self.navigationItem.title);
+}
 
 - (UITableViewController *)conversationTableViewController
 {

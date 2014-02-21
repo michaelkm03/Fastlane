@@ -30,7 +30,7 @@ const   CGFloat     kMessageRowHeight           =   80;
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-
+    
     self.composeViewController.delegate = self;
     
     UIImageView* backgroundImageView = [[UIImageView alloc] initWithFrame:self.tableView.backgroundView.frame];
@@ -38,14 +38,15 @@ const   CGFloat     kMessageRowHeight           =   80;
                                     placeholderImage:[UIImage imageNamed:@"profile_thumb"]];
     
     self.tableView.backgroundView = backgroundImageView;
-
+    
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
-//    self.tableView.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKeyPath:@"theme.color.messages.background"];
+    //    self.tableView.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKeyPath:@"theme.color.messages.background"];
     [self.tableView registerNib:[UINib nibWithNibName:kCommentCellIdentifier bundle:nil]
          forCellReuseIdentifier:kCommentCellIdentifier];
     [self.tableView registerNib:[UINib nibWithNibName:kOtherCommentCellIdentifier bundle:nil]
          forCellReuseIdentifier:kOtherCommentCellIdentifier];
-
+    
+    [self.tableView reloadData];
     [self refreshAction:self];
 }
 
@@ -55,11 +56,13 @@ const   CGFloat     kMessageRowHeight           =   80;
     self.view.frame = self.view.superview.bounds;
 }
 
- - (IBAction)refreshAction:(id)sender
+- (IBAction)refreshAction:(id)sender
 {
     VFailBlock fail = ^(NSOperation* operation, NSError* error)
     {
         NSLog(@"%@", error.localizedDescription);
+        
+        [self delayedRefresh];
     };
     
     VSuccessBlock success = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
@@ -71,18 +74,25 @@ const   CGFloat     kMessageRowHeight           =   80;
         [[VObjectManager sharedManager] markConversationAsRead:self.conversation
                                                   successBlock:nil
                                                      failBlock:fail];
+        [self delayedRefresh];
     };
     
-    //TODO: get rid of this once message pagination works
-    //If we have more than 1 message we've already loaded at least 1 page
-    if ([self.conversation.messages count] > 1)
-    {
-        success (nil, nil, nil);
-        return;
-    }
-    
     [[VObjectManager sharedManager] loadNextPageOfMessagesForConversation:self.conversation
-                                                             successBlock:success                                                                failBlock:fail];
+                                                             successBlock:success
+                                                                failBlock:fail];
+}
+
+- (void)delayedRefresh
+{
+    double delayInSeconds = 5.0;
+    dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
+    dispatch_after(popTime, dispatch_get_main_queue(), ^(void)
+                   {
+                       if(self.isViewLoaded && self.view.window)
+                       {
+                           [self refreshAction:nil];
+                       }
+                   });
 }
 
 #pragma mark - Table view data source
@@ -103,13 +113,13 @@ const   CGFloat     kMessageRowHeight           =   80;
     {
         cell = [tableView dequeueReusableCellWithIdentifier:kCommentCellIdentifier forIndexPath:indexPath];
     }
-
+    
     [(VCommentCell *)cell setCommentOrMessage:aMessage];
-
+    
     return cell;
 }
 
- - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     VMessage*   aMessage = self.messages[indexPath.row];
     if (aMessage.media.mediaUrl)
@@ -146,9 +156,9 @@ const   CGFloat     kMessageRowHeight           =   80;
                                              mediaUrl:nil
                                          successBlock:success
                                             failBlock:^(NSOperation* operation, NSError* error)
-                                          {
-                                               VLog(@"Failed in creating message with error: %@", error);
-                                          }];
+     {
+         VLog(@"Failed in creating message with error: %@", error);
+     }];
 }
 
 @end
