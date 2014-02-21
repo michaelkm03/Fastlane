@@ -23,6 +23,9 @@
 #import "VNode+Fetcher.h"
 #import "VAsset.h"
 
+#import "UIImageView+Blurring.h"
+
+
 @import Social;
 
 const   CGFloat     kCommentRowWithMediaHeight  =   256.0f;
@@ -32,6 +35,7 @@ const   CGFloat     kCommentRowHeight           =   86.0f;
 
 @property (nonatomic, strong) NSMutableArray* newlyReadComments;
 @property (nonatomic, strong) NSArray* sortedComments;
+@property (nonatomic, strong) UIImageView* backgroundImageView;
 
 @end
 
@@ -58,11 +62,18 @@ static NSString* CommentCache = @"CommentCache";
 {
     [super viewWillLayoutSubviews];
     self.view.frame = self.view.superview.bounds;
+    
+     UIImageView* backgroundImageView = [[UIImageView alloc] initWithFrame:self.tableView.backgroundView.frame];
+     [backgroundImageView setLightBlurredImageWithURL:[NSURL URLWithString:self.sequence.previewImage]
+                                     placeholderImage:[UIImage imageNamed:@"profile_thumb"]];
+     
+     self.tableView.backgroundView = backgroundImageView;
 }
 
 - (void)setSequence:(VSequence *)sequence
 {
     _sequence = sequence;
+    
     self.title = sequence.name;
     
     if (![self.sequence.comments count]) //If we don't have comments, try to pull more.
