@@ -280,7 +280,7 @@ static NSString* CommentCache = @"CommentCache";
 {
     VComment* comment = (VComment*)[self.sortedComments objectAtIndex:indexPath.row];
 
-    CGFloat height = [VCommentCell heightForMessageText:comment.text];
+    CGFloat height = [VCommentCell frameSizeForMessageText:comment.text].height;
     CGFloat yOffset = [comment.mediaUrl isEmpty] ? kCommentCellYOffset : kMediaCommentCellYOffset;
     height = MAX(height + yOffset, kMinCellHeight);
 

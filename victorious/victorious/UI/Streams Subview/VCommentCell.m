@@ -53,7 +53,7 @@ CGFloat const kMessageChatBubblePadding = 5;
     
 //    self.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKeyPath:@"theme.color.messages.background"];
     self.dateLabel.font = [[VThemeManager sharedThemeManager] themedFontForKeyPath:@"theme.font.stream.timeSince"];
-
+    self.chatBubble.clipsToBounds = YES;
     self.profileImageButton.clipsToBounds = YES;
     
     self.profileImageButton.layer.cornerRadius = CGRectGetHeight(self.profileImageButton.bounds)/2;
@@ -144,30 +144,31 @@ CGFloat const kMessageChatBubblePadding = 5;
 
 -(void)layoutWithText:(NSString*)text withMedia:(BOOL)hasMedia
 {
-    CGFloat height = [VCommentCell heightForMessageText:(NSString*)text];
+    CGSize size = [VCommentCell frameSizeForMessageText:text];
     
     CGFloat yOffset = hasMedia ? kMediaCommentCellYOffset : kCommentCellYOffset;
     
     self.messageLabel.text = text;
     self.messageLabel.frame = CGRectMake(self.messageLabel.frame.origin.x,
                                          self.messageLabel.frame.origin.y,
-                                         self.messageLabel.frame.size.width,
-                                         height);
+                                         size.width,
+                                         size.height);
+    
+    VLog(@"message frame: %@", NSStringFromCGRect(self.messageLabel.frame));
     [self.messageLabel sizeToFit];
-    height = self.messageLabel.frame.size.height;
+    CGFloat height = self.messageLabel.frame.size.height;
     height = MAX(height + yOffset, kMinCellHeight);
     
-    if (height == kMinCellHeight)
-    {
-        self.chatBubble.frame = CGRectMake(self.messageLabel.frame.origin.x,
-                                           self.messageLabel.frame.origin.y,
-                                           self.messageLabel.frame.size.width,
-                                           self.messageLabel.frame.size.height);
-    }
-    else
-    {
-        
-    }
+    self.chatBubble.bounds = CGRectMake(self.messageLabel.frame.origin.x - kMessageChatBubblePadding,
+                                       self.messageLabel.frame.origin.y - kMessageChatBubblePadding,
+                                       self.messageLabel.frame.size.width + (kMessageChatBubblePadding * 2),
+                                       self.messageLabel.frame.size.height + (kMessageChatBubblePadding * 2));
+//    // force the stupid image to resize.
+//    UIImage* imageCopy = [self.chatBubble.image copy];
+//    self.chatBubble.image = nil;
+//    self.chatBubble.image = imageCopy;
+    
+    VLog(@"bubble frame: %@", NSStringFromCGRect(self.chatBubble.frame));
     
     self.frame = CGRectMake(self.frame.origin.x,
                             self.frame.origin.y,
@@ -175,14 +176,12 @@ CGFloat const kMessageChatBubblePadding = 5;
                             height);
 }
 
-+ (CGFloat)heightForMessageText:(NSString*)text
++ (CGSize)frameSizeForMessageText:(NSString*)text
 {
     NSDictionary *stringAttributes = [NSDictionary dictionaryWithObject:[[VThemeManager sharedThemeManager] themedFontForKeyPath:@"theme.font.stream"]
                                                                  forKey: NSFontAttributeName];
-    CGFloat height = [text heightForViewWidth:kCommentMessageLabelWidth
-                               andAttributes:stringAttributes];
-    
-    return height;
+    return [text frameSizeForWidth:kCommentMessageLabelWidth
+                     andAttributes:stringAttributes];
 }
 
 - (IBAction)playVideo:(id)sender

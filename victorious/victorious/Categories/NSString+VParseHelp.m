@@ -10,7 +10,7 @@
 
 @implementation NSString (VParseHelp)
 
-- (CGFloat)heightForViewWidth:(CGFloat)width andAttributes:(NSDictionary*)attributes
+- (CGSize)frameSizeForWidth:(CGFloat)width andAttributes:(NSDictionary*)attributes
 {
     NSStringDrawingOptions options = NSStringDrawingUsesLineFragmentOrigin |
     NSStringDrawingUsesFontLeading;
@@ -20,7 +20,7 @@
                                           attributes:attributes
                                              context:nil];
     
-    return (CGFloat) (ceil(boundingRect.size.height));
+    return (CGSize) CGSizeMake(ceil(boundingRect.size.width), ceil(boundingRect.size.height));
 }
 
 - (NSString*)typeByExtension

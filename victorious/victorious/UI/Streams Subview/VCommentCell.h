@@ -23,6 +23,6 @@ extern CGFloat const kMinCellHeight;
 
 @property (strong, nonatomic) id commentOrMessage;
 
-+ (CGFloat)heightForMessageText:(NSString*)text;
++ (CGSize)frameSizeForMessageText:(NSString*)text;
 
 @end

@@ -98,6 +98,7 @@
             </tableViewCellContentView>
             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
             <connections>
+                <outlet property="chatBubble" destination="6J0-Gx-uGf" id="lMn-IR-F9A"/>
                 <outlet property="dateLabel" destination="mlx-Sx-ed0" id="5tM-mA-JkR"/>
                 <outlet property="mediaPreview" destination="wD6-xk-K18" id="CZf-He-aUK"/>
                 <outlet property="messageLabel" destination="yUe-8b-fBQ" id="qcA-Ap-56l"/>
