@@ -191,13 +191,7 @@ NSString *kLoggedInChangedNotification = @"LoggedInChangedNotification";
     {
         //Warning: Sometimes empty payloads will appear as Array objects. Use the following line at your own risk.
         //NSDictionary* payload = fullResponse[@"payload"];
-        NSManagedObjectContext* context = self.managedObjectStore.persistentStoreManagedObjectContext;
-        [context deleteObject:[context objectWithID:[self mainUser].objectID]];
-        
-        [context performBlockAndWait:^
-         {
-             [context save:nil];
-         }];
+        self.mainUser = nil;
         
         [[NSNotificationCenter defaultCenter] postNotificationName:kLoggedInChangedNotification object:nil];
     };
