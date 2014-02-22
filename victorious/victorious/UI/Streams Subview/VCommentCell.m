@@ -20,6 +20,7 @@
 #import "NSString+VParseHelp.h"
 #import "UIButton+VImageLoading.h"
 #import "VProfileViewController.h"
+#import "UIView+AutoLayout.h"
 
 CGFloat const kCommentCellWidth = 214;
 CGFloat const kCommentCellYOffset = 10;
@@ -130,13 +131,18 @@ CGFloat const kMessageChatBubblePadding = 5;
                 self.playButton.hidden = YES;
                 [self.mediaPreview setImageWithURL:[NSURL URLWithString:self.mediaUrl]];
             }
+            
+            [self.chatBubble pinEdges:JRTViewPinRightEdge | JRTViewPinBottomEdge toSameEdgesOfView:self.mediaPreview inset:kMessageChatBubblePadding];
         }
         else
         {
             [self layoutWithText:message.text withMedia:NO];
             self.mediaPreview.hidden = YES;
             self.playButton.hidden = YES;
+            [self.chatBubble pinEdges:JRTViewPinRightEdge | JRTViewPinBottomEdge toSameEdgesOfView:self.messageLabel inset:kMessageChatBubblePadding];
         }
+        
+        [self.chatBubble pinEdges:JRTViewPinTopEdge | JRTViewPinLeftEdge toSameEdgesOfView:self.messageLabel inset:kMessageChatBubblePadding];
     }
     
     [self layoutSubviews];
@@ -154,21 +160,18 @@ CGFloat const kMessageChatBubblePadding = 5;
                                          size.width,
                                          size.height);
     
-    VLog(@"message frame: %@", NSStringFromCGRect(self.messageLabel.frame));
+//    VLog(@"message frame: %@", NSStringFromCGRect(self.messageLabel.frame));
     [self.messageLabel sizeToFit];
     CGFloat height = self.messageLabel.frame.size.height;
     height = MAX(height + yOffset, kMinCellHeight);
     
-    self.chatBubble.bounds = CGRectMake(self.messageLabel.frame.origin.x - kMessageChatBubblePadding,
-                                       self.messageLabel.frame.origin.y - kMessageChatBubblePadding,
-                                       self.messageLabel.frame.size.width + (kMessageChatBubblePadding * 2),
-                                       self.messageLabel.frame.size.height + (kMessageChatBubblePadding * 2));
-//    // force the stupid image to resize.
-//    UIImage* imageCopy = [self.chatBubble.image copy];
-//    self.chatBubble.image = nil;
-//    self.chatBubble.image = imageCopy;
+//    self.chatBubble.frame = CGRectMake(self.messageLabel.frame.origin.x - kMessageChatBubblePadding,
+//                                       self.messageLabel.frame.origin.y - kMessageChatBubblePadding,
+//                                       self.messageLabel.frame.size.width + (kMessageChatBubblePadding * 2),
+//                                       self.messageLabel.frame.size.height + (kMessageChatBubblePadding * 2));
+//    [self.chatBubble layoutSubviews];
     
-    VLog(@"bubble frame: %@", NSStringFromCGRect(self.chatBubble.frame));
+//    VLog(@"bubble frame: %@", NSStringFromCGRect(self.chatBubble.frame));
     
     self.frame = CGRectMake(self.frame.origin.x,
                             self.frame.origin.y,
