@@ -222,8 +222,11 @@
           // If the newMedia is already playing, join the existing session.
           if (![self.mediaToPlay.name isEqualToString:[_chromecastController.mediaInformation.metadata stringForKey:kGCKMetadataKeyTitle]])
           {
-              //Cast the movie!!
-              [_chromecastController loadMedia:[[url URLByDeletingPathExtension] URLByAppendingPathExtension:@"mp4"]
+              //Cast the movie
+              [_chromecastController loadMedia:[[[[url URLByDeletingLastPathComponent]
+                                                 URLByAppendingPathComponent:@"720" isDirectory:YES]
+                                                 URLByAppendingPathComponent:@"video"]
+                                                URLByAppendingPathExtension:@"mp4"]
                                   thumbnailURL:thumbnailURL
                                          title:self.mediaToPlay.sequenceDescription
                                       subtitle:self.mediaToPlay.user.name
