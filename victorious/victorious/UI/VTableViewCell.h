@@ -14,6 +14,8 @@
 @property (strong, nonatomic) IBOutletCollection(UILabel) NSArray *labels;
 @property (strong, nonatomic) IBOutletCollection(UIButton) NSArray *buttons;
 
+@property (nonatomic, weak) IBOutlet UIView* mainView;
+
 @property (weak, nonatomic) UITableViewController *parentTableViewController;
 
 @end
