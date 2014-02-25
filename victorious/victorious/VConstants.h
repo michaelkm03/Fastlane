@@ -16,7 +16,7 @@ static NSUInteger const VConstantsForumTitleLength  = 65;
 static NSUInteger const kFeaturedTableCellHeight = 180;
 static NSUInteger const kStreamPollCellHeight = 344;
 static NSUInteger const kStreamYoutubeCellHeight = 315;
-static NSUInteger const kStreamViewCellHeight = 450;
+static NSUInteger const kStreamViewCellHeight = 320;
 //TODO: update these 2 with real numbers
 static NSUInteger const kStreamCommentHeaderHeight = 80;
 static NSUInteger const kStreamCommentCellHeight = 110;

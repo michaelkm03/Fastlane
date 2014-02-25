@@ -43,6 +43,8 @@
      addObserver:self selector:@selector(willCommentSequence:)
      name:kStreamsWillCommentNotification object:nil];
     
+    self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+    
     if ([self.fetchedResultsController.fetchedObjects count] < 5)
         [self refreshAction];
     else
@@ -181,24 +183,24 @@
 - (VStreamViewCell*)tableView:(UITableView *)tableView streamViewCellForIndex:(NSIndexPath*)indexPath
 {
     VSequence* sequence = (VSequence*)[self.fetchedResultsController objectAtIndexPath:indexPath];
-    
-    if (([sequence isForum] || [sequence isVideo])
-        && [[[sequence firstNode] firstAsset].type isEqualToString:VConstantsMediaTypeYoutube])
-        return [tableView dequeueReusableCellWithIdentifier:kStreamYoutubeVideoCellIdentifier
-                                               forIndexPath:indexPath];
-    
-    else if ([sequence isPoll] && [[sequence firstNode] firstAsset])
-        return [tableView dequeueReusableCellWithIdentifier:kStreamPollCellIdentifier
-                                               forIndexPath:indexPath];
-    
-    else if ([sequence isPoll])
+//
+//    if (([sequence isForum] || [sequence isVideo])
+//        && [[[sequence firstNode] firstAsset].type isEqualToString:VConstantsMediaTypeYoutube])
+//        return [tableView dequeueReusableCellWithIdentifier:kStreamYoutubeVideoCellIdentifier
+//                                               forIndexPath:indexPath];
+//    
+//    else if ([sequence isPoll] && [[sequence firstNode] firstAsset])
+//        return [tableView dequeueReusableCellWithIdentifier:kStreamPollCellIdentifier
+//                                               forIndexPath:indexPath];
+//    
+    if ([sequence isPoll])
         return [tableView dequeueReusableCellWithIdentifier:kStreamDoublePollCellIdentifier
                                                forIndexPath:indexPath];
-    
-    else if ([sequence isForum] || [sequence isVideo])
-        return [tableView dequeueReusableCellWithIdentifier:kStreamVideoCellIdentifier
-                                               forIndexPath:indexPath];
-    
+//
+//    else if ([sequence isForum] || [sequence isVideo])
+//        return [tableView dequeueReusableCellWithIdentifier:kStreamVideoCellIdentifier
+//                                               forIndexPath:indexPath];
+//    
     else
         return [tableView dequeueReusableCellWithIdentifier:kStreamViewCellIdentifier
                                                forIndexPath:indexPath];
@@ -220,7 +222,7 @@
     
     animatableContent.layer.opacity = 0.1;
     
-    [UIView animateWithDuration:2.0 animations:^{
+    [UIView animateWithDuration:0.5 animations:^{
         animatableContent.layer.opacity = 1.0;
     }];
 }
