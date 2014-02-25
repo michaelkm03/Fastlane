@@ -42,10 +42,6 @@ const   CGFloat     kCommentRowHeight           =   86.0f;
 static NSString* CommentCache = @"CommentCache";
 
 @implementation VCommentsTableViewController
-{
-    CGPoint     _startPosition;
-    CGPoint     _endPosition;
-}
 
 - (void)viewDidLoad
 {
@@ -316,12 +312,9 @@ static NSString* CommentCache = @"CommentCache";
     //if(!comment.read)
     [self.newlyReadComments addObject:[NSString stringWithFormat:@"%@", comment.remoteId]];
 
-
     UIView*     contentView = [(VTableViewCell *)cell mainView];
-    _endPosition = contentView.center;
-    
-    CGFloat tableViewWidth = CGRectGetWidth(self.tableView.frame);
-    _startPosition = CGPointMake(_endPosition.x + tableViewWidth, _endPosition.y);
+    CGPoint     _endPosition = contentView.center;
+    CGPoint     _startPosition = CGPointMake(_endPosition.x + CGRectGetWidth(self.tableView.frame), _endPosition.y);
 
     contentView.center = _startPosition;
     
