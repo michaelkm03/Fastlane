@@ -214,6 +214,17 @@
     return cell;
 }
 
+- (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    UIView*     animatableContent = [(VTableViewCell *)cell mainView];
+    
+    animatableContent.layer.opacity = 0.1;
+    
+    [UIView animateWithDuration:2.0 animations:^{
+        animatableContent.layer.opacity = 1.0;
+    }];
+}
+
 - (void)registerCells
 {
     [self.tableView registerNib:[UINib nibWithNibName:kStreamViewCellIdentifier bundle:nil]

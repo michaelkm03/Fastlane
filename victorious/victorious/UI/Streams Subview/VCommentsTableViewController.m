@@ -42,6 +42,10 @@ const   CGFloat     kCommentRowHeight           =   86.0f;
 static NSString* CommentCache = @"CommentCache";
 
 @implementation VCommentsTableViewController
+{
+    CGPoint     _startPosition;
+    CGPoint     _endPosition;
+}
 
 - (void)viewDidLoad
 {
@@ -311,6 +315,28 @@ static NSString* CommentCache = @"CommentCache";
     VComment* comment = (VComment*)[self.sortedComments objectAtIndex:indexPath.row];
     //if(!comment.read)
     [self.newlyReadComments addObject:[NSString stringWithFormat:@"%@", comment.remoteId]];
+
+
+    UIView*     contentView = [(VTableViewCell *)cell mainView];
+    _endPosition = contentView.center;
+    
+    CGFloat tableViewWidth = CGRectGetWidth(self.tableView.frame);
+    _startPosition = CGPointMake(_endPosition.x + tableViewWidth, _endPosition.y);
+
+    contentView.center = _startPosition;
+    
+    [UIView animateWithDuration:1.5
+                          delay:0.0
+         usingSpringWithDamping:0.5
+          initialSpringVelocity:1.0
+                        options:UIViewAnimationOptionCurveLinear
+                     animations:^{
+                         contentView.center = _endPosition;
+                     }
+                     completion:^(BOOL finished)
+                     {
+                         
+                     }];
 }
 
 #pragma mark - UITableViewDelegate
