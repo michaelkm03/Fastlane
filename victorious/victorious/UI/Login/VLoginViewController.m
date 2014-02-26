@@ -236,8 +236,6 @@
     VLog(@"Succesfully logged in as: %@", mainUser);
     
     self.profile = mainUser;
-    
-    [[NSNotificationCenter defaultCenter] postNotificationName:kLoggedInChangedNotification object:mainUser];
 
     if (kVLoginTypeCreateFaceBook == self.loginType)
         [self performSegueWithIdentifier:@"toProfileWithFacebook" sender:self];

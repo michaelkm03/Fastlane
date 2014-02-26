@@ -8,6 +8,8 @@
 
 #import "VObjectManager+Private.h"
 #import "VObjectManager+Login.h"
+#import "VObjectManager+Sequence.h"
+#import "VObjectManager+DirectMessaging.h"
 #import "VUser+RestKit.h"
 
 @implementation VObjectManager (Login)
@@ -36,7 +38,7 @@ NSString *kLoggedInChangedNotification = @"LoggedInChangedNotification";
     
     VSuccessBlock fullSuccess = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
     {
-        self.mainUser = [resultObjects firstObject];
+        [self loggedInWithUser:[resultObjects firstObject]];
         if (success)
             success(operation, fullResponse, resultObjects);
     };
@@ -56,7 +58,7 @@ NSString *kLoggedInChangedNotification = @"LoggedInChangedNotification";
     
     VSuccessBlock fullSuccess = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
     {
-        self.mainUser = [resultObjects firstObject];
+        [self loggedInWithUser:[resultObjects firstObject]];
         if (success)
             success(operation, fullResponse, resultObjects);
     };
@@ -78,7 +80,7 @@ NSString *kLoggedInChangedNotification = @"LoggedInChangedNotification";
     
     VSuccessBlock fullSuccess = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
     {
-        self.mainUser = [resultObjects firstObject];
+        [self loggedInWithUser:[resultObjects firstObject]];
         if (success)
             success(operation, fullResponse, resultObjects);
     };
@@ -98,7 +100,7 @@ NSString *kLoggedInChangedNotification = @"LoggedInChangedNotification";
     
     VSuccessBlock fullSuccess = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
     {
-        self.mainUser = [resultObjects firstObject];
+        [self loggedInWithUser:[resultObjects firstObject]];
         if (success)
             success(operation, fullResponse, resultObjects);
     };
@@ -120,7 +122,7 @@ NSString *kLoggedInChangedNotification = @"LoggedInChangedNotification";
     
     VSuccessBlock fullSuccess = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
     {
-        self.mainUser = [resultObjects firstObject];
+        [self loggedInWithUser:[resultObjects firstObject]];
         if (success)
             success(operation, fullResponse, resultObjects);
     };
@@ -144,7 +146,7 @@ NSString *kLoggedInChangedNotification = @"LoggedInChangedNotification";
     
     VSuccessBlock fullSuccess = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
     {
-        self.mainUser = [resultObjects firstObject];
+        [self loggedInWithUser:[resultObjects firstObject]];
         if (success)
             success(operation, fullResponse, resultObjects);
     };
@@ -168,7 +170,7 @@ NSString *kLoggedInChangedNotification = @"LoggedInChangedNotification";
 
     VSuccessBlock fullSuccess = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
     {
-        self.mainUser = [resultObjects firstObject];
+        [self loggedInWithUser:[resultObjects firstObject]];
         if (success)
             success(operation, fullResponse, resultObjects);
     };
@@ -178,6 +180,17 @@ NSString *kLoggedInChangedNotification = @"LoggedInChangedNotification";
            parameters:parameters
          successBlock:fullSuccess
             failBlock:fail];
+}
+
+#pragma mark - LoggedIn
+- (void)loggedInWithUser:(VUser*)user
+{
+    self.mainUser = user;
+    [self loadNextPageOfConversations:nil failBlock:nil];
+    [self pollResultsForUser:user successBlock:nil failBlock:nil];
+    [self unreadCountForConversationsWithSuccessBlock:nil failBlock:nil];
+
+    [[NSNotificationCenter defaultCenter] postNotificationName:kLoggedInChangedNotification object:nil];
 }
 
 #pragma mark - Logout

@@ -28,9 +28,6 @@
 
 @import Social;
 
-const   CGFloat     kCommentRowWithMediaHeight  =   256.0f;
-const   CGFloat     kCommentRowHeight           =   86.0f;
-
 @interface VCommentsTableViewController () //<UINavigationControllerDelegate>
 
 @property (nonatomic, strong) NSMutableArray* newlyReadComments;
@@ -281,7 +278,7 @@ static NSString* CommentCache = @"CommentCache";
     VComment* comment = (VComment*)[self.sortedComments objectAtIndex:indexPath.row];
 
     CGFloat height = [VCommentCell frameSizeForMessageText:comment.text].height;
-    CGFloat yOffset = [comment.mediaUrl isEmpty] ? kCommentCellYOffset : kMediaCommentCellYOffset;
+    CGFloat yOffset = !comment.mediaUrl || [comment.mediaUrl isEmpty] ? kCommentCellYOffset : kMediaCommentCellYOffset;
     height = MAX(height + yOffset, kMinCellHeight);
 
     return height;

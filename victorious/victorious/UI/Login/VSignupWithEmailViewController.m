@@ -174,8 +174,6 @@ NSString*   const   kSignupErrorDomain =   @"VSignupErrorDomain";
 
 - (void)didSignUpWithUser:(VUser*)mainUser
 {
-    [[NSNotificationCenter defaultCenter] postNotificationName:kLoggedInChangedNotification object:mainUser];
-    
     self.profile = mainUser;
 
     [self performSegueWithIdentifier:@"toProfileWithEmail" sender:self];

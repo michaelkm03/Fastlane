@@ -14,6 +14,8 @@
 static NSString *kCommentCellIdentifier = @"VCommentCell";
 static NSString *kOtherCommentCellIdentifier = @"VOtherCommentCell";
 
+extern CGFloat const kCommentRowHeight;
+extern CGFloat const kCommentRowWithMediaHeight;
 extern CGFloat const kCommentCellWidth;
 extern CGFloat const kCommentCellYOffset;
 extern CGFloat const kMediaCommentCellYOffset;

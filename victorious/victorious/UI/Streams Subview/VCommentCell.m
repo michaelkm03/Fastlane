@@ -21,23 +21,30 @@
 #import "UIButton+VImageLoading.h"
 #import "VProfileViewController.h"
 #import "UIView+AutoLayout.h"
+#import "VObjectManager.h"
 
+CGFloat const kCommentRowWithMediaHeight  =   256.0f;
+CGFloat const kCommentRowHeight           =   86.0f;
 CGFloat const kCommentCellWidth = 214;
 CGFloat const kCommentCellYOffset = 10;
 CGFloat const kMediaCommentCellYOffset = 235;
 CGFloat const kMinCellHeight = 84;
 CGFloat const kCommentMessageLabelWidth = 214;
 CGFloat const kMessageChatBubblePadding = 5;
+CGFloat const kProfilePadding = 27;
+
+NSString* const kChatBubbleRightImage = @"ChatBubbleRight";
+NSString* const kChatBubbleLeftImage = @"ChatBubbleLeft";
 
 @interface VCommentCell()
 @property (weak, nonatomic) IBOutlet UILabel *dateLabel;
 @property (weak, nonatomic) IBOutlet UIButton *profileImageButton;
 @property (weak, nonatomic) IBOutlet UILabel *messageLabel;
 @property (weak, nonatomic) IBOutlet UIImageView *mediaPreview;
-@property (weak, nonatomic) IBOutlet UIImageView *chatBubble;
 @property (weak, nonatomic) IBOutlet UIButton *playButton;
 @property (nonatomic, strong) MPMoviePlayerController* mpController;
 @property (strong, nonatomic) NSString *mediaUrl;
+@property (strong, nonatomic) UIImageView *chatBubble;
 @end
 
 @implementation VCommentCell
@@ -46,6 +53,10 @@ CGFloat const kMessageChatBubblePadding = 5;
 {
     [super awakeFromNib];
     self.commentOrMessage = self.commentOrMessage;
+    
+    self.chatBubble = [[UIImageView alloc] initWithImage:[UIImage imageNamed:kChatBubbleRightImage]];
+    self.chatBubble.center = self.messageLabel.center;
+    [self insertSubview:self.chatBubble belowSubview:self.messageLabel];
 }
 
 - (void)layoutSubviews
@@ -54,9 +65,8 @@ CGFloat const kMessageChatBubblePadding = 5;
     
 //    self.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKeyPath:@"theme.color.messages.background"];
     self.dateLabel.font = [[VThemeManager sharedThemeManager] themedFontForKeyPath:@"theme.font.stream.timeSince"];
-    self.chatBubble.clipsToBounds = YES;
-    self.profileImageButton.clipsToBounds = YES;
     
+    self.profileImageButton.clipsToBounds = YES;
     self.profileImageButton.layer.cornerRadius = CGRectGetHeight(self.profileImageButton.bounds)/2;
 }
 
@@ -71,14 +81,13 @@ CGFloat const kMessageChatBubblePadding = 5;
         VComment *comment = (VComment *)self.commentOrMessage;
 
         self.dateLabel.text = [comment.postedAt timeSince];
-        self.chatBubble.hidden = YES; 
         
         [self.profileImageButton setImageWithURL:[NSURL URLWithString:comment.user.pictureUrl]
                                 placeholderImage:[UIImage imageNamed:@"profile_thumb"]
                                         forState:UIControlStateNormal];
         self.messageLabel.text = comment.text;
 
-        if (![comment.mediaUrl isEmpty])
+        if ([comment.mediaUrl length])
         {
             [self layoutWithText:comment.text withMedia:YES];
 
@@ -106,15 +115,13 @@ CGFloat const kMessageChatBubblePadding = 5;
     {
         VMessage *message = (VMessage *)self.commentOrMessage;
 
-        self.chatBubble.hidden = NO;
-        
         self.dateLabel.text = [message.postedAt timeSince];
         [self.profileImageButton.imageView setImageWithURL:[NSURL URLWithString:message.user.pictureUrl]
                                           placeholderImage:[UIImage imageNamed:@"profile_thumb"]];
         
         self.messageLabel.text = message.text;
-
-        if (![message.media.mediaUrl isEmpty])
+        
+        if ([message.media.mediaUrl length])
         {
             [self layoutWithText:message.text withMedia:YES];
 
@@ -131,18 +138,13 @@ CGFloat const kMessageChatBubblePadding = 5;
                 self.playButton.hidden = YES;
                 [self.mediaPreview setImageWithURL:[NSURL URLWithString:self.mediaUrl]];
             }
-            
-            [self.chatBubble pinEdges:JRTViewPinRightEdge | JRTViewPinBottomEdge toSameEdgesOfView:self.mediaPreview inset:kMessageChatBubblePadding];
         }
         else
         {
             [self layoutWithText:message.text withMedia:NO];
             self.mediaPreview.hidden = YES;
             self.playButton.hidden = YES;
-            [self.chatBubble pinEdges:JRTViewPinRightEdge | JRTViewPinBottomEdge toSameEdgesOfView:self.messageLabel inset:kMessageChatBubblePadding];
-        }
-        
-        [self.chatBubble pinEdges:JRTViewPinTopEdge | JRTViewPinLeftEdge toSameEdgesOfView:self.messageLabel inset:kMessageChatBubblePadding];
+        }   
     }
     
     [self layoutSubviews];
@@ -155,24 +157,52 @@ CGFloat const kMessageChatBubblePadding = 5;
     CGFloat yOffset = hasMedia ? kMediaCommentCellYOffset : kCommentCellYOffset;
     
     self.messageLabel.text = text;
-    self.messageLabel.frame = CGRectMake(self.messageLabel.frame.origin.x,
+
+    CGFloat xOrigin = 0;
+    if ([self.commentOrMessage isKindOfClass:[VMessage class]] &&
+        [((VMessage*)self.commentOrMessage).user isEqualToUser:[VObjectManager sharedManager].mainUser])
+    {
+        self.chatBubble.image = [UIImage imageNamed:kChatBubbleLeftImage];
+        xOrigin = self.profileImageButton.frame.origin.x - kProfilePadding - size.width;
+    }
+    else
+    {
+        xOrigin = self.messageLabel.frame.origin.x;
+    }
+    self.messageLabel.frame = CGRectMake(xOrigin,
                                          self.messageLabel.frame.origin.y,
                                          size.width,
                                          size.height);
-    
-//    VLog(@"message frame: %@", NSStringFromCGRect(self.messageLabel.frame));
     [self.messageLabel sizeToFit];
-    CGFloat height = self.messageLabel.frame.size.height;
-    height = MAX(height + yOffset, kMinCellHeight);
     
-//    self.chatBubble.frame = CGRectMake(self.messageLabel.frame.origin.x - kMessageChatBubblePadding,
-//                                       self.messageLabel.frame.origin.y - kMessageChatBubblePadding,
-//                                       self.messageLabel.frame.size.width + (kMessageChatBubblePadding * 2),
-//                                       self.messageLabel.frame.size.height + (kMessageChatBubblePadding * 2));
-//    [self.chatBubble layoutSubviews];
     
-//    VLog(@"bubble frame: %@", NSStringFromCGRect(self.chatBubble.frame));
+    VLog(@"message label: %@", NSStringFromCGRect(self.messageLabel.frame));
     
+    if ([self.commentOrMessage isKindOfClass:[VMessage class]])
+    {
+        self.chatBubble.hidden = NO;
+        
+        CGFloat height = self.messageLabel.frame.size.height + (kMessageChatBubblePadding * 2);
+        height += hasMedia ? self.mediaPreview.frame.size.height : 0;
+        CGFloat width = hasMedia ? kCommentMessageLabelWidth : self.messageLabel.frame.size.width;
+        width += (kMessageChatBubblePadding * 4);
+        self.chatBubble.frame = CGRectMake(0, 0, width, height);
+        
+        CGFloat centerX = self.messageLabel.center.x;
+        if (![((VMessage*)self.commentOrMessage).user isEqualToUser:[VObjectManager sharedManager].mainUser])
+            centerX -= kMessageChatBubblePadding;
+        else
+            centerX += kMessageChatBubblePadding;
+        
+        self.chatBubble.center = CGPointMake(centerX,
+                                             self.messageLabel.center.y);
+    }
+    else
+    {
+        self.chatBubble.hidden = YES;
+    }
+    
+    CGFloat height = MAX(self.messageLabel.frame.size.height + yOffset, kMinCellHeight);
     self.frame = CGRectMake(self.frame.origin.x,
                             self.frame.origin.y,
                             self.frame.size.width,

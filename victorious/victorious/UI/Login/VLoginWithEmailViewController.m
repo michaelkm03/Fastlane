@@ -42,39 +42,6 @@ NSString*   const   kVLoginErrorDomain =   @"VLoginErrorDomain";
     self.passwordTextField.delegate  =   self;
     
     [self.usernameTextField becomeFirstResponder];
-
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(loginChanged:)
-                                                 name:kLoggedInChangedNotification
-                                               object:nil];
-}
-
-- (void)loginChanged:(NSNotification *)notification
-{
-    VUser* mainuser = notification.object;
-    [VObjectManager sharedManager].mainUser = mainuser;
-
-    // Display failed login is the blob isnt a user or if it has no token
-    if ( (mainuser && ![mainuser isKindOfClass:[VUser class]]) || (mainuser && !mainuser.token) )
-    {
-        [VObjectManager sharedManager].mainUser = nil;
-        [self didFailWithError:nil];
-        VLog(@"Invalid object passed in loginChanged notification: %@", mainuser);
-        return;
-    }
-
-    if (mainuser)
-    {
-        // We've logged in
-        [[VObjectManager sharedManager] loadNextPageOfConversations:nil failBlock:nil];
-        [[VObjectManager sharedManager] pollResultsForUser:mainuser successBlock:nil failBlock:nil];
-        [[VObjectManager sharedManager] unreadCountForConversationsWithSuccessBlock:nil failBlock:nil];
-    }
-    else
-    {
-        // We've logged out
-        [VObjectManager sharedManager].mainUser = nil;
-    }
 }
 
 #pragma mark - Validation
@@ -165,8 +132,6 @@ NSString*   const   kVLoginErrorDomain =   @"VLoginErrorDomain";
     VLog(@"Succesfully logged in as: %@", mainUser);
     
     self.profile = mainUser;
-
-    [[NSNotificationCenter defaultCenter] postNotificationName:kLoggedInChangedNotification object:mainUser];
     
     [self dismissViewControllerAnimated:YES completion:nil];
 }

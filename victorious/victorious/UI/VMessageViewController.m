@@ -122,10 +122,12 @@ const   CGFloat     kMessageRowHeight           =   80;
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     VMessage*   aMessage = self.messages[indexPath.row];
-    if (aMessage.media.mediaUrl)
-        return kMessageRowWithMediaHeight;
-    else
-        return kMessageRowHeight;
+
+    CGFloat height = [VCommentCell frameSizeForMessageText:aMessage.text].height;
+    CGFloat yOffset = [aMessage.media.mediaUrl length] ? kMediaCommentCellYOffset : kCommentCellYOffset;
+    height = MAX(height + yOffset, kMinCellHeight);
+    
+    return height;
 }
 
 #pragma mark - VComposeMessageDelegate
