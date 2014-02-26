@@ -27,6 +27,8 @@
 #import "VSettingsViewController.h"
 #import "VInboxViewController.h"
 
+#import "VCameraViewController.h"
+
 NSString *const VMenuControllerDidSelectRowNotification = @"VMenuTableViewControllerDidSelectRowNotification";
 
 @interface VMenuController ()   <MFMailComposeViewControllerDelegate, UIAlertViewDelegate>
@@ -117,8 +119,9 @@ NSString *const VMenuControllerDidSelectRowNotification = @"VMenuTableViewContro
         break;
         
         case VMenuRowForums:
-            navigationController.viewControllers = @[[VForumStreamViewController sharedInstance]];
-            [self.sideMenuViewController hideMenuViewController];
+//            navigationController.viewControllers = @[[VForumStreamViewController sharedInstance]];
+//            [self.sideMenuViewController hideMenuViewController];
+            [self presentViewController:[VCameraViewController cameraViewController] animated:YES completion:nil];
         break;
         
         case VMenuRowInbox:

@@ -3,12 +3,12 @@
     {
       "idiom" : "universal",
       "scale" : "1x",
-      "filename" : "passwordImage.png"
+      "filename" : "press-and-hold-tooltip.png"
     },
     {
       "idiom" : "universal",
       "scale" : "2x",
-      "filename" : "passwordImage@2x.png"
+      "filename" : "press-and-hold-tooltip@2x.png"
     }
   ],
   "info" : {
