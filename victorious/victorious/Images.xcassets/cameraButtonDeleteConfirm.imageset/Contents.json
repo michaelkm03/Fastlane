@@ -3,12 +3,12 @@
     {
       "idiom" : "universal",
       "scale" : "1x",
-      "filename" : "passwordImage.png"
+      "filename" : "btn-delete-confirmation.png"
     },
     {
       "idiom" : "universal",
       "scale" : "2x",
-      "filename" : "passwordImage@2x.png"
+      "filename" : "btn-delete-confirmation@2x.png"
     }
   ],
   "info" : {
