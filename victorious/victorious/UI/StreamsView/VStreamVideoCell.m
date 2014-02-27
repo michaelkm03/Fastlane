@@ -37,10 +37,6 @@
                                              selector:@selector(stopPlayer:)
                                                  name:VMenuControllerDidSelectRowNotification
                                                object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(stopPlayer:)
-                                                 name:kStreamsWillCommentNotification
-                                               object:nil];
     
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(moviePlayerFinished:)

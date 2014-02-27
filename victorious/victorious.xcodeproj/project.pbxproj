@@ -569,7 +569,7 @@
 				3F9B665E188878EC0046F826 /* Menu */,
 				3F9B665F188879060046F826 /* Streams */,
 				BED4568918BC4CD700A67160 /* Content View */,
-				BE692B2C186E5FD900C71336 /* Streams Subview */,
+				BE692B2C186E5FD900C71336 /* Comment View */,
 				3F9B6660188879130046F826 /* Inbox */,
 				3F9B6661188879200046F826 /* Profile */,
 				3F9B66621888792B0046F826 /* Settings */,
@@ -1035,7 +1035,7 @@
 			path = UI/StreamsView;
 			sourceTree = "<group>";
 		};
-		BE692B2C186E5FD900C71336 /* Streams Subview */ = {
+		BE692B2C186E5FD900C71336 /* Comment View */ = {
 			isa = PBXGroup;
 			children = (
 				BE692B34186E60B300C71336 /* VCommentCell.h */,
@@ -1050,7 +1050,7 @@
 				BE692B39186E60B300C71336 /* VCommentsTableViewController.h */,
 				BE692B3A186E60B300C71336 /* VCommentsTableViewController.m */,
 			);
-			name = "Streams Subview";
+			name = "Comment View";
 			sourceTree = "<group>";
 		};
 		BE692B5F186E626800C71336 /* VObjectManager */ = {
