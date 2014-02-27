@@ -40,21 +40,17 @@
                         <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <nil key="highlightedColor"/>
                     </label>
-                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="1d" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="OUw-F8-xAD">
+                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="1d" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="OUw-F8-xAD">
                         <rect key="frame" x="295" y="13" width="20" height="21"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                         <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <nil key="highlightedColor"/>
                     </label>
-                    <imageView userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" image="StreamDate" translatesAutoresizingMaskIntoConstraints="NO" id="D3j-da-Kgn">
+                    <imageView userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="StreamDate" translatesAutoresizingMaskIntoConstraints="NO" id="D3j-da-Kgn">
                         <rect key="frame" x="278" y="17" width="13" height="13"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                        <constraints>
-                            <constraint firstAttribute="width" constant="13" id="2db-LT-iWG"/>
-                            <constraint firstAttribute="height" constant="13" id="g1W-nR-NWo"/>
-                        </constraints>
                     </imageView>
                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="WLo-v6-MW0" userLabel="Description">
                         <rect key="frame" x="5" y="259" width="310" height="21"/>
@@ -88,7 +84,7 @@
                         </connections>
                     </button>
                     <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="sT5-hN-nDW">
-                        <rect key="frame" x="5" y="8" width="30" height="30"/>
+                        <rect key="frame" x="10" y="10" width="30" height="30"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <state key="normal" image="profile_thumb">
                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
@@ -112,12 +108,6 @@
                         </connections>
                     </button>
                 </subviews>
-                <constraints>
-                    <constraint firstAttribute="trailing" secondItem="OUw-F8-xAD" secondAttribute="trailing" constant="5" id="5Gs-eH-deG"/>
-                    <constraint firstItem="OUw-F8-xAD" firstAttribute="top" secondItem="tlv-KZ-xzf" secondAttribute="top" constant="25" id="8tQ-A5-ntJ"/>
-                    <constraint firstItem="OUw-F8-xAD" firstAttribute="centerY" secondItem="D3j-da-Kgn" secondAttribute="centerY" id="9um-jd-po1"/>
-                    <constraint firstItem="OUw-F8-xAD" firstAttribute="leading" secondItem="D3j-da-Kgn" secondAttribute="trailing" constant="4" id="ldo-0F-2KJ"/>
-                </constraints>
             </tableViewCellContentView>
             <connections>
                 <outlet property="dateLabel" destination="OUw-F8-xAD" id="gfW-Td-Edg"/>

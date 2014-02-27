@@ -11,6 +11,7 @@
 #import "VConstants.h"
 
 #import "VCommentsContainerViewController.h"
+#import "VContentViewController.h"
 
 #import "NSString+VParseHelp.h"
 
@@ -18,7 +19,6 @@
 #import "VStreamViewCell.h"
 #import "VStreamVideoCell.h"
 #import "VStreamPollCell.h"
-#import "VStreamYoutubeVideoCell.h"
 
 //ObjectManager
 #import "VObjectManager+Sequence.h"
@@ -98,12 +98,12 @@
     }
 }
 
-//- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
-//{
-//    VCommentsContainerViewController* commentsTable = [VCommentsContainerViewController commentsContainerView];
-//    commentsTable.sequence = [[self fetchedResultsControllerForTableView:tableView] objectAtIndexPath:indexPath];
-//    [self.navigationController pushViewController:commentsTable animated:YES];
-//}
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    VContentViewController* contentViewController = [VContentViewController contentViewController];
+    contentViewController.sequence = [[self fetchedResultsControllerForTableView:tableView] objectAtIndexPath:indexPath];
+    [self.navigationController pushViewController:contentViewController animated:YES];
+}
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
@@ -165,8 +165,11 @@
     VSequence* sequence = (VSequence*)[self.fetchedResultsController objectAtIndexPath:indexPath];
     
     NSUInteger cellHeight;
-    if ([sequence isPoll])
+    if ([sequence isPoll] && [[sequence firstNode] firstAsset])
         cellHeight = kStreamPollCellHeight;
+    
+    else if ([sequence isPoll])
+        cellHeight = kStreamDoublePollCellHeight;
     
     else if (([sequence isVideo] ||[sequence isForum]) && [[[sequence firstNode] firstAsset].type isEqualToString:VConstantsMediaTypeYoutube])
         cellHeight = kStreamYoutubeCellHeight;
@@ -174,10 +177,7 @@
     else
         cellHeight = kStreamViewCellHeight;
     
-//    NSUInteger commentCount = MIN([sequence.comments count], 2);
-//    CGFloat commentHeight = commentCount ? (commentCount * kStreamCommentCellHeight) + kStreamCommentHeaderHeight : 0;
-    
-    return cellHeight;// + commentHeight;
+    return cellHeight;
 }
 
 - (VStreamViewCell*)tableView:(UITableView *)tableView streamViewCellForIndex:(NSIndexPath*)indexPath
@@ -189,11 +189,11 @@
 //        return [tableView dequeueReusableCellWithIdentifier:kStreamYoutubeVideoCellIdentifier
 //                                               forIndexPath:indexPath];
 //    
-//    else if ([sequence isPoll] && [[sequence firstNode] firstAsset])
-//        return [tableView dequeueReusableCellWithIdentifier:kStreamPollCellIdentifier
-//                                               forIndexPath:indexPath];
-//    
-    if ([sequence isPoll])
+    if ([sequence isPoll] && [[sequence firstNode] firstAsset])
+        return [tableView dequeueReusableCellWithIdentifier:kStreamPollCellIdentifier
+                                               forIndexPath:indexPath];
+
+    else if ([sequence isPoll])
         return [tableView dequeueReusableCellWithIdentifier:kStreamDoublePollCellIdentifier
                                                forIndexPath:indexPath];
 //
@@ -328,10 +328,10 @@
 
 - (void)willCommentSequence:(NSNotification *)notification
 {
-    VStreamViewCell *cell = (VStreamViewCell *)notification.object;
-    VCommentsContainerViewController* commentsTable = [VCommentsContainerViewController commentsContainerView];
-    commentsTable.sequence = cell.sequence;
-    [self.navigationController pushViewController:commentsTable animated:YES];
+//    VStreamViewCell *cell = (VStreamViewCell *)notification.object;
+//    VCommentsContainerViewController* commentsTable = [VCommentsContainerViewController commentsContainerView];
+//    commentsTable.sequence = cell.sequence;
+//    [self.navigationController pushViewController:commentsTable animated:YES];
 }
 
 @end
