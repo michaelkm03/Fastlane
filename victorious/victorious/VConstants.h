@@ -50,11 +50,12 @@ static NSString*   const   kFeaturedCategory = @"featured";
 static NSString*   const   kSearchCache = @"SearchCache";
 static NSString*   const   kVPagedFetchCache = @"PagedFetchCache";
 
-static NSString*   const   kHomeStreamStoryboardID          = @"homestream";
-static NSString*   const   kOwnerStreamStoryboardID         = @"ownerstream";
-static NSString*   const   kCommunityStreamStoryboardID     = @"communitystream";
-static NSString*   const   kForumStreamStoryboardID         = @"forumstream";
-static NSString*   const   kContentViewStoryboardID         = @"content";
-static NSString*   const   kCommentsContainerStoryboardID   = @"commentscontainer";
-static NSString*   const   kKeyboardBarStoryboardID         = @"keyboardbar";
+static NSString*   const   kHomeStreamStoryboardID           = @"homestream";
+static NSString*   const   kOwnerStreamStoryboardID          = @"ownerstream";
+static NSString*   const   kCommunityStreamStoryboardID      = @"communitystream";
+static NSString*   const   kForumStreamStoryboardID          = @"forumstream";
+static NSString*   const   kContentViewStoryboardID          = @"content";
+static NSString*   const   kEmotiveBallisticsBarStoryboardID = @"emotiveballistics";
+static NSString*   const   kCommentsContainerStoryboardID    = @"commentscontainer";
+static NSString*   const   kKeyboardBarStoryboardID          = @"keyboardbar";
 
