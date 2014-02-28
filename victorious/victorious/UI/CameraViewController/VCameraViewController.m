@@ -12,6 +12,9 @@
 #import "VCameraViewController.h"
 #import "SCCamera.h"
 #import "SCCameraFocusView.h"
+#import "VImagePreviewViewController.h"
+#import "VVideoPreviewViewController.h"
+#import "UIImage+Cropping.h"
 
 @interface VCameraViewController () <SCCameraDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate>
 
@@ -32,6 +35,9 @@
 
 @property (strong, nonatomic) SCCamera* camera;
 @property (strong, nonatomic) SCCameraFocusView* focusView;
+
+@property (nonatomic, strong)           NSURL*              videoURL;
+@property (nonatomic, strong)           UIImage*            photo;
 
 @end
 
@@ -163,7 +169,7 @@
 
 - (IBAction)closeAction:(id)sender
 {
-    [self.camera stop];
+    [self.camera cancel];
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
@@ -175,11 +181,6 @@
 - (IBAction)nextAction:(id)sender
 {
     [self.camera stop];
-
-    if (self.camera.sessionPreset == AVCaptureSessionPresetPhoto)
-        [self performSegueWithIdentifier:@"toPhotoPreview" sender:self];
-    else
-        [self performSegueWithIdentifier:@"toVideoPreview" sender:self];
 }
 
 - (IBAction)switchFlashAction:(id)sender
@@ -223,7 +224,6 @@
 }
 
 - (void)handleRecordLongTapGesture:(UIGestureRecognizer *)gesture
-//- (void)handleTouchDetected:(SCTouchDetector*)touchDetector
 {
     [UIView animateWithDuration:0.6 animations:^{
         self.toolTipImageView.alpha = 0.0;
@@ -253,7 +253,7 @@
 {
     if (self.camera.sessionPreset == AVCaptureSessionPresetPhoto)
     {
-        [UIView animateWithDuration:0.4 delay:0 options:UIViewAnimationOptionCurveEaseInOut
+        [UIView animateWithDuration:0.6 delay:0 options:UIViewAnimationOptionCurveEaseInOut
                          animations:^{
                              self.capturePhotoButton.alpha = 0.0;
                              self.recordButton.alpha = 1.0;
@@ -270,7 +270,7 @@
     }
     else if (self.camera.sessionPreset == AVCaptureSessionPresetHigh)
     {
-        [UIView animateWithDuration:0.4 delay:0 options:UIViewAnimationOptionCurveEaseInOut
+        [UIView animateWithDuration:0.6 delay:0 options:UIViewAnimationOptionCurveEaseInOut
                          animations:^{
                              self.capturePhotoButton.alpha = 1.0;
                              self.recordButton.alpha = 0.0;
@@ -282,6 +282,8 @@
              if ([UIImagePickerController isFlashAvailableForCameraDevice:UIImagePickerControllerCameraDeviceRear] ||
                  [UIImagePickerController isFlashAvailableForCameraDevice:UIImagePickerControllerCameraDeviceFront])
                  self.navigationItem.rightBarButtonItem = self.flashOffButton;
+             else
+                 self.navigationItem.rightBarButtonItem = nil;
              self.camera.flashMode = SCFlashModeOff;
              [self setLastImageSavedToAlbum];
              [self trashAction:self];
@@ -295,7 +297,6 @@
     [self prepareCamera];
     [self updateProgressForSecond:0];
 }
-
 
 #pragma mark - Support
 
@@ -333,7 +334,9 @@
 
 - (void)setLastImageSavedToAlbum
 {
-    self.openAlbumButton.hidden = YES;
+    [UIView animateWithDuration:0.6 animations:^{
+        self.openAlbumButton.alpha = 0.0;
+    }];
     
     if ((self.camera.sessionPreset == AVCaptureSessionPresetPhoto) && !([self canPickPhotosFromPhotoLibrary]))
         return;
@@ -371,7 +374,9 @@
                          *innerStop = YES;
                          
                          [self.openAlbumButton setImage:latestPhoto forState:UIControlStateNormal];
-                         self.openAlbumButton.hidden = NO;
+                         [UIView animateWithDuration:0.6 animations:^{
+                             self.openAlbumButton.alpha = 1.0;
+                         }];
                      }
                  }];
             }
@@ -423,12 +428,21 @@
 {
     if ([segue.identifier isEqualToString:@"toVideoPreview"])
     {
-        
+        VVideoPreviewViewController*   viewController = (VVideoPreviewViewController *)segue.destinationViewController;
+        viewController.videoURL = self.videoURL;
     }
     else if ([segue.identifier isEqualToString:@"toPhotoPreview"])
     {
-        
+        VImagePreviewViewController*    viewController = (VImagePreviewViewController *)segue.destinationViewController;
+        viewController.photo = self.photo;
     }
+}
+
+- (IBAction)unwindToCameraController:(UIStoryboardSegue*)sender
+{
+    [self.camera cancel];
+    [self prepareCamera];
+    [self updateProgressForSecond:0];
 }
 
 #pragma mark - SCAudioVideoRecorderDelegate
@@ -459,8 +473,6 @@
 {
     [self prepareCamera];
 
-//    self.recordButton.userInteractionEnabled = YES;
-    
     if (error != nil)
     {
         UIAlertView * alertView = [[UIAlertView alloc] initWithTitle:@"Failed to save video"
@@ -472,10 +484,8 @@
     }
     else
     {
-        //	SCVideoPlayerViewController * videoPlayerViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"SCVideoPlayerViewController"];
-        //	videoPlayerViewController.videoUrl = recordedFile;
-        //
-        //	[self.navigationController pushViewController:videoPlayerViewController animated:YES];
+        self.videoURL = recordedFile;
+        [self performSegueWithIdentifier:@"toVideoPreview" sender:self];
     }
 }
 
@@ -486,17 +496,9 @@
 {
     if (!error)
     {
-        //    SCImageViewDisPlayViewController *sc_imageViewDisPlayViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"SCImageViewDisPlayViewController"];
-        //    sc_imageViewDisPlayViewController.photo = [photoDict valueForKey:SCAudioVideoRecorderPhotoImageKey];
-        //    [self.navigationController pushViewController:sc_imageViewDisPlayViewController animated:YES];
-        //    sc_imageViewDisPlayViewController = nil;
-        
-        ALAssetsLibrary *assetLibrary = [[ALAssetsLibrary alloc] init];
-        
-        [assetLibrary writeImageDataToSavedPhotosAlbum:[photoDict objectForKey:SCAudioVideoRecorderPhotoJPEGKey] metadata:[photoDict objectForKey:SCAudioVideoRecorderPhotoMetadataKey] completionBlock:^(NSURL *assetURL, NSError *blockError)
-         {
-            DLog(@"Saved to the camera roll.");
-        }];
+        self.photo = [photoDict[SCAudioVideoRecorderPhotoImageKey] squareImageScaledToSize:CGSizeMake(640.0, 640.0)];
+//        self.photo = photoDict[SCAudioVideoRecorderPhotoImageKey];
+        [self performSegueWithIdentifier:@"toPhotoPreview" sender:self];
     }
 }
 
@@ -589,67 +591,3 @@
 }
 
 @end
-
-
-
-
-
-
-//
-//
-//@interface SCViewController : UIViewController<SCCameraDelegate>
-//
-//@property (weak, nonatomic) IBOutlet UIView *recordView;
-//@property (weak, nonatomic) IBOutlet UIButton *stopButton;
-//@property (weak, nonatomic) IBOutlet UIButton *retakeButton;
-//@property (weak, nonatomic) IBOutlet UIView *previewView;
-//@property (weak, nonatomic) IBOutlet UIView *loadingView;
-//@property (weak, nonatomic) IBOutlet UILabel *timeRecordedLabel;
-//@property (weak, nonatomic) IBOutlet UIView *downBar;
-//@property (weak, nonatomic) IBOutlet UIButton *switchCameraModeButton;
-//@property (weak, nonatomic) IBOutlet UIButton *reverseCamera;
-//- (IBAction)switchCameraMode:(id)sender;
-//- (IBAction)switchFlash:(id)sender;
-//@property (weak, nonatomic) IBOutlet UIButton *flashModeButton;
-//
-//@property (weak, nonatomic) IBOutlet UIButton *capturePhotoButton;
-//
-//
-////
-////  VRViewController.m
-////  VideoRecorder
-////
-////  Created by Simon CORSIN on 8/3/13.
-////  Copyright (c) 2013 SCorsin. All rights reserved.
-////
-//
-//#import "SCTouchDetector.h"
-//#import "SCViewController.h"
-//#import "SCAudioTools.h"
-//#import "SCVideoPlayerViewController.h"
-//#import "SCCameraFocusView.h"
-//#import "SCImageViewDisPlayViewController.h"
-//
-//#import "SCCameraFocusTargetView.h"
-//
-//////////////////////////////////////////////////////////////
-//// PRIVATE DEFINITION
-///////////////////////
-//
-//@interface SCViewController () {
-//    
-//}
-//
-//@property (strong, nonatomic) SCCamera * camera;
-//@property (strong, nonatomic) SCCameraFocusView *focusView;
-//@end
-//
-//////////////////////////////////////////////////////////////
-//// IMPLEMENTATION
-///////////////////////
-//
-//@implementation SCViewController
-//
-//#pragma mark - Handle
-//
-//

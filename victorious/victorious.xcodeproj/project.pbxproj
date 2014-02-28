@@ -52,6 +52,10 @@
 		3FA217E318AD87F40066E893 /* UIImageView+Blurring.m in Sources */ = {isa = PBXBuildFile; fileRef = 3FA217E218AD87F40066E893 /* UIImageView+Blurring.m */; };
 		3FA217EC18BC365E0066E893 /* VCameraViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3FA217EB18BC365E0066E893 /* VCameraViewController.m */; };
 		3FA217EE18BC3A3A0066E893 /* Camera.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3FA217ED18BC3A3A0066E893 /* Camera.storyboard */; };
+		3FD7FFA918BFD64C00945E5F /* VImagePreviewViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3FD7FFA818BFD64C00945E5F /* VImagePreviewViewController.m */; };
+		3FD7FFAC18BFD67800945E5F /* VVideoPreviewViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3FD7FFAB18BFD67800945E5F /* VVideoPreviewViewController.m */; };
+		3FD7FFAF18BFD6EF00945E5F /* VCameraPublishViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3FD7FFAE18BFD6EF00945E5F /* VCameraPublishViewController.m */; };
+		3FD7FFB218C01B2B00945E5F /* UIImage+Cropping.m in Sources */ = {isa = PBXBuildFile; fileRef = 3FD7FFB118C01B2B00945E5F /* UIImage+Cropping.m */; };
 		3FF8B7981868EE7E00806EA0 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3FF8B7971868EE7E00806EA0 /* Main.storyboard */; };
 		3FF8B7A51868FC1C00806EA0 /* defaultTheme.plist in Resources */ = {isa = PBXBuildFile; fileRef = 3FF8B7A41868FC1C00806EA0 /* defaultTheme.plist */; };
 		3FF8C50018A59EAB00812968 /* VCreateContentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3FF8C4F418A59EAB00812968 /* VCreateContentViewController.m */; };
@@ -262,6 +266,14 @@
 		3FA217EA18BC365E0066E893 /* VCameraViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VCameraViewController.h; path = UI/CameraViewController/VCameraViewController.h; sourceTree = "<group>"; };
 		3FA217EB18BC365E0066E893 /* VCameraViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VCameraViewController.m; path = UI/CameraViewController/VCameraViewController.m; sourceTree = "<group>"; };
 		3FA217ED18BC3A3A0066E893 /* Camera.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = Camera.storyboard; path = UI/CameraViewController/Camera.storyboard; sourceTree = "<group>"; };
+		3FD7FFA718BFD64C00945E5F /* VImagePreviewViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VImagePreviewViewController.h; path = UI/CameraViewController/VImagePreviewViewController.h; sourceTree = "<group>"; };
+		3FD7FFA818BFD64C00945E5F /* VImagePreviewViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VImagePreviewViewController.m; path = UI/CameraViewController/VImagePreviewViewController.m; sourceTree = "<group>"; };
+		3FD7FFAA18BFD67800945E5F /* VVideoPreviewViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VVideoPreviewViewController.h; path = UI/CameraViewController/VVideoPreviewViewController.h; sourceTree = "<group>"; };
+		3FD7FFAB18BFD67800945E5F /* VVideoPreviewViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VVideoPreviewViewController.m; path = UI/CameraViewController/VVideoPreviewViewController.m; sourceTree = "<group>"; };
+		3FD7FFAD18BFD6EF00945E5F /* VCameraPublishViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VCameraPublishViewController.h; path = UI/CameraViewController/VCameraPublishViewController.h; sourceTree = "<group>"; };
+		3FD7FFAE18BFD6EF00945E5F /* VCameraPublishViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VCameraPublishViewController.m; path = UI/CameraViewController/VCameraPublishViewController.m; sourceTree = "<group>"; };
+		3FD7FFB018C01B2B00945E5F /* UIImage+Cropping.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "UIImage+Cropping.h"; path = "Categories/UIImage+Cropping.h"; sourceTree = "<group>"; };
+		3FD7FFB118C01B2B00945E5F /* UIImage+Cropping.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "UIImage+Cropping.m"; path = "Categories/UIImage+Cropping.m"; sourceTree = "<group>"; };
 		3FF8B7971868EE7E00806EA0 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
 		3FF8B7A41868FC1C00806EA0 /* defaultTheme.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = defaultTheme.plist; sourceTree = "<group>"; };
 		3FF8C4F318A59EAB00812968 /* VCreateContentViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VCreateContentViewController.h; sourceTree = "<group>"; };
@@ -764,6 +776,8 @@
 			children = (
 				3FA217E118AD87F40066E893 /* UIImageView+Blurring.h */,
 				3FA217E218AD87F40066E893 /* UIImageView+Blurring.m */,
+				3FD7FFB018C01B2B00945E5F /* UIImage+Cropping.h */,
+				3FD7FFB118C01B2B00945E5F /* UIImage+Cropping.m */,
 			);
 			name = Categories;
 			sourceTree = "<group>";
@@ -773,6 +787,12 @@
 			children = (
 				3FA217EA18BC365E0066E893 /* VCameraViewController.h */,
 				3FA217EB18BC365E0066E893 /* VCameraViewController.m */,
+				3FD7FFA718BFD64C00945E5F /* VImagePreviewViewController.h */,
+				3FD7FFA818BFD64C00945E5F /* VImagePreviewViewController.m */,
+				3FD7FFAA18BFD67800945E5F /* VVideoPreviewViewController.h */,
+				3FD7FFAB18BFD67800945E5F /* VVideoPreviewViewController.m */,
+				3FD7FFAD18BFD6EF00945E5F /* VCameraPublishViewController.h */,
+				3FD7FFAE18BFD6EF00945E5F /* VCameraPublishViewController.m */,
 				3FA217ED18BC3A3A0066E893 /* Camera.storyboard */,
 				3F14C43218BD2BD0001796B9 /* SCAudioVideoRecorder */,
 			);
@@ -1322,7 +1342,9 @@
 				BEA5BF71187FCBF10014C3EF /* VObjectManager+Users.m in Sources */,
 				3F53E0C318A485D400089C20 /* VUserManager.m in Sources */,
 				BE171E241868C211004E5202 /* VThemeManager.m in Sources */,
+				3FD7FFB218C01B2B00945E5F /* UIImage+Cropping.m in Sources */,
 				BEF2C2B1188620EE00AAE975 /* VUser.m in Sources */,
+				3FD7FFA918BFD64C00945E5F /* VImagePreviewViewController.m in Sources */,
 				BEF2C2B71886211000AAE975 /* VPollResult.m in Sources */,
 				BE171E201868C211004E5202 /* VObjectManager+Login.m in Sources */,
 				5FF9BE7F1893143D0054694B /* UIViewController+VSideMenuViewController.m in Sources */,
@@ -1344,6 +1366,7 @@
 				BE5C7340187E36CF00A3340D /* VInteraction.m in Sources */,
 				BEF2C2AE188620EE00AAE975 /* VSequence.m in Sources */,
 				BE8C6F4F18B56E70009CFB1C /* VStreamPollCell.m in Sources */,
+				3FD7FFAF18BFD6EF00945E5F /* VCameraPublishViewController.m in Sources */,
 				3F14C45818BD45DF001796B9 /* SCCameraFocusTargetView.m in Sources */,
 				BE6B95FC187C88F700CED4C9 /* VSequence+Fetcher.m in Sources */,
 				BEA73B7E18A98C0A0081312F /* VStreamActionBar.m in Sources */,

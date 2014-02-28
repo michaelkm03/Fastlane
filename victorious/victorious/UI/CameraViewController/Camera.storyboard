@@ -34,7 +34,7 @@
                             <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" fixedFrame="YES" progressViewStyle="bar" translatesAutoresizingMaskIntoConstraints="NO" id="2M1-U9-GGC">
                                 <rect key="frame" x="0.0" y="65" width="320" height="3"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="progressTintColor" red="0.60392156862745094" green="0.14117647058823529" blue="0.92549019607843142" alpha="1" colorSpace="calibratedRGB"/>
+                                <color key="progressTintColor" red="1" green="0.27058823529411763" blue="0.19607843137254902" alpha="1" colorSpace="calibratedRGB"/>
                             </progressView>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="W9w-XF-uIU">
                                 <rect key="frame" x="20" y="473" width="60" height="60"/>
@@ -56,7 +56,7 @@
                                     <action selector="switchMediaTypeAction:" destination="N4E-ak-ozN" eventType="touchUpInside" id="hw7-0P-X81"/>
                                 </connections>
                             </button>
-                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Cdq-4w-Bu5">
+                            <view contentMode="scaleAspectFit" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Cdq-4w-Bu5">
                                 <rect key="frame" x="0.0" y="90" width="320" height="320"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
@@ -123,17 +123,18 @@
                         <outlet property="switchCameraModeButton" destination="VjD-w5-TpN" id="xnp-RB-MEL"/>
                         <outlet property="toolTipImageView" destination="X12-kd-M68" id="ZH4-4b-zqz"/>
                         <segue destination="JbG-Y6-8FE" kind="push" identifier="toVideoPreview" id="rmc-6f-1wR"/>
-                        <segue destination="1zz-KC-cVA" kind="push" identifier="toPhotoPreview" id="e8X-nj-V7N"/>
+                        <segue destination="99V-ng-0rM" kind="push" identifier="toPhotoPreview" id="3kT-Xn-cy6"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="4dS-Xp-8dd" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <exit id="vwD-pE-jar" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
             <point key="canvasLocation" x="-113" y="51"/>
         </scene>
-        <!--View Controller-->
+        <!--Video Preview View Controller-->
         <scene sceneID="4yH-t7-dNv">
             <objects>
-                <viewController id="JbG-Y6-8FE" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="videoPreview" useStoryboardIdentifierAsRestorationIdentifier="YES" id="JbG-Y6-8FE" customClass="VVideoPreviewViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="x7b-LA-5fv"/>
                         <viewControllerLayoutGuide type="bottom" id="NAY-UL-u1y"/>
@@ -141,21 +142,104 @@
                     <view key="view" contentMode="scaleToFill" id="1CL-AE-dbn">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="HS5-fs-ogp" customClass="SCVideoPlayerView">
+                                <rect key="frame" x="0.0" y="90" width="320" height="320"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                            </view>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="58y-q4-Eps">
+                                <rect key="frame" x="20" y="473" width="60" height="60"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" image="cameraButtonDelete">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="handleDeleteAction:" destination="JbG-Y6-8FE" eventType="touchUpInside" id="D6x-c9-YNc"/>
+                                    <action selector="trashAction:" destination="N4E-ak-ozN" eventType="touchUpInside" id="vHg-YS-iJX"/>
+                                    <segue destination="vwD-pE-jar" kind="unwind" unwindAction="unwindToCameraController:" id="9rz-1F-00H"/>
+                                </connections>
+                            </button>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="cameraButtonVideoDone" translatesAutoresizingMaskIntoConstraints="NO" id="fqE-H3-Ghu">
+                                <rect key="frame" x="115" y="457" width="91" height="91"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            </imageView>
+                        </subviews>
+                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
-                    <navigationItem key="navigationItem" id="gtz-HT-2pb"/>
+                    <navigationItem key="navigationItem" id="gtz-HT-2pb">
+                        <barButtonItem key="leftBarButtonItem" image="cameraButtonClose" id="os9-vo-yle">
+                            <connections>
+                                <segue destination="vwD-pE-jar" kind="unwind" identifier="unwindFromVideo" unwindAction="unwindToCameraController:" id="uSI-OE-1K1"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                     <connections>
-                        <segue destination="1zz-KC-cVA" kind="push" identifier="toPublish" id="mer-GU-vyY"/>
+                        <outlet property="doneButtonView" destination="fqE-H3-Ghu" id="Pqe-Zw-8Kz"/>
+                        <outlet property="videoPlayerView" destination="HS5-fs-ogp" id="Lpd-eR-XzV"/>
+                        <segue destination="1zz-KC-cVA" kind="push" identifier="toPublishFromVideo" id="mer-GU-vyY"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="1Fa-nW-5gg" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="455" y="-437"/>
+            <point key="canvasLocation" x="455" y="-379"/>
         </scene>
-        <!--View Controller-->
+        <!--Image Preview View Controller-->
+        <scene sceneID="gGN-nC-5xe">
+            <objects>
+                <viewController storyboardIdentifier="imagePreview" useStoryboardIdentifierAsRestorationIdentifier="YES" id="99V-ng-0rM" customClass="VImagePreviewViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="XeD-84-9O7"/>
+                        <viewControllerLayoutGuide type="bottom" id="ukr-nV-1wY"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="77W-lp-kgL">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="855-qN-JTt">
+                                <rect key="frame" x="0.0" y="90" width="320" height="320"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                            </imageView>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="cameraButtonVideoDone" translatesAutoresizingMaskIntoConstraints="NO" id="4ca-VH-9Hu">
+                                <rect key="frame" x="115" y="457" width="91" height="91"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            </imageView>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="sdI-h6-tee">
+                                <rect key="frame" x="20" y="473" width="60" height="60"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" image="cameraButtonDelete">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="handleDeleteAction:" destination="99V-ng-0rM" eventType="touchUpInside" id="iyM-lv-vVJ"/>
+                                    <action selector="trashAction:" destination="N4E-ak-ozN" eventType="touchUpInside" id="n5a-SZ-ZQw"/>
+                                    <segue destination="vwD-pE-jar" kind="unwind" unwindAction="unwindToCameraController:" id="9YE-nu-8jH"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                    <navigationItem key="navigationItem" id="oLM-wJ-Izk">
+                        <barButtonItem key="leftBarButtonItem" image="cameraButtonClose" id="dGG-CO-7Nl">
+                            <connections>
+                                <segue destination="vwD-pE-jar" kind="unwind" unwindAction="unwindToCameraController:" id="rUY-on-iqg"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
+                    <connections>
+                        <outlet property="doneButtonView" destination="4ca-VH-9Hu" id="F8y-vf-edb"/>
+                        <outlet property="previewImageView" destination="855-qN-JTt" id="8pJ-zU-CMi"/>
+                        <segue destination="1zz-KC-cVA" kind="push" identifier="toPublishFromImage" id="YLb-fO-LI9"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="7ed-pT-ToF" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="474" y="489"/>
+        </scene>
+        <!--Camera Publish View Controller-->
         <scene sceneID="hiH-K5-ap5">
             <objects>
-                <viewController id="1zz-KC-cVA" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="cameraPubish" useStoryboardIdentifierAsRestorationIdentifier="YES" id="1zz-KC-cVA" customClass="VCameraPublishViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="Twn-Vd-Vv9"/>
                         <viewControllerLayoutGuide type="bottom" id="Gg4-zc-aun"/>
@@ -178,6 +262,7 @@
         <image name="cameraButtonFlip" width="36" height="36"/>
         <image name="cameraButtonPhotoCapture" width="91" height="91"/>
         <image name="cameraButtonSwitchToPhoto" width="34" height="34"/>
+        <image name="cameraButtonVideoDone" width="91" height="91"/>
         <image name="cameraButtonVideoRecording" width="91" height="91"/>
         <image name="cameraToolTipImage" width="150" height="31"/>
     </resources>
@@ -187,6 +272,6 @@
         <simulatedScreenMetrics key="destination" type="retina4"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
-        <segue reference="e8X-nj-V7N"/>
+        <segue reference="YLb-fO-LI9"/>
     </inferredMetricsTieBreakers>
 </document>
