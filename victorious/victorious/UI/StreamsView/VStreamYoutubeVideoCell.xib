@@ -72,6 +72,10 @@
                             <action selector="commentButtonAction:" destination="ClS-Ss-SJq" eventType="touchUpInside" id="CeH-MY-Z8N"/>
                         </connections>
                     </button>
+                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="Play" translatesAutoresizingMaskIntoConstraints="NO" id="HVb-Z7-aUP">
+                        <rect key="frame" x="145" y="75" width="30" height="30"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    </imageView>
                 </subviews>
             </tableViewCellContentView>
             <connections>
@@ -89,6 +93,7 @@
         </tableViewCell>
     </objects>
     <resources>
+        <image name="Play" width="33" height="33"/>
         <image name="StreamComments" width="19" height="19"/>
         <image name="StreamDate" width="13" height="13"/>
         <image name="profile_thumb" width="50" height="50"/>
