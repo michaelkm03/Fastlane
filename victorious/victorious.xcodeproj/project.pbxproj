@@ -135,7 +135,6 @@
 		BE651D1018AC270900069119 /* VKeyboardBarViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BE651D0F18AC270900069119 /* VKeyboardBarViewController.m */; };
 		BE692B23186E5ED800C71336 /* VStreamDoublePollCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = BE692B17186E5ED800C71336 /* VStreamDoublePollCell.xib */; };
 		BE692B25186E5ED800C71336 /* VStreamPollCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = BE692B1A186E5ED800C71336 /* VStreamPollCell.xib */; };
-		BE692B27186E5ED800C71336 /* VStreamVideoCell.m in Sources */ = {isa = PBXBuildFile; fileRef = BE692B1E186E5ED800C71336 /* VStreamVideoCell.m */; };
 		BE692B28186E5ED800C71336 /* VStreamVideoCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = BE692B1F186E5ED800C71336 /* VStreamVideoCell.xib */; };
 		BE692B29186E5ED800C71336 /* VStreamViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = BE692B21186E5ED800C71336 /* VStreamViewCell.m */; };
 		BE692B2A186E5ED800C71336 /* VStreamViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = BE692B22186E5ED800C71336 /* VStreamViewCell.xib */; };
@@ -412,8 +411,6 @@
 		BE651D0F18AC270900069119 /* VKeyboardBarViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VKeyboardBarViewController.m; sourceTree = "<group>"; };
 		BE692B17186E5ED800C71336 /* VStreamDoublePollCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VStreamDoublePollCell.xib; sourceTree = "<group>"; };
 		BE692B1A186E5ED800C71336 /* VStreamPollCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VStreamPollCell.xib; sourceTree = "<group>"; };
-		BE692B1D186E5ED800C71336 /* VStreamVideoCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VStreamVideoCell.h; sourceTree = "<group>"; };
-		BE692B1E186E5ED800C71336 /* VStreamVideoCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VStreamVideoCell.m; sourceTree = "<group>"; };
 		BE692B1F186E5ED800C71336 /* VStreamVideoCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VStreamVideoCell.xib; sourceTree = "<group>"; };
 		BE692B20186E5ED800C71336 /* VStreamViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VStreamViewCell.h; sourceTree = "<group>"; };
 		BE692B21186E5ED800C71336 /* VStreamViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VStreamViewCell.m; sourceTree = "<group>"; };
@@ -1023,8 +1020,6 @@
 				BE8C6F4D18B56E70009CFB1C /* VStreamPollCell.h */,
 				BE8C6F4E18B56E70009CFB1C /* VStreamPollCell.m */,
 				BE692B1A186E5ED800C71336 /* VStreamPollCell.xib */,
-				BE692B1D186E5ED800C71336 /* VStreamVideoCell.h */,
-				BE692B1E186E5ED800C71336 /* VStreamVideoCell.m */,
 				BE692B1F186E5ED800C71336 /* VStreamVideoCell.xib */,
 				BEB52A7118BF38A400AC5FE4 /* VStreamYoutubeVideoCell.xib */,
 				BE692B20186E5ED800C71336 /* VStreamViewCell.h */,
@@ -1342,7 +1337,6 @@
 				3F91991A187CAF310055FE37 /* VMessageViewController.m in Sources */,
 				BE5C7340187E36CF00A3340D /* VInteraction.m in Sources */,
 				BEF2C2AE188620EE00AAE975 /* VSequence.m in Sources */,
-				BE692B27186E5ED800C71336 /* VStreamVideoCell.m in Sources */,
 				BE8C6F4F18B56E70009CFB1C /* VStreamPollCell.m in Sources */,
 				3F14C45818BD45DF001796B9 /* SCCameraFocusTargetView.m in Sources */,
 				BE6B95FC187C88F700CED4C9 /* VSequence+Fetcher.m in Sources */,

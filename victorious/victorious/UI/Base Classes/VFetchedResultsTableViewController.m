@@ -233,7 +233,6 @@
 - (void)controllerDidChangeContent:(NSFetchedResultsController *)controller
 {
     //TODO: remove my notes here.  This is for the weird exception / crash / sometimes tableview getting weird bug
-    //This is happening with self.fetchedResults not self.searchFetchedResults
     //Being called multiple times... maybe it has multiple adds all at once from refresh?
     //Maybe this should be changed...
     self.updateCount--;

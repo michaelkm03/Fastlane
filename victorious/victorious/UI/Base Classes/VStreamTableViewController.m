@@ -17,7 +17,6 @@
 
 //Cells
 #import "VStreamViewCell.h"
-#import "VStreamVideoCell.h"
 #import "VStreamPollCell.h"
 
 //ObjectManager
@@ -105,52 +104,12 @@
     [self.navigationController pushViewController:contentViewController animated:YES];
 }
 
-- (void)scrollViewDidScroll:(UIScrollView *)scrollView
-{
-    if (scrollView.contentOffset.y > (scrollView.contentSize.height * .75))
-    {
-        [self refreshAction];
-    }
-}
-//    NSArray* visibleCells = [self.tableView visibleCells];
-//    
-//    if (![visibleCells count])
-//        return;
-//    
-//    VSequence* sequence;
-//    if ([visibleCells count] > 2)
-//    {
-//        //The 2nd one is completely on screen, use that
-//        NSIndexPath* path = [self.tableView indexPathForCell:[visibleCells objectAtIndex:1]];
-//        sequence = [self.fetchedResultsController objectAtIndexPath:path];
-//    }
-//    else
-//    {
-//        CGFloat currentCenterY = self.tableView.contentOffset.y + self.tableView.center.y;
-//        CGFloat firstCellDiff = currentCenterY - ((UIView*)[visibleCells firstObject]).center.y;
-//        CGFloat secondCellDiff = currentCenterY - ((UIView*)[visibleCells lastObject]).center.y;
-//
-//        if (fabsf(firstCellDiff) > fabsf(secondCellDiff))
-//        {
-//            //use 2nd cell
-//            NSIndexPath* path = [self.tableView indexPathForCell:[visibleCells objectAtIndex:1]];
-//            sequence = [self.fetchedResultsController objectAtIndexPath:path];
-//        }
-//        else
-//        {
-//            //use 1st cell
-//            NSIndexPath* path = [self.tableView indexPathForCell:[visibleCells objectAtIndex:0]];
-//            sequence = [self.fetchedResultsController objectAtIndexPath:path];
-//        }
-//    }
-//    
-//    self.actionBar.currentSequence = sequence;
-//    [self showActionBar];
-//}
-//
-//- (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView
+//- (void)scrollViewDidScroll:(UIScrollView *)scrollView
 //{
-//    [self hideActionBar];
+//    if (scrollView.contentOffset.y > (scrollView.contentSize.height * .75))
+//    {
+//        [self refreshAction];
+//    }
 //}
 
 #pragma mark - Cells
@@ -183,12 +142,12 @@
 - (VStreamViewCell*)tableView:(UITableView *)tableView streamViewCellForIndex:(NSIndexPath*)indexPath
 {
     VSequence* sequence = (VSequence*)[self.fetchedResultsController objectAtIndexPath:indexPath];
-//
-//    if (([sequence isForum] || [sequence isVideo])
-//        && [[[sequence firstNode] firstAsset].type isEqualToString:VConstantsMediaTypeYoutube])
-//        return [tableView dequeueReusableCellWithIdentifier:kStreamYoutubeVideoCellIdentifier
-//                                               forIndexPath:indexPath];
-//    
+
+    if (([sequence isForum] || [sequence isVideo])
+        && [[[sequence firstNode] firstAsset].type isEqualToString:VConstantsMediaTypeYoutube])
+        return [tableView dequeueReusableCellWithIdentifier:kStreamYoutubeVideoCellIdentifier
+                                               forIndexPath:indexPath];
+    
     if ([sequence isPoll] && [[sequence firstNode] firstAsset])
         return [tableView dequeueReusableCellWithIdentifier:kStreamPollCellIdentifier
                                                forIndexPath:indexPath];
@@ -196,11 +155,11 @@
     else if ([sequence isPoll])
         return [tableView dequeueReusableCellWithIdentifier:kStreamDoublePollCellIdentifier
                                                forIndexPath:indexPath];
-//
-//    else if ([sequence isForum] || [sequence isVideo])
-//        return [tableView dequeueReusableCellWithIdentifier:kStreamVideoCellIdentifier
-//                                               forIndexPath:indexPath];
-//    
+
+    else if ([sequence isForum] || [sequence isVideo])
+        return [tableView dequeueReusableCellWithIdentifier:kStreamVideoCellIdentifier
+                                               forIndexPath:indexPath];
+
     else
         return [tableView dequeueReusableCellWithIdentifier:kStreamViewCellIdentifier
                                                forIndexPath:indexPath];
@@ -305,33 +264,14 @@
     [self.sideMenuViewController presentMenuViewController];
 }
 
-//- (void)showActionBar
-//{
-//    [UIView animateWithDuration:1.0f
-//                     animations:^{
-//                         self.actionBar.frame = CGRectMake(0, self.view.frame.size.height - VStreamActionBarHeight, self.actionBar.frame.size.width, self.actionBar.frame.size.height);
-//                     }];
-//}
-//
-//- (void)hideActionBar
-//{
-//    if (self.actionBar.frame.origin.y >= self.view.frame.size.height)
-//        return;
-//    
-//    [UIView animateWithDuration:1.0f
-//                     animations:^{
-//                         self.actionBar.frame = CGRectMake(0, self.view.frame.size.height, self.actionBar.frame.size.width, self.actionBar.frame.size.height);
-//                     }];
-//}
-
 #pragma mark - Notifications
 
 - (void)willCommentSequence:(NSNotification *)notification
 {
-//    VStreamViewCell *cell = (VStreamViewCell *)notification.object;
-//    VCommentsContainerViewController* commentsTable = [VCommentsContainerViewController commentsContainerView];
-//    commentsTable.sequence = cell.sequence;
-//    [self.navigationController pushViewController:commentsTable animated:YES];
+    VStreamViewCell *cell = (VStreamViewCell *)notification.object;
+    VCommentsContainerViewController* commentsTable = [VCommentsContainerViewController commentsContainerView];
+    commentsTable.sequence = cell.sequence;
+    [self.navigationController pushViewController:commentsTable animated:YES];
 }
 
 @end
