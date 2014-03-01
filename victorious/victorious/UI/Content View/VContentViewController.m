@@ -72,11 +72,6 @@
     VEmotiveBallisticsBarViewController* emotiveBallistics = [VEmotiveBallisticsBarViewController sharedInstance];
     emotiveBallistics.target = self.previewImage;
     self.actionBarViewController = emotiveBallistics;
-    
-//    self.actionBarViewController.view.frame = CGRectMake(0,
-//                                 self.view.frame.size.height - _actionBarViewController.view.frame.size.height,
-//                                 _actionBarViewController.view.frame.size.width,
-//                                 _actionBarViewController.view.frame.size.height);
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -99,7 +94,7 @@
     _sequence = sequence;
     [self.backgroundImage setLightBlurredImageWithURL:[NSURL URLWithString:self.sequence.previewImage]
                                      placeholderImage:nil];
-    self.descriptionLabel.text = _sequence.description;
+    self.descriptionLabel.text = _sequence.sequenceDescription;
     self.currentNode = [sequence firstNode];
 }
 
