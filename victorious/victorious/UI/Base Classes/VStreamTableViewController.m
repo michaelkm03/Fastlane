@@ -99,7 +99,7 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    VContentViewController* contentViewController = [VContentViewController contentViewController];
+    VContentViewController* contentViewController = [VContentViewController sharedInstance];
     contentViewController.sequence = [[self fetchedResultsControllerForTableView:tableView] objectAtIndexPath:indexPath];
     [self.navigationController pushViewController:contentViewController animated:YES];
 }

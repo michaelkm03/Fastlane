@@ -10,4 +10,8 @@
 
 @interface VEmotiveBallisticsBarViewController : UIViewController
 
+@property (weak, nonatomic) UIView* target;
+
++ (VEmotiveBallisticsBarViewController *)sharedInstance;
+
 @end

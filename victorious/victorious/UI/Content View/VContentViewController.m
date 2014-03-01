@@ -11,6 +11,7 @@
 #import "VConstants.h"
 
 #import "VCommentsContainerViewController.h"
+#import "VEmotiveBallisticsBarViewController.h"
 
 #import "VSequence+Fetcher.h"
 #import "VNode+Fetcher.h"
@@ -18,6 +19,7 @@
 
 #import "UIImageView+Blurring.h"
 #import "UIWebView+VYoutubeLoading.h"
+#import "UIView+VFrameManipulation.h"
 
 @import MediaPlayer;
 
@@ -34,6 +36,9 @@
 @property (weak, nonatomic) IBOutlet UIImageView* secondSmallPreviewImage;
 @property (weak, nonatomic) IBOutlet UIWebView* webView;
 @property (weak, nonatomic) IBOutlet UILabel* descriptionLabel;
+@property (weak, nonatomic) IBOutlet UIView* barView;
+
+@property (strong, nonatomic) UIViewController* actionBarViewController;
 
 @property (strong, nonatomic) MPMoviePlayerController* mpController;
 @property (strong, nonatomic) VNode* currentNode;
@@ -43,10 +48,16 @@
 
 @implementation VContentViewController
 
-+ (instancetype)contentViewController
++ (VContentViewController *)sharedInstance
 {
-    UIViewController*   currentViewController = [[UIApplication sharedApplication] delegate].window.rootViewController;
-    return [currentViewController.storyboard instantiateViewControllerWithIdentifier: kContentViewStoryboardID];
+    static  VContentViewController*   sharedInstance;
+    static  dispatch_once_t         onceToken;
+    dispatch_once(&onceToken, ^{
+        UIViewController*   currentViewController = [[UIApplication sharedApplication] delegate].window.rootViewController;
+        sharedInstance = (VContentViewController*)[currentViewController.storyboard instantiateViewControllerWithIdentifier: kContentViewStoryboardID];
+    });
+    
+    return sharedInstance;
 }
 
 - (void)viewDidLoad
@@ -57,6 +68,15 @@
     self.webView.scrollView.scrollEnabled = NO;
     [self.webView setAllowsInlineMediaPlayback:YES];
     [self.webView setMediaPlaybackRequiresUserAction:NO];
+    
+    VEmotiveBallisticsBarViewController* emotiveBallistics = [VEmotiveBallisticsBarViewController sharedInstance];
+    emotiveBallistics.target = self.previewImage;
+    self.actionBarViewController = emotiveBallistics;
+    
+//    self.actionBarViewController.view.frame = CGRectMake(0,
+//                                 self.view.frame.size.height - _actionBarViewController.view.frame.size.height,
+//                                 _actionBarViewController.view.frame.size.width,
+//                                 _actionBarViewController.view.frame.size.height);
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -83,16 +103,6 @@
     self.currentNode = [sequence firstNode];
 }
 
-//- (void)setActionBar:(VActionBarViewController*)actionBar
-//{
-//animate old bar off, create new bar, animate back on
-//    [actionBar setConstraints:self.actionBar.constraints];
-//    [self.actionBar.view removeFromSuperView]
-//    self.actionBar = actionBar;
-//    self.actionBarView = self.actionBar.view
-//
-//}
-
 - (void)setCurrentNode:(VNode *)currentNode
 {
     //If you run out of nodes... go to the beginning.
@@ -118,6 +128,30 @@
         [self loadNextAsset];
 }
 
+- (void)setActionBarViewController:(UIViewController *)actionBarViewController
+{
+    if (_actionBarViewController != actionBarViewController)
+    {
+        [_actionBarViewController.view removeFromSuperview];
+        [_actionBarViewController removeFromParentViewController];
+        
+        [self addChildViewController:actionBarViewController];
+        [actionBarViewController didMoveToParentViewController:self];
+        [self.barView addSubview:actionBarViewController.view];
+        _actionBarViewController = actionBarViewController;
+        
+        CGFloat xOrigin = self.view.frame.size.height - _actionBarViewController.view.frame.size.height;
+        VLog("oldframe: %@", NSStringFromCGRect(_actionBarViewController.view.frame));
+        CGRect newFrame = CGRectMake(0,
+                                     xOrigin,
+                                     _actionBarViewController.view.frame.size.width,
+                                     _actionBarViewController.view.frame.size.height);
+        VLog("newframe: %@", NSStringFromCGRect(newFrame));
+
+        _actionBarViewController.view.frame = newFrame;
+    }
+}
+
 #pragma mark - Sequence Logic
 - (void)loadNextAsset
 {
@@ -130,6 +164,7 @@
         [self loadVideo];
     else if ([self.currentAsset isYoutube])
         [self loadYoutubeVideo];
+    
     else //Default case: we assume its an image and hope it works out
         [self loadImage];
 }

@@ -14,6 +14,6 @@
 
 @property (strong, nonatomic) VSequence* sequence;
 
-+ (instancetype)contentViewController;
++ (VContentViewController *)sharedInstance;
 
 @end
