@@ -85,8 +85,6 @@ NSString *kStreamsWillCommentNotification = @"kStreamsWillCommentNotification";
     [self.profileImageButton setImageWithURL:[NSURL URLWithString:self.sequence.user.pictureUrl]
                             placeholderImage:[UIImage imageNamed:@"profile_thumb"]
                                     forState:UIControlStateNormal];
-    
-//    [self addCommentViews];
 }
 
 - (void)setHeight:(CGFloat)height

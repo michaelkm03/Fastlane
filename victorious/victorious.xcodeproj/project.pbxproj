@@ -155,7 +155,6 @@
 		BEA5BF59187E7E8E0014C3EF /* VObjectManager+DirectMessaging.m in Sources */ = {isa = PBXBuildFile; fileRef = BEA5BF58187E7E8E0014C3EF /* VObjectManager+DirectMessaging.m */; };
 		BEA5BF5F187F21770014C3EF /* VTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = BEA5BF5E187F21770014C3EF /* VTableViewCell.m */; };
 		BEA5BF71187FCBF10014C3EF /* VObjectManager+Users.m in Sources */ = {isa = PBXBuildFile; fileRef = BEA5BF70187FCBF10014C3EF /* VObjectManager+Users.m */; };
-		BEA73B7E18A98C0A0081312F /* VStreamActionBar.m in Sources */ = {isa = PBXBuildFile; fileRef = BEA73B7D18A98C0A0081312F /* VStreamActionBar.m */; };
 		BEB4C29B187E038C004ECEEF /* VConversationCell.m in Sources */ = {isa = PBXBuildFile; fileRef = BEB4C296187E038C004ECEEF /* VConversationCell.m */; };
 		BEB4C29C187E038C004ECEEF /* VConversationCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = BEB4C297187E038C004ECEEF /* VConversationCell.xib */; };
 		BEB4C29D187E038C004ECEEF /* VNewsCell.m in Sources */ = {isa = PBXBuildFile; fileRef = BEB4C299187E038C004ECEEF /* VNewsCell.m */; };
@@ -455,9 +454,6 @@
 		BEA5BF5E187F21770014C3EF /* VTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VTableViewCell.m; path = UI/VTableViewCell.m; sourceTree = "<group>"; };
 		BEA5BF6F187FCBF10014C3EF /* VObjectManager+Users.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "VObjectManager+Users.h"; sourceTree = "<group>"; };
 		BEA5BF70187FCBF10014C3EF /* VObjectManager+Users.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "VObjectManager+Users.m"; sourceTree = "<group>"; };
-		BEA73B7C18A98C0A0081312F /* VStreamActionBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VStreamActionBar.h; path = UI/StreamsView/VStreamActionBar.h; sourceTree = "<group>"; };
-		BEA73B7D18A98C0A0081312F /* VStreamActionBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VStreamActionBar.m; path = UI/StreamsView/VStreamActionBar.m; sourceTree = "<group>"; };
-		BEA73B7F18A9AAD90081312F /* VStreamActionBar.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VStreamActionBar.xib; sourceTree = "<group>"; };
 		BEB4C295187E038C004ECEEF /* VConversationCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VConversationCell.h; path = UI/Inbox/VConversationCell.h; sourceTree = "<group>"; };
 		BEB4C296187E038C004ECEEF /* VConversationCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VConversationCell.m; path = UI/Inbox/VConversationCell.m; sourceTree = "<group>"; };
 		BEB4C297187E038C004ECEEF /* VConversationCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = VConversationCell.xib; path = UI/Inbox/VConversationCell.xib; sourceTree = "<group>"; };
@@ -654,9 +650,6 @@
 				3F9B66731888C4B20046F826 /* VCommunityStreamViewController.m */,
 				3F9B66751888C4DD0046F826 /* VForumStreamViewController.h */,
 				3F9B66761888C4DD0046F826 /* VForumStreamViewController.m */,
-				BEA73B7C18A98C0A0081312F /* VStreamActionBar.h */,
-				BEA73B7D18A98C0A0081312F /* VStreamActionBar.m */,
-				BEA73B7F18A9AAD90081312F /* VStreamActionBar.xib */,
 			);
 			name = Streams;
 			sourceTree = "<group>";
@@ -1375,7 +1368,6 @@
 				3FD7FFAF18BFD6EF00945E5F /* VCameraPublishViewController.m in Sources */,
 				3F14C45818BD45DF001796B9 /* SCCameraFocusTargetView.m in Sources */,
 				BE6B95FC187C88F700CED4C9 /* VSequence+Fetcher.m in Sources */,
-				BEA73B7E18A98C0A0081312F /* VStreamActionBar.m in Sources */,
 				BE40559418A1828D00092AE1 /* UIButton+VImageLoading.m in Sources */,
 				BEA5BF59187E7E8E0014C3EF /* VObjectManager+DirectMessaging.m in Sources */,
 				3FF8C50118A59EAB00812968 /* VCreateForumViewController.m in Sources */,
