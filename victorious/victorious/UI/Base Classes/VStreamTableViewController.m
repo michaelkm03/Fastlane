@@ -183,6 +183,8 @@
     
     [UIView animateWithDuration:0.5 animations:^{
         animatableContent.layer.opacity = 1.0;
+    } completion:^(BOOL finished) {
+        [(VStreamViewCell*)cell startAnimation];
     }];
 }
 

@@ -75,13 +75,18 @@
                             <action selector="commentButtonAction:" destination="ClS-Ss-SJq" eventType="touchUpInside" id="CeH-MY-Z8N"/>
                         </connections>
                     </button>
-                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="Play" translatesAutoresizingMaskIntoConstraints="NO" id="HVb-Z7-aUP">
-                        <rect key="frame" x="145" y="75" width="30" height="30"/>
+                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="PlayCircle" translatesAutoresizingMaskIntoConstraints="NO" id="7fa-Hw-Oxe">
+                        <rect key="frame" x="134" y="64" width="52" height="52"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    </imageView>
+                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="PlayTriangle" translatesAutoresizingMaskIntoConstraints="NO" id="HVb-Z7-aUP">
+                        <rect key="frame" x="134" y="64" width="52" height="52"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     </imageView>
                 </subviews>
             </tableViewCellContentView>
             <connections>
+                <outlet property="animationImage" destination="HVb-Z7-aUP" id="rng-7z-xUD"/>
                 <outlet property="dateLabel" destination="Rjv-Bf-7RW" id="gPJ-Q9-Qxt"/>
                 <outlet property="descriptionLabel" destination="8D7-NY-L6L" id="Rao-5W-muv"/>
                 <outlet property="previewImageView" destination="m9n-4Y-LID" id="p7E-AY-DS9"/>
@@ -96,7 +101,8 @@
         </tableViewCell>
     </objects>
     <resources>
-        <image name="Play" width="33" height="33"/>
+        <image name="PlayCircle" width="52" height="52"/>
+        <image name="PlayTriangle" width="52" height="52"/>
         <image name="StreamComments" width="19" height="19"/>
         <image name="StreamDate" width="13" height="13"/>
         <image name="profile_thumb" width="50" height="50"/>

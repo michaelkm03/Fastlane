@@ -21,9 +21,10 @@ extern NSString *kStreamsWillCommentNotification;
 
 @property (weak, nonatomic) IBOutlet UIImageView *previewImageView;
 @property (weak, nonatomic) IBOutlet UIImageView *playButtonImage;
+@property (weak, nonatomic) IBOutlet UIImageView *animationImage;
 @property (weak, nonatomic) VSequence* sequence;
 
-// TODO: for some reason if these are not here the cell does not show up
-@property (weak, nonatomic) IBOutlet UIButton *dislikeButton;
+- (void)startAnimation;
+- (void)stopAnimation;
 
 @end

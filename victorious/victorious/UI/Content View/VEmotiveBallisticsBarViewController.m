@@ -99,6 +99,9 @@
      }
                      completion:^(BOOL finished)
      {
+//         thrownImage.animationImages = @[[UIImage imageNamed:@"animated1"]];
+//         thrownImage.animationDuration = .2f;
+//         thrownImage.animationRepeatCount = 1;
          [UIView animateWithDuration:.2f
                           animations:^
           {

@@ -32,9 +32,9 @@ NSString *kStreamsWillCommentNotification = @"kStreamsWillCommentNotification";
 @property (weak, nonatomic) IBOutlet UILabel *locationLabel;
 @property (weak, nonatomic) IBOutlet UILabel *dateLabel;
 @property (weak, nonatomic) IBOutlet UILabel *descriptionLabel;
-@property (weak, nonatomic) IBOutlet UIButton *likeButton;
 @property (weak, nonatomic) IBOutlet UIButton *profileImageButton;
 
+@property (nonatomic) BOOL animating;
 @property (nonatomic) NSUInteger originalHeight;
 
 @property (strong, nonatomic) NSMutableArray* commentViews;
@@ -42,17 +42,6 @@ NSString *kStreamsWillCommentNotification = @"kStreamsWillCommentNotification";
 @end
 
 @implementation VStreamViewCell
-
-// HACK: useing a cache for now to keep track of liked sequences
-- (NSCache *)likeCache
-{
-    static NSCache *cache = nil;
-    static dispatch_once_t once;
-    dispatch_once(&once, ^{
-        cache = [NSCache new];
-    });
-    return cache;
-}
 
 - (void)awakeFromNib
 {
@@ -84,6 +73,9 @@ NSString *kStreamsWillCommentNotification = @"kStreamsWillCommentNotification";
     else
         self.playButtonImage.hidden = YES;
 
+    self.animationImage.alpha = .5f;
+    self.animating = NO;
+    
     self.usernameLabel.text = self.sequence.user.name;
     self.locationLabel.text = self.sequence.user.location;
     self.descriptionLabel.text = self.sequence.name;
@@ -94,42 +86,12 @@ NSString *kStreamsWillCommentNotification = @"kStreamsWillCommentNotification";
                             placeholderImage:[UIImage imageNamed:@"profile_thumb"]
                                     forState:UIControlStateNormal];
     
-    if([[self likeCache] objectForKey:self.sequence.remoteId])
-    {
-        [self.likeButton setImage:[[UIImage imageNamed:@"StreamHeartFull"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal] forState:UIControlStateNormal];
-        [self.likeButton setTitle:@" 124" forState:UIControlStateNormal];
-    }
-    else
-    {
-        [self.likeButton setImage:[UIImage imageNamed:@"StreamHeart"] forState:UIControlStateNormal];
-        [self.likeButton setTitle:@" 123" forState:UIControlStateNormal];
-    }
-    
 //    [self addCommentViews];
 }
 
 - (void)setHeight:(CGFloat)height
 {
     self.frame = CGRectMake(self.frame.origin.x, self.frame.origin.y, self.frame.size.width, height);
-}
-
-- (IBAction)likeButtonAction:(id)sender
-{
-//    [[VObjectManager sharedManager]
-//     likeSequence:self.sequence
-//     successBlock:^(NSArray *resultObjects)
-//     {
-//         self.likeButton.userInteractionEnabled = NO;
-//         self.dislikeButton.userInteractionEnabled = YES;
-//     }
-//     failBlock:^(NSError *error)
-//     {
-//         VLog(@"Like failed with error: %@", error);
-//     }];
-
-    [[self likeCache] setObject:@YES forKey:self.sequence.remoteId];
-    [self.likeButton setImage:[[UIImage imageNamed:@"StreamHeartFull"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal] forState:UIControlStateNormal];
-    [self.likeButton setTitle:@" 124" forState:UIControlStateNormal];
 }
 
 - (IBAction)commentButtonAction:(id)sender
@@ -143,4 +105,78 @@ NSString *kStreamsWillCommentNotification = @"kStreamsWillCommentNotification";
     [self.parentTableViewController.navigationController pushViewController:profileViewController animated:YES];
 }
 
+- (void)startAnimation
+{
+    //If we are already animating just ignore this and continue from where we are.
+    if (self.animating)
+        return;
+        
+    self.animating = YES;
+    [self firstAnimation];
+}
+
+- (void)firstAnimation
+{
+    if (self.animating)
+        [UIView animateWithDuration:.5f
+                         animations:^{
+                             self.animationImage.alpha = 1.0f;
+                         }
+                         completion:^(BOOL finished) {
+                             [self secondAnimation];
+                         }];
+}
+
+- (void)secondAnimation
+{
+    if (self.animating)
+        [UIView animateWithDuration:.3f
+                         animations:^{
+                             self.animationImage.alpha = .3f;
+                         }
+                         completion:^(BOOL finished) {
+                             [self thirdAnimation];
+                         }];
+}
+
+- (void)thirdAnimation
+{
+    if (self.animating)
+        [UIView animateWithDuration:.25f
+                         animations:^{
+                             self.animationImage.alpha = 0.9f;
+                         }
+                         completion:^(BOOL finished) {
+                             [self fourthAnimation];
+                         }];
+}
+
+- (void)fourthAnimation
+{
+    if (self.animating)
+        [UIView animateWithDuration:.2f
+                         animations:^{
+                             self.animationImage.alpha = .3f;
+                         }
+                         completion:^(BOOL finished) {
+                             [self fifthAnimation];
+                         }];
+}
+
+- (void)fifthAnimation
+{
+    if (self.animating)
+        [UIView animateWithDuration:.15f
+                         animations:^{
+                             self.animationImage.alpha = .5f;
+                         }
+                         completion:^(BOOL finished) {
+                             [self performSelector:@selector(firstAnimation) withObject:nil afterDelay:3.5f];
+                         }];
+}
+
+- (void)stopAnimation
+{
+    self.animating = NO;
+}
 @end
