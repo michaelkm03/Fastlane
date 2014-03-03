@@ -37,8 +37,9 @@
 @property (weak, nonatomic) IBOutlet UIWebView* webView;
 @property (weak, nonatomic) IBOutlet UILabel* descriptionLabel;
 @property (weak, nonatomic) IBOutlet UIView* barView;
+@property (weak, nonatomic) IBOutlet UIView* mediaView;
 
-@property (strong, nonatomic) UIViewController* actionBarViewController;
+@property (strong, nonatomic) VEmotiveBallisticsBarViewController* emotiveBallisticsBar;
 
 @property (strong, nonatomic) MPMoviePlayerController* mpController;
 @property (strong, nonatomic) VNode* currentNode;
@@ -47,6 +48,11 @@
 @end
 
 @implementation VContentViewController
+
+- (void) dealloc
+{
+    _emotiveBallisticsBar.target = nil;
+}
 
 + (VContentViewController *)sharedInstance
 {
@@ -71,7 +77,7 @@
     
     VEmotiveBallisticsBarViewController* emotiveBallistics = [VEmotiveBallisticsBarViewController sharedInstance];
     emotiveBallistics.target = self.previewImage;
-    self.actionBarViewController = emotiveBallistics;
+    self.emotiveBallisticsBar = emotiveBallistics;
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -123,27 +129,27 @@
         [self loadNextAsset];
 }
 
-- (void)setActionBarViewController:(UIViewController *)actionBarViewController
+- (void)setEmotiveBallisticsBar:(VEmotiveBallisticsBarViewController *)emotiveBallisticsBar
 {
-    if (_actionBarViewController != actionBarViewController)
+    if (_emotiveBallisticsBar != emotiveBallisticsBar)
     {
-        [_actionBarViewController.view removeFromSuperview];
-        [_actionBarViewController removeFromParentViewController];
+        [_emotiveBallisticsBar.view removeFromSuperview];
+        [_emotiveBallisticsBar removeFromParentViewController];
         
-        [self addChildViewController:actionBarViewController];
-        [actionBarViewController didMoveToParentViewController:self];
-        [self.barView addSubview:actionBarViewController.view];
-        _actionBarViewController = actionBarViewController;
+        [self addChildViewController:emotiveBallisticsBar];
+        [emotiveBallisticsBar didMoveToParentViewController:self];
+        [self.barView addSubview:emotiveBallisticsBar.view];
+        _emotiveBallisticsBar = emotiveBallisticsBar;
         
-        CGFloat xOrigin = self.view.frame.size.height - _actionBarViewController.view.frame.size.height;
-        VLog("oldframe: %@", NSStringFromCGRect(_actionBarViewController.view.frame));
+        CGFloat xOrigin = self.view.frame.size.height - _emotiveBallisticsBar.view.frame.size.height;
+        VLog("oldframe: %@", NSStringFromCGRect(_emotiveBallisticsBar.view.frame));
         CGRect newFrame = CGRectMake(0,
                                      xOrigin,
-                                     _actionBarViewController.view.frame.size.width,
-                                     _actionBarViewController.view.frame.size.height);
+                                     _emotiveBallisticsBar.view.frame.size.width,
+                                     _emotiveBallisticsBar.view.frame.size.height);
         VLog("newframe: %@", NSStringFromCGRect(newFrame));
 
-        _actionBarViewController.view.frame = newFrame;
+        _emotiveBallisticsBar.view.frame = newFrame;
     }
 }
 
@@ -197,28 +203,35 @@
     self.firstSmallPreviewImage.hidden = YES;
     self.secondSmallPreviewImage.hidden = YES;
     self.mpController.view.hidden = YES;
-    
+    self.emotiveBallisticsBar.target = self.previewImage;
 }
 
 
 #pragma mark - Video
 - (void)loadVideo
 {
-    [self loadImage];
+    self.previewImage.hidden = YES;
+    self.webView.hidden = YES;
+    self.sixteenNinePreviewImage.hidden = YES;
+    self.firstSmallPreviewImage.hidden = YES;
+    self.secondSmallPreviewImage.hidden = YES;
+    self.mpController.view.hidden = NO;
     
     [self.mpController.view removeFromSuperview];
     self.mpController = [[MPMoviePlayerController alloc] initWithContentURL:[NSURL URLWithString:self.currentAsset.data]];
     [self.mpController prepareToPlay];
     self.mpController.scalingMode = MPMovieScalingModeAspectFill;
     self.mpController.view.frame = self.previewImage.frame;
-    [self.view insertSubview:self.mpController.view aboveSubview:self.previewImage];
+    VLog(@"pi frame: %@", NSStringFromCGRect(self.previewImage.frame));
+    VLog(@"mp frame: %@", NSStringFromCGRect(self.mpController.view.frame));
+    [self.mediaView insertSubview:self.mpController.view aboveSubview:self.previewImage];
+    [self.mpController play];
+    self.emotiveBallisticsBar.target = self.mpController.view;
 }
 
 #pragma mark - Youtube
 - (void)loadYoutubeVideo
 {
-    [self loadImage];
-    
     NSURL* imageUrl;
     if ([self.currentAsset.type isEqualToString:VConstantsMediaTypeImage])
     {
@@ -237,13 +250,8 @@
     self.firstSmallPreviewImage.hidden = YES;
     self.secondSmallPreviewImage.hidden = YES;
     self.mpController.view.hidden = YES;
-//    self.webView.scrollView.scrollEnabled = NO;
-//    [self.webView setAllowsInlineMediaPlayback:YES];
-//    [self.webView setMediaPlaybackRequiresUserAction:NO];
     [self.webView loadWithYoutubeID:self.currentAsset.data];
-    
-//    self.playButton.userInteractionEnabled = NO;
-//    self.playButtonImage.hidden = YES;
+    self.emotiveBallisticsBar.target = self.webView;
 }
 
 - (void)webViewDidFinishLoad:(UIWebView *)webView

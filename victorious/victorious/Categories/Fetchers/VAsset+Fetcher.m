@@ -24,7 +24,7 @@
 
 - (BOOL)isVideo
 {
-    return [self.type isEqualToString:VConstantsMediaTypeVideo];
+    return [[self.data pathExtension] isEqualToString:VConstantMediaExtensionM3U8];
 }
 
 @end

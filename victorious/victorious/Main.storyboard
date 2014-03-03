@@ -928,6 +928,9 @@
                                         <state key="normal" image="More">
                                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                         </state>
+                                        <connections>
+                                            <action selector="pressedMore:" destination="4V8-Qd-rfj" eventType="touchUpInside" id="pcB-RL-U4y"/>
+                                        </connections>
                                     </button>
                                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="280" translatesAutoresizingMaskIntoConstraints="NO" id="SVt-O0-Xbt">
                                         <rect key="frame" x="20" y="61" width="280" height="73"/>
@@ -986,6 +989,8 @@
                         <outlet property="commentButton" destination="Hjq-lN-vqT" id="5XY-dg-Ys6"/>
                         <outlet property="descriptionLabel" destination="SVt-O0-Xbt" id="CmB-GP-EVp"/>
                         <outlet property="firstSmallPreviewImage" destination="EVH-DQ-EKO" id="sqw-uo-jib"/>
+                        <outlet property="mediaView" destination="bEh-qP-DUl" id="GYP-nN-agT"/>
+                        <outlet property="moreButton" destination="ohf-04-VVL" id="ZbQ-17-R7S"/>
                         <outlet property="previewImage" destination="ZqV-fk-y5a" id="5zD-1U-pWm"/>
                         <outlet property="secondSmallPreviewImage" destination="plb-mq-Tcq" id="Svf-fQ-dzq"/>
                         <outlet property="webView" destination="2BW-vC-QSq" id="DDI-Vc-B4m"/>
