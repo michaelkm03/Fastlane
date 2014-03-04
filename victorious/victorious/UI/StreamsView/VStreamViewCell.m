@@ -25,7 +25,6 @@
 
 #import "VCommentCell.h"
 
-NSString *kStreamsWillShareNotification = @"kStreamsWillShareNotification";
 NSString *kStreamsWillCommentNotification = @"kStreamsWillCommentNotification";
 @interface VStreamViewCell()
 
@@ -109,57 +108,6 @@ NSString *kStreamsWillCommentNotification = @"kStreamsWillCommentNotification";
 //    [self addCommentViews];
 }
 
-- (void)addCommentViews
-{
-    NSInteger currentCommentCount = MIN([self.sequence.comments count], 2);
-    NSInteger commentDiff = currentCommentCount - [self.commentViews count];
-    
-    //If we don't have any new or old comments bail out
-    if (!currentCommentCount && ![self.commentViews count])
-        return;
-    
-    //Change the height if we need to
-    if (!currentCommentCount)
-    {
-        [self setHeight:self.originalHeight];
-    }
-    else if (commentDiff)
-    {
-        CGFloat height = self.frame.size.height;
-        
-        //no old comments so add header height
-        if (![self.commentViews count])
-            height += kStreamCommentHeaderHeight;
-        
-        //Add appropriate cell height and set it
-        int scaler = commentDiff > 0 ? 1 : -1;
-        height = height + ((abs(commentDiff) * kStreamCommentCellHeight) * scaler);
-        [self setHeight:height];
-    }
-
-    //remove old views
-    for (UIView* commentView in self.commentViews)
-    {
-        [commentView removeFromSuperview];
-    }
-    [self.commentViews removeAllObjects];
-    
-    NSSortDescriptor*   sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"postedAt" ascending:YES];
-    NSArray* sortedComments = [[self.sequence.comments allObjects] sortedArrayUsingDescriptors:@[sortDescriptor]];
-    //add new views
-    for (int i = 0; i < currentCommentCount; i++)
-    {
-        VCommentCell* cell = [[[NSBundle mainBundle] loadNibNamed:kCommentCellIdentifier
-                                                            owner:self options:nil] objectAtIndex:0];
-        cell.commentOrMessage = [sortedComments objectAtIndex:0];
-        
-        CGFloat yOffset = self.originalHeight + kStreamCommentHeaderHeight + (kStreamCommentCellHeight * i);
-        cell.frame = CGRectMake(0, yOffset, self.frame.size.width, kStreamCommentCellHeight);
-        [self addSubview:cell];
-        [self.commentViews addObject:cell];
-    }
-}
-
 - (void)setHeight:(CGFloat)height
 {
     self.frame = CGRectMake(self.frame.origin.x, self.frame.origin.y, self.frame.size.width, height);
@@ -187,11 +135,6 @@ NSString *kStreamsWillCommentNotification = @"kStreamsWillCommentNotification";
 - (IBAction)commentButtonAction:(id)sender
 {
     [[NSNotificationCenter defaultCenter] postNotificationName:kStreamsWillCommentNotification object:self];
-}
-
-- (IBAction)shareButtonAction:(id)sender
-{
-    [[NSNotificationCenter defaultCenter] postNotificationName:kStreamsWillShareNotification object:self.sequence];
 }
 
 - (IBAction)profileButtonAction:(id)sender

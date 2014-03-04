@@ -13,4 +13,7 @@
 - (NSArray*)firstAnswers;
 - (VAsset*)firstAsset;
 
+- (BOOL)isPoll;
+- (BOOL)isQuiz;
+
 @end

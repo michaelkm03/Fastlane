@@ -11,7 +11,6 @@
 
 //Cells
 #import "VStreamViewCell.h"
-#import "VStreamVideoCell.h"
 #import "VStreamPollCell.h"
 
 //Data Models

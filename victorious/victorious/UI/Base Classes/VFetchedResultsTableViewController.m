@@ -13,6 +13,7 @@
 #import "VThemeManager.h"
 
 @interface VFetchedResultsTableViewController ()
+@property (nonatomic) NSInteger updateCount;
 @end
 
 @implementation VFetchedResultsTableViewController
@@ -166,75 +167,78 @@
 
 #pragma mark - NSFetchedResultsControllerDelegate
 
-//- (void)controllerWillChangeContent:(NSFetchedResultsController *)controller
-//{
-//    [[self tableViewForFetchedResultsController:controller] beginUpdates];
-//}
-//
-//- (void)controller:(NSFetchedResultsController *)controller
-//   didChangeObject:(id)anObject
-//       atIndexPath:(NSIndexPath *)indexPath
-//     forChangeType:(NSFetchedResultsChangeType)type
-//      newIndexPath:(NSIndexPath *)newIndexPath
-//{
-//    UITableView *tableView = [self tableViewForFetchedResultsController:controller];
-//    
-//    switch(type)
-//    {
-//        case NSFetchedResultsChangeInsert:
-//            [tableView insertRowsAtIndexPaths:@[newIndexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
-//            break;
-//            
-//        case NSFetchedResultsChangeDelete:
-//            [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
-//            break;
-//            
-//        case NSFetchedResultsChangeUpdate:
-//            if (!newIndexPath)
-//            {
-//                [tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
-//            }
-//            else
-//            {
-//                [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
-//                [tableView insertRowsAtIndexPaths:@[newIndexPath] withRowAnimation:UITableViewRowAnimationNone];
-//            }
-//            break;
-//            
-//        case NSFetchedResultsChangeMove:
-//            [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
-//            [tableView insertRowsAtIndexPaths:@[newIndexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
-//            break;
-//    }
-//}
-//
-//- (void)controller:(NSFetchedResultsController *)controller
-//  didChangeSection:(id )sectionInfo
-//           atIndex:(NSUInteger)sectionIndex
-//     forChangeType:(NSFetchedResultsChangeType)type
-//{
-//    UITableView *tableView = [self tableViewForFetchedResultsController:controller];
-//
-//    switch(type)
-//    {
-//        case NSFetchedResultsChangeInsert:
-//            [tableView insertSections:[NSIndexSet indexSetWithIndex:sectionIndex] withRowAnimation:UITableViewRowAnimationAutomatic];
-//            break;
-//            
-//        case NSFetchedResultsChangeDelete:
-//            [tableView deleteSections:[NSIndexSet indexSetWithIndex:sectionIndex] withRowAnimation:UITableViewRowAnimationAutomatic];
-//            break;
-//    }
-//}
+- (void)controllerWillChangeContent:(NSFetchedResultsController *)controller
+{
+    self.updateCount++;
+    if (self.updateCount == 1)
+        [[self tableViewForFetchedResultsController:controller] beginUpdates];
+}
+
+- (void)controller:(NSFetchedResultsController *)controller
+   didChangeObject:(id)anObject
+       atIndexPath:(NSIndexPath *)indexPath
+     forChangeType:(NSFetchedResultsChangeType)type
+      newIndexPath:(NSIndexPath *)newIndexPath
+{
+    UITableView *tableView = [self tableViewForFetchedResultsController:controller];
+    
+    switch(type)
+    {
+        case NSFetchedResultsChangeInsert:
+            [tableView insertRowsAtIndexPaths:@[newIndexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
+            break;
+            
+        case NSFetchedResultsChangeDelete:
+            [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
+            break;
+            
+        case NSFetchedResultsChangeUpdate:
+            if (!newIndexPath)
+            {
+                [tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
+            }
+            else
+            {
+                [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
+                [tableView insertRowsAtIndexPaths:@[newIndexPath] withRowAnimation:UITableViewRowAnimationNone];
+            }
+            break;
+            
+        case NSFetchedResultsChangeMove:
+            [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
+            [tableView insertRowsAtIndexPaths:@[newIndexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
+            break;
+    }
+}
+
+- (void)controller:(NSFetchedResultsController *)controller
+  didChangeSection:(id )sectionInfo
+           atIndex:(NSUInteger)sectionIndex
+     forChangeType:(NSFetchedResultsChangeType)type
+{
+    UITableView *tableView = [self tableViewForFetchedResultsController:controller];
+
+    switch(type)
+    {
+        case NSFetchedResultsChangeInsert:
+            [tableView insertSections:[NSIndexSet indexSetWithIndex:sectionIndex] withRowAnimation:UITableViewRowAnimationAutomatic];
+            break;
+            
+        case NSFetchedResultsChangeDelete:
+            [tableView deleteSections:[NSIndexSet indexSetWithIndex:sectionIndex] withRowAnimation:UITableViewRowAnimationAutomatic];
+            break;
+    }
+}
 
 - (void)controllerDidChangeContent:(NSFetchedResultsController *)controller
 {
     //TODO: remove my notes here.  This is for the weird exception / crash / sometimes tableview getting weird bug
-    //This is happening with self.fetchedResults not self.searchFetchedResults
     //Being called multiple times... maybe it has multiple adds all at once from refresh?
     //Maybe this should be changed...
-//    [[self tableViewForFetchedResultsController:controller] endUpdates];
-    [[self tableViewForFetchedResultsController:controller] reloadData];
+    self.updateCount--;
+    if (self.updateCount == 0)
+        [[self tableViewForFetchedResultsController:controller] endUpdates];
+//    [[self tableViewForFetchedResultsController:controller] reloadData];
 }
 
 #pragma mark - UISearchDisplayControllerDelegate

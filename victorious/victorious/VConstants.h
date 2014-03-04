@@ -14,9 +14,10 @@ static NSUInteger const VConstantsMessageLength     = 140;
 static NSUInteger const VConstantsForumTitleLength  = 65;
 
 static NSUInteger const kFeaturedTableCellHeight = 180;
-static NSUInteger const kStreamPollCellHeight = 344;
-static NSUInteger const kStreamYoutubeCellHeight = 315;
-static NSUInteger const kStreamViewCellHeight = 450;
+static NSUInteger const kStreamDoublePollCellHeight = 160;
+static NSUInteger const kStreamPollCellHeight = 320;
+static NSUInteger const kStreamYoutubeCellHeight = 180;
+static NSUInteger const kStreamViewCellHeight = 320;
 //TODO: update these 2 with real numbers
 static NSUInteger const kStreamCommentHeaderHeight = 80;
 static NSUInteger const kStreamCommentCellHeight = 110;
@@ -49,10 +50,12 @@ static NSString*   const   kFeaturedCategory = @"featured";
 static NSString*   const   kSearchCache = @"SearchCache";
 static NSString*   const   kVPagedFetchCache = @"PagedFetchCache";
 
-static NSString*   const   kHomeStreamStoryboardID          = @"homestream";
-static NSString*   const   kOwnerStreamStoryboardID         = @"ownerstream";
-static NSString*   const   kCommunityStreamStoryboardID     = @"communitystream";
-static NSString*   const   kForumStreamStoryboardID         = @"forumstream";
-static NSString*   const   kCommentsContainerStoryboardID  = @"commentscontainer";
-static NSString*   const   kKeyboardBarStoryboardID         = @"keyboardbar";
+static NSString*   const   kHomeStreamStoryboardID           = @"homestream";
+static NSString*   const   kOwnerStreamStoryboardID          = @"ownerstream";
+static NSString*   const   kCommunityStreamStoryboardID      = @"communitystream";
+static NSString*   const   kForumStreamStoryboardID          = @"forumstream";
+static NSString*   const   kContentViewStoryboardID          = @"content";
+static NSString*   const   kEmotiveBallisticsBarStoryboardID = @"emotiveballistics";
+static NSString*   const   kCommentsContainerStoryboardID    = @"commentscontainer";
+static NSString*   const   kKeyboardBarStoryboardID          = @"keyboardbar";
 
