@@ -39,6 +39,9 @@
 @property (nonatomic, strong)           NSURL*              videoURL;
 @property (nonatomic, strong)           UIImage*            photo;
 
+@property (nonatomic)                   BOOL                inTrashState;
+@property (nonatomic)                   BOOL                inRecordVideoState;
+
 @end
 
 @implementation VCameraViewController
@@ -57,9 +60,6 @@
 {
     [super viewDidLoad];
 
-    self.view.backgroundColor = [UIColor blackColor];
-    self.navigationController.navigationBar.barTintColor = [UIColor blackColor];
-    
     self.camera = [[SCCamera alloc] initWithSessionPreset:AVCaptureSessionPresetHigh];
     self.camera.delegate = self;
     self.camera.enableSound = YES;
@@ -88,8 +88,6 @@
                                                            style:UIBarButtonItemStyleBordered
                                                           target:self
                                                           action:@selector(switchFlashAction:)];
-
-    self.navigationItem.rightBarButtonItem = self.nextButton;
 
     [self.recordButton addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleRecordTapGesture:)]];
     [self.recordButton addGestureRecognizer:[[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(handleRecordLongTapGesture:)]];
@@ -123,6 +121,14 @@
 {
     [super viewWillAppear:animated];
     
+    self.view.backgroundColor = [UIColor blackColor];
+    self.navigationController.navigationBar.barTintColor = [UIColor blackColor];
+    
+    self.inRecordVideoState = NO;
+    self.inTrashState = NO;
+
+    [self addObserver:self forKeyPath:@"inRecordVideoState" options:0 context:nil];
+
     [self setLastImageSavedToAlbum];
 }
 
@@ -145,6 +151,8 @@
 {
     [super viewDidDisappear:animated];
 
+    [self removeObserver:self forKeyPath:@"inRecordVideoState"];
+    
     [self.camera stopRunningSession];
     [self.camera cancel];
 }
@@ -163,6 +171,29 @@
 - (BOOL)prefersStatusBarHidden
 {
     return YES;
+}
+
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
+{
+    if ([keyPath isEqualToString:@"inRecordVideoState"])
+    {
+        [UIView animateWithDuration:0.6 animations:^{
+            if (self.camera.isRecording)
+            {
+                self.navigationItem.rightBarButtonItem = self.nextButton;
+                self.openAlbumButton.alpha = 0.0;
+                self.deleteButton.alpha = 1.0;
+            }
+            else
+            {
+                self.navigationItem.rightBarButtonItem = nil;
+                self.openAlbumButton.alpha = 1.0;
+                self.deleteButton.alpha = 0.0;
+            }
+        }];
+    }
+    else
+        [super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
 }
 
 #pragma mark - Actions
@@ -262,10 +293,12 @@
          {
              self.camera.sessionPreset = AVCaptureSessionPresetHigh;
              [self.switchCameraModeButton setImage:[UIImage imageNamed:@"cameraButtonSwitchToPhoto"] forState:UIControlStateNormal];
-             self.navigationItem.rightBarButtonItem = self.nextButton;
+             if (self.inRecordVideoState)
+                 self.navigationItem.rightBarButtonItem = self.nextButton;
+             else
+                 self.navigationItem.rightBarButtonItem = nil;
              self.camera.flashMode = SCFlashModeOff;
              [self setLastImageSavedToAlbum];
-             [self trashAction:self];
          }];
     }
     else if (self.camera.sessionPreset == AVCaptureSessionPresetHigh)
@@ -286,16 +319,34 @@
                  self.navigationItem.rightBarButtonItem = nil;
              self.camera.flashMode = SCFlashModeOff;
              [self setLastImageSavedToAlbum];
-             [self trashAction:self];
          }];
     }
 }
 
 - (IBAction)trashAction:(id)sender
 {
-    [self.camera cancel];
-    [self prepareCamera];
-    [self updateProgressForSecond:0];
+    if (!self.inTrashState)
+    {
+        [self.deleteButton setImage:[UIImage imageNamed:@"cameraButtonDeleteConfirm"] forState:UIControlStateNormal];
+        self.inTrashState = YES;
+    }
+    else
+    {
+        [self.camera cancel];
+        [self prepareCamera];
+        [self updateProgressForSecond:0];
+        
+        self.inTrashState = NO;
+        self.inRecordVideoState = NO;
+
+        [self.deleteButton setImage:[UIImage imageNamed:@"cameraButtonDelete"] forState:UIControlStateNormal];
+        
+//        [UIView animateWithDuration:0.6 animations:^{
+//            self.deleteButton.alpha = 0.0;
+//            self.openAlbumButton.alpha = 1.0;
+//            self.navigationItem.rightBarButtonItem = nil;
+//        }];
+    }
 }
 
 #pragma mark - Support
@@ -443,12 +494,26 @@
     [self.camera cancel];
     [self prepareCamera];
     [self updateProgressForSecond:0];
+    
+    self.camera.flashMode = SCFlashModeOff;
+    
+    if (self.camera.sessionPreset == AVCaptureSessionPresetPhoto)
+        if (self.camera.flashMode == SCFlashModeOff)
+            self.navigationItem.rightBarButtonItem = self.flashOnButton;
+        else
+            self.navigationItem.rightBarButtonItem = self.flashOffButton;
+    else
+        self.navigationItem.rightBarButtonItem = nil;
+    
+    self.inTrashState = NO;
+    self.inRecordVideoState = NO;
 }
 
 #pragma mark - SCAudioVideoRecorderDelegate
 
 - (void) audioVideoRecorder:(SCAudioVideoRecorder *)audioVideoRecorder didRecordVideoFrame:(CMTime)frameTime
 {
+    self.inRecordVideoState = YES;
     [self updateProgressForSecond:CMTimeGetSeconds(frameTime)];
 }
 
@@ -472,6 +537,7 @@
 - (void) audioVideoRecorder:(SCAudioVideoRecorder *)audioVideoRecorder didFinishRecordingAtUrl:(NSURL *)recordedFile error:(NSError *)error
 {
     [self prepareCamera];
+    self.inRecordVideoState = YES;
 
     if (error != nil)
     {
@@ -497,7 +563,6 @@
     if (!error)
     {
         self.photo = [photoDict[SCAudioVideoRecorderPhotoImageKey] squareImageScaledToSize:CGSizeMake(640.0, 640.0)];
-//        self.photo = photoDict[SCAudioVideoRecorderPhotoImageKey];
         [self performSegueWithIdentifier:@"toPhotoPreview" sender:self];
     }
 }

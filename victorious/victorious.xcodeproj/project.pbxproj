@@ -56,6 +56,9 @@
 		3FD7FFAC18BFD67800945E5F /* VVideoPreviewViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3FD7FFAB18BFD67800945E5F /* VVideoPreviewViewController.m */; };
 		3FD7FFAF18BFD6EF00945E5F /* VCameraPublishViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3FD7FFAE18BFD6EF00945E5F /* VCameraPublishViewController.m */; };
 		3FD7FFB218C01B2B00945E5F /* UIImage+Cropping.m in Sources */ = {isa = PBXBuildFile; fileRef = 3FD7FFB118C01B2B00945E5F /* UIImage+Cropping.m */; };
+		3FD7FFB518C14B6100945E5F /* VPickerTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = 3FD7FFB418C14B6100945E5F /* VPickerTextField.m */; };
+		3FD7FFBB18C14ED400945E5F /* VExpirationPickerTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = 3FD7FFBA18C14ED400945E5F /* VExpirationPickerTextField.m */; };
+		3FD7FFBE18C5360800945E5F /* VExpirationDatePicker.m in Sources */ = {isa = PBXBuildFile; fileRef = 3FD7FFBD18C5360800945E5F /* VExpirationDatePicker.m */; };
 		3FF8B7981868EE7E00806EA0 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3FF8B7971868EE7E00806EA0 /* Main.storyboard */; };
 		3FF8B7A51868FC1C00806EA0 /* defaultTheme.plist in Resources */ = {isa = PBXBuildFile; fileRef = 3FF8B7A41868FC1C00806EA0 /* defaultTheme.plist */; };
 		3FF8C50018A59EAB00812968 /* VCreateContentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3FF8C4F418A59EAB00812968 /* VCreateContentViewController.m */; };
@@ -272,6 +275,12 @@
 		3FD7FFAE18BFD6EF00945E5F /* VCameraPublishViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VCameraPublishViewController.m; path = UI/CameraViewController/VCameraPublishViewController.m; sourceTree = "<group>"; };
 		3FD7FFB018C01B2B00945E5F /* UIImage+Cropping.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "UIImage+Cropping.h"; path = "Categories/UIImage+Cropping.h"; sourceTree = "<group>"; };
 		3FD7FFB118C01B2B00945E5F /* UIImage+Cropping.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "UIImage+Cropping.m"; path = "Categories/UIImage+Cropping.m"; sourceTree = "<group>"; };
+		3FD7FFB318C14B6100945E5F /* VPickerTextField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VPickerTextField.h; path = "UI/Base Classes/VPickerTextField.h"; sourceTree = "<group>"; };
+		3FD7FFB418C14B6100945E5F /* VPickerTextField.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VPickerTextField.m; path = "UI/Base Classes/VPickerTextField.m"; sourceTree = "<group>"; };
+		3FD7FFB918C14ED400945E5F /* VExpirationPickerTextField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VExpirationPickerTextField.h; path = UI/CameraViewController/VExpirationPickerTextField.h; sourceTree = "<group>"; };
+		3FD7FFBA18C14ED400945E5F /* VExpirationPickerTextField.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VExpirationPickerTextField.m; path = UI/CameraViewController/VExpirationPickerTextField.m; sourceTree = "<group>"; };
+		3FD7FFBC18C5360800945E5F /* VExpirationDatePicker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VExpirationDatePicker.h; path = UI/CameraViewController/VExpirationDatePicker.h; sourceTree = "<group>"; };
+		3FD7FFBD18C5360800945E5F /* VExpirationDatePicker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VExpirationDatePicker.m; path = UI/CameraViewController/VExpirationDatePicker.m; sourceTree = "<group>"; };
 		3FF8B7971868EE7E00806EA0 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
 		3FF8B7A41868FC1C00806EA0 /* defaultTheme.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = defaultTheme.plist; sourceTree = "<group>"; };
 		3FF8C4F318A59EAB00812968 /* VCreateContentViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VCreateContentViewController.h; sourceTree = "<group>"; };
@@ -717,6 +726,8 @@
 		3F9B666418887CF40046F826 /* UI Elements */ = {
 			isa = PBXGroup;
 			children = (
+				3FD7FFB318C14B6100945E5F /* VPickerTextField.h */,
+				3FD7FFB418C14B6100945E5F /* VPickerTextField.m */,
 				838511C218762DF3007E0316 /* VBadgeLabel.h */,
 				838511C318762DF3007E0316 /* VBadgeLabel.m */,
 			);
@@ -786,6 +797,10 @@
 				3FD7FFAB18BFD67800945E5F /* VVideoPreviewViewController.m */,
 				3FD7FFAD18BFD6EF00945E5F /* VCameraPublishViewController.h */,
 				3FD7FFAE18BFD6EF00945E5F /* VCameraPublishViewController.m */,
+				3FD7FFB918C14ED400945E5F /* VExpirationPickerTextField.h */,
+				3FD7FFBA18C14ED400945E5F /* VExpirationPickerTextField.m */,
+				3FD7FFBC18C5360800945E5F /* VExpirationDatePicker.h */,
+				3FD7FFBD18C5360800945E5F /* VExpirationDatePicker.m */,
 				3FA217ED18BC3A3A0066E893 /* Camera.storyboard */,
 				3F14C43218BD2BD0001796B9 /* SCAudioVideoRecorder */,
 			);
@@ -1327,6 +1342,7 @@
 				3FD7FFB218C01B2B00945E5F /* UIImage+Cropping.m in Sources */,
 				BEF2C2B1188620EE00AAE975 /* VUser.m in Sources */,
 				3FD7FFA918BFD64C00945E5F /* VImagePreviewViewController.m in Sources */,
+				3FD7FFBE18C5360800945E5F /* VExpirationDatePicker.m in Sources */,
 				BEF2C2B71886211000AAE975 /* VPollResult.m in Sources */,
 				BE171E201868C211004E5202 /* VObjectManager+Login.m in Sources */,
 				5FF9BE7F1893143D0054694B /* UIViewController+VSideMenuViewController.m in Sources */,
@@ -1354,6 +1370,7 @@
 				BEA73B7E18A98C0A0081312F /* VStreamActionBar.m in Sources */,
 				BE40559418A1828D00092AE1 /* UIButton+VImageLoading.m in Sources */,
 				BEA5BF59187E7E8E0014C3EF /* VObjectManager+DirectMessaging.m in Sources */,
+				3FD7FFBB18C14ED400945E5F /* VExpirationPickerTextField.m in Sources */,
 				3FF8C50118A59EAB00812968 /* VCreateForumViewController.m in Sources */,
 				3F4863FA1869184000F77346 /* VInboxViewController.m in Sources */,
 				3FF8C50018A59EAB00812968 /* VCreateContentViewController.m in Sources */,
@@ -1402,6 +1419,7 @@
 				3F9B666E1888C4390046F826 /* VHomeStreamViewController.m in Sources */,
 				BE5C7379187E36E800A3340D /* VNodeAction.m in Sources */,
 				BE171E1F1868C211004E5202 /* VObjectManager+Comment.m in Sources */,
+				3FD7FFB518C14B6100945E5F /* VPickerTextField.m in Sources */,
 				BE171E141868C211004E5202 /* VNode+RestKit.m in Sources */,
 				3F14C45418BD2BD0001796B9 /* SCVideoPlayerView.m in Sources */,
 				BE171E121868C211004E5202 /* VInteraction+RestKit.m in Sources */,

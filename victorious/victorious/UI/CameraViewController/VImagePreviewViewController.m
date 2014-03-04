@@ -12,6 +12,9 @@
 @interface VImagePreviewViewController ()
 @property (nonatomic, weak) IBOutlet    UIImageView*    previewImageView;
 @property (nonatomic, weak) IBOutlet    UIImageView*    doneButtonView;
+@property (nonatomic, weak) IBOutlet    UIButton*       trashAction;
+
+@property (nonatomic)                   BOOL            inTrashState;
 @end
 
 @implementation VImagePreviewViewController
@@ -20,14 +23,22 @@
 {
     [super viewDidLoad];
 	
-    self.view.backgroundColor = [UIColor blackColor];
-    self.navigationController.navigationBar.barTintColor = [UIColor blackColor];
-
-    if (self.photo)
-        self.previewImageView.image = self.photo;
-
     [self.doneButtonView addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleDoneTapGesture:)]];
     self.doneButtonView.userInteractionEnabled = YES;
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    
+    if (self.photo)
+        self.previewImageView.image = self.photo;
+    
+    self.view.backgroundColor = [UIColor blackColor];
+    self.navigationController.navigationBar.barTintColor = [UIColor blackColor];
+    
+    self.inTrashState = NO;
+    self.trashAction.imageView.image = [UIImage imageNamed:@"cameraButtonDelete"];
 }
 
 - (void)handleDoneTapGesture:(UIGestureRecognizer *)gesture
@@ -44,5 +55,26 @@
         viewController.photo = self.photo;
     }
 }
+
+- (IBAction)cancel:(id)sender
+{
+    [self dismissViewControllerAnimated:YES completion:nil];
+}
+
+- (IBAction)deleteAction:(id)sender
+{
+    if (!self.inTrashState)
+    {
+        self.inTrashState = YES;
+        [self.trashAction setImage:[UIImage imageNamed:@"cameraButtonDeleteConfirm"] forState:UIControlStateNormal];
+    }
+    else
+    {
+        self.inTrashState = NO;
+        [self.trashAction setImage:[UIImage imageNamed:@"cameraButtonDelete"] forState:UIControlStateNormal];
+        [self performSegueWithIdentifier:@"unwindToCameraControllerFromPhoto" sender:self];
+    }
+}
+
 @end
 
