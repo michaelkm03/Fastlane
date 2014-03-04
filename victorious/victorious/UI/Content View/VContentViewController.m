@@ -71,7 +71,12 @@ CGFloat kContentMediaViewOffset = 154;
 {
     [super viewDidLoad];
     
-
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(mpLoadStateChanged)
+                                                 name:MPMoviePlayerLoadStateDidChangeNotification
+                                               object:nil];
+    
+    
     self.webView.scrollView.scrollEnabled = NO;
     [self.webView setAllowsInlineMediaPlayback:YES];
     [self.webView setMediaPlaybackRequiresUserAction:NO];
@@ -211,23 +216,27 @@ CGFloat kContentMediaViewOffset = 154;
 #pragma mark - Video
 - (void)loadVideo
 {
-    self.previewImage.hidden = YES;
-    self.webView.hidden = YES;
-    self.sixteenNinePreviewImage.hidden = YES;
-    self.firstSmallPreviewImage.hidden = YES;
-    self.secondSmallPreviewImage.hidden = YES;
-    self.mpController.view.hidden = NO;
+    [self loadImage];
     
     [self.mpController.view removeFromSuperview];
     self.mpController = [[MPMoviePlayerController alloc] initWithContentURL:[NSURL URLWithString:self.currentAsset.data]];
+    self.mpController.view.hidden = YES;
     [self.mpController prepareToPlay];
     self.mpController.scalingMode = MPMovieScalingModeAspectFill;
     self.mpController.view.frame = self.previewImage.frame;
     VLog(@"pi frame: %@", NSStringFromCGRect(self.previewImage.frame));
     VLog(@"mp frame: %@", NSStringFromCGRect(self.mpController.view.frame));
     [self.mediaView insertSubview:self.mpController.view aboveSubview:self.previewImage];
-    [self.mpController play];
     self.emotiveBallisticsBar.target = self.mpController.view;
+}
+
+- (void)mpLoadStateChanged
+{
+    if (self.mpController.loadState == MPMovieLoadStatePlayable)
+    {
+        self.mpController.view.hidden = NO;
+        [self.mpController play];
+    }
 }
 
 #pragma mark - Youtube
