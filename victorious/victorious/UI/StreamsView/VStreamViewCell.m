@@ -73,8 +73,8 @@ NSString *kStreamsWillCommentNotification = @"kStreamsWillCommentNotification";
     else
         self.playButtonImage.hidden = YES;
 
-    self.animationImage.alpha = .5f;
-    self.animating = NO;
+    if (!self.animating)
+        self.animationImage.alpha = .5f;
     
     self.usernameLabel.text = self.sequence.user.name;
     self.locationLabel.text = self.sequence.user.location;

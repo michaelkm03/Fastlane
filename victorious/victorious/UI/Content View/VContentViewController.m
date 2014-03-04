@@ -21,6 +21,8 @@
 #import "UIWebView+VYoutubeLoading.h"
 #import "UIView+VFrameManipulation.h"
 
+CGFloat kContentMediaViewOffset = 154;
+
 @import MediaPlayer;
 
 @interface VContentViewController ()  <UIWebViewDelegate>
@@ -37,7 +39,6 @@
 @property (weak, nonatomic) IBOutlet UIWebView* webView;
 @property (weak, nonatomic) IBOutlet UILabel* descriptionLabel;
 @property (weak, nonatomic) IBOutlet UIView* barView;
-@property (weak, nonatomic) IBOutlet UIView* mediaView;
 
 @property (strong, nonatomic) VEmotiveBallisticsBarViewController* emotiveBallisticsBar;
 
@@ -262,7 +263,8 @@
 #pragma mark - Button Actions
 - (IBAction)pressedBack:(id)sender
 {
-    [self.navigationController popViewControllerAnimated:YES];
+    [self dismissViewControllerAnimated:YES
+                             completion:nil];
 }
 
 - (IBAction)presssedComment:(id)sender

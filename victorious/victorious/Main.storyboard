@@ -859,6 +859,7 @@
                     </refreshControl>
                     <connections>
                         <outlet property="searchDisplayController" destination="sLT-qC-jdj" id="aO3-PW-9jl"/>
+                        <segue destination="4V8-Qd-rfj" kind="custom" identifier="streamcontent" customClass="VStreamContentSegue" id="B2R-Pg-UEK"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="L2T-aI-YsL" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -998,7 +999,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="J2i-Hn-xg3" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-2578" y="-1702"/>
+            <point key="canvasLocation" x="-2222" y="-1304"/>
         </scene>
         <!--Community Stream View Controller - Community-->
         <scene sceneID="dPq-IM-DIk">
@@ -1028,6 +1029,7 @@
                     </refreshControl>
                     <connections>
                         <outlet property="searchDisplayController" destination="SEk-dQ-1qI" id="x7Z-Vr-Wpu"/>
+                        <segue destination="4V8-Qd-rfj" kind="custom" identifier="streamcontent" customClass="VStreamContentSegue" id="Bar-aP-eCJ"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="3Ct-xe-jTb" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -1079,6 +1081,7 @@
                     </refreshControl>
                     <connections>
                         <outlet property="searchDisplayController" destination="QY0-j5-fXE" id="mTK-mS-b1N"/>
+                        <segue destination="4V8-Qd-rfj" kind="custom" identifier="streamcontent" customClass="VStreamContentSegue" id="jpa-ws-Don"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Kxe-XK-VdR" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -1530,6 +1533,7 @@
                     </refreshControl>
                     <connections>
                         <outlet property="searchDisplayController" destination="sLT-qC-jdj" id="aTt-Hd-sI9"/>
+                        <segue destination="4V8-Qd-rfj" kind="custom" identifier="streamcontent" customClass="VStreamContentSegue" id="hhE-4U-i31"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="aRm-WT-6fz" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -1692,7 +1696,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="neH-vB-TZ9" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-2578" y="-1000"/>
+            <point key="canvasLocation" x="-2222" y="-602"/>
         </scene>
     </scenes>
     <resources>
@@ -1725,5 +1729,6 @@
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
         <segue reference="Sho-vj-RuM"/>
+        <segue reference="jpa-ws-Don"/>
     </inferredMetricsTieBreakers>
 </document>

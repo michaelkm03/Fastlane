@@ -10,9 +10,12 @@
 
 @class VSequence;
 
+extern CGFloat kContentMediaViewOffset;
+
 @interface VContentViewController : UIViewController
 
 @property (strong, nonatomic) VSequence* sequence;
+@property (weak, nonatomic) IBOutlet UIView* mediaView;
 
 + (VContentViewController *)sharedInstance;
 

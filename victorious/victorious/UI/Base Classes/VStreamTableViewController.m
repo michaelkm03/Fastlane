@@ -15,6 +15,8 @@
 
 #import "NSString+VParseHelp.h"
 
+#import "VStreamContentSegue.h"
+
 //Cells
 #import "VStreamViewCell.h"
 #import "VStreamPollCell.h"
@@ -99,9 +101,26 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    VContentViewController* contentViewController = [VContentViewController sharedInstance];
-    contentViewController.sequence = [[self fetchedResultsControllerForTableView:tableView] objectAtIndexPath:indexPath];
-    [self.navigationController pushViewController:contentViewController animated:YES];
+    VStreamViewCell* cell = (VStreamViewCell*)[tableView cellForRowAtIndexPath:indexPath];
+    
+    if (tableView.contentOffset.y == cell.frame.origin.y - kContentMediaViewOffset)
+    {
+        [self performSegueWithIdentifier:kStreamContentSegueStoryboardID sender:cell];
+    }
+    else
+    {
+        [tableView setContentOffset:CGPointMake(cell.frame.origin.x, cell.frame.origin.y - kContentMediaViewOffset) animated:YES];
+    }
+}
+
+- (void)scrollViewDidEndScrollingAnimation:(UIScrollView *)scrollView
+{
+    VStreamViewCell* cell = (VStreamViewCell*)[self.tableView cellForRowAtIndexPath:self.tableView.indexPathForSelectedRow];
+    if (cell)
+    {
+        [self.tableView deselectRowAtIndexPath:self.tableView.indexPathForSelectedRow animated:NO];
+        [self performSegueWithIdentifier:kStreamContentSegueStoryboardID sender:cell];
+    }
 }
 
 //- (void)scrollViewDidScroll:(UIScrollView *)scrollView
@@ -274,6 +293,16 @@
     VCommentsContainerViewController* commentsTable = [VCommentsContainerViewController commentsContainerView];
     commentsTable.sequence = cell.sequence;
     [self.navigationController pushViewController:commentsTable animated:YES];
+}
+
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
+{
+    if ([segue.identifier isEqualToString:kStreamContentSegueStoryboardID])
+    {
+        ((VStreamContentSegue*)segue).selectedCell = sender;
+        VContentViewController* contentVC = segue.destinationViewController;
+        contentVC.sequence = ((VStreamViewCell*)sender).sequence;
+    }
 }
 
 @end
