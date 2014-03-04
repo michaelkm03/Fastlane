@@ -24,7 +24,9 @@ extern NSString *kStreamsWillCommentNotification;
 @property (weak, nonatomic) IBOutlet UIImageView *animationImage;
 @property (weak, nonatomic) IBOutlet UIImageView *lowerGradientView;
 @property (weak, nonatomic) IBOutlet UIView *overlayView;
+@property (weak, nonatomic) IBOutlet UIView *shadeView;
 @property (weak, nonatomic) VSequence* sequence;
+@property (readonly, nonatomic) BOOL animating;
 
 - (void)startAnimation;
 - (void)stopAnimation;

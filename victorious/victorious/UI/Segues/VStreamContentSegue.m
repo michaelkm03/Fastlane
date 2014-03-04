@@ -48,7 +48,7 @@
     [newBackgroundView setLightBlurredImageWithURL:[NSURL URLWithString:self.selectedCell.sequence.previewImage]
                                   placeholderImage:nil];
     tableVC.tableView.backgroundView = newBackgroundView;
-    [UIView animateWithDuration:.5f
+    [UIView animateWithDuration:.2f
                      animations:^
                      {
                          CGPoint newNavCenter = CGPointMake(tableVC.navigationController.navigationBar.center.x,
@@ -74,43 +74,27 @@
                      }
                      completion:^(BOOL finished)
                      {
-                         [UIView animateWithDuration:.3f
+                         [UIView animateWithDuration:.2f
                                           animations:^{
-                                              self.selectedCell.overlayView.alpha = self.selectedCell.lowerGradientView.alpha = 0;
+                                              self.selectedCell.overlayView.alpha = self.selectedCell.shadeView.alpha = 0;
                                               self.selectedCell.overlayView.center = CGPointMake(self.selectedCell.overlayView.center.x,
                                                                                                  self.selectedCell.overlayView.center.y - self.selectedCell.frame.size.height);
                                           }
                                           completion:^(BOOL finished) {
                                               [self.sourceViewController presentModalViewController:self.destinationViewController animated:NO];
+                                              
+                                              //return the cells back to their previous spots
+                                              for (VStreamViewCell* cell in self.bottomCells)
+                                                  cell.center = CGPointMake(cell.center.x, cell.center.y - tableVC.tableView.frame.size.height);
+                                              
+                                              for (VStreamViewCell* cell in self.upperCells)
+                                                  cell.center = CGPointMake(cell.center.x, cell.center.y + tableVC.tableView.frame.size.height);
+                                              
+                                              CGPoint oldNavCenter = CGPointMake(tableVC.navigationController.navigationBar.center.x,
+                                                                                 tableVC.navigationController.navigationBar.center.y + tableVC.tableView.frame.size.height);
+                                              tableVC.navigationController.navigationBar.center = oldNavCenter;
+                                              tableVC.tableView.backgroundView = oldBackgroundView;
                                           }];
-                         
-//                         //return the cells back to their previous spots
-//                         for (VStreamViewCell* cell in self.bottomCells)
-//                             cell.center = CGPointMake(cell.center.x, cell.center.y - tableVC.tableView.frame.size.height);
-//
-//                         for (VStreamViewCell* cell in self.upperCells)
-//                             cell.center = CGPointMake(cell.center.x, cell.center.y + tableVC.tableView.frame.size.height);
-//                         
-//                         CGPoint oldNavCenter = CGPointMake(tableVC.navigationController.navigationBar.center.x,
-//                                                            tableVC.navigationController.navigationBar.center.y + tableVC.tableView.frame.size.height);
-//                         tableVC.navigationController.navigationBar.center = oldNavCenter;
-//                         tableVC.tableView.backgroundView = oldBackgroundView;
                      }];
-//    
-//    //Add the destination as a modal
-//    [self performSelector:@selector(finish) withObject:nil afterDelay:1.0f];
 }
-
-- (void)animateFromCellToContent
-{
-    
-}
-
-- (void)finish
-{
-//    [self.navigationController pushViewController:self.destinationViewController animated:YES];
-
-    [self.sourceViewController presentModalViewController:self.destinationViewController animated:NO];
-}
-
 @end

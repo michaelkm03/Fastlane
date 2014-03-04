@@ -68,12 +68,17 @@
                                     <action selector="commentButtonAction:" destination="KPi-2m-jh7" eventType="touchUpInside" id="m5I-1f-O8K"/>
                                 </connections>
                             </button>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="4KJ-2a-1em">
+                                <rect key="frame" x="80" y="40" width="160" height="80"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            </imageView>
                         </subviews>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     </view>
                 </subviews>
             </tableViewCellContentView>
             <connections>
+                <outlet property="animationImage" destination="4KJ-2a-1em" id="bYP-yE-NUH"/>
                 <outlet property="dateLabel" destination="WZA-gK-t4u" id="06c-0q-kzg"/>
                 <outlet property="overlayView" destination="RCT-CJ-9Wa" id="N1y-Mi-nhZ"/>
                 <outlet property="previewImageView" destination="Fss-eh-Px9" id="OLq-fg-Nik"/>

@@ -18,11 +18,27 @@
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                     </imageView>
-                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="BottomGradient" translatesAutoresizingMaskIntoConstraints="NO" id="oxP-2I-nQR">
-                        <rect key="frame" x="0.0" y="78" width="320" height="102"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                    </imageView>
-                    <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="xCK-bb-Zq5">
+                    <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="8fO-LN-zl0" userLabel="Shade View">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="180"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <subviews>
+                            <view alpha="0.14999999999999999" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="2iY-DE-cHl">
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="180"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                            </view>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="topGradient" translatesAutoresizingMaskIntoConstraints="NO" id="BQ4-QF-SsO">
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="52"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            </imageView>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="BottomGradient" translatesAutoresizingMaskIntoConstraints="NO" id="oxP-2I-nQR">
+                                <rect key="frame" x="0.0" y="78" width="320" height="102"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                            </imageView>
+                        </subviews>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                    </view>
+                    <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="xCK-bb-Zq5" userLabel="Overlay View">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="180"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
@@ -104,6 +120,7 @@
                 <outlet property="overlayView" destination="xCK-bb-Zq5" id="z1M-58-uB2"/>
                 <outlet property="previewImageView" destination="m9n-4Y-LID" id="p7E-AY-DS9"/>
                 <outlet property="profileImageButton" destination="gUI-hE-M7J" id="gOC-LY-s3w"/>
+                <outlet property="shadeView" destination="8fO-LN-zl0" id="zRl-Ld-Z5y"/>
                 <outlet property="usernameLabel" destination="E9G-Sx-geH" id="Gbh-CD-dab"/>
                 <outletCollection property="labels" destination="E9G-Sx-geH" id="Pnd-Zi-AKF"/>
                 <outletCollection property="labels" destination="Rjv-Bf-7RW" id="Tzj-d9-aTv"/>
@@ -120,5 +137,6 @@
         <image name="StreamComments" width="19" height="19"/>
         <image name="StreamDate" width="13" height="13"/>
         <image name="profile_thumb" width="50" height="50"/>
+        <image name="topGradient" width="320" height="52"/>
     </resources>
 </document>

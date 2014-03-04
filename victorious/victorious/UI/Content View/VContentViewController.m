@@ -76,7 +76,6 @@ CGFloat kContentMediaViewOffset = 154;
                                                  name:MPMoviePlayerLoadStateDidChangeNotification
                                                object:nil];
     
-    
     self.webView.scrollView.scrollEnabled = NO;
     [self.webView setAllowsInlineMediaPlayback:YES];
     [self.webView setMediaPlaybackRequiresUserAction:NO];
@@ -85,6 +84,7 @@ CGFloat kContentMediaViewOffset = 154;
     emotiveBallistics.target = self.previewImage;
     self.emotiveBallisticsBar = emotiveBallistics;
 }
+
 
 - (void)viewWillAppear:(BOOL)animated
 {

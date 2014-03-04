@@ -18,11 +18,28 @@
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                     </imageView>
-                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="BottomGradient" translatesAutoresizingMaskIntoConstraints="NO" id="fTn-ss-uGL">
-                        <rect key="frame" x="0.0" y="218" width="320" height="102"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                    </imageView>
-                    <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="H2p-kS-Ucs">
+                    <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="adD-xo-Uv6" userLabel="Shade View">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="320"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <subviews>
+                            <view alpha="0.15000000596046448" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="sdG-4D-kmq">
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="320"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
+                            </view>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="topGradient" translatesAutoresizingMaskIntoConstraints="NO" id="LQk-Ur-vph">
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="52"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            </imageView>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="BottomGradient" translatesAutoresizingMaskIntoConstraints="NO" id="fTn-ss-uGL">
+                                <rect key="frame" x="0.0" y="218" width="320" height="102"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                            </imageView>
+                        </subviews>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                    </view>
+                    <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="H2p-kS-Ucs" userLabel="Overlay View">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="320"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
@@ -93,6 +110,7 @@
                 <outlet property="overlayView" destination="H2p-kS-Ucs" id="raJ-Jb-enr"/>
                 <outlet property="previewImageView" destination="RVh-hy-y2K" id="RVb-pz-KXk"/>
                 <outlet property="profileImageButton" destination="sT5-hN-nDW" id="WuV-rF-bW7"/>
+                <outlet property="shadeView" destination="adD-xo-Uv6" id="3wi-kO-1ke"/>
                 <outlet property="usernameLabel" destination="4BA-qs-0sG" id="8Qv-Ho-l6f"/>
                 <outletCollection property="labels" destination="4BA-qs-0sG" id="q38-cp-I2c"/>
                 <outletCollection property="labels" destination="OUw-F8-xAD" id="Kzl-iB-bpr"/>
@@ -107,5 +125,6 @@
         <image name="StreamComments" width="19" height="19"/>
         <image name="StreamDate" width="13" height="13"/>
         <image name="profile_thumb" width="50" height="50"/>
+        <image name="topGradient" width="320" height="52"/>
     </resources>
 </document>
