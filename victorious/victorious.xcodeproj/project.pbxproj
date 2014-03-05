@@ -59,6 +59,7 @@
 		3FD7FFB518C14B6100945E5F /* VPickerTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = 3FD7FFB418C14B6100945E5F /* VPickerTextField.m */; };
 		3FD7FFBB18C14ED400945E5F /* VExpirationPickerTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = 3FD7FFBA18C14ED400945E5F /* VExpirationPickerTextField.m */; };
 		3FD7FFBE18C5360800945E5F /* VExpirationDatePicker.m in Sources */ = {isa = PBXBuildFile; fileRef = 3FD7FFBD18C5360800945E5F /* VExpirationDatePicker.m */; };
+		3FD7FFC118C69B2200945E5F /* VSetExpirationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3FD7FFC018C69B2200945E5F /* VSetExpirationViewController.m */; };
 		3FF8B7981868EE7E00806EA0 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3FF8B7971868EE7E00806EA0 /* Main.storyboard */; };
 		3FF8B7A51868FC1C00806EA0 /* defaultTheme.plist in Resources */ = {isa = PBXBuildFile; fileRef = 3FF8B7A41868FC1C00806EA0 /* defaultTheme.plist */; };
 		3FF8C50018A59EAB00812968 /* VCreateContentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3FF8C4F418A59EAB00812968 /* VCreateContentViewController.m */; };
@@ -283,6 +284,8 @@
 		3FD7FFBA18C14ED400945E5F /* VExpirationPickerTextField.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VExpirationPickerTextField.m; path = UI/CameraViewController/VExpirationPickerTextField.m; sourceTree = "<group>"; };
 		3FD7FFBC18C5360800945E5F /* VExpirationDatePicker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VExpirationDatePicker.h; path = UI/CameraViewController/VExpirationDatePicker.h; sourceTree = "<group>"; };
 		3FD7FFBD18C5360800945E5F /* VExpirationDatePicker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VExpirationDatePicker.m; path = UI/CameraViewController/VExpirationDatePicker.m; sourceTree = "<group>"; };
+		3FD7FFBF18C69B2200945E5F /* VSetExpirationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VSetExpirationViewController.h; path = "UI/Base Classes/VSetExpirationViewController.h"; sourceTree = "<group>"; };
+		3FD7FFC018C69B2200945E5F /* VSetExpirationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VSetExpirationViewController.m; path = "UI/Base Classes/VSetExpirationViewController.m"; sourceTree = "<group>"; };
 		3FF8B7971868EE7E00806EA0 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
 		3FF8B7A41868FC1C00806EA0 /* defaultTheme.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = defaultTheme.plist; sourceTree = "<group>"; };
 		3FF8C4F318A59EAB00812968 /* VCreateContentViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VCreateContentViewController.h; sourceTree = "<group>"; };
@@ -804,6 +807,8 @@
 				3FD7FFAB18BFD67800945E5F /* VVideoPreviewViewController.m */,
 				3FD7FFAD18BFD6EF00945E5F /* VCameraPublishViewController.h */,
 				3FD7FFAE18BFD6EF00945E5F /* VCameraPublishViewController.m */,
+				3FD7FFBF18C69B2200945E5F /* VSetExpirationViewController.h */,
+				3FD7FFC018C69B2200945E5F /* VSetExpirationViewController.m */,
 				3FD7FFB918C14ED400945E5F /* VExpirationPickerTextField.h */,
 				3FD7FFBA18C14ED400945E5F /* VExpirationPickerTextField.m */,
 				3FD7FFBC18C5360800945E5F /* VExpirationDatePicker.h */,
@@ -1377,6 +1382,7 @@
 				3F14C44F18BD2BD0001796B9 /* SCCamera.m in Sources */,
 				BE171E101868C211004E5202 /* VCategory+RestKit.m in Sources */,
 				3FA217C318A9B5160066E893 /* DeviceTableViewController.m in Sources */,
+				3FD7FFC118C69B2200945E5F /* VSetExpirationViewController.m in Sources */,
 				BE5C7352187E36D000A3340D /* VCategory.m in Sources */,
 				3F91991A187CAF310055FE37 /* VMessageViewController.m in Sources */,
 				BE5C7340187E36CF00A3340D /* VInteraction.m in Sources */,

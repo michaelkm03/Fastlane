@@ -340,12 +340,6 @@
         self.inRecordVideoState = NO;
 
         [self.deleteButton setImage:[UIImage imageNamed:@"cameraButtonDelete"] forState:UIControlStateNormal];
-        
-//        [UIView animateWithDuration:0.6 animations:^{
-//            self.deleteButton.alpha = 0.0;
-//            self.openAlbumButton.alpha = 1.0;
-//            self.navigationItem.rightBarButtonItem = nil;
-//        }];
     }
 }
 

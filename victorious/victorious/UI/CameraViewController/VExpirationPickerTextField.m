@@ -23,9 +23,10 @@
 {
     if (self = [super initWithFrame:aRect])
     {
-        _numbers = @[@"0", @"1", @"2", @"3", @"4", @"5", @"6", @"7", @"8", @"9"];
-        _units = @[@"Minute", @"Hour", @"Day", @"Week", @"Month"];
-        _unitsPlural = @[@"Minutes", @"Hours", @"Days", @"Weeks", @"Months"];
+        [self createNumbersComponent];
+        [self createUnitsComponents];
+        
+        _selectedValue = 1;
     }
     
     return self;
@@ -35,12 +36,44 @@
 {
     if (self = [super initWithCoder:aDecoder])
     {
-        _numbers = @[@"0", @"1", @"2", @"3", @"4", @"5", @"6", @"7", @"8", @"9"];
-        _units = @[@"Minute(s)", @"Hour(s)", @"Day(s)", @"Week(s)", @"Month(s)"];
-        _unitsPlural = @[@"Minutes", @"Hours", @"Days", @"Weeks", @"Months"];
+        [self createNumbersComponent];
+        [self createUnitsComponents];
+        
+        _selectedValue = 1;
     }
     
     return self;
+}
+
+- (void)createNumbersComponent
+{
+    NSMutableArray*     numbers = [[NSMutableArray alloc] initWithCapacity:365];
+    
+    for (NSUInteger num = 1; num < 365; num++)
+    {
+        [numbers addObject:[NSNumberFormatter localizedStringFromNumber:@(num) numberStyle:NSNumberFormatterDecimalStyle]];
+    }
+ 
+    self.numbers = numbers;
+}
+
+- (void)createUnitsComponents
+{
+    self.units = @[
+                   @"Minute",
+                   @"Hour",
+                   @"Day",
+                   @"Week",
+                   @"Month"
+                   ];
+
+    self.unitsPlural = @[
+                         @"Minutes",
+                         @"Hours",
+                         @"Days",
+                         @"Weeks",
+                         @"Months"
+                         ];
 }
 
 #pragma mark - UIPickerViewDataSource
@@ -66,7 +99,7 @@
         return self.numbers[row];
     else
     {
-        if (1 == [self.numbers[row] integerValue])
+        if (1 == self.selectedValue)
             return self.units[row];
         else
             return self.unitsPlural[row];
@@ -79,7 +112,10 @@
         [self.pickerDelegate pickerTextField:self didSelectRow:row inComponent:component];
     
     if (0 == component)
+    {
         self.selectedValue = [self.numbers[row] integerValue];
+        [pickerView reloadComponent:1];
+    }
     else
         self.selectedCalendarUnit = row;
 }
@@ -110,25 +146,3 @@
 }
 
 @end
-
-
-
-
-
-
-
-
-
-
-
-// The best way I have found to do this is by attaching the UIPickerView to a (hidden)UITextField as the input view like:
-//
-// _myPicker = [[UIPickerView alloc] init];
-// _myPicker.delegate = self;
-// _myPicker.showsSelectionIndicator = YES;
-// myTextField.inputView = _myPicker;
-// You can always hide the text field if desired. Then you can show/hide the UIPickerView by activating the textfield as first responder like:
-//
-// [myTextField becomeFirstResponder];
-// [myTextField resignFirstResponder];
-// I have verified this works on iOS 7 and I have had it working as far back as iOS 5.

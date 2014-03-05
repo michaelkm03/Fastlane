@@ -9,23 +9,35 @@
 @import AVFoundation;
 
 #import "VCameraPublishViewController.h"
-#import "VExpirationPickerTextField.h"
-#import "VExpirationDatePicker.h"
+#import "VSetExpirationViewController.h"
 
-@interface VCameraPublishViewController () <VExpirationPickerTextFieldDelegate, VExpirationDatePickerDelegate>
+@interface VCameraPublishViewController () <UITextViewDelegate, VSetExpirationDelegate>
 @property (nonatomic, weak) IBOutlet    UIImageView*    previewImage;
 
 @property (nonatomic, weak) IBOutlet    UIButton*       durationButton;
+@property (nonatomic, weak) IBOutlet    UILabel*        expiresOnLabel;
 
 @property (nonatomic, weak) IBOutlet    UISwitch*       twitterButton;
 @property (nonatomic, weak) IBOutlet    UISwitch*       facebookButton;
 
-@property (nonatomic, weak) IBOutlet    VExpirationPickerTextField* expirationPickerField;
-@property (nonatomic, weak) IBOutlet    VExpirationDatePicker* datePickerField;
 @property (nonatomic, weak) IBOutlet    UITextView*     textView;
+
+@property (nonatomic, strong) IBOutlet    UIBarButtonItem*    countDownLabel;
+
+@property (nonatomic, strong)   NSString*     expirationDateString;
+
 @end
 
 @implementation VCameraPublishViewController
+
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
+    
+    [self createInputAccessoryView];
+    
+    self.textView.delegate = self;
+}
 
 - (void)viewWillAppear:(BOOL)animated
 {
@@ -44,32 +56,36 @@
         self.previewImage.image = [UIImage imageWithCGImage:imageRef];
     }
 
-    self.view.backgroundColor = [UIColor lightGrayColor];
+    self.view.backgroundColor = [[UIColor alloc] initWithRed:280.0 green:248.0 blue:248.0 alpha:1.0];
     self.navigationController.navigationBar.barTintColor = [UIColor clearColor];
 }
 
 #pragma mark - Actions
 
-- (IBAction)expirationButtonClicked:(id)sender
+- (IBAction)hashButtonClicked:(id)sender
 {
+    self.textView.text = [self.textView.text stringByAppendingString:@"#"];
+}
+
+- (IBAction)publish:(id)sender
+{
+    VLog (@"Publishing");
     
+    //  Twitter State
+    //  Facebook State
+    //  Expiration Date
+    //  Media URL
+    //  Media Type
 }
 
-#pragma mark - 
+#pragma mark - Delegates
 
-- (void)pickerTextField:(VPickerTextField *)pickerTextField didSelectExpirationDate:(NSDate *)expirationDate
+- (void)setExpirationViewController:(VSetExpirationViewController *)viewController didSelectDate:(NSDate *)expirationDate
 {
-    NSString*   expirationDateString = [self stringForRFC2822Date:expirationDate];
-}
-
-- (void)pickerTextField:(VPickerTextField *)pickerTextField didSelectRow:(NSInteger)row inComponent:(NSInteger)component
-{
-    //  Ignore
-}
-
-- (void)datePicker:(VExpirationDatePicker *)datePicker didSelectExpirationDate:(NSDate *)expirationDate
-{
-    NSString*   expirationDateString = [self stringForRFC2822Date:expirationDate];
+    self.expirationDateString = [self stringForRFC2822Date:expirationDate];
+    self.expiresOnLabel.text = [NSString stringWithFormat:@"Expires on %@", [NSDateFormatter localizedStringFromDate:expirationDate
+                                                                                                           dateStyle:NSDateFormatterLongStyle
+                                                                                                           timeStyle:NSDateFormatterShortStyle]];
 }
 
 #pragma mark - Support
@@ -83,11 +99,62 @@
         sRFC2822DateFormatter = [[NSDateFormatter alloc] init];
         sRFC2822DateFormatter.dateFormat = @"EEE, dd MMM yyyy HH:mm:ss Z"; //RFC2822-Format
         
-        NSTimeZone *gmt = [NSTimeZone timeZoneWithAbbreviation:@"GMT"];
-        [sRFC2822DateFormatter setTimeZone:gmt];
+        [sRFC2822DateFormatter setTimeZone:[NSTimeZone timeZoneWithAbbreviation:@"GMT"]];
     });
     
     return[sRFC2822DateFormatter stringFromDate:date];
+}
+
+- (void)createInputAccessoryView
+{
+    UIToolbar*  toolbar =   [[UIToolbar alloc] initWithFrame:CGRectMake(0, 0, self.view.bounds.size.width, 44)];
+    
+    UIBarButtonItem*    hashButton  =   [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"cameraButtonHashTagAdd"]
+                                                                         style:UIBarButtonItemStyleBordered
+                                                                        target:self
+                                                                        action:@selector(hashButtonClicked:)];
+    UIBarButtonItem*    flexibleSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace
+                                                                                      target:nil
+                                                                                      action:nil];
+    
+    self.countDownLabel = [[UIBarButtonItem alloc] initWithTitle:@"140"
+                                                           style:UIBarButtonItemStyleBordered
+                                                            target:nil
+                                                          action:nil];
+    
+    toolbar.items = @[hashButton, flexibleSpace, self.countDownLabel];
+    self.textView.inputAccessoryView = toolbar;
+}
+
+#pragma mark - UITextViewDelegate
+
+- (void)textViewDidChange:(UITextView *)textView
+{
+    self.countDownLabel.title = [NSNumberFormatter localizedStringFromNumber:@(140.0 - self.textView.text.length)
+                                                                 numberStyle:NSNumberFormatterDecimalStyle];
+}
+
+- (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text
+{
+    if ([text isEqualToString:@"\n"])
+    {
+        [textView resignFirstResponder];
+        return NO;
+    }
+
+    return YES;
+}
+
+#pragma mark - Navigation
+
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
+{
+    if ([segue.identifier isEqualToString:@"setExpiration"])
+    {
+        VSetExpirationViewController*   viewController = (VSetExpirationViewController *)segue.destinationViewController;
+        viewController.delegate = self;
+        viewController.previewImage = self.photo;
+    }
 }
 
 @end
