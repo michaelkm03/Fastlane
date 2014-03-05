@@ -118,7 +118,6 @@
     VStreamViewCell* cell = (VStreamViewCell*)[self.tableView cellForRowAtIndexPath:self.tableView.indexPathForSelectedRow];
     if (cell)
     {
-        [self.tableView deselectRowAtIndexPath:self.tableView.indexPathForSelectedRow animated:NO];
         [self performSegueWithIdentifier:kStreamContentSegueStoryboardID sender:cell];
     }
 }
@@ -295,6 +294,7 @@
     [self.navigationController pushViewController:commentsTable animated:YES];
 }
 
+#pragma mark - Navigation
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
     if ([segue.identifier isEqualToString:kStreamContentSegueStoryboardID])
@@ -307,18 +307,44 @@
 
 - (IBAction)unwindToStreamTable:(UIStoryboardSegue*)sender
 {
+    VStreamViewCell* selectedCell = (VStreamViewCell*)[self.tableView cellForRowAtIndexPath:self.tableView.indexPathForSelectedRow];
+
+    if (selectedCell)
+    {
+        [self.tableView deselectRowAtIndexPath:self.tableView.indexPathForSelectedRow animated:NO];
+    }
     
+    [UIView animateWithDuration:.2f
+                     animations:^
+     {
+         selectedCell.overlayView.alpha = selectedCell.shadeView.alpha = 1;
+         selectedCell.overlayView.center = CGPointMake(selectedCell.overlayView.center.x,
+                                                       selectedCell.overlayView.center.y - selectedCell.frame.size.height);
+     }
+                     completion:^(BOOL finished)
+     {
+         [UIView animateWithDuration:.2f
+                          animations:^{
+                              CGPoint newNavCenter = CGPointMake(self.navigationController.navigationBar.center.x,
+                                                                 self.navigationController.navigationBar.center.y + self.tableView.frame.size.height);
+                              self.navigationController.navigationBar.center = newNavCenter;
+                              
+                              for (VStreamViewCell* cell in [self.tableView visibleCells])
+                              {
+                                  if (cell != selectedCell)
+                                  {
+                                      if (cell.center.y > selectedCell.center.y)
+                                      {
+                                          cell.center = CGPointMake(cell.center.x, cell.center.y - self.tableView.frame.size.height);
+                                      }
+                                      else
+                                      {
+                                          cell.center = CGPointMake(cell.center.x, cell.center.y + self.tableView.frame.size.height);
+                                      }
+                                  }
+                              }
+                          }];
+     }];
 }
 
-// We need to over-ride this method from UIViewController to provide a custom segue for unwinding
-- (UIStoryboardSegue *)segueForUnwindingToViewController:(UIViewController *)toViewController
-                                      fromViewController:(UIViewController *)fromViewController
-                                              identifier:(NSString *)identifier
-{
-    // Instantiate a new CustomUnwindSegue
-//    CustomUnwindSegue *segue = [[CustomUnwindSegue alloc] initWithIdentifier:identifier source:fromViewController destination:toViewController];
-//    // Set the target point for the animation to the center of the button in this VC
-//    segue.targetPoint = self.segueButton.center;
-    return [super segueForUnwindingToViewController:toViewController fromViewController:fromViewController identifier:identifier];
-}
 @end

@@ -910,7 +910,7 @@
                                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                         </state>
                                         <connections>
-                                            <segue destination="ZFi-rh-QOq" kind="unwind" unwindAction="unwindToStreamTable:" id="60e-05-obX"/>
+                                            <action selector="pressedBack:" destination="4V8-Qd-rfj" eventType="touchUpInside" id="h5A-dl-faP"/>
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Hjq-lN-vqT" userLabel="Comment Button">
@@ -995,7 +995,9 @@
                         <outlet property="previewImage" destination="ZqV-fk-y5a" id="5zD-1U-pWm"/>
                         <outlet property="secondSmallPreviewImage" destination="plb-mq-Tcq" id="Svf-fQ-dzq"/>
                         <outlet property="sixteenNinePreviewImage" destination="ix9-wJ-Xcm" id="bFh-tE-Js6"/>
+                        <outlet property="topActionsView" destination="Ruh-qb-vRD" id="Xpq-SD-fWy"/>
                         <outlet property="webView" destination="2BW-vC-QSq" id="DDI-Vc-B4m"/>
+                        <segue destination="ZFi-rh-QOq" kind="unwind" identifier="unwindToStream" unwindAction="unwindToStreamTable:" id="2FF-Sd-W1d"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="J2i-Hn-xg3" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -1639,7 +1641,7 @@
         <!--Emotive Ballistics Bar View Controller-->
         <scene sceneID="U5e-sD-f9l">
             <objects>
-                <viewController storyboardIdentifier="emotiveballistics" id="fx3-Ym-Kt1" customClass="VEmotiveBallisticsBarViewController" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="emotiveballistics" autoresizesArchivedViewToFullSize="NO" id="fx3-Ym-Kt1" customClass="VEmotiveBallisticsBarViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="oVf-qG-T3z"/>
                         <viewControllerLayoutGuide type="bottom" id="6lz-Aw-KWC"/>
@@ -1648,10 +1650,20 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="60"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
+                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Ez5-Y4-614" userLabel="BackgroundView">
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="60"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" red="0.21176470589999999" green="0.1450980392" blue="0.30588235289999999" alpha="1" colorSpace="calibratedRGB"/>
+                            </view>
+                            <view alpha="0.14999999999999999" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="7cE-Bc-XB0" userLabel="ShadeView">
+                                <rect key="frame" x="160" y="0.0" width="160" height="60"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                            </view>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="lMO-OU-gVH" userLabel="Positive Emotive">
                                 <rect key="frame" x="0.0" y="0.0" width="160" height="60"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="backgroundColor" red="0.21176470589999999" green="0.1450980392" blue="0.30588235289999999" alpha="1" colorSpace="calibratedRGB"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <state key="normal" image="Heart">
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
@@ -1662,7 +1674,7 @@
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1dp-HB-SPd" userLabel="Negative Emotive">
                                 <rect key="frame" x="160" y="0.0" width="160" height="60"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="backgroundColor" red="0.1803921568627451" green="0.12156862745098039" blue="0.25882352941176467" alpha="1" colorSpace="calibratedRGB"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <state key="normal" image="Tomato">
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
@@ -1690,10 +1702,12 @@
                     <nil key="simulatedStatusBarMetrics"/>
                     <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
                     <connections>
-                        <outlet property="negativeEmotiveButton" destination="1dp-HB-SPd" id="v8Q-BT-Nvk"/>
+                        <outlet property="backgroundView" destination="Ez5-Y4-614" id="DYK-dK-MCm"/>
+                        <outlet property="negativeEmotiveButton" destination="1dp-HB-SPd" id="qnG-i2-LU1"/>
                         <outlet property="negativeEmotiveLabel" destination="AjL-mD-Ekf" id="ksK-bo-CRi"/>
-                        <outlet property="positiveEmotiveButton" destination="lMO-OU-gVH" id="1mI-dD-VsH"/>
+                        <outlet property="positiveEmotiveButton" destination="lMO-OU-gVH" id="ICh-wl-qcV"/>
                         <outlet property="positiveEmotiveLabel" destination="QOq-WJ-Ibw" id="98e-sW-ug2"/>
+                        <outlet property="shadeView" destination="7cE-Bc-XB0" id="8Us-NY-TjC"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="neH-vB-TZ9" userLabel="First Responder" sceneMemberID="firstResponder"/>

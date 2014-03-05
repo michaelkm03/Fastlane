@@ -14,4 +14,7 @@
 
 + (VEmotiveBallisticsBarViewController *)sharedInstance;
 
+- (void)animateIn;
+- (void)animateOut;
+
 @end

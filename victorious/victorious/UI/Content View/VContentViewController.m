@@ -39,6 +39,7 @@ CGFloat kContentMediaViewOffset = 154;
 @property (weak, nonatomic) IBOutlet UIWebView* webView;
 @property (weak, nonatomic) IBOutlet UILabel* descriptionLabel;
 @property (weak, nonatomic) IBOutlet UIView* barView;
+@property (weak, nonatomic) IBOutlet UIView* topActionsView;
 
 @property (strong, nonatomic) VEmotiveBallisticsBarViewController* emotiveBallisticsBar;
 
@@ -80,11 +81,20 @@ CGFloat kContentMediaViewOffset = 154;
     [self.webView setAllowsInlineMediaPlayback:YES];
     [self.webView setMediaPlaybackRequiresUserAction:NO];
     
-    VEmotiveBallisticsBarViewController* emotiveBallistics = [VEmotiveBallisticsBarViewController sharedInstance];
-    emotiveBallistics.target = self.previewImage;
-    self.emotiveBallisticsBar = emotiveBallistics;
+    [self.topActionsView setYOrigin:self.mediaView.frame.origin.y];
+    self.topActionsView.alpha = 0;
+    [UIView animateWithDuration:.2f
+                     animations:^
+     {
+         [self.topActionsView setYOrigin:0];
+         self.topActionsView.alpha = 1;
+     } completion:^(BOOL finished) {
+         VEmotiveBallisticsBarViewController* emotiveBallistics = [VEmotiveBallisticsBarViewController sharedInstance];
+         emotiveBallistics.target = self.previewImage;
+         self.emotiveBallisticsBar = emotiveBallistics;
+         [self.emotiveBallisticsBar animateIn];
+     }];
 }
-
 
 - (void)viewWillAppear:(BOOL)animated
 {
@@ -145,17 +155,8 @@ CGFloat kContentMediaViewOffset = 154;
         [self addChildViewController:emotiveBallisticsBar];
         [emotiveBallisticsBar didMoveToParentViewController:self];
         [self.barView addSubview:emotiveBallisticsBar.view];
+        [_emotiveBallisticsBar animateIn];
         _emotiveBallisticsBar = emotiveBallisticsBar;
-        
-        CGFloat xOrigin = self.view.frame.size.height - _emotiveBallisticsBar.view.frame.size.height;
-        VLog("oldframe: %@", NSStringFromCGRect(_emotiveBallisticsBar.view.frame));
-        CGRect newFrame = CGRectMake(0,
-                                     xOrigin,
-                                     _emotiveBallisticsBar.view.frame.size.width,
-                                     _emotiveBallisticsBar.view.frame.size.height);
-        VLog("newframe: %@", NSStringFromCGRect(newFrame));
-
-        _emotiveBallisticsBar.view.frame = newFrame;
     }
 }
 
@@ -164,8 +165,8 @@ CGFloat kContentMediaViewOffset = 154;
 {
     if (!self.currentAsset)
         self.currentAsset = [self.currentNode firstAsset];
-//    else
-//        self.currentAsset = [self.currentNode nextAssetFromAsset:self.currentAsset];
+    //    else
+    //        self.currentAsset = [self.currentNode nextAssetFromAsset:self.currentAsset];
     
     if ([self.currentAsset isVideo])
         [self loadVideo];
@@ -200,7 +201,7 @@ CGFloat kContentMediaViewOffset = 154;
     {
         imageUrl = [NSURL URLWithString:self.sequence.previewImage];
     }
-
+    
     [self.previewImage setImageWithURL:imageUrl];
     
     self.previewImage.hidden = NO;
@@ -272,8 +273,21 @@ CGFloat kContentMediaViewOffset = 154;
 #pragma mark - Button Actions
 - (IBAction)pressedBack:(id)sender
 {
-    [self dismissViewControllerAnimated:YES
-                             completion:nil];
+    [self.emotiveBallisticsBar animateOut];
+    
+    [self performSelector:@selector(backAnimation) withObject:nil afterDelay:.4f];
+}
+
+- (void)backAnimation
+{
+    [UIView animateWithDuration:.2f
+                     animations:^
+     {
+         [self.topActionsView setYOrigin:self.mediaView.frame.origin.y];
+         self.topActionsView.alpha = 0;
+     } completion:^(BOOL finished) {
+         [self.navigationController popViewControllerAnimated:NO];//dismissViewControllerAnimated:YES completion:nil];
+     }];
 }
 
 - (IBAction)presssedComment:(id)sender
@@ -299,6 +313,5 @@ CGFloat kContentMediaViewOffset = 154;
     else
         [self.mpController play];
 }
-
 
 @end

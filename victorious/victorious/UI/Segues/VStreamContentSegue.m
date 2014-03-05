@@ -40,9 +40,6 @@
         return;
     }
     
-    self.upperCells = [[NSMutableArray alloc] initWithCapacity:5];
-    self.bottomCells = [[NSMutableArray alloc] initWithCapacity:5];
-    
     __block UIView* oldBackgroundView = tableVC.tableView.backgroundView;
     UIImageView* newBackgroundView = [[UIImageView alloc] initWithFrame:oldBackgroundView.frame];
     [newBackgroundView setLightBlurredImageWithURL:[NSURL URLWithString:self.selectedCell.sequence.previewImage]
@@ -61,12 +58,10 @@
                              {
                                  if (cell.center.y > self.selectedCell.center.y)
                                  {
-                                     [self.bottomCells addObject:cell];
                                      cell.center = CGPointMake(cell.center.x, cell.center.y + tableVC.tableView.frame.size.height);
                                  }
                                  else
                                  {
-                                     [self.upperCells addObject:cell];
                                      cell.center = CGPointMake(cell.center.x, cell.center.y - tableVC.tableView.frame.size.height);
                                  }
                              }
@@ -82,19 +77,9 @@
                                           }
                                           completion:^(BOOL finished) {
                                               [self.sourceViewController presentModalViewController:self.destinationViewController animated:NO];
-                                              
-                                              //return the cells back to their previous spots
-                                              for (VStreamViewCell* cell in self.bottomCells)
-                                                  cell.center = CGPointMake(cell.center.x, cell.center.y - tableVC.tableView.frame.size.height);
-                                              
-                                              for (VStreamViewCell* cell in self.upperCells)
-                                                  cell.center = CGPointMake(cell.center.x, cell.center.y + tableVC.tableView.frame.size.height);
-                                              
-                                              CGPoint oldNavCenter = CGPointMake(tableVC.navigationController.navigationBar.center.x,
-                                                                                 tableVC.navigationController.navigationBar.center.y + tableVC.tableView.frame.size.height);
-                                              tableVC.navigationController.navigationBar.center = oldNavCenter;
-                                              tableVC.tableView.backgroundView = oldBackgroundView;
                                           }];
                      }];
 }
+
+
 @end
