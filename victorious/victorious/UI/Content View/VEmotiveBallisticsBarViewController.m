@@ -203,6 +203,7 @@
      }
                      completion:^(BOOL finished)
      {
+         thrownImage.image = [thrownImage.animationImages lastObject];
          [thrownImage startAnimating];
          [self performSelector:@selector(removeThrownImage:) withObject:thrownImage afterDelay:thrownImage.animationDuration];
      }];
@@ -210,7 +211,6 @@
 
 - (void)removeThrownImage:(UIImageView*)thrownImage
 {
-    thrownImage.alpha = 0;
     [thrownImage removeFromSuperview];
 }
 
