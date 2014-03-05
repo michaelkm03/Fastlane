@@ -59,3 +59,5 @@ static NSString*   const   kEmotiveBallisticsBarStoryboardID = @"emotiveballisti
 static NSString*   const   kCommentsContainerStoryboardID    = @"commentscontainer";
 static NSString*   const   kKeyboardBarStoryboardID          = @"keyboardbar";
 
+static NSString*   const   kStreamContentSegueStoryboardID   = @"streamcontent";
+

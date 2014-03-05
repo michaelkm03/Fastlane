@@ -42,23 +42,26 @@
                         <rect key="frame" x="45" y="7" width="228" height="21"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                        <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                        <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <nil key="highlightedColor"/>
                     </label>
                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="1d" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ClZ-8D-vSe">
                         <rect key="frame" x="59" y="21" width="20" height="21"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                        <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <nil key="highlightedColor"/>
                     </label>
                     <imageView userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="StreamDate" translatesAutoresizingMaskIntoConstraints="NO" id="EnC-ed-tLe">
                         <rect key="frame" x="45" y="25" width="13" height="13"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </imageView>
                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="h1o-6t-QRB" userLabel="Description">
                         <rect key="frame" x="5" y="280" width="310" height="20"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                        <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <nil key="highlightedColor"/>
                     </label>
                     <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="RYb-yh-8oc" userLabel="Comment Button">
@@ -69,13 +72,18 @@
                             <action selector="commentButtonAction:" destination="55v-1L-z95" eventType="touchUpInside" id="Nla-NJ-HUq"/>
                         </connections>
                     </button>
-                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="Play" translatesAutoresizingMaskIntoConstraints="NO" id="FTj-gY-BNb">
-                        <rect key="frame" x="145" y="145" width="30" height="30"/>
+                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="PlayCircle" translatesAutoresizingMaskIntoConstraints="NO" id="tq5-a6-OxG">
+                        <rect key="frame" x="134" y="134" width="52" height="52"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    </imageView>
+                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="PlayTriangle" translatesAutoresizingMaskIntoConstraints="NO" id="N2L-pH-5Tp">
+                        <rect key="frame" x="134" y="134" width="52" height="52"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     </imageView>
                 </subviews>
             </tableViewCellContentView>
             <connections>
+                <outlet property="animationImage" destination="N2L-pH-5Tp" id="Xte-M2-l3Z"/>
                 <outlet property="dateLabel" destination="ClZ-8D-vSe" id="jTd-I7-vCF"/>
                 <outlet property="descriptionLabel" destination="h1o-6t-QRB" id="7KT-DS-yWE"/>
                 <outlet property="previewImageView" destination="X95-hS-XNg" id="BIF-kx-KyG"/>
@@ -90,7 +98,8 @@
         </tableViewCell>
     </objects>
     <resources>
-        <image name="Play" width="33" height="33"/>
+        <image name="PlayCircle" width="52" height="52"/>
+        <image name="PlayTriangle" width="52" height="52"/>
         <image name="StreamComments" width="19" height="19"/>
         <image name="StreamDate" width="13" height="13"/>
         <image name="profile_thumb" width="50" height="50"/>
