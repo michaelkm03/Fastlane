@@ -7,9 +7,12 @@
 //
 
 @import AVFoundation;
+@import Accounts;
+@import Social;
 
 #import "VCameraPublishViewController.h"
 #import "VSetExpirationViewController.h"
+#import "UIImage+ImageEffects.h"
 
 @interface VCameraPublishViewController () <UITextViewDelegate, VSetExpirationDelegate>
 @property (nonatomic, weak) IBOutlet    UIImageView*    previewImage;
@@ -24,7 +27,12 @@
 
 @property (nonatomic, strong) IBOutlet    UIBarButtonItem*    countDownLabel;
 
+@property (nonatomic, weak) IBOutlet    UILabel*        textViewPlaceholderLabel;
+
 @property (nonatomic, strong)   NSString*     expirationDateString;
+
+@property (nonatomic)           BOOL          useTwitter;
+@property (nonatomic)           BOOL          useFacebook;
 
 @end
 
@@ -45,7 +53,7 @@
     
     if (self.photo)
     {
-        self.previewImage.image = self.photo;
+        self.previewImage.image = [self.photo applyDarkEffect];
     }
     else if (self.videoURL)
     {
@@ -53,14 +61,22 @@
         AVAssetImageGenerator*  assetGenerator = [AVAssetImageGenerator assetImageGeneratorWithAsset:asset];
         
         CGImageRef  imageRef    =   [assetGenerator copyCGImageAtTime:kCMTimeZero actualTime:NULL error:NULL];
-        self.previewImage.image = [UIImage imageWithCGImage:imageRef];
+        self.previewImage.image = [[UIImage imageWithCGImage:imageRef] applyDarkEffect];
     }
 
     self.view.backgroundColor = [[UIColor alloc] initWithRed:280.0 green:248.0 blue:248.0 alpha:1.0];
-    self.navigationController.navigationBar.barTintColor = [UIColor clearColor];
+    
+    [self.navigationController.navigationBar setBackgroundImage:[[UIImage alloc] init] forBarMetrics:UIBarMetricsDefault];
+    self.navigationController.navigationBar.shadowImage = [[UIImage alloc] init];
+    self.navigationController.navigationBar.translucent = YES;
 }
 
 #pragma mark - Actions
+
+- (IBAction)goBack:(id)sender
+{
+    [self.navigationController popViewControllerAnimated:YES];
+}
 
 - (IBAction)hashButtonClicked:(id)sender
 {
@@ -76,6 +92,116 @@
     //  Expiration Date
     //  Media URL
     //  Media Type
+    
+    [self dismissViewControllerAnimated:YES completion:nil];
+}
+
+- (IBAction)twitterClicked:(id)sender
+{
+    if (YES == self.twitterButton.on)
+    {
+        ACAccountStore* account = [[ACAccountStore alloc] init];
+        ACAccountType* accountType = [account accountTypeWithAccountTypeIdentifier:ACAccountTypeIdentifierTwitter];
+
+        [account requestAccessToAccountsWithType:accountType options:nil completion:^(BOOL granted, NSError *error)
+        {
+             if (!granted)
+             {
+                 switch (error.code)
+                 {
+                     case ACErrorAccountNotFound:
+                     {
+                         [self twitterAccessDidFail];
+                         break;
+                     }
+                     default:
+                     {
+                         [self didFailWithError:error];
+                         break;
+                     }
+                 }
+                 self.useTwitter = NO;
+                 return;
+             }
+             else
+             {
+                 self.useTwitter = YES;
+             }
+        }];
+    }
+}
+
+- (IBAction)facebookClicked:(id)sender
+{
+    if (YES == self.facebookButton.on)
+    {
+        ACAccountStore * const accountStore = [[ACAccountStore alloc] init];
+        ACAccountType * const accountType = [accountStore accountTypeWithAccountTypeIdentifier:ACAccountTypeIdentifierFacebook];
+        
+        [accountStore requestAccessToAccountsWithType:accountType
+                                              options:@{
+                                                        ACFacebookAppIdKey: @"1374328719478033",
+                                                        ACFacebookPermissionsKey: @[@"email"] // Needed for first login
+                                                        }
+                                           completion:^(BOOL granted, NSError *error)
+         {
+             if (!granted)
+             {
+                 switch (error.code)
+                 {
+                     case ACErrorAccountNotFound:
+                     {
+                         [self facebookAccessDidFail];
+                         break;
+                     }
+                     default:
+                     {
+                         [self didFailWithError:error];
+                         break;
+                     }
+                 }
+                 
+                 self.useFacebook = NO;
+                 return;
+             }
+             else
+             {
+                 self.useFacebook = YES;
+             }
+        }];
+    }
+}
+
+- (void)facebookAccessDidFail
+{
+    dispatch_async(dispatch_get_main_queue(), ^
+                   {
+                       SLComposeViewController *composeViewController = [SLComposeViewController composeViewControllerForServiceType:SLServiceTypeFacebook];
+                       [self presentViewController:composeViewController animated:NO completion:^{
+                           [composeViewController dismissViewControllerAnimated:NO completion:nil];
+                       }];
+                   });
+}
+
+- (void)twitterAccessDidFail
+{
+    dispatch_async(dispatch_get_main_queue(), ^
+                   {
+                       SLComposeViewController *composeViewController = [SLComposeViewController composeViewControllerForServiceType:SLServiceTypeTwitter];
+                       [self presentViewController:composeViewController animated:NO completion:^{
+                           [composeViewController dismissViewControllerAnimated:NO completion:nil];
+                       }];
+                   });
+}
+
+- (void)didFailWithError:(NSError*)error
+{
+    UIAlertView*    alert   =   [[UIAlertView alloc] initWithTitle:@"Social Link Failure"
+                                                           message:error.localizedDescription
+                                                          delegate:nil
+                                                 cancelButtonTitle:NSLocalizedString(@"OKButton", @"")
+                                                 otherButtonTitles:nil];
+    [alert show];
 }
 
 #pragma mark - Delegates
@@ -130,6 +256,7 @@
 
 - (void)textViewDidChange:(UITextView *)textView
 {
+    self.textViewPlaceholderLabel.hidden = ([textView.text length] > 0);
     self.countDownLabel.title = [NSNumberFormatter localizedStringFromNumber:@(140.0 - self.textView.text.length)
                                                                  numberStyle:NSNumberFormatterDecimalStyle];
 }
@@ -145,6 +272,11 @@
     return YES;
 }
 
+- (void)textViewDidEndEditing:(UITextView *)textView
+{
+    self.textViewPlaceholderLabel.hidden = ([textView.text length] > 0);
+}
+
 #pragma mark - Navigation
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
@@ -153,7 +285,7 @@
     {
         VSetExpirationViewController*   viewController = (VSetExpirationViewController *)segue.destinationViewController;
         viewController.delegate = self;
-        viewController.previewImage = self.photo;
+        viewController.previewImage = self.previewImage.image;
     }
 }
 

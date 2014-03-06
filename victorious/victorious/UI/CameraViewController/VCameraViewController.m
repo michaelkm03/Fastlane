@@ -67,7 +67,7 @@
     self.camera.previewView = self.previewView;
 	self.camera.videoOrientation = AVCaptureVideoOrientationPortrait;
 	self.camera.recordingDurationLimit = CMTimeMakeWithSeconds(15, 1);
-    self.camera.videoEncoder.outputVideoSize = CGSizeMake(640.0, 640.0);
+    self.camera.videoEncoder.outputVideoSize = CGSizeMake(320.0, 320.0);
 
     [self.camera initialize:^(NSError * audioError, NSError * videoError)
      {
@@ -127,8 +127,6 @@
     self.inRecordVideoState = NO;
     self.inTrashState = NO;
 
-    [self addObserver:self forKeyPath:@"inRecordVideoState" options:0 context:nil];
-
     [self setLastImageSavedToAlbum];
 }
 
@@ -151,8 +149,6 @@
 {
     [super viewDidDisappear:animated];
 
-    [self removeObserver:self forKeyPath:@"inRecordVideoState"];
-    
     [self.camera stopRunningSession];
     [self.camera cancel];
 }
@@ -171,29 +167,6 @@
 - (BOOL)prefersStatusBarHidden
 {
     return YES;
-}
-
-- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
-{
-    if ([keyPath isEqualToString:@"inRecordVideoState"])
-    {
-        [UIView animateWithDuration:0.6 animations:^{
-            if (self.camera.isRecording)
-            {
-                self.navigationItem.rightBarButtonItem = self.nextButton;
-                self.openAlbumButton.alpha = 0.0;
-                self.deleteButton.alpha = 1.0;
-            }
-            else
-            {
-                self.navigationItem.rightBarButtonItem = nil;
-                self.openAlbumButton.alpha = 1.0;
-                self.deleteButton.alpha = 0.0;
-            }
-        }];
-    }
-    else
-        [super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
 }
 
 #pragma mark - Actions
@@ -338,6 +311,10 @@
         
         self.inTrashState = NO;
         self.inRecordVideoState = NO;
+        
+        self.navigationItem.rightBarButtonItem = nil;
+        self.openAlbumButton.alpha = 1.0;
+        self.deleteButton.alpha = 0.0;
 
         [self.deleteButton setImage:[UIImage imageNamed:@"cameraButtonDelete"] forState:UIControlStateNormal];
     }
@@ -389,53 +366,50 @@
     if ((self.camera.sessionPreset != AVCaptureSessionPresetPhoto) && !([self canPickVideosFromPhotoLibrary]))
         return;
 
-    if ([ALAssetsLibrary authorizationStatus] == ALAuthorizationStatusAuthorized)
-    {
-        ALAssetsLibrary *library = [[ALAssetsLibrary alloc] init];
-        
-        // Enumerate just the photos and videos group by using ALAssetsGroupSavedPhotos.
-        [library enumerateGroupsWithTypes:ALAssetsGroupSavedPhotos usingBlock:^(ALAssetsGroup *group, BOOL *stop)
+    ALAssetsLibrary *library = [[ALAssetsLibrary alloc] init];
+    
+    // Enumerate just the photos and videos group by using ALAssetsGroupSavedPhotos.
+    [library enumerateGroupsWithTypes:ALAssetsGroupSavedPhotos usingBlock:^(ALAssetsGroup *group, BOOL *stop)
+     {
+        // Within the group enumeration block, filter to enumerate just photos.
+         if (self.camera.sessionPreset == AVCaptureSessionPresetPhoto)
+             [group setAssetsFilter:[ALAssetsFilter allPhotos]];
+         else
+             [group setAssetsFilter:[ALAssetsFilter allVideos]];
+         
+         if ([group numberOfAssets] > 0)
          {
-            // Within the group enumeration block, filter to enumerate just photos.
-             if (self.camera.sessionPreset == AVCaptureSessionPresetPhoto)
-                 [group setAssetsFilter:[ALAssetsFilter allPhotos]];
-             else
-                 [group setAssetsFilter:[ALAssetsFilter allVideos]];
-             
-             if ([group numberOfAssets] > 0)
+            // Chooses the photo at the last index
+            [group enumerateAssetsAtIndexes:[NSIndexSet indexSetWithIndex:[group numberOfAssets] - 1]
+                                    options:0
+                                 usingBlock:^(ALAsset *alAsset, NSUInteger index, BOOL *innerStop)
              {
-                // Chooses the photo at the last index
-                [group enumerateAssetsAtIndexes:[NSIndexSet indexSetWithIndex:[group numberOfAssets] - 1]
-                                        options:0
-                                     usingBlock:^(ALAsset *alAsset, NSUInteger index, BOOL *innerStop)
+                 // The end of the enumeration is signaled by asset == nil.
+                 if (alAsset)
                  {
-                     // The end of the enumeration is signaled by asset == nil.
-                     if (alAsset)
-                     {
-                         UIImage *latestPhoto = [UIImage imageWithCGImage:[alAsset thumbnail]];
-                         
-                         // Stop the enumerations
-                         *stop = YES;
-                         *innerStop = YES;
-                         
-                         [self.openAlbumButton setImage:latestPhoto forState:UIControlStateNormal];
-                         [UIView animateWithDuration:0.6 animations:^{
-                             self.openAlbumButton.alpha = 1.0;
-                         }];
-                     }
-                 }];
-            }
-            else
-            {
-                // Typically you should handle an error more gracefully than this.
-                NSLog(@"No groups");
-            }
-        } failureBlock: ^(NSError *error)
+                     UIImage *latestPhoto = [UIImage imageWithCGImage:[alAsset thumbnail]];
+                     
+                     // Stop the enumerations
+                     *stop = YES;
+                     *innerStop = YES;
+                     
+                     [self.openAlbumButton setImage:latestPhoto forState:UIControlStateNormal];
+                     [UIView animateWithDuration:0.6 animations:^{
+                         self.openAlbumButton.alpha = 1.0;
+                     }];
+                 }
+             }];
+        }
+        else
         {
             // Typically you should handle an error more gracefully than this.
             NSLog(@"No groups");
-        }];
-    }
+        }
+    } failureBlock: ^(NSError *error)
+    {
+        // Typically you should handle an error more gracefully than this.
+        NSLog(@"No groups");
+    }];
 }
 
 - (void)prepareCamera
@@ -453,11 +427,11 @@
                                                        cancelButtonTitle:nil
                                                        otherButtonTitles:@"OK", nil];
             [alertView show];
-			NSLog(@"%@", error);
+			VLog(@"%@", error);
 		}
         else
         {
-			NSLog(@"- CAMERA READY -");
+			VLog(@"- CAMERA READY -");
 		}
 	}
 }
@@ -501,13 +475,24 @@
     
     self.inTrashState = NO;
     self.inRecordVideoState = NO;
+    
+    self.navigationItem.rightBarButtonItem = nil;
+    self.openAlbumButton.alpha = 1.0;
+    self.deleteButton.alpha = 0.0;
 }
 
 #pragma mark - SCAudioVideoRecorderDelegate
 
 - (void) audioVideoRecorder:(SCAudioVideoRecorder *)audioVideoRecorder didRecordVideoFrame:(CMTime)frameTime
 {
-    self.inRecordVideoState = YES;
+    if (!self.inRecordVideoState)
+    {
+        self.navigationItem.rightBarButtonItem = self.nextButton;
+        self.openAlbumButton.alpha = 0.0;
+        self.deleteButton.alpha = 1.0;
+        self.inRecordVideoState = YES;
+    }
+
     [self updateProgressForSecond:CMTimeGetSeconds(frameTime)];
 }
 
@@ -531,7 +516,6 @@
 - (void) audioVideoRecorder:(SCAudioVideoRecorder *)audioVideoRecorder didFinishRecordingAtUrl:(NSURL *)recordedFile error:(NSError *)error
 {
     [self prepareCamera];
-    self.inRecordVideoState = YES;
 
     if (error != nil)
     {

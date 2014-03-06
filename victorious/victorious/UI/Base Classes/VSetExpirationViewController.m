@@ -9,8 +9,9 @@
 #import "VSetExpirationViewController.h"
 #import "VExpirationPickerTextField.h"
 #import "VExpirationDatePicker.h"
+#import "UIImage+ImageEffects.h"
 
-@interface VSetExpirationViewController ()  <VExpirationPickerTextFieldDelegate, VExpirationDatePickerDelegate>
+@interface VSetExpirationViewController ()  <VExpirationPickerTextFieldDelegate, VExpirationDatePickerDelegate, UIAlertViewDelegate>
 @property (nonatomic, weak) IBOutlet    VExpirationPickerTextField*     expirationPicker;
 @property (nonatomic, weak) IBOutlet    VExpirationDatePicker*          expirationDatePicker;
 
@@ -59,22 +60,34 @@
 
     self.expirationDate = nil;
     self.useAfterMode = YES;
-
-//    self.videoWillExpireLabel.alpha = 0.0;
-//    [UIView animateWithDuration:5.0
-//                          delay:0
-//                        options:UIViewAnimationOptionCurveEaseIn
-//                     animations:^{
-//                         self.videoWillExpireLabel.alpha = 1.0;
-//                     }
-//                     completion:nil];
+    
+    [self.toolbar setBackgroundImage:[[UIImage alloc] init] forToolbarPosition:UIBarPositionAny barMetrics:UIBarMetricsDefault];
+    [self.toolbar setShadowImage:[[UIImage alloc] init] forToolbarPosition:UIBarPositionAny];
 }
 
 #pragma mark - Actions
 
 - (IBAction)cancel:(id)sender
 {
-    [self dismissViewControllerAnimated:YES completion:nil];
+    if (self.expirationDate)
+    {
+        UIAlertView*    alert   =   [[UIAlertView alloc] initWithTitle:@"Cancel Expiration?"
+                                                               message:@"Are you sure you want to cancel out of setting an expiration date?"
+                                                              delegate:self
+                                                     cancelButtonTitle:nil
+                                                     otherButtonTitles:@"No", @"Yes", nil];
+        [alert show];
+    }
+    else
+    {
+        [self dismissViewControllerAnimated:YES completion:nil];
+    }
+}
+
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    if (alertView.firstOtherButtonIndex != buttonIndex)
+        [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 - (IBAction)reset:(id)sender

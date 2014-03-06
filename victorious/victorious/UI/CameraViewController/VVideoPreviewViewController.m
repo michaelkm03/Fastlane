@@ -9,12 +9,12 @@
 @import MediaPlayer;
 
 #import "VVideoPreviewViewController.h"
-//#import "SCVideoPlayerView.h"
+#import "SCVideoPlayerView.h"
 #import "VCameraPublishViewController.h"
 
 @interface VVideoPreviewViewController ()
-//@property (nonatomic, weak) IBOutlet    SCVideoPlayerView*  videoPlayerView;
-@property (nonatomic, weak) IBOutlet    UIView*         videoPlayerView;
+@property (nonatomic, weak) IBOutlet    SCVideoPlayerView*  videoPlayerView;
+//@property (nonatomic, weak) IBOutlet    UIView*         videoPlayerView;
 @property (nonatomic, weak) IBOutlet    UIImageView*    doneButtonView;
 @property (nonatomic, weak) IBOutlet    UIButton*       trashAction;
 
@@ -37,13 +37,18 @@
 {
     [super viewWillAppear:animated];
     
-    self.moviePlayer = [[MPMoviePlayerController alloc] initWithContentURL:self.videoURL];
-    [self.moviePlayer prepareToPlay];
-    
-    [self.moviePlayer.view setFrame:self.videoPlayerView.bounds];
-    [self.videoPlayerView addSubview:self.moviePlayer.view];
-    
-    [self.moviePlayer play];
+    [self.videoPlayerView.player setItemByUrl:self.videoURL];
+	[self.videoPlayerView.player play];
+
+//    self.moviePlayer = [[MPMoviePlayerController alloc] initWithContentURL:self.videoURL];
+//    self.moviePlayer.scalingMode = MPMovieScalingModeAspectFill;
+//
+//    [self.moviePlayer prepareToPlay];
+//    
+//    [self.moviePlayer.view setFrame:self.videoPlayerView.bounds];
+//    [self.videoPlayerView addSubview:self.moviePlayer.view];
+//    
+//    [self.moviePlayer play];
     
     self.view.backgroundColor = [UIColor blackColor];
     self.navigationController.navigationBar.barTintColor = [UIColor blackColor];
