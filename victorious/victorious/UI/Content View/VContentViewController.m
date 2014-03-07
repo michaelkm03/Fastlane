@@ -309,6 +309,8 @@ CGFloat kContentMediaViewOffset = 154;
 {
 //    ((UIViewController*)segue.destinationViewController).transitioningDelegate = [[VStreamTransitioningDelegate alloc] init];
 //    ((UIViewController*)segue.destinationViewController).modalPresentationStyle= UIModalPresentationCustom;
+    [self.mpController stop];
+    [self.webView loadHTMLString:nil baseURL:nil];
     
     if ([segue.identifier isEqualToString:kContentCommentSegueStoryboardID])
     {
