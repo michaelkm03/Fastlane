@@ -17,7 +17,7 @@
 
 #import "VLoginViewController.h"
 
-@interface VKeyboardBarViewController() //<UICollectionViewDataSource, UICollectionViewDelegateFlowLayout>
+@interface VKeyboardBarViewController() <UITextFieldDelegate>
 @property (weak, nonatomic, readwrite) IBOutlet UITextField *textField;
 @property (weak, nonatomic) IBOutlet UIButton *mediaButton;
 @property (strong, nonatomic) NSData* media;
@@ -71,6 +71,17 @@
     self.mediaExtension = nil;
     self.media = nil;
     self.mediaURL = nil;
+}
+
+#pragma mark - UITextfieldDelegate
+- (BOOL)textFieldShouldBeginEditing:(UITextField *)textField
+{
+    if(![VObjectManager sharedManager].mainUser)
+    {
+        [self presentViewController:[VLoginViewController loginViewController] animated:YES completion:NULL];
+        return NO;
+    }
+    return YES;
 }
 
 #pragma mark - Overrides
