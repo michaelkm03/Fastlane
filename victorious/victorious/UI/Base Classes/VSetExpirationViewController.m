@@ -18,8 +18,12 @@
 @property (nonatomic, weak) IBOutlet    UIButton*                       afterButton;
 @property (nonatomic, weak) IBOutlet    UIButton*                       onButton;
 @property (nonatomic, weak) IBOutlet    UILabel*                        videoWillExpireLabel;
-@property (nonatomic, weak) IBOutlet    UIButton*                       setExpirationButton;
 @property (nonatomic, weak) IBOutlet    UIImageView*                    previewImageView;
+
+@property (nonatomic, weak) IBOutlet    UIView*                         setExpirationView;
+@property (nonatomic, weak) IBOutlet    UILabel*                        setExpirationTextField;
+@property (nonatomic, weak) IBOutlet    UILabel*                        expirationLine1Label;
+@property (nonatomic, weak) IBOutlet    UILabel*                        expirationLine2Label;
 
 @property (nonatomic, weak) IBOutlet    UIButton*                       doneButton;
 
@@ -47,6 +51,15 @@
     
     self.toolbarWithReset = @[cancelButton, flex, resetButton];
     self.toolbarWithoutReset = @[cancelButton, flex];
+    
+    [self.setExpirationView addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleSetExpirationTapGesture:)]];
+    self.setExpirationView.userInteractionEnabled = YES;
+    
+    [UIView animateWithDuration:0.6 animations:^{
+        self.setExpirationTextField.alpha = 1.0;
+        self.expirationLine1Label.alpha = 0.0;
+        self.expirationLine2Label.alpha = 0.0;
+    }];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -93,7 +106,13 @@
 - (IBAction)reset:(id)sender
 {
     [self.toolbar setItems:self.toolbarWithoutReset animated:YES];
-    [self.setExpirationButton setTitle:@"Set An Expiration" forState:UIControlStateNormal];
+    
+    [UIView animateWithDuration:0.6 animations:^{
+        self.setExpirationTextField.alpha = 1.0;
+        self.expirationLine1Label.alpha = 0.0;
+        self.expirationLine2Label.alpha = 0.0;
+    }];
+
     self.expirationDate = nil;
 }
 
@@ -123,6 +142,14 @@
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
+- (IBAction)handleSetExpirationTapGesture:(id)sender
+{
+    if (self.useAfterMode)
+        [self.expirationPicker becomeFirstResponder];
+    else
+        [self.expirationDatePicker becomeFirstResponder];
+}
+
 - (IBAction)setExpirationClicked:(id)sender
 {
     if (self.useAfterMode)
@@ -135,10 +162,15 @@
 
 - (void)pickerTextField:(VPickerTextField *)pickerTextField didSelectExpirationDate:(NSDate *)expirationDate
 {
-    [self.setExpirationButton setTitle:[NSDateFormatter localizedStringFromDate:expirationDate
-                                                                      dateStyle:NSDateFormatterLongStyle
-                                                                      timeStyle:NSDateFormatterShortStyle]
-                              forState:UIControlStateNormal];
+    [UIView animateWithDuration:0.6 animations:^{
+        self.setExpirationTextField.alpha = 0.0;
+        self.expirationLine1Label.alpha = 1.0;
+        self.expirationLine2Label.alpha = 1.0;
+    }];
+    
+    self.expirationLine1Label.text = [NSDateFormatter localizedStringFromDate:expirationDate dateStyle:NSDateFormatterMediumStyle timeStyle:NSDateFormatterNoStyle];
+    self.expirationLine2Label.text = [NSDateFormatter localizedStringFromDate:expirationDate dateStyle:NSDateFormatterNoStyle timeStyle:NSDateFormatterShortStyle];
+    
     self.expirationDate = expirationDate;
     [self.doneButton setTitle:@"Done" forState:UIControlStateNormal];
     [self.toolbar setItems:self.toolbarWithReset animated:YES];
@@ -151,10 +183,15 @@
 
 - (void)datePicker:(VExpirationDatePicker *)datePicker didSelectExpirationDate:(NSDate *)expirationDate
 {
-    [self.setExpirationButton setTitle:[NSDateFormatter localizedStringFromDate:expirationDate
-                                                                      dateStyle:NSDateFormatterLongStyle
-                                                                      timeStyle:NSDateFormatterShortStyle]
-                              forState:UIControlStateNormal];
+    [UIView animateWithDuration:0.6 animations:^{
+        self.setExpirationTextField.alpha = 0.0;
+        self.expirationLine1Label.alpha = 1.0;
+        self.expirationLine2Label.alpha = 1.0;
+    }];
+    
+    self.expirationLine1Label.text = [NSDateFormatter localizedStringFromDate:expirationDate dateStyle:NSDateFormatterMediumStyle timeStyle:NSDateFormatterNoStyle];
+    self.expirationLine2Label.text = [NSDateFormatter localizedStringFromDate:expirationDate dateStyle:NSDateFormatterNoStyle timeStyle:NSDateFormatterShortStyle];
+
     self.expirationDate = expirationDate;
     [self.doneButton setTitle:@"Done" forState:UIControlStateNormal];
     [self.toolbar setItems:self.toolbarWithReset animated:YES];
