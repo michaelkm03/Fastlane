@@ -2,9 +2,6 @@
 //  SCCameraFocusView.m
 //  SCAudioVideoRecorder
 //
-//  Created by Simon CORSIN on 19/12/13.
-//  Copyright (c) 2013 rFlex. All rights reserved.
-//
 
 #import "SCCameraFocusView.h"
 #import "SCCameraFocusTargetView.h"

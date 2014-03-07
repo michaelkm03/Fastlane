@@ -37,8 +37,12 @@
 {
     [super viewWillAppear:animated];
     
-    [self.videoPlayerView.player setItemByUrl:self.videoURL];
+    [self.videoPlayerView.player setSmoothLoopItemByUrl:self.videoURL smoothLoopCount:10.0];
+    self.videoPlayerView.player.shouldLoop = YES;
 	[self.videoPlayerView.player play];
+    
+    [self.videoPlayerView addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTapToPlayAction:)]];
+    self.videoPlayerView.userInteractionEnabled = YES;
 
 //    self.moviePlayer = [[MPMoviePlayerController alloc] initWithContentURL:self.videoURL];
 //    self.moviePlayer.scalingMode = MPMovieScalingModeAspectFill;
@@ -57,6 +61,13 @@
     self.trashAction.imageView.image = [UIImage imageNamed:@"cameraButtonDelete"];
 }
 
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+    if (!self.videoPlayerView.player.isPlaying)
+        [self.videoPlayerView.player pause];
+}
+
 - (void)handleDoneTapGesture:(UIGestureRecognizer *)gesture
 {
     UISaveVideoAtPathToSavedPhotosAlbum([self.videoURL path], nil, nil, nil);
@@ -70,6 +81,16 @@
         VCameraPublishViewController*   viewController = (VCameraPublishViewController *)segue.destinationViewController;
         viewController.videoURL = self.videoURL;
     }
+}
+
+#pragma mark - Actions
+
+- (IBAction)handleTapToPlayAction:(id)sender
+{
+    if (!self.videoPlayerView.player.isPlaying)
+        [self.videoPlayerView.player play];
+    else
+        [self.videoPlayerView.player pause];
 }
 
 - (IBAction)cancel:(id)sender

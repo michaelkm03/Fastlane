@@ -425,18 +425,6 @@
                                     </barButtonItem>
                                 </items>
                             </toolbar>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="DhT-pU-Jud">
-                                <rect key="frame" x="0.0" y="176" width="320" height="332"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="24"/>
-                                <state key="normal" title="Set an Expiration">
-                                    <color key="titleColor" red="0.99607843137254903" green="0.28627450980392155" blue="0.28627450980392155" alpha="1" colorSpace="calibratedRGB"/>
-                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                </state>
-                                <connections>
-                                    <action selector="setExpirationClicked:" destination="ngC-QT-430" eventType="touchUpInside" id="bsS-dg-8UE"/>
-                                </connections>
-                            </button>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="n3Z-m2-gIh">
                                 <rect key="frame" x="0.0" y="123" width="160" height="50"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -464,6 +452,34 @@
                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="LXd-Sn-My6">
+                                <rect key="frame" x="0.0" y="176" width="320" height="332"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <subviews>
+                                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Yjk-3f-ltw">
+                                        <rect key="frame" x="0.0" y="87" width="320" height="60"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="50"/>
+                                        <color key="textColor" red="0.99607843137254903" green="0.28627450980392155" blue="0.28627450980392155" alpha="1" colorSpace="calibratedRGB"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Set An Expiration" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nHh-of-tVx">
+                                        <rect key="frame" x="0.0" y="155" width="320" height="21"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="24"/>
+                                        <color key="textColor" red="0.99607843137254903" green="0.28627450980392155" blue="0.28627450980392155" alpha="1" colorSpace="calibratedRGB"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vsz-NI-D2Y">
+                                        <rect key="frame" x="0.0" y="184" width="320" height="26"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="21"/>
+                                        <color key="textColor" red="0.99607843137254903" green="0.28627450980392155" blue="0.28627450980392155" alpha="1" colorSpace="calibratedRGB"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                </subviews>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                            </view>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
@@ -471,10 +487,13 @@
                         <outlet property="afterButton" destination="n3Z-m2-gIh" id="eIy-KI-N25"/>
                         <outlet property="doneButton" destination="ygp-JG-QTQ" id="sYU-9K-gMU"/>
                         <outlet property="expirationDatePicker" destination="TMf-7R-p3n" id="CXd-5Z-8cl"/>
+                        <outlet property="expirationLine1Label" destination="Yjk-3f-ltw" id="mga-Re-GbZ"/>
+                        <outlet property="expirationLine2Label" destination="vsz-NI-D2Y" id="TfP-pJ-xKa"/>
                         <outlet property="expirationPicker" destination="sT6-FK-i8g" id="EYq-lR-2w1"/>
                         <outlet property="onButton" destination="KGh-61-oX4" id="wCw-TD-1nw"/>
                         <outlet property="previewImageView" destination="Y5t-76-1sY" id="YTE-O5-4gj"/>
-                        <outlet property="setExpirationButton" destination="DhT-pU-Jud" id="hP4-Y9-9nL"/>
+                        <outlet property="setExpirationTextField" destination="nHh-of-tVx" id="hNl-Be-xdh"/>
+                        <outlet property="setExpirationView" destination="LXd-Sn-My6" id="LuD-l7-yI3"/>
                         <outlet property="toolbar" destination="75m-dc-ck8" id="cyu-8m-llN"/>
                         <outlet property="videoWillExpireLabel" destination="rhp-re-0dh" id="xKv-u2-0xm"/>
                     </connections>

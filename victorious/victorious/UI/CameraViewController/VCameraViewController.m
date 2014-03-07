@@ -266,10 +266,6 @@
          {
              self.camera.sessionPreset = AVCaptureSessionPresetHigh;
              [self.switchCameraModeButton setImage:[UIImage imageNamed:@"cameraButtonSwitchToPhoto"] forState:UIControlStateNormal];
-             if (self.inRecordVideoState)
-                 self.navigationItem.rightBarButtonItem = self.nextButton;
-             else
-                 self.navigationItem.rightBarButtonItem = nil;
              self.camera.flashMode = SCFlashModeOff;
              [self setLastImageSavedToAlbum];
          }];
@@ -357,6 +353,7 @@
 - (void)setLastImageSavedToAlbum
 {
     [UIView animateWithDuration:0.6 animations:^{
+        self.deleteButton.alpha = 0.0;
         self.openAlbumButton.alpha = 0.0;
     }];
     
