@@ -18,7 +18,6 @@
 		3F14C45218BD2BD0001796B9 /* SCPlayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F14C44418BD2BD0001796B9 /* SCPlayer.m */; };
 		3F14C45318BD2BD0001796B9 /* SCVideoEncoder.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F14C44618BD2BD0001796B9 /* SCVideoEncoder.m */; };
 		3F14C45418BD2BD0001796B9 /* SCVideoPlayerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F14C44818BD2BD0001796B9 /* SCVideoPlayerView.m */; };
-		3F14C45818BD45DF001796B9 /* SCCameraFocusTargetView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F14C45718BD45DF001796B9 /* SCCameraFocusTargetView.m */; };
 		3F4863FA1869184000F77346 /* VInboxViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F4863F91869184000F77346 /* VInboxViewController.m */; };
 		3F53E0C318A485D400089C20 /* VUserManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F53E0C218A485D400089C20 /* VUserManager.m */; };
 		3F919908187600720055FE37 /* VSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F919907187600720055FE37 /* VSettingsViewController.m */; };
@@ -59,6 +58,8 @@
 		3FD7FFB518C14B6100945E5F /* VPickerTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = 3FD7FFB418C14B6100945E5F /* VPickerTextField.m */; };
 		3FD7FFBB18C14ED400945E5F /* VExpirationPickerTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = 3FD7FFBA18C14ED400945E5F /* VExpirationPickerTextField.m */; };
 		3FD7FFBE18C5360800945E5F /* VExpirationDatePicker.m in Sources */ = {isa = PBXBuildFile; fileRef = 3FD7FFBD18C5360800945E5F /* VExpirationDatePicker.m */; };
+		3FD7FFC118C69B2200945E5F /* VSetExpirationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3FD7FFC018C69B2200945E5F /* VSetExpirationViewController.m */; };
+		3FD7FFC418C7EC2700945E5F /* SCCameraFocusTargetView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3FD7FFC318C7EC2700945E5F /* SCCameraFocusTargetView.m */; };
 		3FF8B7981868EE7E00806EA0 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3FF8B7971868EE7E00806EA0 /* Main.storyboard */; };
 		3FF8B7A51868FC1C00806EA0 /* defaultTheme.plist in Resources */ = {isa = PBXBuildFile; fileRef = 3FF8B7A41868FC1C00806EA0 /* defaultTheme.plist */; };
 		3FF8C50018A59EAB00812968 /* VCreateContentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3FF8C4F418A59EAB00812968 /* VCreateContentViewController.m */; };
@@ -217,8 +218,6 @@
 		3F14C44618BD2BD0001796B9 /* SCVideoEncoder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCVideoEncoder.m; sourceTree = "<group>"; };
 		3F14C44718BD2BD0001796B9 /* SCVideoPlayerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCVideoPlayerView.h; sourceTree = "<group>"; };
 		3F14C44818BD2BD0001796B9 /* SCVideoPlayerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCVideoPlayerView.m; sourceTree = "<group>"; };
-		3F14C45618BD45DF001796B9 /* SCCameraFocusTargetView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCCameraFocusTargetView.h; sourceTree = "<group>"; };
-		3F14C45718BD45DF001796B9 /* SCCameraFocusTargetView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCCameraFocusTargetView.m; sourceTree = "<group>"; };
 		3F4863F81869184000F77346 /* VInboxViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VInboxViewController.h; path = UI/VInboxViewController.h; sourceTree = "<group>"; };
 		3F4863F91869184000F77346 /* VInboxViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VInboxViewController.m; path = UI/VInboxViewController.m; sourceTree = "<group>"; };
 		3F53E0C118A485D400089C20 /* VUserManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VUserManager.h; path = Managers/VUserManager.h; sourceTree = "<group>"; };
@@ -287,6 +286,10 @@
 		3FD7FFBA18C14ED400945E5F /* VExpirationPickerTextField.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VExpirationPickerTextField.m; path = UI/CameraViewController/VExpirationPickerTextField.m; sourceTree = "<group>"; };
 		3FD7FFBC18C5360800945E5F /* VExpirationDatePicker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VExpirationDatePicker.h; path = UI/CameraViewController/VExpirationDatePicker.h; sourceTree = "<group>"; };
 		3FD7FFBD18C5360800945E5F /* VExpirationDatePicker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VExpirationDatePicker.m; path = UI/CameraViewController/VExpirationDatePicker.m; sourceTree = "<group>"; };
+		3FD7FFBF18C69B2200945E5F /* VSetExpirationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VSetExpirationViewController.h; path = "UI/Base Classes/VSetExpirationViewController.h"; sourceTree = "<group>"; };
+		3FD7FFC018C69B2200945E5F /* VSetExpirationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VSetExpirationViewController.m; path = "UI/Base Classes/VSetExpirationViewController.m"; sourceTree = "<group>"; };
+		3FD7FFC218C7EC2700945E5F /* SCCameraFocusTargetView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCCameraFocusTargetView.h; sourceTree = "<group>"; };
+		3FD7FFC318C7EC2700945E5F /* SCCameraFocusTargetView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCCameraFocusTargetView.m; sourceTree = "<group>"; };
 		3FF8B7971868EE7E00806EA0 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
 		3FF8B7A41868FC1C00806EA0 /* defaultTheme.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = defaultTheme.plist; sourceTree = "<group>"; };
 		3FF8C4F318A59EAB00812968 /* VCreateContentViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VCreateContentViewController.h; sourceTree = "<group>"; };
@@ -545,8 +548,6 @@
 		3F14C43218BD2BD0001796B9 /* SCAudioVideoRecorder */ = {
 			isa = PBXGroup;
 			children = (
-				3F14C45618BD45DF001796B9 /* SCCameraFocusTargetView.h */,
-				3F14C45718BD45DF001796B9 /* SCCameraFocusTargetView.m */,
 				3F14C43A18BD2BD0001796B9 /* SCAudioVideoRecorder.h */,
 				3F14C43B18BD2BD0001796B9 /* SCAudioVideoRecorder.m */,
 				3F14C44518BD2BD0001796B9 /* SCVideoEncoder.h */,
@@ -568,6 +569,8 @@
 				3F14C44818BD2BD0001796B9 /* SCVideoPlayerView.m */,
 				3F14C43F18BD2BD0001796B9 /* SCCameraFocusView.h */,
 				3F14C44018BD2BD0001796B9 /* SCCameraFocusView.m */,
+				3FD7FFC218C7EC2700945E5F /* SCCameraFocusTargetView.h */,
+				3FD7FFC318C7EC2700945E5F /* SCCameraFocusTargetView.m */,
 			);
 			name = SCAudioVideoRecorder;
 			path = UI/CameraViewController/SCAudioVideoRecorder;
@@ -815,6 +818,8 @@
 				3FD7FFAB18BFD67800945E5F /* VVideoPreviewViewController.m */,
 				3FD7FFAD18BFD6EF00945E5F /* VCameraPublishViewController.h */,
 				3FD7FFAE18BFD6EF00945E5F /* VCameraPublishViewController.m */,
+				3FD7FFBF18C69B2200945E5F /* VSetExpirationViewController.h */,
+				3FD7FFC018C69B2200945E5F /* VSetExpirationViewController.m */,
 				3FD7FFB918C14ED400945E5F /* VExpirationPickerTextField.h */,
 				3FD7FFBA18C14ED400945E5F /* VExpirationPickerTextField.m */,
 				3FD7FFBC18C5360800945E5F /* VExpirationDatePicker.h */,
@@ -1405,13 +1410,13 @@
 				3F14C44F18BD2BD0001796B9 /* SCCamera.m in Sources */,
 				BE171E101868C211004E5202 /* VCategory+RestKit.m in Sources */,
 				3FA217C318A9B5160066E893 /* DeviceTableViewController.m in Sources */,
+				3FD7FFC118C69B2200945E5F /* VSetExpirationViewController.m in Sources */,
 				BE5C7352187E36D000A3340D /* VCategory.m in Sources */,
 				3F91991A187CAF310055FE37 /* VMessageViewController.m in Sources */,
 				BE5C7340187E36CF00A3340D /* VInteraction.m in Sources */,
 				BEF2C2AE188620EE00AAE975 /* VSequence.m in Sources */,
 				BE8C6F4F18B56E70009CFB1C /* VStreamPollCell.m in Sources */,
 				3FD7FFAF18BFD6EF00945E5F /* VCameraPublishViewController.m in Sources */,
-				3F14C45818BD45DF001796B9 /* SCCameraFocusTargetView.m in Sources */,
 				BE6B95FC187C88F700CED4C9 /* VSequence+Fetcher.m in Sources */,
 				BE40559418A1828D00092AE1 /* UIButton+VImageLoading.m in Sources */,
 				BEA5BF59187E7E8E0014C3EF /* VObjectManager+DirectMessaging.m in Sources */,
@@ -1503,6 +1508,7 @@
 				BE4B74261880D3850090FF84 /* VAnswer.m in Sources */,
 				BE171E111868C211004E5202 /* VComment+RestKit.m in Sources */,
 				BE171E0E1868C211004E5202 /* VAnswerAction+RestKit.m in Sources */,
+				3FD7FFC418C7EC2700945E5F /* SCCameraFocusTargetView.m in Sources */,
 				BE4055AD18A41F1F00092AE1 /* main.m in Sources */,
 				83BD06FB186BE4B2007742D1 /* UIImage+ImageEffects.m in Sources */,
 			);

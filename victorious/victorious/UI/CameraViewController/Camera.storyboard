@@ -127,7 +127,6 @@
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="4dS-Xp-8dd" userLabel="First Responder" sceneMemberID="firstResponder"/>
-                <exit id="vwD-pE-jar" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
             <point key="canvasLocation" x="-113" y="51"/>
         </scene>
@@ -143,7 +142,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="HS5-fs-ogp">
+                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="HS5-fs-ogp" customClass="SCVideoPlayerView">
                                 <rect key="frame" x="0.0" y="90" width="320" height="320"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
@@ -201,7 +200,7 @@
                                 <rect key="frame" x="0.0" y="90" width="320" height="320"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                             </imageView>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="cameraButtonVideoDone" translatesAutoresizingMaskIntoConstraints="NO" id="4ca-VH-9Hu">
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="cameraButtonPhotoDone" translatesAutoresizingMaskIntoConstraints="NO" id="4ca-VH-9Hu">
                                 <rect key="frame" x="115" y="457" width="91" height="91"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             </imageView>
@@ -260,9 +259,12 @@
                                 <color key="backgroundColor" red="0.99607843137254903" green="0.28627450980392155" blue="0.28627450980392155" alpha="1" colorSpace="calibratedRGB"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="25"/>
                                 <state key="normal" title="Publish">
-                                    <color key="titleColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
+                                <connections>
+                                    <action selector="publish:" destination="1zz-KC-cVA" eventType="touchUpInside" id="Wok-j4-Gb7"/>
+                                </connections>
                             </button>
                             <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="pMb-yO-DtL">
                                 <rect key="frame" x="0.0" y="378" width="320" height="87"/>
@@ -272,11 +274,17 @@
                                         <rect key="frame" x="251" y="9" width="51" height="31"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <color key="onTintColor" red="0.99607843137254903" green="0.28627450980392155" blue="0.28627450980392155" alpha="1" colorSpace="calibratedRGB"/>
+                                        <connections>
+                                            <action selector="twitterClicked:" destination="1zz-KC-cVA" eventType="valueChanged" id="Hwo-K9-kls"/>
+                                        </connections>
                                     </switch>
                                     <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="xAL-F0-yK2">
                                         <rect key="frame" x="251" y="48" width="51" height="31"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <color key="onTintColor" red="0.99607843137254903" green="0.28627450980392155" blue="0.28627450980392155" alpha="1" colorSpace="calibratedRGB"/>
+                                        <connections>
+                                            <action selector="facebookClicked:" destination="1zz-KC-cVA" eventType="valueChanged" id="Rcg-aG-5ne"/>
+                                        </connections>
                                     </switch>
                                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Twitter" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qor-bk-5tS">
                                         <rect key="frame" x="20" y="14" width="53" height="22"/>
@@ -303,27 +311,15 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="eIH-lg-ady">
-                                <rect key="frame" x="20" y="269" width="25" height="27"/>
+                                <rect key="frame" x="20" y="263" width="25" height="27"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" image="cameraButtonStopwatch">
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <connections>
-                                    <action selector="expirationButtonClicked:" destination="1zz-KC-cVA" eventType="touchUpInside" id="RrZ-hS-5Ly"/>
+                                    <segue destination="ngC-QT-430" kind="modal" identifier="setExpiration" id="UIX-Yg-1Uz"/>
                                 </connections>
                             </button>
-                            <textField hidden="YES" opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="tUR-Vi-Mgz" customClass="VExpirationPickerTextField">
-                                <rect key="frame" x="203" y="328" width="97" height="30"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <textInputTraits key="textInputTraits"/>
-                            </textField>
-                            <textField hidden="YES" opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="LbJ-6q-5p2" customClass="VExpirationDatePicker">
-                                <rect key="frame" x="98" y="328" width="97" height="30"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <textInputTraits key="textInputTraits"/>
-                            </textField>
                             <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="yxx-6S-3iW">
                                 <rect key="frame" x="20" y="68" width="280" height="186"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -332,23 +328,37 @@
                                 <fontDescription key="fontDescription" type="system" pointSize="24"/>
                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences" returnKeyType="done"/>
                             </textView>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xvl-e7-PxB">
+                                <rect key="frame" x="53" y="266" width="247" height="21"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Add a description..." lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Fsz-Xd-hVx">
+                                <rect key="frame" x="25" y="73" width="206" height="29"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="24"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" red="0.97254901960784312" green="0.97254901960784312" blue="0.97254901960784312" alpha="1" colorSpace="calibratedRGB"/>
                     </view>
                     <navigationItem key="navigationItem" title="Publish" id="bCT-xK-bEO">
                         <barButtonItem key="leftBarButtonItem" image="cameraButtonBack" id="gEL-hj-iBw">
                             <connections>
-                                <segue destination="vwD-pE-jar" kind="unwind" unwindAction="unwindToCameraController:" id="eBH-Sg-tG1"/>
+                                <action selector="goBack:" destination="1zz-KC-cVA" id="nXM-hH-lpw"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
                     <connections>
-                        <outlet property="datePickerField" destination="LbJ-6q-5p2" id="pI9-V4-7Mj"/>
                         <outlet property="durationButton" destination="eIH-lg-ady" id="OMl-hb-DoR"/>
-                        <outlet property="expirationPickerField" destination="tUR-Vi-Mgz" id="Gx8-eO-aHZ"/>
+                        <outlet property="expiresOnLabel" destination="xvl-e7-PxB" id="a0z-BT-mrp"/>
                         <outlet property="facebookButton" destination="xAL-F0-yK2" id="H3v-Ms-EgD"/>
-                        <outlet property="previewImage" destination="g4C-sb-DOe" id="LH4-5D-Xrs"/>
+                        <outlet property="previewImage" destination="g4C-sb-DOe" id="DP7-z1-BFa"/>
                         <outlet property="textView" destination="yxx-6S-3iW" id="CEE-rw-I3h"/>
+                        <outlet property="textViewPlaceholderLabel" destination="Fsz-Xd-hVx" id="eaY-Ix-3Cl"/>
                         <outlet property="twitterButton" destination="BMY-lh-VO4" id="lcQ-yE-LLV"/>
                     </connections>
                 </viewController>
@@ -356,13 +366,133 @@
             </objects>
             <point key="canvasLocation" x="1017" y="51"/>
         </scene>
+        <!--Set Expiration View Controller-->
+        <scene sceneID="pAU-Vm-L0S">
+            <objects>
+                <viewController storyboardIdentifier="setExpirationViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="ngC-QT-430" customClass="VSetExpirationViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="vnt-4K-cGe"/>
+                        <viewControllerLayoutGuide type="bottom" id="xCw-w7-Ej1"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="u0w-We-FJh">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <subviews>
+                            <textField hidden="YES" opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="TMf-7R-p3n" customClass="VExpirationDatePicker">
+                                <rect key="frame" x="203" y="85" width="97" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </textField>
+                            <textField hidden="YES" opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="sT6-FK-i8g" customClass="VExpirationPickerTextField">
+                                <rect key="frame" x="20" y="85" width="97" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </textField>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="top" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Y5t-76-1sY">
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="123"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            </imageView>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ygp-JG-QTQ">
+                                <rect key="frame" x="0.0" y="508" width="320" height="60"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" red="0.99607843137254903" green="0.28627450980392155" blue="0.28627450980392155" alpha="1" colorSpace="calibratedRGB"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="25"/>
+                                <state key="normal" title="Cancel">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="doneClicked:" destination="ngC-QT-430" eventType="touchUpInside" id="xU4-zV-jrE"/>
+                                </connections>
+                            </button>
+                            <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="75m-dc-ck8">
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                <items>
+                                    <barButtonItem systemItem="cancel" id="vCC-fr-XKx">
+                                        <connections>
+                                            <action selector="cancel:" destination="ngC-QT-430" id="v6W-hq-iCX"/>
+                                        </connections>
+                                    </barButtonItem>
+                                    <barButtonItem style="plain" systemItem="flexibleSpace" id="0aL-bR-fIp"/>
+                                    <barButtonItem title="Reset" id="U2T-Yz-ShN">
+                                        <connections>
+                                            <action selector="reset:" destination="ngC-QT-430" id="jMx-3b-Jri"/>
+                                        </connections>
+                                    </barButtonItem>
+                                </items>
+                            </toolbar>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="DhT-pU-Jud">
+                                <rect key="frame" x="0.0" y="176" width="320" height="332"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="24"/>
+                                <state key="normal" title="Set an Expiration">
+                                    <color key="titleColor" red="0.99607843137254903" green="0.28627450980392155" blue="0.28627450980392155" alpha="1" colorSpace="calibratedRGB"/>
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="setExpirationClicked:" destination="ngC-QT-430" eventType="touchUpInside" id="bsS-dg-8UE"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="n3Z-m2-gIh">
+                                <rect key="frame" x="0.0" y="123" width="160" height="50"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" image="cameraButtonAfterOn">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="afterButtonClicked:" destination="ngC-QT-430" eventType="touchUpInside" id="ylH-Qp-4eb"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="KGh-61-oX4">
+                                <rect key="frame" x="160" y="123" width="160" height="50"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Button" image="cameraButtonOnOff">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="onButtonClicked:" destination="ngC-QT-430" eventType="touchUpInside" id="o4v-jz-kZt"/>
+                                </connections>
+                            </button>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Video Will Expire" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rhp-re-0dh">
+                                <rect key="frame" x="0.0" y="61" width="320" height="21"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                    </view>
+                    <connections>
+                        <outlet property="afterButton" destination="n3Z-m2-gIh" id="eIy-KI-N25"/>
+                        <outlet property="doneButton" destination="ygp-JG-QTQ" id="sYU-9K-gMU"/>
+                        <outlet property="expirationDatePicker" destination="TMf-7R-p3n" id="CXd-5Z-8cl"/>
+                        <outlet property="expirationPicker" destination="sT6-FK-i8g" id="EYq-lR-2w1"/>
+                        <outlet property="onButton" destination="KGh-61-oX4" id="wCw-TD-1nw"/>
+                        <outlet property="previewImageView" destination="Y5t-76-1sY" id="YTE-O5-4gj"/>
+                        <outlet property="setExpirationButton" destination="DhT-pU-Jud" id="hP4-Y9-9nL"/>
+                        <outlet property="toolbar" destination="75m-dc-ck8" id="cyu-8m-llN"/>
+                        <outlet property="videoWillExpireLabel" destination="rhp-re-0dh" id="xKv-u2-0xm"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="P9k-l1-5n3" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1437" y="51"/>
+        </scene>
     </scenes>
     <resources>
+        <image name="cameraButtonAfterOn" width="160" height="50"/>
         <image name="cameraButtonBack" width="22" height="17"/>
         <image name="cameraButtonClose" width="24" height="24"/>
         <image name="cameraButtonDelete" width="60" height="60"/>
         <image name="cameraButtonFlip" width="36" height="36"/>
+        <image name="cameraButtonOnOff" width="160" height="50"/>
         <image name="cameraButtonPhotoCapture" width="91" height="91"/>
+        <image name="cameraButtonPhotoDone" width="91" height="91"/>
         <image name="cameraButtonStopwatch" width="25" height="27"/>
         <image name="cameraButtonSwitchToPhoto" width="34" height="34"/>
         <image name="cameraButtonVideoDone" width="91" height="91"/>

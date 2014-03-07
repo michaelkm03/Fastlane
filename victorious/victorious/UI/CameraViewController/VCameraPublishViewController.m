@@ -7,25 +7,45 @@
 //
 
 @import AVFoundation;
+@import Accounts;
+@import Social;
 
 #import "VCameraPublishViewController.h"
-#import "VExpirationPickerTextField.h"
-#import "VExpirationDatePicker.h"
+#import "VSetExpirationViewController.h"
+#import "UIImage+ImageEffects.h"
 
-@interface VCameraPublishViewController () <VExpirationPickerTextFieldDelegate, VExpirationDatePickerDelegate>
+@interface VCameraPublishViewController () <UITextViewDelegate, VSetExpirationDelegate>
 @property (nonatomic, weak) IBOutlet    UIImageView*    previewImage;
 
 @property (nonatomic, weak) IBOutlet    UIButton*       durationButton;
+@property (nonatomic, weak) IBOutlet    UILabel*        expiresOnLabel;
 
 @property (nonatomic, weak) IBOutlet    UISwitch*       twitterButton;
 @property (nonatomic, weak) IBOutlet    UISwitch*       facebookButton;
 
-@property (nonatomic, weak) IBOutlet    VExpirationPickerTextField* expirationPickerField;
-@property (nonatomic, weak) IBOutlet    VExpirationDatePicker* datePickerField;
 @property (nonatomic, weak) IBOutlet    UITextView*     textView;
+
+@property (nonatomic, strong) IBOutlet    UIBarButtonItem*    countDownLabel;
+
+@property (nonatomic, weak) IBOutlet    UILabel*        textViewPlaceholderLabel;
+
+@property (nonatomic, strong)   NSString*     expirationDateString;
+
+@property (nonatomic)           BOOL          useTwitter;
+@property (nonatomic)           BOOL          useFacebook;
+
 @end
 
 @implementation VCameraPublishViewController
+
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
+    
+    [self createInputAccessoryView];
+    
+    self.textView.delegate = self;
+}
 
 - (void)viewWillAppear:(BOOL)animated
 {
@@ -33,7 +53,7 @@
     
     if (self.photo)
     {
-        self.previewImage.image = self.photo;
+        self.previewImage.image = [self.photo applyDarkEffect];
     }
     else if (self.videoURL)
     {
@@ -41,35 +61,157 @@
         AVAssetImageGenerator*  assetGenerator = [AVAssetImageGenerator assetImageGeneratorWithAsset:asset];
         
         CGImageRef  imageRef    =   [assetGenerator copyCGImageAtTime:kCMTimeZero actualTime:NULL error:NULL];
-        self.previewImage.image = [UIImage imageWithCGImage:imageRef];
+        self.previewImage.image = [[UIImage imageWithCGImage:imageRef] applyDarkEffect];
     }
 
-    self.view.backgroundColor = [UIColor lightGrayColor];
-    self.navigationController.navigationBar.barTintColor = [UIColor clearColor];
+    self.view.backgroundColor = [[UIColor alloc] initWithRed:280.0 green:248.0 blue:248.0 alpha:1.0];
+    
+    [self.navigationController.navigationBar setBackgroundImage:[[UIImage alloc] init] forBarMetrics:UIBarMetricsDefault];
+    self.navigationController.navigationBar.shadowImage = [[UIImage alloc] init];
+    self.navigationController.navigationBar.translucent = YES;
 }
 
 #pragma mark - Actions
 
-- (IBAction)expirationButtonClicked:(id)sender
+- (IBAction)goBack:(id)sender
 {
+    [self.navigationController popViewControllerAnimated:YES];
+}
+
+- (IBAction)hashButtonClicked:(id)sender
+{
+    self.textView.text = [self.textView.text stringByAppendingString:@"#"];
+}
+
+- (IBAction)publish:(id)sender
+{
+    VLog (@"Publishing");
     
+    //  Twitter State
+    //  Facebook State
+    //  Expiration Date
+    //  Media URL
+    //  Media Type
+    
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
-#pragma mark - 
-
-- (void)pickerTextField:(VPickerTextField *)pickerTextField didSelectExpirationDate:(NSDate *)expirationDate
+- (IBAction)twitterClicked:(id)sender
 {
-    NSString*   expirationDateString = [self stringForRFC2822Date:expirationDate];
+    if (YES == self.twitterButton.on)
+    {
+        ACAccountStore* account = [[ACAccountStore alloc] init];
+        ACAccountType* accountType = [account accountTypeWithAccountTypeIdentifier:ACAccountTypeIdentifierTwitter];
+
+        [account requestAccessToAccountsWithType:accountType options:nil completion:^(BOOL granted, NSError *error)
+        {
+             if (!granted)
+             {
+                 switch (error.code)
+                 {
+                     case ACErrorAccountNotFound:
+                     {
+                         [self twitterAccessDidFail];
+                         break;
+                     }
+                     default:
+                     {
+                         [self didFailWithError:error];
+                         break;
+                     }
+                 }
+                 self.useTwitter = NO;
+                 return;
+             }
+             else
+             {
+                 self.useTwitter = YES;
+             }
+        }];
+    }
 }
 
-- (void)pickerTextField:(VPickerTextField *)pickerTextField didSelectRow:(NSInteger)row inComponent:(NSInteger)component
+- (IBAction)facebookClicked:(id)sender
 {
-    //  Ignore
+    if (YES == self.facebookButton.on)
+    {
+        ACAccountStore * const accountStore = [[ACAccountStore alloc] init];
+        ACAccountType * const accountType = [accountStore accountTypeWithAccountTypeIdentifier:ACAccountTypeIdentifierFacebook];
+        
+        [accountStore requestAccessToAccountsWithType:accountType
+                                              options:@{
+                                                        ACFacebookAppIdKey: @"1374328719478033",
+                                                        ACFacebookPermissionsKey: @[@"email"] // Needed for first login
+                                                        }
+                                           completion:^(BOOL granted, NSError *error)
+         {
+             if (!granted)
+             {
+                 switch (error.code)
+                 {
+                     case ACErrorAccountNotFound:
+                     {
+                         [self facebookAccessDidFail];
+                         break;
+                     }
+                     default:
+                     {
+                         [self didFailWithError:error];
+                         break;
+                     }
+                 }
+                 
+                 self.useFacebook = NO;
+                 return;
+             }
+             else
+             {
+                 self.useFacebook = YES;
+             }
+        }];
+    }
 }
 
-- (void)datePicker:(VExpirationDatePicker *)datePicker didSelectExpirationDate:(NSDate *)expirationDate
+- (void)facebookAccessDidFail
 {
-    NSString*   expirationDateString = [self stringForRFC2822Date:expirationDate];
+    dispatch_async(dispatch_get_main_queue(), ^
+                   {
+                       SLComposeViewController *composeViewController = [SLComposeViewController composeViewControllerForServiceType:SLServiceTypeFacebook];
+                       [self presentViewController:composeViewController animated:NO completion:^{
+                           [composeViewController dismissViewControllerAnimated:NO completion:nil];
+                       }];
+                   });
+}
+
+- (void)twitterAccessDidFail
+{
+    dispatch_async(dispatch_get_main_queue(), ^
+                   {
+                       SLComposeViewController *composeViewController = [SLComposeViewController composeViewControllerForServiceType:SLServiceTypeTwitter];
+                       [self presentViewController:composeViewController animated:NO completion:^{
+                           [composeViewController dismissViewControllerAnimated:NO completion:nil];
+                       }];
+                   });
+}
+
+- (void)didFailWithError:(NSError*)error
+{
+    UIAlertView*    alert   =   [[UIAlertView alloc] initWithTitle:@"Social Link Failure"
+                                                           message:error.localizedDescription
+                                                          delegate:nil
+                                                 cancelButtonTitle:NSLocalizedString(@"OKButton", @"")
+                                                 otherButtonTitles:nil];
+    [alert show];
+}
+
+#pragma mark - Delegates
+
+- (void)setExpirationViewController:(VSetExpirationViewController *)viewController didSelectDate:(NSDate *)expirationDate
+{
+    self.expirationDateString = [self stringForRFC2822Date:expirationDate];
+    self.expiresOnLabel.text = [NSString stringWithFormat:@"Expires on %@", [NSDateFormatter localizedStringFromDate:expirationDate
+                                                                                                           dateStyle:NSDateFormatterLongStyle
+                                                                                                           timeStyle:NSDateFormatterShortStyle]];
 }
 
 #pragma mark - Support
@@ -83,11 +225,68 @@
         sRFC2822DateFormatter = [[NSDateFormatter alloc] init];
         sRFC2822DateFormatter.dateFormat = @"EEE, dd MMM yyyy HH:mm:ss Z"; //RFC2822-Format
         
-        NSTimeZone *gmt = [NSTimeZone timeZoneWithAbbreviation:@"GMT"];
-        [sRFC2822DateFormatter setTimeZone:gmt];
+        [sRFC2822DateFormatter setTimeZone:[NSTimeZone timeZoneWithAbbreviation:@"GMT"]];
     });
     
     return[sRFC2822DateFormatter stringFromDate:date];
+}
+
+- (void)createInputAccessoryView
+{
+    UIToolbar*  toolbar =   [[UIToolbar alloc] initWithFrame:CGRectMake(0, 0, self.view.bounds.size.width, 44)];
+    
+    UIBarButtonItem*    hashButton  =   [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"cameraButtonHashTagAdd"]
+                                                                         style:UIBarButtonItemStyleBordered
+                                                                        target:self
+                                                                        action:@selector(hashButtonClicked:)];
+    UIBarButtonItem*    flexibleSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace
+                                                                                      target:nil
+                                                                                      action:nil];
+    
+    self.countDownLabel = [[UIBarButtonItem alloc] initWithTitle:@"140"
+                                                           style:UIBarButtonItemStyleBordered
+                                                            target:nil
+                                                          action:nil];
+    
+    toolbar.items = @[hashButton, flexibleSpace, self.countDownLabel];
+    self.textView.inputAccessoryView = toolbar;
+}
+
+#pragma mark - UITextViewDelegate
+
+- (void)textViewDidChange:(UITextView *)textView
+{
+    self.textViewPlaceholderLabel.hidden = ([textView.text length] > 0);
+    self.countDownLabel.title = [NSNumberFormatter localizedStringFromNumber:@(140.0 - self.textView.text.length)
+                                                                 numberStyle:NSNumberFormatterDecimalStyle];
+}
+
+- (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text
+{
+    if ([text isEqualToString:@"\n"])
+    {
+        [textView resignFirstResponder];
+        return NO;
+    }
+
+    return YES;
+}
+
+- (void)textViewDidEndEditing:(UITextView *)textView
+{
+    self.textViewPlaceholderLabel.hidden = ([textView.text length] > 0);
+}
+
+#pragma mark - Navigation
+
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
+{
+    if ([segue.identifier isEqualToString:@"setExpiration"])
+    {
+        VSetExpirationViewController*   viewController = (VSetExpirationViewController *)segue.destinationViewController;
+        viewController.delegate = self;
+        viewController.previewImage = self.previewImage.image;
+    }
 }
 
 @end
