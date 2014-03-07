@@ -2,9 +2,6 @@
 //  SCCameraFocusView.h
 //  SCAudioVideoRecorder
 //
-//  Created by Simon CORSIN on 19/12/13.
-//  Copyright (c) 2013 rFlex. All rights reserved.
-//
 
 #import <UIKit/UIKit.h>
 #import "SCCamera.h"

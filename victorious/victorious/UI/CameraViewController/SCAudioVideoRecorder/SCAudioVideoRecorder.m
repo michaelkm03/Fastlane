@@ -2,9 +2,6 @@
 //  VRVideoRecorder.m
 //  VideoRecorder
 //
-//  Created by Simon CORSIN on 8/3/13.
-//  Copyright (c) 2013 rFlex. All rights reserved.
-//
 
 #if TARGET_IPHONE_SIMULATOR || TARGET_OS_IPHONE
 #import <AssetsLibrary/AssetsLibrary.h>

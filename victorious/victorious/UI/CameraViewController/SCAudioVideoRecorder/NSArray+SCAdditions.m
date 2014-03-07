@@ -2,9 +2,6 @@
 //  NSArray+SCAdditions.m
 //  SCAudioVideoRecorder
 //
-//  Created by Simon CORSIN on 8/23/13.
-//  Copyright (c) 2013 rFlex. All rights reserved.
-//
 
 #import "NSArray+SCAdditions.h"
 
