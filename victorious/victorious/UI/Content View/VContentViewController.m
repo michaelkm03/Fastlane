@@ -40,8 +40,6 @@ CGFloat kContentMediaViewOffset = 154;
 @property (weak, nonatomic) IBOutlet UILabel* descriptionLabel;
 @property (weak, nonatomic) IBOutlet UIView* barView;
 
-@property (strong, nonatomic) VEmotiveBallisticsBarViewController* emotiveBallisticsBar;
-
 @property (strong, nonatomic) MPMoviePlayerController* mpController;
 @property (strong, nonatomic) VNode* currentNode;
 @property (strong, nonatomic) VAsset* currentAsset;
@@ -71,14 +69,14 @@ CGFloat kContentMediaViewOffset = 154;
 {
     [super viewDidLoad];
     
-
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(mpLoadStateChanged)
+                                                 name:MPMoviePlayerLoadStateDidChangeNotification
+                                               object:nil];
+    
     self.webView.scrollView.scrollEnabled = NO;
     [self.webView setAllowsInlineMediaPlayback:YES];
     [self.webView setMediaPlaybackRequiresUserAction:NO];
-    
-    VEmotiveBallisticsBarViewController* emotiveBallistics = [VEmotiveBallisticsBarViewController sharedInstance];
-    emotiveBallistics.target = self.previewImage;
-    self.emotiveBallisticsBar = emotiveBallistics;
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -87,6 +85,20 @@ CGFloat kContentMediaViewOffset = 154;
     
     self.navigationController.navigationBarHidden = YES;
     self.sequence = self.sequence;
+    
+    [self.topActionsView setYOrigin:self.mediaView.frame.origin.y];
+    self.topActionsView.alpha = 0;
+    [UIView animateWithDuration:.2f
+                     animations:^
+     {
+         [self.topActionsView setYOrigin:0];
+         self.topActionsView.alpha = 1;
+     } completion:^(BOOL finished) {
+         VEmotiveBallisticsBarViewController* emotiveBallistics = [VEmotiveBallisticsBarViewController sharedInstance];
+         emotiveBallistics.target = self.previewImage;
+         self.emotiveBallisticsBar = emotiveBallistics;
+         [self.emotiveBallisticsBar animateIn];
+     }];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -140,17 +152,8 @@ CGFloat kContentMediaViewOffset = 154;
         [self addChildViewController:emotiveBallisticsBar];
         [emotiveBallisticsBar didMoveToParentViewController:self];
         [self.barView addSubview:emotiveBallisticsBar.view];
+        [_emotiveBallisticsBar animateIn];
         _emotiveBallisticsBar = emotiveBallisticsBar;
-        
-        CGFloat xOrigin = self.view.frame.size.height - _emotiveBallisticsBar.view.frame.size.height;
-        VLog("oldframe: %@", NSStringFromCGRect(_emotiveBallisticsBar.view.frame));
-        CGRect newFrame = CGRectMake(0,
-                                     xOrigin,
-                                     _emotiveBallisticsBar.view.frame.size.width,
-                                     _emotiveBallisticsBar.view.frame.size.height);
-        VLog("newframe: %@", NSStringFromCGRect(newFrame));
-
-        _emotiveBallisticsBar.view.frame = newFrame;
     }
 }
 
@@ -159,8 +162,8 @@ CGFloat kContentMediaViewOffset = 154;
 {
     if (!self.currentAsset)
         self.currentAsset = [self.currentNode firstAsset];
-//    else
-//        self.currentAsset = [self.currentNode nextAssetFromAsset:self.currentAsset];
+    //    else
+    //        self.currentAsset = [self.currentNode nextAssetFromAsset:self.currentAsset];
     
     if ([self.currentAsset isVideo])
         [self loadVideo];
@@ -195,7 +198,7 @@ CGFloat kContentMediaViewOffset = 154;
     {
         imageUrl = [NSURL URLWithString:self.sequence.previewImage];
     }
-
+    
     [self.previewImage setImageWithURL:imageUrl];
     
     self.previewImage.hidden = NO;
@@ -211,23 +214,27 @@ CGFloat kContentMediaViewOffset = 154;
 #pragma mark - Video
 - (void)loadVideo
 {
-    self.previewImage.hidden = YES;
-    self.webView.hidden = YES;
-    self.sixteenNinePreviewImage.hidden = YES;
-    self.firstSmallPreviewImage.hidden = YES;
-    self.secondSmallPreviewImage.hidden = YES;
-    self.mpController.view.hidden = NO;
+    [self loadImage];
     
     [self.mpController.view removeFromSuperview];
     self.mpController = [[MPMoviePlayerController alloc] initWithContentURL:[NSURL URLWithString:self.currentAsset.data]];
+    self.mpController.view.hidden = YES;
     [self.mpController prepareToPlay];
     self.mpController.scalingMode = MPMovieScalingModeAspectFill;
     self.mpController.view.frame = self.previewImage.frame;
     VLog(@"pi frame: %@", NSStringFromCGRect(self.previewImage.frame));
     VLog(@"mp frame: %@", NSStringFromCGRect(self.mpController.view.frame));
     [self.mediaView insertSubview:self.mpController.view aboveSubview:self.previewImage];
-    [self.mpController play];
     self.emotiveBallisticsBar.target = self.mpController.view;
+}
+
+- (void)mpLoadStateChanged
+{
+    if (self.mpController.loadState == MPMovieLoadStatePlayable)
+    {
+        self.mpController.view.hidden = NO;
+        [self.mpController play];
+    }
 }
 
 #pragma mark - Youtube
@@ -263,8 +270,21 @@ CGFloat kContentMediaViewOffset = 154;
 #pragma mark - Button Actions
 - (IBAction)pressedBack:(id)sender
 {
-    [self dismissViewControllerAnimated:YES
-                             completion:nil];
+    [self.emotiveBallisticsBar animateOut];
+    
+    [self performSelector:@selector(backAnimation) withObject:nil afterDelay:.4f];
+}
+
+- (void)backAnimation
+{
+    [UIView animateWithDuration:.2f
+                     animations:^
+     {
+         [self.topActionsView setYOrigin:self.mediaView.frame.origin.y];
+         self.topActionsView.alpha = 0;
+     } completion:^(BOOL finished) {
+         [self.navigationController popViewControllerAnimated:NO];//dismissViewControllerAnimated:YES completion:nil];
+     }];
 }
 
 - (IBAction)presssedComment:(id)sender
@@ -290,6 +310,5 @@ CGFloat kContentMediaViewOffset = 154;
     else
         [self.mpController play];
 }
-
 
 @end

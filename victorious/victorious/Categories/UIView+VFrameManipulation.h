@@ -11,5 +11,6 @@
 @interface UIView (VFrameManipulation)
 
 - (void) setYOrigin:(CGFloat)newYOrigin;
+- (void) setXOrigin:(CGFloat)newXOrigin;
 
 @end

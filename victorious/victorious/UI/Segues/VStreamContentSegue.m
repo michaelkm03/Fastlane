@@ -40,15 +40,12 @@
         return;
     }
     
-    self.upperCells = [[NSMutableArray alloc] initWithCapacity:5];
-    self.bottomCells = [[NSMutableArray alloc] initWithCapacity:5];
-    
     __block UIView* oldBackgroundView = tableVC.tableView.backgroundView;
     UIImageView* newBackgroundView = [[UIImageView alloc] initWithFrame:oldBackgroundView.frame];
     [newBackgroundView setLightBlurredImageWithURL:[NSURL URLWithString:self.selectedCell.sequence.previewImage]
                                   placeholderImage:nil];
     tableVC.tableView.backgroundView = newBackgroundView;
-    [UIView animateWithDuration:.5f
+    [UIView animateWithDuration:.2f
                      animations:^
                      {
                          CGPoint newNavCenter = CGPointMake(tableVC.navigationController.navigationBar.center.x,
@@ -61,12 +58,10 @@
                              {
                                  if (cell.center.y > self.selectedCell.center.y)
                                  {
-                                     [self.bottomCells addObject:cell];
                                      cell.center = CGPointMake(cell.center.x, cell.center.y + tableVC.tableView.frame.size.height);
                                  }
                                  else
                                  {
-                                     [self.upperCells addObject:cell];
                                      cell.center = CGPointMake(cell.center.x, cell.center.y - tableVC.tableView.frame.size.height);
                                  }
                              }
@@ -74,30 +69,17 @@
                      }
                      completion:^(BOOL finished)
                      {
-                         [self.sourceViewController presentModalViewController:self.destinationViewController animated:NO];
-                         
-                         //return the cells back to their previous spots
-                         for (VStreamViewCell* cell in self.bottomCells)
-                             cell.center = CGPointMake(cell.center.x, cell.center.y - tableVC.tableView.frame.size.height);
-
-                         for (VStreamViewCell* cell in self.upperCells)
-                             cell.center = CGPointMake(cell.center.x, cell.center.y + tableVC.tableView.frame.size.height);
-                         
-                         CGPoint oldNavCenter = CGPointMake(tableVC.navigationController.navigationBar.center.x,
-                                                            tableVC.navigationController.navigationBar.center.y + tableVC.tableView.frame.size.height);
-                         tableVC.navigationController.navigationBar.center = oldNavCenter;
-                         tableVC.tableView.backgroundView = oldBackgroundView;
+                         [UIView animateWithDuration:.2f
+                                          animations:^{
+                                              self.selectedCell.overlayView.alpha = self.selectedCell.shadeView.alpha = 0;
+                                              self.selectedCell.overlayView.center = CGPointMake(self.selectedCell.overlayView.center.x,
+                                                                                                 self.selectedCell.overlayView.center.y - self.selectedCell.frame.size.height);
+                                          }
+                                          completion:^(BOOL finished) {
+                                              [self.sourceViewController presentModalViewController:self.destinationViewController animated:NO];
+                                          }];
                      }];
-//    
-//    //Add the destination as a modal
-//    [self performSelector:@selector(finish) withObject:nil afterDelay:1.0f];
 }
 
-- (void)finish
-{
-//    [self.navigationController pushViewController:self.destinationViewController animated:YES];
-
-    [self.sourceViewController presentModalViewController:self.destinationViewController animated:NO];
-}
 
 @end

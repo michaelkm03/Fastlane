@@ -12,8 +12,15 @@
 
 - (void) setYOrigin:(CGFloat)newYOrigin
 {
-    self.frame = CGRectMake(newYOrigin,
-                            self.frame.origin.x,
+    self.frame = CGRectMake(self.frame.origin.x,
+                            newYOrigin,
+                            self.frame.size.width,
+                            self.frame.size.height);
+}
+- (void) setXOrigin:(CGFloat)newXOrigin
+{
+    self.frame = CGRectMake(newXOrigin,
+                            self.frame.origin.y,
                             self.frame.size.width,
                             self.frame.size.height);
 }

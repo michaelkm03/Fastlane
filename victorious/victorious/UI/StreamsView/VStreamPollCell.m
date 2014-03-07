@@ -19,6 +19,8 @@
 
 #import "NSString+VParseHelp.h"
 
+static NSString* kOrIconImage = @"orIconImage";
+
 @import MediaPlayer;
 
 @interface VStreamPollCell ()
@@ -27,6 +29,8 @@
 
 @property (nonatomic, copy) NSString* firstAssetUrl;
 @property (nonatomic, copy) NSString* secondAssetUrl;
+
+@property (nonatomic) BOOL animating;
 @end
 
 @implementation VStreamPollCell
@@ -36,6 +40,28 @@
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
+- (void)awakeFromNib
+{
+    [super awakeFromNib];
+ 
+    NSMutableArray* animationImages = [[NSMutableArray alloc] initWithCapacity:40];
+    for (int i = 1; i < 40; i++)
+    {
+        if ( i > 9 && i < 35)
+        {
+            [animationImages addObject:[UIImage imageNamed:[kOrIconImage stringByAppendingString:@"10-34"]]];
+        }
+        else
+        {
+            [animationImages addObject:[UIImage imageNamed:[kOrIconImage stringByAppendingString:@(i).stringValue]]];
+        }
+    }
+    [animationImages addObject:[UIImage imageNamed:[kOrIconImage stringByAppendingString:@(1).stringValue]]];
+    
+    self.animationImage.animationImages = animationImages;
+    self.animationImage.animationDuration = 1.2f;
+    self.animationImage.animationRepeatCount = 1;
+}
 - (void)setSequence:(VSequence *)sequence
 {
     [super setSequence:sequence];
@@ -94,6 +120,14 @@
     }
 }
 
+- (void)firstAnimation
+{
+    if (self.animating)
+    {
+        [self.animationImage startAnimating];
+        [self performSelector:@selector(firstAnimation) withObject:nil afterDelay:5.0f];
+    }
+}
 //- (void)answerPollWithAnswer:(VAnswer*)answer
 //{
 //    if(![VObjectManager sharedManager].mainUser)

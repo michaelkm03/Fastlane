@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@class VSequence;
+@class VSequence, VEmotiveBallisticsBarViewController;
 
 extern CGFloat kContentMediaViewOffset;
 
@@ -16,6 +16,8 @@ extern CGFloat kContentMediaViewOffset;
 
 @property (strong, nonatomic) VSequence* sequence;
 @property (weak, nonatomic) IBOutlet UIView* mediaView;
+@property (weak, nonatomic) IBOutlet UIView* topActionsView;
+@property (strong, nonatomic) VEmotiveBallisticsBarViewController* emotiveBallisticsBar;
 
 + (VContentViewController *)sharedInstance;
 

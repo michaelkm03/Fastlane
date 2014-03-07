@@ -12,12 +12,17 @@
 #import "VObjectManager.h"
 #import "VLoginViewController.h"
 
+#import "UIView+VFrameManipulation.h"
+
 @interface VEmotiveBallisticsBarViewController ()
 
 @property (weak, nonatomic) IBOutlet UILabel* positiveEmotiveLabel;
 @property (weak, nonatomic) IBOutlet UILabel* negativeEmotiveLabel;
 @property (weak, nonatomic) IBOutlet UIButton* positiveEmotiveButton;
 @property (weak, nonatomic) IBOutlet UIButton* negativeEmotiveButton;
+
+@property (weak, nonatomic) IBOutlet UIView* backgroundView;
+@property (weak, nonatomic) IBOutlet UIView* shadeView;
 
 @end
 
@@ -45,8 +50,87 @@
     
     UIPanGestureRecognizer *negativePanGesture = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(handlePan:)];
     [self.negativeEmotiveButton addGestureRecognizer:negativePanGesture];
+    
+    NSMutableArray* positiveEmotiveAnimations = [[NSMutableArray alloc] initWithCapacity:13];
+    NSMutableArray* negativeEmotiveAnimations = [[NSMutableArray alloc] initWithCapacity:13];
+    for (int i = 0; i < 17; i++)
+    {
+        if (i<13)
+            [positiveEmotiveAnimations addObject:[UIImage imageNamed:[@"Heart" stringByAppendingString:@(i).stringValue]]];
+        
+        [negativeEmotiveAnimations addObject:[UIImage imageNamed:[@"Tomato" stringByAppendingString:@(i).stringValue]]];
+    }
+    
+    self.positiveEmotiveButton.imageView.animationImages = positiveEmotiveAnimations;
+    self.positiveEmotiveButton.imageView.animationDuration = .25f;
+    self.positiveEmotiveButton.imageView.animationRepeatCount = 1;
+    
+    self.negativeEmotiveButton.imageView.animationImages = negativeEmotiveAnimations;
+    self.negativeEmotiveButton.imageView.animationDuration = .25f;
+    self.negativeEmotiveButton.imageView.animationRepeatCount = 1;
+    
+    
 }
 
+#pragma mark - Animation
+- (void)animateIn
+{   
+    [self.backgroundView setXOrigin:self.view.frame.size.width];
+    [self.shadeView setXOrigin:self.view.frame.size.width];
+    
+    self.negativeEmotiveButton.alpha = 0;
+    self.positiveEmotiveButton.alpha = 0;
+    
+    self.positiveEmotiveLabel.alpha = 0;
+    self.negativeEmotiveLabel.alpha = 0;
+    
+    [UIView animateWithDuration:.2f
+                     animations:^{
+                         [self.backgroundView setXOrigin:0];
+                         [self.shadeView setXOrigin:self.view.frame.size.width - self.shadeView.frame.size.width];
+                     }
+                     completion:^(BOOL finished) {
+                         [self animateInPartTwo];
+                     }];
+}
+
+- (void)animateInPartTwo
+{
+    [UIView animateWithDuration:.2f
+                     animations:^{
+                         self.positiveEmotiveLabel.alpha = 1;
+                         self.negativeEmotiveLabel.alpha = 1;
+                         
+                         self.negativeEmotiveButton.alpha = 1;
+                         self.positiveEmotiveButton.alpha = 1;
+                     }];
+}
+
+- (void)animateOut
+{
+    [UIView animateWithDuration:.2f
+                     animations:^{
+                         self.positiveEmotiveLabel.alpha = 0;
+                         self.negativeEmotiveLabel.alpha = 0;
+                         
+                         self.negativeEmotiveButton.alpha = 0;
+                         self.positiveEmotiveButton.alpha = 0;
+                     }
+                     completion:^(BOOL finished) {
+                         [self animateOutPartTwo];
+                     }];
+}
+
+- (void)animateOutPartTwo
+{
+    [UIView animateWithDuration:.2f
+                     animations:^{
+                         [self.backgroundView setXOrigin:self.view.frame.size.width];
+                         [self.shadeView setXOrigin:self.view.frame.size.width];
+                     }];
+}
+
+#pragma mark - Actions
 - (IBAction)pressedPostiveEmotive:(id)sender
 {
     CGFloat x = self.target.center.x + ([self randomFloat] * self.target.frame.size.width / 4);
@@ -91,6 +175,23 @@
     __block UIImageView* thrownImage = [[UIImageView alloc] initWithImage:emotive.imageView.image];
     thrownImage.frame = emotive.frame;
     
+    
+    NSMutableArray* emotiveAnimations = [[NSMutableArray alloc] initWithCapacity:13];
+    for (int i = 0; i < 17; i++)
+    {
+        if (emotive == self.positiveEmotiveButton && i<13)
+            [emotiveAnimations addObject:[UIImage imageNamed:[@"Heart" stringByAppendingString:@(i).stringValue]]];
+        
+        else if (emotive == self.negativeEmotiveButton)
+            [emotiveAnimations addObject:[UIImage imageNamed:[@"Tomato" stringByAppendingString:@(i).stringValue]]];
+    }
+    
+    thrownImage.animationImages = emotiveAnimations;
+    thrownImage.animationDuration = .25f;
+    thrownImage.animationRepeatCount = 1;
+    
+    thrownImage.contentMode = UIViewContentModeScaleAspectFit;
+    
     [self.view addSubview:thrownImage];
     [UIView animateWithDuration:.3f
                      animations:^
@@ -99,19 +200,15 @@
      }
                      completion:^(BOOL finished)
      {
-//         thrownImage.animationImages = @[[UIImage imageNamed:@"animated1"]];
-//         thrownImage.animationDuration = .2f;
-//         thrownImage.animationRepeatCount = 1;
-         [UIView animateWithDuration:.2f
-                          animations:^
-          {
-              thrownImage.alpha = 0;
-          }
-                          completion:^(BOOL finished)
-          {
-              [thrownImage removeFromSuperview];
-          }];
+         thrownImage.image = [thrownImage.animationImages lastObject];
+         [thrownImage startAnimating];
+         [self performSelector:@selector(removeThrownImage:) withObject:thrownImage afterDelay:thrownImage.animationDuration];
      }];
+}
+
+- (void)removeThrownImage:(UIImageView*)thrownImage
+{
+    [thrownImage removeFromSuperview];
 }
 
 - (float)randomFloat

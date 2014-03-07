@@ -16,6 +16,7 @@
 #import "NSString+VParseHelp.h"
 
 #import "VStreamContentSegue.h"
+#import "VStreamTransitioningDelegate.h"
 
 //Cells
 #import "VStreamViewCell.h"
@@ -30,7 +31,7 @@
 #import "VNode+Fetcher.h"
 #import "VAsset.h"
 
-@interface VStreamTableViewController()
+@interface VStreamTableViewController() <UIViewControllerTransitioningDelegate>
 
 @end
 
@@ -39,6 +40,8 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    self.transitioningDelegate = self;
     
     [[NSNotificationCenter defaultCenter]
      addObserver:self selector:@selector(willCommentSequence:)
@@ -118,7 +121,6 @@
     VStreamViewCell* cell = (VStreamViewCell*)[self.tableView cellForRowAtIndexPath:self.tableView.indexPathForSelectedRow];
     if (cell)
     {
-        [self.tableView deselectRowAtIndexPath:self.tableView.indexPathForSelectedRow animated:NO];
         [self performSegueWithIdentifier:kStreamContentSegueStoryboardID sender:cell];
     }
 }
@@ -295,14 +297,60 @@
     [self.navigationController pushViewController:commentsTable animated:YES];
 }
 
+#pragma mark - Navigation
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
+    ((UIViewController*)segue.destinationViewController).transitioningDelegate = [[VStreamTransitioningDelegate alloc] init];
+    ((UIViewController*)segue.destinationViewController).modalPresentationStyle= UIModalPresentationCustom;
+    
     if ([segue.identifier isEqualToString:kStreamContentSegueStoryboardID])
     {
         ((VStreamContentSegue*)segue).selectedCell = sender;
         VContentViewController* contentVC = segue.destinationViewController;
         contentVC.sequence = ((VStreamViewCell*)sender).sequence;
     }
+}
+
+- (IBAction)unwindToStreamTable:(UIStoryboardSegue*)sender
+{
+//    VStreamViewCell* selectedCell = (VStreamViewCell*)[self.tableView cellForRowAtIndexPath:self.tableView.indexPathForSelectedRow];
+//
+//    if (selectedCell)
+//    {
+//        [self.tableView deselectRowAtIndexPath:self.tableView.indexPathForSelectedRow animated:NO];
+//    }
+//    
+//    [UIView animateWithDuration:.2f
+//                     animations:^
+//     {
+//         selectedCell.overlayView.alpha = selectedCell.shadeView.alpha = 1;
+//         selectedCell.overlayView.center = CGPointMake(selectedCell.overlayView.center.x,
+//                                                       selectedCell.overlayView.center.y - selectedCell.frame.size.height);
+//     }
+//                     completion:^(BOOL finished)
+//     {
+//         [UIView animateWithDuration:.2f
+//                          animations:^{
+//                              CGPoint newNavCenter = CGPointMake(self.navigationController.navigationBar.center.x,
+//                                                                 self.navigationController.navigationBar.center.y + self.tableView.frame.size.height);
+//                              self.navigationController.navigationBar.center = newNavCenter;
+//                              
+//                              for (VStreamViewCell* cell in [self.tableView visibleCells])
+//                              {
+//                                  if (cell != selectedCell)
+//                                  {
+//                                      if (cell.center.y > selectedCell.center.y)
+//                                      {
+//                                          cell.center = CGPointMake(cell.center.x, cell.center.y - self.tableView.frame.size.height);
+//                                      }
+//                                      else
+//                                      {
+//                                          cell.center = CGPointMake(cell.center.x, cell.center.y + self.tableView.frame.size.height);
+//                                      }
+//                                  }
+//                              }
+//                          }];
+//     }];
 }
 
 @end
