@@ -13,6 +13,7 @@
 #import "VUser.h"
 #import "VConstants.h"
 #import "VObjectManager+Comment.h"
+#import "UIView+VFrameManipulation.h"
 
 @interface VCommentsContainerViewController() <VCommentsTableViewControllerDelegate>
 @end
@@ -27,6 +28,28 @@
     VCommentsContainerViewController* commentsContainerViewController = (VCommentsContainerViewController*)[currentViewController.storyboard instantiateViewControllerWithIdentifier: kCommentsContainerStoryboardID];
 
     return commentsContainerViewController;
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    if (animated)
+    {
+        __block CGFloat originalKeyboardY = self.keyboardBarViewController.view.frame.origin.y;
+        __block CGFloat originalConvertationX = self.conversationTableViewController.view.frame.origin.y;
+        [self.conversationTableViewController.view setXOrigin:self.view.frame.size.width];
+        [self.keyboardBarViewController.view setYOrigin:self.view.frame.size.height];
+        [UIView animateWithDuration:.5f
+                         animations:^{
+                             [self.conversationTableViewController.view setXOrigin:originalConvertationX];
+                         }
+                         completion:^(BOOL finished) {
+                             [UIView animateWithDuration:.5f
+                                              animations:^{
+                                                  [self.keyboardBarViewController.view setYOrigin:originalKeyboardY];
+                                              }];
+                         }];
+        
+    }
 }
 
 - (UITableViewController *)conversationTableViewController

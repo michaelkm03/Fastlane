@@ -287,13 +287,6 @@ CGFloat kContentMediaViewOffset = 154;
      }];
 }
 
-- (IBAction)presssedComment:(id)sender
-{
-    VCommentsContainerViewController* commentsTable = [VCommentsContainerViewController commentsContainerView];
-    commentsTable.sequence = self.sequence;
-    [self.navigationController pushViewController:commentsTable animated:YES];
-}
-
 - (IBAction)pressedMore:(id)sender
 {
     //Specced but still no idea what its supposed to do
@@ -309,6 +302,19 @@ CGFloat kContentMediaViewOffset = 154;
     
     else
         [self.mpController play];
+}
+
+#pragma mark - Navigation
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
+{
+//    ((UIViewController*)segue.destinationViewController).transitioningDelegate = [[VStreamTransitioningDelegate alloc] init];
+//    ((UIViewController*)segue.destinationViewController).modalPresentationStyle= UIModalPresentationCustom;
+    
+    if ([segue.identifier isEqualToString:kContentCommentSegueStoryboardID])
+    {
+        VCommentsContainerViewController* commentVC = segue.destinationViewController;
+        commentVC.sequence = self.sequence;
+    }
 }
 
 @end

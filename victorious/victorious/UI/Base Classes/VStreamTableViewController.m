@@ -313,44 +313,7 @@
 
 - (IBAction)unwindToStreamTable:(UIStoryboardSegue*)sender
 {
-//    VStreamViewCell* selectedCell = (VStreamViewCell*)[self.tableView cellForRowAtIndexPath:self.tableView.indexPathForSelectedRow];
-//
-//    if (selectedCell)
-//    {
-//        [self.tableView deselectRowAtIndexPath:self.tableView.indexPathForSelectedRow animated:NO];
-//    }
-//    
-//    [UIView animateWithDuration:.2f
-//                     animations:^
-//     {
-//         selectedCell.overlayView.alpha = selectedCell.shadeView.alpha = 1;
-//         selectedCell.overlayView.center = CGPointMake(selectedCell.overlayView.center.x,
-//                                                       selectedCell.overlayView.center.y - selectedCell.frame.size.height);
-//     }
-//                     completion:^(BOOL finished)
-//     {
-//         [UIView animateWithDuration:.2f
-//                          animations:^{
-//                              CGPoint newNavCenter = CGPointMake(self.navigationController.navigationBar.center.x,
-//                                                                 self.navigationController.navigationBar.center.y + self.tableView.frame.size.height);
-//                              self.navigationController.navigationBar.center = newNavCenter;
-//                              
-//                              for (VStreamViewCell* cell in [self.tableView visibleCells])
-//                              {
-//                                  if (cell != selectedCell)
-//                                  {
-//                                      if (cell.center.y > selectedCell.center.y)
-//                                      {
-//                                          cell.center = CGPointMake(cell.center.x, cell.center.y - self.tableView.frame.size.height);
-//                                      }
-//                                      else
-//                                      {
-//                                          cell.center = CGPointMake(cell.center.x, cell.center.y + self.tableView.frame.size.height);
-//                                      }
-//                                  }
-//                              }
-//                          }];
-//     }];
+    
 }
 
 @end
