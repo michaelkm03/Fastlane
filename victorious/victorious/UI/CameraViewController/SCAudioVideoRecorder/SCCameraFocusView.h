@@ -1,6 +1,5 @@
 //
-//  SCCameraFocusView.h
-//  SCAudioVideoRecorder
+//  SCCameraFocusView
 //
 
 #import <UIKit/UIKit.h>

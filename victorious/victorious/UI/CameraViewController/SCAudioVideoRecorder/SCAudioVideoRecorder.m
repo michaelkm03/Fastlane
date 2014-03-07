@@ -1,6 +1,5 @@
 //
-//  VRVideoRecorder.m
-//  VideoRecorder
+//  SCAudioVideoRecorder
 //
 
 #if TARGET_IPHONE_SIMULATOR || TARGET_OS_IPHONE
@@ -8,10 +7,10 @@
 #endif
 #import "SCAudioVideoRecorderInternal.h"
 
-#import "NSArray+SCAdditions.h"
 #import "SCAudioTools.h"
 
-#import <ImageIO/ImageIO.h>
+@import ImageIO;
+
 // photo dictionary key definitions
 
 NSString * const SCAudioVideoRecorderPhotoMetadataKey = @"SCAudioVideoRecorderPhotoMetadataKey";

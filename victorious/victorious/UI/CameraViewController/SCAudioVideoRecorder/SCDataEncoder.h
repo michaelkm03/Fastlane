@@ -1,10 +1,8 @@
 //
-//  SCDataEncoder.h
-//  SCVideoRecorder
+//  SCDataEncoder
 //
 
-#import <Foundation/Foundation.h>
-#import <AVFoundation/AVFoundation.h>
+@import AVFoundation;
 
 //
 // Encoder

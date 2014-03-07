@@ -1,6 +1,5 @@
 //
-//  XHCameraTagetView.m
-//  iyilunba
+//  SCCameraFocusTargetView
 //
 
 #import "SCCameraFocusTargetView.h"
@@ -52,7 +51,6 @@
 }
 
 - (void)startTargeting {
-    // 判断是否已经add了这个animation
     if ([self.insideCircle.layer.animationKeys containsObject:kInsideCircleAnimationKey] && [self.outsideCircle.layer.animationKeys containsObject:kOutsideCircleAnimationKey]) {
         return;
     }
@@ -62,7 +60,6 @@
         [self.outsideCircle.layer removeAnimationForKey:kRemoveCircleAnimationKey];
     }
     
-    // insideCircle 微微的闪烁
     CABasicAnimation *insideCircleAnimation = [CABasicAnimation animationWithKeyPath:@"opacity"];
     insideCircleAnimation.beginTime = CACurrentMediaTime() + 0.1;
     insideCircleAnimation.duration = 0.5;
@@ -72,8 +69,6 @@
     insideCircleAnimation.autoreverses = YES;
     insideCircleAnimation.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionLinear];
     
-    
-    // outsideCircle 匀速的缩放
     CABasicAnimation *outsideCircleAnimation = [CABasicAnimation animationWithKeyPath:@"transform.scale"];
     outsideCircleAnimation.beginTime = CACurrentMediaTime() + 0.1;
     outsideCircleAnimation.fromValue = [NSNumber numberWithFloat:1.0f];

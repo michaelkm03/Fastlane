@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		0742CD6B32FA44679FBE8716 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 662F0867152745B2B2F08301 /* libPods.a */; };
-		3F14C44B18BD2BD0001796B9 /* NSArray+SCAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F14C43418BD2BD0001796B9 /* NSArray+SCAdditions.m */; };
 		3F14C44C18BD2BD0001796B9 /* SCAudioEncoder.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F14C43618BD2BD0001796B9 /* SCAudioEncoder.m */; };
 		3F14C44D18BD2BD0001796B9 /* SCAudioTools.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F14C43818BD2BD0001796B9 /* SCAudioTools.m */; };
 		3F14C44E18BD2BD0001796B9 /* SCAudioVideoRecorder.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F14C43B18BD2BD0001796B9 /* SCAudioVideoRecorder.m */; };
@@ -194,8 +193,6 @@
 
 /* Begin PBXFileReference section */
 		33ACD3CBAF2C419D97FB901A /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = "<group>"; };
-		3F14C43318BD2BD0001796B9 /* NSArray+SCAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSArray+SCAdditions.h"; sourceTree = "<group>"; };
-		3F14C43418BD2BD0001796B9 /* NSArray+SCAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSArray+SCAdditions.m"; sourceTree = "<group>"; };
 		3F14C43518BD2BD0001796B9 /* SCAudioEncoder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCAudioEncoder.h; sourceTree = "<group>"; };
 		3F14C43618BD2BD0001796B9 /* SCAudioEncoder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCAudioEncoder.m; sourceTree = "<group>"; };
 		3F14C43718BD2BD0001796B9 /* SCAudioTools.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCAudioTools.h; sourceTree = "<group>"; };
@@ -552,8 +549,6 @@
 				3F14C43E18BD2BD0001796B9 /* SCCamera.m */,
 				3F14C43718BD2BD0001796B9 /* SCAudioTools.h */,
 				3F14C43818BD2BD0001796B9 /* SCAudioTools.m */,
-				3F14C43318BD2BD0001796B9 /* NSArray+SCAdditions.h */,
-				3F14C43418BD2BD0001796B9 /* NSArray+SCAdditions.m */,
 				3F14C44318BD2BD0001796B9 /* SCPlayer.h */,
 				3F14C44418BD2BD0001796B9 /* SCPlayer.m */,
 				3F14C44718BD2BD0001796B9 /* SCVideoPlayerView.h */,
@@ -1476,7 +1471,6 @@
 				BE651D1018AC270900069119 /* VKeyboardBarViewController.m in Sources */,
 				3FD7FFAC18BFD67800945E5F /* VVideoPreviewViewController.m in Sources */,
 				BE83A37118827B400077EB26 /* VMessage.m in Sources */,
-				3F14C44B18BD2BD0001796B9 /* NSArray+SCAdditions.m in Sources */,
 				D1DAAA0B187A43BE009ADCB0 /* VProfileEditViewController.m in Sources */,
 				3F91991018761C720055FE37 /* VPrivacyPoliciesViewController.m in Sources */,
 				BEB4C29B187E038C004ECEEF /* VConversationCell.m in Sources */,

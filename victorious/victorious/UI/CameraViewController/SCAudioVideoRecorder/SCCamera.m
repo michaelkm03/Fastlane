@@ -1,9 +1,9 @@
 //
-//  SCCamera.m
-//  SCVideoRecorder
+//  SCCamera
 //
 
-#import <AVFoundation/AVFoundation.h>
+@import AVFoundation;
+
 #import "SCCamera.h"
 #import "SCAudioVideoRecorderInternal.h"
 

@@ -1,10 +1,9 @@
 //
-//  SCAudioTools.m
-//  SCAudioVideoRecorder
+//  SCAudioTools
 //
 
-#import <AudioToolbox/AudioToolbox.h>
-#import <AVFoundation/AVFoundation.h>
+@import AVFoundation;
+@import AudioToolbox;
 #import "SCAudioTools.h"
 
 @implementation SCAudioTools {

@@ -1,6 +1,5 @@
 //
-//  SCVideoPlayerView.h
-//  SCAudioVideoRecorder
+//  SCVideoPlayerView
 //
 
 #import <UIKit/UIKit.h>

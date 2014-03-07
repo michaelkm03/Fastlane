@@ -1,9 +1,8 @@
 //
-//  SCVideoPlayer.h
-//  SCAudioVideoRecorder
+//  SCPlayer
 //
 
-#import <AVFoundation/AVFoundation.h>
+@import AVFoundation;
 
 @class SCPlayer;
 

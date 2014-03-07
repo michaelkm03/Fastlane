@@ -1,6 +1,5 @@
 //
-//  SCCamera.h
-//  SCVideoRecorder
+//  SCCamera
 //
 
 #import <Foundation/Foundation.h>
