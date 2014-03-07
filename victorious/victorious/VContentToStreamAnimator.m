@@ -107,11 +107,13 @@
                                       }
                                   }
                               }
+                              
+                              CGFloat minOffset = streamVC.navigationController.navigationBar.frame.size.height;
                               CGFloat maxOffset = streamVC.tableView.contentSize.height - streamVC.tableView.frame.size.height;
                               
-                              if (streamVC.tableView.contentOffset.y < 0)
+                              if (streamVC.tableView.contentOffset.y < minOffset)
                               {
-                                  [streamVC.tableView setContentOffset:CGPointMake(selectedCell.frame.origin.x, 0) animated:YES];
+//                                  [streamVC.tableView setContentOffset:CGPointMake(selectedCell.frame.origin.x, minOffset) animated:YES];
                               }
                               else if (streamVC.tableView.contentOffset.y >= maxOffset)
                               {

@@ -8,7 +8,6 @@
 
 #import "VStreamTransitioningDelegate.h"
 
-#import "VStreamToContentAnimator.h"
 #import "VContentToStreamAnimator.h"
 
 @implementation VStreamTransitioningDelegate
