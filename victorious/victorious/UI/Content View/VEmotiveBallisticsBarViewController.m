@@ -74,10 +74,7 @@
 
 #pragma mark - Animation
 - (void)animateIn
-{
-    __block CGFloat originalBackgroundX = self.backgroundView.frame.origin.x;
-    __block CGFloat originalShadeX = self.shadeView.frame.origin.x;
-    
+{   
     [self.backgroundView setXOrigin:self.view.frame.size.width];
     [self.shadeView setXOrigin:self.view.frame.size.width];
     
@@ -89,8 +86,8 @@
     
     [UIView animateWithDuration:.2f
                      animations:^{
-                         [self.backgroundView setXOrigin:originalBackgroundX];
-                         [self.shadeView setXOrigin:originalShadeX];
+                         [self.backgroundView setXOrigin:0];
+                         [self.shadeView setXOrigin:self.view.frame.size.width - self.shadeView.frame.size.width];
                      }
                      completion:^(BOOL finished) {
                          [self animateInPartTwo];

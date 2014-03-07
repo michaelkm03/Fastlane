@@ -39,9 +39,6 @@ CGFloat kContentMediaViewOffset = 154;
 @property (weak, nonatomic) IBOutlet UIWebView* webView;
 @property (weak, nonatomic) IBOutlet UILabel* descriptionLabel;
 @property (weak, nonatomic) IBOutlet UIView* barView;
-@property (weak, nonatomic) IBOutlet UIView* topActionsView;
-
-@property (strong, nonatomic) VEmotiveBallisticsBarViewController* emotiveBallisticsBar;
 
 @property (strong, nonatomic) MPMoviePlayerController* mpController;
 @property (strong, nonatomic) VNode* currentNode;
@@ -80,6 +77,14 @@ CGFloat kContentMediaViewOffset = 154;
     self.webView.scrollView.scrollEnabled = NO;
     [self.webView setAllowsInlineMediaPlayback:YES];
     [self.webView setMediaPlaybackRequiresUserAction:NO];
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    
+    self.navigationController.navigationBarHidden = YES;
+    self.sequence = self.sequence;
     
     [self.topActionsView setYOrigin:self.mediaView.frame.origin.y];
     self.topActionsView.alpha = 0;
@@ -94,14 +99,6 @@ CGFloat kContentMediaViewOffset = 154;
          self.emotiveBallisticsBar = emotiveBallistics;
          [self.emotiveBallisticsBar animateIn];
      }];
-}
-
-- (void)viewWillAppear:(BOOL)animated
-{
-    [super viewWillAppear:animated];
-    
-    self.navigationController.navigationBarHidden = YES;
-    self.sequence = self.sequence;
 }
 
 - (void)viewWillDisappear:(BOOL)animated

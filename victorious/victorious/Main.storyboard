@@ -910,7 +910,7 @@
                                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                         </state>
                                         <connections>
-                                            <action selector="pressedBack:" destination="4V8-Qd-rfj" eventType="touchUpInside" id="h5A-dl-faP"/>
+                                            <segue destination="ZFi-rh-QOq" kind="unwind" unwindAction="unwindToStreamTable:" id="Fzw-gz-sF0"/>
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Hjq-lN-vqT" userLabel="Comment Button">
@@ -1744,7 +1744,7 @@
         <simulatedScreenMetrics key="destination" type="retina4"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
+        <segue reference="Bar-aP-eCJ"/>
         <segue reference="Sho-vj-RuM"/>
-        <segue reference="jpa-ws-Don"/>
     </inferredMetricsTieBreakers>
 </document>
