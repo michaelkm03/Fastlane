@@ -32,8 +32,8 @@
     UIView *tableContainerView = [UIView autoLayoutView];
     tableContainerView.backgroundColor = [UIColor greenColor];
     [self.view addSubview:tableContainerView];
-    [tableContainerView pinToSuperviewEdges:JRTViewPinLeftEdge|JRTViewPinRightEdge inset:0];
-    [tableContainerView pinEdge:NSLayoutAttributeTop toEdge:NSLayoutAttributeBottom ofItem:self.topLayoutGuide];
+    [tableContainerView pinToSuperviewEdges:JRTViewPinLeftEdge|JRTViewPinRightEdge|NSLayoutAttributeTop inset:0];
+//    [tableContainerView pinEdge:NSLayoutAttributeTop toEdge:NSLayoutAttributeBottom ofItem:self.topLayoutGuide];
     [tableContainerView pinEdge:NSLayoutAttributeBottom toEdge:NSLayoutAttributeTop ofItem:keyboardBarContainerView];
     [tableContainerView addSubview:self.conversationTableViewController.view];
 

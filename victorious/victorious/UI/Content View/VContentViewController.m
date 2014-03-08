@@ -309,7 +309,8 @@ CGFloat kContentMediaViewOffset = 154;
 {
 //    ((UIViewController*)segue.destinationViewController).transitioningDelegate = [[VStreamTransitioningDelegate alloc] init];
 //    ((UIViewController*)segue.destinationViewController).modalPresentationStyle= UIModalPresentationCustom;
-    [self.mpController stop];
+    [self.mpController.view removeFromSuperview];
+    self.mpController = nil;
     [self.webView loadHTMLString:nil baseURL:nil];
     
     if ([segue.identifier isEqualToString:kContentCommentSegueStoryboardID])
@@ -318,5 +319,11 @@ CGFloat kContentMediaViewOffset = 154;
         commentVC.sequence = self.sequence;
     }
 }
+
+- (IBAction)unwindToContentView:(UIStoryboardSegue*)sender
+{
+    
+}
+
 
 @end

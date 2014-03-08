@@ -32,6 +32,7 @@
 
 - (void)viewWillAppear:(BOOL)animated
 {
+    [super viewWillAppear:animated];
     if (animated)
     {
         __block CGFloat originalKeyboardY = self.keyboardBarViewController.view.frame.origin.y;
@@ -48,7 +49,6 @@
                                                   [self.keyboardBarViewController.view setYOrigin:originalKeyboardY];
                                               }];
                          }];
-        
     }
 }
 
