@@ -14,8 +14,10 @@
 #import "VConstants.h"
 #import "VObjectManager+Comment.h"
 #import "UIView+VFrameManipulation.h"
+#import "UIImageView+Blurring.h"
 
 @interface VCommentsContainerViewController() <VCommentsTableViewControllerDelegate>
+@property (strong, nonatomic) UIImageView* backgroundImage;
 @end
 
 @implementation VCommentsContainerViewController
@@ -28,6 +30,16 @@
     VCommentsContainerViewController* commentsContainerViewController = (VCommentsContainerViewController*)[currentViewController.storyboard instantiateViewControllerWithIdentifier: kCommentsContainerStoryboardID];
 
     return commentsContainerViewController;
+}
+
+- (void)setSequence:(VSequence *)sequence
+{
+    _sequence = sequence;
+    UIImageView* backgroundImageView = [[UIImageView alloc] initWithFrame:self.view.frame];
+    [backgroundImageView setLightBlurredImageWithURL:[NSURL URLWithString:_sequence.previewImage]
+                                    placeholderImage:[UIImage imageNamed:@"profile_thumb"]];
+    
+    [self.view insertSubview:backgroundImageView belowSubview:self.keyboardBarViewController.view];
 }
 
 - (void)viewWillAppear:(BOOL)animated

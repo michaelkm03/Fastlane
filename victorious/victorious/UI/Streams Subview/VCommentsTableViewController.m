@@ -59,12 +59,6 @@ static NSString* CommentCache = @"CommentCache";
 {
     [super viewWillLayoutSubviews];
     self.view.frame = self.view.superview.bounds;
-    
-     UIImageView* backgroundImageView = [[UIImageView alloc] initWithFrame:self.tableView.backgroundView.frame];
-     [backgroundImageView setLightBlurredImageWithURL:[NSURL URLWithString:self.sequence.previewImage]
-                                     placeholderImage:[UIImage imageNamed:@"profile_thumb"]];
-     
-     self.tableView.backgroundView = backgroundImageView;
 }
 
 - (void)setSequence:(VSequence *)sequence
