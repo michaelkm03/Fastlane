@@ -1,6 +1,5 @@
 //
-//  SCVideoPlayerView.m
-//  SCAudioVideoRecorder
+//  SCVideoPlayerView
 //
 
 #import "SCVideoPlayerView.h"

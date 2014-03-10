@@ -1,6 +1,5 @@
 //
-//  SCAudioEncoder.h
-//  SCVideoRecorder
+//  SCAudioEncoder
 //
 
 #import <Foundation/Foundation.h>

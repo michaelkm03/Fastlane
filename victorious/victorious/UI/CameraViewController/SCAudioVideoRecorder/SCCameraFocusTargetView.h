@@ -1,6 +1,5 @@
 //
-//  XHCameraTagetView.h
-//  iyilunba
+//  SCCameraFocusTargetView
 //
 
 #import <UIKit/UIKit.h>

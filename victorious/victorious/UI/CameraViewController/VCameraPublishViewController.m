@@ -100,34 +100,21 @@
 {
     if (YES == self.twitterButton.on)
     {
-        ACAccountStore* account = [[ACAccountStore alloc] init];
-        ACAccountType* accountType = [account accountTypeWithAccountTypeIdentifier:ACAccountTypeIdentifierTwitter];
-
-        [account requestAccessToAccountsWithType:accountType options:nil completion:^(BOOL granted, NSError *error)
+        if (![SLComposeViewController isAvailableForServiceType:SLServiceTypeTwitter])
         {
-             if (!granted)
-             {
-                 switch (error.code)
-                 {
-                     case ACErrorAccountNotFound:
-                     {
-                         [self twitterAccessDidFail];
-                         break;
-                     }
-                     default:
-                     {
-                         [self didFailWithError:error];
-                         break;
-                     }
-                 }
-                 self.useTwitter = NO;
-                 return;
-             }
-             else
-             {
-                 self.useTwitter = YES;
-             }
-        }];
+            self.useTwitter = NO;
+            dispatch_async(dispatch_get_main_queue(), ^
+                           {
+                               SLComposeViewController *composeViewController = [SLComposeViewController composeViewControllerForServiceType:SLServiceTypeTwitter];
+                               [self presentViewController:composeViewController animated:NO completion:^{
+                                   [composeViewController dismissViewControllerAnimated:NO completion:nil];
+                               }];
+                           });
+        }
+        else
+        {
+            self.useTwitter = YES;
+        }
     }
 }
 
@@ -135,73 +122,22 @@
 {
     if (YES == self.facebookButton.on)
     {
-        ACAccountStore * const accountStore = [[ACAccountStore alloc] init];
-        ACAccountType * const accountType = [accountStore accountTypeWithAccountTypeIdentifier:ACAccountTypeIdentifierFacebook];
-        
-        [accountStore requestAccessToAccountsWithType:accountType
-                                              options:@{
-                                                        ACFacebookAppIdKey: @"1374328719478033",
-                                                        ACFacebookPermissionsKey: @[@"email"] // Needed for first login
-                                                        }
-                                           completion:^(BOOL granted, NSError *error)
-         {
-             if (!granted)
-             {
-                 switch (error.code)
-                 {
-                     case ACErrorAccountNotFound:
-                     {
-                         [self facebookAccessDidFail];
-                         break;
-                     }
-                     default:
-                     {
-                         [self didFailWithError:error];
-                         break;
-                     }
-                 }
-                 
-                 self.useFacebook = NO;
-                 return;
-             }
-             else
-             {
-                 self.useFacebook = YES;
-             }
-        }];
+        if (![SLComposeViewController isAvailableForServiceType:SLServiceTypeFacebook])
+        {
+            self.useFacebook = NO;
+            dispatch_async(dispatch_get_main_queue(), ^
+                           {
+                               SLComposeViewController *composeViewController = [SLComposeViewController composeViewControllerForServiceType:SLServiceTypeFacebook];
+                               [self presentViewController:composeViewController animated:NO completion:^{
+                                   [composeViewController dismissViewControllerAnimated:NO completion:nil];
+                               }];
+                           });
+        }
+        else
+        {
+            self.useFacebook = YES;
+        }
     }
-}
-
-- (void)facebookAccessDidFail
-{
-    dispatch_async(dispatch_get_main_queue(), ^
-                   {
-                       SLComposeViewController *composeViewController = [SLComposeViewController composeViewControllerForServiceType:SLServiceTypeFacebook];
-                       [self presentViewController:composeViewController animated:NO completion:^{
-                           [composeViewController dismissViewControllerAnimated:NO completion:nil];
-                       }];
-                   });
-}
-
-- (void)twitterAccessDidFail
-{
-    dispatch_async(dispatch_get_main_queue(), ^
-                   {
-                       SLComposeViewController *composeViewController = [SLComposeViewController composeViewControllerForServiceType:SLServiceTypeTwitter];
-                       [self presentViewController:composeViewController animated:NO completion:^{
-                           [composeViewController dismissViewControllerAnimated:NO completion:nil];
-                       }];
-                   });
-}
-
-- (void)didFailWithError:(NSError*)error
-{
-    UIAlertView*    alert   =   [[UIAlertView alloc] initWithTitle:@"Social Link Failure"
-                                                           message:error.localizedDescription
-                                                          delegate:nil
-                                                 cancelButtonTitle:NSLocalizedString(@"OKButton", @"")
-                                                 otherButtonTitles:nil];
-    [alert show];
 }
 
 #pragma mark - Delegates

@@ -1,6 +1,5 @@
 //
-//  SCDataEncoder.m
-//  SCVideoRecorder
+//  SCDataEncoder
 //
 
 #import "SCDataEncoder.h"

@@ -1,6 +1,5 @@
 //
-//  VRVideoRecorder.h
-//  VideoRecorder
+//  SCAudioVideoRecorder
 //
 
 #import <Foundation/Foundation.h>

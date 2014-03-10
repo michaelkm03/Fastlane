@@ -1,6 +1,5 @@
 //
-//  SCCameraFocusView.m
-//  SCAudioVideoRecorder
+//  SCCameraFocusView
 //
 
 #import "SCCameraFocusView.h"
