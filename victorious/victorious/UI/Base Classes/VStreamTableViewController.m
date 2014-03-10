@@ -32,7 +32,7 @@
 #import "VAsset.h"
 
 @interface VStreamTableViewController() <UIViewControllerTransitioningDelegate>
-
+@property (strong, nonatomic) id<UIViewControllerTransitioningDelegate> transitionDelegate;
 @end
 
 @implementation VStreamTableViewController
@@ -41,7 +41,7 @@
 {
     [super viewDidLoad];
     
-    self.transitioningDelegate = self;
+    self.transitionDelegate = [[VStreamTransitioningDelegate alloc] init];
     
     [[NSNotificationCenter defaultCenter]
      addObserver:self selector:@selector(willCommentSequence:)
@@ -300,7 +300,7 @@
 #pragma mark - Navigation
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
-    ((UIViewController*)segue.destinationViewController).transitioningDelegate = [[VStreamTransitioningDelegate alloc] init];
+    ((UIViewController*)segue.destinationViewController).transitioningDelegate = self.transitionDelegate;
     ((UIViewController*)segue.destinationViewController).modalPresentationStyle= UIModalPresentationCustom;
     
     if ([segue.identifier isEqualToString:kStreamContentSegueStoryboardID])

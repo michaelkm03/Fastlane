@@ -8,6 +8,6 @@
 
 #import <Foundation/Foundation.h>
 
-@interface VContentTransitioningDelegate : NSObject
+@interface VContentTransitioningDelegate : NSObject <UIViewControllerTransitioningDelegate>
 
 @end

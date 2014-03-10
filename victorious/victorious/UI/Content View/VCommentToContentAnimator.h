@@ -8,6 +8,6 @@
 
 #import <Foundation/Foundation.h>
 
-@interface VCommentToContentAnimator : NSObject
+@interface VCommentToContentAnimator : NSObject <UIViewControllerAnimatedTransitioning>
 
 @end

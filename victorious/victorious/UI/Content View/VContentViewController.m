@@ -10,8 +10,10 @@
 
 #import "VConstants.h"
 
-#import "VCommentsContainerViewController.h"
 #import "VEmotiveBallisticsBarViewController.h"
+
+#import "VCommentsContainerViewController.h"
+#import "VContentTransitioningDelegate.h"
 
 #import "VSequence+Fetcher.h"
 #import "VNode+Fetcher.h"
@@ -44,6 +46,8 @@ CGFloat kContentMediaViewOffset = 154;
 @property (strong, nonatomic) VNode* currentNode;
 @property (strong, nonatomic) VAsset* currentAsset;
 
+@property (strong, nonatomic) id<UIViewControllerTransitioningDelegate> transitionDelegate;
+
 @end
 
 @implementation VContentViewController
@@ -68,6 +72,8 @@ CGFloat kContentMediaViewOffset = 154;
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    self.transitionDelegate = [[VContentTransitioningDelegate alloc] init];
     
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(mpLoadStateChanged)
@@ -307,8 +313,8 @@ CGFloat kContentMediaViewOffset = 154;
 #pragma mark - Navigation
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
-//    ((UIViewController*)segue.destinationViewController).transitioningDelegate = [[VStreamTransitioningDelegate alloc] init];
-//    ((UIViewController*)segue.destinationViewController).modalPresentationStyle= UIModalPresentationCustom;
+    ((UIViewController*)segue.destinationViewController).transitioningDelegate = self.transitionDelegate;
+    ((UIViewController*)segue.destinationViewController).modalPresentationStyle= UIModalPresentationCustom;
     [self.mpController.view removeFromSuperview];
     self.mpController = nil;
     [self.webView loadHTMLString:nil baseURL:nil];

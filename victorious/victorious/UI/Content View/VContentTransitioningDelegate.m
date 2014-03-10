@@ -8,6 +8,14 @@
 
 #import "VContentTransitioningDelegate.h"
 
+#import "VCommentToContentAnimator.h"
+
 @implementation VContentTransitioningDelegate
+
+- (id <UIViewControllerAnimatedTransitioning>)animationControllerForDismissedController:(UIViewController *)dismissed
+{
+    VCommentToContentAnimator *animator = [[VCommentToContentAnimator alloc] init];
+    return animator;
+}
 
 @end
