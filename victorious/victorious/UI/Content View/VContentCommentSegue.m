@@ -42,7 +42,6 @@
      }
                      completion:^(BOOL finished)
      {
-         
          [self.sourceViewController presentModalViewController:self.destinationViewController animated:NO];
 //         __block CGFloat originalKeyboardY = commentVC.keyboardBarViewController.view.frame.origin.y;
 //         __block CGFloat originalConvertationX = commentVC.conversationTableViewController.view.frame.origin.y;

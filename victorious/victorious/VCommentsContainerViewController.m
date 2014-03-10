@@ -16,8 +16,11 @@
 #import "UIView+VFrameManipulation.h"
 #import "UIImageView+Blurring.h"
 
-@interface VCommentsContainerViewController() <VCommentsTableViewControllerDelegate>
-@property (strong, nonatomic) UIImageView* backgroundImage;
+@interface VCommentsContainerViewController()
+
+@property (weak, nonatomic) IBOutlet UIButton* backButton;
+@property (weak, nonatomic) IBOutlet UIImageView* backgroundImage;
+
 @end
 
 @implementation VCommentsContainerViewController
@@ -35,11 +38,20 @@
 - (void)setSequence:(VSequence *)sequence
 {
     _sequence = sequence;
-    UIImageView* backgroundImageView = [[UIImageView alloc] initWithFrame:self.view.frame];
-    [backgroundImageView setLightBlurredImageWithURL:[NSURL URLWithString:_sequence.previewImage]
+    [self.backgroundImage setLightBlurredImageWithURL:[NSURL URLWithString:_sequence.previewImage]
+                                    placeholderImage:[UIImage imageNamed:@"profile_thumb"]];
+}
+
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
+    
+    //Load the image on first load
+    [self.backgroundImage setLightBlurredImageWithURL:[NSURL URLWithString:_sequence.previewImage]
                                     placeholderImage:[UIImage imageNamed:@"profile_thumb"]];
     
-    [self.view insertSubview:backgroundImageView belowSubview:self.keyboardBarViewController.view];
+    //Need to manually add this again so it appears over everything else.
+    [self.view addSubview:self.backButton];
 }
 
 - (void)viewWillAppear:(BOOL)animated
