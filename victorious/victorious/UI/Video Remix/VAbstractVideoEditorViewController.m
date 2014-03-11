@@ -46,28 +46,14 @@
 
     AVMutableVideoCompositionLayerInstruction *videolayerInstruction = [AVMutableVideoCompositionLayerInstruction videoCompositionLayerInstructionWithAssetTrack:videoTrack];
     AVAssetTrack *videoAssetTrack = [[aVideoAsset tracksWithMediaType:AVMediaTypeVideo] objectAtIndex:0];
-    UIImageOrientation videoAssetOrientation  = UIImageOrientationUp;
     
     BOOL isVideoAssetPortrait  = NO;
     CGAffineTransform videoTransform = videoAssetTrack.preferredTransform;
     if (videoTransform.a == 0 && videoTransform.b == 1.0 && videoTransform.c == -1.0 && videoTransform.d == 0)
-    {
-        videoAssetOrientation = UIImageOrientationRight;
         isVideoAssetPortrait = YES;
-    }
+
     if (videoTransform.a == 0 && videoTransform.b == -1.0 && videoTransform.c == 1.0 && videoTransform.d == 0)
-    {
-        videoAssetOrientation =  UIImageOrientationLeft;
         isVideoAssetPortrait = YES;
-    }
-    if (videoTransform.a == 1.0 && videoTransform.b == 0 && videoTransform.c == 0 && videoTransform.d == 1.0)
-    {
-        videoAssetOrientation =  UIImageOrientationUp;
-    }
-    if (videoTransform.a == -1.0 && videoTransform.b == 0 && videoTransform.c == 0 && videoTransform.d == -1.0)
-    {
-        videoAssetOrientation = UIImageOrientationDown;
-    }
     
     [videolayerInstruction setTransform:videoAssetTrack.preferredTransform atTime:kCMTimeZero];
     [videolayerInstruction setOpacity:0.0 atTime:timeRange.duration];
@@ -77,7 +63,6 @@
     mainCompositionInst.instructions = @[mainInstruction];
     mainCompositionInst.frameDuration = CMTimeMake(1, 30);
     //  mainCompositionInst.frameDuration = CMTimeMake(1, 30);
-    //  mainCompositionInst.renderSize = CGSizeMake(640, 640);
 
     CGSize naturalSize;
     if(isVideoAssetPortrait)
@@ -138,7 +123,7 @@
     UIImagePickerController*    picker  = [[UIImagePickerController alloc] init];
     picker.sourceType = UIImagePickerControllerSourceTypeSavedPhotosAlbum;
     picker.mediaTypes = [[NSArray alloc] initWithObjects: (NSString *)kUTTypeMovie, nil];
-
+    picker.videoMaximumDuration = 15.0;
     picker.allowsEditing = YES;
     picker.delegate = self;
     

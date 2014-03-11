@@ -12,6 +12,8 @@
 @interface VRemixTrimViewController ()
 @property (nonatomic, assign)   CMTime      start;
 @property (nonatomic, assign)   CMTime      duration;
+
+@property (nonatomic, strong)   AVAssetImageGenerator*  imageGenerator;
 @end
 
 @implementation VRemixTrimViewController
@@ -22,6 +24,9 @@
 	
     self.start  =   kCMTimeZero;
     self.duration = kCMTimeZero;
+    
+    if ([[self.sourceAsset tracksWithMediaType:AVMediaTypeVideo] count] > 0)
+        self.imageGenerator = [AVAssetImageGenerator assetImageGeneratorWithAsset:self.sourceAsset];
 }
 
 #pragma mark - Actions
