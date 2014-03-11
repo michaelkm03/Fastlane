@@ -55,7 +55,6 @@ NSString *kStreamsWillCommentNotification = @"kStreamsWillCommentNotification";
     self.locationLabel.font = [[VThemeManager sharedThemeManager] themedFontForKeyPath:kVStreamLocationFont];
     self.dateLabel.font = [[VThemeManager sharedThemeManager] themedFontForKeyPath:kVStreamDateFont];
     self.descriptionLabel.font = [[VThemeManager sharedThemeManager] themedFontForKeyPath:kVStreamDescriptionFont];
-    
 }
 
 - (void)layoutSubviews
@@ -116,65 +115,24 @@ NSString *kStreamsWillCommentNotification = @"kStreamsWillCommentNotification";
 - (void)firstAnimation
 {
     if (self.animating)
-        [UIView animateWithDuration:.5f
-                         animations:^{
-                             self.animationImage.alpha = 1.0f;
-                         }
-                         completion:^(BOOL finished) {
-                             [self secondAnimation];
-                         }];
-}
-
-- (void)secondAnimation
-{
-    if (self.animating)
-        [UIView animateWithDuration:.3f
-                         animations:^{
-                             self.animationImage.alpha = .3f;
-                         }
-                         completion:^(BOOL finished) {
-                             [self thirdAnimation];
-                         }];
-}
-
-- (void)thirdAnimation
-{
-    if (self.animating)
-        [UIView animateWithDuration:.25f
-                         animations:^{
-                             self.animationImage.alpha = 0.9f;
-                         }
-                         completion:^(BOOL finished) {
-                             [self fourthAnimation];
-                         }];
-}
-
-- (void)fourthAnimation
-{
-    if (self.animating)
-        [UIView animateWithDuration:.2f
-                         animations:^{
-                             self.animationImage.alpha = .3f;
-                         }
-                         completion:^(BOOL finished) {
-                             [self fifthAnimation];
-                         }];
-}
-
-- (void)fifthAnimation
-{
-    if (self.animating)
-        [UIView animateWithDuration:.15f
-                         animations:^{
-                             self.animationImage.alpha = .5f;
-                         }
-                         completion:^(BOOL finished) {
-                             [self performSelector:@selector(firstAnimation) withObject:nil afterDelay:3.5f];
-                         }];
+        [UIView animateKeyframesWithDuration:1.4f delay:0 options:UIViewKeyframeAnimationOptionCalculationModeLinear
+                                  animations:^
+                                  {
+                                      [UIView addKeyframeWithRelativeStartTime:0      relativeDuration:.37f   animations:^{   self.animationImage.alpha = 1;      }];
+                                      [UIView addKeyframeWithRelativeStartTime:.37f   relativeDuration:.21f   animations:^{   self.animationImage.alpha = .3f;    }];
+                                      [UIView addKeyframeWithRelativeStartTime:.58f   relativeDuration:.17f   animations:^{   self.animationImage.alpha = .9f;    }];
+                                      [UIView addKeyframeWithRelativeStartTime:.75f   relativeDuration:.14f   animations:^{   self.animationImage.alpha = .3f;    }];
+                                      [UIView addKeyframeWithRelativeStartTime:.89f   relativeDuration:.11f   animations:^{   self.animationImage.alpha = .5f;    }];
+                                  }
+                                  completion:^(BOOL finished)
+                                  {
+                                      [self performSelector:@selector(firstAnimation) withObject:nil afterDelay:3.5f];
+                                  }];
 }
 
 - (void)stopAnimation
 {
     self.animating = NO;
 }
+
 @end

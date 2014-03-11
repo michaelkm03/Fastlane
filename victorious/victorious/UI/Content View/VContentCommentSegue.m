@@ -20,7 +20,7 @@
 {
     //Custom animation code
     VContentViewController* contentVC = self.sourceViewController;
-    VCommentsContainerViewController* commentVC = self.destinationViewController;
+//    VCommentsContainerViewController* commentVC = self.destinationViewController;
 
     [UIView animateWithDuration:.5f
                      animations:^
@@ -43,25 +43,6 @@
                      completion:^(BOOL finished)
      {
          [self.sourceViewController presentModalViewController:self.destinationViewController animated:NO];
-//         __block CGFloat originalKeyboardY = commentVC.keyboardBarViewController.view.frame.origin.y;
-//         __block CGFloat originalConvertationX = commentVC.conversationTableViewController.view.frame.origin.y;
-//         [commentVC.conversationTableViewController.view setXOrigin:commentVC.view.frame.size.width];
-//         [commentVC.keyboardBarViewController.view setYOrigin:commentVC.view.frame.size.height];
-//
-//         [UIView animateWithDuration:.2f
-//                          animations:^{
-//                              [commentVC.conversationTableViewController.view setXOrigin:originalConvertationX];
-//                               }
-//                          completion:^(BOOL finished) {
-//                              [UIView animateWithDuration:.5f
-//                                               animations:^{
-//                                                   [commentVC.keyboardBarViewController.view setYOrigin:originalKeyboardY];
-//                                               }
-//                                               completion:^(BOOL finished) {
-//                                                   
-//                                                   [self.sourceViewController presentModalViewController:self.destinationViewController animated:NO];
-//                                               }];
-//                          }];
      }];
 }
 

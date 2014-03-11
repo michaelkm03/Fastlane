@@ -8,13 +8,12 @@
 
 #import <UIKit/UIKit.h>
 
-@interface VEmotiveBallisticsBarViewController : UIViewController
+#import "VAnimation.h"
+
+@interface VEmotiveBallisticsBarViewController : UIViewController <VAnimation>
 
 @property (weak, nonatomic) UIView* target;
 
 + (VEmotiveBallisticsBarViewController *)sharedInstance;
-
-- (void)animateIn;
-- (void)animateOut;
 
 @end
