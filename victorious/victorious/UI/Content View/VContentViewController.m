@@ -40,7 +40,7 @@ CGFloat kContentMediaViewOffset = 154;
 @property (weak, nonatomic) IBOutlet UIImageView* secondSmallPreviewImage;
 @property (weak, nonatomic) IBOutlet UIWebView* webView;
 @property (weak, nonatomic) IBOutlet UILabel* descriptionLabel;
-@property (weak, nonatomic) IBOutlet UIView* barView;
+@property (weak, nonatomic) IBOutlet UIView* barContainerView;
 
 @property (strong, nonatomic) MPMoviePlayerController* mpController;
 @property (strong, nonatomic) VNode* currentNode;
@@ -52,16 +52,12 @@ CGFloat kContentMediaViewOffset = 154;
 
 @implementation VContentViewController
 
-- (void) dealloc
-{
-    _emotiveBallisticsBar.target = nil;
-}
-
 + (VContentViewController *)sharedInstance
 {
     static  VContentViewController*   sharedInstance;
     static  dispatch_once_t         onceToken;
-    dispatch_once(&onceToken, ^{
+    dispatch_once(&onceToken,
+    ^{
         UIViewController*   currentViewController = [[UIApplication sharedApplication] delegate].window.rootViewController;
         sharedInstance = (VContentViewController*)[currentViewController.storyboard instantiateViewControllerWithIdentifier: kContentViewStoryboardID];
     });
@@ -99,11 +95,10 @@ CGFloat kContentMediaViewOffset = 154;
      {
          [self.topActionsView setYOrigin:0];
          self.topActionsView.alpha = 1;
-     } completion:^(BOOL finished) {
-         VEmotiveBallisticsBarViewController* emotiveBallistics = [VEmotiveBallisticsBarViewController sharedInstance];
-         emotiveBallistics.target = self.previewImage;
-         self.emotiveBallisticsBar = emotiveBallistics;
-         [self.emotiveBallisticsBar animateIn];
+     }
+                     completion:^(BOOL finished)
+     {
+         [self updateActionBar];
      }];
 }
 
@@ -148,18 +143,58 @@ CGFloat kContentMediaViewOffset = 154;
         [self loadNextAsset];
 }
 
-- (void)setEmotiveBallisticsBar:(VEmotiveBallisticsBarViewController *)emotiveBallisticsBar
+- (void)updateActionBar
 {
-    if (_emotiveBallisticsBar != emotiveBallisticsBar)
+    if (!self.isViewLoaded)
     {
-        [_emotiveBallisticsBar.view removeFromSuperview];
-        [_emotiveBallisticsBar removeFromParentViewController];
+        return;
+    }
+    
+    UIViewController<VAnimation>* newBarViewController;
+    
+    //Find the appropriate target based on what view is hidden
+    UIView* target = !self.webView.hidden ? self.webView : !self.mpController.view.hidden ? self.mpController.view : self.previewImage;
+    
+    if([self.sequence isPoll] )//&& ![self.actionBarViewController isKindOfClass:[VPollAnswerBarViewController class]])
+    {
+//        newBarViewController = [VPollAnswerBarViewController sharedInstance];
+    }
+    else if (![self.actionBarVC isKindOfClass:[VEmotiveBallisticsBarViewController class]])
+    {
+        VEmotiveBallisticsBarViewController* emotiveBallistics = [VEmotiveBallisticsBarViewController sharedInstance];
+        emotiveBallistics.target = target;
+        newBarViewController = emotiveBallistics;
+    }
+    else
+    {
+        ((VEmotiveBallisticsBarViewController*)self.actionBarVC).target = target;//Change the target if we need to
+    }
+    
+    if (self.actionBarVC && newBarViewController)
+    {
+        [self.actionBarVC animateOutWithDuration:.4f
+                                      completion:^(BOOL finished)
+                                      {
+                                          [self.actionBarVC removeFromParentViewController];
+                                          [self.actionBarVC.view removeFromSuperview];
+                                          [self addChildViewController:newBarViewController];
+                                          [newBarViewController didMoveToParentViewController:self];
+                                          [self.barContainerView addSubview:newBarViewController.view];
+                                          self.actionBarVC = newBarViewController;
+                                          
+                                          [self.actionBarVC animateInWithDuration:.4f completion:nil];
+                                      }];
+    }
+    else if (newBarViewController)
+    {
+        [self.actionBarVC removeFromParentViewController];
+        [self.actionBarVC.view removeFromSuperview];
+        [self addChildViewController:newBarViewController];
+        [newBarViewController didMoveToParentViewController:self];
+        [self.barContainerView addSubview:newBarViewController.view];
+        self.actionBarVC = newBarViewController;
         
-        [self addChildViewController:emotiveBallisticsBar];
-        [emotiveBallisticsBar didMoveToParentViewController:self];
-        [self.barView addSubview:emotiveBallisticsBar.view];
-        [_emotiveBallisticsBar animateIn];
-        _emotiveBallisticsBar = emotiveBallisticsBar;
+        [self.actionBarVC animateInWithDuration:.4f completion:nil];
     }
 }
 
@@ -213,7 +248,8 @@ CGFloat kContentMediaViewOffset = 154;
     self.firstSmallPreviewImage.hidden = YES;
     self.secondSmallPreviewImage.hidden = YES;
     self.mpController.view.hidden = YES;
-    self.emotiveBallisticsBar.target = self.previewImage;
+    
+    [self updateActionBar];
 }
 
 
@@ -231,7 +267,8 @@ CGFloat kContentMediaViewOffset = 154;
     VLog(@"pi frame: %@", NSStringFromCGRect(self.previewImage.frame));
     VLog(@"mp frame: %@", NSStringFromCGRect(self.mpController.view.frame));
     [self.mediaView insertSubview:self.mpController.view aboveSubview:self.previewImage];
-    self.emotiveBallisticsBar.target = self.mpController.view;
+    
+    [self updateActionBar];
 }
 
 - (void)mpLoadStateChanged
@@ -265,7 +302,8 @@ CGFloat kContentMediaViewOffset = 154;
     self.secondSmallPreviewImage.hidden = YES;
     self.mpController.view.hidden = YES;
     [self.webView loadWithYoutubeID:self.currentAsset.data];
-    self.emotiveBallisticsBar.target = self.webView;
+    
+    [self updateActionBar];
 }
 
 - (void)webViewDidFinishLoad:(UIWebView *)webView
@@ -276,9 +314,11 @@ CGFloat kContentMediaViewOffset = 154;
 #pragma mark - Button Actions
 - (IBAction)pressedBack:(id)sender
 {
-    [self.emotiveBallisticsBar animateOut];
-    
-    [self performSelector:@selector(backAnimation) withObject:nil afterDelay:.4f];
+    [self.actionBarVC animateOutWithDuration:.4f
+                                  completion:^(BOOL finished)
+                                  {
+                                      [self backAnimation];
+                                  }];
 }
 
 - (void)backAnimation

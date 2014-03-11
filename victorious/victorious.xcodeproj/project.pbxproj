@@ -173,6 +173,7 @@
 		BEB5374818C8FE6400435C29 /* VStreamTransitioningDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = BEB5374718C8FE6400435C29 /* VStreamTransitioningDelegate.m */; };
 		BED4569418BD581800A67160 /* UIWebView+VYoutubeLoading.m in Sources */ = {isa = PBXBuildFile; fileRef = BED4569318BD581800A67160 /* UIWebView+VYoutubeLoading.m */; };
 		BED4569718BD58DE00A67160 /* VAsset+Fetcher.m in Sources */ = {isa = PBXBuildFile; fileRef = BED4569618BD58DE00A67160 /* VAsset+Fetcher.m */; };
+		BEE9C8B618CE4A6B0095C737 /* VPollAnswerBarViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BEE9C8B518CE4A6B0095C737 /* VPollAnswerBarViewController.m */; };
 		BEF2C29618845EF500AAE975 /* VPollResult+RestKit.m in Sources */ = {isa = PBXBuildFile; fileRef = BEF2C29518845EF500AAE975 /* VPollResult+RestKit.m */; };
 		BEF2C29918846FAB00AAE975 /* VConversation.m in Sources */ = {isa = PBXBuildFile; fileRef = BEF2C29818846FAB00AAE975 /* VConversation.m */; };
 		BEF2C2A5188488C000AAE975 /* VUnreadConversation+RestKit.m in Sources */ = {isa = PBXBuildFile; fileRef = BEF2C2A4188488C000AAE975 /* VUnreadConversation+RestKit.m */; };
@@ -494,6 +495,9 @@
 		BED4569318BD581800A67160 /* UIWebView+VYoutubeLoading.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIWebView+VYoutubeLoading.m"; sourceTree = "<group>"; };
 		BED4569518BD58DE00A67160 /* VAsset+Fetcher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "VAsset+Fetcher.h"; sourceTree = "<group>"; };
 		BED4569618BD58DE00A67160 /* VAsset+Fetcher.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "VAsset+Fetcher.m"; sourceTree = "<group>"; };
+		BEE9C8B418CE4A6B0095C737 /* VPollAnswerBarViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VPollAnswerBarViewController.h; path = "UI/Content View/VPollAnswerBarViewController.h"; sourceTree = "<group>"; };
+		BEE9C8B518CE4A6B0095C737 /* VPollAnswerBarViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VPollAnswerBarViewController.m; path = "UI/Content View/VPollAnswerBarViewController.m"; sourceTree = "<group>"; };
+		BEE9C8BC18CE904B0095C737 /* VAnimation.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = VAnimation.h; path = Protocols/VAnimation.h; sourceTree = SOURCE_ROOT; };
 		BEF2C29418845EF500AAE975 /* VPollResult+RestKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "VPollResult+RestKit.h"; sourceTree = "<group>"; };
 		BEF2C29518845EF500AAE975 /* VPollResult+RestKit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "VPollResult+RestKit.m"; sourceTree = "<group>"; };
 		BEF2C29718846FAB00AAE975 /* VConversation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VConversation.h; sourceTree = "<group>"; };
@@ -894,6 +898,7 @@
 				BE171D8B1868BE64004E5202 /* VAppDelegate.m */,
 				3F9B665B188878C60046F826 /* UI */,
 				BE171DD91868C211004E5202 /* Managers */,
+				BEE9C8BB18CE90230095C737 /* Protocols */,
 				BE171DAE1868C211004E5202 /* Categories */,
 				BE171DE91868C211004E5202 /* Models */,
 				BE171D901868BE64004E5202 /* Images.xcassets */,
@@ -1166,8 +1171,18 @@
 				BEB52A7718C02D6600AC5FE4 /* VContentViewController.m */,
 				BEB52A7818C02D6600AC5FE4 /* VEmotiveBallisticsBarViewController.h */,
 				BEB52A7918C02D6600AC5FE4 /* VEmotiveBallisticsBarViewController.m */,
+				BEE9C8B418CE4A6B0095C737 /* VPollAnswerBarViewController.h */,
+				BEE9C8B518CE4A6B0095C737 /* VPollAnswerBarViewController.m */,
 			);
 			name = "Content View";
+			sourceTree = "<group>";
+		};
+		BEE9C8BB18CE90230095C737 /* Protocols */ = {
+			isa = PBXGroup;
+			children = (
+				BEE9C8BC18CE904B0095C737 /* VAnimation.h */,
+			);
+			name = Protocols;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -1489,6 +1504,7 @@
 				BE5C735B187E36E700A3340D /* VNode.m in Sources */,
 				3F91991D187CAF620055FE37 /* VNewsViewController.m in Sources */,
 				3F14C44C18BD2BD0001796B9 /* SCAudioEncoder.m in Sources */,
+				BEE9C8B618CE4A6B0095C737 /* VPollAnswerBarViewController.m in Sources */,
 				BE692B29186E5ED800C71336 /* VStreamViewCell.m in Sources */,
 				BE171E431868CEA0004E5202 /* victoriOS.xcdatamodeld in Sources */,
 				838511C418762DF3007E0316 /* VBadgeLabel.m in Sources */,

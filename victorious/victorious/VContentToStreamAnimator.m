@@ -36,9 +36,11 @@
 {
     VContentViewController *contentVC = (VContentViewController*)[context viewControllerForKey:UITransitionContextFromViewControllerKey];
 
-    [contentVC.emotiveBallisticsBar animateOut];
-    
-    [self performSelector:@selector(secondAnimation:) withObject:context afterDelay:.4f];
+    [contentVC.actionBarVC animateOutWithDuration:.4f
+                                       completion:^(BOOL finished)
+                                        {
+                                            [self secondAnimation:context];
+                                        }];
 }
 
 - (void)secondAnimation:(id<UIViewControllerContextTransitioning>)context

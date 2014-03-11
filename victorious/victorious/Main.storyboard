@@ -999,7 +999,7 @@
                     <connections>
                         <outlet property="backButton" destination="cfP-Ga-rbO" id="JOe-aA-y0m"/>
                         <outlet property="backgroundImage" destination="Xzc-fo-Pc8" id="bwb-2j-hZd"/>
-                        <outlet property="barView" destination="Pce-Lq-Sbm" id="T7y-Tk-UsE"/>
+                        <outlet property="barContainerView" destination="Pce-Lq-Sbm" id="n2G-fA-vJD"/>
                         <outlet property="commentButton" destination="Hjq-lN-vqT" id="5XY-dg-Ys6"/>
                         <outlet property="descriptionLabel" destination="SVt-O0-Xbt" id="CmB-GP-EVp"/>
                         <outlet property="firstSmallPreviewImage" destination="EVH-DQ-EKO" id="sqw-uo-jib"/>
@@ -1724,7 +1724,67 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="neH-vB-TZ9" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-2222" y="-602"/>
+            <point key="canvasLocation" x="-2396" y="-616"/>
+        </scene>
+        <!--Poll Answer Bar View Controller-->
+        <scene sceneID="bVi-Yh-R1f">
+            <objects>
+                <viewController storyboardIdentifier="pollanswerbar" autoresizesArchivedViewToFullSize="NO" id="Pz9-lw-C28" customClass="VPollAnswerBarViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="eI4-jV-fxu"/>
+                        <viewControllerLayoutGuide type="bottom" id="4kK-qP-sdq"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="YN0-go-INq">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="60"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="DDQ-Qa-lGk" userLabel="BackgroundView">
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="60"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" red="0.21176470589999999" green="0.1450980392" blue="0.30588235289999999" alpha="1" colorSpace="calibratedRGB"/>
+                            </view>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Bxp-hr-lFz" userLabel="Positive Emotive">
+                                <rect key="frame" x="0.0" y="0.0" width="160" height="60"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                <state key="normal" title="Answer One">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="pressedPostiveEmotive:" destination="Pz9-lw-C28" eventType="touchUpInside" id="XlA-Zh-drF"/>
+                                </connections>
+                            </button>
+                            <view alpha="0.15000000596046448" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="kNf-Aa-2Eo" userLabel="ShadeView">
+                                <rect key="frame" x="160" y="0.0" width="160" height="60"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                            </view>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="D1I-Wr-6dI" userLabel="Negative Emotive">
+                                <rect key="frame" x="160" y="0.0" width="160" height="60"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                <state key="normal" title="Answer Two">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="pressedNegativeEmotive:" destination="Pz9-lw-C28" eventType="touchUpInside" id="BdF-xw-QEI"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                    </view>
+                    <nil key="simulatedStatusBarMetrics"/>
+                    <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+                    <connections>
+                        <outlet property="backgroundView" destination="DDQ-Qa-lGk" id="GdY-S1-guU"/>
+                        <outlet property="negativeEmotiveButton" destination="D1I-Wr-6dI" id="AtN-iq-YLe"/>
+                        <outlet property="positiveEmotiveButton" destination="Bxp-hr-lFz" id="qUF-4f-Ctg"/>
+                        <outlet property="shadeView" destination="kNf-Aa-2Eo" id="qTv-s5-aUC"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="xDv-wZ-8yQ" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-2047" y="-616"/>
         </scene>
     </scenes>
     <resources>

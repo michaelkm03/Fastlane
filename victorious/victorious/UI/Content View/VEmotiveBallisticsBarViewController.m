@@ -73,7 +73,7 @@
 }
 
 #pragma mark - Animation
-- (void)animateIn
+- (void)animateInWithDuration:(CGFloat)duration completion:(void (^)(BOOL finished))completion
 {   
     [self.backgroundView setXOrigin:self.view.frame.size.width];
     [self.shadeView setXOrigin:self.view.frame.size.width];
@@ -84,49 +84,47 @@
     self.positiveEmotiveLabel.alpha = 0;
     self.negativeEmotiveLabel.alpha = 0;
     
-    [UIView animateWithDuration:.2f
-                     animations:^{
+    [UIView animateWithDuration:duration/2
+                     animations:^
+                     {
                          [self.backgroundView setXOrigin:0];
                          [self.shadeView setXOrigin:self.view.frame.size.width - self.shadeView.frame.size.width];
                      }
-                     completion:^(BOOL finished) {
-                         [self animateInPartTwo];
+                     completion:^(BOOL finished)
+                     {
+                         [UIView animateWithDuration:duration/2
+                                          animations:^
+                                          {
+                                              self.positiveEmotiveLabel.alpha = 1;
+                                              self.negativeEmotiveLabel.alpha = 1;
+                                              
+                                              self.negativeEmotiveButton.alpha = 1;
+                                              self.positiveEmotiveButton.alpha = 1;
+                                          }
+                                          completion:completion];
                      }];
 }
 
-- (void)animateInPartTwo
+- (void)animateOutWithDuration:(CGFloat)duration completion:(void (^)(BOOL finished))completion
 {
-    [UIView animateWithDuration:.2f
-                     animations:^{
-                         self.positiveEmotiveLabel.alpha = 1;
-                         self.negativeEmotiveLabel.alpha = 1;
-                         
-                         self.negativeEmotiveButton.alpha = 1;
-                         self.positiveEmotiveButton.alpha = 1;
-                     }];
-}
-
-- (void)animateOut
-{
-    [UIView animateWithDuration:.2f
-                     animations:^{
+    [UIView animateWithDuration:duration/2
+                     animations:^
+                     {
                          self.positiveEmotiveLabel.alpha = 0;
                          self.negativeEmotiveLabel.alpha = 0;
                          
                          self.negativeEmotiveButton.alpha = 0;
                          self.positiveEmotiveButton.alpha = 0;
                      }
-                     completion:^(BOOL finished) {
-                         [self animateOutPartTwo];
-                     }];
-}
-
-- (void)animateOutPartTwo
-{
-    [UIView animateWithDuration:.2f
-                     animations:^{
-                         [self.backgroundView setXOrigin:self.view.frame.size.width];
-                         [self.shadeView setXOrigin:self.view.frame.size.width];
+                     completion:^(BOOL finished)
+                     {
+                         [UIView animateWithDuration:duration/2
+                                          animations:^
+                                          {
+                                              [self.backgroundView setXOrigin:self.view.frame.size.width];
+                                              [self.shadeView setXOrigin:self.view.frame.size.width];
+                                          }
+                                          completion:completion];
                      }];
 }
 
