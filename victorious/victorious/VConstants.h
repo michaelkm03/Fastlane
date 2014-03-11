@@ -60,4 +60,5 @@ static NSString*   const   kCommentsContainerStoryboardID    = @"commentscontain
 static NSString*   const   kKeyboardBarStoryboardID          = @"keyboardbar";
 
 static NSString*   const   kStreamContentSegueStoryboardID   = @"streamcontent";
+static NSString*   const   kContentCommentSegueStoryboardID   = @"contentcomment";
 

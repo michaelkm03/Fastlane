@@ -130,6 +130,9 @@
 		BE40559418A1828D00092AE1 /* UIButton+VImageLoading.m in Sources */ = {isa = PBXBuildFile; fileRef = BE40559318A1828D00092AE1 /* UIButton+VImageLoading.m */; };
 		BE4055AC18A41F1F00092AE1 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = BE4055A618A41F1F00092AE1 /* Localizable.strings */; };
 		BE4055AD18A41F1F00092AE1 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = BE4055A718A41F1F00092AE1 /* main.m */; };
+		BE46E69418CA742300974DAF /* VContentCommentSegue.m in Sources */ = {isa = PBXBuildFile; fileRef = BE46E69318CA742300974DAF /* VContentCommentSegue.m */; };
+		BE46E69718CA750D00974DAF /* VContentTransitioningDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = BE46E69618CA750D00974DAF /* VContentTransitioningDelegate.m */; };
+		BE46E69A18CA751F00974DAF /* VCommentToContentAnimator.m in Sources */ = {isa = PBXBuildFile; fileRef = BE46E69918CA751F00974DAF /* VCommentToContentAnimator.m */; };
 		BE4B74231880D3850090FF84 /* VComment.m in Sources */ = {isa = PBXBuildFile; fileRef = BE4B74221880D3850090FF84 /* VComment.m */; };
 		BE4B74261880D3850090FF84 /* VAnswer.m in Sources */ = {isa = PBXBuildFile; fileRef = BE4B74251880D3850090FF84 /* VAnswer.m */; };
 		BE55CD15188F316900FE619F /* VObjectManager.m in Sources */ = {isa = PBXBuildFile; fileRef = BE55CD13188F316900FE619F /* VObjectManager.m */; };
@@ -151,8 +154,6 @@
 		BE692B29186E5ED800C71336 /* VStreamViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = BE692B21186E5ED800C71336 /* VStreamViewCell.m */; };
 		BE692B2A186E5ED800C71336 /* VStreamViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = BE692B22186E5ED800C71336 /* VStreamViewCell.xib */; };
 		BE692B50186E60B300C71336 /* VCommentCell.m in Sources */ = {isa = PBXBuildFile; fileRef = BE692B35186E60B300C71336 /* VCommentCell.m */; };
-		BE692B51186E60B300C71336 /* VSequencePlayerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BE692B37186E60B300C71336 /* VSequencePlayerViewController.m */; };
-		BE692B52186E60B300C71336 /* VSequencePlayerViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = BE692B38186E60B300C71336 /* VSequencePlayerViewController.xib */; };
 		BE692B53186E60B300C71336 /* VCommentsTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BE692B3A186E60B300C71336 /* VCommentsTableViewController.m */; };
 		BE6B95FC187C88F700CED4C9 /* VSequence+Fetcher.m in Sources */ = {isa = PBXBuildFile; fileRef = BE6B95FB187C88F700CED4C9 /* VSequence+Fetcher.m */; };
 		BE6C15251880A31A00469BA8 /* VAnswerAction.m in Sources */ = {isa = PBXBuildFile; fileRef = BE6C15241880A31A00469BA8 /* VAnswerAction.m */; };
@@ -417,6 +418,12 @@
 		BE4055A918A41F1F00092AE1 /* stable-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "stable-Info.plist"; path = "Supporting Files/stable-Info.plist"; sourceTree = "<group>"; };
 		BE4055AA18A41F1F00092AE1 /* debug-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "debug-Info.plist"; path = "Supporting Files/debug-Info.plist"; sourceTree = "<group>"; };
 		BE4055AB18A41F1F00092AE1 /* victorious-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "victorious-Prefix.pch"; path = "Supporting Files/victorious-Prefix.pch"; sourceTree = "<group>"; };
+		BE46E69218CA742300974DAF /* VContentCommentSegue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VContentCommentSegue.h; path = "UI/Content View/VContentCommentSegue.h"; sourceTree = "<group>"; };
+		BE46E69318CA742300974DAF /* VContentCommentSegue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VContentCommentSegue.m; path = "UI/Content View/VContentCommentSegue.m"; sourceTree = "<group>"; };
+		BE46E69518CA750D00974DAF /* VContentTransitioningDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VContentTransitioningDelegate.h; path = "UI/Content View/VContentTransitioningDelegate.h"; sourceTree = "<group>"; };
+		BE46E69618CA750D00974DAF /* VContentTransitioningDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VContentTransitioningDelegate.m; path = "UI/Content View/VContentTransitioningDelegate.m"; sourceTree = "<group>"; };
+		BE46E69818CA751F00974DAF /* VCommentToContentAnimator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VCommentToContentAnimator.h; path = "UI/Content View/VCommentToContentAnimator.h"; sourceTree = "<group>"; };
+		BE46E69918CA751F00974DAF /* VCommentToContentAnimator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VCommentToContentAnimator.m; path = "UI/Content View/VCommentToContentAnimator.m"; sourceTree = "<group>"; };
 		BE4B74211880D3850090FF84 /* VComment.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VComment.h; sourceTree = "<group>"; };
 		BE4B74221880D3850090FF84 /* VComment.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VComment.m; sourceTree = "<group>"; };
 		BE4B74241880D3850090FF84 /* VAnswer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VAnswer.h; sourceTree = "<group>"; };
@@ -456,9 +463,6 @@
 		BE692B22186E5ED800C71336 /* VStreamViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VStreamViewCell.xib; sourceTree = "<group>"; };
 		BE692B34186E60B300C71336 /* VCommentCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VCommentCell.h; path = "UI/Streams Subview/VCommentCell.h"; sourceTree = "<group>"; };
 		BE692B35186E60B300C71336 /* VCommentCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VCommentCell.m; path = "UI/Streams Subview/VCommentCell.m"; sourceTree = "<group>"; };
-		BE692B36186E60B300C71336 /* VSequencePlayerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VSequencePlayerViewController.h; path = "UI/Streams Subview/VSequencePlayerViewController.h"; sourceTree = "<group>"; };
-		BE692B37186E60B300C71336 /* VSequencePlayerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VSequencePlayerViewController.m; path = "UI/Streams Subview/VSequencePlayerViewController.m"; sourceTree = "<group>"; };
-		BE692B38186E60B300C71336 /* VSequencePlayerViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = VSequencePlayerViewController.xib; path = "UI/Streams Subview/VSequencePlayerViewController.xib"; sourceTree = "<group>"; };
 		BE692B39186E60B300C71336 /* VCommentsTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VCommentsTableViewController.h; path = "UI/Streams Subview/VCommentsTableViewController.h"; sourceTree = "<group>"; };
 		BE692B3A186E60B300C71336 /* VCommentsTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VCommentsTableViewController.m; path = "UI/Streams Subview/VCommentsTableViewController.m"; sourceTree = "<group>"; };
 		BE6B95FA187C88F700CED4C9 /* VSequence+Fetcher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "VSequence+Fetcher.h"; path = "../VSequence+Fetcher.h"; sourceTree = "<group>"; };
@@ -623,7 +627,6 @@
 		3F9B665C188878D00046F826 /* Common */ = {
 			isa = PBXGroup;
 			children = (
-				BEB52A8218C54C9A00AC5FE4 /* Segues */,
 				3FA217E018AD87B50066E893 /* Categories */,
 				83DC42FC187CDDE600E768E2 /* VConstants.h */,
 				3F9B666518887D000046F826 /* Management */,
@@ -674,6 +677,7 @@
 			isa = PBXGroup;
 			children = (
 				BE692B2B186E5EE000C71336 /* Cells */,
+				BEB52A8218C54C9A00AC5FE4 /* animations */,
 				3F9B666C1888C4390046F826 /* VHomeStreamViewController.h */,
 				3F9B666D1888C4390046F826 /* VHomeStreamViewController.m */,
 				3F9B666F1888C4940046F826 /* VOwnerStreamViewController.h */,
@@ -1090,6 +1094,19 @@
 			path = Models;
 			sourceTree = "<group>";
 		};
+		BE46E69118CA73EC00974DAF /* Animations */ = {
+			isa = PBXGroup;
+			children = (
+				BE46E69218CA742300974DAF /* VContentCommentSegue.h */,
+				BE46E69318CA742300974DAF /* VContentCommentSegue.m */,
+				BE46E69518CA750D00974DAF /* VContentTransitioningDelegate.h */,
+				BE46E69618CA750D00974DAF /* VContentTransitioningDelegate.m */,
+				BE46E69818CA751F00974DAF /* VCommentToContentAnimator.h */,
+				BE46E69918CA751F00974DAF /* VCommentToContentAnimator.m */,
+			);
+			name = Animations;
+			sourceTree = "<group>";
+		};
 		BE692B2B186E5EE000C71336 /* Cells */ = {
 			isa = PBXGroup;
 			children = (
@@ -1114,9 +1131,6 @@
 				BE692B35186E60B300C71336 /* VCommentCell.m */,
 				BEB4C29F187E0778004ECEEF /* VCommentCell.xib */,
 				831C58F71884BD11007C167C /* VOtherCommentCell.xib */,
-				BE692B36186E60B300C71336 /* VSequencePlayerViewController.h */,
-				BE692B37186E60B300C71336 /* VSequencePlayerViewController.m */,
-				BE692B38186E60B300C71336 /* VSequencePlayerViewController.xib */,
 				83D897401881F19D00BD5B8B /* VCommentsContainerViewController.h */,
 				83D897411881F19D00BD5B8B /* VCommentsContainerViewController.m */,
 				BE692B39186E60B300C71336 /* VCommentsTableViewController.h */,
@@ -1162,26 +1176,27 @@
 			name = Cells;
 			sourceTree = "<group>";
 		};
-		BEB52A8218C54C9A00AC5FE4 /* Segues */ = {
+		BEB52A8218C54C9A00AC5FE4 /* animations */ = {
 			isa = PBXGroup;
 			children = (
 				BEB52A8318C5611A00AC5FE4 /* VStreamContentSegue.h */,
 				BEB52A8418C5611A00AC5FE4 /* VStreamContentSegue.m */,
+				BEB5374618C8FE6400435C29 /* VStreamTransitioningDelegate.h */,
+				BEB5374718C8FE6400435C29 /* VStreamTransitioningDelegate.m */,
+				BEB52A8918C80B8700AC5FE4 /* VContentToStreamAnimator.h */,
+				BEB52A8A18C80B8700AC5FE4 /* VContentToStreamAnimator.m */,
 			);
-			name = Segues;
+			name = animations;
 			sourceTree = "<group>";
 		};
 		BED4568918BC4CD700A67160 /* Content View */ = {
 			isa = PBXGroup;
 			children = (
+				BE46E69118CA73EC00974DAF /* Animations */,
 				BEB52A7618C02D6600AC5FE4 /* VContentViewController.h */,
 				BEB52A7718C02D6600AC5FE4 /* VContentViewController.m */,
 				BEB52A7818C02D6600AC5FE4 /* VEmotiveBallisticsBarViewController.h */,
 				BEB52A7918C02D6600AC5FE4 /* VEmotiveBallisticsBarViewController.m */,
-				BEB5374618C8FE6400435C29 /* VStreamTransitioningDelegate.h */,
-				BEB5374718C8FE6400435C29 /* VStreamTransitioningDelegate.m */,
-				BEB52A8918C80B8700AC5FE4 /* VContentToStreamAnimator.h */,
-				BEB52A8A18C80B8700AC5FE4 /* VContentToStreamAnimator.m */,
 			);
 			name = "Content View";
 			sourceTree = "<group>";
@@ -1300,7 +1315,6 @@
 				BEB4C2A0187E0778004ECEEF /* VCommentCell.xib in Resources */,
 				BE692B28186E5ED800C71336 /* VStreamVideoCell.xib in Resources */,
 				83ABAFAF18709DE30069556C /* Roboto-Light.ttf in Resources */,
-				BE692B52186E60B300C71336 /* VSequencePlayerViewController.xib in Resources */,
 				BEB52A7218BF38A400AC5FE4 /* VStreamYoutubeVideoCell.xib in Resources */,
 				83CC444A187DDCA8000C480C /* Roboto-Black.ttf in Resources */,
 				3FA217DF18AAFCFE0066E893 /* cast_outline_black@2x.png in Resources */,
@@ -1436,12 +1450,14 @@
 				3FD7FFC118C69B2200945E5F /* VSetExpirationViewController.m in Sources */,
 				BE5C7352187E36D000A3340D /* VCategory.m in Sources */,
 				3F91991A187CAF310055FE37 /* VMessageViewController.m in Sources */,
+				BE46E69A18CA751F00974DAF /* VCommentToContentAnimator.m in Sources */,
 				BE5C7340187E36CF00A3340D /* VInteraction.m in Sources */,
 				BEF2C2AE188620EE00AAE975 /* VSequence.m in Sources */,
 				BE8C6F4F18B56E70009CFB1C /* VStreamPollCell.m in Sources */,
 				3FD7FFAF18BFD6EF00945E5F /* VCameraPublishViewController.m in Sources */,
 				BE6B95FC187C88F700CED4C9 /* VSequence+Fetcher.m in Sources */,
 				BE40559418A1828D00092AE1 /* UIButton+VImageLoading.m in Sources */,
+				BE46E69718CA750D00974DAF /* VContentTransitioningDelegate.m in Sources */,
 				BEA5BF59187E7E8E0014C3EF /* VObjectManager+DirectMessaging.m in Sources */,
 				3FDEDD0918CE48500028E3F1 /* VRemixPublishViewController.m in Sources */,
 				3FD7FFBB18C14ED400945E5F /* VExpirationPickerTextField.m in Sources */,
@@ -1466,6 +1482,7 @@
 				5FC4DA6A18971155006BA107 /* VLoginWithEmailViewController.m in Sources */,
 				3F9B66711888C4940046F826 /* VOwnerStreamViewController.m in Sources */,
 				3F14C44E18BD2BD0001796B9 /* SCAudioVideoRecorder.m in Sources */,
+				BE46E69418CA742300974DAF /* VContentCommentSegue.m in Sources */,
 				BE171D8C1868BE64004E5202 /* VAppDelegate.m in Sources */,
 				BE171E231868C211004E5202 /* VPaginationStatus.m in Sources */,
 				5FC4DA671897111B006BA107 /* VLoginViewController.m in Sources */,
@@ -1528,7 +1545,6 @@
 				BE171E3A1868C266004E5202 /* NSString+VParseHelp.m in Sources */,
 				3F9B666B1888BE6A0046F826 /* VStreamTableViewController.m in Sources */,
 				3FA217E318AD87F40066E893 /* UIImageView+Blurring.m in Sources */,
-				BE692B51186E60B300C71336 /* VSequencePlayerViewController.m in Sources */,
 				BE4B74261880D3850090FF84 /* VAnswer.m in Sources */,
 				BE171E111868C211004E5202 /* VComment+RestKit.m in Sources */,
 				BE171E0E1868C211004E5202 /* VAnswerAction+RestKit.m in Sources */,

@@ -13,8 +13,14 @@
 #import "VUser.h"
 #import "VConstants.h"
 #import "VObjectManager+Comment.h"
+#import "UIView+VFrameManipulation.h"
+#import "UIImageView+Blurring.h"
 
-@interface VCommentsContainerViewController() <VCommentsTableViewControllerDelegate>
+@interface VCommentsContainerViewController()
+
+@property (weak, nonatomic) IBOutlet UIButton* backButton;
+@property (weak, nonatomic) IBOutlet UIImageView* backgroundImage;
+
 @end
 
 @implementation VCommentsContainerViewController
@@ -27,6 +33,47 @@
     VCommentsContainerViewController* commentsContainerViewController = (VCommentsContainerViewController*)[currentViewController.storyboard instantiateViewControllerWithIdentifier: kCommentsContainerStoryboardID];
 
     return commentsContainerViewController;
+}
+
+- (void)setSequence:(VSequence *)sequence
+{
+    _sequence = sequence;
+    [self.backgroundImage setLightBlurredImageWithURL:[NSURL URLWithString:_sequence.previewImage]
+                                    placeholderImage:[UIImage imageNamed:@"profile_thumb"]];
+}
+
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
+    
+    //Load the image on first load
+    [self.backgroundImage setLightBlurredImageWithURL:[NSURL URLWithString:_sequence.previewImage]
+                                    placeholderImage:[UIImage imageNamed:@"profile_thumb"]];
+    
+    //Need to manually add this again so it appears over everything else.
+    [self.view addSubview:self.backButton];
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    if (animated)
+    {
+        __block CGFloat originalKeyboardY = self.keyboardBarViewController.view.frame.origin.y;
+        __block CGFloat originalConvertationX = self.conversationTableViewController.view.frame.origin.y;
+        [self.conversationTableViewController.view setXOrigin:self.view.frame.size.width];
+        [self.keyboardBarViewController.view setYOrigin:self.view.frame.size.height];
+        [UIView animateWithDuration:.5f
+                         animations:^{
+                             [self.conversationTableViewController.view setXOrigin:originalConvertationX];
+                         }
+                         completion:^(BOOL finished) {
+                             [UIView animateWithDuration:.5f
+                                              animations:^{
+                                                  [self.keyboardBarViewController.view setYOrigin:originalKeyboardY];
+                                              }];
+                         }];
+    }
 }
 
 - (UITableViewController *)conversationTableViewController

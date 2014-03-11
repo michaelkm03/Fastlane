@@ -10,8 +10,10 @@
 
 #import "VConstants.h"
 
-#import "VCommentsContainerViewController.h"
 #import "VEmotiveBallisticsBarViewController.h"
+
+#import "VCommentsContainerViewController.h"
+#import "VContentTransitioningDelegate.h"
 
 #import "VSequence+Fetcher.h"
 #import "VNode+Fetcher.h"
@@ -44,6 +46,8 @@ CGFloat kContentMediaViewOffset = 154;
 @property (strong, nonatomic) VNode* currentNode;
 @property (strong, nonatomic) VAsset* currentAsset;
 
+@property (strong, nonatomic) id<UIViewControllerTransitioningDelegate> transitionDelegate;
+
 @end
 
 @implementation VContentViewController
@@ -68,6 +72,8 @@ CGFloat kContentMediaViewOffset = 154;
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    self.transitionDelegate = [[VContentTransitioningDelegate alloc] init];
     
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(mpLoadStateChanged)
@@ -287,13 +293,6 @@ CGFloat kContentMediaViewOffset = 154;
      }];
 }
 
-- (IBAction)presssedComment:(id)sender
-{
-    VCommentsContainerViewController* commentsTable = [VCommentsContainerViewController commentsContainerView];
-    commentsTable.sequence = self.sequence;
-    [self.navigationController pushViewController:commentsTable animated:YES];
-}
-
 - (IBAction)pressedMore:(id)sender
 {
     //Specced but still no idea what its supposed to do
@@ -310,5 +309,27 @@ CGFloat kContentMediaViewOffset = 154;
     else
         [self.mpController play];
 }
+
+#pragma mark - Navigation
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
+{
+    ((UIViewController*)segue.destinationViewController).transitioningDelegate = self.transitionDelegate;
+    ((UIViewController*)segue.destinationViewController).modalPresentationStyle= UIModalPresentationCustom;
+    [self.mpController.view removeFromSuperview];
+    self.mpController = nil;
+    [self.webView loadHTMLString:nil baseURL:nil];
+    
+    if ([segue.identifier isEqualToString:kContentCommentSegueStoryboardID])
+    {
+        VCommentsContainerViewController* commentVC = segue.destinationViewController;
+        commentVC.sequence = self.sequence;
+    }
+}
+
+- (IBAction)unwindToContentView:(UIStoryboardSegue*)sender
+{
+    
+}
+
 
 @end
