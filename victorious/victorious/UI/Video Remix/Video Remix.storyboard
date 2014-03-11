@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="4514" systemVersion="13C64" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="114-OG-c2P">
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3747"/>
+    </dependencies>
+    <scenes>
+        <!--Navigation Controller-->
+        <scene sceneID="H55-oU-1Tc">
+            <objects>
+                <navigationController definesPresentationContext="YES" id="114-OG-c2P" sceneMemberID="viewController">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="53o-Gk-f9c">
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <connections>
+                        <segue destination="uEv-AE-duX" kind="relationship" relationship="rootViewController" id="mjm-sN-ki8"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="gxY-lr-fMS" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="55" y="84"/>
+        </scene>
+        <!--Remix Trim View Controller-->
+        <scene sceneID="n0d-Gw-mVR">
+            <objects>
+                <viewController storyboardIdentifier="remixTrim" useStoryboardIdentifierAsRestorationIdentifier="YES" id="uEv-AE-duX" customClass="VRemixTrimViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="209-HU-njC"/>
+                        <viewControllerLayoutGuide type="bottom" id="Swv-TE-YEJ"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="rlV-Dy-AD0">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                    </view>
+                    <navigationItem key="navigationItem" id="oAM-sY-FT0">
+                        <barButtonItem key="leftBarButtonItem" image="cameraButtonClose" id="3FT-1D-ihZ"/>
+                        <barButtonItem key="rightBarButtonItem" image="cameraButtonNext" id="ilm-gl-YWp">
+                            <connections>
+                                <segue destination="vMj-SS-k4u" kind="push" identifier="toStich" id="g8I-J2-M1C"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="wnF-CF-yIs" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="482" y="84"/>
+        </scene>
+        <!--Remix Stitch View Controller-->
+        <scene sceneID="te2-Fv-6MP">
+            <objects>
+                <viewController storyboardIdentifier="remixStitch" useStoryboardIdentifierAsRestorationIdentifier="YES" id="vMj-SS-k4u" customClass="VRemixStitchViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="Dfd-WY-qkq"/>
+                        <viewControllerLayoutGuide type="bottom" id="JHh-6N-mFv"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="qxj-pc-qzn">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                    </view>
+                    <navigationItem key="navigationItem" id="DLc-3A-J8B">
+                        <barButtonItem key="rightBarButtonItem" image="cameraButtonNext" id="8ZA-Jm-6zK">
+                            <connections>
+                                <segue destination="fIP-KN-BNE" kind="push" id="Kec-MB-DFj"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="8Xy-hU-i96" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="906" y="84"/>
+        </scene>
+        <!--Remix Publish View Controller-->
+        <scene sceneID="Nh3-3P-EUf">
+            <objects>
+                <viewController storyboardIdentifier="remixPublish" useStoryboardIdentifierAsRestorationIdentifier="YES" id="fIP-KN-BNE" customClass="VRemixPublishViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="TUr-b6-L5X"/>
+                        <viewControllerLayoutGuide type="bottom" id="Q4X-dc-P9F"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="3UV-mQ-Jx4">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                    </view>
+                    <navigationItem key="navigationItem" id="3l2-hl-qdR">
+                        <barButtonItem key="rightBarButtonItem" systemItem="done" id="upj-rR-y9E"/>
+                    </navigationItem>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Ojh-hu-TbZ" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1327" y="84"/>
+        </scene>
+    </scenes>
+    <resources>
+        <image name="cameraButtonClose" width="24" height="24"/>
+        <image name="cameraButtonNext" width="24" height="24"/>
+    </resources>
+    <simulatedMetricsContainer key="defaultSimulatedMetrics">
+        <simulatedStatusBarMetrics key="statusBar"/>
+        <simulatedOrientationMetrics key="orientation"/>
+        <simulatedScreenMetrics key="destination" type="retina4"/>
+    </simulatedMetricsContainer>
+</document>
