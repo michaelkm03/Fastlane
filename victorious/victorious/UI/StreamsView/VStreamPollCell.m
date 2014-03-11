@@ -43,7 +43,7 @@ static NSString* kOrIconImage = @"orIconImage";
 - (void)awakeFromNib
 {
     [super awakeFromNib];
- 
+    
     NSMutableArray* animationImages = [[NSMutableArray alloc] initWithCapacity:40];
     for (int i = 1; i < 40; i++)
     {
@@ -62,6 +62,7 @@ static NSString* kOrIconImage = @"orIconImage";
     self.animationImage.animationDuration = 1.2f;
     self.animationImage.animationRepeatCount = 1;
 }
+
 - (void)setSequence:(VSequence *)sequence
 {
     [super setSequence:sequence];
