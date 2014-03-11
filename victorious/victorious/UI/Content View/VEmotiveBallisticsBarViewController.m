@@ -171,8 +171,8 @@
     
     point = [self.target convertPoint:point toView:self.view];
     __block UIImageView* thrownImage = [[UIImageView alloc] initWithImage:emotive.imageView.image];
-    thrownImage.frame = emotive.frame;
-    
+    thrownImage.frame = CGRectMake(0, 0, 160, 160);
+    thrownImage.center = emotive.center;
     
     NSMutableArray* emotiveAnimations = [[NSMutableArray alloc] initWithCapacity:13];
     for (int i = 0; i < 17; i++)
