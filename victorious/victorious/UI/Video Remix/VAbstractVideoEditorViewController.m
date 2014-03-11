@@ -8,7 +8,7 @@
 
 #import "VAbstractVideoEditorViewController.h"
 
-@interface VAbstractVideoEditorViewController ()
+@interface VAbstractVideoEditorViewController ()    <UIImagePickerControllerDelegate, UINavigationControllerDelegate>
 @end
 
 @implementation VAbstractVideoEditorViewController
@@ -24,7 +24,7 @@
 {
 }
 
-#pragma mark - Support
+#pragma mark - Compositing Support
 
 - (void)processVideo:(AVAsset *)aVideoAsset timeRange:(CMTimeRange)aTimeRange
 {
@@ -118,13 +118,52 @@
     strcpy(tempFileNameCString, tempFileTemplateCString);
     int fileDescriptor = mkstemps(tempFileNameCString, 4);
     
-    // no need to keep it open
     close(fileDescriptor);
     
     NSString *tempFileName = [[NSFileManager defaultManager] stringWithFileSystemRepresentation:tempFileNameCString length:strlen(tempFileNameCString)];
     free(tempFileNameCString);
     
     return [NSURL fileURLWithPath:tempFileName];
+}
+
+#pragma mark - Video Selection Support
+
+- (BOOL)startMediaBrowserFromViewController:(UIViewController*)controller
+{
+    if (([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeSavedPhotosAlbum] == NO) || (controller == nil))
+    {
+        return NO;
+    }
+    
+    UIImagePickerController*    picker  = [[UIImagePickerController alloc] init];
+    picker.sourceType = UIImagePickerControllerSourceTypeSavedPhotosAlbum;
+    picker.mediaTypes = [[NSArray alloc] initWithObjects: (NSString *)kUTTypeMovie, nil];
+
+    picker.allowsEditing = YES;
+    picker.delegate = self;
+    
+    [controller presentViewController:picker animated:YES completion:nil];
+    return YES;
+}
+
+- (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info
+{
+    [self dismissViewControllerAnimated:YES completion:nil];
+    
+    if (CFStringCompare((__bridge_retained CFStringRef)info[UIImagePickerControllerMediaType], kUTTypeMovie, 0) == kCFCompareEqualTo)
+    {
+        [self didSelectVideo:[AVAsset assetWithURL:info[UIImagePickerControllerMediaURL]]];
+    }
+}
+
+- (void)didSelectVideo:(AVAsset *)asset
+{
+    
+}
+
+- (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker
+{
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 @end

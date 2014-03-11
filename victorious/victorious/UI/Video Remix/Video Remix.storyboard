@@ -61,7 +61,7 @@
                     <navigationItem key="navigationItem" id="DLc-3A-J8B">
                         <barButtonItem key="rightBarButtonItem" image="cameraButtonNext" id="8ZA-Jm-6zK">
                             <connections>
-                                <segue destination="fIP-KN-BNE" kind="push" id="Kec-MB-DFj"/>
+                                <segue destination="fIP-KN-BNE" kind="push" identifier="toPublish" id="Kec-MB-DFj"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>

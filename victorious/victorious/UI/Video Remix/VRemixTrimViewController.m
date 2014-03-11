@@ -7,13 +7,11 @@
 //
 
 #import "VRemixTrimViewController.h"
+#import "VRemixStitchViewController.h"
 
 @interface VRemixTrimViewController ()
-@property (nonatomic, weak) IBOutlet    UIActivityIndicatorView*    activityIndicator;
-
-@property (nonatomic, strong)           AVAsset*                    asset;
-@property (nonatomic, assign)           CMTime                      start;
-@property (nonatomic, assign)           CMTime                      duration;
+@property (nonatomic, assign)   CMTime      start;
+@property (nonatomic, assign)   CMTime      duration;
 @end
 
 @implementation VRemixTrimViewController
@@ -26,18 +24,12 @@
     self.duration = kCMTimeZero;
 }
 
-- (void)didReceiveMemoryWarning
-{
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
-}
-
 #pragma mark - Actions
 
 - (IBAction)nextButtonClicked:(id)sender
 {
     [self.activityIndicator startAnimating];
-    [self processVideo:self.asset timeRange:CMTimeRangeMake(self.start, self.duration)];
+    [self processVideo:self.sourceAsset timeRange:CMTimeRangeMake(self.start, self.duration)];
 }
 
 #pragma mark - Video Processing
@@ -45,7 +37,18 @@
 - (void)processVideoDidFinishWithURL:(NSURL *)aURL
 {
     [self.activityIndicator stopAnimating];
+    self.outputURL = aURL;
     [self performSegueWithIdentifier:@"toStich" sender:self];
+}
+
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
+{
+    if ([segue.identifier isEqualToString:@"toStich"])
+    {
+        VRemixStitchViewController*     stitchViewController = (VRemixStitchViewController *)segue.destinationViewController;
+        stitchViewController.sourceAsset = [AVAsset assetWithURL:self.outputURL];
+        stitchViewController.addAudio = self.addAudio;
+    }
 }
 
 @end

@@ -10,15 +10,20 @@
 
 @interface VAbstractVideoEditorViewController : UIViewController
 
-@property (nonatomic, strong)       NSURL*  sourceURL;
-@property (nonatomic, readwrite)    BOOL    addAudio;
+@property (nonatomic, weak) IBOutlet    UIActivityIndicatorView*    activityIndicator;
+
+@property (nonatomic, strong)   AVAsset*    sourceAsset;
+@property (nonatomic)           BOOL        addAudio;
+@property (nonatomic, strong)   NSURL*      outputURL;
 
 - (void)processVideo:(AVAsset *)aVideoAsset timeRange:(CMTimeRange)aTimeRange;
 
 - (void)applyVideoEffectsToComposition:(AVMutableVideoComposition *)composition size:(CGSize)size;
 - (void)processVideoDidFinishWithURL:(NSURL *)aURL;
 
-- (NSURL *)exportFileURL;
+- (BOOL)startMediaBrowserFromViewController:(UIViewController*)controller;
+
 - (void)exportDidFinish:(AVAssetExportSession*)session;
+- (NSURL *)exportFileURL;
 
 @end
