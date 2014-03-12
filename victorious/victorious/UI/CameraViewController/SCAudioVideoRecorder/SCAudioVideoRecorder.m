@@ -18,7 +18,7 @@ NSString * const SCAudioVideoRecorderPhotoJPEGKey = @"SCAudioVideoRecorderPhotoJ
 NSString * const SCAudioVideoRecorderPhotoImageKey = @"SCAudioVideoRecorderPhotoImageKey";
 NSString * const SCAudioVideoRecorderPhotoThumbnailKey = @"SCAudioVideoRecorderPhotoThumbnailKey";
 
-static CGFloat const SCAudioVideoRecorderThumbnailWidth = 160.0f;
+//static CGFloat const SCAudioVideoRecorderThumbnailWidth = 160.0f;
 
 ////////////////////////////////////////////////////////////
 // PRIVATE DEFINITION

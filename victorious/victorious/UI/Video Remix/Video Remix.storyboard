@@ -66,7 +66,7 @@
                         </barButtonItem>
                     </navigationItem>
                     <connections>
-                        <segue destination="YI1-UH-sNO" kind="modal" id="tdT-NE-hOY"/>
+                        <segue destination="YI1-UH-sNO" kind="modal" identifier="toCapture" id="tdT-NE-hOY"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="8Xy-hU-i96" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -104,7 +104,7 @@
                     <navigationItem key="navigationItem" id="rkg-9n-voA">
                         <barButtonItem key="rightBarButtonItem" image="cameraButtonNext" id="nln-6L-eOy">
                             <connections>
-                                <segue destination="g0X-7V-rZd" kind="push" id="KFr-MU-Mro"/>
+                                <segue destination="g0X-7V-rZd" kind="push" identifier="toPreview" id="KFr-MU-Mro"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
