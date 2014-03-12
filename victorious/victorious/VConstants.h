@@ -56,6 +56,7 @@ static NSString*   const   kCommunityStreamStoryboardID      = @"communitystream
 static NSString*   const   kForumStreamStoryboardID          = @"forumstream";
 static NSString*   const   kContentViewStoryboardID          = @"content";
 static NSString*   const   kEmotiveBallisticsBarStoryboardID = @"emotiveballistics";
+static NSString*   const   kPollAnswerBarStoryboardID        = @"pollanswerbar";
 static NSString*   const   kCommentsContainerStoryboardID    = @"commentscontainer";
 static NSString*   const   kKeyboardBarStoryboardID          = @"keyboardbar";
 

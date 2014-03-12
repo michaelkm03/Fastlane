@@ -30,6 +30,7 @@
 
 - (NSArray*)categoriesForOption:(NSUInteger)searchOption
 {
+//    return @[kVOwnerPollCategory, kVUGCPollCategory];
     switch (searchOption)
     {
         case VStreamFilterPolls:
