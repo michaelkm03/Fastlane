@@ -9,7 +9,7 @@
 #import "VPollAnswerBarViewController.h"
 
 #import "UIView+VFrameManipulation.h"
-
+#import "VConstants.h"
 @interface VPollAnswerBarViewController ()
 
 @property (weak, nonatomic) IBOutlet UIButton* positiveEmotiveButton;
@@ -22,25 +22,16 @@
 
 @implementation VPollAnswerBarViewController
 
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
++ (VPollAnswerBarViewController *)sharedInstance
 {
-    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
-    if (self) {
-        // Custom initialization
-    }
-    return self;
-}
-
-- (void)viewDidLoad
-{
-    [super viewDidLoad];
-	// Do any additional setup after loading the view.
-}
-
-- (void)didReceiveMemoryWarning
-{
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
+    static  VPollAnswerBarViewController*   sharedInstance;
+    static  dispatch_once_t         onceToken;
+    dispatch_once(&onceToken, ^{
+        UIViewController*   currentViewController = [[UIApplication sharedApplication] delegate].window.rootViewController;
+        sharedInstance = (VPollAnswerBarViewController*)[currentViewController.storyboard instantiateViewControllerWithIdentifier: kPollAnswerBarStoryboardID];
+    });
+    
+    return sharedInstance;
 }
 
 #pragma mark - Animation

@@ -12,4 +12,6 @@
 
 @interface VPollAnswerBarViewController : UIViewController <VAnimation>
 
++ (VPollAnswerBarViewController *)sharedInstance;
+
 @end

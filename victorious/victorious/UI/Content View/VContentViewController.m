@@ -11,6 +11,7 @@
 #import "VConstants.h"
 
 #import "VEmotiveBallisticsBarViewController.h"
+#import "VPollAnswerBarViewController.h"
 
 #import "VCommentsContainerViewController.h"
 #import "VContentTransitioningDelegate.h"
@@ -157,7 +158,7 @@ CGFloat kContentMediaViewOffset = 154;
     
     if([self.sequence isPoll] )//&& ![self.actionBarViewController isKindOfClass:[VPollAnswerBarViewController class]])
     {
-//        newBarViewController = [VPollAnswerBarViewController sharedInstance];
+        newBarViewController = [VPollAnswerBarViewController sharedInstance];
     }
     else if (![self.actionBarVC isKindOfClass:[VEmotiveBallisticsBarViewController class]])
     {
@@ -265,7 +266,7 @@ CGFloat kContentMediaViewOffset = 154;
     self.mpController.scalingMode = MPMovieScalingModeAspectFill;
     self.mpController.view.frame = self.previewImage.frame;
     VLog(@"pi frame: %@", NSStringFromCGRect(self.previewImage.frame));
-    VLog(@"mp frame: %@", NSStringFromCGRect(self.mpController.view.frame));
+    VLog(@"mp nat size: %@", NSStringFromCGSize(self.mpController.naturalSize));
     [self.mediaView insertSubview:self.mpController.view aboveSubview:self.previewImage];
     
     [self updateActionBar];
@@ -275,6 +276,12 @@ CGFloat kContentMediaViewOffset = 154;
 {
     if (self.mpController.loadState == MPMovieLoadStatePlayable)
     {
+        VLog(@"mp nat size: %@", NSStringFromCGSize(self.mpController.naturalSize));
+        CGFloat yRatio = self.mpController.naturalSize.height / self.mpController.naturalSize.width;
+        CGFloat videoHeight = self.previewImage.frame.size.height * yRatio;
+        self.mpController.view.frame = CGRectMake(self.previewImage.frame.origin.x, self.previewImage.frame.origin.y,
+                                                  self.previewImage.frame.size.width, videoHeight);
+        
         self.mpController.view.hidden = NO;
         [self.mpController play];
     }
