@@ -7,7 +7,7 @@
 //
 
 #import "VRemixStitchViewController.h"
-#import "VRemixPublishViewController.h"
+#import "VRemixCaptionViewController.h"
 
 @interface VRemixStitchViewController ()
 @property (nonatomic, strong)   AVAsset*    beforeAsset;
@@ -36,141 +36,47 @@
 - (void)processVideo:(AVAsset *)anAsset beforeAsset:(AVAsset *)beforeAsset afterAsset:(AVAsset *)afterAsset
 {
     AVMutableComposition*   composition = [[AVMutableComposition alloc] init];
+    CMTime                  startTime   = kCMTimeZero;
 
     AVMutableCompositionTrack*  beforeVideoTrack = nil;
     if (self.beforeAsset)
     {
-        beforeVideoTrack = [composition addMutableTrackWithMediaType:AVMediaTypeVideo preferredTrackID:kCMPersistentTrackID_Invalid];
-        [beforeVideoTrack insertTimeRange:CMTimeRangeMake(kCMTimeZero, self.beforeAsset.duration) ofTrack:[[self.beforeAsset tracksWithMediaType:AVMediaTypeVideo] objectAtIndex:0] atTime:kCMTimeZero error:nil];
-
-        if (self.addAudio)
-        {
-            AVMutableCompositionTrack*  beforeAudioTrack = [composition addMutableTrackWithMediaType:AVMediaTypeAudio preferredTrackID:kCMPersistentTrackID_Invalid];
-            [beforeAudioTrack insertTimeRange:CMTimeRangeMake(kCMTimeZero, self.beforeAsset.duration) ofTrack:[[self.beforeAsset tracksWithMediaType:AVMediaTypeAudio] objectAtIndex:0] atTime:kCMTimeZero error:nil];
-        }
+        beforeVideoTrack = [self insertTimeRange:CMTimeRangeMake(kCMTimeZero, beforeAsset.duration) ofAsset:beforeAsset inComposition:composition atTime:startTime];
+        startTime = CMTimeAdd(startTime, beforeAsset.duration);
     }
 
-    AVMutableCompositionTrack*  mainVideoTrack = [composition addMutableTrackWithMediaType:AVMediaTypeVideo preferredTrackID:kCMPersistentTrackID_Invalid];
-    [mainVideoTrack insertTimeRange:CMTimeRangeMake(kCMTimeZero, anAsset.duration) ofTrack:[[anAsset tracksWithMediaType:AVMediaTypeVideo] objectAtIndex:0] atTime:kCMTimeZero error:nil];
+    AVMutableCompositionTrack*  mainVideoTrack = [self insertTimeRange:CMTimeRangeMake(kCMTimeZero, anAsset.duration) ofAsset:anAsset inComposition:composition atTime:startTime];
+    startTime = CMTimeAdd(startTime, anAsset.duration);
     
-    if (self.addAudio)
-    {
-        AVMutableCompositionTrack*  mainAudioTrack = [composition addMutableTrackWithMediaType:AVMediaTypeAudio preferredTrackID:kCMPersistentTrackID_Invalid];
-        [mainAudioTrack insertTimeRange:CMTimeRangeMake(kCMTimeZero, anAsset.duration) ofTrack:[[anAsset tracksWithMediaType:AVMediaTypeAudio] objectAtIndex:0] atTime:kCMTimeZero error:nil];
-    }
-
     AVMutableCompositionTrack*  afterVideoTrack = nil;
     if (self.afterAsset)
     {
-        afterVideoTrack = [composition addMutableTrackWithMediaType:AVMediaTypeVideo preferredTrackID:kCMPersistentTrackID_Invalid];
-        [afterVideoTrack insertTimeRange:CMTimeRangeMake(kCMTimeZero, afterAsset.duration) ofTrack:[[self.afterAsset tracksWithMediaType:AVMediaTypeVideo] objectAtIndex:0] atTime:kCMTimeZero error:nil];
-        
-        if (self.addAudio)
-        {
-            AVMutableCompositionTrack*  afterAudioTrack = [composition addMutableTrackWithMediaType:AVMediaTypeAudio preferredTrackID:kCMPersistentTrackID_Invalid];
-            [afterAudioTrack insertTimeRange:CMTimeRangeMake(kCMTimeZero, self.afterAsset.duration) ofTrack:[[self.afterAsset tracksWithMediaType:AVMediaTypeAudio] objectAtIndex:0] atTime:kCMTimeZero error:nil];
-        }
+        afterVideoTrack = [self insertTimeRange:CMTimeRangeMake(kCMTimeZero, afterAsset.duration) ofAsset:afterAsset inComposition:composition atTime:startTime];
+        startTime = CMTimeAdd(startTime, afterAsset.duration);
     }
 
     AVMutableVideoCompositionInstruction *mainInstruction = [AVMutableVideoCompositionInstruction videoCompositionInstruction];
-    CMTime  totalDuration = anAsset.duration;
-    if (self.beforeAsset)
-        totalDuration = CMTimeAdd(totalDuration, self.beforeAsset.duration);
-    if (self.afterAsset)
-        totalDuration = CMTimeAdd(totalDuration, self.afterAsset.duration);
-    mainInstruction.timeRange = CMTimeRangeMake(kCMTimeZero, totalDuration);
+    mainInstruction.timeRange = CMTimeRangeMake(kCMTimeZero, startTime);
 
     NSMutableArray*     instructions    =   [[NSMutableArray alloc] initWithCapacity:3];
-    CMTime              duration        =   kCMTimeZero;
 
+    startTime   =   kCMTimeZero;
     if (beforeVideoTrack)
     {
-        AVMutableVideoCompositionLayerInstruction*  beforeVideoTrackLayerInstruction = [AVMutableVideoCompositionLayerInstruction videoCompositionLayerInstructionWithAssetTrack:beforeVideoTrack];
-        AVAssetTrack*                               beforeAssetTrack = [[self.beforeAsset tracksWithMediaType:AVMediaTypeVideo] objectAtIndex:0];
-        BOOL                                        isBeforeAssetPortrait  = NO;
-        CGAffineTransform                           beforeTransform = beforeAssetTrack.preferredTransform;
-        
-        duration = self.beforeAsset.duration;
-
-        if (beforeTransform.a == 0 && beforeTransform.b == 1.0 && beforeTransform.c == -1.0 && beforeTransform.d == 0)
-            isBeforeAssetPortrait = YES;
-
-        if (beforeTransform.a == 0 && beforeTransform.b == -1.0 && beforeTransform.c == 1.0 && beforeTransform.d == 0)
-            isBeforeAssetPortrait = YES;
-        
-        CGFloat beforeAssetScaleToFitRatio = 320.0/beforeAssetTrack.naturalSize.width;
-        if (isBeforeAssetPortrait)
-        {
-            beforeAssetScaleToFitRatio = 320.0/beforeAssetTrack.naturalSize.height;
-            CGAffineTransform   beforeAssetScaleFactor = CGAffineTransformMakeScale(beforeAssetScaleToFitRatio, beforeAssetScaleToFitRatio);
-            [beforeVideoTrackLayerInstruction setTransform:CGAffineTransformConcat(beforeAssetTrack.preferredTransform, beforeAssetScaleFactor) atTime:kCMTimeZero];
-        }
-        else
-        {
-            CGAffineTransform beforeAssetScaleFactor = CGAffineTransformMakeScale(beforeAssetScaleToFitRatio, beforeAssetScaleToFitRatio);
-            [beforeVideoTrackLayerInstruction setTransform:CGAffineTransformConcat(CGAffineTransformConcat(beforeAssetTrack.preferredTransform, beforeAssetScaleFactor), CGAffineTransformMakeTranslation(0, 160)) atTime:kCMTimeZero];
-        }
-        [beforeVideoTrackLayerInstruction setOpacity:0.0 atTime:duration];
+        AVMutableVideoCompositionLayerInstruction*  beforeVideoTrackLayerInstruction = [self orientVideoAsset:beforeAsset videoTrack:beforeVideoTrack atTime:startTime totalDuration:beforeAsset.duration];
         [instructions addObject:beforeVideoTrackLayerInstruction];
+        startTime = CMTimeAdd(startTime, beforeAsset.duration);
     }
 
-    AVMutableVideoCompositionLayerInstruction*  mainVideoTracklayerInstruction = [AVMutableVideoCompositionLayerInstruction videoCompositionLayerInstructionWithAssetTrack:mainVideoTrack];
-    AVAssetTrack*                               mainAssetTrack = [[self.sourceAsset tracksWithMediaType:AVMediaTypeVideo] objectAtIndex:0];
-    BOOL                                        isMainAssetPortrait = NO;
-    CGAffineTransform                           mainTransform = self.sourceAsset.preferredTransform;
-    
-    if (mainTransform.a == 0 && mainTransform.b == 1.0 && mainTransform.c == -1.0 && mainTransform.d == 0)
-        isMainAssetPortrait = YES;
-    
-    if (mainTransform.a == 0 && mainTransform.b == -1.0 && mainTransform.c == 1.0 && mainTransform.d == 0)
-        isMainAssetPortrait = YES;
-
-    CGFloat mainAssetScaleToFitRatio = 320.0/mainAssetTrack.naturalSize.width;
-    if (isMainAssetPortrait)
-    {
-        mainAssetScaleToFitRatio = 320.0/mainAssetTrack.naturalSize.height;
-        CGAffineTransform mainAssetScaleFactor = CGAffineTransformMakeScale(mainAssetScaleToFitRatio, mainAssetScaleToFitRatio);
-        [mainVideoTracklayerInstruction setTransform:CGAffineTransformConcat(mainAssetTrack.preferredTransform, mainAssetScaleFactor) atTime:duration];
-    }
-    else
-    {
-        CGAffineTransform mainAssetScaleFactor = CGAffineTransformMakeScale(mainAssetScaleToFitRatio, mainAssetScaleToFitRatio);
-        [mainVideoTracklayerInstruction setTransform:CGAffineTransformConcat(CGAffineTransformConcat(mainAssetTrack.preferredTransform, mainAssetScaleFactor), CGAffineTransformMakeTranslation(0, 160)) atTime:duration];
-    }
-    
-    duration = CMTimeAdd(duration, self.sourceAsset.duration);
-
-    [mainVideoTracklayerInstruction setOpacity:0.0 atTime:duration];
+    AVMutableVideoCompositionLayerInstruction*  mainVideoTracklayerInstruction = [self orientVideoAsset:anAsset videoTrack:mainVideoTrack atTime:startTime totalDuration:CMTimeAdd(startTime, anAsset.duration)];
     [instructions addObject:mainVideoTracklayerInstruction];
+    startTime = CMTimeAdd(startTime, anAsset.duration);
 
     if (afterVideoTrack)
     {
-        AVMutableVideoCompositionLayerInstruction*  afterVideoTrackLayerInstruction = [AVMutableVideoCompositionLayerInstruction videoCompositionLayerInstructionWithAssetTrack:afterVideoTrack];
-        AVAssetTrack*                               afterAssetTrack = [[self.afterAsset tracksWithMediaType:AVMediaTypeVideo] objectAtIndex:0];
-        BOOL                                        isAfterAssetPortrait  = NO;
-        CGAffineTransform                           afterTransform = afterAssetTrack.preferredTransform;
-        
-        if (afterTransform.a == 0 && afterTransform.b == 1.0 && afterTransform.c == -1.0 && afterTransform.d == 0)
-            isAfterAssetPortrait = YES;
-        
-        if (afterTransform.a == 0 && afterTransform.b == -1.0 && afterTransform.c == 1.0 && afterTransform.d == 0)
-            isAfterAssetPortrait = YES;
-
-        CGFloat afterAssetScaleToFitRatio = 320.0/afterAssetTrack.naturalSize.width;
-        if (isAfterAssetPortrait)
-        {
-            afterAssetScaleToFitRatio = 320.0/afterAssetTrack.naturalSize.height;
-            CGAffineTransform afterAssetScaleFactor = CGAffineTransformMakeScale(afterAssetScaleToFitRatio, afterAssetScaleToFitRatio);
-            [afterVideoTrackLayerInstruction setTransform:CGAffineTransformConcat(afterAssetTrack.preferredTransform, afterAssetScaleFactor) atTime:duration];
-        }
-        else
-        {
-            CGAffineTransform afterAssetScaleFactor = CGAffineTransformMakeScale(afterAssetScaleToFitRatio, afterAssetScaleToFitRatio);
-            [afterVideoTrackLayerInstruction setTransform:CGAffineTransformConcat(CGAffineTransformConcat(afterAssetTrack.preferredTransform, afterAssetScaleFactor),CGAffineTransformMakeTranslation(0, 160)) atTime:duration];
-        }
-
-        duration = CMTimeAdd(duration, self.sourceAsset.duration);
+        AVMutableVideoCompositionLayerInstruction*  afterVideoTrackLayerInstruction = [self orientVideoAsset:afterAsset videoTrack:afterVideoTrack atTime:startTime totalDuration:CMTimeAdd(startTime, afterAsset.duration)];
         [instructions addObject:afterVideoTrackLayerInstruction];
+        startTime = CMTimeAdd(startTime, afterAsset.duration);
     }
 
     mainInstruction.layerInstructions = instructions;
@@ -179,23 +85,14 @@
     mainCompositionInst.instructions = @[mainInstruction];
     mainCompositionInst.frameDuration = CMTimeMake(1, 30);
 
-    AVAssetExportSession*   exporter = [[AVAssetExportSession alloc] initWithAsset:composition presetName:AVAssetExportPresetHighestQuality];
-    exporter.outputURL = [self exportFileURL];
-    exporter.outputFileType = AVFileTypeQuickTimeMovie;
-    exporter.shouldOptimizeForNetworkUse = YES;
-    exporter.videoComposition = mainCompositionInst;
-    [exporter exportAsynchronouslyWithCompletionHandler:^{
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [self exportDidFinish:exporter];
-        });
-    }];
+    [self exportComposition:composition videoComposition:mainCompositionInst];
 }
 
 - (void)processVideoDidFinishWithURL:(NSURL *)aURL
 {
     [self.activityIndicator stopAnimating];
     self.outputURL = aURL;
-    [self performSegueWithIdentifier:@"toPublish" sender:self];
+    [self performSegueWithIdentifier:@"toCaption" sender:self];
 }
 
 
@@ -204,7 +101,6 @@
     self.selectingBeforeURL = YES;
     self.selectingAfterURL = NO;
     
-    [self startMediaBrowserFromViewController:self];
 }
 
 - (IBAction)selectAfterAsset:(id)sender
@@ -212,7 +108,6 @@
     self.selectingBeforeURL = NO;
     self.selectingAfterURL = YES;
     
-    [self startMediaBrowserFromViewController:self];
 }
 
 - (void)didSelectVideo:(AVAsset *)asset
@@ -225,11 +120,11 @@
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
-    if ([segue.identifier isEqualToString:@"toPublish"])
+    if ([segue.identifier isEqualToString:@"toCaption"])
     {
-        VRemixPublishViewController*     stitchViewController = (VRemixPublishViewController *)segue.destinationViewController;
-        stitchViewController.sourceAsset = [AVAsset assetWithURL:self.outputURL];
-        stitchViewController.addAudio = self.addAudio;
+        VRemixCaptionViewController*     captionViewController = (VRemixCaptionViewController *)segue.destinationViewController;
+        captionViewController.sourceAsset = [AVAsset assetWithURL:self.outputURL];
+        captionViewController.addAudio = self.addAudio;
     }
 }
 

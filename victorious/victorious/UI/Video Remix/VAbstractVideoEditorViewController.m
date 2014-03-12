@@ -8,7 +8,7 @@
 
 #import "VAbstractVideoEditorViewController.h"
 
-@interface VAbstractVideoEditorViewController ()    <UIImagePickerControllerDelegate, UINavigationControllerDelegate>
+@interface VAbstractVideoEditorViewController ()
 @end
 
 @implementation VAbstractVideoEditorViewController
@@ -28,57 +28,78 @@
 
 - (void)processVideo:(AVAsset *)aVideoAsset timeRange:(CMTimeRange)aTimeRange
 {
-    CMTimeRange             timeRange = CMTIMERANGE_IS_EMPTY(aTimeRange) ? CMTimeRangeMake(kCMTimeZero, aVideoAsset.duration) : aTimeRange;
+    CMTimeRange                 timeRange = CMTIMERANGE_IS_EMPTY(aTimeRange) ? CMTimeRangeMake(kCMTimeZero, aVideoAsset.duration) : aTimeRange;
 
-    AVMutableComposition*   composition = [[AVMutableComposition alloc] init];
-
-    AVMutableCompositionTrack*  videoTrack = [composition addMutableTrackWithMediaType:AVMediaTypeVideo preferredTrackID:kCMPersistentTrackID_Invalid];
-    [videoTrack insertTimeRange:timeRange ofTrack:[[aVideoAsset tracksWithMediaType:AVMediaTypeVideo] objectAtIndex:0] atTime:kCMTimeZero error:nil];
-
-    if (self.addAudio)
-    {
-        AVMutableCompositionTrack*  audioTrack = [composition addMutableTrackWithMediaType:AVMediaTypeAudio preferredTrackID:kCMPersistentTrackID_Invalid];
-        [audioTrack insertTimeRange:timeRange ofTrack:[[aVideoAsset tracksWithMediaType:AVMediaTypeAudio] objectAtIndex:0] atTime:kCMTimeZero error:nil];
-    }
+    AVMutableComposition*       composition = [[AVMutableComposition alloc] init];
+    AVMutableCompositionTrack*  videoTrack = [self insertTimeRange:timeRange ofAsset:aVideoAsset inComposition:composition atTime:kCMTimeZero];
     
     AVMutableVideoCompositionInstruction *mainInstruction = [AVMutableVideoCompositionInstruction videoCompositionInstruction];
     mainInstruction.timeRange = CMTimeRangeMake(kCMTimeZero, aTimeRange.duration);
 
-    AVMutableVideoCompositionLayerInstruction *videolayerInstruction = [AVMutableVideoCompositionLayerInstruction videoCompositionLayerInstructionWithAssetTrack:videoTrack];
-    AVAssetTrack *videoAssetTrack = [[aVideoAsset tracksWithMediaType:AVMediaTypeVideo] objectAtIndex:0];
-    
-    BOOL isVideoAssetPortrait  = NO;
-    CGAffineTransform videoTransform = videoAssetTrack.preferredTransform;
-    if (videoTransform.a == 0 && videoTransform.b == 1.0 && videoTransform.c == -1.0 && videoTransform.d == 0)
-        isVideoAssetPortrait = YES;
-
-    if (videoTransform.a == 0 && videoTransform.b == -1.0 && videoTransform.c == 1.0 && videoTransform.d == 0)
-        isVideoAssetPortrait = YES;
-    
-    [videolayerInstruction setTransform:videoAssetTrack.preferredTransform atTime:kCMTimeZero];
-    [videolayerInstruction setOpacity:0.0 atTime:timeRange.duration];
-
+    AVMutableVideoCompositionLayerInstruction*  videolayerInstruction = [self orientVideoAsset:aVideoAsset videoTrack:videoTrack atTime:kCMTimeZero totalDuration:aTimeRange.duration];
     mainInstruction.layerInstructions = @[videolayerInstruction];
+    
     AVMutableVideoComposition *mainCompositionInst = [AVMutableVideoComposition videoComposition];
     mainCompositionInst.instructions = @[mainInstruction];
     mainCompositionInst.frameDuration = CMTimeMake(1, 30);
-    //  mainCompositionInst.frameDuration = CMTimeMake(1, 30);
 
-    CGSize naturalSize;
-    if(isVideoAssetPortrait)
-        naturalSize = CGSizeMake(videoAssetTrack.naturalSize.height, videoAssetTrack.naturalSize.width);
+    [self applyVideoEffectsToComposition:mainCompositionInst size:composition.naturalSize];
+    [self exportComposition:composition videoComposition:mainCompositionInst];
+}
+
+- (AVMutableCompositionTrack *)insertTimeRange:(CMTimeRange)timeRange ofAsset:(AVAsset *)asset inComposition:(AVMutableComposition *)composition atTime:(CMTime)time
+{
+    AVMutableCompositionTrack*  videoTrack = [composition addMutableTrackWithMediaType:AVMediaTypeVideo preferredTrackID:kCMPersistentTrackID_Invalid];
+    [videoTrack insertTimeRange:timeRange ofTrack:[[asset tracksWithMediaType:AVMediaTypeVideo] objectAtIndex:0] atTime:time error:nil];
+    
+    if (self.addAudio)
+    {
+        AVMutableCompositionTrack*  audioTrack = [composition addMutableTrackWithMediaType:AVMediaTypeAudio preferredTrackID:kCMPersistentTrackID_Invalid];
+        [audioTrack insertTimeRange:timeRange ofTrack:[[asset tracksWithMediaType:AVMediaTypeAudio] objectAtIndex:0] atTime:time error:nil];
+    }
+    
+    return videoTrack;
+}
+
+- (AVMutableVideoCompositionLayerInstruction *)orientVideoAsset:(AVAsset *)asset videoTrack:(AVAssetTrack *)videoTrack atTime:(CMTime)time totalDuration:(CMTime)duration
+{
+    AVMutableVideoCompositionLayerInstruction*  videoTrackLayerInstruction = [AVMutableVideoCompositionLayerInstruction videoCompositionLayerInstructionWithAssetTrack:videoTrack];
+    AVAssetTrack*                               videoAssetTrack = [[asset tracksWithMediaType:AVMediaTypeVideo] objectAtIndex:0];
+
+    BOOL                                        isVideoAssetPortrait  = NO;
+    CGAffineTransform                           videoTransform = videoAssetTrack.preferredTransform;
+    
+    if (videoTransform.a == 0 && videoTransform.b == 1.0 && videoTransform.c == -1.0 && videoTransform.d == 0)
+        isVideoAssetPortrait = YES;
+    
+    if (videoTransform.a == 0 && videoTransform.b == -1.0 && videoTransform.c == 1.0 && videoTransform.d == 0)
+        isVideoAssetPortrait = YES;
+    
+    CGFloat assetScaleToFitRatio = 320.0 / videoAssetTrack.naturalSize.width;
+    if (isVideoAssetPortrait)
+    {
+        assetScaleToFitRatio = 320.0 / videoAssetTrack.naturalSize.height;
+        CGAffineTransform   assetScaleFactor = CGAffineTransformMakeScale(assetScaleToFitRatio, assetScaleToFitRatio);
+        [videoTrackLayerInstruction setTransform:CGAffineTransformConcat(videoAssetTrack.preferredTransform, assetScaleFactor) atTime:time];
+    }
     else
-        naturalSize = videoAssetTrack.naturalSize;
+    {
+        CGAffineTransform assetScaleFactor = CGAffineTransformMakeScale(assetScaleToFitRatio, assetScaleToFitRatio);
+        [videoTrackLayerInstruction setTransform:CGAffineTransformConcat(CGAffineTransformConcat(videoAssetTrack.preferredTransform, assetScaleFactor), CGAffineTransformMakeTranslation(0, 160)) atTime:time];
+    }
+    
+    [videoTrackLayerInstruction setOpacity:0.0 atTime:duration];
+    
+    return videoTrackLayerInstruction;
+}
 
-    mainCompositionInst.renderSize = CGSizeMake(naturalSize.width, naturalSize.height);
-
-    [self applyVideoEffectsToComposition:mainCompositionInst size:naturalSize];
-
+- (void)exportComposition:(AVMutableComposition *)composition videoComposition:(AVMutableVideoComposition *)videoComposition
+{
     AVAssetExportSession*   exporter = [[AVAssetExportSession alloc] initWithAsset:composition presetName:AVAssetExportPresetHighestQuality];
     exporter.outputURL = [self exportFileURL];
     exporter.outputFileType = AVFileTypeQuickTimeMovie;
     exporter.shouldOptimizeForNetworkUse = YES;
-    exporter.videoComposition = mainCompositionInst;
+    exporter.videoComposition = videoComposition;
     [exporter exportAsynchronouslyWithCompletionHandler:^{
         dispatch_async(dispatch_get_main_queue(), ^{
             [self exportDidFinish:exporter];
@@ -109,46 +130,6 @@
     free(tempFileNameCString);
     
     return [NSURL fileURLWithPath:tempFileName];
-}
-
-#pragma mark - Video Selection Support
-
-- (BOOL)startMediaBrowserFromViewController:(UIViewController*)controller
-{
-    if (([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeSavedPhotosAlbum] == NO) || (controller == nil))
-    {
-        return NO;
-    }
-    
-    UIImagePickerController*    picker  = [[UIImagePickerController alloc] init];
-    picker.sourceType = UIImagePickerControllerSourceTypeSavedPhotosAlbum;
-    picker.mediaTypes = [[NSArray alloc] initWithObjects: (NSString *)kUTTypeMovie, nil];
-    picker.videoMaximumDuration = 15.0;
-    picker.allowsEditing = YES;
-    picker.delegate = self;
-    
-    [controller presentViewController:picker animated:YES completion:nil];
-    return YES;
-}
-
-- (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info
-{
-    [self dismissViewControllerAnimated:YES completion:nil];
-    
-    if (CFStringCompare((__bridge_retained CFStringRef)info[UIImagePickerControllerMediaType], kUTTypeMovie, 0) == kCFCompareEqualTo)
-    {
-        [self didSelectVideo:[AVAsset assetWithURL:info[UIImagePickerControllerMediaURL]]];
-    }
-}
-
-- (void)didSelectVideo:(AVAsset *)asset
-{
-    
-}
-
-- (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker
-{
-    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 @end
