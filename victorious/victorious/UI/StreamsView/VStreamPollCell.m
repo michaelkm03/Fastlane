@@ -30,7 +30,6 @@ static NSString* kOrIconImage = @"orIconImage";
 @property (nonatomic, copy) NSString* firstAssetUrl;
 @property (nonatomic, copy) NSString* secondAssetUrl;
 
-@property (nonatomic) BOOL animating;
 @end
 
 @implementation VStreamPollCell
