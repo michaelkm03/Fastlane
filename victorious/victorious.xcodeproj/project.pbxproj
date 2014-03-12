@@ -159,6 +159,7 @@
 		BE6C15251880A31A00469BA8 /* VAnswerAction.m in Sources */ = {isa = PBXBuildFile; fileRef = BE6C15241880A31A00469BA8 /* VAnswerAction.m */; };
 		BE6C15281880A31B00469BA8 /* VAsset.m in Sources */ = {isa = PBXBuildFile; fileRef = BE6C15271880A31B00469BA8 /* VAsset.m */; };
 		BE6C15311880A31B00469BA8 /* VMedia.m in Sources */ = {isa = PBXBuildFile; fileRef = BE6C15301880A31B00469BA8 /* VMedia.m */; };
+		BE7169D318D0F5B5004966C3 /* VInteractionManager.m in Sources */ = {isa = PBXBuildFile; fileRef = BE7169D218D0F5B5004966C3 /* VInteractionManager.m */; };
 		BE83A37118827B400077EB26 /* VMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = BE83A37018827B400077EB26 /* VMessage.m */; };
 		BE8C6F4F18B56E70009CFB1C /* VStreamPollCell.m in Sources */ = {isa = PBXBuildFile; fileRef = BE8C6F4E18B56E70009CFB1C /* VStreamPollCell.m */; };
 		BEA5BF59187E7E8E0014C3EF /* VObjectManager+DirectMessaging.m in Sources */ = {isa = PBXBuildFile; fileRef = BEA5BF58187E7E8E0014C3EF /* VObjectManager+DirectMessaging.m */; };
@@ -474,6 +475,8 @@
 		BE6C15271880A31B00469BA8 /* VAsset.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VAsset.m; sourceTree = "<group>"; };
 		BE6C152F1880A31B00469BA8 /* VMedia.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VMedia.h; sourceTree = "<group>"; };
 		BE6C15301880A31B00469BA8 /* VMedia.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VMedia.m; sourceTree = "<group>"; };
+		BE7169D118D0F5B5004966C3 /* VInteractionManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VInteractionManager.h; sourceTree = "<group>"; };
+		BE7169D218D0F5B5004966C3 /* VInteractionManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VInteractionManager.m; sourceTree = "<group>"; };
 		BE83A36F18827B400077EB26 /* VMessage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VMessage.h; sourceTree = "<group>"; };
 		BE83A37018827B400077EB26 /* VMessage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VMessage.m; sourceTree = "<group>"; };
 		BE8C6F4C18B53F2A009CFB1C /* victoriOS 4.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "victoriOS 4.xcdatamodel"; sourceTree = "<group>"; };
@@ -1076,6 +1079,7 @@
 		BE171DD91868C211004E5202 /* Managers */ = {
 			isa = PBXGroup;
 			children = (
+				BE7169D018D0F58C004966C3 /* InteractionManager */,
 				BE692B5F186E626800C71336 /* VObjectManager */,
 			);
 			path = Managers;
@@ -1190,6 +1194,15 @@
 				BEA5BF70187FCBF10014C3EF /* VObjectManager+Users.m */,
 			);
 			name = VObjectManager;
+			sourceTree = "<group>";
+		};
+		BE7169D018D0F58C004966C3 /* InteractionManager */ = {
+			isa = PBXGroup;
+			children = (
+				BE7169D118D0F5B5004966C3 /* VInteractionManager.h */,
+				BE7169D218D0F5B5004966C3 /* VInteractionManager.m */,
+			);
+			name = InteractionManager;
 			sourceTree = "<group>";
 		};
 		BEB4C289187DFFF4004ECEEF /* Cells */ = {
@@ -1579,6 +1592,7 @@
 				D1DAAA0B187A43BE009ADCB0 /* VProfileEditViewController.m in Sources */,
 				3F91991018761C720055FE37 /* VPrivacyPoliciesViewController.m in Sources */,
 				BEB4C29B187E038C004ECEEF /* VConversationCell.m in Sources */,
+				BE7169D318D0F5B5004966C3 /* VInteractionManager.m in Sources */,
 				BE5C734C187E36D000A3340D /* VInteractionAction.m in Sources */,
 				BE692B50186E60B300C71336 /* VCommentCell.m in Sources */,
 				5FC4DA6D1897119C006BA107 /* VProfileWithSocialViewController.m in Sources */,

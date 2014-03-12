@@ -10,13 +10,20 @@
 
 #import "UIView+VFrameManipulation.h"
 #import "VConstants.h"
+
+#import "VSequence+Fetcher.h"
+#import "VNode+Fetcher.h"
+#import "VAnswer.h"
+
 @interface VPollAnswerBarViewController ()
 
-@property (weak, nonatomic) IBOutlet UIButton* positiveEmotiveButton;
-@property (weak, nonatomic) IBOutlet UIButton* negativeEmotiveButton;
+@property (weak, nonatomic) IBOutlet UIButton* leftButton;
+@property (weak, nonatomic) IBOutlet UIButton* rightButton;
 
 @property (weak, nonatomic) IBOutlet UIView* backgroundView;
 @property (weak, nonatomic) IBOutlet UIView* shadeView;
+
+@property (strong, nonatomic) NSArray* answers;
 
 @end
 
@@ -34,14 +41,28 @@
     return sharedInstance;
 }
 
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
+    self.sequence = self.sequence;//force a load
+}
+
+- (void)setSequence:(VSequence *)sequence
+{
+    _sequence = sequence;
+    self.answers = [[sequence firstNode] firstAnswers];
+    [self.leftButton setTitle:((VAnswer*)[self.answers firstObject]).label forState:UIControlStateNormal];
+    [self.rightButton setTitle:((VAnswer*)[self.answers lastObject]).label forState:UIControlStateNormal];
+}
+
 #pragma mark - Animation
 - (void)animateInWithDuration:(CGFloat)duration completion:(void (^)(BOOL finished))completion
 {
     [self.backgroundView setXOrigin:self.view.frame.size.width];
     [self.shadeView setXOrigin:self.view.frame.size.width];
     
-    self.negativeEmotiveButton.alpha = 0;
-    self.positiveEmotiveButton.alpha = 0;
+    self.rightButton.alpha = 0;
+    self.leftButton.alpha = 0;
     
     [UIView animateWithDuration:duration/2
                      animations:^
@@ -53,8 +74,8 @@
                          [UIView animateWithDuration:duration/2
                                           animations:^
                                           {
-                                              self.negativeEmotiveButton.alpha = 1;
-                                              self.positiveEmotiveButton.alpha = 1;
+                                              self.rightButton.alpha = 1;
+                                              self.leftButton.alpha = 1;
                                           }
                                           completion:completion];
                      }];
@@ -65,8 +86,8 @@
     [UIView animateWithDuration:duration/2
                      animations:^
                      {
-                         self.negativeEmotiveButton.alpha = 0;
-                         self.positiveEmotiveButton.alpha = 0;
+                         self.rightButton.alpha = 0;
+                         self.leftButton.alpha = 0;
                      }
                      completion:^(BOOL finished) {
                          [UIView animateWithDuration:duration/2
@@ -79,4 +100,14 @@
                      }];
 }
 
+#pragma mark - Button actions
+-(IBAction)pressedLeftButton:(id)sender
+{
+    
+}
+
+-(IBAction)pressedRightButton:(id)sender
+{
+    
+}
 @end

@@ -10,8 +10,11 @@
 
 #import "VAnimation.h"
 
+@class VSequence;
+
 @interface VPollAnswerBarViewController : UIViewController <VAnimation>
 
+@property (strong, nonatomic) VSequence* sequence;
 + (VPollAnswerBarViewController *)sharedInstance;
 
 @end

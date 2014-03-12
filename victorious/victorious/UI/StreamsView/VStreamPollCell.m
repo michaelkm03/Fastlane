@@ -202,15 +202,5 @@ static NSString* kOrIconImage = @"orIconImage";
 //        self.optionTwoButton.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKeyPath:@"theme.color"];
 //    }
 //}
-//
-//- (VBadgeLabel*)resultLabelForAnswerID:(NSNumber*)answerID
-//{
-//    if ([answerID isEqualToNumber:self.firstAnswer.remoteId])
-//        return self.firstResultLabel;
-//    else if ([answerID isEqualToNumber:self.secondAnswer.remoteId])
-//        return  self.secondResultLabel;
-//    
-//    return nil;
-//}
 
 @end

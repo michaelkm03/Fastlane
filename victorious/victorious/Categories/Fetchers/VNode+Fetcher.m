@@ -28,6 +28,12 @@
     return [[[self.assets allObjects] sortedArrayUsingDescriptors:@[sortDescriptor]] firstObject];
 }
 
+- (NSArray*)orderedInteractions
+{
+    NSSortDescriptor*   sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"startTime" ascending:YES];
+    return [[self.interactions allObjects] sortedArrayUsingDescriptors:@[sortDescriptor]];
+}
+
 - (BOOL)isPoll
 {
     NSArray* firstAnswers = [self firstAnswers];

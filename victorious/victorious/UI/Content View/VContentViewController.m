@@ -19,16 +19,19 @@
 #import "VSequence+Fetcher.h"
 #import "VNode+Fetcher.h"
 #import "VAsset+Fetcher.h"
+#import "VAnswer.h"
+#import "VInteractionManager.h"
 
 #import "UIImageView+Blurring.h"
 #import "UIWebView+VYoutubeLoading.h"
 #import "UIView+VFrameManipulation.h"
+#import "NSString+VParseHelp.h"
 
 CGFloat kContentMediaViewOffset = 154;
 
 @import MediaPlayer;
 
-@interface VContentViewController ()  <UIWebViewDelegate>
+@interface VContentViewController ()  <UIWebViewDelegate, VInteractionManagerDelegate>
 
 @property (weak, nonatomic) IBOutlet UIImageView* backgroundImage;
 @property (weak, nonatomic) IBOutlet UILabel* titleLabel;
@@ -46,6 +49,7 @@ CGFloat kContentMediaViewOffset = 154;
 @property (strong, nonatomic) MPMoviePlayerController* mpController;
 @property (strong, nonatomic) VNode* currentNode;
 @property (strong, nonatomic) VAsset* currentAsset;
+@property (strong, nonatomic) VInteractionManager* interactionManager;
 
 @property (strong, nonatomic) id<UIViewControllerTransitioningDelegate> transitionDelegate;
 
@@ -110,6 +114,15 @@ CGFloat kContentMediaViewOffset = 154;
     self.navigationController.navigationBarHidden = NO;
 }
 
+-(VInteractionManager*)interactionManager
+{
+    if(!_interactionManager)
+    {
+        _interactionManager = [[VInteractionManager alloc] initWithNode:self.currentNode delegate:self];
+    }
+    return _interactionManager;
+}
+
 - (void)setSequence:(VSequence *)sequence
 {
     _sequence = sequence;
@@ -124,6 +137,7 @@ CGFloat kContentMediaViewOffset = 154;
     //If you run out of nodes... go to the beginning.
     if (!currentNode)
         _currentNode = [self.sequence firstNode];
+    
     //If this node is not for the sequence... Something is wrong, just use the first node and print a warning
     else if (currentNode.sequence != self.sequence)
     {
@@ -142,6 +156,8 @@ CGFloat kContentMediaViewOffset = 154;
     
     else
         [self loadNextAsset];
+    
+    self.interactionManager.node = currentNode;
 }
 
 - (void)updateActionBar
@@ -156,17 +172,18 @@ CGFloat kContentMediaViewOffset = 154;
     //Find the appropriate target based on what view is hidden
     UIView* target = !self.webView.hidden ? self.webView : !self.mpController.view.hidden ? self.mpController.view : self.previewImage;
     
-    if([self.sequence isPoll] )//&& ![self.actionBarViewController isKindOfClass:[VPollAnswerBarViewController class]])
+    if([self.sequence isPoll] && ![self.actionBarVC isKindOfClass:[VPollAnswerBarViewController class]])
     {
         newBarViewController = [VPollAnswerBarViewController sharedInstance];
+        ((VPollAnswerBarViewController*)newBarViewController).sequence = self.sequence;
     }
-    else if (![self.actionBarVC isKindOfClass:[VEmotiveBallisticsBarViewController class]])
+    else if (![self.sequence isPoll] && ![self.actionBarVC isKindOfClass:[VEmotiveBallisticsBarViewController class]])
     {
         VEmotiveBallisticsBarViewController* emotiveBallistics = [VEmotiveBallisticsBarViewController sharedInstance];
         emotiveBallistics.target = target;
         newBarViewController = emotiveBallistics;
     }
-    else
+    else if ([self.actionBarVC isKindOfClass:[VEmotiveBallisticsBarViewController class]])
     {
         ((VEmotiveBallisticsBarViewController*)self.actionBarVC).target = target;//Change the target if we need to
     }
@@ -219,7 +236,35 @@ CGFloat kContentMediaViewOffset = 154;
 #pragma mark - Poll
 - (void)loadPoll
 {
-    //self.actionBar = [VActionBarViewController pollBar];
+    NSArray* answers = [[self.sequence firstNode] firstAnswers];
+    NSString* firstAssetUrl = ((VAnswer*)[answers firstObject]).mediaUrl;
+    NSString* secondAssetUrl = ((VAnswer*)[answers lastObject]).mediaUrl;
+    if ([[firstAssetUrl pathExtension] isEqualToString:VConstantMediaExtensionM3U8])
+    {
+        [self.firstSmallPreviewImage setImageWithURL:[NSURL URLWithString:[firstAssetUrl previewImageURLForM3U8]]];
+    }
+    else
+    {
+        [self.firstSmallPreviewImage setImageWithURL:[NSURL URLWithString:firstAssetUrl]];
+    }
+    
+    if ([[secondAssetUrl pathExtension] isEqualToString:VConstantMediaExtensionM3U8])
+    {
+        [self.secondSmallPreviewImage setImageWithURL:[NSURL URLWithString:[secondAssetUrl previewImageURLForM3U8]]];
+    }
+    else
+    {
+        [self.secondSmallPreviewImage setImageWithURL:[NSURL URLWithString:secondAssetUrl]];
+    }
+    
+    self.firstSmallPreviewImage.hidden = NO;
+    self.secondSmallPreviewImage.hidden = NO;
+    self.previewImage.hidden = YES;
+    self.webView.hidden = YES;
+    self.sixteenNinePreviewImage.hidden = YES;
+    self.mpController.view.hidden = YES;
+    
+    [self updateActionBar];
 }
 
 #pragma mark - Quiz
@@ -355,6 +400,12 @@ CGFloat kContentMediaViewOffset = 154;
     
     else
         [self.mpController play];
+}
+
+#pragma mark - VInteractionManagerDelegate
+- (void)firedInteraction:(VInteraction*)interaction
+{
+    VLog(@"Interaction fired:%@", interaction);
 }
 
 #pragma mark - Navigation

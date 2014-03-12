@@ -1745,15 +1745,16 @@
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" red="0.21176470589999999" green="0.1450980392" blue="0.30588235289999999" alpha="1" colorSpace="calibratedRGB"/>
                             </view>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Bxp-hr-lFz" userLabel="Positive Emotive">
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="clip" translatesAutoresizingMaskIntoConstraints="NO" id="Bxp-hr-lFz" userLabel="Positive Emotive">
                                 <rect key="frame" x="0.0" y="0.0" width="160" height="60"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                <state key="normal" title="Answer One">
+                                <inset key="contentEdgeInsets" minX="5" minY="0.0" maxX="4" maxY="0.0"/>
+                                <state key="normal" title="Answer One Really Long">
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <connections>
-                                    <action selector="pressedPostiveEmotive:" destination="Pz9-lw-C28" eventType="touchUpInside" id="XlA-Zh-drF"/>
+                                    <action selector="pressedLeftButton:" destination="Pz9-lw-C28" eventType="touchUpInside" id="0CR-Uc-9Ok"/>
                                 </connections>
                             </button>
                             <view alpha="0.15000000596046448" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="kNf-Aa-2Eo" userLabel="ShadeView">
@@ -1761,15 +1762,16 @@
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                             </view>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="D1I-Wr-6dI" userLabel="Negative Emotive">
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="clip" translatesAutoresizingMaskIntoConstraints="NO" id="D1I-Wr-6dI" userLabel="Negative Emotive">
                                 <rect key="frame" x="160" y="0.0" width="160" height="60"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                <state key="normal" title="Answer Two">
+                                <inset key="contentEdgeInsets" minX="5" minY="0.0" maxX="5" maxY="0.0"/>
+                                <state key="normal" title="Answer Two Really Long">
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <connections>
-                                    <action selector="pressedNegativeEmotive:" destination="Pz9-lw-C28" eventType="touchUpInside" id="BdF-xw-QEI"/>
+                                    <action selector="pressedRightButton:" destination="Pz9-lw-C28" eventType="touchUpInside" id="Pu8-nh-lqm"/>
                                 </connections>
                             </button>
                         </subviews>
@@ -1780,8 +1782,8 @@
                     <size key="freeformSize" width="320" height="60"/>
                     <connections>
                         <outlet property="backgroundView" destination="DDQ-Qa-lGk" id="GdY-S1-guU"/>
-                        <outlet property="negativeEmotiveButton" destination="D1I-Wr-6dI" id="AtN-iq-YLe"/>
-                        <outlet property="positiveEmotiveButton" destination="Bxp-hr-lFz" id="qUF-4f-Ctg"/>
+                        <outlet property="leftButton" destination="Bxp-hr-lFz" id="J7Z-B7-U7a"/>
+                        <outlet property="rightButton" destination="D1I-Wr-6dI" id="j6f-4d-Lcb"/>
                         <outlet property="shadeView" destination="kNf-Aa-2Eo" id="qTv-s5-aUC"/>
                     </connections>
                 </viewController>
@@ -1819,7 +1821,7 @@
         <simulatedScreenMetrics key="destination" type="retina4"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
-        <segue reference="Bar-aP-eCJ"/>
         <segue reference="Sho-vj-RuM"/>
+        <segue reference="B2R-Pg-UEK"/>
     </inferredMetricsTieBreakers>
 </document>
