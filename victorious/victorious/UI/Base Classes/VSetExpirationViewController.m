@@ -136,21 +136,14 @@
 {
     if (nil != self.expirationDate)
     {
-        [self.delegate setExpirationViewController:self didSelectDate:self.expirationDate];
+        if ([self.delegate respondsToSelector:@selector(setExpirationViewController:didSelectDate:)])
+            [self.delegate setExpirationViewController:self didSelectDate:self.expirationDate];
     }
     
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 - (IBAction)handleSetExpirationTapGesture:(id)sender
-{
-    if (self.useAfterMode)
-        [self.expirationPicker becomeFirstResponder];
-    else
-        [self.expirationDatePicker becomeFirstResponder];
-}
-
-- (IBAction)setExpirationClicked:(id)sender
 {
     if (self.useAfterMode)
         [self.expirationPicker becomeFirstResponder];

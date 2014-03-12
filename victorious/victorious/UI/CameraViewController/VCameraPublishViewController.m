@@ -7,8 +7,6 @@
 //
 
 @import AVFoundation;
-@import Accounts;
-@import Social;
 
 #import "VCameraPublishViewController.h"
 #import "VSetExpirationViewController.h"
@@ -98,46 +96,12 @@
 
 - (IBAction)twitterClicked:(id)sender
 {
-    if (YES == self.twitterButton.on)
-    {
-        if (![SLComposeViewController isAvailableForServiceType:SLServiceTypeTwitter])
-        {
-            self.useTwitter = NO;
-            dispatch_async(dispatch_get_main_queue(), ^
-                           {
-                               SLComposeViewController *composeViewController = [SLComposeViewController composeViewControllerForServiceType:SLServiceTypeTwitter];
-                               [self presentViewController:composeViewController animated:NO completion:^{
-                                   [composeViewController dismissViewControllerAnimated:NO completion:nil];
-                               }];
-                           });
-        }
-        else
-        {
-            self.useTwitter = YES;
-        }
-    }
+    self.useTwitter = self.twitterButton.on;
 }
 
 - (IBAction)facebookClicked:(id)sender
 {
-    if (YES == self.facebookButton.on)
-    {
-        if (![SLComposeViewController isAvailableForServiceType:SLServiceTypeFacebook])
-        {
-            self.useFacebook = NO;
-            dispatch_async(dispatch_get_main_queue(), ^
-                           {
-                               SLComposeViewController *composeViewController = [SLComposeViewController composeViewControllerForServiceType:SLServiceTypeFacebook];
-                               [self presentViewController:composeViewController animated:NO completion:^{
-                                   [composeViewController dismissViewControllerAnimated:NO completion:nil];
-                               }];
-                           });
-        }
-        else
-        {
-            self.useFacebook = YES;
-        }
-    }
+    self.useFacebook = self.facebookButton.on;
 }
 
 #pragma mark - Delegates
