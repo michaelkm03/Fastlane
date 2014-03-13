@@ -632,6 +632,15 @@
 			name = Common;
 			sourceTree = "<group>";
 		};
+		3F1AA53318CFFC000022D16B /* Abstract Classes */ = {
+			isa = PBXGroup;
+			children = (
+				3FDEDD0A18CE5E180028E3F1 /* VAbstractVideoEditorViewController.h */,
+				3FDEDD0B18CE5E180028E3F1 /* VAbstractVideoEditorViewController.m */,
+			);
+			name = "Abstract Classes";
+			sourceTree = "<group>";
+		};
 		3F53E0C418A595AC00089C20 /* Create */ = {
 			isa = PBXGroup;
 			children = (
@@ -866,6 +875,7 @@
 			children = (
 				3F1AA53018CFEFFC0022D16B /* Capture */,
 				3F1AA53118CFF00B0022D16B /* Editing */,
+				3F1AA53318CFFC000022D16B /* Abstract Classes */,
 				3F1AA53218CFF0180022D16B /* Common */,
 				3FA217EA18BC365E0066E893 /* VCameraViewController.h */,
 				3FA217EB18BC365E0066E893 /* VCameraViewController.m */,
@@ -877,8 +887,6 @@
 				3FDEDD0518CE48210028E3F1 /* VRemixStitchViewController.m */,
 				3F1AA52C18CFD6B70022D16B /* VRemixCaptionViewController.h */,
 				3F1AA52D18CFD6B70022D16B /* VRemixCaptionViewController.m */,
-				3FDEDD0A18CE5E180028E3F1 /* VAbstractVideoEditorViewController.h */,
-				3FDEDD0B18CE5E180028E3F1 /* VAbstractVideoEditorViewController.m */,
 				3FDEDCFF18CE46F00028E3F1 /* Video Remix.storyboard */,
 				3F1AA52F18CFD8D20022D16B /* Abstract */,
 				3F14C43218BD2BD0001796B9 /* SCAudioVideoRecorder */,

@@ -66,7 +66,7 @@
                         </barButtonItem>
                     </navigationItem>
                     <connections>
-                        <segue destination="YI1-UH-sNO" kind="modal" id="tdT-NE-hOY"/>
+                        <segue destination="YI1-UH-sNO" kind="modal" identifier="toCapture" id="tdT-NE-hOY"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="8Xy-hU-i96" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -86,7 +86,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="OPk-lE-WiG" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="906" y="776"/>
+            <point key="canvasLocation" x="906" y="1060"/>
         </scene>
         <!--View Controller-->
         <scene sceneID="ncj-un-YrG">
@@ -104,14 +104,14 @@
                     <navigationItem key="navigationItem" id="rkg-9n-voA">
                         <barButtonItem key="rightBarButtonItem" image="cameraButtonNext" id="nln-6L-eOy">
                             <connections>
-                                <segue destination="g0X-7V-rZd" kind="push" id="KFr-MU-Mro"/>
+                                <segue destination="g0X-7V-rZd" kind="push" identifier="toPreview" id="KFr-MU-Mro"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="cEf-7G-E43" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1333" y="776"/>
+            <point key="canvasLocation" x="1333" y="1060"/>
         </scene>
         <!--View Controller-->
         <scene sceneID="io5-pv-qUn">
@@ -132,7 +132,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="T2c-5O-pEA" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1767" y="776"/>
+            <point key="canvasLocation" x="1767" y="1060"/>
         </scene>
         <!--Remix Caption View Controller-->
         <scene sceneID="gMP-JF-hQ3">
