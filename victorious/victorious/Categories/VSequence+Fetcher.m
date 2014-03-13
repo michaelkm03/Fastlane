@@ -65,30 +65,17 @@
     NSMutableArray* urls = [[NSMutableArray alloc] initWithCapacity:10];
     if ([self isPoll] && [[self firstNode] firstAsset])
     {
-        NSString* data = [[self firstNode] firstAsset].data;
-        if ([[data pathExtension] isEqualToString:VConstantMediaExtensionM3U8])
-            [urls addObject:[NSURL URLWithString:[data previewImageURLForM3U8]]];
-
-        else
-            [urls addObject:[NSURL URLWithString:data]];
+        [urls addObject:[[[self firstNode] firstAsset].data convertToPreviewImageURL]];
     }
     else if ([self isPoll])
     {
         for (VAnswer* answer in [[self firstNode] firstAnswers])
         {
-            NSString* data = answer.mediaUrl;
-            if ([[data pathExtension] isEqualToString:VConstantMediaExtensionM3U8])
-                [urls addObject:[NSURL URLWithString:[data previewImageURLForM3U8]]];
-            
-            else
-                [urls addObject:[NSURL URLWithString:data]];
+            [urls addObject:[answer.mediaUrl convertToPreviewImageURL]];
         }
     }
-    else if ([self isForum] || [self isVideo])
-        [urls addObject:[NSURL URLWithString:[self.previewImage previewImageURLForM3U8]]];
-    
     else
-        [urls addObject:[NSURL URLWithString:self.previewImage]];
+        [urls addObject:[self.previewImage convertToPreviewImageURL]];
     
     return [urls copy];
 }

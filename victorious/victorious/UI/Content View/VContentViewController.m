@@ -126,7 +126,8 @@ CGFloat kContentMediaViewOffset = 154;
 - (void)setSequence:(VSequence *)sequence
 {
     _sequence = sequence;
-    [self.backgroundImage setLightBlurredImageWithURL:[NSURL URLWithString:self.sequence.previewImage]
+
+    [self.backgroundImage setLightBlurredImageWithURL:[[self.sequence initialImageURLs] firstObject]
                                      placeholderImage:nil];
     self.descriptionLabel.text = _sequence.sequenceDescription;
     self.currentNode = [sequence firstNode];
@@ -237,25 +238,8 @@ CGFloat kContentMediaViewOffset = 154;
 - (void)loadPoll
 {
     NSArray* answers = [[self.sequence firstNode] firstAnswers];
-    NSString* firstAssetUrl = ((VAnswer*)[answers firstObject]).mediaUrl;
-    NSString* secondAssetUrl = ((VAnswer*)[answers lastObject]).mediaUrl;
-    if ([[firstAssetUrl pathExtension] isEqualToString:VConstantMediaExtensionM3U8])
-    {
-        [self.firstSmallPreviewImage setImageWithURL:[NSURL URLWithString:[firstAssetUrl previewImageURLForM3U8]]];
-    }
-    else
-    {
-        [self.firstSmallPreviewImage setImageWithURL:[NSURL URLWithString:firstAssetUrl]];
-    }
-    
-    if ([[secondAssetUrl pathExtension] isEqualToString:VConstantMediaExtensionM3U8])
-    {
-        [self.secondSmallPreviewImage setImageWithURL:[NSURL URLWithString:[secondAssetUrl previewImageURLForM3U8]]];
-    }
-    else
-    {
-        [self.secondSmallPreviewImage setImageWithURL:[NSURL URLWithString:secondAssetUrl]];
-    }
+    [self.firstSmallPreviewImage setImageWithURL:[((VAnswer*)[answers firstObject]).mediaUrl convertToPreviewImageURL]];
+    [self.secondSmallPreviewImage setImageWithURL:[((VAnswer*)[answers lastObject]).mediaUrl convertToPreviewImageURL]];
     
     self.firstSmallPreviewImage.hidden = NO;
     self.secondSmallPreviewImage.hidden = NO;

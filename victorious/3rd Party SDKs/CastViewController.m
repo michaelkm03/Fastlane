@@ -16,7 +16,7 @@
 #import "VAppDelegate.h"
 #import "VSequence+Fetcher.h"
 #import "VNode+Fetcher.h"
-#import "VAsset.h"
+#import "VAsset+Fetcher.h"
 #import "NSString+VParseHelp.h"
 #import "VUser.h"
 
@@ -207,7 +207,7 @@
 
       VAsset* firstAsset = [[self.mediaToPlay firstNode] firstAsset];
       NSURL* url = [NSURL URLWithString:firstAsset.data];
-      NSURL* thumbnailURL = [NSURL URLWithString:[firstAsset.data previewImageURLForM3U8]];
+      NSURL* thumbnailURL = [firstAsset.data convertToPreviewImageURL];
       
       //Loading thumbnail async
       NSLog(@"Loaded thumbnail image");

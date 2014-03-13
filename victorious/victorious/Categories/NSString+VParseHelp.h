@@ -15,7 +15,7 @@
 
 - (CGSize)frameSizeForWidth:(CGFloat)width andAttributes:(NSDictionary*)attributes;
 
-- (NSString*)previewImageURLForM3U8;
+- (NSURL*)convertToPreviewImageURL;
 
 - (BOOL ) isEmpty;
 - (BOOL ) isEmptyWithCleanWhiteSpace:(BOOL)cleanWhileSpace;
