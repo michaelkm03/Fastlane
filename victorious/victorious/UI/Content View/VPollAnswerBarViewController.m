@@ -14,11 +14,17 @@
 #import "VSequence+Fetcher.h"
 #import "VNode+Fetcher.h"
 #import "VAnswer.h"
+#import "VPollResult.h"
+
+#import "VLoginViewController.h"
+#import "VObjectManager+Sequence.h"
 
 @interface VPollAnswerBarViewController ()
 
 @property (weak, nonatomic) IBOutlet UIButton* leftButton;
 @property (weak, nonatomic) IBOutlet UIButton* rightButton;
+@property (weak, nonatomic) IBOutlet UILabel* leftLabel;
+@property (weak, nonatomic) IBOutlet UILabel* rightLabel;
 
 @property (weak, nonatomic) IBOutlet UIView* backgroundView;
 @property (weak, nonatomic) IBOutlet UIView* shadeView;
@@ -51,8 +57,8 @@
 {
     _sequence = sequence;
     self.answers = [[sequence firstNode] firstAnswers];
-    [self.leftButton setTitle:((VAnswer*)[self.answers firstObject]).label forState:UIControlStateNormal];
-    [self.rightButton setTitle:((VAnswer*)[self.answers lastObject]).label forState:UIControlStateNormal];
+    self.leftLabel.text = ((VAnswer*)[self.answers firstObject]).label;
+    self.rightLabel.text = ((VAnswer*)[self.answers lastObject]).label;
 }
 
 #pragma mark - Animation
@@ -101,13 +107,103 @@
 }
 
 #pragma mark - Button actions
--(IBAction)pressedLeftButton:(id)sender
+-(IBAction)pressedAnswerButton:(id)sender
 {
+    VAnswer* chosenAnswer;
     
+    NSInteger tag = ((UIButton*)sender).tag;
+    if (tag >= [self.answers count])
+    {
+        chosenAnswer = [self.answers lastObject];
+    }
+    chosenAnswer = [self.answers objectAtIndex:tag];
+    
+    [self answerPollWithAnswer:chosenAnswer];
 }
 
--(IBAction)pressedRightButton:(id)sender
+- (void)answerPollWithAnswer:(VAnswer*)answer
 {
-    
+    if(![VObjectManager sharedManager].mainUser)
+    {
+        [self presentViewController:[VLoginViewController loginViewController] animated:YES completion:NULL];
+        return;
+    }
+
+    [[VObjectManager sharedManager] answerPoll:self.sequence
+                                     withAnswer:answer
+                                  successBlock:^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
+      {
+          [[VObjectManager sharedManager] pollResultsForSequence:self.sequence
+                                                    successBlock:^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
+                                                    {
+//                                                        [self showResultsForAnswerId:answer.remoteId];
+                                                    }
+                                                       failBlock:^(NSOperation* operation, NSError* error)
+                                                        {
+                                                            VLog(@"Failed with error: %@", error);
+                                                        }];
+
+          VLog(@"Successfully answered: %@", resultObjects);
+      }
+                                     failBlock:^(NSOperation* operation, NSError* error)
+      {
+          //Error 1005 is "Poll result was already recorded.
+          //If we get anything else... lie and say we already answered
+          [[[UIAlertView alloc] initWithTitle:NSLocalizedString(@"PollAlreadyAnswered", @"")
+                                      message:error.localizedDescription
+                                     delegate:nil
+                            cancelButtonTitle:NSLocalizedString(@"OKButton", @"")
+                            otherButtonTitles:nil] show];
+
+          VLog(@"Failed to answer with error: %@", error);
+      }];
 }
+
+- (void)showResultsForAnswerId:(NSNumber*)answerId
+{
+    NSInteger totalVotes = 0;
+    for( VPollResult* result in self.sequence.pollResults)
+    {
+        totalVotes+= result.count.integerValue;
+    }
+    totalVotes = totalVotes ? totalVotes : 1; //dividing by 0 is bad.
+
+    for( VPollResult* result in self.sequence.pollResults)
+    {
+//        VBadgeLabel* label = [self resultLabelForAnswerID:result.answerId];
+
+        NSInteger percentage = (result.count.doubleValue + 1.0 / totalVotes) * 100;
+        percentage = percentage > 100 ? 100 : percentage;
+        percentage = percentage < 0 ? 0 : percentage;
+
+//        label.text = [@(percentage).stringValue stringByAppendingString:@"%"];
+        //unhide both flags
+        if (result.answerId == answerId)
+        {
+//            label.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKeyPath:@"theme.color"];
+        }
+    }
+//    self.firstResultLabel.hidden = self.secondResultLabel.hidden = NO;
+
+//    if ([answerId isEqualToNumber:self.firstAnswer.remoteId])
+//    {
+//        self.optionOneButton.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKeyPath:@"theme.color"];
+//    }
+//    else if ([answerId isEqualToNumber:self.secondAnswer.remoteId])
+//    {
+//        self.optionTwoButton.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKeyPath:@"theme.color"];
+//    }
+}
+
+- (UIButton*)buttonForAnswerID:(NSNumber*)answerID
+{
+    if ([answerID isEqualToNumber:((VAnswer*)[self.answers firstObject]).remoteId])
+        return self.leftButton;
+    
+    else if ([answerID isEqualToNumber:((VAnswer*)[self.answers lastObject]).remoteId])
+        return  self.rightButton;
+
+    return nil;
+}
+
 @end

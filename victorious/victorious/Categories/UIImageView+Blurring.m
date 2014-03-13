@@ -27,8 +27,24 @@
                          }
                          failure:nil];
 }
-
+//TODO CAHNGE OTHER THINGS TO EXTRALIGHT
 - (void)setLightBlurredImageWithURL:(NSURL *)url placeholderImage:(UIImage *)placeholderImage
+{
+    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
+    [request addValue:@"image/*" forHTTPHeaderField:@"Accept"];
+    
+    __weak UIImageView* weakSelf = self;
+    [self setImageWithURLRequest:request
+                placeholderImage:[placeholderImage applyLightEffect]
+                         success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image)
+     {
+         __strong UIImageView* strongSelf = weakSelf;
+         strongSelf.image = [image applyLightEffect];
+     }
+                         failure:nil];
+}
+
+- (void)setExtraLightBlurredImageWithURL:(NSURL *)url placeholderImage:(UIImage *)placeholderImage
 {
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
     [request addValue:@"image/*" forHTTPHeaderField:@"Accept"];
@@ -37,10 +53,10 @@
     [self setImageWithURLRequest:request
                 placeholderImage:[placeholderImage applyExtraLightEffect]
                          success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image)
-                         {
-                             __strong UIImageView* strongSelf = weakSelf;
-                             strongSelf.image = [image applyExtraLightEffect];
-                         }
+     {
+         __strong UIImageView* strongSelf = weakSelf;
+         strongSelf.image = [image applyExtraLightEffect];
+     }
                          failure:nil];
 }
 
