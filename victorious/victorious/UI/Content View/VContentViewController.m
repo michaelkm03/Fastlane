@@ -84,6 +84,11 @@ CGFloat kContentMediaViewOffset = 154;
     self.webView.scrollView.scrollEnabled = NO;
     [self.webView setAllowsInlineMediaPlayback:YES];
     [self.webView setMediaPlaybackRequiresUserAction:NO];
+    
+    self.mpController = [[MPMoviePlayerController alloc] initWithContentURL:nil];
+    self.mpController.scalingMode = MPMovieScalingModeAspectFill;
+    self.mpController.view.frame = self.previewImage.frame;
+    [self.mediaView insertSubview:self.mpController.view aboveSubview:self.previewImage];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -282,28 +287,21 @@ CGFloat kContentMediaViewOffset = 154;
     [self updateActionBar];
 }
 
-
 #pragma mark - Video
 - (void)loadVideo
 {
     [self loadImage];
     
-    [self.mpController.view removeFromSuperview];
-    self.mpController = [[MPMoviePlayerController alloc] initWithContentURL:[NSURL URLWithString:self.currentAsset.data]];
+    [self.mpController setContentURL:[NSURL URLWithString:self.currentAsset.data]];
     self.mpController.view.hidden = YES;
     [self.mpController prepareToPlay];
-    self.mpController.scalingMode = MPMovieScalingModeAspectFill;
-    self.mpController.view.frame = self.previewImage.frame;
-    VLog(@"pi frame: %@", NSStringFromCGRect(self.previewImage.frame));
-    VLog(@"mp nat size: %@", NSStringFromCGSize(self.mpController.naturalSize));
-    [self.mediaView insertSubview:self.mpController.view aboveSubview:self.previewImage];
     
     [self updateActionBar];
 }
 
 - (void)mpLoadStateChanged
 {
-    if (self.mpController.loadState == MPMovieLoadStatePlayable)
+    if (self.mpController.loadState == MPMovieLoadStatePlayable && self.mpController.playbackState != MPMoviePlaybackStatePlaying)
     {
         VLog(@"mp nat size: %@", NSStringFromCGSize(self.mpController.naturalSize));
         CGFloat yRatio = self.mpController.naturalSize.height / self.mpController.naturalSize.width;
@@ -397,6 +395,7 @@ CGFloat kContentMediaViewOffset = 154;
 {
     ((UIViewController*)segue.destinationViewController).transitioningDelegate = self.transitionDelegate;
     ((UIViewController*)segue.destinationViewController).modalPresentationStyle= UIModalPresentationCustom;
+    [self.mpController stop];
     [self.mpController.view removeFromSuperview];
     self.mpController = nil;
     [self.webView loadHTMLString:nil baseURL:nil];
