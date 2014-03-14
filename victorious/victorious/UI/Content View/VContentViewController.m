@@ -105,6 +105,9 @@ CGFloat kContentMediaViewOffset = 154;
     
     self.orImageView.hidden = ![self.currentNode isPoll];
     self.orImageView.alpha = 0;
+//    CGPoint newCenter = [self.mediaView]
+    self.orImageView.center = [self.mediaView convertPoint:self.pollPreviewView.center toView:self.view];
+    
     [self.topActionsView setYOrigin:self.mediaView.frame.origin.y];
     self.topActionsView.alpha = 0;
     [UIView animateWithDuration:.2f
@@ -113,28 +116,11 @@ CGFloat kContentMediaViewOffset = 154;
          [self.topActionsView setYOrigin:0];
          self.topActionsView.alpha = 1;
          self.orImageView.alpha = 1;
-         [self.firstSmallPreviewImage setXOrigin:self.firstSmallPreviewImage.frame.origin.x - 1];
-         [self.secondSmallPreviewImage setXOrigin:self.secondSmallPreviewImage.frame.origin.x + 1];
      }
                      completion:^(BOOL finished)
      {
          [self updateActionBar];
      }];
-    
-    self.orImageView.hidden = ![self.currentNode isPoll];
-    self.orImageView.center = CGPointMake(self.orImageView.center.x, self.pollPreviewView.center.y);
-    self.orAnimator = [[UIDynamicAnimator alloc] initWithReferenceView:self.orContainerView];
-    
-    UIGravityBehavior* gravityBehavior = [[UIGravityBehavior alloc] initWithItems:@[self.orImageView]];
-    [self.orAnimator addBehavior:gravityBehavior];
-    
-    UIDynamicItemBehavior *elasticityBehavior = [[UIDynamicItemBehavior alloc] initWithItems:@[self.orImageView]];
-    elasticityBehavior.elasticity = 0.2f;
-    [self.orAnimator addBehavior:elasticityBehavior];
-    
-    UICollisionBehavior* collisionBehavior = [[UICollisionBehavior alloc] initWithItems:@[self.orImageView]];
-    collisionBehavior.translatesReferenceBoundsIntoBoundary = YES;
-    [self.orAnimator addBehavior:collisionBehavior];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -142,6 +128,7 @@ CGFloat kContentMediaViewOffset = 154;
     [super viewWillDisappear:animated];
     
     self.navigationController.navigationBarHidden = NO;
+    self.orAnimator = nil;
 }
 
 -(VInteractionManager*)interactionManager
@@ -223,7 +210,7 @@ CGFloat kContentMediaViewOffset = 154;
     
     if (self.actionBarVC && newBarViewController)
     {
-        [self.actionBarVC animateOutWithDuration:.4f
+        [self.actionBarVC animateOutWithDuration:.2f
                                       completion:^(BOOL finished)
                                       {
                                           [self.actionBarVC removeFromParentViewController];
@@ -233,7 +220,9 @@ CGFloat kContentMediaViewOffset = 154;
                                           [self.barContainerView addSubview:newBarViewController.view];
                                           self.actionBarVC = newBarViewController;
                                           
-                                          [self.actionBarVC animateInWithDuration:.4f completion:nil];
+                                          [self.actionBarVC animateInWithDuration:.2f completion:^(BOOL finished) {
+                                              [self pollAnimation];
+                                          }];
                                       }];
     }
     else if (newBarViewController)
@@ -245,8 +234,35 @@ CGFloat kContentMediaViewOffset = 154;
         [self.barContainerView addSubview:newBarViewController.view];
         self.actionBarVC = newBarViewController;
         
-        [self.actionBarVC animateInWithDuration:.4f completion:nil];
+        [self.actionBarVC animateInWithDuration:.2f completion:^(BOOL finished) {
+            [self pollAnimation];
+        }];
     }
+}
+
+- (void)pollAnimation
+{
+    [UIView animateWithDuration:.2f
+                     animations:^{
+                         
+                         [self.firstSmallPreviewImage setXOrigin:self.firstSmallPreviewImage.frame.origin.x - 1];
+                         [self.secondSmallPreviewImage setXOrigin:self.secondSmallPreviewImage.frame.origin.x + 1];
+                         self.orImageView.hidden = ![self.currentNode isPoll];
+                         self.orImageView.center = CGPointMake(self.orImageView.center.x, self.pollPreviewView.center.y);
+                         self.orAnimator = [[UIDynamicAnimator alloc] initWithReferenceView:self.orContainerView];
+                         
+                         UIGravityBehavior* gravityBehavior = [[UIGravityBehavior alloc] initWithItems:@[self.orImageView]];
+                         gravityBehavior.magnitude = 4;
+                         [self.orAnimator addBehavior:gravityBehavior];
+                         
+                         UIDynamicItemBehavior *elasticityBehavior = [[UIDynamicItemBehavior alloc] initWithItems:@[self.orImageView]];
+                         elasticityBehavior.elasticity = 0.2f;
+                         [self.orAnimator addBehavior:elasticityBehavior];
+                         
+                         UICollisionBehavior* collisionBehavior = [[UICollisionBehavior alloc] initWithItems:@[self.orImageView]];
+                         collisionBehavior.translatesReferenceBoundsIntoBoundary = YES;
+                         [self.orAnimator addBehavior:collisionBehavior];
+                     }];
 }
 
 #pragma mark - Sequence Logic
@@ -376,7 +392,7 @@ CGFloat kContentMediaViewOffset = 154;
         self.orImageView.alpha = 0;
     }];
     
-    [self.actionBarVC animateOutWithDuration:.4f
+    [self.actionBarVC animateOutWithDuration:.2f
                                   completion:^(BOOL finished)
                                   {
                                       [self backAnimation];
