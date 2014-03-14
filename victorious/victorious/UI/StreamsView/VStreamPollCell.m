@@ -27,10 +27,9 @@ static NSString* kOrIconImage = @"orIconImage";
 @property (nonatomic, weak) VAnswer* firstAnswer;
 @property (nonatomic, weak) VAnswer* secondAnswer;
 
-@property (nonatomic, copy) NSString* firstAssetUrl;
-@property (nonatomic, copy) NSString* secondAssetUrl;
+@property (nonatomic, copy) NSURL* firstAssetUrl;
+@property (nonatomic, copy) NSURL* secondAssetUrl;
 
-@property (nonatomic) BOOL animating;
 @end
 
 @implementation VStreamPollCell
@@ -83,31 +82,15 @@ static NSString* kOrIconImage = @"orIconImage";
     VAsset* firstAsset = [[self.sequence firstNode] firstAsset];
     if (firstAsset)
     {
-        self.firstAssetUrl = firstAsset.data;
+        self.firstAssetUrl = [firstAsset.data convertToPreviewImageURL];
     }
     else
     {
-        self.firstAssetUrl = self.firstAnswer.mediaUrl;
-        self.secondAssetUrl = self.secondAnswer.mediaUrl;
+        self.firstAssetUrl = [self.firstAnswer.mediaUrl convertToPreviewImageURL];
+        self.secondAssetUrl = [self.secondAnswer.mediaUrl convertToPreviewImageURL];
     }
-    
-    if ([[self.firstAssetUrl pathExtension] isEqualToString:VConstantMediaExtensionM3U8])
-    {
-        [self.previewImageView setImageWithURL:[NSURL URLWithString:[self.firstAssetUrl previewImageURLForM3U8]]];
-    }
-    else
-    {
-        [self.previewImageView setImageWithURL:[NSURL URLWithString:self.firstAssetUrl]];
-    }
-    
-    if ([[self.secondAssetUrl pathExtension] isEqualToString:VConstantMediaExtensionM3U8])
-    {
-        [self.previewImageTwo setImageWithURL:[NSURL URLWithString:[self.secondAssetUrl previewImageURLForM3U8]]];
-    }
-    else
-    {
-        [self.previewImageTwo setImageWithURL:[NSURL URLWithString:self.secondAssetUrl]];
-    }
+    [self.previewImageView setImageWithURL:self.firstAssetUrl];
+    [self.previewImageTwo setImageWithURL:self.secondAssetUrl];
 }
 
 - (void)checkIfAnswered

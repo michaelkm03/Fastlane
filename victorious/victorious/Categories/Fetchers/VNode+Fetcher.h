@@ -13,6 +13,8 @@
 - (NSArray*)firstAnswers;
 - (VAsset*)firstAsset;
 
+- (NSArray*)orderedInteractions;
+
 - (BOOL)isPoll;
 - (BOOL)isQuiz;
 

@@ -133,6 +133,7 @@
     {
         NSLog(@"%@", resultObjects);
         [indicator stopAnimating];
+        [self.navigationController popViewControllerAnimated:YES];
     };
     VFailBlock fail = ^(NSOperation* operation, NSError* error)
     {
@@ -192,6 +193,7 @@
         NSLog(@"%@", resultObjects);
         [indicator stopAnimating];
         [self.tableView reloadData];
+        [self.navigationController popViewControllerAnimated:YES];
     };
     VFailBlock fail = ^(NSOperation* operation, NSError* error)
     {

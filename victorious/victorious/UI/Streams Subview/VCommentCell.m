@@ -93,16 +93,10 @@ NSString* const kChatBubbleLeftImage = @"ChatBubbleLeft";
 
             self.mediaUrl = comment.mediaUrl;
             self.mediaPreview.hidden = NO;
+
+            self.playButton.hidden = ![comment.mediaType isEqualToString:VConstantsMediaTypeVideo];
             
-            if ([comment.mediaType isEqualToString:VConstantsMediaTypeVideo])
-            {
-                [self.mediaPreview setImageWithURL:[NSURL URLWithString:[self.mediaUrl previewImageURLForM3U8]]];
-            }
-            else
-            {
-                self.playButton.hidden = YES;
-                [self.mediaPreview setImageWithURL:[NSURL URLWithString:self.mediaUrl]];
-            }
+            [self.mediaPreview setImageWithURL:[self.mediaUrl convertToPreviewImageURL]];
         }
         else
         {
@@ -128,16 +122,9 @@ NSString* const kChatBubbleLeftImage = @"ChatBubbleLeft";
             self.mediaUrl = message.media.mediaUrl;
             self.mediaPreview.hidden = NO;
 
-            if ([message.media.mediaType isEqualToString:VConstantsMediaTypeVideo])
-            {
-                self.playButton.hidden = NO;
-                [self.mediaPreview setImageWithURL:[NSURL URLWithString:[self.mediaUrl previewImageURLForM3U8]]];
-            }
-            else
-            {
-                self.playButton.hidden = YES;
-                [self.mediaPreview setImageWithURL:[NSURL URLWithString:self.mediaUrl]];
-            }
+            self.playButton.hidden = ![message.media.mediaType isEqualToString:VConstantsMediaTypeVideo];
+            
+            [self.mediaPreview setImageWithURL:[self.mediaUrl convertToPreviewImageURL]];
         }
         else
         {

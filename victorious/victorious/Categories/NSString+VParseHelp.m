@@ -37,6 +37,14 @@
     return nil;
 }
 
+- (NSURL*)convertToPreviewImageURL
+{
+    if ([[self pathExtension] isEqualToString:VConstantMediaExtensionM3U8])
+        [NSURL URLWithString:[self previewImageURLForM3U8]];
+
+    return [NSURL URLWithString:self];
+}
+
 - (NSString*)previewImageURLForM3U8
 {
     //    $basename . '/playlist.m3u8';
