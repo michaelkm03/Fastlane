@@ -61,9 +61,9 @@
     [self.previewView addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTapToPlayAction:)]];
     self.previewView.userInteractionEnabled = YES;
     
-    [self.scrubber addTarget:self action:@selector(scrubberMoveStart) forControlEvents:UIControlEventTouchDown];
-    [self.scrubber addTarget:self action:@selector(scrubberMoving) forControlEvents:UIControlEventTouchDragInside];
-    [self.scrubber addTarget:self action:@selector(scrubberMoveEnd) forControlEvents:UIControlEventTouchUpInside];
+    [self.scrubber addTarget:self action:@selector(scrubberDidStartMoving) forControlEvents:UIControlEventTouchDown];
+    [self.scrubber addTarget:self action:@selector(scrubberDidMove) forControlEvents:UIControlEventTouchDragInside];
+    [self.scrubber addTarget:self action:@selector(scrubberDidEndMoving) forControlEvents:UIControlEventTouchUpInside];
 }
 
 -(void)viewWillAppear:(BOOL)animated
@@ -111,16 +111,16 @@
     [self trimVideo:self.sourceAsset startTrim:self.start endTrim:self.stop];
 }
 
--(void)sliderMoveStart
+-(void)scrubberDidStartMoving
 {
 }
 
--(void)sliderMoving
+-(void)scrubberDidMove
 {
     [self.previewView.player seekToTime:CMTimeMake(self.scrubber.value, self.previewView.player.currentTime.timescale)];
 }
 
--(void)sliderMoveEnd
+-(void)scrubberDidEndMoving
 {
     [self.previewView.player seekToTime:CMTimeMake(self.scrubber.value, self.previewView.player.currentTime.timescale)];
     [self generateThumbnailsForTime];
