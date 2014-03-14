@@ -439,10 +439,10 @@ CGFloat kContentMediaViewOffset = 154;
 {
     ((UIViewController*)segue.destinationViewController).transitioningDelegate = self.transitionDelegate;
     ((UIViewController*)segue.destinationViewController).modalPresentationStyle= UIModalPresentationCustom;
-    [self.mpController stop];
     [self.mpController.view removeFromSuperview];
+    [self.mpController stop];
     self.mpController = nil;
-    [self.webView loadHTMLString:nil baseURL:nil];
+    self.webView.hidden = YES;
     
     if ([segue.identifier isEqualToString:kContentCommentSegueStoryboardID])
     {
