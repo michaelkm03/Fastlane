@@ -1001,6 +1001,17 @@
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                             </view>
+                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="81Y-P5-SQ9" userLabel="Or Container View">
+                                <rect key="frame" x="0.0" y="154" width="320" height="414"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                <subviews>
+                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="PollBarOr" translatesAutoresizingMaskIntoConstraints="NO" id="jl7-9k-rKO">
+                                        <rect key="frame" x="128" y="0.0" width="65" height="72"/>
+                                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                    </imageView>
+                                </subviews>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                            </view>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
@@ -1014,6 +1025,8 @@
                         <outlet property="firstSmallPreviewImage" destination="EVH-DQ-EKO" id="sqw-uo-jib"/>
                         <outlet property="mediaView" destination="bEh-qP-DUl" id="GYP-nN-agT"/>
                         <outlet property="moreButton" destination="ohf-04-VVL" id="ZbQ-17-R7S"/>
+                        <outlet property="orContainerView" destination="81Y-P5-SQ9" id="Ben-7t-Jmg"/>
+                        <outlet property="orImageView" destination="jl7-9k-rKO" id="Sc8-0d-S6M"/>
                         <outlet property="pollPreviewView" destination="4Kr-fK-dGu" id="Jg8-mK-drW"/>
                         <outlet property="previewImage" destination="ZqV-fk-y5a" id="5zD-1U-pWm"/>
                         <outlet property="secondSmallPreviewImage" destination="plb-mq-Tcq" id="Svf-fQ-dzq"/>
@@ -1797,10 +1810,6 @@
                                 <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="PollBarOr" translatesAutoresizingMaskIntoConstraints="NO" id="Viv-l3-3me">
-                                <rect key="frame" x="128" y="-17" width="65" height="72"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            </imageView>
                         </subviews>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     </view>
@@ -1811,7 +1820,6 @@
                         <outlet property="backgroundView" destination="DDQ-Qa-lGk" id="GdY-S1-guU"/>
                         <outlet property="leftButton" destination="Bxp-hr-lFz" id="J7Z-B7-U7a"/>
                         <outlet property="leftLabel" destination="fBr-Do-fCE" id="qYB-IO-x5s"/>
-                        <outlet property="orImageView" destination="Viv-l3-3me" id="mBi-PW-0cP"/>
                         <outlet property="rightButton" destination="D1I-Wr-6dI" id="j6f-4d-Lcb"/>
                         <outlet property="rightLabel" destination="6ak-S4-RIj" id="9NV-X7-ueG"/>
                         <outlet property="shadeView" destination="kNf-Aa-2Eo" id="qTv-s5-aUC"/>

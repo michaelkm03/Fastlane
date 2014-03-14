@@ -19,6 +19,7 @@ extern CGFloat kContentMediaViewOffset;
 @property (strong, nonatomic) VSequence* sequence;
 @property (weak, nonatomic) IBOutlet UIView* mediaView;
 @property (weak, nonatomic) IBOutlet UIView* topActionsView;
+@property (weak, nonatomic) IBOutlet UIImageView* orImageView;
 @property (strong, nonatomic) UIViewController<VAnimation>* actionBarVC;
 
 + (VContentViewController *)sharedInstance;

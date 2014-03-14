@@ -26,8 +26,6 @@
 @property (weak, nonatomic) IBOutlet UILabel* leftLabel;
 @property (weak, nonatomic) IBOutlet UILabel* rightLabel;
 
-@property (weak, nonatomic) IBOutlet UIImageView* orImageView;
-
 @property (weak, nonatomic) IBOutlet UIView* backgroundView;
 @property (weak, nonatomic) IBOutlet UIView* shadeView;
 
@@ -57,27 +55,6 @@
     self.rightLabel.textAlignment = NSTextAlignmentCenter;
 }
 
-
-- (void)viewWillAppear:(BOOL)animated
-{
-    [super viewWillAppear:animated];
-    
-    
-    self.orImageView.center = [self.target convertPoint:self.target.center toView:self.view];
-    self.animator = [[UIDynamicAnimator alloc] initWithReferenceView:self.view.superview];
-    
-    UIGravityBehavior* gravityBehavior = [[UIGravityBehavior alloc] initWithItems:@[self.orImageView]];
-    [self.animator addBehavior:gravityBehavior];
-    
-    UIDynamicItemBehavior *elasticityBehavior = [[UIDynamicItemBehavior alloc] initWithItems:@[self.orImageView]];
-    elasticityBehavior.elasticity = 0.5f;
-    [self.animator addBehavior:elasticityBehavior];
-    
-    UICollisionBehavior* collisionBehavior = [[UICollisionBehavior alloc] initWithItems:@[self.orImageView]];
-    collisionBehavior.translatesReferenceBoundsIntoBoundary = YES;
-    [self.animator addBehavior:collisionBehavior];
-}
-
 - (void)setSequence:(VSequence *)sequence
 {
     _sequence = sequence;
@@ -97,12 +74,9 @@
     self.rightLabel.alpha = 0;
     self.leftLabel.alpha = 0;
     
-    self.orImageView.alpha = 0;
-    
     [UIView animateWithDuration:duration/2
                      animations:^
                      {
-                         self.orImageView.alpha = 1;
                          [self.backgroundView setXOrigin:0];
                          [self.shadeView setXOrigin:self.view.frame.size.width - self.shadeView.frame.size.width];
                      }
@@ -130,7 +104,6 @@
                          self.leftButton.alpha = 0;
                          self.rightLabel.alpha = 0;
                          self.leftLabel.alpha = 0;
-                         self.orImageView.alpha = 0;
                      }
                      completion:^(BOOL finished) {
                          [UIView animateWithDuration:duration/2

@@ -38,6 +38,7 @@ CGFloat kContentMediaViewOffset = 154;
 @property (weak, nonatomic) IBOutlet UIButton* backButton;
 @property (weak, nonatomic) IBOutlet UIButton* commentButton;
 @property (weak, nonatomic) IBOutlet UIButton* moreButton;
+
 @property (weak, nonatomic) IBOutlet UIImageView* previewImage;
 @property (weak, nonatomic) IBOutlet UIImageView* sixteenNinePreviewImage;
 @property (weak, nonatomic) IBOutlet UIView* pollPreviewView;
@@ -46,6 +47,9 @@ CGFloat kContentMediaViewOffset = 154;
 @property (weak, nonatomic) IBOutlet UIWebView* webView;
 @property (weak, nonatomic) IBOutlet UILabel* descriptionLabel;
 @property (weak, nonatomic) IBOutlet UIView* barContainerView;
+
+@property (weak, nonatomic) IBOutlet UIView* orContainerView;
+@property (strong, nonatomic) UIDynamicAnimator* orAnimator;
 
 @property (strong, nonatomic) MPMoviePlayerController* mpController;
 @property (strong, nonatomic) VNode* currentNode;
@@ -99,6 +103,8 @@ CGFloat kContentMediaViewOffset = 154;
     self.navigationController.navigationBarHidden = YES;
     self.sequence = self.sequence;
     
+    self.orImageView.hidden = ![self.currentNode isPoll];
+    self.orImageView.alpha = 0;
     [self.topActionsView setYOrigin:self.mediaView.frame.origin.y];
     self.topActionsView.alpha = 0;
     [UIView animateWithDuration:.2f
@@ -106,6 +112,7 @@ CGFloat kContentMediaViewOffset = 154;
      {
          [self.topActionsView setYOrigin:0];
          self.topActionsView.alpha = 1;
+         self.orImageView.alpha = 1;
          [self.firstSmallPreviewImage setXOrigin:self.firstSmallPreviewImage.frame.origin.x - 1];
          [self.secondSmallPreviewImage setXOrigin:self.secondSmallPreviewImage.frame.origin.x + 1];
      }
@@ -113,6 +120,21 @@ CGFloat kContentMediaViewOffset = 154;
      {
          [self updateActionBar];
      }];
+    
+    self.orImageView.hidden = ![self.currentNode isPoll];
+    self.orImageView.center = CGPointMake(self.orImageView.center.x, self.pollPreviewView.center.y);
+    self.orAnimator = [[UIDynamicAnimator alloc] initWithReferenceView:self.orContainerView];
+    
+    UIGravityBehavior* gravityBehavior = [[UIGravityBehavior alloc] initWithItems:@[self.orImageView]];
+    [self.orAnimator addBehavior:gravityBehavior];
+    
+    UIDynamicItemBehavior *elasticityBehavior = [[UIDynamicItemBehavior alloc] initWithItems:@[self.orImageView]];
+    elasticityBehavior.elasticity = 0.2f;
+    [self.orAnimator addBehavior:elasticityBehavior];
+    
+    UICollisionBehavior* collisionBehavior = [[UICollisionBehavior alloc] initWithItems:@[self.orImageView]];
+    collisionBehavior.translatesReferenceBoundsIntoBoundary = YES;
+    [self.orAnimator addBehavior:collisionBehavior];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -350,6 +372,10 @@ CGFloat kContentMediaViewOffset = 154;
 #pragma mark - Button Actions
 - (IBAction)pressedBack:(id)sender
 {
+    [UIView animateWithDuration:.2f animations:^{
+        self.orImageView.alpha = 0;
+    }];
+    
     [self.actionBarVC animateOutWithDuration:.4f
                                   completion:^(BOOL finished)
                                   {

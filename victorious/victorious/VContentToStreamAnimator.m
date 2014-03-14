@@ -35,7 +35,11 @@
 - (void)animateTransition:(id<UIViewControllerContextTransitioning>)context
 {
     VContentViewController *contentVC = (VContentViewController*)[context viewControllerForKey:UITransitionContextFromViewControllerKey];
-
+    
+    [UIView animateWithDuration:.2f animations:^{
+        contentVC.orImageView.alpha = 0;
+    }];
+    
     [contentVC.actionBarVC animateOutWithDuration:.4f
                                        completion:^(BOOL finished)
                                         {
