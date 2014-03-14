@@ -14,6 +14,7 @@
 #import "VContentViewController.h"
 
 #import "NSString+VParseHelp.h"
+#import "UIImageView+Blurring.h"
 
 #import "VStreamContentSegue.h"
 #import "VStreamTransitioningDelegate.h"
@@ -106,6 +107,10 @@
 {
     VStreamViewCell* cell = (VStreamViewCell*)[tableView cellForRowAtIndexPath:indexPath];
     
+    UIImageView* newBackgroundView = [[UIImageView alloc] initWithFrame:self.tableView.backgroundView.frame];
+    [newBackgroundView setLightBlurredImageWithURL:[[cell.sequence initialImageURLs] firstObject]
+                                  placeholderImage:nil];
+    self.tableView.backgroundView = newBackgroundView;
     if (tableView.contentOffset.y == cell.frame.origin.y - kContentMediaViewOffset)
     {
         [self performSegueWithIdentifier:kStreamContentSegueStoryboardID sender:cell];

@@ -40,11 +40,6 @@
         return;
     }
     
-    __block UIView* oldBackgroundView = tableVC.tableView.backgroundView;
-    UIImageView* newBackgroundView = [[UIImageView alloc] initWithFrame:oldBackgroundView.frame];
-    [newBackgroundView setLightBlurredImageWithURL:[[self.selectedCell.sequence initialImageURLs] firstObject]
-                                  placeholderImage:nil];
-    tableVC.tableView.backgroundView = newBackgroundView;
     [UIView animateWithDuration:.2f
                      animations:^
                      {
