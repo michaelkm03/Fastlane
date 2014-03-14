@@ -9,7 +9,7 @@
 #import "VCommentsContainerViewController.h"
 #import "VCommentsTableViewController.h"
 #import "VKeyboardBarViewController.h"
-#import "VSequence.h"
+#import "VSequence+Fetcher.h"
 #import "VUser.h"
 #import "VConstants.h"
 #import "VObjectManager+Comment.h"
@@ -38,8 +38,8 @@
 - (void)setSequence:(VSequence *)sequence
 {
     _sequence = sequence;
-    [self.backgroundImage setLightBlurredImageWithURL:[NSURL URLWithString:_sequence.previewImage]
-                                    placeholderImage:[UIImage imageNamed:@"profile_thumb"]];
+    [self.backgroundImage setLightBlurredImageWithURL:[[self.sequence initialImageURLs] firstObject]
+                                     placeholderImage:nil];
 }
 
 - (void)viewDidLoad
@@ -47,8 +47,8 @@
     [super viewDidLoad];
     
     //Load the image on first load
-    [self.backgroundImage setLightBlurredImageWithURL:[NSURL URLWithString:_sequence.previewImage]
-                                    placeholderImage:[UIImage imageNamed:@"profile_thumb"]];
+    [self.backgroundImage setLightBlurredImageWithURL:[[self.sequence initialImageURLs] firstObject]
+                                     placeholderImage:nil];
     
     //Need to manually add this again so it appears over everything else.
     [self.view addSubview:self.backButton];

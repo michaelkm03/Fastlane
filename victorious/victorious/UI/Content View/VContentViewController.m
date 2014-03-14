@@ -106,6 +106,8 @@ CGFloat kContentMediaViewOffset = 154;
      {
          [self.topActionsView setYOrigin:0];
          self.topActionsView.alpha = 1;
+         [self.firstSmallPreviewImage setXOrigin:self.firstSmallPreviewImage.frame.origin.x - 1];
+         [self.secondSmallPreviewImage setXOrigin:self.secondSmallPreviewImage.frame.origin.x + 1];
      }
                      completion:^(BOOL finished)
      {

@@ -16,6 +16,7 @@
 
 @property (strong, nonatomic) VSequence* sequence;
 @property (strong, nonatomic) NSArray* answers;
+@property (weak, nonatomic) UIView* target;
 
 + (VPollAnswerBarViewController *)sharedInstance;
 
