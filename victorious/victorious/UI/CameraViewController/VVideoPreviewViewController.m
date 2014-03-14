@@ -6,21 +6,16 @@
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
-@import MediaPlayer;
-
 #import "VVideoPreviewViewController.h"
 #import "SCVideoPlayerView.h"
 #import "VCameraPublishViewController.h"
 
 @interface VVideoPreviewViewController ()
 @property (nonatomic, weak) IBOutlet    SCVideoPlayerView*  videoPlayerView;
-//@property (nonatomic, weak) IBOutlet    UIView*         videoPlayerView;
 @property (nonatomic, weak) IBOutlet    UIImageView*    doneButtonView;
 @property (nonatomic, weak) IBOutlet    UIButton*       trashAction;
 
 @property (nonatomic)                   BOOL            inTrashState;
-
-@property (nonatomic, strong)           MPMoviePlayerController*  moviePlayer;
 @end
 
 @implementation VVideoPreviewViewController
@@ -44,16 +39,6 @@
     [self.videoPlayerView addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTapToPlayAction:)]];
     self.videoPlayerView.userInteractionEnabled = YES;
 
-//    self.moviePlayer = [[MPMoviePlayerController alloc] initWithContentURL:self.videoURL];
-//    self.moviePlayer.scalingMode = MPMovieScalingModeAspectFill;
-//
-//    [self.moviePlayer prepareToPlay];
-//    
-//    [self.moviePlayer.view setFrame:self.videoPlayerView.bounds];
-//    [self.videoPlayerView addSubview:self.moviePlayer.view];
-//    
-//    [self.moviePlayer play];
-    
     self.view.backgroundColor = [UIColor blackColor];
     self.navigationController.navigationBar.barTintColor = [UIColor blackColor];
     

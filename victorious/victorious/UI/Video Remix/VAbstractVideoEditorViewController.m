@@ -52,7 +52,7 @@
     AVMutableCompositionTrack*  videoTrack = [composition addMutableTrackWithMediaType:AVMediaTypeVideo preferredTrackID:kCMPersistentTrackID_Invalid];
     [videoTrack insertTimeRange:timeRange ofTrack:[[asset tracksWithMediaType:AVMediaTypeVideo] objectAtIndex:0] atTime:time error:nil];
     
-    if (self.addAudio)
+    if (self.hasAudio)
     {
         AVMutableCompositionTrack*  audioTrack = [composition addMutableTrackWithMediaType:AVMediaTypeAudio preferredTrackID:kCMPersistentTrackID_Invalid];
         [audioTrack insertTimeRange:timeRange ofTrack:[[asset tracksWithMediaType:AVMediaTypeAudio] objectAtIndex:0] atTime:time error:nil];

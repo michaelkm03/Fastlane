@@ -8,12 +8,30 @@
 
 @import AVFoundation;
 
+typedef NS_ENUM(NSUInteger, RemixPlaybackSpeed)
+{
+    kRemixPlaybackHalfSpeed,
+    kRemixPlaybackNormalSpeed,
+    kRemixPlaybackDoubleSpeed
+};
+
+typedef NS_ENUM(NSUInteger, RemixLoopingType)
+{
+    kRemixLoopingNone,
+    kRemixLoopingLoop,
+    kRemixLoopingBackandForth
+};
+
 @interface VAbstractVideoEditorViewController : UIViewController
 
 @property (nonatomic, weak) IBOutlet    UIActivityIndicatorView*    activityIndicator;
 
-@property (nonatomic, strong)           AVAsset*                    sourceAsset;
-@property (nonatomic)                   BOOL                        addAudio;
+@property (nonatomic, strong)           AVURLAsset*                 sourceAsset;
+@property (nonatomic, strong)           AVURLAsset*                 outputAsset;
+
+@property (nonatomic)                   BOOL                        hasAudio;
+@property (nonatomic)                   RemixPlaybackSpeed          playBackSpeed;
+@property (nonatomic)                   RemixLoopingType            playbackLooping;
 
 @property (nonatomic, strong)           NSURL*                      outputURL;
 
@@ -24,6 +42,9 @@
 - (void)applyVideoEffectsToComposition:(AVMutableVideoComposition *)composition size:(CGSize)size;
 
 - (void)exportComposition:(AVMutableComposition *)composition videoComposition:(AVMutableVideoComposition *)videoComposition;
+- (void)exportDidFinish:(AVAssetExportSession*)session;
 - (void)processVideoDidFinishWithURL:(NSURL *)aURL;
+
+- (NSURL *)exportFileURL;
 
 @end

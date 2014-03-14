@@ -30,16 +30,77 @@
                     <view key="view" contentMode="scaleToFill" id="rlV-Dy-AD0">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="gBV-EL-ryr">
+                                <rect key="frame" x="0.0" y="106" width="320" height="320"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                            </view>
+                            <slider opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="0.5" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="s7A-U9-bCy">
+                                <rect key="frame" x="68" y="68" width="184" height="31"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <connections>
+                                    <action selector="scrubberChanged:" destination="uEv-AE-duX" eventType="valueChanged" id="wYH-gg-oVT"/>
+                                </connections>
+                            </slider>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="CN3-BV-WkM">
+                                <rect key="frame" x="20" y="508" width="46" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Rate">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="playbackRateClicked:" destination="uEv-AE-duX" eventType="touchUpInside" id="bCO-NS-Twu"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ZUq-H7-oEO">
+                                <rect key="frame" x="244" y="508" width="46" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Mute">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="muteAudioClicked:" destination="uEv-AE-duX" eventType="touchUpInside" id="Qh9-lp-QM6"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="bZd-sH-zLg">
+                                <rect key="frame" x="137" y="508" width="46" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Loop">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="playbackLoopingClicked:" destination="uEv-AE-duX" eventType="touchUpInside" id="DCZ-88-3Zd"/>
+                                </connections>
+                            </button>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="V5U-Ak-Uer">
+                                <rect key="frame" x="20" y="72" width="42" height="21"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Zdh-uA-88a">
+                                <rect key="frame" x="258" y="72" width="42" height="21"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
                     <navigationItem key="navigationItem" id="oAM-sY-FT0">
                         <barButtonItem key="leftBarButtonItem" image="cameraButtonClose" id="3FT-1D-ihZ"/>
                         <barButtonItem key="rightBarButtonItem" image="cameraButtonNext" id="ilm-gl-YWp">
                             <connections>
-                                <segue destination="vMj-SS-k4u" kind="push" identifier="toStich" id="g8I-J2-M1C"/>
+                                <segue destination="vMj-SS-k4u" kind="push" identifier="toStitch" id="g8I-J2-M1C"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
+                    <connections>
+                        <outlet property="previewView" destination="gBV-EL-ryr" id="fMZ-0M-eSR"/>
+                        <outlet property="scrubber" destination="s7A-U9-bCy" id="mVf-Em-nKC"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="wnF-CF-yIs" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -59,14 +120,11 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
                     <navigationItem key="navigationItem" id="DLc-3A-J8B">
-                        <barButtonItem key="rightBarButtonItem" image="cameraButtonNext" id="8ZA-Jm-6zK">
-                            <connections>
-                                <segue destination="b8C-FW-VDj" kind="push" identifier="toCaption" id="85I-FB-hhd"/>
-                            </connections>
-                        </barButtonItem>
+                        <barButtonItem key="rightBarButtonItem" image="cameraButtonNext" id="8ZA-Jm-6zK"/>
                     </navigationItem>
                     <connections>
                         <segue destination="YI1-UH-sNO" kind="modal" identifier="toCapture" id="tdT-NE-hOY"/>
+                        <segue destination="YqF-iv-7Fu" kind="push" identifier="toPublish" id="FG4-sn-s63"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="8Xy-hU-i96" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -86,7 +144,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="OPk-lE-WiG" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="906" y="1060"/>
+            <point key="canvasLocation" x="1521" y="816"/>
         </scene>
         <!--View Controller-->
         <scene sceneID="ncj-un-YrG">
@@ -111,7 +169,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="cEf-7G-E43" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1333" y="1060"/>
+            <point key="canvasLocation" x="1948" y="816"/>
         </scene>
         <!--View Controller-->
         <scene sceneID="io5-pv-qUn">
@@ -132,32 +190,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="T2c-5O-pEA" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1767" y="1060"/>
-        </scene>
-        <!--Remix Caption View Controller-->
-        <scene sceneID="gMP-JF-hQ3">
-            <objects>
-                <viewController storyboardIdentifier="remixText" useStoryboardIdentifierAsRestorationIdentifier="YES" id="b8C-FW-VDj" customClass="VRemixCaptionViewController" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="qEv-qR-IGL"/>
-                        <viewControllerLayoutGuide type="bottom" id="fw5-HW-kgp"/>
-                    </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="Pcm-ko-aqn">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
-                    </view>
-                    <navigationItem key="navigationItem" id="9Ck-Cf-vRk">
-                        <barButtonItem key="rightBarButtonItem" image="cameraButtonNext" id="HT8-YC-jx6">
-                            <connections>
-                                <segue destination="YqF-iv-7Fu" kind="push" identifier="toPublish" id="KyY-Xe-8DU"/>
-                            </connections>
-                        </barButtonItem>
-                    </navigationItem>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="xj3-BJ-lgb" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="1333" y="84"/>
+            <point key="canvasLocation" x="2382" y="816"/>
         </scene>
         <!--Set Expiration View Controller-->
         <scene sceneID="G0a-RE-3UU">
@@ -293,7 +326,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="qJ1-gz-TJJ" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2193" y="84"/>
+            <point key="canvasLocation" x="1947" y="84"/>
         </scene>
         <!--Camera Publish View Controller - Publish-->
         <scene sceneID="z56-bZ-00p">
@@ -420,7 +453,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="S4q-ux-Qxx" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1767" y="84"/>
+            <point key="canvasLocation" x="1521" y="84"/>
         </scene>
     </scenes>
     <resources>
