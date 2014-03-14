@@ -40,6 +40,7 @@ CGFloat kContentMediaViewOffset = 154;
 @property (weak, nonatomic) IBOutlet UIButton* moreButton;
 @property (weak, nonatomic) IBOutlet UIImageView* previewImage;
 @property (weak, nonatomic) IBOutlet UIImageView* sixteenNinePreviewImage;
+@property (weak, nonatomic) IBOutlet UIView* pollPreviewView;
 @property (weak, nonatomic) IBOutlet UIImageView* firstSmallPreviewImage;
 @property (weak, nonatomic) IBOutlet UIImageView* secondSmallPreviewImage;
 @property (weak, nonatomic) IBOutlet UIWebView* webView;
@@ -180,8 +181,10 @@ CGFloat kContentMediaViewOffset = 154;
     
     if([self.sequence isPoll] && ![self.actionBarVC isKindOfClass:[VPollAnswerBarViewController class]])
     {
-        newBarViewController = [VPollAnswerBarViewController sharedInstance];
-        ((VPollAnswerBarViewController*)newBarViewController).sequence = self.sequence;
+        VPollAnswerBarViewController* pollAnswerBar = [VPollAnswerBarViewController sharedInstance];
+        pollAnswerBar.target = self.pollPreviewView;
+        pollAnswerBar.sequence = self.sequence;
+        newBarViewController = pollAnswerBar;
     }
     else if (![self.sequence isPoll] && ![self.actionBarVC isKindOfClass:[VEmotiveBallisticsBarViewController class]])
     {
@@ -246,8 +249,7 @@ CGFloat kContentMediaViewOffset = 154;
     [self.firstSmallPreviewImage setImageWithURL:[((VAnswer*)[answers firstObject]).mediaUrl convertToPreviewImageURL]];
     [self.secondSmallPreviewImage setImageWithURL:[((VAnswer*)[answers lastObject]).mediaUrl convertToPreviewImageURL]];
     
-    self.firstSmallPreviewImage.hidden = NO;
-    self.secondSmallPreviewImage.hidden = NO;
+    self.pollPreviewView.hidden = NO;
     self.previewImage.hidden = YES;
     self.webView.hidden = YES;
     self.sixteenNinePreviewImage.hidden = YES;
@@ -280,8 +282,7 @@ CGFloat kContentMediaViewOffset = 154;
     self.previewImage.hidden = NO;
     self.webView.hidden = YES;
     self.sixteenNinePreviewImage.hidden = YES;
-    self.firstSmallPreviewImage.hidden = YES;
-    self.secondSmallPreviewImage.hidden = YES;
+    self.pollPreviewView.hidden = YES;
     self.mpController.view.hidden = YES;
     
     [self updateActionBar];
@@ -332,8 +333,7 @@ CGFloat kContentMediaViewOffset = 154;
     self.sixteenNinePreviewImage.hidden = NO;
     self.previewImage.hidden = YES;
     self.webView.hidden = YES;
-    self.firstSmallPreviewImage.hidden = YES;
-    self.secondSmallPreviewImage.hidden = YES;
+    self.pollPreviewView.hidden = YES;
     self.mpController.view.hidden = YES;
     [self.webView loadWithYoutubeID:self.currentAsset.data];
     

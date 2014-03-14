@@ -15,6 +15,8 @@
 @interface VPollAnswerBarViewController : UIViewController <VAnimation>
 
 @property (strong, nonatomic) VSequence* sequence;
+@property (strong, nonatomic) NSArray* answers;
+
 + (VPollAnswerBarViewController *)sharedInstance;
 
 @end

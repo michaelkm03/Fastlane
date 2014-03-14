@@ -29,8 +29,6 @@
 @property (weak, nonatomic) IBOutlet UIView* backgroundView;
 @property (weak, nonatomic) IBOutlet UIView* shadeView;
 
-@property (strong, nonatomic) NSArray* answers;
-
 @end
 
 @implementation VPollAnswerBarViewController
@@ -51,6 +49,8 @@
 {
     [super viewDidLoad];
     self.sequence = self.sequence;//force a load
+    self.leftLabel.textAlignment = NSTextAlignmentCenter;
+    self.rightLabel.textAlignment = NSTextAlignmentCenter;
 }
 
 - (void)setSequence:(VSequence *)sequence
@@ -69,6 +69,8 @@
     
     self.rightButton.alpha = 0;
     self.leftButton.alpha = 0;
+    self.rightLabel.alpha = 0;
+    self.leftLabel.alpha = 0;
     
     [UIView animateWithDuration:duration/2
                      animations:^
@@ -82,6 +84,8 @@
                                           {
                                               self.rightButton.alpha = 1;
                                               self.leftButton.alpha = 1;
+                                              self.rightLabel.alpha = 1;
+                                              self.leftLabel.alpha = 1;
                                           }
                                           completion:completion];
                      }];
@@ -94,6 +98,8 @@
                      {
                          self.rightButton.alpha = 0;
                          self.leftButton.alpha = 0;
+                         self.rightLabel.alpha = 0;
+                         self.leftLabel.alpha = 0;
                      }
                      completion:^(BOOL finished) {
                          [UIView animateWithDuration:duration/2

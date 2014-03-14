@@ -16,7 +16,7 @@
 
 #import "UIImageView+Blurring.h"
 
-#import "VSequence.h"
+#import "VSequence+Fetcher.h"
 
 @interface VStreamContentSegue ()
 
@@ -42,7 +42,7 @@
     
     __block UIView* oldBackgroundView = tableVC.tableView.backgroundView;
     UIImageView* newBackgroundView = [[UIImageView alloc] initWithFrame:oldBackgroundView.frame];
-    [newBackgroundView setLightBlurredImageWithURL:[NSURL URLWithString:self.selectedCell.sequence.previewImage]
+    [newBackgroundView setLightBlurredImageWithURL:[[self.selectedCell.sequence initialImageURLs] firstObject]
                                   placeholderImage:nil];
     tableVC.tableView.backgroundView = newBackgroundView;
     [UIView animateWithDuration:.2f
