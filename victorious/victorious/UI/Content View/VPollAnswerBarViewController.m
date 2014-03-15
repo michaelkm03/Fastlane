@@ -15,6 +15,7 @@
 #import "VNode+Fetcher.h"
 #import "VAnswer.h"
 #import "VPollResult.h"
+#import "VUser.h"
 
 #import "VLoginViewController.h"
 #import "VObjectManager+Sequence.h"
@@ -58,7 +59,22 @@
 - (void)setSequence:(VSequence *)sequence
 {
     _sequence = sequence;
-    self.answers = [[sequence firstNode] firstAnswers];
+    
+    [self checkIfAnswered];
+}
+
+- (void)checkIfAnswered
+{
+    for (VPollResult* result in [VObjectManager sharedManager].mainUser.pollResults)
+    {
+        if ([result.sequenceId isEqualToNumber: self.sequence.remoteId])
+        {
+            [self showResultsForAnswerId:result.answerId];
+            return;
+        }
+    }
+    
+    self.answers = [[self.sequence firstNode] firstAnswers];
     self.leftLabel.text = ((VAnswer*)[self.answers firstObject]).label;
     self.rightLabel.text = ((VAnswer*)[self.answers lastObject]).label;
 }
@@ -194,7 +210,6 @@
         }
     }
 //    self.firstResultLabel.hidden = self.secondResultLabel.hidden = NO;
-
 //    if ([answerId isEqualToNumber:self.firstAnswer.remoteId])
 //    {
 //        self.optionOneButton.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKeyPath:@"theme.color"];

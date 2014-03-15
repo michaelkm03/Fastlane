@@ -10,7 +10,13 @@
 
 #import "VAnimation.h"
 
-@class VSequence;
+@class VSequence, VAnswer;
+
+@protocol VPollAnswerBarDelegate <NSObject>
+@required
+- (void)answeredPollWithAnswer:(VAnswer*)answer;
+
+@end
 
 @interface VPollAnswerBarViewController : UIViewController <VAnimation>
 

@@ -16,6 +16,8 @@
 #import "VCommentsContainerViewController.h"
 #import "VContentTransitioningDelegate.h"
 
+#import "VResultView.h"
+
 #import "VSequence+Fetcher.h"
 #import "VNode+Fetcher.h"
 #import "VAsset+Fetcher.h"
@@ -41,12 +43,15 @@ CGFloat kContentMediaViewOffset = 154;
 
 @property (weak, nonatomic) IBOutlet UIImageView* previewImage;
 @property (weak, nonatomic) IBOutlet UIImageView* sixteenNinePreviewImage;
-@property (weak, nonatomic) IBOutlet UIView* pollPreviewView;
-@property (weak, nonatomic) IBOutlet UIImageView* firstSmallPreviewImage;
-@property (weak, nonatomic) IBOutlet UIImageView* secondSmallPreviewImage;
 @property (weak, nonatomic) IBOutlet UIWebView* webView;
 @property (weak, nonatomic) IBOutlet UILabel* descriptionLabel;
 @property (weak, nonatomic) IBOutlet UIView* barContainerView;
+
+@property (weak, nonatomic) IBOutlet UIView* pollPreviewView;
+@property (weak, nonatomic) IBOutlet UIImageView* firstSmallPreviewImage;
+@property (weak, nonatomic) IBOutlet UIImageView* secondSmallPreviewImage;
+@property (weak, nonatomic) IBOutlet VResultView* firstResultView;
+@property (weak, nonatomic) IBOutlet VResultView* secondResultView;
 
 @property (weak, nonatomic) IBOutlet UIView* orContainerView;
 @property (strong, nonatomic) UIDynamicAnimator* orAnimator;
@@ -94,6 +99,11 @@ CGFloat kContentMediaViewOffset = 154;
     self.mpController.scalingMode = MPMovieScalingModeAspectFill;
     self.mpController.view.frame = self.previewImage.frame;
     [self.mediaView insertSubview:self.mpController.view aboveSubview:self.previewImage];
+    
+    self.firstResultView.isVertical = YES;
+    self.secondResultView.isVertical = YES;
+    self.firstResultView.color = [UIColor purpleColor];
+    self.secondResultView.color = [UIColor purpleColor];
 }
 
 - (void)viewWillAppear:(BOOL)animated
