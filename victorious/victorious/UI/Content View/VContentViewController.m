@@ -398,31 +398,6 @@ CGFloat kContentMediaViewOffset = 154;
 }
 
 #pragma mark - Button Actions
-- (IBAction)pressedBack:(id)sender
-{
-    [UIView animateWithDuration:.2f animations:^{
-        self.orImageView.alpha = 0;
-    }];
-    
-    [self.actionBarVC animateOutWithDuration:.2f
-                                  completion:^(BOOL finished)
-                                  {
-                                      [self backAnimation];
-                                  }];
-}
-
-- (void)backAnimation
-{
-    [UIView animateWithDuration:.2f
-                     animations:^
-     {
-         [self.topActionsView setYOrigin:self.mediaView.frame.origin.y];
-         self.topActionsView.alpha = 0;
-     } completion:^(BOOL finished) {
-         [self.navigationController popViewControllerAnimated:NO];//dismissViewControllerAnimated:YES completion:nil];
-     }];
-}
-
 - (IBAction)pressedMore:(id)sender
 {
     //Specced but still no idea what its supposed to do
