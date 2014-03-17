@@ -54,6 +54,8 @@
     self.sequence = self.sequence;//force a load
     self.leftLabel.textAlignment = NSTextAlignmentCenter;
     self.rightLabel.textAlignment = NSTextAlignmentCenter;
+    
+    [self checkIfAnswered];
 }
 
 - (void)setSequence:(VSequence *)sequence
@@ -69,7 +71,7 @@
     {
         if ([result.sequenceId isEqualToNumber: self.sequence.remoteId])
         {
-            [self showResultsForAnswerId:result.answerId];
+            [self.delegate answeredPollWithAnswerId:result.answerId];
             return;
         }
     }
@@ -162,7 +164,7 @@
           [[VObjectManager sharedManager] pollResultsForSequence:self.sequence
                                                     successBlock:^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
                                                     {
-//                                                        [self showResultsForAnswerId:answer.remoteId];
+                                                        [self.delegate answeredPollWithAnswerId:answer.remoteId];
                                                     }
                                                        failBlock:^(NSOperation* operation, NSError* error)
                                                         {
@@ -183,41 +185,6 @@
 
           VLog(@"Failed to answer with error: %@", error);
       }];
-}
-
-- (void)showResultsForAnswerId:(NSNumber*)answerId
-{
-    NSInteger totalVotes = 0;
-    for( VPollResult* result in self.sequence.pollResults)
-    {
-        totalVotes+= result.count.integerValue;
-    }
-    totalVotes = totalVotes ? totalVotes : 1; //dividing by 0 is bad.
-
-    for( VPollResult* result in self.sequence.pollResults)
-    {
-//        VBadgeLabel* label = [self resultLabelForAnswerID:result.answerId];
-
-        NSInteger percentage = (result.count.doubleValue + 1.0 / totalVotes) * 100;
-        percentage = percentage > 100 ? 100 : percentage;
-        percentage = percentage < 0 ? 0 : percentage;
-
-//        label.text = [@(percentage).stringValue stringByAppendingString:@"%"];
-        //unhide both flags
-        if (result.answerId == answerId)
-        {
-//            label.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKeyPath:@"theme.color"];
-        }
-    }
-//    self.firstResultLabel.hidden = self.secondResultLabel.hidden = NO;
-//    if ([answerId isEqualToNumber:self.firstAnswer.remoteId])
-//    {
-//        self.optionOneButton.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKeyPath:@"theme.color"];
-//    }
-//    else if ([answerId isEqualToNumber:self.secondAnswer.remoteId])
-//    {
-//        self.optionTwoButton.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKeyPath:@"theme.color"];
-//    }
 }
 
 - (UIButton*)buttonForAnswerID:(NSNumber*)answerID

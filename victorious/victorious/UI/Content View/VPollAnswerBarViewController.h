@@ -14,8 +14,7 @@
 
 @protocol VPollAnswerBarDelegate <NSObject>
 @required
-- (void)answeredPollWithAnswer:(VAnswer*)answer;
-
+- (void)answeredPollWithAnswerId:(NSNumber*)answerId;
 @end
 
 @interface VPollAnswerBarViewController : UIViewController <VAnimation>
@@ -23,6 +22,7 @@
 @property (strong, nonatomic) VSequence* sequence;
 @property (strong, nonatomic) NSArray* answers;
 @property (weak, nonatomic) UIView* target;
+@property (weak, nonatomic) id<VPollAnswerBarDelegate> delegate;
 
 + (VPollAnswerBarViewController *)sharedInstance;
 

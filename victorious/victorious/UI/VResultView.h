@@ -16,6 +16,7 @@
 - (id)initWithFrame:(CGRect)frame orientation:(BOOL)isVertical;
 - (id)initWithFrame:(CGRect)frame orientation:(BOOL)isVertical progress:(CGFloat)progress;
 
+//Progress: float value between 0 and 1;
 - (void)setProgress:(CGFloat)progress animated:(BOOL)animated;
 
 @end

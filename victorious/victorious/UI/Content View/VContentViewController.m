@@ -23,6 +23,7 @@
 #import "VAsset+Fetcher.h"
 #import "VAnswer.h"
 #import "VInteractionManager.h"
+#import "VPollResult.h"
 
 #import "UIImageView+Blurring.h"
 #import "UIWebView+VYoutubeLoading.h"
@@ -33,7 +34,7 @@ CGFloat kContentMediaViewOffset = 154;
 
 @import MediaPlayer;
 
-@interface VContentViewController ()  <UIWebViewDelegate, VInteractionManagerDelegate>
+@interface VContentViewController ()  <UIWebViewDelegate, VInteractionManagerDelegate, VPollAnswerBarDelegate>
 
 @property (weak, nonatomic) IBOutlet UIImageView* backgroundImage;
 @property (weak, nonatomic) IBOutlet UILabel* titleLabel;
@@ -101,9 +102,11 @@ CGFloat kContentMediaViewOffset = 154;
     [self.mediaView insertSubview:self.mpController.view aboveSubview:self.previewImage];
     
     self.firstResultView.isVertical = YES;
-    self.secondResultView.isVertical = YES;
     self.firstResultView.color = [UIColor purpleColor];
+    self.firstResultView.hidden = YES;
+    self.secondResultView.isVertical = YES;
     self.secondResultView.color = [UIColor purpleColor];
+    self.secondResultView.hidden = YES;
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -205,6 +208,7 @@ CGFloat kContentMediaViewOffset = 154;
         VPollAnswerBarViewController* pollAnswerBar = [VPollAnswerBarViewController sharedInstance];
         pollAnswerBar.target = self.pollPreviewView;
         pollAnswerBar.sequence = self.sequence;
+        pollAnswerBar.delegate = self;
         newBarViewController = pollAnswerBar;
     }
     else if (![self.sequence isPoll] && ![self.actionBarVC isKindOfClass:[VEmotiveBallisticsBarViewController class]])
@@ -257,6 +261,7 @@ CGFloat kContentMediaViewOffset = 154;
                          
                          [self.firstSmallPreviewImage setXOrigin:self.firstSmallPreviewImage.frame.origin.x - 1];
                          [self.secondSmallPreviewImage setXOrigin:self.secondSmallPreviewImage.frame.origin.x + 1];
+                         
                          self.orImageView.hidden = ![self.currentNode isPoll];
                          self.orImageView.center = CGPointMake(self.orImageView.center.x, self.pollPreviewView.center.y);
                          self.orAnimator = [[UIDynamicAnimator alloc] initWithReferenceView:self.orContainerView];
@@ -442,6 +447,42 @@ CGFloat kContentMediaViewOffset = 154;
 - (void)firedInteraction:(VInteraction*)interaction
 {
     VLog(@"Interaction fired:%@", interaction);
+}
+
+#pragma mark - VPollAnswerBarDelegate
+- (void)answeredPollWithAnswerId:(NSNumber *)answerId
+{
+    NSInteger totalVotes = 0;
+    for(VPollResult* result in self.sequence.pollResults)
+    {
+        totalVotes+= result.count.integerValue;
+    }
+    totalVotes = totalVotes ? totalVotes : 1; //dividing by 0 is bad.
+    
+    for(VPollResult* result in self.sequence.pollResults)
+    {
+        //        VBadgeLabel* label = [self resultLabelForAnswerID:result.answerId];
+        
+        NSInteger percentage = (result.count.doubleValue + 1.0 / totalVotes) * 100;
+        percentage = percentage > 100 ? 100 : percentage;
+        percentage = percentage < 0 ? 0 : percentage;
+        
+        //        label.text = [@(percentage).stringValue stringByAppendingString:@"%"];
+        //unhide both flags
+        if (result.answerId == answerId)
+        {
+            //            label.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKeyPath:@"theme.color"];
+        }
+    }
+    //    self.firstResultLabel.hidden = self.secondResultLabel.hidden = NO;
+    //    if ([answerId isEqualToNumber:self.firstAnswer.remoteId])
+    //    {
+    //        self.optionOneButton.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKeyPath:@"theme.color"];
+    //    }
+    //    else if ([answerId isEqualToNumber:self.secondAnswer.remoteId])
+    //    {
+    //        self.optionTwoButton.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKeyPath:@"theme.color"];
+    //    }
 }
 
 #pragma mark - Navigation
