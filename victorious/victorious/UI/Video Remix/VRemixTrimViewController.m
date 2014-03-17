@@ -34,7 +34,7 @@
 
 + (UIViewController *)remixViewControllerWithAsset:(AVURLAsset *)asset
 {
-    UINavigationController*     remixViewController =   [[UIStoryboard storyboardWithName:@"" bundle:nil] instantiateInitialViewController];
+    UINavigationController*     remixViewController =   [[UIStoryboard storyboardWithName:@"VideoRemix" bundle:nil] instantiateInitialViewController];
     VRemixTrimViewController*   rootViewController  =   (VRemixTrimViewController *)remixViewController.topViewController;
     rootViewController.sourceAsset = asset;
     

@@ -59,7 +59,7 @@
 		3FD7FFBE18C5360800945E5F /* VExpirationDatePicker.m in Sources */ = {isa = PBXBuildFile; fileRef = 3FD7FFBD18C5360800945E5F /* VExpirationDatePicker.m */; };
 		3FD7FFC118C69B2200945E5F /* VSetExpirationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3FD7FFC018C69B2200945E5F /* VSetExpirationViewController.m */; };
 		3FD7FFC418C7EC2700945E5F /* SCCameraFocusTargetView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3FD7FFC318C7EC2700945E5F /* SCCameraFocusTargetView.m */; };
-		3FDEDD0018CE46F00028E3F1 /* Video Remix.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3FDEDCFF18CE46F00028E3F1 /* Video Remix.storyboard */; };
+		3FDEDD0018CE46F00028E3F1 /* VideoRemix.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3FDEDCFF18CE46F00028E3F1 /* VideoRemix.storyboard */; };
 		3FDEDD0318CE47E80028E3F1 /* VRemixTrimViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3FDEDD0218CE47E80028E3F1 /* VRemixTrimViewController.m */; };
 		3FDEDD0618CE48210028E3F1 /* VRemixStitchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3FDEDD0518CE48210028E3F1 /* VRemixStitchViewController.m */; };
 		3FDEDD0C18CE5E180028E3F1 /* VAbstractVideoEditorViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3FDEDD0B18CE5E180028E3F1 /* VAbstractVideoEditorViewController.m */; };
@@ -293,7 +293,7 @@
 		3FD7FFC018C69B2200945E5F /* VSetExpirationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VSetExpirationViewController.m; path = "UI/Base Classes/VSetExpirationViewController.m"; sourceTree = "<group>"; };
 		3FD7FFC218C7EC2700945E5F /* SCCameraFocusTargetView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCCameraFocusTargetView.h; sourceTree = "<group>"; };
 		3FD7FFC318C7EC2700945E5F /* SCCameraFocusTargetView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCCameraFocusTargetView.m; sourceTree = "<group>"; };
-		3FDEDCFF18CE46F00028E3F1 /* Video Remix.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = "Video Remix.storyboard"; path = "UI/Video Remix/Video Remix.storyboard"; sourceTree = "<group>"; };
+		3FDEDCFF18CE46F00028E3F1 /* VideoRemix.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = VideoRemix.storyboard; path = "UI/Video Remix/VideoRemix.storyboard"; sourceTree = "<group>"; };
 		3FDEDD0118CE47E80028E3F1 /* VRemixTrimViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VRemixTrimViewController.h; path = "UI/Video Remix/VRemixTrimViewController.h"; sourceTree = "<group>"; };
 		3FDEDD0218CE47E80028E3F1 /* VRemixTrimViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VRemixTrimViewController.m; path = "UI/Video Remix/VRemixTrimViewController.m"; sourceTree = "<group>"; };
 		3FDEDD0418CE48210028E3F1 /* VRemixStitchViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VRemixStitchViewController.h; path = "UI/Video Remix/VRemixStitchViewController.h"; sourceTree = "<group>"; };
@@ -875,7 +875,7 @@
 				3FDEDD0218CE47E80028E3F1 /* VRemixTrimViewController.m */,
 				3FDEDD0418CE48210028E3F1 /* VRemixStitchViewController.h */,
 				3FDEDD0518CE48210028E3F1 /* VRemixStitchViewController.m */,
-				3FDEDCFF18CE46F00028E3F1 /* Video Remix.storyboard */,
+				3FDEDCFF18CE46F00028E3F1 /* VideoRemix.storyboard */,
 				3F14C43218BD2BD0001796B9 /* SCAudioVideoRecorder */,
 			);
 			name = CameraViewController;
@@ -1346,7 +1346,7 @@
 				5FCC1E4C1899CAC800EB7699 /* settings.storyboard in Resources */,
 				3FA217CF18A9BFC90066E893 /* video_thumb_mini.png in Resources */,
 				BEB4C29E187E038C004ECEEF /* VNewsCell.xib in Resources */,
-				3FDEDD0018CE46F00028E3F1 /* Video Remix.storyboard in Resources */,
+				3FDEDD0018CE46F00028E3F1 /* VideoRemix.storyboard in Resources */,
 				BE692B23186E5ED800C71336 /* VStreamDoublePollCell.xib in Resources */,
 				3FA217CD18A9BFC90066E893 /* cast_solid_custom.png in Resources */,
 				BE171D861868BE64004E5202 /* InfoPlist.strings in Resources */,
