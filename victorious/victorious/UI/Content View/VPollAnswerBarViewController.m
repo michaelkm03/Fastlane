@@ -16,6 +16,7 @@
 #import "VAnswer.h"
 #import "VPollResult.h"
 #import "VUser.h"
+#import "VObjectManager+Login.h"
 
 #import "VLoginViewController.h"
 #import "VObjectManager+Sequence.h"
@@ -54,6 +55,11 @@
     self.sequence = self.sequence;//force a load
     self.leftLabel.textAlignment = NSTextAlignmentCenter;
     self.rightLabel.textAlignment = NSTextAlignmentCenter;
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(checkIfAnswered)
+                                                 name:kPollResultsLoaded
+                                               object:nil];
 }
 
 - (void)setSequence:(VSequence *)sequence
@@ -69,7 +75,16 @@
     {
         if ([result.sequenceId isEqualToNumber: self.sequence.remoteId])
         {
-            [self.delegate answeredPollWithAnswerId:result.answerId];
+            __block NSNumber* answerId = result.answerId;
+            [[VObjectManager sharedManager] pollResultsForSequence:self.sequence
+                                                      successBlock:^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
+             {
+                 [self.delegate answeredPollWithAnswerId:answerId];
+             }
+                                                         failBlock:^(NSOperation* operation, NSError* error)
+             {
+                 VLog(@"Failed with error: %@", error);
+             }];
             return;
         }
     }

@@ -117,8 +117,6 @@ CGFloat kContentMediaViewOffset = 154;
     
     self.orImageView.hidden = ![self.currentNode isPoll];
     self.orImageView.alpha = 0;
-//    CGPoint newCenter = [self.mediaView]
-    self.orImageView.center = [self.mediaView convertPoint:self.pollPreviewView.center toView:self.view];
     
     [self.topActionsView setYOrigin:self.mediaView.frame.origin.y];
     self.topActionsView.alpha = 0;
@@ -464,8 +462,9 @@ CGFloat kContentMediaViewOffset = 154;
     for(VPollResult* result in self.sequence.pollResults)
     {
         VResultView* resultView = [self resultViewForAnswerId:result.answerId];
-
-        NSInteger progress = (result.count.doubleValue + 1.0 / totalVotes);
+        resultView.hidden = NO;
+        
+        NSInteger progress = result.count.doubleValue / totalVotes;
         
         if (result.answerId == answerId)
         {
