@@ -1,13 +1,13 @@
 //
-//  SCCameraFocusView
+//  VCCameraFocusView
 //
 
 #import <UIKit/UIKit.h>
-#import "SCCamera.h"
+#import "VCCamera.h"
 
-@interface SCCameraFocusView : UIView
+@interface VCCameraFocusView : UIView
 
-@property (weak, nonatomic) SCCamera *camera;
+@property (weak, nonatomic) VCCamera *camera;
 @property (strong, nonatomic) UIImage *outsideFocusTargetImage;
 @property (strong, nonatomic) UIImage *insideFocusTargetImage;
 @property (assign, nonatomic) CGSize focusTargetSize;

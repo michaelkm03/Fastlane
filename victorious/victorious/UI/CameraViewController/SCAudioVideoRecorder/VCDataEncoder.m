@@ -1,19 +1,19 @@
 //
-//  SCDataEncoder
+//  VCDataEncoder
 //
 
-#import "SCDataEncoder.h"
-#import "SCAudioVideoRecorderInternal.h"
+#import "VCDataEncoder.h"
+#import "VCAudioVideoRecorderInternal.h"
 
 ////////////////////////////////////////////////////////////
 // PRIVATE DEFINITION
 /////////////////////
 
-@interface SCDataEncoder() {
+@interface VCDataEncoder() {
     
 }
 
-@property (weak, nonatomic) SCAudioVideoRecorder * audioVideoRecorder;
+@property (weak, nonatomic) VCAudioVideoRecorder * audioVideoRecorder;
 
 @end
 
@@ -21,7 +21,7 @@
 // IMPLEMENTATION
 /////////////////////
 
-@implementation SCDataEncoder {
+@implementation VCDataEncoder {
     CMTime lastTakenFrame;
     BOOL initialized;
 }
@@ -29,7 +29,7 @@
 @synthesize writerInput;
 @synthesize audioVideoRecorder;
 
-- (id) initWithAudioVideoRecorder:(SCAudioVideoRecorder *)aVR {
+- (id) initWithAudioVideoRecorder:(VCAudioVideoRecorder *)aVR {
     if (self) {
         self.audioVideoRecorder = aVR;
         self.enabled = YES;
@@ -44,7 +44,7 @@
 }
 
 - (AVAssetWriterInput*) createWriterInputForSampleBuffer:(CMSampleBufferRef)sampleBuffer error:(NSError **)error {
-    *error = [SCAudioVideoRecorder createError:@"Inherited objects must override createWriterInput"];
+    *error = [VCAudioVideoRecorder createError:@"Inherited objects must override createWriterInput"];
     return nil;
 }
 
@@ -87,14 +87,14 @@
     self.writerInput = [self createWriterInputForSampleBuffer:sampleBuffer error:&error];
     
     if (self.writerInput == nil && error == nil) {
-        error = [SCAudioVideoRecorder createError:@"Encoder didn't create a WriterInput"];
+        error = [VCAudioVideoRecorder createError:@"Encoder didn't create a WriterInput"];
     }
     
     if (self.writerInput != nil) {
         if ([self.audioVideoRecorder.assetWriter canAddInput:self.writerInput]) {
             [self.audioVideoRecorder.assetWriter addInput:self.writerInput];
         } else {
-            error = [SCAudioVideoRecorder createError:@"Unable to add WriterInput to the AssetWriter"];
+            error = [VCAudioVideoRecorder createError:@"Unable to add WriterInput to the AssetWriter"];
         }
     }
     

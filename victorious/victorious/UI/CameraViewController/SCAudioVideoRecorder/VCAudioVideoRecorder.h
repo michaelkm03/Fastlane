@@ -1,46 +1,39 @@
 //
-//  SCAudioVideoRecorder
+//  VCAudioVideoRecorder
 //
 
 #import <Foundation/Foundation.h>
-#import "SCVideoEncoder.h"
-#import "SCAudioEncoder.h"
-
-#if DEBUG
-#define DLog(fmt, ...) NSLog((@"%s [Line %d] " fmt), __PRETTY_FUNCTION__, __LINE__, ##__VA_ARGS__);
-#else
-#define DLog(...)
-#endif
-
+#import "VCVideoEncoder.h"
+#import "VCAudioEncoder.h"
 
 // photo dictionary keys
 
-extern NSString * const SCAudioVideoRecorderPhotoMetadataKey;
-extern NSString * const SCAudioVideoRecorderPhotoJPEGKey;
-extern NSString * const SCAudioVideoRecorderPhotoImageKey;
-extern NSString * const SCAudioVideoRecorderPhotoThumbnailKey; // 160x120
+extern NSString * const VCAudioVideoRecorderPhotoMetadataKey;
+extern NSString * const VCAudioVideoRecorderPhotoJPEGKey;
+extern NSString * const VCAudioVideoRecorderPhotoImageKey;
+extern NSString * const VCAudioVideoRecorderPhotoThumbnailKey; // 160x120
 
-@class SCAudioVideoRecorder;
+@class VCAudioVideoRecorder;
 
 //
 // VideoRecorderDelegate
 //
 
-@protocol SCAudioVideoRecorderDelegate <NSObject>
+@protocol VCAudioVideoRecorderDelegate <NSObject>
 
 @optional
 
-- (void) audioVideoRecorder:(SCAudioVideoRecorder *)audioVideoRecorder didRecordVideoFrame:(CMTime)frameTime;
-- (void) audioVideoRecorder:(SCAudioVideoRecorder *)audioVideoRecorder didRecordAudioSample:(CMTime)sampleTime;
-- (void) audioVideoRecorder:(SCAudioVideoRecorder *)audioVideoRecorder willFinishRecordingAtTime:(CMTime)frameTime;
-- (void) audioVideoRecorder:(SCAudioVideoRecorder *)audioVideoRecorder didFinishRecordingAtUrl:(NSURL*)recordedFile
+- (void) audioVideoRecorder:(VCAudioVideoRecorder *)audioVideoRecorder didRecordVideoFrame:(CMTime)frameTime;
+- (void) audioVideoRecorder:(VCAudioVideoRecorder *)audioVideoRecorder didRecordAudioSample:(CMTime)sampleTime;
+- (void) audioVideoRecorder:(VCAudioVideoRecorder *)audioVideoRecorder willFinishRecordingAtTime:(CMTime)frameTime;
+- (void) audioVideoRecorder:(VCAudioVideoRecorder *)audioVideoRecorder didFinishRecordingAtUrl:(NSURL*)recordedFile
                       error:(NSError*)error;
-- (void) audioVideoRecorder:(SCAudioVideoRecorder *)audioVideoRecorder willFinalizeAudioMixAtUrl:(NSURL*)recordedFile;
-- (void) audioVideoRecorder:(SCAudioVideoRecorder *)audioVideoRecorder didFailToInitializeVideoEncoder:(NSError*)error;
-- (void) audioVideoRecorder:(SCAudioVideoRecorder *)audioVideoRecorder didFailToInitializeAudioEncoder:(NSError*)error;
+- (void) audioVideoRecorder:(VCAudioVideoRecorder *)audioVideoRecorder willFinalizeAudioMixAtUrl:(NSURL*)recordedFile;
+- (void) audioVideoRecorder:(VCAudioVideoRecorder *)audioVideoRecorder didFailToInitializeVideoEncoder:(NSError*)error;
+- (void) audioVideoRecorder:(VCAudioVideoRecorder *)audioVideoRecorder didFailToInitializeAudioEncoder:(NSError*)error;
 
 // Photo
-- (void)audioVideoRecorder:(SCAudioVideoRecorder *)audioVideoRecorder capturedPhoto:(NSDictionary *)photoDict error:(NSError *)error;
+- (void)audioVideoRecorder:(VCAudioVideoRecorder *)audioVideoRecorder capturedPhoto:(NSDictionary *)photoDict error:(NSError *)error;
 
 @end
 
@@ -48,10 +41,10 @@ extern NSString * const SCAudioVideoRecorderPhotoThumbnailKey; // 160x120
 // AudioVideo Recorder
 //
 
-@class SCVideoEncoder;
-@class SCAudioEncoder;
+@class VCVideoEncoder;
+@class VCAudioEncoder;
 
-@interface SCAudioVideoRecorder : NSObject<SCDataEncoderDelegate> {
+@interface VCAudioVideoRecorder : NSObject<VCDataEncoderDelegate> {
     
 }
 
@@ -73,7 +66,7 @@ extern NSString * const SCAudioVideoRecorderPhotoThumbnailKey; // 160x120
 - (BOOL) isPrepared;
 - (BOOL) isRecording;
 
-@property (weak, nonatomic) id<SCAudioVideoRecorderDelegate> delegate;
+@property (weak, nonatomic) id<VCAudioVideoRecorderDelegate> delegate;
 
 @property (strong, nonatomic, readonly) AVCaptureVideoDataOutput * videoOutput;
 @property (strong, nonatomic, readonly) AVCaptureAudioDataOutput * audioOutput;
@@ -83,10 +76,10 @@ extern NSString * const SCAudioVideoRecorderPhotoThumbnailKey; // 160x120
 @property (assign, nonatomic) BOOL enableVideo;
 
 // The VideoEncoder. Accessing this allow the configuration of the video encoder
-@property (strong, nonatomic, readonly) SCVideoEncoder * videoEncoder;
+@property (strong, nonatomic, readonly) VCVideoEncoder * videoEncoder;
 
 // The AudioEncoder. Accessing this allow the configuration of the audio encoder
-@property (strong, nonatomic, readonly) SCAudioEncoder * audioEncoder;
+@property (strong, nonatomic, readonly) VCAudioEncoder * audioEncoder;
 
 // When the recording is prepared, this getter contains the output file
 @property (strong, nonatomic, readonly) NSURL * outputFileUrl;

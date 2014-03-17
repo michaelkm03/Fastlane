@@ -1,12 +1,12 @@
 //
-//  SCAudioTools
+//  VCAudioTools
 //
 
 @import AVFoundation;
 @import AudioToolbox;
-#import "SCAudioTools.h"
+#import "VCAudioTools.h"
 
-@implementation SCAudioTools {
+@implementation VCAudioTools {
     
 }
 
@@ -81,7 +81,7 @@
 			
 			[userInfo setObject:[AVAssetExportSession allExportPresets] forKey:@"AllExportSessions"];
 			
-			error = [NSError errorWithDomain:@"SCAudioVideoRecorder" code:500 userInfo:userInfo];
+			error = [NSError errorWithDomain:@"VCAudioVideoRecorder" code:500 userInfo:userInfo];
 		}
 				
 		completionBlock(error);

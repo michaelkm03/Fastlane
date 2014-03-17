@@ -1,30 +1,30 @@
 //
-//  SCAudioVideoRecorder
+//  VCAudioVideoRecorder
 //
 
 #if TARGET_IPHONE_SIMULATOR || TARGET_OS_IPHONE
 #import <AssetsLibrary/AssetsLibrary.h>
 #endif
-#import "SCAudioVideoRecorderInternal.h"
+#import "VCAudioVideoRecorderInternal.h"
 
-#import "SCAudioTools.h"
+#import "VCAudioTools.h"
 
 @import ImageIO;
 
 // photo dictionary key definitions
 
-NSString * const SCAudioVideoRecorderPhotoMetadataKey = @"SCAudioVideoRecorderPhotoMetadataKey";
-NSString * const SCAudioVideoRecorderPhotoJPEGKey = @"SCAudioVideoRecorderPhotoJPEGKey";
-NSString * const SCAudioVideoRecorderPhotoImageKey = @"SCAudioVideoRecorderPhotoImageKey";
-NSString * const SCAudioVideoRecorderPhotoThumbnailKey = @"SCAudioVideoRecorderPhotoThumbnailKey";
+NSString * const VCAudioVideoRecorderPhotoMetadataKey = @"VCAudioVideoRecorderPhotoMetadataKey";
+NSString * const VCAudioVideoRecorderPhotoJPEGKey = @"VCAudioVideoRecorderPhotoJPEGKey";
+NSString * const VCAudioVideoRecorderPhotoImageKey = @"VCAudioVideoRecorderPhotoImageKey";
+NSString * const VCAudioVideoRecorderPhotoThumbnailKey = @"VCAudioVideoRecorderPhotoThumbnailKey";
 
-//static CGFloat const SCAudioVideoRecorderThumbnailWidth = 160.0f;
+//static CGFloat const VCAudioVideoRecorderThumbnailWidth = 160.0f;
 
 ////////////////////////////////////////////////////////////
 // PRIVATE DEFINITION
 /////////////////////
 
-@interface SCAudioVideoRecorder() {
+@interface VCAudioVideoRecorder() {
 	BOOL recording;
 	BOOL shouldWriteToCameraRoll;
 	BOOL audioEncoderReady;
@@ -39,8 +39,8 @@ NSString * const SCAudioVideoRecorderPhotoThumbnailKey = @"SCAudioVideoRecorderP
 @property (strong, nonatomic) AVCaptureVideoDataOutput * videoOutput;
 @property (strong, nonatomic) AVCaptureAudioDataOutput * audioOutput;
 @property (strong, nonatomic) AVCaptureStillImageOutput *stillImageOutput;
-@property (strong, nonatomic) SCVideoEncoder * videoEncoder;
-@property (strong, nonatomic) SCAudioEncoder * audioEncoder;
+@property (strong, nonatomic) VCVideoEncoder * videoEncoder;
+@property (strong, nonatomic) VCAudioEncoder * audioEncoder;
 @property (strong, nonatomic) NSURL * outputFileUrl;
 @property (strong, nonatomic) AVPlayer * playbackPlayer;
 @property (assign, nonatomic) CMTime currentRecordingTime;
@@ -51,7 +51,7 @@ NSString * const SCAudioVideoRecorderPhotoThumbnailKey = @"SCAudioVideoRecorderP
 // IMPLEMENTATION
 /////////////////////
 
-@implementation SCAudioVideoRecorder
+@implementation VCAudioVideoRecorder
 
 @synthesize delegate;
 @synthesize videoOutput;
@@ -73,12 +73,12 @@ NSString * const SCAudioVideoRecorderPhotoThumbnailKey = @"SCAudioVideoRecorderP
 		self.outputFileType = AVFileTypeMPEG4;
 		self.recordingDurationLimit = kCMTimePositiveInfinity;
 		
-		self.dispatch_queue = dispatch_queue_create("SCVideoRecorder", nil);
+		self.dispatch_queue = dispatch_queue_create("VCVideoRecorder", nil);
 		
 		audioEncoderReady = NO;
 		videoEncoderReady = NO;
-		self.audioEncoder = [[SCAudioEncoder alloc] initWithAudioVideoRecorder:self];
-		self.videoEncoder = [[SCVideoEncoder alloc] initWithAudioVideoRecorder:self];
+		self.audioEncoder = [[VCAudioEncoder alloc] initWithAudioVideoRecorder:self];
+		self.videoEncoder = [[VCVideoEncoder alloc] initWithAudioVideoRecorder:self];
 		self.audioEncoder.delegate = self;
 		self.videoEncoder.delegate = self;
 		recording = NO;
@@ -144,7 +144,7 @@ NSString * const SCAudioVideoRecorderPhotoThumbnailKey = @"SCAudioVideoRecorderP
 
 - (NSURL*) prepareRecordingOnTempDir:(NSError **)error {
 	long timeInterval =  (long)[[NSDate date] timeIntervalSince1970];
-	NSURL * fileUrl = [NSURL fileURLWithPath:[NSString stringWithFormat:@"%@%ld%@", NSTemporaryDirectory(), timeInterval, @"SCVideo.mp4"]];
+	NSURL * fileUrl = [NSURL fileURLWithPath:[NSString stringWithFormat:@"%@%ld%@", NSTemporaryDirectory(), timeInterval, @"VCVideo.mp4"]];
     
 	NSError * recordError = nil;
 	[self prepareRecordingAtUrl:fileUrl error:&recordError];
@@ -218,7 +218,7 @@ NSString * const SCAudioVideoRecorderPhotoThumbnailKey = @"SCAudioVideoRecorderP
 		[[NSFileManager defaultManager] moveItemAtURL:fileUrl toURL:oldUrl error:&error];
 		
 		if (error == nil) {
-			[SCAudioTools mixAudio:self.playbackAsset startTime:self.playbackStartTime withVideo:oldUrl affineTransform:self.videoEncoder.outputAffineTransform toUrl:fileUrl outputFileType:self.outputFileType withMaxDuration:self.recordingDurationLimit withCompletionBlock:^(NSError * error2) {
+			[VCAudioTools mixAudio:self.playbackAsset startTime:self.playbackStartTime withVideo:oldUrl affineTransform:self.videoEncoder.outputAffineTransform toUrl:fileUrl outputFileType:self.outputFileType withMaxDuration:self.recordingDurationLimit withCompletionBlock:^(NSError * error2) {
 				if (error2 == nil) {
 					[self removeFile:oldUrl];
 				}
@@ -336,7 +336,7 @@ NSString * const SCAudioVideoRecorderPhotoThumbnailKey = @"SCAudioVideoRecorderP
              // add photo metadata (ie EXIF: Aperture, Brightness, Exposure, FocalLength, etc)
              metadata = (__bridge NSDictionary *)CMCopyDictionaryOfAttachments(kCFAllocatorDefault, imageDataSampleBuffer, kCMAttachmentMode_ShouldPropagate);
              if (metadata) {
-                 [photoDict setObject:metadata forKey:SCAudioVideoRecorderPhotoMetadataKey];
+                 [photoDict setObject:metadata forKey:VCAudioVideoRecorderPhotoMetadataKey];
                  CFRelease((__bridge CFTypeRef)(metadata));
              } else {
                  NSLog(@"failed to generate metadata for photo");
@@ -346,12 +346,12 @@ NSString * const SCAudioVideoRecorderPhotoThumbnailKey = @"SCAudioVideoRecorderP
              NSData *jpegData = [AVCaptureStillImageOutput jpegStillImageNSDataRepresentation:imageDataSampleBuffer];
              if (jpegData) {
                  // add JPEG
-                 [photoDict setObject:jpegData forKey:SCAudioVideoRecorderPhotoJPEGKey];
+                 [photoDict setObject:jpegData forKey:VCAudioVideoRecorderPhotoJPEGKey];
                  
                  // add image
                  UIImage *image = [self _uiimageFromJPEGData:jpegData];
                  if (image) {
-                     [photoDict setObject:image forKey:SCAudioVideoRecorderPhotoImageKey];
+                     [photoDict setObject:image forKey:VCAudioVideoRecorderPhotoImageKey];
                  } else {
                      NSLog(@"failed to create image from JPEG");
                      // TODO: return delegate on error
@@ -381,7 +381,7 @@ NSString * const SCAudioVideoRecorderPhotoThumbnailKey = @"SCAudioVideoRecorderP
     
 	dispatch_async(self.dispatch_queue, ^{
 		if (self.assetWriter == nil) {
-			[self notifyRecordFinishedAtUrl:nil withError:[SCAudioVideoRecorder createError:@"Recording must be started before calling stopRecording"]];
+			[self notifyRecordFinishedAtUrl:nil withError:[VCAudioVideoRecorder createError:@"Recording must be started before calling stopRecording"]];
 		} else {
 			[self stopInternal];
 		}
@@ -405,11 +405,11 @@ NSString * const SCAudioVideoRecorderPhotoThumbnailKey = @"SCAudioVideoRecorderP
 			break;
 		case AVAssetWriterStatusCancelled:
 			[self resetInternal];
-			[self notifyRecordFinishedAtUrl:nil withError:[SCAudioVideoRecorder createError:@"Writer cancelled"]];
+			[self notifyRecordFinishedAtUrl:nil withError:[VCAudioVideoRecorder createError:@"Writer cancelled"]];
 			break;
 		case AVAssetWriterStatusUnknown:
 			[self resetInternal];
-			[self notifyRecordFinishedAtUrl:nil withError:[SCAudioVideoRecorder createError:@"Writer status unknown"]];
+			[self notifyRecordFinishedAtUrl:nil withError:[VCAudioVideoRecorder createError:@"Writer status unknown"]];
 			break;
 	}
 }
@@ -471,7 +471,7 @@ NSString * const SCAudioVideoRecorderPhotoThumbnailKey = @"SCAudioVideoRecorderP
 // DataEncoder Delegate implementation
 //
 
-- (void) dataEncoder:(SCDataEncoder *)dataEncoder didEncodeFrame:(CMTime)frameTime {
+- (void) dataEncoder:(VCDataEncoder *)dataEncoder didEncodeFrame:(CMTime)frameTime {
     [self dispatchBlockOnAskedQueue:^ {
 		self.currentRecordingTime = frameTime;
 		
@@ -490,7 +490,7 @@ NSString * const SCAudioVideoRecorderPhotoThumbnailKey = @"SCAudioVideoRecorderP
     }];
 }
 
-- (void) dataEncoder:(SCDataEncoder *)dataEncoder didFailToInitializeEncoder:(NSError *)error {
+- (void) dataEncoder:(VCDataEncoder *)dataEncoder didFailToInitializeEncoder:(NSError *)error {
     [self dispatchBlockOnAskedQueue: ^ {
         if (dataEncoder == self.audioEncoder) {
             if ([self.delegate respondsToSelector:@selector(audioVideoRecorder:didFailToInitializeAudioEncoder:)]) {
@@ -517,10 +517,10 @@ NSString * const SCAudioVideoRecorderPhotoThumbnailKey = @"SCAudioVideoRecorderP
 }
 
 + (NSError*) createError:(NSString*)name {
-	return [NSError errorWithDomain:@"SCAudioVideoRecorder" code:500 userInfo:[NSDictionary dictionaryWithObject:name forKey:NSLocalizedDescriptionKey]];
+	return [NSError errorWithDomain:@"VCAudioVideoRecorder" code:500 userInfo:[NSDictionary dictionaryWithObject:name forKey:NSLocalizedDescriptionKey]];
 }
 
-- (void) prepareWriterAtSourceTime:(CMTime)sourceTime fromEncoder:(SCDataEncoder*)encoder {
+- (void) prepareWriterAtSourceTime:(CMTime)sourceTime fromEncoder:(VCDataEncoder*)encoder {
     // Set an encoder as ready if it's the caller or if it's not enabled
     audioEncoderReady |= (encoder == self.audioEncoder) | !self.audioEncoder.enabled;
     videoEncoderReady |= (encoder == self.videoEncoder) | !self.videoEncoder.enabled;

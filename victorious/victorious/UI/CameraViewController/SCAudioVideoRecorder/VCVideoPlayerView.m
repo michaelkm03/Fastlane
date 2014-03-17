@@ -1,19 +1,19 @@
 //
-//  SCVideoPlayerView
+//  VCVideoPlayerView
 //
 
-#import "SCVideoPlayerView.h"
+#import "VCVideoPlayerView.h"
 
 
 ////////////////////////////////////////////////////////////
 // PRIVATE DEFINITION
 /////////////////////
 
-@interface SCVideoPlayerView() {
+@interface VCVideoPlayerView() {
 	UIView * _loadingView;
 }
 
-@property (strong, nonatomic, readwrite) SCPlayer * player;
+@property (strong, nonatomic, readwrite) VCPlayer * player;
 @property (strong, nonatomic, readwrite) AVPlayerLayer * playerLayer;
 
 @end
@@ -22,7 +22,7 @@
 // IMPLEMENTATION
 /////////////////////
 
-@implementation SCVideoPlayerView
+@implementation VCVideoPlayerView
 
 @synthesize player;
 @synthesize playerLayer;
@@ -54,7 +54,7 @@
 }
 
 - (void) commonInit {
-	self.player = [SCPlayer player];
+	self.player = [VCPlayer player];
 	self.player.delegate = self;
 	self.playerLayer = [AVPlayerLayer playerLayerWithPlayer:self.player];
 	self.playerLayer.videoGravity = AVLayerVideoGravityResizeAspectFill;
@@ -74,19 +74,19 @@
 	self.clipsToBounds = YES;
 }
 
-- (void) videoPlayer:(SCPlayer *)videoPlayer didStartLoadingAtItemTime:(CMTime)itemTime {
+- (void) videoPlayer:(VCPlayer *)videoPlayer didStartLoadingAtItemTime:(CMTime)itemTime {
 	self.loadingView.hidden = NO;
 }
 
-- (void) videoPlayer:(SCPlayer *)videoPlayer didEndLoadingAtItemTime:(CMTime)itemTime {
+- (void) videoPlayer:(VCPlayer *)videoPlayer didEndLoadingAtItemTime:(CMTime)itemTime {
 	self.loadingView.hidden = YES;
 }
 
-- (void) videoPlayer:(SCPlayer *)videoPlayer didPlay:(Float32)secondsElapsed {
+- (void) videoPlayer:(VCPlayer *)videoPlayer didPlay:(Float32)secondsElapsed {
 	
 }
 
-- (void) videoPlayer:(SCPlayer *)videoPlayer didChangeItem:(AVPlayerItem *)item {
+- (void) videoPlayer:(VCPlayer *)videoPlayer didChangeItem:(AVPlayerItem *)item {
 //	self.loadingView.hidden = item == nil;
 }
 

@@ -31,7 +31,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="gBV-EL-ryr">
+                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="gBV-EL-ryr" customClass="VCVideoPlayerView">
                                 <rect key="frame" x="0.0" y="106" width="320" height="320"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
@@ -92,6 +92,11 @@
                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="doN-GD-FKd">
+                                <rect key="frame" x="0.0" y="434" width="320" height="53"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                            </view>
                         </subviews>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
@@ -105,7 +110,7 @@
                     </navigationItem>
                     <connections>
                         <outlet property="currentTimeLabel" destination="V5U-Ak-Uer" id="wEH-LT-f9a"/>
-                        <outlet property="previewView" destination="gBV-EL-ryr" id="fMZ-0M-eSR"/>
+                        <outlet property="previewView" destination="gBV-EL-ryr" id="sjh-7v-8nW"/>
                         <outlet property="scrubber" destination="s7A-U9-bCy" id="mVf-Em-nKC"/>
                         <outlet property="totalTimeLabel" destination="Zdh-uA-88a" id="gVT-83-Qte"/>
                     </connections>

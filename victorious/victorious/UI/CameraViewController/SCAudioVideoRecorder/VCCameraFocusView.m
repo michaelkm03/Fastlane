@@ -1,9 +1,9 @@
 //
-//  SCCameraFocusView
+//  VCCameraFocusView
 //
 
-#import "SCCameraFocusView.h"
-#import "SCCameraFocusTargetView.h"
+#import "VCCameraFocusView.h"
+#import "VCCameraFocusTargetView.h"
 
 #define BASE_FOCUS_TARGET_WIDTH 60
 #define BASE_FOCUS_TARGET_HEIGHT 60
@@ -12,12 +12,12 @@
 // PRIVATE DEFINITION
 /////////////////////
 
-@interface SCCameraFocusView()
+@interface VCCameraFocusView()
 {
     CGPoint _currentFocusPoint;
 }
 
-@property (strong, nonatomic) SCCameraFocusTargetView *cameraFocusTargetView;
+@property (strong, nonatomic) VCCameraFocusTargetView *cameraFocusTargetView;
 
 @end
 
@@ -25,7 +25,7 @@
 // IMPLEMENTATION
 /////////////////////
 
-@implementation SCCameraFocusView
+@implementation VCCameraFocusView
 
 - (id)initWithFrame:(CGRect)frame
 {
@@ -50,7 +50,7 @@
 - (void)commonInit
 {
     _currentFocusPoint = CGPointMake(0.5, 0.5);
-    self.cameraFocusTargetView = [[SCCameraFocusTargetView alloc] init];
+    self.cameraFocusTargetView = [[VCCameraFocusTargetView alloc] init];
     self.cameraFocusTargetView.hidden = YES;
     [self addSubview:self.cameraFocusTargetView];
     

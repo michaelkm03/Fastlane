@@ -10,13 +10,13 @@
 @import AssetsLibrary;
 
 #import "VCameraViewController.h"
-#import "SCCamera.h"
-#import "SCCameraFocusView.h"
+#import "VCCamera.h"
+#import "VCCameraFocusView.h"
 #import "VImagePreviewViewController.h"
 #import "VVideoPreviewViewController.h"
 #import "UIImage+Cropping.h"
 
-@interface VCameraViewController () <SCCameraDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate>
+@interface VCameraViewController () <VCCameraDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate>
 
 @property (nonatomic, weak) IBOutlet    UIButton*           switchCameraButton;
 @property (nonatomic, strong)           UIBarButtonItem*    nextButton;
@@ -33,8 +33,8 @@
 @property (nonatomic, weak) IBOutlet    UIButton*           capturePhotoButton;
 @property (nonatomic, weak) IBOutlet    UIButton*           switchCameraModeButton;
 
-@property (strong, nonatomic) SCCamera* camera;
-@property (strong, nonatomic) SCCameraFocusView* focusView;
+@property (strong, nonatomic) VCCamera* camera;
+@property (strong, nonatomic) VCCameraFocusView* focusView;
 
 @property (nonatomic, strong)           NSURL*              videoURL;
 @property (nonatomic, strong)           UIImage*            photo;
@@ -60,10 +60,10 @@
 {
     [super viewDidLoad];
 
-    self.camera = [[SCCamera alloc] initWithSessionPreset:AVCaptureSessionPresetHigh];
+    self.camera = [[VCCamera alloc] initWithSessionPreset:AVCaptureSessionPresetHigh];
     self.camera.delegate = self;
     self.camera.enableSound = YES;
-    self.camera.previewVideoGravity = SCVideoGravityResizeAspectFill;
+    self.camera.previewVideoGravity = VCVideoGravityResizeAspectFill;
     self.camera.previewView = self.previewView;
 	self.camera.videoOrientation = AVCaptureVideoOrientationPortrait;
 	self.camera.recordingDurationLimit = CMTimeMakeWithSeconds(15, 1);
@@ -101,7 +101,7 @@
     
     self.toolTipImageView.alpha = 0.0;
 
-    self.focusView = [[SCCameraFocusView alloc] initWithFrame:self.previewView.bounds];
+    self.focusView = [[VCCameraFocusView alloc] initWithFrame:self.previewView.bounds];
     self.focusView.camera = self.camera;
     [self.previewView addSubview:self.focusView];
 //    self.focusView.outsideFocusTargetImage = [UIImage imageNamed:@"capture_flip"];
@@ -112,9 +112,9 @@
     
     self.switchCameraButton.hidden = !(hasFrontCamera && hasRearCamera);
     if (hasRearCamera)
-        self.camera.cameraDevice = SCCameraDeviceBack;
+        self.camera.cameraDevice = VCCameraDeviceBack;
     else if (hasFrontCamera)
-        self.camera.cameraDevice = SCCameraDeviceFront;
+        self.camera.cameraDevice = VCCameraDeviceFront;
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -191,12 +191,12 @@
 {
     switch (self.camera.flashMode)
     {
-        case SCFlashModeOff:
-            self.camera.flashMode = SCFlashModeOn;
+        case VCFlashModeOff:
+            self.camera.flashMode = VCFlashModeOn;
             self.navigationItem.rightBarButtonItem = self.flashOnButton;
             break;
-        case SCFlashModeOn:
-            self.camera.flashMode = SCFlashModeOff;
+        case VCFlashModeOn:
+            self.camera.flashMode = VCFlashModeOff;
             self.navigationItem.rightBarButtonItem = self.flashOffButton;
             break;
         default:
@@ -266,7 +266,7 @@
          {
              self.camera.sessionPreset = AVCaptureSessionPresetHigh;
              [self.switchCameraModeButton setImage:[UIImage imageNamed:@"cameraButtonSwitchToPhoto"] forState:UIControlStateNormal];
-             self.camera.flashMode = SCFlashModeOff;
+             self.camera.flashMode = VCFlashModeOff;
              [self setLastImageSavedToAlbum];
          }];
     }
@@ -286,7 +286,7 @@
                  self.navigationItem.rightBarButtonItem = self.flashOffButton;
              else
                  self.navigationItem.rightBarButtonItem = nil;
-             self.camera.flashMode = SCFlashModeOff;
+             self.camera.flashMode = VCFlashModeOff;
              [self setLastImageSavedToAlbum];
          }];
     }
@@ -460,10 +460,10 @@
     [self prepareCamera];
     [self updateProgressForSecond:0];
     
-    self.camera.flashMode = SCFlashModeOff;
+    self.camera.flashMode = VCFlashModeOff;
     
     if (self.camera.sessionPreset == AVCaptureSessionPresetPhoto)
-        if (self.camera.flashMode == SCFlashModeOff)
+        if (self.camera.flashMode == VCFlashModeOff)
             self.navigationItem.rightBarButtonItem = self.flashOnButton;
         else
             self.navigationItem.rightBarButtonItem = self.flashOffButton;
@@ -480,7 +480,7 @@
 
 #pragma mark - SCAudioVideoRecorderDelegate
 
-- (void) audioVideoRecorder:(SCAudioVideoRecorder *)audioVideoRecorder didRecordVideoFrame:(CMTime)frameTime
+- (void) audioVideoRecorder:(VCAudioVideoRecorder *)audioVideoRecorder didRecordVideoFrame:(CMTime)frameTime
 {
     if (!self.inRecordVideoState)
     {
@@ -494,23 +494,23 @@
 }
 
 // error
-- (void) audioVideoRecorder:(SCAudioVideoRecorder *)audioVideoRecorder didFailToInitializeVideoEncoder:(NSError *)error
+- (void) audioVideoRecorder:(VCAudioVideoRecorder *)audioVideoRecorder didFailToInitializeVideoEncoder:(NSError *)error
 {
     NSLog(@"Failed to initialize VideoEncoder: %@", error);
 }
 
-- (void) audioVideoRecorder:(SCAudioVideoRecorder *)audioVideoRecorder didFailToInitializeAudioEncoder:(NSError *)error
+- (void) audioVideoRecorder:(VCAudioVideoRecorder *)audioVideoRecorder didFailToInitializeAudioEncoder:(NSError *)error
 {
     NSLog(@"Failed to initialize AudioEncoder: %@", error);
 }
 
-- (void) audioVideoRecorder:(SCAudioVideoRecorder *)audioVideoRecorder willFinishRecordingAtTime:(CMTime)frameTime
+- (void) audioVideoRecorder:(VCAudioVideoRecorder *)audioVideoRecorder willFinishRecordingAtTime:(CMTime)frameTime
 {
 //    self.recordButton.userInteractionEnabled = NO;
 }
 
 // Video
-- (void) audioVideoRecorder:(SCAudioVideoRecorder *)audioVideoRecorder didFinishRecordingAtUrl:(NSURL *)recordedFile error:(NSError *)error
+- (void) audioVideoRecorder:(VCAudioVideoRecorder *)audioVideoRecorder didFinishRecordingAtUrl:(NSURL *)recordedFile error:(NSError *)error
 {
     [self prepareCamera];
 
@@ -533,63 +533,63 @@
 #pragma mark - Camera Delegate
 
 // Photo
-- (void) audioVideoRecorder:(SCAudioVideoRecorder *)audioVideoRecorder capturedPhoto:(NSDictionary *)photoDict error:(NSError *)error
+- (void) audioVideoRecorder:(VCAudioVideoRecorder *)audioVideoRecorder capturedPhoto:(NSDictionary *)photoDict error:(NSError *)error
 {
     if (!error)
     {
-        self.photo = [photoDict[SCAudioVideoRecorderPhotoImageKey] squareImageScaledToSize:CGSizeMake(640.0, 640.0)];
+        self.photo = [photoDict[VCAudioVideoRecorderPhotoImageKey] squareImageScaledToSize:CGSizeMake(640.0, 640.0)];
         [self performSegueWithIdentifier:@"toPhotoPreview" sender:self];
     }
 }
 
 // Camera
-- (void)camera:(SCCamera *)camera didFailWithError:(NSError *)error
+- (void)camera:(VCCamera *)camera didFailWithError:(NSError *)error
 {
     VLog(@"error : %@", error.description);
 }
 
 // Photo
-- (void)cameraWillCapturePhoto:(SCCamera *)camera
+- (void)cameraWillCapturePhoto:(VCCamera *)camera
 {
     
 }
 
-- (void)cameraDidCapturePhoto:(SCCamera *)camera
+- (void)cameraDidCapturePhoto:(VCCamera *)camera
 {
 
 }
 
 // Focus
-- (void)cameraDidStartFocus:(SCCamera *)camera
+- (void)cameraDidStartFocus:(VCCamera *)camera
 {
     [self.focusView showFocusAnimation];
 }
 
-- (void)cameraDidStopFocus:(SCCamera *)camera
+- (void)cameraDidStopFocus:(VCCamera *)camera
 {
     [self.focusView hideFocusAnimation];
 }
 
-- (void)camera:(SCCamera *)camera didFailFocus:(NSError *)error
+- (void)camera:(VCCamera *)camera didFailFocus:(NSError *)error
 {
-    DLog(@"DidFailFocus");
+    VLog(@"DidFailFocus");
     [self.focusView hideFocusAnimation];
 }
 
 // Session
-- (void)cameraSessionWillStart:(SCAudioVideoRecorder *)audioVideoRecorder
+- (void)cameraSessionWillStart:(VCAudioVideoRecorder *)audioVideoRecorder
 {
 }
 
-- (void)cameraSessionDidStart:(SCAudioVideoRecorder *)audioVideoRecorder
+- (void)cameraSessionDidStart:(VCAudioVideoRecorder *)audioVideoRecorder
 {
 }
 
-- (void)cameraSessionWillStop:(SCAudioVideoRecorder *)audioVideoRecorder
+- (void)cameraSessionWillStop:(VCAudioVideoRecorder *)audioVideoRecorder
 {
 }
 
-- (void)cameraSessionDidStop:(SCAudioVideoRecorder *)audioVideoRecorder
+- (void)cameraSessionDidStop:(VCAudioVideoRecorder *)audioVideoRecorder
 {
 }
 
@@ -597,7 +597,7 @@
 {
 }
 
-- (void)camera:(SCCamera *)camera cleanApertureDidChange:(CGRect)cleanAperture
+- (void)camera:(VCCamera *)camera cleanApertureDidChange:(CGRect)cleanAperture
 {
     VLog(@"%@", NSStringFromCGRect(cleanAperture));
 }
@@ -612,7 +612,7 @@
     if (CFStringCompare ((CFStringRef)mediaType, kUTTypeImage, 0) == kCFCompareEqualTo)
     {
         UIImage* originalImage = (UIImage *)info[UIImagePickerControllerOriginalImage];
-        [self audioVideoRecorder:nil capturedPhoto:@{SCAudioVideoRecorderPhotoImageKey : originalImage} error:nil];
+        [self audioVideoRecorder:nil capturedPhoto:@{VCAudioVideoRecorderPhotoImageKey : originalImage} error:nil];
     }
     
     // Handle a movied picked from a photo album

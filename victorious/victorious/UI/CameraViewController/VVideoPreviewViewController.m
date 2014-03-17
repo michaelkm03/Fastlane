@@ -7,11 +7,11 @@
 //
 
 #import "VVideoPreviewViewController.h"
-#import "SCVideoPlayerView.h"
+#import "VCVideoPlayerView.h"
 #import "VCameraPublishViewController.h"
 
 @interface VVideoPreviewViewController ()
-@property (nonatomic, weak) IBOutlet    SCVideoPlayerView*  videoPlayerView;
+@property (nonatomic, weak) IBOutlet    VCVideoPlayerView*  videoPlayerView;
 @property (nonatomic, weak) IBOutlet    UIImageView*    doneButtonView;
 @property (nonatomic, weak) IBOutlet    UIButton*       trashAction;
 

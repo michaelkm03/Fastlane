@@ -1,22 +1,22 @@
 //
-//  SCCameraFocusTargetView
+//  VCCameraFocusTargetView
 //
 
-#import "SCCameraFocusTargetView.h"
+#import "VCCameraFocusTargetView.h"
 
 #define kInsideCircleAnimationKey @"insideCircleAnimationKey"
 #define kOutsideCircleAnimationKey @"outsideCircleAnimationKey"
 
 #define kRemoveCircleAnimationKey @"removeCircleAnimationKey"
 
-@interface SCCameraFocusTargetView ()
+@interface VCCameraFocusTargetView ()
 
 @property (nonatomic, strong) UIImageView *outsideCircle;
 @property (nonatomic, strong) UIImageView *insideCircle;
 
 @end
 
-@implementation SCCameraFocusTargetView
+@implementation VCCameraFocusTargetView
 
 - (id)initWithFrame:(CGRect)frame
 {
