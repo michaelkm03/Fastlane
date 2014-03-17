@@ -9,6 +9,7 @@
 #import "VObjectManager.h"
 
 extern NSString* const kInitialLoadFinishedNotification;
+extern NSString* const kPollResultsLoaded;
 
 @class VAnswer, VSequence, VCategory;
 

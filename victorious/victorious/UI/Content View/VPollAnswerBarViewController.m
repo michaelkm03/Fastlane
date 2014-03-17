@@ -15,6 +15,8 @@
 #import "VNode+Fetcher.h"
 #import "VAnswer.h"
 #import "VPollResult.h"
+#import "VUser.h"
+#import "VObjectManager+Login.h"
 
 #import "VLoginViewController.h"
 #import "VObjectManager+Sequence.h"
@@ -29,7 +31,7 @@
 @property (weak, nonatomic) IBOutlet UIView* backgroundView;
 @property (weak, nonatomic) IBOutlet UIView* shadeView;
 
-@property (strong, nonatomic) NSArray* answers;
+@property (strong) UIDynamicAnimator* animator;
 
 @end
 
@@ -51,12 +53,43 @@
 {
     [super viewDidLoad];
     self.sequence = self.sequence;//force a load
+    self.leftLabel.textAlignment = NSTextAlignmentCenter;
+    self.rightLabel.textAlignment = NSTextAlignmentCenter;
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(checkIfAnswered)
+                                                 name:kPollResultsLoaded
+                                               object:nil];
 }
 
 - (void)setSequence:(VSequence *)sequence
 {
     _sequence = sequence;
-    self.answers = [[sequence firstNode] firstAnswers];
+    
+    [self checkIfAnswered];
+}
+
+- (void)checkIfAnswered
+{
+    for (VPollResult* result in [VObjectManager sharedManager].mainUser.pollResults)
+    {
+        if ([result.sequenceId isEqualToNumber: self.sequence.remoteId])
+        {
+            __block NSNumber* answerId = result.answerId;
+            [[VObjectManager sharedManager] pollResultsForSequence:self.sequence
+                                                      successBlock:^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
+             {
+                 [self.delegate answeredPollWithAnswerId:answerId];
+             }
+                                                         failBlock:^(NSOperation* operation, NSError* error)
+             {
+                 VLog(@"Failed with error: %@", error);
+             }];
+            return;
+        }
+    }
+    
+    self.answers = [[self.sequence firstNode] firstAnswers];
     self.leftLabel.text = ((VAnswer*)[self.answers firstObject]).label;
     self.rightLabel.text = ((VAnswer*)[self.answers lastObject]).label;
 }
@@ -69,6 +102,8 @@
     
     self.rightButton.alpha = 0;
     self.leftButton.alpha = 0;
+    self.rightLabel.alpha = 0;
+    self.leftLabel.alpha = 0;
     
     [UIView animateWithDuration:duration/2
                      animations:^
@@ -82,10 +117,14 @@
                                           {
                                               self.rightButton.alpha = 1;
                                               self.leftButton.alpha = 1;
+                                              self.rightLabel.alpha = 1;
+                                              self.leftLabel.alpha = 1;
                                           }
                                           completion:completion];
                      }];
 }
+
+
 
 - (void)animateOutWithDuration:(CGFloat)duration completion:(void (^)(BOOL finished))completion
 {
@@ -94,6 +133,8 @@
                      {
                          self.rightButton.alpha = 0;
                          self.leftButton.alpha = 0;
+                         self.rightLabel.alpha = 0;
+                         self.leftLabel.alpha = 0;
                      }
                      completion:^(BOOL finished) {
                          [UIView animateWithDuration:duration/2
@@ -136,7 +177,7 @@
           [[VObjectManager sharedManager] pollResultsForSequence:self.sequence
                                                     successBlock:^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
                                                     {
-//                                                        [self showResultsForAnswerId:answer.remoteId];
+                                                        [self.delegate answeredPollWithAnswerId:answer.remoteId];
                                                     }
                                                        failBlock:^(NSOperation* operation, NSError* error)
                                                         {
@@ -157,42 +198,6 @@
 
           VLog(@"Failed to answer with error: %@", error);
       }];
-}
-
-- (void)showResultsForAnswerId:(NSNumber*)answerId
-{
-    NSInteger totalVotes = 0;
-    for( VPollResult* result in self.sequence.pollResults)
-    {
-        totalVotes+= result.count.integerValue;
-    }
-    totalVotes = totalVotes ? totalVotes : 1; //dividing by 0 is bad.
-
-    for( VPollResult* result in self.sequence.pollResults)
-    {
-//        VBadgeLabel* label = [self resultLabelForAnswerID:result.answerId];
-
-        NSInteger percentage = (result.count.doubleValue + 1.0 / totalVotes) * 100;
-        percentage = percentage > 100 ? 100 : percentage;
-        percentage = percentage < 0 ? 0 : percentage;
-
-//        label.text = [@(percentage).stringValue stringByAppendingString:@"%"];
-        //unhide both flags
-        if (result.answerId == answerId)
-        {
-//            label.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKeyPath:@"theme.color"];
-        }
-    }
-//    self.firstResultLabel.hidden = self.secondResultLabel.hidden = NO;
-
-//    if ([answerId isEqualToNumber:self.firstAnswer.remoteId])
-//    {
-//        self.optionOneButton.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKeyPath:@"theme.color"];
-//    }
-//    else if ([answerId isEqualToNumber:self.secondAnswer.remoteId])
-//    {
-//        self.optionTwoButton.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKeyPath:@"theme.color"];
-//    }
 }
 
 - (UIButton*)buttonForAnswerID:(NSNumber*)answerID

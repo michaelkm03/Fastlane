@@ -14,7 +14,7 @@ static NSUInteger const VConstantsMessageLength     = 140;
 static NSUInteger const VConstantsForumTitleLength  = 65;
 
 static NSUInteger const kFeaturedTableCellHeight = 180;
-static NSUInteger const kStreamDoublePollCellHeight = 160;
+static NSUInteger const kStreamDoublePollCellHeight = 214;
 static NSUInteger const kStreamPollCellHeight = 320;
 static NSUInteger const kStreamYoutubeCellHeight = 180;
 static NSUInteger const kStreamViewCellHeight = 320;

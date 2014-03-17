@@ -23,6 +23,7 @@
 #import "NSString+VParseHelp.h"
 
 NSString* const kInitialLoadFinishedNotification = @"kInitialLoadFinishedNotification";
+NSString* const kPollResultsLoaded = @"kPollResultsLoaded";
 
 @implementation VObjectManager (Sequence)
 
@@ -335,6 +336,8 @@ NSString* const kInitialLoadFinishedNotification = @"kInitialLoadFinishedNotific
          {
              [user.managedObjectContext save:nil];
          }];
+
+        [[NSNotificationCenter defaultCenter] postNotificationName:kPollResultsLoaded object:nil];
         
         if (success)
             success(operation, fullResponse, resultObjects);

@@ -16,11 +16,14 @@
 #import "VCommentsContainerViewController.h"
 #import "VContentTransitioningDelegate.h"
 
+#import "VResultView.h"
+
 #import "VSequence+Fetcher.h"
 #import "VNode+Fetcher.h"
 #import "VAsset+Fetcher.h"
 #import "VAnswer.h"
 #import "VInteractionManager.h"
+#import "VPollResult.h"
 
 #import "UIImageView+Blurring.h"
 #import "UIWebView+VYoutubeLoading.h"
@@ -31,20 +34,28 @@ CGFloat kContentMediaViewOffset = 154;
 
 @import MediaPlayer;
 
-@interface VContentViewController ()  <UIWebViewDelegate, VInteractionManagerDelegate>
+@interface VContentViewController ()  <UIWebViewDelegate, VInteractionManagerDelegate, VPollAnswerBarDelegate>
 
 @property (weak, nonatomic) IBOutlet UIImageView* backgroundImage;
 @property (weak, nonatomic) IBOutlet UILabel* titleLabel;
 @property (weak, nonatomic) IBOutlet UIButton* backButton;
 @property (weak, nonatomic) IBOutlet UIButton* commentButton;
 @property (weak, nonatomic) IBOutlet UIButton* moreButton;
+
 @property (weak, nonatomic) IBOutlet UIImageView* previewImage;
 @property (weak, nonatomic) IBOutlet UIImageView* sixteenNinePreviewImage;
-@property (weak, nonatomic) IBOutlet UIImageView* firstSmallPreviewImage;
-@property (weak, nonatomic) IBOutlet UIImageView* secondSmallPreviewImage;
 @property (weak, nonatomic) IBOutlet UIWebView* webView;
 @property (weak, nonatomic) IBOutlet UILabel* descriptionLabel;
 @property (weak, nonatomic) IBOutlet UIView* barContainerView;
+
+@property (weak, nonatomic) IBOutlet UIView* pollPreviewView;
+@property (weak, nonatomic) IBOutlet UIImageView* firstSmallPreviewImage;
+@property (weak, nonatomic) IBOutlet UIImageView* secondSmallPreviewImage;
+@property (weak, nonatomic) IBOutlet VResultView* firstResultView;
+@property (weak, nonatomic) IBOutlet VResultView* secondResultView;
+
+@property (weak, nonatomic) IBOutlet UIView* orContainerView;
+@property (strong, nonatomic) UIDynamicAnimator* orAnimator;
 
 @property (strong, nonatomic) MPMoviePlayerController* mpController;
 @property (strong, nonatomic) VNode* currentNode;
@@ -84,6 +95,17 @@ CGFloat kContentMediaViewOffset = 154;
     self.webView.scrollView.scrollEnabled = NO;
     [self.webView setAllowsInlineMediaPlayback:YES];
     [self.webView setMediaPlaybackRequiresUserAction:NO];
+    
+    self.mpController = [[MPMoviePlayerController alloc] initWithContentURL:nil];
+    self.mpController.scalingMode = MPMovieScalingModeAspectFill;
+    self.mpController.view.frame = self.previewImage.frame;
+    [self.mediaView insertSubview:self.mpController.view aboveSubview:self.previewImage];
+    
+    self.firstResultView.isVertical = YES;
+    self.firstResultView.hidden = YES;
+    
+    self.secondResultView.isVertical = YES;
+    self.secondResultView.hidden = YES;
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -93,6 +115,9 @@ CGFloat kContentMediaViewOffset = 154;
     self.navigationController.navigationBarHidden = YES;
     self.sequence = self.sequence;
     
+    self.orImageView.hidden = ![self.currentNode isPoll];
+    self.orImageView.alpha = 0;
+    
     [self.topActionsView setYOrigin:self.mediaView.frame.origin.y];
     self.topActionsView.alpha = 0;
     [UIView animateWithDuration:.2f
@@ -100,6 +125,7 @@ CGFloat kContentMediaViewOffset = 154;
      {
          [self.topActionsView setYOrigin:0];
          self.topActionsView.alpha = 1;
+         self.orImageView.alpha = 1;
      }
                      completion:^(BOOL finished)
      {
@@ -112,6 +138,7 @@ CGFloat kContentMediaViewOffset = 154;
     [super viewWillDisappear:animated];
     
     self.navigationController.navigationBarHidden = NO;
+    self.orAnimator = nil;
 }
 
 -(VInteractionManager*)interactionManager
@@ -175,8 +202,11 @@ CGFloat kContentMediaViewOffset = 154;
     
     if([self.sequence isPoll] && ![self.actionBarVC isKindOfClass:[VPollAnswerBarViewController class]])
     {
-        newBarViewController = [VPollAnswerBarViewController sharedInstance];
-        ((VPollAnswerBarViewController*)newBarViewController).sequence = self.sequence;
+        VPollAnswerBarViewController* pollAnswerBar = [VPollAnswerBarViewController sharedInstance];
+        pollAnswerBar.target = self.pollPreviewView;
+        pollAnswerBar.sequence = self.sequence;
+        pollAnswerBar.delegate = self;
+        newBarViewController = pollAnswerBar;
     }
     else if (![self.sequence isPoll] && ![self.actionBarVC isKindOfClass:[VEmotiveBallisticsBarViewController class]])
     {
@@ -191,7 +221,7 @@ CGFloat kContentMediaViewOffset = 154;
     
     if (self.actionBarVC && newBarViewController)
     {
-        [self.actionBarVC animateOutWithDuration:.4f
+        [self.actionBarVC animateOutWithDuration:.2f
                                       completion:^(BOOL finished)
                                       {
                                           [self.actionBarVC removeFromParentViewController];
@@ -201,7 +231,9 @@ CGFloat kContentMediaViewOffset = 154;
                                           [self.barContainerView addSubview:newBarViewController.view];
                                           self.actionBarVC = newBarViewController;
                                           
-                                          [self.actionBarVC animateInWithDuration:.4f completion:nil];
+                                          [self.actionBarVC animateInWithDuration:.2f completion:^(BOOL finished) {
+                                              [self pollAnimation];
+                                          }];
                                       }];
     }
     else if (newBarViewController)
@@ -213,8 +245,36 @@ CGFloat kContentMediaViewOffset = 154;
         [self.barContainerView addSubview:newBarViewController.view];
         self.actionBarVC = newBarViewController;
         
-        [self.actionBarVC animateInWithDuration:.4f completion:nil];
+        [self.actionBarVC animateInWithDuration:.2f completion:^(BOOL finished) {
+            [self pollAnimation];
+        }];
     }
+}
+
+- (void)pollAnimation
+{
+    [UIView animateWithDuration:.2f
+                     animations:^{
+                         
+                         [self.firstSmallPreviewImage setXOrigin:self.firstSmallPreviewImage.frame.origin.x - 1];
+                         [self.secondSmallPreviewImage setXOrigin:self.secondSmallPreviewImage.frame.origin.x + 1];
+                         
+                         self.orImageView.hidden = ![self.currentNode isPoll];
+                         self.orImageView.center = CGPointMake(self.orImageView.center.x, self.pollPreviewView.center.y);
+                         self.orAnimator = [[UIDynamicAnimator alloc] initWithReferenceView:self.orContainerView];
+                         
+                         UIGravityBehavior* gravityBehavior = [[UIGravityBehavior alloc] initWithItems:@[self.orImageView]];
+                         gravityBehavior.magnitude = 4;
+                         [self.orAnimator addBehavior:gravityBehavior];
+                         
+                         UIDynamicItemBehavior *elasticityBehavior = [[UIDynamicItemBehavior alloc] initWithItems:@[self.orImageView]];
+                         elasticityBehavior.elasticity = 0.2f;
+                         [self.orAnimator addBehavior:elasticityBehavior];
+                         
+                         UICollisionBehavior* collisionBehavior = [[UICollisionBehavior alloc] initWithItems:@[self.orImageView]];
+                         collisionBehavior.translatesReferenceBoundsIntoBoundary = YES;
+                         [self.orAnimator addBehavior:collisionBehavior];
+                     }];
 }
 
 #pragma mark - Sequence Logic
@@ -241,8 +301,7 @@ CGFloat kContentMediaViewOffset = 154;
     [self.firstSmallPreviewImage setImageWithURL:[((VAnswer*)[answers firstObject]).mediaUrl convertToPreviewImageURL]];
     [self.secondSmallPreviewImage setImageWithURL:[((VAnswer*)[answers lastObject]).mediaUrl convertToPreviewImageURL]];
     
-    self.firstSmallPreviewImage.hidden = NO;
-    self.secondSmallPreviewImage.hidden = NO;
+    self.pollPreviewView.hidden = NO;
     self.previewImage.hidden = YES;
     self.webView.hidden = YES;
     self.sixteenNinePreviewImage.hidden = YES;
@@ -275,35 +334,27 @@ CGFloat kContentMediaViewOffset = 154;
     self.previewImage.hidden = NO;
     self.webView.hidden = YES;
     self.sixteenNinePreviewImage.hidden = YES;
-    self.firstSmallPreviewImage.hidden = YES;
-    self.secondSmallPreviewImage.hidden = YES;
+    self.pollPreviewView.hidden = YES;
     self.mpController.view.hidden = YES;
     
     [self updateActionBar];
 }
-
 
 #pragma mark - Video
 - (void)loadVideo
 {
     [self loadImage];
     
-    [self.mpController.view removeFromSuperview];
-    self.mpController = [[MPMoviePlayerController alloc] initWithContentURL:[NSURL URLWithString:self.currentAsset.data]];
+    [self.mpController setContentURL:[NSURL URLWithString:self.currentAsset.data]];
     self.mpController.view.hidden = YES;
     [self.mpController prepareToPlay];
-    self.mpController.scalingMode = MPMovieScalingModeAspectFill;
-    self.mpController.view.frame = self.previewImage.frame;
-    VLog(@"pi frame: %@", NSStringFromCGRect(self.previewImage.frame));
-    VLog(@"mp nat size: %@", NSStringFromCGSize(self.mpController.naturalSize));
-    [self.mediaView insertSubview:self.mpController.view aboveSubview:self.previewImage];
     
     [self updateActionBar];
 }
 
 - (void)mpLoadStateChanged
 {
-    if (self.mpController.loadState == MPMovieLoadStatePlayable)
+    if (self.mpController.loadState == MPMovieLoadStatePlayable && self.mpController.playbackState != MPMoviePlaybackStatePlaying)
     {
         VLog(@"mp nat size: %@", NSStringFromCGSize(self.mpController.naturalSize));
         CGFloat yRatio = self.mpController.naturalSize.height / self.mpController.naturalSize.width;
@@ -334,8 +385,7 @@ CGFloat kContentMediaViewOffset = 154;
     self.sixteenNinePreviewImage.hidden = NO;
     self.previewImage.hidden = YES;
     self.webView.hidden = YES;
-    self.firstSmallPreviewImage.hidden = YES;
-    self.secondSmallPreviewImage.hidden = YES;
+    self.pollPreviewView.hidden = YES;
     self.mpController.view.hidden = YES;
     [self.webView loadWithYoutubeID:self.currentAsset.data];
     
@@ -348,27 +398,6 @@ CGFloat kContentMediaViewOffset = 154;
 }
 
 #pragma mark - Button Actions
-- (IBAction)pressedBack:(id)sender
-{
-    [self.actionBarVC animateOutWithDuration:.4f
-                                  completion:^(BOOL finished)
-                                  {
-                                      [self backAnimation];
-                                  }];
-}
-
-- (void)backAnimation
-{
-    [UIView animateWithDuration:.2f
-                     animations:^
-     {
-         [self.topActionsView setYOrigin:self.mediaView.frame.origin.y];
-         self.topActionsView.alpha = 0;
-     } completion:^(BOOL finished) {
-         [self.navigationController popViewControllerAnimated:NO];//dismissViewControllerAnimated:YES completion:nil];
-     }];
-}
-
 - (IBAction)pressedMore:(id)sender
 {
     //Specced but still no idea what its supposed to do
@@ -392,14 +421,69 @@ CGFloat kContentMediaViewOffset = 154;
     VLog(@"Interaction fired:%@", interaction);
 }
 
+#pragma mark - VPollAnswerBarDelegate
+- (void)answeredPollWithAnswerId:(NSNumber *)answerId
+{
+    [self.firstResultView setProgress:0 animated:NO];
+    [self.secondResultView setProgress:0 animated:NO];
+    
+    NSInteger totalVotes = 0;
+    for(VPollResult* result in self.sequence.pollResults)
+    {
+        totalVotes+= result.count.integerValue;
+    }
+    totalVotes = totalVotes ? totalVotes : 1; //dividing by 0 is bad.
+    
+    for(VPollResult* result in self.sequence.pollResults)
+    {
+        VResultView* resultView = [self resultViewForAnswerId:result.answerId];
+        resultView.hidden = NO;
+        
+        NSInteger progress = result.count.doubleValue / totalVotes;
+        
+        if (result.answerId == answerId)
+        {
+            resultView.color = [UIColor purpleColor];//[[VThemeManager sharedThemeManager] themedColorForKeyPath:@"theme.color"];
+        }
+        else
+        {
+            resultView.color = [UIColor whiteColor];
+        }
+        
+        [resultView setProgress:progress animated:YES];
+    }
+    //    self.firstResultLabel.hidden = self.secondResultLabel.hidden = NO;
+    //    if ([answerId isEqualToNumber:self.firstAnswer.remoteId])
+    //    {
+    //        self.optionOneButton.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKeyPath:@"theme.color"];
+    //    }
+    //    else if ([answerId isEqualToNumber:self.secondAnswer.remoteId])
+    //    {
+    //        self.optionTwoButton.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKeyPath:@"theme.color"];
+    //    }
+}
+
+- (VResultView*)resultViewForAnswerId:(NSNumber*)answerId
+{
+    NSArray* answers = [[self.sequence firstNode] firstAnswers];
+    if ([answerId isEqualToNumber:((VAnswer*)[answers firstObject]).remoteId])
+        return self.firstResultView;
+    
+    else if ([answerId isEqualToNumber:((VAnswer*)[answers lastObject]).remoteId])
+        return self.secondResultView;
+    
+    else return nil;
+}
+
 #pragma mark - Navigation
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
     ((UIViewController*)segue.destinationViewController).transitioningDelegate = self.transitionDelegate;
     ((UIViewController*)segue.destinationViewController).modalPresentationStyle= UIModalPresentationCustom;
     [self.mpController.view removeFromSuperview];
+    [self.mpController stop];
     self.mpController = nil;
-    [self.webView loadHTMLString:nil baseURL:nil];
+    self.webView.hidden = YES;
     
     if ([segue.identifier isEqualToString:kContentCommentSegueStoryboardID])
     {
@@ -412,6 +496,5 @@ CGFloat kContentMediaViewOffset = 154;
 {
     
 }
-
 
 @end
