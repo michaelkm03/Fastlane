@@ -102,10 +102,9 @@ CGFloat kContentMediaViewOffset = 154;
     [self.mediaView insertSubview:self.mpController.view aboveSubview:self.previewImage];
     
     self.firstResultView.isVertical = YES;
-    self.firstResultView.color = [UIColor purpleColor];
     self.firstResultView.hidden = YES;
+    
     self.secondResultView.isVertical = YES;
-    self.secondResultView.color = [UIColor purpleColor];
     self.secondResultView.hidden = YES;
 }
 
@@ -452,6 +451,9 @@ CGFloat kContentMediaViewOffset = 154;
 #pragma mark - VPollAnswerBarDelegate
 - (void)answeredPollWithAnswerId:(NSNumber *)answerId
 {
+    [self.firstResultView setProgress:0 animated:NO];
+    [self.secondResultView setProgress:0 animated:NO];
+    
     NSInteger totalVotes = 0;
     for(VPollResult* result in self.sequence.pollResults)
     {
@@ -461,18 +463,20 @@ CGFloat kContentMediaViewOffset = 154;
     
     for(VPollResult* result in self.sequence.pollResults)
     {
-        //        VBadgeLabel* label = [self resultLabelForAnswerID:result.answerId];
+        VResultView* resultView = [self resultViewForAnswerId:result.answerId];
+
+        NSInteger progress = (result.count.doubleValue + 1.0 / totalVotes);
         
-        NSInteger percentage = (result.count.doubleValue + 1.0 / totalVotes) * 100;
-        percentage = percentage > 100 ? 100 : percentage;
-        percentage = percentage < 0 ? 0 : percentage;
-        
-        //        label.text = [@(percentage).stringValue stringByAppendingString:@"%"];
-        //unhide both flags
         if (result.answerId == answerId)
         {
-            //            label.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKeyPath:@"theme.color"];
+            resultView.color = [UIColor purpleColor];//[[VThemeManager sharedThemeManager] themedColorForKeyPath:@"theme.color"];
         }
+        else
+        {
+            resultView.color = [UIColor whiteColor];
+        }
+        
+        [resultView setProgress:progress animated:YES];
     }
     //    self.firstResultLabel.hidden = self.secondResultLabel.hidden = NO;
     //    if ([answerId isEqualToNumber:self.firstAnswer.remoteId])
@@ -483,6 +487,18 @@ CGFloat kContentMediaViewOffset = 154;
     //    {
     //        self.optionTwoButton.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKeyPath:@"theme.color"];
     //    }
+}
+
+- (VResultView*)resultViewForAnswerId:(NSNumber*)answerId
+{
+    NSArray* answers = [[self.sequence firstNode] firstAnswers];
+    if ([answerId isEqualToNumber:((VAnswer*)[answers firstObject]).remoteId])
+        return self.firstResultView;
+    
+    else if ([answerId isEqualToNumber:((VAnswer*)[answers lastObject]).remoteId])
+        return self.secondResultView;
+    
+    else return nil;
 }
 
 #pragma mark - Navigation
@@ -506,6 +522,5 @@ CGFloat kContentMediaViewOffset = 154;
 {
     
 }
-
 
 @end

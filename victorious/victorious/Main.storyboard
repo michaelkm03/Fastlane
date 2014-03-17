@@ -1797,7 +1797,7 @@
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <connections>
-                                    <action selector="pressedAnswerButton:" destination="Pz9-lw-C28" eventType="touchUpInside" id="t8v-oa-3do"/>
+                                    <action selector="pressedAnswerButton:" destination="Pz9-lw-C28" eventType="touchUpInside" id="Ww2-D9-aCV"/>
                                 </connections>
                             </button>
                             <button opaque="NO" tag="1" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="clip" translatesAutoresizingMaskIntoConstraints="NO" id="D1I-Wr-6dI" userLabel="Right Button">
@@ -1809,7 +1809,7 @@
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <connections>
-                                    <action selector="pressedAnswerButton:" destination="Pz9-lw-C28" eventType="touchUpInside" id="51D-Vx-sOy"/>
+                                    <action selector="pressedAnswerButton:" destination="Pz9-lw-C28" eventType="touchUpInside" id="Kaa-kc-YAR"/>
                                 </connections>
                             </button>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Some really Long answer that hopefully will fit" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="136" translatesAutoresizingMaskIntoConstraints="NO" id="fBr-Do-fCE" userLabel="Left Label">

@@ -54,8 +54,6 @@
     self.sequence = self.sequence;//force a load
     self.leftLabel.textAlignment = NSTextAlignmentCenter;
     self.rightLabel.textAlignment = NSTextAlignmentCenter;
-    
-    [self checkIfAnswered];
 }
 
 - (void)setSequence:(VSequence *)sequence
