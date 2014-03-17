@@ -7,7 +7,7 @@
 //
 
 #import "VRemixStitchViewController.h"
-#import "VRemixCaptionViewController.h"
+#import "VCameraPublishViewController.h"
 
 @interface VRemixStitchViewController ()
 @property (nonatomic, strong)   AVAsset*    beforeAsset;
@@ -92,7 +92,7 @@
 {
     [self.activityIndicator stopAnimating];
     self.outputURL = aURL;
-    [self performSegueWithIdentifier:@"toCaption" sender:self];
+    [self performSegueWithIdentifier:@"toPublish" sender:self];
 }
 
 
@@ -122,9 +122,9 @@
 {
     if ([segue.identifier isEqualToString:@"toCaption"])
     {
-        VRemixCaptionViewController*     captionViewController = (VRemixCaptionViewController *)segue.destinationViewController;
-        captionViewController.sourceAsset = [AVAsset assetWithURL:self.outputURL];
-        captionViewController.addAudio = self.addAudio;
+        VCameraPublishViewController*     publishViewController = (VCameraPublishViewController *)segue.destinationViewController;
+//        publishViewController = [AVAsset assetWithURL:self.outputURL];
+//        publishViewController = self.addAudio;
     }
 }
 

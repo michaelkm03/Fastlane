@@ -17,7 +17,6 @@
 		3F14C45218BD2BD0001796B9 /* SCPlayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F14C44418BD2BD0001796B9 /* SCPlayer.m */; };
 		3F14C45318BD2BD0001796B9 /* SCVideoEncoder.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F14C44618BD2BD0001796B9 /* SCVideoEncoder.m */; };
 		3F14C45418BD2BD0001796B9 /* SCVideoPlayerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F14C44818BD2BD0001796B9 /* SCVideoPlayerView.m */; };
-		3F1AA52E18CFD6B70022D16B /* VRemixCaptionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F1AA52D18CFD6B70022D16B /* VRemixCaptionViewController.m */; };
 		3F4863FA1869184000F77346 /* VInboxViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F4863F91869184000F77346 /* VInboxViewController.m */; };
 		3F53E0C318A485D400089C20 /* VUserManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F53E0C218A485D400089C20 /* VUserManager.m */; };
 		3F919908187600720055FE37 /* VSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F919907187600720055FE37 /* VSettingsViewController.m */; };
@@ -223,8 +222,6 @@
 		3F14C44618BD2BD0001796B9 /* SCVideoEncoder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCVideoEncoder.m; sourceTree = "<group>"; };
 		3F14C44718BD2BD0001796B9 /* SCVideoPlayerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCVideoPlayerView.h; sourceTree = "<group>"; };
 		3F14C44818BD2BD0001796B9 /* SCVideoPlayerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCVideoPlayerView.m; sourceTree = "<group>"; };
-		3F1AA52C18CFD6B70022D16B /* VRemixCaptionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VRemixCaptionViewController.h; path = "UI/Video Remix/VRemixCaptionViewController.h"; sourceTree = "<group>"; };
-		3F1AA52D18CFD6B70022D16B /* VRemixCaptionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VRemixCaptionViewController.m; path = "UI/Video Remix/VRemixCaptionViewController.m"; sourceTree = "<group>"; };
 		3F4863F81869184000F77346 /* VInboxViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VInboxViewController.h; path = UI/VInboxViewController.h; sourceTree = "<group>"; };
 		3F4863F91869184000F77346 /* VInboxViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VInboxViewController.m; path = UI/VInboxViewController.m; sourceTree = "<group>"; };
 		3F53E0C118A485D400089C20 /* VUserManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VUserManager.h; path = Managers/VUserManager.h; sourceTree = "<group>"; };
@@ -596,18 +593,13 @@
 			path = UI/CameraViewController/SCAudioVideoRecorder;
 			sourceTree = "<group>";
 		};
-		3F1AA52F18CFD8D20022D16B /* Abstract */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			name = Abstract;
-			sourceTree = "<group>";
-		};
 		3F1AA53018CFEFFC0022D16B /* Capture */ = {
 			isa = PBXGroup;
 			children = (
 				3FD7FFA718BFD64C00945E5F /* VImagePreviewViewController.h */,
 				3FD7FFA818BFD64C00945E5F /* VImagePreviewViewController.m */,
+				3FD7FFAA18BFD67800945E5F /* VVideoPreviewViewController.h */,
+				3FD7FFAB18BFD67800945E5F /* VVideoPreviewViewController.m */,
 				3FA217ED18BC3A3A0066E893 /* Camera.storyboard */,
 			);
 			name = Capture;
@@ -884,16 +876,11 @@
 				3F1AA53218CFF0180022D16B /* Common */,
 				3FA217EA18BC365E0066E893 /* VCameraViewController.h */,
 				3FA217EB18BC365E0066E893 /* VCameraViewController.m */,
-				3FD7FFAA18BFD67800945E5F /* VVideoPreviewViewController.h */,
-				3FD7FFAB18BFD67800945E5F /* VVideoPreviewViewController.m */,
 				3FDEDD0118CE47E80028E3F1 /* VRemixTrimViewController.h */,
 				3FDEDD0218CE47E80028E3F1 /* VRemixTrimViewController.m */,
 				3FDEDD0418CE48210028E3F1 /* VRemixStitchViewController.h */,
 				3FDEDD0518CE48210028E3F1 /* VRemixStitchViewController.m */,
-				3F1AA52C18CFD6B70022D16B /* VRemixCaptionViewController.h */,
-				3F1AA52D18CFD6B70022D16B /* VRemixCaptionViewController.m */,
 				3FDEDCFF18CE46F00028E3F1 /* Video Remix.storyboard */,
-				3F1AA52F18CFD8D20022D16B /* Abstract */,
 				3F14C43218BD2BD0001796B9 /* SCAudioVideoRecorder */,
 			);
 			name = CameraViewController;
@@ -1535,7 +1522,6 @@
 				BEB52A8B18C80B8700AC5FE4 /* VContentToStreamAnimator.m in Sources */,
 				BE171E391868C266004E5202 /* NSManagedObject+RestKit.m in Sources */,
 				3F14C45018BD2BD0001796B9 /* SCCameraFocusView.m in Sources */,
-				3F1AA52E18CFD6B70022D16B /* VRemixCaptionViewController.m in Sources */,
 				3F919908187600720055FE37 /* VSettingsViewController.m in Sources */,
 				BE692B53186E60B300C71336 /* VCommentsTableViewController.m in Sources */,
 				BE171E0D1868C211004E5202 /* VAnswer+RestKit.m in Sources */,
