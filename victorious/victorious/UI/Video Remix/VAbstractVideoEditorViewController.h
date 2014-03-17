@@ -29,7 +29,7 @@ typedef NS_ENUM(NSUInteger, RemixLoopingType)
 @property (nonatomic, strong)           AVURLAsset*                 sourceAsset;
 @property (nonatomic, strong)           AVURLAsset*                 outputAsset;
 
-@property (nonatomic)                   BOOL                        hasAudio;
+@property (nonatomic)                   BOOL                        muteAudio;
 @property (nonatomic)                   RemixPlaybackSpeed          playBackSpeed;
 @property (nonatomic)                   RemixLoopingType            playbackLooping;
 

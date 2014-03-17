@@ -98,8 +98,10 @@
                         </barButtonItem>
                     </navigationItem>
                     <connections>
+                        <outlet property="currentTimeLabel" destination="V5U-Ak-Uer" id="wEH-LT-f9a"/>
                         <outlet property="previewView" destination="gBV-EL-ryr" id="fMZ-0M-eSR"/>
                         <outlet property="scrubber" destination="s7A-U9-bCy" id="mVf-Em-nKC"/>
+                        <outlet property="totalTimeLabel" destination="Zdh-uA-88a" id="gVT-83-Qte"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="wnF-CF-yIs" userLabel="First Responder" sceneMemberID="firstResponder"/>

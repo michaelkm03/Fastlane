@@ -12,7 +12,7 @@
 #import "VRemixStitchViewController.h"
 #import "SCVideoPlayerView.h"
 
-@interface VRemixTrimViewController ()
+@interface VRemixTrimViewController ()  <SCVideoPlayerDelegate>
 @property (nonatomic, assign)   CGFloat                         start;
 @property (nonatomic, assign)   CGFloat                         stop;
 
@@ -54,9 +54,9 @@
     self.thumbnails = [[NSMutableArray alloc] initWithCapacity:10.0];
     self.thumbnailTimes = [[NSMutableArray alloc] initWithCapacity:10.0];
 
-    [self.previewView.player setSmoothLoopItemByUrl:self.sourceAsset.URL smoothLoopCount:10.0];
+    [self.previewView.player setSmoothLoopItemByUrl:self.sourceAsset.URL smoothLoopCount:1];
     self.previewView.player.shouldLoop = YES;
-	[self.previewView.player play];
+    self.previewView.player.delegate = self;
     
     [self.previewView addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTapToPlayAction:)]];
     self.previewView.userInteractionEnabled = YES;
@@ -79,19 +79,7 @@
     [self.thumbnails removeAllObjects];
     [self.thumbnailTimes removeAllObjects];
     
-    self.totalTimeLabel.text = [self secondsToMMSS:CMTimeGetSeconds(self.sourceAsset.duration)];
-    
-    CMTime interval = CMTimeMake(33, 1000);
-    self.periodicTimeObserver = [self.previewView.player addPeriodicTimeObserverForInterval:interval queue:dispatch_get_main_queue() usingBlock:^(CMTime time) {
-        CMTime endTime = CMTimeConvertScale(self.previewView.player.currentItem.asset.duration, self.previewView.player.currentTime.timescale, kCMTimeRoundingMethod_RoundHalfAwayFromZero);
-        if (CMTimeCompare(endTime, kCMTimeZero) != 0)
-        {
-            double normalizedTime = (double)self.previewView.player.currentTime.value / (double)endTime.value;
-            self.scrubber.value = normalizedTime;
-            
-            self.currentTimeLabel.text = [self secondsToMMSS:CMTimeGetSeconds(self.previewView.player.currentTime)];
-        }
-    }];
+    self.totalTimeLabel.text = [self secondsToMMSS:CMTimeGetSeconds(self.previewView.player.playableDuration)];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -101,6 +89,20 @@
         [self.previewView.player pause];
     
     [self.previewView.player removeTimeObserver:self.periodicTimeObserver];
+}
+
+#pragma mark - SCVideoPlayerDelegate
+
+- (void) videoPlayer:(SCPlayer*)videoPlayer didPlay:(Float32)secondsElapsed
+{
+    CMTime endTime = CMTimeConvertScale(self.previewView.player.currentItem.asset.duration, self.previewView.player.currentTime.timescale, kCMTimeRoundingMethod_RoundHalfAwayFromZero);
+    if (CMTimeCompare(endTime, kCMTimeZero) != 0)
+    {
+        double normalizedTime = (double)self.previewView.player.currentTime.value / (double)endTime.value;
+        self.scrubber.value = normalizedTime;
+    }
+
+    self.currentTimeLabel.text = [self secondsToMMSS:secondsElapsed];
 }
 
 #pragma mark - Actions
@@ -141,7 +143,7 @@
     {
         VRemixStitchViewController*     stitchViewController = (VRemixStitchViewController *)segue.destinationViewController;
         stitchViewController.sourceAsset = self.outputAsset;
-        stitchViewController.hasAudio = self.hasAudio;
+        stitchViewController.muteAudio = self.muteAudio;
         stitchViewController.playBackSpeed = self.playBackSpeed;
         stitchViewController.playbackLooping = self.playbackLooping;
     }
@@ -151,7 +153,8 @@
 {
     UIButton*   button = (UIButton *)sender;
     button.selected = !button.selected;
-    self.hasAudio = button.selected;
+    self.muteAudio = button.selected;
+    self.previewView.player.muted = self.muteAudio;
 }
 
 - (IBAction)playbackRateClicked:(id)sender
