@@ -21,6 +21,8 @@
 #import "VLoginViewController.h"
 #import "VObjectManager+Sequence.h"
 
+#import "VThemeManager.h"
+
 @interface VPollAnswerBarViewController ()
 
 @property (weak, nonatomic) IBOutlet UIButton* leftButton;
@@ -55,6 +57,12 @@
     self.sequence = self.sequence;//force a load
     self.leftLabel.textAlignment = NSTextAlignmentCenter;
     self.rightLabel.textAlignment = NSTextAlignmentCenter;
+    
+    self.leftLabel.textColor = [[VThemeManager sharedThemeManager] themedColorForKeyPath:kVAccentColor];
+    self.rightLabel.textColor = [[VThemeManager sharedThemeManager] themedColorForKeyPath:kVAccentColor];
+    
+    self.leftButton.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKeyPath:kVMainColor];
+    self.rightButton.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKeyPath:kVSecondaryMainColor];
     
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(checkIfAnswered)
@@ -98,26 +106,22 @@
 #pragma mark - Animation
 - (void)animateInWithDuration:(CGFloat)duration completion:(void (^)(BOOL finished))completion
 {
-    [self.backgroundView setXOrigin:self.view.frame.size.width];
-    [self.shadeView setXOrigin:self.view.frame.size.width];
+    [self.leftButton setXOrigin:self.view.frame.size.width];
+    [self.rightButton setXOrigin:self.view.frame.size.width];
     
-    self.rightButton.alpha = 0;
-    self.leftButton.alpha = 0;
     self.rightLabel.alpha = 0;
     self.leftLabel.alpha = 0;
     
     [UIView animateWithDuration:duration/2
                      animations:^
                      {
-                         [self.backgroundView setXOrigin:0];
-                         [self.shadeView setXOrigin:self.view.frame.size.width - self.shadeView.frame.size.width];
+                         [self.leftButton setXOrigin:0];
+                         [self.rightButton setXOrigin:self.view.frame.size.width - self.rightButton.frame.size.width];
                      }
                      completion:^(BOOL finished) {
                          [UIView animateWithDuration:duration/2
                                           animations:^
                                           {
-                                              self.rightButton.alpha = 1;
-                                              self.leftButton.alpha = 1;
                                               self.rightLabel.alpha = 1;
                                               self.leftLabel.alpha = 1;
                                           }

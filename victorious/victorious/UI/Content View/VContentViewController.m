@@ -215,7 +215,7 @@ CGFloat kContentMediaViewOffset = 154;
     UIViewController<VAnimation>* newBarViewController;
     
     //Find the appropriate target based on what view is hidden
-    UIView* target = !self.webView.hidden ? self.webView : !self.mpController.view.hidden ? self.mpController.view : self.previewImage;
+    UIView* target = !self.webView.hidden ? self.webView : !self.mpPlayerContainmentView.hidden ? self.mpPlayerContainmentView : self.previewImage;
     
     if([self.sequence isPoll] && ![self.actionBarVC isKindOfClass:[VPollAnswerBarViewController class]])
     {
@@ -322,7 +322,7 @@ CGFloat kContentMediaViewOffset = 154;
     self.previewImage.hidden = YES;
     self.webView.hidden = YES;
     self.sixteenNinePreviewImage.hidden = YES;
-    self.mpController.view.hidden = YES;
+    self.mpPlayerContainmentView.hidden = YES;
     self.remixButton.hidden = YES;
     
     [self updateActionBar];
@@ -365,7 +365,7 @@ CGFloat kContentMediaViewOffset = 154;
     self.webView.hidden = YES;
     self.sixteenNinePreviewImage.hidden = YES;
     self.pollPreviewView.hidden = YES;
-    self.mpController.view.hidden = YES;
+    self.mpPlayerContainmentView.hidden = YES;
     self.remixButton.hidden = NO;
     
     [self updateActionBar];
@@ -377,7 +377,7 @@ CGFloat kContentMediaViewOffset = 154;
     [self loadImage];
     
     [self.mpController setContentURL:[NSURL URLWithString:self.currentAsset.data]];
-    self.mpController.view.hidden = YES;
+    self.mpPlayerContainmentView.hidden = YES;
     [self.mpController prepareToPlay];
     
     [self updateActionBar];
@@ -390,10 +390,10 @@ CGFloat kContentMediaViewOffset = 154;
         VLog(@"mp nat size: %@", NSStringFromCGSize(self.mpController.naturalSize));
         CGFloat yRatio = self.mpController.naturalSize.height / self.mpController.naturalSize.width;
         CGFloat videoHeight = self.previewImage.frame.size.height * yRatio;
-        self.mpController.view.frame = CGRectMake(self.previewImage.frame.origin.x, self.previewImage.frame.origin.y,
-                                                  self.previewImage.frame.size.width, videoHeight);
+        self.mpController.view.frame = CGRectMake(0, 0, self.previewImage.frame.size.width, videoHeight);
         
-        [self animateVideoOpen:1.0f completion:nil];
+        [self.mpPlayerContainmentView addSubview:self.mpController.view];
+        [self animateVideoOpen:0 completion:nil];
         
         [self.mpController play];
     }
@@ -402,6 +402,7 @@ CGFloat kContentMediaViewOffset = 154;
 - (void)animateVideoOpen:(CGFloat)duration completion:(void (^)(BOOL finished))completion
 {
     [self.mpPlayerContainmentView setSize:CGSizeMake(0, 0)];
+    self.mpPlayerContainmentView.hidden = NO;
     [UIView animateWithDuration:duration animations:
      ^{
          [self.mpPlayerContainmentView setSize:CGSizeMake(self.mpController.view.frame.size.width, self.mpController.view.frame.size.height)];
@@ -420,7 +421,7 @@ CGFloat kContentMediaViewOffset = 154;
 
 - (IBAction)pressedRemix:(id)sender
 {
-    AVURLAsset* videoAsset = [AVURLAsset assetWithURL:[NSURL URLWithString:self.currentAsset.data]];
+    AVURLAsset* videoAsset = [AVURLAsset assetWithURL:[self.currentAsset.data mp4UrlFromM3U8]];
     UIViewController* remixVC = [VRemixTrimViewController remixViewControllerWithAsset:videoAsset];
     [self presentViewController:remixVC animated:YES completion:nil];
 }
@@ -444,7 +445,7 @@ CGFloat kContentMediaViewOffset = 154;
     self.previewImage.hidden = YES;
     self.webView.hidden = YES;
     self.pollPreviewView.hidden = YES;
-    self.mpController.view.hidden = YES;
+    self.mpPlayerContainmentView.hidden = YES;
     self.remixButton.hidden = YES;
     [self.webView loadWithYoutubeID:self.currentAsset.data];
     
@@ -539,7 +540,6 @@ CGFloat kContentMediaViewOffset = 154;
 {
     ((UIViewController*)segue.destinationViewController).transitioningDelegate = self.transitionDelegate;
     ((UIViewController*)segue.destinationViewController).modalPresentationStyle= UIModalPresentationCustom;
-    [self.mpController.view removeFromSuperview];
     [self.mpController stop];
     self.mpController = nil;
     self.webView.hidden = YES;
