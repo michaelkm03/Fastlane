@@ -1718,16 +1718,6 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="60"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Ez5-Y4-614" userLabel="BackgroundView">
-                                <rect key="frame" x="0.0" y="0.0" width="320" height="60"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="backgroundColor" red="0.21176470589999999" green="0.1450980392" blue="0.30588235289999999" alpha="1" colorSpace="calibratedRGB"/>
-                            </view>
-                            <view alpha="0.14999999999999999" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="7cE-Bc-XB0" userLabel="ShadeView">
-                                <rect key="frame" x="160" y="0.0" width="160" height="60"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
-                            </view>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="lMO-OU-gVH" userLabel="Positive Emotive">
                                 <rect key="frame" x="0.0" y="0.0" width="160" height="60"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -1771,12 +1761,10 @@
                     <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
                     <size key="freeformSize" width="320" height="60"/>
                     <connections>
-                        <outlet property="backgroundView" destination="Ez5-Y4-614" id="DYK-dK-MCm"/>
                         <outlet property="negativeEmotiveButton" destination="1dp-HB-SPd" id="qnG-i2-LU1"/>
                         <outlet property="negativeEmotiveLabel" destination="AjL-mD-Ekf" id="ksK-bo-CRi"/>
                         <outlet property="positiveEmotiveButton" destination="lMO-OU-gVH" id="ICh-wl-qcV"/>
                         <outlet property="positiveEmotiveLabel" destination="QOq-WJ-Ibw" id="98e-sW-ug2"/>
-                        <outlet property="shadeView" destination="7cE-Bc-XB0" id="8Us-NY-TjC"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="neH-vB-TZ9" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -1795,16 +1783,6 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="60"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="DDQ-Qa-lGk" userLabel="BackgroundView">
-                                <rect key="frame" x="0.0" y="0.0" width="320" height="60"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                            </view>
-                            <view alpha="0.15000000596046448" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="kNf-Aa-2Eo" userLabel="ShadeView">
-                                <rect key="frame" x="160" y="0.0" width="160" height="60"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                            </view>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="clip" translatesAutoresizingMaskIntoConstraints="NO" id="Bxp-hr-lFz" userLabel="Left button">
                                 <rect key="frame" x="0.0" y="0.0" width="160" height="60"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -1850,12 +1828,10 @@
                     <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
                     <size key="freeformSize" width="320" height="60"/>
                     <connections>
-                        <outlet property="backgroundView" destination="DDQ-Qa-lGk" id="GdY-S1-guU"/>
                         <outlet property="leftButton" destination="Bxp-hr-lFz" id="J7Z-B7-U7a"/>
                         <outlet property="leftLabel" destination="fBr-Do-fCE" id="qYB-IO-x5s"/>
                         <outlet property="rightButton" destination="D1I-Wr-6dI" id="j6f-4d-Lcb"/>
                         <outlet property="rightLabel" destination="6ak-S4-RIj" id="9NV-X7-ueG"/>
-                        <outlet property="shadeView" destination="kNf-Aa-2Eo" id="qTv-s5-aUC"/>
                         <outlet property="view" destination="YN0-go-INq" id="QBI-hR-jrh"/>
                     </connections>
                 </viewController>

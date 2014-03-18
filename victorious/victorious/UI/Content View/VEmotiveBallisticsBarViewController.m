@@ -14,15 +14,14 @@
 
 #import "UIView+VFrameManipulation.h"
 
+#import "VThemeManager.h"
+
 @interface VEmotiveBallisticsBarViewController ()
 
 @property (weak, nonatomic) IBOutlet UILabel* positiveEmotiveLabel;
 @property (weak, nonatomic) IBOutlet UILabel* negativeEmotiveLabel;
 @property (weak, nonatomic) IBOutlet UIButton* positiveEmotiveButton;
 @property (weak, nonatomic) IBOutlet UIButton* negativeEmotiveButton;
-
-@property (weak, nonatomic) IBOutlet UIView* backgroundView;
-@property (weak, nonatomic) IBOutlet UIView* shadeView;
 
 @end
 
@@ -69,26 +68,28 @@
     self.negativeEmotiveButton.imageView.animationDuration = .25f;
     self.negativeEmotiveButton.imageView.animationRepeatCount = 1;
     
+    self.positiveEmotiveLabel.textColor = [[VThemeManager sharedThemeManager] themedColorForKeyPath:kVAccentColor];
+    self.negativeEmotiveLabel.textColor = [[VThemeManager sharedThemeManager] themedColorForKeyPath:kVAccentColor];
+    
+    self.positiveEmotiveButton.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKeyPath:kVMainColor];
+    self.negativeEmotiveButton.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKeyPath:kVSecondaryMainColor];
     
 }
 
 #pragma mark - Animation
 - (void)animateInWithDuration:(CGFloat)duration completion:(void (^)(BOOL finished))completion
 {   
-    [self.backgroundView setXOrigin:self.view.frame.size.width];
-    [self.shadeView setXOrigin:self.view.frame.size.width];
-    
-    self.negativeEmotiveButton.alpha = 0;
-    self.positiveEmotiveButton.alpha = 0;
-    
+    [self.negativeEmotiveButton setXOrigin:self.view.frame.size.width];
+    [self.positiveEmotiveButton setXOrigin:self.view.frame.size.width];
+
     self.positiveEmotiveLabel.alpha = 0;
     self.negativeEmotiveLabel.alpha = 0;
     
     [UIView animateWithDuration:duration/2
                      animations:^
                      {
-                         [self.backgroundView setXOrigin:0];
-                         [self.shadeView setXOrigin:self.view.frame.size.width - self.shadeView.frame.size.width];
+                         [self.positiveEmotiveButton setXOrigin:0];
+                         [self.negativeEmotiveButton setXOrigin:self.view.frame.size.width - self.negativeEmotiveButton.frame.size.width];
                      }
                      completion:^(BOOL finished)
                      {
@@ -97,9 +98,6 @@
                                           {
                                               self.positiveEmotiveLabel.alpha = 1;
                                               self.negativeEmotiveLabel.alpha = 1;
-                                              
-                                              self.negativeEmotiveButton.alpha = 1;
-                                              self.positiveEmotiveButton.alpha = 1;
                                           }
                                           completion:completion];
                      }];
@@ -112,17 +110,14 @@
                      {
                          self.positiveEmotiveLabel.alpha = 0;
                          self.negativeEmotiveLabel.alpha = 0;
-                         
-                         self.negativeEmotiveButton.alpha = 0;
-                         self.positiveEmotiveButton.alpha = 0;
                      }
                      completion:^(BOOL finished)
                      {
                          [UIView animateWithDuration:duration/2
                                           animations:^
                                           {
-                                              [self.backgroundView setXOrigin:self.view.frame.size.width];
-                                              [self.shadeView setXOrigin:self.view.frame.size.width];
+                                              [self.positiveEmotiveButton setXOrigin:self.view.frame.size.width];
+                                              [self.negativeEmotiveButton setXOrigin:self.view.frame.size.width];
                                           }
                                           completion:completion];
                      }];
