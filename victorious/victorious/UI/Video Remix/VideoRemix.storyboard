@@ -57,7 +57,7 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ZUq-H7-oEO">
-                                <rect key="frame" x="213" y="508" width="149" height="59"/>
+                                <rect key="frame" x="213" y="508" width="107" height="59"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" title="Mute" image="cameraButtonMute">
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
@@ -101,7 +101,11 @@
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
                     <navigationItem key="navigationItem" id="oAM-sY-FT0">
-                        <barButtonItem key="leftBarButtonItem" image="cameraButtonClose" id="3FT-1D-ihZ"/>
+                        <barButtonItem key="leftBarButtonItem" image="cameraButtonClose" id="3FT-1D-ihZ">
+                            <connections>
+                                <action selector="closeButtonClicked:" destination="uEv-AE-duX" id="Ivr-LP-FCK"/>
+                            </connections>
+                        </barButtonItem>
                         <barButtonItem key="rightBarButtonItem" image="cameraButtonNext" id="ZUw-i1-Ae7">
                             <connections>
                                 <action selector="nextButtonClicked:" destination="uEv-AE-duX" id="qKo-Tu-2T1"/>
@@ -110,7 +114,10 @@
                     </navigationItem>
                     <connections>
                         <outlet property="currentTimeLabel" destination="V5U-Ak-Uer" id="wEH-LT-f9a"/>
+                        <outlet property="loopButton" destination="bZd-sH-zLg" id="0Jz-0b-vTj"/>
+                        <outlet property="muteButton" destination="ZUq-H7-oEO" id="BuQ-qa-Q7u"/>
                         <outlet property="previewView" destination="gBV-EL-ryr" id="sjh-7v-8nW"/>
+                        <outlet property="rateButton" destination="CN3-BV-WkM" id="hAH-ah-h7p"/>
                         <outlet property="scrubber" destination="s7A-U9-bCy" id="mVf-Em-nKC"/>
                         <outlet property="totalTimeLabel" destination="Zdh-uA-88a" id="gVT-83-Qte"/>
                         <outlet property="trimControlContainer" destination="doN-GD-FKd" id="5cE-Cc-ChN"/>
