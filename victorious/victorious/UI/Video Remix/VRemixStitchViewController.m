@@ -25,6 +25,14 @@
 	// Do any additional setup after loading the view.
 }
 
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    
+    self.view.backgroundColor = [UIColor blackColor];
+    self.navigationController.navigationBar.barTintColor = [UIColor blackColor];
+}
+
 #pragma mark - Actions
 
 - (IBAction)nextButtonClicked:(id)sender
@@ -122,7 +130,7 @@
 {
     if ([segue.identifier isEqualToString:@"toCaption"])
     {
-        VCameraPublishViewController*     publishViewController = (VCameraPublishViewController *)segue.destinationViewController;
+//        VCameraPublishViewController*     publishViewController = (VCameraPublishViewController *)segue.destinationViewController;
 //        publishViewController = [AVAsset assetWithURL:self.outputURL];
 //        publishViewController = self.addAudio;
     }
