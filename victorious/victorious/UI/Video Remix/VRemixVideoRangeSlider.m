@@ -387,12 +387,12 @@
 
 - (CGFloat)leftPosition
 {
-    return self.leftPosition * self.durationSeconds / self.frameWidth;
+    return _leftPosition * self.durationSeconds / self.frameWidth;
 }
 
 - (CGFloat)rightPosition
 {
-    return self.rightPosition * self.durationSeconds / self.frameWidth;
+    return _rightPosition * self.durationSeconds / self.frameWidth;
 }
 
 #pragma mark - Bubble

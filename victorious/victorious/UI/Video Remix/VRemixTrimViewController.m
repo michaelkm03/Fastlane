@@ -17,10 +17,6 @@
 @property (nonatomic, assign)   CGFloat                         start;
 @property (nonatomic, assign)   CGFloat                         stop;
 
-@property (nonatomic, strong)   AVAssetImageGenerator*          imageGenerator;
-@property (nonatomic, strong)   NSMutableArray*                 thumbnails;
-@property (nonatomic, strong)   NSMutableArray*                 thumbnailTimes;
-
 @property (nonatomic, weak)     IBOutlet    VCVideoPlayerView*  previewView;;
 @property (nonatomic, weak)     IBOutlet    UISlider*           scrubber;
 @property (nonatomic, weak)     IBOutlet    UILabel*            currentTimeLabel;
@@ -59,9 +55,6 @@
     self.playBackSpeed  =   kRemixPlaybackNormalSpeed;
     self.playbackLooping  =   kRemixLoopingNone;
     
-    self.thumbnails = [[NSMutableArray alloc] initWithCapacity:10.0];
-    self.thumbnailTimes = [[NSMutableArray alloc] initWithCapacity:10.0];
-
     [self.previewView.player setSmoothLoopItemByUrl:self.sourceAsset.URL smoothLoopCount:1];
     self.previewView.player.shouldLoop = YES;
     self.previewView.player.delegate = self;
@@ -108,16 +101,8 @@
     self.view.backgroundColor = [UIColor blackColor];
     self.navigationController.navigationBar.barTintColor = [UIColor blackColor];
 
-    if ([[self.sourceAsset tracksWithMediaType:AVMediaTypeVideo] count] > 0)
-    {
-        self.imageGenerator = [AVAssetImageGenerator assetImageGeneratorWithAsset:self.sourceAsset];
-        self.imageGenerator.maximumSize = CGSizeMake(100.0, 100.0);
-    }
-    
-    [self.thumbnails removeAllObjects];
-    [self.thumbnailTimes removeAllObjects];
-    
     self.totalTimeLabel.text = [self secondsToMMSS:CMTimeGetSeconds(self.previewView.player.playableDuration)];
+    self.currentTimeLabel.text = [self secondsToMMSS:0];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -261,48 +246,6 @@
     self.outputAsset = [[AVURLAsset alloc] initWithURL:aURL options:nil];
     [self performSegueWithIdentifier:@"toStich" sender:self];
 }
-
-//- (void)generateThumbnailsForTime
-//{
-//    CGFloat currentTimeInSeconds    =   CMTimeGetSeconds(self.previewView.player.currentTime);
-//    CGFloat endTimeInSeconds        =   CMTimeGetSeconds(CMTimeConvertScale(self.previewView.player.currentItem.asset.duration, self.previewView.player.currentTime.timescale, kCMTimeRoundingMethod_RoundHalfAwayFromZero));
-//    CGFloat interval                =   15.0;
-//    CGFloat start                   =   currentTimeInSeconds - interval;
-//    CGFloat end                     =   currentTimeInSeconds + interval;
-//    
-//    if (end < endTimeInSeconds)
-//    {
-//        end = endTimeInSeconds;
-//        start = end - interval;
-//    }
-//    
-//    if (start < 0)
-//    {
-//        start = 0;
-//        end = start + interval;
-//    }
-//    
-//    CMTimeRange range               =   CMTimeRangeFromTimeToTime(CMTimeMake(start, self.previewView.player.currentTime.timescale), CMTimeMake(end, self.previewView.player.currentTime.timescale));
-//    [self generateThumnailsForRange:range];
-//}
-//
-//- (void)generateThumnailsForRange:(CMTimeRange)timeRange;
-//{
-//    Float64             duration    = CMTimeGetSeconds(timeRange.duration);
-//    NSMutableArray*     times       = [[NSMutableArray alloc] initWithCapacity:10.0];
-//    
-//    for (CMTime aTime = timeRange.start; CMTimeRangeContainsTime(timeRange, aTime); aTime = CMTimeAdd(aTime, CMTimeMake(duration / 10.0, timeRange.start.timescale)))
-//    {
-//        [times addObject:[NSValue valueWithCMTime:aTime]];
-//    }
-//    
-//    [self.imageGenerator generateCGImagesAsynchronouslyForTimes:times completionHandler:^(CMTime requestedTime, CGImageRef image, CMTime actualTime, AVAssetImageGeneratorResult result, NSError *error)
-//    {
-////        [self.thumbnails addObject:image];
-////        [self.thumbnailTimes addObject:[NSValue valueWithCMTime:actualTime]];
-//        //  set strip view to range
-//    }];
-//}
 
 - (void)trimVideo:(AVURLAsset *)assetToTrim startTrim:(CGFloat)startTrim endTrim:(CGFloat)endTrim
 {
