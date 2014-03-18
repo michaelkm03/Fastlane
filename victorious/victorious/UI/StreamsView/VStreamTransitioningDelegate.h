@@ -9,5 +9,5 @@
 #import <Foundation/Foundation.h>
 
 @interface VStreamTransitioningDelegate : NSObject <UIViewControllerTransitioningDelegate>
-
+@property (strong, nonatomic) NSIndexPath* indexPathForSelectedCell;
 @end

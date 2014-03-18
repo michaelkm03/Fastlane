@@ -44,7 +44,7 @@
                         </subviews>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     </view>
-                    <view alpha="0.40000000000000002" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Qyu-uO-lf5">
+                    <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Qyu-uO-lf5">
                         <rect key="frame" x="0.0" y="-1" width="320" height="214"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
@@ -114,6 +114,7 @@
             <connections>
                 <outlet property="animationImage" destination="Fse-X8-bIf" id="tRj-YR-HSw"/>
                 <outlet property="dateLabel" destination="a6x-TU-Q9b" id="tpa-so-LAW"/>
+                <outlet property="descriptionLabel" destination="0rJ-Vq-OQb" id="zKC-06-GT1"/>
                 <outlet property="overlayView" destination="Qyu-uO-lf5" id="NDf-2z-bli"/>
                 <outlet property="previewImageTwo" destination="e2G-u3-diD" id="7Il-nc-jTL"/>
                 <outlet property="previewImageView" destination="OOq-Yb-3IQ" id="Xai-kb-2mv"/>

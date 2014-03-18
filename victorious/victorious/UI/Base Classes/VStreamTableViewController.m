@@ -305,9 +305,10 @@
 #pragma mark - Navigation
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
+    ((VStreamTransitioningDelegate*)self.transitionDelegate).indexPathForSelectedCell = self.tableView.indexPathForSelectedRow;
     ((UIViewController*)segue.destinationViewController).transitioningDelegate = self.transitionDelegate;
     ((UIViewController*)segue.destinationViewController).modalPresentationStyle= UIModalPresentationCustom;
-    
+
     if ([segue.identifier isEqualToString:kStreamContentSegueStoryboardID])
     {
         ((VStreamContentSegue*)segue).selectedCell = sender;

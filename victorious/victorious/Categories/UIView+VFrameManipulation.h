@@ -13,4 +13,6 @@
 - (void) setYOrigin:(CGFloat)newYOrigin;
 - (void) setXOrigin:(CGFloat)newXOrigin;
 
+- (void) setSize:(CGSize)newSize;
+
 @end

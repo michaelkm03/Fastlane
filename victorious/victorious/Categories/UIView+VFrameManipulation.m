@@ -25,4 +25,12 @@
                             self.frame.size.height);
 }
 
+- (void)setSize:(CGSize)newSize
+{
+    self.frame = CGRectMake(self.frame.origin.y,
+                        self.frame.origin.y,
+                        newSize.width,
+                        newSize.height);
+}
+
 @end
