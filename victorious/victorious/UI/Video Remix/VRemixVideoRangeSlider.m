@@ -99,7 +99,7 @@
     return self;
 }
 
--(void)setPopoverBubbleSize: (CGFloat) width height:(CGFloat)height
+-(void)setPopoverBubbleWidth:(CGFloat)width height:(CGFloat)height
 {
     CGRect currentFrame = self.popoverBubble.frame;
     currentFrame.size.width = width;

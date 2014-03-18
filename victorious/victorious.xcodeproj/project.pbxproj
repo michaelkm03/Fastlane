@@ -620,6 +620,7 @@
 		3F1AA53118CFF00B0022D16B /* Editing */ = {
 			isa = PBXGroup;
 			children = (
+				3F71A7DD18D7D0600048FF60 /* Trim Control */,
 			);
 			name = Editing;
 			sourceTree = "<group>";
@@ -665,6 +666,21 @@
 			);
 			name = Create;
 			path = UI/Create;
+			sourceTree = "<group>";
+		};
+		3F71A7DD18D7D0600048FF60 /* Trim Control */ = {
+			isa = PBXGroup;
+			children = (
+				3F71A7D118D7C6D20048FF60 /* VRemixResizableBubble.h */,
+				3F71A7D218D7C6D20048FF60 /* VRemixResizableBubble.m */,
+				3F71A7D318D7C6D20048FF60 /* VRemixSliderLeft.h */,
+				3F71A7D418D7C6D20048FF60 /* VRemixSliderLeft.m */,
+				3F71A7D518D7C6D20048FF60 /* VRemixSliderRight.h */,
+				3F71A7D618D7C6D20048FF60 /* VRemixSliderRight.m */,
+				3F71A7D718D7C6D20048FF60 /* VRemixVideoRangeSlider.h */,
+				3F71A7D818D7C6D20048FF60 /* VRemixVideoRangeSlider.m */,
+			);
+			name = "Trim Control";
 			sourceTree = "<group>";
 		};
 		3F9B665B188878C60046F826 /* UI */ = {
@@ -893,14 +909,6 @@
 				3FDEDD0218CE47E80028E3F1 /* VRemixTrimViewController.m */,
 				3FDEDD0418CE48210028E3F1 /* VRemixStitchViewController.h */,
 				3FDEDD0518CE48210028E3F1 /* VRemixStitchViewController.m */,
-				3F71A7D118D7C6D20048FF60 /* VRemixResizableBubble.h */,
-				3F71A7D218D7C6D20048FF60 /* VRemixResizableBubble.m */,
-				3F71A7D318D7C6D20048FF60 /* VRemixSliderLeft.h */,
-				3F71A7D418D7C6D20048FF60 /* VRemixSliderLeft.m */,
-				3F71A7D518D7C6D20048FF60 /* VRemixSliderRight.h */,
-				3F71A7D618D7C6D20048FF60 /* VRemixSliderRight.m */,
-				3F71A7D718D7C6D20048FF60 /* VRemixVideoRangeSlider.h */,
-				3F71A7D818D7C6D20048FF60 /* VRemixVideoRangeSlider.m */,
 				3FDEDCFF18CE46F00028E3F1 /* VideoRemix.storyboard */,
 			);
 			name = CameraViewController;

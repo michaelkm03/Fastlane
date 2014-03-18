@@ -95,7 +95,7 @@
                             <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="doN-GD-FKd">
                                 <rect key="frame" x="0.0" y="440" width="320" height="48"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                                <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                             </view>
                         </subviews>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
@@ -113,6 +113,8 @@
                         <outlet property="previewView" destination="gBV-EL-ryr" id="sjh-7v-8nW"/>
                         <outlet property="scrubber" destination="s7A-U9-bCy" id="mVf-Em-nKC"/>
                         <outlet property="totalTimeLabel" destination="Zdh-uA-88a" id="gVT-83-Qte"/>
+                        <outlet property="trimControlContainer" destination="doN-GD-FKd" id="5cE-Cc-ChN"/>
+                        <segue destination="vMj-SS-k4u" kind="push" identifier="toStitch" id="VD5-Sj-bti"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="wnF-CF-yIs" userLabel="First Responder" sceneMemberID="firstResponder"/>

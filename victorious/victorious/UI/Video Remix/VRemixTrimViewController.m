@@ -11,8 +11,9 @@
 #import "VRemixTrimViewController.h"
 #import "VRemixStitchViewController.h"
 #import "VCVideoPlayerView.h"
+#import "VRemixVideoRangeSlider.h"
 
-@interface VRemixTrimViewController ()  <VCVideoPlayerDelegate>
+@interface VRemixTrimViewController ()  <VCVideoPlayerDelegate, VRemixVideoRangeSliderDelegate>
 @property (nonatomic, assign)   CGFloat                         start;
 @property (nonatomic, assign)   CGFloat                         stop;
 
@@ -28,6 +29,9 @@
 @property (nonatomic, weak)     IBOutlet    UIButton*           rateButton;
 @property (nonatomic, weak)     IBOutlet    UIButton*           loopButton;
 @property (nonatomic, weak)     IBOutlet    UIButton*           muteButton;
+
+@property (nonatomic, weak)     IBOutlet    UIView*             trimControlContainer;
+@property (nonatomic, strong)   VRemixVideoRangeSlider*         trimSlider;
 
 @property (nonatomic, strong)   id                              periodicTimeObserver;
 @property (nonatomic)           BOOL                            sliderTouched;
@@ -71,6 +75,30 @@
     
     UIImage*    nextButtonImage = [[UIImage imageNamed:@"cameraButtonNext"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithImage:nextButtonImage style:UIBarButtonItemStyleBordered target:self action:@selector(nextButtonClicked:)];
+    
+    self.trimSlider = [[VRemixVideoRangeSlider alloc] initWithFrame:self.trimControlContainer.frame videoUrl:self.sourceAsset];
+    self.trimSlider.bubbleText.font = [UIFont systemFontOfSize:12];
+    [self.trimSlider setPopoverBubbleWidth:120 height:60];
+    
+    self.trimSlider.delegate = self;
+    [self.trimControlContainer addSubview:self.trimSlider];
+
+//    // Yellow
+//    self.mySAVideoRangeSlider.topBorder.backgroundColor = [UIColor colorWithRed: 0.996 green: 0.951 blue: 0.502 alpha: 1];
+//    self.mySAVideoRangeSlider.bottomBorder.backgroundColor = [UIColor colorWithRed: 0.992 green: 0.902 blue: 0.004 alpha: 1];
+//
+//    // Purple
+//    //self.mySAVideoRangeSlider.topBorder.backgroundColor = [UIColor colorWithRed: 0.768 green: 0.665 blue: 0.853 alpha: 1];
+//    //self.mySAVideoRangeSlider.bottomBorder.backgroundColor = [UIColor colorWithRed: 0.535 green: 0.329 blue: 0.707 alpha: 1];
+//
+//    // Gray
+//    //self.mySAVideoRangeSlider.topBorder.backgroundColor = [UIColor colorWithRed: 0.945 green: 0.945 blue: 0.945 alpha: 1];
+//    //self.mySAVideoRangeSlider.bottomBorder.backgroundColor = [UIColor colorWithRed: 0.806 green: 0.806 blue: 0.806 alpha: 1];
+//
+//    // Green
+//    //self.mySAVideoRangeSlider.topBorder.backgroundColor = [UIColor colorWithRed: 0.725 green: 0.879 blue: 0.745 alpha: 1];
+//    //self.mySAVideoRangeSlider.bottomBorder.backgroundColor = [UIColor colorWithRed: 0.449 green: 0.758 blue: 0.489 alpha: 1];
+//
 }
 
 -(void)viewWillAppear:(BOOL)animated
@@ -113,6 +141,15 @@
     }
 
     self.currentTimeLabel.text = [self secondsToMMSS:secondsElapsed];
+}
+
+#pragma mark - VRemixVideoRangeSliderDelegate
+
+- (void)videoRange:(VRemixVideoRangeSlider *)videoRange didChangeLeftPosition:(CGFloat)leftPosition rightPosition:(CGFloat)rightPosition
+{
+    self.start = leftPosition;
+    self.stop = rightPosition;
+//    self.timeLabel.text = [NSString stringWithFormat:@"%f - %f", leftPosition, rightPosition];
 }
 
 #pragma mark - Actions
@@ -199,7 +236,7 @@
 -(void)scrubberDidEndMoving
 {
     [self.previewView.player seekToTime:CMTimeMake(self.scrubber.value, self.previewView.player.currentTime.timescale)];
-    [self generateThumbnailsForTime];
+//    [self generateThumbnailsForTime];
 }
 
 #pragma mark - Navigation
@@ -225,47 +262,47 @@
     [self performSegueWithIdentifier:@"toStich" sender:self];
 }
 
-- (void)generateThumbnailsForTime
-{
-    CGFloat currentTimeInSeconds    =   CMTimeGetSeconds(self.previewView.player.currentTime);
-    CGFloat endTimeInSeconds        =   CMTimeGetSeconds(CMTimeConvertScale(self.previewView.player.currentItem.asset.duration, self.previewView.player.currentTime.timescale, kCMTimeRoundingMethod_RoundHalfAwayFromZero));
-    CGFloat interval                =   15.0;
-    CGFloat start                   =   currentTimeInSeconds - interval;
-    CGFloat end                     =   currentTimeInSeconds + interval;
-    
-    if (end < endTimeInSeconds)
-    {
-        end = endTimeInSeconds;
-        start = end - interval;
-    }
-    
-    if (start < 0)
-    {
-        start = 0;
-        end = start + interval;
-    }
-    
-    CMTimeRange range               =   CMTimeRangeFromTimeToTime(CMTimeMake(start, self.previewView.player.currentTime.timescale), CMTimeMake(end, self.previewView.player.currentTime.timescale));
-    [self generateThumnailsForRange:range];
-}
-
-- (void)generateThumnailsForRange:(CMTimeRange)timeRange;
-{
-    Float64             duration    = CMTimeGetSeconds(timeRange.duration);
-    NSMutableArray*     times       = [[NSMutableArray alloc] initWithCapacity:10.0];
-    
-    for (CMTime aTime = timeRange.start; CMTimeRangeContainsTime(timeRange, aTime); aTime = CMTimeAdd(aTime, CMTimeMake(duration / 10.0, timeRange.start.timescale)))
-    {
-        [times addObject:[NSValue valueWithCMTime:aTime]];
-    }
-    
-    [self.imageGenerator generateCGImagesAsynchronouslyForTimes:times completionHandler:^(CMTime requestedTime, CGImageRef image, CMTime actualTime, AVAssetImageGeneratorResult result, NSError *error)
-    {
-//        [self.thumbnails addObject:image];
-//        [self.thumbnailTimes addObject:[NSValue valueWithCMTime:actualTime]];
-        //  set strip view to range
-    }];
-}
+//- (void)generateThumbnailsForTime
+//{
+//    CGFloat currentTimeInSeconds    =   CMTimeGetSeconds(self.previewView.player.currentTime);
+//    CGFloat endTimeInSeconds        =   CMTimeGetSeconds(CMTimeConvertScale(self.previewView.player.currentItem.asset.duration, self.previewView.player.currentTime.timescale, kCMTimeRoundingMethod_RoundHalfAwayFromZero));
+//    CGFloat interval                =   15.0;
+//    CGFloat start                   =   currentTimeInSeconds - interval;
+//    CGFloat end                     =   currentTimeInSeconds + interval;
+//    
+//    if (end < endTimeInSeconds)
+//    {
+//        end = endTimeInSeconds;
+//        start = end - interval;
+//    }
+//    
+//    if (start < 0)
+//    {
+//        start = 0;
+//        end = start + interval;
+//    }
+//    
+//    CMTimeRange range               =   CMTimeRangeFromTimeToTime(CMTimeMake(start, self.previewView.player.currentTime.timescale), CMTimeMake(end, self.previewView.player.currentTime.timescale));
+//    [self generateThumnailsForRange:range];
+//}
+//
+//- (void)generateThumnailsForRange:(CMTimeRange)timeRange;
+//{
+//    Float64             duration    = CMTimeGetSeconds(timeRange.duration);
+//    NSMutableArray*     times       = [[NSMutableArray alloc] initWithCapacity:10.0];
+//    
+//    for (CMTime aTime = timeRange.start; CMTimeRangeContainsTime(timeRange, aTime); aTime = CMTimeAdd(aTime, CMTimeMake(duration / 10.0, timeRange.start.timescale)))
+//    {
+//        [times addObject:[NSValue valueWithCMTime:aTime]];
+//    }
+//    
+//    [self.imageGenerator generateCGImagesAsynchronouslyForTimes:times completionHandler:^(CMTime requestedTime, CGImageRef image, CMTime actualTime, AVAssetImageGeneratorResult result, NSError *error)
+//    {
+////        [self.thumbnails addObject:image];
+////        [self.thumbnailTimes addObject:[NSValue valueWithCMTime:actualTime]];
+//        //  set strip view to range
+//    }];
+//}
 
 - (void)trimVideo:(AVURLAsset *)assetToTrim startTrim:(CGFloat)startTrim endTrim:(CGFloat)endTrim
 {
