@@ -103,7 +103,7 @@
     self.profileCircleImageView.layer.masksToBounds = YES;
     self.profileCircleImageView.layer.cornerRadius = CGRectGetHeight(self.profileCircleImageView.bounds)/2;
     self.profileCircleImageView.layer.borderWidth = 2.0;
-    UIColor* tintColor = [[VThemeManager sharedThemeManager] themedColorForKeyPath:kVTintColor];
+    UIColor* tintColor = [[VThemeManager sharedThemeManager] themedColorForKeyPath:kVMainColor];
     self.profileCircleImageView.layer.borderColor = tintColor.CGColor;
     self.profileCircleImageView.layer.rasterizationScale = [UIScreen mainScreen].scale;
     self.profileCircleImageView.layer.shouldRasterize = YES;

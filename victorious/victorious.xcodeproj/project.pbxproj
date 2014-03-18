@@ -163,6 +163,7 @@
 		BE6C15281880A31B00469BA8 /* VAsset.m in Sources */ = {isa = PBXBuildFile; fileRef = BE6C15271880A31B00469BA8 /* VAsset.m */; };
 		BE6C15311880A31B00469BA8 /* VMedia.m in Sources */ = {isa = PBXBuildFile; fileRef = BE6C15301880A31B00469BA8 /* VMedia.m */; };
 		BE7169D318D0F5B5004966C3 /* VInteractionManager.m in Sources */ = {isa = PBXBuildFile; fileRef = BE7169D218D0F5B5004966C3 /* VInteractionManager.m */; };
+		BE7FC00E18D7D42500ACDDE5 /* carlyTheme.plist in Resources */ = {isa = PBXBuildFile; fileRef = BE7FC00D18D7D42500ACDDE5 /* carlyTheme.plist */; };
 		BE83A37118827B400077EB26 /* VMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = BE83A37018827B400077EB26 /* VMessage.m */; };
 		BE8C6F4F18B56E70009CFB1C /* VStreamPollCell.m in Sources */ = {isa = PBXBuildFile; fileRef = BE8C6F4E18B56E70009CFB1C /* VStreamPollCell.m */; };
 		BEA5BF59187E7E8E0014C3EF /* VObjectManager+DirectMessaging.m in Sources */ = {isa = PBXBuildFile; fileRef = BEA5BF58187E7E8E0014C3EF /* VObjectManager+DirectMessaging.m */; };
@@ -487,6 +488,7 @@
 		BE6C15301880A31B00469BA8 /* VMedia.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VMedia.m; sourceTree = "<group>"; };
 		BE7169D118D0F5B5004966C3 /* VInteractionManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VInteractionManager.h; sourceTree = "<group>"; };
 		BE7169D218D0F5B5004966C3 /* VInteractionManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VInteractionManager.m; sourceTree = "<group>"; };
+		BE7FC00D18D7D42500ACDDE5 /* carlyTheme.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = carlyTheme.plist; sourceTree = "<group>"; };
 		BE83A36F18827B400077EB26 /* VMessage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VMessage.h; sourceTree = "<group>"; };
 		BE83A37018827B400077EB26 /* VMessage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VMessage.m; sourceTree = "<group>"; };
 		BE8C6F4C18B53F2A009CFB1C /* victoriOS 4.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "victoriOS 4.xcdatamodel"; sourceTree = "<group>"; };
@@ -834,6 +836,7 @@
 				BE171DE71868C211004E5202 /* VThemeManager.h */,
 				BE171DE81868C211004E5202 /* VThemeManager.m */,
 				3FF8B7A41868FC1C00806EA0 /* defaultTheme.plist */,
+				BE7FC00D18D7D42500ACDDE5 /* carlyTheme.plist */,
 			);
 			name = Management;
 			sourceTree = "<group>";
@@ -1386,6 +1389,7 @@
 				83B5A1241876447800659C73 /* Roboto-Regular.ttf in Resources */,
 				BEB4C2A0187E0778004ECEEF /* VCommentCell.xib in Resources */,
 				BE692B28186E5ED800C71336 /* VStreamVideoCell.xib in Resources */,
+				BE7FC00E18D7D42500ACDDE5 /* carlyTheme.plist in Resources */,
 				83ABAFAF18709DE30069556C /* Roboto-Light.ttf in Resources */,
 				BEB52A7218BF38A400AC5FE4 /* VStreamYoutubeVideoCell.xib in Resources */,
 				83CC444A187DDCA8000C480C /* Roboto-Black.ttf in Resources */,

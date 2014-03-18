@@ -42,7 +42,10 @@ extern  NSString*   const   kVProfileTaglineFont;
 
 //Colors
 
-extern  NSString*   const   kVTintColor;
+extern  NSString*   const   kVAccentColor;
+extern  NSString*   const   kVMainColor;
+extern  NSString*   const   kVLinkColor;
+
 extern  NSString*   const   kVStreamSearchBarColor;
 
 extern  NSString*   const   kVCreatePollQuestionBorderColor;

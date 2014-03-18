@@ -33,6 +33,7 @@ NSString *kStreamsWillCommentNotification = @"kStreamsWillCommentNotification";
 @property (weak, nonatomic) IBOutlet UILabel *dateLabel;
 @property (weak, nonatomic) IBOutlet UILabel *descriptionLabel;
 @property (weak, nonatomic) IBOutlet UIButton *profileImageButton;
+@property (weak, nonatomic) IBOutlet UIImageView *dateImageView;
 
 @property (nonatomic) BOOL animating;
 @property (nonatomic) NSUInteger originalHeight;
@@ -55,6 +56,7 @@ NSString *kStreamsWillCommentNotification = @"kStreamsWillCommentNotification";
     self.locationLabel.font = [[VThemeManager sharedThemeManager] themedFontForKeyPath:kVStreamLocationFont];
     self.dateLabel.font = [[VThemeManager sharedThemeManager] themedFontForKeyPath:kVStreamDateFont];
     self.descriptionLabel.font = [[VThemeManager sharedThemeManager] themedFontForKeyPath:kVStreamDescriptionFont];
+    self.dateImageView.image = [self.dateImageView.image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
 }
 
 - (void)layoutSubviews

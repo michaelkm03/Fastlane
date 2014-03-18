@@ -22,49 +22,54 @@ NSString*   const   kVAgreementLink                     =   @"agreement.link";
 
 NSString*   const   kVMenuBackgroundImage               =   @"LaunchImage-700";
 NSString*   const   kVMenuBackgroundImage5              =   @"LaunchImage-700-568h";
-NSString*   const   kMenuTextFont                       =   @"theme.font.menu";
-NSString*   const   kMenuTextColor                      =   @"theme.color.menu.label";
 
 #pragma mark - Fonts
-NSString*   const   kVStreamLocationFont                =   @"theme.font.stream.text.location";
-NSString*   const   kVStreamUsernameFont                =   @"theme.font.stream.text.username";
-NSString*   const   kVStreamDateFont                    =   @"theme.font.stream.text.date";
-NSString*   const   kVStreamDescriptionFont             =   @"theme.font.stream.text.description";
+NSString*   const   kMenuTextFont                       =   @"font";
 
-NSString*   const   kVCommentUsernameFont               =   @"theme.font.comment.text.username";
+NSString*   const   kVStreamLocationFont                =   @"font";
+NSString*   const   kVStreamUsernameFont                =   @"font";
+NSString*   const   kVStreamDateFont                    =   @"font";
+NSString*   const   kVStreamDescriptionFont             =   @"font";
 
-NSString*   const   kVCreatePostFont                    =   @"theme.font.post";
-NSString*   const   kVCreatePostButtonFont              =   @"theme.font.post.postButton";
+NSString*   const   kVCommentUsernameFont               =   @"font";
 
-NSString*   const   kVProfileUsernameFont               =   @"theme.font.profile.username";
-NSString*   const   kVProfileLocationFont               =   @"theme.font.profile.location";
-NSString*   const   kVProfileTaglineFont                =   @"theme.font.profile.tagline";
+NSString*   const   kVCreatePostFont                    =   @"font";
+NSString*   const   kVCreatePostButtonFont              =   @"font";
+
+NSString*   const   kVProfileUsernameFont               =   @"font";
+NSString*   const   kVProfileLocationFont               =   @"font";
+NSString*   const   kVProfileTaglineFont                =   @"font";
 
 #pragma mark - Colors
+NSString*   const   kMenuTextColor                      =   @"color.main";
 
-NSString*   const   kVTintColor                         =   @"theme.color";
-NSString*   const   kVStreamSearchBarColor              =   @"theme.color.stream.searchbar";
+NSString*   const   kVAccentColor                       =   @"color.accent";
+NSString*   const   kVMainColor                         =   @"color.main";
+NSString*   const   kVSecondaryMainColor                =   @"color.main.secondary";
+NSString*   const   kVLinkColor                         =   @"color.link";
 
-NSString*   const   kVCreatePollQuestionBorderColor     =   @"theme.color.post.poll.questions.border";
-NSString*   const   kVCreatePollQuestionColor           =   @"theme.color.text.post.poll.question";
-NSString*   const   kVCreatePollQuestionLeftColor       =   @"theme.color.text.post.poll.questions.left";
-NSString*   const   kVCreatePollQuestionRightColor      =   @"theme.color.text.post.poll.questions.right";
-NSString*   const   kVCreatePollQuestionLeftBGColor     =   @"theme.color.post.poll.questions.left.background";
-NSString*   const   kVCreatePollQuestionRightBGColor    =   @"theme.color.post.poll.questions.right.background";
+NSString*   const   kVStreamSearchBarColor              =   @"color.main";
 
-NSString*   const   kVCreatePostBackgroundColor         =   @"theme.color.post.background";
-NSString*   const   kVCreatePostMediaLabelColor         =   @"theme.color.text.post.mediaLabel";
-NSString*   const   kVCreatePostMediaButtonColor        =   @"theme.color.post.mediaButton.icon";
-NSString*   const   kVCreatePostMediaButtonBGColor      =   @"theme.color.post.mediaButton.background";
-NSString*   const   kVCreatePostTextColor               =   @"theme.color.text.post";
-NSString*   const   KVRemoveMediaButtonColor            =   @"theme.color.post.media.remove";
-NSString*   const   kVCreatePostInputBorderColor        =   @"theme.color.post.input.border";
-NSString*   const   kVCreatePostButtonTextColor         =   @"theme.color.text.post.postButton";
-NSString*   const   kVCreatePostButtonBGColor           =   @"theme.color.post.postButton.background";
-NSString*   const   kVCreatePostCountInvalidColor       =   @"theme.color.text.post.count.invalid";
-NSString*   const   kVCreatePostCountColor              =   @"theme.color.text.post.count";
+NSString*   const   kVCreatePollQuestionBorderColor     =   @"color.main";
+NSString*   const   kVCreatePollQuestionColor           =   @"color.main";
+NSString*   const   kVCreatePollQuestionLeftColor       =   @"color.main";
+NSString*   const   kVCreatePollQuestionRightColor      =   @"color.main";
+NSString*   const   kVCreatePollQuestionLeftBGColor     =   @"color.main";
+NSString*   const   kVCreatePollQuestionRightBGColor    =   @"color.main";
 
-NSString*   const   kVProfileLocationColor              =   @"theme.color.profile.location";
+NSString*   const   kVCreatePostBackgroundColor         =   @"color.main";
+NSString*   const   kVCreatePostMediaLabelColor         =   @"color.main";
+NSString*   const   kVCreatePostMediaButtonColor        =   @"color.main";
+NSString*   const   kVCreatePostMediaButtonBGColor      =   @"color.main";
+NSString*   const   kVCreatePostTextColor               =   @"color.main";
+NSString*   const   KVRemoveMediaButtonColor            =   @"color.main";
+NSString*   const   kVCreatePostInputBorderColor        =   @"color.main";
+NSString*   const   kVCreatePostButtonTextColor         =   @"color.main";
+NSString*   const   kVCreatePostButtonBGColor           =   @"color.main";
+NSString*   const   kVCreatePostCountInvalidColor       =   @"color.main";
+NSString*   const   kVCreatePostCountColor              =   @"color.main";
+
+NSString*   const   kVProfileLocationColor              =   @"color.main";
 
 
 
@@ -92,7 +97,7 @@ NSString*   const   kVProfileLocationColor              =   @"theme.color.profil
     self    =   [super init];
     if (self)
     {
-        NSURL*  defaultThemeURL =   [[NSBundle mainBundle] URLForResource:@"defaultTheme" withExtension:@"plist"];
+        NSURL*  defaultThemeURL =   [[NSBundle mainBundle] URLForResource:@"carlyTheme" withExtension:@"plist"];
         _themeValues            =   [NSDictionary dictionaryWithContentsOfURL:defaultThemeURL];
     }
     
@@ -112,13 +117,13 @@ NSString*   const   kVProfileLocationColor              =   @"theme.color.profil
 
 - (void)applyStyling
 {
-    [[[[UIApplication sharedApplication] delegate] window] setTintColor:[self themedColorForKeyPath:@"theme.color"]];
+    [[[[UIApplication sharedApplication] delegate] window] setTintColor:[self themedColorForKeyPath:kVAccentColor]];
 
-    [[UINavigationBar appearance] setTintColor:[self themedColorForKeyPath:@"theme.color.navigationBar"]];
-    [[UINavigationBar appearance] setBarTintColor:[self themedTranslucencyColorForKeyPath:@"theme.color.navigationBar.background"]];
+    [[UINavigationBar appearance] setTintColor:[self themedColorForKeyPath:kVAccentColor]];
+    [[UINavigationBar appearance] setBarTintColor:[self themedTranslucencyColorForKeyPath:kVMainColor]];
 
     NSMutableDictionary *titleAttributes = [NSMutableDictionary dictionary];
-    UIColor *navigationBarTitleTintColor = [self themedColorForKeyPath:@"theme.color.navigationBar.title"];
+    UIColor *navigationBarTitleTintColor = [self themedColorForKeyPath:kVAccentColor];
     if(navigationBarTitleTintColor)
     {
         [titleAttributes setObject:navigationBarTitleTintColor forKey:NSForegroundColorAttributeName];

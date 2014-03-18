@@ -79,6 +79,7 @@
             </tableViewCellContentView>
             <connections>
                 <outlet property="animationImage" destination="4KJ-2a-1em" id="bYP-yE-NUH"/>
+                <outlet property="dateImageView" destination="Xa0-nU-fXr" id="L4z-6R-Gof"/>
                 <outlet property="dateLabel" destination="WZA-gK-t4u" id="06c-0q-kzg"/>
                 <outlet property="overlayView" destination="RCT-CJ-9Wa" id="N1y-Mi-nhZ"/>
                 <outlet property="previewImageView" destination="Fss-eh-Px9" id="OLq-fg-Nik"/>
