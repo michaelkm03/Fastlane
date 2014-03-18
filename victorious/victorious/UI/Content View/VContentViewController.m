@@ -421,7 +421,7 @@ CGFloat kContentMediaViewOffset = 154;
 
 - (IBAction)pressedRemix:(id)sender
 {
-    AVURLAsset* videoAsset = [AVURLAsset assetWithURL:[NSURL URLWithString:self.currentAsset.data]];
+    AVURLAsset* videoAsset = [AVURLAsset assetWithURL:[self.currentAsset.data mp4UrlFromM3U8]];
     UIViewController* remixVC = [VRemixTrimViewController remixViewControllerWithAsset:videoAsset];
     [self.navigationController presentViewController:remixVC animated:YES completion:nil];
 }

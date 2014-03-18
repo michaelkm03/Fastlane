@@ -52,6 +52,17 @@
     return  [[[self stringByDeletingLastPathComponent] stringByAppendingPathComponent:@"thumbnail-00001"] stringByAppendingPathExtension: @"png"];
 }
 
+- (NSURL*)mp4UrlFromM3U8
+{
+    if (![[self pathExtension] isEqualToString:VConstantMediaExtensionM3U8])
+        return nil;
+    
+    return [[[[[NSURL URLWithString:self] URLByDeletingLastPathComponent]
+              URLByAppendingPathComponent:@"720" isDirectory:YES]
+             URLByAppendingPathComponent:@"video"]
+            URLByAppendingPathExtension:@"mp4"];
+}
+
 - (BOOL ) isEmpty
 {
     return [self isEmptyWithCleanWhiteSpace:YES];
