@@ -16,7 +16,7 @@
     [super layoutSubviews];
     
     [[UIImageView appearanceWhenContainedIn:[self class], nil]
-     setTintColor:[[VThemeManager sharedThemeManager] themedColorForKeyPath:@"theme.color.stream.icon"]];
+     setTintColor:[[VThemeManager sharedThemeManager] themedColorForKeyPath:kVAccentColor]];
     
     [self.imageViews enumerateObjectsUsingBlock:^(UIImageView *imageView, NSUInteger idx, BOOL *stop)
      {
@@ -26,13 +26,13 @@
     [self.labels enumerateObjectsUsingBlock:^(UILabel *label, NSUInteger idx, BOOL *stop)
      {
          label.font = [[VThemeManager sharedThemeManager] themedFontForKeyPath:@"theme.font.stream"];
-         label.textColor = [[VThemeManager sharedThemeManager] themedColorForKeyPath:@"theme.color.stream.text"];
+         label.textColor = [[VThemeManager sharedThemeManager] themedColorForKeyPath:kVAccentColor];
      }];
     
     [self.buttons enumerateObjectsUsingBlock:^(UIButton *button, NSUInteger idx, BOOL *stop)
      {
-         button.titleLabel.font = [[VThemeManager sharedThemeManager] themedFontForKeyPath:@"theme.font.stream.button"];
-         button.tintColor = [[VThemeManager sharedThemeManager] themedColorForKeyPath:@"theme.color.stream.button"];
+         button.titleLabel.font = [[VThemeManager sharedThemeManager] themedFontForKeyPath:kVAccentColor];
+         button.tintColor = [[VThemeManager sharedThemeManager] themedColorForKeyPath:kVMainColor];
      }];
 }
 

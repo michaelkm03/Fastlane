@@ -8,6 +8,7 @@
 
 #import "VThemeManager.h"
 
+#pragma mark - new theme constants
 NSString*   const   kVThemeManagerThemeDidChange        =   @"VThemeManagerThemeDidChange";
 
 NSString*   const   kVChannelURLAbout                   =   @"channel.url.about";
@@ -23,6 +24,19 @@ NSString*   const   kVAgreementLink                     =   @"agreement.link";
 NSString*   const   kVMenuBackgroundImage               =   @"LaunchImage-700";
 NSString*   const   kVMenuBackgroundImage5              =   @"LaunchImage-700-568h";
 
+#pragma mark - Fonts
+
+#pragma mark - Colors
+NSString*   const   kVAccentColor                       =   @"color.accent";
+NSString*   const   kVContentAccentColor                 =   @"color.accent.content";
+
+NSString*   const   kVMainColor                         =   @"color.main";
+
+NSString*   const   kVSecondaryMainColor                =   @"color.main.secondary";
+
+NSString*   const   kVLinkColor                         =   @"color.link";
+
+#pragma mark - old theme constants
 #pragma mark - Fonts
 NSString*   const   kMenuTextFont                       =   @"font";
 
@@ -42,11 +56,6 @@ NSString*   const   kVProfileTaglineFont                =   @"font";
 
 #pragma mark - Colors
 NSString*   const   kMenuTextColor                      =   @"color.main";
-
-NSString*   const   kVAccentColor                       =   @"color.accent";
-NSString*   const   kVMainColor                         =   @"color.main";
-NSString*   const   kVSecondaryMainColor                =   @"color.main.secondary";
-NSString*   const   kVLinkColor                         =   @"color.link";
 
 NSString*   const   kVStreamSearchBarColor              =   @"color.main";
 

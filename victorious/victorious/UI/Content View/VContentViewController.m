@@ -30,6 +30,10 @@
 #import "UIView+VFrameManipulation.h"
 #import "NSString+VParseHelp.h"
 
+#import "VThemeManager.h"
+
+#import "VRemixTrimViewController.h"
+
 CGFloat kContentMediaViewOffset = 154;
 
 @import MediaPlayer;
@@ -37,18 +41,17 @@ CGFloat kContentMediaViewOffset = 154;
 @interface VContentViewController ()  <UIWebViewDelegate, VInteractionManagerDelegate, VPollAnswerBarDelegate>
 
 @property (weak, nonatomic) IBOutlet UIImageView* backgroundImage;
-@property (weak, nonatomic) IBOutlet UILabel* titleLabel;
-@property (weak, nonatomic) IBOutlet UIButton* backButton;
-@property (weak, nonatomic) IBOutlet UIButton* commentButton;
-@property (weak, nonatomic) IBOutlet UIButton* moreButton;
+@property (weak, nonatomic) IBOutlet UILabel* descriptionLabel;
+@property (weak, nonatomic) IBOutlet UIView* barContainerView;
+
+@property (strong, nonatomic) IBOutletCollection(UIButton) NSArray* buttonCollection;
+@property (weak, nonatomic) IBOutlet UIButton* remixButton;
 
 @property (weak, nonatomic) IBOutlet UIView* mpPlayerContainmentView;
 
 @property (weak, nonatomic) IBOutlet UIImageView* previewImage;
 @property (weak, nonatomic) IBOutlet UIImageView* sixteenNinePreviewImage;
 @property (weak, nonatomic) IBOutlet UIWebView* webView;
-@property (weak, nonatomic) IBOutlet UILabel* descriptionLabel;
-@property (weak, nonatomic) IBOutlet UIView* barContainerView;
 
 @property (weak, nonatomic) IBOutlet UIView* pollPreviewView;
 @property (weak, nonatomic) IBOutlet UIImageView* firstSmallPreviewImage;
@@ -110,6 +113,16 @@ CGFloat kContentMediaViewOffset = 154;
     
     self.secondResultView.isVertical = YES;
     self.secondResultView.hidden = YES;
+    
+    for (UIButton* button in self.buttonCollection)
+    {
+        [button setImage:[button.imageView.image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] forState:UIControlStateNormal];
+        button.tintColor = [[VThemeManager sharedThemeManager] themedColorForKeyPath:kVContentAccentColor];
+    }
+    self.descriptionLabel.textColor = [[VThemeManager sharedThemeManager] themedColorForKeyPath:kVContentAccentColor];
+    
+    [self.remixButton setImage:[self.remixButton.imageView.image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] forState:UIControlStateNormal];
+    self.remixButton.tintColor = [[VThemeManager sharedThemeManager] themedColorForKeyPath:kVAccentColor];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -310,6 +323,7 @@ CGFloat kContentMediaViewOffset = 154;
     self.webView.hidden = YES;
     self.sixteenNinePreviewImage.hidden = YES;
     self.mpController.view.hidden = YES;
+    self.remixButton.hidden = YES;
     
     [self updateActionBar];
 }
@@ -352,6 +366,7 @@ CGFloat kContentMediaViewOffset = 154;
     self.sixteenNinePreviewImage.hidden = YES;
     self.pollPreviewView.hidden = YES;
     self.mpController.view.hidden = YES;
+    self.remixButton.hidden = NO;
     
     [self updateActionBar];
 }
@@ -403,6 +418,13 @@ CGFloat kContentMediaViewOffset = 154;
                      completion:completion];
 }
 
+- (IBAction)pressedRemix:(id)sender
+{
+    AVURLAsset* videoAsset = [AVURLAsset assetWithURL:[NSURL URLWithString:self.currentAsset.data]];
+    UIViewController* remixVC = [VRemixTrimViewController remixViewControllerWithAsset:videoAsset];
+    [self.navigationController presentViewController:remixVC animated:YES completion:nil];
+}
+
 #pragma mark - Youtube
 - (void)loadYoutubeVideo
 {
@@ -423,6 +445,7 @@ CGFloat kContentMediaViewOffset = 154;
     self.webView.hidden = YES;
     self.pollPreviewView.hidden = YES;
     self.mpController.view.hidden = YES;
+    self.remixButton.hidden = YES;
     [self.webView loadWithYoutubeID:self.currentAsset.data];
     
     [self updateActionBar];

@@ -10,6 +10,7 @@
 
 extern  NSString*   const   kVThemeManagerThemeDidChange;
 
+#pragma mark - New Theme Constants
 extern  NSString*   const   kVChannelURLAbout;
 extern  NSString*   const   kVChannelURLPrivacy;
 extern  NSString*   const   kVChannelURLAcknowledgements;
@@ -22,9 +23,21 @@ extern  NSString*   const   kVAgreementLink;
 
 extern  NSString*   const   kVMenuBackgroundImage;
 extern  NSString*   const   kVMenuBackgroundImage5;
-extern  NSString*   const   kMenuTextFont;
-extern  NSString*   const   kMenuTextColor;
 
+//Fonts
+
+
+//Colors
+extern  NSString*   const   kVAccentColor;
+extern  NSString*   const   kVContentAccentColor;
+
+extern  NSString*   const   kVMainColor;
+extern  NSString*   const   kVSecondaryMainColor;
+
+extern  NSString*   const   kVLinkColor;
+
+
+#pragma mark - old theme constants
 //Fonts
 extern  NSString*   const   kVStreamLocationFont;
 extern  NSString*   const   kVStreamUsernameFont;
@@ -41,10 +54,8 @@ extern  NSString*   const   kVProfileLocationFont;
 extern  NSString*   const   kVProfileTaglineFont;
 
 //Colors
-
-extern  NSString*   const   kVAccentColor;
-extern  NSString*   const   kVMainColor;
-extern  NSString*   const   kVLinkColor;
+extern  NSString*   const   kMenuTextFont;
+extern  NSString*   const   kMenuTextColor;
 
 extern  NSString*   const   kVStreamSearchBarColor;
 
