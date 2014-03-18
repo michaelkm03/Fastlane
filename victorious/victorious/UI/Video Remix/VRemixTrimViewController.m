@@ -25,6 +25,10 @@
 @property (nonatomic, weak)     IBOutlet    UILabel*            currentTimeLabel;
 @property (nonatomic, weak)     IBOutlet    UILabel*            totalTimeLabel;
 
+@property (nonatomic, weak)     IBOutlet    UIButton*           rateButton;
+@property (nonatomic, weak)     IBOutlet    UIButton*           loopButton;
+@property (nonatomic, weak)     IBOutlet    UIButton*           muteButton;
+
 @property (nonatomic, strong)   id                              periodicTimeObserver;
 @property (nonatomic)           BOOL                            sliderTouched;
 
@@ -64,6 +68,9 @@
     [self.scrubber addTarget:self action:@selector(scrubberDidStartMoving) forControlEvents:UIControlEventTouchDown];
     [self.scrubber addTarget:self action:@selector(scrubberDidMove) forControlEvents:UIControlEventTouchDragInside];
     [self.scrubber addTarget:self action:@selector(scrubberDidEndMoving) forControlEvents:UIControlEventTouchUpInside];
+    
+    UIImage*    nextButtonImage = [[UIImage imageNamed:@"cameraButtonNext"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithImage:nextButtonImage style:UIBarButtonItemStyleBordered target:self action:@selector(nextButtonClicked:)];
 }
 
 -(void)viewWillAppear:(BOOL)animated
@@ -127,6 +134,11 @@
     button.selected = !button.selected;
     self.muteAudio = button.selected;
     self.previewView.player.muted = self.muteAudio;
+    
+    if (self.muteAudio)
+        [self.muteButton setImage:[UIImage imageNamed:@"cameraButtonUnmute"] forState:UIControlStateNormal];
+    else
+        [self.muteButton setImage:[UIImage imageNamed:@"cameraButtonMute"] forState:UIControlStateNormal];
 }
 
 - (IBAction)playbackRateClicked:(id)sender
@@ -135,16 +147,19 @@
     {
         self.playBackSpeed = kRemixPlaybackDoubleSpeed;
         self.previewView.player.rate = 2.0;
+        [self.rateButton setImage:[UIImage imageNamed:@"cameraButtonSpeedDouble"] forState:UIControlStateNormal];
     }
     else if (self.playBackSpeed == kRemixPlaybackDoubleSpeed)
     {
         self.playBackSpeed = kRemixPlaybackHalfSpeed;
         self.previewView.player.rate = 0.5;
+        [self.rateButton setImage:[UIImage imageNamed:@"cameraButtonSpeedHalf"] forState:UIControlStateNormal];
     }
     else if (self.playBackSpeed == kRemixPlaybackHalfSpeed)
     {
         self.playBackSpeed = kRemixPlaybackNormalSpeed;
         self.previewView.player.rate = 1.0;
+        [self.rateButton setImage:[UIImage imageNamed:@"cameraButtonSpeedNormal"] forState:UIControlStateNormal];
     }
 }
 
@@ -154,11 +169,13 @@
     {
         self.playbackLooping = kRemixLoopingLoop;
         self.previewView.player.shouldLoop = YES;
+        [self.loopButton setImage:[UIImage imageNamed:@"cameraButtonNoLoop"] forState:UIControlStateNormal];
     }
     else if (self.playbackLooping == kRemixLoopingLoop)
     {
         self.playbackLooping = kRemixLoopingNone;
         self.previewView.player.shouldLoop = NO;
+        [self.loopButton setImage:[UIImage imageNamed:@"cameraButtonLoop"] forState:UIControlStateNormal];
     }
 }
 

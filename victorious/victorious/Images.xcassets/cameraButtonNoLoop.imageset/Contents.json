@@ -3,12 +3,12 @@
     {
       "idiom" : "universal",
       "scale" : "1x",
-      "filename" : "btn-next-arrow-accent.png"
+      "filename" : "remix-control-single.png"
     },
     {
       "idiom" : "universal",
       "scale" : "2x",
-      "filename" : "btn-next-arrow-accent@2x.png"
+      "filename" : "remix-control-single@2x.png"
     }
   ],
   "info" : {

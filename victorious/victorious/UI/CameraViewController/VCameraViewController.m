@@ -74,17 +74,20 @@
 		[self prepareCamera];
     }];
 
-    self.nextButton =   [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"cameraButtonNext"]
+    UIImage*    nextButtonImage = [[UIImage imageNamed:@"cameraButtonNext"]  imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+    self.nextButton =   [[UIBarButtonItem alloc] initWithImage:nextButtonImage
                                                          style:UIBarButtonItemStyleBordered
                                                         target:self
                                                         action:@selector(nextAction:)];
 
-    self.flashOnButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"cameraButtonFlashOn"]
+    UIImage*    flashOnImage = [[UIImage imageNamed:@"cameraButtonFlashOn"]  imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+    self.flashOnButton = [[UIBarButtonItem alloc] initWithImage:flashOnImage
                                                           style:UIBarButtonItemStyleBordered
                                                          target:self
                                                          action:@selector(switchFlashAction:)];
 
-    self.flashOffButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"cameraButtonFlashOff"]
+    UIImage*    flashOffImage = [[UIImage imageNamed:@"cameraButtonFlashOff"]  imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+    self.flashOffButton = [[UIBarButtonItem alloc] initWithImage:flashOffImage
                                                            style:UIBarButtonItemStyleBordered
                                                           target:self
                                                           action:@selector(switchFlashAction:)];
