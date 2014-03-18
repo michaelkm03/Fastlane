@@ -14,9 +14,6 @@
 #import "VRemixVideoRangeSlider.h"
 
 @interface VRemixTrimViewController ()  <VCVideoPlayerDelegate, VRemixVideoRangeSliderDelegate>
-@property (nonatomic, assign)   CGFloat                         start;
-@property (nonatomic, assign)   CGFloat                         stop;
-
 @property (nonatomic, weak)     IBOutlet    VCVideoPlayerView*  previewView;;
 @property (nonatomic, weak)     IBOutlet    UISlider*           scrubber;
 @property (nonatomic, weak)     IBOutlet    UILabel*            currentTimeLabel;
@@ -30,8 +27,10 @@
 @property (nonatomic, strong)   VRemixVideoRangeSlider*         trimSlider;
 
 @property (nonatomic, strong)   id                              periodicTimeObserver;
-@property (nonatomic)           BOOL                            sliderTouched;
 
+@property (nonatomic)           BOOL                            sliderTouched;
+@property (nonatomic, assign)   CGFloat                         start;
+@property (nonatomic, assign)   CGFloat                         stop;
 @end
 
 @implementation VRemixTrimViewController
@@ -91,7 +90,6 @@
 //    // Green
 //    //self.mySAVideoRangeSlider.topBorder.backgroundColor = [UIColor colorWithRed: 0.725 green: 0.879 blue: 0.745 alpha: 1];
 //    //self.mySAVideoRangeSlider.bottomBorder.backgroundColor = [UIColor colorWithRed: 0.449 green: 0.758 blue: 0.489 alpha: 1];
-//
 }
 
 -(void)viewWillAppear:(BOOL)animated
@@ -290,7 +288,7 @@
     NSInteger hh = time / 3600;
     NSInteger mm = (time / 60) % 60;
     NSInteger ss = time % 60;
-    if(hh > 0)
+    if (hh > 0)
         return  [NSString stringWithFormat:@"%d:%02i:%02i",hh,mm,ss];
     else
         return  [NSString stringWithFormat:@"%02i:%02i",mm,ss];
