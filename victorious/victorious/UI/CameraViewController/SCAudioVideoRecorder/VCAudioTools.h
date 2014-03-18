@@ -1,10 +1,10 @@
 //
-//  SCAudioTools
+//  VCAudioTools
 //
 
 #import <Foundation/Foundation.h>
 
-@interface SCAudioTools : NSObject {
+@interface VCAudioTools : NSObject {
     
 }
 

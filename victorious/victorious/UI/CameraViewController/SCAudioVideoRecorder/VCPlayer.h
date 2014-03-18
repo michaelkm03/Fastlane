@@ -1,27 +1,27 @@
 //
-//  SCPlayer
+//  VCPlayer
 //
 
 @import AVFoundation;
 
-@class SCPlayer;
+@class VCPlayer;
 
-@protocol SCVideoPlayerDelegate <NSObject>
+@protocol VCVideoPlayerDelegate <NSObject>
 
 @optional
 
-- (void) videoPlayer:(SCPlayer*)videoPlayer didPlay:(Float32)secondsElapsed;
-- (void) videoPlayer:(SCPlayer *)videoPlayer didStartLoadingAtItemTime:(CMTime)itemTime;
-- (void) videoPlayer:(SCPlayer *)videoPlayer didEndLoadingAtItemTime:(CMTime)itemTime;
-- (void) videoPlayer:(SCPlayer *)videoPlayer didChangeItem:(AVPlayerItem*)item;
+- (void) videoPlayer:(VCPlayer*)videoPlayer didPlay:(Float32)secondsElapsed;
+- (void) videoPlayer:(VCPlayer *)videoPlayer didStartLoadingAtItemTime:(CMTime)itemTime;
+- (void) videoPlayer:(VCPlayer *)videoPlayer didEndLoadingAtItemTime:(CMTime)itemTime;
+- (void) videoPlayer:(VCPlayer *)videoPlayer didChangeItem:(AVPlayerItem*)item;
 
 @end
 
-@interface SCPlayer : AVPlayer
+@interface VCPlayer : AVPlayer
 
-+ (SCPlayer*) player;
++ (VCPlayer*) player;
 + (void) pauseCurrentPlayer;
-+ (SCPlayer*) currentPlayer;
++ (VCPlayer*) currentPlayer;
 
 - (void) cleanUp;
 
@@ -42,7 +42,7 @@
 - (BOOL) isPlaying;
 - (BOOL) isLoading;
 
-@property (weak, nonatomic, readwrite) id<SCVideoPlayerDelegate> delegate;
+@property (weak, nonatomic, readwrite) id<VCVideoPlayerDelegate> delegate;
 @property (assign, nonatomic, readwrite) CMTime minimumBufferedTimeBeforePlaying;
 @property (assign, nonatomic, readwrite) BOOL shouldLoop;
 

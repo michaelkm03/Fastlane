@@ -1,16 +1,16 @@
 //
-//  SCCamera
+//  VCCamera
 //
 
 @import AVFoundation;
 
-#import "SCCamera.h"
-#import "SCAudioVideoRecorderInternal.h"
+#import "VCCamera.h"
+#import "VCAudioVideoRecorderInternal.h"
 
-static NSString * const SCCameraFocusObserverContext = @"SCCameraFocusObserverContext";
-static NSString * const SCCameraCaptureStillImageIsCapturingStillImageObserverContext = @"SCCameraCaptureStillImageIsCapturingStillImageObserverContext";
+static NSString * const VCCameraFocusObserverContext = @"VCCameraFocusObserverContext";
+static NSString * const VCCameraCaptureStillImageIsCapturingStillImageObserverContext = @"VCCameraCaptureStillImageIsCapturingStillImageObserverContext";
 
-static void *SCCameraFocusModeObserverContext = &SCCameraFocusModeObserverContext;
+static void *VCCameraFocusModeObserverContext = &VCCameraFocusModeObserverContext;
 
 typedef UIView View;
 
@@ -18,7 +18,7 @@ typedef UIView View;
 // PRIVATE DEFINITION
 /////////////////////
 
-@interface SCCamera() {
+@interface VCCamera() {
     BOOL _useFrontCamera;
     NSInteger _configurationBeganCount;
 	NSString * _sessionPreset;
@@ -36,9 +36,9 @@ typedef UIView View;
 // IMPLEMENTATION
 /////////////////////
 
-@implementation SCCamera {
+@implementation VCCamera {
     View * _previewView;
-    SCCameraPreviewVideoGravity _previewVideoGravity;
+    VCCameraPreviewVideoGravity _previewVideoGravity;
 }
 
 @synthesize session;
@@ -61,8 +61,8 @@ typedef UIView View;
 		_sessionPreset = nil;
 		_useFrontCamera = NO;
         self.sessionPreset = sessionPreset;
-        _cameraDevice = SCCameraDeviceBack;
-        self.flashMode = SCFlashModeAuto;
+        _cameraDevice = VCCameraDeviceBack;
+        self.flashMode = VCFlashModeAuto;
     }
     
     return self;
@@ -89,8 +89,8 @@ typedef UIView View;
 	}
 }
 
-+ (SCCamera*) camera {
-    return [[SCCamera alloc] init];
++ (VCCamera*) camera {
+    return [[VCCamera alloc] init];
 }
 
 - (AVCaptureDeviceInput*) addInputToSession:(AVCaptureSession*)captureSession device:(AVCaptureDevice*)device withMediaType:(NSString*)mediaType error:(NSError**)error {
@@ -102,7 +102,7 @@ typedef UIView View;
             [captureSession addInput:input];
         }
     } else {
-        *error = [SCAudioVideoRecorder createError:[NSString stringWithFormat:@"No device of type %@ were found", mediaType]];
+        *error = [VCAudioVideoRecorder createError:[NSString stringWithFormat:@"No device of type %@ were found", mediaType]];
     }
 	return input;
 }
@@ -166,7 +166,7 @@ typedef UIView View;
             [captureSession addOutput:self.audioOutput];
             [captureSession addOutput:self.videoOutput];
             // KVO is only used to monitor focus and capture events
-            [self.stillImageOutput addObserver:self forKeyPath:@"capturingStillImage" options:NSKeyValueObservingOptionNew context:(__bridge void *)(SCCameraCaptureStillImageIsCapturingStillImageObserverContext)];
+            [self.stillImageOutput addObserver:self forKeyPath:@"capturingStillImage" options:NSKeyValueObservingOptionNew context:(__bridge void *)(VCCameraCaptureStillImageIsCapturingStillImageObserverContext)];
             [captureSession addOutput:self.stillImageOutput];
 			
             self.previewLayer = [[AVCaptureVideoPreviewLayer alloc] initWithSession:captureSession];
@@ -206,7 +206,7 @@ typedef UIView View;
         [super prepareRecordingAtUrl:fileUrl error:error];
     } else {
         if (error != nil) {
-            *error = [SCAudioVideoRecorder createError:@"The camera must be initialized before trying to record"];
+            *error = [VCAudioVideoRecorder createError:@"The camera must be initialized before trying to record"];
         }
     }
 }
@@ -225,11 +225,11 @@ typedef UIView View;
 
 - (NSString*) previewVideoGravityToString {
     switch (self.previewVideoGravity) {
-        case SCVideoGravityResize:
+        case VCVideoGravityResize:
             return AVLayerVideoGravityResize;
-        case SCVideoGravityResizeAspect:
+        case VCVideoGravityResizeAspect:
             return AVLayerVideoGravityResizeAspect;
-        case SCVideoGravityResizeAspectFill:
+        case VCVideoGravityResizeAspectFill:
             return AVLayerVideoGravityResizeAspectFill;
     }
     return nil;
@@ -257,7 +257,7 @@ typedef UIView View;
     return _previewView;
 }
 
-- (void) setPreviewVideoGravity:(SCCameraPreviewVideoGravity)newPreviewVideoGravity {
+- (void) setPreviewVideoGravity:(VCCameraPreviewVideoGravity)newPreviewVideoGravity {
     _previewVideoGravity = newPreviewVideoGravity;
     if (self.previewLayer) {
         self.previewLayer.videoGravity = [self previewVideoGravityToString];
@@ -265,7 +265,7 @@ typedef UIView View;
     
 }
 
-- (SCCameraPreviewVideoGravity) previewVideoGravity {
+- (VCCameraPreviewVideoGravity) previewVideoGravity {
     return _previewVideoGravity;
 }
 
@@ -307,7 +307,7 @@ typedef UIView View;
 	}
 }
 
-- (void)setFlashMode:(SCFlashMode)flashMode {
+- (void)setFlashMode:(VCFlashMode)flashMode {
     AVCaptureDevice *_currentDevice = self.currentVideoDeviceInput.device;
     BOOL shouldChangeFlashMode = (_flashMode != flashMode);
     if (![_currentDevice hasFlash] || !shouldChangeFlashMode)
@@ -318,7 +318,7 @@ typedef UIView View;
     NSError *error = nil;
     if (_currentDevice && [_currentDevice lockForConfiguration:&error]) {
 		
-		if (_flashMode == SCFlashModeLight) {
+		if (_flashMode == VCFlashModeLight) {
 			if ([_currentDevice isTorchModeSupported:AVCaptureTorchModeOn]) {
 				[_currentDevice setTorchMode:AVCaptureTorchModeOn];
 			}
@@ -341,7 +341,7 @@ typedef UIView View;
     }
 }
 
-- (SCFlashMode)flashMode {
+- (VCFlashMode)flashMode {
     return _flashMode;
 }
 
@@ -363,11 +363,11 @@ typedef UIView View;
 
 - (void) switchCamera {
     switch (self.cameraDevice) {
-        case SCCameraDeviceBack:
-            self.cameraDevice = SCCameraDeviceFront;
+        case VCCameraDeviceBack:
+            self.cameraDevice = VCCameraDeviceFront;
             break;
-        case SCCameraDeviceFront:
-            self.cameraDevice = SCCameraDeviceBack;
+        case VCCameraDeviceFront:
+            self.cameraDevice = VCCameraDeviceBack;
             break;
         default:
             break;
@@ -391,7 +391,7 @@ typedef UIView View;
     }
 }
 
-- (void)setCameraDevice:(SCCameraDevice)cameraDevice {
+- (void)setCameraDevice:(VCCameraDevice)cameraDevice {
     if (_cameraDevice == cameraDevice)
         return;
     
@@ -399,7 +399,7 @@ typedef UIView View;
     [self reconfigureSessionInputs];
 }
 
-- (SCCameraDevice)cameraDevice {
+- (VCCameraDevice)cameraDevice {
     return _cameraDevice;
 }
 
@@ -522,12 +522,12 @@ typedef UIView View;
             }
             
             if (!foundSupported && error != nil) {
-                *error = [SCAudioVideoRecorder createError:[NSString stringWithFormat:@"No format that supports framerate %d and dimensions %d/%d was found", (int)frameRate, dimensions.width, dimensions.height]];
+                *error = [VCAudioVideoRecorder createError:[NSString stringWithFormat:@"No format that supports framerate %d and dimensions %d/%d was found", (int)frameRate, dimensions.width, dimensions.height]];
             }
         }
     } else {
         if (error != nil) {
-            *error = [SCAudioVideoRecorder createError:@"The camera must be initialized before setting active format"];
+            *error = [VCAudioVideoRecorder createError:@"The camera must be initialized before setting active format"];
         }
     }
     
@@ -550,15 +550,15 @@ typedef UIView View;
 	
 	if (device != nil) {
 		self.currentVideoDeviceInput = [self addInputToSession:captureSession device:device withMediaType:@"Video" error:error];
-        [self.currentVideoDeviceInput.device addObserver:self forKeyPath:@"adjustingFocus" options:NSKeyValueObservingOptionNew context:(__bridge void *)SCCameraFocusObserverContext];
-        [self addObserver:self forKeyPath:@"currentVideoDeviceInput.device.focusMode" options:NSKeyValueObservingOptionNew context:SCCameraFocusModeObserverContext];
+        [self.currentVideoDeviceInput.device addObserver:self forKeyPath:@"adjustingFocus" options:NSKeyValueObservingOptionNew context:(__bridge void *)VCCameraFocusObserverContext];
+        [self addObserver:self forKeyPath:@"currentVideoDeviceInput.device.focusMode" options:NSKeyValueObservingOptionNew context:VCCameraFocusModeObserverContext];
         if ([self.delegate respondsToSelector:@selector(cameraUpdateFocusMode:)]) {
             AVCaptureFocusMode initialFocusMode = [device focusMode];
             [self.delegate cameraUpdateFocusMode:[NSString stringWithFormat:@"focus: %@", [self stringForFocusMode:initialFocusMode]]];
         }
 	} else {
 		if (error != nil) {
-			*error = [SCAudioVideoRecorder createError:(self.cameraDevice ? @"Front camera not found" : @"Back camera not found")];
+			*error = [VCAudioVideoRecorder createError:(self.cameraDevice ? @"Front camera not found" : @"Back camera not found")];
 		}
 	}
     
@@ -634,7 +634,7 @@ typedef UIView View;
     
     // capturingStillImage
     if (self.stillImageOutput) {
-        [self.stillImageOutput removeObserver:self forKeyPath:@"capturingStillImage" context:(__bridge void *)(SCCameraCaptureStillImageIsCapturingStillImageObserverContext)];
+        [self.stillImageOutput removeObserver:self forKeyPath:@"capturingStillImage" context:(__bridge void *)(VCCameraCaptureStillImageIsCapturingStillImageObserverContext)];
     }
 }
 
@@ -671,17 +671,17 @@ typedef UIView View;
                 switch (errorCode) {
                     case AVErrorMediaServicesWereReset:
                     {
-                        DLog(@"error media services were reset");
+                        VLog(@"error media services were reset");
                         break;
                     }
                     case AVErrorDeviceIsNotAvailableInBackground:
                     {
-                        DLog(@"error media services not available in background");
+                        VLog(@"error media services not available in background");
                         break;
                     }
                     default:
                     {
-                        DLog(@"error media services failed, error (%@)", error);
+                        VLog(@"error media services failed, error (%@)", error);
                         break;
                     }
                 }
@@ -719,7 +719,7 @@ typedef UIView View;
 
     [self dispatchBlockOnAskedQueue:^{
         if ([notification object] == session) {
-            DLog(@"session was interrupted");
+            VLog(@"session was interrupted");
             // notify stop?
         }
     }];
@@ -730,7 +730,7 @@ typedef UIView View;
 
     [self dispatchBlockOnAskedQueue:^{
         if ([notification object] == session) {
-            DLog(@"session interruption ended");
+            VLog(@"session interruption ended");
             // notify ended?
         }
     }];
@@ -924,7 +924,7 @@ typedef UIView View;
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
 {
-    if ( context == (__bridge void *)SCCameraFocusObserverContext ) {
+    if ( context == (__bridge void *)VCCameraFocusObserverContext ) {
         
         BOOL isFocusing = [[change objectForKey:NSKeyValueChangeNewKey] boolValue];
         if (isFocusing) {
@@ -933,7 +933,7 @@ typedef UIView View;
             [self _focusEnded];
         }
         
-	} else if ( context == (__bridge void *)(SCCameraCaptureStillImageIsCapturingStillImageObserverContext) ) {
+	} else if ( context == (__bridge void *)(VCCameraCaptureStillImageIsCapturingStillImageObserverContext) ) {
         
 		BOOL isCapturingStillImage = [[change objectForKey:NSKeyValueChangeNewKey] boolValue];
 		if ( isCapturingStillImage ) {
@@ -942,7 +942,7 @@ typedef UIView View;
             [self _didCapturePhoto];
         }
         
-	} else if (context == SCCameraFocusModeObserverContext) {
+	} else if (context == VCCameraFocusModeObserverContext) {
         // Update the focus UI overlay string when the focus mode changes
         if ([self.delegate respondsToSelector:@selector(cameraUpdateFocusMode:)]) {
             [self.delegate cameraUpdateFocusMode:[NSString stringWithFormat:@"focus: %@", [self stringForFocusMode:(AVCaptureFocusMode)[[change objectForKey:NSKeyValueChangeNewKey] integerValue]]]];
@@ -954,9 +954,9 @@ typedef UIView View;
     return self.currentVideoDeviceInput.device;
 }
 
-- (SCCameraFocusMode)focusMode
+- (VCCameraFocusMode)focusMode
 {
-    return (SCCameraFocusMode)self.currentDevice.focusMode;
+    return (VCCameraFocusMode)self.currentDevice.focusMode;
 }
 
 @end

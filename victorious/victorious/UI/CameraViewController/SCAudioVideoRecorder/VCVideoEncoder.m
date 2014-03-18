@@ -1,15 +1,15 @@
 //
-//  SCVideoEncoder
+//  VCVideoEncoder
 //
 
-#import "SCVideoEncoder.h"
-#import "SCAudioVideoRecorderInternal.h"
+#import "VCVideoEncoder.h"
+#import "VCAudioVideoRecorderInternal.h"
 
 ////////////////////////////////////////////////////////////
 // IMPLEMENTATION
 /////////////////////
 
-@implementation SCVideoEncoder {
+@implementation VCVideoEncoder {
     
 }
 
@@ -17,7 +17,7 @@
 @synthesize outputAffineTransform;
 @synthesize outputVideoSize;
 
-- (id) initWithAudioVideoRecorder:(SCAudioVideoRecorder *)audioVideoRecorder {
+- (id) initWithAudioVideoRecorder:(VCAudioVideoRecorder *)audioVideoRecorder {
     self = [super initWithAudioVideoRecorder:audioVideoRecorder];
     
     if (self) {
@@ -47,7 +47,7 @@
         videoSize.height = height;
     }
     
-    NSInteger bitsPerSecond = [SCVideoEncoder getBitsPerSecondForOutputVideoSize:videoSize andBitsPerPixel:self.outputBitsPerPixel];
+    NSInteger bitsPerSecond = [VCVideoEncoder getBitsPerSecondForOutputVideoSize:videoSize andBitsPerPixel:self.outputBitsPerPixel];
 		    
     AVAssetWriterInput * assetWriterVideoIn = nil;
 	
@@ -68,7 +68,7 @@
         assetWriterVideoIn.transform = self.outputAffineTransform;
         *error = nil;
 	} else {
-        *error = [SCAudioVideoRecorder createError:@"Unable to configure output settings"];
+        *error = [VCAudioVideoRecorder createError:@"Unable to configure output settings"];
 	}
     
     return assetWriterVideoIn;

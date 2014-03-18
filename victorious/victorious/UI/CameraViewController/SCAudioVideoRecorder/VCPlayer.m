@@ -1,14 +1,14 @@
 //
-//  SCPlayer
+//  VCPlayer
 //
 
-#import "SCPlayer.h"
+#import "VCPlayer.h"
 
 ////////////////////////////////////////////////////////////
 // PRIVATE DEFINITION
 /////////////////////
 
-@interface SCPlayer() {
+@interface VCPlayer() {
 	BOOL _loading;
     BOOL _shouldLoop;
 }
@@ -20,14 +20,14 @@
 
 @end
 
-SCPlayer * currentSCVideoPlayer = nil;
+VCPlayer * currentVCVideoPlayer = nil;
 
 
 ////////////////////////////////////////////////////////////
 // IMPLEMENTATION
 /////////////////////
 
-@implementation SCPlayer
+@implementation VCPlayer
 
 @synthesize oldItem;
 
@@ -39,7 +39,7 @@ SCPlayer * currentSCVideoPlayer = nil;
 
 		[self addObserver:self forKeyPath:@"currentItem" options:NSKeyValueObservingOptionNew context:nil];
 		
-		__unsafe_unretained SCPlayer * mySelf = self;
+		__unsafe_unretained VCPlayer * mySelf = self;
 		self.timeObserver = [self addPeriodicTimeObserverForInterval:CMTimeMake(1, 24) queue:dispatch_get_main_queue() usingBlock:^(CMTime time) {
 			if ([mySelf.delegate respondsToSelector:@selector(videoPlayer:didPlay:)]) {
 				Float64 ratio = 1.0 / mySelf.itemsLoopLength;
@@ -137,20 +137,20 @@ SCPlayer * currentSCVideoPlayer = nil;
 }
 
 - (void) play {
-	if (currentSCVideoPlayer != self) {
-		[SCPlayer pauseCurrentPlayer];
+	if (currentVCVideoPlayer != self) {
+		[VCPlayer pauseCurrentPlayer];
 	}
 	
 	[super play];
 	
-	currentSCVideoPlayer = self;
+	currentVCVideoPlayer = self;
 }
 
 - (void) pause {
 	[super pause];
 	
-	if (currentSCVideoPlayer == self) {
-		currentSCVideoPlayer = nil;
+	if (currentVCVideoPlayer == self) {
+		currentVCVideoPlayer = nil;
 	}
 }
 
@@ -212,7 +212,7 @@ SCPlayer * currentSCVideoPlayer = nil;
 }
 
 - (BOOL) isPlaying {
-	return currentSCVideoPlayer == self;
+	return currentVCVideoPlayer == self;
 }
 
 - (void) setLoading:(BOOL)loading {
@@ -239,18 +239,18 @@ SCPlayer * currentSCVideoPlayer = nil;
     self.actionAtItemEnd = shouldLoop ? AVPlayerActionAtItemEndNone : AVPlayerActionAtItemEndPause;
 }
 
-+ (SCPlayer*) player {
-	return [[SCPlayer alloc] init];
++ (VCPlayer*) player {
+	return [[VCPlayer alloc] init];
 }
 
 + (void) pauseCurrentPlayer {
-	if (currentSCVideoPlayer != nil) {
-		[currentSCVideoPlayer pause];
+	if (currentVCVideoPlayer != nil) {
+		[currentVCVideoPlayer pause];
 	}
 }
 
-+ (SCPlayer*) currentPlayer {
-	return currentSCVideoPlayer;
++ (VCPlayer*) currentPlayer {
+	return currentVCVideoPlayer;
 }
 
 @end

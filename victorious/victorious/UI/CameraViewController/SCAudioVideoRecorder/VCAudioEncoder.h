@@ -1,11 +1,11 @@
 //
-//  SCAudioEncoder
+//  VCAudioEncoder
 //
 
 #import <Foundation/Foundation.h>
-#import "SCDataEncoder.h"
+#import "VCDataEncoder.h"
 
-@interface SCAudioEncoder : SCDataEncoder<AVCaptureAudioDataOutputSampleBufferDelegate> {
+@interface VCAudioEncoder : VCDataEncoder<AVCaptureAudioDataOutputSampleBufferDelegate> {
     
 }
 

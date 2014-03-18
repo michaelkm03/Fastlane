@@ -10,9 +10,9 @@
 
 #import "VRemixTrimViewController.h"
 #import "VRemixStitchViewController.h"
-#import "SCVideoPlayerView.h"
+#import "VCVideoPlayerView.h"
 
-@interface VRemixTrimViewController ()  <SCVideoPlayerDelegate>
+@interface VRemixTrimViewController ()  <VCVideoPlayerDelegate>
 @property (nonatomic, assign)   CGFloat                         start;
 @property (nonatomic, assign)   CGFloat                         stop;
 
@@ -20,7 +20,7 @@
 @property (nonatomic, strong)   NSMutableArray*                 thumbnails;
 @property (nonatomic, strong)   NSMutableArray*                 thumbnailTimes;
 
-@property (nonatomic, weak)     IBOutlet    SCVideoPlayerView*  previewView;;
+@property (nonatomic, weak)     IBOutlet    VCVideoPlayerView*  previewView;;
 @property (nonatomic, weak)     IBOutlet    UISlider*           scrubber;
 @property (nonatomic, weak)     IBOutlet    UILabel*            currentTimeLabel;
 @property (nonatomic, weak)     IBOutlet    UILabel*            totalTimeLabel;
@@ -34,7 +34,7 @@
 
 + (UIViewController *)remixViewControllerWithAsset:(AVURLAsset *)asset
 {
-    UINavigationController*     remixViewController =   [[UIStoryboard storyboardWithName:@"" bundle:nil] instantiateInitialViewController];
+    UINavigationController*     remixViewController =   [[UIStoryboard storyboardWithName:@"VideoRemix" bundle:nil] instantiateInitialViewController];
     VRemixTrimViewController*   rootViewController  =   (VRemixTrimViewController *)remixViewController.topViewController;
     rootViewController.sourceAsset = asset;
     
@@ -70,6 +70,9 @@
 {
     [super viewWillAppear:animated];
 
+    self.view.backgroundColor = [UIColor blackColor];
+    self.navigationController.navigationBar.barTintColor = [UIColor blackColor];
+
     if ([[self.sourceAsset tracksWithMediaType:AVMediaTypeVideo] count] > 0)
     {
         self.imageGenerator = [AVAssetImageGenerator assetImageGeneratorWithAsset:self.sourceAsset];
@@ -93,7 +96,7 @@
 
 #pragma mark - SCVideoPlayerDelegate
 
-- (void) videoPlayer:(SCPlayer*)videoPlayer didPlay:(Float32)secondsElapsed
+- (void) videoPlayer:(VCPlayer*)videoPlayer didPlay:(Float32)secondsElapsed
 {
     CMTime endTime = CMTimeConvertScale(self.previewView.player.currentItem.asset.duration, self.previewView.player.currentTime.timescale, kCMTimeRoundingMethod_RoundHalfAwayFromZero);
     if (CMTimeCompare(endTime, kCMTimeZero) != 0)
@@ -107,46 +110,15 @@
 
 #pragma mark - Actions
 
+- (IBAction)closeButtonClicked:(id)sender
+{
+    [self dismissViewControllerAnimated:YES completion:nil];
+}
+
 - (IBAction)nextButtonClicked:(id)sender
 {
     [self.activityIndicator startAnimating];
     [self trimVideo:self.sourceAsset startTrim:self.start endTrim:self.stop];
-}
-
--(void)scrubberDidStartMoving
-{
-}
-
--(void)scrubberDidMove
-{
-    [self.previewView.player seekToTime:CMTimeMake(self.scrubber.value, self.previewView.player.currentTime.timescale)];
-}
-
--(void)scrubberDidEndMoving
-{
-    [self.previewView.player seekToTime:CMTimeMake(self.scrubber.value, self.previewView.player.currentTime.timescale)];
-    [self generateThumbnailsForTime];
-}
-
-#pragma mark - Video Processing
-
-- (void)processVideoDidFinishWithURL:(NSURL *)aURL
-{
-    [self.activityIndicator stopAnimating];
-    self.outputAsset = [[AVURLAsset alloc] initWithURL:aURL options:nil];
-    [self performSegueWithIdentifier:@"toStich" sender:self];
-}
-
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
-{
-    if ([segue.identifier isEqualToString:@"toStitch"])
-    {
-        VRemixStitchViewController*     stitchViewController = (VRemixStitchViewController *)segue.destinationViewController;
-        stitchViewController.sourceAsset = self.outputAsset;
-        stitchViewController.muteAudio = self.muteAudio;
-        stitchViewController.playBackSpeed = self.playBackSpeed;
-        stitchViewController.playbackLooping = self.playbackLooping;
-    }
 }
 
 - (IBAction)muteAudioClicked:(id)sender
@@ -198,7 +170,43 @@
         [self.previewView.player pause];
 }
 
+-(void)scrubberDidStartMoving
+{
+}
+
+-(void)scrubberDidMove
+{
+    [self.previewView.player seekToTime:CMTimeMake(self.scrubber.value, self.previewView.player.currentTime.timescale)];
+}
+
+-(void)scrubberDidEndMoving
+{
+    [self.previewView.player seekToTime:CMTimeMake(self.scrubber.value, self.previewView.player.currentTime.timescale)];
+    [self generateThumbnailsForTime];
+}
+
+#pragma mark - Navigation
+
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
+{
+    if ([segue.identifier isEqualToString:@"toStitch"])
+    {
+        VRemixStitchViewController*     stitchViewController = (VRemixStitchViewController *)segue.destinationViewController;
+        stitchViewController.sourceAsset = self.outputAsset;
+        stitchViewController.muteAudio = self.muteAudio;
+        stitchViewController.playBackSpeed = self.playBackSpeed;
+        stitchViewController.playbackLooping = self.playbackLooping;
+    }
+}
+
 #pragma mark - Support
+
+- (void)processVideoDidFinishWithURL:(NSURL *)aURL
+{
+    [self.activityIndicator stopAnimating];
+    self.outputAsset = [[AVURLAsset alloc] initWithURL:aURL options:nil];
+    [self performSegueWithIdentifier:@"toStich" sender:self];
+}
 
 - (void)generateThumbnailsForTime
 {

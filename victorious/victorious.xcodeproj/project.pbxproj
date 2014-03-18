@@ -8,15 +8,15 @@
 
 /* Begin PBXBuildFile section */
 		0742CD6B32FA44679FBE8716 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 662F0867152745B2B2F08301 /* libPods.a */; };
-		3F14C44C18BD2BD0001796B9 /* SCAudioEncoder.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F14C43618BD2BD0001796B9 /* SCAudioEncoder.m */; };
-		3F14C44D18BD2BD0001796B9 /* SCAudioTools.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F14C43818BD2BD0001796B9 /* SCAudioTools.m */; };
-		3F14C44E18BD2BD0001796B9 /* SCAudioVideoRecorder.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F14C43B18BD2BD0001796B9 /* SCAudioVideoRecorder.m */; };
-		3F14C44F18BD2BD0001796B9 /* SCCamera.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F14C43E18BD2BD0001796B9 /* SCCamera.m */; };
-		3F14C45018BD2BD0001796B9 /* SCCameraFocusView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F14C44018BD2BD0001796B9 /* SCCameraFocusView.m */; };
-		3F14C45118BD2BD0001796B9 /* SCDataEncoder.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F14C44218BD2BD0001796B9 /* SCDataEncoder.m */; };
-		3F14C45218BD2BD0001796B9 /* SCPlayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F14C44418BD2BD0001796B9 /* SCPlayer.m */; };
-		3F14C45318BD2BD0001796B9 /* SCVideoEncoder.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F14C44618BD2BD0001796B9 /* SCVideoEncoder.m */; };
-		3F14C45418BD2BD0001796B9 /* SCVideoPlayerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F14C44818BD2BD0001796B9 /* SCVideoPlayerView.m */; };
+		3F14C44C18BD2BD0001796B9 /* VCAudioEncoder.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F14C43618BD2BD0001796B9 /* VCAudioEncoder.m */; };
+		3F14C44D18BD2BD0001796B9 /* VCAudioTools.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F14C43818BD2BD0001796B9 /* VCAudioTools.m */; };
+		3F14C44E18BD2BD0001796B9 /* VCAudioVideoRecorder.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F14C43B18BD2BD0001796B9 /* VCAudioVideoRecorder.m */; };
+		3F14C44F18BD2BD0001796B9 /* VCCamera.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F14C43E18BD2BD0001796B9 /* VCCamera.m */; };
+		3F14C45018BD2BD0001796B9 /* VCCameraFocusView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F14C44018BD2BD0001796B9 /* VCCameraFocusView.m */; };
+		3F14C45118BD2BD0001796B9 /* VCDataEncoder.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F14C44218BD2BD0001796B9 /* VCDataEncoder.m */; };
+		3F14C45218BD2BD0001796B9 /* VCPlayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F14C44418BD2BD0001796B9 /* VCPlayer.m */; };
+		3F14C45318BD2BD0001796B9 /* VCVideoEncoder.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F14C44618BD2BD0001796B9 /* VCVideoEncoder.m */; };
+		3F14C45418BD2BD0001796B9 /* VCVideoPlayerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F14C44818BD2BD0001796B9 /* VCVideoPlayerView.m */; };
 		3F4863FA1869184000F77346 /* VInboxViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F4863F91869184000F77346 /* VInboxViewController.m */; };
 		3F53E0C318A485D400089C20 /* VUserManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F53E0C218A485D400089C20 /* VUserManager.m */; };
 		3F919908187600720055FE37 /* VSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F919907187600720055FE37 /* VSettingsViewController.m */; };
@@ -58,8 +58,8 @@
 		3FD7FFBB18C14ED400945E5F /* VExpirationPickerTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = 3FD7FFBA18C14ED400945E5F /* VExpirationPickerTextField.m */; };
 		3FD7FFBE18C5360800945E5F /* VExpirationDatePicker.m in Sources */ = {isa = PBXBuildFile; fileRef = 3FD7FFBD18C5360800945E5F /* VExpirationDatePicker.m */; };
 		3FD7FFC118C69B2200945E5F /* VSetExpirationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3FD7FFC018C69B2200945E5F /* VSetExpirationViewController.m */; };
-		3FD7FFC418C7EC2700945E5F /* SCCameraFocusTargetView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3FD7FFC318C7EC2700945E5F /* SCCameraFocusTargetView.m */; };
-		3FDEDD0018CE46F00028E3F1 /* Video Remix.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3FDEDCFF18CE46F00028E3F1 /* Video Remix.storyboard */; };
+		3FD7FFC418C7EC2700945E5F /* VCCameraFocusTargetView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3FD7FFC318C7EC2700945E5F /* VCCameraFocusTargetView.m */; };
+		3FDEDD0018CE46F00028E3F1 /* VideoRemix.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3FDEDCFF18CE46F00028E3F1 /* VideoRemix.storyboard */; };
 		3FDEDD0318CE47E80028E3F1 /* VRemixTrimViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3FDEDD0218CE47E80028E3F1 /* VRemixTrimViewController.m */; };
 		3FDEDD0618CE48210028E3F1 /* VRemixStitchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3FDEDD0518CE48210028E3F1 /* VRemixStitchViewController.m */; };
 		3FDEDD0C18CE5E180028E3F1 /* VAbstractVideoEditorViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3FDEDD0B18CE5E180028E3F1 /* VAbstractVideoEditorViewController.m */; };
@@ -203,25 +203,25 @@
 
 /* Begin PBXFileReference section */
 		33ACD3CBAF2C419D97FB901A /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = "<group>"; };
-		3F14C43518BD2BD0001796B9 /* SCAudioEncoder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCAudioEncoder.h; sourceTree = "<group>"; };
-		3F14C43618BD2BD0001796B9 /* SCAudioEncoder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCAudioEncoder.m; sourceTree = "<group>"; };
-		3F14C43718BD2BD0001796B9 /* SCAudioTools.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCAudioTools.h; sourceTree = "<group>"; };
-		3F14C43818BD2BD0001796B9 /* SCAudioTools.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCAudioTools.m; sourceTree = "<group>"; };
-		3F14C43A18BD2BD0001796B9 /* SCAudioVideoRecorder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCAudioVideoRecorder.h; sourceTree = "<group>"; };
-		3F14C43B18BD2BD0001796B9 /* SCAudioVideoRecorder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCAudioVideoRecorder.m; sourceTree = "<group>"; };
-		3F14C43C18BD2BD0001796B9 /* SCAudioVideoRecorderInternal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCAudioVideoRecorderInternal.h; sourceTree = "<group>"; };
-		3F14C43D18BD2BD0001796B9 /* SCCamera.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCCamera.h; sourceTree = "<group>"; };
-		3F14C43E18BD2BD0001796B9 /* SCCamera.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCCamera.m; sourceTree = "<group>"; };
-		3F14C43F18BD2BD0001796B9 /* SCCameraFocusView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCCameraFocusView.h; sourceTree = "<group>"; };
-		3F14C44018BD2BD0001796B9 /* SCCameraFocusView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCCameraFocusView.m; sourceTree = "<group>"; };
-		3F14C44118BD2BD0001796B9 /* SCDataEncoder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCDataEncoder.h; sourceTree = "<group>"; };
-		3F14C44218BD2BD0001796B9 /* SCDataEncoder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCDataEncoder.m; sourceTree = "<group>"; };
-		3F14C44318BD2BD0001796B9 /* SCPlayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCPlayer.h; sourceTree = "<group>"; };
-		3F14C44418BD2BD0001796B9 /* SCPlayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCPlayer.m; sourceTree = "<group>"; };
-		3F14C44518BD2BD0001796B9 /* SCVideoEncoder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCVideoEncoder.h; sourceTree = "<group>"; };
-		3F14C44618BD2BD0001796B9 /* SCVideoEncoder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCVideoEncoder.m; sourceTree = "<group>"; };
-		3F14C44718BD2BD0001796B9 /* SCVideoPlayerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCVideoPlayerView.h; sourceTree = "<group>"; };
-		3F14C44818BD2BD0001796B9 /* SCVideoPlayerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCVideoPlayerView.m; sourceTree = "<group>"; };
+		3F14C43518BD2BD0001796B9 /* VCAudioEncoder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VCAudioEncoder.h; sourceTree = "<group>"; };
+		3F14C43618BD2BD0001796B9 /* VCAudioEncoder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VCAudioEncoder.m; sourceTree = "<group>"; };
+		3F14C43718BD2BD0001796B9 /* VCAudioTools.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VCAudioTools.h; sourceTree = "<group>"; };
+		3F14C43818BD2BD0001796B9 /* VCAudioTools.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VCAudioTools.m; sourceTree = "<group>"; };
+		3F14C43A18BD2BD0001796B9 /* VCAudioVideoRecorder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VCAudioVideoRecorder.h; sourceTree = "<group>"; };
+		3F14C43B18BD2BD0001796B9 /* VCAudioVideoRecorder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VCAudioVideoRecorder.m; sourceTree = "<group>"; };
+		3F14C43C18BD2BD0001796B9 /* VCAudioVideoRecorderInternal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VCAudioVideoRecorderInternal.h; sourceTree = "<group>"; };
+		3F14C43D18BD2BD0001796B9 /* VCCamera.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VCCamera.h; sourceTree = "<group>"; };
+		3F14C43E18BD2BD0001796B9 /* VCCamera.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VCCamera.m; sourceTree = "<group>"; };
+		3F14C43F18BD2BD0001796B9 /* VCCameraFocusView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VCCameraFocusView.h; sourceTree = "<group>"; };
+		3F14C44018BD2BD0001796B9 /* VCCameraFocusView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VCCameraFocusView.m; sourceTree = "<group>"; };
+		3F14C44118BD2BD0001796B9 /* VCDataEncoder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VCDataEncoder.h; sourceTree = "<group>"; };
+		3F14C44218BD2BD0001796B9 /* VCDataEncoder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VCDataEncoder.m; sourceTree = "<group>"; };
+		3F14C44318BD2BD0001796B9 /* VCPlayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VCPlayer.h; sourceTree = "<group>"; };
+		3F14C44418BD2BD0001796B9 /* VCPlayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VCPlayer.m; sourceTree = "<group>"; };
+		3F14C44518BD2BD0001796B9 /* VCVideoEncoder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VCVideoEncoder.h; sourceTree = "<group>"; };
+		3F14C44618BD2BD0001796B9 /* VCVideoEncoder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VCVideoEncoder.m; sourceTree = "<group>"; };
+		3F14C44718BD2BD0001796B9 /* VCVideoPlayerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VCVideoPlayerView.h; sourceTree = "<group>"; };
+		3F14C44818BD2BD0001796B9 /* VCVideoPlayerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VCVideoPlayerView.m; sourceTree = "<group>"; };
 		3F4863F81869184000F77346 /* VInboxViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VInboxViewController.h; path = UI/VInboxViewController.h; sourceTree = "<group>"; };
 		3F4863F91869184000F77346 /* VInboxViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VInboxViewController.m; path = UI/VInboxViewController.m; sourceTree = "<group>"; };
 		3F53E0C118A485D400089C20 /* VUserManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VUserManager.h; path = Managers/VUserManager.h; sourceTree = "<group>"; };
@@ -292,9 +292,9 @@
 		3FD7FFBD18C5360800945E5F /* VExpirationDatePicker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VExpirationDatePicker.m; path = UI/CameraViewController/VExpirationDatePicker.m; sourceTree = "<group>"; };
 		3FD7FFBF18C69B2200945E5F /* VSetExpirationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VSetExpirationViewController.h; path = "UI/Base Classes/VSetExpirationViewController.h"; sourceTree = "<group>"; };
 		3FD7FFC018C69B2200945E5F /* VSetExpirationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VSetExpirationViewController.m; path = "UI/Base Classes/VSetExpirationViewController.m"; sourceTree = "<group>"; };
-		3FD7FFC218C7EC2700945E5F /* SCCameraFocusTargetView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCCameraFocusTargetView.h; sourceTree = "<group>"; };
-		3FD7FFC318C7EC2700945E5F /* SCCameraFocusTargetView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCCameraFocusTargetView.m; sourceTree = "<group>"; };
-		3FDEDCFF18CE46F00028E3F1 /* Video Remix.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = "Video Remix.storyboard"; path = "UI/Video Remix/Video Remix.storyboard"; sourceTree = "<group>"; };
+		3FD7FFC218C7EC2700945E5F /* VCCameraFocusTargetView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VCCameraFocusTargetView.h; sourceTree = "<group>"; };
+		3FD7FFC318C7EC2700945E5F /* VCCameraFocusTargetView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VCCameraFocusTargetView.m; sourceTree = "<group>"; };
+		3FDEDCFF18CE46F00028E3F1 /* VideoRemix.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = VideoRemix.storyboard; path = "UI/Video Remix/VideoRemix.storyboard"; sourceTree = "<group>"; };
 		3FDEDD0118CE47E80028E3F1 /* VRemixTrimViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VRemixTrimViewController.h; path = "UI/Video Remix/VRemixTrimViewController.h"; sourceTree = "<group>"; };
 		3FDEDD0218CE47E80028E3F1 /* VRemixTrimViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VRemixTrimViewController.m; path = "UI/Video Remix/VRemixTrimViewController.m"; sourceTree = "<group>"; };
 		3FDEDD0418CE48210028E3F1 /* VRemixStitchViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VRemixStitchViewController.h; path = "UI/Video Remix/VRemixStitchViewController.h"; sourceTree = "<group>"; };
@@ -567,27 +567,27 @@
 		3F14C43218BD2BD0001796B9 /* SCAudioVideoRecorder */ = {
 			isa = PBXGroup;
 			children = (
-				3F14C43A18BD2BD0001796B9 /* SCAudioVideoRecorder.h */,
-				3F14C43B18BD2BD0001796B9 /* SCAudioVideoRecorder.m */,
-				3F14C44518BD2BD0001796B9 /* SCVideoEncoder.h */,
-				3F14C44618BD2BD0001796B9 /* SCVideoEncoder.m */,
-				3F14C43518BD2BD0001796B9 /* SCAudioEncoder.h */,
-				3F14C43618BD2BD0001796B9 /* SCAudioEncoder.m */,
-				3F14C44118BD2BD0001796B9 /* SCDataEncoder.h */,
-				3F14C44218BD2BD0001796B9 /* SCDataEncoder.m */,
-				3F14C43C18BD2BD0001796B9 /* SCAudioVideoRecorderInternal.h */,
-				3F14C43D18BD2BD0001796B9 /* SCCamera.h */,
-				3F14C43E18BD2BD0001796B9 /* SCCamera.m */,
-				3F14C43718BD2BD0001796B9 /* SCAudioTools.h */,
-				3F14C43818BD2BD0001796B9 /* SCAudioTools.m */,
-				3F14C44318BD2BD0001796B9 /* SCPlayer.h */,
-				3F14C44418BD2BD0001796B9 /* SCPlayer.m */,
-				3F14C44718BD2BD0001796B9 /* SCVideoPlayerView.h */,
-				3F14C44818BD2BD0001796B9 /* SCVideoPlayerView.m */,
-				3F14C43F18BD2BD0001796B9 /* SCCameraFocusView.h */,
-				3F14C44018BD2BD0001796B9 /* SCCameraFocusView.m */,
-				3FD7FFC218C7EC2700945E5F /* SCCameraFocusTargetView.h */,
-				3FD7FFC318C7EC2700945E5F /* SCCameraFocusTargetView.m */,
+				3F14C43A18BD2BD0001796B9 /* VCAudioVideoRecorder.h */,
+				3F14C43B18BD2BD0001796B9 /* VCAudioVideoRecorder.m */,
+				3F14C44518BD2BD0001796B9 /* VCVideoEncoder.h */,
+				3F14C44618BD2BD0001796B9 /* VCVideoEncoder.m */,
+				3F14C43518BD2BD0001796B9 /* VCAudioEncoder.h */,
+				3F14C43618BD2BD0001796B9 /* VCAudioEncoder.m */,
+				3F14C44118BD2BD0001796B9 /* VCDataEncoder.h */,
+				3F14C44218BD2BD0001796B9 /* VCDataEncoder.m */,
+				3F14C43C18BD2BD0001796B9 /* VCAudioVideoRecorderInternal.h */,
+				3F14C43D18BD2BD0001796B9 /* VCCamera.h */,
+				3F14C43E18BD2BD0001796B9 /* VCCamera.m */,
+				3F14C43718BD2BD0001796B9 /* VCAudioTools.h */,
+				3F14C43818BD2BD0001796B9 /* VCAudioTools.m */,
+				3F14C44318BD2BD0001796B9 /* VCPlayer.h */,
+				3F14C44418BD2BD0001796B9 /* VCPlayer.m */,
+				3F14C44718BD2BD0001796B9 /* VCVideoPlayerView.h */,
+				3F14C44818BD2BD0001796B9 /* VCVideoPlayerView.m */,
+				3F14C43F18BD2BD0001796B9 /* VCCameraFocusView.h */,
+				3F14C44018BD2BD0001796B9 /* VCCameraFocusView.m */,
+				3FD7FFC218C7EC2700945E5F /* VCCameraFocusTargetView.h */,
+				3FD7FFC318C7EC2700945E5F /* VCCameraFocusTargetView.m */,
 			);
 			name = SCAudioVideoRecorder;
 			path = UI/CameraViewController/SCAudioVideoRecorder;
@@ -880,7 +880,7 @@
 				3FDEDD0218CE47E80028E3F1 /* VRemixTrimViewController.m */,
 				3FDEDD0418CE48210028E3F1 /* VRemixStitchViewController.h */,
 				3FDEDD0518CE48210028E3F1 /* VRemixStitchViewController.m */,
-				3FDEDCFF18CE46F00028E3F1 /* Video Remix.storyboard */,
+				3FDEDCFF18CE46F00028E3F1 /* VideoRemix.storyboard */,
 				3F14C43218BD2BD0001796B9 /* SCAudioVideoRecorder */,
 			);
 			name = CameraViewController;
@@ -1351,7 +1351,7 @@
 				5FCC1E4C1899CAC800EB7699 /* settings.storyboard in Resources */,
 				3FA217CF18A9BFC90066E893 /* video_thumb_mini.png in Resources */,
 				BEB4C29E187E038C004ECEEF /* VNewsCell.xib in Resources */,
-				3FDEDD0018CE46F00028E3F1 /* Video Remix.storyboard in Resources */,
+				3FDEDD0018CE46F00028E3F1 /* VideoRemix.storyboard in Resources */,
 				BE692B23186E5ED800C71336 /* VStreamDoublePollCell.xib in Resources */,
 				3FA217CD18A9BFC90066E893 /* cast_solid_custom.png in Resources */,
 				BE171D861868BE64004E5202 /* InfoPlist.strings in Resources */,
@@ -1468,7 +1468,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				BE171E0F1868C211004E5202 /* VAsset+RestKit.m in Sources */,
-				3F14C45218BD2BD0001796B9 /* SCPlayer.m in Sources */,
+				3F14C45218BD2BD0001796B9 /* VCPlayer.m in Sources */,
 				5FF9BE83189318CD0054694B /* VRootViewController.m in Sources */,
 				BEB4C29D187E038C004ECEEF /* VNewsCell.m in Sources */,
 				BE171E131868C211004E5202 /* VInteractionAction+RestKit.m in Sources */,
@@ -1489,14 +1489,14 @@
 				3FDEDD0318CE47E80028E3F1 /* VRemixTrimViewController.m in Sources */,
 				5FC4DA76189712B3006BA107 /* VProfileWithEmailViewController.m in Sources */,
 				3F91991518761D1C0055FE37 /* VAcknowledgementsViewController.m in Sources */,
-				3F14C45318BD2BD0001796B9 /* SCVideoEncoder.m in Sources */,
+				3F14C45318BD2BD0001796B9 /* VCVideoEncoder.m in Sources */,
 				BE6C15281880A31B00469BA8 /* VAsset.m in Sources */,
 				3F91990B18761B0D0055FE37 /* VAboutUsViewController.m in Sources */,
 				BEB52A7B18C02D6600AC5FE4 /* VEmotiveBallisticsBarViewController.m in Sources */,
 				BE55CD15188F316900FE619F /* VObjectManager.m in Sources */,
 				BE5C7388187E37E500A3340D /* VConversation+RestKit.m in Sources */,
 				5FF9BE7C1893137D0054694B /* VSideMenuViewController.m in Sources */,
-				3F14C44F18BD2BD0001796B9 /* SCCamera.m in Sources */,
+				3F14C44F18BD2BD0001796B9 /* VCCamera.m in Sources */,
 				BE171E101868C211004E5202 /* VCategory+RestKit.m in Sources */,
 				3FA217C318A9B5160066E893 /* DeviceTableViewController.m in Sources */,
 				3FD7FFC118C69B2200945E5F /* VSetExpirationViewController.m in Sources */,
@@ -1521,7 +1521,7 @@
 				3FA217EC18BC365E0066E893 /* VCameraViewController.m in Sources */,
 				BEB52A8B18C80B8700AC5FE4 /* VContentToStreamAnimator.m in Sources */,
 				BE171E391868C266004E5202 /* NSManagedObject+RestKit.m in Sources */,
-				3F14C45018BD2BD0001796B9 /* SCCameraFocusView.m in Sources */,
+				3F14C45018BD2BD0001796B9 /* VCCameraFocusView.m in Sources */,
 				3F919908187600720055FE37 /* VSettingsViewController.m in Sources */,
 				BE692B53186E60B300C71336 /* VCommentsTableViewController.m in Sources */,
 				BE171E0D1868C211004E5202 /* VAnswer+RestKit.m in Sources */,
@@ -1532,7 +1532,7 @@
 				BED4569718BD58DE00A67160 /* VAsset+Fetcher.m in Sources */,
 				5FC4DA6A18971155006BA107 /* VLoginWithEmailViewController.m in Sources */,
 				3F9B66711888C4940046F826 /* VOwnerStreamViewController.m in Sources */,
-				3F14C44E18BD2BD0001796B9 /* SCAudioVideoRecorder.m in Sources */,
+				3F14C44E18BD2BD0001796B9 /* VCAudioVideoRecorder.m in Sources */,
 				BE46E69418CA742300974DAF /* VContentCommentSegue.m in Sources */,
 				BE171D8C1868BE64004E5202 /* VAppDelegate.m in Sources */,
 				BE171E231868C211004E5202 /* VPaginationStatus.m in Sources */,
@@ -1552,9 +1552,9 @@
 				3FDEDD0C18CE5E180028E3F1 /* VAbstractVideoEditorViewController.m in Sources */,
 				BEA5BF5F187F21770014C3EF /* VTableViewCell.m in Sources */,
 				3F9B665A18848B750046F826 /* VMessageContainerViewController.m in Sources */,
-				3F14C45118BD2BD0001796B9 /* SCDataEncoder.m in Sources */,
+				3F14C45118BD2BD0001796B9 /* VCDataEncoder.m in Sources */,
 				5F51F81A189AEBF800A546D1 /* VAbstractProfileEditViewController.m in Sources */,
-				3F14C44D18BD2BD0001796B9 /* SCAudioTools.m in Sources */,
+				3F14C44D18BD2BD0001796B9 /* VCAudioTools.m in Sources */,
 				BEF2C2A818848B3B00AAE975 /* VUnreadConversation.m in Sources */,
 				BEF2C29618845EF500AAE975 /* VPollResult+RestKit.m in Sources */,
 				5FCC1E4A1899C94D00EB7699 /* VWebContentViewController.m in Sources */,
@@ -1569,13 +1569,13 @@
 				BE171E1F1868C211004E5202 /* VObjectManager+Comment.m in Sources */,
 				3FD7FFB518C14B6100945E5F /* VPickerTextField.m in Sources */,
 				BE171E141868C211004E5202 /* VNode+RestKit.m in Sources */,
-				3F14C45418BD2BD0001796B9 /* SCVideoPlayerView.m in Sources */,
+				3F14C45418BD2BD0001796B9 /* VCVideoPlayerView.m in Sources */,
 				BE171E121868C211004E5202 /* VInteraction+RestKit.m in Sources */,
 				BEB52A8518C5611A00AC5FE4 /* VStreamContentSegue.m in Sources */,
 				3FF8C50218A59EAB00812968 /* VCreatePollViewController.m in Sources */,
 				BE5C735B187E36E700A3340D /* VNode.m in Sources */,
 				3F91991D187CAF620055FE37 /* VNewsViewController.m in Sources */,
-				3F14C44C18BD2BD0001796B9 /* SCAudioEncoder.m in Sources */,
+				3F14C44C18BD2BD0001796B9 /* VCAudioEncoder.m in Sources */,
 				BEE9C8B618CE4A6B0095C737 /* VPollAnswerBarViewController.m in Sources */,
 				BE692B29186E5ED800C71336 /* VStreamViewCell.m in Sources */,
 				BE171E431868CEA0004E5202 /* victoriOS.xcdatamodeld in Sources */,
@@ -1602,7 +1602,7 @@
 				BE4B74261880D3850090FF84 /* VAnswer.m in Sources */,
 				BE171E111868C211004E5202 /* VComment+RestKit.m in Sources */,
 				BE171E0E1868C211004E5202 /* VAnswerAction+RestKit.m in Sources */,
-				3FD7FFC418C7EC2700945E5F /* SCCameraFocusTargetView.m in Sources */,
+				3FD7FFC418C7EC2700945E5F /* VCCameraFocusTargetView.m in Sources */,
 				BE4055AD18A41F1F00092AE1 /* main.m in Sources */,
 				83BD06FB186BE4B2007742D1 /* UIImage+ImageEffects.m in Sources */,
 			);

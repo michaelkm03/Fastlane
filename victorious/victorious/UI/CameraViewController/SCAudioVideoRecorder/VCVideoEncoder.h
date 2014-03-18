@@ -1,11 +1,11 @@
 //
-//  SCVideoEncoder
+//  VCVideoEncoder
 //
 
 #import <Foundation/Foundation.h>
-#import "SCDataEncoder.h"
+#import "VCDataEncoder.h"
 
-@interface SCVideoEncoder : SCDataEncoder<AVCaptureVideoDataOutputSampleBufferDelegate> {
+@interface VCVideoEncoder : VCDataEncoder<AVCaptureVideoDataOutputSampleBufferDelegate> {
     
 }
 

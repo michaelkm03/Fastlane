@@ -1,18 +1,18 @@
 //
-//  SCAudioVideoRecorderInternal
+//  VCAudioVideoRecorderInternal
 //
 
 #import <Foundation/Foundation.h>
-#import "SCAudioVideoRecorder.h"
+#import "VCAudioVideoRecorder.h"
 
-@interface SCAudioVideoRecorder() {
+@interface VCAudioVideoRecorder() {
     
 }
 
 //
 // Internal methods and fields
 //
-- (void) prepareWriterAtSourceTime:(CMTime)sourceTime fromEncoder:(SCDataEncoder*)encoder;
+- (void) prepareWriterAtSourceTime:(CMTime)sourceTime fromEncoder:(VCDataEncoder*)encoder;
 - (void) dispatchBlockOnAskedQueue:(void(^)())block;
 + (NSError*) createError:(NSString*)name;
 

@@ -1,15 +1,15 @@
 //
-//  SCAudioEncoder
+//  VCAudioEncoder
 //
 
-#import "SCAudioEncoder.h"
-#import "SCAudioVideoRecorderInternal.h"
+#import "VCAudioEncoder.h"
+#import "VCAudioVideoRecorderInternal.h"
 
 ////////////////////////////////////////////////////////////
 // IMPLEMENTATION
 /////////////////////
 
-@implementation SCAudioEncoder {
+@implementation VCAudioEncoder {
     
 }
 
@@ -18,7 +18,7 @@
 @synthesize outputBitRate;
 @synthesize outputEncodeType;
 
-- (id) initWithAudioVideoRecorder:(SCAudioVideoRecorder *)audioVideoRecorder {
+- (id) initWithAudioVideoRecorder:(VCAudioVideoRecorder *)audioVideoRecorder {
     self = [super initWithAudioVideoRecorder:audioVideoRecorder];
     
     if (self != nil) {
@@ -59,7 +59,7 @@
         audioInput.expectsMediaDataInRealTime = YES;
         *error = nil;
     } else {
-        *error = [SCAudioVideoRecorder createError:@"Cannot apply Audio settings"];
+        *error = [VCAudioVideoRecorder createError:@"Cannot apply Audio settings"];
     }
 
     return audioInput;

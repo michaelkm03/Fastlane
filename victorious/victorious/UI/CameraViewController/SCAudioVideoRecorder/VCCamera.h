@@ -1,68 +1,68 @@
 //
-//  SCCamera
+//  VCCamera
 //
 
 #import <Foundation/Foundation.h>
-#import "SCAudioVideoRecorder.h"
+#import "VCAudioVideoRecorder.h"
 
-typedef NS_ENUM(NSInteger, SCFlashMode) {
-    SCFlashModeOff  = AVCaptureFlashModeOff,
-    SCFlashModeOn   = AVCaptureFlashModeOn,
-    SCFlashModeAuto = AVCaptureFlashModeAuto,
-    SCFlashModeLight
+typedef NS_ENUM(NSInteger, VCFlashMode) {
+    VCFlashModeOff  = AVCaptureFlashModeOff,
+    VCFlashModeOn   = AVCaptureFlashModeOn,
+    VCFlashModeAuto = AVCaptureFlashModeAuto,
+    VCFlashModeLight
 };
 
-typedef NS_ENUM(NSInteger, SCCameraDevice) {
-    SCCameraDeviceBack = AVCaptureDevicePositionBack,
-    SCCameraDeviceFront = AVCaptureDevicePositionFront
+typedef NS_ENUM(NSInteger, VCCameraDevice) {
+    VCCameraDeviceBack = AVCaptureDevicePositionBack,
+    VCCameraDeviceFront = AVCaptureDevicePositionFront
 };
 
-typedef NS_ENUM(NSInteger, SCCameraFocusMode) {
-    SCCameraFocusModeLocked = AVCaptureFocusModeLocked,
-    SCCameraFocusModeAutoFocus = AVCaptureFocusModeAutoFocus,
-    SCCameraFocusModeContinuousAutoFocus = AVCaptureFocusModeContinuousAutoFocus
+typedef NS_ENUM(NSInteger, VCCameraFocusMode) {
+    VCCameraFocusModeLocked = AVCaptureFocusModeLocked,
+    VCCameraFocusModeAutoFocus = AVCaptureFocusModeAutoFocus,
+    VCCameraFocusModeContinuousAutoFocus = AVCaptureFocusModeContinuousAutoFocus
 };
 
-@class SCCamera;
-@protocol SCCameraDelegate <SCAudioVideoRecorderDelegate>
+@class VCCamera;
+@protocol VCCameraDelegate <VCAudioVideoRecorderDelegate>
 
 @optional
 
 // Photo
 // These methods are commonly used to show a custom animation
-- (void)cameraWillCapturePhoto:(SCCamera *)camera;
-- (void)cameraDidCapturePhoto:(SCCamera *)camera;
-- (void)camera:(SCCamera *)camera cleanApertureDidChange:(CGRect)cleanAperture;
+- (void)cameraWillCapturePhoto:(VCCamera *)camera;
+- (void)cameraDidCapturePhoto:(VCCamera *)camera;
+- (void)camera:(VCCamera *)camera cleanApertureDidChange:(CGRect)cleanAperture;
 
 // Focus
-- (void)cameraWillStartFocus:(SCCamera *)camera;
-- (void)cameraDidStartFocus:(SCCamera*)camera;
-- (void)cameraDidStopFocus:(SCCamera *)camera;
-- (void)camera:(SCCamera *)camera didFailFocus:(NSError *)error;
+- (void)cameraWillStartFocus:(VCCamera *)camera;
+- (void)cameraDidStartFocus:(VCCamera*)camera;
+- (void)cameraDidStopFocus:(VCCamera *)camera;
+- (void)camera:(VCCamera *)camera didFailFocus:(NSError *)error;
 
 // FocusMode
 - (void)cameraUpdateFocusMode:(NSString *)focusModeString;
 
 // Session
 // These methods are commonly used to show an open/close session animation
-- (void)cameraSessionWillStart:(SCCamera *)camera;
-- (void)cameraSessionDidStart:(SCCamera *)camera;
-- (void)cameraSessionWillStop:(SCCamera *)camera;
-- (void)cameraSessionDidStop:(SCCamera *)camera;
+- (void)cameraSessionWillStart:(VCCamera *)camera;
+- (void)cameraSessionDidStart:(VCCamera *)camera;
+- (void)cameraSessionWillStop:(VCCamera *)camera;
+- (void)cameraSessionDidStop:(VCCamera *)camera;
 
 @end
 
 typedef enum {
-    SCVideoGravityResize,
-    SCVideoGravityResizeAspectFill,
-    SCVideoGravityResizeAspect
-} SCCameraPreviewVideoGravity;
+    VCVideoGravityResize,
+    VCVideoGravityResizeAspectFill,
+    VCVideoGravityResizeAspect
+} VCCameraPreviewVideoGravity;
 
-@interface SCCamera : SCAudioVideoRecorder {
+@interface VCCamera : VCAudioVideoRecorder {
     
 }
 
-+ (SCCamera*) camera;
++ (VCCamera*) camera;
 
 - (id) initWithSessionPreset:(NSString*)sessionPreset;
 
@@ -71,15 +71,15 @@ typedef enum {
 - (BOOL) isReady;
 
 @property (strong, nonatomic, readonly) AVCaptureSession * session;
-@property (weak, nonatomic) id<SCCameraDelegate> delegate;
+@property (weak, nonatomic) id<VCCameraDelegate> delegate;
 @property (copy, nonatomic) NSString * sessionPreset;
-@property (assign, nonatomic) SCCameraPreviewVideoGravity previewVideoGravity;
+@property (assign, nonatomic) VCCameraPreviewVideoGravity previewVideoGravity;
 @property (assign, nonatomic) AVCaptureVideoOrientation videoOrientation;
 @property (readonly) AVCaptureDevice * currentDevice;
 
 
-@property (nonatomic) SCFlashMode flashMode;
-@property (nonatomic) SCCameraDevice cameraDevice;
+@property (nonatomic) VCFlashMode flashMode;
+@property (nonatomic) VCCameraDevice cameraDevice;
 
 // Focus
 @property (nonatomic, readonly, getter = focusSupported) BOOL isFocusSupported;
@@ -114,6 +114,6 @@ typedef enum {
 @property (weak, nonatomic) UIView * previewView;
 
 @property (nonatomic, readonly) CGRect cleanAperture;
-@property (readonly, nonatomic) SCCameraFocusMode focusMode;
+@property (readonly, nonatomic) VCCameraFocusMode focusMode;
 
 @end
