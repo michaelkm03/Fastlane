@@ -220,8 +220,13 @@
         }
     };
     
+    
     [[VObjectManager sharedManager] uploadMediaWithName:message
                                             description:message
+                                              expiresAt:nil
+                                           parentNodeId:nil
+                                               loopType:VLoopOnce
+                                           shareOptions:VShareNone
                                               mediaData:data
                                               extension:mediaType
                                                mediaUrl:nil

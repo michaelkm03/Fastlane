@@ -8,6 +8,20 @@
 
 #import "VObjectManager.h"
 
+typedef NS_OPTIONS(NSUInteger, VShareOptions)
+{
+    VShareNone          = 0,
+    VShareToTwitter     = 1 << 0,
+    VShareToFacebook    = 1 << 1
+};
+
+typedef NS_ENUM(NSUInteger, VLoopType)
+{
+    VLoopOnce       =   0,
+    VLoopRepeat     =   1 << 0,
+    VLoopReverse    =   1 << 1
+};
+
 extern NSString* const kInitialLoadFinishedNotification;
 extern NSString* const kPollResultsLoaded;
 
@@ -16,9 +30,6 @@ extern NSString* const kPollResultsLoaded;
 @interface VObjectManager (Sequence)
 
 - (RKManagedObjectRequestOperation *)initialSequenceLoad;
-
-- (RKManagedObjectRequestOperation *)loadSequenceCategoriesWithSuccessBlock:(VSuccessBlock)success
-                                                                  failBlock:(VFailBlock)fail;
 
 - (RKManagedObjectRequestOperation *)loadNextPageOfSequencesForCategory:(NSString*)category
                                                            successBlock:(VSuccessBlock)success
@@ -66,20 +77,17 @@ extern NSString* const kPollResultsLoaded;
                                    successBlock:(VSuccessBlock)success
                                       failBlock:(VFailBlock)fail;
 
-- (AFHTTPRequestOperation * )createForumWithName:(NSString*)name
+- (AFHTTPRequestOperation * )uploadMediaWithName:(NSString*)name
                                      description:(NSString*)description
+                                       expiresAt:(NSString*)expiresAt
+                                    parentNodeId:(NSNumber*)parentNodeId
+                                        loopType:(VLoopType)loopType
+                                    shareOptions:(VShareOptions)shareOptions
                                        mediaData:(NSData*)mediaData
+                                       extension:(NSString*)extension
                                         mediaUrl:(NSURL*)mediaUrl
                                     successBlock:(VSuccessBlock)success
                                        failBlock:(VFailBlock)fail;
-
-- (RKManagedObjectRequestOperation * )uploadMediaWithName:(NSString*)name
-                                              description:(NSString*)description
-                                                mediaData:(NSData*)mediaData
-                                                extension:(NSString*)extension
-                                                 mediaUrl:(NSURL*)mediaUrl
-                                             successBlock:(VSuccessBlock)success
-                                                failBlock:(VFailBlock)fail;
 #pragma mark - Poll Methods
 
 - (RKManagedObjectRequestOperation *)answerPoll:(VSequence*)poll
