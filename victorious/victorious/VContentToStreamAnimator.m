@@ -77,19 +77,41 @@
     
     [[context containerView] addSubview:streamVC.view];
     
-    VStreamViewCell* selectedCell = (VStreamViewCell*) [streamVC.tableView cellForRowAtIndexPath:streamVC.tableView.indexPathForSelectedRow];
+    VStreamViewCell* selectedCell = (VStreamViewCell*) [streamVC.tableView cellForRowAtIndexPath:self.indexPathForSelectedCell];
 
     [streamVC.tableView setContentOffset:CGPointMake(selectedCell.frame.origin.x,
                                                      selectedCell.frame.origin.y - kContentMediaViewOffset)
                                 animated:NO];
-
+    
+    //If the tableview updates while we are in the content view it will reset the cells to their proper positions.
+    //In this case, we reset them
+    for (VStreamViewCell* cell in [streamVC.tableView visibleCells])
+    {
+        CGRect cellRect = [streamVC.tableView convertRect:cell.frame toView:streamVC.tableView.superview];
+        if (cell != selectedCell && CGRectIntersectsRect(streamVC.tableView.frame, cellRect))
+        {
+            if (cell.center.y > selectedCell.center.y)
+            {
+                cell.center = CGPointMake(cell.center.x, cell.center.y + streamVC.tableView.frame.size.height);
+            }
+            else
+            {
+                cell.center = CGPointMake(cell.center.x, cell.center.y - streamVC.tableView.frame.size.height);
+            }
+        }
+    }
+    selectedCell.overlayView.alpha = 0;
+    selectedCell.shadeView.alpha = 0;
+    selectedCell.overlayView.center = CGPointMake(selectedCell.center.x,
+                                                  selectedCell.center.y - selectedCell.frame.size.height);
+    
     [UIView animateWithDuration:.2f
                      animations:^
      {
          selectedCell.overlayView.alpha = 1;
          selectedCell.shadeView.alpha = 1;
-         selectedCell.overlayView.center = CGPointMake(selectedCell.overlayView.center.x,
-                                                       selectedCell.overlayView.center.y + selectedCell.frame.size.height);
+         selectedCell.overlayView.center = CGPointMake(selectedCell.center.x,
+                                                       selectedCell.center.y + selectedCell.frame.size.height);
      }
                      completion:^(BOOL finished)
      {
@@ -101,7 +123,8 @@
                               
                               for (VStreamViewCell* cell in [streamVC.tableView visibleCells])
                               {
-                                  if (cell != selectedCell)
+                                  CGRect cellRect = [streamVC.tableView convertRect:cell.frame toView:streamVC.tableView.superview];
+                                  if (cell != selectedCell && !CGRectIntersectsRect(streamVC.tableView.frame, cellRect))
                                   {
                                       if (cell.center.y > selectedCell.center.y)
                                       {

@@ -15,6 +15,7 @@
 - (id <UIViewControllerAnimatedTransitioning>)animationControllerForDismissedController:(UIViewController *)dismissed
 {
     VContentToStreamAnimator *animator = [[VContentToStreamAnimator alloc] init];
+    animator.indexPathForSelectedCell = self.indexPathForSelectedCell;
     return animator;
 }
 

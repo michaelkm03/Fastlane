@@ -42,6 +42,8 @@ CGFloat kContentMediaViewOffset = 154;
 @property (weak, nonatomic) IBOutlet UIButton* commentButton;
 @property (weak, nonatomic) IBOutlet UIButton* moreButton;
 
+@property (weak, nonatomic) IBOutlet UIView* mpPlayerContainmentView;
+
 @property (weak, nonatomic) IBOutlet UIImageView* previewImage;
 @property (weak, nonatomic) IBOutlet UIImageView* sixteenNinePreviewImage;
 @property (weak, nonatomic) IBOutlet UIWebView* webView;
@@ -53,6 +55,8 @@ CGFloat kContentMediaViewOffset = 154;
 @property (weak, nonatomic) IBOutlet UIImageView* secondSmallPreviewImage;
 @property (weak, nonatomic) IBOutlet VResultView* firstResultView;
 @property (weak, nonatomic) IBOutlet VResultView* secondResultView;
+@property (weak, nonatomic) IBOutlet UIButton* firstPollButton;
+@property (weak, nonatomic) IBOutlet UIButton* secondPollButton;
 
 @property (weak, nonatomic) IBOutlet UIView* orContainerView;
 @property (strong, nonatomic) UIDynamicAnimator* orAnimator;
@@ -99,7 +103,7 @@ CGFloat kContentMediaViewOffset = 154;
     self.mpController = [[MPMoviePlayerController alloc] initWithContentURL:nil];
     self.mpController.scalingMode = MPMovieScalingModeAspectFill;
     self.mpController.view.frame = self.previewImage.frame;
-    [self.mediaView insertSubview:self.mpController.view aboveSubview:self.previewImage];
+    [self.mpPlayerContainmentView addSubview:self.mpController.view];
     
     self.firstResultView.isVertical = YES;
     self.firstResultView.hidden = YES;
@@ -156,7 +160,7 @@ CGFloat kContentMediaViewOffset = 154;
 
     [self.backgroundImage setLightBlurredImageWithURL:[[self.sequence initialImageURLs] firstObject]
                                      placeholderImage:nil];
-    self.descriptionLabel.text = _sequence.sequenceDescription;
+    self.descriptionLabel.text = _sequence.name;
     self.currentNode = [sequence firstNode];
 }
 
@@ -310,6 +314,18 @@ CGFloat kContentMediaViewOffset = 154;
     [self updateActionBar];
 }
 
+- (IBAction)playPoll:(id)sender
+{
+    if( ((UIButton*)sender).tag == self.firstPollButton.tag)
+    {
+//        [self.mpController setContentURL:[NSURL URLWithString:self.currentAsset.data]];
+    }
+    else if ( ((UIButton*)sender).tag == self.secondPollButton.tag)
+    {
+        
+    }
+}
+
 #pragma mark - Quiz
 - (void)loadQuiz
 {
@@ -362,9 +378,29 @@ CGFloat kContentMediaViewOffset = 154;
         self.mpController.view.frame = CGRectMake(self.previewImage.frame.origin.x, self.previewImage.frame.origin.y,
                                                   self.previewImage.frame.size.width, videoHeight);
         
-        self.mpController.view.hidden = NO;
+        [self animateVideoOpen:1.0f completion:nil];
+        
         [self.mpController play];
     }
+}
+
+- (void)animateVideoOpen:(CGFloat)duration completion:(void (^)(BOOL finished))completion
+{
+    [self.mpPlayerContainmentView setSize:CGSizeMake(0, 0)];
+    [UIView animateWithDuration:duration animations:
+     ^{
+         [self.mpPlayerContainmentView setSize:CGSizeMake(self.mpController.view.frame.size.width, self.mpController.view.frame.size.height)];
+     }
+                     completion:completion];
+}
+
+- (void)animateVideoClosed:(CGFloat)duration completion:(void (^)(BOOL finished))completion
+{
+    [UIView animateWithDuration:duration animations:
+     ^{
+         [self.mpPlayerContainmentView setSize:CGSizeMake(0,0)];
+     }
+                     completion:completion];
 }
 
 #pragma mark - Youtube

@@ -10,4 +10,5 @@
 
 @interface VContentToStreamAnimator : NSObject <UIViewControllerAnimatedTransitioning>
 
+@property (strong, nonatomic) NSIndexPath* indexPathForSelectedCell;
 @end
