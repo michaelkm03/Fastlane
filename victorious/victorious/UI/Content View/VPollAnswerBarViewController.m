@@ -60,6 +60,7 @@
                                              selector:@selector(checkIfAnswered)
                                                  name:kPollResultsLoaded
                                                object:nil];
+    [self checkIfAnswered];
 }
 
 - (void)setSequence:(VSequence *)sequence

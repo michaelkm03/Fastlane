@@ -475,7 +475,7 @@ CGFloat kContentMediaViewOffset = 154;
         VResultView* resultView = [self resultViewForAnswerId:result.answerId];
         resultView.hidden = NO;
         
-        NSInteger progress = result.count.doubleValue / totalVotes;
+        CGFloat progress = result.count.doubleValue / totalVotes;
         
         if (result.answerId == answerId)
         {
