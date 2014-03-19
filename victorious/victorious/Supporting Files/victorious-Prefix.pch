@@ -33,10 +33,10 @@
 #define VLog(...)
 #endif
 
-#ifdef DEBUG
-#define VBASEURL @"http://dev.getvictorious.com"
-#elif STABLE_DEBUG
+#ifdef STABLE_DEBUG
 #define VBASEURL @"http://api.getvictorious.com"
+#elif DEBUG
+#define VBASEURL @"http://dev.getvictorious.com"
 #else
 #define VBASEURL @"http://api.getvictorious.com"
 #endif
