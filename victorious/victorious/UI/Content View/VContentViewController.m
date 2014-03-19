@@ -419,13 +419,6 @@ CGFloat kContentMediaViewOffset = 154;
                      completion:completion];
 }
 
-- (IBAction)pressedRemix:(id)sender
-{
-    AVURLAsset* videoAsset = [AVURLAsset assetWithURL:[self.currentAsset.data mp4UrlFromM3U8]];
-    UIViewController* remixVC = [VRemixTrimViewController remixViewControllerWithAsset:videoAsset];
-    [self presentViewController:remixVC animated:YES completion:nil];
-}
-
 #pragma mark - Youtube
 - (void)loadYoutubeVideo
 {
@@ -473,6 +466,14 @@ CGFloat kContentMediaViewOffset = 154;
     
     else
         [self.mpController play];
+}
+
+- (IBAction)pressedRemix:(id)sender
+{
+    AVURLAsset* videoAsset = [AVURLAsset assetWithURL:[self.currentAsset.data mp4UrlFromM3U8]];
+    UIViewController* remixVC = [VRemixTrimViewController remixViewControllerWithAsset:videoAsset];
+    [self.mpController stop];
+    [self presentViewController:remixVC animated:YES completion:nil];
 }
 
 #pragma mark - VInteractionManagerDelegate
