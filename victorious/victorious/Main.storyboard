@@ -378,6 +378,13 @@
                                     <segue destination="jYa-7x-T8Z" kind="unwind" unwindAction="unwindToContentView:" id="Nea-ZY-PYq"/>
                                 </connections>
                             </button>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="COMMENTS" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kYy-hF-Nue">
+                                <rect key="frame" x="85" y="17" width="150" height="40"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                     </view>
                     <nil key="simulatedStatusBarMetrics"/>
@@ -385,6 +392,7 @@
                     <connections>
                         <outlet property="backButton" destination="u6b-Ys-rsf" id="Pi0-Zf-ffh"/>
                         <outlet property="backgroundImage" destination="IEc-5s-XIc" id="Zck-gG-jaH"/>
+                        <outlet property="topConstraintView" destination="kYy-hF-Nue" id="tkC-xb-VXX"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="JpL-zC-mxW" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -404,7 +412,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Type a reply..." minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="ysg-7l-HaV">
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Type a reply..." minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="ysg-7l-HaV">
                                 <rect key="frame" x="53" y="7" width="198" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>

@@ -16,10 +16,13 @@
 #import "UIView+VFrameManipulation.h"
 #import "UIImageView+Blurring.h"
 
+#import "VThemeManager.h"
+
 @interface VCommentsContainerViewController()
 
 @property (weak, nonatomic) IBOutlet UIButton* backButton;
 @property (weak, nonatomic) IBOutlet UIImageView* backgroundImage;
+@property (weak, nonatomic) IBOutlet UILabel* titleLabel;
 
 @end
 
@@ -49,6 +52,12 @@
     //Load the image on first load
     [self.backgroundImage setLightBlurredImageWithURL:[[self.sequence initialImageURLs] firstObject]
                                      placeholderImage:nil];
+    
+    
+    [self.backButton setImage:[self.backButton.imageView.image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] forState:UIControlStateNormal];
+    self.backButton.tintColor = [[VThemeManager sharedThemeManager] themedColorForKeyPath:kVContentAccentColor];
+    
+    self.titleLabel.textColor = [[VThemeManager sharedThemeManager] themedColorForKeyPath:kVContentAccentColor];
     
     //Need to manually add this again so it appears over everything else.
     [self.view addSubview:self.backButton];
