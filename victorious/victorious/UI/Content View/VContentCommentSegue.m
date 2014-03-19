@@ -20,8 +20,8 @@
 {
     //Custom animation code
     VContentViewController* contentVC = self.sourceViewController;
-//    VCommentsContainerViewController* commentVC = self.destinationViewController;
-
+    VCommentsContainerViewController* commentsContainer = self.destinationViewController;
+    
     [UIView animateWithDuration:.5f
                      animations:^
      {
@@ -42,7 +42,29 @@
      }
                      completion:^(BOOL finished)
      {
-         [self.sourceViewController presentModalViewController:self.destinationViewController animated:NO];
+         [UIView animateWithDuration:.25f
+                          animations:^
+          {
+              
+              for (UIView* view in commentsContainer.view.subviews)
+              {
+                  if ([view isKindOfClass:[UIImageView class]])
+                      continue;
+                  
+                  if (view.center.y > commentsContainer.view.center.y)
+                  {
+                      view.center = CGPointMake(view.center.x, view.center.y + commentsContainer.view.frame.size.height);
+                  }
+                  else
+                  {
+                      view.center = CGPointMake(view.center.x, view.center.y - commentsContainer.view.frame.size.height);
+                  }
+              }
+          }
+                          completion:^(BOOL finished)
+          {
+              [self.sourceViewController presentModalViewController:self.destinationViewController animated:NO];
+          }];
      }];
 }
 

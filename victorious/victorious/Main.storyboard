@@ -378,6 +378,13 @@
                                     <segue destination="jYa-7x-T8Z" kind="unwind" unwindAction="unwindToContentView:" id="Nea-ZY-PYq"/>
                                 </connections>
                             </button>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="COMMENTS" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kYy-hF-Nue">
+                                <rect key="frame" x="85" y="17" width="150" height="40"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                     </view>
                     <nil key="simulatedStatusBarMetrics"/>
@@ -385,6 +392,7 @@
                     <connections>
                         <outlet property="backButton" destination="u6b-Ys-rsf" id="Pi0-Zf-ffh"/>
                         <outlet property="backgroundImage" destination="IEc-5s-XIc" id="Zck-gG-jaH"/>
+                        <outlet property="topConstraintView" destination="kYy-hF-Nue" id="tkC-xb-VXX"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="JpL-zC-mxW" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -404,7 +412,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Type a reply..." minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="ysg-7l-HaV">
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Type a reply..." minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="ysg-7l-HaV">
                                 <rect key="frame" x="53" y="7" width="198" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
@@ -1002,6 +1010,26 @@
                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                             </view>
+                                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="iB3-TF-e3b">
+                                                <rect key="frame" x="54" y="81" width="52" height="52"/>
+                                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                <state key="normal" image="PlayTriangle" backgroundImage="PlayCircle">
+                                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                                </state>
+                                                <connections>
+                                                    <action selector="playPoll:" destination="4V8-Qd-rfj" eventType="touchUpInside" id="3VJ-Ij-lFP"/>
+                                                </connections>
+                                            </button>
+                                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6Fs-nG-V3a">
+                                                <rect key="frame" x="214" y="81" width="52" height="52"/>
+                                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                <state key="normal" image="PlayTriangle" backgroundImage="PlayCircle">
+                                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                                </state>
+                                                <connections>
+                                                    <action selector="playPoll:" destination="4V8-Qd-rfj" eventType="touchUpInside" id="dcW-H3-anr"/>
+                                                </connections>
+                                            </button>
                                         </subviews>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                     </view>
@@ -1048,6 +1076,7 @@
                         <outlet property="backgroundImage" destination="Xzc-fo-Pc8" id="bwb-2j-hZd"/>
                         <outlet property="barContainerView" destination="Pce-Lq-Sbm" id="n2G-fA-vJD"/>
                         <outlet property="descriptionLabel" destination="SVt-O0-Xbt" id="CmB-GP-EVp"/>
+                        <outlet property="firstPollButton" destination="iB3-TF-e3b" id="uEc-eU-Jbu"/>
                         <outlet property="firstResultView" destination="mU7-Gc-RdJ" id="Hap-rD-L8h"/>
                         <outlet property="firstSmallPreviewImage" destination="EVH-DQ-EKO" id="sqw-uo-jib"/>
                         <outlet property="mediaView" destination="bEh-qP-DUl" id="GYP-nN-agT"/>
@@ -1057,6 +1086,7 @@
                         <outlet property="pollPreviewView" destination="4Kr-fK-dGu" id="Jg8-mK-drW"/>
                         <outlet property="previewImage" destination="ZqV-fk-y5a" id="5zD-1U-pWm"/>
                         <outlet property="remixButton" destination="Uu4-D7-xWv" id="uQ7-XS-u22"/>
+                        <outlet property="secondPollButton" destination="6Fs-nG-V3a" id="rgi-QS-JVS"/>
                         <outlet property="secondResultView" destination="eCc-fQ-PSZ" id="yOE-Ip-yhe"/>
                         <outlet property="secondSmallPreviewImage" destination="plb-mq-Tcq" id="Svf-fQ-dzq"/>
                         <outlet property="sixteenNinePreviewImage" destination="ix9-wJ-Xcm" id="bFh-tE-Js6"/>
@@ -1718,16 +1748,6 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="60"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Ez5-Y4-614" userLabel="BackgroundView">
-                                <rect key="frame" x="0.0" y="0.0" width="320" height="60"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="backgroundColor" red="0.21176470589999999" green="0.1450980392" blue="0.30588235289999999" alpha="1" colorSpace="calibratedRGB"/>
-                            </view>
-                            <view alpha="0.14999999999999999" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="7cE-Bc-XB0" userLabel="ShadeView">
-                                <rect key="frame" x="160" y="0.0" width="160" height="60"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
-                            </view>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="lMO-OU-gVH" userLabel="Positive Emotive">
                                 <rect key="frame" x="0.0" y="0.0" width="160" height="60"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -1771,12 +1791,10 @@
                     <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
                     <size key="freeformSize" width="320" height="60"/>
                     <connections>
-                        <outlet property="backgroundView" destination="Ez5-Y4-614" id="DYK-dK-MCm"/>
                         <outlet property="negativeEmotiveButton" destination="1dp-HB-SPd" id="qnG-i2-LU1"/>
                         <outlet property="negativeEmotiveLabel" destination="AjL-mD-Ekf" id="ksK-bo-CRi"/>
                         <outlet property="positiveEmotiveButton" destination="lMO-OU-gVH" id="ICh-wl-qcV"/>
                         <outlet property="positiveEmotiveLabel" destination="QOq-WJ-Ibw" id="98e-sW-ug2"/>
-                        <outlet property="shadeView" destination="7cE-Bc-XB0" id="8Us-NY-TjC"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="neH-vB-TZ9" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -1795,16 +1813,6 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="60"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="DDQ-Qa-lGk" userLabel="BackgroundView">
-                                <rect key="frame" x="0.0" y="0.0" width="320" height="60"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                            </view>
-                            <view alpha="0.15000000596046448" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="kNf-Aa-2Eo" userLabel="ShadeView">
-                                <rect key="frame" x="160" y="0.0" width="160" height="60"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                            </view>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="clip" translatesAutoresizingMaskIntoConstraints="NO" id="Bxp-hr-lFz" userLabel="Left button">
                                 <rect key="frame" x="0.0" y="0.0" width="160" height="60"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -1829,15 +1837,15 @@
                                     <action selector="pressedAnswerButton:" destination="Pz9-lw-C28" eventType="touchUpInside" id="Kaa-kc-YAR"/>
                                 </connections>
                             </button>
-                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Some really Long answer that hopefully will fit" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="136" translatesAutoresizingMaskIntoConstraints="NO" id="fBr-Do-fCE" userLabel="Left Label">
-                                <rect key="frame" x="12" y="5" width="136" height="50"/>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Some really Long answer that hopefully will fit" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="115" translatesAutoresizingMaskIntoConstraints="NO" id="fBr-Do-fCE" userLabel="Left Label">
+                                <rect key="frame" x="10" y="5" width="115" height="50"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Some really Long answer that hopefully will fit" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="136" translatesAutoresizingMaskIntoConstraints="NO" id="6ak-S4-RIj" userLabel="Right Label">
-                                <rect key="frame" x="172" y="5" width="136" height="50"/>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Some really Long answer that hopefully will fit" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="115" translatesAutoresizingMaskIntoConstraints="NO" id="6ak-S4-RIj" userLabel="Right Label">
+                                <rect key="frame" x="195" y="5" width="115" height="50"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
@@ -1850,12 +1858,10 @@
                     <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
                     <size key="freeformSize" width="320" height="60"/>
                     <connections>
-                        <outlet property="backgroundView" destination="DDQ-Qa-lGk" id="GdY-S1-guU"/>
                         <outlet property="leftButton" destination="Bxp-hr-lFz" id="J7Z-B7-U7a"/>
                         <outlet property="leftLabel" destination="fBr-Do-fCE" id="qYB-IO-x5s"/>
                         <outlet property="rightButton" destination="D1I-Wr-6dI" id="j6f-4d-Lcb"/>
                         <outlet property="rightLabel" destination="6ak-S4-RIj" id="9NV-X7-ueG"/>
-                        <outlet property="shadeView" destination="kNf-Aa-2Eo" id="qTv-s5-aUC"/>
                         <outlet property="view" destination="YN0-go-INq" id="QBI-hR-jrh"/>
                     </connections>
                 </viewController>
@@ -1897,6 +1903,8 @@
         <image name="MenuVideos" width="19" height="19"/>
         <image name="MessageCamera" width="22" height="23"/>
         <image name="More" width="22" height="6"/>
+        <image name="PlayCircle" width="52" height="52"/>
+        <image name="PlayTriangle" width="52" height="52"/>
         <image name="PollBarOr" width="65" height="72"/>
         <image name="PostCamera" width="34" height="26"/>
         <image name="PostDelete" width="22" height="22"/>

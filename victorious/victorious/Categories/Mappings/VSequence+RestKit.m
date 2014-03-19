@@ -64,11 +64,25 @@
 
 + (RKResponseDescriptor*)sequenceListPaginationDescriptor
 {
+#ifdef STABLE_DEBUG
     return [RKResponseDescriptor responseDescriptorWithMapping:[VSequence entityMapping]
                                                         method:RKRequestMethodGET
-                                                   pathPattern:@"/api/sequence/detail_list_by_category/:category/:status/:page/:perpage"
+                                                   pathPattern:@"/api/sequence/detail_list_by_category/:status/:category/:page/:perpage"
                                                        keyPath:@"payload"
                                                    statusCodes:RKStatusCodeIndexSetForClass(RKStatusCodeClassSuccessful)];
+#elif DEBUG
+    return [RKResponseDescriptor responseDescriptorWithMapping:[VSequence entityMapping]
+                                                        method:RKRequestMethodGET
+                                                   pathPattern:@"/api/sequence/detail_list_by_category/:category/:page/:perpage"
+                                                       keyPath:@"payload"
+                                                   statusCodes:RKStatusCodeIndexSetForClass(RKStatusCodeClassSuccessful)];
+#else
+    return [RKResponseDescriptor responseDescriptorWithMapping:[VSequence entityMapping]
+                                                        method:RKRequestMethodGET
+                                                   pathPattern:@"/api/sequence/detail_list_by_category/:status/:category/:page/:perpage"
+                                                       keyPath:@"payload"
+                                                   statusCodes:RKStatusCodeIndexSetForClass(RKStatusCodeClassSuccessful)];
+#endif
 }
 
 + (RKResponseDescriptor*)sequenceFullDataDescriptor

@@ -13,6 +13,7 @@
 #import "VObjectManager+Sequence.h"
 #import "VCreatePollViewController.h"
 #import "VLoginViewController.h"
+#import "VCameraViewController.h"
 
 @interface VCommunityStreamViewController () <VCreateSequenceDelegate>
 
@@ -70,14 +71,13 @@
         return;
     }
     
-    NSString *videoTitle = NSLocalizedString(@"Post Video", @"Post video button");
-    NSString *photoTitle = NSLocalizedString(@"Post Photo", @"Post photo button");
+    NSString *contentTitle = NSLocalizedString(@"Post Content", @"Post content button");
     NSString *pollTitle = NSLocalizedString(@"Post Poll", @"Post poll button");
     UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil
                                                              delegate:nil
                                                     cancelButtonTitle:NSLocalizedString(@"Cancel", @"Cancel button")
                                                destructiveButtonTitle:nil
-                                                    otherButtonTitles:videoTitle, photoTitle, pollTitle, nil];
+                                                    otherButtonTitles:contentTitle, pollTitle, nil];
     [actionSheet setCompletionBlock:^(NSInteger buttonIndex, UIActionSheet *actionSheet)
      {
          if(actionSheet.cancelButtonIndex == buttonIndex)
@@ -86,23 +86,9 @@
          }
          
          //TODO: share 
-         if([[actionSheet buttonTitleAtIndex:buttonIndex] isEqualToString:videoTitle])
+         if([[actionSheet buttonTitleAtIndex:buttonIndex] isEqualToString:contentTitle])
          {
-             VCreateContentViewController *createViewController = [VCreateContentViewController newCreateViewControllerForType:VImagePickerViewControllerVideo withDelegate:self];
-             [self presentViewController:createViewController.imagePicker
-                                animated:YES
-                              completion:^{
-                                  [self.navigationController pushViewController:createViewController animated:NO];
-                              }];
-         }
-         else if([[actionSheet buttonTitleAtIndex:buttonIndex] isEqualToString:photoTitle])
-         {
-             VCreateContentViewController *createViewController = [VCreateContentViewController newCreateViewControllerForType:VImagePickerViewControllerPhoto withDelegate:self];
-             [self presentViewController:createViewController.imagePicker
-                                animated:YES
-                              completion:^{
-                                  [self.navigationController pushViewController:createViewController animated:NO];
-                              }];
+             [self presentViewController:[VCameraViewController cameraViewController] animated:YES completion:nil];
          }
          else if([[actionSheet buttonTitleAtIndex:buttonIndex] isEqualToString:pollTitle])
          {
@@ -175,58 +161,62 @@
                                           successBlock:success
                                              failBlock:fail];
 }
-
-
-- (void)createPostwithMessage:(NSString *)message
-                         data:(NSData *)data
-                    mediaType:(NSString *)mediaType
-{
-    __block UIActivityIndicatorView *indicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
-    indicator.frame = CGRectMake(0, 0, 24, 24);
-    [self.view addSubview:indicator];
-    indicator.center = self.view.center;
-    [indicator startAnimating];
-    indicator.hidesWhenStopped = YES;
-    
-    VSuccessBlock success = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
-    {
-        NSLog(@"%@", resultObjects);
-        [indicator stopAnimating];
-        [self.tableView reloadData];
-        [self.navigationController popViewControllerAnimated:YES];
-    };
-    VFailBlock fail = ^(NSOperation* operation, NSError* error)
-    {
-        NSLog(@"%@", error);
-        [indicator stopAnimating];
-        
-        if (5500 == error.code)
-        {
-            UIAlertView*    alert   = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"TranscodingMediaTitle", @"")
-                                                                 message:NSLocalizedString(@"TranscodingMediaBody", @"")
-                                                                delegate:nil
-                                                       cancelButtonTitle:nil
-                                                       otherButtonTitles:NSLocalizedString(@"OKButton", @""), nil];
-            [alert show];
-        }
-        else
-        {
-            UIAlertView*    alert   = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"UploadError", @"")
-                                                                 message:NSLocalizedString(@"UploadErrorBody", @"")
-                                                                delegate:nil
-                                                       cancelButtonTitle:nil
-                                                       otherButtonTitles:NSLocalizedString(@"OKButton", @""), nil];
-            [alert show];
-        }
-    };
-    
-    [[VObjectManager sharedManager] uploadMediaWithName:message
-                                            description:message
-                                              mediaData:data
-                                              extension:mediaType
-                                               mediaUrl:nil
-                                           successBlock:success
-                                              failBlock:fail];
-}
+//
+//
+//- (void)createPostwithMessage:(NSString *)message
+//                         data:(NSData *)data
+//                    mediaType:(NSString *)mediaType
+//{
+//    __block UIActivityIndicatorView *indicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+//    indicator.frame = CGRectMake(0, 0, 24, 24);
+//    [self.view addSubview:indicator];
+//    indicator.center = self.view.center;
+//    [indicator startAnimating];
+//    indicator.hidesWhenStopped = YES;
+//    
+//    VSuccessBlock success = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
+//    {
+//        NSLog(@"%@", resultObjects);
+//        [indicator stopAnimating];
+//        [self.tableView reloadData];
+//        [self.navigationController popViewControllerAnimated:YES];
+//    };
+//    VFailBlock fail = ^(NSOperation* operation, NSError* error)
+//    {
+//        NSLog(@"%@", error);
+//        [indicator stopAnimating];
+//        
+//        if (5500 == error.code)
+//        {
+//            UIAlertView*    alert   = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"TranscodingMediaTitle", @"")
+//                                                                 message:NSLocalizedString(@"TranscodingMediaBody", @"")
+//                                                                delegate:nil
+//                                                       cancelButtonTitle:nil
+//                                                       otherButtonTitles:NSLocalizedString(@"OKButton", @""), nil];
+//            [alert show];
+//        }
+//        else
+//        {
+//            UIAlertView*    alert   = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"UploadError", @"")
+//                                                                 message:NSLocalizedString(@"UploadErrorBody", @"")
+//                                                                delegate:nil
+//                                                       cancelButtonTitle:nil
+//                                                       otherButtonTitles:NSLocalizedString(@"OKButton", @""), nil];
+//            [alert show];
+//        }
+//    };
+//    
+//    [[VObjectManager sharedManager] uploadMediaWithName:message
+//                                            description:message
+//                                              expiresAt:nil
+//                                           parentNodeId:nil
+//                                               loopType:VLoopOnce
+//                                           shareOptions:VShareNone
+//                                              mediaData:data
+//                                              extension:mediaType
+//                                               mediaUrl:nil
+//                                           successBlock:success
+//                                              failBlock:fail];
+//}
 
 @end

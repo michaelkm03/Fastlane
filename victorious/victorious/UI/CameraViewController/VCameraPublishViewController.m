@@ -11,6 +11,9 @@
 #import "VCameraPublishViewController.h"
 #import "VSetExpirationViewController.h"
 #import "UIImage+ImageEffects.h"
+#import "VObjectManager+Sequence.h"
+#import "VConstants.h"
+#import "NSString+VParseHelp.h"
 
 @interface VCameraPublishViewController () <UITextViewDelegate, VSetExpirationDelegate>
 @property (nonatomic, weak) IBOutlet    UIImageView*    previewImage;
@@ -85,11 +88,41 @@
 {
     VLog (@"Publishing");
     
-    //  Twitter State
-    //  Facebook State
-    //  Expiration Date
-    //  Media URL
-    //  Media Type
+    VShareOptions shareOptions = self.useFacebook ? VShareToFacebook : VShareNone;
+    shareOptions = self.useTwitter ? shareOptions | VShareToTwitter : shareOptions;
+    
+    NSData* mediaData;
+    NSString* mediaType;
+    if (self.videoURL)
+    {
+        mediaData = [NSData dataWithContentsOfURL:self.videoURL];
+        mediaType = VConstantMediaExtensionMOV;
+    }
+    else if (self.photo)
+    {
+        mediaData = UIImagePNGRepresentation(self.photo);
+        mediaType = VConstantMediaExtensionPNG;
+    }
+    else
+    {
+        return;
+    }
+    if ([self.textView.text isEmpty])
+    {
+        return;
+    }
+
+    [[VObjectManager sharedManager] uploadMediaWithName:self.textView.text
+                                            description:self.textView.text
+                                              expiresAt:self.expirationDateString
+                                           parentNodeId:nil
+                                               loopType:VLoopOnce
+                                           shareOptions:shareOptions
+                                              mediaData:mediaData
+                                              extension:mediaType
+                                               mediaUrl:nil
+                                           successBlock:nil
+                                              failBlock:nil];
     
     [self dismissViewControllerAnimated:YES completion:nil];
 }

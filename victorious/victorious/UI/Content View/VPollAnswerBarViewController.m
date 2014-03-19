@@ -30,9 +30,6 @@
 @property (weak, nonatomic) IBOutlet UILabel* leftLabel;
 @property (weak, nonatomic) IBOutlet UILabel* rightLabel;
 
-@property (weak, nonatomic) IBOutlet UIView* backgroundView;
-@property (weak, nonatomic) IBOutlet UIView* shadeView;
-
 @property (strong) UIDynamicAnimator* animator;
 
 @end
@@ -136,8 +133,6 @@
     [UIView animateWithDuration:duration/2
                      animations:^
                      {
-                         self.rightButton.alpha = 0;
-                         self.leftButton.alpha = 0;
                          self.rightLabel.alpha = 0;
                          self.leftLabel.alpha = 0;
                      }
@@ -145,8 +140,8 @@
                          [UIView animateWithDuration:duration/2
                                           animations:^
                                           {
-                                              [self.backgroundView setXOrigin:self.view.frame.size.width];
-                                              [self.shadeView setXOrigin:self.view.frame.size.width];
+                                              [self.rightButton setXOrigin:self.view.frame.size.width];
+                                              [self.leftButton setXOrigin:self.view.frame.size.width];
                                           }
                                           completion:completion];
                      }];

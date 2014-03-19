@@ -6,6 +6,7 @@
 //  Copyright (c) 2013 Victorious, Inc. All rights reserved.
 //
 
+#import "VObjectManager+Sequence.h"
 #import "VObjectManager+Private.h"
 #import "VObjectManager+Users.h"
 #import "VObjectManager+Login.h"
@@ -38,20 +39,6 @@ NSString* const kPollResultsLoaded = @"kPollResultsLoaded";
                 [[NSNotificationCenter defaultCenter] postNotificationName:kInitialLoadFinishedNotification object:nil];
             }
                                    failBlock:nil];
-//    return [[VObjectManager sharedManager] loadSequenceCategoriesWithSuccessBlock:^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
-//      {
-//          
-//      } failBlock:nil];
-}
-
-- (RKManagedObjectRequestOperation *)loadSequenceCategoriesWithSuccessBlock:(VSuccessBlock)success
-                                                                  failBlock:(VFailBlock)fail
-{
-    return [self GET:@"/api/sequence/categories"
-               object:nil
-           parameters:nil
-         successBlock:success
-            failBlock:fail];
 }
 
 /*! Loads the next page of sequences for the category
@@ -72,7 +59,13 @@ NSString* const kPollResultsLoaded = @"kPollResultsLoaded";
     }
     
     NSString* path = [@"/api/sequence/detail_list_by_category/" stringByAppendingString: category ?: @"0"];
+#ifdef STABLE_DEBUG
     path = [path stringByAppendingFormat:@"/0/%lu/%lu", (unsigned long)status.pagesLoaded + 1, (unsigned long)status.itemsPerPage];
+#elif DEBUG
+    path = [path stringByAppendingFormat:@"/%lu/%lu", (unsigned long)status.pagesLoaded + 1, (unsigned long)status.itemsPerPage];
+#else
+    path = [path stringByAppendingFormat:@"/0/%lu/%lu", (unsigned long)status.pagesLoaded + 1, (unsigned long)status.itemsPerPage];
+#endif
     
     VSuccessBlock fullSuccessBlock = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
     {
@@ -386,6 +379,7 @@ NSString* const kPollResultsLoaded = @"kPollResultsLoaded";
            failBlock:fail];
 }
 
+#pragma mark - Create Methods
 - (AFHTTPRequestOperation * )createPollWithName:(NSString*)name
                                     description:(NSString*)description
                                        question:(NSString*)question
@@ -449,25 +443,12 @@ NSString* const kPollResultsLoaded = @"kPollResultsLoaded";
               failBlock:fail];
 }
 
-- (AFHTTPRequestOperation * )createForumWithName:(NSString*)name
-                                     description:(NSString*)description
-                                       mediaData:(NSData*)mediaData
-                                        mediaUrl:(NSURL*)mediaUrl
-                                    successBlock:(VSuccessBlock)success
-                                       failBlock:(VFailBlock)fail
-{
-    return nil;
-//    return [self uploadMediaWithName:name
-//                         description:description
-//                           mediaData:mediaData
-//                           extension:VConstantMediaExtensionPNG
-//                            mediaUrl:nil
-//                        successBlock:success
-//                           failBlock:fail];
-}
-
 - (AFHTTPRequestOperation * )uploadMediaWithName:(NSString*)name
                                      description:(NSString*)description
+                                       expiresAt:(NSString*)expiresAt
+                                    parentNodeId:(NSNumber*)parentNodeId
+                                        loopType:(VLoopType)loopType
+                                    shareOptions:(VShareOptions)shareOptions
                                        mediaData:(NSData*)mediaData
                                        extension:(NSString*)extension
                                         mediaUrl:(NSURL*)mediaUrl
@@ -477,8 +458,20 @@ NSString* const kPollResultsLoaded = @"kPollResultsLoaded";
     if (!mediaData || !extension)
         return nil;
     
-    NSDictionary* parameters = @{@"name":name ?: [NSNull null],
-                                 @"description":description ?: [NSNull null]};
+    NSMutableDictionary* parameters = [@{@"name":name ?: [NSNull null],
+                                         @"description":description ?: [NSNull null]} mutableCopy];
+    if (expiresAt)
+        [parameters setObject:expiresAt forKey:@"expires_at"];
+    if (parentNodeId)
+        [parameters setObject:parentNodeId forKey:@"parent_node_id"];
+    if (shareOptions & VShareToFacebook)
+        [parameters setObject:@"1" forKey:@"share_facebook"];
+    if (shareOptions & VShareToTwitter)
+        [parameters setObject:@"1" forKey:@"share_twitter"];
+    
+    NSString* loopParam = [self stringForLoopType:loopType];
+    if (loopParam)
+        [parameters setObject:loopParam forKey:@"playback"];
     
     NSDictionary* allData = @{@"media_data":mediaData ?: [NSNull null]};
     NSDictionary* allExtensions = @{@"media_data":extension ?: [NSNull null]};
@@ -494,9 +487,18 @@ NSString* const kPollResultsLoaded = @"kPollResultsLoaded";
     return [self upload:allData
           fileExtension:allExtensions
                  toPath:@"/api/mediaupload/create"
-             parameters:parameters
+             parameters:[parameters copy]
            successBlock:fullSuccess
               failBlock:fail];
+}
+
+- (NSString*)stringForLoopType:(VLoopType)type
+{
+    if (type == VLoopRepeat)
+        return @"loop";
+    if (type == VLoopReverse)
+        return @"reverse";
+    return nil;
 }
 
 @end
