@@ -11,7 +11,7 @@
 
 @import Accounts;
 
-static  NSString*   kLoginTypeUserDefault   =   @"com.victorious.userdefault.loginType";
+static  NSString*   kLoginTypeUserDefault   =   @"com.victorious.<AppName>.userdefault.loginType";
 
 @implementation VUserManager
 

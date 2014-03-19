@@ -75,11 +75,11 @@
 }
 
 - (void) videoPlayer:(VCPlayer *)videoPlayer didStartLoadingAtItemTime:(CMTime)itemTime {
-	self.loadingView.hidden = NO;
+//	self.loadingView.hidden = NO;
 }
 
 - (void) videoPlayer:(VCPlayer *)videoPlayer didEndLoadingAtItemTime:(CMTime)itemTime {
-	self.loadingView.hidden = YES;
+//	self.loadingView.hidden = YES;
 }
 
 - (void) videoPlayer:(VCPlayer *)videoPlayer didPlay:(Float32)secondsElapsed {
