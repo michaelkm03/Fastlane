@@ -28,6 +28,7 @@
                                 inManagedObjectStore:[RKObjectManager sharedManager].managedObjectStore];
     
     [mapping addAttributeMappingsFromDictionary:propertyMap];
+    mapping.identificationAttributes = @[VSelectorName(answerId), VSelectorName(sequenceId)];
     
     [mapping addConnectionForRelationship:@"sequence" connectedBy:@{@"sequenceId" : @"remoteId"}];
 

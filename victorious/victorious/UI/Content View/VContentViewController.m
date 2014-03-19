@@ -516,6 +516,8 @@ CGFloat kContentMediaViewOffset = 154;
 #pragma mark - VPollAnswerBarDelegate
 - (void)answeredPollWithAnswerId:(NSNumber *)answerId
 {
+    self.firstResultView.hidden = NO;
+    self.secondResultView.hidden = NO;
     [self.firstResultView setProgress:0 animated:NO];
     [self.secondResultView setProgress:0 animated:NO];
     
@@ -529,17 +531,16 @@ CGFloat kContentMediaViewOffset = 154;
     for(VPollResult* result in self.sequence.pollResults)
     {
         VResultView* resultView = [self resultViewForAnswerId:result.answerId];
-        resultView.hidden = NO;
         
-        CGFloat progress = result.count.doubleValue / totalVotes;
+        CGFloat progress = result.acount.doubleValue / totalVotes;
         
         if (result.answerId == answerId)
         {
-            resultView.color = [UIColor purpleColor];//[[VThemeManager sharedThemeManager] themedColorForKeyPath:@"theme.color"];
+            resultView.color = [[VThemeManager sharedThemeManager] themedColorForKeyPath:kVMainColor];
         }
         else
         {
-            resultView.color = [UIColor whiteColor];
+            resultView.color = [[VThemeManager sharedThemeManager] themedColorForKeyPath:kVAccentColor];
         }
         
         [resultView setProgress:progress animated:YES];

@@ -89,8 +89,8 @@ static NSString* kOrIconImage = @"orIconImage";
         self.firstAssetUrl = [self.firstAnswer.mediaUrl convertToPreviewImageURL];
         self.secondAssetUrl = [self.secondAnswer.mediaUrl convertToPreviewImageURL];
     }
-    [self.previewImageView setImageWithURL:self.firstAssetUrl];
-    [self.previewImageTwo setImageWithURL:self.secondAssetUrl];
+    [self.previewImageView setImageWithURL:self.firstAssetUrl placeholderImage:nil];
+    [self.previewImageTwo setImageWithURL:self.secondAssetUrl placeholderImage:nil];
 }
 
 - (void)checkIfAnswered
