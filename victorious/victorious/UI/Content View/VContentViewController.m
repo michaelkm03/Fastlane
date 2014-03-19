@@ -318,6 +318,23 @@ CGFloat kContentMediaViewOffset = 154;
     [self.firstSmallPreviewImage setImageWithURL:[((VAnswer*)[answers firstObject]).mediaUrl convertToPreviewImageURL]];
     [self.secondSmallPreviewImage setImageWithURL:[((VAnswer*)[answers lastObject]).mediaUrl convertToPreviewImageURL]];
     
+    if ([((VAnswer*)[answers firstObject]).mediaUrl isEqualToString:VConstantMediaExtensionM3U8])
+    {
+        self.firstPollButton.hidden = NO;
+    }
+    else
+    {
+        self.firstPollButton.hidden = YES;
+    }
+    if ([((VAnswer*)[answers lastObject]).mediaUrl isEqualToString:VConstantMediaExtensionM3U8])
+    {
+        self.secondPollButton.hidden = NO;
+    }
+    else
+    {
+        self.secondPollButton.hidden = YES;
+    }
+    
     self.pollPreviewView.hidden = NO;
     self.previewImage.hidden = YES;
     self.webView.hidden = YES;
@@ -330,13 +347,14 @@ CGFloat kContentMediaViewOffset = 154;
 
 - (IBAction)playPoll:(id)sender
 {
+    NSArray* answers = [[self.sequence firstNode] firstAnswers];
     if( ((UIButton*)sender).tag == self.firstPollButton.tag)
     {
-//        [self.mpController setContentURL:[NSURL URLWithString:self.currentAsset.data]];
+        [self.mpController setContentURL:[NSURL URLWithString:((VAnswer*)[answers firstObject]).mediaUrl]];
     }
     else if ( ((UIButton*)sender).tag == self.secondPollButton.tag)
     {
-        
+        [self.mpController setContentURL:[NSURL URLWithString:((VAnswer*)[answers lastObject]).mediaUrl]];
     }
 }
 
@@ -393,7 +411,9 @@ CGFloat kContentMediaViewOffset = 154;
         self.mpController.view.frame = CGRectMake(0, 0, self.previewImage.frame.size.width, videoHeight);
         
         [self.mpPlayerContainmentView addSubview:self.mpController.view];
-        [self animateVideoOpen:0 completion:nil];
+        
+        CGFloat duration = [self.sequence isPoll] ? .5f : 0;//We only animate in poll videos
+        [self animateVideoOpen:duration completion:nil];
         
         [self.mpController play];
     }

@@ -33,12 +33,12 @@
 #define VLog(...)
 #endif
 
-#ifdef STAGE_DEBUG
+#ifdef DEBUG
 #define VBASEURL @"http://dev.getvictorious.com"
-#elif DEBUG
-#define VBASEURL @"http://dev.getvictorious.com"
+#elif STABLE_DEBUG
+#define VBASEURL @"http://api.getvictorious.com"
 #else
-#define VBASEURL @"http://dev.getvictorious.com"
+#define VBASEURL @"http://api.getvictorious.com"
 #endif
 
 #define VSelectorName(s) NSStringFromSelector(@selector(s))
