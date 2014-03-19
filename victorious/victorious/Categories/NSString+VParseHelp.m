@@ -40,7 +40,7 @@
 - (NSURL*)convertToPreviewImageURL
 {
     if ([[self pathExtension] isEqualToString:VConstantMediaExtensionM3U8])
-        [NSURL URLWithString:[self previewImageURLForM3U8]];
+        return [NSURL URLWithString:[self previewImageURLForM3U8]];
 
     return [NSURL URLWithString:self];
 }

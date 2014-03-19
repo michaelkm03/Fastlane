@@ -134,6 +134,7 @@
                                                        cancelButtonTitle:nil
                                                        otherButtonTitles:NSLocalizedString(@"OKButton", @""), nil];
             [alert show];
+            [self.navigationController popViewControllerAnimated:YES];
         }
         else
         {

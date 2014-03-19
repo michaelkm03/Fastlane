@@ -48,33 +48,33 @@ CGFloat VCreateViewControllerLargePadding = 20;
     [self.addMediaView constrainToSize:self.addMediaView.frame.size];
     [self.addMediaView centerInContainerOnAxis:NSLayoutAttributeCenterX];
     
-    self.view.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKeyPath:kVCreatePostBackgroundColor];
+//    self.view.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKeyPath:kVCreatePostBackgroundColor];
     
     UIImage* newImage = [self.mediaButton.imageView.image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
     [self.mediaButton setImage:newImage forState:UIControlStateNormal];
-    self.mediaButton.tintColor = [[VThemeManager sharedThemeManager] themedColorForKeyPath:kVCreatePostMediaButtonColor];
-    self.mediaButton.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKeyPath:kVCreatePostMediaButtonBGColor];
+    self.mediaButton.tintColor = [[VThemeManager sharedThemeManager] themedColorForKeyPath:kVAccentColor];
+    self.mediaButton.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKeyPath:kVMainColor];
     self.mediaButton.layer.cornerRadius = self.mediaButton.frame.size.height/2;
 
     newImage = [self.removeMediaButton.imageView.image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
     [self.removeMediaButton setImage:newImage forState:UIControlStateNormal];
-    self.removeMediaButton.tintColor = [[VThemeManager sharedThemeManager] themedColorForKeyPath:KVRemoveMediaButtonColor];
+    self.removeMediaButton.tintColor = [[VThemeManager sharedThemeManager] themedColorForKeyPath:kVMainColor];
     self.removeMediaButton.hidden = YES;
     
-    self.mediaLabel.textColor = [[VThemeManager sharedThemeManager] themedColorForKeyPath:kVCreatePostMediaLabelColor];
+    self.mediaLabel.textColor = [[VThemeManager sharedThemeManager] themedColorForKeyPath:kVAccentColor];
     [self.mediaLabel centerInContainerOnAxis:NSLayoutAttributeCenterX];
     
     self.textView.font = [[VThemeManager sharedThemeManager] themedFontForKeyPath:kVCreatePostFont];
-    self.textView.textColor = [[VThemeManager sharedThemeManager] themedColorForKeyPath:kVCreatePostTextColor];
+    self.textView.textColor = [[VThemeManager sharedThemeManager] themedColorForKeyPath:kVAccentColor];
     self.textView.layer.borderColor = [[[VThemeManager sharedThemeManager] themedColorForKeyPath:kVCreatePostInputBorderColor] CGColor];
     self.textView.layer.borderWidth = 1;
     
-    self.postButton.tintColor = [[VThemeManager sharedThemeManager] themedColorForKeyPath:kVCreatePostButtonTextColor];
-    self.postButton.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKeyPath:kVCreatePostButtonBGColor];
+    self.postButton.tintColor = [[VThemeManager sharedThemeManager] themedColorForKeyPath:kVAccentColor];
+    self.postButton.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKeyPath:kVMainColor];
     [self.postButton setTitle:NSLocalizedString(@"POST IT", @"Post button") forState:UIControlStateNormal];
     self.postButton.titleLabel.font = [[VThemeManager sharedThemeManager] themedFontForKeyPath:kVCreatePostButtonFont];
     
-    self.characterCountLabel.textColor = [[VThemeManager sharedThemeManager] themedColorForKeyPath:kVCreatePostTextColor];
+    self.characterCountLabel.textColor = [[VThemeManager sharedThemeManager] themedColorForKeyPath:kVMainColor];
     self.characterCountLabel.text = @(VConstantsMessageLength).stringValue;
     
     [self validatePostButtonState];

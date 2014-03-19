@@ -99,6 +99,11 @@ CGFloat kContentMediaViewOffset = 154;
                                                  name:MPMoviePlayerLoadStateDidChangeNotification
                                                object:nil];
     
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(animateVideoClosed)
+                                                 name:MPMoviePlayerPlaybackDidFinishNotification
+                                               object:nil];
+    
     self.webView.scrollView.scrollEnabled = NO;
     [self.webView setAllowsInlineMediaPlayback:YES];
     [self.webView setMediaPlaybackRequiresUserAction:NO];
@@ -106,6 +111,7 @@ CGFloat kContentMediaViewOffset = 154;
     self.mpController = [[MPMoviePlayerController alloc] initWithContentURL:nil];
     self.mpController.scalingMode = MPMovieScalingModeAspectFill;
     self.mpController.view.frame = self.previewImage.frame;
+    self.mpController.shouldAutoplay = NO;
     [self.mpPlayerContainmentView addSubview:self.mpController.view];
     
     self.firstResultView.isVertical = YES;
@@ -318,7 +324,7 @@ CGFloat kContentMediaViewOffset = 154;
     [self.firstSmallPreviewImage setImageWithURL:[((VAnswer*)[answers firstObject]).mediaUrl convertToPreviewImageURL]];
     [self.secondSmallPreviewImage setImageWithURL:[((VAnswer*)[answers lastObject]).mediaUrl convertToPreviewImageURL]];
     
-    if ([((VAnswer*)[answers firstObject]).mediaUrl isEqualToString:VConstantMediaExtensionM3U8])
+    if ([[((VAnswer*)[answers firstObject]).mediaUrl pathExtension] isEqualToString:VConstantMediaExtensionM3U8])
     {
         self.firstPollButton.hidden = NO;
     }
@@ -326,7 +332,7 @@ CGFloat kContentMediaViewOffset = 154;
     {
         self.firstPollButton.hidden = YES;
     }
-    if ([((VAnswer*)[answers lastObject]).mediaUrl isEqualToString:VConstantMediaExtensionM3U8])
+    if ([[((VAnswer*)[answers lastObject]).mediaUrl pathExtension] isEqualToString:VConstantMediaExtensionM3U8])
     {
         self.secondPollButton.hidden = NO;
     }
@@ -356,6 +362,7 @@ CGFloat kContentMediaViewOffset = 154;
     {
         [self.mpController setContentURL:[NSURL URLWithString:((VAnswer*)[answers lastObject]).mediaUrl]];
     }
+    [self.mpController prepareToPlay];
 }
 
 #pragma mark - Quiz
@@ -406,37 +413,51 @@ CGFloat kContentMediaViewOffset = 154;
     if (self.mpController.loadState == MPMovieLoadStatePlayable && self.mpController.playbackState != MPMoviePlaybackStatePlaying)
     {
         VLog(@"mp nat size: %@", NSStringFromCGSize(self.mpController.naturalSize));
-        CGFloat yRatio = self.mpController.naturalSize.height / self.mpController.naturalSize.width;
+        CGFloat yRatio = 1;
+        CGFloat xRatio = 1;
+        if (self.mpController.naturalSize.height < self.mpController.naturalSize.width)
+        {
+            yRatio = self.mpController.naturalSize.height / self.mpController.naturalSize.width;
+        }
+        else if (self.mpController.naturalSize.height > self.mpController.naturalSize.width)
+        {
+            xRatio = self.mpController.naturalSize.width / self.mpController.naturalSize.height;
+        }
         CGFloat videoHeight = self.previewImage.frame.size.height * yRatio;
-        self.mpController.view.frame = CGRectMake(0, 0, self.previewImage.frame.size.width, videoHeight);
+        CGFloat videoWidth = self.previewImage.frame.size.width * xRatio;
+        self.mpController.view.frame = CGRectMake(0, 0, videoWidth, videoHeight);
         
         [self.mpPlayerContainmentView addSubview:self.mpController.view];
         
-        CGFloat duration = [self.sequence isPoll] ? .5f : 0;//We only animate in poll videos
-        [self animateVideoOpen:duration completion:nil];
-        
-        [self.mpController play];
+        [self animateVideoOpen];
     }
 }
 
-- (void)animateVideoOpen:(CGFloat)duration completion:(void (^)(BOOL finished))completion
+- (void)animateVideoOpen
 {
     [self.mpPlayerContainmentView setSize:CGSizeMake(0, 0)];
     self.mpPlayerContainmentView.hidden = NO;
+
+    CGFloat duration = [self.sequence isPoll] ? .5f : 0;//We only animate in poll videos
+
     [UIView animateWithDuration:duration animations:
      ^{
          [self.mpPlayerContainmentView setSize:CGSizeMake(self.mpController.view.frame.size.width, self.mpController.view.frame.size.height)];
      }
-                     completion:completion];
+                     completion:^(BOOL finished)
+    {
+                         [self.mpController play];
+                     }];
 }
 
-- (void)animateVideoClosed:(CGFloat)duration completion:(void (^)(BOOL finished))completion
+- (void)animateVideoClosed
 {
+    CGFloat duration = [self.sequence isPoll] ? .5f : 0;//We only animate in poll videos
+
     [UIView animateWithDuration:duration animations:
      ^{
          [self.mpPlayerContainmentView setSize:CGSizeMake(0,0)];
-     }
-                     completion:completion];
+     }];
 }
 
 #pragma mark - Youtube
@@ -474,18 +495,6 @@ CGFloat kContentMediaViewOffset = 154;
 - (IBAction)pressedMore:(id)sender
 {
     //Specced but still no idea what its supposed to do
-}
-
-- (IBAction)pressedPlay:(id)sender
-{
-    if ([self.currentAsset isYoutube])
-    {
-        self.webView.hidden = NO;
-        [self.webView setMediaPlaybackRequiresUserAction:NO];
-    }
-    
-    else
-        [self.mpController play];
 }
 
 - (IBAction)pressedRemix:(id)sender

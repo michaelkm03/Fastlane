@@ -40,24 +40,24 @@
 {
     [super viewDidLoad];
     
-    self.questionTextField.textColor = [[VThemeManager sharedThemeManager] themedColorForKeyPath:kVCreatePollQuestionColor];
+//    self.questionTextField.textColor = [[VThemeManager sharedThemeManager] themedColorForKeyPath:kVCreatePollQuestionColor];
     self.questionTextField.placeholder = NSLocalizedString(@"Ask a Question...", @"Poll question placeholder");
-    self.questionViews.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKeyPath:kVCreatePollQuestionBorderColor];
+//    self.questionViews.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKeyPath:kVCreatePollQuestionBorderColor];
     
-    self.leftAnswerTextField.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKeyPath:kVCreatePollQuestionLeftBGColor];
-    self.leftAnswerTextField.textColor = [[VThemeManager sharedThemeManager] themedColorForKeyPath:kVCreatePollQuestionLeftColor];
+//    self.leftAnswerTextField.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKeyPath:kVCreatePollQuestionLeftBGColor];
+//    self.leftAnswerTextField.textColor = [[VThemeManager sharedThemeManager] themedColorForKeyPath:kVCreatePollQuestionLeftColor];
     self.leftAnswerTextField.placeholder = NSLocalizedString(@"VOTE THIS...", @"Poll left question placeholder");
     
-    self.rightAnswerTextField.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKeyPath:kVCreatePollQuestionRightBGColor];
-    self.rightAnswerTextField.textColor = [[VThemeManager sharedThemeManager] themedColorForKeyPath:kVCreatePollQuestionRightColor];
+//    self.rightAnswerTextField.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKeyPath:kVCreatePollQuestionRightBGColor];
+//    self.rightAnswerTextField.textColor = [[VThemeManager sharedThemeManager] themedColorForKeyPath:kVCreatePollQuestionRightColor];
     self.rightAnswerTextField.placeholder = NSLocalizedString(@"VOTE THAT...", @"Poll left question placeholder");
     
     [self setType:self.type];
-    self.mediaLabel.textColor = [[VThemeManager sharedThemeManager] themedColorForKeyPath:kVCreatePostMediaLabelColor];
+    self.mediaLabel.textColor = [[VThemeManager sharedThemeManager] themedColorForKeyPath:kVAccentColor];
     
     UIImage* newImage = [self.removeMediaButton.imageView.image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
     [self.rightRemoveButton setImage:newImage forState:UIControlStateNormal];
-    self.rightRemoveButton.tintColor = [[VThemeManager sharedThemeManager] themedColorForKeyPath:KVRemoveMediaButtonColor];
+    self.rightRemoveButton.tintColor = [[VThemeManager sharedThemeManager] themedColorForKeyPath:kVMainColor];
     
     [self validatePostButtonState];
     [self updateViewState];
