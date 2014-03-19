@@ -92,6 +92,7 @@
                                              [VUser descriptor],
                                              [VCategory descriptor],
                                              [VSequence sequenceListDescriptor],
+                                             [VSequence sequenceListByUserDescriptor],
                                              [VSequence sequenceFullDataDescriptor],
                                              [VSequence sequenceListPaginationDescriptor],
                                              [VComment descriptor],

@@ -532,7 +532,7 @@ CGFloat kContentMediaViewOffset = 154;
     {
         VResultView* resultView = [self resultViewForAnswerId:result.answerId];
         
-        CGFloat progress = result.acount.doubleValue / totalVotes;
+        CGFloat progress = result.count.doubleValue / totalVotes;
         
         if (result.answerId == answerId)
         {

@@ -62,6 +62,15 @@
                                                    statusCodes:RKStatusCodeIndexSetForClass(RKStatusCodeClassSuccessful)];
 }
 
++ (RKResponseDescriptor*)sequenceListByUserDescriptor
+{
+    return [RKResponseDescriptor responseDescriptorWithMapping:[VSequence entityMapping]
+                                                        method:RKRequestMethodGET
+                                                   pathPattern:@"/api/sequence/detail_list_by_user/:userid/:page/:perpage"
+                                                       keyPath:@"payload"
+                                                   statusCodes:RKStatusCodeIndexSetForClass(RKStatusCodeClassSuccessful)];
+}
+
 + (RKResponseDescriptor*)sequenceListPaginationDescriptor
 {
 #ifdef STABLE_DEBUG

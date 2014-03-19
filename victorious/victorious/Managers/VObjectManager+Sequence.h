@@ -35,6 +35,10 @@ extern NSString* const kPollResultsLoaded;
                                                            successBlock:(VSuccessBlock)success
                                                               failBlock:(VFailBlock)fail;
 
+- (RKManagedObjectRequestOperation *)loadNextPageOfSequencesForUser:(VUser*)user
+                                                       successBlock:(VSuccessBlock)success
+                                                          failBlock:(VFailBlock)fail;
+
 - (RKManagedObjectRequestOperation *)fetchSequence:(NSNumber*)sequenceId
                                       successBlock:(VSuccessBlock)success
                                          failBlock:(VFailBlock)fail;

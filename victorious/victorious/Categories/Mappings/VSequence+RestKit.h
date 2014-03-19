@@ -14,5 +14,6 @@
 + (RKResponseDescriptor*)sequenceListDescriptor;
 + (RKResponseDescriptor*)sequenceFullDataDescriptor;
 + (RKResponseDescriptor*)sequenceListPaginationDescriptor;
++ (RKResponseDescriptor*)sequenceListByUserDescriptor;
 
 @end

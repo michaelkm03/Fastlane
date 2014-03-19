@@ -99,6 +99,56 @@ NSString* const kPollResultsLoaded = @"kPollResultsLoaded";
            failBlock:fail];
 }
 
+
+- (RKManagedObjectRequestOperation *)loadNextPageOfSequencesForUser:(VUser*)user
+                                                       successBlock:(VSuccessBlock)success
+                                                          failBlock:(VFailBlock)fail
+{
+    __block NSString* statusKey = [@"user" stringByAppendingString:user.remoteId.stringValue];
+    __block VPaginationStatus* status = [self statusForKey:statusKey];
+    if([status isFullyLoaded])
+    {
+        if (success)
+            success(nil, nil, nil);
+        return nil;
+    }
+    
+    NSString* path = [@"/api/sequence/detail_list_by_user/" stringByAppendingString: user.remoteId.stringValue];
+    
+    path = [path stringByAppendingFormat:@"/%lu/%lu", (unsigned long)status.pagesLoaded + 1, (unsigned long)status.itemsPerPage];
+    
+    VSuccessBlock fullSuccessBlock = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
+    {
+        status.pagesLoaded = [fullResponse[@"page_number"] integerValue];
+        status.totalPages = [fullResponse[@"total_pages"] integerValue];
+        [self.paginationStatuses setObject:status forKey:statusKey];
+        
+        //If we don't have the user then we need to fetch em.
+        NSMutableArray* nonExistantUsers = [[NSMutableArray alloc] init];
+        for (VSequence* sequence in resultObjects)
+        {
+            if (!sequence.user)
+            {
+                [nonExistantUsers addObject:sequence.createdBy];
+            }
+        }
+        
+        if ([nonExistantUsers count])
+            [[VObjectManager sharedManager] fetchUsers:nonExistantUsers
+                                      withSuccessBlock:success
+                                             failBlock:fail];
+        
+        else if (success)
+            success(operation, fullResponse, resultObjects);
+    };
+    
+    return [self GET:path
+              object:nil
+          parameters:nil
+        successBlock:fullSuccessBlock
+           failBlock:fail];
+}
+
 - (RKManagedObjectRequestOperation *)fetchSequence:(NSNumber*)sequenceId
                                       successBlock:(VSuccessBlock)success
                                          failBlock:(VFailBlock)fail
