@@ -66,7 +66,7 @@ CGFloat VCreateViewControllerLargePadding = 20;
     
     self.textView.font = [[VThemeManager sharedThemeManager] themedFontForKeyPath:kVCreatePostFont];
     self.textView.textColor = [[VThemeManager sharedThemeManager] themedColorForKeyPath:kVAccentColor];
-    self.textView.layer.borderColor = [[[VThemeManager sharedThemeManager] themedColorForKeyPath:kVCreatePostInputBorderColor] CGColor];
+    self.textView.layer.borderColor = [[[VThemeManager sharedThemeManager] themedColorForKeyPath:kVMainColor] CGColor];
     self.textView.layer.borderWidth = 1;
     
     self.postButton.tintColor = [[VThemeManager sharedThemeManager] themedColorForKeyPath:kVAccentColor];
@@ -192,11 +192,11 @@ CGFloat VCreateViewControllerLargePadding = 20;
     NSInteger characterCount = VConstantsMessageLength-[textView.text length];
     if(characterCount < 0)
     {
-        self.characterCountLabel.textColor = [[VThemeManager sharedThemeManager] themedColorForKeyPath:kVCreatePostCountInvalidColor];
+        self.characterCountLabel.textColor = [[VThemeManager sharedThemeManager] themedColorForKeyPath:kVAccentColor];
     }
     else
     {
-        self.characterCountLabel.textColor = [[VThemeManager sharedThemeManager] themedColorForKeyPath:kVCreatePostCountColor];
+        self.characterCountLabel.textColor = [[VThemeManager sharedThemeManager] themedColorForKeyPath:kVAccentColor];
     }
     self.characterCountLabel.text = [NSString stringWithFormat:@"%lu", (unsigned long)characterCount];
     [self validatePostButtonState];

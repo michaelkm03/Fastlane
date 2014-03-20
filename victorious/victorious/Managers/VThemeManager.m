@@ -28,7 +28,7 @@ NSString*   const   kVMenuBackgroundImage5              =   @"LaunchImage-700-56
 
 #pragma mark - Colors
 NSString*   const   kVAccentColor                       =   @"color.accent";
-NSString*   const   kVContentAccentColor                 =   @"color.accent.content";
+NSString*   const   kVContentAccentColor                =   @"color.accent.content";
 
 NSString*   const   kVMainColor                         =   @"color.main";
 
@@ -53,32 +53,6 @@ NSString*   const   kVCreatePostButtonFont              =   @"font";
 NSString*   const   kVProfileUsernameFont               =   @"font";
 NSString*   const   kVProfileLocationFont               =   @"font";
 NSString*   const   kVProfileTaglineFont                =   @"font";
-
-#pragma mark - Colors
-NSString*   const   kMenuTextColor                      =   @"color.main";
-
-NSString*   const   kVStreamSearchBarColor              =   @"color.main";
-
-NSString*   const   kVCreatePollQuestionBorderColor     =   @"color.main";
-NSString*   const   kVCreatePollQuestionColor           =   @"color.main";
-NSString*   const   kVCreatePollQuestionLeftColor       =   @"color.main";
-NSString*   const   kVCreatePollQuestionRightColor      =   @"color.main";
-NSString*   const   kVCreatePollQuestionLeftBGColor     =   @"color.main";
-NSString*   const   kVCreatePollQuestionRightBGColor    =   @"color.main";
-
-NSString*   const   kVCreatePostBackgroundColor         =   @"color.main";
-NSString*   const   kVCreatePostMediaLabelColor         =   @"color.main";
-NSString*   const   kVCreatePostMediaButtonColor        =   @"color.main";
-NSString*   const   kVCreatePostMediaButtonBGColor      =   @"color.main";
-NSString*   const   kVCreatePostTextColor               =   @"color.main";
-NSString*   const   KVRemoveMediaButtonColor            =   @"color.main";
-NSString*   const   kVCreatePostInputBorderColor        =   @"color.main";
-NSString*   const   kVCreatePostButtonTextColor         =   @"color.main";
-NSString*   const   kVCreatePostButtonBGColor           =   @"color.main";
-NSString*   const   kVCreatePostCountInvalidColor       =   @"color.main";
-NSString*   const   kVCreatePostCountColor              =   @"color.main";
-
-NSString*   const   kVProfileLocationColor              =   @"color.main";
 
 
 

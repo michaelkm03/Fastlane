@@ -125,7 +125,7 @@
 
     self.locationLabel.font = [[VThemeManager sharedThemeManager] themedFontForKeyPath:kVProfileLocationFont];
     self.locationLabel.text = self.profile.location;
-    self.locationLabel.textColor = [[VThemeManager sharedThemeManager] themedColorForKeyPath:kVProfileLocationColor];
+    self.locationLabel.textColor = [[VThemeManager sharedThemeManager] themedColorForKeyPath:kVAccentColor];
 
     self.navigationItem.title = self.profile.shortName;
 }

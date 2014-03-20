@@ -53,34 +53,7 @@ extern  NSString*   const   kVProfileUsernameFont;
 extern  NSString*   const   kVProfileLocationFont;
 extern  NSString*   const   kVProfileTaglineFont;
 
-//Colors
 extern  NSString*   const   kMenuTextFont;
-extern  NSString*   const   kMenuTextColor;
-
-extern  NSString*   const   kVStreamSearchBarColor;
-
-extern  NSString*   const   kVCreatePollQuestionBorderColor;
-extern  NSString*   const   kVCreatePollQuestionColor;
-extern  NSString*   const   kVCreatePollQuestionLeftBGColor;
-extern  NSString*   const   kVCreatePollQuestionRightBGColor;
-extern  NSString*   const   kVCreatePollQuestionLeftColor;
-extern  NSString*   const   kVCreatePollQuestionRightColor;
-
-extern  NSString*   const   KVRemoveMediaButtonColor;
-extern  NSString*   const   kVCreatePostMediaLabelColor;
-extern  NSString*   const   kVCreatePostMediaButtonColor;
-extern  NSString*   const   kVCreatePostBackgroundColor;
-extern  NSString*   const   kVCreatePostMediaButtonBGColor;
-
-extern  NSString*   const   kVCreatePostTextColor;
-
-extern  NSString*   const   kVCreatePostInputBorderColor;
-extern  NSString*   const   kVCreatePostButtonTextColor;
-extern  NSString*   const   kVCreatePostButtonBGColor;
-extern  NSString*   const   kVCreatePostCountInvalidColor;
-extern  NSString*   const   kVCreatePostCountColor;
-
-extern  NSString*   const   kVProfileLocationColor;
 
 @interface VThemeManager : NSObject
 
