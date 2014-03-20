@@ -11,4 +11,6 @@
 
 @interface VAsset (RestKit)
 
++ (RKEntityMapping*)entityMappingForVVoteType;
+
 @end

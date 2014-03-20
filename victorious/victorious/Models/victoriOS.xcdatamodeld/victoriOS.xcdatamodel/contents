@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="3401" systemVersion="13B42" minimumToolsVersion="Automatic" macOSVersion="Automatic" iOSVersion="Automatic">
+<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="5063" systemVersion="13C64" minimumToolsVersion="Automatic" macOSVersion="Automatic" iOSVersion="Automatic">
     <entity name="Answer" representedClassName="VAnswer" syncable="YES">
         <attribute name="currency" optional="YES" attributeType="Integer 32" minValueString="0" syncable="YES"/>
         <attribute name="display_order" attributeType="Integer 32" minValueString="0" syncable="YES"/>
@@ -18,9 +18,10 @@
     <entity name="Asset" representedClassName="VAsset" syncable="YES">
         <attribute name="data" attributeType="String" syncable="YES"/>
         <attribute name="display_order" attributeType="Integer 32" minValueString="0" syncable="YES"/>
-        <attribute name="nodeId" attributeType="Integer 64" minValueString="0" syncable="YES"/>
-        <attribute name="type" attributeType="String" syncable="YES"/>
+        <attribute name="nodeId" optional="YES" attributeType="Integer 64" minValueString="0" syncable="YES"/>
+        <attribute name="type" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="node" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Node" inverseName="assets" inverseEntity="Node" syncable="YES"/>
+        <relationship name="vote" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="VoteType" inverseName="assets" inverseEntity="VoteType" syncable="YES"/>
     </entity>
     <entity name="Category" representedClassName="VCategory" syncable="YES">
         <attribute name="name" attributeType="String" syncable="YES"/>
@@ -147,10 +148,16 @@
         <relationship name="postedSequences" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Sequence" inverseName="user" inverseEntity="Sequence" syncable="YES"/>
         <relationship name="unreadConversation" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="UnreadConversation" inverseName="user" inverseEntity="UnreadConversation" syncable="YES"/>
     </entity>
+    <entity name="VoteType" representedClassName="VVoteType" syncable="YES">
+        <attribute name="display_order" optional="YES" attributeType="Integer 32" minValueString="0" defaultValueString="0" syncable="YES"/>
+        <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="remoteId" attributeType="Integer 32" minValueString="0" defaultValueString="0" syncable="YES"/>
+        <relationship name="assets" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Asset" inverseName="vote" inverseEntity="Asset" syncable="YES"/>
+    </entity>
     <elements>
         <element name="Answer" positionX="718" positionY="108" width="128" height="178"/>
         <element name="AnswerAction" positionX="718" positionY="303" width="128" height="75"/>
-        <element name="Asset" positionX="655" positionY="-360" width="128" height="120"/>
+        <element name="Asset" positionX="655" positionY="-360" width="128" height="133"/>
         <element name="Category" positionX="862" positionY="-312" width="128" height="60"/>
         <element name="Comment" positionX="1035" positionY="-513" width="128" height="268"/>
         <element name="Conversation" positionX="1395" positionY="-477" width="128" height="118"/>
@@ -165,5 +172,6 @@
         <element name="Sequence" positionX="1015" positionY="-208" width="128" height="268"/>
         <element name="UnreadConversation" positionX="1206" positionY="-513" width="128" height="73"/>
         <element name="User" positionX="1222" positionY="-412" width="128" height="298"/>
+        <element name="VoteType" positionX="504" positionY="-486" width="128" height="103"/>
     </elements>
 </model>

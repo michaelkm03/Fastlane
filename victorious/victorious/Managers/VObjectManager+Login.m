@@ -12,9 +12,22 @@
 #import "VObjectManager+DirectMessaging.h"
 #import "VUser+RestKit.h"
 
+#import "VVoteType.h"
+
 @implementation VObjectManager (Login)
 
 NSString *kLoggedInChangedNotification = @"LoggedInChangedNotification";
+
+#pragma mark - Init
+- (RKManagedObjectRequestOperation *)appInitWithSuccessBlock:(VSuccessBlock)success
+                                                failBlock:(VFailBlock)failed
+{
+    return [self GET:@"/api/init"
+              object:nil
+          parameters:nil
+        successBlock:success
+           failBlock:failed];
+}
 
 #pragma mark - Facebook
 

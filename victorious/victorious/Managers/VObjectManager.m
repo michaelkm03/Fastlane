@@ -23,6 +23,7 @@
 #import "VPollResult+RestKit.h"
 #import "VMessage+RestKit.h"
 #import "VUnreadConversation+RestKit.h"
+#import "VVoteType+RestKit.h"
 
 #import "VPaginationStatus.h"
 
@@ -104,7 +105,8 @@
                                              [VPollResult descriptor],
                                              [VPollResult createPollResultDescriptor],
                                              [VPollResult byUserDescriptor],
-                                             [VUnreadConversation descriptor]
+                                             [VUnreadConversation descriptor],
+                                             [VVoteType descriptor]
                                              ]];
     
     self.objectCache = [[NSCache alloc] init];

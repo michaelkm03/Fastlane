@@ -11,6 +11,7 @@
 #import "VThemeManager.h"
 
 #import "VObjectManager+Sequence.h"
+#import "VObjectManager+Login.h"
 #import "VUserManager.h"
 
 @import MediaPlayer;
@@ -48,6 +49,14 @@
 
     [VObjectManager setupObjectManager];
     (void)[[VObjectManager sharedManager] initialSequenceLoad];
+    [[VObjectManager sharedManager] appInitWithSuccessBlock:^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
+    {
+        VLog(@"Succeeded with objects: %@", resultObjects);
+    }
+                                                  failBlock:^(NSOperation* operation, NSError* error)
+    {
+        VLog(@"Failed with error: %@", error);
+    }];
     
 #ifdef STABLE_DEBUG
     [TestFlight takeOff:@"8734f1a7-d756-481a-9234-2be8ba841767"];

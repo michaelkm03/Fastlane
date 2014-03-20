@@ -35,4 +35,22 @@
     return mapping;
 }
 
++ (RKEntityMapping*)entityMappingForVVoteType
+{
+    
+    
+    NSDictionary *propertyMap = @{
+                                  @"metadata.mapping.collectionIndex" : VSelectorName(display_order),
+                                  @"" : VSelectorName(data)
+                                  };
+    
+    RKEntityMapping *mapping = [RKEntityMapping
+                                mappingForEntityForName:[self entityName]
+                                inManagedObjectStore:[RKObjectManager sharedManager].managedObjectStore];
+    
+    [mapping addAttributeMappingsFromDictionary:propertyMap];
+    
+    return mapping;
+}
+
 @end

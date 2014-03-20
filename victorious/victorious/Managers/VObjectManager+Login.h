@@ -15,6 +15,9 @@ extern NSString *kLoggedInChangedNotification;
 @property (nonatomic, readonly, getter = isAuthorized)  BOOL    authorized;
 @property (nonatomic, readonly, getter = isOwner)       BOOL    owner;
 
+- (RKManagedObjectRequestOperation *)appInitWithSuccessBlock:(VSuccessBlock)success
+                                                   failBlock:(VFailBlock)failed;
+
 - (RKManagedObjectRequestOperation *)loginToFacebookWithToken:(NSString*)accessToken
                                                  SuccessBlock:(VSuccessBlock)success
                                                     failBlock:(VFailBlock)failed;
