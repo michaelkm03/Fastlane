@@ -57,9 +57,9 @@ NSString *const VMenuControllerDidSelectRowNotification = @"VMenuTableViewContro
         else
             self.inboxBadgeLabel.text = @"+999";
         
-        self.inboxBadgeLabel.font = [[VThemeManager sharedThemeManager] themedFontForKeyPath:@"theme.font.menu.badge"];
-        self.inboxBadgeLabel.textColor = [[VThemeManager sharedThemeManager] themedColorForKeyPath:@"theme.color.menu.badge.text"];
-        self.inboxBadgeLabel.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKeyPath:@"theme.color.menu.badge"];
+        self.inboxBadgeLabel.font = [[VThemeManager sharedThemeManager] themedFontForKeyPath:kVDetailFont];
+        self.inboxBadgeLabel.textColor = [[VThemeManager sharedThemeManager] themedColorForKeyPath:kVAccentColor];
+        self.inboxBadgeLabel.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKeyPath:kVMainColor];
         [self.inboxBadgeLabel setHidden:NO];
     }
     
@@ -67,14 +67,14 @@ NSString *const VMenuControllerDidSelectRowNotification = @"VMenuTableViewContro
     self.nameLabel.text = [NSString stringWithFormat:NSLocalizedString(@"%@ Channel", @"<CHANNEL NAME> Channel"), channelName];
     
     [[UIImageView appearanceWhenContainedIn:[self class], nil]
-     setTintColor:[[VThemeManager sharedThemeManager] themedColorForKeyPath:@"theme.color.menu.icon"]];
+     setTintColor:[[VThemeManager sharedThemeManager] themedColorForKeyPath:kVAccentColor]];
     [self.imageViews enumerateObjectsUsingBlock:^(UIImageView *imageView, NSUInteger idx, BOOL *stop)
     {
         imageView.image = [imageView.image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
     }];
     [self.labels enumerateObjectsUsingBlock:^(UILabel *label, NSUInteger idx, BOOL *stop)
     {
-        label.font = [[VThemeManager sharedThemeManager] themedFontForKeyPath:kVTitleFont];
+        label.font = [[VThemeManager sharedThemeManager] themedFontForKeyPath:kVDetailFont];
 //        label.textColor = [[VThemeManager sharedThemeManager] themedColorForKeyPath:kMenuTextColor];
     }];
     

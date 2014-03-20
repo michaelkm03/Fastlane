@@ -87,53 +87,55 @@
 	<key>font</key>
 	<dict>
 		<key>fontName</key>
-		<string>Roboto-Regular</string>
+		<string>MuseoSans-500</string>
 		<key>fontSize</key>
 		<integer>15</integer>
 	</dict>
 	<key>font.title</key>
 	<dict>
 		<key>fontName</key>
-		<string>Roboto-Regular</string>
+		<string>MuseoSans-500</string>
 		<key>fontSize</key>
-		<integer>15</integer>
+		<integer>18</integer>
 	</dict>
 	<key>font.title.content</key>
 	<dict>
 		<key>fontName</key>
-		<string>Roboto-Regular</string>
+		<string>MuseoSans-300</string>
 		<key>fontSize</key>
-		<integer>15</integer>
+		<integer>20</integer>
 	</dict>
 	<key>font.detail</key>
 	<dict>
 		<key>fontName</key>
-		<string>Roboto-Regular</string>
+		<string>MuseoSans-500</string>
 		<key>fontSize</key>
-		<integer>15</integer>
+		<integer>13</integer>
 	</dict>
 	<key>font.date</key>
 	<dict>
 		<key>fontName</key>
-		<string>Roboto-Regular</string>
+		<string>MuseoSans-100</string>
 		<key>fontSize</key>
-		<integer>15</integer>
+		<integer>12</integer>
 	</dict>
 	<key>font.button</key>
 	<dict>
 		<key>fontName</key>
-		<string>Roboto-Regular</string>
+		<string>MuseoSans-100</string>
 		<key>fontSize</key>
 		<integer>15</integer>
 	</dict>
 	<key>font.button.poll</key>
 	<dict>
 		<key>fontName</key>
-		<string>Roboto-Regular</string>
+		<string>MuseoSans-100</string>
 		<key>fontSize</key>
-		<integer>15</integer>
+		<integer>17</integer>
 	</dict>
 	<key>image.emptyprofile</key>
+	<string>http://dev.getvictorious.com/api/static/privacy</string>
+	<key>image.launchImage</key>
 	<string>http://dev.getvictorious.com/api/static/privacy</string>
 </dict>
 </plist>

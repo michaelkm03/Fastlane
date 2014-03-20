@@ -141,6 +141,9 @@ CGFloat kContentMediaViewOffset = 154;
     self.orImageView.hidden = ![self.currentNode isPoll];
     self.orImageView.alpha = 0;
     
+    self.firstPollButton.alpha = 0;
+    self.secondPollButton.alpha = 0;
+    
     [self.topActionsView setYOrigin:self.mediaView.frame.origin.y];
     self.topActionsView.alpha = 0;
     [UIView animateWithDuration:.2f
@@ -149,6 +152,8 @@ CGFloat kContentMediaViewOffset = 154;
          [self.topActionsView setYOrigin:0];
          self.topActionsView.alpha = 1;
          self.orImageView.alpha = 1;
+         self.firstPollButton.alpha = 1;
+         self.secondPollButton.alpha = 1;
      }
                      completion:^(BOOL finished)
      {
