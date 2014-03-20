@@ -74,7 +74,7 @@ NSString *const VMenuControllerDidSelectRowNotification = @"VMenuTableViewContro
     }];
     [self.labels enumerateObjectsUsingBlock:^(UILabel *label, NSUInteger idx, BOOL *stop)
     {
-        label.font = [[VThemeManager sharedThemeManager] themedFontForKeyPath:kMenuTextFont];
+        label.font = [[VThemeManager sharedThemeManager] themedFontForKeyPath:kVTitleFont];
 //        label.textColor = [[VThemeManager sharedThemeManager] themedColorForKeyPath:kMenuTextColor];
     }];
     

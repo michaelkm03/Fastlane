@@ -64,7 +64,7 @@ CGFloat VCreateViewControllerLargePadding = 20;
     self.mediaLabel.textColor = [[VThemeManager sharedThemeManager] themedColorForKeyPath:kVAccentColor];
     [self.mediaLabel centerInContainerOnAxis:NSLayoutAttributeCenterX];
     
-    self.textView.font = [[VThemeManager sharedThemeManager] themedFontForKeyPath:kVCreatePostFont];
+    self.textView.font = [[VThemeManager sharedThemeManager] themedFontForKeyPath:kVButtonFont];
     self.textView.textColor = [[VThemeManager sharedThemeManager] themedColorForKeyPath:kVAccentColor];
     self.textView.layer.borderColor = [[[VThemeManager sharedThemeManager] themedColorForKeyPath:kVMainColor] CGColor];
     self.textView.layer.borderWidth = 1;
@@ -72,7 +72,7 @@ CGFloat VCreateViewControllerLargePadding = 20;
     self.postButton.tintColor = [[VThemeManager sharedThemeManager] themedColorForKeyPath:kVAccentColor];
     self.postButton.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKeyPath:kVMainColor];
     [self.postButton setTitle:NSLocalizedString(@"POST IT", @"Post button") forState:UIControlStateNormal];
-    self.postButton.titleLabel.font = [[VThemeManager sharedThemeManager] themedFontForKeyPath:kVCreatePostButtonFont];
+    self.postButton.titleLabel.font = [[VThemeManager sharedThemeManager] themedFontForKeyPath:kVButtonFont];
     
     self.characterCountLabel.textColor = [[VThemeManager sharedThemeManager] themedColorForKeyPath:kVMainColor];
     self.characterCountLabel.text = @(VConstantsMessageLength).stringValue;

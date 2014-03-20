@@ -29,7 +29,6 @@ NSString *kStreamsWillCommentNotification = @"kStreamsWillCommentNotification";
 @interface VStreamViewCell()
 
 @property (weak, nonatomic) IBOutlet UILabel *usernameLabel;
-@property (weak, nonatomic) IBOutlet UILabel *locationLabel;
 @property (weak, nonatomic) IBOutlet UILabel *dateLabel;
 @property (weak, nonatomic) IBOutlet UILabel *descriptionLabel;
 @property (weak, nonatomic) IBOutlet UIButton *profileImageButton;
@@ -52,10 +51,9 @@ NSString *kStreamsWillCommentNotification = @"kStreamsWillCommentNotification";
     
     self.commentViews = [[NSMutableArray alloc] init];
     
-    self.usernameLabel.font = [[VThemeManager sharedThemeManager] themedFontForKeyPath:kVStreamUsernameFont];
-    self.locationLabel.font = [[VThemeManager sharedThemeManager] themedFontForKeyPath:kVStreamLocationFont];
-    self.dateLabel.font = [[VThemeManager sharedThemeManager] themedFontForKeyPath:kVStreamDateFont];
-    self.descriptionLabel.font = [[VThemeManager sharedThemeManager] themedFontForKeyPath:kVStreamDescriptionFont];
+    self.usernameLabel.font = [[VThemeManager sharedThemeManager] themedFontForKeyPath:kVDetailFont];
+    self.dateLabel.font = [[VThemeManager sharedThemeManager] themedFontForKeyPath:kVDateFont];
+    self.descriptionLabel.font = [[VThemeManager sharedThemeManager] themedFontForKeyPath:kVContentTitleFont];
     self.dateImageView.image = [self.dateImageView.image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
 }
 
@@ -78,7 +76,6 @@ NSString *kStreamsWillCommentNotification = @"kStreamsWillCommentNotification";
         self.animationImage.alpha = .5f;
     
     self.usernameLabel.text = self.sequence.user.name;
-    self.locationLabel.text = self.sequence.user.location;
     self.descriptionLabel.text = self.sequence.name;
     self.dateLabel.text = [self.sequence.releasedAt timeSince];
     [self.previewImageView setImageWithURL:[NSURL URLWithString:_sequence.previewImage]

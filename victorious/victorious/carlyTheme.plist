@@ -91,6 +91,48 @@
 		<key>fontSize</key>
 		<integer>15</integer>
 	</dict>
+	<key>font.title</key>
+	<dict>
+		<key>fontName</key>
+		<string>Roboto-Regular</string>
+		<key>fontSize</key>
+		<integer>15</integer>
+	</dict>
+	<key>font.title.content</key>
+	<dict>
+		<key>fontName</key>
+		<string>Roboto-Regular</string>
+		<key>fontSize</key>
+		<integer>15</integer>
+	</dict>
+	<key>font.detail</key>
+	<dict>
+		<key>fontName</key>
+		<string>Roboto-Regular</string>
+		<key>fontSize</key>
+		<integer>15</integer>
+	</dict>
+	<key>font.date</key>
+	<dict>
+		<key>fontName</key>
+		<string>Roboto-Regular</string>
+		<key>fontSize</key>
+		<integer>15</integer>
+	</dict>
+	<key>font.button</key>
+	<dict>
+		<key>fontName</key>
+		<string>Roboto-Regular</string>
+		<key>fontSize</key>
+		<integer>15</integer>
+	</dict>
+	<key>font.button.poll</key>
+	<dict>
+		<key>fontName</key>
+		<string>Roboto-Regular</string>
+		<key>fontSize</key>
+		<integer>15</integer>
+	</dict>
 	<key>image.emptyprofile</key>
 	<string>http://dev.getvictorious.com/api/static/privacy</string>
 </dict>

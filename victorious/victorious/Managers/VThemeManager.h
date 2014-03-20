@@ -25,6 +25,12 @@ extern  NSString*   const   kVMenuBackgroundImage;
 extern  NSString*   const   kVMenuBackgroundImage5;
 
 //Fonts
+extern  NSString*   const   kVTitleFont;
+extern  NSString*   const   kVContentTitleFont;
+extern  NSString*   const   kVDetailFont;
+extern  NSString*   const   kVDateFont;
+extern  NSString*   const   kVButtonFont;
+extern  NSString*   const   kVPollButtonFont;
 
 
 //Colors
@@ -35,25 +41,6 @@ extern  NSString*   const   kVMainColor;
 extern  NSString*   const   kVSecondaryMainColor;
 
 extern  NSString*   const   kVLinkColor;
-
-
-#pragma mark - old theme constants
-//Fonts
-extern  NSString*   const   kVStreamLocationFont;
-extern  NSString*   const   kVStreamUsernameFont;
-extern  NSString*   const   kVStreamDateFont;
-extern  NSString*   const   kVStreamDescriptionFont;
-
-extern  NSString*   const   kVCommentUsernameFont;
-
-extern  NSString*   const   kVCreatePostFont;
-extern  NSString*   const   kVCreatePostButtonFont;
-
-extern  NSString*   const   kVProfileUsernameFont;
-extern  NSString*   const   kVProfileLocationFont;
-extern  NSString*   const   kVProfileTaglineFont;
-
-extern  NSString*   const   kMenuTextFont;
 
 @interface VThemeManager : NSObject
 
