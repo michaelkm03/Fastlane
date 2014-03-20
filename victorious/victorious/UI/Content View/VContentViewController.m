@@ -120,6 +120,7 @@ CGFloat kContentMediaViewOffset = 154;
         button.tintColor = [[VThemeManager sharedThemeManager] themedColorForKeyPath:kVContentAccentColor];
     }
     self.descriptionLabel.textColor = [[VThemeManager sharedThemeManager] themedColorForKeyPath:kVContentAccentColor];
+    self.descriptionLabel.font = [[VThemeManager sharedThemeManager] themedFontForKeyPath:kVContentTitleFont];
     
     [self.remixButton setImage:[self.remixButton.imageView.image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] forState:UIControlStateNormal];
     self.remixButton.tintColor = [[VThemeManager sharedThemeManager] themedColorForKeyPath:kVAccentColor];
