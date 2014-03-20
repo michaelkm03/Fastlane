@@ -11,6 +11,7 @@
 #import "VConstants.h"
 
 @import CoreLocation;
+@import AddressBookUI;
 
 @interface VProfileWithEmailViewController ()   <CLLocationManagerDelegate>
 @property (nonatomic, strong) CLLocationManager*    locationManager;
@@ -52,8 +53,7 @@
     [self.geoCoder reverseGeocodeLocation:location completionHandler:^(NSArray *placemarks, NSError *error)
     {
         CLPlacemark*    mapLocation = [placemarks firstObject];
-        self.locationTextField.text = mapLocation.locality;
-        
+        self.locationTextField.text = ABCreateStringWithAddressDictionary(mapLocation.addressDictionary, YES);
         self.geoCoder = nil;
     }];
 }

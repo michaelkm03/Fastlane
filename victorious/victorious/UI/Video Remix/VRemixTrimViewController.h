@@ -12,6 +12,6 @@
 
 @interface VRemixTrimViewController : VAbstractVideoEditorViewController
 
-+ (UIViewController *)remixViewControllerWithAsset:(AVURLAsset *)asset;
++ (UIViewController *)remixViewControllerWithURL:(NSURL *)url;
 
 @end
