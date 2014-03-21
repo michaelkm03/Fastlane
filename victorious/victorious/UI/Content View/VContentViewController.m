@@ -119,8 +119,8 @@ CGFloat kContentMediaViewOffset = 154;
         [button setImage:[button.imageView.image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] forState:UIControlStateNormal];
         button.tintColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVContentAccentColor];
     }
-    self.descriptionLabel.textColor = [[VThemeManager sharedThemeManager] themedColorForKeyPath:kVContentAccentColor];
-    self.descriptionLabel.font = [[VThemeManager sharedThemeManager] themedFontForKeyPath:kVContentTitleFont];
+    self.descriptionLabel.textColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVContentAccentColor];
+    self.descriptionLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVContentTitleFont];
     
     [self.remixButton setImage:[self.remixButton.imageView.image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] forState:UIControlStateNormal];
     self.remixButton.tintColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVAccentColor];
