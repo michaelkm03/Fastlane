@@ -20,9 +20,9 @@
 - (void)awakeFromNib
 {
     if (IS_IPHONE_5)
-        self.backgroundImage = [[[VThemeManager sharedThemeManager] themedImageForKeyPath:kVMenuBackgroundImage5] applyLightEffect];
+        self.backgroundImage = [[[VThemeManager sharedThemeManager] themedImageForKey:kVMenuBackgroundImage5] applyLightEffect];
     else
-        self.backgroundImage = [[[VThemeManager sharedThemeManager] themedImageForKeyPath:kVMenuBackgroundImage] applyLightEffect];
+        self.backgroundImage = [[[VThemeManager sharedThemeManager] themedImageForKey:kVMenuBackgroundImage] applyLightEffect];
 
     self.menuViewController = [self.storyboard instantiateViewControllerWithIdentifier:NSStringFromClass([VMenuController class])];
     self.contentViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"contentController"];

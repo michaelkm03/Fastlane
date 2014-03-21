@@ -28,9 +28,9 @@
     [self.navigationController setNavigationBarHidden:YES animated:NO];
     
     if (IS_IPHONE_5)
-        self.view.layer.contents = (id)[[VThemeManager sharedThemeManager] themedImageForKeyPath:kVMenuBackgroundImage5].CGImage;
+        self.view.layer.contents = (id)[[VThemeManager sharedThemeManager] themedImageForKey:kVMenuBackgroundImage5].CGImage;
     else
-        self.view.layer.contents = (id)[[VThemeManager sharedThemeManager] themedImageForKeyPath:kVMenuBackgroundImage].CGImage;
+        self.view.layer.contents = (id)[[VThemeManager sharedThemeManager] themedImageForKey:kVMenuBackgroundImage].CGImage;
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(initialLoadFinished:) name:kInitialLoadFinishedNotification object:nil];
 }

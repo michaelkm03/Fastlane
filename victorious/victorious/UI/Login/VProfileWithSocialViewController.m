@@ -27,11 +27,11 @@
     self.nameTextField.delegate = self;
 
     self.agreementText.delegate = self;
-    [self.agreementText setText:[[VThemeManager sharedThemeManager] themedStringForPath:kVAgreementText]];
-    NSRange linkRange = [self.agreementText.text rangeOfString:[[VThemeManager sharedThemeManager] themedStringForPath:kVAgreementLinkText]];
+    [self.agreementText setText:[[VThemeManager sharedThemeManager] themedStringForKey:kVAgreementText]];
+    NSRange linkRange = [self.agreementText.text rangeOfString:[[VThemeManager sharedThemeManager] themedStringForKey:kVAgreementLinkText]];
     if (linkRange.length > 0)
     {
-        NSURL *url = [NSURL URLWithString:[[VThemeManager sharedThemeManager] themedStringForPath:kVAgreementLink]];
+        NSURL *url = [NSURL URLWithString:[[VThemeManager sharedThemeManager] themedStringForKey:kVAgreementLink]];
         [self.agreementText addLinkToURL:url withRange:linkRange];
     }
 }

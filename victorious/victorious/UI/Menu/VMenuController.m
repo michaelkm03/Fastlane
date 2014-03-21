@@ -57,24 +57,24 @@ NSString *const VMenuControllerDidSelectRowNotification = @"VMenuTableViewContro
         else
             self.inboxBadgeLabel.text = @"+999";
         
-        self.inboxBadgeLabel.font = [[VThemeManager sharedThemeManager] themedFontForKeyPath:@"theme.font.menu.badge"];
-        self.inboxBadgeLabel.textColor = [[VThemeManager sharedThemeManager] themedColorForKeyPath:@"theme.color.menu.badge.text"];
-        self.inboxBadgeLabel.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKeyPath:@"theme.color.menu.badge"];
+        self.inboxBadgeLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:@"theme.font.menu.badge"];
+        self.inboxBadgeLabel.textColor = [[VThemeManager sharedThemeManager] themedColorForKey:@"theme.color.menu.badge.text"];
+        self.inboxBadgeLabel.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:@"theme.color.menu.badge"];
         [self.inboxBadgeLabel setHidden:NO];
     }
     
-    NSString *channelName = [[VThemeManager sharedThemeManager] themedValueForKeyPath:kVChannelName];
+    NSString *channelName = [[VThemeManager sharedThemeManager] themedValueForKey:kVChannelName];
     self.nameLabel.text = [NSString stringWithFormat:NSLocalizedString(@"%@ Channel", @"<CHANNEL NAME> Channel"), channelName];
     
     [[UIImageView appearanceWhenContainedIn:[self class], nil]
-     setTintColor:[[VThemeManager sharedThemeManager] themedColorForKeyPath:@"theme.color.menu.icon"]];
+     setTintColor:[[VThemeManager sharedThemeManager] themedColorForKey:@"theme.color.menu.icon"]];
     [self.imageViews enumerateObjectsUsingBlock:^(UIImageView *imageView, NSUInteger idx, BOOL *stop)
     {
         imageView.image = [imageView.image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
     }];
     [self.labels enumerateObjectsUsingBlock:^(UILabel *label, NSUInteger idx, BOOL *stop)
     {
-        label.font = [[VThemeManager sharedThemeManager] themedFontForKeyPath:kMenuTextFont];
+        label.font = [[VThemeManager sharedThemeManager] themedFontForKey:kMenuTextFont];
 //        label.textColor = [[VThemeManager sharedThemeManager] themedColorForKeyPath:kMenuTextColor];
     }];
     
@@ -182,7 +182,7 @@ NSString *const VMenuControllerDidSelectRowNotification = @"VMenuTableViewContro
         mailComposer.mailComposeDelegate = self;
         
         [mailComposer setSubject:NSLocalizedString(@"HelpNeeded", @"Need Help")];
-        [mailComposer setToRecipients:@[[[VThemeManager sharedThemeManager] themedValueForKeyPath:kVChannelURLSupport]]];
+        [mailComposer setToRecipients:@[[[VThemeManager sharedThemeManager] themedValueForKey:kVChannelURLSupport]]];
 
         //  Dismiss the menu controller first, since we want to be a child of the root controller
         [self presentViewController:mailComposer animated:YES completion:nil];

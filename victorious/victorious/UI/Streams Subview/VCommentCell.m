@@ -64,7 +64,7 @@ NSString* const kChatBubbleLeftImage = @"ChatBubbleLeft";
     [super layoutSubviews];
     
 //    self.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKeyPath:@"theme.color.messages.background"];
-    self.dateLabel.font = [[VThemeManager sharedThemeManager] themedFontForKeyPath:@"theme.font.stream.timeSince"];
+    self.dateLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:@"theme.font.stream.timeSince"];
     
     self.profileImageButton.clipsToBounds = YES;
     self.profileImageButton.layer.cornerRadius = CGRectGetHeight(self.profileImageButton.bounds)/2;
@@ -198,7 +198,7 @@ NSString* const kChatBubbleLeftImage = @"ChatBubbleLeft";
 
 + (CGSize)frameSizeForMessageText:(NSString*)text
 {
-    NSDictionary *stringAttributes = [NSDictionary dictionaryWithObject:[[VThemeManager sharedThemeManager] themedFontForKeyPath:@"theme.font.stream"]
+    NSDictionary *stringAttributes = [NSDictionary dictionaryWithObject:[[VThemeManager sharedThemeManager] themedFontForKey:@"theme.font.stream"]
                                                                  forKey: NSFontAttributeName];
     return [text frameSizeForWidth:kCommentMessageLabelWidth
                      andAttributes:stringAttributes];

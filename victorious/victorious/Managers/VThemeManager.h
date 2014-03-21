@@ -64,14 +64,13 @@ extern  NSString*   const   kMenuTextFont;
 - (void)applyStyling;
 - (void)removeStyling;
 
-- (id)themedValueForKeyPath:(NSString *)keyPath;
-
-- (NSString *)themedStringForPath:(NSString *)keyPath;
-- (UIColor *)themedColorForKeyPath:(NSString *)keyPath;
-- (UIColor *)themedTranslucencyColorForKeyPath:(NSString *)keyPath;
-- (NSURL *)themedURLForKeyPath:(NSString *)keyPath;
-- (NSURL *)themedImageURLForKeyPath:(NSString *)keyPath;
-- (UIImage *)themedImageForKeyPath:(NSString *)keyPath;
-- (UIFont *)themedFontForKeyPath:(NSString *)keyPath;
+- (id)themedValueForKey:(NSString *)key;
+- (NSString *)themedStringForKey:(NSString *)key;
+- (UIColor *)themedColorForKey:(NSString *)key;
+- (UIColor *)themedTranslucencyColorForKey:(NSString *)key;
+- (NSURL *)themedURLForKey:(NSString *)key;
+- (NSURL *)themedImageURLForKey:(NSString *)key;
+- (UIImage *)themedImageForKey:(NSString *)key;
+- (UIFont *)themedFontForKey:(NSString *)key;
 
 @end

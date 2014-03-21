@@ -24,9 +24,9 @@
     [super awakeFromNib];
 
     self.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-    self.seenView.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKeyPath:@"theme.color.conversation.seen"];
+    self.seenView.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:@"theme.color.conversation.seen"];
     
-    self.dateLabel.font = [[VThemeManager sharedThemeManager] themedFontForKeyPath:@"theme.font.stream.timeSince"];
+    self.dateLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:@"theme.font.stream.timeSince"];
 }
 
 - (void)layoutSubviews

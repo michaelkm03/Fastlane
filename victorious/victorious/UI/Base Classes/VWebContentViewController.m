@@ -21,7 +21,7 @@
     
     self.webView.delegate    =   self;
     
-    NSURL*  webContentURL  =   [[VThemeManager sharedThemeManager] themedURLForKeyPath:self.urlKeyPath];
+    NSURL*  webContentURL  =   [[VThemeManager sharedThemeManager] themedURLForKey:self.urlKeyPath];
     [self.webView loadRequest:[NSURLRequest requestWithURL:webContentURL]];
 }
 

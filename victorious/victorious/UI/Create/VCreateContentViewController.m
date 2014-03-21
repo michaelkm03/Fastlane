@@ -52,29 +52,29 @@ CGFloat VCreateViewControllerLargePadding = 20;
     
     UIImage* newImage = [self.mediaButton.imageView.image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
     [self.mediaButton setImage:newImage forState:UIControlStateNormal];
-    self.mediaButton.tintColor = [[VThemeManager sharedThemeManager] themedColorForKeyPath:kVAccentColor];
-    self.mediaButton.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKeyPath:kVMainColor];
+    self.mediaButton.tintColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVAccentColor];
+    self.mediaButton.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVMainColor];
     self.mediaButton.layer.cornerRadius = self.mediaButton.frame.size.height/2;
 
     newImage = [self.removeMediaButton.imageView.image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
     [self.removeMediaButton setImage:newImage forState:UIControlStateNormal];
-    self.removeMediaButton.tintColor = [[VThemeManager sharedThemeManager] themedColorForKeyPath:kVMainColor];
+    self.removeMediaButton.tintColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVMainColor];
     self.removeMediaButton.hidden = YES;
     
-    self.mediaLabel.textColor = [[VThemeManager sharedThemeManager] themedColorForKeyPath:kVAccentColor];
+    self.mediaLabel.textColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVAccentColor];
     [self.mediaLabel centerInContainerOnAxis:NSLayoutAttributeCenterX];
     
-    self.textView.font = [[VThemeManager sharedThemeManager] themedFontForKeyPath:kVCreatePostFont];
-    self.textView.textColor = [[VThemeManager sharedThemeManager] themedColorForKeyPath:kVAccentColor];
-    self.textView.layer.borderColor = [[[VThemeManager sharedThemeManager] themedColorForKeyPath:kVMainColor] CGColor];
+    self.textView.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVCreatePostFont];
+    self.textView.textColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVAccentColor];
+    self.textView.layer.borderColor = [[[VThemeManager sharedThemeManager] themedColorForKey:kVMainColor] CGColor];
     self.textView.layer.borderWidth = 1;
     
-    self.postButton.tintColor = [[VThemeManager sharedThemeManager] themedColorForKeyPath:kVAccentColor];
-    self.postButton.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKeyPath:kVMainColor];
+    self.postButton.tintColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVAccentColor];
+    self.postButton.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVMainColor];
     [self.postButton setTitle:NSLocalizedString(@"POST IT", @"Post button") forState:UIControlStateNormal];
-    self.postButton.titleLabel.font = [[VThemeManager sharedThemeManager] themedFontForKeyPath:kVCreatePostButtonFont];
+    self.postButton.titleLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVCreatePostButtonFont];
     
-    self.characterCountLabel.textColor = [[VThemeManager sharedThemeManager] themedColorForKeyPath:kVMainColor];
+    self.characterCountLabel.textColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVMainColor];
     self.characterCountLabel.text = @(VConstantsMessageLength).stringValue;
     
     [self validatePostButtonState];
@@ -192,11 +192,11 @@ CGFloat VCreateViewControllerLargePadding = 20;
     NSInteger characterCount = VConstantsMessageLength-[textView.text length];
     if(characterCount < 0)
     {
-        self.characterCountLabel.textColor = [[VThemeManager sharedThemeManager] themedColorForKeyPath:kVAccentColor];
+        self.characterCountLabel.textColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVAccentColor];
     }
     else
     {
-        self.characterCountLabel.textColor = [[VThemeManager sharedThemeManager] themedColorForKeyPath:kVAccentColor];
+        self.characterCountLabel.textColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVAccentColor];
     }
     self.characterCountLabel.text = [NSString stringWithFormat:@"%lu", (unsigned long)characterCount];
     [self validatePostButtonState];

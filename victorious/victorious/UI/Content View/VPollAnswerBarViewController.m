@@ -55,11 +55,11 @@
     self.leftLabel.textAlignment = NSTextAlignmentCenter;
     self.rightLabel.textAlignment = NSTextAlignmentCenter;
     
-    self.leftLabel.textColor = [[VThemeManager sharedThemeManager] themedColorForKeyPath:kVAccentColor];
-    self.rightLabel.textColor = [[VThemeManager sharedThemeManager] themedColorForKeyPath:kVAccentColor];
+    self.leftLabel.textColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVAccentColor];
+    self.rightLabel.textColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVAccentColor];
     
-    self.leftButton.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKeyPath:kVMainColor];
-    self.rightButton.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKeyPath:kVSecondaryMainColor];
+    self.leftButton.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVMainColor];
+    self.rightButton.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVSecondaryMainColor];
     
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(checkIfAnswered)
