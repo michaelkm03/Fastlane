@@ -13,7 +13,7 @@
 
 @implementation VVoteType (Fetcher)
 
-- (NSArray*)allVoteTypes
++ (NSArray*)allVoteTypes
 {
     NSFetchRequest *request = [[NSFetchRequest alloc] initWithEntityName:[VVoteType entityName]];
     NSManagedObjectContext* context = [VObjectManager sharedManager].managedObjectStore.persistentStoreManagedObjectContext;

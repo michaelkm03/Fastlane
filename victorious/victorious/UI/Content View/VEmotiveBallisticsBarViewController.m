@@ -16,6 +16,8 @@
 
 #import "VThemeManager.h"
 
+#import "VVoteType+Fetcher.h"
+
 @interface VEmotiveBallisticsBarViewController ()
 
 @property (weak, nonatomic) IBOutlet UILabel* positiveEmotiveLabel;
@@ -56,6 +58,13 @@
     self.positiveEmotiveButton.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVMainColor];
     self.negativeEmotiveButton.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVSecondaryMainColor];
     
+    NSArray* voteTypes = [VVoteType allVoteTypes];
+    [voteTypes enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+        if (idx == self.positiveEmotiveButton.tag)
+        {
+//            [self.positiveEmotiveButton setImage:[] forState:<#(UIControlState)#>]
+        }
+    }];
 }
 
 #pragma mark - Animation
