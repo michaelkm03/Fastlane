@@ -411,7 +411,7 @@ CGFloat kContentMediaViewOffset = 154;
     
     self.pollPreviewView.hidden = YES;
     self.mpPlayerContainmentView.hidden = YES;
-    self.remixButton.hidden = NO;
+    self.remixButton.hidden = YES;
     
     [self updateActionBar];
 }
@@ -420,7 +420,9 @@ CGFloat kContentMediaViewOffset = 154;
 - (void)loadVideo
 {
     [self loadImage];
-    
+
+    self.remixButton.hidden = NO;
+
     [self.mpController setContentURL:[NSURL URLWithString:self.currentAsset.data]];
     self.mpPlayerContainmentView.hidden = YES;
     [self.mpController prepareToPlay];
