@@ -121,8 +121,14 @@
                                               mediaData:mediaData
                                               extension:mediaType
                                                mediaUrl:nil
-                                           successBlock:nil
-                                              failBlock:nil];
+                                           successBlock:^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
+    {
+        VLog(@"Succeeded with objects: %@", resultObjects);
+    }
+                                              failBlock:^(NSOperation* operation, NSError* error)
+    {
+        VLog(@"Failed with error: %@", error);
+    }];
     
     [self dismissViewControllerAnimated:YES completion:nil];
 }

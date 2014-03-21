@@ -26,6 +26,17 @@ NSString*   const   kVMenuBackgroundImage5              =   @"LaunchImage-700-56
 
 #pragma mark - Fonts
 
+NSString*   const   kVTitleFont                         =   @"font.title";
+NSString*   const   kVContentTitleFont                  =   @"font.title.content";
+
+NSString*   const   kVDetailFont                        =   @"font.detail";
+NSString*   const   kVDateFont                          =   @"font.date";
+
+NSString*   const   kVButtonFont                        =   @"font.button";
+
+NSString*   const   kVPollButtonFont                    =   @"font.button.poll";
+
+
 #pragma mark - Colors
 NSString*   const   kVAccentColor                       =   @"color.accent";
 NSString*   const   kVContentAccentColor                =   @"color.accent.content";
@@ -35,25 +46,6 @@ NSString*   const   kVMainColor                         =   @"color.main";
 NSString*   const   kVSecondaryMainColor                =   @"color.main.secondary";
 
 NSString*   const   kVLinkColor                         =   @"color.link";
-
-#pragma mark - old theme constants
-#pragma mark - Fonts
-NSString*   const   kMenuTextFont                       =   @"font";
-
-NSString*   const   kVStreamLocationFont                =   @"font";
-NSString*   const   kVStreamUsernameFont                =   @"font";
-NSString*   const   kVStreamDateFont                    =   @"font";
-NSString*   const   kVStreamDescriptionFont             =   @"font";
-
-NSString*   const   kVCommentUsernameFont               =   @"font";
-
-NSString*   const   kVCreatePostFont                    =   @"font";
-NSString*   const   kVCreatePostButtonFont              =   @"font";
-
-NSString*   const   kVProfileUsernameFont               =   @"font";
-NSString*   const   kVProfileLocationFont               =   @"font";
-NSString*   const   kVProfileTaglineFont                =   @"font";
-
 
 
 @interface      VThemeManager   ()
