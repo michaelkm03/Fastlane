@@ -2,13 +2,12 @@
 //  VAsset.m
 //  victorious
 //
-//  Created by Will Long on 3/19/14.
+//  Created by Will Long on 3/20/14.
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
 #import "VAsset.h"
 #import "VNode.h"
-#import "VVoteType.h"
 
 
 @implementation VAsset
@@ -18,6 +17,5 @@
 @dynamic nodeId;
 @dynamic type;
 @dynamic node;
-@dynamic vote;
 
 @end

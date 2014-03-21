@@ -1,5 +1,5 @@
 //
-//  VVoteType.m
+//  VVoteType+Fetcher.h
 //  victorious
 //
 //  Created by Will Long on 3/20/14.
@@ -8,12 +8,8 @@
 
 #import "VVoteType.h"
 
+@interface VVoteType (Fetcher)
 
-@implementation VVoteType
-
-@dynamic display_order;
-@dynamic name;
-@dynamic remoteId;
-@dynamic images;
+- (NSArray*)imageURLs;
 
 @end

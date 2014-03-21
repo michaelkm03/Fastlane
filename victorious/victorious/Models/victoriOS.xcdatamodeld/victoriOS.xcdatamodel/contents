@@ -21,7 +21,6 @@
         <attribute name="nodeId" optional="YES" attributeType="Integer 64" minValueString="0" syncable="YES"/>
         <attribute name="type" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="node" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Node" inverseName="assets" inverseEntity="Node" syncable="YES"/>
-        <relationship name="vote" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="VoteType" inverseName="assets" inverseEntity="VoteType" syncable="YES"/>
     </entity>
     <entity name="Category" representedClassName="VCategory" syncable="YES">
         <attribute name="name" attributeType="String" syncable="YES"/>
@@ -150,14 +149,14 @@
     </entity>
     <entity name="VoteType" representedClassName="VVoteType" syncable="YES">
         <attribute name="display_order" optional="YES" attributeType="Integer 32" minValueString="0" defaultValueString="0" syncable="YES"/>
+        <attribute name="images" optional="YES" attributeType="Transformable" syncable="YES"/>
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="remoteId" attributeType="Integer 32" minValueString="0" defaultValueString="0" syncable="YES"/>
-        <relationship name="assets" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Asset" inverseName="vote" inverseEntity="Asset" syncable="YES"/>
     </entity>
     <elements>
         <element name="Answer" positionX="718" positionY="108" width="128" height="178"/>
         <element name="AnswerAction" positionX="718" positionY="303" width="128" height="75"/>
-        <element name="Asset" positionX="655" positionY="-360" width="128" height="133"/>
+        <element name="Asset" positionX="655" positionY="-360" width="128" height="118"/>
         <element name="Category" positionX="862" positionY="-312" width="128" height="60"/>
         <element name="Comment" positionX="1035" positionY="-513" width="128" height="268"/>
         <element name="Conversation" positionX="1395" positionY="-477" width="128" height="118"/>
