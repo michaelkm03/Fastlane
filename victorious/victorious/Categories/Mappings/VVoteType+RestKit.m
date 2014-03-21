@@ -46,7 +46,7 @@
     return [RKResponseDescriptor responseDescriptorWithMapping:[self entityMapping]
                                                         method:RKRequestMethodGET
                                                    pathPattern:@"/api/init"
-                                                       keyPath:@"payload/votetypes"
+                                                       keyPath:@"payload.votetypes"
                                                    statusCodes:RKStatusCodeIndexSetForClass(RKStatusCodeClassSuccessful)];
 }
 

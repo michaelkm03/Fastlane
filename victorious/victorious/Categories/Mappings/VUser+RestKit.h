@@ -11,7 +11,7 @@
 
 @interface VUser (RestKit)
 
-+ (RKResponseDescriptor*)descriptor;
++ (NSArray*)descriptors;
 
 - (BOOL)isEqualToUser:(VUser *)user;
 

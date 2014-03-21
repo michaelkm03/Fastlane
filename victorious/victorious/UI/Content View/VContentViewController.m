@@ -120,6 +120,7 @@ CGFloat kContentMediaViewOffset = 154;
         button.tintColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVContentAccentColor];
     }
     self.descriptionLabel.textColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVContentAccentColor];
+    self.descriptionLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVContentTitleFont];
     
     [self.remixButton setImage:[self.remixButton.imageView.image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] forState:UIControlStateNormal];
     self.remixButton.tintColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVAccentColor];
@@ -410,7 +411,7 @@ CGFloat kContentMediaViewOffset = 154;
     
     self.pollPreviewView.hidden = YES;
     self.mpPlayerContainmentView.hidden = YES;
-    self.remixButton.hidden = NO;
+    self.remixButton.hidden = YES;
     
     [self updateActionBar];
 }
@@ -419,7 +420,9 @@ CGFloat kContentMediaViewOffset = 154;
 - (void)loadVideo
 {
     [self loadImage];
-    
+
+    self.remixButton.hidden = NO;
+
     [self.mpController setContentURL:[NSURL URLWithString:self.currentAsset.data]];
     self.mpPlayerContainmentView.hidden = YES;
     [self.mpController prepareToPlay];
