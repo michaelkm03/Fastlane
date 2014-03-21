@@ -106,7 +106,7 @@ NSString*   const   kVLinkColor                         =   @"color.link";
     {
         [titleAttributes setObject:navigationBarTitleTintColor forKey:NSForegroundColorAttributeName];
     }
-    UIFont *navigationBarTitleFont = [self themedFontForKey:@"theme.font.navigationBar.title"];
+    UIFont *navigationBarTitleFont = [self themedFontForKey:kVTitleFont];
     if(navigationBarTitleFont)
     {
         [titleAttributes setObject:navigationBarTitleFont forKey:NSFontAttributeName];

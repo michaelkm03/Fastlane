@@ -57,9 +57,9 @@ NSString *const VMenuControllerDidSelectRowNotification = @"VMenuTableViewContro
         else
             self.inboxBadgeLabel.text = @"+999";
         
-        self.inboxBadgeLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:@"theme.font.menu.badge"];
-        self.inboxBadgeLabel.textColor = [[VThemeManager sharedThemeManager] themedColorForKey:@"theme.color.menu.badge.text"];
-        self.inboxBadgeLabel.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:@"theme.color.menu.badge"];
+        self.inboxBadgeLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVDetailFont];
+        self.inboxBadgeLabel.textColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVAccentColor];
+        self.inboxBadgeLabel.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVMainColor];
         [self.inboxBadgeLabel setHidden:NO];
     }
     
@@ -67,14 +67,14 @@ NSString *const VMenuControllerDidSelectRowNotification = @"VMenuTableViewContro
     self.nameLabel.text = [NSString stringWithFormat:NSLocalizedString(@"%@ Channel", @"<CHANNEL NAME> Channel"), channelName];
     
     [[UIImageView appearanceWhenContainedIn:[self class], nil]
-     setTintColor:[[VThemeManager sharedThemeManager] themedColorForKey:@"theme.color.menu.icon"]];
+     setTintColor:[[VThemeManager sharedThemeManager] themedColorForKey:kVAccentColor]];
     [self.imageViews enumerateObjectsUsingBlock:^(UIImageView *imageView, NSUInteger idx, BOOL *stop)
     {
         imageView.image = [imageView.image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
     }];
     [self.labels enumerateObjectsUsingBlock:^(UILabel *label, NSUInteger idx, BOOL *stop)
     {
-        label.font = [[VThemeManager sharedThemeManager] themedFontForKey:kMenuTextFont];
+        label.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVDetailFont];
 //        label.textColor = [[VThemeManager sharedThemeManager] themedColorForKeyPath:kMenuTextColor];
     }];
     
