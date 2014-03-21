@@ -51,16 +51,18 @@
     [super viewDidLoad];
 	
     self.sourceAsset = [AVURLAsset assetWithURL:self.assetURL];
-    [self.sourceAsset loadValuesAsynchronouslyForKeys:@[@"duration", @"tracks"] completionHandler:^{
-        NSError*            error   = nil;
-        AVKeyValueStatus    status  = [self.sourceAsset statusOfValueForKey:@"duration" error:&error];
-        switch (status)
-        {
-            case AVKeyValueStatusLoaded:
-//                [self updateUserInterfaceForDuration];
-                break;
-        }
-    }];
+//    [self.sourceAsset loadValuesAsynchronouslyForKeys:@[@"duration", @"tracks"] completionHandler:^{
+//        dispatch_async(dispatch_get_main_queue(), ^{
+//            NSError*            error   = nil;
+//            AVKeyValueStatus    status  = [self.sourceAsset statusOfValueForKey:@"duration" error:&error];
+//            switch (status)
+//            {
+//                case AVKeyValueStatusLoaded:
+//    //                [self updateUserInterfaceForDuration];
+//                    break;
+//            }
+//        });
+//    }];
     
     self.start  =   0.0;
     self.stop   =   self.start + CMTimeGetSeconds(self.sourceAsset.duration);
@@ -132,9 +134,10 @@
 		interval = 0.5f * duration / width;
 	}
 
+    __weak  VRemixTrimViewController*   weakSelf    =   self;
 	self.timeObserver = [self.previewView.player addPeriodicTimeObserverForInterval:CMTimeMakeWithSeconds(interval, NSEC_PER_SEC) queue:NULL usingBlock:^(CMTime time)
                      {
-                         [self syncScrubber];
+                         [weakSelf syncScrubber];
                      }];
 }
 
@@ -191,7 +194,8 @@
 - (IBAction)nextButtonClicked:(id)sender
 {
     [self.activityIndicator startAnimating];
-    [self trimVideo:self.sourceAsset startTrim:self.start endTrim:self.stop];
+//    [self trimVideo:self.previewView.player.currentItem.asset startTrim:self.start endTrim:self.stop];
+    [self trimVideo:self.sourceAsset.URL startTrim:self.start endTrim:self.stop];
 }
 
 - (IBAction)muteAudioClicked:(id)sender
@@ -327,44 +331,71 @@
 {
     [self.activityIndicator stopAnimating];
     self.outputAsset = [[AVURLAsset alloc] initWithURL:aURL options:nil];
-    [self performSegueWithIdentifier:@"toStich" sender:self];
+    [self performSegueWithIdentifier:@"toStitch" sender:self];
 }
 
-- (void)trimVideo:(AVURLAsset *)assetToTrim startTrim:(CGFloat)startTrim endTrim:(CGFloat)endTrim
+- (void)trimVideo:(NSURL *)assetToTrim startTrim:(CGFloat)startTrim endTrim:(CGFloat)endTrim
 {
-    NSArray*    compatiblePresets = [AVAssetExportSession exportPresetsCompatibleWithAsset:assetToTrim];
-    if ([compatiblePresets containsObject:AVAssetExportPresetMediumQuality])
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    NSString *output = paths[0];
+    NSFileManager *manager = [NSFileManager defaultManager];
+    [manager createDirectoryAtPath:output withIntermediateDirectories:YES attributes:nil error:nil];
+    output = [output stringByAppendingPathComponent:@"input.mp4"];
+    // Remove Existing File
+    [manager removeItemAtPath:output error:nil];
+
+    NSData* data = [NSData dataWithContentsOfURL:assetToTrim];
+    [data writeToFile:output atomically:YES];
+    
+    AVAsset* asset   =   [AVAsset assetWithURL:[NSURL fileURLWithPath:output]];
+    if (asset.exportable)
+//    if (assetToTrim.exportable)
     {
-        AVAsset* asset = [AVAsset assetWithURL:self.assetURL];
-        AVAssetExportSession*   exportSession   =   [[AVAssetExportSession alloc] initWithAsset:asset presetName:AVAssetExportPresetPassthrough];
-        
-        exportSession.outputURL = [self exportFileURL];
-        exportSession.outputFileType = AVFileTypeMPEG4;
-//        exportSession.shouldOptimizeForNetworkUse = YES;
-        
-        CMTime start = CMTimeMakeWithSeconds(startTrim, assetToTrim.duration.timescale);
-        CMTime duration = CMTimeMakeWithSeconds(endTrim - startTrim, assetToTrim.duration.timescale);
-        CMTimeRange range = CMTimeRangeMake(start, duration);
-        exportSession.timeRange = range;
-        
-        [exportSession exportAsynchronouslyWithCompletionHandler:^{
-            switch ([exportSession status])
+//        [assetToTrim loadValuesAsynchronouslyForKeys:@[@"tracks"] completionHandler:^{
+    //        NSArray*    compatiblePresets = [AVAssetExportSession exportPresetsCompatibleWithAsset:assetToTrim];
+    //        if ([compatiblePresets containsObject:AVAssetExportPresetMediumQuality])
             {
-                case AVAssetExportSessionStatusFailed:
-                    NSLog(@"Export failed: %@", exportSession.error.localizedDescription);
-                    break;
+                NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+                NSString *outputURL = paths[0];
+                NSFileManager *manager = [NSFileManager defaultManager];
+                [manager createDirectoryAtPath:outputURL withIntermediateDirectories:YES attributes:nil error:nil];
+                outputURL = [outputURL stringByAppendingPathComponent:@"output.mp4"];
+                // Remove Existing File
+                [manager removeItemAtPath:outputURL error:nil];
+                
+        //        AVAssetExportSession*   exportSession   =   [[AVAssetExportSession alloc] initWithAsset:asset presetName:AVAssetExportPresetPassthrough];
+//                AVAssetExportSession*   exportSession   =   [[AVAssetExportSession alloc] initWithAsset:assetToTrim presetName:AVAssetExportPresetPassthrough];
+                AVAssetExportSession*   exportSession   =   [[AVAssetExportSession alloc] initWithAsset:asset presetName:AVAssetExportPresetPassthrough];
+                exportSession.outputFileType = AVFileTypeQuickTimeMovie;
+                exportSession.outputURL = [NSURL fileURLWithPath:outputURL];
+        //        exportSession.outputURL = [self exportFileURL];
+                exportSession.shouldOptimizeForNetworkUse = YES;
                     
-                case AVAssetExportSessionStatusCancelled:
-                    NSLog(@"Export canceled");
-                    break;
-                    
-                default:
-                    dispatch_async(dispatch_get_main_queue(), ^{
-                        [self exportDidFinish:exportSession];
-                    });
-                    break;
+        //        CMTime start = CMTimeMakeWithSeconds(startTrim, assetToTrim.duration.timescale);
+        //        CMTime duration = CMTimeMakeWithSeconds(endTrim - startTrim, assetToTrim.duration.timescale);
+        //        CMTimeRange range = CMTimeRangeMake(start, duration);
+        //        exportSession.timeRange = range;
+                
+                [exportSession exportAsynchronouslyWithCompletionHandler:^{
+                    switch ([exportSession status])
+                    {
+                        case AVAssetExportSessionStatusFailed:
+                            NSLog(@"Export failed: %d, %@, %@", exportSession.error.code, exportSession.error.localizedDescription, exportSession.error.localizedFailureReason);
+                            break;
+                            
+                        case AVAssetExportSessionStatusCancelled:
+                            NSLog(@"Export canceled");
+                            break;
+                            
+                        default:
+                            dispatch_async(dispatch_get_main_queue(), ^{
+                                [self exportDidFinish:exportSession];
+                            });
+                            break;
+                    }
+                }];
             }
-        }];
+//        }];
     }
 }
 

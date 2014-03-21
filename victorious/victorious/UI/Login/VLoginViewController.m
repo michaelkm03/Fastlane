@@ -39,9 +39,9 @@
 - (void)viewDidLoad
 {
     if (IS_IPHONE_5)
-        self.view.layer.contents = (id)[[VThemeManager sharedThemeManager] themedImageForKeyPath:kVMenuBackgroundImage5].CGImage;
+        self.view.layer.contents = (id)[[VThemeManager sharedThemeManager] themedImageForKey:kVMenuBackgroundImage5].CGImage;
     else
-        self.view.layer.contents = (id)[[VThemeManager sharedThemeManager] themedImageForKeyPath:kVMenuBackgroundImage].CGImage;
+        self.view.layer.contents = (id)[[VThemeManager sharedThemeManager] themedImageForKey:kVMenuBackgroundImage].CGImage;
     
     self.animator = [[UIDynamicAnimator alloc] initWithReferenceView:self.view];
     

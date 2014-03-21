@@ -49,7 +49,6 @@ NSString*   const   kVLinkColor                         =   @"color.link";
 
 
 @interface      VThemeManager   ()
-@property   (nonatomic, readwrite, copy)    NSDictionary*   themeValues;
 @end
 
 @implementation VThemeManager
@@ -73,7 +72,7 @@ NSString*   const   kVLinkColor                         =   @"color.link";
     if (self)
     {
         NSURL*  defaultThemeURL =   [[NSBundle mainBundle] URLForResource:@"carlyTheme" withExtension:@"plist"];
-        _themeValues            =   [NSDictionary dictionaryWithContentsOfURL:defaultThemeURL];
+        [[NSUserDefaults standardUserDefaults] registerDefaults:[NSDictionary dictionaryWithContentsOfURL:defaultThemeURL]];
     }
     
     return self;
@@ -83,7 +82,11 @@ NSString*   const   kVLinkColor                         =   @"color.link";
 
 - (void)setTheme:(NSDictionary *)dictionary
 {
-    self.themeValues = [dictionary copy];
+    [dictionary enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop)
+     {
+        [[NSUserDefaults standardUserDefaults] setObject:obj forKey:key];
+    }];
+
     [[NSNotificationCenter defaultCenter] postNotificationName:kVThemeManagerThemeDidChange object:self userInfo:nil];
 }
 
@@ -92,18 +95,18 @@ NSString*   const   kVLinkColor                         =   @"color.link";
 
 - (void)applyStyling
 {
-    [[[[UIApplication sharedApplication] delegate] window] setTintColor:[self themedColorForKeyPath:kVAccentColor]];
+    [[[[UIApplication sharedApplication] delegate] window] setTintColor:[self themedColorForKey:kVAccentColor]];
 
-    [[UINavigationBar appearance] setTintColor:[self themedColorForKeyPath:kVAccentColor]];
-    [[UINavigationBar appearance] setBarTintColor:[self themedTranslucencyColorForKeyPath:kVMainColor]];
+    [[UINavigationBar appearance] setTintColor:[self themedColorForKey:kVAccentColor]];
+    [[UINavigationBar appearance] setBarTintColor:[self themedTranslucencyColorForKey:kVMainColor]];
 
     NSMutableDictionary *titleAttributes = [NSMutableDictionary dictionary];
-    UIColor *navigationBarTitleTintColor = [self themedColorForKeyPath:kVAccentColor];
+    UIColor *navigationBarTitleTintColor = [self themedColorForKey:kVAccentColor];
     if(navigationBarTitleTintColor)
     {
         [titleAttributes setObject:navigationBarTitleTintColor forKey:NSForegroundColorAttributeName];
     }
-    UIFont *navigationBarTitleFont = [self themedFontForKeyPath:kVTitleFont];
+    UIFont *navigationBarTitleFont = [self themedFontForKey:@"theme.font.navigationBar.title"];
     if(navigationBarTitleFont)
     {
         [titleAttributes setObject:navigationBarTitleFont forKey:NSFontAttributeName];
@@ -122,28 +125,19 @@ NSString*   const   kVLinkColor                         =   @"color.link";
 
 #pragma mark -
 
-- (id)themedValueForKeyPath:(NSString *)keyPath
+- (id)themedValueForKey:(NSString *)key
 {
-    id value = self.themeValues[keyPath];
-
-    if (value)
-        return value;
-
-    NSString *newKeyPath = [keyPath stringByDeletingPathExtension];
-    if ([keyPath isEqualToString:newKeyPath])
-        return nil;
-
-    return [self themedValueForKeyPath:newKeyPath];
+    return [[NSUserDefaults standardUserDefaults] objectForKey:key];
 }
 
-- (NSString *)themedStringForPath:(NSString *)keyPath
+- (NSString *)themedStringForKey:(NSString *)key
 {
-    return (NSString *)[self themedValueForKeyPath:keyPath];
+    return [[NSUserDefaults standardUserDefaults] stringForKey:key];
 }
 
-- (UIColor *)themedColorForKeyPath:(NSString *)keyPath
+- (UIColor *)themedColorForKey:(NSString *)key
 {
-    NSDictionary*   colorDictionary =   [self themedValueForKeyPath:keyPath];
+    NSDictionary*   colorDictionary =   [self themedValueForKey:key];
     if (nil == colorDictionary)
         return nil;
 
@@ -155,9 +149,9 @@ NSString*   const   kVLinkColor                         =   @"color.link";
     return color;
 }
 
-- (UIColor *)themedTranslucencyColorForKeyPath:(NSString *)keyPath
+- (UIColor *)themedTranslucencyColorForKey:(NSString *)key
 {
-    UIColor *color = [self themedColorForKeyPath:keyPath];
+    UIColor *color = [self themedColorForKey:key];
 
     // From https://github.com/kgn/UIColorCategories
     CGFloat hue = 0, saturation = 0, brightness = 0, alpha = 0;
@@ -166,27 +160,27 @@ NSString*   const   kVLinkColor                         =   @"color.link";
     return [UIColor colorWithHue:hue saturation:saturation*1.158 brightness:brightness*0.95 alpha:alpha];
 }
 
-- (NSURL *)themedURLForKeyPath:(NSString *)keyPath
+- (NSURL *)themedURLForKey:(NSString *)key
 {
-    return [NSURL URLWithString:[self themedValueForKeyPath:keyPath]];
+    return [[NSUserDefaults standardUserDefaults] URLForKey:key];
 }
 
-- (NSURL *)themedImageURLForKeyPath:(NSString *)keyPath
+- (NSURL *)themedImageURLForKey:(NSString *)key
 {
-    NSURL*  url =   [self themedURLForKeyPath:keyPath];
+    NSURL*  url =   [self themedURLForKey:key];
     if (nil == url)
-        url     =   [[NSBundle mainBundle] URLForResource:keyPath withExtension:@"png"];
+        url     =   [[NSBundle mainBundle] URLForResource:key withExtension:@"png"];
     return url;
 }
 
-- (UIImage *)themedImageForKeyPath:(NSString *)keyPath
+- (UIImage *)themedImageForKey:(NSString *)key
 {
-    return [UIImage imageNamed:keyPath];
+    return [UIImage imageNamed:key];
 }
 
-- (UIFont *)themedFontForKeyPath:(NSString *)keyPath
+- (UIFont *)themedFontForKey:(NSString *)key
 {
-    NSDictionary*   fontDictionary = [self themedValueForKeyPath:keyPath];
+    NSDictionary*   fontDictionary = [self themedValueForKey:key];
     NSString*       fontName    =   fontDictionary[@"fontName"];
     CGFloat         fontSize    =   [fontDictionary[@"fontSize"] doubleValue];
     

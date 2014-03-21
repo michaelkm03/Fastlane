@@ -117,13 +117,13 @@ CGFloat kContentMediaViewOffset = 154;
     for (UIButton* button in self.buttonCollection)
     {
         [button setImage:[button.imageView.image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] forState:UIControlStateNormal];
-        button.tintColor = [[VThemeManager sharedThemeManager] themedColorForKeyPath:kVContentAccentColor];
+        button.tintColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVContentAccentColor];
     }
     self.descriptionLabel.textColor = [[VThemeManager sharedThemeManager] themedColorForKeyPath:kVContentAccentColor];
     self.descriptionLabel.font = [[VThemeManager sharedThemeManager] themedFontForKeyPath:kVContentTitleFont];
     
     [self.remixButton setImage:[self.remixButton.imageView.image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] forState:UIControlStateNormal];
-    self.remixButton.tintColor = [[VThemeManager sharedThemeManager] themedColorForKeyPath:kVAccentColor];
+    self.remixButton.tintColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVAccentColor];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -513,11 +513,11 @@ CGFloat kContentMediaViewOffset = 154;
         
         if (result.answerId == answerId)
         {
-            resultView.color = [[VThemeManager sharedThemeManager] themedColorForKeyPath:kVMainColor];
+            resultView.color = [[VThemeManager sharedThemeManager] themedColorForKey:kVMainColor];
         }
         else
         {
-            resultView.color = [[VThemeManager sharedThemeManager] themedColorForKeyPath:kVAccentColor];
+            resultView.color = [[VThemeManager sharedThemeManager] themedColorForKey:kVAccentColor];
         }
         
         [resultView setProgress:progress animated:YES];

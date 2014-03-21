@@ -8,7 +8,8 @@
 // PRIVATE DEFINITION
 /////////////////////
 
-@interface VCPlayer() {
+@interface VCPlayer()
+{
 	BOOL _loading;
     BOOL _shouldLoop;
 }
@@ -28,12 +29,10 @@ VCPlayer * currentVCVideoPlayer = nil;
 /////////////////////
 
 @implementation VCPlayer
-@synthesize oldItem;
 
-- (id) init
+- (instancetype)init
 {
 	self = [super init];
-	
 	if (self)
     {
         self.shouldLoop = NO;
@@ -41,14 +40,17 @@ VCPlayer * currentVCVideoPlayer = nil;
 		[self addObserver:self forKeyPath:@"currentItem" options:NSKeyValueObservingOptionNew context:nil];
 		
 		__unsafe_unretained VCPlayer * mySelf = self;
-		self.timeObserver = [self addPeriodicTimeObserverForInterval:CMTimeMake(1, 24) queue:dispatch_get_main_queue() usingBlock:^(CMTime time) {
-			if ([mySelf.delegate respondsToSelector:@selector(videoPlayer:didPlay:)]) {
+		self.timeObserver = [self addPeriodicTimeObserverForInterval:CMTimeMake(1, 24) queue:dispatch_get_main_queue() usingBlock:^(CMTime time)
+        {
+			if ([mySelf.delegate respondsToSelector:@selector(videoPlayer:didPlay:)])
+            {
 				Float64 ratio = 1.0 / mySelf.itemsLoopLength;
                 Float64 seconds = CMTimeGetSeconds(CMTimeMultiplyByFloat64(time, ratio));
                 
 				[mySelf.delegate videoPlayer:mySelf didPlay:seconds];
 			}
 		}];
+
 		_loading = NO;
 		
 		self.minimumBufferedTimeBeforePlaying = CMTimeMake(2, 1);
@@ -57,37 +59,42 @@ VCPlayer * currentVCVideoPlayer = nil;
 	return self;
 }
 
-- (void) dealloc
+- (void)dealloc
 {
     [self removeObserver:self forKeyPath:@"currentItem"];
 }
 
-- (void) cleanUp
+- (void)cleanUp
 {
     if (self.timeObserver != nil)
     {
         [self removeTimeObserver:self.timeObserver];
         self.timeObserver = nil;
     }
+
 	[self setItem:nil];
 	self.oldItem = nil;
 }
 
-- (void) playReachedEnd:(NSNotification*)notification
+- (void)playReachedEnd:(NSNotification*)notification
 {
 	if (notification.object == self.currentItem)
     {
-		if (self.shouldLoop) {
+		if (self.shouldLoop)
+        {
 			[self seekToTime:CMTimeMake(0, 1)];
-			if ([self isPlaying]) {
+			if ([self isPlaying])
+            {
 				[self play];
 			}
 		}
 	}
 }
 
-- (void) observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
-	if ([keyPath isEqualToString:@"currentItem"]) {
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
+{
+	if ([keyPath isEqualToString:@"currentItem"])
+    {
 		[self initObserver];
 	}
     else
@@ -128,7 +135,7 @@ VCPlayer * currentVCVideoPlayer = nil;
 	}
 }
 
-- (void) initObserver
+- (void)initObserver
 {
 	if (self.oldItem != nil)
     {
@@ -157,7 +164,7 @@ VCPlayer * currentVCVideoPlayer = nil;
     self.loading = YES;
 }
 
-- (void) play
+- (void)play
 {
 	if (currentVCVideoPlayer != self)
     {
@@ -169,7 +176,7 @@ VCPlayer * currentVCVideoPlayer = nil;
 	currentVCVideoPlayer = self;
 }
 
-- (void) pause
+- (void)pause
 {
 	[super pause];
 	
@@ -179,7 +186,7 @@ VCPlayer * currentVCVideoPlayer = nil;
 	}
 }
 
-- (CMTime) playableDuration
+- (CMTime)playableDuration
 {
 	AVPlayerItem * item = self.currentItem;
 	CMTime playableDuration = kCMTimeZero;
@@ -198,38 +205,38 @@ VCPlayer * currentVCVideoPlayer = nil;
 	return playableDuration;
 }
 
-- (void) setItemByStringPath:(NSString *)stringPath
+- (void)setItemByStringPath:(NSString *)stringPath
 {
 	[self setItemByUrl:[NSURL URLWithString:stringPath]];
 }
 
-- (void) setItemByUrl:(NSURL *)url
+- (void)setItemByUrl:(NSURL *)url
 {
 	[self setItemByAsset:[AVURLAsset URLAssetWithURL:url options:nil]];
 }
 
-- (void) setItemByAsset:(AVAsset *)asset
+- (void)setItemByAsset:(AVAsset *)asset
 {
 	[self setItem:[AVPlayerItem playerItemWithAsset:asset]];
 }
 
-- (void) setItem:(AVPlayerItem *)item
+- (void)setItem:(AVPlayerItem *)item
 {
 	self.itemsLoopLength = 1;
 	[self replaceCurrentItemWithPlayerItem:item];
 }
 
-- (void) setSmoothLoopItemByStringPath:(NSString *)stringPath smoothLoopCount:(NSUInteger)loopCount
+- (void)setSmoothLoopItemByStringPath:(NSString *)stringPath smoothLoopCount:(NSUInteger)loopCount
 {
 	[self setSmoothLoopItemByUrl:[NSURL URLWithString:stringPath] smoothLoopCount:loopCount];
 }
 
-- (void) setSmoothLoopItemByUrl:(NSURL *)url smoothLoopCount:(NSUInteger)loopCount
+- (void)setSmoothLoopItemByUrl:(NSURL *)url smoothLoopCount:(NSUInteger)loopCount
 {
 	[self setSmoothLoopItemByAsset:[AVURLAsset URLAssetWithURL:url options:nil] smoothLoopCount:loopCount];
 }
 
-- (void) setSmoothLoopItemByAsset:(AVAsset *)asset smoothLoopCount:(NSUInteger)loopCount
+- (void)setSmoothLoopItemByAsset:(AVAsset *)asset smoothLoopCount:(NSUInteger)loopCount
 {
 	
 	AVMutableComposition * composition = [AVMutableComposition composition];
@@ -246,12 +253,12 @@ VCPlayer * currentVCVideoPlayer = nil;
 	self.itemsLoopLength = loopCount;
 }
 
-- (BOOL) isPlaying
+- (BOOL)isPlaying
 {
 	return currentVCVideoPlayer == self;
 }
 
-- (void) setLoading:(BOOL)loading
+- (void)setLoading:(BOOL)loading
 {
 	_loading = loading;
 	
@@ -283,12 +290,12 @@ VCPlayer * currentVCVideoPlayer = nil;
     self.actionAtItemEnd = shouldLoop ? AVPlayerActionAtItemEndNone : AVPlayerActionAtItemEndPause;
 }
 
-+ (VCPlayer*) player
++ (VCPlayer*)player
 {
 	return [[VCPlayer alloc] init];
 }
 
-+ (void) pauseCurrentPlayer
++ (void)pauseCurrentPlayer
 {
 	if (currentVCVideoPlayer != nil)
     {
@@ -296,7 +303,7 @@ VCPlayer * currentVCVideoPlayer = nil;
 	}
 }
 
-+ (VCPlayer*) currentPlayer
++ (VCPlayer*)currentPlayer
 {
 	return currentVCVideoPlayer;
 }

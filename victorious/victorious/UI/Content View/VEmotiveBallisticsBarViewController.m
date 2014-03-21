@@ -68,11 +68,11 @@
     self.negativeEmotiveButton.imageView.animationDuration = .25f;
     self.negativeEmotiveButton.imageView.animationRepeatCount = 1;
     
-    self.positiveEmotiveLabel.textColor = [[VThemeManager sharedThemeManager] themedColorForKeyPath:kVAccentColor];
-    self.negativeEmotiveLabel.textColor = [[VThemeManager sharedThemeManager] themedColorForKeyPath:kVAccentColor];
+    self.positiveEmotiveLabel.textColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVAccentColor];
+    self.negativeEmotiveLabel.textColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVAccentColor];
     
-    self.positiveEmotiveButton.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKeyPath:kVMainColor];
-    self.negativeEmotiveButton.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKeyPath:kVSecondaryMainColor];
+    self.positiveEmotiveButton.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVMainColor];
+    self.negativeEmotiveButton.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVSecondaryMainColor];
     
 }
 
