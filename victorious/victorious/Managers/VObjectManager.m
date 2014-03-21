@@ -87,10 +87,11 @@
                                                                                          keyPath:nil
                                                                                      statusCodes:RKStatusCodeIndexSetForClass(RKStatusCodeClassSuccessful)];
     
+    
+    [self addResponseDescriptorsFromArray:[VUser descriptors]];
     [self addResponseDescriptorsFromArray: @[errorDescriptor,
                                              verrorDescriptor,
                                              
-                                             [VUser descriptor],
                                              [VCategory descriptor],
                                              [VSequence sequenceListDescriptor],
                                              [VSequence sequenceListByUserDescriptor],
