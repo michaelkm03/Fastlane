@@ -8,6 +8,7 @@
 
 #import "VImagePreviewViewController.h"
 #import "VCameraPublishViewController.h"
+#import "VThemeManager.h"
 
 @interface VImagePreviewViewController ()
 @property (nonatomic, weak) IBOutlet    UIImageView*    previewImageView;
@@ -34,8 +35,8 @@
     if (self.photo)
         self.previewImageView.image = self.photo;
     
-    self.view.backgroundColor = [UIColor blackColor];
-    self.navigationController.navigationBar.barTintColor = [UIColor blackColor];
+    self.view.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVBackgroundColor];
+    self.navigationController.navigationBar.barTintColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVBackgroundColor];
     
     self.inTrashState = NO;
     self.trashAction.imageView.image = [UIImage imageNamed:@"cameraButtonDelete"];

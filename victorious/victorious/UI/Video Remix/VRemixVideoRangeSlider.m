@@ -268,7 +268,7 @@
 -(void)getMovieFrames
 {
     self.imageGenerator = [AVAssetImageGenerator assetImageGeneratorWithAsset:self.videoAsset];
-    self.imageGenerator.maximumSize = CGSizeMake(42, 42);
+    self.imageGenerator.maximumSize = CGSizeMake(84, 84);
 
     int picWidth = 42;
 
@@ -280,8 +280,8 @@
     {
         UIImage *videoScreen = [[UIImage alloc] initWithCGImage:halfWayImage];
         UIImageView *tmp = [[UIImageView alloc] initWithImage:videoScreen];
-//        tmp.bounds = CGRectMake(0, 0, 42, 42);
-//        tmp.contentMode = UIViewContentModeScaleAspectFill;
+        tmp.frame = CGRectMake(0, 0, 42, 42);
+        tmp.contentMode = UIViewContentModeScaleAspectFill;
         [_backgroundView addSubview:tmp];
         picWidth = tmp.frame.size.width;
         CGImageRelease(halfWayImage);
@@ -308,6 +308,8 @@
                                                   {
                                                       UIImage *videoScreen = [[UIImage alloc] initWithCGImage:image];
                                                       UIImageView *tmp = [[UIImageView alloc] initWithImage:videoScreen];
+                                                      tmp.frame = CGRectMake(0, 0, 42, 42);
+                                                      tmp.contentMode = UIViewContentModeScaleAspectFill;
 
                                                       int all = (i+1)*tmp.frame.size.width;
 

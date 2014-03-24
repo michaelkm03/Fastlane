@@ -10,6 +10,7 @@
 #import "VExpirationPickerTextField.h"
 #import "VExpirationDatePicker.h"
 #import "UIImage+ImageEffects.h"
+#import "VThemeManager.h"
 
 @interface VSetExpirationViewController ()  <VExpirationPickerTextFieldDelegate, VExpirationDatePickerDelegate, UIAlertViewDelegate>
 @property (nonatomic, weak) IBOutlet    VExpirationPickerTextField*     expirationPicker;
@@ -74,6 +75,7 @@
     self.expirationDate = nil;
     self.useAfterMode = YES;
     
+    self.view.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVBackgroundColor];
     [self.toolbar setBackgroundImage:[[UIImage alloc] init] forToolbarPosition:UIBarPositionAny barMetrics:UIBarMetricsDefault];
     [self.toolbar setShadowImage:[[UIImage alloc] init] forToolbarPosition:UIBarPositionAny];
 }

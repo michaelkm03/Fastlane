@@ -53,10 +53,8 @@ extern  NSString*   const   kVLinkColor;
 - (void)applyStyling;
 - (void)removeStyling;
 
-- (id)themedValueForKey:(NSString *)key;
 - (NSString *)themedStringForKey:(NSString *)key;
 - (UIColor *)themedColorForKey:(NSString *)key;
-- (UIColor *)themedTranslucencyColorForKey:(NSString *)key;
 - (NSURL *)themedURLForKey:(NSString *)key;
 - (NSURL *)themedImageURLForKey:(NSString *)key;
 - (UIImage *)themedImageForKey:(NSString *)key;

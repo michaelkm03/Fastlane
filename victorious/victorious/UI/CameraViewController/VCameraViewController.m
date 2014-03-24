@@ -15,6 +15,7 @@
 #import "VImagePreviewViewController.h"
 #import "VVideoPreviewViewController.h"
 #import "UIImage+Cropping.h"
+#import "VThemeManager.h"
 
 @interface VCameraViewController () <VCCameraDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate>
 
@@ -124,8 +125,8 @@
 {
     [super viewWillAppear:animated];
     
-    self.view.backgroundColor = [UIColor blackColor];
-    self.navigationController.navigationBar.barTintColor = [UIColor blackColor];
+    self.view.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVBackgroundColor];
+    self.navigationController.navigationBar.barTintColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVBackgroundColor];
     
     self.inRecordVideoState = NO;
     self.inTrashState = NO;

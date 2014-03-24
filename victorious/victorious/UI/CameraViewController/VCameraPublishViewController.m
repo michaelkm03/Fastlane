@@ -14,6 +14,7 @@
 #import "VObjectManager+Sequence.h"
 #import "VConstants.h"
 #import "NSString+VParseHelp.h"
+#import "VThemeManager.h"
 
 @interface VCameraPublishViewController () <UITextViewDelegate, VSetExpirationDelegate>
 @property (nonatomic, weak) IBOutlet    UIImageView*    previewImage;
@@ -65,7 +66,7 @@
         self.previewImage.image = [[UIImage imageWithCGImage:imageRef] applyDarkEffect];
     }
 
-    self.view.backgroundColor = [[UIColor alloc] initWithRed:280.0 green:248.0 blue:248.0 alpha:1.0];
+    self.view.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVBackgroundColor];
     
     [self.navigationController.navigationBar setBackgroundImage:[[UIImage alloc] init] forBarMetrics:UIBarMetricsDefault];
     self.navigationController.navigationBar.shadowImage = [[UIImage alloc] init];

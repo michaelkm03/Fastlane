@@ -12,6 +12,7 @@
 #import "VRemixStitchViewController.h"
 #import "VCVideoPlayerView.h"
 #import "VRemixVideoRangeSlider.h"
+#import "VThemeManager.h"
 
 @interface VRemixTrimViewController ()  <VCVideoPlayerDelegate, VRemixVideoRangeSliderDelegate>
 @property (nonatomic, weak)     IBOutlet    VCVideoPlayerView*  previewView;;
@@ -80,8 +81,8 @@
 {
     [super viewWillAppear:animated];
 
-    self.view.backgroundColor = [UIColor blackColor];
-    self.navigationController.navigationBar.barTintColor = [UIColor blackColor];
+    self.view.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVBackgroundColor];
+    self.navigationController.navigationBar.barTintColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVBackgroundColor];
 
     self.totalTimeLabel.text = [self secondsToMMSS:CMTimeGetSeconds(self.sourceAsset.duration)];
     self.currentTimeLabel.text = [self secondsToMMSS:0];
