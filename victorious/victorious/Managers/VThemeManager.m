@@ -38,6 +38,8 @@ NSString*   const   kVPollButtonFont                    =   @"font.button.poll";
 
 
 #pragma mark - Colors
+NSString*   const   kVBackgroundColor                   =   @"color.background";
+
 NSString*   const   kVAccentColor                       =   @"color.accent";
 NSString*   const   kVContentAccentColor                =   @"color.accent.content";
 

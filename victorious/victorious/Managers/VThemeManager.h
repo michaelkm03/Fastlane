@@ -34,6 +34,8 @@ extern  NSString*   const   kVPollButtonFont;
 
 
 //Colors
+extern  NSString*   const   kVBackgroundColor;
+
 extern  NSString*   const   kVAccentColor;
 extern  NSString*   const   kVContentAccentColor;
 

@@ -17,7 +17,11 @@
 #import "VPollResult.h"
 #import "VUser.h"
 
+#import "UIImage+SolidColorImage.h"
+
 #import "NSString+VParseHelp.h"
+
+#import "VThemeManager.h"
 
 static NSString* kOrIconImage = @"orIconImage";
 
@@ -89,8 +93,10 @@ static NSString* kOrIconImage = @"orIconImage";
         self.firstAssetUrl = [self.firstAnswer.mediaUrl convertToPreviewImageURL];
         self.secondAssetUrl = [self.secondAnswer.mediaUrl convertToPreviewImageURL];
     }
-    [self.previewImageView setImageWithURL:self.firstAssetUrl placeholderImage:nil];
-    [self.previewImageTwo setImageWithURL:self.secondAssetUrl placeholderImage:nil];
+    
+    UIImage* placeholderImage = [UIImage resizeableImageWithColor:[[VThemeManager sharedThemeManager] themedColorForKey:kVBackgroundColor]];
+    [self.previewImageView setImageWithURL:self.firstAssetUrl placeholderImage:placeholderImage];
+    [self.previewImageTwo setImageWithURL:self.secondAssetUrl placeholderImage:placeholderImage];
 }
 
 - (void)checkIfAnswered

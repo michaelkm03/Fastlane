@@ -15,6 +15,7 @@
 
 #import "NSString+VParseHelp.h"
 #import "UIImageView+Blurring.h"
+#import "UIImage+SolidColorImage.h"
 
 #import "VStreamContentSegue.h"
 #import "VStreamTransitioningDelegate.h"
@@ -31,6 +32,8 @@
 #import "VSequence+Fetcher.h"
 #import "VNode+Fetcher.h"
 #import "VAsset.h"
+
+#import "VThemeManager.h"
 
 @interface VStreamTableViewController() <UIViewControllerTransitioningDelegate>
 @property (strong, nonatomic) id<UIViewControllerTransitioningDelegate> transitionDelegate;
@@ -108,8 +111,11 @@
     VStreamViewCell* cell = (VStreamViewCell*)[tableView cellForRowAtIndexPath:indexPath];
     
     UIImageView* newBackgroundView = [[UIImageView alloc] initWithFrame:self.tableView.backgroundView.frame];
+    
+    UIImage* placeholderImage = [UIImage resizeableImageWithColor:[[VThemeManager sharedThemeManager] themedColorForKey:kVBackgroundColor]];
     [newBackgroundView setLightBlurredImageWithURL:[[cell.sequence initialImageURLs] firstObject]
-                                  placeholderImage:nil];
+                                  placeholderImage:placeholderImage];
+    
     self.tableView.backgroundView = newBackgroundView;
     if (tableView.contentOffset.y == cell.frame.origin.y - kContentMediaViewOffset)
     {
