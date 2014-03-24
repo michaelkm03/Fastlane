@@ -2,7 +2,7 @@
 //  VSequence.m
 //  victorious
 //
-//  Created by Will Long on 1/14/14.
+//  Created by Will Long on 3/24/14.
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
@@ -26,9 +26,10 @@
 @dynamic remoteId;
 @dynamic sequenceDescription;
 @dynamic status;
+@dynamic expiresAt;
 @dynamic comments;
 @dynamic nodes;
-@dynamic user;
 @dynamic pollResults;
+@dynamic user;
 
 @end

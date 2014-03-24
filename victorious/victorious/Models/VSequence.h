@@ -2,7 +2,7 @@
 //  VSequence.h
 //  victorious
 //
-//  Created by Will Long on 1/14/14.
+//  Created by Will Long on 3/24/14.
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
@@ -24,10 +24,11 @@
 @property (nonatomic, retain) NSNumber * remoteId;
 @property (nonatomic, retain) NSString * sequenceDescription;
 @property (nonatomic, retain) NSString * status;
+@property (nonatomic, retain) NSDate * expiresAt;
 @property (nonatomic, retain) NSSet *comments;
 @property (nonatomic, retain) NSSet *nodes;
-@property (nonatomic, retain) VUser *user;
 @property (nonatomic, retain) NSSet *pollResults;
+@property (nonatomic, retain) VUser *user;
 @end
 
 @interface VSequence (CoreDataGeneratedAccessors)

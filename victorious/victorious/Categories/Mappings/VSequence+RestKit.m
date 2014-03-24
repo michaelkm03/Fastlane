@@ -20,18 +20,19 @@
 + (RKEntityMapping*)entityMapping
 {
     NSDictionary *propertyMap = @{
-                                  @"category" : VSelectorName(category),
+                                  @"category"       :   VSelectorName(category),
                                   // for some reason this cannot be camelCase...
-                                  @"display_order" : VSelectorName(display_order),
-                                  @"id" : VSelectorName(remoteId),
-                                  @"created_by" : VSelectorName(createdBy),
-                                  @"name" : VSelectorName(name),
-                                  @"preview_image" : VSelectorName(previewImage),
-                                  @"released_at" : VSelectorName(releasedAt),
-                                  @"description" : VSelectorName(sequenceDescription),
-                                  @"status" : VSelectorName(status),
-                                  @"is_complete": VSelectorName(isComplete),
-                                  @"game_status": VSelectorName(gameStatus),
+                                  @"display_order"  : 	VSelectorName(display_order),
+                                  @"id"             :   VSelectorName(remoteId),
+                                  @"created_by"     :   VSelectorName(createdBy),
+                                  @"name"           :   VSelectorName(name),
+                                  @"preview_image"  :   VSelectorName(previewImage),
+                                  @"released_at"    :   VSelectorName(releasedAt),
+                                  @"description"    :   VSelectorName(sequenceDescription),
+                                  @"status"         :   VSelectorName(status),
+                                  @"is_complete"    :   VSelectorName(isComplete),
+                                  @"game_status"    :   VSelectorName(gameStatus),
+                                  @"expires_at"     :   VSelectorName(expiresAt)
                                   };
 
     RKEntityMapping *mapping = [RKEntityMapping
