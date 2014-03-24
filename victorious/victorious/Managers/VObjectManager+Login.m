@@ -14,6 +14,8 @@
 
 #import "VVoteType.h"
 
+#import "VThemeManager.h"
+
 @implementation VObjectManager (Login)
 
 NSString *kLoggedInChangedNotification = @"LoggedInChangedNotification";
@@ -22,10 +24,20 @@ NSString *kLoggedInChangedNotification = @"LoggedInChangedNotification";
 - (RKManagedObjectRequestOperation *)appInitWithSuccessBlock:(VSuccessBlock)success
                                                 failBlock:(VFailBlock)failed
 {
+    VSuccessBlock fullSuccess = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
+    {
+        NSDictionary* newTheme = fullResponse[@"payload"][@"appearance"];
+        if (newTheme && [newTheme isKindOfClass:[NSDictionary class]])
+            [[VThemeManager sharedThemeManager] setTheme:newTheme];
+        
+        if (success)
+            success(operation, fullResponse, resultObjects);
+    };
+    
     return [self GET:@"/api/init"
               object:nil
           parameters:nil
-        successBlock:success
+        successBlock:fullSuccess
            failBlock:failed];
 }
 
@@ -85,11 +97,15 @@ NSString *kLoggedInChangedNotification = @"LoggedInChangedNotification";
 #pragma mark - Twitter
 
 - (RKManagedObjectRequestOperation *)loginToTwitterWithToken:(NSString*)accessToken
+                                                accessSecret:(NSString*)accessSecret
+                                                   twitterId:(NSString*)twitterId
                                                 SuccessBlock:(VSuccessBlock)success
                                                    failBlock:(VFailBlock)failed
 {
     
-    NSDictionary *parameters = @{@"twitter_access_token": accessToken ?: @""};
+    NSDictionary *parameters = @{@"access_token":   accessToken ?: @"",
+                                 @"access_secret":  accessSecret ?: @"",
+                                 @"twitter_id":     twitterId ?: @""};
     
     VSuccessBlock fullSuccess = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
     {
@@ -106,10 +122,14 @@ NSString *kLoggedInChangedNotification = @"LoggedInChangedNotification";
 }
 
 - (RKManagedObjectRequestOperation *)createTwitterWithToken:(NSString*)accessToken
-                                                        SuccessBlock:(VSuccessBlock)success
-                                                           failBlock:(VFailBlock)failed
+                                               accessSecret:(NSString*)accessSecret
+                                                  twitterId:(NSString*)twitterId
+                                               SuccessBlock:(VSuccessBlock)success
+                                                  failBlock:(VFailBlock)failed
 {
-    NSDictionary *parameters = @{@"twitter_access_token": accessToken ?: [NSNull null]};
+    NSDictionary *parameters = @{@"access_token":   accessToken ?: @"",
+                                 @"access_secret":  accessSecret ?: @"",
+                                 @"twitter_id":     twitterId ?: @""};
     
     VSuccessBlock fullSuccess = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
     {
