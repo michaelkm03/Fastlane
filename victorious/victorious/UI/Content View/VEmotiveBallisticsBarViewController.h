@@ -10,9 +10,13 @@
 
 #import "VAnimation.h"
 
+@class VSequence;
+
 @interface VEmotiveBallisticsBarViewController : UIViewController <VAnimation>
 
 @property (weak, nonatomic) UIView* target;
+
+@property (strong, nonatomic) VSequence* sequence;
 
 + (VEmotiveBallisticsBarViewController *)sharedInstance;
 

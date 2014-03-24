@@ -233,6 +233,7 @@ CGFloat kContentMediaViewOffset = 154;
     else if (![self.sequence isPoll] && ![self.actionBarVC isKindOfClass:[VEmotiveBallisticsBarViewController class]])
     {
         VEmotiveBallisticsBarViewController* emotiveBallistics = [VEmotiveBallisticsBarViewController sharedInstance];
+        emotiveBallistics.sequence = self.sequence;
         emotiveBallistics.target = self.previewImage;
         newBarViewController = emotiveBallistics;
     }

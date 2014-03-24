@@ -18,6 +18,8 @@
 
 #import "VVoteType+Fetcher.h"
 
+#import "VSequence.h"
+
 @interface VEmotiveBallisticsBarViewController ()
 
 @property (weak, nonatomic) IBOutlet UILabel* positiveEmotiveLabel;
@@ -65,6 +67,21 @@
 //            [self.positiveEmotiveButton setImage:[] forState:<#(UIControlState)#>]
         }
     }];
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    
+    self.positiveEmotiveLabel.text = @(0).stringValue;
+    self.negativeEmotiveLabel.text = @(0).stringValue;
+}
+
+- (void)setSequence:(VSequence *)sequence
+{
+    _sequence = sequence;
+    self.positiveEmotiveLabel.text = @(0).stringValue;
+    self.negativeEmotiveLabel.text = @(0).stringValue;
 }
 
 #pragma mark - Animation
@@ -117,22 +134,48 @@
 #pragma mark - Actions
 - (IBAction)pressedPostiveEmotive:(id)sender
 {
+    if (![VObjectManager sharedManager].mainUser)
+    {
+        [self presentViewController:[VLoginViewController loginViewController] animated:YES completion:NULL];
+        return;
+    }
+    
     CGFloat x = self.target.center.x + ([self randomFloat] * self.target.frame.size.width / 4);
     CGFloat y = self.target.center.y + ([self randomFloat] * self.target.frame.size.height / 4);
+    
+    NSInteger voteCount = self.positiveEmotiveLabel.text.integerValue + 1;
+    self.positiveEmotiveLabel.text = @(voteCount).stringValue;
     
     [self throwEmotive:self.positiveEmotiveButton toPoint:CGPointMake(x, y)];
 }
 
 - (IBAction)pressedNegativeEmotive:(id)sender
 {
+    
+    if (![VObjectManager sharedManager].mainUser)
+    {
+        [self presentViewController:[VLoginViewController loginViewController] animated:YES completion:NULL];
+        return;
+    }
+    
     CGFloat x = self.target.center.x + ([self randomFloat] * self.target.frame.size.width / 4);
     CGFloat y = self.target.center.y + ([self randomFloat] * self.target.frame.size.height / 4);
+    
+    NSInteger voteCount = self.negativeEmotiveLabel.text.integerValue + 1;
+    self.negativeEmotiveLabel.text = @(voteCount).stringValue;
     
     [self throwEmotive:self.negativeEmotiveButton toPoint:CGPointMake(x, y)];
 }
 
 - (void)handlePan:(UIPanGestureRecognizer*)recognizer
 {
+    
+    if (![VObjectManager sharedManager].mainUser)
+    {
+        [self presentViewController:[VLoginViewController loginViewController] animated:YES completion:NULL];
+        return;
+    }
+    
     if (recognizer.state == UIGestureRecognizerStateEnded)
     {
         //In points / second
@@ -149,12 +192,6 @@
 
 - (void)throwEmotive:(UIButton*)emotive toPoint:(CGPoint)point
 {
-    if (![VObjectManager sharedManager].mainUser)
-    {
-        [self presentViewController:[VLoginViewController loginViewController] animated:YES completion:NULL];
-        return;
-    }
-    
     point = [self.target convertPoint:point toView:self.view];
     __block UIImageView* thrownImage = [[UIImageView alloc] initWithImage:emotive.imageView.image];
     thrownImage.frame = CGRectMake(0, 0, 110, 110);
