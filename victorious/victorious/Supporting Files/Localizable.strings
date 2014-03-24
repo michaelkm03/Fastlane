@@ -24,6 +24,10 @@
 "NoEmailDetail"         =   "There are no email accounts, would you like to setup one now?";
 "EmailFail"             =   "E-mail failed to send";
 
+
+"NoTwitterTitle"        =   "Can't find a Twitter Account!";
+"NoTwitterMessage"      =   "Please log into the device settings and add a new twitter account";
+
 "HelpNeeded"            =   "I need help with...";
 
 "ReportInappropriate"   =   "Report Inappropriate";

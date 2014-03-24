@@ -27,7 +27,8 @@
     NSDictionary *propertyMap = @{
                                   @"display_order"  : VSelectorName(display_order),
                                   @"name"           : VSelectorName(name),
-                                  @"remote_id"      : VSelectorName(remoteId)
+                                  @"remote_id"      : VSelectorName(remoteId),
+                                  @"images"         : VSelectorName(images)
                                   };
     
     RKEntityMapping *mapping = [RKEntityMapping
@@ -35,9 +36,7 @@
                                 inManagedObjectStore:[RKObjectManager sharedManager].managedObjectStore];
     
     [mapping addAttributeMappingsFromDictionary:propertyMap];
-
-    [mapping addRelationshipMappingWithSourceKeyPath:VSelectorName(assets) mapping:[VAsset entityMappingForVVoteType]];
-
+    
     return mapping;
 }
 

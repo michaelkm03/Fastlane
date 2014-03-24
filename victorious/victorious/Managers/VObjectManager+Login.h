@@ -27,10 +27,14 @@ extern NSString *kLoggedInChangedNotification;
                                                    failBlock:(VFailBlock)failed;
 
 - (RKManagedObjectRequestOperation *)loginToTwitterWithToken:(NSString*)accessToken
+                                                accessSecret:(NSString*)accessSecret
+                                                   twitterId:(NSString*)twitterId
                                                 SuccessBlock:(VSuccessBlock)success
                                                    failBlock:(VFailBlock)failed;
 
 - (RKManagedObjectRequestOperation *)createTwitterWithToken:(NSString*)accessToken
+                                               accessSecret:(NSString*)accessSecret
+                                                  twitterId:(NSString*)twitterId
                                                SuccessBlock:(VSuccessBlock)success
                                                   failBlock:(VFailBlock)failed;
 

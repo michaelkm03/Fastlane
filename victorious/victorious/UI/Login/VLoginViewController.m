@@ -12,6 +12,7 @@
 #import "VProfileWithSocialViewController.h"
 #import "VObjectManager+Login.h"
 #import "VUser.h"
+#import "TWAPIManager.h"
 
 @import Accounts;
 @import Social;
@@ -25,6 +26,8 @@
 @property (nonatomic, strong)           UIDynamicAnimator*  animator;
 @property (nonatomic, assign)           VLoginType          loginType;
 @property (nonatomic, strong)           VUser*              profile;
+
+@property (nonatomic, strong) TWAPIManager *twitterApiManager;
 @end
 
 @implementation VLoginViewController
@@ -38,6 +41,8 @@
 
 - (void)viewDidLoad
 {
+    _twitterApiManager = [[TWAPIManager alloc] init];
+    
     if (IS_IPHONE_5)
         self.view.layer.contents = (id)[[VThemeManager sharedThemeManager] themedImageForKey:kVMenuBackgroundImage5].CGImage;
     else
@@ -196,37 +201,74 @@
          {
              NSArray *accounts = [account accountsWithAccountType:accountType];
              ACAccount *twitterAccount = [accounts lastObject];
-             ACAccountCredential*  ftwCredential = [twitterAccount credential];
-             NSString* accessToken = [ftwCredential oauthToken];
  
-             VSuccessBlock success = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
+             if (!twitterAccount)
              {
-                 if (![[resultObjects firstObject] isKindOfClass:[VUser class]])
-                     [self didFailWithError:nil];
-                 
-                 [self didLoginWithUser:[resultObjects firstObject]];
-             };
-             VFailBlock failed = ^(NSOperation* operation, NSError* error)
-             {
-                 VFailBlock     blockFail = ^(NSOperation* operation, NSError* error)
-                 {
-                     self.loginType = kVLoginTypeNone;
-                     [self didFailWithError:error];
-                 };
-
-                 if (error.code == 1003)
-                 {
-                     self.loginType = kVLoginTypeTwitter;
-                     [[VObjectManager sharedManager] loginToTwitterWithToken:accessToken SuccessBlock:success failBlock:blockFail];
-                 }
-                 else
-                     [self didFailWithError:error];
-             };
+                 [self twitterAccessDidFail];
+                 return;
+             }
              
-             self.loginType = kVLoginTypeCreateTwitter;
-             [[VObjectManager sharedManager] createTwitterWithToken:accessToken
-                                                        SuccessBlock:success
-                                                           failBlock:failed];
+             [self.twitterApiManager performReverseAuthForAccount:twitterAccount
+                                                      withHandler:^(NSData *responseData, NSError *error)
+              {
+                  VLog(@"data: %@, error:%@", responseData, error);
+
+                  if (error)
+                      [self didFailWithError:error];
+                  
+                  NSString *responseStr = [[NSString alloc] initWithData:responseData encoding:NSUTF8StringEncoding];
+                  
+                  //                TWDLog(@"Reverse Auth process returned: %@", responseStr);
+                  
+                  NSArray *parts = [responseStr componentsSeparatedByString:@"&"];
+                  NSMutableDictionary* parsedData = [[NSMutableDictionary alloc] initWithCapacity:[parts count]];
+                  for (NSString* part in parts)
+                  {
+                      NSArray* data = [part componentsSeparatedByString:@"="];
+                      if ([data count] < 2)
+                          continue;
+                      
+                      [parsedData setObject:data[1] forKey:data[0]];
+                  }
+                  
+                  NSString* oauthToken = [parsedData objectForKey:@"oauth_token"];
+                  NSString* tokenSecret = [parsedData objectForKey:@"oauth_token_secret"];
+                  NSString* twitterId = [parsedData objectForKey:@"user_id"];
+                  
+                  VSuccessBlock success = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
+                  {
+                      if (![[resultObjects firstObject] isKindOfClass:[VUser class]])
+                          [self didFailWithError:nil];
+                      
+                      [self didLoginWithUser:[resultObjects firstObject]];
+                  };
+                  VFailBlock failed = ^(NSOperation* operation, NSError* error)
+                  {
+                      VFailBlock     blockFail = ^(NSOperation* operation, NSError* error)
+                      {
+                          self.loginType = kVLoginTypeNone;
+                          [self didFailWithError:error];
+                      };
+                      
+                      if (error.code == 1003)
+                      {
+                          self.loginType = kVLoginTypeTwitter;
+                          [[VObjectManager sharedManager] loginToTwitterWithToken:oauthToken
+                                                                     accessSecret:tokenSecret
+                                                                        twitterId:twitterId
+                                                                     SuccessBlock:success failBlock:blockFail];
+                      }
+                      else
+                          [self didFailWithError:error];
+                  };
+                  
+                  self.loginType = kVLoginTypeCreateTwitter;
+                  [[VObjectManager sharedManager] createTwitterWithToken:oauthToken
+                                                            accessSecret:tokenSecret
+                                                               twitterId:twitterId
+                                                            SuccessBlock:success
+                                                               failBlock:failed];
+              }];
          }
     }];
 }

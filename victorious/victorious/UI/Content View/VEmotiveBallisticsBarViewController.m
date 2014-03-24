@@ -16,6 +16,8 @@
 
 #import "VThemeManager.h"
 
+#import "VVoteType+Fetcher.h"
+
 @interface VEmotiveBallisticsBarViewController ()
 
 @property (weak, nonatomic) IBOutlet UILabel* positiveEmotiveLabel;
@@ -50,30 +52,19 @@
     UIPanGestureRecognizer *negativePanGesture = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(handlePan:)];
     [self.negativeEmotiveButton addGestureRecognizer:negativePanGesture];
     
-    NSMutableArray* positiveEmotiveAnimations = [[NSMutableArray alloc] initWithCapacity:13];
-    NSMutableArray* negativeEmotiveAnimations = [[NSMutableArray alloc] initWithCapacity:13];
-    for (int i = 0; i < 17; i++)
-    {
-        if (i<13)
-            [positiveEmotiveAnimations addObject:[UIImage imageNamed:[@"Heart" stringByAppendingString:@(i).stringValue]]];
-        
-        [negativeEmotiveAnimations addObject:[UIImage imageNamed:[@"Tomato" stringByAppendingString:@(i).stringValue]]];
-    }
-    
-    self.positiveEmotiveButton.imageView.animationImages = positiveEmotiveAnimations;
-    self.positiveEmotiveButton.imageView.animationDuration = .25f;
-    self.positiveEmotiveButton.imageView.animationRepeatCount = 1;
-    
-    self.negativeEmotiveButton.imageView.animationImages = negativeEmotiveAnimations;
-    self.negativeEmotiveButton.imageView.animationDuration = .25f;
-    self.negativeEmotiveButton.imageView.animationRepeatCount = 1;
-    
     self.positiveEmotiveLabel.textColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVAccentColor];
     self.negativeEmotiveLabel.textColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVAccentColor];
     
     self.positiveEmotiveButton.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVMainColor];
     self.negativeEmotiveButton.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVSecondaryMainColor];
     
+    NSArray* voteTypes = [VVoteType allVoteTypes];
+    [voteTypes enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+        if (idx == self.positiveEmotiveButton.tag)
+        {
+//            [self.positiveEmotiveButton setImage:[] forState:<#(UIControlState)#>]
+        }
+    }];
 }
 
 #pragma mark - Animation

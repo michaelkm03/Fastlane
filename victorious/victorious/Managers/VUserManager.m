@@ -101,6 +101,8 @@ static  NSString*   kLoginTypeUserDefault   =   @"com.victorious.<AppName>.userd
              NSString* accessToken = [ftwCredential oauthToken];
              
              [[VObjectManager sharedManager] loginToTwitterWithToken:accessToken
+                                                        accessSecret:@""
+                                                           twitterId:@""
                                                         SuccessBlock:nil
                                                            failBlock:nil];
          }
