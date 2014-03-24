@@ -41,12 +41,12 @@
         _videoAsset = [AVURLAsset assetWithURL:videoAssetURL];
 
         _topBorder = [[UIView alloc] initWithFrame:CGRectMake(0, 0, frame.size.width, SLIDER_BORDERS_SIZE)];
-        _topBorder.backgroundColor = [UIColor colorWithRed: 0.996 green: 0.951 blue: 0.502 alpha: 1];
+        _topBorder.backgroundColor = [UIColor colorWithRed: 1 green: 1 blue: 1 alpha: 1];
         [self addSubview:_topBorder];
 
 
         _bottomBorder = [[UIView alloc] initWithFrame:CGRectMake(0, frame.size.height-SLIDER_BORDERS_SIZE, frame.size.width, SLIDER_BORDERS_SIZE)];
-        _bottomBorder.backgroundColor = [UIColor colorWithRed: 0.992 green: 0.902 blue: 0.004 alpha: 1];
+        _bottomBorder.backgroundColor = [UIColor colorWithRed: 1 green: 1 blue: 1 alpha: 1];
         [self addSubview:_bottomBorder];
 
 
@@ -253,16 +253,10 @@
     CGFloat inset = _leftThumb.frame.size.width / 2;
 
     _leftThumb.center = CGPointMake(_leftPosition+inset, _leftThumb.frame.size.height/2);
-
     _rightThumb.center = CGPointMake(_rightPosition-inset, _rightThumb.frame.size.height/2);
-
     _topBorder.frame = CGRectMake(_leftThumb.frame.origin.x + _leftThumb.frame.size.width, 0, _rightThumb.frame.origin.x - _leftThumb.frame.origin.x - _leftThumb.frame.size.width/2, SLIDER_BORDERS_SIZE);
-
     _bottomBorder.frame = CGRectMake(_leftThumb.frame.origin.x + _leftThumb.frame.size.width, _backgroundView.frame.size.height-SLIDER_BORDERS_SIZE, _rightThumb.frame.origin.x - _leftThumb.frame.origin.x - _leftThumb.frame.size.width/2, SLIDER_BORDERS_SIZE);
-
-
     _centerView.frame = CGRectMake(_leftThumb.frame.origin.x + _leftThumb.frame.size.width, _centerView.frame.origin.y, _rightThumb.frame.origin.x - _leftThumb.frame.origin.x - _leftThumb.frame.size.width, _centerView.frame.size.height);
-
 
     CGRect frame = _popoverBubble.frame;
     frame.origin.x = _centerView.frame.origin.x+_centerView.frame.size.width/2-frame.size.width/2;
@@ -274,7 +268,7 @@
 -(void)getMovieFrames
 {
     self.imageGenerator = [AVAssetImageGenerator assetImageGeneratorWithAsset:self.videoAsset];
-    self.imageGenerator.maximumSize = CGSizeMake(_backgroundView.frame.size.width, _backgroundView.frame.size.height);
+    self.imageGenerator.maximumSize = CGSizeMake(42, 42);
 
     int picWidth = 42;
 
@@ -286,6 +280,8 @@
     {
         UIImage *videoScreen = [[UIImage alloc] initWithCGImage:halfWayImage];
         UIImageView *tmp = [[UIImageView alloc] initWithImage:videoScreen];
+//        tmp.bounds = CGRectMake(0, 0, 42, 42);
+//        tmp.contentMode = UIViewContentModeScaleAspectFill;
         [_backgroundView addSubview:tmp];
         picWidth = tmp.frame.size.width;
         CGImageRelease(halfWayImage);
@@ -295,45 +291,6 @@
     int picsCnt = ceil(_backgroundView.frame.size.width / picWidth);
     NSMutableArray *allTimes = [[NSMutableArray alloc] init];
     int time4Pic = 0;
-
-//    if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 7.0)
-//    {
-//        // Bug iOS7 - generateCGImagesAsynchronouslyForTimes
-//
-//        for (int i=1, ii=1; i<picsCnt; i++)
-//        {
-//            time4Pic = i*picWidth;
-//
-//            CMTime timeFrame = CMTimeMakeWithSeconds(_durationSeconds*time4Pic/_backgroundView.frame.size.width, 600);
-//
-//            [allTimes addObject:[NSValue valueWithCMTime:timeFrame]];
-//
-//
-//            CGImageRef halfWayImage = [self.imageGenerator copyCGImageAtTime:timeFrame actualTime:&actualTime error:&error];
-//
-//            UIImage *videoScreen = [[UIImage alloc] initWithCGImage:halfWayImage];
-//            UIImageView *tmp = [[UIImageView alloc] initWithImage:videoScreen];
-//            int all = (ii+1)*tmp.frame.size.width;
-//
-//            CGRect currentFrame = tmp.frame;
-//            currentFrame.origin.x = ii*currentFrame.size.width;
-//            if (all > _backgroundView.frame.size.width)
-//            {
-//                int delta = all - _backgroundView.frame.size.width;
-//                currentFrame.size.width -= delta;
-//            }
-//            tmp.frame = currentFrame;
-//            ii++;
-//
-//            dispatch_async(dispatch_get_main_queue(), ^{
-//                [_backgroundView addSubview:tmp];
-//            });
-//
-//            CGImageRelease(halfWayImage);
-//        }
-//
-//        return;
-//    }
 
     for (int i=1; i<picsCnt; i++)
     {
@@ -367,7 +324,6 @@
                                                       dispatch_async(dispatch_get_main_queue(), ^{
                                                           [_backgroundView addSubview:tmp];
                                                       });
-
                                                   }
 
                                                   if (result == AVAssetImageGeneratorFailed)

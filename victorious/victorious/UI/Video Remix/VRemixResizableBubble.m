@@ -13,8 +13,8 @@
     CGContextRef context = UIGraphicsGetCurrentContext();
     
     //// Color Declarations
-    UIColor* bubbleGradientTop = [UIColor colorWithRed: 1 green: 0.939 blue: 0.743 alpha: 1];
-    UIColor* bubbleGradientBottom = [UIColor colorWithRed: 1 green: 0.817 blue: 0.053 alpha: 1];
+    UIColor* bubbleGradientTop = [UIColor colorWithRed: 1 green: 1 blue: 1 alpha: 1];
+    UIColor* bubbleGradientBottom = [UIColor colorWithRed: 1 green: 1 blue: 1 alpha: 1];
     UIColor* bubbleHighlightColor = [UIColor colorWithRed: 1 green: 1 blue: 1 alpha: 1];
     UIColor* bubbleStrokeColor = [UIColor colorWithRed: 0.173 green: 0.173 blue: 0.173 alpha: 1];
     
