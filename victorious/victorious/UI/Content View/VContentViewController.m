@@ -29,6 +29,7 @@
 #import "UIWebView+VYoutubeLoading.h"
 #import "UIView+VFrameManipulation.h"
 #import "NSString+VParseHelp.h"
+#import "UIImage+SolidColorImage.h"
 
 #import "VThemeManager.h"
 
@@ -177,8 +178,9 @@ CGFloat kContentMediaViewOffset = 154;
 {
     _sequence = sequence;
 
+    UIImage* placeholderImage = [UIImage resizeableImageWithColor:[UIColor blackColor]];
     [self.backgroundImage setLightBlurredImageWithURL:[[self.sequence initialImageURLs] firstObject]
-                                     placeholderImage:nil];
+                                     placeholderImage:placeholderImage];
     self.descriptionLabel.text = _sequence.name;
     self.currentNode = [sequence firstNode];
 }
@@ -384,8 +386,10 @@ CGFloat kContentMediaViewOffset = 154;
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:imageUrl];
     [request addValue:@"image/*" forHTTPHeaderField:@"Accept"];
     
+    UIImage* placeholderImage = [UIImage resizeableImageWithColor:[UIColor blackColor]];
+
     [self.previewImage setImageWithURLRequest:request
-                             placeholderImage:nil
+                             placeholderImage:placeholderImage
                                       success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image)
                                       {
                                           CGFloat yRatio = 1;
@@ -405,10 +409,7 @@ CGFloat kContentMediaViewOffset = 154;
                                           
                                           self.previewImage.hidden = NO;
                                       }
-                                      failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error)
-                                      {
-                                          self.previewImage.hidden = YES;
-                                      }];
+                                      failure:nil];
     
     self.pollPreviewView.hidden = YES;
     self.mpPlayerContainmentView.hidden = YES;

@@ -48,6 +48,7 @@
     [super viewDidLoad];
 	//Do any additional setup after loading the view.
     UIPanGestureRecognizer *postivePanGesture = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(handlePan:)];
+    
     // Setting the swipe direction.
     [self.positiveEmotiveButton addGestureRecognizer:postivePanGesture];
     

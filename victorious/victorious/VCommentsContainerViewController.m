@@ -15,6 +15,7 @@
 #import "VObjectManager+Comment.h"
 #import "UIView+VFrameManipulation.h"
 #import "UIImageView+Blurring.h"
+#import "UIImage+SolidColorImage.h"
 
 #import "VThemeManager.h"
 
@@ -41,8 +42,10 @@
 - (void)setSequence:(VSequence *)sequence
 {
     _sequence = sequence;
+    
+    UIImage* placeholderImage = [UIImage resizeableImageWithColor:[UIColor blackColor]];
     [self.backgroundImage setLightBlurredImageWithURL:[[self.sequence initialImageURLs] firstObject]
-                                     placeholderImage:nil];
+                                     placeholderImage:placeholderImage];
 }
 
 - (void)viewDidLoad
@@ -50,8 +53,9 @@
     [super viewDidLoad];
     
     //Load the image on first load
+    UIImage* placeholderImage = [UIImage resizeableImageWithColor:[UIColor blackColor]];
     [self.backgroundImage setLightBlurredImageWithURL:[[self.sequence initialImageURLs] firstObject]
-                                     placeholderImage:nil];
+                                     placeholderImage:placeholderImage];
     
     
     [self.backButton setImage:[self.backButton.imageView.image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] forState:UIControlStateNormal];

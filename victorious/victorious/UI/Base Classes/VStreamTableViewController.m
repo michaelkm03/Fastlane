@@ -15,6 +15,7 @@
 
 #import "NSString+VParseHelp.h"
 #import "UIImageView+Blurring.h"
+#import "UIImage+SolidColorImage.h"
 
 #import "VStreamContentSegue.h"
 #import "VStreamTransitioningDelegate.h"
@@ -108,8 +109,11 @@
     VStreamViewCell* cell = (VStreamViewCell*)[tableView cellForRowAtIndexPath:indexPath];
     
     UIImageView* newBackgroundView = [[UIImageView alloc] initWithFrame:self.tableView.backgroundView.frame];
+    
+    UIImage* placeholderImage = [UIImage resizeableImageWithColor:[UIColor blackColor]];
     [newBackgroundView setLightBlurredImageWithURL:[[cell.sequence initialImageURLs] firstObject]
-                                  placeholderImage:nil];
+                                  placeholderImage:placeholderImage];
+    
     self.tableView.backgroundView = newBackgroundView;
     if (tableView.contentOffset.y == cell.frame.origin.y - kContentMediaViewOffset)
     {
