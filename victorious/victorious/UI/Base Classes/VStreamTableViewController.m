@@ -33,6 +33,8 @@
 #import "VNode+Fetcher.h"
 #import "VAsset.h"
 
+#import "VThemeManager.h"
+
 @interface VStreamTableViewController() <UIViewControllerTransitioningDelegate>
 @property (strong, nonatomic) id<UIViewControllerTransitioningDelegate> transitionDelegate;
 @end
@@ -110,7 +112,7 @@
     
     UIImageView* newBackgroundView = [[UIImageView alloc] initWithFrame:self.tableView.backgroundView.frame];
     
-    UIImage* placeholderImage = [UIImage resizeableImageWithColor:[UIColor blackColor]];
+    UIImage* placeholderImage = [UIImage resizeableImageWithColor:[[VThemeManager sharedThemeManager] themedColorForKey:kVBackgroundColor]];
     [newBackgroundView setLightBlurredImageWithURL:[[cell.sequence initialImageURLs] firstObject]
                                   placeholderImage:placeholderImage];
     

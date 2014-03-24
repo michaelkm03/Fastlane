@@ -43,7 +43,7 @@
 {
     _sequence = sequence;
     
-    UIImage* placeholderImage = [UIImage resizeableImageWithColor:[UIColor blackColor]];
+    UIImage* placeholderImage = [UIImage resizeableImageWithColor:[[VThemeManager sharedThemeManager] themedColorForKey:kVBackgroundColor]];
     [self.backgroundImage setLightBlurredImageWithURL:[[self.sequence initialImageURLs] firstObject]
                                      placeholderImage:placeholderImage];
 }
@@ -53,7 +53,7 @@
     [super viewDidLoad];
     
     //Load the image on first load
-    UIImage* placeholderImage = [UIImage resizeableImageWithColor:[UIColor blackColor]];
+    UIImage* placeholderImage = [UIImage resizeableImageWithColor:[[VThemeManager sharedThemeManager] themedColorForKey:kVBackgroundColor]];
     [self.backgroundImage setLightBlurredImageWithURL:[[self.sequence initialImageURLs] firstObject]
                                      placeholderImage:placeholderImage];
     

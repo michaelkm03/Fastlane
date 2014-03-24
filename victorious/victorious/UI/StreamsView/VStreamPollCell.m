@@ -21,6 +21,8 @@
 
 #import "NSString+VParseHelp.h"
 
+#import "VThemeManager.h"
+
 static NSString* kOrIconImage = @"orIconImage";
 
 @import MediaPlayer;
@@ -92,7 +94,7 @@ static NSString* kOrIconImage = @"orIconImage";
         self.secondAssetUrl = [self.secondAnswer.mediaUrl convertToPreviewImageURL];
     }
     
-    UIImage* placeholderImage = [UIImage resizeableImageWithColor:[UIColor blackColor]];
+    UIImage* placeholderImage = [UIImage resizeableImageWithColor:[[VThemeManager sharedThemeManager] themedColorForKey:kVBackgroundColor]];
     [self.previewImageView setImageWithURL:self.firstAssetUrl placeholderImage:placeholderImage];
     [self.previewImageTwo setImageWithURL:self.secondAssetUrl placeholderImage:placeholderImage];
 }

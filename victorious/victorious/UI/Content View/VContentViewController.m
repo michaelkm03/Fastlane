@@ -178,7 +178,7 @@ CGFloat kContentMediaViewOffset = 154;
 {
     _sequence = sequence;
 
-    UIImage* placeholderImage = [UIImage resizeableImageWithColor:[UIColor blackColor]];
+    UIImage* placeholderImage = [UIImage resizeableImageWithColor:[[VThemeManager sharedThemeManager] themedColorForKey:kVBackgroundColor]];
     [self.backgroundImage setLightBlurredImageWithURL:[[self.sequence initialImageURLs] firstObject]
                                      placeholderImage:placeholderImage];
     self.descriptionLabel.text = _sequence.name;
@@ -382,11 +382,10 @@ CGFloat kContentMediaViewOffset = 154;
         imageUrl = [NSURL URLWithString:self.sequence.previewImage];
     }
     
-    
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:imageUrl];
     [request addValue:@"image/*" forHTTPHeaderField:@"Accept"];
     
-    UIImage* placeholderImage = [UIImage resizeableImageWithColor:[UIColor blackColor]];
+    UIImage* placeholderImage = [UIImage resizeableImageWithColor:[[VThemeManager sharedThemeManager] themedColorForKey:kVBackgroundColor]];
 
     [self.previewImage setImageWithURLRequest:request
                              placeholderImage:placeholderImage
