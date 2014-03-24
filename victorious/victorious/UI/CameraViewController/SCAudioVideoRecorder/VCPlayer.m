@@ -36,6 +36,9 @@ VCPlayer * currentVCVideoPlayer = nil;
 	if (self)
     {
         self.shouldLoop = NO;
+        
+        self.startSeconds = 0;
+        self.endSeconds = 0;
 
 		[self addObserver:self forKeyPath:@"currentItem" options:NSKeyValueObservingOptionNew context:nil];
 		
@@ -48,6 +51,11 @@ VCPlayer * currentVCVideoPlayer = nil;
                 Float64 seconds = CMTimeGetSeconds(CMTimeMultiplyByFloat64(time, ratio));
                 
 				[mySelf.delegate videoPlayer:mySelf didPlay:seconds];
+                
+                if ((mySelf.endSeconds != 0) && (seconds > mySelf.endSeconds))
+                {
+                    [[NSNotificationCenter defaultCenter] postNotificationName:AVPlayerItemDidPlayToEndTimeNotification object:mySelf.currentItem];
+                }
 			}
 		}];
 
@@ -82,12 +90,16 @@ VCPlayer * currentVCVideoPlayer = nil;
     {
 		if (self.shouldLoop)
         {
-			[self seekToTime:CMTimeMake(0, 1)];
 			if ([self isPlaying])
             {
+                [self seekToTime:CMTimeMakeWithSeconds(self.startSeconds, NSEC_PER_SEC)];
 				[self play];
 			}
 		}
+        else
+        {
+            [self pause];
+        }
 	}
 }
 

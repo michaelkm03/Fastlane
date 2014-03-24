@@ -46,4 +46,7 @@
 @property (assign, nonatomic, readwrite) CMTime minimumBufferedTimeBeforePlaying;
 @property (assign, nonatomic, readwrite) BOOL shouldLoop;
 
+@property (nonatomic, assign)   CGFloat     startSeconds;
+@property (nonatomic, assign)   CGFloat     endSeconds;
+
 @end

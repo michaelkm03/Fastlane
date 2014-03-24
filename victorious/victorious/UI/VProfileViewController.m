@@ -111,9 +111,9 @@
     [self.profileCircleImageView setImageWithURL:imageURL placeholderImage:[UIImage imageNamed:@"profile_thumb"]];
 
     // Set Profile data
-    self.nameLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVTitleFont];
+    self.nameLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVDetailFont];
     self.nameLabel.text = self.profile.name;
-    self.taglineLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVDetailFont];
+    self.taglineLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVDateFont];
 
     if (self.profile.tagline && self.profile.tagline.length)
         self.taglineLabel.text = [NSString stringWithFormat:@"%@%@%@",
