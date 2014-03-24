@@ -24,7 +24,7 @@
 
 @implementation VRemixVideoRangeSlider
 
-- (id)initWithFrame:(CGRect)frame videoUrl:(AVURLAsset *)videoAssetURL
+- (id)initWithFrame:(CGRect)frame videoUrl:(NSURL *)videoAssetURL
 {    
     self = [super initWithFrame:frame];
     if (self)
@@ -38,7 +38,7 @@
         _backgroundView.layer.borderWidth = BG_VIEW_BORDERS_SIZE;
         [self addSubview:_backgroundView];
 
-        _videoAsset = videoAssetURL;
+        _videoAsset = [AVURLAsset assetWithURL:videoAssetURL];
 
         _topBorder = [[UIView alloc] initWithFrame:CGRectMake(0, 0, frame.size.width, SLIDER_BORDERS_SIZE)];
         _topBorder.backgroundColor = [UIColor colorWithRed: 0.996 green: 0.951 blue: 0.502 alpha: 1];

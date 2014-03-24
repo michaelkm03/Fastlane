@@ -14,7 +14,6 @@
 #import "VRemixVideoRangeSlider.h"
 
 @interface VRemixTrimViewController ()  <VCVideoPlayerDelegate, VRemixVideoRangeSliderDelegate>
-@property (nonatomic, strong)   NSURL*                          assetURL;
 @property (nonatomic, weak)     IBOutlet    VCVideoPlayerView*  previewView;;
 @property (nonatomic, weak)     IBOutlet    UISlider*           scrubber;
 @property (nonatomic, weak)     IBOutlet    UILabel*            currentTimeLabel;
@@ -27,11 +26,8 @@
 @property (nonatomic, weak)     IBOutlet    UIView*             trimControlContainer;
 @property (nonatomic, strong)   VRemixVideoRangeSlider*         trimSlider;
 
-@property (nonatomic, strong)   id                              periodicTimeObserver;
-
+@property (nonatomic, strong)   AVURLAsset*                     sourceAsset;
 @property (nonatomic)           CGFloat                         restoreAfterScrubbingRate;
-@property (nonatomic, assign)   CGFloat                         start;
-@property (nonatomic, assign)   CGFloat                         stop;
 @property (nonatomic, strong)   id                              timeObserver;
 @end
 
@@ -41,7 +37,7 @@
 {
     UINavigationController*     remixViewController =   [[UIStoryboard storyboardWithName:@"VideoRemix" bundle:nil] instantiateInitialViewController];
     VRemixTrimViewController*   rootViewController  =   (VRemixTrimViewController *)remixViewController.topViewController;
-    rootViewController.assetURL = url;
+    rootViewController.sourceURL = url;
     
     return remixViewController;
 }
@@ -50,29 +46,14 @@
 {
     [super viewDidLoad];
 	
-    self.sourceAsset = [AVURLAsset assetWithURL:self.assetURL];
-//    [self.sourceAsset loadValuesAsynchronouslyForKeys:@[@"duration", @"tracks"] completionHandler:^{
-//        dispatch_async(dispatch_get_main_queue(), ^{
-//            NSError*            error   = nil;
-//            AVKeyValueStatus    status  = [self.sourceAsset statusOfValueForKey:@"duration" error:&error];
-//            switch (status)
-//            {
-//                case AVKeyValueStatusLoaded:
-//    //                [self updateUserInterfaceForDuration];
-//                    break;
-//            }
-//        });
-//    }];
-    
-    self.start  =   0.0;
-    self.stop   =   self.start + CMTimeGetSeconds(self.sourceAsset.duration);
-    
+    self.sourceAsset = [AVURLAsset assetWithURL:self.sourceURL];
     self.playBackSpeed = kRemixPlaybackNormalSpeed;
     self.playbackLooping = kRemixLoopingNone;
     
-    [self.previewView.player setItem:[AVPlayerItem playerItemWithURL:self.assetURL]];
-    self.previewView.player.shouldLoop = YES;
+    [self.previewView.player setItem:[AVPlayerItem playerItemWithURL:self.sourceURL]];
     self.previewView.player.delegate = self;
+    
+    [self.previewView.player seekToTime:CMTimeMakeWithSeconds(self.startSeconds, NSEC_PER_SEC)];
     [self.previewView.player play];
     
     [self.previewView addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTapToPlayAction:)]];
@@ -87,7 +68,7 @@
     UIImage*    nextButtonImage = [[UIImage imageNamed:@"cameraButtonNext"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithImage:nextButtonImage style:UIBarButtonItemStyleBordered target:self action:@selector(nextButtonClicked:)];
     
-    self.trimSlider = [[VRemixVideoRangeSlider alloc] initWithFrame:self.trimControlContainer.bounds videoUrl:self.sourceAsset];
+    self.trimSlider = [[VRemixVideoRangeSlider alloc] initWithFrame:self.trimControlContainer.bounds videoUrl:self.sourceURL];
     self.trimSlider.bubbleText.font = [UIFont systemFontOfSize:12];
     [self.trimSlider setPopoverBubbleWidth:120 height:60];
     
@@ -179,8 +160,10 @@
 
 - (void)videoRange:(VRemixVideoRangeSlider *)videoRange didChangeLeftPosition:(CGFloat)leftPosition rightPosition:(CGFloat)rightPosition
 {
-    self.start = leftPosition;
-    self.stop = rightPosition;
+    self.startSeconds = leftPosition;
+    self.previewView.player.startSeconds = leftPosition;
+    self.endSeconds = rightPosition;
+    self.previewView.player.endSeconds = rightPosition;
 //    self.timeLabel.text = [NSString stringWithFormat:@"%f - %f", leftPosition, rightPosition];
 }
 
@@ -193,9 +176,7 @@
 
 - (IBAction)nextButtonClicked:(id)sender
 {
-    [self.activityIndicator startAnimating];
-//    [self trimVideo:self.previewView.player.currentItem.asset startTrim:self.start endTrim:self.stop];
-    [self trimVideo:self.sourceAsset.URL startTrim:self.start endTrim:self.stop];
+    [self performSegueWithIdentifier:@"toStitch" sender:self];
 }
 
 - (IBAction)muteAudioClicked:(id)sender
@@ -297,9 +278,10 @@
 			CGFloat width = CGRectGetWidth([self.scrubber bounds]);
 			double tolerance = 0.5f * duration / width;
 
+            __weak  VRemixTrimViewController*   weakSelf    =   self;
 			self.timeObserver = [self.previewView.player addPeriodicTimeObserverForInterval:CMTimeMakeWithSeconds(tolerance, NSEC_PER_SEC) queue:dispatch_get_main_queue() usingBlock:^(CMTime time)
                              {
-                                 [self syncScrubber];
+                                 [weakSelf syncScrubber];
                              }];
 		}
 	}
@@ -318,86 +300,16 @@
     if ([segue.identifier isEqualToString:@"toStitch"])
     {
         VRemixStitchViewController*     stitchViewController = (VRemixStitchViewController *)segue.destinationViewController;
-        stitchViewController.sourceAsset = self.outputAsset;
+        stitchViewController.sourceURL = self.sourceURL;
         stitchViewController.muteAudio = self.muteAudio;
         stitchViewController.playBackSpeed = self.playBackSpeed;
         stitchViewController.playbackLooping = self.playbackLooping;
+        stitchViewController.startSeconds = self.startSeconds;
+        stitchViewController.endSeconds = self.endSeconds;
     }
 }
 
 #pragma mark - Support
-
-- (void)processVideoDidFinishWithURL:(NSURL *)aURL
-{
-    [self.activityIndicator stopAnimating];
-    self.outputAsset = [[AVURLAsset alloc] initWithURL:aURL options:nil];
-    [self performSegueWithIdentifier:@"toStitch" sender:self];
-}
-
-- (void)trimVideo:(NSURL *)assetToTrim startTrim:(CGFloat)startTrim endTrim:(CGFloat)endTrim
-{
-    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-    NSString *output = paths[0];
-    NSFileManager *manager = [NSFileManager defaultManager];
-    [manager createDirectoryAtPath:output withIntermediateDirectories:YES attributes:nil error:nil];
-    output = [output stringByAppendingPathComponent:@"input.mp4"];
-    // Remove Existing File
-    [manager removeItemAtPath:output error:nil];
-
-    NSData* data = [NSData dataWithContentsOfURL:assetToTrim];
-    [data writeToFile:output atomically:YES];
-    
-    AVAsset* asset   =   [AVAsset assetWithURL:[NSURL fileURLWithPath:output]];
-    if (asset.exportable)
-//    if (assetToTrim.exportable)
-    {
-//        [assetToTrim loadValuesAsynchronouslyForKeys:@[@"tracks"] completionHandler:^{
-    //        NSArray*    compatiblePresets = [AVAssetExportSession exportPresetsCompatibleWithAsset:assetToTrim];
-    //        if ([compatiblePresets containsObject:AVAssetExportPresetMediumQuality])
-            {
-                NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-                NSString *outputURL = paths[0];
-                NSFileManager *manager = [NSFileManager defaultManager];
-                [manager createDirectoryAtPath:outputURL withIntermediateDirectories:YES attributes:nil error:nil];
-                outputURL = [outputURL stringByAppendingPathComponent:@"output.mp4"];
-                // Remove Existing File
-                [manager removeItemAtPath:outputURL error:nil];
-                
-        //        AVAssetExportSession*   exportSession   =   [[AVAssetExportSession alloc] initWithAsset:asset presetName:AVAssetExportPresetPassthrough];
-//                AVAssetExportSession*   exportSession   =   [[AVAssetExportSession alloc] initWithAsset:assetToTrim presetName:AVAssetExportPresetPassthrough];
-                AVAssetExportSession*   exportSession   =   [[AVAssetExportSession alloc] initWithAsset:asset presetName:AVAssetExportPresetPassthrough];
-                exportSession.outputFileType = AVFileTypeQuickTimeMovie;
-                exportSession.outputURL = [NSURL fileURLWithPath:outputURL];
-        //        exportSession.outputURL = [self exportFileURL];
-                exportSession.shouldOptimizeForNetworkUse = YES;
-                    
-        //        CMTime start = CMTimeMakeWithSeconds(startTrim, assetToTrim.duration.timescale);
-        //        CMTime duration = CMTimeMakeWithSeconds(endTrim - startTrim, assetToTrim.duration.timescale);
-        //        CMTimeRange range = CMTimeRangeMake(start, duration);
-        //        exportSession.timeRange = range;
-                
-                [exportSession exportAsynchronouslyWithCompletionHandler:^{
-                    switch ([exportSession status])
-                    {
-                        case AVAssetExportSessionStatusFailed:
-                            NSLog(@"Export failed: %d, %@, %@", exportSession.error.code, exportSession.error.localizedDescription, exportSession.error.localizedFailureReason);
-                            break;
-                            
-                        case AVAssetExportSessionStatusCancelled:
-                            NSLog(@"Export canceled");
-                            break;
-                            
-                        default:
-                            dispatch_async(dispatch_get_main_queue(), ^{
-                                [self exportDidFinish:exportSession];
-                            });
-                            break;
-                    }
-                }];
-            }
-//        }];
-    }
-}
 
 -(NSString *)secondsToMMSS:(double)seconds
 {
@@ -440,335 +352,3 @@
 }
 
 @end
-
-
-
-
-
-
-
-
-//static void *MyStreamingMovieViewControllerTimedMetadataObserverContext = &MyStreamingMovieViewControllerTimedMetadataObserverContext;
-//static void *MyStreamingMovieViewControllerRateObservationContext = &MyStreamingMovieViewControllerRateObservationContext;
-//static void *MyStreamingMovieViewControllerCurrentItemObservationContext = &MyStreamingMovieViewControllerCurrentItemObservationContext;
-//static void *MyStreamingMovieViewControllerPlayerItemStatusObserverContext = &MyStreamingMovieViewControllerPlayerItemStatusObserverContext;
-//
-//NSString *kTracksKey		= @"tracks";
-//NSString *kStatusKey		= @"status";
-//NSString *kRateKey			= @"rate";
-//NSString *kPlayableKey		= @"playable";
-//NSString *kCurrentItemKey	= @"currentItem";
-//NSString *kTimedMetadataKey	= @"currentItem.timedMetadata";
-//
-//#pragma mark -
-//@interface MyStreamingMovieViewController (Player)
-//- (BOOL)isPlaying;
-//- (void)handleTimedMetadata:(AVMetadataItem*)timedMetadata;
-//- (void)updateAdList:(NSArray *)newAdList;
-//- (void)assetFailedToPrepareForPlayback:(NSError *)error;
-//- (void)prepareToPlayAsset:(AVURLAsset *)asset withKeys:(NSArray *)requestedKeys;
-//@end
-//
-//@implementation MyStreamingMovieViewController
-//
-//@synthesize movieURLTextField;
-//@synthesize movieTimeControl;
-//@synthesize playerLayerView;
-//@synthesize player, playerItem;
-//@synthesize isPlayingAdText;
-//@synthesize toolBar, playButton, stopButton;
-//
-///* Prevent the slider from seeking during Ad playback. */
-//- (void)sliderSyncToPlayerSeekableTimeRanges
-//{
-//	NSArray *seekableTimeRanges = [[player currentItem] seekableTimeRanges];
-//	if ([seekableTimeRanges count] > 0)
-//	{
-//		NSValue *range = [seekableTimeRanges objectAtIndex:0];
-//		CMTimeRange timeRange = [range CMTimeRangeValue];
-//		float startSeconds = CMTimeGetSeconds(timeRange.start);
-//		float durationSeconds = CMTimeGetSeconds(timeRange.duration);
-//		
-//		/* Set the minimum and maximum values of the time slider to match the seekable time range. */
-//		movieTimeControl.minimumValue = startSeconds;
-//		movieTimeControl.maximumValue = startSeconds + durationSeconds;
-//	}
-//}
-//
-//- (IBAction)loadMovieButtonPressed:(id)sender
-//{
-//	/* Has the user entered a movie URL? */
-//	if (self.movieURLTextField.text.length > 0)
-//	{
-//		NSURL *newMovieURL = [NSURL URLWithString:self.movieURLTextField.text];
-//		if ([newMovieURL scheme])	/* Sanity check on the URL. */
-//		{
-//			/*
-//			 Create an asset for inspection of a resource referenced by a given URL.
-//			 Load the values for the asset keys "tracks", "playable".
-//			 */
-//            AVURLAsset *asset = [AVURLAsset URLAssetWithURL:newMovieURL options:nil];
-//            
-//			NSArray *requestedKeys = [NSArray arrayWithObjects:kTracksKey, kPlayableKey, nil];
-//			
-//			/* Tells the asset to load the values of any of the specified keys that are not already loaded. */
-//			[asset loadValuesAsynchronouslyForKeys:requestedKeys completionHandler:
-//			 ^{
-//				 dispatch_async( dispatch_get_main_queue(),
-//								^{
-//									/* IMPORTANT: Must dispatch to main queue in order to operate on the AVPlayer and AVPlayerItem. */
-//									[self prepareToPlayAsset:asset withKeys:requestedKeys];
-//								});
-//			 }];
-//		}
-//	}
-//}
-//
-//#pragma mark Prepare to play asset
-//
-///*
-// Invoked at the completion of the loading of the values for all keys on the asset that we require.
-// Checks whether loading was successfull and whether the asset is playable.
-// If so, sets up an AVPlayerItem and an AVPlayer to play the asset.
-// */
-//- (void)prepareToPlayAsset:(AVURLAsset *)asset withKeys:(NSArray *)requestedKeys
-//{
-//    /* Make sure that the value of each key has loaded successfully. */
-//	for (NSString *thisKey in requestedKeys)
-//	{
-//		NSError *error = nil;
-//		AVKeyValueStatus keyStatus = [asset statusOfValueForKey:thisKey error:&error];
-//		if (keyStatus == AVKeyValueStatusFailed)
-//		{
-//			[self assetFailedToPrepareForPlayback:error];
-//			return;
-//		}
-//		/* If you are also implementing the use of -[AVAsset cancelLoading], add your code here to bail
-//         out properly in the case of cancellation. */
-//	}
-//    
-//    /* Use the AVAsset playable property to detect whether the asset can be played. */
-//    if (!asset.playable)
-//    {
-//        /* Generate an error describing the failure. */
-//		NSString *localizedDescription = NSLocalizedString(@"Item cannot be played", @"Item cannot be played description");
-//		NSString *localizedFailureReason = NSLocalizedString(@"The assets tracks were loaded, but could not be made playable.", @"Item cannot be played failure reason");
-//		NSDictionary *errorDict = [NSDictionary dictionaryWithObjectsAndKeys:
-//								   localizedDescription, NSLocalizedDescriptionKey,
-//								   localizedFailureReason, NSLocalizedFailureReasonErrorKey,
-//								   nil];
-//		NSError *assetCannotBePlayedError = [NSError errorWithDomain:@"StitchedStreamPlayer" code:0 userInfo:errorDict];
-//        
-//        /* Display the error to the user. */
-//        [self assetFailedToPrepareForPlayback:assetCannotBePlayedError];
-//        
-//        return;
-//    }
-//	
-//	/* At this point we're ready to set up for playback of the asset. */
-//    
-//	[self initScrubberTimer];
-//	[self enableScrubber];
-//	[self enablePlayerButtons];
-//	
-//    /* Stop observing our prior AVPlayerItem, if we have one. */
-//    if (self.playerItem)
-//    {
-//        /* Remove existing player item key value observers and notifications. */
-//        
-//        [self.playerItem removeObserver:self forKeyPath:kStatusKey];
-//		
-//        [[NSNotificationCenter defaultCenter] removeObserver:self
-//                                                        name:AVPlayerItemDidPlayToEndTimeNotification
-//                                                      object:self.playerItem];
-//    }
-//	
-//    /* Create a new instance of AVPlayerItem from the now successfully loaded AVAsset. */
-//    self.playerItem = [AVPlayerItem playerItemWithAsset:asset];
-//    
-//    /* Observe the player item "status" key to determine when it is ready to play. */
-//    [self.playerItem addObserver:self
-//                      forKeyPath:kStatusKey
-//                         options:NSKeyValueObservingOptionInitial | NSKeyValueObservingOptionNew
-//                         context:MyStreamingMovieViewControllerPlayerItemStatusObserverContext];
-//	
-//    /* When the player item has played to its end time we'll toggle
-//     the movie controller Pause button to be the Play button */
-//    [[NSNotificationCenter defaultCenter] addObserver:self
-//                                             selector:@selector(playerItemDidReachEnd:)
-//                                                 name:AVPlayerItemDidPlayToEndTimeNotification
-//                                               object:self.playerItem];
-//	
-//    seekToZeroBeforePlay = NO;
-//	
-//    /* Create new player, if we don't already have one. */
-//    if (![self player])
-//    {
-//        /* Get a new AVPlayer initialized to play the specified player item. */
-//        [self setPlayer:[AVPlayer playerWithPlayerItem:self.playerItem]];
-//		
-//        /* Observe the AVPlayer "currentItem" property to find out when any
-//         AVPlayer replaceCurrentItemWithPlayerItem: replacement will/did
-//         occur.*/
-//        [self.player addObserver:self
-//                      forKeyPath:kCurrentItemKey
-//                         options:NSKeyValueObservingOptionInitial | NSKeyValueObservingOptionNew
-//                         context:MyStreamingMovieViewControllerCurrentItemObservationContext];
-//        
-//        /* A 'currentItem.timedMetadata' property observer to parse the media stream timed metadata. */
-//        [self.player addObserver:self
-//                      forKeyPath:kTimedMetadataKey
-//                         options:0
-//                         context:MyStreamingMovieViewControllerTimedMetadataObserverContext];
-//        
-//        /* Observe the AVPlayer "rate" property to update the scrubber control. */
-//        [self.player addObserver:self
-//                      forKeyPath:kRateKey
-//                         options:NSKeyValueObservingOptionInitial | NSKeyValueObservingOptionNew
-//                         context:MyStreamingMovieViewControllerRateObservationContext];
-//    }
-//    
-//    /* Make our new AVPlayerItem the AVPlayer's current item. */
-//    if (self.player.currentItem != self.playerItem)
-//    {
-//        /* Replace the player item with a new player item. The item replacement occurs
-//         asynchronously; observe the currentItem property to find out when the
-//         replacement will/did occur*/
-//        [[self player] replaceCurrentItemWithPlayerItem:self.playerItem];
-//        
-//        [self syncPlayPauseButtons];
-//    }
-//	
-//    [movieTimeControl setValue:0.0];
-//}
-//
-//#pragma mark -
-//#pragma mark Asset Key Value Observing
-//#pragma mark
-//
-//#pragma mark Key Value Observer for player rate, currentItem, player item status
-//
-///* ---------------------------------------------------------
-// **  Called when the value at the specified key path relative
-// **  to the given object has changed.
-// **  Adjust the movie play and pause button controls when the
-// **  player item "status" value changes. Update the movie
-// **  scrubber control when the player item is ready to play.
-// **  Adjust the movie scrubber control when the player item
-// **  "rate" value changes. For updates of the player
-// **  "currentItem" property, set the AVPlayer for which the
-// **  player layer displays visual output.
-// **  NOTE: this method is invoked on the main queue.
-// ** ------------------------------------------------------- */
-//
-//- (void)observeValueForKeyPath:(NSString*) path
-//                      ofObject:(id)object
-//                        change:(NSDictionary*)change
-//                       context:(void*)context
-//{
-//	/* AVPlayerItem "status" property value observer. */
-//	if (context == MyStreamingMovieViewControllerPlayerItemStatusObserverContext)
-//	{
-//		[self syncPlayPauseButtons];
-//        
-//        AVPlayerStatus status = [[change objectForKey:NSKeyValueChangeNewKey] integerValue];
-//        switch (status)
-//        {
-//                /* Indicates that the status of the player is not yet known because
-//                 it has not tried to load new media resources for playback */
-//            case AVPlayerStatusUnknown:
-//            {
-//                [self removePlayerTimeObserver];
-//                [self syncScrubber];
-//                
-//                [self disableScrubber];
-//                [self disablePlayerButtons];
-//            }
-//                break;
-//                
-//            case AVPlayerStatusReadyToPlay:
-//            {
-//                /* Once the AVPlayerItem becomes ready to play, i.e.
-//                 [playerItem status] == AVPlayerItemStatusReadyToPlay,
-//                 its duration can be fetched from the item. */
-//                
-//                playerLayerView.playerLayer.hidden = NO;
-//                
-//                [toolBar setHidden:NO];
-//                
-//                /* Show the movie slider control since the movie is now ready to play. */
-//                movieTimeControl.hidden = NO;
-//                
-//                [self enableScrubber];
-//                [self enablePlayerButtons];
-//                
-//                playerLayerView.playerLayer.backgroundColor = [[UIColor blackColor] CGColor];
-//                
-//                /* Set the AVPlayerLayer on the view to allow the AVPlayer object to display
-//                 its content. */
-//                [playerLayerView.playerLayer setPlayer:player];
-//                
-//                [self initScrubberTimer];
-//            }
-//                break;
-//                
-//            case AVPlayerStatusFailed:
-//            {
-//                AVPlayerItem *thePlayerItem = (AVPlayerItem *)object;
-//                [self assetFailedToPrepareForPlayback:thePlayerItem.error];
-//            }
-//                break;
-//        }
-//	}
-//	/* AVPlayer "rate" property value observer. */
-//	else if (context == MyStreamingMovieViewControllerRateObservationContext)
-//	{
-//        [self syncPlayPauseButtons];
-//	}
-//	/* AVPlayer "currentItem" property observer.
-//     Called when the AVPlayer replaceCurrentItemWithPlayerItem:
-//     replacement will/did occur. */
-//	else if (context == MyStreamingMovieViewControllerCurrentItemObservationContext)
-//	{
-//        AVPlayerItem *newPlayerItem = [change objectForKey:NSKeyValueChangeNewKey];
-//        
-//        /* New player item null? */
-//        if (newPlayerItem == (id)[NSNull null])
-//        {
-//            [self disablePlayerButtons];
-//            [self disableScrubber];
-//            
-//            self.isPlayingAdText.text = @"";
-//        }
-//        else /* Replacement of player currentItem has occurred */
-//        {
-//            /* Set the AVPlayer for which the player layer displays visual output. */
-//            [playerLayerView.playerLayer setPlayer:self.player];
-//            
-//            /* Specifies that the player should preserve the video’s aspect ratio and
-//             fit the video within the layer’s bounds. */
-//            [playerLayerView setVideoFillMode:AVLayerVideoGravityResizeAspect];
-//            
-//            [self syncPlayPauseButtons];
-//        }
-//	}
-//	/* Observe the AVPlayer "currentItem.timedMetadata" property to parse the media stream
-//     timed metadata. */
-//	else if (context == MyStreamingMovieViewControllerTimedMetadataObserverContext)
-//	{
-//		NSArray* array = [[player currentItem] timedMetadata];
-//		for (AVMetadataItem *metadataItem in array)
-//		{
-//			[self handleTimedMetadata:metadataItem];
-//		}
-//	}
-//	else
-//	{
-//		[super observeValueForKeyPath:path ofObject:object change:change context:context];
-//	}
-//    
-//    return;
-//}
-//
-//@end
-
