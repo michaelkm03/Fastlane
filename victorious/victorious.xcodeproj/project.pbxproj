@@ -190,7 +190,7 @@
 		BED7F67318E0A8E900545DF6 /* OAuth+Additions.m in Sources */ = {isa = PBXBuildFile; fileRef = BED7F66E18E0A8E900545DF6 /* OAuth+Additions.m */; };
 		BED7F67418E0A8E900545DF6 /* OAuthCore.m in Sources */ = {isa = PBXBuildFile; fileRef = BED7F67018E0A8E900545DF6 /* OAuthCore.m */; };
 		BED7F67718E0B6A100545DF6 /* VSequence.m in Sources */ = {isa = PBXBuildFile; fileRef = BED7F67618E0B6A100545DF6 /* VSequence.m */; };
-		BED7F67A18E0BD5D00545DF6 /* UIImage+SolidColorImage.m in Sources */ = {isa = PBXBuildFile; fileRef = BED7F67918E0BD5D00545DF6 /* UIImage+SolidColorImage.m */; };
+		BED7F67A18E0BD5D00545DF6 /* UIImage+ImageCreation.m in Sources */ = {isa = PBXBuildFile; fileRef = BED7F67918E0BD5D00545DF6 /* UIImage+ImageCreation.m */; };
 		BEDF0FBE18DB783200750EF6 /* MuseoSans-100.otf in Resources */ = {isa = PBXBuildFile; fileRef = BEDF0FBB18DB783200750EF6 /* MuseoSans-100.otf */; };
 		BEDF0FBF18DB783200750EF6 /* MuseoSans-300.otf in Resources */ = {isa = PBXBuildFile; fileRef = BEDF0FBC18DB783200750EF6 /* MuseoSans-300.otf */; };
 		BEDF0FC018DB783200750EF6 /* MuseoSans-500.otf in Resources */ = {isa = PBXBuildFile; fileRef = BEDF0FBD18DB783200750EF6 /* MuseoSans-500.otf */; };
@@ -550,8 +550,8 @@
 		BED7F67018E0A8E900545DF6 /* OAuthCore.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OAuthCore.m; sourceTree = "<group>"; };
 		BED7F67518E0B6A100545DF6 /* VSequence.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VSequence.h; sourceTree = "<group>"; };
 		BED7F67618E0B6A100545DF6 /* VSequence.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VSequence.m; sourceTree = "<group>"; };
-		BED7F67818E0BD5D00545DF6 /* UIImage+SolidColorImage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "UIImage+SolidColorImage.h"; path = "Categories/UIImage+SolidColorImage.h"; sourceTree = "<group>"; };
-		BED7F67918E0BD5D00545DF6 /* UIImage+SolidColorImage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "UIImage+SolidColorImage.m"; path = "Categories/UIImage+SolidColorImage.m"; sourceTree = "<group>"; };
+		BED7F67818E0BD5D00545DF6 /* UIImage+ImageCreation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "UIImage+ImageCreation.h"; path = "Categories/UIImage+ImageCreation.h"; sourceTree = "<group>"; };
+		BED7F67918E0BD5D00545DF6 /* UIImage+ImageCreation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "UIImage+ImageCreation.m"; path = "Categories/UIImage+ImageCreation.m"; sourceTree = "<group>"; };
 		BEDF0FBB18DB783200750EF6 /* MuseoSans-100.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "MuseoSans-100.otf"; sourceTree = "<group>"; };
 		BEDF0FBC18DB783200750EF6 /* MuseoSans-300.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "MuseoSans-300.otf"; sourceTree = "<group>"; };
 		BEDF0FBD18DB783200750EF6 /* MuseoSans-500.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "MuseoSans-500.otf"; sourceTree = "<group>"; };
@@ -929,8 +929,8 @@
 				3FA217E218AD87F40066E893 /* UIImageView+Blurring.m */,
 				3FD7FFB018C01B2B00945E5F /* UIImage+Cropping.h */,
 				3FD7FFB118C01B2B00945E5F /* UIImage+Cropping.m */,
-				BED7F67818E0BD5D00545DF6 /* UIImage+SolidColorImage.h */,
-				BED7F67918E0BD5D00545DF6 /* UIImage+SolidColorImage.m */,
+				BED7F67818E0BD5D00545DF6 /* UIImage+ImageCreation.h */,
+				BED7F67918E0BD5D00545DF6 /* UIImage+ImageCreation.m */,
 			);
 			name = Categories;
 			sourceTree = "<group>";
@@ -1580,7 +1580,7 @@
 				BE171E131868C211004E5202 /* VInteractionAction+RestKit.m in Sources */,
 				3F9B66771888C4DD0046F826 /* VForumStreamViewController.m in Sources */,
 				BEB52A7E18C12DCE00AC5FE4 /* UIView+VFrameManipulation.m in Sources */,
-				BED7F67A18E0BD5D00545DF6 /* UIImage+SolidColorImage.m in Sources */,
+				BED7F67A18E0BD5D00545DF6 /* UIImage+ImageCreation.m in Sources */,
 				BEA5BF71187FCBF10014C3EF /* VObjectManager+Users.m in Sources */,
 				3F53E0C318A485D400089C20 /* VUserManager.m in Sources */,
 				BE171E241868C211004E5202 /* VThemeManager.m in Sources */,

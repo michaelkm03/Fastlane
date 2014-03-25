@@ -15,7 +15,7 @@
 #import "VObjectManager+Comment.h"
 #import "UIView+VFrameManipulation.h"
 #import "UIImageView+Blurring.h"
-#import "UIImage+SolidColorImage.h"
+#import "UIImage+ImageCreation.h"
 
 #import "VThemeManager.h"
 

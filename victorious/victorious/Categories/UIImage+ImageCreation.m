@@ -1,14 +1,14 @@
 //
-//  UIImage+SolidColorImage.m
+//  UIImage+ImageCreation.m
 //  victorious
 //
 //  Created by Will Long on 3/24/14.
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
-#import "UIImage+SolidColorImage.h"
+#import "UIImage+ImageCreation.h"
 
-@implementation UIImage (SolidColorImage)
+@implementation UIImage (ImageCreation)
 
 + (UIImage *)resizeableImageWithColor:(UIColor *)color
 {
