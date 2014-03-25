@@ -24,12 +24,16 @@
 @property (nonatomic, weak)     IBOutlet    UIButton*           loopButton;
 @property (nonatomic, weak)     IBOutlet    UIButton*           muteButton;
 
+@property (nonatomic, weak)     IBOutlet    UIImageView*        playCircle;
+@property (nonatomic, weak)     IBOutlet    UIImageView*        playButton;
+
 @property (nonatomic, weak)     IBOutlet    UIView*             trimControlContainer;
 @property (nonatomic, strong)   VRemixVideoRangeSlider*         trimSlider;
 
 @property (nonatomic, strong)   AVURLAsset*                     sourceAsset;
 @property (nonatomic)           CGFloat                         restoreAfterScrubbingRate;
 @property (nonatomic, strong)   id                              timeObserver;
+@property (nonatomic)           BOOL                            animatingPlayButton;
 @end
 
 @implementation VRemixTrimViewController
@@ -89,11 +93,7 @@
     
     double interval = .1f;
 
-    CMTime playerDuration = [self playerItemDuration];
-	if (CMTIME_IS_INVALID(playerDuration))
-		return;
-
-    double duration = CMTimeGetSeconds(playerDuration);
+    double duration = CMTimeGetSeconds([self playerItemDuration]);
 	if (isfinite(duration))
 	{
 		CGFloat width = CGRectGetWidth([self.scrubber bounds]);
@@ -141,6 +141,16 @@
     self.currentTimeLabel.text = [self secondsToMMSS:secondsElapsed];
 }
 
+- (void)videoPlayerDidStartPlaying:(VCPlayer *)videoPlayer
+{
+    [self stopAnimation];
+}
+
+- (void)videoPlayerDidStopPlaying:(VCPlayer *)videoPlayer
+{
+    [self startAnimation];
+}
+
 #pragma mark - VRemixVideoRangeSliderDelegate
 
 - (void)videoRange:(VRemixVideoRangeSlider *)videoRange didChangeLeftPosition:(CGFloat)leftPosition rightPosition:(CGFloat)rightPosition
@@ -149,7 +159,6 @@
     self.previewView.player.startSeconds = leftPosition;
     self.endSeconds = rightPosition;
     self.previewView.player.endSeconds = rightPosition;
-//    self.timeLabel.text = [NSString stringWithFormat:@"%f - %f", leftPosition, rightPosition];
 }
 
 #pragma mark - Actions
@@ -172,9 +181,9 @@
     self.previewView.player.muted = self.muteAudio;
     
     if (self.muteAudio)
-        [self.muteButton setImage:[UIImage imageNamed:@"cameraButtonUnmute"] forState:UIControlStateNormal];
-    else
         [self.muteButton setImage:[UIImage imageNamed:@"cameraButtonMute"] forState:UIControlStateNormal];
+    else
+        [self.muteButton setImage:[UIImage imageNamed:@"cameraButtonUnmute"] forState:UIControlStateNormal];
 }
 
 - (IBAction)playbackRateClicked:(id)sender
@@ -205,13 +214,13 @@
     {
         self.playbackLooping = kRemixLoopingLoop;
         self.previewView.player.shouldLoop = YES;
-        [self.loopButton setImage:[UIImage imageNamed:@"cameraButtonNoLoop"] forState:UIControlStateNormal];
+        [self.loopButton setImage:[UIImage imageNamed:@"cameraButtonLoop"] forState:UIControlStateNormal];
     }
     else if (self.playbackLooping == kRemixLoopingLoop)
     {
         self.playbackLooping = kRemixLoopingNone;
         self.previewView.player.shouldLoop = NO;
-        [self.loopButton setImage:[UIImage imageNamed:@"cameraButtonLoop"] forState:UIControlStateNormal];
+        [self.loopButton setImage:[UIImage imageNamed:@"cameraButtonNoLoop"] forState:UIControlStateNormal];
     }
 }
 
@@ -334,6 +343,43 @@
 		double time = CMTimeGetSeconds([self.previewView.player currentTime]);
 		[self.scrubber setValue:(maxValue - minValue) * time / duration + minValue];
 	}
+}
+
+- (void)startAnimation
+{
+    //If we are already animating just ignore this and continue from where we are.
+    if (self.animatingPlayButton)
+        return;
+    
+    self.playButton.alpha = 1.0;
+    self.playCircle.alpha = 1.0;
+    self.animatingPlayButton = YES;
+    [self firstAnimation];
+}
+
+- (void)firstAnimation
+{
+    if (self.animatingPlayButton)
+        [UIView animateKeyframesWithDuration:1.4f delay:0 options:UIViewKeyframeAnimationOptionCalculationModeLinear
+                                  animations:^
+         {
+             [UIView addKeyframeWithRelativeStartTime:0      relativeDuration:.37f   animations:^{   self.playButton.alpha = 1;      }];
+             [UIView addKeyframeWithRelativeStartTime:.37f   relativeDuration:.21f   animations:^{   self.playButton.alpha = .3f;    }];
+             [UIView addKeyframeWithRelativeStartTime:.58f   relativeDuration:.17f   animations:^{   self.playButton.alpha = .9f;    }];
+             [UIView addKeyframeWithRelativeStartTime:.75f   relativeDuration:.14f   animations:^{   self.playButton.alpha = .3f;    }];
+             [UIView addKeyframeWithRelativeStartTime:.89f   relativeDuration:.11f   animations:^{   self.playButton.alpha = .5f;    }];
+         }
+                                  completion:^(BOOL finished)
+         {
+             [self performSelector:@selector(firstAnimation) withObject:nil afterDelay:3.5f];
+         }];
+}
+
+- (void)stopAnimation
+{
+    self.animatingPlayButton = NO;
+    self.playButton.alpha = 0.0;
+    self.playCircle.alpha = 0.0;
 }
 
 @end

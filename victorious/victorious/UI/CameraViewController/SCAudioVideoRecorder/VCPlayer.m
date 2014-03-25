@@ -185,6 +185,11 @@ VCPlayer * currentVCVideoPlayer = nil;
 	
 	[super play];
 	
+    if ([self.delegate respondsToSelector:@selector(videoPlayerDidStartPlaying:)])
+    {
+        [self.delegate videoPlayerDidStartPlaying:self];
+    }
+
 	currentVCVideoPlayer = self;
 }
 
@@ -192,6 +197,11 @@ VCPlayer * currentVCVideoPlayer = nil;
 {
 	[super pause];
 	
+    if ([self.delegate respondsToSelector:@selector(videoPlayerDidStopPlaying:)])
+    {
+        [self.delegate videoPlayerDidStopPlaying:self];
+    }
+
 	if (currentVCVideoPlayer == self)
     {
 		currentVCVideoPlayer = nil;
