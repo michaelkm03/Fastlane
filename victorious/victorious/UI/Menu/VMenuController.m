@@ -63,7 +63,7 @@ NSString *const VMenuControllerDidSelectRowNotification = @"VMenuTableViewContro
         [self.inboxBadgeLabel setHidden:NO];
     }
     
-    NSString *channelName = [[VThemeManager sharedThemeManager] themedValueForKey:kVChannelName];
+    NSString *channelName = [[VThemeManager sharedThemeManager] themedStringForKey:kVChannelName];
     self.nameLabel.text = [NSString stringWithFormat:NSLocalizedString(@"%@ Channel", @"<CHANNEL NAME> Channel"), channelName];
     
     [[UIImageView appearanceWhenContainedIn:[self class], nil]
@@ -182,7 +182,7 @@ NSString *const VMenuControllerDidSelectRowNotification = @"VMenuTableViewContro
         mailComposer.mailComposeDelegate = self;
         
         [mailComposer setSubject:NSLocalizedString(@"HelpNeeded", @"Need Help")];
-        [mailComposer setToRecipients:@[[[VThemeManager sharedThemeManager] themedValueForKey:kVChannelURLSupport]]];
+        [mailComposer setToRecipients:@[[[VThemeManager sharedThemeManager] themedStringForKey:kVChannelURLSupport]]];
 
         //  Dismiss the menu controller first, since we want to be a child of the root controller
         [self presentViewController:mailComposer animated:YES completion:nil];

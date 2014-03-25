@@ -8,6 +8,7 @@
 
 #import "VRemixStitchViewController.h"
 #import "VCameraPublishViewController.h"
+#import "VThemeManager.h"
 
 @interface VRemixStitchViewController ()
 @property (nonatomic, strong)   AVAsset*    beforeAsset;
@@ -29,8 +30,8 @@
 {
     [super viewDidAppear:animated];
     
-    self.view.backgroundColor = [UIColor blackColor];
-    self.navigationController.navigationBar.barTintColor = [UIColor blackColor];
+    self.view.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVBackgroundColor];
+    self.navigationController.navigationBar.barTintColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVBackgroundColor];
 }
 
 #pragma mark - Actions

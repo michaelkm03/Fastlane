@@ -9,6 +9,7 @@
 #import "VVideoPreviewViewController.h"
 #import "VCVideoPlayerView.h"
 #import "VCameraPublishViewController.h"
+#import "VThemeManager.h"
 
 @interface VVideoPreviewViewController ()
 @property (nonatomic, weak) IBOutlet    VCVideoPlayerView*  videoPlayerView;
@@ -39,8 +40,8 @@
     [self.videoPlayerView addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTapToPlayAction:)]];
     self.videoPlayerView.userInteractionEnabled = YES;
 
-    self.view.backgroundColor = [UIColor blackColor];
-    self.navigationController.navigationBar.barTintColor = [UIColor blackColor];
+    self.view.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVBackgroundColor];
+    self.navigationController.navigationBar.barTintColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVBackgroundColor];
     
     self.inTrashState = NO;
     self.trashAction.imageView.image = [UIImage imageNamed:@"cameraButtonDelete"];

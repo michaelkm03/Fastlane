@@ -15,6 +15,7 @@
 #import "VImagePreviewViewController.h"
 #import "VVideoPreviewViewController.h"
 #import "UIImage+Cropping.h"
+#import "VThemeManager.h"
 
 @interface VCameraViewController () <VCCameraDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate>
 
@@ -124,8 +125,8 @@
 {
     [super viewWillAppear:animated];
     
-    self.view.backgroundColor = [UIColor blackColor];
-    self.navigationController.navigationBar.barTintColor = [UIColor blackColor];
+    self.view.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVBackgroundColor];
+    self.navigationController.navigationBar.barTintColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVBackgroundColor];
     
     self.inRecordVideoState = NO;
     self.inTrashState = NO;
@@ -154,12 +155,6 @@
 
     [self.camera stopRunningSession];
     [self.camera cancel];
-}
-
-- (void)didReceiveMemoryWarning
-{
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
 }
 
 - (UIStatusBarStyle)preferredStatusBarStyle
@@ -483,7 +478,7 @@
 
 #pragma mark - SCAudioVideoRecorderDelegate
 
-- (void) audioVideoRecorder:(VCAudioVideoRecorder *)audioVideoRecorder didRecordVideoFrame:(CMTime)frameTime
+- (void)audioVideoRecorder:(VCAudioVideoRecorder *)audioVideoRecorder didRecordVideoFrame:(CMTime)frameTime
 {
     if (!self.inRecordVideoState)
     {
@@ -497,23 +492,23 @@
 }
 
 // error
-- (void) audioVideoRecorder:(VCAudioVideoRecorder *)audioVideoRecorder didFailToInitializeVideoEncoder:(NSError *)error
+- (void)audioVideoRecorder:(VCAudioVideoRecorder *)audioVideoRecorder didFailToInitializeVideoEncoder:(NSError *)error
 {
     NSLog(@"Failed to initialize VideoEncoder: %@", error);
 }
 
-- (void) audioVideoRecorder:(VCAudioVideoRecorder *)audioVideoRecorder didFailToInitializeAudioEncoder:(NSError *)error
+- (void)audioVideoRecorder:(VCAudioVideoRecorder *)audioVideoRecorder didFailToInitializeAudioEncoder:(NSError *)error
 {
     NSLog(@"Failed to initialize AudioEncoder: %@", error);
 }
 
-- (void) audioVideoRecorder:(VCAudioVideoRecorder *)audioVideoRecorder willFinishRecordingAtTime:(CMTime)frameTime
+- (void)audioVideoRecorder:(VCAudioVideoRecorder *)audioVideoRecorder willFinishRecordingAtTime:(CMTime)frameTime
 {
 //    self.recordButton.userInteractionEnabled = NO;
 }
 
 // Video
-- (void) audioVideoRecorder:(VCAudioVideoRecorder *)audioVideoRecorder didFinishRecordingAtUrl:(NSURL *)recordedFile error:(NSError *)error
+- (void)audioVideoRecorder:(VCAudioVideoRecorder *)audioVideoRecorder didFinishRecordingAtUrl:(NSURL *)recordedFile error:(NSError *)error
 {
     [self prepareCamera];
 
@@ -536,7 +531,7 @@
 #pragma mark - Camera Delegate
 
 // Photo
-- (void) audioVideoRecorder:(VCAudioVideoRecorder *)audioVideoRecorder capturedPhoto:(NSDictionary *)photoDict error:(NSError *)error
+- (void)audioVideoRecorder:(VCAudioVideoRecorder *)audioVideoRecorder capturedPhoto:(NSDictionary *)photoDict error:(NSError *)error
 {
     if (!error)
     {

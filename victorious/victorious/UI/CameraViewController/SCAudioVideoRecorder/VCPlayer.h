@@ -15,6 +15,9 @@
 - (void) videoPlayer:(VCPlayer *)videoPlayer didEndLoadingAtItemTime:(CMTime)itemTime;
 - (void) videoPlayer:(VCPlayer *)videoPlayer didChangeItem:(AVPlayerItem*)item;
 
+- (void)videoPlayerDidStartPlaying:(VCPlayer *)videoPlayer;
+- (void)videoPlayerDidStopPlaying:(VCPlayer *)videoPlayer;
+
 @end
 
 @interface VCPlayer : AVPlayer

@@ -739,8 +739,8 @@
 		3F9B665C188878D00046F826 /* Common */ = {
 			isa = PBXGroup;
 			children = (
-				3FA217E018AD87B50066E893 /* Categories */,
 				83DC42FC187CDDE600E768E2 /* VConstants.h */,
+				3FA217E018AD87B50066E893 /* Categories */,
 				3F9B666518887D000046F826 /* Management */,
 				3F9B666418887CF40046F826 /* UI Elements */,
 				3F9B666318887CE50046F826 /* Base Classes */,

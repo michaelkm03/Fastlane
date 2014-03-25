@@ -125,7 +125,7 @@ NSString*   const   kVLinkColor                         =   @"color.link";
     [[UINavigationBar appearance] setTitleTextAttributes:nil];
 }
 
-#pragma mark -
+#pragma mark - Primitives
 
 - (id)themedValueForKey:(NSString *)key
 {
@@ -136,6 +136,13 @@ NSString*   const   kVLinkColor                         =   @"color.link";
 {
     return [[NSUserDefaults standardUserDefaults] stringForKey:key];
 }
+
+- (NSURL *)themedURLForKey:(NSString *)key
+{
+    return [[NSUserDefaults standardUserDefaults] URLForKey:key];
+}
+
+#pragma mark - Other
 
 - (UIColor *)themedColorForKey:(NSString *)key
 {
@@ -160,11 +167,6 @@ NSString*   const   kVLinkColor                         =   @"color.link";
 
     [color getHue:&hue saturation:&saturation brightness:&brightness alpha:&alpha];
     return [UIColor colorWithHue:hue saturation:saturation*1.158 brightness:brightness*0.95 alpha:alpha];
-}
-
-- (NSURL *)themedURLForKey:(NSString *)key
-{
-    return [[NSUserDefaults standardUserDefaults] URLForKey:key];
 }
 
 - (NSURL *)themedImageURLForKey:(NSString *)key

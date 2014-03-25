@@ -24,13 +24,11 @@
 
 @implementation VCVideoPlayerView
 
-@synthesize player;
-@synthesize playerLayer;
-
-- (id) init {
+- (instancetype)init
+{
 	self = [super init];
-	
-	if (self) {
+	if (self)
+    {
 		_loadingView = nil;
 		[self commonInit];
 	}
@@ -38,22 +36,25 @@
 	return self;
 }
 
-- (void) dealloc {
+- (void)dealloc
+{
 	[self.player cleanUp];
 	self.playerLayer.player = nil;
 }
 
-- (id) initWithCoder:(NSCoder *)aDecoder {
+- (id)initWithCoder:(NSCoder *)aDecoder
+{
 	self = [super initWithCoder:aDecoder];
-	
-	if (self) {
+	if (self)
+    {
 		[self commonInit];
 	}
 	
 	return self;
 }
 
-- (void) commonInit {
+- (void)commonInit
+{
 	self.player = [VCPlayer player];
 	self.player.delegate = self;
 	self.playerLayer = [AVPlayerLayer playerLayerWithPlayer:self.player];
@@ -74,39 +75,43 @@
 	self.clipsToBounds = YES;
 }
 
-- (void) videoPlayer:(VCPlayer *)videoPlayer didStartLoadingAtItemTime:(CMTime)itemTime {
+- (void)videoPlayer:(VCPlayer *)videoPlayer didStartLoadingAtItemTime:(CMTime)itemTime
+{
 //	self.loadingView.hidden = NO;
 }
 
-- (void) videoPlayer:(VCPlayer *)videoPlayer didEndLoadingAtItemTime:(CMTime)itemTime {
+- (void)videoPlayer:(VCPlayer *)videoPlayer didEndLoadingAtItemTime:(CMTime)itemTime
+{
 //	self.loadingView.hidden = YES;
 }
 
-- (void) videoPlayer:(VCPlayer *)videoPlayer didPlay:(Float32)secondsElapsed {
+- (void)videoPlayer:(VCPlayer *)videoPlayer didPlay:(Float32)secondsElapsed
+{
 	
 }
 
-- (void) videoPlayer:(VCPlayer *)videoPlayer didChangeItem:(AVPlayerItem *)item {
+- (void)videoPlayer:(VCPlayer *)videoPlayer didChangeItem:(AVPlayerItem *)item
+{
 //	self.loadingView.hidden = item == nil;
 }
 
-- (void) layoutSubviews {
+- (void) layoutSubviews
+{
 	[super layoutSubviews];
 	
 	self.playerLayer.frame = self.bounds;
 	self.loadingView.frame = self.bounds;
 }
 
-- (void) setLoadingView:(UIView *)loadingView {
-	if (_loadingView != nil) {
+- (void)setLoadingView:(UIView *)loadingView
+{
+	if (_loadingView != nil)
 		[_loadingView removeFromSuperview];
-	}
 	
 	_loadingView = loadingView;
 	
-	if (_loadingView != nil) {
+	if (_loadingView != nil)
 		[self addSubview:_loadingView];
-	}
 }
 
 @end
