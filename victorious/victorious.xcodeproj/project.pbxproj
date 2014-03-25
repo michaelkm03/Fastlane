@@ -191,6 +191,7 @@
 		BED7F67418E0A8E900545DF6 /* OAuthCore.m in Sources */ = {isa = PBXBuildFile; fileRef = BED7F67018E0A8E900545DF6 /* OAuthCore.m */; };
 		BED7F67718E0B6A100545DF6 /* VSequence.m in Sources */ = {isa = PBXBuildFile; fileRef = BED7F67618E0B6A100545DF6 /* VSequence.m */; };
 		BED7F67A18E0BD5D00545DF6 /* UIImage+ImageCreation.m in Sources */ = {isa = PBXBuildFile; fileRef = BED7F67918E0BD5D00545DF6 /* UIImage+ImageCreation.m */; };
+		BED7F68018E1187800545DF6 /* VEphemeralTimerView.m in Sources */ = {isa = PBXBuildFile; fileRef = BED7F67F18E1187800545DF6 /* VEphemeralTimerView.m */; };
 		BEDF0FBE18DB783200750EF6 /* MuseoSans-100.otf in Resources */ = {isa = PBXBuildFile; fileRef = BEDF0FBB18DB783200750EF6 /* MuseoSans-100.otf */; };
 		BEDF0FBF18DB783200750EF6 /* MuseoSans-300.otf in Resources */ = {isa = PBXBuildFile; fileRef = BEDF0FBC18DB783200750EF6 /* MuseoSans-300.otf */; };
 		BEDF0FC018DB783200750EF6 /* MuseoSans-500.otf in Resources */ = {isa = PBXBuildFile; fileRef = BEDF0FBD18DB783200750EF6 /* MuseoSans-500.otf */; };
@@ -552,6 +553,8 @@
 		BED7F67618E0B6A100545DF6 /* VSequence.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VSequence.m; sourceTree = "<group>"; };
 		BED7F67818E0BD5D00545DF6 /* UIImage+ImageCreation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "UIImage+ImageCreation.h"; path = "Categories/UIImage+ImageCreation.h"; sourceTree = "<group>"; };
 		BED7F67918E0BD5D00545DF6 /* UIImage+ImageCreation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "UIImage+ImageCreation.m"; path = "Categories/UIImage+ImageCreation.m"; sourceTree = "<group>"; };
+		BED7F67E18E1187800545DF6 /* VEphemeralTimerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VEphemeralTimerView.h; path = UI/UIElements/VEphemeralTimerView.h; sourceTree = "<group>"; };
+		BED7F67F18E1187800545DF6 /* VEphemeralTimerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VEphemeralTimerView.m; path = UI/UIElements/VEphemeralTimerView.m; sourceTree = "<group>"; };
 		BEDF0FBB18DB783200750EF6 /* MuseoSans-100.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "MuseoSans-100.otf"; sourceTree = "<group>"; };
 		BEDF0FBC18DB783200750EF6 /* MuseoSans-300.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "MuseoSans-300.otf"; sourceTree = "<group>"; };
 		BEDF0FBD18DB783200750EF6 /* MuseoSans-500.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "MuseoSans-500.otf"; sourceTree = "<group>"; };
@@ -875,6 +878,8 @@
 				838511C318762DF3007E0316 /* VBadgeLabel.m */,
 				BEAEBF1118D3A91C00C79AC7 /* VResultView.h */,
 				BEAEBF1218D3A91C00C79AC7 /* VResultView.m */,
+				BED7F67E18E1187800545DF6 /* VEphemeralTimerView.h */,
+				BED7F67F18E1187800545DF6 /* VEphemeralTimerView.m */,
 			);
 			name = "UI Elements";
 			sourceTree = "<group>";
@@ -1618,6 +1623,7 @@
 				3FD7FFAF18BFD6EF00945E5F /* VCameraPublishViewController.m in Sources */,
 				BEDF0FC318DBC93A00750EF6 /* VAsset.m in Sources */,
 				BE6B95FC187C88F700CED4C9 /* VSequence+Fetcher.m in Sources */,
+				BED7F68018E1187800545DF6 /* VEphemeralTimerView.m in Sources */,
 				BE40559418A1828D00092AE1 /* UIButton+VImageLoading.m in Sources */,
 				3F71A7DB18D7C6D20048FF60 /* VRemixSliderRight.m in Sources */,
 				BE46E69718CA750D00974DAF /* VContentTransitioningDelegate.m in Sources */,
