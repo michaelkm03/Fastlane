@@ -63,8 +63,9 @@ NSString *kStreamsWillCommentNotification = @"kStreamsWillCommentNotification";
     
     if (YES)
     {
-        CGRect newFrame = CGRectMake(0, 0, 90, 90);
-        self.ephemeralTimerView = [[VEphemeralTimerView alloc] initWithFrame:newFrame expireDate:[NSDate dateWithTimeIntervalSinceNow:5.0f] delegate:self];
+        self.ephemeralTimerView = [[[NSBundle mainBundle] loadNibNamed:NSStringFromClass([VEphemeralTimerView class]) owner:self options:nil] firstObject];
+        self.ephemeralTimerView.delegate = self;
+        self.ephemeralTimerView.expireDate = [NSDate dateWithTimeIntervalSinceNow:3605.0f];
         self.ephemeralTimerView.center = self.center;
         [self addSubview:self.ephemeralTimerView];
         self.animationImage.hidden = YES;
