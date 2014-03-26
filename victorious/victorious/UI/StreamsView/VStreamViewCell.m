@@ -61,9 +61,21 @@ NSString *kStreamsWillCommentNotification = @"kStreamsWillCommentNotification";
     self.descriptionLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVContentTitleFont];
     self.dateImageView.image = [self.dateImageView.image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
     
-    CGRect newFrame = CGRectMake(0, 0, 90, 90);
-    self.ephemeralTimerView = [[VEphemeralTimerView alloc] initWithFrame:newFrame expireDate:[NSDate dateWithTimeIntervalSinceNow:5.0f] delegate:self];
-    [self addSubview:self.ephemeralTimerView];
+    if (YES)
+    {
+        CGRect newFrame = CGRectMake(0, 0, 90, 90);
+        self.ephemeralTimerView = [[VEphemeralTimerView alloc] initWithFrame:newFrame expireDate:[NSDate dateWithTimeIntervalSinceNow:5.0f] delegate:self];
+        self.ephemeralTimerView.center = self.center;
+        [self addSubview:self.ephemeralTimerView];
+        self.animationImage.hidden = YES;
+        self.animationBackgroundImage.hidden = YES;
+    }
+    else
+    {
+        self.animationImage.hidden = NO;
+        self.animationBackgroundImage.hidden = NO;
+        self.ephemeralTimerView.hidden = YES;
+    }
 }
 
 - (void)contentExpired

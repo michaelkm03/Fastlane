@@ -111,6 +111,7 @@
                 </subviews>
             </tableViewCellContentView>
             <connections>
+                <outlet property="animationBackgroundImage" destination="tq5-a6-OxG" id="NGO-vB-CGE"/>
                 <outlet property="animationImage" destination="N2L-pH-5Tp" id="Xte-M2-l3Z"/>
                 <outlet property="dateImageView" destination="EnC-ed-tLe" id="KHu-qM-PX7"/>
                 <outlet property="dateLabel" destination="ClZ-8D-vSe" id="jTd-I7-vCF"/>

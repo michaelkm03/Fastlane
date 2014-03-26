@@ -22,6 +22,7 @@ extern NSString *kStreamsWillCommentNotification;
 @property (weak, nonatomic) IBOutlet UIImageView *previewImageView;
 @property (weak, nonatomic) IBOutlet UIImageView *playButtonImage;
 @property (weak, nonatomic) IBOutlet UIImageView *animationImage;
+@property (weak, nonatomic) IBOutlet UIImageView *animationBackgroundImage;
 @property (weak, nonatomic) IBOutlet UIImageView *lowerGradientView;
 @property (weak, nonatomic) IBOutlet UIView *overlayView;
 @property (weak, nonatomic) IBOutlet UIView *shadeView;
