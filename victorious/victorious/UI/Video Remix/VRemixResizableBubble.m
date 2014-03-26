@@ -19,9 +19,8 @@
     UIColor* bubbleStrokeColor = [UIColor colorWithRed: 0.173 green: 0.173 blue: 0.173 alpha: 1];
     
     //// Gradient Declarations
-    NSArray* bubbleGradientColors = [NSArray arrayWithObjects:
-                                     (id)bubbleGradientTop.CGColor,
-                                     (id)bubbleGradientBottom.CGColor, nil];
+    NSArray* bubbleGradientColors = @[(id)bubbleGradientTop.CGColor,
+                                     (id)bubbleGradientBottom.CGColor];
     CGFloat bubbleGradientLocations[] = {0, 1};
     CGGradientRef bubbleGradient = CGGradientCreateWithColors(colorSpace, (__bridge CFArrayRef)bubbleGradientColors, bubbleGradientLocations);
     

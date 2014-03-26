@@ -106,12 +106,12 @@ NSString*   const   kVLinkColor                         =   @"color.link";
     UIColor *navigationBarTitleTintColor = [self themedColorForKey:kVAccentColor];
     if(navigationBarTitleTintColor)
     {
-        [titleAttributes setObject:navigationBarTitleTintColor forKey:NSForegroundColorAttributeName];
+        titleAttributes[NSForegroundColorAttributeName] = navigationBarTitleTintColor;
     }
     UIFont *navigationBarTitleFont = [self themedFontForKey:kVTitleFont];
     if(navigationBarTitleFont)
     {
-        [titleAttributes setObject:navigationBarTitleFont forKey:NSFontAttributeName];
+        titleAttributes[NSFontAttributeName] = navigationBarTitleFont;
     }
     [[UINavigationBar appearance] setTitleTextAttributes:titleAttributes];
 }

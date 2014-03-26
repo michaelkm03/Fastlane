@@ -224,12 +224,15 @@
                         <barButtonItem key="rightBarButtonItem" image="cameraButtonNext" id="8ZA-Jm-6zK"/>
                     </navigationItem>
                     <connections>
+                        <outlet property="afterButton" destination="tLI-NC-Nxa" id="sZX-EE-9Qa"/>
+                        <outlet property="beforeButton" destination="U7e-uL-OMg" id="0HP-ns-Tej"/>
                         <outlet property="loopButton" destination="KMj-ED-h0u" id="ILN-Wx-WNC"/>
                         <outlet property="muteButton" destination="Oad-Gb-wYK" id="Put-Mn-cwc"/>
                         <outlet property="playButton" destination="Ele-xw-w6U" id="kRP-WJ-lc2"/>
                         <outlet property="playCircle" destination="ykO-ox-Rir" id="RRs-zT-dbC"/>
                         <outlet property="previewView" destination="5C1-bS-FtL" id="lXY-rh-S9c"/>
                         <outlet property="rateButton" destination="AJB-sl-S4A" id="fuY-hg-AIT"/>
+                        <outlet property="thumbnail" destination="acY-vU-rwA" id="ZKe-hr-j3z"/>
                         <segue destination="YI1-UH-sNO" kind="modal" identifier="toCapture" id="tdT-NE-hOY"/>
                         <segue destination="YqF-iv-7Fu" kind="push" identifier="toRemixPublish" id="FG4-sn-s63"/>
                     </connections>

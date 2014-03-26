@@ -71,7 +71,7 @@ NSString* const kPollResultsLoaded = @"kPollResultsLoaded";
     {
         status.pagesLoaded = [fullResponse[@"page_number"] integerValue];
         status.totalPages = [fullResponse[@"total_pages"] integerValue];
-        [self.paginationStatuses setObject:status forKey:statusKey];
+        (self.paginationStatuses)[statusKey] = status;
         
         //If we don't have the user then we need to fetch em.
         NSMutableArray* nonExistantUsers = [[NSMutableArray alloc] init];
@@ -121,7 +121,7 @@ NSString* const kPollResultsLoaded = @"kPollResultsLoaded";
     {
         status.pagesLoaded = [fullResponse[@"page_number"] integerValue];
         status.totalPages = [fullResponse[@"total_pages"] integerValue];
-        [self.paginationStatuses setObject:status forKey:statusKey];
+        (self.paginationStatuses)[statusKey] = status;
         
         //If we don't have the user then we need to fetch em.
         NSMutableArray* nonExistantUsers = [[NSMutableArray alloc] init];
@@ -229,7 +229,7 @@ NSString* const kPollResultsLoaded = @"kPollResultsLoaded";
     {
         status.pagesLoaded = [fullResponse[@"page_number"] integerValue];
         status.totalPages = [fullResponse[@"total_pages"] integerValue];
-        [self.paginationStatuses setObject:status forKey:statusKey];
+        (self.paginationStatuses)[statusKey] = status;
         
         NSMutableArray* nonExistantUsers = [[NSMutableArray alloc] init];
         for (VComment* comment in resultObjects)
@@ -511,17 +511,17 @@ NSString* const kPollResultsLoaded = @"kPollResultsLoaded";
     NSMutableDictionary* parameters = [@{@"name":name ?: [NSNull null],
                                          @"description":description ?: [NSNull null]} mutableCopy];
     if (expiresAt)
-        [parameters setObject:expiresAt forKey:@"expires_at"];
+        parameters[@"expires_at"] = expiresAt;
     if (parentNodeId)
-        [parameters setObject:parentNodeId forKey:@"parent_node_id"];
+        parameters[@"parent_node_id"] = parentNodeId;
     if (shareOptions & kVShareToFacebook)
-        [parameters setObject:@"1" forKey:@"share_facebook"];
+        parameters[@"share_facebook"] = @"1";
     if (shareOptions & kVShareToTwitter)
-        [parameters setObject:@"1" forKey:@"share_twitter"];
+        parameters[@"share_twitter"] = @"1";
     
     NSString* loopParam = [self stringForLoopType:loopType];
     if (loopParam)
-        [parameters setObject:loopParam forKey:@"playback"];
+        parameters[@"playback"] = loopParam;
     
     NSDictionary* allData = @{@"media_data":mediaData ?: [NSNull null]};
     NSDictionary* allExtensions = @{@"media_data":extension ?: [NSNull null]};

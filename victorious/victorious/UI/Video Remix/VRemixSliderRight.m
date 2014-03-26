@@ -20,10 +20,9 @@
     UIColor* color6 = [UIColor colorWithRed: 0.196 green: 0.161 blue: 0.047 alpha: 1];
     
     //// Gradient Declarations
-    NSArray* gradient3Colors = [NSArray arrayWithObjects:
-                                (id)gradientColor2.CGColor,
+    NSArray* gradient3Colors = @[(id)gradientColor2.CGColor,
                                 (id)[UIColor colorWithRed: 1 green: 1 blue: 1 alpha: 1].CGColor,
-                                (id)color5.CGColor, nil];
+                                (id)color5.CGColor];
     CGFloat gradient3Locations[] = {0, 0, 0.49};
     CGGradientRef gradient3 = CGGradientCreateWithColors(colorSpace, (__bridge CFArrayRef)gradient3Colors, gradient3Locations);
     

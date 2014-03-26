@@ -57,6 +57,7 @@
         
         CGImageRef  imageRef    =   [assetGenerator copyCGImageAtTime:kCMTimeZero actualTime:NULL error:NULL];
         self.previewImage.image = [[UIImage imageWithCGImage:imageRef] applyDarkEffect];
+        CGImageRelease(imageRef);
     }
 
     self.view.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVBackgroundColor];
