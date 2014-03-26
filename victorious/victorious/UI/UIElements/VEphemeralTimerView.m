@@ -116,7 +116,8 @@
     drawAnimation.fromValue = [NSNumber numberWithFloat:secondFragment];
     drawAnimation.toValue   = [NSNumber numberWithFloat:1.0];
     
-    drawAnimation.beginTime = CACurrentMediaTime() + .05f;
+    drawAnimation.fillMode = kCAFillModeForwards;
+    drawAnimation.removedOnCompletion = NO;
     
     drawAnimation.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionLinear];
     [drawAnimation setDelegate:self];
@@ -137,11 +138,10 @@
     eraseAnimation.fromValue = [NSNumber numberWithFloat:1.0 - secondFragment];
     eraseAnimation.toValue   = [NSNumber numberWithFloat:0.0];
     
-    eraseAnimation.beginTime = CACurrentMediaTime() + .05f;
+    eraseAnimation.fillMode = kCAFillModeForwards;
+    eraseAnimation.removedOnCompletion = NO;
     
-    eraseAnimation.fillMode = kCAFillModeRemoved;
-    
-    eraseAnimation.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseOut];
+    eraseAnimation.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionLinear];
     [eraseAnimation setDelegate:self];
 
     return eraseAnimation;
@@ -149,15 +149,14 @@
 
 - (void)animationDidStop:(CABasicAnimation *)theAnimation finished:(BOOL)flag
 {
-    [self.timerLayer removeAnimationForKey:TimerAnimationKey];
-    
+
     if ([self checkIfDateIsExpired] || !flag)
     {
         [self.timerLayer removeFromSuperlayer];
         return;
     }
     
-    CGFloat evenOrOddSecond = (int)CACurrentMediaTime() % 2;
+    CGFloat evenOrOddSecond = (int)floorf(CACurrentMediaTime()) % 2;
     
     if (evenOrOddSecond)
     {
