@@ -57,6 +57,9 @@
         [self refreshAction];
     else
         [self.tableView reloadData]; //force a reload incase anything has changed
+    
+    //Remove the search button from the stream - feature currently deprecated
+    self.navigationItem.rightBarButtonItem = nil;
 }
 
 #pragma mark - FetchedResultsControllers
