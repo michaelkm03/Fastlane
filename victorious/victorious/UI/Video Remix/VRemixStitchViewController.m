@@ -16,6 +16,7 @@
 @property (nonatomic, weak)     IBOutlet    VCVideoPlayerView*  previewView;;
 @property (nonatomic, weak)     IBOutlet    UIImageView*        playCircle;
 @property (nonatomic, weak)     IBOutlet    UIImageView*        playButton;
+@property (nonatomic, weak)     IBOutlet    UIImageView*        thumbnail;
 
 @property (nonatomic, weak)     IBOutlet    UIButton*           rateButton;
 @property (nonatomic, weak)     IBOutlet    UIButton*           loopButton;
@@ -49,6 +50,12 @@
     self.previewView.userInteractionEnabled = YES;
     
     self.previewView.player.delegate = self;
+    
+    AVAsset*    asset = [AVAsset assetWithURL:self.sourceURL];
+    AVAssetImageGenerator*  assetGenerator = [AVAssetImageGenerator assetImageGeneratorWithAsset:asset];
+    
+    CGImageRef  imageRef    =   [assetGenerator copyCGImageAtTime:kCMTimeZero actualTime:NULL error:NULL];
+    self.thumbnail.image = [UIImage imageWithCGImage:imageRef];
 
     UIImage*    nextButtonImage = [[UIImage imageNamed:@"cameraButtonNext"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithImage:nextButtonImage style:UIBarButtonItemStyleBordered target:self action:@selector(nextButtonClicked:)];
@@ -104,18 +111,8 @@
 {
     self.selectingBeforeURL = YES;
     self.selectingAfterURL = NO;
-
-    UIImagePickerController*    picker = [[UIImagePickerController alloc] init];
-    picker.delegate = self;
-    picker.mediaTypes = @[(id)kUTTypeMovie];
-    picker.allowsEditing = NO;
     
-    if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera])
-        picker.sourceType = UIImagePickerControllerSourceTypeCamera;
-    else
-        picker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
-
-    [self presentViewController:picker animated:YES completion:nil];
+    [self selectAsset];
 }
 
 - (IBAction)selectAfterAssetClicked:(id)sender
@@ -123,15 +120,16 @@
     self.selectingBeforeURL = NO;
     self.selectingAfterURL = YES;
     
+    [self selectAsset];
+}
+
+- (void)selectAsset
+{
     UIImagePickerController*    picker = [[UIImagePickerController alloc] init];
     picker.delegate = self;
     picker.mediaTypes = @[(id)kUTTypeMovie];
     picker.allowsEditing = NO;
-    
-    if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera])
-        picker.sourceType = UIImagePickerControllerSourceTypeCamera;
-    else
-        picker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
+    picker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
     
     [self presentViewController:picker animated:YES completion:nil];
 }
@@ -257,7 +255,6 @@
         [self.afterButton setImage:thumbnail forState:UIControlStateNormal];
     }
 }
-
 
 #pragma mark - UIImagePickerControllerDelegate
 
