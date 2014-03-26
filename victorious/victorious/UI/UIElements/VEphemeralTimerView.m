@@ -150,15 +150,24 @@
 
 - (void)animationDidStop:(CABasicAnimation *)theAnimation finished:(BOOL)flag
 {
-
-    if ([self checkIfDateIsExpired] || !flag)
+    
+    CGFloat secondsTilExpiration = [self.expireDate timeIntervalSinceNow];
+    
+    if (secondsTilExpiration <= 0)
     {
+        [self.delegate contentExpired];
         [self.timerLayer removeFromSuperlayer];
         return;
     }
     
+    NSInteger days = floorf(secondsTilExpiration / 86400);
+    secondsTilExpiration = fmodf(secondsTilExpiration, 86400);
+
+    NSInteger hours = floorf(secondsTilExpiration / 3600);
+    secondsTilExpiration = fmodf(secondsTilExpiration, 3600);
+
+    //Keep everything in sync
     CGFloat evenOrOddSecond = (int)floorf(CACurrentMediaTime()) % 2;
-    
     if (evenOrOddSecond)
     {
         [self refreshLayerWithEraseAnimation];
@@ -167,17 +176,6 @@
     {
         [self refreshLayerWithDrawAnimation];
     }
-}
-
-- (BOOL)checkIfDateIsExpired
-{
-    if ([self.expireDate timeIntervalSinceNow] <= 0)
-    {
-        [self.delegate contentExpired];
-        return YES;
-    }
-    
-    return NO;
 }
 
 @end
