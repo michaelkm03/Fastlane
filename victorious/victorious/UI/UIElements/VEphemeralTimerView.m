@@ -34,6 +34,7 @@
         self.timerColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
         
         self.delegate = delegate;
+        self.expireDate = expireDate;
         
         // Configure draw animation
         self.drawPath = [UIBezierPath bezierPathWithArcCenter:self.center
@@ -170,11 +171,11 @@
 
 - (BOOL)checkIfDateIsExpired
 {
-//    if ([self.date timeIntervalSinceNow] <= 0)
-//    {
-//        [self.delegate contentExpired];
-//        return YES;
-//    }
+    if ([self.expireDate timeIntervalSinceNow] <= 0)
+    {
+        [self.delegate contentExpired];
+        return YES;
+    }
     
     return NO;
 }

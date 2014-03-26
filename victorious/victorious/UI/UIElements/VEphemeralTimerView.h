@@ -17,7 +17,7 @@
 
 @property (nonatomic) NSUInteger timerWidth;
 @property (strong, nonatomic) UIColor* timerColor;
-@property (copy, nonatomic) NSDate* date;
+@property (copy, nonatomic) NSDate* expireDate;
 
 - (id)initWithFrame:(CGRect)frame expireDate:(NSDate*)expireDate delegate:(id<VEphemeralTimerViewDelegate>)delegate;
 
