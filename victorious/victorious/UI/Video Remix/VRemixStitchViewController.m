@@ -56,6 +56,7 @@
     
     CGImageRef  imageRef    =   [assetGenerator copyCGImageAtTime:kCMTimeZero actualTime:NULL error:NULL];
     self.thumbnail.image = [UIImage imageWithCGImage:imageRef];
+    CGImageRelease(imageRef);
 
     UIImage*    nextButtonImage = [[UIImage imageNamed:@"cameraButtonNext"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithImage:nextButtonImage style:UIBarButtonItemStyleBordered target:self action:@selector(nextButtonClicked:)];
@@ -266,13 +267,9 @@
         NSURL*                  url     =   info[UIImagePickerControllerMediaURL];
         AVURLAsset*             asset = [[AVURLAsset alloc] initWithURL:url options:nil];
         AVAssetImageGenerator*  generator = [[AVAssetImageGenerator alloc] initWithAsset:asset];
-        
         generator.appliesPreferredTrackTransform = YES;
-        CMTime time = CMTimeMakeWithSeconds(0.0, NSEC_PER_SEC);
-        NSError*    error;
-        CMTime      actualTime;
         
-        CGImageRef  image = [generator copyCGImageAtTime:time actualTime:&actualTime error:&error];
+        CGImageRef  image = [generator copyCGImageAtTime:kCMTimeZero actualTime:nil error:nil];
         UIImage*    thumb = [[UIImage alloc] initWithCGImage:image];
         CGImageRelease(image);
         
