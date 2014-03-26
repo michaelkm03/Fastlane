@@ -18,6 +18,10 @@
 @property (strong, nonatomic) UIBezierPath* drawPath;
 @property (strong, nonatomic) UIBezierPath* erasePath;
 
+@property (strong, nonatomic) UILabel* dayLabel;
+@property (strong, nonatomic) UILabel* countdownLabel;
+@property (strong, nonatomic) UILabel* timeRemainingLabel;
+
 @end
 
 @implementation VEphemeralTimerView
@@ -35,6 +39,8 @@
         
         self.delegate = delegate;
         self.expireDate = expireDate;
+        
+        self.timeRemainingLabel = [[UILabel alloc] init];
         
         // Configure draw animation
         self.drawPath = [UIBezierPath bezierPathWithArcCenter:self.center
@@ -69,6 +75,19 @@
 {
     _timerWidth = timerWidth;
     [self animationDidStop:nil finished:YES];
+}
+
+- (void)updateLabels
+{
+    CGFloat secondsTilExpiration = [self.expireDate timeIntervalSinceNow];
+    
+    NSInteger days = floorf(secondsTilExpiration / 86400);
+    secondsTilExpiration = fmodf(secondsTilExpiration, 86400);
+    
+    NSInteger hours = floorf(secondsTilExpiration / 3600);
+    secondsTilExpiration = fmodf(secondsTilExpiration, 3600);
+    
+    
 }
 
 #define TimerAnimationKey @"timerAnimation"
@@ -159,12 +178,6 @@
         [self.timerLayer removeFromSuperlayer];
         return;
     }
-    
-    NSInteger days = floorf(secondsTilExpiration / 86400);
-    secondsTilExpiration = fmodf(secondsTilExpiration, 86400);
-
-    NSInteger hours = floorf(secondsTilExpiration / 3600);
-    secondsTilExpiration = fmodf(secondsTilExpiration, 3600);
 
     //Keep everything in sync
     CGFloat evenOrOddSecond = (int)floorf(CACurrentMediaTime()) % 2;
