@@ -17,7 +17,7 @@
 #import "VPollResult.h"
 #import "VUser.h"
 
-#import "UIImage+SolidColorImage.h"
+#import "UIImage+ImageCreation.h"
 
 #import "NSString+VParseHelp.h"
 

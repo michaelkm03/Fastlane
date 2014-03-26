@@ -15,7 +15,7 @@
 
 #import "NSString+VParseHelp.h"
 #import "UIImageView+Blurring.h"
-#import "UIImage+SolidColorImage.h"
+#import "UIImage+ImageCreation.h"
 
 #import "VStreamContentSegue.h"
 #import "VStreamTransitioningDelegate.h"

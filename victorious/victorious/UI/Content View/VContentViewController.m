@@ -29,7 +29,7 @@
 #import "UIWebView+VYoutubeLoading.h"
 #import "UIView+VFrameManipulation.h"
 #import "NSString+VParseHelp.h"
-#import "UIImage+SolidColorImage.h"
+#import "UIImage+ImageCreation.h"
 
 #import "VThemeManager.h"
 

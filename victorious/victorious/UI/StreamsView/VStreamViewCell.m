@@ -25,8 +25,11 @@
 
 #import "VCommentCell.h"
 
+#import "VEphemeralTimerView.h"
+
 NSString *kStreamsWillCommentNotification = @"kStreamsWillCommentNotification";
-@interface VStreamViewCell()
+
+@interface VStreamViewCell() <VEphemeralTimerViewDelegate>
 
 @property (weak, nonatomic) IBOutlet UILabel *usernameLabel;
 @property (weak, nonatomic) IBOutlet UILabel *dateLabel;
@@ -38,6 +41,8 @@ NSString *kStreamsWillCommentNotification = @"kStreamsWillCommentNotification";
 @property (nonatomic) NSUInteger originalHeight;
 
 @property (strong, nonatomic) NSMutableArray* commentViews;
+
+@property (strong, nonatomic) VEphemeralTimerView* ephemeralTimerView;
 
 @end
 
@@ -55,6 +60,15 @@ NSString *kStreamsWillCommentNotification = @"kStreamsWillCommentNotification";
     self.dateLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVDateFont];
     self.descriptionLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVContentTitleFont];
     self.dateImageView.image = [self.dateImageView.image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+    
+    CGRect newFrame = CGRectMake(0, 0, 90, 90);
+    self.ephemeralTimerView = [[VEphemeralTimerView alloc] initWithFrame:newFrame expireDate:[NSDate dateWithTimeIntervalSinceNow:5.0f] delegate:self];
+    [self addSubview:self.ephemeralTimerView];
+}
+
+- (void)contentExpired
+{
+    VLog(@"Wow this worked!");
 }
 
 - (void)layoutSubviews

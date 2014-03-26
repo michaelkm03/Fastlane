@@ -1,5 +1,5 @@
 //
-//  UIImage+SolidColorImage.h
+//  UIImage+ImageCreation.h
 //  victorious
 //
 //  Created by Will Long on 3/24/14.
@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface UIImage (SolidColorImage)
+@interface UIImage (ImageCreation)
 
 + (UIImage *)resizeableImageWithColor:(UIColor *)color;
 
