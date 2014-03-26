@@ -61,22 +61,10 @@ NSString *kStreamsWillCommentNotification = @"kStreamsWillCommentNotification";
     self.descriptionLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVContentTitleFont];
     self.dateImageView.image = [self.dateImageView.image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
     
-    if (YES)
-    {
-        self.ephemeralTimerView = [[[NSBundle mainBundle] loadNibNamed:NSStringFromClass([VEphemeralTimerView class]) owner:self options:nil] firstObject];
-        self.ephemeralTimerView.delegate = self;
-        self.ephemeralTimerView.expireDate = [NSDate dateWithTimeIntervalSinceNow:3605.0f];
-        self.ephemeralTimerView.center = self.center;
-        [self addSubview:self.ephemeralTimerView];
-        self.animationImage.hidden = YES;
-        self.animationBackgroundImage.hidden = YES;
-    }
-    else
-    {
-        self.animationImage.hidden = NO;
-        self.animationBackgroundImage.hidden = NO;
-        self.ephemeralTimerView.hidden = YES;
-    }
+    self.ephemeralTimerView = [[[NSBundle mainBundle] loadNibNamed:NSStringFromClass([VEphemeralTimerView class]) owner:self options:nil] firstObject];
+    self.ephemeralTimerView.delegate = self;
+    self.ephemeralTimerView.center = self.center;
+    [self addSubview:self.ephemeralTimerView];
 }
 
 - (void)contentExpired
@@ -95,6 +83,12 @@ NSString *kStreamsWillCommentNotification = @"kStreamsWillCommentNotification";
 {
     _sequence = sequence;
     
+    [self.previewImageView setImageWithURL:[NSURL URLWithString:_sequence.previewImage]
+                          placeholderImage:[UIImage new]];
+    [self.profileImageButton setImageWithURL:[NSURL URLWithString:self.sequence.user.pictureUrl]
+                            placeholderImage:[UIImage imageNamed:@"profile_thumb"]
+                                    forState:UIControlStateNormal];
+    
     if ([[[_sequence firstNode] firstAsset].type isEqualToString:VConstantsMediaTypeYoutube])
         self.playButtonImage.hidden = NO;
     else
@@ -106,11 +100,20 @@ NSString *kStreamsWillCommentNotification = @"kStreamsWillCommentNotification";
     self.usernameLabel.text = self.sequence.user.name;
     self.descriptionLabel.text = self.sequence.name;
     self.dateLabel.text = [self.sequence.releasedAt timeSince];
-    [self.previewImageView setImageWithURL:[NSURL URLWithString:_sequence.previewImage]
-                          placeholderImage:[UIImage new]];
-    [self.profileImageButton setImageWithURL:[NSURL URLWithString:self.sequence.user.pictureUrl]
-                            placeholderImage:[UIImage imageNamed:@"profile_thumb"]
-                                    forState:UIControlStateNormal];
+    
+    if (_sequence.expiresAt)
+    {
+        self.ephemeralTimerView.hidden = NO;
+        self.ephemeralTimerView.expireDate = _sequence.expiresAt;
+        self.animationImage.hidden = YES;
+        self.animationBackgroundImage.hidden = YES;
+    }
+    else
+    {
+        self.animationImage.hidden = NO;
+        self.animationBackgroundImage.hidden = NO;
+        self.ephemeralTimerView.hidden = YES;
+    }
 }
 
 - (void)setHeight:(CGFloat)height
