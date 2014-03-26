@@ -49,7 +49,7 @@
                                                       endAngle:M_PI + M_PI_2
                                                      clockwise:NO];
         
-        [self refreshLayerWithDrawAnimation];
+        [self animationDidStop:nil finished:YES];
     }
     
     return self;
@@ -67,7 +67,7 @@
 - (void) setTimerWidth:(NSUInteger)timerWidth
 {
     _timerWidth = timerWidth;
-    [self refreshLayerWithDrawAnimation];
+    [self animationDidStop:nil finished:YES];
 }
 
 #define TimerAnimationKey @"timerAnimation"
@@ -126,7 +126,6 @@
 
 - (CAAnimation*)newEraseAnimation
 {
-    
     CABasicAnimation* eraseAnimation = [CABasicAnimation animationWithKeyPath:@"strokeEnd"];
 
     CGFloat secondFragment = fmodf(CACurrentMediaTime(), 1.0f);
@@ -158,7 +157,9 @@
         return;
     }
     
-    if (self.timerLayer.path == self.drawPath.CGPath)
+    CGFloat evenOrOddSecond = (int)CACurrentMediaTime() % 2;
+    
+    if (evenOrOddSecond)
     {
         [self refreshLayerWithEraseAnimation];
     }
