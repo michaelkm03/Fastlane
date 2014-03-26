@@ -37,9 +37,12 @@ NSString* const kChatBubbleRightImage = @"ChatBubbleRight";
 NSString* const kChatBubbleLeftImage = @"ChatBubbleLeft";
 
 @interface VCommentCell()
+
 @property (weak, nonatomic) IBOutlet UILabel *dateLabel;
-@property (weak, nonatomic) IBOutlet UIButton *profileImageButton;
 @property (weak, nonatomic) IBOutlet UILabel *messageLabel;
+@property (weak, nonatomic) IBOutlet UILabel *nameLabel;
+
+@property (weak, nonatomic) IBOutlet UIButton *profileImageButton;
 @property (weak, nonatomic) IBOutlet UIImageView *mediaPreview;
 @property (weak, nonatomic) IBOutlet UIButton *playButton;
 @property (nonatomic, strong) MPMoviePlayerController* mpController;
@@ -63,8 +66,14 @@ NSString* const kChatBubbleLeftImage = @"ChatBubbleLeft";
 {
     [super layoutSubviews];
     
-//    self.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKeyPath:@"theme.color.messages.background"];
-    self.dateLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:@"theme.font.stream.timeSince"];
+    self.dateLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVDateFont];
+    self.dateLabel.textColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVContentAccentColor];
+    
+    self.messageLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVDetailFont];
+    self.messageLabel.textColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVContentAccentColor];
+    
+    self.nameLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVDetailFont];
+    self.nameLabel.textColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
     
     self.profileImageButton.clipsToBounds = YES;
     self.profileImageButton.layer.cornerRadius = CGRectGetHeight(self.profileImageButton.bounds)/2;
@@ -85,6 +94,7 @@ NSString* const kChatBubbleLeftImage = @"ChatBubbleLeft";
         [self.profileImageButton setImageWithURL:[NSURL URLWithString:comment.user.pictureUrl]
                                 placeholderImage:[UIImage imageNamed:@"profile_thumb"]
                                         forState:UIControlStateNormal];
+        self.nameLabel.text = comment.user.shortName ?: comment.user.name;
         self.messageLabel.text = comment.text;
 
         if ([comment.mediaUrl length])
@@ -112,6 +122,7 @@ NSString* const kChatBubbleLeftImage = @"ChatBubbleLeft";
         self.dateLabel.text = [message.postedAt timeSince];
         [self.profileImageButton.imageView setImageWithURL:[NSURL URLWithString:message.user.pictureUrl]
                                           placeholderImage:[UIImage imageNamed:@"profile_thumb"]];
+        self.nameLabel.text = message.user.shortName;
         
         self.messageLabel.text = message.text;
         
@@ -198,8 +209,7 @@ NSString* const kChatBubbleLeftImage = @"ChatBubbleLeft";
 
 + (CGSize)frameSizeForMessageText:(NSString*)text
 {
-    NSDictionary *stringAttributes = [NSDictionary dictionaryWithObject:[[VThemeManager sharedThemeManager] themedFontForKey:@"theme.font.stream"]
-                                                                 forKey: NSFontAttributeName];
+    NSDictionary *stringAttributes = [NSDictionary dictionaryWithObject:[[VThemeManager sharedThemeManager] themedFontForKey:kVDetailFont] forKey: NSFontAttributeName];
     return [text frameSizeForWidth:kCommentMessageLabelWidth
                      andAttributes:stringAttributes];
 }

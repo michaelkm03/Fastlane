@@ -131,6 +131,8 @@
 		BE171E391868C266004E5202 /* NSManagedObject+RestKit.m in Sources */ = {isa = PBXBuildFile; fileRef = BE171E361868C265004E5202 /* NSManagedObject+RestKit.m */; };
 		BE171E3A1868C266004E5202 /* NSString+VParseHelp.m in Sources */ = {isa = PBXBuildFile; fileRef = BE171E381868C266004E5202 /* NSString+VParseHelp.m */; };
 		BE171E431868CEA0004E5202 /* victoriOS.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = BE171E411868CEA0004E5202 /* victoriOS.xcdatamodeld */; };
+		BE185DE418E354E5001C447F /* VMessageCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = BE185DE318E354E5001C447F /* VMessageCell.xib */; };
+		BE185DE618E3826F001C447F /* VEphemeralTimerView.xib in Resources */ = {isa = PBXBuildFile; fileRef = BE185DE518E3826F001C447F /* VEphemeralTimerView.xib */; };
 		BE40559418A1828D00092AE1 /* UIButton+VImageLoading.m in Sources */ = {isa = PBXBuildFile; fileRef = BE40559318A1828D00092AE1 /* UIButton+VImageLoading.m */; };
 		BE4055AC18A41F1F00092AE1 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = BE4055A618A41F1F00092AE1 /* Localizable.strings */; };
 		BE4055AD18A41F1F00092AE1 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = BE4055A718A41F1F00092AE1 /* main.m */; };
@@ -439,6 +441,8 @@
 		BE171E381868C266004E5202 /* NSString+VParseHelp.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+VParseHelp.m"; sourceTree = "<group>"; };
 		BE171E421868CEA0004E5202 /* victoriOS.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = victoriOS.xcdatamodel; sourceTree = "<group>"; };
 		BE171E441868CEAA004E5202 /* victoriOS 2.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "victoriOS 2.xcdatamodel"; sourceTree = "<group>"; };
+		BE185DE318E354E5001C447F /* VMessageCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = VMessageCell.xib; path = "UI/Streams Subview/VMessageCell.xib"; sourceTree = "<group>"; };
+		BE185DE518E3826F001C447F /* VEphemeralTimerView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = VEphemeralTimerView.xib; path = UI/UIElements/VEphemeralTimerView.xib; sourceTree = "<group>"; };
 		BE40559218A1828D00092AE1 /* UIButton+VImageLoading.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIButton+VImageLoading.h"; sourceTree = "<group>"; };
 		BE40559318A1828D00092AE1 /* UIButton+VImageLoading.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIButton+VImageLoading.m"; sourceTree = "<group>"; };
 		BE4055A618A41F1F00092AE1 /* Localizable.strings */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = Localizable.strings; path = "Supporting Files/Localizable.strings"; sourceTree = "<group>"; };
@@ -899,6 +903,7 @@
 				BEAEBF1218D3A91C00C79AC7 /* VResultView.m */,
 				BED7F67E18E1187800545DF6 /* VEphemeralTimerView.h */,
 				BED7F67F18E1187800545DF6 /* VEphemeralTimerView.m */,
+				BE185DE518E3826F001C447F /* VEphemeralTimerView.xib */,
 			);
 			name = "UI Elements";
 			sourceTree = "<group>";
@@ -1255,6 +1260,7 @@
 				BE692B34186E60B300C71336 /* VCommentCell.h */,
 				BE692B35186E60B300C71336 /* VCommentCell.m */,
 				BEB4C29F187E0778004ECEEF /* VCommentCell.xib */,
+				BE185DE318E354E5001C447F /* VMessageCell.xib */,
 				831C58F71884BD11007C167C /* VOtherCommentCell.xib */,
 				83D897401881F19D00BD5B8B /* VCommentsContainerViewController.h */,
 				83D897411881F19D00BD5B8B /* VCommentsContainerViewController.m */,
@@ -1482,6 +1488,8 @@
 				5FC4DA5E18970A9F006BA107 /* login.storyboard in Resources */,
 				BE4055AC18A41F1F00092AE1 /* Localizable.strings in Resources */,
 				3FA217EE18BC3A3A0066E893 /* Camera.storyboard in Resources */,
+				BE185DE418E354E5001C447F /* VMessageCell.xib in Resources */,
+				BE185DE618E3826F001C447F /* VEphemeralTimerView.xib in Resources */,
 				3FA217D018A9BFC90066E893 /* video_thumb_mini@2x.png in Resources */,
 				BE171D911868BE64004E5202 /* Images.xcassets in Resources */,
 				3FA217DE18AAFCFE0066E893 /* cast_outline_black.png in Resources */,

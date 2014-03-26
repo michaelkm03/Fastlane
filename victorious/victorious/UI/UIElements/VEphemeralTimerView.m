@@ -9,51 +9,56 @@
 #import "VEphemeralTimerView.h"
 
 #import "VThemeManager.h"
+#import "NSString+VParseHelp.h"
 
 @interface VEphemeralTimerView()
 
 @property (strong, nonatomic) CAShapeLayer* timerLayer;
-@property (weak, nonatomic) id<VEphemeralTimerViewDelegate> delegate;
 
 @property (strong, nonatomic) UIBezierPath* drawPath;
 @property (strong, nonatomic) UIBezierPath* erasePath;
+
+@property (strong, nonatomic) IBOutlet UILabel* dayLabel;
+@property (strong, nonatomic) IBOutlet UILabel* countdownLabel;
+@property (strong, nonatomic) IBOutlet UILabel* timeRemainingLabel;
 
 @end
 
 @implementation VEphemeralTimerView
 
-- (id)initWithFrame:(CGRect)frame expireDate:(NSDate*)expireDate delegate:(id<VEphemeralTimerViewDelegate>)delegate
+- (void)awakeFromNib
 {
-    self = [super initWithFrame:frame];
-    if (self)
-    {
-        // Initialization code
-        self.layer.cornerRadius = self.frame.size.height / 2;
-        self.backgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:.5f];
-        _timerWidth = 5;
-        self.timerColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
-        
-        self.delegate = delegate;
-        self.expireDate = expireDate;
-        
-        // Configure draw animation
-        self.drawPath = [UIBezierPath bezierPathWithArcCenter:self.center
-                                                       radius:(self.frame.size.height / 2) - (self.timerWidth  / 2)
-                                                   startAngle:-M_PI_2
-                                                     endAngle:M_PI + M_PI_2 + .5
-                                                    clockwise:YES];
-        
-        // Configure erase animation
-        self.erasePath = [UIBezierPath bezierPathWithArcCenter:self.center
-                                                        radius:(self.frame.size.height / 2) - (self.timerWidth  / 2)
-                                                    startAngle:-M_PI_2
-                                                      endAngle:M_PI + M_PI_2
-                                                     clockwise:NO];
-        
-        [self animationDidStop:nil finished:YES];
-    }
+    [super awakeFromNib];
     
-    return self;
+    self.layer.cornerRadius = self.frame.size.height / 2;
+    self.backgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:.5f];
+    _timerWidth = 5;
+    self.timerColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
+    
+    self.timeRemainingLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVDateFont];
+    self.timeRemainingLabel.textColor = [UIColor grayColor];//[[VThemeManager sharedThemeManager] themedColorForKey:kVContentAccentColor];
+    
+    self.dayLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVDateFont];
+    self.dayLabel.textColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
+    
+    self.countdownLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVTitleFont];
+    self.countdownLabel.textColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
+    
+    [self updateLabels];
+    
+    // Configure draw animation
+    self.drawPath = [UIBezierPath bezierPathWithArcCenter:self.center
+                                                   radius:(self.frame.size.height / 2) - (self.timerWidth  / 2)
+                                               startAngle:-M_PI_2
+                                                 endAngle:M_PI + M_PI_2 + .5
+                                                clockwise:YES];
+    
+    // Configure erase animation
+    self.erasePath = [UIBezierPath bezierPathWithArcCenter:self.center
+                                                    radius:(self.frame.size.height / 2) - (self.timerWidth  / 2)
+                                                startAngle:-M_PI_2
+                                                  endAngle:M_PI + M_PI_2
+                                                 clockwise:NO];
 }
 
 /*
@@ -69,6 +74,62 @@
 {
     _timerWidth = timerWidth;
     [self animationDidStop:nil finished:YES];
+}
+
+- (void) setExpireDate:(NSDate *)expireDate
+{
+    _expireDate = expireDate;
+    
+    [self animationDidStop:nil finished:YES];
+}
+
+- (void)updateLabels
+{
+    CGFloat secondsTilExpiration = ceilf([self.expireDate timeIntervalSinceNow]);
+    
+    NSInteger days = floorf(secondsTilExpiration / 86400);
+    secondsTilExpiration = fmodf(secondsTilExpiration, 86400);
+    NSInteger hours = floorf(secondsTilExpiration / 3600);
+    secondsTilExpiration = fmodf(secondsTilExpiration, 3600);
+    NSInteger minutes = floorf(secondsTilExpiration / 60);
+    secondsTilExpiration = fmodf(secondsTilExpiration, 60);
+    
+    if (days == 1)
+        self.dayLabel.text = [@"1" stringByAppendingString:NSLocalizedString(@" Day", nil)];
+    else if (days != 0)
+        self.dayLabel.text = [@(days).stringValue stringByAppendingString:NSLocalizedString(@" Days", nil)];
+    else if (hours == 1)
+        self.dayLabel.text = [@"1" stringByAppendingString:NSLocalizedString(@" Hour", nil)];
+    else
+        self.dayLabel.text = [@(hours).stringValue stringByAppendingString:NSLocalizedString(@" Hours", nil)];
+    
+    NSString* hourString = hours > 9 ? @(hours).stringValue
+                                    : hours <= 0 ? @"00"
+                                    : [@"0" stringByAppendingString:@(hours).stringValue];
+    
+    NSString* minuteString = minutes > 9 ? @(minutes).stringValue
+                                    : minutes <= 0 ? @"00"
+                                    : [@"0" stringByAppendingString:@(minutes).stringValue];
+    
+    NSString* secondString = secondsTilExpiration > 9 ? @(secondsTilExpiration).stringValue
+                                    : secondsTilExpiration <= 0 ? @"00"
+                                    : [@"0" stringByAppendingString:@(secondsTilExpiration).stringValue];
+    
+    if (days)
+        self.countdownLabel.text = [[hourString stringByAppendingString:@":"] stringByAppendingString:minuteString];
+    else
+        self.countdownLabel.text = [[minuteString stringByAppendingString:@":"] stringByAppendingString:secondString];
+    
+    
+    if (!days && !hours)
+        self.dayLabel.textColor = self.timeRemainingLabel.textColor;
+    else
+        self.dayLabel.textColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
+    
+    if (!days && !hours && !minutes && !secondsTilExpiration)
+        self.countdownLabel.textColor = self.timeRemainingLabel.textColor;
+    else
+        self.countdownLabel.textColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
 }
 
 #define TimerAnimationKey @"timerAnimation"
@@ -150,6 +211,7 @@
 
 - (void)animationDidStop:(CABasicAnimation *)theAnimation finished:(BOOL)flag
 {
+    [self updateLabels];
     
     CGFloat secondsTilExpiration = [self.expireDate timeIntervalSinceNow];
     
@@ -160,12 +222,6 @@
         return;
     }
     
-    NSInteger days = floorf(secondsTilExpiration / 86400);
-    secondsTilExpiration = fmodf(secondsTilExpiration, 86400);
-
-    NSInteger hours = floorf(secondsTilExpiration / 3600);
-    secondsTilExpiration = fmodf(secondsTilExpiration, 3600);
-
     //Keep everything in sync
     CGFloat evenOrOddSecond = (int)floorf(CACurrentMediaTime()) % 2;
     if (evenOrOddSecond)
