@@ -107,11 +107,13 @@
 {
     CABasicAnimation* drawAnimation = [CABasicAnimation animationWithKeyPath:@"strokeEnd"];
     
-    drawAnimation.duration            = 1.0f;
+    CGFloat secondFragment = fmodf(CACurrentMediaTime(), 1.0f);
+    
+    drawAnimation.duration            = 1.0f - secondFragment;
     drawAnimation.repeatCount         = 0;
     
     // Animate from no part of the stroke being drawn to the entire stroke being drawn
-    drawAnimation.fromValue = [NSNumber numberWithFloat:0.0];
+    drawAnimation.fromValue = [NSNumber numberWithFloat:secondFragment];
     drawAnimation.toValue   = [NSNumber numberWithFloat:1.0];
     
     drawAnimation.beginTime = CACurrentMediaTime() + .05f;
@@ -126,12 +128,14 @@
 {
     
     CABasicAnimation* eraseAnimation = [CABasicAnimation animationWithKeyPath:@"strokeEnd"];
-    
-    eraseAnimation.duration            = 1.0f;
+
+    CGFloat secondFragment = fmodf(CACurrentMediaTime(), 1.0f);
+
+    eraseAnimation.duration            = 1.0f - secondFragment;
     eraseAnimation.repeatCount         = 0;
     
     // Animate from the entire stroke being drawn to no part of the stroke being drawn
-    eraseAnimation.fromValue = [NSNumber numberWithFloat:1.0];
+    eraseAnimation.fromValue = [NSNumber numberWithFloat:1.0 - secondFragment];
     eraseAnimation.toValue   = [NSNumber numberWithFloat:0.0];
     
     eraseAnimation.beginTime = CACurrentMediaTime() + .05f;
