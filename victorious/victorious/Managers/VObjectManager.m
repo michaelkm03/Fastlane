@@ -42,7 +42,7 @@
     
     //Add the App ID to the User-Agent field
     //(this is the only non-dynamic header, so set it now)
-    NSString *userAgent = [[manager HTTPClient].defaultHeaders objectForKey:@"User-Agent"];
+    NSString *userAgent = ([manager HTTPClient].defaultHeaders)[@"User-Agent"];
     
     //TODO: use real app id once we set that up
     userAgent = [NSString stringWithFormat:@"%@ aid:%@", userAgent, @"1"];
@@ -260,7 +260,7 @@
 
 -(VPaginationStatus *)statusForKey:(NSString*)key
 {
-    VPaginationStatus* status = [self.paginationStatuses objectForKey:key];
+    VPaginationStatus* status = (self.paginationStatuses)[key];
     if (!status)
     {
         status = [[VPaginationStatus alloc] init];
@@ -314,7 +314,7 @@
     AFHTTPClient* client = [self HTTPClient];
     
     NSString *currentDate = [self rFC2822DateTimeString];
-    NSString* userAgent = [client.defaultHeaders objectForKey:@"User-Agent"];
+    NSString* userAgent = (client.defaultHeaders)[@"User-Agent"];
     
     NSString* token = self.mainUser.token ? self.mainUser.token : @"";
     
