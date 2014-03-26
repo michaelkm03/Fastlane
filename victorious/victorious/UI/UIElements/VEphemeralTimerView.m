@@ -41,6 +41,17 @@
         self.expireDate = expireDate;
         
         self.timeRemainingLabel = [[UILabel alloc] init];
+        self.timeRemainingLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVDateFont];
+        self.timeRemainingLabel.textColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVContentAccentColor];
+        
+        self.dayLabel = [[UILabel alloc] init];
+        self.dayLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVDateFont];
+        self.dayLabel.textColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
+        
+        self.countdownLabel = [[UILabel alloc] init];
+        self.countdownLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVTitleFont];
+        self.countdownLabel.textColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
+        
         
         // Configure draw animation
         self.drawPath = [UIBezierPath bezierPathWithArcCenter:self.center
@@ -84,10 +95,21 @@
     NSInteger days = floorf(secondsTilExpiration / 86400);
     secondsTilExpiration = fmodf(secondsTilExpiration, 86400);
     
+    if (days == 1)
+        self.dayLabel.text = [@"1" stringByAppendingString:NSLocalizedString(@"Day", nil)];
+    else
+        self.dayLabel.text = [@(days).stringValue stringByAppendingString:NSLocalizedString(@"Days", nil)];
+    if (!days)
+        self.dayLabel.textColor = self.timeRemainingLabel.textColor;
+    
     NSInteger hours = floorf(secondsTilExpiration / 3600);
     secondsTilExpiration = fmodf(secondsTilExpiration, 3600);
+    NSString* seconds = secondsTilExpiration > 9 ? @(secondsTilExpiration).stringValue
+                                    : [@"0" stringByAppendingString:@(secondsTilExpiration).stringValue];
     
-    
+    self.countdownLabel.text = [[@(hours).stringValue stringByAppendingString:@":"] stringByAppendingString:seconds];
+    if (!hours && !secondsTilExpiration)
+        self.countdownLabel.textColor = self.timeRemainingLabel.textColor;
 }
 
 #define TimerAnimationKey @"timerAnimation"

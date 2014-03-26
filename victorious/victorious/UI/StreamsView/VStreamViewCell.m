@@ -80,7 +80,8 @@ NSString *kStreamsWillCommentNotification = @"kStreamsWillCommentNotification";
 
 - (void)contentExpired
 {
-    VLog(@"Wow this worked!");
+    self.shadeView.backgroundColor = [UIColor whiteColor];
+    self.shadeView.alpha = .5f;
 }
 
 - (void)layoutSubviews
