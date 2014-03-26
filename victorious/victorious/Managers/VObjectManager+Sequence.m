@@ -514,9 +514,9 @@ NSString* const kPollResultsLoaded = @"kPollResultsLoaded";
         [parameters setObject:expiresAt forKey:@"expires_at"];
     if (parentNodeId)
         [parameters setObject:parentNodeId forKey:@"parent_node_id"];
-    if (shareOptions & VShareToFacebook)
+    if (shareOptions & kVShareToFacebook)
         [parameters setObject:@"1" forKey:@"share_facebook"];
-    if (shareOptions & VShareToTwitter)
+    if (shareOptions & kVShareToTwitter)
         [parameters setObject:@"1" forKey:@"share_twitter"];
     
     NSString* loopParam = [self stringForLoopType:loopType];
@@ -544,9 +544,9 @@ NSString* const kPollResultsLoaded = @"kPollResultsLoaded";
 
 - (NSString*)stringForLoopType:(VLoopType)type
 {
-    if (type == VLoopRepeat)
+    if (type == kVLoopRepeat)
         return @"loop";
-    if (type == VLoopReverse)
+    if (type == kVLoopReverse)
         return @"reverse";
     return nil;
 }

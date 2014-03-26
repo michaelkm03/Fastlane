@@ -7,20 +7,7 @@
 //
 
 #import "VObjectManager.h"
-
-typedef NS_OPTIONS(NSUInteger, VShareOptions)
-{
-    VShareNone          = 0,
-    VShareToTwitter     = 1 << 0,
-    VShareToFacebook    = 1 << 1
-};
-
-typedef NS_ENUM(NSUInteger, VLoopType)
-{
-    VLoopOnce       =   0,
-    VLoopRepeat     =   1 << 0,
-    VLoopReverse    =   1 << 1
-};
+#import "VConstants.h"
 
 extern NSString* const kInitialLoadFinishedNotification;
 extern NSString* const kPollResultsLoaded;

@@ -25,16 +25,9 @@
 @property (nonatomic, weak) IBOutlet    UISwitch*       twitterButton;
 @property (nonatomic, weak) IBOutlet    UISwitch*       facebookButton;
 
-@property (nonatomic, weak) IBOutlet    UITextView*     textView;
-
 @property (nonatomic, strong) IBOutlet    UIBarButtonItem*    countDownLabel;
 
 @property (nonatomic, weak) IBOutlet    UILabel*        textViewPlaceholderLabel;
-
-@property (nonatomic, strong)   NSString*     expirationDateString;
-
-@property (nonatomic)           BOOL          useTwitter;
-@property (nonatomic)           BOOL          useFacebook;
 
 @end
 
@@ -89,8 +82,8 @@
 {
     VLog (@"Publishing");
     
-    VShareOptions shareOptions = self.useFacebook ? VShareToFacebook : VShareNone;
-    shareOptions = self.useTwitter ? shareOptions | VShareToTwitter : shareOptions;
+    VShareOptions shareOptions = self.useFacebook ? kVShareToFacebook : kVShareNone;
+    shareOptions = self.useTwitter ? shareOptions | kVShareToTwitter : shareOptions;
     
     NSData* mediaData;
     NSString* mediaType;
@@ -117,7 +110,7 @@
                                             description:self.textView.text
                                               expiresAt:self.expirationDateString
                                            parentNodeId:nil
-                                               loopType:VLoopOnce
+                                               loopType:kVLoopOnce
                                            shareOptions:shareOptions
                                               mediaData:mediaData
                                               extension:mediaType
