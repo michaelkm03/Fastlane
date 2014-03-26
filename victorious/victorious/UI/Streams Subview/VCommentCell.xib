@@ -13,16 +13,6 @@
                 <rect key="frame" x="0.0" y="0.0" width="320" height="255"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="StreamDate" translatesAutoresizingMaskIntoConstraints="NO" id="LfL-cf-slY" userLabel="Time Image">
-                        <rect key="frame" x="15" y="62" width="13" height="13"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                    </imageView>
-                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="date" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mlx-Sx-ed0" userLabel="Time Label">
-                        <rect key="frame" x="30" y="62" width="23" height="14"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        <fontDescription key="fontDescription" style="UICTFontTextStyleCaption1"/>
-                        <nil key="highlightedColor"/>
-                    </label>
                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="message" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="214" translatesAutoresizingMaskIntoConstraints="NO" id="yUe-8b-fBQ" userLabel="Message label">
                         <rect key="frame" x="86" y="7" width="214" height="20"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -72,14 +62,24 @@
                             <action selector="playVideo:" destination="X3b-iY-v4q" eventType="touchUpInside" id="4dZ-iB-xIO"/>
                         </connections>
                     </button>
+                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="1d" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="LIQ-Uh-Qd1">
+                        <rect key="frame" x="280" y="5" width="40" height="21"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                        <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <imageView userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="StreamDate" translatesAutoresizingMaskIntoConstraints="NO" id="nnt-e6-nzy">
+                        <rect key="frame" x="264" y="9" width="13" height="13"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </imageView>
                 </subviews>
                 <constraints>
                     <constraint firstAttribute="trailing" secondItem="wD6-xk-K18" secondAttribute="trailing" constant="29" id="0tf-Qo-beh"/>
-                    <constraint firstItem="mlx-Sx-ed0" firstAttribute="top" secondItem="eAW-cc-13j" secondAttribute="top" constant="62" id="5QM-9e-i9M"/>
                     <constraint firstItem="yUe-8b-fBQ" firstAttribute="leading" secondItem="eAW-cc-13j" secondAttribute="leading" constant="86" id="CyK-m0-rbY"/>
                     <constraint firstItem="yUe-8b-fBQ" firstAttribute="top" secondItem="eAW-cc-13j" secondAttribute="top" constant="7" id="Uoj-ze-vYB"/>
                     <constraint firstItem="kz3-f7-Kav" firstAttribute="leading" secondItem="eAW-cc-13j" secondAttribute="leading" constant="11" id="ahL-Pp-i2e"/>
-                    <constraint firstItem="mlx-Sx-ed0" firstAttribute="leading" secondItem="eAW-cc-13j" secondAttribute="leading" constant="30" id="cbn-XD-z2o"/>
                     <constraint firstItem="kz3-f7-Kav" firstAttribute="top" secondItem="eAW-cc-13j" secondAttribute="top" constant="5" id="jUZ-Ud-yWL"/>
                     <constraint firstAttribute="trailing" secondItem="sUq-fM-2Gz" secondAttribute="trailing" constant="107" id="jzf-iY-eec"/>
                     <constraint firstAttribute="bottom" secondItem="sUq-fM-2Gz" secondAttribute="bottom" constant="88" id="lda-Rb-N3w"/>
@@ -89,7 +89,7 @@
             </tableViewCellContentView>
             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
             <connections>
-                <outlet property="dateLabel" destination="mlx-Sx-ed0" id="5tM-mA-JkR"/>
+                <outlet property="dateLabel" destination="LIQ-Uh-Qd1" id="Nwo-qu-r4W"/>
                 <outlet property="mainView" destination="eAW-cc-13j" id="e2E-wt-3Pu"/>
                 <outlet property="mediaPreview" destination="wD6-xk-K18" id="CZf-He-aUK"/>
                 <outlet property="messageLabel" destination="2Be-vm-ti6" id="HYW-T5-b2e"/>
@@ -97,7 +97,6 @@
                 <outlet property="playButton" destination="sUq-fM-2Gz" id="Qkd-8F-yE3"/>
                 <outlet property="profileImageButton" destination="kz3-f7-Kav" id="sNf-8B-uai"/>
                 <outletCollection property="labels" destination="yUe-8b-fBQ" id="TBX-Ee-cQ8"/>
-                <outletCollection property="labels" destination="mlx-Sx-ed0" id="DJD-4b-L76"/>
                 <outletCollection property="labels" destination="2Be-vm-ti6" id="pmb-cr-Rgb"/>
             </connections>
         </tableViewCell>

@@ -67,7 +67,13 @@ NSString* const kChatBubbleLeftImage = @"ChatBubbleLeft";
     [super layoutSubviews];
     
     self.dateLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVDateFont];
+    self.dateLabel.textColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVContentAccentColor];
+    
     self.messageLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVDetailFont];
+    self.messageLabel.textColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVContentAccentColor];
+    
+    self.nameLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVDetailFont];
+    self.nameLabel.textColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
     
     self.profileImageButton.clipsToBounds = YES;
     self.profileImageButton.layer.cornerRadius = CGRectGetHeight(self.profileImageButton.bounds)/2;
