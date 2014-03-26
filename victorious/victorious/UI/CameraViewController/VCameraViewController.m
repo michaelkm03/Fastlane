@@ -17,6 +17,8 @@
 #import "UIImage+Cropping.h"
 #import "VThemeManager.h"
 
+const   NSTimeInterval  kAnimationDuration      =   0.4;
+
 @interface VCameraViewController () <VCCameraDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate>
 
 @property (nonatomic, weak) IBOutlet    UIButton*           switchCameraButton;
@@ -220,14 +222,14 @@
 
 - (void)handleRecordTapGesture:(UIGestureRecognizer *)gesture
 {
-    [UIView animateWithDuration:0.6 animations:^{
+    [UIView animateWithDuration:kAnimationDuration animations:^{
         self.toolTipImageView.alpha = 1.0;
     }];
 }
 
 - (void)handleRecordLongTapGesture:(UIGestureRecognizer *)gesture
 {
-    [UIView animateWithDuration:0.6 animations:^{
+    [UIView animateWithDuration:kAnimationDuration animations:^{
         self.toolTipImageView.alpha = 0.0;
     }];
 
@@ -255,7 +257,7 @@
 {
     if (self.camera.sessionPreset == AVCaptureSessionPresetPhoto)
     {
-        [UIView animateWithDuration:0.6 delay:0 options:UIViewAnimationOptionCurveEaseInOut
+        [UIView animateWithDuration:kAnimationDuration delay:0 options:UIViewAnimationOptionCurveEaseInOut
                          animations:^{
                              self.capturePhotoButton.alpha = 0.0;
                              self.recordButton.alpha = 1.0;
@@ -270,7 +272,7 @@
     }
     else if (self.camera.sessionPreset == AVCaptureSessionPresetHigh)
     {
-        [UIView animateWithDuration:0.6 delay:0 options:UIViewAnimationOptionCurveEaseInOut
+        [UIView animateWithDuration:kAnimationDuration delay:0 options:UIViewAnimationOptionCurveEaseInOut
                          animations:^{
                              self.capturePhotoButton.alpha = 1.0;
                              self.recordButton.alpha = 0.0;
@@ -350,7 +352,7 @@
 
 - (void)setLastImageSavedToAlbum
 {
-    [UIView animateWithDuration:0.6 animations:^{
+    [UIView animateWithDuration:kAnimationDuration animations:^{
         self.deleteButton.alpha = 0.0;
         self.openAlbumButton.alpha = 0.0;
     }];
@@ -389,7 +391,7 @@
                      *innerStop = YES;
                      
                      [self.openAlbumButton setImage:latestPhoto forState:UIControlStateNormal];
-                     [UIView animateWithDuration:0.6 animations:^{
+                     [UIView animateWithDuration:kAnimationDuration animations:^{
                          self.openAlbumButton.alpha = 1.0;
                      }];
                  }

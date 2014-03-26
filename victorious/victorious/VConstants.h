@@ -10,6 +10,28 @@
 #define IS_IPHONE (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone)
 #define IS_IPHONE_5 (IS_IPHONE && [[UIScreen mainScreen] bounds].size.height == 568.0f)
 
+typedef NS_OPTIONS(NSUInteger, VShareOptions)
+{
+    kVShareNone          = 0,
+    kVShareToTwitter     = 1 << 0,
+    kVShareToFacebook    = 1 << 1
+};
+
+typedef NS_ENUM(NSUInteger, VLoopType)
+{
+    kVLoopOnce       =   0,
+    kVLoopRepeat     =   1,
+    kVLoopReverse    =   2
+};
+
+typedef NS_ENUM(NSUInteger, VPlaybackSpeed)
+{
+    kVPlaybackHalfSpeed     =   0,
+    kVPlaybackNormalSpeed   =   1,
+    kVPlaybackDoubleSpeed   =   2
+};
+
+
 static NSUInteger const VConstantsMessageLength     = 140;
 static NSUInteger const VConstantsForumTitleLength  = 65;
 

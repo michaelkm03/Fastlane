@@ -145,14 +145,93 @@
                     <view key="view" contentMode="scaleToFill" id="qxj-pc-qzn">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="5C1-bS-FtL" customClass="VCVideoPlayerView">
+                                <rect key="frame" x="0.0" y="99" width="320" height="320"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                            </view>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="PlayCircle" translatesAutoresizingMaskIntoConstraints="NO" id="ykO-ox-Rir">
+                                <rect key="frame" x="134" y="233" width="52" height="52"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            </imageView>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="PlayTriangle" translatesAutoresizingMaskIntoConstraints="NO" id="Ele-xw-w6U">
+                                <rect key="frame" x="134" y="233" width="52" height="52"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            </imageView>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="AJB-sl-S4A">
+                                <rect key="frame" x="0.0" y="508" width="107" height="59"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Rate" image="cameraButtonSpeedNormal">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="playbackRateClicked:" destination="vMj-SS-k4u" eventType="touchUpInside" id="Yh6-3i-iKL"/>
+                                    <action selector="playbackRateClicked:" destination="uEv-AE-duX" eventType="touchUpInside" id="uQo-M0-3ya"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Oad-Gb-wYK">
+                                <rect key="frame" x="213" y="508" width="107" height="59"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Mute" image="cameraButtonUnmute">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="muteAudioClicked:" destination="uEv-AE-duX" eventType="touchUpInside" id="cXx-DN-RG2"/>
+                                    <action selector="muteAudioClicked:" destination="vMj-SS-k4u" eventType="touchUpInside" id="eAa-Gj-PIl"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="KMj-ED-h0u">
+                                <rect key="frame" x="107" y="508" width="106" height="59"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Loop" image="cameraButtonNoLoop">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="playbackLoopingClicked:" destination="uEv-AE-duX" eventType="touchUpInside" id="BN3-FW-QGh"/>
+                                    <action selector="playbackLoopingClicked:" destination="vMj-SS-k4u" eventType="touchUpInside" id="aLC-Yd-oSt"/>
+                                </connections>
+                            </button>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="acY-vU-rwA">
+                                <rect key="frame" x="100" y="440" width="120" height="48"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            </imageView>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="U7e-uL-OMg">
+                                <rect key="frame" x="0.0" y="440" width="92" height="50"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <state key="normal" image="cameraButtonStitchLeft">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="selectBeforeAssetClicked:" destination="vMj-SS-k4u" eventType="touchUpInside" id="MEM-Tj-gub"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="tLI-NC-Nxa">
+                                <rect key="frame" x="228" y="440" width="92" height="50"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <state key="normal" image="cameraButtonStitchRight">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="selectAfterAssetClicked:" destination="vMj-SS-k4u" eventType="touchUpInside" id="dVi-nk-3ME"/>
+                                </connections>
+                            </button>
+                        </subviews>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
                     <navigationItem key="navigationItem" id="DLc-3A-J8B">
                         <barButtonItem key="rightBarButtonItem" image="cameraButtonNext" id="8ZA-Jm-6zK"/>
                     </navigationItem>
                     <connections>
+                        <outlet property="loopButton" destination="KMj-ED-h0u" id="ILN-Wx-WNC"/>
+                        <outlet property="muteButton" destination="Oad-Gb-wYK" id="Put-Mn-cwc"/>
+                        <outlet property="playButton" destination="Ele-xw-w6U" id="kRP-WJ-lc2"/>
+                        <outlet property="playCircle" destination="ykO-ox-Rir" id="RRs-zT-dbC"/>
+                        <outlet property="previewView" destination="5C1-bS-FtL" id="lXY-rh-S9c"/>
+                        <outlet property="rateButton" destination="AJB-sl-S4A" id="fuY-hg-AIT"/>
                         <segue destination="YI1-UH-sNO" kind="modal" identifier="toCapture" id="tdT-NE-hOY"/>
-                        <segue destination="YqF-iv-7Fu" kind="push" identifier="toPublish" id="FG4-sn-s63"/>
+                        <segue destination="YqF-iv-7Fu" kind="push" identifier="toRemixPublish" id="FG4-sn-s63"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="8Xy-hU-i96" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -356,10 +435,10 @@
             </objects>
             <point key="canvasLocation" x="1947" y="84"/>
         </scene>
-        <!--Camera Publish View Controller - Publish-->
+        <!--Remix Publish View Controller - Publish-->
         <scene sceneID="z56-bZ-00p">
             <objects>
-                <viewController storyboardIdentifier="cameraPubish" useStoryboardIdentifierAsRestorationIdentifier="YES" id="YqF-iv-7Fu" customClass="VCameraPublishViewController" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="remixPubish" useStoryboardIdentifierAsRestorationIdentifier="YES" id="YqF-iv-7Fu" customClass="VRemixPublishViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="8XZ-hS-b8R"/>
                         <viewControllerLayoutGuide type="bottom" id="7UG-po-PQz"/>
@@ -494,6 +573,8 @@
         <image name="cameraButtonNoLoop" width="106" height="59"/>
         <image name="cameraButtonOnOff" width="160" height="50"/>
         <image name="cameraButtonSpeedNormal" width="107" height="59"/>
+        <image name="cameraButtonStitchLeft" width="81" height="48"/>
+        <image name="cameraButtonStitchRight" width="81" height="48"/>
         <image name="cameraButtonStopwatch" width="25" height="27"/>
         <image name="cameraButtonUnmute" width="107" height="59"/>
     </resources>

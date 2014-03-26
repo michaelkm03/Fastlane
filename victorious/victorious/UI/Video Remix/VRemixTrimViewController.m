@@ -52,8 +52,8 @@
     [super viewDidLoad];
 	
     self.sourceAsset = [AVURLAsset assetWithURL:self.sourceURL];
-    self.playBackSpeed = kRemixPlaybackNormalSpeed;
-    self.playbackLooping = kRemixLoopingNone;
+    self.playBackSpeed = kVPlaybackNormalSpeed;
+    self.playbackLooping = kVLoopOnce;
     
     [self.previewView.player setItem:[AVPlayerItem playerItemWithURL:self.sourceURL]];
     self.previewView.player.delegate = self;
@@ -170,6 +170,9 @@
 
 - (IBAction)nextButtonClicked:(id)sender
 {
+    if (self.previewView.player.isPlaying)
+        [self.previewView.player pause];
+    
     [self performSegueWithIdentifier:@"toStitch" sender:self];
 }
 
@@ -188,21 +191,21 @@
 
 - (IBAction)playbackRateClicked:(id)sender
 {
-    if (self.playBackSpeed == kRemixPlaybackNormalSpeed)
+    if (self.playBackSpeed == kVPlaybackNormalSpeed)
     {
-        self.playBackSpeed = kRemixPlaybackDoubleSpeed;
+        self.playBackSpeed = kVPlaybackDoubleSpeed;
         [self.previewView.player setRate:2.0];
         [self.rateButton setImage:[UIImage imageNamed:@"cameraButtonSpeedDouble"] forState:UIControlStateNormal];
     }
-    else if (self.playBackSpeed == kRemixPlaybackDoubleSpeed)
+    else if (self.playBackSpeed == kVPlaybackDoubleSpeed)
     {
-        self.playBackSpeed = kRemixPlaybackHalfSpeed;
+        self.playBackSpeed = kVPlaybackHalfSpeed;
         [self.previewView.player setRate:0.5];
         [self.rateButton setImage:[UIImage imageNamed:@"cameraButtonSpeedHalf"] forState:UIControlStateNormal];
     }
-    else if (self.playBackSpeed == kRemixPlaybackHalfSpeed)
+    else if (self.playBackSpeed == kVPlaybackHalfSpeed)
     {
-        self.playBackSpeed = kRemixPlaybackNormalSpeed;
+        self.playBackSpeed = kVPlaybackNormalSpeed;
         [self.previewView.player setRate:1.0];
         [self.rateButton setImage:[UIImage imageNamed:@"cameraButtonSpeedNormal"] forState:UIControlStateNormal];
     }
@@ -210,15 +213,15 @@
 
 - (IBAction)playbackLoopingClicked:(id)sender
 {
-    if (self.playbackLooping == kRemixLoopingNone)
+    if (self.playbackLooping == kVLoopOnce)
     {
-        self.playbackLooping = kRemixLoopingLoop;
+        self.playbackLooping = kVLoopRepeat;
         self.previewView.player.shouldLoop = YES;
         [self.loopButton setImage:[UIImage imageNamed:@"cameraButtonLoop"] forState:UIControlStateNormal];
     }
-    else if (self.playbackLooping == kRemixLoopingLoop)
+    else if (self.playbackLooping == kVLoopRepeat)
     {
-        self.playbackLooping = kRemixLoopingNone;
+        self.playbackLooping = kVLoopOnce;
         self.previewView.player.shouldLoop = NO;
         [self.loopButton setImage:[UIImage imageNamed:@"cameraButtonNoLoop"] forState:UIControlStateNormal];
     }
