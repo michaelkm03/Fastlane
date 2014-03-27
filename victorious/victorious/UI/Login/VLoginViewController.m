@@ -22,6 +22,9 @@
 @property (nonatomic, weak) IBOutlet    UIButton*           facebookButton;
 @property (nonatomic, weak) IBOutlet    UIButton*           twitterButton;
 @property (nonatomic, weak) IBOutlet    UIButton*           emailButton;
+@property (nonatomic, weak) IBOutlet    UIButton*           signinEmailButton;
+
+@property (nonatomic, weak) IBOutlet    UILabel*           loginLabel;
 
 @property (nonatomic, strong)           UIDynamicAnimator*  animator;
 @property (nonatomic, assign)           VLoginType          loginType;
@@ -49,6 +52,15 @@
         self.view.layer.contents = (id)[[VThemeManager sharedThemeManager] themedImageForKey:kVMenuBackgroundImage].CGImage;
     
     self.animator = [[UIDynamicAnimator alloc] initWithReferenceView:self.view];
+    
+    UIColor* accentColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVAccentColor];
+    
+    self.loginLabel.textColor = accentColor;
+    
+    NSMutableAttributedString* attributedTitle = [self.signinEmailButton.titleLabel.attributedText mutableCopy];
+    NSRange range = NSRangeFromString(attributedTitle.string);
+    [attributedTitle addAttribute:NSForegroundColorAttributeName value:accentColor range:range];
+    [self.signinEmailButton setAttributedTitle:attributedTitle forState:UIControlStateNormal];
     
     UIGravityBehavior* gravityBehavior = [[UIGravityBehavior alloc] initWithItems:@[self.buttonContainer]];
     [self.animator addBehavior:gravityBehavior];

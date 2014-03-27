@@ -41,7 +41,8 @@
                                                                                    target:self
                                                                                    action:@selector(addButtonAction:)];
     
-    self.navigationItem.rightBarButtonItems= @[addButtonItem, self.navigationItem.rightBarButtonItem];
+
+    self.navigationItem.rightBarButtonItem = addButtonItem;//@[addButtonItem, self.navigationItem.rightBarButtonItem];
 }
 
 - (NSArray*)categoriesForOption:(NSUInteger)searchOption
