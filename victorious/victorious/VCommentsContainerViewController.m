@@ -19,7 +19,7 @@
 
 #import "VThemeManager.h"
 
-@interface VCommentsContainerViewController()
+@interface VCommentsContainerViewController()   <VCommentsTableViewControllerDelegate>
 
 @property (weak, nonatomic) IBOutlet UIButton* backButton;
 @property (weak, nonatomic) IBOutlet UIImageView* backgroundImage;

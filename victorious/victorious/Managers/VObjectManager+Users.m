@@ -99,28 +99,29 @@
 }
 
 - (RKManagedObjectRequestOperation *)attachAccountToFacebookWithToken:(NSString*)accessToken
-                                                         accessSecret:(NSString*)accessSecret
-                                                            twitterId:(NSString*)twitterId
-                                                         SuccessBlock:(VSuccessBlock)success
-                                                            failBlock:(VFailBlock)failed
+                                                     withSuccessBlock:(VSuccessBlock)success
+                                                            failBlock:(VFailBlock)fail
 {
     
-    NSDictionary *parameters = @{@"access_token":   accessToken ?: @"",
-                                 @"access_secret":  accessSecret ?: @"",
-                                 @"twitter_id":     twitterId ?: @""};
+    NSDictionary *parameters = @{@"facebook_access_token":   accessToken ?: @""};
     
     return [self POST:@"/api/socialconnect/facebook"
                object:nil
            parameters:parameters
          successBlock:success
-            failBlock:failed];
+            failBlock:fail];
 }
 
 - (RKManagedObjectRequestOperation *)attachAccountToTwitterWithToken:(NSString*)accessToken
+                                                        accessSecret:(NSString*)accessSecret
+                                                           twitterId:(NSString*)twitterId
                                                     withSuccessBlock:(VSuccessBlock)success
                                                            failBlock:(VFailBlock)fail
 {
-    NSDictionary *parameters = @{@"twitter_access_token": accessToken ?: [NSNull null]};
+    
+    NSDictionary *parameters = @{@"access_token":   accessToken ?: @"",
+                                 @"access_secret":  accessSecret ?: @"",
+                                 @"twitter_id":     twitterId ?: @""};
     
     return [self POST:@"/api/socialconnect/twitter"
                object:nil
