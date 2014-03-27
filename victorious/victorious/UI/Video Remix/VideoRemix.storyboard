@@ -419,6 +419,7 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
+                    <navigationItem key="navigationItem" id="BOa-ls-Sqk"/>
                     <connections>
                         <outlet property="afterButton" destination="tF6-Ix-VrQ" id="DVC-y7-L1G"/>
                         <outlet property="doneButton" destination="2yK-1b-zxM" id="M7N-qV-RxC"/>
@@ -517,6 +518,9 @@
                                 <state key="normal" image="cameraButtonStopwatch">
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
+                                <connections>
+                                    <segue destination="KS8-LA-Kar" kind="push" id="8ZA-ta-RWG"/>
+                                </connections>
                             </button>
                             <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="dln-D2-sTn">
                                 <rect key="frame" x="20" y="68" width="280" height="186"/>
@@ -558,7 +562,6 @@
                         <outlet property="textView" destination="dln-D2-sTn" id="AfT-EH-GOq"/>
                         <outlet property="textViewPlaceholderLabel" destination="MYv-TQ-lLW" id="lkL-CP-Dv6"/>
                         <outlet property="twitterButton" destination="Kc3-4r-Ogb" id="UB4-KS-KMy"/>
-                        <segue destination="KS8-LA-Kar" kind="modal" identifier="setExpiration" id="CJJ-MK-BNU"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="S4q-ux-Qxx" userLabel="First Responder" sceneMemberID="firstResponder"/>
