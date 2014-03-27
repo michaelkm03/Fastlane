@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="5053" systemVersion="13C64" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3733"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell contentMode="scaleToFill" restorationIdentifier="VCommentCell" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="VCommentCell" rowHeight="424" id="3lP-4E-w5O" customClass="VCommentCell">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="256"/>
+            <autoresizingMask key="autoresizingMask"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="3lP-4E-w5O" id="SSb-gQ-QSn">
+                <rect key="frame" x="0.0" y="0.0" width="320" height="255"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="StreamDate" translatesAutoresizingMaskIntoConstraints="NO" id="BXB-23-e1c" userLabel="Time Image">
+                        <rect key="frame" x="15" y="62" width="13" height="13"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    </imageView>
+                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="date" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FyT-Gd-6Ym" userLabel="Time Label">
+                        <rect key="frame" x="30" y="62" width="23" height="14"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <fontDescription key="fontDescription" style="UICTFontTextStyleCaption1"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="message" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="214" translatesAutoresizingMaskIntoConstraints="NO" id="QSL-fG-yxY" userLabel="Message label">
+                        <rect key="frame" x="86" y="7" width="214" height="20"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="jk4-Mq-7rx">
+                        <rect key="frame" x="101" y="56" width="190" height="190"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="190" id="RBV-2D-A3A"/>
+                            <constraint firstAttribute="width" constant="190" id="zqa-sf-ruT"/>
+                        </constraints>
+                    </imageView>
+                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="MPR-i6-dAT">
+                        <rect key="frame" x="11" y="5" width="48" height="48"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="48" id="66G-E8-UDC"/>
+                            <constraint firstAttribute="height" constant="48" id="koC-td-GT1"/>
+                        </constraints>
+                        <state key="normal" title="Button" image="profile_thumb">
+                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                        </state>
+                        <connections>
+                            <action selector="profileButtonAction:" destination="3lP-4E-w5O" eventType="touchUpInside" id="3eJ-Yj-mUa"/>
+                        </connections>
+                    </button>
+                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zIF-WY-QMh">
+                        <rect key="frame" x="180" y="134" width="33" height="33"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="33" id="9nv-8t-ESv"/>
+                            <constraint firstAttribute="height" constant="33" id="Gft-Fk-pqj"/>
+                        </constraints>
+                        <state key="normal" image="Play">
+                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                        </state>
+                        <connections>
+                            <action selector="playVideo:" destination="3lP-4E-w5O" eventType="touchUpInside" id="N65-l3-7uh"/>
+                        </connections>
+                    </button>
+                </subviews>
+                <constraints>
+                    <constraint firstAttribute="trailing" secondItem="QSL-fG-yxY" secondAttribute="trailing" constant="20" id="4ih-JJ-p1s"/>
+                    <constraint firstAttribute="trailing" secondItem="jk4-Mq-7rx" secondAttribute="trailing" constant="29" id="Ee0-rg-ZKD"/>
+                    <constraint firstItem="MPR-i6-dAT" firstAttribute="leading" secondItem="SSb-gQ-QSn" secondAttribute="leading" constant="11" id="H8l-zU-gFK"/>
+                    <constraint firstAttribute="trailing" secondItem="zIF-WY-QMh" secondAttribute="trailing" constant="107" id="JWr-7g-tGr"/>
+                    <constraint firstItem="FyT-Gd-6Ym" firstAttribute="top" secondItem="SSb-gQ-QSn" secondAttribute="top" constant="62" id="QZp-ey-JhA"/>
+                    <constraint firstItem="MPR-i6-dAT" firstAttribute="top" secondItem="SSb-gQ-QSn" secondAttribute="top" constant="5" id="ZOd-lZ-GfN"/>
+                    <constraint firstItem="FyT-Gd-6Ym" firstAttribute="leading" secondItem="SSb-gQ-QSn" secondAttribute="leading" constant="30" id="aSw-EZ-V6g"/>
+                    <constraint firstAttribute="bottom" secondItem="zIF-WY-QMh" secondAttribute="bottom" constant="88" id="gD2-M5-PAs"/>
+                    <constraint firstItem="QSL-fG-yxY" firstAttribute="leading" secondItem="SSb-gQ-QSn" secondAttribute="leading" constant="86" id="r00-0V-Y4b"/>
+                    <constraint firstAttribute="bottom" secondItem="jk4-Mq-7rx" secondAttribute="bottom" constant="9" id="uDT-88-71m"/>
+                    <constraint firstItem="QSL-fG-yxY" firstAttribute="top" secondItem="SSb-gQ-QSn" secondAttribute="top" constant="7" id="uqy-71-DKd"/>
+                </constraints>
+            </tableViewCellContentView>
+            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+            <connections>
+                <outlet property="dateLabel" destination="FyT-Gd-6Ym" id="dPY-ix-1LS"/>
+                <outlet property="mainView" destination="SSb-gQ-QSn" id="Fzh-Ck-GHM"/>
+                <outlet property="mediaPreview" destination="jk4-Mq-7rx" id="GTl-CV-uJE"/>
+                <outlet property="messageLabel" destination="QSL-fG-yxY" id="3Nb-cY-b6n"/>
+                <outlet property="playButton" destination="zIF-WY-QMh" id="4AT-rJ-azh"/>
+                <outlet property="profileImageButton" destination="MPR-i6-dAT" id="Gau-vx-lo1"/>
+                <outletCollection property="labels" destination="QSL-fG-yxY" id="PLa-8R-zKs"/>
+                <outletCollection property="labels" destination="FyT-Gd-6Ym" id="JHz-QB-8GW"/>
+            </connections>
+        </tableViewCell>
+    </objects>
+    <resources>
+        <image name="Play" width="33" height="33"/>
+        <image name="StreamDate" width="13" height="13"/>
+        <image name="profile_thumb" width="50" height="50"/>
+    </resources>
+</document>

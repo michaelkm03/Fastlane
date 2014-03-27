@@ -1,0 +1,58 @@
+/* 
+  Localizable.strings
+  victorious
+
+  Created by Gary Philipp on 12/23/13.
+  Copyright (c) 2013 Victorious Inc. All rights reserved.
+*/
+
+"OKButton"              =   "OK";
+"CancelButton"          =   "Cancel";
+
+"SetupButton"           =   "Set up";
+"EmailValidation"       =   "Invalid Email Address";
+"PasswordValidation"    =   "Password is less than 8 characters";
+"UsernameValidation"    =   "User name is less than 8 characters";
+"AgreeTOS"              =   "You must click that you are at least 13 years of age and agree to the Terms of Service";
+"InvalidCredentials"    =   "Invalid Credentials";
+"PollAlreadyAnswered"   =   "Poll result was already answered";
+"LoginFail"             =   "Login Failed";
+"SignupFail"            =   "Account Creation Failed";
+"AccountUpdateFail"     =   "Account Update Failed";
+
+"NoEmail"               =   "No Email Accounts";
+"NoEmailDetail"         =   "There are no email accounts, would you like to setup one now?";
+"EmailFail"             =   "E-mail failed to send";
+
+
+"NoTwitterTitle"        =   "Can't find a Twitter Account!";
+"NoTwitterMessage"      =   "Please log into the device settings and add a new twitter account";
+
+"HelpNeeded"            =   "I need help with...";
+
+"ReportInappropriate"   =   "Report Inappropriate";
+"BlockUser"             =   "Block User";
+"CopyProfileURL"        =   "Copy Profile URL";
+
+"TranscodingMediaTitle" =   "Transcoding Upload";
+"TranscodingMediaBody"  =   "Your upload is taking longer than usual to transcode.  It will appear once we've finished";
+"PollUploadTitle"       =   "Poll Upload Failed";
+"PollUploadBody"        =   "Unable to upload Poll to server";
+
+"UploadError"           =   "Upload Error";
+"UploadErrorBody"       =   "Sorry! Something went wrong, and we are unable to complete the upload at this time.";
+
+"Now"                   =   "Now";
+"SecondsAgo"            =   "%ds";
+"MinuteAgo"             =   "1m";
+"MinutesAgo"            =   "%dm";
+"HourAgo"               =   "1h";
+"HoursAgo"              =   "%dh";
+"Yesterday"             =   "1d";
+"DaysAgo"               =   "%dd";
+"LastWeek"              =   "1w";
+"WeeksAgo"              =   "%dw";
+"LastMonth"             =   "1mo";
+"MonthsAgo"             =   "%dmo";
+"LastYear"              =   "1y";
+"YearsAgo"              =   "%dy";
