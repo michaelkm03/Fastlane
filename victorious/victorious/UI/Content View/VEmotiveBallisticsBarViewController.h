@@ -8,16 +8,12 @@
 
 #import <UIKit/UIKit.h>
 
-#import "VAnimation.h"
+#import "VActionBarViewController.h"
 
 @class VSequence;
 
-@interface VEmotiveBallisticsBarViewController : UIViewController <VAnimation>
+@interface VEmotiveBallisticsBarViewController : VActionBarViewController
 
 @property (weak, nonatomic) UIView* target;
-
-@property (strong, nonatomic) VSequence* sequence;
-
-+ (VEmotiveBallisticsBarViewController *)sharedInstance;
 
 @end

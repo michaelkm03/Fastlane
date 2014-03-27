@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-#import "VAnimation.h"
+#import "VActionBarViewController.h"
 
 @class VSequence, VAnswer;
 
@@ -17,12 +17,9 @@
 - (void)answeredPollWithAnswerId:(NSNumber*)answerId;
 @end
 
-@interface VPollAnswerBarViewController : UIViewController <VAnimation>
+@interface VPollAnswerBarViewController : VActionBarViewController
 
-@property (strong, nonatomic) VSequence* sequence;
 @property (strong, nonatomic) NSArray* answers;
 @property (weak, nonatomic) id<VPollAnswerBarDelegate> delegate;
-
-+ (VPollAnswerBarViewController *)sharedInstance;
 
 @end

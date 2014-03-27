@@ -136,6 +136,7 @@
 		BE185DEA18E3AF55001C447F /* VContentViewController+Polls.m in Sources */ = {isa = PBXBuildFile; fileRef = BE185DE918E3AF55001C447F /* VContentViewController+Polls.m */; };
 		BE185DEE18E3B255001C447F /* VContentViewController+Videos.m in Sources */ = {isa = PBXBuildFile; fileRef = BE185DED18E3B255001C447F /* VContentViewController+Videos.m */; };
 		BE185DF118E3B2C2001C447F /* VContentViewController+Images.m in Sources */ = {isa = PBXBuildFile; fileRef = BE185DF018E3B2C2001C447F /* VContentViewController+Images.m */; };
+		BE185DF518E3BB54001C447F /* VActionBarViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BE185DF418E3BB54001C447F /* VActionBarViewController.m */; };
 		BE40559418A1828D00092AE1 /* UIButton+VImageLoading.m in Sources */ = {isa = PBXBuildFile; fileRef = BE40559318A1828D00092AE1 /* UIButton+VImageLoading.m */; };
 		BE4055AC18A41F1F00092AE1 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = BE4055A618A41F1F00092AE1 /* Localizable.strings */; };
 		BE4055AD18A41F1F00092AE1 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = BE4055A718A41F1F00092AE1 /* main.m */; };
@@ -453,6 +454,8 @@
 		BE185DED18E3B255001C447F /* VContentViewController+Videos.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "VContentViewController+Videos.m"; path = "UI/Content View/VContentViewController+Videos.m"; sourceTree = "<group>"; };
 		BE185DEF18E3B2C2001C447F /* VContentViewController+Images.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "VContentViewController+Images.h"; path = "UI/Content View/VContentViewController+Images.h"; sourceTree = "<group>"; };
 		BE185DF018E3B2C2001C447F /* VContentViewController+Images.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "VContentViewController+Images.m"; path = "UI/Content View/VContentViewController+Images.m"; sourceTree = "<group>"; };
+		BE185DF318E3BB54001C447F /* VActionBarViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VActionBarViewController.h; path = "UI/Content View/VActionBarViewController.h"; sourceTree = "<group>"; };
+		BE185DF418E3BB54001C447F /* VActionBarViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VActionBarViewController.m; path = "UI/Content View/VActionBarViewController.m"; sourceTree = "<group>"; };
 		BE40559218A1828D00092AE1 /* UIButton+VImageLoading.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIButton+VImageLoading.h"; sourceTree = "<group>"; };
 		BE40559318A1828D00092AE1 /* UIButton+VImageLoading.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIButton+VImageLoading.m"; sourceTree = "<group>"; };
 		BE4055A618A41F1F00092AE1 /* Localizable.strings */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = Localizable.strings; path = "Supporting Files/Localizable.strings"; sourceTree = "<group>"; };
@@ -1234,6 +1237,19 @@
 			path = Models;
 			sourceTree = "<group>";
 		};
+		BE185DF218E3B85D001C447F /* ActionBars */ = {
+			isa = PBXGroup;
+			children = (
+				BEB52A7818C02D6600AC5FE4 /* VEmotiveBallisticsBarViewController.h */,
+				BEB52A7918C02D6600AC5FE4 /* VEmotiveBallisticsBarViewController.m */,
+				BEE9C8B418CE4A6B0095C737 /* VPollAnswerBarViewController.h */,
+				BEE9C8B518CE4A6B0095C737 /* VPollAnswerBarViewController.m */,
+				BE185DF318E3BB54001C447F /* VActionBarViewController.h */,
+				BE185DF418E3BB54001C447F /* VActionBarViewController.m */,
+			);
+			name = ActionBars;
+			sourceTree = "<group>";
+		};
 		BE46E69118CA73EC00974DAF /* Animations */ = {
 			isa = PBXGroup;
 			children = (
@@ -1360,6 +1376,7 @@
 		BED4568918BC4CD700A67160 /* Content View */ = {
 			isa = PBXGroup;
 			children = (
+				BE185DF218E3B85D001C447F /* ActionBars */,
 				BE46E69118CA73EC00974DAF /* Animations */,
 				BEB52A7618C02D6600AC5FE4 /* VContentViewController.h */,
 				BEB52A7718C02D6600AC5FE4 /* VContentViewController.m */,
@@ -1370,10 +1387,6 @@
 				BE185DED18E3B255001C447F /* VContentViewController+Videos.m */,
 				BE185DEF18E3B2C2001C447F /* VContentViewController+Images.h */,
 				BE185DF018E3B2C2001C447F /* VContentViewController+Images.m */,
-				BEB52A7818C02D6600AC5FE4 /* VEmotiveBallisticsBarViewController.h */,
-				BEB52A7918C02D6600AC5FE4 /* VEmotiveBallisticsBarViewController.m */,
-				BEE9C8B418CE4A6B0095C737 /* VPollAnswerBarViewController.h */,
-				BEE9C8B518CE4A6B0095C737 /* VPollAnswerBarViewController.m */,
 			);
 			name = "Content View";
 			sourceTree = "<group>";
@@ -1707,6 +1720,7 @@
 				3FF8C50418A59EAB00812968 /* VKeyboardBarContainerViewController.m in Sources */,
 				BE171E161868C211004E5202 /* VRule+RestKit.m in Sources */,
 				3F9B66741888C4B20046F826 /* VCommunityStreamViewController.m in Sources */,
+				BE185DF518E3BB54001C447F /* VActionBarViewController.m in Sources */,
 				BE171E1E1868C211004E5202 /* VErrorMessage.m in Sources */,
 				BE171E0C1868C211004E5202 /* VNode+Fetcher.m in Sources */,
 				BE5C7382187E37C700A3340D /* VMessage+RestKit.m in Sources */,

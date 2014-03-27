@@ -22,16 +22,11 @@
 
 @interface VEmotiveBallisticsBarViewController ()
 
-@property (weak, nonatomic) IBOutlet UILabel* positiveEmotiveLabel;
-@property (weak, nonatomic) IBOutlet UILabel* negativeEmotiveLabel;
-@property (weak, nonatomic) IBOutlet UIButton* positiveEmotiveButton;
-@property (weak, nonatomic) IBOutlet UIButton* negativeEmotiveButton;
-
 @end
 
 @implementation VEmotiveBallisticsBarViewController
 
-+ (VEmotiveBallisticsBarViewController *)sharedInstance
++ (instancetype)sharedInstance
 {
     static  VEmotiveBallisticsBarViewController*   sharedInstance;
     static  dispatch_once_t         onceToken;
@@ -50,20 +45,14 @@
     UIPanGestureRecognizer *postivePanGesture = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(handlePan:)];
     
     // Setting the swipe direction.
-    [self.positiveEmotiveButton addGestureRecognizer:postivePanGesture];
+    [self.leftButton addGestureRecognizer:postivePanGesture];
     
     UIPanGestureRecognizer *negativePanGesture = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(handlePan:)];
-    [self.negativeEmotiveButton addGestureRecognizer:negativePanGesture];
-    
-    self.positiveEmotiveLabel.textColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVAccentColor];
-    self.negativeEmotiveLabel.textColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVAccentColor];
-    
-    self.positiveEmotiveButton.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVMainColor];
-    self.negativeEmotiveButton.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVSecondaryMainColor];
+    [self.rightButton addGestureRecognizer:negativePanGesture];
     
     NSArray* voteTypes = [VVoteType allVoteTypes];
     [voteTypes enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
-        if (idx == self.positiveEmotiveButton.tag)
+        if (idx == self.leftButton.tag)
         {
 //            [self.positiveEmotiveButton setImage:[] forState:<#(UIControlState)#>]
         }
@@ -74,62 +63,15 @@
 {
     [super viewWillAppear:animated];
     
-    self.positiveEmotiveLabel.text = @(0).stringValue;
-    self.negativeEmotiveLabel.text = @(0).stringValue;
+    self.leftLabel.text = @(0).stringValue;
+    self.rightLabel.text = @(0).stringValue;
 }
 
 - (void)setSequence:(VSequence *)sequence
 {
-    _sequence = sequence;
-    self.positiveEmotiveLabel.text = @(0).stringValue;
-    self.negativeEmotiveLabel.text = @(0).stringValue;
-}
 
-#pragma mark - Animation
-- (void)animateInWithDuration:(CGFloat)duration completion:(void (^)(BOOL finished))completion
-{   
-    [self.negativeEmotiveButton setXOrigin:self.view.frame.size.width];
-    [self.positiveEmotiveButton setXOrigin:self.view.frame.size.width];
-
-    self.positiveEmotiveLabel.alpha = 0;
-    self.negativeEmotiveLabel.alpha = 0;
-    
-    [UIView animateWithDuration:duration/2
-                     animations:^
-                     {
-                         [self.positiveEmotiveButton setXOrigin:0];
-                         [self.negativeEmotiveButton setXOrigin:self.view.frame.size.width - self.negativeEmotiveButton.frame.size.width];
-                     }
-                     completion:^(BOOL finished)
-                     {
-                         [UIView animateWithDuration:duration/2
-                                          animations:^
-                                          {
-                                              self.positiveEmotiveLabel.alpha = 1;
-                                              self.negativeEmotiveLabel.alpha = 1;
-                                          }
-                                          completion:completion];
-                     }];
-}
-
-- (void)animateOutWithDuration:(CGFloat)duration completion:(void (^)(BOOL finished))completion
-{
-    [UIView animateWithDuration:duration/2
-                     animations:^
-                     {
-                         self.positiveEmotiveLabel.alpha = 0;
-                         self.negativeEmotiveLabel.alpha = 0;
-                     }
-                     completion:^(BOOL finished)
-                     {
-                         [UIView animateWithDuration:duration/2
-                                          animations:^
-                                          {
-                                              [self.positiveEmotiveButton setXOrigin:self.view.frame.size.width];
-                                              [self.negativeEmotiveButton setXOrigin:self.view.frame.size.width];
-                                          }
-                                          completion:completion];
-                     }];
+    self.leftLabel.text = @(0).stringValue;
+    self.rightLabel.text = @(0).stringValue;
 }
 
 #pragma mark - Actions
@@ -144,10 +86,10 @@
     CGFloat x = self.target.center.x + ([self randomFloat] * self.target.frame.size.width / 4);
     CGFloat y = self.target.center.y + ([self randomFloat] * self.target.frame.size.height / 4);
     
-    NSInteger voteCount = self.positiveEmotiveLabel.text.integerValue + 1;
-    self.positiveEmotiveLabel.text = @(voteCount).stringValue;
+    NSInteger voteCount = self.leftLabel.text.integerValue + 1;
+    self.leftLabel.text = @(voteCount).stringValue;
     
-    [self throwEmotive:self.positiveEmotiveButton toPoint:CGPointMake(x, y)];
+    [self throwEmotive:self.leftButton toPoint:CGPointMake(x, y)];
 }
 
 - (IBAction)pressedNegativeEmotive:(id)sender
@@ -162,10 +104,10 @@
     CGFloat x = self.target.center.x + ([self randomFloat] * self.target.frame.size.width / 4);
     CGFloat y = self.target.center.y + ([self randomFloat] * self.target.frame.size.height / 4);
     
-    NSInteger voteCount = self.negativeEmotiveLabel.text.integerValue + 1;
-    self.negativeEmotiveLabel.text = @(voteCount).stringValue;
+    NSInteger voteCount = self.rightLabel.text.integerValue + 1;
+    self.rightLabel.text = @(voteCount).stringValue;
     
-    [self throwEmotive:self.negativeEmotiveButton toPoint:CGPointMake(x, y)];
+    [self throwEmotive:self.rightButton toPoint:CGPointMake(x, y)];
 }
 
 - (void)handlePan:(UIPanGestureRecognizer*)recognizer
@@ -201,10 +143,10 @@
     NSMutableArray* emotiveAnimations = [[NSMutableArray alloc] initWithCapacity:13];
     for (int i = 0; i < 17; i++)
     {
-        if (emotive == self.positiveEmotiveButton && i<13)
+        if (emotive == self.leftButton && i<13)
             [emotiveAnimations addObject:[UIImage imageNamed:[@"Heart" stringByAppendingString:@(i).stringValue]]];
         
-        else if (emotive == self.negativeEmotiveButton)
+        else if (emotive == self.rightButton)
             [emotiveAnimations addObject:[UIImage imageNamed:[@"Tomato" stringByAppendingString:@(i).stringValue]]];
     }
     

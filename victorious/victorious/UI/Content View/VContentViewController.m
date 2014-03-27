@@ -17,6 +17,7 @@
 
 #import "UIImageView+Blurring.h"
 
+#import "VActionBarViewController.h"
 #import "VEmotiveBallisticsBarViewController.h"
 
 CGFloat kContentMediaViewOffset = 154;
@@ -150,6 +151,22 @@ CGFloat kContentMediaViewOffset = 154;
     self.interactionManager.node = currentNode;
 }
 
+- (void)setActionBarVC:(VActionBarViewController *)actionBarVC
+{
+    [_actionBarVC removeFromParentViewController];
+    [_actionBarVC.view removeFromSuperview];
+    [self addChildViewController:actionBarVC];
+    [actionBarVC didMoveToParentViewController:self];
+    [self.barContainerView addSubview:actionBarVC.view];
+    
+    _actionBarVC = actionBarVC;
+    
+    [_actionBarVC animateInWithDuration:.2f completion:^(BOOL finished) {
+        [self pollAnimation];
+    }];
+    
+}
+
 - (void)updateActionBar
 {
     if (!self.isViewLoaded)
@@ -157,58 +174,41 @@ CGFloat kContentMediaViewOffset = 154;
         return;
     }
     
-    UIViewController<VAnimation>* newBarViewController;
+    VActionBarViewController* newActionBar;
     
     //Find the appropriate target based on what view is hidden
     
     if([self.sequence isPoll] && ![self.actionBarVC isKindOfClass:[VPollAnswerBarViewController class]])
     {
         VPollAnswerBarViewController* pollAnswerBar = [VPollAnswerBarViewController sharedInstance];
-        pollAnswerBar.sequence = self.sequence;
         pollAnswerBar.delegate = self;
-        newBarViewController = pollAnswerBar;
+        newActionBar = pollAnswerBar;
     }
     else if (![self.sequence isPoll] && ![self.actionBarVC isKindOfClass:[VEmotiveBallisticsBarViewController class]])
     {
         VEmotiveBallisticsBarViewController* emotiveBallistics = [VEmotiveBallisticsBarViewController sharedInstance];
-        emotiveBallistics.sequence = self.sequence;
         emotiveBallistics.target = self.previewImage;
-        newBarViewController = emotiveBallistics;
+        newActionBar = emotiveBallistics;
     }
     else if ([self.actionBarVC isKindOfClass:[VEmotiveBallisticsBarViewController class]])
     {
         ((VEmotiveBallisticsBarViewController*)self.actionBarVC).target = self.previewImage;//Change the target if we need to
     }
     
-    if (self.actionBarVC && newBarViewController)
+    
+    newActionBar.sequence = self.sequence;
+    
+    if (self.actionBarVC && newActionBar)
     {
         [self.actionBarVC animateOutWithDuration:.2f
                                       completion:^(BOOL finished)
                                       {
-                                          [self.actionBarVC removeFromParentViewController];
-                                          [self.actionBarVC.view removeFromSuperview];
-                                          [self addChildViewController:newBarViewController];
-                                          [newBarViewController didMoveToParentViewController:self];
-                                          [self.barContainerView addSubview:newBarViewController.view];
-                                          self.actionBarVC = newBarViewController;
-                                          
-                                          [self.actionBarVC animateInWithDuration:.2f completion:^(BOOL finished) {
-                                              [self pollAnimation];
-                                          }];
+                                          self.actionBarVC = newActionBar;
                                       }];
     }
-    else if (newBarViewController)
+    else if (newActionBar)
     {
-        [self.actionBarVC removeFromParentViewController];
-        [self.actionBarVC.view removeFromSuperview];
-        [self addChildViewController:newBarViewController];
-        [newBarViewController didMoveToParentViewController:self];
-        [self.barContainerView addSubview:newBarViewController.view];
-        self.actionBarVC = newBarViewController;
-        
-        [self.actionBarVC animateInWithDuration:.2f completion:^(BOOL finished) {
-            [self pollAnimation];
-        }];
+        self.actionBarVC = newActionBar;
     }
 }
 

@@ -25,18 +25,13 @@
 
 @interface VPollAnswerBarViewController ()
 
-@property (weak, nonatomic) IBOutlet UIButton* leftButton;
-@property (weak, nonatomic) IBOutlet UIButton* rightButton;
-@property (weak, nonatomic) IBOutlet UILabel* leftLabel;
-@property (weak, nonatomic) IBOutlet UILabel* rightLabel;
-
 @property (strong) UIDynamicAnimator* animator;
 
 @end
 
 @implementation VPollAnswerBarViewController
 
-+ (VPollAnswerBarViewController *)sharedInstance
++ (instancetype)sharedInstance
 {
     static  VPollAnswerBarViewController*   sharedInstance;
     static  dispatch_once_t         onceToken;
@@ -52,14 +47,6 @@
 {
     [super viewDidLoad];
     self.sequence = self.sequence;//force a load
-    self.leftLabel.textAlignment = NSTextAlignmentCenter;
-    self.rightLabel.textAlignment = NSTextAlignmentCenter;
-    
-    self.leftLabel.textColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVAccentColor];
-    self.rightLabel.textColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVAccentColor];
-    
-    self.leftButton.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVMainColor];
-    self.rightButton.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVSecondaryMainColor];
     
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(checkIfAnswered)
@@ -70,7 +57,7 @@
 
 - (void)setSequence:(VSequence *)sequence
 {
-    _sequence = sequence;
+    [super setSequence:sequence];
     
     [self checkIfAnswered];
 }
@@ -98,53 +85,6 @@
     self.answers = [[self.sequence firstNode] firstAnswers];
     self.leftLabel.text = ((VAnswer*)[self.answers firstObject]).label;
     self.rightLabel.text = ((VAnswer*)[self.answers lastObject]).label;
-}
-
-#pragma mark - Animation
-- (void)animateInWithDuration:(CGFloat)duration completion:(void (^)(BOOL finished))completion
-{
-    [self.leftButton setXOrigin:self.view.frame.size.width];
-    [self.rightButton setXOrigin:self.view.frame.size.width];
-    
-    self.rightLabel.alpha = 0;
-    self.leftLabel.alpha = 0;
-    
-    [UIView animateWithDuration:duration/2
-                     animations:^
-                     {
-                         [self.leftButton setXOrigin:0];
-                         [self.rightButton setXOrigin:self.view.frame.size.width - self.rightButton.frame.size.width];
-                     }
-                     completion:^(BOOL finished) {
-                         [UIView animateWithDuration:duration/2
-                                          animations:^
-                                          {
-                                              self.rightLabel.alpha = 1;
-                                              self.leftLabel.alpha = 1;
-                                          }
-                                          completion:completion];
-                     }];
-}
-
-
-
-- (void)animateOutWithDuration:(CGFloat)duration completion:(void (^)(BOOL finished))completion
-{
-    [UIView animateWithDuration:duration/2
-                     animations:^
-                     {
-                         self.rightLabel.alpha = 0;
-                         self.leftLabel.alpha = 0;
-                     }
-                     completion:^(BOOL finished) {
-                         [UIView animateWithDuration:duration/2
-                                          animations:^
-                                          {
-                                              [self.rightButton setXOrigin:self.view.frame.size.width];
-                                              [self.leftButton setXOrigin:self.view.frame.size.width];
-                                          }
-                                          completion:completion];
-                     }];
 }
 
 #pragma mark - Button actions

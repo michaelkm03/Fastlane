@@ -1776,10 +1776,10 @@
                     <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
                     <size key="freeformSize" width="320" height="60"/>
                     <connections>
-                        <outlet property="negativeEmotiveButton" destination="1dp-HB-SPd" id="qnG-i2-LU1"/>
-                        <outlet property="negativeEmotiveLabel" destination="AjL-mD-Ekf" id="ksK-bo-CRi"/>
-                        <outlet property="positiveEmotiveButton" destination="lMO-OU-gVH" id="ICh-wl-qcV"/>
-                        <outlet property="positiveEmotiveLabel" destination="QOq-WJ-Ibw" id="98e-sW-ug2"/>
+                        <outlet property="leftButton" destination="lMO-OU-gVH" id="KAR-pG-Gf5"/>
+                        <outlet property="leftLabel" destination="QOq-WJ-Ibw" id="nfW-3v-Dde"/>
+                        <outlet property="rightButton" destination="1dp-HB-SPd" id="OYe-27-tef"/>
+                        <outlet property="rightLabel" destination="AjL-mD-Ekf" id="Gvu-jM-SDh"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="neH-vB-TZ9" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -1843,10 +1843,10 @@
                     <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
                     <size key="freeformSize" width="320" height="60"/>
                     <connections>
-                        <outlet property="leftButton" destination="Bxp-hr-lFz" id="J7Z-B7-U7a"/>
-                        <outlet property="leftLabel" destination="fBr-Do-fCE" id="qYB-IO-x5s"/>
-                        <outlet property="rightButton" destination="D1I-Wr-6dI" id="j6f-4d-Lcb"/>
-                        <outlet property="rightLabel" destination="6ak-S4-RIj" id="9NV-X7-ueG"/>
+                        <outlet property="leftButton" destination="Bxp-hr-lFz" id="tDi-eo-G9N"/>
+                        <outlet property="leftLabel" destination="fBr-Do-fCE" id="iP5-IW-EK9"/>
+                        <outlet property="rightButton" destination="D1I-Wr-6dI" id="hYQ-Xy-O8S"/>
+                        <outlet property="rightLabel" destination="6ak-S4-RIj" id="dC2-lN-4xP"/>
                         <outlet property="view" destination="YN0-go-INq" id="QBI-hR-jrh"/>
                     </connections>
                 </viewController>
