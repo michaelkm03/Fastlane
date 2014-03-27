@@ -133,6 +133,9 @@
 		BE171E431868CEA0004E5202 /* victoriOS.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = BE171E411868CEA0004E5202 /* victoriOS.xcdatamodeld */; };
 		BE185DE418E354E5001C447F /* VMessageCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = BE185DE318E354E5001C447F /* VMessageCell.xib */; };
 		BE185DE618E3826F001C447F /* VEphemeralTimerView.xib in Resources */ = {isa = PBXBuildFile; fileRef = BE185DE518E3826F001C447F /* VEphemeralTimerView.xib */; };
+		BE185DEA18E3AF55001C447F /* VContentViewController+Polls.m in Sources */ = {isa = PBXBuildFile; fileRef = BE185DE918E3AF55001C447F /* VContentViewController+Polls.m */; };
+		BE185DEE18E3B255001C447F /* VContentViewController+Videos.m in Sources */ = {isa = PBXBuildFile; fileRef = BE185DED18E3B255001C447F /* VContentViewController+Videos.m */; };
+		BE185DF118E3B2C2001C447F /* VContentViewController+Images.m in Sources */ = {isa = PBXBuildFile; fileRef = BE185DF018E3B2C2001C447F /* VContentViewController+Images.m */; };
 		BE40559418A1828D00092AE1 /* UIButton+VImageLoading.m in Sources */ = {isa = PBXBuildFile; fileRef = BE40559318A1828D00092AE1 /* UIButton+VImageLoading.m */; };
 		BE4055AC18A41F1F00092AE1 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = BE4055A618A41F1F00092AE1 /* Localizable.strings */; };
 		BE4055AD18A41F1F00092AE1 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = BE4055A718A41F1F00092AE1 /* main.m */; };
@@ -443,6 +446,13 @@
 		BE171E441868CEAA004E5202 /* victoriOS 2.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "victoriOS 2.xcdatamodel"; sourceTree = "<group>"; };
 		BE185DE318E354E5001C447F /* VMessageCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = VMessageCell.xib; path = "UI/Streams Subview/VMessageCell.xib"; sourceTree = "<group>"; };
 		BE185DE518E3826F001C447F /* VEphemeralTimerView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = VEphemeralTimerView.xib; path = UI/UIElements/VEphemeralTimerView.xib; sourceTree = "<group>"; };
+		BE185DE818E3AF55001C447F /* VContentViewController+Polls.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "VContentViewController+Polls.h"; path = "UI/Content View/VContentViewController+Polls.h"; sourceTree = "<group>"; };
+		BE185DE918E3AF55001C447F /* VContentViewController+Polls.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "VContentViewController+Polls.m"; path = "UI/Content View/VContentViewController+Polls.m"; sourceTree = "<group>"; };
+		BE185DEB18E3AFDD001C447F /* VContentViewController+Private.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "VContentViewController+Private.h"; path = "UI/Content View/VContentViewController+Private.h"; sourceTree = "<group>"; };
+		BE185DEC18E3B255001C447F /* VContentViewController+Videos.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "VContentViewController+Videos.h"; path = "UI/Content View/VContentViewController+Videos.h"; sourceTree = "<group>"; };
+		BE185DED18E3B255001C447F /* VContentViewController+Videos.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "VContentViewController+Videos.m"; path = "UI/Content View/VContentViewController+Videos.m"; sourceTree = "<group>"; };
+		BE185DEF18E3B2C2001C447F /* VContentViewController+Images.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "VContentViewController+Images.h"; path = "UI/Content View/VContentViewController+Images.h"; sourceTree = "<group>"; };
+		BE185DF018E3B2C2001C447F /* VContentViewController+Images.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "VContentViewController+Images.m"; path = "UI/Content View/VContentViewController+Images.m"; sourceTree = "<group>"; };
 		BE40559218A1828D00092AE1 /* UIButton+VImageLoading.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIButton+VImageLoading.h"; sourceTree = "<group>"; };
 		BE40559318A1828D00092AE1 /* UIButton+VImageLoading.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIButton+VImageLoading.m"; sourceTree = "<group>"; };
 		BE4055A618A41F1F00092AE1 /* Localizable.strings */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = Localizable.strings; path = "Supporting Files/Localizable.strings"; sourceTree = "<group>"; };
@@ -1353,6 +1363,13 @@
 				BE46E69118CA73EC00974DAF /* Animations */,
 				BEB52A7618C02D6600AC5FE4 /* VContentViewController.h */,
 				BEB52A7718C02D6600AC5FE4 /* VContentViewController.m */,
+				BE185DE818E3AF55001C447F /* VContentViewController+Polls.h */,
+				BE185DE918E3AF55001C447F /* VContentViewController+Polls.m */,
+				BE185DEB18E3AFDD001C447F /* VContentViewController+Private.h */,
+				BE185DEC18E3B255001C447F /* VContentViewController+Videos.h */,
+				BE185DED18E3B255001C447F /* VContentViewController+Videos.m */,
+				BE185DEF18E3B2C2001C447F /* VContentViewController+Images.h */,
+				BE185DF018E3B2C2001C447F /* VContentViewController+Images.m */,
 				BEB52A7818C02D6600AC5FE4 /* VEmotiveBallisticsBarViewController.h */,
 				BEB52A7918C02D6600AC5FE4 /* VEmotiveBallisticsBarViewController.m */,
 				BEE9C8B418CE4A6B0095C737 /* VPollAnswerBarViewController.h */,
@@ -1601,6 +1618,7 @@
 			files = (
 				BE171E0F1868C211004E5202 /* VAsset+RestKit.m in Sources */,
 				3F14C45218BD2BD0001796B9 /* VCPlayer.m in Sources */,
+				BE185DEA18E3AF55001C447F /* VContentViewController+Polls.m in Sources */,
 				5FF9BE83189318CD0054694B /* VRootViewController.m in Sources */,
 				BEB4C29D187E038C004ECEEF /* VNewsCell.m in Sources */,
 				BE171E131868C211004E5202 /* VInteractionAction+RestKit.m in Sources */,
@@ -1647,6 +1665,7 @@
 				BED7F68018E1187800545DF6 /* VEphemeralTimerView.m in Sources */,
 				BE40559418A1828D00092AE1 /* UIButton+VImageLoading.m in Sources */,
 				3F71A7DB18D7C6D20048FF60 /* VRemixSliderRight.m in Sources */,
+				BE185DEE18E3B255001C447F /* VContentViewController+Videos.m in Sources */,
 				BE46E69718CA750D00974DAF /* VContentTransitioningDelegate.m in Sources */,
 				BEA5BF59187E7E8E0014C3EF /* VObjectManager+DirectMessaging.m in Sources */,
 				3FD7FFBB18C14ED400945E5F /* VExpirationPickerTextField.m in Sources */,
@@ -1668,6 +1687,7 @@
 				3F71A7DA18D7C6D20048FF60 /* VRemixSliderLeft.m in Sources */,
 				BEF2C29918846FAB00AAE975 /* VConversation.m in Sources */,
 				3F71A7DC18D7C6D20048FF60 /* VRemixVideoRangeSlider.m in Sources */,
+				BE185DF118E3B2C2001C447F /* VContentViewController+Images.m in Sources */,
 				BEF2C2A5188488C000AAE975 /* VUnreadConversation+RestKit.m in Sources */,
 				BE171E211868C211004E5202 /* VObjectManager+Sequence.m in Sources */,
 				BED4569718BD58DE00A67160 /* VAsset+Fetcher.m in Sources */,
