@@ -1240,12 +1240,12 @@
 		BE185DF218E3B85D001C447F /* ActionBars */ = {
 			isa = PBXGroup;
 			children = (
+				BE185DF318E3BB54001C447F /* VActionBarViewController.h */,
+				BE185DF418E3BB54001C447F /* VActionBarViewController.m */,
 				BEB52A7818C02D6600AC5FE4 /* VEmotiveBallisticsBarViewController.h */,
 				BEB52A7918C02D6600AC5FE4 /* VEmotiveBallisticsBarViewController.m */,
 				BEE9C8B418CE4A6B0095C737 /* VPollAnswerBarViewController.h */,
 				BEE9C8B518CE4A6B0095C737 /* VPollAnswerBarViewController.m */,
-				BE185DF318E3BB54001C447F /* VActionBarViewController.h */,
-				BE185DF418E3BB54001C447F /* VActionBarViewController.m */,
 			);
 			name = ActionBars;
 			sourceTree = "<group>";

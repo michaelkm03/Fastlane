@@ -45,6 +45,8 @@ static NSUInteger const kStreamCommentHeaderHeight = 80;
 static NSUInteger const kStreamCommentCellHeight = 110;
 
 
+static NSString*   const   kVictoriousAppIDKey = @"VictoriousAppID";
+
 static NSString*   const   kRemoteIdKey = @"remoteId";
 
 static NSString* const VConstantsMediaTypeYoutube   = @"youtube_video_id";
