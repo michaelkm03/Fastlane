@@ -24,6 +24,8 @@
                                                             failBlock:(VFailBlock)fail;
 
 - (RKManagedObjectRequestOperation *)attachAccountToTwitterWithToken:(NSString*)accessToken
+                                                        accessSecret:(NSString*)accessSecret
+                                                           twitterId:(NSString*)twitterId
                                                     withSuccessBlock:(VSuccessBlock)success
                                                            failBlock:(VFailBlock)fail;
 

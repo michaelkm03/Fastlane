@@ -58,7 +58,7 @@
     self.loginLabel.textColor = accentColor;
     
     NSMutableAttributedString* attributedTitle = [self.signinEmailButton.titleLabel.attributedText mutableCopy];
-    NSRange range = NSRangeFromString(attributedTitle.string);
+    NSRange range = NSMakeRange(0, [attributedTitle.string length]);
     [attributedTitle addAttribute:NSForegroundColorAttributeName value:accentColor range:range];
     [self.signinEmailButton setAttributedTitle:attributedTitle forState:UIControlStateNormal];
     
