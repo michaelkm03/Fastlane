@@ -36,8 +36,6 @@
 
 @property (weak, nonatomic) IBOutlet UIView* mpPlayerContainmentView;
 
-@property (weak, nonatomic) IBOutlet UIImageView* previewImage;
-
 @property (weak, nonatomic) IBOutlet UIView* pollPreviewView;
 @property (weak, nonatomic) IBOutlet UIImageView* firstSmallPreviewImage;
 @property (weak, nonatomic) IBOutlet UIImageView* secondSmallPreviewImage;

@@ -35,11 +35,7 @@
 
 - (void)loadVideo
 {
-    self.pollPreviewView.hidden = YES;
-    self.mpPlayerContainmentView.hidden = YES;
-    self.remixButton.hidden = YES;
-    self.previewImage.hidden = YES;
-    self.remixButton.hidden = YES;
+    [self loadImage];
     
     [self.mpController setContentURL:[NSURL URLWithString:self.currentAsset.data]];
     self.mpPlayerContainmentView.hidden = YES;
@@ -83,16 +79,24 @@
     
     VLog(@"PreviewImage size: %@", NSStringFromCGSize(self.previewImage.frame.size));
     VLog(@"Natural Video size: %@", NSStringFromCGSize(self.mpController.naturalSize));
-    
-    [UIView animateWithDuration:duration animations:
-     ^{
-         self.mpPlayerContainmentView.frame = self.mpController.view.frame;
+    [UIView animateWithDuration:.2f
+                     animations:^
+     {
+         self.previewImage.frame =  self.mpController.view.frame;
      }
                      completion:^(BOOL finished)
      {
-         [self.mpController play];
-         self.remixButton.hidden = NO;
+         [UIView animateWithDuration:duration animations:
+          ^{
+              self.mpPlayerContainmentView.frame = self.mpController.view.frame;
+          }
+                          completion:^(BOOL finished)
+          {
+              [self.mpController play];
+              self.remixButton.hidden = NO;
+          }];
      }];
+    
 }
 
 - (void)animateVideoClosed
