@@ -140,6 +140,7 @@
 		BE40559418A1828D00092AE1 /* UIButton+VImageLoading.m in Sources */ = {isa = PBXBuildFile; fileRef = BE40559318A1828D00092AE1 /* UIButton+VImageLoading.m */; };
 		BE4055AC18A41F1F00092AE1 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = BE4055A618A41F1F00092AE1 /* Localizable.strings */; };
 		BE4055AD18A41F1F00092AE1 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = BE4055A718A41F1F00092AE1 /* main.m */; };
+		BE449DC018E4F6A1008411F1 /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = BE449DBF18E4F6A1008411F1 /* Info.plist */; };
 		BE46E69418CA742300974DAF /* VContentCommentSegue.m in Sources */ = {isa = PBXBuildFile; fileRef = BE46E69318CA742300974DAF /* VContentCommentSegue.m */; };
 		BE46E69718CA750D00974DAF /* VContentTransitioningDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = BE46E69618CA750D00974DAF /* VContentTransitioningDelegate.m */; };
 		BE46E69A18CA751F00974DAF /* VCommentToContentAnimator.m in Sources */ = {isa = PBXBuildFile; fileRef = BE46E69918CA751F00974DAF /* VCommentToContentAnimator.m */; };
@@ -462,10 +463,8 @@
 		BE40559318A1828D00092AE1 /* UIButton+VImageLoading.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIButton+VImageLoading.m"; sourceTree = "<group>"; };
 		BE4055A618A41F1F00092AE1 /* Localizable.strings */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = Localizable.strings; path = "Supporting Files/Localizable.strings"; sourceTree = "<group>"; };
 		BE4055A718A41F1F00092AE1 /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = "Supporting Files/main.m"; sourceTree = "<group>"; };
-		BE4055A818A41F1F00092AE1 /* release-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "release-Info.plist"; path = "victorious/Supporting Files/release-Info.plist"; sourceTree = "<group>"; };
-		BE4055A918A41F1F00092AE1 /* stable-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "stable-Info.plist"; path = "victorious/Supporting Files/stable-Info.plist"; sourceTree = "<group>"; };
-		BE4055AA18A41F1F00092AE1 /* debug-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "debug-Info.plist"; path = "victorious/Supporting Files/debug-Info.plist"; sourceTree = "<group>"; };
 		BE4055AB18A41F1F00092AE1 /* victorious-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "victorious-Prefix.pch"; path = "Supporting Files/victorious-Prefix.pch"; sourceTree = "<group>"; };
+		BE449DBF18E4F6A1008411F1 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = AppSpecific/Info.plist; sourceTree = "<group>"; };
 		BE46E69218CA742300974DAF /* VContentCommentSegue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VContentCommentSegue.h; path = "UI/Content View/VContentCommentSegue.h"; sourceTree = "<group>"; };
 		BE46E69318CA742300974DAF /* VContentCommentSegue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VContentCommentSegue.m; path = "UI/Content View/VContentCommentSegue.m"; sourceTree = "<group>"; };
 		BE46E69518CA750D00974DAF /* VContentTransitioningDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VContentTransitioningDelegate.h; path = "UI/Content View/VContentTransitioningDelegate.h"; sourceTree = "<group>"; };
@@ -1335,9 +1334,7 @@
 			isa = PBXGroup;
 			children = (
 				BE76FBE518E4DC1D009E6DD7 /* defaultTheme.plist */,
-				BE4055A818A41F1F00092AE1 /* release-Info.plist */,
-				BE4055A918A41F1F00092AE1 /* stable-Info.plist */,
-				BE4055AA18A41F1F00092AE1 /* debug-Info.plist */,
+				BE449DBF18E4F6A1008411F1 /* Info.plist */,
 				BE76FBE318E4AAE8009E6DD7 /* AppImages.xcassets */,
 			);
 			name = AppSpecific;
@@ -1520,6 +1517,7 @@
 				3FA217D618A9C38A0066E893 /* pause_black@2x.png in Resources */,
 				5FCC1E4C1899CAC800EB7699 /* settings.storyboard in Resources */,
 				3FA217CF18A9BFC90066E893 /* video_thumb_mini.png in Resources */,
+				BE449DC018E4F6A1008411F1 /* Info.plist in Resources */,
 				BEDF0FC018DB783200750EF6 /* MuseoSans-500.otf in Resources */,
 				BEB4C29E187E038C004ECEEF /* VNewsCell.xib in Resources */,
 				3FDEDD0018CE46F00028E3F1 /* VideoRemix.storyboard in Resources */,
@@ -1930,7 +1928,7 @@
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "victorious/Supporting Files/victorious-Prefix.pch";
-				INFOPLIST_FILE = "victorious/Supporting Files/debug-Info.plist";
+				INFOPLIST_FILE = AppSpecific/Info.plist;
 				PRODUCT_NAME = "debug-$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				WRAPPER_EXTENSION = app;
@@ -1951,7 +1949,7 @@
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "victorious/Supporting Files/victorious-Prefix.pch";
-				INFOPLIST_FILE = "victorious/Supporting Files/release-Info.plist";
+				INFOPLIST_FILE = AppSpecific/Info.plist;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				WRAPPER_EXTENSION = app;
@@ -2056,7 +2054,7 @@
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "victorious/Supporting Files/victorious-Prefix.pch";
-				INFOPLIST_FILE = "victorious/Supporting Files/stable-Info.plist";
+				INFOPLIST_FILE = AppSpecific/Info.plist;
 				PRODUCT_NAME = "stable-$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				WRAPPER_EXTENSION = app;
