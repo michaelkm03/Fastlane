@@ -35,9 +35,14 @@
 - (void)animateTransition:(id<UIViewControllerContextTransitioning>)context
 {
     VContentViewController *contentVC = (VContentViewController*)[context viewControllerForKey:UITransitionContextFromViewControllerKey];
-    
+
+    VRootViewController* rootVC = (VRootViewController*)[context viewControllerForKey:UITransitionContextToViewControllerKey];
+    VStreamTableViewController *streamVC = (VStreamTableViewController*)((UINavigationController*)rootVC.contentViewController).topViewController;
+    VStreamViewCell* selectedCell = (VStreamViewCell*) [streamVC.tableView cellForRowAtIndexPath:self.indexPathForSelectedCell];
+   
     [UIView animateWithDuration:.2f animations:^{
         contentVC.orImageView.alpha = 0;
+        [contentVC.previewImage setSize:selectedCell.frame.size];
     }];
     
     [contentVC.actionBarVC animateOutWithDuration:.2f

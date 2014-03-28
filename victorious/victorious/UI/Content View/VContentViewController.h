@@ -22,6 +22,8 @@ extern CGFloat kContentMediaViewOffset;
 @property (weak, nonatomic) IBOutlet UIImageView* orImageView;
 @property (strong, nonatomic) VActionBarViewController* actionBarVC;
 
+@property (weak, nonatomic) IBOutlet UIImageView* previewImage;
+
 + (VContentViewController *)sharedInstance;
 
 @end
