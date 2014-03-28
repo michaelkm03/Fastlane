@@ -35,9 +35,11 @@
 
 - (void)loadVideo
 {
-    [self loadImage];
-    
-    self.remixButton.hidden = NO;
+    self.pollPreviewView.hidden = YES;
+    self.mpPlayerContainmentView.hidden = YES;
+    self.remixButton.hidden = YES;
+    self.previewImage.hidden = YES;
+    self.remixButton.hidden = YES;
     
     [self.mpController setContentURL:[NSURL URLWithString:self.currentAsset.data]];
     self.mpPlayerContainmentView.hidden = YES;
@@ -50,7 +52,21 @@
 {
     if (self.mpController.loadState == MPMovieLoadStatePlayable && self.mpController.playbackState != MPMoviePlaybackStatePlaying)
     {
-        self.mpController.view.frame = self.previewImage.frame;
+        
+        CGFloat yRatio = 1;
+        CGFloat xRatio = 1;
+        if (self.mpController.naturalSize.height < self.mpController.naturalSize.width)
+        {
+            yRatio = self.mpController.naturalSize.height / self.mpController.naturalSize.width;
+        }
+        else if (self.mpController.naturalSize.height > self.mpController.naturalSize.width)
+        {
+            xRatio = self.mpController.naturalSize.width / self.mpController.naturalSize.height;
+        }
+        CGFloat videoHeight = fminf(self.mediaView.frame.size.height * yRatio, self.mediaView.frame.size.height);
+        CGFloat videoWidth = self.mediaView.frame.size.width * xRatio;
+        self.mpController.view.frame = CGRectMake(0, 0, videoWidth, videoHeight);
+        self.mpController.view.center = CGPointMake(self.view.center.x, self.mpController.view.center.y);
         
         [self.mpPlayerContainmentView addSubview:self.mpController.view];
         
@@ -60,14 +76,18 @@
 
 - (void)animateVideoOpen
 {
-    [self.mpPlayerContainmentView setSize:CGSizeMake(0, 0)];
+    self.mpPlayerContainmentView.frame = CGRectMake(0, 0, 0, 0);
     self.mpPlayerContainmentView.hidden = NO;
+    self.remixButton.hidden = NO;
     
-    CGFloat duration = [self.sequence isPoll] ? .5f : 0;//We only animate in poll videos
+    CGFloat duration = .5f;
+    
+    VLog(@"PreviewImage size: %@", NSStringFromCGSize(self.previewImage.frame.size));
+    VLog(@"Natural Video size: %@", NSStringFromCGSize(self.mpController.naturalSize));
     
     [UIView animateWithDuration:duration animations:
      ^{
-         [self.mpPlayerContainmentView setSize:CGSizeMake(self.mpController.view.frame.size.width, self.mpController.view.frame.size.height)];
+         self.mpPlayerContainmentView.frame = self.mpController.view.frame;
      }
                      completion:^(BOOL finished)
      {
