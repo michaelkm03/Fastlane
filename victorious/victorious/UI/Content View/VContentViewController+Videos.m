@@ -78,7 +78,6 @@
 {
     self.mpPlayerContainmentView.frame = CGRectMake(0, 0, 0, 0);
     self.mpPlayerContainmentView.hidden = NO;
-    self.remixButton.hidden = NO;
     
     CGFloat duration = .5f;
     
@@ -92,6 +91,7 @@
                      completion:^(BOOL finished)
      {
          [self.mpController play];
+         self.remixButton.hidden = NO;
      }];
 }
 
