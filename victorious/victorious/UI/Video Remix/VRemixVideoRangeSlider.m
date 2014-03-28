@@ -273,26 +273,24 @@
     int picWidth = 42;
 
     // First image
-    NSError *error;
-    CMTime actualTime;
-    CGImageRef halfWayImage = [self.imageGenerator copyCGImageAtTime:kCMTimeZero actualTime:&actualTime error:&error];
-    if (halfWayImage != NULL)
-    {
-        UIImage *videoScreen = [[UIImage alloc] initWithCGImage:halfWayImage];
-        UIImageView *tmp = [[UIImageView alloc] initWithImage:videoScreen];
-        tmp.frame = CGRectMake(0, 0, 42, 42);
-        tmp.contentMode = UIViewContentModeScaleAspectFill;
-        [_backgroundView addSubview:tmp];
-        picWidth = tmp.frame.size.width;
-        CGImageRelease(halfWayImage);
-    }
+//    CGImageRef halfWayImage = [self.imageGenerator copyCGImageAtTime:kCMTimeZero actualTime:nil error:nil];
+//    if (halfWayImage != NULL)
+//    {
+//        UIImage *videoScreen = [[UIImage alloc] initWithCGImage:halfWayImage];
+//        UIImageView *tmp = [[UIImageView alloc] initWithImage:videoScreen];
+//        tmp.frame = CGRectMake(0, 0, 42, 42);
+//        tmp.contentMode = UIViewContentModeScaleAspectFill;
+//        [_backgroundView addSubview:tmp];
+//        picWidth = tmp.frame.size.width;
+//        CGImageRelease(halfWayImage);
+//    }
 
     _durationSeconds = CMTimeGetSeconds([self.videoAsset duration]);
     int picsCnt = ceil(_backgroundView.frame.size.width / picWidth);
     NSMutableArray *allTimes = [[NSMutableArray alloc] init];
     int time4Pic = 0;
 
-    for (int i=1; i<picsCnt; i++)
+    for (int i=0; i<picsCnt; i++)
     {
         time4Pic = i*picWidth;
         CMTime timeFrame = CMTimeMakeWithSeconds(_durationSeconds*time4Pic/_backgroundView.frame.size.width, 600);
@@ -300,7 +298,7 @@
     }
 
     NSArray *times = allTimes;
-    __block int i = 1;
+    __block int i = 0;
     [self.imageGenerator generateCGImagesAsynchronouslyForTimes:times
                                               completionHandler:^(CMTime requestedTime, CGImageRef image, CMTime actualTime, AVAssetImageGeneratorResult result, NSError *error)
                                                 {
