@@ -11,9 +11,10 @@
 
 @implementation VTableViewCell
 
-- (void)layoutSubviews
+
+- (void)awakeFromNib
 {
-    [super layoutSubviews];
+    [super awakeFromNib];
     
     [[UIImageView appearanceWhenContainedIn:[self class], nil]
      setTintColor:[[VThemeManager sharedThemeManager] themedColorForKey:kVAccentColor]];
@@ -25,14 +26,14 @@
     
     [self.labels enumerateObjectsUsingBlock:^(UILabel *label, NSUInteger idx, BOOL *stop)
      {
-         label.font = [[VThemeManager sharedThemeManager] themedFontForKey:@"theme.font.stream"];
+         label.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVDetailFont];
          label.textColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVAccentColor];
      }];
     
     [self.buttons enumerateObjectsUsingBlock:^(UIButton *button, NSUInteger idx, BOOL *stop)
      {
-         button.titleLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVAccentColor];
-         button.tintColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVMainColor];
+         button.titleLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVDateFont];
+         button.tintColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVAccentColor];
      }];
 }
 

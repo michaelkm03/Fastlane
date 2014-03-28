@@ -62,6 +62,7 @@
     self.backButton.tintColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVContentAccentColor];
     
     self.titleLabel.textColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVContentAccentColor];
+    self.titleLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVContentTitleFont];
     
     //Need to manually add this again so it appears over everything else.
     [self.view addSubview:self.backButton];
