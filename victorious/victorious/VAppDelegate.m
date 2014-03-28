@@ -14,6 +14,8 @@
 #import "VObjectManager+Login.h"
 #import "VUserManager.h"
 
+#import "VConstants.h"
+
 @import MediaPlayer;
 
 @interface VAppDelegate()
@@ -59,11 +61,11 @@
     }];
     
 #ifdef STABLE_DEBUG
-    [TestFlight takeOff:@"8734f1a7-d756-481a-9234-2be8ba841767"];
+    [TestFlight takeOff:[[NSBundle mainBundle] objectForInfoDictionaryKey:kTestflightStableToken]];
 #elif DEBUG
-    [TestFlight takeOff:@"25d004e5-9530-4969-94e9-f3182e53339b"];
+    [TestFlight takeOff:[[NSBundle mainBundle] objectForInfoDictionaryKey:kTestflightDevToken]];
 #else
-    [TestFlight takeOff:@"02101c7d-4a01-4a44-8e8a-26dca03554aa"];
+    [TestFlight takeOff:[[NSBundle mainBundle] objectForInfoDictionaryKey:kTestflightReleaseToken]];
 #endif
     
 //    [[VUserManager sharedInstance] silentlyLogin];
