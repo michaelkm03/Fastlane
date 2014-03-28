@@ -88,11 +88,12 @@ VCPlayer * currentVCVideoPlayer = nil;
 {
 	if (notification.object == self.currentItem)
     {
+        [self seekToTime:CMTimeMakeWithSeconds(self.startSeconds, NSEC_PER_SEC)];
+
 		if (self.shouldLoop)
         {
 			if ([self isPlaying])
             {
-                [self seekToTime:CMTimeMakeWithSeconds(self.startSeconds, NSEC_PER_SEC)];
 				[self play];
 			}
 		}
