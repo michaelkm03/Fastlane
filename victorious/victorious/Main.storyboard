@@ -382,6 +382,7 @@
                     <connections>
                         <outlet property="backButton" destination="u6b-Ys-rsf" id="Pi0-Zf-ffh"/>
                         <outlet property="backgroundImage" destination="IEc-5s-XIc" id="Zck-gG-jaH"/>
+                        <outlet property="titleLabel" destination="kYy-hF-Nue" id="ygS-fR-jmH"/>
                         <outlet property="topConstraintView" destination="kYy-hF-Nue" id="tkC-xb-VXX"/>
                     </connections>
                 </viewController>

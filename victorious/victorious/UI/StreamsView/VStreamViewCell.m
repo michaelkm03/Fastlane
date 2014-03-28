@@ -56,7 +56,6 @@ NSString *kStreamsWillCommentNotification = @"kStreamsWillCommentNotification";
     
     self.commentViews = [[NSMutableArray alloc] init];
     
-    self.usernameLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVDetailFont];
     self.dateLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVDateFont];
     self.descriptionLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVContentTitleFont];
     self.dateImageView.image = [self.dateImageView.image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
