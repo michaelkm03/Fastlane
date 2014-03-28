@@ -31,7 +31,9 @@
     self.rightLabel.textAlignment = NSTextAlignmentCenter;
     
     self.leftLabel.textColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVAccentColor];
+    self.leftLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVPollButtonFont];
     self.rightLabel.textColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVAccentColor];
+    self.rightLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVPollButtonFont];
     
     self.leftButton.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVMainColor];
     self.rightButton.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVSecondaryMainColor];

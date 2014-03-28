@@ -54,12 +54,15 @@
     self.animator = [[UIDynamicAnimator alloc] initWithReferenceView:self.view];
     
     UIColor* accentColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVAccentColor];
+    UIFont* font = [[VThemeManager sharedThemeManager] themedFontForKey:kVTitleFont];
     
     self.loginLabel.textColor = accentColor;
+    self.loginLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVPollButtonFont];
     
     NSMutableAttributedString* attributedTitle = [self.signinEmailButton.titleLabel.attributedText mutableCopy];
     NSRange range = NSMakeRange(0, [attributedTitle.string length]);
     [attributedTitle addAttribute:NSForegroundColorAttributeName value:accentColor range:range];
+    [attributedTitle addAttribute:NSFontAttributeName value:font range:range];
     [self.signinEmailButton setAttributedTitle:attributedTitle forState:UIControlStateNormal];
     
     UIGravityBehavior* gravityBehavior = [[UIGravityBehavior alloc] initWithItems:@[self.buttonContainer]];
