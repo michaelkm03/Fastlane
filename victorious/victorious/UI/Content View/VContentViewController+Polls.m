@@ -109,11 +109,11 @@
         
         if (result.answerId == answerId)
         {
-            resultView.color = [[VThemeManager sharedThemeManager] themedColorForKey:kVMainColor];
+            resultView.color = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
         }
         else
         {
-            resultView.color = [[VThemeManager sharedThemeManager] themedColorForKey:kVAccentColor];
+            resultView.color = [[VThemeManager sharedThemeManager] themedColorForKey:kVMainColor];
         }
         
         [resultView setProgress:progress animated:YES];

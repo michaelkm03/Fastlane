@@ -49,9 +49,13 @@ CGFloat kContentMediaViewOffset = 154;
     
     self.firstResultView.isVertical = YES;
     self.firstResultView.hidden = YES;
+    self.firstResultView.color = [[VThemeManager sharedThemeManager] themedColorForKey:kVMainColor];
+
     
     self.secondResultView.isVertical = YES;
     self.secondResultView.hidden = YES;
+    self.secondResultView.color = [[VThemeManager sharedThemeManager] themedColorForKey:kVMainColor];
+
     
     for (UIButton* button in self.buttonCollection)
     {

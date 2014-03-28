@@ -73,7 +73,7 @@ NSString*   const   kVLinkColor                         =   @"color.link";
     self    =   [super init];
     if (self)
     {
-        NSURL*  defaultThemeURL =   [[NSBundle mainBundle] URLForResource:@"carlyTheme" withExtension:@"plist"];
+        NSURL*  defaultThemeURL =   [[NSBundle mainBundle] URLForResource:@"defaultTheme" withExtension:@"plist"];
         [[NSUserDefaults standardUserDefaults] registerDefaults:[NSDictionary dictionaryWithContentsOfURL:defaultThemeURL]];
     }
     

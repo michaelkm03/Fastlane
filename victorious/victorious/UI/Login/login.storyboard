@@ -104,6 +104,8 @@
                         <outlet property="buttonContainer" destination="MJg-Ve-X70" id="fNV-gP-eBd"/>
                         <outlet property="emailButton" destination="hsa-x2-05W" id="rl8-LZ-nWn"/>
                         <outlet property="facebookButton" destination="III-Mu-yZS" id="fpA-ja-1Ke"/>
+                        <outlet property="loginLabel" destination="DPE-ya-M2u" id="TuG-Gg-RQn"/>
+                        <outlet property="signinEmailButton" destination="wYy-zp-4kG" id="gc4-cX-ELX"/>
                         <outlet property="twitterButton" destination="HhC-PP-xy6" id="zN8-wI-S1l"/>
                         <segue destination="cOv-Kv-HJq" kind="push" identifier="toProfileWithFacebook" id="oVh-ou-v3z"/>
                         <segue destination="cOv-Kv-HJq" kind="push" identifier="toProfileWithTwitter" id="LA7-QA-cv0"/>
