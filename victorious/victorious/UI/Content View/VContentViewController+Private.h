@@ -52,6 +52,8 @@
 @property (strong, nonatomic) VAsset* currentAsset;
 @property (strong, nonatomic) VInteractionManager* interactionManager;
 
+@property (strong, nonatomic) UIActivityIndicatorView* activityIndicator;
+
 @property (strong, nonatomic) id<UIViewControllerTransitioningDelegate> transitionDelegate;
 
 - (void)updateActionBar;

@@ -67,6 +67,11 @@ CGFloat kContentMediaViewOffset = 154;
     
     [self.remixButton setImage:[self.remixButton.imageView.image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] forState:UIControlStateNormal];
     self.remixButton.tintColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVAccentColor];
+    
+    self.activityIndicator = [[UIActivityIndicatorView alloc] initWithFrame:CGRectMake(0, 0, 25, 25)];
+    self.activityIndicator.backgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:.5f];
+    self.activityIndicator.layer.cornerRadius = self.activityIndicator.frame.size.height / 2;
+    self.activityIndicator.hidesWhenStopped = YES;
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -256,7 +261,7 @@ CGFloat kContentMediaViewOffset = 154;
     ((UIViewController*)segue.destinationViewController).transitioningDelegate = self.transitionDelegate;
     ((UIViewController*)segue.destinationViewController).modalPresentationStyle= UIModalPresentationCustom;
     [self.mpController stop];
-    self.mpController = nil;
+    self.mpController.view.hidden = YES;
     
     if ([segue.identifier isEqualToString:kContentCommentSegueStoryboardID])
     {

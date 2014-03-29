@@ -21,10 +21,10 @@
                                                  name:MPMoviePlayerLoadStateDidChangeNotification
                                                object:nil];
     
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(animateVideoClosed)
-                                                 name:MPMoviePlayerPlaybackDidFinishNotification
-                                               object:nil];
+//    [[NSNotificationCenter defaultCenter] addObserver:self
+//                                             selector:@selector(animateVideoClosed)
+//                                                 name:MPMoviePlayerPlaybackDidFinishNotification
+//                                               object:nil];
     
     self.mpController = [[MPMoviePlayerController alloc] initWithContentURL:nil];
     self.mpController.scalingMode = MPMovieScalingModeAspectFill;
@@ -41,13 +41,18 @@
     self.mpPlayerContainmentView.hidden = YES;
     [self.mpController prepareToPlay];
     
+    self.activityIndicator.center = self.mpController.view.center;
+    [self.mediaView addSubview:self.activityIndicator];
+    [self.activityIndicator startAnimating];
+    
     [self updateActionBar];
 }
 
 - (void)mpLoadStateChanged
 {
-    if (self.mpController.loadState == MPMovieLoadStatePlayable && self.mpController.playbackState != MPMoviePlaybackStatePlaying)
+    if (self.mpController.loadState == MPMovieLoadStatePlayable && self.mpController.playbackState == MPMoviePlaybackStateStopped)
     {
+        [self.activityIndicator stopAnimating];
         
         CGFloat yRatio = 1;
         CGFloat xRatio = 1;
