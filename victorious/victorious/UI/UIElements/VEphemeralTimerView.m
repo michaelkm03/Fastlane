@@ -87,11 +87,11 @@
 {
     CGFloat secondsTilExpiration = ceilf([self.expireDate timeIntervalSinceNow]);
     
-    NSInteger days = floorf(secondsTilExpiration / 86400);
+    NSInteger days = MAX(floorf(secondsTilExpiration / 86400), 0);
     secondsTilExpiration = fmodf(secondsTilExpiration, 86400);
-    NSInteger hours = floorf(secondsTilExpiration / 3600);
+    NSInteger hours = MAX(floorf(secondsTilExpiration / 3600), 0);
     secondsTilExpiration = fmodf(secondsTilExpiration, 3600);
-    NSInteger minutes = floorf(secondsTilExpiration / 60);
+    NSInteger minutes = MAX(floorf(secondsTilExpiration / 60), 0);
     secondsTilExpiration = fmodf(secondsTilExpiration, 60);
     
     if (days == 1)
@@ -126,7 +126,7 @@
     else
         self.dayLabel.textColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
     
-    if (!days && !hours && !minutes && !secondsTilExpiration)
+    if (!days && !hours && !minutes && secondsTilExpiration <= 0)
         self.countdownLabel.textColor = self.timeRemainingLabel.textColor;
     else
         self.countdownLabel.textColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
