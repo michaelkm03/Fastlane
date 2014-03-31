@@ -72,11 +72,6 @@ CGFloat kContentMediaViewOffset = 154;
     self.activityIndicator.backgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:.5f];
     self.activityIndicator.layer.cornerRadius = self.activityIndicator.frame.size.height / 2;
     self.activityIndicator.hidesWhenStopped = YES;
-}
-
-- (void)viewWillAppear:(BOOL)animated
-{
-    [super viewWillAppear:animated];
     
     self.navigationController.navigationBarHidden = YES;
     self.sequence = self.sequence;
@@ -106,6 +101,7 @@ CGFloat kContentMediaViewOffset = 154;
 {
     [super viewWillDisappear:animated];
     
+    [self.mpController stop];
     self.navigationController.navigationBarHidden = NO;
     self.orAnimator = nil;
 }
@@ -258,8 +254,8 @@ CGFloat kContentMediaViewOffset = 154;
 {
     ((UIViewController*)segue.destinationViewController).transitioningDelegate = self.transitionDelegate;
     ((UIViewController*)segue.destinationViewController).modalPresentationStyle= UIModalPresentationCustom;
-    [self.mpController stop];
-    self.mpController.view.hidden = YES;
+//    [self.mpController stop];
+//    self.mpController.view.hidden = YES;
     
     if ([segue.identifier isEqualToString:kContentCommentSegueStoryboardID])
     {
