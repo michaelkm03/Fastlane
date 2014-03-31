@@ -100,7 +100,9 @@ NSString *kStreamsWillCommentNotification = @"kStreamsWillCommentNotification";
     self.descriptionLabel.text = self.sequence.name;
     self.dateLabel.text = [self.sequence.releasedAt timeSince];
     
-    if (NO && _sequence.expiresAt)
+    NSLog(@"Expiration date: %@", _sequence.expiresAt);
+    
+    if (_sequence.expiresAt)
     {
         self.ephemeralTimerView.hidden = NO;
         self.ephemeralTimerView.expireDate = _sequence.expiresAt;
