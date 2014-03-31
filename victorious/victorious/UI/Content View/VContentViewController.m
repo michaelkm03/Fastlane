@@ -82,7 +82,6 @@ CGFloat kContentMediaViewOffset = 154;
     self.sequence = self.sequence;
     
     self.orImageView.hidden = ![self.currentNode isPoll];
-    self.orImageView.alpha = 0;
     
     self.firstPollButton.alpha = 0;
     self.secondPollButton.alpha = 0;
@@ -94,7 +93,6 @@ CGFloat kContentMediaViewOffset = 154;
      {
          [self.topActionsView setYOrigin:0];
          self.topActionsView.alpha = 1;
-         self.orImageView.alpha = 1;
          self.firstPollButton.alpha = 1;
          self.secondPollButton.alpha = 1;
      }
