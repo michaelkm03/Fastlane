@@ -40,7 +40,10 @@
     VStreamTableViewController *streamVC = (VStreamTableViewController*)((UINavigationController*)rootVC.contentViewController).topViewController;
     VStreamViewCell* selectedCell = (VStreamViewCell*) [streamVC.tableView cellForRowAtIndexPath:self.indexPathForSelectedCell];
    
-    [UIView animateWithDuration:.2f animations:^{
+    
+    
+    [UIView animateWithDuration:.2f animations:^
+    {
         contentVC.orImageView.alpha = 0;
         [contentVC.previewImage setSize:selectedCell.frame.size];
     }];
@@ -107,6 +110,7 @@
     }
     selectedCell.overlayView.alpha = 0;
     selectedCell.shadeView.alpha = 0;
+    selectedCell.animationImage.alpha = 0;
     selectedCell.overlayView.center = CGPointMake(selectedCell.center.x,
                                                   selectedCell.center.y - selectedCell.frame.size.height);
     
@@ -115,6 +119,7 @@
      {
          selectedCell.overlayView.alpha = 1;
          selectedCell.shadeView.alpha = 1;
+         selectedCell.animationImage.alpha = 1;
          selectedCell.overlayView.center = CGPointMake(selectedCell.center.x,
                                                        selectedCell.center.y + selectedCell.frame.size.height);
      }

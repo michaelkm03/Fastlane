@@ -101,7 +101,6 @@
               self.remixButton.hidden = NO;
           }];
      }];
-    
 }
 
 - (void)animateVideoClosed
@@ -119,7 +118,7 @@
     UIViewController* remixVC = [VRemixTrimViewController remixViewControllerWithURL:[self.currentAsset.data mp4UrlFromM3U8]];
     [self presentViewController:remixVC animated:YES completion:
      ^{
-         [self.mpController stop];
+         [self.mpController pause];
      }];
 }
 

@@ -93,12 +93,14 @@ NSString *kStreamsWillCommentNotification = @"kStreamsWillCommentNotification";
     else
         self.playButtonImage.hidden = YES;
 
-    if (!self.animating)
-        self.animationImage.alpha = .5f;
+//    if (!self.animating)
+//        self.animationImage.alpha = .5f;
     
     self.usernameLabel.text = self.sequence.user.name;
     self.descriptionLabel.text = self.sequence.name;
     self.dateLabel.text = [self.sequence.releasedAt timeSince];
+    
+    NSLog(@"Expiration date: %@", _sequence.expiresAt);
     
     if (_sequence.expiresAt)
     {
@@ -129,39 +131,6 @@ NSString *kStreamsWillCommentNotification = @"kStreamsWillCommentNotification";
 {
     VProfileViewController* profileViewController = [VProfileViewController profileWithUserID:[self.sequence.createdBy integerValue]];
     [self.parentTableViewController.navigationController pushViewController:profileViewController animated:YES];
-}
-
-- (void)startAnimation
-{
-    //If we are already animating just ignore this and continue from where we are.
-    if (self.animating)
-        return;
-        
-    self.animating = YES;
-    [self firstAnimation];
-}
-
-- (void)firstAnimation
-{
-    if (self.animating)
-        [UIView animateKeyframesWithDuration:1.4f delay:0 options:UIViewKeyframeAnimationOptionCalculationModeLinear
-                                  animations:^
-                                  {
-                                      [UIView addKeyframeWithRelativeStartTime:0      relativeDuration:.37f   animations:^{   self.animationImage.alpha = 1;      }];
-                                      [UIView addKeyframeWithRelativeStartTime:.37f   relativeDuration:.21f   animations:^{   self.animationImage.alpha = .3f;    }];
-                                      [UIView addKeyframeWithRelativeStartTime:.58f   relativeDuration:.17f   animations:^{   self.animationImage.alpha = .9f;    }];
-                                      [UIView addKeyframeWithRelativeStartTime:.75f   relativeDuration:.14f   animations:^{   self.animationImage.alpha = .3f;    }];
-                                      [UIView addKeyframeWithRelativeStartTime:.89f   relativeDuration:.11f   animations:^{   self.animationImage.alpha = .5f;    }];
-                                  }
-                                  completion:^(BOOL finished)
-                                  {
-                                      [self performSelector:@selector(firstAnimation) withObject:nil afterDelay:3.5f];
-                                  }];
-}
-
-- (void)stopAnimation
-{
-    self.animating = NO;
 }
 
 @end

@@ -50,13 +50,11 @@ CGFloat kContentMediaViewOffset = 154;
     self.firstResultView.isVertical = YES;
     self.firstResultView.hidden = YES;
     self.firstResultView.color = [[VThemeManager sharedThemeManager] themedColorForKey:kVMainColor];
-
     
     self.secondResultView.isVertical = YES;
     self.secondResultView.hidden = YES;
     self.secondResultView.color = [[VThemeManager sharedThemeManager] themedColorForKey:kVMainColor];
 
-    
     for (UIButton* button in self.buttonCollection)
     {
         [button setImage:[button.imageView.image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] forState:UIControlStateNormal];
@@ -72,17 +70,11 @@ CGFloat kContentMediaViewOffset = 154;
     self.activityIndicator.backgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:.5f];
     self.activityIndicator.layer.cornerRadius = self.activityIndicator.frame.size.height / 2;
     self.activityIndicator.hidesWhenStopped = YES;
-}
-
-- (void)viewWillAppear:(BOOL)animated
-{
-    [super viewWillAppear:animated];
     
     self.navigationController.navigationBarHidden = YES;
     self.sequence = self.sequence;
     
     self.orImageView.hidden = ![self.currentNode isPoll];
-    self.orImageView.alpha = 0;
     
     self.firstPollButton.alpha = 0;
     self.secondPollButton.alpha = 0;
@@ -94,7 +86,6 @@ CGFloat kContentMediaViewOffset = 154;
      {
          [self.topActionsView setYOrigin:0];
          self.topActionsView.alpha = 1;
-         self.orImageView.alpha = 1;
          self.firstPollButton.alpha = 1;
          self.secondPollButton.alpha = 1;
      }
@@ -104,10 +95,12 @@ CGFloat kContentMediaViewOffset = 154;
      }];
 }
 
+
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
     
+    [self.mpController pause];
     self.navigationController.navigationBarHidden = NO;
     self.orAnimator = nil;
 }
@@ -260,7 +253,7 @@ CGFloat kContentMediaViewOffset = 154;
 {
     ((UIViewController*)segue.destinationViewController).transitioningDelegate = self.transitionDelegate;
     ((UIViewController*)segue.destinationViewController).modalPresentationStyle= UIModalPresentationCustom;
-    [self.mpController stop];
+
     self.mpController.view.hidden = YES;
     
     if ([segue.identifier isEqualToString:kContentCommentSegueStoryboardID])
