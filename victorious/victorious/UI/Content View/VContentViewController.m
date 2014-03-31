@@ -50,13 +50,11 @@ CGFloat kContentMediaViewOffset = 154;
     self.firstResultView.isVertical = YES;
     self.firstResultView.hidden = YES;
     self.firstResultView.color = [[VThemeManager sharedThemeManager] themedColorForKey:kVMainColor];
-
     
     self.secondResultView.isVertical = YES;
     self.secondResultView.hidden = YES;
     self.secondResultView.color = [[VThemeManager sharedThemeManager] themedColorForKey:kVMainColor];
 
-    
     for (UIButton* button in self.buttonCollection)
     {
         [button setImage:[button.imageView.image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] forState:UIControlStateNormal];
@@ -97,11 +95,12 @@ CGFloat kContentMediaViewOffset = 154;
      }];
 }
 
+
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
     
-    [self.mpController stop];
+    [self.mpController pause];
     self.navigationController.navigationBarHidden = NO;
     self.orAnimator = nil;
 }
@@ -255,7 +254,7 @@ CGFloat kContentMediaViewOffset = 154;
     ((UIViewController*)segue.destinationViewController).transitioningDelegate = self.transitionDelegate;
     ((UIViewController*)segue.destinationViewController).modalPresentationStyle= UIModalPresentationCustom;
 //    [self.mpController stop];
-//    self.mpController.view.hidden = YES;
+    self.mpController.view.hidden = YES;
     
     if ([segue.identifier isEqualToString:kContentCommentSegueStoryboardID])
     {
