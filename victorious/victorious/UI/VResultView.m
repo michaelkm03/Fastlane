@@ -88,7 +88,7 @@
 {
     if (!_resultLabel)
     {
-        _resultLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 10.0f,
+        _resultLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, self.frame.size.height * .85f,
                                                                  self.frame.size.width,
                                                                  self.frame.size.height *.1f)];
         _resultLabel.center = self.resultArrow.center;
