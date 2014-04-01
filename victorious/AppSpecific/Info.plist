@@ -30,7 +30,7 @@
 		</dict>
 	</array>
 	<key>CFBundleVersion</key>
-	<string>88</string>
+	<string>120</string>
 	<key>FacebookAppID</key>
 	<string>1374328719478033</string>
 	<key>FacebookDisplayName</key>
@@ -68,6 +68,6 @@
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
 	<key>VictoriousAppID</key>
-	<integer>2</integer>
+	<integer>3</integer>
 </dict>
 </plist>
