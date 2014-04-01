@@ -93,7 +93,7 @@
     
     //If the tableview updates while we are in the content view it will reset the cells to their proper positions.
     //In this case, we reset them
-    for (VStreamViewCell* cell in [streamVC.tableView visibleCells])
+    for (VStreamViewCell* cell in streamVC.repositionedCells)
     {
         CGRect cellRect = [streamVC.tableView convertRect:cell.frame toView:streamVC.tableView.superview];
         if (cell != selectedCell && CGRectIntersectsRect(streamVC.tableView.frame, cellRect))
@@ -131,7 +131,7 @@
                                                                  streamVC.navigationController.navigationBar.center.y + streamVC.tableView.frame.size.height);
                               streamVC.navigationController.navigationBar.center = newNavCenter;
                               
-                              for (VStreamViewCell* cell in [streamVC.tableView visibleCells])
+                              for (VStreamViewCell* cell in streamVC.repositionedCells)
                               {
                                   CGRect cellRect = [streamVC.tableView convertRect:cell.frame toView:streamVC.tableView.superview];
                                   if (cell != selectedCell && !CGRectIntersectsRect(streamVC.tableView.frame, cellRect))
@@ -163,6 +163,7 @@
                           }
                           completion:^(BOOL finished)
           {
+              streamVC.repositionedCells = nil;
               if (selectedCell)
               {
                   [streamVC.tableView deselectRowAtIndexPath:streamVC.tableView.indexPathForSelectedRow animated:NO];

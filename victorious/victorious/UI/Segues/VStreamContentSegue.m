@@ -48,6 +48,8 @@
                                                             tableVC.navigationController.navigationBar.center.y - tableVC.tableView.frame.size.height);
                          tableVC.navigationController.navigationBar.center = newNavCenter;
                          
+                         NSMutableArray* repositionedCells = [[NSMutableArray alloc] init];
+                         
                          for (VStreamViewCell* cell in [tableVC.tableView visibleCells])
                          {
                              if (cell != self.selectedCell)
@@ -60,8 +62,10 @@
                                  {
                                      cell.center = CGPointMake(cell.center.x, cell.center.y - tableVC.tableView.frame.size.height);
                                  }
+                                 [repositionedCells addObject:cell];
                              }
                          }
+                         tableVC.repositionedCells = repositionedCells;
                      }
                      completion:^(BOOL finished)
                      {
