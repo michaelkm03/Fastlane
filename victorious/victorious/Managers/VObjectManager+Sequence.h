@@ -12,7 +12,7 @@
 extern NSString* const kInitialLoadFinishedNotification;
 extern NSString* const kPollResultsLoaded;
 
-@class VAnswer, VSequence, VCategory;
+@class VAnswer, VSequence, VCategory, VVoteType;
 
 @interface VObjectManager (Sequence)
 
@@ -42,17 +42,11 @@ extern NSString* const kPollResultsLoaded;
                                                 successBlock:(VSuccessBlock)success
                                                    failBlock:(VFailBlock)fail;
 
-- (RKManagedObjectRequestOperation *)likeSequence:(VSequence*)sequence
+- (RKManagedObjectRequestOperation *)voteSequence:(VSequence*)sequence
+                                        voteTypes:(NSArray*)voteTypes
+                                       votecounts:(NSArray*)voteCounts
                                      successBlock:(VSuccessBlock)success
                                         failBlock:(VFailBlock)fail;
-
-- (RKManagedObjectRequestOperation *)dislikeSequence:(VSequence*)sequence
-                                        successBlock:(VSuccessBlock)success
-                                           failBlock:(VFailBlock)fail;
-
-- (RKManagedObjectRequestOperation *)unvoteSequence:(VSequence*)sequence
-                                       successBlock:(VSuccessBlock)success
-                                          failBlock:(VFailBlock)fail;
 
 - (AFHTTPRequestOperation * )createPollWithName:(NSString*)name
                                     description:(NSString*)description

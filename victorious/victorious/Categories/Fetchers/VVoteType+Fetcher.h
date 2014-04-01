@@ -10,7 +10,8 @@
 
 @interface VVoteType (Fetcher)
 
-+ (NSArray*)allVoteTypes;
++ (VVoteType*)likeVote;
++ (VVoteType*)dislikeVote;
 
 - (NSArray*)imageURLs;
 

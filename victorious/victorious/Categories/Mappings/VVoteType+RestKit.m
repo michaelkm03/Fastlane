@@ -27,7 +27,7 @@
     NSDictionary *propertyMap = @{
                                   @"display_order"  : VSelectorName(display_order),
                                   @"name"           : VSelectorName(name),
-                                  @"remote_id"      : VSelectorName(remoteId),
+                                  @"id"             : VSelectorName(remoteId),
                                   @"images"         : VSelectorName(images)
                                   };
     
