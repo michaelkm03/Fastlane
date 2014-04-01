@@ -209,7 +209,10 @@ NSString* const kChatBubbleLeftImage = @"ChatBubbleLeft";
 
 + (CGSize)frameSizeForMessageText:(NSString*)text
 {
-    NSDictionary *stringAttributes = [NSDictionary dictionaryWithObject:[[VThemeManager sharedThemeManager] themedFontForKey:kVDetailFont] forKey: NSFontAttributeName];
+    UIFont* font = [[VThemeManager sharedThemeManager] themedFontForKey:kVDetailFont];
+    NSDictionary *stringAttributes;
+    if (font)
+        stringAttributes = [NSDictionary dictionaryWithObject:font forKey: NSFontAttributeName];
     return [text frameSizeForWidth:kCommentMessageLabelWidth
                      andAttributes:stringAttributes];
 }

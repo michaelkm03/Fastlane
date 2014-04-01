@@ -11,6 +11,8 @@
 #import "VPollResult.h"
 #import "VAnswer.h"
 
+#import "VObjectManager+Sequence.h"
+
 @implementation VContentViewController (Polls)
 
 #pragma mark - Animation
@@ -46,7 +48,7 @@
     NSArray* answers = [[self.sequence firstNode] firstAnswers];
     [self.firstSmallPreviewImage setImageWithURL:[((VAnswer*)[answers firstObject]).mediaUrl convertToPreviewImageURL]];
     [self.secondSmallPreviewImage setImageWithURL:[((VAnswer*)[answers lastObject]).mediaUrl convertToPreviewImageURL]];
-    
+ 
     if ([[((VAnswer*)[answers firstObject]).mediaUrl pathExtension] isEqualToString:VConstantMediaExtensionM3U8])
     {
         self.firstPollButton.hidden = NO;
@@ -101,13 +103,16 @@
     }
     totalVotes = totalVotes ? totalVotes : 1; //dividing by 0 is bad.
     
+    VLog(@"Answer: %@", answerId);
+    
     for(VPollResult* result in self.sequence.pollResults)
     {
         VResultView* resultView = [self resultViewForAnswerId:result.answerId];
         
         CGFloat progress = result.count.doubleValue / totalVotes;
         
-        if (result.answerId == answerId)
+        VLog(@"Result :%@", result);
+        if ([result.answerId isEqualToNumber:answerId])
         {
             resultView.color = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
         }

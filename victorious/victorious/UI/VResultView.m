@@ -9,10 +9,12 @@
 #import "VResultView.h"
 
 #import "UIView+VFrameManipulation.h"
+#import "VThemeManager.h"
 
 @interface VResultView ()
 @property (nonatomic) CGFloat progress;
 @property (strong, nonatomic) UIImageView* resultArrow;
+@property (strong, nonatomic) UILabel* resultLabel;
 @end
 
 @implementation VResultView
@@ -55,9 +57,9 @@
         {
             arrowImage =[UIImage imageNamed:@"ResultArrowVertical"];
             UIEdgeInsets edgeInsets;
-            edgeInsets.left = 0.0f;
+            edgeInsets.left = 01.0f;
             edgeInsets.top = 10.0f;
-            edgeInsets.right = 0.0f;
+            edgeInsets.right = 01.0f;
             edgeInsets.bottom = 10.0f;
             arrowImage = [arrowImage resizableImageWithCapInsets:edgeInsets];
         }
@@ -66,21 +68,38 @@
             arrowImage =[UIImage imageNamed:@"ResultArrowVertical"];
             UIEdgeInsets edgeInsets;
             edgeInsets.left = 10.0f;
-            edgeInsets.top = 0.0f;
+            edgeInsets.top = 01.0f;
             edgeInsets.right = 10.0f;
-            edgeInsets.bottom = 0.0f;
+            edgeInsets.bottom = 01.0f;
             arrowImage = [arrowImage resizableImageWithCapInsets:edgeInsets];
         }
         
         _resultArrow = [[UIImageView alloc] initWithImage:[arrowImage imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate]];
         [self addSubview:_resultArrow];
         
-        _resultArrow.contentMode = UIViewContentModeScaleToFill;
         
         [self setProgress:0 animated:NO];
     }
     
     return _resultArrow;
+}
+
+- (UILabel*)resultLabel
+{
+    if (!_resultLabel)
+    {
+        _resultLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, self.frame.size.height * .85f,
+                                                                 self.frame.size.width,
+                                                                 self.frame.size.height *.1f)];
+        _resultLabel.center = self.resultArrow.center;
+        _resultLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVPollButtonFont];
+        _resultLabel.textColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVAccentColor];
+        _resultLabel.textAlignment = NSTextAlignmentCenter;
+        _resultLabel.minimumScaleFactor = .5f;
+        [self insertSubview:_resultLabel aboveSubview:self.resultArrow];
+    }
+    
+    return _resultLabel;
 }
 
 - (void)setColor:(UIColor *)color
@@ -125,6 +144,8 @@
         self.resultArrow.frame = CGRectMake(0, self.frame.size.height,
                                              minProgress + currentProgress, self.frame.size.height);
     }
+    
+    self.resultLabel.text = [@((progress * 100.0f)).stringValue stringByAppendingString:@"%"];
 }
 
 @end

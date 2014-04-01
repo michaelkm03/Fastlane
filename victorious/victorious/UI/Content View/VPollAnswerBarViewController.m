@@ -52,7 +52,17 @@
                                              selector:@selector(checkIfAnswered)
                                                  name:kPollResultsLoaded
                                                object:nil];
-    [self checkIfAnswered];
+    
+    [[VObjectManager sharedManager] pollResultsForSequence:self.sequence
+                                              successBlock:^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
+     {
+         VLog(@"Succeeded with objects: %@", resultObjects);
+         [self checkIfAnswered];
+     }
+                                                 failBlock:^(NSOperation* operation, NSError* error)
+     {
+         VLog(@"Failed with error: %@", error);
+     }];
 }
 
 - (void)setSequence:(VSequence *)sequence
@@ -68,16 +78,7 @@
     {
         if ([result.sequenceId isEqualToNumber: self.sequence.remoteId])
         {
-            __block NSNumber* answerId = result.answerId;
-            [[VObjectManager sharedManager] pollResultsForSequence:self.sequence
-                                                      successBlock:^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
-             {
-                 [self.delegate answeredPollWithAnswerId:answerId];
-             }
-                                                         failBlock:^(NSOperation* operation, NSError* error)
-             {
-                 VLog(@"Failed with error: %@", error);
-             }];
+            [self.delegate answeredPollWithAnswerId:result.answerId];
             return;
         }
     }
