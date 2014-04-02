@@ -6,6 +6,7 @@
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
+#import "TWAPIManager.h"
 #import "VObjectManager+Login.h"
 #import "VUser.h"
 #import "VUserManager.h"
@@ -121,7 +122,103 @@ static NSString * const kLastLoginTypeUserDefaultsKey = @"com.getvictorious.VUse
 
 - (void)loginWithTwitterOnCompletion:(VUserManagerLoginCompletionBlock)completion onError:(VUserManagerLoginErrorBlock)errorBlock
 {
-    // TODO
+    ACAccountStore* account = [[ACAccountStore alloc] init];
+    ACAccountType* accountType = [account accountTypeWithAccountTypeIdentifier:ACAccountTypeIdentifierTwitter];
+
+    NSArray *accounts = [account accountsWithAccountType:accountType];
+    ACAccount *twitterAccount = [accounts lastObject];
+    
+    if (!twitterAccount)
+    {
+        if (errorBlock)
+        {
+            errorBlock(nil);
+        }
+        return;
+    }
+
+    TWAPIManager *twitterApiManager = [[TWAPIManager alloc] init];
+    [twitterApiManager performReverseAuthForAccount:twitterAccount
+                                        withHandler:^(NSData *responseData, NSError *error)
+    {
+        if (error)
+        {
+            if (errorBlock)
+            {
+                errorBlock(error);
+            }
+            return;
+        }
+         
+        NSString *responseStr = [[NSString alloc] initWithData:responseData encoding:NSUTF8StringEncoding];
+         
+        NSArray *parts = [responseStr componentsSeparatedByString:@"&"];
+        NSMutableDictionary* parsedData = [[NSMutableDictionary alloc] initWithCapacity:[parts count]];
+        for (NSString* part in parts)
+        {
+            NSArray* data = [part componentsSeparatedByString:@"="];
+            if ([data count] < 2)
+                continue;
+             
+            [parsedData setObject:data[1] forKey:data[0]];
+        }
+         
+        NSString* oauthToken = [parsedData objectForKey:@"oauth_token"];
+        NSString* tokenSecret = [parsedData objectForKey:@"oauth_token_secret"];
+        NSString* twitterId = [parsedData objectForKey:@"user_id"];
+         
+        __block BOOL created = YES;
+        VSuccessBlock success = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
+        {
+            VUser *user = [resultObjects firstObject];
+            if (![user isKindOfClass:[VUser class]])
+            {
+                if (errorBlock)
+                {
+                    errorBlock(nil);
+                }
+            }
+            else
+            {
+                if (completion)
+                {
+                    completion(user, created);
+                }
+            }
+        };
+        VFailBlock failed = ^(NSOperation* operation, NSError* error)
+        {
+            VFailBlock blockFail = ^(NSOperation* operation, NSError* error)
+            {
+                if (errorBlock)
+                {
+                    errorBlock(error);
+                }
+            };
+             
+            if (error.code == 1003)
+            {
+                created = NO;
+                [[VObjectManager sharedManager] loginToTwitterWithToken:oauthToken
+                                                           accessSecret:tokenSecret
+                                                              twitterId:twitterId
+                                                           SuccessBlock:success failBlock:blockFail];
+            }
+            else
+            {
+                if (errorBlock)
+                {
+                    errorBlock(error);
+                }
+            }
+        };
+        
+        [[VObjectManager sharedManager] createTwitterWithToken:oauthToken
+                                                  accessSecret:tokenSecret
+                                                     twitterId:twitterId
+                                                  SuccessBlock:success
+                                                     failBlock:failed];
+    }];
 }
 
 - (void)loginWithEmail:(NSString *)email password:(NSString *)password onCompletion:(VUserManagerLoginCompletionBlock)completion onError:(VUserManagerLoginErrorBlock)errorBlock
