@@ -39,23 +39,27 @@ static NSString * const kAccountIdentifierDefaultsKey = @"com.getvictorious.VUse
 
 - (void)loginViaSavedCredentialsOnCompletion:(VUserManagerLoginCompletionBlock)completion onError:(VUserManagerLoginErrorBlock)errorBlock
 {
-    NSInteger loginType = [[NSUserDefaults standardUserDefaults] integerForKey:kLastLoginTypeUserDefaultsKey];
+    NSInteger  loginType  = [[NSUserDefaults standardUserDefaults] integerForKey:kLastLoginTypeUserDefaultsKey];
+    NSString  *identifier = [[NSUserDefaults standardUserDefaults] stringForKey:kAccountIdentifierDefaultsKey];
     switch (loginType)
     {
         case kVLastLoginTypeFacebook:
         {
-            NSString *identifier = [[NSUserDefaults standardUserDefaults] stringForKey:kAccountIdentifierDefaultsKey];
             [self loginViaFacebookAccountWithIdentifier:identifier onCompletion:completion onError:errorBlock];
             break;
         }
             
         case kVLastLoginTypeTwitter:
-            [self loginViaTwitterOnCompletion:completion onError:errorBlock];
+        {
+            [self loginViaTwitterAccountWithIdentifier:identifier onCompletion:completion onError:errorBlock];
             break;
-            
+        }
+        
         case kVLastLoginTypeEmail:
+        {
             [self loginWithPreviousEmailAndPasswordOnCompletion:completion onError:errorBlock];
             break;
+        }
             
         case kVLastLoginTypeNone:
         default:
@@ -117,7 +121,7 @@ static NSString * const kAccountIdentifierDefaultsKey = @"com.getvictorious.VUse
         VUser *user = [resultObjects firstObject];
         if ([user isKindOfClass:[VUser class]])
         {
-            [[NSUserDefaults standardUserDefaults] setInteger:kVLastLoginTypeFacebook forKey:kLastLoginTypeUserDefaultsKey];
+            [[NSUserDefaults standardUserDefaults] setInteger:kVLastLoginTypeFacebook   forKey:kLastLoginTypeUserDefaultsKey];
             [[NSUserDefaults standardUserDefaults] setObject:facebookAccount.identifier forKey:kAccountIdentifierDefaultsKey];
             if (completion)
             {
@@ -156,11 +160,24 @@ static NSString * const kAccountIdentifierDefaultsKey = @"com.getvictorious.VUse
 
 - (void)loginViaTwitterOnCompletion:(VUserManagerLoginCompletionBlock)completion onError:(VUserManagerLoginErrorBlock)errorBlock
 {
+    [self loginViaTwitterAccountWithIdentifier:nil onCompletion:completion onError:errorBlock];
+}
+
+- (void)loginViaTwitterAccountWithIdentifier:(NSString *)identifier onCompletion:(VUserManagerLoginCompletionBlock)completion onError:(VUserManagerLoginErrorBlock)errorBlock
+{
     ACAccountStore* account = [[ACAccountStore alloc] init];
     ACAccountType* accountType = [account accountTypeWithAccountTypeIdentifier:ACAccountTypeIdentifierTwitter];
 
-    NSArray *accounts = [account accountsWithAccountType:accountType];
-    ACAccount *twitterAccount = [accounts lastObject];
+    ACAccount *twitterAccount;
+    if (identifier)
+    {
+        twitterAccount = [account accountWithIdentifier:identifier];
+    }
+    else
+    {
+        NSArray *accounts = [account accountsWithAccountType:accountType];
+        twitterAccount = [accounts lastObject];
+    }
     
     if (!twitterAccount)
     {
@@ -214,6 +231,8 @@ static NSString * const kAccountIdentifierDefaultsKey = @"com.getvictorious.VUse
             }
             else
             {
+                [[NSUserDefaults standardUserDefaults] setInteger:kVLastLoginTypeTwitter   forKey:kLastLoginTypeUserDefaultsKey];
+                [[NSUserDefaults standardUserDefaults] setObject:twitterAccount.identifier forKey:kAccountIdentifierDefaultsKey];
                 if (completion)
                 {
                     completion(user, created);
