@@ -147,7 +147,7 @@
         }
         else
         {
-            [[VUserManager sharedInstance] loginWithFacebookOnCompletion:^(VUser *user, BOOL created)
+            [[VUserManager sharedInstance] loginViaFacebookOnCompletion:^(VUser *user, BOOL created)
             {
                 dispatch_async(dispatch_get_main_queue(), ^(void)
                 {
@@ -201,7 +201,7 @@
             }
             else
             {
-                [[VUserManager sharedInstance] loginWithTwitterOnCompletion:^(VUser *user, BOOL created)
+                [[VUserManager sharedInstance] loginViaTwitterOnCompletion:^(VUser *user, BOOL created)
                 {
                     self.profile = user;
                     if (created)

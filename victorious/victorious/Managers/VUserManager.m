@@ -22,6 +22,7 @@ typedef NS_ENUM(NSInteger, VLastLoginType)
 };
 
 static NSString * const kLastLoginTypeUserDefaultsKey = @"com.getvictorious.VUserManager.LoginType";
+static NSString * const kAccountIdentifierDefaultsKey = @"com.getvictorious.VUserManager.AccountIdentifier";
 
 @implementation VUserManager
 
@@ -36,17 +37,17 @@ static NSString * const kLastLoginTypeUserDefaultsKey = @"com.getvictorious.VUse
     return sharedInstance;
 }
 
-- (void)reLoginWithCompletion:(VUserManagerLoginCompletionBlock)completion onError:(VUserManagerLoginErrorBlock)errorBlock
+- (void)loginViaSavedCredentialsOnCompletion:(VUserManagerLoginCompletionBlock)completion onError:(VUserManagerLoginErrorBlock)errorBlock
 {
     NSInteger loginType = [[NSUserDefaults standardUserDefaults] integerForKey:kLastLoginTypeUserDefaultsKey];
     switch (loginType)
     {
         case kVLastLoginTypeFacebook:
-            [self loginWithFacebookOnCompletion:completion onError:errorBlock];
+            [self loginViaFacebookOnCompletion:completion onError:errorBlock];
             break;
             
         case kVLastLoginTypeTwitter:
-            [self loginWithTwitterOnCompletion:completion onError:errorBlock];
+            [self loginViaTwitterOnCompletion:completion onError:errorBlock];
             break;
             
         case kVLastLoginTypeEmail:
@@ -55,11 +56,22 @@ static NSString * const kLastLoginTypeUserDefaultsKey = @"com.getvictorious.VUse
             
         case kVLastLoginTypeNone:
         default:
+        {
+            if (errorBlock)
+            {
+                errorBlock(nil);
+            }
             break;
+        }
     }
 }
 
-- (void)loginWithFacebookOnCompletion:(VUserManagerLoginCompletionBlock)completion onError:(VUserManagerLoginErrorBlock)errorBlock
+- (void)loginViaFacebookOnCompletion:(VUserManagerLoginCompletionBlock)completion onError:(VUserManagerLoginErrorBlock)errorBlock
+{
+    [self loginViaFacebookAccountWithIdentifier:nil onCompletion:completion onError:errorBlock];
+}
+
+- (void)loginViaFacebookAccountWithIdentifier:(NSString *)identifier onCompletion:(VUserManagerLoginCompletionBlock)completion onError:(VUserManagerLoginErrorBlock)errorBlock
 {
     ACAccountStore *accountStore = [[ACAccountStore alloc] init];
     ACAccountType *accountType = [accountStore accountTypeWithAccountTypeIdentifier:ACAccountTypeIdentifierFacebook];
@@ -73,8 +85,17 @@ static NSString * const kLastLoginTypeUserDefaultsKey = @"com.getvictorious.VUse
         return;
     }
 
-    NSArray *accounts = [accountStore accountsWithAccountType:accountType];
-    ACAccount* facebookAccount = [accounts lastObject];
+    ACAccount *facebookAccount;
+    if (identifier)
+    {
+        facebookAccount = [accountStore accountWithIdentifier:identifier];
+    }
+    else
+    {
+        NSArray *accounts = [accountStore accountsWithAccountType:accountType];
+        facebookAccount = [accounts lastObject];
+    }
+    
     ACAccountCredential *fbCredential = [facebookAccount credential];
     NSString *accessToken = [fbCredential oauthToken];
     
@@ -120,7 +141,7 @@ static NSString * const kLastLoginTypeUserDefaultsKey = @"com.getvictorious.VUse
                                                   failBlock:failed];
 }
 
-- (void)loginWithTwitterOnCompletion:(VUserManagerLoginCompletionBlock)completion onError:(VUserManagerLoginErrorBlock)errorBlock
+- (void)loginViaTwitterOnCompletion:(VUserManagerLoginCompletionBlock)completion onError:(VUserManagerLoginErrorBlock)errorBlock
 {
     ACAccountStore* account = [[ACAccountStore alloc] init];
     ACAccountType* accountType = [account accountTypeWithAccountTypeIdentifier:ACAccountTypeIdentifierTwitter];
@@ -221,7 +242,7 @@ static NSString * const kLastLoginTypeUserDefaultsKey = @"com.getvictorious.VUse
     }];
 }
 
-- (void)loginWithEmail:(NSString *)email password:(NSString *)password onCompletion:(VUserManagerLoginCompletionBlock)completion onError:(VUserManagerLoginErrorBlock)errorBlock
+- (void)loginViaEmail:(NSString *)email password:(NSString *)password onCompletion:(VUserManagerLoginCompletionBlock)completion onError:(VUserManagerLoginErrorBlock)errorBlock
 {
     VSuccessBlock success = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
     {
@@ -271,7 +292,7 @@ static NSString * const kLastLoginTypeUserDefaultsKey = @"com.getvictorious.VUse
     
     if (email && password)
     {
-        [self loginWithEmail:email password:password onCompletion:completion onError:errorBlock];
+        [self loginViaEmail:email password:password onCompletion:completion onError:errorBlock];
     }
 }
 

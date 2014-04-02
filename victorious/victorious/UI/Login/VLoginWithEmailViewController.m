@@ -155,7 +155,7 @@ NSString*   const   kVLoginErrorDomain =   @"VLoginErrorDomain";
 
     if ([self shouldLoginWithUsername:self.usernameTextField.text password:self.passwordTextField.text])
     {
-        [[VUserManager sharedInstance] loginWithEmail:self.usernameTextField.text
+        [[VUserManager sharedInstance] loginViaEmail:self.usernameTextField.text
                                              password:self.passwordTextField.text
                                          onCompletion:^(VUser *user, BOOL created)
         {
