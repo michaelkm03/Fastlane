@@ -49,11 +49,14 @@ extern NSString *kLoggedInChangedNotification;
                                                   successBlock:(VSuccessBlock)success
                                                      failBlock:(VFailBlock)fail;
 
-- (RKManagedObjectRequestOperation *)updateVictoriousWithEmail:(NSString *)email
-                                                      password:(NSString *)password
-                                                      username:(NSString *)username
-                                                  successBlock:(VSuccessBlock)success
-                                                     failBlock:(VFailBlock)fail;
+- (AFHTTPRequestOperation *)updateVictoriousWithEmail:(NSString *)email
+                                             password:(NSString *)password
+                                             username:(NSString *)username
+                                         profileImage:(NSData *)profileImage
+                                             location:(NSString *)location
+                                              tagline:(NSString *)tagline
+                                         successBlock:(VSuccessBlock)success
+                                            failBlock:(VFailBlock)fail;
 
 - (RKManagedObjectRequestOperation *)logout;
 

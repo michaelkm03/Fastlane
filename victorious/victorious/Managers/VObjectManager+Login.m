@@ -191,16 +191,24 @@ NSString *kLoggedInChangedNotification = @"LoggedInChangedNotification";
             failBlock:fail];
 }
 
-- (RKManagedObjectRequestOperation *)updateVictoriousWithEmail:(NSString *)email
-                                                      password:(NSString *)password
-                                                      username:(NSString *)username
-                                                  successBlock:(VSuccessBlock)success
-                                                     failBlock:(VFailBlock)fail
+- (AFHTTPRequestOperation *)updateVictoriousWithEmail:(NSString *)email
+                                             password:(NSString *)password
+                                             username:(NSString *)username
+                                         profileImage:(NSData *)profileImage
+                                             location:(NSString *)location
+                                              tagline:(NSString *)tagline
+                                         successBlock:(VSuccessBlock)success
+                                            failBlock:(VFailBlock)fail
 {
-    NSDictionary *parameters = @{@"email": email ?: @"",
-                                 @"password": password ?: @"",
-                                 @"name": username ?: @""};
-
+    NSDictionary *parameters = @{@"email": email ?: [NSNull null],
+                                 @"password": password ?: [NSNull null],
+                                 @"name": username ?: [NSNull null],
+                                 @"profile_location": location ?: [NSNull null],
+                                 @"profile_tagline": tagline ?: [NSNull null]};
+    
+    NSDictionary* allData = @{@"profile_image":profileImage ?: [NSNull null]};
+    NSDictionary* allExtensions = @{@"media_data":VConstantMediaExtensionJPG};
+    
     VSuccessBlock fullSuccess = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
     {
         [self loggedInWithUser:[resultObjects firstObject]];
@@ -208,11 +216,12 @@ NSString *kLoggedInChangedNotification = @"LoggedInChangedNotification";
             success(operation, fullResponse, resultObjects);
     };
     
-    return [self POST:@"/api/account/update"
-               object:nil
-           parameters:parameters
-         successBlock:fullSuccess
-            failBlock:fail];
+    return [self upload:allData
+          fileExtension:allExtensions
+                 toPath:@"/api/account/update"
+             parameters:parameters
+           successBlock:fullSuccess
+              failBlock:fail];
 }
 
 #pragma mark - LoggedIn

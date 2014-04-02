@@ -9,6 +9,7 @@
 #import "VSequence+RestKit.h"
 #import "VComment+RestKit.h"
 #import "VNode+RestKit.h"
+#import "VVoteResult+RestKit.h"
 
 @implementation VSequence (RestKit)
 
@@ -32,7 +33,9 @@
                                   @"status"         :   VSelectorName(status),
                                   @"is_complete"    :   VSelectorName(isComplete),
                                   @"game_status"    :   VSelectorName(gameStatus),
-                                  @"expires_at"     :   VSelectorName(expiresAt)
+                                  @"expires_at"     :   VSelectorName(expiresAt),
+                                  @"sequence_counts.comment"    : VSelectorName(commentCount),
+                                  @"sequence_counts.remix"      : VSelectorName(remixCount)
                                   };
 
     RKEntityMapping *mapping = [RKEntityMapping
@@ -47,6 +50,14 @@
     //This is equivilent to the above except it also checks for camelCase ect. versions of the keyPath
     [mapping addRelationshipMappingWithSourceKeyPath:VSelectorName(nodes) mapping:[VNode entityMapping]];
     [mapping addRelationshipMappingWithSourceKeyPath:VSelectorName(comments) mapping:[VComment entityMapping]];
+    
+    mapping.forceCollectionMapping = YES;
+    RKRelationshipMapping* voteResultMapping = [RKRelationshipMapping relationshipMappingFromKeyPath:@"sequence_counts.votetype"
+                                                                                           toKeyPath:VSelectorName(voteResults)
+                                                                                         withMapping:[VVoteResult entityMapping]];
+    [mapping addPropertyMapping:voteResultMapping];
+//    [mapping addRelationshipMappingWithSourceKeyPath:VSelectorName(voteResults) mapping:[VVoteResult entityMapping]];
+    
     
     [mapping addConnectionForRelationship:@"user" connectedBy:@{@"createdBy" : @"remoteId"}];
     [mapping addConnectionForRelationship:@"comments" connectedBy:@{@"remoteId" : @"sequenceId"}];

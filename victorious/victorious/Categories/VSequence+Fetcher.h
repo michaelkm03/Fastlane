@@ -23,4 +23,6 @@
 
 - (NSArray*)initialImageURLs;
 
+- (NSNumber*)voteCountForVoteID:(NSNumber*)voteID;
+
 @end
