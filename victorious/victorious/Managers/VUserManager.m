@@ -43,8 +43,11 @@ static NSString * const kAccountIdentifierDefaultsKey = @"com.getvictorious.VUse
     switch (loginType)
     {
         case kVLastLoginTypeFacebook:
-            [self loginViaFacebookOnCompletion:completion onError:errorBlock];
+        {
+            NSString *identifier = [[NSUserDefaults standardUserDefaults] stringForKey:kAccountIdentifierDefaultsKey];
+            [self loginViaFacebookAccountWithIdentifier:identifier onCompletion:completion onError:errorBlock];
             break;
+        }
             
         case kVLastLoginTypeTwitter:
             [self loginViaTwitterOnCompletion:completion onError:errorBlock];
@@ -96,6 +99,15 @@ static NSString * const kAccountIdentifierDefaultsKey = @"com.getvictorious.VUse
         facebookAccount = [accounts lastObject];
     }
     
+    if (!facebookAccount)
+    {
+        if (errorBlock)
+        {
+            errorBlock(nil);
+        }
+        return;
+    }
+    
     ACAccountCredential *fbCredential = [facebookAccount credential];
     NSString *accessToken = [fbCredential oauthToken];
     
@@ -106,6 +118,7 @@ static NSString * const kAccountIdentifierDefaultsKey = @"com.getvictorious.VUse
         if ([user isKindOfClass:[VUser class]])
         {
             [[NSUserDefaults standardUserDefaults] setInteger:kVLastLoginTypeFacebook forKey:kLastLoginTypeUserDefaultsKey];
+            [[NSUserDefaults standardUserDefaults] setObject:facebookAccount.identifier forKey:kAccountIdentifierDefaultsKey];
             if (completion)
             {
                 completion(user, created);
@@ -279,6 +292,7 @@ static NSString * const kAccountIdentifierDefaultsKey = @"com.getvictorious.VUse
     [[VObjectManager sharedManager] logout];
     
     [[NSUserDefaults standardUserDefaults] removeObjectForKey:kLastLoginTypeUserDefaultsKey];
+    [[NSUserDefaults standardUserDefaults] removeObjectForKey:kAccountIdentifierDefaultsKey];
     
     //  Remove credentials from keychain
 }

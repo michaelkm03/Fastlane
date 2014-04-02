@@ -12,6 +12,7 @@
 #import "VObjectManager+Login.h"
 
 #import "VUser.h"
+#import "VUserManager.h"
 #import "VCategory.h"
 #import "VSequence+RestKit.h"
 #import "VAnswer.h"
@@ -36,7 +37,18 @@ NSString* const kPollResultsLoaded = @"kPollResultsLoaded";
     return [self loadNextPageOfSequencesForCategory:nil
                                 successBlock:^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
             {
-                [[NSNotificationCenter defaultCenter] postNotificationName:kInitialLoadFinishedNotification object:nil];
+                void (^postNotification)(void) = ^(void)
+                {
+                    [[NSNotificationCenter defaultCenter] postNotificationName:kInitialLoadFinishedNotification object:nil];
+                };
+                [[VUserManager sharedInstance] loginViaSavedCredentialsOnCompletion:^(VUser *user, BOOL created)
+                {
+                    dispatch_async(dispatch_get_main_queue(), postNotification);
+                }
+                                                                            onError:^(NSError *error)
+                {
+                    dispatch_async(dispatch_get_main_queue(), postNotification);
+                }];
             }
                                    failBlock:nil];
 }
