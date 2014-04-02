@@ -17,6 +17,7 @@
 #import "VThemeManager.h"
 
 #import "VVoteType+Fetcher.h"
+#import "VSequence+Fetcher.h"
 
 #import "VSequence.h"
 
@@ -64,8 +65,8 @@
 {
     [super viewWillAppear:animated];
     
-    self.leftLabel.text = @(0).stringValue;
-    self.rightLabel.text = @(0).stringValue;
+    self.leftLabel.text = [self.sequence voteCountForVoteID:self.likeVote.remoteId].stringValue;
+    self.rightLabel.text = [self.sequence voteCountForVoteID:self.dislikeVote.remoteId].stringValue;
 }
 
 - (void)viewDidDisappear:(BOOL)animated
@@ -84,6 +85,11 @@
                                         successBlock:^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
          {
              VLog(@"Succeeded with objects: %@", resultObjects);
+             
+             //Update the sequence
+             [[VObjectManager sharedManager] fetchSequence:self.sequence.remoteId
+                                              successBlock:nil
+                                                 failBlock:nil];
          }
                                            failBlock:^(NSOperation* operation, NSError* error)
          {
@@ -96,8 +102,8 @@
 {
     [super setSequence:sequence];
 
-    self.leftLabel.text = @(0).stringValue;
-    self.rightLabel.text = @(0).stringValue;
+    self.leftLabel.text = [self.sequence voteCountForVoteID:self.likeVote.remoteId].stringValue;
+    self.rightLabel.text = [self.sequence voteCountForVoteID:self.dislikeVote.remoteId].stringValue;
 }
 
 #pragma mark - Actions

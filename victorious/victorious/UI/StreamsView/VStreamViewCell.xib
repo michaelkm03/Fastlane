@@ -103,6 +103,7 @@
                 </subviews>
             </tableViewCellContentView>
             <connections>
+                <outlet property="commentButton" destination="cLx-fR-OJL" id="53U-gB-3TI"/>
                 <outlet property="dateImageView" destination="D3j-da-Kgn" id="UE5-kg-oJf"/>
                 <outlet property="dateLabel" destination="OUw-F8-xAD" id="gfW-Td-Edg"/>
                 <outlet property="descriptionLabel" destination="WLo-v6-MW0" id="ErA-uR-QtJ"/>

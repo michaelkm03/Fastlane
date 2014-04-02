@@ -32,7 +32,9 @@ typedef NS_ENUM(NSUInteger, VVoteIDs) {
 {
     NSFetchRequest *request = [[NSFetchRequest alloc] initWithEntityName:[VVoteType entityName]];
     NSManagedObjectContext* context = [VObjectManager sharedManager].managedObjectStore.persistentStoreManagedObjectContext;
-    
+    NSSortDescriptor*   sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"display_order" ascending:YES];
+    [request setSortDescriptors:@[sortDescriptor]];
+
     NSError *error = nil;
     NSArray* allVoteTypes = [context executeFetchRequest:request error:&error];
     if (error != nil)

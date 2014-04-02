@@ -2,7 +2,7 @@
 //  VSequence.m
 //  victorious
 //
-//  Created by Will Long on 3/24/14.
+//  Created by Will Long on 4/1/14.
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
@@ -11,6 +11,7 @@
 #import "VNode.h"
 #import "VPollResult.h"
 #import "VUser.h"
+#import "VVoteResult.h"
 
 
 @implementation VSequence
@@ -18,6 +19,7 @@
 @dynamic category;
 @dynamic createdBy;
 @dynamic display_order;
+@dynamic expiresAt;
 @dynamic gameStatus;
 @dynamic isComplete;
 @dynamic name;
@@ -26,10 +28,12 @@
 @dynamic remoteId;
 @dynamic sequenceDescription;
 @dynamic status;
-@dynamic expiresAt;
+@dynamic commentCount;
+@dynamic remixCount;
 @dynamic comments;
 @dynamic nodes;
 @dynamic pollResults;
 @dynamic user;
+@dynamic voteResults;
 
 @end

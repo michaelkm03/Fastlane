@@ -113,6 +113,7 @@
             <connections>
                 <outlet property="animationBackgroundImage" destination="tq5-a6-OxG" id="NGO-vB-CGE"/>
                 <outlet property="animationImage" destination="N2L-pH-5Tp" id="Xte-M2-l3Z"/>
+                <outlet property="commentButton" destination="RYb-yh-8oc" id="2Oh-KQ-ej1"/>
                 <outlet property="dateImageView" destination="EnC-ed-tLe" id="KHu-qM-PX7"/>
                 <outlet property="dateLabel" destination="ClZ-8D-vSe" id="jTd-I7-vCF"/>
                 <outlet property="descriptionLabel" destination="h1o-6t-QRB" id="7KT-DS-yWE"/>

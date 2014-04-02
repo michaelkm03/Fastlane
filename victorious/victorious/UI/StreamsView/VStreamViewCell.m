@@ -36,6 +36,7 @@ NSString *kStreamsWillCommentNotification = @"kStreamsWillCommentNotification";
 @property (weak, nonatomic) IBOutlet UILabel *descriptionLabel;
 @property (weak, nonatomic) IBOutlet UIButton *profileImageButton;
 @property (weak, nonatomic) IBOutlet UIImageView *dateImageView;
+@property (weak, nonatomic) IBOutlet UIButton *commentButton;
 
 @property (nonatomic) BOOL animating;
 @property (nonatomic) NSUInteger originalHeight;
@@ -59,6 +60,8 @@ NSString *kStreamsWillCommentNotification = @"kStreamsWillCommentNotification";
     self.dateLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVDateFont];
     self.descriptionLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVContentTitleFont];
     self.dateImageView.image = [self.dateImageView.image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+
+    [self.commentButton setTitleEdgeInsets:UIEdgeInsetsMake(0, 5, 0, 0)];
     
     self.ephemeralTimerView = [[[NSBundle mainBundle] loadNibNamed:NSStringFromClass([VEphemeralTimerView class]) owner:self options:nil] firstObject];
     self.ephemeralTimerView.delegate = self;
@@ -99,6 +102,7 @@ NSString *kStreamsWillCommentNotification = @"kStreamsWillCommentNotification";
     self.usernameLabel.text = self.sequence.user.name;
     self.descriptionLabel.text = self.sequence.name;
     self.dateLabel.text = [self.sequence.releasedAt timeSince];
+    [self.commentButton setTitle:self.sequence.commentCount.stringValue forState:UIControlStateNormal];
     
     NSLog(@"Expiration date: %@", _sequence.expiresAt);
     
