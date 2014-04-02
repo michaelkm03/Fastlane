@@ -6,12 +6,21 @@
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
-#import "VUserManager.h"
 #import "VObjectManager+Login.h"
+#import "VUser.h"
+#import "VUserManager.h"
 
 @import Accounts;
 
-static  NSString*   kLoginTypeUserDefault   =   @"com.victorious.<AppName>.userdefault.loginType";
+typedef NS_ENUM(NSInteger, VLastLoginType)
+{
+    kVLastLoginTypeNone,
+    kVLastLoginTypeEmail,
+    kVLastLoginTypeFacebook,
+    kVLastLoginTypeTwitter
+};
+
+static NSString * const kLastLoginTypeUserDefaultsKey = @"com.getvictorious.VUserManager.LoginType";
 
 @implementation VUserManager
 
@@ -26,99 +35,120 @@ static  NSString*   kLoginTypeUserDefault   =   @"com.victorious.<AppName>.userd
     return sharedInstance;
 }
 
-- (void)silentlyLogin
+- (void)reLoginWithCompletion:(VUserManagerLoginCompletionBlock)completion onError:(VUserManagerLoginErrorBlock)errorBlock
 {
-    NSInteger  loginType   =   [[NSUserDefaults standardUserDefaults] integerForKey:kLoginTypeUserDefault];
+    NSInteger loginType = [[NSUserDefaults standardUserDefaults] integerForKey:kLastLoginTypeUserDefaultsKey];
     switch (loginType)
     {
-        case kLoginTypeFacebook:
-            [self loginWithFacebook];
+        case kVLastLoginTypeFacebook:
+            [self loginWithFacebookOnCompletion:completion onError:errorBlock];
             break;
             
-        case kLoginTypeTwitter:
-            [self loginWithTwitter];
+        case kVLastLoginTypeTwitter:
+            [self loginWithTwitterOnCompletion:completion onError:errorBlock];
             break;
             
-        case kLoginTypeEmail:
-            [self loginWithEmail];
+        case kVLastLoginTypeEmail:
+            [self loginWithPreviousEmailAndPasswordOnCompletion:completion onError:errorBlock];
             break;
             
-        case kLoginTypeNone:
+        case kVLastLoginTypeNone:
         default:
             break;
     }
+}
+
+- (void)loginWithFacebookOnCompletion:(VUserManagerLoginCompletionBlock)completion onError:(VUserManagerLoginErrorBlock)errorBlock
+{
+    ACAccountStore *accountStore = [[ACAccountStore alloc] init];
+    ACAccountType *accountType = [accountStore accountTypeWithAccountTypeIdentifier:ACAccountTypeIdentifierFacebook];
+    
+    if (!accountType.accessGranted)
+    {
+        if (errorBlock)
+        {
+            errorBlock(nil);
+        }
+        return;
+    }
+
+    NSArray *accounts = [accountStore accountsWithAccountType:accountType];
+    ACAccount* facebookAccount = [accounts lastObject];
+    ACAccountCredential *fbCredential = [facebookAccount credential];
+    NSString *accessToken = [fbCredential oauthToken];
+    
+    __block BOOL created = YES;
+    VSuccessBlock success = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
+    {
+        VUser *user = [resultObjects firstObject];
+        if ([user isKindOfClass:[VUser class]])
+        {
+            [[NSUserDefaults standardUserDefaults] setInteger:kVLastLoginTypeFacebook forKey:kLastLoginTypeUserDefaultsKey];
+            if (completion)
+            {
+                completion(user, created);
+            }
+        }
+        else if (errorBlock)
+        {
+            errorBlock(nil);
+        }
+    };
+    VFailBlock failed = ^(NSOperation* operation, NSError* error)
+    {
+        if (error.code == 1003)
+        {
+            created = NO;
+            [[VObjectManager sharedManager] loginToFacebookWithToken:accessToken
+                                                        SuccessBlock:success
+                                                           failBlock:^(NSOperation* operation, NSError* error)
+             {
+                 if (errorBlock)
+                 {
+                     errorBlock(error);
+                 }
+             }];
+        }
+        else if (errorBlock)
+        {
+            errorBlock(error);
+        }
+    };
+    [[VObjectManager sharedManager] createFacebookWithToken:accessToken
+                                               SuccessBlock:success
+                                                  failBlock:failed];
+}
+
+- (void)loginWithTwitterOnCompletion:(VUserManagerLoginCompletionBlock)completion onError:(VUserManagerLoginErrorBlock)errorBlock
+{
+    // TODO
+}
+
+- (void)loginWithEmail:(NSString *)email password:(NSString *)password onCompletion:(VUserManagerLoginCompletionBlock)completion onError:(VUserManagerLoginErrorBlock)errorBlock
+{
+    // TODO
 }
 
 - (void)logout
 {
     [[VObjectManager sharedManager] logout];
     
-    [[NSUserDefaults standardUserDefaults] removeObjectForKey:kLoginTypeUserDefault];
+    [[NSUserDefaults standardUserDefaults] removeObjectForKey:kLastLoginTypeUserDefaultsKey];
     
     //  Remove credentials from keychain
 }
 
 #pragma mark - Private
 
-- (void)loginWithFacebook
+- (void)loginWithPreviousEmailAndPasswordOnCompletion:(VUserManagerLoginCompletionBlock)completion onError:(VUserManagerLoginErrorBlock)errorBlock
 {
-    ACAccountStore * const accountStore = [[ACAccountStore alloc] init];
-    ACAccountType * const accountType = [accountStore accountTypeWithAccountTypeIdentifier:ACAccountTypeIdentifierFacebook];
+    NSString*   email    =   nil;    //From Keychain
+    NSString*   password =   nil;    //From Keychain
     
-    [accountStore requestAccessToAccountsWithType:accountType
-                                          options:@{
-                                                    ACFacebookAppIdKey: @"1374328719478033",
-                                                    ACFacebookPermissionsKey: @[@"email"] // Needed for first login
-                                                    }
-                                       completion:^(BOOL granted, NSError *error)
-     {
-         if (granted)
-         {
-             NSArray *accounts = [accountStore accountsWithAccountType:accountType];
-             ACAccount* facebookAccount = [accounts lastObject];
-             ACAccountCredential *fbCredential = [facebookAccount credential];
-             NSString *accessToken = [fbCredential oauthToken];
-             
-             [[VObjectManager sharedManager] loginToFacebookWithToken:accessToken
-                                                         SuccessBlock:nil
-                                                            failBlock:nil];
-         }
-     }];
-}
-
-- (void)loginWithTwitter
-{
-    ACAccountStore* account = [[ACAccountStore alloc] init];
-    ACAccountType* accountType = [account accountTypeWithAccountTypeIdentifier:ACAccountTypeIdentifierTwitter];
-    
-    [account requestAccessToAccountsWithType:accountType options:nil completion:^(BOOL granted, NSError *error)
-     {
-         if (granted)
-         {
-             NSArray *accounts = [account accountsWithAccountType:accountType];
-             ACAccount *twitterAccount = [accounts lastObject];
-             ACAccountCredential*  ftwCredential = [twitterAccount credential];
-             NSString* accessToken = [ftwCredential oauthToken];
-             
-             [[VObjectManager sharedManager] loginToTwitterWithToken:accessToken
-                                                        accessSecret:@""
-                                                           twitterId:@""
-                                                        SuccessBlock:nil
-                                                           failBlock:nil];
-         }
-     }];
-}
-
-- (void)loginWithEmail
-{
-    NSString*   username    =   nil;    //From Keychain
-    NSString*   password    =   nil;    //From Keychain
-    
-    if (username && password)
-        [[VObjectManager sharedManager] loginToVictoriousWithEmail:username
-                                                          password:password
-                                                      successBlock:nil
-                                                         failBlock:nil];
+    if (email && password)
+    {
+        [self loginWithEmail:email password:password onCompletion:completion onError:errorBlock];
+    }
 }
 
 @end

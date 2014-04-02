@@ -12,6 +12,7 @@
 #import "VProfileWithSocialViewController.h"
 #import "VObjectManager+Login.h"
 #import "VUser.h"
+#import "VUserManager.h"
 #import "TWAPIManager.h"
 
 @import Accounts;
@@ -98,15 +99,24 @@
     self.emailButton.clipsToBounds = YES;
 }
 
-- (void)facebookAccessDidFail
+- (void)facebookAccessDidFail:(NSError *)error
 {
-    dispatch_async(dispatch_get_main_queue(), ^
+    if (error.code == ACErrorAccountNotFound)
     {
         SLComposeViewController *composeViewController = [SLComposeViewController composeViewControllerForServiceType:SLServiceTypeFacebook];
         [self presentViewController:composeViewController animated:NO completion:^{
             [composeViewController dismissViewControllerAnimated:NO completion:nil];
         }];
-    });
+    }
+    else
+    {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"FacebookDeniedTitle", @"")
+                                                        message:NSLocalizedString(@"FacebookDenied", @"")
+                                                       delegate:nil
+                                              cancelButtonTitle:NSLocalizedString(@"OKButton", @"")
+                                              otherButtonTitles:nil];
+        [alert show];
+    }
 }
 
 - (void)twitterAccessDidFail
@@ -124,10 +134,9 @@
 
 - (IBAction)facebookClicked:(id)sender
 {
-    ACAccountStore * const accountStore = [[ACAccountStore alloc] init];
-    ACAccountType * const accountType = [accountStore accountTypeWithAccountTypeIdentifier:ACAccountTypeIdentifierFacebook];
-
-    [accountStore requestAccessToAccountsWithType:accountType
+    ACAccountStore *accountStore = [[ACAccountStore alloc] init];
+    ACAccountType *facebookAccountType = [accountStore accountTypeWithAccountTypeIdentifier:ACAccountTypeIdentifierFacebook];
+    [accountStore requestAccessToAccountsWithType:facebookAccountType
                                           options:@{
                                                     ACFacebookAppIdKey: @"1374328719478033",
                                                     ACFacebookPermissionsKey: @[@"email"] // Needed for first login
@@ -136,57 +145,35 @@
     {
         if (!granted)
         {
-            switch (error.code)
+            dispatch_async(dispatch_get_main_queue(), ^(void)
             {
-                case ACErrorAccountNotFound:
-                {
-                    [self facebookAccessDidFail];
-                    break;
-                }
-                default:
-                {
-                    [self didFailWithError:error];
-                    break;
-                }
-            }
-            
-            return;
+                [self facebookAccessDidFail:error];
+            });
         }
         else
         {
-            NSArray *accounts = [accountStore accountsWithAccountType:accountType];
-            ACAccount* facebookAccount = [accounts lastObject];
-            ACAccountCredential *fbCredential = [facebookAccount credential];
-            NSString *accessToken = [fbCredential oauthToken];
- 
-             VSuccessBlock success = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
-             {
-                 if (![[resultObjects firstObject] isKindOfClass:[VUser class]])
-                     [self didFailWithError:nil];
-                 
-                 [self didLoginWithUser:[resultObjects firstObject]];
-             };
-             VFailBlock failed = ^(NSOperation* operation, NSError* error)
-             {
-                 VFailBlock     blockFail = ^(NSOperation* operation, NSError* error)
-                 {
-                     self.loginType = kVLoginTypeNone;
-                     [self didFailWithError:error];
-                 };
-                 
-                 if (error.code == 1003)
-                 {
-                     self.loginType = kVLoginTypeFaceBook;
-                     [[VObjectManager sharedManager] loginToFacebookWithToken:accessToken SuccessBlock:success failBlock:blockFail];
-                }
-                 else
-                     [self didFailWithError:error];
-             };
-
-            self.loginType = kVLoginTypeCreateFaceBook;
-            [[VObjectManager sharedManager] createFacebookWithToken:accessToken
-                                                        SuccessBlock:success
-                                                           failBlock:failed];
+            [[VUserManager sharedInstance] loginWithFacebookOnCompletion:^(VUser *user, BOOL created)
+            {
+                dispatch_async(dispatch_get_main_queue(), ^(void)
+                {
+                    self.profile = user;
+                    if (created)
+                    {
+                        [self performSegueWithIdentifier:@"toProfileWithFacebook" sender:self];
+                    }
+                    else
+                    {
+                        [self dismissViewControllerAnimated:YES completion:NULL];
+                    }
+                });
+            }
+                                                                 onError:^(NSError *error)
+            {
+                dispatch_async(dispatch_get_main_queue(), ^(void)
+                {
+                    [self didFailWithError:error];
+                });
+            }];
         }
     }];
 }
@@ -297,9 +284,7 @@
     
     self.profile = mainUser;
 
-    if (kVLoginTypeCreateFaceBook == self.loginType)
-        [self performSegueWithIdentifier:@"toProfileWithFacebook" sender:self];
-    else if (kVLoginTypeCreateTwitter == self.loginType)
+    if (kVLoginTypeCreateTwitter == self.loginType)
         [self performSegueWithIdentifier:@"toProfileWithTwitter" sender:self];
     else
         [self dismissViewControllerAnimated:YES completion:NULL];

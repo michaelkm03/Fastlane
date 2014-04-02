@@ -6,19 +6,32 @@
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
-NS_ENUM(NSInteger, LoginType)
-{
-    kLoginTypeNone,
-    kLoginTypeEmail,
-    kLoginTypeFacebook,
-    kLoginTypeTwitter
-};
+@class VUser;
+
+typedef void (^VUserManagerLoginCompletionBlock)(VUser *user, BOOL created);
+typedef void (^VUserManagerLoginErrorBlock)(NSError *error);
 
 @interface VUserManager : NSObject
 
 + (VUserManager *)sharedInstance;
 
-- (void)silentlyLogin;
+/**
+ Make sure we have access to the user's Facebook accounts before calling this
+ */
+- (void)loginWithFacebookOnCompletion:(VUserManagerLoginCompletionBlock)completion onError:(VUserManagerLoginErrorBlock)errorBlock;
+
+/**
+ Make sure we have access to the user's Twitter accounts before calling this
+ */
+- (void)loginWithTwitterOnCompletion:(VUserManagerLoginCompletionBlock)completion onError:(VUserManagerLoginErrorBlock)errorBlock;
+
+- (void)loginWithEmail:(NSString *)email password:(NSString *)password onCompletion:(VUserManagerLoginCompletionBlock)completion onError:(VUserManagerLoginErrorBlock)errorBlock;
+
+/**
+ Re-login to whatever service the user last logged in with
+ */
+- (void)reLoginWithCompletion:(VUserManagerLoginCompletionBlock)completion onError:(VUserManagerLoginErrorBlock)errorBlock;
+
 - (void)logout;
 
 @end
