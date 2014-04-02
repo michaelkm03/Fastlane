@@ -20,15 +20,8 @@
                                 mappingForEntityForName:[self entityName]
                                 inManagedObjectStore:[RKObjectManager sharedManager].managedObjectStore];
     
-//    mapping.forceCollectionMapping = YES;
-    
     [mapping addAttributeMappingFromKeyOfRepresentationToAttribute:VSelectorName(remoteId)];
-    
-    RKAttributeMapping* idMapping = [RKAttributeMapping attributeMappingFromKeyPath:nil toKeyPath:VSelectorName(remoteId)];
-    [mapping addPropertyMapping:idMapping];
-    
     [mapping addAttributeMappingsFromDictionary:@{ @"(remoteId)"  : VSelectorName(count) }];
-//    [mapping addAttributeMappingToKeyOfRepresentationFromAttribute:VSelectorName(count)];
 
     return mapping;
 }
