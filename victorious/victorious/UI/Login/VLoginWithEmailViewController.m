@@ -11,6 +11,7 @@
 #import "VObjectManager+Sequence.h"
 #import "VObjectManager+Login.h"
 #import "VUser.h"
+#import "VUserManager.h"
 
 NSString*   const   kVLoginErrorDomain =   @"VLoginErrorDomain";
 
@@ -154,23 +155,22 @@ NSString*   const   kVLoginErrorDomain =   @"VLoginErrorDomain";
 
     if ([self shouldLoginWithUsername:self.usernameTextField.text password:self.passwordTextField.text])
     {
-        VSuccessBlock success = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
+        [[VUserManager sharedInstance] loginWithEmail:self.usernameTextField.text
+                                             password:self.passwordTextField.text
+                                         onCompletion:^(VUser *user, BOOL created)
         {
-            if (![[resultObjects firstObject] isKindOfClass:[VUser class]])
-                [self didFailWithError:nil];
-            
-            [self didLoginWithUser:[resultObjects firstObject]];
-        };
-        VFailBlock fail = ^(NSOperation* operation, NSError* error)
+            dispatch_async(dispatch_get_main_queue(), ^(void)
+            {
+                [self didLoginWithUser:user];
+            });
+        }
+                                              onError:^(NSError *error)
         {
-            [self didFailWithError:error];
-            VLog(@"Error in victorious Login: %@", error);
-        };
-        
-        [[VObjectManager sharedManager] loginToVictoriousWithEmail:self.usernameTextField.text
-                                                          password:self.passwordTextField.text
-                                                      successBlock:success
-                                                         failBlock:fail];
+            dispatch_async(dispatch_get_main_queue(), ^(void)
+            {
+                [self didFailWithError:error];
+            });
+        }];
     }
 }
 

@@ -223,7 +223,34 @@ static NSString * const kLastLoginTypeUserDefaultsKey = @"com.getvictorious.VUse
 
 - (void)loginWithEmail:(NSString *)email password:(NSString *)password onCompletion:(VUserManagerLoginCompletionBlock)completion onError:(VUserManagerLoginErrorBlock)errorBlock
 {
-    // TODO
+    VSuccessBlock success = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
+    {
+        VUser *user = [resultObjects firstObject];
+        if (![user isKindOfClass:[VUser class]])
+        {
+            if (errorBlock)
+            {
+                errorBlock(nil);
+            }
+        }
+        else if (completion)
+        {
+            completion(user, NO);
+        }
+    };
+    VFailBlock fail = ^(NSOperation* operation, NSError* error)
+    {
+        if (errorBlock)
+        {
+            errorBlock(error);
+        }
+        VLog(@"Error in victorious Login: %@", error);
+    };
+    
+    [[VObjectManager sharedManager] loginToVictoriousWithEmail:email
+                                                      password:password
+                                                  successBlock:success
+                                                     failBlock:fail];
 }
 
 - (void)logout
