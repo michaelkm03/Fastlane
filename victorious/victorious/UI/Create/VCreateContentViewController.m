@@ -52,13 +52,14 @@ CGFloat VCreateViewControllerLargePadding = 20;
     
     UIImage* newImage = [self.mediaButton.imageView.image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
     [self.mediaButton setImage:newImage forState:UIControlStateNormal];
+    
     self.mediaButton.tintColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVAccentColor];
-    self.mediaButton.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVMainColor];
+    self.mediaButton.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
     self.mediaButton.layer.cornerRadius = self.mediaButton.frame.size.height/2;
 
     newImage = [self.removeMediaButton.imageView.image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
     [self.removeMediaButton setImage:newImage forState:UIControlStateNormal];
-    self.removeMediaButton.tintColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVMainColor];
+    self.removeMediaButton.tintColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
     self.removeMediaButton.hidden = YES;
     
     self.mediaLabel.textColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVAccentColor];
@@ -70,7 +71,7 @@ CGFloat VCreateViewControllerLargePadding = 20;
     self.textView.layer.borderWidth = 1;
     
     self.postButton.tintColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVAccentColor];
-    self.postButton.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVMainColor];
+    self.postButton.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
     [self.postButton setTitle:NSLocalizedString(@"POST IT", @"Post button") forState:UIControlStateNormal];
     self.postButton.titleLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVButtonFont];
     
@@ -186,7 +187,6 @@ CGFloat VCreateViewControllerLargePadding = 20;
 }
 
 #pragma mark - UITextViewDelegate
-
 - (void)textViewDidChange:(UITextView *)textView
 {
     NSInteger characterCount = VConstantsMessageLength-[textView.text length];
@@ -228,4 +228,5 @@ CGFloat VCreateViewControllerLargePadding = 20;
     self.previewImageView.hidden = NO;
     self.removeMediaButton.hidden = NO;
 }
+
 @end
