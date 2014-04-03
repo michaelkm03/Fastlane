@@ -24,6 +24,11 @@
 "NoEmailDetail"         =   "There are no email accounts, would you like to setup one now?";
 "EmailFail"             =   "E-mail failed to send";
 
+"FacebookDeniedTitle"   =   "Could not access your Facebook account";
+"FacebookDenied"        =   "Please grant access to your Facebook account in Settings -> Facebook";
+
+"TwitterDeniedTitle"    =   "Could not access your Twitter account";
+"TwitterDenied"         =   "Please grant access to your Twitter account in Settings -> Twitter";
 
 "NoTwitterTitle"        =   "Can't find a Twitter Account!";
 "NoTwitterMessage"      =   "Please log into the device settings and add a new twitter account";
