@@ -114,6 +114,7 @@
             </tableViewCellContentView>
             <connections>
                 <outlet property="animationImage" destination="HVb-Z7-aUP" id="rng-7z-xUD"/>
+                <outlet property="commentButton" destination="bUy-TM-3gz" id="KUz-Md-snt"/>
                 <outlet property="dateImageView" destination="IxH-jt-ZWz" id="u8D-pk-pRm"/>
                 <outlet property="dateLabel" destination="Rjv-Bf-7RW" id="gPJ-Q9-Qxt"/>
                 <outlet property="descriptionLabel" destination="8D7-NY-L6L" id="Rao-5W-muv"/>

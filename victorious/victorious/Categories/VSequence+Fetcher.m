@@ -9,6 +9,7 @@
 #import "VSequence+Fetcher.h"
 #import "VNode+Fetcher.h"
 #import "VAsset.h"
+#import "VVoteResult.h"
 #import "VConstants.h"
 
 #import "NSString+VParseHelp.h"
@@ -78,6 +79,19 @@
         [urls addObject:[self.previewImage convertToPreviewImageURL]];
     
     return [urls copy];
+}
+
+- (NSNumber*)voteCountForVoteID:(NSNumber*)voteID
+{
+    if (!voteID)
+        return @(0);
+    
+    for (VVoteResult* result in [self.voteResults allObjects])
+    {
+        if ([result.remoteId isEqualToNumber:voteID])
+            return result.count;
+    }
+    return @(0);
 }
 
 @end

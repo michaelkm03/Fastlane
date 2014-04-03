@@ -11,12 +11,29 @@
 
 #import "VObjectManager.h"
 
+typedef NS_ENUM(NSUInteger, VVoteIDs) {
+    VVoteTypeLike = 0,
+    VVoteTypeDislike
+};
+
 @implementation VVoteType (Fetcher)
 
-+ (NSArray*)allVoteTypes
++ (VVoteType*)likeVote
+{
+    return [self voteAtIndex:VVoteTypeLike];
+}
+
++ (VVoteType*)dislikeVote
+{
+    return [self voteAtIndex:VVoteTypeDislike];
+}
+
++(VVoteType*)voteAtIndex:(NSInteger)index
 {
     NSFetchRequest *request = [[NSFetchRequest alloc] initWithEntityName:[VVoteType entityName]];
     NSManagedObjectContext* context = [VObjectManager sharedManager].managedObjectStore.persistentStoreManagedObjectContext;
+    NSSortDescriptor*   sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"display_order" ascending:YES];
+    [request setSortDescriptors:@[sortDescriptor]];
 
     NSError *error = nil;
     NSArray* allVoteTypes = [context executeFetchRequest:request error:&error];
@@ -26,7 +43,12 @@
         return nil;
     }
     
-    return allVoteTypes;
+    if (index >= [allVoteTypes count])
+    {
+        return nil;
+    }
+    
+    return [allVoteTypes objectAtIndex:index];
 }
 
 - (NSArray*)imageURLs

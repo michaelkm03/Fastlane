@@ -22,4 +22,6 @@ typedef NS_ENUM(NSInteger, VStreamScope)
 
 - (IBAction)showMenu;
 
+@property (strong, nonatomic) NSArray* repositionedCells;;
+
 @end

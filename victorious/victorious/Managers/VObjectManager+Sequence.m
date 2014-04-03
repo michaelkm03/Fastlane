@@ -12,10 +12,12 @@
 #import "VObjectManager+Login.h"
 
 #import "VUser.h"
+#import "VUserManager.h"
 #import "VCategory.h"
 #import "VSequence+RestKit.h"
 #import "VAnswer.h"
 #import "VComment.h"
+#import "VVoteType.h"
 
 #import "VPollResult.h"
 
@@ -36,7 +38,18 @@ NSString* const kPollResultsLoaded = @"kPollResultsLoaded";
     return [self loadNextPageOfSequencesForCategory:nil
                                 successBlock:^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
             {
-                [[NSNotificationCenter defaultCenter] postNotificationName:kInitialLoadFinishedNotification object:nil];
+                void (^postNotification)(void) = ^(void)
+                {
+                    [[NSNotificationCenter defaultCenter] postNotificationName:kInitialLoadFinishedNotification object:nil];
+                };
+                [[VUserManager sharedInstance] loginViaSavedCredentialsOnCompletion:^(VUser *user, BOOL created)
+                {
+                    dispatch_async(dispatch_get_main_queue(), postNotification);
+                }
+                                                                            onError:^(NSError *error)
+                {
+                    dispatch_async(dispatch_get_main_queue(), postNotification);
+                }];
             }
                                    failBlock:nil];
 }
@@ -281,12 +294,14 @@ NSString* const kPollResultsLoaded = @"kPollResultsLoaded";
 
 #pragma mark - Sequence Vote Methods
 - (RKManagedObjectRequestOperation *)voteSequence:(VSequence*)sequence
-                                        voteType:(NSString*)type
-                                    successBlock:(VSuccessBlock)success
-                                       failBlock:(VFailBlock)fail
+                                        voteTypes:(NSArray*)voteTypes
+                                       votecounts:(NSArray*)voteCounts
+                                     successBlock:(VSuccessBlock)success
+                                        failBlock:(VFailBlock)fail
 {
     NSDictionary* parameters = @{@"sequence_id":sequence.remoteId.stringValue ?: [NSNull null],
-                                 @"vote": type ?: [NSNull null]
+                                 @"votetypes": voteTypes ?: [NSNull null],
+                                 @"votecounts": voteCounts ?: [NSNull null]
                                  };
     
     return [self POST:@"/api/sequence/vote"
@@ -294,27 +309,6 @@ NSString* const kPollResultsLoaded = @"kPollResultsLoaded";
            parameters:parameters
          successBlock:success
             failBlock:fail];
-}
-
-- (RKManagedObjectRequestOperation *)likeSequence:(VSequence*)sequence
-                                     successBlock:(VSuccessBlock)success
-                                        failBlock:(VFailBlock)fail
-{
-    return [self voteSequence:sequence voteType:@"like" successBlock:success failBlock:fail];
-}
-
-- (RKManagedObjectRequestOperation *)dislikeSequence:(VSequence*)sequence
-                                        successBlock:(VSuccessBlock)success
-                                           failBlock:(VFailBlock)fail
-{
-    return [self voteSequence:sequence voteType:@"dislike" successBlock:success failBlock:fail];
-}
-
-- (RKManagedObjectRequestOperation *)unvoteSequence:(VSequence*)sequence
-                                       successBlock:(VSuccessBlock)success
-                                          failBlock:(VFailBlock)fail
-{
-    return [self voteSequence:sequence voteType:@"unvote" successBlock:success failBlock:fail];
 }
 
 #pragma mark - Poll Methods

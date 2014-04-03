@@ -12,7 +12,7 @@
 #import "VProfileWithSocialViewController.h"
 #import "VObjectManager+Login.h"
 #import "VUser.h"
-#import "TWAPIManager.h"
+#import "VUserManager.h"
 
 @import Accounts;
 @import Social;
@@ -30,7 +30,6 @@
 @property (nonatomic, assign)           VLoginType          loginType;
 @property (nonatomic, strong)           VUser*              profile;
 
-@property (nonatomic, strong) TWAPIManager *twitterApiManager;
 @end
 
 @implementation VLoginViewController
@@ -44,8 +43,6 @@
 
 - (void)viewDidLoad
 {
-    _twitterApiManager = [[TWAPIManager alloc] init];
-    
     if (IS_IPHONE_5)
         self.view.layer.contents = (id)[[VThemeManager sharedThemeManager] themedImageForKey:kVMenuBackgroundImage5].CGImage;
     else
@@ -98,36 +95,43 @@
     self.emailButton.clipsToBounds = YES;
 }
 
-- (void)facebookAccessDidFail
+- (void)facebookAccessDidFail:(NSError *)error
 {
-    dispatch_async(dispatch_get_main_queue(), ^
+    if (error.code == ACErrorAccountNotFound)
     {
         SLComposeViewController *composeViewController = [SLComposeViewController composeViewControllerForServiceType:SLServiceTypeFacebook];
         [self presentViewController:composeViewController animated:NO completion:^{
             [composeViewController dismissViewControllerAnimated:NO completion:nil];
         }];
-    });
+    }
+    else
+    {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"FacebookDeniedTitle", @"")
+                                                        message:NSLocalizedString(@"FacebookDenied", @"")
+                                                       delegate:nil
+                                              cancelButtonTitle:NSLocalizedString(@"OKButton", @"")
+                                              otherButtonTitles:nil];
+        [alert show];
+    }
 }
 
-- (void)twitterAccessDidFail
+- (void)twitterAccessDidFail:(NSError *)error
 {
-    dispatch_async(dispatch_get_main_queue(), ^
-                   {
-                       SLComposeViewController *composeViewController = [SLComposeViewController composeViewControllerForServiceType:SLServiceTypeTwitter];
-                       [self presentViewController:composeViewController animated:NO completion:^{
-                           [composeViewController dismissViewControllerAnimated:NO completion:nil];
-                       }];
-                   });
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"TwitterDeniedTitle", @"")
+                                                    message:NSLocalizedString(@"TwitterDenied", @"")
+                                                   delegate:nil
+                                          cancelButtonTitle:NSLocalizedString(@"OKButton", @"")
+                                          otherButtonTitles:nil];
+    [alert show];
 }
 
 #pragma mark - Actions
 
 - (IBAction)facebookClicked:(id)sender
 {
-    ACAccountStore * const accountStore = [[ACAccountStore alloc] init];
-    ACAccountType * const accountType = [accountStore accountTypeWithAccountTypeIdentifier:ACAccountTypeIdentifierFacebook];
-
-    [accountStore requestAccessToAccountsWithType:accountType
+    ACAccountStore *accountStore = [[ACAccountStore alloc] init];
+    ACAccountType *facebookAccountType = [accountStore accountTypeWithAccountTypeIdentifier:ACAccountTypeIdentifierFacebook];
+    [accountStore requestAccessToAccountsWithType:facebookAccountType
                                           options:@{
                                                     ACFacebookAppIdKey: @"1374328719478033",
                                                     ACFacebookPermissionsKey: @[@"email"] // Needed for first login
@@ -136,57 +140,35 @@
     {
         if (!granted)
         {
-            switch (error.code)
+            dispatch_async(dispatch_get_main_queue(), ^(void)
             {
-                case ACErrorAccountNotFound:
-                {
-                    [self facebookAccessDidFail];
-                    break;
-                }
-                default:
-                {
-                    [self didFailWithError:error];
-                    break;
-                }
-            }
-            
-            return;
+                [self facebookAccessDidFail:error];
+            });
         }
         else
         {
-            NSArray *accounts = [accountStore accountsWithAccountType:accountType];
-            ACAccount* facebookAccount = [accounts lastObject];
-            ACAccountCredential *fbCredential = [facebookAccount credential];
-            NSString *accessToken = [fbCredential oauthToken];
- 
-             VSuccessBlock success = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
-             {
-                 if (![[resultObjects firstObject] isKindOfClass:[VUser class]])
-                     [self didFailWithError:nil];
-                 
-                 [self didLoginWithUser:[resultObjects firstObject]];
-             };
-             VFailBlock failed = ^(NSOperation* operation, NSError* error)
-             {
-                 VFailBlock     blockFail = ^(NSOperation* operation, NSError* error)
-                 {
-                     self.loginType = kVLoginTypeNone;
-                     [self didFailWithError:error];
-                 };
-                 
-                 if (error.code == 1003)
-                 {
-                     self.loginType = kVLoginTypeFaceBook;
-                     [[VObjectManager sharedManager] loginToFacebookWithToken:accessToken SuccessBlock:success failBlock:blockFail];
-                }
-                 else
-                     [self didFailWithError:error];
-             };
-
-            self.loginType = kVLoginTypeCreateFaceBook;
-            [[VObjectManager sharedManager] createFacebookWithToken:accessToken
-                                                        SuccessBlock:success
-                                                           failBlock:failed];
+            [[VUserManager sharedInstance] loginViaFacebookOnCompletion:^(VUser *user, BOOL created)
+            {
+                dispatch_async(dispatch_get_main_queue(), ^(void)
+                {
+                    self.profile = user;
+                    if (created)
+                    {
+                        [self performSegueWithIdentifier:@"toProfileWithFacebook" sender:self];
+                    }
+                    else
+                    {
+                        [self dismissViewControllerAnimated:YES completion:NULL];
+                    }
+                });
+            }
+                                                                 onError:^(NSError *error)
+            {
+                dispatch_async(dispatch_get_main_queue(), ^(void)
+                {
+                    [self didFailWithError:error];
+                });
+            }];
         }
     }];
 }
@@ -195,114 +177,49 @@
 {
     ACAccountStore* account = [[ACAccountStore alloc] init];
     ACAccountType* accountType = [account accountTypeWithAccountTypeIdentifier:ACAccountTypeIdentifierTwitter];
-
     [account requestAccessToAccountsWithType:accountType options:nil completion:^(BOOL granted, NSError *error)
     {
-         if (!granted)
-         {
-             switch (error.code)
-             {
-                 case ACErrorAccountNotFound:
-                 {
-                     [self twitterAccessDidFail];
-                     break;
-                 }
-                 default:
-                 {
-                     [self didFailWithError:error];
-                     break;
-                 }
-             }
-             return;
-         }
-         else
-         {
-             NSArray *accounts = [account accountsWithAccountType:accountType];
-             ACAccount *twitterAccount = [accounts lastObject];
- 
-             if (!twitterAccount)
-             {
-                 [self twitterAccessDidFail];
-                 return;
-             }
-             
-             [self.twitterApiManager performReverseAuthForAccount:twitterAccount
-                                                      withHandler:^(NSData *responseData, NSError *error)
-              {
-                  VLog(@"data: %@, error:%@", responseData, error);
-
-                  if (error)
-                      [self didFailWithError:error];
-                  
-                  NSString *responseStr = [[NSString alloc] initWithData:responseData encoding:NSUTF8StringEncoding];
-                  
-                  //                TWDLog(@"Reverse Auth process returned: %@", responseStr);
-                  
-                  NSArray *parts = [responseStr componentsSeparatedByString:@"&"];
-                  NSMutableDictionary* parsedData = [[NSMutableDictionary alloc] initWithCapacity:[parts count]];
-                  for (NSString* part in parts)
-                  {
-                      NSArray* data = [part componentsSeparatedByString:@"="];
-                      if ([data count] < 2)
-                          continue;
-                      
-                      [parsedData setObject:data[1] forKey:data[0]];
-                  }
-                  
-                  NSString* oauthToken = [parsedData objectForKey:@"oauth_token"];
-                  NSString* tokenSecret = [parsedData objectForKey:@"oauth_token_secret"];
-                  NSString* twitterId = [parsedData objectForKey:@"user_id"];
-                  
-                  VSuccessBlock success = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
-                  {
-                      if (![[resultObjects firstObject] isKindOfClass:[VUser class]])
-                          [self didFailWithError:nil];
-                      
-                      [self didLoginWithUser:[resultObjects firstObject]];
-                  };
-                  VFailBlock failed = ^(NSOperation* operation, NSError* error)
-                  {
-                      VFailBlock     blockFail = ^(NSOperation* operation, NSError* error)
-                      {
-                          self.loginType = kVLoginTypeNone;
-                          [self didFailWithError:error];
-                      };
-                      
-                      if (error.code == 1003)
-                      {
-                          self.loginType = kVLoginTypeTwitter;
-                          [[VObjectManager sharedManager] loginToTwitterWithToken:oauthToken
-                                                                     accessSecret:tokenSecret
-                                                                        twitterId:twitterId
-                                                                     SuccessBlock:success failBlock:blockFail];
-                      }
-                      else
-                          [self didFailWithError:error];
-                  };
-                  
-                  self.loginType = kVLoginTypeCreateTwitter;
-                  [[VObjectManager sharedManager] createTwitterWithToken:oauthToken
-                                                            accessSecret:tokenSecret
-                                                               twitterId:twitterId
-                                                            SuccessBlock:success
-                                                               failBlock:failed];
-              }];
-         }
+        if (!granted)
+        {
+            dispatch_async(dispatch_get_main_queue(), ^(void)
+            {
+                [self twitterAccessDidFail:error];
+            });
+        }
+        else
+        {
+            NSArray *twitterAccounts = [account accountsWithAccountType:accountType];
+            if (!twitterAccounts.count)
+            {
+                dispatch_async(dispatch_get_main_queue(), ^(void)
+                {
+                    SLComposeViewController *composeViewController = [SLComposeViewController composeViewControllerForServiceType:SLServiceTypeTwitter];
+                    [self presentViewController:composeViewController animated:NO completion:^{
+                        [composeViewController dismissViewControllerAnimated:NO completion:nil];
+                    }];
+                });
+            }
+            else
+            {
+                [[VUserManager sharedInstance] loginViaTwitterOnCompletion:^(VUser *user, BOOL created)
+                {
+                    self.profile = user;
+                    if (created)
+                    {
+                        [self performSegueWithIdentifier:@"toProfileWithTwitter" sender:self];
+                    }
+                    else
+                    {
+                        [self dismissViewControllerAnimated:YES completion:NULL];
+                    }
+                }
+                                                                    onError:^(NSError *error)
+                {
+                    [self didFailWithError:error];
+                }];
+            }
+        }
     }];
-}
-
-- (void)didLoginWithUser:(VUser*)mainUser
-{
-    VLog(@"Succesfully logged in as: %@", mainUser);
-    
-    self.profile = mainUser;
-
-    if (kVLoginTypeCreateFaceBook == self.loginType)
-        [self performSegueWithIdentifier:@"toProfileWithFacebook" sender:self];
-    else if (kVLoginTypeCreateTwitter == self.loginType)
-        [self performSegueWithIdentifier:@"toProfileWithTwitter" sender:self];
-    else
-        [self dismissViewControllerAnimated:YES completion:NULL];
 }
 
 - (void)didFailWithError:(NSError*)error

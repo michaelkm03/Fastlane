@@ -89,12 +89,13 @@
         CGImageRelease(image);
     }
     
-    [self imagePickerFinishedWithData:mediaData
-                            extension:mediaType
-                         previewImage:previewImage
-                             mediaURL:mediaURL];
-    
-    [self dismissViewControllerAnimated:YES completion:nil];
+    [self dismissViewControllerAnimated:YES completion:^
+    {
+        [self imagePickerFinishedWithData:mediaData
+                                extension:mediaType
+                             previewImage:previewImage
+                                 mediaURL:mediaURL];
+    }];
 }
 
 - (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker

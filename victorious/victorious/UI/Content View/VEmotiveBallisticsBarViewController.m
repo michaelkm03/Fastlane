@@ -9,7 +9,7 @@
 #import "VEmotiveBallisticsBarViewController.h"
 
 #import "VConstants.h"
-#import "VObjectManager.h"
+#import "VObjectManager+Sequence.h"
 #import "VLoginViewController.h"
 
 #import "UIView+VFrameManipulation.h"
@@ -17,10 +17,15 @@
 #import "VThemeManager.h"
 
 #import "VVoteType+Fetcher.h"
+#import "VSequence+Fetcher.h"
 
 #import "VSequence.h"
 
 @interface VEmotiveBallisticsBarViewController ()
+
+@property (strong, nonatomic) VVoteType* likeVote;
+@property (strong, nonatomic) VVoteType* dislikeVote;
+@property (strong, nonatomic) NSMutableDictionary* voteCounts;
 
 @end
 
@@ -50,28 +55,55 @@
     UIPanGestureRecognizer *negativePanGesture = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(handlePan:)];
     [self.rightButton addGestureRecognizer:negativePanGesture];
     
-    NSArray* voteTypes = [VVoteType allVoteTypes];
-    [voteTypes enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
-        if (idx == self.leftButton.tag)
-        {
-//            [self.positiveEmotiveButton setImage:[] forState:<#(UIControlState)#>]
-        }
-    }];
+    self.dislikeVote = [VVoteType dislikeVote];
+    self.likeVote = [VVoteType likeVote];
+    
+    self.voteCounts = [[NSMutableDictionary alloc] init];
 }
 
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
     
-    self.leftLabel.text = @(0).stringValue;
-    self.rightLabel.text = @(0).stringValue;
+    self.leftLabel.text = [self.sequence voteCountForVoteID:self.likeVote.remoteId].stringValue;
+    self.rightLabel.text = [self.sequence voteCountForVoteID:self.dislikeVote.remoteId].stringValue;
+}
+
+- (void)viewDidDisappear:(BOOL)animated
+{
+    [super viewDidDisappear:animated];
+    
+    NSArray* voteTypes = [self.voteCounts allKeys];
+    
+    NSArray* voteCounts = [self.voteCounts objectsForKeys:voteTypes notFoundMarker:[NSNull null]];
+    
+    if ([voteTypes count])
+    {
+        [[VObjectManager sharedManager] voteSequence:self.sequence
+                                           voteTypes:voteTypes
+                                          votecounts:voteCounts
+                                        successBlock:^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
+         {
+             VLog(@"Succeeded with objects: %@", resultObjects);
+             
+             //Update the sequence
+             [[VObjectManager sharedManager] fetchSequence:self.sequence.remoteId
+                                              successBlock:nil
+                                                 failBlock:nil];
+         }
+                                           failBlock:^(NSOperation* operation, NSError* error)
+         {
+             VLog(@"Failed with error: %@", error);
+         }];
+    }
 }
 
 - (void)setSequence:(VSequence *)sequence
 {
+    [super setSequence:sequence];
 
-    self.leftLabel.text = @(0).stringValue;
-    self.rightLabel.text = @(0).stringValue;
+    self.leftLabel.text = [self.sequence voteCountForVoteID:self.likeVote.remoteId].stringValue;
+    self.rightLabel.text = [self.sequence voteCountForVoteID:self.dislikeVote.remoteId].stringValue;
 }
 
 #pragma mark - Actions
@@ -90,6 +122,10 @@
     self.leftLabel.text = @(voteCount).stringValue;
     
     [self throwEmotive:self.leftButton toPoint:CGPointMake(x, y)];
+    
+    NSNumber* currentCount = [self.voteCounts objectForKey:self.likeVote.remoteId.stringValue];
+    currentCount = @(currentCount.integerValue + 1);
+    [self.voteCounts setObject:currentCount forKey:self.likeVote.remoteId.stringValue];
 }
 
 - (IBAction)pressedNegativeEmotive:(id)sender
@@ -108,6 +144,10 @@
     self.rightLabel.text = @(voteCount).stringValue;
     
     [self throwEmotive:self.rightButton toPoint:CGPointMake(x, y)];
+    
+    NSNumber* currentCount = [self.voteCounts objectForKey:self.dislikeVote.remoteId.stringValue];
+    currentCount = @(currentCount.integerValue + 1);
+    [self.voteCounts setObject:currentCount forKey:self.dislikeVote.remoteId.stringValue];
 }
 
 - (void)handlePan:(UIPanGestureRecognizer*)recognizer
