@@ -62,7 +62,7 @@
     
     UIImage* newImage = [self.removeMediaButton.imageView.image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
     [self.rightRemoveButton setImage:newImage forState:UIControlStateNormal];
-    self.rightRemoveButton.tintColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVMainColor];
+    self.rightRemoveButton.tintColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
     self.removeMediaButton.hidden = NO;
 
     [self validatePostButtonState];
