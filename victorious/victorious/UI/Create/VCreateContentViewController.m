@@ -186,7 +186,6 @@ CGFloat VCreateViewControllerLargePadding = 20;
 }
 
 #pragma mark - UITextViewDelegate
-
 - (void)textViewDidChange:(UITextView *)textView
 {
     NSInteger characterCount = VConstantsMessageLength-[textView.text length];
@@ -228,4 +227,5 @@ CGFloat VCreateViewControllerLargePadding = 20;
     self.previewImageView.hidden = NO;
     self.removeMediaButton.hidden = NO;
 }
+
 @end

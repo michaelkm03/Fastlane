@@ -12,11 +12,9 @@
 
 @interface VCreatePollViewController : VCreateContentViewController
 
-@property (weak, nonatomic) IBOutlet UIImageView *leftPreviewImageView;
 @property (weak, nonatomic) IBOutlet UIImageView *rightPreviewImageView;
 
 @property (weak, nonatomic) IBOutlet UIButton *rightRemoveButton;
-@property (weak, nonatomic) IBOutlet UIButton *addMoreMediaButton;
 
 @property (weak, nonatomic) IBOutlet UITextField *questionTextField;
 @property (weak, nonatomic) IBOutlet UITextField *leftAnswerTextField;

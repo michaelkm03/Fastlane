@@ -13,6 +13,7 @@
 #import "UIView+AutoLayout.h"
 #import "VConstants.h"
 #import "NSString+VParseHelp.h"
+#import "UIView+VFrameManipulation.h"
 
 @interface VCreatePollViewController() <UITextFieldDelegate>
 
@@ -40,16 +41,18 @@
 {
     [super viewDidLoad];
     
-//    self.questionTextField.textColor = [[VThemeManager sharedThemeManager] themedColorForKeyPath:kVCreatePollQuestionColor];
+    self.addMediaView.translatesAutoresizingMaskIntoConstraints = YES;
+    self.rightPreviewImageView.translatesAutoresizingMaskIntoConstraints = YES;
+
+    self.questionTextField.textColor =  [[VThemeManager sharedThemeManager] themedColorForKey:kVContentAccentColor];
     self.questionTextField.placeholder = NSLocalizedString(@"Ask a Question...", @"Poll question placeholder");
 //    self.questionViews.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKeyPath:kVCreatePollQuestionBorderColor];
     
 //    self.leftAnswerTextField.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKeyPath:kVCreatePollQuestionLeftBGColor];
-//    self.leftAnswerTextField.textColor = [[VThemeManager sharedThemeManager] themedColorForKeyPath:kVCreatePollQuestionLeftColor];
+    self.leftAnswerTextField.textColor =  [[VThemeManager sharedThemeManager] themedColorForKey:kVContentAccentColor];
     self.leftAnswerTextField.placeholder = NSLocalizedString(@"VOTE THIS...", @"Poll left question placeholder");
     
-//    self.rightAnswerTextField.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKeyPath:kVCreatePollQuestionRightBGColor];
-//    self.rightAnswerTextField.textColor = [[VThemeManager sharedThemeManager] themedColorForKeyPath:kVCreatePollQuestionRightColor];
+    self.rightAnswerTextField.textColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVContentAccentColor];
     self.rightAnswerTextField.placeholder = NSLocalizedString(@"VOTE THAT...", @"Poll left question placeholder");
     
     [self setType:self.type];
@@ -58,7 +61,8 @@
     UIImage* newImage = [self.removeMediaButton.imageView.image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
     [self.rightRemoveButton setImage:newImage forState:UIControlStateNormal];
     self.rightRemoveButton.tintColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVMainColor];
-    
+    self.removeMediaButton.hidden = NO;
+
     [self validatePostButtonState];
     [self updateViewState];
 }
@@ -74,7 +78,7 @@
 {
     [self.postButton setEnabled:YES];
     
-    if(!self.mediaData)
+    if(!self.mediaData || !self.secondMediaData)
         [self.postButton setEnabled:NO];
     
     else if([self.questionTextField.text isEmpty])
@@ -98,38 +102,15 @@
 
 - (void)updateViewState
 {
-    if(!self.mediaData && !self.secondMediaData)
+    if(!self.secondMediaData)
     {
-        [self.addMediaView setHidden:NO];
-        
-        [self.previewImageView setHidden:YES];
-        [self.removeMediaButton setHidden:YES];
-        [self.rightRemoveButton setHidden:YES];
-        [self.leftPreviewImageView setHidden:YES];
-        [self.rightPreviewImageView setHidden:YES];
-        [self.addMoreMediaButton setHidden:YES];
+        self.rightPreviewImageView.hidden = YES;
+        self.rightRemoveButton.hidden = YES;
     }
-    else if(self.mediaData && self.secondMediaData)
+    else
     {
-        [self.addMediaView setHidden:YES];
-        [self.addMoreMediaButton setHidden:YES];
-        [self.previewImageView setHidden:YES];
-        
-        [self.removeMediaButton setHidden:NO];
-        [self.rightRemoveButton setHidden:NO];
-        [self.leftPreviewImageView setHidden:NO];
-        [self.rightPreviewImageView setHidden:NO];
-    }
-    else if (self.mediaData && !self.secondMediaData)
-    {
-        [self.addMediaView setHidden:YES];
-        [self.rightRemoveButton setHidden:YES];
-        [self.leftPreviewImageView setHidden:YES];
-        [self.rightPreviewImageView setHidden:YES];
-        
-        [self.previewImageView setHidden:NO];
-        [self.removeMediaButton setHidden:NO];
-        [self.addMoreMediaButton setHidden:NO];
+        self.rightPreviewImageView.hidden = NO;
+        self.rightRemoveButton.hidden = NO;
     }
 }
 
@@ -137,33 +118,57 @@
 
 - (IBAction)clearMedia:(id)sender
 {
-    self.mediaData = nil;
-    self.mediaType = nil;
-    self.leftPreviewImageView.image = nil;
-    self.previewImageView.image = nil;
+    self.addMediaView.userInteractionEnabled = NO;
+    self.postButton.userInteractionEnabled = NO;
     
-    if(self.secondMediaData)
-    {
-        NSData *data = self.secondMediaData;
-        NSString *type = self.secondMediaType;
-        UIImage *image = self.rightPreviewImageView.image;
-        [self clearRightMedia:nil];
-        [self imagePickerFinishedWithData:data extension:type previewImage:image mediaURL:nil];
-    }
-    else
-    {
-        [self updateViewState];
-        [self validatePostButtonState];
-    }
+    [UIView animateWithDuration:.5f
+                     animations:^
+     {
+         [self.addMediaView setXOrigin:self.addMediaView.frame.origin.x - self.addMediaView.frame.size.width];
+         [self.rightPreviewImageView setXOrigin:self.rightPreviewImageView.frame.origin.x - self.addMediaView.frame.size.width];
+     }
+                     completion:^(BOOL finished)
+     {
+         self.addMediaView.userInteractionEnabled = YES;
+         self.postButton.userInteractionEnabled = YES;
+         
+         self.mediaData = self.secondMediaData;
+         self.mediaType = self.secondMediaType;
+         self.previewImageView.image = self.rightPreviewImageView.image;
+         
+         self.secondMediaData = nil;
+         self.secondMediaType = nil;
+         self.rightPreviewImageView.image = nil;
+         
+         [self updateViewState];
+         
+         [self.rightPreviewImageView setXOrigin:self.rightPreviewImageView.frame.origin.x + self.addMediaView.frame.size.width];
+         
+         [self validatePostButtonState];
+     }];
 }
 
 - (IBAction)clearRightMedia:(id)sender
 {
-    self.secondMediaData = nil;
-    self.secondMediaType = nil;
-    self.rightPreviewImageView.image = nil;
-    [self updateViewState];
-    [self validatePostButtonState];
+    self.addMediaView.userInteractionEnabled = NO;
+    self.postButton.userInteractionEnabled = NO;
+
+    [UIView animateWithDuration:.5f
+                     animations:^
+     {
+         [self.addMediaView setXOrigin:self.addMediaView.frame.origin.x - self.addMediaView.frame.size.width];
+     }
+                     completion:^(BOOL finished)
+     {
+         self.addMediaView.userInteractionEnabled = YES;
+         self.postButton.userInteractionEnabled = YES;
+         
+         self.secondMediaData = nil;
+         self.secondMediaType = nil;
+         self.rightPreviewImageView.image = nil;
+         [self updateViewState];
+         [self validatePostButtonState];
+     }];
 }
 
 - (IBAction)postButtonAction:(id)sender
@@ -207,7 +212,6 @@
     {
         self.mediaData = data;
         self.mediaType = extension;
-        self.leftPreviewImageView.image = previewImage;
         self.previewImageView.image = previewImage;
     }
     else
@@ -217,7 +221,23 @@
         self.rightPreviewImageView.image = previewImage;
     }
     
+    self.addMediaView.userInteractionEnabled = NO;
+    self.postButton.userInteractionEnabled = NO;
+    
     [self updateViewState];
-    [self validatePostButtonState];
+    
+    [UIView animateWithDuration:.5f
+                     animations:^
+     {
+         [self.addMediaView setXOrigin:self.addMediaView.frame.origin.x + self.addMediaView.frame.size.width];
+     }
+                     completion:^(BOOL finished)
+     {
+         self.addMediaView.userInteractionEnabled = YES;
+         self.postButton.userInteractionEnabled = YES;
+         
+         [self validatePostButtonState];
+     }];
 }
+
 @end
