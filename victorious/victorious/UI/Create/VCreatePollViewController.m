@@ -41,6 +41,8 @@
 {
     [super viewDidLoad];
     
+    self.edgesForExtendedLayout = UIRectEdgeNone;
+    
     self.addMediaView.translatesAutoresizingMaskIntoConstraints = YES;
     self.rightPreviewImageView.translatesAutoresizingMaskIntoConstraints = YES;
 
