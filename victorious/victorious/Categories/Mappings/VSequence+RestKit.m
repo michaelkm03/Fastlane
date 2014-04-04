@@ -46,18 +46,14 @@
     
     [mapping addAttributeMappingsFromDictionary:propertyMap];
     
-    //Now add relationships
-    //This is equivilent to the above except it also checks for camelCase ect. versions of the keyPath
     [mapping addRelationshipMappingWithSourceKeyPath:VSelectorName(nodes) mapping:[VNode entityMapping]];
     [mapping addRelationshipMappingWithSourceKeyPath:VSelectorName(comments) mapping:[VComment entityMapping]];
     
     mapping.forceCollectionMapping = YES;
-    RKRelationshipMapping* voteResultMapping = [RKRelationshipMapping relationshipMappingFromKeyPath:@"sequence_counts.votetype"
+    RKRelationshipMapping* voteResultMapping = [RKRelationshipMapping relationshipMappingFromKeyPath:@"sequence_counts.votetypes"
                                                                                            toKeyPath:VSelectorName(voteResults)
                                                                                          withMapping:[VVoteResult entityMapping]];
     [mapping addPropertyMapping:voteResultMapping];
-//    [mapping addRelationshipMappingWithSourceKeyPath:VSelectorName(voteResults) mapping:[VVoteResult entityMapping]];
-    
     
     [mapping addConnectionForRelationship:@"user" connectedBy:@{@"createdBy" : @"remoteId"}];
     [mapping addConnectionForRelationship:@"comments" connectedBy:@{@"remoteId" : @"sequenceId"}];

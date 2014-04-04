@@ -13,8 +13,8 @@
 @property (weak, nonatomic) IBOutlet UILabel *usernameLabel;
 @property (weak, nonatomic) IBOutlet UILabel *messageLabel;
 @property (weak, nonatomic) IBOutlet UILabel *dateLabel;
+@property (weak, nonatomic) IBOutlet UIButton *profileImageButton;
+@property (strong, nonatomic) VConversation* conversation;
 @property (nonatomic) BOOL seen;
-
-- (void)setConversation:(VConversation *)conversation;
 
 @end
