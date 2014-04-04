@@ -69,6 +69,7 @@
 		3FDEDD0618CE48210028E3F1 /* VRemixStitchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3FDEDD0518CE48210028E3F1 /* VRemixStitchViewController.m */; };
 		3FDEDD0C18CE5E180028E3F1 /* VAbstractVideoEditorViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3FDEDD0B18CE5E180028E3F1 /* VAbstractVideoEditorViewController.m */; };
 		3FF7B6D718EE4009003831CD /* UIImage+Masking.m in Sources */ = {isa = PBXBuildFile; fileRef = 3FF7B6D618EE4009003831CD /* UIImage+Masking.m */; };
+		3FF7B6DA18EE477D003831CD /* UIView+Masking.m in Sources */ = {isa = PBXBuildFile; fileRef = 3FF7B6D918EE477D003831CD /* UIView+Masking.m */; };
 		3FF8B7981868EE7E00806EA0 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3FF8B7971868EE7E00806EA0 /* Main.storyboard */; };
 		3FF8B7A51868FC1C00806EA0 /* malTheme.plist in Resources */ = {isa = PBXBuildFile; fileRef = 3FF8B7A41868FC1C00806EA0 /* malTheme.plist */; };
 		3FF8C50018A59EAB00812968 /* VCreateContentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3FF8C4F418A59EAB00812968 /* VCreateContentViewController.m */; };
@@ -344,6 +345,8 @@
 		3FDEDD0B18CE5E180028E3F1 /* VAbstractVideoEditorViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VAbstractVideoEditorViewController.m; path = "UI/Video Remix/VAbstractVideoEditorViewController.m"; sourceTree = "<group>"; };
 		3FF7B6D518EE4009003831CD /* UIImage+Masking.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "UIImage+Masking.h"; path = "Categories/UIImage+Masking.h"; sourceTree = "<group>"; };
 		3FF7B6D618EE4009003831CD /* UIImage+Masking.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "UIImage+Masking.m"; path = "Categories/UIImage+Masking.m"; sourceTree = "<group>"; };
+		3FF7B6D818EE477D003831CD /* UIView+Masking.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "UIView+Masking.h"; path = "Categories/UIView+Masking.h"; sourceTree = "<group>"; };
+		3FF7B6D918EE477D003831CD /* UIView+Masking.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "UIView+Masking.m"; path = "Categories/UIView+Masking.m"; sourceTree = "<group>"; };
 		3FF8B7971868EE7E00806EA0 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
 		3FF8B7A41868FC1C00806EA0 /* malTheme.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = malTheme.plist; sourceTree = "<group>"; };
 		3FF8C4F318A59EAB00812968 /* VCreateContentViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VCreateContentViewController.h; sourceTree = "<group>"; };
@@ -987,6 +990,8 @@
 				BED7F67918E0BD5D00545DF6 /* UIImage+ImageCreation.m */,
 				3FF7B6D518EE4009003831CD /* UIImage+Masking.h */,
 				3FF7B6D618EE4009003831CD /* UIImage+Masking.m */,
+				3FF7B6D818EE477D003831CD /* UIView+Masking.h */,
+				3FF7B6D918EE477D003831CD /* UIView+Masking.m */,
 			);
 			name = Categories;
 			sourceTree = "<group>";
@@ -1751,6 +1756,7 @@
 				3FF8C50418A59EAB00812968 /* VKeyboardBarContainerViewController.m in Sources */,
 				BE171E161868C211004E5202 /* VRule+RestKit.m in Sources */,
 				3F9B66741888C4B20046F826 /* VCommunityStreamViewController.m in Sources */,
+				3FF7B6DA18EE477D003831CD /* UIView+Masking.m in Sources */,
 				BE185DF518E3BB54001C447F /* VActionBarViewController.m in Sources */,
 				BE171E1E1868C211004E5202 /* VErrorMessage.m in Sources */,
 				BE171E0C1868C211004E5202 /* VNode+Fetcher.m in Sources */,
