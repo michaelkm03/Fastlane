@@ -22,6 +22,8 @@
 {
     [super viewWillAppear:animated];
     
+    self.edgesForExtendedLayout = UIRectEdgeNone;
+    
     VMessageViewController* messageVC = (VMessageViewController*)self.conversationTableViewController;
     
     VLog(@"title: %@", self.navigationItem.title);
