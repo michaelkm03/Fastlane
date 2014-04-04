@@ -203,6 +203,9 @@
         return NO;
     }
 
+    if (textView.text.length >= 140.0)
+        return NO;
+
     return YES;
 }
 
