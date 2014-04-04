@@ -68,18 +68,12 @@
     [TestFlight takeOff:[[NSBundle mainBundle] objectForInfoDictionaryKey:kTestflightReleaseToken]];
 #endif
     
-//    [[VUserManager sharedInstance] silentlyLogin];
-    
     // Initialize the chromecast device controller.
     self.chromecastDeviceController = [[ChromecastDeviceController alloc] init];
     
     // Scan for devices.
     [self.chromecastDeviceController performScan:YES];
 
-    NSURL*  openURL =   launchOptions[UIApplicationLaunchOptionsURLKey];
-    if (openURL)
-        [self handleOpenURL:openURL];
-    
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(enteredFullscreen:)
                                                  name:MPMoviePlayerWillEnterFullscreenNotification
@@ -89,8 +83,10 @@
                                                  name:MPMoviePlayerWillExitFullscreenNotification
                                                object:nil];
 
+    NSURL*  openURL =   launchOptions[UIApplicationLaunchOptionsURLKey];
+    if (openURL)
+        [self handleOpenURL:openURL];
     
-
     return YES;
 }
 
@@ -203,7 +199,7 @@
     NSString*   linkString = [aURL resourceSpecifier];
     NSError*    error = NULL;
 
-    for (NSString *pattern in [[self deepLinkPatterns] allKeys])
+    for (NSString* pattern in [[self deepLinkPatterns] allKeys])
     {
         NSRegularExpression*    regex = [NSRegularExpression regularExpressionWithPattern:pattern
                                                                                   options:NSRegularExpressionCaseInsensitive
@@ -224,7 +220,7 @@
             }
             
             //  This may look ugly, but this provides greater type safety than simply calling performSelector, allowing ARC to perform correctly.
-            SEL     selector = NSSelectorFromString([[self deepLinkPatterns] objectForKey:pattern]);
+            SEL selector = NSSelectorFromString([[self deepLinkPatterns] objectForKey:pattern]);
             IMP imp = [self methodForSelector:selector];
             void (*func)(id, SEL, NSArray *) = (void *)imp;
             func(self, selector, captures);
@@ -237,10 +233,10 @@
 - (NSDictionary *)deepLinkPatterns
 {
     return @{
-             @"//leagues/(\\d+)/join"                       : @"handleSequenceURL:",
-             @"//leagues/(\\d+)/questions/(\\d+)"           : @"handleProfileURL:",
-             @"//leagues/(\\d+)/comments"                   : @"handleConversationURL:",
-             @"//leagues/(\\d+)/questions/(\\d+)/review"    : @"handleOtherStuffURL:"
+             @"//victorious/(\\d+)/sequence"                : @"handleSequenceURL:",
+             @"//victorious/(\\d+)/profile/(\\d+)"          : @"handleProfileURL:",
+             @"//victorious/(\\d+)/conversation"            : @"handleConversationURL:",
+             @"//victorious/(\\d+)/others/(\\d+)/review"    : @"handleOtherStuffURL:"
              };
 }
 

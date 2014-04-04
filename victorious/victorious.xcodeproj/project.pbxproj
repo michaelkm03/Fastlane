@@ -68,6 +68,7 @@
 		3FDEDD0318CE47E80028E3F1 /* VRemixTrimViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3FDEDD0218CE47E80028E3F1 /* VRemixTrimViewController.m */; };
 		3FDEDD0618CE48210028E3F1 /* VRemixStitchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3FDEDD0518CE48210028E3F1 /* VRemixStitchViewController.m */; };
 		3FDEDD0C18CE5E180028E3F1 /* VAbstractVideoEditorViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3FDEDD0B18CE5E180028E3F1 /* VAbstractVideoEditorViewController.m */; };
+		3FF7B6D718EE4009003831CD /* UIImage+Masking.m in Sources */ = {isa = PBXBuildFile; fileRef = 3FF7B6D618EE4009003831CD /* UIImage+Masking.m */; };
 		3FF8B7981868EE7E00806EA0 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3FF8B7971868EE7E00806EA0 /* Main.storyboard */; };
 		3FF8B7A51868FC1C00806EA0 /* malTheme.plist in Resources */ = {isa = PBXBuildFile; fileRef = 3FF8B7A41868FC1C00806EA0 /* malTheme.plist */; };
 		3FF8C50018A59EAB00812968 /* VCreateContentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3FF8C4F418A59EAB00812968 /* VCreateContentViewController.m */; };
@@ -341,6 +342,8 @@
 		3FDEDD0518CE48210028E3F1 /* VRemixStitchViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VRemixStitchViewController.m; path = "UI/Video Remix/VRemixStitchViewController.m"; sourceTree = "<group>"; };
 		3FDEDD0A18CE5E180028E3F1 /* VAbstractVideoEditorViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VAbstractVideoEditorViewController.h; path = "UI/Video Remix/VAbstractVideoEditorViewController.h"; sourceTree = "<group>"; };
 		3FDEDD0B18CE5E180028E3F1 /* VAbstractVideoEditorViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VAbstractVideoEditorViewController.m; path = "UI/Video Remix/VAbstractVideoEditorViewController.m"; sourceTree = "<group>"; };
+		3FF7B6D518EE4009003831CD /* UIImage+Masking.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "UIImage+Masking.h"; path = "Categories/UIImage+Masking.h"; sourceTree = "<group>"; };
+		3FF7B6D618EE4009003831CD /* UIImage+Masking.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "UIImage+Masking.m"; path = "Categories/UIImage+Masking.m"; sourceTree = "<group>"; };
 		3FF8B7971868EE7E00806EA0 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
 		3FF8B7A41868FC1C00806EA0 /* malTheme.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = malTheme.plist; sourceTree = "<group>"; };
 		3FF8C4F318A59EAB00812968 /* VCreateContentViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VCreateContentViewController.h; sourceTree = "<group>"; };
@@ -982,6 +985,8 @@
 				3FD7FFB118C01B2B00945E5F /* UIImage+Cropping.m */,
 				BED7F67818E0BD5D00545DF6 /* UIImage+ImageCreation.h */,
 				BED7F67918E0BD5D00545DF6 /* UIImage+ImageCreation.m */,
+				3FF7B6D518EE4009003831CD /* UIImage+Masking.h */,
+				3FF7B6D618EE4009003831CD /* UIImage+Masking.m */,
 			);
 			name = Categories;
 			sourceTree = "<group>";
@@ -1487,7 +1492,7 @@
 						DevelopmentTeam = 82T26U698A;
 						SystemCapabilities = {
 							com.apple.BackgroundModes = {
-								enabled = 1;
+								enabled = 0;
 							};
 						};
 					};
@@ -1719,6 +1724,7 @@
 				BED7F66518E0A6F800545DF6 /* TWAPIManager.m in Sources */,
 				3F919908187600720055FE37 /* VSettingsViewController.m in Sources */,
 				BE692B53186E60B300C71336 /* VCommentsTableViewController.m in Sources */,
+				3FF7B6D718EE4009003831CD /* UIImage+Masking.m in Sources */,
 				BE171E0D1868C211004E5202 /* VAnswer+RestKit.m in Sources */,
 				3FDEDD0618CE48210028E3F1 /* VRemixStitchViewController.m in Sources */,
 				3F71A7DA18D7C6D20048FF60 /* VRemixSliderLeft.m in Sources */,

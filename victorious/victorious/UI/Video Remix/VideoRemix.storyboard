@@ -19,7 +19,7 @@
             </objects>
             <point key="canvasLocation" x="55" y="84"/>
         </scene>
-        <!--Remix Trim View Controller-->
+        <!--Remix Trim View Controller - Trim-->
         <scene sceneID="n0d-Gw-mVR">
             <objects>
                 <viewController storyboardIdentifier="remixTrim" useStoryboardIdentifierAsRestorationIdentifier="YES" id="uEv-AE-duX" customClass="VRemixTrimViewController" sceneMemberID="viewController">
@@ -146,7 +146,7 @@
                         </subviews>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
-                    <navigationItem key="navigationItem" id="oAM-sY-FT0">
+                    <navigationItem key="navigationItem" title="Trim" id="oAM-sY-FT0">
                         <barButtonItem key="leftBarButtonItem" image="cameraButtonClose" id="3FT-1D-ihZ">
                             <connections>
                                 <action selector="closeButtonClicked:" destination="uEv-AE-duX" id="Ivr-LP-FCK"/>
@@ -176,7 +176,7 @@
             </objects>
             <point key="canvasLocation" x="482" y="84"/>
         </scene>
-        <!--Remix Stitch View Controller-->
+        <!--Remix Stitch View Controller - Stitch-->
         <scene sceneID="te2-Fv-6MP">
             <objects>
                 <viewController storyboardIdentifier="remixStitch" useStoryboardIdentifierAsRestorationIdentifier="YES" id="vMj-SS-k4u" customClass="VRemixStitchViewController" sceneMemberID="viewController">
@@ -234,11 +234,11 @@
                                 </connections>
                             </button>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="acY-vU-rwA">
-                                <rect key="frame" x="100" y="440" width="120" height="48"/>
+                                <rect key="frame" x="80" y="440" width="160" height="50"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             </imageView>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="U7e-uL-OMg">
-                                <rect key="frame" x="0.0" y="440" width="92" height="50"/>
+                                <rect key="frame" x="0.0" y="440" width="80" height="50"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <state key="normal" image="cameraButtonStitchLeft">
@@ -249,7 +249,7 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="tLI-NC-Nxa">
-                                <rect key="frame" x="228" y="440" width="92" height="50"/>
+                                <rect key="frame" x="240" y="440" width="80" height="50"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <state key="normal" image="cameraButtonStitchRight">
@@ -262,7 +262,7 @@
                         </subviews>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
-                    <navigationItem key="navigationItem" id="DLc-3A-J8B">
+                    <navigationItem key="navigationItem" title="Stitch" id="DLc-3A-J8B">
                         <barButtonItem key="rightBarButtonItem" image="cameraButtonNext" id="8ZA-Jm-6zK"/>
                     </navigationItem>
                     <connections>

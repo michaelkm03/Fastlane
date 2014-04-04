@@ -28,9 +28,17 @@
 				<string>fb1374328719478033</string>
 			</array>
 		</dict>
+		<dict>
+			<key>CFBundleURLName</key>
+			<string>com.getvictorious.deeplinking.scheme</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>getvictorious</string>
+			</array>
+		</dict>
 	</array>
 	<key>CFBundleVersion</key>
-	<string>220</string>
+	<string>223</string>
 	<key>FacebookAppID</key>
 	<string>1374328719478033</string>
 	<key>FacebookDisplayName</key>
@@ -48,10 +56,6 @@
 		<string>Roboto-Light.ttf</string>
 		<string>Roboto-Regular.ttf</string>
 		<string>Roboto-Black.ttf</string>
-	</array>
-	<key>UIBackgroundModes</key>
-	<array>
-		<string>fetch</string>
 	</array>
 	<key>UIMainStoryboardFile</key>
 	<string>Main</string>
