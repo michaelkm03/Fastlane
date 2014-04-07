@@ -72,8 +72,6 @@
 		3FF7B6DA18EE477D003831CD /* UIView+Masking.m in Sources */ = {isa = PBXBuildFile; fileRef = 3FF7B6D918EE477D003831CD /* UIView+Masking.m */; };
 		3FF8B7981868EE7E00806EA0 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3FF8B7971868EE7E00806EA0 /* Main.storyboard */; };
 		3FF8B7A51868FC1C00806EA0 /* malTheme.plist in Resources */ = {isa = PBXBuildFile; fileRef = 3FF8B7A41868FC1C00806EA0 /* malTheme.plist */; };
-		3FF8C50018A59EAB00812968 /* VCreateContentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3FF8C4F418A59EAB00812968 /* VCreateContentViewController.m */; };
-		3FF8C50118A59EAB00812968 /* VCreateForumViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3FF8C4F618A59EAB00812968 /* VCreateForumViewController.m */; };
 		3FF8C50218A59EAB00812968 /* VCreatePollViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3FF8C4F818A59EAB00812968 /* VCreatePollViewController.m */; };
 		3FF8C50418A59EAB00812968 /* VKeyboardBarContainerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3FF8C4FE18A59EAB00812968 /* VKeyboardBarContainerViewController.m */; };
 		5F51F81A189AEBF800A546D1 /* VAbstractProfileEditViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F51F819189AEBF800A546D1 /* VAbstractProfileEditViewController.m */; };
@@ -349,10 +347,6 @@
 		3FF7B6D918EE477D003831CD /* UIView+Masking.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "UIView+Masking.m"; path = "Categories/UIView+Masking.m"; sourceTree = "<group>"; };
 		3FF8B7971868EE7E00806EA0 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
 		3FF8B7A41868FC1C00806EA0 /* malTheme.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = malTheme.plist; sourceTree = "<group>"; };
-		3FF8C4F318A59EAB00812968 /* VCreateContentViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VCreateContentViewController.h; sourceTree = "<group>"; };
-		3FF8C4F418A59EAB00812968 /* VCreateContentViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VCreateContentViewController.m; sourceTree = "<group>"; };
-		3FF8C4F518A59EAB00812968 /* VCreateForumViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VCreateForumViewController.h; sourceTree = "<group>"; };
-		3FF8C4F618A59EAB00812968 /* VCreateForumViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VCreateForumViewController.m; sourceTree = "<group>"; };
 		3FF8C4F718A59EAB00812968 /* VCreatePollViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VCreatePollViewController.h; sourceTree = "<group>"; };
 		3FF8C4F818A59EAB00812968 /* VCreatePollViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VCreatePollViewController.m; sourceTree = "<group>"; };
 		3FF8C4F918A59EAB00812968 /* VCreateSequenceDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VCreateSequenceDelegate.h; sourceTree = "<group>"; };
@@ -741,10 +735,6 @@
 		3F53E0C418A595AC00089C20 /* Create */ = {
 			isa = PBXGroup;
 			children = (
-				3FF8C4F318A59EAB00812968 /* VCreateContentViewController.h */,
-				3FF8C4F418A59EAB00812968 /* VCreateContentViewController.m */,
-				3FF8C4F518A59EAB00812968 /* VCreateForumViewController.h */,
-				3FF8C4F618A59EAB00812968 /* VCreateForumViewController.m */,
 				3FF8C4F718A59EAB00812968 /* VCreatePollViewController.h */,
 				3FF8C4F818A59EAB00812968 /* VCreatePollViewController.m */,
 				3FF8C4F918A59EAB00812968 /* VCreateSequenceDelegate.h */,
@@ -1715,9 +1705,7 @@
 				BE46E69718CA750D00974DAF /* VContentTransitioningDelegate.m in Sources */,
 				BEA5BF59187E7E8E0014C3EF /* VObjectManager+DirectMessaging.m in Sources */,
 				3FD7FFBB18C14ED400945E5F /* VExpirationPickerTextField.m in Sources */,
-				3FF8C50118A59EAB00812968 /* VCreateForumViewController.m in Sources */,
 				3F4863FA1869184000F77346 /* VInboxViewController.m in Sources */,
-				3FF8C50018A59EAB00812968 /* VCreateContentViewController.m in Sources */,
 				5FC4DA731897121F006BA107 /* VSignupWithEmailViewController.m in Sources */,
 				BE4B74231880D3850090FF84 /* VComment.m in Sources */,
 				BE171E171868C211004E5202 /* VSequence+RestKit.m in Sources */,
