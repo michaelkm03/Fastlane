@@ -103,7 +103,7 @@
     self.profileCircleImageView.layer.masksToBounds = YES;
     self.profileCircleImageView.layer.cornerRadius = CGRectGetHeight(self.profileCircleImageView.bounds)/2;
     self.profileCircleImageView.layer.borderWidth = 2.0;
-    UIColor* tintColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVMainColor];
+    UIColor* tintColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVAccentColor];
     self.profileCircleImageView.layer.borderColor = tintColor.CGColor;
     self.profileCircleImageView.layer.rasterizationScale = [UIScreen mainScreen].scale;
     self.profileCircleImageView.layer.shouldRasterize = YES;
@@ -125,7 +125,7 @@
 
     self.locationLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVDateFont];
     self.locationLabel.text = self.profile.location;
-    self.locationLabel.textColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVAccentColor];
+    self.locationLabel.textColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVMainTextColor];
 
     self.navigationItem.title = self.profile.shortName;
 }

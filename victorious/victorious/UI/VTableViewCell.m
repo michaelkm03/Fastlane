@@ -17,7 +17,7 @@
     [super awakeFromNib];
     
     [[UIImageView appearanceWhenContainedIn:[self class], nil]
-     setTintColor:[[VThemeManager sharedThemeManager] themedColorForKey:kVAccentColor]];
+     setTintColor:[[VThemeManager sharedThemeManager] themedColorForKey:kVMainTextColor]];
     
     [self.imageViews enumerateObjectsUsingBlock:^(UIImageView *imageView, NSUInteger idx, BOOL *stop)
      {
@@ -27,13 +27,13 @@
     [self.labels enumerateObjectsUsingBlock:^(UILabel *label, NSUInteger idx, BOOL *stop)
      {
          label.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVDetailFont];
-         label.textColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVAccentColor];
+         label.textColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVMainTextColor];
      }];
     
     [self.buttons enumerateObjectsUsingBlock:^(UIButton *button, NSUInteger idx, BOOL *stop)
      {
          button.titleLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVDateFont];
-         button.tintColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVAccentColor];
+         button.tintColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVMainTextColor];
      }];
 }
 
