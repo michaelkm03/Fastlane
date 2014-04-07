@@ -127,7 +127,7 @@
     self.locationLabel.text = self.profile.location;
     self.locationLabel.textColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVMainTextColor];
 
-    self.navigationItem.title = self.profile.shortName;
+    self.navigationItem.title = self.profile.name;
 }
 
 #pragma mark - Actions

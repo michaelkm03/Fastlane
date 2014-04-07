@@ -2,7 +2,7 @@
 //  VUser.m
 //  victorious
 //
-//  Created by Will Long on 1/14/14.
+//  Created by Will Long on 4/7/14.
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
@@ -23,7 +23,6 @@
 @dynamic name;
 @dynamic pictureUrl;
 @dynamic remoteId;
-@dynamic shortName;
 @dynamic tagline;
 @dynamic token;
 @dynamic tokenUpdatedAt;
