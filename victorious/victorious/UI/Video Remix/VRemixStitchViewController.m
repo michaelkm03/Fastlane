@@ -11,19 +11,23 @@
 #import "VCVideoPlayerView.h"
 #import "VThemeManager.h"
 #import "VConstants.h"
+//#import "UIImage+Masking.h"
+#import "UIView+Masking.h"
 
 @interface VRemixStitchViewController ()    <VCVideoPlayerDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate>
 @property (nonatomic, weak)     IBOutlet    VCVideoPlayerView*  previewView;;
 @property (nonatomic, weak)     IBOutlet    UIImageView*        playCircle;
 @property (nonatomic, weak)     IBOutlet    UIImageView*        playButton;
-@property (nonatomic, weak)     IBOutlet    UIImageView*        thumbnail;
+@property (nonatomic, weak)     IBOutlet    UIView*             thumbnail;
 
 @property (nonatomic, weak)     IBOutlet    UIButton*           rateButton;
 @property (nonatomic, weak)     IBOutlet    UIButton*           loopButton;
 @property (nonatomic, weak)     IBOutlet    UIButton*           muteButton;
 
-@property (nonatomic, weak)     IBOutlet    UIButton*           beforeButton;
-@property (nonatomic, weak)     IBOutlet    UIButton*           afterButton;
+@property (nonatomic, weak)     IBOutlet    UIView*             beforeButton;
+@property (nonatomic, weak)     IBOutlet    UIView*             afterButton;
+
+@property (nonatomic, strong)   AVAssetImageGenerator*          imageGenerator;
 
 @property (nonatomic, strong)   NSURL*      beforeAsset;
 @property (nonatomic, strong)   NSURL*      afterAsset;
@@ -51,12 +55,17 @@
     
     self.previewView.player.delegate = self;
     
-    AVAsset*    asset = [AVAsset assetWithURL:self.sourceURL];
-    AVAssetImageGenerator*  assetGenerator = [AVAssetImageGenerator assetImageGeneratorWithAsset:asset];
+    [self.thumbnail maskWithImage:[UIImage imageNamed:@"cameraThumbnailMask"]];
+
+    [self setupThumbnailStrip:self.thumbnail withURL:self.sourceURL];
     
-    CGImageRef  imageRef    =   [assetGenerator copyCGImageAtTime:kCMTimeZero actualTime:NULL error:NULL];
-    self.thumbnail.image = [UIImage imageWithCGImage:imageRef];
-    CGImageRelease(imageRef);
+    [self.beforeButton addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(selectBeforeAssetClicked:)]];
+    self.beforeButton.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"cameraButtonStitchLeft"]];
+    self.beforeButton.userInteractionEnabled = YES;
+    
+    [self.afterButton addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(selectAfterAssetClicked:)]];
+    self.afterButton.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"cameraButtonStitchRight"]];
+    self.afterButton.userInteractionEnabled = YES;
 
     UIImage*    nextButtonImage = [[UIImage imageNamed:@"cameraButtonNext"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithImage:nextButtonImage style:UIBarButtonItemStyleBordered target:self action:@selector(nextButtonClicked:)];
@@ -243,18 +252,80 @@
     self.playCircle.alpha = 0.0;
 }
 
-- (void)didSelectVideo:(NSURL *)asset withThumbnail:(UIImage *)thumbnail
+- (void)didSelectVideo:(NSURL *)asset
 {
     if (self.selectingBeforeURL)
     {
         self.beforeAsset = asset;
-        [self.beforeButton setImage:thumbnail forState:UIControlStateNormal];
+        self.beforeButton.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
+        [self setupThumbnailStrip:self.beforeButton withURL:asset];
     }
     else if (self.selectingAfterURL)
     {
         self.afterAsset = asset;
-        [self.afterButton setImage:thumbnail forState:UIControlStateNormal];
+        self.afterButton.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
+        [self setupThumbnailStrip:self.afterButton withURL:asset];
     }
+}
+
+- (void)setupThumbnailStrip:(UIView *)background withURL:(NSURL *)aURL
+{
+    AVAsset*    asset = [AVAsset assetWithURL:aURL];
+    self.imageGenerator = [AVAssetImageGenerator assetImageGeneratorWithAsset:asset];
+    self.imageGenerator.maximumSize = CGSizeMake(84, 84);
+    
+    int picWidth = 42;
+    Float64 durationSeconds = CMTimeGetSeconds([asset duration]);
+    int picsCnt = ceil(background.frame.size.width / picWidth);
+    NSMutableArray *allTimes = [[NSMutableArray alloc] init];
+    int time4Pic = 0;
+    
+    for (int i=0; i<picsCnt; i++)
+    {
+        time4Pic = i * picWidth;
+        CMTime timeFrame = CMTimeMakeWithSeconds(durationSeconds*time4Pic/background.frame.size.width, 600);
+        [allTimes addObject:[NSValue valueWithCMTime:timeFrame]];
+    }
+    
+    NSArray *times = allTimes;
+    __block int i = 0;
+    [self.imageGenerator generateCGImagesAsynchronouslyForTimes:times
+                                              completionHandler:^(CMTime requestedTime, CGImageRef image, CMTime actualTime, AVAssetImageGeneratorResult result, NSError *error)
+     {
+         if (result == AVAssetImageGeneratorSucceeded)
+         {
+             UIImage *videoScreen = [[UIImage alloc] initWithCGImage:image];
+             UIImageView *tmp = [[UIImageView alloc] initWithImage:videoScreen];
+             tmp.frame = CGRectMake(0, 3, 42, 42);
+             tmp.contentMode = UIViewContentModeScaleAspectFill;
+             
+             int all = (i+1) * tmp.frame.size.width;
+             
+             CGRect currentFrame = tmp.frame;
+             currentFrame.origin.x = i * currentFrame.size.width;
+             if (all > background.frame.size.width)
+             {
+                 int delta = all - background.frame.size.width;
+                 currentFrame.size.width -= delta;
+             }
+             
+             tmp.frame = currentFrame;
+             i++;
+             
+             dispatch_async(dispatch_get_main_queue(), ^{
+                 [background addSubview:tmp];
+             });
+         }
+         
+         if (result == AVAssetImageGeneratorFailed)
+         {
+             NSLog(@"Failed with error: %@", [error localizedDescription]);
+         }
+         if (result == AVAssetImageGeneratorCancelled)
+         {
+             NSLog(@"Canceled");
+         }
+     }];
 }
 
 #pragma mark - UIImagePickerControllerDelegate
@@ -264,16 +335,7 @@
     NSString *mediaType = info[UIImagePickerControllerMediaType];
     if ([mediaType isEqualToString:(id)kUTTypeMovie])
     {
-        NSURL*                  url     =   info[UIImagePickerControllerMediaURL];
-        AVURLAsset*             asset = [[AVURLAsset alloc] initWithURL:url options:nil];
-        AVAssetImageGenerator*  generator = [[AVAssetImageGenerator alloc] initWithAsset:asset];
-        generator.appliesPreferredTrackTransform = YES;
-        
-        CGImageRef  image = [generator copyCGImageAtTime:kCMTimeZero actualTime:nil error:nil];
-        UIImage*    thumb = [[UIImage alloc] initWithCGImage:image];
-        CGImageRelease(image);
-        
-        [self didSelectVideo:url withThumbnail:thumb];
+        [self didSelectVideo:info[UIImagePickerControllerMediaURL]];
     }
 
     [self dismissViewControllerAnimated:YES completion:nil];

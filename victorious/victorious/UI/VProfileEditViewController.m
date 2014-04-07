@@ -20,7 +20,7 @@
 {
     [super viewDidLoad];
 
-    self.nameLabel.text = self.profile.shortName;
+    self.nameLabel.text = self.profile.name;
     
     [self.usernameTextField becomeFirstResponder];
 }

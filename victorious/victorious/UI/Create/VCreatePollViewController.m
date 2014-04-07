@@ -15,13 +15,18 @@
 #import "NSString+VParseHelp.h"
 #import "UIView+VFrameManipulation.h"
 
-@interface VCreatePollViewController() <UITextFieldDelegate>
+CGFloat VCreateViewControllerPadding = 8;
+CGFloat VCreateViewControllerLargePadding = 20;
+
+@interface VCreatePollViewController() <UITextFieldDelegate, UITextViewDelegate>
 
 @property (strong, nonatomic) NSData *mediaData;
 @property (strong, nonatomic) NSData *secondMediaData;
 
 @property (strong, nonatomic) NSString *mediaType;
 @property (strong, nonatomic) NSString *secondMediaType;
+
+@property (weak, nonatomic) NSLayoutConstraint *contentTopConstraint;
 
 @end
 
@@ -43,28 +48,61 @@
     
     self.edgesForExtendedLayout = UIRectEdgeNone;
     
+    
+    UIImage* newImage = [self.mediaButton.imageView.image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+    [self.mediaButton setImage:newImage forState:UIControlStateNormal];
+    self.mediaButton.tintColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVMainTextColor];
+    self.mediaButton.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
+    self.mediaButton.layer.cornerRadius = self.mediaButton.frame.size.height/2;
+
+    newImage = [self.searchImageButton.imageView.image
+                imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+    [self.searchImageButton setImage:newImage forState:UIControlStateNormal];
+    self.searchImageButton.tintColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVMainTextColor];
+    self.searchImageButton.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
+    self.searchImageButton.layer.cornerRadius = self.searchImageButton.frame.size.height/2;
+    
+    newImage = [self.removeMediaButton.imageView.image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+    [self.rightRemoveButton setImage:newImage forState:UIControlStateNormal];
+    self.rightRemoveButton.tintColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
+    
+    newImage = [self.removeMediaButton.imageView.image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+    [self.removeMediaButton setImage:newImage forState:UIControlStateNormal];
+    self.removeMediaButton.tintColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
+    self.removeMediaButton.hidden = NO;
+    
     self.addMediaView.translatesAutoresizingMaskIntoConstraints = YES;
     self.rightPreviewImageView.translatesAutoresizingMaskIntoConstraints = YES;
 
-    self.questionTextField.textColor =  [[VThemeManager sharedThemeManager] themedColorForKey:kVContentAccentColor];
+    self.questionTextField.textColor =  [[VThemeManager sharedThemeManager] themedColorForKey:kVContentTextColor];
     self.questionTextField.placeholder = NSLocalizedString(@"Ask a Question...", @"Poll question placeholder");
-//    self.questionViews.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKeyPath:kVCreatePollQuestionBorderColor];
-    
-//    self.leftAnswerTextField.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKeyPath:kVCreatePollQuestionLeftBGColor];
-    self.leftAnswerTextField.textColor =  [[VThemeManager sharedThemeManager] themedColorForKey:kVContentAccentColor];
+
+    self.leftAnswerTextField.textColor =  [[VThemeManager sharedThemeManager] themedColorForKey:kVContentTextColor];
     self.leftAnswerTextField.placeholder = NSLocalizedString(@"VOTE THIS...", @"Poll left question placeholder");
     
-    self.rightAnswerTextField.textColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVContentAccentColor];
+    self.rightAnswerTextField.textColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVContentTextColor];
     self.rightAnswerTextField.placeholder = NSLocalizedString(@"VOTE THAT...", @"Poll left question placeholder");
     
-    [self setType:self.type];
-    self.mediaLabel.textColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVAccentColor];
+    self.mediaLabel.textColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVMainTextColor];
+    [self.mediaLabel centerInContainerOnAxis:NSLayoutAttributeCenterX];
     
-    UIImage* newImage = [self.removeMediaButton.imageView.image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
-    [self.rightRemoveButton setImage:newImage forState:UIControlStateNormal];
-    self.rightRemoveButton.tintColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
-    self.removeMediaButton.hidden = NO;
-
+    self.textView.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVButtonFont];
+    self.textView.textColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVMainTextColor];
+    self.textView.layer.borderColor = [[[VThemeManager sharedThemeManager] themedColorForKey:kVAccentColor] CGColor];
+    self.textView.layer.borderWidth = 1;
+    
+    self.postButton.tintColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVMainTextColor];
+    self.postButton.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
+    [self.postButton setTitle:NSLocalizedString(@"POST IT", @"Post button") forState:UIControlStateNormal];
+    self.postButton.titleLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVButtonFont];
+    
+    [[NSNotificationCenter defaultCenter]
+     addObserver:self selector:@selector(keyboardFrameChanged:)
+     name:UIKeyboardWillChangeFrameNotification object:nil];
+    
+    [self setType:self.type];
+    self.mediaLabel.textColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVMainTextColor];
+    
     [self validatePostButtonState];
     [self updateViewState];
 }
@@ -182,11 +220,19 @@
                           media1Extension:self.mediaType
                                media2Data:self.secondMediaData
                           media2Extension:self.secondMediaType];
-    
+}
+
+- (IBAction)closeButtonAction:(id)sender
+{
+    [self.navigationController popViewControllerAnimated:YES];
+}
+
+- (IBAction)searchImageAction:(id)sender
+{
+    //TODO:put search logic here
 }
 
 #pragma mark - UITextFieldDelegate
-
 - (void)textFieldDidEndEditing:(UITextField *)textField
 {
     [self validatePostButtonState];
@@ -201,6 +247,54 @@
         [self.rightAnswerTextField becomeFirstResponder];
 
     [textField resignFirstResponder];
+    return YES;
+}
+
+#pragma mark - Notifications
+
+- (void)keyboardFrameChanged:(NSNotification *)notification
+{
+    CGRect keyboardEndFrame;
+    NSTimeInterval animationDuration;
+    UIViewAnimationCurve animationCurve;
+    NSDictionary *userInfo = [notification userInfo];
+    
+    [userInfo[UIKeyboardAnimationCurveUserInfoKey] getValue:&animationCurve];
+    [userInfo[UIKeyboardAnimationDurationUserInfoKey] getValue:&animationDuration];
+    [userInfo[UIKeyboardFrameEndUserInfoKey] getValue:&keyboardEndFrame];
+    
+    [UIView animateWithDuration:animationDuration delay:0 options:(animationCurve << 16) animations:^
+     {
+         self.contentTopConstraint.constant = VCreateViewControllerLargePadding-MAX(0, CGRectGetMaxY(self.textView.frame)-CGRectGetMinY(keyboardEndFrame)+VCreateViewControllerPadding);
+         [self.view layoutIfNeeded];
+     }
+                     completion:nil];
+}
+
+#pragma mark - UITextViewDelegate
+- (void)textViewDidChange:(UITextView *)textView
+{
+    NSInteger characterCount = VConstantsMessageLength-[textView.text length];
+    if(characterCount < 0)
+    {
+        self.characterCountLabel.textColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVMainTextColor];
+    }
+    else
+    {
+        self.characterCountLabel.textColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVMainTextColor];
+    }
+    self.characterCountLabel.text = [NSString stringWithFormat:@"%lu", (unsigned long)characterCount];
+    [self validatePostButtonState];
+}
+
+- (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text
+{
+    if([text isEqualToString:@"\n"])
+    {
+        [textView resignFirstResponder];
+        return NO;
+    }
+    
     return YES;
 }
 

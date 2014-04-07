@@ -22,13 +22,10 @@
 {
     [super viewWillAppear:animated];
     
-    VMessageViewController* messageVC = (VMessageViewController*)self.conversationTableViewController;
+    self.edgesForExtendedLayout = UIRectEdgeNone;
     
-    VLog(@"title: %@", self.navigationItem.title);
-    NSString* title = [self.conversation.user.shortName isEmpty] ? messageVC.conversation.user.name
-                                                                 : messageVC.conversation.user.shortName;
-    self.navigationItem.title = title;
-    VLog(@"title: %@", self.navigationItem.title);
+    VMessageViewController* messageVC = (VMessageViewController*)self.conversationTableViewController;
+    self.navigationItem.title = [@"@" stringByAppendingString:messageVC.conversation.user.name];
 }
 
 - (UITableViewController *)conversationTableViewController

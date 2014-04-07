@@ -92,6 +92,7 @@ static  NSString*   kNewsCellViewIdentifier       =   @"VNewsCell";
         theCell = [tableView dequeueReusableCellWithIdentifier:kMessageCellViewIdentifier forIndexPath:indexPath];
         VConversation*  info    =   [self.fetchedResultsController objectAtIndexPath:indexPath];
         [(VConversationCell *)theCell setConversation:info];
+        ((VConversationCell*)theCell).parentTableViewController = self;
     }
     else
     {
@@ -99,6 +100,7 @@ static  NSString*   kNewsCellViewIdentifier       =   @"VNewsCell";
         theCell = [tableView dequeueReusableCellWithIdentifier:kMessageCellViewIdentifier forIndexPath:indexPath];
         VConversation*  info    =   [self.fetchedResultsController objectAtIndexPath:indexPath];
         [(VConversationCell *)theCell setConversation:info];
+        ((VConversationCell*)theCell).parentTableViewController = self;
     }
 
     return theCell;

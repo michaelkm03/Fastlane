@@ -50,7 +50,7 @@
     
     self.animator = [[UIDynamicAnimator alloc] initWithReferenceView:self.view];
     
-    UIColor* accentColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVAccentColor];
+    UIColor* accentColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVMainTextColor];
     UIFont* font = [[VThemeManager sharedThemeManager] themedFontForKey:kVTitleFont];
     
     self.loginLabel.textColor = accentColor;

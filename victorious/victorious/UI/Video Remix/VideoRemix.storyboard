@@ -19,7 +19,7 @@
             </objects>
             <point key="canvasLocation" x="55" y="84"/>
         </scene>
-        <!--Remix Trim View Controller-->
+        <!--Remix Trim View Controller - Trim-->
         <scene sceneID="n0d-Gw-mVR">
             <objects>
                 <viewController storyboardIdentifier="remixTrim" useStoryboardIdentifierAsRestorationIdentifier="YES" id="uEv-AE-duX" customClass="VRemixTrimViewController" sceneMemberID="viewController">
@@ -146,7 +146,7 @@
                         </subviews>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
-                    <navigationItem key="navigationItem" id="oAM-sY-FT0">
+                    <navigationItem key="navigationItem" title="Trim" id="oAM-sY-FT0">
                         <barButtonItem key="leftBarButtonItem" image="cameraButtonClose" id="3FT-1D-ihZ">
                             <connections>
                                 <action selector="closeButtonClicked:" destination="uEv-AE-duX" id="Ivr-LP-FCK"/>
@@ -176,7 +176,7 @@
             </objects>
             <point key="canvasLocation" x="482" y="84"/>
         </scene>
-        <!--Remix Stitch View Controller-->
+        <!--Remix Stitch View Controller - Stitch-->
         <scene sceneID="te2-Fv-6MP">
             <objects>
                 <viewController storyboardIdentifier="remixStitch" useStoryboardIdentifierAsRestorationIdentifier="YES" id="vMj-SS-k4u" customClass="VRemixStitchViewController" sceneMemberID="viewController">
@@ -233,48 +233,37 @@
                                     <action selector="playbackLoopingClicked:" destination="vMj-SS-k4u" eventType="touchUpInside" id="aLC-Yd-oSt"/>
                                 </connections>
                             </button>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="acY-vU-rwA">
-                                <rect key="frame" x="100" y="440" width="120" height="48"/>
+                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="0ry-6h-dSb">
+                                <rect key="frame" x="87" y="440" width="146" height="50"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            </imageView>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="U7e-uL-OMg">
-                                <rect key="frame" x="0.0" y="440" width="92" height="50"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                            </view>
+                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="gjo-M3-pff">
+                                <rect key="frame" x="0.0" y="440" width="80" height="50"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                <state key="normal" image="cameraButtonStitchLeft">
-                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                </state>
-                                <connections>
-                                    <action selector="selectBeforeAssetClicked:" destination="vMj-SS-k4u" eventType="touchUpInside" id="MEM-Tj-gub"/>
-                                </connections>
-                            </button>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="tLI-NC-Nxa">
-                                <rect key="frame" x="228" y="440" width="92" height="50"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                            </view>
+                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="WbC-ls-O0o">
+                                <rect key="frame" x="240" y="440" width="80" height="50"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                <state key="normal" image="cameraButtonStitchRight">
-                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                </state>
-                                <connections>
-                                    <action selector="selectAfterAssetClicked:" destination="vMj-SS-k4u" eventType="touchUpInside" id="dVi-nk-3ME"/>
-                                </connections>
-                            </button>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                            </view>
                         </subviews>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
-                    <navigationItem key="navigationItem" id="DLc-3A-J8B">
+                    <navigationItem key="navigationItem" title="Stitch" id="DLc-3A-J8B">
                         <barButtonItem key="rightBarButtonItem" image="cameraButtonNext" id="8ZA-Jm-6zK"/>
                     </navigationItem>
                     <connections>
-                        <outlet property="afterButton" destination="tLI-NC-Nxa" id="sZX-EE-9Qa"/>
-                        <outlet property="beforeButton" destination="U7e-uL-OMg" id="0HP-ns-Tej"/>
+                        <outlet property="afterButton" destination="WbC-ls-O0o" id="Pqt-TR-ueg"/>
+                        <outlet property="beforeButton" destination="gjo-M3-pff" id="zG2-mQ-VD8"/>
                         <outlet property="loopButton" destination="KMj-ED-h0u" id="ILN-Wx-WNC"/>
                         <outlet property="muteButton" destination="Oad-Gb-wYK" id="Put-Mn-cwc"/>
                         <outlet property="playButton" destination="Ele-xw-w6U" id="kRP-WJ-lc2"/>
                         <outlet property="playCircle" destination="ykO-ox-Rir" id="RRs-zT-dbC"/>
                         <outlet property="previewView" destination="5C1-bS-FtL" id="lXY-rh-S9c"/>
                         <outlet property="rateButton" destination="AJB-sl-S4A" id="fuY-hg-AIT"/>
-                        <outlet property="thumbnail" destination="acY-vU-rwA" id="ZKe-hr-j3z"/>
+                        <outlet property="thumbnail" destination="0ry-6h-dSb" id="uzo-Td-SiA"/>
                         <segue destination="YI1-UH-sNO" kind="modal" identifier="toCapture" id="tdT-NE-hOY"/>
                         <segue destination="YqF-iv-7Fu" kind="push" identifier="toRemixPublish" id="FG4-sn-s63"/>
                     </connections>
@@ -621,8 +610,6 @@
         <image name="cameraButtonNoLoop" width="106" height="59"/>
         <image name="cameraButtonOnOff" width="160" height="50"/>
         <image name="cameraButtonSpeedNormal" width="107" height="59"/>
-        <image name="cameraButtonStitchLeft" width="81" height="48"/>
-        <image name="cameraButtonStitchRight" width="81" height="48"/>
         <image name="cameraButtonStopwatch" width="25" height="27"/>
         <image name="cameraButtonUnmute" width="107" height="59"/>
     </resources>

@@ -30,13 +30,13 @@
     self.leftLabel.textAlignment = NSTextAlignmentCenter;
     self.rightLabel.textAlignment = NSTextAlignmentCenter;
     
-    self.leftLabel.textColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVAccentColor];
+    self.leftLabel.textColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVMainTextColor];
     self.leftLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVPollButtonFont];
-    self.rightLabel.textColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVAccentColor];
+    self.rightLabel.textColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVMainTextColor];
     self.rightLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVPollButtonFont];
     
-    self.leftButton.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVMainColor];
-    self.rightButton.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVSecondaryMainColor];
+    self.leftButton.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVAccentColor];
+    self.rightButton.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVSecondaryAccentColor];
 }
 
 #pragma mark - Animation

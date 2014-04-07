@@ -116,12 +116,6 @@
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" title="Messages" id="YF4-gT-XTx"/>
-                    <refreshControl key="refreshControl" opaque="NO" multipleTouchEnabled="YES" contentMode="center" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" id="xm9-Fe-Pgq">
-                        <autoresizingMask key="autoresizingMask"/>
-                        <connections>
-                            <action selector="refreshAction:" destination="quD-aE-BAL" eventType="valueChanged" id="lsb-Qg-Mhg"/>
-                        </connections>
-                    </refreshControl>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ffq-o1-Z0A" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -1473,14 +1467,14 @@
                                             <outlet property="delegate" destination="ZDA-K5-K60" id="znJ-yj-d40"/>
                                         </connections>
                                     </textField>
-                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="PollBarOr" translatesAutoresizingMaskIntoConstraints="NO" id="D7S-lS-tZ7">
-                                        <rect key="frame" x="133" y="1" width="55" height="60"/>
+                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="PollCreateOr" translatesAutoresizingMaskIntoConstraints="NO" id="D7S-lS-tZ7">
+                                        <rect key="frame" x="136" y="5" width="48" height="52"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                     </imageView>
                                 </subviews>
                                 <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                             </view>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="tcT-2X-CHi" userLabel="left preview image">
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="tcT-2X-CHi" userLabel="left preview image">
                                 <rect key="frame" x="0.0" y="128" width="160" height="214"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             </imageView>
@@ -1492,7 +1486,7 @@
                                     <action selector="clearMedia:" destination="ZDA-K5-K60" eventType="touchUpInside" id="OvD-xN-N86"/>
                                 </connections>
                             </button>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="8uD-1M-xDB" userLabel="right preview image">
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="8uD-1M-xDB" userLabel="right preview image">
                                 <rect key="frame" x="160" y="128" width="160" height="214"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             </imageView>
@@ -1509,13 +1503,23 @@
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0lq-A3-lhM" userLabel="Add button">
-                                        <rect key="frame" x="55" y="82" width="50" height="50"/>
+                                        <rect key="frame" x="55" y="42" width="50" height="50"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        <state key="normal" image="PostPollAdd">
+                                        <state key="normal" image="PostCamera">
                                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                         </state>
                                         <connections>
                                             <action selector="mediaButtonAction:" destination="ZDA-K5-K60" eventType="touchUpInside" id="SZZ-tl-u3T"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="rJ2-38-P7S" userLabel="Search Image button">
+                                        <rect key="frame" x="55" y="122" width="50" height="50"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <state key="normal" image="SearchIcon">
+                                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="searchImageAction:" destination="ZDA-K5-K60" eventType="touchUpInside" id="bYl-lq-6wp"/>
                                         </connections>
                                     </button>
                                 </subviews>
@@ -1554,6 +1558,7 @@
                         <outlet property="rightAnswerTextField" destination="wTP-xr-iv8" id="6pk-9Q-cTG"/>
                         <outlet property="rightPreviewImageView" destination="8uD-1M-xDB" id="34j-rE-sg4"/>
                         <outlet property="rightRemoveButton" destination="HVK-af-tcT" id="guw-ay-vbl"/>
+                        <outlet property="searchImageButton" destination="rJ2-38-P7S" id="Rgm-YP-32R"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="cZZ-Yn-Uhj" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -1842,9 +1847,10 @@
         <image name="PlayCircle" width="52" height="52"/>
         <image name="PlayTriangle" width="52" height="52"/>
         <image name="PollBarOr" width="65" height="72"/>
+        <image name="PollCreateOr" width="48" height="52"/>
         <image name="PostCamera" width="34" height="26"/>
         <image name="PostDelete" width="22" height="22"/>
-        <image name="PostPollAdd" width="50" height="50"/>
+        <image name="SearchIcon" width="30" height="31"/>
         <image name="Tomato" width="160" height="60"/>
         <image name="avatar.jpg" width="648" height="968"/>
         <image name="cameraButtonClose" width="24" height="24"/>

@@ -67,10 +67,10 @@ NSString* const kChatBubbleLeftImage = @"ChatBubbleLeft";
     [super layoutSubviews];
     
     self.dateLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVDateFont];
-    self.dateLabel.textColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVContentAccentColor];
+    self.dateLabel.textColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVContentTextColor];
     
     self.messageLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVDetailFont];
-    self.messageLabel.textColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVContentAccentColor];
+    self.messageLabel.textColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVContentTextColor];
     
     self.nameLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVDetailFont];
     self.nameLabel.textColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
@@ -94,7 +94,7 @@ NSString* const kChatBubbleLeftImage = @"ChatBubbleLeft";
         [self.profileImageButton setImageWithURL:[NSURL URLWithString:comment.user.pictureUrl]
                                 placeholderImage:[UIImage imageNamed:@"profile_thumb"]
                                         forState:UIControlStateNormal];
-        self.nameLabel.text = comment.user.shortName ?: comment.user.name;
+        self.nameLabel.text = comment.user.name;
         self.messageLabel.text = comment.text;
 
         if ([comment.mediaUrl length])
@@ -122,7 +122,7 @@ NSString* const kChatBubbleLeftImage = @"ChatBubbleLeft";
         self.dateLabel.text = [message.postedAt timeSince];
         [self.profileImageButton.imageView setImageWithURL:[NSURL URLWithString:message.user.pictureUrl]
                                           placeholderImage:[UIImage imageNamed:@"profile_thumb"]];
-        self.nameLabel.text = message.user.shortName;
+        self.nameLabel.text = message.user.name;
         
         self.messageLabel.text = message.text;
         
