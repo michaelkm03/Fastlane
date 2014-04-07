@@ -47,6 +47,8 @@
     
     self.transitionDelegate = [[VStreamTransitioningDelegate alloc] init];
     
+    self.tableView.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVSecondaryAccentColor];
+    
     [[NSNotificationCenter defaultCenter]
      addObserver:self selector:@selector(willCommentSequence:)
      name:kStreamsWillCommentNotification object:nil];
