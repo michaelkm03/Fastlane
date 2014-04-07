@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0385FEE018EE0A94009FBD68 /* VImageSearchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0385FEDF18EE0A94009FBD68 /* VImageSearchViewController.m */; };
+		0385FEE618EF341D009FBD68 /* VImageSearchDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 0385FEE518EF341D009FBD68 /* VImageSearchDataSource.m */; };
+		0385FEE918EF41B4009FBD68 /* VImageSearchResult.m in Sources */ = {isa = PBXBuildFile; fileRef = 0385FEE818EF41B4009FBD68 /* VImageSearchResult.m */; };
+		0385FEEC18EF9748009FBD68 /* VImageSearchResultCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 0385FEEB18EF9748009FBD68 /* VImageSearchResultCell.m */; };
 		0742CD6B32FA44679FBE8716 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 662F0867152745B2B2F08301 /* libPods.a */; };
 		3F14C44C18BD2BD0001796B9 /* VCAudioEncoder.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F14C43618BD2BD0001796B9 /* VCAudioEncoder.m */; };
 		3F14C44D18BD2BD0001796B9 /* VCAudioTools.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F14C43818BD2BD0001796B9 /* VCAudioTools.m */; };
@@ -232,6 +236,14 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		0385FEDE18EE0A94009FBD68 /* VImageSearchViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VImageSearchViewController.h; sourceTree = "<group>"; };
+		0385FEDF18EE0A94009FBD68 /* VImageSearchViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VImageSearchViewController.m; sourceTree = "<group>"; };
+		0385FEE418EF341D009FBD68 /* VImageSearchDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VImageSearchDataSource.h; sourceTree = "<group>"; };
+		0385FEE518EF341D009FBD68 /* VImageSearchDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VImageSearchDataSource.m; sourceTree = "<group>"; };
+		0385FEE718EF41B4009FBD68 /* VImageSearchResult.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VImageSearchResult.h; sourceTree = "<group>"; };
+		0385FEE818EF41B4009FBD68 /* VImageSearchResult.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VImageSearchResult.m; sourceTree = "<group>"; };
+		0385FEEA18EF9748009FBD68 /* VImageSearchResultCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VImageSearchResultCell.h; sourceTree = "<group>"; };
+		0385FEEB18EF9748009FBD68 /* VImageSearchResultCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VImageSearchResultCell.m; sourceTree = "<group>"; };
 		33ACD3CBAF2C419D97FB901A /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = "<group>"; };
 		3F14C43518BD2BD0001796B9 /* VCAudioEncoder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VCAudioEncoder.h; sourceTree = "<group>"; };
 		3F14C43618BD2BD0001796B9 /* VCAudioEncoder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VCAudioEncoder.m; sourceTree = "<group>"; };
@@ -742,6 +754,12 @@
 				3FF8C4F718A59EAB00812968 /* VCreatePollViewController.h */,
 				3FF8C4F818A59EAB00812968 /* VCreatePollViewController.m */,
 				3FF8C4F918A59EAB00812968 /* VCreateSequenceDelegate.h */,
+				0385FEE418EF341D009FBD68 /* VImageSearchDataSource.h */,
+				0385FEE518EF341D009FBD68 /* VImageSearchDataSource.m */,
+				0385FEEA18EF9748009FBD68 /* VImageSearchResultCell.h */,
+				0385FEEB18EF9748009FBD68 /* VImageSearchResultCell.m */,
+				0385FEDE18EE0A94009FBD68 /* VImageSearchViewController.h */,
+				0385FEDF18EE0A94009FBD68 /* VImageSearchViewController.m */,
 				3FF8C4FD18A59EAB00812968 /* VKeyboardBarContainerViewController.h */,
 				3FF8C4FE18A59EAB00812968 /* VKeyboardBarContainerViewController.m */,
 				3FF8C4FF18A59EAB00812968 /* VKeyboardBarViewController.h */,
@@ -1244,6 +1262,8 @@
 				BEF2C2B0188620EE00AAE975 /* VUser.m */,
 				BEF2C2B51886211000AAE975 /* VPollResult.h */,
 				BEF2C2B61886211000AAE975 /* VPollResult.m */,
+				0385FEE718EF41B4009FBD68 /* VImageSearchResult.h */,
+				0385FEE818EF41B4009FBD68 /* VImageSearchResult.m */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -1670,6 +1690,7 @@
 				3FD7FFA918BFD64C00945E5F /* VImagePreviewViewController.m in Sources */,
 				3FD7FFBE18C5360800945E5F /* VExpirationDatePicker.m in Sources */,
 				BEF2C2B71886211000AAE975 /* VPollResult.m in Sources */,
+				0385FEE618EF341D009FBD68 /* VImageSearchDataSource.m in Sources */,
 				BE171E201868C211004E5202 /* VObjectManager+Login.m in Sources */,
 				5FF9BE7F1893143D0054694B /* UIViewController+VSideMenuViewController.m in Sources */,
 				BEB5374818C8FE6400435C29 /* VStreamTransitioningDelegate.m in Sources */,
@@ -1691,6 +1712,7 @@
 				BE5C7352187E36D000A3340D /* VCategory.m in Sources */,
 				3F91991A187CAF310055FE37 /* VMessageViewController.m in Sources */,
 				BE46E69A18CA751F00974DAF /* VCommentToContentAnimator.m in Sources */,
+				0385FEE018EE0A94009FBD68 /* VImageSearchViewController.m in Sources */,
 				BED7F67418E0A8E900545DF6 /* OAuthCore.m in Sources */,
 				BE5C7340187E36CF00A3340D /* VInteraction.m in Sources */,
 				BE5DE3F618DA72140047B67E /* VInteractionAction.m in Sources */,
@@ -1700,6 +1722,7 @@
 				BE6B95FC187C88F700CED4C9 /* VSequence+Fetcher.m in Sources */,
 				BED7F68018E1187800545DF6 /* VEphemeralTimerView.m in Sources */,
 				BE40559418A1828D00092AE1 /* UIButton+VImageLoading.m in Sources */,
+				0385FEE918EF41B4009FBD68 /* VImageSearchResult.m in Sources */,
 				3F71A7DB18D7C6D20048FF60 /* VRemixSliderRight.m in Sources */,
 				BE185DEE18E3B255001C447F /* VContentViewController+Videos.m in Sources */,
 				BE46E69718CA750D00974DAF /* VContentTransitioningDelegate.m in Sources */,
@@ -1799,6 +1822,7 @@
 				BE7169D318D0F5B5004966C3 /* VInteractionManager.m in Sources */,
 				3F366E6F18E1FE8C00494B12 /* VRemixPublishViewController.m in Sources */,
 				BE692B50186E60B300C71336 /* VCommentCell.m in Sources */,
+				0385FEEC18EF9748009FBD68 /* VImageSearchResultCell.m in Sources */,
 				BEAEBF1318D3A91C00C79AC7 /* VResultView.m in Sources */,
 				5FC4DA6D1897119C006BA107 /* VProfileWithSocialViewController.m in Sources */,
 				BED7F67218E0A8E900545DF6 /* NSData+Base64.m in Sources */,

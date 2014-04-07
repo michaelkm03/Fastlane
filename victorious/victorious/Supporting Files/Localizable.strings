@@ -27,6 +27,9 @@
 "FacebookDeniedTitle"   =   "Could not access your Facebook account";
 "FacebookDenied"        =   "Please grant access to your Facebook account in Settings -> Facebook";
 
+"SearchFailed"          =   "Search failed.";
+"ImageDownloadFailed"   =   "Image download failed.";
+
 "TwitterDeniedTitle"    =   "Could not access your Twitter account";
 "TwitterDenied"         =   "Please grant access to your Twitter account in Settings -> Twitter";
 
