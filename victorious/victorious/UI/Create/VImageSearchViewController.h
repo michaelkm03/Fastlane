@@ -24,8 +24,9 @@
 
 @property (nonatomic, weak) id<VImageSearchViewControllerDelegate> delegate;
 
-@property (nonatomic, weak) IBOutlet UITextField      *searchField;
-@property (nonatomic, weak) IBOutlet UICollectionView *collectionView;
+@property (nonatomic, weak) IBOutlet UITextField        *searchField;
+@property (nonatomic, weak) IBOutlet UICollectionView   *collectionView;
+@property (nonatomic, weak) IBOutlet NSLayoutConstraint *hrHeightConstraint;
 
 + (instancetype)newImageSearchViewController;
 

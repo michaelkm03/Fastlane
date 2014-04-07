@@ -42,6 +42,8 @@ static NSString * const kSearchResultCellReuseIdentifier = @"kSearchResultCellRe
     UICollectionViewFlowLayout *flowLayout = (UICollectionViewFlowLayout *)self.collectionView.collectionViewLayout;
     flowLayout.itemSize = CGSizeMake(71.0f, 71.0f);
     flowLayout.minimumInteritemSpacing = 5.0f;
+    
+    self.hrHeightConstraint.constant = 0.5f;
 }
 
 - (void)viewWillAppear:(BOOL)animated

@@ -119,6 +119,12 @@
     }
     else
     {
+        VImageSearchViewController *flickrPicker = [VImageSearchViewController newImageSearchViewController];
+        flickrPicker.delegate = self;
+        [self presentViewController:flickrPicker animated:YES completion:nil];
+        return;
+        
+        // TODO
         self.imagePicker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
         [self presentViewController:self.imagePicker animated:YES completion:nil];
     }
