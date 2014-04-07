@@ -140,7 +140,6 @@
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="pictureUrl" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="remoteId" attributeType="Integer 64" minValueString="0" syncable="YES"/>
-        <attribute name="shortName" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="tagline" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="token" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="tokenUpdatedAt" optional="YES" attributeType="Date" syncable="YES"/>
@@ -179,8 +178,8 @@
         <element name="Rule" positionX="567" positionY="99" width="128" height="75"/>
         <element name="Sequence" positionX="1015" positionY="-208" width="128" height="328"/>
         <element name="UnreadConversation" positionX="1206" positionY="-513" width="128" height="73"/>
-        <element name="User" positionX="1222" positionY="-412" width="128" height="298"/>
-        <element name="VoteType" positionX="504" positionY="-486" width="128" height="103"/>
+        <element name="User" positionX="1222" positionY="-412" width="128" height="270"/>
         <element name="VoteResult" positionX="954" positionY="191" width="128" height="88"/>
+        <element name="VoteType" positionX="504" positionY="-486" width="128" height="103"/>
     </elements>
 </model>

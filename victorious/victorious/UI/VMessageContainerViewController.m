@@ -27,8 +27,7 @@
     VMessageViewController* messageVC = (VMessageViewController*)self.conversationTableViewController;
     
     VLog(@"title: %@", self.navigationItem.title);
-    NSString* title = [self.conversation.user.shortName isEmpty] ? messageVC.conversation.user.name
-                                                                 : messageVC.conversation.user.shortName;
+    NSString* title = messageVC.conversation.user.name;
     self.navigationItem.title = title;
     VLog(@"title: %@", self.navigationItem.title);
 }
