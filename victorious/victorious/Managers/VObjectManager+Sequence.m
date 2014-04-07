@@ -352,8 +352,9 @@ NSString* const kPollResultsLoaded = @"kPollResultsLoaded";
                                            successBlock:(VSuccessBlock)success
                                               failBlock:(VFailBlock)fail
 {
+    user = user ?: self.mainUser;
     if (!user)
-        user = self.mainUser;
+        return nil;
     
     NSString* path = [@"/api/pollresult/summary_by_user/" stringByAppendingString: user.remoteId.stringValue];
     
