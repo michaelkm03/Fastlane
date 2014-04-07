@@ -40,7 +40,7 @@
 		<key>alpha</key>
 		<integer>1</integer>
 	</dict>
-	<key>color.accent</key>
+	<key>color.text</key>
 	<dict>
 		<key>red</key>
 		<integer>255</integer>
@@ -51,7 +51,7 @@
 		<key>alpha</key>
 		<integer>1</integer>
 	</dict>
-	<key>color.accent.content</key>
+	<key>color.text.content</key>
 	<dict>
 		<key>red</key>
 		<integer>0</integer>
@@ -73,7 +73,7 @@
 		<key>alpha</key>
 		<integer>1</integer>
 	</dict>
-	<key>color.main</key>
+	<key>color.accent</key>
 	<dict>
 		<key>red</key>
 		<integer>54</integer>
@@ -84,7 +84,7 @@
 		<key>alpha</key>
 		<integer>1</integer>
 	</dict>
-	<key>color.main.secondary</key>
+	<key>color.accent.secondary</key>
 	<dict>
 		<key>red</key>
 		<integer>46</integer>

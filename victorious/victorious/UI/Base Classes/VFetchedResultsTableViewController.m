@@ -29,7 +29,7 @@
     [self refreshFetchController:self.fetchedResultsController
                    withPredicate:[self fetchResultsPredicateForString:nil option:0]];
     
-    self.searchDisplayController.searchBar.barTintColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVMainColor];
+    self.searchDisplayController.searchBar.barTintColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVAccentColor];
     UIBarButtonItem *searchButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemSearch
                                                                                       target:self
                                                                                       action:@selector(displaySearchBar:)];

@@ -59,9 +59,9 @@
     
     
     [self.backButton setImage:[self.backButton.imageView.image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] forState:UIControlStateNormal];
-    self.backButton.tintColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVContentAccentColor];
+    self.backButton.tintColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVContentTextColor];
     
-    self.titleLabel.textColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVContentAccentColor];
+    self.titleLabel.textColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVContentTextColor];
     self.titleLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVContentTitleFont];
     
     //Need to manually add this again so it appears over everything else.

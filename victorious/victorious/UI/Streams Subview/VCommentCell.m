@@ -67,10 +67,10 @@ NSString* const kChatBubbleLeftImage = @"ChatBubbleLeft";
     [super layoutSubviews];
     
     self.dateLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVDateFont];
-    self.dateLabel.textColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVContentAccentColor];
+    self.dateLabel.textColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVContentTextColor];
     
     self.messageLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVDetailFont];
-    self.messageLabel.textColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVContentAccentColor];
+    self.messageLabel.textColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVContentTextColor];
     
     self.nameLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVDetailFont];
     self.nameLabel.textColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];

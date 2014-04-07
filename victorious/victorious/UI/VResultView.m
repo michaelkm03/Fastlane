@@ -93,7 +93,7 @@
                                                                  self.frame.size.height *.1f)];
         _resultLabel.center = self.resultArrow.center;
         _resultLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVPollButtonFont];
-        _resultLabel.textColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVAccentColor];
+        _resultLabel.textColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVMainTextColor];
         _resultLabel.textAlignment = NSTextAlignmentCenter;
         _resultLabel.minimumScaleFactor = .5f;
         [self insertSubview:_resultLabel aboveSubview:self.resultArrow];
