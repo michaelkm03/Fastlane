@@ -25,11 +25,7 @@
     self.edgesForExtendedLayout = UIRectEdgeNone;
     
     VMessageViewController* messageVC = (VMessageViewController*)self.conversationTableViewController;
-    
-    VLog(@"title: %@", self.navigationItem.title);
-    NSString* title = messageVC.conversation.user.name;
-    self.navigationItem.title = title;
-    VLog(@"title: %@", self.navigationItem.title);
+    self.navigationItem.title = [@"@" stringByAppendingString:messageVC.conversation.user.name];
 }
 
 - (UITableViewController *)conversationTableViewController
