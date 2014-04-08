@@ -25,7 +25,11 @@
 
 @interface VPollAnswerBarViewController ()
 
-@property (strong) UIDynamicAnimator* animator;
+@property (weak, nonatomic) IBOutlet UIView* answeredView;
+@property (weak, nonatomic) IBOutlet UIView* leftAnsweredView;
+@property (weak, nonatomic) IBOutlet UIView* rightAnsweredView;
+@property (weak, nonatomic) IBOutlet UIImageView* answeredHexImage;
+@property (weak, nonatomic) IBOutlet UIImageView* answeredCheckImage;
 
 @end
 
@@ -53,6 +57,12 @@
                                                  name:kPollResultsLoaded
                                                object:nil];
     
+    self.leftAnsweredView.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
+    self.rightAnsweredView.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
+    UIImage* newImage = [self.answeredHexImage.image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+    [self.answeredHexImage setImage:newImage];
+    self.answeredHexImage.tintColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
+    
     [[VObjectManager sharedManager] pollResultsForSequence:self.sequence
                                               successBlock:^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
      {
@@ -68,8 +78,7 @@
 - (void)setSequence:(VSequence *)sequence
 {
     [super setSequence:sequence];
-    
-    [self checkIfAnswered];
+    self.orImageView.hidden = YES;
 }
 
 - (void)checkIfAnswered
@@ -79,6 +88,9 @@
         if ([result.sequenceId isEqualToNumber: self.sequence.remoteId])
         {
             [self.delegate answeredPollWithAnswerId:result.answerId];
+            
+            [self answerAnimationForAnswerID:result.answerId];
+            
             return;
         }
     }
@@ -86,6 +98,21 @@
     self.answers = [[self.sequence firstNode] firstAnswers];
     self.leftLabel.text = ((VAnswer*)[self.answers firstObject]).label;
     self.rightLabel.text = ((VAnswer*)[self.answers lastObject]).label;
+}
+
+- (void)answerAnimationForAnswerID:(NSNumber*)answerID
+{
+    if ([answerID isEqualToNumber:((VAnswer*)[self.answers firstObject]).remoteId])
+    {
+        self.leftAnsweredView.hidden = NO;
+        self.rightAnsweredView.hidden = YES;
+        
+    }
+    else
+    {
+        self.leftAnsweredView.hidden = YES;
+        self.rightAnsweredView.hidden = NO;
+    }
 }
 
 #pragma mark - Button actions

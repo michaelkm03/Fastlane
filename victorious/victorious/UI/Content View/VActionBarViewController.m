@@ -42,8 +42,7 @@
 #pragma mark - Animation
 - (void)animateInWithDuration:(CGFloat)duration completion:(void (^)(BOOL finished))completion
 {
-    [self.rightButton setXOrigin:self.view.frame.size.width];
-    [self.leftButton setXOrigin:self.view.frame.size.width];
+    [self.view setXOrigin:self.view.frame.size.width];
     
     self.leftLabel.alpha = 0;
     self.rightLabel.alpha = 0;
@@ -51,8 +50,7 @@
     [UIView animateWithDuration:duration/2
                      animations:^
      {
-         [self.leftButton setXOrigin:0];
-         [self.rightButton setXOrigin:self.view.frame.size.width - self.rightButton.frame.size.width];
+         [self.view setXOrigin:0];
      }
                      completion:^(BOOL finished)
      {
@@ -79,8 +77,7 @@
          [UIView animateWithDuration:duration/2
                           animations:^
           {
-              [self.leftButton setXOrigin:self.view.frame.size.width];
-              [self.rightButton setXOrigin:self.view.frame.size.width];
+              [self.view setXOrigin:self.view.frame.size.width];
           }
                           completion:completion];
      }];

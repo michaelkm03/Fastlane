@@ -27,6 +27,8 @@
                          self.orImageView.hidden = ![self.currentNode isPoll];
                          self.orImageView.center = CGPointMake(self.orImageView.center.x, self.pollPreviewView.center.y);
                          self.orAnimator = [[UIDynamicAnimator alloc] initWithReferenceView:self.orContainerView];
+                         self.orAnimator.delegate = self;
+                         
                          
                          UIGravityBehavior* gravityBehavior = [[UIGravityBehavior alloc] initWithItems:@[self.orImageView]];
                          gravityBehavior.magnitude = 4;
@@ -40,6 +42,17 @@
                          collisionBehavior.translatesReferenceBoundsIntoBoundary = YES;
                          [self.orAnimator addBehavior:collisionBehavior];
                      }];
+}
+
+- (void)dynamicAnimatorDidPause:(UIDynamicAnimator *)animator
+{
+    if ([self.actionBarVC isKindOfClass:[VPollAnswerBarViewController class]])
+    {
+        ((VPollAnswerBarViewController*)self.actionBarVC).orImageView.hidden = NO;
+            [((VPollAnswerBarViewController*)self.actionBarVC) checkIfAnswered];
+        self.orImageView.hidden = YES;
+        
+    }
 }
 
 #pragma mark - Poll
