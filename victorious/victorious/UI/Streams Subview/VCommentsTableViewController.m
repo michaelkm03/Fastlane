@@ -16,7 +16,7 @@
 #import "VObjectManager+Sequence.h"
 #import "VObjectManager+Comment.h"
 
-#import "UIActionSheet+BBlock.h"
+#import "UIActionSheet+VBlocks.h"
 #import "NSString+VParseHelp.h"
 
 #import "VSequence+Fetcher.h"
@@ -331,62 +331,55 @@ static NSString* CommentCache = @"CommentCache";
     NSString *thumbUpTitle = NSLocalizedString(@"Thumbs Up", @"Comment thumbs up button");
     NSString *thumbDownTitle = NSLocalizedString(@"Thumbs Down", @"Comment thumbs down button");
     NSString *reply = NSLocalizedString(@"Reply", @"Comment reply button");
-    UIActionSheet *actionSheet =
-    [[UIActionSheet alloc]
-     initWithTitle:nil delegate:nil
-     cancelButtonTitle:NSLocalizedString(@"Cancel", @"Cancel button")
-     destructiveButtonTitle:reportTitle otherButtonTitles:thumbUpTitle, thumbDownTitle, reply, nil];
-    [actionSheet setCompletionBlock:^(NSInteger buttonIndex, UIActionSheet *actionSheet)
-     {
-         if(actionSheet.cancelButtonIndex == buttonIndex)
+    
+    UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil
+                                                    cancelButtonTitle:NSLocalizedString(@"Cancel", @"Cancel button")
+                                                       onCancelButton:nil
+                                               destructiveButtonTitle:reportTitle
+                                                  onDestructiveButton:^(void)
+    {
+        [[VObjectManager sharedManager] flagComment:comment
+                                       successBlock:^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
          {
-             return;
+             //TODO:set flagged flag)
+             VLog(@"resultObjects: %@", resultObjects);
          }
-
-         if(actionSheet.destructiveButtonIndex == buttonIndex)
+                                          failBlock:^(NSOperation* operation, NSError* error)
          {
-             [[VObjectManager sharedManager] flagComment:comment
-                                            successBlock:^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
-               {
-                   //TODO:set flagged flag)
-                   VLog(@"resultObjects: %@", resultObjects);
-               }
-                                                failBlock:^(NSOperation* operation, NSError* error)
-               {
-                   VLog(@"Failed to flag comment %@", comment);
-               }];
-         }
-         else if([[actionSheet buttonTitleAtIndex:buttonIndex] isEqualToString:thumbUpTitle])
-         {
-             [[VObjectManager sharedManager] likeComment:comment
-                                               successBlock:^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
-                                               {
-                                                   //TODO:update UI)
-                                                   VLog(@"resultObjects: %@", resultObjects);
-                                               }
-                                                  failBlock:^(NSOperation* operation, NSError* error)
-                                                  {
-                                                      VLog(@"Failed to dislike comment %@", comment);
-                                                  }];
-         }
-         else if([[actionSheet buttonTitleAtIndex:buttonIndex] isEqualToString:thumbDownTitle])
-         {
-             [[VObjectManager sharedManager] dislikeComment:comment
-                                                successBlock:^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
-                                                {
-                                                    //TODO:set dislike flag)
-                                                    VLog(@"resultObjects: %@", resultObjects);
-                                                }
-                                                   failBlock:^(NSOperation* operation, NSError* error)
-                                                   {
-                                                       VLog(@"Failed to dislike comment %@", comment);
-                                                   }];
-         }
-         else if([[actionSheet buttonTitleAtIndex:buttonIndex] isEqualToString:reply])
-         {
-             [self.delegate streamsCommentsController:self shouldReplyToUser:comment.user];
-         }
-     }];
+             VLog(@"Failed to flag comment %@", comment);
+         }];
+    }
+                                           otherButtonTitlesAndBlocks:thumbUpTitle, ^(void)
+    {
+        [[VObjectManager sharedManager] likeComment:comment
+                                       successBlock:^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
+        {
+            //TODO:update UI)
+            VLog(@"resultObjects: %@", resultObjects);
+        }
+                                          failBlock:^(NSOperation* operation, NSError* error)
+        {
+            VLog(@"Failed to dislike comment %@", comment);
+        }];
+    },
+                                  thumbDownTitle, ^(void)
+    {
+        [[VObjectManager sharedManager] dislikeComment:comment
+                                          successBlock:^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
+        {
+            //TODO:set dislike flag)
+            VLog(@"resultObjects: %@", resultObjects);
+        }
+                                             failBlock:^(NSOperation* operation, NSError* error)
+        {
+            VLog(@"Failed to dislike comment %@", comment);
+        }];
+    },
+                                  reply, ^(void)
+    {
+        [self.delegate streamsCommentsController:self shouldReplyToUser:comment.user];
+    },
+                                  nil];
 
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     UIWindow *window = [[[UIApplication sharedApplication] delegate] window];
