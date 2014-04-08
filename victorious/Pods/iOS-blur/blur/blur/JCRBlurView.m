@@ -6,16 +6,15 @@
 //  Copyright (c) 2013 Arctic Minds Inc. All rights reserved.
 //
 
-#import "AMBlurView.h"
-#import <QuartzCore/QuartzCore.h>
+#import "JCRBlurView.h"
 
-@interface AMBlurView ()
+@interface JCRBlurView ()
 
 @property (nonatomic, strong) UIToolbar *toolbar;
 
 @end
 
-@implementation AMBlurView
+@implementation JCRBlurView
 
 - (instancetype)initWithCoder:(NSCoder *)aDecoder {
     self = [super initWithCoder:aDecoder];
@@ -48,17 +47,22 @@
     
     if (![self toolbar]) {
         [self setToolbar:[[UIToolbar alloc] initWithFrame:[self bounds]]];
-        [self.layer insertSublayer:[self.toolbar layer] atIndex:0];
+        [self.toolbar setTranslatesAutoresizingMaskIntoConstraints:NO];
+        [self insertSubview:[self toolbar] atIndex:0];
+        
+        [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[_toolbar]|"
+                                                                     options:0
+                                                                     metrics:0
+                                                                       views:NSDictionaryOfVariableBindings(_toolbar)]];
+        [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[_toolbar]|"
+                                                                     options:0
+                                                                     metrics:0
+                                                                       views:NSDictionaryOfVariableBindings(_toolbar)]];
     }
 }
 
 - (void) setBlurTintColor:(UIColor *)blurTintColor {
     [self.toolbar setBarTintColor:blurTintColor];
-}
-
-- (void)layoutSubviews {
-    [super layoutSubviews];
-    [self.toolbar setFrame:[self bounds]];
 }
 
 @end
