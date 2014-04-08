@@ -14,7 +14,8 @@
 //#import "UIImage+Masking.h"
 #import "UIView+Masking.h"
 
-@interface VRemixStitchViewController ()    <VCVideoPlayerDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate>
+@interface VRemixStitchViewController ()    <VCVideoPlayerDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIActionSheetDelegate>
+
 @property (nonatomic, weak)     IBOutlet    VCVideoPlayerView*  previewView;;
 @property (nonatomic, weak)     IBOutlet    UIImageView*        playCircle;
 @property (nonatomic, weak)     IBOutlet    UIImageView*        playButton;
@@ -29,13 +30,16 @@
 
 @property (nonatomic, strong)   AVAssetImageGenerator*          imageGenerator;
 
-@property (nonatomic, strong)   NSURL*      beforeAsset;
-@property (nonatomic, strong)   NSURL*      afterAsset;
+@property (nonatomic, strong)   NSURL*                          beforeAsset;
+@property (nonatomic, strong)   NSURL*                          afterAsset;
 
-@property (nonatomic)           BOOL        selectingBeforeURL;
-@property (nonatomic)           BOOL        selectingAfterURL;
+@property (nonatomic)           BOOL                            selectingBeforeURL;
+@property (nonatomic)           BOOL                            selectingAfterURL;
 
-@property (nonatomic)           BOOL        animatingPlayButton;
+@property (nonatomic)           BOOL                            animatingPlayButton;
+
+@property (nonatomic)           AVPlayerItem*                   playerItem;
+
 @end
 
 @implementation VRemixStitchViewController
@@ -44,7 +48,9 @@
 {
     [super viewDidLoad];
 
-    [self.previewView.player setItem:[AVPlayerItem playerItemWithURL:self.sourceURL]];
+    self.playerItem = [AVPlayerItem playerItemWithURL:self.sourceURL];
+    
+    [self.previewView.player setItem:self.playerItem];
     self.previewView.player.startSeconds = self.startSeconds;
     self.previewView.player.endSeconds = self.endSeconds;
     [self.previewView.player seekToTime:CMTimeMakeWithSeconds(self.startSeconds, NSEC_PER_SEC)];
@@ -62,10 +68,12 @@
     [self.beforeButton addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(selectBeforeAssetClicked:)]];
     self.beforeButton.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"cameraButtonStitchLeft"]];
     self.beforeButton.userInteractionEnabled = YES;
+    [self.beforeButton maskWithImage:[UIImage imageNamed:@"cameraLeftMask"]];
     
     [self.afterButton addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(selectAfterAssetClicked:)]];
     self.afterButton.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"cameraButtonStitchRight"]];
     self.afterButton.userInteractionEnabled = YES;
+    [self.afterButton maskWithImage:[UIImage imageNamed:@"cameraRightMask"]];
 
     UIImage*    nextButtonImage = [[UIImage imageNamed:@"cameraButtonNext"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithImage:nextButtonImage style:UIBarButtonItemStyleBordered target:self action:@selector(nextButtonClicked:)];
@@ -122,7 +130,15 @@
     self.selectingBeforeURL = YES;
     self.selectingAfterURL = NO;
     
-    [self selectAsset];
+    if (self.beforeAsset)
+    {
+        UIActionSheet*  sheet   =   [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:@"Delete" otherButtonTitles:@"Replace Video", nil];
+        [sheet showInView:self.view];
+    }
+    else
+    {
+        [self selectAsset];
+    }
 }
 
 - (IBAction)selectAfterAssetClicked:(id)sender
@@ -130,7 +146,43 @@
     self.selectingBeforeURL = NO;
     self.selectingAfterURL = YES;
     
-    [self selectAsset];
+    if (self.afterAsset)
+    {
+        UIActionSheet*  sheet   =   [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:@"Delete" otherButtonTitles:@"Replace Video", nil];
+        [sheet showInView:sender];
+    }
+    else
+    {
+        [self selectAsset];
+    }
+}
+
+- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    if (buttonIndex == [actionSheet destructiveButtonIndex])
+    {
+        if (self.selectingBeforeURL)
+        {
+            self.beforeAsset = nil;
+            [self.beforeButton.subviews makeObjectsPerformSelector: @selector(removeFromSuperview)];
+            self.beforeButton.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"cameraButtonStitchLeft"]];
+        }
+        
+        if (self.selectingAfterURL)
+        {
+            self.afterAsset = nil;
+            [self.afterButton.subviews makeObjectsPerformSelector: @selector(removeFromSuperview)];
+            self.afterButton.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"cameraButtonStitchRight"]];
+        }
+    }
+    else if (buttonIndex == [actionSheet cancelButtonIndex])
+    {
+        
+    }
+    else
+    {
+        [self selectAsset];
+    }
 }
 
 - (void)selectAsset
@@ -258,12 +310,14 @@
     {
         self.beforeAsset = asset;
         self.beforeButton.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
+        [self.beforeButton.subviews makeObjectsPerformSelector: @selector(removeFromSuperview)];
         [self setupThumbnailStrip:self.beforeButton withURL:asset];
     }
     else if (self.selectingAfterURL)
     {
         self.afterAsset = asset;
         self.afterButton.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
+        [self.afterButton.subviews makeObjectsPerformSelector: @selector(removeFromSuperview)];
         [self setupThumbnailStrip:self.afterButton withURL:asset];
     }
 }
@@ -283,7 +337,7 @@
     for (int i=0; i<picsCnt; i++)
     {
         time4Pic = i * picWidth;
-        CMTime timeFrame = CMTimeMakeWithSeconds(durationSeconds*time4Pic/background.frame.size.width, 600);
+        CMTime timeFrame = CMTimeMakeWithSeconds(durationSeconds * time4Pic / background.frame.size.width, 600);
         [allTimes addObject:[NSValue valueWithCMTime:timeFrame]];
     }
     

@@ -114,6 +114,8 @@
         [self.previewView.player pause];
     
     [self.previewView.player removeTimeObserver:self.timeObserver];
+    
+    [self.trimSlider cancel];
 }
 
 #pragma mark - Properties
