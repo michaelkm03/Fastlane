@@ -39,13 +39,13 @@ NSString*   const   kVPollButtonFont                    =   @"font.button.poll";
 
 #pragma mark - Colors
 NSString*   const   kVBackgroundColor                   =   @"color.background";
+NSString*   const   kVCancelColor                       =   @"color.cancel";
+
+NSString*   const   kVMainTextColor                     =   @"color.text";
+NSString*   const   kVContentTextColor                  =   @"color.text.content";
 
 NSString*   const   kVAccentColor                       =   @"color.accent";
-NSString*   const   kVContentAccentColor                =   @"color.accent.content";
-
-NSString*   const   kVMainColor                         =   @"color.main";
-
-NSString*   const   kVSecondaryMainColor                =   @"color.main.secondary";
+NSString*   const   kVSecondaryAccentColor              =   @"color.accent.secondary";
 
 NSString*   const   kVLinkColor                         =   @"color.link";
 
@@ -97,13 +97,13 @@ NSString*   const   kVLinkColor                         =   @"color.link";
 
 - (void)applyStyling
 {
-    [[[[UIApplication sharedApplication] delegate] window] setTintColor:[self themedColorForKey:kVAccentColor]];
+    [[[[UIApplication sharedApplication] delegate] window] setTintColor:[self themedColorForKey:kVMainTextColor]];
 
-    [[UINavigationBar appearance] setTintColor:[self themedColorForKey:kVAccentColor]];
-    [[UINavigationBar appearance] setBarTintColor:[self themedTranslucencyColorForKey:kVMainColor]];
+    [[UINavigationBar appearance] setTintColor:[self themedColorForKey:kVMainTextColor]];
+    [[UINavigationBar appearance] setBarTintColor:[self themedTranslucencyColorForKey:kVAccentColor]];
 
     NSMutableDictionary *titleAttributes = [NSMutableDictionary dictionary];
-    UIColor *navigationBarTitleTintColor = [self themedColorForKey:kVAccentColor];
+    UIColor *navigationBarTitleTintColor = [self themedColorForKey:kVMainTextColor];
     if(navigationBarTitleTintColor)
     {
         titleAttributes[NSForegroundColorAttributeName] = navigationBarTitleTintColor;

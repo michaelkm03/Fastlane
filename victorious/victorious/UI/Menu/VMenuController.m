@@ -58,8 +58,8 @@ NSString *const VMenuControllerDidSelectRowNotification = @"VMenuTableViewContro
             self.inboxBadgeLabel.text = @"+999";
         
         self.inboxBadgeLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVDetailFont];
-        self.inboxBadgeLabel.textColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVAccentColor];
-        self.inboxBadgeLabel.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVMainColor];
+        self.inboxBadgeLabel.textColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVMainTextColor];
+        self.inboxBadgeLabel.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVAccentColor];
         [self.inboxBadgeLabel setHidden:NO];
     }
     
@@ -67,7 +67,7 @@ NSString *const VMenuControllerDidSelectRowNotification = @"VMenuTableViewContro
     self.nameLabel.text = [NSString stringWithFormat:NSLocalizedString(@"%@ Channel", @"<CHANNEL NAME> Channel"), channelName];
     
     [[UIImageView appearanceWhenContainedIn:[self class], nil]
-     setTintColor:[[VThemeManager sharedThemeManager] themedColorForKey:kVAccentColor]];
+     setTintColor:[[VThemeManager sharedThemeManager] themedColorForKey:kVMainTextColor]];
     [self.imageViews enumerateObjectsUsingBlock:^(UIImageView *imageView, NSUInteger idx, BOOL *stop)
     {
         imageView.image = [imageView.image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];

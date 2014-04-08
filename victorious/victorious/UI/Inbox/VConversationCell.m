@@ -28,10 +28,10 @@
     self.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     
     self.dateLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVDateFont];
-    self.dateLabel.textColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVContentAccentColor];
+    self.dateLabel.textColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVContentTextColor];
     
     self.messageLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVDetailFont];
-    self.messageLabel.textColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVContentAccentColor];
+    self.messageLabel.textColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVContentTextColor];
     
     self.usernameLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVDetailFont];
     self.usernameLabel.textColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];

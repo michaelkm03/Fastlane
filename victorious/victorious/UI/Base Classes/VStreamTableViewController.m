@@ -47,6 +47,8 @@
     
     self.transitionDelegate = [[VStreamTransitioningDelegate alloc] init];
     
+    self.tableView.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVSecondaryAccentColor];
+    
     [[NSNotificationCenter defaultCenter]
      addObserver:self selector:@selector(willCommentSequence:)
      name:kStreamsWillCommentNotification object:nil];
@@ -60,6 +62,9 @@
     
     //Remove the search button from the stream - feature currently deprecated
     self.navigationItem.rightBarButtonItem = nil;
+
+    CGRect navBarFrame = self.navigationController.navigationBar.frame;
+    navBarFrame.size.height += navBarFrame.size.height;
 }
 
 #pragma mark - FetchedResultsControllers
@@ -139,13 +144,29 @@
     }
 }
 
-//- (void)scrollViewDidScroll:(UIScrollView *)scrollView
-//{
-//    if (scrollView.contentOffset.y > (scrollView.contentSize.height * .75))
-//    {
-//        [self refreshAction];
-//    }
-//}
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView
+{
+    CGPoint translation = [scrollView.panGestureRecognizer translationInView:scrollView.superview];
+    CGRect navBarFrame = self.navigationController.navigationBar.frame;
+    
+    if (translation.y < 0 && CGRectContainsRect(self.view.frame, navBarFrame))
+    {
+        navBarFrame.origin.y = -navBarFrame.size.height;
+    }
+    else if (translation.y > 0 && !CGRectContainsRect(self.view.frame, navBarFrame))
+    {
+        navBarFrame.origin.y += navBarFrame.size.height;
+    }
+    else
+    {
+        return;
+    }
+    
+    [UIView animateWithDuration:.5f animations:^
+    {
+        self.navigationController.navigationBar.frame = navBarFrame;
+    }];
+}
 
 #pragma mark - Cells
 

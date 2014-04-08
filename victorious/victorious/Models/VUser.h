@@ -2,7 +2,7 @@
 //  VUser.h
 //  victorious
 //
-//  Created by Will Long on 1/14/14.
+//  Created by Will Long on 4/7/14.
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
@@ -19,7 +19,6 @@
 @property (nonatomic, retain) NSString * name;
 @property (nonatomic, retain) NSString * pictureUrl;
 @property (nonatomic, retain) NSNumber * remoteId;
-@property (nonatomic, retain) NSString * shortName;
 @property (nonatomic, retain) NSString * tagline;
 @property (nonatomic, retain) NSString * token;
 @property (nonatomic, retain) NSDate * tokenUpdatedAt;

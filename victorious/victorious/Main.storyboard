@@ -1363,8 +1363,8 @@
                                             <outlet property="delegate" destination="ZDA-K5-K60" id="znJ-yj-d40"/>
                                         </connections>
                                     </textField>
-                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="PollBarOr" translatesAutoresizingMaskIntoConstraints="NO" id="D7S-lS-tZ7">
-                                        <rect key="frame" x="133" y="1" width="55" height="60"/>
+                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="PollCreateOr" translatesAutoresizingMaskIntoConstraints="NO" id="D7S-lS-tZ7">
+                                        <rect key="frame" x="136" y="5" width="48" height="52"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                     </imageView>
                                 </subviews>
@@ -1411,7 +1411,7 @@
                                     <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="rJ2-38-P7S" userLabel="Search Image button">
                                         <rect key="frame" x="55" y="122" width="50" height="50"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        <state key="normal" image="PostCamera">
+                                        <state key="normal" image="SearchIcon">
                                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                         </state>
                                         <connections>
@@ -1743,8 +1743,10 @@
         <image name="PlayCircle" width="52" height="52"/>
         <image name="PlayTriangle" width="52" height="52"/>
         <image name="PollBarOr" width="65" height="72"/>
+        <image name="PollCreateOr" width="48" height="52"/>
         <image name="PostCamera" width="34" height="26"/>
         <image name="PostDelete" width="22" height="22"/>
+        <image name="SearchIcon" width="30" height="31"/>
         <image name="Tomato" width="160" height="60"/>
         <image name="avatar.jpg" width="648" height="968"/>
         <image name="cameraButtonClose" width="24" height="24"/>
@@ -1756,7 +1758,7 @@
         <simulatedScreenMetrics key="destination" type="retina4"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
-        <segue reference="Sho-vj-RuM"/>
         <segue reference="hhE-4U-i31"/>
+        <segue reference="nH9-Zs-lk0"/>
     </inferredMetricsTieBreakers>
 </document>

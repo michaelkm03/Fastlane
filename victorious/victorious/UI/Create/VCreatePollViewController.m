@@ -51,14 +51,14 @@ CGFloat VCreateViewControllerLargePadding = 20;
     
     UIImage* newImage = [self.mediaButton.imageView.image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
     [self.mediaButton setImage:newImage forState:UIControlStateNormal];
-    self.mediaButton.tintColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVAccentColor];
+    self.mediaButton.tintColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVMainTextColor];
     self.mediaButton.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
     self.mediaButton.layer.cornerRadius = self.mediaButton.frame.size.height/2;
 
     newImage = [self.searchImageButton.imageView.image
                 imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
     [self.searchImageButton setImage:newImage forState:UIControlStateNormal];
-    self.searchImageButton.tintColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVAccentColor];
+    self.searchImageButton.tintColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVMainTextColor];
     self.searchImageButton.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
     self.searchImageButton.layer.cornerRadius = self.searchImageButton.frame.size.height/2;
     
@@ -74,24 +74,24 @@ CGFloat VCreateViewControllerLargePadding = 20;
     self.addMediaView.translatesAutoresizingMaskIntoConstraints = YES;
     self.rightPreviewImageView.translatesAutoresizingMaskIntoConstraints = YES;
 
-    self.questionTextField.textColor =  [[VThemeManager sharedThemeManager] themedColorForKey:kVContentAccentColor];
+    self.questionTextField.textColor =  [[VThemeManager sharedThemeManager] themedColorForKey:kVContentTextColor];
     self.questionTextField.placeholder = NSLocalizedString(@"Ask a Question...", @"Poll question placeholder");
 
-    self.leftAnswerTextField.textColor =  [[VThemeManager sharedThemeManager] themedColorForKey:kVContentAccentColor];
+    self.leftAnswerTextField.textColor =  [[VThemeManager sharedThemeManager] themedColorForKey:kVContentTextColor];
     self.leftAnswerTextField.placeholder = NSLocalizedString(@"VOTE THIS...", @"Poll left question placeholder");
     
-    self.rightAnswerTextField.textColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVContentAccentColor];
+    self.rightAnswerTextField.textColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVContentTextColor];
     self.rightAnswerTextField.placeholder = NSLocalizedString(@"VOTE THAT...", @"Poll left question placeholder");
     
-    self.mediaLabel.textColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVAccentColor];
+    self.mediaLabel.textColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVMainTextColor];
     [self.mediaLabel centerInContainerOnAxis:NSLayoutAttributeCenterX];
     
     self.textView.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVButtonFont];
-    self.textView.textColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVAccentColor];
-    self.textView.layer.borderColor = [[[VThemeManager sharedThemeManager] themedColorForKey:kVMainColor] CGColor];
+    self.textView.textColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVMainTextColor];
+    self.textView.layer.borderColor = [[[VThemeManager sharedThemeManager] themedColorForKey:kVAccentColor] CGColor];
     self.textView.layer.borderWidth = 1;
     
-    self.postButton.tintColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVAccentColor];
+    self.postButton.tintColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVMainTextColor];
     self.postButton.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
     [self.postButton setTitle:NSLocalizedString(@"POST IT", @"Post button") forState:UIControlStateNormal];
     self.postButton.titleLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVButtonFont];
@@ -101,7 +101,7 @@ CGFloat VCreateViewControllerLargePadding = 20;
      name:UIKeyboardWillChangeFrameNotification object:nil];
     
     [self setType:self.type];
-    self.mediaLabel.textColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVAccentColor];
+    self.mediaLabel.textColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVMainTextColor];
     
     [self validatePostButtonState];
     [self updateViewState];
@@ -277,11 +277,11 @@ CGFloat VCreateViewControllerLargePadding = 20;
     NSInteger characterCount = VConstantsMessageLength-[textView.text length];
     if(characterCount < 0)
     {
-        self.characterCountLabel.textColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVAccentColor];
+        self.characterCountLabel.textColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVMainTextColor];
     }
     else
     {
-        self.characterCountLabel.textColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVAccentColor];
+        self.characterCountLabel.textColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVMainTextColor];
     }
     self.characterCountLabel.text = [NSString stringWithFormat:@"%lu", (unsigned long)characterCount];
     [self validatePostButtonState];

@@ -35,12 +35,13 @@ extern  NSString*   const   kVPollButtonFont;
 
 //Colors
 extern  NSString*   const   kVBackgroundColor;
+extern  NSString*   const   kVCancelColor;
+
+extern  NSString*   const   kVMainTextColor;
+extern  NSString*   const   kVContentTextColor;
 
 extern  NSString*   const   kVAccentColor;
-extern  NSString*   const   kVContentAccentColor;
-
-extern  NSString*   const   kVMainColor;
-extern  NSString*   const   kVSecondaryMainColor;
+extern  NSString*   const   kVSecondaryAccentColor;
 
 extern  NSString*   const   kVLinkColor;
 

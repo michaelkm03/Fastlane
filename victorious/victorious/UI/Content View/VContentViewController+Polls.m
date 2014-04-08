@@ -118,7 +118,7 @@
         }
         else
         {
-            resultView.color = [[VThemeManager sharedThemeManager] themedColorForKey:kVMainColor];
+            resultView.color = [[VThemeManager sharedThemeManager] themedColorForKey:kVAccentColor];
         }
         
         [resultView setProgress:progress animated:YES];

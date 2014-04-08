@@ -49,22 +49,22 @@ CGFloat kContentMediaViewOffset = 154;
     
     self.firstResultView.isVertical = YES;
     self.firstResultView.hidden = YES;
-    self.firstResultView.color = [[VThemeManager sharedThemeManager] themedColorForKey:kVMainColor];
+    self.firstResultView.color = [[VThemeManager sharedThemeManager] themedColorForKey:kVAccentColor];
     
     self.secondResultView.isVertical = YES;
     self.secondResultView.hidden = YES;
-    self.secondResultView.color = [[VThemeManager sharedThemeManager] themedColorForKey:kVMainColor];
+    self.secondResultView.color = [[VThemeManager sharedThemeManager] themedColorForKey:kVAccentColor];
 
     for (UIButton* button in self.buttonCollection)
     {
         [button setImage:[button.imageView.image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] forState:UIControlStateNormal];
-        button.tintColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVContentAccentColor];
+        button.tintColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVContentTextColor];
     }
-    self.descriptionLabel.textColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVContentAccentColor];
+    self.descriptionLabel.textColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVContentTextColor];
     self.descriptionLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVContentTitleFont];
     
     [self.remixButton setImage:[self.remixButton.imageView.image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] forState:UIControlStateNormal];
-    self.remixButton.tintColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVAccentColor];
+    self.remixButton.tintColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVMainTextColor];
     
     self.activityIndicator = [[UIActivityIndicatorView alloc] initWithFrame:CGRectMake(0, 0, 25, 25)];
     self.activityIndicator.backgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:.5f];
