@@ -55,7 +55,6 @@ static NSString* kOrIconImage = @"orIconImage";
     }
     
     [self setupMedia];
-    [self checkIfAnswered];
 }
 
 - (void)setupMedia
@@ -75,16 +74,4 @@ static NSString* kOrIconImage = @"orIconImage";
     [self.previewImageView setImageWithURL:self.firstAssetUrl placeholderImage:placeholderImage];
     [self.previewImageTwo setImageWithURL:self.secondAssetUrl placeholderImage:placeholderImage];
 }
-
-- (void)checkIfAnswered
-{
-    for (VPollResult* result in [VObjectManager sharedManager].mainUser.pollResults)
-    {
-        if ([result.sequenceId isEqualToNumber: self.sequence.remoteId])
-        {
-//            [self showResultsForAnswerId:result.answerId];
-        }
-    }
-}
-
 @end

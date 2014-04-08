@@ -62,6 +62,9 @@
     
     //Remove the search button from the stream - feature currently deprecated
     self.navigationItem.rightBarButtonItem = nil;
+
+    CGRect navBarFrame = self.navigationController.navigationBar.frame;
+    navBarFrame.size.height += navBarFrame.size.height;
 }
 
 #pragma mark - FetchedResultsControllers
