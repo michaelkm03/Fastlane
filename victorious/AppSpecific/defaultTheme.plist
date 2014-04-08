@@ -40,6 +40,17 @@
 		<key>alpha</key>
 		<integer>1</integer>
 	</dict>
+	<key>color.cancel</key>
+	<dict>
+		<key>red</key>
+		<integer>153</integer>
+		<key>green</key>
+		<integer>153</integer>
+		<key>blue</key>
+		<integer>153</integer>
+		<key>alpha</key>
+		<integer>1</integer>
+	</dict>
 	<key>color.text</key>
 	<dict>
 		<key>red</key>

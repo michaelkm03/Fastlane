@@ -95,6 +95,6 @@
     <resources>
         <image name="StreamComments" width="19" height="19"/>
         <image name="StreamDate" width="13" height="13"/>
-        <image name="profile_thumb" width="50" height="50"/>
+        <image name="profile_thumb" width="32" height="32"/>
     </resources>
 </document>

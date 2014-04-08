@@ -20,6 +20,7 @@
 #import "VAsset.h"
 
 #import "UIButton+VImageLoading.h"
+#import "UIImage+ImageCreation.h"
 
 #import "VConstants.h"
 
@@ -57,6 +58,8 @@ NSString *kStreamsWillCommentNotification = @"kStreamsWillCommentNotification";
     
     self.commentViews = [[NSMutableArray alloc] init];
     
+    self.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVBackgroundColor];
+    
     self.dateLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVDateFont];
     self.descriptionLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVContentTitleFont];
     self.dateImageView.image = [self.dateImageView.image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
@@ -86,7 +89,8 @@ NSString *kStreamsWillCommentNotification = @"kStreamsWillCommentNotification";
     _sequence = sequence;
     
     [self.previewImageView setImageWithURL:[NSURL URLWithString:_sequence.previewImage]
-                          placeholderImage:[UIImage new]];
+                          placeholderImage:[UIImage resizeableImageWithColor:
+                                            [[VThemeManager sharedThemeManager] themedColorForKey:kVSecondaryAccentColor]]];
     [self.profileImageButton setImageWithURL:[NSURL URLWithString:self.sequence.user.pictureUrl]
                             placeholderImage:[UIImage imageNamed:@"profile_thumb"]
                                     forState:UIControlStateNormal];
@@ -95,9 +99,6 @@ NSString *kStreamsWillCommentNotification = @"kStreamsWillCommentNotification";
         self.playButtonImage.hidden = NO;
     else
         self.playButtonImage.hidden = YES;
-
-//    if (!self.animating)
-//        self.animationImage.alpha = .5f;
     
     self.usernameLabel.text = self.sequence.user.name;
     self.descriptionLabel.text = self.sequence.name;
