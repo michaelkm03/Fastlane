@@ -6,8 +6,6 @@
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
-#import "VImageSearchViewController.h"
-
 #import <UIKit/UIKit.h>
 
 typedef NS_ENUM(NSUInteger, VImagePickerViewControllerType)
@@ -17,7 +15,7 @@ typedef NS_ENUM(NSUInteger, VImagePickerViewControllerType)
     VImagePickerViewControllerPhotoAndVideo
 };
 
-@interface VImagePickerViewController : UIViewController <UINavigationControllerDelegate, UIImagePickerControllerDelegate, VImageSearchViewControllerDelegate>
+@interface VImagePickerViewController : UIViewController <UINavigationControllerDelegate, UIImagePickerControllerDelegate>
 
 - (instancetype)initWithType:(VImagePickerViewControllerType)type;
 

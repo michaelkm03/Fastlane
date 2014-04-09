@@ -7,10 +7,10 @@
 //
 
 #import "VCreateSequenceDelegate.h"
-
 #import "VImagePickerViewController.h"
+#import "VImageSearchViewController.h"
 
-@interface VCreatePollViewController : VImagePickerViewController
+@interface VCreatePollViewController : VImagePickerViewController <VImageSearchViewControllerDelegate>
 
 @property (weak, nonatomic) IBOutlet UIImageView *rightPreviewImageView;
 @property (weak, nonatomic) IBOutlet UIImageView *previewImageView;

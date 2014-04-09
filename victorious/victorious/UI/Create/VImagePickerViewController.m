@@ -9,7 +9,6 @@
 @import AVFoundation;
 
 #import "VImagePickerViewController.h"
-#import "VImageSearchViewController.h"
 #import "VConstants.h"
 
 @interface VImagePickerViewController () <UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIActionSheetDelegate>
@@ -114,17 +113,11 @@
                                                             delegate:self
                                                    cancelButtonTitle:@"Cancel"
                                               destructiveButtonTitle:nil
-                                                   otherButtonTitles:@"Camera", @"Your Library", @"Search Online", nil];
+                                                   otherButtonTitles:@"Camera", @"Your Library", nil];
         [sheet showInView:self.view];
     }
     else
     {
-        VImageSearchViewController *flickrPicker = [VImageSearchViewController newImageSearchViewController];
-        flickrPicker.delegate = self;
-        [self presentViewController:flickrPicker animated:YES completion:nil];
-        return;
-        
-        // TODO
         self.imagePicker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
         [self presentViewController:self.imagePicker animated:YES completion:nil];
     }
@@ -142,12 +135,6 @@
         self.imagePicker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
         [self presentViewController:self.imagePicker animated:YES completion:nil];
     }
-    else if ((actionSheet.firstOtherButtonIndex + 2) == buttonIndex)
-    {
-        VImageSearchViewController *flickrPicker = [VImageSearchViewController newImageSearchViewController];
-        flickrPicker.delegate = self;
-        [self presentViewController:flickrPicker animated:YES completion:nil];
-    }
 }
 
 #pragma mark - Overrides
@@ -158,25 +145,6 @@
                            mediaURL:(NSURL*)mediaURL
 {
 
-}
-
-#pragma mark - VImageSearchViewControllerDelegate methods
-
-- (void)imageSearchDidCancel:(VImageSearchViewController *)imageSearch
-{
-    [self dismissViewControllerAnimated:YES completion:nil];
-}
-
-- (void)imageSearch:(VImageSearchViewController *)imageSearch didFinishPickingImage:(UIImage *)image
-{
-    NSData *mediaData = UIImagePNGRepresentation(image);
-    [self dismissViewControllerAnimated:YES completion:^(void)
-    {
-        [self imagePickerFinishedWithData:mediaData
-                                extension:VConstantMediaExtensionPNG
-                             previewImage:image
-                                 mediaURL:nil];
-    }];
 }
 
 @end

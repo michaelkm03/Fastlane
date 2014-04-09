@@ -229,7 +229,9 @@ CGFloat VCreateViewControllerLargePadding = 20;
 
 - (IBAction)searchImageAction:(id)sender
 {
-    //TODO:put search logic here
+    VImageSearchViewController *imageSearch = [VImageSearchViewController newImageSearchViewController];
+    imageSearch.delegate = self;
+    [self presentViewController:imageSearch animated:YES completion:nil];
 }
 
 #pragma mark - UITextFieldDelegate
@@ -333,6 +335,25 @@ CGFloat VCreateViewControllerLargePadding = 20;
          self.postButton.userInteractionEnabled = YES;
          
          [self validatePostButtonState];
+     }];
+}
+
+#pragma mark - VImageSearchViewControllerDelegate methods
+
+- (void)imageSearchDidCancel:(VImageSearchViewController *)imageSearch
+{
+    [self dismissViewControllerAnimated:YES completion:nil];
+}
+
+- (void)imageSearch:(VImageSearchViewController *)imageSearch didFinishPickingImage:(UIImage *)image
+{
+    NSData *mediaData = UIImagePNGRepresentation(image);
+    [self dismissViewControllerAnimated:YES completion:^(void)
+     {
+         [self imagePickerFinishedWithData:mediaData
+                                 extension:VConstantMediaExtensionPNG
+                              previewImage:image
+                                  mediaURL:nil];
      }];
 }
 
