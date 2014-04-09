@@ -54,12 +54,17 @@
                                               [ NSNumber numberWithInt: channels], AVNumberOfChannelsKey,
                                               nil];
     
-    if ([self.audioVideoRecorder.assetWriter canApplyOutputSettings:audioCompressionSetings forMediaType:AVMediaTypeAudio]) {
+    if ([self.audioVideoRecorder.assetWriter canApplyOutputSettings:audioCompressionSetings forMediaType:AVMediaTypeAudio])
+    {
         audioInput = [AVAssetWriterInput assetWriterInputWithMediaType:AVMediaTypeAudio outputSettings:audioCompressionSetings];
         audioInput.expectsMediaDataInRealTime = YES;
-        *error = nil;
-    } else {
-        *error = [VCAudioVideoRecorder createError:@"Cannot apply Audio settings"];
+        if (error)
+            *error = nil;
+    }
+    else
+    {
+        if (error)
+            *error = [VCAudioVideoRecorder createError:@"Cannot apply Audio settings"];
     }
 
     return audioInput;

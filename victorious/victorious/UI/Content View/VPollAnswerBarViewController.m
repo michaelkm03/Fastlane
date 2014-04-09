@@ -141,7 +141,10 @@
     {
         chosenAnswer = [self.answers lastObject];
     }
-    chosenAnswer = (self.answers)[tag];
+    else
+    {
+        chosenAnswer = (self.answers)[tag];
+    }
     
     [self answerPollWithAnswer:chosenAnswer];
 }

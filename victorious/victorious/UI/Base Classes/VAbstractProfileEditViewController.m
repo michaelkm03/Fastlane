@@ -133,10 +133,10 @@
     UIImage* imageToSave = (UIImage *)info[UIImagePickerControllerEditedImage] ?: (UIImage *)info[UIImagePickerControllerOriginalImage];
     self.profileImageView.image = imageToSave;
     
-    NSString*   mediaType   =   nil;
-    NSData*     media = UIImagePNGRepresentation(imageToSave);
-    if (media)
-        mediaType = VConstantMediaExtensionPNG;
+//    NSString*   mediaType   =   nil;
+//    NSData*     media = UIImagePNGRepresentation(imageToSave);
+//    if (media)
+//        mediaType = VConstantMediaExtensionPNG;
     
     [self dismissViewControllerAnimated:YES completion:nil];
 }

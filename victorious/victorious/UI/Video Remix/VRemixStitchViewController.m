@@ -14,8 +14,8 @@
 //#import "UIImage+Masking.h"
 #import "UIView+Masking.h"
 
-@interface VRemixStitchViewController ()    <VCVideoPlayerDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate>
-@property (nonatomic, weak)     IBOutlet    VCVideoPlayerView*  previewView;;
+@interface VRemixStitchViewController ()    <VCVideoPlayerDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIActionSheetDelegate>
+
 @property (nonatomic, weak)     IBOutlet    UIImageView*        playCircle;
 @property (nonatomic, weak)     IBOutlet    UIImageView*        playButton;
 @property (nonatomic, weak)     IBOutlet    UIView*             thumbnail;
@@ -29,13 +29,12 @@
 
 @property (nonatomic, strong)   AVAssetImageGenerator*          imageGenerator;
 
-@property (nonatomic, strong)   NSURL*      beforeAsset;
-@property (nonatomic, strong)   NSURL*      afterAsset;
+@property (nonatomic, strong)   NSURL*                          beforeAsset;
+@property (nonatomic, strong)   NSURL*                          afterAsset;
 
-@property (nonatomic)           BOOL        selectingBeforeURL;
-@property (nonatomic)           BOOL        selectingAfterURL;
+@property (nonatomic)           BOOL                            selectingBeforeURL;
+@property (nonatomic)           BOOL                            selectingAfterURL;
 
-@property (nonatomic)           BOOL        animatingPlayButton;
 @end
 
 @implementation VRemixStitchViewController
@@ -44,17 +43,6 @@
 {
     [super viewDidLoad];
 
-    [self.previewView.player setItem:[AVPlayerItem playerItemWithURL:self.sourceURL]];
-    self.previewView.player.startSeconds = self.startSeconds;
-    self.previewView.player.endSeconds = self.endSeconds;
-    [self.previewView.player seekToTime:CMTimeMakeWithSeconds(self.startSeconds, NSEC_PER_SEC)];
-    [self.previewView.player play];
-
-    [self.previewView addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTapToPlayAction:)]];
-    self.previewView.userInteractionEnabled = YES;
-    
-    self.previewView.player.delegate = self;
-    
     [self.thumbnail maskWithImage:[UIImage imageNamed:@"cameraThumbnailMask"]];
 
     [self setupThumbnailStrip:self.thumbnail withURL:self.sourceURL];
@@ -62,52 +50,18 @@
     [self.beforeButton addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(selectBeforeAssetClicked:)]];
     self.beforeButton.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"cameraButtonStitchLeft"]];
     self.beforeButton.userInteractionEnabled = YES;
+    [self.beforeButton maskWithImage:[UIImage imageNamed:@"cameraLeftMask"]];
     
     [self.afterButton addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(selectAfterAssetClicked:)]];
     self.afterButton.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"cameraButtonStitchRight"]];
     self.afterButton.userInteractionEnabled = YES;
+    [self.afterButton maskWithImage:[UIImage imageNamed:@"cameraRightMask"]];
 
     UIImage*    nextButtonImage = [[UIImage imageNamed:@"cameraButtonNext"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithImage:nextButtonImage style:UIBarButtonItemStyleBordered target:self action:@selector(nextButtonClicked:)];
 }
 
-- (void)viewDidAppear:(BOOL)animated
-{
-    [super viewDidAppear:animated];
-    
-    self.view.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVBackgroundColor];
-    self.navigationController.navigationBar.barTintColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVBackgroundColor];
-}
-
-- (void)viewDidDisappear:(BOOL)animated
-{
-    [super viewWillDisappear:animated];
-    
-    if (!self.previewView.player.isPlaying)
-        [self.previewView.player pause];
-}
-
-#pragma mark - SCVideoPlayerDelegate
-
-- (void)videoPlayerDidStartPlaying:(VCPlayer *)videoPlayer
-{
-    [self stopAnimation];
-}
-
-- (void)videoPlayerDidStopPlaying:(VCPlayer *)videoPlayer
-{
-    [self startAnimation];
-}
-
 #pragma mark - Actions
-
-- (IBAction)handleTapToPlayAction:(id)sender
-{
-    if (!self.previewView.player.isPlaying)
-        [self.previewView.player play];
-    else
-        [self.previewView.player pause];
-}
 
 - (IBAction)nextButtonClicked:(id)sender
 {
@@ -122,7 +76,15 @@
     self.selectingBeforeURL = YES;
     self.selectingAfterURL = NO;
     
-    [self selectAsset];
+    if (self.beforeAsset)
+    {
+        UIActionSheet*  sheet   =   [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:@"Delete" otherButtonTitles:@"Replace Video", nil];
+        [sheet showInView:self.view];
+    }
+    else
+    {
+        [self selectAsset];
+    }
 }
 
 - (IBAction)selectAfterAssetClicked:(id)sender
@@ -130,7 +92,43 @@
     self.selectingBeforeURL = NO;
     self.selectingAfterURL = YES;
     
-    [self selectAsset];
+    if (self.afterAsset)
+    {
+        UIActionSheet*  sheet   =   [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:@"Delete" otherButtonTitles:@"Replace Video", nil];
+        [sheet showInView:sender];
+    }
+    else
+    {
+        [self selectAsset];
+    }
+}
+
+- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    if (buttonIndex == [actionSheet destructiveButtonIndex])
+    {
+        if (self.selectingBeforeURL)
+        {
+            self.beforeAsset = nil;
+            [self.beforeButton.subviews makeObjectsPerformSelector: @selector(removeFromSuperview)];
+            self.beforeButton.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"cameraButtonStitchLeft"]];
+        }
+        
+        if (self.selectingAfterURL)
+        {
+            self.afterAsset = nil;
+            [self.afterButton.subviews makeObjectsPerformSelector: @selector(removeFromSuperview)];
+            self.afterButton.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"cameraButtonStitchRight"]];
+        }
+    }
+    else if (buttonIndex == [actionSheet cancelButtonIndex])
+    {
+        
+    }
+    else
+    {
+        [self selectAsset];
+    }
 }
 
 - (void)selectAsset
@@ -148,10 +146,10 @@
 {
     UIButton*   button = (UIButton *)sender;
     button.selected = !button.selected;
-    self.muteAudio = button.selected;
-    self.previewView.player.muted = self.muteAudio;
+    self.shouldMuteAudio = button.selected;
+    self.previewView.player.muted = self.shouldMuteAudio;
 
-    if (self.muteAudio)
+    if (self.shouldMuteAudio)
         [self.muteButton setImage:[UIImage imageNamed:@"cameraButtonMute"] forState:UIControlStateNormal];
     else
         [self.muteButton setImage:[UIImage imageNamed:@"cameraButtonUnmute"] forState:UIControlStateNormal];
@@ -203,54 +201,13 @@
     {
         VRemixPublishViewController*     publishViewController = (VRemixPublishViewController *)segue.destinationViewController;
         publishViewController.videoURL = self.sourceURL;
-        publishViewController.muteAudio = self.muteAudio;
+        publishViewController.shouldMuteAudio = self.shouldMuteAudio;
         publishViewController.playBackSpeed = self.playBackSpeed;
         publishViewController.playbackLooping = self.playbackLooping;
-        publishViewController.startSeconds = self.startSeconds;
-        publishViewController.endSeconds = self.endSeconds;
     }
 }
 
 #pragma mark - Support
-
-- (void)startAnimation
-{
-    //If we are already animating just ignore this and continue from where we are.
-    if (self.animatingPlayButton)
-        return;
-
-    self.playButton.alpha = 1.0;
-    self.playCircle.alpha = 1.0;
-    self.animatingPlayButton = YES;
-    [self firstAnimation];
-}
-
-- (void)firstAnimation
-{
-    if (self.animatingPlayButton)
-        [UIView animateKeyframesWithDuration:1.4f
-                                       delay:0
-                                     options:UIViewKeyframeAnimationOptionCalculationModeLinear
-                                  animations:^
-         {
-             [UIView addKeyframeWithRelativeStartTime:0      relativeDuration:.37f   animations:^ {self.playButton.alpha = 1.f; }];
-             [UIView addKeyframeWithRelativeStartTime:.37f   relativeDuration:.21f   animations:^ {self.playButton.alpha = .3f; }];
-             [UIView addKeyframeWithRelativeStartTime:.58f   relativeDuration:.17f   animations:^{ self.playButton.alpha = .9f; }];
-             [UIView addKeyframeWithRelativeStartTime:.75f   relativeDuration:.14f   animations:^{ self.playButton.alpha = .3f; }];
-             [UIView addKeyframeWithRelativeStartTime:.89f   relativeDuration:.11f   animations:^{ self.playButton.alpha = .5f; }];
-         }
-                                  completion:^(BOOL finished)
-         {
-             [self performSelector:@selector(firstAnimation) withObject:nil afterDelay:3.5f];
-         }];
-}
-
-- (void)stopAnimation
-{
-    self.animatingPlayButton = NO;
-    self.playButton.alpha = 0.0;
-    self.playCircle.alpha = 0.0;
-}
 
 - (void)didSelectVideo:(NSURL *)asset
 {
@@ -258,12 +215,14 @@
     {
         self.beforeAsset = asset;
         self.beforeButton.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
+        [self.beforeButton.subviews makeObjectsPerformSelector: @selector(removeFromSuperview)];
         [self setupThumbnailStrip:self.beforeButton withURL:asset];
     }
     else if (self.selectingAfterURL)
     {
         self.afterAsset = asset;
         self.afterButton.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
+        [self.afterButton.subviews makeObjectsPerformSelector: @selector(removeFromSuperview)];
         [self setupThumbnailStrip:self.afterButton withURL:asset];
     }
 }
@@ -283,7 +242,7 @@
     for (int i=0; i<picsCnt; i++)
     {
         time4Pic = i * picWidth;
-        CMTime timeFrame = CMTimeMakeWithSeconds(durationSeconds*time4Pic/background.frame.size.width, 600);
+        CMTime timeFrame = CMTimeMakeWithSeconds(durationSeconds * time4Pic / background.frame.size.width, 600);
         [allTimes addObject:[NSValue valueWithCMTime:timeFrame]];
     }
     

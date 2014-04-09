@@ -10,7 +10,7 @@
 #import "VContentViewController+Private.h"
 #import "VContentViewController+Images.h"
 
-#import "VRemixTrimViewController.h"
+#import "VRemixSelectViewController.h"
 
 @implementation VContentViewController (Videos)
 
@@ -115,7 +115,7 @@
 
 - (IBAction)pressedRemix:(id)sender
 {
-    UIViewController* remixVC = [VRemixTrimViewController remixViewControllerWithURL:[self.currentAsset.data mp4UrlFromM3U8]];
+    UIViewController* remixVC = [VRemixSelectViewController remixViewControllerWithURL:[self.currentAsset.data mp4UrlFromM3U8]];
     [self presentViewController:remixVC animated:YES completion:
      ^{
          [self.mpController pause];

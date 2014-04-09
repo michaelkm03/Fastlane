@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		03086AA718F38ABE00105FFB /* UIActionSheet+VBlocks.m in Sources */ = {isa = PBXBuildFile; fileRef = 03086AA618F38ABE00105FFB /* UIActionSheet+VBlocks.m */; };
 		0742CD6B32FA44679FBE8716 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 662F0867152745B2B2F08301 /* libPods.a */; };
 		3F14C44C18BD2BD0001796B9 /* VCAudioEncoder.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F14C43618BD2BD0001796B9 /* VCAudioEncoder.m */; };
 		3F14C44D18BD2BD0001796B9 /* VCAudioTools.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F14C43818BD2BD0001796B9 /* VCAudioTools.m */; };
@@ -70,6 +71,7 @@
 		3FDEDD0C18CE5E180028E3F1 /* VAbstractVideoEditorViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3FDEDD0B18CE5E180028E3F1 /* VAbstractVideoEditorViewController.m */; };
 		3FF7B6D718EE4009003831CD /* UIImage+Masking.m in Sources */ = {isa = PBXBuildFile; fileRef = 3FF7B6D618EE4009003831CD /* UIImage+Masking.m */; };
 		3FF7B6DA18EE477D003831CD /* UIView+Masking.m in Sources */ = {isa = PBXBuildFile; fileRef = 3FF7B6D918EE477D003831CD /* UIView+Masking.m */; };
+		3FF7B6DD18F4A668003831CD /* VRemixSelectViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3FF7B6DC18F4A668003831CD /* VRemixSelectViewController.m */; };
 		3FF8B7981868EE7E00806EA0 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3FF8B7971868EE7E00806EA0 /* Main.storyboard */; };
 		3FF8B7A51868FC1C00806EA0 /* malTheme.plist in Resources */ = {isa = PBXBuildFile; fileRef = 3FF8B7A41868FC1C00806EA0 /* malTheme.plist */; };
 		3FF8C50218A59EAB00812968 /* VCreatePollViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3FF8C4F818A59EAB00812968 /* VCreatePollViewController.m */; };
@@ -232,6 +234,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		03086AA518F38ABE00105FFB /* UIActionSheet+VBlocks.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIActionSheet+VBlocks.h"; sourceTree = "<group>"; };
+		03086AA618F38ABE00105FFB /* UIActionSheet+VBlocks.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIActionSheet+VBlocks.m"; sourceTree = "<group>"; };
 		33ACD3CBAF2C419D97FB901A /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = "<group>"; };
 		3F14C43518BD2BD0001796B9 /* VCAudioEncoder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VCAudioEncoder.h; sourceTree = "<group>"; };
 		3F14C43618BD2BD0001796B9 /* VCAudioEncoder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VCAudioEncoder.m; sourceTree = "<group>"; };
@@ -345,6 +349,8 @@
 		3FF7B6D618EE4009003831CD /* UIImage+Masking.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "UIImage+Masking.m"; path = "Categories/UIImage+Masking.m"; sourceTree = "<group>"; };
 		3FF7B6D818EE477D003831CD /* UIView+Masking.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "UIView+Masking.h"; path = "Categories/UIView+Masking.h"; sourceTree = "<group>"; };
 		3FF7B6D918EE477D003831CD /* UIView+Masking.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "UIView+Masking.m"; path = "Categories/UIView+Masking.m"; sourceTree = "<group>"; };
+		3FF7B6DB18F4A668003831CD /* VRemixSelectViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VRemixSelectViewController.h; path = "UI/Video Remix/VRemixSelectViewController.h"; sourceTree = "<group>"; };
+		3FF7B6DC18F4A668003831CD /* VRemixSelectViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VRemixSelectViewController.m; path = "UI/Video Remix/VRemixSelectViewController.m"; sourceTree = "<group>"; };
 		3FF8B7971868EE7E00806EA0 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
 		3FF8B7A41868FC1C00806EA0 /* malTheme.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = malTheme.plist; sourceTree = "<group>"; };
 		3FF8C4F718A59EAB00812968 /* VCreatePollViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VCreatePollViewController.h; sourceTree = "<group>"; };
@@ -709,24 +715,19 @@
 			name = Common;
 			sourceTree = "<group>";
 		};
-		3F1AA53318CFFC000022D16B /* Abstract Classes */ = {
-			isa = PBXGroup;
-			children = (
-				3FDEDD0A18CE5E180028E3F1 /* VAbstractVideoEditorViewController.h */,
-				3FDEDD0B18CE5E180028E3F1 /* VAbstractVideoEditorViewController.m */,
-			);
-			name = "Abstract Classes";
-			sourceTree = "<group>";
-		};
 		3F366E7018E24CCD00494B12 /* Remix */ = {
 			isa = PBXGroup;
 			children = (
+				3FF7B6DB18F4A668003831CD /* VRemixSelectViewController.h */,
+				3FF7B6DC18F4A668003831CD /* VRemixSelectViewController.m */,
 				3FDEDD0118CE47E80028E3F1 /* VRemixTrimViewController.h */,
 				3FDEDD0218CE47E80028E3F1 /* VRemixTrimViewController.m */,
 				3FDEDD0418CE48210028E3F1 /* VRemixStitchViewController.h */,
 				3FDEDD0518CE48210028E3F1 /* VRemixStitchViewController.m */,
 				3F366E6D18E1FE8C00494B12 /* VRemixPublishViewController.h */,
 				3F366E6E18E1FE8C00494B12 /* VRemixPublishViewController.m */,
+				3FDEDD0A18CE5E180028E3F1 /* VAbstractVideoEditorViewController.h */,
+				3FDEDD0B18CE5E180028E3F1 /* VAbstractVideoEditorViewController.m */,
 				3FDEDCFF18CE46F00028E3F1 /* VideoRemix.storyboard */,
 			);
 			name = Remix;
@@ -992,7 +993,6 @@
 				3F366E7018E24CCD00494B12 /* Remix */,
 				3F1AA53018CFEFFC0022D16B /* Capture */,
 				3F1AA53118CFF00B0022D16B /* Editing */,
-				3F1AA53318CFFC000022D16B /* Abstract Classes */,
 				3F1AA53218CFF0180022D16B /* Common */,
 			);
 			name = CameraViewController;
@@ -1127,6 +1127,8 @@
 				BED4569318BD581800A67160 /* UIWebView+VYoutubeLoading.m */,
 				BEB52A7C18C12DCE00AC5FE4 /* UIView+VFrameManipulation.h */,
 				BEB52A7D18C12DCE00AC5FE4 /* UIView+VFrameManipulation.m */,
+				03086AA518F38ABE00105FFB /* UIActionSheet+VBlocks.h */,
+				03086AA618F38ABE00105FFB /* UIActionSheet+VBlocks.m */,
 			);
 			path = Categories;
 			sourceTree = "<group>";
@@ -1723,6 +1725,7 @@
 				BEF2C29918846FAB00AAE975 /* VConversation.m in Sources */,
 				3F71A7DC18D7C6D20048FF60 /* VRemixVideoRangeSlider.m in Sources */,
 				BE185DF118E3B2C2001C447F /* VContentViewController+Images.m in Sources */,
+				03086AA718F38ABE00105FFB /* UIActionSheet+VBlocks.m in Sources */,
 				BEF2C2A5188488C000AAE975 /* VUnreadConversation+RestKit.m in Sources */,
 				BE171E211868C211004E5202 /* VObjectManager+Sequence.m in Sources */,
 				BED4569718BD58DE00A67160 /* VAsset+Fetcher.m in Sources */,
@@ -1734,6 +1737,7 @@
 				BE171E231868C211004E5202 /* VPaginationStatus.m in Sources */,
 				5FC4DA671897111B006BA107 /* VLoginViewController.m in Sources */,
 				D1DAAA08187A43A9009ADCB0 /* VProfileViewController.m in Sources */,
+				3FF7B6DD18F4A668003831CD /* VRemixSelectViewController.m in Sources */,
 				83D897421881F19D00BD5B8B /* VCommentsContainerViewController.m in Sources */,
 				BE171E151868C211004E5202 /* VNodeAction+RestKit.m in Sources */,
 				BE6C15251880A31A00469BA8 /* VAnswerAction.m in Sources */,
