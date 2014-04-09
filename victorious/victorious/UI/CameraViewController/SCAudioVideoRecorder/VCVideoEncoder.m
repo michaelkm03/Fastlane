@@ -66,9 +66,13 @@
 		assetWriterVideoIn = [[AVAssetWriterInput alloc] initWithMediaType:AVMediaTypeVideo outputSettings:videoCompressionSettings];
 		assetWriterVideoIn.expectsMediaDataInRealTime = YES;
         assetWriterVideoIn.transform = self.outputAffineTransform;
-        *error = nil;
-	} else {
-        *error = [VCAudioVideoRecorder createError:@"Unable to configure output settings"];
+        if (error)
+            *error = nil;
+	}
+    else
+    {
+        if (error)
+            *error = [VCAudioVideoRecorder createError:@"Unable to configure output settings"];
 	}
     
     return assetWriterVideoIn;

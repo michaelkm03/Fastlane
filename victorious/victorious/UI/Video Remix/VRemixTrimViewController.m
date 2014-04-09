@@ -15,7 +15,7 @@
 #import "VThemeManager.h"
 
 @interface VRemixTrimViewController ()  <VCVideoPlayerDelegate, VRemixVideoRangeSliderDelegate>
-@property (nonatomic, weak)     IBOutlet    VCVideoPlayerView*  previewView;;
+
 @property (nonatomic, weak)     IBOutlet    UISlider*           scrubber;
 @property (nonatomic, weak)     IBOutlet    UILabel*            currentTimeLabel;
 @property (nonatomic, weak)     IBOutlet    UILabel*            totalTimeLabel;
@@ -33,19 +33,15 @@
 @property (nonatomic, strong)   AVURLAsset*                     sourceAsset;
 @property (nonatomic)           CGFloat                         restoreAfterScrubbingRate;
 @property (nonatomic, strong)   id                              timeObserver;
-@property (nonatomic)           BOOL                            animatingPlayButton;
+
+@property (nonatomic, strong)   AVAssetExportSession*           exportSession;
+
+@property (nonatomic)           CGFloat                         startSeconds;
+@property (nonatomic)           CGFloat                         endSeconds;
+
 @end
 
 @implementation VRemixTrimViewController
-
-+ (UIViewController *)remixViewControllerWithURL:(NSURL *)url
-{
-    UINavigationController*     remixViewController =   [[UIStoryboard storyboardWithName:@"VideoRemix" bundle:nil] instantiateInitialViewController];
-    VRemixTrimViewController*   rootViewController  =   (VRemixTrimViewController *)remixViewController.topViewController;
-    rootViewController.sourceURL = url;
-    
-    return remixViewController;
-}
 
 - (void)viewDidLoad
 {
@@ -54,15 +50,6 @@
     self.sourceAsset = [AVURLAsset assetWithURL:self.sourceURL];
     self.playBackSpeed = kVPlaybackNormalSpeed;
     self.playbackLooping = kVLoopOnce;
-    
-    [self.previewView.player setItem:[AVPlayerItem playerItemWithURL:self.sourceURL]];
-    self.previewView.player.delegate = self;
-    
-    [self.previewView.player seekToTime:CMTimeMakeWithSeconds(self.startSeconds, NSEC_PER_SEC)];
-    [self.previewView.player play];
-    
-    [self.previewView addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTapToPlayAction:)]];
-    self.previewView.userInteractionEnabled = YES;
     
     [self.scrubber addTarget:self action:@selector(scrubberDidStartMoving:) forControlEvents:UIControlEventTouchDown];
     [self.scrubber addTarget:self action:@selector(scrubberDidMove:) forControlEvents:UIControlEventTouchDragInside];
@@ -84,9 +71,6 @@
 -(void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-
-    self.view.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVBackgroundColor];
-    self.navigationController.navigationBar.barTintColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVBackgroundColor];
 
     self.totalTimeLabel.text = [self secondsToMMSS:CMTimeGetSeconds(self.sourceAsset.duration)];
     self.currentTimeLabel.text = [self secondsToMMSS:0];
@@ -110,8 +94,6 @@
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
-    if (!self.previewView.player.isPlaying)
-        [self.previewView.player pause];
     
     [self.previewView.player removeTimeObserver:self.timeObserver];
     
@@ -143,16 +125,6 @@
     self.currentTimeLabel.text = [self secondsToMMSS:secondsElapsed];
 }
 
-- (void)videoPlayerDidStartPlaying:(VCPlayer *)videoPlayer
-{
-    [self stopAnimation];
-}
-
-- (void)videoPlayerDidStopPlaying:(VCPlayer *)videoPlayer
-{
-    [self startAnimation];
-}
-
 #pragma mark - VRemixVideoRangeSliderDelegate
 
 - (void)videoRange:(VRemixVideoRangeSlider *)videoRange didChangeLeftPosition:(CGFloat)leftPosition rightPosition:(CGFloat)rightPosition
@@ -165,16 +137,49 @@
 
 #pragma mark - Actions
 
-- (IBAction)closeButtonClicked:(id)sender
-{
-    [self dismissViewControllerAnimated:YES completion:nil];
-}
-
 - (IBAction)nextButtonClicked:(id)sender
 {
-    if (self.previewView.player.isPlaying)
-        [self.previewView.player pause];
-    
+    NSURL*      target  =   [NSURL fileURLWithPath:[[NSTemporaryDirectory() stringByAppendingPathComponent:@"movieSegment"] stringByAppendingPathExtension:@"mp4"] isDirectory:NO];
+    [[NSFileManager defaultManager] removeItemAtURL:target error:nil];
+
+    AVAsset*        anAsset = [[AVURLAsset alloc] initWithURL:self.sourceURL options:nil];
+    NSArray*        compatiblePresets = [AVAssetExportSession exportPresetsCompatibleWithAsset:anAsset];
+    if ([compatiblePresets containsObject:AVAssetExportPresetMediumQuality])
+    {
+        self.exportSession  =   [[AVAssetExportSession alloc] initWithAsset:anAsset presetName:AVAssetExportPresetPassthrough];
+
+        self.exportSession.outputURL = target;
+        self.exportSession.outputFileType = AVFileTypeMPEG4;
+
+        CMTime start = CMTimeMakeWithSeconds(self.startSeconds, anAsset.duration.timescale);
+        CMTime duration = CMTimeMakeWithSeconds(self.endSeconds - self.startSeconds, anAsset.duration.timescale);
+        CMTimeRange range = CMTimeRangeMake(start, duration);
+        self.exportSession.timeRange = range;
+
+//        self.myActivityIndicator.hidden = NO;
+//        [self.myActivityIndicator startAnimating];
+        
+        [self.exportSession exportAsynchronouslyWithCompletionHandler:^{
+            switch ([self.exportSession status])
+            {
+                case AVAssetExportSessionStatusFailed:
+                    NSLog(@"Export failed: %@", [[self.exportSession error] localizedDescription]);
+                    break;
+                case AVAssetExportSessionStatusCancelled:
+                    NSLog(@"Export canceled");
+                    break;
+                default:
+                    NSLog(@"Export Complete");
+                    dispatch_async(dispatch_get_main_queue(), ^{
+//                        [self.myActivityIndicator stopAnimating];
+//                        self.myActivityIndicator.hidden = YES;
+                        self.targetURL = target;
+                    });
+                    break;
+            }
+        }];
+    }
+
     [self performSegueWithIdentifier:@"toStitch" sender:self];
 }
 
@@ -182,10 +187,10 @@
 {
     UIButton*   button = (UIButton *)sender;
     button.selected = !button.selected;
-    self.muteAudio = button.selected;
-    self.previewView.player.muted = self.muteAudio;
+    self.shouldMuteAudio = button.selected;
+    self.previewView.player.muted = self.shouldMuteAudio;
     
-    if (self.muteAudio)
+    if (self.shouldMuteAudio)
         [self.muteButton setImage:[UIImage imageNamed:@"cameraButtonMute"] forState:UIControlStateNormal];
     else
         [self.muteButton setImage:[UIImage imageNamed:@"cameraButtonUnmute"] forState:UIControlStateNormal];
@@ -227,14 +232,6 @@
         self.previewView.player.shouldLoop = NO;
         [self.loopButton setImage:[UIImage imageNamed:@"cameraButtonNoLoop"] forState:UIControlStateNormal];
     }
-}
-
-- (IBAction)handleTapToPlayAction:(id)sender
-{
-    if (!self.previewView.player.isPlaying)
-        [self.previewView.player play];
-    else
-        [self.previewView.player pause];
 }
 
 -(IBAction)scrubberDidStartMoving:(id)sender
@@ -299,12 +296,10 @@
     if ([segue.identifier isEqualToString:@"toStitch"])
     {
         VRemixStitchViewController*     stitchViewController = (VRemixStitchViewController *)segue.destinationViewController;
-        stitchViewController.sourceURL = self.sourceURL;
-        stitchViewController.muteAudio = self.muteAudio;
+        stitchViewController.sourceURL = self.targetURL;
+        stitchViewController.shouldMuteAudio = self.shouldMuteAudio;
         stitchViewController.playBackSpeed = self.playBackSpeed;
         stitchViewController.playbackLooping = self.playbackLooping;
-        stitchViewController.startSeconds = self.startSeconds;
-        stitchViewController.endSeconds = self.endSeconds;
     }
 }
 
@@ -348,43 +343,6 @@
 		double time = CMTimeGetSeconds([self.previewView.player currentTime]);
 		[self.scrubber setValue:(maxValue - minValue) * time / duration + minValue];
 	}
-}
-
-- (void)startAnimation
-{
-    //If we are already animating just ignore this and continue from where we are.
-    if (self.animatingPlayButton)
-        return;
-    
-    self.playButton.alpha = 1.0;
-    self.playCircle.alpha = 1.0;
-    self.animatingPlayButton = YES;
-    [self firstAnimation];
-}
-
-- (void)firstAnimation
-{
-    if (self.animatingPlayButton)
-        [UIView animateKeyframesWithDuration:1.4f delay:0 options:UIViewKeyframeAnimationOptionCalculationModeLinear
-                                  animations:^
-         {
-             [UIView addKeyframeWithRelativeStartTime:0      relativeDuration:.37f   animations:^{   self.playButton.alpha = 1;      }];
-             [UIView addKeyframeWithRelativeStartTime:.37f   relativeDuration:.21f   animations:^{   self.playButton.alpha = .3f;    }];
-             [UIView addKeyframeWithRelativeStartTime:.58f   relativeDuration:.17f   animations:^{   self.playButton.alpha = .9f;    }];
-             [UIView addKeyframeWithRelativeStartTime:.75f   relativeDuration:.14f   animations:^{   self.playButton.alpha = .3f;    }];
-             [UIView addKeyframeWithRelativeStartTime:.89f   relativeDuration:.11f   animations:^{   self.playButton.alpha = .5f;    }];
-         }
-                                  completion:^(BOOL finished)
-         {
-             [self performSelector:@selector(firstAnimation) withObject:nil afterDelay:3.5f];
-         }];
-}
-
-- (void)stopAnimation
-{
-    self.animatingPlayButton = NO;
-    self.playButton.alpha = 0.0;
-    self.playCircle.alpha = 0.0;
 }
 
 @end

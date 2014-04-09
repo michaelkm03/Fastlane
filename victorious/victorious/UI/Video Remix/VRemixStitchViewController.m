@@ -16,7 +16,6 @@
 
 @interface VRemixStitchViewController ()    <VCVideoPlayerDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIActionSheetDelegate>
 
-@property (nonatomic, weak)     IBOutlet    VCVideoPlayerView*  previewView;;
 @property (nonatomic, weak)     IBOutlet    UIImageView*        playCircle;
 @property (nonatomic, weak)     IBOutlet    UIImageView*        playButton;
 @property (nonatomic, weak)     IBOutlet    UIView*             thumbnail;
@@ -36,10 +35,6 @@
 @property (nonatomic)           BOOL                            selectingBeforeURL;
 @property (nonatomic)           BOOL                            selectingAfterURL;
 
-@property (nonatomic)           BOOL                            animatingPlayButton;
-
-@property (nonatomic)           AVPlayerItem*                   playerItem;
-
 @end
 
 @implementation VRemixStitchViewController
@@ -48,19 +43,6 @@
 {
     [super viewDidLoad];
 
-    self.playerItem = [AVPlayerItem playerItemWithURL:self.sourceURL];
-    
-    [self.previewView.player setItem:self.playerItem];
-    self.previewView.player.startSeconds = self.startSeconds;
-    self.previewView.player.endSeconds = self.endSeconds;
-    [self.previewView.player seekToTime:CMTimeMakeWithSeconds(self.startSeconds, NSEC_PER_SEC)];
-    [self.previewView.player play];
-
-    [self.previewView addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTapToPlayAction:)]];
-    self.previewView.userInteractionEnabled = YES;
-    
-    self.previewView.player.delegate = self;
-    
     [self.thumbnail maskWithImage:[UIImage imageNamed:@"cameraThumbnailMask"]];
 
     [self setupThumbnailStrip:self.thumbnail withURL:self.sourceURL];
@@ -79,43 +61,7 @@
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithImage:nextButtonImage style:UIBarButtonItemStyleBordered target:self action:@selector(nextButtonClicked:)];
 }
 
-- (void)viewDidAppear:(BOOL)animated
-{
-    [super viewDidAppear:animated];
-    
-    self.view.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVBackgroundColor];
-    self.navigationController.navigationBar.barTintColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVBackgroundColor];
-}
-
-- (void)viewDidDisappear:(BOOL)animated
-{
-    [super viewWillDisappear:animated];
-    
-    if (!self.previewView.player.isPlaying)
-        [self.previewView.player pause];
-}
-
-#pragma mark - SCVideoPlayerDelegate
-
-- (void)videoPlayerDidStartPlaying:(VCPlayer *)videoPlayer
-{
-    [self stopAnimation];
-}
-
-- (void)videoPlayerDidStopPlaying:(VCPlayer *)videoPlayer
-{
-    [self startAnimation];
-}
-
 #pragma mark - Actions
-
-- (IBAction)handleTapToPlayAction:(id)sender
-{
-    if (!self.previewView.player.isPlaying)
-        [self.previewView.player play];
-    else
-        [self.previewView.player pause];
-}
 
 - (IBAction)nextButtonClicked:(id)sender
 {
@@ -200,10 +146,10 @@
 {
     UIButton*   button = (UIButton *)sender;
     button.selected = !button.selected;
-    self.muteAudio = button.selected;
-    self.previewView.player.muted = self.muteAudio;
+    self.shouldMuteAudio = button.selected;
+    self.previewView.player.muted = self.shouldMuteAudio;
 
-    if (self.muteAudio)
+    if (self.shouldMuteAudio)
         [self.muteButton setImage:[UIImage imageNamed:@"cameraButtonMute"] forState:UIControlStateNormal];
     else
         [self.muteButton setImage:[UIImage imageNamed:@"cameraButtonUnmute"] forState:UIControlStateNormal];
@@ -255,54 +201,13 @@
     {
         VRemixPublishViewController*     publishViewController = (VRemixPublishViewController *)segue.destinationViewController;
         publishViewController.videoURL = self.sourceURL;
-        publishViewController.muteAudio = self.muteAudio;
+        publishViewController.shouldMuteAudio = self.shouldMuteAudio;
         publishViewController.playBackSpeed = self.playBackSpeed;
         publishViewController.playbackLooping = self.playbackLooping;
-        publishViewController.startSeconds = self.startSeconds;
-        publishViewController.endSeconds = self.endSeconds;
     }
 }
 
 #pragma mark - Support
-
-- (void)startAnimation
-{
-    //If we are already animating just ignore this and continue from where we are.
-    if (self.animatingPlayButton)
-        return;
-
-    self.playButton.alpha = 1.0;
-    self.playCircle.alpha = 1.0;
-    self.animatingPlayButton = YES;
-    [self firstAnimation];
-}
-
-- (void)firstAnimation
-{
-    if (self.animatingPlayButton)
-        [UIView animateKeyframesWithDuration:1.4f
-                                       delay:0
-                                     options:UIViewKeyframeAnimationOptionCalculationModeLinear
-                                  animations:^
-         {
-             [UIView addKeyframeWithRelativeStartTime:0      relativeDuration:.37f   animations:^ {self.playButton.alpha = 1.f; }];
-             [UIView addKeyframeWithRelativeStartTime:.37f   relativeDuration:.21f   animations:^ {self.playButton.alpha = .3f; }];
-             [UIView addKeyframeWithRelativeStartTime:.58f   relativeDuration:.17f   animations:^{ self.playButton.alpha = .9f; }];
-             [UIView addKeyframeWithRelativeStartTime:.75f   relativeDuration:.14f   animations:^{ self.playButton.alpha = .3f; }];
-             [UIView addKeyframeWithRelativeStartTime:.89f   relativeDuration:.11f   animations:^{ self.playButton.alpha = .5f; }];
-         }
-                                  completion:^(BOOL finished)
-         {
-             [self performSelector:@selector(firstAnimation) withObject:nil afterDelay:3.5f];
-         }];
-}
-
-- (void)stopAnimation
-{
-    self.animatingPlayButton = NO;
-    self.playButton.alpha = 0.0;
-    self.playCircle.alpha = 0.0;
-}
 
 - (void)didSelectVideo:(NSURL *)asset
 {

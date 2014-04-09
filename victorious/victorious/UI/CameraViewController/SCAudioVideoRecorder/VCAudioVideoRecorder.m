@@ -137,7 +137,8 @@ NSString * const VCAudioVideoRecorderPhotoThumbnailKey = @"VCAudioVideoRecorderP
 // Video Recorder methods
 //
 
-- (void) prepareRecordingAtCameraRoll:(NSError **)error {
+- (void) prepareRecordingAtCameraRoll:(NSError **)error
+{
 	[self prepareRecordingOnTempDir:error];
 	shouldWriteToCameraRoll = YES;
 }
@@ -162,7 +163,8 @@ NSString * const VCAudioVideoRecorderPhotoThumbnailKey = @"VCAudioVideoRecorderP
 }
 
 
-- (void) prepareRecordingAtUrl:(NSURL *)fileUrl error:(NSError **)error {
+- (void) prepareRecordingAtUrl:(NSURL *)fileUrl error:(NSError **)error
+{
 	if (fileUrl == nil) {
 		[NSException raise:@"Invalid argument" format:@"FileUrl must be not nil"];
 	}
