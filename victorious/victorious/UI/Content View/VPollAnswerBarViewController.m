@@ -26,8 +26,7 @@
 @interface VPollAnswerBarViewController ()
 
 @property (weak, nonatomic) IBOutlet UIView* answeredView;
-@property (weak, nonatomic) IBOutlet UIView* leftAnsweredView;
-@property (weak, nonatomic) IBOutlet UIView* rightAnsweredView;
+@property (weak, nonatomic) IBOutlet UIView* selectedAnswerView;
 @property (weak, nonatomic) IBOutlet UIImageView* answeredHexImage;
 @property (weak, nonatomic) IBOutlet UIImageView* answeredCheckImage;
 
@@ -57,8 +56,7 @@
                                                  name:kPollResultsLoaded
                                                object:nil];
     
-    self.leftAnsweredView.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
-    self.rightAnsweredView.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
+    self.selectedAnswerView.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
     UIImage* newImage = [self.answeredHexImage.image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
     [self.answeredHexImage setImage:newImage];
     self.answeredHexImage.tintColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
@@ -78,6 +76,9 @@
 - (void)setSequence:(VSequence *)sequence
 {
     [super setSequence:sequence];
+    
+    self.answers = [[self.sequence firstNode] firstAnswers];
+    
     self.orImageView.hidden = YES;
 }
 
@@ -95,24 +96,39 @@
         }
     }
     
-    self.answers = [[self.sequence firstNode] firstAnswers];
     self.leftLabel.text = ((VAnswer*)[self.answers firstObject]).label;
     self.rightLabel.text = ((VAnswer*)[self.answers lastObject]).label;
 }
 
 - (void)answerAnimationForAnswerID:(NSNumber*)answerID
 {
+    CGRect emptyFrame;
+    CGRect fullFrame;
+    self.selectedAnswerView.hidden = NO;
+    
+    CGFloat fullWidth = self.selectedAnswerView.frame.size.width + self.answeredHexImage.frame.size.width;
     if ([answerID isEqualToNumber:((VAnswer*)[self.answers firstObject]).remoteId])
     {
-        self.leftAnsweredView.hidden = NO;
-        self.rightAnsweredView.hidden = YES;
+        CGFloat emptyXOrigin = self.answeredHexImage.frame.origin.x + self.answeredHexImage.frame.size.width;
+        emptyFrame = CGRectMake(emptyXOrigin, 0, 0, self.view.frame.size.height);
         
+        fullFrame = CGRectMake(0, 0, fullWidth, self.view.frame.size.height);
     }
     else
     {
-        self.leftAnsweredView.hidden = YES;
-        self.rightAnsweredView.hidden = NO;
+        CGFloat emptyXOrigin = self.answeredHexImage.frame.origin.x;
+        emptyFrame = CGRectMake(emptyXOrigin, 0, 0, self.view.frame.size.height);
+        
+        fullFrame = CGRectMake(self.answeredHexImage.frame.origin.x, 0, fullWidth, self.view.frame.size.height);
     }
+    self.answeredView.frame = emptyFrame;
+    self.answeredView.hidden = NO;
+    
+    [UIView animateWithDuration:1.0f
+                     animations:^
+    {
+        self.answeredView.frame = fullFrame;
+    }];
 }
 
 #pragma mark - Button actions

@@ -1598,20 +1598,15 @@
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                             </imageView>
                             <view hidden="YES" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="h6y-Vg-Xrc" userLabel="AnsweredView">
-                                <rect key="frame" x="0.0" y="0.0" width="320" height="60"/>
+                                <rect key="frame" x="0.0" y="0.0" width="193" height="60"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <subviews>
                                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="PollHex" translatesAutoresizingMaskIntoConstraints="NO" id="zeQ-mQ-5yp">
                                         <rect key="frame" x="128" y="-12" width="65" height="72"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                     </imageView>
-                                    <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Ab6-i0-Wvz" userLabel="LeftAnsweredView">
+                                    <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="mzz-F2-4Qi" userLabel="selectedAnswerView">
                                         <rect key="frame" x="0.0" y="0.0" width="160" height="60"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        <color key="backgroundColor" white="0.0" alpha="0.40000000000000002" colorSpace="calibratedWhite"/>
-                                    </view>
-                                    <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="mzz-F2-4Qi" userLabel="RightAnsweredView">
-                                        <rect key="frame" x="160" y="0.0" width="160" height="60"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <color key="backgroundColor" white="0.0" alpha="0.40000000000000002" colorSpace="calibratedWhite"/>
                                     </view>
@@ -1641,13 +1636,12 @@
                     <connections>
                         <outlet property="answeredHexImage" destination="zeQ-mQ-5yp" id="Xny-q7-lsX"/>
                         <outlet property="answeredView" destination="h6y-Vg-Xrc" id="yKr-L1-kMB"/>
-                        <outlet property="leftAnsweredView" destination="Ab6-i0-Wvz" id="sYw-EI-N6h"/>
                         <outlet property="leftButton" destination="Bxp-hr-lFz" id="tDi-eo-G9N"/>
                         <outlet property="leftLabel" destination="fBr-Do-fCE" id="iP5-IW-EK9"/>
                         <outlet property="orImageView" destination="GKu-yT-0Dh" id="YLv-VH-vMC"/>
-                        <outlet property="rightAnsweredView" destination="mzz-F2-4Qi" id="Lac-88-tbu"/>
                         <outlet property="rightButton" destination="D1I-Wr-6dI" id="hYQ-Xy-O8S"/>
                         <outlet property="rightLabel" destination="6ak-S4-RIj" id="dC2-lN-4xP"/>
+                        <outlet property="selectedAnswerView" destination="mzz-F2-4Qi" id="1JW-mC-neA"/>
                         <outlet property="view" destination="YN0-go-INq" id="QBI-hR-jrh"/>
                     </connections>
                 </viewController>
@@ -1690,7 +1684,7 @@
         <simulatedScreenMetrics key="destination" type="retina4"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
-        <segue reference="hhE-4U-i31"/>
         <segue reference="nH9-Zs-lk0"/>
+        <segue reference="Bar-aP-eCJ"/>
     </inferredMetricsTieBreakers>
 </document>
