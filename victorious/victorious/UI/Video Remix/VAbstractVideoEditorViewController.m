@@ -20,7 +20,6 @@
 	
     [self.previewView.player setItemByUrl:self.sourceURL];
     self.previewView.player.delegate = self;
-    [self.previewView.player seekToTime:CMTimeMakeWithSeconds(self.startSeconds, NSEC_PER_SEC)];
     [self.previewView.player play];
 
     [self.previewView addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTapToPlayAction:)]];
