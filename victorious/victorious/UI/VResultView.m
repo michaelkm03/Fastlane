@@ -92,7 +92,7 @@
                                                                  self.frame.size.width,
                                                                  self.frame.size.height *.1f)];
         _resultLabel.center = self.resultArrow.center;
-        _resultLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVPollButtonFont];
+        _resultLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVButton1Font];
         _resultLabel.textColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVMainTextColor];
         _resultLabel.textAlignment = NSTextAlignmentCenter;
         _resultLabel.minimumScaleFactor = .5f;

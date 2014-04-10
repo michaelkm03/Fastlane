@@ -35,13 +35,13 @@
     _timerWidth = 5;
     self.timerColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
     
-    self.timeRemainingLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVDateFont];
+    self.timeRemainingLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeading3Font];
     self.timeRemainingLabel.textColor = [UIColor grayColor];//[[VThemeManager sharedThemeManager] themedColorForKey:kVContentAccentColor];
     
-    self.dayLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVDateFont];
+    self.dayLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeading3Font];
     self.dayLabel.textColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
     
-    self.countdownLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVTitleFont];
+    self.countdownLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeaderFont];
     self.countdownLabel.textColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
     
     [self updateLabels];
