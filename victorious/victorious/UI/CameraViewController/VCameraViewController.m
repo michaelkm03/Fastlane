@@ -56,7 +56,7 @@ const   NSTimeInterval  kAnimationDuration      =   0.4;
 
 + (VCameraViewController *)cameraViewController
 {
-    return [[UIStoryboard storyboardWithName:@"Camera" bundle:nil] instantiateInitialViewController];
+    return [[UIStoryboard storyboardWithName:@"Camera" bundle:nil] instantiateViewControllerWithIdentifier:NSStringFromClass(self)];
 }
 
 - (void)viewDidLoad
@@ -174,7 +174,10 @@ const   NSTimeInterval  kAnimationDuration      =   0.4;
 - (IBAction)closeAction:(id)sender
 {
     [self.camera cancel];
-    [self dismissViewControllerAnimated:YES completion:nil];
+    if (self.completionBlock)
+    {
+        self.completionBlock(NO, nil, nil);
+    }
 }
 
 - (IBAction)reverseCameraAction:(id)sender
@@ -446,11 +449,13 @@ const   NSTimeInterval  kAnimationDuration      =   0.4;
     {
         VVideoPreviewViewController*   viewController = (VVideoPreviewViewController *)segue.destinationViewController;
         viewController.videoURL = self.videoURL;
+        viewController.completionBlock = self.completionBlock;
     }
     else if ([segue.identifier isEqualToString:@"toPhotoPreview"])
     {
         VImagePreviewViewController*    viewController = (VImagePreviewViewController *)segue.destinationViewController;
         viewController.photo = self.photo;
+        viewController.completionBlock = self.completionBlock;
     }
 }
 
