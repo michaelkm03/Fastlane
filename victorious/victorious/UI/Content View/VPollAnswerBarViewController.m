@@ -102,33 +102,37 @@
 
 - (void)answerAnimationForAnswerID:(NSNumber*)answerID
 {
-    CGRect emptyFrame;
-    CGRect fullFrame;
-    self.selectedAnswerView.hidden = NO;
-    
-    CGFloat fullWidth = self.selectedAnswerView.frame.size.width + self.answeredHexImage.frame.size.width;
-    if ([answerID isEqualToNumber:((VAnswer*)[self.answers firstObject]).remoteId])
-    {
-        CGFloat emptyXOrigin = self.answeredHexImage.frame.origin.x + self.answeredHexImage.frame.size.width;
-        emptyFrame = CGRectMake(emptyXOrigin, 0, 0, self.view.frame.size.height);
-        
-        fullFrame = CGRectMake(0, 0, fullWidth, self.view.frame.size.height);
-    }
-    else
-    {
-        CGFloat emptyXOrigin = self.answeredHexImage.frame.origin.x;
-        emptyFrame = CGRectMake(emptyXOrigin, 0, 0, self.view.frame.size.height);
-        
-        fullFrame = CGRectMake(self.answeredHexImage.frame.origin.x, 0, fullWidth, self.view.frame.size.height);
-    }
-    self.answeredView.frame = emptyFrame;
-    self.answeredView.hidden = NO;
-    
-    [UIView animateWithDuration:1.0f
-                     animations:^
-    {
-        self.answeredView.frame = fullFrame;
-    }];
+//    CGRect emptyFrame;
+//    CGRect fullFrame;
+//    self.selectedAnswerView.hidden = NO;
+//    
+//    CGFloat fullWidth = self.selectedAnswerView.frame.size.width + self.answeredHexImage.frame.size.width / 2;
+//    
+//    if ([answerID isEqualToNumber:((VAnswer*)[self.answers firstObject]).remoteId])
+//    {
+//        CGFloat emptyXOrigin = self.orImageView.frame.origin.x + self.orImageView.frame.size.width;
+//        emptyFrame = CGRectMake(e mptyXOrigin, 0, 0, self.view.frame.size.height);
+//        fullFrame = CGRectMake(0, 0, fullWidth, self.view.frame.size.height);
+//        
+//        [self.answeredHexImage setXOrigin:self.orImageView.frame.origin.x];
+//        [self.selectedAnswerView setXOrigin:0];
+//    }
+//    else
+//    {
+//        emptyFrame = CGRectMake(self.orImageView.frame.origin.x, 0, 0, self.view.frame.size.height);
+//        fullFrame = CGRectMake(self.orImageView.frame.origin.x, 0, fullWidth, self.view.frame.size.height);
+//        
+//        [self.answeredHexImage setXOrigin:0];
+//        [self.selectedAnswerView setXOrigin:self.answeredHexImage.center.x];
+//    }
+//    self.answeredView.frame = emptyFrame;
+//    self.answeredView.hidden = NO;
+//    
+//    [UIView animateWithDuration:1.0f
+//                     animations:^
+//    {
+//        self.answeredView.frame = fullFrame;
+//    }];
 }
 
 #pragma mark - Button actions
