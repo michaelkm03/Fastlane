@@ -6,12 +6,7 @@
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
-@import AVFoundation;
-
 #import "VAbstractVideoEditorViewController.h"
 
 @interface VRemixTrimViewController : VAbstractVideoEditorViewController
-
-+ (UIViewController *)remixViewControllerWithURL:(NSURL *)url;
-
 @end

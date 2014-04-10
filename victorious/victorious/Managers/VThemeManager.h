@@ -25,13 +25,20 @@ extern  NSString*   const   kVMenuBackgroundImage;
 extern  NSString*   const   kVMenuBackgroundImage5;
 
 //Fonts
-extern  NSString*   const   kVTitleFont;
-extern  NSString*   const   kVContentTitleFont;
-extern  NSString*   const   kVDetailFont;
-extern  NSString*   const   kVDateFont;
-extern  NSString*   const   kVButtonFont;
-extern  NSString*   const   kVPollButtonFont;
+extern  NSString*   const   kVHeaderFont;
 
+extern  NSString*   const   kVHeading1Font;
+extern  NSString*   const   kVHeading2Font;
+extern  NSString*   const   kVHeading3Font;
+extern  NSString*   const   kVHeading4Font;
+
+extern  NSString*   const   kVLabel1Font;
+extern  NSString*   const   kVLabel2Font;
+extern  NSString*   const   kVLabel3Font;
+extern  NSString*   const   kVLabel4Font;
+
+extern  NSString*   const   kVButton1Font;
+extern  NSString*   const   kVButton2Font;
 
 //Colors
 extern  NSString*   const   kVBackgroundColor;

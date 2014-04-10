@@ -11,7 +11,7 @@
 
 @interface VRemixPublishViewController : VCameraPublishViewController
 
-@property (nonatomic)                   BOOL            muteAudio;
+@property (nonatomic)                   BOOL            shouldMuteAudio;
 @property (nonatomic)                   VPlaybackSpeed  playBackSpeed;
 @property (nonatomic)                   VLoopType       playbackLooping;
 @property (nonatomic)                   CGFloat         startSeconds;

@@ -9,10 +9,11 @@
 #import "VCommunityStreamViewController.h"
 #import "VConstants.h"
 
-#import "UIActionSheet+BBlock.h"
+#import "UIActionSheet+VBlocks.h"
 #import "VObjectManager+Sequence.h"
 #import "VCreatePollViewController.h"
 #import "VLoginViewController.h"
+#import "VCameraPublishViewController.h"
 #import "VCameraViewController.h"
 
 @interface VCommunityStreamViewController () <VCreateSequenceDelegate>
@@ -75,29 +76,47 @@
     NSString *contentTitle = NSLocalizedString(@"Post Content", @"Post content button");
     NSString *pollTitle = NSLocalizedString(@"Post Poll", @"Post poll button");
     UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil
-                                                             delegate:nil
                                                     cancelButtonTitle:NSLocalizedString(@"Cancel", @"Cancel button")
+                                                       onCancelButton:nil
                                                destructiveButtonTitle:nil
-                                                    otherButtonTitles:contentTitle, pollTitle, nil];
-    [actionSheet setCompletionBlock:^(NSInteger buttonIndex, UIActionSheet *actionSheet)
-     {
-         if(actionSheet.cancelButtonIndex == buttonIndex)
-         {
-             return;
-         }
-         
-         //TODO: share 
-         if([[actionSheet buttonTitleAtIndex:buttonIndex] isEqualToString:contentTitle])
-         {
-             [self presentViewController:[VCameraViewController cameraViewController] animated:YES completion:nil];
-         }
-         else if([[actionSheet buttonTitleAtIndex:buttonIndex] isEqualToString:pollTitle])
-         {
-             VCreatePollViewController *createViewController = [VCreatePollViewController newCreatePollViewControllerForType:VImagePickerViewControllerPhotoAndVideo withDelegate:self];
-             
-             [self.navigationController pushViewController:createViewController animated:YES];
-         }
-     }];
+                                                  onDestructiveButton:nil
+                                           otherButtonTitlesAndBlocks:contentTitle, ^(void)
+    {
+        UINavigationController *navigationController = [[UINavigationController alloc] init];
+        VCameraViewController *cameraViewController = [VCameraViewController cameraViewController];
+        cameraViewController.completionBlock = ^(BOOL finished, UIImage *image, NSURL *videoURL)
+        {
+            if (!finished || (!image && !videoURL))
+            {
+                [self dismissViewControllerAnimated:YES completion:nil];
+            }
+            else
+            {
+                VCameraPublishViewController *publishViewController = [VCameraPublishViewController cameraPublishViewController];
+                publishViewController.videoURL = videoURL;
+                publishViewController.photo = image;
+                publishViewController.completion = ^(BOOL complete)
+                {
+                    if (complete)
+                    {
+                        [self dismissViewControllerAnimated:YES completion:nil];
+                    }
+                    else
+                    {
+                        [navigationController popViewControllerAnimated:YES];
+                    }
+                };
+                [navigationController pushViewController:publishViewController animated:YES];
+            }
+        };
+        [navigationController pushViewController:cameraViewController animated:NO];
+        [self presentViewController:navigationController animated:YES completion:nil];
+    },
+                                  pollTitle, ^(void)
+    {
+        VCreatePollViewController *createViewController = [VCreatePollViewController newCreatePollViewControllerForType:VImagePickerViewControllerPhotoAndVideo withDelegate:self];
+        [self.navigationController pushViewController:createViewController animated:YES];
+    }, nil];
     [actionSheet showInView:self.view];
 }
 

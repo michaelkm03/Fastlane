@@ -57,7 +57,7 @@ NSString *const VMenuControllerDidSelectRowNotification = @"VMenuTableViewContro
         else
             self.inboxBadgeLabel.text = @"+999";
         
-        self.inboxBadgeLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVDetailFont];
+        self.inboxBadgeLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeading2Font];
         self.inboxBadgeLabel.textColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVMainTextColor];
         self.inboxBadgeLabel.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVAccentColor];
         [self.inboxBadgeLabel setHidden:NO];
@@ -74,7 +74,7 @@ NSString *const VMenuControllerDidSelectRowNotification = @"VMenuTableViewContro
     }];
     [self.labels enumerateObjectsUsingBlock:^(UILabel *label, NSUInteger idx, BOOL *stop)
     {
-        label.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVDetailFont];
+        label.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeading2Font];
 //        label.textColor = [[VThemeManager sharedThemeManager] themedColorForKeyPath:kMenuTextColor];
     }];
     

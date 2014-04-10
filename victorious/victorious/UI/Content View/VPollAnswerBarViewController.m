@@ -25,7 +25,10 @@
 
 @interface VPollAnswerBarViewController ()
 
-@property (strong) UIDynamicAnimator* animator;
+@property (weak, nonatomic) IBOutlet UIView* answeredView;
+@property (weak, nonatomic) IBOutlet UIView* selectedAnswerView;
+@property (weak, nonatomic) IBOutlet UIImageView* answeredHexImage;
+@property (weak, nonatomic) IBOutlet UIImageView* answeredCheckImage;
 
 @end
 
@@ -53,6 +56,11 @@
                                                  name:kPollResultsLoaded
                                                object:nil];
     
+    self.selectedAnswerView.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
+    UIImage* newImage = [self.answeredHexImage.image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+    [self.answeredHexImage setImage:newImage];
+    self.answeredHexImage.tintColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
+    
     [[VObjectManager sharedManager] pollResultsForSequence:self.sequence
                                               successBlock:^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
      {
@@ -69,7 +77,9 @@
 {
     [super setSequence:sequence];
     
-    [self checkIfAnswered];
+    self.answers = [[self.sequence firstNode] firstAnswers];
+    
+    self.orImageView.hidden = YES;
 }
 
 - (void)checkIfAnswered
@@ -79,13 +89,50 @@
         if ([result.sequenceId isEqualToNumber: self.sequence.remoteId])
         {
             [self.delegate answeredPollWithAnswerId:result.answerId];
+            
+            [self answerAnimationForAnswerID:result.answerId];
+            
             return;
         }
     }
     
-    self.answers = [[self.sequence firstNode] firstAnswers];
     self.leftLabel.text = ((VAnswer*)[self.answers firstObject]).label;
     self.rightLabel.text = ((VAnswer*)[self.answers lastObject]).label;
+}
+
+- (void)answerAnimationForAnswerID:(NSNumber*)answerID
+{
+//    CGRect emptyFrame;
+//    CGRect fullFrame;
+//    self.selectedAnswerView.hidden = NO;
+//    
+//    CGFloat fullWidth = self.selectedAnswerView.frame.size.width + self.answeredHexImage.frame.size.width / 2;
+//    
+//    if ([answerID isEqualToNumber:((VAnswer*)[self.answers firstObject]).remoteId])
+//    {
+//        CGFloat emptyXOrigin = self.orImageView.frame.origin.x + self.orImageView.frame.size.width;
+//        emptyFrame = CGRectMake(e mptyXOrigin, 0, 0, self.view.frame.size.height);
+//        fullFrame = CGRectMake(0, 0, fullWidth, self.view.frame.size.height);
+//        
+//        [self.answeredHexImage setXOrigin:self.orImageView.frame.origin.x];
+//        [self.selectedAnswerView setXOrigin:0];
+//    }
+//    else
+//    {
+//        emptyFrame = CGRectMake(self.orImageView.frame.origin.x, 0, 0, self.view.frame.size.height);
+//        fullFrame = CGRectMake(self.orImageView.frame.origin.x, 0, fullWidth, self.view.frame.size.height);
+//        
+//        [self.answeredHexImage setXOrigin:0];
+//        [self.selectedAnswerView setXOrigin:self.answeredHexImage.center.x];
+//    }
+//    self.answeredView.frame = emptyFrame;
+//    self.answeredView.hidden = NO;
+//    
+//    [UIView animateWithDuration:1.0f
+//                     animations:^
+//    {
+//        self.answeredView.frame = fullFrame;
+//    }];
 }
 
 #pragma mark - Button actions
@@ -98,7 +145,10 @@
     {
         chosenAnswer = [self.answers lastObject];
     }
-    chosenAnswer = (self.answers)[tag];
+    else
+    {
+        chosenAnswer = (self.answers)[tag];
+    }
     
     [self answerPollWithAnswer:chosenAnswer];
 }

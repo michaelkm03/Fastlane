@@ -272,19 +272,6 @@
 
     int picWidth = 42;
 
-    // First image
-//    CGImageRef halfWayImage = [self.imageGenerator copyCGImageAtTime:kCMTimeZero actualTime:nil error:nil];
-//    if (halfWayImage != NULL)
-//    {
-//        UIImage *videoScreen = [[UIImage alloc] initWithCGImage:halfWayImage];
-//        UIImageView *tmp = [[UIImageView alloc] initWithImage:videoScreen];
-//        tmp.frame = CGRectMake(0, 0, 42, 42);
-//        tmp.contentMode = UIViewContentModeScaleAspectFill;
-//        [_backgroundView addSubview:tmp];
-//        picWidth = tmp.frame.size.width;
-//        CGImageRelease(halfWayImage);
-//    }
-
     _durationSeconds = CMTimeGetSeconds([self.videoAsset duration]);
     int picsCnt = ceil(_backgroundView.frame.size.width / picWidth);
     NSMutableArray *allTimes = [[NSMutableArray alloc] init];
@@ -335,6 +322,11 @@
                                                       NSLog(@"Canceled");
                                                   }
                                               }];
+}
+
+- (void)cancel
+{
+    [self.imageGenerator cancelAllCGImageGeneration];
 }
 
 #pragma mark - Properties
