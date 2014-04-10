@@ -9,5 +9,9 @@
 #import "VMediaPreviewViewController.h"
 
 @interface VImagePreviewViewController : VMediaPreviewViewController
-@property (nonatomic, strong)   UIImage*    photo;
+
+@property (nonatomic, readonly) UIImage *photo;
+
++ (VImagePreviewViewController *)imagePreviewViewController;
+
 @end

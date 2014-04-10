@@ -84,17 +84,18 @@
     {
         UINavigationController *navigationController = [[UINavigationController alloc] init];
         VCameraViewController *cameraViewController = [VCameraViewController cameraViewController];
-        cameraViewController.completionBlock = ^(BOOL finished, UIImage *image, NSURL *videoURL)
+        cameraViewController.completionBlock = ^(BOOL finished, UIImage *previewImage, NSURL *capturedMediaURL, NSString *mediaExtension)
         {
-            if (!finished || (!image && !videoURL))
+            if (!finished || !capturedMediaURL)
             {
                 [self dismissViewControllerAnimated:YES completion:nil];
             }
             else
             {
                 VCameraPublishViewController *publishViewController = [VCameraPublishViewController cameraPublishViewController];
-                publishViewController.videoURL = videoURL;
-                publishViewController.photo = image;
+                publishViewController.previewImage = previewImage;
+                publishViewController.mediaURL = capturedMediaURL;
+                publishViewController.mediaExtension = mediaExtension;
                 publishViewController.completion = ^(BOOL complete)
                 {
                     if (complete)
