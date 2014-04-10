@@ -61,6 +61,8 @@
     [self.selectedHexImage setImage:newImage];
     self.selectedHexImage.tintColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
     
+    
+    self.view.translatesAutoresizingMaskIntoConstraints = YES;
     self.selectedAnswerView.translatesAutoresizingMaskIntoConstraints = YES;
     self.selectedCheckImage.translatesAutoresizingMaskIntoConstraints = YES;
     self.selectedHexImage.translatesAutoresizingMaskIntoConstraints = YES;
@@ -90,6 +92,8 @@
     self.rightLabel.text = ((VAnswer*)[self.answers lastObject]).label;
     
     self.orImageView.hidden = YES;
+    
+    self.selectedContainmentView.hidden = YES;
 }
 
 - (void)checkIfAnswered
@@ -145,8 +149,8 @@
         initialHexFrame.origin.x = 0;
         finalHexFrame.origin.x = 0;
         
-        initialAnswerFrame.origin.x = self.orImageView.frame.size.width / 2;
-        finalAnswerFrame.origin.x = self.orImageView.frame.size.width / 2;
+        initialAnswerFrame.origin.x = self.selectedHexImage.frame.size.width / 2;
+        finalAnswerFrame.origin.x = self.selectedHexImage.frame.size.width / 2;
     }
     
     self.selectedContainmentView.frame = emptyFrame;
