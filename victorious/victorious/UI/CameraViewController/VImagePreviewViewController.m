@@ -47,12 +47,18 @@
 - (void)handleDoneTapGesture:(UIGestureRecognizer *)gesture
 {
     UIImageWriteToSavedPhotosAlbum(self.photo, nil, nil, nil);
-    [self performSegueWithIdentifier:@"toPublishFromImage" sender:self];
+    if (self.completionBlock)
+    {
+        self.completionBlock(YES, self.photo, nil);
+    }
 }
 
 - (IBAction)cancel:(id)sender
 {
-    [self dismissViewControllerAnimated:YES completion:nil];
+    if (self.completionBlock)
+    {
+        self.completionBlock(NO, nil, nil);
+    }
 }
 
 - (IBAction)deleteAction:(id)sender
@@ -67,17 +73,6 @@
         self.inTrashState = NO;
         [self.trashAction setImage:[UIImage imageNamed:@"cameraButtonDelete"] forState:UIControlStateNormal];
         [self performSegueWithIdentifier:@"unwindToCameraControllerFromPhoto" sender:self];
-    }
-}
-
-#pragma mark - Navigation
-
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
-{
-    if ([segue.identifier isEqualToString:@"toPublishFromImage"])
-    {
-        VCameraPublishViewController*   viewController = (VCameraPublishViewController *)segue.destinationViewController;
-        viewController.photo = self.photo;
     }
 }
 

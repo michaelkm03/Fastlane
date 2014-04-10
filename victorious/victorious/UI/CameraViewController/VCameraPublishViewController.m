@@ -33,6 +33,11 @@
 
 @implementation VCameraPublishViewController
 
++ (VCameraPublishViewController *)cameraPublishViewController
+{
+    return [[UIStoryboard storyboardWithName:@"Camera" bundle:nil] instantiateViewControllerWithIdentifier:NSStringFromClass(self)];
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -71,7 +76,10 @@
 
 - (IBAction)goBack:(id)sender
 {
-    [self.navigationController popViewControllerAnimated:YES];
+    if (self.completion)
+    {
+        self.completion(NO);
+    }
 }
 
 - (IBAction)hashButtonClicked:(id)sender
@@ -125,7 +133,10 @@
         VLog(@"Failed with error: %@", error);
     }];
     
-    [self dismissViewControllerAnimated:YES completion:nil];
+    if (self.completion)
+    {
+        self.completion(YES);
+    }
 }
 
 - (IBAction)twitterClicked:(id)sender

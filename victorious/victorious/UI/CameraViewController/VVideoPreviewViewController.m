@@ -57,15 +57,9 @@
 - (void)handleDoneTapGesture:(UIGestureRecognizer *)gesture
 {
     UISaveVideoAtPathToSavedPhotosAlbum([self.videoURL path], nil, nil, nil);
-    [self performSegueWithIdentifier:@"toPublishFromVideo" sender:self];
-}
-
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
-{
-    if ([segue.identifier isEqualToString:@"toPublishFromVideo"])
+    if (self.completionBlock)
     {
-        VCameraPublishViewController*   viewController = (VCameraPublishViewController *)segue.destinationViewController;
-        viewController.videoURL = self.videoURL;
+        self.completionBlock(YES, nil, self.videoURL);
     }
 }
 
@@ -81,7 +75,10 @@
 
 - (IBAction)cancel:(id)sender
 {
-    [self dismissViewControllerAnimated:YES completion:nil];
+    if (self.completionBlock)
+    {
+        self.completionBlock(NO, nil, nil);
+    }
 }
 
 - (IBAction)deleteAction:(id)sender

@@ -13,6 +13,7 @@
 #import "VObjectManager+Sequence.h"
 #import "VCreatePollViewController.h"
 #import "VLoginViewController.h"
+#import "VCameraPublishViewController.h"
 #import "VCameraViewController.h"
 
 @interface VCommunityStreamViewController () <VCreateSequenceDelegate>
@@ -81,7 +82,35 @@
                                                   onDestructiveButton:nil
                                            otherButtonTitlesAndBlocks:contentTitle, ^(void)
     {
-        [self presentViewController:[VCameraViewController cameraViewController] animated:YES completion:nil];
+        UINavigationController *navigationController = [[UINavigationController alloc] init];
+        VCameraViewController *cameraViewController = [VCameraViewController cameraViewController];
+        cameraViewController.completionBlock = ^(BOOL finished, UIImage *image, NSURL *videoURL)
+        {
+            if (!finished || (!image && !videoURL))
+            {
+                [self dismissViewControllerAnimated:YES completion:nil];
+            }
+            else
+            {
+                VCameraPublishViewController *publishViewController = [VCameraPublishViewController cameraPublishViewController];
+                publishViewController.videoURL = videoURL;
+                publishViewController.photo = image;
+                publishViewController.completion = ^(BOOL complete)
+                {
+                    if (complete)
+                    {
+                        [self dismissViewControllerAnimated:YES completion:nil];
+                    }
+                    else
+                    {
+                        [navigationController popViewControllerAnimated:YES];
+                    }
+                };
+                [navigationController pushViewController:publishViewController animated:YES];
+            }
+        };
+        [navigationController pushViewController:cameraViewController animated:NO];
+        [self presentViewController:navigationController animated:YES completion:nil];
     },
                                   pollTitle, ^(void)
     {
