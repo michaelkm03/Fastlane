@@ -434,7 +434,7 @@ static NSString* CommentCache = @"CommentCache";
 }
 
 #pragma mark - VKeyboardBarDelegate
-- (void)didComposeWithText:(NSString *)text data:(NSData *)data mediaExtension:(NSString *)mediaExtension mediaURL:(NSURL *)mediaURL
+- (void)didComposeWithText:(NSString *)text mediaURL:(NSURL *)mediaURL mediaExtension:(NSString *)mediaExtension
 {
     __block UIActivityIndicatorView *indicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
     indicator.frame = CGRectMake(0, 0, 24, 24);
@@ -466,6 +466,9 @@ static NSString* CommentCache = @"CommentCache";
         }
         [indicator stopAnimating];
     };
+    
+    NSData *data = [NSData dataWithContentsOfURL:mediaURL];
+    [[NSFileManager defaultManager] removeItemAtURL:mediaURL error:nil];
     
     [[VObjectManager sharedManager] addCommentWithText:text
                                                   Data:data

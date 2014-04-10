@@ -439,12 +439,12 @@ const   NSTimeInterval  kAnimationDuration      =   0.4;
     self.progressView.progress = totalRecorded / 15.0;
 }
 
-- (NSURL *)temporaryFileURL
+- (NSURL *)temporaryFileURLWithExtension:(NSString *)extension
 {
     NSURL *tempDirectory = [NSURL fileURLWithPath:NSTemporaryDirectory() isDirectory:YES];
     NSString *uniqueIdentifier = [[NSUUID UUID] UUIDString];
     
-    return [tempDirectory URLByAppendingPathComponent:[NSString stringWithFormat:@"%@.jpg", uniqueIdentifier]];
+    return [tempDirectory URLByAppendingPathComponent:[NSString stringWithFormat:@"%@.%@", uniqueIdentifier, extension]];
 }
 
 #pragma mark - Navigation
@@ -554,7 +554,7 @@ const   NSTimeInterval  kAnimationDuration      =   0.4;
     {
         UIImage *photo = [photoDict[VCAudioVideoRecorderPhotoImageKey] squareImageScaledToSize:CGSizeMake(640.0, 640.0)];
         NSData *pngData = UIImagePNGRepresentation(photo);
-        NSURL *tempFile = [self temporaryFileURL];
+        NSURL *tempFile = [self temporaryFileURLWithExtension:VConstantMediaExtensionPNG];
         [pngData writeToURL:tempFile atomically:NO];
         [self moveToPreviewViewControllerWithContentURL:tempFile mediaExtension:VConstantMediaExtensionPNG];
     }
