@@ -1597,19 +1597,25 @@
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                             </imageView>
-                            <view hidden="YES" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="h6y-Vg-Xrc" userLabel="AnsweredView">
+                            <view hidden="YES" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="h6y-Vg-Xrc" userLabel="selected containment view">
                                 <rect key="frame" x="193" y="-12" width="0.0" height="72"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <subviews>
-                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="PollHex" translatesAutoresizingMaskIntoConstraints="NO" id="zeQ-mQ-5yp">
-                                        <rect key="frame" x="128" y="-12" width="65" height="72"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                    </imageView>
                                     <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="mzz-F2-4Qi" userLabel="selectedAnswerView">
-                                        <rect key="frame" x="0.0" y="0.0" width="160" height="60"/>
+                                        <rect key="frame" x="0.0" y="12" width="160" height="60"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        <color key="backgroundColor" white="0.0" alpha="0.40000000000000002" colorSpace="calibratedWhite"/>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                     </view>
+                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="PollHex" translatesAutoresizingMaskIntoConstraints="NO" id="zeQ-mQ-5yp">
+                                        <rect key="frame" x="128" y="0.0" width="65" height="72"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                    </imageView>
+                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="PollCheck" translatesAutoresizingMaskIntoConstraints="NO" id="CaN-bX-wjx">
+                                        <rect key="frame" x="128" y="0.0" width="65" height="72"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                    </imageView>
                                 </subviews>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                             </view>
@@ -1634,15 +1640,16 @@
                     <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
                     <size key="freeformSize" width="320" height="60"/>
                     <connections>
-                        <outlet property="answeredHexImage" destination="zeQ-mQ-5yp" id="Xny-q7-lsX"/>
-                        <outlet property="answeredView" destination="h6y-Vg-Xrc" id="yKr-L1-kMB"/>
                         <outlet property="leftButton" destination="Bxp-hr-lFz" id="tDi-eo-G9N"/>
                         <outlet property="leftLabel" destination="fBr-Do-fCE" id="iP5-IW-EK9"/>
                         <outlet property="orImageView" destination="GKu-yT-0Dh" id="YLv-VH-vMC"/>
                         <outlet property="rightButton" destination="D1I-Wr-6dI" id="hYQ-Xy-O8S"/>
                         <outlet property="rightLabel" destination="6ak-S4-RIj" id="dC2-lN-4xP"/>
                         <outlet property="selectedAnswerView" destination="mzz-F2-4Qi" id="1JW-mC-neA"/>
-                        <outlet property="view" destination="YN0-go-INq" id="QBI-hR-jrh"/>
+                        <outlet property="selectedCheckImage" destination="CaN-bX-wjx" id="oh1-BW-7oW"/>
+                        <outlet property="selectedContainmentView" destination="h6y-Vg-Xrc" id="tt1-Qf-KSO"/>
+                        <outlet property="selectedHexImage" destination="zeQ-mQ-5yp" id="mAA-jt-hvC"/>
+                        <outlet property="view" destination="zeQ-mQ-5yp" id="0Fk-lQ-i06"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="xDv-wZ-8yQ" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -1669,6 +1676,7 @@
         <image name="PlayCircle" width="52" height="52"/>
         <image name="PlayTriangle" width="52" height="52"/>
         <image name="PollBarOr" width="65" height="72"/>
+        <image name="PollCheck" width="65" height="72"/>
         <image name="PollCreateOr" width="48" height="52"/>
         <image name="PollHex" width="65" height="72"/>
         <image name="PostCamera" width="34" height="26"/>
