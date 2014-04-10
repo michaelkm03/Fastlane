@@ -241,21 +241,18 @@ NSString *kLoggedInChangedNotification = @"LoggedInChangedNotification";
 {
     if (![self isAuthorized]) //foolish mortal you need to log in to log out...
         return nil;
-    
-    VSuccessBlock success = ^(NSOperation* operation, id fullResponse, NSArray* rkObjects)
-    {
-        //Warning: Sometimes empty payloads will appear as Array objects. Use the following line at your own risk.
-        //NSDictionary* payload = fullResponse[@"payload"];
-        self.mainUser = nil;
-        
-        [[NSNotificationCenter defaultCenter] postNotificationName:kLoggedInChangedNotification object:nil];
-    };
 
-    return [self GET:@"/api/logout"
+    RKManagedObjectRequestOperation* operation = [self GET:@"/api/logout"
               object:nil
            parameters:nil
-         successBlock:success
+         successBlock:nil
             failBlock:nil];
+    
+    //Log out no matter what
+    self.mainUser = nil;
+    [[NSNotificationCenter defaultCenter] postNotificationName:kLoggedInChangedNotification object:nil];
+    
+    return operation;
 }
 
 @end
