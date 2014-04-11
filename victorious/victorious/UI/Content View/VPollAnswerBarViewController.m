@@ -25,10 +25,10 @@
 
 @interface VPollAnswerBarViewController ()
 
-@property (weak, nonatomic) IBOutlet UIView* answeredView;
+@property (weak, nonatomic) IBOutlet UIView* selectedContainmentView;
 @property (weak, nonatomic) IBOutlet UIView* selectedAnswerView;
-@property (weak, nonatomic) IBOutlet UIImageView* answeredHexImage;
-@property (weak, nonatomic) IBOutlet UIImageView* answeredCheckImage;
+@property (weak, nonatomic) IBOutlet UIImageView* selectedHexImage;
+@property (weak, nonatomic) IBOutlet UIImageView* selectedCheckImage;
 
 @end
 
@@ -57,15 +57,28 @@
                                                object:nil];
     
     self.selectedAnswerView.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
-    UIImage* newImage = [self.answeredHexImage.image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
-    [self.answeredHexImage setImage:newImage];
-    self.answeredHexImage.tintColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
+    UIImage* newImage = [self.selectedHexImage.image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+    [self.selectedHexImage setImage:newImage];
+    self.selectedHexImage.tintColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
+    
+    self.view.translatesAutoresizingMaskIntoConstraints = YES;
+    self.selectedAnswerView.translatesAutoresizingMaskIntoConstraints = YES;
+    self.selectedCheckImage.translatesAutoresizingMaskIntoConstraints = YES;
+    self.selectedHexImage.translatesAutoresizingMaskIntoConstraints = YES;
+    self.selectedContainmentView.translatesAutoresizingMaskIntoConstraints = YES;
+    
+    self.leftLabel.text = ((VAnswer*)[self.answers firstObject]).label;
+    self.rightLabel.text = ((VAnswer*)[self.answers lastObject]).label;
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
     
     [[VObjectManager sharedManager] pollResultsForSequence:self.sequence
                                               successBlock:^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
      {
          VLog(@"Succeeded with objects: %@", resultObjects);
-         [self checkIfAnswered];
      }
                                                  failBlock:^(NSOperation* operation, NSError* error)
      {
@@ -78,8 +91,12 @@
     [super setSequence:sequence];
     
     self.answers = [[self.sequence firstNode] firstAnswers];
+    self.leftLabel.text = ((VAnswer*)[self.answers firstObject]).label;
+    self.rightLabel.text = ((VAnswer*)[self.answers lastObject]).label;
     
     self.orImageView.hidden = YES;
+    
+    self.selectedContainmentView.hidden = YES;
 }
 
 - (void)checkIfAnswered
@@ -92,47 +109,69 @@
             
             [self answerAnimationForAnswerID:result.answerId];
             
+            self.leftButton.userInteractionEnabled = NO;
+            self.rightButton.userInteractionEnabled = NO;
+            
             return;
         }
     }
-    
-    self.leftLabel.text = ((VAnswer*)[self.answers firstObject]).label;
-    self.rightLabel.text = ((VAnswer*)[self.answers lastObject]).label;
 }
 
 - (void)answerAnimationForAnswerID:(NSNumber*)answerID
 {
-//    CGRect emptyFrame;
-//    CGRect fullFrame;
-//    self.selectedAnswerView.hidden = NO;
-//    
-//    CGFloat fullWidth = self.selectedAnswerView.frame.size.width + self.answeredHexImage.frame.size.width / 2;
-//    
-//    if ([answerID isEqualToNumber:((VAnswer*)[self.answers firstObject]).remoteId])
-//    {
-//        CGFloat emptyXOrigin = self.orImageView.frame.origin.x + self.orImageView.frame.size.width;
-//        emptyFrame = CGRectMake(e mptyXOrigin, 0, 0, self.view.frame.size.height);
-//        fullFrame = CGRectMake(0, 0, fullWidth, self.view.frame.size.height);
-//        
-//        [self.answeredHexImage setXOrigin:self.orImageView.frame.origin.x];
-//        [self.selectedAnswerView setXOrigin:0];
-//    }
-//    else
-//    {
-//        emptyFrame = CGRectMake(self.orImageView.frame.origin.x, 0, 0, self.view.frame.size.height);
-//        fullFrame = CGRectMake(self.orImageView.frame.origin.x, 0, fullWidth, self.view.frame.size.height);
-//        
-//        [self.answeredHexImage setXOrigin:0];
-//        [self.selectedAnswerView setXOrigin:self.answeredHexImage.center.x];
-//    }
-//    self.answeredView.frame = emptyFrame;
-//    self.answeredView.hidden = NO;
-//    
-//    [UIView animateWithDuration:1.0f
-//                     animations:^
-//    {
-//        self.answeredView.frame = fullFrame;
-//    }];
+    CGRect emptyFrame   = CGRectInset(self.selectedContainmentView.frame, 0, 0);
+    CGRect fullFrame    = CGRectInset(self.selectedContainmentView.frame, 0, 0);
+    
+    CGRect initialHexFrame      = CGRectInset(self.selectedHexImage.frame, 0, 0);
+    CGRect finalHexFrame        = CGRectInset(self.selectedHexImage.frame, 0, 0);
+    
+    CGRect initialAnswerFrame   = CGRectInset(self.selectedAnswerView.frame, 0, 0);
+    CGRect finalAnswerFrame     = CGRectInset(self.selectedAnswerView.frame, 0, 0);
+    
+    if ([answerID isEqualToNumber:((VAnswer*)[self.answers firstObject]).remoteId])
+    {
+        emptyFrame.origin.x = self.orImageView.frame.origin.x + self.orImageView.frame.size.width;
+        emptyFrame.size.width = 0;
+        
+        fullFrame.origin.x = 0;
+        fullFrame.size.width = self.orImageView.frame.origin.x + self.orImageView.frame.size.width;
+        
+        initialHexFrame.origin.x = -self.orImageView.frame.size.width;
+        finalHexFrame.origin.x = self.orImageView.frame.origin.x;
+        
+        initialAnswerFrame.origin.x = -fullFrame.size.width;
+        finalAnswerFrame.origin.x = 0;
+    }
+    else
+    {
+        emptyFrame.origin.x = self.orImageView.frame.origin.x;
+        emptyFrame.size.width = 0;
+        
+        fullFrame.origin.x = self.orImageView.frame.origin.x;
+        fullFrame.size.width = self.orImageView.frame.origin.x + self.orImageView.frame.size.width;
+        
+        initialHexFrame.origin.x = 0;
+        finalHexFrame.origin.x = 0;
+        
+        initialAnswerFrame.origin.x = self.selectedHexImage.frame.size.width / 2;
+        finalAnswerFrame.origin.x = self.selectedHexImage.frame.size.width / 2;
+    }
+    
+    self.selectedContainmentView.frame = emptyFrame;
+    self.selectedHexImage.frame = initialHexFrame;
+    self.selectedCheckImage.frame = initialHexFrame;
+    self.selectedAnswerView.frame = initialAnswerFrame;
+    
+    self.selectedContainmentView.hidden = NO;
+    
+    [UIView animateWithDuration:.5f
+                     animations:^
+     {
+         self.selectedContainmentView.frame = fullFrame;
+         self.selectedHexImage.frame = finalHexFrame;
+         self.selectedCheckImage.frame = finalHexFrame;
+         self.selectedAnswerView.frame = finalAnswerFrame;
+     }];
 }
 
 #pragma mark - Button actions
@@ -169,6 +208,7 @@
                                                     successBlock:^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
                                                     {
                                                         [self.delegate answeredPollWithAnswerId:answer.remoteId];
+                                                        [self answerAnimationForAnswerID:answer.remoteId];
                                                     }
                                                        failBlock:^(NSOperation* operation, NSError* error)
                                                         {

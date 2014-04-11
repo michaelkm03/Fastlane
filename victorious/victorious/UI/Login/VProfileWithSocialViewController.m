@@ -11,6 +11,7 @@
 #import "VUser.h"
 #import "TTTAttributedLabel.h"
 #import "VThemeManager.h"
+#import "VObjectManager+Login.h"
 
 @interface VProfileWithSocialViewController () <TTTAttributedLabelDelegate>
 @property (nonatomic, weak) IBOutlet    UITextField*        nameTextField;
@@ -63,6 +64,21 @@
 
 - (IBAction)next:(id)sender
 {
+    [[VObjectManager sharedManager] updateVictoriousWithEmail:nil
+                                                     password:nil
+                                                     username:self.usernameTextField.text
+                                                 profileImage:nil
+                                                     location:self.locationTextField.text
+                                                      tagline:self.taglineTextView.text
+                                                 successBlock:^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
+     {
+         VLog(@"Succeeded with objects: %@", resultObjects);
+     }
+                                                    failBlock:^(NSOperation* operation, NSError* error)
+     {
+         VLog(@"Failed with error: %@", error);
+     }];
+    
     [self performSegueWithIdentifier:@"toInviteWithSocial" sender:self];
 }
 

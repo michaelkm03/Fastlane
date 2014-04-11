@@ -15,6 +15,7 @@
 
 @property (nonatomic, strong) NSMutableDictionary* paginationStatuses;
 @property (nonatomic, strong) NSCache* objectCache;
+@property (nonatomic, strong) VUser*  mainUser;
 
 @end
 

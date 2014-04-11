@@ -45,7 +45,7 @@
                             <constraint firstAttribute="width" constant="48" id="66G-E8-UDC"/>
                             <constraint firstAttribute="height" constant="48" id="koC-td-GT1"/>
                         </constraints>
-                        <state key="normal" title="Button" image="profile_thumb">
+                        <state key="normal" image="profile_thumb">
                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                         </state>
                         <connections>
@@ -97,6 +97,6 @@
     <resources>
         <image name="Play" width="33" height="33"/>
         <image name="StreamDate" width="13" height="13"/>
-        <image name="profile_thumb" width="50" height="50"/>
+        <image name="profile_thumb" width="32" height="32"/>
     </resources>
 </document>

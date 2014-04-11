@@ -12,6 +12,7 @@
 #import "VCameraViewController.h"
 #import "VCCamera.h"
 #import "VCCameraFocusView.h"
+#import "VConstants.h"
 #import "VImagePreviewViewController.h"
 #import "VVideoPreviewViewController.h"
 #import "UIImage+Cropping.h"
@@ -38,9 +39,6 @@ const   NSTimeInterval  kAnimationDuration      =   0.4;
 
 @property (strong, nonatomic) VCCamera* camera;
 @property (strong, nonatomic) VCCameraFocusView* focusView;
-
-@property (nonatomic, strong)           NSURL*              videoURL;
-@property (nonatomic, strong)           UIImage*            photo;
 
 @property (nonatomic)                   BOOL                inTrashState;
 @property (nonatomic)                   BOOL                inRecordVideoState;
@@ -176,7 +174,7 @@ const   NSTimeInterval  kAnimationDuration      =   0.4;
     [self.camera cancel];
     if (self.completionBlock)
     {
-        self.completionBlock(NO, nil, nil);
+        self.completionBlock(NO, nil, nil, nil);
     }
 }
 
@@ -441,22 +439,35 @@ const   NSTimeInterval  kAnimationDuration      =   0.4;
     self.progressView.progress = totalRecorded / 15.0;
 }
 
+- (NSURL *)temporaryFileURLWithExtension:(NSString *)extension
+{
+    NSURL *tempDirectory = [NSURL fileURLWithPath:NSTemporaryDirectory() isDirectory:YES];
+    NSString *uniqueIdentifier = [[NSUUID UUID] UUIDString];
+    
+    return [tempDirectory URLByAppendingPathComponent:[NSString stringWithFormat:@"%@.%@", uniqueIdentifier, extension]];
+}
+
 #pragma mark - Navigation
 
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
+- (void)moveToPreviewViewControllerWithContentURL:(NSURL *)contentURL mediaExtension:(NSString *)extension
 {
-    if ([segue.identifier isEqualToString:@"toVideoPreview"])
+    VMediaPreviewViewController *previewViewController = [VMediaPreviewViewController previewViewControllerForMediaAtURL:contentURL withExtension:extension];
+    previewViewController.completionBlock = ^(BOOL finished, UIImage *previewImage, NSURL *capturedMediaURL, NSString *mediaExtension)
     {
-        VVideoPreviewViewController*   viewController = (VVideoPreviewViewController *)segue.destinationViewController;
-        viewController.videoURL = self.videoURL;
-        viewController.completionBlock = self.completionBlock;
-    }
-    else if ([segue.identifier isEqualToString:@"toPhotoPreview"])
-    {
-        VImagePreviewViewController*    viewController = (VImagePreviewViewController *)segue.destinationViewController;
-        viewController.photo = self.photo;
-        viewController.completionBlock = self.completionBlock;
-    }
+        if (!finished)
+        {
+            [[NSFileManager defaultManager] removeItemAtURL:contentURL error:nil];
+            if (self.completionBlock)
+            {
+                self.completionBlock(NO, nil, nil, nil);
+            }
+        }
+        else if (self.completionBlock)
+        {
+            self.completionBlock(finished, previewImage, capturedMediaURL, mediaExtension);
+        }
+    };
+    [self.navigationController pushViewController:previewViewController animated:YES];
 }
 
 - (IBAction)unwindToCameraController:(UIStoryboardSegue*)sender
@@ -530,8 +541,7 @@ const   NSTimeInterval  kAnimationDuration      =   0.4;
     }
     else
     {
-        self.videoURL = recordedFile;
-        [self performSegueWithIdentifier:@"toVideoPreview" sender:self];
+        [self moveToPreviewViewControllerWithContentURL:recordedFile mediaExtension:VConstantMediaExtensionMOV];
     }
 }
 
@@ -542,8 +552,11 @@ const   NSTimeInterval  kAnimationDuration      =   0.4;
 {
     if (!error)
     {
-        self.photo = [photoDict[VCAudioVideoRecorderPhotoImageKey] squareImageScaledToSize:CGSizeMake(640.0, 640.0)];
-        [self performSegueWithIdentifier:@"toPhotoPreview" sender:self];
+        UIImage *photo = [photoDict[VCAudioVideoRecorderPhotoImageKey] squareImageScaledToSize:CGSizeMake(640.0, 640.0)];
+        NSData *pngData = UIImagePNGRepresentation(photo);
+        NSURL *tempFile = [self temporaryFileURLWithExtension:VConstantMediaExtensionPNG];
+        [pngData writeToURL:tempFile atomically:NO];
+        [self moveToPreviewViewControllerWithContentURL:tempFile mediaExtension:VConstantMediaExtensionPNG];
     }
 }
 

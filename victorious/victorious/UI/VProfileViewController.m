@@ -60,6 +60,11 @@
     return profileViewController;
 }
 
+- (void)dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -90,6 +95,13 @@
                                             VLog("Profile failed to get User object");
                                         }];
     }
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    
+    [self setProfileData];
 }
 
 - (void)setProfileData

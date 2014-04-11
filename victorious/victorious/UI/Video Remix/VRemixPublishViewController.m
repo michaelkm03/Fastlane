@@ -22,19 +22,8 @@
     VShareOptions shareOptions = self.useFacebook ? kVShareToFacebook : kVShareNone;
     shareOptions = self.useTwitter ? shareOptions | kVShareToTwitter : shareOptions;
     
-    NSData* mediaData;
-    NSString* mediaType;
-    if (self.videoURL)
-    {
-        mediaData = [NSData dataWithContentsOfURL:self.videoURL];
-        mediaType = VConstantMediaExtensionMOV;
-    }
-    else if (self.photo)
-    {
-        mediaData = UIImagePNGRepresentation(self.photo);
-        mediaType = VConstantMediaExtensionPNG;
-    }
-    else
+    NSData* mediaData = [NSData dataWithContentsOfURL:self.mediaURL];
+    if (!mediaData)
     {
         return;
     }
@@ -51,7 +40,7 @@
                                                loopType:self.playbackLooping
                                            shareOptions:shareOptions
                                               mediaData:mediaData
-                                              extension:mediaType
+                                              extension:self.mediaExtension
                                                mediaUrl:nil
                                            successBlock:^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
      {

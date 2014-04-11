@@ -353,6 +353,7 @@ NSString* const kPollResultsLoaded = @"kPollResultsLoaded";
                                               failBlock:(VFailBlock)fail
 {
     user = user ?: self.mainUser;
+    
     if (!user)
         return nil;
     
