@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="5053" systemVersion="13C64" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="114-OG-c2P">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="5056" systemVersion="13C64" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="114-OG-c2P">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3733"/>
     </dependencies>
@@ -19,7 +19,7 @@
             </objects>
             <point key="canvasLocation" x="-373" y="84"/>
         </scene>
-        <!--Remix Select View Controller - Select-->
+        <!--Remix Select View Controller - SELECT-->
         <scene sceneID="5Zx-Yp-fgh">
             <objects>
                 <viewController id="iXn-fe-oA1" customClass="VRemixSelectViewController" sceneMemberID="viewController">
@@ -32,7 +32,7 @@
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="1j4-RX-jZf" customClass="VCVideoPlayerView">
-                                <rect key="frame" x="0.0" y="99" width="320" height="320"/>
+                                <rect key="frame" x="0.0" y="115" width="320" height="320"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                             </view>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="PlayCircle" translatesAutoresizingMaskIntoConstraints="NO" id="4qQ-50-2PX">
@@ -43,25 +43,38 @@
                                 <rect key="frame" x="134" y="233" width="52" height="52"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             </imageView>
-                            <slider opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="0.5" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="34Z-zI-nC7">
-                                <rect key="frame" x="0.0" y="440" width="322" height="31"/>
+                            <slider opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="34Z-zI-nC7">
+                                <rect key="frame" x="0.0" y="458" width="322" height="31"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="backgroundColor" red="0.12549019610000001" green="0.12549019610000001" blue="0.12549019610000001" alpha="1" colorSpace="calibratedRGB"/>
                                 <color key="minimumTrackTintColor" red="0.99607843139999996" green="0.28627450980000002" blue="0.28627450980000002" alpha="1" colorSpace="calibratedRGB"/>
                                 <color key="maximumTrackTintColor" red="0.30980392159999998" green="0.30980392159999998" blue="0.30980392159999998" alpha="1" colorSpace="calibratedRGB"/>
                             </slider>
-                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="st1-VJ-BIj">
-                                <rect key="frame" x="20" y="478" width="55" height="31"/>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="st1-VJ-BIj">
+                                <rect key="frame" x="2" y="446" width="68" height="12"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="backgroundColor" red="0.12549019610000001" green="0.12549019610000001" blue="0.12549019610000001" alpha="1" colorSpace="calibratedRGB"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="11"/>
                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="QkP-0U-sWi">
-                                <rect key="frame" x="245" y="478" width="55" height="31"/>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="QkP-0U-sWi">
+                                <rect key="frame" x="250" y="446" width="70" height="12"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="backgroundColor" red="0.12549019610000001" green="0.12549019610000001" blue="0.12549019610000001" alpha="1" colorSpace="calibratedRGB"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="11"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7cq-1s-ji5">
+                                <rect key="frame" x="0.0" y="508" width="320" height="60"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" red="0.99607843139999996" green="0.28627450980000002" blue="0.28627450980000002" alpha="1" colorSpace="calibratedRGB"/>
+                                <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="25"/>
+                                <state key="normal" title="Start Remix">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                            </button>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="To start remixing, pick your starting point for a 15-second clip." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="280" translatesAutoresizingMaskIntoConstraints="NO" id="Y2Z-7b-JsE">
+                                <rect key="frame" x="20" y="62" width="280" height="41"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <nil key="highlightedColor"/>
@@ -70,7 +83,7 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
                     <toolbarItems/>
-                    <navigationItem key="navigationItem" title="Select" id="Uyd-gg-OYC">
+                    <navigationItem key="navigationItem" title="SELECT" id="Uyd-gg-OYC">
                         <barButtonItem key="leftBarButtonItem" image="cameraButtonClose" id="hs6-mu-6OT">
                             <connections>
                                 <action selector="closeButtonClicked:" destination="iXn-fe-oA1" id="GJD-D8-QTt"/>
@@ -84,9 +97,12 @@
                     </navigationItem>
                     <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
+                        <outlet property="currentTimeLabel" destination="st1-VJ-BIj" id="H0l-QL-h2s"/>
                         <outlet property="playButton" destination="RjN-vu-MGb" id="AhQ-Z7-0DX"/>
                         <outlet property="playCircle" destination="4qQ-50-2PX" id="dpu-Xq-vUb"/>
                         <outlet property="previewView" destination="1j4-RX-jZf" id="fxk-mP-qZX"/>
+                        <outlet property="scrubber" destination="34Z-zI-nC7" id="M3A-rh-W0x"/>
+                        <outlet property="totalTimeLabel" destination="QkP-0U-sWi" id="33d-oI-gEi"/>
                         <segue destination="uEv-AE-duX" kind="push" identifier="toTrim" id="lXQ-XC-WZ7"/>
                     </connections>
                 </viewController>
@@ -94,7 +110,7 @@
             </objects>
             <point key="canvasLocation" x="57" y="84"/>
         </scene>
-        <!--Remix Trim View Controller - Trim-->
+        <!--Remix Trim View Controller - TRIM-->
         <scene sceneID="n0d-Gw-mVR">
             <objects>
                 <viewController storyboardIdentifier="remixTrim" useStoryboardIdentifierAsRestorationIdentifier="YES" id="uEv-AE-duX" customClass="VRemixTrimViewController" sceneMemberID="viewController">
@@ -220,7 +236,7 @@
                             </view>
                         </subviews>
                     </view>
-                    <navigationItem key="navigationItem" title="Trim" id="oAM-sY-FT0">
+                    <navigationItem key="navigationItem" title="TRIM" id="oAM-sY-FT0">
                         <barButtonItem key="rightBarButtonItem" image="cameraButtonNext" id="ZUw-i1-Ae7">
                             <connections>
                                 <action selector="nextButtonClicked:" destination="uEv-AE-duX" id="qKo-Tu-2T1"/>
@@ -245,7 +261,7 @@
             </objects>
             <point key="canvasLocation" x="482" y="84"/>
         </scene>
-        <!--Remix Stitch View Controller - Stitch-->
+        <!--Remix Stitch View Controller - STITCH-->
         <scene sceneID="te2-Fv-6MP">
             <objects>
                 <viewController storyboardIdentifier="remixStitch" useStoryboardIdentifierAsRestorationIdentifier="YES" id="vMj-SS-k4u" customClass="VRemixStitchViewController" sceneMemberID="viewController">
@@ -319,7 +335,7 @@
                             </view>
                         </subviews>
                     </view>
-                    <navigationItem key="navigationItem" title="Stitch" id="DLc-3A-J8B">
+                    <navigationItem key="navigationItem" title="STITCH" id="DLc-3A-J8B">
                         <barButtonItem key="rightBarButtonItem" image="cameraButtonNext" id="8ZA-Jm-6zK"/>
                     </navigationItem>
                     <connections>
@@ -476,7 +492,7 @@
             </objects>
             <point key="canvasLocation" x="1822" y="380"/>
         </scene>
-        <!--Remix Publish View Controller - Publish-->
+        <!--Remix Publish View Controller - PUBLISH-->
         <scene sceneID="z56-bZ-00p">
             <objects>
                 <viewController storyboardIdentifier="remixPubish" useStoryboardIdentifierAsRestorationIdentifier="YES" id="YqF-iv-7Fu" customClass="VRemixPublishViewController" sceneMemberID="viewController">
@@ -584,7 +600,7 @@
                         </subviews>
                         <color key="backgroundColor" red="0.97254901959999995" green="0.97254901959999995" blue="0.97254901959999995" alpha="1" colorSpace="calibratedRGB"/>
                     </view>
-                    <navigationItem key="navigationItem" title="Publish" id="y4O-lq-47i">
+                    <navigationItem key="navigationItem" title="PUBLISH" id="y4O-lq-47i">
                         <barButtonItem key="leftBarButtonItem" image="cameraButtonBack" id="MN3-Ot-X2D">
                             <connections>
                                 <action selector="goBack:" destination="YqF-iv-7Fu" id="sRM-p2-xZq"/>
