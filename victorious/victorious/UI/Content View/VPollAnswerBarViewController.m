@@ -61,7 +61,6 @@
     [self.selectedHexImage setImage:newImage];
     self.selectedHexImage.tintColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
     
-    
     self.view.translatesAutoresizingMaskIntoConstraints = YES;
     self.selectedAnswerView.translatesAutoresizingMaskIntoConstraints = YES;
     self.selectedCheckImage.translatesAutoresizingMaskIntoConstraints = YES;
@@ -70,6 +69,11 @@
     
     self.leftLabel.text = ((VAnswer*)[self.answers firstObject]).label;
     self.rightLabel.text = ((VAnswer*)[self.answers lastObject]).label;
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
     
     [[VObjectManager sharedManager] pollResultsForSequence:self.sequence
                                               successBlock:^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
@@ -99,7 +103,7 @@
 {
     for (VPollResult* result in [VObjectManager sharedManager].mainUser.pollResults)
     {
-        if ([result.sequenceId isEqualToNumber: self.sequence.remoteId] && [self.sequence.pollResults count])
+        if ([result.sequenceId isEqualToNumber: self.sequence.remoteId])
         {
             [self.delegate answeredPollWithAnswerId:result.answerId];
             
