@@ -10,11 +10,13 @@
 
 @protocol VKeyboardBarDelegate <NSObject>
 @required
-- (void)didComposeWithText:(NSString *)text data:(NSData *)data mediaExtension:(NSString *)mediaExtension mediaURL:(NSURL *)mediaURL;
+- (void)didComposeWithText:(NSString *)text mediaURL:(NSURL *)mediaURL mediaExtension:(NSString *)mediaExtension;
 @end
 
-@interface VKeyboardBarViewController : VImagePickerViewController
+@interface VKeyboardBarViewController : UIViewController
 @property (nonatomic, weak) id<VKeyboardBarDelegate> delegate;
 @property (weak, nonatomic, readonly) IBOutlet UITextField *textField;
+
+- (IBAction)cameraPressed:(id)sender;
 
 @end

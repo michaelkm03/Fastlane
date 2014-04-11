@@ -60,6 +60,11 @@
     return profileViewController;
 }
 
+- (void)dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -92,6 +97,13 @@
     }
 }
 
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    
+    [self setProfileData];
+}
+
 - (void)setProfileData
 {
     //  Set background profile image
@@ -111,9 +123,9 @@
     [self.profileCircleImageView setImageWithURL:imageURL placeholderImage:[UIImage imageNamed:@"profile_thumb"]];
 
     // Set Profile data
-    self.nameLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVDetailFont];
+    self.nameLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeading2Font];
     self.nameLabel.text = self.profile.name;
-    self.taglineLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVDateFont];
+    self.taglineLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeading3Font];
 
     if (self.profile.tagline && self.profile.tagline.length)
         self.taglineLabel.text = [NSString stringWithFormat:@"%@%@%@",
@@ -123,7 +135,7 @@
     else
         self.taglineLabel.text = @"";
 
-    self.locationLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVDateFont];
+    self.locationLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeading3Font];
     self.locationLabel.text = self.profile.location;
     self.locationLabel.textColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVMainTextColor];
 

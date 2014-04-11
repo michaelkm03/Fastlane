@@ -26,13 +26,13 @@
     
     [self.labels enumerateObjectsUsingBlock:^(UILabel *label, NSUInteger idx, BOOL *stop)
      {
-         label.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVDetailFont];
+         label.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeading2Font];
          label.textColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVMainTextColor];
      }];
     
     [self.buttons enumerateObjectsUsingBlock:^(UIButton *button, NSUInteger idx, BOOL *stop)
      {
-         button.titleLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVDateFont];
+         button.titleLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeading3Font];
          button.tintColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVMainTextColor];
      }];
 }

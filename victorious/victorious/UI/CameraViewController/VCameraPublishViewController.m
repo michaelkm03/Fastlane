@@ -17,7 +17,7 @@
 #import "VThemeManager.h"
 
 @interface VCameraPublishViewController () <UITextViewDelegate, VSetExpirationDelegate>
-@property (nonatomic, weak) IBOutlet    UIImageView*    previewImage;
+@property (nonatomic, weak) IBOutlet    UIImageView*    previewImageView;
 
 @property (nonatomic, weak) IBOutlet    UIButton*       durationButton;
 @property (nonatomic, weak) IBOutlet    UILabel*        expiresOnLabel;
@@ -33,6 +33,11 @@
 
 @implementation VCameraPublishViewController
 
++ (VCameraPublishViewController *)cameraPublishViewController
+{
+    return [[UIStoryboard storyboardWithName:@"Camera" bundle:nil] instantiateViewControllerWithIdentifier:NSStringFromClass(self)];
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -46,18 +51,9 @@
 {
     [super viewWillAppear:animated];
     
-    if (self.photo)
+    if (self.previewImage)
     {
-        self.previewImage.image = [self.photo applyDarkEffect];
-    }
-    else if (self.videoURL)
-    {
-        AVAsset*    asset = [AVAsset assetWithURL:self.videoURL];
-        AVAssetImageGenerator*  assetGenerator = [AVAssetImageGenerator assetImageGeneratorWithAsset:asset];
-        
-        CGImageRef  imageRef    =   [assetGenerator copyCGImageAtTime:kCMTimeZero actualTime:NULL error:NULL];
-        self.previewImage.image = [[UIImage imageWithCGImage:imageRef] applyDarkEffect];
-        CGImageRelease(imageRef);
+        self.previewImageView.image = [self.previewImage applyDarkEffect];
     }
 
     self.view.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVBackgroundColor];
@@ -71,7 +67,10 @@
 
 - (IBAction)goBack:(id)sender
 {
-    [self.navigationController popViewControllerAnimated:YES];
+    if (self.completion)
+    {
+        self.completion(NO);
+    }
 }
 
 - (IBAction)hashButtonClicked:(id)sender
@@ -83,28 +82,19 @@
 {
     VLog (@"Publishing");
     
+    if ([self.textView.text isEmpty])
+    {
+        return; // TODO: some kind of error message here?
+    }
+    
     VShareOptions shareOptions = self.useFacebook ? kVShareToFacebook : kVShareNone;
     shareOptions = self.useTwitter ? shareOptions | kVShareToTwitter : shareOptions;
     
-    NSData* mediaData;
-    NSString* mediaType;
-    if (self.videoURL)
+    NSData* mediaData = [NSData dataWithContentsOfURL:self.mediaURL];
+    [[NSFileManager defaultManager] removeItemAtURL:self.mediaURL error:nil];
+    if (!mediaData)
     {
-        mediaData = [NSData dataWithContentsOfURL:self.videoURL];
-        mediaType = VConstantMediaExtensionMOV;
-    }
-    else if (self.photo)
-    {
-        mediaData = UIImagePNGRepresentation(self.photo);
-        mediaType = VConstantMediaExtensionPNG;
-    }
-    else
-    {
-        return;
-    }
-    if ([self.textView.text isEmpty])
-    {
-        return;
+        return; // TODO: some kind of error message here?
     }
 
     [[VObjectManager sharedManager] uploadMediaWithName:self.textView.text
@@ -114,7 +104,7 @@
                                                loopType:kVLoopOnce
                                            shareOptions:shareOptions
                                               mediaData:mediaData
-                                              extension:mediaType
+                                              extension:self.mediaExtension
                                                mediaUrl:nil
                                            successBlock:^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
     {
@@ -125,7 +115,10 @@
         VLog(@"Failed with error: %@", error);
     }];
     
-    [self dismissViewControllerAnimated:YES completion:nil];
+    if (self.completion)
+    {
+        self.completion(YES);
+    }
 }
 
 - (IBAction)twitterClicked:(id)sender
@@ -222,7 +215,7 @@
     {
         VSetExpirationViewController*   viewController = (VSetExpirationViewController *)segue.destinationViewController;
         viewController.delegate = self;
-        viewController.previewImage = self.previewImage.image;
+        viewController.previewImage = self.previewImageView.image;
     }
 }
 

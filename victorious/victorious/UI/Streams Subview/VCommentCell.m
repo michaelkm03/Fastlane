@@ -66,13 +66,13 @@ NSString* const kChatBubbleLeftImage = @"ChatBubbleLeft";
 {
     [super layoutSubviews];
     
-    self.dateLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVDateFont];
+    self.dateLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeading3Font];
     self.dateLabel.textColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVContentTextColor];
     
-    self.messageLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVDetailFont];
+    self.messageLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeading2Font];
     self.messageLabel.textColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVContentTextColor];
     
-    self.nameLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVDetailFont];
+    self.nameLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeading2Font];
     self.nameLabel.textColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
     
     self.profileImageButton.clipsToBounds = YES;
@@ -209,7 +209,7 @@ NSString* const kChatBubbleLeftImage = @"ChatBubbleLeft";
 
 + (CGSize)frameSizeForMessageText:(NSString*)text
 {
-    UIFont* font = [[VThemeManager sharedThemeManager] themedFontForKey:kVDetailFont];
+    UIFont* font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeading2Font];
     NSDictionary *stringAttributes;
     if (font)
         stringAttributes = [NSDictionary dictionaryWithObject:font forKey: NSFontAttributeName];

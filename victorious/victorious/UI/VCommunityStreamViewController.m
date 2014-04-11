@@ -13,6 +13,7 @@
 #import "VObjectManager+Sequence.h"
 #import "VCreatePollViewController.h"
 #import "VLoginViewController.h"
+#import "VCameraPublishViewController.h"
 #import "VCameraViewController.h"
 
 @interface VCommunityStreamViewController () <VCreateSequenceDelegate>
@@ -81,7 +82,36 @@
                                                   onDestructiveButton:nil
                                            otherButtonTitlesAndBlocks:contentTitle, ^(void)
     {
-        [self presentViewController:[VCameraViewController cameraViewController] animated:YES completion:nil];
+        UINavigationController *navigationController = [[UINavigationController alloc] init];
+        VCameraViewController *cameraViewController = [VCameraViewController cameraViewController];
+        cameraViewController.completionBlock = ^(BOOL finished, UIImage *previewImage, NSURL *capturedMediaURL, NSString *mediaExtension)
+        {
+            if (!finished || !capturedMediaURL)
+            {
+                [self dismissViewControllerAnimated:YES completion:nil];
+            }
+            else
+            {
+                VCameraPublishViewController *publishViewController = [VCameraPublishViewController cameraPublishViewController];
+                publishViewController.previewImage = previewImage;
+                publishViewController.mediaURL = capturedMediaURL;
+                publishViewController.mediaExtension = mediaExtension;
+                publishViewController.completion = ^(BOOL complete)
+                {
+                    if (complete)
+                    {
+                        [self dismissViewControllerAnimated:YES completion:nil];
+                    }
+                    else
+                    {
+                        [navigationController popViewControllerAnimated:YES];
+                    }
+                };
+                [navigationController pushViewController:publishViewController animated:YES];
+            }
+        };
+        [navigationController pushViewController:cameraViewController animated:NO];
+        [self presentViewController:navigationController animated:YES completion:nil];
     },
                                   pollTitle, ^(void)
     {

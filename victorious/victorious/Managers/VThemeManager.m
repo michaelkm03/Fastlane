@@ -26,15 +26,20 @@ NSString*   const   kVMenuBackgroundImage5              =   @"LaunchImage-700-56
 
 #pragma mark - Fonts
 
-NSString*   const   kVTitleFont                         =   @"font.title";
-NSString*   const   kVContentTitleFont                  =   @"font.title.content";
+NSString*   const   kVHeaderFont                        =   @"font.header";
 
-NSString*   const   kVDetailFont                        =   @"font.detail";
-NSString*   const   kVDateFont                          =   @"font.date";
+NSString*   const   kVHeading1Font                      =   @"font.heading1";
+NSString*   const   kVHeading2Font                      =   @"font.heading2";
+NSString*   const   kVHeading3Font                      =   @"font.heading3";
+NSString*   const   kVHeading4Font                      =   @"font.heading4";
 
-NSString*   const   kVButtonFont                        =   @"font.button";
+NSString*   const   kVLabel1Font                        =   @"font.labe1";
+NSString*   const   kVLabel2Font                        =   @"font.labe2";
+NSString*   const   kVLabel3Font                        =   @"font.labe3";
+NSString*   const   kVLabel4Font                        =   @"font.labe4";
 
-NSString*   const   kVPollButtonFont                    =   @"font.button.poll";
+NSString*   const   kVButton1Font                       =   @"font.button1";
+NSString*   const   kVButton2Font                       =   @"font.button2";
 
 
 #pragma mark - Colors
@@ -108,7 +113,7 @@ NSString*   const   kVLinkColor                         =   @"color.link";
     {
         titleAttributes[NSForegroundColorAttributeName] = navigationBarTitleTintColor;
     }
-    UIFont *navigationBarTitleFont = [self themedFontForKey:kVTitleFont];
+    UIFont *navigationBarTitleFont = [self themedFontForKey:kVHeaderFont];
     if(navigationBarTitleFont)
     {
         titleAttributes[NSFontAttributeName] = navigationBarTitleFont;

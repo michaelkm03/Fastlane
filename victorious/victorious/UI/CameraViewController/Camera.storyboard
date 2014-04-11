@@ -1,28 +1,13 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="5053" systemVersion="13C64" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="R9a-gd-sou">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="5053" systemVersion="13C64" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3733"/>
     </dependencies>
     <scenes>
-        <!--Navigation Controller-->
-        <scene sceneID="JDV-Gq-XLd">
-            <objects>
-                <navigationController definesPresentationContext="YES" id="R9a-gd-sou" sceneMemberID="viewController">
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="vjD-PJ-CRF">
-                        <autoresizingMask key="autoresizingMask"/>
-                    </navigationBar>
-                    <connections>
-                        <segue destination="N4E-ak-ozN" kind="relationship" relationship="rootViewController" id="5Im-T4-7h0"/>
-                    </connections>
-                </navigationController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="cg3-Cg-yAH" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="-533" y="51"/>
-        </scene>
         <!--Camera View Controller-->
         <scene sceneID="kLJ-FC-OlA">
             <objects>
-                <viewController id="N4E-ak-ozN" customClass="VCameraViewController" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="VCameraViewController" id="N4E-ak-ozN" customClass="VCameraViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="VHc-U1-zGw"/>
                         <viewControllerLayoutGuide type="bottom" id="e2F-3b-vgF"/>
@@ -122,8 +107,6 @@
                         <outlet property="switchCameraButton" destination="fQI-xE-BeV" id="Vk3-qf-zWV"/>
                         <outlet property="switchCameraModeButton" destination="VjD-w5-TpN" id="xnp-RB-MEL"/>
                         <outlet property="toolTipImageView" destination="X12-kd-M68" id="ZH4-4b-zqz"/>
-                        <segue destination="JbG-Y6-8FE" kind="push" identifier="toVideoPreview" id="rmc-6f-1wR"/>
-                        <segue destination="99V-ng-0rM" kind="push" identifier="toPhotoPreview" id="3kT-Xn-cy6"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="4dS-Xp-8dd" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -133,7 +116,7 @@
         <!--Video Preview View Controller-->
         <scene sceneID="4yH-t7-dNv">
             <objects>
-                <viewController storyboardIdentifier="videoPreview" useStoryboardIdentifierAsRestorationIdentifier="YES" id="JbG-Y6-8FE" customClass="VVideoPreviewViewController" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="VVideoPreviewViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="JbG-Y6-8FE" customClass="VVideoPreviewViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="x7b-LA-5fv"/>
                         <viewControllerLayoutGuide type="bottom" id="NAY-UL-u1y"/>
@@ -175,7 +158,6 @@
                         <outlet property="doneButtonView" destination="fqE-H3-Ghu" id="Pqe-Zw-8Kz"/>
                         <outlet property="trashAction" destination="58y-q4-Eps" id="pwy-0w-3kn"/>
                         <outlet property="videoPlayerView" destination="HS5-fs-ogp" id="2lr-C9-B9H"/>
-                        <segue destination="1zz-KC-cVA" kind="push" identifier="toPublishFromVideo" id="mer-GU-vyY"/>
                         <segue destination="jDW-4S-Vae" kind="unwind" identifier="unwindToCameraControllerFromVideo" unwindAction="unwindToCameraController:" id="I7E-pN-XMq"/>
                     </connections>
                 </viewController>
@@ -187,7 +169,7 @@
         <!--Image Preview View Controller-->
         <scene sceneID="gGN-nC-5xe">
             <objects>
-                <viewController storyboardIdentifier="imagePreview" useStoryboardIdentifierAsRestorationIdentifier="YES" id="99V-ng-0rM" customClass="VImagePreviewViewController" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="VImagePreviewViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="99V-ng-0rM" customClass="VImagePreviewViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="XeD-84-9O7"/>
                         <viewControllerLayoutGuide type="bottom" id="ukr-nV-1wY"/>
@@ -228,7 +210,6 @@
                         <outlet property="doneButtonView" destination="4ca-VH-9Hu" id="F8y-vf-edb"/>
                         <outlet property="previewImageView" destination="855-qN-JTt" id="8pJ-zU-CMi"/>
                         <outlet property="trashAction" destination="sdI-h6-tee" id="fg4-uz-5JZ"/>
-                        <segue destination="1zz-KC-cVA" kind="push" identifier="toPublishFromImage" id="YLb-fO-LI9"/>
                         <segue destination="BYh-e3-x9p" kind="unwind" identifier="unwindToCameraControllerFromPhoto" unwindAction="unwindToCameraController:" id="mf0-ko-Je2"/>
                     </connections>
                 </viewController>
@@ -240,7 +221,7 @@
         <!--Camera Publish View Controller - Publish-->
         <scene sceneID="hiH-K5-ap5">
             <objects>
-                <viewController storyboardIdentifier="cameraPubish" useStoryboardIdentifierAsRestorationIdentifier="YES" id="1zz-KC-cVA" customClass="VCameraPublishViewController" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="VCameraPublishViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="1zz-KC-cVA" customClass="VCameraPublishViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="Twn-Vd-Vv9"/>
                         <viewControllerLayoutGuide type="bottom" id="Gg4-zc-aun"/>
@@ -356,7 +337,7 @@
                         <outlet property="durationButton" destination="eIH-lg-ady" id="OMl-hb-DoR"/>
                         <outlet property="expiresOnLabel" destination="xvl-e7-PxB" id="a0z-BT-mrp"/>
                         <outlet property="facebookButton" destination="xAL-F0-yK2" id="H3v-Ms-EgD"/>
-                        <outlet property="previewImage" destination="g4C-sb-DOe" id="DP7-z1-BFa"/>
+                        <outlet property="previewImageView" destination="g4C-sb-DOe" id="rxc-kH-gXC"/>
                         <outlet property="textView" destination="yxx-6S-3iW" id="CEE-rw-I3h"/>
                         <outlet property="textViewPlaceholderLabel" destination="Fsz-Xd-hVx" id="eaY-Ix-3Cl"/>
                         <outlet property="twitterButton" destination="BMY-lh-VO4" id="lcQ-yE-LLV"/>
@@ -523,7 +504,4 @@
         <simulatedOrientationMetrics key="orientation"/>
         <simulatedScreenMetrics key="destination" type="retina4"/>
     </simulatedMetricsContainer>
-    <inferredMetricsTieBreakers>
-        <segue reference="YLb-fO-LI9"/>
-    </inferredMetricsTieBreakers>
 </document>

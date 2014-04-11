@@ -8,8 +8,8 @@
 
 @import AVFoundation;
 
+#import "VCameraViewController.h"
 #import "VObjectManager+Comment.h"
-
 #import "VKeyboardBarViewController.h"
 
 //#import "VSequence.h"
@@ -20,7 +20,6 @@
 @interface VKeyboardBarViewController() <UITextFieldDelegate>
 @property (weak, nonatomic, readwrite) IBOutlet UITextField *textField;
 @property (weak, nonatomic) IBOutlet UIButton *mediaButton;
-@property (strong, nonatomic) NSData* media;
 @property (nonatomic, strong) NSString*  mediaExtension;
 @property (nonatomic, strong) NSURL* mediaURL;
 
@@ -65,12 +64,28 @@
     }
     
     [self.textField resignFirstResponder];
-    [self.delegate didComposeWithText:self.textField.text data:self.media mediaExtension:self.mediaExtension mediaURL:self.mediaURL];
+    [self.delegate didComposeWithText:self.textField.text mediaURL:self.mediaURL mediaExtension:self.mediaExtension];
     [self.mediaButton setImage:[UIImage imageNamed:@"MessageCamera"] forState:UIControlStateNormal];
     self.textField.text = nil;
     self.mediaExtension = nil;
-    self.media = nil;
     self.mediaURL = nil;
+}
+
+- (void)cameraPressed:(id)sender
+{
+    VCameraViewController *cameraViewController = [VCameraViewController cameraViewController];
+    cameraViewController.completionBlock = ^(BOOL finished, UIImage *previewImage, NSURL *capturedMediaURL, NSString *mediaExtension)
+    {
+        if (finished)
+        {
+            self.mediaURL = capturedMediaURL;
+            self.mediaExtension = mediaExtension;
+            [self.mediaButton setImage:previewImage forState:UIControlStateNormal];
+        }
+        [self dismissViewControllerAnimated:YES completion:nil];
+    };
+    UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:cameraViewController];
+    [self presentViewController:navController animated:YES completion:nil];
 }
 
 #pragma mark - UITextfieldDelegate
@@ -82,18 +97,6 @@
         return NO;
     }
     return YES;
-}
-
-#pragma mark - Overrides
-- (void)imagePickerFinishedWithData:(NSData*)data
-                          extension:(NSString*)extension
-                       previewImage:(UIImage*)previewImage
-                           mediaURL:(NSURL*)mediaURL
-{
-    self.media = data;
-    self.mediaExtension = extension;
-    [self.mediaButton setImage:previewImage forState:UIControlStateNormal];
-    self.mediaURL = mediaURL;
 }
 
 @end

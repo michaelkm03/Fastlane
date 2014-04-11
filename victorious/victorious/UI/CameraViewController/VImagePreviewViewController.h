@@ -6,6 +6,12 @@
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
-@interface VImagePreviewViewController : UIViewController
-@property (nonatomic, strong)   UIImage*    photo;
+#import "VMediaPreviewViewController.h"
+
+@interface VImagePreviewViewController : VMediaPreviewViewController
+
+@property (nonatomic, readonly) UIImage *photo;
+
++ (VImagePreviewViewController *)imagePreviewViewController;
+
 @end

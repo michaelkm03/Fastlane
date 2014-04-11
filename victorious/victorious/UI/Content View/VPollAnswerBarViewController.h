@@ -21,5 +21,8 @@
 
 @property (strong, nonatomic) NSArray* answers;
 @property (weak, nonatomic) id<VPollAnswerBarDelegate> delegate;
+@property (weak, nonatomic) IBOutlet UIImageView *orImageView;
+
+- (void)checkIfAnswered;
 
 @end

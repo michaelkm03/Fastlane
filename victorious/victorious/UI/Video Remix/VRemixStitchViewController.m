@@ -200,7 +200,8 @@
     if ([segue.identifier isEqualToString:@"toRemixPublish"])
     {
         VRemixPublishViewController*     publishViewController = (VRemixPublishViewController *)segue.destinationViewController;
-        publishViewController.videoURL = self.sourceURL;
+        publishViewController.mediaURL = self.sourceURL;
+        publishViewController.mediaExtension = VConstantMediaExtensionMOV;
         publishViewController.shouldMuteAudio = self.shouldMuteAudio;
         publishViewController.playBackSpeed = self.playBackSpeed;
         publishViewController.playbackLooping = self.playbackLooping;

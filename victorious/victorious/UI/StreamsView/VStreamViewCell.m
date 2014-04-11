@@ -60,8 +60,9 @@ NSString *kStreamsWillCommentNotification = @"kStreamsWillCommentNotification";
     
     self.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVBackgroundColor];
     
-    self.dateLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVDateFont];
-    self.descriptionLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVContentTitleFont];
+    self.usernameLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeading3Font];
+    self.dateLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVLabel3Font];
+    self.descriptionLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeading1Font];
     self.dateImageView.image = [self.dateImageView.image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
 
     [self.commentButton setTitleEdgeInsets:UIEdgeInsetsMake(0, 5, 0, 0)];
