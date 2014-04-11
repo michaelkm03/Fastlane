@@ -15,6 +15,7 @@
 #import "VVoteType.h"
 
 #import "VThemeManager.h"
+#import "VUserManager.h"
 
 @implementation VObjectManager (Login)
 
@@ -211,9 +212,19 @@ NSString *kLoggedInChangedNotification = @"LoggedInChangedNotification";
     
     VSuccessBlock fullSuccess = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
     {
-        [self loggedInWithUser:[resultObjects firstObject]];
-        if (success)
-            success(operation, fullResponse, resultObjects);
+        
+        [[VUserManager sharedInstance] loginViaSavedCredentialsOnCompletion:^(VUser *user, BOOL created)
+         {
+             [self loggedInWithUser:user];
+             
+             if (success)
+                 success(operation, fullResponse, resultObjects);
+         }
+                                                                    onError:^(NSError *error)
+         {
+             if(fail)
+                 fail(operation, error);
+         }];
     };
     
     return [self upload:allData
@@ -228,6 +239,7 @@ NSString *kLoggedInChangedNotification = @"LoggedInChangedNotification";
 - (void)loggedInWithUser:(VUser*)user
 {
     self.mainUser = user;
+    
     [self loadNextPageOfConversations:nil failBlock:nil];
     [self pollResultsForUser:user successBlock:nil failBlock:nil];
     [self unreadCountForConversationsWithSuccessBlock:nil failBlock:nil];

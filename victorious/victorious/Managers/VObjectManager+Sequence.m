@@ -354,6 +354,8 @@ NSString* const kPollResultsLoaded = @"kPollResultsLoaded";
 {
     if (!user)
         user = self.mainUser;
+    if (!user)
+        return nil;
     
     NSString* path = [@"/api/pollresult/summary_by_user/" stringByAppendingString: user.remoteId.stringValue];
     
