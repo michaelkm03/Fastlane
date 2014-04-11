@@ -52,6 +52,34 @@
         [self.previewView.player pause];
 }
 
+#pragma mark - Properties
+
+- (CMTime)playerItemDuration
+{
+    AVPlayerItem *thePlayerItem = self.previewView.player.currentItem;
+    if (thePlayerItem.status == AVPlayerItemStatusReadyToPlay)
+        return thePlayerItem.duration;
+    else
+        return kCMTimeInvalid;
+}
+
+#pragma mark - Support
+
+-(NSString *)secondsToMMSS:(double)seconds
+{
+    if (isnan(seconds))
+        return @"";
+
+    NSInteger time = floor(seconds);
+    NSInteger hh = time / 3600;
+    NSInteger mm = (time / 60) % 60;
+    NSInteger ss = time % 60;
+    if (hh > 0)
+        return  [NSString stringWithFormat:@"%d:%02i:%02i",hh,mm,ss];
+    else
+        return  [NSString stringWithFormat:@"%02i:%02i",mm,ss];
+}
+
 #pragma mark - Animations
 
 - (void)startAnimation
@@ -70,7 +98,9 @@
 {
     if (self.animatingPlayButton)
     {
-        [UIView animateKeyframesWithDuration:1.4f delay:0 options:UIViewKeyframeAnimationOptionCalculationModeLinear
+        [UIView animateKeyframesWithDuration:1.4f
+                                       delay:0
+                                     options:UIViewKeyframeAnimationOptionCalculationModeLinear
                                   animations:^
          {
              [UIView addKeyframeWithRelativeStartTime:0      relativeDuration:.37f   animations:^{   self.playButton.alpha = 1;      }];
