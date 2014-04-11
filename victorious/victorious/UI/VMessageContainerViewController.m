@@ -35,8 +35,6 @@
         VMessageViewController *messageController = [self.storyboard instantiateViewControllerWithIdentifier:@"messages"];
         messageController.conversation = self.conversation;
         messageController.composeViewController = self.keyboardBarViewController;
-        [self addChildViewController:messageController];
-        [messageController didMoveToParentViewController:self];
         _conversationTableViewController = messageController;
     }
     

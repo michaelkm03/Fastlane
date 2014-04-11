@@ -8,7 +8,6 @@
 
 #import "VKeyboardBarContainerViewController.h"
 #import "VKeyboardBarViewController.h"
-#import "UIView+AutoLayout.h"
 #import "VConstants.h"
 
 @interface VKeyboardBarContainerViewController()
@@ -17,30 +16,46 @@
 
 @implementation VKeyboardBarContainerViewController
 
+- (void)dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
 
-    UIView *keyboardBarContainerView = [UIView autoLayoutView];
+    UIView *keyboardBarContainerView = [[UIView alloc] init];
+    keyboardBarContainerView.translatesAutoresizingMaskIntoConstraints = NO;
     keyboardBarContainerView.backgroundColor = [UIColor clearColor];
     [self.view addSubview:keyboardBarContainerView];
-    [keyboardBarContainerView constrainToHeight:44];
-    [keyboardBarContainerView pinToSuperviewEdges:JRTViewPinLeftEdge|JRTViewPinRightEdge inset:0];
-    self.bottomConstraint = [[keyboardBarContainerView pinToSuperviewEdges:JRTViewPinBottomEdge inset:0] firstObject];
+    [self addChildViewController:self.keyboardBarViewController];
+    self.keyboardBarViewController.view.translatesAutoresizingMaskIntoConstraints = NO;
     [keyboardBarContainerView addSubview:self.keyboardBarViewController.view];
+    [self.keyboardBarViewController didMoveToParentViewController:self];
 
-    UIView *tableContainerView = [UIView autoLayoutView];
+    UIView *tableContainerView = [[UIView alloc] init];
+    tableContainerView.translatesAutoresizingMaskIntoConstraints = NO;
     tableContainerView.backgroundColor = [UIColor clearColor];
     [self.view addSubview:tableContainerView];
-    [tableContainerView pinToSuperviewEdges:JRTViewPinLeftEdge|JRTViewPinRightEdge inset:0];
-    [tableContainerView pinEdge:NSLayoutAttributeBottom toEdge:NSLayoutAttributeTop ofItem:keyboardBarContainerView];
-    if (self.topConstraintView)
-        [tableContainerView pinEdge:NSLayoutAttributeTop toEdge:NSLayoutAttributeBottom ofItem:self.topConstraintView];
-    else
-        [tableContainerView pinToSuperviewEdges:JRTViewPinTopEdge inset:0];
-    
+    [self addChildViewController:self.conversationTableViewController];
     [tableContainerView addSubview:self.conversationTableViewController.view];
-
+    [self.conversationTableViewController didMoveToParentViewController:self];
+    
+    [keyboardBarContainerView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[keyboardBarContainerView(==44)]" options:0 metrics:nil views:NSDictionaryOfVariableBindings(keyboardBarContainerView)]];
+    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[keyboardBarContainerView]|" options:0 metrics:nil views:NSDictionaryOfVariableBindings(keyboardBarContainerView)]];
+    self.bottomConstraint = [NSLayoutConstraint constraintWithItem:keyboardBarContainerView
+                                                         attribute:NSLayoutAttributeBottom
+                                                         relatedBy:NSLayoutRelationEqual
+                                                            toItem:self.view
+                                                         attribute:NSLayoutAttributeBottom
+                                                        multiplier:1.0f
+                                                          constant:0];
+    [self.view addConstraint:self.bottomConstraint];
+    
+    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[tableContainerView][keyboardBarContainerView]" options:0 metrics:nil views:NSDictionaryOfVariableBindings(tableContainerView, keyboardBarContainerView)]];
+    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[tableContainerView]|" options:0 metrics:nil views:NSDictionaryOfVariableBindings(tableContainerView)]];
+    
     [[NSNotificationCenter defaultCenter]
      addObserver:self selector:@selector(keyboardFrameChanged:)
      name:UIKeyboardWillChangeFrameNotification object:nil];
@@ -60,11 +75,15 @@
     if(_keyboardBarViewController == nil)
     {
         _keyboardBarViewController = [self.storyboard instantiateViewControllerWithIdentifier:kKeyboardBarStoryboardID];
-        [self addChildViewController:_keyboardBarViewController];
-        [_keyboardBarViewController didMoveToParentViewController:self];
     }
 
     return _keyboardBarViewController;
+}
+
+- (void)viewDidLayoutSubviews
+{
+    [super viewDidLayoutSubviews];
+    self.conversationTableViewController.tableView.contentInset = UIEdgeInsetsMake(self.topLayoutGuide.length, 0, 0, 0);
 }
 
 - (void)keyboardFrameChanged:(NSNotification *)notification

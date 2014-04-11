@@ -90,9 +90,3 @@
 #define COCOAPODS_VERSION_MINOR_TransitionKit 0
 #define COCOAPODS_VERSION_PATCH_TransitionKit 0
 
-// UIView-Autolayout
-#define COCOAPODS_POD_AVAILABLE_UIView_Autolayout
-#define COCOAPODS_VERSION_MAJOR_UIView_Autolayout 0
-#define COCOAPODS_VERSION_MINOR_UIView_Autolayout 0
-#define COCOAPODS_VERSION_PATCH_UIView_Autolayout 10
-

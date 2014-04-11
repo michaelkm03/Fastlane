@@ -103,8 +103,6 @@
         streamsCommentsController.sequence = self.sequence;
 //        streamsCommentsController.keyboardBarViewController = self.keyboardBarViewController;
         self.keyboardBarViewController.delegate = streamsCommentsController;
-        [self addChildViewController:streamsCommentsController];
-        [streamsCommentsController didMoveToParentViewController:self];
         _conversationTableViewController = streamsCommentsController;
     }
 
