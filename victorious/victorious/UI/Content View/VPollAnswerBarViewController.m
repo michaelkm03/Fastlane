@@ -75,7 +75,6 @@
                                               successBlock:^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
      {
          VLog(@"Succeeded with objects: %@", resultObjects);
-//         [self checkIfAnswered];
      }
                                                  failBlock:^(NSOperation* operation, NSError* error)
      {
@@ -100,11 +99,14 @@
 {
     for (VPollResult* result in [VObjectManager sharedManager].mainUser.pollResults)
     {
-        if ([result.sequenceId isEqualToNumber: self.sequence.remoteId])
+        if ([result.sequenceId isEqualToNumber: self.sequence.remoteId] && [self.sequence.pollResults count])
         {
             [self.delegate answeredPollWithAnswerId:result.answerId];
             
             [self answerAnimationForAnswerID:result.answerId];
+            
+            self.leftButton.userInteractionEnabled = NO;
+            self.rightButton.userInteractionEnabled = NO;
             
             return;
         }
@@ -121,8 +123,6 @@
     
     CGRect initialAnswerFrame   = CGRectInset(self.selectedAnswerView.frame, 0, 0);
     CGRect finalAnswerFrame     = CGRectInset(self.selectedAnswerView.frame, 0, 0);
-    
-    CGFloat selectedAnswerXOffset = 0;
     
     if ([answerID isEqualToNumber:((VAnswer*)[self.answers firstObject]).remoteId])
     {
@@ -167,8 +167,6 @@
          self.selectedHexImage.frame = finalHexFrame;
          self.selectedCheckImage.frame = finalHexFrame;
          self.selectedAnswerView.frame = finalAnswerFrame;
-         
-         [self.selectedAnswerView setXOrigin:selectedAnswerXOffset];
      }];
 }
 
@@ -206,6 +204,7 @@
                                                     successBlock:^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
                                                     {
                                                         [self.delegate answeredPollWithAnswerId:answer.remoteId];
+                                                        [self answerAnimationForAnswerID:answer.remoteId];
                                                     }
                                                        failBlock:^(NSOperation* operation, NSError* error)
                                                         {
