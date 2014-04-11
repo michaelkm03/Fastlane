@@ -132,7 +132,7 @@ const   CGFloat     kMessageRowHeight           =   80;
 
 #pragma mark - VComposeMessageDelegate
 
-- (void)didComposeWithText:(NSString *)text data:(NSData *)data mediaExtension:(NSString *)mediaExtension mediaURL:(NSURL *)mediaURL
+- (void)didComposeWithText:(NSString *)text mediaURL:(NSURL *)mediaURL mediaExtension:(NSString *)mediaExtension
 {
     VSuccessBlock success = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
     {
@@ -150,6 +150,9 @@ const   CGFloat     kMessageRowHeight           =   80;
         
         VLog(@"Succeed with response: %@", fullResponse);
     };
+    
+    NSData *data = [NSData dataWithContentsOfURL:mediaURL];
+    [[NSFileManager defaultManager] removeItemAtURL:mediaURL error:nil];
     
     [[VObjectManager sharedManager] sendMessageToUser:self.conversation.user
                                              withText:text

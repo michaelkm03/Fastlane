@@ -423,7 +423,7 @@
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <connections>
-                                    <action selector="mediaButtonAction:" destination="Xnc-VI-aqb" eventType="touchUpInside" id="x1V-AC-BZ0"/>
+                                    <action selector="cameraPressed:" destination="Xnc-VI-aqb" eventType="touchUpInside" id="prE-rP-bjW"/>
                                 </connections>
                             </button>
                         </subviews>

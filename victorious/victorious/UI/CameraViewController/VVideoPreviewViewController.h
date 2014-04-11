@@ -9,5 +9,7 @@
 #import "VMediaPreviewViewController.h"
 
 @interface VVideoPreviewViewController : VMediaPreviewViewController
-@property (nonatomic, strong)   NSURL*      videoURL;
+
++ (VVideoPreviewViewController *)videoPreviewViewController;
+
 @end
