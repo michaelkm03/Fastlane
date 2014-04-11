@@ -10,7 +10,6 @@
 
 #import "VCreatePollViewController.h"
 #import "VThemeManager.h"
-#import "UIView+AutoLayout.h"
 #import "VConstants.h"
 #import "NSString+VParseHelp.h"
 #import "UIView+VFrameManipulation.h"
@@ -83,9 +82,6 @@ CGFloat VCreateViewControllerLargePadding = 20;
     self.rightAnswerTextField.textColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVContentTextColor];
     self.rightAnswerTextField.placeholder = NSLocalizedString(@"VOTE THAT...", @"Poll left question placeholder");
     
-    self.mediaLabel.textColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVMainTextColor];
-    [self.mediaLabel centerInContainerOnAxis:NSLayoutAttributeCenterX];
-    
     self.textView.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeading4Font];
     self.textView.textColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVMainTextColor];
     self.textView.layer.borderColor = [[[VThemeManager sharedThemeManager] themedColorForKey:kVAccentColor] CGColor];
@@ -101,7 +97,6 @@ CGFloat VCreateViewControllerLargePadding = 20;
      name:UIKeyboardWillChangeFrameNotification object:nil];
     
     [self setType:self.type];
-    self.mediaLabel.textColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVMainTextColor];
     
     [self validatePostButtonState];
     [self updateViewState];

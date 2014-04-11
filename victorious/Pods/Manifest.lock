@@ -26,14 +26,12 @@ PODS:
   - TestFlightSDK (3.0.0)
   - TransitionKit (2.0.0)
   - TTTAttributedLabel (1.8.1)
-  - UIView-Autolayout (0.0.10)
 
 DEPENDENCIES:
   - IGDigest (~> 1.1.0)
   - RestKit (~> 0.22.0)
   - TestFlightSDK (~> 3.0.0)
   - TTTAttributedLabel (~> 1.8.1)
-  - UIView-Autolayout (~> 0.0.9)
 
 SPEC CHECKSUMS:
   AFNetworking: 61fdd49e2ffe6380378df37b3b6e70630bb9dd66
@@ -45,6 +43,5 @@ SPEC CHECKSUMS:
   TestFlightSDK: fe0567a897456b6f65b180541892ef0154986e01
   TransitionKit: 433284465abacdc07852d7db6dd0cc075010059a
   TTTAttributedLabel: 3a571d73e055f4a79c304240598e4bfd199238e4
-  UIView-Autolayout: d274098a5cbd5c1171db1f2638cbfaf4fba97c74
 
 COCOAPODS: 0.31.1
