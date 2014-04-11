@@ -164,9 +164,11 @@
             {
                 case AVAssetExportSessionStatusFailed:
                     NSLog(@"Export failed: %@", [[self.exportSession error] localizedDescription]);
+                    self.targetURL = nil;
                     break;
                 case AVAssetExportSessionStatusCancelled:
                     NSLog(@"Export canceled");
+                    self.targetURL = nil;
                     break;
                 default:
                     NSLog(@"Export Complete");
@@ -304,18 +306,6 @@
 }
 
 #pragma mark - Support
-
--(NSString *)secondsToMMSS:(double)seconds
-{
-    NSInteger time = floor(seconds);
-    NSInteger hh = time / 3600;
-    NSInteger mm = (time / 60) % 60;
-    NSInteger ss = time % 60;
-    if (hh > 0)
-        return  [NSString stringWithFormat:@"%d:%02i:%02i",hh,mm,ss];
-    else
-        return  [NSString stringWithFormat:@"%02i:%02i",mm,ss];
-}
 
 -(void)removePlayerTimeObserver
 {
