@@ -105,7 +105,7 @@
     {
         NSLog(@"%@", resultObjects);
         [indicator stopAnimating];
-        [(VCommentsTableViewController*)self sortComments];
+        [(VCommentsTableViewController *)self.conversationTableViewController sortComments];
     };
     VFailBlock fail = ^(NSOperation* operation, NSError* error)
     {
