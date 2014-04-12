@@ -21,7 +21,7 @@
 const   CGFloat     kMessageRowWithMediaHeight  =   280.0;
 const   CGFloat     kMessageRowHeight           =   80;
 
-@interface VMessageViewController () <VKeyboardBarDelegate>
+@interface VMessageViewController ()
 @property (nonatomic, readwrite, strong)    NSArray*    messages;
 @end
 
@@ -30,8 +30,6 @@ const   CGFloat     kMessageRowHeight           =   80;
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
-    self.composeViewController.delegate = self;
     
     UIImageView* backgroundImageView = [[UIImageView alloc] initWithFrame:self.tableView.backgroundView.frame];
     [backgroundImageView setLightBlurredImageWithURL:[NSURL URLWithString:self.conversation.user.pictureUrl]
@@ -47,7 +45,7 @@ const   CGFloat     kMessageRowHeight           =   80;
          forCellReuseIdentifier:kOtherCommentCellIdentifier];
     
     [self.tableView reloadData];
-    [self refreshAction:self];
+    [self refresh];
 }
 
 - (void)viewWillLayoutSubviews
@@ -56,7 +54,7 @@ const   CGFloat     kMessageRowHeight           =   80;
     self.view.frame = self.view.superview.bounds;
 }
 
-- (IBAction)refreshAction:(id)sender
+- (void)refresh
 {
     VFailBlock fail = ^(NSOperation* operation, NSError* error)
     {
@@ -90,7 +88,7 @@ const   CGFloat     kMessageRowHeight           =   80;
                    {
                        if(self.isViewLoaded && self.view.window)
                        {
-                           [self refreshAction:nil];
+                           [self refresh];
                        }
                    });
 }
@@ -128,42 +126,6 @@ const   CGFloat     kMessageRowHeight           =   80;
     height = MAX(height + yOffset, kMinCellHeight);
     
     return height;
-}
-
-#pragma mark - VComposeMessageDelegate
-
-- (void)didComposeWithText:(NSString *)text mediaURL:(NSURL *)mediaURL mediaExtension:(NSString *)mediaExtension
-{
-    VSuccessBlock success = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
-    {
-        NSDictionary* payload = fullResponse[@"payload"];
-        if (!self.conversation.remoteId)
-        {
-            self.conversation.remoteId = payload[@"conversation_id"];
-            [self.conversation.managedObjectContext performBlockAndWait:^
-             {
-                 [self.conversation.managedObjectContext save:nil];
-             }];
-        }
-        
-        [self refreshAction:self];
-        
-        VLog(@"Succeed with response: %@", fullResponse);
-    };
-    
-    NSData *data = [NSData dataWithContentsOfURL:mediaURL];
-    [[NSFileManager defaultManager] removeItemAtURL:mediaURL error:nil];
-    
-    [[VObjectManager sharedManager] sendMessageToUser:self.conversation.user
-                                             withText:text
-                                                 Data:data
-                                       mediaExtension:mediaExtension
-                                             mediaUrl:nil
-                                         successBlock:success
-                                            failBlock:^(NSOperation* operation, NSError* error)
-     {
-         VLog(@"Failed in creating message with error: %@", error);
-     }];
 }
 
 @end

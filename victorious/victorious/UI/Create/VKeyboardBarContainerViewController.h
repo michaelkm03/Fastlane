@@ -6,9 +6,9 @@
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
-@class VKeyboardBarViewController;
+#include "VKeyboardBarViewController.h"
 
-@interface VKeyboardBarContainerViewController : UIViewController
+@interface VKeyboardBarContainerViewController : UIViewController <VKeyboardBarDelegate>
 
 @property (weak, nonatomic) VKeyboardBarViewController *keyboardBarViewController;
 @property (strong, nonatomic) IBOutlet UIView* topConstraintView;

@@ -64,7 +64,7 @@
     }
     
     [self.textField resignFirstResponder];
-    [self.delegate didComposeWithText:self.textField.text mediaURL:self.mediaURL mediaExtension:self.mediaExtension];
+    [self.delegate keyboardBar:self didComposeWithText:self.textField.text mediaURL:self.mediaURL mediaExtension:self.mediaExtension];
     [self.mediaButton setImage:[UIImage imageNamed:@"MessageCamera"] forState:UIControlStateNormal];
     self.textField.text = nil;
     self.mediaExtension = nil;

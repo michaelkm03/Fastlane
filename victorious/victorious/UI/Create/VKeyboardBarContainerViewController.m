@@ -75,6 +75,7 @@
     if(_keyboardBarViewController == nil)
     {
         _keyboardBarViewController = [self.storyboard instantiateViewControllerWithIdentifier:kKeyboardBarStoryboardID];
+        _keyboardBarViewController.delegate = self;
     }
 
     return _keyboardBarViewController;
@@ -104,6 +105,13 @@
         [self.view layoutIfNeeded];
     }
                      completion:nil];
+}
+
+#pragma mark - VKeyboardBarViewControllerDelegate methods
+
+- (void)keyboardBar:(VKeyboardBarViewController *)keyboardBar didComposeWithText:(NSString *)text mediaURL:(NSURL *)mediaURL mediaExtension:(NSString *)mediaExtension
+{
+    NSAssert(false, @"keyboardBar:didComposeWithText:mediaURL:mediaExtension: should be overridden in all subclasses of VKeyboardBarContainerViewController!");
 }
 
 @end
