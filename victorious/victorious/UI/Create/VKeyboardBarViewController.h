@@ -15,12 +15,15 @@
 @required
 
 - (void)keyboardBar:(VKeyboardBarViewController *)keyboardBar didComposeWithText:(NSString *)text mediaURL:(NSURL *)mediaURL mediaExtension:(NSString *)mediaExtension;
+- (void)keyboardBar:(VKeyboardBarViewController *)keyboardBar wouldLikeToBeResizedToHeight:(CGFloat)height;
 
 @end
 
 @interface VKeyboardBarViewController : UIViewController
-@property (nonatomic, weak) id<VKeyboardBarDelegate> delegate;
-@property (weak, nonatomic, readonly) IBOutlet UITextField *textField;
+
+@property (nonatomic, weak) id<VKeyboardBarDelegate>  delegate;
+@property (nonatomic, weak) IBOutlet UITextView      *textView;
+@property (nonatomic, weak) IBOutlet UILabel         *promptLabel;
 
 - (IBAction)cameraPressed:(id)sender;
 

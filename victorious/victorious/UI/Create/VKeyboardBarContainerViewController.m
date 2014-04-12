@@ -11,7 +11,10 @@
 #import "VConstants.h"
 
 @interface VKeyboardBarContainerViewController()
-@property (weak, nonatomic) NSLayoutConstraint *bottomConstraint;
+
+@property (nonatomic, strong) NSLayoutConstraint *bottomConstraint;
+@property (nonatomic, strong) NSLayoutConstraint *keyboardBarHeightConstraint;
+
 @end
 
 @implementation VKeyboardBarContainerViewController
@@ -30,7 +33,9 @@
     keyboardBarContainerView.backgroundColor = [UIColor clearColor];
     [self.view addSubview:keyboardBarContainerView];
     [self addChildViewController:self.keyboardBarViewController];
-    self.keyboardBarViewController.view.translatesAutoresizingMaskIntoConstraints = NO;
+    self.keyboardBarViewController.view.translatesAutoresizingMaskIntoConstraints = YES;
+    self.keyboardBarViewController.view.frame = keyboardBarContainerView.bounds;
+    self.keyboardBarViewController.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     [keyboardBarContainerView addSubview:self.keyboardBarViewController.view];
     [self.keyboardBarViewController didMoveToParentViewController:self];
 
@@ -39,10 +44,21 @@
     tableContainerView.backgroundColor = [UIColor clearColor];
     [self.view addSubview:tableContainerView];
     [self addChildViewController:self.conversationTableViewController];
+    self.conversationTableViewController.view.translatesAutoresizingMaskIntoConstraints = YES;
+    self.conversationTableViewController.view.frame = tableContainerView.bounds;
+    self.conversationTableViewController.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     [tableContainerView addSubview:self.conversationTableViewController.view];
     [self.conversationTableViewController didMoveToParentViewController:self];
     
-    [keyboardBarContainerView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[keyboardBarContainerView(==44)]" options:0 metrics:nil views:NSDictionaryOfVariableBindings(keyboardBarContainerView)]];
+    self.keyboardBarHeightConstraint = [NSLayoutConstraint constraintWithItem:keyboardBarContainerView
+                                                                    attribute:NSLayoutAttributeHeight
+                                                                    relatedBy:NSLayoutRelationEqual
+                                                                       toItem:nil
+                                                                    attribute:NSLayoutAttributeNotAnAttribute
+                                                                   multiplier:1.0f
+                                                                     constant:44.0f];
+    [keyboardBarContainerView addConstraint:self.keyboardBarHeightConstraint];
+    
     [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[keyboardBarContainerView]|" options:0 metrics:nil views:NSDictionaryOfVariableBindings(keyboardBarContainerView)]];
     self.bottomConstraint = [NSLayoutConstraint constraintWithItem:keyboardBarContainerView
                                                          attribute:NSLayoutAttributeBottom
@@ -66,7 +82,7 @@
     [super viewDidAppear:animated];
     if(self.showKeyboard)
     {
-        [self.keyboardBarViewController.textField becomeFirstResponder];
+        [self.keyboardBarViewController.textView becomeFirstResponder];
     }
 }
 
@@ -112,6 +128,19 @@
 - (void)keyboardBar:(VKeyboardBarViewController *)keyboardBar didComposeWithText:(NSString *)text mediaURL:(NSURL *)mediaURL mediaExtension:(NSString *)mediaExtension
 {
     NSAssert(false, @"keyboardBar:didComposeWithText:mediaURL:mediaExtension: should be overridden in all subclasses of VKeyboardBarContainerViewController!");
+}
+
+- (void)keyboardBar:(VKeyboardBarViewController *)keyboardBar wouldLikeToBeResizedToHeight:(CGFloat)height
+{
+    [UIView animateWithDuration:0.2
+                          delay:0
+                        options:UIViewAnimationOptionCurveLinear
+                     animations:^(void)
+    {
+        self.keyboardBarHeightConstraint.constant = height;
+        [self.view layoutIfNeeded];
+    }
+                     completion:nil];
 }
 
 @end

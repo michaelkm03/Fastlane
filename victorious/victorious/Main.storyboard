@@ -393,22 +393,17 @@
                         <viewControllerLayoutGuide type="top" id="LjZ-II-H8p"/>
                         <viewControllerLayoutGuide type="bottom" id="RCe-62-BGi"/>
                     </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="4bU-ju-HJT" customClass="UIInputView">
+                    <view key="view" contentMode="scaleToFill" id="4bU-ju-HJT">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Type a reply..." minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="ysg-7l-HaV">
-                                <rect key="frame" x="53" y="7" width="198" height="30"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <textInputTraits key="textInputTraits"/>
-                                <connections>
-                                    <outlet property="delegate" destination="Xnc-VI-aqb" id="fYw-3y-G4P"/>
-                                </connections>
-                            </textField>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vPi-i8-4bG">
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vPi-i8-4bG">
                                 <rect key="frame" x="259" y="0.0" width="61" height="44"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="61" id="0zl-dK-kNx"/>
+                                    <constraint firstAttribute="height" constant="44" id="tX9-8f-BnB"/>
+                                </constraints>
                                 <state key="normal" title="Send">
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
@@ -416,9 +411,13 @@
                                     <action selector="sendButtonAction:" destination="Xnc-VI-aqb" eventType="touchUpInside" id="Vc5-N6-pe0"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="OoL-qH-7ZE">
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="OoL-qH-7ZE">
                                 <rect key="frame" x="9" y="6" width="32" height="32"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="32" id="RjM-zk-eQd"/>
+                                    <constraint firstAttribute="width" constant="32" id="coF-8f-WQQ"/>
+                                </constraints>
                                 <state key="normal" image="MessageCamera">
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
@@ -426,15 +425,43 @@
                                     <action selector="cameraPressed:" destination="Xnc-VI-aqb" eventType="touchUpInside" id="prE-rP-bjW"/>
                                 </connections>
                             </button>
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" bounces="NO" scrollEnabled="NO" translatesAutoresizingMaskIntoConstraints="NO" id="emY-sK-BZQ">
+                                <rect key="frame" x="53" y="7" width="198" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                                <connections>
+                                    <outlet property="delegate" destination="Xnc-VI-aqb" id="JHB-5v-eye"/>
+                                </connections>
+                            </textView>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Type a reply..." lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gwv-3A-zYK" userLabel="Prompt">
+                                <rect key="frame" x="53" y="7" width="198" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstAttribute="trailing" secondItem="vPi-i8-4bG" secondAttribute="trailing" id="DY6-vT-wsn"/>
+                            <constraint firstAttribute="bottom" secondItem="vPi-i8-4bG" secondAttribute="bottom" id="E25-PU-Sql"/>
+                            <constraint firstItem="vPi-i8-4bG" firstAttribute="leading" secondItem="emY-sK-BZQ" secondAttribute="trailing" constant="8" id="M4B-l5-zPq"/>
+                            <constraint firstItem="emY-sK-BZQ" firstAttribute="leading" secondItem="OoL-qH-7ZE" secondAttribute="trailing" constant="12" id="W1o-Qa-cVu"/>
+                            <constraint firstAttribute="bottom" secondItem="OoL-qH-7ZE" secondAttribute="bottom" constant="6" id="Ykp-Kg-fdT"/>
+                            <constraint firstItem="emY-sK-BZQ" firstAttribute="top" secondItem="4bU-ju-HJT" secondAttribute="top" constant="7" id="e9r-78-NEg"/>
+                            <constraint firstItem="OoL-qH-7ZE" firstAttribute="leading" secondItem="4bU-ju-HJT" secondAttribute="leading" constant="9" id="wqH-fp-D2L"/>
+                            <constraint firstAttribute="bottom" secondItem="emY-sK-BZQ" secondAttribute="bottom" constant="7" id="yf6-jm-AKT"/>
+                        </constraints>
                     </view>
                     <nil key="simulatedStatusBarMetrics"/>
                     <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
                     <size key="freeformSize" width="320" height="44"/>
                     <connections>
                         <outlet property="mediaButton" destination="OoL-qH-7ZE" id="tDI-fd-dGU"/>
-                        <outlet property="textField" destination="ysg-7l-HaV" id="OrF-Qv-uU1"/>
+                        <outlet property="promptLabel" destination="gwv-3A-zYK" id="YQ6-fO-0IP"/>
+                        <outlet property="textView" destination="emY-sK-BZQ" id="phN-ng-mOj"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dxU-B0-nHs" userLabel="First Responder" sceneMemberID="firstResponder"/>

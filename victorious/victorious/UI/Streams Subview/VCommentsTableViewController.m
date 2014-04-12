@@ -54,12 +54,6 @@ static NSString* CommentCache = @"CommentCache";
     [self sortComments];
 }
 
-- (void)viewWillLayoutSubviews
-{
-    [super viewWillLayoutSubviews];
-    self.view.frame = self.view.superview.bounds;
-}
-
 - (void)setSequence:(VSequence *)sequence
 {
     _sequence = sequence;
