@@ -28,39 +28,28 @@
 {
     [super viewDidLoad];
 
-    UIView *keyboardBarContainerView = [[UIView alloc] init];
-    keyboardBarContainerView.translatesAutoresizingMaskIntoConstraints = NO;
-    keyboardBarContainerView.backgroundColor = [UIColor clearColor];
-    [self.view addSubview:keyboardBarContainerView];
     [self addChildViewController:self.keyboardBarViewController];
-    self.keyboardBarViewController.view.translatesAutoresizingMaskIntoConstraints = YES;
-    self.keyboardBarViewController.view.frame = keyboardBarContainerView.bounds;
-    self.keyboardBarViewController.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-    [keyboardBarContainerView addSubview:self.keyboardBarViewController.view];
+    self.keyboardBarViewController.view.translatesAutoresizingMaskIntoConstraints = NO;
+    [self.view addSubview:self.keyboardBarViewController.view];
     [self.keyboardBarViewController didMoveToParentViewController:self];
 
-    UIView *tableContainerView = [[UIView alloc] init];
-    tableContainerView.translatesAutoresizingMaskIntoConstraints = NO;
-    tableContainerView.backgroundColor = [UIColor clearColor];
-    [self.view addSubview:tableContainerView];
     [self addChildViewController:self.conversationTableViewController];
-    self.conversationTableViewController.view.translatesAutoresizingMaskIntoConstraints = YES;
-    self.conversationTableViewController.view.frame = tableContainerView.bounds;
-    self.conversationTableViewController.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-    [tableContainerView addSubview:self.conversationTableViewController.view];
+    self.conversationTableViewController.view.translatesAutoresizingMaskIntoConstraints = NO;
+    [self.view addSubview:self.conversationTableViewController.view];
     [self.conversationTableViewController didMoveToParentViewController:self];
     
-    self.keyboardBarHeightConstraint = [NSLayoutConstraint constraintWithItem:keyboardBarContainerView
+    self.keyboardBarHeightConstraint = [NSLayoutConstraint constraintWithItem:self.keyboardBarViewController.view
                                                                     attribute:NSLayoutAttributeHeight
                                                                     relatedBy:NSLayoutRelationEqual
                                                                        toItem:nil
                                                                     attribute:NSLayoutAttributeNotAnAttribute
                                                                    multiplier:1.0f
-                                                                     constant:44.0f];
-    [keyboardBarContainerView addConstraint:self.keyboardBarHeightConstraint];
-    
-    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[keyboardBarContainerView]|" options:0 metrics:nil views:NSDictionaryOfVariableBindings(keyboardBarContainerView)]];
-    self.bottomConstraint = [NSLayoutConstraint constraintWithItem:keyboardBarContainerView
+                                                                     constant:47.0f];
+    [self.keyboardBarViewController.view addConstraint:self.keyboardBarHeightConstraint];
+
+    UIView *keyboardView = self.keyboardBarViewController.view;
+    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[keyboardView]|" options:0 metrics:nil views:NSDictionaryOfVariableBindings(keyboardView)]];
+    self.bottomConstraint = [NSLayoutConstraint constraintWithItem:keyboardView
                                                          attribute:NSLayoutAttributeBottom
                                                          relatedBy:NSLayoutRelationEqual
                                                             toItem:self.view
@@ -69,8 +58,9 @@
                                                           constant:0];
     [self.view addConstraint:self.bottomConstraint];
     
-    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[tableContainerView][keyboardBarContainerView]" options:0 metrics:nil views:NSDictionaryOfVariableBindings(tableContainerView, keyboardBarContainerView)]];
-    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[tableContainerView]|" options:0 metrics:nil views:NSDictionaryOfVariableBindings(tableContainerView)]];
+    UIView *tableView = self.conversationTableViewController.view;
+    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[tableView][keyboardView]" options:0 metrics:nil views:NSDictionaryOfVariableBindings(tableView, keyboardView)]];
+    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[tableView]|" options:0 metrics:nil views:NSDictionaryOfVariableBindings(tableView)]];
     
     [[NSNotificationCenter defaultCenter]
      addObserver:self selector:@selector(keyboardFrameChanged:)
