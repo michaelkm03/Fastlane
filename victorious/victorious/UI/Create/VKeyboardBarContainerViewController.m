@@ -61,10 +61,6 @@
     UIView *tableView = self.conversationTableViewController.view;
     [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[tableView][keyboardView]" options:0 metrics:nil views:NSDictionaryOfVariableBindings(tableView, keyboardView)]];
     [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[tableView]|" options:0 metrics:nil views:NSDictionaryOfVariableBindings(tableView)]];
-    
-    [[NSNotificationCenter defaultCenter]
-     addObserver:self selector:@selector(keyboardFrameChanged:)
-     name:UIKeyboardWillChangeFrameNotification object:nil];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -74,6 +70,13 @@
     {
         [self.keyboardBarViewController.textView becomeFirstResponder];
     }
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardFrameChanged:) name:UIKeyboardWillChangeFrameNotification object:nil];
+}
+
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillChangeFrameNotification object:nil];
 }
 
 - (VKeyboardBarViewController *)keyboardBarViewController
