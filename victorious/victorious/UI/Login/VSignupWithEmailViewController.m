@@ -12,6 +12,7 @@
 #import "VUser.h"
 #import "TTTAttributedLabel.h"
 #import "VThemeManager.h"
+#import "VUserManager.h"
 
 NSString*   const   kSignupErrorDomain =   @"VSignupErrorDomain";
 
@@ -199,25 +200,24 @@ NSString*   const   kSignupErrorDomain =   @"VSignupErrorDomain";
                                  emailAddress:self.emailTextField.text
                                      password:self.passwordTextField.text])
     {
-        VSuccessBlock success = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
-        {
-            VUser* mainUser = [resultObjects firstObject];
-            if (![mainUser isKindOfClass:[VUser class]])
-            {
-                VLog(@"Invalid user object returned in api/account/create");
-                [self didFailWithError:nil];
-                return;
-            }
-
-            [self didSignUpWithUser:mainUser];
-        };
-
-        VFailBlock fail = ^(NSOperation* operation, NSError* error)
-        {
-            [self didFailWithError:error];
-        };
         
-        [[VObjectManager sharedManager] createVictoriousWithEmail:self.emailTextField.text password:self.passwordTextField.text username:self.usernameTextField.text successBlock:success failBlock:fail];
+        [[VUserManager sharedInstance] createEmailAccount:self.emailTextField.text
+                                                 password:self.passwordTextField.text
+                                                 userName:self.usernameTextField.text
+                                             onCompletion:^(VUser *user, BOOL created)
+         {
+             dispatch_async(dispatch_get_main_queue(), ^(void)
+                            {
+                                [self didSignUpWithUser:user];
+                            });
+         }
+                                                  onError:^(NSError *error)
+         {
+             dispatch_async(dispatch_get_main_queue(), ^(void)
+                            {
+                                [self didFailWithError:error];
+                            });
+         }];
     }
 }
 
