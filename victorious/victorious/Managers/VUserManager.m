@@ -278,6 +278,51 @@ static NSString * const kKeychainServiceName          = @"com.getvictorious.VUse
     }];
 }
 
+- (void)createEmailAccount:(NSString *)email password:(NSString *)password userName:(NSString *)userName onCompletion:(VUserManagerLoginCompletionBlock)completion onError:(VUserManagerLoginErrorBlock)errorBlock
+{
+    if (!email || !password || !userName)
+    {
+        if (errorBlock)
+        {
+            errorBlock(nil);
+        }
+        return;
+    }
+    
+    VSuccessBlock success = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
+    {
+        VUser *user = [resultObjects firstObject];
+        if (![user isKindOfClass:[VUser class]])
+        {
+            if (errorBlock)
+            {
+                errorBlock(nil);
+            }
+        }
+        else
+        {
+            [[NSUserDefaults standardUserDefaults] setInteger:kVLastLoginTypeEmail forKey:kLastLoginTypeUserDefaultsKey];
+            [[NSUserDefaults standardUserDefaults] setObject:email                 forKey:kAccountIdentifierDefaultsKey];
+            [self savePassword:password forUsername:email];
+            
+            if (completion)
+            {
+                completion(user, NO);
+            }
+        }
+    };
+    VFailBlock fail = ^(NSOperation* operation, NSError* error)
+    {
+        if (errorBlock)
+        {
+            errorBlock(error);
+        }
+        VLog(@"Error in victorious Login: %@", error);
+    };
+    
+    [[VObjectManager sharedManager] createVictoriousWithEmail:email password:password username:userName successBlock:success failBlock:fail];
+}
+
 - (void)loginViaEmail:(NSString *)email password:(NSString *)password onCompletion:(VUserManagerLoginCompletionBlock)completion onError:(VUserManagerLoginErrorBlock)errorBlock
 {
     if (!email || !password)
@@ -299,12 +344,16 @@ static NSString * const kKeychainServiceName          = @"com.getvictorious.VUse
                 errorBlock(nil);
             }
         }
-        else if (completion)
+        else
         {
             [[NSUserDefaults standardUserDefaults] setInteger:kVLastLoginTypeEmail forKey:kLastLoginTypeUserDefaultsKey];
             [[NSUserDefaults standardUserDefaults] setObject:email                 forKey:kAccountIdentifierDefaultsKey];
             [self savePassword:password forUsername:email];
-            completion(user, NO);
+            
+            if (completion)
+            {
+                completion(user, NO);
+            }
         }
     };
     VFailBlock fail = ^(NSOperation* operation, NSError* error)
