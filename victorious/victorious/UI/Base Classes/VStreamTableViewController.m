@@ -35,9 +35,7 @@
 
 #import "VThemeManager.h"
 
-#import "VCreatePollViewController.h"
-
-@interface VStreamTableViewController() <UIViewControllerTransitioningDelegate, VCreateSequenceDelegate>
+@interface VStreamTableViewController() <UIViewControllerTransitioningDelegate>
 @property (strong, nonatomic) id<UIViewControllerTransitioningDelegate> transitionDelegate;
 
 @property (strong, nonatomic) NSCache* preloadImageCache;
