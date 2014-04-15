@@ -46,16 +46,12 @@
     UIImage*    closeButtonImage = [[UIImage imageNamed:@"cameraButtonClose"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithImage:closeButtonImage style:UIBarButtonItemStyleBordered target:self action:@selector(closeButtonClicked:)];
 
-    UIImage*    nextButtonImage = [[UIImage imageNamed:@"cameraButtonNext"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithImage:nextButtonImage style:UIBarButtonItemStyleBordered target:self action:@selector(nextButtonClicked:)];
-    
-    self.instructionsText.font = [[VThemeManager sharedThemeManager] themedFontForKey:@""];
-    self.currentTimeLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:@""];
-    self.totalTimeLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:@""];
-    self.startRemixButton.titleLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:@""];
-    [self.startRemixButton setTitleColor:[[VThemeManager sharedThemeManager] themedColorForKey:@""] forState:UIControlStateNormal];
-    self.startRemixButton.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:@""];
-    
+    self.instructionsText.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeading3Font];
+    self.currentTimeLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVLabel3Font];
+    self.totalTimeLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVLabel3Font];
+    self.startRemixButton.titleLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVButton1Font];
+    [self.startRemixButton setTitleColor:[[VThemeManager sharedThemeManager] themedColorForKey:kVMainTextColor] forState:UIControlStateNormal];
+    self.startRemixButton.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
 
     [self.scrubber addTarget:self action:@selector(scrubberDidStartMoving:) forControlEvents:UIControlEventTouchDown];
     [self.scrubber addTarget:self action:@selector(scrubberDidMove:) forControlEvents:UIControlEventTouchDragInside];
@@ -86,12 +82,31 @@
     //  Make API call
     //  Modal, busy indicator
     //  With result, segue, setting result to self.targetURL
-    NSData*     movieData = [NSData dataWithContentsOfURL:self.sourceURL];
-    self.targetURL = [NSURL fileURLWithPath:[NSTemporaryDirectory() stringByAppendingPathComponent:[self.sourceURL lastPathComponent]] isDirectory:NO];
-    [movieData writeToURL:self.targetURL atomically:YES];
-
-    [self performSegueWithIdentifier:@"toTrim" sender:self];
-    //  if error, alert
+    
+    self.startRemixButton.enabled = NO;
+    NSURLSession*               session = [NSURLSession sharedSession];
+    NSURLSessionDownloadTask*   task = [session downloadTaskWithURL:self.sourceURL completionHandler:^(NSURL *location, NSURLResponse *response, NSError *error)
+    {
+        if (!error)
+        {
+            NSHTTPURLResponse*  httpResponse = (NSHTTPURLResponse *)response;
+            if (httpResponse.statusCode == 200)
+            {
+                NSData* movieData = [NSData dataWithContentsOfURL:location];
+                    
+                self.targetURL = [NSURL fileURLWithPath:[NSTemporaryDirectory() stringByAppendingPathComponent:[self.sourceURL lastPathComponent]] isDirectory:NO];
+                [movieData writeToURL:self.targetURL atomically:YES];
+                    
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    self.startRemixButton.enabled = YES;
+                    [self performSegueWithIdentifier:@"toTrim" sender:self];
+                    //  if error, alert
+                });
+            }
+        }
+    }];
+    
+    [task resume];
 }
 
 -(IBAction)scrubberDidStartMoving:(id)sender

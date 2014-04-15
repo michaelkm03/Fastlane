@@ -71,6 +71,9 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+    
+    [self.navigationController setNavigationBarHidden:YES animated:animated];
+    
     if (animated)
     {
         __block CGFloat originalKeyboardY = self.keyboardBarViewController.view.frame.origin.y;

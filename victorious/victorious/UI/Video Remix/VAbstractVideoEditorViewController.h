@@ -21,6 +21,10 @@
 @property (nonatomic, strong)   NSURL*                          sourceURL;
 @property (nonatomic, strong)   NSURL*                          targetURL;
 
+@property (nonatomic, weak)     IBOutlet    UIButton*           rateButton;
+@property (nonatomic, weak)     IBOutlet    UIButton*           loopButton;
+@property (nonatomic, weak)     IBOutlet    UIButton*           muteButton;
+
 @property (nonatomic)           BOOL                            shouldMuteAudio;
 @property (nonatomic)           VPlaybackSpeed                  playBackSpeed;
 @property (nonatomic)           VLoopType                       playbackLooping;
