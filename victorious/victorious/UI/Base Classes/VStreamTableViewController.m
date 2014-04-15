@@ -37,6 +37,8 @@
 
 @interface VStreamTableViewController() <UIViewControllerTransitioningDelegate>
 @property (strong, nonatomic) id<UIViewControllerTransitioningDelegate> transitionDelegate;
+
+@property (strong, nonatomic) NSCache* preloadImageCache;
 @end
 
 @implementation VStreamTableViewController
@@ -53,6 +55,8 @@
      addObserver:self selector:@selector(willCommentSequence:)
      name:kStreamsWillCommentNotification object:nil];
     
+    self.preloadImageCache = [[NSCache alloc] init];
+    
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     
     if ([self.fetchedResultsController.fetchedObjects count] < 5)
@@ -65,6 +69,13 @@
 
     CGRect navBarFrame = self.navigationController.navigationBar.frame;
     navBarFrame.size.height += navBarFrame.size.height;
+}
+
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+    
+    [self.preloadImageCache removeAllObjects];
 }
 
 #pragma mark - FetchedResultsControllers
@@ -227,6 +238,20 @@
     VSequence *info = [self.fetchedResultsController objectAtIndexPath:indexPath];
     ((VStreamViewCell*)cell).parentTableViewController = self;
     [((VStreamViewCell*)cell) setSequence:info];
+    
+    if ([self.fetchedResultsController.fetchedObjects count] > indexPath.row + 2)
+    {
+        NSIndexPath* preloadPath = [NSIndexPath indexPathForRow:indexPath.row + 2 inSection:indexPath.section];
+        VSequence* preloadSequence = [self.fetchedResultsController objectAtIndexPath:preloadPath];
+        
+        for (NSURL* imageUrl in [preloadSequence initialImageURLs])
+        {
+            UIImageView* preloadView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 0, 0)];
+            [preloadView setImageWithURL:imageUrl];
+            
+            [self.preloadImageCache setObject:preloadView forKey:imageUrl.absoluteString];
+        }
+    }
 
     return cell;
 }
