@@ -425,32 +425,39 @@
                                     <action selector="cameraPressed:" destination="Xnc-VI-aqb" eventType="touchUpInside" id="prE-rP-bjW"/>
                                 </connections>
                             </button>
-                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" bounces="NO" scrollEnabled="NO" translatesAutoresizingMaskIntoConstraints="NO" id="emY-sK-BZQ">
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Type a reply..." lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gwv-3A-zYK" userLabel="Prompt">
+                                <rect key="frame" x="58" y="7" width="198" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="30" id="57o-wG-N0h"/>
+                                    <constraint firstAttribute="width" constant="198" id="mXw-yn-aGX"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <textView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" bounces="NO" scrollEnabled="NO" translatesAutoresizingMaskIntoConstraints="NO" id="emY-sK-BZQ">
                                 <rect key="frame" x="53" y="7" width="198" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                <color key="tintColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                                 <connections>
                                     <outlet property="delegate" destination="Xnc-VI-aqb" id="JHB-5v-eye"/>
                                 </connections>
                             </textView>
-                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Type a reply..." lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gwv-3A-zYK" userLabel="Prompt">
-                                <rect key="frame" x="53" y="7" width="198" height="30"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstAttribute="trailing" secondItem="vPi-i8-4bG" secondAttribute="trailing" id="DY6-vT-wsn"/>
                             <constraint firstAttribute="bottom" secondItem="vPi-i8-4bG" secondAttribute="bottom" id="E25-PU-Sql"/>
+                            <constraint firstItem="emY-sK-BZQ" firstAttribute="leading" secondItem="gwv-3A-zYK" secondAttribute="leading" constant="-5" id="HC4-e6-fjF"/>
                             <constraint firstItem="vPi-i8-4bG" firstAttribute="leading" secondItem="emY-sK-BZQ" secondAttribute="trailing" constant="8" id="M4B-l5-zPq"/>
                             <constraint firstItem="emY-sK-BZQ" firstAttribute="leading" secondItem="OoL-qH-7ZE" secondAttribute="trailing" constant="12" id="W1o-Qa-cVu"/>
                             <constraint firstAttribute="bottom" secondItem="OoL-qH-7ZE" secondAttribute="bottom" constant="6" id="Ykp-Kg-fdT"/>
                             <constraint firstItem="emY-sK-BZQ" firstAttribute="top" secondItem="4bU-ju-HJT" secondAttribute="top" constant="7" id="e9r-78-NEg"/>
+                            <constraint firstItem="emY-sK-BZQ" firstAttribute="centerY" secondItem="gwv-3A-zYK" secondAttribute="centerY" id="iUb-sV-UYz"/>
                             <constraint firstItem="OoL-qH-7ZE" firstAttribute="leading" secondItem="4bU-ju-HJT" secondAttribute="leading" constant="9" id="wqH-fp-D2L"/>
                             <constraint firstAttribute="bottom" secondItem="emY-sK-BZQ" secondAttribute="bottom" constant="7" id="yf6-jm-AKT"/>
                         </constraints>
