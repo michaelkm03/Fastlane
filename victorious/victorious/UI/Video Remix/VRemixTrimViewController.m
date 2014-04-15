@@ -13,6 +13,7 @@
 #import "VCVideoPlayerView.h"
 #import "VRemixVideoRangeSlider.h"
 #import "VThemeManager.h"
+#import "MBProgressHUD.h"
 
 @interface VRemixTrimViewController ()  <VCVideoPlayerDelegate, VRemixVideoRangeSliderDelegate>
 
@@ -81,6 +82,8 @@
     [super viewWillDisappear:animated];
     
     [self.previewView.player removeTimeObserver:self.timeObserver];
+    
+    [self.trimSlider cancel];
 }
 
 #pragma mark - Properties
@@ -115,8 +118,15 @@
 {
     self.startSeconds = leftPosition;
     self.previewView.player.startSeconds = leftPosition;
+    
     self.endSeconds = rightPosition;
     self.previewView.player.endSeconds = rightPosition;
+
+    double time = CMTimeGetSeconds([self.previewView.player currentTime]);
+    if (time < leftPosition)
+        [self.previewView.player seekToTime:CMTimeMakeWithSeconds(leftPosition, NSEC_PER_SEC)];
+    if (time > rightPosition)
+        [self.previewView.player seekToTime:CMTimeMakeWithSeconds(leftPosition, NSEC_PER_SEC)];
 }
 
 #pragma mark - Actions
@@ -125,6 +135,10 @@
 {
     if (self.previewView.player.isPlaying)
         [self.previewView.player pause];
+
+    MBProgressHUD*  hud =   [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    hud.labelText = @"Just a moment";
+    hud.detailsLabelText = @"Trimming Video...";
 
     NSURL*      target  =   [NSURL fileURLWithPath:[[NSTemporaryDirectory() stringByAppendingPathComponent:@"trimmedMovieSegment"] stringByAppendingPathExtension:@"mp4"] isDirectory:NO];
     [[NSFileManager defaultManager] removeItemAtURL:target error:nil];
@@ -143,10 +157,8 @@
         CMTimeRange range = CMTimeRangeMake(start, duration);
         self.exportSession.timeRange = range;
 
-//        self.myActivityIndicator.hidden = NO;
-//        [self.myActivityIndicator startAnimating];
-        
         [self.exportSession exportAsynchronouslyWithCompletionHandler:^{
+            [hud hide:YES];
             switch ([self.exportSession status])
             {
                 case AVAssetExportSessionStatusFailed:
@@ -160,8 +172,6 @@
                 default:
                     NSLog(@"Export Complete");
                     dispatch_async(dispatch_get_main_queue(), ^{
-//                        [self.myActivityIndicator stopAnimating];
-//                        self.myActivityIndicator.hidden = YES;
                         self.targetURL = target;
                         [self performSegueWithIdentifier:@"toStitch" sender:self];
                     });
