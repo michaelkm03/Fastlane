@@ -52,6 +52,59 @@
         [self.previewView.player pause];
 }
 
+- (IBAction)muteAudioClicked:(id)sender
+{
+    UIButton*   button = (UIButton *)sender;
+    button.selected = !button.selected;
+    self.shouldMuteAudio = button.selected;
+    self.previewView.player.muted = self.shouldMuteAudio;
+    
+    if (self.shouldMuteAudio)
+        [self.muteButton setImage:[UIImage imageNamed:@"cameraButtonMute"] forState:UIControlStateNormal];
+    else
+        [self.muteButton setImage:[UIImage imageNamed:@"cameraButtonUnmute"] forState:UIControlStateNormal];
+}
+
+- (IBAction)playbackRateClicked:(id)sender
+{
+    if (self.playBackSpeed == kVPlaybackNormalSpeed)
+    {
+        self.playBackSpeed = kVPlaybackDoubleSpeed;
+        if ([self.previewView.player.currentItem canPlayFastForward])
+            [self.previewView.player setRate:2.0];
+        [self.rateButton setImage:[UIImage imageNamed:@"cameraButtonSpeedDouble"] forState:UIControlStateNormal];
+    }
+    else if (self.playBackSpeed == kVPlaybackDoubleSpeed)
+    {
+        self.playBackSpeed = kVPlaybackHalfSpeed;
+        if ([self.previewView.player.currentItem canPlaySlowForward])
+            [self.previewView.player setRate:0.5];
+        [self.rateButton setImage:[UIImage imageNamed:@"cameraButtonSpeedHalf"] forState:UIControlStateNormal];
+    }
+    else if (self.playBackSpeed == kVPlaybackHalfSpeed)
+    {
+        self.playBackSpeed = kVPlaybackNormalSpeed;
+        [self.previewView.player setRate:1.0];
+        [self.rateButton setImage:[UIImage imageNamed:@"cameraButtonSpeedNormal"] forState:UIControlStateNormal];
+    }
+}
+
+- (IBAction)playbackLoopingClicked:(id)sender
+{
+    if (self.playbackLooping == kVLoopOnce)
+    {
+        self.playbackLooping = kVLoopRepeat;
+        self.previewView.player.shouldLoop = YES;
+        [self.loopButton setImage:[UIImage imageNamed:@"cameraButtonLoop"] forState:UIControlStateNormal];
+    }
+    else if (self.playbackLooping == kVLoopRepeat)
+    {
+        self.playbackLooping = kVLoopOnce;
+        self.previewView.player.shouldLoop = NO;
+        [self.loopButton setImage:[UIImage imageNamed:@"cameraButtonNoLoop"] forState:UIControlStateNormal];
+    }
+}
+
 #pragma mark - Properties
 
 - (CMTime)playerItemDuration

@@ -20,13 +20,6 @@
 @property (nonatomic, weak)     IBOutlet    UILabel*            currentTimeLabel;
 @property (nonatomic, weak)     IBOutlet    UILabel*            totalTimeLabel;
 
-@property (nonatomic, weak)     IBOutlet    UIButton*           rateButton;
-@property (nonatomic, weak)     IBOutlet    UIButton*           loopButton;
-@property (nonatomic, weak)     IBOutlet    UIButton*           muteButton;
-
-@property (nonatomic, weak)     IBOutlet    UIImageView*        playCircle;
-@property (nonatomic, weak)     IBOutlet    UIImageView*        playButton;
-
 @property (nonatomic, weak)     IBOutlet    UIView*             trimControlContainer;
 @property (nonatomic, strong)   VRemixVideoRangeSlider*         trimSlider;
 
@@ -72,11 +65,10 @@
 {
     [super viewWillAppear:animated];
 
-    self.totalTimeLabel.text = [self secondsToMMSS:CMTimeGetSeconds(self.sourceAsset.duration)];
+    self.totalTimeLabel.text = [self secondsToMMSS:CMTimeGetSeconds([self playerItemDuration])];
     self.currentTimeLabel.text = [self secondsToMMSS:0];
     
     double interval = .1f;
-
     double duration = CMTimeGetSeconds([self playerItemDuration]);
 	if (isfinite(duration))
 	{
@@ -122,6 +114,7 @@
         self.scrubber.value = normalizedTime;
     }
 
+    self.totalTimeLabel.text = [self secondsToMMSS:CMTimeGetSeconds([self playerItemDuration])];
     self.currentTimeLabel.text = [self secondsToMMSS:secondsElapsed];
 }
 
@@ -139,7 +132,10 @@
 
 - (IBAction)nextButtonClicked:(id)sender
 {
-    NSURL*      target  =   [NSURL fileURLWithPath:[[NSTemporaryDirectory() stringByAppendingPathComponent:@"movieSegment"] stringByAppendingPathExtension:@"mp4"] isDirectory:NO];
+    if (self.previewView.player.isPlaying)
+        [self.previewView.player pause];
+
+    NSURL*      target  =   [NSURL fileURLWithPath:[[NSTemporaryDirectory() stringByAppendingPathComponent:@"trimmedMovieSegment"] stringByAppendingPathExtension:@"mp4"] isDirectory:NO];
     [[NSFileManager defaultManager] removeItemAtURL:target error:nil];
 
     AVAsset*        anAsset = [[AVURLAsset alloc] initWithURL:self.sourceURL options:nil];
@@ -176,63 +172,11 @@
 //                        [self.myActivityIndicator stopAnimating];
 //                        self.myActivityIndicator.hidden = YES;
                         self.targetURL = target;
+                        [self performSegueWithIdentifier:@"toStitch" sender:self];
                     });
                     break;
             }
         }];
-    }
-
-    [self performSegueWithIdentifier:@"toStitch" sender:self];
-}
-
-- (IBAction)muteAudioClicked:(id)sender
-{
-    UIButton*   button = (UIButton *)sender;
-    button.selected = !button.selected;
-    self.shouldMuteAudio = button.selected;
-    self.previewView.player.muted = self.shouldMuteAudio;
-    
-    if (self.shouldMuteAudio)
-        [self.muteButton setImage:[UIImage imageNamed:@"cameraButtonMute"] forState:UIControlStateNormal];
-    else
-        [self.muteButton setImage:[UIImage imageNamed:@"cameraButtonUnmute"] forState:UIControlStateNormal];
-}
-
-- (IBAction)playbackRateClicked:(id)sender
-{
-    if (self.playBackSpeed == kVPlaybackNormalSpeed)
-    {
-        self.playBackSpeed = kVPlaybackDoubleSpeed;
-        [self.previewView.player setRate:2.0];
-        [self.rateButton setImage:[UIImage imageNamed:@"cameraButtonSpeedDouble"] forState:UIControlStateNormal];
-    }
-    else if (self.playBackSpeed == kVPlaybackDoubleSpeed)
-    {
-        self.playBackSpeed = kVPlaybackHalfSpeed;
-        [self.previewView.player setRate:0.5];
-        [self.rateButton setImage:[UIImage imageNamed:@"cameraButtonSpeedHalf"] forState:UIControlStateNormal];
-    }
-    else if (self.playBackSpeed == kVPlaybackHalfSpeed)
-    {
-        self.playBackSpeed = kVPlaybackNormalSpeed;
-        [self.previewView.player setRate:1.0];
-        [self.rateButton setImage:[UIImage imageNamed:@"cameraButtonSpeedNormal"] forState:UIControlStateNormal];
-    }
-}
-
-- (IBAction)playbackLoopingClicked:(id)sender
-{
-    if (self.playbackLooping == kVLoopOnce)
-    {
-        self.playbackLooping = kVLoopRepeat;
-        self.previewView.player.shouldLoop = YES;
-        [self.loopButton setImage:[UIImage imageNamed:@"cameraButtonLoop"] forState:UIControlStateNormal];
-    }
-    else if (self.playbackLooping == kVLoopRepeat)
-    {
-        self.playbackLooping = kVLoopOnce;
-        self.previewView.player.shouldLoop = NO;
-        [self.loopButton setImage:[UIImage imageNamed:@"cameraButtonNoLoop"] forState:UIControlStateNormal];
     }
 }
 

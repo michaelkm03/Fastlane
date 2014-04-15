@@ -63,19 +63,20 @@
                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7cq-1s-ji5">
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7cq-1s-ji5">
                                 <rect key="frame" x="0.0" y="508" width="320" height="60"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="backgroundColor" red="0.99607843139999996" green="0.28627450980000002" blue="0.28627450980000002" alpha="1" colorSpace="calibratedRGB"/>
-                                <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="25"/>
                                 <state key="normal" title="Start Remix">
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
+                                <connections>
+                                    <action selector="nextButtonClicked:" destination="iXn-fe-oA1" eventType="touchUpInside" id="5UW-cy-gbd"/>
+                                </connections>
                             </button>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="To start remixing, pick your starting point for a 15-second clip." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="280" translatesAutoresizingMaskIntoConstraints="NO" id="Y2Z-7b-JsE">
-                                <rect key="frame" x="20" y="62" width="280" height="41"/>
+                                <rect key="frame" x="20" y="58" width="280" height="49"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="17"/>
                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <nil key="highlightedColor"/>
                             </label>
@@ -89,19 +90,16 @@
                                 <action selector="closeButtonClicked:" destination="iXn-fe-oA1" id="GJD-D8-QTt"/>
                             </connections>
                         </barButtonItem>
-                        <barButtonItem key="rightBarButtonItem" image="cameraButtonNext" id="tRB-jW-gCk">
-                            <connections>
-                                <action selector="nextButtonClicked:" destination="iXn-fe-oA1" id="TNC-jv-Bab"/>
-                            </connections>
-                        </barButtonItem>
                     </navigationItem>
                     <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
                         <outlet property="currentTimeLabel" destination="st1-VJ-BIj" id="H0l-QL-h2s"/>
+                        <outlet property="instructionsText" destination="Y2Z-7b-JsE" id="1lQ-X2-Tc3"/>
                         <outlet property="playButton" destination="RjN-vu-MGb" id="AhQ-Z7-0DX"/>
                         <outlet property="playCircle" destination="4qQ-50-2PX" id="dpu-Xq-vUb"/>
                         <outlet property="previewView" destination="1j4-RX-jZf" id="fxk-mP-qZX"/>
                         <outlet property="scrubber" destination="34Z-zI-nC7" id="M3A-rh-W0x"/>
+                        <outlet property="startRemixButton" destination="7cq-1s-ji5" id="jlN-Fj-DUn"/>
                         <outlet property="totalTimeLabel" destination="QkP-0U-sWi" id="33d-oI-gEi"/>
                         <segue destination="uEv-AE-duX" kind="push" identifier="toTrim" id="lXQ-XC-WZ7"/>
                     </connections>
