@@ -83,7 +83,7 @@
     //  Modal, busy indicator
     //  With result, segue, setting result to self.targetURL
     
-    self.startRemixButton.enabled = NO;
+    //  MBProgressHUD
     NSURLSession*               session = [NSURLSession sharedSession];
     NSURLSessionDownloadTask*   task = [session downloadTaskWithURL:self.sourceURL completionHandler:^(NSURL *location, NSURLResponse *response, NSError *error)
     {
@@ -98,7 +98,7 @@
                 [movieData writeToURL:self.targetURL atomically:YES];
                     
                 dispatch_async(dispatch_get_main_queue(), ^{
-                    self.startRemixButton.enabled = YES;
+                    //  MBProgressHUD
                     [self performSegueWithIdentifier:@"toTrim" sender:self];
                     //  if error, alert
                 });
