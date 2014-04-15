@@ -34,8 +34,8 @@
                                   @"is_complete"    :   VSelectorName(isComplete),
                                   @"game_status"    :   VSelectorName(gameStatus),
                                   @"expires_at"     :   VSelectorName(expiresAt),
-                                  @"sequence_counts.comment"    : VSelectorName(commentCount),
-                                  @"sequence_counts.remix"      : VSelectorName(remixCount)
+                                  @"sequence_counts.comments"    : VSelectorName(commentCount),
+                                  @"sequence_counts.remixes"      : VSelectorName(remixCount)
                                   };
 
     RKEntityMapping *mapping = [RKEntityMapping

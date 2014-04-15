@@ -71,7 +71,6 @@ CGFloat kContentMediaViewOffset = 154;
     self.activityIndicator.layer.cornerRadius = self.activityIndicator.frame.size.height / 2;
     self.activityIndicator.hidesWhenStopped = YES;
     
-    self.navigationController.navigationBarHidden = YES;
     self.sequence = self.sequence;
     
     self.orImageView.hidden = ![self.currentNode isPoll];
@@ -101,7 +100,6 @@ CGFloat kContentMediaViewOffset = 154;
     [super viewWillDisappear:animated];
     
     [self.mpController pause];
-    self.navigationController.navigationBarHidden = NO;
     self.orAnimator = nil;
 }
 

@@ -81,6 +81,8 @@
         return;
     }
     
+    [streamVC.navigationController setNavigationBarHidden:NO animated:NO];
+    
     __block UIView* originalSuperView = streamVC.view.superview;
     
     [[context containerView] addSubview:streamVC.view];
