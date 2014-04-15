@@ -20,7 +20,6 @@
 #import "NSString+VParseHelp.h"
 #import "UIButton+VImageLoading.h"
 #import "VProfileViewController.h"
-#import "UIView+AutoLayout.h"
 #import "VObjectManager.h"
 
 CGFloat const kCommentRowWithMediaHeight  =   256.0f;

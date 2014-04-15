@@ -27,7 +27,6 @@
 
 @property (weak, nonatomic) IBOutlet UIView* questionViews;
 @property (weak, nonatomic) IBOutlet UILabel *characterCountLabel;
-@property (weak, nonatomic) IBOutlet UILabel *mediaLabel;
 
 @property (weak, nonatomic) IBOutlet UITextView *textView;
 

@@ -68,11 +68,26 @@
     self.navigationItem.rightBarButtonItem = nil;
 }
 
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    
+    [self.navigationController setNavigationBarHidden:NO animated:animated];
+}
+
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
     
     [self.preloadImageCache removeAllObjects];
+    
+    CGRect navBarFrame = self.navigationController.navigationBar.frame;
+    navBarFrame.origin.y = 0;
+    
+    [UIView animateWithDuration:.5f animations:^
+     {
+         self.navigationController.navigationBar.frame = navBarFrame;
+     }];
 }
 
 #pragma mark - FetchedResultsControllers
