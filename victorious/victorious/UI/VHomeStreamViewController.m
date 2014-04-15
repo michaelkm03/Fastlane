@@ -11,6 +11,8 @@
 
 #import "VCreatePollViewController.h"
 
+#import "VStreamTableViewController+ContentCreation.h"
+
 @interface VHomeStreamViewController ()
 @end
 
@@ -26,6 +28,12 @@
     });
     
     return sharedInstance;
+}
+
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
+    [self addCreateButton];
 }
 
 - (NSArray*)categoriesForOption:(NSUInteger)searchOption
