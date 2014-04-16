@@ -47,26 +47,28 @@
                      completion:^(BOOL finished)
      {
          [UIView animateWithDuration:.25f
-                          animations:^{
-                              for (UIView* view in contentVC.view.subviews)
-                              {
-                                  if ([view isKindOfClass:[UIImageView class]])
-                                      continue;
-                                  
-                                  if (view.center.y > contentVC.view.center.y)
-                                  {
-                                      view.center = CGPointMake(view.center.x, view.center.y - contentVC.view.frame.size.height);
-                                  }
-                                  else
-                                  {
-                                      view.center = CGPointMake(view.center.x, view.center.y + contentVC.view.frame.size.height);
-                                  }
-                              }
-                          }
-                          completion:^(BOOL finished) {
-                              [context completeTransition:YES]; // vital
-                          }];
+                          animations:^
+          {
+              for (UIView* view in contentVC.view.subviews)
+              {
+                  if ([view isKindOfClass:[UIImageView class]])
+                      continue;
+                  
+                  if (view.center.y > contentVC.view.center.y)
+                  {
+                      view.center = CGPointMake(view.center.x, view.center.y - contentVC.view.frame.size.height);
+                  }
+                  else
+                  {
+                      view.center = CGPointMake(view.center.x, view.center.y + contentVC.view.frame.size.height);
+                  }
+              }
+          }
+                          completion:^(BOOL finished)
+          {
+              [context completeTransition:![context transitionWasCancelled]];
+          }];
      }];
 }
-     
+
 @end

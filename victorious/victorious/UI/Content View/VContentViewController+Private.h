@@ -25,7 +25,7 @@
 
 @import MediaPlayer;
 
-@interface VContentViewController ()  <UIWebViewDelegate, VInteractionManagerDelegate, UIDynamicAnimatorDelegate>
+@interface VContentViewController ()  <UIWebViewDelegate, VInteractionManagerDelegate, UIDynamicAnimatorDelegate, UINavigationControllerDelegate>
 
 @property (weak, nonatomic) IBOutlet UIImageView* backgroundImage;
 @property (weak, nonatomic) IBOutlet UILabel* descriptionLabel;

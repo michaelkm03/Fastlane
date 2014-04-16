@@ -220,6 +220,8 @@ NSString* const kPollResultsLoaded = @"kPollResultsLoaded";
                                                           successBlock:(VSuccessBlock)success
                                                              failBlock:(VFailBlock)fail
 {
+    if (!sequence)
+        return nil;
     
     __block NSString* statusKey = [@"commentsForSequence%@" stringByAppendingString:sequence.remoteId.stringValue];
     __block VPaginationStatus* status = [self statusForKey:statusKey];

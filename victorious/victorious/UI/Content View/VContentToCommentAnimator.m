@@ -1,27 +1,28 @@
 //
-//  VContentCommentSegue.m
+//  VContentToCommentAnimator.m
 //  victorious
 //
-//  Created by Will Long on 3/7/14.
+//  Created by Will Long on 4/16/14.
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
-#import "VContentCommentSegue.h"
+#import "VContentToCommentAnimator.h"
 
-#import "VContentViewController.h"
 #import "VCommentsContainerViewController.h"
-#import "VKeyboardBarViewController.h"
+#import "VContentViewController.h"
 
-#import "UIView+VFrameManipulation.h"
+@implementation VContentToCommentAnimator
 
-@implementation VContentCommentSegue
-
-- (void)perform
+- (NSTimeInterval)transitionDuration:(id <UIViewControllerContextTransitioning>)transitionContext
 {
-    //Custom animation code
-    VContentViewController* contentVC = self.sourceViewController;
-    VCommentsContainerViewController* commentsContainer = self.destinationViewController;
-    
+    return .5f;
+}
+
+- (void)animateTransition:(id<UIViewControllerContextTransitioning>)context
+{
+    VCommentsContainerViewController *commentsContainer = (VCommentsContainerViewController*)[context viewControllerForKey:UITransitionContextToViewControllerKey];
+    VContentViewController* contentVC = (VContentViewController*)[context viewControllerForKey:UITransitionContextFromViewControllerKey];
+
     [UIView animateWithDuration:.5f
                      animations:^
      {
@@ -29,7 +30,7 @@
          {
              if ([view isKindOfClass:[UIImageView class]])
                  continue;
-
+             
              if (view.center.y > contentVC.view.center.y)
              {
                  view.center = CGPointMake(view.center.x, view.center.y + contentVC.view.frame.size.height);
@@ -42,6 +43,8 @@
      }
                      completion:^(BOOL finished)
      {
+         [[context containerView] addSubview:commentsContainer.view];
+         
          [UIView animateWithDuration:.25f
                           animations:^
           {
@@ -62,7 +65,7 @@
           }
                           completion:^(BOOL finished)
           {
-              [self.sourceViewController presentModalViewController:self.destinationViewController animated:NO];
+              [context completeTransition:![context transitionWasCancelled]];
           }];
      }];
 }

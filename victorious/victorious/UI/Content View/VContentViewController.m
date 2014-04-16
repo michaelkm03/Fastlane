@@ -13,12 +13,14 @@
 #import "VContentViewController+Videos.h"
 
 #import "VCommentsContainerViewController.h"
-#import "VContentTransitioningDelegate.h"
 
 #import "UIImageView+Blurring.h"
 
 #import "VActionBarViewController.h"
 #import "VEmotiveBallisticsBarViewController.h"
+
+#import "VContentToStreamAnimator.h"
+#import "VContentToCommentAnimator.h"
 
 CGFloat kContentMediaViewOffset = 154;
 
@@ -44,9 +46,7 @@ CGFloat kContentMediaViewOffset = 154;
     [super viewDidLoad];
     
     [self setupVideoPlayer];
-    
-    self.transitionDelegate = [[VContentTransitioningDelegate alloc] init];
-    
+        
     self.firstResultView.isVertical = YES;
     self.firstResultView.hidden = YES;
     self.firstResultView.color = [[VThemeManager sharedThemeManager] themedColorForKey:kVAccentColor];
@@ -79,6 +79,8 @@ CGFloat kContentMediaViewOffset = 154;
     self.firstPollButton.alpha = 0;
     self.secondPollButton.alpha = 0;
     
+    self.navigationController.delegate = self;
+    
     [self.topActionsView setYOrigin:self.mediaView.frame.origin.y];
     self.topActionsView.alpha = 0;
     [UIView animateWithDuration:.2f
@@ -98,6 +100,11 @@ CGFloat kContentMediaViewOffset = 154;
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
+    
+    if (self.navigationController.delegate == self)
+    {
+        self.navigationController.delegate = nil;
+    }
     
     [self.mpController pause];
     self.orAnimator = nil;
@@ -239,6 +246,15 @@ CGFloat kContentMediaViewOffset = 154;
     //Specced but still no idea what its supposed to do
 }
 
+- (IBAction)pressedBack:(id)sender
+{
+    [self.navigationController popViewControllerAnimated:YES];
+}
+
+- (IBAction)pressedComment:(id)sender
+{
+    [self.navigationController pushViewController:[VCommentsContainerViewController commentsContainerView] animated:YES];
+}
 
 #pragma mark - VInteractionManagerDelegate
 - (void)firedInteraction:(VInteraction*)interaction
@@ -247,23 +263,23 @@ CGFloat kContentMediaViewOffset = 154;
 }
 
 #pragma mark - Navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
+- (id<UIViewControllerAnimatedTransitioning>) navigationController:(UINavigationController *)navigationController
+                                   animationControllerForOperation:(UINavigationControllerOperation)operation
+                                                fromViewController:(UIViewController*)fromVC
+                                                  toViewController:(UIViewController*)toVC
 {
-    ((UIViewController*)segue.destinationViewController).transitioningDelegate = self.transitionDelegate;
-    ((UIViewController*)segue.destinationViewController).modalPresentationStyle= UIModalPresentationCustom;
-//    [self.mpController stop];
-    self.mpController.view.hidden = YES;
-    
-    if ([segue.identifier isEqualToString:kContentCommentSegueStoryboardID])
+    if (operation == UINavigationControllerOperationPop)
     {
-        VCommentsContainerViewController* commentVC = segue.destinationViewController;
-        commentVC.sequence = self.sequence;
+        VContentToStreamAnimator* animator = [[VContentToStreamAnimator alloc] init];
+//        animator.indexPathForSelectedCell = self.tableView.indexPathForSelectedRow;
+        return animator;
     }
+    else if (operation == UINavigationControllerOperationPush)
+    {
+        return [[VContentToCommentAnimator alloc] init];
+    }
+    return nil;
 }
 
-- (IBAction)unwindToContentView:(UIStoryboardSegue*)sender
-{
-    
-}
 
 @end

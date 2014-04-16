@@ -19,9 +19,11 @@
 #import "VStreamTableViewController.h"
 #import "VContentViewController.h"
 
+#import "VCommentToContentAnimator.h"
+
 #import "VThemeManager.h"
 
-@interface VCommentsContainerViewController()   <VCommentsTableViewControllerDelegate>
+@interface VCommentsContainerViewController()   <VCommentsTableViewControllerDelegate, UINavigationControllerDelegate>
 
 @property (weak, nonatomic) IBOutlet UIButton* backButton;
 @property (weak, nonatomic) IBOutlet UIImageView* backgroundImage;
@@ -75,6 +77,7 @@
     [super viewWillAppear:animated];
     
     [self.navigationController setNavigationBarHidden:YES animated:animated];
+    self.navigationController.delegate = self;
     
     if (animated)
     {
@@ -92,6 +95,16 @@
                                                   [self.keyboardBarViewController.view setYOrigin:originalKeyboardY];
                                               }];
                          }];
+    }
+}
+
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+    
+    if (self.navigationController.delegate == self)
+    {
+        self.navigationController.delegate = nil;
     }
 }
 
@@ -128,17 +141,29 @@
 
 - (IBAction)pressedBackButton:(id)sender
 {
-    NSString* segueID;
-    if ([[self presentingViewController] isKindOfClass:[VStreamTableViewController class]])
+    [self.navigationController popViewControllerAnimated:YES];
+}
+
+- (id<UIViewControllerAnimatedTransitioning>) navigationController:(UINavigationController *)navigationController
+                                   animationControllerForOperation:(UINavigationControllerOperation)operation
+                                                fromViewController:(UIViewController*)fromVC
+                                                  toViewController:(UIViewController*)toVC
+{
+    if (operation == UINavigationControllerOperationPop
+        && [toVC isKindOfClass:[VContentViewController class]])
     {
-        segueID = kUnwindToSteamSegueID;
+        VCommentToContentAnimator* animator = [[VCommentToContentAnimator alloc] init];
+        //        animator.indexPathForSelectedCell = self.tableView.indexPathForSelectedRow;
+        return animator;
     }
-    else
+    else if (operation == UINavigationControllerOperationPop
+             && [toVC isKindOfClass:[VContentViewController class]])
     {
-        segueID = kUnwindToContentSegueID;
+//        VCommentToContentAnimator* animator = [[VCommentToContentAnimator alloc] init];
+//        //        animator.indexPathForSelectedCell = self.tableView.indexPathForSelectedRow;
+//        return animator;
     }
-    
-    [self performSegueWithIdentifier:segueID sender:self];
+    return nil;
 }
 
 @end
