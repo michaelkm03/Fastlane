@@ -15,7 +15,6 @@
 #import "VStreamPollCell.h"
 
 #import "UIImageView+Blurring.h"
-#import "UIView+VFrameManipulation.h"
 
 #import "VSequence+Fetcher.h"
 
@@ -34,63 +33,53 @@
     VStreamTableViewController* tableVC = self.sourceViewController;
     VContentViewController* contentVC = self.destinationViewController;
     
-    //Sanity check that this is a stream table
-    if (![tableVC isKindOfClass:[VStreamTableViewController class]])
+    //Sanity check that this is a stream table and a content VC
+    if (![tableVC isKindOfClass:[VStreamTableViewController class]] || ![contentVC isKindOfClass:[VContentViewController class]])
     {
-        [tableVC presentViewController:contentVC animated:NO completion:nil];
+        [self.sourceViewController presentModalViewController:self.destinationViewController animated:YES];
         return;
     }
     
     [UIView animateWithDuration:.2f
                      animations:^
-     {
-         CGPoint newNavCenter = CGPointMake(tableVC.navigationController.navigationBar.center.x,
-                                            tableVC.navigationController.navigationBar.center.y - tableVC.tableView.frame.size.height);
-         tableVC.navigationController.navigationBar.center = newNavCenter;
-         
-         NSMutableArray* repositionedCells = [[NSMutableArray alloc] init];
-         
-         for (VStreamViewCell* cell in [tableVC.tableView visibleCells])
-         {
-             if (cell != self.selectedCell)
-             {
-                 if (cell.center.y > self.selectedCell.center.y)
-                 {
-                     cell.center = CGPointMake(cell.center.x, cell.center.y + tableVC.tableView.frame.size.height);
-                 }
-                 else
-                 {
-                     cell.center = CGPointMake(cell.center.x, cell.center.y - tableVC.tableView.frame.size.height);
-                 }
-                 [repositionedCells addObject:cell];
-             }
-         }
-         tableVC.repositionedCells = repositionedCells;
-     }
+                     {
+                         CGPoint newNavCenter = CGPointMake(tableVC.navigationController.navigationBar.center.x,
+                                                            tableVC.navigationController.navigationBar.center.y - tableVC.tableView.frame.size.height);
+                         tableVC.navigationController.navigationBar.center = newNavCenter;
+                         
+                         NSMutableArray* repositionedCells = [[NSMutableArray alloc] init];
+                         
+                         for (VStreamViewCell* cell in [tableVC.tableView visibleCells])
+                         {
+                             if (cell != self.selectedCell)
+                             {
+                                 if (cell.center.y > self.selectedCell.center.y)
+                                 {
+                                     cell.center = CGPointMake(cell.center.x, cell.center.y + tableVC.tableView.frame.size.height);
+                                 }
+                                 else
+                                 {
+                                     cell.center = CGPointMake(cell.center.x, cell.center.y - tableVC.tableView.frame.size.height);
+                                 }
+                                 [repositionedCells addObject:cell];
+                             }
+                         }
+                         tableVC.repositionedCells = repositionedCells;
+                     }
                      completion:^(BOOL finished)
-     {
-         //Skip this animation if we aren't going to a content view
-         if ([contentVC isKindOfClass:[VContentViewController class]])
-         {
-             [UIView animateWithDuration:.2f
-                              animations:^
-              {
-                  self.selectedCell.overlayView.alpha = self.selectedCell.shadeView.alpha = 0;
-                  self.selectedCell.overlayView.center = CGPointMake(self.selectedCell.overlayView.center.x,
-                                                                     self.selectedCell.overlayView.center.y - self.selectedCell.frame.size.height);
-              }
-                              completion:^(BOOL finished)
-              {
-                  [contentVC.previewImage setSize:self.selectedCell.previewImageView.image.size];
-                  [tableVC presentViewController:contentVC animated:NO completion:nil];
-              }];
-         }
-         else
-         {
-             [contentVC.navigationController setNavigationBarHidden:YES animated:NO];
-             [tableVC presentViewController:contentVC animated:YES completion:nil];
-         }
-     }];
+                     {
+                         [UIView animateWithDuration:.2f
+                                          animations:^{
+                                              self.selectedCell.overlayView.alpha = self.selectedCell.shadeView.alpha = 0;
+                                              self.selectedCell.overlayView.center = CGPointMake(self.selectedCell.overlayView.center.x,
+                                                                                                 self.selectedCell.overlayView.center.y - self.selectedCell.frame.size.height);
+                                          }
+                                          completion:^(BOOL finished) {
+                                              CGRect frame = contentVC.previewImage.frame;
+                                              contentVC.previewImage.frame = CGRectMake(CGRectGetMinX(frame), CGRectGetMinY(frame), self.selectedCell.previewImageView.image.size.width, self.selectedCell.previewImageView.image.size.width);
+                                              [self.sourceViewController presentModalViewController:self.destinationViewController animated:NO];
+                                          }];
+                     }];
 }
 
 

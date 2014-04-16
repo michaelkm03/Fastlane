@@ -12,10 +12,9 @@
 #import "VThemeManager.h"
 #import "VConstants.h"
 #import "NSString+VParseHelp.h"
-#import "UIView+VFrameManipulation.h"
 
-CGFloat VCreateViewControllerPadding = 8;
-CGFloat VCreateViewControllerLargePadding = 20;
+static const CGFloat VCreateViewControllerPadding = 8;
+static const CGFloat VCreateViewControllerLargePadding = 20;
 
 @interface VCreatePollViewController() <UITextFieldDelegate, UITextViewDelegate>
 
@@ -159,8 +158,11 @@ CGFloat VCreateViewControllerLargePadding = 20;
     [UIView animateWithDuration:.5f
                      animations:^
      {
-         [self.addMediaView setXOrigin:self.addMediaView.frame.origin.x - self.addMediaView.frame.size.width];
-         [self.rightPreviewImageView setXOrigin:self.rightPreviewImageView.frame.origin.x - self.addMediaView.frame.size.width];
+         CGRect addMediaFrame = self.addMediaView.frame;
+         self.addMediaView.frame = CGRectMake(CGRectGetMinX(addMediaFrame) - CGRectGetWidth(addMediaFrame), CGRectGetMinY(addMediaFrame), CGRectGetWidth(addMediaFrame), CGRectGetHeight(addMediaFrame));
+         
+         CGRect rightPreviewFrame = self.rightPreviewImageView.frame;
+         self.rightPreviewImageView.frame = CGRectMake(CGRectGetMinX(rightPreviewFrame) - CGRectGetWidth(addMediaFrame), CGRectGetMinY(rightPreviewFrame), CGRectGetWidth(rightPreviewFrame), CGRectGetHeight(rightPreviewFrame));
      }
                      completion:^(BOOL finished)
      {
@@ -177,7 +179,8 @@ CGFloat VCreateViewControllerLargePadding = 20;
          
          [self updateViewState];
          
-         [self.rightPreviewImageView setXOrigin:self.rightPreviewImageView.frame.origin.x + self.addMediaView.frame.size.width];
+         CGRect frame = self.rightPreviewImageView.frame;
+         self.rightPreviewImageView.frame = CGRectMake(CGRectGetMinX(frame) + CGRectGetWidth(self.addMediaView.frame), CGRectGetMinY(frame), CGRectGetWidth(frame), CGRectGetHeight(frame));
          
          [self validatePostButtonState];
      }];
@@ -191,7 +194,8 @@ CGFloat VCreateViewControllerLargePadding = 20;
     [UIView animateWithDuration:.5f
                      animations:^
      {
-         [self.addMediaView setXOrigin:self.addMediaView.frame.origin.x - self.addMediaView.frame.size.width];
+         CGRect frame = self.addMediaView.frame;
+         self.addMediaView.frame = CGRectMake(CGRectGetMinX(frame) - CGRectGetWidth(frame), CGRectGetMinY(frame), CGRectGetWidth(frame), CGRectGetHeight(frame));
      }
                      completion:^(BOOL finished)
      {
@@ -320,7 +324,8 @@ CGFloat VCreateViewControllerLargePadding = 20;
     [UIView animateWithDuration:.5f
                      animations:^
      {
-         [self.addMediaView setXOrigin:self.addMediaView.frame.origin.x + self.addMediaView.frame.size.width];
+         CGRect frame = self.addMediaView.frame;
+         self.addMediaView.frame = CGRectMake(CGRectGetMinX(frame) + CGRectGetWidth(frame), CGRectGetMinY(frame), CGRectGetWidth(frame), CGRectGetHeight(frame));
      }
                      completion:^(BOOL finished)
      {

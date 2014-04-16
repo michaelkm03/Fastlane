@@ -12,8 +12,6 @@
 #import "VCommentsContainerViewController.h"
 #import "VKeyboardBarViewController.h"
 
-#import "UIView+VFrameManipulation.h"
-
 @implementation VContentCommentSegue
 
 - (void)perform

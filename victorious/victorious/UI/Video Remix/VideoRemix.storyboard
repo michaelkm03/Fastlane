@@ -570,7 +570,7 @@
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <connections>
-                                    <segue destination="KS8-LA-Kar" kind="push" id="8ZA-ta-RWG"/>
+                                    <segue destination="KS8-LA-Kar" kind="modal" identifier="setExpiration" id="8ZA-ta-RWG"/>
                                 </connections>
                             </button>
                             <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="dln-D2-sTn">
@@ -607,9 +607,9 @@
                     </navigationItem>
                     <connections>
                         <outlet property="durationButton" destination="o4p-t9-aFm" id="4NR-Ze-QJY"/>
-                        <outlet property="expiresOnLabel" destination="Sa0-Iz-87M" id="MVl-lL-Mm5"/>
+                        <outlet property="expiresOnLabel" destination="Sa0-Iz-87M" id="aZZ-Jh-58t"/>
                         <outlet property="facebookButton" destination="OMJ-KQ-cwy" id="nuF-3x-nC6"/>
-                        <outlet property="previewImage" destination="Kna-Lh-BMZ" id="NXb-IF-U2K"/>
+                        <outlet property="previewImageView" destination="Kna-Lh-BMZ" id="QCf-IP-QdO"/>
                         <outlet property="textView" destination="dln-D2-sTn" id="AfT-EH-GOq"/>
                         <outlet property="textViewPlaceholderLabel" destination="MYv-TQ-lLW" id="lkL-CP-Dv6"/>
                         <outlet property="twitterButton" destination="Kc3-4r-Ogb" id="UB4-KS-KMy"/>

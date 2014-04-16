@@ -111,7 +111,7 @@
     
     [UIView animateWithDuration:duration animations:
      ^{
-         [self.mpPlayerContainmentView setSize:CGSizeMake(0,0)];
+         self.mpPlayerContainmentView.bounds = CGRectMake(0, 0, 0, 0);
      }];
 }
 

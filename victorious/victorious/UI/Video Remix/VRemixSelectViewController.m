@@ -10,6 +10,7 @@
 #import "VCVideoPlayerView.h"
 #import "VRemixTrimViewController.h"
 #import "VThemeManager.h"
+#import "MBProgressHUD.h"
 
 @interface VRemixSelectViewController ()
 
@@ -80,10 +81,15 @@
 - (IBAction)nextButtonClicked:(id)sender
 {
     //  Make API call
-    //  Modal, busy indicator
     //  With result, segue, setting result to self.targetURL
     
-    self.startRemixButton.enabled = NO;
+    if (self.previewView.player.isPlaying)
+        [self.previewView.player pause];
+
+    MBProgressHUD*  hud =   [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    hud.labelText = @"Just a moment";
+    hud.detailsLabelText = @"Loading Video...";
+    
     NSURLSession*               session = [NSURLSession sharedSession];
     NSURLSessionDownloadTask*   task = [session downloadTaskWithURL:self.sourceURL completionHandler:^(NSURL *location, NSURLResponse *response, NSError *error)
     {
@@ -98,7 +104,7 @@
                 [movieData writeToURL:self.targetURL atomically:YES];
                     
                 dispatch_async(dispatch_get_main_queue(), ^{
-                    self.startRemixButton.enabled = YES;
+                    [hud hide:YES];
                     [self performSegueWithIdentifier:@"toTrim" sender:self];
                     //  if error, alert
                 });
