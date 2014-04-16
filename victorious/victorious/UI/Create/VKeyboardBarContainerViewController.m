@@ -62,6 +62,13 @@
     id topConstraintView = (id)self.topConstraintView ?: self.topLayoutGuide;
     [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[topConstraintView][tableView][keyboardView]" options:0 metrics:nil views:NSDictionaryOfVariableBindings(topConstraintView, tableView, keyboardView)]];
     [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[tableView]|" options:0 metrics:nil views:NSDictionaryOfVariableBindings(tableView)]];
+    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:tableView
+                                                          attribute:NSLayoutAttributeHeight
+                                                          relatedBy:NSLayoutRelationGreaterThanOrEqual
+                                                             toItem:nil
+                                                          attribute:NSLayoutAttributeNotAnAttribute
+                                                         multiplier:1.0f
+                                                           constant:44.0f]];
 }
 
 - (void)viewDidAppear:(BOOL)animated
