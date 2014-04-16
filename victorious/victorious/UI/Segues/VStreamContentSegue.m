@@ -15,7 +15,6 @@
 #import "VStreamPollCell.h"
 
 #import "UIImageView+Blurring.h"
-#import "UIView+VFrameManipulation.h"
 
 #import "VSequence+Fetcher.h"
 
@@ -76,7 +75,8 @@
                                                                                                  self.selectedCell.overlayView.center.y - self.selectedCell.frame.size.height);
                                           }
                                           completion:^(BOOL finished) {
-                                              [contentVC.previewImage setSize:self.selectedCell.previewImageView.image.size];
+                                              CGRect frame = contentVC.previewImage.frame;
+                                              contentVC.previewImage.frame = CGRectMake(CGRectGetMinX(frame), CGRectGetMinY(frame), self.selectedCell.previewImageView.image.size.width, self.selectedCell.previewImageView.image.size.width);
                                               [self.sourceViewController presentModalViewController:self.destinationViewController animated:NO];
                                           }];
                      }];

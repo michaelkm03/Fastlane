@@ -8,7 +8,6 @@
 
 #import "VPollAnswerBarViewController.h"
 
-#import "UIView+VFrameManipulation.h"
 #import "VConstants.h"
 
 #import "VSequence+Fetcher.h"

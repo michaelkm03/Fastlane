@@ -65,13 +65,13 @@ NSString* const kChatBubbleLeftImage = @"ChatBubbleLeft";
 {
     [super layoutSubviews];
     
-    self.dateLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeading3Font];
+    self.dateLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVParagraphFont];
     self.dateLabel.textColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVContentTextColor];
     
-    self.messageLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeading2Font];
+    self.messageLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVLabel2Font];
     self.messageLabel.textColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVContentTextColor];
     
-    self.nameLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeading2Font];
+    self.nameLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeading3Font];
     self.nameLabel.textColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
     
     self.profileImageButton.clipsToBounds = YES;
@@ -93,6 +93,7 @@ NSString* const kChatBubbleLeftImage = @"ChatBubbleLeft";
         [self.profileImageButton setImageWithURL:[NSURL URLWithString:comment.user.pictureUrl]
                                 placeholderImage:[UIImage imageNamed:@"profile_thumb"]
                                         forState:UIControlStateNormal];
+        
         self.nameLabel.text = comment.user.name;
         self.messageLabel.text = comment.text;
 
@@ -119,8 +120,9 @@ NSString* const kChatBubbleLeftImage = @"ChatBubbleLeft";
         VMessage *message = (VMessage *)self.commentOrMessage;
 
         self.dateLabel.text = [message.postedAt timeSince];
-        [self.profileImageButton.imageView setImageWithURL:[NSURL URLWithString:message.user.pictureUrl]
-                                          placeholderImage:[UIImage imageNamed:@"profile_thumb"]];
+        [self.profileImageButton setImageWithURL:[NSURL URLWithString:message.user.pictureUrl]
+                                placeholderImage:[UIImage imageNamed:@"profile_thumb"]
+                                        forState:UIControlStateNormal];
         self.nameLabel.text = message.user.name;
         
         self.messageLabel.text = message.text;

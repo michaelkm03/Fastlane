@@ -12,8 +12,6 @@
 #import "VCommentsContainerViewController.h"
 #import "VKeyboardBarViewController.h"
 
-#import "UIView+VFrameManipulation.h"
-
 @implementation VContentCommentSegue
 
 - (void)perform
@@ -45,7 +43,6 @@
          [UIView animateWithDuration:.25f
                           animations:^
           {
-              
               for (UIView* view in commentsContainer.view.subviews)
               {
                   if ([view isKindOfClass:[UIImageView class]])

@@ -28,10 +28,7 @@
         return;
     }
     
-//    @property (nonatomic)                   BOOL                    muteAudio;
 //    @property (nonatomic)                   RemixPlaybackSpeed      playBackSpeed;
-//    @property (nonatomic)                   CGFloat                 startSeconds;
-//    @property (nonatomic)                   CGFloat                 endSeconds;
 
     [[VObjectManager sharedManager] uploadMediaWithName:self.textView.text
                                             description:self.textView.text
