@@ -9,6 +9,7 @@
 #import "VAppDelegate.h"
 #import <TestFlightSDK/TestFlight.h>
 #import "VThemeManager.h"
+#import "VReachability.h"
 
 #import "VObjectManager+Sequence.h"
 #import "VObjectManager+Login.h"
@@ -48,6 +49,7 @@
 //    }
     
     [[AFNetworkActivityIndicatorManager sharedManager] setEnabled:YES];
+    [[VReachability reachabilityForInternetConnection] startNotifier];
 
     [VObjectManager setupObjectManager];
     (void)[[VObjectManager sharedManager] initialSequenceLoad];
