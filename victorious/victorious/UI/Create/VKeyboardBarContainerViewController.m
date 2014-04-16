@@ -67,10 +67,6 @@
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
-    if(self.showKeyboard)
-    {
-        [self.keyboardBarViewController.textView becomeFirstResponder];
-    }
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardFrameChanged:) name:UIKeyboardWillChangeFrameNotification object:nil];
 }
 
