@@ -37,6 +37,8 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    self.targetURL = self.sourceURL;
 
     [self.thumbnail maskWithImage:[UIImage imageNamed:@"cameraThumbnailMask"]];
 
@@ -63,7 +65,7 @@
     if (self.previewView.player.isPlaying)
         [self.previewView.player pause];
     
-    [self exportVideo];
+    [self performSegueWithIdentifier:@"toRemixPublish" sender:self];
 }
 
 - (IBAction)selectBeforeAssetClicked:(id)sender
@@ -149,6 +151,14 @@
         publishViewController.shouldMuteAudio = self.shouldMuteAudio;
         publishViewController.playBackSpeed = self.playBackSpeed;
         publishViewController.playbackLooping = self.playbackLooping;
+        
+        AVAsset *asset = [AVAsset assetWithURL:self.targetURL];
+        AVAssetImageGenerator *assetGenerator = [AVAssetImageGenerator assetImageGeneratorWithAsset:asset];
+        CGImageRef imageRef = [assetGenerator copyCGImageAtTime:kCMTimeZero actualTime:NULL error:NULL];
+        UIImage *previewImage = [UIImage imageWithCGImage:imageRef];
+        CGImageRelease(imageRef);
+
+        publishViewController.previewImage = previewImage;
     }
 }
 
@@ -176,155 +186,106 @@
 
 - (void)compositeVideo
 {
+    CGRect                      naturalSize         =   CGRectZero;
     AVMutableComposition*       mutableComposition  =   [AVMutableComposition composition];
+
     AVMutableCompositionTrack*  mutableCompositionVideoTrack = [mutableComposition addMutableTrackWithMediaType:AVMediaTypeVideo preferredTrackID:kCMPersistentTrackID_Invalid];
-    AVMutableCompositionTrack*  mutableCompositionAudioTrack = [mutableComposition addMutableTrackWithMediaType:AVMediaTypeAudio preferredTrackID:kCMPersistentTrackID_Invalid];
+    AVMutableCompositionTrack*  mutableCompositionAudioTrack = nil;
+    if (!self.shouldMuteAudio)
+        mutableCompositionAudioTrack = [mutableComposition addMutableTrackWithMediaType:AVMediaTypeAudio preferredTrackID:kCMPersistentTrackID_Invalid];
     
     if (self.beforeURL)
     {
         AVAsset*                    beforeAsset = [AVAsset assetWithURL:self.beforeURL];
+        AVAssetTrack*               beforeAssetTrack = [beforeAsset tracksWithMediaType:AVMediaTypeVideo][0];
+        
+        naturalSize.size     =      beforeAssetTrack.naturalSize;
 
         if (self.shouldMuteAudio)
         {
-            [mutableCompositionVideoTrack insertTimeRange:CMTimeRangeMake(kCMTimeZero, beforeAsset.duration) ofTrack:[beforeAsset tracksWithMediaType:AVMediaTypeVideo][0] atTime:kCMTimeZero error:nil];
+            [mutableCompositionVideoTrack insertTimeRange:CMTimeRangeMake(kCMTimeZero, beforeAsset.duration) ofTrack:beforeAssetTrack atTime:kCMTimeZero error:nil];
         }
         else
         {
-            [mutableCompositionVideoTrack insertTimeRange:CMTimeRangeMake(kCMTimeZero, beforeAsset.duration) ofTrack:[beforeAsset tracksWithMediaType:AVMediaTypeVideo][0] atTime:kCMTimeZero error:nil];
-            [mutableCompositionAudioTrack insertTimeRange:CMTimeRangeMake(kCMTimeZero, beforeAsset.duration) ofTrack:[beforeAsset tracksWithMediaType:AVMediaTypeAudio][0] atTime:kCMTimeZero error:nil];
+            [mutableCompositionVideoTrack insertTimeRange:CMTimeRangeMake(kCMTimeZero, beforeAsset.duration) ofTrack:beforeAssetTrack atTime:kCMTimeZero error:nil];
+            [mutableCompositionAudioTrack insertTimeRange:CMTimeRangeMake(kCMTimeZero, beforeAsset.duration) ofTrack:beforeAssetTrack atTime:kCMTimeZero error:nil];
         }
     }
     
     if (self.sourceURL)
     {
         AVAsset*                    asset = [AVAsset assetWithURL:self.sourceURL];
+        AVAssetTrack*               assetTrack = [asset tracksWithMediaType:AVMediaTypeVideo][0];
+        CGRect                      assetRect = CGRectMake(0.0, 0.0, assetTrack.naturalSize.width, assetTrack.naturalSize.height);
+        
+        naturalSize     =   CGRectUnion(naturalSize, assetRect);
         
         if (self.shouldMuteAudio)
         {
-            [mutableCompositionVideoTrack insertTimeRange:CMTimeRangeMake(kCMTimeZero, asset.duration) ofTrack:[asset tracksWithMediaType:AVMediaTypeVideo][0] atTime:mutableComposition.duration error:nil];
+            [mutableCompositionVideoTrack insertTimeRange:CMTimeRangeMake(kCMTimeZero, asset.duration) ofTrack:assetTrack atTime:mutableComposition.duration error:nil];
         }
         else
         {
             CMTime      duration    =   mutableComposition.duration;
-            [mutableCompositionVideoTrack insertTimeRange:CMTimeRangeMake(kCMTimeZero, asset.duration) ofTrack:[asset tracksWithMediaType:AVMediaTypeVideo][0] atTime:duration error:nil];
-            [mutableCompositionAudioTrack insertTimeRange:CMTimeRangeMake(kCMTimeZero, asset.duration) ofTrack:[asset tracksWithMediaType:AVMediaTypeAudio][0] atTime:duration error:nil];
+            [mutableCompositionVideoTrack insertTimeRange:CMTimeRangeMake(kCMTimeZero, asset.duration) ofTrack:assetTrack atTime:duration error:nil];
+            [mutableCompositionAudioTrack insertTimeRange:CMTimeRangeMake(kCMTimeZero, asset.duration) ofTrack:assetTrack atTime:duration error:nil];
         }
     }
     
     if (self.afterURL)
     {
         AVAsset*                    afterAsset = [AVAsset assetWithURL:self.afterURL];
+        AVAssetTrack*               afterAssetTrack = [afterAsset tracksWithMediaType:AVMediaTypeVideo][0];
+        CGRect                      assetRect = CGRectMake(0.0, 0.0, afterAssetTrack.naturalSize.width, afterAssetTrack.naturalSize.height);
         
+        naturalSize     =   CGRectUnion(naturalSize, assetRect);
+
         if (self.shouldMuteAudio)
         {
-            [mutableCompositionVideoTrack insertTimeRange:CMTimeRangeMake(kCMTimeZero, afterAsset.duration) ofTrack:[afterAsset tracksWithMediaType:AVMediaTypeVideo][0] atTime:mutableComposition.duration error:nil];
+            [mutableCompositionVideoTrack insertTimeRange:CMTimeRangeMake(kCMTimeZero, afterAsset.duration) ofTrack:afterAssetTrack atTime:mutableComposition.duration error:nil];
         }
         else
         {
             CMTime      duration    =   mutableComposition.duration;
-            [mutableCompositionVideoTrack insertTimeRange:CMTimeRangeMake(kCMTimeZero, afterAsset.duration) ofTrack:[afterAsset tracksWithMediaType:AVMediaTypeVideo][0] atTime:duration error:nil];
-            [mutableCompositionAudioTrack insertTimeRange:CMTimeRangeMake(kCMTimeZero, afterAsset.duration) ofTrack:[afterAsset tracksWithMediaType:AVMediaTypeAudio][0] atTime:duration error:nil];
+            [mutableCompositionVideoTrack insertTimeRange:CMTimeRangeMake(kCMTimeZero, afterAsset.duration) ofTrack:afterAssetTrack atTime:duration error:nil];
+            [mutableCompositionAudioTrack insertTimeRange:CMTimeRangeMake(kCMTimeZero, afterAsset.duration) ofTrack:afterAssetTrack atTime:duration error:nil];
         }
     }
     
-    [self.previewView.player setItemByAsset:mutableComposition];
-}
+    AVMutableVideoCompositionInstruction*   mainInstruction = [AVMutableVideoCompositionInstruction videoCompositionInstruction];
+    mainInstruction.timeRange = CMTimeRangeMake(kCMTimeZero, mutableComposition.duration);
 
-- (void)exportVideo
-{
-    //    BOOL isFirstVideoPortrait = NO;
-    //    CGAffineTransform firstTransform = firstVideoAssetTrack.preferredTransform;
-    //    // Check the first video track's preferred transform to determine if it was recorded in portrait mode.
-    //    if (firstTransform.a == 0 && firstTransform.d == 0 && (firstTransform.b == 1.0 || firstTransform.b == -1.0) && (firstTransform.c == 1.0 || firstTransform.c == -1.0)) {
-    //        isFirstVideoPortrait = YES;
-    //    }
-    //    BOOL isSecondVideoPortrait = NO;
-    //    CGAffineTransform secondTransform = secondVideoAssetTrack.preferredTransform;
-    //    // Check the second video track's preferred transform to determine if it was recorded in portrait mode.
-    //    if (secondTransform.a == 0 && secondTransform.d == 0 && (secondTransform.b == 1.0 || secondTransform.b == -1.0) && (secondTransform.c == 1.0 || secondTransform.c == -1.0)) {
-    //        isSecondVideoPortrait = YES;
-    //    }
-    //    if ((isFirstVideoAssetPortrait && !isSecondVideoAssetPortrait) || (!isFirstVideoAssetPortrait && isSecondVideoAssetPortrait)) {
-    //        UIAlertView *incompatibleVideoOrientationAlert = [[UIAlertView alloc] initWithTitle:@"Error!" message:@"Cannot combine a video shot in portrait mode with a video shot in landscape mode." delegate:self cancelButtonTitle:@"Dismiss" otherButtonTitles:nil];
-    //        [incompatibleVideoOrientationAlert show];
-    //        return;
-    //    }
+    AVMutableVideoComposition*  mainCompositionInst = [AVMutableVideoComposition videoComposition];
+    mainCompositionInst.frameDuration = CMTimeMake(1, 30);
+    mainCompositionInst.renderSize = CGSizeMake(CGRectGetWidth(naturalSize), CGRectGetHeight(naturalSize));
     
-    //    AVMutableVideoCompositionInstruction *firstVideoCompositionInstruction = [AVMutableVideoCompositionInstruction videoCompositionInstruction];
-    //    // Set the time range of the first instruction to span the duration of the first video track.
-    //    firstVideoCompositionInstruction.timeRange = CMTimeRangeMake(kCMTimeZero, firstVideoAssetTrack.timeRange.duration);
-    //    AVMutableVideoCompositionInstruction * secondVideoCompositionInstruction = [AVMutableVideoCompositionInstruction videoCompositionInstruction];
-    //    // Set the time range of the second instruction to span the duration of the second video track.
-    //    secondVideoCompositionInstruction.timeRange = CMTimeRangeMake(firstVideoAssetTrack.timeRange.duration, CMTimeAdd(firstVideoAssetTrack.timeRange.duration, secondVideoAssetTrack.timeRange.duration));
-    //    AVMutableVideoCompositionLayerInstruction *firstVideoLayerInstruction = [AVMutableVideoCompositionLayerInstruction videoCompositionLayerInstructionWithAssetTrack:videoCompositionTrack];
-    //    // Set the transform of the first layer instruction to the preferred transform of the first video track.
-    //    [firstVideoLayerInstruction setTransform:firstTransform atTime:kCMTimeZero];
-    //    AVMutableVideoCompositionLayerInstruction *secondVideoLayerInstruction = [AVMutableVideoCompositionLayerInstruction videoCompositionLayerInstructionWithAssetTrack:videoCompositionTrack];
-    //    // Set the transform of the second layer instruction to the preferred transform of the second video track.
-    //    [secondVideoLayerInstruction setTransform:secondTransform atTime:firstVideoAssetTrack.timeRange.duration];
-    //    firstVideoCompositionInstruction.layerInstructions = @[firstVideoLayerInstruction];
-    //    secondVideoCompositionInstruction.layerInstructions = @[secondVideoLayerInstruction];
-    //    AVMutableVideoComposition *mutableVideoComposition = [AVMutableVideoComposition videoComposition];
-    //    mutableVideoComposition.instructions = @[firstVideoCompositionInstruction, secondVideoCompositionInstruction];
-    
-    //    CGSize naturalSizeFirst, naturalSizeSecond;
-    //    // If the first video asset was shot in portrait mode, then so was the second one if we made it here.
-    //    if (isFirstVideoAssetPortrait) {
-    //        // Invert the width and height for the video tracks to ensure that they display properly.
-    //        naturalSizeFirst = CGSizeMake(firstVideoAssetTrack.naturalSize.height, firstVideoAssetTrack.naturalSize.width);
-    //        naturalSizeSecond = CGSizeMake(secondVideoAssetTrack.naturalSize.height, secondVideoAssetTrack.naturalSize.width);
-    //    }
-    //    else {
-    //        // If the videos weren't shot in portrait mode, we can just use their natural sizes.
-    //        naturalSizeFirst = firstVideoAssetTrack.naturalSize;
-    //        naturalSizeSecond = secondVideoAssetTrack.naturalSize;
-    //    }
-    //    float renderWidth, renderHeight;
-    //    // Set the renderWidth and renderHeight to the max of the two videos widths and heights.
-    //    if (naturalSizeFirst.width > naturalSizeSecond.width) {
-    //        renderWidth = naturalSizeFirst.width;
-    //    }
-    //    else {
-    //        renderWidth = naturalSizeSecond.width;
-    //    }
-    //    if (naturalSizeFirst.height > naturalSizeSecond.height) {
-    //        renderHeight = naturalSizeFirst.height;
-    //    }
-    //    else {
-    //        renderHeight = naturalSizeSecond.height;
-    //    }
-    //    mutableVideoComposition.renderSize = CGSizeMake(renderWidth, renderHeight);
-    //    // Set the frame duration to an appropriate value (i.e. 30 frames per second for video).
-    //    mutableVideoComposition.frameDuration = CMTimeMake(1,30);
-    
-    NSURL*      target  =   [NSURL fileURLWithPath:[[NSTemporaryDirectory() stringByAppendingPathComponent:@"trimmedMovieSegment"] stringByAppendingPathExtension:@"mp4"] isDirectory:NO];
+//    [self.previewView.player setItemByAsset:mutableComposition];
+
+    NSURL*      target  =   [NSURL fileURLWithPath:[[NSTemporaryDirectory() stringByAppendingPathComponent:@"stitchedMovieSegment"] stringByAppendingPathExtension:@"mp4"] isDirectory:NO];
     [[NSFileManager defaultManager] removeItemAtURL:target error:nil];
     AVAsset*    asset = self.previewView.player.currentItem.asset;
-
+    
     self.exportSession  = [[AVAssetExportSession alloc] initWithAsset:asset presetName:AVAssetExportPresetPassthrough];
     self.exportSession.outputURL = target;
     self.exportSession.outputFileType = AVFileTypeMPEG4;
     self.exportSession.shouldOptimizeForNetworkUse = YES;
-//    self.exportSession.videoComposition = mutableVideoComposition;
+    self.exportSession.videoComposition = mainCompositionInst;
+    
     [self.exportSession exportAsynchronouslyWithCompletionHandler:^{
         dispatch_async(dispatch_get_main_queue(), ^{
             switch ([self.exportSession status])
             {
                 case AVAssetExportSessionStatusFailed:
                     NSLog(@"Export failed: %@", [[self.exportSession error] localizedDescription]);
-                    self.targetURL = nil;
                     break;
                 case AVAssetExportSessionStatusCancelled:
                     NSLog(@"Export canceled");
-                    self.targetURL = nil;
                     break;
                 default:
                     NSLog(@"Export Complete");
                     dispatch_async(dispatch_get_main_queue(), ^{
-                        //                        [self.myActivityIndicator stopAnimating];
-                        //                        self.myActivityIndicator.hidden = YES;
                         self.targetURL = target;
-                        [self performSegueWithIdentifier:@"toRemixPublish" sender:self];
+                        [self.previewView.player setItemByUrl:target];
                     });
                     break;
             }

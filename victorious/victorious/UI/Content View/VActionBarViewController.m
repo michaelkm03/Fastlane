@@ -8,8 +8,6 @@
 
 #import "VActionBarViewController.h"
 
-#import "UIView+VFrameManipulation.h"
-
 #import "VThemeManager.h"
 
 @interface VActionBarViewController ()
@@ -42,7 +40,8 @@
 #pragma mark - Animation
 - (void)animateInWithDuration:(CGFloat)duration completion:(void (^)(BOOL finished))completion
 {
-    [self.view setXOrigin:self.view.frame.size.width];
+    CGRect frame = self.view.frame;
+    self.view.frame = CGRectMake(CGRectGetWidth(frame), CGRectGetMinY(frame), CGRectGetWidth(frame), CGRectGetHeight(frame));
     
     self.leftLabel.alpha = 0;
     self.rightLabel.alpha = 0;
@@ -50,7 +49,7 @@
     [UIView animateWithDuration:duration/2
                      animations:^
      {
-         [self.view setXOrigin:0];
+         self.view.frame = CGRectMake(0, CGRectGetMinY(frame), CGRectGetWidth(frame), CGRectGetHeight(frame));
      }
                      completion:^(BOOL finished)
      {
@@ -77,7 +76,8 @@
          [UIView animateWithDuration:duration/2
                           animations:^
           {
-              [self.view setXOrigin:self.view.frame.size.width];
+              CGRect frame = self.view.frame;
+              self.view.frame = CGRectMake(CGRectGetWidth(frame), CGRectGetMinY(frame), CGRectGetWidth(frame), CGRectGetHeight(frame));
           }
                           completion:completion];
      }];

@@ -12,8 +12,6 @@
 #import "VObjectManager+Sequence.h"
 #import "VLoginViewController.h"
 
-#import "UIView+VFrameManipulation.h"
-
 #import "VThemeManager.h"
 
 #import "VVoteType+Fetcher.h"

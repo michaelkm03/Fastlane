@@ -102,6 +102,7 @@
     [super viewWillAppear:animated];
     
     [self setProfileData];
+    [self.navigationController setNavigationBarHidden:NO animated:YES];
 }
 
 - (void)setProfileData

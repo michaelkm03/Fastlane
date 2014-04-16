@@ -8,7 +8,6 @@
 
 #import "VResultView.h"
 
-#import "UIView+VFrameManipulation.h"
 #import "VThemeManager.h"
 
 @interface VResultView ()

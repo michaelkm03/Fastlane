@@ -13,6 +13,7 @@
 #import "VCVideoPlayerView.h"
 #import "VRemixVideoRangeSlider.h"
 #import "VThemeManager.h"
+#import "MBProgressHUD.h"
 
 @interface VRemixTrimViewController ()  <VCVideoPlayerDelegate, VRemixVideoRangeSliderDelegate>
 
@@ -24,7 +25,6 @@
 @property (nonatomic, strong)   VRemixVideoRangeSlider*         trimSlider;
 
 @property (nonatomic, strong)   AVURLAsset*                     sourceAsset;
-@property (nonatomic)           CGFloat                         restoreAfterScrubbingRate;
 @property (nonatomic, strong)   id                              timeObserver;
 
 @property (nonatomic, strong)   AVAssetExportSession*           exportSession;
@@ -43,12 +43,6 @@
     self.sourceAsset = [AVURLAsset assetWithURL:self.sourceURL];
     self.playBackSpeed = kVPlaybackNormalSpeed;
     self.playbackLooping = kVLoopOnce;
-    
-    [self.scrubber addTarget:self action:@selector(scrubberDidStartMoving:) forControlEvents:UIControlEventTouchDown];
-    [self.scrubber addTarget:self action:@selector(scrubberDidMove:) forControlEvents:UIControlEventTouchDragInside];
-    [self.scrubber addTarget:self action:@selector(scrubberDidMove:) forControlEvents:UIControlEventValueChanged];
-    [self.scrubber addTarget:self action:@selector(scrubberDidEndMoving:) forControlEvents:UIControlEventTouchUpInside];
-    [self.scrubber addTarget:self action:@selector(scrubberDidEndMoving:) forControlEvents:UIControlEventTouchUpOutside];
     
     UIImage*    nextButtonImage = [[UIImage imageNamed:@"cameraButtonNext"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithImage:nextButtonImage style:UIBarButtonItemStyleBordered target:self action:@selector(nextButtonClicked:)];
@@ -124,8 +118,15 @@
 {
     self.startSeconds = leftPosition;
     self.previewView.player.startSeconds = leftPosition;
+    
     self.endSeconds = rightPosition;
     self.previewView.player.endSeconds = rightPosition;
+
+    double time = CMTimeGetSeconds([self.previewView.player currentTime]);
+    if (time < leftPosition)
+        [self.previewView.player seekToTime:CMTimeMakeWithSeconds(leftPosition, NSEC_PER_SEC)];
+    if (time > rightPosition)
+        [self.previewView.player seekToTime:CMTimeMakeWithSeconds(leftPosition, NSEC_PER_SEC)];
 }
 
 #pragma mark - Actions
@@ -134,6 +135,10 @@
 {
     if (self.previewView.player.isPlaying)
         [self.previewView.player pause];
+
+    MBProgressHUD*  hud =   [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    hud.labelText = @"Just a moment";
+    hud.detailsLabelText = @"Trimming Video...";
 
     NSURL*      target  =   [NSURL fileURLWithPath:[[NSTemporaryDirectory() stringByAppendingPathComponent:@"trimmedMovieSegment"] stringByAppendingPathExtension:@"mp4"] isDirectory:NO];
     [[NSFileManager defaultManager] removeItemAtURL:target error:nil];
@@ -152,10 +157,8 @@
         CMTimeRange range = CMTimeRangeMake(start, duration);
         self.exportSession.timeRange = range;
 
-//        self.myActivityIndicator.hidden = NO;
-//        [self.myActivityIndicator startAnimating];
-        
         [self.exportSession exportAsynchronouslyWithCompletionHandler:^{
+            [hud hide:YES];
             switch ([self.exportSession status])
             {
                 case AVAssetExportSessionStatusFailed:
@@ -169,8 +172,6 @@
                 default:
                     NSLog(@"Export Complete");
                     dispatch_async(dispatch_get_main_queue(), ^{
-//                        [self.myActivityIndicator stopAnimating];
-//                        self.myActivityIndicator.hidden = YES;
                         self.targetURL = target;
                         [self performSegueWithIdentifier:@"toStitch" sender:self];
                     });
@@ -178,61 +179,6 @@
             }
         }];
     }
-}
-
--(IBAction)scrubberDidStartMoving:(id)sender
-{
-    self.restoreAfterScrubbingRate = self.previewView.player.rate;
-    [self.previewView.player setRate:0.f];
-
-    [self removePlayerTimeObserver];
-}
-
--(IBAction)scrubberDidMove:(id)sender
-{
-    CMTime playerDuration = [self playerItemDuration];
-    if (CMTIME_IS_INVALID(playerDuration))
-        return;
-
-    double duration = CMTimeGetSeconds(playerDuration);
-    if (isfinite(duration))
-    {
-        float minValue = [self.scrubber minimumValue];
-        float maxValue = [self.scrubber maximumValue];
-        float value = [self.scrubber value];
-        double time = duration * (value - minValue) / (maxValue - minValue);
-
-        [self.previewView.player seekToTime:CMTimeMakeWithSeconds(time, NSEC_PER_SEC)];
-    }
-}
-
--(IBAction)scrubberDidEndMoving:(id)sender
-{
-	if (!self.timeObserver)
-	{
-		CMTime playerDuration = [self playerItemDuration];
-		if (CMTIME_IS_INVALID(playerDuration))
-			return;
-
-		double duration = CMTimeGetSeconds(playerDuration);
-		if (isfinite(duration))
-		{
-			CGFloat width = CGRectGetWidth([self.scrubber bounds]);
-			double tolerance = 0.5f * duration / width;
-
-            __weak  VRemixTrimViewController*   weakSelf    =   self;
-			self.timeObserver = [self.previewView.player addPeriodicTimeObserverForInterval:CMTimeMakeWithSeconds(tolerance, NSEC_PER_SEC) queue:dispatch_get_main_queue() usingBlock:^(CMTime time)
-                             {
-                                 [weakSelf syncScrubber];
-                             }];
-		}
-	}
-
-	if (self.restoreAfterScrubbingRate)
-	{
-		[self.previewView.player setRate:self.restoreAfterScrubbingRate];
-		self.restoreAfterScrubbingRate = 0.f;
-	}
 }
 
 #pragma mark - Navigation
@@ -250,15 +196,6 @@
 }
 
 #pragma mark - Support
-
--(void)removePlayerTimeObserver
-{
-    if (self.timeObserver)
-    {
-        [self.previewView.player removeTimeObserver:self.timeObserver];
-        self.timeObserver = nil;
-    }
-}
 
 - (void)syncScrubber
 {

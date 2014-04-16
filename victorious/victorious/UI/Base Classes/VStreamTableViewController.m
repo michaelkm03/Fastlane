@@ -66,9 +66,13 @@
     
     //Remove the search button from the stream - feature currently deprecated
     self.navigationItem.rightBarButtonItem = nil;
+}
 
-    CGRect navBarFrame = self.navigationController.navigationBar.frame;
-    navBarFrame.size.height += navBarFrame.size.height;
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    
+    [self.navigationController setNavigationBarHidden:NO animated:animated];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -76,6 +80,14 @@
     [super viewWillDisappear:animated];
     
     [self.preloadImageCache removeAllObjects];
+    
+    CGRect navBarFrame = self.navigationController.navigationBar.frame;
+    navBarFrame.origin.y = 0;
+    
+    [UIView animateWithDuration:.5f animations:^
+     {
+         self.navigationController.navigationBar.frame = navBarFrame;
+     }];
 }
 
 #pragma mark - FetchedResultsControllers
@@ -112,18 +124,6 @@
 }
 
 #pragma mark - UITableViewDelegate
-
-- (void)tableView:(UITableView *)tableView didEndDisplayingCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    VSequence* sequence = ((VStreamViewCell*)cell).sequence;
-    if (([sequence isForum] || [sequence isVideo])
-        && [[[sequence firstNode] firstAsset].type isEqualToString:VConstantsMediaTypeYoutube])
-    {
-        //This will reload the youtube video so it stops playing
-        //TODO: replace this with a pause control
-        ((VStreamViewCell*)cell).sequence = ((VStreamViewCell*)cell).sequence;
-    }
-}
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -166,7 +166,7 @@
     }
     else if (translation.y > 0 && !CGRectContainsRect(self.view.frame, navBarFrame))
     {
-        navBarFrame.origin.y += navBarFrame.size.height;
+        navBarFrame.origin.y = 0;
     }
     else
     {

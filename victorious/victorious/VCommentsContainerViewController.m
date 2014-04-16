@@ -13,7 +13,6 @@
 #import "VUser.h"
 #import "VConstants.h"
 #import "VObjectManager+Comment.h"
-#import "UIView+VFrameManipulation.h"
 #import "UIImageView+Blurring.h"
 #import "UIImage+ImageCreation.h"
 
@@ -66,6 +65,13 @@
     
     //Need to manually add this again so it appears over everything else.
     [self.view addSubview:self.backButton];
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    
+    [self.navigationController setNavigationBarHidden:YES animated:animated];
 }
 
 - (UITableViewController *)conversationTableViewController

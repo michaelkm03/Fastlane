@@ -71,7 +71,7 @@ CGFloat kContentMediaViewOffset = 154;
     self.activityIndicator.layer.cornerRadius = self.activityIndicator.frame.size.height / 2;
     self.activityIndicator.hidesWhenStopped = YES;
     
-    self.navigationController.navigationBarHidden = YES;
+    [self.navigationController setNavigationBarHidden:YES animated:NO];
     self.sequence = self.sequence;
     
     self.orImageView.hidden = ![self.currentNode isPoll];
@@ -79,12 +79,14 @@ CGFloat kContentMediaViewOffset = 154;
     self.firstPollButton.alpha = 0;
     self.secondPollButton.alpha = 0;
     
-    [self.topActionsView setYOrigin:self.mediaView.frame.origin.y];
+    CGRect topActionsFrame = self.topActionsView.frame;
+    self.topActionsView.frame = CGRectMake(CGRectGetMinX(topActionsFrame), CGRectGetMinY(self.mediaView.frame), CGRectGetWidth(topActionsFrame), CGRectGetHeight(topActionsFrame));
+    
     self.topActionsView.alpha = 0;
     [UIView animateWithDuration:.2f
                      animations:^
      {
-         [self.topActionsView setYOrigin:0];
+         self.topActionsView.frame = CGRectMake(CGRectGetMinX(topActionsFrame), 0, CGRectGetWidth(topActionsFrame), CGRectGetHeight(topActionsFrame));
          self.topActionsView.alpha = 1;
          self.firstPollButton.alpha = 1;
          self.secondPollButton.alpha = 1;
@@ -95,13 +97,11 @@ CGFloat kContentMediaViewOffset = 154;
      }];
 }
 
-
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
     
     [self.mpController pause];
-    self.navigationController.navigationBarHidden = NO;
     self.orAnimator = nil;
 }
 
