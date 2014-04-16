@@ -25,33 +25,34 @@
 
 #import "NSString+VParseHelp.h"
 
-NSString* const kInitialLoadFinishedNotification = @"kInitialLoadFinishedNotification";
 NSString* const kPollResultsLoaded = @"kPollResultsLoaded";
 
 @implementation VObjectManager (Sequence)
 
 #pragma mark - Sequences
 
-- (RKManagedObjectRequestOperation *)initialSequenceLoad
+- (RKManagedObjectRequestOperation *)initialSequenceLoadWithSuccessBlock:(VSuccessBlock)success failBlock:(VFailBlock)fail
 {
     
     return [self loadNextPageOfSequencesForCategory:nil
                                 successBlock:^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
             {
-                void (^postNotification)(void) = ^(void)
-                {
-                    [[NSNotificationCenter defaultCenter] postNotificationName:kInitialLoadFinishedNotification object:nil];
-                };
                 [[VUserManager sharedInstance] loginViaSavedCredentialsOnCompletion:^(VUser *user, BOOL created)
                 {
-                    dispatch_async(dispatch_get_main_queue(), postNotification);
+                    if (success)
+                    {
+                        success(operation, fullResponse, resultObjects);
+                    }
                 }
                                                                             onError:^(NSError *error)
                 {
-                    dispatch_async(dispatch_get_main_queue(), postNotification);
+                    if (success)
+                    {
+                        success(operation, fullResponse, resultObjects);
+                    }
                 }];
             }
-                                   failBlock:nil];
+                                   failBlock:fail];
 }
 
 /*! Loads the next page of sequences for the category

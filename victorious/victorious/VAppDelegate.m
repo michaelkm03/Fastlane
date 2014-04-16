@@ -52,15 +52,6 @@
     [[VReachability reachabilityForInternetConnection] startNotifier];
 
     [VObjectManager setupObjectManager];
-    (void)[[VObjectManager sharedManager] initialSequenceLoad];
-    [[VObjectManager sharedManager] appInitWithSuccessBlock:^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
-    {
-        VLog(@"Succeeded with objects: %@", resultObjects);
-    }
-                                                  failBlock:^(NSOperation* operation, NSError* error)
-    {
-        VLog(@"Failed with error: %@", error);
-    }];
     
 #ifdef STABLE_DEBUG
     [TestFlight takeOff:[[NSBundle mainBundle] objectForInfoDictionaryKey:kTestflightStableToken]];

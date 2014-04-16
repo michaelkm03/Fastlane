@@ -8,11 +8,21 @@
 
 #import "VHomeStreamViewController.h"
 #import "VLoadingViewController.h"
+#import "VObjectManager+Login.h"
 #import "VObjectManager+Sequence.h"
 #import "VReachability.h"
 #import "VThemeManager.h"
 
+static const NSTimeInterval kTimeBetweenRetries = 10.0;
+
 @implementation VLoadingViewController
+{
+    BOOL     _initialSequenceLoading;
+    BOOL     _initialSequenceLoaded;
+    BOOL     _appInitLoading;
+    BOOL     _appInitLoaded;
+    NSTimer *_retryTimer;
+}
 
 - (void)dealloc
 {
@@ -23,8 +33,6 @@
 {
     [super viewDidLoad];
     
-    [self.navigationController setNavigationBarHidden:YES animated:NO];
-    
     if (IS_IPHONE_5)
     {
         self.backgroundImageView.image = (id)[[VThemeManager sharedThemeManager] themedImageForKey:kVMenuBackgroundImage5];
@@ -34,8 +42,13 @@
         self.backgroundImageView.image = (id)[[VThemeManager sharedThemeManager] themedImageForKey:kVMenuBackgroundImage];
     }
     
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(initialLoadFinished:) name:kInitialLoadFinishedNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reachabilityChanged:) name:kVReachabilityChangedNotification object:nil];
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    [self.navigationController setNavigationBarHidden:YES animated:NO];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -46,7 +59,19 @@
     {
         [self showReachabilityNotice];
     }
+    else
+    {
+        [self loadInitData];
+    }
 }
+
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+    [self.navigationController setNavigationBarHidden:NO animated:YES];
+}
+
+#pragma mark - Reachability Notice
 
 - (void)showReachabilityNotice
 {
@@ -88,19 +113,6 @@
      }];
 }
 
-- (void)initialLoadFinished:(NSNotification*)notif
-{
-    [UIView animateWithDuration:1.0f
-                     animations:^
-                     {
-                         [self.navigationController pushViewController:[VHomeStreamViewController sharedInstance] animated:YES];
-                     }
-                     completion:^(BOOL finished)
-                     {
-                         [self.navigationController setNavigationBarHidden:NO animated:YES];
-                     }];
-}
-
 - (void)reachabilityChanged:(NSNotification *)notification
 {
     if ([[VReachability reachabilityForInternetConnection] currentReachabilityStatus] == VNetworkStatusNotReachable)
@@ -110,6 +122,62 @@
     else
     {
         [self hideReachabilityNotice];
+        [self loadInitData];
+    }
+}
+
+#pragma mark - Loading
+
+- (void)loadInitData
+{
+    if (!_initialSequenceLoading && !_initialSequenceLoaded)
+    {
+        [[VObjectManager sharedManager] initialSequenceLoadWithSuccessBlock:^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
+        {
+            _initialSequenceLoading = NO;
+            _initialSequenceLoaded = YES;
+        }
+                                                                  failBlock:^(NSOperation *operation, NSError *error)
+        {
+            _initialSequenceLoading = NO;
+            [self scheduleRetry];
+        }];
+    }
+    
+    if (!_appInitLoading && !_appInitLoaded)
+    {
+        [[VObjectManager sharedManager] appInitWithSuccessBlock:^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
+        {
+            _appInitLoading = NO;
+            _appInitLoaded = YES;
+            [self.navigationController pushViewController:[VHomeStreamViewController sharedInstance] animated:YES];
+        }
+                                                      failBlock:^(NSOperation* operation, NSError* error)
+        {
+            _appInitLoading = NO;
+            [self scheduleRetry];
+        }];
+    }
+}
+
+- (void)scheduleRetry
+{
+    if ([_retryTimer isValid])
+    {
+        [_retryTimer invalidate];
+        _retryTimer = nil;
+    }
+
+    _retryTimer = [NSTimer scheduledTimerWithTimeInterval:kTimeBetweenRetries target:self selector:@selector(retryTimerFired) userInfo:nil repeats:NO];
+}
+
+- (void)retryTimerFired
+{
+    _retryTimer = nil;
+    
+    if ([[VReachability reachabilityForInternetConnection] currentReachabilityStatus] != VNetworkStatusNotReachable)
+    {
+        [self loadInitData];
     }
 }
 
