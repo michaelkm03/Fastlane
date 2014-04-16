@@ -88,8 +88,11 @@ static NSString*   const   kPollAnswerBarStoryboardID           = @"pollanswerba
 static NSString*   const   kCommentsContainerStoryboardID       = @"commentscontainer";
 static NSString*   const   kKeyboardBarStoryboardID             = @"keyboardbar";
 
+
 static NSString*   const   kStreamContentSegueStoryboardID      = @"streamcontent";
 static NSString*   const   kContentCommentSegueStoryboardID     = @"contentcomment";
+
+static NSString*   const   kStreamCommentSegueID                = @"streamcomment";
 
 static NSString*   const   kUnwindToSteamSegueID                = @"unwindToStreamTable";
 static NSString*   const   kUnwindToContentSegueID              = @"unwindToContentView";

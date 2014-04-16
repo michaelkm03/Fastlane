@@ -128,14 +128,8 @@
 
 - (IBAction)pressedBackButton:(id)sender
 {
-    NSInteger parentVCIndex = [self.navigationController.viewControllers count] - 2;
-    if (parentVCIndex < 0 || parentVCIndex >= [self.navigationController.viewControllers count])
-    {
-        return;
-    }
-    
     NSString* segueID;
-    if ([self.navigationController.viewControllers[parentVCIndex] isKindOfClass:[VStreamTableViewController class]])
+    if ([[self presentingViewController] isKindOfClass:[VStreamTableViewController class]])
     {
         segueID = kUnwindToSteamSegueID;
     }
