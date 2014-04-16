@@ -54,12 +54,6 @@ static NSString* CommentCache = @"CommentCache";
     [self sortComments];
 }
 
-- (void)viewWillLayoutSubviews
-{
-    [super viewWillLayoutSubviews];
-    self.view.frame = self.view.superview.bounds;
-}
-
 - (void)setSequence:(VSequence *)sequence
 {
     _sequence = sequence;
@@ -432,53 +426,5 @@ static NSString* CommentCache = @"CommentCache";
     
     return YES;
 }
-
-#pragma mark - VKeyboardBarDelegate
-- (void)didComposeWithText:(NSString *)text mediaURL:(NSURL *)mediaURL mediaExtension:(NSString *)mediaExtension
-{
-    __block UIActivityIndicatorView *indicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
-    indicator.frame = CGRectMake(0, 0, 24, 24);
-    indicator.hidesWhenStopped = YES;
-    [self.view addSubview:indicator];
-    indicator.center = self.view.center;
-    [indicator startAnimating];
-    
-    VSuccessBlock success = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
-    {
-        NSLog(@"%@", resultObjects);
-        [indicator stopAnimating];
-        [(VCommentsTableViewController*)self sortComments];
-    };
-    VFailBlock fail = ^(NSOperation* operation, NSError* error)
-    {
-        if (error.code == 5500)
-        {
-            NSLog(@"%@", error);
-            [indicator stopAnimating];
-            
-            UIAlertView*    alert   =
-            [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"TranscodingMediaTitle", @"")
-                                       message:NSLocalizedString(@"TranscodingMediaBody", @"")
-                                      delegate:nil
-                             cancelButtonTitle:NSLocalizedString(@"OKButton", @"")
-                             otherButtonTitles:nil];
-            [alert show];
-        }
-        [indicator stopAnimating];
-    };
-    
-    NSData *data = [NSData dataWithContentsOfURL:mediaURL];
-    [[NSFileManager defaultManager] removeItemAtURL:mediaURL error:nil];
-    
-    [[VObjectManager sharedManager] addCommentWithText:text
-                                                  Data:data
-                                        mediaExtension:mediaExtension
-                                              mediaUrl:nil
-                                            toSequence:_sequence
-                                             andParent:nil
-                                          successBlock:success
-                                             failBlock:fail];
-}
-
 
 @end

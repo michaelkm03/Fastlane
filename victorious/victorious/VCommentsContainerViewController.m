@@ -82,27 +82,66 @@
         [self.storyboard instantiateViewControllerWithIdentifier:@"comments"];
         streamsCommentsController.delegate = self;
         streamsCommentsController.sequence = self.sequence;
-//        streamsCommentsController.keyboardBarViewController = self.keyboardBarViewController;
-        self.keyboardBarViewController.delegate = streamsCommentsController;
         _conversationTableViewController = streamsCommentsController;
     }
 
     return _conversationTableViewController;
 }
 
-//TODO: this is causing issues.  Need to circle back when variable comment height is finished
-//- (void)viewDidAppear:(BOOL)animated
-//{
-//    self.showKeyboard = YES;
-//    [super viewDidAppear:animated];
-//}
-
 #pragma mark - VCommentsTableViewControllerDelegate
 
 - (void)streamsCommentsController:(VCommentsTableViewController *)viewController shouldReplyToUser:(VUser *)user
 {
-    self.keyboardBarViewController.textField.text = [NSString stringWithFormat:@"@%@ ", user.name];
-    [self.keyboardBarViewController.textField becomeFirstResponder];
+    self.keyboardBarViewController.textView.text = [NSString stringWithFormat:@"@%@ ", user.name];
+    [self.keyboardBarViewController.textView becomeFirstResponder];
+}
+
+#pragma mark - VKeyboardBarDelegate
+
+- (void)keyboardBar:(VKeyboardBarViewController *)keyboardBar didComposeWithText:(NSString *)text mediaURL:(NSURL *)mediaURL mediaExtension:(NSString *)mediaExtension
+{
+    __block UIActivityIndicatorView *indicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+    indicator.frame = CGRectMake(0, 0, 24, 24);
+    indicator.hidesWhenStopped = YES;
+    [self.view addSubview:indicator];
+    indicator.center = self.view.center;
+    [indicator startAnimating];
+    
+    VSuccessBlock success = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
+    {
+        NSLog(@"%@", resultObjects);
+        [indicator stopAnimating];
+        [(VCommentsTableViewController *)self.conversationTableViewController sortComments];
+    };
+    VFailBlock fail = ^(NSOperation* operation, NSError* error)
+    {
+        if (error.code == 5500)
+        {
+            NSLog(@"%@", error);
+            [indicator stopAnimating];
+            
+            UIAlertView*    alert   =
+            [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"TranscodingMediaTitle", @"")
+                                       message:NSLocalizedString(@"TranscodingMediaBody", @"")
+                                      delegate:nil
+                             cancelButtonTitle:NSLocalizedString(@"OKButton", @"")
+                             otherButtonTitles:nil];
+            [alert show];
+        }
+        [indicator stopAnimating];
+    };
+    
+    NSData *data = [NSData dataWithContentsOfURL:mediaURL];
+    [[NSFileManager defaultManager] removeItemAtURL:mediaURL error:nil];
+    
+    [[VObjectManager sharedManager] addCommentWithText:text
+                                                  Data:data
+                                        mediaExtension:mediaExtension
+                                              mediaUrl:nil
+                                            toSequence:_sequence
+                                             andParent:nil
+                                          successBlock:success
+                                             failBlock:fail];
 }
 
 @end
