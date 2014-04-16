@@ -140,8 +140,8 @@
 		BE185DEE18E3B255001C447F /* VContentViewController+Videos.m in Sources */ = {isa = PBXBuildFile; fileRef = BE185DED18E3B255001C447F /* VContentViewController+Videos.m */; };
 		BE185DF118E3B2C2001C447F /* VContentViewController+Images.m in Sources */ = {isa = PBXBuildFile; fileRef = BE185DF018E3B2C2001C447F /* VContentViewController+Images.m */; };
 		BE185DF518E3BB54001C447F /* VActionBarViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BE185DF418E3BB54001C447F /* VActionBarViewController.m */; };
-		BE2D1E3818FF040F00C6FF99 /* VStreamToAnythingAnimator.m in Sources */ = {isa = PBXBuildFile; fileRef = BE2D1E3718FF040F00C6FF99 /* VStreamToAnythingAnimator.m */; };
-		BE2D1E3B18FF2B0900C6FF99 /* VContentToCommentAnimator.m in Sources */ = {isa = PBXBuildFile; fileRef = BE2D1E3A18FF2B0900C6FF99 /* VContentToCommentAnimator.m */; };
+		BE2D1E4418FF4F2600C6FF99 /* VStreamToAnythingAnimator.m in Sources */ = {isa = PBXBuildFile; fileRef = BE2D1E4318FF4F2600C6FF99 /* VStreamToAnythingAnimator.m */; };
+		BE2D1E4718FF4F5200C6FF99 /* VContentToCommentAnimator.m in Sources */ = {isa = PBXBuildFile; fileRef = BE2D1E4618FF4F5200C6FF99 /* VContentToCommentAnimator.m */; };
 		BE40559418A1828D00092AE1 /* UIButton+VImageLoading.m in Sources */ = {isa = PBXBuildFile; fileRef = BE40559318A1828D00092AE1 /* UIButton+VImageLoading.m */; };
 		BE4055AC18A41F1F00092AE1 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = BE4055A618A41F1F00092AE1 /* Localizable.strings */; };
 		BE4055AD18A41F1F00092AE1 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = BE4055A718A41F1F00092AE1 /* main.m */; };
@@ -194,7 +194,6 @@
 		BEB52A7218BF38A400AC5FE4 /* VStreamYoutubeVideoCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = BEB52A7118BF38A400AC5FE4 /* VStreamYoutubeVideoCell.xib */; };
 		BEB52A7A18C02D6600AC5FE4 /* VContentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BEB52A7718C02D6600AC5FE4 /* VContentViewController.m */; };
 		BEB52A7B18C02D6600AC5FE4 /* VEmotiveBallisticsBarViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BEB52A7918C02D6600AC5FE4 /* VEmotiveBallisticsBarViewController.m */; };
-		BEB52A7E18C12DCE00AC5FE4 /* UIView+VFrameManipulation.m in Sources */ = {isa = PBXBuildFile; fileRef = BEB52A7D18C12DCE00AC5FE4 /* UIView+VFrameManipulation.m */; };
 		BEB52A8B18C80B8700AC5FE4 /* VContentToStreamAnimator.m in Sources */ = {isa = PBXBuildFile; fileRef = BEB52A8A18C80B8700AC5FE4 /* VContentToStreamAnimator.m */; };
 		BED4569418BD581800A67160 /* UIWebView+VYoutubeLoading.m in Sources */ = {isa = PBXBuildFile; fileRef = BED4569318BD581800A67160 /* UIWebView+VYoutubeLoading.m */; };
 		BED4569718BD58DE00A67160 /* VAsset+Fetcher.m in Sources */ = {isa = PBXBuildFile; fileRef = BED4569618BD58DE00A67160 /* VAsset+Fetcher.m */; };
@@ -468,10 +467,10 @@
 		BE185DF018E3B2C2001C447F /* VContentViewController+Images.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "VContentViewController+Images.m"; path = "UI/Content View/VContentViewController+Images.m"; sourceTree = "<group>"; };
 		BE185DF318E3BB54001C447F /* VActionBarViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VActionBarViewController.h; path = "UI/Content View/VActionBarViewController.h"; sourceTree = "<group>"; };
 		BE185DF418E3BB54001C447F /* VActionBarViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VActionBarViewController.m; path = "UI/Content View/VActionBarViewController.m"; sourceTree = "<group>"; };
-		BE2D1E3618FF040F00C6FF99 /* VStreamToAnythingAnimator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VStreamToAnythingAnimator.h; path = UI/StreamsView/VStreamToAnythingAnimator.h; sourceTree = "<group>"; };
-		BE2D1E3718FF040F00C6FF99 /* VStreamToAnythingAnimator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VStreamToAnythingAnimator.m; path = UI/StreamsView/VStreamToAnythingAnimator.m; sourceTree = "<group>"; };
-		BE2D1E3918FF2B0900C6FF99 /* VContentToCommentAnimator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VContentToCommentAnimator.h; path = "UI/Content View/VContentToCommentAnimator.h"; sourceTree = "<group>"; };
-		BE2D1E3A18FF2B0900C6FF99 /* VContentToCommentAnimator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VContentToCommentAnimator.m; path = "UI/Content View/VContentToCommentAnimator.m"; sourceTree = "<group>"; };
+		BE2D1E4218FF4F2600C6FF99 /* VStreamToAnythingAnimator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VStreamToAnythingAnimator.h; path = UI/StreamsView/VStreamToAnythingAnimator.h; sourceTree = "<group>"; };
+		BE2D1E4318FF4F2600C6FF99 /* VStreamToAnythingAnimator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VStreamToAnythingAnimator.m; path = UI/StreamsView/VStreamToAnythingAnimator.m; sourceTree = "<group>"; };
+		BE2D1E4518FF4F5200C6FF99 /* VContentToCommentAnimator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VContentToCommentAnimator.h; path = "UI/Content View/VContentToCommentAnimator.h"; sourceTree = "<group>"; };
+		BE2D1E4618FF4F5200C6FF99 /* VContentToCommentAnimator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VContentToCommentAnimator.m; path = "UI/Content View/VContentToCommentAnimator.m"; sourceTree = "<group>"; };
 		BE40559218A1828D00092AE1 /* UIButton+VImageLoading.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIButton+VImageLoading.h"; sourceTree = "<group>"; };
 		BE40559318A1828D00092AE1 /* UIButton+VImageLoading.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIButton+VImageLoading.m"; sourceTree = "<group>"; };
 		BE4055A618A41F1F00092AE1 /* Localizable.strings */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = Localizable.strings; path = "Supporting Files/Localizable.strings"; sourceTree = "<group>"; };
@@ -567,8 +566,6 @@
 		BEB52A7718C02D6600AC5FE4 /* VContentViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VContentViewController.m; path = "UI/Content View/VContentViewController.m"; sourceTree = "<group>"; };
 		BEB52A7818C02D6600AC5FE4 /* VEmotiveBallisticsBarViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VEmotiveBallisticsBarViewController.h; path = "UI/Content View/VEmotiveBallisticsBarViewController.h"; sourceTree = "<group>"; };
 		BEB52A7918C02D6600AC5FE4 /* VEmotiveBallisticsBarViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VEmotiveBallisticsBarViewController.m; path = "UI/Content View/VEmotiveBallisticsBarViewController.m"; sourceTree = "<group>"; };
-		BEB52A7C18C12DCE00AC5FE4 /* UIView+VFrameManipulation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+VFrameManipulation.h"; sourceTree = "<group>"; };
-		BEB52A7D18C12DCE00AC5FE4 /* UIView+VFrameManipulation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+VFrameManipulation.m"; sourceTree = "<group>"; };
 		BEB52A8918C80B8700AC5FE4 /* VContentToStreamAnimator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VContentToStreamAnimator.h; sourceTree = "<group>"; };
 		BEB52A8A18C80B8700AC5FE4 /* VContentToStreamAnimator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VContentToStreamAnimator.m; sourceTree = "<group>"; };
 		BED4569218BD581800A67160 /* UIWebView+VYoutubeLoading.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIWebView+VYoutubeLoading.h"; sourceTree = "<group>"; };
@@ -1128,8 +1125,6 @@
 				BE40559318A1828D00092AE1 /* UIButton+VImageLoading.m */,
 				BED4569218BD581800A67160 /* UIWebView+VYoutubeLoading.h */,
 				BED4569318BD581800A67160 /* UIWebView+VYoutubeLoading.m */,
-				BEB52A7C18C12DCE00AC5FE4 /* UIView+VFrameManipulation.h */,
-				BEB52A7D18C12DCE00AC5FE4 /* UIView+VFrameManipulation.m */,
 				03086AA518F38ABE00105FFB /* UIActionSheet+VBlocks.h */,
 				03086AA618F38ABE00105FFB /* UIActionSheet+VBlocks.m */,
 			);
@@ -1269,12 +1264,10 @@
 		BE46E69118CA73EC00974DAF /* Animations */ = {
 			isa = PBXGroup;
 			children = (
-				BE46E69818CA751F00974DAF /* VCommentToContentAnimator.h */,
-				BE46E69918CA751F00974DAF /* VCommentToContentAnimator.m */,
+				BE2D1E4518FF4F5200C6FF99 /* VContentToCommentAnimator.h */,
+				BE2D1E4618FF4F5200C6FF99 /* VContentToCommentAnimator.m */,
 				BEB52A8918C80B8700AC5FE4 /* VContentToStreamAnimator.h */,
 				BEB52A8A18C80B8700AC5FE4 /* VContentToStreamAnimator.m */,
-				BE2D1E3918FF2B0900C6FF99 /* VContentToCommentAnimator.h */,
-				BE2D1E3A18FF2B0900C6FF99 /* VContentToCommentAnimator.m */,
 			);
 			name = Animations;
 			sourceTree = "<group>";
@@ -1299,6 +1292,8 @@
 		BE692B2C186E5FD900C71336 /* Comment View */ = {
 			isa = PBXGroup;
 			children = (
+				BE46E69818CA751F00974DAF /* VCommentToContentAnimator.h */,
+				BE46E69918CA751F00974DAF /* VCommentToContentAnimator.m */,
 				BE692B34186E60B300C71336 /* VCommentCell.h */,
 				BE692B35186E60B300C71336 /* VCommentCell.m */,
 				BEB4C29F187E0778004ECEEF /* VCommentCell.xib */,
@@ -1389,8 +1384,8 @@
 		BEB52A8218C54C9A00AC5FE4 /* animations */ = {
 			isa = PBXGroup;
 			children = (
-				BE2D1E3618FF040F00C6FF99 /* VStreamToAnythingAnimator.h */,
-				BE2D1E3718FF040F00C6FF99 /* VStreamToAnythingAnimator.m */,
+				BE2D1E4218FF4F2600C6FF99 /* VStreamToAnythingAnimator.h */,
+				BE2D1E4318FF4F2600C6FF99 /* VStreamToAnythingAnimator.m */,
 			);
 			name = animations;
 			sourceTree = "<group>";
@@ -1660,7 +1655,6 @@
 				BEB4C29D187E038C004ECEEF /* VNewsCell.m in Sources */,
 				BE171E131868C211004E5202 /* VInteractionAction+RestKit.m in Sources */,
 				3F9B66771888C4DD0046F826 /* VForumStreamViewController.m in Sources */,
-				BEB52A7E18C12DCE00AC5FE4 /* UIView+VFrameManipulation.m in Sources */,
 				BED7F67A18E0BD5D00545DF6 /* UIImage+ImageCreation.m in Sources */,
 				BEA5BF71187FCBF10014C3EF /* VObjectManager+Users.m in Sources */,
 				3F53E0C318A485D400089C20 /* VUserManager.m in Sources */,
@@ -1678,6 +1672,7 @@
 				3F91991518761D1C0055FE37 /* VAcknowledgementsViewController.m in Sources */,
 				3F14C45318BD2BD0001796B9 /* VCVideoEncoder.m in Sources */,
 				3F91990B18761B0D0055FE37 /* VAboutUsViewController.m in Sources */,
+				BE2D1E4718FF4F5200C6FF99 /* VContentToCommentAnimator.m in Sources */,
 				BEB52A7B18C02D6600AC5FE4 /* VEmotiveBallisticsBarViewController.m in Sources */,
 				BE55CD15188F316900FE619F /* VObjectManager.m in Sources */,
 				BE5C7388187E37E500A3340D /* VConversation+RestKit.m in Sources */,
@@ -1686,7 +1681,6 @@
 				BE171E101868C211004E5202 /* VCategory+RestKit.m in Sources */,
 				3FA217C318A9B5160066E893 /* DeviceTableViewController.m in Sources */,
 				3FD7FFC118C69B2200945E5F /* VSetExpirationViewController.m in Sources */,
-				BE2D1E3B18FF2B0900C6FF99 /* VContentToCommentAnimator.m in Sources */,
 				BE5C7352187E36D000A3340D /* VCategory.m in Sources */,
 				3F91991A187CAF310055FE37 /* VMessageViewController.m in Sources */,
 				BE46E69A18CA751F00974DAF /* VCommentToContentAnimator.m in Sources */,
@@ -1716,7 +1710,6 @@
 				BED7F66518E0A6F800545DF6 /* TWAPIManager.m in Sources */,
 				3F919908187600720055FE37 /* VSettingsViewController.m in Sources */,
 				BE692B53186E60B300C71336 /* VCommentsTableViewController.m in Sources */,
-				BE2D1E3818FF040F00C6FF99 /* VStreamToAnythingAnimator.m in Sources */,
 				3FF7B6D718EE4009003831CD /* UIImage+Masking.m in Sources */,
 				BE171E0D1868C211004E5202 /* VAnswer+RestKit.m in Sources */,
 				3FDEDD0618CE48210028E3F1 /* VRemixStitchViewController.m in Sources */,
@@ -1765,6 +1758,7 @@
 				BEB52A7A18C02D6600AC5FE4 /* VContentViewController.m in Sources */,
 				BE5C7385187E37D400A3340D /* VMedia+RestKit.m in Sources */,
 				BE651D0E18AAD58A00069119 /* VLoadingViewController.m in Sources */,
+				BE2D1E4418FF4F2600C6FF99 /* VStreamToAnythingAnimator.m in Sources */,
 				BE6C15311880A31B00469BA8 /* VMedia.m in Sources */,
 				3F9B666E1888C4390046F826 /* VHomeStreamViewController.m in Sources */,
 				BED4569418BD581800A67160 /* UIWebView+VYoutubeLoading.m in Sources */,

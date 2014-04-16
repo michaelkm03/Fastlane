@@ -155,7 +155,7 @@
         [sRFC2822DateFormatter setTimeZone:[NSTimeZone timeZoneWithAbbreviation:@"GMT"]];
     });
     
-    return[sRFC2822DateFormatter stringFromDate:date];
+    return [sRFC2822DateFormatter stringFromDate:date];
 }
 
 - (void)createInputAccessoryView

@@ -81,12 +81,14 @@ CGFloat kContentMediaViewOffset = 154;
     
     self.navigationController.delegate = self;
     
-    [self.topActionsView setYOrigin:self.mediaView.frame.origin.y];
+    CGRect topActionsFrame = self.topActionsView.frame;
+    self.topActionsView.frame = CGRectMake(CGRectGetMinX(topActionsFrame), CGRectGetMinY(self.mediaView.frame), CGRectGetWidth(topActionsFrame), CGRectGetHeight(topActionsFrame));
+    
     self.topActionsView.alpha = 0;
     [UIView animateWithDuration:.2f
                      animations:^
      {
-         [self.topActionsView setYOrigin:0];
+         self.topActionsView.frame = CGRectMake(CGRectGetMinX(topActionsFrame), 0, CGRectGetWidth(topActionsFrame), CGRectGetHeight(topActionsFrame));
          self.topActionsView.alpha = 1;
          self.firstPollButton.alpha = 1;
          self.secondPollButton.alpha = 1;

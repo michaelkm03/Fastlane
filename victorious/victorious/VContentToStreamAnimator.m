@@ -16,8 +16,6 @@
 
 #import "VEmotiveBallisticsBarViewController.h"
 
-#import "UIView+VFrameManipulation.h"
-
 @interface VContentToStreamAnimator ()
 
 @property (strong, nonatomic) VStreamTableViewController* streamVC;
@@ -47,9 +45,8 @@
     [UIView animateWithDuration:.2f animations:^
     {
         contentVC.orImageView.alpha = 0;
-        
-        if (selectedCell)
-            [contentVC.previewImage setSize:selectedCell.frame.size];
+        CGRect frame = contentVC.previewImage.frame;
+        contentVC.previewImage.frame = CGRectMake(CGRectGetMinX(frame), CGRectGetMinY(frame), CGRectGetWidth(selectedCell.frame), CGRectGetHeight(selectedCell.frame));
     }];
     
     [contentVC.actionBarVC animateOutWithDuration:.2f
@@ -66,7 +63,8 @@
     [UIView animateWithDuration:.2
                      animations:^
      {
-         [contentVC.topActionsView setYOrigin:contentVC.mediaView.frame.origin.y];
+         CGRect frame = contentVC.topActionsView.frame;
+         contentVC.topActionsView.frame = CGRectMake(CGRectGetMinX(frame), CGRectGetMinY(contentVC.mediaView.frame), CGRectGetWidth(frame), CGRectGetHeight(frame));
          contentVC.topActionsView.alpha = 0;
      }
                      completion:^(BOOL finished)

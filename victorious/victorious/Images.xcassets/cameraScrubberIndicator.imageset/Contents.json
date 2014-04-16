@@ -3,12 +3,12 @@
     {
       "idiom" : "universal",
       "scale" : "1x",
-      "filename" : "double-arrow.png"
+      "filename" : "vertical-indicator.png"
     },
     {
       "idiom" : "universal",
       "scale" : "2x",
-      "filename" : "double-arrow@2x.png"
+      "filename" : "vertical-indicator@2x.png"
     }
   ],
   "info" : {

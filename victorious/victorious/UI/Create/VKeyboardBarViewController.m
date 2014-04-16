@@ -17,8 +17,7 @@
 
 #import "VLoginViewController.h"
 
-@interface VKeyboardBarViewController() <UITextFieldDelegate>
-@property (weak, nonatomic, readwrite) IBOutlet UITextField *textField;
+@interface VKeyboardBarViewController() <UITextViewDelegate>
 @property (weak, nonatomic) IBOutlet UIButton *mediaButton;
 @property (nonatomic, strong) NSString*  mediaExtension;
 @property (nonatomic, strong) NSURL* mediaURL;
@@ -30,10 +29,20 @@
 
 @implementation VKeyboardBarViewController
 
+- (void)dealloc
+{
+    [self.textView removeObserver:self forKeyPath:NSStringFromSelector(@selector(contentSize))];
+}
+
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
+    [self.textView addObserver:self forKeyPath:NSStringFromSelector(@selector(contentSize)) options:0 context:nil];
+}
+
 - (void)viewWillLayoutSubviews
 {
     [super viewWillLayoutSubviews];
-    self.view.frame = self.view.superview.bounds;
     
 //    [self.stickersView registerClass:[UICollectionViewCell class] forCellWithReuseIdentifier:@"stickerCell"];
     self.mediaButton.layer.cornerRadius = 2;
@@ -50,7 +59,7 @@
         [self presentViewController:[VLoginViewController loginViewController] animated:YES completion:NULL];
         return;
     }
-    [self.textField resignFirstResponder];
+    [self.textView resignFirstResponder];
     
 //    [super cameraButtonAction:sender];
 }
@@ -63,10 +72,10 @@
         return;
     }
     
-    [self.textField resignFirstResponder];
-    [self.delegate didComposeWithText:self.textField.text mediaURL:self.mediaURL mediaExtension:self.mediaExtension];
+    [self.textView resignFirstResponder];
+    [self.delegate keyboardBar:self didComposeWithText:self.textView.text mediaURL:self.mediaURL mediaExtension:self.mediaExtension];
     [self.mediaButton setImage:[UIImage imageNamed:@"MessageCamera"] forState:UIControlStateNormal];
-    self.textField.text = nil;
+    self.textView.text = nil;
     self.mediaExtension = nil;
     self.mediaURL = nil;
 }
@@ -88,8 +97,9 @@
     [self presentViewController:navController animated:YES completion:nil];
 }
 
-#pragma mark - UITextfieldDelegate
-- (BOOL)textFieldShouldBeginEditing:(UITextField *)textField
+#pragma mark - UITextViewDelegate methods
+
+- (BOOL)textViewShouldBeginEditing:(UITextView *)textView
 {
     if(![VObjectManager sharedManager].mainUser)
     {
@@ -97,6 +107,21 @@
         return NO;
     }
     return YES;
+}
+
+- (void)textViewDidChange:(UITextView *)textView
+{
+    self.promptLabel.hidden = ![textView.text isEqualToString:@""];
+}
+
+#pragma mark - KVO
+
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
+{
+    if (object == self.textView && [keyPath isEqualToString:NSStringFromSelector(@selector(contentSize))])
+    {
+        [self.delegate keyboardBar:self wouldLikeToBeResizedToHeight:(14.0f + self.textView.contentSize.height)];
+    }
 }
 
 @end

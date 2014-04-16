@@ -21,8 +21,11 @@
     [UIView animateWithDuration:.2f
                      animations:^{
                          
-                         [self.firstSmallPreviewImage setXOrigin:self.firstSmallPreviewImage.frame.origin.x - 1];
-                         [self.secondSmallPreviewImage setXOrigin:self.secondSmallPreviewImage.frame.origin.x + 1];
+                         CGRect firstSmallFrame = self.firstSmallPreviewImage.frame;
+                         self.firstSmallPreviewImage.frame = CGRectMake(CGRectGetMinX(firstSmallFrame) - 1.0f, CGRectGetMinY(firstSmallFrame), CGRectGetWidth(firstSmallFrame), CGRectGetHeight(firstSmallFrame));
+                         
+                         CGRect secondSmallFrame = self.secondSmallPreviewImage.frame;
+                         self.secondSmallPreviewImage.frame = CGRectMake(CGRectGetMinX(secondSmallFrame) + 1.0f, CGRectGetMinY(secondSmallFrame), CGRectGetWidth(secondSmallFrame), CGRectGetHeight(secondSmallFrame));
                          
                          self.orImageView.hidden = ![self.currentNode isPoll];
                          self.orImageView.center = CGPointMake(self.orImageView.center.x, self.pollPreviewView.center.y);
