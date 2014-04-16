@@ -18,7 +18,6 @@
 
 #import "VThemeManager.h"
 
-#import "UIView+VFrameManipulation.h"
 #import "NSString+VParseHelp.h"
 #import "UIImage+ImageCreation.h"
 

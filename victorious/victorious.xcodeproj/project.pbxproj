@@ -194,7 +194,6 @@
 		BEB52A7218BF38A400AC5FE4 /* VStreamYoutubeVideoCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = BEB52A7118BF38A400AC5FE4 /* VStreamYoutubeVideoCell.xib */; };
 		BEB52A7A18C02D6600AC5FE4 /* VContentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BEB52A7718C02D6600AC5FE4 /* VContentViewController.m */; };
 		BEB52A7B18C02D6600AC5FE4 /* VEmotiveBallisticsBarViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BEB52A7918C02D6600AC5FE4 /* VEmotiveBallisticsBarViewController.m */; };
-		BEB52A7E18C12DCE00AC5FE4 /* UIView+VFrameManipulation.m in Sources */ = {isa = PBXBuildFile; fileRef = BEB52A7D18C12DCE00AC5FE4 /* UIView+VFrameManipulation.m */; };
 		BEB52A8518C5611A00AC5FE4 /* VStreamContentSegue.m in Sources */ = {isa = PBXBuildFile; fileRef = BEB52A8418C5611A00AC5FE4 /* VStreamContentSegue.m */; };
 		BEB52A8B18C80B8700AC5FE4 /* VContentToStreamAnimator.m in Sources */ = {isa = PBXBuildFile; fileRef = BEB52A8A18C80B8700AC5FE4 /* VContentToStreamAnimator.m */; };
 		BEB5374818C8FE6400435C29 /* VStreamTransitioningDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = BEB5374718C8FE6400435C29 /* VStreamTransitioningDelegate.m */; };
@@ -569,8 +568,6 @@
 		BEB52A7718C02D6600AC5FE4 /* VContentViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VContentViewController.m; path = "UI/Content View/VContentViewController.m"; sourceTree = "<group>"; };
 		BEB52A7818C02D6600AC5FE4 /* VEmotiveBallisticsBarViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VEmotiveBallisticsBarViewController.h; path = "UI/Content View/VEmotiveBallisticsBarViewController.h"; sourceTree = "<group>"; };
 		BEB52A7918C02D6600AC5FE4 /* VEmotiveBallisticsBarViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VEmotiveBallisticsBarViewController.m; path = "UI/Content View/VEmotiveBallisticsBarViewController.m"; sourceTree = "<group>"; };
-		BEB52A7C18C12DCE00AC5FE4 /* UIView+VFrameManipulation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+VFrameManipulation.h"; sourceTree = "<group>"; };
-		BEB52A7D18C12DCE00AC5FE4 /* UIView+VFrameManipulation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+VFrameManipulation.m"; sourceTree = "<group>"; };
 		BEB52A8318C5611A00AC5FE4 /* VStreamContentSegue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VStreamContentSegue.h; path = UI/Segues/VStreamContentSegue.h; sourceTree = "<group>"; };
 		BEB52A8418C5611A00AC5FE4 /* VStreamContentSegue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VStreamContentSegue.m; path = UI/Segues/VStreamContentSegue.m; sourceTree = "<group>"; };
 		BEB52A8918C80B8700AC5FE4 /* VContentToStreamAnimator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VContentToStreamAnimator.h; sourceTree = "<group>"; };
@@ -1134,8 +1131,6 @@
 				BE40559318A1828D00092AE1 /* UIButton+VImageLoading.m */,
 				BED4569218BD581800A67160 /* UIWebView+VYoutubeLoading.h */,
 				BED4569318BD581800A67160 /* UIWebView+VYoutubeLoading.m */,
-				BEB52A7C18C12DCE00AC5FE4 /* UIView+VFrameManipulation.h */,
-				BEB52A7D18C12DCE00AC5FE4 /* UIView+VFrameManipulation.m */,
 				03086AA518F38ABE00105FFB /* UIActionSheet+VBlocks.h */,
 				03086AA618F38ABE00105FFB /* UIActionSheet+VBlocks.m */,
 			);
@@ -1670,7 +1665,6 @@
 				BEB4C29D187E038C004ECEEF /* VNewsCell.m in Sources */,
 				BE171E131868C211004E5202 /* VInteractionAction+RestKit.m in Sources */,
 				3F9B66771888C4DD0046F826 /* VForumStreamViewController.m in Sources */,
-				BEB52A7E18C12DCE00AC5FE4 /* UIView+VFrameManipulation.m in Sources */,
 				BED7F67A18E0BD5D00545DF6 /* UIImage+ImageCreation.m in Sources */,
 				BEA5BF71187FCBF10014C3EF /* VObjectManager+Users.m in Sources */,
 				3F53E0C318A485D400089C20 /* VUserManager.m in Sources */,
