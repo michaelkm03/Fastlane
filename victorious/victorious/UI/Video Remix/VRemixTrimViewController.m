@@ -53,6 +53,8 @@
     
     self.trimSlider.delegate = self;
     [self.trimControlContainer addSubview:self.trimSlider];
+    
+    [self.scrubber setThumbImage:[UIImage imageNamed:@"cameraScrubberIndicator"] forState:UIControlStateNormal];
 }
 
 -(void)viewWillAppear:(BOOL)animated
