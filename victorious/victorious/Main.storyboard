@@ -359,7 +359,7 @@
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <connections>
-                                    <segue destination="jYa-7x-T8Z" kind="unwind" unwindAction="unwindToStreamTable:" id="N3r-bV-d5o"/>
+                                    <action selector="pressedBackButton:" destination="yAz-qI-kJZ" eventType="touchUpInside" id="FH5-a9-uhE"/>
                                 </connections>
                             </button>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="COMMENTS" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kYy-hF-Nue">
@@ -378,12 +378,14 @@
                         <outlet property="backgroundImage" destination="IEc-5s-XIc" id="Zck-gG-jaH"/>
                         <outlet property="titleLabel" destination="kYy-hF-Nue" id="ygS-fR-jmH"/>
                         <outlet property="topConstraintView" destination="kYy-hF-Nue" id="tkC-xb-VXX"/>
+                        <segue destination="jYa-7x-T8Z" kind="unwind" unwindAction="unwindToStreamTable:" id="F1h-HB-cr4"/>
+                        <segue destination="jYa-7x-T8Z" kind="unwind" unwindAction="unwindToContentView:" id="ogC-OD-cW8"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="JpL-zC-mxW" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <exit id="jYa-7x-T8Z" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
-            <point key="canvasLocation" x="-2270" y="-1666"/>
+            <point key="canvasLocation" x="-1938" y="-1702"/>
         </scene>
         <!--Keyboard Bar View Controller-->
         <scene sceneID="mYy-rg-OQ6">
@@ -439,7 +441,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dxU-B0-nHs" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1135" y="-296"/>
+            <point key="canvasLocation" x="-1509" y="-976"/>
         </scene>
         <!--Comments Table View Controller-->
         <scene sceneID="fSF-nY-54B">
@@ -460,7 +462,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="UKW-Km-9l6" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1913" y="-1674"/>
+            <point key="canvasLocation" x="-1581" y="-1710"/>
         </scene>
         <!--Root View Controller-->
         <scene sceneID="SBu-AO-Tpm">
@@ -1051,7 +1053,7 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="J2i-Hn-xg3" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <exit id="ZFi-rh-QOq" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
-            <point key="canvasLocation" x="-2270" y="-942"/>
+            <point key="canvasLocation" x="-1938" y="-522"/>
         </scene>
         <!--Community Stream View Controller - Community-->
         <scene sceneID="dPq-IM-DIk">
@@ -1360,7 +1362,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="cZZ-Yn-Uhj" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1512" y="-2049"/>
+            <point key="canvasLocation" x="-1338" y="-569"/>
         </scene>
         <!--Home Stream View Controller - Home-->
         <scene sceneID="PlQ-Kr-rTc">
@@ -1391,6 +1393,7 @@
                     <connections>
                         <outlet property="searchDisplayController" destination="sLT-qC-jdj" id="aTt-Hd-sI9"/>
                         <segue destination="4V8-Qd-rfj" kind="custom" identifier="streamcontent" customClass="VStreamContentSegue" id="hhE-4U-i31"/>
+                        <segue destination="yAz-qI-kJZ" kind="custom" identifier="streamcomment" customClass="VStreamContentSegue" id="1Mw-gO-Ehe"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="aRm-WT-6fz" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -1554,7 +1557,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="neH-vB-TZ9" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-2444" y="-254"/>
+            <point key="canvasLocation" x="-2150" y="166"/>
         </scene>
         <!--Poll Answer Bar View Controller-->
         <scene sceneID="bVi-Yh-R1f">
@@ -1653,7 +1656,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="xDv-wZ-8yQ" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-2097" y="-254"/>
+            <point key="canvasLocation" x="-1803" y="166"/>
         </scene>
     </scenes>
     <resources>
@@ -1691,7 +1694,8 @@
         <simulatedScreenMetrics key="destination" type="retina4"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
+        <segue reference="1Mw-gO-Ehe"/>
+        <segue reference="hhE-4U-i31"/>
         <segue reference="nH9-Zs-lk0"/>
-        <segue reference="jpa-ws-Don"/>
     </inferredMetricsTieBreakers>
 </document>

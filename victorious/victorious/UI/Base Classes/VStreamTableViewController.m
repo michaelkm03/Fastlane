@@ -350,9 +350,16 @@
 - (void)willCommentSequence:(NSNotification *)notification
 {
     VStreamViewCell *cell = (VStreamViewCell *)notification.object;
-    VCommentsContainerViewController* commentsTable = [VCommentsContainerViewController commentsContainerView];
-    commentsTable.sequence = cell.sequence;
-    [self.navigationController pushViewController:commentsTable animated:YES];
+
+    UIImageView* newBackgroundView = [[UIImageView alloc] initWithFrame:self.tableView.backgroundView.frame];
+    UIImage* placeholderImage = [UIImage resizeableImageWithColor:[[VThemeManager sharedThemeManager] themedColorForKey:kVBackgroundColor]];
+    
+    [newBackgroundView setLightBlurredImageWithURL:[[cell.sequence initialImageURLs] firstObject]
+                                  placeholderImage:placeholderImage];
+    
+    self.tableView.backgroundView = newBackgroundView;
+    
+    [self performSegueWithIdentifier:kStreamCommentSegueID sender:cell];
 }
 
 #pragma mark - Navigation
@@ -367,6 +374,11 @@
         ((VStreamContentSegue*)segue).selectedCell = sender;
         VContentViewController* contentVC = segue.destinationViewController;
         contentVC.sequence = ((VStreamViewCell*)sender).sequence;
+    }
+    else if ([segue.identifier isEqualToString:kStreamCommentSegueID])
+    {
+        VCommentsContainerViewController* commentsTable = segue.destinationViewController;
+        commentsTable.sequence = ((VStreamViewCell*)sender).sequence;
     }
 }
 

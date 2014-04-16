@@ -16,6 +16,8 @@
 #import "UIView+VFrameManipulation.h"
 #import "UIImageView+Blurring.h"
 #import "UIImage+ImageCreation.h"
+#import "VStreamTableViewController.h"
+#import "VContentViewController.h"
 
 #import "VThemeManager.h"
 
@@ -122,6 +124,21 @@
 {
     self.keyboardBarViewController.textField.text = [NSString stringWithFormat:@"@%@ ", user.name];
     [self.keyboardBarViewController.textField becomeFirstResponder];
+}
+
+- (IBAction)pressedBackButton:(id)sender
+{
+    NSString* segueID;
+    if ([[self presentingViewController] isKindOfClass:[VStreamTableViewController class]])
+    {
+        segueID = kUnwindToSteamSegueID;
+    }
+    else
+    {
+        segueID = kUnwindToContentSegueID;
+    }
+    
+    [self performSegueWithIdentifier:segueID sender:self];
 }
 
 @end
