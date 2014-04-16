@@ -32,6 +32,8 @@ extern  NSString*   const   kVHeading2Font;
 extern  NSString*   const   kVHeading3Font;
 extern  NSString*   const   kVHeading4Font;
 
+extern  NSString*   const   kVParagraphFont;
+
 extern  NSString*   const   kVLabel1Font;
 extern  NSString*   const   kVLabel2Font;
 extern  NSString*   const   kVLabel3Font;

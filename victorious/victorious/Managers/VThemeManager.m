@@ -33,6 +33,8 @@ NSString*   const   kVHeading2Font                      =   @"font.heading2";
 NSString*   const   kVHeading3Font                      =   @"font.heading3";
 NSString*   const   kVHeading4Font                      =   @"font.heading4";
 
+NSString*   const   kVParagraphFont                     =   @"font.paragraph";
+
 NSString*   const   kVLabel1Font                        =   @"font.labe1";
 NSString*   const   kVLabel2Font                        =   @"font.labe2";
 NSString*   const   kVLabel3Font                        =   @"font.labe3";
