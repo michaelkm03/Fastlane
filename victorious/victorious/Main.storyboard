@@ -1686,7 +1686,6 @@
                         <outlet property="selectedCheckImage" destination="CaN-bX-wjx" id="oh1-BW-7oW"/>
                         <outlet property="selectedContainmentView" destination="h6y-Vg-Xrc" id="tt1-Qf-KSO"/>
                         <outlet property="selectedHexImage" destination="zeQ-mQ-5yp" id="mAA-jt-hvC"/>
-                        <outlet property="view" destination="zeQ-mQ-5yp" id="0Fk-lQ-i06"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="xDv-wZ-8yQ" userLabel="First Responder" sceneMemberID="firstResponder"/>
