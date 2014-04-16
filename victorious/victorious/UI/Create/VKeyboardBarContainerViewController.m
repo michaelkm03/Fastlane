@@ -59,7 +59,8 @@
     [self.view addConstraint:self.bottomConstraint];
     
     UIView *tableView = self.conversationTableViewController.view;
-    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[tableView][keyboardView]" options:0 metrics:nil views:NSDictionaryOfVariableBindings(tableView, keyboardView)]];
+    id topConstraintView = (id)self.topConstraintView ?: self.topLayoutGuide;
+    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[topConstraintView][tableView][keyboardView]" options:0 metrics:nil views:NSDictionaryOfVariableBindings(topConstraintView, tableView, keyboardView)]];
     [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[tableView]|" options:0 metrics:nil views:NSDictionaryOfVariableBindings(tableView)]];
 }
 
@@ -88,12 +89,6 @@
     }
 
     return _keyboardBarViewController;
-}
-
-- (void)viewDidLayoutSubviews
-{
-    [super viewDidLayoutSubviews];
-    self.conversationTableViewController.tableView.contentInset = UIEdgeInsetsMake(self.topLayoutGuide.length, 0, 0, 0);
 }
 
 - (void)keyboardFrameChanged:(NSNotification *)notification
