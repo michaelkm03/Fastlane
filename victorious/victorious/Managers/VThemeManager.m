@@ -56,6 +56,7 @@ NSString*   const   kVSecondaryAccentColor              =   @"color.accent.secon
 
 NSString*   const   kVLinkColor                         =   @"color.link";
 
+NSString*   const   kVNewThemeKey                       =   @"kVNewTheme";
 
 @interface      VThemeManager   ()
 @end
@@ -91,12 +92,20 @@ NSString*   const   kVLinkColor                         =   @"color.link";
 
 - (void)setTheme:(NSDictionary *)dictionary
 {
-    [dictionary enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop)
-     {
-        [[NSUserDefaults standardUserDefaults] setObject:obj forKey:key];
-    }];
+    [[NSUserDefaults standardUserDefaults] setObject:dictionary forKey:kVNewThemeKey];
+//    [[NSNotificationCenter defaultCenter] postNotificationName:kVThemeManagerThemeDidChange object:self userInfo:nil];
+}
 
-    [[NSNotificationCenter defaultCenter] postNotificationName:kVThemeManagerThemeDidChange object:self userInfo:nil];
+- (void)updateToNewTheme
+{
+    NSDictionary* newTheme = [[NSUserDefaults standardUserDefaults] objectForKey:kVNewThemeKey];
+    
+    [newTheme enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop)
+     {
+         [[NSUserDefaults standardUserDefaults] setObject:obj forKey:key];
+     }];
+    
+    [[NSUserDefaults standardUserDefaults] setObject:nil forKey:kVNewThemeKey];
 }
 
 

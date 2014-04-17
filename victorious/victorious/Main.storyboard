@@ -1204,9 +1204,41 @@
                     <view key="view" contentMode="scaleToFill" id="eLu-Xq-owQ">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="o05-KB-ddg" userLabel="Background Image">
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                            </imageView>
+                            <label hidden="YES" opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="No Internet Connection." textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9lr-kw-Rjm">
+                                <rect key="frame" x="0.0" y="568" width="320" height="32"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
+                                <color key="backgroundColor" red="1" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="32" id="kJt-2K-vfE"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="9lr-kw-Rjm" firstAttribute="leading" secondItem="eLu-Xq-owQ" secondAttribute="leading" id="2Cj-um-GQE"/>
+                            <constraint firstItem="9lr-kw-Rjm" firstAttribute="top" secondItem="eLu-Xq-owQ" secondAttribute="bottom" id="7Fh-rp-XbZ"/>
+                            <constraint firstAttribute="trailing" secondItem="9lr-kw-Rjm" secondAttribute="trailing" id="TKa-7M-X9u"/>
+                            <constraint firstItem="o05-KB-ddg" firstAttribute="leading" secondItem="eLu-Xq-owQ" secondAttribute="leading" id="VQX-jy-0ox"/>
+                            <constraint firstAttribute="bottom" secondItem="o05-KB-ddg" secondAttribute="bottom" id="eyZ-0K-gHW"/>
+                            <constraint firstAttribute="trailing" secondItem="o05-KB-ddg" secondAttribute="trailing" id="sub-ga-Znw"/>
+                            <constraint firstItem="o05-KB-ddg" firstAttribute="top" secondItem="eLu-Xq-owQ" secondAttribute="top" id="yQd-sz-ySf"/>
+                        </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="H23-6d-eXe"/>
+                    <connections>
+                        <outlet property="backgroundImageView" destination="o05-KB-ddg" id="qpx-45-A3v"/>
+                        <outlet property="reachabilityLabel" destination="9lr-kw-Rjm" id="y8c-tl-kVF"/>
+                        <outlet property="reachabilityLabelHeightConstraint" destination="kJt-2K-vfE" id="PI6-kz-5gC"/>
+                        <outlet property="reachabilityLabelPositionConstraint" destination="7Fh-rp-XbZ" id="w6f-Ci-Jav"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="o0G-EI-Vz1" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>

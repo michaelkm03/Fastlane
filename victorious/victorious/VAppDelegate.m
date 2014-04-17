@@ -9,6 +9,7 @@
 #import "VAppDelegate.h"
 #import <TestFlightSDK/TestFlight.h>
 #import "VThemeManager.h"
+#import "VReachability.h"
 
 #import "VObjectManager+Sequence.h"
 #import "VObjectManager+Login.h"
@@ -48,17 +49,9 @@
 //    }
     
     [[AFNetworkActivityIndicatorManager sharedManager] setEnabled:YES];
+    [[VReachability reachabilityForInternetConnection] startNotifier];
 
     [VObjectManager setupObjectManager];
-    (void)[[VObjectManager sharedManager] initialSequenceLoad];
-    [[VObjectManager sharedManager] appInitWithSuccessBlock:^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
-    {
-        VLog(@"Succeeded with objects: %@", resultObjects);
-    }
-                                                  failBlock:^(NSOperation* operation, NSError* error)
-    {
-        VLog(@"Failed with error: %@", error);
-    }];
     
 #ifdef STABLE_DEBUG
     [TestFlight takeOff:[[NSBundle mainBundle] objectForInfoDictionaryKey:kTestflightStableToken]];
@@ -122,6 +115,7 @@
 
 - (void)applicationDidEnterBackground:(UIApplication *)application
 {
+    [[VThemeManager sharedThemeManager] updateToNewTheme];
     [[VObjectManager sharedManager].managedObjectStore.persistentStoreManagedObjectContext save:nil];
 }
 
@@ -137,6 +131,7 @@
 
 - (void)applicationWillTerminate:(UIApplication *)application
 {
+    [[VThemeManager sharedThemeManager] updateToNewTheme];
     [[VObjectManager sharedManager].managedObjectStore.persistentStoreManagedObjectContext save:nil];
 }
 
