@@ -3,12 +3,12 @@
     {
       "idiom" : "universal",
       "scale" : "1x",
-      "filename" : "btn-remix.png"
+      "filename" : "btn-remix-notint.png"
     },
     {
       "idiom" : "universal",
       "scale" : "2x",
-      "filename" : "btn-remix@2x.png"
+      "filename" : "btn-remix-notint@2x.png"
     }
   ],
   "info" : {

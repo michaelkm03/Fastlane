@@ -17,8 +17,7 @@
 #import "UIImageView+Blurring.h"
 #import "UIImage+ImageCreation.h"
 
-#import "VStreamContentSegue.h"
-#import "VStreamTransitioningDelegate.h"
+#import "VStreamToAnythingAnimator.h"
 
 //Cells
 #import "VStreamViewCell.h"
@@ -35,8 +34,10 @@
 
 #import "VThemeManager.h"
 
-@interface VStreamTableViewController() <UIViewControllerTransitioningDelegate>
+@interface VStreamTableViewController() <UIViewControllerTransitioningDelegate, UINavigationControllerDelegate>
 @property (strong, nonatomic) id<UIViewControllerTransitioningDelegate> transitionDelegate;
+
+@property (strong, nonatomic) VStreamToAnythingAnimator* streamToAnyAnimator;
 
 @property (strong, nonatomic) NSCache* preloadImageCache;
 @end
@@ -46,8 +47,6 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
-    self.transitionDelegate = [[VStreamTransitioningDelegate alloc] init];
     
     self.tableView.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVSecondaryAccentColor];
     
@@ -64,15 +63,25 @@
     else
         [self.tableView reloadData]; //force a reload incase anything has changed
     
+    self.clearsSelectionOnViewWillAppear = NO;
+    
+    self.streamToAnyAnimator = [[VStreamToAnythingAnimator alloc] init];
+    
     //Remove the search button from the stream - feature currently deprecated
     self.navigationItem.rightBarButtonItem = nil;
 }
 
-- (void)viewWillAppear:(BOOL)animated
+- (void)viewDidAppear:(BOOL)animated
 {
-    [super viewWillAppear:animated];
+    [super viewDidAppear:animated];
     
-    [self.navigationController setNavigationBarHidden:NO animated:animated];
+    self.navigationController.delegate = self;
+    
+    CGRect navBarFrame = self.navigationController.navigationBar.frame;
+    navBarFrame.origin.y = 0;
+    self.navigationController.navigationBar.frame = navBarFrame;
+    [[VThemeManager sharedThemeManager] applyNormalNavBarStyling];
+    [self.navigationController setNavigationBarHidden:NO animated:NO];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -88,6 +97,11 @@
      {
          self.navigationController.navigationBar.frame = navBarFrame;
      }];
+    
+    if (self.navigationController.delegate == self)
+    {
+        self.navigationController.delegate = nil;
+    }
 }
 
 #pragma mark - FetchedResultsControllers
@@ -138,7 +152,8 @@
     self.tableView.backgroundView = newBackgroundView;
     if (tableView.contentOffset.y == cell.frame.origin.y - kContentMediaViewOffset)
     {
-        [self performSegueWithIdentifier:kStreamContentSegueStoryboardID sender:cell];
+        [self.navigationController pushViewController:[VContentViewController sharedInstance] animated:YES];
+//        [self performSegueWithIdentifier:kStreamContentSegueStoryboardID sender:cell];
     }
     else
     {
@@ -151,7 +166,8 @@
     VStreamViewCell* cell = (VStreamViewCell*)[self.tableView cellForRowAtIndexPath:self.tableView.indexPathForSelectedRow];
     if (cell)
     {
-        [self performSegueWithIdentifier:kStreamContentSegueStoryboardID sender:cell];
+        [self.navigationController pushViewController:[VContentViewController sharedInstance] animated:YES];
+//        [self performSegueWithIdentifier:kStreamContentSegueStoryboardID sender:cell];
     }
 }
 
@@ -350,41 +366,29 @@
 - (void)willCommentSequence:(NSNotification *)notification
 {
     VStreamViewCell *cell = (VStreamViewCell *)notification.object;
-
-    UIImageView* newBackgroundView = [[UIImageView alloc] initWithFrame:self.tableView.backgroundView.frame];
-    UIImage* placeholderImage = [UIImage resizeableImageWithColor:[[VThemeManager sharedThemeManager] themedColorForKey:kVBackgroundColor]];
     
-    [newBackgroundView setLightBlurredImageWithURL:[[cell.sequence initialImageURLs] firstObject]
-                                  placeholderImage:placeholderImage];
+    [self.tableView selectRowAtIndexPath:[self.fetchedResultsController indexPathForObject:cell]
+                                animated:NO
+                          scrollPosition:UITableViewScrollPositionNone];
     
-    self.tableView.backgroundView = newBackgroundView;
-    
-    [self performSegueWithIdentifier:kStreamCommentSegueID sender:cell];
+    VCommentsContainerViewController* commentsTable = [VCommentsContainerViewController commentsContainerView];
+    commentsTable.sequence = cell.sequence;
+    commentsTable.parentVC = self;
+    [self.navigationController pushViewController:commentsTable animated:YES];
 }
 
-#pragma mark - Navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
+#pragma marke- Navigation
+- (id<UIViewControllerAnimatedTransitioning>) navigationController:(UINavigationController *)navigationController
+                                   animationControllerForOperation:(UINavigationControllerOperation)operation
+                                                fromViewController:(UIViewController*)fromVC
+                                                  toViewController:(UIViewController*)toVC
 {
-    ((VStreamTransitioningDelegate*)self.transitionDelegate).indexPathForSelectedCell = self.tableView.indexPathForSelectedRow;
-    ((UIViewController*)segue.destinationViewController).transitioningDelegate = self.transitionDelegate;
-    ((UIViewController*)segue.destinationViewController).modalPresentationStyle= UIModalPresentationCustom;
-
-    if ([segue.identifier isEqualToString:kStreamContentSegueStoryboardID])
+    if (operation == UINavigationControllerOperationPush
+        && ([toVC isKindOfClass:[VContentViewController class]] || [toVC isKindOfClass:[VCommentsContainerViewController class]]) )
     {
-        ((VStreamContentSegue*)segue).selectedCell = sender;
-        VContentViewController* contentVC = segue.destinationViewController;
-        contentVC.sequence = ((VStreamViewCell*)sender).sequence;
+        return self.streamToAnyAnimator;
     }
-    else if ([segue.identifier isEqualToString:kStreamCommentSegueID])
-    {
-        VCommentsContainerViewController* commentsTable = segue.destinationViewController;
-        commentsTable.sequence = ((VStreamViewCell*)sender).sequence;
-    }
-}
-
-- (IBAction)unwindToStreamTable:(UIStoryboardSegue*)sender
-{
-    
+    return nil;
 }
 
 @end
