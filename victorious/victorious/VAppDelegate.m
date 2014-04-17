@@ -122,6 +122,7 @@
 
 - (void)applicationDidEnterBackground:(UIApplication *)application
 {
+    [[VThemeManager sharedThemeManager] updateToNewTheme];
     [[VObjectManager sharedManager].managedObjectStore.persistentStoreManagedObjectContext save:nil];
 }
 
@@ -137,6 +138,7 @@
 
 - (void)applicationWillTerminate:(UIApplication *)application
 {
+    [[VThemeManager sharedThemeManager] updateToNewTheme];
     [[VObjectManager sharedManager].managedObjectStore.persistentStoreManagedObjectContext save:nil];
 }
 
