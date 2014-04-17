@@ -43,7 +43,6 @@
          [UIView animateWithDuration:.25f
                           animations:^
           {
-              
               for (UIView* view in commentsContainer.view.subviews)
               {
                   if ([view isKindOfClass:[UIImageView class]])

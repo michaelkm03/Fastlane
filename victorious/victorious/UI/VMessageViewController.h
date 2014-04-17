@@ -10,6 +10,9 @@
 @class VKeyboardBarViewController;
 
 @interface VMessageViewController : UITableViewController
+
 @property (nonatomic, readwrite, strong)    VConversation*  conversation;
-@property (nonatomic, weak) VKeyboardBarViewController* composeViewController;
+
+- (void)refresh;
+
 @end

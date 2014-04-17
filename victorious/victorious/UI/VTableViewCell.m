@@ -32,7 +32,7 @@
     
     [self.buttons enumerateObjectsUsingBlock:^(UIButton *button, NSUInteger idx, BOOL *stop)
      {
-         button.titleLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeading3Font];
+         button.titleLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVParagraphFont];
          button.tintColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVMainTextColor];
      }];
 }

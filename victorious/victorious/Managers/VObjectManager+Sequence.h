@@ -9,14 +9,14 @@
 #import "VObjectManager.h"
 #import "VConstants.h"
 
-extern NSString* const kInitialLoadFinishedNotification;
 extern NSString* const kPollResultsLoaded;
 
 @class VAnswer, VSequence, VCategory, VVoteType;
 
 @interface VObjectManager (Sequence)
 
-- (RKManagedObjectRequestOperation *)initialSequenceLoad;
+- (RKManagedObjectRequestOperation *)initialSequenceLoadWithSuccessBlock:(VSuccessBlock)success
+                                                               failBlock:(VFailBlock)fail;
 
 - (RKManagedObjectRequestOperation *)loadNextPageOfSequencesForCategory:(NSString*)category
                                                            successBlock:(VSuccessBlock)success
