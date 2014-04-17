@@ -2048,7 +2048,7 @@
 			};
 			name = Release;
 		};
-		BE4055A318A41BEE00092AE1 /* Stable Dev */ = {
+		BE4055A318A41BEE00092AE1 /* QA */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
@@ -2073,7 +2073,7 @@
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
 					"$(inherited)",
-					"STABLE_DEBUG=1",
+					"QA=1",
 				);
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
@@ -2088,9 +2088,9 @@
 				SDKROOT = iphoneos;
 				VALID_ARCHS = "armv7 armv7s";
 			};
-			name = "Stable Dev";
+			name = QA;
 		};
-		BE4055A418A41BEE00092AE1 /* Stable Dev */ = {
+		BE4055A418A41BEE00092AE1 /* QA */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 33ACD3CBAF2C419D97FB901A /* Pods.xcconfig */;
 			buildSettings = {
@@ -2105,13 +2105,13 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "victorious/Supporting Files/victorious-Prefix.pch";
 				INFOPLIST_FILE = AppSpecific/Info.plist;
-				PRODUCT_NAME = "stable-$(TARGET_NAME)";
+				PRODUCT_NAME = "qa-$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				WRAPPER_EXTENSION = app;
 			};
-			name = "Stable Dev";
+			name = QA;
 		};
-		BE4055A518A41BEE00092AE1 /* Stable Dev */ = {
+		BE4055A518A41BEE00092AE1 /* QA */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 33ACD3CBAF2C419D97FB901A /* Pods.xcconfig */;
 			buildSettings = {
@@ -2132,7 +2132,7 @@
 				TEST_HOST = "$(BUNDLE_LOADER)";
 				WRAPPER_EXTENSION = xctest;
 			};
-			name = "Stable Dev";
+			name = QA;
 		};
 /* End XCBuildConfiguration section */
 
@@ -2141,7 +2141,7 @@
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				BE171DA61868BE64004E5202 /* Debug */,
-				BE4055A318A41BEE00092AE1 /* Stable Dev */,
+				BE4055A318A41BEE00092AE1 /* QA */,
 				BE171DA71868BE64004E5202 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
@@ -2151,7 +2151,7 @@
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				BE171DA91868BE64004E5202 /* Debug */,
-				BE4055A418A41BEE00092AE1 /* Stable Dev */,
+				BE4055A418A41BEE00092AE1 /* QA */,
 				BE171DAA1868BE64004E5202 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
@@ -2161,7 +2161,7 @@
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				BE171DAC1868BE64004E5202 /* Debug */,
-				BE4055A518A41BEE00092AE1 /* Stable Dev */,
+				BE4055A518A41BEE00092AE1 /* QA */,
 				BE171DAD1868BE64004E5202 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
