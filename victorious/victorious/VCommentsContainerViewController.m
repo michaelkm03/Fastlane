@@ -71,9 +71,9 @@
     [self.view addSubview:self.backButton];
 }
 
-- (void)viewWillAppear:(BOOL)animated
+- (void)viewDidAppear:(BOOL)animated
 {
-    [super viewWillAppear:animated];
+    [super viewDidAppear:animated];
     
     [self.navigationController setNavigationBarHidden:YES animated:animated];
     self.navigationController.delegate = self;
@@ -81,20 +81,18 @@
     if (animated)
     {
         __block CGFloat originalKeyboardY = self.keyboardBarViewController.view.frame.origin.y;
-        __block CGFloat originalConvertationX = self.conversationTableViewController.view.frame.origin.y;
+        __block CGFloat originalConvertationX = self.conversationTableViewController.view.frame.origin.x;
         
         CGRect viewFrame = self.conversationTableViewController.view.frame;
         self.conversationTableViewController.view.frame = CGRectMake(CGRectGetWidth(self.view.frame),
                                                                      CGRectGetMinY(viewFrame),
                                                                      CGRectGetWidth(viewFrame),
                                                                      CGRectGetHeight(viewFrame));
-        
-        CGRect keyboardBarFrame = self.keyboardBarViewController.view.frame;
-        self.keyboardBarViewController.view.frame = CGRectMake(CGRectGetMinX(keyboardBarFrame),
-                                                               CGRectGetHeight(self.view.frame),
-                                                               CGRectGetWidth(keyboardBarFrame),
-                                                               CGRectGetHeight(keyboardBarFrame));
-        [UIView animateWithDuration:.5f
+
+        self.keyboardBarViewController.view.alpha = 0;
+        self.backButton.alpha = 0;
+        self.titleLabel.alpha = 0;
+        [UIView animateWithDuration:.3f
                          animations:^
          {
              CGRect viewFrame = self.conversationTableViewController.view.frame;
@@ -105,14 +103,12 @@
          }
                          completion:^(BOOL finished)
          {
-             [UIView animateWithDuration:.5f
+             [UIView animateWithDuration:.1f
                               animations:^
               {
-                  CGRect keyboardBarFrame = self.keyboardBarViewController.view.frame;
-                  self.keyboardBarViewController.view.frame = CGRectMake(CGRectGetMinX(keyboardBarFrame),
-                                                                         originalKeyboardY,
-                                                                         CGRectGetWidth(keyboardBarFrame),
-                                                                         CGRectGetHeight(keyboardBarFrame));
+                  self.keyboardBarViewController.view.alpha = 1;
+                  self.backButton.alpha = 1;
+                  self.titleLabel.alpha = 1;
               }];
          }];
     }

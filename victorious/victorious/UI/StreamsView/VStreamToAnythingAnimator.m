@@ -39,19 +39,21 @@
          
          for (VStreamViewCell* cell in [streamVC.tableView visibleCells])
          {
-             if (cell != selectedCell)
+             if ([contentVC isKindOfClass:[VContentViewController class]] && cell == selectedCell)
              {
-                 CGFloat centerPoint = selectedCell ? selectedCell.center.y : streamVC.tableView.center.y + streamVC.tableView.contentOffset.y;
-                 if (cell.center.y > centerPoint)
-                 {
-                     cell.center = CGPointMake(cell.center.x, cell.center.y + streamVC.tableView.frame.size.height);
-                 }
-                 else
-                 {
-                     cell.center = CGPointMake(cell.center.x, cell.center.y - streamVC.tableView.frame.size.height);
-                 }
-                 [repositionedCells addObject:cell];
+                 continue;
              }
+             
+             CGFloat centerPoint = selectedCell ? selectedCell.center.y : streamVC.tableView.center.y + streamVC.tableView.contentOffset.y;
+             if (cell.center.y > centerPoint)
+             {
+                 cell.center = CGPointMake(cell.center.x, cell.center.y + streamVC.tableView.frame.size.height);
+             }
+             else
+             {
+                 cell.center = CGPointMake(cell.center.x, cell.center.y - streamVC.tableView.frame.size.height);
+             }
+             [repositionedCells addObject:cell];
          }
          streamVC.repositionedCells = repositionedCells;
      }
@@ -76,8 +78,7 @@
          else
          {
              [[context containerView] addSubview:contentVC.view];
-//             [context completeTransition:![context transitionWasCancelled]];
-             [context completeTransition:YES];
+             [context completeTransition:![context transitionWasCancelled]];
          }
      }];
 }

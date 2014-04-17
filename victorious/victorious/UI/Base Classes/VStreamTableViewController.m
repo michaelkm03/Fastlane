@@ -366,6 +366,11 @@
 - (void)willCommentSequence:(NSNotification *)notification
 {
     VStreamViewCell *cell = (VStreamViewCell *)notification.object;
+    
+    [self.tableView selectRowAtIndexPath:[self.fetchedResultsController indexPathForObject:cell]
+                                animated:NO
+                          scrollPosition:UITableViewScrollPositionNone];
+    
     VCommentsContainerViewController* commentsTable = [VCommentsContainerViewController commentsContainerView];
     commentsTable.sequence = cell.sequence;
     commentsTable.parentVC = self;
