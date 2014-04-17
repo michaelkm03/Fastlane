@@ -10,4 +10,9 @@
 
 @interface VLoadingViewController : UIViewController
 
+@property (nonatomic, weak) IBOutlet UIImageView        *backgroundImageView;
+@property (nonatomic, weak) IBOutlet UILabel            *reachabilityLabel;
+@property (nonatomic, weak) IBOutlet NSLayoutConstraint *reachabilityLabelPositionConstraint;
+@property (nonatomic, weak) IBOutlet NSLayoutConstraint *reachabilityLabelHeightConstraint;
+
 @end
