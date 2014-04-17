@@ -37,6 +37,8 @@
 @interface VStreamTableViewController() <UIViewControllerTransitioningDelegate, UINavigationControllerDelegate>
 @property (strong, nonatomic) id<UIViewControllerTransitioningDelegate> transitionDelegate;
 
+@property (strong, nonatomic) VStreamToAnythingAnimator* streamToAnyAnimator;
+
 @property (strong, nonatomic) NSCache* preloadImageCache;
 @end
 
@@ -62,6 +64,8 @@
         [self.tableView reloadData]; //force a reload incase anything has changed
     
     self.clearsSelectionOnViewWillAppear = NO;
+    
+    self.streamToAnyAnimator = [[VStreamToAnythingAnimator alloc] init];
     
     //Remove the search button from the stream - feature currently deprecated
     self.navigationItem.rightBarButtonItem = nil;
@@ -368,7 +372,7 @@
     [self.navigationController pushViewController:commentsTable animated:YES];
 }
 
-#pragma mark - Navigation
+#pragma marke- Navigation
 - (id<UIViewControllerAnimatedTransitioning>) navigationController:(UINavigationController *)navigationController
                                    animationControllerForOperation:(UINavigationControllerOperation)operation
                                                 fromViewController:(UIViewController*)fromVC
@@ -377,7 +381,7 @@
     if (operation == UINavigationControllerOperationPush
         && ([toVC isKindOfClass:[VContentViewController class]] || [toVC isKindOfClass:[VCommentsContainerViewController class]]) )
     {
-        return [[VStreamToAnythingAnimator alloc] init];
+        return self.streamToAnyAnimator;
     }
     return nil;
 }

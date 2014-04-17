@@ -28,8 +28,6 @@
     
     contentVC.sequence = selectedCell.sequence;
     
-    UIView* originalSuperView = contentVC.view.superview;
-    
     [UIView animateWithDuration:.2f
                      animations:^
      {

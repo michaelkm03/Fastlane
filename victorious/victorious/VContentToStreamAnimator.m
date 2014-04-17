@@ -70,7 +70,6 @@
                      completion:^(BOOL finished)
      {
          [self thirdAnimation:context];
-         contentVC.view.hidden = YES;
      }];
 }
 
