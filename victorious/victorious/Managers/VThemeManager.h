@@ -59,6 +59,7 @@ extern  NSString*   const   kVLinkColor;
 + (VThemeManager *)sharedThemeManager;
 
 - (void)setTheme:(NSDictionary *)dictionary;
+- (void)updateToNewTheme;
 
 - (void)applyStyling;
 - (void)removeStyling;
