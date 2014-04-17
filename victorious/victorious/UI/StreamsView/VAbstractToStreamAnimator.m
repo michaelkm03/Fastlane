@@ -85,17 +85,17 @@
                   }
               }
               
-//              CGFloat minOffset = streamVC.navigationController.navigationBar.frame.size.height;
-//              CGFloat maxOffset = streamVC.tableView.contentSize.height - streamVC.tableView.frame.size.height;
-//              
-//              if (streamVC.tableView.contentOffset.y < minOffset)
-//              {
-//                  [streamVC.tableView setContentOffset:CGPointMake(selectedCell.frame.origin.x, 0) animated:YES];
-//              }
-//              else if (streamVC.tableView.contentOffset.y >= maxOffset)
-//              {
-//                  [streamVC.tableView setContentOffset:CGPointMake(selectedCell.frame.origin.x, maxOffset) animated:YES];
-//              }
+              CGFloat minOffset = streamVC.navigationController.navigationBar.frame.size.height;
+              CGFloat maxOffset = streamVC.tableView.contentSize.height - streamVC.tableView.frame.size.height;
+              
+              if (streamVC.tableView.contentOffset.y < minOffset)
+              {
+                  [streamVC.tableView setContentOffset:CGPointMake(selectedCell.frame.origin.x, 0) animated:YES];
+              }
+              else if (streamVC.tableView.contentOffset.y >= maxOffset)
+              {
+                  [streamVC.tableView setContentOffset:CGPointMake(selectedCell.frame.origin.x, maxOffset) animated:YES];
+              }
           }
                           completion:^(BOOL finished)
           {
