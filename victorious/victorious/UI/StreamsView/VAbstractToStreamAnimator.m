@@ -9,6 +9,7 @@
 #import "VAbstractToStreamAnimator.h"
 
 #import "VStreamTableViewController.h"
+#import "VContentViewController.h"
 #import "VStreamViewCell.h"
 
 @implementation VAbstractToStreamAnimator
@@ -16,6 +17,8 @@
 - (void)animateToStream:(id<UIViewControllerContextTransitioning>)context
 {
     VStreamTableViewController *streamVC = (VStreamTableViewController*)[context viewControllerForKey:UITransitionContextToViewControllerKey];
+    UIViewController *fromVC = [context viewControllerForKey:UITransitionContextFromViewControllerKey];
+    
     if (![streamVC isKindOfClass:[VStreamTableViewController class]])
     {
         [context completeTransition:![context transitionWasCancelled]];
@@ -30,10 +33,16 @@
     //In this case, we reset them
     for (VStreamViewCell* cell in streamVC.repositionedCells)
     {
-        CGRect cellRect = [streamVC.tableView convertRect:cell.frame toView:streamVC.tableView.superview];
-        if (cell != selectedCell && CGRectIntersectsRect(streamVC.tableView.frame, cellRect))
+        if ([fromVC isKindOfClass:[VContentViewController class]] && cell == selectedCell)
         {
-            if (cell.center.y > selectedCell.center.y)
+            continue;
+        }
+        
+        CGFloat centerPoint = selectedCell ? selectedCell.center.y : streamVC.tableView.center.y + streamVC.tableView.contentOffset.y;
+        CGRect cellRect = [streamVC.tableView convertRect:cell.frame toView:streamVC.tableView.superview];
+        if (CGRectIntersectsRect(streamVC.tableView.frame, cellRect))
+        {
+            if (cell.center.y > centerPoint)
             {
                 cell.center = CGPointMake(cell.center.x, cell.center.y + streamVC.tableView.frame.size.height);
             }
@@ -56,10 +65,16 @@
           {
               for (VStreamViewCell* cell in streamVC.repositionedCells)
               {
-                  CGRect cellRect = [streamVC.tableView convertRect:cell.frame toView:streamVC.tableView.superview];
-                  if (cell != selectedCell && !CGRectIntersectsRect(streamVC.tableView.frame, cellRect))
+                  if ([fromVC isKindOfClass:[VContentViewController class]] && cell == selectedCell)
                   {
-                      if (cell.center.y > selectedCell.center.y)
+                      continue;
+                  }
+
+                  CGFloat centerPoint = selectedCell ? selectedCell.center.y : streamVC.tableView.center.y + streamVC.tableView.contentOffset.y;
+                  CGRect cellRect = [streamVC.tableView convertRect:cell.frame toView:streamVC.tableView.superview];
+                  if (!CGRectIntersectsRect(streamVC.tableView.frame, cellRect))
+                  {
+                      if (cell.center.y > centerPoint)
                       {
                           cell.center = CGPointMake(cell.center.x, cell.center.y - streamVC.tableView.frame.size.height);
                       }
@@ -70,17 +85,17 @@
                   }
               }
               
-              CGFloat minOffset = streamVC.navigationController.navigationBar.frame.size.height;
-              CGFloat maxOffset = streamVC.tableView.contentSize.height - streamVC.tableView.frame.size.height;
-              
-              if (streamVC.tableView.contentOffset.y < minOffset)
-              {
-                  [streamVC.tableView setContentOffset:CGPointMake(selectedCell.frame.origin.x, 0) animated:YES];
-              }
-              else if (streamVC.tableView.contentOffset.y >= maxOffset)
-              {
-                  [streamVC.tableView setContentOffset:CGPointMake(selectedCell.frame.origin.x, maxOffset) animated:YES];
-              }
+//              CGFloat minOffset = streamVC.navigationController.navigationBar.frame.size.height;
+//              CGFloat maxOffset = streamVC.tableView.contentSize.height - streamVC.tableView.frame.size.height;
+//              
+//              if (streamVC.tableView.contentOffset.y < minOffset)
+//              {
+//                  [streamVC.tableView setContentOffset:CGPointMake(selectedCell.frame.origin.x, 0) animated:YES];
+//              }
+//              else if (streamVC.tableView.contentOffset.y >= maxOffset)
+//              {
+//                  [streamVC.tableView setContentOffset:CGPointMake(selectedCell.frame.origin.x, maxOffset) animated:YES];
+//              }
           }
                           completion:^(BOOL finished)
           {
