@@ -19,6 +19,7 @@
 #import "VContentViewController.h"
 
 #import "VCommentToContentAnimator.h"
+#import "VCommentToStreamAnimator.h"
 
 #import "VThemeManager.h"
 
@@ -208,15 +209,13 @@
         && [toVC isKindOfClass:[VContentViewController class]])
     {
         VCommentToContentAnimator* animator = [[VCommentToContentAnimator alloc] init];
-        //        animator.indexPathForSelectedCell = self.tableView.indexPathForSelectedRow;
         return animator;
     }
     else if (operation == UINavigationControllerOperationPop
-             && [toVC isKindOfClass:[VContentViewController class]])
+             && [toVC isKindOfClass:[VStreamTableViewController class]])
     {
-//        VCommentToContentAnimator* animator = [[VCommentToContentAnimator alloc] init];
-//        //        animator.indexPathForSelectedCell = self.tableView.indexPathForSelectedRow;
-//        return animator;
+        VCommentToStreamAnimator* animator = [[VCommentToStreamAnimator alloc] init];
+        return animator;
     }
     return nil;
 }
