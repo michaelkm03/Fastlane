@@ -64,6 +64,10 @@ extern  NSString*   const   kVLinkColor;
 - (void)applyStyling;
 - (void)removeStyling;
 
+- (void)applyNormalNavBarStyling;
+- (void)applyClearNavBarStyling;
+- (void)removeNavBarStyling;
+
 - (NSString *)themedStringForKey:(NSString *)key;
 - (UIColor *)themedColorForKey:(NSString *)key;
 - (NSURL *)themedURLForKey:(NSString *)key;

@@ -46,7 +46,7 @@
     
     //TODO: use real app id once we set that up
     NSNumber* appID = [[NSBundle mainBundle] objectForInfoDictionaryKey:kVictoriousAppIDKey];
-    userAgent = [NSString stringWithFormat:@"%@ aid:%@", userAgent, appID.stringValue];
+    userAgent = [NSString stringWithFormat:@"%@ aid:%@ uuid:%@", userAgent, appID.stringValue, [UIDevice currentDevice].identifierForVendor];
     [[manager HTTPClient] setDefaultHeader:@"User-Agent" value:userAgent];
     
     NSURL *modelURL = [[NSBundle mainBundle] URLForResource:@"victoriOS" withExtension:@"momd"];

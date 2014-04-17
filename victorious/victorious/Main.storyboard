@@ -378,12 +378,9 @@
                         <outlet property="backgroundImage" destination="IEc-5s-XIc" id="Zck-gG-jaH"/>
                         <outlet property="titleLabel" destination="kYy-hF-Nue" id="ygS-fR-jmH"/>
                         <outlet property="topConstraintView" destination="kYy-hF-Nue" id="tkC-xb-VXX"/>
-                        <segue destination="jYa-7x-T8Z" kind="unwind" unwindAction="unwindToStreamTable:" id="F1h-HB-cr4"/>
-                        <segue destination="jYa-7x-T8Z" kind="unwind" unwindAction="unwindToContentView:" id="ogC-OD-cW8"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="JpL-zC-mxW" userLabel="First Responder" sceneMemberID="firstResponder"/>
-                <exit id="jYa-7x-T8Z" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
             <point key="canvasLocation" x="-1938" y="-1702"/>
         </scene>
@@ -881,7 +878,6 @@
                     </refreshControl>
                     <connections>
                         <outlet property="searchDisplayController" destination="sLT-qC-jdj" id="aO3-PW-9jl"/>
-                        <segue destination="4V8-Qd-rfj" kind="custom" identifier="streamcontent" customClass="VStreamContentSegue" id="B2R-Pg-UEK"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="L2T-aI-YsL" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -932,7 +928,7 @@
                                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                         </state>
                                         <connections>
-                                            <segue destination="ZFi-rh-QOq" kind="unwind" unwindAction="unwindToStreamTable:" id="gE6-7k-91f"/>
+                                            <action selector="pressedBack:" destination="4V8-Qd-rfj" eventType="touchUpInside" id="xfl-RU-frG"/>
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Hjq-lN-vqT" userLabel="Comment Button">
@@ -942,7 +938,7 @@
                                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                         </state>
                                         <connections>
-                                            <segue destination="yAz-qI-kJZ" kind="custom" identifier="contentcomment" customClass="VContentCommentSegue" id="yfv-ow-gyH"/>
+                                            <action selector="pressedComment:" destination="4V8-Qd-rfj" eventType="touchUpInside" id="cqL-wp-zJk"/>
                                         </connections>
                                     </button>
                                     <button hidden="YES" opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ohf-04-VVL" userLabel="More Button">
@@ -1084,7 +1080,6 @@
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="J2i-Hn-xg3" userLabel="First Responder" sceneMemberID="firstResponder"/>
-                <exit id="ZFi-rh-QOq" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
             <point key="canvasLocation" x="-1938" y="-522"/>
         </scene>
@@ -1116,7 +1111,6 @@
                     </refreshControl>
                     <connections>
                         <outlet property="searchDisplayController" destination="SEk-dQ-1qI" id="x7Z-Vr-Wpu"/>
-                        <segue destination="4V8-Qd-rfj" kind="custom" identifier="streamcontent" customClass="VStreamContentSegue" id="Bar-aP-eCJ"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="3Ct-xe-jTb" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -1168,7 +1162,6 @@
                     </refreshControl>
                     <connections>
                         <outlet property="searchDisplayController" destination="QY0-j5-fXE" id="mTK-mS-b1N"/>
-                        <segue destination="4V8-Qd-rfj" kind="custom" identifier="streamcontent" customClass="VStreamContentSegue" id="jpa-ws-Don"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Kxe-XK-VdR" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -1457,8 +1450,6 @@
                     </refreshControl>
                     <connections>
                         <outlet property="searchDisplayController" destination="sLT-qC-jdj" id="aTt-Hd-sI9"/>
-                        <segue destination="4V8-Qd-rfj" kind="custom" identifier="streamcontent" customClass="VStreamContentSegue" id="hhE-4U-i31"/>
-                        <segue destination="yAz-qI-kJZ" kind="custom" identifier="streamcomment" customClass="VStreamContentSegue" id="1Mw-gO-Ehe"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="aRm-WT-6fz" userLabel="First Responder" sceneMemberID="firstResponder"/>

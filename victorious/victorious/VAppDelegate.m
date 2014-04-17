@@ -53,8 +53,8 @@
 
     [VObjectManager setupObjectManager];
     
-#ifdef STABLE_DEBUG
-    [TestFlight takeOff:[[NSBundle mainBundle] objectForInfoDictionaryKey:kTestflightStableToken]];
+#ifdef QA
+    [TestFlight takeOff:[[NSBundle mainBundle] objectForInfoDictionaryKey:kTestflightQAToken]];
 #elif DEBUG
     [TestFlight takeOff:[[NSBundle mainBundle] objectForInfoDictionaryKey:kTestflightDevToken]];
 #else

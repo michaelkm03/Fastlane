@@ -8,7 +8,8 @@
 
 #import <Foundation/Foundation.h>
 
-@interface VContentToStreamAnimator : NSObject <UIViewControllerAnimatedTransitioning>
+#import "VAbstractToStreamAnimator.h"
 
-@property (strong, nonatomic) NSIndexPath* indexPathForSelectedCell;
+@interface VContentToStreamAnimator : VAbstractToStreamAnimator <UIViewControllerAnimatedTransitioning>
+
 @end
