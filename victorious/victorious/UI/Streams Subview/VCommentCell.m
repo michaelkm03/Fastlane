@@ -210,7 +210,7 @@ NSString* const kChatBubbleLeftImage = @"ChatBubbleLeft";
 
 + (CGSize)frameSizeForMessageText:(NSString*)text
 {
-    UIFont* font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeading2Font];
+    UIFont* font = [[VThemeManager sharedThemeManager] themedFontForKey:kVLabel2Font];
     NSDictionary *stringAttributes;
     if (font)
         stringAttributes = [NSDictionary dictionaryWithObject:font forKey: NSFontAttributeName];
