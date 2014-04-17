@@ -46,6 +46,8 @@
      }
                      completion:^(BOOL finished)
      {
+         [[context containerView] addSubview:contentVC.view];
+         
          [UIView animateWithDuration:.25f
                           animations:^
           {

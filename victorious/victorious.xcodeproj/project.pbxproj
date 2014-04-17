@@ -142,6 +142,8 @@
 		BE185DF518E3BB54001C447F /* VActionBarViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BE185DF418E3BB54001C447F /* VActionBarViewController.m */; };
 		BE2D1E4418FF4F2600C6FF99 /* VStreamToAnythingAnimator.m in Sources */ = {isa = PBXBuildFile; fileRef = BE2D1E4318FF4F2600C6FF99 /* VStreamToAnythingAnimator.m */; };
 		BE2D1E4718FF4F5200C6FF99 /* VContentToCommentAnimator.m in Sources */ = {isa = PBXBuildFile; fileRef = BE2D1E4618FF4F5200C6FF99 /* VContentToCommentAnimator.m */; };
+		BE2D1E4C1900477E00C6FF99 /* VCommentToStreamAnimator.m in Sources */ = {isa = PBXBuildFile; fileRef = BE2D1E4B1900477E00C6FF99 /* VCommentToStreamAnimator.m */; };
+		BE2D1E5219004C2A00C6FF99 /* VAbstractToStreamAnimator.m in Sources */ = {isa = PBXBuildFile; fileRef = BE2D1E5119004C2A00C6FF99 /* VAbstractToStreamAnimator.m */; };
 		BE40559418A1828D00092AE1 /* UIButton+VImageLoading.m in Sources */ = {isa = PBXBuildFile; fileRef = BE40559318A1828D00092AE1 /* UIButton+VImageLoading.m */; };
 		BE4055AC18A41F1F00092AE1 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = BE4055A618A41F1F00092AE1 /* Localizable.strings */; };
 		BE4055AD18A41F1F00092AE1 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = BE4055A718A41F1F00092AE1 /* main.m */; };
@@ -471,6 +473,10 @@
 		BE2D1E4318FF4F2600C6FF99 /* VStreamToAnythingAnimator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VStreamToAnythingAnimator.m; path = UI/StreamsView/VStreamToAnythingAnimator.m; sourceTree = "<group>"; };
 		BE2D1E4518FF4F5200C6FF99 /* VContentToCommentAnimator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VContentToCommentAnimator.h; path = "UI/Content View/VContentToCommentAnimator.h"; sourceTree = "<group>"; };
 		BE2D1E4618FF4F5200C6FF99 /* VContentToCommentAnimator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VContentToCommentAnimator.m; path = "UI/Content View/VContentToCommentAnimator.m"; sourceTree = "<group>"; };
+		BE2D1E4A1900477E00C6FF99 /* VCommentToStreamAnimator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VCommentToStreamAnimator.h; path = "UI/Streams Subview/VCommentToStreamAnimator.h"; sourceTree = "<group>"; };
+		BE2D1E4B1900477E00C6FF99 /* VCommentToStreamAnimator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VCommentToStreamAnimator.m; path = "UI/Streams Subview/VCommentToStreamAnimator.m"; sourceTree = "<group>"; };
+		BE2D1E5019004C2A00C6FF99 /* VAbstractToStreamAnimator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VAbstractToStreamAnimator.h; path = UI/StreamsView/VAbstractToStreamAnimator.h; sourceTree = "<group>"; };
+		BE2D1E5119004C2A00C6FF99 /* VAbstractToStreamAnimator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VAbstractToStreamAnimator.m; path = UI/StreamsView/VAbstractToStreamAnimator.m; sourceTree = "<group>"; };
 		BE40559218A1828D00092AE1 /* UIButton+VImageLoading.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIButton+VImageLoading.h"; sourceTree = "<group>"; };
 		BE40559318A1828D00092AE1 /* UIButton+VImageLoading.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIButton+VImageLoading.m"; sourceTree = "<group>"; };
 		BE4055A618A41F1F00092AE1 /* Localizable.strings */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = Localizable.strings; path = "Supporting Files/Localizable.strings"; sourceTree = "<group>"; };
@@ -1266,6 +1272,8 @@
 			children = (
 				BE46E69818CA751F00974DAF /* VCommentToContentAnimator.h */,
 				BE46E69918CA751F00974DAF /* VCommentToContentAnimator.m */,
+				BE2D1E4A1900477E00C6FF99 /* VCommentToStreamAnimator.h */,
+				BE2D1E4B1900477E00C6FF99 /* VCommentToStreamAnimator.m */,
 			);
 			name = animations;
 			sourceTree = "<group>";
@@ -1402,6 +1410,8 @@
 			children = (
 				BE2D1E4218FF4F2600C6FF99 /* VStreamToAnythingAnimator.h */,
 				BE2D1E4318FF4F2600C6FF99 /* VStreamToAnythingAnimator.m */,
+				BE2D1E5019004C2A00C6FF99 /* VAbstractToStreamAnimator.h */,
+				BE2D1E5119004C2A00C6FF99 /* VAbstractToStreamAnimator.m */,
 			);
 			name = animations;
 			sourceTree = "<group>";
@@ -1745,6 +1755,7 @@
 				5FC4DA671897111B006BA107 /* VLoginViewController.m in Sources */,
 				D1DAAA08187A43A9009ADCB0 /* VProfileViewController.m in Sources */,
 				3FF7B6DD18F4A668003831CD /* VRemixSelectViewController.m in Sources */,
+				BE2D1E4C1900477E00C6FF99 /* VCommentToStreamAnimator.m in Sources */,
 				83D897421881F19D00BD5B8B /* VCommentsContainerViewController.m in Sources */,
 				BE171E151868C211004E5202 /* VNodeAction+RestKit.m in Sources */,
 				BE6C15251880A31A00469BA8 /* VAnswerAction.m in Sources */,
@@ -1763,6 +1774,7 @@
 				3F71A7D918D7C6D20048FF60 /* VRemixResizableBubble.m in Sources */,
 				BEA5BF5F187F21770014C3EF /* VTableViewCell.m in Sources */,
 				3F9B665A18848B750046F826 /* VMessageContainerViewController.m in Sources */,
+				BE2D1E5219004C2A00C6FF99 /* VAbstractToStreamAnimator.m in Sources */,
 				3F14C45118BD2BD0001796B9 /* VCDataEncoder.m in Sources */,
 				BEDF0FC918DBCB5500750EF6 /* VVoteType+Fetcher.m in Sources */,
 				5F51F81A189AEBF800A546D1 /* VAbstractProfileEditViewController.m in Sources */,

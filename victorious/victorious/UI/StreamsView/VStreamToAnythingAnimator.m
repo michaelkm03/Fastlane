@@ -28,7 +28,7 @@
     
     contentVC.sequence = selectedCell.sequence;
     
-    [UIView animateWithDuration:.2f
+    [UIView animateWithDuration:.4f
                      animations:^
      {
          CGPoint newNavCenter = CGPointMake(streamVC.navigationController.navigationBar.center.x,
@@ -41,7 +41,8 @@
          {
              if (cell != selectedCell)
              {
-                 if (cell.center.y > selectedCell.center.y)
+                 CGFloat centerPoint = selectedCell ? selectedCell.center.y : streamVC.tableView.center.y + streamVC.tableView.contentOffset.y;
+                 if (cell.center.y > centerPoint)
                  {
                      cell.center = CGPointMake(cell.center.x, cell.center.y + streamVC.tableView.frame.size.height);
                  }

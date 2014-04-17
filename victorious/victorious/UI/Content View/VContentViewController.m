@@ -84,6 +84,8 @@ CGFloat kContentMediaViewOffset = 154;
     self.firstPollButton.alpha = 0;
     self.secondPollButton.alpha = 0;
     
+    self.actionBarVC = nil;
+    
     self.navigationController.delegate = self;
     
     CGRect topActionsFrame = self.topActionsView.frame;
@@ -169,15 +171,19 @@ CGFloat kContentMediaViewOffset = 154;
 {
     [_actionBarVC removeFromParentViewController];
     [_actionBarVC.view removeFromSuperview];
-    [self addChildViewController:actionBarVC];
-    [actionBarVC didMoveToParentViewController:self];
-    [self.barContainerView addSubview:actionBarVC.view];
-    
     _actionBarVC = actionBarVC;
     
-    [_actionBarVC animateInWithDuration:.2f completion:^(BOOL finished) {
-        [self pollAnimation];
-    }];
+    if(actionBarVC)
+    {
+        [self addChildViewController:actionBarVC];
+        [actionBarVC didMoveToParentViewController:self];
+        [self.barContainerView addSubview:actionBarVC.view];
+        
+        [_actionBarVC animateInWithDuration:.2f completion:^(BOOL finished)
+         {
+             [self pollAnimation];
+         }];
+    }
     
 }
 

@@ -8,20 +8,12 @@
 
 #import "VContentToStreamAnimator.h"
 
-#import "VRootViewController.h"
 #import "VStreamTableViewController.h"
 #import "VContentViewController.h"
 
 #import "VStreamViewCell.h"
 
-#import "VEmotiveBallisticsBarViewController.h"
-
-@interface VContentToStreamAnimator ()
-
-@property (strong, nonatomic) VStreamTableViewController* streamVC;
-@property (strong, nonatomic) UIViewController* originalStreatSuperview;
-
-@end
+#import "VActionBarViewController.h"
 
 @implementation VContentToStreamAnimator 
 
@@ -38,7 +30,7 @@
    
     if (![contentVC isKindOfClass:[VContentViewController class]])
     {
-        [self thirdAnimation:context];
+        [self animateToStream:context];
         return;
     }
     
@@ -59,7 +51,8 @@
 - (void)secondAnimation:(id<UIViewControllerContextTransitioning>)context
 {
     VContentViewController *contentVC = (VContentViewController*)[context viewControllerForKey:UITransitionContextFromViewControllerKey];
-    
+    VStreamTableViewController *streamVC = (VStreamTableViewController*)[context viewControllerForKey:UITransitionContextToViewControllerKey];
+
     [UIView animateWithDuration:.2
                      animations:^
      {
@@ -69,112 +62,12 @@
      }
                      completion:^(BOOL finished)
      {
-         [self thirdAnimation:context];
-     }];
-}
-
-- (void)thirdAnimation:(id<UIViewControllerContextTransitioning>)context
-{
-    VStreamTableViewController *streamVC = (VStreamTableViewController*)[context viewControllerForKey:UITransitionContextToViewControllerKey];
-    if (![streamVC isKindOfClass:[VStreamTableViewController class]])
-    {
-        [context completeTransition:YES]; // vital
-        return;
-    }
-    
-    [[context containerView] addSubview:streamVC.view];
-    
-    VStreamViewCell* selectedCell = (VStreamViewCell*) [streamVC.tableView cellForRowAtIndexPath:streamVC.tableView.indexPathForSelectedRow];
-
-    [streamVC.tableView setContentOffset:CGPointMake(selectedCell.frame.origin.x,
-                                                     selectedCell.frame.origin.y - kContentMediaViewOffset)
-                                animated:NO];
-    
-    //If the tableview updates while we are in the content view it will reset the cells to their proper positions.
-    //In this case, we reset them
-    for (VStreamViewCell* cell in streamVC.repositionedCells)
-    {
-        CGRect cellRect = [streamVC.tableView convertRect:cell.frame toView:streamVC.tableView.superview];
-        if (cell != selectedCell && CGRectIntersectsRect(streamVC.tableView.frame, cellRect))
-        {
-            if (cell.center.y > selectedCell.center.y)
-            {
-                cell.center = CGPointMake(cell.center.x, cell.center.y + streamVC.tableView.frame.size.height);
-            }
-            else
-            {
-                cell.center = CGPointMake(cell.center.x, cell.center.y - streamVC.tableView.frame.size.height);
-            }
-        }
-    }
-    selectedCell.overlayView.alpha = 0;
-    selectedCell.shadeView.alpha = 0;
-    selectedCell.animationImage.alpha = 0;
-    selectedCell.overlayView.center = CGPointMake(selectedCell.center.x,
-                                                  selectedCell.center.y - selectedCell.frame.size.height);
-    
-    [UIView animateWithDuration:.2f
-                     animations:^
-     {
-         selectedCell.overlayView.alpha = 1;
-         selectedCell.shadeView.alpha = 1;
-         selectedCell.animationImage.alpha = 1;
-         selectedCell.overlayView.center = CGPointMake(selectedCell.center.x,
-                                                       selectedCell.center.y + selectedCell.frame.size.height);
-     }
-                     completion:^(BOOL finished)
-     {
-         [UIView animateWithDuration:.2f
-                          animations:^
-          {
-              CGPoint newNavCenter = CGPointMake(streamVC.navigationController.navigationBar.center.x, 0);
-              streamVC.navigationController.navigationBar.center = newNavCenter;
-              
-              for (VStreamViewCell* cell in streamVC.repositionedCells)
-              {
-                  CGRect cellRect = [streamVC.tableView convertRect:cell.frame toView:streamVC.tableView.superview];
-                  if (cell != selectedCell && !CGRectIntersectsRect(streamVC.tableView.frame, cellRect))
-                  {
-                      if (cell.center.y > selectedCell.center.y)
-                      {
-                          cell.center = CGPointMake(cell.center.x, cell.center.y - streamVC.tableView.frame.size.height);
-                      }
-                      else
-                      {
-                          cell.center = CGPointMake(cell.center.x, cell.center.y + streamVC.tableView.frame.size.height);
-                      }
-                  }
-              }
-              
-              CGFloat minOffset = streamVC.navigationController.navigationBar.frame.size.height;
-              CGFloat maxOffset = streamVC.tableView.contentSize.height - streamVC.tableView.frame.size.height;
-              
-              if (streamVC.tableView.contentOffset.y < minOffset)
-              {
-                  //[streamVC.tableView setContentOffset:CGPointMake(selectedCell.frame.origin.x, minOffset) animated:YES];
-              }
-              else if (streamVC.tableView.contentOffset.y >= maxOffset)
-              {
-                  [streamVC.tableView setContentOffset:CGPointMake(selectedCell.frame.origin.x,
-                                                                   maxOffset)
-                                              animated:YES];
-              }
-          }
-                          completion:^(BOOL finished)
-          {
-              streamVC.repositionedCells = nil;
-              if (streamVC.tableView.indexPathForSelectedRow &&  streamVC.tableView.indexPathForSelectedRow.row == 0)
-              {
-                  [streamVC.tableView setContentOffset:CGPointMake(selectedCell.frame.origin.x, 0) animated:NO];
-              }
-              
-              if (selectedCell)
-              {
-                  [streamVC.tableView deselectRowAtIndexPath:streamVC.tableView.indexPathForSelectedRow animated:NO];
-              }
-              
-              [context completeTransition:![context transitionWasCancelled]];
-          }];
+         VStreamViewCell* selectedCell = (VStreamViewCell*) [streamVC.tableView cellForRowAtIndexPath:streamVC.tableView.indexPathForSelectedRow];
+         [streamVC.tableView setContentOffset:CGPointMake(selectedCell.frame.origin.x,
+                                                          selectedCell.frame.origin.y - kContentMediaViewOffset)
+                                     animated:NO];
+         
+         [self animateToStream:context];
      }];
 }
 
