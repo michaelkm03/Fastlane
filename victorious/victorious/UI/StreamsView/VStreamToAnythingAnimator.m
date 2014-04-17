@@ -28,6 +28,8 @@
     
     contentVC.sequence = selectedCell.sequence;
     
+    UIView* originalSuperView = contentVC.view.superview;
+    
     [UIView animateWithDuration:.2f
                      animations:^
      {
@@ -75,7 +77,8 @@
          else
          {
              [[context containerView] addSubview:contentVC.view];
-             [context completeTransition:![context transitionWasCancelled]];
+//             [context completeTransition:![context transitionWasCancelled]];
+             [context completeTransition:YES];
          }
      }];
 }

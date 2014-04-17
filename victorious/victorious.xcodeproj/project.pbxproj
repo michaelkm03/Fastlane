@@ -1261,6 +1261,27 @@
 			name = ActionBars;
 			sourceTree = "<group>";
 		};
+		BE2D1E4818FF52D400C6FF99 /* animations */ = {
+			isa = PBXGroup;
+			children = (
+				BE46E69818CA751F00974DAF /* VCommentToContentAnimator.h */,
+				BE46E69918CA751F00974DAF /* VCommentToContentAnimator.m */,
+			);
+			name = animations;
+			sourceTree = "<group>";
+		};
+		BE2D1E4918FF52DD00C6FF99 /* cells */ = {
+			isa = PBXGroup;
+			children = (
+				BE692B34186E60B300C71336 /* VCommentCell.h */,
+				BE692B35186E60B300C71336 /* VCommentCell.m */,
+				BEB4C29F187E0778004ECEEF /* VCommentCell.xib */,
+				BE185DE318E354E5001C447F /* VMessageCell.xib */,
+				831C58F71884BD11007C167C /* VOtherCommentCell.xib */,
+			);
+			name = cells;
+			sourceTree = "<group>";
+		};
 		BE46E69118CA73EC00974DAF /* Animations */ = {
 			isa = PBXGroup;
 			children = (
@@ -1292,13 +1313,8 @@
 		BE692B2C186E5FD900C71336 /* Comment View */ = {
 			isa = PBXGroup;
 			children = (
-				BE46E69818CA751F00974DAF /* VCommentToContentAnimator.h */,
-				BE46E69918CA751F00974DAF /* VCommentToContentAnimator.m */,
-				BE692B34186E60B300C71336 /* VCommentCell.h */,
-				BE692B35186E60B300C71336 /* VCommentCell.m */,
-				BEB4C29F187E0778004ECEEF /* VCommentCell.xib */,
-				BE185DE318E354E5001C447F /* VMessageCell.xib */,
-				831C58F71884BD11007C167C /* VOtherCommentCell.xib */,
+				BE2D1E4918FF52DD00C6FF99 /* cells */,
+				BE2D1E4818FF52D400C6FF99 /* animations */,
 				83D897401881F19D00BD5B8B /* VCommentsContainerViewController.h */,
 				83D897411881F19D00BD5B8B /* VCommentsContainerViewController.m */,
 				BE692B39186E60B300C71336 /* VCommentsTableViewController.h */,
