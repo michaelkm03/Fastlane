@@ -94,6 +94,5 @@ static NSString*   const   kContentCommentSegueStoryboardID     = @"contentcomme
 
 static NSString*   const   kStreamCommentSegueID                = @"streamcomment";
 
-static NSString*   const   kUnwindToSteamSegueID                = @"unwindToStreamTable";
 static NSString*   const   kUnwindToContentSegueID              = @"unwindToContentView";
 

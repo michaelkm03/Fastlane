@@ -114,10 +114,22 @@ NSString*   const   kVNewThemeKey                       =   @"kVNewTheme";
 - (void)applyStyling
 {
     [[[[UIApplication sharedApplication] delegate] window] setTintColor:[self themedColorForKey:kVMainTextColor]];
+    
+    [self applyNormalNavBarStyling];
+}
 
+- (void)removeStyling
+{
+    [[[[UIApplication sharedApplication] delegate] window] setTintColor:nil];
+
+    [self removeNavBarStyling];
+}
+
+- (void)applyNormalNavBarStyling
+{
     [[UINavigationBar appearance] setTintColor:[self themedColorForKey:kVMainTextColor]];
     [[UINavigationBar appearance] setBarTintColor:[self themedTranslucencyColorForKey:kVAccentColor]];
-
+    
     NSMutableDictionary *titleAttributes = [NSMutableDictionary dictionary];
     UIColor *navigationBarTitleTintColor = [self themedColorForKey:kVMainTextColor];
     if(navigationBarTitleTintColor)
@@ -130,15 +142,41 @@ NSString*   const   kVNewThemeKey                       =   @"kVNewTheme";
         titleAttributes[NSFontAttributeName] = navigationBarTitleFont;
     }
     [[UINavigationBar appearance] setTitleTextAttributes:titleAttributes];
+    
+    [[UINavigationBar appearance] setBackgroundImage:nil forBarMetrics:UIBarMetricsDefault];
+    [[UINavigationBar appearance] setShadowImage:nil];
 }
 
-- (void)removeStyling
+- (void)applyClearNavBarStyling
 {
-    [[[[UIApplication sharedApplication] delegate] window] setTintColor:nil];
+    [[UINavigationBar appearance] setTintColor:[self themedColorForKey:kVContentTextColor]];
+    [[UINavigationBar appearance] setBarTintColor:[UIColor clearColor]];
+    
+    NSMutableDictionary *titleAttributes = [NSMutableDictionary dictionary];
+    UIColor *navigationBarTitleTintColor = [self themedColorForKey:kVContentTextColor];
+    if(navigationBarTitleTintColor)
+    {
+        titleAttributes[NSForegroundColorAttributeName] = navigationBarTitleTintColor;
+    }
+    UIFont *navigationBarTitleFont = [self themedFontForKey:kVHeaderFont];
+    if(navigationBarTitleFont)
+    {
+        titleAttributes[NSFontAttributeName] = navigationBarTitleFont;
+    }
+    [[UINavigationBar appearance] setTitleTextAttributes:titleAttributes];
+    
+    [[UINavigationBar appearance] setBackgroundImage:[[UIImage alloc] init] forBarMetrics:UIBarMetricsDefault];
+    [[UINavigationBar appearance] setShadowImage:[[UIImage alloc] init]];
+}
 
+- (void)removeNavBarStyling
+{
     [[UINavigationBar appearance] setTintColor:nil];
     [[UINavigationBar appearance] setBarTintColor:nil];
     [[UINavigationBar appearance] setTitleTextAttributes:nil];
+    
+    [[UINavigationBar appearance] setBackgroundImage:nil forBarMetrics:UIBarMetricsDefault];
+    [[UINavigationBar appearance] setShadowImage:nil];
 }
 
 #pragma mark - Primitives

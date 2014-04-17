@@ -18,9 +18,12 @@
 #import "VStreamTableViewController.h"
 #import "VContentViewController.h"
 
+#import "VCommentToContentAnimator.h"
+#import "VCommentToStreamAnimator.h"
+
 #import "VThemeManager.h"
 
-@interface VCommentsContainerViewController()   <VCommentsTableViewControllerDelegate>
+@interface VCommentsContainerViewController()   <VCommentsTableViewControllerDelegate, UINavigationControllerDelegate>
 
 @property (weak, nonatomic) IBOutlet UIButton* backButton;
 @property (weak, nonatomic) IBOutlet UIImageView* backgroundImage;
@@ -69,11 +72,57 @@
     [self.view addSubview:self.backButton];
 }
 
-- (void)viewWillAppear:(BOOL)animated
+- (void)viewDidAppear:(BOOL)animated
 {
-    [super viewWillAppear:animated];
+    [super viewDidAppear:animated];
     
     [self.navigationController setNavigationBarHidden:YES animated:animated];
+    self.navigationController.delegate = self;
+    
+    if (animated)
+    {
+        __block CGFloat originalKeyboardY = self.keyboardBarViewController.view.frame.origin.y;
+        __block CGFloat originalConvertationX = self.conversationTableViewController.view.frame.origin.x;
+        
+        CGRect viewFrame = self.conversationTableViewController.view.frame;
+        self.conversationTableViewController.view.frame = CGRectMake(CGRectGetWidth(self.view.frame),
+                                                                     CGRectGetMinY(viewFrame),
+                                                                     CGRectGetWidth(viewFrame),
+                                                                     CGRectGetHeight(viewFrame));
+
+        self.keyboardBarViewController.view.alpha = 0;
+        self.backButton.alpha = 0;
+        self.titleLabel.alpha = 0;
+        [UIView animateWithDuration:.3f
+                         animations:^
+         {
+             CGRect viewFrame = self.conversationTableViewController.view.frame;
+             self.conversationTableViewController.view.frame = CGRectMake(originalConvertationX,
+                                                                          CGRectGetMinY(viewFrame),
+                                                                          CGRectGetWidth(viewFrame),
+                                                                          CGRectGetHeight(viewFrame));
+         }
+                         completion:^(BOOL finished)
+         {
+             [UIView animateWithDuration:.1f
+                              animations:^
+              {
+                  self.keyboardBarViewController.view.alpha = 1;
+                  self.backButton.alpha = 1;
+                  self.titleLabel.alpha = 1;
+              }];
+         }];
+    }
+}
+
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+    
+    if (self.navigationController.delegate == self)
+    {
+        self.navigationController.delegate = nil;
+    }
 }
 
 - (UITableViewController *)conversationTableViewController
@@ -148,17 +197,27 @@
 
 - (IBAction)pressedBackButton:(id)sender
 {
-    NSString* segueID;
-    if ([[self presentingViewController] isKindOfClass:[VStreamTableViewController class]])
+    [self.navigationController popViewControllerAnimated:YES];
+}
+
+- (id<UIViewControllerAnimatedTransitioning>) navigationController:(UINavigationController *)navigationController
+                                   animationControllerForOperation:(UINavigationControllerOperation)operation
+                                                fromViewController:(UIViewController*)fromVC
+                                                  toViewController:(UIViewController*)toVC
+{
+    if (operation == UINavigationControllerOperationPop
+        && [toVC isKindOfClass:[VContentViewController class]])
     {
-        segueID = kUnwindToSteamSegueID;
+        VCommentToContentAnimator* animator = [[VCommentToContentAnimator alloc] init];
+        return animator;
     }
-    else
+    else if (operation == UINavigationControllerOperationPop
+             && [toVC isKindOfClass:[VStreamTableViewController class]])
     {
-        segueID = kUnwindToContentSegueID;
+        VCommentToStreamAnimator* animator = [[VCommentToStreamAnimator alloc] init];
+        return animator;
     }
-    
-    [self performSegueWithIdentifier:segueID sender:self];
+    return nil;
 }
 
 @end

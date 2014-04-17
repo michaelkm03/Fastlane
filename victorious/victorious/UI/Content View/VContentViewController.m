@@ -13,12 +13,14 @@
 #import "VContentViewController+Videos.h"
 
 #import "VCommentsContainerViewController.h"
-#import "VContentTransitioningDelegate.h"
 
 #import "UIImageView+Blurring.h"
 
 #import "VActionBarViewController.h"
 #import "VEmotiveBallisticsBarViewController.h"
+
+#import "VContentToStreamAnimator.h"
+#import "VContentToCommentAnimator.h"
 
 CGFloat kContentMediaViewOffset = 154;
 
@@ -44,9 +46,7 @@ CGFloat kContentMediaViewOffset = 154;
     [super viewDidLoad];
     
     [self setupVideoPlayer];
-    
-    self.transitionDelegate = [[VContentTransitioningDelegate alloc] init];
-    
+        
     self.firstResultView.isVertical = YES;
     self.firstResultView.hidden = YES;
     self.firstResultView.color = [[VThemeManager sharedThemeManager] themedColorForKey:kVAccentColor];
@@ -70,6 +70,11 @@ CGFloat kContentMediaViewOffset = 154;
     self.activityIndicator.backgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:.5f];
     self.activityIndicator.layer.cornerRadius = self.activityIndicator.frame.size.height / 2;
     self.activityIndicator.hidesWhenStopped = YES;
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
     
     [self.navigationController setNavigationBarHidden:YES animated:NO];
     self.sequence = self.sequence;
@@ -78,6 +83,10 @@ CGFloat kContentMediaViewOffset = 154;
     
     self.firstPollButton.alpha = 0;
     self.secondPollButton.alpha = 0;
+    
+    self.actionBarVC = nil;
+    
+    self.navigationController.delegate = self;
     
     CGRect topActionsFrame = self.topActionsView.frame;
     self.topActionsView.frame = CGRectMake(CGRectGetMinX(topActionsFrame), CGRectGetMinY(self.mediaView.frame), CGRectGetWidth(topActionsFrame), CGRectGetHeight(topActionsFrame));
@@ -100,6 +109,11 @@ CGFloat kContentMediaViewOffset = 154;
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
+    
+    if (self.navigationController.delegate == self)
+    {
+        self.navigationController.delegate = nil;
+    }
     
     [self.mpController pause];
     self.orAnimator = nil;
@@ -157,15 +171,19 @@ CGFloat kContentMediaViewOffset = 154;
 {
     [_actionBarVC removeFromParentViewController];
     [_actionBarVC.view removeFromSuperview];
-    [self addChildViewController:actionBarVC];
-    [actionBarVC didMoveToParentViewController:self];
-    [self.barContainerView addSubview:actionBarVC.view];
-    
     _actionBarVC = actionBarVC;
     
-    [_actionBarVC animateInWithDuration:.2f completion:^(BOOL finished) {
-        [self pollAnimation];
-    }];
+    if(actionBarVC)
+    {
+        [self addChildViewController:actionBarVC];
+        [actionBarVC didMoveToParentViewController:self];
+        [self.barContainerView addSubview:actionBarVC.view];
+        
+        [_actionBarVC animateInWithDuration:.2f completion:^(BOOL finished)
+         {
+             [self pollAnimation];
+         }];
+    }
     
 }
 
@@ -192,11 +210,6 @@ CGFloat kContentMediaViewOffset = 154;
         emotiveBallistics.target = self.previewImage;
         newActionBar = emotiveBallistics;
     }
-    else if ([self.actionBarVC isKindOfClass:[VEmotiveBallisticsBarViewController class]])
-    {
-        ((VEmotiveBallisticsBarViewController*)self.actionBarVC).target = self.previewImage;//Change the target if we need to
-    }
-    
     
     newActionBar.sequence = self.sequence;
     
@@ -241,6 +254,15 @@ CGFloat kContentMediaViewOffset = 154;
     //Specced but still no idea what its supposed to do
 }
 
+- (IBAction)pressedBack:(id)sender
+{
+    [self.navigationController popViewControllerAnimated:YES];
+}
+
+- (IBAction)pressedComment:(id)sender
+{
+    [self.navigationController pushViewController:[VCommentsContainerViewController commentsContainerView] animated:YES];
+}
 
 #pragma mark - VInteractionManagerDelegate
 - (void)firedInteraction:(VInteraction*)interaction
@@ -249,23 +271,23 @@ CGFloat kContentMediaViewOffset = 154;
 }
 
 #pragma mark - Navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
+- (id<UIViewControllerAnimatedTransitioning>) navigationController:(UINavigationController *)navigationController
+                                   animationControllerForOperation:(UINavigationControllerOperation)operation
+                                                fromViewController:(UIViewController*)fromVC
+                                                  toViewController:(UIViewController*)toVC
 {
-    ((UIViewController*)segue.destinationViewController).transitioningDelegate = self.transitionDelegate;
-    ((UIViewController*)segue.destinationViewController).modalPresentationStyle= UIModalPresentationCustom;
-//    [self.mpController stop];
-    self.mpController.view.hidden = YES;
-    
-    if ([segue.identifier isEqualToString:kContentCommentSegueStoryboardID])
+    if (operation == UINavigationControllerOperationPop)
     {
-        VCommentsContainerViewController* commentVC = segue.destinationViewController;
-        commentVC.sequence = self.sequence;
+        VContentToStreamAnimator* animator = [[VContentToStreamAnimator alloc] init];
+//        animator.indexPathForSelectedCell = self.tableView.indexPathForSelectedRow;
+        return animator;
     }
+    else if (operation == UINavigationControllerOperationPush)
+    {
+        return [[VContentToCommentAnimator alloc] init];
+    }
+    return nil;
 }
 
-- (IBAction)unwindToContentView:(UIStoryboardSegue*)sender
-{
-    
-}
 
 @end

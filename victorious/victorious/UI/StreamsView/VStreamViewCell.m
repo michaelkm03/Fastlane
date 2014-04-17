@@ -139,4 +139,20 @@ NSString *kStreamsWillCommentNotification = @"kStreamsWillCommentNotification";
     [self.parentTableViewController.navigationController pushViewController:profileViewController animated:YES];
 }
 
+- (void) hideOverlays
+{
+    self.overlayView.alpha = 0;
+    self.shadeView.alpha = 0;
+    self.animationImage.alpha = 0;
+    self.overlayView.center = CGPointMake(self.center.x, self.center.y - self.frame.size.height);
+}
+
+- (void) showOverlays
+{
+    self.overlayView.alpha = 1;
+    self.shadeView.alpha = 1;
+    self.animationImage.alpha = 1;
+    self.overlayView.center = CGPointMake(self.center.x, self.center.y);// + self.frame.size.height);
+}
+
 @end
