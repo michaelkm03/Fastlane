@@ -44,29 +44,7 @@
                      completion:^(BOOL finished)
      {
          [[context containerView] addSubview:commentsContainer.view];
-         
-         [UIView animateWithDuration:.25f
-                          animations:^
-          {
-              for (UIView* view in commentsContainer.view.subviews)
-              {
-                  if ([view isKindOfClass:[UIImageView class]])
-                      continue;
-                  
-                  if (view.center.y > commentsContainer.view.center.y)
-                  {
-                      view.center = CGPointMake(view.center.x, view.center.y + commentsContainer.view.frame.size.height);
-                  }
-                  else
-                  {
-                      view.center = CGPointMake(view.center.x, view.center.y - commentsContainer.view.frame.size.height);
-                  }
-              }
-          }
-                          completion:^(BOOL finished)
-          {
-              [context completeTransition:![context transitionWasCancelled]];
-          }];
+         [context completeTransition:![context transitionWasCancelled]];
      }];
 }
 
