@@ -38,7 +38,10 @@
             continue;
         }
         
-        CGFloat centerPoint = selectedCell ? selectedCell.center.y : streamVC.tableView.center.y + streamVC.tableView.contentOffset.y;
+        
+        CGFloat centerPoint = [fromVC isKindOfClass:[VContentViewController class]] ? selectedCell.center.y
+                                : streamVC.tableView.center.y + streamVC.tableView.contentOffset.y;
+
         CGRect cellRect = [streamVC.tableView convertRect:cell.frame toView:streamVC.tableView.superview];
         if (CGRectIntersectsRect(streamVC.tableView.frame, cellRect))
         {

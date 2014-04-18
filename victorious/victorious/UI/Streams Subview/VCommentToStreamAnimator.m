@@ -23,32 +23,44 @@
 {
     VCommentsContainerViewController *commentsContainer = (VCommentsContainerViewController*)[context viewControllerForKey:UITransitionContextFromViewControllerKey];
     
+    __block CGRect frame = commentsContainer.conversationTableViewController.view.frame;
+    frame.origin.x = 0;
+    commentsContainer.conversationTableViewController.view.frame = frame;
+    
+    
     [UIView animateWithDuration:.25f
                      animations:^
-     {
-         CGRect frame = commentsContainer.conversationTableViewController.view.frame;
-         frame.origin.x += commentsContainer.conversationTableViewController.tableView.frame.size.width;
+    {
+         frame.origin.x = CGRectGetWidth(commentsContainer.conversationTableViewController.view.frame);
          commentsContainer.conversationTableViewController.view.frame = frame;
-         
-         for (UIView* view in commentsContainer.view.subviews)
-         {
-             if ([view isKindOfClass:[UIImageView class]])
-                 continue;
-             
-             if (view.center.y > commentsContainer.view.center.y)
+    }
+                     completion:^(BOOL finished)
+    {
+        [UIView animateWithDuration:.25f
+                         animations:^
+        {
+             for (UIView* view in commentsContainer.view.subviews)
              {
-                 view.center = CGPointMake(view.center.x, view.center.y + commentsContainer.view.frame.size.height);
-             }
-             else
-             {
-                 view.center = CGPointMake(view.center.x, view.center.y - commentsContainer.view.frame.size.height);
+                 if ([view isKindOfClass:[UIImageView class]])
+                     continue;
+                 
+                 if (view.center.y > commentsContainer.view.center.y)
+                 {
+                     view.center = CGPointMake(view.center.x, view.center.y + commentsContainer.view.frame.size.height);
+                 }
+                 else
+                 {
+                     view.center = CGPointMake(view.center.x, view.center.y - commentsContainer.view.frame.size.height);
+                 }
              }
          }
-     }
-                     completion:^(BOOL finished)
-     {
-         [self animateToStream:context];
-     }];
+                         completion:^(BOOL finished)
+         {
+             [self animateToStream:context];
+             frame.origin.x = 0;
+             commentsContainer.conversationTableViewController.view.frame = frame;
+         }];
+    }];
 }
 
 @end

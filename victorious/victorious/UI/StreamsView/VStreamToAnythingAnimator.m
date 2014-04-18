@@ -42,7 +42,8 @@
                  continue;
              }
              
-             CGFloat centerPoint = selectedCell ? selectedCell.center.y : streamVC.tableView.center.y + streamVC.tableView.contentOffset.y;
+             CGFloat centerPoint = [contentVC isKindOfClass:[VContentViewController class]] ? selectedCell.center.y
+                                    : streamVC.tableView.center.y + streamVC.tableView.contentOffset.y;
              if (cell.center.y > centerPoint)
              {
                  cell.center = CGPointMake(cell.center.x, cell.center.y + streamVC.tableView.frame.size.height);

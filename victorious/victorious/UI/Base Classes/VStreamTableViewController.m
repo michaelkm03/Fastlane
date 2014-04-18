@@ -373,7 +373,7 @@
 {
     VStreamViewCell *cell = (VStreamViewCell *)notification.object;
     
-    [self.tableView selectRowAtIndexPath:[self.fetchedResultsController indexPathForObject:cell]
+    [self.tableView selectRowAtIndexPath:[self.fetchedResultsController indexPathForObject:cell.sequence]
                                 animated:NO
                           scrollPosition:UITableViewScrollPositionNone];
 
