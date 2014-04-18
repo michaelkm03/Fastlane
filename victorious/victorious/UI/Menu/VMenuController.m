@@ -26,8 +26,6 @@
 #import "VSettingsViewController.h"
 #import "VInboxViewController.h"
 
-#import "VCameraViewController.h"
-
 NSString *const VMenuControllerDidSelectRowNotification = @"VMenuTableViewControllerDidSelectRowNotification";
 
 @interface VMenuController ()   <MFMailComposeViewControllerDelegate, UIAlertViewDelegate>
