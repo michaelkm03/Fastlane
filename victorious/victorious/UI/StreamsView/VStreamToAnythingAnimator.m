@@ -27,7 +27,7 @@
     VStreamViewCell* selectedCell = (VStreamViewCell*) [streamVC.tableView cellForRowAtIndexPath:streamVC.tableView.indexPathForSelectedRow];
     
     contentVC.sequence = selectedCell.sequence;
-    
+
     [UIView animateWithDuration:.4f
                      animations:^
      {
@@ -68,10 +68,12 @@
                   selectedCell.overlayView.alpha = selectedCell.shadeView.alpha = 0;
                   selectedCell.overlayView.center = CGPointMake(selectedCell.overlayView.center.x,
                                                                 selectedCell.overlayView.center.y - selectedCell.frame.size.height);
+                  
               }
                               completion:^(BOOL finished)
               {
                   [[context containerView] addSubview:contentVC.view];
+                  contentVC.orImageView.center = [selectedCell.animationImage convertPoint:selectedCell.animationImage.center toView:contentVC.view];
                   [context completeTransition:![context transitionWasCancelled]];
               }];
          }

@@ -87,11 +87,11 @@
 {
     if (!_resultLabel)
     {
-        _resultLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, self.frame.size.height * .85f,
+        _resultLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0,
                                                                  self.frame.size.width,
                                                                  self.frame.size.height *.1f)];
-        _resultLabel.center = self.resultArrow.center;
-        _resultLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVButton1Font];
+        
+        _resultLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVParagraphFont];
         _resultLabel.textColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVMainTextColor];
         _resultLabel.textAlignment = NSTextAlignmentCenter;
         _resultLabel.minimumScaleFactor = .5f;
@@ -137,6 +137,12 @@
     {
         self.resultArrow.frame = CGRectMake(0, self.frame.size.height - minProgress - currentProgress,
                                              self.frame.size.width, minProgress + currentProgress);
+        
+        CGRect frame = _resultLabel.frame;
+        frame.origin.y = CGRectGetHeight(self.frame) - CGRectGetHeight(_resultLabel.frame);
+        _resultLabel.frame = frame;
+        VLog(@"result frame: %@", NSStringFromCGRect(_resultLabel.frame));
+        
     }
     else
     {

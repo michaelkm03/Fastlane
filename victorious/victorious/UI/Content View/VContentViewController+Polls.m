@@ -86,8 +86,6 @@
     self.previewImage.hidden = YES;
     self.mpPlayerContainmentView.hidden = YES;
     self.remixButton.hidden = YES;
-    
-    [self updateActionBar];
 }
 
 - (IBAction)playPoll:(id)sender

@@ -70,9 +70,9 @@
     self.rightLabel.text = ((VAnswer*)[self.answers lastObject]).label;
 }
 
-- (void)viewWillAppear:(BOOL)animated
+- (void)viewDidAppear:(BOOL)animated
 {
-    [super viewWillAppear:animated];
+    [super viewDidAppear:animated];
     
     [[VObjectManager sharedManager] pollResultsForSequence:self.sequence
                                               successBlock:^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
