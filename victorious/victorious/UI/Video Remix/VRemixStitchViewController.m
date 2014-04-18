@@ -11,10 +11,10 @@
 #import "VCVideoPlayerView.h"
 #import "VThemeManager.h"
 #import "VConstants.h"
-//#import "UIImage+Masking.h"
 #import "UIView+Masking.h"
+#import "VCameraViewController.h"
 
-@interface VRemixStitchViewController ()    <VCVideoPlayerDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIActionSheetDelegate>
+@interface VRemixStitchViewController ()    <VCVideoPlayerDelegate, UIActionSheetDelegate>
 
 @property (nonatomic, weak)     IBOutlet    UIView*             thumbnail;
 
@@ -130,13 +130,20 @@
 
 - (void)selectAsset
 {
-    UIImagePickerController*    picker = [[UIImagePickerController alloc] init];
-    picker.delegate = self;
-    picker.mediaTypes = @[(id)kUTTypeMovie];
-    picker.allowsEditing = NO;
-    picker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
-    
-    [self presentViewController:picker animated:YES completion:nil];
+    VCameraViewController *cameraViewController = [VCameraViewController cameraViewController];
+    cameraViewController.completionBlock = ^(BOOL finished, UIImage *previewImage, NSURL *capturedMediaURL, NSString *mediaExtension)
+    {
+        [self dismissViewControllerAnimated:YES completion:nil];
+
+        if (finished)
+        {
+            if ([mediaExtension isEqualToString:VConstantMediaExtensionMOV])
+                [self didSelectVideo:capturedMediaURL];
+        }
+    };
+
+    UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:cameraViewController];
+    [self presentViewController:navController animated:YES completion:nil];
 }
 
 #pragma mark - Navigation
@@ -349,24 +356,6 @@
              NSLog(@"Canceled");
          }
      }];
-}
-
-#pragma mark - UIImagePickerControllerDelegate
-
-- (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info
-{
-    NSString *mediaType = info[UIImagePickerControllerMediaType];
-    if ([mediaType isEqualToString:(id)kUTTypeMovie])
-    {
-        [self didSelectVideo:info[UIImagePickerControllerMediaURL]];
-    }
-
-    [self dismissViewControllerAnimated:YES completion:nil];
-}
-
-- (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker
-{
-    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 @end
