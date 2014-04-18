@@ -73,7 +73,6 @@
                               completion:^(BOOL finished)
               {
                   [[context containerView] addSubview:contentVC.view];
-                  contentVC.orImageView.center = [selectedCell.animationImage convertPoint:selectedCell.animationImage.center toView:contentVC.view];
                   [context completeTransition:![context transitionWasCancelled]];
               }];
          }
