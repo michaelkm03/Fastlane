@@ -82,7 +82,7 @@ CGFloat kContentMediaViewOffset = 154;
     self.sequence = self.sequence;
     
     self.orImageView.hidden = ![self.sequence isPoll];
-    ((VPollAnswerBarViewController*)self.actionBarVC).orImageView.hidden = YES;
+
     self.orImageView.center = [self.pollPreviewView convertPoint:self.pollPreviewView.center toView:self.orContainerView];
     
     self.firstPollButton.alpha = 0;
