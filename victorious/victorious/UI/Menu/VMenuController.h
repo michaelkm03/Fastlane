@@ -13,7 +13,6 @@ typedef NS_ENUM(NSUInteger, VMenuControllerRow)
     VMenuRowHome,
     VMenuRowOwnerChannel,
     VMenuRowCommunityChannel,
-    VMenuRowForums,
     VMenuRowInbox,
     VMenuRowProfile,
     VMenuRowSettings,
