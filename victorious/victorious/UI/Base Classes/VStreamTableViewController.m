@@ -143,13 +143,8 @@
 {
     VStreamViewCell* cell = (VStreamViewCell*)[tableView cellForRowAtIndexPath:indexPath];
     
-    UIImageView* newBackgroundView = [[UIImageView alloc] initWithFrame:self.tableView.backgroundView.frame];
+    [self setBackgroundImageWithURL:[[cell.sequence initialImageURLs] firstObject]];
     
-    UIImage* placeholderImage = [UIImage resizeableImageWithColor:[[VThemeManager sharedThemeManager] themedColorForKey:kVBackgroundColor]];
-    [newBackgroundView setLightBlurredImageWithURL:[[cell.sequence initialImageURLs] firstObject]
-                                  placeholderImage:placeholderImage];
-    
-    self.tableView.backgroundView = newBackgroundView;
     if (tableView.contentOffset.y == cell.frame.origin.y - kContentMediaViewOffset)
     {
         [self.navigationController pushViewController:[VContentViewController sharedInstance] animated:YES];
@@ -361,6 +356,17 @@
     [self.sideMenuViewController presentMenuViewController];
 }
 
+- (void)setBackgroundImageWithURL:(NSURL*)url
+{
+    UIImageView* newBackgroundView = [[UIImageView alloc] initWithFrame:self.tableView.backgroundView.frame];
+    
+    UIImage* placeholderImage = [UIImage resizeableImageWithColor:[[VThemeManager sharedThemeManager] themedColorForKey:kVBackgroundColor]];
+    [newBackgroundView setLightBlurredImageWithURL:url
+                                  placeholderImage:placeholderImage];
+    
+    self.tableView.backgroundView = newBackgroundView;
+}
+
 #pragma mark - Notifications
 
 - (void)willCommentSequence:(NSNotification *)notification
@@ -370,7 +376,9 @@
     [self.tableView selectRowAtIndexPath:[self.fetchedResultsController indexPathForObject:cell]
                                 animated:NO
                           scrollPosition:UITableViewScrollPositionNone];
-    
+
+    [self setBackgroundImageWithURL:[[cell.sequence initialImageURLs] firstObject]];
+
     VCommentsContainerViewController* commentsTable = [VCommentsContainerViewController commentsContainerView];
     commentsTable.sequence = cell.sequence;
     commentsTable.parentVC = self;

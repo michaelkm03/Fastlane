@@ -25,8 +25,6 @@
     VStreamTableViewController *streamVC = (VStreamTableViewController*)[context viewControllerForKey:UITransitionContextFromViewControllerKey];    
     VContentViewController* contentVC = (VContentViewController*)[context viewControllerForKey:UITransitionContextToViewControllerKey];
     VStreamViewCell* selectedCell = (VStreamViewCell*) [streamVC.tableView cellForRowAtIndexPath:streamVC.tableView.indexPathForSelectedRow];
-    
-    contentVC.sequence = selectedCell.sequence;
 
     [UIView animateWithDuration:.4f
                      animations:^
@@ -62,6 +60,8 @@
          //Skip this animation if we aren't going to a content view
          if ([contentVC isKindOfClass:[VContentViewController class]])
          {
+             contentVC.sequence = selectedCell.sequence;
+             
              [UIView animateWithDuration:.2f
                               animations:^
               {
