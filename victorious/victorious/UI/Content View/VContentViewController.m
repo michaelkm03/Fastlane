@@ -46,14 +46,6 @@ CGFloat kContentMediaViewOffset = 154;
     [super viewDidLoad];
     
     [self setupVideoPlayer];
-        
-    self.firstResultView.isVertical = YES;
-    self.firstResultView.hidden = YES;
-    self.firstResultView.color = [[VThemeManager sharedThemeManager] themedColorForKey:kVAccentColor];
-    
-    self.secondResultView.isVertical = YES;
-    self.secondResultView.hidden = YES;
-    self.secondResultView.color = [[VThemeManager sharedThemeManager] themedColorForKey:kVAccentColor];
 
     for (UIButton* button in self.buttonCollection)
     {
@@ -72,9 +64,19 @@ CGFloat kContentMediaViewOffset = 154;
     self.activityIndicator.hidesWhenStopped = YES;
 }
 
-- (void)viewWillAppear:(BOOL)animated
+- (void)viewDidAppear:(BOOL)animated
 {
-    [super viewWillAppear:animated];
+    [super viewDidAppear:animated];
+    
+    [self.firstResultView setProgress:0 animated:NO];
+    self.firstResultView.isVertical = YES;
+    self.firstResultView.hidden = YES;
+    self.firstResultView.color = [[VThemeManager sharedThemeManager] themedColorForKey:kVAccentColor];
+    
+    [self.secondResultView setProgress:0 animated:NO];
+    self.secondResultView.isVertical = YES;
+    self.secondResultView.hidden = YES;
+    self.secondResultView.color = [[VThemeManager sharedThemeManager] themedColorForKey:kVAccentColor];
     
     [self.navigationController setNavigationBarHidden:YES animated:NO];
     self.sequence = self.sequence;
@@ -179,12 +181,12 @@ CGFloat kContentMediaViewOffset = 154;
         [actionBarVC didMoveToParentViewController:self];
         [self.barContainerView addSubview:actionBarVC.view];
         
-        [_actionBarVC animateInWithDuration:.2f completion:^(BOOL finished)
+        [_actionBarVC animateInWithDuration:.2f
+                                 completion:^(BOOL finished)
          {
              [self pollAnimation];
          }];
     }
-    
 }
 
 - (void)updateActionBar

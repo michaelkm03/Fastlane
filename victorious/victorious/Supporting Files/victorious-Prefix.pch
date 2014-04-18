@@ -27,13 +27,15 @@
 // Make RestKit globally available
 #import "RestKit.h"
 
-#ifdef DEBUG
-#define VLog(fmt, ...) NSLog((@"%s [Line %d] " fmt),  __PRETTY_FUNCTION__, __LINE__, ##__VA_ARGS__);
-#else
-#define VLog(...)
-#endif
 
-#ifdef STABLE_DEBUG
+#warning "We need to remove this log before release"
+//#ifdef DEBUG
+#define VLog(fmt, ...) NSLog((@"%s [Line %d] " fmt),  __PRETTY_FUNCTION__, __LINE__, ##__VA_ARGS__);
+//#else
+//#define VLog(...)
+//#endif
+
+#ifdef QA
 #define VBASEURL @"http://qa.getvictorious.com"
 #elif DEBUG
 #define VBASEURL @"http://dev.getvictorious.com"

@@ -22,12 +22,9 @@
 #import "VHomeStreamViewController.h"
 #import "VOwnerStreamViewController.h"
 #import "VCommunityStreamViewController.h"
-#import "VForumStreamViewController.h"
 #import "VProfileViewController.h"
 #import "VSettingsViewController.h"
 #import "VInboxViewController.h"
-
-#import "VCameraViewController.h"
 
 NSString *const VMenuControllerDidSelectRowNotification = @"VMenuTableViewControllerDidSelectRowNotification";
 
@@ -97,8 +94,6 @@ NSString *const VMenuControllerDidSelectRowNotification = @"VMenuTableViewContro
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     UINavigationController* navigationController = (UINavigationController *)self.sideMenuViewController.contentViewController;
-
-//    __typeof__(self) __weak     weakSelf = self;
     UIViewController* currentViewController = [navigationController.viewControllers lastObject];
     
     switch (indexPath.row)
@@ -116,12 +111,6 @@ NSString *const VMenuControllerDidSelectRowNotification = @"VMenuTableViewContro
         case VMenuRowCommunityChannel:
             navigationController.viewControllers = @[[VCommunityStreamViewController sharedInstance]];
             [self.sideMenuViewController hideMenuViewController];
-        break;
-        
-        case VMenuRowForums:
-//            navigationController.viewControllers = @[[VForumStreamViewController sharedInstance]];
-//            [self.sideMenuViewController hideMenuViewController];
-            [self presentViewController:[VCameraViewController cameraViewController] animated:YES completion:nil];
         break;
         
         case VMenuRowInbox:

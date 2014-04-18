@@ -81,7 +81,6 @@
     
     if (animated)
     {
-        __block CGFloat originalKeyboardY = self.keyboardBarViewController.view.frame.origin.y;
         __block CGFloat originalConvertationX = self.conversationTableViewController.view.frame.origin.x;
         
         CGRect viewFrame = self.conversationTableViewController.view.frame;
