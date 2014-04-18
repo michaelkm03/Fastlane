@@ -24,6 +24,7 @@
 {
     VStreamTableViewController *streamVC = (VStreamTableViewController*)[context viewControllerForKey:UITransitionContextFromViewControllerKey];    
     VContentViewController* contentVC = (VContentViewController*)[context viewControllerForKey:UITransitionContextToViewControllerKey];
+    [streamVC.navigationController setNavigationBarHidden:NO animated:YES];
     VStreamViewCell* selectedCell = (VStreamViewCell*) [streamVC.tableView cellForRowAtIndexPath:streamVC.tableView.indexPathForSelectedRow];
 
     [UIView animateWithDuration:.4f
@@ -46,11 +47,11 @@
                                     : streamVC.tableView.center.y + streamVC.tableView.contentOffset.y;
              if (cell.center.y > centerPoint)
              {
-                 cell.center = CGPointMake(cell.center.x, cell.center.y + streamVC.tableView.frame.size.height);
+                 cell.center = CGPointMake(cell.center.x, cell.center.y + [UIScreen mainScreen].bounds.size.height);
              }
              else
              {
-                 cell.center = CGPointMake(cell.center.x, cell.center.y - streamVC.tableView.frame.size.height);
+                 cell.center = CGPointMake(cell.center.x, cell.center.y - [UIScreen mainScreen].bounds.size.height);
              }
              [repositionedCells addObject:cell];
          }
