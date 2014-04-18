@@ -637,39 +637,8 @@
                                         </tableViewCellContentView>
                                         <color key="backgroundColor" white="1" alpha="0.0" colorSpace="calibratedWhite"/>
                                     </tableViewCell>
-                                    <tableViewCell tag="3" contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" id="PlU-ro-tw1">
-                                        <rect key="frame" x="0.0" y="167" width="320" height="44"/>
-                                        <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="PlU-ro-tw1" id="bs3-Vh-M7h">
-                                            <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
-                                            <autoresizingMask key="autoresizingMask"/>
-                                            <subviews>
-                                                <imageView userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="MenuForums" translatesAutoresizingMaskIntoConstraints="NO" id="J6K-Ad-pKu">
-                                                    <rect key="frame" x="20" y="6" width="32" height="32"/>
-                                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                                                    <constraints>
-                                                        <constraint firstAttribute="width" constant="32" id="3m0-yY-Olg"/>
-                                                        <constraint firstAttribute="height" constant="32" id="4G3-HG-Ptq"/>
-                                                    </constraints>
-                                                </imageView>
-                                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Forums" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9MP-gB-uyN">
-                                                    <rect key="frame" x="60" y="12" width="57" height="20"/>
-                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                    <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
-                                            </subviews>
-                                            <constraints>
-                                                <constraint firstItem="J6K-Ad-pKu" firstAttribute="leading" secondItem="bs3-Vh-M7h" secondAttribute="leading" constant="20" symbolic="YES" id="BqO-z4-XEU"/>
-                                                <constraint firstItem="9MP-gB-uyN" firstAttribute="leading" secondItem="J6K-Ad-pKu" secondAttribute="trailing" constant="8" id="DBb-Lu-c81"/>
-                                                <constraint firstAttribute="centerY" secondItem="9MP-gB-uyN" secondAttribute="centerY" id="Pta-o5-Itw"/>
-                                                <constraint firstAttribute="centerY" secondItem="J6K-Ad-pKu" secondAttribute="centerY" id="e3a-qS-xhJ"/>
-                                            </constraints>
-                                        </tableViewCellContentView>
-                                        <color key="backgroundColor" white="1" alpha="0.0" colorSpace="calibratedWhite"/>
-                                    </tableViewCell>
                                     <tableViewCell tag="4" contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" id="u0o-wZ-jdR">
-                                        <rect key="frame" x="0.0" y="211" width="320" height="44"/>
+                                        <rect key="frame" x="0.0" y="167" width="320" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="u0o-wZ-jdR" id="29Q-v9-BHB">
                                             <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
@@ -709,7 +678,7 @@
                                         <color key="backgroundColor" white="1" alpha="0.0" colorSpace="calibratedWhite"/>
                                     </tableViewCell>
                                     <tableViewCell tag="5" contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" id="5jk-xX-IvW">
-                                        <rect key="frame" x="0.0" y="255" width="320" height="44"/>
+                                        <rect key="frame" x="0.0" y="211" width="320" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="5jk-xX-IvW" id="iHH-ci-DHe">
                                             <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
@@ -740,7 +709,7 @@
                                         <color key="backgroundColor" white="1" alpha="0.0" colorSpace="calibratedWhite"/>
                                     </tableViewCell>
                                     <tableViewCell tag="6" contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" id="B5S-al-bUL">
-                                        <rect key="frame" x="0.0" y="299" width="320" height="44"/>
+                                        <rect key="frame" x="0.0" y="255" width="320" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="B5S-al-bUL" id="cqp-vW-DtN">
                                             <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
@@ -771,7 +740,7 @@
                                         <color key="backgroundColor" white="1" alpha="0.0" colorSpace="calibratedWhite"/>
                                     </tableViewCell>
                                     <tableViewCell tag="7" contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" id="fqt-eP-Xlf">
-                                        <rect key="frame" x="0.0" y="343" width="320" height="44"/>
+                                        <rect key="frame" x="0.0" y="299" width="320" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="fqt-eP-Xlf" id="a1Q-G9-Dfk">
                                             <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
@@ -819,12 +788,10 @@
                         <outletCollection property="labels" destination="JET-Uy-VNX" id="DbZ-de-1rY"/>
                         <outletCollection property="labels" destination="7dZ-pL-tvb" id="odK-dP-pcl"/>
                         <outletCollection property="imageViews" destination="e48-Qi-rZI" id="crb-0K-xv7"/>
-                        <outletCollection property="imageViews" destination="J6K-Ad-pKu" id="e8R-L2-lza"/>
                         <outletCollection property="imageViews" destination="R0W-Vc-CkE" id="AtN-Mq-bAf"/>
                         <outletCollection property="imageViews" destination="iXf-g0-B1m" id="Kci-SW-bYy"/>
                         <outletCollection property="imageViews" destination="sjx-kH-8di" id="WGV-hX-mKb"/>
                         <outletCollection property="imageViews" destination="YUL-4p-ECz" id="1FM-l8-eOd"/>
-                        <outletCollection property="labels" destination="9MP-gB-uyN" id="rdg-vK-tI9"/>
                         <outletCollection property="labels" destination="cvg-FL-skU" id="TuK-q9-VIl"/>
                         <outletCollection property="labels" destination="Awt-WT-eQ9" id="xsF-e3-kpN"/>
                         <outletCollection property="labels" destination="2WP-f9-Qgg" id="gOS-lD-nq0"/>
@@ -1722,7 +1689,6 @@
         <image name="Heart" width="160" height="60"/>
         <image name="Menu" width="27" height="27"/>
         <image name="MenuCommunityChannel" width="19" height="19"/>
-        <image name="MenuForums" width="22" height="18"/>
         <image name="MenuHelp" width="20" height="20"/>
         <image name="MenuHome" width="19" height="19"/>
         <image name="MenuInbox" width="20" height="19"/>
