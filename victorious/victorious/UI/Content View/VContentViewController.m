@@ -119,7 +119,10 @@ CGFloat kContentMediaViewOffset = 154;
         self.navigationController.delegate = nil;
     }
     
+    [self.mpController.view removeFromSuperview];
     [self.mpController pause];
+    self.mpController = nil;
+    
     self.orAnimator = nil;
 }
 
