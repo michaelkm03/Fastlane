@@ -145,6 +145,7 @@
 		BE2D1E5A19006E9400C6FF99 /* VCommentToStreamAnimator.m in Sources */ = {isa = PBXBuildFile; fileRef = BE2D1E5919006E9400C6FF99 /* VCommentToStreamAnimator.m */; };
 		BE2D1E5D19006EAC00C6FF99 /* VStreamToAnythingAnimator.m in Sources */ = {isa = PBXBuildFile; fileRef = BE2D1E5C19006EAC00C6FF99 /* VStreamToAnythingAnimator.m */; };
 		BE2D1E6019006EB900C6FF99 /* VAbstractToStreamAnimator.m in Sources */ = {isa = PBXBuildFile; fileRef = BE2D1E5F19006EB900C6FF99 /* VAbstractToStreamAnimator.m */; };
+		BE2D1E661901F4D800C6FF99 /* VStreamToCommentAnimator.m in Sources */ = {isa = PBXBuildFile; fileRef = BE2D1E651901F4D800C6FF99 /* VStreamToCommentAnimator.m */; };
 		BE40559418A1828D00092AE1 /* UIButton+VImageLoading.m in Sources */ = {isa = PBXBuildFile; fileRef = BE40559318A1828D00092AE1 /* UIButton+VImageLoading.m */; };
 		BE4055AC18A41F1F00092AE1 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = BE4055A618A41F1F00092AE1 /* Localizable.strings */; };
 		BE4055AD18A41F1F00092AE1 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = BE4055A718A41F1F00092AE1 /* main.m */; };
@@ -478,6 +479,8 @@
 		BE2D1E5C19006EAC00C6FF99 /* VStreamToAnythingAnimator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VStreamToAnythingAnimator.m; path = UI/StreamsView/VStreamToAnythingAnimator.m; sourceTree = "<group>"; };
 		BE2D1E5E19006EB900C6FF99 /* VAbstractToStreamAnimator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VAbstractToStreamAnimator.h; path = UI/StreamsView/VAbstractToStreamAnimator.h; sourceTree = "<group>"; };
 		BE2D1E5F19006EB900C6FF99 /* VAbstractToStreamAnimator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VAbstractToStreamAnimator.m; path = UI/StreamsView/VAbstractToStreamAnimator.m; sourceTree = "<group>"; };
+		BE2D1E641901F4D800C6FF99 /* VStreamToCommentAnimator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VStreamToCommentAnimator.h; path = UI/StreamsView/VStreamToCommentAnimator.h; sourceTree = "<group>"; };
+		BE2D1E651901F4D800C6FF99 /* VStreamToCommentAnimator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VStreamToCommentAnimator.m; path = UI/StreamsView/VStreamToCommentAnimator.m; sourceTree = "<group>"; };
 		BE40559218A1828D00092AE1 /* UIButton+VImageLoading.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIButton+VImageLoading.h"; sourceTree = "<group>"; };
 		BE40559318A1828D00092AE1 /* UIButton+VImageLoading.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIButton+VImageLoading.m"; sourceTree = "<group>"; };
 		BE4055A618A41F1F00092AE1 /* Localizable.strings */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = Localizable.strings; path = "Supporting Files/Localizable.strings"; sourceTree = "<group>"; };
@@ -1419,6 +1422,8 @@
 				BE2D1E5F19006EB900C6FF99 /* VAbstractToStreamAnimator.m */,
 				BE2D1E5B19006EAC00C6FF99 /* VStreamToAnythingAnimator.h */,
 				BE2D1E5C19006EAC00C6FF99 /* VStreamToAnythingAnimator.m */,
+				BE2D1E641901F4D800C6FF99 /* VStreamToCommentAnimator.h */,
+				BE2D1E651901F4D800C6FF99 /* VStreamToCommentAnimator.m */,
 			);
 			name = animations;
 			sourceTree = "<group>";
@@ -1787,6 +1792,7 @@
 				BEF2C29618845EF500AAE975 /* VPollResult+RestKit.m in Sources */,
 				5FCC1E4A1899C94D00EB7699 /* VWebContentViewController.m in Sources */,
 				5FC4DA70189711EA006BA107 /* VInviteWithSocialViewController.m in Sources */,
+				BE2D1E661901F4D800C6FF99 /* VStreamToCommentAnimator.m in Sources */,
 				BEB52A7A18C02D6600AC5FE4 /* VContentViewController.m in Sources */,
 				BE5C7385187E37D400A3340D /* VMedia+RestKit.m in Sources */,
 				BE651D0E18AAD58A00069119 /* VLoadingViewController.m in Sources */,

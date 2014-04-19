@@ -18,6 +18,7 @@
 #import "UIImage+ImageCreation.h"
 
 #import "VStreamToAnythingAnimator.h"
+#import "VStreamToCommentAnimator.h"
 
 //Cells
 #import "VStreamViewCell.h"
@@ -391,10 +392,13 @@
                                                 fromViewController:(UIViewController*)fromVC
                                                   toViewController:(UIViewController*)toVC
 {
-    if (operation == UINavigationControllerOperationPush
-        && ([toVC isKindOfClass:[VContentViewController class]] || [toVC isKindOfClass:[VCommentsContainerViewController class]]) )
+    if (operation == UINavigationControllerOperationPush && ([toVC isKindOfClass:[VContentViewController class]]) )
     {
         return self.streamToAnyAnimator;
+    }
+    else if (operation == UINavigationControllerOperationPush && [toVC isKindOfClass:[VCommentsContainerViewController class]])
+    {
+        return [[VStreamToCommentAnimator alloc] init];
     }
     return nil;
 }
