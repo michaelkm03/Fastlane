@@ -45,6 +45,10 @@
 	<string>VictoriousApp Dev</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+	<key>TWITTER_CONSUMER_KEY</key>
+	<string>MhDYRpVPTaGQgWBT7ChmxQ</string>
+	<key>TWITTER_CONSUMER_SECRET</key>
+	<string>damxXK28SCObMZ1CEMTLszm3v8mdRt0L1wuVnzXtH1E</string>
 	<key>TestflightDevAppToken</key>
 	<string>25d004e5-9530-4969-94e9-f3182e53339b</string>
 	<key>TestflightReleaseAppToken</key>
