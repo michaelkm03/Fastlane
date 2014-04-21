@@ -95,23 +95,13 @@
                     media2Data:(NSData *)media2Data
                media2Extension:(NSString *)media2Extension
 {
-    __block UIActivityIndicatorView *indicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
-    indicator.frame = CGRectMake(0, 0, 24, 24);
-    [self.view addSubview:indicator];
-    indicator.center = self.view.center;
-    [indicator startAnimating];
-    indicator.hidesWhenStopped = YES;
-    
     VSuccessBlock success = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
     {
         NSLog(@"%@", resultObjects);
-        [indicator stopAnimating];
-        [self.navigationController popViewControllerAnimated:YES];
     };
     VFailBlock fail = ^(NSOperation* operation, NSError* error)
     {
         NSLog(@"%@", error);
-        [indicator stopAnimating];
         
         if (5500 == error.code)
         {
@@ -121,12 +111,11 @@
                                                        cancelButtonTitle:nil
                                                        otherButtonTitles:NSLocalizedString(@"OKButton", @""), nil];
             [alert show];
-            [self.navigationController popViewControllerAnimated:YES];
         }
         else
         {
             UIAlertView* alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"PollUploadTitle", @"")
-                                                            message:NSLocalizedString(@"PollUploadBody", @"")
+                                                            message:error.localizedDescription
                                                            delegate:nil
                                                   cancelButtonTitle:nil
                                                   otherButtonTitles:NSLocalizedString(@"OKButton", @""), nil];
@@ -134,7 +123,6 @@
         }
     };
     
-    [self dismissViewControllerAnimated:YES completion:nil];
     [[VObjectManager sharedManager] createPollWithName:question
                                            description:@"<none>"
                                               question:question

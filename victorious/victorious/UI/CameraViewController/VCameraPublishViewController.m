@@ -113,6 +113,25 @@
                                               failBlock:^(NSOperation* operation, NSError* error)
     {
         VLog(@"Failed with error: %@", error);
+        
+        if (5500 == error.code)
+        {
+            UIAlertView*    alert   = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"TranscodingMediaTitle", @"")
+                                                                 message:NSLocalizedString(@"TranscodingMediaBody", @"")
+                                                                delegate:nil
+                                                       cancelButtonTitle:nil
+                                                       otherButtonTitles:NSLocalizedString(@"OKButton", @""), nil];
+            [alert show];
+        }
+        else
+        {
+            UIAlertView* alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"UploadFailedTitle", @"")
+                                                            message:error.localizedDescription
+                                                           delegate:nil
+                                                  cancelButtonTitle:nil
+                                                  otherButtonTitles:NSLocalizedString(@"OKButton", @""), nil];
+            [alert show];
+        }
     }];
     
     if (self.completion)

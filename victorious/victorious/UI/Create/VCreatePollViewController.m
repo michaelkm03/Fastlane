@@ -219,6 +219,8 @@ static const CGFloat VCreateViewControllerLargePadding = 20;
                           media1Extension:self.mediaType
                                media2Data:self.secondMediaData
                           media2Extension:self.secondMediaType];
+    
+    [self.navigationController popViewControllerAnimated:YES];
 }
 
 - (IBAction)closeButtonAction:(id)sender
