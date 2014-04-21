@@ -1909,6 +1909,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				ONLY_ACTIVE_ARCH = YES;
+				ProductPrefix = "debug-";
 				SDKROOT = iphoneos;
 				VALID_ARCHS = "armv7 armv7s";
 			};
@@ -1942,6 +1943,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				ONLY_ACTIVE_ARCH = NO;
+				ProductPrefix = "";
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;
 				VALID_ARCHS = "armv7 armv7s";
@@ -2069,6 +2071,7 @@
 				INFOPLIST_FILE = "";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				ONLY_ACTIVE_ARCH = NO;
+				ProductPrefix = "qa-";
 				SDKROOT = iphoneos;
 				VALID_ARCHS = "armv7 armv7s";
 			};
