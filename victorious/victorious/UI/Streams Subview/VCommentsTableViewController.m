@@ -25,6 +25,8 @@
 
 #import "UIImageView+Blurring.h"
 
+#import "UIImage+ImageCreation.h"
+
 
 @import Social;
 
@@ -56,6 +58,9 @@ static NSString* CommentCache = @"CommentCache";
 
 - (void)setSequence:(VSequence *)sequence
 {
+    self.sortedComments = nil;
+    [self.tableView reloadData];
+    
     _sequence = sequence;
     
     self.title = sequence.name;
@@ -78,8 +83,31 @@ static NSString* CommentCache = @"CommentCache";
 #pragma mark - Comment Sorters
 - (void)sortComments
 {
-    //TODO: choose the right sort based on filter
-    [self sortCommentsByDate];
+    //If theres no sorted comments, this is our first batch so animate in.
+    if (![self.sortedComments count])
+    {
+        [self sortCommentsByDate];
+        
+        __block CGRect frame = self.view.frame;
+        frame.origin.x = CGRectGetWidth(self.view.frame);
+        self.view.frame = frame;
+        
+        [UIView animateWithDuration:1.5
+                              delay:0.0
+             usingSpringWithDamping:0.5
+              initialSpringVelocity:1.0
+                            options:UIViewAnimationOptionCurveLinear
+                         animations:
+         ^{
+             frame.origin.x = 0;
+             self.view.frame = frame;
+         }
+                         completion:nil];
+    }
+    else
+    {
+        [self sortCommentsByDate];
+    }
 }
 
 - (void)sortCommentsByDate
@@ -296,24 +324,6 @@ static NSString* CommentCache = @"CommentCache";
     //if(!comment.read)
     [self.newlyReadComments addObject:[NSString stringWithFormat:@"%@", comment.remoteId]];
 
-    UIView*     contentView = [(VTableViewCell *)cell mainView];
-    CGPoint     _endPosition = contentView.center;
-    CGPoint     _startPosition = CGPointMake(_endPosition.x + CGRectGetWidth(self.tableView.frame), _endPosition.y);
-
-    contentView.center = _startPosition;
-    
-    [UIView animateWithDuration:1.5
-                          delay:0.0
-         usingSpringWithDamping:0.5
-          initialSpringVelocity:1.0
-                        options:UIViewAnimationOptionCurveLinear
-                     animations:^{
-                         contentView.center = _endPosition;
-                     }
-                     completion:^(BOOL finished)
-                     {
-                         
-                     }];
 }
 
 #pragma mark - UITableViewDelegate

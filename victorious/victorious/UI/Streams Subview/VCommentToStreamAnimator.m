@@ -23,13 +23,15 @@
 {
     VCommentsContainerViewController *commentsContainer = (VCommentsContainerViewController*)[context viewControllerForKey:UITransitionContextFromViewControllerKey];
     
+    __block CGRect frame = commentsContainer.conversationTableViewController.view.frame;
+    frame.origin.x = 0;
+    commentsContainer.conversationTableViewController.view.frame = frame;
+    
     [UIView animateWithDuration:.25f
                      animations:^
      {
-         CGRect frame = commentsContainer.conversationTableViewController.view.frame;
-         frame.origin.x += commentsContainer.conversationTableViewController.tableView.frame.size.width;
+         frame.origin.x = CGRectGetWidth(commentsContainer.conversationTableViewController.view.frame);
          commentsContainer.conversationTableViewController.view.frame = frame;
-         
          for (UIView* view in commentsContainer.view.subviews)
          {
              if ([view isKindOfClass:[UIImageView class]])
@@ -48,7 +50,10 @@
                      completion:^(BOOL finished)
      {
          [self animateToStream:context];
+         frame.origin.x = 0;
+         commentsContainer.conversationTableViewController.view.frame = frame;
      }];
+    
 }
 
 @end

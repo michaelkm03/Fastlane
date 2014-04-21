@@ -81,7 +81,9 @@ CGFloat kContentMediaViewOffset = 154;
     [self.navigationController setNavigationBarHidden:YES animated:NO];
     self.sequence = self.sequence;
     
-    self.orImageView.hidden = ![self.currentNode isPoll];
+    self.orImageView.hidden = ![self.sequence isPoll];
+
+    self.orImageView.center = [self.pollPreviewView convertPoint:self.pollPreviewView.center toView:self.orContainerView];
     
     self.firstPollButton.alpha = 0;
     self.secondPollButton.alpha = 0;
@@ -117,7 +119,10 @@ CGFloat kContentMediaViewOffset = 154;
         self.navigationController.delegate = nil;
     }
     
+    [self.mpController.view removeFromSuperview];
     [self.mpController pause];
+    self.mpController = nil;
+    
     self.orAnimator = nil;
 }
 
@@ -184,7 +189,8 @@ CGFloat kContentMediaViewOffset = 154;
         [_actionBarVC animateInWithDuration:.2f
                                  completion:^(BOOL finished)
          {
-             [self pollAnimation];
+             if ([self.sequence isPoll])
+                 [self pollAnimation];
          }];
     }
 }
