@@ -100,6 +100,9 @@
 
 - (void)checkIfAnswered
 {
+    self.leftButton.userInteractionEnabled = YES;
+    self.rightButton.userInteractionEnabled = YES;
+    
     for (VPollResult* result in [VObjectManager sharedManager].mainUser.pollResults)
     {
         if ([result.sequenceId isEqualToNumber: self.sequence.remoteId])
@@ -176,6 +179,9 @@
 #pragma mark - Button actions
 -(IBAction)pressedAnswerButton:(id)sender
 {
+    self.leftButton.userInteractionEnabled = NO;
+    self.rightButton.userInteractionEnabled = NO;
+    
     VAnswer* chosenAnswer;
     
     NSInteger tag = ((UIButton*)sender).tag;
