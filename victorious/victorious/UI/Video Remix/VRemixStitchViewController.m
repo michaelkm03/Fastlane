@@ -265,10 +265,9 @@
     }
 
     AVMutableVideoCompositionInstruction*   instruction =   [AVMutableVideoCompositionInstruction videoCompositionInstruction];
-//    instruction.timeRange = CMTimeRangeMake(insertionTime, CMTimeAdd(insertionTime, asset.duration));
     instruction.timeRange = CMTimeRangeMake(insertionTime, asset.duration);
     
-    AVMutableVideoCompositionLayerInstruction*  videoLayerInstruction = [AVMutableVideoCompositionLayerInstruction videoCompositionLayerInstructionWithAssetTrack:videoCompositionTrack];
+    AVMutableVideoCompositionLayerInstruction*  videoLayerInstruction   = [AVMutableVideoCompositionLayerInstruction videoCompositionLayerInstructionWithAssetTrack:videoCompositionTrack];
     CGAffineTransform                           transform = videoTrack.preferredTransform;
     BOOL                                        isAssetPortrait         =   NO;
     if (transform.a == 0 && transform.b == 1.0 && transform.c == -1.0 && transform.d == 0)
@@ -282,16 +281,15 @@
     {
         assetScaleToFitRatio = 320.0 / videoTrack.naturalSize.height;
         CGAffineTransform assetScaleFactor = CGAffineTransformMakeScale(assetScaleToFitRatio, assetScaleToFitRatio);
-        [videoLayerInstruction setTransform:CGAffineTransformConcat(videoTrack.preferredTransform, assetScaleFactor) atTime:kCMTimeZero];
+        [videoLayerInstruction setTransform:CGAffineTransformConcat(videoTrack.preferredTransform, assetScaleFactor) atTime:insertionTime];
     }
     else
     {
         CGAffineTransform assetScaleFactor = CGAffineTransformMakeScale(assetScaleToFitRatio, assetScaleToFitRatio);
-//        [videoLayerInstruction setTransform:CGAffineTransformConcat(CGAffineTransformConcat(videoTrack.preferredTransform, assetScaleFactor),CGAffineTransformMakeTranslation(0, 160)) atTime:kCMTimeZero];
-        [videoLayerInstruction setTransform:CGAffineTransformConcat(videoTrack.preferredTransform, assetScaleFactor) atTime:kCMTimeZero];
+        CGFloat naturalHeight = videoTrack.naturalSize.height * assetScaleToFitRatio;
+        CGFloat offset = (320.0 - naturalHeight) / 2.0;
+        [videoLayerInstruction setTransform:CGAffineTransformConcat(CGAffineTransformConcat(videoTrack.preferredTransform, assetScaleFactor),CGAffineTransformMakeTranslation(0, offset)) atTime:insertionTime];
     }
-    
-//    [videoLayerInstruction setTransform:transform atTime:insertionTime];
 
     instruction.layerInstructions = @[videoLayerInstruction];
 
