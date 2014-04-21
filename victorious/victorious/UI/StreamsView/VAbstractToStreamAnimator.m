@@ -25,8 +25,6 @@
         return;
     }
     
-    [[context containerView] addSubview:streamVC.view];
-    
     VStreamViewCell* selectedCell = (VStreamViewCell*) [streamVC.tableView cellForRowAtIndexPath:streamVC.tableView.indexPathForSelectedRow];
     
     //If the tableview updates while we are in the content view it will reset the cells to their proper positions.
@@ -38,20 +36,25 @@
             continue;
         }
         
-        CGFloat centerPoint = selectedCell ? selectedCell.center.y : streamVC.tableView.center.y + streamVC.tableView.contentOffset.y;
+        
+        CGFloat centerPoint = [fromVC isKindOfClass:[VContentViewController class]] ? selectedCell.center.y
+                                : streamVC.tableView.center.y + streamVC.tableView.contentOffset.y;
+
         CGRect cellRect = [streamVC.tableView convertRect:cell.frame toView:streamVC.tableView.superview];
         if (CGRectIntersectsRect(streamVC.tableView.frame, cellRect))
         {
             if (cell.center.y > centerPoint)
             {
-                cell.center = CGPointMake(cell.center.x, cell.center.y + streamVC.tableView.frame.size.height);
+                cell.center = CGPointMake(cell.center.x, cell.center.y + [UIScreen mainScreen].bounds.size.height);
             }
             else
             {
-                cell.center = CGPointMake(cell.center.x, cell.center.y - streamVC.tableView.frame.size.height);
+                cell.center = CGPointMake(cell.center.x, cell.center.y - [UIScreen mainScreen].bounds.size.height);
             }
         }
     }
+    
+    [[context containerView] addSubview:streamVC.view];
     
     [UIView animateWithDuration:.2f
                      animations:^
@@ -76,11 +79,11 @@
                   {
                       if (cell.center.y > centerPoint)
                       {
-                          cell.center = CGPointMake(cell.center.x, cell.center.y - streamVC.tableView.frame.size.height);
+                          cell.center = CGPointMake(cell.center.x, cell.center.y - [UIScreen mainScreen].bounds.size.height);
                       }
                       else
                       {
-                          cell.center = CGPointMake(cell.center.x, cell.center.y + streamVC.tableView.frame.size.height);
+                          cell.center = CGPointMake(cell.center.x, cell.center.y + [UIScreen mainScreen].bounds.size.height);
                       }
                   }
               }

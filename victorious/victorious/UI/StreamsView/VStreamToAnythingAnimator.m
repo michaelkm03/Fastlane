@@ -24,9 +24,8 @@
 {
     VStreamTableViewController *streamVC = (VStreamTableViewController*)[context viewControllerForKey:UITransitionContextFromViewControllerKey];    
     VContentViewController* contentVC = (VContentViewController*)[context viewControllerForKey:UITransitionContextToViewControllerKey];
+    [streamVC.navigationController setNavigationBarHidden:NO animated:YES];
     VStreamViewCell* selectedCell = (VStreamViewCell*) [streamVC.tableView cellForRowAtIndexPath:streamVC.tableView.indexPathForSelectedRow];
-    
-    contentVC.sequence = selectedCell.sequence;
 
     [UIView animateWithDuration:.4f
                      animations:^
@@ -44,14 +43,15 @@
                  continue;
              }
              
-             CGFloat centerPoint = selectedCell ? selectedCell.center.y : streamVC.tableView.center.y + streamVC.tableView.contentOffset.y;
+             CGFloat centerPoint = [contentVC isKindOfClass:[VContentViewController class]] ? selectedCell.center.y
+                                    : streamVC.tableView.center.y + streamVC.tableView.contentOffset.y;
              if (cell.center.y > centerPoint)
              {
-                 cell.center = CGPointMake(cell.center.x, cell.center.y + streamVC.tableView.frame.size.height);
+                 cell.center = CGPointMake(cell.center.x, cell.center.y + [UIScreen mainScreen].bounds.size.height);
              }
              else
              {
-                 cell.center = CGPointMake(cell.center.x, cell.center.y - streamVC.tableView.frame.size.height);
+                 cell.center = CGPointMake(cell.center.x, cell.center.y - [UIScreen mainScreen].bounds.size.height);
              }
              [repositionedCells addObject:cell];
          }
@@ -62,6 +62,8 @@
          //Skip this animation if we aren't going to a content view
          if ([contentVC isKindOfClass:[VContentViewController class]])
          {
+             contentVC.sequence = selectedCell.sequence;
+             
              [UIView animateWithDuration:.2f
                               animations:^
               {
@@ -73,7 +75,6 @@
                               completion:^(BOOL finished)
               {
                   [[context containerView] addSubview:contentVC.view];
-                  contentVC.orImageView.center = [selectedCell.animationImage convertPoint:selectedCell.animationImage.center toView:contentVC.view];
                   [context completeTransition:![context transitionWasCancelled]];
               }];
          }

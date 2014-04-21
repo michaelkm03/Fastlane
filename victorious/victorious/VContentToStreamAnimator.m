@@ -36,7 +36,6 @@
     
     [UIView animateWithDuration:.2f animations:^
     {
-        contentVC.orImageView.alpha = 0;
         CGRect frame = contentVC.previewImage.frame;
         contentVC.previewImage.frame = CGRectMake(CGRectGetMinX(frame), CGRectGetMinY(frame), CGRectGetWidth(selectedCell.frame), CGRectGetHeight(selectedCell.frame));
     }];
