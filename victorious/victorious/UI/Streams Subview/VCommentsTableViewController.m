@@ -53,7 +53,14 @@ static NSString* CommentCache = @"CommentCache";
 
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
 
-    [self sortComments];
+//    [self sortComments];
+}
+
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    
+    self.sequence = self.sequence;
 }
 
 - (void)setSequence:(VSequence *)sequence
@@ -102,7 +109,13 @@ static NSString* CommentCache = @"CommentCache";
              frame.origin.x = 0;
              self.view.frame = frame;
          }
-                         completion:nil];
+                         completion:^(BOOL finished) {
+                             for (UIView* view in self.tableView.visibleCells)
+                             {
+                                 [view setNeedsLayout];
+                                 [view layoutIfNeeded];
+                             }
+                         }];
     }
     else
     {
@@ -133,7 +146,7 @@ static NSString* CommentCache = @"CommentCache";
 {
     VSuccessBlock success = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
     {
-        [self sortComments];
+//        [self sortComments];
         
         [self.refreshControl endRefreshing];
     };
@@ -292,7 +305,8 @@ static NSString* CommentCache = @"CommentCache";
 {
     VComment* comment = (VComment*)[self.sortedComments objectAtIndex:indexPath.row];
 
-    CGFloat height = [VCommentCell frameSizeForMessageText:comment.text].height;
+    CGSize textSize = [VCommentCell frameSizeForMessageText:comment.text];
+    CGFloat height = textSize.height;
     CGFloat yOffset = !comment.mediaUrl || [comment.mediaUrl isEmpty] ? kCommentCellYOffset : kMediaCommentCellYOffset;
     height = MAX(height + yOffset, kMinCellHeight);
 
@@ -319,9 +333,7 @@ static NSString* CommentCache = @"CommentCache";
 
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    //Add
     VComment* comment = (VComment*)[self.sortedComments objectAtIndex:indexPath.row];
-    //if(!comment.read)
     [self.newlyReadComments addObject:[NSString stringWithFormat:@"%@", comment.remoteId]];
 
 }
