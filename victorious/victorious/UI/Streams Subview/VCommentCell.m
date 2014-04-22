@@ -25,7 +25,7 @@
 CGFloat const kCommentRowWithMediaHeight  =   256.0f;
 CGFloat const kCommentRowHeight           =   86.0f;
 CGFloat const kCommentCellWidth = 214;
-CGFloat const kCommentCellYOffset = 10;
+CGFloat const kCommentCellYOffset = 28;
 CGFloat const kMediaCommentCellYOffset = 235;
 CGFloat const kMinCellHeight = 84;
 CGFloat const kCommentMessageLabelWidth = 214;
@@ -156,7 +156,7 @@ NSString* const kChatBubbleLeftImage = @"ChatBubbleLeft";
     CGFloat yOffset = hasMedia ? kMediaCommentCellYOffset : kCommentCellYOffset;
     
     self.messageLabel.text = text;
-
+    
     CGFloat xOrigin = 0;
     if ([self.commentOrMessage isKindOfClass:[VMessage class]] &&
         [((VMessage*)self.commentOrMessage).user isEqualToUser:[VObjectManager sharedManager].mainUser])
@@ -168,10 +168,8 @@ NSString* const kChatBubbleLeftImage = @"ChatBubbleLeft";
     {
         xOrigin = self.messageLabel.frame.origin.x;
     }
-    self.messageLabel.frame = CGRectMake(xOrigin,
-                                         self.messageLabel.frame.origin.y,
-                                         size.width,
-                                         size.height);
+    self.messageLabel.bounds = CGRectMake(0, 0, size.width, size.height);
+    
     [self.messageLabel sizeToFit];
     
     
@@ -202,18 +200,20 @@ NSString* const kChatBubbleLeftImage = @"ChatBubbleLeft";
     }
     
     CGFloat height = MAX(self.messageLabel.frame.size.height + yOffset, kMinCellHeight);
-    self.frame = CGRectMake(self.frame.origin.x,
-                            self.frame.origin.y,
-                            self.frame.size.width,
-                            height);
+    self.bounds = CGRectMake(0, 0, self.frame.size.width, height);
 }
 
 + (CGSize)frameSizeForMessageText:(NSString*)text
 {
     UIFont* font = [[VThemeManager sharedThemeManager] themedFontForKey:kVLabel2Font];
     NSDictionary *stringAttributes;
+    if (!font)
+        VLog(@"This is bad, where did the font go.");
     if (font)
         stringAttributes = [NSDictionary dictionaryWithObject:font forKey: NSFontAttributeName];
+    VLog(@"text = %@", text);
+    VLog(@"framesize = %@", NSStringFromCGSize([text frameSizeForWidth:kCommentMessageLabelWidth
+                                                         andAttributes:stringAttributes]));
     return [text frameSizeForWidth:kCommentMessageLabelWidth
                      andAttributes:stringAttributes];
 }

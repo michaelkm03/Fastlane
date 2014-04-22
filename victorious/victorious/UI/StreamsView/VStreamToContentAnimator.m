@@ -6,14 +6,14 @@
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
-#import "VStreamToAnythingAnimator.h"
+#import "VStreamToContentAnimator.h"
 
 #import "VStreamTableViewController.h"
 #import "VStreamViewCell.h"
 
 #import "VContentViewController.h"
 
-@implementation VStreamToAnythingAnimator
+@implementation VStreamToContentAnimator
 
 - (NSTimeInterval)transitionDuration:(id <UIViewControllerContextTransitioning>)transitionContext
 {
@@ -22,11 +22,11 @@
 
 - (void)animateTransition:(id<UIViewControllerContextTransitioning>)context
 {
-    VStreamTableViewController *streamVC = (VStreamTableViewController*)[context viewControllerForKey:UITransitionContextFromViewControllerKey];    
+    VStreamTableViewController *streamVC = (VStreamTableViewController*)[context viewControllerForKey:UITransitionContextFromViewControllerKey];
     VContentViewController* contentVC = (VContentViewController*)[context viewControllerForKey:UITransitionContextToViewControllerKey];
     [streamVC.navigationController setNavigationBarHidden:NO animated:YES];
     VStreamViewCell* selectedCell = (VStreamViewCell*) [streamVC.tableView cellForRowAtIndexPath:streamVC.tableView.indexPathForSelectedRow];
-
+    
     [UIView animateWithDuration:.4f
                      animations:^
      {
@@ -44,7 +44,7 @@
              }
              
              CGFloat centerPoint = [contentVC isKindOfClass:[VContentViewController class]] ? selectedCell.center.y
-                                    : streamVC.tableView.center.y + streamVC.tableView.contentOffset.y;
+             : streamVC.tableView.center.y + streamVC.tableView.contentOffset.y;
              if (cell.center.y > centerPoint)
              {
                  cell.center = CGPointMake(cell.center.x, cell.center.y + [UIScreen mainScreen].bounds.size.height);
@@ -59,30 +59,21 @@
      }
                      completion:^(BOOL finished)
      {
-         //Skip this animation if we aren't going to a content view
-         if ([contentVC isKindOfClass:[VContentViewController class]])
-         {
-             contentVC.sequence = selectedCell.sequence;
-             
-             [UIView animateWithDuration:.2f
-                              animations:^
-              {
-                  selectedCell.overlayView.alpha = selectedCell.shadeView.alpha = 0;
-                  selectedCell.overlayView.center = CGPointMake(selectedCell.overlayView.center.x,
-                                                                selectedCell.overlayView.center.y - selectedCell.frame.size.height);
-                  
-              }
-                              completion:^(BOOL finished)
-              {
-                  [[context containerView] addSubview:contentVC.view];
-                  [context completeTransition:![context transitionWasCancelled]];
-              }];
-         }
-         else
-         {
-             [[context containerView] addSubview:contentVC.view];
-             [context completeTransition:![context transitionWasCancelled]];
-         }
+         contentVC.sequence = selectedCell.sequence;
+         
+         [UIView animateWithDuration:.2f
+                          animations:^
+          {
+              selectedCell.overlayView.alpha = selectedCell.shadeView.alpha = 0;
+              selectedCell.overlayView.center = CGPointMake(selectedCell.overlayView.center.x,
+                                                            selectedCell.overlayView.center.y - selectedCell.frame.size.height);
+              
+          }
+                          completion:^(BOOL finished)
+          {
+              [[context containerView] addSubview:contentVC.view];
+              [context completeTransition:![context transitionWasCancelled]];
+          }];
      }];
 }
 

@@ -10,6 +10,6 @@
 
 @class VSequence;
 
-@interface VStreamToAnythingAnimator : NSObject <UIViewControllerAnimatedTransitioning>
+@interface VStreamToContentAnimator : NSObject <UIViewControllerAnimatedTransitioning>
 
 @end
