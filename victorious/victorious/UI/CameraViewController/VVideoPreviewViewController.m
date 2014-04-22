@@ -61,7 +61,6 @@
 
 - (void)handleDoneTapGesture:(UIGestureRecognizer *)gesture
 {
-    UISaveVideoAtPathToSavedPhotosAlbum([self.mediaURL path], nil, nil, nil);
     if (self.completionBlock)
     {
         AVAsset *asset = [AVAsset assetWithURL:self.mediaURL];

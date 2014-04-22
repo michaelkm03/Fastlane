@@ -43,6 +43,8 @@ const   NSTimeInterval  kAnimationDuration      =   0.4;
 @property (nonatomic)                   BOOL                inTrashState;
 @property (nonatomic)                   BOOL                inRecordVideoState;
 
+@property (nonatomic)                   BOOL                didSelectAssetFromLibrary;
+
 @end
 
 @implementation VCameraViewController
@@ -130,6 +132,7 @@ const   NSTimeInterval  kAnimationDuration      =   0.4;
     
     self.inRecordVideoState = NO;
     self.inTrashState = NO;
+    self.didSelectAssetFromLibrary = NO;
 
     [self setLastImageSavedToAlbum];
 }
@@ -155,16 +158,6 @@ const   NSTimeInterval  kAnimationDuration      =   0.4;
 
     [self.camera stopRunningSession];
     [self.camera cancel];
-}
-
-- (UIStatusBarStyle)preferredStatusBarStyle
-{
-    return UIStatusBarStyleLightContent;
-}
-
-- (BOOL)prefersStatusBarHidden
-{
-    return YES;
 }
 
 #pragma mark - Actions
@@ -308,6 +301,7 @@ const   NSTimeInterval  kAnimationDuration      =   0.4;
         
         self.inTrashState = NO;
         self.inRecordVideoState = NO;
+        self.didSelectAssetFromLibrary = NO;
         
         self.navigationItem.rightBarButtonItem = nil;
         self.openAlbumButton.alpha = 1.0;
@@ -454,6 +448,19 @@ const   NSTimeInterval  kAnimationDuration      =   0.4;
     VMediaPreviewViewController *previewViewController = [VMediaPreviewViewController previewViewControllerForMediaAtURL:contentURL withExtension:extension];
     previewViewController.completionBlock = ^(BOOL finished, UIImage *previewImage, NSURL *capturedMediaURL, NSString *mediaExtension)
     {
+        if (!self.didSelectAssetFromLibrary)
+        {
+            if ([mediaExtension isEqualToString:VConstantMediaExtensionMOV])
+            {
+                UISaveVideoAtPathToSavedPhotosAlbum([capturedMediaURL path], nil, nil, nil);
+            }
+            else if ([mediaExtension isEqualToString:VConstantMediaExtensionPNG])
+            {
+                UIImage*    photo = [UIImage imageWithData:[NSData dataWithContentsOfURL:capturedMediaURL]];
+                UIImageWriteToSavedPhotosAlbum(photo, nil, nil, nil);
+           }
+        }
+
         if (!finished)
         {
             [[NSFileManager defaultManager] removeItemAtURL:contentURL error:nil];
@@ -488,6 +495,7 @@ const   NSTimeInterval  kAnimationDuration      =   0.4;
     
     self.inTrashState = NO;
     self.inRecordVideoState = NO;
+    self.didSelectAssetFromLibrary = NO;
     
     self.navigationItem.rightBarButtonItem = nil;
     self.openAlbumButton.alpha = 1.0;
@@ -522,7 +530,6 @@ const   NSTimeInterval  kAnimationDuration      =   0.4;
 
 - (void)audioVideoRecorder:(VCAudioVideoRecorder *)audioVideoRecorder willFinishRecordingAtTime:(CMTime)frameTime
 {
-//    self.recordButton.userInteractionEnabled = NO;
 }
 
 // Video
@@ -569,12 +576,10 @@ const   NSTimeInterval  kAnimationDuration      =   0.4;
 // Photo
 - (void)cameraWillCapturePhoto:(VCCamera *)camera
 {
-    
 }
 
 - (void)cameraDidCapturePhoto:(VCCamera *)camera
 {
-
 }
 
 // Focus
@@ -617,13 +622,14 @@ const   NSTimeInterval  kAnimationDuration      =   0.4;
 
 - (void)camera:(VCCamera *)camera cleanApertureDidChange:(CGRect)cleanAperture
 {
-    VLog(@"%@", NSStringFromCGRect(cleanAperture));
 }
 
 #pragma mark - UIImagePickerControllerDelegate
 
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info
 {
+    self.didSelectAssetFromLibrary = YES;
+    
     NSString *mediaType = info[UIImagePickerControllerMediaType];
     
     // Handle a still image picked from a photo album
