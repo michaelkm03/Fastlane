@@ -374,9 +374,9 @@
 {
     VStreamViewCell *cell = (VStreamViewCell *)notification.object;
     
-//    [self.tableView selectRowAtIndexPath:[self.fetchedResultsController indexPathForObject:cell.sequence]
-//                                animated:NO
-//                          scrollPosition:UITableViewScrollPositionNone];
+    [self.tableView selectRowAtIndexPath:[self.fetchedResultsController indexPathForObject:cell.sequence]
+                                animated:NO
+                          scrollPosition:UITableViewScrollPositionNone];
 
     [self setBackgroundImageWithURL:[[cell.sequence initialImageURLs] firstObject]];
 

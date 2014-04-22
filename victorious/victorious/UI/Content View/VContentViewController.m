@@ -269,7 +269,11 @@ CGFloat kContentMediaViewOffset = 154;
 
 - (IBAction)pressedComment:(id)sender
 {
-    [self.navigationController pushViewController:[VCommentsContainerViewController commentsContainerView] animated:YES];
+    VCommentsContainerViewController* commentsTable = [VCommentsContainerViewController commentsContainerView];
+    commentsTable.sequence = self.sequence;
+    commentsTable.parentVC = self;
+    
+    [self.navigationController pushViewController:commentsTable animated:YES];
 }
 
 #pragma mark - VInteractionManagerDelegate
