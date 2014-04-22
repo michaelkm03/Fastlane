@@ -13,6 +13,8 @@
 
 #import "VContentViewController.h"
 
+#import "VSequence+Fetcher.h"
+
 @implementation VStreamToContentAnimator
 
 - (NSTimeInterval)transitionDuration:(id <UIViewControllerContextTransitioning>)transitionContext
@@ -72,7 +74,30 @@
                           completion:^(BOOL finished)
           {
               [[context containerView] addSubview:contentVC.view];
-              [context completeTransition:![context transitionWasCancelled]];
+              
+              CGRect topActionsFrame = contentVC.topActionsView.frame;
+              contentVC.topActionsView.frame = CGRectMake(CGRectGetMinX(topActionsFrame), CGRectGetMinY(contentVC.mediaView.frame), CGRectGetWidth(topActionsFrame), CGRectGetHeight(topActionsFrame));
+              
+              contentVC.orImageView.hidden = ![contentVC.sequence isPoll];
+              contentVC.orImageView.center = [contentVC.pollPreviewView convertPoint:contentVC.pollPreviewView.center toView:contentVC.orContainerView];
+              
+              contentVC.firstPollButton.alpha = 0;
+              contentVC.secondPollButton.alpha = 0;
+              
+              contentVC.topActionsView.alpha = 0;
+              [UIView animateWithDuration:.2f
+                               animations:^
+               {
+                   contentVC.topActionsView.frame = CGRectMake(CGRectGetMinX(topActionsFrame), 0, CGRectGetWidth(topActionsFrame), CGRectGetHeight(topActionsFrame));
+                   contentVC.topActionsView.alpha = 1;
+                   contentVC.firstPollButton.alpha = 1;
+                   contentVC.secondPollButton.alpha = 1;
+               }
+                               completion:^(BOOL finished)
+               {
+                   contentVC.actionBarVC = nil;
+                   [context completeTransition:![context transitionWasCancelled]];
+               }];
           }];
      }];
 }

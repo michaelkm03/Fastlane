@@ -54,8 +54,6 @@
     self.pollPreviewView.hidden = YES;
     self.mpPlayerContainmentView.hidden = YES;
     self.remixButton.hidden = YES;
-    
-    [self updateActionBar];
 }
 
 @end
