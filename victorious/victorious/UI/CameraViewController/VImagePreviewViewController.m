@@ -63,7 +63,6 @@
 
 - (void)handleDoneTapGesture:(UIGestureRecognizer *)gesture
 {
-    UIImageWriteToSavedPhotosAlbum(self.photo, nil, nil, nil);
     if (self.completionBlock)
     {
         self.completionBlock(YES, self.photo, self.mediaURL, self.mediaExtension);

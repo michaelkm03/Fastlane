@@ -707,14 +707,6 @@
 			name = Capture;
 			sourceTree = "<group>";
 		};
-		3F1AA53118CFF00B0022D16B /* Editing */ = {
-			isa = PBXGroup;
-			children = (
-				3F71A7DD18D7D0600048FF60 /* Trim Control */,
-			);
-			name = Editing;
-			sourceTree = "<group>";
-		};
 		3F1AA53218CFF0180022D16B /* Common */ = {
 			isa = PBXGroup;
 			children = (
@@ -733,6 +725,7 @@
 		3F366E7018E24CCD00494B12 /* Remix */ = {
 			isa = PBXGroup;
 			children = (
+				3F71A7DD18D7D0600048FF60 /* Trim Control */,
 				3FF7B6DB18F4A668003831CD /* VRemixSelectViewController.h */,
 				3FF7B6DC18F4A668003831CD /* VRemixSelectViewController.m */,
 				3FDEDD0118CE47E80028E3F1 /* VRemixTrimViewController.h */,
@@ -1009,7 +1002,6 @@
 			children = (
 				3F366E7018E24CCD00494B12 /* Remix */,
 				3F1AA53018CFEFFC0022D16B /* Capture */,
-				3F1AA53118CFF00B0022D16B /* Editing */,
 				3F1AA53218CFF0180022D16B /* Common */,
 			);
 			name = CameraViewController;
