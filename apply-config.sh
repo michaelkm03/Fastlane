@@ -5,13 +5,13 @@
 FOLDER=$1
 
 if [ "$FOLDER" == "" ]; then
-	echo "Usage: $0 [folder]"
-	exit 1
+    echo "Usage: $0 [folder]"
+    exit 1
 fi
 
 if [ ! -d "configurations/$FOLDER" ]; then
-	echo "Folder $FOLDER not found."
-	exit 1
+    echo "Folder $FOLDER not found."
+    exit 1
 fi
 
 
@@ -25,10 +25,10 @@ cp    configurations/$FOLDER/defaultTheme.plist victorious/AppSpecific/defaultTh
 ### Modify Info.plist
 
 copyPListValue(){
-	local VAL=`/usr/libexec/PlistBuddy -c "Print $1" configurations/$FOLDER/Info.plist`
-	if [ "$VAL" != "" ]; then
-		/usr/libexec/PlistBuddy -c "Set $1 $VAL" victorious/AppSpecific/Info.plist
-	fi
+    local VAL=`/usr/libexec/PlistBuddy -c "Print $1" configurations/$FOLDER/Info.plist`
+    if [ "$VAL" != "" ]; then
+        /usr/libexec/PlistBuddy -c "Set $1 $VAL" victorious/AppSpecific/Info.plist
+    fi
 }
 
 copyPListValue 'CFBundleDisplayName'
