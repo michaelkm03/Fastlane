@@ -81,33 +81,9 @@ CGFloat kContentMediaViewOffset = 154;
     [self.navigationController setNavigationBarHidden:YES animated:NO];
     self.sequence = self.sequence;
     
-    self.orImageView.hidden = ![self.sequence isPoll];
-
-    self.orImageView.center = [self.pollPreviewView convertPoint:self.pollPreviewView.center toView:self.orContainerView];
-    
-    self.firstPollButton.alpha = 0;
-    self.secondPollButton.alpha = 0;
-    
-    self.actionBarVC = nil;
+    [self updateActionBar];
     
     self.navigationController.delegate = self;
-    
-    CGRect topActionsFrame = self.topActionsView.frame;
-    self.topActionsView.frame = CGRectMake(CGRectGetMinX(topActionsFrame), CGRectGetMinY(self.mediaView.frame), CGRectGetWidth(topActionsFrame), CGRectGetHeight(topActionsFrame));
-    
-    self.topActionsView.alpha = 0;
-    [UIView animateWithDuration:.2f
-                     animations:^
-     {
-         self.topActionsView.frame = CGRectMake(CGRectGetMinX(topActionsFrame), 0, CGRectGetWidth(topActionsFrame), CGRectGetHeight(topActionsFrame));
-         self.topActionsView.alpha = 1;
-         self.firstPollButton.alpha = 1;
-         self.secondPollButton.alpha = 1;
-     }
-                     completion:^(BOOL finished)
-     {
-         [self updateActionBar];
-     }];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -269,7 +245,11 @@ CGFloat kContentMediaViewOffset = 154;
 
 - (IBAction)pressedComment:(id)sender
 {
-    [self.navigationController pushViewController:[VCommentsContainerViewController commentsContainerView] animated:YES];
+    VCommentsContainerViewController* commentsTable = [VCommentsContainerViewController commentsContainerView];
+    commentsTable.sequence = self.sequence;
+    commentsTable.parentVC = self;
+    
+    [self.navigationController pushViewController:commentsTable animated:YES];
 }
 
 #pragma mark - VInteractionManagerDelegate

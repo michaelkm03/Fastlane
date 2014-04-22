@@ -42,8 +42,6 @@
     self.activityIndicator.center = self.mpController.view.center;
     [self.mediaView addSubview:self.activityIndicator];
     [self.activityIndicator startAnimating];
-    
-    [self updateActionBar];
 }
 
 - (void)mpLoadStateChanged

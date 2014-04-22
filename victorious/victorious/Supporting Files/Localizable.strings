@@ -44,6 +44,8 @@
 "PollUploadTitle"       =   "Poll Upload Failed";
 "PollUploadBody"        =   "Unable to upload Poll to server";
 
+"UploadFailedTitle"     =   "Media Upload Failed";
+
 "UploadError"           =   "Upload Error";
 "UploadErrorBody"       =   "Sorry! Something went wrong, and we are unable to complete the upload at this time.";
 

@@ -17,7 +17,7 @@
 #import "UIImageView+Blurring.h"
 #import "UIImage+ImageCreation.h"
 
-#import "VStreamToAnythingAnimator.h"
+#import "VStreamToContentAnimator.h"
 #import "VStreamToCommentAnimator.h"
 
 //Cells
@@ -38,7 +38,7 @@
 @interface VStreamTableViewController() <UIViewControllerTransitioningDelegate, UINavigationControllerDelegate>
 @property (strong, nonatomic) id<UIViewControllerTransitioningDelegate> transitionDelegate;
 
-@property (strong, nonatomic) VStreamToAnythingAnimator* streamToAnyAnimator;
+@property (strong, nonatomic) VStreamToContentAnimator* streamToAnyAnimator;
 
 @property (strong, nonatomic) NSCache* preloadImageCache;
 @end
@@ -66,7 +66,7 @@
     
     self.clearsSelectionOnViewWillAppear = NO;
     
-    self.streamToAnyAnimator = [[VStreamToAnythingAnimator alloc] init];
+    self.streamToAnyAnimator = [[VStreamToContentAnimator alloc] init];
     
     //Remove the search button from the stream - feature currently deprecated
     self.navigationItem.rightBarButtonItem = nil;

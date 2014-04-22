@@ -17,12 +17,18 @@ extern CGFloat kContentMediaViewOffset;
 @interface VContentViewController : UIViewController
 
 @property (strong, nonatomic) VSequence* sequence;
-@property (weak, nonatomic) IBOutlet UIView* mediaView;
-@property (weak, nonatomic) IBOutlet UIView* topActionsView;
-@property (weak, nonatomic) IBOutlet UIImageView* orImageView;
 @property (strong, nonatomic) VActionBarViewController* actionBarVC;
 
+@property (weak, nonatomic) IBOutlet UIView* pollPreviewView;
+@property (weak, nonatomic) IBOutlet UIView* orContainerView;
+@property (weak, nonatomic) IBOutlet UIView* mediaView;
+@property (weak, nonatomic) IBOutlet UIView* topActionsView;
+
+@property (weak, nonatomic) IBOutlet UIImageView* orImageView;
 @property (weak, nonatomic) IBOutlet UIImageView* previewImage;
+
+@property (weak, nonatomic) IBOutlet UIButton* firstPollButton;
+@property (weak, nonatomic) IBOutlet UIButton* secondPollButton;
 
 + (VContentViewController *)sharedInstance;
 
