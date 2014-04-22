@@ -1,9 +1,11 @@
 #!/bin/bash
+# This script applies an individual app configuration to the codebase
+# in preparation for building that app.
 
 FOLDER=$1
 
 if [ "$FOLDER" == "" ]; then
-	echo "Must specify folder name."
+	echo "Usage: $0 [folder]"
 	exit 1
 fi
 
@@ -11,6 +13,7 @@ if [ ! -d "configurations/$FOLDER" ]; then
 	echo "Folder $FOLDER not found."
 	exit 1
 fi
+
 
 ### Copy Files
 
