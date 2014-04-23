@@ -79,7 +79,7 @@ CGFloat kContentMediaViewOffset = 154;
     self.secondResultView.color = [[VThemeManager sharedThemeManager] themedColorForKey:kVAccentColor];
     
     [self.navigationController setNavigationBarHidden:YES animated:NO];
-    self.sequence = self.sequence;
+//    self.sequence = self.sequence;
     
     [self updateActionBar];
     

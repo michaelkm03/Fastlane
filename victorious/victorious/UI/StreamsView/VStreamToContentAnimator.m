@@ -33,8 +33,6 @@
     [streamVC animateOutWithDuration:.4f
                           completion:^(BOOL finished)
      {
-         contentVC.sequence = selectedCell.sequence;
-         
          [UIView animateWithDuration:.2f
                           animations:^
           {
@@ -43,6 +41,7 @@
                           completion:^(BOOL finished)
           {
               [[context containerView] addSubview:contentVC.view];
+              contentVC.sequence = selectedCell.sequence;
               
               CGRect topActionsFrame = contentVC.topActionsView.frame;
               contentVC.topActionsView.frame = CGRectMake(CGRectGetMinX(topActionsFrame), CGRectGetMinY(contentVC.mediaView.frame),

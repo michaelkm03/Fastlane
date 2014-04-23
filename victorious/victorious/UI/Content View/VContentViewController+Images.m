@@ -46,11 +46,10 @@
          CGFloat videoHeight = self.mediaView.frame.size.width * yRatio;
          CGFloat videoWidth = self.mediaView.frame.size.width * xRatio;
          self.previewImage.frame = CGRectMake(0, 0, videoWidth, videoHeight);
-         
-         self.previewImage.hidden = NO;
      }
                                       failure:nil];
     
+    self.previewImage.hidden = NO;
     self.pollPreviewView.hidden = YES;
     self.mpPlayerContainmentView.hidden = YES;
     self.remixButton.hidden = YES;
