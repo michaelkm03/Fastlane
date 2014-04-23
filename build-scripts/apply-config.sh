@@ -1,6 +1,8 @@
 #!/bin/bash
-# This script applies an individual app configuration to the codebase
-# in preparation for building that app.
+###########
+# Modifies the victorious project according to an individual
+# app configuration in preparation for building that app.
+###########
 
 FOLDER=$1
 

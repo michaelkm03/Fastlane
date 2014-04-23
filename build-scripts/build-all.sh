@@ -1,6 +1,10 @@
 #!/bin/bash
-# This script builds all the apps in the 'configurations' folder,
-# archives, exports, and places them in the 'products' folder.
+###########
+# Builds, archives, and exports all the apps in the 'configurations' folder.
+# IPA and DSYM files will be placed in the 'products' folder.
+#
+# Requires Shenzhen: see https://github.com/nomad/shenzhen
+###########
 
 SCHEME=$1
 CONFIGURATION=$2
@@ -54,7 +58,7 @@ do
     BUILDRESULT=$?
 
     if [ $BUILDRESULT ]; then
-        mv ../products/victorious.ipa "../products/$CONFIG.ipa"
+        mv ../products/victorious.ipa          "../products/$CONFIG.ipa"
         mv ../products/victorious.app.dSYM.zip "../products/$CONFIG.app.dSYM.zip"
     else
         cleanWorkingDir
