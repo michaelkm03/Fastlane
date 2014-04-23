@@ -53,7 +53,7 @@
 	<string>25d004e5-9530-4969-94e9-f3182e53339b</string>
 	<key>TestflightReleaseAppToken</key>
 	<string>02101c7d-4a01-4a44-8e8a-26dca03554aa</string>
-	<key>TestflightStableAppToken</key>
+	<key>TestflightQAAppToken</key>
 	<string>8734f1a7-d756-481a-9234-2be8ba841767</string>
 	<key>UIAppFonts</key>
 	<array>

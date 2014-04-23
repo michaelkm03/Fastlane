@@ -23,7 +23,7 @@
 	<string>5008cab8-3afb-468e-b183-cdcf1a4b577d</string>
 	<key>TestflightReleaseAppToken</key>
 	<string>5008cab8-3afb-468e-b183-cdcf1a4b577d</string>
-	<key>TestflightStableAppToken</key>
+	<key>TestflightQAAppToken</key>
 	<string>62cf0bd1-137c-4d9b-b117-deecccfb39b7</string>
 	<key>VictoriousAppID</key>
 	<integer>3</integer>
