@@ -5,7 +5,7 @@
 # Requires Shenzhen: see https://github.com/nomad/shenzhen
 ###########
 
-APPNAME=$1
+APPNAME=`basename $1`
 TF_API_TOKEN="2adc400ea09e42f0ec53c0d605e5bbff_MTgwMzI2MTIwMTQtMDQtMjEgMjI6MDM6MDIuNjk2OTMx"
 TF_TEAM_TOKEN="4f53e38dc2dc6a4286a929d8cf56a16b_MjkwNzIxMjAxMy0xMS0wNyAxOToxNDo0NC4zNDEwOTc"
 
