@@ -128,10 +128,6 @@ NSString* const kChatBubbleLeftImage = @"ChatBubbleLeft";
         self.mediaPreview.hidden = YES;
         self.playButton.hidden = YES;
     }
-    
-    VLog(@"Message frame %@ for text %@", NSStringFromCGRect(self.messageLabel.frame), self.messageLabel.text);
-//    [self setNeedsLayout];
-//    [self layoutIfNeeded];
 }
 
 -(void)layoutWithText:(NSString*)text withMedia:(BOOL)hasMedia

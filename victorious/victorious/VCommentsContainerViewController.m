@@ -208,32 +208,35 @@
     self.keyboardBarViewController.view.alpha = 0;
     self.backButton.alpha = 0;
     self.titleLabel.alpha = 0;
-    [UIView animateWithDuration:duration*.75f
-                     animations:^
-     {
-         CGRect viewFrame = self.conversationTableViewController.view.frame;
-         self.conversationTableViewController.view.frame = CGRectMake(originalConvertationX,
-                                                                      CGRectGetMinY(viewFrame),
-                                                                      CGRectGetWidth(viewFrame),
-                                                                      CGRectGetHeight(viewFrame));
-     }
-                     completion:^(BOOL finished)
-     {
-         [UIView animateWithDuration:duration*.25f
-                          animations:^
-          {
-              self.keyboardBarViewController.view.alpha = 1;
-              self.backButton.alpha = 1;
-              self.titleLabel.alpha = 1;
-          }
-                          completion:^(BOOL finished)
-          {
-              if (completion)
+    if ([self.sequence.comments count])
+    {
+        [UIView animateWithDuration:duration*.75f
+                         animations:^
+         {
+             CGRect viewFrame = self.conversationTableViewController.view.frame;
+             self.conversationTableViewController.view.frame = CGRectMake(originalConvertationX,
+                                                                          CGRectGetMinY(viewFrame),
+                                                                          CGRectGetWidth(viewFrame),
+                                                                          CGRectGetHeight(viewFrame));
+         }
+                         completion:^(BOOL finished)
+         {
+             [UIView animateWithDuration:duration*.25f
+                              animations:^
               {
-                  completion(finished);
+                  self.keyboardBarViewController.view.alpha = 1;
+                  self.backButton.alpha = 1;
+                  self.titleLabel.alpha = 1;
               }
-          }];
-     }];
+                              completion:^(BOOL finished)
+              {
+                  if (completion)
+                  {
+                      completion(finished);
+                  }
+              }];
+         }];
+    }
 }
 
 - (void)animateOutWithDuration:(CGFloat)duration completion:(void (^)(BOOL finished))completion

@@ -94,7 +94,7 @@ static NSString* CommentCache = @"CommentCache";
     if (![self.sortedComments count])
     {
         [self sortCommentsByDate];
-        
+
         __block CGRect frame = self.view.frame;
         frame.origin.x = CGRectGetWidth(self.view.frame);
         self.view.frame = frame;
@@ -109,13 +109,7 @@ static NSString* CommentCache = @"CommentCache";
              frame.origin.x = 0;
              self.view.frame = frame;
          }
-                         completion:^(BOOL finished) {
-                             for (UIView* view in self.tableView.visibleCells)
-                             {
-                                 [view setNeedsLayout];
-                                 [view layoutIfNeeded];
-                             }
-                         }];
+                         completion:nil];
     }
     else
     {
@@ -327,6 +321,9 @@ static NSString* CommentCache = @"CommentCache";
     VComment *comment = [self.sortedComments objectAtIndex:indexPath.row];
     [(VCommentCell*)cell setCommentOrMessage:comment];
     ((VCommentCell*)cell).parentTableViewController = self;
+    
+    [cell setNeedsLayout];
+    [cell layoutIfNeeded];
     
     return cell;
 }
