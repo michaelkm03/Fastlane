@@ -52,27 +52,25 @@ static NSString* CommentCache = @"CommentCache";
          forCellReuseIdentifier:kOtherCommentCellIdentifier];
 
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
-
-//    [self sortComments];
 }
 
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
     
-    self.sequence = self.sequence;
+    [self sortComments];
 }
 
 - (void)setSequence:(VSequence *)sequence
 {
-    self.sortedComments = nil;
+    self.sortedComments = [sequence.comments allObjects];
     [self.tableView reloadData];
     
     _sequence = sequence;
     
     self.title = sequence.name;
     
-    if (![self.sequence.comments count]) //If we don't have comments, try to pull more.
+    if (![self.sortedComments count]) //If we don't have comments, try to pull more.
         [self refresh:nil];
     else
         [self sortComments];
@@ -397,12 +395,6 @@ static NSString* CommentCache = @"CommentCache";
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     UIWindow *window = [[[UIApplication sharedApplication] delegate] window];
     [actionSheet showInView:window];
-}
-
-- (void)controllerDidChangeContent:(NSFetchedResultsController *)controller
-{
-    // The fetch controller has sent all current change notifications, so tell the table view to process all updates.
-    [self.tableView endUpdates];
 }
 
 #pragma mark - Navigation

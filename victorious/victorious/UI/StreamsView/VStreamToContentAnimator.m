@@ -38,10 +38,7 @@
          [UIView animateWithDuration:.2f
                           animations:^
           {
-              selectedCell.overlayView.alpha = selectedCell.shadeView.alpha = 0;
-              selectedCell.overlayView.center = CGPointMake(selectedCell.overlayView.center.x,
-                                                            selectedCell.overlayView.center.y - selectedCell.frame.size.height);
-              
+              [selectedCell hideOverlays];
           }
                           completion:^(BOOL finished)
           {
