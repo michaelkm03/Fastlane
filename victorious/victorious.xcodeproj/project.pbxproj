@@ -1463,7 +1463,7 @@
 				BE171D731868BE64004E5202 /* Frameworks */,
 				BE171D741868BE64004E5202 /* Resources */,
 				BED94623E5054C5785E419C3 /* Copy Pods Resources */,
-				3FF8C50618A5A06A00812968 /* ShellScript */,
+				3FF8C50618A5A06A00812968 /* Set Build Number */,
 			);
 			buildRules = (
 			);
@@ -1591,18 +1591,19 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		3FF8C50618A5A06A00812968 /* ShellScript */ = {
+		3FF8C50618A5A06A00812968 /* Set Build Number */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
+			name = "Set Build Number";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "#!/bin/bash\nbuildNumber=$(/usr/libexec/PlistBuddy -c \"Print CFBundleVersion\" \"$INFOPLIST_FILE\")\nbuildNumber=$(($buildNumber + 1))\n/usr/libexec/PlistBuddy -c \"Set :CFBundleVersion $buildNumber\" \"$INFOPLIST_FILE\"";
+			shellScript = "#!/bin/bash\n\nBUILD_NUMBER=$(git rev-list HEAD --count)\nTARGET_FILE=\"$TARGET_BUILD_DIR/$INFOPLIST_PATH\"\n/usr/libexec/PlistBuddy -c \"Set :CFBundleVersion $BUILD_NUMBER\" \"$TARGET_FILE\"\n\n# NOTE: to get back to a git commit with a given build number, use a command similar to:\n# CURRENT=`git rev-list HEAD --count`; DIFF=`expr $CURRENT - 1467`; git rev-list HEAD --skip=$DIFF | head -1";
 		};
 		4E5869E4F076435495A618CD /* Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
