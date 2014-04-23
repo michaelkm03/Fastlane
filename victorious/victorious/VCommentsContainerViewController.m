@@ -237,6 +237,23 @@
               }];
          }];
     }
+    else
+    {
+        [UIView animateWithDuration:duration*.25f
+                         animations:^
+         {
+             self.keyboardBarViewController.view.alpha = 1;
+             self.backButton.alpha = 1;
+             self.titleLabel.alpha = 1;
+         }
+                         completion:^(BOOL finished)
+         {
+             if (completion)
+             {
+                 completion(finished);
+             }
+         }];
+    }
 }
 
 - (void)animateOutWithDuration:(CGFloat)duration completion:(void (^)(BOOL finished))completion
