@@ -145,7 +145,6 @@
     if (tableView.contentOffset.y == cell.frame.origin.y - kContentMediaViewOffset)
     {
         [self.navigationController pushViewController:[VContentViewController sharedInstance] animated:YES];
-//        [self performSegueWithIdentifier:kStreamContentSegueStoryboardID sender:cell];
     }
     else
     {
@@ -159,7 +158,6 @@
     if (cell)
     {
         [self.navigationController pushViewController:[VContentViewController sharedInstance] animated:YES];
-//        [self performSegueWithIdentifier:kStreamContentSegueStoryboardID sender:cell];
     }
 }
 
@@ -218,16 +216,7 @@
 {
     VSequence* sequence = (VSequence*)[self.fetchedResultsController objectAtIndexPath:indexPath];
 
-    if (([sequence isForum] || [sequence isVideo])
-        && [[[sequence firstNode] firstAsset].type isEqualToString:VConstantsMediaTypeYoutube])
-        return [tableView dequeueReusableCellWithIdentifier:kStreamYoutubeVideoCellIdentifier
-                                               forIndexPath:indexPath];
-    
-    if ([sequence isPoll] && [[sequence firstNode] firstAsset])
-        return [tableView dequeueReusableCellWithIdentifier:kStreamPollCellIdentifier
-                                               forIndexPath:indexPath];
-
-    else if ([sequence isPoll])
+    if ([sequence isPoll])
         return [tableView dequeueReusableCellWithIdentifier:kStreamDoublePollCellIdentifier
                                                forIndexPath:indexPath];
 
@@ -281,21 +270,9 @@
          forCellReuseIdentifier:kStreamViewCellIdentifier];
     [self.searchDisplayController.searchResultsTableView registerNib:[UINib nibWithNibName:kStreamViewCellIdentifier bundle:nil] forCellReuseIdentifier:kStreamViewCellIdentifier];
     
-    [self.tableView registerNib:[UINib nibWithNibName:kStreamYoutubeCellIdentifier bundle:nil]
-         forCellReuseIdentifier:kStreamYoutubeCellIdentifier];
-    [self.searchDisplayController.searchResultsTableView registerNib:[UINib nibWithNibName:kStreamYoutubeCellIdentifier bundle:nil] forCellReuseIdentifier:kStreamYoutubeCellIdentifier];
-    
-    [self.tableView registerNib:[UINib nibWithNibName:kStreamYoutubeVideoCellIdentifier bundle:[NSBundle mainBundle]]
-         forCellReuseIdentifier:kStreamYoutubeVideoCellIdentifier];
-    [self.searchDisplayController.searchResultsTableView registerNib:[UINib nibWithNibName:kStreamYoutubeVideoCellIdentifier bundle:[NSBundle mainBundle]] forCellReuseIdentifier:kStreamYoutubeVideoCellIdentifier];
-    
     [self.tableView registerNib:[UINib nibWithNibName:kStreamVideoCellIdentifier bundle:[NSBundle mainBundle]]
          forCellReuseIdentifier:kStreamVideoCellIdentifier];
     [self.searchDisplayController.searchResultsTableView registerNib:[UINib nibWithNibName:kStreamVideoCellIdentifier bundle:nil] forCellReuseIdentifier:kStreamVideoCellIdentifier];
-    
-    [self.tableView registerNib:[UINib nibWithNibName:kStreamPollCellIdentifier bundle:nil]
-         forCellReuseIdentifier:kStreamPollCellIdentifier];
-    [self.searchDisplayController.searchResultsTableView registerNib:[UINib nibWithNibName:kStreamPollCellIdentifier bundle:nil] forCellReuseIdentifier:kStreamPollCellIdentifier];
     
     [self.tableView registerNib:[UINib nibWithNibName:kStreamDoublePollCellIdentifier bundle:nil]
          forCellReuseIdentifier:kStreamDoublePollCellIdentifier];
