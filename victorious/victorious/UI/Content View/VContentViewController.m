@@ -79,7 +79,6 @@ CGFloat kContentMediaViewOffset = 154;
     self.secondResultView.color = [[VThemeManager sharedThemeManager] themedColorForKey:kVAccentColor];
     
     [self.navigationController setNavigationBarHidden:YES animated:NO];
-//    self.sequence = self.sequence;
     
     [self updateActionBar];
     
@@ -266,9 +265,7 @@ CGFloat kContentMediaViewOffset = 154;
 {
     if (operation == UINavigationControllerOperationPop)
     {
-        VContentToStreamAnimator* animator = [[VContentToStreamAnimator alloc] init];
-//        animator.indexPathForSelectedCell = self.tableView.indexPathForSelectedRow;
-        return animator;
+        return [[VContentToStreamAnimator alloc] init];
     }
     else if (operation == UINavigationControllerOperationPush)
     {

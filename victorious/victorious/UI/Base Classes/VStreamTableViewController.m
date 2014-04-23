@@ -43,6 +43,11 @@
 
 @implementation VStreamTableViewController
 
+- (void)dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -375,6 +380,7 @@
 #pragma mark - VAnimation
 - (void)animateInWithDuration:(CGFloat)duration completion:(void (^)(BOOL finished))completion
 {
+    self.fetchedResultsController.delegate = nil;
     VStreamViewCell* selectedCell = (VStreamViewCell*) [self.tableView cellForRowAtIndexPath:self.tableView.indexPathForSelectedRow];
     
     //If the tableview updates while we are in the content view it will reset the cells to their proper positions.
@@ -444,6 +450,8 @@
                   [self.tableView deselectRowAtIndexPath:self.tableView.indexPathForSelectedRow animated:NO];
               }
               
+              self.fetchedResultsController.delegate = self;
+              
               if (completion)
               {
                   completion(finished);
@@ -454,6 +462,7 @@
 
 - (void)animateOutWithDuration:(CGFloat)duration completion:(void (^)(BOOL finished))completion
 {
+    self.fetchedResultsController.delegate = nil;
     [UIView animateWithDuration:.4f
                      animations:^
      {
@@ -488,6 +497,8 @@
      }
                      completion:^(BOOL finished)
      {
+         self.fetchedResultsController.delegate = self;
+         
          if (completion)
          {
              completion(finished);
