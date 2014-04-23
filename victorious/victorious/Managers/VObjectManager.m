@@ -17,7 +17,6 @@
 
 #import "VUser+RestKit.h"
 #import "VSequence+RestKit.h"
-#import "VCategory+RestKit.h"
 #import "VComment+RestKit.h"
 #import "VConversation+RestKit.h"
 #import "VPollResult+RestKit.h"
@@ -93,7 +92,6 @@
     [self addResponseDescriptorsFromArray: @[errorDescriptor,
                                              verrorDescriptor,
                                              
-                                             [VCategory descriptor],
                                              [VSequence sequenceListDescriptor],
                                              [VSequence sequenceListByUserDescriptor],
                                              [VSequence sequenceFullDataDescriptor],

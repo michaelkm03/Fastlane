@@ -11,7 +11,7 @@
 
 extern NSString* const kPollResultsLoaded;
 
-@class VAnswer, VSequence, VCategory, VVoteType;
+@class VAnswer, VSequence, VVoteType;
 
 @interface VObjectManager (Sequence)
 

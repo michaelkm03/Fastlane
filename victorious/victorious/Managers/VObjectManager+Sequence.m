@@ -13,7 +13,6 @@
 
 #import "VUser.h"
 #import "VUserManager.h"
-#import "VCategory.h"
 #import "VSequence+RestKit.h"
 #import "VAnswer.h"
 #import "VComment.h"
