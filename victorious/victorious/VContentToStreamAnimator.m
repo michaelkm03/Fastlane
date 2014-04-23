@@ -27,12 +27,6 @@
     VContentViewController *contentVC = (VContentViewController*)[context viewControllerForKey:UITransitionContextFromViewControllerKey];
     VStreamTableViewController *streamVC = (VStreamTableViewController*)[context viewControllerForKey:UITransitionContextToViewControllerKey];
     VStreamViewCell* selectedCell = (VStreamViewCell*) [streamVC.tableView cellForRowAtIndexPath:streamVC.tableView.indexPathForSelectedRow];
-   
-    if (![contentVC isKindOfClass:[VContentViewController class]])
-    {
-        [self animateToStream:context];
-        return;
-    }
     
     [UIView animateWithDuration:.2f animations:^
     {
@@ -51,7 +45,7 @@
 {
     VContentViewController *contentVC = (VContentViewController*)[context viewControllerForKey:UITransitionContextFromViewControllerKey];
     VStreamTableViewController *streamVC = (VStreamTableViewController*)[context viewControllerForKey:UITransitionContextToViewControllerKey];
-
+    
     [UIView animateWithDuration:.2
                      animations:^
      {
@@ -66,7 +60,11 @@
                                                           selectedCell.frame.origin.y - kContentMediaViewOffset)
                                      animated:NO];
          
-         [self animateToStream:context];
+         [[context containerView] addSubview:streamVC.view];
+         [streamVC animateInWithDuration:.4f completion:^(BOOL finished)
+          {
+              [context completeTransition:![context transitionWasCancelled]];
+          }];
      }];
 }
 

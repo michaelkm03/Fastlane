@@ -8,9 +8,11 @@
 
 #import "VKeyboardBarContainerViewController.h"
 
+#import "VAnimation.h"
+
 @class VSequence;
 
-@interface VCommentsContainerViewController : VKeyboardBarContainerViewController
+@interface VCommentsContainerViewController : VKeyboardBarContainerViewController <VAnimation>
 @property (nonatomic, strong) VSequence* sequence;
 @property (nonatomic, weak) UIViewController* parentVC;
 

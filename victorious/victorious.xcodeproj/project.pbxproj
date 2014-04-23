@@ -144,7 +144,6 @@
 		BE2D1E5519006E7500C6FF99 /* VContentToCommentAnimator.m in Sources */ = {isa = PBXBuildFile; fileRef = BE2D1E5419006E7500C6FF99 /* VContentToCommentAnimator.m */; };
 		BE2D1E5A19006E9400C6FF99 /* VCommentToStreamAnimator.m in Sources */ = {isa = PBXBuildFile; fileRef = BE2D1E5919006E9400C6FF99 /* VCommentToStreamAnimator.m */; };
 		BE2D1E5D19006EAC00C6FF99 /* VStreamToContentAnimator.m in Sources */ = {isa = PBXBuildFile; fileRef = BE2D1E5C19006EAC00C6FF99 /* VStreamToContentAnimator.m */; };
-		BE2D1E6019006EB900C6FF99 /* VAbstractToStreamAnimator.m in Sources */ = {isa = PBXBuildFile; fileRef = BE2D1E5F19006EB900C6FF99 /* VAbstractToStreamAnimator.m */; };
 		BE2D1E661901F4D800C6FF99 /* VStreamToCommentAnimator.m in Sources */ = {isa = PBXBuildFile; fileRef = BE2D1E651901F4D800C6FF99 /* VStreamToCommentAnimator.m */; };
 		BE40559418A1828D00092AE1 /* UIButton+VImageLoading.m in Sources */ = {isa = PBXBuildFile; fileRef = BE40559318A1828D00092AE1 /* UIButton+VImageLoading.m */; };
 		BE4055AC18A41F1F00092AE1 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = BE4055A618A41F1F00092AE1 /* Localizable.strings */; };
@@ -477,8 +476,6 @@
 		BE2D1E5919006E9400C6FF99 /* VCommentToStreamAnimator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VCommentToStreamAnimator.m; path = "UI/Streams Subview/VCommentToStreamAnimator.m"; sourceTree = "<group>"; };
 		BE2D1E5B19006EAC00C6FF99 /* VStreamToContentAnimator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VStreamToContentAnimator.h; path = UI/StreamsView/VStreamToContentAnimator.h; sourceTree = "<group>"; };
 		BE2D1E5C19006EAC00C6FF99 /* VStreamToContentAnimator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VStreamToContentAnimator.m; path = UI/StreamsView/VStreamToContentAnimator.m; sourceTree = "<group>"; };
-		BE2D1E5E19006EB900C6FF99 /* VAbstractToStreamAnimator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VAbstractToStreamAnimator.h; path = UI/StreamsView/VAbstractToStreamAnimator.h; sourceTree = "<group>"; };
-		BE2D1E5F19006EB900C6FF99 /* VAbstractToStreamAnimator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VAbstractToStreamAnimator.m; path = UI/StreamsView/VAbstractToStreamAnimator.m; sourceTree = "<group>"; };
 		BE2D1E641901F4D800C6FF99 /* VStreamToCommentAnimator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VStreamToCommentAnimator.h; path = UI/StreamsView/VStreamToCommentAnimator.h; sourceTree = "<group>"; };
 		BE2D1E651901F4D800C6FF99 /* VStreamToCommentAnimator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VStreamToCommentAnimator.m; path = UI/StreamsView/VStreamToCommentAnimator.m; sourceTree = "<group>"; };
 		BE40559218A1828D00092AE1 /* UIButton+VImageLoading.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIButton+VImageLoading.h"; sourceTree = "<group>"; };
@@ -1410,8 +1407,6 @@
 		BEB52A8218C54C9A00AC5FE4 /* animations */ = {
 			isa = PBXGroup;
 			children = (
-				BE2D1E5E19006EB900C6FF99 /* VAbstractToStreamAnimator.h */,
-				BE2D1E5F19006EB900C6FF99 /* VAbstractToStreamAnimator.m */,
 				BE2D1E5B19006EAC00C6FF99 /* VStreamToContentAnimator.h */,
 				BE2D1E5C19006EAC00C6FF99 /* VStreamToContentAnimator.m */,
 				BE2D1E641901F4D800C6FF99 /* VStreamToCommentAnimator.h */,
@@ -1720,7 +1715,6 @@
 				BEDF0FC318DBC93A00750EF6 /* VAsset.m in Sources */,
 				03086AAA18F60E3000105FFB /* VMediaPreviewViewController.m in Sources */,
 				BE6B95FC187C88F700CED4C9 /* VSequence+Fetcher.m in Sources */,
-				BE2D1E6019006EB900C6FF99 /* VAbstractToStreamAnimator.m in Sources */,
 				BED7F68018E1187800545DF6 /* VEphemeralTimerView.m in Sources */,
 				BE40559418A1828D00092AE1 /* UIButton+VImageLoading.m in Sources */,
 				3F71A7DB18D7C6D20048FF60 /* VRemixSliderRight.m in Sources */,

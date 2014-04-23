@@ -14,7 +14,7 @@
 
 extern CGFloat kContentMediaViewOffset;
 
-@interface VContentViewController : UIViewController
+@interface VContentViewController : UIViewController <VAnimation>
 
 @property (strong, nonatomic) VSequence* sequence;
 @property (strong, nonatomic) VActionBarViewController* actionBarVC;

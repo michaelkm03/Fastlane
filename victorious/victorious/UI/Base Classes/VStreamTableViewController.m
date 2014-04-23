@@ -38,8 +38,6 @@
 @interface VStreamTableViewController() <UIViewControllerTransitioningDelegate, UINavigationControllerDelegate>
 @property (strong, nonatomic) id<UIViewControllerTransitioningDelegate> transitionDelegate;
 
-@property (strong, nonatomic) VStreamToContentAnimator* streamToAnyAnimator;
-
 @property (strong, nonatomic) NSCache* preloadImageCache;
 @end
 
@@ -65,8 +63,6 @@
         [self.tableView reloadData]; //force a reload incase anything has changed
     
     self.clearsSelectionOnViewWillAppear = NO;
-    
-    self.streamToAnyAnimator = [[VStreamToContentAnimator alloc] init];
     
     //Remove the search button from the stream - feature currently deprecated
     self.navigationItem.rightBarButtonItem = nil;
@@ -373,10 +369,6 @@
 - (void)willCommentSequence:(NSNotification *)notification
 {
     VStreamViewCell *cell = (VStreamViewCell *)notification.object;
-    
-    [self.tableView selectRowAtIndexPath:[self.fetchedResultsController indexPathForObject:cell.sequence]
-                                animated:NO
-                          scrollPosition:UITableViewScrollPositionNone];
 
     [self setBackgroundImageWithURL:[[cell.sequence initialImageURLs] firstObject]];
 
@@ -394,7 +386,7 @@
 {
     if (operation == UINavigationControllerOperationPush && ([toVC isKindOfClass:[VContentViewController class]]) )
     {
-        return self.streamToAnyAnimator;
+        return [[VStreamToContentAnimator alloc] init];;
     }
     else if (operation == UINavigationControllerOperationPush && [toVC isKindOfClass:[VCommentsContainerViewController class]])
     {
@@ -402,5 +394,129 @@
     }
     return nil;
 }
+
+#pragma mark - VAnimation
+- (void)animateInWithDuration:(CGFloat)duration completion:(void (^)(BOOL finished))completion
+{
+    VStreamViewCell* selectedCell = (VStreamViewCell*) [self.tableView cellForRowAtIndexPath:self.tableView.indexPathForSelectedRow];
+    
+    //If the tableview updates while we are in the content view it will reset the cells to their proper positions.
+    //In this case, we reset them
+    CGFloat centerPoint = selectedCell ? selectedCell.center.y : self.tableView.center.y + self.tableView.contentOffset.y;
+
+    for (VStreamViewCell* cell in self.repositionedCells)
+    {
+        
+        CGRect cellRect = [self.tableView convertRect:cell.frame toView:self.tableView.superview];
+        if (CGRectIntersectsRect(self.tableView.frame, cellRect))
+        {
+            if (cell.center.y > centerPoint)
+            {
+                cell.center = CGPointMake(cell.center.x, cell.center.y + [UIScreen mainScreen].bounds.size.height);
+            }
+            else
+            {
+                cell.center = CGPointMake(cell.center.x, cell.center.y - [UIScreen mainScreen].bounds.size.height);
+            }
+        }
+    }
+    
+    [UIView animateWithDuration:duration/2
+                     animations:^
+     {
+         [selectedCell showOverlays];
+     }
+                     completion:^(BOOL finished)
+     {
+         [UIView animateWithDuration:duration/2
+                          animations:^
+          {
+              for (VStreamViewCell* cell in self.repositionedCells)
+              {
+                  CGRect cellRect = [self.tableView convertRect:cell.frame toView:self.tableView.superview];
+                  if (!CGRectIntersectsRect(self.tableView.frame, cellRect))
+                  {
+                      if (cell.center.y > centerPoint)
+                      {
+                          cell.center = CGPointMake(cell.center.x, cell.center.y - [UIScreen mainScreen].bounds.size.height);
+                      }
+                      else
+                      {
+                          cell.center = CGPointMake(cell.center.x, cell.center.y + [UIScreen mainScreen].bounds.size.height);
+                      }
+                  }
+              }
+          }
+                          completion:^(BOOL finished)
+          {
+              CGFloat minOffset = self.navigationController.navigationBar.frame.size.height;
+              CGFloat maxOffset = self.tableView.contentSize.height - self.tableView.frame.size.height;
+              if (self.tableView.contentOffset.y < minOffset)
+              {
+                  [self.tableView setContentOffset:CGPointMake(self.tableView.contentOffset.x, 0) animated:YES];
+              }
+              else if (self.tableView.contentOffset.y >= maxOffset)
+              {
+                  [self.tableView setContentOffset:CGPointMake(self.tableView.contentOffset.x, maxOffset) animated:YES];
+              }
+              
+              self.repositionedCells = nil;
+              
+              if (selectedCell)
+              {
+                  [self.tableView deselectRowAtIndexPath:self.tableView.indexPathForSelectedRow animated:NO];
+              }
+              
+              if (completion)
+              {
+                  completion(finished);
+              }
+          }];
+     }];
+}
+
+- (void)animateOutWithDuration:(CGFloat)duration completion:(void (^)(BOOL finished))completion
+{
+    [UIView animateWithDuration:.4f
+                     animations:^
+     {
+         CGPoint newNavCenter = CGPointMake(self.navigationController.navigationBar.center.x,
+                                            self.navigationController.navigationBar.center.y - self.tableView.frame.size.height);
+         self.navigationController.navigationBar.center = newNavCenter;
+         
+         NSMutableArray* repositionedCells = [[NSMutableArray alloc] init];
+
+         VStreamViewCell* selectedCell = (VStreamViewCell*) [self.tableView cellForRowAtIndexPath:self.tableView.indexPathForSelectedRow];
+         CGFloat centerPoint = selectedCell ? selectedCell.center.y : self.tableView.center.y + self.tableView.contentOffset.y;
+
+         for (VStreamViewCell* cell in [self.tableView visibleCells])
+         {
+             CGRect cellRect = [self.tableView convertRect:cell.frame toView:self.tableView.superview];
+             if (cell == selectedCell || !CGRectIntersectsRect(self.tableView.frame, cellRect))
+             {
+                 continue;
+             }
+         
+             if (cell.center.y > centerPoint)
+             {
+                 cell.center = CGPointMake(cell.center.x, cell.center.y + [UIScreen mainScreen].bounds.size.height);
+             }
+             else
+             {
+                 cell.center = CGPointMake(cell.center.x, cell.center.y - [UIScreen mainScreen].bounds.size.height);
+             }
+             [repositionedCells addObject:cell];
+         }
+         self.repositionedCells = repositionedCells;
+     }
+                     completion:^(BOOL finished)
+     {
+         if (completion)
+         {
+             completion(finished);
+         }
+     }];
+}
+
 
 @end

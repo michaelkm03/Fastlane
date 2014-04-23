@@ -277,5 +277,64 @@ CGFloat kContentMediaViewOffset = 154;
     return nil;
 }
 
+#pragma mark - Animations
+- (void)animateInWithDuration:(CGFloat)duration completion:(void (^)(BOOL finished))completion
+{
+    [UIView animateWithDuration:.25f
+                     animations:^
+     {
+         for (UIView* view in self.view.subviews)
+         {
+             if ([view isKindOfClass:[UIImageView class]])
+                 continue;
+             
+             if (view.center.y > self.view.center.y)
+             {
+                 view.center = CGPointMake(view.center.x, view.center.y - self.view.frame.size.height);
+             }
+             else
+             {
+                 view.center = CGPointMake(view.center.x, view.center.y + self.view.frame.size.height);
+             }
+         }
+     }
+                     completion:^(BOOL finished)
+     {
+         if (completion)
+         {
+             completion(finished);
+         }
+     }];
+}
+
+- (void)animateOutWithDuration:(CGFloat)duration completion:(void (^)(BOOL finished))completion
+{
+    [UIView animateWithDuration:duration
+                     animations:^
+     {
+         for (UIView* view in self.view.subviews)
+         {
+             if ([view isKindOfClass:[UIImageView class]])
+                 continue;
+             
+             if (view.center.y > self.view.center.y)
+             {
+                 view.center = CGPointMake(view.center.x, view.center.y + self.view.frame.size.height);
+             }
+             else
+             {
+                 view.center = CGPointMake(view.center.x, view.center.y - self.view.frame.size.height);
+             }
+         }
+     }
+                     completion:^(BOOL finished)
+     {
+         if(completion)
+         {
+             completion(finished);
+         }
+     }];
+}
+
 
 @end
