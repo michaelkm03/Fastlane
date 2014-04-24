@@ -7,7 +7,7 @@
 //
 
 #import "VRemixStitchViewController.h"
-#import "VRemixPublishViewController.h"
+#import "VCameraPublishViewController.h"
 #import "VCVideoPlayerView.h"
 #import "VThemeManager.h"
 #import "VConstants.h"
@@ -65,7 +65,32 @@
     if (self.previewView.player.isPlaying)
         [self.previewView.player pause];
     
-    [self performSegueWithIdentifier:@"toRemixPublish" sender:self];
+    VCameraPublishViewController *publishViewController = [VCameraPublishViewController cameraPublishViewController];
+    publishViewController.mediaURL = self.targetURL;
+    publishViewController.mediaExtension = VConstantMediaExtensionMOV;
+    publishViewController.playBackSpeed = self.playBackSpeed;
+    publishViewController.playbackLooping = self.playbackLooping;
+
+    AVAsset *asset = [AVAsset assetWithURL:self.targetURL];
+    AVAssetImageGenerator *assetGenerator = [AVAssetImageGenerator assetImageGeneratorWithAsset:asset];
+    CGImageRef imageRef = [assetGenerator copyCGImageAtTime:kCMTimeZero actualTime:NULL error:NULL];
+    UIImage *previewImage = [UIImage imageWithCGImage:imageRef];
+    CGImageRelease(imageRef);
+    publishViewController.previewImage = previewImage;
+    
+    publishViewController.completion = ^(BOOL complete)
+    {
+        if (complete)
+        {
+            [self dismissViewControllerAnimated:YES completion:nil];
+        }
+        else
+        {
+            [self.navigationController popViewControllerAnimated:YES];
+        }
+    };
+    
+    [self.navigationController pushViewController:publishViewController animated:YES];
 }
 
 - (IBAction)selectBeforeAssetClicked:(id)sender
@@ -144,29 +169,6 @@
 
     UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:cameraViewController];
     [self presentViewController:navController animated:YES completion:nil];
-}
-
-#pragma mark - Navigation
-
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
-{
-    if ([segue.identifier isEqualToString:@"toRemixPublish"])
-    {
-        VRemixPublishViewController*     publishViewController = (VRemixPublishViewController *)segue.destinationViewController;
-        publishViewController.mediaURL = self.targetURL;
-        publishViewController.mediaExtension = VConstantMediaExtensionMOV;
-        publishViewController.shouldMuteAudio = self.shouldMuteAudio;
-        publishViewController.playBackSpeed = self.playBackSpeed;
-        publishViewController.playbackLooping = self.playbackLooping;
-        
-        AVAsset *asset = [AVAsset assetWithURL:self.targetURL];
-        AVAssetImageGenerator *assetGenerator = [AVAssetImageGenerator assetImageGeneratorWithAsset:asset];
-        CGImageRef imageRef = [assetGenerator copyCGImageAtTime:kCMTimeZero actualTime:NULL error:NULL];
-        UIImage *previewImage = [UIImage imageWithCGImage:imageRef];
-        CGImageRelease(imageRef);
-
-        publishViewController.previewImage = previewImage;
-    }
 }
 
 #pragma mark - Support

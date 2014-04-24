@@ -6,6 +6,8 @@
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
+#import "VConstants.h"
+
 @interface VCameraPublishViewController : UIViewController
 
 @property (nonatomic, strong)   UIImage*    previewImage;
@@ -18,6 +20,9 @@
 @property (nonatomic, weak) IBOutlet    UITextView*     textView;
 
 @property (nonatomic, strong)   NSString*     expirationDateString;
+
+@property (nonatomic)   VPlaybackSpeed  playBackSpeed;
+@property (nonatomic)   VLoopType       playbackLooping;
 
 /**
  This block will be called when the user has finished publishing

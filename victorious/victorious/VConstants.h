@@ -26,8 +26,8 @@ typedef NS_ENUM(NSUInteger, VLoopType)
 
 typedef NS_ENUM(NSUInteger, VPlaybackSpeed)
 {
-    kVPlaybackHalfSpeed     =   0,
-    kVPlaybackNormalSpeed   =   1,
+    kVPlaybackNormalSpeed   =   0,
+    kVPlaybackHalfSpeed     =   1,
     kVPlaybackDoubleSpeed   =   2
 };
 

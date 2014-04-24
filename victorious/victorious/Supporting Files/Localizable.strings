@@ -49,6 +49,9 @@
 "UploadError"           =   "Upload Error";
 "UploadErrorBody"       =   "Sorry! Something went wrong, and we are unable to complete the upload at this time.";
 
+"PublishSucceeded"      =   "Publish Succeeded";
+"PublishSucceededDetail"    =   "Your media has been submitted to the server";
+
 "Now"                   =   "Now";
 "SecondsAgo"            =   "%ds";
 "MinuteAgo"             =   "1m";
