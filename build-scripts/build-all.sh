@@ -9,9 +9,10 @@
 SCHEME=$1
 CONFIGURATION=$2
 PROVISIONING_PROFILE=$3
+APP_NAME=$4
 
 if [ "$SCHEME" == "" -o "$PROVISIONING_PROFILE" == "" -o "$CONFIGURATION" == "" ]; then
-    echo "Usage: `basename $0` [scheme] [configuration] [provisioning profile UUID]"
+    echo "Usage: `basename $0` <scheme> <configuration> <provisioning profile UUID> [app name (optional)]"
     exit 1
 fi
 
@@ -24,6 +25,11 @@ fi
 PROVISIONING_PROFILE_NAME=`/usr/libexec/PlistBuddy -c 'Print :Name' /dev/stdin <<< $(security cms -D -i "$PROVISIONING_PROFILE_PATH")`
 if [ "$PROVISIONING_PROFILE_NAME" == "" ]; then
     echo "Provisioning profile $PROVISIONING_PROFILE_PATH could not be read."
+    exit 1
+fi
+
+if [ "$APP_NAME" != "" -a ! -d "configurations/$APP_NAME" ]; then
+    echo "App $APP_NAME not found."
     exit 1
 fi
 
@@ -49,6 +55,10 @@ pushd victorious
 
 for CONFIG in $CONFIGS
 do
+    if [ "$APP_NAME" != "" -a "$CONFIG" != "$APP_NAME" ]; then
+        continue
+    fi
+
     pushd ..
     cleanWorkingDir
     ./build-scripts/apply-config.sh $CONFIG
