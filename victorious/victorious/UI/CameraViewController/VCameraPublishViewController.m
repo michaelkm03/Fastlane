@@ -101,8 +101,8 @@
                                             description:self.textView.text
                                               expiresAt:self.expirationDateString
                                            parentNodeId:nil
-                                                  speed:1.0
-                                               loopType:kVLoopOnce
+                                                  speed:self.playBackSpeed
+                                               loopType:self.playbackLooping
                                            shareOptions:shareOptions
                                               mediaData:mediaData
                                               extension:self.mediaExtension
@@ -110,6 +110,13 @@
                                            successBlock:^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
     {
         VLog(@"Succeeded with objects: %@", resultObjects);
+
+        UIAlertView*    alert   = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"PublishSucceeded", @"")
+                                                             message:NSLocalizedString(@"PublishSucceededDetail", @"")
+                                                            delegate:nil
+                                                   cancelButtonTitle:nil
+                                                   otherButtonTitles:NSLocalizedString(@"OKButton", @""), nil];
+        [alert show];
     }
                                               failBlock:^(NSOperation* operation, NSError* error)
     {
