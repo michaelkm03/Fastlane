@@ -61,10 +61,6 @@
     [self.navigationController.navigationBar setBackgroundImage:[[UIImage alloc] init] forBarMetrics:UIBarMetricsDefault];
     self.navigationController.navigationBar.shadowImage = [[UIImage alloc] init];
     self.navigationController.navigationBar.translucent = YES;
-    
-    UIImage*    cancelButtonImage = [[UIImage imageNamed:@"cameraButtonClose"]  imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
-    UIBarButtonItem*    cancelButton = [[UIBarButtonItem alloc] initWithImage:cancelButtonImage style:UIBarButtonItemStyleBordered target:self action:@selector(cancel:)];
-    self.navigationItem.rightBarButtonItem = cancelButton;
 }
 
 #pragma mark - Actions
@@ -74,14 +70,6 @@
     if (self.completion)
     {
         self.completion(NO);
-    }
-}
-
-- (IBAction)cancel:(id)sender
-{
-    if (self.completion)
-    {
-        self.completion(YES);
     }
 }
 
@@ -113,7 +101,8 @@
                                             description:self.textView.text
                                               expiresAt:self.expirationDateString
                                            parentNodeId:nil
-                                               loopType:self.playbackLooping
+                                                  speed:1.0
+                                               loopType:kVLoopOnce
                                            shareOptions:shareOptions
                                               mediaData:mediaData
                                               extension:self.mediaExtension
@@ -121,12 +110,6 @@
                                            successBlock:^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
     {
         VLog(@"Succeeded with objects: %@", resultObjects);
-        UIAlertView*    alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"PublishSucceeded", @"")
-                                                           message:NSLocalizedString(@"PublishSucceededDetail", @"")
-                                                          delegate:nil
-                                                 cancelButtonTitle:nil
-                                                 otherButtonTitles:NSLocalizedString(@"OKButton", @""), nil];
-        [alert show];
     }
                                               failBlock:^(NSOperation* operation, NSError* error)
     {

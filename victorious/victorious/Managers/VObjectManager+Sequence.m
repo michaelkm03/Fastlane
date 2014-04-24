@@ -13,7 +13,6 @@
 
 #import "VUser.h"
 #import "VUserManager.h"
-#import "VCategory.h"
 #import "VSequence+RestKit.h"
 #import "VAnswer.h"
 #import "VComment.h"
@@ -492,6 +491,7 @@ NSString* const kPollResultsLoaded = @"kPollResultsLoaded";
                                      description:(NSString*)description
                                        expiresAt:(NSString*)expiresAt
                                     parentNodeId:(NSNumber*)parentNodeId
+                                           speed:(CGFloat)speed
                                         loopType:(VLoopType)loopType
                                     shareOptions:(VShareOptions)shareOptions
                                        mediaData:(NSData*)mediaData
@@ -507,6 +507,8 @@ NSString* const kPollResultsLoaded = @"kPollResultsLoaded";
                                          @"description":description ?: [NSNull null]} mutableCopy];
     if (expiresAt)
         parameters[@"expires_at"] = expiresAt;
+    if (speed)
+        parameters[@"speed"] = @(speed);
     if (parentNodeId)
         parameters[@"parent_node_id"] = parentNodeId;
     if (shareOptions & kVShareToFacebook)

@@ -17,7 +17,6 @@
 
 #import "VUser+RestKit.h"
 #import "VSequence+RestKit.h"
-#import "VCategory+RestKit.h"
 #import "VComment+RestKit.h"
 #import "VConversation+RestKit.h"
 #import "VPollResult+RestKit.h"
@@ -46,7 +45,7 @@
     
     //TODO: use real app id once we set that up
     NSNumber* appID = [[NSBundle mainBundle] objectForInfoDictionaryKey:kVictoriousAppIDKey];
-    userAgent = [NSString stringWithFormat:@"%@ aid:%@ uuid:%@", userAgent, appID.stringValue, [UIDevice currentDevice].identifierForVendor];
+    userAgent = [NSString stringWithFormat:@"%@ aid:%@ uuid:%@", userAgent, appID.stringValue, [[UIDevice currentDevice].identifierForVendor UUIDString]];
     [[manager HTTPClient] setDefaultHeader:@"User-Agent" value:userAgent];
     
     NSURL *modelURL = [[NSBundle mainBundle] URLForResource:@"victoriOS" withExtension:@"momd"];
@@ -93,7 +92,6 @@
     [self addResponseDescriptorsFromArray: @[errorDescriptor,
                                              verrorDescriptor,
                                              
-                                             [VCategory descriptor],
                                              [VSequence sequenceListDescriptor],
                                              [VSequence sequenceListByUserDescriptor],
                                              [VSequence sequenceFullDataDescriptor],

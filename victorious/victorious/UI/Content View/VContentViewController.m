@@ -68,6 +68,16 @@ CGFloat kContentMediaViewOffset = 154;
 {
     [super viewDidAppear:animated];
     
+    [self.navigationController setNavigationBarHidden:YES animated:NO];
+    
+    [self updateActionBar];
+    [self resetView];
+    
+    self.navigationController.delegate = self;
+}
+
+- (void)resetView
+{
     [self.firstResultView setProgress:0 animated:NO];
     self.firstResultView.isVertical = YES;
     self.firstResultView.hidden = YES;
@@ -78,11 +88,9 @@ CGFloat kContentMediaViewOffset = 154;
     self.secondResultView.hidden = YES;
     self.secondResultView.color = [[VThemeManager sharedThemeManager] themedColorForKey:kVAccentColor];
     
-    [self.navigationController setNavigationBarHidden:YES animated:NO];
+    self.firstPollButton.hidden = YES;
+    self.secondPollButton.hidden = YES;
     
-    [self updateActionBar];
-    
-    self.navigationController.delegate = self;
 }
 
 - (void)viewWillDisappear:(BOOL)animated

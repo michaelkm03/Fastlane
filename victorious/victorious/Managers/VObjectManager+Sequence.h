@@ -11,7 +11,7 @@
 
 extern NSString* const kPollResultsLoaded;
 
-@class VAnswer, VSequence, VCategory, VVoteType;
+@class VAnswer, VSequence, VVoteType;
 
 @interface VObjectManager (Sequence)
 
@@ -66,6 +66,7 @@ extern NSString* const kPollResultsLoaded;
                                      description:(NSString*)description
                                        expiresAt:(NSString*)expiresAt
                                     parentNodeId:(NSNumber*)parentNodeId
+                                           speed:(CGFloat)speed
                                         loopType:(VLoopType)loopType
                                     shareOptions:(VShareOptions)shareOptions
                                        mediaData:(NSData*)mediaData
@@ -73,6 +74,7 @@ extern NSString* const kPollResultsLoaded;
                                         mediaUrl:(NSURL*)mediaUrl
                                     successBlock:(VSuccessBlock)success
                                        failBlock:(VFailBlock)fail;
+
 #pragma mark - Poll Methods
 
 - (RKManagedObjectRequestOperation *)answerPoll:(VSequence*)poll
