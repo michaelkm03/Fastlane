@@ -80,9 +80,6 @@
 
 - (IBAction)nextButtonClicked:(id)sender
 {
-    //  Make API call
-    //  With result, segue, setting result to self.targetURL
-    
     if (self.previewView.player.isPlaying)
         [self.previewView.player pause];
 

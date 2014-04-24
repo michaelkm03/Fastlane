@@ -100,7 +100,11 @@
     
     if (self.beforeURL)
     {
-        UIActionSheet*  sheet   =   [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:@"Delete" otherButtonTitles:@"Replace Video", nil];
+        UIActionSheet*  sheet   =   [[UIActionSheet alloc] initWithTitle:nil
+                                                                delegate:self
+                                                       cancelButtonTitle:NSLocalizedString(@"CancelButton", @"")
+                                                  destructiveButtonTitle:NSLocalizedString(@"DeleteButton", @"")
+                                                       otherButtonTitles:NSLocalizedString(@"ReplaceVideo", @""), nil];
         [sheet showInView:self.view];
     }
     else
@@ -116,7 +120,11 @@
     
     if (self.afterURL)
     {
-        UIActionSheet*  sheet   =   [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:@"Delete" otherButtonTitles:@"Replace Video", nil];
+        UIActionSheet*  sheet   =   [[UIActionSheet alloc] initWithTitle:nil
+                                                                delegate:self
+                                                       cancelButtonTitle:NSLocalizedString(@"CancelButton", @"")
+                                                  destructiveButtonTitle:NSLocalizedString(@"DeleteButton", @"")
+                                                       otherButtonTitles:NSLocalizedString(@"ReplaceVideo", @""), nil];
         [sheet showInView:self.view];
     }
     else
