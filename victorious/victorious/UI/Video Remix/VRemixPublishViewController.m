@@ -34,6 +34,7 @@
                                             description:self.textView.text
                                               expiresAt:self.expirationDateString
                                            parentNodeId:nil
+                                                  speed:1.0
                                                loopType:self.playbackLooping
                                            shareOptions:shareOptions
                                               mediaData:mediaData

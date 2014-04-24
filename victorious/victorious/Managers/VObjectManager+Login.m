@@ -201,11 +201,18 @@ NSString *kLoggedInChangedNotification = @"LoggedInChangedNotification";
                                          successBlock:(VSuccessBlock)success
                                             failBlock:(VFailBlock)fail
 {
-    NSDictionary *parameters = @{@"email": email ?: [NSNull null],
-                                 @"password": password ?: [NSNull null],
-                                 @"name": username ?: [NSNull null],
-                                 @"profile_location": location ?: [NSNull null],
-                                 @"profile_tagline": tagline ?: [NSNull null]};
+    NSMutableDictionary* params = [[NSMutableDictionary alloc] initWithCapacity:5];
+    
+    if (email)
+        [params setObject:email forKey:@"email"];
+    if (password)
+        [params setObject:password forKey:@"password"];
+    if (username)
+        [params setObject:username forKey:@"name"];
+    if (location)
+        [params setObject:location forKey:@"profile_location"];
+    if (tagline)
+        [params setObject:tagline forKey:@"profile_tagline"];
     
     NSDictionary* allData = @{@"profile_image":profileImage ?: [NSNull null]};
     NSDictionary* allExtensions = @{@"media_data":VConstantMediaExtensionJPG};
@@ -230,7 +237,7 @@ NSString *kLoggedInChangedNotification = @"LoggedInChangedNotification";
     return [self upload:allData
           fileExtension:allExtensions
                  toPath:@"/api/account/update"
-             parameters:parameters
+             parameters:[params copy]
            successBlock:fullSuccess
               failBlock:fail];
 }

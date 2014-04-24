@@ -101,6 +101,7 @@
                                             description:self.textView.text
                                               expiresAt:self.expirationDateString
                                            parentNodeId:nil
+                                                  speed:1.0
                                                loopType:kVLoopOnce
                                            shareOptions:shareOptions
                                               mediaData:mediaData
