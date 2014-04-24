@@ -22,38 +22,23 @@
 - (void)animateTransition:(id<UIViewControllerContextTransitioning>)context
 {
     VCommentsContainerViewController *commentsContainer = (VCommentsContainerViewController*)[context viewControllerForKey:UITransitionContextFromViewControllerKey];
+    VStreamTableViewController *streamVC = (VStreamTableViewController*)[context viewControllerForKey:UITransitionContextToViewControllerKey];
+    commentsContainer.view.userInteractionEnabled = NO;
+    streamVC.view.userInteractionEnabled = NO;
     
-    __block CGRect frame = commentsContainer.conversationTableViewController.view.frame;
-    frame.origin.x = 0;
-    commentsContainer.conversationTableViewController.view.frame = frame;
-    
-    [UIView animateWithDuration:.25f
-                     animations:^
+    [commentsContainer animateOutWithDuration:.25f
+                                   completion:^(BOOL finished)
      {
-         frame.origin.x = CGRectGetWidth(commentsContainer.conversationTableViewController.view.frame);
-         commentsContainer.conversationTableViewController.view.frame = frame;
-         for (UIView* view in commentsContainer.view.subviews)
-         {
-             if ([view isKindOfClass:[UIImageView class]])
-                 continue;
-             
-             if (view.center.y > commentsContainer.view.center.y)
-             {
-                 view.center = CGPointMake(view.center.x, view.center.y + commentsContainer.view.frame.size.height);
-             }
-             else
-             {
-                 view.center = CGPointMake(view.center.x, view.center.y - commentsContainer.view.frame.size.height);
-             }
-         }
-     }
-                     completion:^(BOOL finished)
-     {
-         [self animateToStream:context];
-         frame.origin.x = 0;
-         commentsContainer.conversationTableViewController.view.frame = frame;
+         [[context containerView] addSubview:streamVC.view];
+      
+         [streamVC animateInWithDuration:.4f completion:^(BOOL finished)
+          {
+              commentsContainer.view.userInteractionEnabled = YES;
+              streamVC.view.userInteractionEnabled = YES;
+              
+              [context completeTransition:![context transitionWasCancelled]];
+          }];
      }];
-    
 }
 
 @end

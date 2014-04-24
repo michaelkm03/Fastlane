@@ -52,18 +52,6 @@
 //    [self.stickersView reloadData];
 }
 
-- (IBAction)cameraButtonAction:(id)sender
-{
-    if(![VObjectManager sharedManager].mainUser)
-    {
-        [self presentViewController:[VLoginViewController loginViewController] animated:YES completion:NULL];
-        return;
-    }
-    [self.textView resignFirstResponder];
-    
-//    [super cameraButtonAction:sender];
-}
-
 - (IBAction)sendButtonAction:(id)sender
 {
     if(![VObjectManager sharedManager].mainUser)
@@ -82,6 +70,12 @@
 
 - (void)cameraPressed:(id)sender
 {
+    if(![VObjectManager sharedManager].mainUser)
+    {
+        [self presentViewController:[VLoginViewController loginViewController] animated:YES completion:NULL];
+        return;
+    }
+    
     VCameraViewController *cameraViewController = [VCameraViewController cameraViewController];
     cameraViewController.completionBlock = ^(BOOL finished, UIImage *previewImage, NSURL *capturedMediaURL, NSString *mediaExtension)
     {

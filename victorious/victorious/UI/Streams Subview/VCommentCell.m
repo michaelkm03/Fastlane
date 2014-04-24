@@ -76,6 +76,8 @@ NSString* const kChatBubbleLeftImage = @"ChatBubbleLeft";
     
     self.profileImageButton.clipsToBounds = YES;
     self.profileImageButton.layer.cornerRadius = CGRectGetHeight(self.profileImageButton.bounds)/2;
+    
+    [self layoutWithText:self.messageLabel.text withMedia:(BOOL)self.mediaUrl];
 }
 
 - (void)setCommentOrMessage:(id)commentOrMessage
@@ -83,70 +85,49 @@ NSString* const kChatBubbleLeftImage = @"ChatBubbleLeft";
     self.mpController = nil;
     
     _commentOrMessage = commentOrMessage;
+    NSString* mediaType;
+    VUser* user;
 
     if([commentOrMessage isKindOfClass:[VComment class]])
     {
         VComment *comment = (VComment *)self.commentOrMessage;
 
         self.dateLabel.text = [comment.postedAt timeSince];
-        
-        [self.profileImageButton setImageWithURL:[NSURL URLWithString:comment.user.pictureUrl]
-                                placeholderImage:[UIImage imageNamed:@"profile_thumb"]
-                                        forState:UIControlStateNormal];
-        
         self.nameLabel.text = comment.user.name;
         self.messageLabel.text = comment.text;
-
-        if ([comment.mediaUrl length])
-        {
-            [self layoutWithText:comment.text withMedia:YES];
-
-            self.mediaUrl = comment.mediaUrl;
-            self.mediaPreview.hidden = NO;
-
-            self.playButton.hidden = ![comment.mediaType isEqualToString:VConstantsMediaTypeVideo];
-            
-            [self.mediaPreview setImageWithURL:[self.mediaUrl convertToPreviewImageURL]];
-        }
-        else
-        {
-            [self layoutWithText:comment.text withMedia:NO];
-            self.mediaPreview.hidden = YES;
-            self.playButton.hidden = YES;
-        }
+        self.mediaUrl = comment.mediaUrl;
+        mediaType = comment.mediaType;
+        user = comment.user;
     }
     else if([commentOrMessage isKindOfClass:[VMessage class]])
     {
         VMessage *message = (VMessage *)self.commentOrMessage;
 
         self.dateLabel.text = [message.postedAt timeSince];
-        [self.profileImageButton setImageWithURL:[NSURL URLWithString:message.user.pictureUrl]
-                                placeholderImage:[UIImage imageNamed:@"profile_thumb"]
-                                        forState:UIControlStateNormal];
         self.nameLabel.text = message.user.name;
-        
         self.messageLabel.text = message.text;
-        
-        if ([message.media.mediaUrl length])
-        {
-            [self layoutWithText:message.text withMedia:YES];
-
-            self.mediaUrl = message.media.mediaUrl;
-            self.mediaPreview.hidden = NO;
-
-            self.playButton.hidden = ![message.media.mediaType isEqualToString:VConstantsMediaTypeVideo];
-            
-            [self.mediaPreview setImageWithURL:[self.mediaUrl convertToPreviewImageURL]];
-        }
-        else
-        {
-            [self layoutWithText:message.text withMedia:NO];
-            self.mediaPreview.hidden = YES;
-            self.playButton.hidden = YES;
-        }   
+        self.mediaUrl = message.media.mediaUrl;
+        mediaType = message.media.mediaType;
+        user = message.user;
     }
     
-    [self layoutSubviews];
+    [self.profileImageButton setImageWithURL:[NSURL URLWithString:user.pictureUrl]
+                            placeholderImage:[UIImage imageNamed:@"profile_thumb"]
+                                    forState:UIControlStateNormal];
+    if ([self.mediaUrl length])
+    {
+        self.mediaPreview.hidden = NO;
+        
+        self.playButton.hidden = ![mediaType isEqualToString:VConstantsMediaTypeVideo];
+        
+        [self.mediaPreview setImageWithURL:[self.mediaUrl convertToPreviewImageURL]];
+    }
+    else
+    {
+        self.mediaUrl = nil;
+        self.mediaPreview.hidden = YES;
+        self.playButton.hidden = YES;
+    }
 }
 
 -(void)layoutWithText:(NSString*)text withMedia:(BOOL)hasMedia
@@ -168,12 +149,11 @@ NSString* const kChatBubbleLeftImage = @"ChatBubbleLeft";
     {
         xOrigin = self.messageLabel.frame.origin.x;
     }
-    self.messageLabel.bounds = CGRectMake(0, 0, size.width, size.height);
+    
+    self.messageLabel.frame = CGRectMake(CGRectGetMinX(self.messageLabel.frame), CGRectGetMinY(self.messageLabel.frame),
+                                         size.width, size.height);
     
     [self.messageLabel sizeToFit];
-    
-    
-    VLog(@"message label: %@", NSStringFromCGRect(self.messageLabel.frame));
     
     if ([self.commentOrMessage isKindOfClass:[VMessage class]])
     {
@@ -211,9 +191,7 @@ NSString* const kChatBubbleLeftImage = @"ChatBubbleLeft";
         VLog(@"This is bad, where did the font go.");
     if (font)
         stringAttributes = [NSDictionary dictionaryWithObject:font forKey: NSFontAttributeName];
-    VLog(@"text = %@", text);
-    VLog(@"framesize = %@", NSStringFromCGSize([text frameSizeForWidth:kCommentMessageLabelWidth
-                                                         andAttributes:stringAttributes]));
+    
     return [text frameSizeForWidth:kCommentMessageLabelWidth
                      andAttributes:stringAttributes];
 }

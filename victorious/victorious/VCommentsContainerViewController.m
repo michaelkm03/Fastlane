@@ -87,40 +87,6 @@
     
     [self.navigationController setNavigationBarHidden:YES animated:animated];
     self.navigationController.delegate = self;
-    
-    if (animated)
-    {
-        __block CGFloat originalConvertationX = self.conversationTableViewController.view.frame.origin.x;
-        
-        CGRect viewFrame = self.conversationTableViewController.view.frame;
-        self.conversationTableViewController.view.frame = CGRectMake(CGRectGetWidth(self.view.frame),
-                                                                     CGRectGetMinY(viewFrame),
-                                                                     CGRectGetWidth(viewFrame),
-                                                                     CGRectGetHeight(viewFrame));
-
-        self.keyboardBarViewController.view.alpha = 0;
-        self.backButton.alpha = 0;
-        self.titleLabel.alpha = 0;
-        [UIView animateWithDuration:.3f
-                         animations:^
-         {
-             CGRect viewFrame = self.conversationTableViewController.view.frame;
-             self.conversationTableViewController.view.frame = CGRectMake(originalConvertationX,
-                                                                          CGRectGetMinY(viewFrame),
-                                                                          CGRectGetWidth(viewFrame),
-                                                                          CGRectGetHeight(viewFrame));
-         }
-                         completion:^(BOOL finished)
-         {
-             [UIView animateWithDuration:.1f
-                              animations:^
-              {
-                  self.keyboardBarViewController.view.alpha = 1;
-                  self.backButton.alpha = 1;
-                  self.titleLabel.alpha = 1;
-              }];
-         }];
-    }
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -227,5 +193,103 @@
     }
     return nil;
 }
+
+#pragma mark - Animations
+- (void)animateInWithDuration:(CGFloat)duration completion:(void (^)(BOOL finished))completion
+{
+    __block CGFloat originalConvertationX = self.conversationTableViewController.view.frame.origin.x;
+    
+    CGRect viewFrame = self.conversationTableViewController.view.frame;
+    self.conversationTableViewController.view.frame = CGRectMake(CGRectGetWidth(self.view.frame),
+                                                                 CGRectGetMinY(viewFrame),
+                                                                 CGRectGetWidth(viewFrame),
+                                                                 CGRectGetHeight(viewFrame));
+    
+    self.keyboardBarViewController.view.alpha = 0;
+    self.backButton.alpha = 0;
+    self.titleLabel.alpha = 0;
+    if ([self.sequence.comments count])
+    {
+        [UIView animateWithDuration:duration*.75f
+                         animations:^
+         {
+             CGRect viewFrame = self.conversationTableViewController.view.frame;
+             self.conversationTableViewController.view.frame = CGRectMake(originalConvertationX,
+                                                                          CGRectGetMinY(viewFrame),
+                                                                          CGRectGetWidth(viewFrame),
+                                                                          CGRectGetHeight(viewFrame));
+         }
+                         completion:^(BOOL finished)
+         {
+             [UIView animateWithDuration:duration*.25f
+                              animations:^
+              {
+                  self.keyboardBarViewController.view.alpha = 1;
+                  self.backButton.alpha = 1;
+                  self.titleLabel.alpha = 1;
+              }
+                              completion:^(BOOL finished)
+              {
+                  if (completion)
+                  {
+                      completion(finished);
+                  }
+              }];
+         }];
+    }
+    else
+    {
+        [UIView animateWithDuration:duration*.25f
+                         animations:^
+         {
+             self.keyboardBarViewController.view.alpha = 1;
+             self.backButton.alpha = 1;
+             self.titleLabel.alpha = 1;
+         }
+                         completion:^(BOOL finished)
+         {
+             if (completion)
+             {
+                 completion(finished);
+             }
+         }];
+    }
+}
+
+- (void)animateOutWithDuration:(CGFloat)duration completion:(void (^)(BOOL finished))completion
+{
+    __block CGRect frame = self.conversationTableViewController.view.frame;
+    frame.origin.x = 0;
+    self.conversationTableViewController.view.frame = frame;
+    
+    [UIView animateWithDuration:duration
+                     animations:^
+     {
+         frame.origin.x = CGRectGetWidth(self.conversationTableViewController.view.frame);
+         self.conversationTableViewController.view.frame = frame;
+         for (UIView* view in self.view.subviews)
+         {
+             if ([view isKindOfClass:[UIImageView class]])
+                 continue;
+             
+             if (view.center.y > self.view.center.y)
+             {
+                 view.center = CGPointMake(view.center.x, view.center.y + self.view.frame.size.height);
+             }
+             else
+             {
+                 view.center = CGPointMake(view.center.x, view.center.y - self.view.frame.size.height);
+             }
+         }
+     }
+                     completion:^(BOOL finished)
+     {
+         if (completion)
+         {
+             completion(finished);
+         }
+     }];
+}
+
 
 @end

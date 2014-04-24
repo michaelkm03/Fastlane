@@ -29,54 +29,23 @@
     [streamVC.navigationController setNavigationBarHidden:NO animated:YES];
     VStreamViewCell* selectedCell = (VStreamViewCell*) [streamVC.tableView cellForRowAtIndexPath:streamVC.tableView.indexPathForSelectedRow];
     
-    [UIView animateWithDuration:.4f
-                     animations:^
+
+    [streamVC animateOutWithDuration:.4f
+                          completion:^(BOOL finished)
      {
-         CGPoint newNavCenter = CGPointMake(streamVC.navigationController.navigationBar.center.x,
-                                            streamVC.navigationController.navigationBar.center.y - streamVC.tableView.frame.size.height);
-         streamVC.navigationController.navigationBar.center = newNavCenter;
-         
-         NSMutableArray* repositionedCells = [[NSMutableArray alloc] init];
-         
-         for (VStreamViewCell* cell in [streamVC.tableView visibleCells])
-         {
-             if ([contentVC isKindOfClass:[VContentViewController class]] && cell == selectedCell)
-             {
-                 continue;
-             }
-             
-             CGFloat centerPoint = [contentVC isKindOfClass:[VContentViewController class]] ? selectedCell.center.y
-             : streamVC.tableView.center.y + streamVC.tableView.contentOffset.y;
-             if (cell.center.y > centerPoint)
-             {
-                 cell.center = CGPointMake(cell.center.x, cell.center.y + [UIScreen mainScreen].bounds.size.height);
-             }
-             else
-             {
-                 cell.center = CGPointMake(cell.center.x, cell.center.y - [UIScreen mainScreen].bounds.size.height);
-             }
-             [repositionedCells addObject:cell];
-         }
-         streamVC.repositionedCells = repositionedCells;
-     }
-                     completion:^(BOOL finished)
-     {
-         contentVC.sequence = selectedCell.sequence;
-         
          [UIView animateWithDuration:.2f
                           animations:^
           {
-              selectedCell.overlayView.alpha = selectedCell.shadeView.alpha = 0;
-              selectedCell.overlayView.center = CGPointMake(selectedCell.overlayView.center.x,
-                                                            selectedCell.overlayView.center.y - selectedCell.frame.size.height);
-              
+              [selectedCell hideOverlays];
           }
                           completion:^(BOOL finished)
           {
               [[context containerView] addSubview:contentVC.view];
+              contentVC.sequence = selectedCell.sequence;
               
               CGRect topActionsFrame = contentVC.topActionsView.frame;
-              contentVC.topActionsView.frame = CGRectMake(CGRectGetMinX(topActionsFrame), CGRectGetMinY(contentVC.mediaView.frame), CGRectGetWidth(topActionsFrame), CGRectGetHeight(topActionsFrame));
+              contentVC.topActionsView.frame = CGRectMake(CGRectGetMinX(topActionsFrame), CGRectGetMinY(contentVC.mediaView.frame),
+                                                     CGRectGetWidth(topActionsFrame), CGRectGetHeight(topActionsFrame));
               
               contentVC.orImageView.hidden = ![contentVC.sequence isPoll];
               contentVC.orImageView.center = [contentVC.pollPreviewView convertPoint:contentVC.pollPreviewView.center toView:contentVC.orContainerView];

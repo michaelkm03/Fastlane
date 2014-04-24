@@ -8,8 +8,6 @@
 
 #import <Foundation/Foundation.h>
 
-#import "VAbstractToStreamAnimator.h"
-
-@interface VCommentToStreamAnimator : VAbstractToStreamAnimator <UIViewControllerAnimatedTransitioning>
+@interface VCommentToStreamAnimator : NSObject <UIViewControllerAnimatedTransitioning>
 
 @end

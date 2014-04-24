@@ -48,7 +48,7 @@ static NSUInteger const kStreamCommentCellHeight = 110;
 static NSString*   const   kVictoriousAppIDKey      = @"VictoriousAppID";
 
 static NSString*   const   kTestflightDevToken      = @"TestflightDevAppToken";
-static NSString*   const   kTestflightQAToken       = @"TestflightStableAppToken";
+static NSString*   const   kTestflightQAToken       = @"TestflightQAAppToken";
 static NSString*   const   kTestflightReleaseToken  = @"TestflightReleaseAppToken";
 
 static NSString*   const   kRemoteIdKey = @"remoteId";

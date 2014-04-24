@@ -152,7 +152,7 @@ NSString *kStreamsWillCommentNotification = @"kStreamsWillCommentNotification";
     self.overlayView.alpha = 1;
     self.shadeView.alpha = 1;
     self.animationImage.alpha = 1;
-    self.overlayView.center = CGPointMake(self.center.x, self.center.y);// + self.frame.size.height);
+    self.overlayView.center = CGPointMake(self.center.x, self.center.y);
 }
 
 @end

@@ -113,13 +113,13 @@ static NSString *gTWConsumerSecret;
 // OBFUSCATE YOUR KEYS!
 + (NSString *)consumerKey
 {
-    return @"MhDYRpVPTaGQgWBT7ChmxQ";
+    return [[NSBundle bundleForClass:[self class]] objectForInfoDictionaryKey:TW_CONSUMER_KEY];
 }
 
 // OBFUSCATE YOUR KEYS!
 + (NSString *)consumerSecret
 {
-    return @"damxXK28SCObMZ1CEMTLszm3v8mdRt0L1wuVnzXtH1E";
+    return [[NSBundle bundleForClass:[self class]] objectForInfoDictionaryKey:TW_CONSUMER_SECRET];
 }
 
 @end

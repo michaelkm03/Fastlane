@@ -109,9 +109,9 @@
 {
     //  Set background profile image
     NSURL*  imageURL    =   [NSURL URLWithString:self.profile.pictureUrl];
-    [self.backgroundImageView setBlurredImageWithURL:imageURL
-                                    placeholderImage:[UIImage imageNamed:@"profile_full"]
-                                           tintColor:[UIColor colorWithWhite:1.0 alpha:0.3]];
+//    [self.backgroundImageView setBlurredImageWithURL:imageURL
+//                                    placeholderImage:[UIImage imageNamed:@"profile_full"]
+//                                           tintColor:[UIColor colorWithWhite:1.0 alpha:0.3]];
 
     self.profileCircleImageView.layer.masksToBounds = YES;
     self.profileCircleImageView.layer.cornerRadius = CGRectGetHeight(self.profileCircleImageView.bounds)/2;

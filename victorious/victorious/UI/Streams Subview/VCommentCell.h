@@ -12,6 +12,7 @@
 @class VMessage;
 
 static NSString *kCommentCellIdentifier = @"VCommentCell";
+static NSString *kMessageCellIdentifier = @"VMessageCell";
 static NSString *kOtherCommentCellIdentifier = @"VOtherCommentCell";
 
 extern CGFloat const kCommentRowHeight;

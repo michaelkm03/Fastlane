@@ -79,7 +79,6 @@ CGFloat kContentMediaViewOffset = 154;
     self.secondResultView.color = [[VThemeManager sharedThemeManager] themedColorForKey:kVAccentColor];
     
     [self.navigationController setNavigationBarHidden:YES animated:NO];
-    self.sequence = self.sequence;
     
     [self updateActionBar];
     
@@ -266,15 +265,72 @@ CGFloat kContentMediaViewOffset = 154;
 {
     if (operation == UINavigationControllerOperationPop)
     {
-        VContentToStreamAnimator* animator = [[VContentToStreamAnimator alloc] init];
-//        animator.indexPathForSelectedCell = self.tableView.indexPathForSelectedRow;
-        return animator;
+        return [[VContentToStreamAnimator alloc] init];
     }
     else if (operation == UINavigationControllerOperationPush)
     {
         return [[VContentToCommentAnimator alloc] init];
     }
     return nil;
+}
+
+#pragma mark - Animations
+- (void)animateInWithDuration:(CGFloat)duration completion:(void (^)(BOOL finished))completion
+{
+    [UIView animateWithDuration:.25f
+                     animations:^
+     {
+         for (UIView* view in self.view.subviews)
+         {
+             if ([view isKindOfClass:[UIImageView class]])
+                 continue;
+             
+             if (view.center.y > self.view.center.y)
+             {
+                 view.center = CGPointMake(view.center.x, view.center.y - self.view.frame.size.height);
+             }
+             else
+             {
+                 view.center = CGPointMake(view.center.x, view.center.y + self.view.frame.size.height);
+             }
+         }
+     }
+                     completion:^(BOOL finished)
+     {
+         if (completion)
+         {
+             completion(finished);
+         }
+     }];
+}
+
+- (void)animateOutWithDuration:(CGFloat)duration completion:(void (^)(BOOL finished))completion
+{
+    [UIView animateWithDuration:duration
+                     animations:^
+     {
+         for (UIView* view in self.view.subviews)
+         {
+             if ([view isKindOfClass:[UIImageView class]])
+                 continue;
+             
+             if (view.center.y > self.view.center.y)
+             {
+                 view.center = CGPointMake(view.center.x, view.center.y + self.view.frame.size.height);
+             }
+             else
+             {
+                 view.center = CGPointMake(view.center.x, view.center.y - self.view.frame.size.height);
+             }
+         }
+     }
+                     completion:^(BOOL finished)
+     {
+         if(completion)
+         {
+             completion(finished);
+         }
+     }];
 }
 
 

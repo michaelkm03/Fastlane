@@ -32,15 +32,16 @@ const   CGFloat     kMessageRowHeight           =   80;
     [super viewDidLoad];
     
     UIImageView* backgroundImageView = [[UIImageView alloc] initWithFrame:self.tableView.backgroundView.frame];
-    [backgroundImageView setLightBlurredImageWithURL:[NSURL URLWithString:self.conversation.user.pictureUrl]
-                                    placeholderImage:[UIImage imageNamed:@"profile_thumb"]];
+    [backgroundImageView setBlurredImageWithURL:[NSURL URLWithString:self.conversation.user.pictureUrl]
+                               placeholderImage:[UIImage imageNamed:@"profile_thumb"]
+                                      tintColor:[UIColor darkGrayColor]];
     
     self.tableView.backgroundView = backgroundImageView;
     
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     //    self.tableView.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKeyPath:@"theme.color.messages.background"];
-    [self.tableView registerNib:[UINib nibWithNibName:kCommentCellIdentifier bundle:nil]
-         forCellReuseIdentifier:kCommentCellIdentifier];
+    [self.tableView registerNib:[UINib nibWithNibName:kMessageCellIdentifier bundle:nil]
+         forCellReuseIdentifier:kMessageCellIdentifier];
     [self.tableView registerNib:[UINib nibWithNibName:kOtherCommentCellIdentifier bundle:nil]
          forCellReuseIdentifier:kOtherCommentCellIdentifier];
     
@@ -109,10 +110,13 @@ const   CGFloat     kMessageRowHeight           =   80;
         cell = [tableView dequeueReusableCellWithIdentifier:kOtherCommentCellIdentifier forIndexPath:indexPath];
     }else
     {
-        cell = [tableView dequeueReusableCellWithIdentifier:kCommentCellIdentifier forIndexPath:indexPath];
+        cell = [tableView dequeueReusableCellWithIdentifier:kMessageCellIdentifier forIndexPath:indexPath];
     }
     
     [(VCommentCell *)cell setCommentOrMessage:aMessage];
+    
+    [cell setNeedsDisplay];
+    [cell layoutIfNeeded];
     
     return cell;
 }

@@ -52,20 +52,25 @@ static NSString* CommentCache = @"CommentCache";
          forCellReuseIdentifier:kOtherCommentCellIdentifier];
 
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+}
 
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    
     [self sortComments];
 }
 
 - (void)setSequence:(VSequence *)sequence
 {
-    self.sortedComments = nil;
+    self.sortedComments = [sequence.comments allObjects];
     [self.tableView reloadData];
     
     _sequence = sequence;
     
     self.title = sequence.name;
     
-    if (![self.sequence.comments count]) //If we don't have comments, try to pull more.
+    if (![self.sortedComments count]) //If we don't have comments, try to pull more.
         [self refresh:nil];
     else
         [self sortComments];
@@ -87,7 +92,7 @@ static NSString* CommentCache = @"CommentCache";
     if (![self.sortedComments count])
     {
         [self sortCommentsByDate];
-        
+
         __block CGRect frame = self.view.frame;
         frame.origin.x = CGRectGetWidth(self.view.frame);
         self.view.frame = frame;
@@ -133,7 +138,7 @@ static NSString* CommentCache = @"CommentCache";
 {
     VSuccessBlock success = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
     {
-        [self sortComments];
+//        [self sortComments];
         
         [self.refreshControl endRefreshing];
     };
@@ -292,7 +297,8 @@ static NSString* CommentCache = @"CommentCache";
 {
     VComment* comment = (VComment*)[self.sortedComments objectAtIndex:indexPath.row];
 
-    CGFloat height = [VCommentCell frameSizeForMessageText:comment.text].height;
+    CGSize textSize = [VCommentCell frameSizeForMessageText:comment.text];
+    CGFloat height = textSize.height;
     CGFloat yOffset = !comment.mediaUrl || [comment.mediaUrl isEmpty] ? kCommentCellYOffset : kMediaCommentCellYOffset;
     height = MAX(height + yOffset, kMinCellHeight);
 
@@ -314,14 +320,15 @@ static NSString* CommentCache = @"CommentCache";
     [(VCommentCell*)cell setCommentOrMessage:comment];
     ((VCommentCell*)cell).parentTableViewController = self;
     
+    [cell setNeedsLayout];
+    [cell layoutIfNeeded];
+    
     return cell;
 }
 
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    //Add
     VComment* comment = (VComment*)[self.sortedComments objectAtIndex:indexPath.row];
-    //if(!comment.read)
     [self.newlyReadComments addObject:[NSString stringWithFormat:@"%@", comment.remoteId]];
 
 }
@@ -388,12 +395,6 @@ static NSString* CommentCache = @"CommentCache";
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     UIWindow *window = [[[UIApplication sharedApplication] delegate] window];
     [actionSheet showInView:window];
-}
-
-- (void)controllerDidChangeContent:(NSFetchedResultsController *)controller
-{
-    // The fetch controller has sent all current change notifications, so tell the table view to process all updates.
-    [self.tableView endUpdates];
 }
 
 #pragma mark - Navigation
