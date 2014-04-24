@@ -28,4 +28,4 @@ else
 fi
 
 echo "Uploading $APPNAME..."
-ipa distribute:testflight -f "$IPAFILE" $DSYM -a "$TF_API_TOKEN" -T "$TF_TEAM_TOKEN" -m "Build $(git rev-list HEAD --count)" -l getvictoriousteam
+ipa distribute:testflight -f "$IPAFILE" $DSYM -a "$TF_API_TOKEN" -T "$TF_TEAM_TOKEN" -m "Build $(git rev-list HEAD --count)" -l getvictoriousteam --notify
