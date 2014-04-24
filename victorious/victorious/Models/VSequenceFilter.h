@@ -16,6 +16,15 @@
 @property (nonatomic, retain) NSString * filterAPIPath;
 @property (nonatomic, retain) NSNumber * pageNumber;
 @property (nonatomic, retain) NSNumber * perPageNumber;
-@property (nonatomic, retain) VSequence *sequences;
+@property (nonatomic, retain) NSNumber * maxPage;
+@property (nonatomic, retain) NSSet *sequences;
+@end
+
+@interface VSequenceFilter (CoreDataGeneratedAccessors)
+
+- (void)addSequencesObject:(VSequence *)value;
+- (void)removeSequencesObject:(VSequence *)value;
+- (void)addSequences:(NSSet *)values;
+- (void)removeSequences:(NSSet *)values;
 
 @end
