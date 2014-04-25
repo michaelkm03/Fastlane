@@ -130,10 +130,8 @@
                                            answer2Text:answer2Text
                                             media1Data:media1Data
                                        media1Extension:media1Extension
-                                             media1Url:nil
                                             media2Data:media2Data
                                        media2Extension:media2Extension
-                                             media2Url:nil
                                           successBlock:success
                                              failBlock:fail];
 }

@@ -150,7 +150,7 @@
          
          if (error.errorCode && failBlock)
              failBlock(operation, [NSError errorWithDomain:kVictoriousDomain code:error.errorCode
-                                       userInfo:@{NSLocalizedDescriptionKey: error.message}]);
+                                       userInfo:@{NSLocalizedDescriptionKey:[error.errorMessages componentsJoinedByString:@","]}]);
          else if (successBlock)
          {
              NSDictionary *JSON = [NSJSONSerialization JSONObjectWithData:operation.HTTPRequestOperation.responseData options:0 error:nil];
