@@ -14,8 +14,9 @@
 
 @dynamic filterAPIPath;
 @dynamic maxPageNumber;
-@dynamic nextPageNumber;
+@dynamic currentPageNumber;
 @dynamic perPageNumber;
+@dynamic updating;
 @dynamic sequences;
 
 @end

@@ -15,8 +15,9 @@
 
 @property (nonatomic, retain) NSString * filterAPIPath;
 @property (nonatomic, retain) NSNumber * maxPageNumber;
-@property (nonatomic, retain) NSNumber * nextPageNumber;
+@property (nonatomic, retain) NSNumber * currentPageNumber;
 @property (nonatomic, retain) NSNumber * perPageNumber;
+@property (nonatomic, retain) NSNumber * updating;
 @property (nonatomic, retain) NSSet *sequences;
 @end
 

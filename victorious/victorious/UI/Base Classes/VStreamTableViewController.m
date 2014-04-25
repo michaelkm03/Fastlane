@@ -65,6 +65,7 @@
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     
     self.clearsSelectionOnViewWillAppear = NO;
+    self.bottomRefreshIndicator.color = [[VThemeManager sharedThemeManager] themedColorForKey:kVMainTextColor];
     
     //Remove the search button from the stream - feature currently deprecated
     self.navigationItem.rightBarButtonItem = nil;
@@ -171,6 +172,11 @@
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
+    if (scrollView.contentOffset.y > scrollView.contentSize.height * .75)
+    {
+        [self loadNextPageAction];
+    }
+    
     CGPoint translation = [scrollView.panGestureRecognizer translationInView:scrollView.superview];
     CGRect navBarFrame = self.navigationController.navigationBar.frame;
     
@@ -305,20 +311,24 @@
 
 - (void)loadNextPageAction
 {
-    if (self.bottomRefreshIndicator.isAnimating)
-        return;
-    
-    [self.bottomRefreshIndicator startAnimating];
-    
-    [[VObjectManager sharedManager] loadNextPageOfSequenceFilter:[self currentFilter]
+    RKManagedObjectRequestOperation* operation = [[VObjectManager sharedManager] loadNextPageOfSequenceFilter:[self currentFilter]
                                              successBlock:^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
      {
          [self.bottomRefreshIndicator stopAnimating];
+//         self.fetchedResultsController.delegate = self;
+//         [self.fetchedResultsController performFetch:nil];
      }
                                                 failBlock:^(NSOperation* operation, NSError* error)
      {
          [self.bottomRefreshIndicator stopAnimating];
+//         self.fetchedResultsController.delegate = self;
      }];
+    
+    if (operation)
+    {
+//        self.fetchedResultsController.delegate = nil;
+        [self.bottomRefreshIndicator startAnimating];
+    }
 }
 
 #pragma mark - Predicates
@@ -340,12 +350,6 @@
 {
     return [[VObjectManager sharedManager] sequenceFilterForCategories:[self categoriesForOption:VStreamFilterAll]];
 }
-
-//- (NSPredicate*)categoryPredicateForString:(NSString*)categoryName
-//{
-//    //TODO: double check this, I think its wrong
-//    return [NSPredicate predicateWithFormat:@"category == %@", categoryName];
-//}
 
 - (NSArray*)categoriesForOption:(NSUInteger)searchOption
 {

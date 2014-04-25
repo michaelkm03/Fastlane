@@ -71,7 +71,36 @@ static NSString* kOrIconImage = @"orIconImage";
     }
     
     UIImage* placeholderImage = [UIImage resizeableImageWithColor:[[VThemeManager sharedThemeManager] themedColorForKey:kVBackgroundColor]];
-    [self.previewImageView setImageWithURL:self.firstAssetUrl placeholderImage:placeholderImage];
-    [self.previewImageTwo setImageWithURL:self.secondAssetUrl placeholderImage:placeholderImage];
+    
+    
+    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:self.firstAssetUrl];
+    [request addValue:@"image/*" forHTTPHeaderField:@"Accept"];
+    [self.previewImageView setImageWithURLRequest:request
+                                 placeholderImage:placeholderImage
+                                          success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image)
+     {
+         self.previewImageView.alpha = 0;
+         self.previewImageView.image = image;
+         [UIView animateWithDuration:.3f animations:^
+          {
+              self.previewImageView.alpha = 1;
+          }];
+     }
+                                          failure:nil];
+    
+    request = [NSMutableURLRequest requestWithURL:self.firstAssetUrl];
+    [request addValue:@"image/*" forHTTPHeaderField:@"Accept"];
+    [self.previewImageTwo setImageWithURLRequest:request
+                                 placeholderImage:placeholderImage
+                                          success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image)
+     {
+         self.previewImageTwo.alpha = 0;
+         self.previewImageTwo.image = image;
+         [UIView animateWithDuration:.3f animations:^
+          {
+              self.previewImageTwo.alpha = 1;
+          }];
+     }
+                                          failure:nil];
 }
 @end

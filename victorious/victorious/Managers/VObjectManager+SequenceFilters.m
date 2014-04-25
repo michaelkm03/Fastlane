@@ -75,7 +75,7 @@
                                               successBlock:(VSuccessBlock)success
                                                  failBlock:(VFailBlock)fail
 {
-    filter.nextPageNumber = 0;
+    filter.currentPageNumber = 0;
     return [self loadNextPageOfSequenceFilter:filter
                                  successBlock:success
                                     failBlock:fail];
@@ -85,12 +85,23 @@
                                                      successBlock:(VSuccessBlock)success
                                                         failBlock:(VFailBlock)fail
 {
-    NSString* path = [filter.filterAPIPath stringByAppendingFormat:@"/%d/%d", filter.nextPageNumber.integerValue , filter.perPageNumber.integerValue];
+    NSInteger nextPageNumber = filter.currentPageNumber < filter.maxPageNumber ? filter.currentPageNumber.integerValue + 1
+                                                                               : filter.maxPageNumber.integerValue;
+    NSString* path = [filter.filterAPIPath stringByAppendingFormat:@"/%d/%d", nextPageNumber, filter.perPageNumber.integerValue];
+    
+    //If the filter is in the middle of an update, ignore other calls to update
+    @synchronized(filter.updating)
+    {
+        if (filter.updating.boolValue)
+            return nil;
+        else
+            filter.updating = [NSNumber numberWithBool:YES];
+    }
     
     VSuccessBlock fullSuccessBlock = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
     {
         //If this is the first page, break the relationship to all the old objects.
-        if ([filter.nextPageNumber isEqualToNumber:@(0)])
+        if ([filter.currentPageNumber isEqualToNumber:@(0)])
         {
             [filter removeSequences:filter.sequences];
         }
@@ -98,8 +109,8 @@
         //TODO: grab the objects by ID from the filters context and then add them.  Then save.  Otherwise this will break
         [filter addSequences:[NSSet setWithArray:resultObjects]];
         
-        filter.maxPageNumber = fullResponse[@"page_number"];
-        filter.nextPageNumber = fullResponse[@"total_pages"] ;
+        filter.maxPageNumber = @(((NSString*)fullResponse[@"total_pages"]).integerValue);
+        filter.currentPageNumber = @(((NSString*)fullResponse[@"page_number"]).integerValue);
         
         //If we don't have the user then we need to fetch em.
         NSMutableArray* nonExistantUsers = [[NSMutableArray alloc] init];
@@ -118,13 +129,27 @@
         
         else if (success)
             success(operation, fullResponse, resultObjects);
+        
+        
+        [filter.managedObjectContext save:nil];
+        filter.updating = [NSNumber numberWithBool:NO];
+        [[VFilterCache sharedCache] setObject:filter forKey:filter.filterAPIPath];
+    };
+    
+    VFailBlock fullFail = ^(NSOperation* operation, NSError* error)
+    {
+        if (fail)
+            fail(operation, error);
+        
+        filter.updating = [NSNumber numberWithBool:NO];
+        [[VFilterCache sharedCache] setObject:filter forKey:filter.filterAPIPath];
     };
     
     return [self GET:path
               object:nil
           parameters:nil
         successBlock:fullSuccessBlock
-           failBlock:fail];
+           failBlock:fullFail];
 }
 
 //TODO: use this in the stream view to check for

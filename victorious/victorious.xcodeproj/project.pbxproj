@@ -178,7 +178,7 @@
 		BE7D2E9118EB762A009E488E /* VVoteResult.m in Sources */ = {isa = PBXBuildFile; fileRef = BE7D2E9018EB762A009E488E /* VVoteResult.m */; };
 		BE7FC00E18D7D42500ACDDE5 /* carlyTheme.plist in Resources */ = {isa = PBXBuildFile; fileRef = BE7FC00D18D7D42500ACDDE5 /* carlyTheme.plist */; };
 		BE83A37118827B400077EB26 /* VMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = BE83A37018827B400077EB26 /* VMessage.m */; };
-		BE89ECC9190AD453009DD407 /* VSequenceFilter.m in Sources */ = {isa = PBXBuildFile; fileRef = BE89ECC8190AD453009DD407 /* VSequenceFilter.m */; };
+		BE89ECCF190AFAC1009DD407 /* VSequenceFilter.m in Sources */ = {isa = PBXBuildFile; fileRef = BE89ECCE190AFAC1009DD407 /* VSequenceFilter.m */; };
 		BE8C6F4F18B56E70009CFB1C /* VStreamPollCell.m in Sources */ = {isa = PBXBuildFile; fileRef = BE8C6F4E18B56E70009CFB1C /* VStreamPollCell.m */; };
 		BE9181DB19098E280071E7AF /* VObjectManager+SequenceFilters.m in Sources */ = {isa = PBXBuildFile; fileRef = BE9181DA19098E280071E7AF /* VObjectManager+SequenceFilters.m */; };
 		BE9181E11909B1CE0071E7AF /* VSequence.m in Sources */ = {isa = PBXBuildFile; fileRef = BE9181E01909B1CE0071E7AF /* VSequence.m */; };
@@ -539,8 +539,8 @@
 		BE7FC00D18D7D42500ACDDE5 /* carlyTheme.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = carlyTheme.plist; sourceTree = "<group>"; };
 		BE83A36F18827B400077EB26 /* VMessage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VMessage.h; sourceTree = "<group>"; };
 		BE83A37018827B400077EB26 /* VMessage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VMessage.m; sourceTree = "<group>"; };
-		BE89ECC7190AD453009DD407 /* VSequenceFilter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VSequenceFilter.h; sourceTree = "<group>"; };
-		BE89ECC8190AD453009DD407 /* VSequenceFilter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VSequenceFilter.m; sourceTree = "<group>"; };
+		BE89ECCD190AFAC1009DD407 /* VSequenceFilter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VSequenceFilter.h; sourceTree = "<group>"; };
+		BE89ECCE190AFAC1009DD407 /* VSequenceFilter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VSequenceFilter.m; sourceTree = "<group>"; };
 		BE8C6F4C18B53F2A009CFB1C /* victoriOS 4.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "victoriOS 4.xcdatamodel"; sourceTree = "<group>"; };
 		BE8C6F4D18B56E70009CFB1C /* VStreamPollCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VStreamPollCell.h; sourceTree = "<group>"; };
 		BE8C6F4E18B56E70009CFB1C /* VStreamPollCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VStreamPollCell.m; sourceTree = "<group>"; };
@@ -1211,8 +1211,8 @@
 			isa = PBXGroup;
 			children = (
 				BE171E411868CEA0004E5202 /* victoriOS.xcdatamodeld */,
-				BE89ECC7190AD453009DD407 /* VSequenceFilter.h */,
-				BE89ECC8190AD453009DD407 /* VSequenceFilter.m */,
+				BE89ECCD190AFAC1009DD407 /* VSequenceFilter.h */,
+				BE89ECCE190AFAC1009DD407 /* VSequenceFilter.m */,
 				BE9181E21909B1CE0071E7AF /* VAnswer.h */,
 				BE9181E31909B1CE0071E7AF /* VAnswer.m */,
 				BE6C15231880A31A00469BA8 /* VAnswerAction.h */,
@@ -1759,7 +1759,7 @@
 				5FF9BE86189319730054694B /* VMenuController.m in Sources */,
 				3FF8C50418A59EAB00812968 /* VKeyboardBarContainerViewController.m in Sources */,
 				BE171E161868C211004E5202 /* VRule+RestKit.m in Sources */,
-				BE89ECC9190AD453009DD407 /* VSequenceFilter.m in Sources */,
+				BE89ECCF190AFAC1009DD407 /* VSequenceFilter.m in Sources */,
 				3F9B66741888C4B20046F826 /* VCommunityStreamViewController.m in Sources */,
 				3FF7B6DA18EE477D003831CD /* UIView+Masking.m in Sources */,
 				BE185DF518E3BB54001C447F /* VActionBarViewController.m in Sources */,

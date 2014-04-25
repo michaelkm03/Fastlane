@@ -83,6 +83,6 @@
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
 	<key>VictoriousAppID</key>
-	<integer>1</integer>
+	<integer>2</integer>
 </dict>
 </plist>
