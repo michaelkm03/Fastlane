@@ -115,7 +115,7 @@
         return; // TODO: some kind of error message here?
     }
 
-    CGFloat     playbackSpeed;
+    CGFloat playbackSpeed;
     if (self.playBackSpeed == kVPlaybackNormalSpeed)
         playbackSpeed = 1.0;
     else if (self.playBackSpeed == kVPlaybackDoubleSpeed)

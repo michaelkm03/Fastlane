@@ -511,7 +511,7 @@ NSString* const kPollResultsLoaded = @"kPollResultsLoaded";
                                          @"description":description ?: [NSNull null]} mutableCopy];
     if (expiresAt)
         parameters[@"expires_at"] = expiresAt;
-    if (parentNodeId)
+    if (parentNodeId && ![parentNodeId isEqualToNumber:@(0)])
         parameters[@"parent_node_id"] = parentNodeId;
     if (shareOptions & kVShareToFacebook)
         parameters[@"share_facebook"] = @"1";
