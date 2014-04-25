@@ -10,6 +10,7 @@
 #import "VLoadingViewController.h"
 #import "VObjectManager+Login.h"
 #import "VObjectManager+Sequence.h"
+#import "VObjectManager+SequenceFilters.h"
 #import "VReachability.h"
 #import "VThemeManager.h"
 
@@ -132,7 +133,8 @@ static const NSTimeInterval kTimeBetweenRetries = 10.0;
 {
     if (!_initialSequenceLoading && !_initialSequenceLoaded)
     {
-        [[VObjectManager sharedManager] initialSequenceLoadWithSuccessBlock:^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
+//        [[VObjectManager sharedManager] initialSequenceLoadWithSuccessBlock:^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
+        [[VObjectManager sharedManager] loadInitialSequenceFilterWithSuccessBlock:^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
         {
             _initialSequenceLoading = NO;
             _initialSequenceLoaded = YES;

@@ -16,6 +16,8 @@
 #import "VSequenceFilter+RestKit.h"
 
 #import "VHomeStreamViewController.h"
+#import "VOwnerStreamViewController.h"
+#import "VCommunityStreamViewController.h"
 
 #import "VUserManager.h"
 
@@ -49,6 +51,19 @@
                  success(operation, fullResponse, resultObjects);
              }
          }];
+        
+        NSArray* ownerCategories = [[VOwnerStreamViewController sharedInstance] categoriesForOption:0];
+        VSequenceFilter* ownerFilter = [self sequenceFilterForCategories:ownerCategories];
+        [self refreshSequenceFilter:ownerFilter
+                       successBlock:nil
+                          failBlock:nil];
+        
+        NSArray* communityCategories = [[VCommunityStreamViewController sharedInstance] categoriesForOption:0];
+        VSequenceFilter* communityFilter = [self sequenceFilterForCategories:communityCategories];
+        [self refreshSequenceFilter:communityFilter
+                       successBlock:nil
+                          failBlock:nil];
+        
     };
     
     return [self refreshSequenceFilter:defaultFilter

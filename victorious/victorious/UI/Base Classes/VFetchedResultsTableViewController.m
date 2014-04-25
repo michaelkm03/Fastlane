@@ -232,17 +232,12 @@
 
 - (void)controllerDidChangeContent:(NSFetchedResultsController *)controller
 {
-    //TODO: remove my notes here.  This is for the weird exception / crash / sometimes tableview getting weird bug
-    //Being called multiple times... maybe it has multiple adds all at once from refresh?
-    //Maybe this should be changed...
     self.updateCount--;
     if (self.updateCount == 0)
         [[self tableViewForFetchedResultsController:controller] endUpdates];
-//    [[self tableViewForFetchedResultsController:controller] reloadData];
 }
 
 #pragma mark - UISearchDisplayControllerDelegate
-
 - (void)searchDisplayControllerDidEndSearch:(UISearchDisplayController *)controller
 {
     self.searchFetchedResultsController.delegate = nil;

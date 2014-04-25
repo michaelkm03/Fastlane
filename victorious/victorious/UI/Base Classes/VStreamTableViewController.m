@@ -26,8 +26,10 @@
 
 //ObjectManager
 #import "VObjectManager+Sequence.h"
+#import "VObjectManager+SequenceFilters.h"
 
 //Data Models
+#import "VSequenceFilter.h"
 #import "VSequence+RestKit.h"
 #import "VSequence+Fetcher.h"
 #import "VNode+Fetcher.h"
@@ -62,11 +64,6 @@
     
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     
-    if ([self.fetchedResultsController.fetchedObjects count] < 5)
-        [self refreshAction];
-    else
-        [self.tableView reloadData]; //force a reload incase anything has changed
-    
     self.clearsSelectionOnViewWillAppear = NO;
     
     //Remove the search button from the stream - feature currently deprecated
@@ -78,6 +75,11 @@
     [super viewDidAppear:animated];
     
     self.navigationController.delegate = self;
+    
+    if ([self.fetchedResultsController.fetchedObjects count] < 5)
+        [self refreshAction];
+    else
+        [self.tableView reloadData]; //force a reload incase anything has changed
     
     CGRect navBarFrame = self.navigationController.navigationBar.frame;
     navBarFrame.origin.y = 0;
@@ -114,6 +116,7 @@
     
     NSFetchRequest *fetchRequest = [NSFetchRequest fetchRequestWithEntityName:[VSequence entityName]];
     NSSortDescriptor *sort = [[NSSortDescriptor alloc] initWithKey:@"releasedAt" ascending:NO];
+
     [fetchRequest setSortDescriptors:@[sort]];
     [fetchRequest setFetchBatchSize:50];
     
@@ -287,22 +290,33 @@
 #pragma mark - Refresh
 - (void)refreshAction
 {
-    if (self.bottomRefreshIndicator.isAnimating)
-        return;
-    
-    [self.bottomRefreshIndicator startAnimating];
     [self.refreshControl beginRefreshing];
     
-    [[VObjectManager sharedManager] loadNextPageOfSequencesForCategory:nil
+    [[VObjectManager sharedManager] refreshSequenceFilter:[self currentFilter]
                                                           successBlock:^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
      {
          [self.refreshControl endRefreshing];
-         [self.bottomRefreshIndicator stopAnimating];
-         
      }
                                                              failBlock:^(NSOperation* operation, NSError* error)
      {
          [self.refreshControl endRefreshing];
+     }];
+}
+
+- (void)loadNextPageAction
+{
+    if (self.bottomRefreshIndicator.isAnimating)
+        return;
+    
+    [self.bottomRefreshIndicator startAnimating];
+    
+    [[VObjectManager sharedManager] loadNextPageOfSequenceFilter:[self currentFilter]
+                                             successBlock:^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
+     {
+         [self.bottomRefreshIndicator stopAnimating];
+     }
+                                                failBlock:^(NSOperation* operation, NSError* error)
+     {
          [self.bottomRefreshIndicator stopAnimating];
      }];
 }
@@ -310,19 +324,28 @@
 #pragma mark - Predicates
 - (NSPredicate*)scopeTypePredicateForOption:(NSUInteger)searchOption
 {
-    NSMutableArray* allPredicates = [[NSMutableArray alloc] init];
-    for (NSString* categoryName in [self categoriesForOption:searchOption])
-    {
-        [allPredicates addObject:[self categoryPredicateForString:categoryName]];
-    }
-    return [NSCompoundPredicate orPredicateWithSubpredicates:allPredicates];
+//    NSMutableArray* allPredicates = [[NSMutableArray alloc] init];
+//    for (NSString* categoryName in [self categoriesForOption:searchOption])
+//    {
+//        [allPredicates addObject:[self categoryPredicateForString:categoryName]];
+//    }
+//    
+//    return [NSCompoundPredicate orPredicateWithSubpredicates:allPredicates];
+    
+    VSequenceFilter* filter = [self currentFilter];
+    return [NSPredicate predicateWithFormat:@"ANY filters.filterAPIPath =[cd] %@", filter.filterAPIPath];
 }
 
-- (NSPredicate*)categoryPredicateForString:(NSString*)categoryName
+- (VSequenceFilter*)currentFilter
 {
-    //TODO: double check this, I think its wrong
-    return [NSPredicate predicateWithFormat:@"category == %@", categoryName];
+    return [[VObjectManager sharedManager] sequenceFilterForCategories:[self categoriesForOption:VStreamFilterAll]];
 }
+
+//- (NSPredicate*)categoryPredicateForString:(NSString*)categoryName
+//{
+//    //TODO: double check this, I think its wrong
+//    return [NSPredicate predicateWithFormat:@"category == %@", categoryName];
+//}
 
 - (NSArray*)categoriesForOption:(NSUInteger)searchOption
 {
