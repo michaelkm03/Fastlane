@@ -70,7 +70,6 @@
            failBlock:fail];
 }
 
-
 + (NSCache *)sequenceFilterCache
 {
     static NSCache *sequenceFilterCache = nil;

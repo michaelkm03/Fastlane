@@ -508,11 +508,10 @@ NSString* const kPollResultsLoaded = @"kPollResultsLoaded";
         return nil;
     
     NSMutableDictionary* parameters = [@{@"name":name ?: [NSNull null],
-                                         @"speed":@(speed) ?:@(1),
                                          @"description":description ?: [NSNull null]} mutableCopy];
     if (expiresAt)
         parameters[@"expires_at"] = expiresAt;
-    if (parentNodeId)
+    if (parentNodeId && ![parentNodeId isEqualToNumber:@(0)])
         parameters[@"parent_node_id"] = parentNodeId;
     if (shareOptions & kVShareToFacebook)
         parameters[@"share_facebook"] = @"1";
@@ -520,8 +519,11 @@ NSString* const kPollResultsLoaded = @"kPollResultsLoaded";
         parameters[@"share_twitter"] = @"1";
     
     NSString* loopParam = [self stringForLoopType:loopType];
-    if (loopParam)
+    if (loopParam && speed)
+    {
+        parameters[@"speed"] = @(speed);
         parameters[@"playback"] = loopParam;
+    }
     
     NSDictionary* allData = @{@"media_data":mediaData ?: [NSNull null]};
     NSDictionary* allExtensions = @{@"media_data":extension ?: [NSNull null]};

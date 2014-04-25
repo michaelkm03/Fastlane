@@ -59,6 +59,7 @@
      name:kStreamsWillCommentNotification object:nil];
     
     self.preloadImageCache = [[NSCache alloc] init];
+    self.preloadImageCache.countLimit = 5;
     
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     

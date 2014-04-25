@@ -10,7 +10,7 @@
 
 #import "VImagePickerViewController.h"
 
-@interface VCreatePollViewController : VImagePickerViewController
+@interface VCreatePollViewController : UIViewController
 
 @property (weak, nonatomic) IBOutlet UIImageView *rightPreviewImageView;
 @property (weak, nonatomic) IBOutlet UIImageView *previewImageView;
@@ -34,7 +34,6 @@
 
 @property (weak, nonatomic) id<VCreateSequenceDelegate> delegate;
 
-+ (instancetype)newCreatePollViewControllerForType:(VImagePickerViewControllerType)type
-                                      withDelegate:(id<VCreateSequenceDelegate>)delegate;
++ (instancetype)newCreatePollViewControllerWithDelegate:(id<VCreateSequenceDelegate>)delegate;
 
 @end

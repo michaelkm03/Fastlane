@@ -8,6 +8,7 @@
 
 @import AVFoundation;
 
+#import "VCameraViewController.h"
 #import "VCreatePollViewController.h"
 #import "VThemeManager.h"
 #import "VConstants.h"
@@ -18,8 +19,8 @@ static const CGFloat VCreateViewControllerLargePadding = 20;
 
 @interface VCreatePollViewController() <UITextFieldDelegate, UITextViewDelegate>
 
-@property (strong, nonatomic) NSData *mediaData;
-@property (strong, nonatomic) NSData *secondMediaData;
+@property (strong, nonatomic) NSURL *mediaURL;
+@property (strong, nonatomic) NSURL *secondMediaURL;
 
 @property (strong, nonatomic) NSString *mediaType;
 @property (strong, nonatomic) NSString *secondMediaType;
@@ -30,13 +31,11 @@ static const CGFloat VCreateViewControllerLargePadding = 20;
 
 @implementation VCreatePollViewController
 
-+ (instancetype)newCreatePollViewControllerForType:(VImagePickerViewControllerType)type
-                                      withDelegate:(id<VCreateSequenceDelegate>)delegate
++ (instancetype)newCreatePollViewControllerWithDelegate:(id<VCreateSequenceDelegate>)delegate
 {
     UIViewController*   currentViewController = [[UIApplication sharedApplication] delegate].window.rootViewController;
     VCreatePollViewController* createView = (VCreatePollViewController*)[currentViewController.storyboard instantiateViewControllerWithIdentifier: NSStringFromClass([VCreatePollViewController class])];
     createView.delegate = delegate;
-    createView.type = type;
     return createView;
 }
 
@@ -45,7 +44,7 @@ static const CGFloat VCreateViewControllerLargePadding = 20;
     [super viewDidLoad];
     
     self.edgesForExtendedLayout = UIRectEdgeNone;
-    
+    self.title = NSLocalizedString(@"New Poll", @"New poll title");
     
     UIImage* newImage = [self.mediaButton.imageView.image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
     [self.mediaButton setImage:newImage forState:UIControlStateNormal];
@@ -95,24 +94,15 @@ static const CGFloat VCreateViewControllerLargePadding = 20;
      addObserver:self selector:@selector(keyboardFrameChanged:)
      name:UIKeyboardWillChangeFrameNotification object:nil];
     
-    [self setType:self.type];
-    
     [self validatePostButtonState];
     [self updateViewState];
-}
-
-- (void)setType:(VImagePickerViewControllerType)type
-{
-    [super setType:type];
-    
-    self.title = NSLocalizedString(@"New Poll", @"New poll title");
 }
 
 - (void)validatePostButtonState
 {
     [self.postButton setEnabled:YES];
     
-    if(!self.mediaData || !self.secondMediaData)
+    if(!self.mediaURL || !self.secondMediaURL)
         [self.postButton setEnabled:NO];
     
     else if([self.questionTextField.text isEmpty])
@@ -136,7 +126,7 @@ static const CGFloat VCreateViewControllerLargePadding = 20;
 
 - (void)updateViewState
 {
-    if(!self.secondMediaData)
+    if(!self.secondMediaURL)
     {
         self.rightPreviewImageView.hidden = YES;
         self.rightRemoveButton.hidden = YES;
@@ -149,6 +139,24 @@ static const CGFloat VCreateViewControllerLargePadding = 20;
 }
 
 #pragma mark - Actions
+
+- (IBAction)mediaButtonAction:(id)sender
+{
+    VCameraViewController *cameraViewController = [VCameraViewController cameraViewController];
+    cameraViewController.completionBlock = ^(BOOL finished, UIImage *previewImage, NSURL *capturedMediaURL, NSString *mediaExtension)
+    {
+        if (finished)
+        {
+            [self imagePickerFinishedWithURL:capturedMediaURL
+                                   extension:mediaExtension
+                                previewImage:previewImage];
+        }
+        [self dismissViewControllerAnimated:YES completion:nil];
+    };
+    UINavigationController *navigationController = [[UINavigationController alloc] init];
+    [navigationController pushViewController:cameraViewController animated:NO];
+    [self presentViewController:navigationController animated:YES completion:nil];
+}
 
 - (IBAction)clearMedia:(id)sender
 {
@@ -169,11 +177,20 @@ static const CGFloat VCreateViewControllerLargePadding = 20;
          self.addMediaView.userInteractionEnabled = YES;
          self.postButton.userInteractionEnabled = YES;
          
-         self.mediaData = self.secondMediaData;
+         if (!self.secondMediaURL)
+         {
+             [[NSFileManager defaultManager] removeItemAtURL:self.mediaURL error:nil];
+         }
+         
+         self.mediaURL = self.secondMediaURL;
          self.mediaType = self.secondMediaType;
          self.previewImageView.image = self.rightPreviewImageView.image;
          
-         self.secondMediaData = nil;
+         if (self.secondMediaURL)
+         {
+             [[NSFileManager defaultManager] removeItemAtURL:self.secondMediaURL error:nil];
+         }
+         self.secondMediaURL = nil;
          self.secondMediaType = nil;
          self.rightPreviewImageView.image = nil;
          
@@ -202,7 +219,11 @@ static const CGFloat VCreateViewControllerLargePadding = 20;
          self.addMediaView.userInteractionEnabled = YES;
          self.postButton.userInteractionEnabled = YES;
          
-         self.secondMediaData = nil;
+         if (self.secondMediaURL)
+         {
+             [[NSFileManager defaultManager] removeItemAtURL:self.secondMediaURL error:nil];
+         }
+         self.secondMediaURL = nil;
          self.secondMediaType = nil;
          self.rightPreviewImageView.image = nil;
          [self updateViewState];
@@ -215,9 +236,9 @@ static const CGFloat VCreateViewControllerLargePadding = 20;
     [self.delegate createPollWithQuestion:self.questionTextField.text
                               answer1Text:self.leftAnswerTextField.text
                               answer2Text:self.rightAnswerTextField.text
-                               media1Data:self.mediaData
+                               media1URL:self.mediaURL
                           media1Extension:self.mediaType
-                               media2Data:self.secondMediaData
+                               media2URL:self.secondMediaURL
                           media2Extension:self.secondMediaType];
     
     [self.navigationController popViewControllerAnimated:YES];
@@ -299,21 +320,21 @@ static const CGFloat VCreateViewControllerLargePadding = 20;
     return YES;
 }
 
-#pragma mark - Overrides
-- (void)imagePickerFinishedWithData:(NSData*)data
+#pragma mark -
+
+- (void)imagePickerFinishedWithURL:(NSURL *)mediaURL
                           extension:(NSString*)extension
                        previewImage:(UIImage*)previewImage
-                           mediaURL:(NSURL*)mediaURL
 {
-    if(!self.mediaData)
+    if(!self.mediaURL)
     {
-        self.mediaData = data;
+        self.mediaURL = mediaURL;
         self.mediaType = extension;
         self.previewImageView.image = previewImage;
     }
     else
     {
-        self.secondMediaData = data;
+        self.secondMediaURL = mediaURL;
         self.secondMediaType = extension;
         self.rightPreviewImageView.image = previewImage;
     }
