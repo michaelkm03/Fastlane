@@ -159,7 +159,7 @@
         else
         {
             UIAlertView* alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"UploadFailedTitle", @"")
-                                                            message:error.localizedDescription
+                                                            message:NSLocalizedString(@"UploadErrorBody", @"")
                                                            delegate:nil
                                                   cancelButtonTitle:nil
                                                   otherButtonTitles:NSLocalizedString(@"OKButton", @""), nil];
