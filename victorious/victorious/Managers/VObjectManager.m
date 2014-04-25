@@ -254,7 +254,7 @@
         return nil;
     
     return [NSError errorWithDomain:kVictoriousDomain code:[responseObject[@"error"] integerValue]
-                           userInfo:@{NSLocalizedDescriptionKey: responseObject[@"message"]}];
+                           userInfo:@{NSLocalizedDescriptionKey: [responseObject[@"message"] componentsJoinedByString:@","]}];
 }
 
 -(VPaginationStatus *)statusForKey:(NSString*)key
