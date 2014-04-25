@@ -11,8 +11,9 @@
 #import "VObjectManager+Private.h"
 #import "VObjectManager+Users.h"
 
+#import "VUser.h"
 #import "VSequence.h"
-#import "VSequenceFilter.h"
+#import "VSequenceFilter+RestKit.h"
 
 @implementation VObjectManager (SequenceFilters)
 
@@ -37,7 +38,6 @@
                                                         failBlock:(VFailBlock)fail
 {
     NSString* path = [filter.filterAPIPath stringByAppendingFormat:@"/%d/%d", filter.pageNumber.integerValue + 1, filter.perPageNumber.integerValue];
-    
     
     VSuccessBlock fullSuccessBlock = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
     {
@@ -83,25 +83,38 @@
     return sequenceFilterCache;
 }
 
-- (VSequenceFilter*)sequenceFilterForUser:(VUser*)user resultsPerPage:(NSInteger*)resultsPerPage
-{
-    return nil;
-}
-
 //TODO: use this in the stream view to check for
 //[NSPredicate predicateWithFormat:@"ANY filters.filterPath =[cd] %@", filter.filterPath];
 
-- (VSequenceFilter*)sequenceFilterForCategories:(NSArray*)categories resultsPerPage:(NSInteger*)resultsPerPage
+
+- (VSequenceFilter*)sequenceFilterForUser:(VUser*)user
+{
+    NSString* apiPath = [@"/api/sequence/detail_list_by_category/" stringByAppendingString: user.remoteId.stringValue ?: @"0"];
+    return [self sequenceFilterForAPIPath:apiPath];
+}
+
+- (VSequenceFilter*)sequenceFilterForCategories:(NSArray*)categories
 {
     NSString* categoryString = [categories componentsJoinedByString:@","];
-    NSString* filterPath = [@"/api/sequence/detail_list_by_category/" stringByAppendingString: categoryString ?: @"0"];
-    VSequenceFilter* filter = [[VObjectManager sequenceFilterCache] objectForKey:filterPath];
+    NSString* apiPath = [@"/api/sequence/detail_list_by_category/" stringByAppendingString: categoryString ?: @"0"];
+    return [self sequenceFilterForAPIPath:apiPath];
+}
+
+- (VSequenceFilter*)sequenceFilterForAPIPath:(NSString*)apiPath
+{
+    VSequenceFilter* filter = [[VObjectManager sequenceFilterCache] objectForKey:apiPath];
+   
     if (!filter)
     {
-//        filter = []
+        filter = [NSEntityDescription insertNewObjectForEntityForName:[VSequenceFilter entityName]
+                                               inManagedObjectContext:self.managedObjectStore.persistentStoreManagedObjectContext];
+        filter.filterAPIPath = apiPath;
+        
+        [self.managedObjectStore.persistentStoreManagedObjectContext save:nil];
     }
     
-    return nil;
+    return filter;
+    
 }
 
 @end

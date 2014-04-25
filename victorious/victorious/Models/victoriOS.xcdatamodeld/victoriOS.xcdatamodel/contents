@@ -181,7 +181,7 @@
         <element name="PollResult" positionX="1222" positionY="-45" width="128" height="118"/>
         <element name="Rule" positionX="567" positionY="99" width="128" height="75"/>
         <element name="Sequence" positionX="1015" positionY="-208" width="128" height="343"/>
-        <element name="SequenceFilter" positionX="846" positionY="-387" width="128" height="118"/>
+        <element name="SequenceFilter" positionX="828" positionY="-432" width="128" height="118"/>
         <element name="UnreadConversation" positionX="1206" positionY="-513" width="128" height="73"/>
         <element name="User" positionX="1222" positionY="-412" width="128" height="270"/>
         <element name="VoteResult" positionX="864" positionY="99" width="128" height="88"/>

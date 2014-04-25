@@ -183,6 +183,7 @@
 		BE9181E11909B1CE0071E7AF /* VSequence.m in Sources */ = {isa = PBXBuildFile; fileRef = BE9181E01909B1CE0071E7AF /* VSequence.m */; };
 		BE9181E41909B1CE0071E7AF /* VAnswer.m in Sources */ = {isa = PBXBuildFile; fileRef = BE9181E31909B1CE0071E7AF /* VAnswer.m */; };
 		BE9181EB1909D38A0071E7AF /* VSequenceFilter.m in Sources */ = {isa = PBXBuildFile; fileRef = BE9181EA1909D38A0071E7AF /* VSequenceFilter.m */; };
+		BE9181EE1909E7C40071E7AF /* VSequenceFilter+RestKit.m in Sources */ = {isa = PBXBuildFile; fileRef = BE9181ED1909E7C40071E7AF /* VSequenceFilter+RestKit.m */; };
 		BEA5BF59187E7E8E0014C3EF /* VObjectManager+DirectMessaging.m in Sources */ = {isa = PBXBuildFile; fileRef = BEA5BF58187E7E8E0014C3EF /* VObjectManager+DirectMessaging.m */; };
 		BEA5BF5F187F21770014C3EF /* VTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = BEA5BF5E187F21770014C3EF /* VTableViewCell.m */; };
 		BEA5BF71187FCBF10014C3EF /* VObjectManager+Users.m in Sources */ = {isa = PBXBuildFile; fileRef = BEA5BF70187FCBF10014C3EF /* VObjectManager+Users.m */; };
@@ -549,6 +550,8 @@
 		BE9181E31909B1CE0071E7AF /* VAnswer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VAnswer.m; sourceTree = "<group>"; };
 		BE9181E91909D38A0071E7AF /* VSequenceFilter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VSequenceFilter.h; sourceTree = "<group>"; };
 		BE9181EA1909D38A0071E7AF /* VSequenceFilter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VSequenceFilter.m; sourceTree = "<group>"; };
+		BE9181EC1909E7C40071E7AF /* VSequenceFilter+RestKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "VSequenceFilter+RestKit.h"; sourceTree = "<group>"; };
+		BE9181ED1909E7C40071E7AF /* VSequenceFilter+RestKit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "VSequenceFilter+RestKit.m"; sourceTree = "<group>"; };
 		BEA5BF57187E7E8E0014C3EF /* VObjectManager+DirectMessaging.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "VObjectManager+DirectMessaging.h"; sourceTree = "<group>"; };
 		BEA5BF58187E7E8E0014C3EF /* VObjectManager+DirectMessaging.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "VObjectManager+DirectMessaging.m"; sourceTree = "<group>"; };
 		BEA5BF5D187F21770014C3EF /* VTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VTableViewCell.h; path = UI/VTableViewCell.h; sourceTree = "<group>"; };
@@ -1188,6 +1191,8 @@
 				BE7D2E8D18EB65ED009E488E /* VVoteResult+RestKit.m */,
 				BE5DE3FA18DA730B0047B67E /* VVoteType+RestKit.h */,
 				BE5DE3FB18DA730B0047B67E /* VVoteType+RestKit.m */,
+				BE9181EC1909E7C40071E7AF /* VSequenceFilter+RestKit.h */,
+				BE9181ED1909E7C40071E7AF /* VSequenceFilter+RestKit.m */,
 			);
 			path = Mappings;
 			sourceTree = "<group>";
@@ -1740,6 +1745,7 @@
 				BE171E211868C211004E5202 /* VObjectManager+Sequence.m in Sources */,
 				BED4569718BD58DE00A67160 /* VAsset+Fetcher.m in Sources */,
 				5FC4DA6A18971155006BA107 /* VLoginWithEmailViewController.m in Sources */,
+				BE9181EE1909E7C40071E7AF /* VSequenceFilter+RestKit.m in Sources */,
 				3F9B66711888C4940046F826 /* VOwnerStreamViewController.m in Sources */,
 				3F14C44E18BD2BD0001796B9 /* VCAudioVideoRecorder.m in Sources */,
 				BE171D8C1868BE64004E5202 /* VAppDelegate.m in Sources */,
