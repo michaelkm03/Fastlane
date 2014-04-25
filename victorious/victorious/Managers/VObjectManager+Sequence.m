@@ -464,7 +464,14 @@ NSString* const kPollResultsLoaded = @"kPollResultsLoaded";
     {
         if ([fullResponse[@"error"] integerValue] == 0)
         {
-            NSNumber* sequenceID = fullResponse[@"payload"][@"sequence_id"];
+            NSDictionary* payload = fullResponse[@"payload"];
+            if (![payload isKindOfClass:[NSDictionary class]])
+            {
+                payload = nil;
+            }
+            
+            NSNumber* sequenceID = payload[@"sequence_id"];
+
             [self fetchSequence:sequenceID
                    successBlock:success
                       failBlock:fail];
@@ -521,7 +528,14 @@ NSString* const kPollResultsLoaded = @"kPollResultsLoaded";
     
     VSuccessBlock fullSuccess = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
     {
-        NSNumber* sequenceID = fullResponse[@"payload"][@"sequence_id"];
+        NSDictionary* payload = fullResponse[@"payload"];
+        if (![payload isKindOfClass:[NSDictionary class]])
+        {
+            payload = nil;
+        }
+        
+        NSNumber* sequenceID = payload[@"sequence_id"];
+
         [self fetchSequence:sequenceID
                successBlock:success
                   failBlock:fail];

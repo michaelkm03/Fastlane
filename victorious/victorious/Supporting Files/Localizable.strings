@@ -8,6 +8,7 @@
 
 "OKButton"              =   "OK";
 "CancelButton"          =   "Cancel";
+"DeleteButton"          =   "Delete";
 
 "SetupButton"           =   "Set up";
 "EmailValidation"       =   "Invalid Email Address";
@@ -40,7 +41,7 @@
 "CopyProfileURL"        =   "Copy Profile URL";
 
 "TranscodingMediaTitle" =   "Transcoding Upload";
-"TranscodingMediaBody"  =   "Your upload is taking longer than usual to transcode.  It will appear once we've finished";
+"TranscodingMediaBody"  =   "Your upload is taking longer than usual to transcode.  It will appear once we've finished.";
 "PollUploadTitle"       =   "Poll Upload Failed";
 "PollUploadBody"        =   "Unable to upload Poll to server";
 
@@ -51,6 +52,8 @@
 
 "PublishSucceeded"      =   "Publish Succeeded";
 "PublishSucceededDetail"    =   "Your media has been submitted to the server";
+
+"ReplaceVideo"          =   "Replace Video";
 
 "Now"                   =   "Now";
 "SecondsAgo"            =   "%ds";

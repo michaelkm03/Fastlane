@@ -47,6 +47,11 @@
     VSuccessBlock success = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
     {
         NSDictionary* payload = fullResponse[@"payload"];
+        if (![payload isKindOfClass:[NSDictionary class]])
+        {
+            payload = nil;
+        }
+        
         if (!self.conversation.remoteId)
         {
             self.conversation.remoteId = payload[@"conversation_id"];

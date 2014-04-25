@@ -115,7 +115,9 @@
 
 - (IBAction)pressedRemix:(id)sender
 {
-    UIViewController* remixVC = [VRemixSelectViewController remixViewControllerWithURL:[self.currentAsset.data mp4UrlFromM3U8]];
+    NSInteger seqID = [self.sequence.remoteId integerValue];
+
+    UIViewController* remixVC = [VRemixSelectViewController remixViewControllerWithURL:[self.currentAsset.data mp4UrlFromM3U8] sequenceID:seqID];
     [self presentViewController:remixVC animated:YES completion:
      ^{
          [self.mpController pause];

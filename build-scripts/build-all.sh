@@ -22,12 +22,6 @@ if [ ! -f "$PROVISIONING_PROFILE_PATH" ]; then
     exit 1
 fi
 
-PROVISIONING_PROFILE_NAME=`/usr/libexec/PlistBuddy -c 'Print :Name' /dev/stdin <<< $(security cms -D -i "$PROVISIONING_PROFILE_PATH")`
-if [ "$PROVISIONING_PROFILE_NAME" == "" ]; then
-    echo "Provisioning profile $PROVISIONING_PROFILE_PATH could not be read."
-    exit 1
-fi
-
 if [ "$APP_NAME" != "" -a ! -d "configurations/$APP_NAME" ]; then
     echo "App $APP_NAME not found."
     exit 1
@@ -75,11 +69,6 @@ do
         popd
         exit $BUILDRESULT
     fi
-
-### xcodebuild equivalent of "ipa" command above, for posterity.
-# xcodebuild -workspace victorious.xcworkspace -scheme $SCHEME -destination generic/platform=iOS -archivePath ../products/$CONFIG-int.xcarchive PROVISIONING_PROFILE="$PROVISIONING_PROFILE" archive
-# xcodebuild -exportArchive -exportFormat ipa -archivePath ../products/$CONFIG-int.xcarchive -exportPath ../products/$CONFIG -exportProvisioningProfile "$PROVISIONING_PROFILE_NAME"
-
 done
 
 cleanWorkingDir

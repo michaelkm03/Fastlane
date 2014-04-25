@@ -5,11 +5,11 @@
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
 	<key>CFBundleDisplayName</key>
-	<string>${PRODUCT_NAME}</string>
+	<string>${ProductPrefix}${PRODUCT_NAME}</string>
 	<key>CFBundleExecutable</key>
 	<string>${EXECUTABLE_NAME}</string>
 	<key>CFBundleIdentifier</key>
-	<string>com.getvictorious.${PRODUCT_NAME:rfc1034identifier}</string>
+	<string>com.getvictorious.${ProductPrefix}${PRODUCT_NAME:rfc1034identifier}</string>
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleName</key>
@@ -38,7 +38,7 @@
 		</dict>
 	</array>
 	<key>CFBundleVersion</key>
-	<string>899</string>
+	<string>900</string>
 	<key>FacebookAppID</key>
 	<string>1374328719478033</string>
 	<key>FacebookDisplayName</key>
@@ -83,6 +83,6 @@
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
 	<key>VictoriousAppID</key>
-	<integer>3</integer>
+	<integer>1</integer>
 </dict>
 </plist>

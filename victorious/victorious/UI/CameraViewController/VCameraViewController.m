@@ -433,14 +433,6 @@ const   NSTimeInterval  kAnimationDuration      =   0.4;
     self.progressView.progress = totalRecorded / 15.0;
 }
 
-- (NSURL *)temporaryFileURLWithExtension:(NSString *)extension
-{
-    NSURL *tempDirectory = [NSURL fileURLWithPath:NSTemporaryDirectory() isDirectory:YES];
-    NSString *uniqueIdentifier = [[NSUUID UUID] UUIDString];
-    
-    return [tempDirectory URLByAppendingPathComponent:[NSString stringWithFormat:@"%@.%@", uniqueIdentifier, extension]];
-}
-
 #pragma mark - Navigation
 
 - (void)moveToPreviewViewControllerWithContentURL:(NSURL *)contentURL mediaExtension:(NSString *)extension
@@ -486,10 +478,7 @@ const   NSTimeInterval  kAnimationDuration      =   0.4;
     self.camera.flashMode = VCFlashModeOff;
     
     if (self.camera.sessionPreset == AVCaptureSessionPresetPhoto)
-        if (self.camera.flashMode == VCFlashModeOff)
-            self.navigationItem.rightBarButtonItem = self.flashOnButton;
-        else
-            self.navigationItem.rightBarButtonItem = self.flashOffButton;
+        self.navigationItem.rightBarButtonItem = self.flashOnButton;
     else
         self.navigationItem.rightBarButtonItem = nil;
     
@@ -561,7 +550,9 @@ const   NSTimeInterval  kAnimationDuration      =   0.4;
     {
         UIImage *photo = [photoDict[VCAudioVideoRecorderPhotoImageKey] squareImageScaledToSize:CGSizeMake(640.0, 640.0)];
         NSData *pngData = UIImagePNGRepresentation(photo);
-        NSURL *tempFile = [self temporaryFileURLWithExtension:VConstantMediaExtensionPNG];
+        
+        NSURL *tempDirectory = [NSURL fileURLWithPath:NSTemporaryDirectory() isDirectory:YES];
+        NSURL *tempFile = [[tempDirectory URLByAppendingPathComponent:[[NSUUID UUID] UUIDString]] URLByAppendingPathExtension:VConstantMediaExtensionPNG];
         [pngData writeToURL:tempFile atomically:NO];
         [self moveToPreviewViewControllerWithContentURL:tempFile mediaExtension:VConstantMediaExtensionPNG];
     }

@@ -194,6 +194,7 @@
         stitchViewController.shouldMuteAudio = self.shouldMuteAudio;
         stitchViewController.playBackSpeed = self.playBackSpeed;
         stitchViewController.playbackLooping = self.playbackLooping;
+        stitchViewController.parentID = self.parentID;
     }
 }
 

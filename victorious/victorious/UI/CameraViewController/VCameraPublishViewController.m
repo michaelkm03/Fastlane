@@ -61,6 +61,10 @@
     [self.navigationController.navigationBar setBackgroundImage:[[UIImage alloc] init] forBarMetrics:UIBarMetricsDefault];
     self.navigationController.navigationBar.shadowImage = [[UIImage alloc] init];
     self.navigationController.navigationBar.translucent = YES;
+
+    UIImage*    cancelButtonImage = [[UIImage imageNamed:@"cameraButtonClose"]  imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+    UIBarButtonItem*    cancelButton = [[UIBarButtonItem alloc] initWithImage:cancelButtonImage style:UIBarButtonItemStyleBordered target:self action:@selector(cancel:)];
+    self.navigationItem.rightBarButtonItem = cancelButton;
 }
 
 #pragma mark - Actions
@@ -70,6 +74,14 @@
     if (self.completion)
     {
         self.completion(NO);
+    }
+}
+
+- (IBAction)cancel:(id)sender
+{
+    if (self.completion)
+    {
+        self.completion(YES);
     }
 }
 
@@ -84,7 +96,13 @@
     
     if ([self.textView.text isEmpty])
     {
-        return; // TODO: some kind of error message here?
+        UIAlertView*    alert   = [[UIAlertView alloc] initWithTitle:@"Description Required"
+                                                             message:@"You need to enter a description for your media."
+                                                            delegate:nil
+                                                   cancelButtonTitle:nil
+                                                   otherButtonTitles:NSLocalizedString(@"OKButton", @""), nil];
+        [alert show];
+        return;
     }
     
     VShareOptions shareOptions = self.useFacebook ? kVShareToFacebook : kVShareNone;
@@ -97,11 +115,19 @@
         return; // TODO: some kind of error message here?
     }
 
+    CGFloat     playbackSpeed;
+    if (self.playBackSpeed == kVPlaybackNormalSpeed)
+        playbackSpeed = 1.0;
+    else if (self.playBackSpeed == kVPlaybackDoubleSpeed)
+        playbackSpeed = 2.0;
+    else
+        playbackSpeed = 0.5;
+
     [[VObjectManager sharedManager] uploadMediaWithName:self.textView.text
                                             description:self.textView.text
                                               expiresAt:self.expirationDateString
-                                           parentNodeId:nil
-                                                  speed:self.playBackSpeed
+                                           parentNodeId:@(self.parentID)
+                                                  speed:playbackSpeed
                                                loopType:self.playbackLooping
                                            shareOptions:shareOptions
                                               mediaData:mediaData
