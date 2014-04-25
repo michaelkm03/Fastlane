@@ -81,7 +81,7 @@
                                   },
                                   pollTitle, ^(void)
                                   {
-                                      VCreatePollViewController *createViewController = [VCreatePollViewController newCreatePollViewControllerForType:VImagePickerViewControllerPhotoAndVideo withDelegate:self];
+                                      VCreatePollViewController *createViewController = [VCreatePollViewController newCreatePollViewControllerWithDelegate:self];
                                       [self.navigationController pushViewController:createViewController animated:YES];
                                   }, nil];
     [actionSheet showInView:self.view];
@@ -90,9 +90,9 @@
 - (void)createPollWithQuestion:(NSString *)question
                    answer1Text:(NSString *)answer1Text
                    answer2Text:(NSString *)answer2Text
-                    media1Data:(NSData *)media1Data
+                     media1URL:(NSURL *)media1URL
                media1Extension:(NSString *)media1Extension
-                    media2Data:(NSData *)media2Data
+                     media2URL:(NSURL *)media2URL
                media2Extension:(NSString *)media2Extension
 {
     VSuccessBlock success = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
@@ -122,6 +122,12 @@
             [alert show];
         }
     };
+    
+    NSData *media1Data = [NSData dataWithContentsOfURL:media1URL];
+    NSData *media2Data = [NSData dataWithContentsOfURL:media2URL];
+    
+    [[NSFileManager defaultManager] removeItemAtURL:media1URL error:nil];
+    [[NSFileManager defaultManager] removeItemAtURL:media2URL error:nil];
     
     [[VObjectManager sharedManager] createPollWithName:question
                                            description:@"<none>"
