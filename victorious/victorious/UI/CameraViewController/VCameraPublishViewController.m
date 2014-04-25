@@ -61,6 +61,10 @@
     [self.navigationController.navigationBar setBackgroundImage:[[UIImage alloc] init] forBarMetrics:UIBarMetricsDefault];
     self.navigationController.navigationBar.shadowImage = [[UIImage alloc] init];
     self.navigationController.navigationBar.translucent = YES;
+
+    UIImage*    cancelButtonImage = [[UIImage imageNamed:@"cameraButtonClose"]  imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+    UIBarButtonItem*    cancelButton = [[UIBarButtonItem alloc] initWithImage:cancelButtonImage style:UIBarButtonItemStyleBordered target:self action:@selector(cancel:)];
+    self.navigationItem.rightBarButtonItem = cancelButton;
 }
 
 #pragma mark - Actions
@@ -70,6 +74,14 @@
     if (self.completion)
     {
         self.completion(NO);
+    }
+}
+
+- (IBAction)cancel:(id)sender
+{
+    if (self.completion)
+    {
+        self.completion(YES);
     }
 }
 
@@ -100,7 +112,7 @@
     [[VObjectManager sharedManager] uploadMediaWithName:self.textView.text
                                             description:self.textView.text
                                               expiresAt:self.expirationDateString
-                                           parentNodeId:nil
+                                           parentNodeId:@(self.parentID)
                                                   speed:self.playBackSpeed
                                                loopType:self.playbackLooping
                                            shareOptions:shareOptions

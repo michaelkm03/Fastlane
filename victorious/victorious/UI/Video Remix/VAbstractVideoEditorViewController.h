@@ -29,6 +29,8 @@
 @property (nonatomic)           VPlaybackSpeed                  playBackSpeed;
 @property (nonatomic)           VLoopType                       playbackLooping;
 
+@property (nonatomic)           NSInteger                       parentID;
+
 @property (nonatomic)           BOOL                            animatingPlayButton;
 
 

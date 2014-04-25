@@ -70,6 +70,7 @@
     publishViewController.mediaExtension = VConstantMediaExtensionMOV;
     publishViewController.playBackSpeed = self.playBackSpeed;
     publishViewController.playbackLooping = self.playbackLooping;
+    publishViewController.parentID = self.parentID;
 
     AVAsset *asset = [AVAsset assetWithURL:self.targetURL];
     AVAssetImageGenerator *assetGenerator = [AVAssetImageGenerator assetImageGeneratorWithAsset:asset];
