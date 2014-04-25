@@ -134,7 +134,14 @@
     
     VSuccessBlock fullSuccess = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
     {
-        [self fetchCommentByID:[fullResponse[@"payload"][@"id"] integerValue]
+        
+        NSDictionary* payload = fullResponse[@"payload"];
+        if (![payload isKindOfClass:[NSDictionary class]])
+        {
+            payload = nil;
+        }
+        
+        [self fetchCommentByID:[payload[@"id"] integerValue]
                    successBlock:success
                       failBlock:fail];
     };
