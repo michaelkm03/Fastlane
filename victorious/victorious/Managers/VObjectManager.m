@@ -253,8 +253,14 @@
     if ([responseObject[@"error"] integerValue] == 0)
         return nil;
     
+    NSString* errorMessage = responseObject[@"message"];
+    if ([errorMessage isKindOfClass:[NSArray class]])
+    {
+        errorMessage = [(NSArray*)errorMessage componentsJoinedByString:@", "];
+    }
+    
     return [NSError errorWithDomain:kVictoriousDomain code:[responseObject[@"error"] integerValue]
-                           userInfo:@{NSLocalizedDescriptionKey: [responseObject[@"message"] componentsJoinedByString:@","]}];
+                           userInfo:@{NSLocalizedDescriptionKey: errorMessage}];
 }
 
 -(VPaginationStatus *)statusForKey:(NSString*)key

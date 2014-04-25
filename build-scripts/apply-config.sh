@@ -7,12 +7,12 @@
 FOLDER=$1
 
 if [ "$FOLDER" == "" ]; then
-    echo "Usage: $0 [folder]"
+    echo "Usage: $0 <folder>"
     exit 1
 fi
 
 if [ ! -d "configurations/$FOLDER" ]; then
-    echo "Folder $FOLDER not found."
+    echo "Folder \"$FOLDER\" not found."
     exit 1
 fi
 
@@ -20,14 +20,14 @@ fi
 ### Copy Files
 
 rm -rf victorious/AppSpecific/AppImages.xcassets
-cp -R configurations/$FOLDER/AppImages.xcassets victorious/AppSpecific/AppImages.xcassets
-cp    configurations/$FOLDER/defaultTheme.plist victorious/AppSpecific/defaultTheme.plist
+cp -R "configurations/$FOLDER/AppImages.xcassets" victorious/AppSpecific/AppImages.xcassets
+cp    "configurations/$FOLDER/defaultTheme.plist" victorious/AppSpecific/defaultTheme.plist
 
 
 ### Modify Info.plist
 
 copyPListValue(){
-    local VAL=`/usr/libexec/PlistBuddy -c "Print $1" configurations/$FOLDER/Info.plist`
+    local VAL=`/usr/libexec/PlistBuddy -c "Print $1" "configurations/$FOLDER/Info.plist"`
     if [ "$VAL" != "" ]; then
         /usr/libexec/PlistBuddy -c "Set $1 $VAL" victorious/AppSpecific/Info.plist
     fi

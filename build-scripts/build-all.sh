@@ -45,18 +45,19 @@ cleanWorkingDir(){
 }
 
 CONFIGS=`find configurations -type d -depth 1 -exec basename {} \;`
-pushd victorious
+pushd victorious > /dev/null
 
+IFS=$'\n'
 for CONFIG in $CONFIGS
 do
     if [ "$APP_NAME" != "" -a "$CONFIG" != "$APP_NAME" ]; then
         continue
     fi
 
-    pushd ..
+    pushd .. > /dev/null
     cleanWorkingDir
-    ./build-scripts/apply-config.sh $CONFIG
-    popd
+    ./build-scripts/apply-config.sh "$CONFIG"
+    popd > /dev/null
 
     ipa build -w victorious.xcworkspace -s "$SCHEME" -c "$CONFIGURATION" --clean --archive -d "../products" -m "$PROVISIONING_PROFILE_PATH" --verbose
     BUILDRESULT=$?
@@ -66,10 +67,10 @@ do
         mv ../products/victorious.app.dSYM.zip "../products/$CONFIG.app.dSYM.zip"
     else
         cleanWorkingDir
-        popd
+        popd > /dev/null
         exit $BUILDRESULT
     fi
 done
 
 cleanWorkingDir
-popd
+popd > /dev/null
