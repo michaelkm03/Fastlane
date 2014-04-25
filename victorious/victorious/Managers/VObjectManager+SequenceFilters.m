@@ -37,33 +37,24 @@
     
     VSuccessBlock fullSuccess = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
     {
-        [[VUserManager sharedInstance] loginViaSavedCredentialsOnCompletion:^(VUser *user, BOOL created)
-         {
-             if (success)
-             {
-                 success(operation, fullResponse, resultObjects);
-             }
-         }
-                                                                    onError:^(NSError *error)
-         {
-             if (success)
-             {
-                 success(operation, fullResponse, resultObjects);
-             }
-         }];
+        if (success)
+        {
+            success(operation, fullResponse, resultObjects);
+        }
         
-        NSArray* ownerCategories = [[VOwnerStreamViewController sharedInstance] categoriesForOption:0];
-        VSequenceFilter* ownerFilter = [self sequenceFilterForCategories:ownerCategories];
-        [self refreshSequenceFilter:ownerFilter
-                       successBlock:nil
-                          failBlock:nil];
-        
-        NSArray* communityCategories = [[VCommunityStreamViewController sharedInstance] categoriesForOption:0];
-        VSequenceFilter* communityFilter = [self sequenceFilterForCategories:communityCategories];
-        [self refreshSequenceFilter:communityFilter
-                       successBlock:nil
-                          failBlock:nil];
-        
+        [[VUserManager sharedInstance] loginViaSavedCredentialsOnCompletion:nil onError:nil];
+//        
+//        NSArray* ownerCategories = [[VOwnerStreamViewController sharedInstance] categoriesForOption:0];
+//        VSequenceFilter* ownerFilter = [self sequenceFilterForCategories:ownerCategories];
+//        [self refreshSequenceFilter:ownerFilter
+//                       successBlock:nil
+//                          failBlock:nil];
+//        
+//        NSArray* communityCategories = [[VCommunityStreamViewController sharedInstance] categoriesForOption:0];
+//        VSequenceFilter* communityFilter = [self sequenceFilterForCategories:communityCategories];
+//        [self refreshSequenceFilter:communityFilter
+//                       successBlock:nil
+//                          failBlock:nil];
     };
     
     return [self refreshSequenceFilter:defaultFilter
@@ -75,7 +66,7 @@
                                               successBlock:(VSuccessBlock)success
                                                  failBlock:(VFailBlock)fail
 {
-    filter.currentPageNumber = 0;
+    filter.currentPageNumber = @(0);
     return [self loadNextPageOfSequenceFilter:filter
                                  successBlock:success
                                     failBlock:fail];
@@ -93,13 +84,20 @@
     @synchronized(filter.updating)
     {
         if (filter.updating.boolValue)
+        {
+            if (fail)
+                fail(nil, nil);
             return nil;
+        }
         else
             filter.updating = [NSNumber numberWithBool:YES];
     }
     
     VSuccessBlock fullSuccessBlock = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
     {
+        if (success)
+            success(operation, fullResponse, resultObjects);
+        
         //If this is the first page, break the relationship to all the old objects.
         if ([filter.currentPageNumber isEqualToNumber:@(0)])
         {
@@ -107,10 +105,21 @@
         }
         
         //TODO: grab the objects by ID from the filters context and then add them.  Then save.  Otherwise this will break
-        [filter addSequences:[NSSet setWithArray:resultObjects]];
+        for (NSManagedObject* object in resultObjects)
+        {
+            [filter addSequencesObject:(VSequence*)[filter.managedObjectContext objectWithID:object.objectID]];
+        }
+        
+        [filter.managedObjectContext performBlockAndWait:^
+         {
+             [filter.managedObjectContext save:nil];
+         }];
         
         filter.maxPageNumber = @(((NSString*)fullResponse[@"total_pages"]).integerValue);
         filter.currentPageNumber = @(((NSString*)fullResponse[@"page_number"]).integerValue);
+        
+        filter.updating = [NSNumber numberWithBool:NO];
+        [[VFilterCache sharedCache] setObject:filter forKey:filter.filterAPIPath];
         
         //If we don't have the user then we need to fetch em.
         NSMutableArray* nonExistantUsers = [[NSMutableArray alloc] init];
@@ -124,16 +133,8 @@
         
         if ([nonExistantUsers count])
             [[VObjectManager sharedManager] fetchUsers:nonExistantUsers
-                                      withSuccessBlock:success
-                                             failBlock:fail];
-        
-        else if (success)
-            success(operation, fullResponse, resultObjects);
-        
-        
-        [filter.managedObjectContext save:nil];
-        filter.updating = [NSNumber numberWithBool:NO];
-        [[VFilterCache sharedCache] setObject:filter forKey:filter.filterAPIPath];
+                                      withSuccessBlock:nil
+                                             failBlock:nil];
     };
     
     VFailBlock fullFail = ^(NSOperation* operation, NSError* error)

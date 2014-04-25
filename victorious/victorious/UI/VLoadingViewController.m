@@ -133,7 +133,6 @@ static const NSTimeInterval kTimeBetweenRetries = 10.0;
 {
     if (!_initialSequenceLoading && !_initialSequenceLoaded)
     {
-//        [[VObjectManager sharedManager] initialSequenceLoadWithSuccessBlock:^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
         [[VObjectManager sharedManager] loadInitialSequenceFilterWithSuccessBlock:^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
         {
             _initialSequenceLoading = NO;
