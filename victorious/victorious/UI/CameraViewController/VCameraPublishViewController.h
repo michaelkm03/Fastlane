@@ -24,6 +24,8 @@
 @property (nonatomic)   VPlaybackSpeed  playBackSpeed;
 @property (nonatomic)   VLoopType       playbackLooping;
 
+@property (nonatomic)   NSInteger       parentID;
+
 /**
  This block will be called when the user has finished publishing
  

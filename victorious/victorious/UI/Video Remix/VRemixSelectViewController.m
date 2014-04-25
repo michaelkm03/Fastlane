@@ -27,11 +27,12 @@
 
 @implementation VRemixSelectViewController
 
-+ (UIViewController *)remixViewControllerWithURL:(NSURL *)url
++ (UIViewController *)remixViewControllerWithURL:(NSURL *)url sequenceID:(NSInteger)sequenceID
 {
     UINavigationController*     remixViewController =   [[UIStoryboard storyboardWithName:@"VideoRemix" bundle:nil] instantiateInitialViewController];
     VRemixSelectViewController* rootViewController  =   (VRemixSelectViewController *)remixViewController.topViewController;
     rootViewController.sourceURL = url;
+    rootViewController.parentID = sequenceID;
     
     return remixViewController;
 }
@@ -155,6 +156,7 @@
     {
         VRemixTrimViewController*     trimViewController = (VRemixTrimViewController *)segue.destinationViewController;
         trimViewController.sourceURL = self.targetURL;
+        trimViewController.parentID = self.parentID;
     }
 }
 
