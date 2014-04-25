@@ -98,7 +98,7 @@
     VSequenceFilter* filter = [[VObjectManager sequenceFilterCache] objectForKey:filterPath];
     if (!filter)
     {
-        
+//        filter = []
     }
     
     return nil;

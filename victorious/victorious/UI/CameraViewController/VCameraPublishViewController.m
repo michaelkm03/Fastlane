@@ -106,7 +106,6 @@
                                            shareOptions:shareOptions
                                               mediaData:mediaData
                                               extension:self.mediaExtension
-                                               mediaUrl:nil
                                            successBlock:^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
     {
         VLog(@"Succeeded with objects: %@", resultObjects);
