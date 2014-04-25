@@ -96,7 +96,13 @@
     
     if ([self.textView.text isEmpty])
     {
-        return; // TODO: some kind of error message here?
+        UIAlertView*    alert   = [[UIAlertView alloc] initWithTitle:@"Description Required"
+                                                             message:@"You need to enter a description for your media."
+                                                            delegate:nil
+                                                   cancelButtonTitle:nil
+                                                   otherButtonTitles:NSLocalizedString(@"OKButton", @""), nil];
+        [alert show];
+        return;
     }
     
     VShareOptions shareOptions = self.useFacebook ? kVShareToFacebook : kVShareNone;
@@ -109,16 +115,23 @@
         return; // TODO: some kind of error message here?
     }
 
+    CGFloat     playbackSpeed;
+    if (self.playBackSpeed == kVPlaybackNormalSpeed)
+        playbackSpeed = 1.0;
+    else if (self.playBackSpeed == kVPlaybackDoubleSpeed)
+        playbackSpeed = 2.0;
+    else
+        playbackSpeed = 0.5;
+
     [[VObjectManager sharedManager] uploadMediaWithName:self.textView.text
                                             description:self.textView.text
                                               expiresAt:self.expirationDateString
                                            parentNodeId:@(self.parentID)
-                                                  speed:self.playBackSpeed
+                                                  speed:playbackSpeed
                                                loopType:self.playbackLooping
                                            shareOptions:shareOptions
                                               mediaData:mediaData
                                               extension:self.mediaExtension
-                                               mediaUrl:nil
                                            successBlock:^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
     {
         VLog(@"Succeeded with objects: %@", resultObjects);
