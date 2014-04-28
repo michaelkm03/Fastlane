@@ -88,7 +88,7 @@ static NSString* kOrIconImage = @"orIconImage";
      }
                                           failure:nil];
     
-    request = [NSMutableURLRequest requestWithURL:self.firstAssetUrl];
+    request = [NSMutableURLRequest requestWithURL:self.secondAssetUrl];
     [request addValue:@"image/*" forHTTPHeaderField:@"Accept"];
     [self.previewImageTwo setImageWithURLRequest:request
                                  placeholderImage:placeholderImage
