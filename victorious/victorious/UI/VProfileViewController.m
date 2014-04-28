@@ -33,11 +33,16 @@
 
 @implementation VProfileViewController
 
++ (VProfileViewController *)profileViewController
+{
+    UIViewController       *currentViewController = [[UIApplication sharedApplication] delegate].window.rootViewController;
+    VProfileViewController *profileViewController = (VProfileViewController*)[currentViewController.storyboard instantiateViewControllerWithIdentifier:@"profile"];
+    return profileViewController;
+}
+
 + (instancetype)profileWithSelf
 {
-    UIViewController*   currentViewController = [[UIApplication sharedApplication] delegate].window.rootViewController;
-    VProfileViewController* profileViewController = (VProfileViewController*)[currentViewController.storyboard instantiateViewControllerWithIdentifier: @"profile"];
-    
+    VProfileViewController *profileViewController = [self profileViewController];
     profileViewController.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"Menu"]
                                                                                               style:UIBarButtonItemStylePlain
                                                                                              target:profileViewController
@@ -48,9 +53,7 @@
 
 + (instancetype)profileWithUserID:(VProfileUserID)aUserID
 {
-    UIViewController*   currentViewController = [[UIApplication sharedApplication] delegate].window.rootViewController;
-    VProfileViewController* profileViewController = (VProfileViewController*)[currentViewController.storyboard instantiateViewControllerWithIdentifier: @"profile"];
-
+    VProfileViewController *profileViewController = [self profileViewController];
     profileViewController.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone
                                                                                                            target:profileViewController
                                                                                                            action:@selector(closeButtonAction:)];
