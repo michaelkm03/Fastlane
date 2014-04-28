@@ -268,17 +268,6 @@
     return cell;
 }
 
-- (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    UIView*     animatableContent = [(VTableViewCell *)cell mainView];
-    
-    animatableContent.layer.opacity = 0.1;
-    
-    [UIView animateWithDuration:0.5 animations:^{
-        animatableContent.layer.opacity = 1.0;
-    }];
-}
-
 - (void)registerCells
 {
     [self.tableView registerNib:[UINib nibWithNibName:kStreamViewCellIdentifier bundle:nil]
@@ -297,7 +286,14 @@
 #pragma mark - Refresh
 - (void)refreshAction
 {
-    RKManagedObjectRequestOperation* operation = [[VObjectManager sharedManager] refreshSequenceFilter:[self currentFilter]
+    VSequenceFilter* filter = [self currentFilter];
+    @synchronized(filter.updating)
+    {
+        if (filter.updating.boolValue)
+            return;
+    }
+    
+    RKManagedObjectRequestOperation* operation = [[VObjectManager sharedManager] refreshSequenceFilter:filter
                                                           successBlock:^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
      {
          [self.refreshControl endRefreshing];

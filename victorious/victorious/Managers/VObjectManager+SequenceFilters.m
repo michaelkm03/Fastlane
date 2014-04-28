@@ -106,6 +106,7 @@
             [filterInContext removeSequences:filterInContext.sequences];
         }
         
+        NSUInteger oldSequenceCount = [filterInContext.sequences count];
         //TODO: grab the objects by ID from the filters context and then add them.  Then save.  Otherwise this will break
         for (VSequence* sequence in resultObjects)
         {
@@ -121,7 +122,9 @@
         NSError* saveError;
         [currentContext save:&saveError];
         if(saveError)
+        {
             VLog(@"Save error: %@", saveError);
+        }
         
         //If we don't have the user then we need to fetch em.
         NSMutableArray* nonExistantUsers = [[NSMutableArray alloc] init];
@@ -134,12 +137,20 @@
         }
         
         if ([nonExistantUsers count])
+        {
             [[VObjectManager sharedManager] fetchUsers:nonExistantUsers
                                       withSuccessBlock:nil
                                              failBlock:nil];
+        }
         
-        if (success)
+        if (oldSequenceCount == [filterInContext.sequences count])
+        {
+            fail(nil, nil);
+        }
+        else if (success)
+        {
             success(operation, fullResponse, resultObjects);
+        }
     };
     
     VFailBlock fullFail = ^(NSOperation* operation, NSError* error)
@@ -158,8 +169,6 @@
            failBlock:fullFail];
 }
 
-//TODO: use this in the stream view to check for
-//[NSPredicate predicateWithFormat:@"ANY filters.filterPath =[cd] %@", filter.filterPath];
 - (VSequenceFilter*)sequenceFilterForUser:(VUser*)user
 {
     NSString* apiPath = [@"/api/sequence/detail_list_by_category/" stringByAppendingString: user.remoteId.stringValue ?: @"0"];

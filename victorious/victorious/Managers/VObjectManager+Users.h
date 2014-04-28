@@ -18,7 +18,6 @@
                               withSuccessBlock:(VSuccessBlock)success
                                      failBlock:(VFailBlock)fail;
 
-
 - (RKManagedObjectRequestOperation *)attachAccountToFacebookWithToken:(NSString*)accessToken
                                                      withSuccessBlock:(VSuccessBlock)success
                                                             failBlock:(VFailBlock)fail;
