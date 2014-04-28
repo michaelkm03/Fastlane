@@ -2,7 +2,7 @@
 //  VUser.m
 //  victorious
 //
-//  Created by Will Long on 4/7/14.
+//  Created by Josh Hinman on 4/25/14.
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
@@ -13,6 +13,7 @@
 #import "VPollResult.h"
 #import "VSequence.h"
 #import "VUnreadConversation.h"
+#import "VUser.h"
 
 
 @implementation VUser
@@ -28,6 +29,8 @@
 @dynamic tokenUpdatedAt;
 @dynamic comments;
 @dynamic conversations;
+@dynamic followers;
+@dynamic following;
 @dynamic messages;
 @dynamic pollResults;
 @dynamic postedSequences;

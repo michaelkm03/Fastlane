@@ -180,7 +180,7 @@
                                         <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <button opaque="NO" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4kl-cn-fjn">
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4kl-cn-fjn">
                                         <rect key="frame" x="59" y="481" width="202" height="43"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <constraints>
@@ -191,8 +191,11 @@
                                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                         </state>
                                         <state key="selected" image="followingButton"/>
+                                        <connections>
+                                            <action selector="followButtonAction:" destination="Q6B-uo-AQk" eventType="touchUpInside" id="Fsw-Zb-xDq"/>
+                                        </connections>
                                     </button>
-                                    <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" animating="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="rgh-QW-o1b">
+                                    <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="rgh-QW-o1b">
                                         <rect key="frame" x="150" y="493" width="20" height="20"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                     </activityIndicatorView>
@@ -236,6 +239,8 @@
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
                     <connections>
                         <outlet property="backgroundImageView" destination="4hu-wW-MT9" id="Urg-Jj-i5c"/>
+                        <outlet property="followButton" destination="4kl-cn-fjn" id="HQw-ph-Ryn"/>
+                        <outlet property="followButtonActivityIndicator" destination="rgh-QW-o1b" id="lsK-FZ-QdS"/>
                         <outlet property="locationLabel" destination="whR-kI-8UO" id="O0m-Mf-S6R"/>
                         <outlet property="nameLabel" destination="Qwz-4n-OVQ" id="qOp-EG-5aX"/>
                         <outlet property="profileCircleImageView" destination="ydZ-iq-EtL" id="omH-QN-VoN"/>

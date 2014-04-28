@@ -28,6 +28,8 @@
 @property (nonatomic, weak) IBOutlet UILabel* nameLabel;
 @property (nonatomic, weak) IBOutlet UILabel* taglineLabel;
 @property (nonatomic, weak) IBOutlet UILabel* locationLabel;
+@property (nonatomic, weak) IBOutlet UIButton* followButton;
+@property (nonatomic, weak) IBOutlet UIActivityIndicatorView* followButtonActivityIndicator;
 
 @end
 
@@ -72,6 +74,10 @@
 {
     [super viewDidLoad];
 
+    UIImage *followSelectedImage = [self.followButton imageForState:UIControlStateSelected];
+    [self.followButton setImage:followSelectedImage forState:UIControlStateSelected | UIControlStateHighlighted];
+    [self.followButton setImage:followSelectedImage forState:UIControlStateSelected | UIControlStateDisabled];
+    
     if ((-1 == self.userID) || (self.userID == [VObjectManager sharedManager].mainUser.remoteId.integerValue))
     {
         self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemEdit
@@ -144,6 +150,16 @@
     self.locationLabel.textColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVMainTextColor];
 
     self.navigationItem.title = self.profile.name;
+    
+    VUser *mainUser = [[VObjectManager sharedManager] mainUser];
+    if (self.userID == kProfileUserIDSelf)
+    {
+        self.followButton.hidden = YES;
+    }
+    else if ([[[mainUser following] filteredSetUsingPredicate:[NSPredicate predicateWithFormat:@"remoteId=%d", (int)self.userID]] count])
+    {
+        self.followButton.selected = YES;
+    }
 }
 
 #pragma mark - Actions
@@ -172,6 +188,61 @@
 - (IBAction)closeButtonAction:(id)sender
 {
     [self.navigationController popViewControllerAnimated:YES];
+}
+
+- (IBAction)followButtonAction:(id)sender
+{
+    if (![VObjectManager sharedManager].mainUser)
+    {
+        [self presentViewController:[VLoginViewController loginViewController] animated:YES completion:NULL];
+        return;
+    }
+
+    self.followButton.enabled = NO;
+    [self.followButtonActivityIndicator startAnimating];
+
+    if (self.followButton.selected)
+    {
+        [[VObjectManager sharedManager] unfollowUser:self.profile
+                                        successBlock:^(NSOperation *operation, id fullResponse, NSArray *objects)
+        {
+            self.followButton.enabled = YES;
+            self.followButton.selected = NO;
+            [self.followButtonActivityIndicator stopAnimating];
+        }
+                                           failBlock:^(NSOperation *operation, NSError *error)
+        {
+            self.followButton.enabled = YES;
+            [self.followButtonActivityIndicator stopAnimating];
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil
+                                                            message:NSLocalizedString(@"UnfollowError", @"")
+                                                           delegate:nil
+                                                  cancelButtonTitle:NSLocalizedString(@"OKButton", @"")
+                                                  otherButtonTitles:nil];
+            [alert show];
+        }];
+    }
+    else
+    {
+        [[VObjectManager sharedManager] followUser:self.profile
+                                      successBlock:^(NSOperation *operation, id fullResponse, NSArray *objects)
+        {
+            self.followButton.enabled = YES;
+            self.followButton.selected = YES;
+            [self.followButtonActivityIndicator stopAnimating];
+        }
+                                         failBlock:^(NSOperation *operation, NSError *error)
+        {
+            self.followButton.enabled = YES;
+            [self.followButtonActivityIndicator stopAnimating];
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil
+                                                            message:NSLocalizedString(@"FollowError", @"")
+                                                           delegate:nil
+                                                  cancelButtonTitle:NSLocalizedString(@"OKButton", @"")
+                                                  otherButtonTitles:nil];
+            [alert show];
+        }];
+    }
 }
 
 #pragma mark - Navigation
