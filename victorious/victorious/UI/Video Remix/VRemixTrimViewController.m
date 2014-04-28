@@ -15,7 +15,7 @@
 #import "VThemeManager.h"
 #import "MBProgressHUD.h"
 
-@interface VRemixTrimViewController ()  <VCVideoPlayerDelegate, VRemixVideoRangeSliderDelegate>
+@interface VRemixTrimViewController ()  <VCVideoPlayerDelegate, VRemixVideoRangeSliderDelegate, UIGestureRecognizerDelegate>
 
 @property (nonatomic, weak)     IBOutlet    UISlider*           scrubber;
 @property (nonatomic, weak)     IBOutlet    UILabel*            currentTimeLabel;
@@ -79,12 +79,24 @@
                      }];
 }
 
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    
+    //  Disable iOS 7 Back Gesture
+    self.navigationController.interactivePopGestureRecognizer.enabled = NO;
+    self.navigationController.interactivePopGestureRecognizer.delegate = self;
+}
+
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
     
-    [self.previewView.player removeTimeObserver:self.timeObserver];
+    //  Enable iOS 7 Back Gesture
+    self.navigationController.interactivePopGestureRecognizer.enabled = YES;
+    self.navigationController.interactivePopGestureRecognizer.delegate = nil;
     
+    [self.previewView.player removeTimeObserver:self.timeObserver];
     [self.trimSlider cancel];
 }
 
@@ -97,6 +109,14 @@
         return thePlayerItem.duration;
     else
         return kCMTimeInvalid;
+}
+
+#pragma mark - UIGestureRecognizerDelegate
+
+- (BOOL)gestureRecognizerShouldBegin:(UIGestureRecognizer *)gestureRecognizer
+{
+    //  Disable iOS 7 Back Gesture
+    return NO;
 }
 
 #pragma mark - SCVideoPlayerDelegate
