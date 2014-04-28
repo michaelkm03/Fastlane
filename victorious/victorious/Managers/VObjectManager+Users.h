@@ -39,8 +39,17 @@
 - (RKManagedObjectRequestOperation *)listOfRecommendedFriendsWithSuccessBlock:(VSuccessBlock)success
                                                                     failBlock:(VFailBlock)fail;
 
-- (RKManagedObjectRequestOperation *)listOfFriendsWithSuccessBlock:(VSuccessBlock)success
-                                                         failBlock:(VFailBlock)fail;
+- (RKManagedObjectRequestOperation *)requestFollowListForUser:(VUser *)user
+                                                 successBlock:(VSuccessBlock)success
+                                                    failBlock:(VFailBlock)fail;
+
+- (RKManagedObjectRequestOperation *)followUser:(VUser *)user
+                                   successBlock:(VSuccessBlock)success
+                                      failBlock:(VFailBlock)fail;
+
+- (RKManagedObjectRequestOperation *)unfollowUser:(VUser *)user
+                                     successBlock:(VSuccessBlock)success
+                                        failBlock:(VFailBlock)fail;
 
 - (RKManagedObjectRequestOperation *)inviteFriends:(NSArray*)friendIDs
                                   withSuccessBlock:(VSuccessBlock)success

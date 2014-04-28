@@ -13,6 +13,7 @@
 #import "VComment+RestKit.h"
 #import "VMessage+RestKit.h"
 #import "VSequence+RestKit.h"
+#import "VUser.h"
 #import "VUser+RestKit.h"
 
 #import "VConstants.h"
@@ -147,10 +148,84 @@
     return nil;
 }
 
-- (RKManagedObjectRequestOperation *)listOfFriendsWithSuccessBlock:(VSuccessBlock)success
-                                                         failBlock:(VFailBlock)fail
+- (RKManagedObjectRequestOperation *)requestFollowListForUser:(VUser *)user
+                                                 successBlock:(VSuccessBlock)success
+                                                    failBlock:(VFailBlock)fail
 {
-    return nil;
+    NSString *path = [NSString stringWithFormat:@"/api/follow/subscribed_to_list/%d", [user.remoteId intValue]];
+    return [self GET:path
+              object:nil
+          parameters:nil
+        successBlock:^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
+    {
+        for (NSManagedObject *resultUser in resultObjects)
+        {
+            VUser *followUser = (VUser *)[user.managedObjectContext objectWithID:resultUser.objectID];
+            [user addFollowingObject:followUser];
+        }
+        
+        [user.managedObjectContext save:nil];
+        
+        if (success)
+        {
+            success(operation, fullResponse, resultObjects);
+        }
+    }
+           failBlock:fail];
+}
+
+- (RKManagedObjectRequestOperation *)followUser:(VUser *)user
+                                   successBlock:(VSuccessBlock)success
+                                      failBlock:(VFailBlock)fail
+{
+    NSDictionary *parameters = @{ @"target_user_id": user.remoteId };
+    
+    VSuccessBlock fullSuccess = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
+    {
+        if (![[fullResponse objectForKey:@"error"] integerValue])
+        {
+            [self.mainUser addFollowingObject:user];
+            [self.mainUser.managedObjectContext save:nil];
+        }
+        if (success)
+        {
+            success(operation, fullResponse, resultObjects);
+        }
+    };
+    return [self POST:@"/api/follow/add"
+               object:nil
+           parameters:parameters
+         successBlock:fullSuccess
+            failBlock:fail];
+}
+
+- (RKManagedObjectRequestOperation *)unfollowUser:(VUser *)user
+                                     successBlock:(VSuccessBlock)success
+                                        failBlock:(VFailBlock)fail
+{
+    NSDictionary *parameters = @{ @"target_user_id": user.remoteId };
+    
+    VSuccessBlock fullSuccess = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
+    {
+        if (![[fullResponse objectForKey:@"error"] integerValue])
+        {
+            VUser *followedUser = [[self.mainUser.following filteredSetUsingPredicate:[NSPredicate predicateWithFormat:@"remoteId=%d", [user.remoteId intValue]]] anyObject];
+            if (followedUser)
+            {
+                [self.mainUser removeFollowingObject:followedUser];
+                [self.mainUser.managedObjectContext save:nil];
+            }
+        }
+        if (success)
+        {
+            success(operation, fullResponse, resultObjects);
+        }
+    };
+    return [self POST:@"/api/follow/remove"
+               object:nil
+           parameters:parameters
+         successBlock:fullSuccess
+            failBlock:fail];
 }
 
 - (RKManagedObjectRequestOperation *)inviteFriends:(NSArray*)friendIDs
