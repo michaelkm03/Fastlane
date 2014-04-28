@@ -1601,7 +1601,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "#!/bin/bash\n\nBUILD_NUMBER=$(git rev-list HEAD --count)\nTARGET_FILE=\"$TARGET_BUILD_DIR/$INFOPLIST_PATH\"\n/usr/libexec/PlistBuddy -c \"Set :CFBundleVersion $BUILD_NUMBER\" \"$TARGET_FILE\"\n\n# NOTE: to get back to a git commit with a given build number, use a command similar to:\n# CURRENT=`git rev-list HEAD --count`; DIFF=`expr $CURRENT - 1467`; git rev-list HEAD --skip=$DIFF | head -1";
+			shellScript = "#!/bin/bash\n\nBUILD_NUMBER=$(git rev-list HEAD --count)\nTARGET_FILE=\"$TARGET_BUILD_DIR/$INFOPLIST_PATH\"\n/usr/libexec/PlistBuddy -c \"Set :CFBundleVersion $BUILD_NUMBER\" \"$TARGET_FILE\"\n";
 		};
 		4E5869E4F076435495A618CD /* Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
