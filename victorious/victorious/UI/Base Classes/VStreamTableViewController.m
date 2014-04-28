@@ -297,9 +297,7 @@
 #pragma mark - Refresh
 - (void)refreshAction
 {
-    [self.refreshControl beginRefreshing];
-    
-    [[VObjectManager sharedManager] refreshSequenceFilter:[self currentFilter]
+    RKManagedObjectRequestOperation* operation = [[VObjectManager sharedManager] refreshSequenceFilter:[self currentFilter]
                                                           successBlock:^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
      {
          [self.refreshControl endRefreshing];
@@ -308,10 +306,22 @@
      {
          [self.refreshControl endRefreshing];
      }];
+    
+    if (operation)
+    {
+        [self.refreshControl beginRefreshing];
+    }
 }
 
 - (void)loadNextPageAction
 {
+    VSequenceFilter* filter = [self currentFilter];
+    @synchronized(filter.updating)
+    {
+        if (filter.updating.boolValue)
+            return;
+    }
+    
     RKManagedObjectRequestOperation* operation = [[VObjectManager sharedManager] loadNextPageOfSequenceFilter:[self currentFilter]
                                              successBlock:^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
      {
@@ -335,14 +345,6 @@
 #pragma mark - Predicates
 - (NSPredicate*)scopeTypePredicateForOption:(NSUInteger)searchOption
 {
-//    NSMutableArray* allPredicates = [[NSMutableArray alloc] init];
-//    for (NSString* categoryName in [self categoriesForOption:searchOption])
-//    {
-//        [allPredicates addObject:[self categoryPredicateForString:categoryName]];
-//    }
-//    
-//    return [NSCompoundPredicate orPredicateWithSubpredicates:allPredicates];
-    
     VSequenceFilter* filter = [self currentFilter];
     return [NSPredicate predicateWithFormat:@"ANY filters.filterAPIPath =[cd] %@", filter.filterAPIPath];
 }

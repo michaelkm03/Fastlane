@@ -40,10 +40,6 @@ static NSUInteger const kStreamDoublePollCellHeight = 214;
 static NSUInteger const kStreamPollCellHeight = 320;
 static NSUInteger const kStreamYoutubeCellHeight = 180;
 static NSUInteger const kStreamViewCellHeight = 320;
-//TODO: update these 2 with real numbers
-static NSUInteger const kStreamCommentHeaderHeight = 80;
-static NSUInteger const kStreamCommentCellHeight = 110;
-
 
 static NSString*   const   kVictoriousAppIDKey      = @"VictoriousAppID";
 
