@@ -255,6 +255,7 @@ const   NSTimeInterval  kAnimationDuration      =   0.4;
                          animations:^{
                              self.capturePhotoButton.alpha = 0.0;
                              self.recordButton.alpha = 1.0;
+                             self.toolTipImageView.alpha = 0.0;
                           }
                          completion:^(BOOL finished)
          {
@@ -270,6 +271,7 @@ const   NSTimeInterval  kAnimationDuration      =   0.4;
                          animations:^{
                              self.capturePhotoButton.alpha = 1.0;
                              self.recordButton.alpha = 0.0;
+                             self.toolTipImageView.alpha = 0.0;
                          }
                          completion:^(BOOL finished)
          {
@@ -456,6 +458,7 @@ const   NSTimeInterval  kAnimationDuration      =   0.4;
         if (!finished)
         {
             [[NSFileManager defaultManager] removeItemAtURL:contentURL error:nil];
+        
             if (self.completionBlock)
             {
                 self.completionBlock(NO, nil, nil, nil);
@@ -466,6 +469,7 @@ const   NSTimeInterval  kAnimationDuration      =   0.4;
             self.completionBlock(finished, previewImage, capturedMediaURL, mediaExtension);
         }
     };
+
     [self.navigationController pushViewController:previewViewController animated:YES];
 }
 
@@ -624,14 +628,14 @@ const   NSTimeInterval  kAnimationDuration      =   0.4;
     NSString *mediaType = info[UIImagePickerControllerMediaType];
     
     // Handle a still image picked from a photo album
-    if (CFStringCompare ((CFStringRef)mediaType, kUTTypeImage, 0) == kCFCompareEqualTo)
+    if (CFStringCompare((CFStringRef)mediaType, kUTTypeImage, 0) == kCFCompareEqualTo)
     {
         UIImage* originalImage = (UIImage *)info[UIImagePickerControllerOriginalImage];
         [self audioVideoRecorder:nil capturedPhoto:@{VCAudioVideoRecorderPhotoImageKey : originalImage} error:nil];
     }
     
     // Handle a movied picked from a photo album
-    else if (CFStringCompare ((CFStringRef) mediaType, kUTTypeMovie, 0) == kCFCompareEqualTo)
+    else if (CFStringCompare((CFStringRef)mediaType, kUTTypeMovie, 0) == kCFCompareEqualTo)
     {
         NSURL* movieURL = info[UIImagePickerControllerMediaURL];
         [self audioVideoRecorder:nil didFinishRecordingAtUrl:movieURL error:nil];
