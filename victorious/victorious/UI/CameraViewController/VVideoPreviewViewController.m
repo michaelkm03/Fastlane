@@ -52,11 +52,10 @@
     self.trashAction.imageView.image = [UIImage imageNamed:@"cameraButtonDelete"];
 }
 
-- (void)viewWillDisappear:(BOOL)animated
+- (void)viewDidDisappear:(BOOL)animated
 {
-    [super viewWillDisappear:animated];
-    if (!self.videoPlayerView.player.isPlaying)
-        [self.videoPlayerView.player pause];
+    [super viewDidDisappear:animated];
+    [self.videoPlayerView.player pause];
 }
 
 - (void)handleDoneTapGesture:(UIGestureRecognizer *)gesture

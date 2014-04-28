@@ -37,9 +37,7 @@
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
-
-    if (self.previewView.player.isPlaying)
-        [self.previewView.player pause];
+    [self.previewView.player pause];
 }
 
 #pragma mark - Actions
