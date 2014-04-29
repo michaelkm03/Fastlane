@@ -80,11 +80,6 @@ static const CGFloat VCreateViewControllerLargePadding = 20;
     self.rightAnswerTextField.textColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVContentTextColor];
     self.rightAnswerTextField.placeholder = NSLocalizedString(@"VOTE THAT...", @"Poll left question placeholder");
     
-    self.textView.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeading4Font];
-    self.textView.textColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVMainTextColor];
-    self.textView.layer.borderColor = [[[VThemeManager sharedThemeManager] themedColorForKey:kVAccentColor] CGColor];
-    self.textView.layer.borderWidth = 1;
-    
     self.postButton.tintColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVMainTextColor];
     self.postButton.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
     [self.postButton setTitle:NSLocalizedString(@"POST IT", @"Post button") forState:UIControlStateNormal];
@@ -287,7 +282,7 @@ static const CGFloat VCreateViewControllerLargePadding = 20;
     
     [UIView animateWithDuration:animationDuration delay:0 options:(animationCurve << 16) animations:^
      {
-         self.contentTopConstraint.constant = VCreateViewControllerLargePadding-MAX(0, CGRectGetMaxY(self.textView.frame)-CGRectGetMinY(keyboardEndFrame)+VCreateViewControllerPadding);
+         self.contentTopConstraint.constant = VCreateViewControllerLargePadding-MAX(0, VCreateViewControllerPadding-CGRectGetMinY(keyboardEndFrame));
          [self.view layoutIfNeeded];
      }
                      completion:nil];
