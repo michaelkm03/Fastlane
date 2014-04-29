@@ -62,8 +62,12 @@
 - (void)loadPoll
 {
     NSArray* answers = [[self.sequence firstNode] firstAnswers];
-    [self.firstSmallPreviewImage setImageWithURL:[((VAnswer*)[answers firstObject]).mediaUrl convertToPreviewImageURL]];
-    [self.secondSmallPreviewImage setImageWithURL:[((VAnswer*)[answers lastObject]).mediaUrl convertToPreviewImageURL]];
+    
+    
+    [self.firstSmallPreviewImage setImageWithURL:[((VAnswer*)[answers firstObject]).mediaUrl convertToPreviewImageURL]
+                                placeholderImage:self.backgroundImage.image];
+    [self.secondSmallPreviewImage setImageWithURL:[((VAnswer*)[answers lastObject]).mediaUrl convertToPreviewImageURL]
+                                 placeholderImage:self.backgroundImage.image];
  
     if ([[((VAnswer*)[answers firstObject]).mediaUrl pathExtension] isEqualToString:VConstantMediaExtensionM3U8])
     {
