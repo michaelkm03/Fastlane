@@ -33,7 +33,7 @@
     
     [self.mpController.view removeFromSuperview];
     self.mpController = [[MPMoviePlayerController alloc] initWithContentURL:[NSURL URLWithString:self.currentAsset.data]];
-    self.mpController.scalingMode = MPMovieScalingModeAspectFill;
+    self.mpController.scalingMode = MPMovieScalingModeAspectFit;
     self.mpController.view.frame = self.previewImage.frame;
     self.mpController.shouldAutoplay = NO;
     [self.mpPlayerContainmentView addSubview:self.mpController.view];
@@ -115,9 +115,7 @@
 
 - (IBAction)pressedRemix:(id)sender
 {
-    NSInteger seqID = [self.sequence.remoteId integerValue];
-
-    UIViewController* remixVC = [VRemixSelectViewController remixViewControllerWithURL:[self.currentAsset.data mp4UrlFromM3U8] sequenceID:seqID];
+    UIViewController* remixVC = [VRemixSelectViewController remixViewControllerWithURL:[self.currentAsset.data mp4UrlFromM3U8] sequenceID:[self.currentNode.remoteId integerValue]];
     [self presentViewController:remixVC animated:YES completion:
      ^{
          [self.mpController pause];
