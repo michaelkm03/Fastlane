@@ -57,6 +57,7 @@
                         </connections>
                     </refreshControl>
                     <connections>
+                        <outlet property="headerView" destination="Bc3-eu-zp7" id="n3D-ce-YpR"/>
                         <outlet property="modeSelectControl" destination="uca-xh-1su" id="EMz-Nd-q4X"/>
                         <outlet property="searchDisplayController" destination="QRR-5I-cva" id="kbs-mg-Car"/>
                         <segue destination="miw-Vy-oJ3" kind="push" identifier="toNews" id="HlX-of-Z0h"/>
@@ -1766,6 +1767,6 @@
         <simulatedScreenMetrics key="destination" type="retina4"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
-        <segue reference="Sho-vj-RuM"/>
+        <segue reference="nH9-Zs-lk0"/>
     </inferredMetricsTieBreakers>
 </document>

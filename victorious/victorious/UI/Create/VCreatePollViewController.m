@@ -27,6 +27,8 @@ static const CGFloat VCreateViewControllerLargePadding = 20;
 
 @property (weak, nonatomic) NSLayoutConstraint *contentTopConstraint;
 
+@property (nonatomic, strong)   UIBarButtonItem*    countDownLabel;
+
 @end
 
 @implementation VCreatePollViewController
@@ -73,6 +75,8 @@ static const CGFloat VCreateViewControllerLargePadding = 20;
 
     self.questionTextField.textColor =  [[VThemeManager sharedThemeManager] themedColorForKey:kVContentTextColor];
     self.questionTextField.placeholder = NSLocalizedString(@"Ask a Question...", @"Poll question placeholder");
+    [self.questionTextField addTarget:self action:@selector(questionTextFieldDidChange:) forControlEvents:UIControlEventEditingChanged];
+    self.questionTextField.delegate = self;
 
     self.leftAnswerTextField.textColor =  [[VThemeManager sharedThemeManager] themedColorForKey:kVContentTextColor];
     self.leftAnswerTextField.placeholder = NSLocalizedString(@"VOTE THIS...", @"Poll left question placeholder");
@@ -91,6 +95,7 @@ static const CGFloat VCreateViewControllerLargePadding = 20;
     
     [self validatePostButtonState];
     [self updateViewState];
+    [self createInputAccessoryView];
 }
 
 - (void)validatePostButtonState
@@ -146,8 +151,10 @@ static const CGFloat VCreateViewControllerLargePadding = 20;
                                    extension:mediaExtension
                                 previewImage:previewImage];
         }
+
         [self dismissViewControllerAnimated:YES completion:nil];
     };
+
     UINavigationController *navigationController = [[UINavigationController alloc] init];
     [navigationController pushViewController:cameraViewController animated:NO];
     [self presentViewController:navigationController animated:YES completion:nil];
@@ -167,7 +174,7 @@ static const CGFloat VCreateViewControllerLargePadding = 20;
          CGRect rightPreviewFrame = self.rightPreviewImageView.frame;
          self.rightPreviewImageView.frame = CGRectMake(CGRectGetMinX(rightPreviewFrame) - CGRectGetWidth(addMediaFrame), CGRectGetMinY(rightPreviewFrame), CGRectGetWidth(rightPreviewFrame), CGRectGetHeight(rightPreviewFrame));
      }
-                     completion:^(BOOL finished)
+     completion:^(BOOL finished)
      {
          self.addMediaView.userInteractionEnabled = YES;
          self.postButton.userInteractionEnabled = YES;
@@ -209,7 +216,7 @@ static const CGFloat VCreateViewControllerLargePadding = 20;
          CGRect frame = self.addMediaView.frame;
          self.addMediaView.frame = CGRectMake(CGRectGetMinX(frame) - CGRectGetWidth(frame), CGRectGetMinY(frame), CGRectGetWidth(frame), CGRectGetHeight(frame));
      }
-                     completion:^(BOOL finished)
+     completion:^(BOOL finished)
      {
          self.addMediaView.userInteractionEnabled = YES;
          self.postButton.userInteractionEnabled = YES;
@@ -249,7 +256,34 @@ static const CGFloat VCreateViewControllerLargePadding = 20;
     //TODO:put search logic here
 }
 
+- (IBAction)hashButtonClicked:(id)sender
+{
+    self.questionTextField.text = [self.questionTextField.text stringByAppendingString:@"#"];
+}
+
+- (void)createInputAccessoryView
+{
+    UIToolbar*  toolbar =   [[UIToolbar alloc] initWithFrame:CGRectMake(0, 0, self.view.bounds.size.width, 44)];
+    
+    UIBarButtonItem*    hashButton  =   [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"cameraButtonHashTagAdd"]
+                                                                         style:UIBarButtonItemStyleBordered
+                                                                        target:self
+                                                                        action:@selector(hashButtonClicked:)];
+    UIBarButtonItem*    flexibleSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace
+                                                                                      target:nil
+                                                                                      action:nil];
+    
+    self.countDownLabel = [[UIBarButtonItem alloc] initWithTitle:[NSNumberFormatter localizedStringFromNumber:@(VConstantsMessageLength) numberStyle:NSNumberFormatterDecimalStyle]
+                                                           style:UIBarButtonItemStyleBordered
+                                                          target:nil
+                                                          action:nil];
+    
+    toolbar.items = @[hashButton, flexibleSpace, self.countDownLabel];
+    self.questionTextField.inputAccessoryView = toolbar;
+}
+
 #pragma mark - UITextFieldDelegate
+
 - (void)textFieldDidEndEditing:(UITextField *)textField
 {
     [self validatePostButtonState];
@@ -265,6 +299,24 @@ static const CGFloat VCreateViewControllerLargePadding = 20;
 
     [textField resignFirstResponder];
     return YES;
+}
+
+- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
+{
+    if ([textField isEqual:self.questionTextField])
+    {
+        BOOL    isDeleteKey = ([string isEqualToString:@""]);
+        if ((textField.text.length >= VConstantsMessageLength) && (!isDeleteKey))
+            return NO;
+    }
+    
+    return YES;
+}
+
+- (void)questionTextFieldDidChange:(id)sender
+{
+    self.countDownLabel.title = [NSNumberFormatter localizedStringFromNumber:@(VConstantsMessageLength - self.questionTextField.text.length)
+                                                                 numberStyle:NSNumberFormatterDecimalStyle];
 }
 
 #pragma mark - Notifications
@@ -285,10 +337,11 @@ static const CGFloat VCreateViewControllerLargePadding = 20;
          self.contentTopConstraint.constant = VCreateViewControllerLargePadding-MAX(0, VCreateViewControllerPadding-CGRectGetMinY(keyboardEndFrame));
          [self.view layoutIfNeeded];
      }
-                     completion:nil];
+     completion:nil];
 }
 
 #pragma mark - UITextViewDelegate
+
 - (void)textViewDidChange:(UITextView *)textView
 {
     NSInteger characterCount = VConstantsMessageLength-[textView.text length];
@@ -300,7 +353,9 @@ static const CGFloat VCreateViewControllerLargePadding = 20;
     {
         self.characterCountLabel.textColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVMainTextColor];
     }
-    self.characterCountLabel.text = [NSString stringWithFormat:@"%lu", (unsigned long)characterCount];
+
+    self.characterCountLabel.text = [NSNumberFormatter localizedStringFromNumber:@(characterCount)
+                                                                     numberStyle:NSNumberFormatterDecimalStyle];
     [self validatePostButtonState];
 }
 
