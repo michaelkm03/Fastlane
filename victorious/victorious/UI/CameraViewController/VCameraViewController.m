@@ -40,6 +40,8 @@ const   NSTimeInterval  kAnimationDuration      =   0.4;
 @property (strong, nonatomic) VCCamera* camera;
 @property (strong, nonatomic) VCCameraFocusView* focusView;
 
+@property (nonatomic)                   BOOL                allowVideo;
+
 @property (nonatomic)                   BOOL                inTrashState;
 @property (nonatomic)                   BOOL                inRecordVideoState;
 
@@ -58,7 +60,16 @@ const   NSTimeInterval  kAnimationDuration      =   0.4;
 
 + (VCameraViewController *)cameraViewController
 {
-    return [[UIStoryboard storyboardWithName:@"Camera" bundle:nil] instantiateViewControllerWithIdentifier:NSStringFromClass(self)];
+    VCameraViewController *cameraViewController = [[UIStoryboard storyboardWithName:@"Camera" bundle:nil] instantiateViewControllerWithIdentifier:NSStringFromClass(self)];
+    cameraViewController.allowVideo = YES;
+    return cameraViewController;
+}
+
++ (VCameraViewController *)cameraViewControllerLimitedToPhotos
+{
+    VCameraViewController *cameraViewController = [self cameraViewController];
+    cameraViewController.allowVideo = NO;
+    return cameraViewController;
 }
 
 - (void)viewDidLoad
@@ -102,15 +113,7 @@ const   NSTimeInterval  kAnimationDuration      =   0.4;
     [self.recordButton addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleRecordTapGesture:)]];
     [self.recordButton addGestureRecognizer:[[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(handleRecordLongTapGesture:)]];
     self.recordButton.userInteractionEnabled = YES;
-
-    self.capturePhotoButton.alpha = 0.0;
-    self.recordButton.alpha = 1.0;
     
-    self.deleteButton.alpha = 0.0;
-    self.openAlbumButton.alpha = 1.0;
-    
-    self.toolTipImageView.alpha = 0.0;
-
     self.focusView = [[VCCameraFocusView alloc] initWithFrame:self.previewView.bounds];
     self.focusView.camera = self.camera;
     [self.previewView addSubview:self.focusView];
@@ -125,6 +128,16 @@ const   NSTimeInterval  kAnimationDuration      =   0.4;
         self.camera.cameraDevice = VCCameraDeviceBack;
     else if (hasFrontCamera)
         self.camera.cameraDevice = VCCameraDeviceFront;
+    
+    if (self.allowVideo)
+    {
+        [self configureUIforVideoCaptureAnimated:NO completion:nil];
+    }
+    else
+    {
+        [self configureUIforPhotoCaptureAnimated:NO completion:nil];
+        self.switchCameraModeButton.hidden = YES;
+    }
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -138,7 +151,7 @@ const   NSTimeInterval  kAnimationDuration      =   0.4;
     self.inTrashState = NO;
     self.didSelectAssetFromLibrary = NO;
 
-    [self setLastImageSavedToAlbum];
+    [self setOpenAlbumButtonImageWithLatestPhoto:[self.camera.sessionPreset isEqualToString:AVCaptureSessionPresetPhoto] animated:NO];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -271,24 +284,10 @@ const   NSTimeInterval  kAnimationDuration      =   0.4;
     }
     else if (self.camera.sessionPreset == self.videoQuality)
     {
-        [UIView animateWithDuration:kAnimationDuration delay:0 options:UIViewAnimationOptionCurveEaseInOut
-                         animations:^{
-                             self.capturePhotoButton.alpha = 1.0;
-                             self.recordButton.alpha = 0.0;
-                             self.toolTipImageView.alpha = 0.0;
-                         }
-                         completion:^(BOOL finished)
-         {
-             self.camera.sessionPreset = AVCaptureSessionPresetPhoto;
-             [self.switchCameraModeButton setImage:[UIImage imageNamed:@"cameraButtonSwitchToVideo"] forState:UIControlStateNormal];
-             if ([UIImagePickerController isFlashAvailableForCameraDevice:UIImagePickerControllerCameraDeviceRear] ||
-                 [UIImagePickerController isFlashAvailableForCameraDevice:UIImagePickerControllerCameraDeviceFront])
-                 self.navigationItem.rightBarButtonItem = self.flashOffButton;
-             else
-                 self.navigationItem.rightBarButtonItem = nil;
-             self.camera.flashMode = VCFlashModeOff;
-             [self setLastImageSavedToAlbum];
-         }];
+        [self configureUIforPhotoCaptureAnimated:YES completion:^(void)
+        {
+            self.camera.sessionPreset = AVCaptureSessionPresetPhoto;
+        }];
     }
 }
 
@@ -318,6 +317,83 @@ const   NSTimeInterval  kAnimationDuration      =   0.4;
 }
 
 #pragma mark - Support
+
+- (void)configureUIforVideoCaptureAnimated:(BOOL)animated completion:(void(^)(void))completion
+{
+    void (^animations)(void) = ^(void)
+    {
+        self.capturePhotoButton.alpha = 0.0;
+        self.recordButton.alpha = 1.0;
+        self.toolTipImageView.alpha = 0.0;
+    };
+    void (^fullCompletion)(BOOL) = ^(BOOL finished)
+    {
+        [self.switchCameraModeButton setImage:[UIImage imageNamed:@"cameraButtonSwitchToPhoto"] forState:UIControlStateNormal];
+        self.camera.flashMode = VCFlashModeOff;
+        [self setOpenAlbumButtonImageWithLatestPhoto:NO animated:animated];
+        if (completion)
+        {
+            completion();
+        }
+    };
+    
+    if (animated)
+    {
+        [UIView animateWithDuration:kAnimationDuration
+                              delay:0
+                            options:UIViewAnimationOptionCurveEaseInOut
+                         animations:animations
+                         completion:fullCompletion];
+    }
+    else
+    {
+        animations();
+        fullCompletion(YES);
+    }
+}
+
+- (void)configureUIforPhotoCaptureAnimated:(BOOL)animated completion:(void(^)(void))completion
+{
+    void (^animations)(void) = ^(void)
+    {
+        self.capturePhotoButton.alpha = 1.0;
+        self.recordButton.alpha = 0.0;
+        self.toolTipImageView.alpha = 0.0;
+    };
+    void (^fullCompletion)(BOOL) = ^(BOOL finished)
+    {
+        [self.switchCameraModeButton setImage:[UIImage imageNamed:@"cameraButtonSwitchToVideo"] forState:UIControlStateNormal];
+        if ([UIImagePickerController isFlashAvailableForCameraDevice:UIImagePickerControllerCameraDeviceRear] ||
+            [UIImagePickerController isFlashAvailableForCameraDevice:UIImagePickerControllerCameraDeviceFront])
+        {
+            self.navigationItem.rightBarButtonItem = self.flashOffButton;
+        }
+        else
+        {
+            self.navigationItem.rightBarButtonItem = nil;
+        }
+        self.camera.flashMode = VCFlashModeOff;
+        [self setOpenAlbumButtonImageWithLatestPhoto:YES animated:animated];
+        if (completion)
+        {
+            completion();
+        }
+    };
+    
+    if (animated)
+    {
+        [UIView animateWithDuration:kAnimationDuration
+                              delay:0
+                            options:UIViewAnimationOptionCurveEaseInOut
+                         animations:animations
+                         completion:fullCompletion];
+    }
+    else
+    {
+        animations();
+        fullCompletion(YES);
+    }
+}
 
 - (BOOL)cameraSupportsMedia:(NSString *)mediaType sourceType:(UIImagePickerControllerSourceType)sourceType
 {
@@ -351,18 +427,34 @@ const   NSTimeInterval  kAnimationDuration      =   0.4;
     return [self cameraSupportsMedia:(__bridge NSString *)kUTTypeImage sourceType:UIImagePickerControllerSourceTypePhotoLibrary];
 }
 
-- (void)setLastImageSavedToAlbum
+/**
+ @param photo if YES, use photo thumbnail. If NO, use video thumbnail
+ */
+- (void)setOpenAlbumButtonImageWithLatestPhoto:(BOOL)photo animated:(BOOL)animated;
 {
-    [UIView animateWithDuration:kAnimationDuration animations:^{
+    void (^animations)(void) = ^(void)
+    {
         self.deleteButton.alpha = 0.0;
         self.openAlbumButton.alpha = 0.0;
-    }];
+    };
+    if (animated)
+    {
+        [UIView animateWithDuration:kAnimationDuration animations:animations];
+    }
+    else
+    {
+        animations();
+    }
     
-    if ((self.camera.sessionPreset == AVCaptureSessionPresetPhoto) && !([self canPickPhotosFromPhotoLibrary]))
+    if (photo && ![self canPickPhotosFromPhotoLibrary])
+    {
         return;
+    }
     
-    if ((self.camera.sessionPreset != AVCaptureSessionPresetPhoto) && !([self canPickVideosFromPhotoLibrary]))
+    if (!photo && ![self canPickVideosFromPhotoLibrary])
+    {
         return;
+    }
 
     ALAssetsLibrary *library = [[ALAssetsLibrary alloc] init];
     
@@ -370,7 +462,7 @@ const   NSTimeInterval  kAnimationDuration      =   0.4;
     [library enumerateGroupsWithTypes:ALAssetsGroupSavedPhotos usingBlock:^(ALAssetsGroup *group, BOOL *stop)
      {
         // Within the group enumeration block, filter to enumerate just photos.
-         if (self.camera.sessionPreset == AVCaptureSessionPresetPhoto)
+         if (photo)
              [group setAssetsFilter:[ALAssetsFilter allPhotos]];
          else
              [group setAssetsFilter:[ALAssetsFilter allVideos]];
@@ -392,9 +484,18 @@ const   NSTimeInterval  kAnimationDuration      =   0.4;
                      *innerStop = YES;
                      
                      [self.openAlbumButton setImage:latestPhoto forState:UIControlStateNormal];
-                     [UIView animateWithDuration:kAnimationDuration animations:^{
+                     void (^animations)(void) = ^(void)
+                     {
                          self.openAlbumButton.alpha = 1.0;
-                     }];
+                     };
+                     if (animated)
+                     {
+                         [UIView animateWithDuration:kAnimationDuration animations:animations];
+                     }
+                     else
+                     {
+                         animations();
+                     }
                  }
              }];
         }

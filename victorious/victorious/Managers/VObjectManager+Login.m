@@ -8,6 +8,7 @@
 
 #import "VObjectManager+Private.h"
 #import "VObjectManager+Login.h"
+#import "VObjectManager+Users.h"
 #import "VObjectManager+Sequence.h"
 #import "VObjectManager+DirectMessaging.h"
 #import "VUser+RestKit.h"
@@ -257,6 +258,7 @@ NSString *kLoggedInChangedNotification = @"LoggedInChangedNotification";
     [self loadNextPageOfConversations:nil failBlock:nil];
     [self pollResultsForUser:user successBlock:nil failBlock:nil];
     [self unreadCountForConversationsWithSuccessBlock:nil failBlock:nil];
+    [self requestFollowListForUser:user successBlock:nil failBlock:nil];
 
     [[NSNotificationCenter defaultCenter] postNotificationName:kLoggedInChangedNotification object:nil];
 }

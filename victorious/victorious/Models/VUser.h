@@ -2,14 +2,14 @@
 //  VUser.h
 //  victorious
 //
-//  Created by Will Long on 4/7/14.
+//  Created by Josh Hinman on 4/25/14.
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
 #import <Foundation/Foundation.h>
 #import <CoreData/CoreData.h>
 
-@class VComment, VConversation, VMessage, VPollResult, VSequence, VUnreadConversation;
+@class VComment, VConversation, VMessage, VPollResult, VSequence, VUnreadConversation, VUser;
 
 @interface VUser : NSManagedObject
 
@@ -24,6 +24,8 @@
 @property (nonatomic, retain) NSDate * tokenUpdatedAt;
 @property (nonatomic, retain) NSSet *comments;
 @property (nonatomic, retain) NSSet *conversations;
+@property (nonatomic, retain) NSSet *followers;
+@property (nonatomic, retain) NSSet *following;
 @property (nonatomic, retain) NSSet *messages;
 @property (nonatomic, retain) NSSet *pollResults;
 @property (nonatomic, retain) NSSet *postedSequences;
@@ -41,6 +43,16 @@
 - (void)removeConversationsObject:(VConversation *)value;
 - (void)addConversations:(NSSet *)values;
 - (void)removeConversations:(NSSet *)values;
+
+- (void)addFollowersObject:(VUser *)value;
+- (void)removeFollowersObject:(VUser *)value;
+- (void)addFollowers:(NSSet *)values;
+- (void)removeFollowers:(NSSet *)values;
+
+- (void)addFollowingObject:(VUser *)value;
+- (void)removeFollowingObject:(VUser *)value;
+- (void)addFollowing:(NSSet *)values;
+- (void)removeFollowing:(NSSet *)values;
 
 - (void)addMessagesObject:(VMessage *)value;
 - (void)removeMessagesObject:(VMessage *)value;
