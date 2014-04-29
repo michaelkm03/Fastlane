@@ -14,6 +14,7 @@
 #import "VProfileEditViewController.h"
 #import "VMessageViewController.h"
 #import "VUser.h"
+#import "VUser+LoadFollowers.h"
 #import "VThemeManager.h"
 #import "VLoginViewController.h"
 #import "UIImage+ImageEffects.h"
@@ -112,6 +113,18 @@
     
     [self setProfileData];
     [self.navigationController setNavigationBarHidden:NO animated:YES];
+    
+    [[VObjectManager sharedManager] addObserver:self forKeyPath:NSStringFromSelector(@selector(mainUser)) options:(NSKeyValueObservingOptionInitial|NSKeyValueObservingOptionOld|NSKeyValueObservingOptionNew) context:nil];
+}
+
+- (void)viewDidDisappear:(BOOL)animated
+{
+    [super viewDidDisappear:animated];
+    if ([[VObjectManager sharedManager] mainUser])
+    {
+        [[[VObjectManager sharedManager] mainUser] removeObserver:self forKeyPath:NSStringFromSelector(@selector(followingListLoading))];
+    }
+    [[VObjectManager sharedManager] removeObserver:self forKeyPath:NSStringFromSelector(@selector(mainUser))];
 }
 
 - (void)setProfileData
@@ -152,7 +165,7 @@
     self.navigationItem.title = self.profile.name;
     
     VUser *mainUser = [[VObjectManager sharedManager] mainUser];
-    if (self.userID == kProfileUserIDSelf)
+    if (self.userID == kProfileUserIDSelf || [mainUser.remoteId isEqualToNumber:self.profile.remoteId])
     {
         self.followButton.hidden = YES;
     }
@@ -258,6 +271,43 @@
     {
         VMessageViewController *subview = (VMessageViewController *)segue.destinationViewController;
         subview.conversation = [[VObjectManager sharedManager] conversationWithUser:self.profile];
+    }
+}
+
+#pragma mark - Key-Value Observation
+
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
+{
+    if (object == [VObjectManager sharedManager])
+    {
+        VUser *oldUser = change[NSKeyValueChangeOldKey];
+        if ([oldUser isKindOfClass:[VUser class]])
+        {
+            [oldUser removeObserver:self forKeyPath:NSStringFromSelector(@selector(mainUser))];
+        }
+        VUser *newUser = change[NSKeyValueChangeNewKey];
+        if ([newUser isKindOfClass:[VUser class]])
+        {
+            [newUser addObserver:self forKeyPath:NSStringFromSelector(@selector(followingListLoading)) options:NSKeyValueObservingOptionInitial context:NULL];
+            if (!newUser.followingListLoaded && !newUser.followingListLoading)
+            {
+                [[VObjectManager sharedManager] requestFollowListForUser:newUser successBlock:nil failBlock:nil];
+            }
+        }
+    }
+    else if (object == [[VObjectManager sharedManager] mainUser] && [keyPath isEqualToString:NSStringFromSelector(@selector(followingListLoading))])
+    {
+        if ([[[VObjectManager sharedManager] mainUser] followingListLoading])
+        {
+            self.followButton.enabled = NO;
+            [self.followButtonActivityIndicator startAnimating];
+        }
+        else
+        {
+            self.followButton.enabled = YES;
+            [self.followButtonActivityIndicator stopAnimating];
+            [self setProfileData];
+        }
     }
 }
 
