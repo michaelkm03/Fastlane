@@ -278,12 +278,12 @@
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
 {
-    if (object == [VObjectManager sharedManager])
+    if (object == [VObjectManager sharedManager] && [keyPath isEqualToString:NSStringFromSelector(@selector(mainUser))])
     {
         VUser *oldUser = change[NSKeyValueChangeOldKey];
         if ([oldUser isKindOfClass:[VUser class]])
         {
-            [oldUser removeObserver:self forKeyPath:NSStringFromSelector(@selector(mainUser))];
+            [oldUser removeObserver:self forKeyPath:NSStringFromSelector(@selector(followingListLoading))];
         }
         VUser *newUser = change[NSKeyValueChangeNewKey];
         if ([newUser isKindOfClass:[VUser class]])
