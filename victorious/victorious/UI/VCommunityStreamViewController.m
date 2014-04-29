@@ -43,10 +43,10 @@
             return @[kVUGCImageCategory];
             
         case VStreamFilterVideos:
-            return @[kVUGCVideoCategory];
+            return @[kVUGCVideoCategory, kVUGCRemixCategory];
             
         default:
-            return @[kVUGCPollCategory, kVUGCImageCategory, kVUGCVideoCategory];
+            return @[kVUGCPollCategory, kVUGCImageCategory, kVUGCVideoCategory, kVUGCRemixCategory];
     }
 }
 

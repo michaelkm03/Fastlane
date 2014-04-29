@@ -59,16 +59,8 @@ static NSString* kOrIconImage = @"orIconImage";
 
 - (void)setupMedia
 {
-    VAsset* firstAsset = [[self.sequence firstNode] firstAsset];
-    if (firstAsset)
-    {
-        self.firstAssetUrl = [firstAsset.data convertToPreviewImageURL];
-    }
-    else
-    {
-        self.firstAssetUrl = [self.firstAnswer.mediaUrl convertToPreviewImageURL];
-        self.secondAssetUrl = [self.secondAnswer.mediaUrl convertToPreviewImageURL];
-    }
+    self.firstAssetUrl = [NSURL URLWithString: self.firstAnswer.thumbnailUrl];
+    self.secondAssetUrl = [NSURL URLWithString:self.secondAnswer.thumbnailUrl];
     
     UIImage* placeholderImage = [UIImage resizeableImageWithColor:[[VThemeManager sharedThemeManager] themedColorForKey:kVBackgroundColor]];
     [self.previewImageView setImageWithURL:self.firstAssetUrl placeholderImage:placeholderImage];

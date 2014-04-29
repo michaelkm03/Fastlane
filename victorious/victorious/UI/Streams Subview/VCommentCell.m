@@ -120,7 +120,8 @@ NSString* const kChatBubbleLeftImage = @"ChatBubbleLeft";
         
         self.playButton.hidden = ![mediaType isEqualToString:VConstantsMediaTypeVideo];
         
-        [self.mediaPreview setImageWithURL:[self.mediaUrl convertToPreviewImageURL]];
+#warning We need to figure out a reliable way to get comment preview image before release...
+//        [self.mediaPreview setImageWithURL:[self.mediaUrl convertToPreviewImageURL]];
     }
     else
     {

@@ -33,8 +33,8 @@
 + (void)setupObjectManager
 {
 //#if DEBUG
-//    RKLogConfigureByName("RestKit/Network", RKLogLevelTrace);
-//    RKLogConfigureByName("RestKit/ObjectMapping", RKLogLevelTrace);
+    RKLogConfigureByName("RestKit/Network", RKLogLevelTrace);
+    RKLogConfigureByName("RestKit/ObjectMapping", RKLogLevelTrace);
 //#endif
     
     VObjectManager *manager = [self managerWithBaseURL:[NSURL URLWithString:VBASEURL]];

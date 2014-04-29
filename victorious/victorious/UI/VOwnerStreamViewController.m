@@ -38,10 +38,10 @@
             return @[kVOwnerImageCategory];
             
         case VStreamFilterVideos:
-            return @[kVOwnerVideoCategory];
+            return @[kVOwnerVideoCategory, kVOwnerRemixCategory];
             
         default:
-            return @[kVOwnerPollCategory, kVOwnerImageCategory, kVOwnerVideoCategory];
+            return @[kVOwnerPollCategory, kVOwnerImageCategory, kVOwnerVideoCategory, kVOwnerRemixCategory];
     }
 }
 @end

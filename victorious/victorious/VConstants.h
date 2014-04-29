@@ -63,15 +63,17 @@ static NSString* const VConstantMediaExtensionJPG       = @"jpg";
 static NSString* const VConstantMediaExtensionJPEG      = @"jepg";
 static NSString* const VConstantMediaExtensionMOV       = @"mov";
 
-static NSString*   const   kVOwnerPollCategory = @"owner_poll";
+static NSString*   const   kVOwnerPollCategory  = @"owner_poll";
 static NSString*   const   kVOwnerImageCategory = @"owner_image";
 static NSString*   const   kVOwnerVideoCategory = @"owner_video";
 static NSString*   const   kVOwnerForumCategory = @"owner_forum";
+static NSString*   const   kVOwnerRemixCategory = @"owner_video_remix";
 
 static NSString*   const   kVUGCPollCategory = @"ugc_poll";
 static NSString*   const   kVUGCImageCategory = @"ugc_image";
 static NSString*   const   kVUGCVideoCategory = @"ugc_video";
 static NSString*   const   kVUGCForumCategory = @"ugc_forum";
+static NSString*   const   kVUGCRemixCategory = @"ugc_video_remix";
 
 static NSString*   const   kFeaturedCategory = @"featured";
 
