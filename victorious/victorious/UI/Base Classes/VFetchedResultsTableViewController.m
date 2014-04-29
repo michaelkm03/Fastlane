@@ -86,8 +86,10 @@
             // Update to handle the error appropriately.
             VLog(@"Unresolved Fetch Error %@, %@", error, [error userInfo]);
         }
-        
+
         [self.tableView reloadData];
+//        [self.tableView reloadSections:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, self.tableView.numberOfSections)]
+//                      withRowAnimation:UITableViewRowAnimationFade];
     }];
 }
 

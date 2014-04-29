@@ -311,11 +311,8 @@
 - (void)loadNextPageAction
 {
     VSequenceFilter* filter = [self currentFilter];
-    @synchronized(filter.updating)
-    {
-        if (filter.updating.boolValue)
-            return;
-    }
+    if (filter.updating.boolValue)
+        return;
     
     RKManagedObjectRequestOperation* operation = [[VObjectManager sharedManager] loadNextPageOfSequenceFilter:[self currentFilter]
                                              successBlock:^(NSOperation* operation, id fullResponse, NSArray* resultObjects)

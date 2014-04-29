@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="5064" systemVersion="13C1021" minimumToolsVersion="Automatic" macOSVersion="Automatic" iOSVersion="Automatic">
+<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="5064" systemVersion="13C64" minimumToolsVersion="Automatic" macOSVersion="Automatic" iOSVersion="Automatic">
     <entity name="Answer" representedClassName="VAnswer" syncable="YES">
         <attribute name="currency" optional="YES" attributeType="Integer 32" minValueString="0" syncable="YES"/>
         <attribute name="display_order" attributeType="Integer 32" minValueString="0" syncable="YES"/>
@@ -129,9 +129,9 @@
     </entity>
     <entity name="SequenceFilter" representedClassName="VSequenceFilter" syncable="YES">
         <attribute name="currentPageNumber" optional="YES" attributeType="Integer 32" minValueString="0" defaultValueString="0" syncable="YES"/>
-        <attribute name="filterAPIPath" attributeType="String" minValueString="0" syncable="YES"/>
+        <attribute name="filterAPIPath" attributeType="String" minValueString="0" indexed="YES" syncable="YES"/>
         <attribute name="maxPageNumber" attributeType="Integer 16" minValueString="0" defaultValueString="1" syncable="YES"/>
-        <attribute name="perPageNumber" attributeType="Integer 32" minValueString="0" defaultValueString="20" syncable="YES"/>
+        <attribute name="perPageNumber" attributeType="Integer 32" minValueString="0" defaultValueString="15" syncable="YES"/>
         <attribute name="updating" optional="YES" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
         <relationship name="sequences" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Sequence" inverseName="filters" inverseEntity="Sequence" syncable="YES"/>
     </entity>

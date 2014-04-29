@@ -33,7 +33,7 @@
 + (void)setupObjectManager
 {
 //#if DEBUG
-//    RKLogConfigureByName("RestKit/Network", RKLogLevelTrace);
+    RKLogConfigureByName("RestKit/Network", RKLogLevelTrace);
 //    RKLogConfigureByName("RestKit/ObjectMapping", RKLogLevelTrace);
 //#endif
     

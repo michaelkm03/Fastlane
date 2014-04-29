@@ -32,6 +32,23 @@
 - (RKManagedObjectRequestOperation *)loadInitialSequenceFilterWithSuccessBlock:(VSuccessBlock)success
                                                                      failBlock:(VFailBlock)fail
 {
+    //Remove the old filters
+    NSManagedObjectContext* context = [VObjectManager sharedManager].managedObjectStore.persistentStoreManagedObjectContext;
+    NSFetchRequest *request = [[NSFetchRequest alloc] initWithEntityName:[VSequenceFilter entityName]];
+
+    NSError *error = nil;
+    NSArray* objects = [context executeFetchRequest:request error:&error];
+    if (error != nil)
+    {
+        VLog(@"Error occured in sequence filter fetch: %@", error);
+    }
+    
+    for (NSManagedObject* object in objects)
+    {
+        [object.managedObjectContext deleteObject:object];
+    }
+    [context save:nil];
+    
     NSArray* defaultCategories = [[VHomeStreamViewController sharedInstance] categoriesForOption:0];
     VSequenceFilter* defaultFilter = [self sequenceFilterForCategories:defaultCategories];
     
@@ -44,17 +61,23 @@
         
         [[VUserManager sharedInstance] loginViaSavedCredentialsOnCompletion:nil onError:nil];
         
-        NSArray* ownerCategories = [[VOwnerStreamViewController sharedInstance] categoriesForOption:0];
-        VSequenceFilter* ownerFilter = [self sequenceFilterForCategories:ownerCategories];
-        [self refreshSequenceFilter:ownerFilter
-                       successBlock:nil
-                          failBlock:nil];
-        
-        NSArray* communityCategories = [[VCommunityStreamViewController sharedInstance] categoriesForOption:0];
-        VSequenceFilter* communityFilter = [self sequenceFilterForCategories:communityCategories];
-        [self refreshSequenceFilter:communityFilter
-                       successBlock:nil
-                          failBlock:nil];
+//        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^
+//                       {
+//                           NSArray* ownerCategories = [[VOwnerStreamViewController sharedInstance] categoriesForOption:0];
+//                           VSequenceFilter* ownerFilter = [self sequenceFilterForCategories:ownerCategories];
+//                           [self refreshSequenceFilter:ownerFilter
+//                                          successBlock:nil
+//                                             failBlock:nil];
+//                       });
+//        
+//        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^
+//                       {
+//                           NSArray* communityCategories = [[VCommunityStreamViewController sharedInstance] categoriesForOption:0];
+//                           VSequenceFilter* communityFilter = [self sequenceFilterForCategories:communityCategories];
+//                           [self refreshSequenceFilter:communityFilter
+//                                          successBlock:nil
+//                                             failBlock:nil];
+//                       });
     };
     
     return [self refreshSequenceFilter:defaultFilter
@@ -77,8 +100,7 @@
                                                         failBlock:(VFailBlock)fail
 {
     //If the filter is in the middle of an update, ignore other calls to update
-    @synchronized(filter.updating)
-    {
+    
         if (filter.updating.boolValue)
         {
             if (fail)
@@ -87,8 +109,7 @@
         }
         else
             filter.updating = [NSNumber numberWithBool:YES];
-    }
-    
+
     NSInteger nextPageNumber = filter.currentPageNumber.integerValue + 1;
     if (nextPageNumber > filter.maxPageNumber.integerValue)
         nextPageNumber = filter.maxPageNumber.integerValue;
@@ -116,7 +137,11 @@
         filterInContext.maxPageNumber = @(((NSString*)fullResponse[@"total_pages"]).integerValue);
         filterInContext.currentPageNumber = @(((NSString*)fullResponse[@"page_number"]).integerValue);
         
-        filterInContext.updating = [NSNumber numberWithBool:NO];
+        dispatch_async(dispatch_get_main_queue(), ^
+        {
+            filterInContext.updating = [NSNumber numberWithBool:NO];
+        });
+    
         [[VFilterCache sharedCache] setObject:filterInContext forKey:filterInContext.filterAPIPath];
         
         NSError* saveError;
