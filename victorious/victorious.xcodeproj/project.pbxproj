@@ -10,6 +10,7 @@
 		03086AA718F38ABE00105FFB /* UIActionSheet+VBlocks.m in Sources */ = {isa = PBXBuildFile; fileRef = 03086AA618F38ABE00105FFB /* UIActionSheet+VBlocks.m */; };
 		03086AAA18F60E3000105FFB /* VMediaPreviewViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 03086AA918F60E3000105FFB /* VMediaPreviewViewController.m */; };
 		036AE5ED18FF0C0600A74BDA /* VReachability.m in Sources */ = {isa = PBXBuildFile; fileRef = 036AE5EC18FF0C0600A74BDA /* VReachability.m */; };
+		03CB1B87190F0A97001667D0 /* VUser+LoadFollowers.m in Sources */ = {isa = PBXBuildFile; fileRef = 03CB1B86190F0A97001667D0 /* VUser+LoadFollowers.m */; };
 		0742CD6B32FA44679FBE8716 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 662F0867152745B2B2F08301 /* libPods.a */; };
 		3F14C44C18BD2BD0001796B9 /* VCAudioEncoder.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F14C43618BD2BD0001796B9 /* VCAudioEncoder.m */; };
 		3F14C44D18BD2BD0001796B9 /* VCAudioTools.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F14C43818BD2BD0001796B9 /* VCAudioTools.m */; };
@@ -238,6 +239,8 @@
 		03086AA918F60E3000105FFB /* VMediaPreviewViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VMediaPreviewViewController.m; path = UI/CameraViewController/VMediaPreviewViewController.m; sourceTree = "<group>"; };
 		036AE5EB18FF0C0600A74BDA /* VReachability.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VReachability.h; sourceTree = "<group>"; };
 		036AE5EC18FF0C0600A74BDA /* VReachability.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VReachability.m; sourceTree = "<group>"; };
+		03CB1B85190F0A97001667D0 /* VUser+LoadFollowers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "VUser+LoadFollowers.h"; sourceTree = "<group>"; };
+		03CB1B86190F0A97001667D0 /* VUser+LoadFollowers.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "VUser+LoadFollowers.m"; sourceTree = "<group>"; };
 		33ACD3CBAF2C419D97FB901A /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = "<group>"; };
 		3F14C43518BD2BD0001796B9 /* VCAudioEncoder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VCAudioEncoder.h; sourceTree = "<group>"; };
 		3F14C43618BD2BD0001796B9 /* VCAudioEncoder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VCAudioEncoder.m; sourceTree = "<group>"; };
@@ -1343,6 +1346,8 @@
 				BEA5BF70187FCBF10014C3EF /* VObjectManager+Users.m */,
 				BE9181D919098E280071E7AF /* VObjectManager+SequenceFilters.h */,
 				BE9181DA19098E280071E7AF /* VObjectManager+SequenceFilters.m */,
+				03CB1B85190F0A97001667D0 /* VUser+LoadFollowers.h */,
+				03CB1B86190F0A97001667D0 /* VUser+LoadFollowers.m */,
 			);
 			name = VObjectManager;
 			sourceTree = "<group>";
@@ -1727,6 +1732,7 @@
 				3F919908187600720055FE37 /* VSettingsViewController.m in Sources */,
 				BE692B53186E60B300C71336 /* VCommentsTableViewController.m in Sources */,
 				3FF7B6D718EE4009003831CD /* UIImage+Masking.m in Sources */,
+				03CB1B87190F0A97001667D0 /* VUser+LoadFollowers.m in Sources */,
 				BE171E0D1868C211004E5202 /* VAnswer+RestKit.m in Sources */,
 				3FDEDD0618CE48210028E3F1 /* VRemixStitchViewController.m in Sources */,
 				3F71A7DA18D7C6D20048FF60 /* VRemixSliderLeft.m in Sources */,

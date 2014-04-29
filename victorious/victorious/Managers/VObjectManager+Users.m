@@ -14,6 +14,7 @@
 #import "VMessage+RestKit.h"
 #import "VSequence+RestKit.h"
 #import "VUser.h"
+#import "VUser+LoadFollowers.h"
 #import "VUser+RestKit.h"
 
 #import "VConstants.h"
@@ -152,6 +153,16 @@
                                                  successBlock:(VSuccessBlock)success
                                                     failBlock:(VFailBlock)fail
 {
+    if (user.followingListLoading)
+    {
+        if (fail)
+        {
+            fail(nil, nil);
+        }
+        return nil;
+    }
+    
+    user.followingListLoading = YES;
     NSString *path = [NSString stringWithFormat:@"/api/follow/subscribed_to_list/%d", [user.remoteId intValue]];
     return [self GET:path
               object:nil
@@ -165,6 +176,9 @@
         }
         
         [user.managedObjectContext save:nil];
+    
+        user.followingListLoading = NO;
+        user.followingListLoaded = YES;
         
         if (success)
         {
