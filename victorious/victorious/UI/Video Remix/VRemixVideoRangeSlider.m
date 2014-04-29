@@ -310,7 +310,9 @@
 
                                                       dispatch_async(dispatch_get_main_queue(), ^{
                                                           [_backgroundView addSubview:tmp];
+                                                          [_backgroundView setNeedsDisplay];
                                                       });
+                                                      
                                                   }
 
                                                   if (result == AVAssetImageGeneratorFailed)
