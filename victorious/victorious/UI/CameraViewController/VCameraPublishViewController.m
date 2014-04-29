@@ -248,9 +248,10 @@
         return NO;
     }
 
-    if (textView.text.length >= 140.0)
+    BOOL    isDeleteKey = ([text isEqualToString:@""]);
+    if ((textView.text.length >= VConstantsMessageLength) && (!isDeleteKey))
         return NO;
-
+    
     return YES;
 }
 

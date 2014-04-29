@@ -11,10 +11,6 @@
 #import "VCameraViewController.h"
 #import "VObjectManager+Comment.h"
 #import "VKeyboardBarViewController.h"
-
-//#import "VSequence.h"
-//#import "VConstants.h"
-
 #import "VLoginViewController.h"
 
 @interface VKeyboardBarViewController() <UITextViewDelegate>
@@ -22,9 +18,6 @@
 @property (nonatomic, strong) NSString*  mediaExtension;
 @property (nonatomic, strong) NSURL* mediaURL;
 
-//@property (weak, nonatomic) IBOutlet UICollectionView* stickersView;
-//@property (nonatomic, strong) NSArray* stickers;
-//@property (nonatomic, strong) NSData* selectedSticker;
 @end
 
 @implementation VKeyboardBarViewController
@@ -44,12 +37,8 @@
 {
     [super viewWillLayoutSubviews];
     
-//    [self.stickersView registerClass:[UICollectionViewCell class] forCellWithReuseIdentifier:@"stickerCell"];
     self.mediaButton.layer.cornerRadius = 2;
     self.mediaButton.clipsToBounds = YES;
-    // populate stickers array
-    
-//    [self.stickersView reloadData];
 }
 
 - (IBAction)sendButtonAction:(id)sender
