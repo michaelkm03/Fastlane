@@ -355,6 +355,7 @@
              
              dispatch_async(dispatch_get_main_queue(), ^{
                  [background addSubview:tmp];
+                 [background setNeedsDisplay];
              });
          }
          
