@@ -21,13 +21,15 @@
 - (id)initWithFrame:(CGRect)frame
 {
     self = [super initWithFrame:frame];
-    if (self) {
+    if (self)
+    {
         [self setup];
     }
     return self;
 }
 
-- (void)setup {
+- (void)setup
+{
     self.insideFocusTargetImageSizeRatio = 0.5;
     CGRect bounds = self.bounds;
     CGPoint center = CGPointMake(CGRectGetWidth(bounds) / 2.0, CGRectGetHeight(bounds) / 2.0);
@@ -50,12 +52,15 @@
     [self addSubview:self.insideCircle];    
 }
 
-- (void)startTargeting {
-    if ([self.insideCircle.layer.animationKeys containsObject:kInsideCircleAnimationKey] && [self.outsideCircle.layer.animationKeys containsObject:kOutsideCircleAnimationKey]) {
+- (void)startTargeting
+{
+    if ([self.insideCircle.layer.animationKeys containsObject:kInsideCircleAnimationKey] && [self.outsideCircle.layer.animationKeys containsObject:kOutsideCircleAnimationKey])
+    {
         return;
     }
     
-    if ([self.insideCircle.layer.animationKeys containsObject:kRemoveCircleAnimationKey] && [self.outsideCircle.layer.animationKeys containsObject:kRemoveCircleAnimationKey]) {
+    if ([self.insideCircle.layer.animationKeys containsObject:kRemoveCircleAnimationKey] && [self.outsideCircle.layer.animationKeys containsObject:kRemoveCircleAnimationKey])
+    {
         [self.insideCircle.layer removeAnimationForKey:kRemoveCircleAnimationKey];
         [self.outsideCircle.layer removeAnimationForKey:kRemoveCircleAnimationKey];
     }
@@ -81,8 +86,10 @@
     [self.outsideCircle.layer addAnimation:outsideCircleAnimation forKey:kOutsideCircleAnimationKey];
 }
 
-- (void)stopTargeting {
-    if (!([self.insideCircle.layer.animationKeys containsObject:kInsideCircleAnimationKey] && [self.outsideCircle.layer.animationKeys containsObject:kOutsideCircleAnimationKey])) {
+- (void)stopTargeting
+{
+    if (!([self.insideCircle.layer.animationKeys containsObject:kInsideCircleAnimationKey] && [self.outsideCircle.layer.animationKeys containsObject:kOutsideCircleAnimationKey]))
+    {
         return;
     }
     
@@ -110,7 +117,8 @@
     [self.outsideCircle.layer addAnimation:group forKey:kRemoveCircleAnimationKey];
 }
 
-- (void)layoutSubviews {
+- (void)layoutSubviews
+{
     [super layoutSubviews];
     
     CGRect frame = self.bounds;

@@ -45,6 +45,8 @@ const   NSTimeInterval  kAnimationDuration      =   0.4;
 
 @property (nonatomic)                   BOOL                didSelectAssetFromLibrary;
 
+@property (nonatomic, copy)             NSString*           videoQuality;
+
 @end
 
 @implementation VCameraViewController
@@ -62,8 +64,10 @@ const   NSTimeInterval  kAnimationDuration      =   0.4;
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    self.videoQuality = [[VThemeManager sharedThemeManager] themedCapturedVideoQualityForKey:kVCaptureVideoQuality];
 
-    self.camera = [[VCCamera alloc] initWithSessionPreset:AVCaptureSessionPresetHigh];
+    self.camera = [[VCCamera alloc] initWithSessionPreset:self.videoQuality];
     self.camera.delegate = self;
     self.camera.enableSound = YES;
     self.camera.previewVideoGravity = VCVideoGravityResizeAspectFill;
@@ -259,13 +263,13 @@ const   NSTimeInterval  kAnimationDuration      =   0.4;
                           }
                          completion:^(BOOL finished)
          {
-             self.camera.sessionPreset = AVCaptureSessionPresetHigh;
+             self.camera.sessionPreset = self.videoQuality;
              [self.switchCameraModeButton setImage:[UIImage imageNamed:@"cameraButtonSwitchToPhoto"] forState:UIControlStateNormal];
              self.camera.flashMode = VCFlashModeOff;
              [self setLastImageSavedToAlbum];
          }];
     }
-    else if (self.camera.sessionPreset == AVCaptureSessionPresetHigh)
+    else if (self.camera.sessionPreset == self.videoQuality)
     {
         [UIView animateWithDuration:kAnimationDuration delay:0 options:UIViewAnimationOptionCurveEaseInOut
                          animations:^{

@@ -7,6 +7,8 @@
 //
 
 #import "VThemeManager.h"
+#import <AVFoundation/AVAssetExportSession.h>
+#import <AVFoundation/AVCaptureSession.h>
 
 #pragma mark - new theme constants
 NSString*   const   kVThemeManagerThemeDidChange        =   @"VThemeManagerThemeDidChange";
@@ -16,6 +18,9 @@ NSString*   const   kVChannelURLPrivacy                 =   @"channel.url.privac
 NSString*   const   kVChannelURLAcknowledgements        =   @"channel.url.acknowledgements";
 NSString*   const   kVChannelURLSupport                 =   @"channel.url.support";
 NSString*   const   kVChannelName                       =   @"channel.name";
+
+NSString*   const   kVCaptureVideoQuality               =   @"videoQuality.capture";
+NSString*   const   kVExportVideoQuality                =   @"videoQuality.remix";
 
 NSString*   const   kVAgreementText                     =   @"agreement.text";
 NSString*   const   kVAgreementLinkText                 =   @"agreement.linkText";
@@ -251,4 +256,31 @@ NSString*   const   kVNewThemeKey                       =   @"kVNewTheme";
     return [UIFont fontWithName:fontName size:fontSize];
 }
 
+- (NSString *)themedExportVideoQualityForKey:(NSString *)key
+{
+    NSString*   value   =   [self themedStringForKey:key];
+    
+    if ([value isEqualToString:@"low"])
+        return  AVAssetExportPresetLowQuality;
+    else if ([value isEqualToString:@"medium"])
+        return  AVAssetExportPresetMediumQuality;
+    else if ([value isEqualToString:@"high"])
+        return  AVAssetExportPresetHighestQuality;
+    else
+        return AVAssetExportPresetMediumQuality;
+}
+
+- (NSString *)themedCapturedVideoQualityForKey:(NSString *)key
+{
+    NSString*   value   =   [self themedStringForKey:key];
+
+    if ([value isEqualToString:@"low"])
+        return  AVCaptureSessionPresetLow;
+    else if ([value isEqualToString:@"medium"])
+        return  AVCaptureSessionPresetMedium;
+    else if ([value isEqualToString:@"high"])
+        return  AVCaptureSessionPresetHigh;
+    else
+        return AVCaptureSessionPresetMedium;
+}
 @end
