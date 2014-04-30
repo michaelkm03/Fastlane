@@ -96,8 +96,8 @@
     
     if ([self.textView.text isEmpty])
     {
-        UIAlertView*    alert   = [[UIAlertView alloc] initWithTitle:@"Description Required"
-                                                             message:@"You need to enter a description for your media."
+        UIAlertView*    alert   = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"PublishDescriptionRequired", @"")
+                                                             message:NSLocalizedString(@"PublishDescription", @"")
                                                             delegate:nil
                                                    cancelButtonTitle:nil
                                                    otherButtonTitles:NSLocalizedString(@"OKButton", @""), nil];
@@ -107,6 +107,14 @@
     
     VShareOptions shareOptions = self.useFacebook ? kVShareToFacebook : kVShareNone;
     shareOptions = self.useTwitter ? shareOptions | kVShareToTwitter : shareOptions;
+    
+    NSError*    error;
+    NSData* mediaData = [NSData dataWithContentsOfURL:self.mediaURL options:NSDataReadingMappedIfSafe error:&error];
+    if (!mediaData)
+    {
+        return; // TODO: some kind of error message here?
+    }
+
 
     CGFloat playbackSpeed;
     if (self.playBackSpeed == kVPlaybackNormalSpeed)
@@ -221,7 +229,7 @@
                                                                                       target:nil
                                                                                       action:nil];
     
-    self.countDownLabel = [[UIBarButtonItem alloc] initWithTitle:@"140"
+    self.countDownLabel = [[UIBarButtonItem alloc] initWithTitle:[NSNumberFormatter localizedStringFromNumber:@(VConstantsMessageLength) numberStyle:NSNumberFormatterDecimalStyle]
                                                            style:UIBarButtonItemStyleBordered
                                                             target:nil
                                                           action:nil];
@@ -235,7 +243,7 @@
 - (void)textViewDidChange:(UITextView *)textView
 {
     self.textViewPlaceholderLabel.hidden = ([textView.text length] > 0);
-    self.countDownLabel.title = [NSNumberFormatter localizedStringFromNumber:@(140.0 - self.textView.text.length)
+    self.countDownLabel.title = [NSNumberFormatter localizedStringFromNumber:@(VConstantsMessageLength - self.textView.text.length)
                                                                  numberStyle:NSNumberFormatterDecimalStyle];
 }
 
