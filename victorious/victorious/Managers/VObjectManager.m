@@ -247,6 +247,66 @@
     return operation;
 }
 
+- (AFHTTPRequestOperation*)uploadURLs:(NSDictionary*)allUrls
+                       fileExtensions:(NSDictionary*)allExtensions
+                               toPath:(NSString*)path
+                           parameters:(NSDictionary*)parameters
+                         successBlock:(VSuccessBlock)successBlock
+                            failBlock:(VFailBlock)failBlock
+{
+    if ([path isEmpty])
+    {
+        //Something has gone horribly wrong, so fail.
+        if (failBlock)
+            failBlock(nil, nil);
+        return nil;
+    }
+    
+    [self updateHTTPHeadersForPath:path method:RKRequestMethodPOST];
+    
+    NSMutableURLRequest *request =
+    [self.HTTPClient multipartFormRequestWithMethod:@"POST"
+                                               path:path
+                                         parameters:parameters
+                          constructingBodyWithBlock: ^(id <AFMultipartFormData>formData)
+     {
+         [allUrls enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop)
+          {
+              NSString* extension = allExtensions[key];
+              if(extension)
+              {
+                  NSString* mimeType = [extension isEqualToString:VConstantMediaExtensionMOV]
+                  ? @"video/quicktime" : @"image/png";
+                  
+                  [formData appendPartWithFileURL:obj
+                                             name:key
+                                         fileName:[key stringByAppendingPathExtension:extension]
+                                         mimeType:mimeType
+                                            error:nil];
+              }
+          }];
+     }];
+    
+    //Wrap the vsuccess block in a afsuccess block
+    void (^afSuccessBlock)(AFHTTPRequestOperation *operation, id responseObject)  = ^(AFHTTPRequestOperation *operation, id responseObject)
+    {
+        NSError* error = [self errorForResponse:responseObject];
+        
+        if (error && failBlock)
+            failBlock(operation, error);
+        
+        if (!error && successBlock)
+            successBlock(operation, responseObject, nil);
+    };
+    
+    AFHTTPRequestOperation *operation = [self.HTTPClient HTTPRequestOperationWithRequest:request
+                                                                                 success:afSuccessBlock
+                                                                                 failure:failBlock];
+    [operation start];
+    return operation;
+}
+
+
 - (NSError*)errorForResponse:(NSDictionary*)responseObject
 {
     if ([responseObject[@"error"] integerValue] == 0)

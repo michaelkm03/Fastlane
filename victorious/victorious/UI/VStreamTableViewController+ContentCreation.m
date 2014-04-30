@@ -95,13 +95,22 @@
                      media2URL:(NSURL *)media2URL
                media2Extension:(NSString *)media2Extension
 {
+    __block NSURL* firstRemovalURL = media1URL;
+    __block NSURL* secondRemovalURL = media2URL;
+    
     VSuccessBlock success = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
     {
         NSLog(@"%@", resultObjects);
+        
+        [[NSFileManager defaultManager] removeItemAtURL:firstRemovalURL error:nil];
+        [[NSFileManager defaultManager] removeItemAtURL:secondRemovalURL error:nil];
     };
     VFailBlock fail = ^(NSOperation* operation, NSError* error)
     {
         NSLog(@"%@", error);
+        
+        [[NSFileManager defaultManager] removeItemAtURL:firstRemovalURL error:nil];
+        [[NSFileManager defaultManager] removeItemAtURL:secondRemovalURL error:nil];
         
         if (5500 == error.code)
         {
@@ -123,20 +132,14 @@
         }
     };
     
-    NSData *media1Data = [NSData dataWithContentsOfURL:media1URL];
-    NSData *media2Data = [NSData dataWithContentsOfURL:media2URL];
-    
-    [[NSFileManager defaultManager] removeItemAtURL:media1URL error:nil];
-    [[NSFileManager defaultManager] removeItemAtURL:media2URL error:nil];
-    
     [[VObjectManager sharedManager] createPollWithName:question
                                            description:@"<none>"
                                               question:question
                                            answer1Text:answer1Text
                                            answer2Text:answer2Text
-                                            media1Data:media1Data
+                                            media1Url:media1URL
                                        media1Extension:media1Extension
-                                            media2Data:media2Data
+                                            media2Url:media2URL
                                        media2Extension:media2Extension
                                           successBlock:success
                                              failBlock:fail];

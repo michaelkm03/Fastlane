@@ -107,13 +107,6 @@
     
     VShareOptions shareOptions = self.useFacebook ? kVShareToFacebook : kVShareNone;
     shareOptions = self.useTwitter ? shareOptions | kVShareToTwitter : shareOptions;
-    
-    NSData* mediaData = [NSData dataWithContentsOfURL:self.mediaURL];
-    [[NSFileManager defaultManager] removeItemAtURL:self.mediaURL error:nil];
-    if (!mediaData)
-    {
-        return; // TODO: some kind of error message here?
-    }
 
     CGFloat playbackSpeed;
     if (self.playBackSpeed == kVPlaybackNormalSpeed)
@@ -123,6 +116,8 @@
     else
         playbackSpeed = 0.5;
 
+    __block NSURL* mediaToRemove = self.mediaURL;
+    
     [[VObjectManager sharedManager] uploadMediaWithName:self.textView.text
                                             description:self.textView.text
                                               expiresAt:self.expirationDateString
@@ -130,12 +125,14 @@
                                                   speed:playbackSpeed
                                                loopType:self.playbackLooping
                                            shareOptions:shareOptions
-                                              mediaData:mediaData
+                                               mediaURL:self.mediaURL
                                               extension:self.mediaExtension
                                            successBlock:^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
     {
         VLog(@"Succeeded with objects: %@", resultObjects);
-
+        
+        [[NSFileManager defaultManager] removeItemAtURL:mediaToRemove error:nil];
+        
         UIAlertView*    alert   = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"PublishSucceeded", @"")
                                                              message:NSLocalizedString(@"PublishSucceededDetail", @"")
                                                             delegate:nil
@@ -146,6 +143,8 @@
                                               failBlock:^(NSOperation* operation, NSError* error)
     {
         VLog(@"Failed with error: %@", error);
+
+        [[NSFileManager defaultManager] removeItemAtURL:mediaToRemove error:nil];
         
         if (5500 == error.code)
         {

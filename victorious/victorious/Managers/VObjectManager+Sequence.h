@@ -53,9 +53,9 @@ extern NSString* const kPollResultsLoaded;
                                        question:(NSString*)question
                                     answer1Text:(NSString*)answer1Text
                                     answer2Text:(NSString*)answer2Text
-                                     media1Data:(NSData*)media1Data
+                                      media1Url:(NSURL*)media1Url
                                 media1Extension:(NSString*)media1Extension
-                                     media2Data:(NSData*)media2Data
+                                      media2Url:(NSURL*)media2Url
                                 media2Extension:(NSString*)media2Extension
                                    successBlock:(VSuccessBlock)success
                                       failBlock:(VFailBlock)fail;
@@ -67,7 +67,7 @@ extern NSString* const kPollResultsLoaded;
                                            speed:(CGFloat)speed
                                         loopType:(VLoopType)loopType
                                     shareOptions:(VShareOptions)shareOptions
-                                       mediaData:(NSData*)mediaData
+                                        mediaURL:(NSURL*)mediaUrl
                                        extension:(NSString*)extension
                                     successBlock:(VSuccessBlock)success
                                        failBlock:(VFailBlock)fail;

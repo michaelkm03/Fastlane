@@ -47,6 +47,14 @@
                      successBlock:(VSuccessBlock)successBlock
                         failBlock:(VFailBlock)failBlock;
 
+- (AFHTTPRequestOperation*)uploadURLs:(NSDictionary*)allUrls
+                       fileExtensions:(NSDictionary*)allExtensions
+                               toPath:(NSString*)path
+                           parameters:(NSDictionary*)parameters
+                         successBlock:(VSuccessBlock)successBlock
+                            failBlock:(VFailBlock)failBlock;
+
+
 -(VPaginationStatus *)statusForKey:(NSString*)key;
 
 @end
