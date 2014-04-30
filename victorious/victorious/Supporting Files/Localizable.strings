@@ -9,6 +9,9 @@
 "OKButton"              =   "OK";
 "CancelButton"          =   "Cancel";
 "DeleteButton"          =   "Delete";
+"ResetButton"           =   "Reset";
+"YesButton"             =   "Yes";
+"NoButton"              =   "No";
 
 "SetupButton"           =   "Set up";
 "EmailValidation"       =   "Invalid Email Address";
@@ -56,7 +59,13 @@
 "PublishSucceeded"      =   "Publish Succeeded";
 "PublishSucceededDetail"    =   "Your media has been submitted to the server";
 
+"PublishDescriptionRequired" = "Description Required";
+"PublishDescription"    =   "You need to enter a description for your media.";
+
 "ReplaceVideo"          =   "Replace Video";
+
+"CancelExpiration"      =   "Cancel Expiration?";
+"CancelExirationConfirm" = "Are you sure you want to cancel out of setting an expiration date?";
 
 "Now"                   =   "Now";
 "SecondsAgo"            =   "%ds";
