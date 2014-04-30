@@ -76,7 +76,7 @@ const   NSTimeInterval  kAnimationDuration      =   0.4;
 {
     [super viewDidLoad];
     
-    self.videoQuality = [[VThemeManager sharedThemeManager] themedCapturedVideoQualityForKey:kVCaptureVideoQuality];
+    self.videoQuality = [[VThemeManager sharedThemeManager] themedCapturedVideoQuality];
 
     self.camera = [[VCCamera alloc] initWithSessionPreset:(self.allowVideo ? self.videoQuality : AVCaptureSessionPresetPhoto)];
     self.camera.delegate = self;

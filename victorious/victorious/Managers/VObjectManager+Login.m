@@ -39,6 +39,16 @@ NSString *kLoggedInChangedNotification = @"LoggedInChangedNotification";
         if (newTheme && [newTheme isKindOfClass:[NSDictionary class]])
             [[VThemeManager sharedThemeManager] setTheme:newTheme];
         
+        NSDictionary* videoQuality = payload[@"video_quality"];
+        if (videoQuality && [videoQuality isKindOfClass:[NSDictionary class]])
+        {
+            [videoQuality enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop)
+             {
+                 [[NSUserDefaults standardUserDefaults] setObject:obj forKey:key];
+             }];
+
+        }
+        
         if (success)
             success(operation, fullResponse, resultObjects);
     };

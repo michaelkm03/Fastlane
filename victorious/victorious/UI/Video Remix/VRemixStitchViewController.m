@@ -235,7 +235,7 @@
     NSURL*      target  =   [NSURL fileURLWithPath:[[NSTemporaryDirectory() stringByAppendingPathComponent:@"stitchedMovieSegment"] stringByAppendingPathExtension:@"mp4"] isDirectory:NO];
     [[NSFileManager defaultManager] removeItemAtURL:target error:nil];
     
-    NSString*   videoQuality = [[VThemeManager sharedThemeManager] themedExportVideoQualityForKey:kVExportVideoQuality];
+    NSString*   videoQuality = [[VThemeManager sharedThemeManager] themedExportVideoQuality];
 
     self.exportSession  = [[AVAssetExportSession alloc] initWithAsset:mutableComposition presetName:videoQuality];
     self.exportSession.outputURL = target;
