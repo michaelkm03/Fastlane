@@ -108,14 +108,6 @@
     VShareOptions shareOptions = self.useFacebook ? kVShareToFacebook : kVShareNone;
     shareOptions = self.useTwitter ? shareOptions | kVShareToTwitter : shareOptions;
     
-    NSError*    error;
-    NSData* mediaData = [NSData dataWithContentsOfURL:self.mediaURL options:NSDataReadingMappedIfSafe error:&error];
-    if (!mediaData)
-    {
-        return; // TODO: some kind of error message here?
-    }
-
-
     CGFloat playbackSpeed;
     if (self.playBackSpeed == kVPlaybackNormalSpeed)
         playbackSpeed = 1.0;
