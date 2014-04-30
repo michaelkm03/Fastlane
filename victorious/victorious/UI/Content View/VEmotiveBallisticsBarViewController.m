@@ -14,6 +14,7 @@
 
 #import "VThemeManager.h"
 
+#import "VVoteResult.h"
 #import "VVoteType+Fetcher.h"
 #import "VSequence+Fetcher.h"
 
@@ -75,6 +76,17 @@
     
     NSArray* voteCounts = [self.voteCounts objectsForKeys:voteTypes notFoundMarker:[NSNull null]];
     
+    __block NSManagedObjectContext* context;
+    [self.voteCounts enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop)
+    {
+        NSPredicate* sortPredicate = [NSPredicate predicateWithFormat:@"remoteId == %d", ((NSNumber*)key).integerValue];
+        
+        VVoteResult* vote = (VVoteResult*)[[[self.sequence.voteResults filteredSetUsingPredicate:sortPredicate] allObjects] firstObject];
+        vote.count = @(vote.count.integerValue + ((NSNumber*)obj).integerValue);
+        context = vote.managedObjectContext;
+    }];
+    [context save:nil];
+    
     if ([voteTypes count])
     {
         [[VObjectManager sharedManager] voteSequence:self.sequence
@@ -94,6 +106,8 @@
              VLog(@"Failed with error: %@", error);
          }];
     }
+    
+    [self.voteCounts removeAllObjects];
 }
 
 - (void)setSequence:(VSequence *)sequence
@@ -128,7 +142,6 @@
 
 - (IBAction)pressedNegativeEmotive:(id)sender
 {
-    
     if (![VObjectManager sharedManager].mainUser)
     {
         [self presentViewController:[VLoginViewController loginViewController] animated:YES completion:NULL];
