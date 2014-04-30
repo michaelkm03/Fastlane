@@ -40,7 +40,7 @@
     [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
     
     // report the error inside the webview
-    NSString* errorString = @"<html><center><font size=+5 color='red'>About Page</font></center></html>";
+    NSString* errorString = @"<html><center><font size=+5 color='red'>Failed To Load Page</font></center></html>";
     [self.webView loadHTMLString:errorString baseURL:nil];
 }
 
