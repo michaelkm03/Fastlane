@@ -95,7 +95,7 @@
 }
 
 - (AFHTTPRequestOperation *)addCommentWithText:(NSString*)text
-                                          Data:(NSData*)data
+                                      mediaURL:(NSURL*)mediaURL
                                 mediaExtension:(NSString*)extension
                                       mediaUrl:(NSURL*)mediaUrl
                                     toSequence:(VSequence*)sequence
@@ -108,10 +108,10 @@
                                  @"parent_id" : parent.remoteId.stringValue ?: [NSNull null],
                                  @"text" : text ?: [NSNull null]};
     
-    NSDictionary *allData, *allExtensions;
-    if (data && extension)
+    NSDictionary *allURLs, *allExtensions;
+    if (mediaURL && extension)
     {
-        allData = @{@"media_data":data};
+        allURLs = @{@"media_data":mediaURL};
         allExtensions = @{@"media_type":type};
     }
     
@@ -146,12 +146,12 @@
                       failBlock:fail];
     };
     
-    return [self upload:allData
-          fileExtension:allExtensions
-                 toPath:@"/api/comment/add"
-             parameters:parameters
-           successBlock:fullSuccess
-              failBlock:fail];
+    return [self uploadURLs:allURLs
+             fileExtensions:allExtensions
+                     toPath:@"/api/comment/add"
+                 parameters:parameters
+               successBlock:fullSuccess
+                  failBlock:fail];
 }
 
 - (RKManagedObjectRequestOperation *)removeComment:(VComment*)comment

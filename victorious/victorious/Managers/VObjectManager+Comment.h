@@ -13,7 +13,7 @@
 @interface VObjectManager (Comment)
 
 - (AFHTTPRequestOperation *)addCommentWithText:(NSString*)text
-                                          Data:(NSData*)data
+                                      mediaURL:(NSURL*)mediaURL
                                 mediaExtension:(NSString*)extension
                                       mediaUrl:(NSURL*)mediaUrl
                                     toSequence:(VSequence*)sequence

@@ -191,7 +191,7 @@
 
 - (AFHTTPRequestOperation *)sendMessageToUser:(VUser*)user
                                      withText:(NSString*)text
-                                         Data:(NSData*)data
+                                     mediaURL:(NSURL*)mediaURL
                                mediaExtension:(NSString*)extension
                                      mediaUrl:(NSURL*)mediaUrl
                                  successBlock:(VSuccessBlock)success
@@ -201,19 +201,19 @@
     NSDictionary* parameters = @{@"to_user_id" : user.remoteId.stringValue ?: [NSNull null],
                                  @"text" : text ?: [NSNull null]
                                  };
-    NSDictionary *allData, *allExtensions;
-    if (data && extension)
+    NSDictionary *allURLs, *allExtensions;
+    if (mediaURL && extension)
     {
-        allData = @{@"media_data":data};
+        allURLs = @{@"media_data":mediaURL};
         allExtensions = @{@"media_data":extension};
     }
     
-    return [self upload:allData
-          fileExtension:allExtensions
-                 toPath:@"/api/message/send"
-             parameters:parameters
-           successBlock:success
-              failBlock:fail];
+    return [self uploadURLs:allURLs
+             fileExtensions:allExtensions
+                     toPath:@"/api/message/send"
+                 parameters:parameters
+               successBlock:success
+                  failBlock:fail];
 }
 
 - (RKManagedObjectRequestOperation *)unreadCountForConversationsWithSuccessBlock:(VSuccessBlock)success

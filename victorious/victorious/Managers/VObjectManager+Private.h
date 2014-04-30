@@ -38,15 +38,8 @@
                                 failBlock:(VFailBlock)failBlock;
 
 /*! Uses multipartFormRestquest to upload media.
- * allData key:value must be NSString* parameterName:NSData* binaryData
- * allExtensions must have same keys are allData, values are NSString* fileExtension */
-- (AFHTTPRequestOperation*)upload:(NSDictionary*)allData
-                    fileExtension:(NSDictionary*)allExtensions
-                           toPath:(NSString*)path
-                       parameters:(NSDictionary*)parameters
-                     successBlock:(VSuccessBlock)successBlock
-                        failBlock:(VFailBlock)failBlock;
-
+ * allURLs key:value must be NSString* parameterName:NSURL* localURL
+ * allExtensions must have same keys are allURLs, values are NSString* fileExtension */
 - (AFHTTPRequestOperation*)uploadURLs:(NSDictionary*)allUrls
                        fileExtensions:(NSDictionary*)allExtensions
                                toPath:(NSString*)path

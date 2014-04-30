@@ -132,14 +132,20 @@
     indicator.center = self.view.center;
     [indicator startAnimating];
     
+    __block NSURL* urlToRemove = mediaURL;
+    
     VSuccessBlock success = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
     {
         NSLog(@"%@", resultObjects);
         [indicator stopAnimating];
+        [[NSFileManager defaultManager] removeItemAtURL:urlToRemove error:nil];
+        
         [(VCommentsTableViewController *)self.conversationTableViewController sortComments];
     };
     VFailBlock fail = ^(NSOperation* operation, NSError* error)
     {
+        [[NSFileManager defaultManager] removeItemAtURL:urlToRemove error:nil];
+        
         if (error.code == 5500)
         {
             NSLog(@"%@", error);
@@ -155,12 +161,10 @@
         }
         [indicator stopAnimating];
     };
-    
-    NSData *data = [NSData dataWithContentsOfURL:mediaURL];
-    [[NSFileManager defaultManager] removeItemAtURL:mediaURL error:nil];
+
     
     [[VObjectManager sharedManager] addCommentWithText:text
-                                                  Data:data
+                                              mediaURL:mediaURL
                                         mediaExtension:mediaExtension
                                               mediaUrl:nil
                                             toSequence:_sequence

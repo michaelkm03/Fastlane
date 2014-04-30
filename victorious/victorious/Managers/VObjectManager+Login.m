@@ -213,7 +213,7 @@ NSString *kLoggedInChangedNotification = @"LoggedInChangedNotification";
 - (AFHTTPRequestOperation *)updateVictoriousWithEmail:(NSString *)email
                                              password:(NSString *)password
                                              username:(NSString *)username
-                                         profileImage:(NSData *)profileImage
+                                      profileImageURL:(NSURL *)profileImageURL
                                              location:(NSString *)location
                                               tagline:(NSString *)tagline
                                          successBlock:(VSuccessBlock)success
@@ -232,7 +232,7 @@ NSString *kLoggedInChangedNotification = @"LoggedInChangedNotification";
     if (tagline)
         [params setObject:tagline forKey:@"profile_tagline"];
     
-    NSDictionary* allData = @{@"profile_image":profileImage ?: [NSNull null]};
+    NSDictionary* allURLs = @{@"profile_image":profileImageURL ?: [NSNull null]};
     NSDictionary* allExtensions = @{@"media_data":VConstantMediaExtensionJPG};
     
     VSuccessBlock fullSuccess = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
@@ -252,12 +252,12 @@ NSString *kLoggedInChangedNotification = @"LoggedInChangedNotification";
          }];
     };
     
-    return [self upload:allData
-          fileExtension:allExtensions
-                 toPath:@"/api/account/update"
-             parameters:[params copy]
-           successBlock:fullSuccess
-              failBlock:fail];
+    return [self uploadURLs:allURLs
+             fileExtensions:allExtensions
+                     toPath:@"/api/account/update"
+                 parameters:[params copy]
+               successBlock:fullSuccess
+                  failBlock:fail];
 }
 
 #pragma mark - LoggedIn
