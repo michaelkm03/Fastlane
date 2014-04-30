@@ -45,6 +45,9 @@
     
     [self.resultArrow removeFromSuperview];
     self.resultArrow = nil;
+    
+    [self.resultLabel removeFromSuperview];
+    self.resultLabel = nil;
 }
 
 - (UIView*)resultArrow
@@ -139,7 +142,7 @@
                                              self.frame.size.width, minProgress + currentProgress);
         
         CGRect frame = _resultLabel.frame;
-        frame.origin.y = CGRectGetHeight(self.frame) - CGRectGetHeight(_resultLabel.frame);
+        frame.origin.y = self.resultArrow.frame.origin.y + self.resultArrow.image.capInsets.top;
         _resultLabel.frame = frame;
         VLog(@"result frame: %@", NSStringFromCGRect(_resultLabel.frame));
         
