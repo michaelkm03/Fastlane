@@ -6,6 +6,10 @@
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
-@interface VVideoPreviewViewController : UIViewController
-@property (nonatomic, strong)   NSURL*      videoURL;
+#import "VMediaPreviewViewController.h"
+
+@interface VVideoPreviewViewController : VMediaPreviewViewController
+
++ (VVideoPreviewViewController *)videoPreviewViewController;
+
 @end

@@ -10,6 +10,8 @@
 #import "VUser.h"
 #import "VConstants.h"
 
+#import "VObjectManager+Login.h"
+
 @import CoreLocation;
 @import AddressBookUI;
 
@@ -38,6 +40,23 @@
 
 - (IBAction)done:(id)sender
 {
+    
+    [[VObjectManager sharedManager] updateVictoriousWithEmail:nil
+                                                     password:nil
+                                                     username:self.usernameTextField.text
+                                              profileImageURL:nil
+                                                     location:self.locationTextField.text
+                                                      tagline:self.taglineTextView.text
+                                                 successBlock:^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
+     {
+         VLog(@"Succeeded with objects: %@", resultObjects);
+     }
+                                                    failBlock:^(NSOperation* operation, NSError* error)
+     {
+         VLog(@"Failed with error: %@", error);
+     }];
+
+    
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 

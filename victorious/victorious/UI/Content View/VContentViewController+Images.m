@@ -26,10 +26,8 @@
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:imageUrl];
     [request addValue:@"image/*" forHTTPHeaderField:@"Accept"];
     
-    UIImage* placeholderImage = [UIImage resizeableImageWithColor:[[VThemeManager sharedThemeManager] themedColorForKey:kVBackgroundColor]];
-    
     [self.previewImage setImageWithURLRequest:request
-                             placeholderImage:placeholderImage
+                             placeholderImage:self.backgroundImage.image
                                       success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image)
      {
          CGFloat yRatio = 1;
@@ -46,16 +44,13 @@
          CGFloat videoHeight = self.mediaView.frame.size.width * yRatio;
          CGFloat videoWidth = self.mediaView.frame.size.width * xRatio;
          self.previewImage.frame = CGRectMake(0, 0, videoWidth, videoHeight);
-         
-         self.previewImage.hidden = NO;
      }
                                       failure:nil];
     
+    self.previewImage.hidden = NO;
     self.pollPreviewView.hidden = YES;
     self.mpPlayerContainmentView.hidden = YES;
     self.remixButton.hidden = YES;
-    
-    [self updateActionBar];
 }
 
 @end

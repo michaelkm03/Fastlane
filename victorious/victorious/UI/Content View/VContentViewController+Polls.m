@@ -21,12 +21,17 @@
     [UIView animateWithDuration:.2f
                      animations:^{
                          
-                         [self.firstSmallPreviewImage setXOrigin:self.firstSmallPreviewImage.frame.origin.x - 1];
-                         [self.secondSmallPreviewImage setXOrigin:self.secondSmallPreviewImage.frame.origin.x + 1];
+                         CGRect firstSmallFrame = self.firstSmallPreviewImage.frame;
+                         self.firstSmallPreviewImage.frame = CGRectMake(CGRectGetMinX(firstSmallFrame) - 1.0f, CGRectGetMinY(firstSmallFrame), CGRectGetWidth(firstSmallFrame), CGRectGetHeight(firstSmallFrame));
+                         
+                         CGRect secondSmallFrame = self.secondSmallPreviewImage.frame;
+                         self.secondSmallPreviewImage.frame = CGRectMake(CGRectGetMinX(secondSmallFrame) + 1.0f, CGRectGetMinY(secondSmallFrame), CGRectGetWidth(secondSmallFrame), CGRectGetHeight(secondSmallFrame));
                          
                          self.orImageView.hidden = ![self.currentNode isPoll];
                          self.orImageView.center = CGPointMake(self.orImageView.center.x, self.pollPreviewView.center.y);
                          self.orAnimator = [[UIDynamicAnimator alloc] initWithReferenceView:self.orContainerView];
+                         self.orAnimator.delegate = self;
+                         
                          
                          UIGravityBehavior* gravityBehavior = [[UIGravityBehavior alloc] initWithItems:@[self.orImageView]];
                          gravityBehavior.magnitude = 4;
@@ -42,12 +47,26 @@
                      }];
 }
 
+- (void)dynamicAnimatorDidPause:(UIDynamicAnimator *)animator
+{
+    if ([self.actionBarVC isKindOfClass:[VPollAnswerBarViewController class]])
+    {
+        ((VPollAnswerBarViewController*)self.actionBarVC).orImageView.hidden = NO;
+            [((VPollAnswerBarViewController*)self.actionBarVC) checkIfAnswered];
+        self.orImageView.hidden = YES;
+        
+    }
+}
+
 #pragma mark - Poll
 - (void)loadPoll
 {
     NSArray* answers = [[self.sequence firstNode] firstAnswers];
-    [self.firstSmallPreviewImage setImageWithURL:[((VAnswer*)[answers firstObject]).mediaUrl convertToPreviewImageURL]];
-    [self.secondSmallPreviewImage setImageWithURL:[((VAnswer*)[answers lastObject]).mediaUrl convertToPreviewImageURL]];
+    
+    [self.firstSmallPreviewImage setImageWithURL:[NSURL URLWithString:((VAnswer*)[answers firstObject]).thumbnailUrl]
+                                placeholderImage:self.backgroundImage.image];
+    [self.secondSmallPreviewImage setImageWithURL:[NSURL URLWithString:((VAnswer*)[answers lastObject]).thumbnailUrl]
+                                 placeholderImage:self.backgroundImage.image];
  
     if ([[((VAnswer*)[answers firstObject]).mediaUrl pathExtension] isEqualToString:VConstantMediaExtensionM3U8])
     {
@@ -70,8 +89,6 @@
     self.previewImage.hidden = YES;
     self.mpPlayerContainmentView.hidden = YES;
     self.remixButton.hidden = YES;
-    
-    [self updateActionBar];
 }
 
 - (IBAction)playPoll:(id)sender

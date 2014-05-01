@@ -22,12 +22,9 @@
 #import "VHomeStreamViewController.h"
 #import "VOwnerStreamViewController.h"
 #import "VCommunityStreamViewController.h"
-#import "VForumStreamViewController.h"
 #import "VProfileViewController.h"
 #import "VSettingsViewController.h"
 #import "VInboxViewController.h"
-
-#import "VCameraViewController.h"
 
 NSString *const VMenuControllerDidSelectRowNotification = @"VMenuTableViewControllerDidSelectRowNotification";
 
@@ -57,7 +54,7 @@ NSString *const VMenuControllerDidSelectRowNotification = @"VMenuTableViewContro
         else
             self.inboxBadgeLabel.text = @"+999";
         
-        self.inboxBadgeLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVDetailFont];
+        self.inboxBadgeLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeading2Font];
         self.inboxBadgeLabel.textColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVMainTextColor];
         self.inboxBadgeLabel.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVAccentColor];
         [self.inboxBadgeLabel setHidden:NO];
@@ -74,7 +71,7 @@ NSString *const VMenuControllerDidSelectRowNotification = @"VMenuTableViewContro
     }];
     [self.labels enumerateObjectsUsingBlock:^(UILabel *label, NSUInteger idx, BOOL *stop)
     {
-        label.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVDetailFont];
+        label.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeading4Font];
 //        label.textColor = [[VThemeManager sharedThemeManager] themedColorForKeyPath:kMenuTextColor];
     }];
     
@@ -97,8 +94,6 @@ NSString *const VMenuControllerDidSelectRowNotification = @"VMenuTableViewContro
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     UINavigationController* navigationController = (UINavigationController *)self.sideMenuViewController.contentViewController;
-
-//    __typeof__(self) __weak     weakSelf = self;
     UIViewController* currentViewController = [navigationController.viewControllers lastObject];
     
     switch (indexPath.row)
@@ -116,12 +111,6 @@ NSString *const VMenuControllerDidSelectRowNotification = @"VMenuTableViewContro
         case VMenuRowCommunityChannel:
             navigationController.viewControllers = @[[VCommunityStreamViewController sharedInstance]];
             [self.sideMenuViewController hideMenuViewController];
-        break;
-        
-        case VMenuRowForums:
-//            navigationController.viewControllers = @[[VForumStreamViewController sharedInstance]];
-//            [self.sideMenuViewController hideMenuViewController];
-            [self presentViewController:[VCameraViewController cameraViewController] animated:YES completion:nil];
         break;
         
         case VMenuRowInbox:

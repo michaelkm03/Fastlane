@@ -7,35 +7,29 @@
 //
 
 #import "VRemixStitchViewController.h"
-#import "VRemixPublishViewController.h"
+#import "VCameraPublishViewController.h"
 #import "VCVideoPlayerView.h"
 #import "VThemeManager.h"
 #import "VConstants.h"
-//#import "UIImage+Masking.h"
 #import "UIView+Masking.h"
+#import "VCameraViewController.h"
 
-@interface VRemixStitchViewController ()    <VCVideoPlayerDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate>
-@property (nonatomic, weak)     IBOutlet    VCVideoPlayerView*  previewView;;
-@property (nonatomic, weak)     IBOutlet    UIImageView*        playCircle;
-@property (nonatomic, weak)     IBOutlet    UIImageView*        playButton;
+@interface VRemixStitchViewController ()    <VCVideoPlayerDelegate, UIActionSheetDelegate>
+
 @property (nonatomic, weak)     IBOutlet    UIView*             thumbnail;
-
-@property (nonatomic, weak)     IBOutlet    UIButton*           rateButton;
-@property (nonatomic, weak)     IBOutlet    UIButton*           loopButton;
-@property (nonatomic, weak)     IBOutlet    UIButton*           muteButton;
 
 @property (nonatomic, weak)     IBOutlet    UIView*             beforeButton;
 @property (nonatomic, weak)     IBOutlet    UIView*             afterButton;
 
 @property (nonatomic, strong)   AVAssetImageGenerator*          imageGenerator;
+@property (nonatomic, strong)   AVAssetExportSession*           exportSession;
 
-@property (nonatomic, strong)   NSURL*      beforeAsset;
-@property (nonatomic, strong)   NSURL*      afterAsset;
+@property (nonatomic, strong)   NSURL*                          beforeURL;
+@property (nonatomic, strong)   NSURL*                          afterURL;
 
-@property (nonatomic)           BOOL        selectingBeforeURL;
-@property (nonatomic)           BOOL        selectingAfterURL;
+@property (nonatomic)           BOOL                            selectingBeforeURL;
+@property (nonatomic)           BOOL                            selectingAfterURL;
 
-@property (nonatomic)           BOOL        animatingPlayButton;
 @end
 
 @implementation VRemixStitchViewController
@@ -43,18 +37,9 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-
-    [self.previewView.player setItem:[AVPlayerItem playerItemWithURL:self.sourceURL]];
-    self.previewView.player.startSeconds = self.startSeconds;
-    self.previewView.player.endSeconds = self.endSeconds;
-    [self.previewView.player seekToTime:CMTimeMakeWithSeconds(self.startSeconds, NSEC_PER_SEC)];
-    [self.previewView.player play];
-
-    [self.previewView addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTapToPlayAction:)]];
-    self.previewView.userInteractionEnabled = YES;
     
-    self.previewView.player.delegate = self;
-    
+    self.targetURL = self.sourceURL;
+
     [self.thumbnail maskWithImage:[UIImage imageNamed:@"cameraThumbnailMask"]];
 
     [self setupThumbnailStrip:self.thumbnail withURL:self.sourceURL];
@@ -62,59 +47,51 @@
     [self.beforeButton addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(selectBeforeAssetClicked:)]];
     self.beforeButton.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"cameraButtonStitchLeft"]];
     self.beforeButton.userInteractionEnabled = YES;
+    [self.beforeButton maskWithImage:[UIImage imageNamed:@"cameraLeftMask"]];
     
     [self.afterButton addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(selectAfterAssetClicked:)]];
     self.afterButton.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"cameraButtonStitchRight"]];
     self.afterButton.userInteractionEnabled = YES;
+    [self.afterButton maskWithImage:[UIImage imageNamed:@"cameraRightMask"]];
 
     UIImage*    nextButtonImage = [[UIImage imageNamed:@"cameraButtonNext"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithImage:nextButtonImage style:UIBarButtonItemStyleBordered target:self action:@selector(nextButtonClicked:)];
 }
 
-- (void)viewDidAppear:(BOOL)animated
-{
-    [super viewDidAppear:animated];
-    
-    self.view.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVBackgroundColor];
-    self.navigationController.navigationBar.barTintColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVBackgroundColor];
-}
-
-- (void)viewDidDisappear:(BOOL)animated
-{
-    [super viewWillDisappear:animated];
-    
-    if (!self.previewView.player.isPlaying)
-        [self.previewView.player pause];
-}
-
-#pragma mark - SCVideoPlayerDelegate
-
-- (void)videoPlayerDidStartPlaying:(VCPlayer *)videoPlayer
-{
-    [self stopAnimation];
-}
-
-- (void)videoPlayerDidStopPlaying:(VCPlayer *)videoPlayer
-{
-    [self startAnimation];
-}
-
 #pragma mark - Actions
-
-- (IBAction)handleTapToPlayAction:(id)sender
-{
-    if (!self.previewView.player.isPlaying)
-        [self.previewView.player play];
-    else
-        [self.previewView.player pause];
-}
 
 - (IBAction)nextButtonClicked:(id)sender
 {
     if (self.previewView.player.isPlaying)
         [self.previewView.player pause];
     
-    [self performSegueWithIdentifier:@"toRemixPublish" sender:self];
+    VCameraPublishViewController *publishViewController = [VCameraPublishViewController cameraPublishViewController];
+    publishViewController.mediaURL = self.targetURL;
+    publishViewController.mediaExtension = VConstantMediaExtensionMOV;
+    publishViewController.playBackSpeed = self.playBackSpeed;
+    publishViewController.playbackLooping = self.playbackLooping;
+    publishViewController.parentID = self.parentID;
+
+    AVAsset *asset = [AVAsset assetWithURL:self.targetURL];
+    AVAssetImageGenerator *assetGenerator = [AVAssetImageGenerator assetImageGeneratorWithAsset:asset];
+    CGImageRef imageRef = [assetGenerator copyCGImageAtTime:kCMTimeZero actualTime:NULL error:NULL];
+    UIImage *previewImage = [UIImage imageWithCGImage:imageRef];
+    CGImageRelease(imageRef);
+    publishViewController.previewImage = previewImage;
+    
+    publishViewController.completion = ^(BOOL complete)
+    {
+        if (complete)
+        {
+            [self dismissViewControllerAnimated:YES completion:nil];
+        }
+        else
+        {
+            [self.navigationController popViewControllerAnimated:YES];
+        }
+    };
+    
+    [self.navigationController pushViewController:publishViewController animated:YES];
 }
 
 - (IBAction)selectBeforeAssetClicked:(id)sender
@@ -122,7 +99,19 @@
     self.selectingBeforeURL = YES;
     self.selectingAfterURL = NO;
     
-    [self selectAsset];
+    if (self.beforeURL)
+    {
+        UIActionSheet*  sheet   =   [[UIActionSheet alloc] initWithTitle:nil
+                                                                delegate:self
+                                                       cancelButtonTitle:NSLocalizedString(@"CancelButton", @"")
+                                                  destructiveButtonTitle:NSLocalizedString(@"DeleteButton", @"")
+                                                       otherButtonTitles:NSLocalizedString(@"ReplaceVideo", @""), nil];
+        [sheet showInView:self.view];
+    }
+    else
+    {
+        [self selectAsset];
+    }
 }
 
 - (IBAction)selectAfterAssetClicked:(id)sender
@@ -130,142 +119,194 @@
     self.selectingBeforeURL = NO;
     self.selectingAfterURL = YES;
     
-    [self selectAsset];
+    if (self.afterURL)
+    {
+        UIActionSheet*  sheet   =   [[UIActionSheet alloc] initWithTitle:nil
+                                                                delegate:self
+                                                       cancelButtonTitle:NSLocalizedString(@"CancelButton", @"")
+                                                  destructiveButtonTitle:NSLocalizedString(@"DeleteButton", @"")
+                                                       otherButtonTitles:NSLocalizedString(@"ReplaceVideo", @""), nil];
+        [sheet showInView:self.view];
+    }
+    else
+    {
+        [self selectAsset];
+    }
+}
+
+- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    if (buttonIndex == [actionSheet destructiveButtonIndex])
+    {
+        if (self.selectingBeforeURL)
+        {
+            self.beforeURL = nil;
+            [self.beforeButton.subviews makeObjectsPerformSelector: @selector(removeFromSuperview)];
+            self.beforeButton.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"cameraButtonStitchLeft"]];
+        }
+        
+        if (self.selectingAfterURL)
+        {
+            self.afterURL = nil;
+            [self.afterButton.subviews makeObjectsPerformSelector: @selector(removeFromSuperview)];
+            self.afterButton.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"cameraButtonStitchRight"]];
+        }
+    }
+    else if (buttonIndex == [actionSheet cancelButtonIndex])
+    {
+        
+    }
+    else
+    {
+        [self selectAsset];
+    }
 }
 
 - (void)selectAsset
 {
-    UIImagePickerController*    picker = [[UIImagePickerController alloc] init];
-    picker.delegate = self;
-    picker.mediaTypes = @[(id)kUTTypeMovie];
-    picker.allowsEditing = NO;
-    picker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
-    
-    [self presentViewController:picker animated:YES completion:nil];
-}
-
-- (IBAction)muteAudioClicked:(id)sender
-{
-    UIButton*   button = (UIButton *)sender;
-    button.selected = !button.selected;
-    self.muteAudio = button.selected;
-    self.previewView.player.muted = self.muteAudio;
-
-    if (self.muteAudio)
-        [self.muteButton setImage:[UIImage imageNamed:@"cameraButtonMute"] forState:UIControlStateNormal];
-    else
-        [self.muteButton setImage:[UIImage imageNamed:@"cameraButtonUnmute"] forState:UIControlStateNormal];
-}
-
-- (IBAction)playbackRateClicked:(id)sender
-{
-    if (self.playBackSpeed == kVPlaybackNormalSpeed)
+    VCameraViewController *cameraViewController = [VCameraViewController cameraViewController];
+    cameraViewController.completionBlock = ^(BOOL finished, UIImage *previewImage, NSURL *capturedMediaURL, NSString *mediaExtension)
     {
-        self.playBackSpeed = kVPlaybackDoubleSpeed;
-        [self.previewView.player setRate:2.0];
-        [self.rateButton setImage:[UIImage imageNamed:@"cameraButtonSpeedDouble"] forState:UIControlStateNormal];
-    }
-    else if (self.playBackSpeed == kVPlaybackDoubleSpeed)
-    {
-        self.playBackSpeed = kVPlaybackHalfSpeed;
-        [self.previewView.player setRate:0.5];
-        [self.rateButton setImage:[UIImage imageNamed:@"cameraButtonSpeedHalf"] forState:UIControlStateNormal];
-    }
-    else if (self.playBackSpeed == kVPlaybackHalfSpeed)
-    {
-        self.playBackSpeed = kVPlaybackNormalSpeed;
-        [self.previewView.player setRate:1.0];
-        [self.rateButton setImage:[UIImage imageNamed:@"cameraButtonSpeedNormal"] forState:UIControlStateNormal];
-    }
-}
+        [self dismissViewControllerAnimated:YES completion:nil];
 
-- (IBAction)playbackLoopingClicked:(id)sender
-{
-    if (self.playbackLooping == kVLoopOnce)
-    {
-        self.playbackLooping = kVLoopRepeat;
-        self.previewView.player.shouldLoop = YES;
-        [self.loopButton setImage:[UIImage imageNamed:@"cameraButtonLoop"] forState:UIControlStateNormal];
-    }
-    else if (self.playbackLooping == kVLoopRepeat)
-    {
-        self.playbackLooping = kVLoopOnce;
-        self.previewView.player.shouldLoop = NO;
-        [self.loopButton setImage:[UIImage imageNamed:@"cameraButtonNoLoop"] forState:UIControlStateNormal];
-    }
-}
+        if (finished)
+        {
+            if ([mediaExtension isEqualToString:VConstantMediaExtensionMOV])
+                [self didSelectVideo:capturedMediaURL];
+        }
+    };
 
-#pragma mark - Navigation
-
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
-{
-    if ([segue.identifier isEqualToString:@"toRemixPublish"])
-    {
-        VRemixPublishViewController*     publishViewController = (VRemixPublishViewController *)segue.destinationViewController;
-        publishViewController.videoURL = self.sourceURL;
-        publishViewController.muteAudio = self.muteAudio;
-        publishViewController.playBackSpeed = self.playBackSpeed;
-        publishViewController.playbackLooping = self.playbackLooping;
-        publishViewController.startSeconds = self.startSeconds;
-        publishViewController.endSeconds = self.endSeconds;
-    }
+    UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:cameraViewController];
+    [self presentViewController:navController animated:YES completion:nil];
 }
 
 #pragma mark - Support
 
-- (void)startAnimation
-{
-    //If we are already animating just ignore this and continue from where we are.
-    if (self.animatingPlayButton)
-        return;
-
-    self.playButton.alpha = 1.0;
-    self.playCircle.alpha = 1.0;
-    self.animatingPlayButton = YES;
-    [self firstAnimation];
-}
-
-- (void)firstAnimation
-{
-    if (self.animatingPlayButton)
-        [UIView animateKeyframesWithDuration:1.4f
-                                       delay:0
-                                     options:UIViewKeyframeAnimationOptionCalculationModeLinear
-                                  animations:^
-         {
-             [UIView addKeyframeWithRelativeStartTime:0      relativeDuration:.37f   animations:^ {self.playButton.alpha = 1.f; }];
-             [UIView addKeyframeWithRelativeStartTime:.37f   relativeDuration:.21f   animations:^ {self.playButton.alpha = .3f; }];
-             [UIView addKeyframeWithRelativeStartTime:.58f   relativeDuration:.17f   animations:^{ self.playButton.alpha = .9f; }];
-             [UIView addKeyframeWithRelativeStartTime:.75f   relativeDuration:.14f   animations:^{ self.playButton.alpha = .3f; }];
-             [UIView addKeyframeWithRelativeStartTime:.89f   relativeDuration:.11f   animations:^{ self.playButton.alpha = .5f; }];
-         }
-                                  completion:^(BOOL finished)
-         {
-             [self performSelector:@selector(firstAnimation) withObject:nil afterDelay:3.5f];
-         }];
-}
-
-- (void)stopAnimation
-{
-    self.animatingPlayButton = NO;
-    self.playButton.alpha = 0.0;
-    self.playCircle.alpha = 0.0;
-}
-
-- (void)didSelectVideo:(NSURL *)asset
+- (void)didSelectVideo:(NSURL *)url
 {
     if (self.selectingBeforeURL)
     {
-        self.beforeAsset = asset;
+        self.beforeURL = url;
         self.beforeButton.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
-        [self setupThumbnailStrip:self.beforeButton withURL:asset];
+        [self.beforeButton.subviews makeObjectsPerformSelector:@selector(removeFromSuperview)];
+        [self setupThumbnailStrip:self.beforeButton withURL:url];
     }
     else if (self.selectingAfterURL)
     {
-        self.afterAsset = asset;
+        self.afterURL = url;
         self.afterButton.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
-        [self setupThumbnailStrip:self.afterButton withURL:asset];
+        [self.afterButton.subviews makeObjectsPerformSelector:@selector(removeFromSuperview)];
+        [self setupThumbnailStrip:self.afterButton withURL:url];
     }
+    
+    [self compositeVideo];
+}
+
+- (void)compositeVideo
+{
+    AVMutableComposition*       mutableComposition      =   [AVMutableComposition composition];
+    AVMutableCompositionTrack*  videoCompositionTrack   =   [mutableComposition addMutableTrackWithMediaType:AVMediaTypeVideo preferredTrackID:kCMPersistentTrackID_Invalid];
+    AVMutableCompositionTrack*  audioCompositionTrack   =   [mutableComposition addMutableTrackWithMediaType:AVMediaTypeAudio preferredTrackID:kCMPersistentTrackID_Invalid];
+    NSMutableArray*             instructions            =   [NSMutableArray arrayWithCapacity:3];
+
+    if (self.beforeURL)
+    {
+        AVMutableVideoCompositionInstruction*  instruction = [self addAssetURL:self.beforeURL videoCompositionTrack:videoCompositionTrack audioCompositionTrack:(self.shouldMuteAudio) ? nil : audioCompositionTrack atTime:kCMTimeZero];
+        [instructions addObject:instruction];
+    }
+    
+    if (self.sourceURL)
+    {
+        AVMutableVideoCompositionInstruction*  instruction = [self addAssetURL:self.sourceURL videoCompositionTrack:videoCompositionTrack audioCompositionTrack:(self.shouldMuteAudio) ? nil : audioCompositionTrack atTime:mutableComposition.duration];
+        [instructions addObject:instruction];
+    }
+    
+    if (self.afterURL)
+    {
+        AVMutableVideoCompositionInstruction*  instruction = [self addAssetURL:self.afterURL videoCompositionTrack:videoCompositionTrack audioCompositionTrack:(self.shouldMuteAudio) ? nil : audioCompositionTrack atTime:mutableComposition.duration];
+        [instructions addObject:instruction];
+    }
+    
+    AVMutableVideoComposition*  mainCompositionInst = [AVMutableVideoComposition videoComposition];
+    mainCompositionInst.instructions = instructions;
+    mainCompositionInst.frameDuration = CMTimeMake(1, 30);
+    mainCompositionInst.renderSize = CGSizeMake(320.0, 320.0);
+    
+    NSURL*      target  =   [NSURL fileURLWithPath:[[NSTemporaryDirectory() stringByAppendingPathComponent:@"stitchedMovieSegment"] stringByAppendingPathExtension:@"mp4"] isDirectory:NO];
+    [[NSFileManager defaultManager] removeItemAtURL:target error:nil];
+    
+    NSString*   videoQuality = [[VThemeManager sharedThemeManager] themedExportVideoQuality];
+
+    self.exportSession  = [[AVAssetExportSession alloc] initWithAsset:mutableComposition presetName:videoQuality];
+    self.exportSession.outputURL = target;
+    self.exportSession.outputFileType = AVFileTypeMPEG4;
+    self.exportSession.shouldOptimizeForNetworkUse = YES;
+    self.exportSession.videoComposition = mainCompositionInst;
+    
+    [self.exportSession exportAsynchronouslyWithCompletionHandler:^{
+        dispatch_async(dispatch_get_main_queue(), ^{
+            switch ([self.exportSession status])
+            {
+                case AVAssetExportSessionStatusFailed:
+                    NSLog(@"Export failed: %@ : %@", [[self.exportSession error] localizedDescription], [self.exportSession error]);
+                    break;
+                case AVAssetExportSessionStatusCancelled:
+                    NSLog(@"Export canceled");
+                    break;
+                default:
+                    NSLog(@"Export Complete");
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        self.targetURL = target;
+                        [self.previewView.player setItemByUrl:target];
+                    });
+                    break;
+            }
+        });
+    }];
+}
+
+- (AVMutableVideoCompositionInstruction *)addAssetURL:(NSURL *)assetURL videoCompositionTrack:(AVMutableCompositionTrack *)videoCompositionTrack audioCompositionTrack:(AVMutableCompositionTrack *)audioCompositionTrack atTime:(CMTime)insertionTime
+{
+    AVAsset*        asset       =   [AVAsset assetWithURL:assetURL];
+    AVAssetTrack*   videoTrack  =   [asset tracksWithMediaType:AVMediaTypeVideo][0];
+    AVAssetTrack*   audiotrack  =   [asset tracksWithMediaType:AVMediaTypeAudio][0];
+
+    [videoCompositionTrack insertTimeRange:CMTimeRangeMake(kCMTimeZero, asset.duration) ofTrack:videoTrack atTime:insertionTime error:nil];
+    if (audioCompositionTrack)
+    {
+        [audioCompositionTrack insertTimeRange:CMTimeRangeMake(kCMTimeZero, asset.duration) ofTrack:audiotrack atTime:insertionTime error:nil];
+    }
+
+    AVMutableVideoCompositionInstruction*   instruction =   [AVMutableVideoCompositionInstruction videoCompositionInstruction];
+    instruction.timeRange = CMTimeRangeMake(insertionTime, asset.duration);
+    
+    AVMutableVideoCompositionLayerInstruction*  videoLayerInstruction   = [AVMutableVideoCompositionLayerInstruction videoCompositionLayerInstructionWithAssetTrack:videoCompositionTrack];
+    CGAffineTransform                           transform = videoTrack.preferredTransform;
+    BOOL                                        isAssetPortrait         =   NO;
+    if (transform.a == 0 && transform.b == 1.0 && transform.c == -1.0 && transform.d == 0)
+        isAssetPortrait = YES;
+
+    if (transform.a == 0 && transform.b == -1.0 && transform.c == 1.0 && transform.d == 0)
+        isAssetPortrait = YES;
+
+    CGFloat assetScaleToFitRatio = 320.0 / videoTrack.naturalSize.width;
+    if (isAssetPortrait)
+    {
+        assetScaleToFitRatio = 320.0 / videoTrack.naturalSize.height;
+        CGAffineTransform assetScaleFactor = CGAffineTransformMakeScale(assetScaleToFitRatio, assetScaleToFitRatio);
+        [videoLayerInstruction setTransform:CGAffineTransformConcat(videoTrack.preferredTransform, assetScaleFactor) atTime:insertionTime];
+    }
+    else
+    {
+        CGAffineTransform assetScaleFactor = CGAffineTransformMakeScale(assetScaleToFitRatio, assetScaleToFitRatio);
+        CGFloat naturalHeight = videoTrack.naturalSize.height * assetScaleToFitRatio;
+        CGFloat offset = (320.0 - naturalHeight) / 2.0;
+        [videoLayerInstruction setTransform:CGAffineTransformConcat(CGAffineTransformConcat(videoTrack.preferredTransform, assetScaleFactor),CGAffineTransformMakeTranslation(0, offset)) atTime:insertionTime];
+    }
+
+    instruction.layerInstructions = @[videoLayerInstruction];
+
+    return instruction;
 }
 
 - (void)setupThumbnailStrip:(UIView *)background withURL:(NSURL *)aURL
@@ -283,7 +324,7 @@
     for (int i=0; i<picsCnt; i++)
     {
         time4Pic = i * picWidth;
-        CMTime timeFrame = CMTimeMakeWithSeconds(durationSeconds*time4Pic/background.frame.size.width, 600);
+        CMTime timeFrame = CMTimeMakeWithSeconds(durationSeconds * time4Pic / background.frame.size.width, 600);
         [allTimes addObject:[NSValue valueWithCMTime:timeFrame]];
     }
     
@@ -314,6 +355,7 @@
              
              dispatch_async(dispatch_get_main_queue(), ^{
                  [background addSubview:tmp];
+                 [background setNeedsDisplay];
              });
          }
          
@@ -326,24 +368,6 @@
              NSLog(@"Canceled");
          }
      }];
-}
-
-#pragma mark - UIImagePickerControllerDelegate
-
-- (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info
-{
-    NSString *mediaType = info[UIImagePickerControllerMediaType];
-    if ([mediaType isEqualToString:(id)kUTTypeMovie])
-    {
-        [self didSelectVideo:info[UIImagePickerControllerMediaURL]];
-    }
-
-    [self dismissViewControllerAnimated:YES completion:nil];
-}
-
-- (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker
-{
-    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 @end

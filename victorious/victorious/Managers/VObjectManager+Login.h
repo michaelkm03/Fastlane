@@ -52,7 +52,7 @@ extern NSString *kLoggedInChangedNotification;
 - (AFHTTPRequestOperation *)updateVictoriousWithEmail:(NSString *)email
                                              password:(NSString *)password
                                              username:(NSString *)username
-                                         profileImage:(NSData *)profileImage
+                                      profileImageURL:(NSURL *)profileImageURL
                                              location:(NSString *)location
                                               tagline:(NSString *)tagline
                                          successBlock:(VSuccessBlock)success

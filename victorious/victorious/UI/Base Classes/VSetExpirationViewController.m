@@ -48,7 +48,7 @@
     
     UIBarButtonItem*    cancelButton    =   [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(cancel:)];
     UIBarButtonItem*    flex            =   [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
-    UIBarButtonItem*    resetButton     =   [[UIBarButtonItem alloc] initWithTitle:@"Reset" style:UIBarButtonItemStyleBordered target:self action:@selector(reset:)];
+    UIBarButtonItem*    resetButton     =   [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"ResetButton", @"") style:UIBarButtonItemStyleBordered target:self action:@selector(reset:)];
     
     self.toolbarWithReset = @[cancelButton, flex, resetButton];
     self.toolbarWithoutReset = @[cancelButton, flex];
@@ -86,11 +86,11 @@
 {
     if (self.expirationDate)
     {
-        UIAlertView*    alert   =   [[UIAlertView alloc] initWithTitle:@"Cancel Expiration?"
-                                                               message:@"Are you sure you want to cancel out of setting an expiration date?"
+        UIAlertView*    alert   =   [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"CancelExpiration", @"")
+                                                               message:NSLocalizedString(@"CancelExirationConfirm", @"")
                                                               delegate:self
                                                      cancelButtonTitle:nil
-                                                     otherButtonTitles:@"No", @"Yes", nil];
+                                                     otherButtonTitles:NSLocalizedString(@"NoButton", @""), NSLocalizedString(@"YesButton", @""), nil];
         [alert show];
     }
     else

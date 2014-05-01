@@ -8,52 +8,39 @@
 
 @import AVFoundation;
 
+#import "VCameraViewController.h"
 #import "VObjectManager+Comment.h"
-
 #import "VKeyboardBarViewController.h"
-
-//#import "VSequence.h"
-//#import "VConstants.h"
-
 #import "VLoginViewController.h"
 
-@interface VKeyboardBarViewController() <UITextFieldDelegate>
-@property (weak, nonatomic, readwrite) IBOutlet UITextField *textField;
+@interface VKeyboardBarViewController() <UITextViewDelegate>
+
+@property (nonatomic, weak) IBOutlet UITextView *textView;
 @property (weak, nonatomic) IBOutlet UIButton *mediaButton;
-@property (strong, nonatomic) NSData* media;
 @property (nonatomic, strong) NSString*  mediaExtension;
 @property (nonatomic, strong) NSURL* mediaURL;
 
-//@property (weak, nonatomic) IBOutlet UICollectionView* stickersView;
-//@property (nonatomic, strong) NSArray* stickers;
-//@property (nonatomic, strong) NSData* selectedSticker;
 @end
 
 @implementation VKeyboardBarViewController
 
+- (void)dealloc
+{
+    [self.textView removeObserver:self forKeyPath:NSStringFromSelector(@selector(contentSize))];
+}
+
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
+    [self.textView addObserver:self forKeyPath:NSStringFromSelector(@selector(contentSize)) options:0 context:nil];
+}
+
 - (void)viewWillLayoutSubviews
 {
     [super viewWillLayoutSubviews];
-    self.view.frame = self.view.superview.bounds;
     
-//    [self.stickersView registerClass:[UICollectionViewCell class] forCellWithReuseIdentifier:@"stickerCell"];
     self.mediaButton.layer.cornerRadius = 2;
     self.mediaButton.clipsToBounds = YES;
-    // populate stickers array
-    
-//    [self.stickersView reloadData];
-}
-
-- (IBAction)cameraButtonAction:(id)sender
-{
-    if(![VObjectManager sharedManager].mainUser)
-    {
-        [self presentViewController:[VLoginViewController loginViewController] animated:YES completion:NULL];
-        return;
-    }
-    [self.textField resignFirstResponder];
-    
-//    [super cameraButtonAction:sender];
 }
 
 - (IBAction)sendButtonAction:(id)sender
@@ -64,17 +51,59 @@
         return;
     }
     
-    [self.textField resignFirstResponder];
-    [self.delegate didComposeWithText:self.textField.text data:self.media mediaExtension:self.mediaExtension mediaURL:self.mediaURL];
+    [self.textView resignFirstResponder];
+    [self.delegate keyboardBar:self didComposeWithText:self.textView.text mediaURL:self.mediaURL mediaExtension:self.mediaExtension];
     [self.mediaButton setImage:[UIImage imageNamed:@"MessageCamera"] forState:UIControlStateNormal];
-    self.textField.text = nil;
+    self.textView.text = nil;
     self.mediaExtension = nil;
-    self.media = nil;
     self.mediaURL = nil;
 }
 
-#pragma mark - UITextfieldDelegate
-- (BOOL)textFieldShouldBeginEditing:(UITextField *)textField
+- (void)cameraPressed:(id)sender
+{
+    if(![VObjectManager sharedManager].mainUser)
+    {
+        [self presentViewController:[VLoginViewController loginViewController] animated:YES completion:NULL];
+        return;
+    }
+    
+    VCameraViewController *cameraViewController = [VCameraViewController cameraViewController];
+    cameraViewController.completionBlock = ^(BOOL finished, UIImage *previewImage, NSURL *capturedMediaURL, NSString *mediaExtension)
+    {
+        if (finished)
+        {
+            self.mediaURL = capturedMediaURL;
+            self.mediaExtension = mediaExtension;
+            [self.mediaButton setImage:previewImage forState:UIControlStateNormal];
+        }
+        [self dismissViewControllerAnimated:YES completion:nil];
+    };
+    UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:cameraViewController];
+    [self presentViewController:navController animated:YES completion:nil];
+}
+
+- (NSAttributedString *)textViewText
+{
+    return self.textView.attributedText;
+}
+
+- (void)setTextViewText:(NSAttributedString *)textViewText
+{
+    self.textView.attributedText = textViewText;
+    if ([self respondsToSelector:@selector(textViewDidChange:)])
+    {
+        [self textViewDidChange:self.textView];
+    }
+}
+
+- (BOOL)becomeFirstResponder
+{
+    return [self.textView becomeFirstResponder];
+}
+
+#pragma mark - UITextViewDelegate methods
+
+- (BOOL)textViewShouldBeginEditing:(UITextView *)textView
 {
     if(![VObjectManager sharedManager].mainUser)
     {
@@ -84,16 +113,19 @@
     return YES;
 }
 
-#pragma mark - Overrides
-- (void)imagePickerFinishedWithData:(NSData*)data
-                          extension:(NSString*)extension
-                       previewImage:(UIImage*)previewImage
-                           mediaURL:(NSURL*)mediaURL
+- (void)textViewDidChange:(UITextView *)textView
 {
-    self.media = data;
-    self.mediaExtension = extension;
-    [self.mediaButton setImage:previewImage forState:UIControlStateNormal];
-    self.mediaURL = mediaURL;
+    self.promptLabel.hidden = ![textView.text isEqualToString:@""];
+}
+
+#pragma mark - KVO
+
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
+{
+    if (object == self.textView && [keyPath isEqualToString:NSStringFromSelector(@selector(contentSize))])
+    {
+        [self.delegate keyboardBar:self wouldLikeToBeResizedToHeight:(14.0f + self.textView.contentSize.height)];
+    }
 }
 
 @end

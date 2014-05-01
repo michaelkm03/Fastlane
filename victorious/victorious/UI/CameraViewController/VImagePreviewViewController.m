@@ -8,6 +8,7 @@
 
 #import "VImagePreviewViewController.h"
 #import "VCameraPublishViewController.h"
+#import "VConstants.h"
 #import "VThemeManager.h"
 
 @interface VImagePreviewViewController ()
@@ -19,6 +20,14 @@
 @end
 
 @implementation VImagePreviewViewController
+{
+    UIImage *_photo;
+}
+
++ (VImagePreviewViewController *)imagePreviewViewController
+{
+    return [[UIStoryboard storyboardWithName:@"Camera" bundle:nil] instantiateViewControllerWithIdentifier:NSStringFromClass(self)];
+}
 
 - (void)viewDidLoad
 {
@@ -32,8 +41,7 @@
 {
     [super viewWillAppear:animated];
     
-    if (self.photo)
-        self.previewImageView.image = self.photo;
+    self.previewImageView.image = self.photo;
     
     self.view.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVBackgroundColor];
     self.navigationController.navigationBar.barTintColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVBackgroundColor];
@@ -42,17 +50,31 @@
     self.trashAction.imageView.image = [UIImage imageNamed:@"cameraButtonDelete"];
 }
 
+- (UIImage *)photo
+{
+    if (!_photo)
+    {
+        _photo = [UIImage imageWithData:[NSData dataWithContentsOfURL:self.mediaURL]]; // self.mediaURL *should* be a local file URL.
+    }
+    return _photo;
+}
+
 #pragma mark - Actions
 
 - (void)handleDoneTapGesture:(UIGestureRecognizer *)gesture
 {
-    UIImageWriteToSavedPhotosAlbum(self.photo, nil, nil, nil);
-    [self performSegueWithIdentifier:@"toPublishFromImage" sender:self];
+    if (self.completionBlock)
+    {
+        self.completionBlock(YES, self.photo, self.mediaURL, self.mediaExtension);
+    }
 }
 
 - (IBAction)cancel:(id)sender
 {
-    [self dismissViewControllerAnimated:YES completion:nil];
+    if (self.completionBlock)
+    {
+        self.completionBlock(NO, nil, nil, nil);
+    }
 }
 
 - (IBAction)deleteAction:(id)sender
@@ -67,17 +89,6 @@
         self.inTrashState = NO;
         [self.trashAction setImage:[UIImage imageNamed:@"cameraButtonDelete"] forState:UIControlStateNormal];
         [self performSegueWithIdentifier:@"unwindToCameraControllerFromPhoto" sender:self];
-    }
-}
-
-#pragma mark - Navigation
-
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
-{
-    if ([segue.identifier isEqualToString:@"toPublishFromImage"])
-    {
-        VCameraPublishViewController*   viewController = (VCameraPublishViewController *)segue.destinationViewController;
-        viewController.photo = self.photo;
     }
 }
 

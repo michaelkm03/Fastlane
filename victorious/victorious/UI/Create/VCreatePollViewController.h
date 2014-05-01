@@ -10,7 +10,7 @@
 #import "VImagePickerViewController.h"
 #import "VImageSearchViewController.h"
 
-@interface VCreatePollViewController : VImagePickerViewController <VImageSearchViewControllerDelegate>
+@interface VCreatePollViewController : UIViewController
 
 @property (weak, nonatomic) IBOutlet UIImageView *rightPreviewImageView;
 @property (weak, nonatomic) IBOutlet UIImageView *previewImageView;
@@ -27,7 +27,6 @@
 
 @property (weak, nonatomic) IBOutlet UIView* questionViews;
 @property (weak, nonatomic) IBOutlet UILabel *characterCountLabel;
-@property (weak, nonatomic) IBOutlet UILabel *mediaLabel;
 
 @property (weak, nonatomic) IBOutlet UITextView *textView;
 
@@ -35,7 +34,6 @@
 
 @property (weak, nonatomic) id<VCreateSequenceDelegate> delegate;
 
-+ (instancetype)newCreatePollViewControllerForType:(VImagePickerViewControllerType)type
-                                      withDelegate:(id<VCreateSequenceDelegate>)delegate;
++ (instancetype)newCreatePollViewControllerWithDelegate:(id<VCreateSequenceDelegate>)delegate;
 
 @end

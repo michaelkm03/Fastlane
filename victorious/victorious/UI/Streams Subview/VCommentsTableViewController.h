@@ -12,7 +12,7 @@
 
 #import "VKeyboardBarViewController.h"
 
-@interface VCommentsTableViewController : UITableViewController <VKeyboardBarDelegate>
+@interface VCommentsTableViewController : UITableViewController
 @property (nonatomic, strong) VSequence* sequence;
 @property (nonatomic, weak) id<VCommentsTableViewControllerDelegate> delegate;
 

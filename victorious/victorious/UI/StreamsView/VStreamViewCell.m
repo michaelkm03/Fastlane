@@ -20,6 +20,7 @@
 #import "VAsset.h"
 
 #import "UIButton+VImageLoading.h"
+#import "UIImage+ImageCreation.h"
 
 #import "VConstants.h"
 
@@ -57,8 +58,11 @@ NSString *kStreamsWillCommentNotification = @"kStreamsWillCommentNotification";
     
     self.commentViews = [[NSMutableArray alloc] init];
     
-    self.dateLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVDateFont];
-    self.descriptionLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVContentTitleFont];
+    self.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVBackgroundColor];
+    
+    self.usernameLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVLabel1Font];
+    self.dateLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVLabel2Font];
+    self.descriptionLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeading2Font];
     self.dateImageView.image = [self.dateImageView.image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
 
     [self.commentButton setTitleEdgeInsets:UIEdgeInsetsMake(0, 5, 0, 0)];
@@ -86,7 +90,8 @@ NSString *kStreamsWillCommentNotification = @"kStreamsWillCommentNotification";
     _sequence = sequence;
     
     [self.previewImageView setImageWithURL:[NSURL URLWithString:_sequence.previewImage]
-                          placeholderImage:[UIImage new]];
+                          placeholderImage:[UIImage resizeableImageWithColor:
+                                            [[VThemeManager sharedThemeManager] themedColorForKey:kVSecondaryAccentColor]]];
     [self.profileImageButton setImageWithURL:[NSURL URLWithString:self.sequence.user.pictureUrl]
                             placeholderImage:[UIImage imageNamed:@"profile_thumb"]
                                     forState:UIControlStateNormal];
@@ -95,9 +100,6 @@ NSString *kStreamsWillCommentNotification = @"kStreamsWillCommentNotification";
         self.playButtonImage.hidden = NO;
     else
         self.playButtonImage.hidden = YES;
-
-//    if (!self.animating)
-//        self.animationImage.alpha = .5f;
     
     self.usernameLabel.text = self.sequence.user.name;
     self.descriptionLabel.text = self.sequence.name;
@@ -135,6 +137,22 @@ NSString *kStreamsWillCommentNotification = @"kStreamsWillCommentNotification";
 {
     VProfileViewController* profileViewController = [VProfileViewController profileWithUserID:[self.sequence.createdBy integerValue]];
     [self.parentTableViewController.navigationController pushViewController:profileViewController animated:YES];
+}
+
+- (void) hideOverlays
+{
+    self.overlayView.alpha = 0;
+    self.shadeView.alpha = 0;
+    self.animationImage.alpha = 0;
+    self.overlayView.center = CGPointMake(self.center.x, self.center.y - self.frame.size.height);
+}
+
+- (void) showOverlays
+{
+    self.overlayView.alpha = 1;
+    self.shadeView.alpha = 1;
+    self.animationImage.alpha = 1;
+    self.overlayView.center = CGPointMake(self.center.x, self.center.y);
 }
 
 @end

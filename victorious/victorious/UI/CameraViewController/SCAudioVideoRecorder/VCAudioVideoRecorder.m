@@ -137,14 +137,18 @@ NSString * const VCAudioVideoRecorderPhotoThumbnailKey = @"VCAudioVideoRecorderP
 // Video Recorder methods
 //
 
-- (void) prepareRecordingAtCameraRoll:(NSError **)error {
+- (void) prepareRecordingAtCameraRoll:(NSError **)error
+{
 	[self prepareRecordingOnTempDir:error];
 	shouldWriteToCameraRoll = YES;
 }
 
-- (NSURL*) prepareRecordingOnTempDir:(NSError **)error {
+- (NSURL*) prepareRecordingOnTempDir:(NSError **)error
+{
 	long timeInterval =  (long)[[NSDate date] timeIntervalSince1970];
-	NSURL * fileUrl = [NSURL fileURLWithPath:[NSString stringWithFormat:@"%@%ld%@", NSTemporaryDirectory(), timeInterval, @"VCVideo.mp4"]];
+    NSString* fileName = [NSString stringWithFormat:@"%ld%@", timeInterval, @"VCVideo.mp4"];
+	NSURL * fileUrl = [NSURL fileURLWithPath:[NSTemporaryDirectory() stringByAppendingPathComponent:fileName]];
+    [[NSFileManager defaultManager] removeItemAtURL:fileUrl error:nil];
     
 	NSError * recordError = nil;
 	[self prepareRecordingAtUrl:fileUrl error:&recordError];
@@ -162,7 +166,8 @@ NSString * const VCAudioVideoRecorderPhotoThumbnailKey = @"VCAudioVideoRecorderP
 }
 
 
-- (void) prepareRecordingAtUrl:(NSURL *)fileUrl error:(NSError **)error {
+- (void) prepareRecordingAtUrl:(NSURL *)fileUrl error:(NSError **)error
+{
 	if (fileUrl == nil) {
 		[NSException raise:@"Invalid argument" format:@"FileUrl must be not nil"];
 	}

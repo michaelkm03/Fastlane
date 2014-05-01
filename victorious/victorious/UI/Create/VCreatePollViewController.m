@@ -8,37 +8,36 @@
 
 @import AVFoundation;
 
+#import "VCameraViewController.h"
 #import "VCreatePollViewController.h"
 #import "VThemeManager.h"
-#import "UIView+AutoLayout.h"
 #import "VConstants.h"
 #import "NSString+VParseHelp.h"
-#import "UIView+VFrameManipulation.h"
 
-CGFloat VCreateViewControllerPadding = 8;
-CGFloat VCreateViewControllerLargePadding = 20;
+static const CGFloat VCreateViewControllerPadding = 8;
+static const CGFloat VCreateViewControllerLargePadding = 20;
 
 @interface VCreatePollViewController() <UITextFieldDelegate, UITextViewDelegate>
 
-@property (strong, nonatomic) NSData *mediaData;
-@property (strong, nonatomic) NSData *secondMediaData;
+@property (strong, nonatomic) NSURL *mediaURL;
+@property (strong, nonatomic) NSURL *secondMediaURL;
 
 @property (strong, nonatomic) NSString *mediaType;
 @property (strong, nonatomic) NSString *secondMediaType;
 
 @property (weak, nonatomic) NSLayoutConstraint *contentTopConstraint;
 
+@property (nonatomic, strong)   UIBarButtonItem*    countDownLabel;
+
 @end
 
 @implementation VCreatePollViewController
 
-+ (instancetype)newCreatePollViewControllerForType:(VImagePickerViewControllerType)type
-                                      withDelegate:(id<VCreateSequenceDelegate>)delegate
++ (instancetype)newCreatePollViewControllerWithDelegate:(id<VCreateSequenceDelegate>)delegate
 {
     UIViewController*   currentViewController = [[UIApplication sharedApplication] delegate].window.rootViewController;
     VCreatePollViewController* createView = (VCreatePollViewController*)[currentViewController.storyboard instantiateViewControllerWithIdentifier: NSStringFromClass([VCreatePollViewController class])];
     createView.delegate = delegate;
-    createView.type = type;
     return createView;
 }
 
@@ -47,7 +46,7 @@ CGFloat VCreateViewControllerLargePadding = 20;
     [super viewDidLoad];
     
     self.edgesForExtendedLayout = UIRectEdgeNone;
-    
+    self.title = NSLocalizedString(@"New Poll", @"New poll title");
     
     UIImage* newImage = [self.mediaButton.imageView.image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
     [self.mediaButton setImage:newImage forState:UIControlStateNormal];
@@ -76,6 +75,8 @@ CGFloat VCreateViewControllerLargePadding = 20;
 
     self.questionTextField.textColor =  [[VThemeManager sharedThemeManager] themedColorForKey:kVContentTextColor];
     self.questionTextField.placeholder = NSLocalizedString(@"Ask a Question...", @"Poll question placeholder");
+    [self.questionTextField addTarget:self action:@selector(questionTextFieldDidChange:) forControlEvents:UIControlEventEditingChanged];
+    self.questionTextField.delegate = self;
 
     self.leftAnswerTextField.textColor =  [[VThemeManager sharedThemeManager] themedColorForKey:kVContentTextColor];
     self.leftAnswerTextField.placeholder = NSLocalizedString(@"VOTE THIS...", @"Poll left question placeholder");
@@ -83,42 +84,25 @@ CGFloat VCreateViewControllerLargePadding = 20;
     self.rightAnswerTextField.textColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVContentTextColor];
     self.rightAnswerTextField.placeholder = NSLocalizedString(@"VOTE THAT...", @"Poll left question placeholder");
     
-    self.mediaLabel.textColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVMainTextColor];
-    [self.mediaLabel centerInContainerOnAxis:NSLayoutAttributeCenterX];
-    
-    self.textView.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVButtonFont];
-    self.textView.textColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVMainTextColor];
-    self.textView.layer.borderColor = [[[VThemeManager sharedThemeManager] themedColorForKey:kVAccentColor] CGColor];
-    self.textView.layer.borderWidth = 1;
-    
     self.postButton.tintColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVMainTextColor];
     self.postButton.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
     [self.postButton setTitle:NSLocalizedString(@"POST IT", @"Post button") forState:UIControlStateNormal];
-    self.postButton.titleLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVButtonFont];
+    self.postButton.titleLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeading4Font];
     
     [[NSNotificationCenter defaultCenter]
      addObserver:self selector:@selector(keyboardFrameChanged:)
      name:UIKeyboardWillChangeFrameNotification object:nil];
     
-    [self setType:self.type];
-    self.mediaLabel.textColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVMainTextColor];
-    
     [self validatePostButtonState];
     [self updateViewState];
-}
-
-- (void)setType:(VImagePickerViewControllerType)type
-{
-    [super setType:type];
-    
-    self.title = NSLocalizedString(@"New Poll", @"New poll title");
+    [self createInputAccessoryView];
 }
 
 - (void)validatePostButtonState
 {
     [self.postButton setEnabled:YES];
     
-    if(!self.mediaData || !self.secondMediaData)
+    if(!self.mediaURL || !self.secondMediaURL)
         [self.postButton setEnabled:NO];
     
     else if([self.questionTextField.text isEmpty])
@@ -142,7 +126,7 @@ CGFloat VCreateViewControllerLargePadding = 20;
 
 - (void)updateViewState
 {
-    if(!self.secondMediaData)
+    if(!self.secondMediaURL)
     {
         self.rightPreviewImageView.hidden = YES;
         self.rightRemoveButton.hidden = YES;
@@ -156,6 +140,26 @@ CGFloat VCreateViewControllerLargePadding = 20;
 
 #pragma mark - Actions
 
+- (IBAction)mediaButtonAction:(id)sender
+{
+    VCameraViewController *cameraViewController = [VCameraViewController cameraViewController];
+    cameraViewController.completionBlock = ^(BOOL finished, UIImage *previewImage, NSURL *capturedMediaURL, NSString *mediaExtension)
+    {
+        if (finished)
+        {
+            [self imagePickerFinishedWithURL:capturedMediaURL
+                                   extension:mediaExtension
+                                previewImage:previewImage];
+        }
+
+        [self dismissViewControllerAnimated:YES completion:nil];
+    };
+
+    UINavigationController *navigationController = [[UINavigationController alloc] init];
+    [navigationController pushViewController:cameraViewController animated:NO];
+    [self presentViewController:navigationController animated:YES completion:nil];
+}
+
 - (IBAction)clearMedia:(id)sender
 {
     self.addMediaView.userInteractionEnabled = NO;
@@ -164,25 +168,38 @@ CGFloat VCreateViewControllerLargePadding = 20;
     [UIView animateWithDuration:.5f
                      animations:^
      {
-         [self.addMediaView setXOrigin:self.addMediaView.frame.origin.x - self.addMediaView.frame.size.width];
-         [self.rightPreviewImageView setXOrigin:self.rightPreviewImageView.frame.origin.x - self.addMediaView.frame.size.width];
+         CGRect addMediaFrame = self.addMediaView.frame;
+         self.addMediaView.frame = CGRectMake(CGRectGetMinX(addMediaFrame) - CGRectGetWidth(addMediaFrame), CGRectGetMinY(addMediaFrame), CGRectGetWidth(addMediaFrame), CGRectGetHeight(addMediaFrame));
+         
+         CGRect rightPreviewFrame = self.rightPreviewImageView.frame;
+         self.rightPreviewImageView.frame = CGRectMake(CGRectGetMinX(rightPreviewFrame) - CGRectGetWidth(addMediaFrame), CGRectGetMinY(rightPreviewFrame), CGRectGetWidth(rightPreviewFrame), CGRectGetHeight(rightPreviewFrame));
      }
-                     completion:^(BOOL finished)
+     completion:^(BOOL finished)
      {
          self.addMediaView.userInteractionEnabled = YES;
          self.postButton.userInteractionEnabled = YES;
          
-         self.mediaData = self.secondMediaData;
+         if (!self.secondMediaURL)
+         {
+             [[NSFileManager defaultManager] removeItemAtURL:self.mediaURL error:nil];
+         }
+         
+         self.mediaURL = self.secondMediaURL;
          self.mediaType = self.secondMediaType;
          self.previewImageView.image = self.rightPreviewImageView.image;
          
-         self.secondMediaData = nil;
+         if (self.secondMediaURL)
+         {
+             [[NSFileManager defaultManager] removeItemAtURL:self.secondMediaURL error:nil];
+         }
+         self.secondMediaURL = nil;
          self.secondMediaType = nil;
          self.rightPreviewImageView.image = nil;
          
          [self updateViewState];
          
-         [self.rightPreviewImageView setXOrigin:self.rightPreviewImageView.frame.origin.x + self.addMediaView.frame.size.width];
+         CGRect frame = self.rightPreviewImageView.frame;
+         self.rightPreviewImageView.frame = CGRectMake(CGRectGetMinX(frame) + CGRectGetWidth(self.addMediaView.frame), CGRectGetMinY(frame), CGRectGetWidth(frame), CGRectGetHeight(frame));
          
          [self validatePostButtonState];
      }];
@@ -196,14 +213,19 @@ CGFloat VCreateViewControllerLargePadding = 20;
     [UIView animateWithDuration:.5f
                      animations:^
      {
-         [self.addMediaView setXOrigin:self.addMediaView.frame.origin.x - self.addMediaView.frame.size.width];
+         CGRect frame = self.addMediaView.frame;
+         self.addMediaView.frame = CGRectMake(CGRectGetMinX(frame) - CGRectGetWidth(frame), CGRectGetMinY(frame), CGRectGetWidth(frame), CGRectGetHeight(frame));
      }
-                     completion:^(BOOL finished)
+     completion:^(BOOL finished)
      {
          self.addMediaView.userInteractionEnabled = YES;
          self.postButton.userInteractionEnabled = YES;
          
-         self.secondMediaData = nil;
+         if (self.secondMediaURL)
+         {
+             [[NSFileManager defaultManager] removeItemAtURL:self.secondMediaURL error:nil];
+         }
+         self.secondMediaURL = nil;
          self.secondMediaType = nil;
          self.rightPreviewImageView.image = nil;
          [self updateViewState];
@@ -216,10 +238,12 @@ CGFloat VCreateViewControllerLargePadding = 20;
     [self.delegate createPollWithQuestion:self.questionTextField.text
                               answer1Text:self.leftAnswerTextField.text
                               answer2Text:self.rightAnswerTextField.text
-                               media1Data:self.mediaData
+                               media1URL:self.mediaURL
                           media1Extension:self.mediaType
-                               media2Data:self.secondMediaData
+                               media2URL:self.secondMediaURL
                           media2Extension:self.secondMediaType];
+    
+    [self.navigationController popViewControllerAnimated:YES];
 }
 
 - (IBAction)closeButtonAction:(id)sender
@@ -234,7 +258,34 @@ CGFloat VCreateViewControllerLargePadding = 20;
     [self presentViewController:imageSearch animated:YES completion:nil];
 }
 
+- (IBAction)hashButtonClicked:(id)sender
+{
+    self.questionTextField.text = [self.questionTextField.text stringByAppendingString:@"#"];
+}
+
+- (void)createInputAccessoryView
+{
+    UIToolbar*  toolbar =   [[UIToolbar alloc] initWithFrame:CGRectMake(0, 0, self.view.bounds.size.width, 44)];
+    
+    UIBarButtonItem*    hashButton  =   [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"cameraButtonHashTagAdd"]
+                                                                         style:UIBarButtonItemStyleBordered
+                                                                        target:self
+                                                                        action:@selector(hashButtonClicked:)];
+    UIBarButtonItem*    flexibleSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace
+                                                                                      target:nil
+                                                                                      action:nil];
+    
+    self.countDownLabel = [[UIBarButtonItem alloc] initWithTitle:[NSNumberFormatter localizedStringFromNumber:@(VConstantsMessageLength) numberStyle:NSNumberFormatterDecimalStyle]
+                                                           style:UIBarButtonItemStyleBordered
+                                                          target:nil
+                                                          action:nil];
+    
+    toolbar.items = @[hashButton, flexibleSpace, self.countDownLabel];
+    self.questionTextField.inputAccessoryView = toolbar;
+}
+
 #pragma mark - UITextFieldDelegate
+
 - (void)textFieldDidEndEditing:(UITextField *)textField
 {
     [self validatePostButtonState];
@@ -252,6 +303,24 @@ CGFloat VCreateViewControllerLargePadding = 20;
     return YES;
 }
 
+- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
+{
+    if ([textField isEqual:self.questionTextField])
+    {
+        BOOL    isDeleteKey = ([string isEqualToString:@""]);
+        if ((textField.text.length >= VConstantsMessageLength) && (!isDeleteKey))
+            return NO;
+    }
+    
+    return YES;
+}
+
+- (void)questionTextFieldDidChange:(id)sender
+{
+    self.countDownLabel.title = [NSNumberFormatter localizedStringFromNumber:@(VConstantsMessageLength - self.questionTextField.text.length)
+                                                                 numberStyle:NSNumberFormatterDecimalStyle];
+}
+
 #pragma mark - Notifications
 
 - (void)keyboardFrameChanged:(NSNotification *)notification
@@ -267,13 +336,14 @@ CGFloat VCreateViewControllerLargePadding = 20;
     
     [UIView animateWithDuration:animationDuration delay:0 options:(animationCurve << 16) animations:^
      {
-         self.contentTopConstraint.constant = VCreateViewControllerLargePadding-MAX(0, CGRectGetMaxY(self.textView.frame)-CGRectGetMinY(keyboardEndFrame)+VCreateViewControllerPadding);
+         self.contentTopConstraint.constant = VCreateViewControllerLargePadding-MAX(0, VCreateViewControllerPadding-CGRectGetMinY(keyboardEndFrame));
          [self.view layoutIfNeeded];
      }
-                     completion:nil];
+     completion:nil];
 }
 
 #pragma mark - UITextViewDelegate
+
 - (void)textViewDidChange:(UITextView *)textView
 {
     NSInteger characterCount = VConstantsMessageLength-[textView.text length];
@@ -285,7 +355,9 @@ CGFloat VCreateViewControllerLargePadding = 20;
     {
         self.characterCountLabel.textColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVMainTextColor];
     }
-    self.characterCountLabel.text = [NSString stringWithFormat:@"%lu", (unsigned long)characterCount];
+
+    self.characterCountLabel.text = [NSNumberFormatter localizedStringFromNumber:@(characterCount)
+                                                                     numberStyle:NSNumberFormatterDecimalStyle];
     [self validatePostButtonState];
 }
 
@@ -300,21 +372,21 @@ CGFloat VCreateViewControllerLargePadding = 20;
     return YES;
 }
 
-#pragma mark - Overrides
-- (void)imagePickerFinishedWithData:(NSData*)data
+#pragma mark -
+
+- (void)imagePickerFinishedWithURL:(NSURL *)mediaURL
                           extension:(NSString*)extension
                        previewImage:(UIImage*)previewImage
-                           mediaURL:(NSURL*)mediaURL
 {
-    if(!self.mediaData)
+    if(!self.mediaURL)
     {
-        self.mediaData = data;
+        self.mediaURL = mediaURL;
         self.mediaType = extension;
         self.previewImageView.image = previewImage;
     }
     else
     {
-        self.secondMediaData = data;
+        self.secondMediaURL = mediaURL;
         self.secondMediaType = extension;
         self.rightPreviewImageView.image = previewImage;
     }
@@ -327,7 +399,8 @@ CGFloat VCreateViewControllerLargePadding = 20;
     [UIView animateWithDuration:.5f
                      animations:^
      {
-         [self.addMediaView setXOrigin:self.addMediaView.frame.origin.x + self.addMediaView.frame.size.width];
+         CGRect frame = self.addMediaView.frame;
+         self.addMediaView.frame = CGRectMake(CGRectGetMinX(frame) + CGRectGetWidth(frame), CGRectGetMinY(frame), CGRectGetWidth(frame), CGRectGetHeight(frame));
      }
                      completion:^(BOOL finished)
      {

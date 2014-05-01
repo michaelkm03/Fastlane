@@ -21,6 +21,11 @@
 
 @implementation VVideoPreviewViewController
 
++ (VVideoPreviewViewController *)videoPreviewViewController
+{
+    return [[UIStoryboard storyboardWithName:@"Camera" bundle:nil] instantiateViewControllerWithIdentifier:NSStringFromClass(self)];
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -33,7 +38,7 @@
 {
     [super viewWillAppear:animated];
     
-    [self.videoPlayerView.player setSmoothLoopItemByUrl:self.videoURL smoothLoopCount:10.0];
+    [self.videoPlayerView.player setSmoothLoopItemByUrl:self.mediaURL smoothLoopCount:10.0];
     self.videoPlayerView.player.shouldLoop = YES;
 	[self.videoPlayerView.player play];
     
@@ -47,25 +52,22 @@
     self.trashAction.imageView.image = [UIImage imageNamed:@"cameraButtonDelete"];
 }
 
-- (void)viewWillDisappear:(BOOL)animated
+- (void)viewDidDisappear:(BOOL)animated
 {
-    [super viewWillDisappear:animated];
-    if (!self.videoPlayerView.player.isPlaying)
-        [self.videoPlayerView.player pause];
+    [super viewDidDisappear:animated];
+    [self.videoPlayerView.player pause];
 }
 
 - (void)handleDoneTapGesture:(UIGestureRecognizer *)gesture
 {
-    UISaveVideoAtPathToSavedPhotosAlbum([self.videoURL path], nil, nil, nil);
-    [self performSegueWithIdentifier:@"toPublishFromVideo" sender:self];
-}
-
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
-{
-    if ([segue.identifier isEqualToString:@"toPublishFromVideo"])
+    if (self.completionBlock)
     {
-        VCameraPublishViewController*   viewController = (VCameraPublishViewController *)segue.destinationViewController;
-        viewController.videoURL = self.videoURL;
+        AVAsset *asset = [AVAsset assetWithURL:self.mediaURL];
+        AVAssetImageGenerator *assetGenerator = [AVAssetImageGenerator assetImageGeneratorWithAsset:asset];
+        CGImageRef imageRef = [assetGenerator copyCGImageAtTime:kCMTimeZero actualTime:NULL error:NULL];
+        UIImage *previewImage = [UIImage imageWithCGImage:imageRef];
+        CGImageRelease(imageRef);
+        self.completionBlock(YES, previewImage, self.mediaURL, self.mediaExtension);
     }
 }
 
@@ -81,7 +83,10 @@
 
 - (IBAction)cancel:(id)sender
 {
-    [self dismissViewControllerAnimated:YES completion:nil];
+    if (self.completionBlock)
+    {
+        self.completionBlock(NO, nil, nil, nil);
+    }
 }
 
 - (IBAction)deleteAction:(id)sender

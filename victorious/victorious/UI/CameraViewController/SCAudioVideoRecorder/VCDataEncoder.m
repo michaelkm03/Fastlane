@@ -43,8 +43,10 @@
     self.writerInput = nil;
 }
 
-- (AVAssetWriterInput*) createWriterInputForSampleBuffer:(CMSampleBufferRef)sampleBuffer error:(NSError **)error {
-    *error = [VCAudioVideoRecorder createError:@"Inherited objects must override createWriterInput"];
+- (AVAssetWriterInput*) createWriterInputForSampleBuffer:(CMSampleBufferRef)sampleBuffer error:(NSError **)error
+{
+    if (error)
+        *error = [VCAudioVideoRecorder createError:@"Inherited objects must override createWriterInput"];
     return nil;
 }
 

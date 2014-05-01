@@ -8,6 +8,10 @@
 
 "OKButton"              =   "OK";
 "CancelButton"          =   "Cancel";
+"DeleteButton"          =   "Delete";
+"ResetButton"           =   "Reset";
+"YesButton"             =   "Yes";
+"NoButton"              =   "No";
 
 "SetupButton"           =   "Set up";
 "EmailValidation"       =   "Invalid Email Address";
@@ -43,12 +47,28 @@
 "CopyProfileURL"        =   "Copy Profile URL";
 
 "TranscodingMediaTitle" =   "Transcoding Upload";
-"TranscodingMediaBody"  =   "Your upload is taking longer than usual to transcode.  It will appear once we've finished";
+"TranscodingMediaBody"  =   "Your upload is taking longer than usual to transcode.  It will appear once we've finished.";
 "PollUploadTitle"       =   "Poll Upload Failed";
 "PollUploadBody"        =   "Unable to upload Poll to server";
 
+"UploadFailedTitle"     =   "Media Upload Failed";
+
 "UploadError"           =   "Upload Error";
 "UploadErrorBody"       =   "Sorry! Something went wrong, and we are unable to complete the upload at this time.";
+
+"FollowError"           =   "Sorry! There was an error following this user.";
+"UnfollowError"         =   "Sorry! There was an error unfollowing this user.";
+
+"PublishSucceeded"      =   "Publish Succeeded";
+"PublishSucceededDetail"    =   "Your media has been submitted to the server";
+
+"PublishDescriptionRequired" = "Description Required";
+"PublishDescription"    =   "You need to enter a description for your media.";
+
+"ReplaceVideo"          =   "Replace Video";
+
+"CancelExpiration"      =   "Cancel Expiration?";
+"CancelExirationConfirm" = "Are you sure you want to cancel out of setting an expiration date?";
 
 "Now"                   =   "Now";
 "SecondsAgo"            =   "%ds";

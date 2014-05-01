@@ -26,8 +26,8 @@ typedef NS_ENUM(NSUInteger, VLoopType)
 
 typedef NS_ENUM(NSUInteger, VPlaybackSpeed)
 {
-    kVPlaybackHalfSpeed     =   0,
-    kVPlaybackNormalSpeed   =   1,
+    kVPlaybackNormalSpeed   =   0,
+    kVPlaybackHalfSpeed     =   1,
     kVPlaybackDoubleSpeed   =   2
 };
 
@@ -48,7 +48,7 @@ static NSUInteger const kStreamCommentCellHeight = 110;
 static NSString*   const   kVictoriousAppIDKey      = @"VictoriousAppID";
 
 static NSString*   const   kTestflightDevToken      = @"TestflightDevAppToken";
-static NSString*   const   kTestflightStableToken   = @"TestflightStableAppToken";
+static NSString*   const   kTestflightQAToken       = @"TestflightQAAppToken";
 static NSString*   const   kTestflightReleaseToken  = @"TestflightReleaseAppToken";
 
 static NSString*   const   kRemoteIdKey = @"remoteId";
@@ -63,31 +63,38 @@ static NSString* const VConstantMediaExtensionJPG       = @"jpg";
 static NSString* const VConstantMediaExtensionJPEG      = @"jepg";
 static NSString* const VConstantMediaExtensionMOV       = @"mov";
 
-static NSString*   const   kVOwnerPollCategory = @"owner_poll";
+static NSString*   const   kVOwnerPollCategory  = @"owner_poll";
 static NSString*   const   kVOwnerImageCategory = @"owner_image";
 static NSString*   const   kVOwnerVideoCategory = @"owner_video";
 static NSString*   const   kVOwnerForumCategory = @"owner_forum";
+static NSString*   const   kVOwnerRemixCategory = @"owner_video_remix";
 
 static NSString*   const   kVUGCPollCategory = @"ugc_poll";
 static NSString*   const   kVUGCImageCategory = @"ugc_image";
 static NSString*   const   kVUGCVideoCategory = @"ugc_video";
 static NSString*   const   kVUGCForumCategory = @"ugc_forum";
+static NSString*   const   kVUGCRemixCategory = @"ugc_video_remix";
 
 static NSString*   const   kFeaturedCategory = @"featured";
 
 static NSString*   const   kSearchCache = @"SearchCache";
 static NSString*   const   kVPagedFetchCache = @"PagedFetchCache";
 
-static NSString*   const   kHomeStreamStoryboardID           = @"homestream";
-static NSString*   const   kOwnerStreamStoryboardID          = @"ownerstream";
-static NSString*   const   kCommunityStreamStoryboardID      = @"communitystream";
-static NSString*   const   kForumStreamStoryboardID          = @"forumstream";
-static NSString*   const   kContentViewStoryboardID          = @"content";
-static NSString*   const   kEmotiveBallisticsBarStoryboardID = @"emotiveballistics";
-static NSString*   const   kPollAnswerBarStoryboardID        = @"pollanswerbar";
-static NSString*   const   kCommentsContainerStoryboardID    = @"commentscontainer";
-static NSString*   const   kKeyboardBarStoryboardID          = @"keyboardbar";
+static NSString*   const   kHomeStreamStoryboardID              = @"homestream";
+static NSString*   const   kOwnerStreamStoryboardID             = @"ownerstream";
+static NSString*   const   kCommunityStreamStoryboardID         = @"communitystream";
+static NSString*   const   kForumStreamStoryboardID             = @"forumstream";
+static NSString*   const   kContentViewStoryboardID             = @"content";
+static NSString*   const   kEmotiveBallisticsBarStoryboardID    = @"emotiveballistics";
+static NSString*   const   kPollAnswerBarStoryboardID           = @"pollanswerbar";
+static NSString*   const   kCommentsContainerStoryboardID       = @"commentscontainer";
+static NSString*   const   kKeyboardBarStoryboardID             = @"keyboardbar";
 
-static NSString*   const   kStreamContentSegueStoryboardID   = @"streamcontent";
-static NSString*   const   kContentCommentSegueStoryboardID   = @"contentcomment";
+
+static NSString*   const   kStreamContentSegueStoryboardID      = @"streamcontent";
+static NSString*   const   kContentCommentSegueStoryboardID     = @"contentcomment";
+
+static NSString*   const   kStreamCommentSegueID                = @"streamcomment";
+
+static NSString*   const   kUnwindToContentSegueID              = @"unwindToContentView";
 

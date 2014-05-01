@@ -58,7 +58,7 @@
 	self.player = [VCPlayer player];
 	self.player.delegate = self;
 	self.playerLayer = [AVPlayerLayer playerLayerWithPlayer:self.player];
-	self.playerLayer.videoGravity = AVLayerVideoGravityResizeAspectFill;
+	self.playerLayer.videoGravity = AVLayerVideoGravityResizeAspect;
 	[self.layer addSublayer:self.playerLayer];
 	
 	UIView * theLoadingView = [[UIView alloc] init];

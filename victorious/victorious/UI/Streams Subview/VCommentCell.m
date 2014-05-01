@@ -20,13 +20,12 @@
 #import "NSString+VParseHelp.h"
 #import "UIButton+VImageLoading.h"
 #import "VProfileViewController.h"
-#import "UIView+AutoLayout.h"
 #import "VObjectManager.h"
 
 CGFloat const kCommentRowWithMediaHeight  =   256.0f;
 CGFloat const kCommentRowHeight           =   86.0f;
 CGFloat const kCommentCellWidth = 214;
-CGFloat const kCommentCellYOffset = 10;
+CGFloat const kCommentCellYOffset = 28;
 CGFloat const kMediaCommentCellYOffset = 235;
 CGFloat const kMinCellHeight = 84;
 CGFloat const kCommentMessageLabelWidth = 214;
@@ -66,17 +65,19 @@ NSString* const kChatBubbleLeftImage = @"ChatBubbleLeft";
 {
     [super layoutSubviews];
     
-    self.dateLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVDateFont];
+    self.dateLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVParagraphFont];
     self.dateLabel.textColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVContentTextColor];
     
-    self.messageLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVDetailFont];
+    self.messageLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVLabel2Font];
     self.messageLabel.textColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVContentTextColor];
     
-    self.nameLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVDetailFont];
+    self.nameLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVLabel1Font];
     self.nameLabel.textColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
     
     self.profileImageButton.clipsToBounds = YES;
     self.profileImageButton.layer.cornerRadius = CGRectGetHeight(self.profileImageButton.bounds)/2;
+    
+    [self layoutWithText:self.messageLabel.text withMedia:(BOOL)self.mediaUrl];
 }
 
 - (void)setCommentOrMessage:(id)commentOrMessage
@@ -84,68 +85,50 @@ NSString* const kChatBubbleLeftImage = @"ChatBubbleLeft";
     self.mpController = nil;
     
     _commentOrMessage = commentOrMessage;
+    NSString* mediaType;
+    VUser* user;
 
     if([commentOrMessage isKindOfClass:[VComment class]])
     {
         VComment *comment = (VComment *)self.commentOrMessage;
 
         self.dateLabel.text = [comment.postedAt timeSince];
-        
-        [self.profileImageButton setImageWithURL:[NSURL URLWithString:comment.user.pictureUrl]
-                                placeholderImage:[UIImage imageNamed:@"profile_thumb"]
-                                        forState:UIControlStateNormal];
         self.nameLabel.text = comment.user.name;
         self.messageLabel.text = comment.text;
-
-        if ([comment.mediaUrl length])
-        {
-            [self layoutWithText:comment.text withMedia:YES];
-
-            self.mediaUrl = comment.mediaUrl;
-            self.mediaPreview.hidden = NO;
-
-            self.playButton.hidden = ![comment.mediaType isEqualToString:VConstantsMediaTypeVideo];
-            
-            [self.mediaPreview setImageWithURL:[self.mediaUrl convertToPreviewImageURL]];
-        }
-        else
-        {
-            [self layoutWithText:comment.text withMedia:NO];
-            self.mediaPreview.hidden = YES;
-            self.playButton.hidden = YES;
-        }
+        self.mediaUrl = comment.mediaUrl;
+        mediaType = comment.mediaType;
+        user = comment.user;
     }
     else if([commentOrMessage isKindOfClass:[VMessage class]])
     {
         VMessage *message = (VMessage *)self.commentOrMessage;
 
         self.dateLabel.text = [message.postedAt timeSince];
-        [self.profileImageButton.imageView setImageWithURL:[NSURL URLWithString:message.user.pictureUrl]
-                                          placeholderImage:[UIImage imageNamed:@"profile_thumb"]];
         self.nameLabel.text = message.user.name;
-        
         self.messageLabel.text = message.text;
-        
-        if ([message.media.mediaUrl length])
-        {
-            [self layoutWithText:message.text withMedia:YES];
-
-            self.mediaUrl = message.media.mediaUrl;
-            self.mediaPreview.hidden = NO;
-
-            self.playButton.hidden = ![message.media.mediaType isEqualToString:VConstantsMediaTypeVideo];
-            
-            [self.mediaPreview setImageWithURL:[self.mediaUrl convertToPreviewImageURL]];
-        }
-        else
-        {
-            [self layoutWithText:message.text withMedia:NO];
-            self.mediaPreview.hidden = YES;
-            self.playButton.hidden = YES;
-        }   
+        self.mediaUrl = message.media.mediaUrl;
+        mediaType = message.media.mediaType;
+        user = message.user;
     }
     
-    [self layoutSubviews];
+    [self.profileImageButton setImageWithURL:[NSURL URLWithString:user.pictureUrl]
+                            placeholderImage:[UIImage imageNamed:@"profile_thumb"]
+                                    forState:UIControlStateNormal];
+    if ([self.mediaUrl length])
+    {
+        self.mediaPreview.hidden = NO;
+        
+        self.playButton.hidden = ![mediaType isEqualToString:VConstantsMediaTypeVideo];
+        
+#warning We need to figure out a reliable way to get comment preview image before release...
+//        [self.mediaPreview setImageWithURL:[self.mediaUrl convertToPreviewImageURL]];
+    }
+    else
+    {
+        self.mediaUrl = nil;
+        self.mediaPreview.hidden = YES;
+        self.playButton.hidden = YES;
+    }
 }
 
 -(void)layoutWithText:(NSString*)text withMedia:(BOOL)hasMedia
@@ -155,7 +138,7 @@ NSString* const kChatBubbleLeftImage = @"ChatBubbleLeft";
     CGFloat yOffset = hasMedia ? kMediaCommentCellYOffset : kCommentCellYOffset;
     
     self.messageLabel.text = text;
-
+    
     CGFloat xOrigin = 0;
     if ([self.commentOrMessage isKindOfClass:[VMessage class]] &&
         [((VMessage*)self.commentOrMessage).user isEqualToUser:[VObjectManager sharedManager].mainUser])
@@ -167,14 +150,11 @@ NSString* const kChatBubbleLeftImage = @"ChatBubbleLeft";
     {
         xOrigin = self.messageLabel.frame.origin.x;
     }
-    self.messageLabel.frame = CGRectMake(xOrigin,
-                                         self.messageLabel.frame.origin.y,
-                                         size.width,
-                                         size.height);
+    
+    self.messageLabel.frame = CGRectMake(CGRectGetMinX(self.messageLabel.frame), CGRectGetMinY(self.messageLabel.frame),
+                                         size.width, size.height);
+    
     [self.messageLabel sizeToFit];
-    
-    
-    VLog(@"message label: %@", NSStringFromCGRect(self.messageLabel.frame));
     
     if ([self.commentOrMessage isKindOfClass:[VMessage class]])
     {
@@ -201,18 +181,18 @@ NSString* const kChatBubbleLeftImage = @"ChatBubbleLeft";
     }
     
     CGFloat height = MAX(self.messageLabel.frame.size.height + yOffset, kMinCellHeight);
-    self.frame = CGRectMake(self.frame.origin.x,
-                            self.frame.origin.y,
-                            self.frame.size.width,
-                            height);
+    self.bounds = CGRectMake(0, 0, self.frame.size.width, height);
 }
 
 + (CGSize)frameSizeForMessageText:(NSString*)text
 {
-    UIFont* font = [[VThemeManager sharedThemeManager] themedFontForKey:kVDetailFont];
+    UIFont* font = [[VThemeManager sharedThemeManager] themedFontForKey:kVLabel2Font];
     NSDictionary *stringAttributes;
+    if (!font)
+        VLog(@"This is bad, where did the font go.");
     if (font)
         stringAttributes = [NSDictionary dictionaryWithObject:font forKey: NSFontAttributeName];
+    
     return [text frameSizeForWidth:kCommentMessageLabelWidth
                      andAttributes:stringAttributes];
 }

@@ -68,14 +68,14 @@
         else
             return [NSString stringWithFormat:NSLocalizedString(@"MinutesAgo", @""), components.minute];
     }
-    else if (components.second < 5)
+    else //if (components.second < 5)
     {
         return NSLocalizedString(@"Now", @"");
     }
-    else
-    {
-        return [NSString stringWithFormat:NSLocalizedString(@"SecondsAgo", @""), components.second];
-    }
+//    else
+//    {
+//        return [NSString stringWithFormat:NSLocalizedString(@"SecondsAgo", @""), components.second];
+//    }
 }
 
 @end

@@ -20,7 +20,7 @@ NSString* const kVictoriousDomain = @"com.getvictorious.victoriOS";
                                   @"api_version" : @"api_version",
                                   @"app_id" : @"app_id",
                                   @"user_id" : @"user_id",
-                                  @"message" : @"message",
+                                  @"message" : @"errorMessages",
                                   @"page_number" : @"page_number",
                                   @"total_pages" : @"total_pages"
                                   };

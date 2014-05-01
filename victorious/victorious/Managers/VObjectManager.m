@@ -17,7 +17,6 @@
 
 #import "VUser+RestKit.h"
 #import "VSequence+RestKit.h"
-#import "VCategory+RestKit.h"
 #import "VComment+RestKit.h"
 #import "VConversation+RestKit.h"
 #import "VPollResult+RestKit.h"
@@ -33,10 +32,10 @@
 
 + (void)setupObjectManager
 {
-#if DEBUG
+//#if DEBUG
     RKLogConfigureByName("RestKit/Network", RKLogLevelTrace);
     RKLogConfigureByName("RestKit/ObjectMapping", RKLogLevelTrace);
-#endif
+//#endif
     
     VObjectManager *manager = [self managerWithBaseURL:[NSURL URLWithString:VBASEURL]];
     
@@ -44,9 +43,8 @@
     //(this is the only non-dynamic header, so set it now)
     NSString *userAgent = ([manager HTTPClient].defaultHeaders)[@"User-Agent"];
     
-    //TODO: use real app id once we set that up
     NSNumber* appID = [[NSBundle mainBundle] objectForInfoDictionaryKey:kVictoriousAppIDKey];
-    userAgent = [NSString stringWithFormat:@"%@ aid:%@", userAgent, appID.stringValue];
+    userAgent = [NSString stringWithFormat:@"%@ aid:%@ uuid:%@", userAgent, appID.stringValue, [[UIDevice currentDevice].identifierForVendor UUIDString]];
     [[manager HTTPClient] setDefaultHeader:@"User-Agent" value:userAgent];
     
     NSURL *modelURL = [[NSBundle mainBundle] URLForResource:@"victoriOS" withExtension:@"momd"];
@@ -93,7 +91,6 @@
     [self addResponseDescriptorsFromArray: @[errorDescriptor,
                                              verrorDescriptor,
                                              
-                                             [VCategory descriptor],
                                              [VSequence sequenceListDescriptor],
                                              [VSequence sequenceListByUserDescriptor],
                                              [VSequence sequenceFullDataDescriptor],
@@ -152,7 +149,7 @@
          
          if (error.errorCode && failBlock)
              failBlock(operation, [NSError errorWithDomain:kVictoriousDomain code:error.errorCode
-                                       userInfo:@{NSLocalizedDescriptionKey: error.message}]);
+                                       userInfo:@{NSLocalizedDescriptionKey:[error.errorMessages componentsJoinedByString:@","]}]);
          else if (successBlock)
          {
              NSDictionary *JSON = [NSJSONSerialization JSONObjectWithData:operation.HTTPRequestOperation.responseData options:0 error:nil];
@@ -193,12 +190,12 @@
                      failBlock:failBlock];
 }
 
-- (AFHTTPRequestOperation*)upload:(NSDictionary*)allData
-                    fileExtension:(NSDictionary*)allExtensions
-                           toPath:(NSString*)path
-                       parameters:(NSDictionary*)parameters
-                     successBlock:(VSuccessBlock)successBlock
-                        failBlock:(VFailBlock)failBlock
+- (AFHTTPRequestOperation*)uploadURLs:(NSDictionary*)allUrls
+                       fileExtensions:(NSDictionary*)allExtensions
+                               toPath:(NSString*)path
+                           parameters:(NSDictionary*)parameters
+                         successBlock:(VSuccessBlock)successBlock
+                            failBlock:(VFailBlock)failBlock
 {
     if ([path isEmpty])
     {
@@ -216,17 +213,19 @@
                                          parameters:parameters
                           constructingBodyWithBlock: ^(id <AFMultipartFormData>formData)
      {
-         [allData enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop)
+         [allUrls enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop)
           {
               NSString* extension = allExtensions[key];
               if(extension)
               {
                   NSString* mimeType = [extension isEqualToString:VConstantMediaExtensionMOV]
                   ? @"video/quicktime" : @"image/png";
-                  [formData appendPartWithFileData:obj
-                                              name:key
-                                          fileName:[key stringByAppendingPathExtension:extension]
-                                          mimeType:mimeType];
+                  
+                  [formData appendPartWithFileURL:obj
+                                             name:key
+                                         fileName:[key stringByAppendingPathExtension:extension]
+                                         mimeType:mimeType
+                                            error:nil];
               }
           }];
      }];
@@ -235,7 +234,7 @@
     void (^afSuccessBlock)(AFHTTPRequestOperation *operation, id responseObject)  = ^(AFHTTPRequestOperation *operation, id responseObject)
     {
         NSError* error = [self errorForResponse:responseObject];
-    
+        
         if (error && failBlock)
             failBlock(operation, error);
         
@@ -250,13 +249,20 @@
     return operation;
 }
 
+
 - (NSError*)errorForResponse:(NSDictionary*)responseObject
 {
     if ([responseObject[@"error"] integerValue] == 0)
         return nil;
     
+    NSString* errorMessage = responseObject[@"message"];
+    if ([errorMessage isKindOfClass:[NSArray class]])
+    {
+        errorMessage = [(NSArray*)errorMessage componentsJoinedByString:@", "];
+    }
+    
     return [NSError errorWithDomain:kVictoriousDomain code:[responseObject[@"error"] integerValue]
-                           userInfo:@{NSLocalizedDescriptionKey: responseObject[@"message"]}];
+                           userInfo:@{NSLocalizedDescriptionKey: errorMessage}];
 }
 
 -(VPaginationStatus *)statusForKey:(NSString*)key

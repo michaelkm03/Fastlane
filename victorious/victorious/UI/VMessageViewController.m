@@ -21,7 +21,7 @@
 const   CGFloat     kMessageRowWithMediaHeight  =   280.0;
 const   CGFloat     kMessageRowHeight           =   80;
 
-@interface VMessageViewController () <VKeyboardBarDelegate>
+@interface VMessageViewController ()
 @property (nonatomic, readwrite, strong)    NSArray*    messages;
 @end
 
@@ -31,23 +31,22 @@ const   CGFloat     kMessageRowHeight           =   80;
 {
     [super viewDidLoad];
     
-    self.composeViewController.delegate = self;
-    
     UIImageView* backgroundImageView = [[UIImageView alloc] initWithFrame:self.tableView.backgroundView.frame];
-    [backgroundImageView setLightBlurredImageWithURL:[NSURL URLWithString:self.conversation.user.pictureUrl]
-                                    placeholderImage:[UIImage imageNamed:@"profile_thumb"]];
+    [backgroundImageView setBlurredImageWithURL:[NSURL URLWithString:self.conversation.user.pictureUrl]
+                               placeholderImage:[UIImage imageNamed:@"profile_thumb"]
+                                      tintColor:[UIColor darkGrayColor]];
     
     self.tableView.backgroundView = backgroundImageView;
     
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     //    self.tableView.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKeyPath:@"theme.color.messages.background"];
-    [self.tableView registerNib:[UINib nibWithNibName:kCommentCellIdentifier bundle:nil]
-         forCellReuseIdentifier:kCommentCellIdentifier];
+    [self.tableView registerNib:[UINib nibWithNibName:kMessageCellIdentifier bundle:nil]
+         forCellReuseIdentifier:kMessageCellIdentifier];
     [self.tableView registerNib:[UINib nibWithNibName:kOtherCommentCellIdentifier bundle:nil]
          forCellReuseIdentifier:kOtherCommentCellIdentifier];
     
     [self.tableView reloadData];
-    [self refreshAction:self];
+    [self refresh];
 }
 
 - (void)viewWillLayoutSubviews
@@ -56,7 +55,7 @@ const   CGFloat     kMessageRowHeight           =   80;
     self.view.frame = self.view.superview.bounds;
 }
 
-- (IBAction)refreshAction:(id)sender
+- (void)refresh
 {
     VFailBlock fail = ^(NSOperation* operation, NSError* error)
     {
@@ -90,7 +89,7 @@ const   CGFloat     kMessageRowHeight           =   80;
                    {
                        if(self.isViewLoaded && self.view.window)
                        {
-                           [self refreshAction:nil];
+                           [self refresh];
                        }
                    });
 }
@@ -111,10 +110,13 @@ const   CGFloat     kMessageRowHeight           =   80;
         cell = [tableView dequeueReusableCellWithIdentifier:kOtherCommentCellIdentifier forIndexPath:indexPath];
     }else
     {
-        cell = [tableView dequeueReusableCellWithIdentifier:kCommentCellIdentifier forIndexPath:indexPath];
+        cell = [tableView dequeueReusableCellWithIdentifier:kMessageCellIdentifier forIndexPath:indexPath];
     }
     
     [(VCommentCell *)cell setCommentOrMessage:aMessage];
+    
+    [cell setNeedsDisplay];
+    [cell layoutIfNeeded];
     
     return cell;
 }
@@ -128,39 +130,6 @@ const   CGFloat     kMessageRowHeight           =   80;
     height = MAX(height + yOffset, kMinCellHeight);
     
     return height;
-}
-
-#pragma mark - VComposeMessageDelegate
-
-- (void)didComposeWithText:(NSString *)text data:(NSData *)data mediaExtension:(NSString *)mediaExtension mediaURL:(NSURL *)mediaURL
-{
-    VSuccessBlock success = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
-    {
-        NSDictionary* payload = fullResponse[@"payload"];
-        if (!self.conversation.remoteId)
-        {
-            self.conversation.remoteId = payload[@"conversation_id"];
-            [self.conversation.managedObjectContext performBlockAndWait:^
-             {
-                 [self.conversation.managedObjectContext save:nil];
-             }];
-        }
-        
-        [self refreshAction:self];
-        
-        VLog(@"Succeed with response: %@", fullResponse);
-    };
-    
-    [[VObjectManager sharedManager] sendMessageToUser:self.conversation.user
-                                             withText:text
-                                                 Data:data
-                                       mediaExtension:mediaExtension
-                                             mediaUrl:nil
-                                         successBlock:success
-                                            failBlock:^(NSOperation* operation, NSError* error)
-     {
-         VLog(@"Failed in creating message with error: %@", error);
-     }];
 }
 
 @end

@@ -8,7 +8,6 @@
 
 #import "VResultView.h"
 
-#import "UIView+VFrameManipulation.h"
 #import "VThemeManager.h"
 
 @interface VResultView ()
@@ -46,6 +45,9 @@
     
     [self.resultArrow removeFromSuperview];
     self.resultArrow = nil;
+    
+    [self.resultLabel removeFromSuperview];
+    self.resultLabel = nil;
 }
 
 - (UIView*)resultArrow
@@ -88,11 +90,11 @@
 {
     if (!_resultLabel)
     {
-        _resultLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, self.frame.size.height * .85f,
+        _resultLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0,
                                                                  self.frame.size.width,
                                                                  self.frame.size.height *.1f)];
-        _resultLabel.center = self.resultArrow.center;
-        _resultLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVPollButtonFont];
+        
+        _resultLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVParagraphFont];
         _resultLabel.textColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVMainTextColor];
         _resultLabel.textAlignment = NSTextAlignmentCenter;
         _resultLabel.minimumScaleFactor = .5f;
@@ -138,6 +140,12 @@
     {
         self.resultArrow.frame = CGRectMake(0, self.frame.size.height - minProgress - currentProgress,
                                              self.frame.size.width, minProgress + currentProgress);
+        
+        CGRect frame = _resultLabel.frame;
+        frame.origin.y = self.resultArrow.frame.origin.y + self.resultArrow.image.capInsets.top;
+        _resultLabel.frame = frame;
+        VLog(@"result frame: %@", NSStringFromCGRect(_resultLabel.frame));
+        
     }
     else
     {
@@ -145,7 +153,15 @@
                                              minProgress + currentProgress, self.frame.size.height);
     }
     
-    self.resultLabel.text = [@((progress * 100.0f)).stringValue stringByAppendingString:@"%"];
+    static NSNumberFormatter* percentFormatter;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^
+    {
+        percentFormatter = [[NSNumberFormatter alloc] init];
+        [percentFormatter setNumberStyle:NSNumberFormatterPercentStyle];
+    });
+    
+    self.resultLabel.text = [percentFormatter stringFromNumber:@(progress)];
 }
 
 @end

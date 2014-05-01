@@ -7,12 +7,10 @@
 //
 
 #import "VAbstractProfileEditViewController.h"
+#import "VCameraViewController.h"
 #import "VConstants.h"
 #import "VUser.h"
 #import "UIImageView+Blurring.h"
-
-@interface VAbstractProfileEditViewController () <UIActionSheetDelegate>
-@end
 
 @implementation VAbstractProfileEditViewController
 
@@ -61,45 +59,23 @@
 
 - (IBAction)takePicture:(id)sender
 {
-    if([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera])
+    UINavigationController *navigationController = [[UINavigationController alloc] init];
+    VCameraViewController *cameraViewController = [VCameraViewController cameraViewControllerLimitedToPhotos];
+    cameraViewController.completionBlock = ^(BOOL finished, UIImage *previewImage, NSURL *capturedMediaURL, NSString *mediaExtension)
     {
-        UIActionSheet*  sheet = [[UIActionSheet alloc] initWithTitle:@"Select Picture Using:"
-                                                            delegate:self
-                                                   cancelButtonTitle:@"Cancel"
-                                              destructiveButtonTitle:nil
-                                                   otherButtonTitles:@"Camera", @"Photo Library", nil];
-        [sheet showInView:self.view];
-    }
-    else
-    {
-        [self takePictureWithSource:UIImagePickerControllerSourceTypePhotoLibrary];
-    }
-}
-
-- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
-{
-    if (actionSheet.firstOtherButtonIndex == buttonIndex)
-    {
-        [self takePictureWithSource:UIImagePickerControllerSourceTypeCamera];
-    }
-    else if ((actionSheet.firstOtherButtonIndex + 1) == buttonIndex)
-    {
-        [self takePictureWithSource:UIImagePickerControllerSourceTypePhotoLibrary];
-    }
-}
-
-- (void)takePictureWithSource:(UIImagePickerControllerSourceType)sourceType
-{
-    UIImagePickerController*    picker = [[UIImagePickerController alloc] init];
-    
-    picker.sourceType = sourceType;
-    if (UIImagePickerControllerSourceTypeCamera == sourceType)
-        picker.cameraCaptureMode = UIImagePickerControllerCameraCaptureModePhoto;
-
-    picker.delegate = self;
-    picker.allowsEditing = YES;
-    
-    [self presentViewController:picker animated:YES completion:nil];
+        [self dismissViewControllerAnimated:YES completion:nil];
+        if (finished && capturedMediaURL)
+        {
+            NSData *imageData = [NSData dataWithContentsOfURL:capturedMediaURL];
+            if (imageData)
+            {
+                self.profileImageView.image = [UIImage imageWithData:imageData];
+            }
+            [[NSFileManager defaultManager] removeItemAtURL:capturedMediaURL error:nil];
+        }
+    };
+    [navigationController pushViewController:cameraViewController animated:NO];
+    [self presentViewController:navigationController animated:YES completion:nil];
 }
 
 #pragma mark - UITextFieldDelegate
@@ -124,26 +100,6 @@
 - (void)textViewDidEndEditing:(UITextView *)textView
 {
     self.tagLinePlaceholderLabel.hidden = ([textView.text length] > 0);
-}
-
-#pragma mark - UIImagePickerControllerDelegate
-
-- (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info
-{
-    UIImage* imageToSave = (UIImage *)info[UIImagePickerControllerEditedImage] ?: (UIImage *)info[UIImagePickerControllerOriginalImage];
-    self.profileImageView.image = imageToSave;
-    
-    NSString*   mediaType   =   nil;
-    NSData*     media = UIImagePNGRepresentation(imageToSave);
-    if (media)
-        mediaType = VConstantMediaExtensionPNG;
-    
-    [self dismissViewControllerAnimated:YES completion:nil];
-}
-
-- (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker
-{
-    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 @end

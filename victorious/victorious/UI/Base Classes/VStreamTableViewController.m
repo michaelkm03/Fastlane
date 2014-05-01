@@ -17,8 +17,8 @@
 #import "UIImageView+Blurring.h"
 #import "UIImage+ImageCreation.h"
 
-#import "VStreamContentSegue.h"
-#import "VStreamTransitioningDelegate.h"
+#import "VStreamToContentAnimator.h"
+#import "VStreamToCommentAnimator.h"
 
 //Cells
 #import "VStreamViewCell.h"
@@ -35,21 +35,31 @@
 
 #import "VThemeManager.h"
 
-@interface VStreamTableViewController() <UIViewControllerTransitioningDelegate>
+@interface VStreamTableViewController() <UIViewControllerTransitioningDelegate, UINavigationControllerDelegate>
 @property (strong, nonatomic) id<UIViewControllerTransitioningDelegate> transitionDelegate;
+
+@property (strong, nonatomic) NSCache* preloadImageCache;
 @end
 
 @implementation VStreamTableViewController
+
+- (void)dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
     
-    self.transitionDelegate = [[VStreamTransitioningDelegate alloc] init];
+    self.tableView.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVSecondaryAccentColor];
     
     [[NSNotificationCenter defaultCenter]
      addObserver:self selector:@selector(willCommentSequence:)
      name:kStreamsWillCommentNotification object:nil];
+    
+    self.preloadImageCache = [[NSCache alloc] init];
+    self.preloadImageCache.countLimit = 5;
     
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     
@@ -58,8 +68,43 @@
     else
         [self.tableView reloadData]; //force a reload incase anything has changed
     
+    self.clearsSelectionOnViewWillAppear = NO;
+    
     //Remove the search button from the stream - feature currently deprecated
     self.navigationItem.rightBarButtonItem = nil;
+}
+
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    
+    self.navigationController.delegate = self;
+    
+    CGRect navBarFrame = self.navigationController.navigationBar.frame;
+    navBarFrame.origin.y = 0;
+    self.navigationController.navigationBar.frame = navBarFrame;
+    [[VThemeManager sharedThemeManager] applyNormalNavBarStyling];
+    [self.navigationController setNavigationBarHidden:NO animated:YES];
+}
+
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+    
+    [self.preloadImageCache removeAllObjects];
+    
+    CGRect navBarFrame = self.navigationController.navigationBar.frame;
+    navBarFrame.origin.y = 0;
+    
+    [UIView animateWithDuration:.5f animations:^
+     {
+         self.navigationController.navigationBar.frame = navBarFrame;
+     }];
+    
+    if (self.navigationController.delegate == self)
+    {
+        self.navigationController.delegate = nil;
+    }
 }
 
 #pragma mark - FetchedResultsControllers
@@ -97,32 +142,15 @@
 
 #pragma mark - UITableViewDelegate
 
-- (void)tableView:(UITableView *)tableView didEndDisplayingCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    VSequence* sequence = ((VStreamViewCell*)cell).sequence;
-    if (([sequence isForum] || [sequence isVideo])
-        && [[[sequence firstNode] firstAsset].type isEqualToString:VConstantsMediaTypeYoutube])
-    {
-        //This will reload the youtube video so it stops playing
-        //TODO: replace this with a pause control
-        ((VStreamViewCell*)cell).sequence = ((VStreamViewCell*)cell).sequence;
-    }
-}
-
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     VStreamViewCell* cell = (VStreamViewCell*)[tableView cellForRowAtIndexPath:indexPath];
     
-    UIImageView* newBackgroundView = [[UIImageView alloc] initWithFrame:self.tableView.backgroundView.frame];
+    [self setBackgroundImageWithURL:[[cell.sequence initialImageURLs] firstObject]];
     
-    UIImage* placeholderImage = [UIImage resizeableImageWithColor:[[VThemeManager sharedThemeManager] themedColorForKey:kVBackgroundColor]];
-    [newBackgroundView setLightBlurredImageWithURL:[[cell.sequence initialImageURLs] firstObject]
-                                  placeholderImage:placeholderImage];
-    
-    self.tableView.backgroundView = newBackgroundView;
     if (tableView.contentOffset.y == cell.frame.origin.y - kContentMediaViewOffset)
     {
-        [self performSegueWithIdentifier:kStreamContentSegueStoryboardID sender:cell];
+        [self.navigationController pushViewController:[VContentViewController sharedInstance] animated:YES];
     }
     else
     {
@@ -135,17 +163,33 @@
     VStreamViewCell* cell = (VStreamViewCell*)[self.tableView cellForRowAtIndexPath:self.tableView.indexPathForSelectedRow];
     if (cell)
     {
-        [self performSegueWithIdentifier:kStreamContentSegueStoryboardID sender:cell];
+        [self.navigationController pushViewController:[VContentViewController sharedInstance] animated:YES];
     }
 }
 
-//- (void)scrollViewDidScroll:(UIScrollView *)scrollView
-//{
-//    if (scrollView.contentOffset.y > (scrollView.contentSize.height * .75))
-//    {
-//        [self refreshAction];
-//    }
-//}
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView
+{
+    CGPoint translation = [scrollView.panGestureRecognizer translationInView:scrollView.superview];
+    CGRect navBarFrame = self.navigationController.navigationBar.frame;
+    
+    if (translation.y < 0 && CGRectContainsRect(self.view.frame, navBarFrame))
+    {
+        navBarFrame.origin.y = -navBarFrame.size.height;
+    }
+    else if (translation.y > 0 && !CGRectContainsRect(self.view.frame, navBarFrame))
+    {
+        navBarFrame.origin.y = 0;
+    }
+    else
+    {
+        return;
+    }
+    
+    [UIView animateWithDuration:.5f animations:^
+    {
+        self.navigationController.navigationBar.frame = navBarFrame;
+    }];
+}
 
 #pragma mark - Cells
 
@@ -178,16 +222,7 @@
 {
     VSequence* sequence = (VSequence*)[self.fetchedResultsController objectAtIndexPath:indexPath];
 
-    if (([sequence isForum] || [sequence isVideo])
-        && [[[sequence firstNode] firstAsset].type isEqualToString:VConstantsMediaTypeYoutube])
-        return [tableView dequeueReusableCellWithIdentifier:kStreamYoutubeVideoCellIdentifier
-                                               forIndexPath:indexPath];
-    
-    if ([sequence isPoll] && [[sequence firstNode] firstAsset])
-        return [tableView dequeueReusableCellWithIdentifier:kStreamPollCellIdentifier
-                                               forIndexPath:indexPath];
-
-    else if ([sequence isPoll])
+    if ([sequence isPoll])
         return [tableView dequeueReusableCellWithIdentifier:kStreamDoublePollCellIdentifier
                                                forIndexPath:indexPath];
 
@@ -206,6 +241,20 @@
     VSequence *info = [self.fetchedResultsController objectAtIndexPath:indexPath];
     ((VStreamViewCell*)cell).parentTableViewController = self;
     [((VStreamViewCell*)cell) setSequence:info];
+    
+    if ([self.fetchedResultsController.fetchedObjects count] > indexPath.row + 2)
+    {
+        NSIndexPath* preloadPath = [NSIndexPath indexPathForRow:indexPath.row + 2 inSection:indexPath.section];
+        VSequence* preloadSequence = [self.fetchedResultsController objectAtIndexPath:preloadPath];
+        
+        for (NSURL* imageUrl in [preloadSequence initialImageURLs])
+        {
+            UIImageView* preloadView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 0, 0)];
+            [preloadView setImageWithURL:imageUrl];
+            
+            [self.preloadImageCache setObject:preloadView forKey:imageUrl.absoluteString];
+        }
+    }
 
     return cell;
 }
@@ -227,21 +276,9 @@
          forCellReuseIdentifier:kStreamViewCellIdentifier];
     [self.searchDisplayController.searchResultsTableView registerNib:[UINib nibWithNibName:kStreamViewCellIdentifier bundle:nil] forCellReuseIdentifier:kStreamViewCellIdentifier];
     
-    [self.tableView registerNib:[UINib nibWithNibName:kStreamYoutubeCellIdentifier bundle:nil]
-         forCellReuseIdentifier:kStreamYoutubeCellIdentifier];
-    [self.searchDisplayController.searchResultsTableView registerNib:[UINib nibWithNibName:kStreamYoutubeCellIdentifier bundle:nil] forCellReuseIdentifier:kStreamYoutubeCellIdentifier];
-    
-    [self.tableView registerNib:[UINib nibWithNibName:kStreamYoutubeVideoCellIdentifier bundle:[NSBundle mainBundle]]
-         forCellReuseIdentifier:kStreamYoutubeVideoCellIdentifier];
-    [self.searchDisplayController.searchResultsTableView registerNib:[UINib nibWithNibName:kStreamYoutubeVideoCellIdentifier bundle:[NSBundle mainBundle]] forCellReuseIdentifier:kStreamYoutubeVideoCellIdentifier];
-    
     [self.tableView registerNib:[UINib nibWithNibName:kStreamVideoCellIdentifier bundle:[NSBundle mainBundle]]
          forCellReuseIdentifier:kStreamVideoCellIdentifier];
     [self.searchDisplayController.searchResultsTableView registerNib:[UINib nibWithNibName:kStreamVideoCellIdentifier bundle:nil] forCellReuseIdentifier:kStreamVideoCellIdentifier];
-    
-    [self.tableView registerNib:[UINib nibWithNibName:kStreamPollCellIdentifier bundle:nil]
-         forCellReuseIdentifier:kStreamPollCellIdentifier];
-    [self.searchDisplayController.searchResultsTableView registerNib:[UINib nibWithNibName:kStreamPollCellIdentifier bundle:nil] forCellReuseIdentifier:kStreamPollCellIdentifier];
     
     [self.tableView registerNib:[UINib nibWithNibName:kStreamDoublePollCellIdentifier bundle:nil]
          forCellReuseIdentifier:kStreamDoublePollCellIdentifier];
@@ -299,34 +336,176 @@
     [self.sideMenuViewController presentMenuViewController];
 }
 
+- (void)setBackgroundImageWithURL:(NSURL*)url
+{
+    UIImageView* newBackgroundView = [[UIImageView alloc] initWithFrame:self.tableView.backgroundView.frame];
+    
+    UIImage* placeholderImage = [UIImage resizeableImageWithColor:[[VThemeManager sharedThemeManager] themedColorForKey:kVBackgroundColor]];
+    [newBackgroundView setLightBlurredImageWithURL:url
+                                  placeholderImage:placeholderImage];
+    
+    self.tableView.backgroundView = newBackgroundView;
+}
+
 #pragma mark - Notifications
 
 - (void)willCommentSequence:(NSNotification *)notification
 {
     VStreamViewCell *cell = (VStreamViewCell *)notification.object;
+
+    [self setBackgroundImageWithURL:[[cell.sequence initialImageURLs] firstObject]];
+
     VCommentsContainerViewController* commentsTable = [VCommentsContainerViewController commentsContainerView];
     commentsTable.sequence = cell.sequence;
+    commentsTable.parentVC = self;
     [self.navigationController pushViewController:commentsTable animated:YES];
 }
 
-#pragma mark - Navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
+#pragma marke- Navigation
+- (id<UIViewControllerAnimatedTransitioning>) navigationController:(UINavigationController *)navigationController
+                                   animationControllerForOperation:(UINavigationControllerOperation)operation
+                                                fromViewController:(UIViewController*)fromVC
+                                                  toViewController:(UIViewController*)toVC
 {
-    ((VStreamTransitioningDelegate*)self.transitionDelegate).indexPathForSelectedCell = self.tableView.indexPathForSelectedRow;
-    ((UIViewController*)segue.destinationViewController).transitioningDelegate = self.transitionDelegate;
-    ((UIViewController*)segue.destinationViewController).modalPresentationStyle= UIModalPresentationCustom;
-
-    if ([segue.identifier isEqualToString:kStreamContentSegueStoryboardID])
+    if (operation == UINavigationControllerOperationPush && ([toVC isKindOfClass:[VContentViewController class]]) )
     {
-        ((VStreamContentSegue*)segue).selectedCell = sender;
-        VContentViewController* contentVC = segue.destinationViewController;
-        contentVC.sequence = ((VStreamViewCell*)sender).sequence;
+        return [[VStreamToContentAnimator alloc] init];;
     }
+    else if (operation == UINavigationControllerOperationPush && [toVC isKindOfClass:[VCommentsContainerViewController class]])
+    {
+        return [[VStreamToCommentAnimator alloc] init];
+    }
+    return nil;
 }
 
-- (IBAction)unwindToStreamTable:(UIStoryboardSegue*)sender
+#pragma mark - VAnimation
+- (void)animateInWithDuration:(CGFloat)duration completion:(void (^)(BOOL finished))completion
 {
+    self.fetchedResultsController.delegate = nil;
+    VStreamViewCell* selectedCell = (VStreamViewCell*) [self.tableView cellForRowAtIndexPath:self.tableView.indexPathForSelectedRow];
     
+    //If the tableview updates while we are in the content view it will reset the cells to their proper positions.
+    //In this case, we reset them
+    CGFloat centerPoint = selectedCell ? selectedCell.center.y : self.tableView.center.y + self.tableView.contentOffset.y;
+
+    for (VStreamViewCell* cell in self.repositionedCells)
+    {
+        
+        CGRect cellRect = [self.tableView convertRect:cell.frame toView:self.tableView.superview];
+        if (CGRectIntersectsRect(self.tableView.frame, cellRect))
+        {
+            if (cell.center.y > centerPoint)
+            {
+                cell.center = CGPointMake(cell.center.x, cell.center.y + [UIScreen mainScreen].bounds.size.height);
+            }
+            else
+            {
+                cell.center = CGPointMake(cell.center.x, cell.center.y - [UIScreen mainScreen].bounds.size.height);
+            }
+        }
+    }
+    
+    [UIView animateWithDuration:duration/2
+                     animations:^
+     {
+         [selectedCell showOverlays];
+     }
+                     completion:^(BOOL finished)
+     {
+         [UIView animateWithDuration:duration/2
+                          animations:^
+          {
+              for (VStreamViewCell* cell in self.repositionedCells)
+              {
+                  CGRect cellRect = [self.tableView convertRect:cell.frame toView:self.tableView.superview];
+                  if (!CGRectIntersectsRect(self.tableView.frame, cellRect))
+                  {
+                      if (cell.center.y > centerPoint)
+                      {
+                          cell.center = CGPointMake(cell.center.x, cell.center.y - [UIScreen mainScreen].bounds.size.height);
+                      }
+                      else
+                      {
+                          cell.center = CGPointMake(cell.center.x, cell.center.y + [UIScreen mainScreen].bounds.size.height);
+                      }
+                  }
+              }
+          }
+                          completion:^(BOOL finished)
+          {
+              CGFloat minOffset = self.navigationController.navigationBar.frame.size.height;
+              CGFloat maxOffset = self.tableView.contentSize.height - self.tableView.frame.size.height;
+              if (self.tableView.contentOffset.y < minOffset)
+              {
+                  [self.tableView setContentOffset:CGPointMake(self.tableView.contentOffset.x, 0) animated:YES];
+              }
+              else if (self.tableView.contentOffset.y >= maxOffset)
+              {
+                  [self.tableView setContentOffset:CGPointMake(self.tableView.contentOffset.x, maxOffset) animated:YES];
+              }
+              
+              self.repositionedCells = nil;
+              
+              if (selectedCell)
+              {
+                  [self.tableView deselectRowAtIndexPath:self.tableView.indexPathForSelectedRow animated:NO];
+              }
+              
+              self.fetchedResultsController.delegate = self;
+              
+              if (completion)
+              {
+                  completion(finished);
+              }
+          }];
+     }];
 }
+
+- (void)animateOutWithDuration:(CGFloat)duration completion:(void (^)(BOOL finished))completion
+{
+    self.fetchedResultsController.delegate = nil;
+    [UIView animateWithDuration:.4f
+                     animations:^
+     {
+         CGPoint newNavCenter = CGPointMake(self.navigationController.navigationBar.center.x,
+                                            self.navigationController.navigationBar.center.y - self.tableView.frame.size.height);
+         self.navigationController.navigationBar.center = newNavCenter;
+         
+         NSMutableArray* repositionedCells = [[NSMutableArray alloc] init];
+
+         VStreamViewCell* selectedCell = (VStreamViewCell*) [self.tableView cellForRowAtIndexPath:self.tableView.indexPathForSelectedRow];
+         CGFloat centerPoint = selectedCell ? selectedCell.center.y : self.tableView.center.y + self.tableView.contentOffset.y;
+
+         for (VStreamViewCell* cell in [self.tableView visibleCells])
+         {
+             CGRect cellRect = [self.tableView convertRect:cell.frame toView:self.tableView.superview];
+             if (cell == selectedCell || !CGRectIntersectsRect(self.tableView.frame, cellRect))
+             {
+                 continue;
+             }
+         
+             if (cell.center.y > centerPoint)
+             {
+                 cell.center = CGPointMake(cell.center.x, cell.center.y + [UIScreen mainScreen].bounds.size.height);
+             }
+             else
+             {
+                 cell.center = CGPointMake(cell.center.x, cell.center.y - [UIScreen mainScreen].bounds.size.height);
+             }
+             [repositionedCells addObject:cell];
+         }
+         self.repositionedCells = repositionedCells;
+     }
+                     completion:^(BOOL finished)
+     {
+         self.fetchedResultsController.delegate = self;
+         
+         if (completion)
+         {
+             completion(finished);
+         }
+     }];
+}
+
 
 @end

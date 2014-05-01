@@ -13,6 +13,7 @@
 #import "VNewsViewController.h"
 #import "VConversationCell.h"
 #import "VObjectManager+DirectMessaging.h"
+#import "VThemeManager.h"
 
 
 NS_ENUM(NSUInteger, VModeSelect)
@@ -26,6 +27,7 @@ static  NSString*   kNewsCellViewIdentifier       =   @"VNewsCell";
 
 @interface VInboxViewController ()
 @property (weak, nonatomic) IBOutlet UISegmentedControl*    modeSelectControl;
+@property (weak, nonatomic) IBOutlet UIView*                headerView;
 @end
 
 @implementation VInboxViewController
@@ -42,10 +44,11 @@ static  NSString*   kNewsCellViewIdentifier       =   @"VNewsCell";
 
     self.modeSelectControl.selectedSegmentIndex = kMessageModeSelect;
     [self modeSelected:self.modeSelectControl];
-
-//  [self.modeSelectControl setDividerImage:image1 forLeftSegmentState:UIControlStateNormal                   rightSegmentState:UIControlStateNormal barMetrics:barMetrics];
-//  [self.modeSelectControl setDividerImage:image2 forLeftSegmentState:UIControlStateSelected                   rightSegmentState:UIControlStateNormal barMetrics:barMetrics];
-//  [self.modeSelectControl setDividerImage:image3 forLeftSegmentState:UIControlStateNormal                   rightSegmentState:UIControlStateSelected barMetrics:barMetrics];
+    
+//    self.tableView.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVBackgroundColor];
+//    self.tableView.separatorColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVBackgroundColor];
+    self.navigationController.navigationBar.barTintColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVAccentColor];
+    self.headerView.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVAccentColor];
 }
 
 #pragma mark - Overrides

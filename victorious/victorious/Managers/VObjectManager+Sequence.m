@@ -13,7 +13,6 @@
 
 #import "VUser.h"
 #import "VUserManager.h"
-#import "VCategory.h"
 #import "VSequence+RestKit.h"
 #import "VAnswer.h"
 #import "VComment.h"
@@ -25,33 +24,34 @@
 
 #import "NSString+VParseHelp.h"
 
-NSString* const kInitialLoadFinishedNotification = @"kInitialLoadFinishedNotification";
 NSString* const kPollResultsLoaded = @"kPollResultsLoaded";
 
 @implementation VObjectManager (Sequence)
 
 #pragma mark - Sequences
 
-- (RKManagedObjectRequestOperation *)initialSequenceLoad
+- (RKManagedObjectRequestOperation *)initialSequenceLoadWithSuccessBlock:(VSuccessBlock)success failBlock:(VFailBlock)fail
 {
     
     return [self loadNextPageOfSequencesForCategory:nil
                                 successBlock:^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
             {
-                void (^postNotification)(void) = ^(void)
-                {
-                    [[NSNotificationCenter defaultCenter] postNotificationName:kInitialLoadFinishedNotification object:nil];
-                };
                 [[VUserManager sharedInstance] loginViaSavedCredentialsOnCompletion:^(VUser *user, BOOL created)
                 {
-                    dispatch_async(dispatch_get_main_queue(), postNotification);
+                    if (success)
+                    {
+                        success(operation, fullResponse, resultObjects);
+                    }
                 }
                                                                             onError:^(NSError *error)
                 {
-                    dispatch_async(dispatch_get_main_queue(), postNotification);
+                    if (success)
+                    {
+                        success(operation, fullResponse, resultObjects);
+                    }
                 }];
             }
-                                   failBlock:nil];
+                                   failBlock:fail];
 }
 
 /*! Loads the next page of sequences for the category
@@ -220,6 +220,8 @@ NSString* const kPollResultsLoaded = @"kPollResultsLoaded";
                                                           successBlock:(VSuccessBlock)success
                                                              failBlock:(VFailBlock)fail
 {
+    if (!sequence)
+        return nil;
     
     __block NSString* statusKey = [@"commentsForSequence%@" stringByAppendingString:sequence.remoteId.stringValue];
     __block VPaginationStatus* status = [self statusForKey:statusKey];
@@ -352,8 +354,10 @@ NSString* const kPollResultsLoaded = @"kPollResultsLoaded";
                                            successBlock:(VSuccessBlock)success
                                               failBlock:(VFailBlock)fail
 {
+    user = user ?: self.mainUser;
+    
     if (!user)
-        user = self.mainUser;
+        return nil;
     
     NSString* path = [@"/api/pollresult/summary_by_user/" stringByAppendingString: user.remoteId.stringValue];
     
@@ -425,12 +429,10 @@ NSString* const kPollResultsLoaded = @"kPollResultsLoaded";
                                        question:(NSString*)question
                                     answer1Text:(NSString*)answer1Text
                                     answer2Text:(NSString*)answer2Text
-                                     media1Data:(NSData*)media1Data
-                                media1Extension:(NSString*)media1Extension
                                       media1Url:(NSURL*)media1Url
-                                     media2Data:(NSData*)media2Data
-                                media2Extension:(NSString*)media2Extension
+                                media1Extension:(NSString*)media1Extension
                                       media2Url:(NSURL*)media2Url
+                                media2Extension:(NSString*)media2Extension
                                    successBlock:(VSuccessBlock)success
                                       failBlock:(VFailBlock)fail
 {
@@ -441,20 +443,20 @@ NSString* const kPollResultsLoaded = @"kPollResultsLoaded";
                                  @"answer1_label" : answer1Text ?: [NSNull null],
                                  @"answer2_label" : answer2Text ?: [NSNull null]};
 
-    NSMutableDictionary *allData = [[NSMutableDictionary alloc] init];
+    NSMutableDictionary *allURLs = [[NSMutableDictionary alloc] init];
     NSMutableDictionary *allExtensions = [[NSMutableDictionary alloc] init];
 
-    if (media1Data && ![media1Extension isEmpty] && media2Data && ![media2Extension isEmpty])
+    if (media1Url && ![media1Extension isEmpty] && media2Url && ![media2Extension isEmpty])
     {
-        allData[@"answer1_media"] = media1Data;
+        allURLs[@"answer1_media"] = media1Url;
         allExtensions[@"answer1_media"] = media1Extension;
 
-        allData[@"answer2_media"] = media2Data;
+        allURLs[@"answer2_media"] = media2Url;
         allExtensions[@"answer2_media"] = media2Extension;
     }
-    else if (media1Data && ![media1Extension isEmpty] )
+    else if (media1Url && ![media1Extension isEmpty] )
     {
-        allData[@"poll_media"] = media1Data;
+        allURLs[@"poll_media"] = media1Url;
         allExtensions[@"poll_media"] = media1Extension;
     }
     
@@ -462,7 +464,14 @@ NSString* const kPollResultsLoaded = @"kPollResultsLoaded";
     {
         if ([fullResponse[@"error"] integerValue] == 0)
         {
-            NSNumber* sequenceID = fullResponse[@"payload"][@"sequence_id"];
+            NSDictionary* payload = fullResponse[@"payload"];
+            if (![payload isKindOfClass:[NSDictionary class]])
+            {
+                payload = nil;
+            }
+            
+            NSNumber* sequenceID = payload[@"sequence_id"];
+
             [self fetchSequence:sequenceID
                    successBlock:success
                       failBlock:fail];
@@ -475,34 +484,34 @@ NSString* const kPollResultsLoaded = @"kPollResultsLoaded";
         }
     };
     
-    return [self upload:allData
-          fileExtension:allExtensions
-                 toPath:@"/api/poll/create"
-             parameters:parameters
-           successBlock:fullSuccess
-              failBlock:fail];
+    return [self uploadURLs:allURLs
+             fileExtensions:allExtensions
+                     toPath:@"/api/poll/create"
+                 parameters:parameters
+               successBlock:fullSuccess
+                  failBlock:fail];
 }
 
 - (AFHTTPRequestOperation * )uploadMediaWithName:(NSString*)name
                                      description:(NSString*)description
                                        expiresAt:(NSString*)expiresAt
                                     parentNodeId:(NSNumber*)parentNodeId
+                                           speed:(CGFloat)speed
                                         loopType:(VLoopType)loopType
                                     shareOptions:(VShareOptions)shareOptions
-                                       mediaData:(NSData*)mediaData
+                                       mediaURL:(NSURL*)mediaUrl
                                        extension:(NSString*)extension
-                                        mediaUrl:(NSURL*)mediaUrl
                                     successBlock:(VSuccessBlock)success
                                        failBlock:(VFailBlock)fail
 {
-    if (!mediaData || !extension)
+    if (!mediaUrl || !extension)
         return nil;
     
     NSMutableDictionary* parameters = [@{@"name":name ?: [NSNull null],
                                          @"description":description ?: [NSNull null]} mutableCopy];
     if (expiresAt)
         parameters[@"expires_at"] = expiresAt;
-    if (parentNodeId)
+    if (parentNodeId && ![parentNodeId isEqualToNumber:@(0)])
         parameters[@"parent_node_id"] = parentNodeId;
     if (shareOptions & kVShareToFacebook)
         parameters[@"share_facebook"] = @"1";
@@ -510,26 +519,36 @@ NSString* const kPollResultsLoaded = @"kPollResultsLoaded";
         parameters[@"share_twitter"] = @"1";
     
     NSString* loopParam = [self stringForLoopType:loopType];
-    if (loopParam)
+    if (loopParam && speed)
+    {
+        parameters[@"speed"] = @(speed);
         parameters[@"playback"] = loopParam;
+    }
     
-    NSDictionary* allData = @{@"media_data":mediaData ?: [NSNull null]};
+    NSDictionary* allUrls = @{@"media_data":mediaUrl ?: [NSNull null]};
     NSDictionary* allExtensions = @{@"media_data":extension ?: [NSNull null]};
     
     VSuccessBlock fullSuccess = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
     {
-        NSNumber* sequenceID = fullResponse[@"payload"][@"sequence_id"];
+        NSDictionary* payload = fullResponse[@"payload"];
+        if (![payload isKindOfClass:[NSDictionary class]])
+        {
+            payload = nil;
+        }
+        
+        NSNumber* sequenceID = payload[@"sequence_id"];
+
         [self fetchSequence:sequenceID
                successBlock:success
                   failBlock:fail];
     };
     
-    return [self upload:allData
-          fileExtension:allExtensions
-                 toPath:@"/api/mediaupload/create"
-             parameters:[parameters copy]
-           successBlock:fullSuccess
-              failBlock:fail];
+    return [self uploadURLs:allUrls
+             fileExtensions:allExtensions
+                     toPath:@"/api/mediaupload/create"
+                 parameters:[parameters copy]
+               successBlock:fullSuccess
+                  failBlock:fail];
 }
 
 - (NSString*)stringForLoopType:(VLoopType)type

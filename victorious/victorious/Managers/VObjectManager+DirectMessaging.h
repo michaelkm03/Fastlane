@@ -27,7 +27,7 @@
 
 - (AFHTTPRequestOperation *)sendMessageToUser:(VUser*)user
                                      withText:(NSString*)text
-                                         Data:(NSData*)data
+                                     mediaURL:(NSURL*)mediaURL
                                mediaExtension:(NSString*)extension
                                      mediaUrl:(NSURL*)mediaUrl
                                  successBlock:(VSuccessBlock)success

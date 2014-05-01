@@ -17,6 +17,9 @@ extern  NSString*   const   kVChannelURLAcknowledgements;
 extern  NSString*   const   kVChannelURLSupport;
 extern  NSString*   const   kVChannelName;
 
+extern  NSString*   const   kVCaptureVideoQuality;
+extern  NSString*   const   kVExportVideoQuality;
+
 extern  NSString*   const   kVAgreementText;
 extern  NSString*   const   kVAgreementLinkText;
 extern  NSString*   const   kVAgreementLink;
@@ -25,16 +28,26 @@ extern  NSString*   const   kVMenuBackgroundImage;
 extern  NSString*   const   kVMenuBackgroundImage5;
 
 //Fonts
-extern  NSString*   const   kVTitleFont;
-extern  NSString*   const   kVContentTitleFont;
-extern  NSString*   const   kVDetailFont;
-extern  NSString*   const   kVDateFont;
-extern  NSString*   const   kVButtonFont;
-extern  NSString*   const   kVPollButtonFont;
+extern  NSString*   const   kVHeaderFont;
 
+extern  NSString*   const   kVHeading1Font;
+extern  NSString*   const   kVHeading2Font;
+extern  NSString*   const   kVHeading3Font;
+extern  NSString*   const   kVHeading4Font;
+
+extern  NSString*   const   kVParagraphFont;
+
+extern  NSString*   const   kVLabel1Font;
+extern  NSString*   const   kVLabel2Font;
+extern  NSString*   const   kVLabel3Font;
+extern  NSString*   const   kVLabel4Font;
+
+extern  NSString*   const   kVButton1Font;
+extern  NSString*   const   kVButton2Font;
 
 //Colors
 extern  NSString*   const   kVBackgroundColor;
+extern  NSString*   const   kVCancelColor;
 
 extern  NSString*   const   kVMainTextColor;
 extern  NSString*   const   kVContentTextColor;
@@ -49,9 +62,14 @@ extern  NSString*   const   kVLinkColor;
 + (VThemeManager *)sharedThemeManager;
 
 - (void)setTheme:(NSDictionary *)dictionary;
+- (void)updateToNewTheme;
 
 - (void)applyStyling;
 - (void)removeStyling;
+
+- (void)applyNormalNavBarStyling;
+- (void)applyClearNavBarStyling;
+- (void)removeNavBarStyling;
 
 - (NSString *)themedStringForKey:(NSString *)key;
 - (UIColor *)themedColorForKey:(NSString *)key;
@@ -59,5 +77,8 @@ extern  NSString*   const   kVLinkColor;
 - (NSURL *)themedImageURLForKey:(NSString *)key;
 - (UIImage *)themedImageForKey:(NSString *)key;
 - (UIFont *)themedFontForKey:(NSString *)key;
+
+- (NSString *)themedExportVideoQuality;
+- (NSString *)themedCapturedVideoQuality;
 
 @end

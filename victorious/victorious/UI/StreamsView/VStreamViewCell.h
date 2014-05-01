@@ -28,4 +28,8 @@ extern NSString *kStreamsWillCommentNotification;
 @property (weak, nonatomic) IBOutlet UIView *shadeView;
 @property (weak, nonatomic) VSequence* sequence;
 
+- (void) hideOverlays;
+- (void) showOverlays;
+
+
 @end

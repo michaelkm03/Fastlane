@@ -19,6 +19,8 @@
 - (id)initWithFrame:(CGRect)frame videoUrl:(NSURL *)videoUrl;
 - (void)setPopoverBubbleWidth:(CGFloat)width height:(CGFloat)height;
 
+- (void)cancel;
+
 @end
 
 

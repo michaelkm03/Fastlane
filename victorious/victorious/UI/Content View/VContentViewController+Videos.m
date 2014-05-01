@@ -10,7 +10,7 @@
 #import "VContentViewController+Private.h"
 #import "VContentViewController+Images.h"
 
-#import "VRemixTrimViewController.h"
+#import "VRemixSelectViewController.h"
 
 @implementation VContentViewController (Videos)
 
@@ -25,27 +25,23 @@
 //                                             selector:@selector(animateVideoClosed)
 //                                                 name:MPMoviePlayerPlaybackDidFinishNotification
 //                                               object:nil];
-    
-    self.mpController = [[MPMoviePlayerController alloc] initWithContentURL:nil];
-    self.mpController.scalingMode = MPMovieScalingModeAspectFill;
-    self.mpController.view.frame = self.previewImage.frame;
-    self.mpController.shouldAutoplay = NO;
-    [self.mpPlayerContainmentView addSubview:self.mpController.view];
 }
 
 - (void)loadVideo
 {
     [self loadImage];
     
-    [self.mpController setContentURL:[NSURL URLWithString:self.currentAsset.data]];
-    self.mpPlayerContainmentView.hidden = YES;
+    [self.mpController.view removeFromSuperview];
+    self.mpController = [[MPMoviePlayerController alloc] initWithContentURL:[NSURL URLWithString:self.currentAsset.data]];
+    self.mpController.scalingMode = MPMovieScalingModeAspectFit;
+    self.mpController.view.frame = self.previewImage.frame;
+    self.mpController.shouldAutoplay = NO;
+    [self.mpPlayerContainmentView addSubview:self.mpController.view];
     [self.mpController prepareToPlay];
     
     self.activityIndicator.center = self.mpController.view.center;
     [self.mediaView addSubview:self.activityIndicator];
     [self.activityIndicator startAnimating];
-    
-    [self updateActionBar];
 }
 
 - (void)mpLoadStateChanged
@@ -64,10 +60,13 @@
         {
             xRatio = self.mpController.naturalSize.width / self.mpController.naturalSize.height;
         }
+        
+        VLog(@"Natural Width: %f  Height: %f", self.mpController.naturalSize.width, self.mpController.naturalSize.height);
+        
         CGFloat videoHeight = fminf(self.mediaView.frame.size.height * yRatio, self.mediaView.frame.size.height);
         CGFloat videoWidth = self.mediaView.frame.size.width * xRatio;
         self.mpController.view.frame = CGRectMake(0, 0, videoWidth, videoHeight);
-        self.mpController.view.center = CGPointMake(self.view.center.x, self.mpController.view.center.y);
+//        self.mpController.view.center = CGPointMake(self.view.center.x, self.mpController.view.center.y);
         
         [self.mpPlayerContainmentView addSubview:self.mpController.view];
         
@@ -87,6 +86,7 @@
     [UIView animateWithDuration:.2f
                      animations:^
      {
+         [self.previewImage cancelImageRequestOperation];
          self.previewImage.frame =  self.mpController.view.frame;
      }
                      completion:^(BOOL finished)
@@ -109,13 +109,13 @@
     
     [UIView animateWithDuration:duration animations:
      ^{
-         [self.mpPlayerContainmentView setSize:CGSizeMake(0,0)];
+         self.mpPlayerContainmentView.bounds = CGRectMake(0, 0, 0, 0);
      }];
 }
 
 - (IBAction)pressedRemix:(id)sender
 {
-    UIViewController* remixVC = [VRemixTrimViewController remixViewControllerWithURL:[self.currentAsset.data mp4UrlFromM3U8]];
+    UIViewController* remixVC = [VRemixSelectViewController remixViewControllerWithURL:[self.currentAsset.data mp4UrlFromM3U8] sequenceID:[self.currentNode.remoteId integerValue]];
     [self presentViewController:remixVC animated:YES completion:
      ^{
          [self.mpController pause];

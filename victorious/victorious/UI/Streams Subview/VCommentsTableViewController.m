@@ -16,7 +16,7 @@
 #import "VObjectManager+Sequence.h"
 #import "VObjectManager+Comment.h"
 
-#import "UIActionSheet+BBlock.h"
+#import "UIActionSheet+VBlocks.h"
 #import "NSString+VParseHelp.h"
 
 #import "VSequence+Fetcher.h"
@@ -24,6 +24,8 @@
 #import "VAsset.h"
 
 #import "UIImageView+Blurring.h"
+
+#import "UIImage+ImageCreation.h"
 
 
 @import Social;
@@ -50,23 +52,25 @@ static NSString* CommentCache = @"CommentCache";
          forCellReuseIdentifier:kOtherCommentCellIdentifier];
 
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
-
-    [self sortComments];
 }
 
-- (void)viewWillLayoutSubviews
+- (void)viewDidAppear:(BOOL)animated
 {
-    [super viewWillLayoutSubviews];
-    self.view.frame = self.view.superview.bounds;
+    [super viewDidAppear:animated];
+    
+    [self sortComments];
 }
 
 - (void)setSequence:(VSequence *)sequence
 {
+    self.sortedComments = [sequence.comments allObjects];
+    [self.tableView reloadData];
+    
     _sequence = sequence;
     
     self.title = sequence.name;
     
-    if (![self.sequence.comments count]) //If we don't have comments, try to pull more.
+    if (![self.sortedComments count]) //If we don't have comments, try to pull more.
         [self refresh:nil];
     else
         [self sortComments];
@@ -84,8 +88,31 @@ static NSString* CommentCache = @"CommentCache";
 #pragma mark - Comment Sorters
 - (void)sortComments
 {
-    //TODO: choose the right sort based on filter
-    [self sortCommentsByDate];
+    //If theres no sorted comments, this is our first batch so animate in.
+    if (![self.sortedComments count])
+    {
+        [self sortCommentsByDate];
+
+        __block CGRect frame = self.view.frame;
+        frame.origin.x = CGRectGetWidth(self.view.frame);
+        self.view.frame = frame;
+        
+        [UIView animateWithDuration:1.5
+                              delay:0.0
+             usingSpringWithDamping:0.5
+              initialSpringVelocity:1.0
+                            options:UIViewAnimationOptionCurveLinear
+                         animations:
+         ^{
+             frame.origin.x = 0;
+             self.view.frame = frame;
+         }
+                         completion:nil];
+    }
+    else
+    {
+        [self sortCommentsByDate];
+    }
 }
 
 - (void)sortCommentsByDate
@@ -111,7 +138,7 @@ static NSString* CommentCache = @"CommentCache";
 {
     VSuccessBlock success = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
     {
-        [self sortComments];
+//        [self sortComments];
         
         [self.refreshControl endRefreshing];
     };
@@ -270,7 +297,8 @@ static NSString* CommentCache = @"CommentCache";
 {
     VComment* comment = (VComment*)[self.sortedComments objectAtIndex:indexPath.row];
 
-    CGFloat height = [VCommentCell frameSizeForMessageText:comment.text].height;
+    CGSize textSize = [VCommentCell frameSizeForMessageText:comment.text];
+    CGFloat height = textSize.height;
     CGFloat yOffset = !comment.mediaUrl || [comment.mediaUrl isEmpty] ? kCommentCellYOffset : kMediaCommentCellYOffset;
     height = MAX(height + yOffset, kMinCellHeight);
 
@@ -292,34 +320,17 @@ static NSString* CommentCache = @"CommentCache";
     [(VCommentCell*)cell setCommentOrMessage:comment];
     ((VCommentCell*)cell).parentTableViewController = self;
     
+    [cell setNeedsLayout];
+    [cell layoutIfNeeded];
+    
     return cell;
 }
 
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    //Add
     VComment* comment = (VComment*)[self.sortedComments objectAtIndex:indexPath.row];
-    //if(!comment.read)
     [self.newlyReadComments addObject:[NSString stringWithFormat:@"%@", comment.remoteId]];
 
-    UIView*     contentView = [(VTableViewCell *)cell mainView];
-    CGPoint     _endPosition = contentView.center;
-    CGPoint     _startPosition = CGPointMake(_endPosition.x + CGRectGetWidth(self.tableView.frame), _endPosition.y);
-
-    contentView.center = _startPosition;
-    
-    [UIView animateWithDuration:1.5
-                          delay:0.0
-         usingSpringWithDamping:0.5
-          initialSpringVelocity:1.0
-                        options:UIViewAnimationOptionCurveLinear
-                     animations:^{
-                         contentView.center = _endPosition;
-                     }
-                     completion:^(BOOL finished)
-                     {
-                         
-                     }];
 }
 
 #pragma mark - UITableViewDelegate
@@ -331,72 +342,59 @@ static NSString* CommentCache = @"CommentCache";
     NSString *thumbUpTitle = NSLocalizedString(@"Thumbs Up", @"Comment thumbs up button");
     NSString *thumbDownTitle = NSLocalizedString(@"Thumbs Down", @"Comment thumbs down button");
     NSString *reply = NSLocalizedString(@"Reply", @"Comment reply button");
-    UIActionSheet *actionSheet =
-    [[UIActionSheet alloc]
-     initWithTitle:nil delegate:nil
-     cancelButtonTitle:NSLocalizedString(@"Cancel", @"Cancel button")
-     destructiveButtonTitle:reportTitle otherButtonTitles:thumbUpTitle, thumbDownTitle, reply, nil];
-    [actionSheet setCompletionBlock:^(NSInteger buttonIndex, UIActionSheet *actionSheet)
-     {
-         if(actionSheet.cancelButtonIndex == buttonIndex)
+    
+    UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil
+                                                    cancelButtonTitle:NSLocalizedString(@"Cancel", @"Cancel button")
+                                                       onCancelButton:nil
+                                               destructiveButtonTitle:reportTitle
+                                                  onDestructiveButton:^(void)
+    {
+        [[VObjectManager sharedManager] flagComment:comment
+                                       successBlock:^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
          {
-             return;
+             //TODO:set flagged flag)
+             VLog(@"resultObjects: %@", resultObjects);
          }
-
-         if(actionSheet.destructiveButtonIndex == buttonIndex)
+                                          failBlock:^(NSOperation* operation, NSError* error)
          {
-             [[VObjectManager sharedManager] flagComment:comment
-                                            successBlock:^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
-               {
-                   //TODO:set flagged flag)
-                   VLog(@"resultObjects: %@", resultObjects);
-               }
-                                                failBlock:^(NSOperation* operation, NSError* error)
-               {
-                   VLog(@"Failed to flag comment %@", comment);
-               }];
-         }
-         else if([[actionSheet buttonTitleAtIndex:buttonIndex] isEqualToString:thumbUpTitle])
-         {
-             [[VObjectManager sharedManager] likeComment:comment
-                                               successBlock:^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
-                                               {
-                                                   //TODO:update UI)
-                                                   VLog(@"resultObjects: %@", resultObjects);
-                                               }
-                                                  failBlock:^(NSOperation* operation, NSError* error)
-                                                  {
-                                                      VLog(@"Failed to dislike comment %@", comment);
-                                                  }];
-         }
-         else if([[actionSheet buttonTitleAtIndex:buttonIndex] isEqualToString:thumbDownTitle])
-         {
-             [[VObjectManager sharedManager] dislikeComment:comment
-                                                successBlock:^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
-                                                {
-                                                    //TODO:set dislike flag)
-                                                    VLog(@"resultObjects: %@", resultObjects);
-                                                }
-                                                   failBlock:^(NSOperation* operation, NSError* error)
-                                                   {
-                                                       VLog(@"Failed to dislike comment %@", comment);
-                                                   }];
-         }
-         else if([[actionSheet buttonTitleAtIndex:buttonIndex] isEqualToString:reply])
-         {
-             [self.delegate streamsCommentsController:self shouldReplyToUser:comment.user];
-         }
-     }];
+             VLog(@"Failed to flag comment %@", comment);
+         }];
+    }
+                                           otherButtonTitlesAndBlocks:thumbUpTitle, ^(void)
+    {
+        [[VObjectManager sharedManager] likeComment:comment
+                                       successBlock:^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
+        {
+            //TODO:update UI)
+            VLog(@"resultObjects: %@", resultObjects);
+        }
+                                          failBlock:^(NSOperation* operation, NSError* error)
+        {
+            VLog(@"Failed to dislike comment %@", comment);
+        }];
+    },
+                                  thumbDownTitle, ^(void)
+    {
+        [[VObjectManager sharedManager] dislikeComment:comment
+                                          successBlock:^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
+        {
+            //TODO:set dislike flag)
+            VLog(@"resultObjects: %@", resultObjects);
+        }
+                                             failBlock:^(NSOperation* operation, NSError* error)
+        {
+            VLog(@"Failed to dislike comment %@", comment);
+        }];
+    },
+                                  reply, ^(void)
+    {
+        [self.delegate streamsCommentsController:self shouldReplyToUser:comment.user];
+    },
+                                  nil];
 
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     UIWindow *window = [[[UIApplication sharedApplication] delegate] window];
     [actionSheet showInView:window];
-}
-
-- (void)controllerDidChangeContent:(NSFetchedResultsController *)controller
-{
-    // The fetch controller has sent all current change notifications, so tell the table view to process all updates.
-    [self.tableView endUpdates];
 }
 
 #pragma mark - Navigation
@@ -439,50 +437,5 @@ static NSString* CommentCache = @"CommentCache";
     
     return YES;
 }
-
-#pragma mark - VKeyboardBarDelegate
-- (void)didComposeWithText:(NSString *)text data:(NSData *)data mediaExtension:(NSString *)mediaExtension mediaURL:(NSURL *)mediaURL
-{
-    __block UIActivityIndicatorView *indicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
-    indicator.frame = CGRectMake(0, 0, 24, 24);
-    indicator.hidesWhenStopped = YES;
-    [self.view addSubview:indicator];
-    indicator.center = self.view.center;
-    [indicator startAnimating];
-    
-    VSuccessBlock success = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
-    {
-        NSLog(@"%@", resultObjects);
-        [indicator stopAnimating];
-        [(VCommentsTableViewController*)self sortComments];
-    };
-    VFailBlock fail = ^(NSOperation* operation, NSError* error)
-    {
-        if (error.code == 5500)
-        {
-            NSLog(@"%@", error);
-            [indicator stopAnimating];
-            
-            UIAlertView*    alert   =
-            [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"TranscodingMediaTitle", @"")
-                                       message:NSLocalizedString(@"TranscodingMediaBody", @"")
-                                      delegate:nil
-                             cancelButtonTitle:NSLocalizedString(@"OKButton", @"")
-                             otherButtonTitles:nil];
-            [alert show];
-        }
-        [indicator stopAnimating];
-    };
-    
-    [[VObjectManager sharedManager] addCommentWithText:text
-                                                  Data:data
-                                        mediaExtension:mediaExtension
-                                              mediaUrl:nil
-                                            toSequence:_sequence
-                                             andParent:nil
-                                          successBlock:success
-                                             failBlock:fail];
-}
-
 
 @end

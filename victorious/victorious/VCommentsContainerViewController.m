@@ -13,17 +13,24 @@
 #import "VUser.h"
 #import "VConstants.h"
 #import "VObjectManager+Comment.h"
-#import "UIView+VFrameManipulation.h"
 #import "UIImageView+Blurring.h"
 #import "UIImage+ImageCreation.h"
+#import "VStreamTableViewController.h"
+#import "VContentViewController.h"
+
+#import "VCommentToContentAnimator.h"
+#import "VCommentToStreamAnimator.h"
 
 #import "VThemeManager.h"
 
-@interface VCommentsContainerViewController()   <VCommentsTableViewControllerDelegate>
+#import "UIImage+ImageCreation.h"
+
+@interface VCommentsContainerViewController()   <VCommentsTableViewControllerDelegate, UINavigationControllerDelegate>
 
 @property (weak, nonatomic) IBOutlet UIButton* backButton;
-@property (weak, nonatomic) IBOutlet UIImageView* backgroundImage;
 @property (weak, nonatomic) IBOutlet UILabel* titleLabel;
+
+@property (strong, nonatomic) IBOutlet UIImageView* backgroundImage;
 
 @end
 
@@ -43,9 +50,15 @@
 {
     _sequence = sequence;
     
+    [self.backgroundImage removeFromSuperview];
+    UIImageView* newBackgroundView = [[UIImageView alloc] initWithFrame:self.view.frame];
+    
     UIImage* placeholderImage = [UIImage resizeableImageWithColor:[[VThemeManager sharedThemeManager] themedColorForKey:kVBackgroundColor]];
-    [self.backgroundImage setLightBlurredImageWithURL:[[self.sequence initialImageURLs] firstObject]
-                                     placeholderImage:placeholderImage];
+    [newBackgroundView setLightBlurredImageWithURL:[[self.sequence initialImageURLs] firstObject]
+                                  placeholderImage:placeholderImage];
+    
+    self.backgroundImage = newBackgroundView;
+    [self.view insertSubview:self.backgroundImage atIndex:0];
 }
 
 - (void)viewDidLoad
@@ -62,31 +75,27 @@
     self.backButton.tintColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVContentTextColor];
     
     self.titleLabel.textColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVContentTextColor];
-    self.titleLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVContentTitleFont];
+    self.titleLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeading1Font];
     
     //Need to manually add this again so it appears over everything else.
     [self.view addSubview:self.backButton];
 }
 
-- (void)viewWillAppear:(BOOL)animated
+- (void)viewDidAppear:(BOOL)animated
 {
-    [super viewWillAppear:animated];
-    if (animated)
+    [super viewDidAppear:animated];
+    
+    [self.navigationController setNavigationBarHidden:YES animated:animated];
+    self.navigationController.delegate = self;
+}
+
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+    
+    if (self.navigationController.delegate == self)
     {
-        __block CGFloat originalKeyboardY = self.keyboardBarViewController.view.frame.origin.y;
-        __block CGFloat originalConvertationX = self.conversationTableViewController.view.frame.origin.y;
-        [self.conversationTableViewController.view setXOrigin:self.view.frame.size.width];
-        [self.keyboardBarViewController.view setYOrigin:self.view.frame.size.height];
-        [UIView animateWithDuration:.5f
-                         animations:^{
-                             [self.conversationTableViewController.view setXOrigin:originalConvertationX];
-                         }
-                         completion:^(BOOL finished) {
-                             [UIView animateWithDuration:.5f
-                                              animations:^{
-                                                  [self.keyboardBarViewController.view setYOrigin:originalKeyboardY];
-                                              }];
-                         }];
+        self.navigationController.delegate = nil;
     }
 }
 
@@ -98,29 +107,193 @@
         [self.storyboard instantiateViewControllerWithIdentifier:@"comments"];
         streamsCommentsController.delegate = self;
         streamsCommentsController.sequence = self.sequence;
-//        streamsCommentsController.keyboardBarViewController = self.keyboardBarViewController;
-        self.keyboardBarViewController.delegate = streamsCommentsController;
-        [self addChildViewController:streamsCommentsController];
-        [streamsCommentsController didMoveToParentViewController:self];
         _conversationTableViewController = streamsCommentsController;
     }
 
     return _conversationTableViewController;
 }
 
-//TODO: this is causing issues.  Need to circle back when variable comment height is finished
-//- (void)viewDidAppear:(BOOL)animated
-//{
-//    self.showKeyboard = YES;
-//    [super viewDidAppear:animated];
-//}
-
 #pragma mark - VCommentsTableViewControllerDelegate
 
 - (void)streamsCommentsController:(VCommentsTableViewController *)viewController shouldReplyToUser:(VUser *)user
 {
-    self.keyboardBarViewController.textField.text = [NSString stringWithFormat:@"@%@ ", user.name];
-    [self.keyboardBarViewController.textField becomeFirstResponder];
+    self.keyboardBarViewController.textViewText = [[NSAttributedString alloc] initWithString:[NSString stringWithFormat:@"@%@ ", user.name]];
+    [self.keyboardBarViewController becomeFirstResponder];
 }
+
+#pragma mark - VKeyboardBarDelegate
+
+- (void)keyboardBar:(VKeyboardBarViewController *)keyboardBar didComposeWithText:(NSString *)text mediaURL:(NSURL *)mediaURL mediaExtension:(NSString *)mediaExtension
+{
+    __block UIActivityIndicatorView *indicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+    indicator.frame = CGRectMake(0, 0, 24, 24);
+    indicator.hidesWhenStopped = YES;
+    [self.view addSubview:indicator];
+    indicator.center = self.view.center;
+    [indicator startAnimating];
+    
+    __block NSURL* urlToRemove = mediaURL;
+    
+    VSuccessBlock success = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
+    {
+        NSLog(@"%@", resultObjects);
+        [indicator stopAnimating];
+        [[NSFileManager defaultManager] removeItemAtURL:urlToRemove error:nil];
+        
+        [(VCommentsTableViewController *)self.conversationTableViewController sortComments];
+    };
+    VFailBlock fail = ^(NSOperation* operation, NSError* error)
+    {
+        [[NSFileManager defaultManager] removeItemAtURL:urlToRemove error:nil];
+        
+        if (error.code == 5500)
+        {
+            NSLog(@"%@", error);
+            [indicator stopAnimating];
+            
+            UIAlertView*    alert   =
+            [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"TranscodingMediaTitle", @"")
+                                       message:NSLocalizedString(@"TranscodingMediaBody", @"")
+                                      delegate:nil
+                             cancelButtonTitle:NSLocalizedString(@"OKButton", @"")
+                             otherButtonTitles:nil];
+            [alert show];
+        }
+        [indicator stopAnimating];
+    };
+
+    
+    [[VObjectManager sharedManager] addCommentWithText:text
+                                              mediaURL:mediaURL
+                                        mediaExtension:mediaExtension
+                                              mediaUrl:nil
+                                            toSequence:_sequence
+                                             andParent:nil
+                                          successBlock:success
+                                             failBlock:fail];
+}
+
+- (IBAction)pressedBackButton:(id)sender
+{
+    [self.navigationController popViewControllerAnimated:YES];
+}
+
+- (id<UIViewControllerAnimatedTransitioning>) navigationController:(UINavigationController *)navigationController
+                                   animationControllerForOperation:(UINavigationControllerOperation)operation
+                                                fromViewController:(UIViewController*)fromVC
+                                                  toViewController:(UIViewController*)toVC
+{
+    if (operation == UINavigationControllerOperationPop
+        && [toVC isKindOfClass:[VContentViewController class]])
+    {
+        VCommentToContentAnimator* animator = [[VCommentToContentAnimator alloc] init];
+        return animator;
+    }
+    else if (operation == UINavigationControllerOperationPop
+             && [toVC isKindOfClass:[VStreamTableViewController class]])
+    {
+        VCommentToStreamAnimator* animator = [[VCommentToStreamAnimator alloc] init];
+        return animator;
+    }
+    return nil;
+}
+
+#pragma mark - Animations
+- (void)animateInWithDuration:(CGFloat)duration completion:(void (^)(BOOL finished))completion
+{
+    __block CGFloat originalConvertationX = self.conversationTableViewController.view.frame.origin.x;
+    
+    CGRect viewFrame = self.conversationTableViewController.view.frame;
+    self.conversationTableViewController.view.frame = CGRectMake(CGRectGetWidth(self.view.frame),
+                                                                 CGRectGetMinY(viewFrame),
+                                                                 CGRectGetWidth(viewFrame),
+                                                                 CGRectGetHeight(viewFrame));
+    
+    self.keyboardBarViewController.view.alpha = 0;
+    self.backButton.alpha = 0;
+    self.titleLabel.alpha = 0;
+    if ([self.sequence.comments count])
+    {
+        [UIView animateWithDuration:duration*.75f
+                         animations:^
+         {
+             CGRect viewFrame = self.conversationTableViewController.view.frame;
+             self.conversationTableViewController.view.frame = CGRectMake(originalConvertationX,
+                                                                          CGRectGetMinY(viewFrame),
+                                                                          CGRectGetWidth(viewFrame),
+                                                                          CGRectGetHeight(viewFrame));
+         }
+                         completion:^(BOOL finished)
+         {
+             [UIView animateWithDuration:duration*.25f
+                              animations:^
+              {
+                  self.keyboardBarViewController.view.alpha = 1;
+                  self.backButton.alpha = 1;
+                  self.titleLabel.alpha = 1;
+              }
+                              completion:^(BOOL finished)
+              {
+                  if (completion)
+                  {
+                      completion(finished);
+                  }
+              }];
+         }];
+    }
+    else
+    {
+        [UIView animateWithDuration:duration*.25f
+                         animations:^
+         {
+             self.keyboardBarViewController.view.alpha = 1;
+             self.backButton.alpha = 1;
+             self.titleLabel.alpha = 1;
+         }
+                         completion:^(BOOL finished)
+         {
+             if (completion)
+             {
+                 completion(finished);
+             }
+         }];
+    }
+}
+
+- (void)animateOutWithDuration:(CGFloat)duration completion:(void (^)(BOOL finished))completion
+{
+    __block CGRect frame = self.conversationTableViewController.view.frame;
+    frame.origin.x = 0;
+    self.conversationTableViewController.view.frame = frame;
+    
+    [UIView animateWithDuration:duration
+                     animations:^
+     {
+         frame.origin.x = CGRectGetWidth(self.conversationTableViewController.view.frame);
+         self.conversationTableViewController.view.frame = frame;
+         for (UIView* view in self.view.subviews)
+         {
+             if ([view isKindOfClass:[UIImageView class]])
+                 continue;
+             
+             if (view.center.y > self.view.center.y)
+             {
+                 view.center = CGPointMake(view.center.x, view.center.y + self.view.frame.size.height);
+             }
+             else
+             {
+                 view.center = CGPointMake(view.center.x, view.center.y - self.view.frame.size.height);
+             }
+         }
+     }
+                     completion:^(BOOL finished)
+     {
+         if (completion)
+         {
+             completion(finished);
+         }
+     }];
+}
+
 
 @end

@@ -9,14 +9,14 @@
 #import "VObjectManager.h"
 #import "VConstants.h"
 
-extern NSString* const kInitialLoadFinishedNotification;
 extern NSString* const kPollResultsLoaded;
 
-@class VAnswer, VSequence, VCategory, VVoteType;
+@class VAnswer, VSequence, VVoteType;
 
 @interface VObjectManager (Sequence)
 
-- (RKManagedObjectRequestOperation *)initialSequenceLoad;
+- (RKManagedObjectRequestOperation *)initialSequenceLoadWithSuccessBlock:(VSuccessBlock)success
+                                                               failBlock:(VFailBlock)fail;
 
 - (RKManagedObjectRequestOperation *)loadNextPageOfSequencesForCategory:(NSString*)category
                                                            successBlock:(VSuccessBlock)success
@@ -53,12 +53,10 @@ extern NSString* const kPollResultsLoaded;
                                        question:(NSString*)question
                                     answer1Text:(NSString*)answer1Text
                                     answer2Text:(NSString*)answer2Text
-                                     media1Data:(NSData*)media1Data
-                                media1Extension:(NSString*)media1Extension
                                       media1Url:(NSURL*)media1Url
-                                     media2Data:(NSData*)media2Data
-                                media2Extension:(NSString*)media2Extension
+                                media1Extension:(NSString*)media1Extension
                                       media2Url:(NSURL*)media2Url
+                                media2Extension:(NSString*)media2Extension
                                    successBlock:(VSuccessBlock)success
                                       failBlock:(VFailBlock)fail;
 
@@ -66,13 +64,14 @@ extern NSString* const kPollResultsLoaded;
                                      description:(NSString*)description
                                        expiresAt:(NSString*)expiresAt
                                     parentNodeId:(NSNumber*)parentNodeId
+                                           speed:(CGFloat)speed
                                         loopType:(VLoopType)loopType
                                     shareOptions:(VShareOptions)shareOptions
-                                       mediaData:(NSData*)mediaData
+                                        mediaURL:(NSURL*)mediaUrl
                                        extension:(NSString*)extension
-                                        mediaUrl:(NSURL*)mediaUrl
                                     successBlock:(VSuccessBlock)success
                                        failBlock:(VFailBlock)fail;
+
 #pragma mark - Poll Methods
 
 - (RKManagedObjectRequestOperation *)answerPoll:(VSequence*)poll

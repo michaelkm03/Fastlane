@@ -8,6 +8,8 @@
 
 #import "VMessageContainerViewController.h"
 #import "VMessageViewController.h"
+#import "VObjectManager.h"
+#import "VObjectManager+DirectMessaging.h"
 #import "VConversation.h"
 #import "VUser.h"
 #import "NSString+VParseHelp.h"
@@ -34,13 +36,52 @@
     {
         VMessageViewController *messageController = [self.storyboard instantiateViewControllerWithIdentifier:@"messages"];
         messageController.conversation = self.conversation;
-        messageController.composeViewController = self.keyboardBarViewController;
-        [self addChildViewController:messageController];
-        [messageController didMoveToParentViewController:self];
         _conversationTableViewController = messageController;
     }
     
     return _conversationTableViewController;
+}
+
+- (void)keyboardBar:(VKeyboardBarViewController *)keyboardBar didComposeWithText:(NSString *)text mediaURL:(NSURL *)mediaURL mediaExtension:(NSString *)mediaExtension
+{
+    
+    __block NSURL* urlToRemove = mediaURL;
+    
+    VSuccessBlock success = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
+    {
+        [[NSFileManager defaultManager] removeItemAtURL:urlToRemove error:nil];
+        
+        NSDictionary* payload = fullResponse[@"payload"];
+        if (![payload isKindOfClass:[NSDictionary class]])
+        {
+            payload = nil;
+        }
+        
+        if (!self.conversation.remoteId)
+        {
+            self.conversation.remoteId = payload[@"conversation_id"];
+            [self.conversation.managedObjectContext performBlockAndWait:^
+             {
+                 [self.conversation.managedObjectContext save:nil];
+             }];
+        }
+        
+        [(VMessageViewController *)self.conversationTableViewController refresh];
+        
+        VLog(@"Succeed with response: %@", fullResponse);
+    };
+    
+    [[VObjectManager sharedManager] sendMessageToUser:self.conversation.user
+                                             withText:text
+                                             mediaURL:mediaURL
+                                       mediaExtension:mediaExtension
+                                             mediaUrl:nil
+                                         successBlock:success
+                                            failBlock:^(NSOperation* operation, NSError* error)
+     {
+         VLog(@"Failed in creating message with error: %@", error);
+        [[NSFileManager defaultManager] removeItemAtURL:urlToRemove error:nil];
+     }];
 }
 
 @end

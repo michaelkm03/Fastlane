@@ -8,6 +8,7 @@
 
 #import "VObjectManager+Private.h"
 #import "VObjectManager+Login.h"
+#import "VObjectManager+Users.h"
 #import "VObjectManager+Sequence.h"
 #import "VObjectManager+DirectMessaging.h"
 #import "VUser+RestKit.h"
@@ -15,6 +16,7 @@
 #import "VVoteType.h"
 
 #import "VThemeManager.h"
+#import "VUserManager.h"
 
 @implementation VObjectManager (Login)
 
@@ -26,9 +28,26 @@ NSString *kLoggedInChangedNotification = @"LoggedInChangedNotification";
 {
     VSuccessBlock fullSuccess = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
     {
-        NSDictionary* newTheme = fullResponse[@"payload"][@"appearance"];
+        
+        NSDictionary* payload = fullResponse[@"payload"];
+        if (![payload isKindOfClass:[NSDictionary class]])
+        {
+            payload = nil;
+        }
+        
+        NSDictionary* newTheme = payload[@"appearance"];
         if (newTheme && [newTheme isKindOfClass:[NSDictionary class]])
             [[VThemeManager sharedThemeManager] setTheme:newTheme];
+        
+        NSDictionary* videoQuality = payload[@"video_quality"];
+        if (videoQuality && [videoQuality isKindOfClass:[NSDictionary class]])
+        {
+            [videoQuality enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop)
+             {
+                 [[NSUserDefaults standardUserDefaults] setObject:obj forKey:key];
+             }];
+
+        }
         
         if (success)
             success(operation, fullResponse, resultObjects);
@@ -194,43 +213,62 @@ NSString *kLoggedInChangedNotification = @"LoggedInChangedNotification";
 - (AFHTTPRequestOperation *)updateVictoriousWithEmail:(NSString *)email
                                              password:(NSString *)password
                                              username:(NSString *)username
-                                         profileImage:(NSData *)profileImage
+                                      profileImageURL:(NSURL *)profileImageURL
                                              location:(NSString *)location
                                               tagline:(NSString *)tagline
                                          successBlock:(VSuccessBlock)success
                                             failBlock:(VFailBlock)fail
 {
-    NSDictionary *parameters = @{@"email": email ?: [NSNull null],
-                                 @"password": password ?: [NSNull null],
-                                 @"name": username ?: [NSNull null],
-                                 @"profile_location": location ?: [NSNull null],
-                                 @"profile_tagline": tagline ?: [NSNull null]};
+    NSMutableDictionary* params = [[NSMutableDictionary alloc] initWithCapacity:5];
     
-    NSDictionary* allData = @{@"profile_image":profileImage ?: [NSNull null]};
+    if (email)
+        [params setObject:email forKey:@"email"];
+    if (password)
+        [params setObject:password forKey:@"password"];
+    if (username)
+        [params setObject:username forKey:@"name"];
+    if (location)
+        [params setObject:location forKey:@"profile_location"];
+    if (tagline)
+        [params setObject:tagline forKey:@"profile_tagline"];
+    
+    NSDictionary* allURLs = @{@"profile_image":profileImageURL ?: [NSNull null]};
     NSDictionary* allExtensions = @{@"media_data":VConstantMediaExtensionJPG};
     
     VSuccessBlock fullSuccess = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
     {
-        [self loggedInWithUser:[resultObjects firstObject]];
-        if (success)
-            success(operation, fullResponse, resultObjects);
+        
+        [[VUserManager sharedInstance] loginViaSavedCredentialsOnCompletion:^(VUser *user, BOOL created)
+         {
+             [self loggedInWithUser:user];
+             
+             if (success)
+                 success(operation, fullResponse, resultObjects);
+         }
+                                                                    onError:^(NSError *error)
+         {
+             if(fail)
+                 fail(operation, error);
+         }];
     };
     
-    return [self upload:allData
-          fileExtension:allExtensions
-                 toPath:@"/api/account/update"
-             parameters:parameters
-           successBlock:fullSuccess
-              failBlock:fail];
+    return [self uploadURLs:allURLs
+             fileExtensions:allExtensions
+                     toPath:@"/api/account/update"
+                 parameters:[params copy]
+               successBlock:fullSuccess
+                  failBlock:fail];
 }
 
 #pragma mark - LoggedIn
 - (void)loggedInWithUser:(VUser*)user
 {
     self.mainUser = user;
+    
     [self loadNextPageOfConversations:nil failBlock:nil];
     [self pollResultsForUser:user successBlock:nil failBlock:nil];
     [self unreadCountForConversationsWithSuccessBlock:nil failBlock:nil];
+    [self requestFollowListForUser:user successBlock:nil failBlock:nil];
 
     [[NSNotificationCenter defaultCenter] postNotificationName:kLoggedInChangedNotification object:nil];
 }
@@ -241,21 +279,18 @@ NSString *kLoggedInChangedNotification = @"LoggedInChangedNotification";
 {
     if (![self isAuthorized]) //foolish mortal you need to log in to log out...
         return nil;
-    
-    VSuccessBlock success = ^(NSOperation* operation, id fullResponse, NSArray* rkObjects)
-    {
-        //Warning: Sometimes empty payloads will appear as Array objects. Use the following line at your own risk.
-        //NSDictionary* payload = fullResponse[@"payload"];
-        self.mainUser = nil;
-        
-        [[NSNotificationCenter defaultCenter] postNotificationName:kLoggedInChangedNotification object:nil];
-    };
 
-    return [self GET:@"/api/logout"
+    RKManagedObjectRequestOperation* operation = [self GET:@"/api/logout"
               object:nil
            parameters:nil
-         successBlock:success
+         successBlock:nil
             failBlock:nil];
+    
+    //Log out no matter what
+    self.mainUser = nil;
+    [[NSNotificationCenter defaultCenter] postNotificationName:kLoggedInChangedNotification object:nil];
+    
+    return operation;
 }
 
 @end

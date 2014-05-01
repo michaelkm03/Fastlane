@@ -13,12 +13,14 @@
 #import "VContentViewController+Videos.h"
 
 #import "VCommentsContainerViewController.h"
-#import "VContentTransitioningDelegate.h"
 
 #import "UIImageView+Blurring.h"
 
 #import "VActionBarViewController.h"
 #import "VEmotiveBallisticsBarViewController.h"
+
+#import "VContentToStreamAnimator.h"
+#import "VContentToCommentAnimator.h"
 
 CGFloat kContentMediaViewOffset = 154;
 
@@ -44,16 +46,6 @@ CGFloat kContentMediaViewOffset = 154;
     [super viewDidLoad];
     
     [self setupVideoPlayer];
-    
-    self.transitionDelegate = [[VContentTransitioningDelegate alloc] init];
-    
-    self.firstResultView.isVertical = YES;
-    self.firstResultView.hidden = YES;
-    self.firstResultView.color = [[VThemeManager sharedThemeManager] themedColorForKey:kVAccentColor];
-    
-    self.secondResultView.isVertical = YES;
-    self.secondResultView.hidden = YES;
-    self.secondResultView.color = [[VThemeManager sharedThemeManager] themedColorForKey:kVAccentColor];
 
     for (UIButton* button in self.buttonCollection)
     {
@@ -61,7 +53,7 @@ CGFloat kContentMediaViewOffset = 154;
         button.tintColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVContentTextColor];
     }
     self.descriptionLabel.textColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVContentTextColor];
-    self.descriptionLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVContentTitleFont];
+    self.descriptionLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeading2Font];
     
     [self.remixButton setImage:[self.remixButton.imageView.image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] forState:UIControlStateNormal];
     self.remixButton.tintColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVMainTextColor];
@@ -71,37 +63,58 @@ CGFloat kContentMediaViewOffset = 154;
     self.activityIndicator.layer.cornerRadius = self.activityIndicator.frame.size.height / 2;
     self.activityIndicator.hidesWhenStopped = YES;
     
-    self.navigationController.navigationBarHidden = YES;
-    self.sequence = self.sequence;
-    
-    self.orImageView.hidden = ![self.currentNode isPoll];
-    
-    self.firstPollButton.alpha = 0;
-    self.secondPollButton.alpha = 0;
-    
-    [self.topActionsView setYOrigin:self.mediaView.frame.origin.y];
-    self.topActionsView.alpha = 0;
-    [UIView animateWithDuration:.2f
-                     animations:^
-     {
-         [self.topActionsView setYOrigin:0];
-         self.topActionsView.alpha = 1;
-         self.firstPollButton.alpha = 1;
-         self.secondPollButton.alpha = 1;
-     }
-                     completion:^(BOOL finished)
-     {
-         [self updateActionBar];
-     }];
+    [self resetView];
 }
 
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    
+    [self.navigationController setNavigationBarHidden:YES animated:NO];
+    
+    [self updateActionBar];
+    
+    self.navigationController.delegate = self;
+
+}
+
+- (void)viewDidDisappear:(BOOL)animated
+{
+    [super viewDidDisappear:animated];
+    
+    [self resetView];
+}
+
+- (void)resetView
+{
+    [self.firstResultView setProgress:0 animated:NO];
+    self.firstResultView.isVertical = YES;
+    self.firstResultView.hidden = YES;
+    self.firstResultView.color = [[VThemeManager sharedThemeManager] themedColorForKey:kVAccentColor];
+    
+    [self.secondResultView setProgress:0 animated:NO];
+    self.secondResultView.isVertical = YES;
+    self.secondResultView.hidden = YES;
+    self.secondResultView.color = [[VThemeManager sharedThemeManager] themedColorForKey:kVAccentColor];
+    
+    self.firstPollButton.hidden = YES;
+    self.secondPollButton.hidden = YES;
+    
+}
 
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
     
+    if (self.navigationController.delegate == self)
+    {
+        self.navigationController.delegate = nil;
+    }
+    
+    [self.mpController.view removeFromSuperview];
     [self.mpController pause];
-    self.navigationController.navigationBarHidden = NO;
+    self.mpController = nil;
+    
     self.orAnimator = nil;
 }
 
@@ -157,16 +170,21 @@ CGFloat kContentMediaViewOffset = 154;
 {
     [_actionBarVC removeFromParentViewController];
     [_actionBarVC.view removeFromSuperview];
-    [self addChildViewController:actionBarVC];
-    [actionBarVC didMoveToParentViewController:self];
-    [self.barContainerView addSubview:actionBarVC.view];
-    
     _actionBarVC = actionBarVC;
     
-    [_actionBarVC animateInWithDuration:.2f completion:^(BOOL finished) {
-        [self pollAnimation];
-    }];
-    
+    if(actionBarVC)
+    {
+        [self addChildViewController:actionBarVC];
+        [actionBarVC didMoveToParentViewController:self];
+        [self.barContainerView addSubview:actionBarVC.view];
+        
+        [_actionBarVC animateInWithDuration:.2f
+                                 completion:^(BOOL finished)
+         {
+             if ([self.sequence isPoll])
+                 [self pollAnimation];
+         }];
+    }
 }
 
 - (void)updateActionBar
@@ -192,11 +210,6 @@ CGFloat kContentMediaViewOffset = 154;
         emotiveBallistics.target = self.previewImage;
         newActionBar = emotiveBallistics;
     }
-    else if ([self.actionBarVC isKindOfClass:[VEmotiveBallisticsBarViewController class]])
-    {
-        ((VEmotiveBallisticsBarViewController*)self.actionBarVC).target = self.previewImage;//Change the target if we need to
-    }
-    
     
     newActionBar.sequence = self.sequence;
     
@@ -241,6 +254,19 @@ CGFloat kContentMediaViewOffset = 154;
     //Specced but still no idea what its supposed to do
 }
 
+- (IBAction)pressedBack:(id)sender
+{
+    [self.navigationController popViewControllerAnimated:YES];
+}
+
+- (IBAction)pressedComment:(id)sender
+{
+    VCommentsContainerViewController* commentsTable = [VCommentsContainerViewController commentsContainerView];
+    commentsTable.sequence = self.sequence;
+    commentsTable.parentVC = self;
+    
+    [self.navigationController pushViewController:commentsTable animated:YES];
+}
 
 #pragma mark - VInteractionManagerDelegate
 - (void)firedInteraction:(VInteraction*)interaction
@@ -249,23 +275,80 @@ CGFloat kContentMediaViewOffset = 154;
 }
 
 #pragma mark - Navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
+- (id<UIViewControllerAnimatedTransitioning>) navigationController:(UINavigationController *)navigationController
+                                   animationControllerForOperation:(UINavigationControllerOperation)operation
+                                                fromViewController:(UIViewController*)fromVC
+                                                  toViewController:(UIViewController*)toVC
 {
-    ((UIViewController*)segue.destinationViewController).transitioningDelegate = self.transitionDelegate;
-    ((UIViewController*)segue.destinationViewController).modalPresentationStyle= UIModalPresentationCustom;
-//    [self.mpController stop];
-    self.mpController.view.hidden = YES;
-    
-    if ([segue.identifier isEqualToString:kContentCommentSegueStoryboardID])
+    if (operation == UINavigationControllerOperationPop)
     {
-        VCommentsContainerViewController* commentVC = segue.destinationViewController;
-        commentVC.sequence = self.sequence;
+        return [[VContentToStreamAnimator alloc] init];
     }
+    else if (operation == UINavigationControllerOperationPush)
+    {
+        return [[VContentToCommentAnimator alloc] init];
+    }
+    return nil;
 }
 
-- (IBAction)unwindToContentView:(UIStoryboardSegue*)sender
+#pragma mark - Animations
+- (void)animateInWithDuration:(CGFloat)duration completion:(void (^)(BOOL finished))completion
 {
-    
+    [UIView animateWithDuration:.25f
+                     animations:^
+     {
+         for (UIView* view in self.view.subviews)
+         {
+             if ([view isKindOfClass:[UIImageView class]])
+                 continue;
+             
+             if (view.center.y > self.view.center.y)
+             {
+                 view.center = CGPointMake(view.center.x, view.center.y - self.view.frame.size.height);
+             }
+             else
+             {
+                 view.center = CGPointMake(view.center.x, view.center.y + self.view.frame.size.height);
+             }
+         }
+     }
+                     completion:^(BOOL finished)
+     {
+         if (completion)
+         {
+             completion(finished);
+         }
+     }];
 }
+
+- (void)animateOutWithDuration:(CGFloat)duration completion:(void (^)(BOOL finished))completion
+{
+    [UIView animateWithDuration:duration
+                     animations:^
+     {
+         for (UIView* view in self.view.subviews)
+         {
+             if ([view isKindOfClass:[UIImageView class]])
+                 continue;
+             
+             if (view.center.y > self.view.center.y)
+             {
+                 view.center = CGPointMake(view.center.x, view.center.y + self.view.frame.size.height);
+             }
+             else
+             {
+                 view.center = CGPointMake(view.center.x, view.center.y - self.view.frame.size.height);
+             }
+         }
+     }
+                     completion:^(BOOL finished)
+     {
+         if(completion)
+         {
+             completion(finished);
+         }
+     }];
+}
+
 
 @end

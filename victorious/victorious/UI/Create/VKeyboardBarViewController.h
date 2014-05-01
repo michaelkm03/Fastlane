@@ -8,13 +8,24 @@
 
 #import "VImagePickerViewController.h"
 
+@class VKeyboardBarViewController;
+
 @protocol VKeyboardBarDelegate <NSObject>
+
 @required
-- (void)didComposeWithText:(NSString *)text data:(NSData *)data mediaExtension:(NSString *)mediaExtension mediaURL:(NSURL *)mediaURL;
+
+- (void)keyboardBar:(VKeyboardBarViewController *)keyboardBar didComposeWithText:(NSString *)text mediaURL:(NSURL *)mediaURL mediaExtension:(NSString *)mediaExtension;
+- (void)keyboardBar:(VKeyboardBarViewController *)keyboardBar wouldLikeToBeResizedToHeight:(CGFloat)height;
+
 @end
 
-@interface VKeyboardBarViewController : VImagePickerViewController
-@property (nonatomic, weak) id<VKeyboardBarDelegate> delegate;
-@property (weak, nonatomic, readonly) IBOutlet UITextField *textField;
+@interface VKeyboardBarViewController : UIViewController
+
+@property (nonatomic, weak)   id<VKeyboardBarDelegate>  delegate;
+@property (nonatomic, strong) NSAttributedString       *textViewText;
+@property (nonatomic, weak)   IBOutlet UILabel         *promptLabel;
+
+- (IBAction)cameraPressed:(id)sender;
+- (BOOL)becomeFirstResponder; ///< Tells the keyboard bar view controller to make its internal text view the first responder
 
 @end

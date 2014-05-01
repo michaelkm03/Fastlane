@@ -9,15 +9,36 @@
 @import AVFoundation;
 
 #import "VConstants.h"
+#import "VCVideoPlayerView.h"
 
-@interface VAbstractVideoEditorViewController : UIViewController
+@interface  VAbstractVideoEditorViewController : UIViewController   <VCVideoPlayerDelegate>
 
-@property (nonatomic, strong)           NSURL*          sourceURL;
+@property (nonatomic, weak)     IBOutlet    VCVideoPlayerView*  previewView;;
 
-@property (nonatomic)                   BOOL            muteAudio;
-@property (nonatomic)                   VPlaybackSpeed  playBackSpeed;
-@property (nonatomic)                   VLoopType       playbackLooping;
-@property (nonatomic)                   CGFloat         startSeconds;
-@property (nonatomic)                   CGFloat         endSeconds;
+@property (nonatomic, weak)     IBOutlet    UIImageView*        playCircle;
+@property (nonatomic, weak)     IBOutlet    UIImageView*        playButton;
+
+@property (nonatomic, strong)   NSURL*                          sourceURL;
+@property (nonatomic, strong)   NSURL*                          targetURL;
+
+@property (nonatomic, weak)     IBOutlet    UIButton*           rateButton;
+@property (nonatomic, weak)     IBOutlet    UIButton*           loopButton;
+@property (nonatomic, weak)     IBOutlet    UIButton*           muteButton;
+
+@property (nonatomic)           BOOL                            shouldMuteAudio;
+@property (nonatomic)           VPlaybackSpeed                  playBackSpeed;
+@property (nonatomic)           VLoopType                       playbackLooping;
+
+@property (nonatomic)           NSInteger                       parentID;
+
+@property (nonatomic)           BOOL                            animatingPlayButton;
+
+
+- (void)startAnimation;
+- (void)stopAnimation;
+
+- (CMTime)playerItemDuration;
+
+-(NSString *)secondsToMMSS:(double)seconds;
 
 @end

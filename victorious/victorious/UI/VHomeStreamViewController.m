@@ -11,6 +11,8 @@
 
 #import "VCreatePollViewController.h"
 
+#import "VStreamTableViewController+ContentCreation.h"
+
 @interface VHomeStreamViewController ()
 @end
 
@@ -28,6 +30,12 @@
     return sharedInstance;
 }
 
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
+    [self addCreateButton];
+}
+
 - (NSArray*)categoriesForOption:(NSUInteger)searchOption
 {
 //    return @[kVOwnerPollCategory, kVUGCPollCategory];
@@ -40,11 +48,14 @@
             return @[kVOwnerImageCategory, kVUGCImageCategory];
             
         case VStreamFilterVideos:
-            return @[kVOwnerVideoCategory, kVUGCVideoCategory];
+            return @[kVOwnerVideoCategory, kVUGCVideoCategory,
+                     kVOwnerRemixCategory, kVUGCRemixCategory];
             
         default:
-            return @[kVOwnerPollCategory, kVUGCPollCategory, kVOwnerImageCategory,
-                     kVUGCImageCategory, kVOwnerVideoCategory, kVUGCVideoCategory];
+            return @[kVOwnerPollCategory, kVUGCPollCategory,
+                     kVOwnerImageCategory, kVUGCImageCategory,
+                     kVOwnerVideoCategory, kVUGCVideoCategory,
+                     kVOwnerRemixCategory, kVUGCRemixCategory];
     }
 }
 

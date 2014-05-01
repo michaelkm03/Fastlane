@@ -17,7 +17,7 @@
 #import "VThemeManager.h"
 
 @interface VCameraPublishViewController () <UITextViewDelegate, VSetExpirationDelegate>
-@property (nonatomic, weak) IBOutlet    UIImageView*    previewImage;
+@property (nonatomic, weak) IBOutlet    UIImageView*    previewImageView;
 
 @property (nonatomic, weak) IBOutlet    UIButton*       durationButton;
 @property (nonatomic, weak) IBOutlet    UILabel*        expiresOnLabel;
@@ -33,6 +33,11 @@
 
 @implementation VCameraPublishViewController
 
++ (VCameraPublishViewController *)cameraPublishViewController
+{
+    return [[UIStoryboard storyboardWithName:@"Camera" bundle:nil] instantiateViewControllerWithIdentifier:NSStringFromClass(self)];
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -46,18 +51,9 @@
 {
     [super viewWillAppear:animated];
     
-    if (self.photo)
+    if (self.previewImage)
     {
-        self.previewImage.image = [self.photo applyDarkEffect];
-    }
-    else if (self.videoURL)
-    {
-        AVAsset*    asset = [AVAsset assetWithURL:self.videoURL];
-        AVAssetImageGenerator*  assetGenerator = [AVAssetImageGenerator assetImageGeneratorWithAsset:asset];
-        
-        CGImageRef  imageRef    =   [assetGenerator copyCGImageAtTime:kCMTimeZero actualTime:NULL error:NULL];
-        self.previewImage.image = [[UIImage imageWithCGImage:imageRef] applyDarkEffect];
-        CGImageRelease(imageRef);
+        self.previewImageView.image = [self.previewImage applyDarkEffect];
     }
 
     self.view.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVBackgroundColor];
@@ -65,13 +61,28 @@
     [self.navigationController.navigationBar setBackgroundImage:[[UIImage alloc] init] forBarMetrics:UIBarMetricsDefault];
     self.navigationController.navigationBar.shadowImage = [[UIImage alloc] init];
     self.navigationController.navigationBar.translucent = YES;
+
+    UIImage*    cancelButtonImage = [[UIImage imageNamed:@"cameraButtonClose"]  imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+    UIBarButtonItem*    cancelButton = [[UIBarButtonItem alloc] initWithImage:cancelButtonImage style:UIBarButtonItemStyleBordered target:self action:@selector(cancel:)];
+    self.navigationItem.rightBarButtonItem = cancelButton;
 }
 
 #pragma mark - Actions
 
 - (IBAction)goBack:(id)sender
 {
-    [self.navigationController popViewControllerAnimated:YES];
+    if (self.completion)
+    {
+        self.completion(NO);
+    }
+}
+
+- (IBAction)cancel:(id)sender
+{
+    if (self.completion)
+    {
+        self.completion(YES);
+    }
 }
 
 - (IBAction)hashButtonClicked:(id)sender
@@ -83,49 +94,82 @@
 {
     VLog (@"Publishing");
     
+    if ([self.textView.text isEmpty])
+    {
+        UIAlertView*    alert   = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"PublishDescriptionRequired", @"")
+                                                             message:NSLocalizedString(@"PublishDescription", @"")
+                                                            delegate:nil
+                                                   cancelButtonTitle:nil
+                                                   otherButtonTitles:NSLocalizedString(@"OKButton", @""), nil];
+        [alert show];
+        return;
+    }
+    
     VShareOptions shareOptions = self.useFacebook ? kVShareToFacebook : kVShareNone;
     shareOptions = self.useTwitter ? shareOptions | kVShareToTwitter : shareOptions;
     
-    NSData* mediaData;
-    NSString* mediaType;
-    if (self.videoURL)
-    {
-        mediaData = [NSData dataWithContentsOfURL:self.videoURL];
-        mediaType = VConstantMediaExtensionMOV;
-    }
-    else if (self.photo)
-    {
-        mediaData = UIImagePNGRepresentation(self.photo);
-        mediaType = VConstantMediaExtensionPNG;
-    }
+    CGFloat playbackSpeed;
+    if (self.playBackSpeed == kVPlaybackNormalSpeed)
+        playbackSpeed = 1.0;
+    else if (self.playBackSpeed == kVPlaybackDoubleSpeed)
+        playbackSpeed = 2.0;
     else
-    {
-        return;
-    }
-    if ([self.textView.text isEmpty])
-    {
-        return;
-    }
+        playbackSpeed = 0.5;
 
+    __block NSURL* mediaToRemove = self.mediaURL;
+    
     [[VObjectManager sharedManager] uploadMediaWithName:self.textView.text
                                             description:self.textView.text
                                               expiresAt:self.expirationDateString
-                                           parentNodeId:nil
-                                               loopType:kVLoopOnce
+                                           parentNodeId:@(self.parentID)
+                                                  speed:playbackSpeed
+                                               loopType:self.playbackLooping
                                            shareOptions:shareOptions
-                                              mediaData:mediaData
-                                              extension:mediaType
-                                               mediaUrl:nil
+                                               mediaURL:self.mediaURL
+                                              extension:self.mediaExtension
                                            successBlock:^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
     {
         VLog(@"Succeeded with objects: %@", resultObjects);
+        
+        [[NSFileManager defaultManager] removeItemAtURL:mediaToRemove error:nil];
+        
+        UIAlertView*    alert   = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"PublishSucceeded", @"")
+                                                             message:NSLocalizedString(@"PublishSucceededDetail", @"")
+                                                            delegate:nil
+                                                   cancelButtonTitle:nil
+                                                   otherButtonTitles:NSLocalizedString(@"OKButton", @""), nil];
+        [alert show];
     }
                                               failBlock:^(NSOperation* operation, NSError* error)
     {
         VLog(@"Failed with error: %@", error);
+
+        [[NSFileManager defaultManager] removeItemAtURL:mediaToRemove error:nil];
+        
+        if (5500 == error.code)
+        {
+            UIAlertView*    alert   = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"TranscodingMediaTitle", @"")
+                                                                 message:NSLocalizedString(@"TranscodingMediaBody", @"")
+                                                                delegate:nil
+                                                       cancelButtonTitle:nil
+                                                       otherButtonTitles:NSLocalizedString(@"OKButton", @""), nil];
+            [alert show];
+        }
+        else
+        {
+            UIAlertView* alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"UploadFailedTitle", @"")
+                                                            message:NSLocalizedString(@"UploadErrorBody", @"")
+                                                           delegate:nil
+                                                  cancelButtonTitle:nil
+                                                  otherButtonTitles:NSLocalizedString(@"OKButton", @""), nil];
+            [alert show];
+        }
     }];
     
-    [self dismissViewControllerAnimated:YES completion:nil];
+    if (self.completion)
+    {
+        self.completion(YES);
+    }
 }
 
 - (IBAction)twitterClicked:(id)sender
@@ -162,7 +206,7 @@
         [sRFC2822DateFormatter setTimeZone:[NSTimeZone timeZoneWithAbbreviation:@"GMT"]];
     });
     
-    return[sRFC2822DateFormatter stringFromDate:date];
+    return [sRFC2822DateFormatter stringFromDate:date];
 }
 
 - (void)createInputAccessoryView
@@ -177,7 +221,7 @@
                                                                                       target:nil
                                                                                       action:nil];
     
-    self.countDownLabel = [[UIBarButtonItem alloc] initWithTitle:@"140"
+    self.countDownLabel = [[UIBarButtonItem alloc] initWithTitle:[NSNumberFormatter localizedStringFromNumber:@(VConstantsMessageLength) numberStyle:NSNumberFormatterDecimalStyle]
                                                            style:UIBarButtonItemStyleBordered
                                                             target:nil
                                                           action:nil];
@@ -191,7 +235,7 @@
 - (void)textViewDidChange:(UITextView *)textView
 {
     self.textViewPlaceholderLabel.hidden = ([textView.text length] > 0);
-    self.countDownLabel.title = [NSNumberFormatter localizedStringFromNumber:@(140.0 - self.textView.text.length)
+    self.countDownLabel.title = [NSNumberFormatter localizedStringFromNumber:@(VConstantsMessageLength - self.textView.text.length)
                                                                  numberStyle:NSNumberFormatterDecimalStyle];
 }
 
@@ -203,9 +247,10 @@
         return NO;
     }
 
-    if (textView.text.length >= 140.0)
+    BOOL    isDeleteKey = ([text isEqualToString:@""]);
+    if ((textView.text.length >= VConstantsMessageLength) && (!isDeleteKey))
         return NO;
-
+    
     return YES;
 }
 
@@ -222,7 +267,7 @@
     {
         VSetExpirationViewController*   viewController = (VSetExpirationViewController *)segue.destinationViewController;
         viewController.delegate = self;
-        viewController.previewImage = self.previewImage.image;
+        viewController.previewImage = self.previewImageView.image;
     }
 }
 

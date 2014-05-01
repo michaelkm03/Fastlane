@@ -7,6 +7,8 @@
 //
 
 #import "VThemeManager.h"
+#import <AVFoundation/AVAssetExportSession.h>
+#import <AVFoundation/AVCaptureSession.h>
 
 #pragma mark - new theme constants
 NSString*   const   kVThemeManagerThemeDidChange        =   @"VThemeManagerThemeDidChange";
@@ -17,6 +19,9 @@ NSString*   const   kVChannelURLAcknowledgements        =   @"channel.url.acknow
 NSString*   const   kVChannelURLSupport                 =   @"channel.url.support";
 NSString*   const   kVChannelName                       =   @"channel.name";
 
+NSString*   const   kVCaptureVideoQuality               =   @"capture";
+NSString*   const   kVExportVideoQuality                =   @"remix";
+
 NSString*   const   kVAgreementText                     =   @"agreement.text";
 NSString*   const   kVAgreementLinkText                 =   @"agreement.linkText";
 NSString*   const   kVAgreementLink                     =   @"agreement.link";
@@ -26,19 +31,27 @@ NSString*   const   kVMenuBackgroundImage5              =   @"LaunchImage-700-56
 
 #pragma mark - Fonts
 
-NSString*   const   kVTitleFont                         =   @"font.title";
-NSString*   const   kVContentTitleFont                  =   @"font.title.content";
+NSString*   const   kVHeaderFont                        =   @"font.header";
 
-NSString*   const   kVDetailFont                        =   @"font.detail";
-NSString*   const   kVDateFont                          =   @"font.date";
+NSString*   const   kVHeading1Font                      =   @"font.heading1";
+NSString*   const   kVHeading2Font                      =   @"font.heading2";
+NSString*   const   kVHeading3Font                      =   @"font.heading3";
+NSString*   const   kVHeading4Font                      =   @"font.heading4";
 
-NSString*   const   kVButtonFont                        =   @"font.button";
+NSString*   const   kVParagraphFont                     =   @"font.paragraph";
 
-NSString*   const   kVPollButtonFont                    =   @"font.button.poll";
+NSString*   const   kVLabel1Font                        =   @"font.labe1";
+NSString*   const   kVLabel2Font                        =   @"font.labe2";
+NSString*   const   kVLabel3Font                        =   @"font.labe3";
+NSString*   const   kVLabel4Font                        =   @"font.labe4";
+
+NSString*   const   kVButton1Font                       =   @"font.button1";
+NSString*   const   kVButton2Font                       =   @"font.button2";
 
 
 #pragma mark - Colors
 NSString*   const   kVBackgroundColor                   =   @"color.background";
+NSString*   const   kVCancelColor                       =   @"color.cancel";
 
 NSString*   const   kVMainTextColor                     =   @"color.text";
 NSString*   const   kVContentTextColor                  =   @"color.text.content";
@@ -48,6 +61,7 @@ NSString*   const   kVSecondaryAccentColor              =   @"color.accent.secon
 
 NSString*   const   kVLinkColor                         =   @"color.link";
 
+NSString*   const   kVNewThemeKey                       =   @"kVNewTheme";
 
 @interface      VThemeManager   ()
 @end
@@ -83,45 +97,90 @@ NSString*   const   kVLinkColor                         =   @"color.link";
 
 - (void)setTheme:(NSDictionary *)dictionary
 {
-    [dictionary enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop)
-     {
-        [[NSUserDefaults standardUserDefaults] setObject:obj forKey:key];
-    }];
-
-    [[NSNotificationCenter defaultCenter] postNotificationName:kVThemeManagerThemeDidChange object:self userInfo:nil];
+    [[NSUserDefaults standardUserDefaults] setObject:dictionary forKey:kVNewThemeKey];
+//    [[NSNotificationCenter defaultCenter] postNotificationName:kVThemeManagerThemeDidChange object:self userInfo:nil];
 }
 
+- (void)updateToNewTheme
+{
+    NSDictionary* newTheme = [[NSUserDefaults standardUserDefaults] objectForKey:kVNewThemeKey];
+    
+    [newTheme enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop)
+     {
+         [[NSUserDefaults standardUserDefaults] setObject:obj forKey:key];
+     }];
+    
+    [[NSUserDefaults standardUserDefaults] setObject:nil forKey:kVNewThemeKey];
+}
 
 #pragma mark -
 
 - (void)applyStyling
 {
     [[[[UIApplication sharedApplication] delegate] window] setTintColor:[self themedColorForKey:kVMainTextColor]];
-
-    [[UINavigationBar appearance] setTintColor:[self themedColorForKey:kVMainTextColor]];
-    [[UINavigationBar appearance] setBarTintColor:[self themedTranslucencyColorForKey:kVAccentColor]];
-
-    NSMutableDictionary *titleAttributes = [NSMutableDictionary dictionary];
-    UIColor *navigationBarTitleTintColor = [self themedColorForKey:kVMainTextColor];
-    if(navigationBarTitleTintColor)
-    {
-        titleAttributes[NSForegroundColorAttributeName] = navigationBarTitleTintColor;
-    }
-    UIFont *navigationBarTitleFont = [self themedFontForKey:kVTitleFont];
-    if(navigationBarTitleFont)
-    {
-        titleAttributes[NSFontAttributeName] = navigationBarTitleFont;
-    }
-    [[UINavigationBar appearance] setTitleTextAttributes:titleAttributes];
+    
+    [self applyNormalNavBarStyling];
 }
 
 - (void)removeStyling
 {
     [[[[UIApplication sharedApplication] delegate] window] setTintColor:nil];
 
+    [self removeNavBarStyling];
+}
+
+- (void)applyNormalNavBarStyling
+{
+    [[UINavigationBar appearance] setTintColor:[self themedColorForKey:kVMainTextColor]];
+    [[UINavigationBar appearance] setBarTintColor:[self themedTranslucencyColorForKey:kVAccentColor]];
+    
+    NSMutableDictionary *titleAttributes = [NSMutableDictionary dictionary];
+    UIColor *navigationBarTitleTintColor = [self themedColorForKey:kVMainTextColor];
+    if(navigationBarTitleTintColor)
+    {
+        titleAttributes[NSForegroundColorAttributeName] = navigationBarTitleTintColor;
+    }
+    UIFont *navigationBarTitleFont = [self themedFontForKey:kVHeaderFont];
+    if(navigationBarTitleFont)
+    {
+        titleAttributes[NSFontAttributeName] = navigationBarTitleFont;
+    }
+    [[UINavigationBar appearance] setTitleTextAttributes:titleAttributes];
+    
+    [[UINavigationBar appearance] setBackgroundImage:nil forBarMetrics:UIBarMetricsDefault];
+    [[UINavigationBar appearance] setShadowImage:nil];
+}
+
+- (void)applyClearNavBarStyling
+{
+    [[UINavigationBar appearance] setTintColor:[self themedColorForKey:kVContentTextColor]];
+    [[UINavigationBar appearance] setBarTintColor:[UIColor clearColor]];
+    
+    NSMutableDictionary *titleAttributes = [NSMutableDictionary dictionary];
+    UIColor *navigationBarTitleTintColor = [self themedColorForKey:kVContentTextColor];
+    if(navigationBarTitleTintColor)
+    {
+        titleAttributes[NSForegroundColorAttributeName] = navigationBarTitleTintColor;
+    }
+    UIFont *navigationBarTitleFont = [self themedFontForKey:kVHeaderFont];
+    if(navigationBarTitleFont)
+    {
+        titleAttributes[NSFontAttributeName] = navigationBarTitleFont;
+    }
+    [[UINavigationBar appearance] setTitleTextAttributes:titleAttributes];
+    
+    [[UINavigationBar appearance] setBackgroundImage:[[UIImage alloc] init] forBarMetrics:UIBarMetricsDefault];
+    [[UINavigationBar appearance] setShadowImage:[[UIImage alloc] init]];
+}
+
+- (void)removeNavBarStyling
+{
     [[UINavigationBar appearance] setTintColor:nil];
     [[UINavigationBar appearance] setBarTintColor:nil];
     [[UINavigationBar appearance] setTitleTextAttributes:nil];
+    
+    [[UINavigationBar appearance] setBackgroundImage:nil forBarMetrics:UIBarMetricsDefault];
+    [[UINavigationBar appearance] setShadowImage:nil];
 }
 
 #pragma mark - Primitives
@@ -196,4 +255,31 @@ NSString*   const   kVLinkColor                         =   @"color.link";
     return [UIFont fontWithName:fontName size:fontSize];
 }
 
+- (NSString *)themedExportVideoQuality
+{
+    NSString*   value   =   [self themedStringForKey:kVExportVideoQuality];
+    
+    if ([value isEqualToString:@"low"])
+        return  AVAssetExportPresetLowQuality;
+    else if ([value isEqualToString:@"medium"])
+        return  AVAssetExportPresetMediumQuality;
+    else if ([value isEqualToString:@"high"])
+        return  AVAssetExportPresetHighestQuality;
+    else
+        return AVAssetExportPresetMediumQuality;
+}
+
+- (NSString *)themedCapturedVideoQuality
+{
+    NSString*   value   =   [self themedStringForKey:kVCaptureVideoQuality];
+
+    if ([value isEqualToString:@"low"])
+        return  AVCaptureSessionPresetLow;
+    else if ([value isEqualToString:@"medium"])
+        return  AVCaptureSessionPresetMedium;
+    else if ([value isEqualToString:@"high"])
+        return  AVCaptureSessionPresetHigh;
+    else
+        return AVCaptureSessionPresetMedium;
+}
 @end

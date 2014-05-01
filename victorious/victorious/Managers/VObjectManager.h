@@ -17,7 +17,7 @@ typedef void (^VFailBlock) (NSOperation*, NSError*);
 
 @interface VObjectManager : RKObjectManager
 
-@property (nonatomic, strong) VUser*  mainUser;
+@property (nonatomic, readonly) VUser*  mainUser;
 
 + (void)setupObjectManager;
 

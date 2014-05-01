@@ -51,10 +51,10 @@
     self.animator = [[UIDynamicAnimator alloc] initWithReferenceView:self.view];
     
     UIColor* accentColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVMainTextColor];
-    UIFont* font = [[VThemeManager sharedThemeManager] themedFontForKey:kVTitleFont];
+    UIFont* font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeaderFont];
     
     self.loginLabel.textColor = accentColor;
-    self.loginLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVPollButtonFont];
+    self.loginLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVButton1Font];
     
     NSMutableAttributedString* attributedTitle = [self.signinEmailButton.titleLabel.attributedText mutableCopy];
     NSRange range = NSMakeRange(0, [attributedTitle.string length]);
