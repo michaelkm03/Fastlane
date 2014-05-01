@@ -141,6 +141,9 @@
         [[NSFileManager defaultManager] removeItemAtURL:urlToRemove error:nil];
         
         [(VCommentsTableViewController *)self.conversationTableViewController sortComments];
+        
+        self.sequence.commentCount = @(self.sequence.commentCount.integerValue + 1);
+        [self.sequence.managedObjectContext save:nil];
     };
     VFailBlock fail = ^(NSOperation* operation, NSError* error)
     {
