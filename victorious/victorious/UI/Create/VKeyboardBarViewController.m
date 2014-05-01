@@ -14,6 +14,8 @@
 #import "VLoginViewController.h"
 
 @interface VKeyboardBarViewController() <UITextViewDelegate>
+
+@property (nonatomic, weak) IBOutlet UITextView *textView;
 @property (weak, nonatomic) IBOutlet UIButton *mediaButton;
 @property (nonatomic, strong) NSString*  mediaExtension;
 @property (nonatomic, strong) NSURL* mediaURL;
@@ -78,6 +80,25 @@
     };
     UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:cameraViewController];
     [self presentViewController:navController animated:YES completion:nil];
+}
+
+- (NSAttributedString *)textViewText
+{
+    return self.textView.attributedText;
+}
+
+- (void)setTextViewText:(NSAttributedString *)textViewText
+{
+    self.textView.attributedText = textViewText;
+    if ([self respondsToSelector:@selector(textViewDidChange:)])
+    {
+        [self textViewDidChange:self.textView];
+    }
+}
+
+- (BOOL)becomeFirstResponder
+{
+    return [self.textView becomeFirstResponder];
 }
 
 #pragma mark - UITextViewDelegate methods

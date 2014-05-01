@@ -10,11 +10,6 @@
 
 #import <objc/runtime.h>
 
-//@property (nonatomic) BOOL followerListLoading; ///< YES if the follower list is currently being loaded from the server
-//@property (nonatomic) BOOL followerListLoaded;  ///< YES if we have already downloaded the follower list from the server
-//@property (nonatomic) BOOL followingListLoading; ///< YES if the follower list is currently being loaded from the server
-//@property (nonatomic) BOOL followingListLoaded;  ///< YES if we have already downloaded the follower list from the server
-
 static const char kFollowerListLoadingKey;
 static const char kFollowerListLoadedKey;
 static const char kFollowingListLoadingKey;

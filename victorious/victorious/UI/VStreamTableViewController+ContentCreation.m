@@ -49,6 +49,7 @@
                                            otherButtonTitlesAndBlocks:contentTitle, ^(void)
                                   {
                                       UINavigationController *navigationController = [[UINavigationController alloc] init];
+                                      UINavigationController * __weak weakNav = navigationController;
                                       VCameraViewController *cameraViewController = [VCameraViewController cameraViewController];
                                       cameraViewController.completionBlock = ^(BOOL finished, UIImage *previewImage, NSURL *capturedMediaURL, NSString *mediaExtension)
                                       {
@@ -70,10 +71,10 @@
                                                   }
                                                   else
                                                   {
-                                                      [navigationController popViewControllerAnimated:YES];
+                                                      [weakNav popViewControllerAnimated:YES];
                                                   }
                                               };
-                                              [navigationController pushViewController:publishViewController animated:YES];
+                                              [weakNav pushViewController:publishViewController animated:YES];
                                           }
                                       };
                                       [navigationController pushViewController:cameraViewController animated:NO];

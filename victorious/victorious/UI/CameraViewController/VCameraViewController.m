@@ -87,6 +87,15 @@ const   NSTimeInterval  kAnimationDuration      =   0.4;
 	self.camera.recordingDurationLimit = CMTimeMakeWithSeconds(15, 1);
     self.camera.videoEncoder.outputVideoSize = CGSizeMake(320.0, 320.0);
 
+    BOOL    hasFrontCamera = [UIImagePickerController isCameraDeviceAvailable:UIImagePickerControllerCameraDeviceFront];
+    BOOL    hasRearCamera = [UIImagePickerController isCameraDeviceAvailable:UIImagePickerControllerCameraDeviceRear];
+    
+    self.switchCameraButton.hidden = !(hasFrontCamera && hasRearCamera);
+    if (hasRearCamera)
+        self.camera.cameraDevice = VCCameraDeviceBack;
+    else if (hasFrontCamera)
+        self.camera.cameraDevice = VCCameraDeviceFront;
+    
     [self.camera initialize:^(NSError * audioError, NSError * videoError)
      {
 		[self prepareCamera];
@@ -119,15 +128,6 @@ const   NSTimeInterval  kAnimationDuration      =   0.4;
     [self.previewView addSubview:self.focusView];
 //    self.focusView.outsideFocusTargetImage = [UIImage imageNamed:@"capture_flip"];
 //    self.focusView.insideFocusTargetImage = [UIImage imageNamed:@"capture_flip"];
-    
-    BOOL    hasFrontCamera = [UIImagePickerController isCameraDeviceAvailable:UIImagePickerControllerCameraDeviceFront];
-    BOOL    hasRearCamera = [UIImagePickerController isCameraDeviceAvailable:UIImagePickerControllerCameraDeviceRear];
-    
-    self.switchCameraButton.hidden = !(hasFrontCamera && hasRearCamera);
-    if (hasRearCamera)
-        self.camera.cameraDevice = VCCameraDeviceBack;
-    else if (hasFrontCamera)
-        self.camera.cameraDevice = VCCameraDeviceFront;
     
     if (self.allowVideo)
     {

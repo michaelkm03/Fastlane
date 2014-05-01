@@ -132,7 +132,7 @@ typedef UIView View;
 }
 
 - (void)stopRunningSession {
-    if (!session && !session.isRunning)
+    if (!session || !session.isRunning)
         return;
     
     [session stopRunning];
