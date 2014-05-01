@@ -13,16 +13,18 @@
 
 @implementation VMediaPreviewViewController
 
-+ (VMediaPreviewViewController *)previewViewControllerForMediaAtURL:(NSURL *)mediaURL withExtension:(NSString *)mediaExtension
++ (VMediaPreviewViewController *)previewViewControllerForMediaAtURL:(NSURL *)mediaURL
 {
+    NSString *mediaExtension = [mediaURL pathExtension];
     VMediaPreviewViewController *previewViewController = nil;
-    if ([VConstantMediaExtensionPNG isEqualToString:mediaExtension]  ||
-        [VConstantMediaExtensionJPEG isEqualToString:mediaExtension] ||
-        [VConstantMediaExtensionJPG isEqualToString:mediaExtension])
+    if ([@"png"  isEqualToString:mediaExtension] ||
+        [@"jpg"  isEqualToString:mediaExtension] ||
+        [@"jpeg" isEqualToString:mediaExtension])
     {
         previewViewController = [VImagePreviewViewController imagePreviewViewController];
     }
-    else if ([VConstantMediaExtensionMOV isEqualToString:mediaExtension])
+    else if ([@"mov" isEqualToString:mediaExtension] ||
+             [@"mp4" isEqualToString:mediaExtension])
     {
         previewViewController = [VVideoPreviewViewController videoPreviewViewController];
     }
@@ -30,7 +32,6 @@
     if (previewViewController)
     {
         previewViewController->_mediaURL = mediaURL;
-        previewViewController->_mediaExtension = mediaExtension;
     }
     return previewViewController;
 }
