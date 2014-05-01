@@ -117,8 +117,8 @@
 
 - (void)streamsCommentsController:(VCommentsTableViewController *)viewController shouldReplyToUser:(VUser *)user
 {
-    self.keyboardBarViewController.textView.text = [NSString stringWithFormat:@"@%@ ", user.name];
-    [self.keyboardBarViewController.textView becomeFirstResponder];
+    self.keyboardBarViewController.textViewText = [[NSAttributedString alloc] initWithString:[NSString stringWithFormat:@"@%@ ", user.name]];
+    [self.keyboardBarViewController becomeFirstResponder];
 }
 
 #pragma mark - VKeyboardBarDelegate

@@ -21,10 +21,11 @@
 
 @interface VKeyboardBarViewController : UIViewController
 
-@property (nonatomic, weak) id<VKeyboardBarDelegate>  delegate;
-@property (nonatomic, weak) IBOutlet UITextView      *textView;
-@property (nonatomic, weak) IBOutlet UILabel         *promptLabel;
+@property (nonatomic, weak)   id<VKeyboardBarDelegate>  delegate;
+@property (nonatomic, strong) NSAttributedString       *textViewText;
+@property (nonatomic, weak)   IBOutlet UILabel         *promptLabel;
 
 - (IBAction)cameraPressed:(id)sender;
+- (BOOL)becomeFirstResponder; ///< Tells the keyboard bar view controller to make its internal text view the first responder
 
 @end
