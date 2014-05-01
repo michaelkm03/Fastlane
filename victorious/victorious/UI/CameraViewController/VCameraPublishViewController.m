@@ -126,7 +126,7 @@
                                                loopType:self.playbackLooping
                                            shareOptions:shareOptions
                                                mediaURL:self.mediaURL
-                                              extension:self.mediaExtension
+                                              extension:[self.mediaURL pathExtension]
                                            successBlock:^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
     {
         VLog(@"Succeeded with objects: %@", resultObjects);

@@ -62,7 +62,6 @@
                                               VCameraPublishViewController *publishViewController = [VCameraPublishViewController cameraPublishViewController];
                                               publishViewController.previewImage = previewImage;
                                               publishViewController.mediaURL = capturedMediaURL;
-                                              publishViewController.mediaExtension = mediaExtension;
                                               publishViewController.completion = ^(BOOL complete)
                                               {
                                                   if (complete)

@@ -67,7 +67,6 @@
     
     VCameraPublishViewController *publishViewController = [VCameraPublishViewController cameraPublishViewController];
     publishViewController.mediaURL = self.targetURL;
-    publishViewController.mediaExtension = VConstantMediaExtensionMOV;
     publishViewController.playBackSpeed = self.playBackSpeed;
     publishViewController.playbackLooping = self.playbackLooping;
     publishViewController.parentID = self.parentID;
