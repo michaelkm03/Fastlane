@@ -171,7 +171,7 @@
 
         if (finished)
         {
-            if ([mediaExtension isEqualToString:VConstantMediaExtensionMOV])
+            if ([mediaExtension isEqualToString:@"mp4"])
                 [self didSelectVideo:capturedMediaURL];
         }
     };
