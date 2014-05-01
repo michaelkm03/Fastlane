@@ -153,7 +153,15 @@
                                              minProgress + currentProgress, self.frame.size.height);
     }
     
-    self.resultLabel.text = [@((progress * 100.0f)).stringValue stringByAppendingString:@"%"];
+    static NSNumberFormatter* percentFormatter;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^
+    {
+        percentFormatter = [[NSNumberFormatter alloc] init];
+        [percentFormatter setNumberStyle:NSNumberFormatterPercentStyle];
+    });
+    
+    self.resultLabel.text = [percentFormatter stringFromNumber:@(progress)];
 }
 
 @end

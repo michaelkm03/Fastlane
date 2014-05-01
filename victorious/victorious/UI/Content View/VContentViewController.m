@@ -62,6 +62,8 @@ CGFloat kContentMediaViewOffset = 154;
     self.activityIndicator.backgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:.5f];
     self.activityIndicator.layer.cornerRadius = self.activityIndicator.frame.size.height / 2;
     self.activityIndicator.hidesWhenStopped = YES;
+    
+    [self resetView];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -71,9 +73,16 @@ CGFloat kContentMediaViewOffset = 154;
     [self.navigationController setNavigationBarHidden:YES animated:NO];
     
     [self updateActionBar];
-    [self resetView];
     
     self.navigationController.delegate = self;
+
+}
+
+- (void)viewDidDisappear:(BOOL)animated
+{
+    [super viewDidDisappear:animated];
+    
+    [self resetView];
 }
 
 - (void)resetView
