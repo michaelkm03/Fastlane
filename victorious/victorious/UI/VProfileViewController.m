@@ -151,10 +151,7 @@
     self.taglineLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeading3Font];
 
     if (self.profile.tagline && self.profile.tagline.length)
-        self.taglineLabel.text = [NSString stringWithFormat:@"%@%@%@",
-                                  [[NSLocale autoupdatingCurrentLocale] objectForKey:NSLocaleQuotationBeginDelimiterKey],
-                                  self.profile.tagline,
-                                  [[NSLocale autoupdatingCurrentLocale] objectForKey:NSLocaleQuotationEndDelimiterKey]];
+        self.taglineLabel.text = self.profile.tagline;
     else
         self.taglineLabel.text = @"";
 
