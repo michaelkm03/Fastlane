@@ -12,7 +12,7 @@
 #import "VThemeManager.h"
 #import "MBProgressHUD.h"
 
-@interface VRemixSelectViewController ()
+@interface VRemixSelectViewController ()    <NSURLSessionDownloadDelegate>
 
 @property (nonatomic, weak)     IBOutlet    UISlider*           scrubber;
 
@@ -88,7 +88,10 @@
     hud.labelText = @"Just a moment";
     hud.detailsLabelText = @"Loading Video...";
     
-    NSURLSession*               session = [NSURLSession sharedSession];
+    NSURLSessionConfiguration*  sessionConfig = [NSURLSessionConfiguration defaultSessionConfiguration];
+    NSURLSession*               session = [NSURLSession sessionWithConfiguration:sessionConfig
+                                                                        delegate:self
+                                                                   delegateQueue:nil];
     NSURLSessionDownloadTask*   task = [session downloadTaskWithURL:self.sourceURL completionHandler:^(NSURL *location, NSURLResponse *response, NSError *error)
     {
         if (!error)
@@ -111,6 +114,11 @@
     }];
     
     [task resume];
+}
+
+- (void)URLSession:(NSURLSession *)session downloadTask:(NSURLSessionDownloadTask *)downloadTask didWriteData:(int64_t)bytesWritten totalBytesWritten:(int64_t)totalBytesWritten totalBytesExpectedToWrite:(int64_t)totalBytesExpectedToWrite
+{
+    
 }
 
 -(IBAction)scrubberDidStartMoving:(id)sender
