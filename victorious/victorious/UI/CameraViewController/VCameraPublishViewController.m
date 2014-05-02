@@ -145,7 +145,7 @@
 
         [[NSFileManager defaultManager] removeItemAtURL:mediaToRemove error:nil];
         
-        if (5500 == error.code)
+        if (kVStillTranscodingError == error.code)
         {
             UIAlertView*    alert   = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"TranscodingMediaTitle", @"")
                                                                  message:NSLocalizedString(@"TranscodingMediaBody", @"")

@@ -194,7 +194,7 @@ NSString* const kPollResultsLoaded = @"kPollResultsLoaded";
     VFailBlock fullFail = ^(NSOperation* operation, NSError* error)
     {
         //keep trying until we are done transcoding
-        if (error.code == 5500 && attemptCount < 15)
+        if (error.code == kVStillTranscodingError && attemptCount < 15)
         {
             double delayInSeconds = 2.0;
             dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));

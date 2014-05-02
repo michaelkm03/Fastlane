@@ -150,7 +150,7 @@
     {
         [[NSFileManager defaultManager] removeItemAtURL:urlToRemove error:nil];
         
-        if (error.code == 5500)
+        if (error.code == kVStillTranscodingError)
         {
             NSLog(@"%@", error);
             [indicator stopAnimating];
