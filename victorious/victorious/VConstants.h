@@ -10,6 +10,12 @@
 #define IS_IPHONE (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone)
 #define IS_IPHONE_5 (IS_IPHONE && [[UIScreen mainScreen] bounds].size.height == 568.0f)
 
+//  HTTP Error Codes
+typedef NS_ENUM(NSInteger, HTTPStatusCodes)
+{
+    kVHTTPStatusCode200OK      =   200
+};
+
 typedef NS_OPTIONS(NSUInteger, VShareOptions)
 {
     kVShareNone          = 0,
