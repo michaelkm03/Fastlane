@@ -14,7 +14,7 @@
 #import "VObjectManager+Sequence.h"
 #import "VObjectManager+Comment.h"
 
-#import "VSequence.h"
+#import "VSequence+Restkit.h"
 #import "VComment.h"
 
 @implementation VObjectManager (ContentCreation)
@@ -109,10 +109,17 @@
         NSDictionary* payload = fullResponse[@"payload"];
         
         NSNumber* sequenceID = payload[@"sequence_id"];
-        
-        [self fetchSequence:sequenceID
-               successBlock:success
-                  failBlock:fail];
+        VSequence* newSequence = [self newSequenceWithID:sequenceID
+                                                    name:name
+                                             description:description
+                                            mediaURLPath:[mediaUrl absoluteString]];
+
+        if (success)
+            success(operation, fullResponse, @[newSequence]);
+            
+//        [self fetchSequence:sequenceID
+//               successBlock:success
+//                  failBlock:fail];
     };
     
     return [self uploadURLs:allUrls
@@ -129,6 +136,37 @@
     if (type == kVLoopReverse)
         return @"reverse";
     return nil;
+}
+
+- (VSequence*)newSequenceWithID:(NSNumber*)remoteID
+                           name:(NSString*)name
+                    description:(NSString*)description
+//                       category:(NSString*)category
+                   mediaURLPath:(NSString*)mediaURLPath
+
+{
+    VSequence* tempSequence = (VSequence*)[NSEntityDescription entityForName:[VSequence entityName]
+                                                      inManagedObjectContext:self.managedObjectStore.persistentStoreManagedObjectContext];
+    tempSequence.remoteId = remoteID;
+    tempSequence.name = name;
+    tempSequence.sequenceDescription = description;
+//    tempSequence.category = category;
+    
+    tempSequence.releasedAt = [NSDate dateWithTimeIntervalSinceNow:0];
+    tempSequence.status = @"temp";
+    tempSequence.display_order = @(-1);
+    tempSequence.category = @"";
+    
+    NSString* extension = [[mediaURLPath pathExtension] lowercaseStringWithLocale:[NSLocale localeWithLocaleIdentifier:@"en_US_POSIX"]];
+    //If its not one of these its an image, so we can use that for the preview
+    if ([extension isEqualToString:VConstantMediaExtensionMOV] || [extension isEqualToString:VConstantMediaExtensionMP4])
+    {
+        
+    }
+    tempSequence.previewImage = mediaURLPath;
+    
+    tempSequence.user = self.mainUser;
+    return tempSequence;
 }
 
 #pragma mark - Comment

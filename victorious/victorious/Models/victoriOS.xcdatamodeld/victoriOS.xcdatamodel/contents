@@ -111,7 +111,7 @@
         <attribute name="category" attributeType="String" syncable="YES"/>
         <attribute name="commentCount" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
         <attribute name="createdBy" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
-        <attribute name="display_order" optional="YES" attributeType="Integer 16" minValueString="0" syncable="YES"/>
+        <attribute name="display_order" optional="YES" attributeType="Integer 16" minValueString="-1" syncable="YES"/>
         <attribute name="expiresAt" optional="YES" attributeType="Date" syncable="YES"/>
         <attribute name="gameStatus" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="isComplete" optional="YES" attributeType="Boolean" syncable="YES"/>
