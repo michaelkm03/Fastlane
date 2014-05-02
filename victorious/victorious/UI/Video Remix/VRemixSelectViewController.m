@@ -11,6 +11,7 @@
 #import "VRemixTrimViewController.h"
 #import "VThemeManager.h"
 #import "MBProgressHUD.h"
+#import "VConstants.h"
 
 @interface VRemixSelectViewController ()    <NSURLSessionDownloadDelegate>
 
@@ -84,7 +85,7 @@
 - (IBAction)nextButtonClicked:(id)sender
 {
     [self.previewView.player pause];
-    [self downloadVideoSegmentAtURL:self.sourceURL atTime:CMTimeGetSeconds(self.previewView.player.currentTime)];
+    [self downloadVideoSegmentAtURL:self.sourceURL atTime:self.previewView.player.startSeconds];
 }
 
 -(IBAction)scrubberDidStartMoving:(id)sender
@@ -172,7 +173,7 @@
 - (void)URLSession:(NSURLSession *)session downloadTask:(NSURLSessionDownloadTask *)downloadTask didFinishDownloadingToURL:(NSURL *)location
 {
     NSHTTPURLResponse*  httpResponse = (NSHTTPURLResponse *)downloadTask.response;
-    if (httpResponse.statusCode == 200)
+    if (httpResponse.statusCode == kVHTTPStatusCode200OK)
     {
         self.targetURL = [NSURL fileURLWithPath:[NSTemporaryDirectory() stringByAppendingPathComponent:[self.sourceURL lastPathComponent]] isDirectory:NO];
         [[NSFileManager defaultManager] removeItemAtURL:self.targetURL error:nil];
