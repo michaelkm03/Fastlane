@@ -5,7 +5,8 @@
 #import <Foundation/Foundation.h>
 #import "VCAudioVideoRecorder.h"
 
-@interface VCAudioVideoRecorder() {
+@interface VCAudioVideoRecorder()
+{
     
 }
 

@@ -9,19 +9,20 @@
 // PRIVATE DEFINITION
 /////////////////////
 
-@interface VCDataEncoder() {
+@interface VCDataEncoder()
+{
     
 }
 
 @property (weak, nonatomic) VCAudioVideoRecorder * audioVideoRecorder;
-
 @end
 
 ////////////////////////////////////////////////////////////
 // IMPLEMENTATION
 /////////////////////
 
-@implementation VCDataEncoder {
+@implementation VCDataEncoder
+{
     CMTime lastTakenFrame;
     BOOL initialized;
 }
@@ -29,8 +30,10 @@
 @synthesize writerInput;
 @synthesize audioVideoRecorder;
 
-- (id) initWithAudioVideoRecorder:(VCAudioVideoRecorder *)aVR {
-    if (self) {
+- (instancetype)initWithAudioVideoRecorder:(VCAudioVideoRecorder *)aVR
+{
+    if (self)
+    {
         self.audioVideoRecorder = aVR;
         self.enabled = YES;
         lastTakenFrame = kCMTimeInvalid;
@@ -39,24 +42,30 @@
     return self;
 }
 
-- (void) dealloc {
+- (void)dealloc
+{
     self.writerInput = nil;
 }
 
-- (AVAssetWriterInput*) createWriterInputForSampleBuffer:(CMSampleBufferRef)sampleBuffer error:(NSError **)error
+- (AVAssetWriterInput*)createWriterInputForSampleBuffer:(CMSampleBufferRef)sampleBuffer error:(NSError **)error
 {
     if (error)
         *error = [VCAudioVideoRecorder createError:@"Inherited objects must override createWriterInput"];
+    
     return nil;
 }
 
-- (void) reset {
-    if (self.writerInput != nil) {
+- (void)reset
+{
+    if (self.writerInput != nil)
+    {
         self.writerInput = nil;
-        if ([self.delegate respondsToSelector:@selector(dataEncoder:didEncodeFrame:)]) {
+        if ([self.delegate respondsToSelector:@selector(dataEncoder:didEncodeFrame:)])
+        {
             [self.delegate dataEncoder:self didEncodeFrame:kCMTimeZero];
         }
     }
+    
     initialized = NO;
     lastTakenFrame = kCMTimeInvalid;
 }
@@ -64,13 +73,15 @@
 //
 // The following function is from http://www.gdcl.co.uk/2013/02/20/iPhone-Pause.html
 //
-- (CMSampleBufferRef) adjustBuffer:(CMSampleBufferRef)sample withTimeOffset:(CMTime)offset andDuration:(CMTime)duration {
+- (CMSampleBufferRef)adjustBuffer:(CMSampleBufferRef)sample withTimeOffset:(CMTime)offset andDuration:(CMTime)duration
+{
     CMItemCount count;
     CMSampleBufferGetSampleTimingInfoArray(sample, 0, nil, &count);
     CMSampleTimingInfo* pInfo = malloc(sizeof(CMSampleTimingInfo) * count);
     CMSampleBufferGetSampleTimingInfoArray(sample, count, pInfo, &count);
     
-    for (CMItemCount i = 0; i < count; i++) {
+    for (CMItemCount i = 0; i < count; i++)
+    {
         pInfo[i].decodeTimeStamp = CMTimeSubtract(pInfo[i].decodeTimeStamp, offset);
         pInfo[i].presentationTimeStamp = CMTimeSubtract(pInfo[i].presentationTimeStamp, offset);
         pInfo[i].duration = duration;
@@ -82,54 +93,64 @@
     return sout;
 }
 
-- (void) initialize:(CMSampleBufferRef)sampleBuffer atFrameTime:(CMTime)frameTime {
+- (void)initialize:(CMSampleBufferRef)sampleBuffer atFrameTime:(CMTime)frameTime
+{
     initialized = YES;
     lastTakenFrame = frameTime;
     NSError * error = nil;
     self.writerInput = [self createWriterInputForSampleBuffer:sampleBuffer error:&error];
     
-    if (self.writerInput == nil && error == nil) {
+    if (self.writerInput == nil && error == nil)
+    {
         error = [VCAudioVideoRecorder createError:@"Encoder didn't create a WriterInput"];
     }
     
-    if (self.writerInput != nil) {
-        if ([self.audioVideoRecorder.assetWriter canAddInput:self.writerInput]) {
+    if (self.writerInput != nil)
+    {
+        if ([self.audioVideoRecorder.assetWriter canAddInput:self.writerInput])
+        {
             [self.audioVideoRecorder.assetWriter addInput:self.writerInput];
-        } else {
+        }
+        else
+        {
             error = [VCAudioVideoRecorder createError:@"Unable to add WriterInput to the AssetWriter"];
         }
     }
     
-    if (error != nil) {
-        if ([self.delegate respondsToSelector:@selector(dataEncoder:didFailToInitializeEncoder:)]) {
+    if (error != nil)
+    {
+        if ([self.delegate respondsToSelector:@selector(dataEncoder:didFailToInitializeEncoder:)])
+        {
             [self.delegate dataEncoder:self didFailToInitializeEncoder:error];
         }
     }
 }
 
-- (void) computeOffset:(CMTime)frameTime {
+- (void)computeOffset:(CMTime)frameTime
+{
     audioVideoRecorder.shouldComputeOffset = NO;
     
-    if (CMTIME_IS_VALID(lastTakenFrame)) {
+    if (CMTIME_IS_VALID(lastTakenFrame))
+    {
         CMTime offset = CMTimeSubtract(frameTime, lastTakenFrame);
-        
         CMTime currentTimeOffset = audioVideoRecorder.currentTimeOffset;
         currentTimeOffset = CMTimeAdd(currentTimeOffset, offset);
         audioVideoRecorder.currentTimeOffset = CMTimeSubtract(currentTimeOffset, audioVideoRecorder.lastFrameTimeBeforePause);
     }
 }
 
-- (void) captureOutput:(AVCaptureOutput *)captureOutput didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer fromConnection:(AVCaptureConnection *)connection {
-    
-    if (!self.enabled) {
+- (void)captureOutput:(AVCaptureOutput *)captureOutput didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer fromConnection:(AVCaptureConnection *)connection
+{
+    if (!self.enabled)
         return;
-    }
 	    
     CMTime frameTime = CMSampleBufferGetPresentationTimeStamp(sampleBuffer);
     CMTime realDuration = CMSampleBufferGetDuration(sampleBuffer);
     
-	if ([audioVideoRecorder isPrepared]) {
-		if (!initialized) {
+	if ([audioVideoRecorder isPrepared])
+    {
+		if (!initialized)
+        {
             [self initialize:sampleBuffer atFrameTime:frameTime];
 			[audioVideoRecorder prepareWriterAtSourceTime:frameTime fromEncoder:self];
 			
@@ -139,15 +160,19 @@
 			return;
         }
 		
-		if ([audioVideoRecorder isRecording]) {
-			if ([self.writerInput isReadyForMoreMediaData]) {
-				if (audioVideoRecorder.shouldComputeOffset) {
+		if ([audioVideoRecorder isRecording])
+        {
+			if ([self.writerInput isReadyForMoreMediaData])
+            {
+				if (audioVideoRecorder.shouldComputeOffset)
+                {
 					[self computeOffset:frameTime];
                     lastTakenFrame = kCMTimeInvalid;
 				}
                 
                 CMTime duration = kCMTimeZero;
-                if (CMTIME_IS_VALID(lastTakenFrame)) {
+                if (CMTIME_IS_VALID(lastTakenFrame))
+                {
                     duration = CMTimeSubtract(frameTime, lastTakenFrame);
                 }
   
@@ -161,10 +186,12 @@
 				[self.writerInput appendSampleBuffer:adjustedBuffer];
 				CFRelease(adjustedBuffer);
 				
-				if ([self.delegate respondsToSelector:@selector(dataEncoder:didEncodeFrame:)]) {
+				if ([self.delegate respondsToSelector:@selector(dataEncoder:didEncodeFrame:)])
+                {
 					[self.delegate dataEncoder:self didEncodeFrame:currentTime];
 				}
 			}
+            
             lastTakenFrame = frameTime;
 		}
 	}

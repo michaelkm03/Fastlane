@@ -5,7 +5,8 @@
 #import <Foundation/Foundation.h>
 #import "VCDataEncoder.h"
 
-@interface VCAudioEncoder : VCDataEncoder<AVCaptureAudioDataOutputSampleBufferDelegate> {
+@interface VCAudioEncoder : VCDataEncoder<AVCaptureAudioDataOutputSampleBufferDelegate>
+{
     
 }
 

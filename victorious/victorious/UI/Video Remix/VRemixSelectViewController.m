@@ -11,6 +11,7 @@
 #import "VRemixTrimViewController.h"
 #import "VThemeManager.h"
 #import "MBProgressHUD.h"
+#import "VConstants.h"
 
 @interface VRemixSelectViewController ()    <NSURLSessionDownloadDelegate>
 
@@ -22,6 +23,8 @@
 @property (nonatomic, weak)     IBOutlet    UIButton*           startRemixButton;
 
 @property (nonatomic)           CGFloat                         restoreAfterScrubbingRate;
+
+@property (nonatomic, strong)   MBProgressHUD*                  progressHUD;
 
 @end
 
@@ -81,44 +84,8 @@
 
 - (IBAction)nextButtonClicked:(id)sender
 {
-    if (self.previewView.player.isPlaying)
-        [self.previewView.player pause];
-
-    MBProgressHUD*  hud =   [MBProgressHUD showHUDAddedTo:self.view animated:YES];
-    hud.labelText = @"Just a moment";
-    hud.detailsLabelText = @"Loading Video...";
-    
-    NSURLSessionConfiguration*  sessionConfig = [NSURLSessionConfiguration defaultSessionConfiguration];
-    NSURLSession*               session = [NSURLSession sessionWithConfiguration:sessionConfig
-                                                                        delegate:self
-                                                                   delegateQueue:nil];
-    NSURLSessionDownloadTask*   task = [session downloadTaskWithURL:self.sourceURL completionHandler:^(NSURL *location, NSURLResponse *response, NSError *error)
-    {
-        if (!error)
-        {
-            NSHTTPURLResponse*  httpResponse = (NSHTTPURLResponse *)response;
-            if (httpResponse.statusCode == 200)
-            {
-                NSData* movieData = [NSData dataWithContentsOfURL:location];
-                    
-                self.targetURL = [NSURL fileURLWithPath:[NSTemporaryDirectory() stringByAppendingPathComponent:[self.sourceURL lastPathComponent]] isDirectory:NO];
-                [movieData writeToURL:self.targetURL atomically:YES];
-                    
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    [hud hide:YES];
-                    [self performSegueWithIdentifier:@"toTrim" sender:self];
-                    //  if error, alert
-                });
-            }
-        }
-    }];
-    
-    [task resume];
-}
-
-- (void)URLSession:(NSURLSession *)session downloadTask:(NSURLSessionDownloadTask *)downloadTask didWriteData:(int64_t)bytesWritten totalBytesWritten:(int64_t)totalBytesWritten totalBytesExpectedToWrite:(int64_t)totalBytesExpectedToWrite
-{
-    
+    [self.previewView.player pause];
+    [self downloadVideoSegmentAtURL:self.sourceURL atTime:self.previewView.player.startSeconds];
 }
 
 -(IBAction)scrubberDidStartMoving:(id)sender
@@ -166,6 +133,67 @@
         trimViewController.sourceURL = self.targetURL;
         trimViewController.parentID = self.parentID;
     }
+}
+
+#pragma mark - Support
+
+- (void)downloadVideoSegmentAtURL:(NSURL *)segmentURL atTime:(NSTimeInterval)internval
+{
+    self.progressHUD =   [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    self.progressHUD.mode = MBProgressHUDModeIndeterminate;
+    self.progressHUD.labelText = NSLocalizedString(@"JustAMoment", @"");
+    self.progressHUD.detailsLabelText = NSLocalizedString(@"LocatingVideo", @"");
+
+    [self downloadVideoSegmentAtURL:segmentURL];
+}
+
+- (void)downloadVideoSegmentAtURL:(NSURL *)segmentURL
+{
+    self.progressHUD.mode = MBProgressHUDModeDeterminate;
+    self.progressHUD.detailsLabelText = NSLocalizedString(@"DownloadingVideo", @"");
+    
+    NSURLSessionConfiguration*  sessionConfig = [NSURLSessionConfiguration defaultSessionConfiguration];
+    NSURLSession*               session = [NSURLSession sessionWithConfiguration:sessionConfig
+                                                                        delegate:self
+                                                                   delegateQueue:nil];
+    NSURLSessionDownloadTask*   task = [session downloadTaskWithURL:segmentURL];
+    [task resume];
+}
+
+#pragma mark - NSURLSessionDownloadDelegate
+
+- (void)URLSession:(NSURLSession *)session downloadTask:(NSURLSessionDownloadTask *)downloadTask didWriteData:(int64_t)bytesWritten totalBytesWritten:(int64_t)totalBytesWritten totalBytesExpectedToWrite:(int64_t)totalBytesExpectedToWrite
+{
+    double percent = ((double)totalBytesWritten / (double)totalBytesExpectedToWrite);
+    dispatch_async(dispatch_get_main_queue(), ^{
+        self.progressHUD.progress = (float)percent;
+    });
+}
+
+- (void)URLSession:(NSURLSession *)session downloadTask:(NSURLSessionDownloadTask *)downloadTask didFinishDownloadingToURL:(NSURL *)location
+{
+    NSHTTPURLResponse*  httpResponse = (NSHTTPURLResponse *)downloadTask.response;
+    if (httpResponse.statusCode == kVHTTPStatusCode200OK)
+    {
+        self.targetURL = [NSURL fileURLWithPath:[NSTemporaryDirectory() stringByAppendingPathComponent:[self.sourceURL lastPathComponent]] isDirectory:NO];
+        [[NSFileManager defaultManager] removeItemAtURL:self.targetURL error:nil];
+        [[NSFileManager defaultManager] moveItemAtURL:location toURL:self.targetURL error:nil];
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self.progressHUD hide:YES];
+            self.progressHUD = nil;
+            [self performSegueWithIdentifier:@"toTrim" sender:self];
+        });
+    }
+}
+
+- (void)URLSession:(NSURLSession *)session downloadTask:(NSURLSessionDownloadTask *)downloadTask didResumeAtOffset:(int64_t)fileOffset expectedTotalBytes:(int64_t)expectedTotalBytes
+{
+}
+
+- (void)URLSession:(NSURLSession *)session task:(NSURLSessionTask *)task didCompleteWithError:(NSError *)error
+{
+    //  Error Message if video fails to download
 }
 
 #pragma mark - SCVideoPlayerDelegate

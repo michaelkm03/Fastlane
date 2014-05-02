@@ -9,7 +9,8 @@
 // IMPLEMENTATION
 /////////////////////
 
-@implementation VCAudioEncoder {
+@implementation VCAudioEncoder
+{
     
 }
 
@@ -18,10 +19,12 @@
 @synthesize outputBitRate;
 @synthesize outputEncodeType;
 
-- (id) initWithAudioVideoRecorder:(VCAudioVideoRecorder *)audioVideoRecorder {
+- (instancetype)initWithAudioVideoRecorder:(VCAudioVideoRecorder *)audioVideoRecorder
+{
     self = [super initWithAudioVideoRecorder:audioVideoRecorder];
     
-    if (self != nil) {
+    if (self != nil)
+    {
         self.outputSampleRate = 0;
         self.outputChannels = 0;
         self.outputBitRate = 128000;
@@ -31,7 +34,8 @@
     return self;
 }
 
-- (AVAssetWriterInput*) createWriterInputForSampleBuffer:(CMSampleBufferRef)sampleBuffer error:(NSError **)error {
+- (AVAssetWriterInput*)createWriterInputForSampleBuffer:(CMSampleBufferRef)sampleBuffer error:(NSError **)error
+{
     
     Float64 sampleRate = self.outputSampleRate;
     int channels = self.outputChannels;
@@ -39,20 +43,22 @@
     CMFormatDescriptionRef formatDescription = CMSampleBufferGetFormatDescription(sampleBuffer);
     const AudioStreamBasicDescription * streamBasicDescription = CMAudioFormatDescriptionGetStreamBasicDescription(formatDescription);
     
-    if (sampleRate == 0) {
+    if (sampleRate == 0)
+    {
         sampleRate = streamBasicDescription->mSampleRate;
     }
-    if (channels == 0) {
+    if (channels == 0)
+    {
         channels = streamBasicDescription->mChannelsPerFrame;
     }
     
     AVAssetWriterInput * audioInput = nil;
-    NSDictionary * audioCompressionSetings = [NSDictionary dictionaryWithObjectsAndKeys:
-                                              [ NSNumber numberWithInt: self.outputEncodeType], AVFormatIDKey,
-                                              [ NSNumber numberWithInt: self.outputBitRate ], AVEncoderBitRateKey,
-                                              [ NSNumber numberWithFloat: sampleRate], AVSampleRateKey,
-                                              [ NSNumber numberWithInt: channels], AVNumberOfChannelsKey,
-                                              nil];
+    NSDictionary * audioCompressionSetings = @{
+                                               AVFormatIDKey : @(self.outputEncodeType),
+                                               AVEncoderBitRateKey : @(self.outputBitRate),
+                                               AVSampleRateKey : @(sampleRate),
+                                               AVNumberOfChannelsKey : @(channels)
+                                               };
     
     if ([self.audioVideoRecorder.assetWriter canApplyOutputSettings:audioCompressionSetings forMediaType:AVMediaTypeAudio])
     {

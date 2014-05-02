@@ -5,19 +5,22 @@
 #import <Foundation/Foundation.h>
 #import "VCAudioVideoRecorder.h"
 
-typedef NS_ENUM(NSInteger, VCFlashMode) {
+typedef NS_ENUM(NSInteger, VCFlashMode)
+{
     VCFlashModeOff  = AVCaptureFlashModeOff,
     VCFlashModeOn   = AVCaptureFlashModeOn,
     VCFlashModeAuto = AVCaptureFlashModeAuto,
     VCFlashModeLight
 };
 
-typedef NS_ENUM(NSInteger, VCCameraDevice) {
+typedef NS_ENUM(NSInteger, VCCameraDevice)
+{
     VCCameraDeviceBack = AVCaptureDevicePositionBack,
     VCCameraDeviceFront = AVCaptureDevicePositionFront
 };
 
-typedef NS_ENUM(NSInteger, VCCameraFocusMode) {
+typedef NS_ENUM(NSInteger, VCCameraFocusMode)
+{
     VCCameraFocusModeLocked = AVCaptureFocusModeLocked,
     VCCameraFocusModeAutoFocus = AVCaptureFocusModeAutoFocus,
     VCCameraFocusModeContinuousAutoFocus = AVCaptureFocusModeContinuousAutoFocus
@@ -52,23 +55,22 @@ typedef NS_ENUM(NSInteger, VCCameraFocusMode) {
 
 @end
 
-typedef enum {
+typedef enum
+{
     VCVideoGravityResize,
     VCVideoGravityResizeAspectFill,
     VCVideoGravityResizeAspect
 } VCCameraPreviewVideoGravity;
 
-@interface VCCamera : VCAudioVideoRecorder {
+@interface VCCamera : VCAudioVideoRecorder
+{
     
 }
 
 + (VCCamera*) camera;
-
-- (id) initWithSessionPreset:(NSString*)sessionPreset;
-
-- (void) initialize:(void(^)(NSError * audioError, NSError * videoError))completionHandler;
-
-- (BOOL) isReady;
+- (instancetype)initWithSessionPreset:(NSString*)sessionPreset;
+- (void)initialize:(void(^)(NSError * audioError, NSError * videoError))completionHandler;
+- (BOOL)isReady;
 
 @property (strong, nonatomic, readonly) AVCaptureSession * session;
 @property (weak, nonatomic) id<VCCameraDelegate> delegate;

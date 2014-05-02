@@ -6,42 +6,44 @@
 @import AudioToolbox;
 #import "VCAudioTools.h"
 
-@implementation VCAudioTools {
+@implementation VCAudioTools
+{
     
 }
 
 #if TARGET_IPHONE_SIMULATOR || TARGET_OS_IPHONE
-+ (void) overrideCategoryMixWithOthers {
-	
-    UInt32 doSetProperty = 1;
-    
-    AudioSessionSetProperty (kAudioSessionProperty_OverrideCategoryMixWithOthers, sizeof(doSetProperty), &doSetProperty);
++ (void)overrideCategoryMixWithOthers
+{
+    AVAudioSession*     session = [AVAudioSession sharedInstance];
+	[session setCategory:session.category withOptions:AVAudioSessionCategoryOptionMixWithOthers error:nil];
+
+//    UInt32 doSetProperty = 1;
+//    AudioSessionSetProperty (kAudioSessionProperty_OverrideCategoryMixWithOthers, sizeof(doSetProperty), &doSetProperty);
 }
 #endif
 
-+ (void)mixAudio:(AVAsset*)audioAsset startTime:(CMTime)startTime withVideo:(NSURL*)inputUrl affineTransform:(CGAffineTransform)affineTransform  toUrl:(NSURL*)outputUrl outputFileType:(NSString*)outputFileType withMaxDuration:(CMTime)maxDuration withCompletionBlock:(void(^)(NSError *))completionBlock {
++ (void)mixAudio:(AVAsset*)audioAsset startTime:(CMTime)startTime withVideo:(NSURL*)inputUrl affineTransform:(CGAffineTransform)affineTransform  toUrl:(NSURL*)outputUrl outputFileType:(NSString*)outputFileType withMaxDuration:(CMTime)maxDuration withCompletionBlock:(void(^)(NSError *))completionBlock
+{
 	NSError * error = nil;
 	AVMutableComposition * composition = [[AVMutableComposition alloc] init];
-	
 	AVMutableCompositionTrack * videoTrackComposition = [composition addMutableTrackWithMediaType:AVMediaTypeVideo preferredTrackID:kCMPersistentTrackID_Invalid];
-	
 	AVMutableCompositionTrack * audioTrackComposition = [composition addMutableTrackWithMediaType:AVMediaTypeAudio preferredTrackID:kCMPersistentTrackID_Invalid];
-	
 	AVURLAsset * fileAsset = [AVURLAsset URLAssetWithURL:inputUrl options:[NSDictionary dictionaryWithObject:[NSNumber numberWithBool:YES] forKey:AVURLAssetPreferPreciseDurationAndTimingKey]];
-	
 	NSArray * videoTracks = [fileAsset tracksWithMediaType:AVMediaTypeVideo];
-	
 	CMTime duration = ((AVAssetTrack*)[videoTracks objectAtIndex:0]).timeRange.duration;
 	
 	// We check if the recorded time if more than the limit
-	if (CMTIME_COMPARE_INLINE(duration, >, maxDuration)) {
+	if (CMTIME_COMPARE_INLINE(duration, >, maxDuration))
+    {
 		duration = maxDuration;
 	}
 	
-	for (AVAssetTrack * track in [audioAsset tracksWithMediaType:AVMediaTypeAudio]) {
+	for (AVAssetTrack * track in [audioAsset tracksWithMediaType:AVMediaTypeAudio])
+    {
 		[audioTrackComposition insertTimeRange:CMTimeRangeMake(startTime, duration) ofTrack:track atTime:kCMTimeZero error:&error];
 		
-		if (error != nil) {
+		if (error != nil)
+        {
 			completionBlock(error);
 			return;
 		}
@@ -52,10 +54,12 @@
 	//				[audioTrackComposition insertTimeRange:CMTimeRangeMake(kCMTimeZero, duration) ofTrack:track atTime:kCMTimeZero error:nil];
 	//			}
 	
-	for (AVAssetTrack * track in videoTracks) {
+	for (AVAssetTrack * track in videoTracks)
+    {
 		[videoTrackComposition insertTimeRange:CMTimeRangeMake(kCMTimeZero, duration) ofTrack:track atTime:kCMTimeZero error:&error];
 		
-		if (error != nil) {
+		if (error != nil)
+        {
 			completionBlock(error);
 			return;
 		}
@@ -70,7 +74,8 @@
     
 	[exportSession exportAsynchronouslyWithCompletionHandler:^ {
 		NSError * error = nil;
-		if (exportSession.error != nil) {
+		if (exportSession.error != nil)
+        {
 			NSMutableDictionary * userInfo = [NSMutableDictionary dictionaryWithDictionary:exportSession.error.userInfo];
 			NSString * subLocalizedDescription = [userInfo objectForKey:NSLocalizedDescriptionKey];
 			[userInfo removeObjectForKey:NSLocalizedDescriptionKey];
@@ -78,7 +83,6 @@
 			[userInfo setObject:exportSession.outputFileType forKey:@"OutputFileType"];
 			[userInfo setObject:exportSession.outputURL forKey:@"OutputUrl"];
 			[userInfo setObject:subLocalizedDescription forKey:@"CauseLocalizedDescription"];
-			
 			[userInfo setObject:[AVAssetExportSession allExportPresets] forKey:@"AllExportSessions"];
 			
 			error = [NSError errorWithDomain:@"VCAudioVideoRecorder" code:500 userInfo:userInfo];
