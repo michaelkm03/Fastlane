@@ -67,7 +67,7 @@
         CGImageRef imageRef = [assetGenerator copyCGImageAtTime:kCMTimeZero actualTime:NULL error:NULL];
         UIImage *previewImage = [UIImage imageWithCGImage:imageRef];
         CGImageRelease(imageRef);
-        self.completionBlock(YES, previewImage, self.mediaURL, [self.mediaURL pathExtension]);
+        self.completionBlock(YES, previewImage, self.mediaURL);
     }
 }
 
@@ -85,7 +85,7 @@
 {
     if (self.completionBlock)
     {
-        self.completionBlock(NO, nil, nil, nil);
+        self.completionBlock(NO, nil, nil);
     }
 }
 

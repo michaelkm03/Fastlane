@@ -65,7 +65,7 @@
 {
     if (self.completionBlock)
     {
-        self.completionBlock(YES, self.photo, self.mediaURL, [self.mediaURL pathExtension]);
+        self.completionBlock(YES, self.photo, self.mediaURL);
     }
 }
 
@@ -73,7 +73,7 @@
 {
     if (self.completionBlock)
     {
-        self.completionBlock(NO, nil, nil, nil);
+        self.completionBlock(NO, nil, nil);
     }
 }
 

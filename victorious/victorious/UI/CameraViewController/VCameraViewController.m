@@ -184,7 +184,7 @@ const   NSTimeInterval  kAnimationDuration      =   0.4;
     [self.camera cancel];
     if (self.completionBlock)
     {
-        self.completionBlock(NO, nil, nil, nil);
+        self.completionBlock(NO, nil, nil);
     }
 }
 
@@ -533,14 +533,15 @@ const   NSTimeInterval  kAnimationDuration      =   0.4;
 
 #pragma mark - Navigation
 
-- (void)moveToPreviewViewControllerWithContentURL:(NSURL *)contentURL mediaExtension:(NSString *)extension
+- (void)moveToPreviewViewControllerWithContentURL:(NSURL *)contentURL
 {
     VMediaPreviewViewController *previewViewController = [VMediaPreviewViewController previewViewControllerForMediaAtURL:contentURL];
-    previewViewController.completionBlock = ^(BOOL finished, UIImage *previewImage, NSURL *capturedMediaURL, NSString *mediaExtension)
+    previewViewController.completionBlock = ^(BOOL finished, UIImage *previewImage, NSURL *capturedMediaURL)
     {
+        NSString *mediaExtension = [capturedMediaURL pathExtension];
         if (!self.didSelectAssetFromLibrary)
         {
-            if ([mediaExtension isEqualToString:VConstantMediaExtensionMOV])
+            if ([mediaExtension isEqualToString:VConstantMediaExtensionMP4])
             {
                 UISaveVideoAtPathToSavedPhotosAlbum([capturedMediaURL path], nil, nil, nil);
             }
@@ -548,7 +549,7 @@ const   NSTimeInterval  kAnimationDuration      =   0.4;
             {
                 UIImage*    photo = [UIImage imageWithData:[NSData dataWithContentsOfURL:capturedMediaURL]];
                 UIImageWriteToSavedPhotosAlbum(photo, nil, nil, nil);
-           }
+            }
         }
 
         if (!finished)
@@ -557,12 +558,12 @@ const   NSTimeInterval  kAnimationDuration      =   0.4;
         
             if (self.completionBlock)
             {
-                self.completionBlock(NO, nil, nil, nil);
+                self.completionBlock(NO, nil, nil);
             }
         }
         else if (self.completionBlock)
         {
-            self.completionBlock(finished, previewImage, capturedMediaURL, mediaExtension);
+            self.completionBlock(finished, previewImage, capturedMediaURL);
         }
     };
 
@@ -637,7 +638,7 @@ const   NSTimeInterval  kAnimationDuration      =   0.4;
     }
     else
     {
-        [self moveToPreviewViewControllerWithContentURL:recordedFile mediaExtension:VConstantMediaExtensionMOV];
+        [self moveToPreviewViewControllerWithContentURL:recordedFile];
     }
 }
 
@@ -654,7 +655,7 @@ const   NSTimeInterval  kAnimationDuration      =   0.4;
         NSURL *tempDirectory = [NSURL fileURLWithPath:NSTemporaryDirectory() isDirectory:YES];
         NSURL *tempFile = [[tempDirectory URLByAppendingPathComponent:[[NSUUID UUID] UUIDString]] URLByAppendingPathExtension:VConstantMediaExtensionPNG];
         [pngData writeToURL:tempFile atomically:NO];
-        [self moveToPreviewViewControllerWithContentURL:tempFile mediaExtension:VConstantMediaExtensionPNG];
+        [self moveToPreviewViewControllerWithContentURL:tempFile];
     }
 }
 

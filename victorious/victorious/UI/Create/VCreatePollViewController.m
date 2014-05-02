@@ -140,12 +140,11 @@ static const CGFloat VCreateViewControllerLargePadding = 20;
 - (IBAction)mediaButtonAction:(id)sender
 {
     VCameraViewController *cameraViewController = [VCameraViewController cameraViewController];
-    cameraViewController.completionBlock = ^(BOOL finished, UIImage *previewImage, NSURL *capturedMediaURL, NSString *mediaExtension)
+    cameraViewController.completionBlock = ^(BOOL finished, UIImage *previewImage, NSURL *capturedMediaURL)
     {
         if (finished)
         {
             [self imagePickerFinishedWithURL:capturedMediaURL
-                                   extension:mediaExtension
                                 previewImage:previewImage];
         }
 
@@ -367,8 +366,7 @@ static const CGFloat VCreateViewControllerLargePadding = 20;
 #pragma mark -
 
 - (void)imagePickerFinishedWithURL:(NSURL *)mediaURL
-                          extension:(NSString*)extension
-                       previewImage:(UIImage*)previewImage
+                      previewImage:(UIImage*)previewImage
 {
     if(!self.mediaURL)
     {
