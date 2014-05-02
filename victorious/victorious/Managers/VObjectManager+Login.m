@@ -232,8 +232,13 @@ NSString *kLoggedInChangedNotification = @"LoggedInChangedNotification";
     if (tagline)
         [params setObject:tagline forKey:@"profile_tagline"];
     
-    NSDictionary* allURLs = @{@"profile_image":profileImageURL ?: [NSNull null]};
-    NSDictionary* allExtensions = @{@"media_data":VConstantMediaExtensionJPG};
+    NSDictionary* allURLs = nil;
+    NSDictionary* allExtensions = nil;
+    if (profileImageURL)
+    {
+        allURLs = @{@"profile_image":profileImageURL};
+        allExtensions = @{@"profile_image":VConstantMediaExtensionPNG};
+    }
     
     VSuccessBlock fullSuccess = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
     {
