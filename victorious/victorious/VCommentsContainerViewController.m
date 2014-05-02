@@ -12,7 +12,7 @@
 #import "VSequence+Fetcher.h"
 #import "VUser.h"
 #import "VConstants.h"
-#import "VObjectManager+Comment.h"
+#import "VObjectManager+ContentCreation.h"
 #import "UIImageView+Blurring.h"
 #import "UIImage+ImageCreation.h"
 #import "VStreamTableViewController.h"

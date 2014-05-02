@@ -15,7 +15,7 @@
 
 #import "VLoginViewController.h"
 
-#import "VObjectManager+Sequence.h"
+#import "VObjectManager+ContentCreation.h"
 #import "VCreatePollViewController.h"
 
 @implementation VStreamTableViewController (ContentCreation)

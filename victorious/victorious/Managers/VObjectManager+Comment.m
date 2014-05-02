@@ -10,7 +10,6 @@
 #import "VObjectManager+Private.h"
 #import "VObjectManager+Sequence.h"
 
-#import "VSequence.h"
 #import "VUser.h"
 #import "VConstants.h"
 
@@ -92,43 +91,6 @@
           parameters:nil
         successBlock:success
            failBlock:fullFail];
-}
-
-- (AFHTTPRequestOperation *)addCommentWithText:(NSString*)text
-                                      mediaURL:(NSURL*)mediaURL
-                                    toSequence:(VSequence*)sequence
-                                     andParent:(VComment*)parent
-                                  successBlock:(VSuccessBlock)success
-                                     failBlock:(VFailBlock)fail
-{
-    NSString* extension = [[mediaURL pathExtension] lowercaseStringWithLocale:[NSLocale localeWithLocaleIdentifier:@"en_US_POSIX"]];
-    NSString* type = [extension isEqualToString:VConstantMediaExtensionMOV] || [extension isEqualToString:VConstantMediaExtensionMP4] ? @"video" : @"image";
-    NSMutableDictionary* parameters = [@{@"sequence_id" : sequence.remoteId.stringValue ?: [NSNull null],
-                                 @"parent_id" : parent.remoteId.stringValue ?: [NSNull null],
-                                 @"text" : text ?: [NSNull null]} mutableCopy];
-    
-    NSDictionary *allURLs;
-    if (mediaURL && type)
-    {
-        [parameters setObject:type forKey:@"media_type"];
-        allURLs = @{@"media_data":mediaURL};
-    }
-        
-    VSuccessBlock fullSuccess = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
-    {
-        
-        NSDictionary* payload = fullResponse[@"payload"];
-        
-        [self fetchCommentByID:[payload[@"id"] integerValue]
-                   successBlock:success
-                      failBlock:fail];
-    };
-    
-    return [self uploadURLs:allURLs
-                     toPath:@"/api/comment/add"
-                 parameters:parameters
-               successBlock:fullSuccess
-                  failBlock:fail];
 }
 
 - (RKManagedObjectRequestOperation *)removeComment:(VComment*)comment

@@ -11,7 +11,7 @@
 #import "VCameraPublishViewController.h"
 #import "VSetExpirationViewController.h"
 #import "UIImage+ImageEffects.h"
-#import "VObjectManager+Sequence.h"
+#import "VObjectManager+ContentCreation.h"
 #import "VConstants.h"
 #import "NSString+VParseHelp.h"
 #import "VThemeManager.h"
