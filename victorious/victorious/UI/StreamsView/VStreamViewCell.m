@@ -83,7 +83,7 @@ NSString *kStreamsWillCommentNotification = @"kStreamsWillCommentNotification";
 {
     self.profileImageButton.layer.cornerRadius = CGRectGetHeight(self.profileImageButton.bounds)/2;
     self.profileImageButton.clipsToBounds = YES;
-}s
+}
 
 - (void)setSequence:(VSequence *)sequence
 {

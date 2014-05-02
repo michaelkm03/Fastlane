@@ -434,6 +434,9 @@ NSString* const kPollResultsLoaded = @"kPollResultsLoaded";
                                    successBlock:(VSuccessBlock)success
                                       failBlock:(VFailBlock)fail
 {
+    if(!media1Url || !media2Url)
+        return nil;
+    
     //Required Fields
     NSDictionary* parameters = @{@"name":name ?: [NSNull null],
                                  @"description":description ?: [NSNull null],
@@ -441,27 +444,14 @@ NSString* const kPollResultsLoaded = @"kPollResultsLoaded";
                                  @"answer1_label" : answer1Text ?: [NSNull null],
                                  @"answer2_label" : answer2Text ?: [NSNull null]};
 
-    NSMutableDictionary *allURLs = [[NSMutableDictionary alloc] init];
-
-    if (media1Url && media2Url)
-    {
-        allURLs[@"answer1_media"] = media1Url;
-        allURLs[@"answer2_media"] = media2Url;
-    }
-    else if (media1Url)
-    {
-        allURLs[@"poll_media"] = media1Url;
-    }
+    NSDictionary *allURLs = @{@"answer1_media":media1Url,
+                              @"answer2_media":media2Url};
     
     VSuccessBlock fullSuccess = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
     {
         if ([fullResponse[@"error"] integerValue] == 0)
         {
             NSDictionary* payload = fullResponse[@"payload"];
-            if (![payload isKindOfClass:[NSDictionary class]])
-            {
-                payload = nil;
-            }
             
             NSNumber* sequenceID = payload[@"sequence_id"];
 
@@ -521,10 +511,6 @@ NSString* const kPollResultsLoaded = @"kPollResultsLoaded";
     VSuccessBlock fullSuccess = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
     {
         NSDictionary* payload = fullResponse[@"payload"];
-        if (![payload isKindOfClass:[NSDictionary class]])
-        {
-            payload = nil;
-        }
         
         NSNumber* sequenceID = payload[@"sequence_id"];
 

@@ -152,7 +152,12 @@
                                        userInfo:@{NSLocalizedDescriptionKey:[error.errorMessages componentsJoinedByString:@","]}]);
          else if (successBlock)
          {
-             NSDictionary *JSON = [NSJSONSerialization JSONObjectWithData:operation.HTTPRequestOperation.responseData options:0 error:nil];
+             //Grab the response data, and make sure to process it... we must guarentee that the payload is a dictionary
+             NSMutableDictionary *JSON = [[NSJSONSerialization JSONObjectWithData:operation.HTTPRequestOperation.responseData options:0 error:nil] mutableCopy];
+             if (![JSON[@"payload"] isKindOfClass:[NSDictionary class]])
+             {
+                 [JSON removeObjectForKey:@"payload"];
+             }
              successBlock(operation, JSON, mappedObjects);
          }
      }
@@ -233,6 +238,11 @@
     void (^afSuccessBlock)(AFHTTPRequestOperation *operation, id responseObject)  = ^(AFHTTPRequestOperation *operation, id responseObject)
     {
         NSError* error = [self errorForResponse:responseObject];
+        
+        if (![responseObject[@"payload"] isKindOfClass:[NSDictionary class]])
+        {
+            [responseObject removeObjectForKey:@"payload"];
+        }
         
         if (error && failBlock)
             failBlock(operation, error);

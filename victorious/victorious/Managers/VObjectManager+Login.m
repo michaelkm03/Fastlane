@@ -30,10 +30,6 @@ NSString *kLoggedInChangedNotification = @"LoggedInChangedNotification";
     {
         
         NSDictionary* payload = fullResponse[@"payload"];
-        if (![payload isKindOfClass:[NSDictionary class]])
-        {
-            payload = nil;
-        }
         
         NSDictionary* newTheme = payload[@"appearance"];
         if (newTheme && [newTheme isKindOfClass:[NSDictionary class]])
