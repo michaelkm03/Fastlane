@@ -41,7 +41,6 @@
  * allURLs key:value must be NSString* parameterName:NSURL* localURL
  * allExtensions must have same keys are allURLs, values are NSString* fileExtension */
 - (AFHTTPRequestOperation*)uploadURLs:(NSDictionary*)allUrls
-                       fileExtensions:(NSDictionary*)allExtensions
                                toPath:(NSString*)path
                            parameters:(NSDictionary*)parameters
                          successBlock:(VSuccessBlock)successBlock

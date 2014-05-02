@@ -192,8 +192,6 @@
 - (AFHTTPRequestOperation *)sendMessageToUser:(VUser*)user
                                      withText:(NSString*)text
                                      mediaURL:(NSURL*)mediaURL
-                               mediaExtension:(NSString*)extension
-                                     mediaUrl:(NSURL*)mediaUrl
                                  successBlock:(VSuccessBlock)success
                                     failBlock:(VFailBlock)fail
 {
@@ -201,15 +199,13 @@
     NSDictionary* parameters = @{@"to_user_id" : user.remoteId.stringValue ?: [NSNull null],
                                  @"text" : text ?: [NSNull null]
                                  };
-    NSDictionary *allURLs, *allExtensions;
-    if (mediaURL && extension)
+    NSDictionary *allURLs;
+    if (mediaURL)
     {
         allURLs = @{@"media_data":mediaURL};
-        allExtensions = @{@"media_data":extension};
     }
     
     return [self uploadURLs:allURLs
-             fileExtensions:allExtensions
                      toPath:@"/api/message/send"
                  parameters:parameters
                successBlock:success

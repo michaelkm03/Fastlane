@@ -191,7 +191,6 @@
 }
 
 - (AFHTTPRequestOperation*)uploadURLs:(NSDictionary*)allUrls
-                       fileExtensions:(NSDictionary*)allExtensions
                                toPath:(NSString*)path
                            parameters:(NSDictionary*)parameters
                          successBlock:(VSuccessBlock)successBlock
@@ -215,7 +214,7 @@
      {
          [allUrls enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop)
           {
-              NSString* extension = allExtensions[key];
+              NSString* extension = [obj pathExtension];
               if(extension)
               {
                   NSString* mimeType = [extension isEqualToString:VConstantMediaExtensionMOV] || [extension isEqualToString:VConstantMediaExtensionMP4]

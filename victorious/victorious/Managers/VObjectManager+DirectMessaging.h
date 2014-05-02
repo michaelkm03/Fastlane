@@ -28,8 +28,6 @@
 - (AFHTTPRequestOperation *)sendMessageToUser:(VUser*)user
                                      withText:(NSString*)text
                                      mediaURL:(NSURL*)mediaURL
-                               mediaExtension:(NSString*)extension
-                                     mediaUrl:(NSURL*)mediaUrl
                                  successBlock:(VSuccessBlock)success
                                     failBlock:(VFailBlock)fail;
 

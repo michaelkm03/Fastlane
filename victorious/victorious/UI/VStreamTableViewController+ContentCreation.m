@@ -136,9 +136,7 @@
                                            answer1Text:answer1Text
                                            answer2Text:answer2Text
                                             media1Url:media1URL
-                                       media1Extension:[media1URL pathExtension]
                                             media2Url:media2URL
-                                       media2Extension:[media2URL pathExtension]
                                           successBlock:success
                                              failBlock:fail];
 }

@@ -169,8 +169,6 @@
     
     [[VObjectManager sharedManager] addCommentWithText:text
                                               mediaURL:mediaURL
-                                        mediaExtension:[mediaURL pathExtension]
-                                              mediaUrl:nil
                                             toSequence:_sequence
                                              andParent:nil
                                           successBlock:success
