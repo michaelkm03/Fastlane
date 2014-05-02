@@ -158,7 +158,6 @@
 		BE5C7382187E37C700A3340D /* VMessage+RestKit.m in Sources */ = {isa = PBXBuildFile; fileRef = BE5C7381187E37C700A3340D /* VMessage+RestKit.m */; };
 		BE5C7385187E37D400A3340D /* VMedia+RestKit.m in Sources */ = {isa = PBXBuildFile; fileRef = BE5C7384187E37D400A3340D /* VMedia+RestKit.m */; };
 		BE5C7388187E37E500A3340D /* VConversation+RestKit.m in Sources */ = {isa = PBXBuildFile; fileRef = BE5C7387187E37E500A3340D /* VConversation+RestKit.m */; };
-		BE5D799518989A0800DC752A /* VImagePickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BE5D799418989A0800DC752A /* VImagePickerViewController.m */; };
 		BE5DE3F618DA72140047B67E /* VInteractionAction.m in Sources */ = {isa = PBXBuildFile; fileRef = BE5DE3F518DA72140047B67E /* VInteractionAction.m */; };
 		BE5DE3FC18DA730B0047B67E /* VVoteType+RestKit.m in Sources */ = {isa = PBXBuildFile; fileRef = BE5DE3FB18DA730B0047B67E /* VVoteType+RestKit.m */; };
 		BE651D0E18AAD58A00069119 /* VLoadingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BE651D0D18AAD58A00069119 /* VLoadingViewController.m */; };
@@ -505,8 +504,6 @@
 		BE5C7384187E37D400A3340D /* VMedia+RestKit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "VMedia+RestKit.m"; sourceTree = "<group>"; };
 		BE5C7386187E37E500A3340D /* VConversation+RestKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "VConversation+RestKit.h"; sourceTree = "<group>"; };
 		BE5C7387187E37E500A3340D /* VConversation+RestKit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "VConversation+RestKit.m"; sourceTree = "<group>"; };
-		BE5D799318989A0800DC752A /* VImagePickerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VImagePickerViewController.h; path = UI/Create/VImagePickerViewController.h; sourceTree = "<group>"; };
-		BE5D799418989A0800DC752A /* VImagePickerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VImagePickerViewController.m; path = UI/Create/VImagePickerViewController.m; sourceTree = "<group>"; };
 		BE5DE3F418DA72140047B67E /* VInteractionAction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VInteractionAction.h; sourceTree = "<group>"; };
 		BE5DE3F518DA72140047B67E /* VInteractionAction.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VInteractionAction.m; sourceTree = "<group>"; };
 		BE5DE3FA18DA730B0047B67E /* VVoteType+RestKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "VVoteType+RestKit.h"; sourceTree = "<group>"; };
@@ -898,8 +895,6 @@
 		3F9B666318887CE50046F826 /* Base Classes */ = {
 			isa = PBXGroup;
 			children = (
-				BE5D799318989A0800DC752A /* VImagePickerViewController.h */,
-				BE5D799418989A0800DC752A /* VImagePickerViewController.m */,
 				BEA5BF5D187F21770014C3EF /* VTableViewCell.h */,
 				BEA5BF5E187F21770014C3EF /* VTableViewCell.m */,
 				3F9B666618887D910046F826 /* VFetchedResultsTableViewController.h */,
@@ -1805,7 +1800,6 @@
 				3F9B666818887D910046F826 /* VFetchedResultsTableViewController.m in Sources */,
 				BE438E0E18F35A2700F5DF29 /* VUser.m in Sources */,
 				BE171E1B1868C211004E5202 /* VUser+RestKit.m in Sources */,
-				BE5D799518989A0800DC752A /* VImagePickerViewController.m in Sources */,
 				BE5C736A187E36E800A3340D /* VRule.m in Sources */,
 				3FA217C218A9B5160066E893 /* CastViewController.m in Sources */,
 				BE651D1018AC270900069119 /* VKeyboardBarViewController.m in Sources */,

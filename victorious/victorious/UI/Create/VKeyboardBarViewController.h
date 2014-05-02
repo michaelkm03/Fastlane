@@ -6,8 +6,6 @@
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
-#import "VImagePickerViewController.h"
-
 @class VKeyboardBarViewController;
 
 @protocol VKeyboardBarDelegate <NSObject>
