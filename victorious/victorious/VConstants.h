@@ -45,6 +45,7 @@ static NSUInteger const kStreamCommentHeaderHeight = 80;
 static NSUInteger const kStreamCommentCellHeight = 110;
 
 static NSUInteger const kVStillTranscodingError = 5500;
+static NSUInteger const kVAccountAlreadyExistsError = 1003;
 
 static NSString*   const   kVictoriousAppIDKey      = @"VictoriousAppID";
 
