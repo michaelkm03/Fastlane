@@ -17,14 +17,14 @@
 {
     NSString *mediaExtension = [mediaURL pathExtension];
     VMediaPreviewViewController *previewViewController = nil;
-    if ([@"png"  isEqualToString:mediaExtension] ||
-        [@"jpg"  isEqualToString:mediaExtension] ||
-        [@"jpeg" isEqualToString:mediaExtension])
+    if ([VConstantMediaExtensionPNG isEqualToString:mediaExtension]  ||
+        [VConstantMediaExtensionJPEG isEqualToString:mediaExtension] ||
+        [VConstantMediaExtensionJPG isEqualToString:mediaExtension])
     {
         previewViewController = [VImagePreviewViewController imagePreviewViewController];
     }
-    else if ([@"mov" isEqualToString:mediaExtension] ||
-             [@"mp4" isEqualToString:mediaExtension])
+    else if ([VConstantMediaExtensionMOV isEqualToString:mediaExtension] ||
+             [VConstantMediaExtensionMP4 isEqualToString:mediaExtension])
     {
         previewViewController = [VVideoPreviewViewController videoPreviewViewController];
     }

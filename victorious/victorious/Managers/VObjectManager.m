@@ -218,7 +218,7 @@
               NSString* extension = allExtensions[key];
               if(extension)
               {
-                  NSString* mimeType = [extension isEqualToString:@"mov"] || [extension isEqualToString:@"mp4"]
+                  NSString* mimeType = [extension isEqualToString:VConstantMediaExtensionMOV] || [extension isEqualToString:VConstantMediaExtensionMP4]
                     ? @"video/quicktime" : @"image/png";
                   
                   [formData appendPartWithFileURL:obj

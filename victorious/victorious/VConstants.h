@@ -62,6 +62,7 @@ static NSString* const VConstantMediaExtensionPNG       = @"png";
 static NSString* const VConstantMediaExtensionJPG       = @"jpg";
 static NSString* const VConstantMediaExtensionJPEG      = @"jepg";
 static NSString* const VConstantMediaExtensionMOV       = @"mov";
+static NSString* const VConstantMediaExtensionMP4       = @"mp4";
 
 static NSString*   const   kVOwnerPollCategory  = @"owner_poll";
 static NSString*   const   kVOwnerImageCategory = @"owner_image";
