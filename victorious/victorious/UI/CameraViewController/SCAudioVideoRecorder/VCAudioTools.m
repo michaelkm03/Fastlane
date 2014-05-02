@@ -6,17 +6,19 @@
 @import AudioToolbox;
 #import "VCAudioTools.h"
 
-@implementation VCAudioTools {
+@implementation VCAudioTools
+{
     
 }
 
 #if TARGET_IPHONE_SIMULATOR || TARGET_OS_IPHONE
-+ (void) overrideCategoryMixWithOthers
++ (void)overrideCategoryMixWithOthers
 {
-	
-    UInt32 doSetProperty = 1;
-    
-    AudioSessionSetProperty (kAudioSessionProperty_OverrideCategoryMixWithOthers, sizeof(doSetProperty), &doSetProperty);
+    AVAudioSession*     session = [AVAudioSession sharedInstance];
+	[session setCategory:session.category withOptions:AVAudioSessionCategoryOptionMixWithOthers error:nil];
+
+//    UInt32 doSetProperty = 1;
+//    AudioSessionSetProperty (kAudioSessionProperty_OverrideCategoryMixWithOthers, sizeof(doSetProperty), &doSetProperty);
 }
 #endif
 

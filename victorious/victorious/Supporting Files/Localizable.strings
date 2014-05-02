@@ -81,3 +81,9 @@
 "MonthsAgo"             =   "%dmo";
 "LastYear"              =   "1y";
 "YearsAgo"              =   "%dy";
+
+"JustAMoment"           =   "Just a moment";
+"LocatingVideo"         =   "Locating Video...";
+"DownloadingVideo"      =   "Downloading Video...";
+
+

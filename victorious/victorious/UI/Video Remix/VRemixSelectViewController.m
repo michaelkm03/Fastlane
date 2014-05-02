@@ -140,8 +140,8 @@
 {
     self.progressHUD =   [MBProgressHUD showHUDAddedTo:self.view animated:YES];
     self.progressHUD.mode = MBProgressHUDModeIndeterminate;
-    self.progressHUD.labelText = @"Just a moment";
-    self.progressHUD.detailsLabelText = @"Locating Video";
+    self.progressHUD.labelText = NSLocalizedString(@"JustAMoment", @"");
+    self.progressHUD.detailsLabelText = NSLocalizedString(@"LocatingVideo", @"");
 
     [self downloadVideoSegmentAtURL:segmentURL];
 }
@@ -149,7 +149,7 @@
 - (void)downloadVideoSegmentAtURL:(NSURL *)segmentURL
 {
     self.progressHUD.mode = MBProgressHUDModeDeterminate;
-    self.progressHUD.detailsLabelText = @"Downloading Video...";
+    self.progressHUD.detailsLabelText = NSLocalizedString(@"DownloadingVideo", @"");
     
     NSURLSessionConfiguration*  sessionConfig = [NSURLSessionConfiguration defaultSessionConfiguration];
     NSURLSession*               session = [NSURLSession sessionWithConfiguration:sessionConfig
@@ -188,7 +188,6 @@
 
 - (void)URLSession:(NSURLSession *)session downloadTask:(NSURLSessionDownloadTask *)downloadTask didResumeAtOffset:(int64_t)fileOffset expectedTotalBytes:(int64_t)expectedTotalBytes
 {
-    
 }
 
 - (void)URLSession:(NSURLSession *)session task:(NSURLSessionTask *)task didCompleteWithError:(NSError *)error
