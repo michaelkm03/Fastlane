@@ -2,7 +2,7 @@
 //  VComment.h
 //  victorious
 //
-//  Created by Will Long on 1/10/14.
+//  Created by Will Long on 5/1/14.
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
@@ -26,6 +26,7 @@
 @property (nonatomic, retain) NSNumber * shares;
 @property (nonatomic, retain) NSString * text;
 @property (nonatomic, retain) NSNumber * userId;
+@property (nonatomic, retain) NSString * thumbnailUrl;
 @property (nonatomic, retain) VSequence *sequence;
 @property (nonatomic, retain) VUser *user;
 

@@ -30,7 +30,8 @@
                                   @"dislikes" : VSelectorName(dislikes),
                                   @"shares" : VSelectorName(shares),
                                   @"flags" : VSelectorName(flags),
-                                  @"posted_at" : VSelectorName(postedAt)
+                                  @"posted_at" : VSelectorName(postedAt),
+                                  @"thumbnail_url" : VSelectorName(thumbnailUrl)
                                   };
 
     RKEntityMapping *mapping = [RKEntityMapping

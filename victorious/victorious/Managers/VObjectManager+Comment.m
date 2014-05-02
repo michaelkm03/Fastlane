@@ -104,15 +104,16 @@
                                      failBlock:(VFailBlock)fail
 {
     NSString* type = [extension isEqualToString:VConstantMediaExtensionMOV] ? @"video" : @"image";
-    NSDictionary* parameters = @{@"sequence_id" : sequence.remoteId.stringValue ?: [NSNull null],
+    NSMutableDictionary* parameters = [@{@"sequence_id" : sequence.remoteId.stringValue ?: [NSNull null],
                                  @"parent_id" : parent.remoteId.stringValue ?: [NSNull null],
-                                 @"text" : text ?: [NSNull null]};
+                                 @"text" : text ?: [NSNull null]} mutableCopy];
     
     NSDictionary *allURLs, *allExtensions;
-    if (mediaURL && extension)
+    if (mediaURL && extension && type)
     {
+        [parameters setObject:type forKey:@"media_type"];
         allURLs = @{@"media_data":mediaURL};
-        allExtensions = @{@"media_type":type};
+        allExtensions = @{@"media_data":type};
     }
     
 //    VSuccessBlock fetchCommentSuccess = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)

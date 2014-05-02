@@ -140,6 +140,7 @@
 		BE185DEE18E3B255001C447F /* VContentViewController+Videos.m in Sources */ = {isa = PBXBuildFile; fileRef = BE185DED18E3B255001C447F /* VContentViewController+Videos.m */; };
 		BE185DF118E3B2C2001C447F /* VContentViewController+Images.m in Sources */ = {isa = PBXBuildFile; fileRef = BE185DF018E3B2C2001C447F /* VContentViewController+Images.m */; };
 		BE185DF518E3BB54001C447F /* VActionBarViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BE185DF418E3BB54001C447F /* VActionBarViewController.m */; };
+		BE2A890819131EC6004B63AA /* VComment.m in Sources */ = {isa = PBXBuildFile; fileRef = BE2A890719131EC6004B63AA /* VComment.m */; };
 		BE2D1E5519006E7500C6FF99 /* VContentToCommentAnimator.m in Sources */ = {isa = PBXBuildFile; fileRef = BE2D1E5419006E7500C6FF99 /* VContentToCommentAnimator.m */; };
 		BE2D1E5A19006E9400C6FF99 /* VCommentToStreamAnimator.m in Sources */ = {isa = PBXBuildFile; fileRef = BE2D1E5919006E9400C6FF99 /* VCommentToStreamAnimator.m */; };
 		BE2D1E5D19006EAC00C6FF99 /* VStreamToContentAnimator.m in Sources */ = {isa = PBXBuildFile; fileRef = BE2D1E5C19006EAC00C6FF99 /* VStreamToContentAnimator.m */; };
@@ -149,7 +150,6 @@
 		BE4055AD18A41F1F00092AE1 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = BE4055A718A41F1F00092AE1 /* main.m */; };
 		BE438E0E18F35A2700F5DF29 /* VUser.m in Sources */ = {isa = PBXBuildFile; fileRef = BE438E0D18F35A2700F5DF29 /* VUser.m */; };
 		BE46E69A18CA751F00974DAF /* VCommentToContentAnimator.m in Sources */ = {isa = PBXBuildFile; fileRef = BE46E69918CA751F00974DAF /* VCommentToContentAnimator.m */; };
-		BE4B74231880D3850090FF84 /* VComment.m in Sources */ = {isa = PBXBuildFile; fileRef = BE4B74221880D3850090FF84 /* VComment.m */; };
 		BE55CD15188F316900FE619F /* VObjectManager.m in Sources */ = {isa = PBXBuildFile; fileRef = BE55CD13188F316900FE619F /* VObjectManager.m */; };
 		BE5C7340187E36CF00A3340D /* VInteraction.m in Sources */ = {isa = PBXBuildFile; fileRef = BE5C733F187E36CF00A3340D /* VInteraction.m */; };
 		BE5C735B187E36E700A3340D /* VNode.m in Sources */ = {isa = PBXBuildFile; fileRef = BE5C735A187E36E700A3340D /* VNode.m */; };
@@ -467,6 +467,8 @@
 		BE185DF018E3B2C2001C447F /* VContentViewController+Images.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "VContentViewController+Images.m"; path = "UI/Content View/VContentViewController+Images.m"; sourceTree = "<group>"; };
 		BE185DF318E3BB54001C447F /* VActionBarViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VActionBarViewController.h; path = "UI/Content View/VActionBarViewController.h"; sourceTree = "<group>"; };
 		BE185DF418E3BB54001C447F /* VActionBarViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VActionBarViewController.m; path = "UI/Content View/VActionBarViewController.m"; sourceTree = "<group>"; };
+		BE2A890619131EC6004B63AA /* VComment.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VComment.h; sourceTree = "<group>"; };
+		BE2A890719131EC6004B63AA /* VComment.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VComment.m; sourceTree = "<group>"; };
 		BE2D1E5319006E7500C6FF99 /* VContentToCommentAnimator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VContentToCommentAnimator.h; path = "UI/Content View/VContentToCommentAnimator.h"; sourceTree = "<group>"; };
 		BE2D1E5419006E7500C6FF99 /* VContentToCommentAnimator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VContentToCommentAnimator.m; path = "UI/Content View/VContentToCommentAnimator.m"; sourceTree = "<group>"; };
 		BE2D1E5819006E9400C6FF99 /* VCommentToStreamAnimator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VCommentToStreamAnimator.h; path = "UI/Streams Subview/VCommentToStreamAnimator.h"; sourceTree = "<group>"; };
@@ -485,8 +487,6 @@
 		BE449DBF18E4F6A1008411F1 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = AppSpecific/Info.plist; sourceTree = "<group>"; };
 		BE46E69818CA751F00974DAF /* VCommentToContentAnimator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VCommentToContentAnimator.h; path = "UI/Content View/VCommentToContentAnimator.h"; sourceTree = "<group>"; };
 		BE46E69918CA751F00974DAF /* VCommentToContentAnimator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VCommentToContentAnimator.m; path = "UI/Content View/VCommentToContentAnimator.m"; sourceTree = "<group>"; };
-		BE4B74211880D3850090FF84 /* VComment.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VComment.h; sourceTree = "<group>"; };
-		BE4B74221880D3850090FF84 /* VComment.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VComment.m; sourceTree = "<group>"; };
 		BE55CD12188F316900FE619F /* VObjectManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VObjectManager.h; sourceTree = "<group>"; };
 		BE55CD13188F316900FE619F /* VObjectManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VObjectManager.m; sourceTree = "<group>"; };
 		BE55CD14188F316900FE619F /* VObjectManager+Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "VObjectManager+Private.h"; sourceTree = "<group>"; };
@@ -1210,13 +1210,13 @@
 				BE9181EA1909D38A0071E7AF /* VSequenceFilter.m */,
 				BE89ECD919105DB8009DD407 /* VAnswer.h */,
 				BE89ECDA19105DB8009DD407 /* VAnswer.m */,
+				BE2A890619131EC6004B63AA /* VComment.h */,
+				BE2A890719131EC6004B63AA /* VComment.m */,
 				BE171E411868CEA0004E5202 /* victoriOS.xcdatamodeld */,
 				BE6C15231880A31A00469BA8 /* VAnswerAction.h */,
 				BE6C15241880A31A00469BA8 /* VAnswerAction.m */,
 				BEDF0FC118DBC93A00750EF6 /* VAsset.h */,
 				BEDF0FC218DBC93A00750EF6 /* VAsset.m */,
-				BE4B74211880D3850090FF84 /* VComment.h */,
-				BE4B74221880D3850090FF84 /* VComment.m */,
 				BEF2C29718846FAB00AAE975 /* VConversation.h */,
 				BEF2C29818846FAB00AAE975 /* VConversation.m */,
 				BE5C733E187E36CF00A3340D /* VInteraction.h */,
@@ -1720,7 +1720,6 @@
 				3FD7FFBB18C14ED400945E5F /* VExpirationPickerTextField.m in Sources */,
 				3F4863FA1869184000F77346 /* VInboxViewController.m in Sources */,
 				5FC4DA731897121F006BA107 /* VSignupWithEmailViewController.m in Sources */,
-				BE4B74231880D3850090FF84 /* VComment.m in Sources */,
 				BE9181EB1909D38A0071E7AF /* VSequenceFilter.m in Sources */,
 				BE171E171868C211004E5202 /* VSequence+RestKit.m in Sources */,
 				3FA217EC18BC365E0066E893 /* VCameraViewController.m in Sources */,
@@ -1766,6 +1765,7 @@
 				BE5C7382187E37C700A3340D /* VMessage+RestKit.m in Sources */,
 				3FDEDD0C18CE5E180028E3F1 /* VAbstractVideoEditorViewController.m in Sources */,
 				3F71A7D918D7C6D20048FF60 /* VRemixResizableBubble.m in Sources */,
+				BE2A890819131EC6004B63AA /* VComment.m in Sources */,
 				BEA5BF5F187F21770014C3EF /* VTableViewCell.m in Sources */,
 				3F9B665A18848B750046F826 /* VMessageContainerViewController.m in Sources */,
 				3F14C45118BD2BD0001796B9 /* VCDataEncoder.m in Sources */,

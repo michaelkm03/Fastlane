@@ -36,6 +36,7 @@
         <attribute name="sequenceId" attributeType="Integer 64" minValueString="0" syncable="YES"/>
         <attribute name="shares" attributeType="Integer 32" minValueString="0" syncable="YES"/>
         <attribute name="text" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="thumbnailUrl" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="userId" attributeType="Integer 64" minValueString="0" syncable="YES"/>
         <relationship name="sequence" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Sequence" inverseName="comments" inverseEntity="Sequence" syncable="YES"/>
         <relationship name="user" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="User" inverseName="comments" inverseEntity="User" syncable="YES"/>
@@ -173,7 +174,7 @@
         <element name="Answer" positionX="727" positionY="108" width="128" height="193"/>
         <element name="AnswerAction" positionX="718" positionY="330" width="128" height="75"/>
         <element name="Asset" positionX="655" positionY="-360" width="128" height="118"/>
-        <element name="Comment" positionX="1035" positionY="-513" width="128" height="268"/>
+        <element name="Comment" positionX="1035" positionY="-576" width="128" height="283"/>
         <element name="Conversation" positionX="1395" positionY="-477" width="128" height="118"/>
         <element name="Interaction" positionX="646" positionY="-208" width="128" height="208"/>
         <element name="InteractionAction" positionX="495" positionY="-162" width="128" height="105"/>
