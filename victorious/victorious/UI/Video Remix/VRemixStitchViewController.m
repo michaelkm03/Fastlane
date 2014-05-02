@@ -163,15 +163,14 @@
 
 - (void)selectAsset
 {
-    VCameraViewController *cameraViewController = [VCameraViewController cameraViewController];
+    VCameraViewController *cameraViewController = [VCameraViewController cameraViewControllerLimitedToVideo];
     cameraViewController.completionBlock = ^(BOOL finished, UIImage *previewImage, NSURL *capturedMediaURL)
     {
         [self dismissViewControllerAnimated:YES completion:nil];
 
         if (finished)
         {
-            if ([[capturedMediaURL pathExtension] isEqualToString:VConstantMediaExtensionMP4])
-                [self didSelectVideo:capturedMediaURL];
+            [self didSelectVideo:capturedMediaURL];
         }
     };
 

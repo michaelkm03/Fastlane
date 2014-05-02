@@ -41,6 +41,7 @@ const   NSTimeInterval  kAnimationDuration      =   0.4;
 @property (strong, nonatomic) VCCameraFocusView* focusView;
 
 @property (nonatomic)                   BOOL                allowVideo;
+@property (nonatomic)                   BOOL                allowPhotos;
 
 @property (nonatomic)                   BOOL                inTrashState;
 @property (nonatomic)                   BOOL                inRecordVideoState;
@@ -62,6 +63,7 @@ const   NSTimeInterval  kAnimationDuration      =   0.4;
 {
     VCameraViewController *cameraViewController = [[UIStoryboard storyboardWithName:@"Camera" bundle:nil] instantiateViewControllerWithIdentifier:NSStringFromClass(self)];
     cameraViewController.allowVideo = YES;
+    cameraViewController.allowPhotos = YES;
     return cameraViewController;
 }
 
@@ -69,6 +71,13 @@ const   NSTimeInterval  kAnimationDuration      =   0.4;
 {
     VCameraViewController *cameraViewController = [self cameraViewController];
     cameraViewController.allowVideo = NO;
+    return cameraViewController;
+}
+
++ (VCameraViewController *)cameraViewControllerLimitedToVideo
+{
+    VCameraViewController *cameraViewController = [self cameraViewController];
+    cameraViewController.allowPhotos = NO;
     return cameraViewController;
 }
 
@@ -136,6 +145,9 @@ const   NSTimeInterval  kAnimationDuration      =   0.4;
     else
     {
         [self configureUIforPhotoCaptureAnimated:NO completion:nil];
+    }
+    if (!self.allowVideo || !self.allowPhotos)
+    {
         self.switchCameraModeButton.hidden = YES;
     }
 }
