@@ -91,9 +91,7 @@
                    answer1Text:(NSString *)answer1Text
                    answer2Text:(NSString *)answer2Text
                      media1URL:(NSURL *)media1URL
-               media1Extension:(NSString *)media1Extension
                      media2URL:(NSURL *)media2URL
-               media2Extension:(NSString *)media2Extension
 {
     __block NSURL* firstRemovalURL = media1URL;
     __block NSURL* secondRemovalURL = media2URL;
@@ -138,9 +136,9 @@
                                            answer1Text:answer1Text
                                            answer2Text:answer2Text
                                             media1Url:media1URL
-                                       media1Extension:media1Extension
+                                       media1Extension:[media1URL pathExtension]
                                             media2Url:media2URL
-                                       media2Extension:media2Extension
+                                       media2Extension:[media2URL pathExtension]
                                           successBlock:success
                                              failBlock:fail];
 }
