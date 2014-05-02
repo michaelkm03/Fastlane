@@ -113,26 +113,9 @@
     {
         [parameters setObject:type forKey:@"media_type"];
         allURLs = @{@"media_data":mediaURL};
-        allExtensions = @{@"media_data":type};
+        allExtensions = @{@"media_data":[mediaURL pathExtension]};
     }
-    
-//    VSuccessBlock fetchCommentSuccess = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
-//    {
-//        NSManagedObjectID* objectId = [[resultObjects firstObject] objectID];
-//        if (objectId)
-//        {
-//            [sequence addCommentsObject:(VComment*)[sequence.managedObjectContext objectWithID:objectId]];
-//        }
-//        
-//        [sequence.managedObjectContext performBlockAndWait:^
-//        {
-//            [sequence.managedObjectContext save:nil];
-//        }];
-//        
-//        if (success)
-//            success(operation, fullResponse, resultObjects);
-//    };
-    
+        
     VSuccessBlock fullSuccess = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
     {
         
