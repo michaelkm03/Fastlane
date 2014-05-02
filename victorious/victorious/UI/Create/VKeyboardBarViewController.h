@@ -6,15 +6,13 @@
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
-#import "VImagePickerViewController.h"
-
 @class VKeyboardBarViewController;
 
 @protocol VKeyboardBarDelegate <NSObject>
 
 @required
 
-- (void)keyboardBar:(VKeyboardBarViewController *)keyboardBar didComposeWithText:(NSString *)text mediaURL:(NSURL *)mediaURL mediaExtension:(NSString *)mediaExtension;
+- (void)keyboardBar:(VKeyboardBarViewController *)keyboardBar didComposeWithText:(NSString *)text mediaURL:(NSURL *)mediaURL;
 - (void)keyboardBar:(VKeyboardBarViewController *)keyboardBar wouldLikeToBeResizedToHeight:(CGFloat)height;
 
 @end

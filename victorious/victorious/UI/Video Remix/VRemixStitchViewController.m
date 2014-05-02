@@ -67,7 +67,6 @@
     
     VCameraPublishViewController *publishViewController = [VCameraPublishViewController cameraPublishViewController];
     publishViewController.mediaURL = self.targetURL;
-    publishViewController.mediaExtension = VConstantMediaExtensionMOV;
     publishViewController.playBackSpeed = self.playBackSpeed;
     publishViewController.playbackLooping = self.playbackLooping;
     publishViewController.parentID = self.parentID;
@@ -164,15 +163,14 @@
 
 - (void)selectAsset
 {
-    VCameraViewController *cameraViewController = [VCameraViewController cameraViewController];
-    cameraViewController.completionBlock = ^(BOOL finished, UIImage *previewImage, NSURL *capturedMediaURL, NSString *mediaExtension)
+    VCameraViewController *cameraViewController = [VCameraViewController cameraViewControllerLimitedToVideo];
+    cameraViewController.completionBlock = ^(BOOL finished, UIImage *previewImage, NSURL *capturedMediaURL)
     {
         [self dismissViewControllerAnimated:YES completion:nil];
 
         if (finished)
         {
-            if ([mediaExtension isEqualToString:VConstantMediaExtensionMOV])
-                [self didSelectVideo:capturedMediaURL];
+            [self didSelectVideo:capturedMediaURL];
         }
     };
 

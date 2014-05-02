@@ -61,7 +61,7 @@
 {
     UINavigationController *navigationController = [[UINavigationController alloc] init];
     VCameraViewController *cameraViewController = [VCameraViewController cameraViewControllerLimitedToPhotos];
-    cameraViewController.completionBlock = ^(BOOL finished, UIImage *previewImage, NSURL *capturedMediaURL, NSString *mediaExtension)
+    cameraViewController.completionBlock = ^(BOOL finished, UIImage *previewImage, NSURL *capturedMediaURL)
     {
         [self dismissViewControllerAnimated:YES completion:nil];
         if (finished && capturedMediaURL)

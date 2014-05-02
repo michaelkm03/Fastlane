@@ -123,7 +123,7 @@
 
 #pragma mark - VKeyboardBarDelegate
 
-- (void)keyboardBar:(VKeyboardBarViewController *)keyboardBar didComposeWithText:(NSString *)text mediaURL:(NSURL *)mediaURL mediaExtension:(NSString *)mediaExtension
+- (void)keyboardBar:(VKeyboardBarViewController *)keyboardBar didComposeWithText:(NSString *)text mediaURL:(NSURL *)mediaURL
 {
     __block UIActivityIndicatorView *indicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
     indicator.frame = CGRectMake(0, 0, 24, 24);
@@ -169,8 +169,6 @@
     
     [[VObjectManager sharedManager] addCommentWithText:text
                                               mediaURL:mediaURL
-                                        mediaExtension:mediaExtension
-                                              mediaUrl:nil
                                             toSequence:_sequence
                                              andParent:nil
                                           successBlock:success

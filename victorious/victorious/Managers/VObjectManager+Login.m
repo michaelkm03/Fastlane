@@ -233,11 +233,9 @@ NSString *kLoggedInChangedNotification = @"LoggedInChangedNotification";
         [params setObject:tagline forKey:@"profile_tagline"];
     
     NSDictionary* allURLs = nil;
-    NSDictionary* allExtensions = nil;
     if (profileImageURL)
     {
         allURLs = @{@"profile_image":profileImageURL};
-        allExtensions = @{@"profile_image":VConstantMediaExtensionPNG};
     }
     
     VSuccessBlock fullSuccess = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
@@ -258,7 +256,6 @@ NSString *kLoggedInChangedNotification = @"LoggedInChangedNotification";
     };
     
     return [self uploadURLs:allURLs
-             fileExtensions:allExtensions
                      toPath:@"/api/account/update"
                  parameters:[params copy]
                successBlock:fullSuccess

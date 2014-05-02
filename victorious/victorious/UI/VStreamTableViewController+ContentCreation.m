@@ -51,7 +51,7 @@
                                       UINavigationController *navigationController = [[UINavigationController alloc] init];
                                       UINavigationController * __weak weakNav = navigationController;
                                       VCameraViewController *cameraViewController = [VCameraViewController cameraViewController];
-                                      cameraViewController.completionBlock = ^(BOOL finished, UIImage *previewImage, NSURL *capturedMediaURL, NSString *mediaExtension)
+                                      cameraViewController.completionBlock = ^(BOOL finished, UIImage *previewImage, NSURL *capturedMediaURL)
                                       {
                                           if (!finished || !capturedMediaURL)
                                           {
@@ -62,7 +62,6 @@
                                               VCameraPublishViewController *publishViewController = [VCameraPublishViewController cameraPublishViewController];
                                               publishViewController.previewImage = previewImage;
                                               publishViewController.mediaURL = capturedMediaURL;
-                                              publishViewController.mediaExtension = mediaExtension;
                                               publishViewController.completion = ^(BOOL complete)
                                               {
                                                   if (complete)
@@ -92,9 +91,7 @@
                    answer1Text:(NSString *)answer1Text
                    answer2Text:(NSString *)answer2Text
                      media1URL:(NSURL *)media1URL
-               media1Extension:(NSString *)media1Extension
                      media2URL:(NSURL *)media2URL
-               media2Extension:(NSString *)media2Extension
 {
     __block NSURL* firstRemovalURL = media1URL;
     __block NSURL* secondRemovalURL = media2URL;
@@ -139,9 +136,7 @@
                                            answer1Text:answer1Text
                                            answer2Text:answer2Text
                                             media1Url:media1URL
-                                       media1Extension:media1Extension
                                             media2Url:media2URL
-                                       media2Extension:media2Extension
                                           successBlock:success
                                              failBlock:fail];
 }

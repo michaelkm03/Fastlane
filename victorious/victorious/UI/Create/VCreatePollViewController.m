@@ -22,9 +22,6 @@ static const CGFloat VCreateViewControllerLargePadding = 20;
 @property (strong, nonatomic) NSURL *mediaURL;
 @property (strong, nonatomic) NSURL *secondMediaURL;
 
-@property (strong, nonatomic) NSString *mediaType;
-@property (strong, nonatomic) NSString *secondMediaType;
-
 @property (weak, nonatomic) NSLayoutConstraint *contentTopConstraint;
 
 @property (nonatomic, strong)   UIBarButtonItem*    countDownLabel;
@@ -143,12 +140,11 @@ static const CGFloat VCreateViewControllerLargePadding = 20;
 - (IBAction)mediaButtonAction:(id)sender
 {
     VCameraViewController *cameraViewController = [VCameraViewController cameraViewController];
-    cameraViewController.completionBlock = ^(BOOL finished, UIImage *previewImage, NSURL *capturedMediaURL, NSString *mediaExtension)
+    cameraViewController.completionBlock = ^(BOOL finished, UIImage *previewImage, NSURL *capturedMediaURL)
     {
         if (finished)
         {
             [self imagePickerFinishedWithURL:capturedMediaURL
-                                   extension:mediaExtension
                                 previewImage:previewImage];
         }
 
@@ -185,7 +181,6 @@ static const CGFloat VCreateViewControllerLargePadding = 20;
          }
          
          self.mediaURL = self.secondMediaURL;
-         self.mediaType = self.secondMediaType;
          self.previewImageView.image = self.rightPreviewImageView.image;
          
          if (self.secondMediaURL)
@@ -193,7 +188,6 @@ static const CGFloat VCreateViewControllerLargePadding = 20;
              [[NSFileManager defaultManager] removeItemAtURL:self.secondMediaURL error:nil];
          }
          self.secondMediaURL = nil;
-         self.secondMediaType = nil;
          self.rightPreviewImageView.image = nil;
          
          [self updateViewState];
@@ -226,7 +220,6 @@ static const CGFloat VCreateViewControllerLargePadding = 20;
              [[NSFileManager defaultManager] removeItemAtURL:self.secondMediaURL error:nil];
          }
          self.secondMediaURL = nil;
-         self.secondMediaType = nil;
          self.rightPreviewImageView.image = nil;
          [self updateViewState];
          [self validatePostButtonState];
@@ -235,14 +228,14 @@ static const CGFloat VCreateViewControllerLargePadding = 20;
 
 - (IBAction)postButtonAction:(id)sender
 {
-    [self.delegate createPollWithQuestion:self.questionTextField.text
-                              answer1Text:self.leftAnswerTextField.text
-                              answer2Text:self.rightAnswerTextField.text
-                               media1URL:self.mediaURL
-                          media1Extension:self.mediaType
-                               media2URL:self.secondMediaURL
-                          media2Extension:self.secondMediaType];
-    
+    if ([self.delegate respondsToSelector:@selector(createPollWithQuestion:answer1Text:answer2Text:media1URL:media2URL:)])
+    {
+        [self.delegate createPollWithQuestion:self.questionTextField.text
+                                  answer1Text:self.leftAnswerTextField.text
+                                  answer2Text:self.rightAnswerTextField.text
+                                    media1URL:self.mediaURL
+                                    media2URL:self.secondMediaURL];
+    }
     [self.navigationController popViewControllerAnimated:YES];
 }
 
@@ -373,19 +366,16 @@ static const CGFloat VCreateViewControllerLargePadding = 20;
 #pragma mark -
 
 - (void)imagePickerFinishedWithURL:(NSURL *)mediaURL
-                          extension:(NSString*)extension
-                       previewImage:(UIImage*)previewImage
+                      previewImage:(UIImage*)previewImage
 {
     if(!self.mediaURL)
     {
         self.mediaURL = mediaURL;
-        self.mediaType = extension;
         self.previewImageView.image = previewImage;
     }
     else
     {
         self.secondMediaURL = mediaURL;
-        self.secondMediaType = extension;
         self.rightPreviewImageView.image = previewImage;
     }
     

@@ -8,8 +8,6 @@
 
 #import "VCreateSequenceDelegate.h"
 
-#import "VImagePickerViewController.h"
-
 @interface VCreatePollViewController : UIViewController
 
 @property (weak, nonatomic) IBOutlet UIImageView *rightPreviewImageView;

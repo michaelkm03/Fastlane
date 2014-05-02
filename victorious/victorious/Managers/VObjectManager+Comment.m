@@ -96,24 +96,22 @@
 
 - (AFHTTPRequestOperation *)addCommentWithText:(NSString*)text
                                       mediaURL:(NSURL*)mediaURL
-                                mediaExtension:(NSString*)extension
-                                      mediaUrl:(NSURL*)mediaUrl
                                     toSequence:(VSequence*)sequence
                                      andParent:(VComment*)parent
                                   successBlock:(VSuccessBlock)success
                                      failBlock:(VFailBlock)fail
 {
-    NSString* type = [extension isEqualToString:VConstantMediaExtensionMOV] ? @"video" : @"image";
+    NSString* extension = [[mediaURL pathExtension] lowercaseStringWithLocale:[NSLocale localeWithLocaleIdentifier:@"en_US_POSIX"]];
+    NSString* type = [extension isEqualToString:VConstantMediaExtensionMOV] || [extension isEqualToString:VConstantMediaExtensionMP4] ? @"video" : @"image";
     NSMutableDictionary* parameters = [@{@"sequence_id" : sequence.remoteId.stringValue ?: [NSNull null],
                                  @"parent_id" : parent.remoteId.stringValue ?: [NSNull null],
                                  @"text" : text ?: [NSNull null]} mutableCopy];
     
-    NSDictionary *allURLs, *allExtensions;
-    if (mediaURL && extension && type)
+    NSDictionary *allURLs;
+    if (mediaURL && type)
     {
         [parameters setObject:type forKey:@"media_type"];
         allURLs = @{@"media_data":mediaURL};
-        allExtensions = @{@"media_data":[mediaURL pathExtension]};
     }
         
     VSuccessBlock fullSuccess = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
@@ -131,7 +129,6 @@
     };
     
     return [self uploadURLs:allURLs
-             fileExtensions:allExtensions
                      toPath:@"/api/comment/add"
                  parameters:parameters
                successBlock:fullSuccess
