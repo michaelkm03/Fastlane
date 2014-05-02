@@ -214,7 +214,7 @@
      {
          [allUrls enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop)
           {
-              NSString* extension = [obj pathExtension];
+              NSString* extension = [[obj pathExtension] lowercaseStringWithLocale:[NSLocale localeWithLocaleIdentifier:@"en_US_POSIX"]];
               if(extension)
               {
                   NSString* mimeType = [extension isEqualToString:VConstantMediaExtensionMOV] || [extension isEqualToString:VConstantMediaExtensionMP4]

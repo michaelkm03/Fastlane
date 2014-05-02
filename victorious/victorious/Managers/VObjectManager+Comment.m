@@ -101,7 +101,8 @@
                                   successBlock:(VSuccessBlock)success
                                      failBlock:(VFailBlock)fail
 {
-    NSString* type = [[mediaURL pathExtension] isEqualToString:VConstantMediaExtensionMOV] || [[mediaURL pathExtension] isEqualToString:VConstantMediaExtensionMP4] ? @"video" : @"image";
+    NSString* extension = [[mediaURL pathExtension] lowercaseStringWithLocale:[NSLocale localeWithLocaleIdentifier:@"en_US_POSIX"]];
+    NSString* type = [extension isEqualToString:VConstantMediaExtensionMOV] || [extension isEqualToString:VConstantMediaExtensionMP4] ? @"video" : @"image";
     NSMutableDictionary* parameters = [@{@"sequence_id" : sequence.remoteId.stringValue ?: [NSNull null],
                                  @"parent_id" : parent.remoteId.stringValue ?: [NSNull null],
                                  @"text" : text ?: [NSNull null]} mutableCopy];

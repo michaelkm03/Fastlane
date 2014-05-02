@@ -15,7 +15,7 @@
 
 + (VMediaPreviewViewController *)previewViewControllerForMediaAtURL:(NSURL *)mediaURL
 {
-    NSString *mediaExtension = [mediaURL pathExtension];
+    NSString *mediaExtension = [[mediaURL pathExtension] lowercaseStringWithLocale:[NSLocale localeWithLocaleIdentifier:@"en_US_POSIX"]];
     VMediaPreviewViewController *previewViewController = nil;
     if ([VConstantMediaExtensionPNG isEqualToString:mediaExtension]  ||
         [VConstantMediaExtensionJPEG isEqualToString:mediaExtension] ||
