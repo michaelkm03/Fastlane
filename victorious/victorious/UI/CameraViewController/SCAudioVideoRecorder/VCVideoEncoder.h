@@ -5,7 +5,8 @@
 #import <Foundation/Foundation.h>
 #import "VCDataEncoder.h"
 
-@interface VCVideoEncoder : VCDataEncoder<AVCaptureVideoDataOutputSampleBufferDelegate> {
+@interface VCVideoEncoder : VCDataEncoder<AVCaptureVideoDataOutputSampleBufferDelegate>
+{
     
 }
 
