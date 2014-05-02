@@ -152,7 +152,7 @@
     self.progressHUD.mode = MBProgressHUDModeDeterminate;
     self.progressHUD.detailsLabelText = NSLocalizedString(@"DownloadingVideo", @"");
     
-    NSURLSessionConfiguration*  sessionConfig = [NSURLSessionConfiguration defaultSessionConfiguration];
+    NSURLSessionConfiguration*  sessionConfig = [NSURLSessionConfiguration ephemeralSessionConfiguration];
     NSURLSession*               session = [NSURLSession sessionWithConfiguration:sessionConfig
                                                                         delegate:self
                                                                    delegateQueue:nil];

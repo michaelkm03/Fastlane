@@ -86,4 +86,6 @@
 "LocatingVideo"         =   "Locating Video...";
 "DownloadingVideo"      =   "Downloading Video...";
 
+"ExpiresOn"             =   "Expires on %@";
+
 

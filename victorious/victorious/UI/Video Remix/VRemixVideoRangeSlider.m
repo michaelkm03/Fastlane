@@ -271,7 +271,6 @@
     self.imageGenerator.maximumSize = CGSizeMake(84, 84);
 
     int picWidth = 42;
-
     _durationSeconds = CMTimeGetSeconds([self.videoAsset duration]);
     int picsCnt = ceil(_backgroundView.frame.size.width / picWidth);
     NSMutableArray *allTimes = [[NSMutableArray alloc] init];
@@ -279,7 +278,7 @@
 
     for (int i=0; i<picsCnt; i++)
     {
-        time4Pic = i*picWidth;
+        time4Pic = i * picWidth;
         CMTime timeFrame = CMTimeMakeWithSeconds(_durationSeconds*time4Pic/_backgroundView.frame.size.width, 600);
         [allTimes addObject:[NSValue valueWithCMTime:timeFrame]];
     }
@@ -305,6 +304,7 @@
                                                           int delta = all - _backgroundView.frame.size.width;
                                                           currentFrame.size.width -= delta;
                                                       }
+                                                      
                                                       tmp.frame = currentFrame;
                                                       i++;
 

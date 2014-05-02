@@ -186,9 +186,9 @@
 - (void)setExpirationViewController:(VSetExpirationViewController *)viewController didSelectDate:(NSDate *)expirationDate
 {
     self.expirationDateString = [self stringForRFC2822Date:expirationDate];
-    self.expiresOnLabel.text = [NSString stringWithFormat:@"Expires on %@", [NSDateFormatter localizedStringFromDate:expirationDate
-                                                                                                           dateStyle:NSDateFormatterLongStyle
-                                                                                                           timeStyle:NSDateFormatterShortStyle]];
+    self.expiresOnLabel.text = [NSString stringWithFormat:NSLocalizedString(@"ExpiresOn", @""), [NSDateFormatter localizedStringFromDate:expirationDate
+                                                                                                                               dateStyle:NSDateFormatterLongStyle
+                                                                                                                               timeStyle:NSDateFormatterShortStyle]];
 }
 
 #pragma mark - Support
