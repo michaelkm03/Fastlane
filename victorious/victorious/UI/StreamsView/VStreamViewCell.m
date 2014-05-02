@@ -83,7 +83,7 @@ NSString *kStreamsWillCommentNotification = @"kStreamsWillCommentNotification";
 {
     self.profileImageButton.layer.cornerRadius = CGRectGetHeight(self.profileImageButton.bounds)/2;
     self.profileImageButton.clipsToBounds = YES;
-}
+}s
 
 - (void)setSequence:(VSequence *)sequence
 {
@@ -91,7 +91,7 @@ NSString *kStreamsWillCommentNotification = @"kStreamsWillCommentNotification";
     
     [self.previewImageView setImageWithURL:[NSURL URLWithString:_sequence.previewImage]
                           placeholderImage:[UIImage resizeableImageWithColor:
-                                            [[VThemeManager sharedThemeManager] themedColorForKey:kVSecondaryAccentColor]]];
+                                            [[VThemeManager sharedThemeManager] themedColorForKey:kVBackgroundColor]]];
     [self.profileImageButton setImageWithURL:[NSURL URLWithString:self.sequence.user.pictureUrl]
                             placeholderImage:[UIImage imageNamed:@"profile_thumb"]
                                     forState:UIControlStateNormal];

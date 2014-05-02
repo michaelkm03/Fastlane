@@ -21,6 +21,7 @@
 #import "UIButton+VImageLoading.h"
 #import "VProfileViewController.h"
 #import "VObjectManager.h"
+#import "UIImage+ImageCreation.h"
 
 CGFloat const kCommentRowWithMediaHeight  =   256.0f;
 CGFloat const kCommentRowHeight           =   86.0f;
@@ -125,7 +126,9 @@ NSString* const kChatBubbleLeftImage = @"ChatBubbleLeft";
         self.playButton.hidden = ![mediaType isEqualToString:VConstantsMediaTypeVideo];
         
 #warning We need to figure out a reliable way to get message preview image before release...
-        [self.mediaPreview setImageWithURL:previewImageURL];
+        [self.mediaPreview setImageWithURL:previewImageURL
+                          placeholderImage:[UIImage resizeableImageWithColor:
+                                            [[VThemeManager sharedThemeManager] themedColorForKey:kVBackgroundColor]]];
     }
     else
     {
