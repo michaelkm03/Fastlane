@@ -87,7 +87,9 @@ NSString* const kChatBubbleLeftImage = @"ChatBubbleLeft";
     _commentOrMessage = commentOrMessage;
     NSString* mediaType;
     VUser* user;
-
+    NSURL* previewImageURL;
+    
+    
     if([commentOrMessage isKindOfClass:[VComment class]])
     {
         VComment *comment = (VComment *)self.commentOrMessage;
@@ -98,6 +100,8 @@ NSString* const kChatBubbleLeftImage = @"ChatBubbleLeft";
         self.mediaUrl = comment.mediaUrl;
         mediaType = comment.mediaType;
         user = comment.user;
+        
+        previewImageURL = [NSURL URLWithString:comment.thumbnailUrl];
     }
     else if([commentOrMessage isKindOfClass:[VMessage class]])
     {
@@ -120,8 +124,8 @@ NSString* const kChatBubbleLeftImage = @"ChatBubbleLeft";
         
         self.playButton.hidden = ![mediaType isEqualToString:VConstantsMediaTypeVideo];
         
-#warning We need to figure out a reliable way to get comment preview image before release...
-//        [self.mediaPreview setImageWithURL:[self.mediaUrl convertToPreviewImageURL]];
+#warning We need to figure out a reliable way to get message preview image before release...
+        [self.mediaPreview setImageWithURL:previewImageURL];
     }
     else
     {

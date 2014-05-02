@@ -57,6 +57,7 @@ const   CGFloat     kMessageRowHeight           =   80;
 
 - (void)refresh
 {
+    __block NSInteger oldMessageCount = [self.messages count];
     VFailBlock fail = ^(NSOperation* operation, NSError* error)
     {
         NSLog(@"%@", error.localizedDescription);
@@ -70,6 +71,13 @@ const   CGFloat     kMessageRowHeight           =   80;
         self.messages = [[self.conversation.messages allObjects] sortedArrayUsingDescriptors:@[sortDescriptor]];
         [self.tableView reloadData];
         
+        if (oldMessageCount != [self.messages count]
+            && self.tableView.contentSize.height > self.tableView.frame.size.height)
+        {
+            CGPoint offset = CGPointMake(0, self.tableView.contentSize.height - self.tableView.frame.size.height);
+            [self.tableView setContentOffset:offset animated:YES];
+        }
+    
         [[VObjectManager sharedManager] markConversationAsRead:self.conversation
                                                   successBlock:nil
                                                      failBlock:fail];

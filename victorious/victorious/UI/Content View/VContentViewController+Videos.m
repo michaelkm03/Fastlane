@@ -51,20 +51,12 @@
         [self.activityIndicator stopAnimating];
         
         CGFloat yRatio = 1;
-        CGFloat xRatio = 1;
-        if (self.mpController.naturalSize.height < self.mpController.naturalSize.width)
-        {
-            yRatio = self.mpController.naturalSize.height / self.mpController.naturalSize.width;
-        }
-        else if (self.mpController.naturalSize.height > self.mpController.naturalSize.width)
-        {
-            xRatio = self.mpController.naturalSize.width / self.mpController.naturalSize.height;
-        }
+        yRatio = fminf(self.mpController.naturalSize.height / self.mpController.naturalSize.width, 1);
         
         VLog(@"Natural Width: %f  Height: %f", self.mpController.naturalSize.width, self.mpController.naturalSize.height);
         
         CGFloat videoHeight = fminf(self.mediaView.frame.size.height * yRatio, self.mediaView.frame.size.height);
-        CGFloat videoWidth = self.mediaView.frame.size.width * xRatio;
+        CGFloat videoWidth = self.mediaView.frame.size.width;
         self.mpController.view.frame = CGRectMake(0, 0, videoWidth, videoHeight);
 //        self.mpController.view.center = CGPointMake(self.view.center.x, self.mpController.view.center.y);
         

@@ -42,7 +42,7 @@
     return _conversationTableViewController;
 }
 
-- (void)keyboardBar:(VKeyboardBarViewController *)keyboardBar didComposeWithText:(NSString *)text mediaURL:(NSURL *)mediaURL mediaExtension:(NSString *)mediaExtension
+- (void)keyboardBar:(VKeyboardBarViewController *)keyboardBar didComposeWithText:(NSString *)text mediaURL:(NSURL *)mediaURL
 {
     
     __block NSURL* urlToRemove = mediaURL;
@@ -74,8 +74,6 @@
     [[VObjectManager sharedManager] sendMessageToUser:self.conversation.user
                                              withText:text
                                              mediaURL:mediaURL
-                                       mediaExtension:mediaExtension
-                                             mediaUrl:nil
                                          successBlock:success
                                             failBlock:^(NSOperation* operation, NSError* error)
      {

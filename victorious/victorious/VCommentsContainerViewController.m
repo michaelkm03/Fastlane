@@ -123,7 +123,7 @@
 
 #pragma mark - VKeyboardBarDelegate
 
-- (void)keyboardBar:(VKeyboardBarViewController *)keyboardBar didComposeWithText:(NSString *)text mediaURL:(NSURL *)mediaURL mediaExtension:(NSString *)mediaExtension
+- (void)keyboardBar:(VKeyboardBarViewController *)keyboardBar didComposeWithText:(NSString *)text mediaURL:(NSURL *)mediaURL
 {
     __block UIActivityIndicatorView *indicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
     indicator.frame = CGRectMake(0, 0, 24, 24);
@@ -141,7 +141,11 @@
         [[NSFileManager defaultManager] removeItemAtURL:urlToRemove error:nil];
         
         [(VCommentsTableViewController *)self.conversationTableViewController sortComments];
+        
+        self.sequence.commentCount = @(self.sequence.commentCount.integerValue + 1);
+        [self.sequence.managedObjectContext save:nil];
     };
+    
     VFailBlock fail = ^(NSOperation* operation, NSError* error)
     {
         [[NSFileManager defaultManager] removeItemAtURL:urlToRemove error:nil];
@@ -165,8 +169,6 @@
     
     [[VObjectManager sharedManager] addCommentWithText:text
                                               mediaURL:mediaURL
-                                        mediaExtension:mediaExtension
-                                              mediaUrl:nil
                                             toSequence:_sequence
                                              andParent:nil
                                           successBlock:success

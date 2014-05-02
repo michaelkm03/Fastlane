@@ -191,7 +191,6 @@
 }
 
 - (AFHTTPRequestOperation*)uploadURLs:(NSDictionary*)allUrls
-                       fileExtensions:(NSDictionary*)allExtensions
                                toPath:(NSString*)path
                            parameters:(NSDictionary*)parameters
                          successBlock:(VSuccessBlock)successBlock
@@ -215,11 +214,11 @@
      {
          [allUrls enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop)
           {
-              NSString* extension = allExtensions[key];
+              NSString* extension = [[obj pathExtension] lowercaseStringWithLocale:[NSLocale localeWithLocaleIdentifier:@"en_US_POSIX"]];
               if(extension)
               {
-                  NSString* mimeType = [extension isEqualToString:VConstantMediaExtensionMOV]
-                  ? @"video/quicktime" : @"image/png";
+                  NSString* mimeType = [extension isEqualToString:VConstantMediaExtensionMOV] || [extension isEqualToString:VConstantMediaExtensionMP4]
+                    ? @"video/quicktime" : @"image/png";
                   
                   [formData appendPartWithFileURL:obj
                                              name:key

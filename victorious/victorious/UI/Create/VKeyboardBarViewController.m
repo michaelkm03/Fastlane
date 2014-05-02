@@ -17,7 +17,6 @@
 
 @property (nonatomic, weak) IBOutlet UITextView *textView;
 @property (weak, nonatomic) IBOutlet UIButton *mediaButton;
-@property (nonatomic, strong) NSString*  mediaExtension;
 @property (nonatomic, strong) NSURL* mediaURL;
 
 @end
@@ -52,10 +51,9 @@
     }
     
     [self.textView resignFirstResponder];
-    [self.delegate keyboardBar:self didComposeWithText:self.textView.text mediaURL:self.mediaURL mediaExtension:self.mediaExtension];
+    [self.delegate keyboardBar:self didComposeWithText:self.textView.text mediaURL:self.mediaURL];
     [self.mediaButton setImage:[UIImage imageNamed:@"MessageCamera"] forState:UIControlStateNormal];
     self.textView.text = nil;
-    self.mediaExtension = nil;
     self.mediaURL = nil;
 }
 
@@ -68,12 +66,11 @@
     }
     
     VCameraViewController *cameraViewController = [VCameraViewController cameraViewController];
-    cameraViewController.completionBlock = ^(BOOL finished, UIImage *previewImage, NSURL *capturedMediaURL, NSString *mediaExtension)
+    cameraViewController.completionBlock = ^(BOOL finished, UIImage *previewImage, NSURL *capturedMediaURL)
     {
         if (finished)
         {
             self.mediaURL = capturedMediaURL;
-            self.mediaExtension = mediaExtension;
             [self.mediaButton setImage:previewImage forState:UIControlStateNormal];
         }
         [self dismissViewControllerAnimated:YES completion:nil];

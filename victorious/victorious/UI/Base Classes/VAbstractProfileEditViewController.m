@@ -61,17 +61,13 @@
 {
     UINavigationController *navigationController = [[UINavigationController alloc] init];
     VCameraViewController *cameraViewController = [VCameraViewController cameraViewControllerLimitedToPhotos];
-    cameraViewController.completionBlock = ^(BOOL finished, UIImage *previewImage, NSURL *capturedMediaURL, NSString *mediaExtension)
+    cameraViewController.completionBlock = ^(BOOL finished, UIImage *previewImage, NSURL *capturedMediaURL)
     {
         [self dismissViewControllerAnimated:YES completion:nil];
         if (finished && capturedMediaURL)
         {
-            NSData *imageData = [NSData dataWithContentsOfURL:capturedMediaURL];
-            if (imageData)
-            {
-                self.profileImageView.image = [UIImage imageWithData:imageData];
-            }
-            [[NSFileManager defaultManager] removeItemAtURL:capturedMediaURL error:nil];
+            self.profileImageView.image = previewImage;
+            self.updatedProfileImage = capturedMediaURL;
         }
     };
     [navigationController pushViewController:cameraViewController animated:NO];

@@ -11,6 +11,8 @@
 @interface VAbstractProfileEditViewController : UITableViewController   <UITextFieldDelegate, UITextViewDelegate, UINavigationControllerDelegate>
 @property (nonatomic, strong)   VUser*          profile;
 
+@property (nonatomic, strong)   NSURL*          updatedProfileImage;
+
 @property (nonatomic, weak) IBOutlet UITextField*   usernameTextField;
 @property (nonatomic, weak) IBOutlet UITextField*   locationTextField;
 @property (nonatomic, weak) IBOutlet UITextView*    taglineTextView;
