@@ -8,6 +8,6 @@
 
 @interface UIImage (Cropping)
 
-- (UIImage *)squareImageScaledToSize:(CGSize)newSize;
+- (UIImage *)squareImageScaledToSize:(NSUInteger)newSize;
 
 @end

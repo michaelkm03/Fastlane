@@ -661,7 +661,7 @@ const   NSTimeInterval  kAnimationDuration      =   0.4;
 {
     if (!error)
     {
-        UIImage *photo = [photoDict[VCAudioVideoRecorderPhotoImageKey] squareImageScaledToSize:CGSizeMake(640.0, 640.0)];
+        UIImage *photo = [photoDict[VCAudioVideoRecorderPhotoImageKey] squareImageScaledToSize:640.0];
         NSData *pngData = UIImagePNGRepresentation(photo);
         
         NSURL *tempDirectory = [NSURL fileURLWithPath:NSTemporaryDirectory() isDirectory:YES];
