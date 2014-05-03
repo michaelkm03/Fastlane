@@ -17,6 +17,8 @@
 #import "VSequence+Restkit.h"
 #import "VComment.h"
 
+@import MediaPlayer;
+
 @implementation VObjectManager (ContentCreation)
 
 #pragma mark - Sequence Methods
@@ -161,8 +163,16 @@
     //If its not one of these its an image, so we can use that for the preview
     if ([extension isEqualToString:VConstantMediaExtensionMOV] || [extension isEqualToString:VConstantMediaExtensionMP4])
     {
+        MPMoviePlayerController *player = [[MPMoviePlayerController alloc] initWithContentURL:[NSURL URLWithString:mediaURLPath]];
+        UIImage  *thumbnail = [player thumbnailImageAtTime:1.0 timeOption:MPMovieTimeOptionNearestKeyFrame];
+        NSData *imgData = UIImageJPEGRepresentation(thumbnail, 1);
+        #warning Make sure to verify that we are properly deleting the old obj
+        mediaURLPath = [[mediaURLPath stringByDeletingPathExtension] stringByAppendingString:@".jpg"];
+        [imgData writeToFile:mediaURLPath atomically:YES];
+        player = nil;
         
     }
+
     tempSequence.previewImage = mediaURLPath;
     
     tempSequence.user = self.mainUser;

@@ -131,38 +131,59 @@
     }
     
     RKManagedObjectRequestOperation *requestOperation =
-        [self  appropriateObjectRequestOperationWithObject:object method:method path:path parameters:parameters];
+    [self  appropriateObjectRequestOperationWithObject:object method:method path:path parameters:parameters];
+
+     void (^rkSuccessBlock) (RKObjectRequestOperation*, RKMappingResult*) = ^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult)
+    {
+        NSMutableArray* mappedObjects = [mappingResult.array mutableCopy];
+        VErrorMessage* error;
+        for (id object in mappedObjects)
+        {
+            if([object isKindOfClass:[VErrorMessage class]])
+            {
+                error = object;
+                [mappedObjects removeObject:object];
+                break;
+            }
+        }
+        
+        if (error.errorCode == kVUnauthoizedError && self.mainUser)
+        {
+            self.mainUser = nil;
+            [self requestMethod:method object:object path:path parameters:parameters successBlock:successBlock failBlock:failBlock];
+        }
+        else if (error.errorCode && failBlock)
+        {
+            failBlock(operation, [NSError errorWithDomain:kVictoriousDomain code:error.errorCode
+                                                 userInfo:@{NSLocalizedDescriptionKey:[error.errorMessages componentsJoinedByString:@","]}]);
+        }
+        else if (!error.errorCode && successBlock)
+        {
+            //Grab the response data, and make sure to process it... we must guarentee that the payload is a dictionary
+            NSMutableDictionary *JSON = [[NSJSONSerialization JSONObjectWithData:operation.HTTPRequestOperation.responseData options:0 error:nil] mutableCopy];
+            if (![JSON[@"payload"] isKindOfClass:[NSDictionary class]])
+            {
+                [JSON removeObjectForKey:@"payload"];
+            }
+            successBlock(operation, JSON, mappedObjects);
+        }
+    };
     
-    [requestOperation setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult)
-     {
-         NSMutableArray* mappedObjects = [mappingResult.array mutableCopy];
-         VErrorMessage* error;
-         for (id object in mappedObjects)
-         {
-             if([object isKindOfClass:[VErrorMessage class]])
-             {
-                 error = object;
-                 [mappedObjects removeObject:object];
-                 break;
-             }
-         }
-         
-         if (error.errorCode && failBlock)
-             failBlock(operation, [NSError errorWithDomain:kVictoriousDomain code:error.errorCode
-                                       userInfo:@{NSLocalizedDescriptionKey:[error.errorMessages componentsJoinedByString:@","]}]);
-         else if (successBlock)
-         {
-             //Grab the response data, and make sure to process it... we must guarentee that the payload is a dictionary
-             NSMutableDictionary *JSON = [[NSJSONSerialization JSONObjectWithData:operation.HTTPRequestOperation.responseData options:0 error:nil] mutableCopy];
-             if (![JSON[@"payload"] isKindOfClass:[NSDictionary class]])
-             {
-                 [JSON removeObjectForKey:@"payload"];
-             }
-             successBlock(operation, JSON, mappedObjects);
-         }
-     }
-                                            failure:failBlock];
+    VFailBlock rkFailBlock = ^(NSOperation* operation, NSError* error)
+    {
+        RKErrorMessage* rkErrorMessage = [error.userInfo[RKObjectMapperErrorObjectsKey] firstObject];
+        if (rkErrorMessage.errorMessage.integerValue == kVUnauthoizedError && self.mainUser)
+        {
+            self.mainUser = nil;
+            [self requestMethod:method object:object path:path parameters:parameters successBlock:successBlock failBlock:failBlock];
+        }
+        else if (failBlock)
+        {
+            failBlock(operation, error);
+        }
+    };
     
+    [requestOperation setCompletionBlockWithSuccess:rkSuccessBlock failure:rkFailBlock];
     [requestOperation start];
     return requestOperation;
 }
