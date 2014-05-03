@@ -258,18 +258,19 @@
     //Wrap the vsuccess block in a afsuccess block
     void (^afSuccessBlock)(AFHTTPRequestOperation *operation, id responseObject)  = ^(AFHTTPRequestOperation *operation, id responseObject)
     {
-        NSError* error = [self errorForResponse:responseObject];
+        NSError             *error                 = [self errorForResponse:responseObject];
+        NSMutableDictionary *mutableResponseObject = [responseObject mutableCopy];
         
-        if (![responseObject[@"payload"] isKindOfClass:[NSDictionary class]])
+        if (mutableResponseObject[@"payload"] && ![mutableResponseObject[@"payload"] isKindOfClass:[NSDictionary class]])
         {
-            [responseObject removeObjectForKey:@"payload"];
+            [mutableResponseObject removeObjectForKey:@"payload"];
         }
         
         if (error && failBlock)
             failBlock(operation, error);
         
         if (!error && successBlock)
-            successBlock(operation, responseObject, nil);
+            successBlock(operation, mutableResponseObject, nil);
     };
     
     AFHTTPRequestOperation *operation = [self.HTTPClient HTTPRequestOperationWithRequest:request
