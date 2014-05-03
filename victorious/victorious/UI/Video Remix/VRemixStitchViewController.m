@@ -291,8 +291,9 @@
     if (isAssetPortrait)
     {
         assetScaleToFitRatio = 320.0 / videoTrack.naturalSize.height;
-        CGAffineTransform assetScaleFactor = CGAffineTransformMakeScale(assetScaleToFitRatio, assetScaleToFitRatio);
-        [videoLayerInstruction setTransform:CGAffineTransformConcat(videoTrack.preferredTransform, assetScaleFactor) atTime:insertionTime];
+        CGAffineTransform assetScaleTransform = CGAffineTransformMakeScale(assetScaleToFitRatio, assetScaleToFitRatio);
+        CGAffineTransform assetTranslationTransform = CGAffineTransformMakeTranslation(0, (320.0f - videoTrack.naturalSize.width * assetScaleToFitRatio) * 0.5f);
+        [videoLayerInstruction setTransform:CGAffineTransformConcat(videoTrack.preferredTransform, CGAffineTransformConcat(assetScaleTransform, assetTranslationTransform)) atTime:insertionTime];
     }
     else
     {
