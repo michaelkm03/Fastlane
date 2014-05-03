@@ -312,6 +312,7 @@
     AVAsset*    asset = [AVAsset assetWithURL:aURL];
     self.imageGenerator = [AVAssetImageGenerator assetImageGeneratorWithAsset:asset];
     self.imageGenerator.maximumSize = CGSizeMake(84, 84);
+    self.imageGenerator.appliesPreferredTrackTransform = YES;
     
     int picWidth = 42;
     Float64 durationSeconds = CMTimeGetSeconds([asset duration]);
@@ -333,25 +334,27 @@
      {
          if (result == AVAssetImageGeneratorSucceeded)
          {
-             UIImage *videoScreen = [[UIImage alloc] initWithCGImage:image];
-             UIImageView *tmp = [[UIImageView alloc] initWithImage:videoScreen];
-             tmp.frame = CGRectMake(0, 3, 42, 42);
-             tmp.contentMode = UIViewContentModeScaleAspectFill;
-             
-             int all = (i+1) * tmp.frame.size.width;
-             
-             CGRect currentFrame = tmp.frame;
-             currentFrame.origin.x = i * currentFrame.size.width;
-             if (all > background.frame.size.width)
-             {
-                 int delta = all - background.frame.size.width;
-                 currentFrame.size.width -= delta;
-             }
-             
-             tmp.frame = currentFrame;
-             i++;
+             UIImage*      thumb = [[UIImage alloc] initWithCGImage:image];
              
              dispatch_async(dispatch_get_main_queue(), ^{
+                 UIImageView*  tmp = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 42, 42)];
+                 tmp.image = thumb;
+                 tmp.backgroundColor = [UIColor redColor];
+                 tmp.contentMode = UIViewContentModeScaleAspectFill;
+                 
+                 int total = (i+1) * tmp.frame.size.width;
+                 
+                 CGRect currentFrame = tmp.frame;
+                 currentFrame.origin.x = i * currentFrame.size.width;
+                 if (total > background.frame.size.width)
+                 {
+                     int delta = total - background.frame.size.width;
+                     currentFrame.size.width -= delta;
+                 }
+                 
+                 tmp.frame = currentFrame;
+                 i++;
+                 
                  [background addSubview:tmp];
                  [background setNeedsDisplay];
              });
