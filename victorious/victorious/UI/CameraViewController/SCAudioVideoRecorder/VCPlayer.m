@@ -271,6 +271,14 @@ VCPlayer * currentVCVideoPlayer = nil;
 		[composition insertTimeRange:timeRange ofAsset:asset atTime:composition.duration error:nil];
 	}
 	
+    NSArray *tracks = [asset tracksWithMediaType:AVMediaTypeVideo];
+    if ([tracks count])
+    {
+        AVAssetTrack *assetTrack = tracks[0];
+        AVMutableCompositionTrack *compositionTrack = [composition mutableTrackCompatibleWithTrack:assetTrack];
+        compositionTrack.preferredTransform = assetTrack.preferredTransform;
+    }
+    
 	[self setItemByAsset:composition];
 	
 	self.itemsLoopLength = loopCount;

@@ -269,50 +269,52 @@
 {
     self.imageGenerator = [AVAssetImageGenerator assetImageGeneratorWithAsset:self.videoAsset];
     self.imageGenerator.maximumSize = CGSizeMake(84, 84);
-
-    int picWidth = 42;
+    self.imageGenerator.appliesPreferredTrackTransform = YES;
 
     _durationSeconds = CMTimeGetSeconds([self.videoAsset duration]);
-    int picsCnt = ceil(_backgroundView.frame.size.width / picWidth);
-    NSMutableArray *allTimes = [[NSMutableArray alloc] init];
+
     int time4Pic = 0;
+    int picWidth = 42;
+    int picsCnt = ceil(_backgroundView.frame.size.width / picWidth);
+    NSMutableArray*     allTimes = [[NSMutableArray alloc] initWithCapacity:picsCnt];
 
     for (int i=0; i<picsCnt; i++)
     {
-        time4Pic = i*picWidth;
-        CMTime timeFrame = CMTimeMakeWithSeconds(_durationSeconds*time4Pic/_backgroundView.frame.size.width, 600);
+        time4Pic = i * picWidth;
+        CMTime timeFrame = CMTimeMakeWithSeconds(_durationSeconds * time4Pic / _backgroundView.frame.size.width, 600);
         [allTimes addObject:[NSValue valueWithCMTime:timeFrame]];
     }
 
-    NSArray *times = allTimes;
     __block int i = 0;
-    [self.imageGenerator generateCGImagesAsynchronouslyForTimes:times
+    [self.imageGenerator generateCGImagesAsynchronouslyForTimes:allTimes
                                               completionHandler:^(CMTime requestedTime, CGImageRef image, CMTime actualTime, AVAssetImageGeneratorResult result, NSError *error)
                                                 {
                                                   if (result == AVAssetImageGeneratorSucceeded)
                                                   {
-                                                      UIImage *videoScreen = [[UIImage alloc] initWithCGImage:image];
-                                                      UIImageView *tmp = [[UIImageView alloc] initWithImage:videoScreen];
-                                                      tmp.frame = CGRectMake(0, 0, 42, 42);
-                                                      tmp.contentMode = UIViewContentModeScaleAspectFill;
-
-                                                      int all = (i+1)*tmp.frame.size.width;
-
-                                                      CGRect currentFrame = tmp.frame;
-                                                      currentFrame.origin.x = i*currentFrame.size.width;
-                                                      if (all > _backgroundView.frame.size.width)
-                                                      {
-                                                          int delta = all - _backgroundView.frame.size.width;
-                                                          currentFrame.size.width -= delta;
-                                                      }
-                                                      tmp.frame = currentFrame;
-                                                      i++;
-
+                                                      UIImage*      thumb = [[UIImage alloc] initWithCGImage:image];
+                                                      
                                                       dispatch_async(dispatch_get_main_queue(), ^{
+                                                          UIImageView*  tmp = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 42, 42)];
+                                                          tmp.image = thumb;
+                                                          tmp.backgroundColor = [UIColor redColor];
+                                                          tmp.contentMode = UIViewContentModeScaleAspectFill;
+
+                                                          int total = (i+1) * tmp.frame.size.width;
+
+                                                          CGRect currentFrame = tmp.frame;
+                                                          currentFrame.origin.x = i * currentFrame.size.width;
+                                                          if (total > _backgroundView.frame.size.width)
+                                                          {
+                                                              int delta = total - _backgroundView.frame.size.width;
+                                                              currentFrame.size.width -= delta;
+                                                          }
+                                                          
+                                                          tmp.frame = currentFrame;
+                                                          i++;
+
                                                           [_backgroundView addSubview:tmp];
                                                           [_backgroundView setNeedsDisplay];
                                                       });
-                                                      
                                                   }
 
                                                   if (result == AVAssetImageGeneratorFailed)
