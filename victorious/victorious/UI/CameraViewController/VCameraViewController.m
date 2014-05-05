@@ -93,7 +93,7 @@ const   NSTimeInterval  kAnimationDuration      =   0.4;
     self.camera.previewVideoGravity = VCVideoGravityResizeAspectFill;
     self.camera.previewView = self.previewView;
 	self.camera.videoOrientation = AVCaptureVideoOrientationPortrait;
-	self.camera.recordingDurationLimit = CMTimeMakeWithSeconds(15, 1);
+	self.camera.recordingDurationLimit = CMTimeMakeWithSeconds(VConstantsMaximumVideoDuration, 1);
     self.camera.videoEncoder.outputVideoSize = CGSizeMake(320.0, 320.0);
 
     BOOL    hasFrontCamera = [UIImagePickerController isCameraDeviceAvailable:UIImagePickerControllerCameraDeviceFront];
@@ -540,7 +540,7 @@ const   NSTimeInterval  kAnimationDuration      =   0.4;
 
 - (void)updateProgressForSecond:(Float64)totalRecorded
 {
-    self.progressView.progress = totalRecorded / 15.0;
+    self.progressView.progress = totalRecorded / VConstantsMaximumVideoDuration;
 }
 
 #pragma mark - Navigation

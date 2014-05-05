@@ -9,6 +9,7 @@
 #import "VRemixSelectViewController.h"
 #import "VCVideoPlayerView.h"
 #import "VRemixTrimViewController.h"
+#import "VObjectManager+ContentCreation.h"
 #import "VThemeManager.h"
 #import "MBProgressHUD.h"
 #import "VConstants.h"
@@ -46,7 +47,7 @@
 	
     self.previewView.player.shouldLoop = YES;
     self.previewView.player.startSeconds = 0;
-    self.previewView.player.endSeconds = 15;
+    self.previewView.player.endSeconds = VConstantsMaximumVideoDuration;
 
     UIImage*    closeButtonImage = [[UIImage imageNamed:@"cameraButtonClose"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithImage:closeButtonImage style:UIBarButtonItemStyleBordered target:self action:@selector(closeButtonClicked:)];
@@ -85,7 +86,7 @@
 - (IBAction)nextButtonClicked:(id)sender
 {
     [self.previewView.player pause];
-    [self downloadVideoSegmentAtURL:self.sourceURL atTime:self.previewView.player.startSeconds];
+    [self downloadVideoSegmentForSequenceID:self.parentID atTime:self.previewView.player.startSeconds];
 }
 
 -(IBAction)scrubberDidStartMoving:(id)sender
@@ -110,7 +111,7 @@
         
         [self.previewView.player seekToTime:CMTimeMakeWithSeconds(time, NSEC_PER_SEC)];
         self.previewView.player.startSeconds = time;
-        self.previewView.player.endSeconds = time + 15;
+        self.previewView.player.endSeconds = time + VConstantsMaximumVideoDuration;
     }
 }
 
@@ -137,17 +138,18 @@
 
 #pragma mark - Support
 
-- (void)downloadVideoSegmentAtURL:(NSURL *)segmentURL atTime:(NSTimeInterval)internval
+- (void)downloadVideoSegmentForSequenceID:(NSInteger)sequenceID atTime:(NSTimeInterval)interval
 {
     self.progressHUD =   [MBProgressHUD showHUDAddedTo:self.view animated:YES];
     self.progressHUD.mode = MBProgressHUDModeIndeterminate;
     self.progressHUD.labelText = NSLocalizedString(@"JustAMoment", @"");
     self.progressHUD.detailsLabelText = NSLocalizedString(@"LocatingVideo", @"");
 
-    //  Place the Calling of the API here
-    //  and pass the resulting URL into the next routine
-    
-    [self downloadVideoSegmentAtURL:segmentURL];
+    [[VObjectManager sharedManager] fetchRemixMP4UrlForSequenceID:@(sequenceID) atStartTime:interval duration:VConstantsMaximumVideoDuration completionBlock:^(BOOL completion, NSURL *remixMp4Url)
+     {
+         if (completion)
+             [self downloadVideoSegmentAtURL:remixMp4Url];
+     }];
 }
 
 - (void)downloadVideoSegmentAtURL:(NSURL *)segmentURL
