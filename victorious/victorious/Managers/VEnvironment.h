@@ -1,0 +1,21 @@
+//
+//  VEnvironment.h
+//  victorious
+//
+//  Created by Josh Hinman on 5/5/14.
+//  Copyright (c) 2014 Victorious. All rights reserved.
+//
+
+#import <Foundation/Foundation.h>
+
+/**
+ A VEnvironment object represents a server environment, like Dev, QA or Production.
+ */
+@interface VEnvironment : NSObject
+
+@property (nonatomic, readonly) NSString *name;
+@property (nonatomic, readonly) NSURL    *baseURL;
+
+- (instancetype)initWithName:(NSString *)name baseURL:(NSURL *)baseURL;
+
+@end
