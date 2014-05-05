@@ -172,9 +172,11 @@
 {
     if (type == kVLoopRepeat)
         return @"loop";
+    
     if (type == kVLoopReverse)
         return @"reverse";
-    return nil;
+
+    return @"once";
 }
 
 - (VSequence*)newSequenceWithID:(NSNumber*)remoteID
