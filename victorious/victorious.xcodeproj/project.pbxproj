@@ -1066,8 +1066,8 @@
 		BE171D811868BE64004E5202 /* victorious */ = {
 			isa = PBXGroup;
 			children = (
-				BE171D8A1868BE64004E5202 /* VAppDelegate.h */,
 				BE171D8B1868BE64004E5202 /* VAppDelegate.m */,
+				BE171D8A1868BE64004E5202 /* VAppDelegate.h */,
 				3F9B665B188878C60046F826 /* UI */,
 				BE171DD91868C211004E5202 /* Managers */,
 				BEE9C8BB18CE90230095C737 /* Protocols */,
