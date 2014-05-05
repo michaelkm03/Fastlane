@@ -22,6 +22,38 @@
 
 @implementation VObjectManager (ContentCreation)
 
+#pragma mark - Remix
+- (RKManagedObjectRequestOperation*)fetchRemixMP4UrlForSequenceID:(NSNumber*)sequenceID
+                                             atStartTime:(CGFloat)startTime
+                                                duration:(CGFloat)duration
+                                         completionBlock:(VRemixCompletionBlock)completionBlock
+{
+    VSuccessBlock success = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
+    {
+        VLog(@"Succeeded with objects: %@", resultObjects);
+        if (completionBlock)
+        {
+            NSURL* remixURL = [NSURL URLWithString:fullResponse[@"payload"][@"mp4_url"]];
+            completionBlock(YES, remixURL);
+        }
+    };
+    
+    VFailBlock fail = ^(NSOperation* operation, NSError* error)
+    {
+        VLog(@"Failed with error: %@", error);
+        if (completionBlock)
+        {
+            completionBlock(NO, nil);
+        }
+    };
+    
+    NSString* path = [[[@"/api/remix/fetch" stringByAppendingPathComponent:sequenceID.stringValue]
+                       stringByAppendingPathComponent:@(startTime).stringValue]
+                      stringByAppendingPathComponent:@(duration).stringValue];
+    
+    return [self GET:path object:nil parameters:nil successBlock:success failBlock:fail];
+}
+
 #pragma mark - Sequence Methods
 - (AFHTTPRequestOperation * )createPollWithName:(NSString*)name
                                     description:(NSString*)description
@@ -109,20 +141,20 @@
     
     VSuccessBlock fullSuccess = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
     {
-        NSDictionary* payload = fullResponse[@"payload"];
-        
-        NSNumber* sequenceID = payload[@"sequence_id"];
-        VSequence* newSequence = [self newSequenceWithID:sequenceID
-                                                    name:name
-                                             description:description
-                                            mediaURLPath:[mediaUrl absoluteString]];
-
-        if (success)
-            success(operation, fullResponse, @[newSequence]);
-        
-//        //old way
+//        NSDictionary* payload = fullResponse[@"payload"];
+//        
+//        NSNumber* sequenceID = payload[@"sequence_id"];
+//        VSequence* newSequence = [self newSequenceWithID:sequenceID
+//                                                    name:name
+//                                             description:description
+//                                            mediaURLPath:[mediaUrl absoluteString]];
+//
 //        if (success)
-//            success(operation, fullResponse, resultObjects);
+//            success(operation, fullResponse, @[newSequence]);
+        
+        //old way
+        if (success)
+            success(operation, fullResponse, resultObjects);
         
 //        [self fetchSequence:sequenceID
 //               successBlock:success

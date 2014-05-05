@@ -99,7 +99,6 @@ CGFloat kContentMediaViewOffset = 154;
     
     self.firstPollButton.hidden = YES;
     self.secondPollButton.hidden = YES;
-    
 }
 
 - (void)viewWillDisappear:(BOOL)animated
