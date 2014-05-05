@@ -36,7 +36,6 @@ static NSString * const kCurrentEnvironmentKey = @"com.victorious.VObjectManager
     {
         [[NSUserDefaults standardUserDefaults] setObject:currentEnvironment.name forKey:kCurrentEnvironmentKey];
         [[NSUserDefaults standardUserDefaults] synchronize];
-        [self setupObjectManager];
     }
 }
 

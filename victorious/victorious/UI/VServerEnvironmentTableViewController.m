@@ -67,6 +67,8 @@
     cell.accessoryType = UITableViewCellAccessoryCheckmark;
     [VObjectManager setCurrentEnvironment:self.serverEnvironments[indexPath.row]];
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"" message:@"Please restart the app for this change to take effect." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+    [alert show];
 }
 
 @end
