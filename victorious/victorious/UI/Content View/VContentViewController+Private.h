@@ -51,6 +51,8 @@
 
 @property (strong, nonatomic) id<UIViewControllerTransitioningDelegate> transitionDelegate;
 
+@property (nonatomic) BOOL appearing; ///< YES if this view is the topmost view of the application window. NO if not.
+
 - (void)updateActionBar;
 
 @end

@@ -70,19 +70,24 @@ CGFloat kContentMediaViewOffset = 154;
 {
     [super viewDidAppear:animated];
     
-    [self.navigationController setNavigationBarHidden:YES animated:NO];
-    
-    [self updateActionBar];
-    
-    self.navigationController.delegate = self;
-
+    if (!self.appearing)
+    {
+        self.appearing = YES;
+        [self.navigationController setNavigationBarHidden:YES animated:NO];
+        [self updateActionBar];
+        self.navigationController.delegate = self;
+    }
 }
 
 - (void)viewDidDisappear:(BOOL)animated
 {
     [super viewDidDisappear:animated];
     
-    [self resetView];
+    if (UIApplication.sharedApplication.delegate.window.isKeyWindow)
+    {
+        self.appearing = NO;
+        [self resetView];
+    }
 }
 
 - (void)resetView
@@ -105,16 +110,19 @@ CGFloat kContentMediaViewOffset = 154;
 {
     [super viewWillDisappear:animated];
     
-    if (self.navigationController.delegate == self)
+    if (UIApplication.sharedApplication.delegate.window.isKeyWindow)
     {
-        self.navigationController.delegate = nil;
+        if (self.navigationController.delegate == self)
+        {
+            self.navigationController.delegate = nil;
+        }
+        
+        [self.mpController.view removeFromSuperview];
+        [self.mpController pause];
+        self.mpController = nil;
+        
+        self.orAnimator = nil;
     }
-    
-    [self.mpController.view removeFromSuperview];
-    [self.mpController pause];
-    self.mpController = nil;
-    
-    self.orAnimator = nil;
 }
 
 -(VInteractionManager*)interactionManager
