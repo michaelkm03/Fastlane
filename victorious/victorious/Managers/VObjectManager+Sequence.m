@@ -66,7 +66,7 @@ NSString* const kPollResultsLoaded = @"kPollResultsLoaded";
     VFailBlock fullFail = ^(NSOperation* operation, NSError* error)
     {
         //keep trying until we are done transcoding
-        if (error.code == 5500 && attemptCount < 15)
+        if (error.code == kVStillTranscodingError && attemptCount < 15)
         {
             double delayInSeconds = 2.0;
             dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
@@ -259,9 +259,6 @@ NSString* const kPollResultsLoaded = @"kPollResultsLoaded";
            failBlock:fail];
 }
 
-
-
-
 - (RKManagedObjectRequestOperation *)pollResultsForSequence:(VSequence*)sequence
                                                successBlock:(VSuccessBlock)success
                                                   failBlock:(VFailBlock)fail
@@ -293,143 +290,6 @@ NSString* const kPollResultsLoaded = @"kPollResultsLoaded";
           parameters:nil
         successBlock:fullSuccess
            failBlock:fail];
-}
-
-#pragma mark - Create Methods
-- (AFHTTPRequestOperation * )createPollWithName:(NSString*)name
-                                    description:(NSString*)description
-                                       question:(NSString*)question
-                                    answer1Text:(NSString*)answer1Text
-                                    answer2Text:(NSString*)answer2Text
-                                     media1Data:(NSData*)media1Data
-                                media1Extension:(NSString*)media1Extension
-                                     media2Data:(NSData*)media2Data
-                                media2Extension:(NSString*)media2Extension
-                                   successBlock:(VSuccessBlock)success
-                                      failBlock:(VFailBlock)fail
-{
-    //Required Fields
-    NSDictionary* parameters = @{@"name":name ?: [NSNull null],
-                                 @"description":description ?: [NSNull null],
-                                 @"question":question ?: [NSNull null],
-                                 @"answer1_label" : answer1Text ?: [NSNull null],
-                                 @"answer2_label" : answer2Text ?: [NSNull null]};
-
-    NSMutableDictionary *allData = [[NSMutableDictionary alloc] init];
-    NSMutableDictionary *allExtensions = [[NSMutableDictionary alloc] init];
-
-    if (media1Data && ![media1Extension isEmpty] && media2Data && ![media2Extension isEmpty])
-    {
-        allData[@"answer1_media"] = media1Data;
-        allExtensions[@"answer1_media"] = media1Extension;
-
-        allData[@"answer2_media"] = media2Data;
-        allExtensions[@"answer2_media"] = media2Extension;
-    }
-    else if (media1Data && ![media1Extension isEmpty] )
-    {
-        allData[@"poll_media"] = media1Data;
-        allExtensions[@"poll_media"] = media1Extension;
-    }
-    
-    VSuccessBlock fullSuccess = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
-    {
-        if ([fullResponse[@"error"] integerValue] == 0)
-        {
-            NSDictionary* payload = fullResponse[@"payload"];
-            if (![payload isKindOfClass:[NSDictionary class]])
-            {
-                payload = nil;
-            }
-            
-            NSNumber* sequenceID = payload[@"sequence_id"];
-
-            [self fetchSequence:sequenceID
-                   successBlock:success
-                      failBlock:fail];
-        }
-        else
-        {
-            NSError*    error = [NSError errorWithDomain:NSCocoaErrorDomain code:[fullResponse[@"error"] integerValue] userInfo:nil];
-            if (fail)
-                fail(operation, error);
-        }
-    };
-    
-    return [self upload:allData
-          fileExtension:allExtensions
-                 toPath:@"/api/poll/create"
-             parameters:parameters
-           successBlock:fullSuccess
-              failBlock:fail];
-}
-
-- (AFHTTPRequestOperation * )uploadMediaWithName:(NSString*)name
-                                     description:(NSString*)description
-                                       expiresAt:(NSString*)expiresAt
-                                    parentNodeId:(NSNumber*)parentNodeId
-                                           speed:(CGFloat)speed
-                                        loopType:(VLoopType)loopType
-                                    shareOptions:(VShareOptions)shareOptions
-                                       mediaData:(NSData*)mediaData
-                                       extension:(NSString*)extension
-                                    successBlock:(VSuccessBlock)success
-                                       failBlock:(VFailBlock)fail
-{
-    if (!mediaData || !extension)
-        return nil;
-    
-    NSMutableDictionary* parameters = [@{@"name":name ?: [NSNull null],
-                                         @"description":description ?: [NSNull null]} mutableCopy];
-    if (expiresAt)
-        parameters[@"expires_at"] = expiresAt;
-    if (parentNodeId && ![parentNodeId isEqualToNumber:@(0)])
-        parameters[@"parent_node_id"] = parentNodeId;
-    if (shareOptions & kVShareToFacebook)
-        parameters[@"share_facebook"] = @"1";
-    if (shareOptions & kVShareToTwitter)
-        parameters[@"share_twitter"] = @"1";
-    
-    NSString* loopParam = [self stringForLoopType:loopType];
-    if (loopParam && speed)
-    {
-        parameters[@"speed"] = @(speed);
-        parameters[@"playback"] = loopParam;
-    }
-    
-    NSDictionary* allData = @{@"media_data":mediaData ?: [NSNull null]};
-    NSDictionary* allExtensions = @{@"media_data":extension ?: [NSNull null]};
-    
-    VSuccessBlock fullSuccess = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
-    {
-        NSDictionary* payload = fullResponse[@"payload"];
-        if (![payload isKindOfClass:[NSDictionary class]])
-        {
-            payload = nil;
-        }
-        
-        NSNumber* sequenceID = payload[@"sequence_id"];
-
-        [self fetchSequence:sequenceID
-               successBlock:success
-                  failBlock:fail];
-    };
-    
-    return [self upload:allData
-          fileExtension:allExtensions
-                 toPath:@"/api/mediaupload/create"
-             parameters:[parameters copy]
-           successBlock:fullSuccess
-              failBlock:fail];
-}
-
-- (NSString*)stringForLoopType:(VLoopType)type
-{
-    if (type == kVLoopRepeat)
-        return @"loop";
-    if (type == kVLoopReverse)
-        return @"reverse";
-    return nil;
 }
 
 @end

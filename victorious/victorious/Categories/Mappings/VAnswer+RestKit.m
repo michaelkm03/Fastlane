@@ -25,7 +25,8 @@
                                   @"is_correct" : VSelectorName(isCorrect),
                                   @"label_media_url" : VSelectorName(mediaUrl),
                                   @"points" : VSelectorName(points),
-                                  @"currency" : VSelectorName(currency)
+                                  @"currency" : VSelectorName(currency),
+                                  @"label_thumbnail_url" :  VSelectorName(thumbnailUrl)
                                   };
     
     RKEntityMapping *mapping = [RKEntityMapping

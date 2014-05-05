@@ -44,7 +44,8 @@ extern NSString * const VCAudioVideoRecorderPhotoThumbnailKey; // 160x120
 @class VCVideoEncoder;
 @class VCAudioEncoder;
 
-@interface VCAudioVideoRecorder : NSObject<VCDataEncoderDelegate> {
+@interface VCAudioVideoRecorder : NSObject<VCDataEncoderDelegate>
+{
     
 }
 

@@ -26,10 +26,8 @@
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:imageUrl];
     [request addValue:@"image/*" forHTTPHeaderField:@"Accept"];
     
-    UIImage* placeholderImage = [UIImage resizeableImageWithColor:[[VThemeManager sharedThemeManager] themedColorForKey:kVBackgroundColor]];
-    
     [self.previewImage setImageWithURLRequest:request
-                             placeholderImage:placeholderImage
+                             placeholderImage:self.backgroundImage.image
                                       success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image)
      {
          CGFloat yRatio = 1;

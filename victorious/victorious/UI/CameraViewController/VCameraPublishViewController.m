@@ -11,7 +11,7 @@
 #import "VCameraPublishViewController.h"
 #import "VSetExpirationViewController.h"
 #import "UIImage+ImageEffects.h"
-#import "VObjectManager+Sequence.h"
+#import "VObjectManager+ContentCreation.h"
 #import "VConstants.h"
 #import "NSString+VParseHelp.h"
 #import "VThemeManager.h"
@@ -96,8 +96,8 @@
     
     if ([self.textView.text isEmpty])
     {
-        UIAlertView*    alert   = [[UIAlertView alloc] initWithTitle:@"Description Required"
-                                                             message:@"You need to enter a description for your media."
+        UIAlertView*    alert   = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"PublishDescriptionRequired", @"")
+                                                             message:NSLocalizedString(@"PublishDescription", @"")
                                                             delegate:nil
                                                    cancelButtonTitle:nil
                                                    otherButtonTitles:NSLocalizedString(@"OKButton", @""), nil];
@@ -108,13 +108,6 @@
     VShareOptions shareOptions = self.useFacebook ? kVShareToFacebook : kVShareNone;
     shareOptions = self.useTwitter ? shareOptions | kVShareToTwitter : shareOptions;
     
-    NSData* mediaData = [NSData dataWithContentsOfURL:self.mediaURL];
-    [[NSFileManager defaultManager] removeItemAtURL:self.mediaURL error:nil];
-    if (!mediaData)
-    {
-        return; // TODO: some kind of error message here?
-    }
-
     CGFloat playbackSpeed;
     if (self.playBackSpeed == kVPlaybackNormalSpeed)
         playbackSpeed = 1.0;
@@ -123,6 +116,8 @@
     else
         playbackSpeed = 0.5;
 
+    __block NSURL* mediaToRemove = self.mediaURL;
+    
     [[VObjectManager sharedManager] uploadMediaWithName:self.textView.text
                                             description:self.textView.text
                                               expiresAt:self.expirationDateString
@@ -130,12 +125,13 @@
                                                   speed:playbackSpeed
                                                loopType:self.playbackLooping
                                            shareOptions:shareOptions
-                                              mediaData:mediaData
-                                              extension:self.mediaExtension
+                                               mediaURL:self.mediaURL
                                            successBlock:^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
     {
         VLog(@"Succeeded with objects: %@", resultObjects);
-
+        
+        [[NSFileManager defaultManager] removeItemAtURL:mediaToRemove error:nil];
+        
         UIAlertView*    alert   = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"PublishSucceeded", @"")
                                                              message:NSLocalizedString(@"PublishSucceededDetail", @"")
                                                             delegate:nil
@@ -146,8 +142,10 @@
                                               failBlock:^(NSOperation* operation, NSError* error)
     {
         VLog(@"Failed with error: %@", error);
+
+        [[NSFileManager defaultManager] removeItemAtURL:mediaToRemove error:nil];
         
-        if (5500 == error.code)
+        if (kVStillTranscodingError == error.code)
         {
             UIAlertView*    alert   = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"TranscodingMediaTitle", @"")
                                                                  message:NSLocalizedString(@"TranscodingMediaBody", @"")
@@ -188,9 +186,9 @@
 - (void)setExpirationViewController:(VSetExpirationViewController *)viewController didSelectDate:(NSDate *)expirationDate
 {
     self.expirationDateString = [self stringForRFC2822Date:expirationDate];
-    self.expiresOnLabel.text = [NSString stringWithFormat:@"Expires on %@", [NSDateFormatter localizedStringFromDate:expirationDate
-                                                                                                           dateStyle:NSDateFormatterLongStyle
-                                                                                                           timeStyle:NSDateFormatterShortStyle]];
+    self.expiresOnLabel.text = [NSString stringWithFormat:NSLocalizedString(@"ExpiresOn", @""), [NSDateFormatter localizedStringFromDate:expirationDate
+                                                                                                                               dateStyle:NSDateFormatterLongStyle
+                                                                                                                               timeStyle:NSDateFormatterShortStyle]];
 }
 
 #pragma mark - Support
@@ -222,7 +220,7 @@
                                                                                       target:nil
                                                                                       action:nil];
     
-    self.countDownLabel = [[UIBarButtonItem alloc] initWithTitle:@"140"
+    self.countDownLabel = [[UIBarButtonItem alloc] initWithTitle:[NSNumberFormatter localizedStringFromNumber:@(VConstantsMessageLength) numberStyle:NSNumberFormatterDecimalStyle]
                                                            style:UIBarButtonItemStyleBordered
                                                             target:nil
                                                           action:nil];
@@ -236,7 +234,7 @@
 - (void)textViewDidChange:(UITextView *)textView
 {
     self.textViewPlaceholderLabel.hidden = ([textView.text length] > 0);
-    self.countDownLabel.title = [NSNumberFormatter localizedStringFromNumber:@(140.0 - self.textView.text.length)
+    self.countDownLabel.title = [NSNumberFormatter localizedStringFromNumber:@(VConstantsMessageLength - self.textView.text.length)
                                                                  numberStyle:NSNumberFormatterDecimalStyle];
 }
 
@@ -248,9 +246,10 @@
         return NO;
     }
 
-    if (textView.text.length >= 140.0)
+    BOOL    isDeleteKey = ([text isEqualToString:@""]);
+    if ((textView.text.length >= VConstantsMessageLength) && (!isDeleteKey))
         return NO;
-
+    
     return YES;
 }
 

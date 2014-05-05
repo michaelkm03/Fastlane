@@ -45,6 +45,9 @@
     
     [self.resultArrow removeFromSuperview];
     self.resultArrow = nil;
+    
+    [self.resultLabel removeFromSuperview];
+    self.resultLabel = nil;
 }
 
 - (UIView*)resultArrow
@@ -139,7 +142,7 @@
                                              self.frame.size.width, minProgress + currentProgress);
         
         CGRect frame = _resultLabel.frame;
-        frame.origin.y = CGRectGetHeight(self.frame) - CGRectGetHeight(_resultLabel.frame);
+        frame.origin.y = self.resultArrow.frame.origin.y + self.resultArrow.image.capInsets.top;
         _resultLabel.frame = frame;
         VLog(@"result frame: %@", NSStringFromCGRect(_resultLabel.frame));
         
@@ -150,7 +153,15 @@
                                              minProgress + currentProgress, self.frame.size.height);
     }
     
-    self.resultLabel.text = [@((progress * 100.0f)).stringValue stringByAppendingString:@"%"];
+    static NSNumberFormatter* percentFormatter;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^
+    {
+        percentFormatter = [[NSNumberFormatter alloc] init];
+        [percentFormatter setNumberStyle:NSNumberFormatterPercentStyle];
+    });
+    
+    self.resultLabel.text = [percentFormatter stringFromNumber:@(progress)];
 }
 
 @end

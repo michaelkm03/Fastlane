@@ -12,7 +12,7 @@
 #import "VSequence+Fetcher.h"
 #import "VUser.h"
 #import "VConstants.h"
-#import "VObjectManager+Comment.h"
+#import "VObjectManager+ContentCreation.h"
 #import "UIImageView+Blurring.h"
 #import "UIImage+ImageCreation.h"
 #import "VStreamTableViewController.h"
@@ -117,13 +117,13 @@
 
 - (void)streamsCommentsController:(VCommentsTableViewController *)viewController shouldReplyToUser:(VUser *)user
 {
-    self.keyboardBarViewController.textView.text = [NSString stringWithFormat:@"@%@ ", user.name];
-    [self.keyboardBarViewController.textView becomeFirstResponder];
+    self.keyboardBarViewController.textViewText = [[NSAttributedString alloc] initWithString:[NSString stringWithFormat:@"@%@ ", user.name]];
+    [self.keyboardBarViewController becomeFirstResponder];
 }
 
 #pragma mark - VKeyboardBarDelegate
 
-- (void)keyboardBar:(VKeyboardBarViewController *)keyboardBar didComposeWithText:(NSString *)text mediaURL:(NSURL *)mediaURL mediaExtension:(NSString *)mediaExtension
+- (void)keyboardBar:(VKeyboardBarViewController *)keyboardBar didComposeWithText:(NSString *)text mediaURL:(NSURL *)mediaURL
 {
     __block UIActivityIndicatorView *indicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
     indicator.frame = CGRectMake(0, 0, 24, 24);
@@ -132,15 +132,25 @@
     indicator.center = self.view.center;
     [indicator startAnimating];
     
+    __block NSURL* urlToRemove = mediaURL;
+    
     VSuccessBlock success = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
     {
         NSLog(@"%@", resultObjects);
         [indicator stopAnimating];
+        [[NSFileManager defaultManager] removeItemAtURL:urlToRemove error:nil];
+        
         [(VCommentsTableViewController *)self.conversationTableViewController sortComments];
+        
+        self.sequence.commentCount = @(self.sequence.commentCount.integerValue + 1);
+        [self.sequence.managedObjectContext save:nil];
     };
+    
     VFailBlock fail = ^(NSOperation* operation, NSError* error)
     {
-        if (error.code == 5500)
+        [[NSFileManager defaultManager] removeItemAtURL:urlToRemove error:nil];
+        
+        if (error.code == kVStillTranscodingError)
         {
             NSLog(@"%@", error);
             [indicator stopAnimating];
@@ -155,14 +165,10 @@
         }
         [indicator stopAnimating];
     };
-    
-    NSData *data = [NSData dataWithContentsOfURL:mediaURL];
-    [[NSFileManager defaultManager] removeItemAtURL:mediaURL error:nil];
+
     
     [[VObjectManager sharedManager] addCommentWithText:text
-                                                  Data:data
-                                        mediaExtension:mediaExtension
-                                              mediaUrl:nil
+                                              mediaURL:mediaURL
                                             toSequence:_sequence
                                              andParent:nil
                                           successBlock:success

@@ -64,19 +64,17 @@
 - (NSArray*)initialImageURLs
 {
     NSMutableArray* urls = [[NSMutableArray alloc] initWithCapacity:10];
-    if ([self isPoll] && [[self firstNode] firstAsset])
-    {
-        [urls addObject:[[[self firstNode] firstAsset].data convertToPreviewImageURL]];
-    }
-    else if ([self isPoll])
+
+    if ([self isPoll])
     {
         for (VAnswer* answer in [[self firstNode] firstAnswers])
         {
-            [urls addObject:[answer.mediaUrl convertToPreviewImageURL]];
+            if (answer.thumbnailUrl)
+                [urls addObject:[NSURL URLWithString:answer.thumbnailUrl]];
         }
     }
     else
-        [urls addObject:[self.previewImage convertToPreviewImageURL]];
+        [urls addObject:[NSURL URLWithString:self.previewImage]];
     
     return [urls copy];
 }

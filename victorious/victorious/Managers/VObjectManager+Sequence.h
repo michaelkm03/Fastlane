@@ -37,30 +37,6 @@ extern NSString* const kPollResultsLoaded;
                                      successBlock:(VSuccessBlock)success
                                         failBlock:(VFailBlock)fail;
 
-- (AFHTTPRequestOperation * )createPollWithName:(NSString*)name
-                                    description:(NSString*)description
-                                       question:(NSString*)question
-                                    answer1Text:(NSString*)answer1Text
-                                    answer2Text:(NSString*)answer2Text
-                                     media1Data:(NSData*)media1Data
-                                media1Extension:(NSString*)media1Extension
-                                     media2Data:(NSData*)media2Data
-                                media2Extension:(NSString*)media2Extension
-                                   successBlock:(VSuccessBlock)success
-                                      failBlock:(VFailBlock)fail;
-
-- (AFHTTPRequestOperation * )uploadMediaWithName:(NSString*)name
-                                     description:(NSString*)description
-                                       expiresAt:(NSString*)expiresAt
-                                    parentNodeId:(NSNumber*)parentNodeId
-                                           speed:(CGFloat)speed
-                                        loopType:(VLoopType)loopType
-                                    shareOptions:(VShareOptions)shareOptions
-                                       mediaData:(NSData*)mediaData
-                                       extension:(NSString*)extension
-                                    successBlock:(VSuccessBlock)success
-                                       failBlock:(VFailBlock)fail;
-
 #pragma mark - Poll Methods
 
 - (RKManagedObjectRequestOperation *)answerPoll:(VSequence*)poll

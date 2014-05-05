@@ -62,8 +62,11 @@
 - (void)loadPoll
 {
     NSArray* answers = [[self.sequence firstNode] firstAnswers];
-    [self.firstSmallPreviewImage setImageWithURL:[((VAnswer*)[answers firstObject]).mediaUrl convertToPreviewImageURL]];
-    [self.secondSmallPreviewImage setImageWithURL:[((VAnswer*)[answers lastObject]).mediaUrl convertToPreviewImageURL]];
+    
+    [self.firstSmallPreviewImage setImageWithURL:[NSURL URLWithString:((VAnswer*)[answers firstObject]).thumbnailUrl]
+                                placeholderImage:self.backgroundImage.image];
+    [self.secondSmallPreviewImage setImageWithURL:[NSURL URLWithString:((VAnswer*)[answers lastObject]).thumbnailUrl]
+                                 placeholderImage:self.backgroundImage.image];
  
     if ([[((VAnswer*)[answers firstObject]).mediaUrl pathExtension] isEqualToString:VConstantMediaExtensionM3U8])
     {
@@ -91,15 +94,27 @@
 - (IBAction)playPoll:(id)sender
 {
     NSArray* answers = [[self.sequence firstNode] firstAnswers];
+    NSURL* contentURL;
     if( ((UIButton*)sender).tag == self.firstPollButton.tag)
     {
-        [self.mpController setContentURL:[NSURL URLWithString:((VAnswer*)[answers firstObject]).mediaUrl]];
+        contentURL = [NSURL URLWithString:((VAnswer*)[answers firstObject]).mediaUrl];
     }
     else if ( ((UIButton*)sender).tag == self.secondPollButton.tag)
     {
-        [self.mpController setContentURL:[NSURL URLWithString:((VAnswer*)[answers lastObject]).mediaUrl]];
+        contentURL = [NSURL URLWithString:((VAnswer*)[answers lastObject]).mediaUrl];
     }
+    
+    [self.mpController.view removeFromSuperview];
+    self.mpController = [[MPMoviePlayerController alloc] initWithContentURL:contentURL];
+    self.mpController.scalingMode = MPMovieScalingModeAspectFit;
+    self.mpController.view.frame = self.pollPreviewView.frame;
+    self.mpController.shouldAutoplay = NO;
+    [self.mpPlayerContainmentView addSubview:self.mpController.view];
     [self.mpController prepareToPlay];
+    
+    self.activityIndicator.center = self.mpController.view.center;
+    [self.mediaView addSubview:self.activityIndicator];
+    [self.activityIndicator startAnimating];
 }
 
 #pragma mark - VPollAnswerBarDelegate

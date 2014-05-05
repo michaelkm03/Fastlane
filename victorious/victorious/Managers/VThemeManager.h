@@ -78,7 +78,7 @@ extern  NSString*   const   kVLinkColor;
 - (UIImage *)themedImageForKey:(NSString *)key;
 - (UIFont *)themedFontForKey:(NSString *)key;
 
-- (NSString *)themedExportVideoQualityForKey:(NSString *)key;
-- (NSString *)themedCapturedVideoQualityForKey:(NSString *)key;
+- (NSString *)themedExportVideoQuality;
+- (NSString *)themedCapturedVideoQuality;
 
 @end

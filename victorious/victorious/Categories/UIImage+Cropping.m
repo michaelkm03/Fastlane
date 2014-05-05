@@ -10,26 +10,26 @@
 
 @implementation UIImage (Cropping)
 
-- (UIImage *)squareImageScaledToSize:(CGSize)newSize
+- (UIImage *)squareImageScaledToSize:(NSUInteger)newSize
 {
     double ratio;
     double delta;
     CGPoint offset;
     
     //make a new square size, that is the resized imaged width
-    CGSize sz = CGSizeMake(newSize.width, newSize.width);
+    CGSize sz = CGSizeMake(newSize, newSize);
     
     //figure out if the picture is landscape or portrait, then
     //calculate scale factor and offset
     if (self.size.width > self.size.height)
     {
-        ratio = newSize.width / self.size.width;
+        ratio = newSize / self.size.width;
         delta = (ratio * self.size.width - ratio * self.size.height);
         offset = CGPointMake(delta/2.0, 0);
     }
     else
     {
-        ratio = newSize.width / self.size.height;
+        ratio = newSize / self.size.height;
         delta = (ratio * self.size.height - ratio * self.size.width);
         offset = CGPointMake(0, delta/2.0);
     }

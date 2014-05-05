@@ -10,6 +10,7 @@
 #import "VObjectManager+Login.h"
 #import "VUser.h"
 #import "VUserManager.h"
+#import "VConstants.h"
 
 @import Accounts;
 @import Security;
@@ -139,7 +140,7 @@ static NSString * const kKeychainServiceName          = @"com.getvictorious.VUse
     };
     VFailBlock failed = ^(NSOperation* operation, NSError* error)
     {
-        if (error.code == 1003)
+        if (error.code == kVAccountAlreadyExistsError)
         {
             created = NO;
             [[VObjectManager sharedManager] loginToFacebookWithToken:accessToken
@@ -253,7 +254,7 @@ static NSString * const kKeychainServiceName          = @"com.getvictorious.VUse
                 }
             };
              
-            if (error.code == 1003)
+            if (error.code == kVAccountAlreadyExistsError)
             {
                 created = NO;
                 [[VObjectManager sharedManager] loginToTwitterWithToken:oauthToken

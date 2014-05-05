@@ -30,14 +30,20 @@ NSString *kLoggedInChangedNotification = @"LoggedInChangedNotification";
     {
         
         NSDictionary* payload = fullResponse[@"payload"];
-        if (![payload isKindOfClass:[NSDictionary class]])
-        {
-            payload = nil;
-        }
         
         NSDictionary* newTheme = payload[@"appearance"];
         if (newTheme && [newTheme isKindOfClass:[NSDictionary class]])
             [[VThemeManager sharedThemeManager] setTheme:newTheme];
+        
+        NSDictionary* videoQuality = payload[@"video_quality"];
+        if (videoQuality && [videoQuality isKindOfClass:[NSDictionary class]])
+        {
+            [videoQuality enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop)
+             {
+                 [[NSUserDefaults standardUserDefaults] setObject:obj forKey:key];
+             }];
+
+        }
         
         if (success)
             success(operation, fullResponse, resultObjects);
@@ -203,7 +209,7 @@ NSString *kLoggedInChangedNotification = @"LoggedInChangedNotification";
 - (AFHTTPRequestOperation *)updateVictoriousWithEmail:(NSString *)email
                                              password:(NSString *)password
                                              username:(NSString *)username
-                                         profileImage:(NSData *)profileImage
+                                      profileImageURL:(NSURL *)profileImageURL
                                              location:(NSString *)location
                                               tagline:(NSString *)tagline
                                          successBlock:(VSuccessBlock)success
@@ -222,8 +228,11 @@ NSString *kLoggedInChangedNotification = @"LoggedInChangedNotification";
     if (tagline)
         [params setObject:tagline forKey:@"profile_tagline"];
     
-    NSDictionary* allData = @{@"profile_image":profileImage ?: [NSNull null]};
-    NSDictionary* allExtensions = @{@"media_data":VConstantMediaExtensionJPG};
+    NSDictionary* allURLs = nil;
+    if (profileImageURL)
+    {
+        allURLs = @{@"profile_image":profileImageURL};
+    }
     
     VSuccessBlock fullSuccess = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
     {
@@ -242,12 +251,11 @@ NSString *kLoggedInChangedNotification = @"LoggedInChangedNotification";
          }];
     };
     
-    return [self upload:allData
-          fileExtension:allExtensions
-                 toPath:@"/api/account/update"
-             parameters:[params copy]
-           successBlock:fullSuccess
-              failBlock:fail];
+    return [self uploadURLs:allURLs
+                     toPath:@"/api/account/update"
+                 parameters:[params copy]
+               successBlock:fullSuccess
+                  failBlock:fail];
 }
 
 #pragma mark - LoggedIn

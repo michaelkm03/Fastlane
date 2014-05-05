@@ -88,23 +88,10 @@ NSString *kStreamsWillCommentNotification = @"kStreamsWillCommentNotification";
 - (void)setSequence:(VSequence *)sequence
 {
     _sequence = sequence;
-
-    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:_sequence.previewImage]];
-    [request addValue:@"image/*" forHTTPHeaderField:@"Accept"];
-    [self.previewImageView setImageWithURLRequest:request
-                                 placeholderImage:[UIImage resizeableImageWithColor:
-                                                   [[VThemeManager sharedThemeManager] themedColorForKey:kVBackgroundColor]]
-                                          success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image)
-     {
-         self.previewImageView.alpha = 0;
-         self.previewImageView.image = image;
-         [UIView animateWithDuration:.3f animations:^
-          {
-              self.previewImageView.alpha = 1;
-          }];
-     }
-                                          failure:nil];
     
+    [self.previewImageView setImageWithURL:[NSURL URLWithString:_sequence.previewImage]
+                          placeholderImage:[UIImage resizeableImageWithColor:
+                                            [[VThemeManager sharedThemeManager] themedColorForKey:kVBackgroundColor]]];
     [self.profileImageButton setImageWithURL:[NSURL URLWithString:self.sequence.user.pictureUrl]
                             placeholderImage:[UIImage imageNamed:@"profile_thumb"]
                                     forState:UIControlStateNormal];
@@ -133,6 +120,11 @@ NSString *kStreamsWillCommentNotification = @"kStreamsWillCommentNotification";
         self.animationImage.hidden = NO;
         self.animationBackgroundImage.hidden = NO;
         self.ephemeralTimerView.hidden = YES;
+    }
+    
+    if ([sequence.status isEqualToString:kTemporaryContentStatus])
+    {
+        //TODO: grey out sequence;
     }
 }
 

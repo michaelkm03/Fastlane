@@ -19,8 +19,8 @@ NSString*   const   kVChannelURLAcknowledgements        =   @"channel.url.acknow
 NSString*   const   kVChannelURLSupport                 =   @"channel.url.support";
 NSString*   const   kVChannelName                       =   @"channel.name";
 
-NSString*   const   kVCaptureVideoQuality               =   @"videoQuality.capture";
-NSString*   const   kVExportVideoQuality                =   @"videoQuality.remix";
+NSString*   const   kVCaptureVideoQuality               =   @"capture";
+NSString*   const   kVExportVideoQuality                =   @"remix";
 
 NSString*   const   kVAgreementText                     =   @"agreement.text";
 NSString*   const   kVAgreementLinkText                 =   @"agreement.linkText";
@@ -112,7 +112,6 @@ NSString*   const   kVNewThemeKey                       =   @"kVNewTheme";
     
     [[NSUserDefaults standardUserDefaults] setObject:nil forKey:kVNewThemeKey];
 }
-
 
 #pragma mark -
 
@@ -256,9 +255,9 @@ NSString*   const   kVNewThemeKey                       =   @"kVNewTheme";
     return [UIFont fontWithName:fontName size:fontSize];
 }
 
-- (NSString *)themedExportVideoQualityForKey:(NSString *)key
+- (NSString *)themedExportVideoQuality
 {
-    NSString*   value   =   [self themedStringForKey:key];
+    NSString*   value   =   [self themedStringForKey:kVExportVideoQuality];
     
     if ([value isEqualToString:@"low"])
         return  AVAssetExportPresetLowQuality;
@@ -270,9 +269,9 @@ NSString*   const   kVNewThemeKey                       =   @"kVNewTheme";
         return AVAssetExportPresetMediumQuality;
 }
 
-- (NSString *)themedCapturedVideoQualityForKey:(NSString *)key
+- (NSString *)themedCapturedVideoQuality
 {
-    NSString*   value   =   [self themedStringForKey:key];
+    NSString*   value   =   [self themedStringForKey:kVCaptureVideoQuality];
 
     if ([value isEqualToString:@"low"])
         return  AVCaptureSessionPresetLow;

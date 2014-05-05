@@ -12,15 +12,6 @@
 
 @interface VObjectManager (Comment)
 
-- (AFHTTPRequestOperation *)addCommentWithText:(NSString*)text
-                                          Data:(NSData*)data
-                                mediaExtension:(NSString*)extension
-                                      mediaUrl:(NSURL*)mediaUrl
-                                    toSequence:(VSequence*)sequence
-                                     andParent:(VComment*)parent
-                                  successBlock:(VSuccessBlock)success
-                                     failBlock:(VFailBlock)fail;
-
 - (RKManagedObjectRequestOperation *)fetchCommentByID:(NSInteger)commentID
                                          successBlock:(VSuccessBlock)success
                                             failBlock:(VFailBlock)fail;

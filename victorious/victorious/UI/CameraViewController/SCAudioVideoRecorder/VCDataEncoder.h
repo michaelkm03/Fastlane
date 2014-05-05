@@ -19,15 +19,16 @@
 
 @end
 
-@interface VCDataEncoder : NSObject {
+@interface VCDataEncoder : NSObject
+{
     
 }
 
-- (id) initWithAudioVideoRecorder:(VCAudioVideoRecorder*)audioVideoRecorder;
-- (void) reset;
+- (instancetype)initWithAudioVideoRecorder:(VCAudioVideoRecorder*)audioVideoRecorder;
+- (void)reset;
 
 // Abstract method
-- (AVAssetWriterInput*) createWriterInputForSampleBuffer:(CMSampleBufferRef)sampleBuffer error:(NSError**)error;
+- (AVAssetWriterInput*)createWriterInputForSampleBuffer:(CMSampleBufferRef)sampleBuffer error:(NSError**)error;
 
 @property (assign, nonatomic) BOOL enabled;
 @property (strong, nonatomic) AVAssetWriterInput * writerInput;

@@ -42,15 +42,16 @@
     return _conversationTableViewController;
 }
 
-- (void)keyboardBar:(VKeyboardBarViewController *)keyboardBar didComposeWithText:(NSString *)text mediaURL:(NSURL *)mediaURL mediaExtension:(NSString *)mediaExtension
+- (void)keyboardBar:(VKeyboardBarViewController *)keyboardBar didComposeWithText:(NSString *)text mediaURL:(NSURL *)mediaURL
 {
+    
+    __block NSURL* urlToRemove = mediaURL;
+    
     VSuccessBlock success = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
     {
+        [[NSFileManager defaultManager] removeItemAtURL:urlToRemove error:nil];
+        
         NSDictionary* payload = fullResponse[@"payload"];
-        if (![payload isKindOfClass:[NSDictionary class]])
-        {
-            payload = nil;
-        }
         
         if (!self.conversation.remoteId)
         {
@@ -66,18 +67,14 @@
         VLog(@"Succeed with response: %@", fullResponse);
     };
     
-    NSData *data = [NSData dataWithContentsOfURL:mediaURL];
-    [[NSFileManager defaultManager] removeItemAtURL:mediaURL error:nil];
-    
     [[VObjectManager sharedManager] sendMessageToUser:self.conversation.user
                                              withText:text
-                                                 Data:data
-                                       mediaExtension:mediaExtension
-                                             mediaUrl:nil
+                                             mediaURL:mediaURL
                                          successBlock:success
                                             failBlock:^(NSOperation* operation, NSError* error)
      {
          VLog(@"Failed in creating message with error: %@", error);
+        [[NSFileManager defaultManager] removeItemAtURL:urlToRemove error:nil];
      }];
 }
 

@@ -48,11 +48,14 @@
             return @[kVOwnerImageCategory, kVUGCImageCategory];
             
         case VStreamFilterVideos:
-            return @[kVOwnerVideoCategory, kVUGCVideoCategory];
+            return @[kVOwnerVideoCategory, kVUGCVideoCategory,
+                     kVOwnerRemixCategory, kVUGCRemixCategory];
             
         default:
-            return @[kVOwnerPollCategory, kVUGCPollCategory, kVOwnerImageCategory,
-                     kVUGCImageCategory, kVOwnerVideoCategory, kVUGCVideoCategory];
+            return @[kVOwnerPollCategory, kVUGCPollCategory,
+                     kVOwnerImageCategory, kVUGCImageCategory,
+                     kVOwnerVideoCategory, kVUGCVideoCategory,
+                     kVOwnerRemixCategory, kVUGCRemixCategory];
     }
 }
 

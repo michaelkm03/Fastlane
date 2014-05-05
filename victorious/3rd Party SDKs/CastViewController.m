@@ -207,7 +207,7 @@
 
       VAsset* firstAsset = [[self.mediaToPlay firstNode] firstAsset];
       NSURL* url = [NSURL URLWithString:firstAsset.data];
-      NSURL* thumbnailURL = [firstAsset.data convertToPreviewImageURL];
+      NSURL* thumbnailURL = [NSURL URLWithString: self.mediaToPlay.previewImage];
       
       //Loading thumbnail async
       NSLog(@"Loaded thumbnail image");

@@ -62,18 +62,32 @@ CGFloat kContentMediaViewOffset = 154;
     self.activityIndicator.backgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:.5f];
     self.activityIndicator.layer.cornerRadius = self.activityIndicator.frame.size.height / 2;
     self.activityIndicator.hidesWhenStopped = YES;
+    
+    [self resetView];
 }
 
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
     
-    [self.navigationController setNavigationBarHidden:YES animated:NO];
+    if (!self.appearing)
+    {
+        self.appearing = YES;
+        [self.navigationController setNavigationBarHidden:YES animated:NO];
+        [self updateActionBar];
+        self.navigationController.delegate = self;
+    }
+}
+
+- (void)viewDidDisappear:(BOOL)animated
+{
+    [super viewDidDisappear:animated];
     
-    [self updateActionBar];
-    [self resetView];
-    
-    self.navigationController.delegate = self;
+    if (UIApplication.sharedApplication.delegate.window.isKeyWindow)
+    {
+        self.appearing = NO;
+        [self resetView];
+    }
 }
 
 - (void)resetView
@@ -90,24 +104,25 @@ CGFloat kContentMediaViewOffset = 154;
     
     self.firstPollButton.hidden = YES;
     self.secondPollButton.hidden = YES;
-    
-    [self.activityIndicator stopAnimating];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
     
-    if (self.navigationController.delegate == self)
+    if (UIApplication.sharedApplication.delegate.window.isKeyWindow)
     {
-        self.navigationController.delegate = nil;
+        if (self.navigationController.delegate == self)
+        {
+            self.navigationController.delegate = nil;
+        }
+        
+        [self.mpController.view removeFromSuperview];
+        [self.mpController pause];
+        self.mpController = nil;
+        
+        self.orAnimator = nil;
     }
-    
-    [self.mpController.view removeFromSuperview];
-    [self.mpController pause];
-    self.mpController = nil;
-    
-    self.orAnimator = nil;
 }
 
 -(VInteractionManager*)interactionManager

@@ -69,7 +69,7 @@
     {
         self.playBackSpeed = kVPlaybackDoubleSpeed;
         if ([self.previewView.player.currentItem canPlayFastForward])
-            [self.previewView.player setRate:2.0];
+            [self.previewView.player setRate:3.0];
         [self.rateButton setImage:[UIImage imageNamed:@"cameraButtonSpeedDouble"] forState:UIControlStateNormal];
     }
     else if (self.playBackSpeed == kVPlaybackDoubleSpeed)

@@ -3,4 +3,19 @@
 # Uploads all apps in the 'products' folder to TestFlight.
 ###########
 
-find configurations -type d -depth 1 -print0 | xargs -0 -n 1 build-scripts/upload-to-testflight.sh
+CONFIGS=`find configurations -type d -depth 1 -exec basename {} \;`
+
+IFS=$'\n'
+for CONFIG in $CONFIGS
+do
+    build-scripts/upload-to-testflight.sh "$CONFIG"
+    if [ $? != 0 ]; then
+        FAILED="yes"
+    fi
+done
+
+if [ "$FAILED" != "" ]; then
+    exit 1
+else
+    exit 0
+fi

@@ -8,8 +8,6 @@
 
 #import "VCreateSequenceDelegate.h"
 
-#import "VImagePickerViewController.h"
-
 @interface VCreatePollViewController : UIViewController
 
 @property (weak, nonatomic) IBOutlet UIImageView *rightPreviewImageView;
@@ -27,8 +25,6 @@
 
 @property (weak, nonatomic) IBOutlet UIView* questionViews;
 @property (weak, nonatomic) IBOutlet UILabel *characterCountLabel;
-
-@property (weak, nonatomic) IBOutlet UITextView *textView;
 
 @property (weak, nonatomic) IBOutlet UIView *addMediaView;
 

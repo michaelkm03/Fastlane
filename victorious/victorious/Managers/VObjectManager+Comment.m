@@ -10,7 +10,6 @@
 #import "VObjectManager+Private.h"
 #import "VObjectManager+Sequence.h"
 
-#import "VSequence.h"
 #import "VUser.h"
 #import "VConstants.h"
 
@@ -72,7 +71,7 @@
     VFailBlock fullFail = ^(NSOperation* operation, NSError* error)
     {
         //keep trying until we are done transcoding
-        if (error.code == 5500 && attemptCount < 15)
+        if (error.code == kVStillTranscodingError && attemptCount < 15)
         {
             double delayInSeconds = 2.0;
             dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
@@ -92,66 +91,6 @@
           parameters:nil
         successBlock:success
            failBlock:fullFail];
-}
-
-- (AFHTTPRequestOperation *)addCommentWithText:(NSString*)text
-                                          Data:(NSData*)data
-                                mediaExtension:(NSString*)extension
-                                      mediaUrl:(NSURL*)mediaUrl
-                                    toSequence:(VSequence*)sequence
-                                     andParent:(VComment*)parent
-                                  successBlock:(VSuccessBlock)success
-                                     failBlock:(VFailBlock)fail
-{
-    NSString* type = [extension isEqualToString:VConstantMediaExtensionMOV] ? @"video" : @"image";
-    NSDictionary* parameters = @{@"sequence_id" : sequence.remoteId.stringValue ?: [NSNull null],
-                                 @"parent_id" : parent.remoteId.stringValue ?: [NSNull null],
-                                 @"text" : text ?: [NSNull null]};
-    
-    NSDictionary *allData, *allExtensions;
-    if (data && extension)
-    {
-        allData = @{@"media_data":data};
-        allExtensions = @{@"media_type":type};
-    }
-    
-//    VSuccessBlock fetchCommentSuccess = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
-//    {
-//        NSManagedObjectID* objectId = [[resultObjects firstObject] objectID];
-//        if (objectId)
-//        {
-//            [sequence addCommentsObject:(VComment*)[sequence.managedObjectContext objectWithID:objectId]];
-//        }
-//        
-//        [sequence.managedObjectContext performBlockAndWait:^
-//        {
-//            [sequence.managedObjectContext save:nil];
-//        }];
-//        
-//        if (success)
-//            success(operation, fullResponse, resultObjects);
-//    };
-    
-    VSuccessBlock fullSuccess = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
-    {
-        
-        NSDictionary* payload = fullResponse[@"payload"];
-        if (![payload isKindOfClass:[NSDictionary class]])
-        {
-            payload = nil;
-        }
-        
-        [self fetchCommentByID:[payload[@"id"] integerValue]
-                   successBlock:success
-                      failBlock:fail];
-    };
-    
-    return [self upload:allData
-          fileExtension:allExtensions
-                 toPath:@"/api/comment/add"
-             parameters:parameters
-           successBlock:fullSuccess
-              failBlock:fail];
 }
 
 - (RKManagedObjectRequestOperation *)removeComment:(VComment*)comment

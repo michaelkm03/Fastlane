@@ -11,20 +11,14 @@
 #import "VCameraViewController.h"
 #import "VObjectManager+Comment.h"
 #import "VKeyboardBarViewController.h"
-
-//#import "VSequence.h"
-//#import "VConstants.h"
-
 #import "VLoginViewController.h"
 
 @interface VKeyboardBarViewController() <UITextViewDelegate>
+
+@property (nonatomic, weak) IBOutlet UITextView *textView;
 @property (weak, nonatomic) IBOutlet UIButton *mediaButton;
-@property (nonatomic, strong) NSString*  mediaExtension;
 @property (nonatomic, strong) NSURL* mediaURL;
 
-//@property (weak, nonatomic) IBOutlet UICollectionView* stickersView;
-//@property (nonatomic, strong) NSArray* stickers;
-//@property (nonatomic, strong) NSData* selectedSticker;
 @end
 
 @implementation VKeyboardBarViewController
@@ -44,12 +38,8 @@
 {
     [super viewWillLayoutSubviews];
     
-//    [self.stickersView registerClass:[UICollectionViewCell class] forCellWithReuseIdentifier:@"stickerCell"];
     self.mediaButton.layer.cornerRadius = 2;
     self.mediaButton.clipsToBounds = YES;
-    // populate stickers array
-    
-//    [self.stickersView reloadData];
 }
 
 - (IBAction)sendButtonAction:(id)sender
@@ -61,10 +51,9 @@
     }
     
     [self.textView resignFirstResponder];
-    [self.delegate keyboardBar:self didComposeWithText:self.textView.text mediaURL:self.mediaURL mediaExtension:self.mediaExtension];
+    [self.delegate keyboardBar:self didComposeWithText:self.textView.text mediaURL:self.mediaURL];
     [self.mediaButton setImage:[UIImage imageNamed:@"MessageCamera"] forState:UIControlStateNormal];
     self.textView.text = nil;
-    self.mediaExtension = nil;
     self.mediaURL = nil;
 }
 
@@ -77,18 +66,36 @@
     }
     
     VCameraViewController *cameraViewController = [VCameraViewController cameraViewController];
-    cameraViewController.completionBlock = ^(BOOL finished, UIImage *previewImage, NSURL *capturedMediaURL, NSString *mediaExtension)
+    cameraViewController.completionBlock = ^(BOOL finished, UIImage *previewImage, NSURL *capturedMediaURL)
     {
         if (finished)
         {
             self.mediaURL = capturedMediaURL;
-            self.mediaExtension = mediaExtension;
             [self.mediaButton setImage:previewImage forState:UIControlStateNormal];
         }
         [self dismissViewControllerAnimated:YES completion:nil];
     };
     UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:cameraViewController];
     [self presentViewController:navController animated:YES completion:nil];
+}
+
+- (NSAttributedString *)textViewText
+{
+    return self.textView.attributedText;
+}
+
+- (void)setTextViewText:(NSAttributedString *)textViewText
+{
+    self.textView.attributedText = textViewText;
+    if ([self respondsToSelector:@selector(textViewDidChange:)])
+    {
+        [self textViewDidChange:self.textView];
+    }
+}
+
+- (BOOL)becomeFirstResponder
+{
+    return [self.textView becomeFirstResponder];
 }
 
 #pragma mark - UITextViewDelegate methods

@@ -18,6 +18,7 @@ NSString*   const   kVLoginErrorDomain =   @"VLoginErrorDomain";
 @interface VLoginWithEmailViewController () <UITextFieldDelegate>
 @property   (nonatomic, weak)   IBOutlet    UITextField*    usernameTextField;
 @property   (nonatomic, weak)   IBOutlet    UITextField*    passwordTextField;
+@property   (nonatomic, weak)   IBOutlet    UIButton*       loginButton;
 @property   (nonatomic, strong)             VUser*          profile;
 @end
 
@@ -155,6 +156,7 @@ NSString*   const   kVLoginErrorDomain =   @"VLoginErrorDomain";
 
     if ([self shouldLoginWithUsername:self.usernameTextField.text password:self.passwordTextField.text])
     {
+        self.loginButton.enabled = NO;
         [[VUserManager sharedInstance] loginViaEmail:self.usernameTextField.text
                                              password:self.passwordTextField.text
                                          onCompletion:^(VUser *user, BOOL created)
@@ -169,6 +171,7 @@ NSString*   const   kVLoginErrorDomain =   @"VLoginErrorDomain";
             dispatch_async(dispatch_get_main_queue(), ^(void)
             {
                 [self didFailWithError:error];
+                self.loginButton.enabled = YES;
             });
         }];
     }
@@ -178,10 +181,15 @@ NSString*   const   kVLoginErrorDomain =   @"VLoginErrorDomain";
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField
 {
-    if ([textField isEqual:self.usernameTextField])
+    if (textField == self.usernameTextField)
+    {
         [self.passwordTextField becomeFirstResponder];
-    else
+    }
+    else if (textField == self.passwordTextField)
+    {
         [self.passwordTextField resignFirstResponder];
+        [self login:nil];
+    }
     
     return YES;
 }

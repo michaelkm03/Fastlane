@@ -41,6 +41,7 @@ const   NSTimeInterval  kAnimationDuration      =   0.4;
 @property (strong, nonatomic) VCCameraFocusView* focusView;
 
 @property (nonatomic)                   BOOL                allowVideo;
+@property (nonatomic)                   BOOL                allowPhotos;
 
 @property (nonatomic)                   BOOL                inTrashState;
 @property (nonatomic)                   BOOL                inRecordVideoState;
@@ -62,6 +63,7 @@ const   NSTimeInterval  kAnimationDuration      =   0.4;
 {
     VCameraViewController *cameraViewController = [[UIStoryboard storyboardWithName:@"Camera" bundle:nil] instantiateViewControllerWithIdentifier:NSStringFromClass(self)];
     cameraViewController.allowVideo = YES;
+    cameraViewController.allowPhotos = YES;
     return cameraViewController;
 }
 
@@ -72,11 +74,18 @@ const   NSTimeInterval  kAnimationDuration      =   0.4;
     return cameraViewController;
 }
 
++ (VCameraViewController *)cameraViewControllerLimitedToVideo
+{
+    VCameraViewController *cameraViewController = [self cameraViewController];
+    cameraViewController.allowPhotos = NO;
+    return cameraViewController;
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
     
-    self.videoQuality = [[VThemeManager sharedThemeManager] themedCapturedVideoQualityForKey:kVCaptureVideoQuality];
+    self.videoQuality = [[VThemeManager sharedThemeManager] themedCapturedVideoQuality];
 
     self.camera = [[VCCamera alloc] initWithSessionPreset:(self.allowVideo ? self.videoQuality : AVCaptureSessionPresetPhoto)];
     self.camera.delegate = self;
@@ -84,9 +93,18 @@ const   NSTimeInterval  kAnimationDuration      =   0.4;
     self.camera.previewVideoGravity = VCVideoGravityResizeAspectFill;
     self.camera.previewView = self.previewView;
 	self.camera.videoOrientation = AVCaptureVideoOrientationPortrait;
-	self.camera.recordingDurationLimit = CMTimeMakeWithSeconds(15, 1);
+	self.camera.recordingDurationLimit = CMTimeMakeWithSeconds(VConstantsMaximumVideoDuration, 1);
     self.camera.videoEncoder.outputVideoSize = CGSizeMake(320.0, 320.0);
 
+    BOOL    hasFrontCamera = [UIImagePickerController isCameraDeviceAvailable:UIImagePickerControllerCameraDeviceFront];
+    BOOL    hasRearCamera = [UIImagePickerController isCameraDeviceAvailable:UIImagePickerControllerCameraDeviceRear];
+    
+    self.switchCameraButton.hidden = !(hasFrontCamera && hasRearCamera);
+    if (hasRearCamera)
+        self.camera.cameraDevice = VCCameraDeviceBack;
+    else if (hasFrontCamera)
+        self.camera.cameraDevice = VCCameraDeviceFront;
+    
     [self.camera initialize:^(NSError * audioError, NSError * videoError)
      {
 		[self prepareCamera];
@@ -120,15 +138,6 @@ const   NSTimeInterval  kAnimationDuration      =   0.4;
 //    self.focusView.outsideFocusTargetImage = [UIImage imageNamed:@"capture_flip"];
 //    self.focusView.insideFocusTargetImage = [UIImage imageNamed:@"capture_flip"];
     
-    BOOL    hasFrontCamera = [UIImagePickerController isCameraDeviceAvailable:UIImagePickerControllerCameraDeviceFront];
-    BOOL    hasRearCamera = [UIImagePickerController isCameraDeviceAvailable:UIImagePickerControllerCameraDeviceRear];
-    
-    self.switchCameraButton.hidden = !(hasFrontCamera && hasRearCamera);
-    if (hasRearCamera)
-        self.camera.cameraDevice = VCCameraDeviceBack;
-    else if (hasFrontCamera)
-        self.camera.cameraDevice = VCCameraDeviceFront;
-    
     if (self.allowVideo)
     {
         [self configureUIforVideoCaptureAnimated:NO completion:nil];
@@ -136,6 +145,9 @@ const   NSTimeInterval  kAnimationDuration      =   0.4;
     else
     {
         [self configureUIforPhotoCaptureAnimated:NO completion:nil];
+    }
+    if (!self.allowVideo || !self.allowPhotos)
+    {
         self.switchCameraModeButton.hidden = YES;
     }
 }
@@ -146,6 +158,10 @@ const   NSTimeInterval  kAnimationDuration      =   0.4;
     
     self.view.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVBackgroundColor];
     self.navigationController.navigationBar.barTintColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVBackgroundColor];
+    if (![[UIApplication sharedApplication] isStatusBarHidden])
+    {
+        [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationSlide];
+    }
     
     self.inRecordVideoState = NO;
     self.inTrashState = NO;
@@ -184,7 +200,7 @@ const   NSTimeInterval  kAnimationDuration      =   0.4;
     [self.camera cancel];
     if (self.completionBlock)
     {
-        self.completionBlock(NO, nil, nil, nil);
+        self.completionBlock(NO, nil, nil);
     }
 }
 
@@ -528,19 +544,20 @@ const   NSTimeInterval  kAnimationDuration      =   0.4;
 
 - (void)updateProgressForSecond:(Float64)totalRecorded
 {
-    self.progressView.progress = totalRecorded / 15.0;
+    self.progressView.progress = totalRecorded / VConstantsMaximumVideoDuration;
 }
 
 #pragma mark - Navigation
 
-- (void)moveToPreviewViewControllerWithContentURL:(NSURL *)contentURL mediaExtension:(NSString *)extension
+- (void)moveToPreviewViewControllerWithContentURL:(NSURL *)contentURL
 {
-    VMediaPreviewViewController *previewViewController = [VMediaPreviewViewController previewViewControllerForMediaAtURL:contentURL withExtension:extension];
-    previewViewController.completionBlock = ^(BOOL finished, UIImage *previewImage, NSURL *capturedMediaURL, NSString *mediaExtension)
+    VMediaPreviewViewController *previewViewController = [VMediaPreviewViewController previewViewControllerForMediaAtURL:contentURL];
+    previewViewController.completionBlock = ^(BOOL finished, UIImage *previewImage, NSURL *capturedMediaURL)
     {
+        NSString *mediaExtension = [capturedMediaURL pathExtension];
         if (!self.didSelectAssetFromLibrary)
         {
-            if ([mediaExtension isEqualToString:VConstantMediaExtensionMOV])
+            if ([mediaExtension isEqualToString:VConstantMediaExtensionMP4])
             {
                 UISaveVideoAtPathToSavedPhotosAlbum([capturedMediaURL path], nil, nil, nil);
             }
@@ -548,7 +565,7 @@ const   NSTimeInterval  kAnimationDuration      =   0.4;
             {
                 UIImage*    photo = [UIImage imageWithData:[NSData dataWithContentsOfURL:capturedMediaURL]];
                 UIImageWriteToSavedPhotosAlbum(photo, nil, nil, nil);
-           }
+            }
         }
 
         if (!finished)
@@ -557,12 +574,12 @@ const   NSTimeInterval  kAnimationDuration      =   0.4;
         
             if (self.completionBlock)
             {
-                self.completionBlock(NO, nil, nil, nil);
+                self.completionBlock(NO, nil, nil);
             }
         }
         else if (self.completionBlock)
         {
-            self.completionBlock(finished, previewImage, capturedMediaURL, mediaExtension);
+            self.completionBlock(finished, previewImage, capturedMediaURL);
         }
     };
 
@@ -637,7 +654,7 @@ const   NSTimeInterval  kAnimationDuration      =   0.4;
     }
     else
     {
-        [self moveToPreviewViewControllerWithContentURL:recordedFile mediaExtension:VConstantMediaExtensionMOV];
+        [self moveToPreviewViewControllerWithContentURL:recordedFile];
     }
 }
 
@@ -648,13 +665,13 @@ const   NSTimeInterval  kAnimationDuration      =   0.4;
 {
     if (!error)
     {
-        UIImage *photo = [photoDict[VCAudioVideoRecorderPhotoImageKey] squareImageScaledToSize:CGSizeMake(640.0, 640.0)];
+        UIImage *photo = [photoDict[VCAudioVideoRecorderPhotoImageKey] squareImageScaledToSize:640.0];
         NSData *pngData = UIImagePNGRepresentation(photo);
         
         NSURL *tempDirectory = [NSURL fileURLWithPath:NSTemporaryDirectory() isDirectory:YES];
         NSURL *tempFile = [[tempDirectory URLByAppendingPathComponent:[[NSUUID UUID] UUIDString]] URLByAppendingPathExtension:VConstantMediaExtensionPNG];
         [pngData writeToURL:tempFile atomically:NO];
-        [self moveToPreviewViewControllerWithContentURL:tempFile mediaExtension:VConstantMediaExtensionPNG];
+        [self moveToPreviewViewControllerWithContentURL:tempFile];
     }
 }
 

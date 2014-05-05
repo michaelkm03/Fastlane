@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-typedef void (^VMediaCaptureCompletion)(BOOL finished, UIImage *previewImage, NSURL *capturedMediaURL, NSString *mediaExtension);
+typedef void (^VMediaCaptureCompletion)(BOOL finished, UIImage *previewImage, NSURL *capturedMediaURL);
 
 /**
  Abstract base class for view controllers 
@@ -16,14 +16,13 @@ typedef void (^VMediaCaptureCompletion)(BOOL finished, UIImage *previewImage, NS
  */
 @interface VMediaPreviewViewController : UIViewController
 
-@property (nonatomic, readonly) NSURL    *mediaURL;
-@property (nonatomic, readonly) NSString *mediaExtension;
+@property (nonatomic, readonly) NSURL *mediaURL;
 
 /**
  A completion block to call when the user has finished previewing media
  */
 @property (nonatomic, copy) VMediaCaptureCompletion completionBlock;
 
-+ (VMediaPreviewViewController *)previewViewControllerForMediaAtURL:(NSURL *)mediaURL withExtension:(NSString *)mediaExtension;
++ (VMediaPreviewViewController *)previewViewControllerForMediaAtURL:(NSURL *)mediaURL;
 
 @end
