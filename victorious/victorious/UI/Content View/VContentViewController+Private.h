@@ -34,6 +34,8 @@
 @property (weak, nonatomic) IBOutlet UIButton* remixButton;
 
 @property (weak, nonatomic) IBOutlet UIView* mpPlayerContainmentView;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint* mpPlayerContainmentWidthConstraint;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint* mpPlayerContainmentHeightConstraint;
 
 @property (weak, nonatomic) IBOutlet UIImageView* firstSmallPreviewImage;
 @property (weak, nonatomic) IBOutlet UIImageView* secondSmallPreviewImage;
@@ -50,6 +52,8 @@
 @property (strong, nonatomic) UIActivityIndicatorView* activityIndicator;
 
 @property (strong, nonatomic) id<UIViewControllerTransitioningDelegate> transitionDelegate;
+
+@property (nonatomic) BOOL appearing; ///< YES if this view is the topmost view of the application window. NO if not.
 
 - (void)updateActionBar;
 

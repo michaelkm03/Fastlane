@@ -39,7 +39,7 @@
     [self.mpPlayerContainmentView addSubview:self.mpController.view];
     [self.mpController prepareToPlay];
     
-    self.activityIndicator.center = self.mpController.view.center;
+    self.activityIndicator.center = CGPointMake(CGRectGetMidX(self.mediaView.bounds), CGRectGetMidY(self.mediaView.bounds));
     [self.mediaView addSubview:self.activityIndicator];
     [self.activityIndicator startAnimating];
 }
@@ -53,28 +53,22 @@
         CGFloat yRatio = 1;
         yRatio = fminf(self.mpController.naturalSize.height / self.mpController.naturalSize.width, 1);
         
-        VLog(@"Natural Width: %f  Height: %f", self.mpController.naturalSize.width, self.mpController.naturalSize.height);
-        
         CGFloat videoHeight = fminf(self.mediaView.frame.size.height * yRatio, self.mediaView.frame.size.height);
         CGFloat videoWidth = self.mediaView.frame.size.width;
         self.mpController.view.frame = CGRectMake(0, 0, videoWidth, videoHeight);
-//        self.mpController.view.center = CGPointMake(self.view.center.x, self.mpController.view.center.y);
-        
-        [self.mpPlayerContainmentView addSubview:self.mpController.view];
-        
         [self animateVideoOpen];
     }
 }
 
 - (void)animateVideoOpen
 {
-    self.mpPlayerContainmentView.frame = CGRectMake(0, 0, 0, 0);
+    self.mpPlayerContainmentHeightConstraint.constant = 0;
+    self.mpPlayerContainmentWidthConstraint.constant = 0;
+    [self.view layoutIfNeeded];
     self.mpPlayerContainmentView.hidden = NO;
     
     CGFloat duration = .5f;
     
-    VLog(@"PreviewImage size: %@", NSStringFromCGSize(self.previewImage.frame.size));
-    VLog(@"Natural Video size: %@", NSStringFromCGSize(self.mpController.naturalSize));
     [UIView animateWithDuration:.2f
                      animations:^
      {
@@ -85,7 +79,9 @@
      {
          [UIView animateWithDuration:duration animations:
           ^{
-              self.mpPlayerContainmentView.frame = self.mpController.view.frame;
+              self.mpPlayerContainmentHeightConstraint.constant = CGRectGetHeight(self.mpController.view.bounds);
+              self.mpPlayerContainmentWidthConstraint.constant = CGRectGetWidth(self.mpController.view.bounds);
+              [self.view layoutIfNeeded];
           }
                           completion:^(BOOL finished)
           {
