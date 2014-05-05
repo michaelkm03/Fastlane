@@ -34,7 +34,7 @@
         if (completionBlock)
         {
             NSURL* remixURL = [NSURL URLWithString:fullResponse[@"payload"][@"mp4_url"]];
-            completionBlock(YES, remixURL);
+            completionBlock(YES, remixURL, nil);
         }
     };
     
@@ -43,7 +43,7 @@
         VLog(@"Failed with error: %@", error);
         if (completionBlock)
         {
-            completionBlock(NO, nil);
+            completionBlock(NO, nil, error);
         }
     };
     

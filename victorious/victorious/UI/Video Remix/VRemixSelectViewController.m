@@ -148,7 +148,7 @@
     self.progressHUD.labelText = NSLocalizedString(@"JustAMoment", @"");
     self.progressHUD.detailsLabelText = NSLocalizedString(@"LocatingVideo", @"");
 
-    [[VObjectManager sharedManager] fetchRemixMP4UrlForSequenceID:@(sequenceID) atStartTime:selectedTime duration:VConstantsMaximumVideoDuration completionBlock:^(BOOL completion, NSURL *remixMp4Url)
+    [[VObjectManager sharedManager] fetchRemixMP4UrlForSequenceID:@(sequenceID) atStartTime:selectedTime duration:VConstantsMaximumVideoDuration completionBlock:^(BOOL completion, NSURL *remixMp4Url, NSError* error)
      {
          if (completion)
          {
