@@ -71,10 +71,11 @@
     
     CGFloat duration = .5f;
     
+    [self.previewImage cancelImageRequestOperation];
+    
     [UIView animateWithDuration:.2f
                      animations:^
      {
-         [self.previewImage cancelImageRequestOperation];
          self.previewImage.frame =  self.mpController.view.frame;
      }
                      completion:^(BOOL finished)
