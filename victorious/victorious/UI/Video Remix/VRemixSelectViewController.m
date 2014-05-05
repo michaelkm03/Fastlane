@@ -144,6 +144,9 @@
     self.progressHUD.labelText = NSLocalizedString(@"JustAMoment", @"");
     self.progressHUD.detailsLabelText = NSLocalizedString(@"LocatingVideo", @"");
 
+    //  Place the Calling of the API here
+    //  and pass the resulting URL into the next routine
+    
     [self downloadVideoSegmentAtURL:segmentURL];
 }
 
@@ -152,7 +155,7 @@
     self.progressHUD.mode = MBProgressHUDModeDeterminate;
     self.progressHUD.detailsLabelText = NSLocalizedString(@"DownloadingVideo", @"");
     
-    NSURLSessionConfiguration*  sessionConfig = [NSURLSessionConfiguration ephemeralSessionConfiguration];
+    NSURLSessionConfiguration*  sessionConfig = [NSURLSessionConfiguration defaultSessionConfiguration];
     NSURLSession*               session = [NSURLSession sessionWithConfiguration:sessionConfig
                                                                         delegate:self
                                                                    delegateQueue:nil];
