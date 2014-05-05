@@ -34,6 +34,8 @@
 @property (weak, nonatomic) IBOutlet UIButton* remixButton;
 
 @property (weak, nonatomic) IBOutlet UIView* mpPlayerContainmentView;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint* mpPlayerContainmentWidthConstraint;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint* mpPlayerContainmentHeightConstraint;
 
 @property (weak, nonatomic) IBOutlet UIImageView* firstSmallPreviewImage;
 @property (weak, nonatomic) IBOutlet UIImageView* secondSmallPreviewImage;
