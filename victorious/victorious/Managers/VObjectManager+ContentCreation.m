@@ -111,14 +111,17 @@
         NSDictionary* payload = fullResponse[@"payload"];
         
         NSNumber* sequenceID = payload[@"sequence_id"];
-        VSequence* newSequence = [self newSequenceWithID:sequenceID
-                                                    name:name
-                                             description:description
-                                            mediaURLPath:[mediaUrl absoluteString]];
-
+//        VSequence* newSequence = [self newSequenceWithID:sequenceID
+//                                                    name:name
+//                                             description:description
+//                                            mediaURLPath:[mediaUrl absoluteString]];
+//
+//        if (success)
+//            success(operation, fullResponse, @[newSequence]);
         if (success)
-            success(operation, fullResponse, @[newSequence]);
-            
+            success(operation, fullResponse, resultObjects);
+        
+        
 //        [self fetchSequence:sequenceID
 //               successBlock:success
 //                  failBlock:fail];
