@@ -33,8 +33,9 @@
     
     [UIView animateWithDuration:.2f animations:^
     {
-        CGRect frame = contentVC.previewImage.frame;
-        contentVC.previewImage.frame = CGRectMake(CGRectGetMinX(frame), CGRectGetMinY(frame), CGRectGetWidth(selectedCell.frame), CGRectGetHeight(selectedCell.frame));
+        contentVC.previewImageWidthConstraint.constant = CGRectGetWidth(selectedCell.frame);
+        contentVC.previewImageHeightConstraint.constant = CGRectGetHeight(selectedCell.frame);
+        [contentVC.view layoutIfNeeded];
     }];
     
     [contentVC.actionBarVC animateOutWithDuration:.2f

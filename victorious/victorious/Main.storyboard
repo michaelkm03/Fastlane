@@ -981,10 +981,14 @@
                                 <rect key="frame" x="0.0" y="154" width="320" height="320"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <subviews>
-                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ZqV-fk-y5a" userLabel="Preview Image">
+                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="ZqV-fk-y5a" userLabel="Preview Image">
                                         <rect key="frame" x="0.0" y="0.0" width="320" height="320"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="320" id="DXI-ux-aOw"/>
+                                            <constraint firstAttribute="height" constant="320" id="Wbv-w9-KIN"/>
+                                        </constraints>
                                     </imageView>
                                     <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="4Kr-fK-dGu" userLabel="Poll View">
                                         <rect key="frame" x="0.0" y="0.0" width="320" height="214"/>
@@ -1056,7 +1060,9 @@
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <constraints>
                                     <constraint firstItem="Rie-Yf-0gS" firstAttribute="top" secondItem="bEh-qP-DUl" secondAttribute="top" id="Kl5-Pa-O5b"/>
+                                    <constraint firstItem="ZqV-fk-y5a" firstAttribute="leading" secondItem="bEh-qP-DUl" secondAttribute="leading" id="Yuj-9J-TQl"/>
                                     <constraint firstItem="Rie-Yf-0gS" firstAttribute="leading" secondItem="bEh-qP-DUl" secondAttribute="leading" id="hw5-9Q-z5a"/>
+                                    <constraint firstItem="ZqV-fk-y5a" firstAttribute="top" secondItem="bEh-qP-DUl" secondAttribute="top" id="yXq-mx-Xsl"/>
                                 </constraints>
                             </view>
                             <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Pce-Lq-Sbm">
@@ -1095,6 +1101,8 @@
                         <outlet property="orImageView" destination="jl7-9k-rKO" id="Sc8-0d-S6M"/>
                         <outlet property="pollPreviewView" destination="4Kr-fK-dGu" id="Jg8-mK-drW"/>
                         <outlet property="previewImage" destination="ZqV-fk-y5a" id="5zD-1U-pWm"/>
+                        <outlet property="previewImageHeightConstraint" destination="Wbv-w9-KIN" id="zcg-cF-KCW"/>
+                        <outlet property="previewImageWidthConstraint" destination="DXI-ux-aOw" id="BDC-PZ-iXZ"/>
                         <outlet property="remixButton" destination="Uu4-D7-xWv" id="uQ7-XS-u22"/>
                         <outlet property="secondPollButton" destination="6Fs-nG-V3a" id="rgi-QS-JVS"/>
                         <outlet property="secondResultView" destination="eCc-fQ-PSZ" id="yOE-Ip-yhe"/>
