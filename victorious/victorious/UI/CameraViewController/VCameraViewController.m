@@ -158,6 +158,10 @@ const   NSTimeInterval  kAnimationDuration      =   0.4;
     
     self.view.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVBackgroundColor];
     self.navigationController.navigationBar.barTintColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVBackgroundColor];
+    if (![[UIApplication sharedApplication] isStatusBarHidden])
+    {
+        [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationSlide];
+    }
     
     self.inRecordVideoState = NO;
     self.inTrashState = NO;
