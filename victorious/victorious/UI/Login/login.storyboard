@@ -154,6 +154,7 @@
                     </view>
                     <navigationItem key="navigationItem" title="Login with E-mail" id="d29-FA-lll"/>
                     <connections>
+                        <outlet property="loginButton" destination="lMo-xL-a8U" id="j4Y-ek-bju"/>
                         <outlet property="passwordTextField" destination="if8-Ai-8cE" id="ima-gP-lp0"/>
                         <outlet property="usernameTextField" destination="ce0-Lh-kVG" id="Soj-z1-qJS"/>
                     </connections>
