@@ -86,6 +86,10 @@
 "LocatingVideo"         =   "Locating Video...";
 "DownloadingVideo"      =   "Downloading Video...";
 
+"SegmentDownloadFail"   =   "Unable to get Video";
+
+"TryAgain"              =   "Please try again later.";
+
 "ExpiresOn"             =   "Expires on %@";
 
 
