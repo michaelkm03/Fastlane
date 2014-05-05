@@ -50,7 +50,6 @@
 	
     self.previewView.player.shouldLoop = YES;
     self.previewView.player.startSeconds = 0;
-    self.previewView.player.endSeconds = VConstantsMaximumVideoDuration;
 
     UIImage*    closeButtonImage = [[UIImage imageNamed:@"cameraButtonClose"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithImage:closeButtonImage style:UIBarButtonItemStyleBordered target:self action:@selector(closeButtonClicked:)];
@@ -95,7 +94,7 @@
 -(IBAction)scrubberDidStartMoving:(id)sender
 {
     self.restoreAfterScrubbingRate = self.previewView.player.rate;
-    [self.previewView.player setRate:0.f];
+    [self.previewView.player setRate:0.0f];
 }
 
 -(IBAction)scrubberDidMove:(id)sender
@@ -114,7 +113,6 @@
         
         [self.previewView.player seekToTime:CMTimeMakeWithSeconds(time, NSEC_PER_SEC)];
         self.previewView.player.startSeconds = time;
-        self.previewView.player.endSeconds = time + VConstantsMaximumVideoDuration;
     }
 }
 
@@ -123,7 +121,7 @@
 	if (self.restoreAfterScrubbingRate)
 	{
 		[self.previewView.player setRate:self.restoreAfterScrubbingRate];
-		self.restoreAfterScrubbingRate = 0.f;
+		self.restoreAfterScrubbingRate = 0.0f;
 	}
 }
 
