@@ -16,6 +16,7 @@
 
 #import "VSequence+Restkit.h"
 #import "VComment.h"
+#import "VUser.h"
 
 @import MediaPlayer;
 
@@ -111,16 +112,17 @@
         NSDictionary* payload = fullResponse[@"payload"];
         
         NSNumber* sequenceID = payload[@"sequence_id"];
-//        VSequence* newSequence = [self newSequenceWithID:sequenceID
-//                                                    name:name
-//                                             description:description
-//                                            mediaURLPath:[mediaUrl absoluteString]];
-//
-//        if (success)
-//            success(operation, fullResponse, @[newSequence]);
+        VSequence* newSequence = [self newSequenceWithID:sequenceID
+                                                    name:name
+                                             description:description
+                                            mediaURLPath:[mediaUrl absoluteString]];
+
         if (success)
-            success(operation, fullResponse, resultObjects);
+            success(operation, fullResponse, @[newSequence]);
         
+//        //old way
+//        if (success)
+//            success(operation, fullResponse, resultObjects);
         
 //        [self fetchSequence:sequenceID
 //               successBlock:success
@@ -150,15 +152,19 @@
                    mediaURLPath:(NSString*)mediaURLPath
 
 {
-    VSequence* tempSequence = (VSequence*)[NSEntityDescription entityForName:[VSequence entityName]
-                                                      inManagedObjectContext:self.managedObjectStore.persistentStoreManagedObjectContext];
+    NSEntityDescription* entityDescription =  [NSEntityDescription entityForName:[VSequence entityName]
+                                                          inManagedObjectContext:self.mainUser.managedObjectContext];
+    
+    VSequence* tempSequence = [[VSequence alloc] initWithEntity:entityDescription
+                                 insertIntoManagedObjectContext:self.mainUser.managedObjectContext];
+    
     tempSequence.remoteId = remoteID;
     tempSequence.name = name;
     tempSequence.sequenceDescription = description;
 //    tempSequence.category = category;
     
     tempSequence.releasedAt = [NSDate dateWithTimeIntervalSinceNow:0];
-    tempSequence.status = @"temp";
+    tempSequence.status = kTemporaryContentStatus;
     tempSequence.display_order = @(-1);
     tempSequence.category = @"";
     
@@ -169,16 +175,19 @@
         MPMoviePlayerController *player = [[MPMoviePlayerController alloc] initWithContentURL:[NSURL URLWithString:mediaURLPath]];
         UIImage  *thumbnail = [player thumbnailImageAtTime:1.0 timeOption:MPMovieTimeOptionNearestKeyFrame];
         NSData *imgData = UIImageJPEGRepresentation(thumbnail, 1);
+        
         #warning Make sure to verify that we are properly deleting the old obj
         mediaURLPath = [[mediaURLPath stringByDeletingPathExtension] stringByAppendingString:@".jpg"];
         [imgData writeToFile:mediaURLPath atomically:YES];
         player = nil;
-        
     }
 
     tempSequence.previewImage = mediaURLPath;
+
+    [self.mainUser addPostedSequencesObject:tempSequence];
     
-    tempSequence.user = self.mainUser;
+    [tempSequence.managedObjectContext save:nil];
+    
     return tempSequence;
 }
 

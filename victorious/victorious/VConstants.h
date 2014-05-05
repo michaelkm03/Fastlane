@@ -87,6 +87,8 @@ static NSString*   const   kVUGCRemixCategory = @"ugc_video_remix";
 
 static NSString*   const   kFeaturedCategory = @"featured";
 
+static NSString*   const   kTemporaryContentStatus = @"temp";
+
 static NSString*   const   kSearchCache = @"SearchCache";
 static NSString*   const   kVPagedFetchCache = @"PagedFetchCache";
 
