@@ -29,6 +29,8 @@
     [streamVC.navigationController setNavigationBarHidden:NO animated:YES];
     VStreamViewCell* selectedCell = (VStreamViewCell*) [streamVC.tableView cellForRowAtIndexPath:streamVC.tableView.indexPathForSelectedRow];
     
+    streamVC.view.userInteractionEnabled = NO;
+    contentVC.view.userInteractionEnabled = NO;
 
     [streamVC animateOutWithDuration:.4f
                           completion:^(BOOL finished)
@@ -65,6 +67,8 @@
                                completion:^(BOOL finished)
                {
                    contentVC.actionBarVC = nil;
+                   streamVC.view.userInteractionEnabled = YES;
+                   contentVC.view.userInteractionEnabled = YES;
                    [context completeTransition:![context transitionWasCancelled]];
                }];
           }];
