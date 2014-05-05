@@ -11,7 +11,14 @@
 
 @class VSequence, VComment;
 
+typedef void (^VRemixCompletionBlock) (BOOL completion, NSURL* remixMp4Url);
+
 @interface VObjectManager (ContentCreation)
+
+- (RKManagedObjectRequestOperation*)fetchRemixMP4UrlForSequenceID:(NSNumber*)sequenceID
+                                                      atStartTime:(CGFloat)startTime
+                                                         duration:(CGFloat)duration
+                                                  completionBlock:(VRemixCompletionBlock)completionBlock;
 
 - (AFHTTPRequestOperation * )createPollWithName:(NSString*)name
                                     description:(NSString*)description

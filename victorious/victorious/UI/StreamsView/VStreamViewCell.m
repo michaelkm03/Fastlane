@@ -121,6 +121,11 @@ NSString *kStreamsWillCommentNotification = @"kStreamsWillCommentNotification";
         self.animationBackgroundImage.hidden = NO;
         self.ephemeralTimerView.hidden = YES;
     }
+    
+    if ([sequence.status isEqualToString:kTemporaryContentStatus])
+    {
+        //TODO: grey out sequence;
+    }
 }
 
 - (void)setHeight:(CGFloat)height
