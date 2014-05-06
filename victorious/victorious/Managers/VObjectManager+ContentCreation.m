@@ -130,9 +130,11 @@
     if (shareOptions & kVShareToTwitter)
         parameters[@"share_twitter"] = @"1";
     
-    NSString* loopParam = [self stringForLoopType:loopType];
-    if (loopParam && speed)
+    if (parentNodeId && ![parentNodeId isEqualToNumber:@(0)])
     {
+        NSString* loopParam = [self stringForLoopType:loopType];
+        speed = speed ?: 1;
+        
         parameters[@"speed"] = @(speed);
         parameters[@"playback"] = loopParam;
     }
