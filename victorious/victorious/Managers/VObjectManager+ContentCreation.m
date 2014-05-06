@@ -210,10 +210,10 @@
     {
         MPMoviePlayerController *player = [[MPMoviePlayerController alloc] initWithContentURL:[NSURL URLWithString:mediaURLPath]];
         UIImage  *thumbnail = [player thumbnailImageAtTime:1.0 timeOption:MPMovieTimeOptionNearestKeyFrame];
-        NSData *imgData = UIImageJPEGRepresentation(thumbnail, 1);
+        NSData *imgData = UIImageJPEGRepresentation(thumbnail, 0.8);
         
         #warning Make sure to verify that we are properly deleting the old obj
-        mediaURLPath = [[mediaURLPath stringByDeletingPathExtension] stringByAppendingString:@".jpg"];
+        mediaURLPath = [[mediaURLPath stringByDeletingPathExtension] stringByAppendingPathExtension:VConstantMediaExtensionJPG];
         [imgData writeToFile:mediaURLPath atomically:YES];
         player = nil;
     }
