@@ -25,6 +25,10 @@
     self.usernameTextField.text = self.profile.name;
     self.taglineTextView.text = self.profile.tagline;
     self.locationTextField.text = self.profile.location;
+    if ([self respondsToSelector:@selector(textViewDidChange:)])
+    {
+        [self textViewDidChange:self.taglineTextView];
+    }
 
     self.profileImageView.layer.masksToBounds = YES;
     self.profileImageView.layer.cornerRadius = CGRectGetHeight(self.profileImageView.bounds)/2;
