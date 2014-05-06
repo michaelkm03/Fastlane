@@ -64,11 +64,6 @@ NSString *kLoggedInChangedNotification = @"LoggedInChangedNotification";
     return authorized;
 }
 
-- (BOOL)isOwner
-{
-    return [self.mainUser.accessLevel isEqualToString:@"api_owner"] ;
-}
-
 - (RKManagedObjectRequestOperation *)loginToFacebookWithToken:(NSString*)accessToken
                                                  SuccessBlock:(VSuccessBlock)success
                                                     failBlock:(VFailBlock)failed
