@@ -39,14 +39,17 @@
                                                       tagline:self.taglineTextView.text
                                                  successBlock:^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
     {
-        VLog(@"Succeeded with objects: %@", resultObjects);
-        
         [self.navigationController popViewControllerAnimated:YES];
     }
                                                     failBlock:^(NSOperation* operation, NSError* error)
     {
-        VLog(@"Failed with error: %@", error);
-        [self.navigationController popViewControllerAnimated:YES];
+        sender.enabled = YES;
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil
+                                                        message:NSLocalizedString(@"ProfileSaveFail", @"")
+                                                       delegate:nil
+                                              cancelButtonTitle:NSLocalizedString(@"OKButton", @"")
+                                              otherButtonTitles:nil];
+        [alert show];
     }];
 }
 
