@@ -669,7 +669,7 @@ const   NSTimeInterval  kAnimationDuration      =   0.4;
         NSData *jpegData = UIImageJPEGRepresentation(photo, 1.0f);
         
         NSURL *tempDirectory = [NSURL fileURLWithPath:NSTemporaryDirectory() isDirectory:YES];
-        NSURL *tempFile = [[tempDirectory URLByAppendingPathComponent:[[NSUUID UUID] UUIDString]] URLByAppendingPathExtension:VConstantMediaExtensionPNG];
+        NSURL *tempFile = [[tempDirectory URLByAppendingPathComponent:[[NSUUID UUID] UUIDString]] URLByAppendingPathExtension:VConstantMediaExtensionJPEG];
         [jpegData writeToURL:tempFile atomically:NO];
         [self moveToPreviewViewControllerWithContentURL:tempFile];
     }
