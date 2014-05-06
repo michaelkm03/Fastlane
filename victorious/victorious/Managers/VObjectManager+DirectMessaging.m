@@ -41,7 +41,7 @@
     
     [newConversation.managedObjectContext performBlockAndWait:^
      {
-         [newConversation.managedObjectContext save:nil];
+         [newConversation.managedObjectContext saveToPersistentStore:nil];
      }];
     
     return newConversation;
@@ -95,7 +95,7 @@
         
         [context performBlockAndWait:^
          {
-            [context save:nil];
+            [context saveToPersistentStore:nil];
          }];
         
         if ([nonExistantUsers count])
@@ -159,7 +159,7 @@
         
         [conversation.managedObjectContext performBlockAndWait:^
          {
-             [conversation.managedObjectContext save:nil];
+             [conversation.managedObjectContext saveToPersistentStore:nil];
          }];
         
         if ([nonExistantUsers count])

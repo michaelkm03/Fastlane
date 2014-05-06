@@ -85,7 +85,7 @@
         vote.count = @(vote.count.integerValue + ((NSNumber*)obj).integerValue);
         context = vote.managedObjectContext;
     }];
-    [context save:nil];
+    [context saveToPersistentStore:nil];
     
     if ([voteTypes count])
     {

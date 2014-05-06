@@ -175,7 +175,7 @@
             [user addFollowingObject:followUser];
         }
         
-        [user.managedObjectContext save:nil];
+        [user.managedObjectContext saveToPersistentStore:nil];
     
         user.followingListLoading = NO;
         user.followingListLoaded = YES;
@@ -199,7 +199,7 @@
         if (![[fullResponse objectForKey:@"error"] integerValue])
         {
             [self.mainUser addFollowingObject:user];
-            [self.mainUser.managedObjectContext save:nil];
+            [self.mainUser.managedObjectContext saveToPersistentStore:nil];
         }
         if (success)
         {
@@ -227,7 +227,7 @@
             if (followedUser)
             {
                 [self.mainUser removeFollowingObject:followedUser];
-                [self.mainUser.managedObjectContext save:nil];
+                [self.mainUser.managedObjectContext saveToPersistentStore:nil];
             }
         }
         if (success)

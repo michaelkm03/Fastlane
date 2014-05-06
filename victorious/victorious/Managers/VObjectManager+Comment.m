@@ -107,7 +107,7 @@
         
         [commentToRemove.managedObjectContext performBlockAndWait:^
          {
-             [commentToRemove.managedObjectContext save:nil];
+             [commentToRemove.managedObjectContext saveToPersistentStore:nil];
          }];
         
         if (success)

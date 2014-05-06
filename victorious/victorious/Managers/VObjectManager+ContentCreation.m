@@ -222,7 +222,7 @@
 
     [self.mainUser addPostedSequencesObject:tempSequence];
     
-    [tempSequence.managedObjectContext save:nil];
+    [tempSequence.managedObjectContext saveToPersistentStore:nil];
     
     return tempSequence;
 }
