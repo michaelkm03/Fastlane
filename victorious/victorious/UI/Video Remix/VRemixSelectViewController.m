@@ -156,7 +156,7 @@
          {
              [self.progressHUD hide:YES];
              self.progressHUD = nil;
-             [self showSegmentDownloadFailureAlert];
+             [self showSegmentDownloadFailureAlert:error];
          }
      }];
 }
@@ -176,10 +176,11 @@
     [task resume];
 }
 
-- (void)showSegmentDownloadFailureAlert
+- (void)showSegmentDownloadFailureAlert:(NSError *)error
 {
     UIAlertView*    alert   =   [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"SegmentDownloadFail", @"")
-                                                           message:NSLocalizedString(@"TryAgain", @"")
+//                                                           message:NSLocalizedString(@"TryAgain", @"")
+                                                           message:error.localizedDescription
                                                           delegate:nil
                                                  cancelButtonTitle:nil
                                                  otherButtonTitles:NSLocalizedString(@"OKButton", @""), nil];
@@ -214,7 +215,7 @@
         self.progressHUD = nil;
         
         if (error)
-            [self showSegmentDownloadFailureAlert];
+            [self showSegmentDownloadFailureAlert:error];
         else
             [self performSegueWithIdentifier:@"toTrim" sender:self];
     });

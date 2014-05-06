@@ -666,7 +666,7 @@ const   NSTimeInterval  kAnimationDuration      =   0.4;
     if (!error)
     {
         UIImage *photo = [photoDict[VCAudioVideoRecorderPhotoImageKey] squareImageScaledToSize:640.0];
-        NSData *jpegData = UIImageJPEGRepresentation(photo, 1.0f);
+        NSData *jpegData = UIImageJPEGRepresentation(photo, 0.8);
         
         NSURL *tempDirectory = [NSURL fileURLWithPath:NSTemporaryDirectory() isDirectory:YES];
         NSURL *tempFile = [[tempDirectory URLByAppendingPathComponent:[[NSUUID UUID] UUIDString]] URLByAppendingPathExtension:VConstantMediaExtensionJPEG];
