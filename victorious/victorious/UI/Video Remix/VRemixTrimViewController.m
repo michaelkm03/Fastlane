@@ -194,10 +194,8 @@
                         break;
                     default:
                         NSLog(@"Export Complete");
-                        dispatch_async(dispatch_get_main_queue(), ^{
-                            self.targetURL = target;
-                            [self performSegueWithIdentifier:@"toStitch" sender:self];
-                        });
+                        self.targetURL = target;
+                        [self performSegueWithIdentifier:@"toStitch" sender:self];
                         break;
                 }
             });

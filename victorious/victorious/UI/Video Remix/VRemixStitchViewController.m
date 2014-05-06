@@ -253,10 +253,8 @@
                     break;
                 default:
                     NSLog(@"Export Complete");
-                    dispatch_async(dispatch_get_main_queue(), ^{
-                        self.targetURL = target;
-                        [self.previewView.player setItemByUrl:target];
-                    });
+                    self.targetURL = target;
+                    [self.previewView.player setItemByUrl:target];
                     break;
             }
         });
