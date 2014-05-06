@@ -45,6 +45,8 @@
 - (BOOL) isPlaying;
 - (BOOL) isLoading;
 
+- (void)resetForRateChange;
+
 @property (weak, nonatomic, readwrite) id<VCVideoPlayerDelegate> delegate;
 @property (assign, nonatomic, readwrite) CMTime minimumBufferedTimeBeforePlaying;
 @property (assign, nonatomic, readwrite) BOOL shouldLoop;

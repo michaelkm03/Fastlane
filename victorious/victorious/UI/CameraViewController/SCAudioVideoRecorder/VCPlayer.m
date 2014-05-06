@@ -209,6 +209,16 @@ VCPlayer * currentVCVideoPlayer = nil;
 	}
 }
 
+- (void)resetForRateChange
+{
+	[super pause];
+	
+	if (currentVCVideoPlayer == self)
+    {
+		currentVCVideoPlayer = nil;
+	}
+}
+
 - (CMTime)playableDuration
 {
 	AVPlayerItem * item = self.currentItem;
