@@ -149,6 +149,10 @@ NSString*   const   kVNewThemeKey                       =   @"kVNewTheme";
     
     [[UINavigationBar appearance] setBackgroundImage:nil forBarMetrics:UIBarMetricsDefault];
     [[UINavigationBar appearance] setShadowImage:nil];
+    
+//    NSMutableDictionary *attributes = [NSMutableDictionary dictionaryWithDictionary: [[UIBarButtonItem appearance] titleTextAttributesForState:UIControlStateNormal]];
+//    attributes[NSFontAttributeName] = navigationBarTitleFont;
+//    [[UIBarButtonItem appearance] setTitleTextAttributes:attributes forState:UIControlStateNormal];
 }
 
 - (void)applyClearNavBarStyling
@@ -171,6 +175,10 @@ NSString*   const   kVNewThemeKey                       =   @"kVNewTheme";
     
     [[UINavigationBar appearance] setBackgroundImage:[[UIImage alloc] init] forBarMetrics:UIBarMetricsDefault];
     [[UINavigationBar appearance] setShadowImage:[[UIImage alloc] init]];
+
+//    NSMutableDictionary *attributes = [NSMutableDictionary dictionaryWithDictionary: [[UIBarButtonItem appearance] titleTextAttributesForState:UIControlStateNormal]];
+//    attributes[NSFontAttributeName] = navigationBarTitleFont;
+//    [[UIBarButtonItem appearance] setTitleTextAttributes:attributes forState:UIControlStateNormal];
 }
 
 - (void)removeNavBarStyling
@@ -181,6 +189,8 @@ NSString*   const   kVNewThemeKey                       =   @"kVNewTheme";
     
     [[UINavigationBar appearance] setBackgroundImage:nil forBarMetrics:UIBarMetricsDefault];
     [[UINavigationBar appearance] setShadowImage:nil];
+    
+//    [[UIBarButtonItem appearance] setTitleTextAttributes:nil forState:UIControlStateNormal];
 }
 
 #pragma mark - Primitives

@@ -85,7 +85,7 @@
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
 	<key>VictoriousAppID</key>
-	<integer>1</integer>
+	<integer>2</integer>
 	<key>VictoriousServerEnvironment</key>
 	<string>${DefaultEnvironment}</string>
 </dict>

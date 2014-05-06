@@ -209,19 +209,19 @@
 
     if (self.beforeURL)
     {
-        AVMutableVideoCompositionInstruction*  instruction = [self addAssetURL:self.beforeURL videoCompositionTrack:videoCompositionTrack audioCompositionTrack:(self.shouldMuteAudio) ? nil : audioCompositionTrack atTime:kCMTimeZero];
+        AVMutableVideoCompositionInstruction*  instruction = [self addAssetURL:self.beforeURL videoCompositionTrack:videoCompositionTrack audioCompositionTrack:((self.shouldMuteAudio) ? nil : audioCompositionTrack) atTime:mutableComposition.duration];
         [instructions addObject:instruction];
     }
     
     if (self.sourceURL)
     {
-        AVMutableVideoCompositionInstruction*  instruction = [self addAssetURL:self.sourceURL videoCompositionTrack:videoCompositionTrack audioCompositionTrack:(self.shouldMuteAudio) ? nil : audioCompositionTrack atTime:mutableComposition.duration];
+        AVMutableVideoCompositionInstruction*  instruction = [self addAssetURL:self.sourceURL videoCompositionTrack:videoCompositionTrack audioCompositionTrack:((self.shouldMuteAudio) ? nil : audioCompositionTrack) atTime:mutableComposition.duration];
         [instructions addObject:instruction];
     }
     
     if (self.afterURL)
     {
-        AVMutableVideoCompositionInstruction*  instruction = [self addAssetURL:self.afterURL videoCompositionTrack:videoCompositionTrack audioCompositionTrack:(self.shouldMuteAudio) ? nil : audioCompositionTrack atTime:mutableComposition.duration];
+        AVMutableVideoCompositionInstruction*  instruction = [self addAssetURL:self.afterURL videoCompositionTrack:videoCompositionTrack audioCompositionTrack:((self.shouldMuteAudio) ? nil : audioCompositionTrack) atTime:mutableComposition.duration];
         [instructions addObject:instruction];
     }
     
@@ -255,6 +255,7 @@
                     NSLog(@"Export Complete");
                     self.targetURL = target;
                     [self.previewView.player setItemByUrl:target];
+                    [self.previewView.player seekToTime:kCMTimeZero];
                     break;
             }
         });
