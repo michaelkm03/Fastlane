@@ -3,11 +3,11 @@
 <plist version="1.0">
 <dict>
 	<key>CFBundleDisplayName</key>
-	<string>${ProductPrefix}victorious</string>
+	<string>${ProductPrefix}Pwnisher</string>
 	<key>CFBundleIdentifier</key>
-	<string>com.getvictorious.${ProductPrefix}victorious</string>
+	<string>com.getvictorious.${ProductPrefix}Pwnisher</string>
 	<key>CFBundleName</key>
-	<string>${ProductPrefix}victorious</string>
+	<string>${ProductPrefix}Pwnisher</string>
 	<key>CFBundleURLTypes</key>
 	<array>
 		<dict>
