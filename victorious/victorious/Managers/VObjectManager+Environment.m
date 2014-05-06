@@ -49,6 +49,7 @@ static NSString * const kCurrentEnvironmentKey = @"com.victorious.VObjectManager
         @[
             [[VEnvironment alloc] initWithName:@"Dev" baseURL:[NSURL URLWithString:@"http://dev.getvictorious.com"]],
             [[VEnvironment alloc] initWithName:@"QA" baseURL:[NSURL URLWithString:@"http://qa.getvictorious.com"]],
+            [[VEnvironment alloc] initWithName:@"Staging" baseURL:[NSURL URLWithString:@"http://staging.getvictorious.com"]],
             [[VEnvironment alloc] initWithName:@"Production" baseURL:[NSURL URLWithString:@"http://api.getvictorious.com"]]
         ];
     });
