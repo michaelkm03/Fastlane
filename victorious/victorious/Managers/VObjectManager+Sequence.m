@@ -204,10 +204,7 @@ NSString* const kPollResultsLoaded = @"kPollResultsLoaded";
         newPollResult.sequenceId = poll.remoteId;
         [self.mainUser addPollResultsObject:newPollResult];
         
-        [self.mainUser.managedObjectContext performBlockAndWait:^
-         {
-             [self.mainUser.managedObjectContext saveToPersistentStore:nil];
-         }];
+        [self.mainUser.managedObjectContext saveToPersistentStore:nil];
         
         if (success)
             success(operation, fullResponse, resultObjects);
@@ -241,10 +238,7 @@ NSString* const kPollResultsLoaded = @"kPollResultsLoaded";
             [user addPollResultsObject: poll];
         }
         
-        [user.managedObjectContext performBlockAndWait:^
-         {
-             [user.managedObjectContext saveToPersistentStore:nil];
-         }];
+        [user.managedObjectContext saveToPersistentStore:nil];
 
         [[NSNotificationCenter defaultCenter] postNotificationName:kPollResultsLoaded object:nil];
         
@@ -276,10 +270,7 @@ NSString* const kPollResultsLoaded = @"kPollResultsLoaded";
             context = result.managedObjectContext;
         }
         
-        [context performBlockAndWait:^
-         {
-             [context saveToPersistentStore:nil];
-         }];
+        [context saveToPersistentStore:nil];
       
         if(success)
             success(operation, fullResponse, resultObjects);

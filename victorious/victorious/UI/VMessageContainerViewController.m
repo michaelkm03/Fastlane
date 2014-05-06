@@ -56,10 +56,7 @@
         if (!self.conversation.remoteId)
         {
             self.conversation.remoteId = payload[@"conversation_id"];
-            [self.conversation.managedObjectContext performBlockAndWait:^
-             {
-                 [self.conversation.managedObjectContext saveToPersistentStore:nil];
-             }];
+            [self.conversation.managedObjectContext saveToPersistentStore:nil];
         }
         
         [(VMessageViewController *)self.conversationTableViewController refresh];

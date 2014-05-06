@@ -47,7 +47,7 @@
     {
         [object.managedObjectContext deleteObject:object];
     }
-    [context save:nil];
+    [context saveToPersistentStore:nil];
     
     NSArray* defaultCategories = [[VHomeStreamViewController sharedInstance] categoriesForOption:0];
     VSequenceFilter* defaultFilter = [self sequenceFilterForCategories:defaultCategories];
@@ -145,7 +145,7 @@
         [[VFilterCache sharedCache] setObject:filterInContext forKey:filterInContext.filterAPIPath];
         
         NSError* saveError;
-        [currentContext save:&saveError];
+        [currentContext saveToPersistentStore:&saveError];
         if(saveError)
         {
             VLog(@"Save error: %@", saveError);
@@ -251,7 +251,7 @@
                                                inManagedObjectContext:[VObjectManager sharedManager].managedObjectStore.persistentStoreManagedObjectContext];
         filter.filterAPIPath = path;
         
-        [[VObjectManager sharedManager].managedObjectStore.persistentStoreManagedObjectContext save:nil];
+        [filter.managedObjectContext saveToPersistentStore:nil];
     }
     
     return filter;

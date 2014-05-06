@@ -39,10 +39,7 @@
         newConversation.user = userInContext;
     }
     
-    [newConversation.managedObjectContext performBlockAndWait:^
-     {
-         [newConversation.managedObjectContext saveToPersistentStore:nil];
-     }];
+    [newConversation.managedObjectContext saveToPersistentStore:nil];
     
     return newConversation;
 }
@@ -93,10 +90,7 @@
             context = conversation.managedObjectContext;
         }
         
-        [context performBlockAndWait:^
-         {
-            [context saveToPersistentStore:nil];
-         }];
+        [context saveToPersistentStore:nil];
         
         if ([nonExistantUsers count])
             [[VObjectManager sharedManager] fetchUsers:nonExistantUsers
@@ -157,10 +151,7 @@
                 [nonExistantUsers addObject:message.senderUserId];
         }
         
-        [conversation.managedObjectContext performBlockAndWait:^
-         {
-             [conversation.managedObjectContext saveToPersistentStore:nil];
-         }];
+        [conversation.managedObjectContext saveToPersistentStore:nil];
         
         if ([nonExistantUsers count])
             [[VObjectManager sharedManager] fetchUsers:nonExistantUsers

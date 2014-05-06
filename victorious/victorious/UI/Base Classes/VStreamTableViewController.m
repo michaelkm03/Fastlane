@@ -318,18 +318,18 @@
                                              successBlock:^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
      {
          [self.bottomRefreshIndicator stopAnimating];
-         self.fetchedResultsController.delegate = self;
-         [self performFetch];
+//         self.fetchedResultsController.delegate = self;
+//         [self performFetch];
      }
                                                 failBlock:^(NSOperation* operation, NSError* error)
      {
          [self.bottomRefreshIndicator stopAnimating];
-         self.fetchedResultsController.delegate = self;
+//         self.fetchedResultsController.delegate = self;
      }];
     
     if (operation)
     {
-        self.fetchedResultsController.delegate = nil;
+//        self.fetchedResultsController.delegate = nil;
         [self.bottomRefreshIndicator startAnimating];
     }
 }
