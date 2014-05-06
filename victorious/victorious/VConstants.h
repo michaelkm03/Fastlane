@@ -72,7 +72,7 @@ static NSString* const VConstantsMediaTypeImage     = @"image";
 static NSString* const VConstantMediaExtensionM3U8      = @"m3u8";
 static NSString* const VConstantMediaExtensionPNG       = @"png";
 static NSString* const VConstantMediaExtensionJPG       = @"jpg";
-static NSString* const VConstantMediaExtensionJPEG      = @"jepg";
+static NSString* const VConstantMediaExtensionJPEG      = @"jpeg";
 static NSString* const VConstantMediaExtensionMOV       = @"mov";
 static NSString* const VConstantMediaExtensionMP4       = @"mp4";
 
