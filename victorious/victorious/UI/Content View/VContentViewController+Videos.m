@@ -76,7 +76,9 @@
     [UIView animateWithDuration:.2f
                      animations:^
      {
-         self.previewImage.frame =  self.mpController.view.frame;
+         self.previewImageHeightConstraint.constant = CGRectGetHeight(self.mpController.view.bounds);
+         self.previewImageWidthConstraint.constant = CGRectGetWidth(self.mpController.view.bounds);
+         [self.view layoutIfNeeded];
      }
                      completion:^(BOOL finished)
      {
