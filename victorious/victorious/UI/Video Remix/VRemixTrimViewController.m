@@ -180,25 +180,27 @@
         self.exportSession.timeRange = range;
 
         [self.exportSession exportAsynchronouslyWithCompletionHandler:^{
-            [hud hide:YES];
-            switch ([self.exportSession status])
-            {
-                case AVAssetExportSessionStatusFailed:
-                    NSLog(@"Export failed: %@", [[self.exportSession error] localizedDescription]);
-                    self.targetURL = nil;
-                    break;
-                case AVAssetExportSessionStatusCancelled:
-                    NSLog(@"Export canceled");
-                    self.targetURL = nil;
-                    break;
-                default:
-                    NSLog(@"Export Complete");
-                    dispatch_async(dispatch_get_main_queue(), ^{
-                        self.targetURL = target;
-                        [self performSegueWithIdentifier:@"toStitch" sender:self];
-                    });
-                    break;
-            }
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [hud hide:YES];
+                switch ([self.exportSession status])
+                {
+                    case AVAssetExportSessionStatusFailed:
+                        NSLog(@"Export failed: %@", [[self.exportSession error] localizedDescription]);
+                        self.targetURL = nil;
+                        break;
+                    case AVAssetExportSessionStatusCancelled:
+                        NSLog(@"Export canceled");
+                        self.targetURL = nil;
+                        break;
+                    default:
+                        NSLog(@"Export Complete");
+                        dispatch_async(dispatch_get_main_queue(), ^{
+                            self.targetURL = target;
+                            [self performSegueWithIdentifier:@"toStitch" sender:self];
+                        });
+                        break;
+                }
+            });
         }];
     }
 }

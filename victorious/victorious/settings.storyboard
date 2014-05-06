@@ -22,7 +22,7 @@
                                             <rect key="frame" x="0.0" y="0.0" width="287" height="43"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="left" text="About Us" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="mrn-LJ-NES">
+                                                <label opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="left" text="Terms of Use" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="mrn-LJ-NES">
                                                     <rect key="frame" x="15" y="0.0" width="270" height="43"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="18"/>
@@ -42,7 +42,7 @@
                                             <rect key="frame" x="0.0" y="0.0" width="287" height="43"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="left" text="Privacy Policies" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="vRt-M4-9nW">
+                                                <label opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="left" text="Privacy Policy" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="vRt-M4-9nW">
                                                     <rect key="frame" x="15" y="0.0" width="270" height="43"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="18"/>
@@ -284,7 +284,7 @@
             </objects>
             <point key="canvasLocation" x="-3652" y="-2410"/>
         </scene>
-        <!--About Us View Controller - About Us-->
+        <!--About Us View Controller - Terms of Use-->
         <scene sceneID="80e-2h-oqv">
             <objects>
                 <viewController storyboardIdentifier="aboutUs" useStoryboardIdentifierAsRestorationIdentifier="YES" id="uRj-bL-JcU" customClass="VAboutUsViewController" sceneMemberID="viewController">
@@ -317,7 +317,7 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
-                    <navigationItem key="navigationItem" title="About Us" id="4Bo-2y-3qa"/>
+                    <navigationItem key="navigationItem" title="Terms of Use" id="4Bo-2y-3qa"/>
                     <connections>
                         <outlet property="applicationNameLabel" destination="0jn-1k-CcI" id="D3T-dn-gxS"/>
                         <outlet property="versionLabel" destination="2Ne-Si-Yj1" id="6JL-8Q-Wkc"/>
@@ -328,7 +328,7 @@
             </objects>
             <point key="canvasLocation" x="-3002" y="-3319"/>
         </scene>
-        <!--Privacy Policies View Controller - Privacy Policies-->
+        <!--Privacy Policies View Controller - Privacy Policy-->
         <scene sceneID="Dbm-PF-rlC">
             <objects>
                 <viewController storyboardIdentifier="privacyPolicies" useStoryboardIdentifierAsRestorationIdentifier="YES" id="lSu-os-HMa" customClass="VPrivacyPoliciesViewController" sceneMemberID="viewController">
@@ -349,7 +349,7 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
-                    <navigationItem key="navigationItem" title="Privacy Policies" id="dAg-zH-vd2"/>
+                    <navigationItem key="navigationItem" title="Privacy Policy" id="dAg-zH-vd2"/>
                     <connections>
                         <outlet property="webView" destination="AWB-Yk-rVR" id="N2p-bW-LiS"/>
                     </connections>
