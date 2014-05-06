@@ -68,18 +68,21 @@
     if (self.playBackSpeed == kVPlaybackNormalSpeed)
     {
         self.playBackSpeed = kVPlaybackDoubleSpeed;
-        self.previewView.player.rate = 3.0;
+        [self.previewView.player resetForRateChange];
+        self.previewView.player.rate = 2.0;
         [self.rateButton setImage:[UIImage imageNamed:@"cameraButtonSpeedDouble"] forState:UIControlStateNormal];
     }
     else if (self.playBackSpeed == kVPlaybackDoubleSpeed)
     {
         self.playBackSpeed = kVPlaybackHalfSpeed;
+        [self.previewView.player resetForRateChange];
         self.previewView.player.rate = 0.5;
         [self.rateButton setImage:[UIImage imageNamed:@"cameraButtonSpeedHalf"] forState:UIControlStateNormal];
     }
     else if (self.playBackSpeed == kVPlaybackHalfSpeed)
     {
         self.playBackSpeed = kVPlaybackNormalSpeed;
+        [self.previewView.player resetForRateChange];
         self.previewView.player.rate = 1.0;
         [self.rateButton setImage:[UIImage imageNamed:@"cameraButtonSpeedNormal"] forState:UIControlStateNormal];
     }
