@@ -23,6 +23,7 @@
 "LoginFail"             =   "Login Failed";
 "SignupFail"            =   "Account Creation Failed";
 "AccountUpdateFail"     =   "Account Update Failed";
+"ProfileSaveFail"       =   "Your profile information could not be saved because of a server error";
 
 "NoEmail"               =   "No Email Accounts";
 "NoEmailDetail"         =   "There are no email accounts, would you like to setup one now?";
