@@ -116,7 +116,7 @@
 - (void)applicationDidEnterBackground:(UIApplication *)application
 {
     [[VThemeManager sharedThemeManager] updateToNewTheme];
-    [[VObjectManager sharedManager].managedObjectStore.persistentStoreManagedObjectContext save:nil];
+    [[VObjectManager sharedManager].managedObjectStore.persistentStoreManagedObjectContext saveToPersistentStore:nil];
 }
 
 - (void)applicationWillEnterForeground:(UIApplication *)application
@@ -132,7 +132,7 @@
 - (void)applicationWillTerminate:(UIApplication *)application
 {
     [[VThemeManager sharedThemeManager] updateToNewTheme];
-    [[VObjectManager sharedManager].managedObjectStore.persistentStoreManagedObjectContext save:nil];
+    [[VObjectManager sharedManager].managedObjectStore.persistentStoreManagedObjectContext saveToPersistentStore:nil];
 }
 
 //- (void)application:(UIApplication *)application performFetchWithCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler

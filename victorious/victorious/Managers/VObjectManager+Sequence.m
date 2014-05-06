@@ -206,7 +206,7 @@ NSString* const kPollResultsLoaded = @"kPollResultsLoaded";
         
         [self.mainUser.managedObjectContext performBlockAndWait:^
          {
-             [self.mainUser.managedObjectContext save:nil];
+             [self.mainUser.managedObjectContext saveToPersistentStore:nil];
          }];
         
         if (success)
@@ -243,7 +243,7 @@ NSString* const kPollResultsLoaded = @"kPollResultsLoaded";
         
         [user.managedObjectContext performBlockAndWait:^
          {
-             [user.managedObjectContext save:nil];
+             [user.managedObjectContext saveToPersistentStore:nil];
          }];
 
         [[NSNotificationCenter defaultCenter] postNotificationName:kPollResultsLoaded object:nil];
@@ -278,7 +278,7 @@ NSString* const kPollResultsLoaded = @"kPollResultsLoaded";
         
         [context performBlockAndWait:^
          {
-             [context save:nil];
+             [context saveToPersistentStore:nil];
          }];
       
         if(success)

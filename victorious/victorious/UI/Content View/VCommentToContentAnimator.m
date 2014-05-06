@@ -26,6 +26,9 @@
     
     VContentViewController* contentVC = (VContentViewController*)[context viewControllerForKey:UITransitionContextToViewControllerKey];
     
+    commentsContainer.view.userInteractionEnabled = NO;
+    contentVC.view.userInteractionEnabled = NO;
+    
     [commentsContainer animateOutWithDuration:.25f
                                    completion:^(BOOL finished)
      {
@@ -34,6 +37,9 @@
          [contentVC animateInWithDuration:.25f
                                completion:^(BOOL finished)
           {
+              commentsContainer.view.userInteractionEnabled = YES;
+              contentVC.view.userInteractionEnabled = YES;
+              
               [context completeTransition:![context transitionWasCancelled]];
           }];
      }];

@@ -24,14 +24,19 @@
 {
     VStreamTableViewController *streamVC = (VStreamTableViewController*)[context viewControllerForKey:UITransitionContextFromViewControllerKey];
     VCommentsContainerViewController* commentVC = (VCommentsContainerViewController*)[context viewControllerForKey:UITransitionContextToViewControllerKey];
-
+    
+    streamVC.view.userInteractionEnabled = NO;
+    commentVC.view.userInteractionEnabled = NO;
+    
      [streamVC animateOutWithDuration:.4f
                            completion:^(BOOL finished)
      {
          [[context containerView] addSubview:commentVC.view];
          [commentVC animateInWithDuration:.4f
                                completion:^(BOOL finished)
-         {
+          {
+              streamVC.view.userInteractionEnabled = YES;
+              commentVC.view.userInteractionEnabled = YES;
              [context completeTransition:![context transitionWasCancelled]];
          }];
      }];

@@ -10,6 +10,6 @@
 
 @interface VRemixSelectViewController : VAbstractVideoEditorViewController
 
-+ (UIViewController *)remixViewControllerWithURL:(NSURL *)url sequenceID:(NSInteger)sequenceID;
++ (UIViewController *)remixViewControllerWithURL:(NSURL *)url sequenceID:(NSInteger)sequenceID nodeID:(NSInteger)nodeID;
 
 @end

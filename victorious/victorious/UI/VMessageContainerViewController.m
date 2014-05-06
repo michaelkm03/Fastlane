@@ -58,7 +58,7 @@
             self.conversation.remoteId = payload[@"conversation_id"];
             [self.conversation.managedObjectContext performBlockAndWait:^
              {
-                 [self.conversation.managedObjectContext save:nil];
+                 [self.conversation.managedObjectContext saveToPersistentStore:nil];
              }];
         }
         

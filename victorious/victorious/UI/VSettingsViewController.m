@@ -6,10 +6,12 @@
 //  Copyright (c) 2014 Will Long. All rights reserved.
 //
 
+#import "VEnvironment.h"
 #import "VSettingsViewController.h"
 #import "UIViewController+VSideMenuViewController.h"
 #import "VWebContentViewController.h"
 #import "VThemeManager.h"
+#import "VObjectManager+Environment.h"
 #import "VObjectManager+Login.h"
 #import "VUser.h"
 #import "VUserManager.h"
@@ -25,6 +27,7 @@ NSString*   const   kAccountUpdateViewControllerDomain =   @"VAccountUpdateViewC
 @property (weak, nonatomic) IBOutlet UITextField *passwordTextField;
 @property (weak, nonatomic) IBOutlet UIButton *logoutButton;
 @property (weak, nonatomic) IBOutlet UIButton *saveChangesButton;
+@property (weak, nonatomic) IBOutlet UITableViewCell *serverEnvironmentCell;
 
 @property (nonatomic, weak) ChromecastDeviceController*     chromeCastController;
 @property (nonatomic, assign) BOOL    showChromeCastButton;
@@ -68,6 +71,8 @@ NSString*   const   kAccountUpdateViewControllerDomain =   @"VAccountUpdateViewC
     
     self.chromeCastController = [VAppDelegate sharedAppDelegate].chromecastDeviceController;
     self.chromeCastController.delegate = self;
+    
+    self.serverEnvironmentCell.detailTextLabel.text = [[VObjectManager currentEnvironment] name];
     
     [self updateChromecastButton];
 }

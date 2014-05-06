@@ -6,8 +6,10 @@
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
+#import "VEnvironment.h"
 #import "VErrorMessage.h"
 #import "VObjectManager.h"
+#import "VObjectManager+Environment.h"
 #import "VObjectManager+Private.h"
 
 #import "VConstants.h"
@@ -37,7 +39,7 @@
 //    RKLogConfigureByName("RestKit/ObjectMapping", RKLogLevelTrace);
 //#endif
     
-    VObjectManager *manager = [self managerWithBaseURL:[NSURL URLWithString:VBASEURL]];
+    VObjectManager *manager = [self managerWithBaseURL:[[self currentEnvironment] baseURL]];
     
     //Add the App ID to the User-Agent field
     //(this is the only non-dynamic header, so set it now)

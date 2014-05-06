@@ -27,6 +27,9 @@ extern CGFloat kContentMediaViewOffset;
 @property (weak, nonatomic) IBOutlet UIImageView* orImageView;
 @property (weak, nonatomic) IBOutlet UIImageView* previewImage;
 
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint* previewImageWidthConstraint;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint* previewImageHeightConstraint;
+
 @property (weak, nonatomic) IBOutlet UIButton* firstPollButton;
 @property (weak, nonatomic) IBOutlet UIButton* secondPollButton;
 

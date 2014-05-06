@@ -34,7 +34,7 @@
         if (completionBlock)
         {
             NSURL* remixURL = [NSURL URLWithString:fullResponse[@"payload"][@"mp4_url"]];
-            completionBlock(YES, remixURL);
+            completionBlock(YES, remixURL, nil);
         }
     };
     
@@ -43,7 +43,7 @@
         VLog(@"Failed with error: %@", error);
         if (completionBlock)
         {
-            completionBlock(NO, nil);
+            completionBlock(NO, nil, error);
         }
     };
     
@@ -130,9 +130,11 @@
     if (shareOptions & kVShareToTwitter)
         parameters[@"share_twitter"] = @"1";
     
-    NSString* loopParam = [self stringForLoopType:loopType];
-    if (loopParam && speed)
+    if (parentNodeId && ![parentNodeId isEqualToNumber:@(0)])
     {
+        NSString* loopParam = [self stringForLoopType:loopType];
+        speed = speed ?: 1;
+        
         parameters[@"speed"] = @(speed);
         parameters[@"playback"] = loopParam;
     }
@@ -172,9 +174,11 @@
 {
     if (type == kVLoopRepeat)
         return @"loop";
+    
     if (type == kVLoopReverse)
         return @"reverse";
-    return nil;
+
+    return @"once";
 }
 
 - (VSequence*)newSequenceWithID:(NSNumber*)remoteID
@@ -218,7 +222,7 @@
 
     [self.mainUser addPostedSequencesObject:tempSequence];
     
-    [tempSequence.managedObjectContext save:nil];
+    [tempSequence.managedObjectContext saveToPersistentStore:nil];
     
     return tempSequence;
 }

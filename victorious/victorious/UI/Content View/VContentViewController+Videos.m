@@ -9,6 +9,8 @@
 #import "VContentViewController+Videos.h"
 #import "VContentViewController+Private.h"
 #import "VContentViewController+Images.h"
+#import "VObjectManager+Users.h"
+#import "VLoginViewController.h"
 
 #import "VRemixSelectViewController.h"
 
@@ -69,11 +71,14 @@
     
     CGFloat duration = .5f;
     
+    [self.previewImage cancelImageRequestOperation];
+    
     [UIView animateWithDuration:.2f
                      animations:^
      {
-         [self.previewImage cancelImageRequestOperation];
-         self.previewImage.frame =  self.mpController.view.frame;
+         self.previewImageHeightConstraint.constant = CGRectGetHeight(self.mpController.view.bounds);
+         self.previewImageWidthConstraint.constant = CGRectGetWidth(self.mpController.view.bounds);
+         [self.view layoutIfNeeded];
      }
                      completion:^(BOOL finished)
      {
@@ -103,7 +108,13 @@
 
 - (IBAction)pressedRemix:(id)sender
 {
-    UIViewController* remixVC = [VRemixSelectViewController remixViewControllerWithURL:[self.currentAsset.data mp4UrlFromM3U8] sequenceID:[self.currentNode.remoteId integerValue]];
+    if (![VObjectManager sharedManager].mainUser)
+    {
+        [self presentViewController:[VLoginViewController loginViewController] animated:YES completion:NULL];
+        return;
+    }
+
+    UIViewController* remixVC = [VRemixSelectViewController remixViewControllerWithURL:[self.currentAsset.data mp4UrlFromM3U8] sequenceID:[self.sequence.remoteId integerValue] nodeID:[self.currentNode.remoteId integerValue]];
     [self presentViewController:remixVC animated:YES completion:
      ^{
          [self.mpController pause];

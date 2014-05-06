@@ -11,7 +11,7 @@
 
 @class VSequence, VComment;
 
-typedef void (^VRemixCompletionBlock) (BOOL completion, NSURL* remixMp4Url);
+typedef void (^VRemixCompletionBlock) (BOOL completion, NSURL* remixMp4Url, NSError* error);
 
 @interface VObjectManager (ContentCreation)
 

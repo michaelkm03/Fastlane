@@ -27,16 +27,19 @@
 
 @property (nonatomic, strong)   MBProgressHUD*                  progressHUD;
 
+@property (nonatomic)           NSInteger                       seqID;
+
 @end
 
 @implementation VRemixSelectViewController
 
-+ (UIViewController *)remixViewControllerWithURL:(NSURL *)url sequenceID:(NSInteger)sequenceID
++ (UIViewController *)remixViewControllerWithURL:(NSURL *)url sequenceID:(NSInteger)sequenceID nodeID:(NSInteger)nodeID
 {
     UINavigationController*     remixViewController =   [[UIStoryboard storyboardWithName:@"VideoRemix" bundle:nil] instantiateInitialViewController];
     VRemixSelectViewController* rootViewController  =   (VRemixSelectViewController *)remixViewController.topViewController;
     rootViewController.sourceURL = url;
-    rootViewController.parentID = sequenceID;
+    rootViewController.parentID = nodeID;
+    rootViewController.seqID = sequenceID;
     
     return remixViewController;
 }
@@ -47,7 +50,6 @@
 	
     self.previewView.player.shouldLoop = YES;
     self.previewView.player.startSeconds = 0;
-    self.previewView.player.endSeconds = VConstantsMaximumVideoDuration;
 
     UIImage*    closeButtonImage = [[UIImage imageNamed:@"cameraButtonClose"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithImage:closeButtonImage style:UIBarButtonItemStyleBordered target:self action:@selector(closeButtonClicked:)];
@@ -86,13 +88,13 @@
 - (IBAction)nextButtonClicked:(id)sender
 {
     [self.previewView.player pause];
-    [self downloadVideoSegmentForSequenceID:self.parentID atTime:self.previewView.player.startSeconds];
+    [self downloadVideoSegmentForSequenceID:self.seqID atTime:self.previewView.player.startSeconds];
 }
 
 -(IBAction)scrubberDidStartMoving:(id)sender
 {
     self.restoreAfterScrubbingRate = self.previewView.player.rate;
-    [self.previewView.player setRate:0.f];
+    [self.previewView.player setRate:0.0f];
 }
 
 -(IBAction)scrubberDidMove:(id)sender
@@ -111,7 +113,6 @@
         
         [self.previewView.player seekToTime:CMTimeMakeWithSeconds(time, NSEC_PER_SEC)];
         self.previewView.player.startSeconds = time;
-        self.previewView.player.endSeconds = time + VConstantsMaximumVideoDuration;
     }
 }
 
@@ -120,7 +121,7 @@
 	if (self.restoreAfterScrubbingRate)
 	{
 		[self.previewView.player setRate:self.restoreAfterScrubbingRate];
-		self.restoreAfterScrubbingRate = 0.f;
+		self.restoreAfterScrubbingRate = 0.0f;
 	}
 }
 
@@ -138,17 +139,25 @@
 
 #pragma mark - Support
 
-- (void)downloadVideoSegmentForSequenceID:(NSInteger)sequenceID atTime:(NSTimeInterval)interval
+- (void)downloadVideoSegmentForSequenceID:(NSInteger)sequenceID atTime:(CGFloat)selectedTime
 {
     self.progressHUD =   [MBProgressHUD showHUDAddedTo:self.view animated:YES];
     self.progressHUD.mode = MBProgressHUDModeIndeterminate;
     self.progressHUD.labelText = NSLocalizedString(@"JustAMoment", @"");
     self.progressHUD.detailsLabelText = NSLocalizedString(@"LocatingVideo", @"");
 
-    [[VObjectManager sharedManager] fetchRemixMP4UrlForSequenceID:@(sequenceID) atStartTime:interval duration:VConstantsMaximumVideoDuration completionBlock:^(BOOL completion, NSURL *remixMp4Url)
+    [[VObjectManager sharedManager] fetchRemixMP4UrlForSequenceID:@(sequenceID) atStartTime:selectedTime duration:VConstantsMaximumVideoDuration completionBlock:^(BOOL completion, NSURL *remixMp4Url, NSError* error)
      {
          if (completion)
+         {
              [self downloadVideoSegmentAtURL:remixMp4Url];
+         }
+         else
+         {
+             [self.progressHUD hide:YES];
+             self.progressHUD = nil;
+             [self showSegmentDownloadFailureAlert];
+         }
      }];
 }
 
@@ -158,11 +167,23 @@
     self.progressHUD.detailsLabelText = NSLocalizedString(@"DownloadingVideo", @"");
     
     NSURLSessionConfiguration*  sessionConfig = [NSURLSessionConfiguration defaultSessionConfiguration];
+    sessionConfig.allowsCellularAccess = YES;
+
     NSURLSession*               session = [NSURLSession sessionWithConfiguration:sessionConfig
                                                                         delegate:self
                                                                    delegateQueue:nil];
     NSURLSessionDownloadTask*   task = [session downloadTaskWithURL:segmentURL];
     [task resume];
+}
+
+- (void)showSegmentDownloadFailureAlert
+{
+    UIAlertView*    alert   =   [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"SegmentDownloadFail", @"")
+                                                           message:NSLocalizedString(@"TryAgain", @"")
+                                                          delegate:nil
+                                                 cancelButtonTitle:nil
+                                                 otherButtonTitles:NSLocalizedString(@"OKButton", @""), nil];
+    [alert show];
 }
 
 #pragma mark - NSURLSessionDownloadDelegate
@@ -177,19 +198,9 @@
 
 - (void)URLSession:(NSURLSession *)session downloadTask:(NSURLSessionDownloadTask *)downloadTask didFinishDownloadingToURL:(NSURL *)location
 {
-    NSHTTPURLResponse*  httpResponse = (NSHTTPURLResponse *)downloadTask.response;
-    if (httpResponse.statusCode == kVHTTPStatusCode200OK)
-    {
-        self.targetURL = [NSURL fileURLWithPath:[NSTemporaryDirectory() stringByAppendingPathComponent:[self.sourceURL lastPathComponent]] isDirectory:NO];
-        [[NSFileManager defaultManager] removeItemAtURL:self.targetURL error:nil];
-        [[NSFileManager defaultManager] moveItemAtURL:location toURL:self.targetURL error:nil];
-        
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [self.progressHUD hide:YES];
-            self.progressHUD = nil;
-            [self performSegueWithIdentifier:@"toTrim" sender:self];
-        });
-    }
+    self.targetURL = [NSURL fileURLWithPath:[NSTemporaryDirectory() stringByAppendingPathComponent:[self.sourceURL lastPathComponent]] isDirectory:NO];
+    [[NSFileManager defaultManager] removeItemAtURL:self.targetURL error:nil];
+    [[NSFileManager defaultManager] moveItemAtURL:location toURL:self.targetURL error:nil];
 }
 
 - (void)URLSession:(NSURLSession *)session downloadTask:(NSURLSessionDownloadTask *)downloadTask didResumeAtOffset:(int64_t)fileOffset expectedTotalBytes:(int64_t)expectedTotalBytes
@@ -198,7 +209,15 @@
 
 - (void)URLSession:(NSURLSession *)session task:(NSURLSessionTask *)task didCompleteWithError:(NSError *)error
 {
-    //  Error Message if video fails to download
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self.progressHUD hide:YES];
+        self.progressHUD = nil;
+        
+        if (error)
+            [self showSegmentDownloadFailureAlert];
+        else
+            [self performSegueWithIdentifier:@"toTrim" sender:self];
+    });
 }
 
 #pragma mark - SCVideoPlayerDelegate

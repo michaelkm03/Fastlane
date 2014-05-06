@@ -28,10 +28,14 @@
     VStreamTableViewController *streamVC = (VStreamTableViewController*)[context viewControllerForKey:UITransitionContextToViewControllerKey];
     VStreamViewCell* selectedCell = (VStreamViewCell*) [streamVC.tableView cellForRowAtIndexPath:streamVC.tableView.indexPathForSelectedRow];
     
+    streamVC.view.userInteractionEnabled = NO;
+    contentVC.view.userInteractionEnabled = NO;
+    
     [UIView animateWithDuration:.2f animations:^
     {
-        CGRect frame = contentVC.previewImage.frame;
-        contentVC.previewImage.frame = CGRectMake(CGRectGetMinX(frame), CGRectGetMinY(frame), CGRectGetWidth(selectedCell.frame), CGRectGetHeight(selectedCell.frame));
+        contentVC.previewImageWidthConstraint.constant = CGRectGetWidth(selectedCell.frame);
+        contentVC.previewImageHeightConstraint.constant = CGRectGetHeight(selectedCell.frame);
+        [contentVC.view layoutIfNeeded];
     }];
     
     [contentVC.actionBarVC animateOutWithDuration:.2f
@@ -63,6 +67,9 @@
          [[context containerView] addSubview:streamVC.view];
          [streamVC animateInWithDuration:.4f completion:^(BOOL finished)
           {
+              streamVC.view.userInteractionEnabled = YES;
+              contentVC.view.userInteractionEnabled = YES;
+              
               [context completeTransition:![context transitionWasCancelled]];
           }];
      }];

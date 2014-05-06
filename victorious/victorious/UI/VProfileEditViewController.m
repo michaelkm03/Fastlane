@@ -27,8 +27,10 @@
     [self.usernameTextField becomeFirstResponder];
 }
 
-- (IBAction)done:(id)sender
+- (IBAction)done:(UIBarButtonItem *)sender
 {
+    [[self view] endEditing:YES];
+    sender.enabled = NO;
     [[VObjectManager sharedManager] updateVictoriousWithEmail:nil
                                                      password:nil
                                                      username:self.usernameTextField.text
@@ -37,16 +39,18 @@
                                                       tagline:self.taglineTextView.text
                                                  successBlock:^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
     {
-        VLog(@"Succeeded with objects: %@", resultObjects);
-        
         [self.navigationController popViewControllerAnimated:YES];
     }
                                                     failBlock:^(NSOperation* operation, NSError* error)
     {
-        VLog(@"Failed with error: %@", error);
-        [self.navigationController popViewControllerAnimated:YES];
+        sender.enabled = YES;
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil
+                                                        message:NSLocalizedString(@"ProfileSaveFail", @"")
+                                                       delegate:nil
+                                              cancelButtonTitle:NSLocalizedString(@"OKButton", @"")
+                                              otherButtonTitles:nil];
+        [alert show];
     }];
-    
 }
 
 @end
