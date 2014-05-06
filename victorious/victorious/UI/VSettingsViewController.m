@@ -21,6 +21,10 @@
 
 NSString*   const   kAccountUpdateViewControllerDomain =   @"VAccountUpdateViewControllerDomain";
 
+static const NSInteger kSettingsSectionIndex         = 1;
+static const NSInteger kChromecastButtonIndex        = 0;
+static const NSInteger kServerEnvironmentButtonIndex = 1;
+
 @interface VSettingsViewController ()   <UITextFieldDelegate, ChromecastControllerDelegate>
 @property (weak, nonatomic) IBOutlet UITextField *nameTextField;
 @property (weak, nonatomic) IBOutlet UITextField *emailAddressTextField;
@@ -31,6 +35,7 @@ NSString*   const   kAccountUpdateViewControllerDomain =   @"VAccountUpdateViewC
 
 @property (nonatomic, weak) ChromecastDeviceController*     chromeCastController;
 @property (nonatomic, assign) BOOL    showChromeCastButton;
+@property (nonatomic, assign) BOOL    showEnvironmentSetting;
 
 @end
 
@@ -75,6 +80,12 @@ NSString*   const   kAccountUpdateViewControllerDomain =   @"VAccountUpdateViewC
     self.serverEnvironmentCell.detailTextLabel.text = [[VObjectManager currentEnvironment] name];
     
     [self updateChromecastButton];
+    
+#ifdef V_NO_SWITCH_ENVIRONMENTS
+    self.showEnvironmentSetting = NO;
+#else
+    self.showEnvironmentSetting = YES;
+#endif
 }
 
 #pragma mark - Validation
@@ -304,7 +315,7 @@ NSString*   const   kAccountUpdateViewControllerDomain =   @"VAccountUpdateViewC
     {
         self.showChromeCastButton = YES;
 
-        UITableViewCell*    cell = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:1]];
+        UITableViewCell*    cell = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:kChromecastButtonIndex inSection:kSettingsSectionIndex]];
 
         if (self.chromeCastController.deviceManager && self.chromeCastController.deviceManager.isConnected)
         {
@@ -342,12 +353,23 @@ NSString*   const   kAccountUpdateViewControllerDomain =   @"VAccountUpdateViewC
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath;
 {
-    if (1 == indexPath.section && 0 == indexPath.row)
+    if (kSettingsSectionIndex == indexPath.section && kChromecastButtonIndex == indexPath.row)
     {
         if (self.showChromeCastButton)
             return self.tableView.rowHeight;
         else
             return 0;
+    }
+    else if (kSettingsSectionIndex == indexPath.section && kServerEnvironmentButtonIndex == indexPath.row)
+    {
+        if (self.showEnvironmentSetting)
+        {
+            return self.tableView.rowHeight;
+        }
+        else
+        {
+            return 0;
+        }
     }
     
     return self.tableView.rowHeight;

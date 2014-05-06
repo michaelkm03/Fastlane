@@ -60,6 +60,7 @@ static NSString*   const   kVictoriousAppIDKey      = @"VictoriousAppID";
 
 static NSString*   const   kTestflightDevToken      = @"TestflightDevAppToken";
 static NSString*   const   kTestflightQAToken       = @"TestflightQAAppToken";
+static NSString*   const   kTestflightStagingToken  = @"TestflightStagingAppToken";
 static NSString*   const   kTestflightReleaseToken  = @"TestflightReleaseAppToken";
 
 static NSString*   const   kRemoteIdKey = @"remoteId";
