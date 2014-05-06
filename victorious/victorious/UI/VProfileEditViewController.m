@@ -27,8 +27,10 @@
     [self.usernameTextField becomeFirstResponder];
 }
 
-- (IBAction)done:(id)sender
+- (IBAction)done:(UIBarButtonItem *)sender
 {
+    [[self view] endEditing:YES];
+    sender.enabled = NO;
     [[VObjectManager sharedManager] updateVictoriousWithEmail:nil
                                                      password:nil
                                                      username:self.usernameTextField.text
@@ -46,7 +48,6 @@
         VLog(@"Failed with error: %@", error);
         [self.navigationController popViewControllerAnimated:YES];
     }];
-    
 }
 
 @end
