@@ -19,10 +19,10 @@ static NSString * const kCurrentEnvironmentKey = @"com.victorious.VObjectManager
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^(void)
     {
-        VEnvironment *defaultEnvironment = self.allEnvironments.lastObject;
+        NSString *defaultEnvironment = [[NSBundle bundleForClass:[self class]] objectForInfoDictionaryKey:@"VictoriousServerEnvironment"];
         if (defaultEnvironment)
         {
-            [[NSUserDefaults standardUserDefaults] registerDefaults:@{ kCurrentEnvironmentKey: defaultEnvironment.name }];
+            [[NSUserDefaults standardUserDefaults] registerDefaults:@{ kCurrentEnvironmentKey: defaultEnvironment }];
         }
     });
     

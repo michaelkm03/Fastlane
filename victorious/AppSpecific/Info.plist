@@ -84,5 +84,7 @@
 	<false/>
 	<key>VictoriousAppID</key>
 	<integer>2</integer>
+	<key>VictoriousServerEnvironment</key>
+	<string>${DefaultEnvironment}</string>
 </dict>
 </plist>
