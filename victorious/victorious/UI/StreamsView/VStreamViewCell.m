@@ -98,17 +98,16 @@ NSString *kStreamsWillCommentNotification = @"kStreamsWillCommentNotification";
     if ([sequence.status isEqualToString:kTemporaryContentStatus])
     {
         [self contentExpired];
-        [UIImage imageWithContentsOfFile:_sequence.previewImage];
     }
     else
     {
         [self removeExpiredOverlay];
-        
-        [self.previewImageView setImageWithURL:[NSURL URLWithString:_sequence.previewImage]
-                              placeholderImage:[UIImage resizeableImageWithColor:
-                                                [[VThemeManager sharedThemeManager] themedColorForKey:kVBackgroundColor]]];
     }
     
+    [self.previewImageView setImageWithURL:[NSURL URLWithString:_sequence.previewImage]
+                          placeholderImage:[UIImage resizeableImageWithColor:
+                                            [[VThemeManager sharedThemeManager] themedColorForKey:kVBackgroundColor]]];
+
     [self.profileImageButton setImageWithURL:[NSURL URLWithString:self.sequence.user.pictureUrl]
                             placeholderImage:[UIImage imageNamed:@"profile_thumb"]
                                     forState:UIControlStateNormal];
