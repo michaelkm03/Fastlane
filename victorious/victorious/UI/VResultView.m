@@ -98,6 +98,9 @@
         _resultLabel.textColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVMainTextColor];
         _resultLabel.textAlignment = NSTextAlignmentCenter;
         _resultLabel.minimumScaleFactor = .5f;
+        _resultLabel.adjustsFontSizeToFitWidth = YES;
+        _resultLabel.minimumScaleFactor = .75f;
+        
         [self insertSubview:_resultLabel aboveSubview:self.resultArrow];
     }
     
