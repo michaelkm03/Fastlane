@@ -49,12 +49,6 @@ const   CGFloat     kMessageRowHeight           =   80;
     [self refresh];
 }
 
-- (void)viewWillLayoutSubviews
-{
-    [super viewWillLayoutSubviews];
-    self.view.frame = self.view.superview.bounds;
-}
-
 - (void)refresh
 {
     __block NSInteger oldMessageCount = [self.messages count];
