@@ -264,7 +264,7 @@
 
 - (AVMutableVideoCompositionInstruction *)addAssetURL:(NSURL *)assetURL videoCompositionTrack:(AVMutableCompositionTrack *)videoCompositionTrack audioCompositionTrack:(AVMutableCompositionTrack *)audioCompositionTrack atTime:(CMTime)insertionTime
 {
-    AVAsset*        asset       =   [AVAsset assetWithURL:assetURL];
+    AVURLAsset*     asset       =   [AVURLAsset URLAssetWithURL:assetURL options:@{ AVURLAssetPreferPreciseDurationAndTimingKey : @YES }];
     AVAssetTrack*   videoTrack  =   [asset tracksWithMediaType:AVMediaTypeVideo][0];
     AVAssetTrack*   audiotrack  =   [asset tracksWithMediaType:AVMediaTypeAudio][0];
 
