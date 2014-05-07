@@ -115,8 +115,6 @@
         playbackSpeed = 2.0;
     else
         playbackSpeed = 0.5;
-
-    __block NSURL* mediaToRemove = self.mediaURL;
     
     [[VObjectManager sharedManager] uploadMediaWithName:self.textView.text
                                             description:self.textView.text
@@ -130,8 +128,6 @@
     {
         VLog(@"Succeeded with objects: %@", resultObjects);
         
-        [[NSFileManager defaultManager] removeItemAtURL:mediaToRemove error:nil];
-        
         UIAlertView*    alert   = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"PublishSucceeded", @"")
                                                              message:NSLocalizedString(@"PublishSucceededDetail", @"")
                                                             delegate:nil
@@ -142,8 +138,6 @@
                                               failBlock:^(NSOperation* operation, NSError* error)
     {
         VLog(@"Failed with error: %@", error);
-
-        [[NSFileManager defaultManager] removeItemAtURL:mediaToRemove error:nil];
         
         if (kVStillTranscodingError == error.code)
         {
@@ -163,7 +157,8 @@
                                                   otherButtonTitles:NSLocalizedString(@"OKButton", @""), nil];
             [alert show];
         }
-    }];
+    }
+                                      shouldRemoveMedia:YES];
     
     if (self.completion)
     {

@@ -21,6 +21,8 @@
 
 #import "VUserManager.h"
 
+#import "VConstants.h"
+
 @interface VFilterCache : NSCache
 + (VFilterCache *)sharedCache;
 - (VSequenceFilter *)filterForPath:(NSString*)path;
@@ -61,23 +63,26 @@
         
         [[VUserManager sharedInstance] loginViaSavedCredentialsOnCompletion:nil onError:nil];
         
-//        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^
-//                       {
-//                           NSArray* ownerCategories = [[VOwnerStreamViewController sharedInstance] categoriesForOption:0];
-//                           VSequenceFilter* ownerFilter = [self sequenceFilterForCategories:ownerCategories];
-//                           [self refreshSequenceFilter:ownerFilter
-//                                          successBlock:nil
-//                                             failBlock:nil];
-//                       });
-//        
-//        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^
-//                       {
-//                           NSArray* communityCategories = [[VCommunityStreamViewController sharedInstance] categoriesForOption:0];
-//                           VSequenceFilter* communityFilter = [self sequenceFilterForCategories:communityCategories];
-//                           [self refreshSequenceFilter:communityFilter
-//                                          successBlock:nil
-//                                             failBlock:nil];
-//                       });
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^
+                       {
+                           NSArray* ownerCategories = [[VOwnerStreamViewController sharedInstance] categoriesForOption:0];
+                           VSequenceFilter* ownerFilter = [self sequenceFilterForCategories:ownerCategories];
+                           [self refreshSequenceFilter:ownerFilter
+                                          successBlock:^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
+                           {
+                               VLog(@"Succeeded with objects: %@", resultObjects);
+                           }
+                                             failBlock:nil];
+                       });
+        
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^
+                       {
+                           NSArray* communityCategories = [[VCommunityStreamViewController sharedInstance] categoriesForOption:0];
+                           VSequenceFilter* communityFilter = [self sequenceFilterForCategories:communityCategories];
+                           [self refreshSequenceFilter:communityFilter
+                                          successBlock:nil
+                                             failBlock:nil];
+                       });
     };
     
     return [self refreshSequenceFilter:defaultFilter
@@ -124,7 +129,9 @@
         //If this is the first page, break the relationship to all the old objects.
         if ([filterInContext.currentPageNumber isEqualToNumber:@(0)])
         {
-            [filterInContext removeSequences:filterInContext.sequences];
+            NSPredicate* tempFilter = [NSPredicate predicateWithFormat:@"NOT (status CONTAINS %@)", kTemporaryContentStatus];
+            NSArray* filteredSequences = [[filterInContext.sequences allObjects] filteredArrayUsingPredicate:tempFilter];
+            [filterInContext removeSequences:[NSSet setWithArray:filteredSequences]];
         }
         
         NSUInteger oldSequenceCount = [filterInContext.sequences count];

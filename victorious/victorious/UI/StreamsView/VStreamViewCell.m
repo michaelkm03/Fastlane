@@ -75,8 +75,14 @@ NSString *kStreamsWillCommentNotification = @"kStreamsWillCommentNotification";
 
 - (void)contentExpired
 {
-    self.shadeView.backgroundColor = [UIColor whiteColor];
-    self.shadeView.alpha = .5f;
+//    self.shadeView.backgroundColor = [UIColor whiteColor];
+    self.previewImageView.alpha = .5f;
+}
+
+- (void)removeExpiredOverlay
+{
+//    self.shadeView.backgroundColor = [UIColor clearColor];
+    self.previewImageView.alpha = 1.0f;
 }
 
 - (void)layoutSubviews
@@ -89,9 +95,20 @@ NSString *kStreamsWillCommentNotification = @"kStreamsWillCommentNotification";
 {
     _sequence = sequence;
     
-    [self.previewImageView setImageWithURL:[NSURL URLWithString:_sequence.previewImage]
-                          placeholderImage:[UIImage resizeableImageWithColor:
-                                            [[VThemeManager sharedThemeManager] themedColorForKey:kVBackgroundColor]]];
+    if ([sequence.status isEqualToString:kTemporaryContentStatus])
+    {
+        [self contentExpired];
+        [UIImage imageWithContentsOfFile:_sequence.previewImage];
+    }
+    else
+    {
+        [self removeExpiredOverlay];
+        
+        [self.previewImageView setImageWithURL:[NSURL URLWithString:_sequence.previewImage]
+                              placeholderImage:[UIImage resizeableImageWithColor:
+                                                [[VThemeManager sharedThemeManager] themedColorForKey:kVBackgroundColor]]];
+    }
+    
     [self.profileImageButton setImageWithURL:[NSURL URLWithString:self.sequence.user.pictureUrl]
                             placeholderImage:[UIImage imageNamed:@"profile_thumb"]
                                     forState:UIControlStateNormal];

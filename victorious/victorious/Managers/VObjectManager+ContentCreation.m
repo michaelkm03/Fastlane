@@ -9,14 +9,20 @@
 #import "VObjectManager+ContentCreation.h"
 
 #import "VObjectManager+Private.h"
+#import "VObjectManager+SequenceFilters.h"
+
+#import "VHomeStreamViewController.h"
+#import "VCommunityStreamViewController.h"
+#import "VOwnerStreamViewController.h"
 
 //Probably can remove these after we manually create the sequences
 #import "VObjectManager+Sequence.h"
 #import "VObjectManager+Comment.h"
 
 #import "VSequence+Restkit.h"
+#import "VSequenceFilter.h"
 #import "VComment.h"
-#import "VUser.h"
+#import "VUser+Fetcher.h"
 
 @import MediaPlayer;
 
@@ -115,6 +121,7 @@
                                         mediaURL:(NSURL*)mediaUrl
                                     successBlock:(VSuccessBlock)success
                                        failBlock:(VFailBlock)fail
+                               shouldRemoveMedia:(BOOL)shouldRemoveMedia
 {
     if (!mediaUrl)
         return nil;
@@ -143,24 +150,19 @@
     
     VSuccessBlock fullSuccess = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
     {
-//        NSDictionary* payload = fullResponse[@"payload"];
-//        
-//        NSNumber* sequenceID = payload[@"sequence_id"];
-//        VSequence* newSequence = [self newSequenceWithID:sequenceID
-//                                                    name:name
-//                                             description:description
-//                                            mediaURLPath:[mediaUrl absoluteString]];
-//
-//        if (success)
-//            success(operation, fullResponse, @[newSequence]);
+        NSDictionary* payload = fullResponse[@"payload"];
         
-        //old way
+        NSNumber* sequenceID = payload[@"sequence_id"];
+        VSequence* newSequence = [self newSequenceWithID:sequenceID
+                                                    name:name
+                                             description:description
+                                            mediaURLPath:[mediaUrl absoluteString]];
+        
+        //Try to fetch the sequence
+        [self fetchSequence:sequenceID successBlock:nil failBlock:nil];
+
         if (success)
-            success(operation, fullResponse, resultObjects);
-        
-//        [self fetchSequence:sequenceID
-//               successBlock:success
-//                  failBlock:fail];
+            success(operation, fullResponse, @[newSequence]);
     };
     
     return [self uploadURLs:allUrls
@@ -184,7 +186,6 @@
 - (VSequence*)newSequenceWithID:(NSNumber*)remoteID
                            name:(NSString*)name
                     description:(NSString*)description
-//                       category:(NSString*)category
                    mediaURLPath:(NSString*)mediaURLPath
 
 {
@@ -197,12 +198,10 @@
     tempSequence.remoteId = remoteID;
     tempSequence.name = name;
     tempSequence.sequenceDescription = description;
-//    tempSequence.category = category;
-    
     tempSequence.releasedAt = [NSDate dateWithTimeIntervalSinceNow:0];
     tempSequence.status = kTemporaryContentStatus;
     tempSequence.display_order = @(-1);
-    tempSequence.category = @"";
+    tempSequence.category = [self.mainUser isOwner] ? kVOwnerImageCategory : kVUGCImageCategory;
     
     NSString* extension = [[mediaURLPath pathExtension] lowercaseStringWithLocale:[NSLocale localeWithLocaleIdentifier:@"en_US_POSIX"]];
     //If its not one of these its an image, so we can use that for the preview
@@ -222,10 +221,39 @@
 
     [self.mainUser addPostedSequencesObject:tempSequence];
     
+    //Add to home screen
+    VSequenceFilter* homeFilter = [self sequenceFilterForCategories:[[VHomeStreamViewController sharedInstance] categoriesForOption:0]];
+    [(VSequenceFilter*)[tempSequence.managedObjectContext objectWithID:homeFilter.objectID] addSequencesObject:tempSequence];
+    
+    //Add to community or owner (depends on user)
+    NSArray* categoriesForSecondFilter = [self.mainUser isOwner] ? [[VOwnerStreamViewController sharedInstance] categoriesForOption:0]
+                                                                 : [[VCommunityStreamViewController sharedInstance] categoriesForOption:0];
+    VSequenceFilter* secondFilter = [self sequenceFilterForCategories:categoriesForSecondFilter];
+    [(VSequenceFilter*)[tempSequence.managedObjectContext objectWithID:secondFilter.objectID] addSequencesObject:tempSequence];
+
     [tempSequence.managedObjectContext saveToPersistentStore:nil];
+    
+//    [[NSFileManager defaultManager] removeItemAtURL:mediaToRemove error:nil];
     
     return tempSequence;
 }
+
+- (VSequence*)newPollWithID:(NSNumber*)remoteID
+                       name:(NSString*)name
+                description:(NSString*)description
+          firstMediaURLPath:(NSString*)firstmediaURLPath
+         secondMediaURLPath:(NSString*)secondMediaURLPath
+{
+    VSequence* tempPoll = [self newSequenceWithID:remoteID name:name description:description mediaURLPath:nil];
+    tempPoll.category = [self.mainUser isOwner] ? kVOwnerPollCategory : kVUGCPollCategory;
+    
+    
+    
+    [tempPoll.managedObjectContext saveToPersistentStore:nil];
+    return tempPoll;
+}
+
+
 
 #pragma mark - Comment
 
