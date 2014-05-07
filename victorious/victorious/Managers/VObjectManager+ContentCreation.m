@@ -24,7 +24,7 @@
 #import "VComment.h"
 #import "VUser+Fetcher.h"
 
-@import MediaPlayer;
+@import AVFoundation;
 
 @implementation VObjectManager (ContentCreation)
 
@@ -86,22 +86,20 @@
     
     VSuccessBlock fullSuccess = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
     {
-        if ([fullResponse[@"error"] integerValue] == 0)
-        {
-            NSDictionary* payload = fullResponse[@"payload"];
-            
-            NSNumber* sequenceID = payload[@"sequence_id"];
-            
-            [self fetchSequence:sequenceID
-                   successBlock:success
-                      failBlock:fail];
-        }
-        else
-        {
-            NSError*    error = [NSError errorWithDomain:NSCocoaErrorDomain code:[fullResponse[@"error"] integerValue] userInfo:nil];
-            if (fail)
-                fail(operation, error);
-        }
+        
+        NSDictionary* payload = fullResponse[@"payload"];
+        
+        NSNumber* sequenceID = payload[@"sequence_id"];
+        VSequence* newSequence = [self newPollWithID:sequenceID
+                                                name:name
+                                         description:description
+                                   firstMediaURLPath:[media1Url absoluteString]
+                                  secondMediaURLPath:[media2Url absoluteString]];
+        
+        [self fetchSequence:sequenceID successBlock:nil failBlock:nil];
+        
+        if (success)
+            success(operation, fullResponse, @[newSequence]);
     };
     
     return [self uploadURLs:allURLs
@@ -202,22 +200,7 @@
     tempSequence.status = kTemporaryContentStatus;
     tempSequence.display_order = @(-1);
     tempSequence.category = [self.mainUser isOwner] ? kVOwnerImageCategory : kVUGCImageCategory;
-    
-    NSString* extension = [[mediaURLPath pathExtension] lowercaseStringWithLocale:[NSLocale localeWithLocaleIdentifier:@"en_US_POSIX"]];
-    //If its not one of these its an image, so we can use that for the preview
-    if ([extension isEqualToString:VConstantMediaExtensionMOV] || [extension isEqualToString:VConstantMediaExtensionMP4])
-    {
-        MPMoviePlayerController *player = [[MPMoviePlayerController alloc] initWithContentURL:[NSURL URLWithString:mediaURLPath]];
-        UIImage  *thumbnail = [player thumbnailImageAtTime:1.0 timeOption:MPMovieTimeOptionNearestKeyFrame];
-        NSData *imgData = UIImageJPEGRepresentation(thumbnail, 1);
-        
-        #warning Make sure to verify that we are properly deleting the old obj
-        mediaURLPath = [[mediaURLPath stringByDeletingPathExtension] stringByAppendingString:@".jpg"];
-        [imgData writeToFile:mediaURLPath atomically:YES];
-        player = nil;
-    }
-
-    tempSequence.previewImage = mediaURLPath;
+    tempSequence.previewImage = [self localImageURLForVideo:mediaURLPath];
 
     [self.mainUser addPostedSequencesObject:tempSequence];
     
@@ -233,8 +216,6 @@
 
     [tempSequence.managedObjectContext saveToPersistentStore:nil];
     
-//    [[NSFileManager defaultManager] removeItemAtURL:mediaToRemove error:nil];
-    
     return tempSequence;
 }
 
@@ -248,12 +229,38 @@
     tempPoll.category = [self.mainUser isOwner] ? kVOwnerPollCategory : kVUGCPollCategory;
     
     
+//    [tempPoll addNodesObject:nil];
+    
+    firstmediaURLPath = [self localImageURLForVideo:firstmediaURLPath];
+    secondMediaURLPath = [self localImageURLForVideo:secondMediaURLPath];
     
     [tempPoll.managedObjectContext saveToPersistentStore:nil];
     return tempPoll;
 }
 
-
+- (NSString*)localImageURLForVideo:(NSString*)localVideoPath
+{
+    NSString* extension = [[localVideoPath pathExtension] lowercaseStringWithLocale:[NSLocale localeWithLocaleIdentifier:@"en_US_POSIX"]];
+    if ([extension isEqualToString:VConstantMediaExtensionPNG] || [extension isEqualToString:VConstantMediaExtensionJPG]
+        || [extension isEqualToString:VConstantMediaExtensionJPEG])
+    {
+        return localVideoPath;
+    }
+    
+    AVAsset *asset = [AVAsset assetWithURL:[NSURL URLWithString:localVideoPath]];
+    AVAssetImageGenerator *assetGenerator = [AVAssetImageGenerator assetImageGeneratorWithAsset:asset];
+    CGImageRef imageRef = [assetGenerator copyCGImageAtTime:kCMTimeZero actualTime:NULL error:NULL];
+    UIImage *previewImage = [UIImage imageWithCGImage:imageRef];
+    CGImageRelease(imageRef);
+    
+    NSData *imgData = UIImageJPEGRepresentation(previewImage, .8);
+    
+    NSURL *tempDirectory = [NSURL fileURLWithPath:NSTemporaryDirectory() isDirectory:YES];
+    NSURL *tempFile = [[tempDirectory URLByAppendingPathComponent:[[NSUUID UUID] UUIDString]] URLByAppendingPathExtension:VConstantMediaExtensionJPG];
+    [imgData writeToURL:tempFile atomically:NO];
+    
+    return [tempFile absoluteString];
+}
 
 #pragma mark - Comment
 

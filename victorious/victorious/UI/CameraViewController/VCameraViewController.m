@@ -666,10 +666,10 @@ const   NSTimeInterval  kAnimationDuration      =   0.4;
     if (!error)
     {
         UIImage *photo = [photoDict[VCAudioVideoRecorderPhotoImageKey] squareImageScaledToSize:640.0];
-        NSData *pngData = UIImagePNGRepresentation(photo);
+        NSData *pngData = UIImageJPEGRepresentation(photo, .8);
         
         NSURL *tempDirectory = [NSURL fileURLWithPath:NSTemporaryDirectory() isDirectory:YES];
-        NSURL *tempFile = [[tempDirectory URLByAppendingPathComponent:[[NSUUID UUID] UUIDString]] URLByAppendingPathExtension:VConstantMediaExtensionPNG];
+        NSURL *tempFile = [[tempDirectory URLByAppendingPathComponent:[[NSUUID UUID] UUIDString]] URLByAppendingPathExtension:VConstantMediaExtensionJPG];
         [pngData writeToURL:tempFile atomically:NO];
         [self moveToPreviewViewControllerWithContentURL:tempFile];
     }
