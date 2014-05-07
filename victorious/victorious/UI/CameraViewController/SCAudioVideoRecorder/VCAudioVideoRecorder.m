@@ -170,7 +170,6 @@ NSString * const VCAudioVideoRecorderPhotoThumbnailKey = @"VCAudioVideoRecorderP
 	return fileUrl;
 }
 
-
 - (void)prepareRecordingAtUrl:(NSURL *)fileUrl error:(NSError **)error
 {
 	if (fileUrl == nil)
@@ -590,8 +589,7 @@ NSString * const VCAudioVideoRecorderPhotoThumbnailKey = @"VCAudioVideoRecorderP
 // Misc methods
 //
 
-- (void)
-dispatchBlockOnAskedQueue:(void(^)())block
+- (void)dispatchBlockOnAskedQueue:(void(^)())block
 {
 	if (self.dispatchDelegateMessagesOnMainQueue)
     {
