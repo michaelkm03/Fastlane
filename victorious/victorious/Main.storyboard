@@ -20,8 +20,8 @@
                                     <rect key="frame" x="79" y="8" width="161" height="29"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                     <segments>
-                                        <segment title="Messages"/>
-                                        <segment title="News"/>
+                                        <segment title="Message"/>
+                                        <segment title="Notification"/>
                                     </segments>
                                     <connections>
                                         <action selector="modeSelected:" destination="Tfk-WC-tkh" eventType="valueChanged" id="Xaf-Rs-sJ6"/>
