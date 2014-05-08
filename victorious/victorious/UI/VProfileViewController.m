@@ -75,9 +75,11 @@
 {
     [super viewDidLoad];
 
-    UIImage *followSelectedImage = [self.followButton imageForState:UIControlStateSelected];
+    UIImage *followSelectedImage = [[UIImage imageNamed:@"followingButton"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+    [self.followButton setImage:followSelectedImage forState:UIControlStateSelected];
     [self.followButton setImage:followSelectedImage forState:UIControlStateSelected | UIControlStateHighlighted];
     [self.followButton setImage:followSelectedImage forState:UIControlStateSelected | UIControlStateDisabled];
+    self.followButton.tintColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVAccentColor];
     
     if ((-1 == self.userID) || (self.userID == [VObjectManager sharedManager].mainUser.remoteId.integerValue))
     {

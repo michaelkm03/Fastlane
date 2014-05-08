@@ -96,7 +96,7 @@
         VSequence* newSequence = [self newPollWithID:sequenceID
                                                 name:name
                                          description:description
-                                  answer1Text:answer1Text
+                                         answer1Text:answer1Text
                                          answer2Text:answer2Text
                                    firstMediaURLPath:[media1Url absoluteString]
                                   secondMediaURLPath:[media2Url absoluteString]];
@@ -191,9 +191,6 @@
                     description:(NSString*)description
                    mediaURLPath:(NSString*)mediaURLPath
 {
-    if (!remoteID || !name || !description || !mediaURLPath || !self.mainUser)
-        return nil;
-    
     VSequence* tempSequence = [self.mainUser.managedObjectContext insertNewObjectForEntityForName:[VSequence entityName]];
     
     tempSequence.remoteId = remoteID;
@@ -230,9 +227,6 @@
           firstMediaURLPath:(NSString*)firstmediaURLPath
          secondMediaURLPath:(NSString*)secondMediaURLPath
 {
-    if (!remoteID || !name || !description || !firstmediaURLPath || !secondMediaURLPath || !self.mainUser)
-        return nil;
-    
     VSequence* tempPoll = [self newSequenceWithID:remoteID name:name description:description mediaURLPath:nil];
     tempPoll.category = [self.mainUser isOwner] ? kVOwnerPollCategory : kVUGCPollCategory;
     
@@ -241,11 +235,13 @@
 
     VAnswer* firstAnswer = [self.mainUser.managedObjectContext insertNewObjectForEntityForName:[VAnswer entityName]];
     firstAnswer.label = answer1Text;
+    firstAnswer.display_order = @(1);
     firstAnswer.thumbnailUrl = [self localImageURLForVideo:firstmediaURLPath];
     [interaction addAnswersObject:firstAnswer];
     
     VAnswer* secondAnswer = [self.mainUser.managedObjectContext insertNewObjectForEntityForName:[VAnswer entityName]];
     secondAnswer.label = answer2Text;
+    secondAnswer.display_order = @(2);
     secondAnswer.thumbnailUrl = [self localImageURLForVideo:secondMediaURLPath];
     [interaction addAnswersObject:secondAnswer];
     

@@ -25,6 +25,8 @@
 	<string>cb3d33de-2bb2-4d9a-8025-6f8a0d39c01d</string>
 	<key>TestflightQAAppToken</key>
 	<string>dda7d69b-2d07-45f0-933b-583b9c88dd59</string>
+	<key>TestflightStagingAppToken</key>
+	<string>a9355690-b5fe-4636-a9a0-bc7256fff07e</string>
 	<key>VictoriousAppID</key>
 	<integer>5</integer>
 </dict>

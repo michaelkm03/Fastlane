@@ -20,8 +20,9 @@
 
 - (BOOL)isPoll
 {
-    return [self.category isEqualToString:kVOwnerPollCategory] ||
-        [self.category isEqualToString:kVUGCPollCategory];
+    return [[self firstNode] isPoll];
+//    return [self.category isEqualToString:kVOwnerPollCategory] ||
+//        [self.category isEqualToString:kVUGCPollCategory];
 }
 
 - (BOOL)isQuiz

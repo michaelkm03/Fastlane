@@ -61,6 +61,7 @@ static NSString*   const   kVictoriousAppIDKey      = @"VictoriousAppID";
 
 static NSString*   const   kTestflightDevToken      = @"TestflightDevAppToken";
 static NSString*   const   kTestflightQAToken       = @"TestflightQAAppToken";
+static NSString*   const   kTestflightStagingToken  = @"TestflightStagingAppToken";
 static NSString*   const   kTestflightReleaseToken  = @"TestflightReleaseAppToken";
 
 static NSString*   const   kRemoteIdKey = @"remoteId";
@@ -72,7 +73,7 @@ static NSString* const VConstantsMediaTypeImage     = @"image";
 static NSString* const VConstantMediaExtensionM3U8      = @"m3u8";
 static NSString* const VConstantMediaExtensionPNG       = @"png";
 static NSString* const VConstantMediaExtensionJPG       = @"jpg";
-static NSString* const VConstantMediaExtensionJPEG      = @"jepg";
+static NSString* const VConstantMediaExtensionJPEG      = @"jpeg";
 static NSString* const VConstantMediaExtensionMOV       = @"mov";
 static NSString* const VConstantMediaExtensionMP4       = @"mp4";
 
