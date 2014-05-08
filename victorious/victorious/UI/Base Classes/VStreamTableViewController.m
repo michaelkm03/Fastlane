@@ -286,11 +286,6 @@
 - (void)refreshAction
 {
     VSequenceFilter* filter = [self currentFilter];
-    @synchronized(filter.updating)
-    {
-        if (filter.updating.boolValue)
-            return;
-    }
     
     RKManagedObjectRequestOperation* operation = [[VObjectManager sharedManager] refreshSequenceFilter:filter
                                                           successBlock:^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
@@ -310,28 +305,24 @@
 
 - (void)loadNextPageAction
 {
-//    VSequenceFilter* filter = [self currentFilter];
-//    if (filter.updating.boolValue)
-//        return;
-//    
-//    RKManagedObjectRequestOperation* operation = [[VObjectManager sharedManager] loadNextPageOfSequenceFilter:[self currentFilter]
-//                                             successBlock:^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
-//     {
-//         [self.bottomRefreshIndicator stopAnimating];
+    RKManagedObjectRequestOperation* operation = [[VObjectManager sharedManager] loadNextPageOfSequenceFilter:[self currentFilter]
+                                             successBlock:^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
+     {
+         [self.bottomRefreshIndicator stopAnimating];
 //         self.fetchedResultsController.delegate = self;
 //         [self performFetch];
-//     }
-//                                                failBlock:^(NSOperation* operation, NSError* error)
-//     {
-//         [self.bottomRefreshIndicator stopAnimating];
+     }
+                                                failBlock:^(NSOperation* operation, NSError* error)
+     {
+         [self.bottomRefreshIndicator stopAnimating];
 //         self.fetchedResultsController.delegate = self;
-//     }];
-//    
-//    if (operation)
-//    {
+     }];
+    
+    if (operation)
+    {
 //        self.fetchedResultsController.delegate = nil;
-//        [self.bottomRefreshIndicator startAnimating];
-//    }
+        [self.bottomRefreshIndicator startAnimating];
+    }
 }
 
 #pragma mark - Predicates

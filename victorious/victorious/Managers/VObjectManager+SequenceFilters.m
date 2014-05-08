@@ -105,15 +105,25 @@
                                                         failBlock:(VFailBlock)fail
 {
     //If the filter is in the middle of an update, ignore other calls to update
+    __block BOOL updating;
+    void(^updateCheck)(void) = ^(void)
+    {
+        updating = filter.updating.boolValue;
+        if (!updating)
+            filter.updating = @(YES);
+    };
     
-        if (filter.updating.boolValue)
-        {
-            if (fail)
-                fail(nil, nil);
-            return nil;
-        }
-        else
-            filter.updating = [NSNumber numberWithBool:YES];
+    if ([NSThread isMainThread])
+        updateCheck();
+    else
+        dispatch_sync(dispatch_get_main_queue(), updateCheck);
+    
+    if (updating)
+    {
+        if (fail)
+            fail(nil, nil);
+        return nil;
+    }
 
     NSInteger nextPageNumber = filter.currentPageNumber.integerValue + 1;
     if (nextPageNumber > filter.maxPageNumber.integerValue)

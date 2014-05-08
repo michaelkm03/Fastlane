@@ -12,10 +12,6 @@
 #import "NSString+VParseHelp.h"
 #import "VThemeManager.h"
 
-@interface VFetchedResultsTableViewController ()
-@property (nonatomic) NSInteger updateCount;
-@end
-
 @implementation VFetchedResultsTableViewController
 
 - (void)viewDidLoad
@@ -171,9 +167,7 @@
 
 - (void)controllerWillChangeContent:(NSFetchedResultsController *)controller
 {
-    self.updateCount++;
-    if (self.updateCount == 1)
-        [[self tableViewForFetchedResultsController:controller] beginUpdates];
+    [[self tableViewForFetchedResultsController:controller] beginUpdates];
 }
 
 - (void)controller:(NSFetchedResultsController *)controller
@@ -234,9 +228,7 @@
 
 - (void)controllerDidChangeContent:(NSFetchedResultsController *)controller
 {
-    self.updateCount--;
-    if (self.updateCount == 0)
-        [[self tableViewForFetchedResultsController:controller] endUpdates];
+    [[self tableViewForFetchedResultsController:controller] endUpdates];
 }
 
 #pragma mark - UISearchDisplayControllerDelegate
