@@ -74,26 +74,17 @@
         
         [[VUserManager sharedInstance] loginViaSavedCredentialsOnCompletion:nil onError:nil];
         
-        dispatch_async([VObjectManager paginationDispatchQueue], ^
-                       {
-                           NSArray* ownerCategories = [[VOwnerStreamViewController sharedInstance] categoriesForOption:0];
-                           VSequenceFilter* ownerFilter = [self sequenceFilterForCategories:ownerCategories];
-                           [self refreshSequenceFilter:ownerFilter
-                                          successBlock:^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
-                           {
-                               VLog(@"Succeeded with objects: %@", resultObjects);
-                           }
-                                             failBlock:nil];
-                       });
+        NSArray* ownerCategories = [[VOwnerStreamViewController sharedInstance] categoriesForOption:0];
+        VSequenceFilter* ownerFilter = [self sequenceFilterForCategories:ownerCategories];
+        [self refreshSequenceFilter:ownerFilter
+                       successBlock:nil
+                          failBlock:nil];
         
-        dispatch_async([VObjectManager paginationDispatchQueue], ^
-                       {
-                           NSArray* communityCategories = [[VCommunityStreamViewController sharedInstance] categoriesForOption:0];
-                           VSequenceFilter* communityFilter = [self sequenceFilterForCategories:communityCategories];
-                           [self refreshSequenceFilter:communityFilter
-                                          successBlock:nil
-                                             failBlock:nil];
-                       });
+        NSArray* communityCategories = [[VCommunityStreamViewController sharedInstance] categoriesForOption:0];
+        VSequenceFilter* communityFilter = [self sequenceFilterForCategories:communityCategories];
+        [self refreshSequenceFilter:communityFilter
+                       successBlock:nil
+                          failBlock:nil];
     };
     
     return [self refreshSequenceFilter:defaultFilter
@@ -161,7 +152,7 @@
         filterInContext.maxPageNumber = @(((NSString*)fullResponse[@"total_pages"]).integerValue);
         filterInContext.currentPageNumber = @(((NSString*)fullResponse[@"page_number"]).integerValue);
         
-        dispatch_async(dispatch_get_main_queue(), ^
+        dispatch_async([VObjectManager paginationDispatchQueue], ^
         {
             filterInContext.updating = [NSNumber numberWithBool:NO];
         });
