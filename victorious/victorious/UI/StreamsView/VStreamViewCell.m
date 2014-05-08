@@ -122,8 +122,6 @@ NSString *kStreamsWillCommentNotification = @"kStreamsWillCommentNotification";
     self.dateLabel.text = [self.sequence.releasedAt timeSince];
     [self.commentButton setTitle:self.sequence.commentCount.stringValue forState:UIControlStateNormal];
     
-    NSLog(@"Expiration date: %@", _sequence.expiresAt);
-    
     if (_sequence.expiresAt)
     {
         self.ephemeralTimerView.hidden = NO;
@@ -136,11 +134,6 @@ NSString *kStreamsWillCommentNotification = @"kStreamsWillCommentNotification";
         self.animationImage.hidden = NO;
         self.animationBackgroundImage.hidden = NO;
         self.ephemeralTimerView.hidden = YES;
-    }
-    
-    if ([sequence.status isEqualToString:kTemporaryContentStatus])
-    {
-        //TODO: grey out sequence;
     }
 }
 
