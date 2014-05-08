@@ -200,7 +200,12 @@
         if (fail)
             fail(operation, error);
         
-        filter.updating = [NSNumber numberWithBool:NO];
+        dispatch_async(dispatch_get_main_queue(), ^
+                       {
+                           filter.updating = @(NO);
+                       });
+
+        
         [[VFilterCache sharedCache] setObject:filter forKey:filter.filterAPIPath];
     };
     
