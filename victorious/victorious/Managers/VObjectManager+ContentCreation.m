@@ -20,6 +20,9 @@
 #import "VObjectManager+Comment.h"
 
 #import "VSequence+Restkit.h"
+#import "VNode+RestKit.h"
+#import "VInteraction+RestKit.h"
+#import "VAnswer+RestKit.h"
 #import "VSequenceFilter.h"
 #import "VComment.h"
 #import "VUser+Fetcher.h"
@@ -93,6 +96,8 @@
         VSequence* newSequence = [self newPollWithID:sequenceID
                                                 name:name
                                          description:description
+                                  answer1Text:answer1Text
+                                         answer2Text:answer2Text
                                    firstMediaURLPath:[media1Url absoluteString]
                                   secondMediaURLPath:[media2Url absoluteString]];
         
@@ -185,18 +190,16 @@
                            name:(NSString*)name
                     description:(NSString*)description
                    mediaURLPath:(NSString*)mediaURLPath
-
 {
-    NSEntityDescription* entityDescription =  [NSEntityDescription entityForName:[VSequence entityName]
-                                                          inManagedObjectContext:self.mainUser.managedObjectContext];
+    if (!remoteID || !name || !description || !mediaURLPath || !self.mainUser)
+        return nil;
     
-    VSequence* tempSequence = [[VSequence alloc] initWithEntity:entityDescription
-                                 insertIntoManagedObjectContext:self.mainUser.managedObjectContext];
+    VSequence* tempSequence = [self.mainUser.managedObjectContext insertNewObjectForEntityForName:[VSequence entityName]];
     
     tempSequence.remoteId = remoteID;
     tempSequence.name = name;
     tempSequence.sequenceDescription = description;
-    tempSequence.releasedAt = [NSDate dateWithTimeIntervalSinceNow:0];
+    tempSequence.releasedAt = [NSDate dateWithTimeIntervalSinceNow:-1];
     tempSequence.status = kTemporaryContentStatus;
     tempSequence.display_order = @(-1);
     tempSequence.category = [self.mainUser isOwner] ? kVOwnerImageCategory : kVUGCImageCategory;
@@ -222,17 +225,32 @@
 - (VSequence*)newPollWithID:(NSNumber*)remoteID
                        name:(NSString*)name
                 description:(NSString*)description
+                answer1Text:(NSString*)answer1Text
+                answer2Text:(NSString*)answer2Text
           firstMediaURLPath:(NSString*)firstmediaURLPath
          secondMediaURLPath:(NSString*)secondMediaURLPath
 {
+    if (!remoteID || !name || !description || !firstmediaURLPath || !secondMediaURLPath || !self.mainUser)
+        return nil;
+    
     VSequence* tempPoll = [self newSequenceWithID:remoteID name:name description:description mediaURLPath:nil];
     tempPoll.category = [self.mainUser isOwner] ? kVOwnerPollCategory : kVUGCPollCategory;
     
+    VNode* node = [self.mainUser.managedObjectContext insertNewObjectForEntityForName:[VNode entityName]];
+    VInteraction* interaction = [self.mainUser.managedObjectContext insertNewObjectForEntityForName:[VInteraction entityName]];
+
+    VAnswer* firstAnswer = [self.mainUser.managedObjectContext insertNewObjectForEntityForName:[VAnswer entityName]];
+    firstAnswer.label = answer1Text;
+    firstAnswer.thumbnailUrl = [self localImageURLForVideo:firstmediaURLPath];
+    [interaction addAnswersObject:firstAnswer];
     
-//    [tempPoll addNodesObject:nil];
+    VAnswer* secondAnswer = [self.mainUser.managedObjectContext insertNewObjectForEntityForName:[VAnswer entityName]];
+    secondAnswer.label = answer2Text;
+    secondAnswer.thumbnailUrl = [self localImageURLForVideo:secondMediaURLPath];
+    [interaction addAnswersObject:secondAnswer];
     
-    firstmediaURLPath = [self localImageURLForVideo:firstmediaURLPath];
-    secondMediaURLPath = [self localImageURLForVideo:secondMediaURLPath];
+    [node addInteractionsObject:interaction];
+    [tempPoll addNodesObject:node];
     
     [tempPoll.managedObjectContext saveToPersistentStore:nil];
     return tempPoll;
