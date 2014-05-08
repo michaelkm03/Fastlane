@@ -17,10 +17,11 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-	
-    [self.previewView.player setItemByUrl:self.sourceURL];
-    self.previewView.player.delegate = self;
-    [self.previewView.player play];
+
+    self.view.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVBackgroundColor];
+
+    self.previewView.itemURL = self.sourceURL;
+    self.previewView.delegate = self;
 
     [self.previewView addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTapToPlayAction:)]];
     self.previewView.userInteractionEnabled = YES;
@@ -29,8 +30,7 @@
 -(void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    
-    self.view.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVBackgroundColor];
+    [self.previewView.player play];
     self.navigationController.navigationBar.barTintColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVBackgroundColor];
 }
 
@@ -44,10 +44,27 @@
 
 - (IBAction)handleTapToPlayAction:(id)sender
 {
-    if (!self.previewView.player.isPlaying)
-        [self.previewView.player play];
+    if (!self.previewView.isPlaying)
+    {
+        switch (self.playBackSpeed)
+        {
+            case kVPlaybackHalfSpeed:
+                self.previewView.player.rate = 0.5f;
+                break;
+                
+            case kVPlaybackDoubleSpeed:
+                self.previewView.player.rate = 2.0f;
+                break;
+                
+            default:
+                self.previewView.player.rate = 1.0f;
+                break;
+        }
+    }
     else
+    {
         [self.previewView.player pause];
+    }
 }
 
 - (IBAction)muteAudioClicked:(id)sender
@@ -68,21 +85,18 @@
     if (self.playBackSpeed == kVPlaybackNormalSpeed)
     {
         self.playBackSpeed = kVPlaybackDoubleSpeed;
-        [self.previewView.player resetForRateChange];
         self.previewView.player.rate = 2.0;
         [self.rateButton setImage:[UIImage imageNamed:@"cameraButtonSpeedDouble"] forState:UIControlStateNormal];
     }
     else if (self.playBackSpeed == kVPlaybackDoubleSpeed)
     {
         self.playBackSpeed = kVPlaybackHalfSpeed;
-        [self.previewView.player resetForRateChange];
         self.previewView.player.rate = 0.5;
         [self.rateButton setImage:[UIImage imageNamed:@"cameraButtonSpeedHalf"] forState:UIControlStateNormal];
     }
     else if (self.playBackSpeed == kVPlaybackHalfSpeed)
     {
         self.playBackSpeed = kVPlaybackNormalSpeed;
-        [self.previewView.player resetForRateChange];
         self.previewView.player.rate = 1.0;
         [self.rateButton setImage:[UIImage imageNamed:@"cameraButtonSpeedNormal"] forState:UIControlStateNormal];
     }
@@ -93,26 +107,15 @@
     if (self.playbackLooping == kVLoopOnce)
     {
         self.playbackLooping = kVLoopRepeat;
-        self.previewView.player.shouldLoop = YES;
+        self.previewView.shouldLoop = YES;
         [self.loopButton setImage:[UIImage imageNamed:@"cameraButtonLoop"] forState:UIControlStateNormal];
     }
     else if (self.playbackLooping == kVLoopRepeat)
     {
         self.playbackLooping = kVLoopOnce;
-        self.previewView.player.shouldLoop = NO;
+        self.previewView.shouldLoop = NO;
         [self.loopButton setImage:[UIImage imageNamed:@"cameraButtonNoLoop"] forState:UIControlStateNormal];
     }
-}
-
-#pragma mark - Properties
-
-- (CMTime)playerItemDuration
-{
-    AVPlayerItem *thePlayerItem = self.previewView.player.currentItem;
-    if (thePlayerItem.status == AVPlayerItemStatusReadyToPlay)
-        return thePlayerItem.duration;
-    else
-        return kCMTimeInvalid;
 }
 
 #pragma mark - Support
@@ -179,12 +182,12 @@
 
 #pragma mark - SCVideoPlayerDelegate
 
-- (void)videoPlayerDidStartPlaying:(VCPlayer *)videoPlayer
+- (void)videoPlayerWillStartPlaying:(VCVideoPlayerView *)videoPlayer
 {
     [self stopAnimation];
 }
 
-- (void)videoPlayerDidStopPlaying:(VCPlayer *)videoPlayer
+- (void)videoPlayerWillStopPlaying:(VCVideoPlayerView *)videoPlayer
 {
     [self startAnimation];
 }

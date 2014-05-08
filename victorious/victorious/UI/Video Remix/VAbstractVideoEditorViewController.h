@@ -37,8 +37,6 @@
 - (void)startAnimation;
 - (void)stopAnimation;
 
-- (CMTime)playerItemDuration;
-
 -(NSString *)secondsToMMSS:(double)seconds;
 
 @end
