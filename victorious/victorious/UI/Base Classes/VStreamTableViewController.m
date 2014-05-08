@@ -157,6 +157,7 @@
     }
     else
     {
+        self.tableView.userInteractionEnabled = NO;
         [tableView setContentOffset:CGPointMake(cell.frame.origin.x, cell.frame.origin.y - kContentMediaViewOffset) animated:YES];
     }
 }
@@ -166,6 +167,7 @@
     VStreamViewCell* cell = (VStreamViewCell*)[self.tableView cellForRowAtIndexPath:self.tableView.indexPathForSelectedRow];
     if (cell)
     {
+        self.tableView.userInteractionEnabled = YES;
         [self.navigationController pushViewController:[VContentViewController sharedInstance] animated:YES];
     }
 }
