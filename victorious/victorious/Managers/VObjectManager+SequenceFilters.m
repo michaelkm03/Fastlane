@@ -31,6 +31,17 @@
 
 @implementation VObjectManager (SequenceFilters)
 
++ (dispatch_queue_t)paginationDispatchQueue
+{
+    static dispatch_queue_t paginationDispatchQueue;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        paginationDispatchQueue = dispatch_queue_create("org.restkit.network.object-request-operation-queue", DISPATCH_QUEUE_CONCURRENT);
+    });
+    
+    return paginationDispatchQueue;
+}
+
 - (RKManagedObjectRequestOperation *)loadInitialSequenceFilterWithSuccessBlock:(VSuccessBlock)success
                                                                      failBlock:(VFailBlock)fail
 {
@@ -63,7 +74,7 @@
         
         [[VUserManager sharedInstance] loginViaSavedCredentialsOnCompletion:nil onError:nil];
         
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^
+        dispatch_async([VObjectManager paginationDispatchQueue], ^
                        {
                            NSArray* ownerCategories = [[VOwnerStreamViewController sharedInstance] categoriesForOption:0];
                            VSequenceFilter* ownerFilter = [self sequenceFilterForCategories:ownerCategories];
@@ -75,7 +86,7 @@
                                              failBlock:nil];
                        });
         
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^
+        dispatch_async([VObjectManager paginationDispatchQueue], ^
                        {
                            NSArray* communityCategories = [[VCommunityStreamViewController sharedInstance] categoriesForOption:0];
                            VSequenceFilter* communityFilter = [self sequenceFilterForCategories:communityCategories];
@@ -106,17 +117,13 @@
 {
     //If the filter is in the middle of an update, ignore other calls to update
     __block BOOL updating;
-    void(^updateCheck)(void) = ^(void)
-    {
-        updating = filter.updating.boolValue;
-        if (!updating)
-            filter.updating = @(YES);
-    };
-    
-    if ([NSThread isMainThread])
-        updateCheck();
-    else
-        dispatch_sync(dispatch_get_main_queue(), updateCheck);
+
+    dispatch_barrier_sync([VObjectManager paginationDispatchQueue],  ^(void)
+                          {
+                              updating = filter.updating.boolValue;
+                              if (!updating)
+                                  filter.updating = @(YES);
+                          });
     
     if (updating)
     {
@@ -200,7 +207,7 @@
         if (fail)
             fail(operation, error);
         
-        dispatch_async(dispatch_get_main_queue(), ^
+        dispatch_async([VObjectManager paginationDispatchQueue], ^
                        {
                            filter.updating = @(NO);
                        });
