@@ -9,6 +9,7 @@
 @property (nonatomic, strong) AVPlayerLayer *playerLayer;
 @property (nonatomic, strong) id             timeObserver;
 @property (assign, nonatomic) NSUInteger     numberOfLoops;
+@property (nonatomic)         BOOL           delegateNotifiedOfReadinessToPlay;
 
 @end
 
@@ -122,6 +123,7 @@ static __weak VCVideoPlayerView *_currentPlayer = nil;
     
     self.numberOfLoops = loopCount;
     [self.player replaceCurrentItemWithPlayerItem:playerItem];
+    self.delegateNotifiedOfReadinessToPlay = NO;
 }
 
 - (void)setItemURL:(NSURL *)itemURL
@@ -198,16 +200,11 @@ static __weak VCVideoPlayerView *_currentPlayer = nil;
 {
     if (oldItem)
     {
-        [oldItem removeObserver:self forKeyPath:@"playbackBufferEmpty"];
-        [oldItem removeObserver:self forKeyPath:@"playbackLikelyToKeepUp"];
         [oldItem removeObserver:self forKeyPath:@"loadedTimeRanges"];
     }
-
     if (currentItem)
     {
-        [currentItem addObserver:self forKeyPath:@"playbackBufferEmpty"    options:NSKeyValueObservingOptionNew context:NULL];
-        [currentItem addObserver:self forKeyPath:@"playbackLikelyToKeepUp" options:NSKeyValueObservingOptionNew context:NULL];
-        [currentItem addObserver:self forKeyPath:@"loadedTimeRanges"       options:NSKeyValueObservingOptionNew context:NULL];
+        [currentItem addObserver:self forKeyPath:@"loadedTimeRanges" options:NSKeyValueObservingOptionNew context:NULL];
     }
 }
 
@@ -227,6 +224,11 @@ static __weak VCVideoPlayerView *_currentPlayer = nil;
         NSNumber *newRate = change[NSKeyValueChangeNewKey];
         if ([oldRate floatValue] == 0 && [newRate floatValue] != 0)
         {
+            if (_currentPlayer != self)
+            {
+                [_currentPlayer.player pause];
+                _currentPlayer = self;
+            }
             if ([self.delegate respondsToSelector:@selector(videoPlayerWillStartPlaying:)])
             {
                 [self.delegate videoPlayerWillStartPlaying:self];
@@ -244,12 +246,9 @@ static __weak VCVideoPlayerView *_currentPlayer = nil;
             }
         }
     }
-    else if (object == self.player.currentItem)
+    else if (object == self.player.currentItem && [keyPath isEqualToString:@"loadedTimeRanges"])
     {
-        if ([keyPath isEqualToString:@"playbackBufferEmpty"])
-        {
-        }
-        else if ([keyPath isEqualToString:@"loadedTimeRanges"])
+        if (!self.delegateNotifiedOfReadinessToPlay)
         {
             CMTime playableDuration = [self playableDuration];
             CMTime minimumTime = CMTimeMakeWithSeconds(kMinimumBufferredTimeBeforePlaying, 1);
@@ -262,7 +261,11 @@ static __weak VCVideoPlayerView *_currentPlayer = nil;
             
             if (CMTIME_COMPARE_INLINE(playableDuration, >=, minimumTime))
             {
-//                [self.player play];
+                if ([self.delegate respondsToSelector:@selector(videoPlayerItemBufferredAndReady:)])
+                {
+                    [self.delegate videoPlayerItemBufferredAndReady:self];
+                }
+                self.delegateNotifiedOfReadinessToPlay = YES;
             }
         }
     }

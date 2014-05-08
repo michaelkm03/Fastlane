@@ -13,6 +13,7 @@
 @optional
 
 - (void)videoPlayer:(VCVideoPlayerView *)videoPlayer didPlayToSeconds:(Float32)secondsElapsed;
+- (void)videoPlayerItemBufferredAndReady:(VCVideoPlayerView *)videoPlayer;
 - (void)videoPlayerWillStartPlaying:(VCVideoPlayerView *)videoPlayer;
 - (void)videoPlayerWillStopPlaying:(VCVideoPlayerView *)videoPlayer;
 
