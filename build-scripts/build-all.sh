@@ -57,12 +57,19 @@ do
     pushd .. > /dev/null
     cleanWorkingDir
     ./build-scripts/apply-config.sh "$CONFIG"
+    if [ $? != 0 ]; then
+        echo "Error applying configuration for $CONFIG"
+        popd > /dev/null
+        cleanWorkingDir
+        popd > /dev/null
+        exit 1
+    fi
     popd > /dev/null
 
     ipa build -w victorious.xcworkspace -s "$SCHEME" -c "$CONFIGURATION" --clean --archive -d "../products" -m "$PROVISIONING_PROFILE_PATH" --verbose
     BUILDRESULT=$?
 
-    if [ $BUILDRESULT ]; then
+    if [ $BUILDRESULT == 0 ]; then
         mv ../products/victorious.ipa          "../products/$CONFIG.ipa"
         mv ../products/victorious.app.dSYM.zip "../products/$CONFIG.app.dSYM.zip"
     else

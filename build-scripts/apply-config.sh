@@ -27,7 +27,11 @@ cp    "configurations/$FOLDER/defaultTheme.plist" victorious/AppSpecific/default
 ### Modify Info.plist
 
 copyPListValue(){
-    local VAL=`/usr/libexec/PlistBuddy -c "Print $1" "configurations/$FOLDER/Info.plist"`
+    VAL=`/usr/libexec/PlistBuddy -c "Print $1" "configurations/$FOLDER/Info.plist"`
+    if [ $? != 0 ]; then
+        echo "Error reading \"configurations/$FOLDER/Info.plist\""
+        exit 1
+    fi
     if [ "$VAL" != "" ]; then
         /usr/libexec/PlistBuddy -c "Set $1 $VAL" victorious/AppSpecific/Info.plist
     fi
