@@ -10,6 +10,8 @@
 @property (nonatomic, strong) id             timeObserver;
 @property (assign, nonatomic) NSUInteger     numberOfLoops;
 @property (nonatomic)         BOOL           delegateNotifiedOfReadinessToPlay;
+@property (nonatomic)         CMTime         startTime;
+@property (nonatomic)         CMTime         endTime;
 
 @end
 
@@ -72,6 +74,7 @@ static __weak VCVideoPlayerView *_currentPlayer = nil;
 
     self.clipsToBounds = YES;
     self.shouldLoop = NO;
+    self.startTime = CMTimeMakeWithSeconds(0, 1);
 }
 
 - (void)dealloc
@@ -128,10 +131,39 @@ static __weak VCVideoPlayerView *_currentPlayer = nil;
     [self setItemURL:itemURL withLoopCount:1];
 }
 
+#pragma mark - Properties
+
 - (void)setShouldLoop:(BOOL)shouldLoop
 {
     _shouldLoop = shouldLoop;
     self.player.actionAtItemEnd = shouldLoop ? AVPlayerActionAtItemEndNone : AVPlayerActionAtItemEndPause;
+}
+
+- (void)setStartSeconds:(Float64)startSeconds
+{
+    self.startTime = CMTimeMakeWithSeconds(startSeconds, NSEC_PER_SEC);
+}
+
+- (void)setEndSeconds:(Float64)endSeconds
+{
+    if (!endSeconds)
+    {
+        self.endTime = kCMTimeInvalid;
+    }
+    else
+    {
+        self.endTime = CMTimeMakeWithSeconds(endSeconds, NSEC_PER_SEC);
+    }
+}
+
+- (Float64)startSeconds
+{
+    return CMTimeGetSeconds(self.startTime);
+}
+
+- (Float64)endSeconds
+{
+    return CMTimeGetSeconds(self.endTime);
 }
 
 - (BOOL)isPlaying
@@ -143,6 +175,8 @@ static __weak VCVideoPlayerView *_currentPlayer = nil;
 {
     _naturalSize = naturalSize;
 }
+
+#pragma mark -
 
 - (CMTime)playerItemDuration
 {
@@ -157,39 +191,17 @@ static __weak VCVideoPlayerView *_currentPlayer = nil;
     }
 }
 
-- (CMTime)playableDuration
-{
-	AVPlayerItem *item = self.player.currentItem;
-	CMTime playableDuration = kCMTimeZero;
-	
-	if (item.status != AVPlayerItemStatusFailed)
-    {
-		if (item.loadedTimeRanges.count > 0)
-        {
-			NSValue * value = [item.loadedTimeRanges objectAtIndex:0];
-			CMTimeRange timeRange = [value CMTimeRangeValue];
-			
-			playableDuration = timeRange.duration;
-		}
-	}
-	
-	return playableDuration;
-}
-
 - (void)didPlay:(CMTime)time
 {
-    Float64 ratio = 1.0f / (Float64)self.numberOfLoops;
-    Float64 seconds = CMTimeGetSeconds(CMTimeMultiplyByFloat64(time, ratio));
-
-    if ([self.delegate respondsToSelector:@selector(videoPlayer:didPlayToSeconds:)])
+    if ([self.delegate respondsToSelector:@selector(videoPlayer:didPlayToTime:)])
     {
-        [self.delegate videoPlayer:self didPlayToSeconds:seconds];
+        [self.delegate videoPlayer:self didPlayToTime:time];
     }
 
     if (CMTIME_COMPARE_INLINE(time, >=, self.player.currentItem.duration) ||
-        ((self.endSeconds != 0) && (seconds > self.endSeconds)))
+        (!CMTIME_IS_INVALID(self.endTime) && CMTIME_COMPARE_INLINE(time, >=, self.endTime)))
     {
-        [self.player seekToTime:CMTimeMakeWithSeconds(self.startSeconds, NSEC_PER_SEC)];
+        [self.player seekToTime:self.startTime];
 
         if (!self.shouldLoop)
         {
@@ -251,7 +263,6 @@ static __weak VCVideoPlayerView *_currentPlayer = nil;
         NSNumber *newRate = change[NSKeyValueChangeNewKey];
         if ((id)oldRate != [NSNull null] && (id)newRate != [NSNull null])
         {
-
             if ([oldRate floatValue] == 0 && [newRate floatValue] != 0)
             {
                 if (_currentPlayer != self)

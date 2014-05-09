@@ -121,7 +121,7 @@
 
 #pragma mark - SCVideoPlayerDelegate
 
-- (void)videoPlayer:(VCVideoPlayerView *)videoPlayer didPlayToSeconds:(Float32)secondsElapsed
+- (void)videoPlayer:(VCVideoPlayerView *)videoPlayer didPlayToTime:(CMTime)time
 {
     CMTime endTime = CMTimeConvertScale([self playerItemDuration], self.previewView.player.currentTime.timescale, kCMTimeRoundingMethod_RoundHalfAwayFromZero);
     if (CMTimeCompare(endTime, kCMTimeZero) != 0)
@@ -131,7 +131,7 @@
     }
 
     self.totalTimeLabel.text = [self secondsToMMSS:CMTimeGetSeconds([self playerItemDuration])];
-    self.currentTimeLabel.text = [self secondsToMMSS:secondsElapsed];
+    self.currentTimeLabel.text = [self secondsToMMSS:CMTimeGetSeconds(time)];
 }
 
 #pragma mark - VRemixVideoRangeSliderDelegate

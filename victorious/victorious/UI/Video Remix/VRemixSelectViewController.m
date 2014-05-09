@@ -222,10 +222,10 @@
 
 #pragma mark - SCVideoPlayerDelegate
 
-- (void)videoPlayer:(VCVideoPlayerView *)videoPlayer didPlayToSeconds:(Float32)secondsElapsed
+- (void)videoPlayer:(VCVideoPlayerView *)videoPlayer didPlayToTime:(CMTime)time
 {
     self.totalTimeLabel.text = [self secondsToMMSS:CMTimeGetSeconds([videoPlayer playerItemDuration])];
-    self.currentTimeLabel.text = [self secondsToMMSS:secondsElapsed];
+    self.currentTimeLabel.text = [self secondsToMMSS:CMTimeGetSeconds(time)];
 }
 
 @end
