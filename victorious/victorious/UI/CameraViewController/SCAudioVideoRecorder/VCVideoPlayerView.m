@@ -2,18 +2,22 @@
 //  VCVideoPlayerView
 //
 
+#import "VCVideoPlayerToolbarView.h"
 #import "VCVideoPlayerView.h"
 
 @interface VCVideoPlayerView ()
 
-@property (nonatomic, strong) AVPlayerLayer *playerLayer;
-@property (nonatomic, strong) id             timeObserver;
-@property (assign, nonatomic) NSUInteger     numberOfLoops;
-@property (nonatomic)         BOOL           delegateNotifiedOfReadinessToPlay;
-@property (nonatomic)         CMTime         startTime;
-@property (nonatomic)         CMTime         endTime;
+@property (nonatomic, weak)   VCVideoPlayerToolbarView *toolbarView;
+@property (nonatomic, strong) AVPlayerLayer            *playerLayer;
+@property (nonatomic, strong) id                        timeObserver;
+@property (assign, nonatomic) NSUInteger                numberOfLoops;
+@property (nonatomic)         BOOL                      delegateNotifiedOfReadinessToPlay;
+@property (nonatomic)         CMTime                    startTime;
+@property (nonatomic)         CMTime                    endTime;
 
 @end
+
+static const CGFloat kToolbarHeight = 41.0f;
 
 static __weak VCVideoPlayerView *_currentPlayer = nil;
 
@@ -72,9 +76,16 @@ static __weak VCVideoPlayerView *_currentPlayer = nil;
         [weakSelf didPlay:time];
     }];
 
+    VCVideoPlayerToolbarView *toolbarView = [VCVideoPlayerToolbarView toolbarFromNibWithOwner:self];
+    toolbarView.frame = CGRectMake(0.0f, CGRectGetMaxY(self.bounds) - kToolbarHeight, CGRectGetWidth(self.bounds), kToolbarHeight);
+    toolbarView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleTopMargin;
+    [self addSubview:toolbarView];
+    self.toolbarView = toolbarView;
+    
     self.clipsToBounds = YES;
     self.shouldLoop = NO;
     self.startTime = CMTimeMakeWithSeconds(0, 1);
+    self.shouldShowToolbar = YES;
 }
 
 - (void)dealloc
@@ -176,6 +187,12 @@ static __weak VCVideoPlayerView *_currentPlayer = nil;
     _naturalSize = naturalSize;
 }
 
+- (void)setShouldShowToolbar:(BOOL)shouldShowToolbar
+{
+    _shouldShowToolbar = shouldShowToolbar;
+    self.toolbarView.hidden = !shouldShowToolbar;
+}
+
 #pragma mark -
 
 - (CMTime)playerItemDuration
@@ -244,6 +261,32 @@ static __weak VCVideoPlayerView *_currentPlayer = nil;
             }
         });
     }];
+}
+
+#pragma mark - Actions
+
+- (IBAction)playButtonTapped:(UIButton *)sender
+{
+    if ([self isPlaying])
+    {
+        [self.player pause];
+    }
+    else
+    {
+        [self.player play];
+    }
+}
+
+- (void)videoFrameTapped:(UITapGestureRecognizer *)sender
+{
+    if (self.toolbarView.hidden)
+    {
+        self.toolbarView.hidden = NO;
+    }
+    else
+    {
+        self.toolbarView.hidden = YES;
+    }
 }
 
 #pragma mark - Key-Value Observation

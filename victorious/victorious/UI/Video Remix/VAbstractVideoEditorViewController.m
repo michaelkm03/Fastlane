@@ -20,6 +20,7 @@
 
     self.view.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVBackgroundColor];
 
+    self.previewView.shouldShowToolbar = NO;
     self.previewView.itemURL = self.sourceURL;
     self.previewView.delegate = self;
 

@@ -32,6 +32,7 @@
 @property (nonatomic, assign)   Float64                    endSeconds; ///< Playback will end (or loop) at this point. Set to 0 to play to end.
 @property (nonatomic, readonly) CGSize                     naturalSize;
 @property (nonatomic, readonly, getter = isPlaying) BOOL   playing; ///< YES if a video is playing
+@property (nonatomic)           BOOL                       shouldShowToolbar; ///< If NO, toolbar will never show.
 
 + (VCVideoPlayerView *)currentPlayer; ///< Returns a reference to a VCVideoPlayerView instance that is currently playing
 
