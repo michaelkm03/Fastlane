@@ -45,8 +45,6 @@ CGFloat kContentMediaViewOffset = 154;
 {
     [super viewDidLoad];
     
-    [self setupVideoPlayer];
-
     for (UIButton* button in self.buttonCollection)
     {
         [button setImage:[button.imageView.image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] forState:UIControlStateNormal];
@@ -117,9 +115,9 @@ CGFloat kContentMediaViewOffset = 154;
             self.navigationController.delegate = nil;
         }
         
-        [self.mpController.view removeFromSuperview];
-        [self.mpController pause];
-        self.mpController = nil;
+        [self.videoPlayer removeFromSuperview];
+        [self.videoPlayer.player pause];
+        self.videoPlayer = nil;
         
         self.orAnimator = nil;
     }
@@ -356,6 +354,5 @@ CGFloat kContentMediaViewOffset = 154;
          }
      }];
 }
-
 
 @end

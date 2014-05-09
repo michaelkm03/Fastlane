@@ -7,6 +7,7 @@
 //
 
 #import "VContentViewController+Polls.h"
+#import "VContentViewController+Videos.h"
 
 #import "VPollResult.h"
 #import "VAnswer.h"
@@ -104,15 +105,13 @@
         contentURL = [NSURL URLWithString:((VAnswer*)[answers lastObject]).mediaUrl];
     }
     
-    [self.mpController.view removeFromSuperview];
-    self.mpController = [[MPMoviePlayerController alloc] initWithContentURL:contentURL];
-    self.mpController.scalingMode = MPMovieScalingModeAspectFit;
-    self.mpController.view.frame = self.pollPreviewView.frame;
-    self.mpController.shouldAutoplay = NO;
-    [self.mpPlayerContainmentView addSubview:self.mpController.view];
-    [self.mpController prepareToPlay];
+    [self.videoPlayer removeFromSuperview];
+    self.videoPlayer = [[VCVideoPlayerView alloc] initWithFrame:self.pollPreviewView.frame];
+    self.videoPlayer.delegate = self;
+    [self.videoPlayer setItemURL:contentURL];
+    [self.mpPlayerContainmentView addSubview:self.videoPlayer];
     
-    self.activityIndicator.center = self.mpController.view.center;
+    self.activityIndicator.center = self.videoPlayer.center;
     [self.mediaView addSubview:self.activityIndicator];
     [self.activityIndicator startAnimating];
 }

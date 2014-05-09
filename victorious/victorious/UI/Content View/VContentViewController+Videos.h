@@ -7,11 +7,11 @@
 //
 
 #import "VContentViewController.h"
+#import "VCVideoPlayerView.h"
 
-@interface VContentViewController (Videos)
+@interface VContentViewController (Videos) <VCVideoPlayerDelegate>
 
 - (void)loadVideo;
-- (void)setupVideoPlayer;
 
 - (IBAction)pressedRemix:(id)sender;
 

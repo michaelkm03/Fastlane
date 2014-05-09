@@ -13,7 +13,7 @@
 @optional
 
 - (void)videoPlayer:(VCVideoPlayerView *)videoPlayer didPlayToSeconds:(Float32)secondsElapsed;
-- (void)videoPlayerItemBufferredAndReady:(VCVideoPlayerView *)videoPlayer;
+- (void)videoPlayerReadyToPlay:(VCVideoPlayerView *)videoPlayer;
 - (void)videoPlayerWillStartPlaying:(VCVideoPlayerView *)videoPlayer;
 - (void)videoPlayerWillStopPlaying:(VCVideoPlayerView *)videoPlayer;
 
@@ -30,6 +30,7 @@
 @property (nonatomic, readonly) AVPlayer                  *player; ///< The AVPlayer instance being managed
 @property (nonatomic, assign)   CGFloat                    startSeconds; ///< Playback will begin at this point
 @property (nonatomic, assign)   CGFloat                    endSeconds; ///< Playback will end (or loop) at this point
+@property (nonatomic, readonly) CGSize                     naturalSize;
 
 + (VCVideoPlayerView *)currentPlayer; ///< Returns a reference to a VCVideoPlayerView instance that is currently playing
 
