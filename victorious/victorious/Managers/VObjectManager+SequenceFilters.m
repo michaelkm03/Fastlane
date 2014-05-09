@@ -108,31 +108,27 @@
 {
     //If the filter is in the middle of an update, ignore other calls to update
     __block BOOL updating;
-
     dispatch_barrier_sync([VObjectManager paginationDispatchQueue],  ^(void)
                           {
                               updating = filter.updating.boolValue;
                               if (!updating)
+                              {
                                   filter.updating = @(YES);
+                                  [[VFilterCache sharedCache] setObject:filter forKey:filter.filterAPIPath];
+                              }
                           });
-    
     if (updating)
     {
         if (fail)
             fail(nil, nil);
         return nil;
     }
-
-    NSInteger nextPageNumber = filter.currentPageNumber.integerValue + 1;
-    if (nextPageNumber > filter.maxPageNumber.integerValue)
-        nextPageNumber = filter.maxPageNumber.integerValue;
-    
-    NSString* path = [filter.filterAPIPath stringByAppendingFormat:@"/%d/%d", nextPageNumber, filter.perPageNumber.integerValue];
     
     VSuccessBlock fullSuccessBlock = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
     {
         NSManagedObjectContext* currentContext =((NSManagedObject*)resultObjects.firstObject).managedObjectContext;
         VSequenceFilter* filterInContext = (VSequenceFilter*)[currentContext objectWithID:filter.objectID];
+        NSUInteger oldSequenceCount = [filterInContext.sequences count];
         
         //If this is the first page, break the relationship to all the old objects.
         if ([filterInContext.currentPageNumber isEqualToNumber:@(0)])
@@ -142,29 +138,21 @@
             [filterInContext removeSequences:[NSSet setWithArray:filteredSequences]];
         }
         
-        NSUInteger oldSequenceCount = [filterInContext.sequences count];
-        //TODO: grab the objects by ID from the filters context and then add them.  Then save.  Otherwise this will break
         for (VSequence* sequence in resultObjects)
         {
             [filterInContext addSequencesObject:sequence];
         }
         
-        filterInContext.maxPageNumber = @(((NSString*)fullResponse[@"total_pages"]).integerValue);
-        filterInContext.currentPageNumber = @(((NSString*)fullResponse[@"page_number"]).integerValue);
         
-        dispatch_async([VObjectManager paginationDispatchQueue], ^
+        dispatch_sync([VObjectManager paginationDispatchQueue], ^
         {
+            filterInContext.maxPageNumber = @(((NSString*)fullResponse[@"total_pages"]).integerValue);
+            filterInContext.currentPageNumber = @(((NSString*)fullResponse[@"page_number"]).integerValue);
             filterInContext.updating = [NSNumber numberWithBool:NO];
+            [[VFilterCache sharedCache] setObject:filterInContext forKey:filterInContext.filterAPIPath];
         });
-    
-        [[VFilterCache sharedCache] setObject:filterInContext forKey:filterInContext.filterAPIPath];
         
-        NSError* saveError;
-        [currentContext saveToPersistentStore:&saveError];
-        if(saveError)
-        {
-            VLog(@"Save error: %@", saveError);
-        }
+        [currentContext saveToPersistentStore:nil];
         
         //If we don't have the user then we need to fetch em.
         NSMutableArray* nonExistantUsers = [[NSMutableArray alloc] init];
@@ -198,14 +186,18 @@
         if (fail)
             fail(operation, error);
         
-        dispatch_async([VObjectManager paginationDispatchQueue], ^
-                       {
-                           filter.updating = @(NO);
-                       });
-
-        
-        [[VFilterCache sharedCache] setObject:filter forKey:filter.filterAPIPath];
+        dispatch_sync([VObjectManager paginationDispatchQueue], ^
+        {
+            filter.updating = @(NO);
+            [[VFilterCache sharedCache] setObject:filter forKey:filter.filterAPIPath];
+        });
     };
+    
+    NSInteger nextPageNumber = filter.currentPageNumber.integerValue + 1;
+    
+    if (nextPageNumber > filter.maxPageNumber.integerValue)
+        nextPageNumber = filter.maxPageNumber.integerValue;
+    NSString* path = [filter.filterAPIPath stringByAppendingFormat:@"/%d/%d", nextPageNumber, filter.perPageNumber.integerValue];
     
     return [self GET:path
               object:nil
