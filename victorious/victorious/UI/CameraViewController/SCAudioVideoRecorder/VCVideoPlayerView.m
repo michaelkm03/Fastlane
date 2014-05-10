@@ -8,6 +8,9 @@
 @interface VCVideoPlayerView ()
 
 @property (nonatomic, weak)   VCVideoPlayerToolbarView *toolbarView;
+@property (nonatomic, weak)   UITapGestureRecognizer   *videoFrameTapGesture;
+@property (nonatomic)         BOOL                      toolbarAnimating;
+@property (nonatomic)         BOOL                      sliderTouchActive;
 @property (nonatomic, strong) AVPlayerLayer            *playerLayer;
 @property (nonatomic, strong) id                        timeObserver;
 @property (assign, nonatomic) NSUInteger                numberOfLoops;
@@ -73,7 +76,7 @@ static __weak VCVideoPlayerView *_currentPlayer = nil;
                                                                   queue:dispatch_get_main_queue()
                                                              usingBlock:^(CMTime time)
     {
-        [weakSelf didPlay:time];
+        [weakSelf didPlayToTime:time];
     }];
 
     VCVideoPlayerToolbarView *toolbarView = [VCVideoPlayerToolbarView toolbarFromNibWithOwner:self];
@@ -86,6 +89,10 @@ static __weak VCVideoPlayerView *_currentPlayer = nil;
     self.shouldLoop = NO;
     self.startTime = CMTimeMakeWithSeconds(0, 1);
     self.shouldShowToolbar = YES;
+    
+    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(videoFrameTapped:)];
+    [self addGestureRecognizer:tap];
+    self.videoFrameTapGesture = tap;
 }
 
 - (void)dealloc
@@ -191,9 +198,52 @@ static __weak VCVideoPlayerView *_currentPlayer = nil;
 {
     _shouldShowToolbar = shouldShowToolbar;
     self.toolbarView.hidden = !shouldShowToolbar;
+    self.videoFrameTapGesture.enabled = shouldShowToolbar;
 }
 
 #pragma mark -
+
+- (void)toggleToolbarHidden
+{
+    if (self.toolbarAnimating)
+    {
+        return;
+    }
+    if (self.toolbarView.hidden)
+    {
+        self.toolbarView.hidden = NO;
+        self.toolbarView.alpha = 0;
+        self.toolbarAnimating = YES;
+        [UIView animateWithDuration:0.2
+                              delay:0
+                            options:UIViewAnimationOptionCurveLinear
+                         animations:^(void)
+        {
+            self.toolbarView.alpha = 1.0f;
+        }
+                         completion:^(BOOL finished)
+        {
+            self.toolbarAnimating = NO;
+        }];
+    }
+    else
+    {
+        self.toolbarAnimating = YES;
+        [UIView animateWithDuration:0.2
+                              delay:0
+                            options:UIViewAnimationOptionCurveLinear
+                         animations:^(void)
+         {
+             self.toolbarView.alpha = 0;
+         }
+                         completion:^(BOOL finished)
+         {
+             self.toolbarView.alpha = 1.0f;
+             self.toolbarView.hidden = YES;
+             self.toolbarAnimating = NO;
+         }];
+    }
+}
 
 - (CMTime)playerItemDuration
 {
@@ -208,8 +258,16 @@ static __weak VCVideoPlayerView *_currentPlayer = nil;
     }
 }
 
-- (void)didPlay:(CMTime)time
+- (void)didPlayToTime:(CMTime)time
 {
+    if (!self.sliderTouchActive)
+    {
+        Float64 durationInSeconds = CMTimeGetSeconds([self playerItemDuration]);
+        Float64 timeInSeconds     = CMTimeGetSeconds(time);
+        float percentElapsed    = timeInSeconds / durationInSeconds;
+        self.toolbarView.slider.value = percentElapsed;
+    }
+    
     if ([self.delegate respondsToSelector:@selector(videoPlayer:didPlayToTime:)])
     {
         [self.delegate videoPlayer:self didPlayToTime:time];
@@ -279,14 +337,24 @@ static __weak VCVideoPlayerView *_currentPlayer = nil;
 
 - (void)videoFrameTapped:(UITapGestureRecognizer *)sender
 {
-    if (self.toolbarView.hidden)
-    {
-        self.toolbarView.hidden = NO;
-    }
-    else
-    {
-        self.toolbarView.hidden = YES;
-    }
+    [self toggleToolbarHidden];
+}
+
+- (IBAction)sliderTouchDown:(UISlider *)sender
+{
+    self.sliderTouchActive = YES;
+}
+
+- (IBAction)sliderTouchUp:(UISlider *)sender
+{
+    self.sliderTouchActive = NO;
+    CMTime duration = [self playerItemDuration];
+    [self.player seekToTime:CMTimeMultiplyByFloat64(duration, self.toolbarView.slider.value)];
+}
+
+- (IBAction)sliderTouchCancelled:(id)sender
+{
+    self.sliderTouchActive = NO;
 }
 
 #pragma mark - Key-Value Observation
@@ -317,6 +385,7 @@ static __weak VCVideoPlayerView *_currentPlayer = nil;
                 {
                     [self.delegate videoPlayerWillStartPlaying:self];
                 }
+                self.toolbarView.playButton.selected = YES;
             }
             else if ([oldRate floatValue] != 0 && [newRate floatValue] == 0)
             {
@@ -328,6 +397,7 @@ static __weak VCVideoPlayerView *_currentPlayer = nil;
                 {
                     [self.delegate videoPlayerWillStopPlaying:self];
                 }
+                self.toolbarView.playButton.selected = NO;
             }
         }
     }
