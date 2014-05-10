@@ -52,11 +52,11 @@
 	<key>TestflightDevAppToken</key>
 	<string>503df174-0d0c-4077-91ea-f509a5bbd142</string>
 	<key>TestflightQAAppToken</key>
-	<string>8ebdaa55-4d8e-41ee-a1a0-5938e9772611</string>
+	<string>a58f1753-1790-4c39-b115-02663d0163a5</string>
 	<key>TestflightReleaseAppToken</key>
-	<string>ac3f1322-d0f7-4002-8119-81be50e1c5f2</string>
+	<string>03cd956e-d112-4a45-b62e-b3875b27592c</string>
 	<key>TestflightStagingAppToken</key>
-	<string>b52a2a45-9c10-4526-a915-a5b65972e9b3</string>
+	<string>39907803-9e14-4967-bac2-e079046065c9</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>Roboto-Light.ttf</string>
