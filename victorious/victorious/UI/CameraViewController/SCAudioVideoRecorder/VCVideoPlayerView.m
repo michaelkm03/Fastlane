@@ -13,7 +13,6 @@
 @property (nonatomic)         BOOL                      sliderTouchActive;
 @property (nonatomic, strong) AVPlayerLayer            *playerLayer;
 @property (nonatomic, strong) id                        timeObserver;
-@property (assign, nonatomic) NSUInteger                numberOfLoops;
 @property (nonatomic)         BOOL                      delegateNotifiedOfReadinessToPlay;
 @property (nonatomic)         CMTime                    startTime;
 @property (nonatomic)         CMTime                    endTime;
@@ -140,7 +139,6 @@ static __weak VCVideoPlayerView *_currentPlayer = nil;
         playerItem = [AVPlayerItem playerItemWithAsset:asset];
     }
     
-    self.numberOfLoops = loopCount;
     [self.player replaceCurrentItemWithPlayerItem:playerItem];
 }
 
@@ -273,12 +271,20 @@ static __weak VCVideoPlayerView *_currentPlayer = nil;
         [self.delegate videoPlayer:self didPlayToTime:time];
     }
 
-    if (CMTIME_COMPARE_INLINE(time, >=, self.player.currentItem.duration) ||
-        (!CMTIME_IS_INVALID(self.endTime) && CMTIME_COMPARE_INLINE(time, >=, self.endTime)))
+    if (CMTIME_IS_VALID(self.endTime) && CMTIME_COMPARE_INLINE(time, >=, self.endTime))
     {
-        [self.player seekToTime:self.startTime];
-
-        if (!self.shouldLoop)
+        if (self.shouldLoop)
+        {
+            if (CMTIME_IS_VALID(self.startTime))
+            {
+                [self.player seekToTime:self.startTime];
+            }
+            else
+            {
+                [self.player seekToTime:CMTimeMake(0, 1)];
+            }
+        }
+        else
         {
             [self.player pause];
         }
@@ -291,11 +297,14 @@ static __weak VCVideoPlayerView *_currentPlayer = nil;
     {
         [oldItem removeObserver:self forKeyPath:NSStringFromSelector(@selector(status))];
         [oldItem removeObserver:self forKeyPath:NSStringFromSelector(@selector(tracks))];
+        [[NSNotificationCenter defaultCenter] removeObserver:self name:nil object:oldItem];
     }
     if (currentItem && (id)currentItem != [NSNull null])
     {
         [currentItem addObserver:self forKeyPath:NSStringFromSelector(@selector(status)) options:(NSKeyValueObservingOptionInitial | NSKeyValueObservingOptionNew) context:NULL];
         [currentItem addObserver:self forKeyPath:NSStringFromSelector(@selector(tracks)) options:(NSKeyValueObservingOptionInitial | NSKeyValueObservingOptionNew) context:NULL];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(playerItemDidPlayToEndTime:)      name:AVPlayerItemDidPlayToEndTimeNotification      object:currentItem];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(playerItemFailedToPlayToEndTime:) name:AVPlayerItemFailedToPlayToEndTimeNotification object:currentItem];
     }
 }
 
@@ -355,6 +364,38 @@ static __weak VCVideoPlayerView *_currentPlayer = nil;
 - (IBAction)sliderTouchCancelled:(id)sender
 {
     self.sliderTouchActive = NO;
+}
+
+#pragma mark - NSNotification handlers
+
+- (void)playerItemDidPlayToEndTime:(NSNotification *)notification
+{
+    if (notification.object == self.player.currentItem)
+    {
+        if (self.shouldLoop)
+        {
+            if (CMTIME_IS_VALID(self.startTime))
+            {
+                [self.player seekToTime:self.startTime];
+            }
+            else
+            {
+                [self.player seekToTime:CMTimeMake(0, 1)];
+            }
+        }
+        else
+        {
+            self.player.rate = 0;
+        }
+    }
+}
+
+- (void)playerItemFailedToPlayToEndTime:(NSNotification *)notification
+{
+    if (notification.object == self.player.currentItem)
+    {
+        self.player.rate = 0;
+    }
 }
 
 #pragma mark - Key-Value Observation
