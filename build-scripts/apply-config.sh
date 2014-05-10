@@ -27,15 +27,19 @@ cp    "configurations/$FOLDER/defaultTheme.plist" victorious/AppSpecific/default
 ### Modify Info.plist
 
 copyPListValue(){
-    VAL=`/usr/libexec/PlistBuddy -c "Print $1" "configurations/$FOLDER/Info.plist"`
-    if [ $? != 0 ]; then
-        echo "Error reading \"configurations/$FOLDER/Info.plist\""
-        exit 1
-    fi
+    local VAL=`/usr/libexec/PlistBuddy -c "Print $1" "configurations/$FOLDER/Info.plist"`
     if [ "$VAL" != "" ]; then
         /usr/libexec/PlistBuddy -c "Set $1 $VAL" victorious/AppSpecific/Info.plist
     fi
 }
+
+# Make sure plist is readable
+/usr/libexec/PlistBuddy -c "Print" "configurations/$FOLDER/Info.plist" > /dev/null
+if [ $? != 0 ]; then
+    echo "Error reading \"configurations/$FOLDER/Info.plist\""
+    exit 1
+fi
+
 
 copyPListValue 'CFBundleDisplayName'
 copyPListValue 'CFBundleIdentifier'
