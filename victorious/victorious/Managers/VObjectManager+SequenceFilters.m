@@ -25,7 +25,7 @@
 
 @interface VFilterCache : NSCache
 + (VFilterCache *)sharedCache;
-- (VSequenceFilter *)filterForPath:(NSString*)path;
+- (VSequenceFilter *)sequenceFilterForPath:(NSString*)path;
 @end
 
 
@@ -102,9 +102,68 @@
                                     failBlock:fail];
 }
 
+
 - (RKManagedObjectRequestOperation *)loadNextPageOfSequenceFilter:(VSequenceFilter*)filter
                                                      successBlock:(VSuccessBlock)success
                                                         failBlock:(VFailBlock)fail
+{
+    VSuccessBlock fullSuccessBlock = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
+    {
+        void(^paginationBlock)(void) = ^(void)
+        {
+            
+            //If this is the first page, break the relationship to all the old objects.
+            if ([filter.currentPageNumber isEqualToNumber:@(0)])
+            {
+                NSPredicate* tempFilter = [NSPredicate predicateWithFormat:@"NOT (status CONTAINS %@)", kTemporaryContentStatus];
+                NSArray* filteredSequences = [[filter.sequences allObjects] filteredArrayUsingPredicate:tempFilter];
+                [filter removeSequences:[NSSet setWithArray:filteredSequences]];
+            }
+            
+            for (VSequence* sequence in resultObjects)
+            {
+                [filter addSequencesObject:sequence];
+            }
+        
+            if (success)
+                success(operation, fullResponse, resultObjects);
+        };
+        
+        //Don't complete the fetch until we have the users
+        NSMutableArray* nonExistantUsers = [[NSMutableArray alloc] init];
+        for (VSequence* sequence in resultObjects)
+        {
+            if (!sequence.user)
+            {
+                [nonExistantUsers addObject:sequence.createdBy];
+            }
+        }
+        if ([nonExistantUsers count])
+        {
+            [[VObjectManager sharedManager] fetchUsers:nonExistantUsers
+                                      withSuccessBlock:^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
+            {
+                VLog(@"Succeeded with objects: %@", resultObjects);
+                paginationBlock();
+            }
+                                             failBlock:^(NSOperation* operation, NSError* error)
+            {
+                VLog(@"Failed with error: %@", error);
+                paginationBlock();
+            }];
+        }
+        else
+        {
+            paginationBlock();
+        }
+    };
+
+    return [self loadNextPageOfFilter:filter successBlock:fullSuccessBlock failBlock:fail];
+}
+
+- (RKManagedObjectRequestOperation *)loadNextPageOfFilter:(VAbstractFilter*)filter
+                                             successBlock:(VSuccessBlock)success
+                                                failBlock:(VFailBlock)fail
 {
     //If the filter is in the middle of an update, ignore other calls to update
     __block BOOL updating;
@@ -124,61 +183,22 @@
         return nil;
     }
     
-    VSuccessBlock fullSuccessBlock = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
+    VSuccessBlock fullSuccess = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
     {
-        NSManagedObjectContext* currentContext =((NSManagedObject*)resultObjects.firstObject).managedObjectContext;
-        VSequenceFilter* filterInContext = (VSequenceFilter*)[currentContext objectWithID:filter.objectID];
-        NSUInteger oldSequenceCount = [filterInContext.sequences count];
-        
-        //If this is the first page, break the relationship to all the old objects.
-        if ([filterInContext.currentPageNumber isEqualToNumber:@(0)])
-        {
-            NSPredicate* tempFilter = [NSPredicate predicateWithFormat:@"NOT (status CONTAINS %@)", kTemporaryContentStatus];
-            NSArray* filteredSequences = [[filterInContext.sequences allObjects] filteredArrayUsingPredicate:tempFilter];
-            [filterInContext removeSequences:[NSSet setWithArray:filteredSequences]];
-        }
-        
-        for (VSequence* sequence in resultObjects)
-        {
-            [filterInContext addSequencesObject:sequence];
-        }
-        
+        VLog(@"Succeeded with objects: %@", resultObjects);
         
         dispatch_sync([VObjectManager paginationDispatchQueue], ^
-        {
-            filterInContext.maxPageNumber = @(((NSString*)fullResponse[@"total_pages"]).integerValue);
-            filterInContext.currentPageNumber = @(((NSString*)fullResponse[@"page_number"]).integerValue);
-            filterInContext.updating = [NSNumber numberWithBool:NO];
-            [[VFilterCache sharedCache] setObject:filterInContext forKey:filterInContext.filterAPIPath];
-        });
+                      {
+                          filter.maxPageNumber = @(((NSString*)fullResponse[@"total_pages"]).integerValue);
+                          filter.currentPageNumber = @(((NSString*)fullResponse[@"page_number"]).integerValue);
+                          filter.updating = [NSNumber numberWithBool:NO];
+                          [[VFilterCache sharedCache] setObject:filter forKey:filter.filterAPIPath];
+                      });
         
-        [currentContext saveToPersistentStore:nil];
+        [filter.managedObjectContext saveToPersistentStore:nil];
         
-        //If we don't have the user then we need to fetch em.
-        NSMutableArray* nonExistantUsers = [[NSMutableArray alloc] init];
-        for (VSequence* sequence in resultObjects)
-        {
-            if (!sequence.user)
-            {
-                [nonExistantUsers addObject:sequence.createdBy];
-            }
-        }
-        
-        if ([nonExistantUsers count])
-        {
-            [[VObjectManager sharedManager] fetchUsers:nonExistantUsers
-                                      withSuccessBlock:nil
-                                             failBlock:nil];
-        }
-        
-        if (oldSequenceCount == [filterInContext.sequences count])
-        {
-            fail(nil, nil);
-        }
-        else if (success)
-        {
+        if (success)
             success(operation, fullResponse, resultObjects);
-        }
     };
     
     VFailBlock fullFail = ^(NSOperation* operation, NSError* error)
@@ -194,29 +214,25 @@
     };
     
     NSInteger nextPageNumber = filter.currentPageNumber.integerValue + 1;
-    
     if (nextPageNumber > filter.maxPageNumber.integerValue)
         nextPageNumber = filter.maxPageNumber.integerValue;
+    
     NSString* path = [filter.filterAPIPath stringByAppendingFormat:@"/%d/%d", nextPageNumber, filter.perPageNumber.integerValue];
     
-    return [self GET:path
-              object:nil
-          parameters:nil
-        successBlock:fullSuccessBlock
-           failBlock:fullFail];
+    return [self GET:path object:nil parameters:nil successBlock:fullSuccess failBlock:fullFail];
 }
 
 - (VSequenceFilter*)sequenceFilterForUser:(VUser*)user
 {
     NSString* apiPath = [@"/api/sequence/detail_list_by_category/" stringByAppendingString: user.remoteId.stringValue ?: @"0"];
-    return [[VFilterCache sharedCache] filterForPath:apiPath];
+    return [[VFilterCache sharedCache] sequenceFilterForPath:apiPath];
 }
 
 - (VSequenceFilter*)sequenceFilterForCategories:(NSArray*)categories
 {
     NSString* categoryString = [categories componentsJoinedByString:@","];
     NSString* apiPath = [@"/api/sequence/detail_list_by_category/" stringByAppendingString: categoryString ?: @"0"];
-    return [[VFilterCache sharedCache] filterForPath:apiPath];
+    return [[VFilterCache sharedCache] sequenceFilterForPath:apiPath];
 }
 
 @end
@@ -235,7 +251,7 @@
     return sequenceFilterCache;
 }
 
-- (VSequenceFilter*)filterForPath:(NSString *)path
+- (VSequenceFilter*)sequenceFilterForPath:(NSString *)path
 {
     //Check cache
     VSequenceFilter* filter =[self objectForKey:path];
@@ -257,7 +273,7 @@
     }
     
     //Create a new one if it doesn't exist or it faulted
-    if (!filter || [filter isFault])
+    if (!filter || [filter isFault] || ![filter isKindOfClass:[VSequenceFilter class]])
     {
         filter = [NSEntityDescription insertNewObjectForEntityForName:[VSequenceFilter entityName]
                                                inManagedObjectContext:[VObjectManager sharedManager].managedObjectStore.persistentStoreManagedObjectContext];

@@ -306,24 +306,24 @@
 - (void)loadNextPageAction
 {
 #warning The next page action will cause the tableview to sometimes freak out. Use at your own risk.
-//    RKManagedObjectRequestOperation* operation = [[VObjectManager sharedManager] loadNextPageOfSequenceFilter:[self currentFilter]
-//                                             successBlock:^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
-//     {
-//         [self.bottomRefreshIndicator stopAnimating];
-//         self.fetchedResultsController.delegate = self;
-//         [self performFetch];
-//     }
-//                                                failBlock:^(NSOperation* operation, NSError* error)
-//     {
-//         [self.bottomRefreshIndicator stopAnimating];
-//         self.fetchedResultsController.delegate = self ;
-//     }];
-//    
-//    if (operation)
-//    {
-//        self.fetchedResultsController.delegate = nil;
-//        [self.bottomRefreshIndicator startAnimating];
-//    }
+    RKManagedObjectRequestOperation* operation = [[VObjectManager sharedManager] loadNextPageOfSequenceFilter:[self currentFilter]
+                                             successBlock:^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
+     {
+         [self.bottomRefreshIndicator stopAnimating];
+         self.fetchedResultsController.delegate = self;
+         [self performFetch];
+     }
+                                                failBlock:^(NSOperation* operation, NSError* error)
+     {
+         [self.bottomRefreshIndicator stopAnimating];
+         self.fetchedResultsController.delegate = self ;
+     }];
+    
+    if (operation)
+    {
+        self.fetchedResultsController.delegate = nil;
+        [self.bottomRefreshIndicator startAnimating];
+    }
 }
 
 #pragma mark - Predicates
