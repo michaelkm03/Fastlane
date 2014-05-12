@@ -26,8 +26,8 @@ NSString*   const   kVAgreementText                     =   @"agreement.text";
 NSString*   const   kVAgreementLinkText                 =   @"agreement.linkText";
 NSString*   const   kVAgreementLink                     =   @"agreement.link";
 
-NSString*   const   kVMenuBackgroundImage               =   @"LaunchImage-700";
-NSString*   const   kVMenuBackgroundImage5              =   @"LaunchImage-700-568h";
+NSString*   const   kVMenuBackgroundImage               =   @"Default";
+NSString*   const   kVMenuBackgroundImage5              =   @"Default-568h";
 
 #pragma mark - Fonts
 
