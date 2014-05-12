@@ -36,7 +36,7 @@
 {
 //#if DEBUG
     RKLogConfigureByName("RestKit/Network", RKLogLevelTrace);
-    RKLogConfigureByName("RestKit/ObjectMapping", RKLogLevelTrace);
+//    RKLogConfigureByName("RestKit/ObjectMapping", RKLogLevelTrace);
 //#endif
     
     VObjectManager *manager = [self managerWithBaseURL:[[self currentEnvironment] baseURL]];

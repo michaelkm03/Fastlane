@@ -26,8 +26,10 @@
 
 //ObjectManager
 #import "VObjectManager+Sequence.h"
+#import "VObjectManager+SequenceFilters.h"
 
 //Data Models
+#import "VSequenceFilter.h"
 #import "VSequence+RestKit.h"
 #import "VSequence+Fetcher.h"
 #import "VNode+Fetcher.h"
@@ -59,16 +61,11 @@
      name:kStreamsWillCommentNotification object:nil];
     
     self.preloadImageCache = [[NSCache alloc] init];
-    self.preloadImageCache.countLimit = 5;
     
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     
-    if ([self.fetchedResultsController.fetchedObjects count] < 5)
-        [self refreshAction];
-    else
-        [self.tableView reloadData]; //force a reload incase anything has changed
-    
     self.clearsSelectionOnViewWillAppear = NO;
+    self.bottomRefreshIndicator.color = [[VThemeManager sharedThemeManager] themedColorForKey:kVMainTextColor];
     
     //Remove the search button from the stream - feature currently deprecated
     self.navigationItem.rightBarButtonItem = nil;
@@ -79,6 +76,11 @@
     [super viewDidAppear:animated];
     
     self.navigationController.delegate = self;
+    
+    if ([self.fetchedResultsController.fetchedObjects count] < 5)
+        [self refreshAction];
+    else
+        [self.tableView reloadData]; //force a reload incase anything has changed
     
     CGRect navBarFrame = self.navigationController.navigationBar.frame;
     navBarFrame.origin.y = 0;
@@ -115,6 +117,7 @@
     
     NSFetchRequest *fetchRequest = [NSFetchRequest fetchRequestWithEntityName:[VSequence entityName]];
     NSSortDescriptor *sort = [[NSSortDescriptor alloc] initWithKey:@"releasedAt" ascending:NO];
+
     [fetchRequest setSortDescriptors:@[sort]];
     [fetchRequest setFetchBatchSize:50];
     
@@ -154,6 +157,7 @@
     }
     else
     {
+        self.tableView.userInteractionEnabled = NO;
         [tableView setContentOffset:CGPointMake(cell.frame.origin.x, cell.frame.origin.y - kContentMediaViewOffset) animated:YES];
     }
 }
@@ -163,12 +167,18 @@
     VStreamViewCell* cell = (VStreamViewCell*)[self.tableView cellForRowAtIndexPath:self.tableView.indexPathForSelectedRow];
     if (cell)
     {
+        self.tableView.userInteractionEnabled = YES;
         [self.navigationController pushViewController:[VContentViewController sharedInstance] animated:YES];
     }
 }
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
+    if (scrollView.contentOffset.y > scrollView.contentSize.height * .75)
+    {
+        [self loadNextPageAction];
+    }
+    
     CGPoint translation = [scrollView.panGestureRecognizer translationInView:scrollView.superview];
     CGRect navBarFrame = self.navigationController.navigationBar.frame;
     
@@ -259,17 +269,6 @@
     return cell;
 }
 
-- (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    UIView*     animatableContent = [(VTableViewCell *)cell mainView];
-    
-    animatableContent.layer.opacity = 0.1;
-    
-    [UIView animateWithDuration:0.5 animations:^{
-        animatableContent.layer.opacity = 1.0;
-    }];
-}
-
 - (void)registerCells
 {
     [self.tableView registerNib:[UINib nibWithNibName:kStreamViewCellIdentifier bundle:nil]
@@ -288,41 +287,55 @@
 #pragma mark - Refresh
 - (void)refreshAction
 {
-    if (self.bottomRefreshIndicator.isAnimating)
-        return;
-    
-    [self.bottomRefreshIndicator startAnimating];
-    [self.refreshControl beginRefreshing];
-    
-    [[VObjectManager sharedManager] loadNextPageOfSequencesForCategory:nil
+    RKManagedObjectRequestOperation* operation = [[VObjectManager sharedManager] refreshSequenceFilter:[self currentFilter]
                                                           successBlock:^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
      {
          [self.refreshControl endRefreshing];
-         [self.bottomRefreshIndicator stopAnimating];
-         
      }
                                                              failBlock:^(NSOperation* operation, NSError* error)
      {
          [self.refreshControl endRefreshing];
-         [self.bottomRefreshIndicator stopAnimating];
      }];
+    
+    if (operation)
+    {
+        [self.refreshControl beginRefreshing];
+    }
+}
+
+- (void)loadNextPageAction
+{
+#warning The next page action will cause the tableview to sometimes freak out. Use at your own risk.
+//    RKManagedObjectRequestOperation* operation = [[VObjectManager sharedManager] loadNextPageOfSequenceFilter:[self currentFilter]
+//                                             successBlock:^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
+//     {
+//         [self.bottomRefreshIndicator stopAnimating];
+//         self.fetchedResultsController.delegate = self;
+//         [self performFetch];
+//     }
+//                                                failBlock:^(NSOperation* operation, NSError* error)
+//     {
+//         [self.bottomRefreshIndicator stopAnimating];
+//         self.fetchedResultsController.delegate = self ;
+//     }];
+//    
+//    if (operation)
+//    {
+//        self.fetchedResultsController.delegate = nil;
+//        [self.bottomRefreshIndicator startAnimating];
+//    }
 }
 
 #pragma mark - Predicates
 - (NSPredicate*)scopeTypePredicateForOption:(NSUInteger)searchOption
 {
-    NSMutableArray* allPredicates = [[NSMutableArray alloc] init];
-    for (NSString* categoryName in [self categoriesForOption:searchOption])
-    {
-        [allPredicates addObject:[self categoryPredicateForString:categoryName]];
-    }
-    return [NSCompoundPredicate orPredicateWithSubpredicates:allPredicates];
+    VSequenceFilter* filter = [self currentFilter];
+    return [NSPredicate predicateWithFormat:@"ANY filters.filterAPIPath =[cd] %@", filter.filterAPIPath];
 }
 
-- (NSPredicate*)categoryPredicateForString:(NSString*)categoryName
+- (VSequenceFilter*)currentFilter
 {
-    //TODO: double check this, I think its wrong
-    return [NSPredicate predicateWithFormat:@"category == %@", categoryName];
+    return [[VObjectManager sharedManager] sequenceFilterForCategories:[self categoriesForOption:VStreamFilterAll]];
 }
 
 - (NSArray*)categoriesForOption:(NSUInteger)searchOption

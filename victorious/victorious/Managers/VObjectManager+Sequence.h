@@ -15,17 +15,6 @@ extern NSString* const kPollResultsLoaded;
 
 @interface VObjectManager (Sequence)
 
-- (RKManagedObjectRequestOperation *)initialSequenceLoadWithSuccessBlock:(VSuccessBlock)success
-                                                               failBlock:(VFailBlock)fail;
-
-- (RKManagedObjectRequestOperation *)loadNextPageOfSequencesForCategory:(NSString*)category
-                                                           successBlock:(VSuccessBlock)success
-                                                              failBlock:(VFailBlock)fail;
-
-- (RKManagedObjectRequestOperation *)loadNextPageOfSequencesForUser:(VUser*)user
-                                                       successBlock:(VSuccessBlock)success
-                                                          failBlock:(VFailBlock)fail;
-
 - (RKManagedObjectRequestOperation *)fetchSequence:(NSNumber*)sequenceId
                                       successBlock:(VSuccessBlock)success
                                          failBlock:(VFailBlock)fail;

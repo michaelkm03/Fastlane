@@ -93,22 +93,14 @@
                      media1URL:(NSURL *)media1URL
                      media2URL:(NSURL *)media2URL
 {
-    __block NSURL* firstRemovalURL = media1URL;
-    __block NSURL* secondRemovalURL = media2URL;
     
     VSuccessBlock success = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
     {
         NSLog(@"%@", resultObjects);
-        
-        [[NSFileManager defaultManager] removeItemAtURL:firstRemovalURL error:nil];
-        [[NSFileManager defaultManager] removeItemAtURL:secondRemovalURL error:nil];
     };
     VFailBlock fail = ^(NSOperation* operation, NSError* error)
     {
         NSLog(@"%@", error);
-        
-        [[NSFileManager defaultManager] removeItemAtURL:firstRemovalURL error:nil];
-        [[NSFileManager defaultManager] removeItemAtURL:secondRemovalURL error:nil];
         
         if (kVStillTranscodingError == error.code)
         {

@@ -105,10 +105,7 @@
         //Since this is a POST not a DELETE we need to manually remove the comment.
         [commentToRemove.managedObjectContext deleteObject:commentToRemove];
         
-        [commentToRemove.managedObjectContext performBlockAndWait:^
-         {
-             [commentToRemove.managedObjectContext saveToPersistentStore:nil];
-         }];
+        [commentToRemove.managedObjectContext saveToPersistentStore:nil];
         
         if (success)
             success(operation, fullResponse, resultObjects);

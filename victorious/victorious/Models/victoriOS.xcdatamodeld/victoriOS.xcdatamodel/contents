@@ -3,11 +3,11 @@
     <entity name="Answer" representedClassName="VAnswer" syncable="YES">
         <attribute name="currency" optional="YES" attributeType="Integer 32" minValueString="0" syncable="YES"/>
         <attribute name="display_order" attributeType="Integer 32" minValueString="0" syncable="YES"/>
-        <attribute name="isCorrect" attributeType="Boolean" syncable="YES"/>
+        <attribute name="isCorrect" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="label" attributeType="String" syncable="YES"/>
         <attribute name="mediaUrl" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="points" optional="YES" attributeType="Integer 32" minValueString="0" syncable="YES"/>
-        <attribute name="remoteId" attributeType="Integer 64" minValueString="0" syncable="YES"/>
+        <attribute name="remoteId" attributeType="Integer 64" minValueString="-1" defaultValueString="-1" syncable="YES"/>
         <attribute name="thumbnailUrl" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="answerAction" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="AnswerAction" inverseName="answer" inverseEntity="AnswerAction" syncable="YES"/>
         <relationship name="interaction" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Interaction" inverseName="answers" inverseEntity="Interaction" syncable="YES"/>
@@ -49,10 +49,10 @@
         <relationship name="user" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="User" inverseName="conversations" inverseEntity="User" syncable="YES"/>
     </entity>
     <entity name="Interaction" representedClassName="VInteraction" syncable="YES">
-        <attribute name="display_order" attributeType="Integer 32" minValueString="0" syncable="YES"/>
-        <attribute name="nodeId" attributeType="Integer 64" minValueString="0" syncable="YES"/>
+        <attribute name="display_order" attributeType="Integer 32" minValueString="0" defaultValueString="0" syncable="YES"/>
+        <attribute name="nodeId" attributeType="Integer 64" minValueString="-1" defaultValueString="-1" syncable="YES"/>
         <attribute name="question" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="remoteId" attributeType="Integer 64" minValueString="0" syncable="YES"/>
+        <attribute name="remoteId" attributeType="Integer 64" minValueString="-1" defaultValueString="-1" syncable="YES"/>
         <attribute name="startTime" optional="YES" attributeType="Integer 32" minValueString="-1" syncable="YES"/>
         <attribute name="timeout" optional="YES" attributeType="Integer 64" minValueString="0" syncable="YES"/>
         <attribute name="type" optional="YES" attributeType="String" syncable="YES"/>
@@ -84,8 +84,8 @@
         <relationship name="user" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="User" inverseName="messages" inverseEntity="User" syncable="YES"/>
     </entity>
     <entity name="Node" representedClassName="VNode" syncable="YES">
-        <attribute name="display_order" attributeType="Integer 32" minValueString="0" syncable="YES"/>
-        <attribute name="remoteId" attributeType="Integer 64" minValueString="0" syncable="YES"/>
+        <attribute name="display_order" attributeType="Integer 32" minValueString="0" defaultValueString="0" syncable="YES"/>
+        <attribute name="remoteId" attributeType="Integer 64" minValueString="-1" defaultValueString="-1" syncable="YES"/>
         <relationship name="assets" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="Asset" inverseName="node" inverseEntity="Asset" syncable="YES"/>
         <relationship name="interactions" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="Interaction" inverseName="node" inverseEntity="Interaction" syncable="YES"/>
         <relationship name="nodeAction" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="NodeAction" inverseName="node" inverseEntity="NodeAction" syncable="YES"/>
@@ -119,21 +119,22 @@
         <attribute name="previewImage" optional="YES" attributeType="Transformable" syncable="YES"/>
         <attribute name="releasedAt" optional="YES" attributeType="Date" syncable="YES"/>
         <attribute name="remixCount" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
-        <attribute name="remoteId" attributeType="Integer 64" minValueString="0" syncable="YES"/>
+        <attribute name="remoteId" attributeType="Integer 64" minValueString="0" indexed="YES" syncable="YES"/>
         <attribute name="sequenceDescription" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="status" attributeType="String" syncable="YES"/>
         <relationship name="comments" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="Comment" inverseName="sequence" inverseEntity="Comment" syncable="YES"/>
-        <relationship name="filters" optional="YES" toMany="YES" deletionRule="Deny" destinationEntity="SequenceFilter" inverseName="sequences" inverseEntity="SequenceFilter" syncable="YES"/>
+        <relationship name="filters" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="SequenceFilter" inverseName="sequences" inverseEntity="SequenceFilter" syncable="YES"/>
         <relationship name="nodes" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="Node" inverseName="sequence" inverseEntity="Node" syncable="YES"/>
         <relationship name="pollResults" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="PollResult" inverseName="sequence" inverseEntity="PollResult" syncable="YES"/>
         <relationship name="user" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="User" inverseName="postedSequences" inverseEntity="User" syncable="YES"/>
         <relationship name="voteResults" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="VoteResult" inverseName="sequence" inverseEntity="VoteResult" syncable="YES"/>
     </entity>
     <entity name="SequenceFilter" representedClassName="VSequenceFilter" syncable="YES">
-        <attribute name="filterAPIPath" attributeType="String" minValueString="0" syncable="YES"/>
-        <attribute name="maxPage" attributeType="Integer 16" minValueString="0" defaultValueString="0" syncable="YES"/>
-        <attribute name="pageNumber" attributeType="Integer 32" minValueString="0" defaultValueString="0" syncable="YES"/>
-        <attribute name="perPageNumber" attributeType="Integer 32" minValueString="0" defaultValueString="20" syncable="YES"/>
+        <attribute name="currentPageNumber" optional="YES" attributeType="Integer 32" minValueString="0" defaultValueString="0" syncable="YES"/>
+        <attribute name="filterAPIPath" attributeType="String" minValueString="0" indexed="YES" syncable="YES"/>
+        <attribute name="maxPageNumber" attributeType="Integer 16" minValueString="0" defaultValueString="1" syncable="YES"/>
+        <attribute name="perPageNumber" attributeType="Integer 32" minValueString="0" defaultValueString="15" syncable="YES"/>
+        <attribute name="updating" optional="YES" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
         <relationship name="sequences" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Sequence" inverseName="filters" inverseEntity="Sequence" syncable="YES"/>
     </entity>
     <entity name="UnreadConversation" representedClassName="VUnreadConversation" syncable="YES">
@@ -171,7 +172,7 @@
         <attribute name="remoteId" attributeType="Integer 32" minValueString="0" defaultValueString="0" syncable="YES"/>
     </entity>
     <elements>
-        <element name="Answer" positionX="727" positionY="108" width="128" height="193"/>
+        <element name="Answer" positionX="727" positionY="99" width="128" height="193"/>
         <element name="AnswerAction" positionX="718" positionY="330" width="128" height="75"/>
         <element name="Asset" positionX="655" positionY="-360" width="128" height="118"/>
         <element name="Comment" positionX="1035" positionY="-576" width="128" height="283"/>
@@ -180,12 +181,12 @@
         <element name="InteractionAction" positionX="495" positionY="-162" width="128" height="105"/>
         <element name="Media" positionX="1404" positionY="-67" width="128" height="103"/>
         <element name="Message" positionX="1447" positionY="-280" width="128" height="163"/>
-        <element name="Node" positionX="817" positionY="-180" width="128" height="135"/>
+        <element name="Node" positionX="817" positionY="-180" width="128" height="133"/>
         <element name="NodeAction" positionX="835" positionY="-9" width="128" height="90"/>
         <element name="PollResult" positionX="1222" positionY="-45" width="128" height="118"/>
         <element name="Rule" positionX="567" positionY="99" width="128" height="75"/>
         <element name="Sequence" positionX="1015" positionY="-208" width="128" height="343"/>
-        <element name="SequenceFilter" positionX="846" positionY="-387" width="128" height="118"/>
+        <element name="SequenceFilter" positionX="844" positionY="-457" width="128" height="133"/>
         <element name="UnreadConversation" positionX="1206" positionY="-513" width="128" height="73"/>
         <element name="User" positionX="1222" positionY="-412" width="128" height="270"/>
         <element name="VoteResult" positionX="864" positionY="99" width="128" height="88"/>

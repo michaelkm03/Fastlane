@@ -14,6 +14,11 @@
 		03D6381B191840570084FFC8 /* VEnvironment.m in Sources */ = {isa = PBXBuildFile; fileRef = 03D6381A191840570084FFC8 /* VEnvironment.m */; };
 		03D6381E191841220084FFC8 /* VObjectManager+Environment.m in Sources */ = {isa = PBXBuildFile; fileRef = 03D6381D191841220084FFC8 /* VObjectManager+Environment.m */; };
 		03D638211918488F0084FFC8 /* VServerEnvironmentTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 03D638201918488F0084FFC8 /* VServerEnvironmentTableViewController.m */; };
+		03F9D28F19204CDC00576AEE /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 03F9D28A19204CDC00576AEE /* Default-568h@2x.png */; };
+		03F9D29019204CDC00576AEE /* Default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 03F9D28B19204CDC00576AEE /* Default@2x.png */; };
+		03F9D29719204D7700576AEE /* Icon-29@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 03F9D29419204D7700576AEE /* Icon-29@2x.png */; };
+		03F9D29819204D7700576AEE /* Icon-40@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 03F9D29519204D7700576AEE /* Icon-40@2x.png */; };
+		03F9D29919204D7700576AEE /* Icon-60@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 03F9D29619204D7700576AEE /* Icon-60@2x.png */; };
 		0742CD6B32FA44679FBE8716 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 662F0867152745B2B2F08301 /* libPods.a */; };
 		3F0F14FF191C015B0030B33D /* Profile.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3F0F14FE191C015B0030B33D /* Profile.storyboard */; };
 		3F0F1502191C04A20030B33D /* VUserProfileViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F0F1501191C04A20030B33D /* VUserProfileViewController.m */; };
@@ -24,7 +29,6 @@
 		3F14C44F18BD2BD0001796B9 /* VCCamera.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F14C43E18BD2BD0001796B9 /* VCCamera.m */; };
 		3F14C45018BD2BD0001796B9 /* VCCameraFocusView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F14C44018BD2BD0001796B9 /* VCCameraFocusView.m */; };
 		3F14C45118BD2BD0001796B9 /* VCDataEncoder.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F14C44218BD2BD0001796B9 /* VCDataEncoder.m */; };
-		3F14C45218BD2BD0001796B9 /* VCPlayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F14C44418BD2BD0001796B9 /* VCPlayer.m */; };
 		3F14C45318BD2BD0001796B9 /* VCVideoEncoder.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F14C44618BD2BD0001796B9 /* VCVideoEncoder.m */; };
 		3F14C45418BD2BD0001796B9 /* VCVideoPlayerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F14C44818BD2BD0001796B9 /* VCVideoPlayerView.m */; };
 		3F4863FA1869184000F77346 /* VInboxViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F4863F91869184000F77346 /* VInboxViewController.m */; };
@@ -179,11 +183,12 @@
 		BE6C15251880A31A00469BA8 /* VAnswerAction.m in Sources */ = {isa = PBXBuildFile; fileRef = BE6C15241880A31A00469BA8 /* VAnswerAction.m */; };
 		BE6C15311880A31B00469BA8 /* VMedia.m in Sources */ = {isa = PBXBuildFile; fileRef = BE6C15301880A31B00469BA8 /* VMedia.m */; };
 		BE7169D318D0F5B5004966C3 /* VInteractionManager.m in Sources */ = {isa = PBXBuildFile; fileRef = BE7169D218D0F5B5004966C3 /* VInteractionManager.m */; };
-		BE76FBE418E4AAE8009E6DD7 /* AppImages.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BE76FBE318E4AAE8009E6DD7 /* AppImages.xcassets */; };
 		BE76FBE618E4DC1D009E6DD7 /* defaultTheme.plist in Resources */ = {isa = PBXBuildFile; fileRef = BE76FBE518E4DC1D009E6DD7 /* defaultTheme.plist */; };
 		BE7D2E8E18EB65ED009E488E /* VVoteResult+RestKit.m in Sources */ = {isa = PBXBuildFile; fileRef = BE7D2E8D18EB65ED009E488E /* VVoteResult+RestKit.m */; };
 		BE7D2E9118EB762A009E488E /* VVoteResult.m in Sources */ = {isa = PBXBuildFile; fileRef = BE7D2E9018EB762A009E488E /* VVoteResult.m */; };
 		BE83A37118827B400077EB26 /* VMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = BE83A37018827B400077EB26 /* VMessage.m */; };
+		BE89D981192141D600D97E7F /* VUser+Fetcher.m in Sources */ = {isa = PBXBuildFile; fileRef = BE89D980192141D600D97E7F /* VUser+Fetcher.m */; };
+		BE89D984192141E000D97E7F /* VSequenceFilter+RestKit.m in Sources */ = {isa = PBXBuildFile; fileRef = BE89D983192141E000D97E7F /* VSequenceFilter+RestKit.m */; };
 		BE89ECDB19105DB8009DD407 /* VAnswer.m in Sources */ = {isa = PBXBuildFile; fileRef = BE89ECDA19105DB8009DD407 /* VAnswer.m */; };
 		BE8C6F4F18B56E70009CFB1C /* VStreamPollCell.m in Sources */ = {isa = PBXBuildFile; fileRef = BE8C6F4E18B56E70009CFB1C /* VStreamPollCell.m */; };
 		BE9181DB19098E280071E7AF /* VObjectManager+SequenceFilters.m in Sources */ = {isa = PBXBuildFile; fileRef = BE9181DA19098E280071E7AF /* VObjectManager+SequenceFilters.m */; };
@@ -252,6 +257,11 @@
 		03D6381D191841220084FFC8 /* VObjectManager+Environment.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "VObjectManager+Environment.m"; sourceTree = "<group>"; };
 		03D6381F1918488F0084FFC8 /* VServerEnvironmentTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VServerEnvironmentTableViewController.h; path = UI/VServerEnvironmentTableViewController.h; sourceTree = "<group>"; };
 		03D638201918488F0084FFC8 /* VServerEnvironmentTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VServerEnvironmentTableViewController.m; path = UI/VServerEnvironmentTableViewController.m; sourceTree = "<group>"; };
+		03F9D28A19204CDC00576AEE /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Default-568h@2x.png"; path = "AppSpecific/Default-568h@2x.png"; sourceTree = "<group>"; };
+		03F9D28B19204CDC00576AEE /* Default@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Default@2x.png"; path = "AppSpecific/Default@2x.png"; sourceTree = "<group>"; };
+		03F9D29419204D7700576AEE /* Icon-29@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Icon-29@2x.png"; path = "AppSpecific/Icon-29@2x.png"; sourceTree = "<group>"; };
+		03F9D29519204D7700576AEE /* Icon-40@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Icon-40@2x.png"; path = "AppSpecific/Icon-40@2x.png"; sourceTree = "<group>"; };
+		03F9D29619204D7700576AEE /* Icon-60@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Icon-60@2x.png"; path = "AppSpecific/Icon-60@2x.png"; sourceTree = "<group>"; };
 		33ACD3CBAF2C419D97FB901A /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = "<group>"; };
 		3F0F14FE191C015B0030B33D /* Profile.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = Profile.storyboard; path = UI/Profile/Profile.storyboard; sourceTree = "<group>"; };
 		3F0F1500191C04A20030B33D /* VUserProfileViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VUserProfileViewController.h; path = UI/Profile/VUserProfileViewController.h; sourceTree = "<group>"; };
@@ -271,8 +281,6 @@
 		3F14C44018BD2BD0001796B9 /* VCCameraFocusView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VCCameraFocusView.m; sourceTree = "<group>"; };
 		3F14C44118BD2BD0001796B9 /* VCDataEncoder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VCDataEncoder.h; sourceTree = "<group>"; };
 		3F14C44218BD2BD0001796B9 /* VCDataEncoder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VCDataEncoder.m; sourceTree = "<group>"; };
-		3F14C44318BD2BD0001796B9 /* VCPlayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VCPlayer.h; sourceTree = "<group>"; };
-		3F14C44418BD2BD0001796B9 /* VCPlayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VCPlayer.m; sourceTree = "<group>"; };
 		3F14C44518BD2BD0001796B9 /* VCVideoEncoder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VCVideoEncoder.h; sourceTree = "<group>"; };
 		3F14C44618BD2BD0001796B9 /* VCVideoEncoder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VCVideoEncoder.m; sourceTree = "<group>"; };
 		3F14C44718BD2BD0001796B9 /* VCVideoPlayerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VCVideoPlayerView.h; sourceTree = "<group>"; };
@@ -547,7 +555,6 @@
 		BE6C15301880A31B00469BA8 /* VMedia.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VMedia.m; sourceTree = "<group>"; };
 		BE7169D118D0F5B5004966C3 /* VInteractionManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VInteractionManager.h; sourceTree = "<group>"; };
 		BE7169D218D0F5B5004966C3 /* VInteractionManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VInteractionManager.m; sourceTree = "<group>"; };
-		BE76FBE318E4AAE8009E6DD7 /* AppImages.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = AppImages.xcassets; path = AppSpecific/AppImages.xcassets; sourceTree = "<group>"; };
 		BE76FBE518E4DC1D009E6DD7 /* defaultTheme.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = defaultTheme.plist; path = AppSpecific/defaultTheme.plist; sourceTree = SOURCE_ROOT; };
 		BE7D2E8C18EB65ED009E488E /* VVoteResult+RestKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "VVoteResult+RestKit.h"; sourceTree = "<group>"; };
 		BE7D2E8D18EB65ED009E488E /* VVoteResult+RestKit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "VVoteResult+RestKit.m"; sourceTree = "<group>"; };
@@ -555,6 +562,10 @@
 		BE7D2E9018EB762A009E488E /* VVoteResult.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VVoteResult.m; sourceTree = "<group>"; };
 		BE83A36F18827B400077EB26 /* VMessage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VMessage.h; sourceTree = "<group>"; };
 		BE83A37018827B400077EB26 /* VMessage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VMessage.m; sourceTree = "<group>"; };
+		BE89D97F192141D600D97E7F /* VUser+Fetcher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "VUser+Fetcher.h"; sourceTree = "<group>"; };
+		BE89D980192141D600D97E7F /* VUser+Fetcher.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "VUser+Fetcher.m"; sourceTree = "<group>"; };
+		BE89D982192141E000D97E7F /* VSequenceFilter+RestKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "VSequenceFilter+RestKit.h"; sourceTree = "<group>"; };
+		BE89D983192141E000D97E7F /* VSequenceFilter+RestKit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "VSequenceFilter+RestKit.m"; sourceTree = "<group>"; };
 		BE89ECD919105DB8009DD407 /* VAnswer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VAnswer.h; sourceTree = "<group>"; };
 		BE89ECDA19105DB8009DD407 /* VAnswer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VAnswer.m; sourceTree = "<group>"; };
 		BE8C6F4C18B53F2A009CFB1C /* victoriOS 4.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "victoriOS 4.xcdatamodel"; sourceTree = "<group>"; };
@@ -690,8 +701,6 @@
 				3F14C43E18BD2BD0001796B9 /* VCCamera.m */,
 				3F14C43718BD2BD0001796B9 /* VCAudioTools.h */,
 				3F14C43818BD2BD0001796B9 /* VCAudioTools.m */,
-				3F14C44318BD2BD0001796B9 /* VCPlayer.h */,
-				3F14C44418BD2BD0001796B9 /* VCPlayer.m */,
 				3F14C44718BD2BD0001796B9 /* VCVideoPlayerView.h */,
 				3F14C44818BD2BD0001796B9 /* VCVideoPlayerView.m */,
 				3F14C43F18BD2BD0001796B9 /* VCCameraFocusView.h */,
@@ -1156,6 +1165,8 @@
 		BE171DAF1868C211004E5202 /* Fetchers */ = {
 			isa = PBXGroup;
 			children = (
+				BE89D97F192141D600D97E7F /* VUser+Fetcher.h */,
+				BE89D980192141D600D97E7F /* VUser+Fetcher.m */,
 				BE171DB41868C211004E5202 /* VNode+Fetcher.h */,
 				BE171DB51868C211004E5202 /* VNode+Fetcher.m */,
 				BE6B95FA187C88F700CED4C9 /* VSequence+Fetcher.h */,
@@ -1171,6 +1182,8 @@
 		BE171DB61868C211004E5202 /* Mappings */ = {
 			isa = PBXGroup;
 			children = (
+				BE89D982192141E000D97E7F /* VSequenceFilter+RestKit.h */,
+				BE89D983192141E000D97E7F /* VSequenceFilter+RestKit.m */,
 				BE171E351868C265004E5202 /* NSManagedObject+RestKit.h */,
 				BE171E361868C265004E5202 /* NSManagedObject+RestKit.m */,
 				BE171DB71868C211004E5202 /* VAnswer+RestKit.h */,
@@ -1390,9 +1403,13 @@
 		BE76FBE218E4AA95009E6DD7 /* AppSpecific */ = {
 			isa = PBXGroup;
 			children = (
+				03F9D28A19204CDC00576AEE /* Default-568h@2x.png */,
+				03F9D28B19204CDC00576AEE /* Default@2x.png */,
 				BE76FBE518E4DC1D009E6DD7 /* defaultTheme.plist */,
+				03F9D29419204D7700576AEE /* Icon-29@2x.png */,
+				03F9D29519204D7700576AEE /* Icon-40@2x.png */,
+				03F9D29619204D7700576AEE /* Icon-60@2x.png */,
 				BE449DBF18E4F6A1008411F1 /* Info.plist */,
-				BE76FBE318E4AAE8009E6DD7 /* AppImages.xcassets */,
 			);
 			name = AppSpecific;
 			sourceTree = "<group>";
@@ -1566,19 +1583,21 @@
 			files = (
 				3FA217D818A9C38A0066E893 /* play_black@2x.png in Resources */,
 				3FF8B7981868EE7E00806EA0 /* Main.storyboard in Resources */,
+				03F9D29919204D7700576AEE /* Icon-60@2x.png in Resources */,
 				831C58F81884BD11007C167C /* VOtherCommentCell.xib in Resources */,
 				3FA217D518A9C38A0066E893 /* pause_black.png in Resources */,
 				3FA217D618A9C38A0066E893 /* pause_black@2x.png in Resources */,
 				5FCC1E4C1899CAC800EB7699 /* settings.storyboard in Resources */,
+				03F9D29719204D7700576AEE /* Icon-29@2x.png in Resources */,
 				3FA217CF18A9BFC90066E893 /* video_thumb_mini.png in Resources */,
 				BEDF0FC018DB783200750EF6 /* MuseoSans-500.otf in Resources */,
 				BEB4C29E187E038C004ECEEF /* VNewsCell.xib in Resources */,
 				3FDEDD0018CE46F00028E3F1 /* VideoRemix.storyboard in Resources */,
 				BE692B23186E5ED800C71336 /* VStreamDoublePollCell.xib in Resources */,
 				3FA217CD18A9BFC90066E893 /* cast_solid_custom.png in Resources */,
+				03F9D29019204CDC00576AEE /* Default@2x.png in Resources */,
 				BE171D861868BE64004E5202 /* InfoPlist.strings in Resources */,
 				BEB4C29C187E038C004ECEEF /* VConversationCell.xib in Resources */,
-				BE76FBE418E4AAE8009E6DD7 /* AppImages.xcassets in Resources */,
 				BEDF0FBE18DB783200750EF6 /* MuseoSans-100.otf in Resources */,
 				3FA217D718A9C38A0066E893 /* play_black.png in Resources */,
 				5FC4DA5E18970A9F006BA107 /* login.storyboard in Resources */,
@@ -1599,6 +1618,8 @@
 				BE692B2A186E5ED800C71336 /* VStreamViewCell.xib in Resources */,
 				BEDF0FBF18DB783200750EF6 /* MuseoSans-300.otf in Resources */,
 				BE76FBE618E4DC1D009E6DD7 /* defaultTheme.plist in Resources */,
+				03F9D29819204D7700576AEE /* Icon-40@2x.png in Resources */,
+				03F9D28F19204CDC00576AEE /* Default-568h@2x.png in Resources */,
 				3FA217CE18A9BFC90066E893 /* cast_solid_custom@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1696,7 +1717,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				BE171E0F1868C211004E5202 /* VAsset+RestKit.m in Sources */,
-				3F14C45218BD2BD0001796B9 /* VCPlayer.m in Sources */,
 				BE185DEA18E3AF55001C447F /* VContentViewController+Polls.m in Sources */,
 				5FF9BE83189318CD0054694B /* VRootViewController.m in Sources */,
 				BEB4C29D187E038C004ECEEF /* VNewsCell.m in Sources */,
@@ -1730,6 +1750,7 @@
 				3FD7FFC118C69B2200945E5F /* VSetExpirationViewController.m in Sources */,
 				3F91991A187CAF310055FE37 /* VMessageViewController.m in Sources */,
 				BE46E69A18CA751F00974DAF /* VCommentToContentAnimator.m in Sources */,
+				BE89D981192141D600D97E7F /* VUser+Fetcher.m in Sources */,
 				BED7F67418E0A8E900545DF6 /* OAuthCore.m in Sources */,
 				BE5C7340187E36CF00A3340D /* VInteraction.m in Sources */,
 				BE5DE3F618DA72140047B67E /* VInteractionAction.m in Sources */,
@@ -1945,8 +1966,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 33ACD3CBAF2C419D97FB901A /* Pods.xcconfig */;
 			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
@@ -2067,8 +2086,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 33ACD3CBAF2C419D97FB901A /* Pods.xcconfig */;
 			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
@@ -2089,8 +2106,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 33ACD3CBAF2C419D97FB901A /* Pods.xcconfig */;
 			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
@@ -2197,8 +2212,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 33ACD3CBAF2C419D97FB901A /* Pods.xcconfig */;
 			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (

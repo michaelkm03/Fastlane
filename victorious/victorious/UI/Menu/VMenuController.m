@@ -86,7 +86,7 @@ NSString *const VMenuControllerDidSelectRowNotification = @"VMenuTableViewContro
 - (void)viewWillLayoutSubviews
 {
     [super viewWillLayoutSubviews];
-    //TODO: randomly got a malloc_error_break crash here.  Double check this once the featured view is complete.
+
     self.view.frame = self.view.superview.bounds;
 }
 

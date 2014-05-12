@@ -4,114 +4,268 @@
 
 #import "VCVideoPlayerView.h"
 
+@interface VCVideoPlayerView ()
 
-////////////////////////////////////////////////////////////
-// PRIVATE DEFINITION
-/////////////////////
-
-@interface VCVideoPlayerView() {
-	UIView * _loadingView;
-}
-
-@property (strong, nonatomic, readwrite) VCPlayer * player;
-@property (strong, nonatomic, readwrite) AVPlayerLayer * playerLayer;
+@property (nonatomic, strong) AVPlayerLayer *playerLayer;
+@property (nonatomic, strong) id             timeObserver;
+@property (assign, nonatomic) NSUInteger     numberOfLoops;
 
 @end
 
-////////////////////////////////////////////////////////////
-// IMPLEMENTATION
-/////////////////////
+static const Float64 kMinimumBufferredTimeBeforePlaying = 2.0;
+
+static __weak VCVideoPlayerView *_currentPlayer = nil;
 
 @implementation VCVideoPlayerView
+{
+    UIView * _loadingView;
+}
+
++ (VCVideoPlayerView *)currentPlayer
+{
+    return _currentPlayer;
+}
 
 - (instancetype)init
 {
-	self = [super init];
-	if (self)
+    self = [super init];
+    if (self)
     {
-		_loadingView = nil;
-		[self commonInit];
-	}
-	
-	return self;
-}
+        [self commonInit];
+    }
 
-- (void)dealloc
-{
-	[self.player cleanUp];
-	self.playerLayer.player = nil;
+    return self;
 }
 
 - (id)initWithCoder:(NSCoder *)aDecoder
 {
-	self = [super initWithCoder:aDecoder];
-	if (self)
+    self = [super initWithCoder:aDecoder];
+    if (self)
     {
-		[self commonInit];
-	}
-	
-	return self;
+        [self commonInit];
+    }
+
+    return self;
 }
 
 - (void)commonInit
 {
-	self.player = [VCPlayer player];
-	self.player.delegate = self;
-	self.playerLayer = [AVPlayerLayer playerLayerWithPlayer:self.player];
-	self.playerLayer.videoGravity = AVLayerVideoGravityResizeAspectFill;
-	[self.layer addSublayer:self.playerLayer];
-	
-	UIView * theLoadingView = [[UIView alloc] init];
-	theLoadingView.backgroundColor = [[UIColor blackColor] colorWithAlphaComponent:0.5];
-	
-	UIActivityIndicatorView * theIndicatorView = [[UIActivityIndicatorView alloc] init];
-	[theIndicatorView startAnimating];
-	theIndicatorView.autoresizingMask = UIViewAutoresizingFlexibleBottomMargin | UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleWidth;
-	
-	[theLoadingView addSubview:theIndicatorView];
-	
-	self.loadingView = theLoadingView;
-	self.loadingView.hidden = YES;
-	self.clipsToBounds = YES;
+    _player = [[AVPlayer alloc] init];
+    self.playerLayer = [AVPlayerLayer playerLayerWithPlayer:self.player];
+    self.playerLayer.videoGravity = AVLayerVideoGravityResizeAspectFill;
+    [self.layer addSublayer:self.playerLayer];
+    [self.player addObserver:self
+                  forKeyPath:NSStringFromSelector(@selector(currentItem))
+                     options:(NSKeyValueObservingOptionInitial | NSKeyValueObservingOptionNew)
+                     context:NULL];
+    [self.player addObserver:self
+                  forKeyPath:NSStringFromSelector(@selector(rate))
+                     options:(NSKeyValueObservingOptionOld | NSKeyValueObservingOptionNew)
+                     context:NULL];
+
+    __weak VCVideoPlayerView *weakSelf = self;
+    self.timeObserver = [self.player addPeriodicTimeObserverForInterval:CMTimeMake(1, 24)
+                                                                  queue:dispatch_get_main_queue()
+                                                             usingBlock:^(CMTime time)
+    {
+        [weakSelf didPlay:time];
+    }];
+
+    self.clipsToBounds = YES;
+    self.shouldLoop = NO;
 }
 
-- (void)videoPlayer:(VCPlayer *)videoPlayer didStartLoadingAtItemTime:(CMTime)itemTime
+- (void)dealloc
 {
-//	self.loadingView.hidden = NO;
+    [self removeObserverFromOldPlayerItem:_player.currentItem andAddObserverToPlayerItem:nil];
+    [_player removeObserver:self forKeyPath:NSStringFromSelector(@selector(currentItem))];
+    [_player removeObserver:self forKeyPath:NSStringFromSelector(@selector(rate))];
+    [_player removeTimeObserver:_timeObserver]; _timeObserver = nil;
 }
 
-- (void)videoPlayer:(VCPlayer *)videoPlayer didEndLoadingAtItemTime:(CMTime)itemTime
+- (void)layoutSubviews
 {
-//	self.loadingView.hidden = YES;
+    [super layoutSubviews];
+    self.playerLayer.frame = self.layer.bounds;
 }
 
-- (void)videoPlayer:(VCPlayer *)videoPlayer didPlay:(Float32)secondsElapsed
+- (void)setItemURL:(NSURL *)itemURL withLoopCount:(NSUInteger)loopCount
 {
+    _itemURL = itemURL;
+
+    AVAsset *asset = [AVURLAsset assetWithURL:itemURL];
+    AVPlayerItem *playerItem;
+
+    if (loopCount > 1)
+    {
+        AVMutableComposition * composition = [AVMutableComposition composition];
+        CMTimeRange timeRange = CMTimeRangeMake(kCMTimeZero, asset.duration);
+        
+        for (NSUInteger i = 0; i < loopCount; i++)
+        {
+            [composition insertTimeRange:timeRange ofAsset:asset atTime:composition.duration error:nil];
+        }
+        
+        NSArray *tracks = [asset tracksWithMediaType:AVMediaTypeVideo];
+        if ([tracks count])
+        {
+            AVAssetTrack *assetTrack = tracks[0];
+            AVMutableCompositionTrack *compositionTrack = [composition mutableTrackCompatibleWithTrack:assetTrack];
+            compositionTrack.preferredTransform = assetTrack.preferredTransform;
+        }
+        playerItem = [AVPlayerItem playerItemWithAsset:composition];
+    }
+    else
+    {
+        playerItem = [AVPlayerItem playerItemWithAsset:asset];
+    }
+    
+    self.numberOfLoops = loopCount;
+    [self.player replaceCurrentItemWithPlayerItem:playerItem];
+}
+
+- (void)setItemURL:(NSURL *)itemURL
+{
+    [self setItemURL:itemURL withLoopCount:1];
+}
+
+- (void)setShouldLoop:(BOOL)shouldLoop
+{
+    _shouldLoop = shouldLoop;
+    self.player.actionAtItemEnd = shouldLoop ? AVPlayerActionAtItemEndNone : AVPlayerActionAtItemEndPause;
+}
+
+- (BOOL)isPlaying
+{
+    return self.player.rate > 0;
+}
+
+- (CMTime)playerItemDuration
+{
+    AVPlayerItem *playerItem = self.player.currentItem;
+    if (playerItem.status == AVPlayerItemStatusReadyToPlay)
+    {
+        return playerItem.duration;
+    }
+    else
+    {
+        return kCMTimeInvalid;
+    }
+}
+
+- (CMTime)playableDuration
+{
+	AVPlayerItem *item = self.player.currentItem;
+	CMTime playableDuration = kCMTimeZero;
 	
+	if (item.status != AVPlayerItemStatusFailed)
+    {
+		if (item.loadedTimeRanges.count > 0)
+        {
+			NSValue * value = [item.loadedTimeRanges objectAtIndex:0];
+			CMTimeRange timeRange = [value CMTimeRangeValue];
+			
+			playableDuration = timeRange.duration;
+		}
+	}
+	
+	return playableDuration;
 }
 
-- (void)videoPlayer:(VCPlayer *)videoPlayer didChangeItem:(AVPlayerItem *)item
+- (void)didPlay:(CMTime)time
 {
-//	self.loadingView.hidden = item == nil;
+    Float64 ratio = 1.0f / (Float64)self.numberOfLoops;
+    Float64 seconds = CMTimeGetSeconds(CMTimeMultiplyByFloat64(time, ratio));
+
+    if ([self.delegate respondsToSelector:@selector(videoPlayer:didPlayToSeconds:)])
+    {
+        [self.delegate videoPlayer:self didPlayToSeconds:seconds];
+    }
+
+    if (CMTIME_COMPARE_INLINE(time, >=, self.player.currentItem.duration) ||
+        ((self.endSeconds != 0) && (seconds > self.endSeconds)))
+    {
+        [self.player seekToTime:CMTimeMakeWithSeconds(self.startSeconds, NSEC_PER_SEC)];
+
+        if (!self.shouldLoop)
+        {
+            [self.player pause];
+        }
+    }
 }
 
-- (void) layoutSubviews
+- (void)removeObserverFromOldPlayerItem:(AVPlayerItem *)oldItem andAddObserverToPlayerItem:(AVPlayerItem *)currentItem
 {
-	[super layoutSubviews];
-	
-	self.playerLayer.frame = self.bounds;
-	self.loadingView.frame = self.bounds;
+    if (oldItem)
+    {
+        [oldItem removeObserver:self forKeyPath:@"playbackBufferEmpty"];
+        [oldItem removeObserver:self forKeyPath:@"playbackLikelyToKeepUp"];
+        [oldItem removeObserver:self forKeyPath:@"loadedTimeRanges"];
+    }
+
+    if (currentItem)
+    {
+        [currentItem addObserver:self forKeyPath:@"playbackBufferEmpty"    options:NSKeyValueObservingOptionNew context:NULL];
+        [currentItem addObserver:self forKeyPath:@"playbackLikelyToKeepUp" options:NSKeyValueObservingOptionNew context:NULL];
+        [currentItem addObserver:self forKeyPath:@"loadedTimeRanges"       options:NSKeyValueObservingOptionNew context:NULL];
+    }
 }
 
-- (void)setLoadingView:(UIView *)loadingView
+#pragma mark - Key-Value Observation
+
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
 {
-	if (_loadingView != nil)
-		[_loadingView removeFromSuperview];
-	
-	_loadingView = loadingView;
-	
-	if (_loadingView != nil)
-		[self addSubview:_loadingView];
+    if (object == self.player && [keyPath isEqualToString:NSStringFromSelector(@selector(currentItem))])
+    {
+        AVPlayerItem *oldItem = change[NSKeyValueChangeOldKey];
+        AVPlayerItem *newItem = change[NSKeyValueChangeNewKey];
+        [self removeObserverFromOldPlayerItem:oldItem andAddObserverToPlayerItem:newItem];
+    }
+    else if (object == self.player && [keyPath isEqualToString:NSStringFromSelector(@selector(rate))])
+    {
+        NSNumber *oldRate = change[NSKeyValueChangeOldKey];
+        NSNumber *newRate = change[NSKeyValueChangeNewKey];
+        if ([oldRate floatValue] == 0 && [newRate floatValue] != 0)
+        {
+            if ([self.delegate respondsToSelector:@selector(videoPlayerWillStartPlaying:)])
+            {
+                [self.delegate videoPlayerWillStartPlaying:self];
+            }
+        }
+        else if ([oldRate floatValue] != 0 && [newRate floatValue] == 0)
+        {
+            if (_currentPlayer == self)
+            {
+                _currentPlayer = nil;
+            }
+            if ([self.delegate respondsToSelector:@selector(videoPlayerWillStopPlaying:)])
+            {
+                [self.delegate videoPlayerWillStopPlaying:self];
+            }
+        }
+    }
+    else if (object == self.player.currentItem)
+    {
+        if ([keyPath isEqualToString:@"playbackBufferEmpty"])
+        {
+        }
+        else if ([keyPath isEqualToString:@"loadedTimeRanges"])
+        {
+            CMTime playableDuration = [self playableDuration];
+            CMTime minimumTime = CMTimeMakeWithSeconds(kMinimumBufferredTimeBeforePlaying, 1);
+            CMTime itemTime = self.player.currentItem.duration;
+            
+            if (CMTIME_COMPARE_INLINE(minimumTime, >, itemTime))
+            {
+                minimumTime = itemTime;
+            }
+            
+            if (CMTIME_COMPARE_INLINE(playableDuration, >=, minimumTime))
+            {
+//                [self.player play];
+            }
+        }
+    }
 }
 
 @end

@@ -121,7 +121,7 @@
 
 #pragma mark - SCVideoPlayerDelegate
 
-- (void)videoPlayer:(VCPlayer*)videoPlayer didPlay:(Float32)secondsElapsed
+- (void)videoPlayer:(VCVideoPlayerView *)videoPlayer didPlayToSeconds:(Float32)secondsElapsed
 {
     CMTime endTime = CMTimeConvertScale([self playerItemDuration], self.previewView.player.currentTime.timescale, kCMTimeRoundingMethod_RoundHalfAwayFromZero);
     if (CMTimeCompare(endTime, kCMTimeZero) != 0)
@@ -139,10 +139,10 @@
 - (void)videoRange:(VRemixVideoRangeSlider *)videoRange didChangeLeftPosition:(CGFloat)leftPosition rightPosition:(CGFloat)rightPosition
 {
     self.startSeconds = leftPosition;
-    self.previewView.player.startSeconds = leftPosition;
+    self.previewView.startSeconds = leftPosition;
     
     self.endSeconds = rightPosition;
-    self.previewView.player.endSeconds = rightPosition;
+    self.previewView.endSeconds = rightPosition;
 
     double time = CMTimeGetSeconds([self.previewView.player currentTime]);
     if (time < leftPosition)
@@ -155,7 +155,7 @@
 
 - (IBAction)nextButtonClicked:(id)sender
 {
-    if (self.previewView.player.isPlaying)
+    if (self.previewView.isPlaying)
         [self.previewView.player pause];
 
     MBProgressHUD*  hud =   [MBProgressHUD showHUDAddedTo:self.view animated:YES];

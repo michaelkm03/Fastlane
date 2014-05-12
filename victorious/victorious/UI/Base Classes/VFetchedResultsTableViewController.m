@@ -12,10 +12,6 @@
 #import "NSString+VParseHelp.h"
 #import "VThemeManager.h"
 
-@interface VFetchedResultsTableViewController ()
-@property (nonatomic) NSInteger updateCount;
-@end
-
 @implementation VFetchedResultsTableViewController
 
 - (void)viewDidLoad
@@ -86,8 +82,10 @@
             // Update to handle the error appropriately.
             VLog(@"Unresolved Fetch Error %@, %@", error, [error userInfo]);
         }
-        
+
         [self.tableView reloadData];
+//        [self.tableView reloadSections:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, self.tableView.numberOfSections)]
+//                      withRowAnimation:UITableViewRowAnimationFade];
     }];
 }
 
@@ -169,9 +167,7 @@
 
 - (void)controllerWillChangeContent:(NSFetchedResultsController *)controller
 {
-    self.updateCount++;
-    if (self.updateCount == 1)
-        [[self tableViewForFetchedResultsController:controller] beginUpdates];
+    [[self tableViewForFetchedResultsController:controller] beginUpdates];
 }
 
 - (void)controller:(NSFetchedResultsController *)controller
@@ -232,17 +228,10 @@
 
 - (void)controllerDidChangeContent:(NSFetchedResultsController *)controller
 {
-    //TODO: remove my notes here.  This is for the weird exception / crash / sometimes tableview getting weird bug
-    //Being called multiple times... maybe it has multiple adds all at once from refresh?
-    //Maybe this should be changed...
-    self.updateCount--;
-    if (self.updateCount == 0)
-        [[self tableViewForFetchedResultsController:controller] endUpdates];
-//    [[self tableViewForFetchedResultsController:controller] reloadData];
+    [[self tableViewForFetchedResultsController:controller] endUpdates];
 }
 
 #pragma mark - UISearchDisplayControllerDelegate
-
 - (void)searchDisplayControllerDidEndSearch:(UISearchDisplayController *)controller
 {
     self.searchFetchedResultsController.delegate = nil;

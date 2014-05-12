@@ -39,7 +39,8 @@ typedef void (^VRemixCompletionBlock) (BOOL completion, NSURL* remixMp4Url, NSEr
                                     shareOptions:(VShareOptions)shareOptions
                                         mediaURL:(NSURL*)mediaUrl
                                     successBlock:(VSuccessBlock)success
-                                       failBlock:(VFailBlock)fail;
+                                       failBlock:(VFailBlock)fail
+                               shouldRemoveMedia:(BOOL)shouldRemoveMedia;
 
 
 - (AFHTTPRequestOperation *)addCommentWithText:(NSString*)text

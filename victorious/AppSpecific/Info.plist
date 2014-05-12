@@ -16,6 +16,12 @@
 	<string>${PRODUCT_NAME}</string>
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
+	<key>CFBundleIconFiles</key>
+	<array>
+		<string>Icon-29</string>
+		<string>Icon-40</string>
+		<string>Icon-60</string>
+	</array>
 	<key>CFBundleShortVersionString</key>
 	<string>1.0</string>
 	<key>CFBundleSignature</key>
@@ -88,5 +94,7 @@
 	<integer>1</integer>
 	<key>VictoriousServerEnvironment</key>
 	<string>${DefaultEnvironment}</string>
+	<key>ProductPrefix</key>
+	<string>${ProductPrefix}</string>
 </dict>
 </plist>

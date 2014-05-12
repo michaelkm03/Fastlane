@@ -62,7 +62,7 @@
 
 - (IBAction)nextButtonClicked:(id)sender
 {
-    if (self.previewView.player.isPlaying)
+    if (self.previewView.isPlaying)
         [self.previewView.player pause];
     
     VCameraPublishViewController *publishViewController = [VCameraPublishViewController cameraPublishViewController];
@@ -254,7 +254,7 @@
                 default:
                     NSLog(@"Export Complete");
                     self.targetURL = target;
-                    [self.previewView.player setItemByUrl:target];
+                    [self.previewView setItemURL:target];
                     [self.previewView.player seekToTime:kCMTimeZero];
                     break;
             }

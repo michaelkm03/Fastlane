@@ -38,8 +38,8 @@
 {
     [super viewWillAppear:animated];
     
-    [self.videoPlayerView.player setSmoothLoopItemByUrl:self.mediaURL smoothLoopCount:10.0];
-    self.videoPlayerView.player.shouldLoop = YES;
+    [self.videoPlayerView setItemURL:self.mediaURL withLoopCount:10];
+    self.videoPlayerView.shouldLoop = YES;
 	[self.videoPlayerView.player play];
     
     [self.videoPlayerView addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTapToPlayAction:)]];
@@ -75,10 +75,14 @@
 
 - (IBAction)handleTapToPlayAction:(id)sender
 {
-    if (!self.videoPlayerView.player.isPlaying)
-        [self.videoPlayerView.player play];
-    else
+    if ([self.videoPlayerView isPlaying])
+    {
         [self.videoPlayerView.player pause];
+    }
+    else
+    {
+        [self.videoPlayerView.player play];
+    }
 }
 
 - (IBAction)cancel:(id)sender

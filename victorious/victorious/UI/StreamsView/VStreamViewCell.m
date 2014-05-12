@@ -75,8 +75,14 @@ NSString *kStreamsWillCommentNotification = @"kStreamsWillCommentNotification";
 
 - (void)contentExpired
 {
-    self.shadeView.backgroundColor = [UIColor whiteColor];
-    self.shadeView.alpha = .5f;
+//    self.shadeView.backgroundColor = [UIColor whiteColor];
+    self.previewImageView.alpha = .5f;
+}
+
+- (void)removeExpiredOverlay
+{
+//    self.shadeView.backgroundColor = [UIColor clearColor];
+    self.previewImageView.alpha = 1.0f;
 }
 
 - (void)layoutSubviews
@@ -89,9 +95,19 @@ NSString *kStreamsWillCommentNotification = @"kStreamsWillCommentNotification";
 {
     _sequence = sequence;
     
+    if ([sequence.status isEqualToString:kTemporaryContentStatus])
+    {
+        [self contentExpired];
+    }
+    else
+    {
+        [self removeExpiredOverlay];
+    }
+    
     [self.previewImageView setImageWithURL:[NSURL URLWithString:_sequence.previewImage]
                           placeholderImage:[UIImage resizeableImageWithColor:
                                             [[VThemeManager sharedThemeManager] themedColorForKey:kVBackgroundColor]]];
+
     [self.profileImageButton setImageWithURL:[NSURL URLWithString:self.sequence.user.pictureUrl]
                             placeholderImage:[UIImage imageNamed:@"profile_thumb"]
                                     forState:UIControlStateNormal];
@@ -106,8 +122,6 @@ NSString *kStreamsWillCommentNotification = @"kStreamsWillCommentNotification";
     self.dateLabel.text = [self.sequence.releasedAt timeSince];
     [self.commentButton setTitle:self.sequence.commentCount.stringValue forState:UIControlStateNormal];
     
-    NSLog(@"Expiration date: %@", _sequence.expiresAt);
-    
     if (_sequence.expiresAt)
     {
         self.ephemeralTimerView.hidden = NO;
@@ -120,11 +134,6 @@ NSString *kStreamsWillCommentNotification = @"kStreamsWillCommentNotification";
         self.animationImage.hidden = NO;
         self.animationBackgroundImage.hidden = NO;
         self.ephemeralTimerView.hidden = YES;
-    }
-    
-    if ([sequence.status isEqualToString:kTemporaryContentStatus])
-    {
-        //TODO: grey out sequence;
     }
 }
 

@@ -9,16 +9,25 @@
 #import "VObjectManager+ContentCreation.h"
 
 #import "VObjectManager+Private.h"
+#import "VObjectManager+SequenceFilters.h"
+
+#import "VHomeStreamViewController.h"
+#import "VCommunityStreamViewController.h"
+#import "VOwnerStreamViewController.h"
 
 //Probably can remove these after we manually create the sequences
 #import "VObjectManager+Sequence.h"
 #import "VObjectManager+Comment.h"
 
 #import "VSequence+Restkit.h"
+#import "VNode+RestKit.h"
+#import "VInteraction+RestKit.h"
+#import "VAnswer+RestKit.h"
+#import "VSequenceFilter.h"
 #import "VComment.h"
-#import "VUser.h"
+#import "VUser+Fetcher.h"
 
-@import MediaPlayer;
+@import AVFoundation;
 
 @implementation VObjectManager (ContentCreation)
 
@@ -80,22 +89,22 @@
     
     VSuccessBlock fullSuccess = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
     {
-        if ([fullResponse[@"error"] integerValue] == 0)
-        {
-            NSDictionary* payload = fullResponse[@"payload"];
-            
-            NSNumber* sequenceID = payload[@"sequence_id"];
-            
-            [self fetchSequence:sequenceID
-                   successBlock:success
-                      failBlock:fail];
-        }
-        else
-        {
-            NSError*    error = [NSError errorWithDomain:NSCocoaErrorDomain code:[fullResponse[@"error"] integerValue] userInfo:nil];
-            if (fail)
-                fail(operation, error);
-        }
+        
+        NSDictionary* payload = fullResponse[@"payload"];
+        
+        NSNumber* sequenceID = payload[@"sequence_id"];
+        VSequence* newSequence = [self newPollWithID:sequenceID
+                                                name:name
+                                         description:description
+                                         answer1Text:answer1Text
+                                         answer2Text:answer2Text
+                                   firstMediaURLPath:[media1Url absoluteString]
+                                  secondMediaURLPath:[media2Url absoluteString]];
+        
+        [self fetchSequence:sequenceID successBlock:nil failBlock:nil];
+        
+        if (success)
+            success(operation, fullResponse, @[newSequence]);
     };
     
     return [self uploadURLs:allURLs
@@ -115,6 +124,7 @@
                                         mediaURL:(NSURL*)mediaUrl
                                     successBlock:(VSuccessBlock)success
                                        failBlock:(VFailBlock)fail
+                               shouldRemoveMedia:(BOOL)shouldRemoveMedia
 {
     if (!mediaUrl)
         return nil;
@@ -143,24 +153,19 @@
     
     VSuccessBlock fullSuccess = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
     {
-//        NSDictionary* payload = fullResponse[@"payload"];
-//        
-//        NSNumber* sequenceID = payload[@"sequence_id"];
-//        VSequence* newSequence = [self newSequenceWithID:sequenceID
-//                                                    name:name
-//                                             description:description
-//                                            mediaURLPath:[mediaUrl absoluteString]];
-//
-//        if (success)
-//            success(operation, fullResponse, @[newSequence]);
+        NSDictionary* payload = fullResponse[@"payload"];
         
-        //old way
+        NSNumber* sequenceID = payload[@"sequence_id"];
+        VSequence* newSequence = [self newSequenceWithID:sequenceID
+                                                    name:name
+                                             description:description
+                                            mediaURLPath:[mediaUrl absoluteString]];
+        
+        //Try to fetch the sequence
+        [self fetchSequence:sequenceID successBlock:nil failBlock:nil];
+
         if (success)
-            success(operation, fullResponse, resultObjects);
-        
-//        [self fetchSequence:sequenceID
-//               successBlock:success
-//                  failBlock:fail];
+            success(operation, fullResponse, @[newSequence]);
     };
     
     return [self uploadURLs:allUrls
@@ -184,47 +189,91 @@
 - (VSequence*)newSequenceWithID:(NSNumber*)remoteID
                            name:(NSString*)name
                     description:(NSString*)description
-//                       category:(NSString*)category
                    mediaURLPath:(NSString*)mediaURLPath
-
 {
-    NSEntityDescription* entityDescription =  [NSEntityDescription entityForName:[VSequence entityName]
-                                                          inManagedObjectContext:self.mainUser.managedObjectContext];
-    
-    VSequence* tempSequence = [[VSequence alloc] initWithEntity:entityDescription
-                                 insertIntoManagedObjectContext:self.mainUser.managedObjectContext];
+    VSequence* tempSequence = [self.mainUser.managedObjectContext insertNewObjectForEntityForName:[VSequence entityName]];
     
     tempSequence.remoteId = remoteID;
     tempSequence.name = name;
     tempSequence.sequenceDescription = description;
-//    tempSequence.category = category;
-    
-    tempSequence.releasedAt = [NSDate dateWithTimeIntervalSinceNow:0];
+    tempSequence.releasedAt = [NSDate dateWithTimeIntervalSinceNow:-1];
     tempSequence.status = kTemporaryContentStatus;
     tempSequence.display_order = @(-1);
-    tempSequence.category = @"";
-    
-    NSString* extension = [[mediaURLPath pathExtension] lowercaseStringWithLocale:[NSLocale localeWithLocaleIdentifier:@"en_US_POSIX"]];
-    //If its not one of these its an image, so we can use that for the preview
-    if ([extension isEqualToString:VConstantMediaExtensionMOV] || [extension isEqualToString:VConstantMediaExtensionMP4])
-    {
-        MPMoviePlayerController *player = [[MPMoviePlayerController alloc] initWithContentURL:[NSURL URLWithString:mediaURLPath]];
-        UIImage  *thumbnail = [player thumbnailImageAtTime:1.0 timeOption:MPMovieTimeOptionNearestKeyFrame];
-        NSData *imgData = UIImageJPEGRepresentation(thumbnail, 0.8);
-        
-        #warning Make sure to verify that we are properly deleting the old obj
-        mediaURLPath = [[mediaURLPath stringByDeletingPathExtension] stringByAppendingPathExtension:VConstantMediaExtensionJPG];
-        [imgData writeToFile:mediaURLPath atomically:YES];
-        player = nil;
-    }
-
-    tempSequence.previewImage = mediaURLPath;
+    tempSequence.category = [self.mainUser isOwner] ? kVOwnerImageCategory : kVUGCImageCategory;
+    tempSequence.previewImage = [self localImageURLForVideo:mediaURLPath];
 
     [self.mainUser addPostedSequencesObject:tempSequence];
     
+    //Add to home screen
+    VSequenceFilter* homeFilter = [self sequenceFilterForCategories:[[VHomeStreamViewController sharedInstance] categoriesForOption:0]];
+    [(VSequenceFilter*)[tempSequence.managedObjectContext objectWithID:homeFilter.objectID] addSequencesObject:tempSequence];
+    
+    //Add to community or owner (depends on user)
+    NSArray* categoriesForSecondFilter = [self.mainUser isOwner] ? [[VOwnerStreamViewController sharedInstance] categoriesForOption:0]
+                                                                 : [[VCommunityStreamViewController sharedInstance] categoriesForOption:0];
+    VSequenceFilter* secondFilter = [self sequenceFilterForCategories:categoriesForSecondFilter];
+    [(VSequenceFilter*)[tempSequence.managedObjectContext objectWithID:secondFilter.objectID] addSequencesObject:tempSequence];
+
     [tempSequence.managedObjectContext saveToPersistentStore:nil];
     
     return tempSequence;
+}
+
+- (VSequence*)newPollWithID:(NSNumber*)remoteID
+                       name:(NSString*)name
+                description:(NSString*)description
+                answer1Text:(NSString*)answer1Text
+                answer2Text:(NSString*)answer2Text
+          firstMediaURLPath:(NSString*)firstmediaURLPath
+         secondMediaURLPath:(NSString*)secondMediaURLPath
+{
+    VSequence* tempPoll = [self newSequenceWithID:remoteID name:name description:description mediaURLPath:nil];
+    tempPoll.category = [self.mainUser isOwner] ? kVOwnerPollCategory : kVUGCPollCategory;
+    
+    VNode* node = [self.mainUser.managedObjectContext insertNewObjectForEntityForName:[VNode entityName]];
+    VInteraction* interaction = [self.mainUser.managedObjectContext insertNewObjectForEntityForName:[VInteraction entityName]];
+
+    VAnswer* firstAnswer = [self.mainUser.managedObjectContext insertNewObjectForEntityForName:[VAnswer entityName]];
+    firstAnswer.label = answer1Text;
+    firstAnswer.display_order = @(1);
+    firstAnswer.thumbnailUrl = [self localImageURLForVideo:firstmediaURLPath];
+    [interaction addAnswersObject:firstAnswer];
+    
+    VAnswer* secondAnswer = [self.mainUser.managedObjectContext insertNewObjectForEntityForName:[VAnswer entityName]];
+    secondAnswer.label = answer2Text;
+    secondAnswer.display_order = @(2);
+    secondAnswer.thumbnailUrl = [self localImageURLForVideo:secondMediaURLPath];
+    [interaction addAnswersObject:secondAnswer];
+    
+    [node addInteractionsObject:interaction];
+    [tempPoll addNodesObject:node];
+    
+    [tempPoll.managedObjectContext saveToPersistentStore:nil];
+    return tempPoll;
+}
+
+- (NSString*)localImageURLForVideo:(NSString*)localVideoPath
+{
+    NSString* extension = [[localVideoPath pathExtension] lowercaseStringWithLocale:[NSLocale localeWithLocaleIdentifier:@"en_US_POSIX"]];
+    if ([extension isEqualToString:VConstantMediaExtensionPNG] || [extension isEqualToString:VConstantMediaExtensionJPG]
+        || [extension isEqualToString:VConstantMediaExtensionJPEG])
+    {
+        return localVideoPath;
+    }
+    
+    AVAsset *asset = [AVAsset assetWithURL:[NSURL URLWithString:localVideoPath]];
+    AVAssetImageGenerator *assetGenerator = [AVAssetImageGenerator assetImageGeneratorWithAsset:asset];
+    CGImageRef imageRef = [assetGenerator copyCGImageAtTime:kCMTimeZero actualTime:NULL error:NULL];
+    UIImage *previewImage = [UIImage imageWithCGImage:imageRef];
+    CGImageRelease(imageRef);
+    
+    NSData *imgData = UIImageJPEGRepresentation(previewImage, .8);
+    
+    NSURL *tempDirectory = [NSURL fileURLWithPath:NSTemporaryDirectory() isDirectory:YES];
+    NSURL *tempFile = [[tempDirectory URLByAppendingPathComponent:[[NSUUID UUID] UUIDString]] URLByAppendingPathExtension:VConstantMediaExtensionJPG];
+    [imgData writeToURL:tempFile atomically:NO];
+    
+    return [tempFile absoluteString];
 }
 
 #pragma mark - Comment

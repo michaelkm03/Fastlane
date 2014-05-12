@@ -48,6 +48,7 @@ static NSUInteger const kStreamDoublePollCellHeight = 214;
 static NSUInteger const kStreamPollCellHeight = 320;
 static NSUInteger const kStreamYoutubeCellHeight = 180;
 static NSUInteger const kStreamViewCellHeight = 320;
+
 //TODO: update these 2 with real numbers
 static NSUInteger const kStreamCommentHeaderHeight = 80;
 static NSUInteger const kStreamCommentCellHeight = 110;
@@ -89,6 +90,9 @@ static NSString*   const   kVUGCForumCategory = @"ugc_forum";
 static NSString*   const   kVUGCRemixCategory = @"ugc_video_remix";
 
 static NSString*   const   kFeaturedCategory = @"featured";
+
+static NSString*   const   kOwnerAccessLevel = @"api_owner";
+static NSString*   const   kUserAccessLevel = @"api_user";
 
 static NSString*   const   kTemporaryContentStatus = @"temp";
 

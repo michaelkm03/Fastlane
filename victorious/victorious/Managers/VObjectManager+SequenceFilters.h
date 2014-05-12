@@ -23,7 +23,7 @@
                                                      successBlock:(VSuccessBlock)success
                                                         failBlock:(VFailBlock)fail;
 
-- (VSequenceFilter*)sequenceFilterForUser:(VUser*)user resultsPerPage:(NSInteger*)resultsPerPage;
-- (VSequenceFilter*)sequenceFilterForCategories:(NSArray*)categories resultsPerPage:(NSInteger*)resultsPerPage;
+- (VSequenceFilter*)sequenceFilterForUser:(VUser*)user;
+- (VSequenceFilter*)sequenceFilterForCategories:(NSArray*)categories;
 
 @end
