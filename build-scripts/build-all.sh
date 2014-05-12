@@ -10,6 +10,7 @@ SCHEME=$1
 CONFIGURATION=$2
 PROVISIONING_PROFILE=$3
 APP_NAME=$4
+CODESIGN_ID="iPhone Distribution: Victorious Inc. (82T26U698A)"
 
 if [ "$SCHEME" == "" -o "$PROVISIONING_PROFILE" == "" -o "$CONFIGURATION" == "" ]; then
     echo "Usage: `basename $0` <scheme> <configuration> <provisioning profile UUID> [app name (optional)]"
@@ -69,7 +70,8 @@ xcodebuild -workspace victorious.xcworkspace -scheme $SCHEME -destination generi
 ### Build
 
 xcodebuild -workspace victorious.xcworkspace -scheme "$SCHEME" -destination generic/platform=iOS \
-           -archivePath "../victorious.xcarchive" PROVISIONING_PROFILE="$PROVISIONING_PROFILE" archive
+           -archivePath "../victorious.xcarchive" PROVISIONING_PROFILE="$PROVISIONING_PROFILE" \
+           CODE_SIGN_IDENTITY="$CODESIGN_ID" archive
 BUILDRESULT=$?
 if [ $BUILDRESULT == 0 ]; then
     pushd ../victorious.xcarchive/dSYMs > /dev/null
@@ -79,6 +81,9 @@ else
     popd > /dev/null
     exit $BUILDRESULT
 fi
+
+
+### Package the individual apps
 
 IFS=$'\n'
 for CONFIG in $CONFIGS
@@ -97,7 +102,7 @@ do
     fi
     popd > /dev/null
 
-    codesign -f -vvv -s "iPhone Distribution: Victorious Inc. (82T26U698A)" "../victorious.xcarchive/Products/Applications/victorious.app"
+    codesign -f -vvv -s "$CODESIGN_ID" "../victorious.xcarchive/Products/Applications/victorious.app"
     CODESIGNRESULT=$?
 
     if [ $CODESIGNRESULT != 0 ]; then
@@ -107,7 +112,7 @@ do
     fi
 
     xcodebuild -exportArchive -exportFormat ipa -archivePath "../victorious.xcarchive" \
-               -exportPath "../products/$CONFIG" -exportProvisioningProfile "$PROVISIONING_PROFILE_NAME"
+               -exportPath "../products/$CONFIG" -exportSigningIdentity "$CODESIGN_ID"
     EXPORTRESULT=$?
 
     if [ $EXPORTRESULT == 0 ]; then
