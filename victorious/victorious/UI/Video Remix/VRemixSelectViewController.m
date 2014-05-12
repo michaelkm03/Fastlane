@@ -48,8 +48,8 @@
 {
     [super viewDidLoad];
 	
-    self.previewView.player.shouldLoop = YES;
-    self.previewView.player.startSeconds = 0;
+    self.previewView.shouldLoop = YES;
+    self.previewView.startSeconds = 0;
 
     UIImage*    closeButtonImage = [[UIImage imageNamed:@"cameraButtonClose"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithImage:closeButtonImage style:UIBarButtonItemStyleBordered target:self action:@selector(closeButtonClicked:)];
@@ -74,7 +74,7 @@
 {
     [super viewWillAppear:animated];
     
-    self.totalTimeLabel.text = [self secondsToMMSS:CMTimeGetSeconds([self playerItemDuration])];
+    self.totalTimeLabel.text = [self secondsToMMSS:CMTimeGetSeconds([self.previewView playerItemDuration])];
     self.currentTimeLabel.text = [self secondsToMMSS:0];
 }
 
@@ -88,7 +88,7 @@
 - (IBAction)nextButtonClicked:(id)sender
 {
     [self.previewView.player pause];
-    [self downloadVideoSegmentForSequenceID:self.seqID atTime:self.previewView.player.startSeconds];
+    [self downloadVideoSegmentForSequenceID:self.seqID atTime:self.previewView.startSeconds];
 }
 
 -(IBAction)scrubberDidStartMoving:(id)sender
@@ -99,7 +99,7 @@
 
 -(IBAction)scrubberDidMove:(id)sender
 {
-    CMTime playerDuration = [self playerItemDuration];
+    CMTime playerDuration = [self.previewView playerItemDuration];
     if (CMTIME_IS_INVALID(playerDuration))
         return;
     
@@ -112,7 +112,7 @@
         double time = duration * (value - minValue) / (maxValue - minValue);
         
         [self.previewView.player seekToTime:CMTimeMakeWithSeconds(time, NSEC_PER_SEC)];
-        self.previewView.player.startSeconds = time;
+        self.previewView.startSeconds = time;
     }
 }
 
@@ -222,9 +222,9 @@
 
 #pragma mark - SCVideoPlayerDelegate
 
-- (void)videoPlayer:(VCPlayer*)videoPlayer didPlay:(Float32)secondsElapsed
+- (void)videoPlayer:(VCVideoPlayerView *)videoPlayer didPlayToSeconds:(Float32)secondsElapsed
 {
-    self.totalTimeLabel.text = [self secondsToMMSS:CMTimeGetSeconds([self playerItemDuration])];
+    self.totalTimeLabel.text = [self secondsToMMSS:CMTimeGetSeconds([videoPlayer playerItemDuration])];
     self.currentTimeLabel.text = [self secondsToMMSS:secondsElapsed];
 }
 

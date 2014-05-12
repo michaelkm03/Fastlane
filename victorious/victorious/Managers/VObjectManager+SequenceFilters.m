@@ -256,8 +256,8 @@
         }
     }
     
-    //Create a new one
-    if (!filter)
+    //Create a new one if it doesn't exist or it faulted
+    if (!filter || [filter isFault])
     {
         filter = [NSEntityDescription insertNewObjectForEntityForName:[VSequenceFilter entityName]
                                                inManagedObjectContext:[VObjectManager sharedManager].managedObjectStore.persistentStoreManagedObjectContext];
