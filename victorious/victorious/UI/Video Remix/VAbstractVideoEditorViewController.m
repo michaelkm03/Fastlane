@@ -7,6 +7,7 @@
 //
 
 #import "VAbstractVideoEditorViewController.h"
+#import "VElapsedTimeFormatter.h"
 #import "VThemeManager.h"
 
 @interface VAbstractVideoEditorViewController ()
@@ -18,6 +19,8 @@
 {
     [super viewDidLoad];
 
+    self.elapsedTimeFormatter = [[VElapsedTimeFormatter alloc] init];
+    
     self.view.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVBackgroundColor];
 
     self.previewView.shouldShowToolbar = NO;
@@ -117,23 +120,6 @@
         self.previewView.shouldLoop = NO;
         [self.loopButton setImage:[UIImage imageNamed:@"cameraButtonNoLoop"] forState:UIControlStateNormal];
     }
-}
-
-#pragma mark - Support
-
--(NSString *)secondsToMMSS:(double)seconds
-{
-    if (isnan(seconds))
-        return @"";
-
-    NSInteger time = floor(seconds);
-    NSInteger hh = time / 3600;
-    NSInteger mm = (time / 60) % 60;
-    NSInteger ss = time % 60;
-    if (hh > 0)
-        return  [NSString stringWithFormat:@"%d:%02i:%02i",hh,mm,ss];
-    else
-        return  [NSString stringWithFormat:@"%02i:%02i",mm,ss];
 }
 
 #pragma mark - Animations

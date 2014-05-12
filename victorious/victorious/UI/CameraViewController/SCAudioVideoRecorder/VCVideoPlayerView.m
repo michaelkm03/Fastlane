@@ -4,11 +4,13 @@
 
 #import "VCVideoPlayerToolbarView.h"
 #import "VCVideoPlayerView.h"
+#import "VElapsedTimeFormatter.h"
 
 @interface VCVideoPlayerView ()
 
 @property (nonatomic, weak)   VCVideoPlayerToolbarView *toolbarView;
 @property (nonatomic, weak)   UITapGestureRecognizer   *videoFrameTapGesture;
+@property (nonatomic, strong) VElapsedTimeFormatter    *timeFormatter;
 @property (nonatomic)         BOOL                      toolbarAnimating;
 @property (nonatomic)         BOOL                      sliderTouchActive;
 @property (nonatomic, strong) AVPlayerLayer            *playerLayer;
@@ -92,6 +94,10 @@ static __weak VCVideoPlayerView *_currentPlayer = nil;
     UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(videoFrameTapped:)];
     [self addGestureRecognizer:tap];
     self.videoFrameTapGesture = tap;
+    
+    self.timeFormatter = [[VElapsedTimeFormatter alloc] init];
+    self.toolbarView.elapsedTimeLabel.text = [self.timeFormatter stringForCMTime:kCMTimeInvalid];
+    self.toolbarView.remainingTimeLabel.text = [self.timeFormatter stringForCMTime:kCMTimeInvalid];
 }
 
 - (void)dealloc
@@ -265,6 +271,8 @@ static __weak VCVideoPlayerView *_currentPlayer = nil;
         float percentElapsed    = timeInSeconds / durationInSeconds;
         self.toolbarView.slider.value = percentElapsed;
     }
+    self.toolbarView.elapsedTimeLabel.text = [self.timeFormatter stringForCMTime:time];
+    self.toolbarView.remainingTimeLabel.text = [self.timeFormatter stringForCMTime:CMTimeSubtract([self playerItemDuration], time)];
     
     if ([self.delegate respondsToSelector:@selector(videoPlayer:didPlayToTime:)])
     {

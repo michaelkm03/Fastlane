@@ -13,6 +13,9 @@
 "YesButton"             =   "Yes";
 "NoButton"              =   "No";
 
+"TimeSeparator"         =   ":";
+"InvalidTimePlaceholder"=   "-";
+
 "SetupButton"           =   "Set up";
 "EmailValidation"       =   "Invalid Email Address";
 "PasswordValidation"    =   "Password is less than 8 characters";
