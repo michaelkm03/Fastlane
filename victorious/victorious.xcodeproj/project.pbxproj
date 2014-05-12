@@ -1735,6 +1735,7 @@
 				BED7F67118E0A8E900545DF6 /* TWSignedRequest.m in Sources */,
 				3FA217BB18A9ADF10066E893 /* ChromecastDeviceController.m in Sources */,
 				3F0F1502191C04A20030B33D /* VUserProfileViewController.m in Sources */,
+				BE89D984192141E000D97E7F /* VSequenceFilter+RestKit.m in Sources */,
 				3FDEDD0318CE47E80028E3F1 /* VRemixTrimViewController.m in Sources */,
 				5FC4DA76189712B3006BA107 /* VProfileWithEmailViewController.m in Sources */,
 				3F91991518761D1C0055FE37 /* VAcknowledgementsViewController.m in Sources */,
