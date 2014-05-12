@@ -189,6 +189,7 @@
 		BE83A37118827B400077EB26 /* VMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = BE83A37018827B400077EB26 /* VMessage.m */; };
 		BE89D981192141D600D97E7F /* VUser+Fetcher.m in Sources */ = {isa = PBXBuildFile; fileRef = BE89D980192141D600D97E7F /* VUser+Fetcher.m */; };
 		BE89D984192141E000D97E7F /* VSequenceFilter+RestKit.m in Sources */ = {isa = PBXBuildFile; fileRef = BE89D983192141E000D97E7F /* VSequenceFilter+RestKit.m */; };
+		BE89D98D1921531400D97E7F /* VAbstractFilter.m in Sources */ = {isa = PBXBuildFile; fileRef = BE89D98C1921531400D97E7F /* VAbstractFilter.m */; };
 		BE89ECDB19105DB8009DD407 /* VAnswer.m in Sources */ = {isa = PBXBuildFile; fileRef = BE89ECDA19105DB8009DD407 /* VAnswer.m */; };
 		BE8C6F4F18B56E70009CFB1C /* VStreamPollCell.m in Sources */ = {isa = PBXBuildFile; fileRef = BE8C6F4E18B56E70009CFB1C /* VStreamPollCell.m */; };
 		BE9181DB19098E280071E7AF /* VObjectManager+SequenceFilters.m in Sources */ = {isa = PBXBuildFile; fileRef = BE9181DA19098E280071E7AF /* VObjectManager+SequenceFilters.m */; };
@@ -566,6 +567,8 @@
 		BE89D980192141D600D97E7F /* VUser+Fetcher.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "VUser+Fetcher.m"; sourceTree = "<group>"; };
 		BE89D982192141E000D97E7F /* VSequenceFilter+RestKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "VSequenceFilter+RestKit.h"; sourceTree = "<group>"; };
 		BE89D983192141E000D97E7F /* VSequenceFilter+RestKit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "VSequenceFilter+RestKit.m"; sourceTree = "<group>"; };
+		BE89D98B1921531400D97E7F /* VAbstractFilter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VAbstractFilter.h; sourceTree = "<group>"; };
+		BE89D98C1921531400D97E7F /* VAbstractFilter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VAbstractFilter.m; sourceTree = "<group>"; };
 		BE89ECD919105DB8009DD407 /* VAnswer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VAnswer.h; sourceTree = "<group>"; };
 		BE89ECDA19105DB8009DD407 /* VAnswer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VAnswer.m; sourceTree = "<group>"; };
 		BE8C6F4C18B53F2A009CFB1C /* victoriOS 4.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "victoriOS 4.xcdatamodel"; sourceTree = "<group>"; };
@@ -1246,6 +1249,8 @@
 				BE2A890619131EC6004B63AA /* VComment.h */,
 				BE2A890719131EC6004B63AA /* VComment.m */,
 				BE171E411868CEA0004E5202 /* victoriOS.xcdatamodeld */,
+				BE89D98B1921531400D97E7F /* VAbstractFilter.h */,
+				BE89D98C1921531400D97E7F /* VAbstractFilter.m */,
 				BE6C15231880A31A00469BA8 /* VAnswerAction.h */,
 				BE6C15241880A31A00469BA8 /* VAnswerAction.m */,
 				BEDF0FC118DBC93A00750EF6 /* VAsset.h */,
@@ -1751,6 +1756,7 @@
 				3F91991A187CAF310055FE37 /* VMessageViewController.m in Sources */,
 				BE46E69A18CA751F00974DAF /* VCommentToContentAnimator.m in Sources */,
 				BE89D981192141D600D97E7F /* VUser+Fetcher.m in Sources */,
+				BE89D98D1921531400D97E7F /* VAbstractFilter.m in Sources */,
 				BED7F67418E0A8E900545DF6 /* OAuthCore.m in Sources */,
 				BE5C7340187E36CF00A3340D /* VInteraction.m in Sources */,
 				BE5DE3F618DA72140047B67E /* VInteractionAction.m in Sources */,
