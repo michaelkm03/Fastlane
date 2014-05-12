@@ -22,6 +22,12 @@ if [ ! -f "$PROVISIONING_PROFILE_PATH" ]; then
     exit 1
 fi
 
+PROVISIONING_PROFILE_NAME=`/usr/libexec/PlistBuddy -c 'Print :Name' /dev/stdin <<< $(security cms -D -i "$PROVISIONING_PROFILE_PATH")`
+if [ "$PROVISIONING_PROFILE_NAME" == "" ]; then
+    echo "Provisioning profile $PROVISIONING_PROFILE_PATH could not be read."
+    exit 1
+fi
+
 if [ "$APP_NAME" != "" -a ! -d "configurations/$APP_NAME" ]; then
     echo "App $APP_NAME not found."
     exit 1
@@ -36,48 +42,73 @@ else
     mkdir products
 fi
 
+if [ -d "victorious.xcarchive" ]; then
+    rm -rf victorious.xcarchive
+fi
 
-### Go build!
+if [ -a "victorious.app.dSYM.zip" ]; then
+    rm -f victorious.app.dSYM.zip
+fi
 
-cleanWorkingDir(){
-    git reset --hard -q
-    git clean -f -q
-}
+
+### Get Configurations
 
 CONFIGS=`find configurations -type d -depth 1 -exec basename {} \;`
+
+
+### Change to project folder
+
 pushd victorious > /dev/null
 
-IFS=$'\n'
-for CONFIG in $CONFIGS
+
+### Clean
+
+xcodebuild -workspace victorious.xcworkspace -scheme $SCHEME -destination generic/platform=iOS clean
+
+
+### Build
+
+xcodebuild -workspace victorious.xcworkspace -scheme "$SCHEME" -destination generic/platform=iOS \
+           -archivePath "../victorious.xcarchive" PROVISIONING_PROFILE="$PROVISIONING_PROFILE" archive
+BUILDRESULT=$?
+if [ $BUILDRESULT == 0 ]; then
+    pushd ../victorious.xcarchive/dSYMs > /dev/null
+    zip -r ../../victorious.app.dSYM.zip victorious.app.dSYM
+    popd > /dev/null
+else
+    popd > /dev/null
+    exit $BUILDRESULT
+fi
+
+#IFS=$'\n'
+for CONFIG in AnneOrShine CartoonHangover; # $CONFIGS
 do
     if [ "$APP_NAME" != "" -a "$CONFIG" != "$APP_NAME" ]; then
         continue
     fi
 
     pushd .. > /dev/null
-    cleanWorkingDir
-    ./build-scripts/apply-config.sh "$CONFIG"
+    ./build-scripts/apply-config.sh "$CONFIG" victorious.xcarchive
     if [ $? != 0 ]; then
         echo "Error applying configuration for $CONFIG"
         popd > /dev/null
-        cleanWorkingDir
         popd > /dev/null
         exit 1
     fi
     popd > /dev/null
 
-    ipa build -w victorious.xcworkspace -s "$SCHEME" -c "$CONFIGURATION" --clean --archive -d "../products" -m "$PROVISIONING_PROFILE_PATH" --verbose
-    BUILDRESULT=$?
+    codesign -f -vv -s "iPhone Distribution: Victorious Inc. (82T26U698A)" "../victorious.xcarchive/Products/Applications/victorious.app"
 
-    if [ $BUILDRESULT == 0 ]; then
-        mv ../products/victorious.ipa          "../products/$CONFIG.ipa"
-        mv ../products/victorious.app.dSYM.zip "../products/$CONFIG.app.dSYM.zip"
+    xcodebuild -exportArchive -exportFormat ipa -archivePath "../victorious.xcarchive" \
+               -exportPath "../products/$CONFIG" -exportProvisioningProfile "$PROVISIONING_PROFILE_NAME"
+    EXPORTRESULT=$?
+
+    if [ $EXPORTRESULT == 0 ]; then
+        cp ../victorious.app.dSYM.zip "../products/$CONFIG.app.dSYM.zip"
     else
-        cleanWorkingDir
         popd > /dev/null
-        exit $BUILDRESULT
+        exit $EXPORTRESULT
     fi
 done
 
-cleanWorkingDir
 popd > /dev/null
