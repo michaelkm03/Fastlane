@@ -26,6 +26,8 @@
 #import "VSettingsViewController.h"
 #import "VInboxViewController.h"
 
+#import "VUserProfileViewController.h"
+
 NSString *const VMenuControllerDidSelectRowNotification = @"VMenuTableViewControllerDidSelectRowNotification";
 
 @interface VMenuController ()   <MFMailComposeViewControllerDelegate, UIAlertViewDelegate>
@@ -134,7 +136,8 @@ NSString *const VMenuControllerDidSelectRowNotification = @"VMenuTableViewContro
             }
             else
             {
-                navigationController.viewControllers = @[[VProfileViewController profileWithSelf]];
+                navigationController.viewControllers = @[[VUserProfileViewController userProfileWithSelf]];
+//                navigationController.viewControllers = @[[VProfileViewController profileWithSelf]];
                 [self.sideMenuViewController hideMenuViewController];
             }
         break;

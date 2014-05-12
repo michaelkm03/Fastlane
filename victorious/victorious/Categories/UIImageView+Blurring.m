@@ -23,7 +23,7 @@
                          success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image)
                          {
                              __strong UIImageView* strongSelf = weakSelf;
-                             strongSelf.image = [image applyBlurWithRadius:15 tintColor:tintColor saturationDeltaFactor:1.8 maskImage:nil];
+                             strongSelf.image = [image applyBlurWithRadius:25 tintColor:tintColor saturationDeltaFactor:1.8 maskImage:nil];
                          }
                          failure:nil];
 }

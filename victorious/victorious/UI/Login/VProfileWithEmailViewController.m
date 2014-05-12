@@ -86,7 +86,6 @@
         NSDictionary*   locationDictionary = @{
                                                (__bridge NSString *)kABPersonAddressCityKey : mapLocation.locality,
                                                (__bridge NSString *)kABPersonAddressStateKey : mapLocation.administrativeArea,
-                                               (__bridge NSString *)kABPersonAddressCountryKey : mapLocation.country,
                                                (__bridge NSString *)kABPersonAddressCountryCodeKey : [[NSLocale autoupdatingCurrentLocale] objectForKey:NSLocaleCountryCode]
                                                };
         self.locationTextField.text = ABCreateStringWithAddressDictionary(locationDictionary, NO);
