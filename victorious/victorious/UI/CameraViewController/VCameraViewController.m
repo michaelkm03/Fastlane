@@ -759,7 +759,12 @@ const   NSTimeInterval  kAnimationDuration      =   0.4;
 
 - (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker
 {
+    self.didSelectAssetFromLibrary = NO;
     [self dismissViewControllerAnimated:YES completion:nil];
+    
+    [self.camera cancel];
+    [self prepareCamera];
+    [self updateProgressForSecond:0];
 }
 
 @end
