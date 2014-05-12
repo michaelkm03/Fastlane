@@ -94,5 +94,7 @@
 	<integer>8</integer>
 	<key>VictoriousServerEnvironment</key>
 	<string>${DefaultEnvironment}</string>
+	<key>ProductPrefix</key>
+	<string>${ProductPrefix}</string>
 </dict>
 </plist>
