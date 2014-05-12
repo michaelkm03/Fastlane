@@ -80,8 +80,8 @@ else
     exit $BUILDRESULT
 fi
 
-#IFS=$'\n'
-for CONFIG in AnneOrShine CartoonHangover; # $CONFIGS
+IFS=$'\n'
+for CONFIG in $CONFIGS
 do
     if [ "$APP_NAME" != "" -a "$CONFIG" != "$APP_NAME" ]; then
         continue
