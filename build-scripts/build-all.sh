@@ -97,7 +97,14 @@ do
     fi
     popd > /dev/null
 
-    codesign -f -vv -s "iPhone Distribution: Victorious Inc. (82T26U698A)" "../victorious.xcarchive/Products/Applications/victorious.app"
+    codesign -f -vvv -s "iPhone Distribution: Victorious Inc. (82T26U698A)" "../victorious.xcarchive/Products/Applications/victorious.app"
+    CODESIGNRESULT=$?
+
+    if [ $CODESIGNRESULT != 0 ]; then
+        echo "Codesign failed."
+        popd > /dev/null
+        exit $CODESIGNRESULT
+    fi
 
     xcodebuild -exportArchive -exportFormat ipa -archivePath "../victorious.xcarchive" \
                -exportPath "../products/$CONFIG" -exportProvisioningProfile "$PROVISIONING_PROFILE_NAME"
