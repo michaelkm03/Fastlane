@@ -20,8 +20,6 @@
 		03F9D29819204D7700576AEE /* Icon-40@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 03F9D29519204D7700576AEE /* Icon-40@2x.png */; };
 		03F9D29919204D7700576AEE /* Icon-60@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 03F9D29619204D7700576AEE /* Icon-60@2x.png */; };
 		0742CD6B32FA44679FBE8716 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 662F0867152745B2B2F08301 /* libPods.a */; };
-		3F0F14FF191C015B0030B33D /* Profile.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3F0F14FE191C015B0030B33D /* Profile.storyboard */; };
-		3F0F1502191C04A20030B33D /* VUserProfileViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F0F1501191C04A20030B33D /* VUserProfileViewController.m */; };
 		3F0F1505191C20280030B33D /* VProgressiveImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F0F1504191C20280030B33D /* VProgressiveImageView.m */; };
 		3F14C44C18BD2BD0001796B9 /* VCAudioEncoder.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F14C43618BD2BD0001796B9 /* VCAudioEncoder.m */; };
 		3F14C44D18BD2BD0001796B9 /* VCAudioTools.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F14C43818BD2BD0001796B9 /* VCAudioTools.m */; };
@@ -43,6 +41,8 @@
 		3F91991518761D1C0055FE37 /* VAcknowledgementsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F91991418761D1C0055FE37 /* VAcknowledgementsViewController.m */; };
 		3F91991A187CAF310055FE37 /* VMessageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F919919187CAF310055FE37 /* VMessageViewController.m */; };
 		3F91991D187CAF620055FE37 /* VNewsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F91991C187CAF620055FE37 /* VNewsViewController.m */; };
+		3F93489519215302002EA91F /* Profile.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3F93489219215302002EA91F /* Profile.storyboard */; };
+		3F93489619215302002EA91F /* VUserProfileViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F93489419215302002EA91F /* VUserProfileViewController.m */; };
 		3F9B6657187F80780046F826 /* NSDate+timeSince.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F9B6656187F80780046F826 /* NSDate+timeSince.m */; };
 		3F9B665A18848B750046F826 /* VMessageContainerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F9B665918848B750046F826 /* VMessageContainerViewController.m */; };
 		3F9B666818887D910046F826 /* VFetchedResultsTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F9B666718887D910046F826 /* VFetchedResultsTableViewController.m */; };
@@ -263,9 +263,6 @@
 		03F9D29519204D7700576AEE /* Icon-40@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Icon-40@2x.png"; path = "AppSpecific/Icon-40@2x.png"; sourceTree = "<group>"; };
 		03F9D29619204D7700576AEE /* Icon-60@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Icon-60@2x.png"; path = "AppSpecific/Icon-60@2x.png"; sourceTree = "<group>"; };
 		33ACD3CBAF2C419D97FB901A /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = "<group>"; };
-		3F0F14FE191C015B0030B33D /* Profile.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = Profile.storyboard; path = UI/Profile/Profile.storyboard; sourceTree = "<group>"; };
-		3F0F1500191C04A20030B33D /* VUserProfileViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VUserProfileViewController.h; path = UI/Profile/VUserProfileViewController.h; sourceTree = "<group>"; };
-		3F0F1501191C04A20030B33D /* VUserProfileViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VUserProfileViewController.m; path = UI/Profile/VUserProfileViewController.m; sourceTree = "<group>"; };
 		3F0F1503191C20280030B33D /* VProgressiveImageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VProgressiveImageView.h; path = UI/UIElements/VProgressiveImageView.h; sourceTree = "<group>"; };
 		3F0F1504191C20280030B33D /* VProgressiveImageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VProgressiveImageView.m; path = UI/UIElements/VProgressiveImageView.m; sourceTree = "<group>"; };
 		3F14C43518BD2BD0001796B9 /* VCAudioEncoder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VCAudioEncoder.h; sourceTree = "<group>"; };
@@ -309,6 +306,9 @@
 		3F919919187CAF310055FE37 /* VMessageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VMessageViewController.m; path = UI/VMessageViewController.m; sourceTree = "<group>"; };
 		3F91991B187CAF620055FE37 /* VNewsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VNewsViewController.h; path = UI/VNewsViewController.h; sourceTree = "<group>"; };
 		3F91991C187CAF620055FE37 /* VNewsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VNewsViewController.m; path = UI/VNewsViewController.m; sourceTree = "<group>"; };
+		3F93489219215302002EA91F /* Profile.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = Profile.storyboard; path = UI/UserProfile/Profile.storyboard; sourceTree = "<group>"; };
+		3F93489319215302002EA91F /* VUserProfileViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VUserProfileViewController.h; path = UI/UserProfile/VUserProfileViewController.h; sourceTree = "<group>"; };
+		3F93489419215302002EA91F /* VUserProfileViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VUserProfileViewController.m; path = UI/UserProfile/VUserProfileViewController.m; sourceTree = "<group>"; };
 		3F9B6655187F80780046F826 /* NSDate+timeSince.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDate+timeSince.h"; sourceTree = "<group>"; };
 		3F9B6656187F80780046F826 /* NSDate+timeSince.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDate+timeSince.m"; sourceTree = "<group>"; };
 		3F9B665818848B750046F826 /* VMessageContainerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VMessageContainerViewController.h; path = UI/VMessageContainerViewController.h; sourceTree = "<group>"; };
@@ -900,9 +900,9 @@
 				D1DAAA07187A43A9009ADCB0 /* VProfileViewController.m */,
 				D1DAAA09187A43BE009ADCB0 /* VProfileEditViewController.h */,
 				D1DAAA0A187A43BE009ADCB0 /* VProfileEditViewController.m */,
-				3F0F14FE191C015B0030B33D /* Profile.storyboard */,
-				3F0F1500191C04A20030B33D /* VUserProfileViewController.h */,
-				3F0F1501191C04A20030B33D /* VUserProfileViewController.m */,
+				3F93489219215302002EA91F /* Profile.storyboard */,
+				3F93489319215302002EA91F /* VUserProfileViewController.h */,
+				3F93489419215302002EA91F /* VUserProfileViewController.m */,
 			);
 			name = Profile;
 			sourceTree = "<group>";
@@ -1605,6 +1605,7 @@
 				3FA217EE18BC3A3A0066E893 /* Camera.storyboard in Resources */,
 				BE185DE418E354E5001C447F /* VMessageCell.xib in Resources */,
 				BE185DE618E3826F001C447F /* VEphemeralTimerView.xib in Resources */,
+				3F93489519215302002EA91F /* Profile.storyboard in Resources */,
 				3FA217D018A9BFC90066E893 /* video_thumb_mini@2x.png in Resources */,
 				BE171D911868BE64004E5202 /* Images.xcassets in Resources */,
 				3FA217DE18AAFCFE0066E893 /* cast_outline_black.png in Resources */,
@@ -1613,7 +1614,6 @@
 				BE692B28186E5ED800C71336 /* VStreamVideoCell.xib in Resources */,
 				83ABAFAF18709DE30069556C /* Roboto-Light.ttf in Resources */,
 				83CC444A187DDCA8000C480C /* Roboto-Black.ttf in Resources */,
-				3F0F14FF191C015B0030B33D /* Profile.storyboard in Resources */,
 				3FA217DF18AAFCFE0066E893 /* cast_outline_black@2x.png in Resources */,
 				BE692B2A186E5ED800C71336 /* VStreamViewCell.xib in Resources */,
 				BEDF0FBF18DB783200750EF6 /* MuseoSans-300.otf in Resources */,
@@ -1734,7 +1734,6 @@
 				5FF9BE7F1893143D0054694B /* UIViewController+VSideMenuViewController.m in Sources */,
 				BED7F67118E0A8E900545DF6 /* TWSignedRequest.m in Sources */,
 				3FA217BB18A9ADF10066E893 /* ChromecastDeviceController.m in Sources */,
-				3F0F1502191C04A20030B33D /* VUserProfileViewController.m in Sources */,
 				BE89D984192141E000D97E7F /* VSequenceFilter+RestKit.m in Sources */,
 				3FDEDD0318CE47E80028E3F1 /* VRemixTrimViewController.m in Sources */,
 				5FC4DA76189712B3006BA107 /* VProfileWithEmailViewController.m in Sources */,
@@ -1802,6 +1801,7 @@
 				3FF7B6DD18F4A668003831CD /* VRemixSelectViewController.m in Sources */,
 				83D897421881F19D00BD5B8B /* VCommentsContainerViewController.m in Sources */,
 				BE171E151868C211004E5202 /* VNodeAction+RestKit.m in Sources */,
+				3F93489619215302002EA91F /* VUserProfileViewController.m in Sources */,
 				BE6C15251880A31A00469BA8 /* VAnswerAction.m in Sources */,
 				3F9B6657187F80780046F826 /* NSDate+timeSince.m in Sources */,
 				5FF9BE86189319730054694B /* VMenuController.m in Sources */,
