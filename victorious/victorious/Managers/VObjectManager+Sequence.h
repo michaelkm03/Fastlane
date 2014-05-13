@@ -19,10 +19,6 @@ extern NSString* const kPollResultsLoaded;
                                       successBlock:(VSuccessBlock)success
                                          failBlock:(VFailBlock)fail;
 
-- (RKManagedObjectRequestOperation *)loadNextPageOfCommentsForSequence:(VSequence*)sequence
-                                                          successBlock:(VSuccessBlock)success
-                                                             failBlock:(VFailBlock)fail;
-
 - (RKManagedObjectRequestOperation *)shareSequenceToTwitter:(VSequence*)sequence
                                                successBlock:(VSuccessBlock)success
                                                   failBlock:(VFailBlock)fail;

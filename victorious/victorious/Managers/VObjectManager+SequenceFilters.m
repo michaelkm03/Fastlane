@@ -13,7 +13,9 @@
 
 #import "VUser.h"
 #import "VSequence.h"
+#import "VComment.h"
 #import "VSequenceFilter+RestKit.h"
+#import "VCommentFilter+RestKit.h"
 
 #import "VHomeStreamViewController.h"
 #import "VOwnerStreamViewController.h"
@@ -25,7 +27,8 @@
 
 @interface VFilterCache : NSCache
 + (VFilterCache *)sharedCache;
-- (VSequenceFilter *)sequenceFilterForPath:(NSString*)path;
+//- (VSequenceFilter *)sequenceFilterForPath:(NSString*)path;
+- (VAbstractFilter*)filterForPath:(NSString *)path entityName:(NSString*)entityName;
 @end
 
 
@@ -92,6 +95,74 @@
                              failBlock:fail];
 }
 
+
+#pragma mark - Comment
+- (RKManagedObjectRequestOperation *)refreshCommentFilter:(VCommentFilter*)filter
+                                              successBlock:(VSuccessBlock)success
+                                                 failBlock:(VFailBlock)fail
+{
+    filter.currentPageNumber = @(0);
+    return [self loadNextPageOfCommentFilter:filter
+                                successBlock:success
+                                   failBlock:fail];
+}
+
+- (RKManagedObjectRequestOperation *)loadNextPageOfCommentFilter:(VCommentFilter*)filter
+                                                    successBlock:(VSuccessBlock)success
+                                                       failBlock:(VFailBlock)fail
+{
+    VSuccessBlock fullSuccessBlock = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
+    {
+        void(^paginationBlock)(void) = ^(void)
+        {
+            
+            //If this is the first page, break the relationship to all the old objects.
+            if ([filter.currentPageNumber isEqualToNumber:@(0)])
+            {
+                NSPredicate* tempFilter = [NSPredicate predicateWithFormat:@"NOT (mediaType CONTAINS %@)", kTemporaryContentStatus];
+                NSArray* filteredSequences = [[filter.comments allObjects] filteredArrayUsingPredicate:tempFilter];
+                [filter removeComments:[NSSet setWithArray:filteredSequences]];
+            }
+            
+            for (VComment* comment in resultObjects)
+            {
+                [filter addCommentsObject:comment];
+            }
+            
+            if (success)
+                success(operation, fullResponse, resultObjects);
+        };
+        
+        NSMutableArray* nonExistantUsers = [[NSMutableArray alloc] init];
+        for (VComment* comment in resultObjects)
+        {
+            if (!comment.user )
+                [nonExistantUsers addObject:comment.userId];
+        }
+        if ([nonExistantUsers count])
+        {
+            [[VObjectManager sharedManager] fetchUsers:nonExistantUsers
+                                      withSuccessBlock:^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
+             {
+                 VLog(@"Succeeded with objects: %@", resultObjects);
+                 paginationBlock();
+             }
+                                             failBlock:^(NSOperation* operation, NSError* error)
+             {
+                 VLog(@"Failed with error: %@", error);
+                 paginationBlock();
+             }];
+        }
+        else
+        {
+            paginationBlock();
+        }
+    };
+    
+    return [self loadNextPageOfFilter:filter successBlock:fullSuccessBlock failBlock:fail];
+}
+
+#pragma mark - Sequence
 - (RKManagedObjectRequestOperation *)refreshSequenceFilter:(VSequenceFilter*)filter
                                               successBlock:(VSuccessBlock)success
                                                  failBlock:(VFailBlock)fail
@@ -225,14 +296,20 @@
 - (VSequenceFilter*)sequenceFilterForUser:(VUser*)user
 {
     NSString* apiPath = [@"/api/sequence/detail_list_by_category/" stringByAppendingString: user.remoteId.stringValue ?: @"0"];
-    return [[VFilterCache sharedCache] sequenceFilterForPath:apiPath];
+    return (VSequenceFilter*)[[VFilterCache sharedCache] filterForPath:apiPath entityName:[VSequenceFilter entityName]];
 }
 
 - (VSequenceFilter*)sequenceFilterForCategories:(NSArray*)categories
 {
     NSString* categoryString = [categories componentsJoinedByString:@","];
     NSString* apiPath = [@"/api/sequence/detail_list_by_category/" stringByAppendingString: categoryString ?: @"0"];
-    return [[VFilterCache sharedCache] sequenceFilterForPath:apiPath];
+    return (VSequenceFilter*)[[VFilterCache sharedCache] filterForPath:apiPath entityName:[VSequenceFilter entityName]];
+}
+
+- (VCommentFilter*)commentFilterForSequence:(VSequence*)sequence
+{
+    NSString* apiPath = [@"/api/comment/all/" stringByAppendingString: sequence.remoteId.stringValue];
+    return (VCommentFilter*)[[VFilterCache sharedCache] filterForPath:apiPath entityName:[VCommentFilter entityName]];
 }
 
 @end
@@ -251,16 +328,51 @@
     return sequenceFilterCache;
 }
 
-- (VSequenceFilter*)sequenceFilterForPath:(NSString *)path
+//Old method, deprecate after the abstractfilter method has been tested more
+//- (VSequenceFilter*)sequenceFilterForPath:(NSString *)path
+//{
+//    //Check cache
+//    VSequenceFilter* filter =[self objectForKey:path];
+//    
+//    //Check core data
+//    if (!filter)
+//    {
+//        NSManagedObjectContext* context = [VObjectManager sharedManager].managedObjectStore.persistentStoreManagedObjectContext;
+//        NSFetchRequest *request = [[NSFetchRequest alloc] initWithEntityName:[VSequenceFilter entityName]];
+//        NSPredicate* predicate = [NSPredicate predicateWithFormat:@"filterAPIPath == %@", path];
+//        [request setPredicate:predicate];
+//        NSError *error = nil;
+//        filter = [[context executeFetchRequest:request error:&error] firstObject];
+//        if (error != nil)
+//        {
+//            filter = nil;
+//            VLog(@"Error occured in sequence filter fetch: %@", error);
+//        }
+//    }
+//    
+//    //Create a new one if it doesn't exist or it faulted
+//    if (!filter || [filter isFault] || ![filter isKindOfClass:[VSequenceFilter class]])
+//    {
+//        filter = [NSEntityDescription insertNewObjectForEntityForName:[VSequenceFilter entityName]
+//                                               inManagedObjectContext:[VObjectManager sharedManager].managedObjectStore.persistentStoreManagedObjectContext];
+//        filter.filterAPIPath = path;
+//        
+//        [filter.managedObjectContext saveToPersistentStore:nil];
+//    }
+//    
+//    return filter;
+//}
+
+- (VAbstractFilter*)filterForPath:(NSString *)path entityName:(NSString*)entityName
 {
     //Check cache
-    VSequenceFilter* filter =[self objectForKey:path];
+    VAbstractFilter* filter =[self objectForKey:path];
     
     //Check core data
     if (!filter)
     {
         NSManagedObjectContext* context = [VObjectManager sharedManager].managedObjectStore.persistentStoreManagedObjectContext;
-        NSFetchRequest *request = [[NSFetchRequest alloc] initWithEntityName:[VSequenceFilter entityName]];
+        NSFetchRequest *request = [[NSFetchRequest alloc] initWithEntityName:entityName];
         NSPredicate* predicate = [NSPredicate predicateWithFormat:@"filterAPIPath == %@", path];
         [request setPredicate:predicate];
         NSError *error = nil;
@@ -272,10 +384,10 @@
         }
     }
     
-    //Create a new one if it doesn't exist or it faulted
-    if (!filter || [filter isFault] || ![filter isKindOfClass:[VSequenceFilter class]])
+    //Create a new one if it doesn't exist, is faulted, or is the wrong entity type
+    if (!filter || [filter isFault] || ![[[filter entity] name] isEqualToString:entityName])
     {
-        filter = [NSEntityDescription insertNewObjectForEntityForName:[VSequenceFilter entityName]
+        filter = [NSEntityDescription insertNewObjectForEntityForName:entityName
                                                inManagedObjectContext:[VObjectManager sharedManager].managedObjectStore.persistentStoreManagedObjectContext];
         filter.filterAPIPath = path;
         

@@ -45,8 +45,12 @@
         <attribute name="text" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="thumbnailUrl" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="userId" attributeType="Integer 64" minValueString="0" syncable="YES"/>
+        <relationship name="filters" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="CommentFilter" inverseName="comments" inverseEntity="CommentFilter" syncable="YES"/>
         <relationship name="sequence" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Sequence" inverseName="comments" inverseEntity="Sequence" syncable="YES"/>
         <relationship name="user" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="User" inverseName="comments" inverseEntity="User" syncable="YES"/>
+    </entity>
+    <entity name="CommentFilter" representedClassName="VCommentFilter" parentEntity="AbstractFilter" syncable="YES">
+        <relationship name="comments" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Comment" inverseName="filters" inverseEntity="Comment" syncable="YES"/>
     </entity>
     <entity name="Conversation" representedClassName="VConversation" syncable="YES">
         <attribute name="other_interlocutor_user_id" attributeType="Integer 32" minValueString="0" defaultValueString="0" syncable="YES"/>
@@ -174,10 +178,11 @@
         <attribute name="remoteId" attributeType="Integer 32" minValueString="0" defaultValueString="0" syncable="YES"/>
     </entity>
     <elements>
+        <element name="AbstractFilter" positionX="693" positionY="-558" width="128" height="118"/>
         <element name="Answer" positionX="727" positionY="99" width="128" height="193"/>
         <element name="AnswerAction" positionX="718" positionY="330" width="128" height="75"/>
         <element name="Asset" positionX="655" positionY="-360" width="128" height="118"/>
-        <element name="Comment" positionX="1035" positionY="-576" width="128" height="283"/>
+        <element name="Comment" positionX="1035" positionY="-576" width="128" height="298"/>
         <element name="Conversation" positionX="1395" positionY="-477" width="128" height="118"/>
         <element name="Interaction" positionX="646" positionY="-208" width="128" height="208"/>
         <element name="InteractionAction" positionX="495" positionY="-162" width="128" height="105"/>
@@ -188,11 +193,11 @@
         <element name="PollResult" positionX="1222" positionY="-45" width="128" height="118"/>
         <element name="Rule" positionX="567" positionY="99" width="128" height="75"/>
         <element name="Sequence" positionX="1015" positionY="-208" width="128" height="343"/>
-        <element name="SequenceFilter" positionX="855" positionY="-459" width="128" height="58"/>
+        <element name="SequenceFilter" positionX="855" positionY="-274" width="128" height="58"/>
         <element name="UnreadConversation" positionX="1206" positionY="-513" width="128" height="73"/>
         <element name="User" positionX="1222" positionY="-412" width="128" height="270"/>
         <element name="VoteResult" positionX="864" positionY="99" width="128" height="88"/>
         <element name="VoteType" positionX="504" positionY="-486" width="128" height="103"/>
-        <element name="AbstractFilter" positionX="693" positionY="-558" width="128" height="118"/>
+        <element name="CommentFilter" positionX="862" positionY="-468" width="128" height="58"/>
     </elements>
 </model>
