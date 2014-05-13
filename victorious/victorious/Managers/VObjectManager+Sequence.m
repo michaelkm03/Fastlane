@@ -88,54 +88,6 @@ NSString* const kPollResultsLoaded = @"kPollResultsLoaded";
            failBlock:fullFail];
 }
 
-- (RKManagedObjectRequestOperation *)loadNextPageOfCommentsForSequence:(VSequence*)sequence
-                                                          successBlock:(VSuccessBlock)success
-                                                             failBlock:(VFailBlock)fail
-{
-    if (!sequence)
-        return nil;
-    
-    __block NSString* statusKey = [@"commentsForSequence%@" stringByAppendingString:sequence.remoteId.stringValue];
-    __block VPaginationStatus* status = [self statusForKey:statusKey];
-    if([status isFullyLoaded])
-    {
-        if (success)
-            success(nil, nil, nil);
-        return nil;
-    }
-    
-    NSString* path = [@"/api/comment/all/" stringByAppendingString:sequence.remoteId.stringValue];
-    path = [path stringByAppendingFormat:@"/%lu/%lu", (unsigned long)status.pagesLoaded + 1, (unsigned long)status.itemsPerPage];
-    
-    __block VSequence* commentOwner = sequence; //Keep the sequence around until the block gets called
-    VSuccessBlock fullSuccessBlock = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
-    {
-        status.pagesLoaded = [fullResponse[@"page_number"] integerValue];
-        status.totalPages = [fullResponse[@"total_pages"] integerValue];
-        (self.paginationStatuses)[statusKey] = status;
-        
-        NSMutableArray* nonExistantUsers = [[NSMutableArray alloc] init];
-        for (VComment* comment in resultObjects)
-        {
-            [commentOwner addCommentsObject:(VComment*)[commentOwner.managedObjectContext
-                                                        objectWithID:[comment objectID]]];
-            if (!comment.user )
-                [nonExistantUsers addObject:comment.userId];
-        }
-        
-        if ([nonExistantUsers count])
-            [[VObjectManager sharedManager] fetchUsers:nonExistantUsers withSuccessBlock:success failBlock:fail];
-        else if (success)
-            success(operation, fullResponse, resultObjects);
-    };
-    
-    return [self GET:path
-              object:nil
-          parameters:nil
-        successBlock:fullSuccessBlock
-           failBlock:fail];
-}
-
 - (RKManagedObjectRequestOperation *)shareSequence:(VSequence*)sequence
                                          shareType:(NSString*)type
                                       successBlock:(VSuccessBlock)success

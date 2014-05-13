@@ -252,30 +252,6 @@
     return tempPoll;
 }
 
-- (NSString*)localImageURLForVideo:(NSString*)localVideoPath
-{
-    NSString* extension = [[localVideoPath pathExtension] lowercaseStringWithLocale:[NSLocale localeWithLocaleIdentifier:@"en_US_POSIX"]];
-    if ([extension isEqualToString:VConstantMediaExtensionPNG] || [extension isEqualToString:VConstantMediaExtensionJPG]
-        || [extension isEqualToString:VConstantMediaExtensionJPEG])
-    {
-        return localVideoPath;
-    }
-    
-    AVAsset *asset = [AVAsset assetWithURL:[NSURL URLWithString:localVideoPath]];
-    AVAssetImageGenerator *assetGenerator = [AVAssetImageGenerator assetImageGeneratorWithAsset:asset];
-    CGImageRef imageRef = [assetGenerator copyCGImageAtTime:kCMTimeZero actualTime:NULL error:NULL];
-    UIImage *previewImage = [UIImage imageWithCGImage:imageRef];
-    CGImageRelease(imageRef);
-    
-    NSData *imgData = UIImageJPEGRepresentation(previewImage, .8);
-    
-    NSURL *tempDirectory = [NSURL fileURLWithPath:NSTemporaryDirectory() isDirectory:YES];
-    NSURL *tempFile = [[tempDirectory URLByAppendingPathComponent:[[NSUUID UUID] UUIDString]] URLByAppendingPathExtension:VConstantMediaExtensionJPG];
-    [imgData writeToURL:tempFile atomically:NO];
-    
-    return [tempFile absoluteString];
-}
-
 #pragma mark - Comment
 
 - (AFHTTPRequestOperation *)addCommentWithText:(NSString*)text
@@ -302,10 +278,13 @@
     {
         
         NSDictionary* payload = fullResponse[@"payload"];
+        NSNumber* commentID = @([payload[@"id"] integerValue]);
+        
+        VComment* tempComment = [self newCommentWithID:commentID onSequence:sequence text:text mediaURLPath:[mediaURL absoluteString]];
         
         [self fetchCommentByID:[payload[@"id"] integerValue]
-                  successBlock:success
-                     failBlock:fail];
+                  successBlock:nil
+                     failBlock:nil];
     };
     
     return [self uploadURLs:allURLs
@@ -315,4 +294,63 @@
                   failBlock:fail];
 }
 
+- (VComment*)newCommentWithID:(NSNumber*)remoteID
+                   onSequence:(VSequence*)sequence
+                         text:(NSString*)text
+                 mediaURLPath:(NSString*)mediaURLPath
+{
+    VComment* tempComment = [self.mainUser.managedObjectContext insertNewObjectForEntityForName:[VComment entityName]];
+    
+    tempComment.remoteId = remoteID;
+    tempComment.text = text;
+    tempComment.postedAt = [NSDate dateWithTimeIntervalSinceNow:-1];
+    tempComment.sequenceId = sequence.remoteId;
+    tempComment.mediaType = kTemporaryContentStatus;
+    tempComment.display_order = @(-1);
+    tempComment.thumbnailUrl = [self localImageURLForVideo:mediaURLPath];
+    
+    [sequence addCommentsObject:tempComment];
+    [self.mainUser addCommentsObject:tempComment];
+    
+    //Add to home screen
+//    VSequenceFilter* homeFilter = [self sequenceFilterForCategories:[[VHomeStreamViewController sharedInstance] categoriesForOption:0]];
+//    [(VSequenceFilter*)[tempComment.managedObjectContext objectWithID:homeFilter.objectID] addSequencesObject:tempSequence];
+    
+    //Add to community or owner (depends on user)
+//    NSArray* categoriesForSecondFilter = [self.mainUser isOwner] ? [[VOwnerStreamViewController sharedInstance] categoriesForOption:0]
+//    : [[VCommunityStreamViewController sharedInstance] categoriesForOption:0];
+//    VSequenceFilter* secondFilter = [self sequenceFilterForCategories:categoriesForSecondFilter];
+//    [(VSequenceFilter*)[tempComment.managedObjectContext objectWithID:secondFilter.objectID] addSequencesObject:tempSequence];
+    
+    [tempComment.managedObjectContext saveToPersistentStore:nil];
+    
+    return tempComment;
+}
+
+
+#pragma mark - Helper methods
+
+- (NSString*)localImageURLForVideo:(NSString*)localVideoPath
+{
+    NSString* extension = [[localVideoPath pathExtension] lowercaseStringWithLocale:[NSLocale localeWithLocaleIdentifier:@"en_US_POSIX"]];
+    if ([extension isEqualToString:VConstantMediaExtensionPNG] || [extension isEqualToString:VConstantMediaExtensionJPG]
+        || [extension isEqualToString:VConstantMediaExtensionJPEG])
+    {
+        return localVideoPath;
+    }
+    
+    AVAsset *asset = [AVAsset assetWithURL:[NSURL URLWithString:localVideoPath]];
+    AVAssetImageGenerator *assetGenerator = [AVAssetImageGenerator assetImageGeneratorWithAsset:asset];
+    CGImageRef imageRef = [assetGenerator copyCGImageAtTime:kCMTimeZero actualTime:NULL error:NULL];
+    UIImage *previewImage = [UIImage imageWithCGImage:imageRef];
+    CGImageRelease(imageRef);
+    
+    NSData *imgData = UIImageJPEGRepresentation(previewImage, .8);
+    
+    NSURL *tempDirectory = [NSURL fileURLWithPath:NSTemporaryDirectory() isDirectory:YES];
+    NSURL *tempFile = [[tempDirectory URLByAppendingPathComponent:[[NSUUID UUID] UUIDString]] URLByAppendingPathExtension:VConstantMediaExtensionJPG];
+    [imgData writeToURL:tempFile atomically:NO];
+    
+    return [tempFile absoluteString];
+}
 @end

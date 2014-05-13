@@ -8,6 +8,7 @@
 
 #import "VConstants.h"
 
+#import "VCVideoPlayerView.h"
 #import "VPollAnswerBarViewController.h"
 #import "VResultView.h"
 
@@ -44,7 +45,7 @@
 
 @property (strong, nonatomic) UIDynamicAnimator* orAnimator;
 
-@property (strong, nonatomic) MPMoviePlayerController* mpController;
+@property (strong, nonatomic) VCVideoPlayerView* videoPlayer;
 @property (strong, nonatomic) VNode* currentNode;
 @property (strong, nonatomic) VAsset* currentAsset;
 @property (strong, nonatomic) VInteractionManager* interactionManager;

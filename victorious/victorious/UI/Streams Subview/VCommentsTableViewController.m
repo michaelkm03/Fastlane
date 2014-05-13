@@ -13,7 +13,7 @@
 #import "VLoginViewController.h"
 #import "VCommentCell.h"
 
-#import "VObjectManager+Sequence.h"
+#import "VObjectManager+SequenceFilters.h"
 #import "VObjectManager+Comment.h"
 
 #import "UIActionSheet+VBlocks.h"
@@ -136,23 +136,46 @@ static NSString* CommentCache = @"CommentCache";
 
 - (IBAction)refresh:(UIRefreshControl *)sender
 {
-    VSuccessBlock success = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
-    {
-//        [self sortComments];
-        
-        [self.refreshControl endRefreshing];
-    };
+    VCommentFilter* filter = [[VObjectManager sharedManager] commentFilterForSequence:self.sequence];
+    RKManagedObjectRequestOperation* operation = [[VObjectManager sharedManager]
+                                                  loadNextPageOfCommentFilter:filter
+                                                  successBlock:^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
+                                                  {
+                                                      [self performSelector:@selector(sortComments) withObject:nil afterDelay:.5f];
+                                                      [self.refreshControl endRefreshing];
+                                                  }
+                                                  failBlock:^(NSOperation* operation, NSError* error)
+                                                  {
+                                                      [self.refreshControl endRefreshing];
+                                                  }];
     
-    VFailBlock fail = ^(NSOperation* operation, NSError* error)
+    if (operation)
     {
-        [self.refreshControl endRefreshing];
-        VLog(@"Error on loadNextPage: %@", error);
-    };
-    
-    [[VObjectManager sharedManager] loadNextPageOfCommentsForSequence:self.sequence
-                                                          successBlock:success
-                                                             failBlock:fail];
+        [self.refreshControl beginRefreshing];
+    }
 }
+
+- (void)loadNextPageAction
+{
+    VCommentFilter* filter = [[VObjectManager sharedManager] commentFilterForSequence:self.sequence];
+    RKManagedObjectRequestOperation* operation = [[VObjectManager sharedManager]
+                                                  loadNextPageOfCommentFilter:filter
+                                                  successBlock:^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
+                                                  {
+                                                      [self sortComments];
+//                                                      [self.bottomRefreshIndicator stopAnimating];
+                                                  }
+                                                  failBlock:^(NSOperation* operation, NSError* error)
+                                                  {
+//                                                      [self.bottomRefreshIndicator stopAnimating];
+                                                  }];
+    
+    if (operation)
+    {
+//        [self.bottomRefreshIndicator startAnimating];
+    }
+}
+
 
 - (IBAction)shareSequence:(id)sender
 {
@@ -334,6 +357,14 @@ static NSString* CommentCache = @"CommentCache";
 }
 
 #pragma mark - UITableViewDelegate
+
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView
+{
+    if (scrollView.contentOffset.y > scrollView.contentSize.height * .75)
+    {
+        [self loadNextPageAction];
+    }
+}
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {

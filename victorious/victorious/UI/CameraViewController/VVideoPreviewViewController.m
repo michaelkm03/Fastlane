@@ -40,6 +40,7 @@
     
     [self.videoPlayerView setItemURL:self.mediaURL withLoopCount:10];
     self.videoPlayerView.shouldLoop = YES;
+    self.videoPlayerView.shouldShowToolbar = NO;
 	[self.videoPlayerView.player play];
     
     [self.videoPlayerView addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTapToPlayAction:)]];

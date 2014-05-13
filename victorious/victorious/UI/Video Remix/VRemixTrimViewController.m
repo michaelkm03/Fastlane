@@ -8,6 +8,7 @@
 
 @import MediaPlayer;
 
+#import "VElapsedTimeFormatter.h"
 #import "VRemixTrimViewController.h"
 #import "VRemixStitchViewController.h"
 #import "VCVideoPlayerView.h"
@@ -61,8 +62,8 @@
 {
     [super viewWillAppear:animated];
 
-    self.totalTimeLabel.text = [self secondsToMMSS:CMTimeGetSeconds([self playerItemDuration])];
-    self.currentTimeLabel.text = [self secondsToMMSS:0];
+    self.totalTimeLabel.text = [self.elapsedTimeFormatter stringForCMTime:[self playerItemDuration]];
+    self.currentTimeLabel.text = [self.elapsedTimeFormatter stringForCMTime:CMTimeMakeWithSeconds(0, 1)];
     
     double interval = .1f;
     double duration = CMTimeGetSeconds([self playerItemDuration]);
@@ -121,7 +122,7 @@
 
 #pragma mark - SCVideoPlayerDelegate
 
-- (void)videoPlayer:(VCVideoPlayerView *)videoPlayer didPlayToSeconds:(Float32)secondsElapsed
+- (void)videoPlayer:(VCVideoPlayerView *)videoPlayer didPlayToTime:(CMTime)time
 {
     CMTime endTime = CMTimeConvertScale([self playerItemDuration], self.previewView.player.currentTime.timescale, kCMTimeRoundingMethod_RoundHalfAwayFromZero);
     if (CMTimeCompare(endTime, kCMTimeZero) != 0)
@@ -130,8 +131,8 @@
         self.scrubber.value = normalizedTime;
     }
 
-    self.totalTimeLabel.text = [self secondsToMMSS:CMTimeGetSeconds([self playerItemDuration])];
-    self.currentTimeLabel.text = [self secondsToMMSS:secondsElapsed];
+    self.totalTimeLabel.text = [self.elapsedTimeFormatter stringForCMTime:[self playerItemDuration]];
+    self.currentTimeLabel.text = [self.elapsedTimeFormatter stringForCMTime:time];
 }
 
 #pragma mark - VRemixVideoRangeSliderDelegate

@@ -2,22 +2,18 @@
 //  VSequenceFilter.h
 //  victorious
 //
-//  Created by Will Long on 4/25/14.
+//  Created by Will Long on 5/12/14.
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
 #import <Foundation/Foundation.h>
 #import <CoreData/CoreData.h>
+#import "VAbstractFilter.h"
 
 @class VSequence;
 
-@interface VSequenceFilter : NSManagedObject
+@interface VSequenceFilter : VAbstractFilter
 
-@property (nonatomic, retain) NSString * filterAPIPath;
-@property (nonatomic, retain) NSNumber * maxPageNumber;
-@property (nonatomic, retain) NSNumber * currentPageNumber;
-@property (nonatomic, retain) NSNumber * perPageNumber;
-@property (nonatomic, retain) NSNumber * updating;
 @property (nonatomic, retain) NSSet *sequences;
 @end
 

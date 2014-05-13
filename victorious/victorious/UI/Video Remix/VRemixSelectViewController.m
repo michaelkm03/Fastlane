@@ -6,6 +6,7 @@
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
+#import "VElapsedTimeFormatter.h"
 #import "VRemixSelectViewController.h"
 #import "VCVideoPlayerView.h"
 #import "VRemixTrimViewController.h"
@@ -74,8 +75,8 @@
 {
     [super viewWillAppear:animated];
     
-    self.totalTimeLabel.text = [self secondsToMMSS:CMTimeGetSeconds([self.previewView playerItemDuration])];
-    self.currentTimeLabel.text = [self secondsToMMSS:0];
+    self.totalTimeLabel.text = [self.elapsedTimeFormatter stringForCMTime:[self.previewView playerItemDuration]];
+    self.currentTimeLabel.text = [self.elapsedTimeFormatter stringForCMTime:CMTimeMakeWithSeconds(0, 1)];
 }
 
 #pragma mark - Actions
@@ -222,10 +223,10 @@
 
 #pragma mark - SCVideoPlayerDelegate
 
-- (void)videoPlayer:(VCVideoPlayerView *)videoPlayer didPlayToSeconds:(Float32)secondsElapsed
+- (void)videoPlayer:(VCVideoPlayerView *)videoPlayer didPlayToTime:(CMTime)time
 {
-    self.totalTimeLabel.text = [self secondsToMMSS:CMTimeGetSeconds([videoPlayer playerItemDuration])];
-    self.currentTimeLabel.text = [self secondsToMMSS:secondsElapsed];
+    self.totalTimeLabel.text = [self.elapsedTimeFormatter stringForCMTime:[videoPlayer playerItemDuration]];
+    self.currentTimeLabel.text = [self.elapsedTimeFormatter stringForCMTime:time];
 }
 
 @end
