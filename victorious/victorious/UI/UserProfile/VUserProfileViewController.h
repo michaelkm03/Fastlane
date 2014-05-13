@@ -6,12 +6,14 @@
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
+#import "VStreamTableViewController.h"
+
 typedef NS_ENUM(NSInteger, VUserProfileUserID)
 {
     kVProfileUserIDSelf  =   -1
 };
 
-@interface VUserProfileViewController : UITableViewController
+@interface VUserProfileViewController : VStreamTableViewController
 
 + (instancetype)userProfileWithSelf;
 + (instancetype)userProfileWithUserID:(VUserProfileUserID)aUserID;

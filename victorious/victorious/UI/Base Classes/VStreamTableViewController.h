@@ -10,6 +10,7 @@
 
 #import "VCreatePollViewController.h"
 #import "VAnimation.h"
+#import "VSequenceFilter.h"
 
 typedef NS_ENUM(NSInteger, VStreamScope)
 {
@@ -22,6 +23,7 @@ typedef NS_ENUM(NSInteger, VStreamScope)
 @interface VStreamTableViewController : VFetchedResultsTableViewController <VAnimation, VCreateSequenceDelegate>
 
 - (NSArray*)categoriesForOption:(NSUInteger)searchOption;
+- (VSequenceFilter*)currentFilter;
 
 - (IBAction)showMenu;
 

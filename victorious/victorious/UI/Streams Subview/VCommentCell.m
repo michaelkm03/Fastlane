@@ -19,7 +19,7 @@
 #import "VThemeManager.h"
 #import "NSString+VParseHelp.h"
 #import "UIButton+VImageLoading.h"
-#import "VProfileViewController.h"
+#import "VUserProfileViewController.h"
 #import "VObjectManager.h"
 #import "UIImage+ImageCreation.h"
 
@@ -227,7 +227,7 @@ NSString* const kChatBubbleLeftImage = @"ChatBubbleLeft";
         userID = message.senderUserId.integerValue;
     }
     
-    VProfileViewController* profileViewController = [VProfileViewController profileWithUserID:userID];
+    VUserProfileViewController* profileViewController = [VUserProfileViewController userProfileWithUserID:userID];
     [self.parentTableViewController.navigationController pushViewController:profileViewController animated:YES];
 }
 

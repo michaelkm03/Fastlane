@@ -93,4 +93,13 @@
 
 "ExpiresOn"             =   "Expires on %@";
 
+"me"                    =   "ME";
+
+"editProfileButton"     =   "Edit Profile";
+"followers"             =   "Followers";
+"following"             =   "Following";
+"follow"                =   "Follow";
+
+
+
 

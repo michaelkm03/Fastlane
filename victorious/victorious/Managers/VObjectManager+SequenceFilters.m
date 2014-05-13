@@ -208,7 +208,7 @@
 
 - (VSequenceFilter*)sequenceFilterForUser:(VUser*)user
 {
-    NSString* apiPath = [@"/api/sequence/detail_list_by_category/" stringByAppendingString: user.remoteId.stringValue ?: @"0"];
+    NSString* apiPath = [@"/api/sequence/detail_list_by_user/" stringByAppendingString: user.remoteId.stringValue ?: @"0"];
     return [[VFilterCache sharedCache] filterForPath:apiPath];
 }
 

@@ -11,44 +11,42 @@
 #import "UIViewController+VSideMenuViewController.h"
 #import "VLoginViewController.h"
 #import "VObjectManager+Users.h"
-//#import "VObjectManager+Login.h"
-//#import "VObjectManager+DirectMessaging.h"
-//#import "VProfileEditViewController.h"
-//#import "VMessageViewController.h"
+#import "VObjectManager+SequenceFilters.h"
+#import "VStreamTableViewController+ContentCreation.h"
+#import "VObjectManager+DirectMessaging.h"
+#import "VProfileEditViewController.h"
+#import "VMessageContainerViewController.h"
 #import "UIImage+ImageEffects.h"
 #import "UIImageView+Blurring.h"
 #import "VProgressiveImageView.h"
 #import "VUser+LoadFollowers.h"
 #import "VThemeManager.h"
 
+const   CGFloat kVNavigationBarHeight = 44.0;
+
 @interface VUserProfileViewController ()
 
-@property   (nonatomic) VUserProfileUserID                      userID;
-@property   (nonatomic, strong) VUser*                          profile;
+@property   (nonatomic) VUserProfileUserID              userID;
+@property   (nonatomic, strong) VUser*                  profile;
 
-@property (nonatomic, weak) IBOutlet    UIImageView*            backgroundImageView;
-@property (nonatomic, weak) IBOutlet    UIView*                 profileCircleImageView;
+@property (nonatomic, strong) UIImageView*              backgroundImageView;
+@property (nonatomic, strong) VProgressiveImageView*    profileCircleImageView;
 
-@property (nonatomic, weak) IBOutlet    UILabel*                nameLabel;
-@property (nonatomic, weak) IBOutlet    UILabel*                taglineLabel;
-@property (nonatomic, weak) IBOutlet    UILabel*                locationLabel;
+@property (nonatomic, strong) UILabel*                  nameLabel;
+@property (nonatomic, strong) UILabel*                  locationLabel;
+@property (nonatomic, strong) UILabel*                  taglineLabel;
 
-@property (nonatomic, weak) IBOutlet    UILabel*                followersLabel;
-@property (nonatomic, weak) IBOutlet    UILabel*                followersHeader;
-@property (nonatomic, weak) IBOutlet    UILabel*                followingLabel;
-@property (nonatomic, weak) IBOutlet    UILabel*                followingHeader;
+@property (nonatomic, strong) UILabel*                  followersLabel;
+@property (nonatomic, strong) UILabel*                  followersHeader;
+@property (nonatomic, strong) UILabel*                  followingLabel;
+@property (nonatomic, strong) UILabel*                  followingHeader;
 
-@property (nonatomic, weak) IBOutlet    UIButton*               editProfileButton;
-@property (nonatomic, weak) IBOutlet    UIButton*               followButton;
-@property (nonatomic, weak) IBOutlet    UIActivityIndicatorView* followButtonActivityIndicator;
+@property (nonatomic, strong) UIButton*                 editProfileButton;
+@property (nonatomic, strong) UIActivityIndicatorView*  followButtonActivityIndicator;
 
 @end
 
 @implementation VUserProfileViewController
-{
-    CGFloat _startContentOffset;
-    CGFloat _lastContentOffset;
-}
 
 + (instancetype)userProfileWithSelf
 {
@@ -84,19 +82,10 @@
 
     if ((kVProfileUserIDSelf == self.userID) || (self.userID == [[VObjectManager sharedManager].mainUser.remoteId integerValue]))
     {
-        self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"profileAddContent"]
-                                                                                  style:UIBarButtonItemStylePlain
-                                                                                 target:self
-                                                                                 action:@selector(addContent:)];
-        self.editProfileButton.hidden = NO;
-        self.followButton.hidden = YES;
+        [self addCreateButton];
 
         self.profile = [VObjectManager sharedManager].mainUser;
-        self.navigationItem.title = @"ME";
-
-        self.editProfileButton.layer.borderColor = [UIColor whiteColor].CGColor;
-        self.editProfileButton.layer.borderWidth = 2.0;
-        self.editProfileButton.layer.cornerRadius = 3.0;
+        self.navigationItem.title = NSLocalizedString(@"me", "");
     }
     else
     {
@@ -104,20 +93,12 @@
                                                                                             style:UIBarButtonItemStylePlain
                                                                                            target:self
                                                                                            action:@selector(composeMessage:)];
-        self.editProfileButton.hidden = YES;
-        self.followButton.hidden = NO;
-        
-        UIImage *followSelectedImage = [[UIImage imageNamed:@"followingButton"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
-        [self.followButton setImage:followSelectedImage forState:UIControlStateSelected];
-        [self.followButton setImage:followSelectedImage forState:UIControlStateSelected | UIControlStateHighlighted];
-        [self.followButton setImage:followSelectedImage forState:UIControlStateSelected | UIControlStateDisabled];
-        self.followButton.tintColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVAccentColor];
 
         [[VObjectManager sharedManager] fetchUser:@(self.userID) withSuccessBlock:^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
          {
              self.profile = [resultObjects firstObject];
              self.navigationItem.title = [@"@" stringByAppendingString:self.profile.name];
-        }
+         }
          failBlock:^(NSOperation* operation, NSError* error)
          {
              VLog("Profile failed to get User object");
@@ -125,16 +106,15 @@
     }
     
     self.tableView.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVContentTextColor];
-    
-    [self createStreamIfNecessary];
 }
 
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
 
-    [self setProfileData];
     [self.navigationController setNavigationBarHidden:NO animated:YES];
+
+    self.tableView.tableHeaderView = [self longHeader];
     
     [[VObjectManager sharedManager] addObserver:self forKeyPath:NSStringFromSelector(@selector(mainUser)) options:(NSKeyValueObservingOptionInitial|NSKeyValueObservingOptionOld|NSKeyValueObservingOptionNew) context:nil];
 }
@@ -168,76 +148,27 @@
                                     placeholderImage:defaultBackgroundImage
                                            tintColor:[UIColor colorWithWhite:0.0 alpha:0.5]];
 
-    VProgressiveImageView*  imageView = [[VProgressiveImageView alloc] initWithFrame:CGRectMake(0.0, 0.0, CGRectGetWidth(self.profileCircleImageView.bounds), CGRectGetHeight(self.profileCircleImageView.bounds))];
-    [self.profileCircleImageView addSubview:imageView];
-    [imageView setImageURL:imageURL];
+    [self.profileCircleImageView setImageURL:imageURL];
 
     // Set Profile data
-    self.nameLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeading1Font];
-    self.nameLabel.textColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVMainTextColor];
     self.nameLabel.text = self.profile.name;
+    self.locationLabel.text = self.profile.location;
     
-    self.taglineLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeading4Font];
-    self.taglineLabel.textColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVMainTextColor];
     if (self.profile.tagline && self.profile.tagline.length)
         self.taglineLabel.text = self.profile.tagline;
 
-    self.locationLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVParagraphFont];
-    self.locationLabel.text = self.profile.location;
-    self.locationLabel.textColor = [UIColor colorWithRed:0.8 green:0.8 blue:0.8 alpha:1.0];
-    
-    if ([[[[VObjectManager sharedManager].mainUser following] filteredSetUsingPredicate:[NSPredicate predicateWithFormat:@"remoteId=%d", (int)self.userID]] count])
-    {
-        self.followButton.selected = YES;
-    }
-    
-    self.followersHeader.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVLabel4Font];
-    self.followersLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeading3Font];
-    self.followersLabel.text = [self formattedStringForCount:0];
-    self.followingHeader.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVLabel4Font];
-    self.followingLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeading3Font];
-    self.followingLabel.text = [self formattedStringForCount:7526854];
-    
-    self.editProfileButton.titleLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVButton2Font];
-}
-
-- (void)createStreamIfNecessary
-{
-    return;
-    
-    //  Does this user have any stream entries
-    //  YES -
-    
-    CGRect  newRect = CGRectMake(0.0, 0.0, self.tableView.bounds.size.width, 320.0);
-    UIView* tblHeader = self.tableView.tableHeaderView;
-    
-    [UIView animateWithDuration:0.6 animations:^{
-        tblHeader.frame = newRect;
-        self.tableView.tableHeaderView = tblHeader;
-    }];
-
-    //      populate stream
+    self.followersLabel.text = [self formattedStringForCount:[self.profile.followers count]];
+    self.followingLabel.text = [self formattedStringForCount:[self.profile.following count]];
 }
 
 - (NSString *)formattedStringForCount:(CGFloat)count
 {
-//    static  NSByteCountFormatter*       formatter;
-//    static  dispatch_once_t             onceToken;
-//    
-//    dispatch_once(&onceToken, ^{
-//        formatter = [[NSByteCountFormatter alloc] init];
-//        formatter.countStyle = NSByteCountFormatterCountStyleDecimal;
-//        formatter.includesUnit = NO;
-//    });
-//    
-//    return [formatter stringFromByteCount:count];
-
     if (0.0 == count)
         return @"Zero";
 
     static  NSNumberFormatter*  formatter;
     static  dispatch_once_t     onceToken;
-    static const char sUnits[] = { '\0', 'K', 'M', 'G', 'T', 'P', 'E', 'Z', 'Y' };
+    static const char sUnits[] = { '\0', 'K', 'M', 'G' };
     static int sMaxUnits = sizeof sUnits - 1;
     
     int multiplier = 1000;
@@ -258,6 +189,198 @@
     return [NSString stringWithFormat:@"%@ %c", [formatter stringFromNumber:@(count)], sUnits[exponent]];
 }
 
+- (UIView *)longHeader
+{
+    CGFloat     screenHeight = [UIScreen mainScreen].bounds.size.height;
+    CGFloat     screenWidth = [UIScreen mainScreen].bounds.size.width;
+
+    UIView*     containerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, screenWidth, screenHeight - kVNavigationBarHeight)];
+    self.backgroundImageView = [[UIImageView alloc] initWithFrame:containerView.frame];
+    self.backgroundImageView.contentMode = UIViewContentModeScaleAspectFill;
+    [containerView addSubview:self.backgroundImageView];
+    
+    self.profileCircleImageView = [[VProgressiveImageView alloc] initWithFrame:CGRectMake(120, 99, 80, 80)];
+    [containerView addSubview:self.profileCircleImageView];
+    
+    self.nameLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 196, screenWidth, 25)];
+    self.nameLabel.textAlignment = NSTextAlignmentCenter;
+    self.nameLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeading1Font];
+    self.nameLabel.textColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVMainTextColor];
+    [containerView addSubview:self.nameLabel];
+    
+    self.locationLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 225, screenWidth, 25)];
+    self.locationLabel.textAlignment = NSTextAlignmentCenter;
+    self.locationLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVParagraphFont];
+    self.locationLabel.textColor = [UIColor colorWithRed:0.8 green:0.8 blue:0.8 alpha:1.0];
+    [containerView addSubview:self.locationLabel];
+    
+    self.taglineLabel = [[UILabel alloc] initWithFrame:CGRectMake(36, 255, screenWidth-72, 60)];
+    self.taglineLabel.textAlignment = NSTextAlignmentCenter;
+    self.taglineLabel.numberOfLines = 3;
+    self.taglineLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeading4Font];
+    self.taglineLabel.textColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVMainTextColor];
+    [containerView addSubview:self.taglineLabel];
+    
+    UIView* barView = [[UIView alloc] initWithFrame:CGRectMake(0, screenHeight - 60 - 44, screenWidth, 60)];
+    barView.backgroundColor = [UIColor colorWithWhite:0.8 alpha:0.45];
+    [containerView addSubview:barView];
+    
+    self.followersLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 10, 100, 21)];
+    self.followersLabel.textAlignment = NSTextAlignmentCenter;
+    self.followersLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeading3Font];
+    [barView addSubview:self.followersLabel];
+    
+    self.followersHeader = [[UILabel alloc] initWithFrame:CGRectMake(0, 30, 100, 21)];
+    self.followersHeader.text = NSLocalizedString(@"followers", @"");
+    self.followersHeader.textAlignment = NSTextAlignmentCenter;
+    self.followersHeader.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVLabel4Font];
+    [barView addSubview:self.followersHeader];
+    
+    self.followingLabel = [[UILabel alloc] initWithFrame:CGRectMake(screenWidth - 100, 10, 100, 21)];
+    self.followingLabel.textAlignment = NSTextAlignmentCenter;
+    self.followingLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeading3Font];
+    [barView addSubview:self.followingLabel];
+
+    self.followingHeader = [[UILabel alloc] initWithFrame:CGRectMake(screenWidth - 100, 30, 100, 21)];
+    self.followingHeader.text = NSLocalizedString(@"following", @"");
+    self.followingHeader.textAlignment = NSTextAlignmentCenter;
+    self.followingHeader.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVLabel4Font];
+    [barView addSubview:self.followingHeader];
+
+    self.editProfileButton = [[UIButton alloc] initWithFrame:CGRectMake(101, 13, 118, 34)];
+    if ([self.profile isEqual:[VObjectManager sharedManager].mainUser])
+    {
+        [self.editProfileButton setTitle:NSLocalizedString(@"editProfileButton", @"") forState:UIControlStateNormal];
+        [self.editProfileButton addTarget:self action:@selector(editProfile:) forControlEvents:UIControlEventTouchUpInside];
+        self.editProfileButton.layer.borderColor = [UIColor whiteColor].CGColor;
+        self.editProfileButton.layer.borderWidth = 2.0;
+        self.editProfileButton.layer.cornerRadius = 3.0;
+        self.editProfileButton.backgroundColor = [UIColor clearColor];
+    }
+    else
+    {
+        [self.editProfileButton setTitle:NSLocalizedString(@"follow", @"") forState:UIControlStateNormal];
+        [self.editProfileButton addTarget:self action:@selector(followButtonAction:) forControlEvents:UIControlEventTouchUpInside];
+        self.editProfileButton.layer.borderColor = [UIColor whiteColor].CGColor;
+        self.editProfileButton.layer.borderWidth = 0.0;
+        self.editProfileButton.layer.cornerRadius = 3.0;
+        self.editProfileButton.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
+        
+        if ([[[[VObjectManager sharedManager].mainUser following] filteredSetUsingPredicate:[NSPredicate predicateWithFormat:@"remoteId=%d", (int)self.userID]] count])
+        {
+            [self.editProfileButton setTitle:NSLocalizedString(@"following", @"") forState:UIControlStateNormal];
+            self.editProfileButton.layer.borderWidth = 2.0;
+        }
+        
+        self.followButtonActivityIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+        self.followButtonActivityIndicator.center = CGPointMake(CGRectGetWidth(self.editProfileButton.frame) / 2.0, CGRectGetHeight(self.editProfileButton.frame) / 2.0);
+        [self.editProfileButton addSubview:self.followButtonActivityIndicator];
+    }
+    self.editProfileButton.titleLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVButton2Font];
+    [barView addSubview:self.editProfileButton];
+
+    [self setProfileData];
+
+    return containerView;
+}
+
+- (UIView *)shortHeader
+{
+    CGFloat     screenHeight = 316;
+    CGFloat     screenWidth = [UIScreen mainScreen].bounds.size.width;
+    UIView*     containerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, screenWidth, screenHeight)];
+    
+    self.backgroundImageView = [[UIImageView alloc] initWithFrame:containerView.frame];
+    self.backgroundImageView.contentMode = UIViewContentModeScaleAspectFill;
+    [containerView addSubview:self.backgroundImageView];
+    
+    self.profileCircleImageView = [[VProgressiveImageView alloc] initWithFrame:CGRectMake(120, 25, 80, 80)];
+    [containerView addSubview:self.profileCircleImageView];
+    
+    self.nameLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 122, screenWidth, 25)];
+    self.nameLabel.textAlignment = NSTextAlignmentCenter;
+    self.nameLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeading1Font];
+    self.nameLabel.textColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVMainTextColor];
+    [containerView addSubview:self.nameLabel];
+    
+    self.locationLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 151, screenWidth, 25)];
+    self.locationLabel.textAlignment = NSTextAlignmentCenter;
+    self.locationLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVParagraphFont];
+    self.locationLabel.textColor = [UIColor colorWithRed:0.8 green:0.8 blue:0.8 alpha:1.0];
+    [containerView addSubview:self.locationLabel];
+    
+    self.taglineLabel = [[UILabel alloc] initWithFrame:CGRectMake(36, 181, screenWidth-72, 60)];
+    self.taglineLabel.textAlignment = NSTextAlignmentCenter;
+    self.taglineLabel.numberOfLines = 3;
+    self.taglineLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeading4Font];
+    self.taglineLabel.textColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVMainTextColor];
+    [containerView addSubview:self.taglineLabel];
+    
+    UIView* barView = [[UIView alloc] initWithFrame:CGRectMake(0, screenHeight - 60, screenWidth, 60)];
+    barView.backgroundColor = [UIColor colorWithWhite:0.8 alpha:0.45];
+    [containerView addSubview:barView];
+    
+    self.followersLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 10, 100, 21)];
+    self.followersLabel.textAlignment = NSTextAlignmentCenter;
+    self.followersLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeading3Font];
+    [barView addSubview:self.followersLabel];
+    
+    self.followersHeader = [[UILabel alloc] initWithFrame:CGRectMake(0, 30, 100, 21)];
+    self.followersHeader.text = NSLocalizedString(@"followers", @"");
+    self.followersHeader.textAlignment = NSTextAlignmentCenter;
+    self.followersHeader.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVLabel4Font];
+    [barView addSubview:self.followersHeader];
+    
+    self.followingLabel = [[UILabel alloc] initWithFrame:CGRectMake(screenWidth - 100, 10, 100, 21)];
+    self.followingLabel.textAlignment = NSTextAlignmentCenter;
+    self.followingLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeading3Font];
+    [barView addSubview:self.followingLabel];
+    
+    self.followingHeader = [[UILabel alloc] initWithFrame:CGRectMake(screenWidth - 100, 30, 100, 21)];
+    self.followingHeader.text = NSLocalizedString(@"following", @"");
+    self.followingHeader.textAlignment = NSTextAlignmentCenter;
+    self.followingHeader.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVLabel4Font];
+    [barView addSubview:self.followingHeader];
+    
+    self.editProfileButton = [[UIButton alloc] initWithFrame:CGRectMake(101, 13, 118, 34)];
+    if ([self.profile isEqual:[VObjectManager sharedManager].mainUser])
+    {
+        [self.editProfileButton setTitle:NSLocalizedString(@"editProfileButton", @"") forState:UIControlStateNormal];
+        [self.editProfileButton addTarget:self action:@selector(editProfile:) forControlEvents:UIControlEventTouchUpInside];
+        self.editProfileButton.layer.borderColor = [UIColor whiteColor].CGColor;
+        self.editProfileButton.layer.borderWidth = 2.0;
+        self.editProfileButton.layer.cornerRadius = 3.0;
+        self.editProfileButton.backgroundColor = [UIColor clearColor];
+    }
+    else
+    {
+        [self.editProfileButton setTitle:NSLocalizedString(@"follow", @"") forState:UIControlStateNormal];
+        [self.editProfileButton addTarget:self action:@selector(followButtonAction:) forControlEvents:UIControlEventTouchUpInside];
+        self.editProfileButton.layer.borderColor = [UIColor whiteColor].CGColor;
+        self.editProfileButton.layer.borderWidth = 0.0;
+        self.editProfileButton.layer.cornerRadius = 3.0;
+        self.editProfileButton.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
+        
+        if ([[[[VObjectManager sharedManager].mainUser following] filteredSetUsingPredicate:[NSPredicate predicateWithFormat:@"remoteId=%d", (int)self.userID]] count])
+        {
+            [self.editProfileButton setTitle:NSLocalizedString(@"following", @"") forState:UIControlStateNormal];
+            self.editProfileButton.layer.borderWidth = 2.0;
+            self.editProfileButton.selected = YES;
+        }
+
+        self.followButtonActivityIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+        self.followButtonActivityIndicator.center = CGPointMake(CGRectGetWidth(self.editProfileButton.frame) / 2.0, CGRectGetHeight(self.editProfileButton.frame) / 2.0);
+        [self.editProfileButton addSubview:self.followButtonActivityIndicator];
+    }
+
+    self.editProfileButton.titleLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVButton2Font];
+    [barView addSubview:self.editProfileButton];
+    
+    [self setProfileData];
+    
+    return containerView;
+}
+
 #pragma mark - Actions
 
 - (IBAction)showMenu:(id)sender
@@ -270,25 +393,22 @@
     [self.navigationController popViewControllerAnimated:YES];
 }
 
-- (IBAction)addContent:(id)sender
-{
-    
-}
-
 - (IBAction)composeMessage:(id)sender
 {
-    //    if (![VObjectManager sharedManager].mainUser)
-    //    {
-    //        [self presentViewController:[VLoginViewController loginViewController] animated:YES completion:NULL];
-    //        return;
-    //    }
-    //
-    //    [self performSegueWithIdentifier:@"toComposeMessage" sender:self];
+    if (![VObjectManager sharedManager].mainUser)
+    {
+        [self presentViewController:[VLoginViewController loginViewController] animated:YES completion:NULL];
+        return;
+    }
+
+    VMessageContainerViewController*    composeController   = [[UIStoryboard storyboardWithName:@"Main" bundle:[NSBundle mainBundle]] instantiateViewControllerWithIdentifier:@"messageContainer"];
+    composeController.conversation = [[VObjectManager sharedManager] conversationWithUser:self.profile];
+    [self.navigationController pushViewController:composeController animated:YES];
 }
 
 - (IBAction)editProfile:(id)sender
 {
-//    [self performSegueWithIdentifier:@"toEditProfile" sender:self];
+    [self performSegueWithIdentifier:@"toEditProfile" sender:self];
 }
 
 - (IBAction)followButtonAction:(id)sender
@@ -299,21 +419,26 @@
         return;
     }
 
-    self.followButton.enabled = NO;
+    self.editProfileButton.enabled = NO;
     [self.followButtonActivityIndicator startAnimating];
 
-    if (self.followButton.selected)
+    if (self.editProfileButton.selected)
     {
         [[VObjectManager sharedManager] unfollowUser:self.profile
                                         successBlock:^(NSOperation *operation, id fullResponse, NSArray *objects)
          {
-             self.followButton.enabled = YES;
-             self.followButton.selected = NO;
+             self.editProfileButton.enabled = YES;
+             self.editProfileButton.selected = NO;
+             [self.editProfileButton setTitle:NSLocalizedString(@"follow", @"") forState:UIControlStateNormal];
+             self.editProfileButton.layer.borderColor = [UIColor whiteColor].CGColor;
+             self.editProfileButton.layer.borderWidth = 0.0;
+             self.editProfileButton.layer.cornerRadius = 3.0;
+             self.editProfileButton.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
              [self.followButtonActivityIndicator stopAnimating];
          }
                                            failBlock:^(NSOperation *operation, NSError *error)
          {
-             self.followButton.enabled = YES;
+             self.editProfileButton.enabled = YES;
              [self.followButtonActivityIndicator stopAnimating];
              UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil
                                                              message:NSLocalizedString(@"UnfollowError", @"")
@@ -328,13 +453,18 @@
         [[VObjectManager sharedManager] followUser:self.profile
                                       successBlock:^(NSOperation *operation, id fullResponse, NSArray *objects)
          {
-             self.followButton.enabled = YES;
-             self.followButton.selected = YES;
+             self.editProfileButton.enabled = YES;
+             self.editProfileButton.selected = YES;
+             [self.editProfileButton setTitle:NSLocalizedString(@"following", @"") forState:UIControlStateNormal];
+             self.editProfileButton.layer.borderColor = [UIColor whiteColor].CGColor;
+             self.editProfileButton.layer.borderWidth = 2.0;
+             self.editProfileButton.layer.cornerRadius = 3.0;
+             self.editProfileButton.backgroundColor = [UIColor clearColor];
              [self.followButtonActivityIndicator stopAnimating];
          }
                                          failBlock:^(NSOperation *operation, NSError *error)
          {
-             self.followButton.enabled = YES;
+             self.editProfileButton.enabled = YES;
              [self.followButtonActivityIndicator stopAnimating];
              UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil
                                                              message:NSLocalizedString(@"FollowError", @"")
@@ -350,16 +480,11 @@
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
-//    if ([segue.identifier isEqualToString:@"toEditProfile"])
-//    {
-//        VProfileEditViewController* controller = (VProfileEditViewController *)segue.destinationViewController;
-//        controller.profile = self.profile;
-//    }
-//    else if ([segue.identifier isEqualToString:@"toComposeMessage"])
-//    {
-//        VMessageViewController *subview = (VMessageViewController *)segue.destinationViewController;
-//        subview.conversation = [[VObjectManager sharedManager] conversationWithUser:self.profile];
-//    }
+    if ([segue.identifier isEqualToString:@"toEditProfile"])
+    {
+        VProfileEditViewController* controller = (VProfileEditViewController *)segue.destinationViewController;
+        controller.profile = self.profile;
+    }
 }
 
 #pragma mark - Key-Value Observation
@@ -387,54 +512,58 @@
     {
         if ([[[VObjectManager sharedManager] mainUser] followingListLoading])
         {
-            self.followButton.enabled = NO;
+            self.editProfileButton.enabled = NO;
             [self.followButtonActivityIndicator startAnimating];
         }
         else
         {
-            self.followButton.enabled = YES;
+            self.editProfileButton.enabled = YES;
             [self.followButtonActivityIndicator stopAnimating];
             [self setProfileData];
         }
     }
 }
 
-#pragma mark - UIScrollViewDelegate Methods
+#pragma mark - VStreamTableViewController
 
-- (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView
+- (VSequenceFilter*)currentFilter
 {
-    _startContentOffset = _lastContentOffset = scrollView.contentOffset.y;
+    return [[VObjectManager sharedManager] sequenceFilterForUser:self.profile];
 }
 
-- (void)scrollViewDidScroll:(UIScrollView *)scrollView
+- (IBAction)refreshAction:(id)sender
 {
-    CGFloat currentOffset = scrollView.contentOffset.y;
-    CGFloat differenceFromStart = _startContentOffset - currentOffset;
-    CGFloat differenceFromLast = _lastContentOffset - currentOffset;
-    _lastContentOffset = currentOffset;
+    RKManagedObjectRequestOperation* operation = [[VObjectManager sharedManager] refreshSequenceFilter:[self currentFilter]
+                                                                                          successBlock:^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
+                                                  {
+                                                      [self.refreshControl endRefreshing];
+                                                      
+                                                      if (resultObjects.count > 0)
+                                                      {
+                                                          [UIView animateWithDuration:0.6 animations:^{
+                                                              self.tableView.tableHeaderView = [self shortHeader];
+                                                          }];
+                                                      }
+                                                      else
+                                                      {
+                                                          [UIView animateWithDuration:0.6 animations:^{
+                                                              self.tableView.tableHeaderView = [self longHeader];
+                                                          }];
+                                                     }
+                                                  }
+                                                                                             failBlock:^(NSOperation* operation, NSError* error)
+                                                  {
+                                                      [self.refreshControl endRefreshing];
+                                                      [UIView animateWithDuration:0.6 animations:^{
+                                                          self.tableView.tableHeaderView = [self longHeader];
+                                                      }];
+
+                                                  }];
     
-    if ((differenceFromStart) < 0)
+    if (operation)
     {
-        if (scrollView.isTracking && (abs(differenceFromLast)>1))
-            [self.navigationController setNavigationBarHidden:YES animated:YES];
+        [self.refreshControl beginRefreshing];
     }
-    else
-    {
-        if (scrollView.isTracking && (abs(differenceFromLast)>1))
-            [self.navigationController setNavigationBarHidden:NO animated:YES];
-    }
-}
-
-#pragma mark - UITableViewDataSource
-
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
-{
-    return 0;
-}
-
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    return [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"stream"];
 }
 
 @end
