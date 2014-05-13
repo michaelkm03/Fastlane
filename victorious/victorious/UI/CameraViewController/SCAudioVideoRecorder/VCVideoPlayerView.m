@@ -19,6 +19,7 @@
 @property (nonatomic)         BOOL                      delegateNotifiedOfReadinessToPlay;
 @property (nonatomic)         CMTime                    startTime;
 @property (nonatomic)         CMTime                    endTime;
+@property (nonatomic)         BOOL                      didPlayToEnd;
 
 @end
 
@@ -395,6 +396,12 @@ static __weak VCVideoPlayerView *_currentPlayer = nil;
         }
         else
         {
+            CMTime endTime = self.player.currentItem.duration;
+            if (CMTIME_IS_VALID(endTime) && !CMTIME_IS_INDEFINITE(endTime))
+            {
+                [self.player seekToTime:endTime];
+            }
+            self.didPlayToEnd = YES;
             self.player.rate = 0;
         }
     }
@@ -439,6 +446,22 @@ static __weak VCVideoPlayerView *_currentPlayer = nil;
                     [self.delegate videoPlayerWillStartPlaying:self];
                 }
                 self.toolbarView.playButton.selected = YES;
+                
+                if (self.didPlayToEnd)
+                {
+                    self.didPlayToEnd = NO;
+                    if (newRate > 0)
+                    {
+                        if (CMTIME_IS_VALID(self.startTime))
+                        {
+                            [self.player seekToTime:self.startTime];
+                        }
+                        else
+                        {
+                            [self.player seekToTime:CMTimeMake(0, 1)];
+                        }
+                    }
+                }
             }
             else if ([oldRate floatValue] != 0 && [newRate floatValue] == 0)
             {
