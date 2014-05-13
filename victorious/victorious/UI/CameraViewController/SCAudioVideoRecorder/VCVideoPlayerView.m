@@ -438,11 +438,7 @@ static __weak VCVideoPlayerView *_currentPlayer = nil;
         }
         else
         {
-            CMTime endTime = self.player.currentItem.duration;
-            if (CMTIME_IS_VALID(endTime) && !CMTIME_IS_INDEFINITE(endTime))
-            {
-                [self.player seekToTime:endTime];
-            }
+            self.toolbarView.slider.value = 1.0f;
             self.didPlayToEnd = YES;
             self.player.rate = 0;
         }
