@@ -81,8 +81,6 @@ const   CGFloat kVNavigationBarHeight = 44.0;
 
 - (void)viewDidLoad
 {
-    [super viewDidLoad];
-
     if ((kVProfileUserIDSelf == self.userID) || (self.userID == [[VObjectManager sharedManager].mainUser.remoteId integerValue]))
     {
         [self addCreateButton];
@@ -109,6 +107,8 @@ const   CGFloat kVNavigationBarHeight = 44.0;
     }
     
     self.tableView.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVContentTextColor];
+    
+    [super viewDidLoad];
 }
 
 - (void)viewWillAppear:(BOOL)animated

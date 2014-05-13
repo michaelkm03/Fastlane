@@ -21,6 +21,7 @@
 
 #import "VSequence+Fetcher.h"
 #import "VNode+Fetcher.h"
+#import "VComment+Fetcher.h"
 #import "VAsset.h"
 
 #import "UIImageView+Blurring.h"
@@ -322,7 +323,7 @@ static NSString* CommentCache = @"CommentCache";
 
     CGSize textSize = [VCommentCell frameSizeForMessageText:comment.text];
     CGFloat height = textSize.height;
-    CGFloat yOffset = !comment.mediaUrl || [comment.mediaUrl isEmpty] ? kCommentCellYOffset : kMediaCommentCellYOffset;
+    CGFloat yOffset = [comment hasMedia] ? kMediaCommentCellYOffset : kCommentCellYOffset;
     height = MAX(height + yOffset, kMinCellHeight);
 
     return height;

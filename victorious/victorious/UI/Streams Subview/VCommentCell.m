@@ -11,7 +11,7 @@
 #import "VCommentCell.h"
 #import "VConstants.h"
 #import "UIImageView+AFNetworking.h"
-#import "VComment+RestKit.h"
+#import "VComment+Fetcher.h"
 #import "VMessage+RestKit.h"
 #import "VMedia+RestKit.h"
 #import "VUser+RestKit.h"
@@ -27,8 +27,8 @@ CGFloat const kCommentRowWithMediaHeight  =   256.0f;
 CGFloat const kCommentRowHeight           =   86.0f;
 CGFloat const kCommentCellWidth = 214;
 CGFloat const kCommentCellYOffset = 28;
-CGFloat const kMediaCommentCellYOffset = 284;
-CGFloat const kMinCellHeight = 84;
+CGFloat const kMediaCommentCellYOffset = 236;
+CGFloat const kMinCellHeight = 55;
 CGFloat const kCommentMessageLabelWidth = 214;
 CGFloat const kMessageChatBubblePadding = 5;
 CGFloat const kProfilePadding = 27;
@@ -78,7 +78,7 @@ NSString* const kChatBubbleLeftImage = @"ChatBubbleLeft";
     self.profileImageButton.clipsToBounds = YES;
     self.profileImageButton.layer.cornerRadius = CGRectGetHeight(self.profileImageButton.bounds)/2;
     
-    [self layoutWithText:self.messageLabel.text withMedia:(BOOL)self.mediaUrl];
+    [self layoutWithText:self.messageLabel.text withMedia:!self.mediaPreview.hidden];
 }
 
 - (void)setCommentOrMessage:(id)commentOrMessage
@@ -102,7 +102,7 @@ NSString* const kChatBubbleLeftImage = @"ChatBubbleLeft";
         mediaType = comment.mediaType;
         user = comment.user;
         
-        previewImageURL = [NSURL URLWithString:comment.thumbnailUrl];
+        previewImageURL = [comment previewImageURL];
     }
     else if([commentOrMessage isKindOfClass:[VMessage class]])
     {
@@ -114,12 +114,14 @@ NSString* const kChatBubbleLeftImage = @"ChatBubbleLeft";
         self.mediaUrl = message.media.mediaUrl;
         mediaType = message.media.mediaType;
         user = message.user;
+        
+        previewImageURL = [NSURL URLWithString:message.media.mediaUrl];
     }
     
     [self.profileImageButton setImageWithURL:[NSURL URLWithString:user.pictureUrl]
                             placeholderImage:[UIImage imageNamed:@"profile_thumb"]
                                     forState:UIControlStateNormal];
-    if ([self.mediaUrl length])
+    if (previewImageURL)
     {
         self.mediaPreview.hidden = NO;
         
