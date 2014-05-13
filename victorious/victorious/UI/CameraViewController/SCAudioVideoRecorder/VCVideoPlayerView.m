@@ -305,8 +305,12 @@ static __weak VCVideoPlayerView *_currentPlayer = nil;
         float percentElapsed    = timeInSeconds / durationInSeconds;
         self.toolbarView.slider.value = percentElapsed;
     }
-    self.toolbarView.elapsedTimeLabel.text = [self.timeFormatter stringForCMTime:time];
-    self.toolbarView.remainingTimeLabel.text = [self.timeFormatter stringForCMTime:CMTimeSubtract([self playerItemDuration], time)];
+    
+    CMTime duration = [self playerItemDuration];
+    Float64 playedSeconds = round(CMTimeGetSeconds(time));
+    Float64 durationSeconds = round(CMTimeGetSeconds(duration));
+    self.toolbarView.elapsedTimeLabel.text = [self.timeFormatter stringForCMTime:CMTimeMakeWithSeconds(playedSeconds, time.timescale)];
+    self.toolbarView.remainingTimeLabel.text = [self.timeFormatter stringForCMTime:CMTimeMakeWithSeconds(durationSeconds - playedSeconds, duration.timescale)];
     
     if ([self.delegate respondsToSelector:@selector(videoPlayer:didPlayToTime:)])
     {
