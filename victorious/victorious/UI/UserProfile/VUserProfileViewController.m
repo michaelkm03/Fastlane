@@ -83,18 +83,10 @@ const   CGFloat kVNavigationBarHeight = 44.0;
 {
     if ((kVProfileUserIDSelf == self.userID) || (self.userID == [[VObjectManager sharedManager].mainUser.remoteId integerValue]))
     {
-        [self addCreateButton];
-
         self.profile = [VObjectManager sharedManager].mainUser;
-        self.navigationItem.title = NSLocalizedString(@"me", "");
     }
     else
     {
-        self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"profileCompose"]
-                                                                                            style:UIBarButtonItemStylePlain
-                                                                                           target:self
-                                                                                           action:@selector(composeMessage:)];
-
         [[VObjectManager sharedManager] fetchUser:@(self.userID) withSuccessBlock:^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
          {
              self.profile = [resultObjects firstObject];
@@ -106,16 +98,30 @@ const   CGFloat kVNavigationBarHeight = 44.0;
          }];
     }
     
-    self.tableView.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVContentTextColor];
-    
     [super viewDidLoad];
+    
+    if ((kVProfileUserIDSelf == self.userID) || (self.userID == [[VObjectManager sharedManager].mainUser.remoteId integerValue]))
+    {
+        [self addCreateButton];
+        
+        self.navigationItem.title = NSLocalizedString(@"me", "");
+    }
+    else
+    {
+        self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"profileCompose"]
+                                                                                  style:UIBarButtonItemStylePlain
+                                                                                 target:self
+                                                                                 action:@selector(composeMessage:)];
+    }
+
+    self.tableView.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVContentTextColor];
 }
 
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
 
-    [self.navigationController setNavigationBarHidden:NO animated:YES];
+//    [self.navigationController setNavigationBarHidden:NO animated:YES];
 
     self.tableView.tableHeaderView = [self longHeader];
     
@@ -150,7 +156,6 @@ const   CGFloat kVNavigationBarHeight = 44.0;
     [self.backgroundImageView setBlurredImageWithURL:imageURL
                                     placeholderImage:defaultBackgroundImage
                                            tintColor:[UIColor colorWithWhite:0.0 alpha:0.5]];
-
     [self.profileCircleImageView setImageURL:imageURL];
 
     // Set Profile data
@@ -232,6 +237,7 @@ const   CGFloat kVNavigationBarHeight = 44.0;
     self.longContainerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, screenWidth, screenHeight - kVNavigationBarHeight)];
     self.backgroundImageView = [[UIImageView alloc] initWithFrame:self.longContainerView.frame];
     self.backgroundImageView.contentMode = UIViewContentModeScaleAspectFill;
+    self.backgroundImageView.clipsToBounds = YES;
     [self.longContainerView addSubview:self.backgroundImageView];
     
     self.profileCircleImageView = [[VProgressiveImageView alloc] initWithFrame:CGRectMake(120, 99, 80, 80)];
@@ -303,6 +309,7 @@ const   CGFloat kVNavigationBarHeight = 44.0;
     
     self.backgroundImageView = [[UIImageView alloc] initWithFrame:self.shortContainerView.frame];
     self.backgroundImageView.contentMode = UIViewContentModeScaleAspectFill;
+    self.backgroundImageView.clipsToBounds = YES;
     [self.shortContainerView addSubview:self.backgroundImageView];
     
     self.profileCircleImageView = [[VProgressiveImageView alloc] initWithFrame:CGRectMake(120, 25, 80, 80)];
@@ -522,14 +529,18 @@ const   CGFloat kVNavigationBarHeight = 44.0;
                                                       if (resultObjects.count > 0)
                                                       {
                                                           [UIView animateWithDuration:0.6 animations:^{
+                                                              [self.tableView beginUpdates];
                                                               self.tableView.tableHeaderView = [self shortHeader];
+                                                              [self.tableView endUpdates];
                                                               [self setProfileData];
                                                           }];
                                                       }
                                                       else
                                                       {
                                                           [UIView animateWithDuration:0.6 animations:^{
+                                                              [self.tableView beginUpdates];
                                                               self.tableView.tableHeaderView = [self longHeader];
+                                                              [self.tableView endUpdates];
                                                               [self setProfileData];
                                                           }];
                                                      }
@@ -538,7 +549,9 @@ const   CGFloat kVNavigationBarHeight = 44.0;
                                                   {
                                                       [self.refreshControl endRefreshing];
                                                       [UIView animateWithDuration:0.6 animations:^{
+                                                          [self.tableView beginUpdates];
                                                           self.tableView.tableHeaderView = [self longHeader];
+                                                          [self.tableView endUpdates];
                                                           [self setProfileData];
                                                       }];
 
