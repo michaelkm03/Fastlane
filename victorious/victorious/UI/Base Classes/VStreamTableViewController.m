@@ -29,7 +29,6 @@
 #import "VObjectManager+SequenceFilters.h"
 
 //Data Models
-#import "VSequenceFilter.h"
 #import "VSequence+RestKit.h"
 #import "VSequence+Fetcher.h"
 #import "VNode+Fetcher.h"

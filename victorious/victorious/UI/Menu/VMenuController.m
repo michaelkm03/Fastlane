@@ -22,7 +22,7 @@
 #import "VHomeStreamViewController.h"
 #import "VOwnerStreamViewController.h"
 #import "VCommunityStreamViewController.h"
-#import "VProfileViewController.h"
+#import "VUserProfileViewController.h"
 #import "VSettingsViewController.h"
 #import "VInboxViewController.h"
 

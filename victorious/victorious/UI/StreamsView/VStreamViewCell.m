@@ -13,7 +13,7 @@
 #import "NSDate+timeSince.h"
 #import "VUser.h"
 
-#import "VProfileViewController.h"
+#import "VUserProfileViewController.h"
 
 #import "VSequence+Fetcher.h"
 #import "VNode+Fetcher.h"
@@ -149,7 +149,7 @@ NSString *kStreamsWillCommentNotification = @"kStreamsWillCommentNotification";
 
 - (IBAction)profileButtonAction:(id)sender
 {
-    VProfileViewController* profileViewController = [VProfileViewController profileWithUserID:[self.sequence.createdBy integerValue]];
+    VUserProfileViewController* profileViewController = [VUserProfileViewController userProfileWithUserID:[self.sequence.createdBy integerValue]];
     [self.parentTableViewController.navigationController pushViewController:profileViewController animated:YES];
 }
 
