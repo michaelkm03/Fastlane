@@ -20,10 +20,13 @@
 @property (nonatomic)         CMTime                    startTime;
 @property (nonatomic)         CMTime                    endTime;
 @property (nonatomic)         BOOL                      didPlayToEnd;
+@property (nonatomic, strong) NSTimer                  *toolbarHideTimer;
+@property (nonatomic, strong) NSDate                   *toolbarShowDate;
 
 @end
 
-static const CGFloat kToolbarHeight = 41.0f;
+static const CGFloat        kToolbarHeight    = 41.0f;
+static const NSTimeInterval kToolbarHideDelay =  5.0;
 
 static __weak VCVideoPlayerView *_currentPlayer = nil;
 
@@ -207,11 +210,11 @@ static __weak VCVideoPlayerView *_currentPlayer = nil;
     self.videoFrameTapGesture.enabled = shouldShowToolbar;
 }
 
-#pragma mark -
+#pragma mark - Toolbar
 
 - (void)toggleToolbarHidden
 {
-    if (self.toolbarAnimating)
+    if (self.toolbarAnimating || !self.shouldShowToolbar)
     {
         return;
     }
@@ -234,6 +237,7 @@ static __weak VCVideoPlayerView *_currentPlayer = nil;
     }
     else
     {
+        [self stopToolbarTimer];
         self.toolbarAnimating = YES;
         [UIView animateWithDuration:0.2
                               delay:0
@@ -250,6 +254,34 @@ static __weak VCVideoPlayerView *_currentPlayer = nil;
          }];
     }
 }
+
+- (void)startToolbarTimer
+{
+    self.toolbarShowDate = [NSDate date];
+    [self.toolbarHideTimer invalidate]; // just in case--losing a reference to an active timer would be bad
+    self.toolbarHideTimer = [NSTimer scheduledTimerWithTimeInterval:0.5 target:self selector:@selector(toolbarTimerFired) userInfo:nil repeats:YES];
+}
+
+- (void)stopToolbarTimer
+{
+    [self.toolbarHideTimer invalidate];
+    self.toolbarHideTimer = nil;
+}
+
+- (void)toolbarTimerFired
+{
+    if (self.toolbarView.hidden)
+    {
+        [self stopToolbarTimer];
+    }
+    else if (!self.sliderTouchActive && [self.toolbarShowDate timeIntervalSinceNow] <= -kToolbarHideDelay)
+    {
+        [self stopToolbarTimer];
+        [self toggleToolbarHidden];
+    }
+}
+
+#pragma mark -
 
 - (CMTime)playerItemDuration
 {
@@ -345,6 +377,7 @@ static __weak VCVideoPlayerView *_currentPlayer = nil;
 
 - (IBAction)playButtonTapped:(UIButton *)sender
 {
+    self.toolbarShowDate = [NSDate date];
     if ([self isPlaying])
     {
         [self.player pause];
@@ -357,7 +390,15 @@ static __weak VCVideoPlayerView *_currentPlayer = nil;
 
 - (void)videoFrameTapped:(UITapGestureRecognizer *)sender
 {
-    [self toggleToolbarHidden];
+    CGPoint touchPoint = [sender locationInView:self];
+    if (!CGRectContainsPoint(self.toolbarView.frame, touchPoint))
+    {
+        if (self.toolbarView.hidden && [self isPlaying])
+        {
+            [self startToolbarTimer];
+        }
+        [self toggleToolbarHidden];
+    }
 }
 
 - (IBAction)sliderTouchDown:(UISlider *)sender
@@ -367,6 +408,7 @@ static __weak VCVideoPlayerView *_currentPlayer = nil;
 
 - (IBAction)sliderTouchUp:(UISlider *)sender
 {
+    self.toolbarShowDate = [NSDate date];
     self.sliderTouchActive = NO;
     CMTime duration = [self playerItemDuration];
     [self.player seekToTime:CMTimeMultiplyByFloat64(duration, self.toolbarView.slider.value)];
@@ -446,6 +488,7 @@ static __weak VCVideoPlayerView *_currentPlayer = nil;
                     [self.delegate videoPlayerWillStartPlaying:self];
                 }
                 self.toolbarView.playButton.selected = YES;
+                [self startToolbarTimer];
                 
                 if (self.didPlayToEnd)
                 {
@@ -474,6 +517,11 @@ static __weak VCVideoPlayerView *_currentPlayer = nil;
                     [self.delegate videoPlayerWillStopPlaying:self];
                 }
                 self.toolbarView.playButton.selected = NO;
+                if (self.toolbarView.hidden)
+                {
+                    [self toggleToolbarHidden];
+                }
+                [self stopToolbarTimer];
             }
         }
     }
