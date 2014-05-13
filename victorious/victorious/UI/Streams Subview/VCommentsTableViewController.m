@@ -141,7 +141,7 @@ static NSString* CommentCache = @"CommentCache";
                                                   loadNextPageOfCommentFilter:filter
                                                   successBlock:^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
                                                   {
-                                                      [self performSelector:@selector(sortComments) withObject:nil afterDelay:1.0f];
+                                                      [self performSelector:@selector(sortComments) withObject:nil afterDelay:.5f];
                                                       [self.refreshControl endRefreshing];
                                                   }
                                                   failBlock:^(NSOperation* operation, NSError* error)
@@ -154,7 +154,6 @@ static NSString* CommentCache = @"CommentCache";
         [self.refreshControl beginRefreshing];
     }
 }
-
 
 - (void)loadNextPageAction
 {
