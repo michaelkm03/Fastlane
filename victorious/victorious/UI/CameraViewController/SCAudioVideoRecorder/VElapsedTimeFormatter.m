@@ -13,7 +13,6 @@
 - (NSString *)stringForCMTime:(CMTime)time
 {
     NSString *separator = NSLocalizedString(@"TimeSeparator", @"");
-    NSString *placeholder = NSLocalizedString(@"InvalidTimePlaceholder", @"");
     
     if (CMTIME_IS_VALID(time))
     {
@@ -33,7 +32,7 @@
     }
     else
     {
-        return [NSString stringWithFormat:@"%1$@%2$@%1$@%1$@", placeholder, separator];
+        return NSLocalizedString(@"InvalidTimePlaceholder", @"");
     }
 }
 

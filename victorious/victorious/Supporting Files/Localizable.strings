@@ -14,7 +14,7 @@
 "NoButton"              =   "No";
 
 "TimeSeparator"         =   ":";
-"InvalidTimePlaceholder"=   "-";
+"InvalidTimePlaceholder"=   "-:--";
 
 "SetupButton"           =   "Set up";
 "EmailValidation"       =   "Invalid Email Address";
