@@ -5,6 +5,7 @@
 #import "VCVideoPlayerToolbarView.h"
 #import "VCVideoPlayerView.h"
 #import "VElapsedTimeFormatter.h"
+#import "VVideoDownloadProgressIndicatorView.h"
 
 @interface VCVideoPlayerView ()
 
@@ -309,8 +310,9 @@ static __weak VCVideoPlayerView *_currentPlayer = nil;
     }
     if (currentItem && (id)currentItem != [NSNull null])
     {
-        [currentItem addObserver:self forKeyPath:NSStringFromSelector(@selector(status)) options:(NSKeyValueObservingOptionInitial | NSKeyValueObservingOptionNew) context:NULL];
-        [currentItem addObserver:self forKeyPath:NSStringFromSelector(@selector(tracks)) options:(NSKeyValueObservingOptionInitial | NSKeyValueObservingOptionNew) context:NULL];
+        [currentItem addObserver:self forKeyPath:NSStringFromSelector(@selector(status))           options:(NSKeyValueObservingOptionInitial | NSKeyValueObservingOptionNew) context:NULL];
+        [currentItem addObserver:self forKeyPath:NSStringFromSelector(@selector(tracks))           options:(NSKeyValueObservingOptionInitial | NSKeyValueObservingOptionNew) context:NULL];
+        [currentItem addObserver:self forKeyPath:NSStringFromSelector(@selector(loadedTimeRanges)) options:(NSKeyValueObservingOptionInitial | NSKeyValueObservingOptionNew) context:NULL];
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(playerItemDidPlayToEndTime:)      name:AVPlayerItemDidPlayToEndTimeNotification      object:currentItem];
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(playerItemFailedToPlayToEndTime:) name:AVPlayerItemFailedToPlayToEndTimeNotification object:currentItem];
     }
@@ -412,6 +414,8 @@ static __weak VCVideoPlayerView *_currentPlayer = nil;
 {
     if (object == self.player && [keyPath isEqualToString:NSStringFromSelector(@selector(currentItem))])
     {
+        self.toolbarView.progressIndicator.duration = kCMTimeIndefinite;
+        self.toolbarView.progressIndicator.loadedTimeRanges = nil;
         self.delegateNotifiedOfReadinessToPlay = NO;
         AVPlayerItem *oldItem = change[NSKeyValueChangeOldKey];
         AVPlayerItem *newItem = change[NSKeyValueChangeNewKey];
@@ -453,13 +457,17 @@ static __weak VCVideoPlayerView *_currentPlayer = nil;
     else if (object == self.player.currentItem && [keyPath isEqualToString:NSStringFromSelector(@selector(status))])
     {
         NSNumber *status = change[NSKeyValueChangeNewKey];
-        if ((id)status != [NSNull null] && status.integerValue == AVPlayerItemStatusReadyToPlay && !self.delegateNotifiedOfReadinessToPlay)
+        if ((id)status != [NSNull null] && status.integerValue == AVPlayerItemStatusReadyToPlay)
         {
-            if ([self.delegate respondsToSelector:@selector(videoPlayerReadyToPlay:)])
+            self.toolbarView.progressIndicator.duration = self.player.currentItem.duration;
+            if (!self.delegateNotifiedOfReadinessToPlay)
             {
-                [self.delegate videoPlayerReadyToPlay:self];
+                if ([self.delegate respondsToSelector:@selector(videoPlayerReadyToPlay:)])
+                {
+                    [self.delegate videoPlayerReadyToPlay:self];
+                }
+                self.delegateNotifiedOfReadinessToPlay = YES;
             }
-            self.delegateNotifiedOfReadinessToPlay = YES;
         }
     }
     else if (object == self.player.currentItem && [keyPath isEqualToString:NSStringFromSelector(@selector(tracks))])
@@ -475,6 +483,14 @@ static __weak VCVideoPlayerView *_currentPlayer = nil;
                     break;
                 }
             }
+        }
+    }
+    else if (object == self.player.currentItem && [keyPath isEqualToString:NSStringFromSelector(@selector(loadedTimeRanges))])
+    {
+        NSArray *loadedTimeRanges = change[NSKeyValueChangeNewKey];
+        if ([loadedTimeRanges isKindOfClass:[NSArray class]])
+        {
+            self.toolbarView.progressIndicator.loadedTimeRanges = loadedTimeRanges;
         }
     }
 }

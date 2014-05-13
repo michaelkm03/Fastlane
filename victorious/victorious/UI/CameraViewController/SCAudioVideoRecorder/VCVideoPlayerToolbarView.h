@@ -8,14 +8,15 @@
 
 #import <UIKit/UIKit.h>
 
-@class VCVideoPlayerView;
+@class VCVideoPlayerView, VVideoDownloadProgressIndicatorView;
 
 @interface VCVideoPlayerToolbarView : UIView
 
-@property (nonatomic, weak) IBOutlet UIButton *playButton;
-@property (nonatomic, weak) IBOutlet UISlider *slider;
-@property (nonatomic, weak) IBOutlet UILabel  *elapsedTimeLabel;
-@property (nonatomic, weak) IBOutlet UILabel  *remainingTimeLabel;
+@property (nonatomic, weak) IBOutlet UIButton                            *playButton;
+@property (nonatomic, weak) IBOutlet UISlider                            *slider;
+@property (nonatomic, weak) IBOutlet VVideoDownloadProgressIndicatorView *progressIndicator;
+@property (nonatomic, weak) IBOutlet UILabel                             *elapsedTimeLabel;
+@property (nonatomic, weak) IBOutlet UILabel                             *remainingTimeLabel;
 
 + (instancetype)toolbarFromNibWithOwner:(VCVideoPlayerView *)filesOwner;
 

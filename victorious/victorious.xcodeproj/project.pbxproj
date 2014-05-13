@@ -10,6 +10,7 @@
 		03086AA718F38ABE00105FFB /* UIActionSheet+VBlocks.m in Sources */ = {isa = PBXBuildFile; fileRef = 03086AA618F38ABE00105FFB /* UIActionSheet+VBlocks.m */; };
 		03086AAA18F60E3000105FFB /* VMediaPreviewViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 03086AA918F60E3000105FFB /* VMediaPreviewViewController.m */; };
 		03522780192173F0003FCD10 /* VElapsedTimeFormatterTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 0352277F192173F0003FCD10 /* VElapsedTimeFormatterTests.m */; };
+		0352278319219079003FCD10 /* VVideoDownloadProgressIndicatorView.m in Sources */ = {isa = PBXBuildFile; fileRef = 0352278219219079003FCD10 /* VVideoDownloadProgressIndicatorView.m */; };
 		036AE5ED18FF0C0600A74BDA /* VReachability.m in Sources */ = {isa = PBXBuildFile; fileRef = 036AE5EC18FF0C0600A74BDA /* VReachability.m */; };
 		03CB1B87190F0A97001667D0 /* VUser+LoadFollowers.m in Sources */ = {isa = PBXBuildFile; fileRef = 03CB1B86190F0A97001667D0 /* VUser+LoadFollowers.m */; };
 		03D6381B191840570084FFC8 /* VEnvironment.m in Sources */ = {isa = PBXBuildFile; fileRef = 03D6381A191840570084FFC8 /* VEnvironment.m */; };
@@ -255,6 +256,8 @@
 		03086AA818F60E3000105FFB /* VMediaPreviewViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VMediaPreviewViewController.h; path = UI/CameraViewController/VMediaPreviewViewController.h; sourceTree = "<group>"; };
 		03086AA918F60E3000105FFB /* VMediaPreviewViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VMediaPreviewViewController.m; path = UI/CameraViewController/VMediaPreviewViewController.m; sourceTree = "<group>"; };
 		0352277F192173F0003FCD10 /* VElapsedTimeFormatterTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VElapsedTimeFormatterTests.m; sourceTree = "<group>"; };
+		0352278119219079003FCD10 /* VVideoDownloadProgressIndicatorView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VVideoDownloadProgressIndicatorView.h; sourceTree = "<group>"; };
+		0352278219219079003FCD10 /* VVideoDownloadProgressIndicatorView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VVideoDownloadProgressIndicatorView.m; sourceTree = "<group>"; };
 		036AE5EB18FF0C0600A74BDA /* VReachability.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VReachability.h; sourceTree = "<group>"; };
 		036AE5EC18FF0C0600A74BDA /* VReachability.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VReachability.m; sourceTree = "<group>"; };
 		03CB1B85190F0A97001667D0 /* VUser+LoadFollowers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "VUser+LoadFollowers.h"; sourceTree = "<group>"; };
@@ -732,6 +735,8 @@
 				3FD7FFC318C7EC2700945E5F /* VCCameraFocusTargetView.m */,
 				03F9D287191DC71700576AEE /* VElapsedTimeFormatter.h */,
 				03F9D288191DC71700576AEE /* VElapsedTimeFormatter.m */,
+				0352278119219079003FCD10 /* VVideoDownloadProgressIndicatorView.h */,
+				0352278219219079003FCD10 /* VVideoDownloadProgressIndicatorView.m */,
 			);
 			name = VCAudioVideoRecorder;
 			path = UI/CameraViewController/SCAudioVideoRecorder;
@@ -1838,6 +1843,7 @@
 				5FC4DA671897111B006BA107 /* VLoginViewController.m in Sources */,
 				D1DAAA08187A43A9009ADCB0 /* VProfileViewController.m in Sources */,
 				3FF7B6DD18F4A668003831CD /* VRemixSelectViewController.m in Sources */,
+				0352278319219079003FCD10 /* VVideoDownloadProgressIndicatorView.m in Sources */,
 				83D897421881F19D00BD5B8B /* VCommentsContainerViewController.m in Sources */,
 				BE171E151868C211004E5202 /* VNodeAction+RestKit.m in Sources */,
 				3F93489619215302002EA91F /* VUserProfileViewController.m in Sources */,
