@@ -205,12 +205,12 @@
     [self.mainUser addPostedSequencesObject:tempSequence];
     
     //Add to home screen
-    VSequenceFilter* homeFilter = [self sequenceFilterForCategories:[[VHomeStreamViewController sharedInstance] categoriesForOption:0]];
+    VSequenceFilter* homeFilter = [self sequenceFilterForCategories:[[VHomeStreamViewController sharedInstance] sequenceCategories]];
     [(VSequenceFilter*)[tempSequence.managedObjectContext objectWithID:homeFilter.objectID] addSequencesObject:tempSequence];
     
     //Add to community or owner (depends on user)
-    NSArray* categoriesForSecondFilter = [self.mainUser isOwner] ? [[VOwnerStreamViewController sharedInstance] categoriesForOption:0]
-                                                                 : [[VCommunityStreamViewController sharedInstance] categoriesForOption:0];
+    NSArray* categoriesForSecondFilter = [self.mainUser isOwner] ? [[VOwnerStreamViewController sharedInstance] sequenceCategories]
+                                                                 : [[VCommunityStreamViewController sharedInstance] sequenceCategories];
     VSequenceFilter* secondFilter = [self sequenceFilterForCategories:categoriesForSecondFilter];
     [(VSequenceFilter*)[tempSequence.managedObjectContext objectWithID:secondFilter.objectID] addSequencesObject:tempSequence];
 

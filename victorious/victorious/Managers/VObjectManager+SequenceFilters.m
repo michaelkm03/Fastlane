@@ -65,7 +65,7 @@
     }
     [context saveToPersistentStore:nil];
     
-    NSArray* defaultCategories = [[VHomeStreamViewController sharedInstance] categoriesForOption:0];
+    NSArray* defaultCategories = [[VHomeStreamViewController sharedInstance] sequenceCategories];
     VSequenceFilter* defaultFilter = [self sequenceFilterForCategories:defaultCategories];
     
     VSuccessBlock fullSuccess = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
@@ -77,13 +77,13 @@
         
         [[VUserManager sharedInstance] loginViaSavedCredentialsOnCompletion:nil onError:nil];
         
-        NSArray* ownerCategories = [[VOwnerStreamViewController sharedInstance] categoriesForOption:0];
+        NSArray* ownerCategories = [[VOwnerStreamViewController sharedInstance] sequenceCategories];
         VSequenceFilter* ownerFilter = [self sequenceFilterForCategories:ownerCategories];
         [self refreshSequenceFilter:ownerFilter
                        successBlock:nil
                           failBlock:nil];
         
-        NSArray* communityCategories = [[VCommunityStreamViewController sharedInstance] categoriesForOption:0];
+        NSArray* communityCategories = [[VCommunityStreamViewController sharedInstance] sequenceCategories];
         VSequenceFilter* communityFilter = [self sequenceFilterForCategories:communityCategories];
         [self refreshSequenceFilter:communityFilter
                        successBlock:nil

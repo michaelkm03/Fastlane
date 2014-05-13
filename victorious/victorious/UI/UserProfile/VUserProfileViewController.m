@@ -59,7 +59,7 @@ const   CGFloat kVNavigationBarHeight = 44.0;
                                                                                        style:UIBarButtonItemStylePlain
                                                                                       target:viewController
                                                                                       action:@selector(showMenu:)];
-    viewController.userID = -1;
+    viewController.userID = kVProfileUserIDSelf;
 
     return viewController;
 }

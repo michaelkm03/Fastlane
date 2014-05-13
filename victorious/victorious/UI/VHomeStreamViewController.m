@@ -36,27 +36,12 @@
     [self addCreateButton];
 }
 
-- (NSArray*)categoriesForOption:(NSUInteger)searchOption
+- (NSArray*)sequenceCategories
 {
-//    return @[kVOwnerPollCategory, kVUGCPollCategory];
-    switch (searchOption)
-    {
-        case VStreamFilterPolls:
-            return @[kVOwnerPollCategory, kVUGCPollCategory];
-            
-        case VStreamFilterImages:
-            return @[kVOwnerImageCategory, kVUGCImageCategory];
-            
-        case VStreamFilterVideos:
-            return @[kVOwnerVideoCategory, kVUGCVideoCategory,
-                     kVOwnerRemixCategory, kVUGCRemixCategory];
-            
-        default:
-            return @[kVOwnerPollCategory, kVUGCPollCategory,
-                     kVOwnerImageCategory, kVUGCImageCategory,
-                     kVOwnerVideoCategory, kVUGCVideoCategory,
-                     kVOwnerRemixCategory, kVUGCRemixCategory];
-    }
+    return @[kVOwnerPollCategory, kVUGCPollCategory,
+             kVOwnerImageCategory, kVUGCImageCategory,
+             kVOwnerVideoCategory, kVUGCVideoCategory,
+             kVOwnerRemixCategory, kVUGCRemixCategory];
 }
 
 @end

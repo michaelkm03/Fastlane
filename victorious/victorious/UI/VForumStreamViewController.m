@@ -37,13 +37,9 @@
     return sharedInstance;
 }
 
-- (NSArray*)categoriesForOption:(NSUInteger)searchOption
+- (NSArray*)sequenceCategories
 {
-    switch (searchOption)
-    {
-        default:
-            return @[kVOwnerForumCategory, kVUGCForumCategory];
-    }
+    return @[kVOwnerForumCategory, kVUGCForumCategory];
 }
 
 
