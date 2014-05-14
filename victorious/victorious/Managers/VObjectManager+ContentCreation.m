@@ -24,6 +24,7 @@
 #import "VInteraction+RestKit.h"
 #import "VAnswer+RestKit.h"
 #import "VSequenceFilter.h"
+#import "VCommentFilter.h"
 #import "VComment.h"
 #import "VUser+Fetcher.h"
 
@@ -285,6 +286,9 @@
         [self fetchCommentByID:[payload[@"id"] integerValue]
                   successBlock:nil
                      failBlock:nil];
+        
+        if (success)
+            success(operation, fullResponse, @[tempComment]);
     };
     
     return [self uploadURLs:allURLs
@@ -309,18 +313,13 @@
     tempComment.display_order = @(-1);
     tempComment.thumbnailUrl = [self localImageURLForVideo:mediaURLPath];
     
-    [sequence addCommentsObject:tempComment];
+    VSequence* sequenceInContext = (VSequence*)[self.mainUser.managedObjectContext objectWithID:sequence.objectID];
+    [sequenceInContext addCommentsObject:tempComment];
+    sequenceInContext.commentCount = @(sequenceInContext.commentCount.integerValue + 1);
+    
     [self.mainUser addCommentsObject:tempComment];
-    
-    //Add to home screen
-//    VSequenceFilter* homeFilter = [self sequenceFilterForCategories:[[VHomeStreamViewController sharedInstance] categoriesForOption:0]];
-//    [(VSequenceFilter*)[tempComment.managedObjectContext objectWithID:homeFilter.objectID] addSequencesObject:tempSequence];
-    
-    //Add to community or owner (depends on user)
-//    NSArray* categoriesForSecondFilter = [self.mainUser isOwner] ? [[VOwnerStreamViewController sharedInstance] categoriesForOption:0]
-//    : [[VCommunityStreamViewController sharedInstance] categoriesForOption:0];
-//    VSequenceFilter* secondFilter = [self sequenceFilterForCategories:categoriesForSecondFilter];
-//    [(VSequenceFilter*)[tempComment.managedObjectContext objectWithID:secondFilter.objectID] addSequencesObject:tempSequence];
+    VCommentFilter* filter = [[VObjectManager sharedManager] commentFilterForSequence:sequence];
+    [(VCommentFilter*)[tempComment.managedObjectContext objectWithID:filter.objectID] addCommentsObject:tempComment];
     
     [tempComment.managedObjectContext saveToPersistentStore:nil];
     
