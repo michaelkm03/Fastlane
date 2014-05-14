@@ -1042,14 +1042,6 @@
                                         </subviews>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                     </view>
-                                    <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Rie-Yf-0gS" userLabel="mpPlayer Container View">
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                        <constraints>
-                                            <constraint firstAttribute="height" id="4tO-fL-nyD"/>
-                                            <constraint firstAttribute="width" id="9DN-1c-PwX"/>
-                                        </constraints>
-                                    </view>
                                     <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Uu4-D7-xWv" userLabel="Remix Button">
                                         <rect key="frame" x="265" y="5" width="50" height="50"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -1066,11 +1058,9 @@
                                 <constraints>
                                     <constraint firstAttribute="width" secondItem="ZqV-fk-y5a" secondAttribute="width" priority="750" id="1ih-Ct-aqq"/>
                                     <constraint firstAttribute="height" constant="320" id="7aB-wm-dZC"/>
-                                    <constraint firstItem="Rie-Yf-0gS" firstAttribute="top" secondItem="bEh-qP-DUl" secondAttribute="top" id="Kl5-Pa-O5b"/>
                                     <constraint firstAttribute="centerX" secondItem="ZqV-fk-y5a" secondAttribute="centerX" id="U5o-zo-MM0"/>
                                     <constraint firstAttribute="height" secondItem="ZqV-fk-y5a" secondAttribute="height" priority="750" id="bCg-Wg-6SM"/>
                                     <constraint firstAttribute="width" constant="320" id="dEI-zm-8Cj"/>
-                                    <constraint firstItem="Rie-Yf-0gS" firstAttribute="leading" secondItem="bEh-qP-DUl" secondAttribute="leading" id="hw5-9Q-z5a"/>
                                     <constraint firstItem="ZqV-fk-y5a" firstAttribute="top" secondItem="bEh-qP-DUl" secondAttribute="top" id="yXq-mx-Xsl"/>
                                 </constraints>
                             </view>
@@ -1110,9 +1100,6 @@
                         <outlet property="firstResultView" destination="mU7-Gc-RdJ" id="Hap-rD-L8h"/>
                         <outlet property="firstSmallPreviewImage" destination="EVH-DQ-EKO" id="sqw-uo-jib"/>
                         <outlet property="mediaView" destination="bEh-qP-DUl" id="GYP-nN-agT"/>
-                        <outlet property="mpPlayerContainmentHeightConstraint" destination="4tO-fL-nyD" id="KxA-h5-m4x"/>
-                        <outlet property="mpPlayerContainmentView" destination="Rie-Yf-0gS" id="mfJ-Df-YRf"/>
-                        <outlet property="mpPlayerContainmentWidthConstraint" destination="9DN-1c-PwX" id="2Ie-aU-CLE"/>
                         <outlet property="orContainerView" destination="81Y-P5-SQ9" id="Ben-7t-Jmg"/>
                         <outlet property="orImageView" destination="jl7-9k-rKO" id="Sc8-0d-S6M"/>
                         <outlet property="pollPreviewView" destination="4Kr-fK-dGu" id="Jg8-mK-drW"/>

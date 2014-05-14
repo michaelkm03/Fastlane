@@ -8,6 +8,7 @@
 
 #import "VContentViewController+Images.h"
 #import "VContentViewController+Private.h"
+#import "VContentViewController+Videos.h"
 
 @implementation VContentViewController (Images)
 
@@ -33,8 +34,11 @@
     
     self.previewImage.hidden = NO;
     self.pollPreviewView.hidden = YES;
-    self.mpPlayerContainmentView.hidden = YES;
     self.remixButton.hidden = YES;
+    if ([self isVideoLoadingOrLoaded])
+    {
+        [self unloadVideoWithDuration:0];
+    }
 }
 
 @end

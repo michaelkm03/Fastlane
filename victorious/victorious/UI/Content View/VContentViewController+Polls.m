@@ -88,7 +88,7 @@
     
     self.pollPreviewView.hidden = NO;
     self.previewImage.hidden = YES;
-    self.mpPlayerContainmentView.hidden = YES;
+//    self.mpPlayerContainmentView.hidden = YES; // TODO
     self.remixButton.hidden = YES;
 }
 
@@ -109,7 +109,7 @@
     self.videoPlayer = [[VCVideoPlayerView alloc] initWithFrame:self.pollPreviewView.frame];
     self.videoPlayer.delegate = self;
     [self.videoPlayer setItemURL:contentURL];
-    [self.mpPlayerContainmentView addSubview:self.videoPlayer];
+//    [self.mpPlayerContainmentView addSubview:self.videoPlayer]; // TODO
     
     self.activityIndicator.center = self.videoPlayer.center;
     [self.mediaView addSubview:self.activityIndicator];
