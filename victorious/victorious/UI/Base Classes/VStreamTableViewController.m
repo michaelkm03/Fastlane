@@ -118,7 +118,7 @@
     [fetchRequest setPredicate:filterPredicate];
     
     [fetchRequest setSortDescriptors:@[sort]];
-    [fetchRequest setFetchBatchSize:50];
+    [fetchRequest setFetchBatchSize:[self currentFilter].perPageNumber.integerValue];
     
     return [[NSFetchedResultsController alloc] initWithFetchRequest:fetchRequest
                                                managedObjectContext:context
@@ -186,10 +186,6 @@
 
 #pragma mark - Cells
 
-- (CGFloat)tableView:(UITableView *)tableView estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    return kStreamViewCellHeight;
-}
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -290,18 +286,14 @@
                                              successBlock:^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
      {
          [self.bottomRefreshIndicator stopAnimating];
-         self.fetchedResultsController.delegate = self;
-         [self performFetch];
      }
                                                 failBlock:^(NSOperation* operation, NSError* error)
      {
          [self.bottomRefreshIndicator stopAnimating];
-         self.fetchedResultsController.delegate = self ;
      }];
     
     if (operation)
     {
-        self.fetchedResultsController.delegate = nil;
         [self.bottomRefreshIndicator startAnimating];
     }
 }

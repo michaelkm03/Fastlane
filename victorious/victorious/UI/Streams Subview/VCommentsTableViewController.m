@@ -64,16 +64,14 @@ static NSString* CommentCache = @"CommentCache";
 
 - (void)setSequence:(VSequence *)sequence
 {
-    [self.tableView reloadData];
-    
     _sequence = sequence;
     
     self.title = sequence.name;
     
+    [self sortComments];
+    
     if (![self.sortedComments count]) //If we don't have comments, try to pull more.
         [self refresh:nil];
-    else
-        [self sortComments];
 }
 
 - (NSMutableArray *)newlyReadComments
@@ -331,15 +329,8 @@ static NSString* CommentCache = @"CommentCache";
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    UITableViewCell *cell = nil;
-//    VComment *comment = [self.fetchedResultsController objectAtIndexPath:indexPath];
-//    if([comment.user isEqualToUser:[VObjectManager sharedManager].mainUser])
-//    {
-//        cell = [self.tableView dequeueReusableCellWithIdentifier:kOtherCommentCellIdentifier forIndexPath:indexPath];
-//    }else
-//    {
-        cell = [self.tableView dequeueReusableCellWithIdentifier:kCommentCellIdentifier forIndexPath:indexPath];
-//    }
+    UITableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:kCommentCellIdentifier forIndexPath:indexPath];
+    
     VComment *comment = [self.sortedComments objectAtIndex:indexPath.row];
     [(VCommentCell*)cell setCommentOrMessage:comment];
     ((VCommentCell*)cell).parentTableViewController = self;
