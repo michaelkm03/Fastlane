@@ -343,6 +343,7 @@ static __weak VCVideoPlayerView *_currentPlayer = nil;
     {
         [oldItem removeObserver:self forKeyPath:NSStringFromSelector(@selector(status))];
         [oldItem removeObserver:self forKeyPath:NSStringFromSelector(@selector(tracks))];
+        [oldItem removeObserver:self forKeyPath:NSStringFromSelector(@selector(loadedTimeRanges))];
         [[NSNotificationCenter defaultCenter] removeObserver:self name:nil object:oldItem];
     }
     if (currentItem && (id)currentItem != [NSNull null])
