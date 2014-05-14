@@ -202,7 +202,7 @@
     else if ([sequence isPoll])
         cellHeight = kStreamDoublePollCellHeight;
     
-    else if (([sequence isVideo] ||[sequence isForum]) && [[[sequence firstNode] firstAsset].type isEqualToString:VConstantsMediaTypeYoutube])
+    else if ([sequence isVideo] && [[[sequence firstNode] firstAsset].type isEqualToString:VConstantsMediaTypeYoutube])
         cellHeight = kStreamYoutubeCellHeight;
     
     else
@@ -219,7 +219,7 @@
         return [tableView dequeueReusableCellWithIdentifier:kStreamDoublePollCellIdentifier
                                                forIndexPath:indexPath];
 
-    else if ([sequence isForum] || [sequence isVideo])
+    else if ([sequence isVideo])
         return [tableView dequeueReusableCellWithIdentifier:kStreamVideoCellIdentifier
                                                forIndexPath:indexPath];
 

@@ -16,7 +16,6 @@
 - (BOOL)isQuiz;
 - (BOOL)isImage;
 - (BOOL)isVideo;
-- (BOOL)isForum;
 - (BOOL)isOwnerContent;
 
 - (VNode*)firstNode;

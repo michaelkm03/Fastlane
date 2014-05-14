@@ -80,13 +80,11 @@ static NSString* const VConstantMediaExtensionMP4       = @"mp4";
 static NSString*   const   kVOwnerPollCategory  = @"owner_poll";
 static NSString*   const   kVOwnerImageCategory = @"owner_image";
 static NSString*   const   kVOwnerVideoCategory = @"owner_video";
-static NSString*   const   kVOwnerForumCategory = @"owner_forum";
 static NSString*   const   kVOwnerRemixCategory = @"owner_video_remix";
 
 static NSString*   const   kVUGCPollCategory = @"ugc_poll";
 static NSString*   const   kVUGCImageCategory = @"ugc_image";
 static NSString*   const   kVUGCVideoCategory = @"ugc_video";
-static NSString*   const   kVUGCForumCategory = @"ugc_forum";
 static NSString*   const   kVUGCRemixCategory = @"ugc_video_remix";
 
 static NSString*   const   kFeaturedCategory = @"featured";
@@ -102,7 +100,6 @@ static NSString*   const   kVPagedFetchCache = @"PagedFetchCache";
 static NSString*   const   kHomeStreamStoryboardID              = @"homestream";
 static NSString*   const   kOwnerStreamStoryboardID             = @"ownerstream";
 static NSString*   const   kCommunityStreamStoryboardID         = @"communitystream";
-static NSString*   const   kForumStreamStoryboardID             = @"forumstream";
 static NSString*   const   kContentViewStoryboardID             = @"content";
 static NSString*   const   kEmotiveBallisticsBarStoryboardID    = @"emotiveballistics";
 static NSString*   const   kPollAnswerBarStoryboardID           = @"pollanswerbar";

@@ -24,6 +24,7 @@
 #import "VInteraction+RestKit.h"
 #import "VAnswer+RestKit.h"
 #import "VSequenceFilter.h"
+#import "VCommentFilter.h"
 #import "VComment.h"
 #import "VUser+Fetcher.h"
 
@@ -266,7 +267,6 @@
     NSMutableDictionary* parameters = [@{@"sequence_id" : sequence.remoteId.stringValue ?: [NSNull null],
                                          @"parent_id" : parent.remoteId.stringValue ?: [NSNull null],
                                          @"text" : text ?: [NSNull null]} mutableCopy];
-    
     NSDictionary *allURLs;
     if (mediaURL && type)
     {
@@ -285,6 +285,9 @@
         [self fetchCommentByID:[payload[@"id"] integerValue]
                   successBlock:nil
                      failBlock:nil];
+        
+        if (success)
+            success(operation, fullResponse, @[tempComment]);
     };
     
     return [self uploadURLs:allURLs
@@ -299,7 +302,7 @@
                          text:(NSString*)text
                  mediaURLPath:(NSString*)mediaURLPath
 {
-    VComment* tempComment = [self.mainUser.managedObjectContext insertNewObjectForEntityForName:[VComment entityName]];
+    VComment* tempComment = [sequence.managedObjectContext insertNewObjectForEntityForName:[VComment entityName]];
     
     tempComment.remoteId = remoteID;
     tempComment.text = text;
@@ -310,23 +313,17 @@
     tempComment.thumbnailUrl = [self localImageURLForVideo:mediaURLPath];
     
     [sequence addCommentsObject:tempComment];
-    [self.mainUser addCommentsObject:tempComment];
+    sequence.commentCount = @(sequence.commentCount.integerValue + 1);
     
-    //Add to home screen
-//    VSequenceFilter* homeFilter = [self sequenceFilterForCategories:[[VHomeStreamViewController sharedInstance] categoriesForOption:0]];
-//    [(VSequenceFilter*)[tempComment.managedObjectContext objectWithID:homeFilter.objectID] addSequencesObject:tempSequence];
+    [self.mainUser addCommentsObject:(VComment*)[self.mainUser.managedObjectContext objectWithID:tempComment.objectID]];
     
-    //Add to community or owner (depends on user)
-//    NSArray* categoriesForSecondFilter = [self.mainUser isOwner] ? [[VOwnerStreamViewController sharedInstance] categoriesForOption:0]
-//    : [[VCommunityStreamViewController sharedInstance] categoriesForOption:0];
-//    VSequenceFilter* secondFilter = [self sequenceFilterForCategories:categoriesForSecondFilter];
-//    [(VSequenceFilter*)[tempComment.managedObjectContext objectWithID:secondFilter.objectID] addSequencesObject:tempSequence];
+    VCommentFilter* filter = [[VObjectManager sharedManager] commentFilterForSequence:sequence];
+    [(VCommentFilter*)[tempComment.managedObjectContext objectWithID:filter.objectID] addCommentsObject:tempComment];
     
     [tempComment.managedObjectContext saveToPersistentStore:nil];
     
     return tempComment;
 }
-
 
 #pragma mark - Helper methods
 

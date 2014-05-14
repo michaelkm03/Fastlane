@@ -64,7 +64,6 @@ static NSString* CommentCache = @"CommentCache";
 
 - (void)setSequence:(VSequence *)sequence
 {
-    self.sortedComments = [sequence.comments allObjects];
     [self.tableView reloadData];
     
     _sequence = sequence;
@@ -89,6 +88,8 @@ static NSString* CommentCache = @"CommentCache";
 #pragma mark - Comment Sorters
 - (void)sortComments
 {
+    [self.sequence.managedObjectContext refreshObject:self.sequence mergeChanges:YES];
+    self.sortedComments = [self.sequence.comments allObjects];
     //If theres no sorted comments, this is our first batch so animate in.
     if (![self.sortedComments count])
     {
@@ -163,7 +164,7 @@ static NSString* CommentCache = @"CommentCache";
                                                   loadNextPageOfCommentFilter:filter
                                                   successBlock:^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
                                                   {
-                                                      [self sortComments];
+                                                      [self performSelector:@selector(sortComments) withObject:nil afterDelay:.5f];
 //                                                      [self.bottomRefreshIndicator stopAnimating];
                                                   }
                                                   failBlock:^(NSOperation* operation, NSError* error)
@@ -176,7 +177,6 @@ static NSString* CommentCache = @"CommentCache";
 //        [self.bottomRefreshIndicator startAnimating];
     }
 }
-
 
 - (IBAction)shareSequence:(id)sender
 {

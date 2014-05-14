@@ -44,16 +44,9 @@
         [self.category isEqualToString:kVUGCRemixCategory];
 }
 
-- (BOOL)isForum
-{
-    return [self.category isEqualToString:kVOwnerForumCategory] ||
-        [self.category isEqualToString:kVUGCForumCategory];
-}
-
 - (BOOL)isOwnerContent
 {
-    return [self.category isEqualToString:kVOwnerForumCategory] ||
-    [self.category isEqualToString:kVOwnerImageCategory] ||
+    return [self.category isEqualToString:kVOwnerImageCategory] ||
     [self.category isEqualToString:kVOwnerPollCategory] ||
     [self.category isEqualToString:kVOwnerVideoCategory] ||
     [self.category isEqualToString:kVOwnerRemixCategory];

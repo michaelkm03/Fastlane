@@ -140,10 +140,10 @@
         [indicator stopAnimating];
         [[NSFileManager defaultManager] removeItemAtURL:urlToRemove error:nil];
         
-        [(VCommentsTableViewController *)self.conversationTableViewController sortComments];
-        
         self.sequence.commentCount = @(self.sequence.commentCount.integerValue + 1);
         [self.sequence.managedObjectContext saveToPersistentStore:nil];
+        
+        [(VCommentsTableViewController *)self.conversationTableViewController sortComments];
     };
     
     VFailBlock fail = ^(NSOperation* operation, NSError* error)
@@ -166,7 +166,6 @@
         [indicator stopAnimating];
     };
 
-    
     [[VObjectManager sharedManager] addCommentWithText:text
                                               mediaURL:mediaURL
                                             toSequence:_sequence

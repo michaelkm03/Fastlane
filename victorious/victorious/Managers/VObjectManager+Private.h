@@ -8,12 +8,9 @@
 
 #import "VObjectManager.h"
 
-@class VPaginationStatus;
-
 
 @interface VObjectManager ()
 
-@property (nonatomic, strong) NSMutableDictionary* paginationStatuses;
 @property (nonatomic, strong) NSCache* objectCache;
 @property (nonatomic, strong) VUser*  mainUser;
 
@@ -45,8 +42,5 @@
                            parameters:(NSDictionary*)parameters
                          successBlock:(VSuccessBlock)successBlock
                             failBlock:(VFailBlock)failBlock;
-
-
--(VPaginationStatus *)statusForKey:(NSString*)key;
 
 @end
