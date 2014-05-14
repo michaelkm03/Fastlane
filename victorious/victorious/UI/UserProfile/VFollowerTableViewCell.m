@@ -16,6 +16,7 @@
 @property (nonatomic, weak)     IBOutlet    UILabel*            profileName;
 @property (nonatomic, weak)     IBOutlet    UILabel*            profileLocation;
 @property (nonatomic, weak)     IBOutlet    UIButton*           followButton;
+@property (nonatomic)                       BOOL                following;
 @end
 
 @implementation VFollowerTableViewCell
@@ -37,11 +38,29 @@
     self.profileLocation.text = profile.location;
     
     self.followButton.hidden = !self.showButton;
+    
+    self.backgroundColor = [UIColor colorWithWhite:0.97 alpha:1.0];
+//  self.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVSecondaryBackgroundColor];
 }
 
 - (IBAction)follow:(id)sender
 {
-    [[VObjectManager sharedManager] followUser:self.profile successBlock:nil failBlock:nil];
+    if (self.following)
+    {
+        self.following = NO;
+        [[VObjectManager sharedManager] unfollowUser:self.profile successBlock:nil failBlock:nil];
+//      [UIView animateWithDuration:0.4 animations:^{
+//        [self.followButton setImage:[UIImage imageNamed:@""] forState:UIControlStateNormal];
+//      }];
+    }
+    else
+    {
+        self.following = YES;
+        [[VObjectManager sharedManager] followUser:self.profile successBlock:nil failBlock:nil];
+//      [UIView animateWithDuration:0.4 animations:^{
+//        [self.followButton setImage:[UIImage imageNamed:@""] forState:UIControlStateNormal];
+//      }];
+    }
 }
 
 @end

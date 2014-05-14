@@ -339,13 +339,14 @@ static __weak VCVideoPlayerView *_currentPlayer = nil;
 
 - (void)removeObserverFromOldPlayerItem:(AVPlayerItem *)oldItem andAddObserverToPlayerItem:(AVPlayerItem *)currentItem
 {
-    if (oldItem && (id)oldItem != [NSNull null])
+    if ([oldItem isKindOfClass:[AVPlayerItem class]])
     {
         [oldItem removeObserver:self forKeyPath:NSStringFromSelector(@selector(status))];
         [oldItem removeObserver:self forKeyPath:NSStringFromSelector(@selector(tracks))];
+        [oldItem removeObserver:self forKeyPath:NSStringFromSelector(@selector(loadedTimeRanges))];
         [[NSNotificationCenter defaultCenter] removeObserver:self name:nil object:oldItem];
     }
-    if (currentItem && (id)currentItem != [NSNull null])
+    if ([currentItem isKindOfClass:[AVPlayerItem class]])
     {
         [currentItem addObserver:self forKeyPath:NSStringFromSelector(@selector(status))           options:(NSKeyValueObservingOptionInitial | NSKeyValueObservingOptionNew) context:NULL];
         [currentItem addObserver:self forKeyPath:NSStringFromSelector(@selector(tracks))           options:(NSKeyValueObservingOptionInitial | NSKeyValueObservingOptionNew) context:NULL];

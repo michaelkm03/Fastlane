@@ -305,14 +305,13 @@
 - (void)updateStatusBar
 {
     [UIView animateWithDuration:0.3f animations:^{
-        [self performSelector:@selector(setNeedsStatusBarAppearanceUpdate)];
+        [self setNeedsStatusBarAppearanceUpdate];
     }];
 }
 
 - (UIStatusBarStyle)preferredStatusBarStyle
 {
-    UIStatusBarStyle statusBarStyle = UIStatusBarStyleDefault;
-   statusBarStyle = self.visible ? self.menuViewController.preferredStatusBarStyle : self.contentViewController.preferredStatusBarStyle;
+   UIStatusBarStyle statusBarStyle;
    if (self.contentViewController.view.frame.origin.y > 10)
        statusBarStyle = self.menuViewController.preferredStatusBarStyle;
    else
@@ -323,8 +322,7 @@
 
 - (BOOL)prefersStatusBarHidden
 {
-    BOOL statusBarHidden = NO;
-   statusBarHidden = self.visible ? self.menuViewController.prefersStatusBarHidden : self.contentViewController.prefersStatusBarHidden;
+    BOOL statusBarHidden;
    if (self.contentViewController.view.frame.origin.y > 10)
        statusBarHidden = self.menuViewController.prefersStatusBarHidden;
    else
@@ -335,8 +333,7 @@
 
 - (UIStatusBarAnimation)preferredStatusBarUpdateAnimation
 {
-    UIStatusBarAnimation statusBarAnimation = UIStatusBarAnimationNone;
-    statusBarAnimation = self.visible ? self.menuViewController.preferredStatusBarUpdateAnimation : self.contentViewController.preferredStatusBarUpdateAnimation;
+    UIStatusBarAnimation    statusBarAnimation;
    if (self.contentViewController.view.frame.origin.y > 10)
        statusBarAnimation = self.menuViewController.preferredStatusBarUpdateAnimation;
    else
