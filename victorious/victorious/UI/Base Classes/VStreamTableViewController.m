@@ -192,14 +192,9 @@
     VSequence* sequence = (VSequence*)[self.fetchedResultsController objectAtIndexPath:indexPath];
     
     NSUInteger cellHeight;
-    if ([sequence isPoll] && [[sequence firstNode] firstAsset])
-        cellHeight = kStreamPollCellHeight;
     
-    else if ([sequence isPoll])
+    if ([sequence isPoll])
         cellHeight = kStreamDoublePollCellHeight;
-    
-    else if ([sequence isVideo] && [[[sequence firstNode] firstAsset].type isEqualToString:VConstantsMediaTypeYoutube])
-        cellHeight = kStreamYoutubeCellHeight;
     
     else
         cellHeight = kStreamViewCellHeight;
@@ -281,7 +276,6 @@
 
 - (void)loadNextPageAction
 {
-#warning The next page action will cause the tableview to sometimes freak out. Use at your own risk.
     RKManagedObjectRequestOperation* operation = [[VObjectManager sharedManager] loadNextPageOfSequenceFilter:[self currentFilter]
                                              successBlock:^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
      {
