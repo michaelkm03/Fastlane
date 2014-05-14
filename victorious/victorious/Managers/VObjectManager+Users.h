@@ -43,6 +43,10 @@
                                                  successBlock:(VSuccessBlock)success
                                                     failBlock:(VFailBlock)fail;
 
+- (RKManagedObjectRequestOperation *)requestFollowerListForUser:(VUser *)user
+                                                   successBlock:(VSuccessBlock)success
+                                                      failBlock:(VFailBlock)fail;
+
 - (RKManagedObjectRequestOperation *)followUser:(VUser *)user
                                    successBlock:(VSuccessBlock)success
                                       failBlock:(VFailBlock)fail;

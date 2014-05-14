@@ -188,6 +188,45 @@
            failBlock:fail];
 }
 
+- (RKManagedObjectRequestOperation *)requestFollowerListForUser:(VUser *)user
+                                                   successBlock:(VSuccessBlock)success
+                                                      failBlock:(VFailBlock)fail
+{
+    if (user.followerListLoading)
+    {
+        if (fail)
+        {
+            fail(nil, nil);
+        }
+        return nil;
+    }
+    
+    user.followerListLoading = YES;
+    NSString *path = [NSString stringWithFormat:@"/api/follow/followers_list/%d", [user.remoteId intValue]];
+    return [self GET:path
+              object:nil
+          parameters:nil
+        successBlock:^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
+            {
+                for (NSManagedObject *resultUser in resultObjects)
+                {
+                    VUser *followUser = (VUser *)[user.managedObjectContext objectWithID:resultUser.objectID];
+                    [user addFollowersObject:followUser];
+                }
+                
+                [user.managedObjectContext saveToPersistentStore:nil];
+                
+                user.followerListLoading = NO;
+                user.followerListLoaded = YES;
+                
+                if (success)
+                {
+                    success(operation, fullResponse, resultObjects);
+                }
+            }
+           failBlock:fail];
+}
+
 - (RKManagedObjectRequestOperation *)followUser:(VUser *)user
                                    successBlock:(VSuccessBlock)success
                                       failBlock:(VFailBlock)fail

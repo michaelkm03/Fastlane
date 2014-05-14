@@ -15,10 +15,11 @@
 #import "VStreamTableViewController+ContentCreation.h"
 #import "VObjectManager+DirectMessaging.h"
 #import "VProfileEditViewController.h"
+#import "VFollowerTableViewController.h"
+#import "VFollowingTableViewController.h"
 #import "VMessageContainerViewController.h"
 #import "UIImage+ImageEffects.h"
 #import "UIImageView+Blurring.h"
-#import "VProgressiveImageView.h"
 #import "VUser+LoadFollowers.h"
 #import "VThemeManager.h"
 
@@ -29,11 +30,13 @@ const   CGFloat kVNavigationBarHeight = 44.0;
 @property   (nonatomic) VUserProfileUserID              userID;
 @property   (nonatomic, strong) VUser*                  profile;
 
+@property   (nonatomic)       BOOL                      isMe;
+
 @property (nonatomic, strong) UIView*                   shortContainerView;
 @property (nonatomic, strong) UIView*                   longContainerView;
 
 @property (nonatomic, strong) UIImageView*              backgroundImageView;
-@property (nonatomic, strong) VProgressiveImageView*    profileCircleImageView;
+@property (nonatomic, strong) UIImageView*              profileCircleImageView;
 
 @property (nonatomic, strong) UILabel*                  nameLabel;
 @property (nonatomic, strong) UILabel*                  locationLabel;
@@ -81,9 +84,12 @@ const   CGFloat kVNavigationBarHeight = 44.0;
 
 - (void)viewDidLoad
 {
-    if ((kVProfileUserIDSelf == self.userID) || (self.userID == [[VObjectManager sharedManager].mainUser.remoteId integerValue]))
+    self.isMe = ((kVProfileUserIDSelf == self.userID) || (self.userID == [[VObjectManager sharedManager].mainUser.remoteId integerValue]));
+    
+    if (self.isMe)
     {
         self.profile = [VObjectManager sharedManager].mainUser;
+        self.navigationItem.title = NSLocalizedString(@"me", "");
     }
     else
     {
@@ -100,11 +106,9 @@ const   CGFloat kVNavigationBarHeight = 44.0;
     
     [super viewDidLoad];
     
-    if ((kVProfileUserIDSelf == self.userID) || (self.userID == [[VObjectManager sharedManager].mainUser.remoteId integerValue]))
+    if (self.isMe)
     {
         [self addCreateButton];
-        
-        self.navigationItem.title = NSLocalizedString(@"me", "");
     }
     else
     {
@@ -121,23 +125,23 @@ const   CGFloat kVNavigationBarHeight = 44.0;
 {
     [super viewWillAppear:animated];
 
-//    [self.navigationController setNavigationBarHidden:NO animated:YES];
-
     self.tableView.tableHeaderView = [self longHeader];
     
-    [[VObjectManager sharedManager] addObserver:self forKeyPath:NSStringFromSelector(@selector(mainUser)) options:(NSKeyValueObservingOptionInitial|NSKeyValueObservingOptionOld|NSKeyValueObservingOptionNew) context:nil];
+    if (!self.isMe)
+        [[VObjectManager sharedManager] addObserver:self forKeyPath:NSStringFromSelector(@selector(mainUser)) options:(NSKeyValueObservingOptionInitial|NSKeyValueObservingOptionOld|NSKeyValueObservingOptionNew) context:nil];
 }
 
 - (void)viewDidDisappear:(BOOL)animated
 {
     [super viewDidDisappear:animated];
     
-    if ([[VObjectManager sharedManager] mainUser])
+    if (!self.isMe)
     {
-        [[[VObjectManager sharedManager] mainUser] removeObserver:self forKeyPath:NSStringFromSelector(@selector(followingListLoading))];
-    }
+        if ([[VObjectManager sharedManager] mainUser])
+            [[[VObjectManager sharedManager] mainUser] removeObserver:self forKeyPath:NSStringFromSelector(@selector(followingListLoading))];
 
-    [[VObjectManager sharedManager] removeObserver:self forKeyPath:NSStringFromSelector(@selector(mainUser))];
+        [[VObjectManager sharedManager] removeObserver:self forKeyPath:NSStringFromSelector(@selector(mainUser))];
+    }
 }
 
 #pragma mark - Support
@@ -156,7 +160,7 @@ const   CGFloat kVNavigationBarHeight = 44.0;
     [self.backgroundImageView setBlurredImageWithURL:imageURL
                                     placeholderImage:defaultBackgroundImage
                                            tintColor:[UIColor colorWithWhite:0.0 alpha:0.5]];
-    [self.profileCircleImageView setImageURL:imageURL];
+    [self.profileCircleImageView setImageWithURL:imageURL placeholderImage:[UIImage imageNamed:@"profileGenericUser"]];
 
     // Set Profile data
     self.nameLabel.text = self.profile.name;
@@ -165,13 +169,34 @@ const   CGFloat kVNavigationBarHeight = 44.0;
     if (self.profile.tagline && self.profile.tagline.length)
         self.taglineLabel.text = self.profile.tagline;
 
-    self.followersLabel.text = [self formattedStringForCount:[self.profile.followers count]];
-    self.followingLabel.text = [self formattedStringForCount:[self.profile.following count]];
+    VSuccessBlock followerSuccess = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
+    {
+        self.followersLabel.text = [self formattedStringForCount:[self.profile.followers count]];
+    };
+   
+    VSuccessBlock followingSuccess = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
+    {
+        self.followingLabel.text = [self formattedStringForCount:[self.profile.following count]];
+    };
 
-    if ([self.profile isEqual:[VObjectManager sharedManager].mainUser])
+    if (!self.profile.followerListLoading)
+         [[VObjectManager sharedManager] requestFollowerListForUser:self.profile
+                                                      successBlock:followerSuccess
+                                                         failBlock:nil];
+    else
+        followerSuccess(nil, nil, nil);
+
+    if (!self.profile.followingListLoading)
+        [[VObjectManager sharedManager] requestFollowListForUser:self.profile
+                                                    successBlock:followingSuccess
+                                                       failBlock:nil];
+    else
+        followingSuccess(nil, nil, nil);
+        
+    if (self.isMe)
     {
         [self.editProfileButton setTitle:NSLocalizedString(@"editProfileButton", @"") forState:UIControlStateNormal];
-        [self.editProfileButton addTarget:self action:@selector(editProfile:) forControlEvents:UIControlEventTouchUpInside];
+        [self.editProfileButton addTarget:self action:@selector(showProfileEdit:) forControlEvents:UIControlEventTouchUpInside];
         self.editProfileButton.layer.borderColor = [UIColor whiteColor].CGColor;
         self.editProfileButton.layer.borderWidth = 2.0;
         self.editProfileButton.layer.cornerRadius = 3.0;
@@ -190,6 +215,7 @@ const   CGFloat kVNavigationBarHeight = 44.0;
         {
             [self.editProfileButton setTitle:NSLocalizedString(@"following", @"") forState:UIControlStateNormal];
             self.editProfileButton.layer.borderWidth = 2.0;
+            self.editProfileButton.selected = YES;
         }
         
         self.followButtonActivityIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
@@ -240,7 +266,11 @@ const   CGFloat kVNavigationBarHeight = 44.0;
     self.backgroundImageView.clipsToBounds = YES;
     [self.longContainerView addSubview:self.backgroundImageView];
     
-    self.profileCircleImageView = [[VProgressiveImageView alloc] initWithFrame:CGRectMake(120, 99, 80, 80)];
+    self.profileCircleImageView = [[UIImageView alloc] initWithFrame:CGRectMake(120, 99, 80, 80)];
+    self.profileCircleImageView.layer.cornerRadius = CGRectGetHeight(self.profileCircleImageView.bounds)/2;
+    self.profileCircleImageView.layer.borderWidth = 1.0;
+    self.profileCircleImageView.layer.borderColor = [UIColor whiteColor].CGColor;
+    self.profileCircleImageView.clipsToBounds = YES;
     [self.longContainerView addSubview:self.profileCircleImageView];
     
     self.nameLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 196, screenWidth, 25)];
@@ -268,6 +298,8 @@ const   CGFloat kVNavigationBarHeight = 44.0;
     
     self.followersLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 10, 100, 21)];
     self.followersLabel.textAlignment = NSTextAlignmentCenter;
+    self.followersLabel.userInteractionEnabled = YES;
+    [self.followersLabel addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(showFollowers:)]];
     self.followersLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeading3Font];
     [barView addSubview:self.followersLabel];
     
@@ -279,6 +311,8 @@ const   CGFloat kVNavigationBarHeight = 44.0;
     
     self.followingLabel = [[UILabel alloc] initWithFrame:CGRectMake(screenWidth - 100, 10, 100, 21)];
     self.followingLabel.textAlignment = NSTextAlignmentCenter;
+    self.followingLabel.userInteractionEnabled = YES;
+    [self.followingLabel addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(showFollowing:)]];
     self.followingLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeading3Font];
     [barView addSubview:self.followingLabel];
 
@@ -288,7 +322,7 @@ const   CGFloat kVNavigationBarHeight = 44.0;
     self.followingHeader.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVLabel4Font];
     [barView addSubview:self.followingHeader];
 
-    self.editProfileButton = [[UIButton alloc] initWithFrame:CGRectMake(101, 13, 118, 34)];
+    self.editProfileButton = [[UIButton alloc] initWithFrame:CGRectMake(105, 13, 110, 34)];
     self.editProfileButton.titleLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVButton2Font];
     [barView addSubview:self.editProfileButton];
 
@@ -312,7 +346,11 @@ const   CGFloat kVNavigationBarHeight = 44.0;
     self.backgroundImageView.clipsToBounds = YES;
     [self.shortContainerView addSubview:self.backgroundImageView];
     
-    self.profileCircleImageView = [[VProgressiveImageView alloc] initWithFrame:CGRectMake(120, 25, 80, 80)];
+    self.profileCircleImageView = [[UIImageView alloc] initWithFrame:CGRectMake(120, 25, 80, 80)];
+    self.profileCircleImageView.layer.cornerRadius = CGRectGetHeight(self.profileCircleImageView.bounds)/2;
+    self.profileCircleImageView.layer.borderWidth = 1.0;
+    self.profileCircleImageView.layer.borderColor = [UIColor whiteColor].CGColor;
+    self.profileCircleImageView.clipsToBounds = YES;
     [self.shortContainerView addSubview:self.profileCircleImageView];
     
     self.nameLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 122, screenWidth, 25)];
@@ -340,6 +378,8 @@ const   CGFloat kVNavigationBarHeight = 44.0;
     
     self.followersLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 10, 100, 21)];
     self.followersLabel.textAlignment = NSTextAlignmentCenter;
+    self.followersLabel.userInteractionEnabled = YES;
+    [self.followersLabel addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(showFollowers:)]];
     self.followersLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeading3Font];
     [barView addSubview:self.followersLabel];
     
@@ -351,6 +391,8 @@ const   CGFloat kVNavigationBarHeight = 44.0;
     
     self.followingLabel = [[UILabel alloc] initWithFrame:CGRectMake(screenWidth - 100, 10, 100, 21)];
     self.followingLabel.textAlignment = NSTextAlignmentCenter;
+    self.followingLabel.userInteractionEnabled = YES;
+    [self.followingLabel addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(showFollowing:)]];
     self.followingLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeading3Font];
     [barView addSubview:self.followingLabel];
     
@@ -360,7 +402,7 @@ const   CGFloat kVNavigationBarHeight = 44.0;
     self.followingHeader.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVLabel4Font];
     [barView addSubview:self.followingHeader];
     
-    self.editProfileButton = [[UIButton alloc] initWithFrame:CGRectMake(101, 13, 118, 34)];
+    self.editProfileButton = [[UIButton alloc] initWithFrame:CGRectMake(105, 13, 110, 34)];
     self.editProfileButton.titleLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVButton2Font];
     [barView addSubview:self.editProfileButton];
     
@@ -394,7 +436,7 @@ const   CGFloat kVNavigationBarHeight = 44.0;
     [self.navigationController pushViewController:composeController animated:YES];
 }
 
-- (IBAction)editProfile:(id)sender
+- (IBAction)showProfileEdit:(id)sender
 {
     [self performSegueWithIdentifier:@"toEditProfile" sender:self];
 }
@@ -423,6 +465,7 @@ const   CGFloat kVNavigationBarHeight = 44.0;
              self.editProfileButton.layer.cornerRadius = 3.0;
              self.editProfileButton.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
              [self.followButtonActivityIndicator stopAnimating];
+             [self setProfileData];
          }
                                            failBlock:^(NSOperation *operation, NSError *error)
          {
@@ -449,6 +492,7 @@ const   CGFloat kVNavigationBarHeight = 44.0;
              self.editProfileButton.layer.cornerRadius = 3.0;
              self.editProfileButton.backgroundColor = [UIColor clearColor];
              [self.followButtonActivityIndicator stopAnimating];
+             [self setProfileData];
          }
                                          failBlock:^(NSOperation *operation, NSError *error)
          {
@@ -464,13 +508,39 @@ const   CGFloat kVNavigationBarHeight = 44.0;
     }
 }
 
+- (IBAction)showFollowers:(id)sender
+{
+    [self performSegueWithIdentifier:@"toFollowers" sender:self];
+}
+
+- (IBAction)showFollowing:(id)sender
+{
+    [self performSegueWithIdentifier:@"toFollowing" sender:self];
+}
+
 #pragma mark - Navigation
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
+    self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc]
+                                             initWithTitle:@""
+                                             style:UIBarButtonItemStylePlain
+                                             target:nil
+                                             action:nil];
+
     if ([segue.identifier isEqualToString:@"toEditProfile"])
     {
         VProfileEditViewController* controller = (VProfileEditViewController *)segue.destinationViewController;
+        controller.profile = self.profile;
+    }
+    else if ([segue.identifier isEqualToString:@"toFollowers"])
+    {
+        VFollowerTableViewController*   controller = (VFollowerTableViewController *)segue.destinationViewController;
+        controller.profile = self.profile;
+    }
+    else if ([segue.identifier isEqualToString:@"toFollowing"])
+    {
+        VFollowingTableViewController*   controller = (VFollowingTableViewController *)segue.destinationViewController;
         controller.profile = self.profile;
     }
 }
