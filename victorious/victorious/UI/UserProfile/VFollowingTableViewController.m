@@ -11,7 +11,6 @@
 #import "VObjectManager+Users.h"
 #import "VUser.h"
 #import "VUser+LoadFollowers.h"
-#import "VThemeManager.h"
 
 @interface VFollowingTableViewController ()
 @end
@@ -26,8 +25,8 @@
     [super viewDidLoad];
     [self.navigationController.navigationBar setBackIndicatorImage:[UIImage imageNamed:@"cameraButtonBack"]];
     [self.navigationController.navigationBar setBackIndicatorTransitionMaskImage:[UIImage imageNamed:@"cameraButtonBack"]];
+
     [self.tableView registerNib:[UINib nibWithNibName:@"followerCell" bundle:nil] forCellReuseIdentifier:@"followerCell"];
-    
     [self populateFollowingList];
 }
 
