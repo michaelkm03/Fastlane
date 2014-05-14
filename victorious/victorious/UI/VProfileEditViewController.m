@@ -22,6 +22,9 @@
 {
     [super viewDidLoad];
 
+    [self.navigationController.navigationBar setBackIndicatorImage:[UIImage imageNamed:@"cameraButtonBack"]];
+    [self.navigationController.navigationBar setBackIndicatorTransitionMaskImage:[UIImage imageNamed:@"cameraButtonBack"]];
+
     self.nameLabel.text = self.profile.name;
     
     [self.usernameTextField becomeFirstResponder];

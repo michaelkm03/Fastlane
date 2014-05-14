@@ -49,6 +49,10 @@
 		3F91991D187CAF620055FE37 /* VNewsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F91991C187CAF620055FE37 /* VNewsViewController.m */; };
 		3F93489519215302002EA91F /* Profile.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3F93489219215302002EA91F /* Profile.storyboard */; };
 		3F93489619215302002EA91F /* VUserProfileViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F93489419215302002EA91F /* VUserProfileViewController.m */; };
+		3F93489D1922C522002EA91F /* VFollowerTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F93489C1922C522002EA91F /* VFollowerTableViewController.m */; };
+		3F9348A01922C539002EA91F /* VFollowingTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F93489F1922C539002EA91F /* VFollowingTableViewController.m */; };
+		3F9348A31922C944002EA91F /* VFollowerTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F9348A21922C944002EA91F /* VFollowerTableViewCell.m */; };
+		3F9348A81922D124002EA91F /* followerCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3F9348A71922D124002EA91F /* followerCell.xib */; };
 		3F9B6657187F80780046F826 /* NSDate+timeSince.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F9B6656187F80780046F826 /* NSDate+timeSince.m */; };
 		3F9B665A18848B750046F826 /* VMessageContainerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F9B665918848B750046F826 /* VMessageContainerViewController.m */; };
 		3F9B666818887D910046F826 /* VFetchedResultsTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F9B666718887D910046F826 /* VFetchedResultsTableViewController.m */; };
@@ -327,6 +331,13 @@
 		3F93489219215302002EA91F /* Profile.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = Profile.storyboard; path = UI/UserProfile/Profile.storyboard; sourceTree = "<group>"; };
 		3F93489319215302002EA91F /* VUserProfileViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VUserProfileViewController.h; path = UI/UserProfile/VUserProfileViewController.h; sourceTree = "<group>"; };
 		3F93489419215302002EA91F /* VUserProfileViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VUserProfileViewController.m; path = UI/UserProfile/VUserProfileViewController.m; sourceTree = "<group>"; };
+		3F93489B1922C522002EA91F /* VFollowerTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VFollowerTableViewController.h; path = UI/UserProfile/VFollowerTableViewController.h; sourceTree = "<group>"; };
+		3F93489C1922C522002EA91F /* VFollowerTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VFollowerTableViewController.m; path = UI/UserProfile/VFollowerTableViewController.m; sourceTree = "<group>"; };
+		3F93489E1922C539002EA91F /* VFollowingTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VFollowingTableViewController.h; path = UI/UserProfile/VFollowingTableViewController.h; sourceTree = "<group>"; };
+		3F93489F1922C539002EA91F /* VFollowingTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VFollowingTableViewController.m; path = UI/UserProfile/VFollowingTableViewController.m; sourceTree = "<group>"; };
+		3F9348A11922C944002EA91F /* VFollowerTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VFollowerTableViewCell.h; path = UI/UserProfile/VFollowerTableViewCell.h; sourceTree = "<group>"; };
+		3F9348A21922C944002EA91F /* VFollowerTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VFollowerTableViewCell.m; path = UI/UserProfile/VFollowerTableViewCell.m; sourceTree = "<group>"; };
+		3F9348A71922D124002EA91F /* followerCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = followerCell.xib; sourceTree = "<group>"; };
 		3F9B6655187F80780046F826 /* NSDate+timeSince.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDate+timeSince.h"; sourceTree = "<group>"; };
 		3F9B6656187F80780046F826 /* NSDate+timeSince.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDate+timeSince.m"; sourceTree = "<group>"; };
 		3F9B665818848B750046F826 /* VMessageContainerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VMessageContainerViewController.h; path = UI/VMessageContainerViewController.h; sourceTree = "<group>"; };
@@ -931,6 +942,13 @@
 				3F93489419215302002EA91F /* VUserProfileViewController.m */,
 				D1DAAA09187A43BE009ADCB0 /* VProfileEditViewController.h */,
 				D1DAAA0A187A43BE009ADCB0 /* VProfileEditViewController.m */,
+				3F93489B1922C522002EA91F /* VFollowerTableViewController.h */,
+				3F93489C1922C522002EA91F /* VFollowerTableViewController.m */,
+				3F93489E1922C539002EA91F /* VFollowingTableViewController.h */,
+				3F93489F1922C539002EA91F /* VFollowingTableViewController.m */,
+				3F9348A11922C944002EA91F /* VFollowerTableViewCell.h */,
+				3F9348A21922C944002EA91F /* VFollowerTableViewCell.m */,
+				3F9348A71922D124002EA91F /* followerCell.xib */,
 			);
 			name = Profile;
 			sourceTree = "<group>";
@@ -1638,6 +1656,7 @@
 				BEB4C29C187E038C004ECEEF /* VConversationCell.xib in Resources */,
 				BEDF0FBE18DB783200750EF6 /* MuseoSans-100.otf in Resources */,
 				3FA217D718A9C38A0066E893 /* play_black.png in Resources */,
+				3F9348A81922D124002EA91F /* followerCell.xib in Resources */,
 				5FC4DA5E18970A9F006BA107 /* login.storyboard in Resources */,
 				BE4055AC18A41F1F00092AE1 /* Localizable.strings in Resources */,
 				3FA217EE18BC3A3A0066E893 /* Camera.storyboard in Resources */,
@@ -1822,11 +1841,13 @@
 				3F919908187600720055FE37 /* VSettingsViewController.m in Sources */,
 				BE692B53186E60B300C71336 /* VCommentsTableViewController.m in Sources */,
 				3FF7B6D718EE4009003831CD /* UIImage+Masking.m in Sources */,
+				3F9348A31922C944002EA91F /* VFollowerTableViewCell.m in Sources */,
 				03CB1B87190F0A97001667D0 /* VUser+LoadFollowers.m in Sources */,
 				3F0F1505191C20280030B33D /* VProgressiveImageView.m in Sources */,
 				BE171E0D1868C211004E5202 /* VAnswer+RestKit.m in Sources */,
 				3FDEDD0618CE48210028E3F1 /* VRemixStitchViewController.m in Sources */,
 				3F71A7DA18D7C6D20048FF60 /* VRemixSliderLeft.m in Sources */,
+				3F9348A01922C539002EA91F /* VFollowingTableViewController.m in Sources */,
 				BEF2C29918846FAB00AAE975 /* VConversation.m in Sources */,
 				3F71A7DC18D7C6D20048FF60 /* VRemixVideoRangeSlider.m in Sources */,
 				03D638211918488F0084FFC8 /* VServerEnvironmentTableViewController.m in Sources */,
@@ -1878,6 +1899,7 @@
 				03F9D289191DC71700576AEE /* VElapsedTimeFormatter.m in Sources */,
 				3F9B666E1888C4390046F826 /* VHomeStreamViewController.m in Sources */,
 				BED4569418BD581800A67160 /* UIWebView+VYoutubeLoading.m in Sources */,
+				3F93489D1922C522002EA91F /* VFollowerTableViewController.m in Sources */,
 				BE5C7379187E36E800A3340D /* VNodeAction.m in Sources */,
 				BE171E1F1868C211004E5202 /* VObjectManager+Comment.m in Sources */,
 				3FD7FFB518C14B6100945E5F /* VPickerTextField.m in Sources */,
