@@ -38,6 +38,11 @@
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint* mpPlayerContainmentWidthConstraint;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint* mpPlayerContainmentHeightConstraint;
 
+/**
+ This constraint is on the preview image only while a video is being played
+ */
+@property (weak, nonatomic) NSLayoutConstraint* previewImageTemporaryHeightConstraint;
+
 @property (weak, nonatomic) IBOutlet UIImageView* firstSmallPreviewImage;
 @property (weak, nonatomic) IBOutlet UIImageView* secondSmallPreviewImage;
 @property (weak, nonatomic) IBOutlet VResultView* firstResultView;

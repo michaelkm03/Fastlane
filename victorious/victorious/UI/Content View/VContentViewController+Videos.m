@@ -26,9 +26,47 @@
     [self.videoPlayer setItemURL:[NSURL URLWithString:self.currentAsset.data]];
     [self.mpPlayerContainmentView addSubview:self.videoPlayer];
     
-    self.activityIndicator.center = CGPointMake(CGRectGetMidX(self.mediaView.bounds), CGRectGetMidY(self.mediaView.bounds));
     [self.mediaView addSubview:self.activityIndicator];
+    NSLayoutConstraint *centerX = [NSLayoutConstraint constraintWithItem:self.activityIndicator
+                                                               attribute:NSLayoutAttributeCenterX
+                                                               relatedBy:NSLayoutRelationEqual
+                                                                  toItem:self.mediaView
+                                                               attribute:NSLayoutAttributeCenterX
+                                                              multiplier:1
+                                                                constant:0];
+    [self.mediaView addConstraint:centerX];
+    NSLayoutConstraint *centerY = [NSLayoutConstraint constraintWithItem:self.activityIndicator
+                                                               attribute:NSLayoutAttributeCenterY
+                                                               relatedBy:NSLayoutRelationEqual
+                                                                  toItem:self.mediaView
+                                                               attribute:NSLayoutAttributeCenterY
+                                                              multiplier:1
+                                                                constant:0];
+    [self.mediaView addConstraint:centerY];
     [self.activityIndicator startAnimating];
+}
+
+- (BOOL)isVideoLoadingOrLoaded
+{
+    return self.videoPlayer || self.previewImageTemporaryHeightConstraint;
+}
+
+- (void)unloadVideoWithDuration:(NSTimeInterval)duration
+{
+    [self.videoPlayer removeFromSuperview];
+    self.videoPlayer = nil;
+    if (self.previewImageTemporaryHeightConstraint)
+    {
+        [UIView animateWithDuration:duration
+                        delay:0
+                            options:UIViewAnimationOptionCurveEaseInOut
+                         animations:^(void)
+        {
+            [self.previewImage removeConstraint:self.previewImageTemporaryHeightConstraint];
+            [self.view layoutIfNeeded];
+        }
+                         completion:nil];
+    }
 }
 
 - (void)animateVideoOpen
@@ -45,8 +83,15 @@
     [UIView animateWithDuration:.2f
                      animations:^
      {
-         self.previewImageHeightConstraint.constant = CGRectGetHeight(self.videoPlayer.bounds);
-         self.previewImageWidthConstraint.constant = CGRectGetWidth(self.videoPlayer.bounds);
+         NSLayoutConstraint *temporaryHeightConstraint = [NSLayoutConstraint constraintWithItem:self.previewImage
+                                                                                      attribute:NSLayoutAttributeHeight
+                                                                                      relatedBy:NSLayoutRelationEqual
+                                                                                         toItem:nil
+                                                                                      attribute:NSLayoutAttributeNotAnAttribute
+                                                                                     multiplier:1.0f
+                                                                                       constant:CGRectGetHeight(self.videoPlayer.bounds)];
+         [self.previewImage addConstraint:temporaryHeightConstraint];
+         self.previewImageTemporaryHeightConstraint = temporaryHeightConstraint;
          [self.view layoutIfNeeded];
      }
                      completion:^(BOOL finished)
@@ -62,16 +107,6 @@
               [self.videoPlayer.player play];
               self.remixButton.hidden = NO;
           }];
-     }];
-}
-
-- (void)animateVideoClosed
-{
-    CGFloat duration = [self.sequence isPoll] ? .5f : 0;//We only animate in poll videos
-    
-    [UIView animateWithDuration:duration animations:
-     ^{
-         self.mpPlayerContainmentView.bounds = CGRectMake(0, 0, 0, 0);
      }];
 }
 
@@ -95,6 +130,7 @@
 - (void)videoPlayerReadyToPlay:(VCVideoPlayerView *)videoPlayer
 {
     [self.activityIndicator stopAnimating];
+    [self.activityIndicator removeFromSuperview];
     
     CGFloat yRatio = 1;
     yRatio = fminf(self.videoPlayer.naturalSize.height / self.videoPlayer.naturalSize.width, 1);

@@ -10,6 +10,7 @@
 
 #import "VStreamTableViewController.h"
 #import "VContentViewController.h"
+#import "VContentViewController+Videos.h"
 
 #import "VStreamViewCell.h"
 
@@ -26,17 +27,14 @@
 {
     VContentViewController *contentVC = (VContentViewController*)[context viewControllerForKey:UITransitionContextFromViewControllerKey];
     VStreamTableViewController *streamVC = (VStreamTableViewController*)[context viewControllerForKey:UITransitionContextToViewControllerKey];
-    VStreamViewCell* selectedCell = (VStreamViewCell*) [streamVC.tableView cellForRowAtIndexPath:streamVC.tableView.indexPathForSelectedRow];
     
     streamVC.view.userInteractionEnabled = NO;
     contentVC.view.userInteractionEnabled = NO;
     
-    [UIView animateWithDuration:.2f animations:^
+    if ([contentVC isVideoLoadingOrLoaded])
     {
-        contentVC.previewImageWidthConstraint.constant = CGRectGetWidth(selectedCell.frame);
-        contentVC.previewImageHeightConstraint.constant = CGRectGetHeight(selectedCell.frame);
-        [contentVC.view layoutIfNeeded];
-    }];
+        [contentVC unloadVideoWithDuration:0.2f];
+    }
     
     [contentVC.actionBarVC animateOutWithDuration:.2f
                                        completion:^(BOOL finished)

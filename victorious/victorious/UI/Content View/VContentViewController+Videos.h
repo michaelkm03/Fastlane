@@ -11,7 +11,9 @@
 
 @interface VContentViewController (Videos) <VCVideoPlayerDelegate>
 
-- (void)loadVideo;
+- (void)loadVideo; ///< Loads and plays a video
+- (BOOL)isVideoLoadingOrLoaded; ///< Returns YES if -loadVideo has been called without a subsequent -unloadVideo.
+- (void)unloadVideoWithDuration:(NSTimeInterval)duration; ///< Undoes the changes that -loadVideo does.
 
 - (IBAction)pressedRemix:(id)sender;
 
