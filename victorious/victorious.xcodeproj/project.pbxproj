@@ -60,7 +60,6 @@
 		3F9B666E1888C4390046F826 /* VHomeStreamViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F9B666D1888C4390046F826 /* VHomeStreamViewController.m */; };
 		3F9B66711888C4940046F826 /* VOwnerStreamViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F9B66701888C4940046F826 /* VOwnerStreamViewController.m */; };
 		3F9B66741888C4B20046F826 /* VCommunityStreamViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F9B66731888C4B20046F826 /* VCommunityStreamViewController.m */; };
-		3F9B66771888C4DD0046F826 /* VForumStreamViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F9B66761888C4DD0046F826 /* VForumStreamViewController.m */; };
 		3FA217BB18A9ADF10066E893 /* ChromecastDeviceController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3FA217BA18A9ADF10066E893 /* ChromecastDeviceController.m */; };
 		3FA217C218A9B5160066E893 /* CastViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3FA217BD18A9B5160066E893 /* CastViewController.m */; };
 		3FA217C318A9B5160066E893 /* DeviceTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3FA217BF18A9B5160066E893 /* DeviceTableViewController.m */; };
@@ -351,8 +350,6 @@
 		3F9B66701888C4940046F826 /* VOwnerStreamViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VOwnerStreamViewController.m; path = UI/VOwnerStreamViewController.m; sourceTree = "<group>"; };
 		3F9B66721888C4B20046F826 /* VCommunityStreamViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VCommunityStreamViewController.h; path = UI/VCommunityStreamViewController.h; sourceTree = "<group>"; };
 		3F9B66731888C4B20046F826 /* VCommunityStreamViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VCommunityStreamViewController.m; path = UI/VCommunityStreamViewController.m; sourceTree = "<group>"; };
-		3F9B66751888C4DD0046F826 /* VForumStreamViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VForumStreamViewController.h; path = UI/VForumStreamViewController.h; sourceTree = "<group>"; };
-		3F9B66761888C4DD0046F826 /* VForumStreamViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VForumStreamViewController.m; path = UI/VForumStreamViewController.m; sourceTree = "<group>"; };
 		3FA217B518A9AD9B0066E893 /* GoogleCast.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GoogleCast.framework; path = "3rd Party SDKs/GoogleCast.framework"; sourceTree = "<group>"; };
 		3FA217B918A9ADF10066E893 /* ChromecastDeviceController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ChromecastDeviceController.h; path = "3rd Party SDKs/ChromecastDeviceController.h"; sourceTree = SOURCE_ROOT; };
 		3FA217BA18A9ADF10066E893 /* ChromecastDeviceController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ChromecastDeviceController.m; path = "3rd Party SDKs/ChromecastDeviceController.m"; sourceTree = SOURCE_ROOT; };
@@ -907,8 +904,6 @@
 				3F9B66701888C4940046F826 /* VOwnerStreamViewController.m */,
 				3F9B66721888C4B20046F826 /* VCommunityStreamViewController.h */,
 				3F9B66731888C4B20046F826 /* VCommunityStreamViewController.m */,
-				3F9B66751888C4DD0046F826 /* VForumStreamViewController.h */,
-				3F9B66761888C4DD0046F826 /* VForumStreamViewController.m */,
 				BEE800E718FCC5C200A7CFD7 /* VStreamTableViewController+ContentCreation.h */,
 				BEE800E818FCC5C200A7CFD7 /* VStreamTableViewController+ContentCreation.m */,
 			);
@@ -1775,7 +1770,6 @@
 				5FF9BE83189318CD0054694B /* VRootViewController.m in Sources */,
 				BEB4C29D187E038C004ECEEF /* VNewsCell.m in Sources */,
 				BE171E131868C211004E5202 /* VInteractionAction+RestKit.m in Sources */,
-				3F9B66771888C4DD0046F826 /* VForumStreamViewController.m in Sources */,
 				03F9D281191D542300576AEE /* VCVideoPlayerToolbarView.m in Sources */,
 				BED7F67A18E0BD5D00545DF6 /* UIImage+ImageCreation.m in Sources */,
 				BEA5BF71187FCBF10014C3EF /* VObjectManager+Users.m in Sources */,
