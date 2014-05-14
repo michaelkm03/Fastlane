@@ -88,7 +88,6 @@
     
     self.pollPreviewView.hidden = NO;
     self.previewImage.hidden = YES;
-//    self.mpPlayerContainmentView.hidden = YES; // TODO
     self.remixButton.hidden = YES;
 }
 
@@ -105,15 +104,7 @@
         contentURL = [NSURL URLWithString:((VAnswer*)[answers lastObject]).mediaUrl];
     }
     
-    [self.videoPlayer removeFromSuperview];
-    self.videoPlayer = [[VCVideoPlayerView alloc] initWithFrame:self.pollPreviewView.frame];
-    self.videoPlayer.delegate = self;
-    [self.videoPlayer setItemURL:contentURL];
-//    [self.mpPlayerContainmentView addSubview:self.videoPlayer]; // TODO
-    
-    self.activityIndicator.center = self.videoPlayer.center;
-    [self.mediaView addSubview:self.activityIndicator];
-    [self.activityIndicator startAnimating];
+    [self playVideoAtURL:contentURL withPreviewView:self.pollPreviewView];
 }
 
 #pragma mark - VPollAnswerBarDelegate

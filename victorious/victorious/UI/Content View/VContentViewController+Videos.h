@@ -11,10 +11,20 @@
 
 @interface VContentViewController (Videos) <VCVideoPlayerDelegate>
 
-- (void)loadVideo; ///< Loads and plays a video
-- (BOOL)isVideoLoadingOrLoaded; ///< Returns YES if -loadVideo has been called without a subsequent -unloadVideo.
-- (void)unloadVideoWithDuration:(NSTimeInterval)duration; ///< Undoes the changes that -loadVideo does.
+/**
+ Plays a video.
+ 
+ @param contentURL   The URL of the video to play
+ @param previewView  The view that contains a thumbnail of the video being played.
+                     It should be a direct subview of mediaView, and it should be
+                     positioned via optional constraints (i.e. constraints with a
+                     priority less then UILayoutPriorityRequired), since it will
+                     be temporarily re-positioned with required constraints while
+                     the video is playing.
+ */
+- (void)playVideoAtURL:(NSURL *)contentURL withPreviewView:(UIView *)previewView;
 
-- (IBAction)pressedRemix:(id)sender;
+- (BOOL)isVideoLoadingOrLoaded; ///< Returns YES if -playVideoAtURL:withPreviewView: has been called without a subsequent -unloadVideoWithDuration:
+- (void)unloadVideoWithDuration:(NSTimeInterval)duration; ///< Undoes the changes that -loadVideo does.
 
 @end

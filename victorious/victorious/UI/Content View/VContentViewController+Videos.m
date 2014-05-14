@@ -6,19 +6,22 @@
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
-#import "VContentViewController+Videos.h"
-#import "VContentViewController+Private.h"
 #import "VContentViewController+Images.h"
+#import "VContentViewController+Private.h"
+#import "VContentViewController+Videos.h"
 #import "VObjectManager+Users.h"
 #import "VLoginViewController.h"
-
 #import "VRemixSelectViewController.h"
+
+#import <objc/runtime.h>
+
+static const char kVideoPreviewViewKey;
 
 @implementation VContentViewController (Videos)
 
-- (void)loadVideo
+- (void)playVideoAtURL:(NSURL *)contentURL withPreviewView:(UIView *)previewView
 {
-    [self loadImage];
+    NSAssert([self.mediaView.subviews containsObject:previewView], @"previewView must be a subview of mediaView");
     
     [self.videoPlayer removeFromSuperview];
     self.videoPlayer = [[VCVideoPlayerView alloc] init];
@@ -29,60 +32,61 @@
     [self.mediaView addConstraint:[NSLayoutConstraint constraintWithItem:self.videoPlayer
                                                                attribute:NSLayoutAttributeWidth
                                                                relatedBy:NSLayoutRelationEqual
-                                                                  toItem:self.previewImage
+                                                                  toItem:previewView
                                                                attribute:NSLayoutAttributeWidth
                                                               multiplier:1.0f
                                                                 constant:0.0f]];
     [self.mediaView addConstraint:[NSLayoutConstraint constraintWithItem:self.videoPlayer
                                                                attribute:NSLayoutAttributeHeight
                                                                relatedBy:NSLayoutRelationEqual
-                                                                  toItem:self.previewImage
+                                                                  toItem:previewView
                                                                attribute:NSLayoutAttributeHeight
                                                               multiplier:1.0f
                                                                 constant:0.0f]];
     [self.mediaView addConstraint:[NSLayoutConstraint constraintWithItem:self.videoPlayer
                                                                attribute:NSLayoutAttributeLeading
                                                                relatedBy:NSLayoutRelationEqual
-                                                                  toItem:self.previewImage
+                                                                  toItem:previewView
                                                                attribute:NSLayoutAttributeLeading
                                                               multiplier:1.0f
                                                                 constant:0.0f]];
     [self.mediaView addConstraint:[NSLayoutConstraint constraintWithItem:self.videoPlayer
                                                                attribute:NSLayoutAttributeTop
                                                                relatedBy:NSLayoutRelationEqual
-                                                                  toItem:self.previewImage
+                                                                  toItem:previewView
                                                                attribute:NSLayoutAttributeTop
                                                               multiplier:1.0f
                                                                 constant:0.0f]];
     self.videoPlayer.alpha = 0;
-    [self.videoPlayer setItemURL:[NSURL URLWithString:self.currentAsset.data]];
+    [self.videoPlayer setItemURL:contentURL];
     
     [self.mediaView addSubview:self.activityIndicator];
     [self.mediaView addConstraint:[NSLayoutConstraint constraintWithItem:self.activityIndicator
                                                                attribute:NSLayoutAttributeCenterX
                                                                relatedBy:NSLayoutRelationEqual
-                                                                  toItem:self.mediaView
+                                                                  toItem:previewView
                                                                attribute:NSLayoutAttributeCenterX
                                                               multiplier:1
                                                                 constant:0]];
     [self.mediaView addConstraint:[NSLayoutConstraint constraintWithItem:self.activityIndicator
                                                                attribute:NSLayoutAttributeCenterY
                                                                relatedBy:NSLayoutRelationEqual
-                                                                  toItem:self.mediaView
+                                                                  toItem:previewView
                                                                attribute:NSLayoutAttributeCenterY
                                                               multiplier:1
                                                                 constant:0]];
     [self.activityIndicator startAnimating];
+    self.videoPreviewView = previewView;
 }
 
 - (BOOL)isVideoLoadingOrLoaded
 {
-    return self.videoPlayer || self.previewImageTemporaryHeightConstraint;
+    return self.videoPlayer || self.temporaryVideoPreviewConstraints.count;
 }
 
 - (void)unloadVideoWithDuration:(NSTimeInterval)duration
 {
-    if (!self.videoPlayer && !self.previewImageTemporaryHeightConstraint)
+    if (!self.videoPlayer && !self.temporaryVideoPreviewConstraints.count)
     {
         return;
     }
@@ -93,14 +97,15 @@
         self.videoPlayer = nil;
     };
 
-    if (self.previewImageTemporaryHeightConstraint)
+    if (self.temporaryVideoPreviewConstraints.count)
     {
         [UIView animateWithDuration:duration
                         delay:0
                             options:UIViewAnimationOptionCurveEaseInOut
                          animations:^(void)
         {
-            [self.previewImage removeConstraint:self.previewImageTemporaryHeightConstraint];
+            [self.mediaView removeConstraints:self.temporaryVideoPreviewConstraints];
+            self.temporaryVideoPreviewConstraints = nil;
             [self.view layoutIfNeeded];
             self.previewImage.alpha = 1.0f;
             self.videoPlayer.alpha = 0;
@@ -118,15 +123,18 @@
     [UIView animateWithDuration:0.2f
                      animations:^(void)
     {
-        NSLayoutConstraint *temporaryHeightConstraint = [NSLayoutConstraint constraintWithItem:self.previewImage
-                                                                                     attribute:NSLayoutAttributeHeight
-                                                                                     relatedBy:NSLayoutRelationEqual
-                                                                                        toItem:nil
-                                                                                     attribute:NSLayoutAttributeNotAnAttribute
-                                                                                    multiplier:1.0f
-                                                                                      constant:height];
-        [self.previewImage addConstraint:temporaryHeightConstraint];
-        self.previewImageTemporaryHeightConstraint = temporaryHeightConstraint;
+        UIView *videoPreviewView = self.videoPreviewView;
+        NSArray *temporaryVerticalConstraints = [NSLayoutConstraint constraintsWithVisualFormat:@"V:|[videoPreviewView(==height)]"
+                                                                                        options:0
+                                                                                        metrics:@{ @"height": @(height) }
+                                                                                          views:NSDictionaryOfVariableBindings(videoPreviewView)];
+        NSArray *temporaryHorizontalConstraints = [NSLayoutConstraint constraintsWithVisualFormat:@"H:|[videoPreviewView]|"
+                                                                                options:0
+                                                                                metrics:nil
+                                                                                  views:NSDictionaryOfVariableBindings(videoPreviewView)];
+        NSArray *temporaryConstraints = [temporaryHorizontalConstraints arrayByAddingObjectsFromArray:temporaryVerticalConstraints];
+        [self.mediaView addConstraints:temporaryConstraints];
+        self.temporaryVideoPreviewConstraints = temporaryConstraints;
         [self.view layoutIfNeeded];
         self.previewImage.alpha = 0;
         self.videoPlayer.alpha = 1.0f;
@@ -151,6 +159,18 @@
      ^{
          [self.videoPlayer.player pause];
      }];
+}
+
+#pragma mark - Video Preview View
+
+- (void)setVideoPreviewView:(UIView *)videoPreviewView
+{
+    objc_setAssociatedObject(self, &kVideoPreviewViewKey, videoPreviewView, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+}
+
+- (UIView *)videoPreviewView
+{
+    return objc_getAssociatedObject(self, &kVideoPreviewViewKey);
 }
 
 #pragma mark - VCVideoPlayerDelegate methods

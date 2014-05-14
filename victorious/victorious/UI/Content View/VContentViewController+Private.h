@@ -35,9 +35,9 @@
 @property (weak, nonatomic) IBOutlet UIButton* remixButton;
 
 /**
- This constraint is on the preview image only while a video is being played
+ These constraints are set on the preview image only while a video is being played
  */
-@property (weak, nonatomic) NSLayoutConstraint* previewImageTemporaryHeightConstraint;
+@property (strong, nonatomic) NSArray* temporaryVideoPreviewConstraints;
 
 @property (weak, nonatomic) IBOutlet UIImageView* firstSmallPreviewImage;
 @property (weak, nonatomic) IBOutlet UIImageView* secondSmallPreviewImage;

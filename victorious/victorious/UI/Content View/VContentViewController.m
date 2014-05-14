@@ -237,15 +237,19 @@ CGFloat kContentMediaViewOffset = 154;
 - (void)loadNextAsset
 {
     if (!self.currentAsset)
+    {
         self.currentAsset = [self.currentNode firstAsset];
-    //    else
-    //        self.currentAsset = [self.currentNode nextAssetFromAsset:self.currentAsset];
+    }
     
     if ([self.currentAsset isVideo])
-        [self loadVideo];
-    
-    else //Default case: we assume its an image and hope it works out
+    {
+        [self loadImage]; // load the video thumbnail
+        [self playVideoAtURL:[NSURL URLWithString:self.currentAsset.data] withPreviewView:self.previewImage];
+    }
+    else //Default case: we assume it's an image and hope it works out
+    {
         [self loadImage];
+    }
 }
 
 #pragma mark - Quiz
