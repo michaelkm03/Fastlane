@@ -267,7 +267,6 @@
     NSMutableDictionary* parameters = [@{@"sequence_id" : sequence.remoteId.stringValue ?: [NSNull null],
                                          @"parent_id" : parent.remoteId.stringValue ?: [NSNull null],
                                          @"text" : text ?: [NSNull null]} mutableCopy];
-    
     NSDictionary *allURLs;
     if (mediaURL && type)
     {
@@ -303,7 +302,7 @@
                          text:(NSString*)text
                  mediaURLPath:(NSString*)mediaURLPath
 {
-    VComment* tempComment = [self.mainUser.managedObjectContext insertNewObjectForEntityForName:[VComment entityName]];
+    VComment* tempComment = [sequence.managedObjectContext insertNewObjectForEntityForName:[VComment entityName]];
     
     tempComment.remoteId = remoteID;
     tempComment.text = text;
@@ -313,11 +312,11 @@
     tempComment.display_order = @(-1);
     tempComment.thumbnailUrl = [self localImageURLForVideo:mediaURLPath];
     
-    VSequence* sequenceInContext = (VSequence*)[self.mainUser.managedObjectContext objectWithID:sequence.objectID];
-    [sequenceInContext addCommentsObject:tempComment];
-    sequenceInContext.commentCount = @(sequenceInContext.commentCount.integerValue + 1);
+    [sequence addCommentsObject:tempComment];
+    sequence.commentCount = @(sequence.commentCount.integerValue + 1);
     
-    [self.mainUser addCommentsObject:tempComment];
+    [self.mainUser addCommentsObject:[self.mainUser.managedObjectContext objectWithID:tempComment.objectID]];
+    
     VCommentFilter* filter = [[VObjectManager sharedManager] commentFilterForSequence:sequence];
     [(VCommentFilter*)[tempComment.managedObjectContext objectWithID:filter.objectID] addCommentsObject:tempComment];
     
@@ -325,7 +324,6 @@
     
     return tempComment;
 }
-
 
 #pragma mark - Helper methods
 
