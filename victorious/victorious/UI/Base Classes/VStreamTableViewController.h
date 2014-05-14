@@ -22,7 +22,7 @@ typedef NS_ENUM(NSInteger, VStreamScope)
 
 @interface VStreamTableViewController : VFetchedResultsTableViewController <VAnimation, VCreateSequenceDelegate>
 
-- (NSArray*)categoriesForOption:(NSUInteger)searchOption;
+- (NSArray*)sequenceCategories;
 - (VSequenceFilter*)currentFilter;
 
 - (IBAction)showMenu;

@@ -144,6 +144,13 @@ const   CGFloat kVNavigationBarHeight = 44.0;
 //}
 
 #pragma mark - Support
+- (void)setProfile:(VUser *)profile
+{
+    _profile = profile;
+    
+    [self refreshFetchController];
+    [self refreshAction:nil];
+}
 
 - (void)setProfileData
 {
@@ -596,6 +603,13 @@ const   CGFloat kVNavigationBarHeight = 44.0;
                                                       
                                                       if (resultObjects.count > 0)
                                                       {
+#warning temporary hack to unblock gary
+                                                          if (![self.fetchedResultsController.fetchedObjects count])
+                                                          {
+                                                              //This does not make any sense, so just call refresh again.
+                                                              [self refreshAction:sender];
+                                                          }
+                                                          
                                                           [UIView animateWithDuration:0.6 animations:^{
                                                               [self.tableView beginUpdates];
                                                               self.tableView.tableHeaderView = [self shortHeader];

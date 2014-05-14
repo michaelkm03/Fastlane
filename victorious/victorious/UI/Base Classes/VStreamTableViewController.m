@@ -65,9 +65,6 @@
     
     self.clearsSelectionOnViewWillAppear = NO;
     self.bottomRefreshIndicator.color = [[VThemeManager sharedThemeManager] themedColorForKey:kVMainTextColor];
-    
-    //Remove the search button from the stream - feature currently deprecated
-    self.navigationItem.rightBarButtonItem = nil;
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -116,7 +113,10 @@
     
     NSFetchRequest *fetchRequest = [NSFetchRequest fetchRequestWithEntityName:[VSequence entityName]];
     NSSortDescriptor *sort = [[NSSortDescriptor alloc] initWithKey:@"releasedAt" ascending:NO];
-
+    
+    NSPredicate* filterPredicate = [NSPredicate predicateWithFormat:@"ANY filters.filterAPIPath =[cd] %@", [self currentFilter].filterAPIPath];
+    [fetchRequest setPredicate:filterPredicate];
+    
     [fetchRequest setSortDescriptors:@[sort]];
     [fetchRequest setFetchBatchSize:50];
     
@@ -124,22 +124,6 @@
                                                managedObjectContext:context
                                                  sectionNameKeyPath:nil
                                                           cacheName:fetchRequest.entityName];
-}
-
-- (NSFetchedResultsController *)makeSearchFetchedResultsController
-{
-    RKObjectManager* manager = [RKObjectManager sharedManager];
-    NSManagedObjectContext *context = manager.managedObjectStore.persistentStoreManagedObjectContext;
-    
-    NSFetchRequest *fetchRequest = [NSFetchRequest fetchRequestWithEntityName:[VSequence entityName]];
-    NSSortDescriptor *sort = [[NSSortDescriptor alloc] initWithKey:@"releasedAt" ascending:NO];
-    [fetchRequest setSortDescriptors:@[sort]];
-    [fetchRequest setFetchBatchSize:50];
-    
-    return  [[NSFetchedResultsController alloc] initWithFetchRequest:fetchRequest
-                                                managedObjectContext:context
-                                                  sectionNameKeyPath:nil
-                                                           cacheName:kSearchCache];
 }
 
 #pragma mark - UITableViewDelegate
@@ -272,15 +256,12 @@
 {
     [self.tableView registerNib:[UINib nibWithNibName:kStreamViewCellIdentifier bundle:nil]
          forCellReuseIdentifier:kStreamViewCellIdentifier];
-    [self.searchDisplayController.searchResultsTableView registerNib:[UINib nibWithNibName:kStreamViewCellIdentifier bundle:nil] forCellReuseIdentifier:kStreamViewCellIdentifier];
     
     [self.tableView registerNib:[UINib nibWithNibName:kStreamVideoCellIdentifier bundle:[NSBundle mainBundle]]
          forCellReuseIdentifier:kStreamVideoCellIdentifier];
-    [self.searchDisplayController.searchResultsTableView registerNib:[UINib nibWithNibName:kStreamVideoCellIdentifier bundle:nil] forCellReuseIdentifier:kStreamVideoCellIdentifier];
     
     [self.tableView registerNib:[UINib nibWithNibName:kStreamDoublePollCellIdentifier bundle:nil]
          forCellReuseIdentifier:kStreamDoublePollCellIdentifier];
-    [self.searchDisplayController.searchResultsTableView registerNib:[UINib nibWithNibName:kStreamDoublePollCellIdentifier bundle:nil] forCellReuseIdentifier:kStreamDoublePollCellIdentifier];
 }
 
 #pragma mark - Refresh
@@ -326,18 +307,12 @@
 }
 
 #pragma mark - Predicates
-- (NSPredicate*)scopeTypePredicateForOption:(NSUInteger)searchOption
-{
-    VSequenceFilter* filter = [self currentFilter];
-    return [NSPredicate predicateWithFormat:@"ANY filters.filterAPIPath =[cd] %@", filter.filterAPIPath];
-}
-
 - (VSequenceFilter*)currentFilter
 {
-    return [[VObjectManager sharedManager] sequenceFilterForCategories:[self categoriesForOption:VStreamFilterAll]];
+    return [[VObjectManager sharedManager] sequenceFilterForCategories:[self sequenceCategories]];
 }
 
-- (NSArray*)categoriesForOption:(NSUInteger)searchOption
+- (NSArray*)sequenceCategories
 {
     return nil;
 }

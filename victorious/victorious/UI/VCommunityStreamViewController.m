@@ -32,22 +32,9 @@
     [self addCreateButton];
 }
 
-- (NSArray*)categoriesForOption:(NSUInteger)searchOption
+- (NSArray*)sequenceCategories
 {
-    switch (searchOption)
-    {
-        case VStreamFilterPolls:
-            return @[kVUGCPollCategory];
-            
-        case VStreamFilterImages:
-            return @[kVUGCImageCategory];
-            
-        case VStreamFilterVideos:
-            return @[kVUGCVideoCategory, kVUGCRemixCategory];
-            
-        default:
-            return @[kVUGCPollCategory, kVUGCImageCategory, kVUGCVideoCategory, kVUGCRemixCategory];
-    }
+    return @[kVUGCPollCategory, kVUGCImageCategory, kVUGCVideoCategory, kVUGCRemixCategory];
 }
 
 @end
