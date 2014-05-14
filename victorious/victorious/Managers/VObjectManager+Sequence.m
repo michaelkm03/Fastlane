@@ -20,8 +20,6 @@
 
 #import "VPollResult.h"
 
-#import "VPaginationStatus.h"
-
 #import "NSString+VParseHelp.h"
 
 NSString* const kPollResultsLoaded = @"kPollResultsLoaded";

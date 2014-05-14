@@ -148,7 +148,6 @@
 		BE171E1F1868C211004E5202 /* VObjectManager+Comment.m in Sources */ = {isa = PBXBuildFile; fileRef = BE171DDD1868C211004E5202 /* VObjectManager+Comment.m */; };
 		BE171E201868C211004E5202 /* VObjectManager+Login.m in Sources */ = {isa = PBXBuildFile; fileRef = BE171DDF1868C211004E5202 /* VObjectManager+Login.m */; };
 		BE171E211868C211004E5202 /* VObjectManager+Sequence.m in Sources */ = {isa = PBXBuildFile; fileRef = BE171DE21868C211004E5202 /* VObjectManager+Sequence.m */; };
-		BE171E231868C211004E5202 /* VPaginationStatus.m in Sources */ = {isa = PBXBuildFile; fileRef = BE171DE61868C211004E5202 /* VPaginationStatus.m */; };
 		BE171E241868C211004E5202 /* VThemeManager.m in Sources */ = {isa = PBXBuildFile; fileRef = BE171DE81868C211004E5202 /* VThemeManager.m */; };
 		BE171E391868C266004E5202 /* NSManagedObject+RestKit.m in Sources */ = {isa = PBXBuildFile; fileRef = BE171E361868C265004E5202 /* NSManagedObject+RestKit.m */; };
 		BE171E3A1868C266004E5202 /* NSString+VParseHelp.m in Sources */ = {isa = PBXBuildFile; fileRef = BE171E381868C266004E5202 /* NSString+VParseHelp.m */; };
@@ -498,8 +497,6 @@
 		BE171DDF1868C211004E5202 /* VObjectManager+Login.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "VObjectManager+Login.m"; sourceTree = "<group>"; };
 		BE171DE11868C211004E5202 /* VObjectManager+Sequence.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "VObjectManager+Sequence.h"; sourceTree = "<group>"; };
 		BE171DE21868C211004E5202 /* VObjectManager+Sequence.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "VObjectManager+Sequence.m"; sourceTree = "<group>"; };
-		BE171DE51868C211004E5202 /* VPaginationStatus.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VPaginationStatus.h; sourceTree = "<group>"; };
-		BE171DE61868C211004E5202 /* VPaginationStatus.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VPaginationStatus.m; sourceTree = "<group>"; };
 		BE171DE71868C211004E5202 /* VThemeManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VThemeManager.h; path = Managers/VThemeManager.h; sourceTree = "<group>"; };
 		BE171DE81868C211004E5202 /* VThemeManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VThemeManager.m; path = Managers/VThemeManager.m; sourceTree = "<group>"; };
 		BE171E351868C265004E5202 /* NSManagedObject+RestKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSManagedObject+RestKit.h"; path = "../NSManagedObject+RestKit.h"; sourceTree = "<group>"; };
@@ -1431,8 +1428,6 @@
 				BE171DDF1868C211004E5202 /* VObjectManager+Login.m */,
 				BE171DE11868C211004E5202 /* VObjectManager+Sequence.h */,
 				BE171DE21868C211004E5202 /* VObjectManager+Sequence.m */,
-				BE171DE51868C211004E5202 /* VPaginationStatus.h */,
-				BE171DE61868C211004E5202 /* VPaginationStatus.m */,
 				BEA5BF6F187FCBF10014C3EF /* VObjectManager+Users.h */,
 				BEA5BF70187FCBF10014C3EF /* VObjectManager+Users.m */,
 				BE9181D919098E280071E7AF /* VObjectManager+SequenceFilters.h */,
@@ -1861,7 +1856,6 @@
 				BE89D9961921908F00D97E7F /* VCommentFilter+RestKit.m in Sources */,
 				3F14C44E18BD2BD0001796B9 /* VCAudioVideoRecorder.m in Sources */,
 				BE171D8C1868BE64004E5202 /* VAppDelegate.m in Sources */,
-				BE171E231868C211004E5202 /* VPaginationStatus.m in Sources */,
 				5FC4DA671897111B006BA107 /* VLoginViewController.m in Sources */,
 				3FF7B6DD18F4A668003831CD /* VRemixSelectViewController.m in Sources */,
 				0352278319219079003FCD10 /* VVideoDownloadProgressIndicatorView.m in Sources */,

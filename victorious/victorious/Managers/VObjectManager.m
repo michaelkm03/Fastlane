@@ -26,8 +26,6 @@
 #import "VUnreadConversation+RestKit.h"
 #import "VVoteType+RestKit.h"
 
-#import "VPaginationStatus.h"
-
 @implementation VObjectManager
 
 @synthesize mainUser;
@@ -111,7 +109,6 @@
                                              ]];
     
     self.objectCache = [[NSCache alloc] init];
-    self.paginationStatuses = [[NSMutableDictionary alloc] init];
 }
 
 #pragma mark - operation
@@ -295,17 +292,6 @@
     
     return [NSError errorWithDomain:kVictoriousDomain code:[responseObject[@"error"] integerValue]
                            userInfo:@{NSLocalizedDescriptionKey: errorMessage}];
-}
-
--(VPaginationStatus *)statusForKey:(NSString*)key
-{
-    VPaginationStatus* status = (self.paginationStatuses)[key];
-    if (!status)
-    {
-        status = [[VPaginationStatus alloc] init];
-    }
-    
-    return status;
 }
 
 - (NSManagedObject*)objectForID:(NSNumber*)objectID

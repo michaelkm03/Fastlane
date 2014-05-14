@@ -49,26 +49,6 @@
 {
     NSString* path = @"/api/message/conversation_list";
     
-    //    TODO: waiting for pagination to work on backend
-    //    static NSString* kConversationPaginationKey = @"conversations";
-    //    __block VPaginationStatus* status = [self statusForKey:kConversationPaginationKey];
-    //    if([status isFullyLoaded])
-    //    {
-    //        return nil;
-    //    }
-    //
-    //    if (status.pagesLoaded) //only add page to the path if we've looked it up before.
-    //    {
-    //        path = [path stringByAppendingFormat:@"/0/%lu/%lu", status.pagesLoaded + 1, (unsigned long)status.itemsPerPage];
-    //    }
-    //
-    //    PaginationBlock pagination = ^(NSUInteger page_number, NSUInteger total_pages)
-    //    {
-    //        status.pagesLoaded = page_number;
-    //        status.totalPages = total_pages;
-    //        [self.paginationStatuses setObject:status forKey:kConversationPaginationKey];
-    //    };
-    
     VSuccessBlock fullSuccess = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
     {
         NSManagedObjectContext* context;
@@ -113,27 +93,6 @@
                                                                  failBlock:(VFailBlock)fail
 {
     NSString* path = [@"/api/message/conversation/" stringByAppendingString:conversation.remoteId.stringValue];
-    
-//    TODO: waiting for pagination to work on backend
-//    NSString* statusKey = [NSString stringWithFormat:@"messagesFor%@", conversation.remoteId];
-//    
-//    __block VPaginationStatus* status = [self statusForKey:statusKey];
-//    if([status isFullyLoaded])
-//    {
-//        return nil;
-//    }
-//    
-//    if (status.pagesLoaded) //only add page to the path if we've looked it up before.
-//    {
-//        path = [path stringByAppendingFormat:@"/0/%lu/%lu", status.pagesLoaded + 1, (unsigned long)status.itemsPerPage];
-//    }
-//    
-//    PaginationBlock pagination = ^(NSUInteger page_number, NSUInteger total_pages)
-//    {
-//        status.pagesLoaded = page_number;
-//        status.totalPages = total_pages;
-//        [self.paginationStatuses setObject:status forKey:statusKey];
-//    };
     
     VSuccessBlock fullSuccess = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
     {
