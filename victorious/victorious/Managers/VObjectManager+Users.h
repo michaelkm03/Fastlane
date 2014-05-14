@@ -55,6 +55,15 @@
                                      successBlock:(VSuccessBlock)success
                                         failBlock:(VFailBlock)fail;
 
+- (RKManagedObjectRequestOperation *)countOfFollowsForUser:(VUser *)user
+                                              successBlock:(VSuccessBlock)success
+                                                 failBlock:(VFailBlock)fail;
+
+- (RKManagedObjectRequestOperation *)isUser:(VUser *)follower
+                                  following:(VUser *)user
+                               successBlock:(VSuccessBlock)success
+                                  failBlock:(VFailBlock)fail;
+
 - (RKManagedObjectRequestOperation *)inviteFriends:(NSArray*)friendIDs
                                   withSuccessBlock:(VSuccessBlock)success
                                          failBlock:(VFailBlock)fail;

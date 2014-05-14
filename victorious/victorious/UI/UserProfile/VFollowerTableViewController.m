@@ -14,12 +14,10 @@
 #import "VThemeManager.h"
 
 @interface VFollowerTableViewController ()
+@property (nonatomic, strong)   NSArray*    followers;
 @end
 
 @implementation VFollowerTableViewController
-{
-    NSMutableArray*    _followers;
-}
 
 - (void)viewDidLoad
 {
@@ -32,25 +30,21 @@
 
     [self.tableView registerNib:[UINib nibWithNibName:@"followerCell" bundle:nil] forCellReuseIdentifier:@"followerCell"];
     [self populateFollowersList];
-    
-    if (!self.profile.followingListLoaded && !self.profile.followingListLoading)
-    {
-        [[VObjectManager sharedManager] requestFollowListForUser:self.profile successBlock:nil failBlock:nil];
-    }
 }
 
 #pragma mark - Table view data source
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return [_followers count];
+    return [self.followers count];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     VFollowerTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"followerCell" forIndexPath:indexPath];
-    cell.profile = _followers[indexPath.row];
-    cell.showButton = ![self.profile.following containsObject:cell.profile];
+    cell.profile = self.followers[indexPath.row];
+    cell.showButton = YES;
+    cell.owner = self.profile;
     return cell;
 }
 
@@ -67,21 +61,22 @@
 
 - (void)populateFollowersList
 {
-    if (_followers)
-        [_followers removeAllObjects];
-    else
-        _followers = [[NSMutableArray alloc] init];
-    
     VSuccessBlock followerSuccess = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
     {
-        [_followers addObjectsFromArray:[self.profile.followers allObjects]];
+        NSSortDescriptor*   sort = [[NSSortDescriptor alloc] initWithKey:@"name" ascending:YES selector:@selector(localizedCaseInsensitiveCompare:)];
+        self.followers = [[self.profile.followers allObjects] sortedArrayUsingDescriptors:@[sort]];
         [self.tableView reloadData];
     };
     
+    VFailBlock followerFail = ^(NSOperation* operation, NSError* error)
+    {
+        self.followers = [[NSArray alloc] init];
+    };
+
     if (!self.profile.followerListLoading)
         [[VObjectManager sharedManager] requestFollowerListForUser:self.profile
                                                       successBlock:followerSuccess
-                                                         failBlock:nil];
+                                                         failBlock:followerFail];
     else
         followerSuccess(nil, nil, nil);
 }
