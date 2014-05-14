@@ -27,7 +27,7 @@ const   CGFloat kVNavigationBarHeight = 44.0;
 
 @interface VUserProfileViewController ()
 
-@property   (nonatomic) VUserProfileUserID              userID;
+@property   (nonatomic) NSInteger                       userID;
 @property   (nonatomic, strong) VUser*                  profile;
 
 @property   (nonatomic)       BOOL                      isMe;
@@ -67,7 +67,7 @@ const   CGFloat kVNavigationBarHeight = 44.0;
     return viewController;
 }
 
-+ (instancetype)userProfileWithUserID:(VUserProfileUserID)aUserID
++ (instancetype)userProfileWithUserID:(NSInteger)aUserID
 {
     VUserProfileViewController*   viewController  =   [[UIStoryboard storyboardWithName:@"Profile" bundle:nil] instantiateInitialViewController];
     
@@ -84,7 +84,7 @@ const   CGFloat kVNavigationBarHeight = 44.0;
 
 - (void)viewDidLoad
 {
-    self.isMe = ((kVProfileUserIDSelf == self.userID) || (self.userID == [[VObjectManager sharedManager].mainUser.remoteId integerValue]));
+    self.isMe = ((-1 == self.userID) || (self.userID == [[VObjectManager sharedManager].mainUser.remoteId integerValue]));
     
     if (self.isMe)
     {

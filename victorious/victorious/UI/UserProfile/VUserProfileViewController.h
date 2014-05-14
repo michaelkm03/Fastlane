@@ -8,14 +8,9 @@
 
 #import "VStreamTableViewController.h"
 
-typedef NS_ENUM(NSInteger, VUserProfileUserID)
-{
-    kVProfileUserIDSelf  =   -1
-};
-
 @interface VUserProfileViewController : VStreamTableViewController
 
 + (instancetype)userProfileWithSelf;
-+ (instancetype)userProfileWithUserID:(VUserProfileUserID)aUserID;
++ (instancetype)userProfileWithUserID:(NSInteger)aUserID;
 
 @end
