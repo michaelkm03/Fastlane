@@ -23,12 +23,10 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-
     [self.navigationController.navigationBar setBackIndicatorImage:[UIImage imageNamed:@"cameraButtonBack"]];
     [self.navigationController.navigationBar setBackIndicatorTransitionMaskImage:[UIImage imageNamed:@"cameraButtonBack"]];
 
     [self.tableView registerNib:[UINib nibWithNibName:@"followerCell" bundle:nil] forCellReuseIdentifier:@"followerCell"];
-    
     [self populateFollowersList];
     
     if (!self.profile.followingListLoaded && !self.profile.followingListLoading)

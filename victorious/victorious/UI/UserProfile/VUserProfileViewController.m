@@ -29,8 +29,7 @@ const   CGFloat kVNavigationBarHeight = 44.0;
 
 @property   (nonatomic) NSInteger                       userID;
 @property   (nonatomic, strong) VUser*                  profile;
-
-@property   (nonatomic)       BOOL                      isMe;
+@property   (nonatomic) BOOL                            isMe;
 
 @property (nonatomic, strong) UIView*                   shortContainerView;
 @property (nonatomic, strong) UIView*                   longContainerView;
@@ -62,7 +61,7 @@ const   CGFloat kVNavigationBarHeight = 44.0;
                                                                                        style:UIBarButtonItemStylePlain
                                                                                       target:viewController
                                                                                       action:@selector(showMenu:)];
-    viewController.userID = [VObjectManager sharedManager].mainUser.remoteId.integerValue;
+    viewController.userID = [[VObjectManager sharedManager].mainUser.remoteId integerValue];
 
     return viewController;
 }
@@ -84,7 +83,7 @@ const   CGFloat kVNavigationBarHeight = 44.0;
 
 - (void)viewDidLoad
 {
-    self.isMe = ((-1 == self.userID) || (self.userID == [[VObjectManager sharedManager].mainUser.remoteId integerValue]));
+    self.isMe = (self.userID == [[VObjectManager sharedManager].mainUser.remoteId integerValue]);
     
     if (self.isMe)
     {
@@ -119,6 +118,13 @@ const   CGFloat kVNavigationBarHeight = 44.0;
     }
 
     self.tableView.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVContentTextColor];
+    
+    [[VObjectManager sharedManager] requestFollowerListForUser:self.profile
+                                                  successBlock:nil
+                                                     failBlock:nil];
+    [[VObjectManager sharedManager] requestFollowListForUser:self.profile
+                                                successBlock:nil
+                                                   failBlock:nil];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -127,24 +133,25 @@ const   CGFloat kVNavigationBarHeight = 44.0;
 
     self.tableView.tableHeaderView = [self longHeader];
     
-    if (!self.isMe)
-        [[VObjectManager sharedManager] addObserver:self forKeyPath:NSStringFromSelector(@selector(mainUser)) options:(NSKeyValueObservingOptionInitial|NSKeyValueObservingOptionOld|NSKeyValueObservingOptionNew) context:nil];
+//    if (!self.isMe)
+//        [[VObjectManager sharedManager] addObserver:self forKeyPath:NSStringFromSelector(@selector(mainUser)) options:(NSKeyValueObservingOptionInitial|NSKeyValueObservingOptionOld|NSKeyValueObservingOptionNew) context:nil];
 }
 
-- (void)viewDidDisappear:(BOOL)animated
-{
-    [super viewDidDisappear:animated];
-    
-    if (!self.isMe)
-    {
-        if ([[VObjectManager sharedManager] mainUser])
-            [[[VObjectManager sharedManager] mainUser] removeObserver:self forKeyPath:NSStringFromSelector(@selector(followingListLoading))];
-
-        [[VObjectManager sharedManager] removeObserver:self forKeyPath:NSStringFromSelector(@selector(mainUser))];
-    }
-}
+//- (void)viewDidDisappear:(BOOL)animated
+//{
+//    [super viewDidDisappear:animated];
+//    
+//    if (!self.isMe)
+//    {
+//        if ([[VObjectManager sharedManager] mainUser])
+//            [[[VObjectManager sharedManager] mainUser] removeObserver:self forKeyPath:NSStringFromSelector(@selector(followingListLoading))];
+//
+//        [[VObjectManager sharedManager] removeObserver:self forKeyPath:NSStringFromSelector(@selector(mainUser))];
+//    }
+//}
 
 #pragma mark - Support
+
 - (void)setProfile:(VUser *)profile
 {
     _profile = profile;
@@ -155,7 +162,6 @@ const   CGFloat kVNavigationBarHeight = 44.0;
 
 - (void)setProfileData
 {
-    //  Set background profile image
     NSURL*  imageURL    =   [NSURL URLWithString:self.profile.pictureUrl];
     
     UIImage*    defaultBackgroundImage;
@@ -200,34 +206,16 @@ const   CGFloat kVNavigationBarHeight = 44.0;
     else
         followingSuccess(nil, nil, nil);
         
-    if (self.isMe)
-    {
-        [self.editProfileButton setTitle:NSLocalizedString(@"editProfileButton", @"") forState:UIControlStateNormal];
-        [self.editProfileButton addTarget:self action:@selector(showProfileEdit:) forControlEvents:UIControlEventTouchUpInside];
-        self.editProfileButton.layer.borderColor = [UIColor whiteColor].CGColor;
-        self.editProfileButton.layer.borderWidth = 2.0;
-        self.editProfileButton.layer.cornerRadius = 3.0;
-        self.editProfileButton.backgroundColor = [UIColor clearColor];
-    }
-    else
+    if (!self.isMe)
     {
         [self.editProfileButton setTitle:NSLocalizedString(@"follow", @"") forState:UIControlStateNormal];
-        [self.editProfileButton addTarget:self action:@selector(followButtonAction:) forControlEvents:UIControlEventTouchUpInside];
-        self.editProfileButton.layer.borderColor = [UIColor whiteColor].CGColor;
         self.editProfileButton.layer.borderWidth = 0.0;
-        self.editProfileButton.layer.cornerRadius = 3.0;
-        self.editProfileButton.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
         
-        if ([[[[VObjectManager sharedManager].mainUser following] filteredSetUsingPredicate:[NSPredicate predicateWithFormat:@"remoteId=%d", (int)self.userID]] count])
+        if (self.editProfileButton.selected)
         {
             [self.editProfileButton setTitle:NSLocalizedString(@"following", @"") forState:UIControlStateNormal];
             self.editProfileButton.layer.borderWidth = 2.0;
-            self.editProfileButton.selected = YES;
         }
-        
-        self.followButtonActivityIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
-        self.followButtonActivityIndicator.center = CGPointMake(CGRectGetWidth(self.editProfileButton.frame) / 2.0, CGRectGetHeight(self.editProfileButton.frame) / 2.0);
-        [self.editProfileButton addSubview:self.followButtonActivityIndicator];
     }
 }
 
@@ -333,6 +321,36 @@ const   CGFloat kVNavigationBarHeight = 44.0;
     self.editProfileButton.titleLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVButton2Font];
     [barView addSubview:self.editProfileButton];
 
+    self.followButtonActivityIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+    self.followButtonActivityIndicator.center = CGPointMake(CGRectGetWidth(self.editProfileButton.frame) / 2.0, CGRectGetHeight(self.editProfileButton.frame) / 2.0);
+    [self.editProfileButton addSubview:self.followButtonActivityIndicator];
+
+    if (self.isMe)
+    {
+        [self.editProfileButton setTitle:NSLocalizedString(@"editProfileButton", @"") forState:UIControlStateNormal];
+        [self.editProfileButton addTarget:self action:@selector(showProfileEdit:) forControlEvents:UIControlEventTouchUpInside];
+        self.editProfileButton.layer.borderColor = [UIColor whiteColor].CGColor;
+        self.editProfileButton.layer.borderWidth = 2.0;
+        self.editProfileButton.layer.cornerRadius = 3.0;
+        self.editProfileButton.backgroundColor = [UIColor clearColor];
+    }
+    else
+    {
+        [self.editProfileButton setTitle:NSLocalizedString(@"follow", @"") forState:UIControlStateNormal];
+        [self.editProfileButton addTarget:self action:@selector(followButtonAction:) forControlEvents:UIControlEventTouchUpInside];
+        self.editProfileButton.layer.borderColor = [UIColor whiteColor].CGColor;
+        self.editProfileButton.layer.borderWidth = 0.0;
+        self.editProfileButton.layer.cornerRadius = 3.0;
+        self.editProfileButton.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
+
+        if ([[[[VObjectManager sharedManager].mainUser following] filteredSetUsingPredicate:[NSPredicate predicateWithFormat:@"remoteId=%d", (int)self.userID]] count])
+        {
+            [self.editProfileButton setTitle:NSLocalizedString(@"following", @"") forState:UIControlStateNormal];
+            self.editProfileButton.layer.borderWidth = 2.0;
+            self.editProfileButton.selected = YES;
+        }
+    }
+
     [self setProfileData];
 
     return self.longContainerView;
@@ -413,6 +431,36 @@ const   CGFloat kVNavigationBarHeight = 44.0;
     self.editProfileButton.titleLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVButton2Font];
     [barView addSubview:self.editProfileButton];
     
+    self.followButtonActivityIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+    self.followButtonActivityIndicator.center = CGPointMake(CGRectGetWidth(self.editProfileButton.frame) / 2.0, CGRectGetHeight(self.editProfileButton.frame) / 2.0);
+    [self.editProfileButton addSubview:self.followButtonActivityIndicator];
+
+    if (self.isMe)
+    {
+        [self.editProfileButton setTitle:NSLocalizedString(@"editProfileButton", @"") forState:UIControlStateNormal];
+        [self.editProfileButton addTarget:self action:@selector(showProfileEdit:) forControlEvents:UIControlEventTouchUpInside];
+        self.editProfileButton.layer.borderColor = [UIColor whiteColor].CGColor;
+        self.editProfileButton.layer.borderWidth = 2.0;
+        self.editProfileButton.layer.cornerRadius = 3.0;
+        self.editProfileButton.backgroundColor = [UIColor clearColor];
+    }
+    else
+    {
+        [self.editProfileButton setTitle:NSLocalizedString(@"follow", @"") forState:UIControlStateNormal];
+        [self.editProfileButton addTarget:self action:@selector(followButtonAction:) forControlEvents:UIControlEventTouchUpInside];
+        self.editProfileButton.layer.borderColor = [UIColor whiteColor].CGColor;
+        self.editProfileButton.layer.borderWidth = 0.0;
+        self.editProfileButton.layer.cornerRadius = 3.0;
+        self.editProfileButton.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
+        
+        if ([[[[VObjectManager sharedManager].mainUser following] filteredSetUsingPredicate:[NSPredicate predicateWithFormat:@"remoteId=%d", (int)self.userID]] count])
+        {
+            [self.editProfileButton setTitle:NSLocalizedString(@"following", @"") forState:UIControlStateNormal];
+            self.editProfileButton.layer.borderWidth = 2.0;
+            self.editProfileButton.selected = YES;
+        }
+    }
+
     [self setProfileData];
     
     return self.shortContainerView;
@@ -554,40 +602,40 @@ const   CGFloat kVNavigationBarHeight = 44.0;
 
 #pragma mark - Key-Value Observation
 
-- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
-{
-    if (object == [VObjectManager sharedManager] && [keyPath isEqualToString:NSStringFromSelector(@selector(mainUser))])
-    {
-        VUser *oldUser = change[NSKeyValueChangeOldKey];
-        if ([oldUser isKindOfClass:[VUser class]])
-        {
-            [oldUser removeObserver:self forKeyPath:NSStringFromSelector(@selector(followingListLoading))];
-        }
-        VUser *newUser = change[NSKeyValueChangeNewKey];
-        if ([newUser isKindOfClass:[VUser class]])
-        {
-            [newUser addObserver:self forKeyPath:NSStringFromSelector(@selector(followingListLoading)) options:NSKeyValueObservingOptionInitial context:NULL];
-            if (!newUser.followingListLoaded && !newUser.followingListLoading)
-            {
-                [[VObjectManager sharedManager] requestFollowListForUser:newUser successBlock:nil failBlock:nil];
-            }
-        }
-    }
-    else if (object == [[VObjectManager sharedManager] mainUser] && [keyPath isEqualToString:NSStringFromSelector(@selector(followingListLoading))])
-    {
-        if ([[[VObjectManager sharedManager] mainUser] followingListLoading])
-        {
-            self.editProfileButton.enabled = NO;
-            [self.followButtonActivityIndicator startAnimating];
-        }
-        else
-        {
-            self.editProfileButton.enabled = YES;
-            [self.followButtonActivityIndicator stopAnimating];
-            [self setProfileData];
-        }
-    }
-}
+//- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
+//{
+//    if (object == [VObjectManager sharedManager] && [keyPath isEqualToString:NSStringFromSelector(@selector(mainUser))])
+//    {
+//        VUser *oldUser = change[NSKeyValueChangeOldKey];
+//        if ([oldUser isKindOfClass:[VUser class]])
+//        {
+//            [oldUser removeObserver:self forKeyPath:NSStringFromSelector(@selector(followingListLoading))];
+//        }
+//        VUser *newUser = change[NSKeyValueChangeNewKey];
+//        if ([newUser isKindOfClass:[VUser class]])
+//        {
+//            [newUser addObserver:self forKeyPath:NSStringFromSelector(@selector(followingListLoading)) options:NSKeyValueObservingOptionInitial context:NULL];
+//            if (!newUser.followingListLoaded && !newUser.followingListLoading)
+//            {
+//                [[VObjectManager sharedManager] requestFollowListForUser:newUser successBlock:nil failBlock:nil];
+//            }
+//        }
+//    }
+//    else if (object == [[VObjectManager sharedManager] mainUser] && [keyPath isEqualToString:NSStringFromSelector(@selector(followingListLoading))])
+//    {
+//        if ([[[VObjectManager sharedManager] mainUser] followingListLoading])
+//        {
+//            self.editProfileButton.enabled = NO;
+//            [self.followButtonActivityIndicator startAnimating];
+//        }
+//        else
+//        {
+//            self.editProfileButton.enabled = YES;
+//            [self.followButtonActivityIndicator stopAnimating];
+//            [self setProfileData];
+//        }
+//    }
+//}
 
 #pragma mark - VStreamTableViewController
 
