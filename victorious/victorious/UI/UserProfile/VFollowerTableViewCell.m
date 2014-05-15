@@ -46,7 +46,7 @@
                                      following:self.profile
                                   successBlock:^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
          {
-             if ([resultObjects[0] isEqualToString:@"true"])
+             if ([resultObjects[0] boolValue])
                  self.followButton.hidden = NO;
          }
                                      failBlock:nil];

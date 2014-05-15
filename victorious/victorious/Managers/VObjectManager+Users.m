@@ -310,7 +310,7 @@
 {
     VSuccessBlock fullSuccess = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
     {
-        NSArray*    results = @[fullResponse[@"relationship_exists"]];
+        NSArray*    results = @[fullResponse[@"payload"][@"relationship_exists"]];
         
         success(operation, fullResponse, results);
     };

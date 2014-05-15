@@ -299,7 +299,7 @@ const   CGFloat kVNavigationBarHeight = 44.0;
                                          following:self.profile
                                       successBlock:^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
                                       {
-                                          if ([resultObjects[0] isEqualToString:@"true"])
+                                          if ([resultObjects[0] boolValue])
                                               self.editProfileButton.selected = YES;
                                       }
                                          failBlock:nil];
@@ -406,7 +406,7 @@ const   CGFloat kVNavigationBarHeight = 44.0;
                                          following:self.profile
                                       successBlock:^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
              {
-                 if ([resultObjects[0] isEqualToString:@"true"])
+                 if ([resultObjects[0] boolValue])
                      self.editProfileButton.selected = YES;
              }
                                          failBlock:nil];
