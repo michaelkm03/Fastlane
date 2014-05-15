@@ -6,73 +6,157 @@
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
-#import "VContentViewController+Videos.h"
-#import "VContentViewController+Private.h"
 #import "VContentViewController+Images.h"
+#import "VContentViewController+Private.h"
+#import "VContentViewController+Videos.h"
 #import "VObjectManager+Users.h"
 #import "VLoginViewController.h"
-
 #import "VRemixSelectViewController.h"
+
+#import <objc/runtime.h>
+
+static const char kVideoPreviewViewKey;
+static const char kVideoCompletionBlockKey;
+static const char kVideoUnloadBlockKey;
 
 @implementation VContentViewController (Videos)
 
-- (void)loadVideo
+- (void)playVideoAtURL:(NSURL *)contentURL withPreviewView:(UIView *)previewView
 {
-    [self loadImage];
+    NSAssert(![self isVideoLoadingOrLoaded], @"attempt to play two videos at once--not allowed.");
+    NSAssert([self.mediaView.subviews containsObject:previewView], @"previewView must be a subview of mediaView");
     
     [self.videoPlayer removeFromSuperview];
-    self.videoPlayer = [[VCVideoPlayerView alloc] initWithFrame:self.previewImage.frame];
+    self.videoPlayer = [[VCVideoPlayerView alloc] init];
     self.videoPlayer.delegate = self;
-    [self.videoPlayer setItemURL:[NSURL URLWithString:self.currentAsset.data]];
-    [self.mpPlayerContainmentView addSubview:self.videoPlayer];
+    self.videoPlayer.translatesAutoresizingMaskIntoConstraints = NO;
+    [self.mediaView addSubview:self.videoPlayer];
     
-    self.activityIndicator.center = CGPointMake(CGRectGetMidX(self.mediaView.bounds), CGRectGetMidY(self.mediaView.bounds));
+    [self.mediaView addConstraint:[NSLayoutConstraint constraintWithItem:self.videoPlayer
+                                                               attribute:NSLayoutAttributeWidth
+                                                               relatedBy:NSLayoutRelationEqual
+                                                                  toItem:previewView
+                                                               attribute:NSLayoutAttributeWidth
+                                                              multiplier:1.0f
+                                                                constant:0.0f]];
+    [self.mediaView addConstraint:[NSLayoutConstraint constraintWithItem:self.videoPlayer
+                                                               attribute:NSLayoutAttributeHeight
+                                                               relatedBy:NSLayoutRelationEqual
+                                                                  toItem:previewView
+                                                               attribute:NSLayoutAttributeHeight
+                                                              multiplier:1.0f
+                                                                constant:0.0f]];
+    [self.mediaView addConstraint:[NSLayoutConstraint constraintWithItem:self.videoPlayer
+                                                               attribute:NSLayoutAttributeLeading
+                                                               relatedBy:NSLayoutRelationEqual
+                                                                  toItem:previewView
+                                                               attribute:NSLayoutAttributeLeading
+                                                              multiplier:1.0f
+                                                                constant:0.0f]];
+    [self.mediaView addConstraint:[NSLayoutConstraint constraintWithItem:self.videoPlayer
+                                                               attribute:NSLayoutAttributeTop
+                                                               relatedBy:NSLayoutRelationEqual
+                                                                  toItem:previewView
+                                                               attribute:NSLayoutAttributeTop
+                                                              multiplier:1.0f
+                                                                constant:0.0f]];
+    self.videoPlayer.alpha = 0;
+    [self.videoPlayer setItemURL:contentURL];
+    
     [self.mediaView addSubview:self.activityIndicator];
+    [self.mediaView addConstraint:[NSLayoutConstraint constraintWithItem:self.activityIndicator
+                                                               attribute:NSLayoutAttributeCenterX
+                                                               relatedBy:NSLayoutRelationEqual
+                                                                  toItem:previewView
+                                                               attribute:NSLayoutAttributeCenterX
+                                                              multiplier:1
+                                                                constant:0]];
+    [self.mediaView addConstraint:[NSLayoutConstraint constraintWithItem:self.activityIndicator
+                                                               attribute:NSLayoutAttributeCenterY
+                                                               relatedBy:NSLayoutRelationEqual
+                                                                  toItem:previewView
+                                                               attribute:NSLayoutAttributeCenterY
+                                                              multiplier:1
+                                                                constant:0]];
     [self.activityIndicator startAnimating];
+    self.videoPreviewView = previewView;
 }
 
-- (void)animateVideoOpen
+- (BOOL)isVideoLoadingOrLoaded
 {
-    self.mpPlayerContainmentHeightConstraint.constant = 0;
-    self.mpPlayerContainmentWidthConstraint.constant = 0;
-    [self.view layoutIfNeeded];
-    self.mpPlayerContainmentView.hidden = NO;
+    return self.videoPlayer || self.temporaryVideoPreviewConstraints.count;
+}
+
+- (void)unloadVideoWithDuration:(NSTimeInterval)duration completion:(void (^)(void))completion
+{
+    if (!self.videoPlayer && !self.temporaryVideoPreviewConstraints.count)
+    {
+        return;
+    }
     
-    CGFloat duration = .5f;
-    
-    [self.previewImage cancelImageRequestOperation];
-    
-    [UIView animateWithDuration:.2f
-                     animations:^
-     {
-         self.previewImageHeightConstraint.constant = CGRectGetHeight(self.videoPlayer.bounds);
-         self.previewImageWidthConstraint.constant = CGRectGetWidth(self.videoPlayer.bounds);
-         [self.view layoutIfNeeded];
-     }
+    void (^animationCompletion)(BOOL) = ^(BOOL complete)
+    {
+        [self.videoPlayer removeFromSuperview];
+        self.videoPlayer = nil;
+        
+        if (self.onVideoUnloadBlock)
+        {
+            self.onVideoUnloadBlock();
+            self.onVideoUnloadBlock = nil;
+        }
+        if (completion)
+        {
+            completion();
+        }
+    };
+
+    if (self.temporaryVideoPreviewConstraints.count)
+    {
+        [UIView animateWithDuration:duration
+                        delay:0
+                            options:UIViewAnimationOptionCurveEaseInOut
+                         animations:^(void)
+        {
+            [self.mediaView removeConstraints:self.temporaryVideoPreviewConstraints];
+            self.temporaryVideoPreviewConstraints = nil;
+            [self.view layoutIfNeeded];
+            self.previewImage.alpha = 1.0f;
+            self.videoPlayer.alpha = 0;
+        }
+                         completion:animationCompletion];
+    }
+    else
+    {
+        animationCompletion(YES);
+    }
+}
+
+- (void)animateVideoOpenToHeight:(CGFloat)height
+{
+    [UIView animateWithDuration:0.2f
+                     animations:^(void)
+    {
+        UIView *videoPreviewView = self.videoPreviewView;
+        NSArray *temporaryVerticalConstraints = [NSLayoutConstraint constraintsWithVisualFormat:@"V:|[videoPreviewView(==height)]"
+                                                                                        options:0
+                                                                                        metrics:@{ @"height": @(height) }
+                                                                                          views:NSDictionaryOfVariableBindings(videoPreviewView)];
+        NSArray *temporaryHorizontalConstraints = [NSLayoutConstraint constraintsWithVisualFormat:@"H:|[videoPreviewView]|"
+                                                                                options:0
+                                                                                metrics:nil
+                                                                                  views:NSDictionaryOfVariableBindings(videoPreviewView)];
+        NSArray *temporaryConstraints = [temporaryHorizontalConstraints arrayByAddingObjectsFromArray:temporaryVerticalConstraints];
+        [self.mediaView addConstraints:temporaryConstraints];
+        self.temporaryVideoPreviewConstraints = temporaryConstraints;
+        [self.view layoutIfNeeded];
+        self.previewImage.alpha = 0;
+        self.videoPlayer.alpha = 1.0f;
+    }
                      completion:^(BOOL finished)
-     {
-         [UIView animateWithDuration:duration animations:
-          ^{
-              self.mpPlayerContainmentHeightConstraint.constant = CGRectGetHeight(self.videoPlayer.bounds);
-              self.mpPlayerContainmentWidthConstraint.constant = CGRectGetWidth(self.videoPlayer.bounds);
-              [self.view layoutIfNeeded];
-          }
-                          completion:^(BOOL finished)
-          {
-              [self.videoPlayer.player play];
-              self.remixButton.hidden = NO;
-          }];
-     }];
-}
-
-- (void)animateVideoClosed
-{
-    CGFloat duration = [self.sequence isPoll] ? .5f : 0;//We only animate in poll videos
-    
-    [UIView animateWithDuration:duration animations:
-     ^{
-         self.mpPlayerContainmentView.bounds = CGRectMake(0, 0, 0, 0);
-     }];
+    {
+         [self.videoPlayer.player play];
+         self.remixButton.hidden = NO;
+    }];
 }
 
 - (IBAction)pressedRemix:(id)sender
@@ -90,19 +174,58 @@
      }];
 }
 
+#pragma mark - Private Properties
+
+- (void)setVideoPreviewView:(UIView *)videoPreviewView
+{
+    objc_setAssociatedObject(self, &kVideoPreviewViewKey, videoPreviewView, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+}
+
+- (UIView *)videoPreviewView
+{
+    return objc_getAssociatedObject(self, &kVideoPreviewViewKey);
+}
+
+- (void)setOnVideoCompletionBlock:(void (^)(void))completion
+{
+    objc_setAssociatedObject(self, &kVideoCompletionBlockKey, [completion copy], OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+}
+
+- (void(^)(void))onVideoCompletionBlock
+{
+    return objc_getAssociatedObject(self, &kVideoCompletionBlockKey);
+}
+
+- (void)setOnVideoUnloadBlock:(void (^)(void))onUnload
+{
+    objc_setAssociatedObject(self, &kVideoUnloadBlockKey, [onUnload copy], OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+}
+
+- (void(^)(void))onVideoUnloadBlock
+{
+    return objc_getAssociatedObject(self, &kVideoUnloadBlockKey);
+}
+
 #pragma mark - VCVideoPlayerDelegate methods
 
 - (void)videoPlayerReadyToPlay:(VCVideoPlayerView *)videoPlayer
 {
     [self.activityIndicator stopAnimating];
+    [self.activityIndicator removeFromSuperview];
     
-    CGFloat yRatio = 1;
-    yRatio = fminf(self.videoPlayer.naturalSize.height / self.videoPlayer.naturalSize.width, 1);
+    CGFloat yRatio = fminf(self.videoPlayer.naturalSize.height / self.videoPlayer.naturalSize.width, 1);
     
-    CGFloat videoHeight = fminf(self.mediaView.frame.size.height * yRatio, self.mediaView.frame.size.height);
-    CGFloat videoWidth = self.mediaView.frame.size.width;
-    self.videoPlayer.frame = CGRectMake(0, 0, videoWidth, videoHeight);
-    [self animateVideoOpen];
+    CGFloat videoHeight = CGRectGetHeight(self.mediaView.frame) * yRatio;
+    [self animateVideoOpenToHeight:videoHeight];
+}
+
+- (void)videoPlayerDidReachEndOfVideo:(VCVideoPlayerView *)videoPlayer
+{
+    if (self.onVideoCompletionBlock)
+    {
+        self.onVideoCompletionBlock();
+        self.onVideoCompletionBlock = nil;
+    }
 }
 
 @end

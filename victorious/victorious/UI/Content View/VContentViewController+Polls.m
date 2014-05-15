@@ -88,7 +88,6 @@
     
     self.pollPreviewView.hidden = NO;
     self.previewImage.hidden = YES;
-    self.mpPlayerContainmentView.hidden = YES;
     self.remixButton.hidden = YES;
 }
 
@@ -96,24 +95,78 @@
 {
     NSArray* answers = [[self.sequence firstNode] firstAnswers];
     NSURL* contentURL;
+    UIImageView *thumbnailView;
     if( ((UIButton*)sender).tag == self.firstPollButton.tag)
     {
+        thumbnailView = self.firstSmallPreviewImage;
         contentURL = [NSURL URLWithString:((VAnswer*)[answers firstObject]).mediaUrl];
     }
     else if ( ((UIButton*)sender).tag == self.secondPollButton.tag)
     {
+        thumbnailView = self.secondSmallPreviewImage;
         contentURL = [NSURL URLWithString:((VAnswer*)[answers lastObject]).mediaUrl];
     }
+
+    UIImageView *temporaryThumbnailView = [[UIImageView alloc] initWithImage:thumbnailView.image];
+    temporaryThumbnailView.contentMode = thumbnailView.contentMode;
+    temporaryThumbnailView.clipsToBounds = thumbnailView.clipsToBounds;
+    temporaryThumbnailView.translatesAutoresizingMaskIntoConstraints = NO;
+    [self.mediaView addSubview:temporaryThumbnailView];
+    thumbnailView.hidden = YES;
     
-    [self.videoPlayer removeFromSuperview];
-    self.videoPlayer = [[VCVideoPlayerView alloc] initWithFrame:self.pollPreviewView.frame];
-    self.videoPlayer.delegate = self;
-    [self.videoPlayer setItemURL:contentURL];
-    [self.mpPlayerContainmentView addSubview:self.videoPlayer];
+    CGRect desiredFrame = [self.mediaView convertRect:thumbnailView.bounds fromView:thumbnailView];
+    NSLayoutConstraint *xConstraint = [NSLayoutConstraint constraintWithItem:temporaryThumbnailView
+                                                                   attribute:NSLayoutAttributeLeading
+                                                                   relatedBy:NSLayoutRelationEqual
+                                                                      toItem:self.mediaView
+                                                                   attribute:NSLayoutAttributeLeading
+                                                                  multiplier:1.0f
+                                                                    constant:CGRectGetMinX(desiredFrame)];
+    xConstraint.priority = UILayoutPriorityDefaultHigh;
+    [self.mediaView addConstraint:xConstraint];
     
-    self.activityIndicator.center = self.videoPlayer.center;
-    [self.mediaView addSubview:self.activityIndicator];
-    [self.activityIndicator startAnimating];
+    NSLayoutConstraint *yConstraint = [NSLayoutConstraint constraintWithItem:temporaryThumbnailView
+                                                                   attribute:NSLayoutAttributeTop
+                                                                   relatedBy:NSLayoutRelationEqual
+                                                                      toItem:self.mediaView
+                                                                   attribute:NSLayoutAttributeTop
+                                                                  multiplier:1.0f
+                                                                    constant:CGRectGetMinY(desiredFrame)];
+    yConstraint.priority = UILayoutPriorityDefaultHigh;
+    [self.mediaView addConstraint:yConstraint];
+    
+    NSLayoutConstraint *widthConstraint = [NSLayoutConstraint constraintWithItem:temporaryThumbnailView
+                                                                       attribute:NSLayoutAttributeWidth
+                                                                       relatedBy:NSLayoutRelationEqual
+                                                                          toItem:nil
+                                                                       attribute:NSLayoutAttributeNotAnAttribute
+                                                                      multiplier:1.0f
+                                                                        constant:CGRectGetWidth(desiredFrame)];
+    widthConstraint.priority = UILayoutPriorityDefaultHigh;
+    [self.mediaView addConstraint:widthConstraint];
+    
+    NSLayoutConstraint *heightConstraint = [NSLayoutConstraint constraintWithItem:temporaryThumbnailView
+                                                                        attribute:NSLayoutAttributeHeight
+                                                                        relatedBy:NSLayoutRelationEqual
+                                                                           toItem:nil
+                                                                        attribute:NSLayoutAttributeNotAnAttribute
+                                                                       multiplier:1.0f
+                                                                         constant:CGRectGetHeight(desiredFrame)];
+    heightConstraint.priority = UILayoutPriorityDefaultHigh;
+    [self.mediaView addConstraint:heightConstraint];
+    
+    [self playVideoAtURL:contentURL withPreviewView:temporaryThumbnailView];
+    
+    typeof(self) __weak weakSelf = self;
+    [self setOnVideoUnloadBlock:^(void)
+    {
+        thumbnailView.hidden = NO;
+        [temporaryThumbnailView removeFromSuperview];
+    }];
+    [self setOnVideoCompletionBlock:^(void)
+    {
+        [weakSelf unloadVideoWithDuration:0.2f completion:nil];
+    }];
 }
 
 #pragma mark - VPollAnswerBarDelegate

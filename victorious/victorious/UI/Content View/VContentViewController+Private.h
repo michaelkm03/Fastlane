@@ -34,9 +34,10 @@
 @property (strong, nonatomic) IBOutletCollection(UIButton) NSArray* buttonCollection;
 @property (weak, nonatomic) IBOutlet UIButton* remixButton;
 
-@property (weak, nonatomic) IBOutlet UIView* mpPlayerContainmentView;
-@property (weak, nonatomic) IBOutlet NSLayoutConstraint* mpPlayerContainmentWidthConstraint;
-@property (weak, nonatomic) IBOutlet NSLayoutConstraint* mpPlayerContainmentHeightConstraint;
+/**
+ These constraints are set on the preview image only while a video is being played
+ */
+@property (strong, nonatomic) NSArray* temporaryVideoPreviewConstraints;
 
 @property (weak, nonatomic) IBOutlet UIImageView* firstSmallPreviewImage;
 @property (weak, nonatomic) IBOutlet UIImageView* secondSmallPreviewImage;

@@ -16,6 +16,7 @@
 - (void)videoPlayerReadyToPlay:(VCVideoPlayerView *)videoPlayer;
 - (void)videoPlayerWillStartPlaying:(VCVideoPlayerView *)videoPlayer;
 - (void)videoPlayerWillStopPlaying:(VCVideoPlayerView *)videoPlayer;
+- (void)videoPlayerDidReachEndOfVideo:(VCVideoPlayerView *)videoPlayer;
 
 @end
 

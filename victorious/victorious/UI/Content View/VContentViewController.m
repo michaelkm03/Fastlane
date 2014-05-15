@@ -56,10 +56,11 @@ CGFloat kContentMediaViewOffset = 154;
     [self.remixButton setImage:[self.remixButton.imageView.image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] forState:UIControlStateNormal];
     self.remixButton.tintColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVMainTextColor];
     
-    self.activityIndicator = [[UIActivityIndicatorView alloc] initWithFrame:CGRectMake(0, 0, 25, 25)];
+    self.activityIndicator = [[UIActivityIndicatorView alloc] init];
     self.activityIndicator.backgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:.5f];
-    self.activityIndicator.layer.cornerRadius = self.activityIndicator.frame.size.height / 2;
+    self.activityIndicator.layer.cornerRadius = 10.0f;
     self.activityIndicator.hidesWhenStopped = YES;
+    self.activityIndicator.translatesAutoresizingMaskIntoConstraints = NO;
     
     [self resetView];
 }
@@ -236,15 +237,19 @@ CGFloat kContentMediaViewOffset = 154;
 - (void)loadNextAsset
 {
     if (!self.currentAsset)
+    {
         self.currentAsset = [self.currentNode firstAsset];
-    //    else
-    //        self.currentAsset = [self.currentNode nextAssetFromAsset:self.currentAsset];
+    }
     
     if ([self.currentAsset isVideo])
-        [self loadVideo];
-    
-    else //Default case: we assume its an image and hope it works out
+    {
+        [self loadImage]; // load the video thumbnail
+        [self playVideoAtURL:[NSURL URLWithString:self.currentAsset.data] withPreviewView:self.previewImage];
+    }
+    else //Default case: we assume it's an image and hope it works out
+    {
         [self loadImage];
+    }
 }
 
 #pragma mark - Quiz
