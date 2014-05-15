@@ -978,12 +978,12 @@
 				3F9B666718887D910046F826 /* VFetchedResultsTableViewController.m */,
 				3F9B66691888BE6A0046F826 /* VStreamTableViewController.h */,
 				3F9B666A1888BE6A0046F826 /* VStreamTableViewController.m */,
+				BE31757A19257592007DAC76 /* VStreamContainerViewController.h */,
+				BE31757B19257592007DAC76 /* VStreamContainerViewController.m */,
 				5FCC1E481899C94D00EB7699 /* VWebContentViewController.h */,
 				5FCC1E491899C94D00EB7699 /* VWebContentViewController.m */,
 				5F51F818189AEBF800A546D1 /* VAbstractProfileEditViewController.h */,
 				5F51F819189AEBF800A546D1 /* VAbstractProfileEditViewController.m */,
-				BE31757A19257592007DAC76 /* VStreamContainerViewController.h */,
-				BE31757B19257592007DAC76 /* VStreamContainerViewController.m */,
 			);
 			name = "Base Classes";
 			sourceTree = "<group>";

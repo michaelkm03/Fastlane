@@ -198,7 +198,7 @@
                                         <rect key="frame" x="270" y="14" width="27" height="27"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
-                                        <state key="normal" image="Menu">
+                                        <state key="normal" image="createContentButton">
                                             <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                         </state>
@@ -233,7 +233,10 @@
                     <nil key="simulatedStatusBarMetrics"/>
                     <nil key="simulatedTopBarMetrics"/>
                     <connections>
+                        <outlet property="createButton" destination="oOz-qF-TD2" id="zlN-c0-Oz4"/>
+                        <outlet property="headerLabel" destination="QiD-8u-6Dv" id="lNi-dD-Ckb"/>
                         <outlet property="headerView" destination="uAX-J4-ubb" id="hnT-wI-TLl"/>
+                        <outlet property="menuButton" destination="qF3-Sw-Tm6" id="bNI-IU-10B"/>
                         <outlet property="streamContainerView" destination="5Mf-9l-SXM" id="2Qz-Hq-R9O"/>
                     </connections>
                 </viewController>
@@ -1572,6 +1575,7 @@
         <image name="SearchIcon" width="30" height="31"/>
         <image name="Tomato" width="160" height="60"/>
         <image name="cameraButtonClose" width="24" height="24"/>
+        <image name="createContentButton" width="27" height="27"/>
     </resources>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
         <simulatedStatusBarMetrics key="statusBar"/>
