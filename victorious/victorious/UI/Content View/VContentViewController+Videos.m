@@ -248,6 +248,19 @@ static const char kVideoUnloadBlockKey;
     [self animateVideoOpenToHeight:videoHeight];
 }
 
+- (void)videoPlayerFailed:(VCVideoPlayerView *)videoPlayer
+{
+    [self unloadVideoWithDuration:0.2f completion:^(void)
+    {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil
+                                                        message:NSLocalizedString(@"VideoPlayFailed", @"")
+                                                       delegate:nil
+                                              cancelButtonTitle:NSLocalizedString(@"OKButton", @"")
+                                              otherButtonTitles:nil];
+        [alert show];
+    }];
+}
+
 - (void)videoPlayerDidReachEndOfVideo:(VCVideoPlayerView *)videoPlayer
 {
     if (self.onVideoCompletionBlock)

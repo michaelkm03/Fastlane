@@ -68,6 +68,8 @@
 
 "ReplaceVideo"          =   "Replace Video";
 
+"VideoPlayFailed"       =   "Failed to play video";
+
 "CancelExpiration"      =   "Cancel Expiration?";
 "CancelExirationConfirm" = "Are you sure you want to cancel out of setting an expiration date?";
 
