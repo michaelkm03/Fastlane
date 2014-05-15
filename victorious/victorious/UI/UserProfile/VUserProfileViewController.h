@@ -12,6 +12,7 @@
 
 @interface VUserProfileViewController : VStreamTableViewController
 
++ (instancetype)userProfileWithSelf;
 + (instancetype)userProfileWithUser:(VUser*)aUser;
 
 @end

@@ -136,7 +136,7 @@ NSString *const VMenuControllerDidSelectRowNotification = @"VMenuTableViewContro
             }
             else
             {
-                navigationController.viewControllers = @[[VUserProfileViewController userProfileWithUser:[VObjectManager sharedManager].mainUser]];
+                navigationController.viewControllers = @[[VUserProfileViewController userProfileWithSelf]];
                 [self.sideMenuViewController hideMenuViewController];
             }
         break;

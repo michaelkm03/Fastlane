@@ -52,6 +52,19 @@ const   CGFloat kVNavigationBarHeight = 44.0;
 
 @implementation VUserProfileViewController
 
++ (instancetype)userProfileWithSelf
+{
+    VUserProfileViewController*   viewController  =   [[UIStoryboard storyboardWithName:@"Profile" bundle:nil] instantiateInitialViewController];
+    
+    viewController.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"Menu"]
+                                                                                       style:UIBarButtonItemStylePlain
+                                                                                      target:viewController
+                                                                                      action:@selector(showMenu:)];
+    viewController.profile = [VObjectManager sharedManager].mainUser;
+    
+    return viewController;
+}
+
 + (instancetype)userProfileWithUser:(VUser*)aUser
 {
     VUserProfileViewController*   viewController  =   [[UIStoryboard storyboardWithName:@"Profile" bundle:nil] instantiateInitialViewController];
@@ -69,7 +82,7 @@ const   CGFloat kVNavigationBarHeight = 44.0;
 
 - (void)viewDidLoad
 {
-    self.isMe = ([self.profile.remoteId isEqualToNumber:[VObjectManager sharedManager].mainUser.remoteId]);
+    self.isMe = (self.profile.remoteId.integerValue == [VObjectManager sharedManager].mainUser.remoteId.integerValue);
     
     if (self.isMe)
     {
