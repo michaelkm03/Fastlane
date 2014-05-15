@@ -14,6 +14,7 @@
 
 - (void)videoPlayer:(VCVideoPlayerView *)videoPlayer didPlayToTime:(CMTime)time;
 - (void)videoPlayerReadyToPlay:(VCVideoPlayerView *)videoPlayer;
+- (void)videoPlayerFailed:(VCVideoPlayerView *)videoPlayer;
 - (void)videoPlayerWillStartPlaying:(VCVideoPlayerView *)videoPlayer;
 - (void)videoPlayerWillStopPlaying:(VCVideoPlayerView *)videoPlayer;
 - (void)videoPlayerDidReachEndOfVideo:(VCVideoPlayerView *)videoPlayer;
@@ -34,6 +35,7 @@
 @property (nonatomic, readonly) CGSize                     naturalSize;
 @property (nonatomic, readonly, getter = isPlaying) BOOL   playing; ///< YES if a video is playing
 @property (nonatomic)           BOOL                       shouldShowToolbar; ///< If NO, toolbar will never show.
+@property (nonatomic, readonly) UIView                    *overlayView; ///< A view to be displayed on top of the video player. Will not show if shouldShowToolbar is NO.
 
 + (VCVideoPlayerView *)currentPlayer; ///< Returns a reference to a VCVideoPlayerView instance that is currently playing
 

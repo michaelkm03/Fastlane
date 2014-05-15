@@ -88,7 +88,6 @@
     
     self.pollPreviewView.hidden = NO;
     self.previewImage.hidden = YES;
-    self.remixButton.hidden = YES;
 }
 
 - (IBAction)playPoll:(UIButton *)sender

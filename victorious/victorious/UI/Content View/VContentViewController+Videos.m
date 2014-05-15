@@ -31,6 +31,10 @@ static const char kVideoUnloadBlockKey;
     self.videoPlayer.delegate = self;
     self.videoPlayer.translatesAutoresizingMaskIntoConstraints = NO;
     [self.mediaView addSubview:self.videoPlayer];
+    if (![self.currentNode isPoll])
+    {
+        [self addRemixButtonToVideoPlayer];
+    }
     
     [self.mediaView addConstraint:[NSLayoutConstraint constraintWithItem:self.videoPlayer
                                                                attribute:NSLayoutAttributeWidth
@@ -82,6 +86,26 @@ static const char kVideoUnloadBlockKey;
                                                                 constant:0]];
     [self.activityIndicator startAnimating];
     self.videoPreviewView = previewView;
+}
+
+- (void)addRemixButtonToVideoPlayer
+{
+    UIButton *remixButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    remixButton.translatesAutoresizingMaskIntoConstraints = NO;
+    remixButton.backgroundColor = [[UIColor blackColor] colorWithAlphaComponent:0.4f];
+    [remixButton setImage:[[UIImage imageNamed:@"cameraButtonRemix"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate]
+                 forState:UIControlStateNormal];
+    [remixButton addTarget:self action:@selector(pressedRemix:) forControlEvents:UIControlEventTouchUpInside];
+    remixButton.tintColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVMainTextColor];
+    [self.videoPlayer.overlayView addSubview:remixButton];
+    [self.videoPlayer.overlayView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:[remixButton(==50)]-5-|"
+                                                                                         options:0
+                                                                                         metrics:nil
+                                                                                           views:NSDictionaryOfVariableBindings(remixButton)]];
+    [self.videoPlayer.overlayView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-5-[remixButton(==50)]"
+                                                                                         options:0
+                                                                                         metrics:nil
+                                                                                           views:NSDictionaryOfVariableBindings(remixButton)]];
 }
 
 - (BOOL)isVideoLoadingOrLoaded
@@ -159,8 +183,7 @@ static const char kVideoUnloadBlockKey;
     }
                      completion:^(BOOL finished)
     {
-         [self.videoPlayer.player play];
-         self.remixButton.hidden = NO;
+        [self.videoPlayer.player play];
     }];
 }
 
@@ -223,6 +246,19 @@ static const char kVideoUnloadBlockKey;
     
     CGFloat videoHeight = CGRectGetHeight(self.mediaView.frame) * yRatio;
     [self animateVideoOpenToHeight:videoHeight];
+}
+
+- (void)videoPlayerFailed:(VCVideoPlayerView *)videoPlayer
+{
+    [self unloadVideoWithDuration:0.2f completion:^(void)
+    {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil
+                                                        message:NSLocalizedString(@"VideoPlayFailed", @"")
+                                                       delegate:nil
+                                              cancelButtonTitle:NSLocalizedString(@"OKButton", @"")
+                                              otherButtonTitles:nil];
+        [alert show];
+    }];
 }
 
 - (void)videoPlayerDidReachEndOfVideo:(VCVideoPlayerView *)videoPlayer
