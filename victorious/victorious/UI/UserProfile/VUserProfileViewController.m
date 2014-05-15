@@ -85,53 +85,23 @@ const   CGFloat kVNavigationBarHeight = 44.0;
     self.isMe = (self.profile.remoteId.integerValue == [VObjectManager sharedManager].mainUser.remoteId.integerValue);
     
     if (self.isMe)
-    {
         self.navigationItem.title = NSLocalizedString(@"me", "");
-    }
     else
-    {
         self.navigationItem.title = [@"@" stringByAppendingString:self.profile.name];
-    }
     
     [super viewDidLoad];
     
     if (self.isMe)
-    {
         [self addCreateButton];
-    }
     else
-    {
         self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"profileCompose"]
                                                                                   style:UIBarButtonItemStylePlain
                                                                                  target:self
                                                                                  action:@selector(composeMessage:)];
-    }
 
     self.tableView.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVContentTextColor];
-}
-
-- (void)viewWillAppear:(BOOL)animated
-{
-    [super viewWillAppear:animated];
-
     self.tableView.tableHeaderView = [self longHeader];
-    
-//    if (!self.isMe)
-//        [[VObjectManager sharedManager] addObserver:self forKeyPath:NSStringFromSelector(@selector(mainUser)) options:(NSKeyValueObservingOptionInitial|NSKeyValueObservingOptionOld|NSKeyValueObservingOptionNew) context:nil];
 }
-
-//- (void)viewDidDisappear:(BOOL)animated
-//{
-//    [super viewDidDisappear:animated];
-//    
-//    if (!self.isMe)
-//    {
-//        if ([[VObjectManager sharedManager] mainUser])
-//            [[[VObjectManager sharedManager] mainUser] removeObserver:self forKeyPath:NSStringFromSelector(@selector(followingListLoading))];
-//
-//        [[VObjectManager sharedManager] removeObserver:self forKeyPath:NSStringFromSelector(@selector(mainUser))];
-//    }
-//}
 
 #pragma mark - Accessors
 
@@ -173,11 +143,11 @@ const   CGFloat kVNavigationBarHeight = 44.0;
              self.followersLabel.text = [self formattedStringForCount:[resultObjects[0] integerValue]];
              self.followingLabel.text = [self formattedStringForCount:[resultObjects[1] integerValue]];
          }
-        failBlock:^(NSOperation *operation, NSError *error)
-        {
-            self.followersLabel.text = [self formattedStringForCount:0];
-            self.followingLabel.text = [self formattedStringForCount:0];
-        }];
+         failBlock:^(NSOperation *operation, NSError *error)
+         {
+             self.followersLabel.text = [self formattedStringForCount:0];
+             self.followingLabel.text = [self formattedStringForCount:0];
+         }];
     
     if (!self.isMe)
     {
@@ -412,7 +382,7 @@ const   CGFloat kVNavigationBarHeight = 44.0;
 {
     static  NSNumberFormatter*  formatter;
     static  dispatch_once_t     onceToken;
-    static const char sUnits[] = { '\0', 'K', 'M', 'G' };
+    static const char sUnits[] = { '\0', 'K', 'M', 'B' };
     static int sMaxUnits = sizeof sUnits - 1;
     
     int multiplier = 1000;
@@ -557,43 +527,6 @@ const   CGFloat kVNavigationBarHeight = 44.0;
     }
 }
 
-#pragma mark - Key-Value Observation
-
-//- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
-//{
-//    if (object == [VObjectManager sharedManager] && [keyPath isEqualToString:NSStringFromSelector(@selector(mainUser))])
-//    {
-//        VUser *oldUser = change[NSKeyValueChangeOldKey];
-//        if ([oldUser isKindOfClass:[VUser class]])
-//        {
-//            [oldUser removeObserver:self forKeyPath:NSStringFromSelector(@selector(followingListLoading))];
-//        }
-//        VUser *newUser = change[NSKeyValueChangeNewKey];
-//        if ([newUser isKindOfClass:[VUser class]])
-//        {
-//            [newUser addObserver:self forKeyPath:NSStringFromSelector(@selector(followingListLoading)) options:NSKeyValueObservingOptionInitial context:NULL];
-//            if (!newUser.followingListLoaded && !newUser.followingListLoading)
-//            {
-//                [[VObjectManager sharedManager] requestFollowListForUser:newUser successBlock:nil failBlock:nil];
-//            }
-//        }
-//    }
-//    else if (object == [[VObjectManager sharedManager] mainUser] && [keyPath isEqualToString:NSStringFromSelector(@selector(followingListLoading))])
-//    {
-//        if ([[[VObjectManager sharedManager] mainUser] followingListLoading])
-//        {
-//            self.editProfileButton.enabled = NO;
-//            [self.followButtonActivityIndicator startAnimating];
-//        }
-//        else
-//        {
-//            self.editProfileButton.enabled = YES;
-//            [self.followButtonActivityIndicator stopAnimating];
-//            [self setProfileData];
-//        }
-//    }
-//}
-
 #pragma mark - VStreamTableViewController
 
 - (VSequenceFilter*)currentFilter
@@ -603,46 +536,41 @@ const   CGFloat kVNavigationBarHeight = 44.0;
 
 - (IBAction)refreshAction:(id)sender
 {
-    RKManagedObjectRequestOperation* operation = [[VObjectManager sharedManager] refreshSequenceFilter:[self currentFilter]
-                                                                                          successBlock:^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
+    [[VObjectManager sharedManager] refreshSequenceFilter:[self currentFilter]
+                                             successBlock:^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
+                                              {
+                                                  [self.refreshControl endRefreshing];
+                                                  
+                                                  if (resultObjects.count > 0)
                                                   {
-                                                      [self.refreshControl endRefreshing];
-                                                      
-                                                      if (resultObjects.count > 0)
-                                                      {
-                                                          [UIView animateWithDuration:0.6 animations:^{
-                                                              [self.tableView beginUpdates];
-                                                              self.tableView.tableHeaderView = [self shortHeader];
-                                                              [self.tableView endUpdates];
-                                                              [self setProfileData];
-                                                          }];
-                                                      }
-                                                      else
-                                                      {
-                                                          [UIView animateWithDuration:0.6 animations:^{
-                                                              [self.tableView beginUpdates];
-                                                              self.tableView.tableHeaderView = [self longHeader];
-                                                              [self.tableView endUpdates];
-                                                              [self setProfileData];
-                                                          }];
-                                                     }
+                                                      [UIView animateWithDuration:0.6 animations:^{
+                                                          [self.tableView beginUpdates];
+                                                          self.tableView.tableHeaderView = [self shortHeader];
+                                                          [self.tableView endUpdates];
+                                                          [self setProfileData];
+                                                      }];
                                                   }
-                                                  failBlock:^(NSOperation* operation, NSError* error)
+                                                  else
                                                   {
-                                                      [self.refreshControl endRefreshing];
                                                       [UIView animateWithDuration:0.6 animations:^{
                                                           [self.tableView beginUpdates];
                                                           self.tableView.tableHeaderView = [self longHeader];
                                                           [self.tableView endUpdates];
                                                           [self setProfileData];
                                                       }];
-
+                                                 }
+                                              }
+                                              failBlock:^(NSOperation* operation, NSError* error)
+                                              {
+                                                  [self.refreshControl endRefreshing];
+                                                  [UIView animateWithDuration:0.6 animations:^{
+                                                      [self.tableView beginUpdates];
+                                                      self.tableView.tableHeaderView = [self longHeader];
+                                                      [self.tableView endUpdates];
+                                                      [self setProfileData];
                                                   }];
-    
-    if (operation)
-    {
-        [self.refreshControl beginRefreshing];
-    }
+
+                                              }];
 }
 
 @end

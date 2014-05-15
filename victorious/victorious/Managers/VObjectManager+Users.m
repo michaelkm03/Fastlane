@@ -143,11 +143,7 @@
     return nil;
 }
 
-- (RKManagedObjectRequestOperation *)listOfRecommendedFriendsWithSuccessBlock:(VSuccessBlock)success
-                                                                    failBlock:(VFailBlock)fail
-{
-    return nil;
-}
+#pragma mark - Following
 
 - (RKManagedObjectRequestOperation *)requestFollowListForUser:(VUser *)user
                                                  successBlock:(VSuccessBlock)success
@@ -245,6 +241,7 @@
             success(operation, fullResponse, resultObjects);
         }
     };
+    
     return [self POST:@"/api/follow/add"
                object:nil
            parameters:parameters
@@ -274,6 +271,7 @@
             success(operation, fullResponse, resultObjects);
         }
     };
+    
     return [self POST:@"/api/follow/remove"
                object:nil
            parameters:parameters
@@ -295,8 +293,7 @@
         }
     };
 
-    NSString *path = [NSString stringWithFormat:@"/api/follow/counts/%d", [user.remoteId intValue]];
-    return [self GET:path
+    return [self GET:[NSString stringWithFormat:@"/api/follow/counts/%d", [user.remoteId intValue]]
                object:nil
            parameters:nil
          successBlock:fullSuccess
@@ -315,12 +312,19 @@
         success(operation, fullResponse, results);
     };
     
-    NSString *path = [NSString stringWithFormat:@"/api/follow/is_follower/%d/%d", [follower.remoteId integerValue], [user.remoteId integerValue]];
-    return [self GET:path
+    return [self GET:[NSString stringWithFormat:@"/api/follow/is_follower/%d/%d", [follower.remoteId integerValue], [user.remoteId integerValue]]
               object:nil
           parameters:nil
         successBlock:fullSuccess
            failBlock:fail];
+}
+
+#pragma mark - Friends
+
+- (RKManagedObjectRequestOperation *)listOfRecommendedFriendsWithSuccessBlock:(VSuccessBlock)success
+                                                                    failBlock:(VFailBlock)fail
+{
+    return nil;
 }
 
 - (RKManagedObjectRequestOperation *)inviteFriends:(NSArray*)friendIDs
@@ -331,6 +335,7 @@
 }
 
 #pragma mark - helpers
+
 - (NSArray*)objectsForEntity:(NSString*)entityName
                    userIdKey:(NSString*)idKey
                       userId:(NSNumber*)userId
