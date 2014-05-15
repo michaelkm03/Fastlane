@@ -74,7 +74,7 @@
     self.navigationController.delegate = self;
     
     if ([self.fetchedResultsController.fetchedObjects count] < 5)
-        [self refreshAction];
+        [self refresh:nil];
     else
         [self.tableView reloadData]; //force a reload incase anything has changed
     
@@ -256,22 +256,17 @@
 }
 
 #pragma mark - Refresh
-- (void)refreshAction
+- (IBAction)refresh:(UIRefreshControl *)sender
 {
-    RKManagedObjectRequestOperation* operation = [[VObjectManager sharedManager] refreshSequenceFilter:[self currentFilter]
-                                                          successBlock:^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
+    [[VObjectManager sharedManager] refreshSequenceFilter:[self currentFilter]
+                                             successBlock:^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
      {
          [self.refreshControl endRefreshing];
      }
-                                                             failBlock:^(NSOperation* operation, NSError* error)
+                                                failBlock:^(NSOperation* operation, NSError* error)
      {
          [self.refreshControl endRefreshing];
      }];
-    
-    if (operation)
-    {
-        [self.refreshControl beginRefreshing];
-    }
 }
 
 - (void)loadNextPageAction

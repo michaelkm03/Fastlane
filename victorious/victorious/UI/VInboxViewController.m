@@ -153,7 +153,7 @@ static  NSString*   kNewsCellViewIdentifier       =   @"VNewsCell";
     [self.sideMenuViewController presentMenuViewController];
 }
 
-- (IBAction)refreshAction:(id)sender
+- (IBAction)refresh:(UIRefreshControl *)sender
 {
     VFailBlock fail = ^(NSOperation* operation, NSError* error)
     {

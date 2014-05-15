@@ -19,6 +19,6 @@
 - (void)refreshFetchController;
 
 - (void)registerCells;
-- (void)refreshAction;
+- (IBAction)refresh:(UIRefreshControl *)sender;
 
 @end

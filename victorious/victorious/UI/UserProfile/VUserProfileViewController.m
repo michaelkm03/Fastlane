@@ -110,7 +110,6 @@ const   CGFloat kVNavigationBarHeight = 44.0;
     _profile = profile;
     
     [self refreshFetchController];
-    [self refreshAction:nil];
 }
 
 #pragma mark - Support
@@ -541,7 +540,7 @@ const   CGFloat kVNavigationBarHeight = 44.0;
     return [[VObjectManager sharedManager] sequenceFilterForUser:self.profile];
 }
 
-- (IBAction)refreshAction:(id)sender
+- (IBAction)refresh:(UIRefreshControl *)sender
 {
     [[VObjectManager sharedManager] refreshSequenceFilter:[self currentFilter]
                                              successBlock:^(NSOperation* operation, id fullResponse, NSArray* resultObjects)

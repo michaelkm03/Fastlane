@@ -80,7 +80,8 @@
 
 - (IBAction)refresh:(UIRefreshControl *)sender
 {
-    [self refreshAction];
+    [self performFetch];
+    [self.refreshControl endRefreshing];
 }
 
 #pragma mark - UITablViewDataSource
@@ -184,12 +185,6 @@
 - (void)registerCells
 {
     
-}
-
-- (void)refreshAction
-{
-    [self performFetch];
-    [self.refreshControl endRefreshing];
 }
 
 @end
