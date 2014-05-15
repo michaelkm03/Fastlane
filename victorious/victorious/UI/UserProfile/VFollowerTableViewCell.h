@@ -10,7 +10,8 @@
 
 @interface VFollowerTableViewCell : UITableViewCell
 
-@property (nonatomic, copy) VUser*  profile;
-@property (nonatomic)       BOOL    showButton;
+@property (nonatomic, strong)   VUser*  profile;
+@property (nonatomic, strong)   VUser*  owner;
+@property (nonatomic)           BOOL    showButton;
 
 @end

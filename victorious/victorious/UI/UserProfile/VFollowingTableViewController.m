@@ -13,12 +13,10 @@
 #import "VUser+LoadFollowers.h"
 
 @interface VFollowingTableViewController ()
+@property (nonatomic, strong)   NSArray*    following;
 @end
 
 @implementation VFollowingTableViewController
-{
-    NSMutableArray*    _following;
-}
 
 - (void)viewDidLoad
 {
@@ -37,13 +35,13 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return [_following count];
+    return [self.following count];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     VFollowerTableViewCell*    cell = [tableView dequeueReusableCellWithIdentifier:@"followerCell" forIndexPath:indexPath];
-    cell.profile = _following[indexPath.row];    
+    cell.profile = self.following[indexPath.row];
     cell.showButton = NO;
     return cell;
 }
@@ -61,21 +59,22 @@
 
 - (void)populateFollowingList
 {
-    if (_following)
-        [_following removeAllObjects];
-    else
-        _following = [[NSMutableArray alloc] init];
-    
     VSuccessBlock followingSuccess = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
     {
-        [_following addObjectsFromArray:[self.profile.following allObjects]];
+        NSSortDescriptor*   sort = [[NSSortDescriptor alloc] initWithKey:@"name" ascending:YES selector:@selector(localizedCaseInsensitiveCompare:)];
+        self.following = [[self.profile.following allObjects] sortedArrayUsingDescriptors:@[sort]];
         [self.tableView reloadData];
+    };
+    
+    VFailBlock followingFail = ^(NSOperation* operation, NSError* error)
+    {
+        self.following = [[NSArray alloc] init];
     };
     
     if (!self.profile.followingListLoading)
         [[VObjectManager sharedManager] requestFollowListForUser:self.profile
                                                     successBlock:followingSuccess
-                                                       failBlock:nil];
+                                                       failBlock:followingFail];
     else
         followingSuccess(nil, nil, nil);
 }

@@ -281,6 +281,48 @@
             failBlock:fail];
 }
 
+- (RKManagedObjectRequestOperation *)countOfFollowsForUser:(VUser *)user
+                                              successBlock:(VSuccessBlock)success
+                                                 failBlock:(VFailBlock)fail
+{
+    VSuccessBlock fullSuccess = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
+    {
+        if (success)
+        {
+            NSArray* results = @[fullResponse[@"payload"][@"followers"], fullResponse[@"payload"][@"subscribed_to"]];
+            
+            success(operation, fullResponse, results);
+        }
+    };
+
+    NSString *path = [NSString stringWithFormat:@"/api/follow/counts/%d", [user.remoteId intValue]];
+    return [self GET:path
+               object:nil
+           parameters:nil
+         successBlock:fullSuccess
+            failBlock:fail];
+}
+
+- (RKManagedObjectRequestOperation *)isUser:(VUser *)follower
+                                  following:(VUser *)user
+                               successBlock:(VSuccessBlock)success
+                                  failBlock:(VFailBlock)fail
+{
+    VSuccessBlock fullSuccess = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
+    {
+        NSArray*    results = @[fullResponse[@"relationship_exists"]];
+        
+        success(operation, fullResponse, results);
+    };
+    
+    NSString *path = [NSString stringWithFormat:@"/api/follow/is_follower/%d/%d", [follower.remoteId integerValue], [user.remoteId integerValue]];
+    return [self GET:path
+              object:nil
+          parameters:nil
+        successBlock:fullSuccess
+           failBlock:fail];
+}
+
 - (RKManagedObjectRequestOperation *)inviteFriends:(NSArray*)friendIDs
                                   withSuccessBlock:(VSuccessBlock)success
                                          failBlock:(VFailBlock)fail

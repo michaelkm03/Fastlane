@@ -16,7 +16,6 @@
 @property (nonatomic, weak)     IBOutlet    UILabel*            profileName;
 @property (nonatomic, weak)     IBOutlet    UILabel*            profileLocation;
 @property (nonatomic, weak)     IBOutlet    UIButton*           followButton;
-@property (nonatomic)                       BOOL                following;
 @end
 
 @implementation VFollowerTableViewCell
@@ -37,30 +36,41 @@
     self.profileLocation.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVLabel3Font];
     self.profileLocation.text = profile.location;
     
-    self.followButton.hidden = !self.showButton;
-    
     self.backgroundColor = [UIColor colorWithWhite:0.97 alpha:1.0];
 //  self.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVSecondaryBackgroundColor];
+
+    self.followButton.hidden = YES;
+    if (self.showButton)
+    {
+        [[VObjectManager sharedManager] isUser:self.owner
+                                     following:self.profile
+                                  successBlock:^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
+         {
+             if ([resultObjects[0] isEqualToString:@"true"])
+                 self.followButton.hidden = NO;
+         }
+                                     failBlock:nil];
+    }
 }
 
 - (IBAction)follow:(id)sender
 {
-    if (self.following)
-    {
-        self.following = NO;
-        [[VObjectManager sharedManager] unfollowUser:self.profile successBlock:nil failBlock:nil];
-//      [UIView animateWithDuration:0.4 animations:^{
-//        [self.followButton setImage:[UIImage imageNamed:@""] forState:UIControlStateNormal];
-//      }];
-    }
-    else
-    {
-        self.following = YES;
-        [[VObjectManager sharedManager] followUser:self.profile successBlock:nil failBlock:nil];
-//      [UIView animateWithDuration:0.4 animations:^{
-//        [self.followButton setImage:[UIImage imageNamed:@""] forState:UIControlStateNormal];
-//      }];
-    }
+    [[VObjectManager sharedManager] followUser:self.profile successBlock:nil failBlock:nil];
+    
+    [UIView transitionWithView:self.followButton
+                      duration:1.0
+                       options:UIViewAnimationOptionTransitionFlipFromTop
+                    animations:^{
+                        [self.followButton setImage:[UIImage imageNamed:@"buttonFollowed"] forState:UIControlStateNormal];
+                    } completion:^(BOOL finished) {
+                        [UIView animateWithDuration:1.0 animations:^{
+                            self.followButton.alpha = 0.0;
+                        }
+                                         completion:^(BOOL finished)
+                         {
+                             self.followButton.hidden = YES;
+                         }];
+                    }];
 }
 
 @end
