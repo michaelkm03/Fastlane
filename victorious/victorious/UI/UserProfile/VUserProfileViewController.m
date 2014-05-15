@@ -250,6 +250,7 @@ const   CGFloat kVNavigationBarHeight = 44.0;
             self.editProfileButton.layer.borderWidth = 2.0;
             self.editProfileButton.layer.cornerRadius = 3.0;
             self.editProfileButton.backgroundColor = [UIColor clearColor];
+            [self setProfileData];
         }
         else
         {
@@ -360,6 +361,7 @@ const   CGFloat kVNavigationBarHeight = 44.0;
             self.editProfileButton.layer.borderWidth = 2.0;
             self.editProfileButton.layer.cornerRadius = 3.0;
             self.editProfileButton.backgroundColor = [UIColor clearColor];
+            [self setProfileData];
         }
         else
         {
