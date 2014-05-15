@@ -158,13 +158,14 @@
     [self playVideoAtURL:contentURL withPreviewView:temporaryThumbnailView];
     
     typeof(self) __weak weakSelf = self;
-    [self setVideoCompletionBlock:^(void)
+    [self setOnVideoUnloadBlock:^(void)
     {
-        [weakSelf unloadVideoWithDuration:0.2f completion:^(void)
-        {
-            thumbnailView.hidden = NO;
-            [temporaryThumbnailView removeFromSuperview];
-        }];
+        thumbnailView.hidden = NO;
+        [temporaryThumbnailView removeFromSuperview];
+    }];
+    [self setOnVideoCompletionBlock:^(void)
+    {
+        [weakSelf unloadVideoWithDuration:0.2f completion:nil];
     }];
 }
 

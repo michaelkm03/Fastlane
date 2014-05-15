@@ -17,11 +17,13 @@
 
 static const char kVideoPreviewViewKey;
 static const char kVideoCompletionBlockKey;
+static const char kVideoUnloadBlockKey;
 
 @implementation VContentViewController (Videos)
 
 - (void)playVideoAtURL:(NSURL *)contentURL withPreviewView:(UIView *)previewView
 {
+    NSAssert(![self isVideoLoadingOrLoaded], @"attempt to play two videos at once--not allowed.");
     NSAssert([self.mediaView.subviews containsObject:previewView], @"previewView must be a subview of mediaView");
     
     [self.videoPlayer removeFromSuperview];
@@ -92,11 +94,16 @@ static const char kVideoCompletionBlockKey;
         return;
     }
     
-    void (^removeVideoPlayer)(BOOL) = ^(BOOL complete)
+    void (^animationCompletion)(BOOL) = ^(BOOL complete)
     {
         [self.videoPlayer removeFromSuperview];
         self.videoPlayer = nil;
         
+        if (self.onVideoUnloadBlock)
+        {
+            self.onVideoUnloadBlock();
+            self.onVideoUnloadBlock = nil;
+        }
         if (completion)
         {
             completion();
@@ -116,11 +123,11 @@ static const char kVideoCompletionBlockKey;
             self.previewImage.alpha = 1.0f;
             self.videoPlayer.alpha = 0;
         }
-                         completion:removeVideoPlayer];
+                         completion:animationCompletion];
     }
     else
     {
-        removeVideoPlayer(YES);
+        animationCompletion(YES);
     }
 }
 
@@ -179,14 +186,24 @@ static const char kVideoCompletionBlockKey;
     return objc_getAssociatedObject(self, &kVideoPreviewViewKey);
 }
 
-- (void)setVideoCompletionBlock:(void (^)(void))completion
+- (void)setOnVideoCompletionBlock:(void (^)(void))completion
 {
     objc_setAssociatedObject(self, &kVideoCompletionBlockKey, [completion copy], OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }
 
-- (void(^)(void))videoCompletionBlock
+- (void(^)(void))onVideoCompletionBlock
 {
     return objc_getAssociatedObject(self, &kVideoCompletionBlockKey);
+}
+
+- (void)setOnVideoUnloadBlock:(void (^)(void))onUnload
+{
+    objc_setAssociatedObject(self, &kVideoUnloadBlockKey, [onUnload copy], OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+}
+
+- (void(^)(void))onVideoUnloadBlock
+{
+    return objc_getAssociatedObject(self, &kVideoUnloadBlockKey);
 }
 
 #pragma mark - VCVideoPlayerDelegate methods
@@ -204,10 +221,10 @@ static const char kVideoCompletionBlockKey;
 
 - (void)videoPlayerDidReachEndOfVideo:(VCVideoPlayerView *)videoPlayer
 {
-    if (self.videoCompletionBlock)
+    if (self.onVideoCompletionBlock)
     {
-        self.videoCompletionBlock();
-        self.videoCompletionBlock = nil;
+        self.onVideoCompletionBlock();
+        self.onVideoCompletionBlock = nil;
     }
 }
 
