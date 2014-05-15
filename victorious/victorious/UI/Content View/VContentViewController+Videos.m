@@ -129,6 +129,9 @@ static const char kVideoUnloadBlockKey;
     }
     else
     {
+        [self.activityIndicator stopAnimating];
+        [self.activityIndicator removeFromSuperview];
+        self.activityIndicator = nil;
         animationCompletion(YES);
     }
 }
