@@ -8,6 +8,7 @@
 
 #import "VUserProfileViewController.h"
 #import "VConstants.h"
+#import "VUser.h"
 #import "UIViewController+VSideMenuViewController.h"
 #import "VLoginViewController.h"
 #import "VObjectManager+Users.h"
@@ -20,7 +21,6 @@
 #import "VMessageContainerViewController.h"
 #import "UIImage+ImageEffects.h"
 #import "UIImageView+Blurring.h"
-#import "VUser+LoadFollowers.h"
 #import "VThemeManager.h"
 
 const   CGFloat kVNavigationBarHeight = 44.0;

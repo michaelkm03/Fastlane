@@ -14,7 +14,6 @@
 #import "VMessage+RestKit.h"
 #import "VSequence+RestKit.h"
 #import "VUser.h"
-#import "VUser+LoadFollowers.h"
 #import "VUser+RestKit.h"
 
 #import "VConstants.h"
@@ -149,33 +148,12 @@
                                                  successBlock:(VSuccessBlock)success
                                                     failBlock:(VFailBlock)fail
 {
-    if (user.followingListLoading)
-    {
-        if (fail)
-        {
-            fail(nil, nil);
-        }
-        return nil;
-    }
-    
-    user.followingListLoading = YES;
     NSString *path = [NSString stringWithFormat:@"/api/follow/subscribed_to_list/%d", [user.remoteId intValue]];
     return [self GET:path
               object:nil
           parameters:nil
         successBlock:^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
     {
-        for (NSManagedObject *resultUser in resultObjects)
-        {
-            VUser *followUser = (VUser *)[user.managedObjectContext objectWithID:resultUser.objectID];
-            [user addFollowingObject:followUser];
-        }
-        
-        [user.managedObjectContext saveToPersistentStore:nil];
-    
-        user.followingListLoading = NO;
-        user.followingListLoaded = YES;
-        
         if (success)
         {
             success(operation, fullResponse, resultObjects);
@@ -188,33 +166,12 @@
                                                    successBlock:(VSuccessBlock)success
                                                       failBlock:(VFailBlock)fail
 {
-    if (user.followerListLoading)
-    {
-        if (fail)
-        {
-            fail(nil, nil);
-        }
-        return nil;
-    }
-    
-    user.followerListLoading = YES;
     NSString *path = [NSString stringWithFormat:@"/api/follow/followers_list/%d", [user.remoteId intValue]];
     return [self GET:path
               object:nil
           parameters:nil
         successBlock:^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
             {
-                for (NSManagedObject *resultUser in resultObjects)
-                {
-                    VUser *followUser = (VUser *)[user.managedObjectContext objectWithID:resultUser.objectID];
-                    [user addFollowersObject:followUser];
-                }
-                
-                [user.managedObjectContext saveToPersistentStore:nil];
-                
-                user.followerListLoading = NO;
-                user.followerListLoaded = YES;
-                
                 if (success)
                 {
                     success(operation, fullResponse, resultObjects);
@@ -231,11 +188,6 @@
     
     VSuccessBlock fullSuccess = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
     {
-        if (![[fullResponse objectForKey:@"error"] integerValue])
-        {
-            [self.mainUser addFollowingObject:user];
-            [self.mainUser.managedObjectContext saveToPersistentStore:nil];
-        }
         if (success)
         {
             success(operation, fullResponse, resultObjects);
@@ -257,15 +209,6 @@
     
     VSuccessBlock fullSuccess = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
     {
-        if (![[fullResponse objectForKey:@"error"] integerValue])
-        {
-            VUser *followedUser = [[self.mainUser.following filteredSetUsingPredicate:[NSPredicate predicateWithFormat:@"remoteId=%d", [user.remoteId intValue]]] anyObject];
-            if (followedUser)
-            {
-                [self.mainUser removeFollowingObject:followedUser];
-                [self.mainUser.managedObjectContext saveToPersistentStore:nil];
-            }
-        }
         if (success)
         {
             success(operation, fullResponse, resultObjects);
