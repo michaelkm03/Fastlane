@@ -620,13 +620,6 @@ const   CGFloat kVNavigationBarHeight = 44.0;
                                                       
                                                       if (resultObjects.count > 0)
                                                       {
-#warning temporary hack to unblock gary
-                                                          if (![self.fetchedResultsController.fetchedObjects count])
-                                                          {
-                                                              //This does not make any sense, so just call refresh again.
-                                                              [self refreshAction:sender];
-                                                          }
-                                                          
                                                           [UIView animateWithDuration:0.6 animations:^{
                                                               [self.tableView beginUpdates];
                                                               self.tableView.tableHeaderView = [self shortHeader];
@@ -644,7 +637,7 @@ const   CGFloat kVNavigationBarHeight = 44.0;
                                                           }];
                                                      }
                                                   }
-                                                                                             failBlock:^(NSOperation* operation, NSError* error)
+                                                  failBlock:^(NSOperation* operation, NSError* error)
                                                   {
                                                       [self.refreshControl endRefreshing];
                                                       [UIView animateWithDuration:0.6 animations:^{
