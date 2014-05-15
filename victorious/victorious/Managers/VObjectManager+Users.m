@@ -289,7 +289,8 @@
         {
             NSArray* results = @[fullResponse[@"payload"][@"followers"], fullResponse[@"payload"][@"subscribed_to"]];
             
-            success(operation, fullResponse, results);
+            if (success)
+                success(operation, fullResponse, results);
         }
     };
 
@@ -309,7 +310,8 @@
     {
         NSArray*    results = @[fullResponse[@"payload"][@"relationship_exists"]];
         
-        success(operation, fullResponse, results);
+        if (success)
+            success(operation, fullResponse, results);
     };
     
     return [self GET:[NSString stringWithFormat:@"/api/follow/is_follower/%d/%d", [follower.remoteId integerValue], [user.remoteId integerValue]]

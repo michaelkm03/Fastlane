@@ -64,7 +64,7 @@
     VSuccessBlock followerSuccess = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
     {
         NSSortDescriptor*   sort = [[NSSortDescriptor alloc] initWithKey:@"name" ascending:YES selector:@selector(localizedCaseInsensitiveCompare:)];
-        self.followers = [[self.profile.followers allObjects] sortedArrayUsingDescriptors:@[sort]];
+        self.followers = [resultObjects sortedArrayUsingDescriptors:@[sort]];
         [self.tableView reloadData];
     };
     

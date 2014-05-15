@@ -151,16 +151,17 @@ const   CGFloat kVNavigationBarHeight = 44.0;
     
     if (!self.isMe)
     {
-        [self.editProfileButton setTitle:NSLocalizedString(@"follow", @"") forState:UIControlStateNormal];
-        self.editProfileButton.layer.borderWidth = 0.0;
-        self.editProfileButton.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];;
-        
-        
         if (self.editProfileButton.selected)
         {
             [self.editProfileButton setTitle:NSLocalizedString(@"following", @"") forState:UIControlStateNormal];
             self.editProfileButton.layer.borderWidth = 2.0;
             self.editProfileButton.backgroundColor = [UIColor clearColor];
+        }
+        else
+        {
+            [self.editProfileButton setTitle:NSLocalizedString(@"follow", @"") forState:UIControlStateNormal];
+            self.editProfileButton.layer.borderWidth = 0.0;
+            self.editProfileButton.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];;
         }
     }
 }
@@ -258,15 +259,18 @@ const   CGFloat kVNavigationBarHeight = 44.0;
             [[VObjectManager sharedManager] isUser:[VObjectManager sharedManager].mainUser
                                          following:self.profile
                                       successBlock:^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
-                                      {
-                                          if ([resultObjects[0] boolValue])
-                                              self.editProfileButton.selected = YES;
-                                      }
-                                         failBlock:nil];
+              {
+                  if ([resultObjects[0] boolValue])
+                      self.editProfileButton.selected = YES;
+                  [self setProfileData];
+              }
+                 failBlock:nil];
         }
     }
-
-    [self setProfileData];
+    else
+    {
+        [self setProfileData];
+    }
 
     return self.longContainerView;
 }
@@ -368,12 +372,15 @@ const   CGFloat kVNavigationBarHeight = 44.0;
              {
                  if ([resultObjects[0] boolValue])
                      self.editProfileButton.selected = YES;
+                 [self setProfileData];
              }
                                          failBlock:nil];
         }
     }
-
-    [self setProfileData];
+    else
+    {
+        [self setProfileData];
+    }
     
     return self.shortContainerView;
 }
@@ -543,31 +550,28 @@ const   CGFloat kVNavigationBarHeight = 44.0;
                                                   
                                                   if (resultObjects.count > 0)
                                                   {
-                                                      [UIView animateWithDuration:0.6 animations:^{
+                                                      [UIView animateWithDuration:0.8 animations:^{
                                                           [self.tableView beginUpdates];
                                                           self.tableView.tableHeaderView = [self shortHeader];
                                                           [self.tableView endUpdates];
-                                                          [self setProfileData];
                                                       }];
                                                   }
                                                   else
                                                   {
-                                                      [UIView animateWithDuration:0.6 animations:^{
+                                                      [UIView animateWithDuration:0.8 animations:^{
                                                           [self.tableView beginUpdates];
                                                           self.tableView.tableHeaderView = [self longHeader];
                                                           [self.tableView endUpdates];
-                                                          [self setProfileData];
                                                       }];
                                                  }
                                               }
                                               failBlock:^(NSOperation* operation, NSError* error)
                                               {
                                                   [self.refreshControl endRefreshing];
-                                                  [UIView animateWithDuration:0.6 animations:^{
+                                                  [UIView animateWithDuration:0.8 animations:^{
                                                       [self.tableView beginUpdates];
                                                       self.tableView.tableHeaderView = [self longHeader];
                                                       [self.tableView endUpdates];
-                                                      [self setProfileData];
                                                   }];
 
                                               }];

@@ -62,7 +62,7 @@
     VSuccessBlock followingSuccess = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
     {
         NSSortDescriptor*   sort = [[NSSortDescriptor alloc] initWithKey:@"name" ascending:YES selector:@selector(localizedCaseInsensitiveCompare:)];
-        self.following = [[self.profile.following allObjects] sortedArrayUsingDescriptors:@[sort]];
+        self.following = [resultObjects sortedArrayUsingDescriptors:@[sort]];
         [self.tableView reloadData];
     };
     
