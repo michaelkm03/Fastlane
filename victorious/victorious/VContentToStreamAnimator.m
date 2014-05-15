@@ -33,7 +33,7 @@
     
     if ([contentVC isVideoLoadingOrLoaded])
     {
-        [contentVC unloadVideoWithDuration:0.2f];
+        [contentVC unloadVideoWithDuration:0.2f completion:nil];
     }
     
     [contentVC.actionBarVC animateOutWithDuration:.2f

@@ -16,6 +16,7 @@
 #import <objc/runtime.h>
 
 static const char kVideoPreviewViewKey;
+static const char kVideoCompletionBlockKey;
 
 @implementation VContentViewController (Videos)
 
@@ -84,7 +85,7 @@ static const char kVideoPreviewViewKey;
     return self.videoPlayer || self.temporaryVideoPreviewConstraints.count;
 }
 
-- (void)unloadVideoWithDuration:(NSTimeInterval)duration
+- (void)unloadVideoWithDuration:(NSTimeInterval)duration completion:(void (^)(void))completion
 {
     if (!self.videoPlayer && !self.temporaryVideoPreviewConstraints.count)
     {
@@ -95,6 +96,11 @@ static const char kVideoPreviewViewKey;
     {
         [self.videoPlayer removeFromSuperview];
         self.videoPlayer = nil;
+        
+        if (completion)
+        {
+            completion();
+        }
     };
 
     if (self.temporaryVideoPreviewConstraints.count)
@@ -161,7 +167,7 @@ static const char kVideoPreviewViewKey;
      }];
 }
 
-#pragma mark - Video Preview View
+#pragma mark - Private Properties
 
 - (void)setVideoPreviewView:(UIView *)videoPreviewView
 {
@@ -171,6 +177,16 @@ static const char kVideoPreviewViewKey;
 - (UIView *)videoPreviewView
 {
     return objc_getAssociatedObject(self, &kVideoPreviewViewKey);
+}
+
+- (void)setVideoCompletionBlock:(void (^)(void))completion
+{
+    objc_setAssociatedObject(self, &kVideoCompletionBlockKey, [completion copy], OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+}
+
+- (void(^)(void))videoCompletionBlock
+{
+    return objc_getAssociatedObject(self, &kVideoCompletionBlockKey);
 }
 
 #pragma mark - VCVideoPlayerDelegate methods
@@ -184,6 +200,15 @@ static const char kVideoPreviewViewKey;
     
     CGFloat videoHeight = CGRectGetHeight(self.mediaView.frame) * yRatio;
     [self animateVideoOpenToHeight:videoHeight];
+}
+
+- (void)videoPlayerDidReachEndOfVideo:(VCVideoPlayerView *)videoPlayer
+{
+    if (self.videoCompletionBlock)
+    {
+        self.videoCompletionBlock();
+        self.videoCompletionBlock = nil;
+    }
 }
 
 @end

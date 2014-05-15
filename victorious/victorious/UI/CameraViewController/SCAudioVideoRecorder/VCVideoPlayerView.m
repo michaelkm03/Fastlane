@@ -446,6 +446,10 @@ static __weak VCVideoPlayerView *_currentPlayer = nil;
             self.toolbarView.slider.value = 1.0f;
             self.didPlayToEnd = YES;
             self.player.rate = 0;
+            if ([self.delegate respondsToSelector:@selector(videoPlayerDidReachEndOfVideo:)])
+            {
+                [self.delegate videoPlayerDidReachEndOfVideo:self];
+            }
         }
     }
 }

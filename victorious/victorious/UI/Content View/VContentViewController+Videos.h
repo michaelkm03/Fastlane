@@ -25,6 +25,7 @@
 - (void)playVideoAtURL:(NSURL *)contentURL withPreviewView:(UIView *)previewView;
 
 - (BOOL)isVideoLoadingOrLoaded; ///< Returns YES if -playVideoAtURL:withPreviewView: has been called without a subsequent -unloadVideoWithDuration:
-- (void)unloadVideoWithDuration:(NSTimeInterval)duration; ///< Undoes the changes that -loadVideo does.
+- (void)unloadVideoWithDuration:(NSTimeInterval)duration completion:(void(^)(void))completion; ///< Undoes the changes that -loadVideo makes.
+- (void)setVideoCompletionBlock:(void(^)(void))completion; ///< Sets a block to execute as soon as playback finishes. Block will be cleared after executing once
 
 @end

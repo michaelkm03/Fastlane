@@ -37,7 +37,7 @@
     self.remixButton.hidden = YES;
     if ([self isVideoLoadingOrLoaded])
     {
-        [self unloadVideoWithDuration:0];
+        [self unloadVideoWithDuration:0 completion:nil];
     }
 }
 
