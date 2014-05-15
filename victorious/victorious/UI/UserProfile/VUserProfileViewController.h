@@ -8,9 +8,10 @@
 
 #import "VStreamTableViewController.h"
 
+@class VUser;
+
 @interface VUserProfileViewController : VStreamTableViewController
 
-+ (instancetype)userProfileWithSelf;
-+ (instancetype)userProfileWithUserID:(NSInteger)aUserID;
++ (instancetype)userProfileWithUser:(VUser*)aUser;
 
 @end

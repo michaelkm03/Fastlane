@@ -27,7 +27,6 @@ const   CGFloat kVNavigationBarHeight = 44.0;
 
 @interface VUserProfileViewController ()
 
-@property   (nonatomic) NSInteger                       userID;
 @property   (nonatomic, strong) VUser*                  profile;
 @property   (nonatomic) BOOL                            isMe;
 
@@ -53,20 +52,7 @@ const   CGFloat kVNavigationBarHeight = 44.0;
 
 @implementation VUserProfileViewController
 
-+ (instancetype)userProfileWithSelf
-{
-    VUserProfileViewController*   viewController  =   [[UIStoryboard storyboardWithName:@"Profile" bundle:nil] instantiateInitialViewController];
-
-    viewController.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"Menu"]
-                                                                                       style:UIBarButtonItemStylePlain
-                                                                                      target:viewController
-                                                                                      action:@selector(showMenu:)];
-    viewController.userID = [[VObjectManager sharedManager].mainUser.remoteId integerValue];
-
-    return viewController;
-}
-
-+ (instancetype)userProfileWithUserID:(NSInteger)aUserID
++ (instancetype)userProfileWithUser:(VUser*)aUser
 {
     VUserProfileViewController*   viewController  =   [[UIStoryboard storyboardWithName:@"Profile" bundle:nil] instantiateInitialViewController];
     
@@ -74,8 +60,8 @@ const   CGFloat kVNavigationBarHeight = 44.0;
                                                                                        style:UIBarButtonItemStylePlain
                                                                                       target:viewController
                                                                                       action:@selector(close:)];
-    viewController.userID = aUserID;
-
+    viewController.profile = aUser;
+    
     return viewController;
 }
 
@@ -83,24 +69,15 @@ const   CGFloat kVNavigationBarHeight = 44.0;
 
 - (void)viewDidLoad
 {
-    self.isMe = (self.userID == [[VObjectManager sharedManager].mainUser.remoteId integerValue]);
+    self.isMe = ([self.profile.remoteId isEqualToNumber:[VObjectManager sharedManager].mainUser.remoteId]);
     
     if (self.isMe)
     {
-        self.profile = [VObjectManager sharedManager].mainUser;
         self.navigationItem.title = NSLocalizedString(@"me", "");
     }
     else
     {
-        [[VObjectManager sharedManager] fetchUser:@(self.userID) withSuccessBlock:^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
-         {
-             self.profile = [resultObjects firstObject];
-             self.navigationItem.title = [@"@" stringByAppendingString:self.profile.name];
-         }
-         failBlock:^(NSOperation* operation, NSError* error)
-         {
-             VLog("Profile failed to get User object");
-         }];
+        self.navigationItem.title = [@"@" stringByAppendingString:self.profile.name];
     }
     
     [super viewDidLoad];

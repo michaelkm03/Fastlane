@@ -61,9 +61,7 @@
 
 - (IBAction)profileButtonAction:(id)sender
 {
-    NSInteger userID = self.conversation.user.remoteId.integerValue;
-    
-    VUserProfileViewController* profileViewController = [VUserProfileViewController userProfileWithUserID:userID];
+    VUserProfileViewController* profileViewController = [VUserProfileViewController userProfileWithUser:self.conversation.user];
     [self.parentTableViewController.navigationController pushViewController:profileViewController animated:YES];
 }
 

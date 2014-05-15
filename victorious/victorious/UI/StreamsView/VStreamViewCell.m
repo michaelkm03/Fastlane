@@ -149,7 +149,7 @@ NSString *kStreamsWillCommentNotification = @"kStreamsWillCommentNotification";
 
 - (IBAction)profileButtonAction:(id)sender
 {
-    VUserProfileViewController* profileViewController = [VUserProfileViewController userProfileWithUserID:[self.sequence.createdBy integerValue]];
+    VUserProfileViewController* profileViewController = [VUserProfileViewController userProfileWithUser:self.sequence.user];
     [self.parentTableViewController.navigationController pushViewController:profileViewController animated:YES];
 }
 

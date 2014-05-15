@@ -217,19 +217,19 @@ NSString* const kChatBubbleLeftImage = @"ChatBubbleLeft";
 
 - (IBAction)profileButtonAction:(id)sender
 {
-    NSInteger userID;
+    VUser* user;
     if([self.commentOrMessage isKindOfClass:[VComment class]])
     {
         VComment* comment = (VComment *)self.commentOrMessage;
-        userID = comment.userId.integerValue;
+        user = comment.user;
     }
     else
     {
         VMessage* message = (VMessage *)self.commentOrMessage;
-        userID = message.senderUserId.integerValue;
+        user = message.user;
     }
     
-    VUserProfileViewController* profileViewController = [VUserProfileViewController userProfileWithUserID:userID];
+    VUserProfileViewController* profileViewController = [VUserProfileViewController userProfileWithUser:user];
     [self.parentTableViewController.navigationController pushViewController:profileViewController animated:YES];
 }
 
