@@ -22,6 +22,8 @@
 #import "VHomeStreamViewController.h"
 #import "VOwnerStreamViewController.h"
 #import "VCommunityStreamViewController.h"
+#import "VStreamContainerViewController.h"
+
 #import "VUserProfileViewController.h"
 #import "VSettingsViewController.h"
 #import "VInboxViewController.h"
@@ -101,7 +103,7 @@ NSString *const VMenuControllerDidSelectRowNotification = @"VMenuTableViewContro
     switch (indexPath.row)
     {
         case VMenuRowHome:
-            navigationController.viewControllers = @[[VHomeStreamViewController sharedInstance]];
+            navigationController.viewControllers = @[[VStreamContainerViewController containerForStreamTable:[VHomeStreamViewController sharedInstance]]];
             [self.sideMenuViewController hideMenuViewController];
         break;
         

@@ -53,6 +53,8 @@
 {
     [super viewDidLoad];
     
+    self.view.autoresizingMask = UIViewAutoresizingFlexibleWidth |UIViewAutoresizingFlexibleHeight;
+    
     self.tableView.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVSecondaryAccentColor];
     
     [[NSNotificationCenter defaultCenter]
@@ -82,7 +84,7 @@
     navBarFrame.origin.y = 0;
     self.navigationController.navigationBar.frame = navBarFrame;
     [[VThemeManager sharedThemeManager] applyNormalNavBarStyling];
-    [self.navigationController setNavigationBarHidden:NO animated:YES];
+    [self.navigationController setNavigationBarHidden:YES animated:NO];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -299,11 +301,6 @@
 }
 
 #pragma mark - Actions
-- (IBAction)showMenu
-{
-    [self.sideMenuViewController presentMenuViewController];
-}
-
 - (void)setBackgroundImageWithURL:(NSURL*)url
 {
     UIImageView* newBackgroundView = [[UIImageView alloc] initWithFrame:self.tableView.backgroundView.frame];

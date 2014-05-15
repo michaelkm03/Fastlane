@@ -8,6 +8,7 @@
 
 #import "VStreamToContentAnimator.h"
 
+#import "VStreamContainerViewController.h"
 #import "VStreamTableViewController.h"
 #import "VStreamViewCell.h"
 
@@ -24,7 +25,8 @@
 
 - (void)animateTransition:(id<UIViewControllerContextTransitioning>)context
 {
-    VStreamTableViewController *streamVC = (VStreamTableViewController*)[context viewControllerForKey:UITransitionContextFromViewControllerKey];
+    VStreamContainerViewController* container = (VStreamContainerViewController*)[context viewControllerForKey:UITransitionContextFromViewControllerKey];
+    VStreamTableViewController *streamVC = container.streamTable;
     VContentViewController* contentVC = (VContentViewController*)[context viewControllerForKey:UITransitionContextToViewControllerKey];
     [streamVC.navigationController setNavigationBarHidden:NO animated:YES];
     VStreamViewCell* selectedCell = (VStreamViewCell*) [streamVC.tableView cellForRowAtIndexPath:streamVC.tableView.indexPathForSelectedRow];

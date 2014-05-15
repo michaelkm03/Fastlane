@@ -5,9 +5,10 @@
 //  Created by Will Long on 2/11/14.
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
-
-#import "VHomeStreamViewController.h"
 #import "VLoadingViewController.h"
+
+#import "VStreamContainerViewController.h"
+#import "VHomeStreamViewController.h"
 #import "VObjectManager+Login.h"
 #import "VObjectManager+Sequence.h"
 #import "VObjectManager+SequenceFilters.h"
@@ -151,7 +152,7 @@ static const NSTimeInterval kTimeBetweenRetries = 10.0;
         {
             _appInitLoading = NO;
             _appInitLoaded = YES;
-            [self.navigationController pushViewController:[VHomeStreamViewController sharedInstance] animated:YES];
+            [self.navigationController pushViewController:[VStreamContainerViewController containerForStreamTable:[VHomeStreamViewController sharedInstance]] animated:YES];
         }
                                                       failBlock:^(NSOperation* operation, NSError* error)
         {

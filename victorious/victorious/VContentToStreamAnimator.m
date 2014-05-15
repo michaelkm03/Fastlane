@@ -8,6 +8,7 @@
 
 #import "VContentToStreamAnimator.h"
 
+#import "VStreamContainerViewController.h"
 #import "VStreamTableViewController.h"
 #import "VContentViewController.h"
 #import "VContentViewController+Videos.h"
@@ -26,7 +27,8 @@
 - (void)animateTransition:(id<UIViewControllerContextTransitioning>)context
 {
     VContentViewController *contentVC = (VContentViewController*)[context viewControllerForKey:UITransitionContextFromViewControllerKey];
-    VStreamTableViewController *streamVC = (VStreamTableViewController*)[context viewControllerForKey:UITransitionContextToViewControllerKey];
+    VStreamContainerViewController* container = (VStreamContainerViewController*)[context viewControllerForKey:UITransitionContextFromViewControllerKey];
+    VStreamTableViewController *streamVC = container.streamTable;
     
     streamVC.view.userInteractionEnabled = NO;
     contentVC.view.userInteractionEnabled = NO;
@@ -46,7 +48,8 @@
 - (void)secondAnimation:(id<UIViewControllerContextTransitioning>)context
 {
     VContentViewController *contentVC = (VContentViewController*)[context viewControllerForKey:UITransitionContextFromViewControllerKey];
-    VStreamTableViewController *streamVC = (VStreamTableViewController*)[context viewControllerForKey:UITransitionContextToViewControllerKey];
+    VStreamContainerViewController* container = (VStreamContainerViewController*)[context viewControllerForKey:UITransitionContextFromViewControllerKey];
+    VStreamTableViewController *streamVC = container.streamTable;
     
     [UIView animateWithDuration:.2
                      animations:^

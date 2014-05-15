@@ -100,7 +100,10 @@ static NSString*   const   kVPagedFetchCache = @"PagedFetchCache";
 static NSString*   const   kHomeStreamStoryboardID              = @"homestream";
 static NSString*   const   kOwnerStreamStoryboardID             = @"ownerstream";
 static NSString*   const   kCommunityStreamStoryboardID         = @"communitystream";
+static NSString*   const   kStreamContainerID                   = @"streamcontainer";
+
 static NSString*   const   kContentViewStoryboardID             = @"content";
+
 static NSString*   const   kEmotiveBallisticsBarStoryboardID    = @"emotiveballistics";
 static NSString*   const   kPollAnswerBarStoryboardID           = @"pollanswerbar";
 static NSString*   const   kCommentsContainerStoryboardID       = @"commentscontainer";
