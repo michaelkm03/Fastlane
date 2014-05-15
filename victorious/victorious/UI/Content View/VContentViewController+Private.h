@@ -8,6 +8,7 @@
 
 #import "VConstants.h"
 
+#import "VActivityIndicatorView.h"
 #import "VCVideoPlayerView.h"
 #import "VPollAnswerBarViewController.h"
 #import "VResultView.h"
@@ -51,7 +52,7 @@
 @property (strong, nonatomic) VAsset* currentAsset;
 @property (strong, nonatomic) VInteractionManager* interactionManager;
 
-@property (strong, nonatomic) UIActivityIndicatorView* activityIndicator;
+@property (strong, nonatomic) VActivityIndicatorView* activityIndicator;
 
 @property (strong, nonatomic) id<UIViewControllerTransitioningDelegate> transitionDelegate;
 

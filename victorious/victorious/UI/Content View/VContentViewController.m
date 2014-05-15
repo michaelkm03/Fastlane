@@ -56,12 +56,6 @@ CGFloat kContentMediaViewOffset = 154;
     [self.remixButton setImage:[self.remixButton.imageView.image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] forState:UIControlStateNormal];
     self.remixButton.tintColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVMainTextColor];
     
-    self.activityIndicator = [[UIActivityIndicatorView alloc] init];
-    self.activityIndicator.backgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:.5f];
-    self.activityIndicator.layer.cornerRadius = 10.0f;
-    self.activityIndicator.hidesWhenStopped = YES;
-    self.activityIndicator.translatesAutoresizingMaskIntoConstraints = NO;
-    
     [self resetView];
 }
 
