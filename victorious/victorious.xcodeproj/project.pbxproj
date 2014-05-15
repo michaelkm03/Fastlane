@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		03086AA718F38ABE00105FFB /* UIActionSheet+VBlocks.m in Sources */ = {isa = PBXBuildFile; fileRef = 03086AA618F38ABE00105FFB /* UIActionSheet+VBlocks.m */; };
 		03086AAA18F60E3000105FFB /* VMediaPreviewViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 03086AA918F60E3000105FFB /* VMediaPreviewViewController.m */; };
+		0345285419244E9700D0B1D1 /* VActivityIndicatorView.m in Sources */ = {isa = PBXBuildFile; fileRef = 0345285319244E9700D0B1D1 /* VActivityIndicatorView.m */; };
 		03522780192173F0003FCD10 /* VElapsedTimeFormatterTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 0352277F192173F0003FCD10 /* VElapsedTimeFormatterTests.m */; };
 		0352278319219079003FCD10 /* VVideoDownloadProgressIndicatorView.m in Sources */ = {isa = PBXBuildFile; fileRef = 0352278219219079003FCD10 /* VVideoDownloadProgressIndicatorView.m */; };
 		036AE5ED18FF0C0600A74BDA /* VReachability.m in Sources */ = {isa = PBXBuildFile; fileRef = 036AE5EC18FF0C0600A74BDA /* VReachability.m */; };
@@ -257,6 +258,8 @@
 		03086AA618F38ABE00105FFB /* UIActionSheet+VBlocks.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIActionSheet+VBlocks.m"; sourceTree = "<group>"; };
 		03086AA818F60E3000105FFB /* VMediaPreviewViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VMediaPreviewViewController.h; path = UI/CameraViewController/VMediaPreviewViewController.h; sourceTree = "<group>"; };
 		03086AA918F60E3000105FFB /* VMediaPreviewViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VMediaPreviewViewController.m; path = UI/CameraViewController/VMediaPreviewViewController.m; sourceTree = "<group>"; };
+		0345285219244E9700D0B1D1 /* VActivityIndicatorView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VActivityIndicatorView.h; path = UI/VActivityIndicatorView.h; sourceTree = "<group>"; };
+		0345285319244E9700D0B1D1 /* VActivityIndicatorView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VActivityIndicatorView.m; path = UI/VActivityIndicatorView.m; sourceTree = "<group>"; };
 		0352277F192173F0003FCD10 /* VElapsedTimeFormatterTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VElapsedTimeFormatterTests.m; sourceTree = "<group>"; };
 		0352278119219079003FCD10 /* VVideoDownloadProgressIndicatorView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VVideoDownloadProgressIndicatorView.h; sourceTree = "<group>"; };
 		0352278219219079003FCD10 /* VVideoDownloadProgressIndicatorView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VVideoDownloadProgressIndicatorView.m; sourceTree = "<group>"; };
@@ -983,6 +986,8 @@
 		3F9B666418887CF40046F826 /* UI Elements */ = {
 			isa = PBXGroup;
 			children = (
+				0345285219244E9700D0B1D1 /* VActivityIndicatorView.h */,
+				0345285319244E9700D0B1D1 /* VActivityIndicatorView.m */,
 				3FD7FFB318C14B6100945E5F /* VPickerTextField.h */,
 				3FD7FFB418C14B6100945E5F /* VPickerTextField.m */,
 				838511C218762DF3007E0316 /* VBadgeLabel.h */,
@@ -1834,6 +1839,7 @@
 				03CB1B87190F0A97001667D0 /* VUser+LoadFollowers.m in Sources */,
 				3F0F1505191C20280030B33D /* VProgressiveImageView.m in Sources */,
 				BE171E0D1868C211004E5202 /* VAnswer+RestKit.m in Sources */,
+				0345285419244E9700D0B1D1 /* VActivityIndicatorView.m in Sources */,
 				3FDEDD0618CE48210028E3F1 /* VRemixStitchViewController.m in Sources */,
 				3F71A7DA18D7C6D20048FF60 /* VRemixSliderLeft.m in Sources */,
 				3F9348A01922C539002EA91F /* VFollowingTableViewController.m in Sources */,

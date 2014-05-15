@@ -63,6 +63,8 @@ static const char kVideoUnloadBlockKey;
     self.videoPlayer.alpha = 0;
     [self.videoPlayer setItemURL:contentURL];
     
+    self.activityIndicator = [[VActivityIndicatorView alloc] init];
+    self.activityIndicator.translatesAutoresizingMaskIntoConstraints = NO;
     [self.mediaView addSubview:self.activityIndicator];
     [self.mediaView addConstraint:[NSLayoutConstraint constraintWithItem:self.activityIndicator
                                                                attribute:NSLayoutAttributeCenterX
@@ -212,6 +214,7 @@ static const char kVideoUnloadBlockKey;
 {
     [self.activityIndicator stopAnimating];
     [self.activityIndicator removeFromSuperview];
+    self.activityIndicator = nil;
     
     CGFloat yRatio = fminf(self.videoPlayer.naturalSize.height / self.videoPlayer.naturalSize.width, 1);
     
