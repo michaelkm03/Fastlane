@@ -103,6 +103,8 @@ static __weak VCVideoPlayerView *_currentPlayer = nil;
     self.timeFormatter = [[VElapsedTimeFormatter alloc] init];
     self.toolbarView.elapsedTimeLabel.text = [self.timeFormatter stringForCMTime:kCMTimeInvalid];
     self.toolbarView.remainingTimeLabel.text = [self.timeFormatter stringForCMTime:kCMTimeInvalid];
+    
+    self.overlayView = [[UIView alloc] init];
 }
 
 - (void)dealloc
@@ -210,6 +212,25 @@ static __weak VCVideoPlayerView *_currentPlayer = nil;
     self.videoFrameTapGesture.enabled = shouldShowToolbar;
 }
 
+- (void)setOverlayView:(UIView *)overlayView
+{
+    if (_overlayView)
+    {
+        [_overlayView removeFromSuperview];
+    }
+    _overlayView = overlayView;
+    _overlayView.translatesAutoresizingMaskIntoConstraints = NO;
+    [self insertSubview:_overlayView belowSubview:self.toolbarView];
+    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[overlayView]|"
+                                                                 options:0
+                                                                 metrics:nil
+                                                                   views:NSDictionaryOfVariableBindings(overlayView)]];
+    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[overlayView]|"
+                                                                 options:0
+                                                                 metrics:nil
+                                                                   views:NSDictionaryOfVariableBindings(overlayView)]];
+}
+
 #pragma mark - Toolbar
 
 - (void)toggleToolbarHidden
@@ -221,7 +242,9 @@ static __weak VCVideoPlayerView *_currentPlayer = nil;
     if (self.toolbarView.hidden)
     {
         self.toolbarView.hidden = NO;
-        self.toolbarView.alpha = 0;
+        self.overlayView.hidden = NO;
+        self.toolbarView.alpha  =  0;
+        self.overlayView.alpha  =  0;
         self.toolbarAnimating = YES;
         [UIView animateWithDuration:0.2
                               delay:0
@@ -229,6 +252,7 @@ static __weak VCVideoPlayerView *_currentPlayer = nil;
                          animations:^(void)
         {
             self.toolbarView.alpha = 1.0f;
+            self.overlayView.alpha = 1.0f;
         }
                          completion:^(BOOL finished)
         {
@@ -245,11 +269,14 @@ static __weak VCVideoPlayerView *_currentPlayer = nil;
                          animations:^(void)
          {
              self.toolbarView.alpha = 0;
+             self.overlayView.alpha = 0;
          }
                          completion:^(BOOL finished)
          {
-             self.toolbarView.alpha = 1.0f;
-             self.toolbarView.hidden = YES;
+             self.toolbarView.alpha  = 1.0f;
+             self.overlayView.alpha  = 1.0f;
+             self.toolbarView.hidden =  YES;
+             self.overlayView.hidden =  YES;
              self.toolbarAnimating = NO;
          }];
     }

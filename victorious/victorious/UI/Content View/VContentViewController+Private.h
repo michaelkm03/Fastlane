@@ -33,7 +33,6 @@
 @property (weak, nonatomic) IBOutlet UIView* barContainerView;
 
 @property (strong, nonatomic) IBOutletCollection(UIButton) NSArray* buttonCollection;
-@property (weak, nonatomic) IBOutlet UIButton* remixButton;
 
 /**
  These constraints are set on the preview image only while a video is being played

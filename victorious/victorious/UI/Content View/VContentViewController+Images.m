@@ -34,7 +34,6 @@
     
     self.previewImage.hidden = NO;
     self.pollPreviewView.hidden = YES;
-    self.remixButton.hidden = YES;
     if ([self isVideoLoadingOrLoaded])
     {
         [self unloadVideoWithDuration:0 completion:nil];

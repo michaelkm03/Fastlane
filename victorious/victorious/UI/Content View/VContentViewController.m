@@ -53,9 +53,6 @@ CGFloat kContentMediaViewOffset = 154;
     self.descriptionLabel.textColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVContentTextColor];
     self.descriptionLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeading2Font];
     
-    [self.remixButton setImage:[self.remixButton.imageView.image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] forState:UIControlStateNormal];
-    self.remixButton.tintColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVMainTextColor];
-    
     [self resetView];
 }
 
