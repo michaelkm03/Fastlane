@@ -110,10 +110,6 @@ CGFloat kContentMediaViewOffset = 154;
             self.navigationController.delegate = nil;
         }
         
-        [self.videoPlayer removeFromSuperview];
-        [self.videoPlayer.player pause];
-        self.videoPlayer = nil;
-        
         self.orAnimator = nil;
     }
 }
