@@ -155,6 +155,8 @@
             [view setBackgroundColor:[[VThemeManager sharedThemeManager] themedColorForKey:kVSecondaryAccentColor]];
         }
     }
+    
+    self.streamTable.filterType = self.filterControls.selectedSegmentIndex;
 }
 
 #pragma mark UITableViewDelegate

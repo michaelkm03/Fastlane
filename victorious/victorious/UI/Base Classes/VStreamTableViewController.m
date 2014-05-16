@@ -51,6 +51,8 @@
 
 - (void)viewDidLoad
 {
+    self.filterType = VStreamRecentFilter;
+    
     [super viewDidLoad];
     
     self.view.autoresizingMask = UIViewAutoresizingFlexibleWidth |UIViewAutoresizingFlexibleHeight;
@@ -106,7 +108,14 @@
     }
 }
 
-#pragma mark - FetchedResultsControllers
+#pragma mark - Properties
+- (void)setFilterType:(VStreamFilter)filterType
+{
+    _filterType = filterType;
+    
+    [self refreshFetchController];
+}
+
 - (NSFetchedResultsController *)makeFetchedResultsController
 {
     RKObjectManager* manager = [RKObjectManager sharedManager];
@@ -298,7 +307,18 @@
 #pragma mark - Predicates
 - (VSequenceFilter*)currentFilter
 {
-    return [[VObjectManager sharedManager] sequenceFilterForCategories:[self sequenceCategories]];
+    switch (self.filterType) {
+        case VStreamHotFilter:
+            return [self hotFilter];
+        case VStreamRecentFilter:
+            return [self defaultFilter];
+        case VStreamFollowingFilter:
+            return [self followingFilter];
+            
+        default:
+            VLog(@"Unknown filter type, using default filter");
+            return [self defaultFilter];
+    }
 }
 
 - (VSequenceFilter*)defaultFilter
