@@ -21,7 +21,7 @@
 
 - (NSTimeInterval)transitionDuration:(id <UIViewControllerContextTransitioning>)transitionContext
 {
-    return .8f;
+    return 1.0f;
 }
 
 - (void)animateTransition:(id<UIViewControllerContextTransitioning>)context
@@ -69,10 +69,18 @@
          [[context containerView] addSubview:container.view];
          [streamVC animateInWithDuration:.4f completion:^(BOOL finished)
           {
-              streamVC.view.userInteractionEnabled = YES;
-              contentVC.view.userInteractionEnabled = YES;
-              
-              [context completeTransition:![context transitionWasCancelled]];
+              [UIView animateWithDuration:.2f
+                               animations:^
+               {
+                   [container showHeader];
+               }
+                               completion:^(BOOL finished)
+               {
+                   streamVC.view.userInteractionEnabled = YES;
+                   contentVC.view.userInteractionEnabled = YES;
+                   
+                   [context completeTransition:![context transitionWasCancelled]];
+               }];
           }];
      }];
 }

@@ -178,7 +178,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="uAX-J4-ubb" userLabel="Header View">
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="uAX-J4-ubb" userLabel="Header View">
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="90"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <subviews>
@@ -222,13 +222,25 @@
                                     </label>
                                 </subviews>
                                 <color key="backgroundColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="90" id="sZf-P3-Cho"/>
+                                </constraints>
                             </view>
-                            <containerView contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="5Mf-9l-SXM">
+                            <containerView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="5Mf-9l-SXM">
                                 <rect key="frame" x="0.0" y="90" width="320" height="478"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                             </containerView>
                         </subviews>
+                        <constraints>
+                            <constraint firstItem="5Mf-9l-SXM" firstAttribute="leading" secondItem="Pyo-eX-Cfs" secondAttribute="leading" id="0M6-6z-WCg"/>
+                            <constraint firstItem="uAX-J4-ubb" firstAttribute="leading" secondItem="Pyo-eX-Cfs" secondAttribute="leading" id="BQV-Qu-pgd"/>
+                            <constraint firstAttribute="trailing" secondItem="uAX-J4-ubb" secondAttribute="trailing" id="Ktc-GO-koe"/>
+                            <constraint firstAttribute="trailing" secondItem="5Mf-9l-SXM" secondAttribute="trailing" id="Xpf-AX-Eop"/>
+                            <constraint firstItem="Ak4-0Q-P1S" firstAttribute="top" secondItem="5Mf-9l-SXM" secondAttribute="bottom" id="Zqw-D1-23t"/>
+                            <constraint firstItem="5Mf-9l-SXM" firstAttribute="top" secondItem="uAX-J4-ubb" secondAttribute="bottom" id="hzg-dc-dJt"/>
+                            <constraint firstItem="uAX-J4-ubb" firstAttribute="top" secondItem="Pyo-eX-Cfs" secondAttribute="top" id="sbd-TC-btl"/>
+                        </constraints>
                     </view>
                     <nil key="simulatedStatusBarMetrics"/>
                     <nil key="simulatedTopBarMetrics"/>
@@ -236,6 +248,7 @@
                         <outlet property="createButton" destination="oOz-qF-TD2" id="zlN-c0-Oz4"/>
                         <outlet property="headerLabel" destination="QiD-8u-6Dv" id="lNi-dD-Ckb"/>
                         <outlet property="headerView" destination="uAX-J4-ubb" id="hnT-wI-TLl"/>
+                        <outlet property="headerYConstraint" destination="sbd-TC-btl" id="yOm-aI-O3B"/>
                         <outlet property="menuButton" destination="qF3-Sw-Tm6" id="bNI-IU-10B"/>
                         <outlet property="streamContainerView" destination="5Mf-9l-SXM" id="2Qz-Hq-R9O"/>
                     </connections>

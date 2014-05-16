@@ -30,6 +30,8 @@
 @property (nonatomic, weak) IBOutlet UIButton* menuButton;
 @property (nonatomic, weak) IBOutlet UIButton* createButton;
 
+@property (nonatomic, weak) IBOutlet NSLayoutConstraint* headerYConstraint;
+
 @end
 
 @implementation VStreamContainerViewController
@@ -95,30 +97,20 @@
 #pragma mark - Header
 - (void)hideHeader
 {
-    CGRect headerViewFrame = self.headerView.frame;
-    CGRect containerFrame = self.streamContainerView.frame;
-    
-    if (!CGRectContainsRect(self.view.frame, headerViewFrame))
+    if (!CGRectContainsRect(self.view.frame, self.headerView.frame))
         return;
     
-    headerViewFrame.origin.y = -headerViewFrame.size.height;
-    containerFrame.origin.y = 0;
-    self.headerView.frame = headerViewFrame;
-    self.streamContainerView.frame = containerFrame;
+    self.headerYConstraint.constant = -self.headerView.frame.size.height;
+    [self.view layoutIfNeeded];
 }
 
--(void)showHeader
+- (void)showHeader
 {
-    CGRect headerViewFrame = self.headerView.frame;
-    CGRect containerFrame = self.streamContainerView.frame;
-    
-    if (CGRectContainsRect(self.view.frame, headerViewFrame))
+    if (CGRectContainsRect(self.view.frame, self.headerView.frame))
         return;
     
-    headerViewFrame.origin.y = 0;
-    containerFrame.origin.y = headerViewFrame.size.height;
-    self.headerView.frame = headerViewFrame;
-    self.streamContainerView.frame = containerFrame;
+    self.headerYConstraint.constant = 0;
+    [self.view layoutIfNeeded];
 }
 
 #pragma mark UITableViewDelegate
@@ -137,14 +129,14 @@
     
     if (translation.y < 0)
     {
-        [UIView animateWithDuration:.5f animations:^
+        [UIView animateWithDuration:.2f animations:^
          {
              [self hideHeader];
          }];
     }
     else if (translation.y > 0)
     {
-        [UIView animateWithDuration:.5f animations:^
+        [UIView animateWithDuration:.2f animations:^
          {
              [self showHeader];
          }];

@@ -16,4 +16,7 @@
 
 + (instancetype)containerForStreamTable:(VStreamTableViewController*)streamTable;
 
+- (void)hideHeader;
+- (void)showHeader;
+
 @end
