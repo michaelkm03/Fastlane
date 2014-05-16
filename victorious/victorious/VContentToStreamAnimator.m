@@ -67,6 +67,7 @@
                                      animated:NO];
          
          [[context containerView] addSubview:container.view];
+         
          [streamVC animateInWithDuration:.4f completion:^(BOOL finished)
           {
               [UIView animateWithDuration:.2f

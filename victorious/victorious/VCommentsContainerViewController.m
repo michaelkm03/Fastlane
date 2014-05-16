@@ -15,7 +15,7 @@
 #import "VObjectManager+ContentCreation.h"
 #import "UIImageView+Blurring.h"
 #import "UIImage+ImageCreation.h"
-#import "VStreamTableViewController.h"
+#import "VStreamContainerViewController.h"
 #import "VContentViewController.h"
 
 #import "VCommentToContentAnimator.h"
@@ -191,7 +191,7 @@
         return animator;
     }
     else if (operation == UINavigationControllerOperationPop
-             && [toVC isKindOfClass:[VStreamTableViewController class]])
+             && [toVC isKindOfClass:[VStreamContainerViewController class]])
     {
         VCommentToStreamAnimator* animator = [[VCommentToStreamAnimator alloc] init];
         return animator;

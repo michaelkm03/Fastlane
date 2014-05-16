@@ -28,12 +28,16 @@
     commentsContainer.view.userInteractionEnabled = NO;
     streamVC.view.userInteractionEnabled = NO;
     
-    [commentsContainer animateOutWithDuration:.25f
+    [commentsContainer animateOutWithDuration:.2f
                                    completion:^(BOOL finished)
      {
-         [[context containerView] addSubview:streamVC.view];
-      
-         [streamVC animateInWithDuration:.4f completion:^(BOOL finished)
+         [[context containerView] addSubview:container.view];
+         
+         [UIView animateWithDuration:.6f animations:^
+          {
+              [container showHeader];
+          }];
+         [streamVC animateInWithDuration:.6f completion:^(BOOL finished)
           {
               commentsContainer.view.userInteractionEnabled = YES;
               streamVC.view.userInteractionEnabled = YES;
