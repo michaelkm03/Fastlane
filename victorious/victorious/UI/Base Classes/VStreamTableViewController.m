@@ -301,6 +301,24 @@
     return [[VObjectManager sharedManager] sequenceFilterForCategories:[self sequenceCategories]];
 }
 
+- (VSequenceFilter*)defaultFilter
+{
+    return [[VObjectManager sharedManager] sequenceFilterForCategories:[self sequenceCategories]];
+}
+- (VSequenceFilter*)hotFilter
+{
+    return [[VObjectManager sharedManager] hotSequenceFilterForStream:[self streamName]];
+}
+- (VSequenceFilter*)followingFilter
+{
+    return [[VObjectManager sharedManager] followerSequenceFilterForStream:[self streamName] user:nil];
+}
+
+- (NSString*)streamName
+{
+    return @"home";
+}
+
 - (NSArray*)sequenceCategories
 {
     return nil;

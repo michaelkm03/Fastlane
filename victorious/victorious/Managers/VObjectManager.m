@@ -88,13 +88,10 @@
     
     
     [self addResponseDescriptorsFromArray:[VUser descriptors]];
+    [self addResponseDescriptorsFromArray:[VSequence descriptors]];
     [self addResponseDescriptorsFromArray: @[errorDescriptor,
                                              verrorDescriptor,
                                              
-                                             [VSequence sequenceListDescriptor],
-                                             [VSequence sequenceListByUserDescriptor],
-                                             [VSequence sequenceFullDataDescriptor],
-                                             [VSequence sequenceListPaginationDescriptor],
                                              [VComment descriptor],
                                              [VComment getAllDescriptor],
                                              [VComment getAllPaginationDescriptor],

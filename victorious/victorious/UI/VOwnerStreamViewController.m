@@ -27,6 +27,11 @@
     return sharedInstance;
 }
 
+- (NSString*)streamName
+{
+    return @"owner";
+}
+
 - (NSArray*)sequenceCategories
 {
     return @[kVOwnerPollCategory, kVOwnerImageCategory, kVOwnerVideoCategory, kVOwnerRemixCategory];

@@ -306,6 +306,23 @@
     return (VSequenceFilter*)[[VFilterCache sharedCache] filterForPath:apiPath entityName:[VSequenceFilter entityName]];
 }
 
+- (VSequenceFilter*)hotSequenceFilterForStream:(NSString*)streamName
+{
+    NSString* apiPath = [@"/api/sequence/hot_detail_list_by_stream/" stringByAppendingString: streamName];
+    return (VSequenceFilter*)[[VFilterCache sharedCache] filterForPath:apiPath entityName:[VSequenceFilter entityName]];
+}
+
+- (VSequenceFilter*)followerSequenceFilterForStream:(NSString*)streamName user:(VUser*)user
+{
+    user = user ?: self.mainUser;
+    if (!user)
+        return nil;
+    
+    NSString* apiPath = [@"/api/sequence/follows_detail_list_by_stream/" stringByAppendingString: user.remoteId.stringValue];
+    [apiPath stringByAppendingString:streamName];
+    return (VSequenceFilter*)[[VFilterCache sharedCache] filterForPath:apiPath entityName:[VSequenceFilter entityName]];
+}
+
 - (VCommentFilter*)commentFilterForSequence:(VSequence*)sequence
 {
     NSString* apiPath = [@"/api/comment/all/" stringByAppendingString: sequence.remoteId.stringValue];

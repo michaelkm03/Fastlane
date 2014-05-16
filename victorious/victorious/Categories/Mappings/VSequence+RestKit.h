@@ -11,9 +11,6 @@
 
 @interface VSequence (RestKit)
 
-+ (RKResponseDescriptor*)sequenceListDescriptor;
-+ (RKResponseDescriptor*)sequenceFullDataDescriptor;
-+ (RKResponseDescriptor*)sequenceListPaginationDescriptor;
-+ (RKResponseDescriptor*)sequenceListByUserDescriptor;
++ (NSArray*)descriptors;
 
 @end

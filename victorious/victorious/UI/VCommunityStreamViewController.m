@@ -32,6 +32,11 @@
     [self addCreateButton];
 }
 
+- (NSString*)streamName
+{
+    return @"ugc";
+}
+
 - (NSArray*)sequenceCategories
 {
     return @[kVUGCPollCategory, kVUGCImageCategory, kVUGCVideoCategory, kVUGCRemixCategory];

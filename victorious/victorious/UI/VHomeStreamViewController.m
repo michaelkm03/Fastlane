@@ -36,6 +36,11 @@
     [self addCreateButton];
 }
 
+- (NSString*)streamName
+{
+    return @"home";
+}
+
 - (NSArray*)sequenceCategories
 {
     return @[kVOwnerPollCategory, kVUGCPollCategory,
