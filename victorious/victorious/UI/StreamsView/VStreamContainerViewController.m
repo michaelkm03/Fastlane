@@ -92,35 +92,55 @@
 {
     [self.sideMenuViewController presentMenuViewController];
 }
+#pragma mark - Header
+- (void)hideHeader
+{
+    CGRect headerViewFrame = self.headerView.frame;
+    CGRect containerFrame = self.streamContainerView.frame;
+    
+    if (!CGRectContainsRect(self.view.frame, headerViewFrame))
+        return;
+    
+    headerViewFrame.origin.y = -headerViewFrame.size.height;
+    containerFrame.origin.y = 0;
+    self.headerView.frame = headerViewFrame;
+    self.streamContainerView.frame = containerFrame;
+}
+
+-(void)showHeader
+{
+    CGRect headerViewFrame = self.headerView.frame;
+    CGRect containerFrame = self.streamContainerView.frame;
+    
+    if (CGRectContainsRect(self.view.frame, headerViewFrame))
+        return;
+    
+    headerViewFrame.origin.y = 0;
+    containerFrame.origin.y = headerViewFrame.size.height;
+    self.headerView.frame = headerViewFrame;
+    self.streamContainerView.frame = containerFrame;
+}
 
 #pragma mark UITableViewDelegate
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
     CGPoint translation = [scrollView.panGestureRecognizer translationInView:scrollView.superview];
-    CGRect headerViewFrame = self.headerView.frame;
-    CGRect containerFrame = self.streamContainerView.frame;
     
-    if (translation.y < 0 && CGRectContainsRect(self.view.frame, headerViewFrame))
+    if (translation.y < 0)
     {
-        headerViewFrame.origin.y = -headerViewFrame.size.height;
-        containerFrame.origin.y = 0;
+        [UIView animateWithDuration:.5f animations:^
+         {
+             [self hideHeader];
+         }];
     }
-    else if (translation.y > 0 && !CGRectContainsRect(self.view.frame, headerViewFrame))
+    else if (translation.y > 0)
     {
-        headerViewFrame.origin.y = 0;
-        containerFrame.origin.y = headerViewFrame.size.height;
+        [UIView animateWithDuration:.5f animations:^
+         {
+             [self showHeader];
+         }];
     }
-    else
-    {
-        return;
-    }
-    
-    [UIView animateWithDuration:.5f animations:^
-     {
-         self.headerView.frame = headerViewFrame;
-         self.streamContainerView.frame = containerFrame;
-     }];
 }
 
 @end
