@@ -10,6 +10,7 @@
 
 #import "UIViewController+VSideMenuViewController.h"
 
+#import "VStreamTableViewController+ContentCreation.h"
 #import "VHomeStreamViewController.h"
 #import "VOwnerStreamViewController.h"
 #import "VCommunityStreamViewController.h"
@@ -67,9 +68,12 @@
     UIImage* image = [self.menuButton.currentImage imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
     [self.menuButton setImage:image forState:UIControlStateNormal];
     
+    self.createButton.hidden = [self.streamTable isKindOfClass:[VOwnerStreamViewController class]];
     self.createButton.tintColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVMainTextColor];
     image = [self.createButton.currentImage imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
     [self.createButton setImage:image forState:UIControlStateNormal];
+    [self.createButton addTarget:self.streamTable action:@selector(createButtonAction:) forControlEvents:UIControlEventTouchUpInside];
+
     
     self.headerLabel.textColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVMainTextColor];
     self.headerLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeaderFont];
