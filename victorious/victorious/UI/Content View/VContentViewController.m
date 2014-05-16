@@ -6,6 +6,8 @@
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
+#import "UIViewController+ForceOrientationChange.h"
+
 #import "VContentViewController.h"
 #import "VContentViewController+Images.h"
 #import "VContentViewController+Private.h"
@@ -153,7 +155,7 @@ CGFloat kContentMediaViewOffset = 154;
 
 - (NSUInteger)supportedInterfaceOrientations
 {
-    if ([self isVideoLoadingOrLoaded])
+    if (!self.isRotating && [self isVideoLoadingOrLoaded])
     {
         return UIInterfaceOrientationMaskAllButUpsideDown;
     }
@@ -163,7 +165,45 @@ CGFloat kContentMediaViewOffset = 154;
     }
 }
 
+- (void)forceRotationBackToPortraitOnCompletion:(void(^)(void))completion
+{
+    self.isRotating = YES;
+    [self beforeRotationToInterfaceOrientation:UIInterfaceOrientationPortrait];
+    [UIView animateWithDuration:0.3
+                          delay:0
+                        options:UIViewAnimationOptionCurveLinear
+                     animations:^(void)
+    {
+        [self duringRotationToInterfaceOrientation:UIInterfaceOrientationPortrait];
+    }
+                     completion:^(BOOL finished)
+    {
+        [self afterRotationToNewInterfaceOrientation:UIInterfaceOrientationPortrait];
+        [UIViewController v_forceOrientationChange];
+        self.isRotating = NO;
+        if (completion)
+        {
+            completion();
+        }
+    }];
+}
+
 - (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
+{
+    [self beforeRotationToInterfaceOrientation:toInterfaceOrientation];
+}
+
+- (void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
+{
+    [self duringRotationToInterfaceOrientation:toInterfaceOrientation];
+}
+
+- (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation
+{
+    [self afterRotationToNewInterfaceOrientation:self.interfaceOrientation];
+}
+
+- (void)beforeRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation
 {
     if (UIInterfaceOrientationIsLandscape(toInterfaceOrientation))
     {
@@ -173,10 +213,10 @@ CGFloat kContentMediaViewOffset = 154;
     }
 }
 
-- (void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
+- (void)duringRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation
 {
     UIView *rootView = [[[[UIApplication sharedApplication] keyWindow] rootViewController] view];
-    if (!CGAffineTransformIsIdentity(rootView.transform))
+    if (UIInterfaceOrientationIsLandscape(toInterfaceOrientation))
     {
         CGAffineTransform rotationTransform = rootView.transform;
         rootView.transform = CGAffineTransformIdentity;
@@ -193,9 +233,9 @@ CGFloat kContentMediaViewOffset = 154;
     [self.mediaView layoutIfNeeded];
 }
 
-- (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation
+- (void)afterRotationToNewInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
-    if (UIInterfaceOrientationIsPortrait(self.interfaceOrientation))
+    if (UIInterfaceOrientationIsPortrait(interfaceOrientation))
     {
         self.maskingView.hidden = YES;
         [self.view insertSubview:self.mediaSuperview belowSubview:self.barContainerView];

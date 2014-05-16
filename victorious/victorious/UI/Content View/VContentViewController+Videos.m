@@ -215,6 +215,15 @@ static const char kVideoUnloadBlockKey;
 
 - (IBAction)pressedRemix:(id)sender
 {
+    if (UIInterfaceOrientationIsLandscape(self.interfaceOrientation))
+    {
+        [self forceRotationBackToPortraitOnCompletion:^(void)
+        {
+            [self pressedRemix:sender];
+        }];
+        return;
+    }
+    
     if (![VObjectManager sharedManager].mainUser)
     {
         [self presentViewController:[VLoginViewController loginViewController] animated:YES completion:NULL];

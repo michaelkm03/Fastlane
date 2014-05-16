@@ -57,7 +57,9 @@
 @property (strong, nonatomic) id<UIViewControllerTransitioningDelegate> transitionDelegate;
 
 @property (nonatomic) BOOL appearing; ///< YES if this view is the topmost view of the application window. NO if not.
+@property (nonatomic) BOOL isRotating; ///< YES only if we are trying to force rotation, not if the rotation is natural
 
 - (void)updateActionBar;
+- (void)forceRotationBackToPortraitOnCompletion:(void(^)(void))completion;
 
 @end
