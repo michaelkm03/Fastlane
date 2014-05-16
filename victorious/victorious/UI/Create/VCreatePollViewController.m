@@ -95,6 +95,16 @@ static const CGFloat VCreateViewControllerLargePadding = 20;
     [self createInputAccessoryView];
 }
 
+- (BOOL)shouldAutorotate
+{
+    return NO;
+}
+
+- (NSUInteger)supportedInterfaceOrientations
+{
+    return UIInterfaceOrientationMaskPortrait;
+}
+
 - (void)validatePostButtonState
 {
     [self.postButton setEnabled:YES];

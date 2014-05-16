@@ -15,6 +15,7 @@
 		036AE5ED18FF0C0600A74BDA /* VReachability.m in Sources */ = {isa = PBXBuildFile; fileRef = 036AE5EC18FF0C0600A74BDA /* VReachability.m */; };
 		03943A78192570A500FA8A1F /* UINavigationController+RotationMethodForwarding.m in Sources */ = {isa = PBXBuildFile; fileRef = 03943A77192570A500FA8A1F /* UINavigationController+RotationMethodForwarding.m */; };
 		03A2AD971926B9460034EB80 /* UIViewController+ForceOrientationChange.m in Sources */ = {isa = PBXBuildFile; fileRef = 03A2AD961926B9460034EB80 /* UIViewController+ForceOrientationChange.m */; };
+		03A2AD9A1926C9300034EB80 /* DeviceTableViewController+RotationMethods.m in Sources */ = {isa = PBXBuildFile; fileRef = 03A2AD991926C9300034EB80 /* DeviceTableViewController+RotationMethods.m */; };
 		03D6381B191840570084FFC8 /* VEnvironment.m in Sources */ = {isa = PBXBuildFile; fileRef = 03D6381A191840570084FFC8 /* VEnvironment.m */; };
 		03D6381E191841220084FFC8 /* VObjectManager+Environment.m in Sources */ = {isa = PBXBuildFile; fileRef = 03D6381D191841220084FFC8 /* VObjectManager+Environment.m */; };
 		03D638211918488F0084FFC8 /* VServerEnvironmentTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 03D638201918488F0084FFC8 /* VServerEnvironmentTableViewController.m */; };
@@ -271,6 +272,8 @@
 		03943A77192570A500FA8A1F /* UINavigationController+RotationMethodForwarding.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "UINavigationController+RotationMethodForwarding.m"; path = "UI/UINavigationController+RotationMethodForwarding.m"; sourceTree = "<group>"; };
 		03A2AD951926B9460034EB80 /* UIViewController+ForceOrientationChange.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+ForceOrientationChange.h"; sourceTree = "<group>"; };
 		03A2AD961926B9460034EB80 /* UIViewController+ForceOrientationChange.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+ForceOrientationChange.m"; sourceTree = "<group>"; };
+		03A2AD981926C9300034EB80 /* DeviceTableViewController+RotationMethods.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "DeviceTableViewController+RotationMethods.h"; path = "UI/DeviceTableViewController+RotationMethods.h"; sourceTree = "<group>"; };
+		03A2AD991926C9300034EB80 /* DeviceTableViewController+RotationMethods.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "DeviceTableViewController+RotationMethods.m"; path = "UI/DeviceTableViewController+RotationMethods.m"; sourceTree = "<group>"; };
 		03D63819191840570084FFC8 /* VEnvironment.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VEnvironment.h; sourceTree = "<group>"; };
 		03D6381A191840570084FFC8 /* VEnvironment.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VEnvironment.m; sourceTree = "<group>"; };
 		03D6381C191841220084FFC8 /* VObjectManager+Environment.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "VObjectManager+Environment.h"; sourceTree = "<group>"; };
@@ -957,6 +960,8 @@
 		3F9B66621888792B0046F826 /* Settings */ = {
 			isa = PBXGroup;
 			children = (
+				03A2AD981926C9300034EB80 /* DeviceTableViewController+RotationMethods.h */,
+				03A2AD991926C9300034EB80 /* DeviceTableViewController+RotationMethods.m */,
 				5FCC1E4B1899CAC800EB7699 /* settings.storyboard */,
 				3F919906187600720055FE37 /* VSettingsViewController.h */,
 				3F919907187600720055FE37 /* VSettingsViewController.m */,
@@ -1819,6 +1824,7 @@
 				BE46E69A18CA751F00974DAF /* VCommentToContentAnimator.m in Sources */,
 				BE89D981192141D600D97E7F /* VUser+Fetcher.m in Sources */,
 				BE89D98D1921531400D97E7F /* VAbstractFilter.m in Sources */,
+				03A2AD9A1926C9300034EB80 /* DeviceTableViewController+RotationMethods.m in Sources */,
 				BED7F67418E0A8E900545DF6 /* OAuthCore.m in Sources */,
 				BE5C7340187E36CF00A3340D /* VInteraction.m in Sources */,
 				BE5DE3F618DA72140047B67E /* VInteractionAction.m in Sources */,

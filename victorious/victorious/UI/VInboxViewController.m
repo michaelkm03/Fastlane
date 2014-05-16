@@ -51,6 +51,16 @@ static  NSString*   kNewsCellViewIdentifier       =   @"VNewsCell";
     self.headerView.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVAccentColor];
 }
 
+- (BOOL)shouldAutorotate
+{
+    return NO;
+}
+
+- (NSUInteger)supportedInterfaceOrientations
+{
+    return UIInterfaceOrientationMaskPortrait;
+}
+
 #pragma mark - Overrides
 
 - (NSFetchedResultsController *)makeFetchedResultsController

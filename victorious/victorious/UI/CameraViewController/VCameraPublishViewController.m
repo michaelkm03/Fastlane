@@ -67,6 +67,16 @@
     self.navigationItem.rightBarButtonItem = cancelButton;
 }
 
+- (BOOL)shouldAutorotate
+{
+    return NO;
+}
+
+- (NSUInteger)supportedInterfaceOrientations
+{
+    return UIInterfaceOrientationMaskPortrait;
+}
+
 #pragma mark - Actions
 
 - (IBAction)goBack:(id)sender
