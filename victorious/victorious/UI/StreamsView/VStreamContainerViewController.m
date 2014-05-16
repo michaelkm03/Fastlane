@@ -62,6 +62,13 @@
     [self.streamContainerView addSubview:self.streamTable.view];
     [self addChildViewController:self.streamTable];
     [self.streamTable didMoveToParentViewController:self];
+    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.streamTable.view
+                                                          attribute:NSLayoutAttributeBottom
+                                                          relatedBy:NSLayoutRelationEqual
+                                                             toItem:self.view
+                                                          attribute:NSLayoutAttributeBottom
+                                                         multiplier:1.0
+                                                           constant:0]];
 
     self.headerView.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVAccentColor];
     self.headerView.tintColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVMainTextColor];
