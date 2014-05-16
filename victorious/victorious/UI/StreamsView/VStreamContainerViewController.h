@@ -10,7 +10,7 @@
 
 @class VStreamTableViewController;
 
-@interface VStreamContainerViewController : UIViewController
+@interface VStreamContainerViewController : UIViewController <UITableViewDelegate>
 
 @property (nonatomic, readonly) VStreamTableViewController* streamTable;
 

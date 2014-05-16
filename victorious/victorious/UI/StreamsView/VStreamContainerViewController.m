@@ -38,6 +38,7 @@
     UIViewController*   currentViewController = [[UIApplication sharedApplication] delegate].window.rootViewController;
     VStreamContainerViewController* container = (VStreamContainerViewController*)[currentViewController.storyboard instantiateViewControllerWithIdentifier: kStreamContainerID];
     container.streamTable = streamTable;
+    streamTable.delegate = container;
     
     return container;
 }
@@ -86,6 +87,36 @@
 - (IBAction)showMenu
 {
     [self.sideMenuViewController presentMenuViewController];
+}
+
+#pragma mark UITableViewDelegate
+
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView
+{
+    CGPoint translation = [scrollView.panGestureRecognizer translationInView:scrollView.superview];
+    CGRect headerViewFrame = self.headerView.frame;
+    CGRect containerFrame = self.streamContainerView.frame;
+    
+    if (translation.y < 0 && CGRectContainsRect(self.view.frame, headerViewFrame))
+    {
+        headerViewFrame.origin.y = -headerViewFrame.size.height;
+        containerFrame.origin.y = 0;
+    }
+    else if (translation.y > 0 && !CGRectContainsRect(self.view.frame, headerViewFrame))
+    {
+        headerViewFrame.origin.y = 0;
+        containerFrame.origin.y = headerViewFrame.size.height;
+    }
+    else
+    {
+        return;
+    }
+    
+    [UIView animateWithDuration:.5f animations:^
+     {
+         self.headerView.frame = headerViewFrame;
+         self.streamContainerView.frame = containerFrame;
+     }];
 }
 
 @end

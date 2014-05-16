@@ -66,7 +66,7 @@
                                                           selectedCell.frame.origin.y - kContentMediaViewOffset)
                                      animated:NO];
          
-         [[context containerView] addSubview:streamVC.view];
+         [[context containerView] addSubview:container.view];
          [streamVC animateInWithDuration:.4f completion:^(BOOL finished)
           {
               streamVC.view.userInteractionEnabled = YES;
