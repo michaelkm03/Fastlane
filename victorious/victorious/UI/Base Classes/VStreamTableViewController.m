@@ -135,6 +135,7 @@
     VStreamViewCell* cell = (VStreamViewCell*)[tableView cellForRowAtIndexPath:indexPath];
     
     [self setBackgroundImageWithURL:[[cell.sequence initialImageURLs] firstObject]];
+    [self.delegate streamWillDisappear];
     
     if (tableView.contentOffset.y == cell.frame.origin.y - kContentMediaViewOffset)
     {
@@ -325,6 +326,7 @@
     VStreamViewCell *cell = (VStreamViewCell *)notification.object;
 
     [self setBackgroundImageWithURL:[[cell.sequence initialImageURLs] firstObject]];
+    [self.delegate streamWillDisappear];
 
     VCommentsContainerViewController* commentsTable = [VCommentsContainerViewController commentsContainerView];
     commentsTable.sequence = cell.sequence;

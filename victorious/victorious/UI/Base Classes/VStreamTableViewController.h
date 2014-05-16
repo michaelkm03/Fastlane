@@ -20,19 +20,18 @@ typedef NS_ENUM(NSInteger, VStreamScope)
     VStreamFilterPolls
 };
 
-//@protocol VStreamTableDelegate <NSObject>
-//@optional
-//- (void)scrollViewDidScroll:(UIScrollView *)scrollView;
-//@end
+@protocol VStreamTableDelegate <NSObject>
+@optional
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView;
+- (void)streamWillDisappear;
+@end
 
 @interface VStreamTableViewController : VFetchedResultsTableViewController <VAnimation, VCreateSequenceDelegate>
 
 - (NSArray*)sequenceCategories;
 - (VSequenceFilter*)currentFilter;
 
-- (IBAction)showMenu;
-
 @property (strong, nonatomic) NSArray* repositionedCells;;
-@property (weak, nonatomic) id<UITableViewDelegate> delegate;
+@property (weak, nonatomic) id<VStreamTableDelegate> delegate;
 
 @end

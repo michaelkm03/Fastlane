@@ -123,6 +123,14 @@
 
 #pragma mark UITableViewDelegate
 
+- (void)streamWillDisappear
+{
+    [UIView animateWithDuration:.2f
+                     animations:^{
+        [self hideHeader];
+    }];
+}
+
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
     CGPoint translation = [scrollView.panGestureRecognizer translationInView:scrollView.superview];

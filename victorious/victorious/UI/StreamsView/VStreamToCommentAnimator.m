@@ -27,7 +27,7 @@
     VStreamTableViewController *streamVC = container.streamTable;
     VCommentsContainerViewController* commentVC = (VCommentsContainerViewController*)[context viewControllerForKey:UITransitionContextToViewControllerKey];
     
-    streamVC.view.userInteractionEnabled = NO;
+    container.view.userInteractionEnabled = NO;
     commentVC.view.userInteractionEnabled = NO;
     
      [streamVC animateOutWithDuration:.4f
@@ -37,7 +37,7 @@
          [commentVC animateInWithDuration:.4f
                                completion:^(BOOL finished)
           {
-              streamVC.view.userInteractionEnabled = YES;
+              container.view.userInteractionEnabled = YES;
               commentVC.view.userInteractionEnabled = YES;
              [context completeTransition:![context transitionWasCancelled]];
          }];
