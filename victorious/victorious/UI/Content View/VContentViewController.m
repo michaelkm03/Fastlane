@@ -6,6 +6,8 @@
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
+#import "UIViewController+ForceOrientationChange.h"
+
 #import "VContentViewController.h"
 #import "VContentViewController+Images.h"
 #import "VContentViewController+Private.h"
@@ -45,6 +47,12 @@ CGFloat kContentMediaViewOffset = 154;
 {
     [super viewDidLoad];
     
+    self.mediaSuperview.translatesAutoresizingMaskIntoConstraints = YES; // these two views need to opt-out of Auto Layout.
+    self.mediaView.translatesAutoresizingMaskIntoConstraints = YES;      // their frames are set in -layoutMediaSuperview.
+
+    UIView *maskingView = self.maskingView;
+    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[maskingView]|" options:0 metrics:nil views:NSDictionaryOfVariableBindings(maskingView)]];
+    
     for (UIButton* button in self.buttonCollection)
     {
         [button setImage:[button.imageView.image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] forState:UIControlStateNormal];
@@ -67,6 +75,33 @@ CGFloat kContentMediaViewOffset = 154;
         [self updateActionBar];
         self.navigationController.delegate = self;
     }
+}
+
+- (void)viewDidLayoutSubviews
+{
+    [super viewDidLayoutSubviews];
+    [self layoutMediaSuperview];
+}
+
+- (void)layoutMediaSuperview
+{
+    if (CGAffineTransformIsIdentity(self.mediaSuperview.transform))
+    {
+        self.mediaSuperview.frame = CGRectMake(CGRectGetMinX(self.view.bounds),
+                                               CGRectGetMaxY(self.topActionsView.frame),
+                                               CGRectGetWidth(self.view.bounds),
+                                               320.0f);
+    }
+    else
+    {
+        self.mediaSuperview.bounds = CGRectMake(0,
+                                                0,
+                                                CGRectGetHeight(self.view.bounds),
+                                                CGRectGetWidth(self.view.bounds));
+        self.mediaSuperview.center = CGPointMake(CGRectGetMidX(self.view.bounds),
+                                                 CGRectGetMidY(self.view.bounds));
+    }
+    self.mediaView.frame = self.mediaSuperview.bounds;
 }
 
 - (void)viewDidDisappear:(BOOL)animated
@@ -110,6 +145,104 @@ CGFloat kContentMediaViewOffset = 154;
         self.orAnimator = nil;
     }
 }
+
+#pragma mark - Rotation
+
+- (BOOL)shouldAutorotate
+{
+    return YES;
+}
+
+- (NSUInteger)supportedInterfaceOrientations
+{
+    if (!self.isRotating && [self isVideoLoadingOrLoaded])
+    {
+        return UIInterfaceOrientationMaskAllButUpsideDown;
+    }
+    else
+    {
+        return UIInterfaceOrientationMaskPortrait;
+    }
+}
+
+- (void)forceRotationBackToPortraitOnCompletion:(void(^)(void))completion
+{
+    self.isRotating = YES;
+    [self beforeRotationToInterfaceOrientation:UIInterfaceOrientationPortrait];
+    [UIView animateWithDuration:0.3
+                          delay:0
+                        options:UIViewAnimationOptionCurveLinear
+                     animations:^(void)
+    {
+        [self duringRotationToInterfaceOrientation:UIInterfaceOrientationPortrait];
+    }
+                     completion:^(BOOL finished)
+    {
+        [self afterRotationToNewInterfaceOrientation:UIInterfaceOrientationPortrait];
+        [UIViewController v_forceOrientationChange];
+        self.isRotating = NO;
+        if (completion)
+        {
+            completion();
+        }
+    }];
+}
+
+- (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
+{
+    [self beforeRotationToInterfaceOrientation:toInterfaceOrientation];
+}
+
+- (void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
+{
+    [self duringRotationToInterfaceOrientation:toInterfaceOrientation];
+}
+
+- (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation
+{
+    [self afterRotationToNewInterfaceOrientation:self.interfaceOrientation];
+}
+
+- (void)beforeRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation
+{
+    if (UIInterfaceOrientationIsLandscape(toInterfaceOrientation))
+    {
+        self.maskingView.alpha = 0;
+        self.maskingView.hidden = NO;
+        [self.view bringSubviewToFront:self.mediaSuperview];
+    }
+}
+
+- (void)duringRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation
+{
+    UIView *rootView = [[[[UIApplication sharedApplication] keyWindow] rootViewController] view];
+    if (UIInterfaceOrientationIsLandscape(toInterfaceOrientation))
+    {
+        CGAffineTransform rotationTransform = rootView.transform;
+        rootView.transform = CGAffineTransformIdentity;
+        rootView.bounds = CGRectMake(0, 0, CGRectGetHeight(rootView.bounds), CGRectGetWidth(rootView.bounds));
+        self.mediaSuperview.transform = rotationTransform;
+        self.maskingView.alpha = 1.0f;
+    }
+    else
+    {
+        self.mediaSuperview.transform = CGAffineTransformIdentity;
+        self.maskingView.alpha = 0;
+    }
+    [self layoutMediaSuperview];
+    [self.mediaView layoutIfNeeded];
+}
+
+- (void)afterRotationToNewInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
+{
+    if (UIInterfaceOrientationIsPortrait(interfaceOrientation))
+    {
+        self.maskingView.hidden = YES;
+        [self.view insertSubview:self.mediaSuperview belowSubview:self.barContainerView];
+    }
+}
+
+#pragma mark -
 
 -(VInteractionManager*)interactionManager
 {

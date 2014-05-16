@@ -193,6 +193,16 @@ const   NSTimeInterval  kAnimationDuration      =   0.4;
     [self.camera cancel];
 }
 
+- (BOOL)shouldAutorotate
+{
+    return NO;
+}
+
+- (NSUInteger)supportedInterfaceOrientations
+{
+    return UIInterfaceOrientationMaskPortrait;
+}
+
 #pragma mark - Actions
 
 - (IBAction)closeAction:(id)sender

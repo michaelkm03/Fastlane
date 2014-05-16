@@ -58,6 +58,16 @@ static  NSString*   kNewsCellViewIdentifier       =   @"VNewsCell";
     [self.navigationController setNavigationBarHidden:NO animated:YES];
 }
 
+- (BOOL)shouldAutorotate
+{
+    return NO;
+}
+
+- (NSUInteger)supportedInterfaceOrientations
+{
+    return UIInterfaceOrientationMaskPortrait;
+}
+
 #pragma mark - Overrides
 
 - (NSFetchedResultsController *)makeFetchedResultsController

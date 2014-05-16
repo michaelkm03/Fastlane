@@ -104,6 +104,23 @@
     [self addMenuViewControllerMotionEffects];
 }
 
+- (NSUInteger)supportedInterfaceOrientations
+{
+    if (_contentViewController)
+    {
+        return _contentViewController.supportedInterfaceOrientations;
+    }
+    else
+    {
+        return UIInterfaceOrientationMaskPortrait;
+    }
+}
+
+- (BOOL)shouldAutorotate
+{
+    return [_contentViewController shouldAutorotate];
+}
+
 #pragma mark -
 
 - (void)presentMenuViewController

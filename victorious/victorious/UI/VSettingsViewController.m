@@ -88,6 +88,16 @@ static const NSInteger kServerEnvironmentButtonIndex = 1;
 #endif
 }
 
+- (BOOL)shouldAutorotate
+{
+    return NO;
+}
+
+- (NSUInteger)supportedInterfaceOrientations
+{
+    return UIInterfaceOrientationMaskPortrait;
+}
+
 #pragma mark - Validation
 
 - (BOOL)shouldUpdateEmailAddress:(NSString *)emailAddress password:(NSString *)password username:(NSString *)username

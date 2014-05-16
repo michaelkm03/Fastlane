@@ -23,6 +23,15 @@
     self.serverEnvironments = [VObjectManager allEnvironments];
 }
 
+- (BOOL)shouldAutorotate
+{
+    return NO;
+}
+
+- (NSUInteger)supportedInterfaceOrientations
+{
+    return UIInterfaceOrientationMaskPortrait;
+}
 
 #pragma mark - Table view data source
 

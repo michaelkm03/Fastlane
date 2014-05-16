@@ -13,6 +13,9 @@
 		03522780192173F0003FCD10 /* VElapsedTimeFormatterTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 0352277F192173F0003FCD10 /* VElapsedTimeFormatterTests.m */; };
 		0352278319219079003FCD10 /* VVideoDownloadProgressIndicatorView.m in Sources */ = {isa = PBXBuildFile; fileRef = 0352278219219079003FCD10 /* VVideoDownloadProgressIndicatorView.m */; };
 		036AE5ED18FF0C0600A74BDA /* VReachability.m in Sources */ = {isa = PBXBuildFile; fileRef = 036AE5EC18FF0C0600A74BDA /* VReachability.m */; };
+		03943A78192570A500FA8A1F /* UINavigationController+RotationMethodForwarding.m in Sources */ = {isa = PBXBuildFile; fileRef = 03943A77192570A500FA8A1F /* UINavigationController+RotationMethodForwarding.m */; };
+		03A2AD971926B9460034EB80 /* UIViewController+ForceOrientationChange.m in Sources */ = {isa = PBXBuildFile; fileRef = 03A2AD961926B9460034EB80 /* UIViewController+ForceOrientationChange.m */; };
+		03A2AD9A1926C9300034EB80 /* DeviceTableViewController+RotationMethods.m in Sources */ = {isa = PBXBuildFile; fileRef = 03A2AD991926C9300034EB80 /* DeviceTableViewController+RotationMethods.m */; };
 		03D6381B191840570084FFC8 /* VEnvironment.m in Sources */ = {isa = PBXBuildFile; fileRef = 03D6381A191840570084FFC8 /* VEnvironment.m */; };
 		03D6381E191841220084FFC8 /* VObjectManager+Environment.m in Sources */ = {isa = PBXBuildFile; fileRef = 03D6381D191841220084FFC8 /* VObjectManager+Environment.m */; };
 		03D638211918488F0084FFC8 /* VServerEnvironmentTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 03D638201918488F0084FFC8 /* VServerEnvironmentTableViewController.m */; };
@@ -265,6 +268,12 @@
 		0352278219219079003FCD10 /* VVideoDownloadProgressIndicatorView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VVideoDownloadProgressIndicatorView.m; sourceTree = "<group>"; };
 		036AE5EB18FF0C0600A74BDA /* VReachability.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VReachability.h; sourceTree = "<group>"; };
 		036AE5EC18FF0C0600A74BDA /* VReachability.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VReachability.m; sourceTree = "<group>"; };
+		03943A76192570A500FA8A1F /* UINavigationController+RotationMethodForwarding.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "UINavigationController+RotationMethodForwarding.h"; path = "UI/UINavigationController+RotationMethodForwarding.h"; sourceTree = "<group>"; };
+		03943A77192570A500FA8A1F /* UINavigationController+RotationMethodForwarding.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "UINavigationController+RotationMethodForwarding.m"; path = "UI/UINavigationController+RotationMethodForwarding.m"; sourceTree = "<group>"; };
+		03A2AD951926B9460034EB80 /* UIViewController+ForceOrientationChange.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+ForceOrientationChange.h"; sourceTree = "<group>"; };
+		03A2AD961926B9460034EB80 /* UIViewController+ForceOrientationChange.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+ForceOrientationChange.m"; sourceTree = "<group>"; };
+		03A2AD981926C9300034EB80 /* DeviceTableViewController+RotationMethods.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "DeviceTableViewController+RotationMethods.h"; path = "UI/DeviceTableViewController+RotationMethods.h"; sourceTree = "<group>"; };
+		03A2AD991926C9300034EB80 /* DeviceTableViewController+RotationMethods.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "DeviceTableViewController+RotationMethods.m"; path = "UI/DeviceTableViewController+RotationMethods.m"; sourceTree = "<group>"; };
 		03D63819191840570084FFC8 /* VEnvironment.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VEnvironment.h; sourceTree = "<group>"; };
 		03D6381A191840570084FFC8 /* VEnvironment.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VEnvironment.m; sourceTree = "<group>"; };
 		03D6381C191841220084FFC8 /* VObjectManager+Environment.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "VObjectManager+Environment.h"; sourceTree = "<group>"; };
@@ -951,6 +960,8 @@
 		3F9B66621888792B0046F826 /* Settings */ = {
 			isa = PBXGroup;
 			children = (
+				03A2AD981926C9300034EB80 /* DeviceTableViewController+RotationMethods.h */,
+				03A2AD991926C9300034EB80 /* DeviceTableViewController+RotationMethods.m */,
 				5FCC1E4B1899CAC800EB7699 /* settings.storyboard */,
 				3F919906187600720055FE37 /* VSettingsViewController.h */,
 				3F919907187600720055FE37 /* VSettingsViewController.m */,
@@ -1057,6 +1068,8 @@
 				BED7F67918E0BD5D00545DF6 /* UIImage+ImageCreation.m */,
 				3FF7B6D518EE4009003831CD /* UIImage+Masking.h */,
 				3FF7B6D618EE4009003831CD /* UIImage+Masking.m */,
+				03943A76192570A500FA8A1F /* UINavigationController+RotationMethodForwarding.h */,
+				03943A77192570A500FA8A1F /* UINavigationController+RotationMethodForwarding.m */,
 				3FF7B6D818EE477D003831CD /* UIView+Masking.h */,
 				3FF7B6D918EE477D003831CD /* UIView+Masking.m */,
 			);
@@ -1205,6 +1218,8 @@
 				BED4569318BD581800A67160 /* UIWebView+VYoutubeLoading.m */,
 				03086AA518F38ABE00105FFB /* UIActionSheet+VBlocks.h */,
 				03086AA618F38ABE00105FFB /* UIActionSheet+VBlocks.m */,
+				03A2AD951926B9460034EB80 /* UIViewController+ForceOrientationChange.h */,
+				03A2AD961926B9460034EB80 /* UIViewController+ForceOrientationChange.m */,
 			);
 			path = Categories;
 			sourceTree = "<group>";
@@ -1787,6 +1802,7 @@
 				BE171E201868C211004E5202 /* VObjectManager+Login.m in Sources */,
 				BEA31EE9192292F300A90A10 /* VComment+Fetcher.m in Sources */,
 				5FF9BE7F1893143D0054694B /* UIViewController+VSideMenuViewController.m in Sources */,
+				03A2AD971926B9460034EB80 /* UIViewController+ForceOrientationChange.m in Sources */,
 				BED7F67118E0A8E900545DF6 /* TWSignedRequest.m in Sources */,
 				3FA217BB18A9ADF10066E893 /* ChromecastDeviceController.m in Sources */,
 				BE89D984192141E000D97E7F /* VSequenceFilter+RestKit.m in Sources */,
@@ -1808,6 +1824,7 @@
 				BE46E69A18CA751F00974DAF /* VCommentToContentAnimator.m in Sources */,
 				BE89D981192141D600D97E7F /* VUser+Fetcher.m in Sources */,
 				BE89D98D1921531400D97E7F /* VAbstractFilter.m in Sources */,
+				03A2AD9A1926C9300034EB80 /* DeviceTableViewController+RotationMethods.m in Sources */,
 				BED7F67418E0A8E900545DF6 /* OAuthCore.m in Sources */,
 				BE5C7340187E36CF00A3340D /* VInteraction.m in Sources */,
 				BE5DE3F618DA72140047B67E /* VInteractionAction.m in Sources */,
@@ -1838,6 +1855,7 @@
 				3F9348A31922C944002EA91F /* VFollowerTableViewCell.m in Sources */,
 				3F0F1505191C20280030B33D /* VProgressiveImageView.m in Sources */,
 				BE31757C19257592007DAC76 /* VStreamContainerViewController.m in Sources */,
+				03943A78192570A500FA8A1F /* UINavigationController+RotationMethodForwarding.m in Sources */,
 				BE171E0D1868C211004E5202 /* VAnswer+RestKit.m in Sources */,
 				0345285419244E9700D0B1D1 /* VActivityIndicatorView.m in Sources */,
 				3FDEDD0618CE48210028E3F1 /* VRemixStitchViewController.m in Sources */,

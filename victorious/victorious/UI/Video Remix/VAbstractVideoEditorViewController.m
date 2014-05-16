@@ -44,6 +44,16 @@
     [self.previewView.player pause];
 }
 
+- (BOOL)shouldAutorotate
+{
+    return NO;
+}
+
+- (NSUInteger)supportedInterfaceOrientations
+{
+    return UIInterfaceOrientationMaskPortrait;
+}
+
 #pragma mark - Actions
 
 - (IBAction)handleTapToPlayAction:(id)sender

@@ -108,6 +108,16 @@
     }
 }
 
+- (BOOL)shouldAutorotate
+{
+    return NO;
+}
+
+- (NSUInteger)supportedInterfaceOrientations
+{
+    return UIInterfaceOrientationMaskPortrait;
+}
+
 #pragma mark - Properties
 - (void)setFilterType:(VStreamFilter)filterType
 {

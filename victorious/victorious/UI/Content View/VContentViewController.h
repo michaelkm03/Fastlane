@@ -21,6 +21,7 @@ extern CGFloat kContentMediaViewOffset;
 
 @property (weak, nonatomic) IBOutlet UIView* pollPreviewView;
 @property (weak, nonatomic) IBOutlet UIView* orContainerView;
+@property (weak, nonatomic) IBOutlet UIView* mediaSuperview;
 @property (weak, nonatomic) IBOutlet UIView* mediaView;
 @property (weak, nonatomic) IBOutlet UIView* topActionsView;
 

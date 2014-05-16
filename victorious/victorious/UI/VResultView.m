@@ -147,7 +147,6 @@
         CGRect frame = _resultLabel.frame;
         frame.origin.y = self.resultArrow.frame.origin.y + self.resultArrow.image.capInsets.top;
         _resultLabel.frame = frame;
-        VLog(@"result frame: %@", NSStringFromCGRect(_resultLabel.frame));
         
     }
     else
