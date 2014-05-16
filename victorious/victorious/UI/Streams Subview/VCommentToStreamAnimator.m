@@ -23,7 +23,7 @@
 - (void)animateTransition:(id<UIViewControllerContextTransitioning>)context
 {
     VCommentsContainerViewController *commentsContainer = (VCommentsContainerViewController*)[context viewControllerForKey:UITransitionContextFromViewControllerKey];
-    VStreamContainerViewController* container = (VStreamContainerViewController*)[context viewControllerForKey:UITransitionContextFromViewControllerKey];
+    VStreamContainerViewController* container = (VStreamContainerViewController*)[context viewControllerForKey:UITransitionContextToViewControllerKey];
     VStreamTableViewController *streamVC = container.streamTable;
     commentsContainer.view.userInteractionEnabled = NO;
     streamVC.view.userInteractionEnabled = NO;
