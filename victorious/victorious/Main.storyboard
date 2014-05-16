@@ -203,7 +203,7 @@
                                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                         </state>
                                     </button>
-                                    <segmentedControl opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="Fdy-7V-EvU">
+                                    <segmentedControl opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="1" translatesAutoresizingMaskIntoConstraints="NO" id="Fdy-7V-EvU">
                                         <rect key="frame" x="20" y="49" width="280" height="29"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <segments>
@@ -212,6 +212,9 @@
                                             <segment title="Following"/>
                                         </segments>
                                         <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                                        <connections>
+                                            <action selector="changedFilterControls:" destination="OrJ-Wr-Uhc" eventType="valueChanged" id="ZWO-So-Mqe"/>
+                                        </connections>
                                     </segmentedControl>
                                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="QiD-8u-6Dv">
                                         <rect key="frame" x="52" y="0.0" width="210" height="50"/>
@@ -246,6 +249,7 @@
                     <nil key="simulatedTopBarMetrics"/>
                     <connections>
                         <outlet property="createButton" destination="oOz-qF-TD2" id="zlN-c0-Oz4"/>
+                        <outlet property="filterControls" destination="Fdy-7V-EvU" id="nuT-B0-rLP"/>
                         <outlet property="headerLabel" destination="QiD-8u-6Dv" id="lNi-dD-Ckb"/>
                         <outlet property="headerView" destination="uAX-J4-ubb" id="hnT-wI-TLl"/>
                         <outlet property="headerYConstraint" destination="sbd-TC-btl" id="yOm-aI-O3B"/>

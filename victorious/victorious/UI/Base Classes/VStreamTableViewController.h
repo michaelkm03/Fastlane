@@ -12,12 +12,11 @@
 #import "VAnimation.h"
 #import "VSequenceFilter.h"
 
-typedef NS_ENUM(NSInteger, VStreamScope)
+typedef NS_ENUM(NSInteger, VStreamFilter)
 {
-    VStreamFilterAll = 0,
-    VStreamFilterImages,
-    VStreamFilterVideos,
-    VStreamFilterPolls
+    VStreamHotFilter = 0,
+    VStreamRecentFilter,
+    VStreamFollowingFilter
 };
 
 @protocol VStreamTableDelegate <NSObject>

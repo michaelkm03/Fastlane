@@ -88,7 +88,13 @@
     self.headerLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeaderFont];
     self.headerLabel.text = self.streamTable.navigationItem.title;
     
-    // Do any additional setup after loading the view.
+    self.filterControls.tintColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVAccentColor];
+    [[UISegmentedControl appearance] setTitleTextAttributes:@{
+                                                              NSForegroundColorAttributeName : [[VThemeManager sharedThemeManager] themedColorForKey:kVMainTextColor]
+                                                              } forState:UIControlStateNormal];
+    self.filterControls.layer.cornerRadius = 8;
+    self.filterControls.clipsToBounds = YES;
+    [self changedFilterControls:nil];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -125,6 +131,30 @@
     
     self.headerYConstraint.constant = 0;
     [self.view layoutIfNeeded];
+}
+
+#pragma mark - FilterControls
+
+- (IBAction)changedFilterControls:(id)sender
+{
+    for (int i = 0; i < self.filterControls.subviews.count; i++)
+    {
+        id view = self.filterControls.subviews[i];
+        if (![view respondsToSelector:@selector(isSelected)]
+            || ![view respondsToSelector:@selector(setTintColor:)]
+            || ![view respondsToSelector:@selector(setBackgroundColor:)])
+            continue;
+        
+        if ([view isSelected])
+        {
+            [view setTintColor: [[VThemeManager sharedThemeManager] themedColorForKey:kVMainTextColor]];
+        }
+        else
+        {
+            [view setTintColor: [[VThemeManager sharedThemeManager] themedColorForKey:kVAccentColor]];
+            [view setBackgroundColor:[[VThemeManager sharedThemeManager] themedColorForKey:kVSecondaryAccentColor]];
+        }
+    }
 }
 
 #pragma mark UITableViewDelegate
