@@ -160,21 +160,47 @@ static const char kVideoUnloadBlockKey;
     }
 }
 
-- (void)animateVideoOpenToHeight:(CGFloat)height
+- (void)animateVideoOpenToAspectRatio:(CGFloat)aspectRatio
 {
     [UIView animateWithDuration:0.2f
                      animations:^(void)
     {
-        UIView *videoPreviewView = self.videoPreviewView;
-        NSArray *temporaryVerticalConstraints = [NSLayoutConstraint constraintsWithVisualFormat:@"V:|[videoPreviewView(==height)]"
-                                                                                        options:0
-                                                                                        metrics:@{ @"height": @(height) }
-                                                                                          views:NSDictionaryOfVariableBindings(videoPreviewView)];
-        NSArray *temporaryHorizontalConstraints = [NSLayoutConstraint constraintsWithVisualFormat:@"H:|[videoPreviewView]|"
-                                                                                options:0
-                                                                                metrics:nil
-                                                                                  views:NSDictionaryOfVariableBindings(videoPreviewView)];
-        NSArray *temporaryConstraints = [temporaryHorizontalConstraints arrayByAddingObjectsFromArray:temporaryVerticalConstraints];
+        NSLayoutConstraint *yConstraint = [NSLayoutConstraint constraintWithItem:self.videoPreviewView
+                                                                       attribute:NSLayoutAttributeCenterY
+                                                                       relatedBy:NSLayoutRelationEqual
+                                                                          toItem:self.mediaView
+                                                                       attribute:NSLayoutAttributeCenterY
+                                                                      multiplier:1.0f
+                                                                        constant:0.0f];
+        NSLayoutConstraint *xConstraint = [NSLayoutConstraint constraintWithItem:self.videoPreviewView
+                                                                       attribute:NSLayoutAttributeCenterX
+                                                                       relatedBy:NSLayoutRelationEqual
+                                                                          toItem:self.mediaView
+                                                                       attribute:NSLayoutAttributeCenterX
+                                                                      multiplier:1.0f
+                                                                        constant:0.0];
+        NSLayoutConstraint *widthConstraint = [NSLayoutConstraint constraintWithItem:self.videoPreviewView
+                                                                           attribute:NSLayoutAttributeWidth
+                                                                           relatedBy:NSLayoutRelationLessThanOrEqual
+                                                                              toItem:self.mediaView
+                                                                           attribute:NSLayoutAttributeWidth
+                                                                          multiplier:1.0f
+                                                                            constant:0.0f];
+        NSLayoutConstraint *heightConstraint = [NSLayoutConstraint constraintWithItem:self.videoPreviewView
+                                                                            attribute:NSLayoutAttributeHeight
+                                                                            relatedBy:NSLayoutRelationEqual
+                                                                               toItem:self.videoPreviewView
+                                                                            attribute:NSLayoutAttributeWidth
+                                                                           multiplier:aspectRatio
+                                                                             constant:0];
+        NSLayoutConstraint *maxHeightConstraint = [NSLayoutConstraint constraintWithItem:self.videoPreviewView
+                                                                               attribute:NSLayoutAttributeHeight
+                                                                               relatedBy:NSLayoutRelationLessThanOrEqual
+                                                                                  toItem:self.mediaView
+                                                                               attribute:NSLayoutAttributeHeight
+                                                                              multiplier:1.0f
+                                                                                constant:0.0f];
+        NSArray *temporaryConstraints = @[yConstraint, xConstraint, widthConstraint, heightConstraint, maxHeightConstraint];
         [self.mediaView addConstraints:temporaryConstraints];
         self.temporaryVideoPreviewConstraints = temporaryConstraints;
         [self.view layoutIfNeeded];
@@ -242,10 +268,8 @@ static const char kVideoUnloadBlockKey;
     [self.activityIndicator removeFromSuperview];
     self.activityIndicator = nil;
     
-    CGFloat yRatio = fminf(self.videoPlayer.naturalSize.height / self.videoPlayer.naturalSize.width, 1);
-    
-    CGFloat videoHeight = CGRectGetHeight(self.mediaView.frame) * yRatio;
-    [self animateVideoOpenToHeight:videoHeight];
+    CGFloat ratio = fminf(self.videoPlayer.naturalSize.height / self.videoPlayer.naturalSize.width, 1);
+    [self animateVideoOpenToAspectRatio:ratio];
 }
 
 - (void)videoPlayerFailed:(VCVideoPlayerView *)videoPlayer

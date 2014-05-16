@@ -43,6 +43,7 @@
 @property (weak, nonatomic) IBOutlet UIImageView* secondSmallPreviewImage;
 @property (weak, nonatomic) IBOutlet VResultView* firstResultView;
 @property (weak, nonatomic) IBOutlet VResultView* secondResultView;
+@property (weak, nonatomic) IBOutlet UIView*      maskingView; ///< This view is normally hidden but unhides during landspace video playback
 
 @property (strong, nonatomic) UIDynamicAnimator* orAnimator;
 
