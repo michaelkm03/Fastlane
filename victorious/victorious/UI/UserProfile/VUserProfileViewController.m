@@ -103,6 +103,13 @@ const   CGFloat kVNavigationBarHeight = 44.0;
     self.tableView.tableHeaderView = [self longHeader];
 }
 
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    
+    [self.navigationController setNavigationBarHidden:NO animated:YES];
+}
+
 #pragma mark - Accessors
 
 - (void)setProfile:(VUser *)profile

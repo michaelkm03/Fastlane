@@ -84,7 +84,6 @@
     navBarFrame.origin.y = 0;
     self.navigationController.navigationBar.frame = navBarFrame;
     [[VThemeManager sharedThemeManager] applyNormalNavBarStyling];
-    [self.navigationController setNavigationBarHidden:YES animated:NO];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
