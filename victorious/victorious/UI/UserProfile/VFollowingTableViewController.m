@@ -10,7 +10,6 @@
 #import "VFollowerTableViewCell.h"
 #import "VObjectManager+Users.h"
 #import "VUser.h"
-#import "VUser+LoadFollowers.h"
 
 @interface VFollowingTableViewController ()
 @property (nonatomic, strong)   NSArray*    following;
@@ -71,12 +70,9 @@
         self.following = [[NSArray alloc] init];
     };
     
-    if (!self.profile.followingListLoading)
-        [[VObjectManager sharedManager] requestFollowListForUser:self.profile
-                                                    successBlock:followingSuccess
-                                                       failBlock:followingFail];
-    else
-        followingSuccess(nil, nil, nil);
+    [[VObjectManager sharedManager] requestFollowListForUser:self.profile
+                                                successBlock:followingSuccess
+                                                   failBlock:followingFail];
 }
 
 @end

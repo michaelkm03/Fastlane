@@ -14,6 +14,7 @@
 
 - (void)videoPlayer:(VCVideoPlayerView *)videoPlayer didPlayToTime:(CMTime)time;
 - (void)videoPlayerReadyToPlay:(VCVideoPlayerView *)videoPlayer;
+- (void)videoPlayerFailed:(VCVideoPlayerView *)videoPlayer;
 - (void)videoPlayerWillStartPlaying:(VCVideoPlayerView *)videoPlayer;
 - (void)videoPlayerWillStopPlaying:(VCVideoPlayerView *)videoPlayer;
 - (void)videoPlayerDidReachEndOfVideo:(VCVideoPlayerView *)videoPlayer;

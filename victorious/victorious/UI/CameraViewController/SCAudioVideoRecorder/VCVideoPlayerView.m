@@ -560,16 +560,31 @@ static __weak VCVideoPlayerView *_currentPlayer = nil;
     else if (object == self.player.currentItem && [keyPath isEqualToString:NSStringFromSelector(@selector(status))])
     {
         NSNumber *status = change[NSKeyValueChangeNewKey];
-        if ((id)status != [NSNull null] && status.integerValue == AVPlayerItemStatusReadyToPlay)
+        if ((id)status != [NSNull null])
         {
-            self.toolbarView.progressIndicator.duration = self.player.currentItem.duration;
-            if (!self.delegateNotifiedOfReadinessToPlay)
+            switch (status.integerValue)
             {
-                if ([self.delegate respondsToSelector:@selector(videoPlayerReadyToPlay:)])
+                case AVPlayerItemStatusReadyToPlay:
                 {
-                    [self.delegate videoPlayerReadyToPlay:self];
+                    self.toolbarView.progressIndicator.duration = self.player.currentItem.duration;
+                    if (!self.delegateNotifiedOfReadinessToPlay)
+                    {
+                        if ([self.delegate respondsToSelector:@selector(videoPlayerReadyToPlay:)])
+                        {
+                            [self.delegate videoPlayerReadyToPlay:self];
+                        }
+                        self.delegateNotifiedOfReadinessToPlay = YES;
+                    }
+                    break;
                 }
-                self.delegateNotifiedOfReadinessToPlay = YES;
+                case AVPlayerItemStatusFailed:
+                {
+                    if ([self.delegate respondsToSelector:@selector(videoPlayerFailed:)])
+                    {
+                        [self.delegate videoPlayerFailed:self];
+                    }
+                    break;
+                }
             }
         }
     }

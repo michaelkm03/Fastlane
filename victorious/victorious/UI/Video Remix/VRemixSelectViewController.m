@@ -89,6 +89,7 @@
 - (IBAction)nextButtonClicked:(id)sender
 {
     [self.previewView.player pause];
+    self.navigationItem.leftBarButtonItem.enabled = NO;
     [self downloadVideoSegmentForSequenceID:self.seqID atTime:self.previewView.startSeconds];
 }
 
@@ -158,6 +159,7 @@
              [self.progressHUD hide:YES];
              self.progressHUD = nil;
              [self showSegmentDownloadFailureAlert];
+             self.navigationItem.leftBarButtonItem.enabled = YES;
          }
      }];
 }
@@ -213,6 +215,7 @@
     dispatch_async(dispatch_get_main_queue(), ^{
         [self.progressHUD hide:YES];
         self.progressHUD = nil;
+        self.navigationItem.leftBarButtonItem.enabled = YES;
         
         if (error)
             [self showSegmentDownloadFailureAlert];

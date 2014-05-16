@@ -10,7 +10,6 @@
 #import "VFollowerTableViewCell.h"
 #import "VObjectManager+Users.h"
 #import "VUser.h"
-#import "VUser+LoadFollowers.h"
 #import "VThemeManager.h"
 
 @interface VFollowerTableViewController ()
@@ -73,12 +72,9 @@
         self.followers = [[NSArray alloc] init];
     };
 
-    if (!self.profile.followerListLoading)
-        [[VObjectManager sharedManager] requestFollowerListForUser:self.profile
-                                                      successBlock:followerSuccess
-                                                         failBlock:followerFail];
-    else
-        followerSuccess(nil, nil, nil);
+    [[VObjectManager sharedManager] requestFollowerListForUser:self.profile
+                                                  successBlock:followerSuccess
+                                                     failBlock:followerFail];
 }
 
 @end
