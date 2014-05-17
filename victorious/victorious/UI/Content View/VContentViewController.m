@@ -163,7 +163,7 @@ CGFloat kContentMediaViewOffset = 154;
 
 - (NSUInteger)supportedInterfaceOrientations
 {
-    if (!self.isRotating && [self isVideoLoadingOrLoaded])
+    if (!self.isRotating && [self isVideoLoaded])
     {
         return UIInterfaceOrientationMaskAllButUpsideDown;
     }

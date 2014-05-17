@@ -172,6 +172,11 @@ static const char kVideoUnloadBlockKey;
     return self.videoPlayer || self.temporaryVideoPreviewConstraints.count;
 }
 
+- (BOOL)isVideoLoaded
+{
+    return self.temporaryVideoPreviewConstraints.count;
+}
+
 - (void)unloadVideoWithDuration:(NSTimeInterval)duration completion:(void (^)(void))completion
 {
     if (!self.videoPlayer && !self.temporaryVideoPreviewConstraints.count)
