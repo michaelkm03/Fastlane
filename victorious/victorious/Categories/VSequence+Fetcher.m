@@ -15,6 +15,7 @@
 #import "NSString+VParseHelp.h"
 #import "UIImageView+AFNetworking.h"
 #import "VAnswer.h"
+#import "VUser.h"
 
 @implementation VSequence (Fetcher)
 
@@ -72,6 +73,9 @@
     }
     else
         [urls addObject:[NSURL URLWithString:self.previewImage]];
+    
+    if (self.user && self.user.pictureUrl)
+        [urls addObject:[NSURL URLWithString:self.user.pictureUrl]];
     
     return [urls copy];
 }
