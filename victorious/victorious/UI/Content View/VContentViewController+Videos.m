@@ -54,7 +54,11 @@ static const char kVideoUnloadBlockKey;
     self.videoPlayer.delegate = self;
     self.videoPlayer.translatesAutoresizingMaskIntoConstraints = NO;
     [self.mediaView addSubview:self.videoPlayer];
-    if (![self.currentNode isPoll])
+    if ([self.currentNode isPoll])
+    {
+        [self addCloseButtonToVideoPlayer];
+    }
+    else
     {
         [self addRemixButtonToVideoPlayer];
     }
@@ -141,6 +145,26 @@ static const char kVideoUnloadBlockKey;
                                                                                          options:0
                                                                                          metrics:nil
                                                                                            views:NSDictionaryOfVariableBindings(remixButton)]];
+}
+
+- (void)addCloseButtonToVideoPlayer
+{
+    UIButton *closeButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    closeButton.translatesAutoresizingMaskIntoConstraints = NO;
+    closeButton.backgroundColor = [[UIColor blackColor] colorWithAlphaComponent:0.4f];
+    [closeButton setImage:[[UIImage imageNamed:@"Close"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate]
+                 forState:UIControlStateNormal];
+    [closeButton addTarget:self action:@selector(pressedClose:) forControlEvents:UIControlEventTouchUpInside];
+    closeButton.tintColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVMainTextColor];
+    [self.videoPlayer.overlayView addSubview:closeButton];
+    [self.videoPlayer.overlayView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:[closeButton(==50)]-5-|"
+                                                                                         options:0
+                                                                                         metrics:nil
+                                                                                           views:NSDictionaryOfVariableBindings(closeButton)]];
+    [self.videoPlayer.overlayView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-5-[closeButton(==50)]"
+                                                                                         options:0
+                                                                                         metrics:nil
+                                                                                           views:NSDictionaryOfVariableBindings(closeButton)]];
 }
 
 - (BOOL)isVideoLoadingOrLoaded
@@ -275,6 +299,20 @@ static const char kVideoUnloadBlockKey;
      ^{
          [self.videoPlayer.player pause];
      }];
+}
+
+- (IBAction)pressedClose:(id)sender
+{
+    if (UIInterfaceOrientationIsLandscape(self.interfaceOrientation))
+    {
+        [self forceRotationBackToPortraitOnCompletion:^(void)
+        {
+            [self pressedClose:sender];
+        }];
+        return;
+    }
+    
+    [self unloadVideoWithDuration:0.2 completion:nil];
 }
 
 #pragma mark - Properties
