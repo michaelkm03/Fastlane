@@ -158,10 +158,6 @@ const   NSTimeInterval  kAnimationDuration      =   0.4;
     
     self.view.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVBackgroundColor];
     self.navigationController.navigationBar.barTintColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVBackgroundColor];
-    if (![[UIApplication sharedApplication] isStatusBarHidden])
-    {
-        [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationSlide];
-    }
     
     self.inRecordVideoState = NO;
     self.inTrashState = NO;
@@ -201,6 +197,11 @@ const   NSTimeInterval  kAnimationDuration      =   0.4;
 - (NSUInteger)supportedInterfaceOrientations
 {
     return UIInterfaceOrientationMaskPortrait;
+}
+
+- (BOOL)prefersStatusBarHidden
+{
+    return YES;
 }
 
 #pragma mark - Actions

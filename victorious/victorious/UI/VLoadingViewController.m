@@ -68,6 +68,11 @@ static const NSTimeInterval kTimeBetweenRetries = 10.0;
     }
 }
 
+- (BOOL)prefersStatusBarHidden
+{
+    return YES;
+}
+
 #pragma mark - Reachability Notice
 
 - (void)showReachabilityNotice

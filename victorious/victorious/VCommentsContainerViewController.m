@@ -99,6 +99,11 @@
     }
 }
 
+- (BOOL)prefersStatusBarHidden
+{
+    return YES;
+}
+
 - (UITableViewController *)conversationTableViewController
 {
     if(_conversationTableViewController == nil)

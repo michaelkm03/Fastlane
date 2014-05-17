@@ -118,6 +118,11 @@
     return UIInterfaceOrientationMaskPortrait;
 }
 
+- (BOOL)prefersStatusBarHidden
+{
+    return YES;
+}
+
 #pragma mark - Properties
 - (void)setFilterType:(VStreamFilter)filterType
 {

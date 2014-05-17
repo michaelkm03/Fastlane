@@ -30,6 +30,11 @@
     self.navigationItem.title = [@"@" stringByAppendingString:messageVC.conversation.user.name];
 }
 
+- (BOOL)prefersStatusBarHidden
+{
+    return YES;
+}
+
 - (UITableViewController *)conversationTableViewController
 {
     if(_conversationTableViewController == nil)

@@ -90,8 +90,6 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
-	<key>UIViewControllerBasedStatusBarAppearance</key>
-	<false/>
 	<key>VictoriousAppID</key>
 	<integer>2</integer>
 	<key>VictoriousServerEnvironment</key>

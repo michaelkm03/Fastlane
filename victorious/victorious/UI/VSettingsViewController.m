@@ -100,6 +100,11 @@ static const NSInteger kServerEnvironmentButtonIndex = 1;
     return UIInterfaceOrientationMaskPortrait;
 }
 
+- (BOOL)prefersStatusBarHidden
+{
+    return YES;
+}
+
 #pragma mark - Validation
 
 - (BOOL)shouldUpdateEmailAddress:(NSString *)emailAddress password:(NSString *)password username:(NSString *)username

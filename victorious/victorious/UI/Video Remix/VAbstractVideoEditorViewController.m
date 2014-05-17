@@ -54,6 +54,11 @@
     return UIInterfaceOrientationMaskPortrait;
 }
 
+- (BOOL)prefersStatusBarHidden
+{
+    return YES;
+}
+
 #pragma mark - Actions
 
 - (IBAction)handleTapToPlayAction:(id)sender

@@ -121,6 +121,11 @@
     return [_contentViewController shouldAutorotate];
 }
 
+- (UIViewController *)childViewControllerForStatusBarHidden
+{
+    return _contentViewController;
+}
+
 #pragma mark -
 
 - (void)presentMenuViewController
@@ -266,6 +271,7 @@
     if (!_contentViewController)
     {
         _contentViewController = contentViewController;
+        [self setNeedsStatusBarAppearanceUpdate];
         return;
     }
 
@@ -278,6 +284,7 @@
     contentViewController.view.frame = frame;
     
     [self addContentViewControllerMotionEffects];
+    [self setNeedsStatusBarAppearanceUpdate];
 }
 
 - (void)setContentViewController:(UIViewController *)contentViewController animated:(BOOL)animated

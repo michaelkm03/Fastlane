@@ -149,6 +149,11 @@ CGFloat kContentMediaViewOffset = 154;
     }
 }
 
+- (BOOL)prefersStatusBarHidden
+{
+    return YES;
+}
+
 #pragma mark - Rotation
 
 - (BOOL)shouldAutorotate

@@ -105,6 +105,11 @@
     return UIInterfaceOrientationMaskPortrait;
 }
 
+- (BOOL)prefersStatusBarHidden
+{
+    return YES;
+}
+
 - (void)facebookAccessDidFail:(NSError *)error
 {
     if (error.code == ACErrorAccountNotFound)

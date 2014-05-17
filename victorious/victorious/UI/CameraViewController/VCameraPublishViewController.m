@@ -77,6 +77,11 @@
     return UIInterfaceOrientationMaskPortrait;
 }
 
+- (BOOL)prefersStatusBarHidden
+{
+    return YES;
+}
+
 #pragma mark - Actions
 
 - (IBAction)goBack:(id)sender

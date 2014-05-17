@@ -105,6 +105,11 @@ static const CGFloat VCreateViewControllerLargePadding = 20;
     return UIInterfaceOrientationMaskPortrait;
 }
 
+- (BOOL)prefersStatusBarHidden
+{
+    return YES;
+}
+
 - (void)validatePostButtonState
 {
     [self.postButton setEnabled:YES];

@@ -68,6 +68,11 @@ static  NSString*   kNewsCellViewIdentifier       =   @"VNewsCell";
     return UIInterfaceOrientationMaskPortrait;
 }
 
+- (BOOL)prefersStatusBarHidden
+{
+    return YES;
+}
+
 #pragma mark - Overrides
 
 - (NSFetchedResultsController *)makeFetchedResultsController
