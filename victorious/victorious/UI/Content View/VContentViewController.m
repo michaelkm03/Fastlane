@@ -135,13 +135,16 @@ CGFloat kContentMediaViewOffset = 154;
 {
     [super viewWillDisappear:animated];
     
-    if (UIApplication.sharedApplication.delegate.window.isKeyWindow)
+    if ([self isVideoLoadingOrLoaded])
+    {
+        [self pauseVideo];
+    }
+    if ([self isBeingDismissed] || [self isMovingFromParentViewController])
     {
         if (self.navigationController.delegate == self)
         {
             self.navigationController.delegate = nil;
         }
-        
         self.orAnimator = nil;
     }
 }
@@ -391,10 +394,6 @@ CGFloat kContentMediaViewOffset = 154;
 
 - (IBAction)pressedComment:(id)sender
 {
-    if ([self isVideoLoadingOrLoaded])
-    {
-        [self pauseVideo];
-    }
     VCommentsContainerViewController* commentsTable = [VCommentsContainerViewController commentsContainerView];
     commentsTable.sequence = self.sequence;
     commentsTable.parentVC = self;
