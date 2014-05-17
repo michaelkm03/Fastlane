@@ -33,6 +33,7 @@
  */
 - (void)playVideoAtURL:(NSURL *)contentURL withPreviewView:(UIView *)previewView;
 
+- (void)pauseVideo; ///< Pause a playing video or prevent a loading video from starting to play
 - (BOOL)isVideoLoadingOrLoaded; ///< Returns YES if -playVideoAtURL:withPreviewView: has been called without a subsequent -unloadVideoWithDuration:
 - (void)unloadVideoWithDuration:(NSTimeInterval)duration completion:(void(^)(void))completion; ///< Undoes the changes that -loadVideo makes.
 

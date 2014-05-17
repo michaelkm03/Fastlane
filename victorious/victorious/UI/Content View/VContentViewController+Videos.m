@@ -15,9 +15,31 @@
 
 #import <objc/runtime.h>
 
+static const char kShouldPauseKey;
 static const char kVideoPreviewViewKey;
 static const char kVideoCompletionBlockKey;
 static const char kVideoUnloadBlockKey;
+
+@interface VContentViewController (VideosPrivate)
+
+@property (nonatomic) BOOL shouldPause;
+
+@end
+
+@implementation VContentViewController (VideosPrivate)
+
+- (void)setShouldPause:(BOOL)shouldPause
+{
+    objc_setAssociatedObject(self, &kShouldPauseKey, @(shouldPause), OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+}
+
+- (BOOL)shouldPause
+{
+    NSNumber *shouldPause = objc_getAssociatedObject(self, &kShouldPauseKey);
+    return [shouldPause boolValue];
+}
+
+@end
 
 @implementation VContentViewController (Videos)
 
@@ -26,6 +48,7 @@ static const char kVideoUnloadBlockKey;
     NSAssert(![self isVideoLoadingOrLoaded], @"attempt to play two videos at once--not allowed.");
     NSAssert([self.mediaView.subviews containsObject:previewView], @"previewView must be a subview of mediaView");
     
+    self.shouldPause = NO;
     [self.videoPlayer removeFromSuperview];
     self.videoPlayer = [[VCVideoPlayerView alloc] init];
     self.videoPlayer.delegate = self;
@@ -88,6 +111,18 @@ static const char kVideoUnloadBlockKey;
     self.videoPreviewView = previewView;
 }
 
+- (void)pauseVideo
+{
+    if ([self.videoPlayer isPlaying])
+    {
+        [self.videoPlayer.player pause];
+    }
+    else
+    {
+        self.shouldPause = YES;
+    }
+}
+
 - (void)addRemixButtonToVideoPlayer
 {
     UIButton *remixButton = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -119,6 +154,8 @@ static const char kVideoUnloadBlockKey;
     {
         return;
     }
+    
+    [self pauseVideo];
     
     void (^animationCompletion)(BOOL) = ^(BOOL complete)
     {
@@ -209,7 +246,10 @@ static const char kVideoUnloadBlockKey;
     }
                      completion:^(BOOL finished)
     {
-        [self.videoPlayer.player play];
+        if (!self.shouldPause)
+        {
+            [self.videoPlayer.player play];
+        }
     }];
 }
 
@@ -237,7 +277,7 @@ static const char kVideoUnloadBlockKey;
      }];
 }
 
-#pragma mark - Private Properties
+#pragma mark - Properties
 
 - (void)setVideoPreviewView:(UIView *)videoPreviewView
 {
