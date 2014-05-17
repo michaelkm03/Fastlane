@@ -76,6 +76,9 @@
     self.fetchedResultsController = nil;
     
     [self performFetch];
+    
+    if (self.fetchedResultsController.fetchedObjects)
+        [self refresh:self.refreshControl];
 }
 
 - (IBAction)refresh:(UIRefreshControl *)sender

@@ -15,7 +15,11 @@
 #import "VOwnerStreamViewController.h"
 #import "VCommunityStreamViewController.h"
 
+#import "VLoginViewController.h"
+
 #import "VThemeManager.h"
+
+#import "VObjectManager.h"
 
 #import "VConstants.h"
 
@@ -147,6 +151,12 @@
 
 - (IBAction)changedFilterControls:(id)sender
 {
+    if (self.filterControls.selectedSegmentIndex == VStreamFollowingFilter && ![VObjectManager sharedManager].mainUser)
+    {
+        [self presentViewController:[VLoginViewController loginViewController] animated:YES completion:NULL];
+        return;
+    }
+    
     for (int i = 0; i < self.filterControls.subviews.count; i++)
     {
         id view = self.filterControls.subviews[i];
