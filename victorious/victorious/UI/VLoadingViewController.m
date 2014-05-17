@@ -14,6 +14,7 @@
 #import "VObjectManager+SequenceFilters.h"
 #import "VReachability.h"
 #import "VThemeManager.h"
+#import "VUserManager.h"
 
 static const NSTimeInterval kTimeBetweenRetries = 10.0;
 
@@ -146,7 +147,15 @@ static const NSTimeInterval kTimeBetweenRetries = 10.0;
         {
             _appInitLoading = NO;
             _appInitLoaded = YES;
-            [self.navigationController pushViewController:[VStreamContainerViewController containerForStreamTable:[VHomeStreamViewController sharedInstance]] animated:YES];
+            
+            [[VUserManager sharedInstance] loginViaSavedCredentialsOnCompletion:^(VUser *user, BOOL created)
+             {
+                 [self.navigationController pushViewController:[VStreamContainerViewController containerForStreamTable:[VHomeStreamViewController sharedInstance]] animated:YES];
+             }
+                                                                        onError:^(NSError *error)
+             {
+                 [self.navigationController pushViewController:[VStreamContainerViewController containerForStreamTable:[VHomeStreamViewController sharedInstance]] animated:YES];
+             }];
         }
                                                       failBlock:^(NSOperation* operation, NSError* error)
         {

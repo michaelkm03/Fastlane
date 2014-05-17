@@ -75,8 +75,6 @@
             success(operation, fullResponse, resultObjects);
         }
         
-        [[VUserManager sharedInstance] loginViaSavedCredentialsOnCompletion:nil onError:nil];
-        
         NSArray* ownerCategories = [[VOwnerStreamViewController sharedInstance] sequenceCategories];
         VSequenceFilter* ownerFilter = [self sequenceFilterForCategories:ownerCategories];
         [self refreshSequenceFilter:ownerFilter
