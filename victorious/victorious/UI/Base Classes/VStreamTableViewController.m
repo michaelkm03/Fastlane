@@ -121,8 +121,10 @@
 #pragma mark - Properties
 - (void)setFilterType:(VStreamFilter)filterType
 {
-    _filterType = filterType;
+    if (_filterType == filterType)
+        return;
     
+    _filterType = filterType;
     [self refreshFetchController];
 }
 

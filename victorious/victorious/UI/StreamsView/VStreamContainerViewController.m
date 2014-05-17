@@ -153,8 +153,8 @@
 {
     if (self.filterControls.selectedSegmentIndex == VStreamFollowingFilter && ![VObjectManager sharedManager].mainUser)
     {
+        [self.filterControls setSelectedSegmentIndex:self.streamTable.filterType];
         [self presentViewController:[VLoginViewController loginViewController] animated:YES completion:NULL];
-        return;
     }
     
     for (int i = 0; i < self.filterControls.subviews.count; i++)
