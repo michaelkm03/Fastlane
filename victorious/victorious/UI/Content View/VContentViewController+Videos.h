@@ -11,6 +11,15 @@
 
 @interface VContentViewController (Videos) <VCVideoPlayerDelegate>
 
+@property (nonatomic, copy) void (^onVideoCompletionBlock)(void); ///< A block to execute as soon as playback finishes. Block will be cleared after executing once.
+
+/**
+ A block to execute when -unloadVideoWithDuration:completion: is called. 
+ Block will be cleared after executing once. Will be called BEFORE 
+ onVideoCompletionBlock
+ */
+@property (nonatomic, copy) void (^onVideoUnloadBlock)(void);
+
 /**
  Plays a video.
  
@@ -24,16 +33,8 @@
  */
 - (void)playVideoAtURL:(NSURL *)contentURL withPreviewView:(UIView *)previewView;
 
+- (void)pauseVideo; ///< Pause a playing video or prevent a loading video from starting to play
 - (BOOL)isVideoLoadingOrLoaded; ///< Returns YES if -playVideoAtURL:withPreviewView: has been called without a subsequent -unloadVideoWithDuration:
 - (void)unloadVideoWithDuration:(NSTimeInterval)duration completion:(void(^)(void))completion; ///< Undoes the changes that -loadVideo makes.
-- (void)setOnVideoCompletionBlock:(void(^)(void))completion; ///< Sets a block to execute as soon as playback finishes. Block will be cleared after executing once
-
-/**
- Sets a block to execute when -unloadVideoWithDuration:completion: is called.
- Block will be cleared after executing once
- 
- @param onUnload The block to execute. Will be called BEFORE the -unloadVideoWithDuration:completion: block.
- */
-- (void)setOnVideoUnloadBlock:(void(^)(void))onUnload;
 
 @end

@@ -391,10 +391,13 @@ CGFloat kContentMediaViewOffset = 154;
 
 - (IBAction)pressedComment:(id)sender
 {
+    if ([self isVideoLoadingOrLoaded])
+    {
+        [self pauseVideo];
+    }
     VCommentsContainerViewController* commentsTable = [VCommentsContainerViewController commentsContainerView];
     commentsTable.sequence = self.sequence;
     commentsTable.parentVC = self;
-    
     [self.navigationController pushViewController:commentsTable animated:YES];
 }
 
