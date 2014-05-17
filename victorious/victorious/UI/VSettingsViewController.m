@@ -86,6 +86,8 @@ static const NSInteger kServerEnvironmentButtonIndex = 1;
 #else
     self.showEnvironmentSetting = YES;
 #endif
+    
+    [self.navigationController setNavigationBarHidden:NO animated:YES];
 }
 
 - (BOOL)shouldAutorotate
