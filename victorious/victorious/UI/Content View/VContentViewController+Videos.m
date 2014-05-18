@@ -63,6 +63,8 @@ static const char kVideoUnloadBlockKey;
         [self addRemixButtonToVideoPlayer];
     }
     
+    [self.view bringSubviewToFront:self.mediaSuperview];
+    
     [self.mediaView addConstraint:[NSLayoutConstraint constraintWithItem:self.videoPlayer
                                                                attribute:NSLayoutAttributeWidth
                                                                relatedBy:NSLayoutRelationEqual
@@ -188,6 +190,8 @@ static const char kVideoUnloadBlockKey;
     
     void (^animationCompletion)(BOOL) = ^(BOOL complete)
     {
+        [self.view insertSubview:self.mediaSuperview belowSubview:self.pollPreviewView];
+        
         [self.videoPlayer removeFromSuperview];
         self.videoPlayer = nil;
         
@@ -247,11 +251,12 @@ static const char kVideoUnloadBlockKey;
                                                                         constant:0.0];
         NSLayoutConstraint *widthConstraint = [NSLayoutConstraint constraintWithItem:self.videoPreviewView
                                                                            attribute:NSLayoutAttributeWidth
-                                                                           relatedBy:NSLayoutRelationLessThanOrEqual
+                                                                           relatedBy:NSLayoutRelationEqual
                                                                               toItem:self.mediaView
                                                                            attribute:NSLayoutAttributeWidth
                                                                           multiplier:1.0f
                                                                             constant:0.0f];
+        widthConstraint.priority = UILayoutPriorityRequired - 1;
         NSLayoutConstraint *heightConstraint = [NSLayoutConstraint constraintWithItem:self.videoPreviewView
                                                                             attribute:NSLayoutAttributeHeight
                                                                             relatedBy:NSLayoutRelationEqual

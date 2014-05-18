@@ -217,7 +217,6 @@ CGFloat kContentMediaViewOffset = 154;
     {
         self.maskingView.alpha = 0;
         self.maskingView.hidden = NO;
-        [self.view bringSubviewToFront:self.mediaSuperview];
     }
 }
 
@@ -246,7 +245,6 @@ CGFloat kContentMediaViewOffset = 154;
     if (UIInterfaceOrientationIsPortrait(interfaceOrientation))
     {
         self.maskingView.hidden = YES;
-        [self.view insertSubview:self.mediaSuperview belowSubview:self.barContainerView];
     }
 }
 
