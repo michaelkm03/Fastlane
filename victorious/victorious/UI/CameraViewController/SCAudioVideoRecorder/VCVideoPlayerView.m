@@ -25,8 +25,9 @@
 
 @end
 
-static const CGFloat        kToolbarHeight    = 41.0f;
-static const NSTimeInterval kToolbarHideDelay =  5.0;
+static const CGFloat        kToolbarHeight            = 41.0f;
+static const NSTimeInterval kToolbarHideDelay         =  5.0;
+static const NSTimeInterval kToolbarAnimationDuration =  0.2;
 
 static __weak VCVideoPlayerView *_currentPlayer = nil;
 
@@ -246,7 +247,7 @@ static __weak VCVideoPlayerView *_currentPlayer = nil;
         self.toolbarView.alpha  =  0;
         self.overlayView.alpha  =  0;
         self.toolbarAnimating = YES;
-        [UIView animateWithDuration:0.2
+        [UIView animateWithDuration:kToolbarAnimationDuration
                               delay:0
                             options:UIViewAnimationOptionCurveLinear
                          animations:^(void)
@@ -263,7 +264,7 @@ static __weak VCVideoPlayerView *_currentPlayer = nil;
     {
         [self stopToolbarTimer];
         self.toolbarAnimating = YES;
-        [UIView animateWithDuration:0.2
+        [UIView animateWithDuration:kToolbarAnimationDuration
                               delay:0
                             options:UIViewAnimationOptionCurveLinear
                          animations:^(void)

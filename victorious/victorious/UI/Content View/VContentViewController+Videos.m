@@ -15,6 +15,8 @@
 
 #import <objc/runtime.h>
 
+const NSTimeInterval kVideoPlayerAnimationDuration = 0.2;
+
 static const char kShouldPauseKey;
 static const char kVideoPreviewViewKey;
 static const char kVideoCompletionBlockKey;
@@ -247,7 +249,7 @@ static const char kVideoUnloadBlockKey;
 - (void)animateVideoOpenToAspectRatio:(CGFloat)aspectRatio
 {
     [self.view bringSubviewToFront:self.mediaSuperview];
-    [UIView animateWithDuration:0.2f
+    [UIView animateWithDuration:kVideoPlayerAnimationDuration
                      animations:^(void)
     {
         NSLayoutConstraint *yConstraint = [NSLayoutConstraint constraintWithItem:self.videoPreviewView
@@ -328,7 +330,7 @@ static const char kVideoUnloadBlockKey;
 
 - (IBAction)pressedClose:(id)sender
 {
-    [self unloadVideoWithDuration:0.2 completion:nil];
+    [self unloadVideoWithDuration:kVideoPlayerAnimationDuration completion:nil];
 }
 
 #pragma mark - Properties
@@ -377,7 +379,7 @@ static const char kVideoUnloadBlockKey;
 
 - (void)videoPlayerFailed:(VCVideoPlayerView *)videoPlayer
 {
-    [self unloadVideoWithDuration:0.2f completion:^(void)
+    [self unloadVideoWithDuration:kVideoPlayerAnimationDuration completion:^(void)
     {
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil
                                                         message:NSLocalizedString(@"VideoPlayFailed", @"")

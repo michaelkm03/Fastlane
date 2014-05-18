@@ -169,13 +169,13 @@
         }];
         [self setOnVideoCompletionBlock:^(void)
         {
-            [weakSelf unloadVideoWithDuration:0.2f completion:nil];
+            [weakSelf unloadVideoWithDuration:kVideoPlayerAnimationDuration completion:nil];
         }];
     };
     
     if ([self isVideoLoadingOrLoaded])
     {
-        [self unloadVideoWithDuration:0.2f
+        [self unloadVideoWithDuration:kVideoPlayerAnimationDuration
                            completion:^(void)
         {
             playVideo();
