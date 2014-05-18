@@ -349,6 +349,16 @@ const   NSTimeInterval  kAnimationDuration      =   0.4;
         [self.switchCameraModeButton setImage:[UIImage imageNamed:@"cameraButtonSwitchToPhoto"] forState:UIControlStateNormal];
         self.camera.flashMode = VCFlashModeOff;
         [self setOpenAlbumButtonImageWithLatestPhoto:NO animated:animated];
+        
+        if (self.inRecordVideoState)
+        {
+            self.navigationItem.rightBarButtonItem = self.nextButton;
+        }
+        else
+        {
+            self.navigationItem.rightBarButtonItem = nil;
+        }
+        
         if (completion)
         {
             completion();
