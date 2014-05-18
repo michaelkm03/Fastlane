@@ -203,7 +203,7 @@ NSString *kLoggedInChangedNotification = @"LoggedInChangedNotification";
 
 - (AFHTTPRequestOperation *)updateVictoriousWithEmail:(NSString *)email
                                              password:(NSString *)password
-                                             username:(NSString *)username
+                                                 name:(NSString *)name
                                       profileImageURL:(NSURL *)profileImageURL
                                              location:(NSString *)location
                                               tagline:(NSString *)tagline
@@ -216,8 +216,8 @@ NSString *kLoggedInChangedNotification = @"LoggedInChangedNotification";
         [params setObject:email forKey:@"email"];
     if (password)
         [params setObject:password forKey:@"password"];
-    if (username)
-        [params setObject:username forKey:@"name"];
+    if (name)
+        [params setObject:name forKey:@"name"];
     if (location)
         [params setObject:location forKey:@"profile_location"];
     if (tagline)

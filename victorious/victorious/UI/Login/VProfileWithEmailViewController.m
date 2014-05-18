@@ -54,7 +54,7 @@
     
     [[VObjectManager sharedManager] updateVictoriousWithEmail:nil
                                                      password:nil
-                                                     username:self.usernameTextField.text
+                                                         name:self.usernameTextField.text
                                               profileImageURL:nil
                                                      location:self.locationTextField.text
                                                       tagline:self.taglineTextView.text

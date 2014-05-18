@@ -256,7 +256,7 @@ static const NSInteger kServerEnvironmentButtonIndex = 1;
 
         [[VObjectManager sharedManager] updateVictoriousWithEmail:self.emailAddressTextField.text
                                                          password:self.passwordTextField.text
-                                                         username:self.nameTextField.text
+                                                             name:self.nameTextField.text
                                                   profileImageURL:nil
                                                          location:nil
                                                           tagline:nil
