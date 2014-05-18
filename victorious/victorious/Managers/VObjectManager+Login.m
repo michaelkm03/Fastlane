@@ -231,19 +231,33 @@ NSString *kLoggedInChangedNotification = @"LoggedInChangedNotification";
     
     VSuccessBlock fullSuccess = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
     {
+        VUser *user = self.mainUser;
+        if (email)
+        {
+            user.email = email;
+        }
+        if (name)
+        {
+            user.name = name;
+        }
+        if (location)
+        {
+            user.location = location;
+        }
+        if (tagline)
+        {
+            user.tagline = tagline;
+        }
+        if (profileImageURL)
+        {
+            user.pictureUrl = profileImageURL.absoluteString;
+        }
+        [user.managedObjectContext save:nil];
         
-        [[VUserManager sharedInstance] loginViaSavedCredentialsOnCompletion:^(VUser *user, BOOL created)
-         {
-             [self loggedInWithUser:user];
-             
-             if (success)
-                 success(operation, fullResponse, resultObjects);
-         }
-                                                                    onError:^(NSError *error)
-         {
-             if(fail)
-                 fail(operation, error);
-         }];
+        if (success)
+        {
+            success(operation, fullResponse, resultObjects);
+        }
     };
     
     return [self uploadURLs:allURLs
