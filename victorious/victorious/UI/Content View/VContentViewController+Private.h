@@ -60,6 +60,12 @@
 @property (nonatomic) BOOL isRotating; ///< YES only if we are trying to force rotation, not if the rotation is natural
 
 - (void)updateActionBar;
-- (void)forceRotationBackToPortraitOnCompletion:(void(^)(void))completion;
+- (void)forceRotationBackToPortraitOnCompletion:(void(^)(void))completion; ///< Animate back to portrait mode.
+
+/**
+ Like -forceRotationBackToPortraitOnCompletion:, but allows the caller to specify more animations
+ to go alongside the rotation animations.
+ */
+- (void)forceRotationBackToPortraitWithExtraAnimations:(void(^)(void))animations onCompletion:(void(^)(void))completion;
 
 @end

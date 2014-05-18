@@ -108,7 +108,7 @@ CGFloat kContentMediaViewOffset = 154;
 {
     [super viewDidDisappear:animated];
     
-    if (UIApplication.sharedApplication.delegate.window.isKeyWindow)
+    if  ([self isBeingDismissed] || [self isMovingFromParentViewController])
     {
         self.appearing = NO;
         [self resetView];
@@ -173,7 +173,12 @@ CGFloat kContentMediaViewOffset = 154;
     }
 }
 
-- (void)forceRotationBackToPortraitOnCompletion:(void(^)(void))completion
+- (void)forceRotationBackToPortraitOnCompletion:(void (^)(void))completion
+{
+    [self forceRotationBackToPortraitWithExtraAnimations:nil onCompletion:completion];
+}
+
+- (void)forceRotationBackToPortraitWithExtraAnimations:(void(^)(void))animations onCompletion:(void(^)(void))completion
 {
     self.isRotating = YES;
     [self beforeRotationToInterfaceOrientation:UIInterfaceOrientationPortrait];
@@ -182,6 +187,10 @@ CGFloat kContentMediaViewOffset = 154;
                         options:UIViewAnimationOptionCurveLinear
                      animations:^(void)
     {
+        if (animations)
+        {
+            animations();
+        }
         [self duringRotationToInterfaceOrientation:UIInterfaceOrientationPortrait];
     }
                      completion:^(BOOL finished)
@@ -203,7 +212,10 @@ CGFloat kContentMediaViewOffset = 154;
 
 - (void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
 {
-    [self duringRotationToInterfaceOrientation:toInterfaceOrientation];
+    if (!self.isRotating) // if this is a "forced" rotation, the animations would have been completed by now.
+    {
+        [self duringRotationToInterfaceOrientation:toInterfaceOrientation];
+    }
 }
 
 - (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation

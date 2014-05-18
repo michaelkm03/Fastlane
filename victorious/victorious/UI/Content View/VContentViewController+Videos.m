@@ -63,8 +63,6 @@ static const char kVideoUnloadBlockKey;
         [self addRemixButtonToVideoPlayer];
     }
     
-    [self.view bringSubviewToFront:self.mediaSuperview];
-    
     [self.mediaView addConstraint:[NSLayoutConstraint constraintWithItem:self.videoPlayer
                                                                attribute:NSLayoutAttributeWidth
                                                                relatedBy:NSLayoutRelationEqual
@@ -208,18 +206,34 @@ static const char kVideoUnloadBlockKey;
 
     if (self.temporaryVideoPreviewConstraints.count)
     {
-        [UIView animateWithDuration:duration
-                        delay:0
-                            options:UIViewAnimationOptionCurveEaseInOut
-                         animations:^(void)
+        void (^animations)(void) = ^(void)
         {
             [self.mediaView removeConstraints:self.temporaryVideoPreviewConstraints];
             self.temporaryVideoPreviewConstraints = nil;
-            [self.view layoutIfNeeded];
             self.previewImage.alpha = 1.0f;
             self.videoPlayer.alpha = 0;
+        };
+        
+        if (UIInterfaceOrientationIsLandscape(self.interfaceOrientation))
+        {
+            [self forceRotationBackToPortraitWithExtraAnimations:animations
+                                                    onCompletion:^(void)
+            {
+                animationCompletion(YES);
+            }];
         }
-                         completion:animationCompletion];
+        else
+        {
+            [UIView animateWithDuration:duration
+                                  delay:0
+                                options:UIViewAnimationOptionCurveEaseInOut
+                             animations:^(void)
+            {
+                animations();
+                [self.mediaView layoutIfNeeded];
+            }
+                             completion:animationCompletion];
+        }
     }
     else
     {
@@ -232,6 +246,7 @@ static const char kVideoUnloadBlockKey;
 
 - (void)animateVideoOpenToAspectRatio:(CGFloat)aspectRatio
 {
+    [self.view bringSubviewToFront:self.mediaSuperview];
     [UIView animateWithDuration:0.2f
                      animations:^(void)
     {
@@ -313,15 +328,6 @@ static const char kVideoUnloadBlockKey;
 
 - (IBAction)pressedClose:(id)sender
 {
-    if (UIInterfaceOrientationIsLandscape(self.interfaceOrientation))
-    {
-        [self forceRotationBackToPortraitOnCompletion:^(void)
-        {
-            [self pressedClose:sender];
-        }];
-        return;
-    }
-    
     [self unloadVideoWithDuration:0.2 completion:nil];
 }
 

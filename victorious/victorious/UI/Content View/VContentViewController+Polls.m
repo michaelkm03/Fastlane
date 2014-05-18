@@ -156,6 +156,8 @@
         heightConstraint.priority = UILayoutPriorityDefaultHigh;
         [self.mediaView addConstraint:heightConstraint];
         
+        sender.hidden = YES;
+        
         [self playVideoAtURL:contentURL withPreviewView:temporaryThumbnailView];
         
         typeof(self) __weak weakSelf = self;
@@ -163,6 +165,7 @@
         {
             thumbnailView.hidden = NO;
             [temporaryThumbnailView removeFromSuperview];
+            sender.hidden = NO;
         }];
         [self setOnVideoCompletionBlock:^(void)
         {
