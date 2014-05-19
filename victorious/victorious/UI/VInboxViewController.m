@@ -68,11 +68,6 @@ static  NSString*   kNewsCellViewIdentifier       =   @"VNewsCell";
     return UIInterfaceOrientationMaskPortrait;
 }
 
-- (BOOL)prefersStatusBarHidden
-{
-    return YES;
-}
-
 #pragma mark - Overrides
 
 - (NSFetchedResultsController *)makeFetchedResultsController
@@ -148,7 +143,9 @@ static  NSString*   kNewsCellViewIdentifier       =   @"VNewsCell";
     if (editingStyle == UITableViewCellEditingStyleDelete)
     {
         VConversation* conversation = [self.fetchedResultsController objectAtIndexPath:indexPath];
-        [conversation.managedObjectContext deleteObject:conversation];
+        NSManagedObjectContext* context =   conversation.managedObjectContext;
+        [context deleteObject:conversation];
+        [context saveToPersistentStore:nil];
     }
 }
 
