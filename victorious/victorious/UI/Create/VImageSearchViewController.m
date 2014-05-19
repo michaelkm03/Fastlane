@@ -17,6 +17,7 @@ static NSString * const kSearchResultCellReuseIdentifier = @"kSearchResultCellRe
 
 @interface VImageSearchViewController ()
 
+@property (nonatomic, weak) IBOutlet UIView             *headerView;
 @property (nonatomic, weak) IBOutlet UITextField        *searchField;
 @property (nonatomic, weak) IBOutlet UICollectionView   *collectionView;
 @property (nonatomic, weak) IBOutlet NSLayoutConstraint *hrHeightConstraint;
@@ -52,6 +53,14 @@ static NSString * const kSearchResultCellReuseIdentifier = @"kSearchResultCellRe
     flowLayout.minimumInteritemSpacing = 5.0f;
     
     self.hrHeightConstraint.constant = 0.5f;
+    
+    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.headerView
+                                                          attribute:NSLayoutAttributeBottom
+                                                          relatedBy:NSLayoutRelationEqual
+                                                             toItem:self.topLayoutGuide
+                                                          attribute:NSLayoutAttributeBottom
+                                                         multiplier:1.0f
+                                                           constant:50.0f]];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -64,6 +73,21 @@ static NSString * const kSearchResultCellReuseIdentifier = @"kSearchResultCellRe
 {
     [super viewWillDisappear:animated];
     [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent animated:YES];
+}
+
+- (BOOL)shouldAutorotate
+{
+    return NO;
+}
+
+- (NSUInteger)supportedInterfaceOrientations
+{
+    return UIInterfaceOrientationMaskPortrait;
+}
+
+- (BOOL)prefersStatusBarHidden
+{
+    return YES;
 }
 
 #pragma mark - Button handlers
