@@ -83,11 +83,15 @@
     [self.geoCoder reverseGeocodeLocation:location completionHandler:^(NSArray *placemarks, NSError *error)
     {
         CLPlacemark*    mapLocation = [placemarks firstObject];
-        NSDictionary*   locationDictionary = @{
-                                               (__bridge NSString *)kABPersonAddressCityKey : mapLocation.locality,
-                                               (__bridge NSString *)kABPersonAddressStateKey : mapLocation.administrativeArea,
-                                               (__bridge NSString *)kABPersonAddressCountryCodeKey : [[NSLocale autoupdatingCurrentLocale] objectForKey:NSLocaleCountryCode]
-                                               };
+        NSMutableDictionary*    locationDictionary = [NSMutableDictionary dictionaryWithCapacity:3];
+        
+        if (mapLocation.locality)
+            [locationDictionary setObject:mapLocation.locality forKey:(__bridge NSString *)kABPersonAddressCityKey];
+
+        if (mapLocation.administrativeArea)
+            [locationDictionary setObject:mapLocation.administrativeArea forKey:(__bridge NSString *)kABPersonAddressStateKey];
+
+        [locationDictionary setObject:[[NSLocale autoupdatingCurrentLocale] objectForKey:NSLocaleCountryCode] forKey:(__bridge NSString *)kABPersonAddressCountryCodeKey];
         self.locationTextField.text = ABCreateStringWithAddressDictionary(locationDictionary, NO);
     }];
 }
