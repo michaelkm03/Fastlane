@@ -8,10 +8,13 @@
 
 #import <Foundation/Foundation.h>
 
+@class RKResponseDescriptor;
+
 @interface VImageSearchResult : NSObject
 
-@property (nonatomic, copy)   NSString *title;
-@property (nonatomic, strong) NSURL    *thumbnailURL;
-@property (nonatomic, strong) NSURL    *sourceURL;
+@property (nonatomic, strong) NSURL *thumbnailURL;
+@property (nonatomic, strong) NSURL *sourceURL;
+
++ (RKResponseDescriptor *)descriptor;
 
 @end
