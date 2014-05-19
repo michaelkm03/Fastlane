@@ -95,6 +95,12 @@ static const CGFloat VCreateViewControllerLargePadding = 20;
     [self createInputAccessoryView];
 }
 
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    [self.navigationController setNavigationBarHidden:NO animated:YES];
+}
+
 - (BOOL)shouldAutorotate
 {
     return NO;
