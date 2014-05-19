@@ -148,7 +148,7 @@
     ACAccountType *facebookAccountType = [accountStore accountTypeWithAccountTypeIdentifier:ACAccountTypeIdentifierFacebook];
     [accountStore requestAccessToAccountsWithType:facebookAccountType
                                           options:@{
-                                                    ACFacebookAppIdKey: @"1374328719478033",
+                                                    ACFacebookAppIdKey: [[NSBundle mainBundle] objectForInfoDictionaryKey:kFacebookAppIDKey],
                                                     ACFacebookPermissionsKey: @[@"email"] // Needed for first login
                                                     }
                                        completion:^(BOOL granted, NSError *error)

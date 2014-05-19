@@ -17,6 +17,7 @@
 - (BOOL)isImage;
 - (BOOL)isVideo;
 - (BOOL)isOwnerContent;
+- (BOOL)isTemporarySequence;
 
 - (VNode*)firstNode;
 
