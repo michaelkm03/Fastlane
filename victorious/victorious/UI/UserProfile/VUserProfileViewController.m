@@ -22,6 +22,7 @@
 #import "UIImage+ImageEffects.h"
 #import "UIImageView+Blurring.h"
 #import "VThemeManager.h"
+#import "VObjectManager+Login.h"
 
 const   CGFloat kVNavigationBarHeight = 44.0;
 
@@ -100,7 +101,9 @@ const   CGFloat kVNavigationBarHeight = 44.0;
                                                                                  action:@selector(composeMessage:)];
 
     self.tableView.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVContentTextColor];
-    self.tableView.tableHeaderView = [self longHeader];
+
+    if (![VObjectManager sharedManager].mainUser)
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(loginStateDidChange:) name:kLoggedInChangedNotification object:nil];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -108,6 +111,11 @@ const   CGFloat kVNavigationBarHeight = 44.0;
     [super viewDidAppear:animated];
     
     [self.navigationController setNavigationBarHidden:NO animated:YES];
+}
+
+- (void)dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:kLoggedInChangedNotification object:nil];    
 }
 
 #pragma mark - Accessors
@@ -262,16 +270,23 @@ const   CGFloat kVNavigationBarHeight = 44.0;
         else
         {
             [self.editProfileButton addTarget:self action:@selector(followButtonAction:) forControlEvents:UIControlEventTouchUpInside];
-
-            [[VObjectManager sharedManager] isUser:[VObjectManager sharedManager].mainUser
-                                         following:self.profile
-                                      successBlock:^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
-              {
-                  if ([resultObjects[0] boolValue])
-                      self.editProfileButton.selected = YES;
-                  [self setProfileData];
-              }
-                 failBlock:nil];
+            
+            if ([VObjectManager sharedManager].mainUser)
+            {
+                [[VObjectManager sharedManager] isUser:[VObjectManager sharedManager].mainUser
+                                             following:self.profile
+                                          successBlock:^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
+                 {
+                     if ([resultObjects[0] boolValue])
+                         self.editProfileButton.selected = YES;
+                     [self setProfileData];
+                 }
+                                             failBlock:nil];
+            }
+            else
+            {
+                [self setProfileData];
+            }
         }
     }
     else
@@ -374,15 +389,22 @@ const   CGFloat kVNavigationBarHeight = 44.0;
         {
             [self.editProfileButton addTarget:self action:@selector(followButtonAction:) forControlEvents:UIControlEventTouchUpInside];
             
-            [[VObjectManager sharedManager] isUser:[VObjectManager sharedManager].mainUser
-                                         following:self.profile
-                                      successBlock:^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
-             {
-                 if ([resultObjects[0] boolValue])
-                     self.editProfileButton.selected = YES;
-                 [self setProfileData];
-             }
-                                         failBlock:nil];
+            if ([VObjectManager sharedManager].mainUser)
+            {
+                [[VObjectManager sharedManager] isUser:[VObjectManager sharedManager].mainUser
+                                             following:self.profile
+                                          successBlock:^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
+                 {
+                     if ([resultObjects[0] boolValue])
+                         self.editProfileButton.selected = YES;
+                     [self setProfileData];
+                 }
+                                             failBlock:nil];
+            }
+            else
+            {
+                [self setProfileData];
+            }
         }
     }
     else
@@ -416,6 +438,22 @@ const   CGFloat kVNavigationBarHeight = 44.0;
     }
     
     return [NSString stringWithFormat:@"%@ %c", [formatter stringFromNumber:@(count)], sUnits[exponent]];
+}
+
+- (void)loginStateDidChange:(NSNotification *)notification
+{
+    if ([VObjectManager sharedManager].mainUser)
+    {
+        [[VObjectManager sharedManager] isUser:[VObjectManager sharedManager].mainUser
+                                     following:self.profile
+                                  successBlock:^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
+         {
+             if ([resultObjects[0] boolValue])
+                 self.editProfileButton.selected = YES;
+             [self setProfileData];
+         }
+                                     failBlock:nil];
+    }
 }
 
 #pragma mark - Actions
