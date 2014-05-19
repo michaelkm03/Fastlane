@@ -329,6 +329,9 @@
 
 - (NSString*)localImageURLForVideo:(NSString*)localVideoPath
 {
+    if (!localVideoPath)
+        return nil;
+    
     NSString* extension = [[localVideoPath pathExtension] lowercaseStringWithLocale:[NSLocale localeWithLocaleIdentifier:@"en_US_POSIX"]];
     if ([extension isEqualToString:VConstantMediaExtensionPNG] || [extension isEqualToString:VConstantMediaExtensionJPG]
         || [extension isEqualToString:VConstantMediaExtensionJPEG])
@@ -338,7 +341,11 @@
     
     AVAsset *asset = [AVAsset assetWithURL:[NSURL URLWithString:localVideoPath]];
     AVAssetImageGenerator *assetGenerator = [AVAssetImageGenerator assetImageGeneratorWithAsset:asset];
-    CGImageRef imageRef = [assetGenerator copyCGImageAtTime:kCMTimeZero actualTime:NULL error:NULL];
+    NSError* error;
+    CGImageRef imageRef = [assetGenerator copyCGImageAtTime:kCMTimeZero actualTime:NULL error:&error];
+    if (error)
+        return nil;
+        
     UIImage *previewImage = [UIImage imageWithCGImage:imageRef];
     CGImageRelease(imageRef);
     
