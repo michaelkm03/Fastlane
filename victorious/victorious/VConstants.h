@@ -77,6 +77,8 @@ static NSString* const VConstantMediaExtensionJPEG      = @"jpeg";
 static NSString* const VConstantMediaExtensionMOV       = @"mov";
 static NSString* const VConstantMediaExtensionMP4       = @"mp4";
 
+static const CGFloat VConstantJPEGCompressionQuality    = 0.8f;
+
 static NSString*   const   kVOwnerPollCategory  = @"owner_poll";
 static NSString*   const   kVOwnerImageCategory = @"owner_image";
 static NSString*   const   kVOwnerVideoCategory = @"owner_video";

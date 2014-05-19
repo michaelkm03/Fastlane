@@ -342,7 +342,7 @@
     UIImage *previewImage = [UIImage imageWithCGImage:imageRef];
     CGImageRelease(imageRef);
     
-    NSData *imgData = UIImageJPEGRepresentation(previewImage, .8);
+    NSData *imgData = UIImageJPEGRepresentation(previewImage, VConstantJPEGCompressionQuality);
     
     NSURL *tempDirectory = [NSURL fileURLWithPath:NSTemporaryDirectory() isDirectory:YES];
     NSURL *tempFile = [[tempDirectory URLByAppendingPathComponent:[[NSUUID UUID] UUIDString]] URLByAppendingPathExtension:VConstantMediaExtensionJPG];

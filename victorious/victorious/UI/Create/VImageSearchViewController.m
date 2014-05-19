@@ -7,6 +7,7 @@
 //
 
 #import "UIImage+ImageCreation.h"
+#import "VConstants.h"
 #import "VImageSearchDataSource.h"
 #import "VImageSearchResult.h"
 #import "VImageSearchResultCell.h"
@@ -20,15 +21,12 @@ static NSString * const kSearchResultCellReuseIdentifier = @"kSearchResultCellRe
 @property (nonatomic, weak) IBOutlet UICollectionView   *collectionView;
 @property (nonatomic, weak) IBOutlet NSLayoutConstraint *hrHeightConstraint;
 
-- (IBAction)closeButtonTapped:(id)sender;
+@property (nonatomic, strong) VImageSearchDataSource  *dataSource;
+@property (nonatomic, strong) AFImageRequestOperation *imageRequestOperation;
 
 @end
 
 @implementation VImageSearchViewController
-{
-    VImageSearchDataSource  *_dataSource;
-    AFImageRequestOperation *_imageRequestOperation;
-}
 
 + (instancetype)newImageSearchViewController
 {
@@ -42,10 +40,10 @@ static NSString * const kSearchResultCellReuseIdentifier = @"kSearchResultCellRe
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    _dataSource = [[VImageSearchDataSource alloc] init];
-    _dataSource.delegate = self;
-    _dataSource.collectionView = self.collectionView;
-    self.collectionView.dataSource = _dataSource;
+    self.dataSource = [[VImageSearchDataSource alloc] init];
+    self.dataSource.delegate = self;
+    self.dataSource.collectionView = self.collectionView;
+    self.collectionView.dataSource = self.dataSource;
     self.collectionView.contentInset = UIEdgeInsetsMake(5.0f, 5.0f, 5.0f, 5.0f);
     [self.collectionView registerClass:[VImageSearchResultCell class] forCellWithReuseIdentifier:kSearchResultCellReuseIdentifier];
     
@@ -82,17 +80,17 @@ static NSString * const kSearchResultCellReuseIdentifier = @"kSearchResultCellRe
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField
 {
-    [_dataSource searchWithSearchTerm:self.searchField.text
-                         onCompletion:nil
-                              onError:^(NSError *error)
-     {
-         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"SearchFailed", @"")
-                                                         message:@""
-                                                        delegate:nil
-                                               cancelButtonTitle:NSLocalizedString(@"OKButton", @"")
-                                               otherButtonTitles:nil];
-         [alert show];
-     }];
+    [self.dataSource searchWithSearchTerm:self.searchField.text
+                             onCompletion:nil
+                                  onError:^(NSError *error)
+    {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"SearchFailed", @"")
+                                                        message:@""
+                                                       delegate:nil
+                                              cancelButtonTitle:NSLocalizedString(@"OKButton", @"")
+                                              otherButtonTitles:nil];
+        [alert show];
+    }];
     [self.searchField resignFirstResponder];
     return YES;
 }
@@ -110,28 +108,32 @@ static NSString * const kSearchResultCellReuseIdentifier = @"kSearchResultCellRe
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    VImageSearchResult *searchResult = [_dataSource searchResultAtIndexPath:indexPath];
-    if (![_imageRequestOperation.request.URL isEqual:searchResult.sourceURL])
+    VImageSearchResult *searchResult = [self.dataSource searchResultAtIndexPath:indexPath];
+    if (![self.imageRequestOperation.request.URL isEqual:searchResult.sourceURL])
     {
-        [_imageRequestOperation cancel];
+        [self.imageRequestOperation cancel];
         
         NSURLRequest *request = [NSURLRequest requestWithURL:searchResult.sourceURL];
         __typeof(self) __weak weakSelf = self;
-        _imageRequestOperation = [AFImageRequestOperation imageRequestOperationWithRequest:request
-                                                                      imageProcessingBlock:nil
-                                                                                   success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image)
+        self.imageRequestOperation = [AFImageRequestOperation imageRequestOperationWithRequest:request
+                                                                          imageProcessingBlock:nil
+                                                                                       success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image)
         {
             __typeof(self) strongSelf = weakSelf;
             if (strongSelf)
             {
                 if (strongSelf.completionBlock)
                 {
-                    strongSelf.completionBlock(YES, image, nil);
+                    NSData *jpegData = UIImageJPEGRepresentation(image, VConstantJPEGCompressionQuality);
+                    NSURL *tempDirectory = [NSURL fileURLWithPath:NSTemporaryDirectory() isDirectory:YES];
+                    NSURL *tempFile = [[tempDirectory URLByAppendingPathComponent:[[NSUUID UUID] UUIDString]] URLByAppendingPathExtension:VConstantMediaExtensionJPG];
+                    [jpegData writeToURL:tempFile atomically:NO];
+                    strongSelf.completionBlock(YES, image, tempFile);
                 }
                 [strongSelf.collectionView deselectItemAtIndexPath:indexPath animated:YES];
             }
         }
-                                                                                   failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error)
+                                                                                       failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error)
         {
             __typeof(self) strongSelf = weakSelf;
             if (strongSelf)
@@ -145,7 +147,7 @@ static NSString * const kSearchResultCellReuseIdentifier = @"kSearchResultCellRe
                 [strongSelf.collectionView deselectItemAtIndexPath:indexPath animated:YES];
             }
         }];
-        [_imageRequestOperation start];
+        [self.imageRequestOperation start];
     }
 }
 
