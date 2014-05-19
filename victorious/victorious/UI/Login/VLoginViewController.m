@@ -95,6 +95,21 @@
     self.emailButton.clipsToBounds = YES;
 }
 
+- (BOOL)shouldAutorotate
+{
+    return NO;
+}
+
+- (NSUInteger)supportedInterfaceOrientations
+{
+    return UIInterfaceOrientationMaskPortrait;
+}
+
+- (BOOL)prefersStatusBarHidden
+{
+    return YES;
+}
+
 - (void)facebookAccessDidFail:(NSError *)error
 {
     if (error.code == ACErrorAccountNotFound)

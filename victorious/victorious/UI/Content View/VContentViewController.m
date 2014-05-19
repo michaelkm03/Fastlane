@@ -6,6 +6,8 @@
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
+#import "UIViewController+ForceOrientationChange.h"
+
 #import "VContentViewController.h"
 #import "VContentViewController+Images.h"
 #import "VContentViewController+Private.h"
@@ -45,8 +47,12 @@ CGFloat kContentMediaViewOffset = 154;
 {
     [super viewDidLoad];
     
-    [self setupVideoPlayer];
+    self.mediaSuperview.translatesAutoresizingMaskIntoConstraints = YES; // these two views need to opt-out of Auto Layout.
+    self.mediaView.translatesAutoresizingMaskIntoConstraints = YES;      // their frames are set in -layoutMediaSuperview.
 
+    UIView *maskingView = self.maskingView;
+    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[maskingView]|" options:0 metrics:nil views:NSDictionaryOfVariableBindings(maskingView)]];
+    
     for (UIButton* button in self.buttonCollection)
     {
         [button setImage:[button.imageView.image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] forState:UIControlStateNormal];
@@ -55,14 +61,6 @@ CGFloat kContentMediaViewOffset = 154;
     self.descriptionLabel.textColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVContentTextColor];
     self.descriptionLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeading2Font];
     
-    [self.remixButton setImage:[self.remixButton.imageView.image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] forState:UIControlStateNormal];
-    self.remixButton.tintColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVMainTextColor];
-    
-    self.activityIndicator = [[UIActivityIndicatorView alloc] initWithFrame:CGRectMake(0, 0, 25, 25)];
-    self.activityIndicator.backgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:.5f];
-    self.activityIndicator.layer.cornerRadius = self.activityIndicator.frame.size.height / 2;
-    self.activityIndicator.hidesWhenStopped = YES;
-    
     [self resetView];
 }
 
@@ -70,19 +68,51 @@ CGFloat kContentMediaViewOffset = 154;
 {
     [super viewDidAppear:animated];
     
-    [self.navigationController setNavigationBarHidden:YES animated:NO];
-    
-    [self updateActionBar];
-    
-    self.navigationController.delegate = self;
+    if (!self.appearing)
+    {
+        self.appearing = YES;
+        [self.navigationController setNavigationBarHidden:YES animated:NO];
+        [self updateActionBar];
+        self.navigationController.delegate = self;
+    }
+}
 
+- (void)viewDidLayoutSubviews
+{
+    [super viewDidLayoutSubviews];
+    [self layoutMediaSuperview];
+}
+
+- (void)layoutMediaSuperview
+{
+    if (CGAffineTransformIsIdentity(self.mediaSuperview.transform))
+    {
+        self.mediaSuperview.frame = CGRectMake(CGRectGetMinX(self.view.bounds),
+                                               CGRectGetMaxY(self.topActionsView.frame),
+                                               CGRectGetWidth(self.view.bounds),
+                                               320.0f);
+    }
+    else
+    {
+        self.mediaSuperview.bounds = CGRectMake(0,
+                                                0,
+                                                CGRectGetHeight(self.view.bounds),
+                                                CGRectGetWidth(self.view.bounds));
+        self.mediaSuperview.center = CGPointMake(CGRectGetMidX(self.view.bounds),
+                                                 CGRectGetMidY(self.view.bounds));
+    }
+    self.mediaView.frame = self.mediaSuperview.bounds;
 }
 
 - (void)viewDidDisappear:(BOOL)animated
 {
     [super viewDidDisappear:animated];
     
-    [self resetView];
+    if  ([self isBeingDismissed] || [self isMovingFromParentViewController])
+    {
+        self.appearing = NO;
+        [self resetView];
+    }
 }
 
 - (void)resetView
@@ -99,24 +129,138 @@ CGFloat kContentMediaViewOffset = 154;
     
     self.firstPollButton.hidden = YES;
     self.secondPollButton.hidden = YES;
-    
 }
 
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
     
-    if (self.navigationController.delegate == self)
+    if ([self isVideoLoadingOrLoaded])
     {
-        self.navigationController.delegate = nil;
+        [self pauseVideo];
     }
-    
-    [self.mpController.view removeFromSuperview];
-    [self.mpController pause];
-    self.mpController = nil;
-    
-    self.orAnimator = nil;
+    if ([self isBeingDismissed] || [self isMovingFromParentViewController])
+    {
+        if (self.navigationController.delegate == self)
+        {
+            self.navigationController.delegate = nil;
+        }
+        self.orAnimator = nil;
+    }
 }
+
+- (BOOL)prefersStatusBarHidden
+{
+    return YES;
+}
+
+#pragma mark - Rotation
+
+- (BOOL)shouldAutorotate
+{
+    return YES;
+}
+
+- (NSUInteger)supportedInterfaceOrientations
+{
+    if (!self.isRotating && [self isVideoLoaded])
+    {
+        return UIInterfaceOrientationMaskAllButUpsideDown;
+    }
+    else
+    {
+        return UIInterfaceOrientationMaskPortrait;
+    }
+}
+
+- (void)forceRotationBackToPortraitOnCompletion:(void (^)(void))completion
+{
+    [self forceRotationBackToPortraitWithExtraAnimations:nil onCompletion:completion];
+}
+
+- (void)forceRotationBackToPortraitWithExtraAnimations:(void(^)(void))animations onCompletion:(void(^)(void))completion
+{
+    self.isRotating = YES;
+    [self beforeRotationToInterfaceOrientation:UIInterfaceOrientationPortrait];
+    [UIView animateWithDuration:0.3
+                          delay:0
+                        options:UIViewAnimationOptionCurveLinear
+                     animations:^(void)
+    {
+        if (animations)
+        {
+            animations();
+        }
+        [self duringRotationToInterfaceOrientation:UIInterfaceOrientationPortrait];
+    }
+                     completion:^(BOOL finished)
+    {
+        [self afterRotationToNewInterfaceOrientation:UIInterfaceOrientationPortrait];
+        [UIViewController v_forceOrientationChange];
+        self.isRotating = NO;
+        if (completion)
+        {
+            completion();
+        }
+    }];
+}
+
+- (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
+{
+    [self beforeRotationToInterfaceOrientation:toInterfaceOrientation];
+}
+
+- (void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
+{
+    if (!self.isRotating) // if this is a "forced" rotation, the animations would have been completed by now.
+    {
+        [self duringRotationToInterfaceOrientation:toInterfaceOrientation];
+    }
+}
+
+- (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation
+{
+    [self afterRotationToNewInterfaceOrientation:self.interfaceOrientation];
+}
+
+- (void)beforeRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation
+{
+    if (UIInterfaceOrientationIsLandscape(toInterfaceOrientation))
+    {
+        self.maskingView.alpha = 0;
+        self.maskingView.hidden = NO;
+    }
+}
+
+- (void)duringRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation
+{
+    UIView *rootView = [[[[UIApplication sharedApplication] keyWindow] rootViewController] view];
+    if (UIInterfaceOrientationIsLandscape(toInterfaceOrientation))
+    {
+        CGAffineTransform rotationTransform = rootView.transform;
+        rootView.transform = CGAffineTransformIdentity;
+        rootView.bounds = CGRectMake(0, 0, CGRectGetHeight(rootView.bounds), CGRectGetWidth(rootView.bounds));
+        self.mediaSuperview.transform = rotationTransform;
+        self.maskingView.alpha = 1.0f;
+    }
+    else
+    {
+        self.mediaSuperview.transform = CGAffineTransformIdentity;
+        self.maskingView.alpha = 0;
+    }
+    [self layoutMediaSuperview];
+    [self.mediaView layoutIfNeeded];
+}
+
+- (void)afterRotationToNewInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
+{
+    if (UIInterfaceOrientationIsPortrait(interfaceOrientation))
+    {
+        self.maskingView.hidden = YES;
+    }
+}
+
+#pragma mark -
 
 -(VInteractionManager*)interactionManager
 {
@@ -231,15 +375,19 @@ CGFloat kContentMediaViewOffset = 154;
 - (void)loadNextAsset
 {
     if (!self.currentAsset)
+    {
         self.currentAsset = [self.currentNode firstAsset];
-    //    else
-    //        self.currentAsset = [self.currentNode nextAssetFromAsset:self.currentAsset];
+    }
     
     if ([self.currentAsset isVideo])
-        [self loadVideo];
-    
-    else //Default case: we assume its an image and hope it works out
+    {
+        [self loadImage]; // load the video thumbnail
+        [self playVideoAtURL:[NSURL URLWithString:self.currentAsset.data] withPreviewView:self.previewImage];
+    }
+    else //Default case: we assume it's an image and hope it works out
+    {
         [self loadImage];
+    }
 }
 
 #pragma mark - Quiz
@@ -264,7 +412,6 @@ CGFloat kContentMediaViewOffset = 154;
     VCommentsContainerViewController* commentsTable = [VCommentsContainerViewController commentsContainerView];
     commentsTable.sequence = self.sequence;
     commentsTable.parentVC = self;
-    
     [self.navigationController pushViewController:commentsTable animated:YES];
 }
 
@@ -349,6 +496,5 @@ CGFloat kContentMediaViewOffset = 154;
          }
      }];
 }
-
 
 @end

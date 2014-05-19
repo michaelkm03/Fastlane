@@ -6,10 +6,12 @@
 //  Copyright (c) 2014 Will Long. All rights reserved.
 //
 
+#import "VEnvironment.h"
 #import "VSettingsViewController.h"
 #import "UIViewController+VSideMenuViewController.h"
 #import "VWebContentViewController.h"
 #import "VThemeManager.h"
+#import "VObjectManager+Environment.h"
 #import "VObjectManager+Login.h"
 #import "VUser.h"
 #import "VUserManager.h"
@@ -19,15 +21,21 @@
 
 NSString*   const   kAccountUpdateViewControllerDomain =   @"VAccountUpdateViewControllerDomain";
 
+static const NSInteger kSettingsSectionIndex         = 1;
+static const NSInteger kChromecastButtonIndex        = 0;
+static const NSInteger kServerEnvironmentButtonIndex = 1;
+
 @interface VSettingsViewController ()   <UITextFieldDelegate, ChromecastControllerDelegate>
 @property (weak, nonatomic) IBOutlet UITextField *nameTextField;
 @property (weak, nonatomic) IBOutlet UITextField *emailAddressTextField;
 @property (weak, nonatomic) IBOutlet UITextField *passwordTextField;
 @property (weak, nonatomic) IBOutlet UIButton *logoutButton;
 @property (weak, nonatomic) IBOutlet UIButton *saveChangesButton;
+@property (weak, nonatomic) IBOutlet UITableViewCell *serverEnvironmentCell;
 
 @property (nonatomic, weak) ChromecastDeviceController*     chromeCastController;
 @property (nonatomic, assign) BOOL    showChromeCastButton;
+@property (nonatomic, assign) BOOL    showEnvironmentSetting;
 
 @end
 
@@ -69,7 +77,32 @@ NSString*   const   kAccountUpdateViewControllerDomain =   @"VAccountUpdateViewC
     self.chromeCastController = [VAppDelegate sharedAppDelegate].chromecastDeviceController;
     self.chromeCastController.delegate = self;
     
+    self.serverEnvironmentCell.detailTextLabel.text = [[VObjectManager currentEnvironment] name];
+    
     [self updateChromecastButton];
+    
+#ifdef V_NO_SWITCH_ENVIRONMENTS
+    self.showEnvironmentSetting = NO;
+#else
+    self.showEnvironmentSetting = YES;
+#endif
+    
+    [self.navigationController setNavigationBarHidden:NO animated:YES];
+}
+
+- (BOOL)shouldAutorotate
+{
+    return NO;
+}
+
+- (NSUInteger)supportedInterfaceOrientations
+{
+    return UIInterfaceOrientationMaskPortrait;
+}
+
+- (BOOL)prefersStatusBarHidden
+{
+    return YES;
 }
 
 #pragma mark - Validation
@@ -223,7 +256,7 @@ NSString*   const   kAccountUpdateViewControllerDomain =   @"VAccountUpdateViewC
 
         [[VObjectManager sharedManager] updateVictoriousWithEmail:self.emailAddressTextField.text
                                                          password:self.passwordTextField.text
-                                                         username:self.nameTextField.text
+                                                             name:self.nameTextField.text
                                                   profileImageURL:nil
                                                          location:nil
                                                           tagline:nil
@@ -299,7 +332,7 @@ NSString*   const   kAccountUpdateViewControllerDomain =   @"VAccountUpdateViewC
     {
         self.showChromeCastButton = YES;
 
-        UITableViewCell*    cell = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:1]];
+        UITableViewCell*    cell = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:kChromecastButtonIndex inSection:kSettingsSectionIndex]];
 
         if (self.chromeCastController.deviceManager && self.chromeCastController.deviceManager.isConnected)
         {
@@ -337,12 +370,23 @@ NSString*   const   kAccountUpdateViewControllerDomain =   @"VAccountUpdateViewC
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath;
 {
-    if (1 == indexPath.section && 0 == indexPath.row)
+    if (kSettingsSectionIndex == indexPath.section && kChromecastButtonIndex == indexPath.row)
     {
         if (self.showChromeCastButton)
             return self.tableView.rowHeight;
         else
             return 0;
+    }
+    else if (kSettingsSectionIndex == indexPath.section && kServerEnvironmentButtonIndex == indexPath.row)
+    {
+        if (self.showEnvironmentSetting)
+        {
+            return self.tableView.rowHeight;
+        }
+        else
+        {
+            return 0;
+        }
     }
     
     return self.tableView.rowHeight;

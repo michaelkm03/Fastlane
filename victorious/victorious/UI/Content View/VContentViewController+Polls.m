@@ -7,6 +7,7 @@
 //
 
 #import "VContentViewController+Polls.h"
+#import "VContentViewController+Videos.h"
 
 #import "VPollResult.h"
 #import "VAnswer.h"
@@ -87,22 +88,103 @@
     
     self.pollPreviewView.hidden = NO;
     self.previewImage.hidden = YES;
-    self.mpPlayerContainmentView.hidden = YES;
-    self.remixButton.hidden = YES;
 }
 
-- (IBAction)playPoll:(id)sender
+- (IBAction)playPoll:(UIButton *)sender
 {
     NSArray* answers = [[self.sequence firstNode] firstAnswers];
-    if( ((UIButton*)sender).tag == self.firstPollButton.tag)
+    NSURL* contentURL;
+    UIImageView *thumbnailView;
+    if (sender == self.firstPollButton)
     {
-        [self.mpController setContentURL:[NSURL URLWithString:((VAnswer*)[answers firstObject]).mediaUrl]];
+        thumbnailView = self.firstSmallPreviewImage;
+        contentURL = [NSURL URLWithString:((VAnswer*)[answers firstObject]).mediaUrl];
     }
-    else if ( ((UIButton*)sender).tag == self.secondPollButton.tag)
+    else if (sender == self.secondPollButton)
     {
-        [self.mpController setContentURL:[NSURL URLWithString:((VAnswer*)[answers lastObject]).mediaUrl]];
+        thumbnailView = self.secondSmallPreviewImage;
+        contentURL = [NSURL URLWithString:((VAnswer*)[answers lastObject]).mediaUrl];
     }
-    [self.mpController prepareToPlay];
+
+    void (^playVideo)(void) = ^(void)
+    {
+        UIImageView *temporaryThumbnailView = [[UIImageView alloc] initWithImage:thumbnailView.image];
+        temporaryThumbnailView.contentMode = thumbnailView.contentMode;
+        temporaryThumbnailView.clipsToBounds = thumbnailView.clipsToBounds;
+        temporaryThumbnailView.translatesAutoresizingMaskIntoConstraints = NO;
+        [self.mediaView addSubview:temporaryThumbnailView];
+        thumbnailView.hidden = YES;
+        
+        CGRect desiredFrame = [self.mediaView convertRect:thumbnailView.bounds fromView:thumbnailView];
+        NSLayoutConstraint *xConstraint = [NSLayoutConstraint constraintWithItem:temporaryThumbnailView
+                                                                       attribute:NSLayoutAttributeLeading
+                                                                       relatedBy:NSLayoutRelationEqual
+                                                                          toItem:self.mediaView
+                                                                       attribute:NSLayoutAttributeLeading
+                                                                      multiplier:1.0f
+                                                                        constant:CGRectGetMinX(desiredFrame)];
+        xConstraint.priority = UILayoutPriorityDefaultHigh;
+        [self.mediaView addConstraint:xConstraint];
+        
+        NSLayoutConstraint *yConstraint = [NSLayoutConstraint constraintWithItem:temporaryThumbnailView
+                                                                       attribute:NSLayoutAttributeTop
+                                                                       relatedBy:NSLayoutRelationEqual
+                                                                          toItem:self.mediaView
+                                                                       attribute:NSLayoutAttributeTop
+                                                                      multiplier:1.0f
+                                                                        constant:CGRectGetMinY(desiredFrame)];
+        yConstraint.priority = UILayoutPriorityDefaultHigh;
+        [self.mediaView addConstraint:yConstraint];
+        
+        NSLayoutConstraint *widthConstraint = [NSLayoutConstraint constraintWithItem:temporaryThumbnailView
+                                                                           attribute:NSLayoutAttributeWidth
+                                                                           relatedBy:NSLayoutRelationEqual
+                                                                              toItem:nil
+                                                                           attribute:NSLayoutAttributeNotAnAttribute
+                                                                          multiplier:1.0f
+                                                                            constant:CGRectGetWidth(desiredFrame)];
+        widthConstraint.priority = UILayoutPriorityDefaultHigh;
+        [self.mediaView addConstraint:widthConstraint];
+        
+        NSLayoutConstraint *heightConstraint = [NSLayoutConstraint constraintWithItem:temporaryThumbnailView
+                                                                            attribute:NSLayoutAttributeHeight
+                                                                            relatedBy:NSLayoutRelationEqual
+                                                                               toItem:nil
+                                                                            attribute:NSLayoutAttributeNotAnAttribute
+                                                                           multiplier:1.0f
+                                                                             constant:CGRectGetHeight(desiredFrame)];
+        heightConstraint.priority = UILayoutPriorityDefaultHigh;
+        [self.mediaView addConstraint:heightConstraint];
+        
+        sender.hidden = YES;
+        
+        [self playVideoAtURL:contentURL withPreviewView:temporaryThumbnailView];
+        
+        typeof(self) __weak weakSelf = self;
+        [self setOnVideoUnloadBlock:^(void)
+        {
+            thumbnailView.hidden = NO;
+            [temporaryThumbnailView removeFromSuperview];
+            sender.hidden = NO;
+        }];
+        [self setOnVideoCompletionBlock:^(void)
+        {
+            [weakSelf unloadVideoWithDuration:kVideoPlayerAnimationDuration completion:nil];
+        }];
+    };
+    
+    if ([self isVideoLoadingOrLoaded])
+    {
+        [self unloadVideoWithDuration:kVideoPlayerAnimationDuration
+                           completion:^(void)
+        {
+            playVideo();
+        }];
+    }
+    else
+    {
+        playVideo();
+    }
 }
 
 #pragma mark - VPollAnswerBarDelegate

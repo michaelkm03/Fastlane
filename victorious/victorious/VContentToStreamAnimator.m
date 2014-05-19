@@ -8,8 +8,10 @@
 
 #import "VContentToStreamAnimator.h"
 
+#import "VStreamContainerViewController.h"
 #import "VStreamTableViewController.h"
 #import "VContentViewController.h"
+#import "VContentViewController+Videos.h"
 
 #import "VStreamViewCell.h"
 
@@ -19,20 +21,23 @@
 
 - (NSTimeInterval)transitionDuration:(id <UIViewControllerContextTransitioning>)transitionContext
 {
-    return .8f;
+    return 1.0f;
 }
 
 - (void)animateTransition:(id<UIViewControllerContextTransitioning>)context
 {
     VContentViewController *contentVC = (VContentViewController*)[context viewControllerForKey:UITransitionContextFromViewControllerKey];
-    VStreamTableViewController *streamVC = (VStreamTableViewController*)[context viewControllerForKey:UITransitionContextToViewControllerKey];
-    VStreamViewCell* selectedCell = (VStreamViewCell*) [streamVC.tableView cellForRowAtIndexPath:streamVC.tableView.indexPathForSelectedRow];
+    VStreamContainerViewController* container = (VStreamContainerViewController*)[context viewControllerForKey:UITransitionContextToViewControllerKey];
+    VStreamTableViewController *streamVC = container.streamTable;
+
     
-    [UIView animateWithDuration:.2f animations:^
+    streamVC.view.userInteractionEnabled = NO;
+    contentVC.view.userInteractionEnabled = NO;
+    
+    if ([contentVC isVideoLoadingOrLoaded])
     {
-        CGRect frame = contentVC.previewImage.frame;
-        contentVC.previewImage.frame = CGRectMake(CGRectGetMinX(frame), CGRectGetMinY(frame), CGRectGetWidth(selectedCell.frame), CGRectGetHeight(selectedCell.frame));
-    }];
+        [contentVC unloadVideoWithDuration:0.2f completion:nil];
+    }
     
     [contentVC.actionBarVC animateOutWithDuration:.2f
                                        completion:^(BOOL finished)
@@ -44,7 +49,8 @@
 - (void)secondAnimation:(id<UIViewControllerContextTransitioning>)context
 {
     VContentViewController *contentVC = (VContentViewController*)[context viewControllerForKey:UITransitionContextFromViewControllerKey];
-    VStreamTableViewController *streamVC = (VStreamTableViewController*)[context viewControllerForKey:UITransitionContextToViewControllerKey];
+    VStreamContainerViewController* container = (VStreamContainerViewController*)[context viewControllerForKey:UITransitionContextToViewControllerKey];
+    VStreamTableViewController *streamVC = container.streamTable;
     
     [UIView animateWithDuration:.2
                      animations:^
@@ -60,10 +66,22 @@
                                                           selectedCell.frame.origin.y - kContentMediaViewOffset)
                                      animated:NO];
          
-         [[context containerView] addSubview:streamVC.view];
+         [[context containerView] addSubview:container.view];
+         
          [streamVC animateInWithDuration:.4f completion:^(BOOL finished)
           {
-              [context completeTransition:![context transitionWasCancelled]];
+              [UIView animateWithDuration:.2f
+                               animations:^
+               {
+                   [container showHeader];
+               }
+                               completion:^(BOOL finished)
+               {
+                   streamVC.view.userInteractionEnabled = YES;
+                   contentVC.view.userInteractionEnabled = YES;
+                   
+                   [context completeTransition:![context transitionWasCancelled]];
+               }];
           }];
      }];
 }

@@ -30,10 +30,6 @@ NSString *kLoggedInChangedNotification = @"LoggedInChangedNotification";
     {
         
         NSDictionary* payload = fullResponse[@"payload"];
-        if (![payload isKindOfClass:[NSDictionary class]])
-        {
-            payload = nil;
-        }
         
         NSDictionary* newTheme = payload[@"appearance"];
         if (newTheme && [newTheme isKindOfClass:[NSDictionary class]])
@@ -66,11 +62,6 @@ NSString *kLoggedInChangedNotification = @"LoggedInChangedNotification";
 {
     BOOL authorized = (nil != self.mainUser);
     return authorized;
-}
-
-- (BOOL)isOwner
-{
-    return [self.mainUser.accessLevel isEqualToString:@"api_owner"] ;
 }
 
 - (RKManagedObjectRequestOperation *)loginToFacebookWithToken:(NSString*)accessToken
@@ -212,7 +203,7 @@ NSString *kLoggedInChangedNotification = @"LoggedInChangedNotification";
 
 - (AFHTTPRequestOperation *)updateVictoriousWithEmail:(NSString *)email
                                              password:(NSString *)password
-                                             username:(NSString *)username
+                                                 name:(NSString *)name
                                       profileImageURL:(NSURL *)profileImageURL
                                              location:(NSString *)location
                                               tagline:(NSString *)tagline
@@ -225,35 +216,51 @@ NSString *kLoggedInChangedNotification = @"LoggedInChangedNotification";
         [params setObject:email forKey:@"email"];
     if (password)
         [params setObject:password forKey:@"password"];
-    if (username)
-        [params setObject:username forKey:@"name"];
+    if (name)
+        [params setObject:name forKey:@"name"];
     if (location)
         [params setObject:location forKey:@"profile_location"];
     if (tagline)
         [params setObject:tagline forKey:@"profile_tagline"];
     
-    NSDictionary* allURLs = @{@"profile_image":profileImageURL ?: [NSNull null]};
-    NSDictionary* allExtensions = @{@"media_data":VConstantMediaExtensionJPG};
+    NSDictionary* allURLs = nil;
+    if (profileImageURL)
+    {
+        allURLs = @{@"profile_image":profileImageURL};
+    }
     
     VSuccessBlock fullSuccess = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
     {
+        VUser *user = self.mainUser;
+        if (email)
+        {
+            user.email = email;
+        }
+        if (name)
+        {
+            user.name = name;
+        }
+        if (location)
+        {
+            user.location = location;
+        }
+        if (tagline)
+        {
+            user.tagline = tagline;
+        }
+        if (profileImageURL)
+        {
+            user.pictureUrl = profileImageURL.absoluteString;
+        }
+        [user.managedObjectContext save:nil];
         
-        [[VUserManager sharedInstance] loginViaSavedCredentialsOnCompletion:^(VUser *user, BOOL created)
-         {
-             [self loggedInWithUser:user];
-             
-             if (success)
-                 success(operation, fullResponse, resultObjects);
-         }
-                                                                    onError:^(NSError *error)
-         {
-             if(fail)
-                 fail(operation, error);
-         }];
+        if (success)
+        {
+            success(operation, fullResponse, resultObjects);
+        }
     };
     
     return [self uploadURLs:allURLs
-             fileExtensions:allExtensions
                      toPath:@"/api/account/update"
                  parameters:[params copy]
                successBlock:fullSuccess
@@ -268,7 +275,6 @@ NSString *kLoggedInChangedNotification = @"LoggedInChangedNotification";
     [self loadNextPageOfConversations:nil failBlock:nil];
     [self pollResultsForUser:user successBlock:nil failBlock:nil];
     [self unreadCountForConversationsWithSuccessBlock:nil failBlock:nil];
-    [self requestFollowListForUser:user successBlock:nil failBlock:nil];
 
     [[NSNotificationCenter defaultCenter] postNotificationName:kLoggedInChangedNotification object:nil];
 }

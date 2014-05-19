@@ -6,8 +6,10 @@
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
+#import "VEnvironment.h"
 #import "VErrorMessage.h"
 #import "VObjectManager.h"
+#import "VObjectManager+Environment.h"
 #import "VObjectManager+Private.h"
 
 #import "VConstants.h"
@@ -24,8 +26,6 @@
 #import "VUnreadConversation+RestKit.h"
 #import "VVoteType+RestKit.h"
 
-#import "VPaginationStatus.h"
-
 @implementation VObjectManager
 
 @synthesize mainUser;
@@ -34,10 +34,10 @@
 {
 //#if DEBUG
     RKLogConfigureByName("RestKit/Network", RKLogLevelTrace);
-    RKLogConfigureByName("RestKit/ObjectMapping", RKLogLevelTrace);
+//    RKLogConfigureByName("RestKit/ObjectMapping", RKLogLevelTrace);
 //#endif
     
-    VObjectManager *manager = [self managerWithBaseURL:[NSURL URLWithString:VBASEURL]];
+    VObjectManager *manager = [self managerWithBaseURL:[[self currentEnvironment] baseURL]];
     
     //Add the App ID to the User-Agent field
     //(this is the only non-dynamic header, so set it now)
@@ -88,13 +88,10 @@
     
     
     [self addResponseDescriptorsFromArray:[VUser descriptors]];
+    [self addResponseDescriptorsFromArray:[VSequence descriptors]];
     [self addResponseDescriptorsFromArray: @[errorDescriptor,
                                              verrorDescriptor,
                                              
-                                             [VSequence sequenceListDescriptor],
-                                             [VSequence sequenceListByUserDescriptor],
-                                             [VSequence sequenceFullDataDescriptor],
-                                             [VSequence sequenceListPaginationDescriptor],
                                              [VComment descriptor],
                                              [VComment getAllDescriptor],
                                              [VComment getAllPaginationDescriptor],
@@ -109,7 +106,6 @@
                                              ]];
     
     self.objectCache = [[NSCache alloc] init];
-    self.paginationStatuses = [[NSMutableDictionary alloc] init];
 }
 
 #pragma mark - operation
@@ -131,33 +127,59 @@
     }
     
     RKManagedObjectRequestOperation *requestOperation =
-        [self  appropriateObjectRequestOperationWithObject:object method:method path:path parameters:parameters];
+    [self  appropriateObjectRequestOperationWithObject:object method:method path:path parameters:parameters];
+
+     void (^rkSuccessBlock) (RKObjectRequestOperation*, RKMappingResult*) = ^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult)
+    {
+        NSMutableArray* mappedObjects = [mappingResult.array mutableCopy];
+        VErrorMessage* error;
+        for (id object in mappedObjects)
+        {
+            if([object isKindOfClass:[VErrorMessage class]])
+            {
+                error = object;
+                [mappedObjects removeObject:object];
+                break;
+            }
+        }
+        
+        if (error.errorCode == kVUnauthoizedError && self.mainUser)
+        {
+            self.mainUser = nil;
+            [self requestMethod:method object:object path:path parameters:parameters successBlock:successBlock failBlock:failBlock];
+        }
+        else if (error.errorCode && failBlock)
+        {
+            failBlock(operation, [NSError errorWithDomain:kVictoriousDomain code:error.errorCode
+                                                 userInfo:@{NSLocalizedDescriptionKey:[error.errorMessages componentsJoinedByString:@","]}]);
+        }
+        else if (!error.errorCode && successBlock)
+        {
+            //Grab the response data, and make sure to process it... we must guarentee that the payload is a dictionary
+            NSMutableDictionary *JSON = [[NSJSONSerialization JSONObjectWithData:operation.HTTPRequestOperation.responseData options:0 error:nil] mutableCopy];
+            if (![JSON[@"payload"] isKindOfClass:[NSDictionary class]])
+            {
+                [JSON removeObjectForKey:@"payload"];
+            }
+            successBlock(operation, JSON, mappedObjects);
+        }
+    };
     
-    [requestOperation setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult)
-     {
-         NSMutableArray* mappedObjects = [mappingResult.array mutableCopy];
-         VErrorMessage* error;
-         for (id object in mappedObjects)
-         {
-             if([object isKindOfClass:[VErrorMessage class]])
-             {
-                 error = object;
-                 [mappedObjects removeObject:object];
-                 break;
-             }
-         }
-         
-         if (error.errorCode && failBlock)
-             failBlock(operation, [NSError errorWithDomain:kVictoriousDomain code:error.errorCode
-                                       userInfo:@{NSLocalizedDescriptionKey:[error.errorMessages componentsJoinedByString:@","]}]);
-         else if (successBlock)
-         {
-             NSDictionary *JSON = [NSJSONSerialization JSONObjectWithData:operation.HTTPRequestOperation.responseData options:0 error:nil];
-             successBlock(operation, JSON, mappedObjects);
-         }
-     }
-                                            failure:failBlock];
+    VFailBlock rkFailBlock = ^(NSOperation* operation, NSError* error)
+    {
+        RKErrorMessage* rkErrorMessage = [error.userInfo[RKObjectMapperErrorObjectsKey] firstObject];
+        if (rkErrorMessage.errorMessage.integerValue == kVUnauthoizedError && self.mainUser)
+        {
+            self.mainUser = nil;
+            [self requestMethod:method object:object path:path parameters:parameters successBlock:successBlock failBlock:failBlock];
+        }
+        else if (failBlock)
+        {
+            failBlock(operation, error);
+        }
+    };
     
+    [requestOperation setCompletionBlockWithSuccess:rkSuccessBlock failure:rkFailBlock];
     [requestOperation start];
     return requestOperation;
 }
@@ -191,7 +213,6 @@
 }
 
 - (AFHTTPRequestOperation*)uploadURLs:(NSDictionary*)allUrls
-                       fileExtensions:(NSDictionary*)allExtensions
                                toPath:(NSString*)path
                            parameters:(NSDictionary*)parameters
                          successBlock:(VSuccessBlock)successBlock
@@ -215,11 +236,11 @@
      {
          [allUrls enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop)
           {
-              NSString* extension = allExtensions[key];
+              NSString* extension = [[obj pathExtension] lowercaseStringWithLocale:[NSLocale localeWithLocaleIdentifier:@"en_US_POSIX"]];
               if(extension)
               {
-                  NSString* mimeType = [extension isEqualToString:VConstantMediaExtensionMOV]
-                  ? @"video/quicktime" : @"image/png";
+                  NSString* mimeType = [extension isEqualToString:VConstantMediaExtensionMOV] || [extension isEqualToString:VConstantMediaExtensionMP4]
+                    ? @"video/quicktime" : @"image/png";
                   
                   [formData appendPartWithFileURL:obj
                                              name:key
@@ -233,13 +254,19 @@
     //Wrap the vsuccess block in a afsuccess block
     void (^afSuccessBlock)(AFHTTPRequestOperation *operation, id responseObject)  = ^(AFHTTPRequestOperation *operation, id responseObject)
     {
-        NSError* error = [self errorForResponse:responseObject];
+        NSError             *error                 = [self errorForResponse:responseObject];
+        NSMutableDictionary *mutableResponseObject = [responseObject mutableCopy];
+        
+        if (mutableResponseObject[@"payload"] && ![mutableResponseObject[@"payload"] isKindOfClass:[NSDictionary class]])
+        {
+            [mutableResponseObject removeObjectForKey:@"payload"];
+        }
         
         if (error && failBlock)
             failBlock(operation, error);
         
         if (!error && successBlock)
-            successBlock(operation, responseObject, nil);
+            successBlock(operation, mutableResponseObject, nil);
     };
     
     AFHTTPRequestOperation *operation = [self.HTTPClient HTTPRequestOperationWithRequest:request
@@ -248,7 +275,6 @@
     [operation start];
     return operation;
 }
-
 
 - (NSError*)errorForResponse:(NSDictionary*)responseObject
 {
@@ -263,17 +289,6 @@
     
     return [NSError errorWithDomain:kVictoriousDomain code:[responseObject[@"error"] integerValue]
                            userInfo:@{NSLocalizedDescriptionKey: errorMessage}];
-}
-
--(VPaginationStatus *)statusForKey:(NSString*)key
-{
-    VPaginationStatus* status = (self.paginationStatuses)[key];
-    if (!status)
-    {
-        status = [[VPaginationStatus alloc] init];
-    }
-    
-    return status;
 }
 
 - (NSManagedObject*)objectForID:(NSNumber*)objectID

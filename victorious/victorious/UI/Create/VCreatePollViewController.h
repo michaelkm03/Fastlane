@@ -7,7 +7,6 @@
 //
 
 #import "VCreateSequenceDelegate.h"
-#import "VImagePickerViewController.h"
 #import "VImageSearchViewController.h"
 
 @interface VCreatePollViewController : UIViewController

@@ -26,6 +26,7 @@
 
 //ObjectManager
 #import "VObjectManager+Sequence.h"
+#import "VObjectManager+SequenceFilters.h"
 
 //Data Models
 #import "VSequence+RestKit.h"
@@ -50,7 +51,11 @@
 
 - (void)viewDidLoad
 {
+    self.filterType = VStreamRecentFilter;
+    
     [super viewDidLoad];
+    
+    self.view.autoresizingMask = UIViewAutoresizingFlexibleWidth |UIViewAutoresizingFlexibleHeight;
     
     self.tableView.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVSecondaryAccentColor];
     
@@ -59,19 +64,11 @@
      name:kStreamsWillCommentNotification object:nil];
     
     self.preloadImageCache = [[NSCache alloc] init];
-    self.preloadImageCache.countLimit = 5;
     
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     
-    if ([self.fetchedResultsController.fetchedObjects count] < 5)
-        [self refreshAction];
-    else
-        [self.tableView reloadData]; //force a reload incase anything has changed
-    
     self.clearsSelectionOnViewWillAppear = NO;
-    
-    //Remove the search button from the stream - feature currently deprecated
-    self.navigationItem.rightBarButtonItem = nil;
+    self.bottomRefreshIndicator.color = [[VThemeManager sharedThemeManager] themedColorForKey:kVMainTextColor];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -80,11 +77,15 @@
     
     self.navigationController.delegate = self;
     
+    if ([self.fetchedResultsController.fetchedObjects count] < 5)
+        [self refresh:nil];
+    else
+        [self.tableView reloadData]; //force a reload incase anything has changed
+    
     CGRect navBarFrame = self.navigationController.navigationBar.frame;
     navBarFrame.origin.y = 0;
     self.navigationController.navigationBar.frame = navBarFrame;
     [[VThemeManager sharedThemeManager] applyNormalNavBarStyling];
-    [self.navigationController setNavigationBarHidden:NO animated:YES];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -107,7 +108,31 @@
     }
 }
 
-#pragma mark - FetchedResultsControllers
+- (BOOL)shouldAutorotate
+{
+    return NO;
+}
+
+- (NSUInteger)supportedInterfaceOrientations
+{
+    return UIInterfaceOrientationMaskPortrait;
+}
+
+- (BOOL)prefersStatusBarHidden
+{
+    return YES;
+}
+
+#pragma mark - Properties
+- (void)setFilterType:(VStreamFilter)filterType
+{
+    if (_filterType == filterType)
+        return;
+    
+    _filterType = filterType;
+    [self refreshFetchController];
+}
+
 - (NSFetchedResultsController *)makeFetchedResultsController
 {
     RKObjectManager* manager = [RKObjectManager sharedManager];
@@ -115,29 +140,17 @@
     
     NSFetchRequest *fetchRequest = [NSFetchRequest fetchRequestWithEntityName:[VSequence entityName]];
     NSSortDescriptor *sort = [[NSSortDescriptor alloc] initWithKey:@"releasedAt" ascending:NO];
+    
+    NSPredicate* filterPredicate = [NSPredicate predicateWithFormat:@"ANY filters.filterAPIPath =[cd] %@", [self currentFilter].filterAPIPath];
+    [fetchRequest setPredicate:filterPredicate];
+    
     [fetchRequest setSortDescriptors:@[sort]];
-    [fetchRequest setFetchBatchSize:50];
+    [fetchRequest setFetchBatchSize:[self currentFilter].perPageNumber.integerValue];
     
     return [[NSFetchedResultsController alloc] initWithFetchRequest:fetchRequest
                                                managedObjectContext:context
                                                  sectionNameKeyPath:nil
                                                           cacheName:fetchRequest.entityName];
-}
-
-- (NSFetchedResultsController *)makeSearchFetchedResultsController
-{
-    RKObjectManager* manager = [RKObjectManager sharedManager];
-    NSManagedObjectContext *context = manager.managedObjectStore.persistentStoreManagedObjectContext;
-    
-    NSFetchRequest *fetchRequest = [NSFetchRequest fetchRequestWithEntityName:[VSequence entityName]];
-    NSSortDescriptor *sort = [[NSSortDescriptor alloc] initWithKey:@"releasedAt" ascending:NO];
-    [fetchRequest setSortDescriptors:@[sort]];
-    [fetchRequest setFetchBatchSize:50];
-    
-    return  [[NSFetchedResultsController alloc] initWithFetchRequest:fetchRequest
-                                                managedObjectContext:context
-                                                  sectionNameKeyPath:nil
-                                                           cacheName:kSearchCache];
 }
 
 #pragma mark - UITableViewDelegate
@@ -147,6 +160,7 @@
     VStreamViewCell* cell = (VStreamViewCell*)[tableView cellForRowAtIndexPath:indexPath];
     
     [self setBackgroundImageWithURL:[[cell.sequence initialImageURLs] firstObject]];
+    [self.delegate streamWillDisappear];
     
     if (tableView.contentOffset.y == cell.frame.origin.y - kContentMediaViewOffset)
     {
@@ -154,6 +168,7 @@
     }
     else
     {
+        self.tableView.userInteractionEnabled = NO;
         [tableView setContentOffset:CGPointMake(cell.frame.origin.x, cell.frame.origin.y - kContentMediaViewOffset) animated:YES];
     }
 }
@@ -163,12 +178,24 @@
     VStreamViewCell* cell = (VStreamViewCell*)[self.tableView cellForRowAtIndexPath:self.tableView.indexPathForSelectedRow];
     if (cell)
     {
+        self.tableView.userInteractionEnabled = YES;
         [self.navigationController pushViewController:[VContentViewController sharedInstance] animated:YES];
     }
 }
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
+    if (scrollView.contentOffset.y > scrollView.contentSize.height * .75)
+    {
+        [self loadNextPageAction];
+    }
+    
+    //Notify the container about the scroll so it can handle the header
+    if ([self.delegate respondsToSelector:@selector(scrollViewDidScroll:)])
+    {
+        [self.delegate scrollViewDidScroll:scrollView];
+    }
+    
     CGPoint translation = [scrollView.panGestureRecognizer translationInView:scrollView.superview];
     CGRect navBarFrame = self.navigationController.navigationBar.frame;
     
@@ -193,24 +220,15 @@
 
 #pragma mark - Cells
 
-- (CGFloat)tableView:(UITableView *)tableView estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    return kStreamViewCellHeight;
-}
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     VSequence* sequence = (VSequence*)[self.fetchedResultsController objectAtIndexPath:indexPath];
     
     NSUInteger cellHeight;
-    if ([sequence isPoll] && [[sequence firstNode] firstAsset])
-        cellHeight = kStreamPollCellHeight;
     
-    else if ([sequence isPoll])
+    if ([sequence isPoll])
         cellHeight = kStreamDoublePollCellHeight;
-    
-    else if (([sequence isVideo] ||[sequence isForum]) && [[[sequence firstNode] firstAsset].type isEqualToString:VConstantsMediaTypeYoutube])
-        cellHeight = kStreamYoutubeCellHeight;
     
     else
         cellHeight = kStreamViewCellHeight;
@@ -226,7 +244,7 @@
         return [tableView dequeueReusableCellWithIdentifier:kStreamDoublePollCellIdentifier
                                                forIndexPath:indexPath];
 
-    else if ([sequence isForum] || [sequence isVideo])
+    else if ([sequence isVideo])
         return [tableView dequeueReusableCellWithIdentifier:kStreamVideoCellIdentifier
                                                forIndexPath:indexPath];
 
@@ -259,83 +277,91 @@
     return cell;
 }
 
-- (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    UIView*     animatableContent = [(VTableViewCell *)cell mainView];
-    
-    animatableContent.layer.opacity = 0.1;
-    
-    [UIView animateWithDuration:0.5 animations:^{
-        animatableContent.layer.opacity = 1.0;
-    }];
-}
-
 - (void)registerCells
 {
     [self.tableView registerNib:[UINib nibWithNibName:kStreamViewCellIdentifier bundle:nil]
          forCellReuseIdentifier:kStreamViewCellIdentifier];
-    [self.searchDisplayController.searchResultsTableView registerNib:[UINib nibWithNibName:kStreamViewCellIdentifier bundle:nil] forCellReuseIdentifier:kStreamViewCellIdentifier];
     
     [self.tableView registerNib:[UINib nibWithNibName:kStreamVideoCellIdentifier bundle:[NSBundle mainBundle]]
          forCellReuseIdentifier:kStreamVideoCellIdentifier];
-    [self.searchDisplayController.searchResultsTableView registerNib:[UINib nibWithNibName:kStreamVideoCellIdentifier bundle:nil] forCellReuseIdentifier:kStreamVideoCellIdentifier];
     
     [self.tableView registerNib:[UINib nibWithNibName:kStreamDoublePollCellIdentifier bundle:nil]
          forCellReuseIdentifier:kStreamDoublePollCellIdentifier];
-    [self.searchDisplayController.searchResultsTableView registerNib:[UINib nibWithNibName:kStreamDoublePollCellIdentifier bundle:nil] forCellReuseIdentifier:kStreamDoublePollCellIdentifier];
 }
 
 #pragma mark - Refresh
-- (void)refreshAction
+- (IBAction)refresh:(UIRefreshControl *)sender
 {
-    if (self.bottomRefreshIndicator.isAnimating)
-        return;
-    
-    [self.bottomRefreshIndicator startAnimating];
-    [self.refreshControl beginRefreshing];
-    
-    [[VObjectManager sharedManager] loadNextPageOfSequencesForCategory:nil
-                                                          successBlock:^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
+    [[VObjectManager sharedManager] refreshSequenceFilter:[self currentFilter]
+                                             successBlock:^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
      {
          [self.refreshControl endRefreshing];
-         [self.bottomRefreshIndicator stopAnimating];
-         
      }
-                                                             failBlock:^(NSOperation* operation, NSError* error)
+                                                failBlock:^(NSOperation* operation, NSError* error)
      {
          [self.refreshControl endRefreshing];
-         [self.bottomRefreshIndicator stopAnimating];
      }];
 }
 
-#pragma mark - Predicates
-- (NSPredicate*)scopeTypePredicateForOption:(NSUInteger)searchOption
+- (void)loadNextPageAction
 {
-    NSMutableArray* allPredicates = [[NSMutableArray alloc] init];
-    for (NSString* categoryName in [self categoriesForOption:searchOption])
+    RKManagedObjectRequestOperation* operation = [[VObjectManager sharedManager] loadNextPageOfSequenceFilter:[self currentFilter]
+                                             successBlock:^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
+     {
+         [self.bottomRefreshIndicator stopAnimating];
+     }
+                                                failBlock:^(NSOperation* operation, NSError* error)
+     {
+         [self.bottomRefreshIndicator stopAnimating];
+     }];
+    
+    if (operation)
     {
-        [allPredicates addObject:[self categoryPredicateForString:categoryName]];
+        [self.bottomRefreshIndicator startAnimating];
     }
-    return [NSCompoundPredicate orPredicateWithSubpredicates:allPredicates];
 }
 
-- (NSPredicate*)categoryPredicateForString:(NSString*)categoryName
+#pragma mark - Predicates
+- (VSequenceFilter*)currentFilter
 {
-    //TODO: double check this, I think its wrong
-    return [NSPredicate predicateWithFormat:@"category == %@", categoryName];
+    switch (self.filterType) {
+        case VStreamHotFilter:
+            return [self hotFilter];
+        case VStreamRecentFilter:
+            return [self defaultFilter];
+        case VStreamFollowingFilter:
+            return [self followingFilter];
+            
+        default:
+            VLog(@"Unknown filter type, using default filter");
+            return [self defaultFilter];
+    }
 }
 
-- (NSArray*)categoriesForOption:(NSUInteger)searchOption
+- (VSequenceFilter*)defaultFilter
+{
+    return [[VObjectManager sharedManager] sequenceFilterForCategories:[self sequenceCategories]];
+}
+- (VSequenceFilter*)hotFilter
+{
+    return [[VObjectManager sharedManager] hotSequenceFilterForStream:[self streamName]];
+}
+- (VSequenceFilter*)followingFilter
+{
+    return [[VObjectManager sharedManager] followerSequenceFilterForStream:[self streamName] user:nil];
+}
+
+- (NSString*)streamName
+{
+    return @"home";
+}
+
+- (NSArray*)sequenceCategories
 {
     return nil;
 }
 
 #pragma mark - Actions
-- (IBAction)showMenu
-{
-    [self.sideMenuViewController presentMenuViewController];
-}
-
 - (void)setBackgroundImageWithURL:(NSURL*)url
 {
     UIImageView* newBackgroundView = [[UIImageView alloc] initWithFrame:self.tableView.backgroundView.frame];
@@ -354,6 +380,7 @@
     VStreamViewCell *cell = (VStreamViewCell *)notification.object;
 
     [self setBackgroundImageWithURL:[[cell.sequence initialImageURLs] firstObject]];
+    [self.delegate streamWillDisappear];
 
     VCommentsContainerViewController* commentsTable = [VCommentsContainerViewController commentsContainerView];
     commentsTable.sequence = cell.sequence;

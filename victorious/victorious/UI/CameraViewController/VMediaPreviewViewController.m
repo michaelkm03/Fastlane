@@ -13,8 +13,9 @@
 
 @implementation VMediaPreviewViewController
 
-+ (VMediaPreviewViewController *)previewViewControllerForMediaAtURL:(NSURL *)mediaURL withExtension:(NSString *)mediaExtension
++ (VMediaPreviewViewController *)previewViewControllerForMediaAtURL:(NSURL *)mediaURL
 {
+    NSString *mediaExtension = [[mediaURL pathExtension] lowercaseStringWithLocale:[NSLocale localeWithLocaleIdentifier:@"en_US_POSIX"]];
     VMediaPreviewViewController *previewViewController = nil;
     if ([VConstantMediaExtensionPNG isEqualToString:mediaExtension]  ||
         [VConstantMediaExtensionJPEG isEqualToString:mediaExtension] ||
@@ -22,7 +23,8 @@
     {
         previewViewController = [VImagePreviewViewController imagePreviewViewController];
     }
-    else if ([VConstantMediaExtensionMOV isEqualToString:mediaExtension])
+    else if ([VConstantMediaExtensionMOV isEqualToString:mediaExtension] ||
+             [VConstantMediaExtensionMP4 isEqualToString:mediaExtension])
     {
         previewViewController = [VVideoPreviewViewController videoPreviewViewController];
     }
@@ -30,9 +32,23 @@
     if (previewViewController)
     {
         previewViewController->_mediaURL = mediaURL;
-        previewViewController->_mediaExtension = mediaExtension;
     }
     return previewViewController;
+}
+
+- (BOOL)shouldAutorotate
+{
+    return NO;
+}
+
+- (NSUInteger)supportedInterfaceOrientations
+{
+    return UIInterfaceOrientationMaskPortrait;
+}
+
+- (BOOL)prefersStatusBarHidden
+{
+    return YES;
 }
 
 @end

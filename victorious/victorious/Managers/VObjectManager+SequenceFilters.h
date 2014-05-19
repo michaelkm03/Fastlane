@@ -8,9 +8,17 @@
 
 #import "VObjectManager.h"
 
-@class VSequenceFilter;
+@class VSequenceFilter, VCommentFilter, VSequence;
 
 @interface VObjectManager (SequenceFilters)
+
+- (RKManagedObjectRequestOperation *)refreshCommentFilter:(VCommentFilter*)filter
+                                             successBlock:(VSuccessBlock)success
+                                                failBlock:(VFailBlock)fail;
+
+- (RKManagedObjectRequestOperation *)loadNextPageOfCommentFilter:(VCommentFilter*)filter
+                                                    successBlock:(VSuccessBlock)success
+                                                       failBlock:(VFailBlock)fail;
 
 - (RKManagedObjectRequestOperation *)loadInitialSequenceFilterWithSuccessBlock:(VSuccessBlock)success
                                                                      failBlock:(VFailBlock)fail;
@@ -23,7 +31,11 @@
                                                      successBlock:(VSuccessBlock)success
                                                         failBlock:(VFailBlock)fail;
 
-- (VSequenceFilter*)sequenceFilterForUser:(VUser*)user resultsPerPage:(NSInteger*)resultsPerPage;
-- (VSequenceFilter*)sequenceFilterForCategories:(NSArray*)categories resultsPerPage:(NSInteger*)resultsPerPage;
+- (VSequenceFilter*)sequenceFilterForUser:(VUser*)user;
+- (VSequenceFilter*)sequenceFilterForCategories:(NSArray*)categories;
+- (VSequenceFilter*)hotSequenceFilterForStream:(NSString*)streamName;
+- (VSequenceFilter*)followerSequenceFilterForStream:(NSString*)streamName user:(VUser*)user;
+
+- (VCommentFilter*)commentFilterForSequence:(VSequence*)sequence;
 
 @end

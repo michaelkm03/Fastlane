@@ -62,12 +62,11 @@
 
 - (IBAction)nextButtonClicked:(id)sender
 {
-    if (self.previewView.player.isPlaying)
+    if (self.previewView.isPlaying)
         [self.previewView.player pause];
     
     VCameraPublishViewController *publishViewController = [VCameraPublishViewController cameraPublishViewController];
     publishViewController.mediaURL = self.targetURL;
-    publishViewController.mediaExtension = VConstantMediaExtensionMOV;
     publishViewController.playBackSpeed = self.playBackSpeed;
     publishViewController.playbackLooping = self.playbackLooping;
     publishViewController.parentID = self.parentID;
@@ -164,15 +163,14 @@
 
 - (void)selectAsset
 {
-    VCameraViewController *cameraViewController = [VCameraViewController cameraViewController];
-    cameraViewController.completionBlock = ^(BOOL finished, UIImage *previewImage, NSURL *capturedMediaURL, NSString *mediaExtension)
+    VCameraViewController *cameraViewController = [VCameraViewController cameraViewControllerLimitedToVideo];
+    cameraViewController.completionBlock = ^(BOOL finished, UIImage *previewImage, NSURL *capturedMediaURL)
     {
         [self dismissViewControllerAnimated:YES completion:nil];
 
         if (finished)
         {
-            if ([mediaExtension isEqualToString:VConstantMediaExtensionMOV])
-                [self didSelectVideo:capturedMediaURL];
+            [self didSelectVideo:capturedMediaURL];
         }
     };
 
@@ -211,19 +209,19 @@
 
     if (self.beforeURL)
     {
-        AVMutableVideoCompositionInstruction*  instruction = [self addAssetURL:self.beforeURL videoCompositionTrack:videoCompositionTrack audioCompositionTrack:(self.shouldMuteAudio) ? nil : audioCompositionTrack atTime:kCMTimeZero];
+        AVMutableVideoCompositionInstruction*  instruction = [self addAssetURL:self.beforeURL videoCompositionTrack:videoCompositionTrack audioCompositionTrack:((self.shouldMuteAudio) ? nil : audioCompositionTrack) atTime:mutableComposition.duration];
         [instructions addObject:instruction];
     }
     
     if (self.sourceURL)
     {
-        AVMutableVideoCompositionInstruction*  instruction = [self addAssetURL:self.sourceURL videoCompositionTrack:videoCompositionTrack audioCompositionTrack:(self.shouldMuteAudio) ? nil : audioCompositionTrack atTime:mutableComposition.duration];
+        AVMutableVideoCompositionInstruction*  instruction = [self addAssetURL:self.sourceURL videoCompositionTrack:videoCompositionTrack audioCompositionTrack:((self.shouldMuteAudio) ? nil : audioCompositionTrack) atTime:mutableComposition.duration];
         [instructions addObject:instruction];
     }
     
     if (self.afterURL)
     {
-        AVMutableVideoCompositionInstruction*  instruction = [self addAssetURL:self.afterURL videoCompositionTrack:videoCompositionTrack audioCompositionTrack:(self.shouldMuteAudio) ? nil : audioCompositionTrack atTime:mutableComposition.duration];
+        AVMutableVideoCompositionInstruction*  instruction = [self addAssetURL:self.afterURL videoCompositionTrack:videoCompositionTrack audioCompositionTrack:((self.shouldMuteAudio) ? nil : audioCompositionTrack) atTime:mutableComposition.duration];
         [instructions addObject:instruction];
     }
     
@@ -255,10 +253,9 @@
                     break;
                 default:
                     NSLog(@"Export Complete");
-                    dispatch_async(dispatch_get_main_queue(), ^{
-                        self.targetURL = target;
-                        [self.previewView.player setItemByUrl:target];
-                    });
+                    self.targetURL = target;
+                    [self.previewView setItemURL:target];
+                    [self.previewView.player seekToTime:kCMTimeZero];
                     break;
             }
         });
@@ -267,7 +264,7 @@
 
 - (AVMutableVideoCompositionInstruction *)addAssetURL:(NSURL *)assetURL videoCompositionTrack:(AVMutableCompositionTrack *)videoCompositionTrack audioCompositionTrack:(AVMutableCompositionTrack *)audioCompositionTrack atTime:(CMTime)insertionTime
 {
-    AVAsset*        asset       =   [AVAsset assetWithURL:assetURL];
+    AVURLAsset*     asset       =   [AVURLAsset URLAssetWithURL:assetURL options:@{ AVURLAssetPreferPreciseDurationAndTimingKey : @YES }];
     AVAssetTrack*   videoTrack  =   [asset tracksWithMediaType:AVMediaTypeVideo][0];
     AVAssetTrack*   audiotrack  =   [asset tracksWithMediaType:AVMediaTypeAudio][0];
 
@@ -293,8 +290,9 @@
     if (isAssetPortrait)
     {
         assetScaleToFitRatio = 320.0 / videoTrack.naturalSize.height;
-        CGAffineTransform assetScaleFactor = CGAffineTransformMakeScale(assetScaleToFitRatio, assetScaleToFitRatio);
-        [videoLayerInstruction setTransform:CGAffineTransformConcat(videoTrack.preferredTransform, assetScaleFactor) atTime:insertionTime];
+        CGAffineTransform assetScaleTransform = CGAffineTransformMakeScale(assetScaleToFitRatio, assetScaleToFitRatio);
+        CGAffineTransform assetTranslationTransform = CGAffineTransformMakeTranslation(0, (320.0f - videoTrack.naturalSize.width * assetScaleToFitRatio) * 0.5f);
+        [videoLayerInstruction setTransform:CGAffineTransformConcat(videoTrack.preferredTransform, CGAffineTransformConcat(assetScaleTransform, assetTranslationTransform)) atTime:insertionTime];
     }
     else
     {
@@ -314,6 +312,7 @@
     AVAsset*    asset = [AVAsset assetWithURL:aURL];
     self.imageGenerator = [AVAssetImageGenerator assetImageGeneratorWithAsset:asset];
     self.imageGenerator.maximumSize = CGSizeMake(84, 84);
+    self.imageGenerator.appliesPreferredTrackTransform = YES;
     
     int picWidth = 42;
     Float64 durationSeconds = CMTimeGetSeconds([asset duration]);
@@ -335,25 +334,27 @@
      {
          if (result == AVAssetImageGeneratorSucceeded)
          {
-             UIImage *videoScreen = [[UIImage alloc] initWithCGImage:image];
-             UIImageView *tmp = [[UIImageView alloc] initWithImage:videoScreen];
-             tmp.frame = CGRectMake(0, 3, 42, 42);
-             tmp.contentMode = UIViewContentModeScaleAspectFill;
-             
-             int all = (i+1) * tmp.frame.size.width;
-             
-             CGRect currentFrame = tmp.frame;
-             currentFrame.origin.x = i * currentFrame.size.width;
-             if (all > background.frame.size.width)
-             {
-                 int delta = all - background.frame.size.width;
-                 currentFrame.size.width -= delta;
-             }
-             
-             tmp.frame = currentFrame;
-             i++;
+             UIImage*      thumb = [[UIImage alloc] initWithCGImage:image];
              
              dispatch_async(dispatch_get_main_queue(), ^{
+                 UIImageView*  tmp = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 42, 42)];
+                 tmp.image = thumb;
+                 tmp.backgroundColor = [UIColor redColor];
+                 tmp.contentMode = UIViewContentModeScaleAspectFill;
+                 
+                 int total = (i+1) * tmp.frame.size.width;
+                 
+                 CGRect currentFrame = tmp.frame;
+                 currentFrame.origin.x = i * currentFrame.size.width;
+                 if (total > background.frame.size.width)
+                 {
+                     int delta = total - background.frame.size.width;
+                     currentFrame.size.width -= delta;
+                 }
+                 
+                 tmp.frame = currentFrame;
+                 i++;
+                 
                  [background addSubview:tmp];
                  [background setNeedsDisplay];
              });

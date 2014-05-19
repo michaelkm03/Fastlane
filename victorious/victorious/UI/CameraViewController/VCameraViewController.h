@@ -26,4 +26,9 @@
  */
 + (VCameraViewController *)cameraViewControllerLimitedToPhotos;
 
+/**
+ Returns an instance of this class that will only take video, no photos.
+ */
++ (VCameraViewController *)cameraViewControllerLimitedToVideo;
+
 @end

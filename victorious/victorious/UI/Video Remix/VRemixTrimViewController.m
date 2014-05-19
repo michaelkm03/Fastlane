@@ -8,6 +8,7 @@
 
 @import MediaPlayer;
 
+#import "VElapsedTimeFormatter.h"
 #import "VRemixTrimViewController.h"
 #import "VRemixStitchViewController.h"
 #import "VCVideoPlayerView.h"
@@ -61,8 +62,8 @@
 {
     [super viewWillAppear:animated];
 
-    self.totalTimeLabel.text = [self secondsToMMSS:CMTimeGetSeconds([self playerItemDuration])];
-    self.currentTimeLabel.text = [self secondsToMMSS:0];
+    self.totalTimeLabel.text = [self.elapsedTimeFormatter stringForCMTime:[self playerItemDuration]];
+    self.currentTimeLabel.text = [self.elapsedTimeFormatter stringForCMTime:CMTimeMakeWithSeconds(0, 1)];
     
     double interval = .1f;
     double duration = CMTimeGetSeconds([self playerItemDuration]);
@@ -121,7 +122,7 @@
 
 #pragma mark - SCVideoPlayerDelegate
 
-- (void)videoPlayer:(VCPlayer*)videoPlayer didPlay:(Float32)secondsElapsed
+- (void)videoPlayer:(VCVideoPlayerView *)videoPlayer didPlayToTime:(CMTime)time
 {
     CMTime endTime = CMTimeConvertScale([self playerItemDuration], self.previewView.player.currentTime.timescale, kCMTimeRoundingMethod_RoundHalfAwayFromZero);
     if (CMTimeCompare(endTime, kCMTimeZero) != 0)
@@ -130,8 +131,8 @@
         self.scrubber.value = normalizedTime;
     }
 
-    self.totalTimeLabel.text = [self secondsToMMSS:CMTimeGetSeconds([self playerItemDuration])];
-    self.currentTimeLabel.text = [self secondsToMMSS:secondsElapsed];
+    self.totalTimeLabel.text = [self.elapsedTimeFormatter stringForCMTime:[self playerItemDuration]];
+    self.currentTimeLabel.text = [self.elapsedTimeFormatter stringForCMTime:time];
 }
 
 #pragma mark - VRemixVideoRangeSliderDelegate
@@ -139,10 +140,10 @@
 - (void)videoRange:(VRemixVideoRangeSlider *)videoRange didChangeLeftPosition:(CGFloat)leftPosition rightPosition:(CGFloat)rightPosition
 {
     self.startSeconds = leftPosition;
-    self.previewView.player.startSeconds = leftPosition;
+    self.previewView.startSeconds = leftPosition;
     
     self.endSeconds = rightPosition;
-    self.previewView.player.endSeconds = rightPosition;
+    self.previewView.endSeconds = rightPosition;
 
     double time = CMTimeGetSeconds([self.previewView.player currentTime]);
     if (time < leftPosition)
@@ -155,7 +156,7 @@
 
 - (IBAction)nextButtonClicked:(id)sender
 {
-    if (self.previewView.player.isPlaying)
+    if (self.previewView.isPlaying)
         [self.previewView.player pause];
 
     MBProgressHUD*  hud =   [MBProgressHUD showHUDAddedTo:self.view animated:YES];
@@ -180,25 +181,25 @@
         self.exportSession.timeRange = range;
 
         [self.exportSession exportAsynchronouslyWithCompletionHandler:^{
-            [hud hide:YES];
-            switch ([self.exportSession status])
-            {
-                case AVAssetExportSessionStatusFailed:
-                    NSLog(@"Export failed: %@", [[self.exportSession error] localizedDescription]);
-                    self.targetURL = nil;
-                    break;
-                case AVAssetExportSessionStatusCancelled:
-                    NSLog(@"Export canceled");
-                    self.targetURL = nil;
-                    break;
-                default:
-                    NSLog(@"Export Complete");
-                    dispatch_async(dispatch_get_main_queue(), ^{
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [hud hide:YES];
+                switch ([self.exportSession status])
+                {
+                    case AVAssetExportSessionStatusFailed:
+                        NSLog(@"Export failed: %@", [[self.exportSession error] localizedDescription]);
+                        self.targetURL = nil;
+                        break;
+                    case AVAssetExportSessionStatusCancelled:
+                        NSLog(@"Export canceled");
+                        self.targetURL = nil;
+                        break;
+                    default:
+                        NSLog(@"Export Complete");
                         self.targetURL = target;
                         [self performSegueWithIdentifier:@"toStitch" sender:self];
-                    });
-                    break;
-            }
+                        break;
+                }
+            });
         }];
     }
 }

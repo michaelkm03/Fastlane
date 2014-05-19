@@ -27,21 +27,13 @@
     return sharedInstance;
 }
 
-- (NSArray*)categoriesForOption:(NSUInteger)searchOption
+- (NSString*)streamName
 {
-    switch (searchOption)
-    {
-        case VStreamFilterPolls:
-            return @[kVOwnerPollCategory];
-            
-        case VStreamFilterImages:
-            return @[kVOwnerImageCategory];
-            
-        case VStreamFilterVideos:
-            return @[kVOwnerVideoCategory, kVOwnerRemixCategory];
-            
-        default:
-            return @[kVOwnerPollCategory, kVOwnerImageCategory, kVOwnerVideoCategory, kVOwnerRemixCategory];
-    }
+    return @"owner";
+}
+
+- (NSArray*)sequenceCategories
+{
+    return @[kVOwnerPollCategory, kVOwnerImageCategory, kVOwnerVideoCategory, kVOwnerRemixCategory];
 }
 @end

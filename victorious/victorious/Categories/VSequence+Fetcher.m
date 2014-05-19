@@ -15,13 +15,15 @@
 #import "NSString+VParseHelp.h"
 #import "UIImageView+AFNetworking.h"
 #import "VAnswer.h"
+#import "VUser.h"
 
 @implementation VSequence (Fetcher)
 
 - (BOOL)isPoll
 {
-    return [self.category isEqualToString:kVOwnerPollCategory] ||
-        [self.category isEqualToString:kVUGCPollCategory];
+    return [[self firstNode] isPoll];
+//    return [self.category isEqualToString:kVOwnerPollCategory] ||
+//        [self.category isEqualToString:kVUGCPollCategory];
 }
 
 - (BOOL)isQuiz
@@ -38,21 +40,17 @@
 - (BOOL)isVideo
 {
     return [self.category isEqualToString:kVOwnerVideoCategory] ||
-        [self.category isEqualToString:kVUGCVideoCategory];
-}
-
-- (BOOL)isForum
-{
-    return [self.category isEqualToString:kVOwnerForumCategory] ||
-        [self.category isEqualToString:kVUGCForumCategory];
+        [self.category isEqualToString:kVUGCVideoCategory] ||
+        [self.category isEqualToString:kVOwnerRemixCategory] ||
+        [self.category isEqualToString:kVUGCRemixCategory];
 }
 
 - (BOOL)isOwnerContent
 {
-    return [self.category isEqualToString:kVOwnerForumCategory] ||
-    [self.category isEqualToString:kVOwnerImageCategory] ||
+    return [self.category isEqualToString:kVOwnerImageCategory] ||
     [self.category isEqualToString:kVOwnerPollCategory] ||
-    [self.category isEqualToString:kVOwnerVideoCategory];
+    [self.category isEqualToString:kVOwnerVideoCategory] ||
+    [self.category isEqualToString:kVOwnerRemixCategory];
 }
 
 - (VNode*)firstNode
@@ -75,6 +73,9 @@
     }
     else
         [urls addObject:[NSURL URLWithString:self.previewImage]];
+    
+    if (self.user && self.user.pictureUrl)
+        [urls addObject:[NSURL URLWithString:self.user.pictureUrl]];
     
     return [urls copy];
 }

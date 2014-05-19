@@ -3,14 +3,49 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "VCPlayer.h"
+
+@import AVFoundation;
 
 @class VCVideoPlayerView;
 
-@interface VCVideoPlayerView : UIView<VCVideoPlayerDelegate>
+@protocol VCVideoPlayerDelegate <NSObject>
 
-@property (strong, nonatomic, readonly) VCPlayer * player;
-@property (strong, nonatomic, readonly) AVPlayerLayer * playerLayer;
-@property (strong, nonatomic, readwrite) UIView * loadingView;
+@optional
+
+- (void)videoPlayer:(VCVideoPlayerView *)videoPlayer didPlayToTime:(CMTime)time;
+- (void)videoPlayerReadyToPlay:(VCVideoPlayerView *)videoPlayer;
+- (void)videoPlayerFailed:(VCVideoPlayerView *)videoPlayer;
+- (void)videoPlayerWillStartPlaying:(VCVideoPlayerView *)videoPlayer;
+- (void)videoPlayerWillStopPlaying:(VCVideoPlayerView *)videoPlayer;
+- (void)videoPlayerDidReachEndOfVideo:(VCVideoPlayerView *)videoPlayer;
+
+@end
+
+/**
+ A UIView subclass for displaying video content
+ */
+@interface VCVideoPlayerView : UIView
+
+@property (nonatomic, strong)   NSURL                     *itemURL; ///< The URL of the video to play
+@property (nonatomic, weak)     id<VCVideoPlayerDelegate>  delegate;
+@property (nonatomic)           BOOL                       shouldLoop; ///< If YES, video will loop around at the end
+@property (nonatomic, readonly) AVPlayer                  *player; ///< The AVPlayer instance being managed
+@property (nonatomic, assign)   Float64                    startSeconds; ///< Playback will begin at this point
+@property (nonatomic, assign)   Float64                    endSeconds; ///< Playback will end (or loop) at this point. Set to 0 to play to end.
+@property (nonatomic, readonly) CGSize                     naturalSize;
+@property (nonatomic, readonly, getter = isPlaying) BOOL   playing; ///< YES if a video is playing
+@property (nonatomic)           BOOL                       shouldShowToolbar; ///< If NO, toolbar will never show.
+@property (nonatomic, readonly) UIView                    *overlayView; ///< A view to be displayed on top of the video player. Will not show if shouldShowToolbar is NO.
+
++ (VCVideoPlayerView *)currentPlayer; ///< Returns a reference to a VCVideoPlayerView instance that is currently playing
+
+/**
+ Add the same item "loopCount" times in order to have a smooth loop. 
+ The loop system provided by Apple has an unvoidable hiccup. Using 
+ this method will avoid the hiccup.
+ */
+- (void)setItemURL:(NSURL *)itemURL withLoopCount:(NSUInteger)loopCount;
+
+- (CMTime)playerItemDuration;
 
 @end

@@ -22,7 +22,10 @@
 {
     VCommentsContainerViewController *commentsContainer = (VCommentsContainerViewController*)[context viewControllerForKey:UITransitionContextToViewControllerKey];
     VContentViewController* contentVC = (VContentViewController*)[context viewControllerForKey:UITransitionContextFromViewControllerKey];
-
+    
+    commentsContainer.view.userInteractionEnabled = NO;
+    contentVC.view.userInteractionEnabled = NO;
+    
     [contentVC animateOutWithDuration:.5f
                            completion:^(BOOL finished)
      {
@@ -30,6 +33,9 @@
          [commentsContainer animateInWithDuration:.4f
                                        completion:^(BOOL finished)
           {
+              commentsContainer.view.userInteractionEnabled = YES;
+              contentVC.view.userInteractionEnabled = YES;
+              
               [context completeTransition:![context transitionWasCancelled]];
           }];
      }];

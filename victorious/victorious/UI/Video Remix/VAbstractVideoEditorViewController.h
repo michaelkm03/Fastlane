@@ -11,6 +11,8 @@
 #import "VConstants.h"
 #import "VCVideoPlayerView.h"
 
+@class VElapsedTimeFormatter;
+
 @interface  VAbstractVideoEditorViewController : UIViewController   <VCVideoPlayerDelegate>
 
 @property (nonatomic, weak)     IBOutlet    VCVideoPlayerView*  previewView;;
@@ -33,12 +35,9 @@
 
 @property (nonatomic)           BOOL                            animatingPlayButton;
 
+@property (nonatomic, strong)   VElapsedTimeFormatter*          elapsedTimeFormatter;
 
 - (void)startAnimation;
 - (void)stopAnimation;
-
-- (CMTime)playerItemDuration;
-
--(NSString *)secondsToMMSS:(double)seconds;
 
 @end

@@ -15,7 +15,7 @@
 
 #import "UIButton+VImageLoading.h"
 
-#import "VProfileViewController.h"
+#import "VUserProfileViewController.h"
 
 //VConversationCell
 
@@ -61,9 +61,7 @@
 
 - (IBAction)profileButtonAction:(id)sender
 {
-    NSInteger userID = self.conversation.user.remoteId.integerValue;
-    
-    VProfileViewController* profileViewController = [VProfileViewController profileWithUserID:userID];
+    VUserProfileViewController* profileViewController = [VUserProfileViewController userProfileWithUser:self.conversation.user];
     [self.parentTableViewController.navigationController pushViewController:profileViewController animated:YES];
 }
 

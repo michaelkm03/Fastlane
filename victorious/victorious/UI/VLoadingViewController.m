@@ -5,13 +5,16 @@
 //  Created by Will Long on 2/11/14.
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
-
-#import "VHomeStreamViewController.h"
 #import "VLoadingViewController.h"
+
+#import "VStreamContainerViewController.h"
+#import "VHomeStreamViewController.h"
 #import "VObjectManager+Login.h"
 #import "VObjectManager+Sequence.h"
+#import "VObjectManager+SequenceFilters.h"
 #import "VReachability.h"
 #import "VThemeManager.h"
+#import "VUserManager.h"
 
 static const NSTimeInterval kTimeBetweenRetries = 10.0;
 
@@ -65,10 +68,9 @@ static const NSTimeInterval kTimeBetweenRetries = 10.0;
     }
 }
 
-- (void)viewWillDisappear:(BOOL)animated
+- (BOOL)prefersStatusBarHidden
 {
-    [super viewWillDisappear:animated];
-    [self.navigationController setNavigationBarHidden:NO animated:YES];
+    return YES;
 }
 
 #pragma mark - Reachability Notice
@@ -132,7 +134,7 @@ static const NSTimeInterval kTimeBetweenRetries = 10.0;
 {
     if (!_initialSequenceLoading && !_initialSequenceLoaded)
     {
-        [[VObjectManager sharedManager] initialSequenceLoadWithSuccessBlock:^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
+        [[VObjectManager sharedManager] loadInitialSequenceFilterWithSuccessBlock:^(NSOperation *operation, id fullResponse, NSArray *resultObjects)
         {
             _initialSequenceLoading = NO;
             _initialSequenceLoaded = YES;
@@ -150,7 +152,15 @@ static const NSTimeInterval kTimeBetweenRetries = 10.0;
         {
             _appInitLoading = NO;
             _appInitLoaded = YES;
-            [self.navigationController pushViewController:[VHomeStreamViewController sharedInstance] animated:YES];
+            
+            [[VUserManager sharedInstance] loginViaSavedCredentialsOnCompletion:^(VUser *user, BOOL created)
+             {
+                 [self.navigationController pushViewController:[VStreamContainerViewController containerForStreamTable:[VHomeStreamViewController sharedInstance]] animated:YES];
+             }
+                                                                        onError:^(NSError *error)
+             {
+                 [self.navigationController pushViewController:[VStreamContainerViewController containerForStreamTable:[VHomeStreamViewController sharedInstance]] animated:YES];
+             }];
         }
                                                       failBlock:^(NSOperation* operation, NSError* error)
         {

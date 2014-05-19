@@ -18,7 +18,6 @@
                               withSuccessBlock:(VSuccessBlock)success
                                      failBlock:(VFailBlock)fail;
 
-
 - (RKManagedObjectRequestOperation *)attachAccountToFacebookWithToken:(NSString*)accessToken
                                                      withSuccessBlock:(VSuccessBlock)success
                                                             failBlock:(VFailBlock)fail;
@@ -44,6 +43,10 @@
                                                  successBlock:(VSuccessBlock)success
                                                     failBlock:(VFailBlock)fail;
 
+- (RKManagedObjectRequestOperation *)requestFollowerListForUser:(VUser *)user
+                                                   successBlock:(VSuccessBlock)success
+                                                      failBlock:(VFailBlock)fail;
+
 - (RKManagedObjectRequestOperation *)followUser:(VUser *)user
                                    successBlock:(VSuccessBlock)success
                                       failBlock:(VFailBlock)fail;
@@ -51,6 +54,15 @@
 - (RKManagedObjectRequestOperation *)unfollowUser:(VUser *)user
                                      successBlock:(VSuccessBlock)success
                                         failBlock:(VFailBlock)fail;
+
+- (RKManagedObjectRequestOperation *)countOfFollowsForUser:(VUser *)user
+                                              successBlock:(VSuccessBlock)success
+                                                 failBlock:(VFailBlock)fail;
+
+- (RKManagedObjectRequestOperation *)isUser:(VUser *)follower
+                                  following:(VUser *)user
+                               successBlock:(VSuccessBlock)success
+                                  failBlock:(VFailBlock)fail;
 
 - (RKManagedObjectRequestOperation *)inviteFriends:(NSArray*)friendIDs
                                   withSuccessBlock:(VSuccessBlock)success

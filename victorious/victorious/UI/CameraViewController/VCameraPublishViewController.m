@@ -11,7 +11,7 @@
 #import "VCameraPublishViewController.h"
 #import "VSetExpirationViewController.h"
 #import "UIImage+ImageEffects.h"
-#import "VObjectManager+Sequence.h"
+#import "VObjectManager+ContentCreation.h"
 #import "VConstants.h"
 #import "NSString+VParseHelp.h"
 #import "VThemeManager.h"
@@ -67,6 +67,21 @@
     self.navigationItem.rightBarButtonItem = cancelButton;
 }
 
+- (BOOL)shouldAutorotate
+{
+    return NO;
+}
+
+- (NSUInteger)supportedInterfaceOrientations
+{
+    return UIInterfaceOrientationMaskPortrait;
+}
+
+- (BOOL)prefersStatusBarHidden
+{
+    return YES;
+}
+
 #pragma mark - Actions
 
 - (IBAction)goBack:(id)sender
@@ -115,8 +130,6 @@
         playbackSpeed = 2.0;
     else
         playbackSpeed = 0.5;
-
-    __block NSURL* mediaToRemove = self.mediaURL;
     
     [[VObjectManager sharedManager] uploadMediaWithName:self.textView.text
                                             description:self.textView.text
@@ -126,12 +139,9 @@
                                                loopType:self.playbackLooping
                                            shareOptions:shareOptions
                                                mediaURL:self.mediaURL
-                                              extension:self.mediaExtension
                                            successBlock:^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
     {
         VLog(@"Succeeded with objects: %@", resultObjects);
-        
-        [[NSFileManager defaultManager] removeItemAtURL:mediaToRemove error:nil];
         
         UIAlertView*    alert   = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"PublishSucceeded", @"")
                                                              message:NSLocalizedString(@"PublishSucceededDetail", @"")
@@ -143,10 +153,8 @@
                                               failBlock:^(NSOperation* operation, NSError* error)
     {
         VLog(@"Failed with error: %@", error);
-
-        [[NSFileManager defaultManager] removeItemAtURL:mediaToRemove error:nil];
         
-        if (5500 == error.code)
+        if (kVStillTranscodingError == error.code)
         {
             UIAlertView*    alert   = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"TranscodingMediaTitle", @"")
                                                                  message:NSLocalizedString(@"TranscodingMediaBody", @"")
@@ -164,7 +172,8 @@
                                                   otherButtonTitles:NSLocalizedString(@"OKButton", @""), nil];
             [alert show];
         }
-    }];
+    }
+                                      shouldRemoveMedia:YES];
     
     if (self.completion)
     {
@@ -187,9 +196,9 @@
 - (void)setExpirationViewController:(VSetExpirationViewController *)viewController didSelectDate:(NSDate *)expirationDate
 {
     self.expirationDateString = [self stringForRFC2822Date:expirationDate];
-    self.expiresOnLabel.text = [NSString stringWithFormat:@"Expires on %@", [NSDateFormatter localizedStringFromDate:expirationDate
-                                                                                                           dateStyle:NSDateFormatterLongStyle
-                                                                                                           timeStyle:NSDateFormatterShortStyle]];
+    self.expiresOnLabel.text = [NSString stringWithFormat:NSLocalizedString(@"ExpiresOn", @""), [NSDateFormatter localizedStringFromDate:expirationDate
+                                                                                                                               dateStyle:NSDateFormatterLongStyle
+                                                                                                                               timeStyle:NSDateFormatterShortStyle]];
 }
 
 #pragma mark - Support

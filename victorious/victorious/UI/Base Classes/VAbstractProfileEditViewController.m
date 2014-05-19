@@ -25,6 +25,10 @@
     self.usernameTextField.text = self.profile.name;
     self.taglineTextView.text = self.profile.tagline;
     self.locationTextField.text = self.profile.location;
+    if ([self respondsToSelector:@selector(textViewDidChange:)])
+    {
+        [self textViewDidChange:self.taglineTextView];
+    }
 
     self.profileImageView.layer.masksToBounds = YES;
     self.profileImageView.layer.cornerRadius = CGRectGetHeight(self.profileImageView.bounds)/2;
@@ -50,6 +54,21 @@
     self.tableView.backgroundView = backgroundImageView;
 }
 
+- (BOOL)shouldAutorotate
+{
+    return NO;
+}
+
+- (NSUInteger)supportedInterfaceOrientations
+{
+    return UIInterfaceOrientationMaskPortrait;
+}
+
+- (BOOL)prefersStatusBarHidden
+{
+    return YES;
+}
+
 - (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
 {
     [[self view] endEditing:YES];
@@ -61,17 +80,13 @@
 {
     UINavigationController *navigationController = [[UINavigationController alloc] init];
     VCameraViewController *cameraViewController = [VCameraViewController cameraViewControllerLimitedToPhotos];
-    cameraViewController.completionBlock = ^(BOOL finished, UIImage *previewImage, NSURL *capturedMediaURL, NSString *mediaExtension)
+    cameraViewController.completionBlock = ^(BOOL finished, UIImage *previewImage, NSURL *capturedMediaURL)
     {
         [self dismissViewControllerAnimated:YES completion:nil];
         if (finished && capturedMediaURL)
         {
-            NSData *imageData = [NSData dataWithContentsOfURL:capturedMediaURL];
-            if (imageData)
-            {
-                self.profileImageView.image = [UIImage imageWithData:imageData];
-            }
-            [[NSFileManager defaultManager] removeItemAtURL:capturedMediaURL error:nil];
+            self.profileImageView.image = previewImage;
+            self.updatedProfileImage = capturedMediaURL;
         }
     };
     [navigationController pushViewController:cameraViewController animated:NO];

@@ -66,8 +66,8 @@
 {
     [[VObjectManager sharedManager] updateVictoriousWithEmail:nil
                                                      password:nil
-                                                     username:self.usernameTextField.text
-                                              profileImageURL:nil
+                                                         name:self.usernameTextField.text
+                                              profileImageURL:self.updatedProfileImage
                                                      location:self.locationTextField.text
                                                       tagline:self.taglineTextView.text
                                                  successBlock:^(NSOperation* operation, id fullResponse, NSArray* resultObjects)

@@ -26,8 +26,8 @@ NSString*   const   kVAgreementText                     =   @"agreement.text";
 NSString*   const   kVAgreementLinkText                 =   @"agreement.linkText";
 NSString*   const   kVAgreementLink                     =   @"agreement.link";
 
-NSString*   const   kVMenuBackgroundImage               =   @"LaunchImage-700";
-NSString*   const   kVMenuBackgroundImage5              =   @"LaunchImage-700-568h";
+NSString*   const   kVMenuBackgroundImage               =   @"Default";
+NSString*   const   kVMenuBackgroundImage5              =   @"Default-568h";
 
 #pragma mark - Fonts
 
@@ -51,6 +51,7 @@ NSString*   const   kVButton2Font                       =   @"font.button2";
 
 #pragma mark - Colors
 NSString*   const   kVBackgroundColor                   =   @"color.background";
+NSString*   const   kVSecondaryBackgroundColor          =   @"color.bacground.secondary";
 NSString*   const   kVCancelColor                       =   @"color.cancel";
 
 NSString*   const   kVMainTextColor                     =   @"color.text";
@@ -144,11 +145,17 @@ NSString*   const   kVNewThemeKey                       =   @"kVNewTheme";
     if(navigationBarTitleFont)
     {
         titleAttributes[NSFontAttributeName] = navigationBarTitleFont;
+
+        NSMutableDictionary *attributes = [NSMutableDictionary dictionaryWithDictionary: [[UIBarButtonItem appearance] titleTextAttributesForState:UIControlStateNormal]];
+        attributes[NSFontAttributeName] = navigationBarTitleFont;
+        [[UIBarButtonItem appearance] setTitleTextAttributes:attributes forState:UIControlStateNormal];
     }
+
     [[UINavigationBar appearance] setTitleTextAttributes:titleAttributes];
     
     [[UINavigationBar appearance] setBackgroundImage:nil forBarMetrics:UIBarMetricsDefault];
     [[UINavigationBar appearance] setShadowImage:nil];
+    
 }
 
 - (void)applyClearNavBarStyling
@@ -166,7 +173,12 @@ NSString*   const   kVNewThemeKey                       =   @"kVNewTheme";
     if(navigationBarTitleFont)
     {
         titleAttributes[NSFontAttributeName] = navigationBarTitleFont;
+        
+        NSMutableDictionary *attributes = [NSMutableDictionary dictionaryWithDictionary: [[UIBarButtonItem appearance] titleTextAttributesForState:UIControlStateNormal]];
+        attributes[NSFontAttributeName] = navigationBarTitleFont;
+        [[UIBarButtonItem appearance] setTitleTextAttributes:attributes forState:UIControlStateNormal];
     }
+    
     [[UINavigationBar appearance] setTitleTextAttributes:titleAttributes];
     
     [[UINavigationBar appearance] setBackgroundImage:[[UIImage alloc] init] forBarMetrics:UIBarMetricsDefault];
@@ -181,6 +193,8 @@ NSString*   const   kVNewThemeKey                       =   @"kVNewTheme";
     
     [[UINavigationBar appearance] setBackgroundImage:nil forBarMetrics:UIBarMetricsDefault];
     [[UINavigationBar appearance] setShadowImage:nil];
+    
+    [[UIBarButtonItem appearance] setTitleTextAttributes:nil forState:UIControlStateNormal];
 }
 
 #pragma mark - Primitives

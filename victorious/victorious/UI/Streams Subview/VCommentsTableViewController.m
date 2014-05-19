@@ -13,7 +13,7 @@
 #import "VLoginViewController.h"
 #import "VCommentCell.h"
 
-#import "VObjectManager+Sequence.h"
+#import "VObjectManager+SequenceFilters.h"
 #import "VObjectManager+Comment.h"
 
 #import "UIActionSheet+VBlocks.h"
@@ -21,6 +21,7 @@
 
 #import "VSequence+Fetcher.h"
 #import "VNode+Fetcher.h"
+#import "VComment+Fetcher.h"
 #import "VAsset.h"
 
 #import "UIImageView+Blurring.h"
@@ -63,17 +64,14 @@ static NSString* CommentCache = @"CommentCache";
 
 - (void)setSequence:(VSequence *)sequence
 {
-    self.sortedComments = [sequence.comments allObjects];
-    [self.tableView reloadData];
-    
     _sequence = sequence;
     
     self.title = sequence.name;
     
+    [self sortComments];
+    
     if (![self.sortedComments count]) //If we don't have comments, try to pull more.
         [self refresh:nil];
-    else
-        [self sortComments];
 }
 
 - (NSMutableArray *)newlyReadComments
@@ -88,6 +86,8 @@ static NSString* CommentCache = @"CommentCache";
 #pragma mark - Comment Sorters
 - (void)sortComments
 {
+    [self.sequence.managedObjectContext refreshObject:self.sequence mergeChanges:YES];
+    self.sortedComments = [self.sequence.comments allObjects];
     //If theres no sorted comments, this is our first batch so animate in.
     if (![self.sortedComments count])
     {
@@ -136,22 +136,44 @@ static NSString* CommentCache = @"CommentCache";
 
 - (IBAction)refresh:(UIRefreshControl *)sender
 {
-    VSuccessBlock success = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
-    {
-//        [self sortComments];
-        
-        [self.refreshControl endRefreshing];
-    };
+    VCommentFilter* filter = [[VObjectManager sharedManager] commentFilterForSequence:self.sequence];
+    RKManagedObjectRequestOperation* operation = [[VObjectManager sharedManager]
+                                                  loadNextPageOfCommentFilter:filter
+                                                  successBlock:^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
+                                                  {
+                                                      [self performSelector:@selector(sortComments) withObject:nil afterDelay:.5f];
+                                                      [self.refreshControl endRefreshing];
+                                                  }
+                                                  failBlock:^(NSOperation* operation, NSError* error)
+                                                  {
+                                                      [self.refreshControl endRefreshing];
+                                                  }];
     
-    VFailBlock fail = ^(NSOperation* operation, NSError* error)
+    if (operation)
     {
-        [self.refreshControl endRefreshing];
-        VLog(@"Error on loadNextPage: %@", error);
-    };
+        [self.refreshControl beginRefreshing];
+    }
+}
+
+- (void)loadNextPageAction
+{
+    VCommentFilter* filter = [[VObjectManager sharedManager] commentFilterForSequence:self.sequence];
+    RKManagedObjectRequestOperation* operation = [[VObjectManager sharedManager]
+                                                  loadNextPageOfCommentFilter:filter
+                                                  successBlock:^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
+                                                  {
+                                                      [self performSelector:@selector(sortComments) withObject:nil afterDelay:.5f];
+//                                                      [self.bottomRefreshIndicator stopAnimating];
+                                                  }
+                                                  failBlock:^(NSOperation* operation, NSError* error)
+                                                  {
+//                                                      [self.bottomRefreshIndicator stopAnimating];
+                                                  }];
     
-    [[VObjectManager sharedManager] loadNextPageOfCommentsForSequence:self.sequence
-                                                          successBlock:success
-                                                             failBlock:fail];
+    if (operation)
+    {
+//        [self.bottomRefreshIndicator startAnimating];
+    }
 }
 
 - (IBAction)shareSequence:(id)sender
@@ -299,7 +321,7 @@ static NSString* CommentCache = @"CommentCache";
 
     CGSize textSize = [VCommentCell frameSizeForMessageText:comment.text];
     CGFloat height = textSize.height;
-    CGFloat yOffset = !comment.mediaUrl || [comment.mediaUrl isEmpty] ? kCommentCellYOffset : kMediaCommentCellYOffset;
+    CGFloat yOffset = [comment hasMedia] ? kMediaCommentCellYOffset : kCommentCellYOffset;
     height = MAX(height + yOffset, kMinCellHeight);
 
     return height;
@@ -307,15 +329,8 @@ static NSString* CommentCache = @"CommentCache";
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    UITableViewCell *cell = nil;
-//    VComment *comment = [self.fetchedResultsController objectAtIndexPath:indexPath];
-//    if([comment.user isEqualToUser:[VObjectManager sharedManager].mainUser])
-//    {
-//        cell = [self.tableView dequeueReusableCellWithIdentifier:kOtherCommentCellIdentifier forIndexPath:indexPath];
-//    }else
-//    {
-        cell = [self.tableView dequeueReusableCellWithIdentifier:kCommentCellIdentifier forIndexPath:indexPath];
-//    }
+    UITableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:kCommentCellIdentifier forIndexPath:indexPath];
+    
     VComment *comment = [self.sortedComments objectAtIndex:indexPath.row];
     [(VCommentCell*)cell setCommentOrMessage:comment];
     ((VCommentCell*)cell).parentTableViewController = self;
@@ -334,6 +349,14 @@ static NSString* CommentCache = @"CommentCache";
 }
 
 #pragma mark - UITableViewDelegate
+
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView
+{
+    if (scrollView.contentOffset.y > scrollView.contentSize.height * .75)
+    {
+        [self loadNextPageAction];
+    }
+}
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {

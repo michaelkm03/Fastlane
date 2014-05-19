@@ -4,7 +4,8 @@
 
 #import <Foundation/Foundation.h>
 
-@interface VCAudioTools : NSObject {
+@interface VCAudioTools : NSObject
+{
     
 }
 

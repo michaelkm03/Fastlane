@@ -11,7 +11,7 @@
 #import "VCommentCell.h"
 #import "VConstants.h"
 #import "UIImageView+AFNetworking.h"
-#import "VComment+RestKit.h"
+#import "VComment+Fetcher.h"
 #import "VMessage+RestKit.h"
 #import "VMedia+RestKit.h"
 #import "VUser+RestKit.h"
@@ -19,15 +19,16 @@
 #import "VThemeManager.h"
 #import "NSString+VParseHelp.h"
 #import "UIButton+VImageLoading.h"
-#import "VProfileViewController.h"
+#import "VUserProfileViewController.h"
 #import "VObjectManager.h"
+#import "UIImage+ImageCreation.h"
 
 CGFloat const kCommentRowWithMediaHeight  =   256.0f;
 CGFloat const kCommentRowHeight           =   86.0f;
 CGFloat const kCommentCellWidth = 214;
 CGFloat const kCommentCellYOffset = 28;
-CGFloat const kMediaCommentCellYOffset = 235;
-CGFloat const kMinCellHeight = 84;
+CGFloat const kMediaCommentCellYOffset = 236;
+CGFloat const kMinCellHeight = 55;
 CGFloat const kCommentMessageLabelWidth = 214;
 CGFloat const kMessageChatBubblePadding = 5;
 CGFloat const kProfilePadding = 27;
@@ -77,7 +78,7 @@ NSString* const kChatBubbleLeftImage = @"ChatBubbleLeft";
     self.profileImageButton.clipsToBounds = YES;
     self.profileImageButton.layer.cornerRadius = CGRectGetHeight(self.profileImageButton.bounds)/2;
     
-    [self layoutWithText:self.messageLabel.text withMedia:(BOOL)self.mediaUrl];
+    [self layoutWithText:self.messageLabel.text withMedia:!self.mediaPreview.hidden];
 }
 
 - (void)setCommentOrMessage:(id)commentOrMessage
@@ -87,7 +88,9 @@ NSString* const kChatBubbleLeftImage = @"ChatBubbleLeft";
     _commentOrMessage = commentOrMessage;
     NSString* mediaType;
     VUser* user;
-
+    NSURL* previewImageURL;
+    
+    
     if([commentOrMessage isKindOfClass:[VComment class]])
     {
         VComment *comment = (VComment *)self.commentOrMessage;
@@ -98,6 +101,8 @@ NSString* const kChatBubbleLeftImage = @"ChatBubbleLeft";
         self.mediaUrl = comment.mediaUrl;
         mediaType = comment.mediaType;
         user = comment.user;
+        
+        previewImageURL = [comment previewImageURL];
     }
     else if([commentOrMessage isKindOfClass:[VMessage class]])
     {
@@ -109,19 +114,23 @@ NSString* const kChatBubbleLeftImage = @"ChatBubbleLeft";
         self.mediaUrl = message.media.mediaUrl;
         mediaType = message.media.mediaType;
         user = message.user;
+        
+        previewImageURL = [NSURL URLWithString:message.media.mediaUrl];
     }
     
     [self.profileImageButton setImageWithURL:[NSURL URLWithString:user.pictureUrl]
                             placeholderImage:[UIImage imageNamed:@"profile_thumb"]
                                     forState:UIControlStateNormal];
-    if ([self.mediaUrl length])
+    if (previewImageURL)
     {
         self.mediaPreview.hidden = NO;
         
         self.playButton.hidden = ![mediaType isEqualToString:VConstantsMediaTypeVideo];
         
-#warning We need to figure out a reliable way to get comment preview image before release...
-//        [self.mediaPreview setImageWithURL:[self.mediaUrl convertToPreviewImageURL]];
+#warning We need to figure out a reliable way to get message preview image before release...
+        [self.mediaPreview setImageWithURL:previewImageURL
+                          placeholderImage:[UIImage resizeableImageWithColor:
+                                            [[VThemeManager sharedThemeManager] themedColorForKey:kVBackgroundColor]]];
     }
     else
     {
@@ -208,19 +217,19 @@ NSString* const kChatBubbleLeftImage = @"ChatBubbleLeft";
 
 - (IBAction)profileButtonAction:(id)sender
 {
-    NSInteger userID;
+    VUser* user;
     if([self.commentOrMessage isKindOfClass:[VComment class]])
     {
         VComment* comment = (VComment *)self.commentOrMessage;
-        userID = comment.userId.integerValue;
+        user = comment.user;
     }
     else
     {
         VMessage* message = (VMessage *)self.commentOrMessage;
-        userID = message.senderUserId.integerValue;
+        user = message.user;
     }
     
-    VProfileViewController* profileViewController = [VProfileViewController profileWithUserID:userID];
+    VUserProfileViewController* profileViewController = [VUserProfileViewController userProfileWithUser:user];
     [self.parentTableViewController.navigationController pushViewController:profileViewController animated:YES];
 }
 

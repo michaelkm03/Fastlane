@@ -11,5 +11,6 @@
 @interface VStreamTableViewController (ContentCreation)
 
 - (void)addCreateButton;
+- (IBAction)createButtonAction:(id)sender;
 
 @end

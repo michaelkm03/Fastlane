@@ -10,21 +10,30 @@
 
 #import "VCreatePollViewController.h"
 #import "VAnimation.h"
+#import "VSequenceFilter.h"
 
-typedef NS_ENUM(NSInteger, VStreamScope)
+typedef NS_ENUM(NSInteger, VStreamFilter)
 {
-    VStreamFilterAll = 0,
-    VStreamFilterImages,
-    VStreamFilterVideos,
-    VStreamFilterPolls
+    VStreamHotFilter = 0,
+    VStreamRecentFilter,
+    VStreamFollowingFilter
 };
+
+@protocol VStreamTableDelegate <NSObject>
+@optional
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView;
+- (void)streamWillDisappear;
+@end
 
 @interface VStreamTableViewController : VFetchedResultsTableViewController <VAnimation, VCreateSequenceDelegate>
 
-- (NSArray*)categoriesForOption:(NSUInteger)searchOption;
+- (NSArray*)sequenceCategories;
+- (VSequenceFilter*)currentFilter;
+- (NSString*)streamName;
 
-- (IBAction)showMenu;
+@property (nonatomic) VStreamFilter filterType;
 
 @property (strong, nonatomic) NSArray* repositionedCells;;
+@property (weak, nonatomic) id<VStreamTableDelegate> delegate;
 
 @end

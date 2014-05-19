@@ -2,7 +2,7 @@
 //  VSequenceFilter.m
 //  victorious
 //
-//  Created by Will Long on 4/24/14.
+//  Created by Will Long on 5/12/14.
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
@@ -12,10 +12,6 @@
 
 @implementation VSequenceFilter
 
-@dynamic filterAPIPath;
-@dynamic pageNumber;
-@dynamic perPageNumber;
-@dynamic maxPage;
 @dynamic sequences;
 
 @end

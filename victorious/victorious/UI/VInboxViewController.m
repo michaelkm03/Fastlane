@@ -51,6 +51,28 @@ static  NSString*   kNewsCellViewIdentifier       =   @"VNewsCell";
     self.headerView.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVAccentColor];
 }
 
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    
+    [self.navigationController setNavigationBarHidden:NO animated:YES];
+}
+
+- (BOOL)shouldAutorotate
+{
+    return NO;
+}
+
+- (NSUInteger)supportedInterfaceOrientations
+{
+    return UIInterfaceOrientationMaskPortrait;
+}
+
+- (BOOL)prefersStatusBarHidden
+{
+    return YES;
+}
+
 #pragma mark - Overrides
 
 - (NSFetchedResultsController *)makeFetchedResultsController
@@ -153,7 +175,7 @@ static  NSString*   kNewsCellViewIdentifier       =   @"VNewsCell";
     [self.sideMenuViewController presentMenuViewController];
 }
 
-- (IBAction)refreshAction:(id)sender
+- (IBAction)refresh:(UIRefreshControl *)sender
 {
     VFailBlock fail = ^(NSOperation* operation, NSError* error)
     {

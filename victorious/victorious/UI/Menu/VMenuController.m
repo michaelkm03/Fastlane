@@ -22,9 +22,13 @@
 #import "VHomeStreamViewController.h"
 #import "VOwnerStreamViewController.h"
 #import "VCommunityStreamViewController.h"
-#import "VProfileViewController.h"
+#import "VStreamContainerViewController.h"
+
+#import "VUserProfileViewController.h"
 #import "VSettingsViewController.h"
 #import "VInboxViewController.h"
+
+#import "VUserProfileViewController.h"
 
 NSString *const VMenuControllerDidSelectRowNotification = @"VMenuTableViewControllerDidSelectRowNotification";
 
@@ -84,7 +88,7 @@ NSString *const VMenuControllerDidSelectRowNotification = @"VMenuTableViewContro
 - (void)viewWillLayoutSubviews
 {
     [super viewWillLayoutSubviews];
-    //TODO: randomly got a malloc_error_break crash here.  Double check this once the featured view is complete.
+
     self.view.frame = self.view.superview.bounds;
 }
 
@@ -99,17 +103,17 @@ NSString *const VMenuControllerDidSelectRowNotification = @"VMenuTableViewContro
     switch (indexPath.row)
     {
         case VMenuRowHome:
-            navigationController.viewControllers = @[[VHomeStreamViewController sharedInstance]];
+            navigationController.viewControllers = @[[VStreamContainerViewController containerForStreamTable:[VHomeStreamViewController sharedInstance]]];
             [self.sideMenuViewController hideMenuViewController];
         break;
         
         case VMenuRowOwnerChannel:
-            navigationController.viewControllers = @[[VOwnerStreamViewController sharedInstance]];
+            navigationController.viewControllers = @[[VStreamContainerViewController containerForStreamTable:[VOwnerStreamViewController sharedInstance]]];
             [self.sideMenuViewController hideMenuViewController];
         break;
         
         case VMenuRowCommunityChannel:
-            navigationController.viewControllers = @[[VCommunityStreamViewController sharedInstance]];
+            navigationController.viewControllers = @[[VStreamContainerViewController containerForStreamTable:[VCommunityStreamViewController sharedInstance]]];
             [self.sideMenuViewController hideMenuViewController];
         break;
         
@@ -134,7 +138,7 @@ NSString *const VMenuControllerDidSelectRowNotification = @"VMenuTableViewContro
             }
             else
             {
-                navigationController.viewControllers = @[[VProfileViewController profileWithSelf]];
+                navigationController.viewControllers = @[[VUserProfileViewController userProfileWithSelf]];
                 [self.sideMenuViewController hideMenuViewController];
             }
         break;

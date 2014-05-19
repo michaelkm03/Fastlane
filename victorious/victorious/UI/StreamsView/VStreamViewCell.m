@@ -13,7 +13,7 @@
 #import "NSDate+timeSince.h"
 #import "VUser.h"
 
-#import "VProfileViewController.h"
+#import "VUserProfileViewController.h"
 
 #import "VSequence+Fetcher.h"
 #import "VNode+Fetcher.h"
@@ -75,8 +75,14 @@ NSString *kStreamsWillCommentNotification = @"kStreamsWillCommentNotification";
 
 - (void)contentExpired
 {
-    self.shadeView.backgroundColor = [UIColor whiteColor];
-    self.shadeView.alpha = .5f;
+//    self.shadeView.backgroundColor = [UIColor whiteColor];
+    self.previewImageView.alpha = .5f;
+}
+
+- (void)removeExpiredOverlay
+{
+//    self.shadeView.backgroundColor = [UIColor clearColor];
+    self.previewImageView.alpha = 1.0f;
 }
 
 - (void)layoutSubviews
@@ -89,9 +95,19 @@ NSString *kStreamsWillCommentNotification = @"kStreamsWillCommentNotification";
 {
     _sequence = sequence;
     
+    if ([sequence.status isEqualToString:kTemporaryContentStatus])
+    {
+        [self contentExpired];
+    }
+    else
+    {
+        [self removeExpiredOverlay];
+    }
+    
     [self.previewImageView setImageWithURL:[NSURL URLWithString:_sequence.previewImage]
                           placeholderImage:[UIImage resizeableImageWithColor:
-                                            [[VThemeManager sharedThemeManager] themedColorForKey:kVSecondaryAccentColor]]];
+                                            [[VThemeManager sharedThemeManager] themedColorForKey:kVBackgroundColor]]];
+
     [self.profileImageButton setImageWithURL:[NSURL URLWithString:self.sequence.user.pictureUrl]
                             placeholderImage:[UIImage imageNamed:@"profile_thumb"]
                                     forState:UIControlStateNormal];
@@ -105,8 +121,6 @@ NSString *kStreamsWillCommentNotification = @"kStreamsWillCommentNotification";
     self.descriptionLabel.text = self.sequence.name;
     self.dateLabel.text = [self.sequence.releasedAt timeSince];
     [self.commentButton setTitle:self.sequence.commentCount.stringValue forState:UIControlStateNormal];
-    
-    NSLog(@"Expiration date: %@", _sequence.expiresAt);
     
     if (_sequence.expiresAt)
     {
@@ -135,7 +149,7 @@ NSString *kStreamsWillCommentNotification = @"kStreamsWillCommentNotification";
 
 - (IBAction)profileButtonAction:(id)sender
 {
-    VProfileViewController* profileViewController = [VProfileViewController profileWithUserID:[self.sequence.createdBy integerValue]];
+    VUserProfileViewController* profileViewController = [VUserProfileViewController userProfileWithUser:self.sequence.user];
     [self.parentTableViewController.navigationController pushViewController:profileViewController animated:YES];
 }
 

@@ -39,10 +39,7 @@
         newConversation.user = userInContext;
     }
     
-    [newConversation.managedObjectContext performBlockAndWait:^
-     {
-         [newConversation.managedObjectContext save:nil];
-     }];
+    [newConversation.managedObjectContext saveToPersistentStore:nil];
     
     return newConversation;
 }
@@ -51,26 +48,6 @@
                                                        failBlock:(VFailBlock)fail
 {
     NSString* path = @"/api/message/conversation_list";
-    
-    //    TODO: waiting for pagination to work on backend
-    //    static NSString* kConversationPaginationKey = @"conversations";
-    //    __block VPaginationStatus* status = [self statusForKey:kConversationPaginationKey];
-    //    if([status isFullyLoaded])
-    //    {
-    //        return nil;
-    //    }
-    //
-    //    if (status.pagesLoaded) //only add page to the path if we've looked it up before.
-    //    {
-    //        path = [path stringByAppendingFormat:@"/0/%lu/%lu", status.pagesLoaded + 1, (unsigned long)status.itemsPerPage];
-    //    }
-    //
-    //    PaginationBlock pagination = ^(NSUInteger page_number, NSUInteger total_pages)
-    //    {
-    //        status.pagesLoaded = page_number;
-    //        status.totalPages = total_pages;
-    //        [self.paginationStatuses setObject:status forKey:kConversationPaginationKey];
-    //    };
     
     VSuccessBlock fullSuccess = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
     {
@@ -93,10 +70,7 @@
             context = conversation.managedObjectContext;
         }
         
-        [context performBlockAndWait:^
-         {
-            [context save:nil];
-         }];
+        [context saveToPersistentStore:nil];
         
         if ([nonExistantUsers count])
             [[VObjectManager sharedManager] fetchUsers:nonExistantUsers
@@ -120,27 +94,6 @@
 {
     NSString* path = [@"/api/message/conversation/" stringByAppendingString:conversation.remoteId.stringValue];
     
-//    TODO: waiting for pagination to work on backend
-//    NSString* statusKey = [NSString stringWithFormat:@"messagesFor%@", conversation.remoteId];
-//    
-//    __block VPaginationStatus* status = [self statusForKey:statusKey];
-//    if([status isFullyLoaded])
-//    {
-//        return nil;
-//    }
-//    
-//    if (status.pagesLoaded) //only add page to the path if we've looked it up before.
-//    {
-//        path = [path stringByAppendingFormat:@"/0/%lu/%lu", status.pagesLoaded + 1, (unsigned long)status.itemsPerPage];
-//    }
-//    
-//    PaginationBlock pagination = ^(NSUInteger page_number, NSUInteger total_pages)
-//    {
-//        status.pagesLoaded = page_number;
-//        status.totalPages = total_pages;
-//        [self.paginationStatuses setObject:status forKey:statusKey];
-//    };
-    
     VSuccessBlock fullSuccess = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
     {
         //TODO: send notif if we have new messages?
@@ -157,10 +110,7 @@
                 [nonExistantUsers addObject:message.senderUserId];
         }
         
-        [conversation.managedObjectContext performBlockAndWait:^
-         {
-             [conversation.managedObjectContext save:nil];
-         }];
+        [conversation.managedObjectContext saveToPersistentStore:nil];
         
         if ([nonExistantUsers count])
             [[VObjectManager sharedManager] fetchUsers:nonExistantUsers
@@ -192,8 +142,6 @@
 - (AFHTTPRequestOperation *)sendMessageToUser:(VUser*)user
                                      withText:(NSString*)text
                                      mediaURL:(NSURL*)mediaURL
-                               mediaExtension:(NSString*)extension
-                                     mediaUrl:(NSURL*)mediaUrl
                                  successBlock:(VSuccessBlock)success
                                     failBlock:(VFailBlock)fail
 {
@@ -201,15 +149,13 @@
     NSDictionary* parameters = @{@"to_user_id" : user.remoteId.stringValue ?: [NSNull null],
                                  @"text" : text ?: [NSNull null]
                                  };
-    NSDictionary *allURLs, *allExtensions;
-    if (mediaURL && extension)
+    NSDictionary *allURLs;
+    if (mediaURL)
     {
         allURLs = @{@"media_data":mediaURL};
-        allExtensions = @{@"media_data":extension};
     }
     
     return [self uploadURLs:allURLs
-             fileExtensions:allExtensions
                      toPath:@"/api/message/send"
                  parameters:parameters
                successBlock:success

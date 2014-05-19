@@ -61,40 +61,45 @@
     return mapping;
 }
 
-+ (RKResponseDescriptor*)sequenceListDescriptor
++ (NSArray*)descriptors
 {
-    return [RKResponseDescriptor responseDescriptorWithMapping:[VSequence entityMapping]
+    return @[ [RKResponseDescriptor responseDescriptorWithMapping:[VSequence entityMapping]
                                                         method:RKRequestMethodGET
                                                    pathPattern:@"/api/sequence/detail_list_by_category/:category"
                                                        keyPath:@"payload"
-                                                   statusCodes:RKStatusCodeIndexSetForClass(RKStatusCodeClassSuccessful)];
+                                                   statusCodes:RKStatusCodeIndexSetForClass(RKStatusCodeClassSuccessful)],
+            
+              [RKResponseDescriptor responseDescriptorWithMapping:[VSequence entityMapping]
+                                                           method:RKRequestMethodGET
+                                                      pathPattern:@"/api/sequence/detail_list_by_user/:userid/:page/:perpage"
+                                                          keyPath:@"payload"
+                                                      statusCodes:RKStatusCodeIndexSetForClass(RKStatusCodeClassSuccessful)],
+          
+              [RKResponseDescriptor responseDescriptorWithMapping:[VSequence entityMapping]
+                                                           method:RKRequestMethodGET
+                                                      pathPattern:@"/api/sequence/detail_list_by_category/:category/:page/:perpage"
+                                                          keyPath:@"payload"
+                                                      statusCodes:RKStatusCodeIndexSetForClass(RKStatusCodeClassSuccessful)],
+              
+              [RKResponseDescriptor responseDescriptorWithMapping:[VSequence entityMapping]
+                                                           method:RKRequestMethodGET
+                                                      pathPattern:@"/api/sequence/hot_detail_list_by_stream/:stream/:page/:perpage"
+                                                          keyPath:@"payload"
+                                                      statusCodes:RKStatusCodeIndexSetForClass(RKStatusCodeClassSuccessful)],
+              
+              [RKResponseDescriptor responseDescriptorWithMapping:[VSequence entityMapping]
+                                                           method:RKRequestMethodGET
+                                                      pathPattern:@"/api/sequence/follows_detail_list_by_stream/:userid/:stream/:page/:perpage"
+                                                          keyPath:@"payload"
+                                                      statusCodes:RKStatusCodeIndexSetForClass(RKStatusCodeClassSuccessful)],
+              
+              [RKResponseDescriptor responseDescriptorWithMapping:[VSequence entityMapping]
+                                                           method:RKRequestMethodGET
+                                                      pathPattern:@"/api/sequence/fetch/:sequence_id"
+                                                          keyPath:@"payload"
+                                                      statusCodes:RKStatusCodeIndexSetForClass(RKStatusCodeClassSuccessful)]
+              ];
 }
 
-+ (RKResponseDescriptor*)sequenceListByUserDescriptor
-{
-    return [RKResponseDescriptor responseDescriptorWithMapping:[VSequence entityMapping]
-                                                        method:RKRequestMethodGET
-                                                   pathPattern:@"/api/sequence/detail_list_by_user/:userid/:page/:perpage"
-                                                       keyPath:@"payload"
-                                                   statusCodes:RKStatusCodeIndexSetForClass(RKStatusCodeClassSuccessful)];
-}
-
-+ (RKResponseDescriptor*)sequenceListPaginationDescriptor
-{
-    return [RKResponseDescriptor responseDescriptorWithMapping:[VSequence entityMapping]
-                                                        method:RKRequestMethodGET
-                                                   pathPattern:@"/api/sequence/detail_list_by_category/:category/:page/:perpage"
-                                                       keyPath:@"payload"
-                                                   statusCodes:RKStatusCodeIndexSetForClass(RKStatusCodeClassSuccessful)];
-}
-
-+ (RKResponseDescriptor*)sequenceFullDataDescriptor
-{
-    return [RKResponseDescriptor responseDescriptorWithMapping:[VSequence entityMapping]
-                                                        method:RKRequestMethodGET
-                                                   pathPattern:@"/api/sequence/fetch/:sequence_id"
-                                                       keyPath:@"payload"
-                                                   statusCodes:RKStatusCodeIndexSetForClass(RKStatusCodeClassSuccessful)];
-}
 
 @end

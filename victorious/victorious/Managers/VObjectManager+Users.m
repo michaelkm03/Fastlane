@@ -14,7 +14,6 @@
 #import "VMessage+RestKit.h"
 #import "VSequence+RestKit.h"
 #import "VUser.h"
-#import "VUser+LoadFollowers.h"
 #import "VUser+RestKit.h"
 
 #import "VConstants.h"
@@ -143,48 +142,41 @@
     return nil;
 }
 
-- (RKManagedObjectRequestOperation *)listOfRecommendedFriendsWithSuccessBlock:(VSuccessBlock)success
-                                                                    failBlock:(VFailBlock)fail
-{
-    return nil;
-}
+#pragma mark - Following
 
 - (RKManagedObjectRequestOperation *)requestFollowListForUser:(VUser *)user
                                                  successBlock:(VSuccessBlock)success
                                                     failBlock:(VFailBlock)fail
 {
-    if (user.followingListLoading)
-    {
-        if (fail)
-        {
-            fail(nil, nil);
-        }
-        return nil;
-    }
-    
-    user.followingListLoading = YES;
     NSString *path = [NSString stringWithFormat:@"/api/follow/subscribed_to_list/%d", [user.remoteId intValue]];
     return [self GET:path
               object:nil
           parameters:nil
         successBlock:^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
     {
-        for (NSManagedObject *resultUser in resultObjects)
-        {
-            VUser *followUser = (VUser *)[user.managedObjectContext objectWithID:resultUser.objectID];
-            [user addFollowingObject:followUser];
-        }
-        
-        [user.managedObjectContext save:nil];
-    
-        user.followingListLoading = NO;
-        user.followingListLoaded = YES;
-        
         if (success)
         {
             success(operation, fullResponse, resultObjects);
         }
     }
+           failBlock:fail];
+}
+
+- (RKManagedObjectRequestOperation *)requestFollowerListForUser:(VUser *)user
+                                                   successBlock:(VSuccessBlock)success
+                                                      failBlock:(VFailBlock)fail
+{
+    NSString *path = [NSString stringWithFormat:@"/api/follow/followers_list/%d", [user.remoteId intValue]];
+    return [self GET:path
+              object:nil
+          parameters:nil
+        successBlock:^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
+            {
+                if (success)
+                {
+                    success(operation, fullResponse, resultObjects);
+                }
+            }
            failBlock:fail];
 }
 
@@ -196,16 +188,12 @@
     
     VSuccessBlock fullSuccess = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
     {
-        if (![[fullResponse objectForKey:@"error"] integerValue])
-        {
-            [self.mainUser addFollowingObject:user];
-            [self.mainUser.managedObjectContext save:nil];
-        }
         if (success)
         {
             success(operation, fullResponse, resultObjects);
         }
     };
+    
     return [self POST:@"/api/follow/add"
                object:nil
            parameters:parameters
@@ -221,25 +209,67 @@
     
     VSuccessBlock fullSuccess = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
     {
-        if (![[fullResponse objectForKey:@"error"] integerValue])
-        {
-            VUser *followedUser = [[self.mainUser.following filteredSetUsingPredicate:[NSPredicate predicateWithFormat:@"remoteId=%d", [user.remoteId intValue]]] anyObject];
-            if (followedUser)
-            {
-                [self.mainUser removeFollowingObject:followedUser];
-                [self.mainUser.managedObjectContext save:nil];
-            }
-        }
         if (success)
         {
             success(operation, fullResponse, resultObjects);
         }
     };
+    
     return [self POST:@"/api/follow/remove"
                object:nil
            parameters:parameters
          successBlock:fullSuccess
             failBlock:fail];
+}
+
+- (RKManagedObjectRequestOperation *)countOfFollowsForUser:(VUser *)user
+                                              successBlock:(VSuccessBlock)success
+                                                 failBlock:(VFailBlock)fail
+{
+    VSuccessBlock fullSuccess = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
+    {
+        if (success)
+        {
+            NSArray* results = @[fullResponse[@"payload"][@"followers"], fullResponse[@"payload"][@"subscribed_to"]];
+            
+            if (success)
+                success(operation, fullResponse, results);
+        }
+    };
+
+    return [self GET:[NSString stringWithFormat:@"/api/follow/counts/%d", [user.remoteId intValue]]
+               object:nil
+           parameters:nil
+         successBlock:fullSuccess
+            failBlock:fail];
+}
+
+- (RKManagedObjectRequestOperation *)isUser:(VUser *)follower
+                                  following:(VUser *)user
+                               successBlock:(VSuccessBlock)success
+                                  failBlock:(VFailBlock)fail
+{
+    VSuccessBlock fullSuccess = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
+    {
+        NSArray*    results = @[fullResponse[@"payload"][@"relationship_exists"]];
+        
+        if (success)
+            success(operation, fullResponse, results);
+    };
+    
+    return [self GET:[NSString stringWithFormat:@"/api/follow/is_follower/%d/%d", [follower.remoteId integerValue], [user.remoteId integerValue]]
+              object:nil
+          parameters:nil
+        successBlock:fullSuccess
+           failBlock:fail];
+}
+
+#pragma mark - Friends
+
+- (RKManagedObjectRequestOperation *)listOfRecommendedFriendsWithSuccessBlock:(VSuccessBlock)success
+                                                                    failBlock:(VFailBlock)fail
+{
+    return nil;
 }
 
 - (RKManagedObjectRequestOperation *)inviteFriends:(NSArray*)friendIDs
@@ -250,6 +280,7 @@
 }
 
 #pragma mark - helpers
+
 - (NSArray*)objectsForEntity:(NSString*)entityName
                    userIdKey:(NSString*)idKey
                       userId:(NSNumber*)userId

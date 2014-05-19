@@ -13,7 +13,6 @@ extern NSString *kLoggedInChangedNotification;
 @interface VObjectManager (Login)
 
 @property (nonatomic, readonly, getter = isAuthorized)  BOOL    authorized;
-@property (nonatomic, readonly, getter = isOwner)       BOOL    owner;
 
 - (RKManagedObjectRequestOperation *)appInitWithSuccessBlock:(VSuccessBlock)success
                                                    failBlock:(VFailBlock)failed;
@@ -51,7 +50,7 @@ extern NSString *kLoggedInChangedNotification;
 
 - (AFHTTPRequestOperation *)updateVictoriousWithEmail:(NSString *)email
                                              password:(NSString *)password
-                                             username:(NSString *)username
+                                                 name:(NSString *)name
                                       profileImageURL:(NSURL *)profileImageURL
                                              location:(NSString *)location
                                               tagline:(NSString *)tagline

@@ -98,6 +98,9 @@
         _resultLabel.textColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVMainTextColor];
         _resultLabel.textAlignment = NSTextAlignmentCenter;
         _resultLabel.minimumScaleFactor = .5f;
+        _resultLabel.adjustsFontSizeToFitWidth = YES;
+        _resultLabel.minimumScaleFactor = .75f;
+        
         [self insertSubview:_resultLabel aboveSubview:self.resultArrow];
     }
     
@@ -144,7 +147,6 @@
         CGRect frame = _resultLabel.frame;
         frame.origin.y = self.resultArrow.frame.origin.y + self.resultArrow.image.capInsets.top;
         _resultLabel.frame = frame;
-        VLog(@"result frame: %@", NSStringFromCGRect(_resultLabel.frame));
         
     }
     else

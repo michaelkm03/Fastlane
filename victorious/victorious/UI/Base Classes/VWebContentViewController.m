@@ -52,6 +52,21 @@
     [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 }
 
+- (BOOL)shouldAutorotate
+{
+    return NO;
+}
+
+- (NSUInteger)supportedInterfaceOrientations
+{
+    return UIInterfaceOrientationMaskPortrait;
+}
+
+- (BOOL)prefersStatusBarHidden
+{
+    return YES;
+}
+
 @end
 
 

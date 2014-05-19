@@ -8,6 +8,7 @@
 
 #import "VCommentToStreamAnimator.h"
 
+#import "VStreamContainerViewController.h"
 #import "VStreamTableViewController.h"
 #import "VCommentsContainerViewController.h"
 
@@ -22,16 +23,21 @@
 - (void)animateTransition:(id<UIViewControllerContextTransitioning>)context
 {
     VCommentsContainerViewController *commentsContainer = (VCommentsContainerViewController*)[context viewControllerForKey:UITransitionContextFromViewControllerKey];
-    VStreamTableViewController *streamVC = (VStreamTableViewController*)[context viewControllerForKey:UITransitionContextToViewControllerKey];
+    VStreamContainerViewController* container = (VStreamContainerViewController*)[context viewControllerForKey:UITransitionContextToViewControllerKey];
+    VStreamTableViewController *streamVC = container.streamTable;
     commentsContainer.view.userInteractionEnabled = NO;
     streamVC.view.userInteractionEnabled = NO;
     
-    [commentsContainer animateOutWithDuration:.25f
+    [commentsContainer animateOutWithDuration:.2f
                                    completion:^(BOOL finished)
      {
-         [[context containerView] addSubview:streamVC.view];
-      
-         [streamVC animateInWithDuration:.4f completion:^(BOOL finished)
+         [[context containerView] addSubview:container.view];
+         
+         [UIView animateWithDuration:.6f animations:^
+          {
+              [container showHeader];
+          }];
+         [streamVC animateInWithDuration:.6f completion:^(BOOL finished)
           {
               commentsContainer.view.userInteractionEnabled = YES;
               streamVC.view.userInteractionEnabled = YES;

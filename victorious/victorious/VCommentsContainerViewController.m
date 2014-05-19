@@ -12,10 +12,10 @@
 #import "VSequence+Fetcher.h"
 #import "VUser.h"
 #import "VConstants.h"
-#import "VObjectManager+Comment.h"
+#import "VObjectManager+ContentCreation.h"
 #import "UIImageView+Blurring.h"
 #import "UIImage+ImageCreation.h"
-#import "VStreamTableViewController.h"
+#import "VStreamContainerViewController.h"
 #import "VContentViewController.h"
 
 #import "VCommentToContentAnimator.h"
@@ -99,6 +99,11 @@
     }
 }
 
+- (BOOL)prefersStatusBarHidden
+{
+    return YES;
+}
+
 - (UITableViewController *)conversationTableViewController
 {
     if(_conversationTableViewController == nil)
@@ -123,7 +128,7 @@
 
 #pragma mark - VKeyboardBarDelegate
 
-- (void)keyboardBar:(VKeyboardBarViewController *)keyboardBar didComposeWithText:(NSString *)text mediaURL:(NSURL *)mediaURL mediaExtension:(NSString *)mediaExtension
+- (void)keyboardBar:(VKeyboardBarViewController *)keyboardBar didComposeWithText:(NSString *)text mediaURL:(NSURL *)mediaURL
 {
     __block UIActivityIndicatorView *indicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
     indicator.frame = CGRectMake(0, 0, 24, 24);
@@ -140,13 +145,17 @@
         [indicator stopAnimating];
         [[NSFileManager defaultManager] removeItemAtURL:urlToRemove error:nil];
         
+        self.sequence.commentCount = @(self.sequence.commentCount.integerValue + 1);
+        [self.sequence.managedObjectContext saveToPersistentStore:nil];
+        
         [(VCommentsTableViewController *)self.conversationTableViewController sortComments];
     };
+    
     VFailBlock fail = ^(NSOperation* operation, NSError* error)
     {
         [[NSFileManager defaultManager] removeItemAtURL:urlToRemove error:nil];
         
-        if (error.code == 5500)
+        if (error.code == kVStillTranscodingError)
         {
             NSLog(@"%@", error);
             [indicator stopAnimating];
@@ -162,11 +171,8 @@
         [indicator stopAnimating];
     };
 
-    
     [[VObjectManager sharedManager] addCommentWithText:text
                                               mediaURL:mediaURL
-                                        mediaExtension:mediaExtension
-                                              mediaUrl:nil
                                             toSequence:_sequence
                                              andParent:nil
                                           successBlock:success
@@ -190,7 +196,7 @@
         return animator;
     }
     else if (operation == UINavigationControllerOperationPop
-             && [toVC isKindOfClass:[VStreamTableViewController class]])
+             && [toVC isKindOfClass:[VStreamContainerViewController class]])
     {
         VCommentToStreamAnimator* animator = [[VCommentToStreamAnimator alloc] init];
         return animator;

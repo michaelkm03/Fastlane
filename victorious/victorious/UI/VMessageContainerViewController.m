@@ -30,6 +30,11 @@
     self.navigationItem.title = [@"@" stringByAppendingString:messageVC.conversation.user.name];
 }
 
+- (BOOL)prefersStatusBarHidden
+{
+    return YES;
+}
+
 - (UITableViewController *)conversationTableViewController
 {
     if(_conversationTableViewController == nil)
@@ -42,7 +47,7 @@
     return _conversationTableViewController;
 }
 
-- (void)keyboardBar:(VKeyboardBarViewController *)keyboardBar didComposeWithText:(NSString *)text mediaURL:(NSURL *)mediaURL mediaExtension:(NSString *)mediaExtension
+- (void)keyboardBar:(VKeyboardBarViewController *)keyboardBar didComposeWithText:(NSString *)text mediaURL:(NSURL *)mediaURL
 {
     
     __block NSURL* urlToRemove = mediaURL;
@@ -52,18 +57,11 @@
         [[NSFileManager defaultManager] removeItemAtURL:urlToRemove error:nil];
         
         NSDictionary* payload = fullResponse[@"payload"];
-        if (![payload isKindOfClass:[NSDictionary class]])
-        {
-            payload = nil;
-        }
         
         if (!self.conversation.remoteId)
         {
             self.conversation.remoteId = payload[@"conversation_id"];
-            [self.conversation.managedObjectContext performBlockAndWait:^
-             {
-                 [self.conversation.managedObjectContext save:nil];
-             }];
+            [self.conversation.managedObjectContext saveToPersistentStore:nil];
         }
         
         [(VMessageViewController *)self.conversationTableViewController refresh];
@@ -74,8 +72,6 @@
     [[VObjectManager sharedManager] sendMessageToUser:self.conversation.user
                                              withText:text
                                              mediaURL:mediaURL
-                                       mediaExtension:mediaExtension
-                                             mediaUrl:nil
                                          successBlock:success
                                             failBlock:^(NSOperation* operation, NSError* error)
      {

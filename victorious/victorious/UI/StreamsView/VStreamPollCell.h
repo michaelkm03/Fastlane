@@ -10,7 +10,6 @@
 #import "VStreamViewCell.h"
 #import "VBadgeLabel.h"
 
-static NSString *kStreamPollCellIdentifier = @"VStreamPollCell";
 static NSString *kStreamDoublePollCellIdentifier = @"VStreamDoublePollCell";
 
 @interface VStreamPollCell : VStreamViewCell

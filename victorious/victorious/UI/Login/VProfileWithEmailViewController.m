@@ -28,12 +28,23 @@
     
     [self.usernameTextField becomeFirstResponder];
 
-    if ([CLLocationManager locationServicesEnabled])
+    if ([CLLocationManager locationServicesEnabled] && [CLLocationManager significantLocationChangeMonitoringAvailable])
     {
         self.locationManager = [[CLLocationManager alloc] init];
         self.locationManager.delegate = self;
-        [self.locationManager startMonitoringSignificantLocationChanges];
     }
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    [self.locationManager startMonitoringSignificantLocationChanges];
+}
+
+- (void)viewDidDisappear:(BOOL)animated
+{
+    [super viewDidDisappear:animated];
+    [self.locationManager  stopMonitoringSignificantLocationChanges];
 }
 
 #pragma mark - Actions
@@ -43,7 +54,7 @@
     
     [[VObjectManager sharedManager] updateVictoriousWithEmail:nil
                                                      password:nil
-                                                     username:self.usernameTextField.text
+                                                         name:self.usernameTextField.text
                                               profileImageURL:nil
                                                      location:self.locationTextField.text
                                                       tagline:self.taglineTextView.text
@@ -72,8 +83,12 @@
     [self.geoCoder reverseGeocodeLocation:location completionHandler:^(NSArray *placemarks, NSError *error)
     {
         CLPlacemark*    mapLocation = [placemarks firstObject];
-        self.locationTextField.text = ABCreateStringWithAddressDictionary(mapLocation.addressDictionary, YES);
-        self.geoCoder = nil;
+        NSDictionary*   locationDictionary = @{
+                                               (__bridge NSString *)kABPersonAddressCityKey : mapLocation.locality,
+                                               (__bridge NSString *)kABPersonAddressStateKey : mapLocation.administrativeArea,
+                                               (__bridge NSString *)kABPersonAddressCountryCodeKey : [[NSLocale autoupdatingCurrentLocale] objectForKey:NSLocaleCountryCode]
+                                               };
+        self.locationTextField.text = ABCreateStringWithAddressDictionary(locationDictionary, NO);
     }];
 }
 
