@@ -17,6 +17,7 @@
 #import "VUser+RestKit.h"
 #import "UIImageView+Blurring.h"
 #import "UIImage+ImageEffects.h"
+#import "VConstants.h"
 
 const   CGFloat     kMessageRowWithMediaHeight  =   280.0;
 const   CGFloat     kMessageRowHeight           =   80;
@@ -32,9 +33,16 @@ const   CGFloat     kMessageRowHeight           =   80;
     [super viewDidLoad];
     
     UIImageView* backgroundImageView = [[UIImageView alloc] initWithFrame:self.tableView.backgroundView.frame];
+
+    UIImage*    defaultBackgroundImage;
+    if (IS_IPHONE_5)
+        defaultBackgroundImage = [[[VThemeManager sharedThemeManager] themedImageForKey:kVMenuBackgroundImage5] applyLightEffect];
+    else
+        defaultBackgroundImage = [[[VThemeManager sharedThemeManager] themedImageForKey:kVMenuBackgroundImage] applyLightEffect];
+    
     [backgroundImageView setBlurredImageWithURL:[NSURL URLWithString:self.conversation.user.pictureUrl]
-                               placeholderImage:[UIImage imageNamed:@"profile_thumb"]
-                                      tintColor:[UIColor darkGrayColor]];
+                                    placeholderImage:defaultBackgroundImage
+                                           tintColor:[UIColor colorWithWhite:0.0 alpha:0.5]];
     
     self.tableView.backgroundView = backgroundImageView;
     

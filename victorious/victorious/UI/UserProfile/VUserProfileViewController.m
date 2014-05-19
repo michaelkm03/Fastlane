@@ -88,7 +88,7 @@ const   CGFloat kVNavigationBarHeight = 44.0;
     if (self.isMe)
         self.navigationItem.title = NSLocalizedString(@"me", "");
     else
-        self.navigationItem.title = [@"@" stringByAppendingString:self.profile.name];
+        self.navigationItem.title = self.profile.name ? [@"@" stringByAppendingString:self.profile.name] : @"Profile";
     
     [super viewDidLoad];
     
@@ -115,7 +115,7 @@ const   CGFloat kVNavigationBarHeight = 44.0;
 
 - (void)dealloc
 {
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:kLoggedInChangedNotification object:nil];    
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:kLoggedInChangedNotification object:nil];
 }
 
 #pragma mark - Accessors

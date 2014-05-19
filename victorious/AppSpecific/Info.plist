@@ -91,7 +91,7 @@
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
 	<key>VictoriousAppID</key>
-	<integer>1</integer>
+	<integer>2</integer>
 	<key>VictoriousServerEnvironment</key>
 	<string>${DefaultEnvironment}</string>
 	<key>ProductPrefix</key>
