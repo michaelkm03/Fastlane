@@ -14,6 +14,16 @@
 
 static NSString * const kSearchResultCellReuseIdentifier = @"kSearchResultCellReuseIdentifier";
 
+@interface VImageSearchViewController ()
+
+@property (nonatomic, weak) IBOutlet UITextField        *searchField;
+@property (nonatomic, weak) IBOutlet UICollectionView   *collectionView;
+@property (nonatomic, weak) IBOutlet NSLayoutConstraint *hrHeightConstraint;
+
+- (IBAction)closeButtonTapped:(id)sender;
+
+@end
+
 @implementation VImageSearchViewController
 {
     VImageSearchDataSource  *_dataSource;
@@ -62,9 +72,9 @@ static NSString * const kSearchResultCellReuseIdentifier = @"kSearchResultCellRe
 
 - (IBAction)closeButtonTapped:(id)sender
 {
-    if ([self.delegate respondsToSelector:@selector(imageSearchDidCancel:)])
+    if (self.completionBlock)
     {
-        [self.delegate imageSearchDidCancel:self];
+        self.completionBlock(NO, nil, nil);
     }
 }
 
@@ -114,9 +124,9 @@ static NSString * const kSearchResultCellReuseIdentifier = @"kSearchResultCellRe
             __typeof(self) strongSelf = weakSelf;
             if (strongSelf)
             {
-                if ([strongSelf->_delegate respondsToSelector:@selector(imageSearch:didFinishPickingImage:)])
+                if (strongSelf.completionBlock)
                 {
-                    [strongSelf->_delegate imageSearch:strongSelf didFinishPickingImage:image];
+                    strongSelf.completionBlock(YES, image, nil);
                 }
                 [strongSelf.collectionView deselectItemAtIndexPath:indexPath animated:YES];
             }

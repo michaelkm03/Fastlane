@@ -7,29 +7,17 @@
 //
 
 #import "VImageSearchDataSource.h"
+#import "VMediaPreviewViewController.h"
 
 #import <UIKit/UIKit.h>
 
-@class VImageSearchViewController;
-
-@protocol VImageSearchViewControllerDelegate <NSObject>
-@optional
-
-- (void)imageSearchDidCancel:(VImageSearchViewController *)imageSearch;
-- (void)imageSearch:(VImageSearchViewController *)imageSearch didFinishPickingImage:(UIImage *)image;
-
-@end
-
+/**
+ Displays an interface for searching and downloading images online.
+ */
 @interface VImageSearchViewController : UIViewController <UICollectionViewDelegate, UITextFieldDelegate, VImageSearchDataDelegate>
 
-@property (nonatomic, weak) id<VImageSearchViewControllerDelegate> delegate;
-
-@property (nonatomic, weak) IBOutlet UITextField        *searchField;
-@property (nonatomic, weak) IBOutlet UICollectionView   *collectionView;
-@property (nonatomic, weak) IBOutlet NSLayoutConstraint *hrHeightConstraint;
+@property (nonatomic, copy) VMediaCaptureCompletion completionBlock; ///< Will be called when the user has either selected an image or asked to cancel
 
 + (instancetype)newImageSearchViewController;
-
-- (IBAction)closeButtonTapped:(id)sender;
 
 @end
