@@ -123,8 +123,7 @@ const   CGFloat     kMessageRowHeight           =   80;
         cell = [tableView dequeueReusableCellWithIdentifier:kMessageCellIdentifier forIndexPath:indexPath];
     }
     
-#warning replace with message cell
-//    [(VCommentCell *)cell setCommentOrMessage:aMessage];
+    [(VMessageCell *)cell setMessage:aMessage];
     
     [cell setNeedsDisplay];
     [cell layoutIfNeeded];
