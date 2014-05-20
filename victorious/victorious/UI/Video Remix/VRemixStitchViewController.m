@@ -8,7 +8,7 @@
 
 #import "VRemixStitchViewController.h"
 #import "VCameraPublishViewController.h"
-#import "VCVideoPlayerView.h"
+#import "VCVideoPlayerViewController.h"
 #import "VThemeManager.h"
 #import "VConstants.h"
 #import "UIView+Masking.h"

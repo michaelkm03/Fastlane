@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="5056" systemVersion="13C1021" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="114-OG-c2P">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="5056" systemVersion="13D65" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="114-OG-c2P">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3733"/>
     </dependencies>
@@ -31,7 +31,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="1j4-RX-jZf" customClass="VCVideoPlayerView">
+                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="1j4-RX-jZf" userLabel="Preview Parent View">
                                 <rect key="frame" x="0.0" y="115" width="320" height="320"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                             </view>
@@ -102,7 +102,7 @@
                         <outlet property="instructionsText" destination="Y2Z-7b-JsE" id="1lQ-X2-Tc3"/>
                         <outlet property="playButton" destination="RjN-vu-MGb" id="AhQ-Z7-0DX"/>
                         <outlet property="playCircle" destination="4qQ-50-2PX" id="dpu-Xq-vUb"/>
-                        <outlet property="previewView" destination="1j4-RX-jZf" id="fxk-mP-qZX"/>
+                        <outlet property="previewParentView" destination="1j4-RX-jZf" id="bFa-4w-p28"/>
                         <outlet property="scrubber" destination="34Z-zI-nC7" id="M3A-rh-W0x"/>
                         <outlet property="startRemixButton" destination="7cq-1s-ji5" id="jlN-Fj-DUn"/>
                         <outlet property="totalTimeLabel" destination="QkP-0U-sWi" id="33d-oI-gEi"/>
@@ -125,7 +125,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="gBV-EL-ryr" customClass="VCVideoPlayerView">
+                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="gBV-EL-ryr" userLabel="Preview Parent View">
                                 <rect key="frame" x="0.0" y="99" width="320" height="320"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                             </view>
@@ -210,7 +210,7 @@
                         <outlet property="muteButton" destination="ZUq-H7-oEO" id="BuQ-qa-Q7u"/>
                         <outlet property="playButton" destination="ucr-Hp-JfF" id="HLc-ML-nor"/>
                         <outlet property="playCircle" destination="YQI-ac-uh8" id="FzX-0t-057"/>
-                        <outlet property="previewView" destination="gBV-EL-ryr" id="sjh-7v-8nW"/>
+                        <outlet property="previewParentView" destination="gBV-EL-ryr" id="iBS-qW-W16"/>
                         <outlet property="rateButton" destination="CN3-BV-WkM" id="hAH-ah-h7p"/>
                         <outlet property="scrubber" destination="s7A-U9-bCy" id="mVf-Em-nKC"/>
                         <outlet property="totalTimeLabel" destination="Zdh-uA-88a" id="gVT-83-Qte"/>
@@ -234,7 +234,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="5C1-bS-FtL" customClass="VCVideoPlayerView">
+                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="5C1-bS-FtL" userLabel="Preview Parent View">
                                 <rect key="frame" x="0.0" y="99" width="320" height="320"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                             </view>
@@ -306,7 +306,7 @@
                         <outlet property="muteButton" destination="Oad-Gb-wYK" id="Put-Mn-cwc"/>
                         <outlet property="playButton" destination="Ele-xw-w6U" id="kRP-WJ-lc2"/>
                         <outlet property="playCircle" destination="ykO-ox-Rir" id="RRs-zT-dbC"/>
-                        <outlet property="previewView" destination="5C1-bS-FtL" id="lXY-rh-S9c"/>
+                        <outlet property="previewParentView" destination="5C1-bS-FtL" id="zRX-uo-mji"/>
                         <outlet property="rateButton" destination="AJB-sl-S4A" id="fuY-hg-AIT"/>
                         <outlet property="thumbnail" destination="0ry-6h-dSb" id="uzo-Td-SiA"/>
                     </connections>

@@ -1,13 +1,13 @@
 //
-//  VCVideoPlayerView
+//  VCVideoPlayerViewController.m
 //
 
 #import "VCVideoPlayerToolbarView.h"
-#import "VCVideoPlayerView.h"
+#import "VCVideoPlayerViewController.h"
 #import "VElapsedTimeFormatter.h"
 #import "VVideoDownloadProgressIndicatorView.h"
 
-@interface VCVideoPlayerView ()
+@interface VCVideoPlayerViewController ()
 
 @property (nonatomic, weak)   VCVideoPlayerToolbarView *toolbarView;
 @property (nonatomic, weak)   UITapGestureRecognizer   *videoFrameTapGesture;
@@ -29,83 +29,26 @@ static const CGFloat        kToolbarHeight            = 41.0f;
 static const NSTimeInterval kToolbarHideDelay         =  5.0;
 static const NSTimeInterval kToolbarAnimationDuration =  0.2;
 
-static __weak VCVideoPlayerView *_currentPlayer = nil;
+static __weak VCVideoPlayerViewController *_currentPlayer = nil;
 
-@implementation VCVideoPlayerView
+@implementation VCVideoPlayerViewController
 {
     UIView * _loadingView;
 }
 
-+ (VCVideoPlayerView *)currentPlayer
++ (VCVideoPlayerViewController *)currentPlayer
 {
     return _currentPlayer;
 }
 
-- (instancetype)initWithFrame:(CGRect)frame
+- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
-    self = [super initWithFrame:frame];
+    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self)
     {
-        [self commonInit];
+        self.shouldShowToolbar = YES;
     }
-
     return self;
-}
-
-- (id)initWithCoder:(NSCoder *)aDecoder
-{
-    self = [super initWithCoder:aDecoder];
-    if (self)
-    {
-        [self commonInit];
-    }
-
-    return self;
-}
-
-- (void)commonInit
-{
-    _player = [[AVPlayer alloc] init];
-    self.playerLayer = [AVPlayerLayer playerLayerWithPlayer:self.player];
-    self.playerLayer.videoGravity = AVLayerVideoGravityResizeAspectFill;
-    [self.layer addSublayer:self.playerLayer];
-    [self.player addObserver:self
-                  forKeyPath:NSStringFromSelector(@selector(currentItem))
-                     options:(NSKeyValueObservingOptionInitial | NSKeyValueObservingOptionNew)
-                     context:NULL];
-    [self.player addObserver:self
-                  forKeyPath:NSStringFromSelector(@selector(rate))
-                     options:(NSKeyValueObservingOptionOld | NSKeyValueObservingOptionNew)
-                     context:NULL];
-
-    __weak VCVideoPlayerView *weakSelf = self;
-    self.timeObserver = [self.player addPeriodicTimeObserverForInterval:CMTimeMake(1, 24)
-                                                                  queue:dispatch_get_main_queue()
-                                                             usingBlock:^(CMTime time)
-    {
-        [weakSelf didPlayToTime:time];
-    }];
-
-    VCVideoPlayerToolbarView *toolbarView = [VCVideoPlayerToolbarView toolbarFromNibWithOwner:self];
-    toolbarView.frame = CGRectMake(0.0f, CGRectGetMaxY(self.bounds) - kToolbarHeight, CGRectGetWidth(self.bounds), kToolbarHeight);
-    toolbarView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleTopMargin;
-    [self addSubview:toolbarView];
-    self.toolbarView = toolbarView;
-    
-    self.clipsToBounds = YES;
-    self.shouldLoop = NO;
-    self.startTime = CMTimeMakeWithSeconds(0, 1);
-    self.shouldShowToolbar = YES;
-    
-    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(videoFrameTapped:)];
-    [self addGestureRecognizer:tap];
-    self.videoFrameTapGesture = tap;
-    
-    self.timeFormatter = [[VElapsedTimeFormatter alloc] init];
-    self.toolbarView.elapsedTimeLabel.text = [self.timeFormatter stringForCMTime:kCMTimeInvalid];
-    self.toolbarView.remainingTimeLabel.text = [self.timeFormatter stringForCMTime:kCMTimeInvalid];
-    
-    self.overlayView = [[UIView alloc] init];
 }
 
 - (void)dealloc
@@ -116,16 +59,103 @@ static __weak VCVideoPlayerView *_currentPlayer = nil;
     [_player removeTimeObserver:_timeObserver]; _timeObserver = nil;
 }
 
-- (void)layoutSubviews
+#pragma mark - View Lifecycle
+
+- (void)loadView
 {
-    [super layoutSubviews];
-    self.playerLayer.frame = self.layer.bounds;
+    self.view = [[UIView alloc] init];
+    self.view.clipsToBounds = YES;
+
+    self.player = [[AVPlayer alloc] init];
+    self.playerLayer = [AVPlayerLayer playerLayerWithPlayer:self.player];
+    self.playerLayer.videoGravity = AVLayerVideoGravityResizeAspectFill;
+    [self.view.layer addSublayer:self.playerLayer];
+    [self.player addObserver:self
+                  forKeyPath:NSStringFromSelector(@selector(currentItem))
+                     options:(NSKeyValueObservingOptionInitial | NSKeyValueObservingOptionNew)
+                     context:NULL];
+    [self.player addObserver:self
+                  forKeyPath:NSStringFromSelector(@selector(rate))
+                     options:(NSKeyValueObservingOptionOld | NSKeyValueObservingOptionNew)
+                     context:NULL];
+    
+    VCVideoPlayerViewController * __weak weakSelf = self;
+    self.timeObserver = [self.player addPeriodicTimeObserverForInterval:CMTimeMake(1, 24)
+                                                                  queue:dispatch_get_main_queue()
+                                                             usingBlock:^(CMTime time)
+    {
+        [weakSelf didPlayToTime:time];
+    }];
+
+    VCVideoPlayerToolbarView *toolbarView = [VCVideoPlayerToolbarView toolbarFromNibWithOwner:self];
+    toolbarView.translatesAutoresizingMaskIntoConstraints = NO;
+    [self.view addSubview:toolbarView];
+    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[toolbarView(==toolbarHeight)]|"
+                                                                      options:0
+                                                                      metrics:@{ @"toolbarHeight": @(kToolbarHeight) }
+                                                                        views:NSDictionaryOfVariableBindings(toolbarView)]];
+    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[toolbarView]|"
+                                                                      options:0
+                                                                      metrics:nil
+                                                                        views:NSDictionaryOfVariableBindings(toolbarView)]];
+    self.toolbarView = toolbarView;
+    
+    self.shouldLoop = NO;
+    self.startTime = CMTimeMakeWithSeconds(0, 1);
+    
+    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(videoFrameTapped:)];
+    [self.view addGestureRecognizer:tap];
+    self.videoFrameTapGesture = tap;
+    
+    self.timeFormatter = [[VElapsedTimeFormatter alloc] init];
+    self.toolbarView.elapsedTimeLabel.text = [self.timeFormatter stringForCMTime:kCMTimeInvalid];
+    self.toolbarView.remainingTimeLabel.text = [self.timeFormatter stringForCMTime:kCMTimeInvalid];
+    
+    self.overlayView = [[UIView alloc] init];
+    
+    [self updateViewForShowToolbarValue];
+
+    if (self.itemURL)
+    {
+        [self _setItemURL:self.itemURL withLoopCount:self.loopCount];
+    }
+}
+
+- (void)viewDidLayoutSubviews
+{
+    self.playerLayer.frame = self.view.layer.bounds;
+}
+
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+    [self.player pause];
+}
+
+#pragma mark - Properties
+
+- (void)setPlayer:(AVPlayer *)player
+{
+    _player = player;
 }
 
 - (void)setItemURL:(NSURL *)itemURL withLoopCount:(NSUInteger)loopCount
 {
     _itemURL = itemURL;
+    _loopCount = loopCount;
+    if ([self isViewLoaded])
+    {
+        [self _setItemURL:itemURL withLoopCount:loopCount];
+    }
+}
 
+- (void)setItemURL:(NSURL *)itemURL
+{
+    [self setItemURL:itemURL withLoopCount:1];
+}
+
+- (void)_setItemURL:(NSURL *)itemURL withLoopCount:(NSUInteger)loopCount
+{
     AVAsset *asset = [AVURLAsset assetWithURL:itemURL];
     AVPlayerItem *playerItem;
 
@@ -155,13 +185,6 @@ static __weak VCVideoPlayerView *_currentPlayer = nil;
     
     [self.player replaceCurrentItemWithPlayerItem:playerItem];
 }
-
-- (void)setItemURL:(NSURL *)itemURL
-{
-    [self setItemURL:itemURL withLoopCount:1];
-}
-
-#pragma mark - Properties
 
 - (void)setShouldLoop:(BOOL)shouldLoop
 {
@@ -209,8 +232,16 @@ static __weak VCVideoPlayerView *_currentPlayer = nil;
 - (void)setShouldShowToolbar:(BOOL)shouldShowToolbar
 {
     _shouldShowToolbar = shouldShowToolbar;
-    self.toolbarView.hidden = !shouldShowToolbar;
-    self.videoFrameTapGesture.enabled = shouldShowToolbar;
+    if ([self isViewLoaded])
+    {
+        [self updateViewForShowToolbarValue];
+    }
+}
+
+- (void)updateViewForShowToolbarValue
+{
+    self.toolbarView.hidden = !self.shouldShowToolbar;
+    self.videoFrameTapGesture.enabled = self.shouldShowToolbar;
 }
 
 - (void)setOverlayView:(UIView *)overlayView
@@ -221,15 +252,15 @@ static __weak VCVideoPlayerView *_currentPlayer = nil;
     }
     _overlayView = overlayView;
     _overlayView.translatesAutoresizingMaskIntoConstraints = NO;
-    [self insertSubview:_overlayView belowSubview:self.toolbarView];
-    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[overlayView]|"
-                                                                 options:0
-                                                                 metrics:nil
-                                                                   views:NSDictionaryOfVariableBindings(overlayView)]];
-    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[overlayView]|"
-                                                                 options:0
-                                                                 metrics:nil
-                                                                   views:NSDictionaryOfVariableBindings(overlayView)]];
+    [self.view insertSubview:_overlayView belowSubview:self.toolbarView];
+    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[overlayView]|"
+                                                                      options:0
+                                                                      metrics:nil
+                                                                        views:NSDictionaryOfVariableBindings(overlayView)]];
+    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[overlayView]|"
+                                                                      options:0
+                                                                      metrics:nil
+                                                                        views:NSDictionaryOfVariableBindings(overlayView)]];
 }
 
 #pragma mark - Toolbar
@@ -386,7 +417,7 @@ static __weak VCVideoPlayerView *_currentPlayer = nil;
 
 - (void)refreshNaturalSizePropertyFromTrack:(AVPlayerItemTrack *)track inItem:(AVPlayerItem *)item
 {
-    VCVideoPlayerView * __weak weakSelf = self;
+    VCVideoPlayerViewController * __weak weakSelf = self;
     AVAssetTrack *assetTrack = track.assetTrack;
     [assetTrack loadValuesAsynchronouslyForKeys:@[NSStringFromSelector(@selector(naturalSize))] completionHandler:^(void)
     {
@@ -423,7 +454,7 @@ static __weak VCVideoPlayerView *_currentPlayer = nil;
 
 - (void)videoFrameTapped:(UITapGestureRecognizer *)sender
 {
-    CGPoint touchPoint = [sender locationInView:self];
+    CGPoint touchPoint = [sender locationInView:self.view];
     if (!CGRectContainsPoint(self.toolbarView.frame, touchPoint))
     {
         if (self.toolbarView.hidden && [self isPlaying])

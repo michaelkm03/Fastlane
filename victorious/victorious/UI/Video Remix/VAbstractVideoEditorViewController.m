@@ -7,6 +7,7 @@
 //
 
 #import "VAbstractVideoEditorViewController.h"
+#import "VCVideoPlayerViewController.h"
 #import "VElapsedTimeFormatter.h"
 #import "VThemeManager.h"
 
@@ -23,12 +24,26 @@
     
     self.view.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVBackgroundColor];
 
+    self.previewView = [[VCVideoPlayerViewController alloc] init];
     self.previewView.shouldShowToolbar = NO;
     self.previewView.itemURL = self.sourceURL;
     self.previewView.delegate = self;
-
-    [self.previewView addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTapToPlayAction:)]];
-    self.previewView.userInteractionEnabled = YES;
+    
+    [self addChildViewController:self.previewView];
+    
+    self.previewView.view.translatesAutoresizingMaskIntoConstraints = NO;
+    [self.previewParentView addSubview:self.previewView.view];
+    UIView *previewViewView = self.previewView.view;
+    [self.previewParentView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[previewViewView]|"
+                                                                                   options:0
+                                                                                   metrics:nil
+                                                                                     views:NSDictionaryOfVariableBindings(previewViewView)]];
+    [self.previewParentView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[previewViewView]|"
+                                                                                   options:0
+                                                                                   metrics:nil
+                                                                                     views:NSDictionaryOfVariableBindings(previewViewView)]];
+    [self.previewView didMoveToParentViewController:self];
+    [self.previewView.view addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTapToPlayAction:)]];
 }
 
 -(void)viewWillAppear:(BOOL)animated
@@ -36,12 +51,6 @@
     [super viewWillAppear:animated];
     [self.previewView.player play];
     self.navigationController.navigationBar.barTintColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVBackgroundColor];
-}
-
-- (void)viewWillDisappear:(BOOL)animated
-{
-    [super viewWillDisappear:animated];
-    [self.previewView.player pause];
 }
 
 - (BOOL)shouldAutorotate
@@ -184,12 +193,12 @@
 
 #pragma mark - SCVideoPlayerDelegate
 
-- (void)videoPlayerWillStartPlaying:(VCVideoPlayerView *)videoPlayer
+- (void)videoPlayerWillStartPlaying:(VCVideoPlayerViewController *)videoPlayer
 {
     [self stopAnimation];
 }
 
-- (void)videoPlayerWillStopPlaying:(VCVideoPlayerView *)videoPlayer
+- (void)videoPlayerWillStopPlaying:(VCVideoPlayerViewController *)videoPlayer
 {
     [self startAnimation];
 }

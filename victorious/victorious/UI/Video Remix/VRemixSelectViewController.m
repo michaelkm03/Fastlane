@@ -8,7 +8,7 @@
 
 #import "VElapsedTimeFormatter.h"
 #import "VRemixSelectViewController.h"
-#import "VCVideoPlayerView.h"
+#import "VCVideoPlayerViewController.h"
 #import "VRemixTrimViewController.h"
 #import "VObjectManager+ContentCreation.h"
 #import "VThemeManager.h"
@@ -226,7 +226,7 @@
 
 #pragma mark - SCVideoPlayerDelegate
 
-- (void)videoPlayer:(VCVideoPlayerView *)videoPlayer didPlayToTime:(CMTime)time
+- (void)videoPlayer:(VCVideoPlayerViewController *)videoPlayer didPlayToTime:(CMTime)time
 {
     self.totalTimeLabel.text = [self.elapsedTimeFormatter stringForCMTime:[videoPlayer playerItemDuration]];
     self.currentTimeLabel.text = [self.elapsedTimeFormatter stringForCMTime:time];

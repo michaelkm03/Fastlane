@@ -135,10 +135,6 @@ CGFloat kContentMediaViewOffset = 154;
 {
     [super viewWillDisappear:animated];
     
-    if ([self isVideoLoadingOrLoaded])
-    {
-        [self pauseVideo];
-    }
     if ([self isBeingDismissed] || [self isMovingFromParentViewController])
     {
         if (self.navigationController.delegate == self)

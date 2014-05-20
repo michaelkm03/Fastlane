@@ -50,12 +50,53 @@ static const char kVideoUnloadBlockKey;
     NSAssert(![self isVideoLoadingOrLoaded], @"attempt to play two videos at once--not allowed.");
     NSAssert([self.mediaView.subviews containsObject:previewView], @"previewView must be a subview of mediaView");
     
+    if (self.videoPlayer)
+    {
+        [self.videoPlayer willMoveToParentViewController:nil];
+        [self.videoPlayer.view removeFromSuperview];
+        [self.videoPlayer removeFromParentViewController];
+        self.videoPlayer = nil;
+    }
+    
     self.shouldPause = NO;
-    [self.videoPlayer removeFromSuperview];
-    self.videoPlayer = [[VCVideoPlayerView alloc] init];
+    self.videoPlayer = [[VCVideoPlayerViewController alloc] init];
     self.videoPlayer.delegate = self;
-    self.videoPlayer.translatesAutoresizingMaskIntoConstraints = NO;
-    [self.mediaView addSubview:self.videoPlayer];
+    
+    [self addChildViewController:self.videoPlayer];
+    self.videoPlayer.view.translatesAutoresizingMaskIntoConstraints = NO;
+    [self.mediaView addSubview:self.videoPlayer.view];
+    
+    [self.mediaView addConstraint:[NSLayoutConstraint constraintWithItem:self.videoPlayer.view
+                                                               attribute:NSLayoutAttributeWidth
+                                                               relatedBy:NSLayoutRelationEqual
+                                                                  toItem:previewView
+                                                               attribute:NSLayoutAttributeWidth
+                                                              multiplier:1.0f
+                                                                constant:0.0f]];
+    [self.mediaView addConstraint:[NSLayoutConstraint constraintWithItem:self.videoPlayer.view
+                                                               attribute:NSLayoutAttributeHeight
+                                                               relatedBy:NSLayoutRelationEqual
+                                                                  toItem:previewView
+                                                               attribute:NSLayoutAttributeHeight
+                                                              multiplier:1.0f
+                                                                constant:0.0f]];
+    [self.mediaView addConstraint:[NSLayoutConstraint constraintWithItem:self.videoPlayer.view
+                                                               attribute:NSLayoutAttributeLeading
+                                                               relatedBy:NSLayoutRelationEqual
+                                                                  toItem:previewView
+                                                               attribute:NSLayoutAttributeLeading
+                                                              multiplier:1.0f
+                                                                constant:0.0f]];
+    [self.mediaView addConstraint:[NSLayoutConstraint constraintWithItem:self.videoPlayer.view
+                                                               attribute:NSLayoutAttributeTop
+                                                               relatedBy:NSLayoutRelationEqual
+                                                                  toItem:previewView
+                                                               attribute:NSLayoutAttributeTop
+                                                              multiplier:1.0f
+                                                                constant:0.0f]];
+    self.videoPlayer.view.alpha = 0;
+    [self didMoveToParentViewController:self];
+
     if ([self.currentNode isPoll])
     {
         [self addCloseButtonToVideoPlayer];
@@ -65,35 +106,6 @@ static const char kVideoUnloadBlockKey;
         [self addRemixButtonToVideoPlayer];
     }
     
-    [self.mediaView addConstraint:[NSLayoutConstraint constraintWithItem:self.videoPlayer
-                                                               attribute:NSLayoutAttributeWidth
-                                                               relatedBy:NSLayoutRelationEqual
-                                                                  toItem:previewView
-                                                               attribute:NSLayoutAttributeWidth
-                                                              multiplier:1.0f
-                                                                constant:0.0f]];
-    [self.mediaView addConstraint:[NSLayoutConstraint constraintWithItem:self.videoPlayer
-                                                               attribute:NSLayoutAttributeHeight
-                                                               relatedBy:NSLayoutRelationEqual
-                                                                  toItem:previewView
-                                                               attribute:NSLayoutAttributeHeight
-                                                              multiplier:1.0f
-                                                                constant:0.0f]];
-    [self.mediaView addConstraint:[NSLayoutConstraint constraintWithItem:self.videoPlayer
-                                                               attribute:NSLayoutAttributeLeading
-                                                               relatedBy:NSLayoutRelationEqual
-                                                                  toItem:previewView
-                                                               attribute:NSLayoutAttributeLeading
-                                                              multiplier:1.0f
-                                                                constant:0.0f]];
-    [self.mediaView addConstraint:[NSLayoutConstraint constraintWithItem:self.videoPlayer
-                                                               attribute:NSLayoutAttributeTop
-                                                               relatedBy:NSLayoutRelationEqual
-                                                                  toItem:previewView
-                                                               attribute:NSLayoutAttributeTop
-                                                              multiplier:1.0f
-                                                                constant:0.0f]];
-    self.videoPlayer.alpha = 0;
     [self.videoPlayer setItemURL:contentURL];
     
     self.activityIndicator = [[VActivityIndicatorView alloc] init];
@@ -192,7 +204,9 @@ static const char kVideoUnloadBlockKey;
     {
         [self.view insertSubview:self.mediaSuperview belowSubview:self.pollPreviewView];
         
-        [self.videoPlayer removeFromSuperview];
+        [self.videoPlayer willMoveToParentViewController:nil];
+        [self.videoPlayer.view removeFromSuperview];
+        [self.videoPlayer removeFromParentViewController];
         self.videoPlayer = nil;
         
         if (self.onVideoUnloadBlock)
@@ -213,7 +227,7 @@ static const char kVideoUnloadBlockKey;
             [self.mediaView removeConstraints:self.temporaryVideoPreviewConstraints];
             self.temporaryVideoPreviewConstraints = nil;
             self.previewImage.alpha = 1.0f;
-            self.videoPlayer.alpha = 0;
+            self.videoPlayer.view.alpha = 0;
         };
         
         if (UIInterfaceOrientationIsLandscape(self.interfaceOrientation))
@@ -293,7 +307,7 @@ static const char kVideoUnloadBlockKey;
         self.temporaryVideoPreviewConstraints = temporaryConstraints;
         [self.view layoutIfNeeded];
         self.previewImage.alpha = 0;
-        self.videoPlayer.alpha = 1.0f;
+        self.videoPlayer.view.alpha = 1.0f;
     }
                      completion:^(BOOL finished)
     {
@@ -367,7 +381,7 @@ static const char kVideoUnloadBlockKey;
 
 #pragma mark - VCVideoPlayerDelegate methods
 
-- (void)videoPlayerReadyToPlay:(VCVideoPlayerView *)videoPlayer
+- (void)videoPlayerReadyToPlay:(VCVideoPlayerViewController *)videoPlayer
 {
     [self.activityIndicator stopAnimating];
     [self.activityIndicator removeFromSuperview];
@@ -377,7 +391,7 @@ static const char kVideoUnloadBlockKey;
     [self animateVideoOpenToAspectRatio:ratio];
 }
 
-- (void)videoPlayerFailed:(VCVideoPlayerView *)videoPlayer
+- (void)videoPlayerFailed:(VCVideoPlayerViewController *)videoPlayer
 {
     [self unloadVideoWithDuration:kVideoPlayerAnimationDuration completion:^(void)
     {
@@ -390,7 +404,7 @@ static const char kVideoUnloadBlockKey;
     }];
 }
 
-- (void)videoPlayerDidReachEndOfVideo:(VCVideoPlayerView *)videoPlayer
+- (void)videoPlayerDidReachEndOfVideo:(VCVideoPlayerViewController *)videoPlayer
 {
     if (self.onVideoCompletionBlock)
     {

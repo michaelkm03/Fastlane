@@ -11,7 +11,7 @@
 #import "VElapsedTimeFormatter.h"
 #import "VRemixTrimViewController.h"
 #import "VRemixStitchViewController.h"
-#import "VCVideoPlayerView.h"
+#import "VCVideoPlayerViewController.h"
 #import "VRemixVideoRangeSlider.h"
 #import "VThemeManager.h"
 #import "MBProgressHUD.h"
@@ -122,7 +122,7 @@
 
 #pragma mark - SCVideoPlayerDelegate
 
-- (void)videoPlayer:(VCVideoPlayerView *)videoPlayer didPlayToTime:(CMTime)time
+- (void)videoPlayer:(VCVideoPlayerViewController *)videoPlayer didPlayToTime:(CMTime)time
 {
     CMTime endTime = CMTimeConvertScale([self playerItemDuration], self.previewView.player.currentTime.timescale, kCMTimeRoundingMethod_RoundHalfAwayFromZero);
     if (CMTimeCompare(endTime, kCMTimeZero) != 0)

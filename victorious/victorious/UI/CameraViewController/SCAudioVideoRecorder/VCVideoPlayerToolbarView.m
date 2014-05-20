@@ -11,7 +11,7 @@
 
 @implementation VCVideoPlayerToolbarView
 
-+ (instancetype)toolbarFromNibWithOwner:(VCVideoPlayerView *)filesOwner
++ (instancetype)toolbarFromNibWithOwner:(VCVideoPlayerViewController *)filesOwner
 {
     UINib *nib = [UINib nibWithNibName:NSStringFromClass(self) bundle:[NSBundle bundleForClass:self]];
     NSArray *objects = [nib instantiateWithOwner:filesOwner options:nil];

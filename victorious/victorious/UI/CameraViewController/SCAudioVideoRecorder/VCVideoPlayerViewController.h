@@ -1,35 +1,36 @@
 //
-//  VCVideoPlayerView
+//  VCVideoPlayerViewController.h
 //
 
 #import <UIKit/UIKit.h>
 
 @import AVFoundation;
 
-@class VCVideoPlayerView;
+@class VCVideoPlayerViewController;
 
 @protocol VCVideoPlayerDelegate <NSObject>
 
 @optional
 
-- (void)videoPlayer:(VCVideoPlayerView *)videoPlayer didPlayToTime:(CMTime)time;
-- (void)videoPlayerReadyToPlay:(VCVideoPlayerView *)videoPlayer;
-- (void)videoPlayerFailed:(VCVideoPlayerView *)videoPlayer;
-- (void)videoPlayerWillStartPlaying:(VCVideoPlayerView *)videoPlayer;
-- (void)videoPlayerWillStopPlaying:(VCVideoPlayerView *)videoPlayer;
-- (void)videoPlayerDidReachEndOfVideo:(VCVideoPlayerView *)videoPlayer;
+- (void)videoPlayer:(VCVideoPlayerViewController *)videoPlayer didPlayToTime:(CMTime)time;
+- (void)videoPlayerReadyToPlay:(VCVideoPlayerViewController *)videoPlayer;
+- (void)videoPlayerFailed:(VCVideoPlayerViewController *)videoPlayer;
+- (void)videoPlayerWillStartPlaying:(VCVideoPlayerViewController *)videoPlayer;
+- (void)videoPlayerWillStopPlaying:(VCVideoPlayerViewController *)videoPlayer;
+- (void)videoPlayerDidReachEndOfVideo:(VCVideoPlayerViewController *)videoPlayer;
 
 @end
 
 /**
  A UIView subclass for displaying video content
  */
-@interface VCVideoPlayerView : UIView
+@interface VCVideoPlayerViewController : UIViewController
 
 @property (nonatomic, strong)   NSURL                     *itemURL; ///< The URL of the video to play
+@property (nonatomic, readonly) NSUInteger                 loopCount; ///< The number of loops requested via a call to setItemURL:withLoopCount:
 @property (nonatomic, weak)     id<VCVideoPlayerDelegate>  delegate;
 @property (nonatomic)           BOOL                       shouldLoop; ///< If YES, video will loop around at the end
-@property (nonatomic, readonly) AVPlayer                  *player; ///< The AVPlayer instance being managed
+@property (nonatomic, readonly) AVPlayer                  *player; ///< The AVPlayer instance being managed. Will be nil until the receiver's view is loaded
 @property (nonatomic, assign)   Float64                    startSeconds; ///< Playback will begin at this point
 @property (nonatomic, assign)   Float64                    endSeconds; ///< Playback will end (or loop) at this point. Set to 0 to play to end.
 @property (nonatomic, readonly) CGSize                     naturalSize;
@@ -37,7 +38,7 @@
 @property (nonatomic)           BOOL                       shouldShowToolbar; ///< If NO, toolbar will never show.
 @property (nonatomic, readonly) UIView                    *overlayView; ///< A view to be displayed on top of the video player. Will not show if shouldShowToolbar is NO.
 
-+ (VCVideoPlayerView *)currentPlayer; ///< Returns a reference to a VCVideoPlayerView instance that is currently playing
++ (VCVideoPlayerViewController *)currentPlayer; ///< Returns a reference to a VCVideoPlayerViewController instance that is currently playing
 
 /**
  Add the same item "loopCount" times in order to have a smooth loop. 
