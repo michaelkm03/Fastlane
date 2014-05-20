@@ -49,8 +49,8 @@
 {
     [super viewDidLoad];
 	
-    self.previewView.shouldLoop = YES;
-    self.previewView.startSeconds = 0;
+    self.videoPlayerViewController.shouldLoop = YES;
+    self.videoPlayerViewController.startSeconds = 0;
 
     UIImage*    closeButtonImage = [[UIImage imageNamed:@"cameraButtonClose"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithImage:closeButtonImage style:UIBarButtonItemStyleBordered target:self action:@selector(closeButtonClicked:)];
@@ -75,7 +75,7 @@
 {
     [super viewWillAppear:animated];
     
-    self.totalTimeLabel.text = [self.elapsedTimeFormatter stringForCMTime:[self.previewView playerItemDuration]];
+    self.totalTimeLabel.text = [self.elapsedTimeFormatter stringForCMTime:[self.videoPlayerViewController playerItemDuration]];
     self.currentTimeLabel.text = [self.elapsedTimeFormatter stringForCMTime:CMTimeMakeWithSeconds(0, 1)];
 }
 
@@ -88,20 +88,20 @@
 
 - (IBAction)nextButtonClicked:(id)sender
 {
-    [self.previewView.player pause];
+    [self.videoPlayerViewController.player pause];
     self.navigationItem.leftBarButtonItem.enabled = NO;
-    [self downloadVideoSegmentForSequenceID:self.seqID atTime:self.previewView.startSeconds];
+    [self downloadVideoSegmentForSequenceID:self.seqID atTime:self.videoPlayerViewController.startSeconds];
 }
 
 -(IBAction)scrubberDidStartMoving:(id)sender
 {
-    self.restoreAfterScrubbingRate = self.previewView.player.rate;
-    [self.previewView.player setRate:0.0f];
+    self.restoreAfterScrubbingRate = self.videoPlayerViewController.player.rate;
+    [self.videoPlayerViewController.player setRate:0.0f];
 }
 
 -(IBAction)scrubberDidMove:(id)sender
 {
-    CMTime playerDuration = [self.previewView playerItemDuration];
+    CMTime playerDuration = [self.videoPlayerViewController playerItemDuration];
     if (CMTIME_IS_INVALID(playerDuration))
         return;
     
@@ -113,8 +113,8 @@
         float value = [self.scrubber value];
         double time = duration * (value - minValue) / (maxValue - minValue);
         
-        [self.previewView.player seekToTime:CMTimeMakeWithSeconds(time, NSEC_PER_SEC)];
-        self.previewView.startSeconds = time;
+        [self.videoPlayerViewController.player seekToTime:CMTimeMakeWithSeconds(time, NSEC_PER_SEC)];
+        self.videoPlayerViewController.startSeconds = time;
     }
 }
 
@@ -122,7 +122,7 @@
 {
 	if (self.restoreAfterScrubbingRate)
 	{
-		[self.previewView.player setRate:self.restoreAfterScrubbingRate];
+		[self.videoPlayerViewController.player setRate:self.restoreAfterScrubbingRate];
 		self.restoreAfterScrubbingRate = 0.0f;
 	}
 }

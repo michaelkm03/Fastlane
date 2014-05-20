@@ -16,7 +16,7 @@
 @interface  VAbstractVideoEditorViewController : UIViewController   <VCVideoPlayerDelegate>
 
 @property (nonatomic, weak)     IBOutlet    UIView*             previewParentView;
-@property (nonatomic, strong)   VCVideoPlayerViewController*    previewView;
+@property (nonatomic, strong)   VCVideoPlayerViewController*    videoPlayerViewController;
 
 @property (nonatomic, weak)     IBOutlet    UIImageView*        playCircle;
 @property (nonatomic, weak)     IBOutlet    UIImageView*        playButton;

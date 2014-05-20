@@ -74,7 +74,7 @@
 	}
 
     __weak  VRemixTrimViewController*   weakSelf    =   self;
-	self.timeObserver = [self.previewView.player addPeriodicTimeObserverForInterval:CMTimeMakeWithSeconds(interval, NSEC_PER_SEC) queue:NULL usingBlock:^(CMTime time)
+	self.timeObserver = [self.videoPlayerViewController.player addPeriodicTimeObserverForInterval:CMTimeMakeWithSeconds(interval, NSEC_PER_SEC) queue:NULL usingBlock:^(CMTime time)
                      {
                          [weakSelf syncScrubber];
                      }];
@@ -97,7 +97,7 @@
     self.navigationController.interactivePopGestureRecognizer.enabled = YES;
     self.navigationController.interactivePopGestureRecognizer.delegate = nil;
     
-    [self.previewView.player removeTimeObserver:self.timeObserver];
+    [self.videoPlayerViewController.player removeTimeObserver:self.timeObserver];
     [self.trimSlider cancel];
 }
 
@@ -105,7 +105,7 @@
 
 - (CMTime)playerItemDuration
 {
-    AVPlayerItem *thePlayerItem = self.previewView.player.currentItem;
+    AVPlayerItem *thePlayerItem = self.videoPlayerViewController.player.currentItem;
     if (thePlayerItem.status == AVPlayerItemStatusReadyToPlay)
         return thePlayerItem.duration;
     else
@@ -124,10 +124,10 @@
 
 - (void)videoPlayer:(VCVideoPlayerViewController *)videoPlayer didPlayToTime:(CMTime)time
 {
-    CMTime endTime = CMTimeConvertScale([self playerItemDuration], self.previewView.player.currentTime.timescale, kCMTimeRoundingMethod_RoundHalfAwayFromZero);
+    CMTime endTime = CMTimeConvertScale([self playerItemDuration], self.videoPlayerViewController.player.currentTime.timescale, kCMTimeRoundingMethod_RoundHalfAwayFromZero);
     if (CMTimeCompare(endTime, kCMTimeZero) != 0)
     {
-        double normalizedTime = (double)self.previewView.player.currentTime.value / (double)endTime.value;
+        double normalizedTime = (double)self.videoPlayerViewController.player.currentTime.value / (double)endTime.value;
         self.scrubber.value = normalizedTime;
     }
 
@@ -140,24 +140,24 @@
 - (void)videoRange:(VRemixVideoRangeSlider *)videoRange didChangeLeftPosition:(CGFloat)leftPosition rightPosition:(CGFloat)rightPosition
 {
     self.startSeconds = leftPosition;
-    self.previewView.startSeconds = leftPosition;
+    self.videoPlayerViewController.startSeconds = leftPosition;
     
     self.endSeconds = rightPosition;
-    self.previewView.endSeconds = rightPosition;
+    self.videoPlayerViewController.endSeconds = rightPosition;
 
-    double time = CMTimeGetSeconds([self.previewView.player currentTime]);
+    double time = CMTimeGetSeconds([self.videoPlayerViewController.player currentTime]);
     if (time < leftPosition)
-        [self.previewView.player seekToTime:CMTimeMakeWithSeconds(leftPosition, NSEC_PER_SEC)];
+        [self.videoPlayerViewController.player seekToTime:CMTimeMakeWithSeconds(leftPosition, NSEC_PER_SEC)];
     if (time > rightPosition)
-        [self.previewView.player seekToTime:CMTimeMakeWithSeconds(leftPosition, NSEC_PER_SEC)];
+        [self.videoPlayerViewController.player seekToTime:CMTimeMakeWithSeconds(leftPosition, NSEC_PER_SEC)];
 }
 
 #pragma mark - Actions
 
 - (IBAction)nextButtonClicked:(id)sender
 {
-    if (self.previewView.isPlaying)
-        [self.previewView.player pause];
+    if (self.videoPlayerViewController.isPlaying)
+        [self.videoPlayerViewController.player pause];
 
     MBProgressHUD*  hud =   [MBProgressHUD showHUDAddedTo:self.view animated:YES];
     hud.labelText = @"Just a moment";
@@ -235,7 +235,7 @@
 	{
 		float minValue = [self.scrubber minimumValue];
 		float maxValue = [self.scrubber maximumValue];
-		double time = CMTimeGetSeconds([self.previewView.player currentTime]);
+		double time = CMTimeGetSeconds([self.videoPlayerViewController.player currentTime]);
 		[self.scrubber setValue:(maxValue - minValue) * time / duration + minValue];
 	}
 }
