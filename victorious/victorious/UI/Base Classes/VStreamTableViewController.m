@@ -158,7 +158,7 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     VSequence* sequence = [self.fetchedResultsController objectAtIndexPath:indexPath];
-    if ([sequence isTemporarySequence] || [sequence.releasedAt timeIntervalSinceNow] < 0)
+    if ([sequence isTemporarySequence] || [sequence.expiresAt timeIntervalSinceNow] < 0)
     {
         [self.tableView deselectRowAtIndexPath:indexPath animated:NO];
         return;
