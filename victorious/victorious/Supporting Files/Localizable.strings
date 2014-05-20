@@ -12,6 +12,7 @@
 "ResetButton"           =   "Reset";
 "YesButton"             =   "Yes";
 "NoButton"              =   "No";
+"BackButton"            =   "Back";
 
 "TimeSeparator"         =   ":";
 "InvalidTimePlaceholder"=   "-:--";

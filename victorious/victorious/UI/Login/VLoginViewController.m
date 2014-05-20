@@ -10,14 +10,16 @@
 #import "VConstants.h"
 #import "VThemeManager.h"
 #import "VProfileWithSocialViewController.h"
+#import "VLoginWithEmailViewController.h"
 #import "VObjectManager+Login.h"
 #import "VUser.h"
 #import "VUserManager.h"
+#import "VLoginTransitionAnimator.h"
 
 @import Accounts;
 @import Social;
 
-@interface VLoginViewController ()
+@interface VLoginViewController ()  <UINavigationControllerDelegate>
 @property (nonatomic, weak) IBOutlet    UIView*             buttonContainer;
 @property (nonatomic, weak) IBOutlet    UIButton*           facebookButton;
 @property (nonatomic, weak) IBOutlet    UIButton*           twitterButton;
@@ -95,6 +97,25 @@
     self.emailButton.clipsToBounds = YES;
 }
 
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    
+    // Set outself as the navigation controller's delegate so we're asked for a transitioning object
+//    self.navigationController.delegate = self;
+}
+
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+    
+    // Stop being the navigation controller's delegate
+//    if (self.navigationController.delegate == self)
+//    {
+//        self.navigationController.delegate = nil;
+//    }
+}
+
 - (BOOL)shouldAutorotate
 {
     return NO;
@@ -109,6 +130,8 @@
 {
     return YES;
 }
+
+#pragma mark - Support
 
 - (void)facebookAccessDidFail:(NSError *)error
 {
@@ -247,24 +270,39 @@
     [alert show];
 }
 
+- (IBAction)cancel:(id)sender
+{
+    [self dismissViewControllerAnimated:YES completion:nil];
+}
+
+#pragma mark - Navigation
+
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
-    VProfileWithSocialViewController*   profileViewController = (VProfileWithSocialViewController *)segue.destinationViewController;
     if ([segue.identifier isEqualToString:@"toProfileWithFacebook"])
     {
+        VProfileWithSocialViewController*   profileViewController = (VProfileWithSocialViewController *)segue.destinationViewController;
         profileViewController.loginType = kVLoginTypeFaceBook;
         profileViewController.profile = self.profile;
     }
     else if ([segue.identifier isEqualToString:@"toProfileWithTwitter"])
     {
+        VProfileWithSocialViewController*   profileViewController = (VProfileWithSocialViewController *)segue.destinationViewController;
         profileViewController.loginType = kVLoginTypeTwitter;
         profileViewController.profile = self.profile;
     }
 }
 
-- (IBAction)cancel:(id)sender
+- (id<UIViewControllerAnimatedTransitioning>) navigationController:(UINavigationController *)navigationController
+                                   animationControllerForOperation:(UINavigationControllerOperation)operation
+                                                fromViewController:(UIViewController *)fromVC
+                                                  toViewController:(UIViewController *)toVC
 {
-    [self dismissViewControllerAnimated:YES completion:nil];
+//    VLoginTransitionAnimator*   animator = [[VLoginTransitionAnimator alloc] init];
+//    animator.presenting = (operation == UINavigationControllerOperationPush);
+//    return animator;
+    
+    return nil;
 }
 
 @end
