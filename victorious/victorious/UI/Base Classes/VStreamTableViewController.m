@@ -385,6 +385,10 @@
 - (void)willCommentSequence:(NSNotification *)notification
 {
     VStreamViewCell *cell = (VStreamViewCell *)notification.object;
+    if ([cell.sequence isTemporarySequence])
+    {
+        return;
+    }
 
     [self setBackgroundImageWithURL:[[cell.sequence initialImageURLs] firstObject]];
     [self.delegate streamWillDisappear];
