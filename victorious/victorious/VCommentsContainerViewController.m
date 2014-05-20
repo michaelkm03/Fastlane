@@ -137,13 +137,10 @@
     indicator.center = self.view.center;
     [indicator startAnimating];
     
-    __block NSURL* urlToRemove = mediaURL;
-    
     VSuccessBlock success = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
     {
         NSLog(@"%@", resultObjects);
         [indicator stopAnimating];
-        [[NSFileManager defaultManager] removeItemAtURL:urlToRemove error:nil];
         
         [self.sequence.managedObjectContext saveToPersistentStore:nil];
         
@@ -152,21 +149,6 @@
     
     VFailBlock fail = ^(NSOperation* operation, NSError* error)
     {
-        [[NSFileManager defaultManager] removeItemAtURL:urlToRemove error:nil];
-        
-        if (error.code == kVStillTranscodingError)
-        {
-            NSLog(@"%@", error);
-            [indicator stopAnimating];
-            
-            UIAlertView*    alert   =
-            [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"TranscodingMediaTitle", @"")
-                                       message:NSLocalizedString(@"TranscodingMediaBody", @"")
-                                      delegate:nil
-                             cancelButtonTitle:NSLocalizedString(@"OKButton", @"")
-                             otherButtonTitles:nil];
-            [alert show];
-        }
         [indicator stopAnimating];
     };
 

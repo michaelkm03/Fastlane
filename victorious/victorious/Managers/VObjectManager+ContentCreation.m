@@ -315,7 +315,8 @@
     [sequence addCommentsObject:tempComment];
     sequence.commentCount = @(sequence.commentCount.integerValue + 1);
     
-    [self.mainUser addCommentsObject:(VComment*)[self.mainUser.managedObjectContext objectWithID:tempComment.objectID]];
+    VUser* userInContext = (VUser*)[tempComment.managedObjectContext objectWithID:self.mainUser.objectID];
+    [userInContext addCommentsObject:tempComment];
     
     VCommentFilter* filter = [[VObjectManager sharedManager] commentFilterForSequence:sequence];
     [(VCommentFilter*)[tempComment.managedObjectContext objectWithID:filter.objectID] addCommentsObject:tempComment];

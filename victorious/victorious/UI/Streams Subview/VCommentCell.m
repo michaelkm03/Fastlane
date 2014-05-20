@@ -90,7 +90,6 @@ NSString* const kChatBubbleLeftImage = @"ChatBubbleLeft";
     VUser* user;
     NSURL* previewImageURL;
     
-    
     if([commentOrMessage isKindOfClass:[VComment class]])
     {
         VComment *comment = (VComment *)self.commentOrMessage;

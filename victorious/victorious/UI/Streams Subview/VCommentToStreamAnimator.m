@@ -14,7 +14,6 @@
 
 @implementation VCommentToStreamAnimator
 
-
 - (NSTimeInterval)transitionDuration:(id <UIViewControllerContextTransitioning>)transitionContext
 {
     return .8f;
