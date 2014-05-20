@@ -27,7 +27,8 @@
     self.edgesForExtendedLayout = UIRectEdgeNone;
     
     VMessageViewController* messageVC = (VMessageViewController*)self.conversationTableViewController;
-    self.navigationItem.title = [@"@" stringByAppendingString:messageVC.conversation.user.name];
+    
+    self.navigationItem.title = messageVC.conversation.user.name ? [@"@" stringByAppendingString:messageVC.conversation.user.name] : @"Message";
 }
 
 - (BOOL)prefersStatusBarHidden
@@ -37,7 +38,7 @@
 
 - (UITableViewController *)conversationTableViewController
 {
-    if(_conversationTableViewController == nil)
+    if (_conversationTableViewController == nil)
     {
         VMessageViewController *messageController = [self.storyboard instantiateViewControllerWithIdentifier:@"messages"];
         messageController.conversation = self.conversation;
