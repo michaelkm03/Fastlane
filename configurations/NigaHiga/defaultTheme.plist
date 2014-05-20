@@ -9,7 +9,7 @@
 	<key>agreement.text</key>
 	<string>I&apos;m at least 13 years old and agree to Terms of Service</string>
 	<key>channel.name</key>
-	<string>DeStorm Power</string>
+	<string>HigaTV</string>
 	<key>channel.url.about</key>
 	<string>http://dev.getvictorious.com/api/static/about</string>
 	<key>channel.url.acknowledgements</key>
@@ -76,128 +76,117 @@
 	<key>color.link</key>
 	<dict>
 		<key>red</key>
-		<integer>1</integer>
+		<integer>51</integer>
 		<key>green</key>
-		<integer>149</integer>
+		<integer>165</integer>
 		<key>blue</key>
-		<integer>219</integer>
-		<key>alpha</key>
-		<integer>1</integer>
-	</dict>
-	<key>color.link.secondary</key>
-	<dict>
-		<key>red</key>
-		<integer>35</integer>
-		<key>green</key>
-		<integer>35</integer>
-		<key>blue</key>
-		<integer>35</integer>
+		<integer>21</integer>
 		<key>alpha</key>
 		<integer>1</integer>
 	</dict>
 	<key>color.accent</key>
 	<dict>
 		<key>red</key>
-		<integer>44</integer>
+		<integer>21</integer>
 		<key>green</key>
-		<integer>45</integer>
+		<integer>67</integer>
 		<key>blue</key>
-		<integer>54</integer>
+		<integer>145</integer>
 		<key>alpha</key>
 		<integer>1</integer>
 	</dict>
 	<key>color.accent.secondary</key>
 	<dict>
 		<key>red</key>
-		<integer>37</integer>
+		<integer>18</integer>
 		<key>green</key>
-		<integer>38</integer>
+		<integer>57</integer>
 		<key>blue</key>
-		<integer>46</integer>
+		<integer>123</integer>
 		<key>alpha</key>
 		<integer>1</integer>
 	</dict>
 	<key>font.header</key>
 	<dict>
 		<key>fontName</key>
-		<string>MuseoSans-300</string>
+		<string>Avenir-Roman</string>
 		<key>fontSize</key>
 		<integer>18</integer>
 	</dict>
 	<key>font.heading1</key>
 	<dict>
 		<key>fontName</key>
-		<string>MuseoSans-300</string>
+		<string>Avenir-Roman</string>
 		<key>fontSize</key>
 		<integer>24</integer>
 	</dict>
 	<key>font.heading2</key>
 	<dict>
 		<key>fontName</key>
-		<string>MuseoSans-300</string>
+		<string>Avenir-Roman</string>
 		<key>fontSize</key>
 		<integer>20</integer>
 	</dict>
 	<key>font.heading3</key>
 	<dict>
 		<key>fontName</key>
-		<string>MuseoSans-500</string>
+		<string>Avenir-Roman</string>
 		<key>fontSize</key>
 		<integer>17</integer>
 	</dict>
 	<key>font.heading4</key>
 	<dict>
 		<key>fontName</key>
-		<string>MuseoSans-100</string>
+		<string>Avenir-Roman</string>
 		<key>fontSize</key>
 		<integer>15</integer>
 	</dict>
 	<key>font.paragraph</key>
 	<dict>
 		<key>fontName</key>
-		<string>MuseoSans-300</string>
+		<string>Avenir-Roman</string>
 		<key>fontSize</key>
 		<integer>13</integer>
 	</dict>
 	<key>font.label1</key>
 	<dict>
 		<key>fontName</key>
-		<string>MuseoSans-500</string>
+		<string>Avenir-Heavy</string>
 		<key>fontSize</key>
 		<integer>13</integer>
 	</dict>
 	<key>font.label2</key>
 	<dict>
 		<key>fontName</key>
-		<string>MuseoSans-300</string>
+		<string>Avenir-Roman</string>
 		<key>fontSize</key>
 		<integer>12</integer>
 	</dict>
 	<key>font.label3</key>
 	<dict>
 		<key>fontName</key>
-		<string>MuseoSans-300</string>
+		<string>Avenir-Roman</string>
 		<key>fontSize</key>
 		<integer>11</integer>
 	</dict>
 	<key>font.label4</key>
 	<dict>
 		<key>fontName</key>
-		<string>MuseoSans-300</string>
+		<string>Avenir-Roman</string>
 		<key>fontSize</key>
 		<integer>10</integer>
 	</dict>
 	<key>font.button1</key>
 	<dict>
 		<key>fontName</key>
-		<string>MuseoSans-500</string>
+		<string>Avenir-Heavy</string>
 		<key>fontSize</key>
-		<integer>15</integer>
+		<integer>25</integer>
 	</dict>
 	<key>font.button2</key>
 	<dict>
 		<key>fontName</key>
-		<string>MuseoSans-500</string>
+		<string>Avenir-Heavy</string>
 		<key>fontSize</key>
 		<integer>17</integer>
 	</dict>
