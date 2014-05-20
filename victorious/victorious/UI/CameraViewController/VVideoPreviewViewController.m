@@ -12,12 +12,12 @@
 #import "VThemeManager.h"
 
 @interface VVideoPreviewViewController ()
-@property (nonatomic, strong)           VCVideoPlayerViewController*  videoPlayerView;
-@property (nonatomic, weak) IBOutlet    UIView*         videoPlayerParentView;
-@property (nonatomic, weak) IBOutlet    UIImageView*    doneButtonView;
-@property (nonatomic, weak) IBOutlet    UIButton*       trashAction;
+@property (nonatomic, strong)           VCVideoPlayerViewController* videoPlayerViewController;
+@property (nonatomic, weak) IBOutlet    UIView*                      videoPlayerParentView;
+@property (nonatomic, weak) IBOutlet    UIImageView*                 doneButtonView;
+@property (nonatomic, weak) IBOutlet    UIButton*                    trashAction;
 
-@property (nonatomic)                   BOOL            inTrashState;
+@property (nonatomic)                   BOOL                         inTrashState;
 @end
 
 @implementation VVideoPreviewViewController
@@ -39,27 +39,27 @@
 {
     [super viewWillAppear:animated];
     
-    self.videoPlayerView = [[VCVideoPlayerViewController alloc] init];
-    [self addChildViewController:self.videoPlayerView];
-    self.videoPlayerView.view.translatesAutoresizingMaskIntoConstraints = NO;
-    [self.videoPlayerParentView addSubview:self.videoPlayerView.view];
-    UIView *videoPlayerViewView = self.videoPlayerView.view;
-    [self.videoPlayerParentView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[videoPlayerViewView]|"
+    self.videoPlayerViewController = [[VCVideoPlayerViewController alloc] init];
+    [self addChildViewController:self.videoPlayerViewController];
+    self.videoPlayerViewController.view.translatesAutoresizingMaskIntoConstraints = NO;
+    [self.videoPlayerParentView addSubview:self.videoPlayerViewController.view];
+    UIView *videoPlayerView = self.videoPlayerViewController.view;
+    [self.videoPlayerParentView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[videoPlayerView]|"
                                                                                        options:0
                                                                                        metrics:nil
-                                                                                         views:NSDictionaryOfVariableBindings(videoPlayerViewView)]];
-    [self.videoPlayerParentView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[videoPlayerViewView]|"
+                                                                                         views:NSDictionaryOfVariableBindings(videoPlayerView)]];
+    [self.videoPlayerParentView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[videoPlayerView]|"
                                                                                        options:0
                                                                                        metrics:nil
-                                                                                         views:NSDictionaryOfVariableBindings(videoPlayerViewView)]];
-    [self.videoPlayerView didMoveToParentViewController:self];
+                                                                                         views:NSDictionaryOfVariableBindings(videoPlayerView)]];
+    [self.videoPlayerViewController didMoveToParentViewController:self];
     
-    [self.videoPlayerView setItemURL:self.mediaURL withLoopCount:10];
-    self.videoPlayerView.shouldLoop = YES;
-    self.videoPlayerView.shouldShowToolbar = NO;
-	[self.videoPlayerView.player play];
+    [self.videoPlayerViewController setItemURL:self.mediaURL withLoopCount:10];
+    self.videoPlayerViewController.shouldLoop = YES;
+    self.videoPlayerViewController.shouldShowToolbar = NO;
+	[self.videoPlayerViewController.player play];
     
-    [self.videoPlayerView.view addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTapToPlayAction:)]];
+    [self.videoPlayerViewController.view addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTapToPlayAction:)]];
 
     self.view.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVBackgroundColor];
     self.navigationController.navigationBar.barTintColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVBackgroundColor];
@@ -71,7 +71,7 @@
 - (void)viewDidDisappear:(BOOL)animated
 {
     [super viewDidDisappear:animated];
-    [self.videoPlayerView.player pause];
+    [self.videoPlayerViewController.player pause];
 }
 
 - (void)handleDoneTapGesture:(UIGestureRecognizer *)gesture
@@ -91,13 +91,13 @@
 
 - (IBAction)handleTapToPlayAction:(id)sender
 {
-    if ([self.videoPlayerView isPlaying])
+    if ([self.videoPlayerViewController isPlaying])
     {
-        [self.videoPlayerView.player pause];
+        [self.videoPlayerViewController.player pause];
     }
     else
     {
-        [self.videoPlayerView.player play];
+        [self.videoPlayerViewController.player play];
     }
 }
 
