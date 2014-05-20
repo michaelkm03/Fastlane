@@ -53,6 +53,11 @@
     [self.category isEqualToString:kVOwnerRemixCategory];
 }
 
+- (BOOL)isTemporarySequence
+{
+    return [self.status isEqualToString:kTemporaryContentStatus];
+}
+
 - (VNode*)firstNode
 {
     NSSortDescriptor*   sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"display_order" ascending:YES];

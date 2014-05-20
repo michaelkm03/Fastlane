@@ -157,6 +157,13 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    VSequence* sequence = [self.fetchedResultsController objectAtIndexPath:indexPath];
+    if ([sequence isTemporarySequence] || [sequence.releasedAt timeIntervalSinceNow] < 0)
+    {
+        [self.tableView deselectRowAtIndexPath:indexPath animated:NO];
+        return;
+    }
+    
     VStreamViewCell* cell = (VStreamViewCell*)[tableView cellForRowAtIndexPath:indexPath];
     
     [self setBackgroundImageWithURL:[[cell.sequence initialImageURLs] firstObject]];

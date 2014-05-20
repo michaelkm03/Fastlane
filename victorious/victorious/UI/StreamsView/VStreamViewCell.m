@@ -95,7 +95,7 @@ NSString *kStreamsWillCommentNotification = @"kStreamsWillCommentNotification";
 {
     _sequence = sequence;
     
-    if ([sequence.status isEqualToString:kTemporaryContentStatus])
+    if ([sequence isTemporarySequence])
     {
         [self contentExpired];
     }

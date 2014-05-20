@@ -145,7 +145,6 @@
         [indicator stopAnimating];
         [[NSFileManager defaultManager] removeItemAtURL:urlToRemove error:nil];
         
-        self.sequence.commentCount = @(self.sequence.commentCount.integerValue + 1);
         [self.sequence.managedObjectContext saveToPersistentStore:nil];
         
         [(VCommentsTableViewController *)self.conversationTableViewController sortComments];

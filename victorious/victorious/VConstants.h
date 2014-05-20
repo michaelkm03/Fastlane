@@ -59,6 +59,8 @@ static NSUInteger const kVUnauthoizedError = 401;
 
 static NSString*   const   kVictoriousAppIDKey      = @"VictoriousAppID";
 
+static NSString*   const   kFacebookAppIDKey        = @"FacebookAppID";
+
 static NSString*   const   kTestflightDevToken      = @"TestflightDevAppToken";
 static NSString*   const   kTestflightQAToken       = @"TestflightQAAppToken";
 static NSString*   const   kTestflightStagingToken  = @"TestflightStagingAppToken";
