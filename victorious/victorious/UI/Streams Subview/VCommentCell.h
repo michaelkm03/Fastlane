@@ -6,26 +6,20 @@
 //  Copyright (c) 2013 Victorious, Inc. All rights reserved.
 //
 
-#import "VTableViewCell.h"
+#import "VAbstractCommentCell.h"
 
 @class VComment;
-@class VMessage;
+//@class VMessage;
 
 static NSString *kCommentCellIdentifier = @"VCommentCell";
-static NSString *kMessageCellIdentifier = @"VMessageCell";
 static NSString *kOtherCommentCellIdentifier = @"VOtherCommentCell";
 
-extern CGFloat const kCommentRowHeight;
-extern CGFloat const kCommentRowWithMediaHeight;
-extern CGFloat const kCommentCellWidth;
 extern CGFloat const kCommentCellYOffset;
-extern CGFloat const kMediaCommentCellYOffset;
-extern CGFloat const kMinCellHeight;
+extern CGFloat const kCommentMediaCellYOffset;
+extern CGFloat const kCommentMinCellHeight;
 
-@interface VCommentCell : VTableViewCell
+@interface VCommentCell : VAbstractCommentCell
 
-@property (strong, nonatomic) id commentOrMessage;
-
-+ (CGSize)frameSizeForMessageText:(NSString*)text;
+@property (strong, nonatomic) VComment* comment;
 
 @end

@@ -312,7 +312,7 @@ static NSString* CommentCache = @"CommentCache";
 - (CGFloat)tableView:(UITableView *)tableView estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     VComment *comment = [self.sortedComments objectAtIndex:indexPath.row];
-    return [comment.mediaUrl length] ? kCommentRowWithMediaHeight : kCommentRowHeight;
+    return [comment.mediaUrl length] ? kEstimatedCommentRowWithMediaHeight : kEstimatedCommentRowHeight;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -321,8 +321,8 @@ static NSString* CommentCache = @"CommentCache";
 
     CGSize textSize = [VCommentCell frameSizeForMessageText:comment.text];
     CGFloat height = textSize.height;
-    CGFloat yOffset = [comment hasMedia] ? kMediaCommentCellYOffset : kCommentCellYOffset;
-    height = MAX(height + yOffset, kMinCellHeight);
+    CGFloat yOffset = [comment hasMedia] ? kCommentMediaCellYOffset : kCommentCellYOffset;
+    height = MAX(height + yOffset, kCommentMinCellHeight);
 
     return height;
 }
@@ -332,7 +332,7 @@ static NSString* CommentCache = @"CommentCache";
     UITableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:kCommentCellIdentifier forIndexPath:indexPath];
     
     VComment *comment = [self.sortedComments objectAtIndex:indexPath.row];
-    [(VCommentCell*)cell setCommentOrMessage:comment];
+    [(VCommentCell*)cell setComment:comment];
     ((VCommentCell*)cell).parentTableViewController = self;
     
     [cell setNeedsLayout];

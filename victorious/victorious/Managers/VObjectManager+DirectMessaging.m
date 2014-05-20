@@ -13,6 +13,8 @@
 #import "VMessage.h"
 #import "VUser.h"
 
+#import "VConstants.h"
+
 #import "VConversation+RestKit.h"
 
 @implementation VObjectManager (DirectMessaging)
@@ -146,18 +148,21 @@
                                     failBlock:(VFailBlock)fail
 {
     //Set the parameters
-    NSDictionary* parameters = @{@"to_user_id" : user.remoteId.stringValue ?: [NSNull null],
+    NSDictionary* parameters = [@{@"to_user_id" : user.remoteId.stringValue ?: [NSNull null],
                                  @"text" : text ?: [NSNull null]
-                                 };
+                                 } mutableCopy];
     NSDictionary *allURLs;
     if (mediaURL)
     {
         allURLs = @{@"media_data":mediaURL};
+        NSString* type = [[mediaURL pathExtension] isEqualToString:VConstantMediaExtensionMOV] || [[mediaURL pathExtension] isEqualToString:VConstantMediaExtensionMP4]
+                           ? @"video" : @"image";
+        [parameters setValue:type forKey:@"media_type"];
     }
     
     return [self uploadURLs:allURLs
                      toPath:@"/api/message/send"
-                 parameters:parameters
+                 parameters:[parameters copy]
                successBlock:success
                   failBlock:fail];
 }
