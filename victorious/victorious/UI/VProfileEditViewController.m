@@ -9,6 +9,7 @@
 #import "VProfileEditViewController.h"
 #import "UIImage+ImageEffects.h"
 #import "VUser.h"
+#import "MBProgressHUD.h"
 
 #import "VObjectManager+Login.h"
 
@@ -34,6 +35,11 @@
 {
     [[self view] endEditing:YES];
     sender.enabled = NO;
+
+    MBProgressHUD*  progressHUD =   [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    progressHUD.labelText = NSLocalizedString(@"JustAMoment", @"");
+    progressHUD.detailsLabelText = NSLocalizedString(@"ProfileSave", @"");
+
     [[VObjectManager sharedManager] updateVictoriousWithEmail:nil
                                                      password:nil
                                                          name:self.usernameTextField.text
@@ -42,10 +48,12 @@
                                                       tagline:self.taglineTextView.text
                                                  successBlock:^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
     {
+        [progressHUD hide:YES];
         [self.navigationController popViewControllerAnimated:YES];
     }
                                                     failBlock:^(NSOperation* operation, NSError* error)
     {
+        [progressHUD hide:YES];
         sender.enabled = YES;
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil
                                                         message:NSLocalizedString(@"ProfileSaveFail", @"")

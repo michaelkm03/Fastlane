@@ -130,7 +130,10 @@ static  NSString*   kNewsCellViewIdentifier       =   @"VNewsCell";
 
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return YES;
+    if (kMessageModeSelect == self.modeSelectControl.selectedSegmentIndex)
+        return YES;
+    else
+        return NO;
 }
 
 - (UITableViewCellEditingStyle)tableView:(UITableView *)tableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath
