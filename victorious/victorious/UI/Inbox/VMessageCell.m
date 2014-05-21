@@ -48,7 +48,7 @@ NSString* const kChatBubbleLeftImage = @"ChatBubbleLeft";
 {
     [super layoutSubviews];
     
-    self.message = self.message;
+//    self.message = self.message;
     
     CGFloat yOffset = self.message.media.mediaUrl ? kMessageMediaCellYOffset : kMessageCellYOffset;
     
@@ -93,6 +93,14 @@ NSString* const kChatBubbleLeftImage = @"ChatBubbleLeft";
     self.mediaUrl = message.media.mediaUrl ? [NSURL URLWithString:message.media.mediaUrl] : nil;
     self.previewImageUrl = self.mediaUrl;//[message previewImageURL];
     self.user = message.user;
+    if ([self.user.remoteId isEqualToNumber:[VObjectManager sharedManager].mainUser.remoteId])
+    {
+        self.chatBubble.transform = CGAffineTransformMakeScale(-1, 1);
+    }
+    else
+    {
+        self.chatBubble.transform = CGAffineTransformMakeScale(1, 1);
+    }
     
     mediaType = message.media.mediaType;
     
