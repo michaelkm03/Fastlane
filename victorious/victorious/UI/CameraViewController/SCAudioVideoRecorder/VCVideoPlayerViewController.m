@@ -32,9 +32,6 @@ static const NSTimeInterval kToolbarAnimationDuration =  0.2;
 static __weak VCVideoPlayerViewController *_currentPlayer = nil;
 
 @implementation VCVideoPlayerViewController
-{
-    UIView * _loadingView;
-}
 
 + (VCVideoPlayerViewController *)currentPlayer
 {
