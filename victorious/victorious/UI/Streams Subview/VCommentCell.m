@@ -45,7 +45,14 @@ CGFloat const kCommentMediaCellYOffset = 236;
     
     self.comment = self.comment;
     CGFloat yOffset = [self.comment previewImageURL] ? kCommentMediaCellYOffset : kCommentCellYOffset;
-    [self layoutWithMinHeight:kCommentMinCellHeight yOffset:yOffset];
+    
+    CGSize size = [VAbstractCommentCell frameSizeForMessageText:self.messageLabel.text];
+    self.messageLabel.frame = CGRectMake(CGRectGetMinX(self.messageLabel.frame), CGRectGetMinY(self.messageLabel.frame),
+                                         size.width, size.height);
+    [self.messageLabel sizeToFit];
+    
+    CGFloat height = MAX(self.messageLabel.frame.size.height + yOffset, kCommentMinCellHeight);
+    self.bounds = CGRectMake(0, 0, self.frame.size.width, height);
 }
 
 - (void)setComment:(VComment *)comment

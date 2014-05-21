@@ -1416,8 +1416,6 @@
 				BE692B34186E60B300C71336 /* VCommentCell.h */,
 				BE692B35186E60B300C71336 /* VCommentCell.m */,
 				BEB4C29F187E0778004ECEEF /* VCommentCell.xib */,
-				BE185DE318E354E5001C447F /* VMessageCell.xib */,
-				831C58F71884BD11007C167C /* VOtherMessageCell.xib */,
 				BEB8DB01192BE81000E0E3E6 /* VAbstractCommentCell.h */,
 				BEB8DB02192BE81000E0E3E6 /* VAbstractCommentCell.m */,
 			);
@@ -1547,6 +1545,8 @@
 				BEB4C29A187E038C004ECEEF /* VNewsCell.xib */,
 				BEB8DB05192BFF5300E0E3E6 /* VMessageCell.h */,
 				BEB8DB06192BFF5300E0E3E6 /* VMessageCell.m */,
+				BE185DE318E354E5001C447F /* VMessageCell.xib */,
+				831C58F71884BD11007C167C /* VOtherMessageCell.xib */,
 			);
 			name = Cells;
 			sourceTree = "<group>";

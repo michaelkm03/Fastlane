@@ -37,17 +37,6 @@ CGFloat const kMessageLabelWidth = 214;
     self.profileImageButton.layer.cornerRadius = CGRectGetHeight(self.profileImageButton.bounds)/2;
 }
 
--(void)layoutWithMinHeight:(CGFloat)minHeight yOffset:(CGFloat)yOffset
-{
-    CGSize size = [VAbstractCommentCell frameSizeForMessageText:self.messageLabel.text];
-    self.messageLabel.frame = CGRectMake(CGRectGetMinX(self.messageLabel.frame), CGRectGetMinY(self.messageLabel.frame),
-                                         size.width, size.height);
-    [self.messageLabel sizeToFit];
-    
-    CGFloat height = MAX(self.messageLabel.frame.size.height + yOffset, minHeight);
-    self.bounds = CGRectMake(0, 0, self.frame.size.width, height);
-}
-
 + (CGSize)frameSizeForMessageText:(NSString*)text
 {
     UIFont* font = [[VThemeManager sharedThemeManager] themedFontForKey:kVLabel2Font];

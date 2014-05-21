@@ -35,6 +35,4 @@ extern CGFloat const kMessageLabelWidth;
 
 + (CGSize)frameSizeForMessageText:(NSString*)text;
 
--(void)layoutWithMinHeight:(CGFloat)minHeight yOffset:(CGFloat)yOffset;
-
 @end

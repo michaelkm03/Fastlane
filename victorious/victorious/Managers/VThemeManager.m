@@ -40,10 +40,10 @@ NSString*   const   kVHeading4Font                      =   @"font.heading4";
 
 NSString*   const   kVParagraphFont                     =   @"font.paragraph";
 
-NSString*   const   kVLabel1Font                        =   @"font.labe1";
-NSString*   const   kVLabel2Font                        =   @"font.labe2";
-NSString*   const   kVLabel3Font                        =   @"font.labe3";
-NSString*   const   kVLabel4Font                        =   @"font.labe4";
+NSString*   const   kVLabel1Font                        =   @"font.label1";
+NSString*   const   kVLabel2Font                        =   @"font.label2";
+NSString*   const   kVLabel3Font                        =   @"font.label3";
+NSString*   const   kVLabel4Font                        =   @"font.label4";
 
 NSString*   const   kVButton1Font                       =   @"font.button1";
 NSString*   const   kVButton2Font                       =   @"font.button2";

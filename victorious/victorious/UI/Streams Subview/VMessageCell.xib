@@ -6,78 +6,74 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
-        <tableViewCell contentMode="scaleToFill" restorationIdentifier="VMessageCell" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="VMessageCell" rowHeight="424" id="3lP-4E-w5O" customClass="VMessageCell">
-            <rect key="frame" x="0.0" y="0.0" width="320" height="233"/>
+        <tableViewCell contentMode="scaleToFill" restorationIdentifier="VOtherMessageCell" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="VMessageCell" rowHeight="276" id="FjT-zX-vN4" customClass="VMessageCell">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="246"/>
             <autoresizingMask key="autoresizingMask"/>
-            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="3lP-4E-w5O" id="SSb-gQ-QSn">
-                <rect key="frame" x="0.0" y="0.0" width="320" height="232"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="FjT-zX-vN4" id="OCU-v7-M0N">
+                <rect key="frame" x="0.0" y="0.0" width="320" height="245"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="StreamDate" translatesAutoresizingMaskIntoConstraints="NO" id="BXB-23-e1c" userLabel="Time Image">
-                        <rect key="frame" x="15" y="62" width="13" height="13"/>
+                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="ChatBubbleRight" translatesAutoresizingMaskIntoConstraints="NO" id="0UZ-V6-0FV">
+                        <rect key="frame" x="66" y="10" width="236" height="235"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     </imageView>
-                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="date" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FyT-Gd-6Ym" userLabel="Time Label">
-                        <rect key="frame" x="30" y="62" width="23" height="14"/>
+                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="StreamDate" translatesAutoresizingMaskIntoConstraints="NO" id="Rgs-9K-iBc" userLabel="Time Image">
+                        <rect key="frame" x="20" y="57" width="13" height="13"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    </imageView>
+                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="date" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="EzG-iN-xlM" userLabel="Time Label">
+                        <rect key="frame" x="35" y="53" width="23" height="21"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <fontDescription key="fontDescription" style="UICTFontTextStyleCaption1"/>
                         <nil key="highlightedColor"/>
                     </label>
-                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="message" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="214" translatesAutoresizingMaskIntoConstraints="NO" id="QSL-fG-yxY" userLabel="Message label">
-                        <rect key="frame" x="86" y="7" width="214" height="20"/>
+                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="evX-ID-lZS">
+                        <rect key="frame" x="20" y="10" width="48" height="48"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        <fontDescription key="fontDescription" type="system" pointSize="16"/>
-                        <nil key="highlightedColor"/>
-                    </label>
-                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="jk4-Mq-7rx">
-                        <rect key="frame" x="101" y="35" width="190" height="190"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                    </imageView>
-                    <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="MPR-i6-dAT">
-                        <rect key="frame" x="11" y="5" width="48" height="48"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        <constraints>
-                            <constraint firstAttribute="width" constant="48" id="66G-E8-UDC"/>
-                            <constraint firstAttribute="height" constant="48" id="koC-td-GT1"/>
-                        </constraints>
-                        <state key="normal" image="profile_thumb">
+                        <state key="normal" backgroundImage="profile_thumb">
                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                         </state>
                         <connections>
-                            <action selector="profileButtonAction:" destination="3lP-4E-w5O" eventType="touchUpInside" id="3eJ-Yj-mUa"/>
+                            <action selector="profileButtonAction:" destination="FjT-zX-vN4" eventType="touchUpInside" id="7yf-mI-y3p"/>
                         </connections>
                     </button>
-                    <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zIF-WY-QMh">
-                        <rect key="frame" x="180" y="111" width="33" height="33"/>
+                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Z4Q-lM-koN">
+                        <rect key="frame" x="85" y="48" width="190" height="190"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        <constraints>
-                            <constraint firstAttribute="width" constant="33" id="9nv-8t-ESv"/>
-                            <constraint firstAttribute="height" constant="33" id="Gft-Fk-pqj"/>
-                        </constraints>
+                    </imageView>
+                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="JsJ-0N-s41">
+                        <rect key="frame" x="164" y="126" width="33" height="33"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <state key="normal" image="Play">
                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                         </state>
                         <connections>
-                            <action selector="playVideo:" destination="3lP-4E-w5O" eventType="touchUpInside" id="N65-l3-7uh"/>
+                            <action selector="playVideo:" destination="FjT-zX-vN4" eventType="touchUpInside" id="MHh-gk-LUf"/>
                         </connections>
                     </button>
+                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="message" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="214" translatesAutoresizingMaskIntoConstraints="NO" id="y7x-B1-aa3" userLabel="Message label">
+                        <rect key="frame" x="86" y="17" width="214" height="24"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                        <nil key="highlightedColor"/>
+                    </label>
                 </subviews>
             </tableViewCellContentView>
             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
             <connections>
-                <outlet property="dateLabel" destination="FyT-Gd-6Ym" id="dPY-ix-1LS"/>
-                <outlet property="mainView" destination="SSb-gQ-QSn" id="Fzh-Ck-GHM"/>
-                <outlet property="mediaPreview" destination="jk4-Mq-7rx" id="GTl-CV-uJE"/>
-                <outlet property="messageLabel" destination="QSL-fG-yxY" id="3Nb-cY-b6n"/>
-                <outlet property="playButton" destination="zIF-WY-QMh" id="4AT-rJ-azh"/>
-                <outlet property="profileImageButton" destination="MPR-i6-dAT" id="Gau-vx-lo1"/>
-                <outletCollection property="labels" destination="QSL-fG-yxY" id="PLa-8R-zKs"/>
-                <outletCollection property="labels" destination="FyT-Gd-6Ym" id="JHz-QB-8GW"/>
+                <outlet property="chatBubble" destination="0UZ-V6-0FV" id="ECj-dg-rYb"/>
+                <outlet property="dateLabel" destination="EzG-iN-xlM" id="5U1-bf-ePa"/>
+                <outlet property="mediaPreview" destination="Z4Q-lM-koN" id="Aok-1K-JsF"/>
+                <outlet property="messageLabel" destination="y7x-B1-aa3" id="ZXv-6x-zIM"/>
+                <outlet property="playButton" destination="JsJ-0N-s41" id="7Kw-hE-Rgz"/>
+                <outlet property="profileImageButton" destination="evX-ID-lZS" id="xSf-ub-HxJ"/>
+                <outletCollection property="labels" destination="EzG-iN-xlM" id="xh4-Um-ywf"/>
+                <outletCollection property="labels" destination="y7x-B1-aa3" id="ueK-Qs-ehy"/>
             </connections>
         </tableViewCell>
     </objects>
     <resources>
+        <image name="ChatBubbleRight" width="256" height="106"/>
         <image name="Play" width="33" height="33"/>
         <image name="StreamDate" width="13" height="13"/>
         <image name="profile_thumb" width="32" height="32"/>
