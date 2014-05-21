@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@class VCVideoPlayerView, VVideoDownloadProgressIndicatorView;
+@class VCVideoPlayerViewController, VVideoDownloadProgressIndicatorView;
 
 @interface VCVideoPlayerToolbarView : UIView
 
@@ -18,6 +18,6 @@
 @property (nonatomic, weak) IBOutlet UILabel                             *elapsedTimeLabel;
 @property (nonatomic, weak) IBOutlet UILabel                             *remainingTimeLabel;
 
-+ (instancetype)toolbarFromNibWithOwner:(VCVideoPlayerView *)filesOwner;
++ (instancetype)toolbarFromNibWithOwner:(VCVideoPlayerViewController *)filesOwner;
 
 @end

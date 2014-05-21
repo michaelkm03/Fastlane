@@ -7,6 +7,7 @@
 //
 
 #import "VAbstractVideoEditorViewController.h"
+#import "VCVideoPlayerViewController.h"
 #import "VElapsedTimeFormatter.h"
 #import "VThemeManager.h"
 
@@ -23,25 +24,33 @@
     
     self.view.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVBackgroundColor];
 
-    self.previewView.shouldShowToolbar = NO;
-    self.previewView.itemURL = self.sourceURL;
-    self.previewView.delegate = self;
-
-    [self.previewView addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTapToPlayAction:)]];
-    self.previewView.userInteractionEnabled = YES;
+    self.videoPlayerViewController = [[VCVideoPlayerViewController alloc] init];
+    self.videoPlayerViewController.shouldShowToolbar = NO;
+    self.videoPlayerViewController.itemURL = self.sourceURL;
+    self.videoPlayerViewController.delegate = self;
+    
+    [self addChildViewController:self.videoPlayerViewController];
+    
+    self.videoPlayerViewController.view.translatesAutoresizingMaskIntoConstraints = NO;
+    [self.previewParentView addSubview:self.videoPlayerViewController.view];
+    UIView *videoPlayerView = self.videoPlayerViewController.view;
+    [self.previewParentView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[videoPlayerView]|"
+                                                                                   options:0
+                                                                                   metrics:nil
+                                                                                     views:NSDictionaryOfVariableBindings(videoPlayerView)]];
+    [self.previewParentView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[videoPlayerView]|"
+                                                                                   options:0
+                                                                                   metrics:nil
+                                                                                     views:NSDictionaryOfVariableBindings(videoPlayerView)]];
+    [self.videoPlayerViewController didMoveToParentViewController:self];
+    [self.videoPlayerViewController.view addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTapToPlayAction:)]];
 }
 
 -(void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    [self.previewView.player play];
+    [self.videoPlayerViewController.player play];
     self.navigationController.navigationBar.barTintColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVBackgroundColor];
-}
-
-- (void)viewWillDisappear:(BOOL)animated
-{
-    [super viewWillDisappear:animated];
-    [self.previewView.player pause];
 }
 
 - (BOOL)shouldAutorotate
@@ -63,26 +72,26 @@
 
 - (IBAction)handleTapToPlayAction:(id)sender
 {
-    if (!self.previewView.isPlaying)
+    if (!self.videoPlayerViewController.isPlaying)
     {
         switch (self.playBackSpeed)
         {
             case kVPlaybackHalfSpeed:
-                self.previewView.player.rate = 0.5f;
+                self.videoPlayerViewController.player.rate = 0.5f;
                 break;
                 
             case kVPlaybackDoubleSpeed:
-                self.previewView.player.rate = 2.0f;
+                self.videoPlayerViewController.player.rate = 2.0f;
                 break;
                 
             default:
-                self.previewView.player.rate = 1.0f;
+                self.videoPlayerViewController.player.rate = 1.0f;
                 break;
         }
     }
     else
     {
-        [self.previewView.player pause];
+        [self.videoPlayerViewController.player pause];
     }
 }
 
@@ -91,7 +100,7 @@
     UIButton*   button = (UIButton *)sender;
     button.selected = !button.selected;
     self.shouldMuteAudio = button.selected;
-    self.previewView.player.muted = self.shouldMuteAudio;
+    self.videoPlayerViewController.player.muted = self.shouldMuteAudio;
     
     if (self.shouldMuteAudio)
         [self.muteButton setImage:[UIImage imageNamed:@"cameraButtonMute"] forState:UIControlStateNormal];
@@ -104,19 +113,19 @@
     if (self.playBackSpeed == kVPlaybackNormalSpeed)
     {
         self.playBackSpeed = kVPlaybackDoubleSpeed;
-        self.previewView.player.rate = 2.0;
+        self.videoPlayerViewController.player.rate = 2.0;
         [self.rateButton setImage:[UIImage imageNamed:@"cameraButtonSpeedDouble"] forState:UIControlStateNormal];
     }
     else if (self.playBackSpeed == kVPlaybackDoubleSpeed)
     {
         self.playBackSpeed = kVPlaybackHalfSpeed;
-        self.previewView.player.rate = 0.5;
+        self.videoPlayerViewController.player.rate = 0.5;
         [self.rateButton setImage:[UIImage imageNamed:@"cameraButtonSpeedHalf"] forState:UIControlStateNormal];
     }
     else if (self.playBackSpeed == kVPlaybackHalfSpeed)
     {
         self.playBackSpeed = kVPlaybackNormalSpeed;
-        self.previewView.player.rate = 1.0;
+        self.videoPlayerViewController.player.rate = 1.0;
         [self.rateButton setImage:[UIImage imageNamed:@"cameraButtonSpeedNormal"] forState:UIControlStateNormal];
     }
 }
@@ -126,13 +135,13 @@
     if (self.playbackLooping == kVLoopOnce)
     {
         self.playbackLooping = kVLoopRepeat;
-        self.previewView.shouldLoop = YES;
+        self.videoPlayerViewController.shouldLoop = YES;
         [self.loopButton setImage:[UIImage imageNamed:@"cameraButtonLoop"] forState:UIControlStateNormal];
     }
     else if (self.playbackLooping == kVLoopRepeat)
     {
         self.playbackLooping = kVLoopOnce;
-        self.previewView.shouldLoop = NO;
+        self.videoPlayerViewController.shouldLoop = NO;
         [self.loopButton setImage:[UIImage imageNamed:@"cameraButtonNoLoop"] forState:UIControlStateNormal];
     }
 }
@@ -184,12 +193,12 @@
 
 #pragma mark - SCVideoPlayerDelegate
 
-- (void)videoPlayerWillStartPlaying:(VCVideoPlayerView *)videoPlayer
+- (void)videoPlayerWillStartPlaying:(VCVideoPlayerViewController *)videoPlayer
 {
     [self stopAnimation];
 }
 
-- (void)videoPlayerWillStopPlaying:(VCVideoPlayerView *)videoPlayer
+- (void)videoPlayerWillStopPlaying:(VCVideoPlayerViewController *)videoPlayer
 {
     [self startAnimation];
 }

@@ -9,13 +9,14 @@
 @import AVFoundation;
 
 #import "VConstants.h"
-#import "VCVideoPlayerView.h"
+#import "VCVideoPlayerViewController.h"
 
 @class VElapsedTimeFormatter;
 
 @interface  VAbstractVideoEditorViewController : UIViewController   <VCVideoPlayerDelegate>
 
-@property (nonatomic, weak)     IBOutlet    VCVideoPlayerView*  previewView;;
+@property (nonatomic, weak)     IBOutlet    UIView*             previewParentView;
+@property (nonatomic, strong)   VCVideoPlayerViewController*    videoPlayerViewController;
 
 @property (nonatomic, weak)     IBOutlet    UIImageView*        playCircle;
 @property (nonatomic, weak)     IBOutlet    UIImageView*        playButton;
