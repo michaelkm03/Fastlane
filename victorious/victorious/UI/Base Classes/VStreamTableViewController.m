@@ -158,7 +158,7 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     VSequence* sequence = [self.fetchedResultsController objectAtIndexPath:indexPath];
-    if ([sequence isTemporarySequence] || [sequence.releasedAt timeIntervalSinceNow] < 0)
+    if ([sequence isTemporarySequence] || [sequence.expiresAt timeIntervalSinceNow] < 0)
     {
         [self.tableView deselectRowAtIndexPath:indexPath animated:NO];
         return;
@@ -385,6 +385,10 @@
 - (void)willCommentSequence:(NSNotification *)notification
 {
     VStreamViewCell *cell = (VStreamViewCell *)notification.object;
+    if ([cell.sequence isTemporarySequence])
+    {
+        return;
+    }
 
     [self setBackgroundImageWithURL:[[cell.sequence initialImageURLs] firstObject]];
     [self.delegate streamWillDisappear];

@@ -8,7 +8,7 @@
 
 #import "VRemixStitchViewController.h"
 #import "VCameraPublishViewController.h"
-#import "VCVideoPlayerView.h"
+#import "VCVideoPlayerViewController.h"
 #import "VThemeManager.h"
 #import "VConstants.h"
 #import "UIView+Masking.h"
@@ -62,8 +62,8 @@
 
 - (IBAction)nextButtonClicked:(id)sender
 {
-    if (self.previewView.isPlaying)
-        [self.previewView.player pause];
+    if (self.videoPlayerViewController.isPlaying)
+        [self.videoPlayerViewController.player pause];
     
     VCameraPublishViewController *publishViewController = [VCameraPublishViewController cameraPublishViewController];
     publishViewController.mediaURL = self.targetURL;
@@ -254,8 +254,8 @@
                 default:
                     NSLog(@"Export Complete");
                     self.targetURL = target;
-                    [self.previewView setItemURL:target];
-                    [self.previewView.player seekToTime:kCMTimeZero];
+                    [self.videoPlayerViewController setItemURL:target];
+                    [self.videoPlayerViewController.player seekToTime:kCMTimeZero];
                     break;
             }
         });
