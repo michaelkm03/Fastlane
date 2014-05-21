@@ -13,15 +13,19 @@
 #import "TTTAttributedLabel.h"
 #import "VThemeManager.h"
 #import "VUserManager.h"
+#import "VConstants.h"
+#import "UIImage+ImageEffects.h"
 
 NSString*   const   kSignupErrorDomain =   @"VSignupErrorDomain";
 
 @interface VSignupWithEmailViewController ()    <UITextFieldDelegate, TTTAttributedLabelDelegate>
-@property (weak, nonatomic) IBOutlet UITextField *usernameTextField;
 @property (weak, nonatomic) IBOutlet UITextField *emailTextField;
 @property (weak, nonatomic) IBOutlet UITextField *passwordTextField;
+@property (weak, nonatomic) IBOutlet UITextField *confirmPasswordTextField;
 @property (weak, nonatomic) IBOutlet UISwitch* agreeSwitch;
-@property (nonatomic, weak) IBOutlet    TTTAttributedLabel* agreementText;
+@property (nonatomic, weak) IBOutlet TTTAttributedLabel* agreementText;
+@property (nonatomic, weak) IBOutlet    UIButton*       cancelButton;
+@property (nonatomic, weak) IBOutlet    UIButton*       signupButton;
 @property (nonatomic, strong)   VUser*  profile;
 @end
 
@@ -31,11 +35,16 @@ NSString*   const   kSignupErrorDomain =   @"VSignupErrorDomain";
 {
     [super viewDidLoad];
 
-    self.usernameTextField.delegate =   self;
-    self.passwordTextField.delegate =   self;
-    self.emailTextField.delegate =   self;
+    if (IS_IPHONE_5)
+        self.view.layer.contents = (id)[[[VThemeManager sharedThemeManager] themedImageForKey:kVMenuBackgroundImage5] applyBlurWithRadius:25 tintColor:[UIColor colorWithWhite:1.0 alpha:0.7] saturationDeltaFactor:1.8 maskImage:nil].CGImage;
+    else
+        self.view.layer.contents = (id)[[[VThemeManager sharedThemeManager] themedImageForKey:kVMenuBackgroundImage] applyBlurWithRadius:25 tintColor:[UIColor colorWithWhite:1.0 alpha:0.7] saturationDeltaFactor:1.8 maskImage:nil].CGImage;
 
-    [self.usernameTextField becomeFirstResponder];
+    self.emailTextField.delegate = self;
+    self.passwordTextField.delegate = self;
+    self.confirmPasswordTextField.delegate = self;
+
+    [self.emailTextField becomeFirstResponder];
 
     self.agreementText.delegate = self;
     [self.agreementText setText:[[VThemeManager sharedThemeManager] themedStringForKey:kVAgreementText]];
@@ -45,25 +54,50 @@ NSString*   const   kSignupErrorDomain =   @"VSignupErrorDomain";
         NSURL *url = [NSURL URLWithString:[[VThemeManager sharedThemeManager] themedStringForKey:kVAgreementLink]];
         [self.agreementText addLinkToURL:url withRange:linkRange];
     }
+
+    self.cancelButton.layer.borderColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor].CGColor;
+    self.cancelButton.layer.borderWidth = 2.0;
+    self.cancelButton.layer.cornerRadius = 3.0;
+    self.cancelButton.backgroundColor = [UIColor clearColor];
+    self.cancelButton.titleLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeaderFont];
+    [self.cancelButton setTitleColor:[UIColor colorWithWhite:0.14 alpha:1.0] forState:UIControlStateNormal];
+    
+    self.signupButton.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
+    self.signupButton.titleLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeaderFont];
+    [self.signupButton setTitleColor:[UIColor colorWithWhite:0.14 alpha:1.0] forState:UIControlStateNormal];
+    
+    self.emailTextField.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeaderFont];
+    self.emailTextField.textColor = [UIColor colorWithWhite:0.14 alpha:1.0];
+    self.emailTextField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:self.emailTextField.placeholder attributes:@{NSForegroundColorAttributeName : [UIColor colorWithWhite:0.14 alpha:1.0]}];
+    self.passwordTextField.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeaderFont];
+    self.passwordTextField.textColor = [UIColor colorWithWhite:0.14 alpha:1.0];
+    self.passwordTextField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:self.passwordTextField.placeholder attributes:@{NSForegroundColorAttributeName : [UIColor colorWithWhite:0.14 alpha:1.0]}];
+    self.confirmPasswordTextField.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeaderFont];
+    self.confirmPasswordTextField.textColor = [UIColor colorWithWhite:0.14 alpha:1.0];
+    self.confirmPasswordTextField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:self.confirmPasswordTextField.placeholder attributes:@{NSForegroundColorAttributeName : [UIColor colorWithWhite:0.14 alpha:1.0]}];
+
+    self.agreementText.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVLabel2Font];
+
+    [self.navigationController setNavigationBarHidden:YES animated:NO];
+}
+
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    
+    [self.emailTextField becomeFirstResponder];
+}
+
+- (BOOL)prefersStatusBarHidden
+{
+    return YES;
 }
 
 #pragma mark - Validation
 
-- (BOOL)shouldSignUpWithUsername:(NSString *)username emailAddress:(NSString *)emailAddress password:(NSString *)password
+- (BOOL)shouldSignUpWithEmailAddress:(NSString *)emailAddress password:(NSString *)password
 {
     NSError*    theError;
-
-    if (![self validateUsername:&username error:&theError])
-    {
-        UIAlertView*    alert   =   [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"InvalidCredentials", @"")
-                                                               message:theError.localizedDescription
-                                                              delegate:nil
-                                                     cancelButtonTitle:NSLocalizedString(@"OKButton", @"")
-                                                     otherButtonTitles:nil];
-        [alert show];
-        [[self view] endEditing:YES];
-        return NO;
-    }
 
     if (![self validateEmailAddress:&emailAddress error:&theError])
     {
@@ -89,6 +123,18 @@ NSString*   const   kSignupErrorDomain =   @"VSignupErrorDomain";
         return NO;
     }
 
+    if (![self.passwordTextField.text isEqualToString:self.confirmPasswordTextField.text])
+    {
+        UIAlertView*    alert   =   [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"InvalidCredentials", @"")
+                                                               message:NSLocalizedString(@"PasswordNotMatching", @"")
+                                                              delegate:nil
+                                                     cancelButtonTitle:NSLocalizedString(@"OKButton", @"")
+                                                     otherButtonTitles:nil];
+        [alert show];
+        [[self view] endEditing:YES];
+        return NO;
+    }
+    
     if (NO == self.agreeSwitch.on)
     {
         UIAlertView*    alert   =   [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"InvalidCredentials", @"")
@@ -98,25 +144,6 @@ NSString*   const   kSignupErrorDomain =   @"VSignupErrorDomain";
                                                      otherButtonTitles:nil];
         [alert show];
         [[self view] endEditing:YES];
-        return NO;
-    }
-
-    return YES;
-}
-
-- (BOOL)validateUsername:(id *)ioValue error:(NSError * __autoreleasing *)outError
-{
-    if ((*ioValue == nil) || ([(NSString *)*ioValue length] < 8))
-    {
-        if (outError != NULL)
-        {
-            NSString *errorString = NSLocalizedString(@"UsernameValidation", @"Invalid Username");
-            NSDictionary*   userInfoDict = @{ NSLocalizedDescriptionKey : errorString };
-            *outError   =   [[NSError alloc] initWithDomain:kSignupErrorDomain
-                                                       code:VSignupBadPasswordErrorCode
-                                                   userInfo:userInfoDict];
-        }
-
         return NO;
     }
 
@@ -192,45 +219,43 @@ NSString*   const   kSignupErrorDomain =   @"VSignupErrorDomain";
 
 #pragma mark - Actions
 
-- (IBAction)next:(id)sender
+- (IBAction)signup:(id)sender
 {
     [[self view] endEditing:YES];
 
-    if (YES == [self shouldSignUpWithUsername:self.usernameTextField.text
-                                 emailAddress:self.emailTextField.text
-                                     password:self.passwordTextField.text])
+    if (YES == [self shouldSignUpWithEmailAddress:self.emailTextField.text
+                                         password:self.passwordTextField.text])
     {
         
         [[VUserManager sharedInstance] createEmailAccount:self.emailTextField.text
                                                  password:self.passwordTextField.text
-                                                 userName:self.usernameTextField.text
+                                                 userName:nil
                                              onCompletion:^(VUser *user, BOOL created)
          {
-             dispatch_async(dispatch_get_main_queue(), ^(void)
-                            {
-                                [self didSignUpWithUser:user];
-                            });
+             [self didSignUpWithUser:user];
          }
                                                   onError:^(NSError *error)
          {
-             dispatch_async(dispatch_get_main_queue(), ^(void)
-                            {
-                                [self didFailWithError:error];
-                            });
+             [self didFailWithError:error];
          }];
     }
+}
+
+- (IBAction)cancel:(id)sender
+{
+    [self.navigationController popViewControllerAnimated:YES];
 }
 
 #pragma mark - UITextFieldDelegate
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField
 {
-    if ([textField isEqual:self.usernameTextField])
-        [self.emailTextField becomeFirstResponder];
-    else if ([textField isEqual:self.emailTextField])
+    if ([textField isEqual:self.emailTextField])
         [self.passwordTextField becomeFirstResponder];
+    else if ([textField isEqual:self.passwordTextField])
+        [self.confirmPasswordTextField becomeFirstResponder];
     else
-        [self.passwordTextField resignFirstResponder];
+        [self.confirmPasswordTextField resignFirstResponder];
     
     return YES;
 }

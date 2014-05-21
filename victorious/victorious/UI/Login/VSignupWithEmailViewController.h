@@ -15,5 +15,5 @@ NS_ENUM(NSUInteger, VSignupErrorCode)
     VSignUpBadEmailAddressErrorCode
 };
 
-@interface VSignupWithEmailViewController : UITableViewController
+@interface VSignupWithEmailViewController : UIViewController
 @end

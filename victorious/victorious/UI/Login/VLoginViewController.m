@@ -8,30 +8,30 @@
 
 #import "VLoginViewController.h"
 #import "VConstants.h"
-#import "VThemeManager.h"
-#import "VProfileWithSocialViewController.h"
-#import "VLoginWithEmailViewController.h"
-#import "VObjectManager+Login.h"
 #import "VUser.h"
+#import "VThemeManager.h"
+#import "UIImage+ImageEffects.h"
+#import "VProfileWithSocialViewController.h"
 #import "VUserManager.h"
 #import "VLoginTransitionAnimator.h"
+#import "UIImage+ImageCreation.h"
 
 @import Accounts;
 @import Social;
 
 @interface VLoginViewController ()  <UINavigationControllerDelegate>
-@property (nonatomic, weak) IBOutlet    UIView*             buttonContainer;
-@property (nonatomic, weak) IBOutlet    UIButton*           facebookButton;
-@property (nonatomic, weak) IBOutlet    UIButton*           twitterButton;
-@property (nonatomic, weak) IBOutlet    UIButton*           emailButton;
-@property (nonatomic, weak) IBOutlet    UIButton*           signinEmailButton;
+@property (nonatomic, strong)           VUser*          profile;
 
-@property (nonatomic, weak) IBOutlet    UILabel*           loginLabel;
+@property (nonatomic, weak) IBOutlet    UIImageView*    backgroundImageView;
+@property (nonatomic, weak) IBOutlet    UILabel*        fauxEmailLoginButton;
+@property (nonatomic, weak) IBOutlet    UILabel*        fauxPasswordLoginButton;
 
-@property (nonatomic, strong)           UIDynamicAnimator*  animator;
-@property (nonatomic, assign)           VLoginType          loginType;
-@property (nonatomic, strong)           VUser*              profile;
+@property (nonatomic, weak) IBOutlet    UILabel*        facebookButtonLabel;
+@property (nonatomic, weak) IBOutlet    UILabel*        twitterButtonLabel;
+@property (nonatomic, weak) IBOutlet    UIButton*       loginEmailButton;
 
+@property (nonatomic, assign)           VLoginType      loginType;
+@property (nonatomic, assign)           BOOL            animateToLogin;
 @end
 
 @implementation VLoginViewController
@@ -39,62 +39,34 @@
 + (VLoginViewController *)loginViewController
 {
     UIStoryboard*   storyboard  =   [UIStoryboard storyboardWithName:@"login" bundle:nil];
-    
     return [storyboard instantiateInitialViewController];
 }
 
 - (void)viewDidLoad
 {
+    [super viewDidLoad];
+
+    UIImage*    backgroundImage;
     if (IS_IPHONE_5)
-        self.view.layer.contents = (id)[[VThemeManager sharedThemeManager] themedImageForKey:kVMenuBackgroundImage5].CGImage;
+        backgroundImage = (id)[[[VThemeManager sharedThemeManager] themedImageForKey:kVMenuBackgroundImage5] applyBlurWithRadius:0 tintColor:[UIColor colorWithWhite:0.0 alpha:0.3] saturationDeltaFactor:1.8 maskImage:nil];
     else
-        self.view.layer.contents = (id)[[VThemeManager sharedThemeManager] themedImageForKey:kVMenuBackgroundImage].CGImage;
+        backgroundImage = (id)[[[VThemeManager sharedThemeManager] themedImageForKey:kVMenuBackgroundImage] applyBlurWithRadius:0 tintColor:[UIColor colorWithWhite:0.0 alpha:0.3] saturationDeltaFactor:1.8 maskImage:nil];
     
-    self.animator = [[UIDynamicAnimator alloc] initWithReferenceView:self.view];
+    self.backgroundImageView.image = backgroundImage;
+    [self addGradientToImageView:self.backgroundImageView];
+
+    self.fauxEmailLoginButton.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeaderFont];
+    self.fauxEmailLoginButton.textColor = [UIColor whiteColor];
+    self.fauxPasswordLoginButton.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeaderFont];
+    self.fauxPasswordLoginButton.textColor = [UIColor whiteColor];
     
-    UIColor* accentColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVMainTextColor];
-    UIFont* font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeaderFont];
+    self.facebookButtonLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeaderFont];
+    self.facebookButtonLabel.textColor = [UIColor whiteColor];
+    self.twitterButtonLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeaderFont];
+    self.twitterButtonLabel.textColor = [UIColor whiteColor];
+    self.loginEmailButton.titleLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeading4Font];
     
-    self.loginLabel.textColor = accentColor;
-    self.loginLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVButton1Font];
-    
-    NSMutableAttributedString* attributedTitle = [self.signinEmailButton.titleLabel.attributedText mutableCopy];
-    NSRange range = NSMakeRange(0, [attributedTitle.string length]);
-    [attributedTitle addAttribute:NSForegroundColorAttributeName value:accentColor range:range];
-    
-    if(font)
-        [attributedTitle addAttribute:NSFontAttributeName value:font range:range];
-  
-    [self.signinEmailButton setAttributedTitle:attributedTitle forState:UIControlStateNormal];
-    
-    UIGravityBehavior* gravityBehavior = [[UIGravityBehavior alloc] initWithItems:@[self.buttonContainer]];
-    [self.animator addBehavior:gravityBehavior];
-    
-    UIDynamicItemBehavior *elasticityBehavior = [[UIDynamicItemBehavior alloc] initWithItems:@[self.buttonContainer]];
-    elasticityBehavior.elasticity = 0.5f;
-    [self.animator addBehavior:elasticityBehavior];
-    
-    UICollisionBehavior* collisionBehavior = [[UICollisionBehavior alloc] initWithItems:@[self.buttonContainer]];
-    collisionBehavior.translatesReferenceBoundsIntoBoundary = YES;
-    [self.animator addBehavior:collisionBehavior];
-    
-    self.facebookButton.layer.masksToBounds = YES;
-    self.facebookButton.layer.cornerRadius = 40.0;
-    self.facebookButton.layer.rasterizationScale = [UIScreen mainScreen].scale;
-    self.facebookButton.layer.shouldRasterize = YES;
-    self.facebookButton.clipsToBounds = YES;
-    
-    self.twitterButton.layer.masksToBounds = YES;
-    self.twitterButton.layer.cornerRadius = 40.0;
-    self.twitterButton.layer.rasterizationScale = [UIScreen mainScreen].scale;
-    self.twitterButton.layer.shouldRasterize = YES;
-    self.twitterButton.clipsToBounds = YES;
-    
-    self.emailButton.layer.masksToBounds = YES;
-    self.emailButton.layer.cornerRadius = 40.0;
-    self.emailButton.layer.rasterizationScale = [UIScreen mainScreen].scale;
-    self.emailButton.layer.shouldRasterize = YES;
-    self.emailButton.clipsToBounds = YES;
+    [self.transitionPlaceholder addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(emailClicked:)]];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -102,7 +74,15 @@
     [super viewDidAppear:animated];
     
     // Set outself as the navigation controller's delegate so we're asked for a transitioning object
-//    self.navigationController.delegate = self;
+    [self.navigationController.navigationBar setBackgroundImage:[[UIImage alloc] init] forBarMetrics:UIBarMetricsDefault];
+    self.navigationController.navigationBar.shadowImage = [[UIImage alloc] init];
+    self.navigationController.navigationBar.translucent = YES;
+    [self.navigationController setNavigationBarHidden:NO animated:NO];
+    
+    UIImage*    cancelButtonImage = [[UIImage imageNamed:@"cameraButtonClose"]  imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithImage:cancelButtonImage style:UIBarButtonItemStyleBordered target:self action:@selector(closeButtonClicked:)];
+
+    self.navigationController.delegate = self;
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -110,10 +90,10 @@
     [super viewWillDisappear:animated];
     
     // Stop being the navigation controller's delegate
-//    if (self.navigationController.delegate == self)
-//    {
-//        self.navigationController.delegate = nil;
-//    }
+    if (self.navigationController.delegate == self)
+    {
+        self.navigationController.delegate = nil;
+    }
 }
 
 - (BOOL)shouldAutorotate
@@ -132,6 +112,15 @@
 }
 
 #pragma mark - Support
+
+- (void)addGradientToImageView:(UIView *)view
+{
+    CAGradientLayer*    gradient    =   [CAGradientLayer layer];
+    gradient.frame = view.bounds;
+    gradient.colors = @[(id)[UIColor colorWithWhite:0.0 alpha:0.0].CGColor,
+                        (id)[UIColor colorWithWhite:0.0 alpha:1.0].CGColor];
+    [view.layer insertSublayer:gradient atIndex:0];
+}
 
 - (void)facebookAccessDidFail:(NSError *)error
 {
@@ -160,6 +149,16 @@
                                                    delegate:nil
                                           cancelButtonTitle:NSLocalizedString(@"OKButton", @"")
                                           otherButtonTitles:nil];
+    [alert show];
+}
+
+- (void)didFailWithError:(NSError*)error
+{
+    UIAlertView*    alert   =   [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"LoginFail", @"")
+                                                           message:error.localizedDescription
+                                                          delegate:nil
+                                                 cancelButtonTitle:NSLocalizedString(@"OKButton", @"")
+                                                 otherButtonTitles:nil];
     [alert show];
 }
 
@@ -260,17 +259,18 @@
     }];
 }
 
-- (void)didFailWithError:(NSError*)error
+- (IBAction)emailClicked:(id)sender
 {
-    UIAlertView*    alert   =   [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"LoginFail", @"")
-                                                           message:error.localizedDescription
-                                                          delegate:nil
-                                                 cancelButtonTitle:NSLocalizedString(@"OKButton", @"")
-                                                 otherButtonTitles:nil];
-    [alert show];
+    self.animateToLogin = YES;
+    [self performSegueWithIdentifier:@"toEmailLogin" sender:self];
 }
 
-- (IBAction)cancel:(id)sender
+- (IBAction)signup:(id)sender
+{
+    [self performSegueWithIdentifier:@"toSignup" sender:self];
+}
+
+- (IBAction)closeButtonClicked:(id)sender
 {
     [self dismissViewControllerAnimated:YES completion:nil];
 }
@@ -298,9 +298,14 @@
                                                 fromViewController:(UIViewController *)fromVC
                                                   toViewController:(UIViewController *)toVC
 {
-//    VLoginTransitionAnimator*   animator = [[VLoginTransitionAnimator alloc] init];
-//    animator.presenting = (operation == UINavigationControllerOperationPush);
-//    return animator;
+    if (self.animateToLogin)
+    {
+        self.animateToLogin = NO;
+        
+        VLoginTransitionAnimator*   animator = [[VLoginTransitionAnimator alloc] init];
+        animator.presenting = (operation == UINavigationControllerOperationPush);
+        return animator;
+    }
     
     return nil;
 }

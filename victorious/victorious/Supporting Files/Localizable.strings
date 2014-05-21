@@ -23,6 +23,7 @@
 "UsernameValidation"    =   "User name is less than 8 characters";
 "AgreeTOS"              =   "You must click that you are at least 13 years of age and agree to the Terms of Service";
 "InvalidCredentials"    =   "Invalid Credentials";
+"PasswordNotMatching"   =   "The confirmation password does not match the password";
 "PollAlreadyAnswered"   =   "Poll result was already answered";
 "LoginFail"             =   "Login Failed";
 "SignupFail"            =   "Account Creation Failed";

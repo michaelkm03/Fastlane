@@ -12,38 +12,81 @@
 #import "VObjectManager+Login.h"
 #import "VUser.h"
 #import "VUserManager.h"
+#import "VThemeManager.h"
+#import "UIImage+ImageEffects.h"
+#import "VLoginTransitionAnimator.h"
 
 NSString*   const   kVLoginErrorDomain =   @"VLoginErrorDomain";
 
-@interface VLoginWithEmailViewController () <UITextFieldDelegate>
-@property   (nonatomic, weak)   IBOutlet    UITextField*    usernameTextField;
-@property   (nonatomic, weak)   IBOutlet    UITextField*    passwordTextField;
-@property   (nonatomic, weak)   IBOutlet    UIButton*       loginButton;
-@property   (nonatomic, strong)             VUser*          profile;
+@interface VLoginWithEmailViewController () <UITextFieldDelegate, UINavigationControllerDelegate>
+@property (nonatomic, weak) IBOutlet    UITextField*    usernameTextField;
+@property (nonatomic, weak) IBOutlet    UITextField*    passwordTextField;
+@property (nonatomic, weak) IBOutlet    UIButton*       loginButton;
+@property (nonatomic, weak) IBOutlet    UIButton*       cancelButton;
+@property (nonatomic, weak) IBOutlet    UIButton*       forgotPasswordButton;
+@property (nonatomic, strong)           VUser*          profile;
 @end
 
 @implementation VLoginWithEmailViewController
-
-- (void)dealloc
-{
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
-}
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
 
-    self.view.layer.contents = (id)[UIImage imageNamed:@"loginBackground"].CGImage;
-    
-    self.usernameTextField.leftView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"emailImage"]];
-    self.usernameTextField.leftViewMode = UITextFieldViewModeAlways;
-    self.passwordTextField.leftView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"passwordImage"]];
-    self.passwordTextField.leftViewMode = UITextFieldViewModeAlways;
+    if (IS_IPHONE_5)
+        self.view.layer.contents = (id)[[[VThemeManager sharedThemeManager] themedImageForKey:kVMenuBackgroundImage5] applyBlurWithRadius:25 tintColor:[UIColor colorWithWhite:1.0 alpha:0.7] saturationDeltaFactor:1.8 maskImage:nil].CGImage;
+    else
+        self.view.layer.contents = (id)[[[VThemeManager sharedThemeManager] themedImageForKey:kVMenuBackgroundImage] applyBlurWithRadius:25 tintColor:[UIColor colorWithWhite:1.0 alpha:0.7] saturationDeltaFactor:1.8 maskImage:nil].CGImage;
 
+    self.usernameTextField.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeaderFont];
+    self.usernameTextField.textColor = [UIColor colorWithWhite:0.14 alpha:1.0];
+    self.usernameTextField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:self.usernameTextField.placeholder attributes:@{NSForegroundColorAttributeName : [UIColor colorWithWhite:0.14 alpha:1.0]}];
+    self.passwordTextField.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeaderFont];
+    self.passwordTextField.textColor = [UIColor colorWithWhite:0.14 alpha:1.0];
+    self.passwordTextField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:self.passwordTextField.placeholder attributes:@{NSForegroundColorAttributeName : [UIColor colorWithWhite:0.14 alpha:1.0]}];
+    
+    self.cancelButton.layer.borderColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor].CGColor;
+    self.cancelButton.layer.borderWidth = 2.0;
+    self.cancelButton.layer.cornerRadius = 3.0;
+    self.cancelButton.backgroundColor = [UIColor clearColor];
+    self.cancelButton.titleLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeaderFont];
+    [self.cancelButton setTitleColor:[UIColor colorWithWhite:0.14 alpha:1.0] forState:UIControlStateNormal];
+
+    self.loginButton.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
+    self.loginButton.titleLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeaderFont];
+    [self.loginButton setTitleColor:[UIColor colorWithWhite:0.14 alpha:1.0] forState:UIControlStateNormal];
+    
+    self.forgotPasswordButton.titleLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeading4Font];
+    [self.forgotPasswordButton setTitleColor:[UIColor colorWithWhite:0.14 alpha:1.0] forState:UIControlStateNormal];
+    
     self.usernameTextField.delegate  =   self;
     self.passwordTextField.delegate  =   self;
     
+    [self.navigationController setNavigationBarHidden:YES animated:NO];
+}
+
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    
     [self.usernameTextField becomeFirstResponder];
+    self.navigationController.delegate = self;
+}
+
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+    
+    // Stop being the navigation controller's delegate
+    if (self.navigationController.delegate == self)
+    {
+        self.navigationController.delegate = nil;
+    }
+}
+
+- (BOOL)prefersStatusBarHidden
+{
+    return YES;
 }
 
 #pragma mark - Validation
@@ -177,6 +220,16 @@ NSString*   const   kVLoginErrorDomain =   @"VLoginErrorDomain";
     }
 }
 
+- (IBAction)cancel:(id)sender
+{
+    [self.navigationController popViewControllerAnimated:YES];
+}
+
+ -(IBAction)forgotPassword:(id)sender
+{
+    
+}
+
 #pragma mark - UITextFieldDelegate
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField
@@ -197,6 +250,18 @@ NSString*   const   kVLoginErrorDomain =   @"VLoginErrorDomain";
 - (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
 {
     [[self view] endEditing:YES];
+}
+
+#pragma mark - Navigation
+
+- (id<UIViewControllerAnimatedTransitioning>) navigationController:(UINavigationController *)navigationController
+                                   animationControllerForOperation:(UINavigationControllerOperation)operation
+                                                fromViewController:(UIViewController *)fromVC
+                                                  toViewController:(UIViewController *)toVC
+{
+    VLoginTransitionAnimator*   animator = [[VLoginTransitionAnimator alloc] init];
+    animator.presenting = (operation == UINavigationControllerOperationPush);
+    return animator;
 }
 
 @end

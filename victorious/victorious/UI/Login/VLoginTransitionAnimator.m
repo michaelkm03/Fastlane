@@ -14,44 +14,45 @@
 
 - (NSTimeInterval)transitionDuration:(id <UIViewControllerContextTransitioning>)transitionContext
 {
-    return 0.3f;
+    return 0.6f;
 }
 
 - (void)animateTransition:(id <UIViewControllerContextTransitioning>)transitionContext
 {
-    VLoginViewController*           fromViewController = (VLoginViewController *)[transitionContext viewControllerForKey:UITransitionContextFromViewControllerKey];
-    VLoginWithEmailViewController*  toViewController = (VLoginWithEmailViewController *)[transitionContext viewControllerForKey:UITransitionContextToViewControllerKey];
     UIView*                         containerView = [transitionContext containerView];
     NSTimeInterval                  duration = [self transitionDuration:transitionContext];
     
     if (self.presenting)
     {
+        VLoginViewController*           fromViewController = (VLoginViewController *)[transitionContext viewControllerForKey:UITransitionContextFromViewControllerKey];
+        VLoginWithEmailViewController*  toViewController = (VLoginWithEmailViewController *)[transitionContext viewControllerForKey:UITransitionContextToViewControllerKey];
+
         //  Get a snapshot of the thing we are transitioning from
-    //    UIView *cellSnapshot = [transitioningView snapshotViewAfterScreenUpdates];
-    //    cellSnapshot = [containerView convertRect:cell.imageView.frame fromView:cell.imageView.superview];
-    //    transitioningView.hidden = YES;
+        UIView *snapshot = [fromViewController.transitionPlaceholder snapshotViewAfterScreenUpdates:NO];
+        snapshot.frame = [containerView convertRect:fromViewController.transitionPlaceholder.frame fromView:fromViewController.transitionPlaceholder.superview];
+        fromViewController.transitionPlaceholder.hidden = YES;
         
         //  Set up the initial view states
         toViewController.view.frame = [transitionContext finalFrameForViewController:toViewController];
         toViewController.view.alpha = 0.0;
-    //    toViewController.transitioningView.hidden = YES;
+        toViewController.transitionPlaceholder.hidden = YES;
         
         [containerView addSubview:toViewController.view];
-    //    [containerView addSubview:cellSnapshot];
+        [containerView addSubview:snapshot];
         
         [UIView animateWithDuration:duration animations:^{
             // Fade in the second view controller's view
             toViewController.view.alpha = 1.0;
                 
             // Move the cell snapshot so it's over the second view controller's image view
-//            CGRect frame = [containerView convertRect:toViewController.transitioningView.frame fromView:toViewController.view];
-//            cellSnapshot.frame = frame;
+            CGRect frame = [containerView convertRect:toViewController.transitionPlaceholder.frame fromView:toViewController.view];
+            snapshot.frame = frame;
         } completion:^(BOOL finished)
          {
              // Clean up
-//             toViewController.transitioningView.hidden = NO;
-//             cell.hidden = NO;
-//             [cellImageSnapshot removeFromSuperview];
+             toViewController.transitionPlaceholder.hidden = NO;
+             fromViewController.transitionPlaceholder.hidden = NO;
+             [snapshot removeFromSuperview];
              
              // Declare that we've finished
              [transitionContext completeTransition:!transitionContext.transitionWasCancelled];
@@ -59,31 +60,33 @@
     }
     else
     {
+        VLoginWithEmailViewController*  fromViewController = (VLoginWithEmailViewController *)[transitionContext viewControllerForKey:UITransitionContextFromViewControllerKey];
+        VLoginViewController*           toViewController = (VLoginViewController *)[transitionContext viewControllerForKey:UITransitionContextToViewControllerKey];
+
         // Get a snapshot of the image view
-//        UIView *imageSnapshot = [fromViewController.imageView snapshotViewAfterScreenUpdates:NO];
-//        imageSnapshot.frame = [containerView convertRect:fromViewController.imageView.frame fromView:fromViewController.imageView.superview];
-//        fromViewController.imageView.hidden = YES;
+        UIView* snapshot = [fromViewController.transitionPlaceholder snapshotViewAfterScreenUpdates:NO];
+        snapshot.frame = [containerView convertRect:fromViewController.transitionPlaceholder.frame fromView:fromViewController.transitionPlaceholder.superview];
+        fromViewController.transitionPlaceholder.hidden = YES;
         
-        // Get the cell we'll animate to
-//        DSLThingCell *cell = [toViewController collectionViewCellForThing:fromViewController.thing];
-//        cell.imageView.hidden = YES;
+        // Get the view we'll animate to
+        toViewController.transitionPlaceholder.hidden = YES;
         
         // Setup the initial view states
         toViewController.view.frame = [transitionContext finalFrameForViewController:toViewController];
         [containerView insertSubview:toViewController.view belowSubview:fromViewController.view];
-//        [containerView addSubview:imageSnapshot];
+        [containerView addSubview:snapshot];
         
         [UIView animateWithDuration:duration animations:^{
             // Fade out the source view controller
             fromViewController.view.alpha = 0.0;
             
             // Move the image view
-//            imageSnapshot.frame = [containerView convertRect:cell.imageView.frame fromView:cell.imageView.superview];
+            snapshot.frame = [containerView convertRect:toViewController.transitionPlaceholder.frame fromView:toViewController.transitionPlaceholder.superview];
         } completion:^(BOOL finished) {
             // Clean up
-//            [imageSnapshot removeFromSuperview];
-//            fromViewController.imageView.hidden = NO;
-//            cell.imageView.hidden = NO;
+            [snapshot removeFromSuperview];
+            fromViewController.transitionPlaceholder.hidden = NO;
+            toViewController.transitionPlaceholder.hidden = NO;
             
             // Declare that we've finished
             [transitionContext completeTransition:!transitionContext.transitionWasCancelled];
