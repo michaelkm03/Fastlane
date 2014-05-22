@@ -11,6 +11,12 @@
 		03086AAA18F60E3000105FFB /* VMediaPreviewViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 03086AA918F60E3000105FFB /* VMediaPreviewViewController.m */; };
 		032C9B471929C113002FB447 /* VObjectManager+ImageSearch.m in Sources */ = {isa = PBXBuildFile; fileRef = 032C9B461929C113002FB447 /* VObjectManager+ImageSearch.m */; };
 		0345285419244E9700D0B1D1 /* VActivityIndicatorView.m in Sources */ = {isa = PBXBuildFile; fileRef = 0345285319244E9700D0B1D1 /* VActivityIndicatorView.m */; };
+		03484BF1192D284100403FB1 /* VLightboxDisplayAnimator.m in Sources */ = {isa = PBXBuildFile; fileRef = 03484BEE192D284100403FB1 /* VLightboxDisplayAnimator.m */; };
+		03484BF2192D284100403FB1 /* VLightboxViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 03484BF0192D284100403FB1 /* VLightboxViewController.m */; };
+		03484BF5192D28CC00403FB1 /* VLightboxTransitioningDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 03484BF4192D28CC00403FB1 /* VLightboxTransitioningDelegate.m */; };
+		03484BF8192D2B4400403FB1 /* VLightboxDismissAnimator.m in Sources */ = {isa = PBXBuildFile; fileRef = 03484BF7192D2B4400403FB1 /* VLightboxDismissAnimator.m */; };
+		03484BFB192E6E8C00403FB1 /* VVideoLightboxViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 03484BFA192E6E8C00403FB1 /* VVideoLightboxViewController.m */; };
+		03484BFE192E9D2100403FB1 /* NSLayoutConstraint+CenterConstraints.m in Sources */ = {isa = PBXBuildFile; fileRef = 03484BFD192E9D2100403FB1 /* NSLayoutConstraint+CenterConstraints.m */; };
 		03522780192173F0003FCD10 /* VElapsedTimeFormatterTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 0352277F192173F0003FCD10 /* VElapsedTimeFormatterTests.m */; };
 		0352278319219079003FCD10 /* VVideoDownloadProgressIndicatorView.m in Sources */ = {isa = PBXBuildFile; fileRef = 0352278219219079003FCD10 /* VVideoDownloadProgressIndicatorView.m */; };
 		036AE5ED18FF0C0600A74BDA /* VReachability.m in Sources */ = {isa = PBXBuildFile; fileRef = 036AE5EC18FF0C0600A74BDA /* VReachability.m */; };
@@ -274,6 +280,18 @@
 		032C9B461929C113002FB447 /* VObjectManager+ImageSearch.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "VObjectManager+ImageSearch.m"; sourceTree = "<group>"; };
 		0345285219244E9700D0B1D1 /* VActivityIndicatorView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VActivityIndicatorView.h; path = UI/VActivityIndicatorView.h; sourceTree = "<group>"; };
 		0345285319244E9700D0B1D1 /* VActivityIndicatorView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VActivityIndicatorView.m; path = UI/VActivityIndicatorView.m; sourceTree = "<group>"; };
+		03484BED192D284100403FB1 /* VLightboxDisplayAnimator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VLightboxDisplayAnimator.h; sourceTree = "<group>"; };
+		03484BEE192D284100403FB1 /* VLightboxDisplayAnimator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VLightboxDisplayAnimator.m; sourceTree = "<group>"; };
+		03484BEF192D284100403FB1 /* VLightboxViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VLightboxViewController.h; sourceTree = "<group>"; };
+		03484BF0192D284100403FB1 /* VLightboxViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VLightboxViewController.m; sourceTree = "<group>"; };
+		03484BF3192D28CC00403FB1 /* VLightboxTransitioningDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VLightboxTransitioningDelegate.h; sourceTree = "<group>"; };
+		03484BF4192D28CC00403FB1 /* VLightboxTransitioningDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VLightboxTransitioningDelegate.m; sourceTree = "<group>"; };
+		03484BF6192D2B4400403FB1 /* VLightboxDismissAnimator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VLightboxDismissAnimator.h; sourceTree = "<group>"; };
+		03484BF7192D2B4400403FB1 /* VLightboxDismissAnimator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VLightboxDismissAnimator.m; sourceTree = "<group>"; };
+		03484BF9192E6E8C00403FB1 /* VVideoLightboxViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VVideoLightboxViewController.h; sourceTree = "<group>"; };
+		03484BFA192E6E8C00403FB1 /* VVideoLightboxViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VVideoLightboxViewController.m; sourceTree = "<group>"; };
+		03484BFC192E9D2100403FB1 /* NSLayoutConstraint+CenterConstraints.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSLayoutConstraint+CenterConstraints.h"; sourceTree = "<group>"; };
+		03484BFD192E9D2100403FB1 /* NSLayoutConstraint+CenterConstraints.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSLayoutConstraint+CenterConstraints.m"; sourceTree = "<group>"; };
 		0352277F192173F0003FCD10 /* VElapsedTimeFormatterTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VElapsedTimeFormatterTests.m; sourceTree = "<group>"; };
 		0352278119219079003FCD10 /* VVideoDownloadProgressIndicatorView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VVideoDownloadProgressIndicatorView.h; sourceTree = "<group>"; };
 		0352278219219079003FCD10 /* VVideoDownloadProgressIndicatorView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VVideoDownloadProgressIndicatorView.m; sourceTree = "<group>"; };
@@ -745,6 +763,24 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		03484BEC192D27E600403FB1 /* Lightbox */ = {
+			isa = PBXGroup;
+			children = (
+				03484BF6192D2B4400403FB1 /* VLightboxDismissAnimator.h */,
+				03484BF7192D2B4400403FB1 /* VLightboxDismissAnimator.m */,
+				03484BED192D284100403FB1 /* VLightboxDisplayAnimator.h */,
+				03484BEE192D284100403FB1 /* VLightboxDisplayAnimator.m */,
+				03484BF3192D28CC00403FB1 /* VLightboxTransitioningDelegate.h */,
+				03484BF4192D28CC00403FB1 /* VLightboxTransitioningDelegate.m */,
+				03484BEF192D284100403FB1 /* VLightboxViewController.h */,
+				03484BF0192D284100403FB1 /* VLightboxViewController.m */,
+				03484BF9192E6E8C00403FB1 /* VVideoLightboxViewController.h */,
+				03484BFA192E6E8C00403FB1 /* VVideoLightboxViewController.m */,
+			);
+			name = Lightbox;
+			path = UI/Lightbox;
+			sourceTree = "<group>";
+		};
 		036AE5EA18FF0C0600A74BDA /* Reachability */ = {
 			isa = PBXGroup;
 			children = (
@@ -901,6 +937,7 @@
 				5FF9BE801893188A0054694B /* Menu */,
 				3F53E0C418A595AC00089C20 /* Create */,
 				3F14C43218BD2BD0001796B9 /* VCAudioVideoRecorder */,
+				03484BEC192D27E600403FB1 /* Lightbox */,
 				BE651D0C18AAD58A00069119 /* VLoadingViewController.h */,
 				BE651D0D18AAD58A00069119 /* VLoadingViewController.m */,
 			);
@@ -1249,6 +1286,8 @@
 			children = (
 				BE171DAF1868C211004E5202 /* Fetchers */,
 				BE171DB61868C211004E5202 /* Mappings */,
+				03484BFC192E9D2100403FB1 /* NSLayoutConstraint+CenterConstraints.h */,
+				03484BFD192E9D2100403FB1 /* NSLayoutConstraint+CenterConstraints.m */,
 				BE171E371868C266004E5202 /* NSString+VParseHelp.h */,
 				BE171E381868C266004E5202 /* NSString+VParseHelp.m */,
 				83BD06F9186BE4B2007742D1 /* UIImage+ImageEffects.h */,
@@ -1833,11 +1872,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				03484BF5192D28CC00403FB1 /* VLightboxTransitioningDelegate.m in Sources */,
 				BE171E0F1868C211004E5202 /* VAsset+RestKit.m in Sources */,
 				BE89D9931921907200D97E7F /* VComment.m in Sources */,
 				BE185DEA18E3AF55001C447F /* VContentViewController+Polls.m in Sources */,
 				5FF9BE83189318CD0054694B /* VRootViewController.m in Sources */,
 				BEB4C29D187E038C004ECEEF /* VNewsCell.m in Sources */,
+				03484BFB192E6E8C00403FB1 /* VVideoLightboxViewController.m in Sources */,
 				BE171E131868C211004E5202 /* VInteractionAction+RestKit.m in Sources */,
 				03F9D281191D542300576AEE /* VCVideoPlayerToolbarView.m in Sources */,
 				BEB8DB07192BFF5300E0E3E6 /* VMessageCell.m in Sources */,
@@ -1889,6 +1930,7 @@
 				BE6B95FC187C88F700CED4C9 /* VSequence+Fetcher.m in Sources */,
 				BED7F68018E1187800545DF6 /* VEphemeralTimerView.m in Sources */,
 				BE40559418A1828D00092AE1 /* UIButton+VImageLoading.m in Sources */,
+				03484BFE192E9D2100403FB1 /* NSLayoutConstraint+CenterConstraints.m in Sources */,
 				0385FEE918EF41B4009FBD68 /* VImageSearchResult.m in Sources */,
 				3F71A7DB18D7C6D20048FF60 /* VRemixSliderRight.m in Sources */,
 				BE185DEE18E3B255001C447F /* VContentViewController+Videos.m in Sources */,
@@ -1957,6 +1999,7 @@
 				5F51F81A189AEBF800A546D1 /* VAbstractProfileEditViewController.m in Sources */,
 				3F14C44D18BD2BD0001796B9 /* VCAudioTools.m in Sources */,
 				BEF2C2A818848B3B00AAE975 /* VUnreadConversation.m in Sources */,
+				03484BF1192D284100403FB1 /* VLightboxDisplayAnimator.m in Sources */,
 				BEF2C29618845EF500AAE975 /* VPollResult+RestKit.m in Sources */,
 				5FCC1E4A1899C94D00EB7699 /* VWebContentViewController.m in Sources */,
 				BEE604C1192D7D84003A0206 /* VInboxContainerViewController.m in Sources */,
@@ -1984,11 +2027,13 @@
 				BE692B29186E5ED800C71336 /* VStreamViewCell.m in Sources */,
 				BE5DE3FC18DA730B0047B67E /* VVoteType+RestKit.m in Sources */,
 				BE171E431868CEA0004E5202 /* victoriOS.xcdatamodeld in Sources */,
+				03484BF2192D284100403FB1 /* VLightboxViewController.m in Sources */,
 				BEE800E918FCC5C200A7CFD7 /* VStreamTableViewController+ContentCreation.m in Sources */,
 				838511C418762DF3007E0316 /* VBadgeLabel.m in Sources */,
 				3F9B666818887D910046F826 /* VFetchedResultsTableViewController.m in Sources */,
 				BE438E0E18F35A2700F5DF29 /* VUser.m in Sources */,
 				BE171E1B1868C211004E5202 /* VUser+RestKit.m in Sources */,
+				03484BF8192D2B4400403FB1 /* VLightboxDismissAnimator.m in Sources */,
 				BE5C736A187E36E800A3340D /* VRule.m in Sources */,
 				3FA217C218A9B5160066E893 /* CastViewController.m in Sources */,
 				BE6211AF192D65C300D5C74B /* VTableContainerViewController.m in Sources */,
