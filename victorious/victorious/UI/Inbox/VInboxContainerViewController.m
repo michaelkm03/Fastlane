@@ -34,4 +34,17 @@
     self.headerLabel.text = NSLocalizedString(@"Inbox", nil);
 }
 
+//- (IBAction)changedFilterControls:(id)sender
+//{
+//    if (self.filterControls.selectedSegmentIndex == VStreamFollowingFilter && ![VObjectManager sharedManager].mainUser)
+//    {
+//        [self.filterControls setSelectedSegmentIndex:self.streamTable.filterType];
+//        [self presentViewController:[VLoginViewController loginViewController] animated:YES completion:NULL];
+//    }
+//    
+//    [super changedFilterControls:sender];
+//    
+//    self.streamTable.filterType = self.filterControls.selectedSegmentIndex;
+//}
+
 @end
