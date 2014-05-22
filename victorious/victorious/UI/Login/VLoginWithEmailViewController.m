@@ -30,6 +30,7 @@ NSString*   const   kVLoginErrorDomain =   @"VLoginErrorDomain";
 
 @property (nonatomic, strong)           UIAlertView*    resetAlert;
 @property (nonatomic, strong)           UIAlertView*    thanksAlert;
+@property (nonatomic)                   BOOL            alertDismissed;
 @end
 
 @implementation VLoginWithEmailViewController
@@ -232,6 +233,8 @@ NSString*   const   kVLoginErrorDomain =   @"VLoginErrorDomain";
 
  -(IBAction)forgotPassword:(id)sender
 {
+    self.alertDismissed = NO;
+
     self.resetAlert   =   [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"ResetPassword", @"")
                                                      message:NSLocalizedString(@"ResetPasswordPrompt", @"")
                                                     delegate:self
@@ -250,16 +253,19 @@ NSString*   const   kVLoginErrorDomain =   @"VLoginErrorDomain";
     {
         if (buttonIndex == alertView.firstOtherButtonIndex)
         {
+            self.thanksAlert   =   [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Thanks", @"")
+                                                              message:NSLocalizedString(@"EmailSent", @"")
+                                                             delegate:self
+                                                    cancelButtonTitle:nil
+                                                    otherButtonTitles:NSLocalizedString(@"OKButton", @""), nil];
+            [self.thanksAlert show];
+
             [[VObjectManager sharedManager] requestPasswordResetForEmail:[alertView textFieldAtIndex:0].text
                                                             successBlock:^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
              {
                  self.deviceToken = resultObjects[0];
-                 self.thanksAlert   =   [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Thanks", @"")
-                                                                   message:NSLocalizedString(@"EmailSent", @"")
-                                                                  delegate:self
-                                                         cancelButtonTitle:nil
-                                                         otherButtonTitles:NSLocalizedString(@"OKButton", @""), nil];
-                 [self.thanksAlert show];
+                 if (self.alertDismissed)
+                     [self performSegueWithIdentifier:@"toResetCode" sender:self];
              }
                                                                failBlock:^(NSOperation* operation, NSError* error)
              {
@@ -274,7 +280,10 @@ NSString*   const   kVLoginErrorDomain =   @"VLoginErrorDomain";
     }
     else if (alertView == self.thanksAlert)
     {
-        [self performSegueWithIdentifier:@"toResetCode" sender:self];
+        if (self.deviceToken)
+            [self performSegueWithIdentifier:@"toResetCode" sender:self];
+        else
+            self.alertDismissed = YES;
     }
     
 }

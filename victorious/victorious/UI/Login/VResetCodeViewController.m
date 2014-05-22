@@ -7,6 +7,7 @@
 //
 
 #import "VResetCodeViewController.h"
+#import "VObjectManager+Login.h"
 
 @interface VResetCodeViewController ()
 
@@ -30,6 +31,27 @@
 - (IBAction)resendEmail:(id)sender
 {
     
+}
+
+- (IBAction)checkCode:(id)sender
+{
+    NSString*   userToken;
+
+    [[VObjectManager sharedManager] resetPasswordWithUserToken:userToken
+                                                   deviceToken:self.deviceToken
+                                                  successBlock:^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
+    {
+         
+    }
+                                                     failBlock:^(NSOperation* operation, NSError* error)
+    {
+        UIAlertView*    alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"CannotVerify", @"")
+                                                           message:NSLocalizedString(@"IncorrectCode", @"")
+                                                          delegate:nil
+                                                 cancelButtonTitle:nil
+                                                 otherButtonTitles:NSLocalizedString(@"OKButton", @""), nil];
+        [alert show];
+    }];
 }
 
 @end

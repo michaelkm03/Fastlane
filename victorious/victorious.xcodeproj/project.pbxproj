@@ -929,12 +929,12 @@
 				5FC4DA6C1897119C006BA107 /* VProfileCreateViewController.m */,
 				5FC4DA6E189711EA006BA107 /* VInviteFriendsViewController.h */,
 				5FC4DA6F189711EA006BA107 /* VInviteFriendsViewController.m */,
-				3F53E0C118A485D400089C20 /* VUserManager.h */,
-				3F53E0C218A485D400089C20 /* VUserManager.m */,
 				3FBCB9C6192E9A9600EB510C /* VResetCodeViewController.h */,
 				3FBCB9C7192E9A9600EB510C /* VResetCodeViewController.m */,
 				3FBCB9C3192E9A7400EB510C /* VResetPasswordViewController.h */,
 				3FBCB9C4192E9A7400EB510C /* VResetPasswordViewController.m */,
+				3F53E0C118A485D400089C20 /* VUserManager.h */,
+				3F53E0C218A485D400089C20 /* VUserManager.m */,
 			);
 			name = User;
 			sourceTree = "<group>";

@@ -325,4 +325,19 @@ NSString *kLoggedInChangedNotification = @"LoggedInChangedNotification";
             failBlock:fail];
 }
 
+- (RKManagedObjectRequestOperation *)resetPasswordWithUserToken:(NSString *)userToken
+                                                    deviceToken:(NSString *)deviceToken
+                                                   successBlock:(VSuccessBlock)success
+                                                      failBlock:(VFailBlock)fail
+{
+    NSDictionary *parameters = @{@"user_token": userToken ?: @"",
+                                 @"device_token" : deviceToken ?: @""};
+    
+    return [self POST:@"api/password_reset"
+               object:nil
+           parameters:parameters
+         successBlock:success
+            failBlock:fail];
+}
+
 @end
