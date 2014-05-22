@@ -18,17 +18,17 @@
 
 @implementation VResultView
 
-- (id)initWithFrame:(CGRect)frame
+- (instancetype)initWithFrame:(CGRect)frame
 {
     return [self initWithFrame:frame orientation:YES progress:0];
 }
 
-- (id)initWithFrame:(CGRect)frame orientation:(BOOL)isVertical
+- (instancetype)initWithFrame:(CGRect)frame orientation:(BOOL)isVertical
 {
     return [self initWithFrame:frame orientation:isVertical progress:0];
 }
 
-- (id)initWithFrame:(CGRect)frame orientation:(BOOL)isVertical progress:(CGFloat)progress
+- (instancetype)initWithFrame:(CGRect)frame orientation:(BOOL)isVertical progress:(CGFloat)progress
 {
     self = [super initWithFrame:frame];
     if (self) {

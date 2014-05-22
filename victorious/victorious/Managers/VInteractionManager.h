@@ -22,7 +22,7 @@
 @property (readonly, nonatomic) CGFloat lastInteractionTimeout;
 @property (weak, nonatomic) id<VInteractionManagerDelegate> delegate;
 
-- (id)initWithNode:(VNode*)node delegate:(id<VInteractionManagerDelegate>)delegate;
+- (instancetype)initWithNode:(VNode*)node delegate:(id<VInteractionManagerDelegate>)delegate;
 - (void)startInteractionTimerAtTime:(CGFloat)seconds;
 - (void)pauseInterationTimer;
 

@@ -35,14 +35,14 @@ static  const   CGFloat     kVLineWidth  =   3.0f;
 
 @implementation VProgressiveImageView
 
-- (id)initWithFrame:(CGRect)frame
+- (instancetype)initWithFrame:(CGRect)frame
 {
     return [[VProgressiveImageView alloc] initWithFrame:frame
                                 backgroundProgressColor:[UIColor whiteColor]
                                           progressColor:[UIColor colorWithRed:240/255.f green:85/255.f blue:97/255.f alpha:1.f]];
 }
 
-- (id)initWithFrame:(CGRect)frame backgroundProgressColor:(UIColor *)backgroundProgresscolor progressColor:(UIColor *)progressColor
+- (instancetype)initWithFrame:(CGRect)frame backgroundProgressColor:(UIColor *)backgroundProgresscolor progressColor:(UIColor *)progressColor
 {
     self = [super initWithFrame:frame];
     if (self)

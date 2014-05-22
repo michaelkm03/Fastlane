@@ -23,7 +23,7 @@
 
 @implementation VInteractionManager
 
-- (id)initWithNode:(VNode*)node delegate:(id<VInteractionManagerDelegate>)delegate
+- (instancetype)initWithNode:(VNode*)node delegate:(id<VInteractionManagerDelegate>)delegate
 {
     self = [super init];
     if (self)

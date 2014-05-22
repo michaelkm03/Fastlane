@@ -39,6 +39,8 @@
 
 @property (nonatomic, strong)   NSURL*                      updatedProfileImage;
 
+@property (nonatomic, strong)   UIBarButtonItem*            countDownLabel;
+
 @end
 
 @implementation VProfileCreateViewController
@@ -67,10 +69,12 @@
     
     self.usernameTextField.delegate = self;
     self.usernameTextField.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeaderFont];
+    self.usernameTextField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:self.usernameTextField.placeholder attributes:@{NSForegroundColorAttributeName : [UIColor colorWithWhite:0.14 alpha:1.0]}];
     self.usernameTextField.text = self.profile.name;
     
     self.locationTextField.delegate = self;
     self.locationTextField.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeaderFont];
+    self.locationTextField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:self.usernameTextField.placeholder attributes:@{NSForegroundColorAttributeName : [UIColor colorWithWhite:0.14 alpha:1.0]}];
     self.locationTextField.text = self.profile.location;
     if ([CLLocationManager locationServicesEnabled] && [CLLocationManager significantLocationChangeMonitoringAvailable])
     {
@@ -78,11 +82,15 @@
         self.locationManager.delegate = self;
     }
     
+    self.tagLinePlaceholderLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeaderFont];
+    self.tagLinePlaceholderLabel.textColor = [UIColor colorWithWhite:0.14 alpha:1.0];
+
     self.taglineTextView.delegate = self;
     self.taglineTextView.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeaderFont];
     self.taglineTextView.text = self.profile.tagline;
     if ([self respondsToSelector:@selector(textViewDidChange:)])
         [self textViewDidChange:self.taglineTextView];
+    [self createInputAccessoryView];
     
     self.agreementText.delegate = self;
     self.agreementText.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVLabel2Font];
@@ -154,11 +162,28 @@
 - (void)textViewDidChange:(UITextView *)textView
 {
     self.tagLinePlaceholderLabel.hidden = ([textView.text length] > 0);
+    self.countDownLabel.title = [NSNumberFormatter localizedStringFromNumber:@(VConstantsMessageLength - self.taglineTextView.text.length)
+                                                                 numberStyle:NSNumberFormatterDecimalStyle];
 }
 
 - (void)textViewDidEndEditing:(UITextView *)textView
 {
     self.tagLinePlaceholderLabel.hidden = ([textView.text length] > 0);
+}
+
+- (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text
+{
+    if ([text isEqualToString:@"\n"])
+    {
+        [textView resignFirstResponder];
+        return NO;
+    }
+    
+    BOOL    isDeleteKey = ([text isEqualToString:@""]);
+    if ((textView.text.length >= VConstantsMessageLength) && (!isDeleteKey))
+        return NO;
+    
+    return YES;
 }
 
 #pragma mark - TTTAttributedLabelDelegate
@@ -195,24 +220,47 @@
 
 #pragma mark - Actions
 
-- (IBAction)next:(id)sender
+- (IBAction)done:(id)sender
 {
-    [[VObjectManager sharedManager] updateVictoriousWithEmail:nil
-                                                     password:nil
-                                                         name:self.usernameTextField.text
-                                              profileImageURL:self.updatedProfileImage
-                                                     location:self.locationTextField.text
-                                                      tagline:self.taglineTextView.text
-                                                 successBlock:^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
-     {
-         VLog(@"Succeeded with objects: %@", resultObjects);
-     }
-                                                    failBlock:^(NSOperation* operation, NSError* error)
-     {
-         VLog(@"Failed with error: %@", error);
-     }];
+    if ([self ShouldSaveProfile])
+    {
+        [[VObjectManager sharedManager] updateVictoriousWithEmail:nil
+                                                         password:nil
+                                                             name:self.usernameTextField.text
+                                                  profileImageURL:self.updatedProfileImage
+                                                         location:self.locationTextField.text
+                                                          tagline:self.taglineTextView.text
+                                                     successBlock:^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
+         {
+             VLog(@"Succeeded with objects: %@", resultObjects);
+             [self performSegueWithIdentifier:@"toInviteFriends" sender:self];
+         }
+                                                        failBlock:^(NSOperation* operation, NSError* error)
+         {
+             VLog(@"Failed with error: %@", error);
+         }];
+    }
+}
+
+- (BOOL)ShouldSaveProfile
+{
+    BOOL    isValid =   ((self.usernameTextField.text.length > 0) &&
+                         (self.locationTextField.text.length > 0) &&
+                         (self.taglineTextView.text.length > 0) &&
+                         ([self.agreeSwitch isOn]) &&
+                         (self.updatedProfileImage));
     
-    [self performSegueWithIdentifier:@"toInviteFriends" sender:self];
+    if (isValid)
+        return YES;
+    
+    UIAlertView*    alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"ProfileIncomplete", @"")
+                                                       message:NSLocalizedString(@"ProfileRequired", @"")
+                                                      delegate:nil
+                                             cancelButtonTitle:nil
+                                             otherButtonTitles:NSLocalizedString(@"OKButton", @""), nil];
+    [alert show];
+    
+    return NO;
 }
 
 - (IBAction)takePicture:(id)sender
@@ -245,6 +293,23 @@
 - (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
 {
     [[self view] endEditing:YES];
+}
+
+- (void)createInputAccessoryView
+{
+    UIToolbar*  toolbar =   [[UIToolbar alloc] initWithFrame:CGRectMake(0, 0, self.view.bounds.size.width, 44)];
+    
+    UIBarButtonItem*    flexibleSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace
+                                                                                      target:nil
+                                                                                      action:nil];
+    
+    self.countDownLabel = [[UIBarButtonItem alloc] initWithTitle:[NSNumberFormatter localizedStringFromNumber:@(VConstantsMessageLength) numberStyle:NSNumberFormatterDecimalStyle]
+                                                           style:UIBarButtonItemStyleBordered
+                                                          target:nil
+                                                          action:nil];
+    
+    toolbar.items = @[flexibleSpace, self.countDownLabel];
+    self.taglineTextView.inputAccessoryView = toolbar;
 }
 
 @end

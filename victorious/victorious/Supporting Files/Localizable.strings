@@ -36,6 +36,8 @@
 "AccountUpdateFail"     =   "Account Update Failed";
 "ProfileSaveFail"       =   "Your profile information could not be saved because of a server error";
 "ProfileSave"           =   "Uploading your Profile";
+"ProfileIncomplete"     =   "Profile Incomplete";
+"ProfileRequired"       =   "You must complete your profile.";
 
 "NoEmail"               =   "No Email Accounts";
 "NoEmailDetail"         =   "There are no email accounts, would you like to setup one now?";
@@ -117,6 +119,9 @@
 "following"             =   "Following";
 "follow"                =   "Follow";
 
+"ResetPassword"         =   "Reset Password";
+"ResetPasswordPrompt"   =   "Please enter your e-mail address";
+"ResetPasswordPlaceholder" = "E-mail Address";
 
-
+"EmailNotFound"         =   "That E-mail address was not found. Please check that you are using the e-mail account you used to create this account.";
 

@@ -7,6 +7,7 @@
 //
 
 #import "VLoginWithEmailViewController.h"
+#import "VResetCodeViewController.h"
 #import "VObjectManager+DirectMessaging.h"
 #import "VObjectManager+Sequence.h"
 #import "VObjectManager+Login.h"
@@ -18,13 +19,14 @@
 
 NSString*   const   kVLoginErrorDomain =   @"VLoginErrorDomain";
 
-@interface VLoginWithEmailViewController () <UITextFieldDelegate, UINavigationControllerDelegate>
+@interface VLoginWithEmailViewController () <UITextFieldDelegate, UINavigationControllerDelegate, UIAlertViewDelegate>
 @property (nonatomic, weak) IBOutlet    UITextField*    usernameTextField;
 @property (nonatomic, weak) IBOutlet    UITextField*    passwordTextField;
 @property (nonatomic, weak) IBOutlet    UIButton*       loginButton;
 @property (nonatomic, weak) IBOutlet    UIButton*       cancelButton;
 @property (nonatomic, weak) IBOutlet    UIButton*       forgotPasswordButton;
 @property (nonatomic, strong)           VUser*          profile;
+@property (nonatomic, strong)           NSString*       deviceToken;
 @end
 
 @implementation VLoginWithEmailViewController
@@ -227,7 +229,38 @@ NSString*   const   kVLoginErrorDomain =   @"VLoginErrorDomain";
 
  -(IBAction)forgotPassword:(id)sender
 {
-    
+    UIAlertView*    alert   =   [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"ResetPassword", @"")
+                                                           message:NSLocalizedString(@"ResetPasswordPrompt", @"")
+                                                          delegate:self
+                                                 cancelButtonTitle:NSLocalizedString(@"CancelButton", @"")
+                                                 otherButtonTitles:NSLocalizedString(@"ResetButton", @""), nil];
+    alert.alertViewStyle = UIAlertViewStylePlainTextInput;
+    [alert textFieldAtIndex:0].placeholder = NSLocalizedString(@"ResetPasswordPlaceholder", @"");
+    [alert textFieldAtIndex:0].keyboardType = UIKeyboardTypeEmailAddress;
+    [alert show];
+}
+
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    if (buttonIndex == alertView.firstOtherButtonIndex)
+    {
+        [[VObjectManager sharedManager] requestPasswordResetForEmail:[alertView textFieldAtIndex:0].text
+                                                        successBlock:^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
+         {
+             self.deviceToken = resultObjects[0];
+             
+             [self performSegueWithIdentifier:@"toResetCode" sender:self];
+         }
+                                                           failBlock:^(NSOperation* operation, NSError* error)
+         {
+             UIAlertView*   alert   =   [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"EmailValidation", @"")
+                                                                   message:NSLocalizedString(@"EmailNotFound", @"")
+                                                                  delegate:nil
+                                                         cancelButtonTitle:nil
+                                                         otherButtonTitles:NSLocalizedString(@"OKButton", @""), nil];
+             [alert show];
+         }];
+    }
 }
 
 #pragma mark - UITextFieldDelegate
@@ -262,6 +295,15 @@ NSString*   const   kVLoginErrorDomain =   @"VLoginErrorDomain";
     VLoginTransitionAnimator*   animator = [[VLoginTransitionAnimator alloc] init];
     animator.presenting = (operation == UINavigationControllerOperationPush);
     return animator;
+}
+
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
+{
+    if ([segue.identifier isEqualToString:@"toResetCode"])
+    {
+        VResetCodeViewController* viewController = (VResetCodeViewController *)segue.destinationViewController;
+        viewController.deviceToken = self.deviceToken;
+    }
 }
 
 @end

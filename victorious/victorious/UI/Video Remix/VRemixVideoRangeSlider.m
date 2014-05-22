@@ -24,7 +24,7 @@
 
 @implementation VRemixVideoRangeSlider
 
-- (id)initWithFrame:(CGRect)frame videoUrl:(NSURL *)videoAssetURL
+- (instancetype)initWithFrame:(CGRect)frame videoUrl:(NSURL *)videoAssetURL
 {    
     self = [super initWithFrame:frame];
     if (self)

@@ -87,6 +87,8 @@
 		3FA217E318AD87F40066E893 /* UIImageView+Blurring.m in Sources */ = {isa = PBXBuildFile; fileRef = 3FA217E218AD87F40066E893 /* UIImageView+Blurring.m */; };
 		3FA217EC18BC365E0066E893 /* VCameraViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3FA217EB18BC365E0066E893 /* VCameraViewController.m */; };
 		3FA217EE18BC3A3A0066E893 /* Camera.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3FA217ED18BC3A3A0066E893 /* Camera.storyboard */; };
+		3FBCB9C5192E9A7400EB510C /* VResetPasswordViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3FBCB9C4192E9A7400EB510C /* VResetPasswordViewController.m */; };
+		3FBCB9C8192E9A9600EB510C /* VResetCodeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3FBCB9C7192E9A9600EB510C /* VResetCodeViewController.m */; };
 		3FD7FFA918BFD64C00945E5F /* VImagePreviewViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3FD7FFA818BFD64C00945E5F /* VImagePreviewViewController.m */; };
 		3FD7FFAC18BFD67800945E5F /* VVideoPreviewViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3FD7FFAB18BFD67800945E5F /* VVideoPreviewViewController.m */; };
 		3FD7FFAF18BFD6EF00945E5F /* VCameraPublishViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3FD7FFAE18BFD6EF00945E5F /* VCameraPublishViewController.m */; };
@@ -111,7 +113,6 @@
 		5FC4DA671897111B006BA107 /* VLoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FC4DA661897111B006BA107 /* VLoginViewController.m */; };
 		5FC4DA6A18971155006BA107 /* VLoginWithEmailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FC4DA6918971155006BA107 /* VLoginWithEmailViewController.m */; };
 		5FC4DA6D1897119C006BA107 /* VProfileCreateViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FC4DA6C1897119C006BA107 /* VProfileCreateViewController.m */; };
-		5FC4DA70189711EA006BA107 /* VInviteFriendsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FC4DA6F189711EA006BA107 /* VInviteFriendsViewController.m */; };
 		5FC4DA731897121F006BA107 /* VSignupWithEmailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FC4DA721897121F006BA107 /* VSignupWithEmailViewController.m */; };
 		5FCC1E4A1899C94D00EB7699 /* VWebContentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FCC1E491899C94D00EB7699 /* VWebContentViewController.m */; };
 		5FCC1E4C1899CAC800EB7699 /* settings.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5FCC1E4B1899CAC800EB7699 /* settings.storyboard */; };
@@ -406,6 +407,10 @@
 		3FA217EA18BC365E0066E893 /* VCameraViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VCameraViewController.h; path = UI/CameraViewController/VCameraViewController.h; sourceTree = "<group>"; };
 		3FA217EB18BC365E0066E893 /* VCameraViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VCameraViewController.m; path = UI/CameraViewController/VCameraViewController.m; sourceTree = "<group>"; };
 		3FA217ED18BC3A3A0066E893 /* Camera.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = Camera.storyboard; path = UI/CameraViewController/Camera.storyboard; sourceTree = "<group>"; };
+		3FBCB9C3192E9A7400EB510C /* VResetPasswordViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VResetPasswordViewController.h; path = UI/Login/VResetPasswordViewController.h; sourceTree = "<group>"; };
+		3FBCB9C4192E9A7400EB510C /* VResetPasswordViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VResetPasswordViewController.m; path = UI/Login/VResetPasswordViewController.m; sourceTree = "<group>"; };
+		3FBCB9C6192E9A9600EB510C /* VResetCodeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VResetCodeViewController.h; path = UI/Login/VResetCodeViewController.h; sourceTree = "<group>"; };
+		3FBCB9C7192E9A9600EB510C /* VResetCodeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VResetCodeViewController.m; path = UI/Login/VResetCodeViewController.m; sourceTree = "<group>"; };
 		3FD7FFA718BFD64C00945E5F /* VImagePreviewViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VImagePreviewViewController.h; path = UI/CameraViewController/VImagePreviewViewController.h; sourceTree = "<group>"; };
 		3FD7FFA818BFD64C00945E5F /* VImagePreviewViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VImagePreviewViewController.m; path = UI/CameraViewController/VImagePreviewViewController.m; sourceTree = "<group>"; };
 		3FD7FFAA18BFD67800945E5F /* VVideoPreviewViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VVideoPreviewViewController.h; path = UI/CameraViewController/VVideoPreviewViewController.h; sourceTree = "<group>"; };
@@ -926,6 +931,10 @@
 				5FC4DA6F189711EA006BA107 /* VInviteFriendsViewController.m */,
 				3F53E0C118A485D400089C20 /* VUserManager.h */,
 				3F53E0C218A485D400089C20 /* VUserManager.m */,
+				3FBCB9C6192E9A9600EB510C /* VResetCodeViewController.h */,
+				3FBCB9C7192E9A9600EB510C /* VResetCodeViewController.m */,
+				3FBCB9C3192E9A7400EB510C /* VResetPasswordViewController.h */,
+				3FBCB9C4192E9A7400EB510C /* VResetPasswordViewController.m */,
 			);
 			name = User;
 			sourceTree = "<group>";
@@ -1842,6 +1851,7 @@
 				BE171E131868C211004E5202 /* VInteractionAction+RestKit.m in Sources */,
 				03F9D281191D542300576AEE /* VCVideoPlayerToolbarView.m in Sources */,
 				BEB8DB07192BFF5300E0E3E6 /* VMessageCell.m in Sources */,
+				3FBCB9C8192E9A9600EB510C /* VResetCodeViewController.m in Sources */,
 				BED7F67A18E0BD5D00545DF6 /* UIImage+ImageCreation.m in Sources */,
 				BEA5BF71187FCBF10014C3EF /* VObjectManager+Users.m in Sources */,
 				3F53E0C318A485D400089C20 /* VUserManager.m in Sources */,
@@ -1904,6 +1914,7 @@
 				BE171E391868C266004E5202 /* NSManagedObject+RestKit.m in Sources */,
 				3F14C45018BD2BD0001796B9 /* VCCameraFocusView.m in Sources */,
 				BED7F66518E0A6F800545DF6 /* TWAPIManager.m in Sources */,
+				3FBCB9C5192E9A7400EB510C /* VResetPasswordViewController.m in Sources */,
 				3F919908187600720055FE37 /* VSettingsViewController.m in Sources */,
 				BE692B53186E60B300C71336 /* VCommentsTableViewController.m in Sources */,
 				3FF7B6D718EE4009003831CD /* UIImage+Masking.m in Sources */,
@@ -1958,7 +1969,7 @@
 				BEF2C2A818848B3B00AAE975 /* VUnreadConversation.m in Sources */,
 				BEF2C29618845EF500AAE975 /* VPollResult+RestKit.m in Sources */,
 				5FCC1E4A1899C94D00EB7699 /* VWebContentViewController.m in Sources */,
-				5FC4DA70189711EA006BA107 /* VInviteFriendsViewController.m in Sources */,
+				BEE604C1192D7D84003A0206 /* VInboxContainerViewController.m in Sources */,
 				BE2D1E661901F4D800C6FF99 /* VStreamToCommentAnimator.m in Sources */,
 				BEB52A7A18C02D6600AC5FE4 /* VContentViewController.m in Sources */,
 				BE5C7385187E37D400A3340D /* VMedia+RestKit.m in Sources */,
