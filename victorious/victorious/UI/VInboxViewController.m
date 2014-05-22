@@ -183,6 +183,12 @@ static  NSString*   kNewsCellViewIdentifier       =   @"VNewsCell";
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
+    self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc]
+                                             initWithTitle:NSLocalizedString(@"BackButton", @"")
+                                             style:UIBarButtonItemStylePlain
+                                             target:nil
+                                             action:nil];
+
     if ([segue.identifier isEqualToString:@"toMessage"])
     {
         VMessageContainerViewController *subview = (VMessageContainerViewController *)segue.destinationViewController;

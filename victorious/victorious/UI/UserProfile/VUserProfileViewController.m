@@ -558,7 +558,7 @@ const   CGFloat kVNavigationBarHeight = 44.0;
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
     self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc]
-                                             initWithTitle:@""
+                                             initWithTitle:NSLocalizedString(@"BackButton", @"")
                                              style:UIBarButtonItemStylePlain
                                              target:nil
                                              action:nil];

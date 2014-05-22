@@ -19,7 +19,7 @@
 
 @implementation VExpirationPickerTextField
 
-- (id)initWithFrame:(CGRect)aRect
+- (instancetype)initWithFrame:(CGRect)aRect
 {
     if (self = [super initWithFrame:aRect])
     {
@@ -32,7 +32,7 @@
     return self;
 }
 
-- (id)initWithCoder:(NSCoder*)aDecoder
+- (instancetype)initWithCoder:(NSCoder*)aDecoder
 {
     if (self = [super initWithCoder:aDecoder])
     {

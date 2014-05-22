@@ -299,4 +299,30 @@ NSString *kLoggedInChangedNotification = @"LoggedInChangedNotification";
     return operation;
 }
 
+#pragma mark - Password reset
+
+- (RKManagedObjectRequestOperation *)requestPasswordResetForEmail:(NSString *)email
+                                                     successBlock:(VSuccessBlock)success
+                                                        failBlock:(VFailBlock)fail
+{
+    NSDictionary *parameters = @{@"email": email ?: @""};
+    
+    VSuccessBlock fullSuccess = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
+    {
+        if (success)
+        {
+            NSArray* results = @[fullResponse[@"payload"][@"device_token"]];
+            
+            if (success)
+                success(operation, fullResponse, results);
+        }
+    };
+
+    return [self POST:@"api/password_reset_request"
+               object:nil
+           parameters:parameters
+         successBlock:fullSuccess
+            failBlock:fail];
+}
+
 @end

@@ -56,7 +56,9 @@ static const NSInteger kServerEnvironmentButtonIndex = 1;
     
     BOOL    enabledState    = [VObjectManager sharedManager].isAuthorized;
     self.logoutButton.enabled = enabledState;
+    [self.logoutButton setTitleColor:[UIColor lightGrayColor] forState:UIControlStateDisabled];
     self.saveChangesButton.enabled = enabledState;
+    [self.saveChangesButton setTitleColor:[UIColor lightGrayColor] forState:UIControlStateDisabled];
     self.nameTextField.enabled = enabledState;
     self.emailAddressTextField.enabled = enabledState;
     self.passwordTextField.enabled = enabledState;

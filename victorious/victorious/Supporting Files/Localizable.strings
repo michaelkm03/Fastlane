@@ -18,6 +18,7 @@
 "ResetButton"           =   "Reset";
 "YesButton"             =   "Yes";
 "NoButton"              =   "No";
+"BackButton"            =   "Back";
 
 "TimeSeparator"         =   ":";
 "InvalidTimePlaceholder"=   "-:--";
@@ -28,12 +29,15 @@
 "UsernameValidation"    =   "User name is less than 8 characters";
 "AgreeTOS"              =   "You must click that you are at least 13 years of age and agree to the Terms of Service";
 "InvalidCredentials"    =   "Invalid Credentials";
+"PasswordNotMatching"   =   "Passwords do not match";
 "PollAlreadyAnswered"   =   "Poll result was already answered";
 "LoginFail"             =   "Login Failed";
 "SignupFail"            =   "Account Creation Failed";
 "AccountUpdateFail"     =   "Account Update Failed";
 "ProfileSaveFail"       =   "Your profile information could not be saved because of a server error";
 "ProfileSave"           =   "Uploading your Profile";
+"ProfileIncomplete"     =   "Profile Incomplete";
+"ProfileRequired"       =   "You must complete your profile.";
 
 "NoEmail"               =   "No Email Accounts";
 "NoEmailDetail"         =   "There are no email accounts, would you like to setup one now?";
@@ -115,6 +119,11 @@
 "following"             =   "Following";
 "follow"                =   "Follow";
 
+"ResetPassword"         =   "Reset Password";
+"ResetPasswordPrompt"   =   "Please enter your e-mail address";
+"ResetPasswordPlaceholder" = "E-mail Address";
 
-
+"EmailNotFound"         =   "That E-mail address was not found. Please check that you are using the e-mail account you used to create this account.";
+"Thanks"                =   "Thanks!";
+"EmailSent"             =   "An e-mail was sent to this address which contains a 4-digit code to use to verify your account.";
 

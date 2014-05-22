@@ -11,13 +11,13 @@ typedef NS_ENUM(NSUInteger, VLoginType)
     kVLoginTypeNone,
     kVLoginTypeEmail,
     kVLoginTypeFaceBook,
-    kVLoginTypeCreateFaceBook,
     kVLoginTypeTwitter,
-    kVLoginTypeCreateTwitter
 };
 
 @interface VLoginViewController : UIViewController
 
 + (VLoginViewController *)loginViewController;
+
+@property (nonatomic, weak) IBOutlet    UIView*         transitionPlaceholder;
 
 @end

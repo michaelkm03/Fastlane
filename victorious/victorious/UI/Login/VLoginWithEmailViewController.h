@@ -16,4 +16,5 @@ NS_ENUM(NSUInteger, VLoginErrorCode)
 };
 
 @interface VLoginWithEmailViewController : UIViewController
+@property (nonatomic, weak) IBOutlet    UIView*         transitionPlaceholder;
 @end

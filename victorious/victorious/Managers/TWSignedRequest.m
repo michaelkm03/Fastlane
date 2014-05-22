@@ -55,7 +55,7 @@ static NSString *gTWConsumerSecret;
 @synthesize authToken = _authToken;
 @synthesize authTokenSecret = _authTokenSecret;
 
-- (id)initWithURL:(NSURL *)url parameters:(NSDictionary *)parameters requestMethod:(TWSignedRequestMethod)requestMethod
+- (instancetype)initWithURL:(NSURL *)url parameters:(NSDictionary *)parameters requestMethod:(TWSignedRequestMethod)requestMethod
 {
     self = [super init];
     if (self) {
