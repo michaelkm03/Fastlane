@@ -78,20 +78,15 @@
         <attribute name="timeoutGotoNode" optional="YES" attributeType="Integer 64" minValueString="0" syncable="YES"/>
         <relationship name="relationship" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Interaction" inverseName="interactionAction" inverseEntity="Interaction" syncable="YES"/>
     </entity>
-    <entity name="Media" representedClassName="VMedia" syncable="YES">
-        <attribute name="mediaType" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="mediaUrl" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="previewImage" optional="YES" attributeType="String" syncable="YES"/>
-        <relationship name="message" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Message" inverseName="media" inverseEntity="Message" syncable="YES"/>
-    </entity>
     <entity name="Message" representedClassName="VMessage" syncable="YES">
         <attribute name="isRead" optional="YES" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
+        <attribute name="mediaPath" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="postedAt" optional="YES" attributeType="Date" syncable="YES"/>
         <attribute name="senderUserId" optional="YES" attributeType="Integer 32" minValueString="-1" defaultValueString="-1" syncable="YES"/>
         <attribute name="text" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="thumbnailPath" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="conversation" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Conversation" inverseName="messages" inverseEntity="Conversation" syncable="YES"/>
         <relationship name="lastMessageInverse" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Conversation" inverseName="lastMessage" inverseEntity="Conversation" syncable="YES"/>
-        <relationship name="media" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="Media" inverseName="message" inverseEntity="Media" syncable="YES"/>
         <relationship name="user" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="User" inverseName="messages" inverseEntity="User" syncable="YES"/>
     </entity>
     <entity name="Node" representedClassName="VNode" syncable="YES">
@@ -187,8 +182,7 @@
         <element name="Conversation" positionX="1395" positionY="-477" width="128" height="118"/>
         <element name="Interaction" positionX="646" positionY="-208" width="128" height="208"/>
         <element name="InteractionAction" positionX="495" positionY="-162" width="128" height="105"/>
-        <element name="Media" positionX="1404" positionY="-67" width="128" height="103"/>
-        <element name="Message" positionX="1447" positionY="-280" width="128" height="163"/>
+        <element name="Message" positionX="1447" positionY="-280" width="128" height="178"/>
         <element name="Node" positionX="817" positionY="-180" width="128" height="133"/>
         <element name="NodeAction" positionX="835" positionY="-9" width="128" height="90"/>
         <element name="PollResult" positionX="1222" positionY="-45" width="128" height="118"/>

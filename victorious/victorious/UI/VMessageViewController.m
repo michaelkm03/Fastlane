@@ -10,13 +10,13 @@
 #import "VObjectManager+DirectMessaging.h"
 #import "VMessageCell.h"
 #import "VMessage+RestKit.h"
-#import "VMedia+RestKit.h"
 #import "VKeyboardBarViewController.h"
 #import "VThemeManager.h"
 #import "VObjectManager.h"
 #import "VUser+RestKit.h"
 #import "UIImageView+Blurring.h"
 #import "UIImage+ImageEffects.h"
+#import "NSString+VParseHelp.h"
 #import "VConstants.h"
 
 const   CGFloat     kMessageRowWithMediaHeight  =   280.0;
@@ -124,6 +124,7 @@ const   CGFloat     kMessageRowHeight           =   80;
     }
     
     [(VMessageCell *)cell setMessage:aMessage];
+    cell.selectionStyle = UITableViewCellSelectionStyleNone;
     
     [cell setNeedsDisplay];
     [cell layoutIfNeeded];
@@ -136,7 +137,7 @@ const   CGFloat     kMessageRowHeight           =   80;
     VMessage*   aMessage = self.messages[indexPath.row];
 
     CGFloat height = [VMessageCell frameSizeForMessageText:aMessage.text].height;
-    CGFloat yOffset = [aMessage.media.mediaUrl length] ? kMessageMediaCellYOffset : kMessageCellYOffset;
+    CGFloat yOffset = ![aMessage.thumbnailPath isEmpty] ? kMessageMediaCellYOffset : kMessageCellYOffset;
     height = MAX(height + yOffset, kMessageMinCellHeight);
     
     return height;

@@ -44,6 +44,25 @@ static __weak VCVideoPlayerViewController *_currentPlayer = nil;
     if (self)
     {
         self.shouldShowToolbar = YES;
+        self.shouldLoop = NO;
+        self.startTime = CMTimeMakeWithSeconds(0, 1);
+        self.player = [[AVPlayer alloc] init];
+        [self.player addObserver:self
+                      forKeyPath:NSStringFromSelector(@selector(currentItem))
+                         options:(NSKeyValueObservingOptionInitial | NSKeyValueObservingOptionNew)
+                         context:NULL];
+        [self.player addObserver:self
+                      forKeyPath:NSStringFromSelector(@selector(rate))
+                         options:(NSKeyValueObservingOptionOld | NSKeyValueObservingOptionNew)
+                         context:NULL];
+
+        VCVideoPlayerViewController * __weak weakSelf = self;
+        self.timeObserver = [self.player addPeriodicTimeObserverForInterval:CMTimeMake(1, 24)
+                                                                      queue:dispatch_get_main_queue()
+                                                                 usingBlock:^(CMTime time)
+        {
+            [weakSelf didPlayToTime:time];
+        }];
     }
     return self;
 }
@@ -63,27 +82,10 @@ static __weak VCVideoPlayerViewController *_currentPlayer = nil;
     self.view = [[UIView alloc] init];
     self.view.clipsToBounds = YES;
 
-    self.player = [[AVPlayer alloc] init];
     self.playerLayer = [AVPlayerLayer playerLayerWithPlayer:self.player];
     self.playerLayer.videoGravity = AVLayerVideoGravityResizeAspectFill;
     [self.view.layer addSublayer:self.playerLayer];
-    [self.player addObserver:self
-                  forKeyPath:NSStringFromSelector(@selector(currentItem))
-                     options:(NSKeyValueObservingOptionInitial | NSKeyValueObservingOptionNew)
-                     context:NULL];
-    [self.player addObserver:self
-                  forKeyPath:NSStringFromSelector(@selector(rate))
-                     options:(NSKeyValueObservingOptionOld | NSKeyValueObservingOptionNew)
-                     context:NULL];
     
-    VCVideoPlayerViewController * __weak weakSelf = self;
-    self.timeObserver = [self.player addPeriodicTimeObserverForInterval:CMTimeMake(1, 24)
-                                                                  queue:dispatch_get_main_queue()
-                                                             usingBlock:^(CMTime time)
-    {
-        [weakSelf didPlayToTime:time];
-    }];
-
     VCVideoPlayerToolbarView *toolbarView = [VCVideoPlayerToolbarView toolbarFromNibWithOwner:self];
     toolbarView.translatesAutoresizingMaskIntoConstraints = NO;
     [self.view addSubview:toolbarView];
@@ -97,9 +99,6 @@ static __weak VCVideoPlayerViewController *_currentPlayer = nil;
                                                                         views:NSDictionaryOfVariableBindings(toolbarView)]];
     self.toolbarView = toolbarView;
     
-    self.shouldLoop = NO;
-    self.startTime = CMTimeMakeWithSeconds(0, 1);
-    
     UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(videoFrameTapped:)];
     [self.view addGestureRecognizer:tap];
     self.videoFrameTapGesture = tap;
@@ -111,11 +110,6 @@ static __weak VCVideoPlayerViewController *_currentPlayer = nil;
     self.overlayView = [[UIView alloc] init];
     
     [self updateViewForShowToolbarValue];
-
-    if (self.itemURL)
-    {
-        [self _setItemURL:self.itemURL withLoopCount:self.loopCount];
-    }
 }
 
 - (void)viewDidLayoutSubviews
@@ -140,19 +134,7 @@ static __weak VCVideoPlayerViewController *_currentPlayer = nil;
 {
     _itemURL = itemURL;
     _loopCount = loopCount;
-    if ([self isViewLoaded])
-    {
-        [self _setItemURL:itemURL withLoopCount:loopCount];
-    }
-}
-
-- (void)setItemURL:(NSURL *)itemURL
-{
-    [self setItemURL:itemURL withLoopCount:1];
-}
-
-- (void)_setItemURL:(NSURL *)itemURL withLoopCount:(NSUInteger)loopCount
-{
+    
     AVAsset *asset = [AVURLAsset assetWithURL:itemURL];
     AVPlayerItem *playerItem;
 
@@ -181,6 +163,11 @@ static __weak VCVideoPlayerViewController *_currentPlayer = nil;
     }
     
     [self.player replaceCurrentItemWithPlayerItem:playerItem];
+}
+
+- (void)setItemURL:(NSURL *)itemURL
+{
+    [self setItemURL:itemURL withLoopCount:1];
 }
 
 - (void)setShouldLoop:(BOOL)shouldLoop

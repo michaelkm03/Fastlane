@@ -30,7 +30,7 @@
 @property (nonatomic, readonly) NSUInteger                 loopCount; ///< The number of loops requested via a call to setItemURL:withLoopCount:
 @property (nonatomic, weak)     id<VCVideoPlayerDelegate>  delegate;
 @property (nonatomic)           BOOL                       shouldLoop; ///< If YES, video will loop around at the end
-@property (nonatomic, readonly) AVPlayer                  *player; ///< The AVPlayer instance being managed. Will be nil until the receiver's view is loaded
+@property (nonatomic, readonly) AVPlayer                  *player; ///< The AVPlayer instance being managed.
 @property (nonatomic, assign)   Float64                    startSeconds; ///< Playback will begin at this point
 @property (nonatomic, assign)   Float64                    endSeconds; ///< Playback will end (or loop) at this point. Set to 0 to play to end.
 @property (nonatomic, readonly) CGSize                     naturalSize;

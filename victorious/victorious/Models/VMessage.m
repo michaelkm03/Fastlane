@@ -2,13 +2,12 @@
 //  VMessage.m
 //  victorious
 //
-//  Created by Will Long on 1/11/14.
+//  Created by Will Long on 5/22/14.
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
 #import "VMessage.h"
 #import "VConversation.h"
-#import "VMedia.h"
 #import "VUser.h"
 
 
@@ -18,9 +17,10 @@
 @dynamic postedAt;
 @dynamic senderUserId;
 @dynamic text;
+@dynamic thumbnailPath;
+@dynamic mediaPath;
 @dynamic conversation;
 @dynamic lastMessageInverse;
-@dynamic media;
 @dynamic user;
 
 @end

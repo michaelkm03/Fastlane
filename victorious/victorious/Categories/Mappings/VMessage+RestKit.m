@@ -8,8 +8,6 @@
 
 #import "VMessage+RestKit.h"
 
-#import "VMedia+RestKit.h"
-
 @implementation VMessage (RestKit)
 
 + (NSString *)entityName
@@ -23,7 +21,9 @@
                                   @"is_read" : VSelectorName(isRead),
                                   @"text" : VSelectorName(text),
                                   @"sender_user_id" : VSelectorName(senderUserId),
-                                  @"posted_at" : VSelectorName(postedAt)
+                                  @"posted_at" : VSelectorName(postedAt),
+                                  @"thumbnail_url" : VSelectorName(thumbnailPath),
+                                  @"media_url" : VSelectorName(mediaPath)
                                   };
     
     RKEntityMapping *mapping = [RKEntityMapping
@@ -33,8 +33,6 @@
     [mapping addAttributeMappingsFromDictionary:propertyMap];
 
     [mapping addConnectionForRelationship:@"user" connectedBy:@{@"senderUserId" : @"remoteId"}];
-
-    [mapping addRelationshipMappingWithSourceKeyPath:VSelectorName(media) mapping:[VMedia entityMapping]];
     
     return mapping;
 }
