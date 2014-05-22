@@ -21,7 +21,6 @@ typedef NS_ENUM(NSInteger, VStreamFilter)
 
 @protocol VStreamTableDelegate <NSObject>
 @optional
-- (void)scrollViewDidScroll:(UIScrollView *)scrollView;
 - (void)streamWillDisappear;
 @end
 
@@ -34,6 +33,6 @@ typedef NS_ENUM(NSInteger, VStreamFilter)
 @property (nonatomic) VStreamFilter filterType;
 
 @property (strong, nonatomic) NSArray* repositionedCells;;
-@property (weak, nonatomic) id<VStreamTableDelegate> delegate;
+@property (weak, nonatomic) id<VStreamTableDelegate, UITableViewDelegate> delegate;
 
 @end

@@ -8,7 +8,7 @@
 
 #import "VMessageViewController.h"
 #import "VObjectManager+DirectMessaging.h"
-#import "VCommentCell.h"
+#import "VMessageCell.h"
 #import "VMessage+RestKit.h"
 #import "VMedia+RestKit.h"
 #import "VKeyboardBarViewController.h"
@@ -50,8 +50,8 @@ const   CGFloat     kMessageRowHeight           =   80;
     //    self.tableView.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKeyPath:@"theme.color.messages.background"];
     [self.tableView registerNib:[UINib nibWithNibName:kMessageCellIdentifier bundle:nil]
          forCellReuseIdentifier:kMessageCellIdentifier];
-    [self.tableView registerNib:[UINib nibWithNibName:kOtherCommentCellIdentifier bundle:nil]
-         forCellReuseIdentifier:kOtherCommentCellIdentifier];
+    [self.tableView registerNib:[UINib nibWithNibName:kOtherMessageCellIdentifier bundle:nil]
+         forCellReuseIdentifier:kOtherMessageCellIdentifier];
     
     [self.tableView reloadData];
     [self refresh];
@@ -117,13 +117,13 @@ const   CGFloat     kMessageRowHeight           =   80;
     VMessage*   aMessage = self.messages[indexPath.row];
     if([aMessage.user isEqualToUser:[VObjectManager sharedManager].mainUser])
     {
-        cell = [tableView dequeueReusableCellWithIdentifier:kOtherCommentCellIdentifier forIndexPath:indexPath];
+        cell = [tableView dequeueReusableCellWithIdentifier:kOtherMessageCellIdentifier forIndexPath:indexPath];
     }else
     {
         cell = [tableView dequeueReusableCellWithIdentifier:kMessageCellIdentifier forIndexPath:indexPath];
     }
     
-    [(VCommentCell *)cell setCommentOrMessage:aMessage];
+    [(VMessageCell *)cell setMessage:aMessage];
     
     [cell setNeedsDisplay];
     [cell layoutIfNeeded];
@@ -135,9 +135,9 @@ const   CGFloat     kMessageRowHeight           =   80;
 {
     VMessage*   aMessage = self.messages[indexPath.row];
 
-    CGFloat height = [VCommentCell frameSizeForMessageText:aMessage.text].height;
-    CGFloat yOffset = [aMessage.media.mediaUrl length] ? kMediaCommentCellYOffset : kCommentCellYOffset;
-    height = MAX(height + yOffset, kMinCellHeight);
+    CGFloat height = [VMessageCell frameSizeForMessageText:aMessage.text].height;
+    CGFloat yOffset = [aMessage.media.mediaUrl length] ? kMessageMediaCellYOffset : kMessageCellYOffset;
+    height = MAX(height + yOffset, kMessageMinCellHeight);
     
     return height;
 }

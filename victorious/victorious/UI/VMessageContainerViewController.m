@@ -24,6 +24,7 @@
 {
     [super viewWillAppear:animated];
     
+    [self.navigationController setNavigationBarHidden:NO animated:animated];
     self.edgesForExtendedLayout = UIRectEdgeNone;
     
     VMessageViewController* messageVC = (VMessageViewController*)self.conversationTableViewController;
@@ -50,7 +51,6 @@
 
 - (void)keyboardBar:(VKeyboardBarViewController *)keyboardBar didComposeWithText:(NSString *)text mediaURL:(NSURL *)mediaURL
 {
-    
     __block NSURL* urlToRemove = mediaURL;
     
     VSuccessBlock success = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)

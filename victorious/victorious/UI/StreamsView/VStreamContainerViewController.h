@@ -9,14 +9,12 @@
 #import <UIKit/UIKit.h>
 
 #import "VStreamTableViewController.h"
+#import "VTableContainerViewController.h"
 
-@interface VStreamContainerViewController : UIViewController <VStreamTableDelegate>
+@interface VStreamContainerViewController : VTableContainerViewController <VStreamTableDelegate>
 
 @property (nonatomic, readonly) VStreamTableViewController* streamTable;
 
 + (instancetype)containerForStreamTable:(VStreamTableViewController*)streamTable;
-
-- (void)hideHeader;
-- (void)showHeader;
 
 @end

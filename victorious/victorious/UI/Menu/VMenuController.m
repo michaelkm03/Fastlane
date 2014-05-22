@@ -26,7 +26,8 @@
 
 #import "VUserProfileViewController.h"
 #import "VSettingsViewController.h"
-#import "VInboxViewController.h"
+
+#import "VInboxContainerViewController.h"
 
 #import "VUserProfileViewController.h"
 
@@ -125,7 +126,7 @@ NSString *const VMenuControllerDidSelectRowNotification = @"VMenuTableViewContro
             }
             else
             {
-                navigationController.viewControllers = @[[VInboxViewController inboxViewController]];
+                navigationController.viewControllers = @[[VInboxContainerViewController inboxContainer]];
                 [self.sideMenuViewController hideMenuViewController];
             }
         break;
