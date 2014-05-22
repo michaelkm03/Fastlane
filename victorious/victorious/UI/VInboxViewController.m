@@ -51,23 +51,6 @@ static  NSString*   kNewsCellViewIdentifier       =   @"VNewsCell";
     self.headerView.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVAccentColor];
 }
 
-- (void)viewDidAppear:(BOOL)animated
-{
-    [super viewDidAppear:animated];
-    
-    [self.navigationController setNavigationBarHidden:NO animated:YES];
-}
-
-- (BOOL)shouldAutorotate
-{
-    return NO;
-}
-
-- (NSUInteger)supportedInterfaceOrientations
-{
-    return UIInterfaceOrientationMaskPortrait;
-}
-
 #pragma mark - Overrides
 
 - (NSFetchedResultsController *)makeFetchedResultsController
@@ -180,11 +163,13 @@ static  NSString*   kNewsCellViewIdentifier       =   @"VNewsCell";
     VFailBlock fail = ^(NSOperation* operation, NSError* error)
     {
         NSLog(@"%@", error.localizedDescription);
+        [self.refreshControl endRefreshing];
     };
     
     VSuccessBlock success = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
     {
         [self.tableView reloadData];
+        [self.refreshControl endRefreshing];
     };
     
     //TODO: remove this when we have conversation pagination

@@ -12,4 +12,5 @@
 
 + (instancetype)inboxViewController;
 
+
 @end

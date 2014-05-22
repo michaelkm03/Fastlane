@@ -187,6 +187,7 @@
 		BE5C7388187E37E500A3340D /* VConversation+RestKit.m in Sources */ = {isa = PBXBuildFile; fileRef = BE5C7387187E37E500A3340D /* VConversation+RestKit.m */; };
 		BE5DE3F618DA72140047B67E /* VInteractionAction.m in Sources */ = {isa = PBXBuildFile; fileRef = BE5DE3F518DA72140047B67E /* VInteractionAction.m */; };
 		BE5DE3FC18DA730B0047B67E /* VVoteType+RestKit.m in Sources */ = {isa = PBXBuildFile; fileRef = BE5DE3FB18DA730B0047B67E /* VVoteType+RestKit.m */; };
+		BE6211AF192D65C300D5C74B /* VTableContainerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BE6211AE192D65C300D5C74B /* VTableContainerViewController.m */; };
 		BE651D0E18AAD58A00069119 /* VLoadingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BE651D0D18AAD58A00069119 /* VLoadingViewController.m */; };
 		BE651D1018AC270900069119 /* VKeyboardBarViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BE651D0F18AC270900069119 /* VKeyboardBarViewController.m */; };
 		BE692B23186E5ED800C71336 /* VStreamDoublePollCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = BE692B17186E5ED800C71336 /* VStreamDoublePollCell.xib */; };
@@ -244,6 +245,7 @@
 		BEDF0FC318DBC93A00750EF6 /* VAsset.m in Sources */ = {isa = PBXBuildFile; fileRef = BEDF0FC218DBC93A00750EF6 /* VAsset.m */; };
 		BEDF0FC618DBC93B00750EF6 /* VVoteType.m in Sources */ = {isa = PBXBuildFile; fileRef = BEDF0FC518DBC93B00750EF6 /* VVoteType.m */; };
 		BEDF0FC918DBCB5500750EF6 /* VVoteType+Fetcher.m in Sources */ = {isa = PBXBuildFile; fileRef = BEDF0FC818DBCB5500750EF6 /* VVoteType+Fetcher.m */; };
+		BEE604C1192D7D84003A0206 /* VInboxContainerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BEE604C0192D7D84003A0206 /* VInboxContainerViewController.m */; };
 		BEE800E918FCC5C200A7CFD7 /* VStreamTableViewController+ContentCreation.m in Sources */ = {isa = PBXBuildFile; fileRef = BEE800E818FCC5C200A7CFD7 /* VStreamTableViewController+ContentCreation.m */; };
 		BEE9C8B618CE4A6B0095C737 /* VPollAnswerBarViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BEE9C8B518CE4A6B0095C737 /* VPollAnswerBarViewController.m */; };
 		BEF2C29618845EF500AAE975 /* VPollResult+RestKit.m in Sources */ = {isa = PBXBuildFile; fileRef = BEF2C29518845EF500AAE975 /* VPollResult+RestKit.m */; };
@@ -587,6 +589,8 @@
 		BE5DE3F518DA72140047B67E /* VInteractionAction.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VInteractionAction.m; sourceTree = "<group>"; };
 		BE5DE3FA18DA730B0047B67E /* VVoteType+RestKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "VVoteType+RestKit.h"; sourceTree = "<group>"; };
 		BE5DE3FB18DA730B0047B67E /* VVoteType+RestKit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "VVoteType+RestKit.m"; sourceTree = "<group>"; };
+		BE6211AD192D65C300D5C74B /* VTableContainerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VTableContainerViewController.h; path = "UI/Base Classes/VTableContainerViewController.h"; sourceTree = "<group>"; };
+		BE6211AE192D65C300D5C74B /* VTableContainerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VTableContainerViewController.m; path = "UI/Base Classes/VTableContainerViewController.m"; sourceTree = "<group>"; };
 		BE651D0C18AAD58A00069119 /* VLoadingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VLoadingViewController.h; path = UI/VLoadingViewController.h; sourceTree = "<group>"; };
 		BE651D0D18AAD58A00069119 /* VLoadingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VLoadingViewController.m; path = UI/VLoadingViewController.m; sourceTree = "<group>"; };
 		BE651D0F18AC270900069119 /* VKeyboardBarViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VKeyboardBarViewController.m; sourceTree = "<group>"; };
@@ -691,6 +695,8 @@
 		BEDF0FC518DBC93B00750EF6 /* VVoteType.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VVoteType.m; sourceTree = "<group>"; };
 		BEDF0FC718DBCB5500750EF6 /* VVoteType+Fetcher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "VVoteType+Fetcher.h"; sourceTree = "<group>"; };
 		BEDF0FC818DBCB5500750EF6 /* VVoteType+Fetcher.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "VVoteType+Fetcher.m"; sourceTree = "<group>"; };
+		BEE604BF192D7D84003A0206 /* VInboxContainerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VInboxContainerViewController.h; path = UI/Inbox/VInboxContainerViewController.h; sourceTree = "<group>"; };
+		BEE604C0192D7D84003A0206 /* VInboxContainerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VInboxContainerViewController.m; path = UI/Inbox/VInboxContainerViewController.m; sourceTree = "<group>"; };
 		BEE800E718FCC5C200A7CFD7 /* VStreamTableViewController+ContentCreation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "VStreamTableViewController+ContentCreation.h"; path = "UI/VStreamTableViewController+ContentCreation.h"; sourceTree = "<group>"; };
 		BEE800E818FCC5C200A7CFD7 /* VStreamTableViewController+ContentCreation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "VStreamTableViewController+ContentCreation.m"; path = "UI/VStreamTableViewController+ContentCreation.m"; sourceTree = "<group>"; };
 		BEE9C8B418CE4A6B0095C737 /* VPollAnswerBarViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VPollAnswerBarViewController.h; path = "UI/Content View/VPollAnswerBarViewController.h"; sourceTree = "<group>"; };
@@ -955,6 +961,8 @@
 		3F9B6660188879130046F826 /* Inbox */ = {
 			isa = PBXGroup;
 			children = (
+				BEE604BF192D7D84003A0206 /* VInboxContainerViewController.h */,
+				BEE604C0192D7D84003A0206 /* VInboxContainerViewController.m */,
 				3F4863F81869184000F77346 /* VInboxViewController.h */,
 				3F4863F91869184000F77346 /* VInboxViewController.m */,
 				3F9B665818848B750046F826 /* VMessageContainerViewController.h */,
@@ -1024,6 +1032,8 @@
 				5FCC1E491899C94D00EB7699 /* VWebContentViewController.m */,
 				5F51F818189AEBF800A546D1 /* VAbstractProfileEditViewController.h */,
 				5F51F819189AEBF800A546D1 /* VAbstractProfileEditViewController.m */,
+				BE6211AD192D65C300D5C74B /* VTableContainerViewController.h */,
+				BE6211AE192D65C300D5C74B /* VTableContainerViewController.m */,
 			);
 			name = "Base Classes";
 			sourceTree = "<group>";
@@ -1948,6 +1958,7 @@
 				BEF2C2A818848B3B00AAE975 /* VUnreadConversation.m in Sources */,
 				BEF2C29618845EF500AAE975 /* VPollResult+RestKit.m in Sources */,
 				5FCC1E4A1899C94D00EB7699 /* VWebContentViewController.m in Sources */,
+				BEE604C1192D7D84003A0206 /* VInboxContainerViewController.m in Sources */,
 				5FC4DA70189711EA006BA107 /* VInviteWithSocialViewController.m in Sources */,
 				BE2D1E661901F4D800C6FF99 /* VStreamToCommentAnimator.m in Sources */,
 				BEB52A7A18C02D6600AC5FE4 /* VContentViewController.m in Sources */,
@@ -1982,6 +1993,7 @@
 				BE171E1B1868C211004E5202 /* VUser+RestKit.m in Sources */,
 				BE5C736A187E36E800A3340D /* VRule.m in Sources */,
 				3FA217C218A9B5160066E893 /* CastViewController.m in Sources */,
+				BE6211AF192D65C300D5C74B /* VTableContainerViewController.m in Sources */,
 				BE651D1018AC270900069119 /* VKeyboardBarViewController.m in Sources */,
 				BEB8DB03192BE81000E0E3E6 /* VAbstractCommentCell.m in Sources */,
 				3FD7FFAC18BFD67800945E5F /* VVideoPreviewViewController.m in Sources */,

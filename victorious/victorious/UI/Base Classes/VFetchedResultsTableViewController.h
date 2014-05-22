@@ -13,6 +13,8 @@
 @property (nonatomic, strong)   NSFetchedResultsController*     fetchedResultsController;
 @property (nonatomic, strong)   UIActivityIndicatorView*        bottomRefreshIndicator;
 
+@property (nonatomic, weak) id<UITableViewDelegate>delegate;
+
 - (void)performFetch;
 
 - (NSFetchedResultsController *)makeFetchedResultsController;
@@ -20,5 +22,7 @@
 
 - (void)registerCells;
 - (IBAction)refresh:(UIRefreshControl *)sender;
+
+- (void)loadNextPageAction;
 
 @end

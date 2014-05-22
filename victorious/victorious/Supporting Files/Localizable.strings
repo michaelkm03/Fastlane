@@ -6,6 +6,12 @@
   Copyright (c) 2013 Victorious Inc. All rights reserved.
 */
 
+
+
+"Home"                  =   "Home";
+"Community"             =   "Community";
+"Inbox"                 =   "Inbox";
+
 "OKButton"              =   "OK";
 "CancelButton"          =   "Cancel";
 "DeleteButton"          =   "Delete";
