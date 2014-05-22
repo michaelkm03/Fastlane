@@ -14,7 +14,7 @@
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ChatBubble" translatesAutoresizingMaskIntoConstraints="NO" id="EL4-cX-Dok">
-                        <rect key="frame" x="26" y="10" width="237" height="40"/>
+                        <rect key="frame" x="21" y="10" width="242" height="40"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     </imageView>
                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="StreamDate" translatesAutoresizingMaskIntoConstraints="NO" id="LfL-cf-slY" userLabel="Time Image">
@@ -42,7 +42,7 @@
                         </connections>
                     </button>
                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="wD6-xk-K18">
-                        <rect key="frame" x="45" y="44" width="190" height="190"/>
+                        <rect key="frame" x="45" y="54" width="190" height="190"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <constraints>
                             <constraint firstAttribute="width" constant="190" id="haz-kc-Smy"/>
@@ -50,7 +50,7 @@
                         </constraints>
                     </imageView>
                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="CWw-hg-GSB">
-                        <rect key="frame" x="124" y="123" width="33" height="33"/>
+                        <rect key="frame" x="124" y="133" width="33" height="33"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <state key="normal" image="Play">
                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
@@ -60,7 +60,7 @@
                         </connections>
                     </button>
                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="message" textAlignment="right" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="214" translatesAutoresizingMaskIntoConstraints="NO" id="We0-sR-GmK" userLabel="Message label">
-                        <rect key="frame" x="33" y="17" width="214" height="20"/>
+                        <rect key="frame" x="33" y="22" width="214" height="20"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="20" id="UD3-gZ-MRg"/>
@@ -79,16 +79,16 @@
                     <constraint firstAttribute="bottom" secondItem="CJX-gU-fJU" secondAttribute="bottom" constant="20" id="Nbk-Dz-ETV"/>
                     <constraint firstItem="mlx-Sx-ed0" firstAttribute="leading" secondItem="LfL-cf-slY" secondAttribute="trailing" constant="2" id="TKq-N9-kU1"/>
                     <constraint firstItem="LfL-cf-slY" firstAttribute="leading" secondItem="CJX-gU-fJU" secondAttribute="leading" id="a7F-7m-XeB"/>
-                    <constraint firstItem="EL4-cX-Dok" firstAttribute="leading" secondItem="We0-sR-GmK" secondAttribute="leading" constant="-7" id="fR0-aG-aw1"/>
+                    <constraint firstItem="EL4-cX-Dok" firstAttribute="leading" secondItem="We0-sR-GmK" secondAttribute="leading" constant="-12" id="fR0-aG-aw1"/>
                     <constraint firstItem="CWw-hg-GSB" firstAttribute="centerX" secondItem="wD6-xk-K18" secondAttribute="centerX" id="h4r-Du-sCH"/>
                     <constraint firstItem="EL4-cX-Dok" firstAttribute="top" secondItem="eAW-cc-13j" secondAttribute="top" constant="10" id="mf2-hb-xi3"/>
                     <constraint firstItem="wD6-xk-K18" firstAttribute="centerX" secondItem="We0-sR-GmK" secondAttribute="centerX" id="oW1-Sg-E5M"/>
-                    <constraint firstItem="wD6-xk-K18" firstAttribute="top" secondItem="We0-sR-GmK" secondAttribute="bottom" constant="7" id="odA-WO-kvl"/>
+                    <constraint firstItem="wD6-xk-K18" firstAttribute="top" secondItem="We0-sR-GmK" secondAttribute="bottom" constant="12" id="odA-WO-kvl"/>
                     <constraint firstItem="mlx-Sx-ed0" firstAttribute="top" secondItem="CJX-gU-fJU" secondAttribute="bottom" constant="5" id="v1z-Hs-5Ih"/>
-                    <constraint firstItem="We0-sR-GmK" firstAttribute="top" secondItem="EL4-cX-Dok" secondAttribute="top" constant="7" id="xok-MG-Dxz"/>
+                    <constraint firstItem="We0-sR-GmK" firstAttribute="top" secondItem="EL4-cX-Dok" secondAttribute="top" constant="12" id="xok-MG-Dxz"/>
                 </constraints>
             </tableViewCellContentView>
-            <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
             <connections>
                 <outlet property="chatBubble" destination="EL4-cX-Dok" id="CGa-hB-g7t"/>
                 <outlet property="dateLabel" destination="mlx-Sx-ed0" id="5tM-mA-JkR"/>

@@ -21,9 +21,9 @@
 @import MediaPlayer;
 
 CGFloat const kMessageMinCellHeight = 60;
-CGFloat const kMessageCellYOffset = 31;
-CGFloat const kMessageMediaCellYOffset = 228;
-CGFloat const kChatBubbleInset = 6;
+CGFloat const kMessageCellYOffset = 41;
+CGFloat const kMessageMediaCellYOffset = 238;
+CGFloat const kChatBubbleInset = 12;
 CGFloat const kChatBubbleArrowPadding = 9;
 CGFloat const kProfilePadding = 27;
 
