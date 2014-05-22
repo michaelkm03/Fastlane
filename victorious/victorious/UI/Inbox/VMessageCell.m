@@ -34,6 +34,11 @@ NSString* const kChatBubbleLeftImage = @"ChatBubbleLeft";
 
 @property (weak, nonatomic) IBOutlet UIImageView *chatBubble;
 
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint* messageHeightConstraint;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint* messageWidthConstraint;
+
+@property (strong, nonatomic) NSLayoutConstraint* chatBottomConstraint;
+
 @end
 
 @implementation VMessageCell
@@ -43,44 +48,6 @@ NSString* const kChatBubbleLeftImage = @"ChatBubbleLeft";
     [super awakeFromNib];
     
     self.message = self.message;
-}
-
-- (void)layoutSubviews
-{
-    [super layoutSubviews];
-    
-//    self.message = self.message;
-    
-    CGFloat yOffset = self.previewImageUrl ? kMessageMediaCellYOffset : kMessageCellYOffset;
-    
-    CGSize size = [VAbstractCommentCell frameSizeForMessageText:self.messageLabel.text];
-    self.messageLabel.frame = CGRectMake(CGRectGetMinX(self.messageLabel.frame), CGRectGetMinY(self.messageLabel.frame),
-                                         size.width, size.height);
-    [self.messageLabel sizeToFit];
-    
-    CGFloat xOrigin = CGRectGetMinX(self.messageLabel.frame);
-    CGFloat arrowOffset = -kChatBubbleArrowPadding / 2;
-    if ( [self.message.user isEqualToUser:[VObjectManager sharedManager].mainUser])
-    {
-        xOrigin = CGRectGetMinX(self.profileImageButton.frame) - kProfilePadding - CGRectGetWidth(self.messageLabel.frame);
-        arrowOffset = -arrowOffset;
-    }
-    
-    self.messageLabel.frame = CGRectMake(xOrigin, CGRectGetMinY(self.messageLabel.frame),
-                                         CGRectGetWidth(self.messageLabel.frame), CGRectGetHeight(self.messageLabel.frame));
-    
-    CGFloat height = self.messageLabel.frame.size.height + (kChatBubbleInset * 2);
-    height += self.previewImageUrl ? self.mediaPreview.frame.size.height : 0;
-    
-    CGFloat width = self.previewImageUrl ? kMessageLabelWidth : self.messageLabel.frame.size.width;
-    width += (kChatBubbleInset * 2) + kChatBubbleArrowPadding;
-    
-    self.chatBubble.bounds = CGRectMake(0, 0, width, height);
-    
-    self.chatBubble.center = CGPointMake(self.messageLabel.center.x + arrowOffset, self.messageLabel.center.y);
-    
-    height = MAX(self.messageLabel.frame.size.height + yOffset, kMessageMinCellHeight);
-    self.bounds = CGRectMake(0, 0, self.frame.size.width, height);
 }
 
 - (void)setMessage:(VMessage *)message
@@ -109,11 +76,8 @@ NSString* const kChatBubbleLeftImage = @"ChatBubbleLeft";
                                     forState:UIControlStateNormal];
     if (self.previewImageUrl)
     {
-        self.mediaPreview.hidden = NO;
-        
         self.playButton.hidden = !([[self.mediaUrl pathExtension] isEqualToString:VConstantMediaExtensionM3U8]);
-        
-        //#warning We need to figure out a reliable way to get message preview image before release...
+        self.mediaPreview.hidden = NO;
         [self.mediaPreview setImageWithURL:self.previewImageUrl
                           placeholderImage:[UIImage resizeableImageWithColor:
                                             [[VThemeManager sharedThemeManager] themedColorForKey:kVBackgroundColor]]];
@@ -124,6 +88,30 @@ NSString* const kChatBubbleLeftImage = @"ChatBubbleLeft";
         self.mediaPreview.hidden = YES;
         self.playButton.hidden = YES;
     }
+    
+    CGFloat mediaWidth = self.mediaPreview.hidden ? 0 : self.mediaPreview.bounds.size.width;
+    CGSize size = [VAbstractCommentCell frameSizeForMessageText:self.messageLabel.text];
+    self.messageHeightConstraint.constant = size.height;
+    self.messageWidthConstraint.constant = MAX(size.width, mediaWidth);
+    
+    UIView* bottomConstrainer = self.previewImageUrl ? self.mediaPreview : self.messageLabel;
+    [self removeConstraint:self.chatBottomConstraint];
+    self.chatBottomConstraint = [NSLayoutConstraint constraintWithItem:self.chatBubble
+                                                             attribute:NSLayoutAttributeBottom
+                                                             relatedBy:NSLayoutRelationEqual
+                                                                toItem:bottomConstrainer
+                                                             attribute:NSLayoutAttributeBottom
+                                                            multiplier:1.0
+                                                              constant:kChatBubbleInset];
+    [self addConstraint:self.chatBottomConstraint];
+    
+    CGFloat height = self.messageHeightConstraint.constant + (kChatBubbleInset * 2);
+    height += self.previewImageUrl ? self.mediaPreview.frame.size.height + kChatBubbleInset: 0;
+    
+    CGFloat yOffset = self.previewImageUrl ? kMessageMediaCellYOffset : kMessageCellYOffset;
+    height = MAX(self.messageLabel.frame.size.height + yOffset, kMessageMinCellHeight);
+    
+    self.bounds = CGRectMake(0, 0, self.frame.size.width, height);
 }
 
 @end

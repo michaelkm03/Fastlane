@@ -27,7 +27,7 @@ CGFloat const kMessageLabelWidth = 214;
     self.dateLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVParagraphFont];
     self.dateLabel.textColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVContentTextColor];
     
-    self.messageLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVLabel2Font];
+    self.messageLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeading3Font];
     self.messageLabel.textColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVContentTextColor];
     
     self.nameLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVLabel1Font];
@@ -39,7 +39,7 @@ CGFloat const kMessageLabelWidth = 214;
 
 + (CGSize)frameSizeForMessageText:(NSString*)text
 {
-    UIFont* font = [[VThemeManager sharedThemeManager] themedFontForKey:kVLabel2Font];
+    UIFont* font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeading3Font];
     NSDictionary *stringAttributes;
     if (!font)
         VLog(@"This is bad, where did the font go.");
