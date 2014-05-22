@@ -27,6 +27,9 @@ NSString*   const   kVLoginErrorDomain =   @"VLoginErrorDomain";
 @property (nonatomic, weak) IBOutlet    UIButton*       forgotPasswordButton;
 @property (nonatomic, strong)           VUser*          profile;
 @property (nonatomic, strong)           NSString*       deviceToken;
+
+@property (nonatomic, strong)           UIAlertView*    resetAlert;
+@property (nonatomic, strong)           UIAlertView*    thanksAlert;
 @end
 
 @implementation VLoginWithEmailViewController
@@ -229,38 +232,51 @@ NSString*   const   kVLoginErrorDomain =   @"VLoginErrorDomain";
 
  -(IBAction)forgotPassword:(id)sender
 {
-    UIAlertView*    alert   =   [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"ResetPassword", @"")
-                                                           message:NSLocalizedString(@"ResetPasswordPrompt", @"")
-                                                          delegate:self
-                                                 cancelButtonTitle:NSLocalizedString(@"CancelButton", @"")
-                                                 otherButtonTitles:NSLocalizedString(@"ResetButton", @""), nil];
-    alert.alertViewStyle = UIAlertViewStylePlainTextInput;
-    [alert textFieldAtIndex:0].placeholder = NSLocalizedString(@"ResetPasswordPlaceholder", @"");
-    [alert textFieldAtIndex:0].keyboardType = UIKeyboardTypeEmailAddress;
-    [alert show];
+    self.resetAlert   =   [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"ResetPassword", @"")
+                                                     message:NSLocalizedString(@"ResetPasswordPrompt", @"")
+                                                    delegate:self
+                                           cancelButtonTitle:NSLocalizedString(@"CancelButton", @"")
+                                           otherButtonTitles:NSLocalizedString(@"ResetButton", @""), nil];
+
+    self.resetAlert.alertViewStyle = UIAlertViewStylePlainTextInput;
+    [self.resetAlert textFieldAtIndex:0].placeholder = NSLocalizedString(@"ResetPasswordPlaceholder", @"");
+    [self.resetAlert textFieldAtIndex:0].keyboardType = UIKeyboardTypeEmailAddress;
+    [self.resetAlert show];
 }
 
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
 {
-    if (buttonIndex == alertView.firstOtherButtonIndex)
+    if (alertView == self.resetAlert)
     {
-        [[VObjectManager sharedManager] requestPasswordResetForEmail:[alertView textFieldAtIndex:0].text
-                                                        successBlock:^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
-         {
-             self.deviceToken = resultObjects[0];
-             
-             [self performSegueWithIdentifier:@"toResetCode" sender:self];
-         }
-                                                           failBlock:^(NSOperation* operation, NSError* error)
-         {
-             UIAlertView*   alert   =   [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"EmailValidation", @"")
-                                                                   message:NSLocalizedString(@"EmailNotFound", @"")
-                                                                  delegate:nil
+        if (buttonIndex == alertView.firstOtherButtonIndex)
+        {
+            [[VObjectManager sharedManager] requestPasswordResetForEmail:[alertView textFieldAtIndex:0].text
+                                                            successBlock:^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
+             {
+                 self.deviceToken = resultObjects[0];
+                 self.thanksAlert   =   [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Thanks", @"")
+                                                                   message:NSLocalizedString(@"EmailSent", @"")
+                                                                  delegate:self
                                                          cancelButtonTitle:nil
                                                          otherButtonTitles:NSLocalizedString(@"OKButton", @""), nil];
-             [alert show];
-         }];
+                 [self.thanksAlert show];
+             }
+                                                               failBlock:^(NSOperation* operation, NSError* error)
+             {
+                 UIAlertView*   alert   =   [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"EmailValidation", @"")
+                                                                       message:NSLocalizedString(@"EmailNotFound", @"")
+                                                                      delegate:nil
+                                                             cancelButtonTitle:nil
+                                                             otherButtonTitles:NSLocalizedString(@"OKButton", @""), nil];
+                 [alert show];
+             }];
+        }
     }
+    else if (alertView == self.thanksAlert)
+    {
+        [self performSegueWithIdentifier:@"toResetCode" sender:self];
+    }
+    
 }
 
 #pragma mark - UITextFieldDelegate
