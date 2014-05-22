@@ -124,6 +124,7 @@ const   CGFloat     kMessageRowHeight           =   80;
     }
     
     [(VMessageCell *)cell setMessage:aMessage];
+    cell.selectionStyle = UITableViewCellSelectionStyleNone;
     
     [cell setNeedsDisplay];
     [cell layoutIfNeeded];
