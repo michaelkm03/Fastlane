@@ -8,7 +8,7 @@
 
 @class VUser;
 
-@interface VInviteWithSocialViewController : UITableViewController
+@interface VInviteFriendsViewController : UITableViewController
 @property (nonatomic, strong)   VUser*  profile;
 
 @end

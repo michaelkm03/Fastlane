@@ -6,12 +6,12 @@
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
-#import "VInviteWithSocialViewController.h"
+#import "VInviteFriendsViewController.h"
 
-@interface VInviteWithSocialViewController ()
+@interface VInviteFriendsViewController ()
 @end
 
-@implementation VInviteWithSocialViewController
+@implementation VInviteFriendsViewController
 
 #pragma mark - UITableViewDataSource
 

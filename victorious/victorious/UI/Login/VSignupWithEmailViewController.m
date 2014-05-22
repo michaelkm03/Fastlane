@@ -7,7 +7,7 @@
 //
 
 #import "VSignupWithEmailViewController.h"
-#import "VProfileWithEmailViewController.h"
+#import "VProfileCreateViewController.h"
 #import "VObjectManager+Login.h"
 #import "VUser.h"
 #import "TTTAttributedLabel.h"
@@ -22,8 +22,6 @@ NSString*   const   kSignupErrorDomain =   @"VSignupErrorDomain";
 @property (weak, nonatomic) IBOutlet UITextField *emailTextField;
 @property (weak, nonatomic) IBOutlet UITextField *passwordTextField;
 @property (weak, nonatomic) IBOutlet UITextField *confirmPasswordTextField;
-@property (weak, nonatomic) IBOutlet UISwitch* agreeSwitch;
-@property (nonatomic, weak) IBOutlet TTTAttributedLabel* agreementText;
 @property (nonatomic, weak) IBOutlet    UIButton*       cancelButton;
 @property (nonatomic, weak) IBOutlet    UIButton*       signupButton;
 @property (nonatomic, strong)   VUser*  profile;
@@ -46,15 +44,6 @@ NSString*   const   kSignupErrorDomain =   @"VSignupErrorDomain";
 
     [self.emailTextField becomeFirstResponder];
 
-    self.agreementText.delegate = self;
-    [self.agreementText setText:[[VThemeManager sharedThemeManager] themedStringForKey:kVAgreementText]];
-    NSRange linkRange = [self.agreementText.text rangeOfString:[[VThemeManager sharedThemeManager] themedStringForKey:kVAgreementLinkText]];
-    if (linkRange.length > 0)
-    {
-        NSURL *url = [NSURL URLWithString:[[VThemeManager sharedThemeManager] themedStringForKey:kVAgreementLink]];
-        [self.agreementText addLinkToURL:url withRange:linkRange];
-    }
-
     self.cancelButton.layer.borderColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor].CGColor;
     self.cancelButton.layer.borderWidth = 2.0;
     self.cancelButton.layer.cornerRadius = 3.0;
@@ -75,8 +64,6 @@ NSString*   const   kSignupErrorDomain =   @"VSignupErrorDomain";
     self.confirmPasswordTextField.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeaderFont];
     self.confirmPasswordTextField.textColor = [UIColor colorWithWhite:0.14 alpha:1.0];
     self.confirmPasswordTextField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:self.confirmPasswordTextField.placeholder attributes:@{NSForegroundColorAttributeName : [UIColor colorWithWhite:0.14 alpha:1.0]}];
-
-    self.agreementText.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVLabel2Font];
 
     [self.navigationController setNavigationBarHidden:YES animated:NO];
 }
@@ -135,18 +122,6 @@ NSString*   const   kSignupErrorDomain =   @"VSignupErrorDomain";
         return NO;
     }
     
-    if (NO == self.agreeSwitch.on)
-    {
-        UIAlertView*    alert   =   [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"InvalidCredentials", @"")
-                                                               message:NSLocalizedString(@"AgreeTOS", @"")
-                                                              delegate:nil
-                                                     cancelButtonTitle:NSLocalizedString(@"OKButton", @"")
-                                                     otherButtonTitles:nil];
-        [alert show];
-        [[self view] endEditing:YES];
-        return NO;
-    }
-
     return YES;
 }
 
@@ -278,8 +253,9 @@ NSString*   const   kSignupErrorDomain =   @"VSignupErrorDomain";
 {
     if ([segue.identifier isEqualToString:@"toProfileWithEmail"])
     {
-        VProfileWithEmailViewController* profileViewController = (VProfileWithEmailViewController *)segue.destinationViewController;
+        VProfileCreateViewController* profileViewController = (VProfileCreateViewController *)segue.destinationViewController;
         profileViewController.profile = self.profile;
+        profileViewController.loginType = kVLoginTypeEmail;
     }
 }
 

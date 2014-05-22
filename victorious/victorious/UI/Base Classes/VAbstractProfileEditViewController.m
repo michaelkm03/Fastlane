@@ -11,6 +11,8 @@
 #import "VConstants.h"
 #import "VUser.h"
 #import "UIImageView+Blurring.h"
+#import "UIImage+ImageEffects.h"
+#import "VThemeManager.h"
 
 @implementation VAbstractProfileEditViewController
 
@@ -42,13 +44,19 @@
     self.cameraButton.layer.shouldRasterize = YES;
     self.cameraButton.clipsToBounds = YES;
 
+    UIImage*    backgroundImage;
+    if (IS_IPHONE_5)
+        backgroundImage = (id)[[[VThemeManager sharedThemeManager] themedImageForKey:kVMenuBackgroundImage5] applyBlurWithRadius:0 tintColor:[UIColor colorWithWhite:0.0 alpha:0.3] saturationDeltaFactor:1.8 maskImage:nil];
+    else
+        backgroundImage = (id)[[[VThemeManager sharedThemeManager] themedImageForKey:kVMenuBackgroundImage] applyBlurWithRadius:0 tintColor:[UIColor colorWithWhite:0.0 alpha:0.3] saturationDeltaFactor:1.8 maskImage:nil];
+
     NSURL*  imageURL    =   [NSURL URLWithString:self.profile.pictureUrl];
-    [self.profileImageView setImageWithURL:imageURL placeholderImage:[UIImage imageNamed:@"profile_thumb"]];
+    [self.profileImageView setImageWithURL:imageURL placeholderImage:backgroundImage];
 
     //  Set background image
     UIImageView* backgroundImageView = [[UIImageView alloc] initWithFrame:self.tableView.backgroundView.frame];
     [backgroundImageView setBlurredImageWithURL:[NSURL URLWithString:self.profile.pictureUrl]
-                               placeholderImage:[UIImage imageNamed:@"profile_thumb"]
+                               placeholderImage:[UIImage imageNamed:@"profileGenericUser"]
                                       tintColor:[UIColor colorWithWhite:1.0 alpha:0.3]];
     
     self.tableView.backgroundView = backgroundImageView;

@@ -11,7 +11,7 @@
 #import "VUser.h"
 #import "VThemeManager.h"
 #import "UIImage+ImageEffects.h"
-#import "VProfileWithSocialViewController.h"
+#import "VProfileCreateViewController.h"
 #import "VUserManager.h"
 #import "VLoginTransitionAnimator.h"
 #import "UIImage+ImageCreation.h"
@@ -281,13 +281,13 @@
 {
     if ([segue.identifier isEqualToString:@"toProfileWithFacebook"])
     {
-        VProfileWithSocialViewController*   profileViewController = (VProfileWithSocialViewController *)segue.destinationViewController;
+        VProfileCreateViewController*   profileViewController = (VProfileCreateViewController *)segue.destinationViewController;
         profileViewController.loginType = kVLoginTypeFaceBook;
         profileViewController.profile = self.profile;
     }
     else if ([segue.identifier isEqualToString:@"toProfileWithTwitter"])
     {
-        VProfileWithSocialViewController*   profileViewController = (VProfileWithSocialViewController *)segue.destinationViewController;
+        VProfileCreateViewController*   profileViewController = (VProfileCreateViewController *)segue.destinationViewController;
         profileViewController.loginType = kVLoginTypeTwitter;
         profileViewController.profile = self.profile;
     }
