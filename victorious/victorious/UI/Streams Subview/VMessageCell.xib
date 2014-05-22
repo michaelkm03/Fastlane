@@ -13,23 +13,27 @@
                 <rect key="frame" x="0.0" y="0.0" width="320" height="252"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="ChatBubble" translatesAutoresizingMaskIntoConstraints="NO" id="0UZ-V6-0FV">
-                        <rect key="frame" x="66" y="10" width="236" height="235"/>
+                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" image="ChatBubble" translatesAutoresizingMaskIntoConstraints="NO" id="0UZ-V6-0FV">
+                        <rect key="frame" x="76" y="10" width="236" height="235"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     </imageView>
-                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="StreamDate" translatesAutoresizingMaskIntoConstraints="NO" id="Rgs-9K-iBc" userLabel="Time Image">
-                        <rect key="frame" x="20" y="57" width="13" height="13"/>
+                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="StreamDate" translatesAutoresizingMaskIntoConstraints="NO" id="Rgs-9K-iBc" userLabel="Time Image">
+                        <rect key="frame" x="20" y="232" width="13" height="13"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     </imageView>
-                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="date" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="EzG-iN-xlM" userLabel="Time Label">
-                        <rect key="frame" x="35" y="53" width="23" height="21"/>
+                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="date" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="EzG-iN-xlM" userLabel="Time Label">
+                        <rect key="frame" x="35" y="232" width="23" height="14"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <fontDescription key="fontDescription" style="UICTFontTextStyleCaption1"/>
                         <nil key="highlightedColor"/>
                     </label>
-                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="evX-ID-lZS">
-                        <rect key="frame" x="20" y="10" width="48" height="48"/>
+                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="evX-ID-lZS">
+                        <rect key="frame" x="20" y="200" width="32" height="32"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="32" id="64J-jJ-snI"/>
+                            <constraint firstAttribute="height" constant="32" id="s0Y-jy-KtY"/>
+                        </constraints>
                         <state key="normal" backgroundImage="profile_thumb">
                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                         </state>
@@ -37,12 +41,16 @@
                             <action selector="profileButtonAction:" destination="FjT-zX-vN4" eventType="touchUpInside" id="7yf-mI-y3p"/>
                         </connections>
                     </button>
-                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Z4Q-lM-koN">
-                        <rect key="frame" x="85" y="48" width="190" height="190"/>
+                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Z4Q-lM-koN">
+                        <rect key="frame" x="95" y="48" width="190" height="190"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="190" id="LRQ-Rf-HFN"/>
+                            <constraint firstAttribute="width" constant="190" id="k16-MO-Yhr"/>
+                        </constraints>
                     </imageView>
                     <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="JsJ-0N-s41">
-                        <rect key="frame" x="164" y="126" width="33" height="33"/>
+                        <rect key="frame" x="174" y="126" width="33" height="33"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <state key="normal" image="Play">
                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
@@ -51,13 +59,27 @@
                             <action selector="playVideo:" destination="FjT-zX-vN4" eventType="touchUpInside" id="MHh-gk-LUf"/>
                         </connections>
                     </button>
-                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="message" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="214" translatesAutoresizingMaskIntoConstraints="NO" id="y7x-B1-aa3" userLabel="Message label">
-                        <rect key="frame" x="86" y="17" width="214" height="24"/>
+                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="message" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="214" translatesAutoresizingMaskIntoConstraints="NO" id="y7x-B1-aa3" userLabel="Message label">
+                        <rect key="frame" x="96" y="17" width="214" height="24"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <fontDescription key="fontDescription" type="system" pointSize="16"/>
                         <nil key="highlightedColor"/>
                     </label>
                 </subviews>
+                <constraints>
+                    <constraint firstItem="0UZ-V6-0FV" firstAttribute="top" secondItem="OCU-v7-M0N" secondAttribute="top" constant="10" id="0T1-QP-b5E"/>
+                    <constraint firstItem="EzG-iN-xlM" firstAttribute="leading" secondItem="Rgs-9K-iBc" secondAttribute="trailing" constant="2" id="EhR-p7-OQP"/>
+                    <constraint firstItem="Z4Q-lM-koN" firstAttribute="leading" secondItem="0UZ-V6-0FV" secondAttribute="leading" constant="19" id="I0g-mY-XTD"/>
+                    <constraint firstItem="evX-ID-lZS" firstAttribute="leading" secondItem="OCU-v7-M0N" secondAttribute="leading" constant="20" id="Lze-SD-Bwh"/>
+                    <constraint firstAttribute="bottom" secondItem="evX-ID-lZS" secondAttribute="bottom" constant="20" id="P1g-yI-pet"/>
+                    <constraint firstItem="EzG-iN-xlM" firstAttribute="top" secondItem="evX-ID-lZS" secondAttribute="bottom" id="P3x-UP-c9a"/>
+                    <constraint firstItem="Rgs-9K-iBc" firstAttribute="leading" secondItem="evX-ID-lZS" secondAttribute="leading" id="RLN-6I-2zl"/>
+                    <constraint firstItem="Z4Q-lM-koN" firstAttribute="top" secondItem="y7x-B1-aa3" secondAttribute="bottom" constant="7" id="TcK-aB-f5f"/>
+                    <constraint firstItem="y7x-B1-aa3" firstAttribute="leading" secondItem="0UZ-V6-0FV" secondAttribute="leading" constant="20" id="bny-XC-3JU"/>
+                    <constraint firstItem="0UZ-V6-0FV" firstAttribute="leading" secondItem="evX-ID-lZS" secondAttribute="trailing" id="ee1-7p-pAx"/>
+                    <constraint firstItem="y7x-B1-aa3" firstAttribute="top" secondItem="0UZ-V6-0FV" secondAttribute="top" constant="7" id="fxX-ZJ-mOa"/>
+                    <constraint firstItem="EzG-iN-xlM" firstAttribute="centerY" secondItem="Rgs-9K-iBc" secondAttribute="centerY" id="twX-Tt-S3A"/>
+                </constraints>
             </tableViewCellContentView>
             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
             <connections>

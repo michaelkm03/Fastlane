@@ -20,10 +20,11 @@
 
 @import MediaPlayer;
 
-CGFloat const kMessageMinCellHeight = 84;
-CGFloat const kMessageCellYOffset = 7;
+CGFloat const kMessageMinCellHeight = 60;
+CGFloat const kMessageCellYOffset = 31;
 CGFloat const kMessageMediaCellYOffset = 213;
-CGFloat const kMessageChatBubblePadding = 5;
+CGFloat const kChatBubbleInset = 6;
+CGFloat const kChatBubbleArrowPadding = 9;
 CGFloat const kProfilePadding = 27;
 
 NSString* const kChatBubbleRightImage = @"ChatBubbleRight";
@@ -58,23 +59,25 @@ NSString* const kChatBubbleLeftImage = @"ChatBubbleLeft";
     [self.messageLabel sizeToFit];
     
     CGFloat xOrigin = CGRectGetMinX(self.messageLabel.frame);
+    CGFloat arrowOffset = -kChatBubbleArrowPadding / 2;
     if ( [self.message.user isEqualToUser:[VObjectManager sharedManager].mainUser])
     {
         xOrigin = CGRectGetMinX(self.profileImageButton.frame) - kProfilePadding - CGRectGetWidth(self.messageLabel.frame);
+        arrowOffset = -arrowOffset;
     }
     
     self.messageLabel.frame = CGRectMake(xOrigin, CGRectGetMinY(self.messageLabel.frame),
                                          CGRectGetWidth(self.messageLabel.frame), CGRectGetHeight(self.messageLabel.frame));
     
-    CGFloat height = self.messageLabel.frame.size.height + (kMessageChatBubblePadding * 2);
+    CGFloat height = self.messageLabel.frame.size.height + (kChatBubbleInset * 2);
     height += self.message.media.mediaUrl ? self.mediaPreview.frame.size.height : 0;
     
     CGFloat width = self.message.media.mediaUrl ? kMessageLabelWidth : self.messageLabel.frame.size.width;
-    width += (kMessageChatBubblePadding * 4);
+    width += (kChatBubbleInset * 2) + kChatBubbleArrowPadding;
     
     self.chatBubble.bounds = CGRectMake(0, 0, width, height);
     
-    self.chatBubble.center = self.messageLabel.center;
+    self.chatBubble.center = CGPointMake(self.messageLabel.center.x + arrowOffset, self.messageLabel.center.y);
     
     height = MAX(self.messageLabel.frame.size.height + yOffset, kMessageMinCellHeight);
     self.bounds = CGRectMake(0, 0, self.frame.size.width, height);
