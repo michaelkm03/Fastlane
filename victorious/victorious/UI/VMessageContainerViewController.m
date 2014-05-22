@@ -24,6 +24,7 @@
 {
     [super viewWillAppear:animated];
     
+    [self.navigationController setNavigationBarHidden:NO animated:animated];
     self.edgesForExtendedLayout = UIRectEdgeNone;
     
     VMessageViewController* messageVC = (VMessageViewController*)self.conversationTableViewController;
