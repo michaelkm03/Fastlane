@@ -220,34 +220,11 @@
                         <outlet property="passwordTextField" destination="3pO-cP-eTE" id="g2J-cP-u9B"/>
                         <outlet property="transitionPlaceholder" destination="nwd-XK-Yuq" id="yXS-dG-e45"/>
                         <outlet property="usernameTextField" destination="Jbh-n4-soS" id="sa1-3r-n9Y"/>
-                        <segue destination="59l-M1-WUZ" kind="push" identifier="toResetCode" id="Yox-U3-jov"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="AQe-iH-88j" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="815" y="-519"/>
-        </scene>
-        <!--Reset Code View Controller-->
-        <scene sceneID="Prt-wy-nZ2">
-            <objects>
-                <viewController storyboardIdentifier="resetCode" useStoryboardIdentifierAsRestorationIdentifier="YES" id="59l-M1-WUZ" customClass="VResetCodeViewController" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="xWM-57-7VP"/>
-                        <viewControllerLayoutGuide type="bottom" id="0Hz-1h-e7u"/>
-                    </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="YgJ-pe-ebW">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
-                    </view>
-                    <navigationItem key="navigationItem" id="YZu-ZQ-5Kg"/>
-                    <connections>
-                        <segue destination="uvb-TU-XJY" kind="push" identifier="toResetPassword" id="sT8-YU-BDZ"/>
-                    </connections>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="hHF-Qp-GYk" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="1465" y="-719"/>
         </scene>
         <!--Reset Password View Controller-->
         <scene sceneID="dl9-g7-8V5">

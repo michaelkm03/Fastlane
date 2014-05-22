@@ -16,10 +16,11 @@
 #import "VThemeManager.h"
 #import "UIImage+ImageEffects.h"
 #import "VLoginTransitionAnimator.h"
+#import "THPinViewController.h"
 
 NSString*   const   kVLoginErrorDomain =   @"VLoginErrorDomain";
 
-@interface VLoginWithEmailViewController () <UITextFieldDelegate, UINavigationControllerDelegate, UIAlertViewDelegate>
+@interface VLoginWithEmailViewController () <UITextFieldDelegate, UINavigationControllerDelegate, UIAlertViewDelegate, THPinViewControllerDelegate>
 @property (nonatomic, weak) IBOutlet    UITextField*    usernameTextField;
 @property (nonatomic, weak) IBOutlet    UITextField*    passwordTextField;
 @property (nonatomic, weak) IBOutlet    UIButton*       loginButton;
@@ -31,6 +32,7 @@ NSString*   const   kVLoginErrorDomain =   @"VLoginErrorDomain";
 @property (nonatomic, strong)           UIAlertView*    resetAlert;
 @property (nonatomic, strong)           UIAlertView*    thanksAlert;
 @property (nonatomic)                   BOOL            alertDismissed;
+
 @end
 
 @implementation VLoginWithEmailViewController
@@ -67,6 +69,8 @@ NSString*   const   kVLoginErrorDomain =   @"VLoginErrorDomain";
     
     self.usernameTextField.delegate  =   self;
     self.passwordTextField.delegate  =   self;
+    
+    self.remainingPinEntries = 3;
     
     [self.navigationController setNavigationBarHidden:YES animated:NO];
 }
@@ -265,7 +269,7 @@ NSString*   const   kVLoginErrorDomain =   @"VLoginErrorDomain";
              {
                  self.deviceToken = resultObjects[0];
                  if (self.alertDismissed)
-                     [self performSegueWithIdentifier:@"toResetCode" sender:self];
+                     [self presentPINController];
              }
                                                                failBlock:^(NSOperation* operation, NSError* error)
              {
@@ -281,11 +285,29 @@ NSString*   const   kVLoginErrorDomain =   @"VLoginErrorDomain";
     else if (alertView == self.thanksAlert)
     {
         if (self.deviceToken)
-            [self performSegueWithIdentifier:@"toResetCode" sender:self];
+            [self presentPINController];
         else
             self.alertDismissed = YES;
     }
     
+}
+
+#pragma mark - Support
+
+- (void)presentPINController
+{
+    THPinViewController *pinViewController = [[THPinViewController alloc] initWithDelegate:self];
+    pinViewController.promptTitle = @"Enter PIN";
+    pinViewController.promptColor = [UIColor darkTextColor];
+    pinViewController.view.tintColor = [UIColor darkTextColor];
+//    pinViewController.hideLetters = YES;
+    
+    // for a translucent background, use this:
+    self.view.tag = THPinViewControllerContentViewTag;
+    self.modalPresentationStyle = UIModalPresentationCurrentContext;
+    pinViewController.translucentBackground = YES;
+    
+    [self presentViewController:pinViewController animated:YES completion:nil];
 }
 
 #pragma mark - UITextFieldDelegate
@@ -309,6 +331,31 @@ NSString*   const   kVLoginErrorDomain =   @"VLoginErrorDomain";
 {
     [[self view] endEditing:YES];
 }
+
+#pragma mark - THPinViewControllerDelegate
+
+- (NSUInteger)pinLengthForPinViewController:(THPinViewController *)pinViewController
+{
+    return 4;
+}
+
+- (BOOL)pinViewController:(THPinViewController *)pinViewController isPinValid:(NSString *)pin
+{
+    return YES;
+}
+
+- (BOOL)userCanRetryInPinViewController:(THPinViewController *)pinViewController
+{
+    return YES;
+}
+
+//- (void)incorrectPinEnteredInPinViewController:(THPinViewController *)pinViewController {}
+//- (void)pinViewControllerWillDismissAfterPinEntryWasSuccessful:(THPinViewController *)pinViewController {}
+//- (void)pinViewControllerDidDismissAfterPinEntryWasSuccessful:(THPinViewController *)pinViewController {}
+//- (void)pinViewControllerWillDismissAfterPinEntryWasUnsuccessful:(THPinViewController *)pinViewController {}
+//- (void)pinViewControllerDidDismissAfterPinEntryWasUnsuccessful:(THPinViewController *)pinViewController {}
+//- (void)pinViewControllerWillDismissAfterPinEntryWasCancelled:(THPinViewController *)pinViewController {}
+//- (void)pinViewControllerDidDismissAfterPinEntryWasCancelled:(THPinViewController *)pinViewController {}
 
 #pragma mark - Navigation
 
