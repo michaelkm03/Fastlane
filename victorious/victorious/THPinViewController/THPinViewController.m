@@ -163,9 +163,9 @@
 - (UIImage*)blurredContentImage
 {
     UIView *contentView = [[[UIApplication sharedApplication] keyWindow] viewWithTag:THPinViewControllerContentViewTag];
-    if (! contentView) {
-        return nil;
-    }
+    if (!contentView)
+        return self.backgroundImage ?: nil;
+    
     UIGraphicsBeginImageContext(self.view.bounds.size);
     [contentView drawViewHierarchyInRect:self.view.bounds afterScreenUpdates:NO];
     UIImage *image = UIGraphicsGetImageFromCurrentImageContext();

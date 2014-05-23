@@ -39,6 +39,7 @@ static const NSInteger THPinViewControllerContentViewTag = 14742;
 @property (nonatomic, copy) NSString *promptTitle;
 @property (nonatomic, strong) UIColor *promptColor;
 @property (nonatomic, assign) BOOL hideLetters;
+@property (nonatomic, strong) UIImage*  backgroundImage;
 
 - (instancetype)initWithDelegate:(id<THPinViewControllerDelegate>)delegate;
 

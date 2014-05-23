@@ -28,14 +28,6 @@
                                                     withSuccessBlock:(VSuccessBlock)success
                                                            failBlock:(VFailBlock)fail;
 
-- (RKManagedObjectRequestOperation *)updateProfileWithFullName:(NSString*)FullName
-                                                      userName:(NSString*)userName
-                                                      location:(NSString*)location
-                                                       tagLine:(NSString*)newTagLine
-                                                  profileImage:(NSString*)profileImage
-                                              withSuccessBlock:(VSuccessBlock)success
-                                                     failBlock:(VFailBlock)fail;
-
 - (RKManagedObjectRequestOperation *)listOfRecommendedFriendsWithSuccessBlock:(VSuccessBlock)success
                                                                     failBlock:(VFailBlock)fail;
 

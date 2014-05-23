@@ -222,7 +222,7 @@
 
 - (IBAction)done:(id)sender
 {
-    if ([self ShouldSaveProfile])
+    if ([self shouldCreateProfile])
     {
         [[VObjectManager sharedManager] updateVictoriousWithEmail:nil
                                                          password:nil
@@ -242,7 +242,7 @@
     }
 }
 
-- (BOOL)ShouldSaveProfile
+- (BOOL)shouldCreateProfile
 {
     BOOL    isValid =   ((self.usernameTextField.text.length > 0) &&
                          (self.locationTextField.text.length > 0) &&

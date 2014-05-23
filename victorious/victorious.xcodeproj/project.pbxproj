@@ -88,7 +88,6 @@
 		3FA217EC18BC365E0066E893 /* VCameraViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3FA217EB18BC365E0066E893 /* VCameraViewController.m */; };
 		3FA217EE18BC3A3A0066E893 /* Camera.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3FA217ED18BC3A3A0066E893 /* Camera.storyboard */; };
 		3FBCB9C5192E9A7400EB510C /* VResetPasswordViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3FBCB9C4192E9A7400EB510C /* VResetPasswordViewController.m */; };
-		3FBCB9C8192E9A9600EB510C /* VResetCodeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3FBCB9C7192E9A9600EB510C /* VResetCodeViewController.m */; };
 		3FBCB9DE192EC77400EB510C /* THPinViewController.strings in Resources */ = {isa = PBXBuildFile; fileRef = 3FBCB9CA192EC77400EB510C /* THPinViewController.strings */; };
 		3FBCB9DF192EC77400EB510C /* THPinInputCirclesView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3FBCB9D1192EC77400EB510C /* THPinInputCirclesView.m */; };
 		3FBCB9E0192EC77400EB510C /* THPinInputCircleView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3FBCB9D3192EC77400EB510C /* THPinInputCircleView.m */; };
@@ -415,8 +414,6 @@
 		3FA217ED18BC3A3A0066E893 /* Camera.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = Camera.storyboard; path = UI/CameraViewController/Camera.storyboard; sourceTree = "<group>"; };
 		3FBCB9C3192E9A7400EB510C /* VResetPasswordViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VResetPasswordViewController.h; path = UI/Login/VResetPasswordViewController.h; sourceTree = "<group>"; };
 		3FBCB9C4192E9A7400EB510C /* VResetPasswordViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VResetPasswordViewController.m; path = UI/Login/VResetPasswordViewController.m; sourceTree = "<group>"; };
-		3FBCB9C6192E9A9600EB510C /* VResetCodeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VResetCodeViewController.h; path = UI/Login/VResetCodeViewController.h; sourceTree = "<group>"; };
-		3FBCB9C7192E9A9600EB510C /* VResetCodeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VResetCodeViewController.m; path = UI/Login/VResetCodeViewController.m; sourceTree = "<group>"; };
 		3FBCB9CB192EC77400EB510C /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/THPinViewController.strings; sourceTree = "<group>"; };
 		3FBCB9CC192EC77400EB510C /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/THPinViewController.strings; sourceTree = "<group>"; };
 		3FBCB9CD192EC77400EB510C /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/THPinViewController.strings; sourceTree = "<group>"; };
@@ -950,8 +947,6 @@
 				5FC4DA6C1897119C006BA107 /* VProfileCreateViewController.m */,
 				5FC4DA6E189711EA006BA107 /* VInviteFriendsViewController.h */,
 				5FC4DA6F189711EA006BA107 /* VInviteFriendsViewController.m */,
-				3FBCB9C6192E9A9600EB510C /* VResetCodeViewController.h */,
-				3FBCB9C7192E9A9600EB510C /* VResetCodeViewController.m */,
 				3FBCB9C3192E9A7400EB510C /* VResetPasswordViewController.h */,
 				3FBCB9C4192E9A7400EB510C /* VResetPasswordViewController.m */,
 				3F53E0C118A485D400089C20 /* VUserManager.h */,
@@ -1896,7 +1891,6 @@
 				BE171E131868C211004E5202 /* VInteractionAction+RestKit.m in Sources */,
 				03F9D281191D542300576AEE /* VCVideoPlayerToolbarView.m in Sources */,
 				BEB8DB07192BFF5300E0E3E6 /* VMessageCell.m in Sources */,
-				3FBCB9C8192E9A9600EB510C /* VResetCodeViewController.m in Sources */,
 				BED7F67A18E0BD5D00545DF6 /* UIImage+ImageCreation.m in Sources */,
 				BEA5BF71187FCBF10014C3EF /* VObjectManager+Users.m in Sources */,
 				3FBCB9E3192EC77400EB510C /* THPinView.m in Sources */,
