@@ -298,11 +298,12 @@ NSString*   const   kVLoginErrorDomain =   @"VLoginErrorDomain";
 {
     THPinViewController *pinViewController = [[THPinViewController alloc] initWithDelegate:self];
     pinViewController.promptTitle = @"Enter PIN";
-    pinViewController.promptColor = [UIColor darkTextColor];
-    pinViewController.view.tintColor = [UIColor darkTextColor];
-//    pinViewController.hideLetters = YES;
+    pinViewController.promptColor = [UIColor whiteColor];
+    pinViewController.view.tintColor = [UIColor whiteColor];
+    pinViewController.hideLetters = YES;
     
-    // for a translucent background, use this:
+    pinViewController.backgroundColor = [UIColor blackColor];
+
     self.view.tag = THPinViewControllerContentViewTag;
     self.modalPresentationStyle = UIModalPresentationCurrentContext;
     pinViewController.translucentBackground = YES;
@@ -349,12 +350,12 @@ NSString*   const   kVLoginErrorDomain =   @"VLoginErrorDomain";
     return YES;
 }
 
-//- (void)incorrectPinEnteredInPinViewController:(THPinViewController *)pinViewController {}
-//- (void)pinViewControllerWillDismissAfterPinEntryWasSuccessful:(THPinViewController *)pinViewController {}
+- (void)incorrectPinEnteredInPinViewController:(THPinViewController *)pinViewController {}
+- (void)pinViewControllerWillDismissAfterPinEntryWasSuccessful:(THPinViewController *)pinViewController {}
 //- (void)pinViewControllerDidDismissAfterPinEntryWasSuccessful:(THPinViewController *)pinViewController {}
-//- (void)pinViewControllerWillDismissAfterPinEntryWasUnsuccessful:(THPinViewController *)pinViewController {}
+- (void)pinViewControllerWillDismissAfterPinEntryWasUnsuccessful:(THPinViewController *)pinViewController {}
 //- (void)pinViewControllerDidDismissAfterPinEntryWasUnsuccessful:(THPinViewController *)pinViewController {}
-//- (void)pinViewControllerWillDismissAfterPinEntryWasCancelled:(THPinViewController *)pinViewController {}
+- (void)pinViewControllerWillDismissAfterPinEntryWasCancelled:(THPinViewController *)pinViewController {}
 //- (void)pinViewControllerDidDismissAfterPinEntryWasCancelled:(THPinViewController *)pinViewController {}
 
 #pragma mark - Navigation
