@@ -26,7 +26,7 @@
 @property (nonatomic, strong) UIView *backgroundView;
 
 /**
- This view rotates with the device (backgroundView and maskingView do not)
+ This view rotates with the device (backgroundView does not)
  */
 @property (nonatomic, strong) UIView *contentSuperview;
 
@@ -35,6 +35,6 @@
  the implementation for this property, and it should 
  return a view that is a subclass of contentSuperview.
  */
-@property (nonatomic, weak, readonly) UIView *contentView;
+@property (nonatomic, readonly) UIView *contentView;
 
 @end
