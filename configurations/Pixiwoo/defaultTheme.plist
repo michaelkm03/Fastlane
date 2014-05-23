@@ -9,7 +9,7 @@
 	<key>agreement.text</key>
 	<string>I&apos;m at least 13 years old and agree to Terms of Service</string>
 	<key>channel.name</key>
-	<string>The Fine Bros</string>
+	<string>Geek &amp;  Sundry</string>
 	<key>channel.url.about</key>
 	<string>http://dev.getvictorious.com/api/static/about</string>
 	<key>channel.url.acknowledgements</key>
@@ -76,117 +76,117 @@
 	<key>color.link</key>
 	<dict>
 		<key>red</key>
-		<integer>220</integer>
+		<integer>213</integer>
 		<key>green</key>
-		<integer>42</integer>
+		<integer>15</integer>
 		<key>blue</key>
-		<integer>42</integer>
+		<integer>128</integer>
 		<key>alpha</key>
 		<integer>1</integer>
 	</dict>
 	<key>color.accent</key>
 	<dict>
 		<key>red</key>
-		<integer>168</integer>
+		<integer>44</integer>
 		<key>green</key>
-		<integer>168</integer>
+		<integer>44</integer>
 		<key>blue</key>
-		<integer>170</integer>
+		<integer>44</integer>
 		<key>alpha</key>
 		<integer>1</integer>
 	</dict>
 	<key>color.accent.secondary</key>
 	<dict>
 		<key>red</key>
-		<integer>143</integer>
+		<integer>37</integer>
 		<key>green</key>
-		<integer>143</integer>
+		<integer>37</integer>
 		<key>blue</key>
-		<integer>145</integer>
+		<integer>37</integer>
 		<key>alpha</key>
 		<integer>1</integer>
 	</dict>
 	<key>font.header</key>
 	<dict>
 		<key>fontName</key>
-		<string>HelveticaNeue</string>
+		<string>STHeitiSC-Light</string>
 		<key>fontSize</key>
 		<integer>18</integer>
 	</dict>
 	<key>font.heading1</key>
 	<dict>
 		<key>fontName</key>
-		<string>HelveticaNeue</string>
+		<string>STHeitiSC-Light</string>
 		<key>fontSize</key>
 		<integer>24</integer>
 	</dict>
 	<key>font.heading2</key>
 	<dict>
 		<key>fontName</key>
-		<string>HelveticaNeue</string>
+		<string>STHeitiSC-Light</string>
 		<key>fontSize</key>
 		<integer>20</integer>
 	</dict>
 	<key>font.heading3</key>
 	<dict>
 		<key>fontName</key>
-		<string>HelveticaNeue</string>
+		<string>STHeitiSC-Light</string>
 		<key>fontSize</key>
 		<integer>17</integer>
 	</dict>
 	<key>font.heading4</key>
 	<dict>
 		<key>fontName</key>
-		<string>HelveticaNeue</string>
+		<string>STHeitiSC-Light</string>
 		<key>fontSize</key>
 		<integer>15</integer>
 	</dict>
 	<key>font.paragraph</key>
 	<dict>
 		<key>fontName</key>
-		<string>HelveticaNeue</string>
+		<string>STHeitiSC-Light</string>
 		<key>fontSize</key>
 		<integer>13</integer>
 	</dict>
 	<key>font.label1</key>
 	<dict>
 		<key>fontName</key>
-		<string>HelveticaNeue-Bold</string>
+		<string>STHeitiSC-Medium</string>
 		<key>fontSize</key>
 		<integer>13</integer>
 	</dict>
 	<key>font.label2</key>
 	<dict>
 		<key>fontName</key>
-		<string>HelveticaNeue</string>
+		<string>STHeitiSC-Light</string>
 		<key>fontSize</key>
 		<integer>12</integer>
 	</dict>
 	<key>font.label3</key>
 	<dict>
 		<key>fontName</key>
-		<string>HelveticaNeue</string>
+		<string>STHeitiSC-Light</string>
 		<key>fontSize</key>
 		<integer>11</integer>
 	</dict>
 	<key>font.label4</key>
 	<dict>
 		<key>fontName</key>
-		<string>HelveticaNeue</string>
+		<string>STHeitiSC-Light</string>
 		<key>fontSize</key>
 		<integer>10</integer>
 	</dict>
 	<key>font.button1</key>
 	<dict>
 		<key>fontName</key>
-		<string>HelveticaNeue-Bold</string>
+		<string>STHeitiSC-Medium</string>
 		<key>fontSize</key>
 		<integer>25</integer>
 	</dict>
 	<key>font.button2</key>
 	<dict>
 		<key>fontName</key>
-		<string>HelveticaNeue-Bold</string>
+		<string>STHeitiSC-Medium</string>
 		<key>fontSize</key>
 		<integer>17</integer>
 	</dict>

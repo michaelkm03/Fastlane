@@ -9,7 +9,7 @@
 	<key>agreement.text</key>
 	<string>I&apos;m at least 13 years old and agree to Terms of Service</string>
 	<key>channel.name</key>
-	<string>The Fine Bros</string>
+	<string>Linus Tech Tips</string>
 	<key>channel.url.about</key>
 	<string>http://dev.getvictorious.com/api/static/about</string>
 	<key>channel.url.acknowledgements</key>
@@ -76,33 +76,33 @@
 	<key>color.link</key>
 	<dict>
 		<key>red</key>
-		<integer>220</integer>
+		<integer>211</integer>
 		<key>green</key>
-		<integer>42</integer>
+		<integer>65</integer>
 		<key>blue</key>
-		<integer>42</integer>
+		<integer>29</integer>
 		<key>alpha</key>
 		<integer>1</integer>
 	</dict>
 	<key>color.accent</key>
 	<dict>
 		<key>red</key>
-		<integer>168</integer>
+		<integer>99</integer>
 		<key>green</key>
-		<integer>168</integer>
+		<integer>98</integer>
 		<key>blue</key>
-		<integer>170</integer>
+		<integer>98</integer>
 		<key>alpha</key>
 		<integer>1</integer>
 	</dict>
 	<key>color.accent.secondary</key>
 	<dict>
 		<key>red</key>
-		<integer>143</integer>
+		<integer>84</integer>
 		<key>green</key>
-		<integer>143</integer>
+		<integer>83</integer>
 		<key>blue</key>
-		<integer>145</integer>
+		<integer>83</integer>
 		<key>alpha</key>
 		<integer>1</integer>
 	</dict>
