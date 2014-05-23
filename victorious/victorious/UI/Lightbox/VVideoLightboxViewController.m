@@ -122,9 +122,19 @@
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
+    
     if (self.activityIndicator)
     {
         [self.activityIndicator removeFromSuperview];
+    }
+    
+    if (self.videoPlayer && !self.videoLoaded)
+    {
+        [self.videoPlayer willMoveToParentViewController:nil];
+        [self.videoPlayer.view removeFromSuperview];
+        [self.videoPlayer removeFromParentViewController];
+        self.videoPlayer.delegate = nil;
+        self.videoPlayer = nil;
     }
 }
 
