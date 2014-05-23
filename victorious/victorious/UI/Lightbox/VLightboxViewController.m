@@ -11,6 +11,13 @@
 #import "VLightboxViewController.h"
 #import "VThemeManager.h"
 
+@interface VLightboxViewController ()
+
+@property (nonatomic) BOOL hasAppeared; ///< YES after viewDidAppear is called
+
+@end
+
+
 @implementation VLightboxViewController
 
 #pragma mark - View lifecycle
@@ -67,11 +74,32 @@
     return YES;
 }
 
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    self.hasAppeared = YES;
+    [UIViewController attemptRotationToDeviceOrientation];
+}
+
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+    if ([self isBeingDismissed] || [self isMovingFromParentViewController])
+    {
+        self.hasAppeared = NO;
+    }
+}
+
 #pragma mark - Rotation
+
+- (BOOL)shouldAutorotate
+{
+    return self.hasAppeared;
+}
 
 - (NSUInteger)supportedInterfaceOrientations
 {
-    return UIInterfaceOrientationMaskAll;
+    return UIInterfaceOrientationMaskAllButUpsideDown;
 }
 
 - (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
