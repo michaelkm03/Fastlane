@@ -23,20 +23,6 @@
     return (CGSize) CGSizeMake(ceil(boundingRect.size.width), ceil(boundingRect.size.height));
 }
 
-- (NSString*)typeByExtension
-{
-    if ([[self pathExtension] isEqualToString:VConstantMediaExtensionM3U8])
-        return VConstantsMediaTypeVideo;
-    
-    if ([[self pathExtension] isEqualToString:VConstantMediaExtensionM3U8]
-        || [[self pathExtension] isEqualToString:VConstantMediaExtensionPNG]
-        || [[self pathExtension] isEqualToString:VConstantMediaExtensionJPEG]
-        || [[self pathExtension] isEqualToString:VConstantMediaExtensionJPG])
-        return VConstantsMediaTypeImage;
-    
-    return nil;
-}
-
 - (NSURL*)mp4UrlFromM3U8
 {
     if (![[self pathExtension] isEqualToString:VConstantMediaExtensionM3U8])
