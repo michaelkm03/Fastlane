@@ -6,6 +6,8 @@
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
+#import "NSURL+MediaType.h"
+
 #import "VContentViewController+Polls.h"
 #import "VContentViewController+Videos.h"
 
@@ -69,7 +71,7 @@
     [self.secondSmallPreviewImage setImageWithURL:[NSURL URLWithString:((VAnswer*)[answers lastObject]).thumbnailUrl]
                                  placeholderImage:self.backgroundImage.image];
  
-    if ([[((VAnswer*)[answers firstObject]).mediaUrl pathExtension] isEqualToString:VConstantMediaExtensionM3U8])
+    if ([((VAnswer*)[answers firstObject]).mediaUrl v_hasVideoExtension])
     {
         self.firstPollButton.hidden = NO;
     }
@@ -77,7 +79,7 @@
     {
         self.firstPollButton.hidden = YES;
     }
-    if ([[((VAnswer*)[answers lastObject]).mediaUrl pathExtension] isEqualToString:VConstantMediaExtensionM3U8])
+    if ([((VAnswer*)[answers lastObject]).mediaUrl v_hasVideoExtension])
     {
         self.secondPollButton.hidden = NO;
     }
