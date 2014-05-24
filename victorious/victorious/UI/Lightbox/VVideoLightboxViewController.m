@@ -196,7 +196,6 @@
 
 - (void)videoPlayerReadyToPlay:(VCVideoPlayerViewController *)videoPlayer
 {
-    self.videoLoaded = YES;
     [self.activityIndicator removeFromSuperview];
     
     [UIView animateWithDuration:0.2
@@ -213,6 +212,7 @@
                      completion:^(BOOL finished)
     {
         [self.videoPlayer.player play];
+        self.videoLoaded = YES;
     }];
 }
 
