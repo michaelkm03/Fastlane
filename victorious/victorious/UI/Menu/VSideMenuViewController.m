@@ -115,6 +115,11 @@
     return _contentViewController;
 }
 
+- (UIViewController *)childViewControllerForStatusBarStyle
+{
+    return _contentViewController;
+}
+
 #pragma mark -
 
 - (void)presentMenuViewController
