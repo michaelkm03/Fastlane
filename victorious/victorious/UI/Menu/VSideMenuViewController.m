@@ -38,17 +38,6 @@
     return self;
 }
 
-- (instancetype)initWithContentViewController:(UIViewController *)contentViewController menuViewController:(UIViewController *)menuViewController
-{
-    self = [self init];
-    if (self)
-    {
-        _contentViewController = contentViewController;
-        _menuViewController = menuViewController;
-    }
-    return self;
-}
-
 - (void)commonInit
 {
     _animationDuration = 0.35f;
