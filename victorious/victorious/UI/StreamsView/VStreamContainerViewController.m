@@ -197,4 +197,21 @@
                                              failBlock:fail];
 }
 
+#pragma mark - Navigation
+
+- (id<UIViewControllerAnimatedTransitioning>)navigationController:(UINavigationController *)navigationController animationControllerForOperation:(UINavigationControllerOperation)operation fromViewController:(UIViewController *)fromVC toViewController:(UIViewController *)toVC
+{
+    if ([self.streamTable respondsToSelector:@selector(navigationController:animationControllerForOperation:fromViewController:toViewController:)])
+    {
+        return [(UIViewController<UINavigationControllerDelegate>*)self.streamTable navigationController:navigationController
+                                                                         animationControllerForOperation:operation
+                                                                                      fromViewController:fromVC
+                                                                                        toViewController:toVC];
+    }
+    else
+    {
+        return nil;
+    }
+}
+
 @end
