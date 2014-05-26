@@ -112,12 +112,26 @@
 
 - (UIViewController *)childViewControllerForStatusBarHidden
 {
-    return _contentViewController;
+    if (self.visible)
+    {
+        return nil;
+    }
+    else
+    {
+        return _contentViewController;
+    }
 }
 
 - (UIViewController *)childViewControllerForStatusBarStyle
 {
-    return _contentViewController;
+    if (self.visible)
+    {
+        return nil;
+    }
+    else
+    {
+        return _contentViewController;
+    }
 }
 
 #pragma mark -
@@ -144,6 +158,7 @@
     [self.view.window endEditing:YES];
     [self addContentButton];
     
+    self.visible = YES;
     [UIView animateWithDuration:self.animationDuration animations:^{
         if (self.scaleContentView)
             self.contentViewController.view.transform = CGAffineTransformMakeScale(self.contentViewScaleValue, self.contentViewScaleValue);
@@ -159,7 +174,6 @@
     completion:^(BOOL finished)
     {
         [self addContentViewControllerMotionEffects];
-        self.visible = YES;
     }];
     
     [self updateStatusBar];
@@ -186,12 +200,12 @@
                [self.contentViewController.view removeMotionEffect:effect];
             }
         }
+        self.visible = NO;
+        [self setNeedsStatusBarAppearanceUpdate];
     }
     completion:^(BOOL finished)
     {
         [[UIApplication sharedApplication] endIgnoringInteractionEvents];
-        self.visible = NO;
-        [self updateStatusBar];
     }];
     
 }
@@ -291,37 +305,14 @@
     }];
 }
 
-- (UIStatusBarStyle)preferredStatusBarStyle
-{
-   UIStatusBarStyle statusBarStyle;
-   if (self.contentViewController.view.frame.origin.y > 10)
-       statusBarStyle = self.menuViewController.preferredStatusBarStyle;
-   else
-       statusBarStyle = self.contentViewController.preferredStatusBarStyle;
-
-    return statusBarStyle;
-}
-
 - (BOOL)prefersStatusBarHidden
 {
-    BOOL statusBarHidden;
-   if (self.contentViewController.view.frame.origin.y > 10)
-       statusBarHidden = self.menuViewController.prefersStatusBarHidden;
-   else
-       statusBarHidden = self.contentViewController.prefersStatusBarHidden;
-
-    return statusBarHidden;
+    return YES;
 }
 
 - (UIStatusBarAnimation)preferredStatusBarUpdateAnimation
 {
-    UIStatusBarAnimation    statusBarAnimation;
-   if (self.contentViewController.view.frame.origin.y > 10)
-       statusBarAnimation = self.menuViewController.preferredStatusBarUpdateAnimation;
-   else
-       statusBarAnimation = self.contentViewController.preferredStatusBarUpdateAnimation;
-
-    return statusBarAnimation;
+    return UIStatusBarAnimationFade;
 }
 
 @end
