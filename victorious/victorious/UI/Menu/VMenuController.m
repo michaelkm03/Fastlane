@@ -98,7 +98,7 @@ NSString *const VMenuControllerDidSelectRowNotification = @"VMenuTableViewContro
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    UINavigationController* navigationController = (UINavigationController *)self.sideMenuViewController.contentViewController;
+    UINavigationController* navigationController = self.sideMenuViewController.contentViewController;
     UIViewController* currentViewController = [navigationController.viewControllers lastObject];
     
     switch (indexPath.row)

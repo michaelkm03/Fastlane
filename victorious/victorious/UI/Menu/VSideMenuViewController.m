@@ -255,24 +255,10 @@
         self.backgroundImageView.image = backgroundImage;
 }
 
-- (void)setContentViewController:(UIViewController *)contentViewController
+- (void)setContentViewController:(UINavigationController *)contentViewController
 {
-    if (!_contentViewController)
-    {
-        _contentViewController = contentViewController;
-        [self setNeedsStatusBarAppearanceUpdate];
-        return;
-    }
-
-    CGRect frame = _contentViewController.view.frame;
-    CGAffineTransform transform = _contentViewController.view.transform;
-    [self hideController:_contentViewController];
+    NSAssert(!_contentViewController, @"contentViewController should only be set once");
     _contentViewController = contentViewController;
-    [self displayController:contentViewController frame:self.view.bounds];
-    contentViewController.view.transform = transform;
-    contentViewController.view.frame = frame;
-    
-    [self addContentViewControllerMotionEffects];
     [self setNeedsStatusBarAppearanceUpdate];
 }
 

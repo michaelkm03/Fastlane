@@ -27,8 +27,8 @@
 @property (assign, readwrite, nonatomic) BOOL parallaxEnabled;
 @property (assign, readwrite, nonatomic) BOOL bouncesHorizontally;
 
-@property (strong, readwrite, nonatomic) UIViewController *contentViewController;
-@property (strong, readwrite, nonatomic) UIViewController *menuViewController;
+@property (strong, readonly, nonatomic)  UINavigationController *contentViewController;
+@property (strong, readwrite, nonatomic) UIViewController       *menuViewController;
 
 - (void)presentMenuViewController;
 - (void)hideMenuViewController;

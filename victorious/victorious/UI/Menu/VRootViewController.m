@@ -12,7 +12,10 @@
 #import "UIImage+ImageEffects.h"
 #import "VConstants.h"
 
-@interface  VRootViewController ()
+@interface  VSideMenuViewController ()
+
+- (void)setContentViewController:(UINavigationController *)contentViewController;
+
 @end
 
 @implementation VRootViewController
