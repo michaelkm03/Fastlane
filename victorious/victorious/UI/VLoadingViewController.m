@@ -68,6 +68,11 @@ static const NSTimeInterval kTimeBetweenRetries = 10.0;
     }
 }
 
+- (NSUInteger)supportedInterfaceOrientations
+{
+    return UIInterfaceOrientationMaskPortrait;
+}
+
 - (BOOL)prefersStatusBarHidden
 {
     return YES;
