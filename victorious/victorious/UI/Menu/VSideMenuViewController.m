@@ -276,28 +276,6 @@
     [self setNeedsStatusBarAppearanceUpdate];
 }
 
-- (void)setContentViewController:(UIViewController *)contentViewController animated:(BOOL)animated
-{
-    if (!animated)
-    {
-        [self setContentViewController:contentViewController];
-    }
-    else
-    {
-        contentViewController.view.alpha = 0;
-        contentViewController.view.frame = self.contentViewController.view.bounds;
-        [self.contentViewController.view addSubview:contentViewController.view];
-        [UIView animateWithDuration:self.animationDuration animations:^{
-            contentViewController.view.alpha = 1;
-        }
-        completion:^(BOOL finished)
-        {
-            [contentViewController.view removeFromSuperview];
-            [self setContentViewController:contentViewController];
-        }];
-    }
-}
-
 - (void)setMenuViewController:(UIViewController *)menuViewController
 {
     if (!_menuViewController)

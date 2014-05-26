@@ -30,7 +30,6 @@
 @property (strong, readwrite, nonatomic) UIViewController *contentViewController;
 @property (strong, readwrite, nonatomic) UIViewController *menuViewController;
 
-- (void)setContentViewController:(UIViewController *)contentViewController animated:(BOOL)animated;
 - (void)presentMenuViewController;
 - (void)hideMenuViewController;
 
