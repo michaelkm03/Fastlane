@@ -17,6 +17,7 @@
 		03484BF8192D2B4400403FB1 /* VLightboxDismissAnimator.m in Sources */ = {isa = PBXBuildFile; fileRef = 03484BF7192D2B4400403FB1 /* VLightboxDismissAnimator.m */; };
 		03484BFB192E6E8C00403FB1 /* VVideoLightboxViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 03484BFA192E6E8C00403FB1 /* VVideoLightboxViewController.m */; };
 		03484BFE192E9D2100403FB1 /* NSLayoutConstraint+CenterConstraints.m in Sources */ = {isa = PBXBuildFile; fileRef = 03484BFD192E9D2100403FB1 /* NSLayoutConstraint+CenterConstraints.m */; };
+		03484C041930129C00403FB1 /* VImageLightboxViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 03484C031930129C00403FB1 /* VImageLightboxViewController.m */; };
 		03484C071930294D00403FB1 /* NSURL+MediaType.m in Sources */ = {isa = PBXBuildFile; fileRef = 03484C061930294D00403FB1 /* NSURL+MediaType.m */; };
 		03522780192173F0003FCD10 /* VElapsedTimeFormatterTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 0352277F192173F0003FCD10 /* VElapsedTimeFormatterTests.m */; };
 		0352278319219079003FCD10 /* VVideoDownloadProgressIndicatorView.m in Sources */ = {isa = PBXBuildFile; fileRef = 0352278219219079003FCD10 /* VVideoDownloadProgressIndicatorView.m */; };
@@ -293,6 +294,8 @@
 		03484BFA192E6E8C00403FB1 /* VVideoLightboxViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VVideoLightboxViewController.m; sourceTree = "<group>"; };
 		03484BFC192E9D2100403FB1 /* NSLayoutConstraint+CenterConstraints.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSLayoutConstraint+CenterConstraints.h"; sourceTree = "<group>"; };
 		03484BFD192E9D2100403FB1 /* NSLayoutConstraint+CenterConstraints.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSLayoutConstraint+CenterConstraints.m"; sourceTree = "<group>"; };
+		03484C021930129C00403FB1 /* VImageLightboxViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VImageLightboxViewController.h; sourceTree = "<group>"; };
+		03484C031930129C00403FB1 /* VImageLightboxViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VImageLightboxViewController.m; sourceTree = "<group>"; };
 		03484C051930294D00403FB1 /* NSURL+MediaType.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSURL+MediaType.h"; sourceTree = "<group>"; };
 		03484C061930294D00403FB1 /* NSURL+MediaType.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSURL+MediaType.m"; sourceTree = "<group>"; };
 		0352277F192173F0003FCD10 /* VElapsedTimeFormatterTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VElapsedTimeFormatterTests.m; sourceTree = "<group>"; };
@@ -769,6 +772,8 @@
 		03484BEC192D27E600403FB1 /* Lightbox */ = {
 			isa = PBXGroup;
 			children = (
+				03484C021930129C00403FB1 /* VImageLightboxViewController.h */,
+				03484C031930129C00403FB1 /* VImageLightboxViewController.m */,
 				03484BF6192D2B4400403FB1 /* VLightboxDismissAnimator.h */,
 				03484BF7192D2B4400403FB1 /* VLightboxDismissAnimator.m */,
 				03484BED192D284100403FB1 /* VLightboxDisplayAnimator.h */,
@@ -2059,6 +2064,7 @@
 				BE7169D318D0F5B5004966C3 /* VInteractionManager.m in Sources */,
 				03D6381B191840570084FFC8 /* VEnvironment.m in Sources */,
 				BE89ECDB19105DB8009DD407 /* VAnswer.m in Sources */,
+				03484C041930129C00403FB1 /* VImageLightboxViewController.m in Sources */,
 				BE692B50186E60B300C71336 /* VCommentCell.m in Sources */,
 				0385FEEC18EF9748009FBD68 /* VImageSearchResultCell.m in Sources */,
 				BEAEBF1318D3A91C00C79AC7 /* VResultView.m in Sources */,

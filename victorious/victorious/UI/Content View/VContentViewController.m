@@ -127,8 +127,8 @@ CGFloat kContentMediaViewOffset = 154;
     self.secondResultView.hidden = YES;
     self.secondResultView.color = [[VThemeManager sharedThemeManager] themedColorForKey:kVAccentColor];
     
-    self.firstPollButton.hidden = YES;
-    self.secondPollButton.hidden = YES;
+    self.firstPollPlayIcon.hidden = YES;
+    self.secondPollPlayIcon.hidden = YES;
 }
 
 - (void)viewWillDisappear:(BOOL)animated

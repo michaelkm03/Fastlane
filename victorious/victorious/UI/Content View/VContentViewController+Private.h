@@ -6,6 +6,8 @@
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
+#import "AFImageRequestOperation.h"
+
 #import "VConstants.h"
 
 #import "VActivityIndicatorView.h"
@@ -52,7 +54,8 @@
 @property (strong, nonatomic) VAsset* currentAsset;
 @property (strong, nonatomic) VInteractionManager* interactionManager;
 
-@property (strong, nonatomic) VActivityIndicatorView* activityIndicator;
+@property (strong, nonatomic) VActivityIndicatorView*  activityIndicator;
+@property (strong, nonatomic) AFImageRequestOperation* imageRequestOperation;
 
 @property (strong, nonatomic) id<UIViewControllerTransitioningDelegate> transitionDelegate;
 
