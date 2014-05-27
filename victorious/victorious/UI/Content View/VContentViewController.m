@@ -402,7 +402,6 @@ CGFloat kContentMediaViewOffset = 154;
 {
     VCommentsContainerViewController* commentsTable = [VCommentsContainerViewController commentsContainerView];
     commentsTable.sequence = self.sequence;
-    commentsTable.parentVC = self;
     [self.navigationController pushViewController:commentsTable animated:YES];
 }
 

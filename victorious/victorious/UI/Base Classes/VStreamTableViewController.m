@@ -353,7 +353,6 @@
 
     VCommentsContainerViewController* commentsTable = [VCommentsContainerViewController commentsContainerView];
     commentsTable.sequence = cell.sequence;
-    commentsTable.parentVC = self;
     [self.navigationController pushViewController:commentsTable animated:YES];
 }
 
