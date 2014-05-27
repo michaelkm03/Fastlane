@@ -1158,8 +1158,8 @@
                                     <constraint firstAttribute="height" constant="54" placeholder="YES" id="qUi-pL-afI"/>
                                 </constraints>
                             </view>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" placeholderIntrinsicWidth="16" placeholderIntrinsicHeight="16" image="SearchIconSmall" translatesAutoresizingMaskIntoConstraints="NO" id="xTc-ax-2nu">
-                                <rect key="frame" x="15" y="20" width="16" height="16"/>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" placeholderIntrinsicWidth="20" placeholderIntrinsicHeight="20" image="SearchIconSmall" translatesAutoresizingMaskIntoConstraints="NO" id="xTc-ax-2nu">
+                                <rect key="frame" x="13" y="18" width="20" height="20"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="tintColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                             </imageView>
@@ -1286,10 +1286,10 @@
                             <constraint firstItem="Xqc-I1-Nm3" firstAttribute="top" secondItem="d98-ui-mTQ" secondAttribute="bottom" id="Gk2-o2-B1u"/>
                             <constraint firstItem="Xqc-I1-Nm3" firstAttribute="leading" secondItem="Fu1-bK-nJD" secondAttribute="leading" id="Ibf-Om-DDB"/>
                             <constraint firstAttribute="trailing" secondItem="E4Z-JL-IBz" secondAttribute="trailing" id="Idp-Nf-sfy"/>
-                            <constraint firstItem="xTc-ax-2nu" firstAttribute="top" secondItem="d98-ui-mTQ" secondAttribute="top" constant="20" id="IfQ-BB-50l"/>
+                            <constraint firstItem="xTc-ax-2nu" firstAttribute="top" secondItem="d98-ui-mTQ" secondAttribute="top" constant="18" id="IfQ-BB-50l"/>
                             <constraint firstItem="d98-ui-mTQ" firstAttribute="leading" secondItem="Fu1-bK-nJD" secondAttribute="leading" id="Iym-vj-nRB"/>
                             <constraint firstAttribute="trailing" secondItem="Xqc-I1-Nm3" secondAttribute="trailing" id="K4z-ws-tWR"/>
-                            <constraint firstItem="xTc-ax-2nu" firstAttribute="left" secondItem="d98-ui-mTQ" secondAttribute="left" constant="15" id="KhB-iy-mNv"/>
+                            <constraint firstItem="xTc-ax-2nu" firstAttribute="left" secondItem="d98-ui-mTQ" secondAttribute="left" constant="13" id="KhB-iy-mNv"/>
                             <constraint firstItem="e4B-nQ-DnV" firstAttribute="bottom" secondItem="d98-ui-mTQ" secondAttribute="bottom" id="OzK-CG-x7T"/>
                             <constraint firstItem="E4Z-JL-IBz" firstAttribute="leading" secondItem="Fu1-bK-nJD" secondAttribute="leading" id="R5K-Ni-kg5"/>
                             <constraint firstItem="GSS-PO-98I" firstAttribute="top" secondItem="d98-ui-mTQ" secondAttribute="top" constant="19" id="Rrt-4w-73N"/>
@@ -1302,7 +1302,7 @@
                             <constraint firstItem="31C-iA-Qyj" firstAttribute="height" secondItem="d98-ui-mTQ" secondAttribute="height" id="cqm-Hr-L1L"/>
                             <constraint firstAttribute="centerY" secondItem="pJl-i9-bwE" secondAttribute="centerY" multiplier="1.618" id="eMP-gD-gTK"/>
                             <constraint firstItem="E4Z-JL-IBz" firstAttribute="top" secondItem="d98-ui-mTQ" secondAttribute="bottom" constant="8" id="fpm-r8-EBm"/>
-                            <constraint firstItem="GSS-PO-98I" firstAttribute="left" secondItem="xTc-ax-2nu" secondAttribute="right" constant="11" id="n0T-yb-H3o"/>
+                            <constraint firstItem="GSS-PO-98I" firstAttribute="left" secondItem="xTc-ax-2nu" secondAttribute="right" constant="9" id="n0T-yb-H3o"/>
                             <constraint firstItem="31C-iA-Qyj" firstAttribute="top" secondItem="d98-ui-mTQ" secondAttribute="top" id="qYv-PY-riJ"/>
                             <constraint firstItem="e4B-nQ-DnV" firstAttribute="top" secondItem="d98-ui-mTQ" secondAttribute="top" constant="4" id="wQm-5l-qSk"/>
                             <constraint firstItem="GSS-PO-98I" firstAttribute="bottom" secondItem="d98-ui-mTQ" secondAttribute="bottom" constant="-16" id="y7S-70-gfc"/>
@@ -1910,7 +1910,7 @@
         <image name="PostCamera" width="34" height="26"/>
         <image name="PostDelete" width="22" height="22"/>
         <image name="SearchIcon" width="30" height="31"/>
-        <image name="SearchIconSmall" width="16" height="16"/>
+        <image name="SearchIconSmall" width="20" height="20"/>
         <image name="Tomato" width="160" height="60"/>
         <image name="cameraButtonClose" width="24" height="24"/>
         <image name="createContentButton" width="27" height="27"/>

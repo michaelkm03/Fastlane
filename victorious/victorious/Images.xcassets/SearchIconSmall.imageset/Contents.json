@@ -3,12 +3,12 @@
     {
       "idiom" : "universal",
       "scale" : "1x",
-      "filename" : "SearchIconSmall.png"
+      "filename" : "magnifying_glass.png"
     },
     {
       "idiom" : "universal",
       "scale" : "2x",
-      "filename" : "SearchIconSmall@2x.png"
+      "filename" : "magnifying_glass@2x.png"
     }
   ],
   "info" : {
