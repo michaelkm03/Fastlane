@@ -77,11 +77,11 @@
                                                           tagline:nil
                                                      successBlock:^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
          {
-             
+             [self dismissViewControllerAnimated:YES completion:NO];
          }
                                                         failBlock:^(NSOperation* operation, NSError* error)
          {
-             
+             [self dismissViewControllerAnimated:YES completion:NO];
          }];
     }
 }

@@ -352,7 +352,7 @@
                                 <rect key="frame" x="17" y="188" width="288" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <textInputTraits key="textInputTraits" autocorrectionType="no" returnKeyType="done" secureTextEntry="YES"/>
+                                <textInputTraits key="textInputTraits" autocorrectionType="no" returnKeyType="done"/>
                             </textField>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" alpha="0.15000000596046448" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="43A-YH-4Jx">
                                 <rect key="frame" x="17" y="217" width="288" height="1"/>
@@ -364,7 +364,7 @@
                             <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="XNN-n4-drt">
                                 <rect key="frame" x="17" y="229" width="288" height="99"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                                <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                             </textView>
@@ -404,11 +404,11 @@
                         <outlet property="agreementText" destination="EGg-eb-7Dm" id="FOD-cg-woF"/>
                         <outlet property="cameraButton" destination="lHZ-bd-hUg" id="Ofx-V4-gXP"/>
                         <outlet property="doneButton" destination="9Wi-As-OwD" id="AdC-3g-M03"/>
-                        <outlet property="locationTextField" destination="pDv-b6-X4m" id="U2t-HC-Bfy"/>
+                        <outlet property="locationTextField" destination="pDv-b6-X4m" id="4pT-rE-Jfi"/>
                         <outlet property="profileImageView" destination="IgQ-W8-D43" id="sjL-el-raS"/>
                         <outlet property="tagLinePlaceholderLabel" destination="kzi-75-z6l" id="ckt-sK-4Dc"/>
                         <outlet property="taglineTextView" destination="XNN-n4-drt" id="nGm-Sm-Xc1"/>
-                        <outlet property="usernameTextField" destination="qGa-ti-Owy" id="cdu-IU-wBh"/>
+                        <outlet property="usernameTextField" destination="qGa-ti-Owy" id="ObJ-7B-zBh"/>
                         <segue destination="A4g-vx-597" kind="push" identifier="toInviteFriends" id="iM6-pE-5Wg"/>
                     </connections>
                 </viewController>

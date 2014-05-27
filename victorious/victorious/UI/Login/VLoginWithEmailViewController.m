@@ -78,6 +78,18 @@ NSString*   const   kVLoginErrorDomain =   @"VLoginErrorDomain";
 {
     [super viewDidAppear:animated];
     [self.usernameTextField becomeFirstResponder];
+    self.navigationController.delegate = self;
+}
+
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+    
+    // Stop being the navigation controller's delegate
+    if (self.navigationController.delegate == self)
+    {
+        self.navigationController.delegate = nil;
+    }
 }
 
 - (BOOL)prefersStatusBarHidden
@@ -283,7 +295,7 @@ NSString*   const   kVLoginErrorDomain =   @"VLoginErrorDomain";
 
 - (void)presentPINController
 {
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.5f * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.4f * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
         THPinViewController *pinViewController = [[THPinViewController alloc] initWithDelegate:self];
         pinViewController.promptTitle = @"Enter PIN";
         pinViewController.promptColor = [UIColor colorWithWhite:0.0 alpha:0.6];
@@ -342,8 +354,6 @@ NSString*   const   kVLoginErrorDomain =   @"VLoginErrorDomain";
     return NO;
 }
 
-//- (void)incorrectPinEnteredInPinViewController:(THPinViewController *)pinViewController {}
-
 - (void)pinViewControllerWillDismissAfterPinEntryWasSuccessful:(THPinViewController *)pinViewController
 {
     [[VObjectManager sharedManager] resetPasswordWithUserToken:self.userToken
@@ -363,16 +373,10 @@ NSString*   const   kVLoginErrorDomain =   @"VLoginErrorDomain";
      }];
 }
 
-//- (void)pinViewControllerDidDismissAfterPinEntryWasSuccessful:(THPinViewController *)pinViewController {}
-//- (void)pinViewControllerWillDismissAfterPinEntryWasUnsuccessful:(THPinViewController *)pinViewController {}
-//- (void)pinViewControllerDidDismissAfterPinEntryWasUnsuccessful:(THPinViewController *)pinViewController {}
-
 - (void)pinViewControllerWillDismissAfterPinEntryWasCancelled:(THPinViewController *)pinViewController
 {
     
 }
-
-//- (void)pinViewControllerDidDismissAfterPinEntryWasCancelled:(THPinViewController *)pinViewController {}
 
 #pragma mark - Navigation
 
@@ -384,14 +388,6 @@ NSString*   const   kVLoginErrorDomain =   @"VLoginErrorDomain";
     VLoginTransitionAnimator*   animator = [[VLoginTransitionAnimator alloc] init];
     animator.presenting = (operation == UINavigationControllerOperationPush);
     return animator;
-}
-
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
-{
-    if ([segue.identifier isEqualToString:@"toResetPassword"])
-    {
-//        VResetPasswordViewController* viewController = (VResetPasswordViewController *)segue.destinationViewController;
-    }
 }
 
 @end
