@@ -24,6 +24,7 @@
 		036AE5ED18FF0C0600A74BDA /* VReachability.m in Sources */ = {isa = PBXBuildFile; fileRef = 036AE5EC18FF0C0600A74BDA /* VReachability.m */; };
 		03811D31193533D0005687FF /* UIAlertView+VBlocks.m in Sources */ = {isa = PBXBuildFile; fileRef = 03811D30193533D0005687FF /* UIAlertView+VBlocks.m */; };
 		03811D3419353486005687FF /* VAlertViewBlockDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 03811D3319353486005687FF /* VAlertViewBlockDelegate.m */; };
+		03811D2E1934707B005687FF /* VImageSearchResultsFooterView.m in Sources */ = {isa = PBXBuildFile; fileRef = 03811D2D1934707B005687FF /* VImageSearchResultsFooterView.m */; };
 		0385FEE018EE0A94009FBD68 /* VImageSearchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0385FEDF18EE0A94009FBD68 /* VImageSearchViewController.m */; };
 		0385FEE618EF341D009FBD68 /* VImageSearchDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 0385FEE518EF341D009FBD68 /* VImageSearchDataSource.m */; };
 		0385FEE918EF41B4009FBD68 /* VImageSearchResult.m in Sources */ = {isa = PBXBuildFile; fileRef = 0385FEE818EF41B4009FBD68 /* VImageSearchResult.m */; };
@@ -315,6 +316,8 @@
 		03811D30193533D0005687FF /* UIAlertView+VBlocks.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIAlertView+VBlocks.m"; sourceTree = "<group>"; };
 		03811D3219353486005687FF /* VAlertViewBlockDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VAlertViewBlockDelegate.h; sourceTree = "<group>"; };
 		03811D3319353486005687FF /* VAlertViewBlockDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VAlertViewBlockDelegate.m; sourceTree = "<group>"; };
+		03811D2C1934707B005687FF /* VImageSearchResultsFooterView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VImageSearchResultsFooterView.h; sourceTree = "<group>"; };
+		03811D2D1934707B005687FF /* VImageSearchResultsFooterView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VImageSearchResultsFooterView.m; sourceTree = "<group>"; };
 		0385FEDE18EE0A94009FBD68 /* VImageSearchViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VImageSearchViewController.h; sourceTree = "<group>"; };
 		0385FEDF18EE0A94009FBD68 /* VImageSearchViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VImageSearchViewController.m; sourceTree = "<group>"; };
 		0385FEE418EF341D009FBD68 /* VImageSearchDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VImageSearchDataSource.h; sourceTree = "<group>"; };
@@ -917,6 +920,8 @@
 				0385FEE518EF341D009FBD68 /* VImageSearchDataSource.m */,
 				0385FEEA18EF9748009FBD68 /* VImageSearchResultCell.h */,
 				0385FEEB18EF9748009FBD68 /* VImageSearchResultCell.m */,
+				03811D2C1934707B005687FF /* VImageSearchResultsFooterView.h */,
+				03811D2D1934707B005687FF /* VImageSearchResultsFooterView.m */,
 				0385FEDE18EE0A94009FBD68 /* VImageSearchViewController.h */,
 				0385FEDF18EE0A94009FBD68 /* VImageSearchViewController.m */,
 				3FF8C4FD18A59EAB00812968 /* VKeyboardBarContainerViewController.h */,
@@ -2142,6 +2147,7 @@
 				BE4055AD18A41F1F00092AE1 /* main.m in Sources */,
 				83BD06FB186BE4B2007742D1 /* UIImage+ImageEffects.m in Sources */,
 				BE2D1E5A19006E9400C6FF99 /* VCommentToStreamAnimator.m in Sources */,
+				03811D2E1934707B005687FF /* VImageSearchResultsFooterView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
