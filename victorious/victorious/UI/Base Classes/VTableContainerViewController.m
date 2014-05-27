@@ -14,13 +14,6 @@
 
 @implementation VTableContainerViewController
 
-- (void)viewWillAppear:(BOOL)animated
-{
-    [super viewWillAppear:animated];
-    
-    [self.navigationController setNavigationBarHidden:YES animated:NO];
-}
-
 - (BOOL)shouldAutorotate
 {
     return NO;
@@ -46,9 +39,11 @@
     return UIStatusBarAnimationSlide;
 }
 
-- (void)viewDidLoad
+- (void)viewWillAppear:(BOOL)animated
 {
-    [super viewDidLoad];
+    [super viewWillAppear:animated];
+    
+    [self.navigationController setNavigationBarHidden:YES animated:NO];
     
     [self.tableContainerView addSubview:self.tableViewController.view];
     [self addChildViewController:self.tableViewController];
@@ -72,8 +67,6 @@
     self.filterControls.layer.cornerRadius = 8;
     self.filterControls.clipsToBounds = YES;
     [self changedFilterControls:nil];
-    
-    // Do any additional setup after loading the view.
 }
 
 - (IBAction)showMenu
