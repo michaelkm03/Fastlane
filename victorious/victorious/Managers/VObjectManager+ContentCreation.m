@@ -343,7 +343,8 @@
     AVAsset *asset = [AVAsset assetWithURL:[NSURL URLWithString:localVideoPath]];
     AVAssetImageGenerator *assetGenerator = [AVAssetImageGenerator assetImageGeneratorWithAsset:asset];
     NSError* error;
-    CGImageRef imageRef = [assetGenerator copyCGImageAtTime:kCMTimeZero actualTime:NULL error:&error];
+    CMTime time = CMTimeMake(asset.duration.value / 2, asset.duration.timescale);
+    CGImageRef imageRef = [assetGenerator copyCGImageAtTime:time actualTime:NULL error:&error];
     if (error)
         return nil;
         

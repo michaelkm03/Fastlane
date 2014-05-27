@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CFBundleDisplayName</key>
+	<string>${ProductPrefix}Pixiwoo</string>
+	<key>CFBundleIdentifier</key>
+	<string>com.getvictorious.${ProductPrefix}Pixiwoo</string>
+	<key>CFBundleName</key>
+	<string>${ProductPrefix}Pixiwoo</string>
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>fb1374328719478033</string>
+			</array>
+		</dict>
+		<dict>
+			<key>CFBundleURLName</key>
+			<string>com.getvictorious.deeplinking.scheme</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>getvictorious</string>
+			</array>
+		</dict>
+	</array>
+	<key>FacebookAppID</key>
+	<string>1374328719478033</string>
+	<key>FacebookDisplayName</key>
+	<string>VictoriousApp Dev</string>
+	<key>TWITTER_CONSUMER_KEY</key>
+	<string>MhDYRpVPTaGQgWBT7ChmxQ</string>
+	<key>TWITTER_CONSUMER_SECRET</key>
+	<string>damxXK28SCObMZ1CEMTLszm3v8mdRt0L1wuVnzXtH1E</string>
+	<key>TestflightDevAppToken</key>
+	<string>25d004e5-9530-4969-94e9-f3182e53339b</string>
+	<key>TestflightReleaseAppToken</key>
+	<string>a9b519c5-b1e9-46a1-b450-a53a7d262ca3</string>
+	<key>TestflightQAAppToken</key>
+	<string>a1fbd6c7-2621-4424-ad7a-e10dac5bfaa6</string>
+	<key>TestflightStagingAppToken</key>
+	<string>bbf060a3-19f2-4c53-a379-fbf0275cb68e</string>
+	<key>VictoriousAppID</key>
+	<integer>19</integer>
+</dict>
+</plist>

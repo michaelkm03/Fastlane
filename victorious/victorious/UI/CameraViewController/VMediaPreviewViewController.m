@@ -6,6 +6,7 @@
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
+#import "NSURL+MediaType.h"
 #import "VConstants.h"
 #import "VImagePreviewViewController.h"
 #import "VMediaPreviewViewController.h"
@@ -15,16 +16,12 @@
 
 + (VMediaPreviewViewController *)previewViewControllerForMediaAtURL:(NSURL *)mediaURL
 {
-    NSString *mediaExtension = [[mediaURL pathExtension] lowercaseStringWithLocale:[NSLocale localeWithLocaleIdentifier:@"en_US_POSIX"]];
     VMediaPreviewViewController *previewViewController = nil;
-    if ([VConstantMediaExtensionPNG isEqualToString:mediaExtension]  ||
-        [VConstantMediaExtensionJPEG isEqualToString:mediaExtension] ||
-        [VConstantMediaExtensionJPG isEqualToString:mediaExtension])
+    if ([mediaURL v_hasImageExtension])
     {
         previewViewController = [VImagePreviewViewController imagePreviewViewController];
     }
-    else if ([VConstantMediaExtensionMOV isEqualToString:mediaExtension] ||
-             [VConstantMediaExtensionMP4 isEqualToString:mediaExtension])
+    else if ([mediaURL v_hasVideoExtension])
     {
         previewViewController = [VVideoPreviewViewController videoPreviewViewController];
     }

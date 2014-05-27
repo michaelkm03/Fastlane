@@ -103,6 +103,10 @@
 - (IBAction)hashButtonClicked:(id)sender
 {
     self.textView.text = [self.textView.text stringByAppendingString:@"#"];
+    if ([self respondsToSelector:@selector(textViewDidChange:)])
+    {
+        [self textViewDidChange:self.textView];
+    }
 }
 
 - (IBAction)publish:(id)sender

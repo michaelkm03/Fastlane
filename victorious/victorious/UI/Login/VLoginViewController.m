@@ -69,11 +69,10 @@
     [self.transitionPlaceholder addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(emailClicked:)]];
 }
 
-- (void)viewDidAppear:(BOOL)animated
+- (void)viewWillAppear:(BOOL)animated
 {
-    [super viewDidAppear:animated];
+    [super viewWillAppear:animated];
     
-    // Set outself as the navigation controller's delegate so we're asked for a transitioning object
     [self.navigationController.navigationBar setBackgroundImage:[[UIImage alloc] init] forBarMetrics:UIBarMetricsDefault];
     self.navigationController.navigationBar.shadowImage = [[UIImage alloc] init];
     self.navigationController.navigationBar.translucent = YES;
@@ -81,19 +80,6 @@
     
     UIImage*    cancelButtonImage = [[UIImage imageNamed:@"cameraButtonClose"]  imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithImage:cancelButtonImage style:UIBarButtonItemStyleBordered target:self action:@selector(closeButtonClicked:)];
-
-    self.navigationController.delegate = self;
-}
-
-- (void)viewWillDisappear:(BOOL)animated
-{
-    [super viewWillDisappear:animated];
-    
-    // Stop being the navigation controller's delegate
-    if (self.navigationController.delegate == self)
-    {
-        self.navigationController.delegate = nil;
-    }
 }
 
 - (BOOL)shouldAutorotate

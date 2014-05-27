@@ -6,13 +6,15 @@
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
+#import "NSURL+MediaType.h"
+#import "VAnswer.h"
 #import "VContentViewController+Polls.h"
 #import "VContentViewController+Videos.h"
-
-#import "VPollResult.h"
-#import "VAnswer.h"
-
+#import "VImageLightboxViewController.h"
+#import "VLightboxTransitioningDelegate.h"
 #import "VObjectManager+Sequence.h"
+#import "VPollResult.h"
+#import "VVideoLightboxViewController.h"
 
 @implementation VContentViewController (Polls)
 
@@ -69,21 +71,21 @@
     [self.secondSmallPreviewImage setImageWithURL:[NSURL URLWithString:((VAnswer*)[answers lastObject]).thumbnailUrl]
                                  placeholderImage:self.backgroundImage.image];
  
-    if ([[((VAnswer*)[answers firstObject]).mediaUrl pathExtension] isEqualToString:VConstantMediaExtensionM3U8])
+    if ([((VAnswer*)[answers firstObject]).mediaUrl v_hasVideoExtension])
     {
-        self.firstPollButton.hidden = NO;
+        self.firstPollPlayIcon.hidden = NO;
     }
     else
     {
-        self.firstPollButton.hidden = YES;
+        self.firstPollPlayIcon.hidden = YES;
     }
-    if ([[((VAnswer*)[answers lastObject]).mediaUrl pathExtension] isEqualToString:VConstantMediaExtensionM3U8])
+    if ([((VAnswer*)[answers lastObject]).mediaUrl v_hasVideoExtension])
     {
-        self.secondPollButton.hidden = NO;
+        self.secondPollPlayIcon.hidden = NO;
     }
     else
     {
-        self.secondPollButton.hidden = YES;
+        self.secondPollPlayIcon.hidden = YES;
     }
     
     self.pollPreviewView.hidden = NO;
@@ -106,86 +108,88 @@
         contentURL = [NSURL URLWithString:((VAnswer*)[answers lastObject]).mediaUrl];
     }
 
-    void (^playVideo)(void) = ^(void)
+    [self.activityIndicator removeFromSuperview];
+    if (self.imageRequestOperation)
     {
-        UIImageView *temporaryThumbnailView = [[UIImageView alloc] initWithImage:thumbnailView.image];
-        temporaryThumbnailView.contentMode = thumbnailView.contentMode;
-        temporaryThumbnailView.clipsToBounds = thumbnailView.clipsToBounds;
-        temporaryThumbnailView.translatesAutoresizingMaskIntoConstraints = NO;
-        [self.mediaView addSubview:temporaryThumbnailView];
-        thumbnailView.hidden = YES;
-        
-        CGRect desiredFrame = [self.mediaView convertRect:thumbnailView.bounds fromView:thumbnailView];
-        NSLayoutConstraint *xConstraint = [NSLayoutConstraint constraintWithItem:temporaryThumbnailView
-                                                                       attribute:NSLayoutAttributeLeading
-                                                                       relatedBy:NSLayoutRelationEqual
-                                                                          toItem:self.mediaView
-                                                                       attribute:NSLayoutAttributeLeading
-                                                                      multiplier:1.0f
-                                                                        constant:CGRectGetMinX(desiredFrame)];
-        xConstraint.priority = UILayoutPriorityDefaultHigh;
-        [self.mediaView addConstraint:xConstraint];
-        
-        NSLayoutConstraint *yConstraint = [NSLayoutConstraint constraintWithItem:temporaryThumbnailView
-                                                                       attribute:NSLayoutAttributeTop
-                                                                       relatedBy:NSLayoutRelationEqual
-                                                                          toItem:self.mediaView
-                                                                       attribute:NSLayoutAttributeTop
-                                                                      multiplier:1.0f
-                                                                        constant:CGRectGetMinY(desiredFrame)];
-        yConstraint.priority = UILayoutPriorityDefaultHigh;
-        [self.mediaView addConstraint:yConstraint];
-        
-        NSLayoutConstraint *widthConstraint = [NSLayoutConstraint constraintWithItem:temporaryThumbnailView
-                                                                           attribute:NSLayoutAttributeWidth
-                                                                           relatedBy:NSLayoutRelationEqual
-                                                                              toItem:nil
-                                                                           attribute:NSLayoutAttributeNotAnAttribute
-                                                                          multiplier:1.0f
-                                                                            constant:CGRectGetWidth(desiredFrame)];
-        widthConstraint.priority = UILayoutPriorityDefaultHigh;
-        [self.mediaView addConstraint:widthConstraint];
-        
-        NSLayoutConstraint *heightConstraint = [NSLayoutConstraint constraintWithItem:temporaryThumbnailView
-                                                                            attribute:NSLayoutAttributeHeight
-                                                                            relatedBy:NSLayoutRelationEqual
-                                                                               toItem:nil
-                                                                            attribute:NSLayoutAttributeNotAnAttribute
-                                                                           multiplier:1.0f
-                                                                             constant:CGRectGetHeight(desiredFrame)];
-        heightConstraint.priority = UILayoutPriorityDefaultHigh;
-        [self.mediaView addConstraint:heightConstraint];
-        
-        sender.hidden = YES;
-        
-        [self playVideoAtURL:contentURL withPreviewView:temporaryThumbnailView];
-        
-        typeof(self) __weak weakSelf = self;
-        [self setOnVideoUnloadBlock:^(void)
-        {
-            thumbnailView.hidden = NO;
-            [temporaryThumbnailView removeFromSuperview];
-            sender.hidden = NO;
-        }];
-        [self setOnVideoCompletionBlock:^(void)
-        {
-            [weakSelf unloadVideoWithDuration:kVideoPlayerAnimationDuration completion:nil];
-        }];
-    };
-    
-    if ([self isVideoLoadingOrLoaded])
-    {
-        [self unloadVideoWithDuration:kVideoPlayerAnimationDuration
-                           completion:^(void)
-        {
-            playVideo();
-        }];
+        AFImageRequestOperation *oldImageRequest = self.imageRequestOperation;
+        self.imageRequestOperation = nil;
+        [oldImageRequest cancel];
     }
-    else
+    
+    if ([contentURL v_hasVideoExtension])
     {
-        playVideo();
+        VVideoLightboxViewController *lightbox = [[VVideoLightboxViewController alloc] initWithPreviewImage:thumbnailView.image videoURL:contentURL];
+        [VLightboxTransitioningDelegate addNewTransitioningDelegateToLightboxController:lightbox referenceView:thumbnailView];
+        lightbox.onCloseButtonTapped = ^(void)
+        {
+            [self dismissViewControllerAnimated:YES completion:nil];
+        };
+        lightbox.onVideoFinished = lightbox.onCloseButtonTapped;
+        [self presentViewController:lightbox animated:YES completion:nil];
+    }
+    else if ([contentURL v_hasImageExtension] && ![self.imageRequestOperation.request.URL isEqual:contentURL])
+    {
+        VActivityIndicatorView *activityIndicator = [[VActivityIndicatorView alloc] init];
+        activityIndicator.translatesAutoresizingMaskIntoConstraints = NO;
+        [self.pollPreviewView addSubview:activityIndicator];
+        [self.pollPreviewView addConstraint:[NSLayoutConstraint constraintWithItem:activityIndicator
+                                                                         attribute:NSLayoutAttributeCenterX
+                                                                         relatedBy:NSLayoutRelationEqual
+                                                                            toItem:thumbnailView
+                                                                         attribute:NSLayoutAttributeCenterX
+                                                                        multiplier:1.0f
+                                                                          constant:0.0f]];
+        [self.pollPreviewView addConstraint:[NSLayoutConstraint constraintWithItem:activityIndicator
+                                                                         attribute:NSLayoutAttributeCenterY
+                                                                         relatedBy:NSLayoutRelationEqual
+                                                                            toItem:thumbnailView
+                                                                         attribute:NSLayoutAttributeCenterY
+                                                                        multiplier:1.0f
+                                                                          constant:0.0f]];
+        [activityIndicator startAnimating];
+        self.activityIndicator = activityIndicator;
+        
+        VContentViewController * __weak weakSelf = self;
+        void (^cleanup)(void) = ^(void)
+        {
+            [activityIndicator removeFromSuperview];
+            weakSelf.activityIndicator = nil;
+            weakSelf.imageRequestOperation = nil;
+        };
+        
+        AFImageRequestOperation *imageRequestOperation = [[AFImageRequestOperation alloc] initWithRequest:[NSURLRequest requestWithURL:contentURL]];
+        [imageRequestOperation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject)
+        {
+            AFImageRequestOperation *imageRequestOperation = (AFImageRequestOperation *)operation;
+            if (operation == weakSelf.imageRequestOperation)
+            {
+                VImageLightboxViewController *lightbox = [[VImageLightboxViewController alloc] initWithImage:imageRequestOperation.responseImage];
+                [VLightboxTransitioningDelegate addNewTransitioningDelegateToLightboxController:lightbox referenceView:thumbnailView];
+                lightbox.onCloseButtonTapped = ^(void)
+                {
+                    [weakSelf dismissViewControllerAnimated:YES completion:nil];
+                };
+                [weakSelf presentViewController:lightbox animated:YES completion:cleanup];
+            }
+        }
+                                                     failure:^(AFHTTPRequestOperation *operation, NSError *error)
+        {
+            if (operation == weakSelf.imageRequestOperation)
+            {
+                UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil
+                                                                    message:NSLocalizedString(@"ImageDownloadFailed", @"")
+                                                                   delegate:nil
+                                                          cancelButtonTitle:NSLocalizedString(@"OKButton", @"")
+                                                          otherButtonTitles:nil];
+                [alertView show];
+                cleanup();
+            }
+        }];
+        self.imageRequestOperation = imageRequestOperation;
+        [imageRequestOperation start];
     }
 }
+
 
 #pragma mark - VPollAnswerBarDelegate
 - (void)answeredPollWithAnswerId:(NSNumber *)answerId

@@ -73,7 +73,6 @@ CGFloat kContentMediaViewOffset = 154;
         self.appearing = YES;
         [self.navigationController setNavigationBarHidden:YES animated:NO];
         [self updateActionBar];
-        self.navigationController.delegate = self;
     }
 }
 
@@ -127,8 +126,8 @@ CGFloat kContentMediaViewOffset = 154;
     self.secondResultView.hidden = YES;
     self.secondResultView.color = [[VThemeManager sharedThemeManager] themedColorForKey:kVAccentColor];
     
-    self.firstPollButton.hidden = YES;
-    self.secondPollButton.hidden = YES;
+    self.firstPollPlayIcon.hidden = YES;
+    self.secondPollPlayIcon.hidden = YES;
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -137,10 +136,6 @@ CGFloat kContentMediaViewOffset = 154;
     
     if ([self isBeingDismissed] || [self isMovingFromParentViewController])
     {
-        if (self.navigationController.delegate == self)
-        {
-            self.navigationController.delegate = nil;
-        }
         self.orAnimator = nil;
     }
 }

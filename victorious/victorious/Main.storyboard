@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="5056" systemVersion="13C64" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="L3S-Yk-w4N">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="5056" systemVersion="13D65" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="L3S-Yk-w4N">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3733"/>
     </dependencies>
@@ -151,11 +151,11 @@
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="uAX-J4-ubb" userLabel="Header View">
-                                <rect key="frame" x="0.0" y="0.0" width="320" height="90"/>
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="100"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qF3-Sw-Tm6">
-                                        <rect key="frame" x="17" y="14" width="27" height="27"/>
+                                        <rect key="frame" x="17" y="24" width="27" height="27"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                                         <state key="normal" image="Menu">
@@ -167,7 +167,7 @@
                                         </connections>
                                     </button>
                                     <button hidden="YES" opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="oOz-qF-TD2">
-                                        <rect key="frame" x="270" y="14" width="27" height="27"/>
+                                        <rect key="frame" x="270" y="24" width="27" height="27"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                                         <state key="normal" image="createContentButton">
@@ -179,7 +179,7 @@
                                         </connections>
                                     </button>
                                     <segmentedControl opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="1" translatesAutoresizingMaskIntoConstraints="NO" id="Fdy-7V-EvU">
-                                        <rect key="frame" x="20" y="49" width="280" height="29"/>
+                                        <rect key="frame" x="20" y="59" width="280" height="29"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <segments>
                                             <segment title="Hot"/>
@@ -192,7 +192,7 @@
                                         </connections>
                                     </segmentedControl>
                                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="QiD-8u-6Dv">
-                                        <rect key="frame" x="52" y="0.0" width="210" height="50"/>
+                                        <rect key="frame" x="52" y="10" width="210" height="50"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                         <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
@@ -201,11 +201,11 @@
                                 </subviews>
                                 <color key="backgroundColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="90" id="sZf-P3-Cho"/>
+                                    <constraint firstAttribute="height" constant="100" id="sZf-P3-Cho"/>
                                 </constraints>
                             </view>
                             <containerView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="5Mf-9l-SXM">
-                                <rect key="frame" x="0.0" y="90" width="320" height="478"/>
+                                <rect key="frame" x="0.0" y="100" width="320" height="468"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                             </containerView>
@@ -665,7 +665,7 @@
         <scene sceneID="YV9-l0-kDH">
             <objects>
                 <navigationController storyboardIdentifier="contentController" definesPresentationContext="YES" useStoryboardIdentifierAsRestorationIdentifier="YES" id="OPb-Ic-5E4" sceneMemberID="viewController">
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="2ta-Hu-rne">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" barStyle="black" id="2ta-Hu-rne">
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <connections>
@@ -846,20 +846,68 @@
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                     </view>
-                                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="iB3-TF-e3b" userLabel="First Poll Button">
+                                    <view opaque="NO" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="yMt-1L-zyw" userLabel="First Poll Play Icon">
                                         <rect key="frame" x="54" y="81" width="52" height="52"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        <state key="normal" image="PlayTriangle" backgroundImage="PlayCircle">
+                                        <subviews>
+                                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="PlayCircle" translatesAutoresizingMaskIntoConstraints="NO" id="D62-se-sfP" userLabel="Play Circle">
+                                                <rect key="frame" x="0.0" y="0.0" width="52" height="52"/>
+                                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                <accessibility key="accessibilityConfiguration">
+                                                    <accessibilityTraits key="traits" none="YES" image="YES" notEnabled="YES"/>
+                                                </accessibility>
+                                            </imageView>
+                                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="PlayTriangle" translatesAutoresizingMaskIntoConstraints="NO" id="4zk-rf-MTe" userLabel="Play Triangle">
+                                                <rect key="frame" x="0.0" y="0.0" width="52" height="52"/>
+                                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                <accessibility key="accessibilityConfiguration">
+                                                    <accessibilityTraits key="traits" none="YES" image="YES" notEnabled="YES"/>
+                                                </accessibility>
+                                            </imageView>
+                                        </subviews>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                        <accessibility key="accessibilityConfiguration">
+                                            <accessibilityTraits key="traits" none="YES" notEnabled="YES"/>
+                                        </accessibility>
+                                    </view>
+                                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="iB3-TF-e3b" userLabel="First Poll Button">
+                                        <rect key="frame" x="0.0" y="0.0" width="160" height="214"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <state key="normal">
                                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                         </state>
                                         <connections>
                                             <action selector="playPoll:" destination="4V8-Qd-rfj" eventType="touchUpInside" id="3VJ-Ij-lFP"/>
                                         </connections>
                                     </button>
-                                    <button opaque="NO" tag="1" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6Fs-nG-V3a" userLabel="Second Poll Button">
+                                    <view opaque="NO" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ZyP-Vw-yAD" userLabel="Second Poll Play Icon">
                                         <rect key="frame" x="214" y="81" width="52" height="52"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        <state key="normal" image="PlayTriangle" backgroundImage="PlayCircle">
+                                        <subviews>
+                                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="PlayCircle" translatesAutoresizingMaskIntoConstraints="NO" id="51u-bf-c5T" userLabel="Play Circle">
+                                                <rect key="frame" x="0.0" y="0.0" width="52" height="52"/>
+                                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                <accessibility key="accessibilityConfiguration">
+                                                    <accessibilityTraits key="traits" none="YES" image="YES" notEnabled="YES"/>
+                                                </accessibility>
+                                            </imageView>
+                                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="PlayTriangle" translatesAutoresizingMaskIntoConstraints="NO" id="JDb-2P-qzG" userLabel="Play Triangle">
+                                                <rect key="frame" x="0.0" y="0.0" width="52" height="52"/>
+                                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                <accessibility key="accessibilityConfiguration">
+                                                    <accessibilityTraits key="traits" none="YES" image="YES" notEnabled="YES"/>
+                                                </accessibility>
+                                            </imageView>
+                                        </subviews>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                        <accessibility key="accessibilityConfiguration">
+                                            <accessibilityTraits key="traits" none="YES" notEnabled="YES"/>
+                                        </accessibility>
+                                    </view>
+                                    <button opaque="NO" tag="1" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6Fs-nG-V3a" userLabel="Second Poll Button">
+                                        <rect key="frame" x="160" y="0.0" width="160" height="213"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <state key="normal">
                                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                         </state>
                                         <connections>
@@ -912,6 +960,7 @@
                         <outlet property="barContainerView" destination="Pce-Lq-Sbm" id="n2G-fA-vJD"/>
                         <outlet property="descriptionLabel" destination="SVt-O0-Xbt" id="CmB-GP-EVp"/>
                         <outlet property="firstPollButton" destination="iB3-TF-e3b" id="uEc-eU-Jbu"/>
+                        <outlet property="firstPollPlayIcon" destination="yMt-1L-zyw" id="QWi-P7-VYR"/>
                         <outlet property="firstResultView" destination="mU7-Gc-RdJ" id="Hap-rD-L8h"/>
                         <outlet property="firstSmallPreviewImage" destination="EVH-DQ-EKO" id="sqw-uo-jib"/>
                         <outlet property="maskingView" destination="NhC-7g-uaI" id="ei9-KA-VA0"/>
@@ -922,6 +971,7 @@
                         <outlet property="pollPreviewView" destination="4Kr-fK-dGu" id="Jg8-mK-drW"/>
                         <outlet property="previewImage" destination="ZqV-fk-y5a" id="5zD-1U-pWm"/>
                         <outlet property="secondPollButton" destination="6Fs-nG-V3a" id="rgi-QS-JVS"/>
+                        <outlet property="secondPollPlayIcon" destination="ZyP-Vw-yAD" id="qSb-Jn-ofd"/>
                         <outlet property="secondResultView" destination="eCc-fQ-PSZ" id="yOE-Ip-yhe"/>
                         <outlet property="secondSmallPreviewImage" destination="plb-mq-Tcq" id="Svf-fQ-dzq"/>
                         <outlet property="topActionsView" destination="Ruh-qb-vRD" id="Xpq-SD-fWy"/>
@@ -1689,11 +1739,11 @@
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Zjp-f4-diu" userLabel="Header View">
-                                <rect key="frame" x="0.0" y="0.0" width="320" height="90"/>
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="100"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="n3n-gs-7Wo">
-                                        <rect key="frame" x="17" y="14" width="27" height="27"/>
+                                        <rect key="frame" x="17" y="24" width="27" height="27"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                                         <state key="normal" image="Menu">
@@ -1705,7 +1755,7 @@
                                         </connections>
                                     </button>
                                     <segmentedControl opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="1" translatesAutoresizingMaskIntoConstraints="NO" id="n7p-by-hQZ">
-                                        <rect key="frame" x="20" y="49" width="280" height="29"/>
+                                        <rect key="frame" x="20" y="59" width="280" height="29"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <segments>
                                             <segment title="Message"/>
@@ -1717,7 +1767,7 @@
                                         </connections>
                                     </segmentedControl>
                                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9mf-xA-Y30">
-                                        <rect key="frame" x="52" y="0.0" width="210" height="50"/>
+                                        <rect key="frame" x="52" y="10" width="210" height="50"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                         <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
@@ -1726,11 +1776,11 @@
                                 </subviews>
                                 <color key="backgroundColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="90" id="e11-6i-T95"/>
+                                    <constraint firstAttribute="height" constant="100" id="e11-6i-T95"/>
                                 </constraints>
                             </view>
                             <containerView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="YFY-fR-cea">
-                                <rect key="frame" x="0.0" y="90" width="320" height="478"/>
+                                <rect key="frame" x="0.0" y="100" width="320" height="468"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                             </containerView>
