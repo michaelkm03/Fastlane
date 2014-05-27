@@ -232,9 +232,7 @@ static const CGFloat    kHeightRatioForRefresh                    =  0.1f;
 
 - (CGFloat)distanceFromBottom
 {
-    CGFloat distance = self.collectionView.contentOffset.y + CGRectGetHeight(self.collectionView.frame) - self.collectionView.contentSize.height - self.collectionView.contentInset.bottom;
-    NSLog(@"%f", distance);
-    return distance;
+    return self.collectionView.contentOffset.y + CGRectGetHeight(self.collectionView.frame) - self.collectionView.contentSize.height - self.collectionView.contentInset.bottom;
 }
 
 - (CGFloat)neededDistance
