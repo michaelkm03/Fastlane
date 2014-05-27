@@ -10,6 +10,8 @@
 
 #import "VUserProfileViewController.h"
 #import "VThemeManager.h"
+#import "VLightboxTransitioningDelegate.h"
+#import "VVideoLightboxViewController.h"
 
 #import "NSString+VParseHelp.h"
 
@@ -52,11 +54,14 @@ CGFloat const kMessageLabelWidth = 214;
 
 - (IBAction)playVideo:(id)sender
 {
-    self.mpController = [[MPMoviePlayerController alloc] initWithContentURL:self.mediaUrl];
-    [self.mpController prepareToPlay];
-    self.mpController.view.frame = self.mediaPreview.frame;
-    [self insertSubview:self.mpController.view aboveSubview:self.mediaPreview];
-    [self.mpController play];
+    VVideoLightboxViewController *lightbox = [[VVideoLightboxViewController alloc] initWithPreviewImage:self.mediaPreview.image videoURL:self.mediaUrl];
+    [VLightboxTransitioningDelegate addNewTransitioningDelegateToLightboxController:lightbox referenceView:self.mediaPreview];
+    lightbox.onCloseButtonTapped = ^(void)
+    {
+        [self.parentTableViewController dismissViewControllerAnimated:YES completion:nil];
+    };
+    lightbox.onVideoFinished = lightbox.onCloseButtonTapped;
+    [self.parentTableViewController presentViewController:lightbox animated:YES completion:nil];
 }
 
 - (IBAction)profileButtonAction:(id)sender

@@ -104,7 +104,12 @@ static const NSInteger kServerEnvironmentButtonIndex = 1;
 
 - (BOOL)prefersStatusBarHidden
 {
-    return YES;
+    return NO;
+}
+
+- (UIStatusBarAnimation)preferredStatusBarUpdateAnimation
+{
+    return UIStatusBarAnimationSlide;
 }
 
 #pragma mark - Validation

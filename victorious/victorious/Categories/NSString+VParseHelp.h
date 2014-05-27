@@ -11,8 +11,6 @@
 
 @interface NSString (VParseHelp)
 
-@property (nonatomic, readonly, getter = typeByExtension) NSString* extensionType;
-
 - (CGSize)frameSizeForWidth:(CGFloat)width andAttributes:(NSDictionary*)attributes;
 
 - (NSURL*)mp4UrlFromM3U8;

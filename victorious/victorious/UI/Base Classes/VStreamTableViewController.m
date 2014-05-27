@@ -75,8 +75,6 @@
 {
     [super viewDidAppear:animated];
     
-    self.navigationController.delegate = self;
-    
     if ([self.fetchedResultsController.fetchedObjects count] < 5)
         [self refresh:nil];
     else
@@ -101,11 +99,6 @@
      {
          self.navigationController.navigationBar.frame = navBarFrame;
      }];
-    
-    if (self.navigationController.delegate == self)
-    {
-        self.navigationController.delegate = nil;
-    }
 }
 
 - (BOOL)shouldAutorotate
@@ -364,7 +357,7 @@
     [self.navigationController pushViewController:commentsTable animated:YES];
 }
 
-#pragma marke- Navigation
+#pragma mark - Navigation
 - (id<UIViewControllerAnimatedTransitioning>) navigationController:(UINavigationController *)navigationController
                                    animationControllerForOperation:(UINavigationControllerOperation)operation
                                                 fromViewController:(UIViewController*)fromVC

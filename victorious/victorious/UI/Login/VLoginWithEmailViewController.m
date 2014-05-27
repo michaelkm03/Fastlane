@@ -73,20 +73,7 @@ NSString*   const   kVLoginErrorDomain =   @"VLoginErrorDomain";
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
-    
     [self.usernameTextField becomeFirstResponder];
-    self.navigationController.delegate = self;
-}
-
-- (void)viewWillDisappear:(BOOL)animated
-{
-    [super viewWillDisappear:animated];
-    
-    // Stop being the navigation controller's delegate
-    if (self.navigationController.delegate == self)
-    {
-        self.navigationController.delegate = nil;
-    }
 }
 
 - (BOOL)prefersStatusBarHidden

@@ -33,7 +33,17 @@
 
 - (BOOL)prefersStatusBarHidden
 {
-    return YES;
+    return ![self isHeaderVisible];
+}
+
+- (UIStatusBarStyle)preferredStatusBarStyle
+{
+    return UIStatusBarStyleLightContent;
+}
+
+- (UIStatusBarAnimation)preferredStatusBarUpdateAnimation
+{
+    return UIStatusBarAnimationSlide;
 }
 
 - (void)viewDidLoad
@@ -72,22 +82,30 @@
 }
 
 #pragma mark - Header
+
+- (BOOL)isHeaderVisible
+{
+    return CGRectContainsRect(self.view.frame, self.headerView.frame);
+}
+
 - (void)hideHeader
 {
-    if (!CGRectContainsRect(self.view.frame, self.headerView.frame))
+    if (![self isHeaderVisible])
         return;
     
     self.headerYConstraint.constant = -self.headerView.frame.size.height;
     [self.view layoutIfNeeded];
+    [self setNeedsStatusBarAppearanceUpdate];
 }
 
 - (void)showHeader
 {
-    if (CGRectContainsRect(self.view.frame, self.headerView.frame))
+    if ([self isHeaderVisible])
         return;
     
     self.headerYConstraint.constant = 0;
     [self.view layoutIfNeeded];
+    [self setNeedsStatusBarAppearanceUpdate];
 }
 
 

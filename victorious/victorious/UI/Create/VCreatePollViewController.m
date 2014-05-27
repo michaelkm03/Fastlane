@@ -98,7 +98,7 @@ static const CGFloat VCreateViewControllerLargePadding = 20;
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    [self.navigationController setNavigationBarHidden:NO animated:YES];
+    [self.navigationController setNavigationBarHidden:NO animated:NO];
 }
 
 - (BOOL)shouldAutorotate
@@ -113,7 +113,7 @@ static const CGFloat VCreateViewControllerLargePadding = 20;
 
 - (BOOL)prefersStatusBarHidden
 {
-    return YES;
+    return NO;
 }
 
 - (void)validatePostButtonState
