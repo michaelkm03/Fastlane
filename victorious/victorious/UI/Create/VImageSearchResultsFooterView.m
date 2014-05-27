@@ -22,7 +22,8 @@
 {
     self.pullUpForMoreLabel.text = NSLocalizedString(@"Pull up for more...", @"");
     self.pullUpForMoreLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeading4Font];
-    self.refreshImageView.translatesAutoresizingMaskIntoConstraints = YES; // opt-out of autolayout for this view so we can scale it with a transform
+    self.refreshImageView.translatesAutoresizingMaskIntoConstraints = YES; // opt-out of autolayout for these views so we can scale them with a transform
+    self.activityIndicatorView.translatesAutoresizingMaskIntoConstraints = YES;
 }
 
 - (void)setRefreshImageView:(UIImageView *)refreshImageView
@@ -35,6 +36,8 @@
     [super layoutSubviews];
     self.refreshImageView.bounds = CGRectMake(0.0f, 0.0f, self.refreshImageView.intrinsicContentSize.width, self.refreshImageView.intrinsicContentSize.height);
     self.refreshImageView.center = CGPointMake(CGRectGetMidX(self.refreshImageSuperview.bounds), CGRectGetMidY(self.refreshImageSuperview.bounds));
+    self.activityIndicatorView.bounds = CGRectMake(0.0f, 0.0f, self.activityIndicatorView.intrinsicContentSize.width, self.activityIndicatorView.intrinsicContentSize.height);
+    self.activityIndicatorView.center = CGPointMake(CGRectGetMidX(self.refreshImageSuperview.bounds), CGRectGetMidY(self.refreshImageSuperview.bounds));
 }
 
 - (void)prepareForReuse

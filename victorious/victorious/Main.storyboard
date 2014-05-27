@@ -1189,7 +1189,7 @@
                                 </connections>
                             </textField>
                             <collectionView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" minimumZoomScale="0.0" maximumZoomScale="0.0" keyboardDismissMode="onDrag" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="E4Z-JL-IBz">
-                                <rect key="frame" x="0.0" y="62" width="320" height="506"/>
+                                <rect key="frame" x="0.0" y="54" width="320" height="514"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="sBy-D4-HDq">
@@ -1211,10 +1211,16 @@
                                                     <rect key="frame" x="0.0" y="0.0" width="13" height="15"/>
                                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                 </imageView>
+                                                <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="odn-43-qVN">
+                                                    <rect key="frame" x="-4" y="-3" width="20" height="20"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                </activityIndicatorView>
                                             </subviews>
                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="15" id="9Po-tq-e87"/>
+                                                <constraint firstAttribute="centerX" secondItem="odn-43-qVN" secondAttribute="centerX" placeholder="YES" id="Pv8-UM-nj3"/>
+                                                <constraint firstAttribute="centerY" secondItem="odn-43-qVN" secondAttribute="centerY" placeholder="YES" id="Yo8-Y4-VRp"/>
                                                 <constraint firstAttribute="centerY" secondItem="MzA-5c-mxS" secondAttribute="centerY" placeholder="YES" id="e2p-Cu-oOH"/>
                                                 <constraint firstAttribute="width" constant="13" id="jCT-9A-EuS"/>
                                                 <constraint firstAttribute="centerX" secondItem="MzA-5c-mxS" secondAttribute="centerX" placeholder="YES" id="wPq-Ts-XuL"/>
@@ -1227,18 +1233,12 @@
                                             <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
-                                        <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="odn-43-qVN">
-                                            <rect key="frame" x="87" y="12" width="20" height="20"/>
-                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        </activityIndicatorView>
                                     </subviews>
                                     <constraints>
                                         <constraint firstAttribute="centerX" secondItem="O7q-AE-sOJ" secondAttribute="centerX" constant="-21" id="JBH-DT-cvb"/>
                                         <constraint firstAttribute="centerY" secondItem="LBC-7J-0su" secondAttribute="centerY" id="PFg-hA-4av"/>
-                                        <constraint firstItem="LBC-7J-0su" firstAttribute="centerY" secondItem="odn-43-qVN" secondAttribute="centerY" constant="0.5" id="Qjr-XW-t8Q"/>
                                         <constraint firstAttribute="centerY" secondItem="O7q-AE-sOJ" secondAttribute="centerY" constant="0.5" id="cIe-lj-rsf"/>
                                         <constraint firstItem="LBC-7J-0su" firstAttribute="trailing" secondItem="O7q-AE-sOJ" secondAttribute="leading" constant="-9" id="qUz-Nh-5x9"/>
-                                        <constraint firstItem="LBC-7J-0su" firstAttribute="centerX" secondItem="odn-43-qVN" secondAttribute="centerX" constant="0.5" id="zri-Lq-tGm"/>
                                     </constraints>
                                     <connections>
                                         <outlet property="activityIndicatorView" destination="odn-43-qVN" id="enm-jv-iZo"/>
@@ -1301,7 +1301,7 @@
                             <constraint firstItem="d98-ui-mTQ" firstAttribute="top" secondItem="2bS-32-Hgr" secondAttribute="bottom" id="c1F-20-TNh"/>
                             <constraint firstItem="31C-iA-Qyj" firstAttribute="height" secondItem="d98-ui-mTQ" secondAttribute="height" id="cqm-Hr-L1L"/>
                             <constraint firstAttribute="centerY" secondItem="pJl-i9-bwE" secondAttribute="centerY" multiplier="1.618" id="eMP-gD-gTK"/>
-                            <constraint firstItem="E4Z-JL-IBz" firstAttribute="top" secondItem="d98-ui-mTQ" secondAttribute="bottom" constant="8" id="fpm-r8-EBm"/>
+                            <constraint firstItem="E4Z-JL-IBz" firstAttribute="top" secondItem="d98-ui-mTQ" secondAttribute="bottom" id="fpm-r8-EBm"/>
                             <constraint firstItem="GSS-PO-98I" firstAttribute="left" secondItem="xTc-ax-2nu" secondAttribute="right" constant="9" id="n0T-yb-H3o"/>
                             <constraint firstItem="31C-iA-Qyj" firstAttribute="top" secondItem="d98-ui-mTQ" secondAttribute="top" id="qYv-PY-riJ"/>
                             <constraint firstItem="e4B-nQ-DnV" firstAttribute="top" secondItem="d98-ui-mTQ" secondAttribute="top" constant="4" id="wQm-5l-qSk"/>

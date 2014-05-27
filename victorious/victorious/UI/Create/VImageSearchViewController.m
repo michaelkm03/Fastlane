@@ -17,6 +17,7 @@
 
 static NSString * const kSearchResultCellReuseIdentifier          = @"kSearchResultCellReuseIdentifier";
 static NSString * const kSearchResultSectionFooterReuseIdentifier = @"kSearchResultSectionFooterReuseIdentifier";
+static const CGFloat    kVerySmallScale                           =  0.001f;
 static const CGFloat    kSearchResultSectionFooterHeight          = 45.0f;
 static const CGFloat    kHeightRatioForRefresh                    =  0.1f;
 
@@ -58,7 +59,7 @@ static const CGFloat    kHeightRatioForRefresh                    =  0.1f;
     self.dataSource.delegate = self;
     self.dataSource.collectionView = self.collectionView;
     self.collectionView.dataSource = self.dataSource;
-    self.collectionView.contentInset = UIEdgeInsetsMake(5.0f, 5.0f, 5.0f, 5.0f);
+    self.collectionView.contentInset = UIEdgeInsetsMake(13.0f, 5.0f, 5.0f, 5.0f);
     [self.collectionView registerClass:[VImageSearchResultCell class] forCellWithReuseIdentifier:kSearchResultCellReuseIdentifier];
     
     UICollectionViewFlowLayout *flowLayout = (UICollectionViewFlowLayout *)self.collectionView.collectionViewLayout;
@@ -266,17 +267,28 @@ static const CGFloat    kHeightRatioForRefresh                    =  0.1f;
         self.refreshFooter.refreshImageView.hidden = YES;
         [self.refreshFooter.activityIndicatorView startAnimating];
         self.refreshing = YES;
-        [self.dataSource loadNextPageWithCompletion:^(void)
+        self.refreshFooter.activityIndicatorView.transform = CGAffineTransformMakeScale(kVerySmallScale, kVerySmallScale);
+        [UIView animateWithDuration:0.2
+                              delay:0
+                            options:UIViewAnimationOptionCurveLinear
+                         animations:^(void)
         {
-            self.refreshing = NO;
-            [self.refreshFooter.activityIndicatorView stopAnimating];
-            self.refreshFooter.refreshImageView.hidden = NO;
+            self.refreshFooter.activityIndicatorView.transform = CGAffineTransformIdentity;
         }
-                                              error:^(NSError *error)
+                         completion:^(BOOL finished)
         {
-            self.refreshing = NO;
-            [self.refreshFooter.activityIndicatorView stopAnimating];
-            self.refreshFooter.refreshImageView.hidden = NO;
+            [self.dataSource loadNextPageWithCompletion:^(void)
+            {
+                self.refreshing = NO;
+                [self.refreshFooter.activityIndicatorView stopAnimating];
+                self.refreshFooter.refreshImageView.hidden = NO;
+            }
+                                                  error:^(NSError *error)
+            {
+                self.refreshing = NO;
+                [self.refreshFooter.activityIndicatorView stopAnimating];
+                self.refreshFooter.refreshImageView.hidden = NO;
+            }];
         }];
     }
 }
