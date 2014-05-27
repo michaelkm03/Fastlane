@@ -12,6 +12,7 @@
 #import "VImageSearchResult.h"
 #import "VImageSearchResultCell.h"
 #import "VImageSearchViewController.h"
+#import "VThemeManager.h"
 
 static NSString * const kSearchResultCellReuseIdentifier = @"kSearchResultCellReuseIdentifier";
 
@@ -19,8 +20,10 @@ static NSString * const kSearchResultCellReuseIdentifier = @"kSearchResultCellRe
 
 @property (nonatomic, weak) IBOutlet UIView             *headerView;
 @property (nonatomic, weak) IBOutlet UITextField        *searchField;
+@property (nonatomic, weak) IBOutlet UIImageView        *searchIconImageView;
 @property (nonatomic, weak) IBOutlet UICollectionView   *collectionView;
 @property (nonatomic, weak) IBOutlet NSLayoutConstraint *hrHeightConstraint;
+@property (nonatomic, weak) IBOutlet NSLayoutConstraint *vrWidthConstraint;
 
 @property (nonatomic, strong) VImageSearchDataSource  *dataSource;
 @property (nonatomic, strong) AFImageRequestOperation *imageRequestOperation;
@@ -32,8 +35,8 @@ static NSString * const kSearchResultCellReuseIdentifier = @"kSearchResultCellRe
 + (instancetype)newImageSearchViewController
 {
     UIViewController *currentViewController = [[UIApplication sharedApplication] delegate].window.rootViewController;
-    VImageSearchViewController *flickrPicker = (VImageSearchViewController *)[currentViewController.storyboard instantiateViewControllerWithIdentifier: NSStringFromClass([VImageSearchViewController class])];
-    return flickrPicker;
+    VImageSearchViewController *imageSearchViewController = (VImageSearchViewController *)[currentViewController.storyboard instantiateViewControllerWithIdentifier:NSStringFromClass([VImageSearchViewController class])];
+    return imageSearchViewController;
 }
 
 #pragma mark - View lifecycle
@@ -53,14 +56,10 @@ static NSString * const kSearchResultCellReuseIdentifier = @"kSearchResultCellRe
     flowLayout.minimumInteritemSpacing = 5.0f;
     
     self.hrHeightConstraint.constant = 0.5f;
+    self.vrWidthConstraint.constant = 0.5f;
     
-    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.headerView
-                                                          attribute:NSLayoutAttributeBottom
-                                                          relatedBy:NSLayoutRelationEqual
-                                                             toItem:self.topLayoutGuide
-                                                          attribute:NSLayoutAttributeBottom
-                                                         multiplier:1.0f
-                                                           constant:50.0f]];
+    self.searchField.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeading4Font];
+    self.searchIconImageView.image = [self.searchIconImageView.image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
 }
 
 - (void)viewWillAppear:(BOOL)animated
