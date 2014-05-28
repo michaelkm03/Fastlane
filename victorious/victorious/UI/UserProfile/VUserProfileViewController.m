@@ -475,7 +475,13 @@ const   CGFloat kVNavigationBarHeight = 44.0;
         [self presentViewController:[VLoginViewController loginViewController] animated:YES completion:NULL];
         return;
     }
-
+    
+    self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc]
+                                             initWithTitle:NSLocalizedString(@"BackButton", @"")
+                                             style:UIBarButtonItemStylePlain
+                                             target:nil
+                                             action:nil];
+    
     VMessageContainerViewController*    composeController   = [[UIStoryboard storyboardWithName:@"Main" bundle:[NSBundle mainBundle]] instantiateViewControllerWithIdentifier:@"messageContainer"];
     composeController.conversation = [[VObjectManager sharedManager] conversationWithUser:self.profile];
     [self.navigationController pushViewController:composeController animated:YES];

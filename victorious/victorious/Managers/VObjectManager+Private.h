@@ -34,6 +34,12 @@
                              successBlock:(VSuccessBlock)successBlock
                                 failBlock:(VFailBlock)failBlock;
 
+- (RKManagedObjectRequestOperation *)DELETE:(NSString *)path
+                                     object:(id)object
+                                 parameters:(NSDictionary *)parameters
+                               successBlock:(VSuccessBlock)successBlock
+                                  failBlock:(VFailBlock)failBlock;
+
 /*! Uses multipartFormRestquest to upload media.
  * allURLs key:value must be NSString* parameterName:NSURL* localURL
  * allExtensions must have same keys are allURLs, values are NSString* fileExtension */

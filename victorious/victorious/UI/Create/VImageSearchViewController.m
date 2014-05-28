@@ -11,19 +11,33 @@
 #import "VImageSearchDataSource.h"
 #import "VImageSearchResult.h"
 #import "VImageSearchResultCell.h"
+#import "VImageSearchResultsFooterView.h"
 #import "VImageSearchViewController.h"
+#import "VThemeManager.h"
 
-static NSString * const kSearchResultCellReuseIdentifier = @"kSearchResultCellReuseIdentifier";
+static NSString * const kSearchResultCellReuseIdentifier          = @"kSearchResultCellReuseIdentifier";
+static NSString * const kSearchResultSectionFooterReuseIdentifier = @"kSearchResultSectionFooterReuseIdentifier";
+static const CGFloat    kVerySmallScale                           =  0.001f;
+static const CGFloat    kSearchResultSectionFooterHeight          = 45.0f;
+static const CGFloat    kHeightRatioForRefresh                    =  0.1f;
 
-@interface VImageSearchViewController ()
+@interface VImageSearchViewController () <UICollectionViewDelegateFlowLayout, UITextFieldDelegate, VImageSearchDataDelegate>
 
-@property (nonatomic, weak) IBOutlet UIView             *headerView;
-@property (nonatomic, weak) IBOutlet UITextField        *searchField;
-@property (nonatomic, weak) IBOutlet UICollectionView   *collectionView;
-@property (nonatomic, weak) IBOutlet NSLayoutConstraint *hrHeightConstraint;
+@property (nonatomic, weak) IBOutlet UIView                  *headerView;
+@property (nonatomic, weak) IBOutlet UITextField             *searchField;
+@property (nonatomic, weak) IBOutlet UIImageView             *searchIconImageView;
+@property (nonatomic, weak) IBOutlet UICollectionView        *collectionView;
+@property (nonatomic, weak) IBOutlet UILabel                 *noResultsLabel;
+@property (nonatomic, weak) IBOutlet NSLayoutConstraint      *hrHeightConstraint;
+@property (nonatomic, weak) IBOutlet NSLayoutConstraint      *vrWidthConstraint;
+@property (nonatomic, weak) IBOutlet UIActivityIndicatorView *activityIndicatorView;
+
+@property (nonatomic, weak) VImageSearchResultsFooterView *refreshFooter;
 
 @property (nonatomic, strong) VImageSearchDataSource  *dataSource;
 @property (nonatomic, strong) AFImageRequestOperation *imageRequestOperation;
+
+@property (nonatomic) BOOL refreshing;
 
 @end
 
@@ -32,8 +46,8 @@ static NSString * const kSearchResultCellReuseIdentifier = @"kSearchResultCellRe
 + (instancetype)newImageSearchViewController
 {
     UIViewController *currentViewController = [[UIApplication sharedApplication] delegate].window.rootViewController;
-    VImageSearchViewController *flickrPicker = (VImageSearchViewController *)[currentViewController.storyboard instantiateViewControllerWithIdentifier: NSStringFromClass([VImageSearchViewController class])];
-    return flickrPicker;
+    VImageSearchViewController *imageSearchViewController = (VImageSearchViewController *)[currentViewController.storyboard instantiateViewControllerWithIdentifier:NSStringFromClass([VImageSearchViewController class])];
+    return imageSearchViewController;
 }
 
 #pragma mark - View lifecycle
@@ -45,7 +59,7 @@ static NSString * const kSearchResultCellReuseIdentifier = @"kSearchResultCellRe
     self.dataSource.delegate = self;
     self.dataSource.collectionView = self.collectionView;
     self.collectionView.dataSource = self.dataSource;
-    self.collectionView.contentInset = UIEdgeInsetsMake(5.0f, 5.0f, 5.0f, 5.0f);
+    self.collectionView.contentInset = UIEdgeInsetsMake(13.0f, 5.0f, 5.0f, 5.0f);
     [self.collectionView registerClass:[VImageSearchResultCell class] forCellWithReuseIdentifier:kSearchResultCellReuseIdentifier];
     
     UICollectionViewFlowLayout *flowLayout = (UICollectionViewFlowLayout *)self.collectionView.collectionViewLayout;
@@ -53,14 +67,14 @@ static NSString * const kSearchResultCellReuseIdentifier = @"kSearchResultCellRe
     flowLayout.minimumInteritemSpacing = 5.0f;
     
     self.hrHeightConstraint.constant = 0.5f;
+    self.vrWidthConstraint.constant = 0.5f;
     
-    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.headerView
-                                                          attribute:NSLayoutAttributeBottom
-                                                          relatedBy:NSLayoutRelationEqual
-                                                             toItem:self.topLayoutGuide
-                                                          attribute:NSLayoutAttributeBottom
-                                                         multiplier:1.0f
-                                                           constant:50.0f]];
+    self.searchField.placeholder = NSLocalizedString(@"Search for an image", @"");
+    self.searchField.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeading4Font];
+    self.searchIconImageView.image = [self.searchIconImageView.image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+    
+    self.noResultsLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeading4Font];
+    self.noResultsLabel.text = NSLocalizedString(@"No results", @"");
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -104,10 +118,18 @@ static NSString * const kSearchResultCellReuseIdentifier = @"kSearchResultCellRe
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField
 {
+    self.noResultsLabel.hidden = YES;
+    [self.activityIndicatorView startAnimating];
     [self.dataSource searchWithSearchTerm:self.searchField.text
-                             onCompletion:nil
+                             onCompletion:^(void)
+    {
+        [self.activityIndicatorView stopAnimating];
+        self.noResultsLabel.hidden = [self.dataSource searchResultCount] > 0;
+        self.collectionView.contentOffset = CGPointZero;
+    }
                                   onError:^(NSError *error)
     {
+        [self.activityIndicatorView stopAnimating];
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"SearchFailed", @"")
                                                         message:@""
                                                        delegate:nil
@@ -126,6 +148,26 @@ static NSString * const kSearchResultCellReuseIdentifier = @"kSearchResultCellRe
     VImageSearchResultCell *searchResultCell = (VImageSearchResultCell *)[self.collectionView dequeueReusableCellWithReuseIdentifier:kSearchResultCellReuseIdentifier forIndexPath:indexPath];
     [searchResultCell.imageView setImageWithURL:searchResult.thumbnailURL];
     return searchResultCell;
+}
+
+- (UICollectionReusableView *)dataSource:(VImageSearchDataSource *)dataSource viewForSupplementaryElementOfKind:(NSString *)kind atIndexPath:(NSIndexPath *)indexPath
+{
+    if ([UICollectionElementKindSectionFooter isEqualToString:kind])
+    {
+        self.refreshFooter = (VImageSearchResultsFooterView *)[self.collectionView dequeueReusableSupplementaryViewOfKind:kind
+                                                                                                      withReuseIdentifier:kSearchResultSectionFooterReuseIdentifier
+                                                                                                             forIndexPath:indexPath];
+        if (self.refreshing)
+        {
+            self.refreshFooter.refreshImageView.hidden = YES;
+            [self.refreshFooter.activityIndicatorView startAnimating];
+        }
+        return self.refreshFooter;
+    }
+    else
+    {
+        return nil;
+    }
 }
 
 #pragma mark - UICollectionViewDelegate methods
@@ -172,6 +214,82 @@ static NSString * const kSearchResultCellReuseIdentifier = @"kSearchResultCellRe
             }
         }];
         [self.imageRequestOperation start];
+    }
+}
+
+- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout referenceSizeForFooterInSection:(NSInteger)section
+{
+    if ([self.dataSource searchResultCount])
+    {
+        return CGSizeMake(0, kSearchResultSectionFooterHeight);
+    }
+    else
+    {
+        return CGSizeZero;
+    }
+}
+
+#pragma mark - UIScrollViewDelegate methods
+
+- (CGFloat)distanceFromBottom
+{
+    return self.collectionView.contentOffset.y + CGRectGetHeight(self.collectionView.frame) - self.collectionView.contentSize.height - self.collectionView.contentInset.bottom;
+}
+
+- (CGFloat)neededDistance
+{
+    return CGRectGetHeight(self.collectionView.frame) * kHeightRatioForRefresh;
+}
+
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView
+{
+    CGFloat distanceFromBottom = [self distanceFromBottom];
+    CGFloat neededDistance = [self neededDistance];
+    
+    if (distanceFromBottom <= 0)
+    {
+        self.refreshFooter.refreshImageView.transform = CGAffineTransformIdentity;
+    }
+    else
+    {
+        CGFloat scale = MAX(1.0f - distanceFromBottom / neededDistance, 0);
+        self.refreshFooter.refreshImageView.transform = CGAffineTransformMakeScale(scale, scale);
+    }
+}
+
+- (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate
+{
+    CGFloat distanceFromBottom = [self distanceFromBottom];
+    CGFloat neededDistance = [self neededDistance];
+    
+    if (distanceFromBottom >= neededDistance)
+    {
+        self.refreshFooter.refreshImageView.hidden = YES;
+        [self.refreshFooter.activityIndicatorView startAnimating];
+        self.refreshing = YES;
+        self.refreshFooter.activityIndicatorView.transform = CGAffineTransformMakeScale(kVerySmallScale, kVerySmallScale);
+        [UIView animateWithDuration:0.2
+                              delay:0
+                            options:UIViewAnimationOptionCurveLinear
+                         animations:^(void)
+        {
+            self.refreshFooter.activityIndicatorView.transform = CGAffineTransformIdentity;
+        }
+                         completion:^(BOOL finished)
+        {
+            [self.dataSource loadNextPageWithCompletion:^(void)
+            {
+                self.refreshing = NO;
+                [self.refreshFooter.activityIndicatorView stopAnimating];
+                self.refreshFooter.refreshImageView.hidden = NO;
+            }
+                                                  error:^(NSError *error)
+            {
+                self.refreshing = NO;
+                [self.refreshFooter.activityIndicatorView stopAnimating];
+                self.refreshFooter.refreshImageView.hidden = NO;
+            }];
+        }];
     }
 }
 

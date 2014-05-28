@@ -53,7 +53,7 @@ copyFile "Icon-60@2x.png"
 ### Modify Info.plist
 
 PRODUCT_PREFIX=`/usr/libexec/PlistBuddy -c "Print ProductPrefix" "$APP_BUNDLE_PATH/Info.plist"`
-if [ $? != 0 -o "$PRODUCT_PREFIX" == "" ]; then
+if [ $? != 0 ]; then
     echo "ProductPrefix key not found in info.plist."
     exit 1
 fi

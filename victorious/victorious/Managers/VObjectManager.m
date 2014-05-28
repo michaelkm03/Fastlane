@@ -214,6 +214,20 @@
                      failBlock:failBlock];
 }
 
+- (RKManagedObjectRequestOperation *)DELETE:(NSString *)path
+                                     object:(id)object
+                                 parameters:(NSDictionary *)parameters
+                               successBlock:(VSuccessBlock)successBlock
+                                  failBlock:(VFailBlock)failBlock
+{
+    return [self requestMethod:RKRequestMethodDELETE
+                        object:object
+                          path:path
+                    parameters:parameters
+                  successBlock:successBlock
+                     failBlock:failBlock];
+}
+
 - (AFHTTPRequestOperation*)uploadURLs:(NSDictionary*)allUrls
                                toPath:(NSString*)path
                            parameters:(NSDictionary*)parameters

@@ -14,7 +14,7 @@
 /**
  Displays an interface for searching and downloading images online.
  */
-@interface VImageSearchViewController : UIViewController <UICollectionViewDelegate, UITextFieldDelegate, VImageSearchDataDelegate>
+@interface VImageSearchViewController : UIViewController
 
 @property (nonatomic, copy) VMediaCaptureCompletion completionBlock; ///< Will be called when the user has either selected an image or asked to cancel
 

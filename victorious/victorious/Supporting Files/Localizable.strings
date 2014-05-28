@@ -74,6 +74,8 @@
 "FollowError"           =   "There was an error following this user.";
 "UnfollowError"         =   "There was an error unfollowing this user.";
 
+"PublishUpload"         =   "Your content is being uploaded.";
+
 "PublishSucceeded"      =   "Publish Succeeded";
 "PublishSucceededDetail"    =   "Your media has been submitted to the server";
 
@@ -140,3 +142,7 @@
 "EmailSent"             =   "An e-mail was sent to this address which contains a 4-digit code to use to verify your account.";
 "CannotVerify"          =   "Cannot Verify Account";
 "IncorrectCode"         =   "The 4-digit code used for account verfication is incorrect.";
+
+"Search for an image"   =   "Search for an image";
+"Pull up for more..."   =   "Pull up for more...";
+"No results"            =   "No results";

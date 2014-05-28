@@ -135,8 +135,9 @@
     NSSortDescriptor *sort = [[NSSortDescriptor alloc] initWithKey:@"releasedAt" ascending:NO];
     
     NSPredicate* filterPredicate = [NSPredicate predicateWithFormat:@"ANY filters.filterAPIPath =[cd] %@", [self currentFilter].filterAPIPath];
-    [fetchRequest setPredicate:filterPredicate];
-    
+    NSPredicate* datePredicate = [NSPredicate predicateWithFormat:@"(expiresAt >= %@) OR (expiresAt = nil)", [NSDate dateWithTimeIntervalSinceNow:0]];
+    [fetchRequest setPredicate:[NSCompoundPredicate andPredicateWithSubpredicates:@[filterPredicate, datePredicate]]];
+//    [fetchRequest setPredicate:filterPredicate];
     [fetchRequest setSortDescriptors:@[sort]];
     [fetchRequest setFetchBatchSize:[self currentFilter].perPageNumber.integerValue];
     
@@ -353,7 +354,6 @@
 
     VCommentsContainerViewController* commentsTable = [VCommentsContainerViewController commentsContainerView];
     commentsTable.sequence = cell.sequence;
-    commentsTable.parentVC = self;
     [self.navigationController pushViewController:commentsTable animated:YES];
 }
 

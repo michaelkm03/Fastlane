@@ -14,7 +14,6 @@
 
 @interface VCommentsContainerViewController : VKeyboardBarContainerViewController <VAnimation>
 @property (nonatomic, strong) VSequence* sequence;
-@property (nonatomic, weak) UIViewController* parentVC;
 
 + (instancetype)commentsContainerView;
 
