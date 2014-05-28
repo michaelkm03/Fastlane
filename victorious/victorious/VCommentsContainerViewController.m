@@ -25,6 +25,8 @@
 
 #import "UIImage+ImageCreation.h"
 
+#import "MBProgressHUD.h"
+
 @interface VCommentsContainerViewController()   <VCommentsTableViewControllerDelegate, UINavigationControllerDelegate>
 
 @property (weak, nonatomic) IBOutlet UIButton* backButton;
@@ -118,17 +120,14 @@
 
 - (void)keyboardBar:(VKeyboardBarViewController *)keyboardBar didComposeWithText:(NSString *)text mediaURL:(NSURL *)mediaURL
 {
-    __block UIActivityIndicatorView *indicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
-    indicator.frame = CGRectMake(0, 0, 24, 24);
-    indicator.hidesWhenStopped = YES;
-    [self.view addSubview:indicator];
-    indicator.center = self.view.center;
-    [indicator startAnimating];
+    MBProgressHUD*  progressHUD =   [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    progressHUD.labelText = NSLocalizedString(@"JustAMoment", @"");
+    progressHUD.detailsLabelText = NSLocalizedString(@"PublishUpload", @"");
     
     VSuccessBlock success = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
     {
         NSLog(@"%@", resultObjects);
-        [indicator stopAnimating];
+        [progressHUD hide:YES];
         
         [self.sequence.managedObjectContext saveToPersistentStore:nil];
         
@@ -137,7 +136,7 @@
     
     VFailBlock fail = ^(NSOperation* operation, NSError* error)
     {
-        [indicator stopAnimating];
+        [progressHUD hide:YES];
     };
 
     [[VObjectManager sharedManager] addCommentWithText:text
