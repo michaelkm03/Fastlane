@@ -17,6 +17,7 @@
 #import "UIImage+ImageEffects.h"
 #import "VLoginTransitionAnimator.h"
 #import "THPinViewController.h"
+#import "UIAlertView+VBlocks.h"
 
 NSString*   const   kVLoginErrorDomain =   @"VLoginErrorDomain";
 

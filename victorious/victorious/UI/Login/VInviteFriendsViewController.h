@@ -8,7 +8,8 @@
 
 @class VUser;
 
-@interface VInviteFriendsViewController : UITableViewController
-@property (nonatomic, strong)   VUser*  profile;
+@interface VInviteFriendsViewController : UIViewController
+@property (nonatomic, weak)     IBOutlet    UIView*     containerView;
 
+@property (nonatomic, strong)   VUser*  profile;
 @end

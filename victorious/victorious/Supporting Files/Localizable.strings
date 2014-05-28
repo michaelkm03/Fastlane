@@ -104,6 +104,18 @@
 "LastYear"              =   "1y";
 "YearsAgo"              =   "%dy";
 
+"Minute"                =   "Minute";
+"Hour"                  =   "Hour";
+"Day"                   =   "Day";
+"Week"                  =   "Week";
+"Month"                 =   "Month";
+
+"Minutes"               =   "Minutes";
+"Hours"                 =   "Hours";
+"Days"                  =   "Days";
+"Weeks"                 =   "Weeks";
+"Months"                =   "Months";
+
 "JustAMoment"           =   "Just a moment";
 "LocatingVideo"         =   "Locating Video...";
 "DownloadingVideo"      =   "Downloading Video...";

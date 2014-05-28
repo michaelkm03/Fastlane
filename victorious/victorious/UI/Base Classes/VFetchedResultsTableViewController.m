@@ -160,6 +160,9 @@
 
 - (void)controllerWillChangeContent:(NSFetchedResultsController *)controller
 {
+    if (self.tableView.window == nil)
+        return;
+
     [self.tableView beginUpdates];
 }
 
@@ -169,6 +172,9 @@
      forChangeType:(NSFetchedResultsChangeType)type
       newIndexPath:(NSIndexPath *)newIndexPath
 {
+    if (self.tableView.window == nil)
+        return;
+    
     switch(type)
     {
         case NSFetchedResultsChangeInsert:
@@ -203,6 +209,9 @@
            atIndex:(NSUInteger)sectionIndex
      forChangeType:(NSFetchedResultsChangeType)type
 {
+    if (self.tableView.window == nil)
+        return;
+
     switch(type)
     {
         case NSFetchedResultsChangeInsert:
@@ -217,6 +226,12 @@
 
 - (void)controllerDidChangeContent:(NSFetchedResultsController *)controller
 {
+    if (self.tableView.window == nil)
+    {
+        [self.tableView reloadData];
+        return;
+    }
+
     [self.tableView endUpdates];
 }
 

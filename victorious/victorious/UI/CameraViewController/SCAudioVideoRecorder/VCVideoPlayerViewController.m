@@ -114,7 +114,16 @@ static __weak VCVideoPlayerViewController *_currentPlayer = nil;
 
 - (void)viewDidLayoutSubviews
 {
+    [CATransaction begin];
+    CAAnimation *boundsAnimation = [self.view.layer animationForKey:NSStringFromSelector(@selector(bounds))];
+    if (boundsAnimation)
+    {
+        [CATransaction setAnimationDuration:boundsAnimation.duration];
+        [CATransaction setAnimationTimingFunction:boundsAnimation.timingFunction];
+    }
+    
     self.playerLayer.frame = self.view.layer.bounds;
+    [CATransaction commit];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
