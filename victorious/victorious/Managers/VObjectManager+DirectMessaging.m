@@ -187,4 +187,15 @@
            failBlock:fail];
 }
 
+- (RKManagedObjectRequestOperation *) deleteConversation:(VConversation*)conversation
+                                            successBlock:(VSuccessBlock)success
+                                               failBlock:(VFailBlock)fail
+{
+    return [self POST:@"/api/message/delete_conversation"
+              object:conversation
+           parameters:@{@"conversation_id" : conversation.remoteId}
+        successBlock:success
+           failBlock:fail];
+}
+
 @end

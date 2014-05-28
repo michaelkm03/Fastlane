@@ -129,9 +129,18 @@ static  NSString*   kNewsCellViewIdentifier       =   @"VNewsCell";
     if (editingStyle == UITableViewCellEditingStyleDelete)
     {
         VConversation* conversation = [self.fetchedResultsController objectAtIndexPath:indexPath];
-        NSManagedObjectContext* context =   conversation.managedObjectContext;
-        [context deleteObject:conversation];
-        [context saveToPersistentStore:nil];
+        [[VObjectManager sharedManager] deleteConversation:conversation
+                                              successBlock:^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
+        {
+            VLog(@"Succeeded with objects: %@", resultObjects);
+            NSManagedObjectContext* context =   conversation.managedObjectContext;
+            [context deleteObject:conversation];
+            [context saveToPersistentStore:nil];
+        }
+                                                 failBlock:^(NSOperation* operation, NSError* error)
+        {
+            VLog(@"Failed to delete conversation: %@", error)
+        }];
     }
 }
 
