@@ -12,7 +12,9 @@
 
 @interface VObjectManager (DirectMessaging)
 
-- (VConversation*)conversationWithUser:(VUser*)user;
+- (VConversation*)conversationWithUser:(VUser*)user
+                          successBlock:(VSuccessBlock)success
+                             failBlock:(VFailBlock)fail;
 
 - (RKManagedObjectRequestOperation *)loadNextPageOfConversations:(VSuccessBlock)success
                                                        failBlock:(VFailBlock)fail;

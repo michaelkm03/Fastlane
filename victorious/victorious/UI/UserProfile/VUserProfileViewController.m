@@ -482,9 +482,19 @@ const   CGFloat kVNavigationBarHeight = 44.0;
                                              target:nil
                                              action:nil];
     
-    VMessageContainerViewController*    composeController   = [[UIStoryboard storyboardWithName:@"Main" bundle:[NSBundle mainBundle]] instantiateViewControllerWithIdentifier:@"messageContainer"];
-    composeController.conversation = [[VObjectManager sharedManager] conversationWithUser:self.profile];
-    [self.navigationController pushViewController:composeController animated:YES];
+    [[VObjectManager sharedManager] conversationWithUser:self.profile
+                                            successBlock:^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
+    {
+        VLog(@"Succeeded with objects: %@", resultObjects);
+        
+        VMessageContainerViewController*    composeController   = [[UIStoryboard storyboardWithName:@"Main" bundle:[NSBundle mainBundle]] instantiateViewControllerWithIdentifier:@"messageContainer"];
+        composeController.conversation = [resultObjects firstObject];
+        [self.navigationController pushViewController:composeController animated:YES];
+    }
+                                               failBlock:^(NSOperation* operation, NSError* error)
+    {
+        VLog(@"Failed with error: %@", error);
+    }];
 }
 
 - (IBAction)showProfileEdit:(id)sender
