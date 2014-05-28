@@ -84,6 +84,17 @@
 		<key>alpha</key>
 		<integer>1</integer>
 	</dict>
+	<key>color.link.secondary</key>
+	<dict>
+		<key>red</key>
+		<integer>35</integer>
+		<key>green</key>
+		<integer>35</integer>
+		<key>blue</key>
+		<integer>35</integer>
+		<key>alpha</key>
+		<integer>1</integer>
+	</dict>
 	<key>color.accent</key>
 	<dict>
 		<key>red</key>

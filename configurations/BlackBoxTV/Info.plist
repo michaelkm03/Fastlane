@@ -33,8 +33,6 @@
 	<string>MhDYRpVPTaGQgWBT7ChmxQ</string>
 	<key>TWITTER_CONSUMER_SECRET</key>
 	<string>damxXK28SCObMZ1CEMTLszm3v8mdRt0L1wuVnzXtH1E</string>
-	<key>TestflightDevAppToken</key>
-	<string>25d004e5-9530-4969-94e9-f3182e53339b</string>
 	<key>TestflightReleaseAppToken</key>
 	<string>6b0f0e53-2724-41c6-81b2-1ba77f26ebde</string>
 	<key>TestflightQAAppToken</key>
@@ -42,6 +40,10 @@
 	<key>TestflightStagingAppToken</key>
 	<string>b7e2e3e0-2dbc-44f9-ba44-32d2cb85ae93</string>
 	<key>VictoriousAppID</key>
+	<integer>1</integer>
+	<key>StagingAppID</key>
+	<integer>18</integer>
+	<key>QAAppID</key>
 	<integer>18</integer>
 </dict>
 </plist>

@@ -19,8 +19,6 @@
 	<string>1374328719478033</string>
 	<key>FacebookDisplayName</key>
 	<string>VictoriousApp Dev</string>
-	<key>TestflightDevAppToken</key>
-	<string>7bc4e136-ad35-4a65-9401-baffa40a1eb6</string>
 	<key>TestflightReleaseAppToken</key>
 	<string>38dec4c9-e76e-41ba-82bf-ea690e121c6f</string>
 	<key>TestflightQAAppToken</key>
@@ -28,6 +26,10 @@
 	<key>TestflightStagingAppToken</key>
 	<string>87c752d6-d64c-4599-abbb-613c783a5fb7</string>
 	<key>VictoriousAppID</key>
+	<integer>1</integer>
+	<key>StagingAppID</key>
 	<integer>12</integer>
+	<key>QAAppID</key>
+	<integer>1</integer>
 </dict>
 </plist>
