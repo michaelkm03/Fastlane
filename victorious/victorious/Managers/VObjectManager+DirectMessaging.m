@@ -21,6 +21,7 @@
 
 - (VConversation*)conversationWithUser:(VUser*)user
 {
+    //TODO: this is gonna break with pagination, you don't have all the convos of a person
     //TODO: rethink this.  Another user has multiple conversations but can only have one conversation with you?
     for (VConversation* conversation in user.conversations)
     {
@@ -94,6 +95,13 @@
                                                               successBlock:(VSuccessBlock)success
                                                                  failBlock:(VFailBlock)fail
 {
+    if (!conversation)
+    {
+        if (fail)
+            fail(nil, nil);
+        return nil;
+    }
+    
     NSString* path = [@"/api/message/conversation/" stringByAppendingString:conversation.remoteId.stringValue];
     
     VSuccessBlock fullSuccess = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)

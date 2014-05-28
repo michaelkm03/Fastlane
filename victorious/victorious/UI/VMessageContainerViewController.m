@@ -32,6 +32,23 @@
     self.navigationItem.title = messageVC.conversation.user.name ? [@"@" stringByAppendingString:messageVC.conversation.user.name] : @"Message";
 }
 
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+    
+    //Be sure to delete the conversation if we've come to create a new conversation and stopped
+    if (![[self.conversation messages] count])
+    {
+        NSManagedObjectContext* context =   self.conversation.managedObjectContext;
+        [context deleteObject:self.conversation];
+        [context saveToPersistentStore:nil];
+        
+        //Delete the evidence!
+        ((VMessageViewController*)self.conversationTableViewController).conversation = nil;
+        self.conversation = nil;
+    }
+}
+
 - (BOOL)prefersStatusBarHidden
 {
     return YES;
