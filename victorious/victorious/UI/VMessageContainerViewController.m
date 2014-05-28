@@ -87,11 +87,11 @@
         VLog(@"Succeed with response: %@", fullResponse);
     };
     
-    [[VObjectManager sharedManager] sendMessageToUser:self.conversation.user
-                                             withText:text
-                                             mediaURL:mediaURL
-                                         successBlock:success
-                                            failBlock:^(NSOperation* operation, NSError* error)
+    [[VObjectManager sharedManager] sendMessageToConversation:self.conversation
+                                                     withText:text
+                                                     mediaURL:mediaURL
+                                                 successBlock:success
+                                                    failBlock:^(NSOperation* operation, NSError* error)
      {
          VLog(@"Failed in creating message with error: %@", error);
         [[NSFileManager defaultManager] removeItemAtURL:urlToRemove error:nil];

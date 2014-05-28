@@ -172,14 +172,14 @@
     
 }
 
-- (AFHTTPRequestOperation *)sendMessageToUser:(VUser*)user
-                                     withText:(NSString*)text
-                                     mediaURL:(NSURL*)mediaURL
-                                 successBlock:(VSuccessBlock)success
-                                    failBlock:(VFailBlock)fail
+- (AFHTTPRequestOperation *)sendMessageToConversation:(VConversation*)conversation
+                                             withText:(NSString*)text
+                                             mediaURL:(NSURL*)mediaURL
+                                         successBlock:(VSuccessBlock)success
+                                            failBlock:(VFailBlock)fail
 {
     //Set the parameters
-    NSDictionary* parameters = [@{@"to_user_id" : user.remoteId.stringValue ?: [NSNull null],
+    NSDictionary* parameters = [@{@"to_user_id" : conversation.other_interlocutor_user_id.stringValue ?: [NSNull null],
                                  @"text" : text ?: [NSNull null]
                                  } mutableCopy];
     NSDictionary *allURLs;
@@ -191,10 +191,27 @@
         [parameters setValue:type forKey:@"media_type"];
     }
     
+    VSuccessBlock fullSuccess = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
+    {
+        VLog(@"Succeeded with objects: %@", resultObjects);
+        
+        if ([fullResponse isKindOfClass:[NSDictionary class]])
+        {
+            conversation.remoteId = fullResponse[@"payload"][@"conversation_id"];
+            NSNumber* messageID = fullResponse[@"payload"][@"message_id"];
+        }
+        
+        //TODO: create temp message
+        
+        if (success)
+            success(operation, fullResponse, resultObjects);
+    };
+    
+    
     return [self uploadURLs:allURLs
                      toPath:@"/api/message/send"
                  parameters:[parameters copy]
-               successBlock:success
+               successBlock:fullSuccess
                   failBlock:fail];
 }
 

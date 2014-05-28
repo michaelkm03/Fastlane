@@ -27,11 +27,11 @@
                                                successBlock:(VSuccessBlock)success
                                                   failBlock:(VFailBlock)fail;
 
-- (AFHTTPRequestOperation *)sendMessageToUser:(VUser*)user
-                                     withText:(NSString*)text
-                                     mediaURL:(NSURL*)mediaURL
-                                 successBlock:(VSuccessBlock)success
-                                    failBlock:(VFailBlock)fail;
+- (AFHTTPRequestOperation *)sendMessageToConversation:(VConversation*)conversation
+                                             withText:(NSString*)text
+                                             mediaURL:(NSURL*)mediaURL
+                                         successBlock:(VSuccessBlock)success
+                                            failBlock:(VFailBlock)fail;
 
 - (RKManagedObjectRequestOperation *)unreadCountForConversationsWithSuccessBlock:(VSuccessBlock)success
                                                                        failBlock:(VFailBlock)fail;
