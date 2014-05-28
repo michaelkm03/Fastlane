@@ -172,49 +172,6 @@
     
 }
 
-- (AFHTTPRequestOperation *)sendMessageToConversation:(VConversation*)conversation
-                                             withText:(NSString*)text
-                                             mediaURL:(NSURL*)mediaURL
-                                         successBlock:(VSuccessBlock)success
-                                            failBlock:(VFailBlock)fail
-{
-    //Set the parameters
-    NSDictionary* parameters = [@{@"to_user_id" : conversation.other_interlocutor_user_id.stringValue ?: [NSNull null],
-                                 @"text" : text ?: [NSNull null]
-                                 } mutableCopy];
-    NSDictionary *allURLs;
-    if (mediaURL)
-    {
-        allURLs = @{@"media_data":mediaURL};
-        NSString* type = [[mediaURL pathExtension] isEqualToString:VConstantMediaExtensionMOV] || [[mediaURL pathExtension] isEqualToString:VConstantMediaExtensionMP4]
-                           ? @"video" : @"image";
-        [parameters setValue:type forKey:@"media_type"];
-    }
-    
-    VSuccessBlock fullSuccess = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
-    {
-        VLog(@"Succeeded with objects: %@", resultObjects);
-        
-        if ([fullResponse isKindOfClass:[NSDictionary class]])
-        {
-            conversation.remoteId = fullResponse[@"payload"][@"conversation_id"];
-            NSNumber* messageID = fullResponse[@"payload"][@"message_id"];
-        }
-        
-        //TODO: create temp message
-        
-        if (success)
-            success(operation, fullResponse, resultObjects);
-    };
-    
-    
-    return [self uploadURLs:allURLs
-                     toPath:@"/api/message/send"
-                 parameters:[parameters copy]
-               successBlock:fullSuccess
-                  failBlock:fail];
-}
-
 - (RKManagedObjectRequestOperation *)unreadCountForConversationsWithSuccessBlock:(VSuccessBlock)success
                                                                        failBlock:(VFailBlock)fail
 {

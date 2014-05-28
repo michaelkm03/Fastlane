@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="5064" systemVersion="13C64" minimumToolsVersion="Automatic" macOSVersion="Automatic" iOSVersion="Automatic">
+<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="5064" systemVersion="13D65" minimumToolsVersion="Automatic" macOSVersion="Automatic" iOSVersion="Automatic">
     <entity name="AbstractFilter" representedClassName="VAbstractFilter" isAbstract="YES" syncable="YES">
         <attribute name="currentPageNumber" optional="YES" attributeType="Integer 16" minValueString="0" defaultValueString="0" syncable="YES"/>
         <attribute name="filterAPIPath" attributeType="String" minValueString="0" indexed="YES" syncable="YES"/>
@@ -82,6 +82,7 @@
         <attribute name="isRead" optional="YES" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
         <attribute name="mediaPath" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="postedAt" optional="YES" attributeType="Date" syncable="YES"/>
+        <attribute name="remoteId" attributeType="Integer 32" minValueString="0" indexed="YES" syncable="YES"/>
         <attribute name="senderUserId" optional="YES" attributeType="Integer 32" minValueString="-1" defaultValueString="-1" syncable="YES"/>
         <attribute name="text" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="thumbnailPath" optional="YES" attributeType="String" syncable="YES"/>
@@ -182,7 +183,7 @@
         <element name="Conversation" positionX="1395" positionY="-477" width="128" height="118"/>
         <element name="Interaction" positionX="646" positionY="-208" width="128" height="208"/>
         <element name="InteractionAction" positionX="495" positionY="-162" width="128" height="105"/>
-        <element name="Message" positionX="1447" positionY="-280" width="128" height="178"/>
+        <element name="Message" positionX="1447" positionY="-280" width="128" height="193"/>
         <element name="Node" positionX="817" positionY="-180" width="128" height="133"/>
         <element name="NodeAction" positionX="835" positionY="-9" width="128" height="90"/>
         <element name="PollResult" positionX="1222" positionY="-45" width="128" height="118"/>

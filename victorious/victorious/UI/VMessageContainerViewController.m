@@ -9,10 +9,12 @@
 #import "VMessageContainerViewController.h"
 #import "VMessageViewController.h"
 #import "VObjectManager.h"
-#import "VObjectManager+DirectMessaging.h"
+#import "VObjectManager+ContentCreation.h"
 #import "VConversation.h"
 #import "VUser.h"
 #import "NSString+VParseHelp.h"
+
+#import "MBProgressHUD.h"
 
 @interface VMessageContainerViewController ()
 @end
@@ -68,11 +70,13 @@
 
 - (void)keyboardBar:(VKeyboardBarViewController *)keyboardBar didComposeWithText:(NSString *)text mediaURL:(NSURL *)mediaURL
 {
-    __block NSURL* urlToRemove = mediaURL;
+    MBProgressHUD*  progressHUD =   [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    progressHUD.labelText = NSLocalizedString(@"JustAMoment", @"");
+    progressHUD.detailsLabelText = NSLocalizedString(@"PublishUpload", @"");
     
     VSuccessBlock success = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
     {
-        [[NSFileManager defaultManager] removeItemAtURL:urlToRemove error:nil];
+        [progressHUD hide:YES];
         
         NSDictionary* payload = fullResponse[@"payload"];
         
@@ -94,7 +98,7 @@
                                                     failBlock:^(NSOperation* operation, NSError* error)
      {
          VLog(@"Failed in creating message with error: %@", error);
-        [[NSFileManager defaultManager] removeItemAtURL:urlToRemove error:nil];
+        [progressHUD hide:YES];
      }];
 }
 
