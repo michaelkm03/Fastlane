@@ -60,19 +60,19 @@
 - (void)createUnitsComponents
 {
     self.units = @[
-                   @"Minute",
-                   @"Hour",
-                   @"Day",
-                   @"Week",
-                   @"Month"
+                   NSLocalizedString(@"Minute", @"Minute"),
+                   NSLocalizedString(@"Hour", @"Hour"),
+                   NSLocalizedString(@"Day", @"Day"),
+                   NSLocalizedString(@"Week", @"Week"),
+                   NSLocalizedString(@"Month", @"Month")
                    ];
 
     self.unitsPlural = @[
-                         @"Minutes",
-                         @"Hours",
-                         @"Days",
-                         @"Weeks",
-                         @"Months"
+                         NSLocalizedString(@"Minutes", @"Minutes"),
+                         NSLocalizedString(@"Hours", @"Hours"),
+                         NSLocalizedString(@"Days", @"Days"),
+                         NSLocalizedString(@"Weeks", @"Weeks"),
+                         NSLocalizedString(@"Months", @"Months")
                          ];
 }
 

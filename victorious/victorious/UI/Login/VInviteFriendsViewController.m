@@ -7,27 +7,31 @@
 //
 
 #import "VInviteFriendsViewController.h"
+#import "VThemeManager.h"
 
 @interface VInviteFriendsViewController ()
+@property (nonatomic, weak)     IBOutlet    UIToolbar*      segmentedToolbar;
 @end
 
 @implementation VInviteFriendsViewController
 
-#pragma mark - UITableViewDataSource
-
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
-{
-    return 0;
-}
-
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    UITableViewCell*    cell    =   [self.tableView dequeueReusableCellWithIdentifier:@"" forIndexPath:indexPath];
-    
-    return cell;
-}
-
 #pragma mark - Actions
+
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
+    
+    self.segmentedToolbar.barTintColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVAccentColor];
+    self.segmentedToolbar.translucent = NO;
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    
+    [[VThemeManager sharedThemeManager] applyNormalNavBarStyling];
+    self.navigationController.navigationBar.translucent = NO;
+}
 
 - (IBAction)done:(id)sender
 {

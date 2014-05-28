@@ -155,7 +155,6 @@ NSString*   const   kVNewThemeKey                       =   @"kVNewTheme";
     
     [[UINavigationBar appearance] setBackgroundImage:nil forBarMetrics:UIBarMetricsDefault];
     [[UINavigationBar appearance] setShadowImage:nil];
-    
 }
 
 - (void)applyClearNavBarStyling

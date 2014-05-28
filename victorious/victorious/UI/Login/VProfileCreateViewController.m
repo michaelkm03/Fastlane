@@ -108,22 +108,18 @@
     self.doneButton.titleLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVButton1Font];
     [self.doneButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     self.doneButton.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
-
-    [self.usernameTextField becomeFirstResponder];
-    
-    [self.navigationController setNavigationBarHidden:NO animated:NO];
-    [self.navigationController.navigationBar setBackgroundImage:[[UIImage alloc] init] forBarMetrics:UIBarMetricsDefault];
-    self.navigationController.navigationBar.shadowImage = [[UIImage alloc] init];
-    self.navigationController.navigationBar.translucent = YES;
-    [self.navigationController setNavigationBarHidden:NO animated:NO];
-    
-//    UIImage*    cancelButtonImage = [[UIImage imageNamed:@"cameraButtonClose"]  imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
-//    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithImage:cancelButtonImage style:UIBarButtonItemStyleBordered target:self action:@selector(closeButtonClicked:)];
 }
 
 - (void)viewWillAppear:(BOOL)animated
 {
-    [super viewDidAppear:animated];
+    [super viewWillAppear:animated];
+    
+    [self.navigationController.navigationBar setBackgroundImage:[[UIImage alloc] init] forBarMetrics:UIBarMetricsDefault];
+    self.navigationController.navigationBar.shadowImage = [[UIImage alloc] init];
+    self.navigationController.navigationBar.translucent = YES;
+    [self.navigationController setNavigationBarHidden:NO animated:NO];
+
+    [self.usernameTextField becomeFirstResponder];
     [self.locationManager startMonitoringSignificantLocationChanges];
 }
 
@@ -250,8 +246,8 @@
     BOOL    isValid =   ((self.usernameTextField.text.length > 0) &&
                          (self.locationTextField.text.length > 0) &&
                          (self.taglineTextView.text.length > 0) &&
-                         ([self.agreeSwitch isOn]) &&
-                         (self.updatedProfileImage));
+//                         (self.updatedProfileImage) &&
+                         ([self.agreeSwitch isOn]));
     
     if (isValid)
         return YES;
@@ -287,8 +283,11 @@
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
-    VInviteFriendsViewController*   inviteViewController = (VInviteFriendsViewController *)segue.destinationViewController;
-    inviteViewController.profile = self.profile;
+    if ([segue.identifier isEqualToString:@"toInviteFriends"])
+    {
+//        VInviteFriendsViewController*   inviteViewController = (VInviteFriendsViewController *)segue.destinationViewController;
+//        inviteViewController.profile = self.profile;
+    }
 }
 
 #pragma mark - Support

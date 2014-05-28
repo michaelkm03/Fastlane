@@ -309,6 +309,132 @@
             </objects>
             <point key="canvasLocation" x="1465" y="-695"/>
         </scene>
+        <!--View Controller-->
+        <scene sceneID="PPy-Lw-KEU">
+            <objects>
+                <viewController id="4rH-7r-rIV" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="sQg-bc-tCR"/>
+                        <viewControllerLayoutGuide type="bottom" id="Qtr-qL-XUn"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="F33-P6-Q2y">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="zyv-er-YWZ">
+                                <rect key="frame" x="0.0" y="498" width="320" height="70"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                <subviews>
+                                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="YeY-zh-tSE">
+                                        <rect key="frame" x="20" y="20" width="100" height="30"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <state key="normal" title="Clear">
+                                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                        </state>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="JRX-LQ-My0">
+                                        <rect key="frame" x="200" y="20" width="100" height="30"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <state key="normal" title="Select All">
+                                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                        </state>
+                                    </button>
+                                </subviews>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                            </view>
+                            <containerView contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="tb1-gk-brp">
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="490"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                                <connections>
+                                    <segue destination="H3J-rv-plJ" kind="embed" id="G3Y-DA-41W"/>
+                                </connections>
+                            </containerView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Jad-Rw-PvJ" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2807" y="-1403"/>
+        </scene>
+        <!--Invite Suggested Table View Controller-->
+        <scene sceneID="mgS-L0-TKe">
+            <objects>
+                <tableViewController storyboardIdentifier="inviteSuggested" useStoryboardIdentifierAsRestorationIdentifier="YES" id="H3J-rv-plJ" customClass="VInviteSuggestedTableViewController" sceneMemberID="viewController">
+                    <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="CB9-VF-ZqO">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="490"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <prototypes>
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" id="Gua-Y6-3ap">
+                                <rect key="frame" x="0.0" y="22" width="320" height="44"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Gua-Y6-3ap" id="emn-kv-TPV">
+                                    <rect key="frame" x="0.0" y="0.0" width="320" height="43"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                </tableViewCellContentView>
+                            </tableViewCell>
+                        </prototypes>
+                        <connections>
+                            <outlet property="dataSource" destination="H3J-rv-plJ" id="Y6e-ts-9il"/>
+                            <outlet property="delegate" destination="H3J-rv-plJ" id="dgN-z5-CBu"/>
+                        </connections>
+                    </tableView>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="3AS-id-xG7" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="3339" y="-1403"/>
+        </scene>
+        <!--Invite Contacts View Controller-->
+        <scene sceneID="ObL-g6-Oh3">
+            <objects>
+                <viewController storyboardIdentifier="inviteContacts" useStoryboardIdentifierAsRestorationIdentifier="YES" id="VhC-qR-Pae" customClass="VInviteContactsViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="qdN-m0-qer"/>
+                        <viewControllerLayoutGuide type="bottom" id="iUP-x6-7El"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="mol-aw-Lnw">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <subviews>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="SEARCH AND INVITE YOUR FRIENDS FROM YOUR CONTACTS" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="280" translatesAutoresizingMaskIntoConstraints="NO" id="513-pn-WWA">
+                                <rect key="frame" x="20" y="128" width="280" height="83"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="23"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ZcE-aA-k4M">
+                                <rect key="frame" x="20" y="289" width="280" height="60"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" red="0.99607843139999996" green="0.28627450980000002" blue="0.28627450980000002" alpha="1" colorSpace="calibratedRGB"/>
+                                <state key="normal" title="Access Your Contacts">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                            </button>
+                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="oeX-rv-OpO">
+                                <rect key="frame" x="0.0" y="491" width="320" height="77"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <subviews>
+                                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="279" translatesAutoresizingMaskIntoConstraints="NO" id="i6J-Ck-F4n">
+                                        <rect key="frame" x="20" y="17" width="279" height="40"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <string key="text">Your contacts are safe with us! In order to find your friends, we need to send your contacts information to our servers using a secure connected.</string>
+                                        <fontDescription key="fontDescription" type="system" pointSize="11"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                </subviews>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                            </view>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="4qH-58-WyN" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2807" y="-705"/>
+        </scene>
         <!--Profile Create View Controller-->
         <scene sceneID="n2v-Tj-rFs">
             <objects>
@@ -366,7 +492,7 @@
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences" returnKeyType="done"/>
                             </textView>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Tell us about yourself..." lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kzi-75-z6l">
                                 <rect key="frame" x="17" y="239" width="288" height="17"/>
@@ -409,37 +535,93 @@
                         <outlet property="tagLinePlaceholderLabel" destination="kzi-75-z6l" id="ckt-sK-4Dc"/>
                         <outlet property="taglineTextView" destination="XNN-n4-drt" id="nGm-Sm-Xc1"/>
                         <outlet property="usernameTextField" destination="qGa-ti-Owy" id="ObJ-7B-zBh"/>
-                        <segue destination="A4g-vx-597" kind="push" identifier="toInviteFriends" id="iM6-pE-5Wg"/>
+                        <segue destination="it5-Qw-ibi" kind="push" identifier="toInviteFriends" id="WZL-l6-Bes"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="46v-Ci-MIV" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1465" y="9"/>
         </scene>
-        <!--Invite Friends View Controller - Invite Friends-->
-        <scene sceneID="laW-zi-qAf">
+        <!--Invite Friends View Controller - FIND FRIENDS-->
+        <scene sceneID="c0n-pp-xRY">
             <objects>
-                <tableViewController storyboardIdentifier="inviteWithSocial" useStoryboardIdentifierAsRestorationIdentifier="YES" id="A4g-vx-597" customClass="VInviteFriendsViewController" sceneMemberID="viewController">
-                    <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="9Xj-VY-iHr">
+                <viewController storyboardIdentifier="inviteFriends" useStoryboardIdentifierAsRestorationIdentifier="YES" id="it5-Qw-ibi" customClass="VInviteFriendsViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="tMX-m9-nbT"/>
+                        <viewControllerLayoutGuide type="bottom" id="ivW-1X-NN2"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="8bd-KR-stB">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                        <connections>
-                            <outlet property="dataSource" destination="A4g-vx-597" id="aad-E9-w7I"/>
-                            <outlet property="delegate" destination="A4g-vx-597" id="xzo-bG-BGh"/>
-                        </connections>
-                    </tableView>
-                    <navigationItem key="navigationItem" title="Invite Friends" id="krb-mX-BkW">
-                        <barButtonItem key="rightBarButtonItem" style="done" systemItem="done" id="V7O-Ym-KY7">
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <subviews>
+                            <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="oVq-hq-oha">
+                                <rect key="frame" x="0.0" y="64" width="320" height="44"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
+                                <items>
+                                    <barButtonItem image="inviteSuggested" id="qfK-d4-mCB">
+                                        <connections>
+                                            <segue destination="4rH-7r-rIV" kind="custom" customClass="VSegmentedViewControllerSegue" id="K5u-6a-yCS"/>
+                                        </connections>
+                                    </barButtonItem>
+                                    <barButtonItem style="plain" systemItem="flexibleSpace" id="xSH-XV-iP2"/>
+                                    <barButtonItem image="inviteFacebook" id="iA5-bh-tJn">
+                                        <connections>
+                                            <segue destination="VhC-qR-Pae" kind="custom" customClass="VSegmentedViewControllerSegue" id="aBH-xA-jQb"/>
+                                        </connections>
+                                    </barButtonItem>
+                                    <barButtonItem style="plain" systemItem="flexibleSpace" id="4Qm-ks-sng"/>
+                                    <barButtonItem image="inviteContacts" id="hwA-5T-tGH">
+                                        <connections>
+                                            <segue destination="gQ5-Gq-z3D" kind="custom" customClass="VSegmentedViewControllerSegue" id="UWT-de-Ik5"/>
+                                        </connections>
+                                    </barButtonItem>
+                                    <barButtonItem style="plain" systemItem="flexibleSpace" id="NbO-gS-0p2"/>
+                                    <barButtonItem image="inviteTwitter" id="DgI-9R-o4h">
+                                        <connections>
+                                            <segue destination="nr9-ai-yrY" kind="custom" customClass="VSegmentedViewControllerSegue" id="Ceb-ch-QFv"/>
+                                        </connections>
+                                    </barButtonItem>
+                                    <barButtonItem style="plain" systemItem="flexibleSpace" id="kUy-Ld-5q2"/>
+                                    <barButtonItem image="inviteInstagram" id="3om-C2-pJW">
+                                        <connections>
+                                            <segue destination="xcc-Fa-5Xq" kind="custom" customClass="VSegmentedViewControllerSegue" id="qDh-Gv-zMQ"/>
+                                        </connections>
+                                    </barButtonItem>
+                                </items>
+                            </toolbar>
+                            <containerView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="grF-dk-BdJ">
+                                <rect key="frame" x="0.0" y="108" width="320" height="460"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                            </containerView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstAttribute="bottom" secondItem="grF-dk-BdJ" secondAttribute="bottom" id="2TT-jb-TJR"/>
+                            <constraint firstItem="oVq-hq-oha" firstAttribute="top" secondItem="tMX-m9-nbT" secondAttribute="bottom" id="Aft-Gf-hoO"/>
+                            <constraint firstAttribute="trailing" secondItem="oVq-hq-oha" secondAttribute="trailing" id="OiW-oD-pYq"/>
+                            <constraint firstItem="oVq-hq-oha" firstAttribute="leading" secondItem="8bd-KR-stB" secondAttribute="leading" id="V0c-XM-gKo"/>
+                            <constraint firstItem="grF-dk-BdJ" firstAttribute="leading" secondItem="oVq-hq-oha" secondAttribute="leading" id="pB6-ri-c4Z"/>
+                            <constraint firstItem="grF-dk-BdJ" firstAttribute="top" secondItem="oVq-hq-oha" secondAttribute="bottom" id="rcf-8W-7Nk"/>
+                            <constraint firstItem="grF-dk-BdJ" firstAttribute="trailing" secondItem="oVq-hq-oha" secondAttribute="trailing" id="yXV-jp-9kM"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" title="FIND FRIENDS" id="MAE-q2-Awg">
+                        <barButtonItem key="leftBarButtonItem" image="cameraButtonBack" id="APJ-15-z6e"/>
+                        <barButtonItem key="rightBarButtonItem" title="DONE" style="done" id="cKm-7v-WZb">
                             <connections>
-                                <action selector="done:" destination="A4g-vx-597" id="Re8-Le-aVG"/>
+                                <action selector="done:" destination="it5-Qw-ibi" id="n8O-s0-KOg"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
-                </tableViewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="oKT-ag-RRT" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                    <connections>
+                        <outlet property="containerView" destination="grF-dk-BdJ" id="4og-WX-d5Z"/>
+                        <outlet property="segmentedToolbar" destination="oVq-hq-oha" id="e6q-W9-Orq"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="ovZ-vF-4fZ" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2039" y="9"/>
+            <point key="canvasLocation" x="1923" y="10"/>
         </scene>
         <!--Signup With Email View Controller-->
         <scene sceneID="zqJ-MV-vh3">
@@ -529,11 +711,161 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="daE-ky-fmu" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="815" y="453"/>
+            <point key="canvasLocation" x="815" y="507"/>
+        </scene>
+        <!--Invite Facebook View Controller-->
+        <scene sceneID="j1n-5e-rew">
+            <objects>
+                <viewController storyboardIdentifier="inviteFacebook" useStoryboardIdentifierAsRestorationIdentifier="YES" id="gQ5-Gq-z3D" customClass="VInviteFacebookViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="VWY-ek-KuO"/>
+                        <viewControllerLayoutGuide type="bottom" id="8rf-hj-4Ds"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="PM7-4f-ImK">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <subviews>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="ADD YOUR FRIENDS FROM FACEBOOK BY CONNECTING YOUR ACCOUNT" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="4" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="280" translatesAutoresizingMaskIntoConstraints="NO" id="O3i-Jo-XgY">
+                                <rect key="frame" x="20" y="128" width="280" height="110"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="23"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="GHG-RE-UMq">
+                                <rect key="frame" x="20" y="289" width="280" height="60"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" red="0.99607843139999996" green="0.28627450980000002" blue="0.28627450980000002" alpha="1" colorSpace="calibratedRGB"/>
+                                <state key="normal" title="Connected to Facebook">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                            </button>
+                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="s2V-6G-5Tc">
+                                <rect key="frame" x="0.0" y="491" width="320" height="77"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <subviews>
+                                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="We don't store your passwords and will never post anything without your permission" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="264" translatesAutoresizingMaskIntoConstraints="NO" id="78Y-qg-Eo2">
+                                        <rect key="frame" x="20" y="17" width="264" height="27"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="11"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                </subviews>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                            </view>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Ep8-kc-brj" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2807" y="-9"/>
+        </scene>
+        <!--Invite Twitter View Controller-->
+        <scene sceneID="Z72-1n-tmi">
+            <objects>
+                <viewController storyboardIdentifier="inviteTwitter" useStoryboardIdentifierAsRestorationIdentifier="YES" id="nr9-ai-yrY" customClass="VInviteTwitterViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="pUJ-Sg-lfD"/>
+                        <viewControllerLayoutGuide type="bottom" id="McA-zt-yXs"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="Wh5-sj-hvQ">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <subviews>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="ADD YOUR FRIENDS FROM TWITTER BY CONNECTING YOUR ACCOUNT" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="4" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="280" translatesAutoresizingMaskIntoConstraints="NO" id="G6z-go-Yoj">
+                                <rect key="frame" x="20" y="128" width="280" height="110"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="23"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Fmf-Hb-HwY">
+                                <rect key="frame" x="20" y="289" width="280" height="60"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" red="0.99607843139999996" green="0.28627450980000002" blue="0.28627450980000002" alpha="1" colorSpace="calibratedRGB"/>
+                                <state key="normal" title="Connect to Twitter">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                            </button>
+                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Js3-ea-Fa5">
+                                <rect key="frame" x="0.0" y="491" width="320" height="77"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <subviews>
+                                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="We don't store your passwords and will never post anything without your permission" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="264" translatesAutoresizingMaskIntoConstraints="NO" id="73l-km-3gw">
+                                        <rect key="frame" x="20" y="17" width="264" height="27"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="11"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                </subviews>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                            </view>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="cD5-Jv-4fT" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2807" y="707"/>
+        </scene>
+        <!--Invite Instagram View Controller-->
+        <scene sceneID="O6T-qo-pLl">
+            <objects>
+                <viewController storyboardIdentifier="inviteInstagram" useStoryboardIdentifierAsRestorationIdentifier="YES" id="xcc-Fa-5Xq" customClass="VInviteInstagramViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="FN1-z5-PmD"/>
+                        <viewControllerLayoutGuide type="bottom" id="As5-PH-xTt"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="mZJ-MP-SRu">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <subviews>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="ADD YOUR FRIENDS FROM INSTAGRAM BY CONNECTING YOUR ACCOUNT" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="4" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="280" translatesAutoresizingMaskIntoConstraints="NO" id="deM-hZ-sZG">
+                                <rect key="frame" x="20" y="128" width="280" height="110"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="23"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="TBE-qT-gOy">
+                                <rect key="frame" x="20" y="289" width="280" height="60"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" red="0.99607843139999996" green="0.28627450980000002" blue="0.28627450980000002" alpha="1" colorSpace="calibratedRGB"/>
+                                <state key="normal" title="Connect to Instagram">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                            </button>
+                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="4mO-VF-aDY">
+                                <rect key="frame" x="0.0" y="491" width="320" height="77"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <subviews>
+                                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="We don't store your passwords and will never post anything without your permission" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="264" translatesAutoresizingMaskIntoConstraints="NO" id="9hH-01-Wk3">
+                                        <rect key="frame" x="20" y="17" width="264" height="27"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="11"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                </subviews>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                            </view>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="UG7-TK-B8e" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2807" y="1435"/>
         </scene>
     </scenes>
     <resources>
         <image name="PostCamera" width="34" height="26"/>
+        <image name="cameraButtonBack" width="22" height="17"/>
+        <image name="inviteContacts" width="26" height="25"/>
+        <image name="inviteFacebook" width="13" height="24"/>
+        <image name="inviteInstagram" width="24" height="24"/>
+        <image name="inviteSuggested" width="27" height="20"/>
+        <image name="inviteTwitter" width="23" height="20"/>
         <image name="loginFacebook" width="288" height="42"/>
         <image name="loginTwitter" width="288" height="42"/>
     </resources>
