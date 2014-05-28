@@ -162,6 +162,9 @@
 
 - (IBAction)handleSetExpirationTapGesture:(id)sender
 {
+    self.afterButton.userInteractionEnabled = NO;
+    self.onButton.userInteractionEnabled = NO;
+
     if (self.useAfterMode)
         [self.expirationPicker becomeFirstResponder];
     else
@@ -184,6 +187,9 @@
     self.expirationDate = expirationDate;
     [self.doneButton setTitle:@"Done" forState:UIControlStateNormal];
     [self.toolbar setItems:self.toolbarWithReset animated:YES];
+    
+    self.afterButton.userInteractionEnabled = YES;
+    self.onButton.userInteractionEnabled = YES;
 }
 
 - (void)pickerTextField:(VPickerTextField *)pickerTextField didSelectRow:(NSInteger)row inComponent:(NSInteger)component
@@ -205,6 +211,9 @@
     self.expirationDate = expirationDate;
     [self.doneButton setTitle:@"Done" forState:UIControlStateNormal];
     [self.toolbar setItems:self.toolbarWithReset animated:YES];
+    
+    self.afterButton.userInteractionEnabled = YES;
+    self.onButton.userInteractionEnabled = YES;
 }
 
 @end

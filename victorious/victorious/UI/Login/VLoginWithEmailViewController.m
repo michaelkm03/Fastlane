@@ -7,7 +7,7 @@
 //
 
 #import "VLoginWithEmailViewController.h"
-#import "VResetCodeViewController.h"
+#import "VResetPasswordViewController.h"
 #import "VObjectManager+DirectMessaging.h"
 #import "VObjectManager+Sequence.h"
 #import "VObjectManager+Login.h"
@@ -16,10 +16,11 @@
 #import "VThemeManager.h"
 #import "UIImage+ImageEffects.h"
 #import "VLoginTransitionAnimator.h"
+#import "THPinViewController.h"
 
 NSString*   const   kVLoginErrorDomain =   @"VLoginErrorDomain";
 
-@interface VLoginWithEmailViewController () <UITextFieldDelegate, UINavigationControllerDelegate, UIAlertViewDelegate>
+@interface VLoginWithEmailViewController () <UITextFieldDelegate, UINavigationControllerDelegate, UIAlertViewDelegate, THPinViewControllerDelegate>
 @property (nonatomic, weak) IBOutlet    UITextField*    usernameTextField;
 @property (nonatomic, weak) IBOutlet    UITextField*    passwordTextField;
 @property (nonatomic, weak) IBOutlet    UIButton*       loginButton;
@@ -27,9 +28,12 @@ NSString*   const   kVLoginErrorDomain =   @"VLoginErrorDomain";
 @property (nonatomic, weak) IBOutlet    UIButton*       forgotPasswordButton;
 @property (nonatomic, strong)           VUser*          profile;
 @property (nonatomic, strong)           NSString*       deviceToken;
+@property (nonatomic, strong)           NSString*       userToken;
 
 @property (nonatomic, strong)           UIAlertView*    resetAlert;
 @property (nonatomic, strong)           UIAlertView*    thanksAlert;
+@property (nonatomic)                   BOOL            alertDismissed;
+
 @end
 
 @implementation VLoginWithEmailViewController
@@ -74,6 +78,18 @@ NSString*   const   kVLoginErrorDomain =   @"VLoginErrorDomain";
 {
     [super viewDidAppear:animated];
     [self.usernameTextField becomeFirstResponder];
+    self.navigationController.delegate = self;
+}
+
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+    
+    // Stop being the navigation controller's delegate
+    if (self.navigationController.delegate == self)
+    {
+        self.navigationController.delegate = nil;
+    }
 }
 
 - (BOOL)prefersStatusBarHidden
@@ -219,6 +235,9 @@ NSString*   const   kVLoginErrorDomain =   @"VLoginErrorDomain";
 
  -(IBAction)forgotPassword:(id)sender
 {
+    [[self view] endEditing:YES];
+    self.alertDismissed = NO;
+
     self.resetAlert   =   [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"ResetPassword", @"")
                                                      message:NSLocalizedString(@"ResetPasswordPrompt", @"")
                                                     delegate:self
@@ -237,16 +256,19 @@ NSString*   const   kVLoginErrorDomain =   @"VLoginErrorDomain";
     {
         if (buttonIndex == alertView.firstOtherButtonIndex)
         {
+            self.thanksAlert   =   [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Thanks", @"")
+                                                              message:NSLocalizedString(@"EmailSent", @"")
+                                                             delegate:self
+                                                    cancelButtonTitle:nil
+                                                    otherButtonTitles:NSLocalizedString(@"OKButton", @""), nil];
+            [self.thanksAlert show];
+
             [[VObjectManager sharedManager] requestPasswordResetForEmail:[alertView textFieldAtIndex:0].text
                                                             successBlock:^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
              {
                  self.deviceToken = resultObjects[0];
-                 self.thanksAlert   =   [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Thanks", @"")
-                                                                   message:NSLocalizedString(@"EmailSent", @"")
-                                                                  delegate:self
-                                                         cancelButtonTitle:nil
-                                                         otherButtonTitles:NSLocalizedString(@"OKButton", @""), nil];
-                 [self.thanksAlert show];
+                 if (self.alertDismissed)
+                     [self presentPINController];
              }
                                                                failBlock:^(NSOperation* operation, NSError* error)
              {
@@ -261,9 +283,35 @@ NSString*   const   kVLoginErrorDomain =   @"VLoginErrorDomain";
     }
     else if (alertView == self.thanksAlert)
     {
-        [self performSegueWithIdentifier:@"toResetCode" sender:self];
+        if (self.deviceToken)
+            [self presentPINController];
+        else
+            self.alertDismissed = YES;
     }
     
+}
+
+#pragma mark - Support
+
+- (void)presentPINController
+{
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.4f * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
+        THPinViewController *pinViewController = [[THPinViewController alloc] initWithDelegate:self];
+        pinViewController.promptTitle = @"Enter PIN";
+        pinViewController.promptColor = [UIColor colorWithWhite:0.0 alpha:0.6];
+        pinViewController.view.tintColor = [UIColor colorWithWhite:0.0 alpha:0.6];
+        pinViewController.hideLetters = YES;
+
+        if (IS_IPHONE_5)
+            pinViewController.backgroundImage = [[[VThemeManager sharedThemeManager] themedImageForKey:kVMenuBackgroundImage5] applyBlurWithRadius:25 tintColor:[UIColor colorWithWhite:1.0 alpha:0.7] saturationDeltaFactor:1.8 maskImage:nil];
+        else
+            pinViewController.backgroundImage = [[[VThemeManager sharedThemeManager] themedImageForKey:kVMenuBackgroundImage] applyBlurWithRadius:25 tintColor:[UIColor colorWithWhite:1.0 alpha:0.7] saturationDeltaFactor:1.8 maskImage:nil];
+
+        self.modalPresentationStyle = UIModalPresentationCurrentContext;
+        pinViewController.translucentBackground = YES;
+        
+        [self presentViewController:pinViewController animated:YES completion:nil];
+    });
 }
 
 #pragma mark - UITextFieldDelegate
@@ -288,6 +336,48 @@ NSString*   const   kVLoginErrorDomain =   @"VLoginErrorDomain";
     [[self view] endEditing:YES];
 }
 
+#pragma mark - THPinViewControllerDelegate
+
+- (NSUInteger)pinLengthForPinViewController:(THPinViewController *)pinViewController
+{
+    return 4;
+}
+
+- (BOOL)pinViewController:(THPinViewController *)pinViewController isPinValid:(NSString *)pin
+{
+    self.userToken = pin;
+    return YES;
+}
+
+- (BOOL)userCanRetryInPinViewController:(THPinViewController *)pinViewController
+{
+    return NO;
+}
+
+- (void)pinViewControllerWillDismissAfterPinEntryWasSuccessful:(THPinViewController *)pinViewController
+{
+    [[VObjectManager sharedManager] resetPasswordWithUserToken:self.userToken
+                                                   deviceToken:self.deviceToken
+                                                  successBlock:^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
+     {
+         [self performSegueWithIdentifier:@"toResetPassword" sender:self];
+     }
+                                                     failBlock:^(NSOperation* operation, NSError* error)
+     {
+         UIAlertView*    alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"CannotVerify", @"")
+                                                            message:NSLocalizedString(@"IncorrectCode", @"")
+                                                           delegate:nil
+                                                  cancelButtonTitle:nil
+                                                  otherButtonTitles:NSLocalizedString(@"OKButton", @""), nil];
+         [alert show];
+     }];
+}
+
+- (void)pinViewControllerWillDismissAfterPinEntryWasCancelled:(THPinViewController *)pinViewController
+{
+    
+}
+
 #pragma mark - Navigation
 
 - (id<UIViewControllerAnimatedTransitioning>) navigationController:(UINavigationController *)navigationController
@@ -298,15 +388,6 @@ NSString*   const   kVLoginErrorDomain =   @"VLoginErrorDomain";
     VLoginTransitionAnimator*   animator = [[VLoginTransitionAnimator alloc] init];
     animator.presenting = (operation == UINavigationControllerOperationPush);
     return animator;
-}
-
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
-{
-    if ([segue.identifier isEqualToString:@"toResetCode"])
-    {
-        VResetCodeViewController* viewController = (VResetCodeViewController *)segue.destinationViewController;
-        viewController.deviceToken = self.deviceToken;
-    }
 }
 
 @end

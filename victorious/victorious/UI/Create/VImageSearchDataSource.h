@@ -14,6 +14,7 @@
 
 @required
 - (UICollectionViewCell *)dataSource:(VImageSearchDataSource *)dataSource cellForSearchResult:(VImageSearchResult *)searchResult atIndexPath:(NSIndexPath *)indexPath;
+- (UICollectionReusableView *)dataSource:(VImageSearchDataSource *)dataSource viewForSupplementaryElementOfKind:(NSString *)kind atIndexPath:(NSIndexPath *)indexPath;
 
 @end
 
@@ -30,8 +31,18 @@
 - (void)searchWithSearchTerm:(NSString *)searchTerm onCompletion:(void(^)(void))completion onError:(void(^)(NSError*))errorBlock;
 
 /**
+ Load the next page of search results
+ */
+- (void)loadNextPageWithCompletion:(void(^)(void))completion error:(void(^)(NSError*))errorBlock;
+
+/**
  Returns the search result at the given index path.
  */
 - (VImageSearchResult *)searchResultAtIndexPath:(NSIndexPath *)indexPath;
+
+/**
+ Returns the number of search results
+ */
+- (NSUInteger)searchResultCount;
 
 @end

@@ -204,7 +204,7 @@ NSString*   const   kSignupErrorDomain =   @"VSignupErrorDomain";
         
         [[VUserManager sharedInstance] createEmailAccount:self.emailTextField.text
                                                  password:self.passwordTextField.text
-                                                 userName:nil
+                                                 userName:self.emailTextField.text
                                              onCompletion:^(VUser *user, BOOL created)
          {
              [self didSignUpWithUser:user];
