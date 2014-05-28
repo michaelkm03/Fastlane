@@ -90,6 +90,7 @@
     
     [self addResponseDescriptorsFromArray:[VUser descriptors]];
     [self addResponseDescriptorsFromArray:[VSequence descriptors]];
+    [self addResponseDescriptorsFromArray:[VConversation descriptors]];
     [self addResponseDescriptorsFromArray: @[errorDescriptor,
                                              verrorDescriptor,
                                              
@@ -97,7 +98,6 @@
                                              [VComment getAllDescriptor],
                                              [VComment getAllPaginationDescriptor],
                                              [VComment fetchDescriptor],
-                                             [VConversation descriptor],
                                              [VMessage descriptor],
                                              [VPollResult descriptor],
                                              [VPollResult createPollResultDescriptor],

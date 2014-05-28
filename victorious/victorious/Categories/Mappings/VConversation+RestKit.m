@@ -38,13 +38,20 @@
     return mapping;
 }
 
-+ (RKResponseDescriptor*)descriptor
++ (NSArray*)descriptors
 {
-    return [RKResponseDescriptor responseDescriptorWithMapping:[self entityMapping]
+    return @[ [RKResponseDescriptor responseDescriptorWithMapping:[self entityMapping]
                                                         method:RKRequestMethodGET
                                                    pathPattern:@"/api/message/conversation_list"
                                                        keyPath:@"payload"
-                                                   statusCodes:RKStatusCodeIndexSetForClass(RKStatusCodeClassSuccessful)];
+                                                   statusCodes:RKStatusCodeIndexSetForClass(RKStatusCodeClassSuccessful)],
+              
+              [RKResponseDescriptor responseDescriptorWithMapping:[self entityMapping]
+                                                           method:RKRequestMethodGET
+                                                      pathPattern:@"/api/message/conversation_with_user/:userid"
+                                                          keyPath:@"payload"
+                                                      statusCodes:RKStatusCodeIndexSetForClass(RKStatusCodeClassSuccessful)]
+              ];
 }
 
 @end
