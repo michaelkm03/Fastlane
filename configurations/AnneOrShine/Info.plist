@@ -39,5 +39,11 @@
 	<string>03cd956e-d112-4a45-b62e-b3875b27592c</string>
 	<key>TestflightStagingAppToken</key>
 	<string>39907803-9e14-4967-bac2-e079046065c9</string>
+	<key>VictoriousAppID</key>
+	<integer>1</integer>
+	<key>StagingAppID</key>
+	<integer>8</integer>
+	<key>QAAppID</key>
+	<integer>8</integer>
 </dict>
 </plist>

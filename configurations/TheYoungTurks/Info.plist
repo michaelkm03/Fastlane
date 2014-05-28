@@ -42,6 +42,10 @@
 	<key>TestflightReleaseAppToken</key>
 	<string>344351eb-9dc9-4b5e-a299-d2201a5d3e3a</string>
 	<key>VictoriousAppID</key>
+	<integer>1</integer>
+	<key>StagingAppID</key>
 	<integer>10</integer>
+	<key>QAAppID</key>
+	<integer>1</integer>
 </dict>
 </plist>

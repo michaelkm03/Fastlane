@@ -29,5 +29,9 @@
 	<string>49051cf7-348c-48c7-8bee-6fa1e72ff0b3</string>
 	<key>VictoriousAppID</key>
 	<integer>2</integer>
+	<key>StagingAppID</key>
+	<integer>2</integer>
+	<key>QAAppID</key>
+	<integer>2</integer>
 </dict>
 </plist>
