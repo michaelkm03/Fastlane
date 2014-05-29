@@ -23,7 +23,8 @@
                                   @"sender_user_id" : VSelectorName(senderUserId),
                                   @"posted_at" : VSelectorName(postedAt),
                                   @"thumbnail_url" : VSelectorName(thumbnailPath),
-                                  @"media_url" : VSelectorName(mediaPath)
+                                  @"media_url" : VSelectorName(mediaPath),
+                                  @"message_id" : VSelectorName(remoteId)
                                   };
     
     RKEntityMapping *mapping = [RKEntityMapping

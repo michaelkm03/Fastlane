@@ -9,7 +9,7 @@
 #import "VObjectManager.h"
 #import "VConstants.h"
 
-@class VSequence, VComment;
+@class VSequence, VComment, VConversation;
 
 typedef void (^VRemixCompletionBlock) (BOOL completion, NSURL* remixMp4Url, NSError* error);
 
@@ -49,4 +49,12 @@ typedef void (^VRemixCompletionBlock) (BOOL completion, NSURL* remixMp4Url, NSEr
                                      andParent:(VComment*)parent
                                   successBlock:(VSuccessBlock)success
                                      failBlock:(VFailBlock)fail;
+
+
+- (AFHTTPRequestOperation *)sendMessageToConversation:(VConversation*)conversation
+                                             withText:(NSString*)text
+                                             mediaURL:(NSURL*)mediaURL
+                                         successBlock:(VSuccessBlock)success
+                                            failBlock:(VFailBlock)fail;
+
 @end

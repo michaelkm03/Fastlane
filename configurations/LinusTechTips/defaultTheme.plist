@@ -9,7 +9,7 @@
 	<key>agreement.text</key>
 	<string>I&apos;m at least 13 years old and agree to Terms of Service</string>
 	<key>channel.name</key>
-	<string>Linus Tech Tips</string>
+	<string>Linus Tech</string>
 	<key>channel.url.about</key>
 	<string>http://dev.getvictorious.com/api/static/about</string>
 	<key>channel.url.acknowledgements</key>
@@ -81,6 +81,17 @@
 		<integer>65</integer>
 		<key>blue</key>
 		<integer>29</integer>
+		<key>alpha</key>
+		<integer>1</integer>
+	</dict>
+	<key>color.link.secondary</key>
+	<dict>
+		<key>red</key>
+		<integer>35</integer>
+		<key>green</key>
+		<integer>35</integer>
+		<key>blue</key>
+		<integer>35</integer>
 		<key>alpha</key>
 		<integer>1</integer>
 	</dict>

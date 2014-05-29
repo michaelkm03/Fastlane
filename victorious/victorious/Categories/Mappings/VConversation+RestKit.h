@@ -11,6 +11,6 @@
 
 @interface VConversation (RestKit)
 
-+ (RKResponseDescriptor*)descriptor;
++ (NSArray*)descriptors;
 
 @end

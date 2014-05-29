@@ -15,7 +15,8 @@
 
 @property (nonatomic, readonly) NSString *name;
 @property (nonatomic, readonly) NSURL    *baseURL;
+@property (nonatomic, readonly) NSNumber *appID;
 
-- (instancetype)initWithName:(NSString *)name baseURL:(NSURL *)baseURL;
+- (instancetype)initWithName:(NSString *)name baseURL:(NSURL *)baseURL appID:(NSNumber*)appID;
 
 @end

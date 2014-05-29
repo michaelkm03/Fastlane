@@ -19,32 +19,55 @@
 
 @implementation VObjectManager (DirectMessaging)
 
-- (VConversation*)conversationWithUser:(VUser*)user
+
+- (RKManagedObjectRequestOperation *)conversationWithUser:(VUser*)user
+                                             successBlock:(VSuccessBlock)success
+                                                failBlock:(VFailBlock)fail
 {
-    //TODO: this is gonna break with pagination, you don't have all the convos of a person
-    //TODO: rethink this.  Another user has multiple conversations but can only have one conversation with you?
     for (VConversation* conversation in user.conversations)
     {
         if ([conversation.user.remoteId isEqualToNumber:user.remoteId])
-            return conversation;
+        {
+            if (success)
+                success(nil, nil, @[conversation]);
+            return nil;
+        }
     }
     
-    VConversation *newConversation = [NSEntityDescription
-                                  insertNewObjectForEntityForName:[VConversation entityName]
-                                  inManagedObjectContext:self.managedObjectStore.persistentStoreManagedObjectContext];
-    
-    NSManagedObjectID* objectID = [user objectID];
-    if (objectID)
+    VFailBlock fullFail = ^(NSOperation* operation, NSError* error)
     {
-        VUser* userInContext = (VUser*)[newConversation.managedObjectContext objectWithID:objectID];
+        VLog(@"Failed with error: %@", error);
+        
+        if (error.code == kVConversationDoesNotExistError)
+        {
+            VConversation *newConversation = [NSEntityDescription
+                                              insertNewObjectForEntityForName:[VConversation entityName]
+                                              inManagedObjectContext:self.managedObjectStore.persistentStoreManagedObjectContext];
+            
+            NSManagedObjectID* objectID = [user objectID];
+            if (objectID)
+            {
+                VUser* userInContext = (VUser*)[newConversation.managedObjectContext objectWithID:objectID];
+                
+                newConversation.other_interlocutor_user_id = userInContext.remoteId;
+                newConversation.user = userInContext;
+            }
+            
+            [newConversation.managedObjectContext saveToPersistentStore:nil];
+            
+            if (success)
+                success(nil, nil, @[newConversation]);
+        }
+        
+        else if (fail)
+            fail(operation, error);
+    };
     
-        newConversation.other_interlocutor_user_id = userInContext.remoteId;
-        newConversation.user = userInContext;
-    }
-    
-    [newConversation.managedObjectContext saveToPersistentStore:nil];
-    
-    return newConversation;
+    return [self GET:[@"/api/message/conversation_with_user/" stringByAppendingString:user.remoteId.stringValue]
+              object:nil
+          parameters:nil
+        successBlock:success
+           failBlock:fullFail];
 }
 
 - (RKManagedObjectRequestOperation *)loadNextPageOfConversations:(VSuccessBlock)success
@@ -147,32 +170,6 @@
          successBlock:success
             failBlock:fail];
     
-}
-
-- (AFHTTPRequestOperation *)sendMessageToUser:(VUser*)user
-                                     withText:(NSString*)text
-                                     mediaURL:(NSURL*)mediaURL
-                                 successBlock:(VSuccessBlock)success
-                                    failBlock:(VFailBlock)fail
-{
-    //Set the parameters
-    NSDictionary* parameters = [@{@"to_user_id" : user.remoteId.stringValue ?: [NSNull null],
-                                 @"text" : text ?: [NSNull null]
-                                 } mutableCopy];
-    NSDictionary *allURLs;
-    if (mediaURL)
-    {
-        allURLs = @{@"media_data":mediaURL};
-        NSString* type = [[mediaURL pathExtension] isEqualToString:VConstantMediaExtensionMOV] || [[mediaURL pathExtension] isEqualToString:VConstantMediaExtensionMP4]
-                           ? @"video" : @"image";
-        [parameters setValue:type forKey:@"media_type"];
-    }
-    
-    return [self uploadURLs:allURLs
-                     toPath:@"/api/message/send"
-                 parameters:[parameters copy]
-               successBlock:success
-                  failBlock:fail];
 }
 
 - (RKManagedObjectRequestOperation *)unreadCountForConversationsWithSuccessBlock:(VSuccessBlock)success

@@ -12,7 +12,9 @@
 
 @interface VObjectManager (DirectMessaging)
 
-- (VConversation*)conversationWithUser:(VUser*)user;
+- (VConversation*)conversationWithUser:(VUser*)user
+                          successBlock:(VSuccessBlock)success
+                             failBlock:(VFailBlock)fail;
 
 - (RKManagedObjectRequestOperation *)loadNextPageOfConversations:(VSuccessBlock)success
                                                        failBlock:(VFailBlock)fail;
@@ -24,12 +26,6 @@
 - (RKManagedObjectRequestOperation *)markConversationAsRead:(VConversation*)conversation
                                                successBlock:(VSuccessBlock)success
                                                   failBlock:(VFailBlock)fail;
-
-- (AFHTTPRequestOperation *)sendMessageToUser:(VUser*)user
-                                     withText:(NSString*)text
-                                     mediaURL:(NSURL*)mediaURL
-                                 successBlock:(VSuccessBlock)success
-                                    failBlock:(VFailBlock)fail;
 
 - (RKManagedObjectRequestOperation *)unreadCountForConversationsWithSuccessBlock:(VSuccessBlock)success
                                                                        failBlock:(VFailBlock)fail;
