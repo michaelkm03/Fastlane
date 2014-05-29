@@ -6,8 +6,8 @@
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
-#import "VInviteFriendsViewController.h"
+#import "VFollowFriendsViewController.h"
 
 @interface VSegmentedViewControllerSegue : UIStoryboardSegue
-@property (nonatomic, strong)   VInviteFriendsViewController*       segmentedTabViewController;
+@property (nonatomic, strong)   VFollowFriendsViewController*       segmentedTabViewController;
 @end

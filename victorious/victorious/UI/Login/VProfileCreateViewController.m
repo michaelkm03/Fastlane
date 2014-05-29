@@ -8,7 +8,7 @@
 
 #import "VProfileCreateViewController.h"
 #import "VCameraViewController.h"
-#import "VInviteFriendsViewController.h"
+#import "VFollowFriendsViewController.h"
 #import "VUser.h"
 #import "TTTAttributedLabel.h"
 #import "VThemeManager.h"

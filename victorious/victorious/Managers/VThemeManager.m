@@ -121,6 +121,9 @@ NSString*   const   kVNewThemeKey                       =   @"kVNewTheme";
     [[[[UIApplication sharedApplication] delegate] window] setTintColor:[self themedColorForKey:kVMainTextColor]];
     
     [self applyNormalNavBarStyling];
+    
+//    [[UITabBar appearanceWhenContainedIn:[UITabBar class], nil] setTintColor:[UIColor redColor]];
+//    [[UITabBar appearance] setSelectedImageTintColor:[UIColor greenColor]];
 }
 
 - (void)removeStyling
