@@ -18,6 +18,8 @@
 
 static const CGFloat kPreviewImageWidth = 160.0f;
 
+static char KVOContext;
+
 @interface VCreatePollViewController() <UITextViewDelegate>
 
 @property (weak, nonatomic) IBOutlet UILabel *titleLabel;
@@ -38,8 +40,11 @@ static const CGFloat kPreviewImageWidth = 160.0f;
 @property (weak, nonatomic) IBOutlet UILabel *rightAnswerPrompt;
 
 @property (weak, nonatomic) IBOutlet UITextView *questionTextView;
-@property (weak, nonatomic) IBOutlet UITextView *leftAnswerTextView;
-@property (weak, nonatomic) IBOutlet UITextView *rightAnswerTextView;
+@property (strong, nonatomic) IBOutlet UITextView *leftAnswerTextView; // these properties are strong because they are being KVO'd
+@property (strong, nonatomic) IBOutlet UITextView *rightAnswerTextView;
+
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *leftAnswerTextViewHeightConstraint;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *rightAnswerTextViewHeightConstraint;
 
 @property (weak, nonatomic) IBOutlet UIView* answersSuperview;
 
@@ -51,6 +56,7 @@ static const CGFloat kPreviewImageWidth = 160.0f;
 @property (strong, nonatomic) IBOutletCollection(NSLayoutConstraint) NSArray *constraintsThatNeedHalfPointConstant;
 
 @property (nonatomic, strong)   UIBarButtonItem*    countDownLabel;
+@property (nonatomic)           BOOL                textViewsCleared;
 
 @end
 
@@ -62,6 +68,11 @@ static const CGFloat kPreviewImageWidth = 160.0f;
     VCreatePollViewController* createView = (VCreatePollViewController*)[currentViewController.storyboard instantiateViewControllerWithIdentifier: NSStringFromClass([VCreatePollViewController class])];
     createView.delegate = delegate;
     return createView;
+}
+
+- (void)dealloc
+{
+    [self.leftAnswerTextView removeObserver:self forKeyPath:NSStringFromSelector(@selector(contentSize)) context:&KVOContext];
 }
 
 - (void)viewDidLoad
@@ -101,10 +112,35 @@ static const CGFloat kPreviewImageWidth = 160.0f;
     self.leftAnswerTextView.textColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVContentTextColor];
     self.leftAnswerTextView.tintColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVContentTextColor];
     self.leftAnswerTextView.font      = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeading4Font];
+    [self.leftAnswerTextView addObserver:self
+                              forKeyPath:NSStringFromSelector(@selector(contentSize))
+                                 options:NSKeyValueObservingOptionInitial | NSKeyValueObservingOptionOld | NSKeyValueObservingOptionNew
+                                 context:&KVOContext];
+    self.leftAnswerTextView.text = self.leftAnswerPrompt.text; // temporarily
     
     self.rightAnswerTextView.textColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVContentTextColor];
     self.rightAnswerTextView.tintColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVContentTextColor];
     self.rightAnswerTextView.font      = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeading4Font];
+    [self.rightAnswerTextView addObserver:self
+                               forKeyPath:NSStringFromSelector(@selector(contentSize))
+                                  options:NSKeyValueObservingOptionInitial | NSKeyValueObservingOptionOld | NSKeyValueObservingOptionNew
+                                  context:&KVOContext];
+    self.rightAnswerTextView.text = self.rightAnswerPrompt.text; // temporarily
+    
+    [self.answersSuperview addConstraint:[NSLayoutConstraint constraintWithItem:self.leftAnswerTextView
+                                                                      attribute:NSLayoutAttributeCenterY
+                                                                      relatedBy:NSLayoutRelationEqual
+                                                                         toItem:self.answersSuperview
+                                                                      attribute:NSLayoutAttributeTop
+                                                                     multiplier:1.0f
+                                                                       constant:30.0f]];
+    [self.answersSuperview addConstraint:[NSLayoutConstraint constraintWithItem:self.rightAnswerTextView
+                                                                      attribute:NSLayoutAttributeCenterY
+                                                                      relatedBy:NSLayoutRelationEqual
+                                                                         toItem:self.answersSuperview
+                                                                      attribute:NSLayoutAttributeTop
+                                                                     multiplier:1.0f
+                                                                       constant:30.0f]];
     
     self.leftAnswerPrompt.text      = NSLocalizedString(@"Vote this", @"");
     self.leftAnswerPrompt.textColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVContentTextColor];
@@ -128,9 +164,17 @@ static const CGFloat kPreviewImageWidth = 160.0f;
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+
     if (![self.navigationController isNavigationBarHidden])
     {
         [self.navigationController setNavigationBarHidden:YES animated:YES];
+    }
+    
+    if (!self.textViewsCleared)
+    {
+        self.leftAnswerTextView.text = @"";
+        self.rightAnswerTextView.text = @"";
+        self.textViewsCleared = YES;
     }
 }
 
@@ -420,6 +464,79 @@ static const CGFloat kPreviewImageWidth = 160.0f;
     
     [self updateViewState];
     [self validatePostButtonState];
+}
+
+#pragma mark - KVO
+
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
+{
+    if (context != &KVOContext)
+    {
+        return;
+    }
+    
+    if (object == self.leftAnswerTextView && [keyPath isEqualToString:NSStringFromSelector(@selector(contentSize))])
+    {
+        NSValue *newContentSize = change[NSKeyValueChangeNewKey];
+        if (newContentSize && (id)newContentSize != [NSNull null])
+        {
+            NSValue *oldContentSize = change[NSKeyValueChangeOldKey];
+            if (oldContentSize && (id)oldContentSize != [NSNull null] &&
+                [oldContentSize CGSizeValue].height == [newContentSize CGSizeValue].height)
+            {
+                return;
+            }
+            
+            void (^animations)(void) = ^(void)
+            {
+                self.leftAnswerTextViewHeightConstraint.constant = [newContentSize CGSizeValue].height;
+                [self.answersSuperview layoutIfNeeded];
+            };
+            if (self.textViewsCleared)
+            {
+                [UIView animateWithDuration:0.2
+                                      delay:0
+                                    options:UIViewAnimationOptionCurveLinear
+                                 animations:animations
+                                 completion:nil];
+            }
+            else
+            {
+                animations();
+            }
+        }
+    }
+    else if (object == self.rightAnswerTextView && [keyPath isEqualToString:NSStringFromSelector(@selector(contentSize))])
+    {
+        NSValue *newContentSize = change[NSKeyValueChangeNewKey];
+        if (newContentSize && (id)newContentSize != [NSNull null])
+        {
+            NSValue *oldContentSize = change[NSKeyValueChangeOldKey];
+            if (oldContentSize && (id)oldContentSize != [NSNull null] &&
+                [oldContentSize CGSizeValue].height == [newContentSize CGSizeValue].height)
+            {
+                return;
+            }
+            
+            void (^animations)(void) = ^(void)
+            {
+                self.rightAnswerTextViewHeightConstraint.constant = [newContentSize CGSizeValue].height;
+                [self.answersSuperview layoutIfNeeded];
+            };
+            if (self.textViewsCleared)
+            {
+                [UIView animateWithDuration:0.2
+                                      delay:0
+                                    options:UIViewAnimationOptionCurveLinear
+                                 animations:animations
+                                 completion:nil];
+            }
+            else
+            {
+                animations();
+            }
+        }
+    }
 }
 
 @end
