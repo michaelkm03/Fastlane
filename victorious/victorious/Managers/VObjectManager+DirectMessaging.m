@@ -129,27 +129,12 @@
     
     VSuccessBlock fullSuccess = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
     {
-        //TODO: send notif if we have new messages?
-        conversation.messages = [NSSet set]; //TODO: this will need to change with pagination / messageIDs
-        NSMutableArray* nonExistantUsers = [[NSMutableArray alloc] init];
-        for (VMessage* message in resultObjects)
-        {
-            [conversation addMessagesObject:(VMessage*)[conversation.managedObjectContext objectWithID:[message objectID]]];
-            
-            //Sometimes we get -1 for the current logged in user
-            if (!message.user && [message.senderUserId  isEqual: @(-1)])
-                message.user = self.mainUser;
-            else if (!message.user)
-                [nonExistantUsers addObject:message.senderUserId];
-        }
+        NSManagedObjectContext* context = ((NSManagedObject*)[resultObjects firstObject]).managedObjectContext;
+        VConversation* conversationInContext = (VConversation*)[context objectWithID:conversation.objectID];
+        [conversationInContext addMessages:[NSSet setWithArray:resultObjects]];
+        [conversationInContext.managedObjectContext saveToPersistentStore:nil];
         
-        [conversation.managedObjectContext saveToPersistentStore:nil];
-        
-        if ([nonExistantUsers count])
-            [[VObjectManager sharedManager] fetchUsers:nonExistantUsers
-                                      withSuccessBlock:success
-                                             failBlock:fail];
-        else if (success)
+        if (success)
             success(operation, fullResponse, resultObjects);
     };
     

@@ -45,19 +45,37 @@ const   CGFloat     kMessageRowHeight           =   80;
                                            tintColor:[UIColor colorWithWhite:0.0 alpha:0.5]];
     
     self.tableView.backgroundView = backgroundImageView;
-    
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
-    //    self.tableView.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKeyPath:@"theme.color.messages.background"];
-    [self.tableView registerNib:[UINib nibWithNibName:kMessageCellIdentifier bundle:nil]
-         forCellReuseIdentifier:kMessageCellIdentifier];
-    [self.tableView registerNib:[UINib nibWithNibName:kOtherMessageCellIdentifier bundle:nil]
-         forCellReuseIdentifier:kOtherMessageCellIdentifier];
-    
-    [self.tableView reloadData];
-    [self refresh];
+
+//    [self.tableView reloadData];
+//    [self refresh];
 }
 
-- (void)refresh
+#pragma mark - fetched results controller
+
+- (NSFetchedResultsController *)makeFetchedResultsController
+{
+    RKObjectManager* manager = [RKObjectManager sharedManager];
+    NSManagedObjectContext *context = manager.managedObjectStore.persistentStoreManagedObjectContext;
+    
+    NSFetchRequest *fetchRequest = [NSFetchRequest fetchRequestWithEntityName:[VMessage entityName]];
+    NSSortDescriptor *sort = [[NSSortDescriptor alloc] initWithKey:@"postedAt" ascending:NO];
+    
+    NSPredicate* filterPredicate = [NSPredicate predicateWithFormat:@"conversation.remoteId = %@", self.conversation.remoteId];
+    [fetchRequest setPredicate:filterPredicate];
+    
+    [fetchRequest setSortDescriptors:@[sort]];
+    [fetchRequest setFetchBatchSize:20]; //[self currentFilter].perPageNumber.integerValue];
+    
+    return [[NSFetchedResultsController alloc] initWithFetchRequest:fetchRequest
+                                               managedObjectContext:context
+                                                 sectionNameKeyPath:nil
+                                                          cacheName:fetchRequest.entityName];
+}
+
+#pragma mark - Refresh
+
+- (IBAction)refresh:(UIRefreshControl *)sender
 {
     __block NSInteger oldMessageCount = [self.messages count];
     VFailBlock fail = ^(NSOperation* operation, NSError* error)
@@ -76,7 +94,8 @@ const   CGFloat     kMessageRowHeight           =   80;
         if (oldMessageCount != [self.messages count]
             && self.tableView.contentSize.height > self.tableView.frame.size.height)
         {
-            CGPoint offset = CGPointMake(0, self.tableView.contentSize.height - self.tableView.frame.size.height);
+            CGPoint offset = CGPointMake(self.tableView.contentOffset.x,
+                                         self.tableView.contentSize.height - self.tableView.frame.size.height);
             [self.tableView setContentOffset:offset animated:YES];
         }
     
@@ -93,23 +112,26 @@ const   CGFloat     kMessageRowHeight           =   80;
 
 - (void)delayedRefresh
 {
+    return;
+    
     double delayInSeconds = 1.0f;
     dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
     dispatch_after(popTime, dispatch_get_main_queue(), ^(void)
                    {
                        if(self.isViewLoaded && self.view.window)
                        {
-                           [self refresh];
+                           [self refresh:nil];
                        }
                    });
 }
 
-#pragma mark - Table view data source
 
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+- (void)loadNextPageAction
 {
-    return self.messages.count;
+    //TODO: fill this in later
 }
+
+#pragma mark - Table view data source
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -143,6 +165,14 @@ const   CGFloat     kMessageRowHeight           =   80;
     height = MAX(height + yOffset, kMessageMinCellHeight);
     
     return height;
+}
+
+- (void)registerCells
+{
+    [self.tableView registerNib:[UINib nibWithNibName:kMessageCellIdentifier bundle:nil]
+         forCellReuseIdentifier:kMessageCellIdentifier];
+    [self.tableView registerNib:[UINib nibWithNibName:kOtherMessageCellIdentifier bundle:nil]
+         forCellReuseIdentifier:kOtherMessageCellIdentifier];
 }
 
 @end

@@ -78,15 +78,8 @@
     {
         [progressHUD hide:YES];
         
-        NSDictionary* payload = fullResponse[@"payload"];
-        
-        if (!self.conversation.remoteId)
-        {
-            self.conversation.remoteId = payload[@"conversation_id"];
-            [self.conversation.managedObjectContext saveToPersistentStore:nil];
-        }
-        
-        [(VMessageViewController *)self.conversationTableViewController refresh];
+//        [(VMessageViewController *)self.conversationTableViewController refresh];
+//        [self.conversationTableViewController.tableView reloadData];
         
         VLog(@"Succeed with response: %@", fullResponse);
     };

@@ -100,33 +100,33 @@
         [self loadNextPageAction];
     }
     
-    //Notify the container about the scroll so it can handle the header
-    if ([self.delegate respondsToSelector:@selector(scrollViewDidScroll:)])
-    {
-        [self.delegate scrollViewDidScroll:scrollView];
-    }
-    
-    //TODO: remove this, this is just here until we port the profile view
-    CGPoint translation = [scrollView.panGestureRecognizer translationInView:scrollView.superview];
-    CGRect navBarFrame = self.navigationController.navigationBar.frame;
-    
-    if (translation.y < 0 && CGRectContainsRect(self.view.frame, navBarFrame))
-    {
-        navBarFrame.origin.y = -navBarFrame.size.height;
-    }
-    else if (translation.y > 0 && !CGRectContainsRect(self.view.frame, navBarFrame))
-    {
-        navBarFrame.origin.y = 0;
-    }
-    else
-    {
-        return;
-    }
-    
-    [UIView animateWithDuration:.5f animations:^
-     {
-         self.navigationController.navigationBar.frame = navBarFrame;
-     }];
+//    //Notify the container about the scroll so it can handle the header
+//    if ([self.delegate respondsToSelector:@selector(scrollViewDidScroll:)])
+//    {
+//        [self.delegate scrollViewDidScroll:scrollView];
+//    }
+//    
+//    //TODO: remove this, this is just here until we port the profile view
+//    CGPoint translation = [scrollView.panGestureRecognizer translationInView:scrollView.superview];
+//    CGRect navBarFrame = self.navigationController.navigationBar.frame;
+//    
+//    if (translation.y < 0 && CGRectContainsRect(self.view.frame, navBarFrame))
+//    {
+//        navBarFrame.origin.y = -navBarFrame.size.height;
+//    }
+//    else if (translation.y > 0 && !CGRectContainsRect(self.view.frame, navBarFrame))
+//    {
+//        navBarFrame.origin.y = 0;
+//    }
+//    else
+//    {
+//        return;
+//    }
+//    
+//    [UIView animateWithDuration:.5f animations:^
+//     {
+//         self.navigationController.navigationBar.frame = navBarFrame;
+//     }];
 }
 
 #pragma mark - UITablViewDataSource
