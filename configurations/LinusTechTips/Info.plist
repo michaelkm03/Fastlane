@@ -3,11 +3,9 @@
 <plist version="1.0">
 <dict>
 	<key>CFBundleDisplayName</key>
-	<string>${ProductPrefix}LinusTechTips</string>
+	<string>${ProductPrefix}LinusTech</string>
 	<key>CFBundleIdentifier</key>
 	<string>com.getvictorious.${ProductPrefix}LinusTechTips</string>
-	<key>CFBundleName</key>
-	<string>${ProductPrefix}LinusTechTips</string>
 	<key>CFBundleURLTypes</key>
 	<array>
 		<dict>
