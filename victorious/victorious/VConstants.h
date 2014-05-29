@@ -58,11 +58,13 @@ static NSUInteger const kVStillTranscodingError = 5500;
 static NSUInteger const kVAccountAlreadyExistsError = 1003;
 static NSUInteger const kVUnauthoizedError = 401;
 
+static NSUInteger  const   kDevAppID                = 1;
 static NSString*   const   kVictoriousAppIDKey      = @"VictoriousAppID";
+static NSString*   const   kStagingAppIDKey         = @"StagingAppID";
+static NSString*   const   kQAAppIDKey              = @"QAAppID";
 
 static NSString*   const   kFacebookAppIDKey        = @"FacebookAppID";
 
-static NSString*   const   kTestflightDevToken      = @"TestflightDevAppToken";
 static NSString*   const   kTestflightQAToken       = @"TestflightQAAppToken";
 static NSString*   const   kTestflightStagingToken  = @"TestflightStagingAppToken";
 static NSString*   const   kTestflightReleaseToken  = @"TestflightReleaseAppToken";

@@ -44,7 +44,7 @@
     //(this is the only non-dynamic header, so set it now)
     NSString *userAgent = ([manager HTTPClient].defaultHeaders)[@"User-Agent"];
     
-    NSNumber* appID = [[NSBundle mainBundle] objectForInfoDictionaryKey:kVictoriousAppIDKey];
+    NSNumber* appID = [VObjectManager currentEnvironment].appID;
     userAgent = [NSString stringWithFormat:@"%@ aid:%@ uuid:%@", userAgent, appID.stringValue, [[UIDevice currentDevice].identifierForVendor UUIDString]];
     [[manager HTTPClient] setDefaultHeader:@"User-Agent" value:userAgent];
     

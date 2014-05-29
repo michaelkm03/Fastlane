@@ -9,6 +9,7 @@
 #import "AFNetworking.h"
 #import "VEnvironment.h"
 #import "VObjectManager+Environment.h"
+#import "VConstants.h"
 
 static NSString * const kCurrentEnvironmentKey = @"com.victorious.VObjectManager.Environment.currentEnvironment";
 
@@ -48,11 +49,16 @@ static NSString * const kCurrentEnvironmentKey = @"com.victorious.VObjectManager
         allEnvironments =
         @[
 #ifndef V_NO_SWITCH_ENVIRONMENTS
-            [[VEnvironment alloc] initWithName:@"Dev" baseURL:[NSURL URLWithString:@"http://dev.getvictorious.com"]],
-            [[VEnvironment alloc] initWithName:@"QA" baseURL:[NSURL URLWithString:@"http://qa.getvictorious.com"]],
-            [[VEnvironment alloc] initWithName:@"Staging" baseURL:[NSURL URLWithString:@"http://staging.getvictorious.com"]],
+
+            [[VEnvironment alloc] initWithName:@"Dev" baseURL:[NSURL URLWithString:@"http://dev.getvictorious.com"]
+                                         appID:@(kDevAppID)],
+            [[VEnvironment alloc] initWithName:@"QA" baseURL:[NSURL URLWithString:@"http://qa.getvictorious.com"]
+                                         appID:[[NSBundle mainBundle] objectForInfoDictionaryKey:kQAAppIDKey]],
+            [[VEnvironment alloc] initWithName:@"Staging" baseURL:[NSURL URLWithString:@"http://staging.getvictorious.com"]
+                                         appID:[[NSBundle mainBundle] objectForInfoDictionaryKey:kStagingAppIDKey]],
 #endif
-            [[VEnvironment alloc] initWithName:@"Production" baseURL:[NSURL URLWithString:@"http://api.getvictorious.com"]]
+            [[VEnvironment alloc] initWithName:@"Production" baseURL:[NSURL URLWithString:@"http://api.getvictorious.com"]
+                                         appID:[[NSBundle mainBundle] objectForInfoDictionaryKey:kVictoriousAppIDKey]]
         ];
     });
     return allEnvironments;
