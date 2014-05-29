@@ -1332,7 +1332,7 @@
                         <viewControllerLayoutGuide type="top" id="A3o-wT-u1C"/>
                         <viewControllerLayoutGuide type="bottom" id="zRc-OV-VaM"/>
                     </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="h7T-CG-J0Y">
+                    <view key="view" contentMode="scaleToFill" placeholderIntrinsicWidth="320" placeholderIntrinsicHeight="568" id="h7T-CG-J0Y">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
@@ -1357,18 +1357,23 @@
                                 <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Ask a Question..." minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="qvX-lB-9ig" userLabel="Question Text Field">
-                                <rect key="frame" x="20" y="68" width="280" height="66"/>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Ask a question..." lineBreakMode="wordWrap" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hOL-9P-6fa" userLabel="Question Prompt">
+                                <rect key="frame" x="20" y="68" width="128" height="21"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="66" id="OUD-0g-VoJ"/>
-                                </constraints>
-                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <textInputTraits key="textInputTraits" returnKeyType="next"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" verticalCompressionResistancePriority="250" translatesAutoresizingMaskIntoConstraints="NO" id="KcL-yk-Mgj" userLabel="Question Text View">
+                                <rect key="frame" x="15" y="60" width="285" height="100"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences" returnKeyType="done"/>
                                 <connections>
-                                    <outlet property="delegate" destination="ZDA-K5-K60" id="5cq-Xx-Vk0"/>
+                                    <outlet property="delegate" destination="ZDA-K5-K60" id="y9V-Us-P3x"/>
                                 </connections>
-                            </textField>
+                            </textView>
                             <view opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="rJm-hU-1CC" userLabel="Answers Superview">
                                 <rect key="frame" x="0.0" y="160" width="320" height="274"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -1389,24 +1394,44 @@
                                             <constraint firstAttribute="width" constant="160" id="eVu-Ze-rFT"/>
                                         </constraints>
                                     </view>
-                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="VOTE THIS..." textAlignment="right" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="HuI-wz-Frr" userLabel="Vote This Text Field">
-                                        <rect key="frame" x="0.0" y="1" width="128" height="60"/>
+                                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Vote this" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="83v-Xs-Bp8" userLabel="Left Answer Prompt">
+                                        <rect key="frame" x="61" y="16" width="67" height="21"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                        <textInputTraits key="textInputTraits" returnKeyType="next"/>
-                                        <connections>
-                                            <outlet property="delegate" destination="ZDA-K5-K60" id="BIW-W1-Egt"/>
-                                        </connections>
-                                    </textField>
-                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="VOTE THAT..." textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="wTP-xr-iv8" userLabel="Vote That Text Field">
-                                        <rect key="frame" x="160" y="1" width="160" height="60"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Vote that" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="aHa-OF-GOS" userLabel="Right Answer Prompt">
+                                        <rect key="frame" x="192" y="16" width="69" height="21"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="right" translatesAutoresizingMaskIntoConstraints="NO" id="0QX-qc-n1v" userLabel="Left Answer Text View">
+                                        <rect key="frame" x="9" y="8" width="124" height="44"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="44" id="gIU-9Z-0qd"/>
+                                        </constraints>
                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                        <textInputTraits key="textInputTraits" returnKeyType="done"/>
+                                        <textInputTraits key="textInputTraits" autocapitalizationType="sentences" returnKeyType="done"/>
                                         <connections>
-                                            <outlet property="delegate" destination="ZDA-K5-K60" id="znJ-yj-d40"/>
+                                            <outlet property="delegate" destination="ZDA-K5-K60" id="2FK-LC-rYO"/>
                                         </connections>
-                                    </textField>
+                                    </textView>
+                                    <textView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="wuq-qM-nvz" userLabel="Right Answer Text View">
+                                        <rect key="frame" x="187" y="8" width="124" height="44"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="44" id="eDo-bA-c7W"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <textInputTraits key="textInputTraits" autocapitalizationType="sentences" returnKeyType="done"/>
+                                        <connections>
+                                            <outlet property="delegate" destination="ZDA-K5-K60" id="1fM-Ox-JjP"/>
+                                        </connections>
+                                    </textView>
                                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" placeholderIntrinsicWidth="48" placeholderIntrinsicHeight="52" image="PollCreateOr" translatesAutoresizingMaskIntoConstraints="NO" id="D7S-lS-tZ7" userLabel="OR Image">
                                         <rect key="frame" x="136" y="5" width="48" height="52"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -1532,32 +1557,42 @@
                                     </view>
                                 </subviews>
                                 <constraints>
+                                    <constraint firstItem="83v-Xs-Bp8" firstAttribute="top" secondItem="0QX-qc-n1v" secondAttribute="top" constant="8" id="3YM-qM-aYe"/>
                                     <constraint firstAttribute="right" secondItem="j2x-Lb-uJi" secondAttribute="right" id="5zV-bw-qlD"/>
                                     <constraint firstAttribute="height" constant="274" id="6Kp-Or-B5M"/>
+                                    <constraint firstAttribute="right" secondItem="wuq-qM-nvz" secondAttribute="right" constant="9" id="6pW-1X-M9K"/>
                                     <constraint firstAttribute="right" secondItem="8uD-1M-xDB" secondAttribute="right" id="8Cp-uO-LNz"/>
                                     <constraint firstItem="uFq-1W-p8e" firstAttribute="left" secondItem="rJm-hU-1CC" secondAttribute="left" id="8JM-c0-gXp"/>
                                     <constraint firstItem="nrN-3e-ph5" firstAttribute="top" secondItem="rJm-hU-1CC" secondAttribute="top" constant="60" id="Aty-sj-QUe"/>
                                     <constraint firstAttribute="bottom" secondItem="YgI-Md-qE7" secondAttribute="bottom" id="Cor-Pb-DOa"/>
                                     <constraint firstAttribute="right" secondItem="HVK-af-tcT" secondAttribute="right" constant="2" id="Dcw-yw-h7l"/>
                                     <constraint firstAttribute="bottom" secondItem="uFq-1W-p8e" secondAttribute="bottom" id="FqA-cT-iIM"/>
+                                    <constraint firstItem="D7S-lS-tZ7" firstAttribute="left" secondItem="0QX-qc-n1v" secondAttribute="right" constant="3" id="IGs-Ul-UbJ"/>
                                     <constraint firstItem="Aub-7c-txI" firstAttribute="left" secondItem="rJm-hU-1CC" secondAttribute="left" id="M20-IB-crf"/>
                                     <constraint firstItem="8uD-1M-xDB" firstAttribute="top" secondItem="rJm-hU-1CC" secondAttribute="top" constant="60" id="Mnc-ze-9MA"/>
                                     <constraint firstItem="Aub-7c-txI" firstAttribute="top" secondItem="rJm-hU-1CC" secondAttribute="top" constant="60" id="Mut-UI-7kr"/>
                                     <constraint firstItem="tcT-2X-CHi" firstAttribute="top" secondItem="rJm-hU-1CC" secondAttribute="top" constant="60" id="OON-ay-o3m"/>
+                                    <constraint firstItem="0QX-qc-n1v" firstAttribute="left" secondItem="rJm-hU-1CC" secondAttribute="left" constant="9" id="PYQ-Eg-ggL"/>
                                     <constraint firstItem="61D-XK-J2Z" firstAttribute="left" secondItem="rJm-hU-1CC" secondAttribute="left" constant="2" id="QTZ-gB-PjM"/>
                                     <constraint firstItem="eOK-5f-0c1" firstAttribute="left" secondItem="rJm-hU-1CC" secondAttribute="left" id="R9M-RA-BnP"/>
                                     <constraint firstItem="D7S-lS-tZ7" firstAttribute="top" secondItem="rJm-hU-1CC" secondAttribute="top" constant="5" id="SFK-eM-LFj"/>
+                                    <constraint firstItem="wuq-qM-nvz" firstAttribute="left" secondItem="D7S-lS-tZ7" secondAttribute="right" constant="3" id="SaB-A1-lu3"/>
                                     <constraint firstAttribute="right" secondItem="Aub-7c-txI" secondAttribute="right" id="Smr-IT-ObQ"/>
+                                    <constraint firstItem="aHa-OF-GOS" firstAttribute="top" secondItem="wuq-qM-nvz" secondAttribute="top" constant="8" id="XV0-Hh-H5p"/>
+                                    <constraint firstItem="aHa-OF-GOS" firstAttribute="leading" secondItem="wuq-qM-nvz" secondAttribute="leading" constant="5" id="ak5-QP-tat"/>
                                     <constraint firstAttribute="bottom" secondItem="HVK-af-tcT" secondAttribute="bottom" id="bDL-8L-MYn"/>
                                     <constraint firstAttribute="bottom" secondItem="tcT-2X-CHi" secondAttribute="bottom" id="bIE-SI-4SN"/>
                                     <constraint firstAttribute="right" secondItem="YgI-Md-qE7" secondAttribute="right" id="bpq-BS-jEe"/>
+                                    <constraint firstItem="0QX-qc-n1v" firstAttribute="right" secondItem="83v-Xs-Bp8" secondAttribute="right" constant="5" id="cBC-Ys-UF6"/>
                                     <constraint firstItem="j2x-Lb-uJi" firstAttribute="left" secondItem="rJm-hU-1CC" secondAttribute="left" id="cjD-eY-hUB"/>
                                     <constraint firstItem="tcT-2X-CHi" firstAttribute="left" secondItem="rJm-hU-1CC" secondAttribute="left" id="d7v-TW-Pje"/>
+                                    <constraint firstItem="wuq-qM-nvz" firstAttribute="top" secondItem="rJm-hU-1CC" secondAttribute="top" constant="8" id="dBg-du-vpt"/>
                                     <constraint firstItem="YgI-Md-qE7" firstAttribute="top" secondItem="rJm-hU-1CC" secondAttribute="top" id="dSf-YK-IVK"/>
                                     <constraint firstAttribute="bottom" secondItem="8uD-1M-xDB" secondAttribute="bottom" id="eX2-Ls-Qmg"/>
                                     <constraint firstAttribute="bottom" secondItem="61D-XK-J2Z" secondAttribute="bottom" id="gca-OW-jVI"/>
                                     <constraint firstAttribute="centerX" secondItem="D7S-lS-tZ7" secondAttribute="centerX" id="hmI-bY-6Lc"/>
                                     <constraint firstAttribute="right" secondItem="eOK-5f-0c1" secondAttribute="right" id="i0J-z9-KSc"/>
+                                    <constraint firstItem="0QX-qc-n1v" firstAttribute="top" secondItem="rJm-hU-1CC" secondAttribute="top" constant="8" id="iAi-MY-ipg"/>
                                     <constraint firstItem="eOK-5f-0c1" firstAttribute="top" secondItem="rJm-hU-1CC" secondAttribute="top" id="lNR-Ul-wlK"/>
                                     <constraint firstAttribute="bottom" secondItem="nrN-3e-ph5" secondAttribute="bottom" id="paB-zA-ieH"/>
                                     <constraint firstAttribute="bottom" secondItem="j2x-Lb-uJi" secondAttribute="bottom" id="q39-Av-u6t"/>
@@ -1586,18 +1621,21 @@
                         <constraints>
                             <constraint firstAttribute="right" secondItem="ZZw-Pe-VXw" secondAttribute="right" id="3Mm-cr-rwJ"/>
                             <constraint firstItem="rJm-hU-1CC" firstAttribute="left" secondItem="h7T-CG-J0Y" secondAttribute="left" id="6q1-dX-2Hn"/>
+                            <constraint firstItem="KcL-yk-Mgj" firstAttribute="top" secondItem="A3o-wT-u1C" secondAttribute="bottom" constant="60" id="BG9-gt-Jgb"/>
                             <constraint firstItem="kOI-QN-Gzl" firstAttribute="top" secondItem="A3o-wT-u1C" secondAttribute="bottom" constant="21" id="Esb-vw-wrV"/>
+                            <constraint firstItem="KcL-yk-Mgj" firstAttribute="left" secondItem="h7T-CG-J0Y" secondAttribute="left" constant="15" id="G3j-ai-r5I"/>
                             <constraint firstAttribute="right" secondItem="rJm-hU-1CC" secondAttribute="right" id="GjI-W8-ZSw"/>
+                            <constraint firstItem="rJm-hU-1CC" firstAttribute="top" secondItem="KcL-yk-Mgj" secondAttribute="bottom" id="Ie3-4G-Vgs"/>
                             <constraint firstItem="ZZw-Pe-VXw" firstAttribute="top" relation="greaterThanOrEqual" secondItem="rJm-hU-1CC" secondAttribute="bottom" id="Kah-QS-Ot3"/>
-                            <constraint firstItem="qvX-lB-9ig" firstAttribute="leading" secondItem="h7T-CG-J0Y" secondAttribute="leading" constant="20" id="Vsn-0k-JaU"/>
+                            <constraint firstItem="hOL-9P-6fa" firstAttribute="top" secondItem="KcL-yk-Mgj" secondAttribute="top" constant="8" id="Ulg-l5-sEe"/>
                             <constraint firstAttribute="centerX" secondItem="kOI-QN-Gzl" secondAttribute="centerX" constant="-0.5" id="WEx-v7-8dz"/>
                             <constraint firstItem="zRc-OV-VaM" firstAttribute="top" secondItem="ZZw-Pe-VXw" secondAttribute="bottom" id="Zit-vg-0My"/>
-                            <constraint firstAttribute="trailing" secondItem="qvX-lB-9ig" secondAttribute="trailing" constant="20" id="Zvo-iH-Gh8"/>
-                            <constraint firstItem="qvX-lB-9ig" firstAttribute="top" secondItem="A3o-wT-u1C" secondAttribute="bottom" constant="68" id="cRo-i4-TfV"/>
                             <constraint firstItem="rJm-hU-1CC" firstAttribute="top" secondItem="A3o-wT-u1C" secondAttribute="bottom" constant="160" id="ffs-8e-lCu"/>
                             <constraint firstItem="ZZw-Pe-VXw" firstAttribute="left" secondItem="h7T-CG-J0Y" secondAttribute="left" id="jwi-pX-bd9"/>
                             <constraint firstItem="8OZ-gz-Jxr" firstAttribute="top" secondItem="A3o-wT-u1C" secondAttribute="bottom" constant="3" id="t7d-CU-OFe"/>
+                            <constraint firstItem="hOL-9P-6fa" firstAttribute="leading" secondItem="KcL-yk-Mgj" secondAttribute="leading" constant="5" id="vCi-Mb-jNb"/>
                             <constraint firstItem="8OZ-gz-Jxr" firstAttribute="left" secondItem="h7T-CG-J0Y" secondAttribute="left" id="yUf-qe-scb"/>
+                            <constraint firstAttribute="right" secondItem="KcL-yk-Mgj" secondAttribute="right" constant="20" id="zYF-yH-6GV"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="New Poll" id="18V-Wp-b3G">
@@ -1608,14 +1646,17 @@
                     <connections>
                         <outlet property="addMediaView" destination="nrN-3e-ph5" id="Ich-kg-HuN"/>
                         <outlet property="answersSuperview" destination="rJm-hU-1CC" id="Kga-2P-EeG"/>
-                        <outlet property="leftAnswerTextField" destination="HuI-wz-Frr" id="mnh-vB-ylU"/>
+                        <outlet property="leftAnswerPrompt" destination="83v-Xs-Bp8" id="aAU-bj-QzO"/>
+                        <outlet property="leftAnswerTextView" destination="0QX-qc-n1v" id="sDi-lf-5Z8"/>
                         <outlet property="leftPreviewImageView" destination="tcT-2X-CHi" id="M1C-Li-6Tj"/>
                         <outlet property="leftRemoveButton" destination="61D-XK-J2Z" id="suw-yR-eaZ"/>
                         <outlet property="mediaButton" destination="0lq-A3-lhM" id="WIp-FT-1F3"/>
                         <outlet property="mediaButtonLeftSpacingConstraint" destination="ycQ-uB-8ba" id="mGj-A3-tbj"/>
                         <outlet property="postButton" destination="ZZw-Pe-VXw" id="HZe-8t-7Qw"/>
-                        <outlet property="questionTextField" destination="qvX-lB-9ig" id="zWK-zV-6kY"/>
-                        <outlet property="rightAnswerTextField" destination="wTP-xr-iv8" id="6pk-9Q-cTG"/>
+                        <outlet property="questionPrompt" destination="hOL-9P-6fa" id="dhX-ih-llp"/>
+                        <outlet property="questionTextView" destination="KcL-yk-Mgj" id="rgo-wE-0DT"/>
+                        <outlet property="rightAnswerPrompt" destination="aHa-OF-GOS" id="GRr-Gu-XxM"/>
+                        <outlet property="rightAnswerTextView" destination="wuq-qM-nvz" id="VLY-Il-gGE"/>
                         <outlet property="rightPreviewImageView" destination="8uD-1M-xDB" id="34j-rE-sg4"/>
                         <outlet property="rightRemoveButton" destination="HVK-af-tcT" id="guw-ay-vbl"/>
                         <outlet property="searchImageButton" destination="rJ2-38-P7S" id="Rgm-YP-32R"/>

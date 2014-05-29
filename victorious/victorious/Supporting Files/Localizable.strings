@@ -62,6 +62,9 @@
 "CopyProfileURL"        =   "Copy Profile URL";
 
 "NEW POLL"              =   "NEW POLL";
+"Ask a question..."     =   "Ask a question...";
+"Vote this"             =   "Vote this";
+"Vote that"             =   "Vote that";
 "Create Poll"           =   "Create Poll";
 
 "TranscodingMediaTitle" =   "Transcoding Upload";

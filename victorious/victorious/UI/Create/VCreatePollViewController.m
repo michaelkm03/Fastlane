@@ -18,7 +18,7 @@
 
 static const CGFloat kPreviewImageWidth = 160.0f;
 
-@interface VCreatePollViewController() <UITextFieldDelegate, UITextViewDelegate>
+@interface VCreatePollViewController() <UITextViewDelegate>
 
 @property (weak, nonatomic) IBOutlet UILabel *titleLabel;
 
@@ -33,14 +33,15 @@ static const CGFloat kPreviewImageWidth = 160.0f;
 @property (weak, nonatomic) IBOutlet UIButton *mediaButton;
 @property (weak, nonatomic) IBOutlet UIButton *postButton;
 
-@property (weak, nonatomic) IBOutlet UITextField *questionTextField;
-@property (weak, nonatomic) IBOutlet UITextField *leftAnswerTextField;
-@property (weak, nonatomic) IBOutlet UITextField *rightAnswerTextField;
+@property (weak, nonatomic) IBOutlet UILabel *questionPrompt;
+@property (weak, nonatomic) IBOutlet UILabel *leftAnswerPrompt;
+@property (weak, nonatomic) IBOutlet UILabel *rightAnswerPrompt;
+
+@property (weak, nonatomic) IBOutlet UITextView *questionTextView;
+@property (weak, nonatomic) IBOutlet UITextView *leftAnswerTextView;
+@property (weak, nonatomic) IBOutlet UITextView *rightAnswerTextView;
 
 @property (weak, nonatomic) IBOutlet UIView* answersSuperview;
-@property (weak, nonatomic) IBOutlet UILabel *characterCountLabel;
-
-@property (weak, nonatomic) IBOutlet UITextView *textView;
 
 @property (weak, nonatomic) IBOutlet UIView *addMediaView;
 
@@ -89,16 +90,29 @@ static const CGFloat kPreviewImageWidth = 160.0f;
     newImage = [self.leftRemoveButton.imageView.image imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
     [self.leftRemoveButton setImage:newImage forState:UIControlStateNormal];
     
-    self.questionTextField.textColor =  [[VThemeManager sharedThemeManager] themedColorForKey:kVContentTextColor];
-    self.questionTextField.placeholder = NSLocalizedString(@"Ask a Question...", @"Poll question placeholder");
-    [self.questionTextField addTarget:self action:@selector(questionTextFieldDidChange:) forControlEvents:UIControlEventEditingChanged];
-    self.questionTextField.delegate = self;
+    self.questionTextView.textColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVContentTextColor];
+    self.questionTextView.tintColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVContentTextColor];
+    self.questionTextView.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeading2Font];
 
-    self.leftAnswerTextField.textColor =  [[VThemeManager sharedThemeManager] themedColorForKey:kVContentTextColor];
-    self.leftAnswerTextField.placeholder = NSLocalizedString(@"VOTE THIS...", @"Poll left question placeholder");
+    self.questionPrompt.text      = NSLocalizedString(@"Ask a question...", @"");
+    self.questionPrompt.textColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVContentTextColor];
+    self.questionPrompt.font      = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeading2Font];
     
-    self.rightAnswerTextField.textColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVContentTextColor];
-    self.rightAnswerTextField.placeholder = NSLocalizedString(@"VOTE THAT...", @"Poll left question placeholder");
+    self.leftAnswerTextView.textColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVContentTextColor];
+    self.leftAnswerTextView.tintColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVContentTextColor];
+    self.leftAnswerTextView.font      = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeading4Font];
+    
+    self.rightAnswerTextView.textColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVContentTextColor];
+    self.rightAnswerTextView.tintColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVContentTextColor];
+    self.rightAnswerTextView.font      = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeading4Font];
+    
+    self.leftAnswerPrompt.text      = NSLocalizedString(@"Vote this", @"");
+    self.leftAnswerPrompt.textColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVContentTextColor];
+    self.leftAnswerPrompt.font      = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeading4Font];
+
+    self.rightAnswerPrompt.text      = NSLocalizedString(@"Vote that", @"");
+    self.rightAnswerPrompt.textColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVContentTextColor];
+    self.rightAnswerPrompt.font      = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeading4Font];
     
     self.postButton.tintColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVMainTextColor];
     [self.postButton setBackgroundImage:[UIImage resizeableImageWithColor:[[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor]] forState:UIControlStateNormal];
@@ -137,22 +151,22 @@ static const CGFloat kPreviewImageWidth = 160.0f;
     if(!self.firstMediaURL || !self.secondMediaURL)
         [self.postButton setEnabled:NO];
     
-    else if([self.questionTextField.text isEmpty])
+    else if([self.questionTextView.text isEmpty])
         [self.postButton setEnabled:NO];
 
-    else if([self.questionTextField.text length] > VConstantsForumTitleLength)
+    else if([self.questionTextView.text length] > VConstantsForumTitleLength)
         [self.postButton setEnabled:NO];
     
-    else if([self.leftAnswerTextField.text isEmpty])
+    else if([self.leftAnswerTextView.text isEmpty])
         [self.postButton setEnabled:NO];
 
-    else if([self.leftAnswerTextField.text length] > VConstantsForumTitleLength)
+    else if([self.leftAnswerTextView.text length] > VConstantsForumTitleLength)
         [self.postButton setEnabled:NO];
     
-    else if([self.rightAnswerTextField.text isEmpty])
+    else if([self.rightAnswerTextView.text isEmpty])
         [self.postButton setEnabled:NO];
 
-    else if([self.rightAnswerTextField.text length] > VConstantsForumTitleLength)
+    else if([self.rightAnswerTextView.text length] > VConstantsForumTitleLength)
         [self.postButton setEnabled:NO];
 }
 
@@ -287,9 +301,9 @@ static const CGFloat kPreviewImageWidth = 160.0f;
 {
     if ([self.delegate respondsToSelector:@selector(createPollWithQuestion:answer1Text:answer2Text:media1URL:media2URL:)])
     {
-        [self.delegate createPollWithQuestion:self.questionTextField.text
-                                  answer1Text:self.leftAnswerTextField.text
-                                  answer2Text:self.rightAnswerTextField.text
+        [self.delegate createPollWithQuestion:self.questionTextView.text
+                                  answer1Text:self.leftAnswerTextView.text
+                                  answer2Text:self.rightAnswerTextView.text
                                     media1URL:self.firstMediaURL
                                     media2URL:self.secondMediaURL];
     }
@@ -317,7 +331,8 @@ static const CGFloat kPreviewImageWidth = 160.0f;
 
 - (IBAction)hashButtonClicked:(id)sender
 {
-    self.questionTextField.text = [self.questionTextField.text stringByAppendingString:@"#"];
+    self.questionTextView.text = [self.questionTextView.text stringByAppendingString:@"#"];
+    [self textViewDidChange:self.questionTextView];
 }
 
 - (void)createInputAccessoryView
@@ -338,74 +353,53 @@ static const CGFloat kPreviewImageWidth = 160.0f;
                                                           action:nil];
     
     toolbar.items = @[hashButton, flexibleSpace, self.countDownLabel];
-    self.questionTextField.inputAccessoryView = toolbar;
-}
-
-#pragma mark - UITextFieldDelegate
-
-- (void)textFieldDidEndEditing:(UITextField *)textField
-{
-    [self validatePostButtonState];
-}
-
-- (BOOL)textFieldShouldReturn:(UITextField *)textField
-{
-    if (textField == self.questionTextField)
-        [self.leftAnswerTextField becomeFirstResponder];
-
-    if (textField == self.leftAnswerTextField)
-        [self.rightAnswerTextField becomeFirstResponder];
-
-    [textField resignFirstResponder];
-    return YES;
-}
-
-- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
-{
-    if ([textField isEqual:self.questionTextField])
-    {
-        BOOL    isDeleteKey = ([string isEqualToString:@""]);
-        if ((textField.text.length >= VConstantsMessageLength) && (!isDeleteKey))
-            return NO;
-    }
-    
-    return YES;
-}
-
-- (void)questionTextFieldDidChange:(id)sender
-{
-    self.countDownLabel.title = [NSNumberFormatter localizedStringFromNumber:@(VConstantsMessageLength - self.questionTextField.text.length)
-                                                                 numberStyle:NSNumberFormatterDecimalStyle];
+    self.questionTextView.inputAccessoryView = toolbar;
 }
 
 #pragma mark - UITextViewDelegate
 
-- (void)textViewDidChange:(UITextView *)textView
-{
-    NSInteger characterCount = VConstantsMessageLength-[textView.text length];
-    if(characterCount < 0)
-    {
-        self.characterCountLabel.textColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVMainTextColor];
-    }
-    else
-    {
-        self.characterCountLabel.textColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVMainTextColor];
-    }
-
-    self.characterCountLabel.text = [NSNumberFormatter localizedStringFromNumber:@(characterCount)
-                                                                     numberStyle:NSNumberFormatterDecimalStyle];
-    [self validatePostButtonState];
-}
-
 - (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text
 {
-    if([text isEqualToString:@"\n"])
+    if ([text isEqualToString:@"\n"])
     {
         [textView resignFirstResponder];
         return NO;
     }
-    
-    return YES;
+    else if (textView == self.questionTextView)
+    {
+        BOOL isDeleteKey = [text isEqualToString:@""];
+        if (textView.text.length >= VConstantsMessageLength && !isDeleteKey)
+        {
+            return NO;
+        }
+        else
+        {
+            return YES;
+        }
+    }
+    else
+    {
+        return YES;
+    }
+}
+
+- (void)textViewDidChange:(UITextView *)textView
+{
+    if (textView == self.questionTextView)
+    {
+        self.countDownLabel.title = [NSNumberFormatter localizedStringFromNumber:@(VConstantsMessageLength - textView.text.length)
+                                                                     numberStyle:NSNumberFormatterDecimalStyle];
+        self.questionPrompt.hidden = textView.text.length > 0;
+    }
+    else if (textView == self.leftAnswerTextView)
+    {
+        self.leftAnswerPrompt.hidden = textView.text.length > 0;
+    }
+    else if (textView == self.rightAnswerTextView)
+    {
+        self.rightAnswerPrompt.hidden = textView.text.length > 0;
+    }
+    [self validatePostButtonState];
 }
 
 #pragma mark -
