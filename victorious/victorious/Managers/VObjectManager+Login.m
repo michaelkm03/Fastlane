@@ -314,6 +314,11 @@ NSString *kLoggedInChangedNotification = @"LoggedInChangedNotification";
         [context deleteObject:pollResult];
     }
     
+    //Nuke and refetch the user so we don't have their access token / person info
+    NSNumber* remoteID = self.mainUser.remoteId;
+    [context deleteObject:[context objectWithID:self.mainUser.objectID]];
+    [self fetchUser:remoteID withSuccessBlock:nil failBlock:nil];
+    
     NSError *saveError = nil;
     [context saveToPersistentStore:&saveError];
     
