@@ -37,7 +37,6 @@ typedef NS_ENUM(NSUInteger, VPlaybackSpeed)
     kVPlaybackDoubleSpeed   =   2
 };
 
-
 static NSUInteger const VConstantsMessageLength     = 140;
 static NSUInteger const VConstantsForumTitleLength  = 65;
 
@@ -48,6 +47,7 @@ static NSUInteger const kStreamDoublePollCellHeight = 214;
 static NSUInteger const kStreamPollCellHeight = 320;
 static NSUInteger const kStreamYoutubeCellHeight = 180;
 static NSUInteger const kStreamViewCellHeight = 320;
+
 //TODO: update these 2 with real numbers
 static NSUInteger const kStreamCommentHeaderHeight = 80;
 static NSUInteger const kStreamCommentCellHeight = 110;
@@ -56,9 +56,12 @@ static NSUInteger const kVStillTranscodingError = 5500;
 static NSUInteger const kVAccountAlreadyExistsError = 1003;
 static NSUInteger const kVUnauthoizedError = 401;
 
-static NSString*   const   kVictoriousAppIDKey      = @"VictoriousAppID";
 
-static NSString*   const   kTestflightDevToken      = @"TestflightDevAppToken";
+static NSUInteger  const   kDevAppID                = 1;
+static NSString*   const   kVictoriousAppIDKey      = @"VictoriousAppID";
+static NSString*   const   kStagingAppIDKey         = @"StagingAppID";
+static NSString*   const   kQAAppIDKey              = @"QAAppID";
+
 static NSString*   const   kTestflightQAToken       = @"TestflightQAAppToken";
 static NSString*   const   kTestflightStagingToken  = @"TestflightStagingAppToken";
 static NSString*   const   kTestflightReleaseToken  = @"TestflightReleaseAppToken";

@@ -58,7 +58,6 @@
 #elif STAGING
     [TestFlight takeOff:[[NSBundle mainBundle] objectForInfoDictionaryKey:kTestflightStagingToken]];
 #elif DEBUG
-    [TestFlight takeOff:[[NSBundle mainBundle] objectForInfoDictionaryKey:kTestflightDevToken]];
 #else
     [TestFlight takeOff:[[NSBundle mainBundle] objectForInfoDictionaryKey:kTestflightReleaseToken]];
 #endif
