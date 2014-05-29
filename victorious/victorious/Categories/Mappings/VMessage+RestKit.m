@@ -30,7 +30,9 @@
     RKEntityMapping *mapping = [RKEntityMapping
                                 mappingForEntityForName:[self entityName]
                                 inManagedObjectStore:[RKObjectManager sharedManager].managedObjectStore];
-    
+
+    mapping.identificationAttributes = @[ VSelectorName(remoteId) ];
+
     [mapping addAttributeMappingsFromDictionary:propertyMap];
 
     [mapping addConnectionForRelationship:@"user" connectedBy:@{@"senderUserId" : @"remoteId"}];

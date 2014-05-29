@@ -14,6 +14,7 @@
 #import "VUser+RestKit.h"
 
 #import "VVoteType.h"
+#import "VPollResult+RestKit.h"
 
 #import "VThemeManager.h"
 #import "VUserManager.h"
@@ -291,6 +292,30 @@ NSString *kLoggedInChangedNotification = @"LoggedInChangedNotification";
            parameters:nil
          successBlock:nil
             failBlock:nil];
+    
+    //Delete all conversations / pollresults for the user!
+    NSManagedObjectContext* context = self.managedObjectStore.persistentStoreManagedObjectContext;
+    
+    NSFetchRequest * allConversations = [[NSFetchRequest alloc] init];
+    [allConversations setEntity:[NSEntityDescription entityForName:[VConversation entityName] inManagedObjectContext:context]];
+    [allConversations setIncludesPropertyValues:NO]; //only fetch the managedObjectID
+    
+    NSArray * conversations = [context executeFetchRequest:allConversations error:nil];
+    for (NSManagedObject* conversation in conversations) {
+        [context deleteObject:conversation];
+    }
+    
+    NSFetchRequest * allPollResults = [[NSFetchRequest alloc] init];
+    [allPollResults setEntity:[NSEntityDescription entityForName:[VPollResult entityName] inManagedObjectContext:context]];
+    [allPollResults setIncludesPropertyValues:NO]; //only fetch the managedObjectID
+    
+    NSArray * pollResults = [context executeFetchRequest:allPollResults error:nil];
+    for (NSManagedObject* pollResult in pollResults) {
+        [context deleteObject:pollResult];
+    }
+    
+    NSError *saveError = nil;
+    [context saveToPersistentStore:&saveError];
     
     //Log out no matter what
     self.mainUser = nil;
