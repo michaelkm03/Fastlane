@@ -100,12 +100,12 @@
         [self loadNextPageAction];
     }
     
-//    //Notify the container about the scroll so it can handle the header
-//    if ([self.delegate respondsToSelector:@selector(scrollViewDidScroll:)])
-//    {
-//        [self.delegate scrollViewDidScroll:scrollView];
-//    }
-//    
+    //Notify the container about the scroll so it can handle the header
+    if ([self.delegate respondsToSelector:@selector(scrollViewDidScroll:)])
+    {
+        [self.delegate scrollViewDidScroll:scrollView];
+    }
+    
 //    //TODO: remove this, this is just here until we port the profile view
 //    CGPoint translation = [scrollView.panGestureRecognizer translationInView:scrollView.superview];
 //    CGRect navBarFrame = self.navigationController.navigationBar.frame;
