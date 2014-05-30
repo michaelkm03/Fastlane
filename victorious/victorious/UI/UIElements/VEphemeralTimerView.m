@@ -70,17 +70,13 @@
 }
 */
 
-- (void) setTimerWidth:(NSUInteger)timerWidth
-{
-    _timerWidth = timerWidth;
-    [self animationDidStop:nil finished:YES];
-}
-
 - (void) setExpireDate:(NSDate *)expireDate
 {
     _expireDate = expireDate;
     
-    [self animationDidStop:nil finished:YES];
+    self.hidden = !_expireDate;
+    [self animationDidStop:nil finished:_expireDate];
+    
 }
 
 - (void)updateLabels
@@ -211,6 +207,9 @@
 
 - (void)animationDidStop:(CABasicAnimation *)theAnimation finished:(BOOL)flag
 {
+    if(!flag)
+        return;
+    
     [self updateLabels];
     
     CGFloat secondsTilExpiration = [self.expireDate timeIntervalSinceNow];
