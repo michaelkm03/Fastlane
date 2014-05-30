@@ -42,9 +42,10 @@
 {
     [super viewDidLoad];
     
-    [self createInputAccessoryView];
+    UIView *previewImageView = self.previewImageView;
+    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[previewImageView]" options:0 metrics:nil views:NSDictionaryOfVariableBindings(previewImageView)]];
     
-    self.textView.delegate = self;
+    [self createInputAccessoryView];
 }
 
 - (void)viewWillAppear:(BOOL)animated
