@@ -61,6 +61,12 @@
 "BlockUser"             =   "Block User";
 "CopyProfileURL"        =   "Copy Profile URL";
 
+"NEW POLL"              =   "NEW POLL";
+"Ask a question..."     =   "Ask a question...";
+"Vote this"             =   "Vote this";
+"Vote that"             =   "Vote that";
+"Create Poll"           =   "Create Poll";
+
 "TranscodingMediaTitle" =   "Transcoding Upload";
 "TranscodingMediaBody"  =   "Your upload is taking longer than usual to transcode.  It will appear once we've finished.";
 "PollUploadTitle"       =   "Poll Upload Failed";
