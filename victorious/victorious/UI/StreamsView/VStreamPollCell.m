@@ -71,6 +71,12 @@ static NSString* kOrIconImage = @"orIconImage";
                                  placeholderImage:placeholderImage
                                           success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image)
      {
+         if (!request)
+         {
+             self.previewImageView.image = image;
+             return;
+         }
+         
          self.previewImageView.alpha = 0;
          self.previewImageView.image = image;
          [UIView animateWithDuration:.3f animations:^
@@ -86,6 +92,11 @@ static NSString* kOrIconImage = @"orIconImage";
                                  placeholderImage:placeholderImage
                                           success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image)
      {
+         if (!request)
+         {
+             self.previewImageTwo.image = image;
+             return;
+         }
          self.previewImageTwo.alpha = 0;
          self.previewImageTwo.image = image;
          [UIView animateWithDuration:.3f animations:^

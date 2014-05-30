@@ -104,10 +104,28 @@ NSString *kStreamsWillCommentNotification = @"kStreamsWillCommentNotification";
         [self removeExpiredOverlay];
     }
     
-    [self.previewImageView setImageWithURL:[NSURL URLWithString:_sequence.previewImage]
-                          placeholderImage:[UIImage resizeableImageWithColor:
-                                            [[VThemeManager sharedThemeManager] themedColorForKey:kVBackgroundColor]]];
-
+    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:_sequence.previewImage]];
+    [request addValue:@"image/*" forHTTPHeaderField:@"Accept"];
+    [self.previewImageView setImageWithURLRequest:request
+                                 placeholderImage:[UIImage resizeableImageWithColor:
+                                                   [[VThemeManager sharedThemeManager] themedColorForKey:kVBackgroundColor]]
+                                          success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image)
+     {
+         if (!request)
+         {
+             self.previewImageView.image = image;
+             return;
+         }
+         
+         self.previewImageView.alpha = 0;
+         self.previewImageView.image = image;
+         [UIView animateWithDuration:.3f animations:^
+          {
+              self.previewImageView.alpha = 1;
+          }];
+     }
+                                          failure:nil];
+    
     [self.profileImageButton setImageWithURL:[NSURL URLWithString:self.sequence.user.pictureUrl]
                             placeholderImage:[UIImage imageNamed:@"profile_thumb"]
                                     forState:UIControlStateNormal];
