@@ -33,7 +33,7 @@
 
 - (IBAction)createButtonAction:(id)sender
 {
-    if(![VObjectManager sharedManager].mainUser)
+    if (![VObjectManager sharedManager].mainUser)
     {
         [self presentViewController:[VLoginViewController loginViewController] animated:YES completion:NULL];
         return;

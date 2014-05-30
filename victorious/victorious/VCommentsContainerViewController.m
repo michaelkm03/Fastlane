@@ -96,7 +96,7 @@
 
 - (UITableViewController *)conversationTableViewController
 {
-    if(_conversationTableViewController == nil)
+    if (_conversationTableViewController == nil)
     {
         VCommentsTableViewController *streamsCommentsController =
         [self.storyboard instantiateViewControllerWithIdentifier:@"comments"];

@@ -44,7 +44,7 @@ NSString*   const   kSignupErrorDomain =   @"VSignupErrorDomain";
 
     [self.emailTextField becomeFirstResponder];
 
-    self.cancelButton.layer.borderColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor].CGColor;
+    self.cancelButton.layer.borderColor = [UIColor colorWithWhite:0.14 alpha:1.0].CGColor;
     self.cancelButton.layer.borderWidth = 2.0;
     self.cancelButton.layer.cornerRadius = 3.0;
     self.cancelButton.backgroundColor = [UIColor clearColor];
@@ -52,6 +52,7 @@ NSString*   const   kSignupErrorDomain =   @"VSignupErrorDomain";
     [self.cancelButton setTitleColor:[UIColor colorWithWhite:0.14 alpha:1.0] forState:UIControlStateNormal];
     
     self.signupButton.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
+    self.signupButton.layer.cornerRadius = 3.0;
     self.signupButton.titleLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeaderFont];
     [self.signupButton setTitleColor:[UIColor colorWithWhite:0.14 alpha:1.0] forState:UIControlStateNormal];
     

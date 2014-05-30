@@ -45,6 +45,12 @@
 		03F9D29819204D7700576AEE /* Icon-40@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 03F9D29519204D7700576AEE /* Icon-40@2x.png */; };
 		03F9D29919204D7700576AEE /* Icon-60@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 03F9D29619204D7700576AEE /* Icon-60@2x.png */; };
 		0742CD6B32FA44679FBE8716 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 662F0867152745B2B2F08301 /* libPods.a */; };
+		3F0282381937D0AA0099259A /* VAbstractInviteTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F0282371937D0AA0099259A /* VAbstractInviteTableViewController.m */; };
+		3F02823D1937D16D0099259A /* VAbstractConnectViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F02823C1937D16D0099259A /* VAbstractConnectViewController.m */; };
+		3F0282401937D23E0099259A /* VContactsConnectViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F02823F1937D23E0099259A /* VContactsConnectViewController.m */; };
+		3F0282431937D2520099259A /* VFacebookConnectViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F0282421937D2520099259A /* VFacebookConnectViewController.m */; };
+		3F0282461937D2660099259A /* VTwitterConnectViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F0282451937D2660099259A /* VTwitterConnectViewController.m */; };
+		3F0282491937D2780099259A /* VInstagramConnectViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F0282481937D2780099259A /* VInstagramConnectViewController.m */; };
 		3F033874192AE4A500DCD36A /* VLoginTransitionAnimator.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F033873192AE4A500DCD36A /* VLoginTransitionAnimator.m */; };
 		3F0F1505191C20280030B33D /* VProgressiveImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F0F1504191C20280030B33D /* VProgressiveImageView.m */; };
 		3F14C44C18BD2BD0001796B9 /* VCAudioEncoder.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F14C43618BD2BD0001796B9 /* VCAudioEncoder.m */; };
@@ -357,6 +363,18 @@
 		03F9D29519204D7700576AEE /* Icon-40@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Icon-40@2x.png"; path = "AppSpecific/Icon-40@2x.png"; sourceTree = "<group>"; };
 		03F9D29619204D7700576AEE /* Icon-60@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Icon-60@2x.png"; path = "AppSpecific/Icon-60@2x.png"; sourceTree = "<group>"; };
 		33ACD3CBAF2C419D97FB901A /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = "<group>"; };
+		3F0282361937D0AA0099259A /* VAbstractInviteTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VAbstractInviteTableViewController.h; path = UI/Login/VAbstractInviteTableViewController.h; sourceTree = "<group>"; };
+		3F0282371937D0AA0099259A /* VAbstractInviteTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VAbstractInviteTableViewController.m; path = UI/Login/VAbstractInviteTableViewController.m; sourceTree = "<group>"; };
+		3F02823B1937D16D0099259A /* VAbstractConnectViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VAbstractConnectViewController.h; path = UI/Login/VAbstractConnectViewController.h; sourceTree = "<group>"; };
+		3F02823C1937D16D0099259A /* VAbstractConnectViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VAbstractConnectViewController.m; path = UI/Login/VAbstractConnectViewController.m; sourceTree = "<group>"; };
+		3F02823E1937D23E0099259A /* VContactsConnectViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VContactsConnectViewController.h; path = UI/Login/VContactsConnectViewController.h; sourceTree = "<group>"; };
+		3F02823F1937D23E0099259A /* VContactsConnectViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VContactsConnectViewController.m; path = UI/Login/VContactsConnectViewController.m; sourceTree = "<group>"; };
+		3F0282411937D2520099259A /* VFacebookConnectViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VFacebookConnectViewController.h; path = UI/Login/VFacebookConnectViewController.h; sourceTree = "<group>"; };
+		3F0282421937D2520099259A /* VFacebookConnectViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VFacebookConnectViewController.m; path = UI/Login/VFacebookConnectViewController.m; sourceTree = "<group>"; };
+		3F0282441937D2660099259A /* VTwitterConnectViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VTwitterConnectViewController.h; path = UI/Login/VTwitterConnectViewController.h; sourceTree = "<group>"; };
+		3F0282451937D2660099259A /* VTwitterConnectViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VTwitterConnectViewController.m; path = UI/Login/VTwitterConnectViewController.m; sourceTree = "<group>"; };
+		3F0282471937D2780099259A /* VInstagramConnectViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VInstagramConnectViewController.h; path = UI/Login/VInstagramConnectViewController.h; sourceTree = "<group>"; };
+		3F0282481937D2780099259A /* VInstagramConnectViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VInstagramConnectViewController.m; path = UI/Login/VInstagramConnectViewController.m; sourceTree = "<group>"; };
 		3F033872192AE4A500DCD36A /* VLoginTransitionAnimator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VLoginTransitionAnimator.h; path = UI/Login/VLoginTransitionAnimator.h; sourceTree = "<group>"; };
 		3F033873192AE4A500DCD36A /* VLoginTransitionAnimator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VLoginTransitionAnimator.m; path = UI/Login/VLoginTransitionAnimator.m; sourceTree = "<group>"; };
 		3F0F1503191C20280030B33D /* VProgressiveImageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VProgressiveImageView.h; path = UI/UIElements/VProgressiveImageView.h; sourceTree = "<group>"; };
@@ -469,8 +487,6 @@
 		3FBCB9DB192EC77400EB510C /* THPinViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = THPinViewController.m; sourceTree = "<group>"; };
 		3FBCB9DC192EC77400EB510C /* UIImage+ImageEffects.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+ImageEffects.h"; sourceTree = "<group>"; };
 		3FBCB9DD192EC77400EB510C /* UIImage+ImageEffects.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+ImageEffects.m"; sourceTree = "<group>"; };
-		3FBCB9E61935545200EB510C /* VSegmentedViewControllerSegue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VSegmentedViewControllerSegue.h; path = UI/Login/VSegmentedViewControllerSegue.h; sourceTree = "<group>"; };
-		3FBCB9E71935545200EB510C /* VSegmentedViewControllerSegue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VSegmentedViewControllerSegue.m; path = UI/Login/VSegmentedViewControllerSegue.m; sourceTree = "<group>"; };
 		3FBCB9F9193558E400EB510C /* VInviteSuggestedTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VInviteSuggestedTableViewController.h; path = UI/Login/VInviteSuggestedTableViewController.h; sourceTree = "<group>"; };
 		3FBCB9FA193558E400EB510C /* VInviteSuggestedTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VInviteSuggestedTableViewController.m; path = UI/Login/VInviteSuggestedTableViewController.m; sourceTree = "<group>"; };
 		3FBCB9FC1935594A00EB510C /* VInviteContactsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VInviteContactsViewController.h; path = UI/Login/VInviteContactsViewController.h; sourceTree = "<group>"; };
@@ -846,6 +862,68 @@
 			path = Reachability;
 			sourceTree = "<group>";
 		};
+		3F0282391937D0B30099259A /* List */ = {
+			isa = PBXGroup;
+			children = (
+				3F0282361937D0AA0099259A /* VAbstractInviteTableViewController.h */,
+				3F0282371937D0AA0099259A /* VAbstractInviteTableViewController.m */,
+				3FBCB9F9193558E400EB510C /* VInviteSuggestedTableViewController.h */,
+				3FBCB9FA193558E400EB510C /* VInviteSuggestedTableViewController.m */,
+				3FBCB9FC1935594A00EB510C /* VInviteContactsViewController.h */,
+				3FBCB9FD1935594A00EB510C /* VInviteContactsViewController.m */,
+				3FBCB9FF1935598F00EB510C /* VInviteFacebookViewController.h */,
+				3FBCBA001935598F00EB510C /* VInviteFacebookViewController.m */,
+				3FBCBA02193559DB00EB510C /* VInviteTwitterViewController.h */,
+				3FBCBA03193559DB00EB510C /* VInviteTwitterViewController.m */,
+				3FBCBA0519355A1C00EB510C /* VInviteInstagramViewController.h */,
+				3FBCBA0619355A1C00EB510C /* VInviteInstagramViewController.m */,
+			);
+			name = List;
+			sourceTree = "<group>";
+		};
+		3F02823A1937D0B70099259A /* Connect */ = {
+			isa = PBXGroup;
+			children = (
+				3F02823B1937D16D0099259A /* VAbstractConnectViewController.h */,
+				3F02823C1937D16D0099259A /* VAbstractConnectViewController.m */,
+				3F02823E1937D23E0099259A /* VContactsConnectViewController.h */,
+				3F02823F1937D23E0099259A /* VContactsConnectViewController.m */,
+				3F0282411937D2520099259A /* VFacebookConnectViewController.h */,
+				3F0282421937D2520099259A /* VFacebookConnectViewController.m */,
+				3F0282441937D2660099259A /* VTwitterConnectViewController.h */,
+				3F0282451937D2660099259A /* VTwitterConnectViewController.m */,
+				3F0282471937D2780099259A /* VInstagramConnectViewController.h */,
+				3F0282481937D2780099259A /* VInstagramConnectViewController.m */,
+			);
+			name = Connect;
+			sourceTree = "<group>";
+		};
+		3F02824A1937D3830099259A /* Login */ = {
+			isa = PBXGroup;
+			children = (
+				5FC4DA651897111B006BA107 /* VLoginViewController.h */,
+				5FC4DA661897111B006BA107 /* VLoginViewController.m */,
+				3F033872192AE4A500DCD36A /* VLoginTransitionAnimator.h */,
+				3F033873192AE4A500DCD36A /* VLoginTransitionAnimator.m */,
+				5FC4DA6818971155006BA107 /* VLoginWithEmailViewController.h */,
+				5FC4DA6918971155006BA107 /* VLoginWithEmailViewController.m */,
+				5FC4DA711897121F006BA107 /* VSignupWithEmailViewController.h */,
+				5FC4DA721897121F006BA107 /* VSignupWithEmailViewController.m */,
+				5FC4DA6B1897119C006BA107 /* VProfileCreateViewController.h */,
+				5FC4DA6C1897119C006BA107 /* VProfileCreateViewController.m */,
+			);
+			name = Login;
+			sourceTree = "<group>";
+		};
+		3F02824B1937D3890099259A /* Reset Password */ = {
+			isa = PBXGroup;
+			children = (
+				3FBCB9C3192E9A7400EB510C /* VResetPasswordViewController.h */,
+				3FBCB9C4192E9A7400EB510C /* VResetPasswordViewController.m */,
+			);
+			name = "Reset Password";
+			sourceTree = "<group>";
+		};
 		3F14C43218BD2BD0001796B9 /* VCAudioVideoRecorder */ = {
 			isa = PBXGroup;
 			children = (
@@ -1006,19 +1084,9 @@
 			isa = PBXGroup;
 			children = (
 				5FC4DA5D18970A9F006BA107 /* login.storyboard */,
-				5FC4DA651897111B006BA107 /* VLoginViewController.h */,
-				5FC4DA661897111B006BA107 /* VLoginViewController.m */,
-				3F033872192AE4A500DCD36A /* VLoginTransitionAnimator.h */,
-				3F033873192AE4A500DCD36A /* VLoginTransitionAnimator.m */,
-				5FC4DA6818971155006BA107 /* VLoginWithEmailViewController.h */,
-				5FC4DA6918971155006BA107 /* VLoginWithEmailViewController.m */,
-				5FC4DA711897121F006BA107 /* VSignupWithEmailViewController.h */,
-				5FC4DA721897121F006BA107 /* VSignupWithEmailViewController.m */,
-				5FC4DA6B1897119C006BA107 /* VProfileCreateViewController.h */,
-				5FC4DA6C1897119C006BA107 /* VProfileCreateViewController.m */,
+				3F02824A1937D3830099259A /* Login */,
+				3F02824B1937D3890099259A /* Reset Password */,
 				3FBCB9E91935561B00EB510C /* Invite Friends */,
-				3FBCB9C3192E9A7400EB510C /* VResetPasswordViewController.h */,
-				3FBCB9C4192E9A7400EB510C /* VResetPasswordViewController.m */,
 				3F53E0C118A485D400089C20 /* VUserManager.h */,
 				3F53E0C218A485D400089C20 /* VUserManager.m */,
 			);
@@ -1249,18 +1317,8 @@
 			children = (
 				5FC4DA6E189711EA006BA107 /* VFollowFriendsViewController.h */,
 				5FC4DA6F189711EA006BA107 /* VFollowFriendsViewController.m */,
-				3FBCB9E61935545200EB510C /* VSegmentedViewControllerSegue.h */,
-				3FBCB9E71935545200EB510C /* VSegmentedViewControllerSegue.m */,
-				3FBCB9F9193558E400EB510C /* VInviteSuggestedTableViewController.h */,
-				3FBCB9FA193558E400EB510C /* VInviteSuggestedTableViewController.m */,
-				3FBCB9FC1935594A00EB510C /* VInviteContactsViewController.h */,
-				3FBCB9FD1935594A00EB510C /* VInviteContactsViewController.m */,
-				3FBCB9FF1935598F00EB510C /* VInviteFacebookViewController.h */,
-				3FBCBA001935598F00EB510C /* VInviteFacebookViewController.m */,
-				3FBCBA02193559DB00EB510C /* VInviteTwitterViewController.h */,
-				3FBCBA03193559DB00EB510C /* VInviteTwitterViewController.m */,
-				3FBCBA0519355A1C00EB510C /* VInviteInstagramViewController.h */,
-				3FBCBA0619355A1C00EB510C /* VInviteInstagramViewController.m */,
+				3F02823A1937D0B70099259A /* Connect */,
+				3F0282391937D0B30099259A /* List */,
 			);
 			name = "Invite Friends";
 			sourceTree = "<group>";
@@ -2077,6 +2135,7 @@
 				BEF2C29918846FAB00AAE975 /* VConversation.m in Sources */,
 				3F71A7DC18D7C6D20048FF60 /* VRemixVideoRangeSlider.m in Sources */,
 				03D638211918488F0084FFC8 /* VServerEnvironmentTableViewController.m in Sources */,
+				3F0282381937D0AA0099259A /* VAbstractInviteTableViewController.m in Sources */,
 				BE185DF118E3B2C2001C447F /* VContentViewController+Images.m in Sources */,
 				03086AA718F38ABE00105FFB /* UIActionSheet+VBlocks.m in Sources */,
 				BEF2C2A5188488C000AAE975 /* VUnreadConversation+RestKit.m in Sources */,
@@ -2091,6 +2150,7 @@
 				5FC4DA671897111B006BA107 /* VLoginViewController.m in Sources */,
 				3FF7B6DD18F4A668003831CD /* VRemixSelectViewController.m in Sources */,
 				03811D31193533D0005687FF /* UIAlertView+VBlocks.m in Sources */,
+				3F0282431937D2520099259A /* VFacebookConnectViewController.m in Sources */,
 				0352278319219079003FCD10 /* VVideoDownloadProgressIndicatorView.m in Sources */,
 				83D897421881F19D00BD5B8B /* VCommentsContainerViewController.m in Sources */,
 				BE171E151868C211004E5202 /* VNodeAction+RestKit.m in Sources */,
@@ -2108,6 +2168,7 @@
 				BE171E0C1868C211004E5202 /* VNode+Fetcher.m in Sources */,
 				BE5C7382187E37C700A3340D /* VMessage+RestKit.m in Sources */,
 				3FDEDD0C18CE5E180028E3F1 /* VAbstractVideoEditorViewController.m in Sources */,
+				3F0282491937D2780099259A /* VInstagramConnectViewController.m in Sources */,
 				3F033874192AE4A500DCD36A /* VLoginTransitionAnimator.m in Sources */,
 				3F71A7D918D7C6D20048FF60 /* VRemixResizableBubble.m in Sources */,
 				BEA5BF5F187F21770014C3EF /* VTableViewCell.m in Sources */,
@@ -2116,6 +2177,7 @@
 				BEDF0FC918DBCB5500750EF6 /* VVoteType+Fetcher.m in Sources */,
 				5F51F81A189AEBF800A546D1 /* VAbstractProfileEditViewController.m in Sources */,
 				3F14C44D18BD2BD0001796B9 /* VCAudioTools.m in Sources */,
+				3F0282401937D23E0099259A /* VContactsConnectViewController.m in Sources */,
 				BEF2C2A818848B3B00AAE975 /* VUnreadConversation.m in Sources */,
 				03484BF1192D284100403FB1 /* VLightboxDisplayAnimator.m in Sources */,
 				BEF2C29618845EF500AAE975 /* VPollResult+RestKit.m in Sources */,
@@ -2126,6 +2188,7 @@
 				BEB52A7A18C02D6600AC5FE4 /* VContentViewController.m in Sources */,
 				BE651D0E18AAD58A00069119 /* VLoadingViewController.m in Sources */,
 				03F9D289191DC71700576AEE /* VElapsedTimeFormatter.m in Sources */,
+				3F0282461937D2660099259A /* VTwitterConnectViewController.m in Sources */,
 				3F9B666E1888C4390046F826 /* VHomeStreamViewController.m in Sources */,
 				BED4569418BD581800A67160 /* UIWebView+VYoutubeLoading.m in Sources */,
 				3F93489D1922C522002EA91F /* VFollowerTableViewController.m in Sources */,
@@ -2181,6 +2244,7 @@
 				BED7F67218E0A8E900545DF6 /* NSData+Base64.m in Sources */,
 				BE171E3A1868C266004E5202 /* NSString+VParseHelp.m in Sources */,
 				3F9B666B1888BE6A0046F826 /* VStreamTableViewController.m in Sources */,
+				3F02823D1937D16D0099259A /* VAbstractConnectViewController.m in Sources */,
 				3FBCB9E1192EC77400EB510C /* THPinNumButton.m in Sources */,
 				3FA217E318AD87F40066E893 /* UIImageView+Blurring.m in Sources */,
 				BE171E111868C211004E5202 /* VComment+RestKit.m in Sources */,

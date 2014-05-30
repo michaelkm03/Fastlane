@@ -47,14 +47,13 @@ NSString *const VMenuControllerDidSelectRowNotification = @"VMenuTableViewContro
     [super viewDidLoad];
     
     NSUInteger count = [VObjectManager sharedManager].mainUser.unreadConversation.count.unsignedIntegerValue;
-    
-    if(count < 1)
+    if (count < 1)
     {
         [self.inboxBadgeLabel setHidden:YES];
     }
     else
     {
-        if(count < 1000)
+        if (count < 1000)
             self.inboxBadgeLabel.text = [NSString stringWithFormat:@"%lu", (unsigned long)count];
         else
             self.inboxBadgeLabel.text = @"+999";
@@ -159,7 +158,7 @@ NSString *const VMenuControllerDidSelectRowNotification = @"VMenuTableViewContro
     }
     
     //If the view controllers aren't the same notify everything a change is about to happen
-    if(currentViewController!=[navigationController.viewControllers lastObject])
+    if (currentViewController!=[navigationController.viewControllers lastObject])
     {
         [[NSNotificationCenter defaultCenter] postNotificationName:VMenuControllerDidSelectRowNotification object:nil];
     }
@@ -195,7 +194,7 @@ NSString *const VMenuControllerDidSelectRowNotification = @"VMenuTableViewContro
 
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
 {
-    if(alertView.cancelButtonIndex != buttonIndex)
+    if (alertView.cancelButtonIndex != buttonIndex)
     {
         // opening mailto: when there are no valid email accounts registered will open the mail app to setup an account
         [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"mailto:"]];

@@ -9,7 +9,5 @@
 @class VUser;
 
 @interface VFollowFriendsViewController : UITabBarController
-//@property (nonatomic, weak)     IBOutlet    UIView*     containerView;
-
 @property (nonatomic, strong)   VUser*  profile;
 @end

@@ -222,7 +222,7 @@ NSString* const kPollResultsLoaded = @"kPollResultsLoaded";
         
         [context saveToPersistentStore:nil];
       
-        if(success)
+        if (success)
             success(operation, fullResponse, resultObjects);
     };
     

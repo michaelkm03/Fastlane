@@ -255,7 +255,7 @@ CGFloat kContentMediaViewOffset = 154;
 
 -(VInteractionManager*)interactionManager
 {
-    if(!_interactionManager)
+    if (!_interactionManager)
     {
         _interactionManager = [[VInteractionManager alloc] initWithNode:self.currentNode delegate:self];
     }
@@ -307,7 +307,7 @@ CGFloat kContentMediaViewOffset = 154;
     [_actionBarVC.view removeFromSuperview];
     _actionBarVC = actionBarVC;
     
-    if(actionBarVC)
+    if (actionBarVC)
     {
         [self addChildViewController:actionBarVC];
         [actionBarVC didMoveToParentViewController:self];
@@ -333,7 +333,7 @@ CGFloat kContentMediaViewOffset = 154;
     
     //Find the appropriate target based on what view is hidden
     
-    if([self.sequence isPoll] && ![self.actionBarVC isKindOfClass:[VPollAnswerBarViewController class]])
+    if ([self.sequence isPoll] && ![self.actionBarVC isKindOfClass:[VPollAnswerBarViewController class]])
     {
         VPollAnswerBarViewController* pollAnswerBar = [VPollAnswerBarViewController sharedInstance];
         pollAnswerBar.delegate = self;
@@ -480,7 +480,7 @@ CGFloat kContentMediaViewOffset = 154;
      }
                      completion:^(BOOL finished)
      {
-         if(completion)
+         if (completion)
          {
              completion(finished);
          }

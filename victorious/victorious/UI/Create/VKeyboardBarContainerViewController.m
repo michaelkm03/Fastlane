@@ -95,7 +95,7 @@
 
 - (VKeyboardBarViewController *)keyboardBarViewController
 {
-    if(_keyboardBarViewController == nil)
+    if (_keyboardBarViewController == nil)
     {
         _keyboardBarViewController = [self.storyboard instantiateViewControllerWithIdentifier:kKeyboardBarStoryboardID];
         _keyboardBarViewController.delegate = self;

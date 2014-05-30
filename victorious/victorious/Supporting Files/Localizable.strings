@@ -42,6 +42,8 @@
 "NoEmail"               =   "No Email Accounts";
 "NoEmailDetail"         =   "There are no email accounts, would you like to setup one now?";
 "EmailFail"             =   "E-mail failed to send";
+"SMSFail"               =   "SMS failed to send";
+"CouldNotSend"          =   "Message was not sent";
 
 "FacebookDeniedTitle"   =   "Could not access your Facebook account";
 "FacebookDenied"        =   "Please grant access to your Facebook account in Settings -> Facebook";
@@ -146,3 +148,17 @@
 "Search for an image"   =   "Search for an image";
 "Pull up for more..."   =   "Pull up for more...";
 "No results"            =   "No results";
+
+"InviteYourFriends"     =   "Invite your Friends!";
+"InviteUsingEmail"      =   "Invite using Email";
+"InviteUsingSMS"        =   "Invite using SMS";
+"InviteFriendsSubject"  =   "Invite Friends";
+"InviteFriendsBody"     =   "Invite........................";
+
+"AccessContactsDenied"  =   "Access to Contacts Denied";
+"CantReadEmailAddresses" =  "YOu will need to allow this app to access your contacts in your Privacy Settings";
+
+
+
+
+

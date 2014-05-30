@@ -97,7 +97,7 @@ const   CGFloat     kMessageRowHeight           =   80;
     dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
     dispatch_after(popTime, dispatch_get_main_queue(), ^(void)
                    {
-                       if(self.isViewLoaded && self.view.window)
+                       if (self.isViewLoaded && self.view.window)
                        {
                            [self refresh];
                        }
@@ -115,7 +115,7 @@ const   CGFloat     kMessageRowHeight           =   80;
 {
     UITableViewCell *cell = nil;
     VMessage*   aMessage = self.messages[indexPath.row];
-    if([aMessage.user isEqualToUser:[VObjectManager sharedManager].mainUser])
+    if ([aMessage.user isEqualToUser:[VObjectManager sharedManager].mainUser])
     {
         cell = [tableView dequeueReusableCellWithIdentifier:kOtherMessageCellIdentifier forIndexPath:indexPath];
     }else

@@ -120,31 +120,31 @@ static const CGFloat VCreateViewControllerLargePadding = 20;
 {
     [self.postButton setEnabled:YES];
     
-    if(!self.mediaURL || !self.secondMediaURL)
+    if (!self.mediaURL || !self.secondMediaURL)
         [self.postButton setEnabled:NO];
     
-    else if([self.questionTextField.text isEmpty])
+    else if ([self.questionTextField.text isEmpty])
         [self.postButton setEnabled:NO];
 
-    else if([self.questionTextField.text length] > VConstantsForumTitleLength)
+    else if ([self.questionTextField.text length] > VConstantsForumTitleLength)
         [self.postButton setEnabled:NO];
     
-    else if([self.leftAnswerTextField.text isEmpty])
+    else if ([self.leftAnswerTextField.text isEmpty])
         [self.postButton setEnabled:NO];
 
-    else if([self.leftAnswerTextField.text length] > VConstantsForumTitleLength)
+    else if ([self.leftAnswerTextField.text length] > VConstantsForumTitleLength)
         [self.postButton setEnabled:NO];
     
-    else if([self.rightAnswerTextField.text isEmpty])
+    else if ([self.rightAnswerTextField.text isEmpty])
         [self.postButton setEnabled:NO];
 
-    else if([self.rightAnswerTextField.text length] > VConstantsForumTitleLength)
+    else if ([self.rightAnswerTextField.text length] > VConstantsForumTitleLength)
         [self.postButton setEnabled:NO];
 }
 
 - (void)updateViewState
 {
-    if(!self.secondMediaURL)
+    if (!self.secondMediaURL)
     {
         self.rightPreviewImageView.hidden = YES;
         self.rightRemoveButton.hidden = YES;
@@ -368,7 +368,7 @@ static const CGFloat VCreateViewControllerLargePadding = 20;
 - (void)textViewDidChange:(UITextView *)textView
 {
     NSInteger characterCount = VConstantsMessageLength-[textView.text length];
-    if(characterCount < 0)
+    if (characterCount < 0)
     {
         self.characterCountLabel.textColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVMainTextColor];
     }
@@ -384,7 +384,7 @@ static const CGFloat VCreateViewControllerLargePadding = 20;
 
 - (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text
 {
-    if([text isEqualToString:@"\n"])
+    if ([text isEqualToString:@"\n"])
     {
         [textView resignFirstResponder];
         return NO;
@@ -398,7 +398,7 @@ static const CGFloat VCreateViewControllerLargePadding = 20;
 - (void)imagePickerFinishedWithURL:(NSURL *)mediaURL
                       previewImage:(UIImage*)previewImage
 {
-    if(!self.mediaURL)
+    if (!self.mediaURL)
     {
         self.mediaURL = mediaURL;
         self.previewImageView.image = previewImage;

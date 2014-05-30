@@ -28,7 +28,6 @@
 @property (nonatomic, weak) IBOutlet UILabel*               tagLinePlaceholderLabel;
 
 @property (nonatomic, weak) IBOutlet UIImageView*           profileImageView;
-@property (nonatomic, weak) IBOutlet UIButton*              cameraButton;
 
 @property (nonatomic, strong) CLLocationManager*            locationManager;
 @property (nonatomic, strong) CLGeocoder*                   geoCoder;
@@ -59,14 +58,9 @@
     self.profileImageView.layer.rasterizationScale = [UIScreen mainScreen].scale;
     self.profileImageView.layer.shouldRasterize = YES;
     self.profileImageView.clipsToBounds = YES;
-    self.profileImageView.image = [[UIImage imageNamed:@"profileGenericUser"] applyBlurWithRadius:0.0 tintColor:[UIColor colorWithWhite:1.0 alpha:0.7] saturationDeltaFactor:1.8 maskImage:nil];
+    self.profileImageView.userInteractionEnabled = YES;
+    [self.profileImageView addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(takePicture:)]];
 
-    self.cameraButton.layer.masksToBounds = YES;
-    self.cameraButton.layer.cornerRadius = CGRectGetHeight(self.cameraButton.bounds)/2;
-    self.cameraButton.layer.rasterizationScale = [UIScreen mainScreen].scale;
-    self.cameraButton.layer.shouldRasterize = YES;
-    self.cameraButton.clipsToBounds = YES;
-    
     self.usernameTextField.delegate = self;
     self.usernameTextField.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeaderFont];
     self.usernameTextField.text = self.profile.name;
@@ -108,6 +102,8 @@
     self.doneButton.titleLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVButton1Font];
     [self.doneButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     self.doneButton.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
+    
+    self.agreeSwitch.onTintColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
 }
 
 - (void)viewWillAppear:(BOOL)animated

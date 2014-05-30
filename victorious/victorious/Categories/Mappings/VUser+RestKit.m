@@ -110,7 +110,7 @@
 
 - (BOOL)isEqualToUser:(VUser *)user
 {
-    if(!self.remoteId || !user.remoteId)
+    if (!self.remoteId || !user.remoteId)
     {
         return NO;
     }

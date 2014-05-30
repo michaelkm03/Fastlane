@@ -17,17 +17,20 @@
 {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
+    
+    //  instrcutions font is heading 1
+    //      color is 0.14 grey
+    
+    //  button font is heading 2
+    //  text color is white
+    //  color is link color
+    
+    //  shadow on top whiter block = .86
+    
+    //  block is 0.91
+    //      85 Height
+    
+    //  font is 0.56, label3
 }
-
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
-{
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
 
 @end

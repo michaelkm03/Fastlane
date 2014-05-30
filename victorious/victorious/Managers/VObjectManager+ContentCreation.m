@@ -77,7 +77,7 @@
                                    successBlock:(VSuccessBlock)success
                                       failBlock:(VFailBlock)fail
 {
-    if(!media1Url || !media2Url)
+    if (!media1Url || !media2Url)
         return nil;
     
     //Required Fields

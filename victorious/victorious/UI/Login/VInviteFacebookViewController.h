@@ -6,7 +6,7 @@
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
+#import "VAbstractInviteTableViewController.h"
 
-@interface VInviteFacebookViewController : UIViewController
+@interface VInviteFacebookViewController : VAbstractInviteTableViewController
 @end
