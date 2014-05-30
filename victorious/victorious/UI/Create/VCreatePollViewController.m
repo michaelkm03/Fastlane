@@ -281,7 +281,7 @@ static char KVOContext;
     self.rightPreviewImageView.hidden = YES;
     self.leftPreviewImageView.hidden = YES;
 
-    if (!self.secondMediaURL)
+    if (self.firstMediaURL)
     {
         [[NSFileManager defaultManager] removeItemAtURL:self.firstMediaURL error:nil];
     }
@@ -289,10 +289,6 @@ static char KVOContext;
     self.firstMediaURL = self.secondMediaURL;
     self.leftPreviewImageView.image = self.rightPreviewImageView.image;
     
-    if (self.secondMediaURL)
-    {
-        [[NSFileManager defaultManager] removeItemAtURL:self.secondMediaURL error:nil];
-    }
     self.secondMediaURL = nil;
     self.rightPreviewImageView.image = nil;
     
