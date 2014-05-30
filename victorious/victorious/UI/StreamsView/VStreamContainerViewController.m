@@ -67,6 +67,10 @@
     UIImage* image = [self.createButton.currentImage imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
     [self.createButton setImage:image forState:UIControlStateNormal];
     
+    if (![self.streamTable isKindOfClass:[VHomeStreamViewController class]])
+    {
+        [self.filterControls removeSegmentAtIndex:VStreamFollowingFilter animated:NO];
+    }
 }
 
 - (IBAction)changedFilterControls:(id)sender
