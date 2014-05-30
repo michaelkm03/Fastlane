@@ -221,13 +221,11 @@ static char KVOContext;
 {
     if (self.firstMediaURL)
     {
-        self.mediaButtonLeftSpacingConstraint.constant = kPreviewImageWidth;
         self.leftPreviewImageView.alpha = 1.0f;
         self.leftRemoveButton.alpha = 1.0f;
     }
     else
     {
-        self.mediaButtonLeftSpacingConstraint.constant = 0.0f;
         self.leftPreviewImageView.alpha = 0.0f;
         self.leftRemoveButton.alpha = 0.0f;
     }
@@ -236,12 +234,28 @@ static char KVOContext;
     {
         self.rightPreviewImageView.alpha = 1.0f;
         self.rightRemoveButton.alpha = 1.0f;
-        self.addMediaView.alpha = 0.0f;
     }
     else
     {
         self.rightPreviewImageView.alpha = 0.0f;
         self.rightRemoveButton.alpha = 0.0f;
+    }
+
+    if (self.firstMediaURL)
+    {
+        self.mediaButtonLeftSpacingConstraint.constant = kPreviewImageWidth;
+    }
+    else
+    {
+        self.mediaButtonLeftSpacingConstraint.constant = 0.0f;
+    }
+
+    if (self.firstMediaURL && self.secondMediaURL)
+    {
+        self.addMediaView.alpha = 0.0f;
+    }
+    else
+    {
         self.addMediaView.alpha = 1.0f;
     }
     
@@ -271,14 +285,10 @@ static char KVOContext;
 
 - (IBAction)clearLeftMedia:(id)sender
 {
-    UIView *temporaryRightPreviewView = [self.rightPreviewImageView snapshotViewAfterScreenUpdates:NO];
     UIView *temporaryLeftPreviewView = [self.leftPreviewImageView snapshotViewAfterScreenUpdates:NO];
-    temporaryRightPreviewView.frame = self.rightPreviewImageView.frame;
     temporaryLeftPreviewView.frame = self.leftPreviewImageView.frame;
-    [self.answersSuperview addSubview:temporaryRightPreviewView];
     [self.answersSuperview addSubview:temporaryLeftPreviewView];
     
-    self.rightPreviewImageView.hidden = YES;
     self.leftPreviewImageView.hidden = YES;
 
     if (self.firstMediaURL)
@@ -286,16 +296,17 @@ static char KVOContext;
         [[NSFileManager defaultManager] removeItemAtURL:self.firstMediaURL error:nil];
     }
     
-    self.firstMediaURL = self.secondMediaURL;
-    self.leftPreviewImageView.image = self.rightPreviewImageView.image;
-    
-    self.secondMediaURL = nil;
-    self.rightPreviewImageView.image = nil;
-    
+    self.firstMediaURL = nil;
+    self.leftPreviewImageView.image = nil;
+
+    if (self.secondMediaURL)
+    {
+        self.mediaButtonLeftSpacingConstraint.constant = 0;
+        [self.answersSuperview layoutIfNeeded];
+    }
     [UIView animateWithDuration:0.2f
                      animations:^(void)
     {
-        temporaryRightPreviewView.frame = temporaryLeftPreviewView.frame;
         temporaryLeftPreviewView.transform = CGAffineTransformMakeScale(0.6f, 0.6f);
         temporaryLeftPreviewView.alpha = 0;
         [self validatePostButtonState];
@@ -304,8 +315,6 @@ static char KVOContext;
                      completion:^(BOOL finished)
     {
         [temporaryLeftPreviewView removeFromSuperview];
-        [temporaryRightPreviewView removeFromSuperview];
-        self.rightPreviewImageView.hidden = NO;
         self.leftPreviewImageView.hidden = NO;
     }];
 }
