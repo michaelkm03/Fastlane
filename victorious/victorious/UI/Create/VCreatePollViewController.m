@@ -393,7 +393,7 @@ static char KVOContext;
         [textView resignFirstResponder];
         return NO;
     }
-    else if (textView == self.questionTextView)
+    else
     {
         BOOL isDeleteKey = [text isEqualToString:@""];
         if (textView.text.length >= VConstantsMessageLength && !isDeleteKey)
@@ -404,10 +404,6 @@ static char KVOContext;
         {
             return YES;
         }
-    }
-    else
-    {
-        return YES;
     }
 }
 
