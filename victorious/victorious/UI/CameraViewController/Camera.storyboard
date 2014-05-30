@@ -574,10 +574,13 @@
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="123"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             </imageView>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ygp-JG-QTQ">
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ygp-JG-QTQ">
                                 <rect key="frame" x="0.0" y="508" width="320" height="60"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" red="0.99607843137254903" green="0.28627450980392155" blue="0.28627450980392155" alpha="1" colorSpace="calibratedRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="60" id="gd4-Kv-p3i"/>
+                                </constraints>
                                 <fontDescription key="fontDescription" type="system" pointSize="25"/>
                                 <state key="normal" title="Cancel">
                                     <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -632,36 +635,65 @@
                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="LXd-Sn-My6">
-                                <rect key="frame" x="0.0" y="176" width="320" height="332"/>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="LXd-Sn-My6">
+                                <rect key="frame" x="0.0" y="173" width="320" height="335"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <subviews>
-                                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Yjk-3f-ltw">
-                                        <rect key="frame" x="0.0" y="87" width="320" height="60"/>
+                                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Yjk-3f-ltw">
+                                        <rect key="frame" x="0.0" y="90" width="320" height="60"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="60" id="IqH-2K-VQB"/>
+                                            <constraint firstAttribute="width" constant="320" id="bYK-Cc-Gw7"/>
+                                        </constraints>
                                         <fontDescription key="fontDescription" type="system" pointSize="50"/>
                                         <color key="textColor" red="0.99607843137254903" green="0.28627450980392155" blue="0.28627450980392155" alpha="1" colorSpace="calibratedRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Set An Expiration" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nHh-of-tVx">
-                                        <rect key="frame" x="0.0" y="155" width="320" height="21"/>
+                                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Set An Expiration" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nHh-of-tVx">
+                                        <rect key="frame" x="0.0" y="158" width="320" height="21"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="21" id="Tlw-4Y-3az"/>
+                                            <constraint firstAttribute="width" constant="320" id="r9F-01-pWG"/>
+                                        </constraints>
                                         <fontDescription key="fontDescription" type="system" pointSize="24"/>
                                         <color key="textColor" red="0.99607843137254903" green="0.28627450980392155" blue="0.28627450980392155" alpha="1" colorSpace="calibratedRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vsz-NI-D2Y">
-                                        <rect key="frame" x="0.0" y="184" width="320" height="26"/>
+                                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vsz-NI-D2Y">
+                                        <rect key="frame" x="0.0" y="187" width="320" height="26"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="320" id="190-Kc-y85"/>
+                                            <constraint firstAttribute="height" constant="26" id="qJ1-Ad-NPV"/>
+                                        </constraints>
                                         <fontDescription key="fontDescription" type="system" pointSize="21"/>
                                         <color key="textColor" red="0.99607843137254903" green="0.28627450980392155" blue="0.28627450980392155" alpha="1" colorSpace="calibratedRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                 </subviews>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="centerX" secondItem="Yjk-3f-ltw" secondAttribute="centerX" id="KJI-TO-Ebt"/>
+                                    <constraint firstAttribute="centerY" secondItem="Yjk-3f-ltw" secondAttribute="centerY" constant="47.5" id="Uix-X0-24S"/>
+                                    <constraint firstAttribute="centerY" secondItem="nHh-of-tVx" secondAttribute="centerY" constant="-1" id="WSR-g1-hc8"/>
+                                    <constraint firstAttribute="centerX" secondItem="nHh-of-tVx" secondAttribute="centerX" id="pIq-Im-zXM"/>
+                                    <constraint firstAttribute="centerY" secondItem="vsz-NI-D2Y" secondAttribute="centerY" constant="-32.5" id="qxX-yr-Bbl"/>
+                                    <constraint firstAttribute="centerX" secondItem="vsz-NI-D2Y" secondAttribute="centerX" id="vvC-ey-qmm"/>
+                                </constraints>
                             </view>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="ygp-JG-QTQ" firstAttribute="leading" secondItem="u0w-We-FJh" secondAttribute="leading" id="X9A-Bh-Mzb"/>
+                            <constraint firstItem="ygp-JG-QTQ" firstAttribute="top" secondItem="LXd-Sn-My6" secondAttribute="bottom" id="oab-wv-8B7"/>
+                            <constraint firstAttribute="right" secondItem="LXd-Sn-My6" secondAttribute="right" id="ohW-Gu-Oov"/>
+                            <constraint firstAttribute="trailing" secondItem="ygp-JG-QTQ" secondAttribute="trailing" id="vMV-g0-6cG"/>
+                            <constraint firstItem="xCw-w7-Ej1" firstAttribute="top" secondItem="ygp-JG-QTQ" secondAttribute="bottom" id="xoa-Qk-pEX"/>
+                            <constraint firstItem="LXd-Sn-My6" firstAttribute="top" secondItem="vnt-4K-cGe" secondAttribute="bottom" constant="173" id="yFC-vS-zDR"/>
+                            <constraint firstItem="LXd-Sn-My6" firstAttribute="left" secondItem="u0w-We-FJh" secondAttribute="left" id="z4C-BH-9RG"/>
+                        </constraints>
                     </view>
                     <connections>
                         <outlet property="afterButton" destination="n3Z-m2-gIh" id="eIy-KI-N25"/>
