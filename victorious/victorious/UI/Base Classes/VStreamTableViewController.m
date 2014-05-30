@@ -51,8 +51,6 @@
 
 - (void)viewDidLoad
 {
-    self.filterType = VStreamRecentFilter;
-    
     [super viewDidLoad];
     
     self.view.autoresizingMask = UIViewAutoresizingFlexibleWidth |UIViewAutoresizingFlexibleHeight;
@@ -130,8 +128,10 @@
     if (_filterType == filterType)
         return;
     
-    _filterType = filterType;
-    [self refreshFetchController];
+    dispatch_barrier_async(dispatch_get_main_queue(), ^{
+        _filterType = filterType;
+        [self refreshFetchController];
+    });
 }
 
 - (void)didReceiveMemoryWarning
@@ -200,8 +200,6 @@
 }
 
 #pragma mark - Cells
-
-
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     VSequence* sequence = (VSequence*)[self.fetchedResultsController objectAtIndexPath:indexPath];

@@ -71,6 +71,9 @@
     {
         [self.filterControls removeSegmentAtIndex:VStreamFollowingFilter animated:NO];
     }
+    
+    [self.filterControls setSelectedSegmentIndex:VStreamRecentFilter];
+    [self changedFilterControls:self.filterControls];
 }
 
 - (IBAction)changedFilterControls:(id)sender
