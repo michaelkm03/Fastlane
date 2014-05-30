@@ -42,6 +42,9 @@ static const CGFloat    kHeightRatioForRefresh                    =  0.1f;
 @end
 
 @implementation VImageSearchViewController
+{
+    NSString *_searchTerm;
+}
 
 + (instancetype)newImageSearchViewController
 {
@@ -71,6 +74,10 @@ static const CGFloat    kHeightRatioForRefresh                    =  0.1f;
     
     self.searchField.placeholder = NSLocalizedString(@"Search for an image", @"");
     self.searchField.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeading4Font];
+    if (_searchTerm)
+    {
+        self.searchField.text = _searchTerm;
+    }
     self.searchIconImageView.image = [self.searchIconImageView.image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
     
     self.noResultsLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeading4Font];
@@ -80,13 +87,10 @@ static const CGFloat    kHeightRatioForRefresh                    =  0.1f;
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault animated:YES];
-}
-
-- (void)viewWillDisappear:(BOOL)animated
-{
-    [super viewWillDisappear:animated];
-    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent animated:YES];
+    if (self.searchTerm && ![self.searchTerm isEqualToString:@""] && ![self.searchTerm isEqualToString:self.dataSource.searchTerm])
+    {
+        [self performSearch];
+    }
 }
 
 - (BOOL)shouldAutorotate
@@ -114,9 +118,9 @@ static const CGFloat    kHeightRatioForRefresh                    =  0.1f;
     }
 }
 
-#pragma mark - UITextFieldDelegate methods
+#pragma mark - 
 
-- (BOOL)textFieldShouldReturn:(UITextField *)textField
+- (void)performSearch
 {
     self.noResultsLabel.hidden = YES;
     [self.activityIndicatorView startAnimating];
@@ -137,6 +141,41 @@ static const CGFloat    kHeightRatioForRefresh                    =  0.1f;
                                               otherButtonTitles:nil];
         [alert show];
     }];
+}
+
+- (NSString *)searchTerm
+{
+    if ([self isViewLoaded])
+    {
+        return self.searchField.text;
+    }
+    else
+    {
+        return _searchTerm;
+    }
+}
+
+- (void)setSearchTerm:(NSString *)searchTerm
+{
+    if ([self isViewLoaded])
+    {
+        self.searchField.text = searchTerm;
+        if (self.view.superview)
+        {
+            [self performSearch];
+        }
+    }
+    else
+    {
+        _searchTerm = [searchTerm copy];
+    }
+}
+
+#pragma mark - UITextFieldDelegate methods
+
+- (BOOL)textFieldShouldReturn:(UITextField *)textField
+{
+    [self performSearch];
     [self.searchField resignFirstResponder];
     return YES;
 }

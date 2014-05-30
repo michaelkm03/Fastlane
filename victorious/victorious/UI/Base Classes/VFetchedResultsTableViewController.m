@@ -77,7 +77,7 @@
     
     [self performFetch];
     
-    if (self.fetchedResultsController.fetchedObjects)
+    if (![self.fetchedResultsController.fetchedObjects count])
         [self refresh:self.refreshControl];
 }
 

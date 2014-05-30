@@ -51,8 +51,6 @@
 
 - (void)viewDidLoad
 {
-    self.filterType = VStreamRecentFilter;
-    
     [super viewDidLoad];
     
     self.view.autoresizingMask = UIViewAutoresizingFlexibleWidth |UIViewAutoresizingFlexibleHeight;
@@ -130,8 +128,10 @@
     if (_filterType == filterType)
         return;
     
-    _filterType = filterType;
-    [self refreshFetchController];
+    dispatch_barrier_async(dispatch_get_main_queue(), ^{
+        _filterType = filterType;
+        [self refreshFetchController];
+    });
 }
 
 - (void)didReceiveMemoryWarning
@@ -200,8 +200,6 @@
 }
 
 #pragma mark - Cells
-
-
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     VSequence* sequence = (VSequence*)[self.fetchedResultsController objectAtIndexPath:indexPath];
@@ -273,15 +271,21 @@
 #pragma mark - Refresh
 - (IBAction)refresh:(UIRefreshControl *)sender
 {
-    [[VObjectManager sharedManager] refreshSequenceFilter:[self currentFilter]
+
+    RKManagedObjectRequestOperation* operation = [[VObjectManager sharedManager] refreshSequenceFilter:[self currentFilter]
                                              successBlock:^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
      {
-         [self.refreshControl endRefreshing];
+         [sender endRefreshing];
      }
                                                 failBlock:^(NSOperation* operation, NSError* error)
      {
-         [self.refreshControl endRefreshing];
+         [sender endRefreshing];
      }];
+    
+    if (operation)
+    {
+        [sender endRefreshing];
+    }
 }
 
 - (void)loadNextPageAction
@@ -392,7 +396,6 @@
 #pragma mark - VAnimation
 - (void)animateInWithDuration:(CGFloat)duration completion:(void (^)(BOOL finished))completion
 {
-    self.fetchedResultsController.delegate = nil;
     VStreamViewCell* selectedCell = (VStreamViewCell*) [self.tableView cellForRowAtIndexPath:self.tableView.indexPathForSelectedRow];
     
     //If the tableview updates while we are in the content view it will reset the cells to their proper positions.
@@ -459,10 +462,9 @@
               
               if (selectedCell)
               {
+                  //sanity check that we showed the overlay.
                   [self.tableView deselectRowAtIndexPath:self.tableView.indexPathForSelectedRow animated:NO];
               }
-              
-              self.fetchedResultsController.delegate = self;
               
               if (completion)
               {
@@ -474,7 +476,6 @@
 
 - (void)animateOutWithDuration:(CGFloat)duration completion:(void (^)(BOOL finished))completion
 {
-    self.fetchedResultsController.delegate = nil;
     [UIView animateWithDuration:.4f
                      animations:^
      {
@@ -509,8 +510,6 @@
      }
                      completion:^(BOOL finished)
      {
-         self.fetchedResultsController.delegate = self;
-         
          if (completion)
          {
              completion(finished);

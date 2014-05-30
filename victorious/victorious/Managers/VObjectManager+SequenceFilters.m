@@ -124,7 +124,8 @@
             
             for (VComment* comment in resultObjects)
             {
-                [filter addCommentsObject:comment];
+                VComment* commentInContext = (VComment*)[filter.managedObjectContext objectWithID:comment.objectID];
+                [filter addCommentsObject:commentInContext];
             }
             
             if (success)
@@ -190,7 +191,8 @@
             
             for (VSequence* sequence in resultObjects)
             {
-                [filter addSequencesObject:sequence];
+                VSequence* sequenceInContext = (VSequence*)[filter.managedObjectContext objectWithID:sequence.objectID];
+                [filter addSequencesObject:sequenceInContext];
             }
         
             if (success)
@@ -263,10 +265,10 @@
                           [[VFilterCache sharedCache] setObject:filter forKey:filter.filterAPIPath];
                       });
         
-        [filter.managedObjectContext saveToPersistentStore:nil];
-        
         if (success)
             success(operation, fullResponse, resultObjects);
+        
+        [filter.managedObjectContext saveToPersistentStore:nil];
     };
     
     VFailBlock fullFail = ^(NSOperation* operation, NSError* error)
@@ -312,11 +314,9 @@
 - (VSequenceFilter*)followerSequenceFilterForStream:(NSString*)streamName user:(VUser*)user
 {
     user = user ?: self.mainUser;
-    if (!user)
-        return nil;
     
     NSString* apiPath = [@"/api/sequence/follows_detail_list_by_stream/" stringByAppendingString: user.remoteId.stringValue];
-    [apiPath stringByAppendingString:streamName];
+    apiPath = [apiPath stringByAppendingPathComponent:streamName];
     return (VSequenceFilter*)[[VFilterCache sharedCache] filterForPath:apiPath entityName:[VSequenceFilter entityName]];
 }
 

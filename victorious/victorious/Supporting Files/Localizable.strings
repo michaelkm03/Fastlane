@@ -63,6 +63,10 @@
 "BlockUser"             =   "Block User";
 "CopyProfileURL"        =   "Copy Profile URL";
 
+"Create a Video Post"   =   "Create a Video Post";
+"Create an Image Post"  =   "Create an Image Post";
+"Create a Poll"         =   "Create a Poll";
+
 "NEW POLL"              =   "NEW POLL";
 "Ask a question..."     =   "Ask a question...";
 "Vote this"             =   "Vote this";

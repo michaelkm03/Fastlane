@@ -60,12 +60,7 @@
     if (self.writerInput != nil)
     {
         self.writerInput = nil;
-        if ([self.delegate respondsToSelector:@selector(dataEncoder:didEncodeFrame:)])
-        {
-            [self.delegate dataEncoder:self didEncodeFrame:kCMTimeZero];
-        }
     }
-    
     initialized = NO;
     lastTakenFrame = kCMTimeInvalid;
 }

@@ -42,6 +42,7 @@ const   NSTimeInterval  kAnimationDuration      =   0.4;
 
 @property (nonatomic)                   BOOL                allowVideo;
 @property (nonatomic)                   BOOL                allowPhotos;
+@property (nonatomic, copy)             NSString*           initialCaptureMode;
 
 @property (nonatomic)                   BOOL                inTrashState;
 @property (nonatomic)                   BOOL                inRecordVideoState;
@@ -61,9 +62,13 @@ const   NSTimeInterval  kAnimationDuration      =   0.4;
 
 + (VCameraViewController *)cameraViewController
 {
-    VCameraViewController *cameraViewController = [[UIStoryboard storyboardWithName:@"Camera" bundle:nil] instantiateViewControllerWithIdentifier:NSStringFromClass(self)];
-    cameraViewController.allowVideo = YES;
-    cameraViewController.allowPhotos = YES;
+    return [[UIStoryboard storyboardWithName:@"Camera" bundle:nil] instantiateViewControllerWithIdentifier:NSStringFromClass(self)];
+}
+
++ (VCameraViewController *)cameraViewControllerStartingWithStillCapture
+{
+    VCameraViewController *cameraViewController = [self cameraViewController];
+    cameraViewController.initialCaptureMode = AVCaptureSessionPresetPhoto;
     return cameraViewController;
 }
 
@@ -71,6 +76,7 @@ const   NSTimeInterval  kAnimationDuration      =   0.4;
 {
     VCameraViewController *cameraViewController = [self cameraViewController];
     cameraViewController.allowVideo = NO;
+    cameraViewController.initialCaptureMode = AVCaptureSessionPresetPhoto;
     return cameraViewController;
 }
 
@@ -81,13 +87,39 @@ const   NSTimeInterval  kAnimationDuration      =   0.4;
     return cameraViewController;
 }
 
+- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
+{
+    self = [super initWithNibName:nil bundle:nil];
+    if (self)
+    {
+        [self commonInit];
+    }
+    return self;
+}
+
+- (id)initWithCoder:(NSCoder *)aDecoder
+{
+    self = [super initWithCoder:aDecoder];
+    if (self)
+    {
+        [self commonInit];
+    }
+    return self;
+}
+
+- (void)commonInit
+{
+    self.allowVideo = YES;
+    self.allowPhotos = YES;
+    self.videoQuality = [[VThemeManager sharedThemeManager] themedCapturedVideoQuality];
+    self.initialCaptureMode = self.videoQuality;
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
     
-    self.videoQuality = [[VThemeManager sharedThemeManager] themedCapturedVideoQuality];
-
-    self.camera = [[VCCamera alloc] initWithSessionPreset:(self.allowVideo ? self.videoQuality : AVCaptureSessionPresetPhoto)];
+    self.camera = [[VCCamera alloc] initWithSessionPreset:self.initialCaptureMode];
     self.camera.delegate = self;
     self.camera.enableSound = YES;
     self.camera.previewVideoGravity = VCVideoGravityResizeAspectFill;
@@ -138,13 +170,13 @@ const   NSTimeInterval  kAnimationDuration      =   0.4;
 //    self.focusView.outsideFocusTargetImage = [UIImage imageNamed:@"capture_flip"];
 //    self.focusView.insideFocusTargetImage = [UIImage imageNamed:@"capture_flip"];
     
-    if (self.allowVideo)
+    if ([self.initialCaptureMode isEqualToString:AVCaptureSessionPresetPhoto])
     {
-        [self configureUIforVideoCaptureAnimated:NO completion:nil];
+        [self configureUIforPhotoCaptureAnimated:NO completion:nil];
     }
     else
     {
-        [self configureUIforPhotoCaptureAnimated:NO completion:nil];
+        [self configureUIforVideoCaptureAnimated:NO completion:nil];
     }
     if (!self.allowVideo || !self.allowPhotos)
     {
