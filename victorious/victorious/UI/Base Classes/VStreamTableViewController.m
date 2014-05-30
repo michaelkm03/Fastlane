@@ -273,15 +273,21 @@
 #pragma mark - Refresh
 - (IBAction)refresh:(UIRefreshControl *)sender
 {
-    [[VObjectManager sharedManager] refreshSequenceFilter:[self currentFilter]
+
+    RKManagedObjectRequestOperation* operation = [[VObjectManager sharedManager] refreshSequenceFilter:[self currentFilter]
                                              successBlock:^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
      {
-         [self.refreshControl endRefreshing];
+         [sender endRefreshing];
      }
                                                 failBlock:^(NSOperation* operation, NSError* error)
      {
-         [self.refreshControl endRefreshing];
+         [sender endRefreshing];
      }];
+    
+    if (operation)
+    {
+        [sender endRefreshing];
+    }
 }
 
 - (void)loadNextPageAction

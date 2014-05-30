@@ -71,7 +71,7 @@ static NSString* CommentCache = @"CommentCache";
     [self sortComments];
     
     if (![self.sortedComments count]) //If we don't have comments, try to pull more.
-        [self refresh:nil];
+        [self refresh:self.refreshControl];
 }
 
 - (NSMutableArray *)newlyReadComments
