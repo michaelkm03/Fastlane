@@ -19,7 +19,15 @@
 
 + (BOOL)isCameraAvailable;
 
+/**
+ Returns an instance of this class that will initially show a video capture screen.
+ */
 + (VCameraViewController *)cameraViewController;
+
+/**
+ Returns an instance of this class that will initially show a still image capture screen.
+ */
++ (VCameraViewController *)cameraViewControllerStartingWithStillCapture;
 
 /**
  Returns an instance of this class that will only take photos, no video.

@@ -16,7 +16,8 @@
  */
 @interface VImageSearchViewController : UIViewController
 
-@property (nonatomic, copy) VMediaCaptureCompletion completionBlock; ///< Will be called when the user has either selected an image or asked to cancel
+@property (nonatomic, copy) VMediaCaptureCompletion  completionBlock; ///< Will be called when the user has either selected an image or asked to cancel
+@property (nonatomic, copy) NSString                *searchTerm; ///< Setting this will trigger a search. If the user enters their own search term, it will be stored in this property.
 
 + (instancetype)newImageSearchViewController;
 

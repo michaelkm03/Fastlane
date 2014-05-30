@@ -103,52 +103,59 @@
         return;
     }
     
-    NSString *contentTitle = NSLocalizedString(@"Post Content", @"Post content button");
-    NSString *pollTitle = NSLocalizedString(@"Post Poll", @"Post poll button");
     UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil
                                                     cancelButtonTitle:NSLocalizedString(@"Cancel", @"Cancel button")
                                                        onCancelButton:nil
                                                destructiveButtonTitle:nil
                                                   onDestructiveButton:nil
-                                           otherButtonTitlesAndBlocks:contentTitle, ^(void)
+                                           otherButtonTitlesAndBlocks:
+                                  NSLocalizedString(@"Create a Video Post", @""), ^(void)
                                   {
-                                      UINavigationController *navigationController = [[UINavigationController alloc] init];
-                                      UINavigationController * __weak weakNav = navigationController;
-                                      VCameraViewController *cameraViewController = [VCameraViewController cameraViewController];
-                                      cameraViewController.completionBlock = ^(BOOL finished, UIImage *previewImage, NSURL *capturedMediaURL)
-                                      {
-                                          if (!finished || !capturedMediaURL)
-                                          {
-                                              [self dismissViewControllerAnimated:YES completion:nil];
-                                          }
-                                          else
-                                          {
-                                              VCameraPublishViewController *publishViewController = [VCameraPublishViewController cameraPublishViewController];
-                                              publishViewController.previewImage = previewImage;
-                                              publishViewController.mediaURL = capturedMediaURL;
-                                              publishViewController.completion = ^(BOOL complete)
-                                              {
-                                                  if (complete)
-                                                  {
-                                                      [self dismissViewControllerAnimated:YES completion:nil];
-                                                  }
-                                                  else
-                                                  {
-                                                      [weakNav popViewControllerAnimated:YES];
-                                                  }
-                                              };
-                                              [weakNav pushViewController:publishViewController animated:YES];
-                                          }
-                                      };
-                                      [navigationController pushViewController:cameraViewController animated:NO];
-                                      [self presentViewController:navigationController animated:YES completion:nil];
+                                      [self presentCameraViewController:[VCameraViewController cameraViewController]];
                                   },
-                                  pollTitle, ^(void)
+                                  NSLocalizedString(@"Create an Image Post", @""), ^(void)
+                                  {
+                                      [self presentCameraViewController:[VCameraViewController cameraViewControllerStartingWithStillCapture]];
+                                  },
+                                  NSLocalizedString(@"Create a Poll", @""), ^(void)
                                   {
                                       VCreatePollViewController *createViewController = [VCreatePollViewController newCreatePollViewControllerWithDelegate:self];
                                       [self.navigationController pushViewController:createViewController animated:YES];
                                   }, nil];
     [actionSheet showInView:self.view];
+}
+
+- (void)presentCameraViewController:(VCameraViewController *)cameraViewController
+{
+    UINavigationController *navigationController = [[UINavigationController alloc] init];
+    UINavigationController * __weak weakNav = navigationController;
+    cameraViewController.completionBlock = ^(BOOL finished, UIImage *previewImage, NSURL *capturedMediaURL)
+    {
+        if (!finished || !capturedMediaURL)
+        {
+            [self dismissViewControllerAnimated:YES completion:nil];
+        }
+        else
+        {
+            VCameraPublishViewController *publishViewController = [VCameraPublishViewController cameraPublishViewController];
+            publishViewController.previewImage = previewImage;
+            publishViewController.mediaURL = capturedMediaURL;
+            publishViewController.completion = ^(BOOL complete)
+            {
+                if (complete)
+                {
+                    [self dismissViewControllerAnimated:YES completion:nil];
+                }
+                else
+                {
+                    [weakNav popViewControllerAnimated:YES];
+                }
+            };
+            [weakNav pushViewController:publishViewController animated:YES];
+        }
+    };
+    [navigationController pushViewController:cameraViewController animated:NO];
+    [self presentViewController:navigationController animated:YES completion:nil];
 }
 
 - (void)createPollWithQuestion:(NSString *)question
