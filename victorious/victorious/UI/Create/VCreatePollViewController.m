@@ -370,10 +370,37 @@ static char KVOContext;
 - (IBAction)searchImageAction:(id)sender
 {
     VImageSearchViewController *imageSearch = [VImageSearchViewController newImageSearchViewController];
+    
+    if (self.firstMediaURL)
+    {
+        imageSearch.searchTerm = self.rightAnswerTextView.text;
+    }
+    else
+    {
+        imageSearch.searchTerm = self.leftAnswerTextView.text;
+    }
+    
+    VImageSearchViewController * __weak weakImageSearch = imageSearch;
     imageSearch.completionBlock = ^(BOOL finished, UIImage *previewImage, NSURL *capturedMediaURL)
     {
         if (finished)
         {
+            if (self.firstMediaURL)
+            {
+                if (!self.rightAnswerTextView.text || [self.rightAnswerTextView.text isEqualToString:@""])
+                {
+                    self.rightAnswerTextView.text = weakImageSearch.searchTerm;
+                    [self textViewDidChange:self.rightAnswerTextView];
+                }
+            }
+            else
+            {
+                if (!self.leftAnswerTextView.text || [self.leftAnswerTextView.text isEqualToString:@""])
+                {
+                    self.leftAnswerTextView.text = weakImageSearch.searchTerm;
+                    [self textViewDidChange:self.leftAnswerTextView];
+                }
+            }
             [self imagePickerFinishedWithURL:capturedMediaURL previewImage:previewImage];
         }
         [self dismissViewControllerAnimated:YES completion:nil];
