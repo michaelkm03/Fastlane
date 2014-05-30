@@ -74,7 +74,6 @@
 {
     _expireDate = expireDate;
     
-    self.hidden = !_expireDate;
     [self animationDidStop:nil finished:_expireDate];
     
 }
