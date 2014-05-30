@@ -12,6 +12,7 @@
 #import "UIImage+ImageCreation.h"
 #import "VCameraViewController.h"
 #import "VConstants.h"
+#import "VContentInputAccessoryView.h"
 #import "VCreatePollViewController.h"
 #import "VImageSearchViewController.h"
 #import "VThemeManager.h"
@@ -55,8 +56,7 @@ static char KVOContext;
 
 @property (strong, nonatomic) IBOutletCollection(NSLayoutConstraint) NSArray *constraintsThatNeedHalfPointConstant;
 
-@property (nonatomic, strong)   UIBarButtonItem*    countDownLabel;
-@property (nonatomic)           BOOL                textViewsCleared;
+@property (nonatomic) BOOL textViewsCleared;
 
 @end
 
@@ -105,6 +105,7 @@ static char KVOContext;
     self.questionTextView.textColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVContentTextColor];
     self.questionTextView.tintColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVContentTextColor];
     self.questionTextView.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeading2Font];
+    self.questionTextView.inputAccessoryView = [self inputAccessoryViewForTextView:self.questionTextView];
 
     self.questionPrompt.text      = NSLocalizedString(@"Ask a question...", @"");
     self.questionPrompt.textColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVContentTextColor];
@@ -118,6 +119,7 @@ static char KVOContext;
                                  options:NSKeyValueObservingOptionInitial | NSKeyValueObservingOptionOld | NSKeyValueObservingOptionNew
                                  context:&KVOContext];
     self.leftAnswerTextView.text = self.leftAnswerPrompt.text; // temporarily
+    self.leftAnswerTextView.inputAccessoryView = [self inputAccessoryViewForTextView:self.leftAnswerTextView];
     
     self.rightAnswerTextView.textColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVContentTextColor];
     self.rightAnswerTextView.tintColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVContentTextColor];
@@ -127,6 +129,7 @@ static char KVOContext;
                                   options:NSKeyValueObservingOptionInitial | NSKeyValueObservingOptionOld | NSKeyValueObservingOptionNew
                                   context:&KVOContext];
     self.rightAnswerTextView.text = self.rightAnswerPrompt.text; // temporarily
+    self.rightAnswerTextView.inputAccessoryView = [self inputAccessoryViewForTextView:self.rightAnswerTextView];
     
     [self.answersSuperview addConstraint:[NSLayoutConstraint constraintWithItem:self.leftAnswerTextView
                                                                       attribute:NSLayoutAttributeCenterY
@@ -159,7 +162,6 @@ static char KVOContext;
     
     [self validatePostButtonState];
     [self updateViewState];
-    [self createInputAccessoryView];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -374,31 +376,12 @@ static char KVOContext;
     [self presentViewController:imageSearch animated:YES completion:nil];
 }
 
-- (IBAction)hashButtonClicked:(id)sender
+- (VContentInputAccessoryView *)inputAccessoryViewForTextView:(UITextView *)textView
 {
-    self.questionTextView.text = [self.questionTextView.text stringByAppendingString:@"#"];
-    [self textViewDidChange:self.questionTextView];
-}
-
-- (void)createInputAccessoryView
-{
-    UIToolbar*  toolbar =   [[UIToolbar alloc] initWithFrame:CGRectMake(0, 0, self.view.bounds.size.width, 44)];
-    
-    UIBarButtonItem*    hashButton  =   [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"cameraButtonHashTagAdd"]
-                                                                         style:UIBarButtonItemStyleBordered
-                                                                        target:self
-                                                                        action:@selector(hashButtonClicked:)];
-    UIBarButtonItem*    flexibleSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace
-                                                                                      target:nil
-                                                                                      action:nil];
-    
-    self.countDownLabel = [[UIBarButtonItem alloc] initWithTitle:[NSNumberFormatter localizedStringFromNumber:@(VConstantsMessageLength) numberStyle:NSNumberFormatterDecimalStyle]
-                                                           style:UIBarButtonItemStyleBordered
-                                                          target:nil
-                                                          action:nil];
-    
-    toolbar.items = @[hashButton, flexibleSpace, self.countDownLabel];
-    self.questionTextView.inputAccessoryView = toolbar;
+    VContentInputAccessoryView *contentInputAccessory = [[VContentInputAccessoryView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 320.0f, 44.0f)];
+    contentInputAccessory.textInputView = textView;
+    contentInputAccessory.tintColor = [UIColor colorWithRed:0.85f green:0.86f blue:0.87f alpha:1.0f];
+    return contentInputAccessory;
 }
 
 #pragma mark - UITextViewDelegate
@@ -432,8 +415,6 @@ static char KVOContext;
 {
     if (textView == self.questionTextView)
     {
-        self.countDownLabel.title = [NSNumberFormatter localizedStringFromNumber:@(VConstantsMessageLength - textView.text.length)
-                                                                     numberStyle:NSNumberFormatterDecimalStyle];
         self.questionPrompt.hidden = textView.text.length > 0;
     }
     else if (textView == self.leftAnswerTextView)
