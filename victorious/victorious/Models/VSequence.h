@@ -2,7 +2,7 @@
 //  VSequence.h
 //  victorious
 //
-//  Created by Will Long on 4/24/14.
+//  Created by Will Long on 5/29/14.
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
@@ -28,8 +28,8 @@
 @property (nonatomic, retain) NSString * sequenceDescription;
 @property (nonatomic, retain) NSString * status;
 @property (nonatomic, retain) NSSet *comments;
+@property (nonatomic, retain) NSSet *filters;
 @property (nonatomic, retain) NSSet *nodes;
-@property (nonatomic, retain) VSequenceFilter *pages;
 @property (nonatomic, retain) NSSet *pollResults;
 @property (nonatomic, retain) VUser *user;
 @property (nonatomic, retain) NSSet *voteResults;
@@ -41,6 +41,11 @@
 - (void)removeCommentsObject:(VComment *)value;
 - (void)addComments:(NSSet *)values;
 - (void)removeComments:(NSSet *)values;
+
+- (void)addFiltersObject:(VSequenceFilter *)value;
+- (void)removeFiltersObject:(VSequenceFilter *)value;
+- (void)addFilters:(NSSet *)values;
+- (void)removeFilters:(NSSet *)values;
 
 - (void)addNodesObject:(VNode *)value;
 - (void)removeNodesObject:(VNode *)value;

@@ -171,7 +171,6 @@
                                     failBlock:fail];
 }
 
-
 - (RKManagedObjectRequestOperation *)loadNextPageOfSequenceFilter:(VSequenceFilter*)filter
                                                      successBlock:(VSuccessBlock)success
                                                         failBlock:(VFailBlock)fail
@@ -342,41 +341,6 @@
     
     return sequenceFilterCache;
 }
-
-//Old method, deprecate after the abstractfilter method has been tested more
-//- (VSequenceFilter*)sequenceFilterForPath:(NSString *)path
-//{
-//    //Check cache
-//    VSequenceFilter* filter =[self objectForKey:path];
-//    
-//    //Check core data
-//    if (!filter)
-//    {
-//        NSManagedObjectContext* context = [VObjectManager sharedManager].managedObjectStore.persistentStoreManagedObjectContext;
-//        NSFetchRequest *request = [[NSFetchRequest alloc] initWithEntityName:[VSequenceFilter entityName]];
-//        NSPredicate* predicate = [NSPredicate predicateWithFormat:@"filterAPIPath == %@", path];
-//        [request setPredicate:predicate];
-//        NSError *error = nil;
-//        filter = [[context executeFetchRequest:request error:&error] firstObject];
-//        if (error != nil)
-//        {
-//            filter = nil;
-//            VLog(@"Error occured in sequence filter fetch: %@", error);
-//        }
-//    }
-//    
-//    //Create a new one if it doesn't exist or it faulted
-//    if (!filter || [filter isFault] || ![filter isKindOfClass:[VSequenceFilter class]])
-//    {
-//        filter = [NSEntityDescription insertNewObjectForEntityForName:[VSequenceFilter entityName]
-//                                               inManagedObjectContext:[VObjectManager sharedManager].managedObjectStore.persistentStoreManagedObjectContext];
-//        filter.filterAPIPath = path;
-//        
-//        [filter.managedObjectContext saveToPersistentStore:nil];
-//    }
-//    
-//    return filter;
-//}
 
 - (VAbstractFilter*)filterForPath:(NSString *)path entityName:(NSString*)entityName
 {

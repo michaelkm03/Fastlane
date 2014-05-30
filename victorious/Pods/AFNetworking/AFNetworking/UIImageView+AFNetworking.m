@@ -72,6 +72,7 @@ static char kAFImageRequestOperationObjectKey;
     static dispatch_once_t oncePredicate;
     dispatch_once(&oncePredicate, ^{
         _af_imageCache = [[AFImageCache alloc] init];
+        [_af_imageCache setCountLimit: 20];
     });
 
     return _af_imageCache;

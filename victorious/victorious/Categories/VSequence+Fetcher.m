@@ -21,9 +21,8 @@
 
 - (BOOL)isPoll
 {
-    return [[self firstNode] isPoll];
-//    return [self.category isEqualToString:kVOwnerPollCategory] ||
-//        [self.category isEqualToString:kVUGCPollCategory];
+    return [self.category isEqualToString:kVOwnerPollCategory] ||
+        [self.category isEqualToString:kVUGCPollCategory];
 }
 
 - (BOOL)isQuiz
