@@ -312,11 +312,9 @@
 - (VSequenceFilter*)followerSequenceFilterForStream:(NSString*)streamName user:(VUser*)user
 {
     user = user ?: self.mainUser;
-    if (!user)
-        return nil;
     
     NSString* apiPath = [@"/api/sequence/follows_detail_list_by_stream/" stringByAppendingString: user.remoteId.stringValue];
-    [apiPath stringByAppendingString:streamName];
+    apiPath = [apiPath stringByAppendingPathComponent:streamName];
     return (VSequenceFilter*)[[VFilterCache sharedCache] filterForPath:apiPath entityName:[VSequenceFilter entityName]];
 }
 
