@@ -22,10 +22,6 @@
 const   CGFloat     kMessageRowWithMediaHeight  =   280.0;
 const   CGFloat     kMessageRowHeight           =   80;
 
-@interface VMessageViewController ()
-@property (nonatomic, readwrite, strong)    NSArray*    messages;
-@end
-
 @implementation VMessageViewController
 
 - (void)viewDidLoad
@@ -49,6 +45,15 @@ const   CGFloat     kMessageRowHeight           =   80;
 
 //    [self.tableView reloadData];
 //    [self refresh];
+}
+
+
+- (void)setConversation:(VConversation *)conversation
+{
+    _conversation = conversation;
+    
+    [self refreshFetchController];
+    [self refresh:self.refreshControl];//always refresh when you go back to a thread
 }
 
 #pragma mark - fetched results controller
@@ -77,7 +82,7 @@ const   CGFloat     kMessageRowHeight           =   80;
 
 - (IBAction)refresh:(UIRefreshControl *)sender
 {
-    __block NSInteger oldMessageCount = [self.messages count];
+    __block NSInteger oldMessageCount = [self.fetchedResultsController.fetchedObjects count];
     VFailBlock fail = ^(NSOperation* operation, NSError* error)
     {
         NSLog(@"%@", error.localizedDescription);
@@ -87,11 +92,9 @@ const   CGFloat     kMessageRowHeight           =   80;
     
     VSuccessBlock success = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
     {
-        NSSortDescriptor*   sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"postedAt" ascending:YES];
-        self.messages = [[self.conversation.messages allObjects] sortedArrayUsingDescriptors:@[sortDescriptor]];
         [self.tableView reloadData];
         
-        if (oldMessageCount != [self.messages count]
+        if (oldMessageCount != [self.fetchedResultsController.fetchedObjects count]
             && self.tableView.contentSize.height > self.tableView.frame.size.height)
         {
             CGPoint offset = CGPointMake(self.tableView.contentOffset.x,
@@ -136,7 +139,7 @@ const   CGFloat     kMessageRowHeight           =   80;
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     UITableViewCell *cell = nil;
-    VMessage*   aMessage = self.messages[indexPath.row];
+    VMessage*   aMessage = [self.fetchedResultsController objectAtIndexPath:indexPath];
     if([aMessage.user isEqualToUser:[VObjectManager sharedManager].mainUser])
     {
         cell = [tableView dequeueReusableCellWithIdentifier:kOtherMessageCellIdentifier forIndexPath:indexPath];
@@ -158,7 +161,7 @@ const   CGFloat     kMessageRowHeight           =   80;
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    VMessage*   aMessage = self.messages[indexPath.row];
+    VMessage*   aMessage = [self.fetchedResultsController objectAtIndexPath:indexPath];
 
     CGFloat height = [VMessageCell frameSizeForMessageText:aMessage.text].height;
     CGFloat yOffset = ![aMessage.thumbnailPath isEmpty] ? kMessageMediaCellYOffset : kMessageCellYOffset;
