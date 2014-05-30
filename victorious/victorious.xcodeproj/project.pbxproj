@@ -32,6 +32,7 @@
 		03943A78192570A500FA8A1F /* UINavigationController+RotationMethodForwarding.m in Sources */ = {isa = PBXBuildFile; fileRef = 03943A77192570A500FA8A1F /* UINavigationController+RotationMethodForwarding.m */; };
 		03A2AD971926B9460034EB80 /* UIViewController+ForceOrientationChange.m in Sources */ = {isa = PBXBuildFile; fileRef = 03A2AD961926B9460034EB80 /* UIViewController+ForceOrientationChange.m */; };
 		03A2AD9A1926C9300034EB80 /* DeviceTableViewController+RotationMethods.m in Sources */ = {isa = PBXBuildFile; fileRef = 03A2AD991926C9300034EB80 /* DeviceTableViewController+RotationMethods.m */; };
+		03ABEE201937EC7F007931F9 /* VContentInputAccessoryView.m in Sources */ = {isa = PBXBuildFile; fileRef = 03ABEE1F1937EC7F007931F9 /* VContentInputAccessoryView.m */; };
 		03D6381B191840570084FFC8 /* VEnvironment.m in Sources */ = {isa = PBXBuildFile; fileRef = 03D6381A191840570084FFC8 /* VEnvironment.m */; };
 		03D6381E191841220084FFC8 /* VObjectManager+Environment.m in Sources */ = {isa = PBXBuildFile; fileRef = 03D6381D191841220084FFC8 /* VObjectManager+Environment.m */; };
 		03D638211918488F0084FFC8 /* VServerEnvironmentTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 03D638201918488F0084FFC8 /* VServerEnvironmentTableViewController.m */; };
@@ -339,6 +340,8 @@
 		03A2AD961926B9460034EB80 /* UIViewController+ForceOrientationChange.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+ForceOrientationChange.m"; sourceTree = "<group>"; };
 		03A2AD981926C9300034EB80 /* DeviceTableViewController+RotationMethods.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "DeviceTableViewController+RotationMethods.h"; path = "UI/DeviceTableViewController+RotationMethods.h"; sourceTree = "<group>"; };
 		03A2AD991926C9300034EB80 /* DeviceTableViewController+RotationMethods.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "DeviceTableViewController+RotationMethods.m"; path = "UI/DeviceTableViewController+RotationMethods.m"; sourceTree = "<group>"; };
+		03ABEE1E1937EC7F007931F9 /* VContentInputAccessoryView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VContentInputAccessoryView.h; sourceTree = "<group>"; };
+		03ABEE1F1937EC7F007931F9 /* VContentInputAccessoryView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VContentInputAccessoryView.m; sourceTree = "<group>"; };
 		03D63819191840570084FFC8 /* VEnvironment.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VEnvironment.h; sourceTree = "<group>"; };
 		03D6381A191840570084FFC8 /* VEnvironment.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VEnvironment.m; sourceTree = "<group>"; };
 		03D6381C191841220084FFC8 /* VObjectManager+Environment.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "VObjectManager+Environment.h"; sourceTree = "<group>"; };
@@ -932,6 +935,8 @@
 		3F53E0C418A595AC00089C20 /* Create */ = {
 			isa = PBXGroup;
 			children = (
+				03ABEE1E1937EC7F007931F9 /* VContentInputAccessoryView.h */,
+				03ABEE1F1937EC7F007931F9 /* VContentInputAccessoryView.m */,
 				3FF8C4F718A59EAB00812968 /* VCreatePollViewController.h */,
 				3FF8C4F818A59EAB00812968 /* VCreatePollViewController.m */,
 				3FF8C4F918A59EAB00812968 /* VCreateSequenceDelegate.h */,
@@ -1988,6 +1993,7 @@
 				BE185DEA18E3AF55001C447F /* VContentViewController+Polls.m in Sources */,
 				5FF9BE83189318CD0054694B /* VRootViewController.m in Sources */,
 				BEB4C29D187E038C004ECEEF /* VNewsCell.m in Sources */,
+				03ABEE201937EC7F007931F9 /* VContentInputAccessoryView.m in Sources */,
 				03484BFB192E6E8C00403FB1 /* VVideoLightboxViewController.m in Sources */,
 				BE171E131868C211004E5202 /* VInteractionAction+RestKit.m in Sources */,
 				03F9D281191D542300576AEE /* VCVideoPlayerToolbarView.m in Sources */,
