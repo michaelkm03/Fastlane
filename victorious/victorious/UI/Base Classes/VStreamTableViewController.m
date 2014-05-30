@@ -63,12 +63,20 @@
      addObserver:self selector:@selector(willCommentSequence:)
      name:kStreamsWillCommentNotification object:nil];
     
-    self.preloadImageCache = [[NSCache alloc] init];
-    
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     
     self.clearsSelectionOnViewWillAppear = NO;
     self.bottomRefreshIndicator.color = [[VThemeManager sharedThemeManager] themedColorForKey:kVMainTextColor];
+}
+
+- (NSCache*)preloadImageCache
+{
+    if (!_preloadImageCache)
+    {
+        self.preloadImageCache = [[NSCache alloc] init];
+        self.preloadImageCache.countLimit = 20;
+    }
+    return _preloadImageCache;
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -124,6 +132,13 @@
     
     _filterType = filterType;
     [self refreshFetchController];
+}
+
+- (void)didReceiveMemoryWarning
+{
+    [super didReceiveMemoryWarning];
+
+    self.preloadImageCache = nil;
 }
 
 - (NSFetchedResultsController *)makeFetchedResultsController
@@ -190,7 +205,7 @@
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     VSequence* sequence = (VSequence*)[self.fetchedResultsController objectAtIndexPath:indexPath];
-    
+
     NSUInteger cellHeight;
     
     if ([sequence isPoll])

@@ -9,10 +9,10 @@
 @class VConversation;
 @class VKeyboardBarViewController;
 
-@interface VMessageViewController : UITableViewController
+#import "VFetchedResultsTableViewController.h"
+
+@interface VMessageViewController : VFetchedResultsTableViewController
 
 @property (nonatomic, readwrite, strong)    VConversation*  conversation;
-
-- (void)refresh;
 
 @end
