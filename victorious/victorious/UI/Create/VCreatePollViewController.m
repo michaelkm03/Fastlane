@@ -195,31 +195,31 @@ static char KVOContext;
 {
     [self.postButton setEnabled:YES];
     
-    if (!self.mediaURL || !self.secondMediaURL)
+    if (!self.firstMediaURL || !self.secondMediaURL)
         [self.postButton setEnabled:NO];
     
-    else if ([self.questionTextField.text isEmpty])
+    else if ([self.questionTextView.text isEmpty])
         [self.postButton setEnabled:NO];
 
-    else if ([self.questionTextField.text length] > VConstantsForumTitleLength)
+    else if ([self.questionTextView.text length] > VConstantsForumTitleLength)
         [self.postButton setEnabled:NO];
     
-    else if ([self.leftAnswerTextField.text isEmpty])
+    else if ([self.leftAnswerTextView.text isEmpty])
         [self.postButton setEnabled:NO];
 
-    else if ([self.leftAnswerTextField.text length] > VConstantsForumTitleLength)
+    else if ([self.leftAnswerTextView.text length] > VConstantsForumTitleLength)
         [self.postButton setEnabled:NO];
     
-    else if ([self.rightAnswerTextField.text isEmpty])
+    else if ([self.rightAnswerTextView.text isEmpty])
         [self.postButton setEnabled:NO];
 
-    else if ([self.rightAnswerTextField.text length] > VConstantsForumTitleLength)
+    else if ([self.rightAnswerTextView.text length] > VConstantsForumTitleLength)
         [self.postButton setEnabled:NO];
 }
 
 - (void)updateViewState
 {
-    if (!self.secondMediaURL)
+    if (self.firstMediaURL)
     {
         self.mediaButtonLeftSpacingConstraint.constant = kPreviewImageWidth;
         self.leftPreviewImageView.alpha = 1.0f;
@@ -405,8 +405,7 @@ static char KVOContext;
 
 - (void)textViewDidChange:(UITextView *)textView
 {
-    NSInteger characterCount = VConstantsMessageLength-[textView.text length];
-    if (characterCount < 0)
+    if (textView == self.questionTextView)
     {
         self.questionPrompt.hidden = textView.text.length > 0;
     }
@@ -414,15 +413,7 @@ static char KVOContext;
     {
         self.leftAnswerPrompt.hidden = textView.text.length > 0;
     }
-
-    self.characterCountLabel.text = [NSNumberFormatter localizedStringFromNumber:@(characterCount)
-                                                                     numberStyle:NSNumberFormatterDecimalStyle];
-    [self validatePostButtonState];
-}
-
-- (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text
-{
-    if ([text isEqualToString:@"\n"])
+    else if (textView == self.rightAnswerTextView)
     {
         self.rightAnswerPrompt.hidden = textView.text.length > 0;
     }
@@ -434,7 +425,7 @@ static char KVOContext;
 - (void)imagePickerFinishedWithURL:(NSURL *)mediaURL
                       previewImage:(UIImage *)previewImage
 {
-    if (!self.mediaURL)
+    if (!self.firstMediaURL)
     {
         self.firstMediaURL = mediaURL;
         self.leftPreviewImageView.image = previewImage;
