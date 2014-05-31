@@ -57,6 +57,7 @@ extern  NSString*   const   kVAccentColor;
 extern  NSString*   const   kVSecondaryAccentColor;
 
 extern  NSString*   const   kVLinkColor;
+extern  NSString*   const   kVSecondaryLinkColor;
 
 @interface VThemeManager : NSObject
 

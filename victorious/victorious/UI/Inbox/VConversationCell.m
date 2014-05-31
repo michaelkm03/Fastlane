@@ -38,6 +38,11 @@
     
     self.profileImageButton.clipsToBounds = YES;
     self.profileImageButton.layer.cornerRadius = CGRectGetHeight(self.profileImageButton.bounds)/2;
+    self.profileImageButton.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVSecondaryLinkColor];
+    self.profileImageButton.layer.borderColor = self.backgroundColor.CGColor;
+    self.profileImageButton.layer.borderWidth = 1.0f;
+    
+    self.selectionStyle = UITableViewCellSelectionStyleNone;
 }
 
 - (void)setSeen:(BOOL)seen
