@@ -47,7 +47,6 @@ const   CGFloat     kMessageRowHeight           =   80;
 //    [self refresh];
 }
 
-
 - (void)setConversation:(VConversation *)conversation
 {
     _conversation = conversation;
@@ -82,7 +81,6 @@ const   CGFloat     kMessageRowHeight           =   80;
 
 - (IBAction)refresh:(UIRefreshControl *)sender
 {
-    __block NSInteger oldMessageCount = [self.fetchedResultsController.fetchedObjects count];
     VFailBlock fail = ^(NSOperation* operation, NSError* error)
     {
         NSLog(@"%@", error.localizedDescription);
@@ -94,8 +92,7 @@ const   CGFloat     kMessageRowHeight           =   80;
     {
         [self.tableView reloadData];
         
-        if (oldMessageCount != [self.fetchedResultsController.fetchedObjects count]
-            && self.tableView.contentSize.height > self.tableView.frame.size.height)
+        if (self.tableView.contentSize.height > self.tableView.frame.size.height)
         {
             CGPoint offset = CGPointMake(self.tableView.contentOffset.x,
                                          self.tableView.contentSize.height - self.tableView.frame.size.height);
