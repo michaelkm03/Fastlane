@@ -65,7 +65,7 @@ static  NSString*   kNewsCellViewIdentifier       =   @"VNewsCell";
     else if (kNewsModeSelect == self.modeSelectControl.selectedSegmentIndex)
         fetchRequest = [NSFetchRequest fetchRequestWithEntityName:[VConversation entityName]];
 
-    NSSortDescriptor *sort = [[NSSortDescriptor alloc] initWithKey:@"lastMessage.postedAt" ascending:YES];
+    NSSortDescriptor *sort = [[NSSortDescriptor alloc] initWithKey:@"lastMessage.postedAt" ascending:NO];
     [fetchRequest setSortDescriptors:@[sort]];
     [fetchRequest setFetchBatchSize:50];
     
