@@ -22,6 +22,9 @@
 @interface VLoginViewController ()  <UINavigationControllerDelegate>
 @property (nonatomic, strong)           VUser*          profile;
 
+@property (nonatomic, weak) IBOutlet    UIButton*       facebookButton;
+@property (nonatomic, weak) IBOutlet    UIButton*       twitterButton;
+
 @property (nonatomic, weak) IBOutlet    UIImageView*    backgroundImageView;
 @property (nonatomic, weak) IBOutlet    UILabel*        fauxEmailLoginButton;
 @property (nonatomic, weak) IBOutlet    UILabel*        fauxPasswordLoginButton;
@@ -67,6 +70,7 @@
     self.loginEmailButton.titleLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeading4Font];
     
     [self.transitionPlaceholder addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(emailClicked:)]];
+    self.transitionPlaceholder.userInteractionEnabled = YES;
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -153,6 +157,11 @@
 
 - (void)didFailWithError:(NSError*)error
 {
+    self.facebookButton.userInteractionEnabled = YES;
+    self.twitterButton.userInteractionEnabled = YES;
+    self.loginEmailButton.userInteractionEnabled = YES;
+    self.transitionPlaceholder.userInteractionEnabled = YES;
+
     UIAlertView*    alert   =   [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"LoginFail", @"")
                                                            message:error.localizedDescription
                                                           delegate:nil
@@ -165,6 +174,11 @@
 
 - (IBAction)facebookClicked:(id)sender
 {
+    self.facebookButton.userInteractionEnabled = NO;
+    self.twitterButton.userInteractionEnabled = NO;
+    self.loginEmailButton.userInteractionEnabled = NO;
+    self.transitionPlaceholder.userInteractionEnabled = NO;
+
     ACAccountStore *accountStore = [[ACAccountStore alloc] init];
     ACAccountType *facebookAccountType = [accountStore accountTypeWithAccountTypeIdentifier:ACAccountTypeIdentifierFacebook];
     [accountStore requestAccessToAccountsWithType:facebookAccountType
@@ -211,6 +225,11 @@
 
 - (IBAction)twitterClicked:(id)sender
 {
+    self.facebookButton.userInteractionEnabled = NO;
+    self.twitterButton.userInteractionEnabled = NO;
+    self.loginEmailButton.userInteractionEnabled = NO;
+    self.transitionPlaceholder.userInteractionEnabled = NO;
+    
     ACAccountStore* account = [[ACAccountStore alloc] init];
     ACAccountType* accountType = [account accountTypeWithAccountTypeIdentifier:ACAccountTypeIdentifierTwitter];
     [account requestAccessToAccountsWithType:accountType options:nil completion:^(BOOL granted, NSError *error)
@@ -266,6 +285,11 @@
 
 - (IBAction)signup:(id)sender
 {
+    self.facebookButton.userInteractionEnabled = NO;
+    self.twitterButton.userInteractionEnabled = NO;
+    self.loginEmailButton.userInteractionEnabled = NO;
+    self.transitionPlaceholder.userInteractionEnabled = NO;
+    
     [self performSegueWithIdentifier:@"toSignup" sender:self];
 }
 
@@ -292,10 +316,10 @@
     }
 }
 
-- (id<UIViewControllerAnimatedTransitioning>) navigationController:(UINavigationController *)navigationController
-                                   animationControllerForOperation:(UINavigationControllerOperation)operation
-                                                fromViewController:(UIViewController *)fromVC
-                                                  toViewController:(UIViewController *)toVC
+- (id<UIViewControllerAnimatedTransitioning>)navigationController:(UINavigationController *)navigationController
+                                  animationControllerForOperation:(UINavigationControllerOperation)operation
+                                               fromViewController:(UIViewController *)fromVC
+                                                 toViewController:(UIViewController *)toVC
 {
     if (self.animateToLogin)
     {

@@ -118,11 +118,13 @@
                     <navigationItem key="navigationItem" id="isi-ni-Mut"/>
                     <connections>
                         <outlet property="backgroundImageView" destination="DEt-dq-bzY" id="VW1-k7-spm"/>
+                        <outlet property="facebookButton" destination="Yoh-zd-utn" id="Sdb-wZ-zMw"/>
                         <outlet property="facebookButtonLabel" destination="tgS-Dw-MLG" id="cU2-kY-S0W"/>
                         <outlet property="fauxEmailLoginButton" destination="PBd-jN-jOQ" id="SUU-Kc-yV6"/>
                         <outlet property="fauxPasswordLoginButton" destination="dbc-B9-jGE" id="vOX-ST-Omq"/>
                         <outlet property="loginEmailButton" destination="yeM-Dh-LIB" id="5K1-gY-NYu"/>
                         <outlet property="transitionPlaceholder" destination="t4p-sF-3n6" id="njl-QD-yfX"/>
+                        <outlet property="twitterButton" destination="c2n-re-bSf" id="FIC-b1-Oi9"/>
                         <outlet property="twitterButtonLabel" destination="3q4-yP-lYm" id="Zjw-5c-fgR"/>
                         <segue destination="iZ7-hd-8dA" kind="push" identifier="toEmailLogin" id="DLv-b3-ha2"/>
                         <segue destination="WjX-TR-OnL" kind="push" identifier="toSignup" id="9EH-It-qvD"/>
@@ -951,6 +953,6 @@
         <simulatedScreenMetrics key="destination" type="retina4"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
-        <segue reference="671-FK-1wm"/>
+        <segue reference="L0J-p9-vsT"/>
     </inferredMetricsTieBreakers>
 </document>
