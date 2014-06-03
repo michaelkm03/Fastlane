@@ -23,11 +23,17 @@
 
 - (void)animateTransition:(id<UIViewControllerContextTransitioning>)context
 {
-    VStreamContainerViewController* container = (VStreamContainerViewController*)[context viewControllerForKey:UITransitionContextFromViewControllerKey];
-    VStreamTableViewController *streamVC = container.streamTable;
+    UIViewController* fromVC = [context viewControllerForKey:UITransitionContextFromViewControllerKey];
+    VStreamTableViewController *streamVC;
+    
+    if ([fromVC isKindOfClass:[VStreamTableViewController class]])
+        streamVC = (VStreamTableViewController*)fromVC;
+    else
+        streamVC = ((VStreamContainerViewController*)fromVC).streamTable;
+    
     VCommentsContainerViewController* commentVC = (VCommentsContainerViewController*)[context viewControllerForKey:UITransitionContextToViewControllerKey];
     
-    container.view.userInteractionEnabled = NO;
+    fromVC.view.userInteractionEnabled = NO;
     commentVC.view.userInteractionEnabled = NO;
     
      [streamVC animateOutWithDuration:.4f
@@ -37,7 +43,7 @@
          [commentVC animateInWithDuration:.4f
                                completion:^(BOOL finished)
           {
-              container.view.userInteractionEnabled = YES;
+              fromVC.view.userInteractionEnabled = YES;
               commentVC.view.userInteractionEnabled = YES;
              [context completeTransition:![context transitionWasCancelled]];
          }];

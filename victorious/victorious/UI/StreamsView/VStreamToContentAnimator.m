@@ -25,8 +25,10 @@
 
 - (void)animateTransition:(id<UIViewControllerContextTransitioning>)context
 {
-    VStreamContainerViewController* container = (VStreamContainerViewController*)[context viewControllerForKey:UITransitionContextFromViewControllerKey];
-    VStreamTableViewController *streamVC = container.streamTable;
+    id fromVC = [context viewControllerForKey:UITransitionContextFromViewControllerKey];
+    VStreamTableViewController *streamVC = [fromVC isKindOfClass:[VStreamTableViewController class]] ? fromVC
+                                                    : ((VStreamContainerViewController*)fromVC).streamTable;
+    
     VContentViewController* contentVC = (VContentViewController*)[context viewControllerForKey:UITransitionContextToViewControllerKey];
     VStreamViewCell* selectedCell = (VStreamViewCell*) [streamVC.tableView cellForRowAtIndexPath:streamVC.tableView.indexPathForSelectedRow];
     
