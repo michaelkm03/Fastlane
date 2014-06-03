@@ -228,7 +228,9 @@
                                                      successBlock:^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
          {
              VLog(@"Succeeded with objects: %@", resultObjects);
-             [self performSegueWithIdentifier:@"toInviteFriends" sender:self];
+#warning Temporary to prevent someone from going into invite friends. We will re-open this we finihs App Store release, and we finish the implementation for this
+//             [self performSegueWithIdentifier:@"toInviteFriends" sender:self];
+             [self dismissViewControllerAnimated:YES completion:nil];
          }
                                                         failBlock:^(NSOperation* operation, NSError* error)
          {

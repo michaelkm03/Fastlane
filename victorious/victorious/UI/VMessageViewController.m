@@ -136,8 +136,8 @@ const   CGFloat     kMessageRowHeight           =   80;
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     UITableViewCell *cell = nil;
-    VMessage*   aMessage = self.messages[indexPath.row];
-    if ([aMessage.user isEqualToUser:[VObjectManager sharedManager].mainUser])
+    VMessage*   aMessage = [self.fetchedResultsController objectAtIndexPath:indexPath];
+    if([aMessage.user isEqualToUser:[VObjectManager sharedManager].mainUser])
     {
         cell = [tableView dequeueReusableCellWithIdentifier:kOtherMessageCellIdentifier forIndexPath:indexPath];
     }else
