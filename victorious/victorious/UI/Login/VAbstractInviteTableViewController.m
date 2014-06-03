@@ -7,8 +7,11 @@
 //
 
 #import "VAbstractInviteTableViewController.h"
+#import "VThemeManager.h"
 
 @interface VAbstractInviteTableViewController ()
+@property (nonatomic, weak) IBOutlet    UIButton*       clearButton;
+@property (nonatomic, weak) IBOutlet    UIButton*       selectAllButton;
 @end
 
 @implementation VAbstractInviteTableViewController
@@ -17,11 +20,14 @@
 {
     [super viewDidLoad];
     
-    // Uncomment the following line to preserve selection between presentations.
-    // self.clearsSelectionOnViewWillAppear = NO;
-    
-    // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-    // self.navigationItem.rightBarButtonItem = self.editButtonItem;
+    self.clearButton.layer.borderWidth = 2.0;
+    self.clearButton.layer.cornerRadius = 3.0;
+    self.clearButton.layer.borderColor = [UIColor blackColor].CGColor;
+    self.clearButton.titleLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVButton2Font];
+    self.selectAllButton.layer.borderWidth = 2.0;
+    self.selectAllButton.layer.cornerRadius = 3.0;
+    self.selectAllButton.layer.borderColor = [UIColor blackColor].CGColor;
+    self.selectAllButton.titleLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVButton2Font];
 }
 
 #pragma mark - Table view data source
