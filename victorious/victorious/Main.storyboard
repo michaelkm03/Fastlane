@@ -659,13 +659,10 @@
                                             <action selector="pressedMore:" destination="4V8-Qd-rfj" eventType="touchUpInside" id="pcB-RL-U4y"/>
                                         </connections>
                                     </button>
-                                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="280" translatesAutoresizingMaskIntoConstraints="NO" id="SVt-O0-Xbt">
-                                        <rect key="frame" x="20" y="61" width="280" height="73"/>
+                                    <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="W6u-ac-PS7" customClass="VContentTitleTextView">
+                                        <rect key="frame" x="20" y="60" width="280" height="89"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        <string key="text">12345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890</string>
-                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
+                                    </view>
                                 </subviews>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <constraints>
@@ -840,7 +837,7 @@
                     <connections>
                         <outlet property="backgroundImage" destination="Xzc-fo-Pc8" id="bwb-2j-hZd"/>
                         <outlet property="barContainerView" destination="Pce-Lq-Sbm" id="n2G-fA-vJD"/>
-                        <outlet property="descriptionLabel" destination="SVt-O0-Xbt" id="CmB-GP-EVp"/>
+                        <outlet property="descriptionLabel" destination="W6u-ac-PS7" id="y5I-eh-o13"/>
                         <outlet property="firstPollButton" destination="iB3-TF-e3b" id="uEc-eU-Jbu"/>
                         <outlet property="firstPollPlayIcon" destination="yMt-1L-zyw" id="QWi-P7-VYR"/>
                         <outlet property="firstResultView" destination="mU7-Gc-RdJ" id="Hap-rD-L8h"/>

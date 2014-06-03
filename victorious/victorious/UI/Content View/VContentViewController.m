@@ -58,8 +58,6 @@ CGFloat kContentMediaViewOffset = 154;
         [button setImage:[button.imageView.image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] forState:UIControlStateNormal];
         button.tintColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVContentTextColor];
     }
-    self.descriptionLabel.textColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVContentTextColor];
-    self.descriptionLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeading2Font];
     
     [self resetView];
 }

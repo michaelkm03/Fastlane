@@ -12,6 +12,7 @@
 
 #import "VActivityIndicatorView.h"
 #import "VCVideoPlayerViewController.h"
+#import "VContentTitleTextView.h"
 #import "VPollAnswerBarViewController.h"
 #import "VResultView.h"
 
@@ -31,7 +32,7 @@
 @interface VContentViewController ()  <UIWebViewDelegate, VInteractionManagerDelegate, UIDynamicAnimatorDelegate, UINavigationControllerDelegate>
 
 @property (weak, nonatomic) IBOutlet UIImageView* backgroundImage;
-@property (weak, nonatomic) IBOutlet UILabel* descriptionLabel;
+@property (weak, nonatomic) IBOutlet VContentTitleTextView* descriptionLabel;
 @property (weak, nonatomic) IBOutlet UIView* barContainerView;
 
 @property (strong, nonatomic) IBOutletCollection(UIButton) NSArray* buttonCollection;

@@ -33,6 +33,7 @@
 		03A2AD971926B9460034EB80 /* UIViewController+ForceOrientationChange.m in Sources */ = {isa = PBXBuildFile; fileRef = 03A2AD961926B9460034EB80 /* UIViewController+ForceOrientationChange.m */; };
 		03A2AD9A1926C9300034EB80 /* DeviceTableViewController+RotationMethods.m in Sources */ = {isa = PBXBuildFile; fileRef = 03A2AD991926C9300034EB80 /* DeviceTableViewController+RotationMethods.m */; };
 		03ABEE201937EC7F007931F9 /* VContentInputAccessoryView.m in Sources */ = {isa = PBXBuildFile; fileRef = 03ABEE1F1937EC7F007931F9 /* VContentInputAccessoryView.m */; };
+		03ABEE2319395AF6007931F9 /* VContentTitleTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = 03ABEE2219395AF6007931F9 /* VContentTitleTextView.m */; };
 		03D6381B191840570084FFC8 /* VEnvironment.m in Sources */ = {isa = PBXBuildFile; fileRef = 03D6381A191840570084FFC8 /* VEnvironment.m */; };
 		03D6381E191841220084FFC8 /* VObjectManager+Environment.m in Sources */ = {isa = PBXBuildFile; fileRef = 03D6381D191841220084FFC8 /* VObjectManager+Environment.m */; };
 		03D638211918488F0084FFC8 /* VServerEnvironmentTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 03D638201918488F0084FFC8 /* VServerEnvironmentTableViewController.m */; };
@@ -348,6 +349,8 @@
 		03A2AD991926C9300034EB80 /* DeviceTableViewController+RotationMethods.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "DeviceTableViewController+RotationMethods.m"; path = "UI/DeviceTableViewController+RotationMethods.m"; sourceTree = "<group>"; };
 		03ABEE1E1937EC7F007931F9 /* VContentInputAccessoryView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VContentInputAccessoryView.h; sourceTree = "<group>"; };
 		03ABEE1F1937EC7F007931F9 /* VContentInputAccessoryView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VContentInputAccessoryView.m; sourceTree = "<group>"; };
+		03ABEE2119395AF6007931F9 /* VContentTitleTextView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VContentTitleTextView.h; path = "UI/Content View/VContentTitleTextView.h"; sourceTree = "<group>"; };
+		03ABEE2219395AF6007931F9 /* VContentTitleTextView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VContentTitleTextView.m; path = "UI/Content View/VContentTitleTextView.m"; sourceTree = "<group>"; };
 		03D63819191840570084FFC8 /* VEnvironment.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VEnvironment.h; sourceTree = "<group>"; };
 		03D6381A191840570084FFC8 /* VEnvironment.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VEnvironment.m; sourceTree = "<group>"; };
 		03D6381C191841220084FFC8 /* VObjectManager+Environment.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "VObjectManager+Environment.h"; sourceTree = "<group>"; };
@@ -1786,6 +1789,8 @@
 			children = (
 				BE185DF218E3B85D001C447F /* ActionBars */,
 				BE46E69118CA73EC00974DAF /* Animations */,
+				03ABEE2119395AF6007931F9 /* VContentTitleTextView.h */,
+				03ABEE2219395AF6007931F9 /* VContentTitleTextView.m */,
 				BEB52A7618C02D6600AC5FE4 /* VContentViewController.h */,
 				BEB52A7718C02D6600AC5FE4 /* VContentViewController.m */,
 				BE185DE818E3AF55001C447F /* VContentViewController+Polls.h */,
@@ -2253,6 +2258,7 @@
 				0385FEEC18EF9748009FBD68 /* VImageSearchResultCell.m in Sources */,
 				BEAEBF1318D3A91C00C79AC7 /* VResultView.m in Sources */,
 				5FC4DA6D1897119C006BA107 /* VProfileCreateViewController.m in Sources */,
+				03ABEE2319395AF6007931F9 /* VContentTitleTextView.m in Sources */,
 				BED7F67218E0A8E900545DF6 /* NSData+Base64.m in Sources */,
 				BE171E3A1868C266004E5202 /* NSString+VParseHelp.m in Sources */,
 				3F9B666B1888BE6A0046F826 /* VStreamTableViewController.m in Sources */,
