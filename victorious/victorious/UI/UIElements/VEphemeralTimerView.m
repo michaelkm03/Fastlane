@@ -74,7 +74,7 @@
 {
     _expireDate = expireDate;
     
-    [self animationDidStop:nil finished:_expireDate];
+    [self animationDidStop:nil finished:!!_expireDate];
     
 }
 

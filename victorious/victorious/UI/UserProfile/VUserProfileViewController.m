@@ -24,6 +24,8 @@
 #import "VThemeManager.h"
 #import "VObjectManager+Login.h"
 
+#import "VInboxContainerViewController.h"
+
 const   CGFloat kVNavigationBarHeight = 44.0;
 
 @interface VUserProfileViewController ()
@@ -92,14 +94,6 @@ const   CGFloat kVNavigationBarHeight = 44.0;
     
     [super viewDidLoad];
     
-    if (self.isMe)
-        [self addCreateButton];
-    else
-        self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"profileCompose"]
-                                                                                  style:UIBarButtonItemStylePlain
-                                                                                 target:self
-                                                                                 action:@selector(composeMessage:)];
-
     self.tableView.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVContentTextColor];
 
     if (![VObjectManager sharedManager].mainUser)
@@ -111,6 +105,22 @@ const   CGFloat kVNavigationBarHeight = 44.0;
     [super viewDidAppear:animated];
     
     [self.navigationController setNavigationBarHidden:NO animated:YES];
+ 
+    //If we came from the inbox we can get into a loop with the compose button, so hide it
+    BOOL fromInbox = NO;
+    for (UIViewController* vc in self.navigationController.viewControllers)
+    {
+        if ([vc isKindOfClass:[VInboxContainerViewController class]])
+            fromInbox = YES;
+    }
+    
+    if (self.isMe)
+        [self addCreateButton];
+    else if (!self.isMe && !fromInbox)
+        self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"profileCompose"]
+                                                                                  style:UIBarButtonItemStylePlain
+                                                                                 target:self
+                                                                                 action:@selector(composeMessage:)];
 }
 
 - (void)dealloc
