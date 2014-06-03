@@ -16,7 +16,17 @@
 #import "VThemeManager.h"
 #import "VUserManager.h"
 
-static const NSTimeInterval kTimeBetweenRetries = 10.0;
+#import "MBProgressHUD.h"
+
+static const NSTimeInterval kTimeBetweenRetries = 1.0;
+static const NSUInteger kRetryAttempts = 5;
+
+@interface VLoadingViewController()
+
+@property NSUInteger failCount;
+@property MBProgressHUD* progressHUD;
+
+@end
 
 @implementation VLoadingViewController
 {
@@ -51,6 +61,9 @@ static const NSTimeInterval kTimeBetweenRetries = 10.0;
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+    
+    self.failCount = 0;
+    
     [self.navigationController setNavigationBarHidden:YES animated:NO];
 }
 
@@ -146,6 +159,8 @@ static const NSTimeInterval kTimeBetweenRetries = 10.0;
         }
                                                                   failBlock:^(NSOperation *operation, NSError *error)
         {
+            self.failCount++;
+            
             _initialSequenceLoading = NO;
             [self scheduleRetry];
         }];
@@ -169,6 +184,8 @@ static const NSTimeInterval kTimeBetweenRetries = 10.0;
         }
                                                       failBlock:^(NSOperation* operation, NSError* error)
         {
+            self.failCount++;
+            
             _appInitLoading = NO;
             [self scheduleRetry];
         }];
@@ -182,8 +199,18 @@ static const NSTimeInterval kTimeBetweenRetries = 10.0;
         [_retryTimer invalidate];
         _retryTimer = nil;
     }
+    
+    if (self.failCount > kRetryAttempts)
+    {
+        self.progressHUD =   [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+        self.progressHUD.mode = MBProgressHUDModeText;
+        self.progressHUD.labelText = NSLocalizedString(@"WereSorry", @"");
+        self.progressHUD.detailsLabelText = NSLocalizedString(@"ErrorOccured", @"");
+        return;
+    }
 
-    _retryTimer = [NSTimer scheduledTimerWithTimeInterval:kTimeBetweenRetries target:self selector:@selector(retryTimerFired) userInfo:nil repeats:NO];
+    _retryTimer = [NSTimer scheduledTimerWithTimeInterval:kTimeBetweenRetries * self.failCount
+                                                   target:self selector:@selector(retryTimerFired) userInfo:nil repeats:NO];
 }
 
 - (void)retryTimerFired

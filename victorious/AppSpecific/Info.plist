@@ -93,7 +93,7 @@
 	<key>StagingAppID</key>
 	<integer>2</integer>
 	<key>QAAppID</key>
-	<integer>2</integer>
+	<integer>50</integer>
 	<key>VictoriousServerEnvironment</key>
 	<string>${DefaultEnvironment}</string>
 	<key>ProductPrefix</key>
