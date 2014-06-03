@@ -52,6 +52,8 @@
 
 - (void)setConversation:(VConversation *)conversation
 {
+    _conversation = conversation;
+    
     self.usernameLabel.text  = conversation.user.name;
     
     [self.profileImageButton setImageWithURL:[NSURL URLWithString:conversation.user.pictureUrl]
