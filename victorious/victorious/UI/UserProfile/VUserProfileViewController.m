@@ -36,7 +36,6 @@ const   CGFloat kVNavigationBarHeight = 44.0;
 @property (nonatomic, strong) UIView*                   shortContainerView;
 @property (nonatomic, strong) UIView*                   longContainerView;
 
-@property (nonatomic, strong) UIImageView*              backgroundImageView;
 @property (nonatomic, strong) UIImageView*              profileCircleImageView;
 
 @property (nonatomic, strong) UILabel*                  nameLabel;
@@ -94,6 +93,17 @@ const   CGFloat kVNavigationBarHeight = 44.0;
     
     [super viewDidLoad];
     
+    UIImage*    defaultBackgroundImage;
+    if (IS_IPHONE_5)
+        defaultBackgroundImage = [[[VThemeManager sharedThemeManager] themedImageForKey:kVMenuBackgroundImage5] applyLightEffect];
+    else
+        defaultBackgroundImage = [[[VThemeManager sharedThemeManager] themedImageForKey:kVMenuBackgroundImage] applyLightEffect];
+    UIImageView* backgroundImage = [[UIImageView alloc] initWithFrame:self.view.frame];
+    [backgroundImage setBlurredImageWithURL:[NSURL URLWithString:self.profile.pictureUrl]
+                           placeholderImage:defaultBackgroundImage
+                                  tintColor:[UIColor colorWithWhite:0.0 alpha:0.5]];
+    self.tableView.backgroundView = backgroundImage;
+    
     self.tableView.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVContentTextColor];
 
     if (![VObjectManager sharedManager].mainUser)
@@ -143,15 +153,6 @@ const   CGFloat kVNavigationBarHeight = 44.0;
 {
     NSURL*  imageURL    =   [NSURL URLWithString:self.profile.pictureUrl];
     
-    UIImage*    defaultBackgroundImage;
-    if (IS_IPHONE_5)
-        defaultBackgroundImage = [[[VThemeManager sharedThemeManager] themedImageForKey:kVMenuBackgroundImage5] applyLightEffect];
-    else
-        defaultBackgroundImage = [[[VThemeManager sharedThemeManager] themedImageForKey:kVMenuBackgroundImage] applyLightEffect];
-
-    [self.backgroundImageView setBlurredImageWithURL:imageURL
-                                    placeholderImage:defaultBackgroundImage
-                                           tintColor:[UIColor colorWithWhite:0.0 alpha:0.5]];
     [self.profileCircleImageView setImageWithURL:imageURL placeholderImage:[UIImage imageNamed:@"profileGenericUser"]];
 
     // Set Profile data
@@ -198,10 +199,6 @@ const   CGFloat kVNavigationBarHeight = 44.0;
         CGFloat     screenWidth = [UIScreen mainScreen].bounds.size.width;
         
         self.longContainerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, screenWidth, screenHeight - kVNavigationBarHeight)];
-        self.backgroundImageView = [[UIImageView alloc] initWithFrame:self.longContainerView.frame];
-        self.backgroundImageView.contentMode = UIViewContentModeScaleAspectFill;
-        self.backgroundImageView.clipsToBounds = YES;
-        [self.longContainerView addSubview:self.backgroundImageView];
         
         self.profileCircleImageView = [[UIImageView alloc] initWithFrame:CGRectMake(120, 99, 80, 80)];
         self.profileCircleImageView.layer.cornerRadius = CGRectGetHeight(self.profileCircleImageView.bounds)/2;
@@ -315,11 +312,6 @@ const   CGFloat kVNavigationBarHeight = 44.0;
         CGFloat     screenWidth = [UIScreen mainScreen].bounds.size.width;
 
         self.shortContainerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, screenWidth, screenHeight)];
-        
-        self.backgroundImageView = [[UIImageView alloc] initWithFrame:self.shortContainerView.frame];
-        self.backgroundImageView.contentMode = UIViewContentModeScaleAspectFill;
-        self.backgroundImageView.clipsToBounds = YES;
-        [self.shortContainerView addSubview:self.backgroundImageView];
         
         self.profileCircleImageView = [[UIImageView alloc] initWithFrame:CGRectMake(120, 25, 80, 80)];
         self.profileCircleImageView.layer.cornerRadius = CGRectGetHeight(self.profileCircleImageView.bounds)/2;
