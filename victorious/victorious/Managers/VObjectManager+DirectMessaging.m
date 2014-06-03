@@ -87,10 +87,10 @@
             //Sometimes we get -1 for the current logged in user
             if (!conversation.lastMessage.user && [conversation.lastMessage.senderUserId isEqual: @(-1)])
                 conversation.lastMessage.user = self.mainUser;
-            else if (!conversation.lastMessage.user)
+            else if (conversation.lastMessage && !conversation.lastMessage.user)
                 [nonExistantUsers addObject:conversation.lastMessage.senderUserId];
             
-            if (!conversation.user)
+            if (!conversation.user && conversation.other_interlocutor_user_id)
                 [nonExistantUsers addObject:conversation.other_interlocutor_user_id];
             
             context = conversation.managedObjectContext;

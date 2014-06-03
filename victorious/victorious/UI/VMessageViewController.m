@@ -63,7 +63,7 @@ const   CGFloat     kMessageRowHeight           =   80;
     NSManagedObjectContext *context = manager.managedObjectStore.persistentStoreManagedObjectContext;
     
     NSFetchRequest *fetchRequest = [NSFetchRequest fetchRequestWithEntityName:[VMessage entityName]];
-    NSSortDescriptor *sort = [[NSSortDescriptor alloc] initWithKey:@"postedAt" ascending:NO];
+    NSSortDescriptor *sort = [[NSSortDescriptor alloc] initWithKey:@"postedAt" ascending:YES];
     
     NSPredicate* filterPredicate = [NSPredicate predicateWithFormat:@"conversation.remoteId = %@", self.conversation.remoteId];
     [fetchRequest setPredicate:filterPredicate];
