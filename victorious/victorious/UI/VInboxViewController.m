@@ -49,6 +49,8 @@ static  NSString*   kNewsCellViewIdentifier       =   @"VNewsCell";
 //    self.tableView.separatorColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVBackgroundColor];
     self.navigationController.navigationBar.barTintColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVAccentColor];
     self.headerView.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVAccentColor];
+    
+    self.navigationItem.title = NSLocalizedString(@"Inbox", nil);
 }
 
 #pragma mark - Overrides
@@ -153,11 +155,6 @@ static  NSString*   kNewsCellViewIdentifier       =   @"VNewsCell";
 
 - (IBAction)modeSelected:(id)sender
 {
-    if (0 == [sender selectedSegmentIndex])
-        self.navigationItem.rightBarButtonItem = self.editButtonItem;
-    else
-        self.navigationItem.rightBarButtonItem = nil;
-    
     self.fetchedResultsController = nil;
     [self performFetch];
 }
