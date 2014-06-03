@@ -34,6 +34,12 @@
     self.navigationItem.title = messageVC.conversation.user.name ? [@"@" stringByAppendingString:messageVC.conversation.user.name] : @"Message";
 }
 
+- (void)setConversation:(VConversation *)conversation
+{
+    _conversation = conversation;
+    ((VMessageViewController*)self.conversationTableViewController).conversation = conversation;
+}
+
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
@@ -60,9 +66,7 @@
 {
     if (_conversationTableViewController == nil)
     {
-        VMessageViewController *messageController = [self.storyboard instantiateViewControllerWithIdentifier:@"messages"];
-        messageController.conversation = self.conversation;
-        _conversationTableViewController = messageController;
+        _conversationTableViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"messages"];
     }
     
     return _conversationTableViewController;

@@ -61,6 +61,7 @@ NSString*   const   kVAccentColor                       =   @"color.accent";
 NSString*   const   kVSecondaryAccentColor              =   @"color.accent.secondary";
 
 NSString*   const   kVLinkColor                         =   @"color.link";
+NSString*   const   kVSecondaryLinkColor                =   @"color.link.secondary";
 
 NSString*   const   kVNewThemeKey                       =   @"kVNewTheme";
 
