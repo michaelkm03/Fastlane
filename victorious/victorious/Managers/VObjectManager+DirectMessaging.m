@@ -125,37 +125,37 @@
         successBlock:fullSuccess
            failBlock:fail];
 }
-
-- (RKManagedObjectRequestOperation *)loadNextPageOfMessagesForConversation:(VConversation*)conversation
-                                                              successBlock:(VSuccessBlock)success
-                                                                 failBlock:(VFailBlock)fail
-{
-    if (!conversation)
-    {
-        if (fail)
-            fail(nil, nil);
-        return nil;
-    }
-    
-    NSString* path = [@"/api/message/conversation/" stringByAppendingString:conversation.remoteId.stringValue];
-    
-    VSuccessBlock fullSuccess = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
-    {
-        NSManagedObjectContext* context = ((NSManagedObject*)[resultObjects firstObject]).managedObjectContext;
-        VConversation* conversationInContext = (VConversation*)[context objectWithID:conversation.objectID];
-        [conversationInContext addMessages:[NSSet setWithArray:resultObjects]];
-        [conversationInContext.managedObjectContext saveToPersistentStore:nil];
-        
-        if (success)
-            success(operation, fullResponse, resultObjects);
-    };
-    
-    return [self GET:path
-              object:nil
-          parameters:nil
-        successBlock:fullSuccess
-           failBlock:fail];
-}
+//
+//- (RKManagedObjectRequestOperation *)loadNextPageOfMessagesForConversation:(VConversation*)conversation
+//                                                              successBlock:(VSuccessBlock)success
+//                                                                 failBlock:(VFailBlock)fail
+//{
+//    if (!conversation)
+//    {
+//        if (fail)
+//            fail(nil, nil);
+//        return nil;
+//    }
+//    
+//    NSString* path = [@"/api/message/conversation/" stringByAppendingString:conversation.remoteId.stringValue];
+//    
+//    VSuccessBlock fullSuccess = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
+//    {
+//        NSManagedObjectContext* context = ((NSManagedObject*)[resultObjects firstObject]).managedObjectContext;
+//        VConversation* conversationInContext = (VConversation*)[context objectWithID:conversation.objectID];
+//        [conversationInContext addMessages:[NSSet setWithArray:resultObjects]];
+//        [conversationInContext.managedObjectContext saveToPersistentStore:nil];
+//        
+//        if (success)
+//            success(operation, fullResponse, resultObjects);
+//    };
+//    
+//    return [self GET:path
+//              object:nil
+//          parameters:nil
+//        successBlock:fullSuccess
+//           failBlock:fail];
+//}
 
 - (RKManagedObjectRequestOperation *)markConversationAsRead:(VConversation*)conversation
                                                successBlock:(VSuccessBlock)success

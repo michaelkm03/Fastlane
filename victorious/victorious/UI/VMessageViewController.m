@@ -164,7 +164,7 @@ const   CGFloat     kMessageRowHeight           =   80;
     VMessage*   aMessage = [self.fetchedResultsController objectAtIndexPath:indexPath];
 
     CGFloat height = [VMessageCell frameSizeForMessageText:aMessage.text].height;
-    CGFloat yOffset = ![aMessage.thumbnailPath isEmpty] ? kMessageMediaCellYOffset : kMessageCellYOffset;
+    CGFloat yOffset = aMessage.thumbnailPath && ![aMessage.thumbnailPath isEmpty] ? kMessageMediaCellYOffset : kMessageCellYOffset;
     height = MAX(height + yOffset, kMessageMinCellHeight);
     
     return height;

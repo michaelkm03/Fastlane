@@ -19,9 +19,9 @@
 - (RKManagedObjectRequestOperation *)loadNextPageOfConversations:(VSuccessBlock)success
                                                        failBlock:(VFailBlock)fail;
 
-- (RKManagedObjectRequestOperation *)loadNextPageOfMessagesForConversation:(VConversation*)conversation
-                                                              successBlock:(VSuccessBlock)success
-                                                                 failBlock:(VFailBlock)fail;
+//- (RKManagedObjectRequestOperation *)loadNextPageOfMessagesForConversation:(VConversation*)conversation
+//                                                              successBlock:(VSuccessBlock)success
+//                                                                 failBlock:(VFailBlock)fail;
 
 - (RKManagedObjectRequestOperation *)markConversationAsRead:(VConversation*)conversation
                                                successBlock:(VSuccessBlock)success
