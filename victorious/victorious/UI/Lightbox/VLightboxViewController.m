@@ -143,10 +143,6 @@
 {
     switch (interfaceOrientation)
     {
-        case UIInterfaceOrientationPortrait:
-            return CGAffineTransformIdentity;
-            break;
-            
         case UIInterfaceOrientationLandscapeRight:
             return CGAffineTransformMakeRotation(M_PI / 2.0);
             break;
@@ -157,6 +153,11 @@
             
         case UIInterfaceOrientationPortraitUpsideDown:
             return CGAffineTransformMakeRotation(M_PI);
+            break;
+
+        default:
+        case UIInterfaceOrientationPortrait:
+            return CGAffineTransformIdentity;
             break;
     }
 }
