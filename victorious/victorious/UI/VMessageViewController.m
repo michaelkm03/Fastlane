@@ -7,7 +7,10 @@
 //
 
 #import "VMessageViewController.h"
+
 #import "VObjectManager+DirectMessaging.h"
+#import "VObjectManager+SequenceFilters.h"
+
 #import "VMessageCell.h"
 #import "VMessage+RestKit.h"
 #import "VKeyboardBarViewController.h"
@@ -52,7 +55,6 @@ const   CGFloat     kMessageRowHeight           =   80;
     _conversation = conversation;
     
     [self refreshFetchController];
-    [self refresh:self.refreshControl];//always refresh when you go back to a thread
 }
 
 #pragma mark - fetched results controller
@@ -84,13 +86,14 @@ const   CGFloat     kMessageRowHeight           =   80;
     VFailBlock fail = ^(NSOperation* operation, NSError* error)
     {
         NSLog(@"%@", error.localizedDescription);
+        [self.refreshControl endRefreshing];
         
         [self delayedRefresh];
     };
     
     VSuccessBlock success = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
     {
-        [self.tableView reloadData];
+        [self.refreshControl endRefreshing];
         
         if (self.tableView.contentSize.height > self.tableView.frame.size.height)
         {
@@ -105,9 +108,9 @@ const   CGFloat     kMessageRowHeight           =   80;
         [self delayedRefresh];
     };
     
-    [[VObjectManager sharedManager] loadNextPageOfMessagesForConversation:self.conversation
-                                                             successBlock:success
-                                                                failBlock:fail];
+    [[VObjectManager sharedManager] refreshMessagesForConversation:self.conversation
+                                                      successBlock:success
+                                                         failBlock:fail];
 }
 
 - (void)delayedRefresh

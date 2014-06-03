@@ -17,6 +17,8 @@
 
 #import "VConversation+RestKit.h"
 
+#import "NSString+VParseHelp.h"
+
 @implementation VObjectManager (DirectMessaging)
 
 
@@ -51,6 +53,11 @@
                 
                 newConversation.other_interlocutor_user_id = userInContext.remoteId;
                 newConversation.user = userInContext;
+            }
+            
+            if (!newConversation.filterAPIPath || [newConversation.filterAPIPath isEmpty])
+            {
+                newConversation.filterAPIPath = [@"/api/message/conversation/" stringByAppendingString:newConversation.remoteId.stringValue];
             }
             
             [newConversation.managedObjectContext saveToPersistentStore:nil];
@@ -90,7 +97,12 @@
             else if (!conversation.lastMessage.user)
                 [nonExistantUsers addObject:conversation.lastMessage.senderUserId];
             
-            if (!conversation.user)
+            if (!conversation.filterAPIPath || [conversation.filterAPIPath isEmpty])
+            {
+                conversation.filterAPIPath = [@"/api/message/conversation/" stringByAppendingString:conversation.remoteId.stringValue];
+            }
+            
+            if (!conversation.user && conversation.other_interlocutor_user_id)
                 [nonExistantUsers addObject:conversation.other_interlocutor_user_id];
             
             context = conversation.managedObjectContext;
