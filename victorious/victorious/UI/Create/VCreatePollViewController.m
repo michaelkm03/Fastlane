@@ -195,25 +195,25 @@ static char KVOContext;
 {
     [self.postButton setEnabled:YES];
     
-    if(!self.firstMediaURL || !self.secondMediaURL)
+    if (!self.firstMediaURL || !self.secondMediaURL)
         [self.postButton setEnabled:NO];
     
-    else if([self.questionTextView.text isEmpty])
+    else if ([self.questionTextView.text isEmpty])
         [self.postButton setEnabled:NO];
 
-    else if([self.questionTextView.text length] > VConstantsForumTitleLength)
+    else if ([self.questionTextView.text length] > VConstantsForumTitleLength)
         [self.postButton setEnabled:NO];
     
-    else if([self.leftAnswerTextView.text isEmpty])
+    else if ([self.leftAnswerTextView.text isEmpty])
         [self.postButton setEnabled:NO];
 
-    else if([self.leftAnswerTextView.text length] > VConstantsForumTitleLength)
+    else if ([self.leftAnswerTextView.text length] > VConstantsForumTitleLength)
         [self.postButton setEnabled:NO];
     
-    else if([self.rightAnswerTextView.text isEmpty])
+    else if ([self.rightAnswerTextView.text isEmpty])
         [self.postButton setEnabled:NO];
 
-    else if([self.rightAnswerTextView.text length] > VConstantsForumTitleLength)
+    else if ([self.rightAnswerTextView.text length] > VConstantsForumTitleLength)
         [self.postButton setEnabled:NO];
 }
 

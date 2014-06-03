@@ -202,7 +202,7 @@ static  const   CGFloat     kVLineWidth  =   3.0f;
 - (UIImage *)imageForURL:(NSURL *)url
 {
     NSURL*  path = [_cacheURL URLByAppendingPathComponent:[NSString stringWithFormat:@"%u.%@", url.hash, url.pathExtension]];
-    if([[NSFileManager defaultManager] fileExistsAtPath:path.path])
+    if ([[NSFileManager defaultManager] fileExistsAtPath:path.path])
         return [UIImage imageWithData:[NSData dataWithContentsOfURL:path]];
 
     return nil;

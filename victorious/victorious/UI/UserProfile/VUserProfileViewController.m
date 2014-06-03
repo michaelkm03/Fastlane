@@ -191,14 +191,14 @@ const   CGFloat kVNavigationBarHeight = 44.0;
         if (self.editProfileButton.selected)
         {
             [self.editProfileButton setTitle:NSLocalizedString(@"following", @"") forState:UIControlStateNormal];
-            self.editProfileButton.layer.borderWidth = 2.0;
+            self.editProfileButton.layer.borderColor = [UIColor whiteColor].CGColor;
             self.editProfileButton.backgroundColor = [UIColor clearColor];
         }
         else
         {
             [self.editProfileButton setTitle:NSLocalizedString(@"follow", @"") forState:UIControlStateNormal];
-            self.editProfileButton.layer.borderWidth = 0.0;
-            self.editProfileButton.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];;
+            self.editProfileButton.layer.borderColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor].CGColor;
+            self.editProfileButton.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
         }
     }
 }
@@ -270,6 +270,8 @@ const   CGFloat kVNavigationBarHeight = 44.0;
 
         self.editProfileButton = [[UIButton alloc] initWithFrame:CGRectMake(105, 13, 110, 34)];
         self.editProfileButton.titleLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVButton2Font];
+        self.editProfileButton.layer.cornerRadius = 3.0;
+        self.editProfileButton.layer.borderWidth = 2.0;
         [barView addSubview:self.editProfileButton];
 
         self.followButtonActivityIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
@@ -282,7 +284,6 @@ const   CGFloat kVNavigationBarHeight = 44.0;
             [self.editProfileButton addTarget:self action:@selector(showProfileEdit:) forControlEvents:UIControlEventTouchUpInside];
             self.editProfileButton.layer.borderColor = [UIColor whiteColor].CGColor;
             self.editProfileButton.layer.borderWidth = 2.0;
-            self.editProfileButton.layer.cornerRadius = 3.0;
             self.editProfileButton.backgroundColor = [UIColor clearColor];
             [self setProfileData];
         }
@@ -383,6 +384,8 @@ const   CGFloat kVNavigationBarHeight = 44.0;
         
         self.editProfileButton = [[UIButton alloc] initWithFrame:CGRectMake(105, 13, 110, 34)];
         self.editProfileButton.titleLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVButton2Font];
+        self.editProfileButton.layer.cornerRadius = 3.0;
+        self.editProfileButton.layer.borderWidth = 2.0;
         [barView addSubview:self.editProfileButton];
         
         self.followButtonActivityIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
@@ -394,14 +397,13 @@ const   CGFloat kVNavigationBarHeight = 44.0;
             [self.editProfileButton setTitle:NSLocalizedString(@"editProfileButton", @"") forState:UIControlStateNormal];
             [self.editProfileButton addTarget:self action:@selector(showProfileEdit:) forControlEvents:UIControlEventTouchUpInside];
             self.editProfileButton.layer.borderColor = [UIColor whiteColor].CGColor;
-            self.editProfileButton.layer.borderWidth = 2.0;
-            self.editProfileButton.layer.cornerRadius = 3.0;
             self.editProfileButton.backgroundColor = [UIColor clearColor];
             [self setProfileData];
         }
         else
         {
             [self.editProfileButton addTarget:self action:@selector(followButtonAction:) forControlEvents:UIControlEventTouchUpInside];
+            self.editProfileButton.layer.borderColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor].CGColor;
             
             if ([VObjectManager sharedManager].mainUser)
             {

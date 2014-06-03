@@ -137,7 +137,7 @@
         VErrorMessage* error;
         for (id object in mappedObjects)
         {
-            if([object isKindOfClass:[VErrorMessage class]])
+            if ([object isKindOfClass:[VErrorMessage class]])
             {
                 error = object;
                 [mappedObjects removeObject:object];
@@ -253,7 +253,7 @@
          [allUrls enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop)
           {
               NSString* extension = [[obj pathExtension] lowercaseStringWithLocale:[NSLocale localeWithLocaleIdentifier:@"en_US_POSIX"]];
-              if(extension)
+              if (extension)
               {
                   NSString* mimeType = [extension isEqualToString:VConstantMediaExtensionMOV] || [extension isEqualToString:VConstantMediaExtensionMP4]
                     ? @"video/quicktime" : @"image/png";

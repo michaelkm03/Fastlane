@@ -44,7 +44,7 @@
 
 - (IBAction)sendButtonAction:(id)sender
 {
-    if(![VObjectManager sharedManager].mainUser)
+    if (![VObjectManager sharedManager].mainUser)
     {
         [self presentViewController:[VLoginViewController loginViewController] animated:YES completion:NULL];
         return;
@@ -59,7 +59,7 @@
 
 - (void)cameraPressed:(id)sender
 {
-    if(![VObjectManager sharedManager].mainUser)
+    if (![VObjectManager sharedManager].mainUser)
     {
         [self presentViewController:[VLoginViewController loginViewController] animated:YES completion:NULL];
         return;
@@ -102,7 +102,7 @@
 
 - (BOOL)textViewShouldBeginEditing:(UITextView *)textView
 {
-    if(![VObjectManager sharedManager].mainUser)
+    if (![VObjectManager sharedManager].mainUser)
     {
         [self presentViewController:[VLoginViewController loginViewController] animated:YES completion:NULL];
         return NO;

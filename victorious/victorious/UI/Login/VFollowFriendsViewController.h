@@ -1,5 +1,5 @@
 //
-//  VInviteWithSocialViewController.h
+//  VFollowFriendsViewController.h
 //  victorious
 //
 //  Created by Gary Philipp on 1/27/14.
@@ -8,8 +8,6 @@
 
 @class VUser;
 
-@interface VInviteFriendsViewController : UIViewController
-@property (nonatomic, weak)     IBOutlet    UIView*     containerView;
-
+@interface VFollowFriendsViewController : UITabBarController
 @property (nonatomic, strong)   VUser*  profile;
 @end

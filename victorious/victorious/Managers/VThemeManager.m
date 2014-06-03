@@ -122,6 +122,9 @@ NSString*   const   kVNewThemeKey                       =   @"kVNewTheme";
     [[[[UIApplication sharedApplication] delegate] window] setTintColor:[self themedColorForKey:kVMainTextColor]];
     
     [self applyNormalNavBarStyling];
+    
+//    [[UITabBar appearanceWhenContainedIn:[UITabBar class], nil] setTintColor:[UIColor redColor]];
+//    [[UITabBar appearance] setSelectedImageTintColor:[UIColor greenColor]];
 }
 
 - (void)removeStyling
@@ -138,12 +141,12 @@ NSString*   const   kVNewThemeKey                       =   @"kVNewTheme";
     
     NSMutableDictionary *titleAttributes = [NSMutableDictionary dictionary];
     UIColor *navigationBarTitleTintColor = [self themedColorForKey:kVMainTextColor];
-    if(navigationBarTitleTintColor)
+    if (navigationBarTitleTintColor)
     {
         titleAttributes[NSForegroundColorAttributeName] = navigationBarTitleTintColor;
     }
     UIFont *navigationBarTitleFont = [self themedFontForKey:kVHeaderFont];
-    if(navigationBarTitleFont)
+    if (navigationBarTitleFont)
     {
         titleAttributes[NSFontAttributeName] = navigationBarTitleFont;
 
@@ -165,12 +168,12 @@ NSString*   const   kVNewThemeKey                       =   @"kVNewTheme";
     
     NSMutableDictionary *titleAttributes = [NSMutableDictionary dictionary];
     UIColor *navigationBarTitleTintColor = [self themedColorForKey:kVContentTextColor];
-    if(navigationBarTitleTintColor)
+    if (navigationBarTitleTintColor)
     {
         titleAttributes[NSForegroundColorAttributeName] = navigationBarTitleTintColor;
     }
     UIFont *navigationBarTitleFont = [self themedFontForKey:kVHeaderFont];
-    if(navigationBarTitleFont)
+    if (navigationBarTitleFont)
     {
         titleAttributes[NSFontAttributeName] = navigationBarTitleFont;
         
