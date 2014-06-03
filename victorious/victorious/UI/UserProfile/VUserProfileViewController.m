@@ -37,6 +37,7 @@ const   CGFloat kVNavigationBarHeight = 44.0;
 @property (nonatomic, strong) UIView*                   longContainerView;
 
 @property (nonatomic, strong) UIImageView*              profileCircleImageView;
+@property (nonatomic, strong) UIImageView*              backgroundImageView;
 
 @property (nonatomic, strong) UILabel*                  nameLabel;
 @property (nonatomic, strong) UILabel*                  locationLabel;
@@ -93,17 +94,6 @@ const   CGFloat kVNavigationBarHeight = 44.0;
     
     [super viewDidLoad];
     
-    UIImage*    defaultBackgroundImage;
-    if (IS_IPHONE_5)
-        defaultBackgroundImage = [[[VThemeManager sharedThemeManager] themedImageForKey:kVMenuBackgroundImage5] applyLightEffect];
-    else
-        defaultBackgroundImage = [[[VThemeManager sharedThemeManager] themedImageForKey:kVMenuBackgroundImage] applyLightEffect];
-    UIImageView* backgroundImage = [[UIImageView alloc] initWithFrame:self.view.frame];
-    [backgroundImage setBlurredImageWithURL:[NSURL URLWithString:self.profile.pictureUrl]
-                           placeholderImage:defaultBackgroundImage
-                                  tintColor:[UIColor colorWithWhite:0.0 alpha:0.5]];
-    self.tableView.backgroundView = backgroundImage;
-    
     self.tableView.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVContentTextColor];
 
     if (![VObjectManager sharedManager].mainUser)
@@ -123,6 +113,25 @@ const   CGFloat kVNavigationBarHeight = 44.0;
         if ([vc isKindOfClass:[VInboxContainerViewController class]])
             fromInbox = YES;
     }
+    
+    
+    UIImage*    defaultBackgroundImage;
+    if (self.backgroundImageView.image)
+        defaultBackgroundImage = self.backgroundImageView.image;
+    else if (IS_IPHONE_5)
+        defaultBackgroundImage = [[[VThemeManager sharedThemeManager] themedImageForKey:kVMenuBackgroundImage5] applyLightEffect];
+    else
+        defaultBackgroundImage = [[[VThemeManager sharedThemeManager] themedImageForKey:kVMenuBackgroundImage] applyLightEffect];
+    
+    self.backgroundImageView = [[UIImageView alloc] initWithFrame:self.view.frame];
+    [self.backgroundImageView setBlurredImageWithURL:[NSURL URLWithString:self.profile.pictureUrl]
+                           placeholderImage:defaultBackgroundImage
+                                  tintColor:[UIColor colorWithWhite:0.0 alpha:0.5]];
+    self.tableView.backgroundView = self.backgroundImageView;
+    
+    defaultBackgroundImage = self.profileCircleImageView.image ? self.profileCircleImageView.image : [UIImage imageNamed:@"profileGenericUser"];
+    [self.profileCircleImageView setImageWithURL:[NSURL URLWithString:self.profile.pictureUrl]
+                                placeholderImage:defaultBackgroundImage];
     
     if (self.isMe)
         [self addCreateButton];
@@ -151,10 +160,12 @@ const   CGFloat kVNavigationBarHeight = 44.0;
 
 - (void)setProfileData
 {
-    NSURL*  imageURL    =   [NSURL URLWithString:self.profile.pictureUrl];
+    UIImage* defaultBackgroundImage = self.profileCircleImageView.image ? self.profileCircleImageView.image
+                                                                        : [UIImage imageNamed:@"profileGenericUser"];
+    [self.profileCircleImageView setImageWithURL:[NSURL URLWithString:self.profile.pictureUrl]
+                                placeholderImage:defaultBackgroundImage];
     
-    [self.profileCircleImageView setImageWithURL:imageURL placeholderImage:[UIImage imageNamed:@"profileGenericUser"]];
-
+    
     // Set Profile data
     self.nameLabel.text = self.profile.name;
     self.locationLabel.text = self.profile.location;
