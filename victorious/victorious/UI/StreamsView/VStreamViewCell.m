@@ -28,6 +28,8 @@
 
 #import "VEphemeralTimerView.h"
 
+#import "VUserProfileViewController.h"
+
 NSString *kStreamsWillCommentNotification = @"kStreamsWillCommentNotification";
 
 @interface VStreamViewCell() <VEphemeralTimerViewDelegate>
@@ -167,6 +169,16 @@ NSString *kStreamsWillCommentNotification = @"kStreamsWillCommentNotification";
 
 - (IBAction)profileButtonAction:(id)sender
 {
+    //If this cell is from the profile we should disable going to the profile
+    BOOL fromProfile = NO;
+    for (UIViewController* vc in self.parentTableViewController.navigationController.viewControllers)
+    {
+        if ([vc isKindOfClass:[VUserProfileViewController class]])
+            fromProfile = YES;
+    }
+    if (fromProfile)
+        return;
+    
     VUserProfileViewController* profileViewController = [VUserProfileViewController userProfileWithUser:self.sequence.user];
     [self.parentTableViewController.navigationController pushViewController:profileViewController animated:YES];
 }

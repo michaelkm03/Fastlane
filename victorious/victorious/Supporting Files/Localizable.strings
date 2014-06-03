@@ -39,6 +39,9 @@
 "ProfileIncomplete"     =   "Profile Incomplete";
 "ProfileRequired"       =   "You must complete your profile.";
 
+"WereSorry"             =   "We're Sorry";
+"ErrorOccured"          =   "For some reason we can't connect to the server.  Please try again later!";
+
 "NoEmail"               =   "No Email Accounts";
 "NoEmailDetail"         =   "There are no email accounts, would you like to setup one now?";
 "EmailFail"             =   "E-mail failed to send";

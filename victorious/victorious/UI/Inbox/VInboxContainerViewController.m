@@ -27,13 +27,6 @@
     return container;
 }
 
-- (void)viewDidLoad
-{
-    [super viewDidLoad];
-    
-    self.headerLabel.text = NSLocalizedString(@"Inbox", nil);
-}
-
 //- (IBAction)changedFilterControls:(id)sender
 //{
 //    if (self.filterControls.selectedSegmentIndex == VStreamFollowingFilter && ![VObjectManager sharedManager].mainUser)

@@ -22,24 +22,36 @@
 - (void)animateTransition:(id<UIViewControllerContextTransitioning>)context
 {
     VCommentsContainerViewController *commentsContainer = (VCommentsContainerViewController*)[context viewControllerForKey:UITransitionContextFromViewControllerKey];
-    VStreamContainerViewController* container = (VStreamContainerViewController*)[context viewControllerForKey:UITransitionContextToViewControllerKey];
-    VStreamTableViewController *streamVC = container.streamTable;
+    
+    UIViewController* toVC = [context viewControllerForKey:UITransitionContextToViewControllerKey];
+    VStreamTableViewController *streamVC;
+    
+    if ([toVC isKindOfClass:[VStreamTableViewController class]])
+        streamVC = (VStreamTableViewController*)toVC;
+    else
+        streamVC = ((VStreamContainerViewController*)toVC).streamTable;
+    
     commentsContainer.view.userInteractionEnabled = NO;
-    streamVC.view.userInteractionEnabled = NO;
+    toVC.view.userInteractionEnabled = NO;
+    
     
     [commentsContainer animateOutWithDuration:.2f
                                    completion:^(BOOL finished)
      {
-         [[context containerView] addSubview:container.view];
+         [[context containerView] addSubview:toVC.view];
          
-         [UIView animateWithDuration:.6f animations:^
-          {
-              [container showHeader];
-          }];
+         if ([toVC isKindOfClass:[VStreamContainerViewController class]])
+         {
+             [UIView animateWithDuration:.6f animations:^
+              {
+                  [(VStreamContainerViewController*)toVC showHeader];
+              }];
+         }
+         
          [streamVC animateInWithDuration:.6f completion:^(BOOL finished)
           {
               commentsContainer.view.userInteractionEnabled = YES;
-              streamVC.view.userInteractionEnabled = YES;
+              toVC.view.userInteractionEnabled = YES;
               
               [context completeTransition:![context transitionWasCancelled]];
           }];

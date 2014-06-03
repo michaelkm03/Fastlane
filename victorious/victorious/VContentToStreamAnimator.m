@@ -27,11 +27,17 @@
 - (void)animateTransition:(id<UIViewControllerContextTransitioning>)context
 {
     VContentViewController *contentVC = (VContentViewController*)[context viewControllerForKey:UITransitionContextFromViewControllerKey];
-    VStreamContainerViewController* container = (VStreamContainerViewController*)[context viewControllerForKey:UITransitionContextToViewControllerKey];
-    VStreamTableViewController *streamVC = container.streamTable;
+    
+    UIViewController* toVC = [context viewControllerForKey:UITransitionContextToViewControllerKey];
+    VStreamTableViewController *streamVC;
+    
+    if ([toVC isKindOfClass:[VStreamTableViewController class]])
+        streamVC = (VStreamTableViewController*)toVC;
+    else
+        streamVC = ((VStreamContainerViewController*)toVC).streamTable;
 
     
-    streamVC.view.userInteractionEnabled = NO;
+    toVC.view.userInteractionEnabled = NO;
     contentVC.view.userInteractionEnabled = NO;
     
     if ([contentVC isVideoLoadingOrLoaded])
@@ -49,8 +55,15 @@
 - (void)secondAnimation:(id<UIViewControllerContextTransitioning>)context
 {
     VContentViewController *contentVC = (VContentViewController*)[context viewControllerForKey:UITransitionContextFromViewControllerKey];
-    VStreamContainerViewController* container = (VStreamContainerViewController*)[context viewControllerForKey:UITransitionContextToViewControllerKey];
-    VStreamTableViewController *streamVC = container.streamTable;
+    
+    UIViewController* toVC = [context viewControllerForKey:UITransitionContextToViewControllerKey];
+    VStreamTableViewController *streamVC;
+    
+    if ([toVC isKindOfClass:[VStreamTableViewController class]])
+        streamVC = (VStreamTableViewController*)toVC;
+    else
+        streamVC = ((VStreamContainerViewController*)toVC).streamTable;
+
     
     [UIView animateWithDuration:.2
                      animations:^
@@ -66,22 +79,32 @@
                                                           selectedCell.frame.origin.y - kContentMediaViewOffset)
                                      animated:NO];
          
-         [[context containerView] addSubview:container.view];
+         [[context containerView] addSubview:toVC.view];
          
          [streamVC animateInWithDuration:.4f completion:^(BOOL finished)
           {
-              [UIView animateWithDuration:.2f
-                               animations:^
-               {
-                   [container showHeader];
-               }
-                               completion:^(BOOL finished)
-               {
-                   streamVC.view.userInteractionEnabled = YES;
-                   contentVC.view.userInteractionEnabled = YES;
-                   
-                   [context completeTransition:![context transitionWasCancelled]];
-               }];
+              if ([toVC isKindOfClass:[VStreamContainerViewController class]])
+              {
+                  [UIView animateWithDuration:.2f
+                                   animations:^
+                   {
+                       [(VStreamContainerViewController*)toVC showHeader];
+                   }
+                                   completion:^(BOOL finished)
+                   {
+                       toVC.view.userInteractionEnabled = YES;
+                       contentVC.view.userInteractionEnabled = YES;
+                       
+                       [context completeTransition:![context transitionWasCancelled]];
+                   }];
+              }
+              else
+              {
+                  toVC.view.userInteractionEnabled = YES;
+                  contentVC.view.userInteractionEnabled = YES;
+                  
+                  [context completeTransition:![context transitionWasCancelled]];
+              }
           }];
      }];
 }
