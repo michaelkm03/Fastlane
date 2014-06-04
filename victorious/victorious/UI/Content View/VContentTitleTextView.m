@@ -112,9 +112,17 @@ static const CGFloat kSeeMoreFontSizeRatio = 0.8f;
 
 - (void)setText:(NSString *)text
 {
-    _text = text;
+    if (![_text isEqualToString:text])
+    {
+        _text = text;
+    }
     self.seeMoreTextAppended = NO;
     [self.textStorage replaceCharactersInRange:NSMakeRange(0, self.textStorage.length) withAttributedString:[[NSAttributedString alloc] initWithString:text attributes:[self attributesForTitleText]]];
+}
+
+- (void)setLocationForLastLineOfText:(CGFloat)lastLineOfTextLocation
+{
+    _locationForLastLineOfText = lastLineOfTextLocation;
 }
 
 #pragma mark - See More button positioning
@@ -190,6 +198,11 @@ static const CGFloat kSeeMoreFontSizeRatio = 0.8f;
                 self.seeMoreRange = NSMakeRange(index, self.seeMoreString.length);
                 self.seeMoreTextAppended = YES;
             }
+        }
+        self.locationForLastLineOfText = CGRectGetMaxY([self lastLineFragmentInTextView]);
+        if ([self.delegate respondsToSelector:@selector(textLayoutHappenedInContentTitleTextView:)])
+        {
+            [self.delegate textLayoutHappenedInContentTitleTextView:self];
         }
     }
 }

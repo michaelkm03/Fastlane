@@ -14,7 +14,8 @@
 
 @optional
 
-- (void)seeMoreButtonTappedInContentTitleTextView:(VContentTitleTextView *)contentTitleTextView;
+- (void)textLayoutHappenedInContentTitleTextView:(VContentTitleTextView *)contentTitleTextView; ///< Notifies the delegate that the text has been placed into the container
+- (void)seeMoreButtonTappedInContentTitleTextView:(VContentTitleTextView *)contentTitleTextView; ///< Notifies the delegate that the user tapped teh "see more" button
 
 @end
 
@@ -23,7 +24,16 @@
  */
 @interface VContentTitleTextView : UIView
 
-@property (nonatomic, weak) id<VContentTitleTextViewDelegate>  delegate;
-@property (nonatomic, copy) NSString                          *text;
+@property (nonatomic, weak)     IBOutlet id<VContentTitleTextViewDelegate>  delegate;
+@property (nonatomic, copy)     NSString                                   *text;
+
+/**
+ Y-coordinate of the bottom of the last line of text, in 
+ the receiver's coordinates. If you're doing anything 
+ with this value, listen for the 
+ textLayoutHappenedInContentTitleTextView: delegate 
+ method, which signals that this value may have changed.
+ */
+@property (nonatomic, readonly) CGFloat locationForLastLineOfText;
 
 @end

@@ -26,10 +26,9 @@
 #import "NSString+VParseHelp.h"
 #import "UIImage+ImageCreation.h"
 
-
 @import MediaPlayer;
 
-@interface VContentViewController ()  <UIWebViewDelegate, VInteractionManagerDelegate, UIDynamicAnimatorDelegate, UINavigationControllerDelegate>
+@interface VContentViewController ()  <UIWebViewDelegate, VContentTitleTextViewDelegate, VInteractionManagerDelegate, UIDynamicAnimatorDelegate, UINavigationControllerDelegate>
 
 @property (weak, nonatomic) IBOutlet UIImageView* backgroundImage;
 @property (weak, nonatomic) IBOutlet VContentTitleTextView* descriptionLabel;
@@ -47,6 +46,13 @@
 @property (weak, nonatomic) IBOutlet VResultView* firstResultView;
 @property (weak, nonatomic) IBOutlet VResultView* secondResultView;
 @property (weak, nonatomic) IBOutlet UIView*      maskingView; ///< This view is normally hidden but unhides during landspace video playback
+@property (weak, nonatomic) IBOutlet UIView*      expandedTitleMaskingView; ///< This view is normally hidden but unhides when the
+@property (weak, nonatomic) IBOutlet UIButton*    collapseButton;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint* topActionsViewHeightConstraint;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint* hrVerticalSpacingConstraint;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint* collapseButtonVerticalSpacingConstraint;
+@property (nonatomic)                CGFloat             smallTextSize; ///< The size of the title text when collapsed into 3 lines
+@property (nonatomic)                BOOL                collapsingOrExpanding; ///< YES during the animation block for a title expand/collapse operation
 
 @property (strong, nonatomic) UIDynamicAnimator* orAnimator;
 
