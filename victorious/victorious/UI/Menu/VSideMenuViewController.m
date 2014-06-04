@@ -41,9 +41,6 @@
 - (void)commonInit
 {
     _animationDuration = 0.35f;
-//    _panGestureEnabled = YES;
-//    _interactivePopGestureRecognizerEnabled = YES;
-    
     _scaleContentView      = YES;
     _contentViewScaleValue = 0.7f;
     

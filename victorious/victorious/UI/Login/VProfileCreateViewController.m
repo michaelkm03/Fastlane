@@ -244,7 +244,7 @@
     BOOL    isValid =   ((self.usernameTextField.text.length > 0) &&
                          (self.locationTextField.text.length > 0) &&
                          (self.taglineTextView.text.length > 0) &&
-//                         (self.updatedProfileImage) &&
+                         (self.updatedProfileImage) &&
                          ([self.agreeSwitch isOn]));
     
     if (isValid)
