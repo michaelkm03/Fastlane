@@ -260,6 +260,15 @@ static const CGFloat kDistanceBetweenTitleAndCollapseButton =  42.5f;
 
 - (void)expandTitleAnimated:(BOOL)animated
 {
+    UIView *temporaryTitleView = nil;
+    if (animated)
+    {
+        temporaryTitleView = [self.descriptionLabel snapshotViewAfterScreenUpdates:NO];
+        temporaryTitleView.frame = self.descriptionLabel.frame;
+        [self.descriptionLabel.superview addSubview:temporaryTitleView];
+        self.descriptionLabel.alpha = 0;
+    }
+    
     void (^animations)(void) = ^(void)
     {
         self.expandedTitleMaskingView.alpha = 1.0f;
@@ -268,15 +277,19 @@ static const CGFloat kDistanceBetweenTitleAndCollapseButton =  42.5f;
         [self.view layoutIfNeeded];
         [self updateConstraintsForTextSize:self.descriptionLabel.locationForLastLineOfText];
         [self.view layoutIfNeeded];
+        
+        self.descriptionLabel.alpha = 1.0f;
+        temporaryTitleView.alpha = 0;
     };
     void (^completion)(BOOL) = ^(BOOL finished)
     {
         self.collapsingOrExpanding = NO;
+        [temporaryTitleView removeFromSuperview];
     };
     
     self.smallTextSize = self.descriptionLabel.locationForLastLineOfText;
-    
     self.collapsingOrExpanding = YES;
+    
     if (animated)
     {
         [UIView animateWithDuration:0.2
@@ -294,6 +307,15 @@ static const CGFloat kDistanceBetweenTitleAndCollapseButton =  42.5f;
 
 - (void)collapseTitleAnimated:(BOOL)animated
 {
+    UIView *temporaryTitleView = nil;
+    if (animated)
+    {
+        temporaryTitleView = [self.descriptionLabel snapshotViewAfterScreenUpdates:NO];
+        temporaryTitleView.frame = self.descriptionLabel.frame;
+        [self.descriptionLabel.superview addSubview:temporaryTitleView];
+        self.descriptionLabel.alpha = 0;
+    }
+    
     void (^animations)(void) = ^(void)
     {
         self.expandedTitleMaskingView.alpha = 0;
@@ -301,10 +323,15 @@ static const CGFloat kDistanceBetweenTitleAndCollapseButton =  42.5f;
         self.topActionsViewHeightConstraint.constant = kContentMediaViewOffset;
         [self updateConstraintsForTextSize:self.smallTextSize];
         [self.view layoutIfNeeded];
+        
+        self.descriptionLabel.alpha = 1.0f;
+        temporaryTitleView.alpha = 0;
+        
     };
     void (^completion)(BOOL) = ^(BOOL finished)
     {
         self.collapsingOrExpanding = NO;
+        [temporaryTitleView removeFromSuperview];
     };
     
     self.collapsingOrExpanding = YES;
