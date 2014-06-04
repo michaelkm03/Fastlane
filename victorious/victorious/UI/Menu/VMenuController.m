@@ -31,12 +31,21 @@
 
 #import "VUserProfileViewController.h"
 
+typedef NS_ENUM(NSUInteger, VMenuControllerRow)
+{
+    VMenuRowHome                =   0,
+    VMenuRowOwnerChannel        =   1,
+    VMenuRowCommunityChannel    =   2,
+    VMenuRowInbox               =   0,
+    VMenuRowProfile             =   1,
+    VMenuRowSettings            =   2
+};
+
 NSString *const VMenuControllerDidSelectRowNotification = @"VMenuTableViewControllerDidSelectRowNotification";
 
 @interface VMenuController ()   <MFMailComposeViewControllerDelegate, UIAlertViewDelegate>
 @property (weak, nonatomic) IBOutlet VBadgeLabel *inboxBadgeLabel;
 @property (weak, nonatomic) IBOutlet UILabel *nameLabel;
-@property (strong, nonatomic) IBOutletCollection(UIImageView) NSArray *imageViews;
 @property (strong, nonatomic) IBOutletCollection(UILabel) NSArray *labels;
 @end
 
@@ -46,6 +55,13 @@ NSString *const VMenuControllerDidSelectRowNotification = @"VMenuTableViewContro
 {
     [super viewDidLoad];
     
+    [self.labels enumerateObjectsUsingBlock:^(UILabel *label, NSUInteger idx, BOOL *stop)
+     {
+         UIFont*     font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeading4Font];
+         label.font = [font fontWithSize:22.0];
+         label.textColor = [UIColor colorWithWhite:1.0 alpha:0.7];
+     }];
+
     NSUInteger count = [VObjectManager sharedManager].mainUser.unreadConversation.count.unsignedIntegerValue;
     if (count < 1)
     {
@@ -54,7 +70,7 @@ NSString *const VMenuControllerDidSelectRowNotification = @"VMenuTableViewContro
     else
     {
         if (count < 1000)
-            self.inboxBadgeLabel.text = [NSString stringWithFormat:@"%lu", (unsigned long)count];
+            self.inboxBadgeLabel.text = [NSNumberFormatter localizedStringFromNumber:@(count) numberStyle:NSNumberFormatterDecimalStyle];
         else
             self.inboxBadgeLabel.text = @"+999";
         
@@ -64,24 +80,11 @@ NSString *const VMenuControllerDidSelectRowNotification = @"VMenuTableViewContro
         [self.inboxBadgeLabel setHidden:NO];
     }
     
-    NSString *channelName = [[VThemeManager sharedThemeManager] themedStringForKey:kVChannelName];
-    self.nameLabel.text = [NSString stringWithFormat:NSLocalizedString(@"%@ Channel", @"<CHANNEL NAME> Channel"), channelName];
-    
-    [[UIImageView appearanceWhenContainedIn:[self class], nil]
-     setTintColor:[[VThemeManager sharedThemeManager] themedColorForKey:kVMainTextColor]];
-    [self.imageViews enumerateObjectsUsingBlock:^(UIImageView *imageView, NSUInteger idx, BOOL *stop)
-    {
-        imageView.image = [imageView.image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
-    }];
-    [self.labels enumerateObjectsUsingBlock:^(UILabel *label, NSUInteger idx, BOOL *stop)
-    {
-        label.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeading4Font];
-//        label.textColor = [[VThemeManager sharedThemeManager] themedColorForKeyPath:kMenuTextColor];
-    }];
+    self.nameLabel.text = [[VThemeManager sharedThemeManager] themedStringForKey:kVChannelName];
     
     self.view.backgroundColor = [UIColor clearColor];
     self.tableView.backgroundView.backgroundColor = [UIColor clearColor];
-    
+
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
 }
 
@@ -100,61 +103,67 @@ NSString *const VMenuControllerDidSelectRowNotification = @"VMenuTableViewContro
     UINavigationController* navigationController = self.sideMenuViewController.contentViewController;
     UIViewController* currentViewController = [navigationController.viewControllers lastObject];
     
-    switch (indexPath.row)
+    if (0 == indexPath.section)
     {
-        case VMenuRowHome:
-            navigationController.viewControllers = @[[VStreamContainerViewController containerForStreamTable:[VHomeStreamViewController sharedInstance]]];
-            [self.sideMenuViewController hideMenuViewController];
-        break;
-        
-        case VMenuRowOwnerChannel:
-            navigationController.viewControllers = @[[VStreamContainerViewController containerForStreamTable:[VOwnerStreamViewController sharedInstance]]];
-            [self.sideMenuViewController hideMenuViewController];
-        break;
-        
-        case VMenuRowCommunityChannel:
-            navigationController.viewControllers = @[[VStreamContainerViewController containerForStreamTable:[VCommunityStreamViewController sharedInstance]]];
-            [self.sideMenuViewController hideMenuViewController];
-        break;
-        
-        case VMenuRowInbox:
-            if (![VObjectManager sharedManager].authorized)
-            {
-                [self presentViewController:[VLoginViewController loginViewController] animated:YES completion:nil];
+        switch (indexPath.row)
+        {
+            case VMenuRowHome:
+                navigationController.viewControllers = @[[VStreamContainerViewController containerForStreamTable:[VHomeStreamViewController sharedInstance]]];
                 [self.sideMenuViewController hideMenuViewController];
-            }
-            else
-            {
-                navigationController.viewControllers = @[[VInboxContainerViewController inboxContainer]];
-                [self.sideMenuViewController hideMenuViewController];
-            }
-        break;
-        
-        case VMenuRowProfile:
-            if (![VObjectManager sharedManager].authorized)
-            {
-                [self presentViewController:[VLoginViewController loginViewController] animated:YES completion:nil];
-                [self.sideMenuViewController hideMenuViewController];
-            }
-            else
-            {
-                navigationController.viewControllers = @[[VUserProfileViewController userProfileWithSelf]];
-                [self.sideMenuViewController hideMenuViewController];
-            }
-        break;
-        
-        case VMenuRowSettings:
-            navigationController.viewControllers = @[[VSettingsViewController settingsViewController]];
-            [self.sideMenuViewController hideMenuViewController];
-        break;
-        
-        case VMenuRowHelp:
-            [self sendHelp:self];
-            [self.sideMenuViewController hideMenuViewController];
-        break;
-
-        default:
             break;
+            
+            case VMenuRowOwnerChannel:
+                navigationController.viewControllers = @[[VStreamContainerViewController containerForStreamTable:[VOwnerStreamViewController sharedInstance]]];
+                [self.sideMenuViewController hideMenuViewController];
+            break;
+            
+            case VMenuRowCommunityChannel:
+                navigationController.viewControllers = @[[VStreamContainerViewController containerForStreamTable:[VCommunityStreamViewController sharedInstance]]];
+                [self.sideMenuViewController hideMenuViewController];
+            break;
+                
+            default:
+                break;
+        }
+    }
+    else if (1 == indexPath.section)
+    {
+        switch (indexPath.row)
+        {
+            case VMenuRowInbox:
+                if (![VObjectManager sharedManager].authorized)
+                {
+                    [self presentViewController:[VLoginViewController loginViewController] animated:YES completion:nil];
+                    [self.sideMenuViewController hideMenuViewController];
+                }
+                else
+                {
+                    navigationController.viewControllers = @[[VInboxContainerViewController inboxContainer]];
+                    [self.sideMenuViewController hideMenuViewController];
+                }
+            break;
+            
+            case VMenuRowProfile:
+                if (![VObjectManager sharedManager].authorized)
+                {
+                    [self presentViewController:[VLoginViewController loginViewController] animated:YES completion:nil];
+                    [self.sideMenuViewController hideMenuViewController];
+                }
+                else
+                {
+                    navigationController.viewControllers = @[[VUserProfileViewController userProfileWithSelf]];
+                    [self.sideMenuViewController hideMenuViewController];
+                }
+            break;
+            
+            case VMenuRowSettings:
+                navigationController.viewControllers = @[[VSettingsViewController settingsViewController]];
+                [self.sideMenuViewController hideMenuViewController];
+            break;
+            
+            default:
+                break;
+        }
     }
     
     //If the view controllers aren't the same notify everything a change is about to happen
@@ -163,6 +172,28 @@ NSString *const VMenuControllerDidSelectRowNotification = @"VMenuTableViewContro
         [[NSNotificationCenter defaultCenter] postNotificationName:VMenuControllerDidSelectRowNotification object:nil];
     }
 }
+
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
+{
+    if (1 == section)
+    {
+        UIView* sectionHeader = [[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, 320.0, 1.0)];
+        sectionHeader.backgroundColor = [UIColor colorWithWhite:1.0 alpha:0.3];
+        return sectionHeader;
+    }
+    
+    return nil;
+}
+
+ - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
+{
+    if (1 == section)
+        return 1.0;
+    else
+        return 100.0;
+}
+
+#pragma mark - Actions
 
 - (IBAction)sendHelp:(id)sender
 {
@@ -217,46 +248,6 @@ NSString *const VMenuControllerDidSelectRowNotification = @"VMenuTableViewContro
 
     [self dismissViewControllerAnimated:YES completion:nil];
 }
-
-
-//        case VMenuTableViewControllerRowInbox:
-//        {
-//            if (![VObjectManager sharedManager].authorized)
-//            {
-//                UINavigationController *navigationController =
-//                [[UINavigationController alloc] initWithRootViewController:[VLoginViewController sharedLoginViewController]];
-//                [self dismissViewControllerAnimated:YES completion:^{
-//                    [wself presentViewController:navigationController animated:YES completion:NULL];
-//                }];
-//            }
-//            else
-//            {
-//                self.viewControllers = @[[VInboxViewController sharedInboxViewController]];
-//                [self dismissViewControllerAnimated:YES completion:nil];
-//            }
-//            break;
-//        }
-//        case VMenuTableViewControllerRowProfile:
-//        {
-//            if (![VObjectManager sharedManager].authorized)
-//            {
-//                UINavigationController *navigationController =
-//                [[UINavigationController alloc] initWithRootViewController:[VLoginViewController sharedLoginViewController]];
-//                [self dismissViewControllerAnimated:YES completion:^{
-//                    [wself presentViewController:navigationController animated:YES completion:NULL];
-//                }];
-//            }
-//            else
-//            {
-//                //  Show Profile
-//                VProfileViewController* profileViewController = [VProfileViewController sharedProfileViewController];
-//                profileViewController.userID = -1;    //  We want our own profile
-//                self.viewControllers = @[profileViewController];
-//                [self dismissViewControllerAnimated:YES completion:nil];
-//            }
-//            break;
-//        }
-//    }
 
 - (UIStatusBarStyle)preferredStatusBarStyle
 {

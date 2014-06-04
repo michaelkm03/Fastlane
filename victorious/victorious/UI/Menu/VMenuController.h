@@ -8,16 +8,5 @@
 
 extern NSString *const VMenuControllerDidSelectRowNotification;
 
-typedef NS_ENUM(NSUInteger, VMenuControllerRow)
-{
-    VMenuRowHome,
-    VMenuRowOwnerChannel,
-    VMenuRowCommunityChannel,
-    VMenuRowInbox,
-    VMenuRowProfile,
-    VMenuRowSettings,
-    VMenuRowHelp
-};
-
 @interface VMenuController : UITableViewController
 @end
