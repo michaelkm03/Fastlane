@@ -414,19 +414,20 @@ static const CGFloat kDistanceBetweenTitleAndCollapseButton =  42.5f;
 
 - (void)setActionBarVC:(VActionBarViewController *)actionBarVC
 {
-    [_actionBarVC removeFromParentViewController];
+    [_actionBarVC willMoveToParentViewController:nil];
     [_actionBarVC.view removeFromSuperview];
+    [_actionBarVC removeFromParentViewController];
     _actionBarVC = actionBarVC;
     
     if (actionBarVC)
     {
         [self addChildViewController:actionBarVC];
-        [actionBarVC didMoveToParentViewController:self];
         [self.barContainerView addSubview:actionBarVC.view];
         
         [_actionBarVC animateInWithDuration:.2f
                                  completion:^(BOOL finished)
          {
+             [actionBarVC didMoveToParentViewController:self];
              if ([self.sequence isPoll])
                  [self pollAnimation];
          }];
