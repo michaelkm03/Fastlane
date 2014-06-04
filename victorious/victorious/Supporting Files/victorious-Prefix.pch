@@ -28,11 +28,10 @@
 #import "RestKit.h"
 
 
-#warning "We need to remove this log before release"
-//#ifdef DEBUG
+#ifdef DEBUG
 #define VLog(fmt, ...) NSLog((@"%s [Line %d] " fmt),  __PRETTY_FUNCTION__, __LINE__, ##__VA_ARGS__);
-//#else
-//#define VLog(...)
-//#endif
+#else
+#define VLog(...)
+#endif
 
 #define VSelectorName(s) NSStringFromSelector(@selector(s))
