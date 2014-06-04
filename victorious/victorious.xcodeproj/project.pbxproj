@@ -34,6 +34,8 @@
 		03A2AD9A1926C9300034EB80 /* DeviceTableViewController+RotationMethods.m in Sources */ = {isa = PBXBuildFile; fileRef = 03A2AD991926C9300034EB80 /* DeviceTableViewController+RotationMethods.m */; };
 		03ABEE201937EC7F007931F9 /* VContentInputAccessoryView.m in Sources */ = {isa = PBXBuildFile; fileRef = 03ABEE1F1937EC7F007931F9 /* VContentInputAccessoryView.m */; };
 		03ABEE2319395AF6007931F9 /* VContentTitleTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = 03ABEE2219395AF6007931F9 /* VContentTitleTextView.m */; };
+		03CA03CC193F93FE002CFB37 /* VLargeNumberFormatter.m in Sources */ = {isa = PBXBuildFile; fileRef = 03CA03CB193F93FE002CFB37 /* VLargeNumberFormatter.m */; };
+		03CA03CE193F95FC002CFB37 /* VLargeNumberFormatterTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 03CA03CD193F95FC002CFB37 /* VLargeNumberFormatterTests.m */; };
 		03D6381B191840570084FFC8 /* VEnvironment.m in Sources */ = {isa = PBXBuildFile; fileRef = 03D6381A191840570084FFC8 /* VEnvironment.m */; };
 		03D6381E191841220084FFC8 /* VObjectManager+Environment.m in Sources */ = {isa = PBXBuildFile; fileRef = 03D6381D191841220084FFC8 /* VObjectManager+Environment.m */; };
 		03D638211918488F0084FFC8 /* VServerEnvironmentTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 03D638201918488F0084FFC8 /* VServerEnvironmentTableViewController.m */; };
@@ -351,6 +353,9 @@
 		03ABEE1F1937EC7F007931F9 /* VContentInputAccessoryView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VContentInputAccessoryView.m; sourceTree = "<group>"; };
 		03ABEE2119395AF6007931F9 /* VContentTitleTextView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VContentTitleTextView.h; path = "UI/Content View/VContentTitleTextView.h"; sourceTree = "<group>"; };
 		03ABEE2219395AF6007931F9 /* VContentTitleTextView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VContentTitleTextView.m; path = "UI/Content View/VContentTitleTextView.m"; sourceTree = "<group>"; };
+		03CA03CA193F93FE002CFB37 /* VLargeNumberFormatter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VLargeNumberFormatter.h; path = UI/VLargeNumberFormatter.h; sourceTree = "<group>"; };
+		03CA03CB193F93FE002CFB37 /* VLargeNumberFormatter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VLargeNumberFormatter.m; path = UI/VLargeNumberFormatter.m; sourceTree = "<group>"; };
+		03CA03CD193F95FC002CFB37 /* VLargeNumberFormatterTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VLargeNumberFormatterTests.m; sourceTree = "<group>"; };
 		03D63819191840570084FFC8 /* VEnvironment.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VEnvironment.h; sourceTree = "<group>"; };
 		03D6381A191840570084FFC8 /* VEnvironment.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VEnvironment.m; sourceTree = "<group>"; };
 		03D6381C191841220084FFC8 /* VObjectManager+Environment.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "VObjectManager+Environment.h"; sourceTree = "<group>"; };
@@ -1085,6 +1090,8 @@
 				3F53E0C418A595AC00089C20 /* Create */,
 				3F14C43218BD2BD0001796B9 /* VCAudioVideoRecorder */,
 				03484BEC192D27E600403FB1 /* Lightbox */,
+				03CA03CA193F93FE002CFB37 /* VLargeNumberFormatter.h */,
+				03CA03CB193F93FE002CFB37 /* VLargeNumberFormatter.m */,
 				BE651D0C18AAD58A00069119 /* VLoadingViewController.h */,
 				BE651D0D18AAD58A00069119 /* VLoadingViewController.m */,
 			);
@@ -1434,6 +1441,7 @@
 			children = (
 				BE171D9F1868BE64004E5202 /* Supporting Files */,
 				0352277F192173F0003FCD10 /* VElapsedTimeFormatterTests.m */,
+				03CA03CD193F95FC002CFB37 /* VLargeNumberFormatterTests.m */,
 			);
 			path = victoriousTests;
 			sourceTree = "<group>";
@@ -2219,6 +2227,7 @@
 				3F14C45418BD2BD0001796B9 /* VCVideoPlayerViewController.m in Sources */,
 				BE171E121868C211004E5202 /* VInteraction+RestKit.m in Sources */,
 				036AE5ED18FF0C0600A74BDA /* VReachability.m in Sources */,
+				03CA03CC193F93FE002CFB37 /* VLargeNumberFormatter.m in Sources */,
 				3FF8C50218A59EAB00812968 /* VCreatePollViewController.m in Sources */,
 				BE5C735B187E36E700A3340D /* VNode.m in Sources */,
 				3F91991D187CAF620055FE37 /* VNewsViewController.m in Sources */,
@@ -2281,6 +2290,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				03CA03CE193F95FC002CFB37 /* VLargeNumberFormatterTests.m in Sources */,
 				03522780192173F0003FCD10 /* VElapsedTimeFormatterTests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
