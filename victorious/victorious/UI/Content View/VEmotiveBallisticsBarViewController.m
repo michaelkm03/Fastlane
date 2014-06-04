@@ -198,10 +198,12 @@
 
 - (void)throwEmotive:(UIButton*)emotive toPoint:(CGPoint)point
 {
-    point = [self.target convertPoint:point toView:self.view];
+    UIView *thrownImageSuperview = self.parentViewController.view ?: self.view;
+    
+    point = [self.target convertPoint:point toView:thrownImageSuperview];
     __block UIImageView* thrownImage = [[UIImageView alloc] initWithImage:emotive.imageView.image];
     thrownImage.frame = CGRectMake(0, 0, 110, 110);
-    thrownImage.center = emotive.center;
+    thrownImage.center = [emotive.superview convertPoint:emotive.center toView:thrownImageSuperview];
     
     NSMutableArray* emotiveAnimations = [[NSMutableArray alloc] initWithCapacity:13];
     for (int i = 0; i < 17; i++)
@@ -219,7 +221,7 @@
     
     thrownImage.contentMode = UIViewContentModeScaleAspectFit;
     
-    [self.view addSubview:thrownImage];
+    [thrownImageSuperview addSubview:thrownImage];
     [UIView animateWithDuration:.3f
                      animations:^
      {
