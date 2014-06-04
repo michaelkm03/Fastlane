@@ -198,6 +198,7 @@
 		BE185DF118E3B2C2001C447F /* VContentViewController+Images.m in Sources */ = {isa = PBXBuildFile; fileRef = BE185DF018E3B2C2001C447F /* VContentViewController+Images.m */; };
 		BE185DF518E3BB54001C447F /* VActionBarViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BE185DF418E3BB54001C447F /* VActionBarViewController.m */; };
 		BE24782C193E735A0074191C /* VConversation.m in Sources */ = {isa = PBXBuildFile; fileRef = BE24782B193E735A0074191C /* VConversation.m */; };
+		BE24782F193E9E8E0074191C /* VAbstractFilter+RestKit.m in Sources */ = {isa = PBXBuildFile; fileRef = BE24782E193E9E8E0074191C /* VAbstractFilter+RestKit.m */; };
 		BE2D1E5519006E7500C6FF99 /* VContentToCommentAnimator.m in Sources */ = {isa = PBXBuildFile; fileRef = BE2D1E5419006E7500C6FF99 /* VContentToCommentAnimator.m */; };
 		BE2D1E5A19006E9400C6FF99 /* VCommentToStreamAnimator.m in Sources */ = {isa = PBXBuildFile; fileRef = BE2D1E5919006E9400C6FF99 /* VCommentToStreamAnimator.m */; };
 		BE2D1E5D19006EAC00C6FF99 /* VStreamToContentAnimator.m in Sources */ = {isa = PBXBuildFile; fileRef = BE2D1E5C19006EAC00C6FF99 /* VStreamToContentAnimator.m */; };
@@ -641,6 +642,8 @@
 		BE185DF418E3BB54001C447F /* VActionBarViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VActionBarViewController.m; path = "UI/Content View/VActionBarViewController.m"; sourceTree = "<group>"; };
 		BE24782A193E735A0074191C /* VConversation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VConversation.h; sourceTree = "<group>"; };
 		BE24782B193E735A0074191C /* VConversation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VConversation.m; sourceTree = "<group>"; };
+		BE24782D193E9E8E0074191C /* VAbstractFilter+RestKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "VAbstractFilter+RestKit.h"; sourceTree = "<group>"; };
+		BE24782E193E9E8E0074191C /* VAbstractFilter+RestKit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "VAbstractFilter+RestKit.m"; sourceTree = "<group>"; };
 		BE2D1E5319006E7500C6FF99 /* VContentToCommentAnimator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VContentToCommentAnimator.h; path = "UI/Content View/VContentToCommentAnimator.h"; sourceTree = "<group>"; };
 		BE2D1E5419006E7500C6FF99 /* VContentToCommentAnimator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VContentToCommentAnimator.m; path = "UI/Content View/VContentToCommentAnimator.m"; sourceTree = "<group>"; };
 		BE2D1E5819006E9400C6FF99 /* VCommentToStreamAnimator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VCommentToStreamAnimator.h; path = "UI/Streams Subview/VCommentToStreamAnimator.h"; sourceTree = "<group>"; };
@@ -1536,6 +1539,8 @@
 				BE7D2E8D18EB65ED009E488E /* VVoteResult+RestKit.m */,
 				BE5DE3FA18DA730B0047B67E /* VVoteType+RestKit.h */,
 				BE5DE3FB18DA730B0047B67E /* VVoteType+RestKit.m */,
+				BE24782D193E9E8E0074191C /* VAbstractFilter+RestKit.h */,
+				BE24782E193E9E8E0074191C /* VAbstractFilter+RestKit.m */,
 			);
 			path = Mappings;
 			sourceTree = "<group>";
@@ -2068,6 +2073,7 @@
 				BE171E201868C211004E5202 /* VObjectManager+Login.m in Sources */,
 				BEA31EE9192292F300A90A10 /* VComment+Fetcher.m in Sources */,
 				5FF9BE7F1893143D0054694B /* UIViewController+VSideMenuViewController.m in Sources */,
+				BE24782F193E9E8E0074191C /* VAbstractFilter+RestKit.m in Sources */,
 				3FBCB9E4192EC77400EB510C /* THPinViewController.m in Sources */,
 				03A2AD971926B9460034EB80 /* UIViewController+ForceOrientationChange.m in Sources */,
 				BED7F67118E0A8E900545DF6 /* TWSignedRequest.m in Sources */,

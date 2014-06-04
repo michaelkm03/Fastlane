@@ -37,6 +37,10 @@
                                                    successBlock:(VSuccessBlock)success
                                                       failBlock:(VFailBlock)fail;
 
+- (RKManagedObjectRequestOperation *)refreshConversationListWithSuccessBlock:(VSuccessBlock)success
+                                                                   failBlock:(VFailBlock)fail;
+- (RKManagedObjectRequestOperation *)loadNextPageOfConversationListWithSuccessBlock:(VSuccessBlock)success
+                                                                          failBlock:(VFailBlock)fail;
 
 - (VSequenceFilter*)sequenceFilterForUser:(VUser*)user;
 - (VSequenceFilter*)sequenceFilterForCategories:(NSArray*)categories;

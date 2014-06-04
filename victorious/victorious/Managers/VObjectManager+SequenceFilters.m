@@ -15,7 +15,7 @@
 #import "VSequence.h"
 #import "VComment.h"
 #import "VMessage.h"
-#import "VConversation.h"
+#import "VConversation+RestKit.h"
 
 #import "VSequenceFilter+RestKit.h"
 #import "VCommentFilter+RestKit.h"
@@ -27,6 +27,8 @@
 #import "VUserManager.h"
 
 #import "VConstants.h"
+
+#import "NSString+VParseHelp.h"
 
 @interface VFilterCache : NSCache
 + (VFilterCache *)sharedCache;
@@ -162,6 +164,65 @@
     };
     
     return [self loadNextPageOfFilter:filter successBlock:fullSuccessBlock failBlock:fail];
+}
+
+#pragma mark - Conversations
+
+- (RKManagedObjectRequestOperation *)refreshConversationListWithSuccessBlock:(VSuccessBlock)success
+                                                                   failBlock:(VFailBlock)fail
+{
+    VAbstractFilter* listFilter = [[VFilterCache sharedCache] filterForPath:@"/api/message/conversation_list"
+                                                                 entityName:[VAbstractFilter entityName]];
+    listFilter.currentPageNumber = @(0);
+    return [self loadNextPageOfConversationListWithSuccessBlock:success
+                                                      failBlock:fail];
+}
+
+- (RKManagedObjectRequestOperation *)loadNextPageOfConversationListWithSuccessBlock:(VSuccessBlock)success
+                                                                          failBlock:(VFailBlock)fail
+{
+    VAbstractFilter* listFilter = [[VFilterCache sharedCache] filterForPath:@"/api/message/conversation_list"
+                                                                 entityName:[VAbstractFilter entityName]];
+    
+    VSuccessBlock fullSuccessBlock = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
+    {
+        NSManagedObjectContext* context;
+        NSMutableArray* nonExistantUsers = [[NSMutableArray alloc] init];
+        for (VConversation* conversation in resultObjects)
+        {
+            //There should only be one message.  Its the current 'last message'
+            conversation.lastMessage = [conversation.messages anyObject];
+            
+            //Sometimes we get -1 for the current logged in user
+            if (!conversation.lastMessage.user && [conversation.lastMessage.senderUserId isEqual: @(-1)])
+                conversation.lastMessage.user = self.mainUser;
+            else if (conversation.lastMessage && !conversation.lastMessage.user)
+                [nonExistantUsers addObject:conversation.lastMessage.senderUserId];
+            
+            if (!conversation.filterAPIPath || [conversation.filterAPIPath isEmpty])
+            {
+                conversation.filterAPIPath = [@"/api/message/conversation/" stringByAppendingString:conversation.remoteId.stringValue];
+            }
+            
+            if (!conversation.user && conversation.other_interlocutor_user_id)
+                [nonExistantUsers addObject:conversation.other_interlocutor_user_id];
+            
+            context = conversation.managedObjectContext;
+        }
+        
+        [context saveToPersistentStore:nil];
+        
+        if ([nonExistantUsers count])
+            [[VObjectManager sharedManager] fetchUsers:nonExistantUsers
+                                      withSuccessBlock:success
+                                             failBlock:fail];
+        
+        else if (success)
+            success(operation, fullResponse, resultObjects);
+    };
+    
+    
+    return [self loadNextPageOfFilter:listFilter successBlock:fullSuccessBlock failBlock:fail];
 }
 
 #pragma mark - Message
