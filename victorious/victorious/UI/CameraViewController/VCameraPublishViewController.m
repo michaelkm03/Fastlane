@@ -9,6 +9,7 @@
 @import AVFoundation;
 
 #import "VCameraPublishViewController.h"
+#import "VContentInputAccessoryView.h"
 #import "VSetExpirationViewController.h"
 #import "UIImage+ImageEffects.h"
 #import "VObjectManager+ContentCreation.h"
@@ -24,8 +25,6 @@
 
 @property (nonatomic, weak) IBOutlet    UISwitch*       twitterButton;
 @property (nonatomic, weak) IBOutlet    UISwitch*       facebookButton;
-
-@property (nonatomic, strong) IBOutlet    UIBarButtonItem*    countDownLabel;
 
 @property (nonatomic, weak) IBOutlet    UILabel*        textViewPlaceholderLabel;
 
@@ -45,7 +44,9 @@
     UIView *previewImageView = self.previewImageView;
     [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[previewImageView]" options:0 metrics:nil views:NSDictionaryOfVariableBindings(previewImageView)]];
     
-    [self createInputAccessoryView];
+    VContentInputAccessoryView *contentInputAccessory = [[VContentInputAccessoryView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 320.0f, 44.0f)];
+    contentInputAccessory.textInputView = self.textView;
+    self.textView.inputAccessoryView = contentInputAccessory;
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -223,34 +224,11 @@
     return [sRFC2822DateFormatter stringFromDate:date];
 }
 
-- (void)createInputAccessoryView
-{
-    UIToolbar*  toolbar =   [[UIToolbar alloc] initWithFrame:CGRectMake(0, 0, self.view.bounds.size.width, 44)];
-    
-    UIBarButtonItem*    hashButton  =   [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"cameraButtonHashTagAdd"]
-                                                                         style:UIBarButtonItemStyleBordered
-                                                                        target:self
-                                                                        action:@selector(hashButtonClicked:)];
-    UIBarButtonItem*    flexibleSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace
-                                                                                      target:nil
-                                                                                      action:nil];
-    
-    self.countDownLabel = [[UIBarButtonItem alloc] initWithTitle:[NSNumberFormatter localizedStringFromNumber:@(VConstantsMessageLength) numberStyle:NSNumberFormatterDecimalStyle]
-                                                           style:UIBarButtonItemStyleBordered
-                                                            target:nil
-                                                          action:nil];
-    
-    toolbar.items = @[hashButton, flexibleSpace, self.countDownLabel];
-    self.textView.inputAccessoryView = toolbar;
-}
-
 #pragma mark - UITextViewDelegate
 
 - (void)textViewDidChange:(UITextView *)textView
 {
     self.textViewPlaceholderLabel.hidden = ([textView.text length] > 0);
-    self.countDownLabel.title = [NSNumberFormatter localizedStringFromNumber:@(VConstantsMessageLength - self.textView.text.length)
-                                                                 numberStyle:NSNumberFormatterDecimalStyle];
 }
 
 - (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text
