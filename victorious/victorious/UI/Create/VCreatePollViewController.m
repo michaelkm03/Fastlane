@@ -120,6 +120,7 @@ static char KVOContext;
                                  context:&KVOContext];
     self.leftAnswerTextView.text = self.leftAnswerPrompt.text; // temporarily
     self.leftAnswerTextView.inputAccessoryView = [self inputAccessoryViewForTextView:self.leftAnswerTextView];
+    ((VContentInputAccessoryView*)self.leftAnswerTextView.inputAccessoryView).maxCharacterLength = VConstantsPollAnswerLength;
     
     self.rightAnswerTextView.textColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVContentTextColor];
     self.rightAnswerTextView.tintColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVContentTextColor];
@@ -130,6 +131,7 @@ static char KVOContext;
                                   context:&KVOContext];
     self.rightAnswerTextView.text = self.rightAnswerPrompt.text; // temporarily
     self.rightAnswerTextView.inputAccessoryView = [self inputAccessoryViewForTextView:self.rightAnswerTextView];
+    ((VContentInputAccessoryView*)self.rightAnswerTextView.inputAccessoryView).maxCharacterLength = VConstantsPollAnswerLength;
     
     [self.answersSuperview addConstraint:[NSLayoutConstraint constraintWithItem:self.leftAnswerTextView
                                                                       attribute:NSLayoutAttributeCenterY

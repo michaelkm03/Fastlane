@@ -43,6 +43,9 @@
     toolbar.translatesAutoresizingMaskIntoConstraints = NO;
     [self addSubview:toolbar];
 
+    //Default to the standard message length if no length is provided
+    self.maxCharacterLength = self.maxCharacterLength ?: VConstantsMessageLength;
+
     [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[toolbar]|" options:0 metrics:nil views:NSDictionaryOfVariableBindings(toolbar)]];
     [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[toolbar]|" options:0 metrics:nil views:NSDictionaryOfVariableBindings(toolbar)]];
     
@@ -62,6 +65,13 @@
 - (void)dealloc
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
+- (void)setMaxCharacterLength:(NSInteger)maxCharacterLength
+{
+    _maxCharacterLength = maxCharacterLength;
+    
+    self.countDownLabel.title = [self charactersRemainingForCharacterCount:0];
 }
 
 - (CGSize)intrinsicContentSize
@@ -99,7 +109,7 @@
         numberFormatter = [[NSNumberFormatter alloc] init];
         numberFormatter.numberStyle = NSNumberFormatterDecimalStyle;
     });
-    return [numberFormatter stringFromNumber:@((NSInteger)VConstantsMessageLength - characterCount)];
+    return [numberFormatter stringFromNumber:@((NSInteger)self.maxCharacterLength - characterCount)];
 }
 
 #pragma mark - Properties
@@ -129,7 +139,7 @@
     if (notification.object == self.textInputView)
     {
         NSString *text = [notification.object text];
-        self.hashtagButton.enabled = text.length < VConstantsMessageLength;
+        self.hashtagButton.enabled = text.length < self.maxCharacterLength;
         self.countDownLabel.title = [self charactersRemainingForCharacterCount:text.length];
     }
 }
