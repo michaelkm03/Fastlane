@@ -154,7 +154,7 @@ static const CGFloat kDistanceBetweenTitleAndCollapseButton =  42.5f;
 
 - (BOOL)shouldAutorotate
 {
-    return YES;
+    return ![self isTitleExpanded];
 }
 
 - (NSUInteger)supportedInterfaceOrientations
@@ -225,6 +225,10 @@ static const CGFloat kDistanceBetweenTitleAndCollapseButton =  42.5f;
     {
         self.maskingView.alpha = 0;
         self.maskingView.hidden = NO;
+        if ([self isVideoLoaded])
+        {
+            [self.view bringSubviewToFront:self.mediaSuperview];
+        }
     }
 }
 
@@ -253,6 +257,7 @@ static const CGFloat kDistanceBetweenTitleAndCollapseButton =  42.5f;
     if (UIInterfaceOrientationIsPortrait(interfaceOrientation))
     {
         self.maskingView.hidden = YES;
+        [self.view insertSubview:self.mediaSuperview aboveSubview:self.backgroundImage];
     }
 }
 
@@ -289,6 +294,8 @@ static const CGFloat kDistanceBetweenTitleAndCollapseButton =  42.5f;
     
     self.smallTextSize = self.descriptionLabel.locationForLastLineOfText;
     self.collapsingOrExpanding = YES;
+    
+    [self.videoPlayer.player pause];
     
     if (animated)
     {
