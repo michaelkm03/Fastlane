@@ -11,6 +11,8 @@
 #import "VObjectManager+Users.h"
 #import "VObjectManager+Sequence.h"
 #import "VObjectManager+DirectMessaging.h"
+#import "VObjectManager+SequenceFilters.h"
+
 #import "VUser+RestKit.h"
 
 #import "VVoteType.h"
@@ -273,7 +275,8 @@ NSString *kLoggedInChangedNotification = @"LoggedInChangedNotification";
 {
     self.mainUser = user;
     
-    [self loadNextPageOfConversations:nil failBlock:nil];
+    [self refreshConversationListWithSuccessBlock:nil failBlock:nil];
+    
     [self pollResultsForUser:user successBlock:nil failBlock:nil];
     [self unreadCountForConversationsWithSuccessBlock:nil failBlock:nil];
 

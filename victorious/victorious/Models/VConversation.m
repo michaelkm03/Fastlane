@@ -2,7 +2,7 @@
 //  VConversation.m
 //  victorious
 //
-//  Created by Will Long on 1/13/14.
+//  Created by Will Long on 6/3/14.
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 

@@ -13,6 +13,7 @@
 #import "VNewsViewController.h"
 #import "VConversationCell.h"
 #import "VObjectManager+DirectMessaging.h"
+#import "VObjectManager+SequenceFilters.h"
 #import "VThemeManager.h"
 
 
@@ -177,12 +178,13 @@ static  NSString*   kNewsCellViewIdentifier       =   @"VNewsCell";
         [self.tableView reloadData];
         [self.refreshControl endRefreshing];
     };
-    
-    //TODO: remove this when we have conversation pagination
-    if ([self.fetchedResultsController.fetchedObjects count])
-        success(nil, nil, nil);
-    
-    [[VObjectManager sharedManager] loadNextPageOfConversations:success failBlock: fail];
+
+    [[VObjectManager sharedManager] refreshConversationListWithSuccessBlock:success failBlock:fail];
+}
+
+- (void)loadNextPageAction
+{
+    [[VObjectManager sharedManager] loadNextPageOfConversationListWithSuccessBlock:nil failBlock:nil];
 }
 
 #pragma mark - Navigation

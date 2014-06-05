@@ -8,7 +8,7 @@
 
 #import "VObjectManager.h"
 
-@class VSequenceFilter, VCommentFilter, VSequence;
+@class VSequenceFilter, VCommentFilter, VSequence, VConversation;
 
 @interface VObjectManager (SequenceFilters)
 
@@ -19,17 +19,28 @@
 - (RKManagedObjectRequestOperation *)loadNextPageOfCommentFilter:(VCommentFilter*)filter
                                                     successBlock:(VSuccessBlock)success
                                                        failBlock:(VFailBlock)fail;
-
 - (RKManagedObjectRequestOperation *)loadInitialSequenceFilterWithSuccessBlock:(VSuccessBlock)success
                                                                      failBlock:(VFailBlock)fail;
 
 - (RKManagedObjectRequestOperation *)refreshSequenceFilter:(VSequenceFilter*)filter
                                               successBlock:(VSuccessBlock)success
                                                  failBlock:(VFailBlock)fail;
-
 - (RKManagedObjectRequestOperation *)loadNextPageOfSequenceFilter:(VSequenceFilter*)filter
                                                      successBlock:(VSuccessBlock)success
                                                         failBlock:(VFailBlock)fail;
+
+
+- (RKManagedObjectRequestOperation *)refreshMessagesForConversation:(VConversation*)conversation
+                                                       successBlock:(VSuccessBlock)success
+                                                          failBlock:(VFailBlock)fail;
+- (RKManagedObjectRequestOperation *)loadNextPageOfConversation:(VConversation*)conversation
+                                                   successBlock:(VSuccessBlock)success
+                                                      failBlock:(VFailBlock)fail;
+
+- (RKManagedObjectRequestOperation *)refreshConversationListWithSuccessBlock:(VSuccessBlock)success
+                                                                   failBlock:(VFailBlock)fail;
+- (RKManagedObjectRequestOperation *)loadNextPageOfConversationListWithSuccessBlock:(VSuccessBlock)success
+                                                                          failBlock:(VFailBlock)fail;
 
 - (VSequenceFilter*)sequenceFilterForUser:(VUser*)user;
 - (VSequenceFilter*)sequenceFilterForCategories:(NSArray*)categories;

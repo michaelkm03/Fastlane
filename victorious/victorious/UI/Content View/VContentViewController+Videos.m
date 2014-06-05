@@ -262,7 +262,6 @@ static const char kVideoUnloadBlockKey;
 
 - (void)animateVideoOpenToAspectRatio:(CGFloat)aspectRatio
 {
-    [self.view bringSubviewToFront:self.mediaSuperview];
     [UIView animateWithDuration:kVideoPlayerAnimationDuration
                      animations:^(void)
     {
@@ -313,7 +312,10 @@ static const char kVideoUnloadBlockKey;
     {
         if (!self.shouldPause)
         {
-            [self.videoPlayer.player play];
+            if (![self isTitleExpanded])
+            {
+                [self.videoPlayer.player play];
+            }
         }
     }];
 }

@@ -24,7 +24,9 @@
 #import "VContentToStreamAnimator.h"
 #import "VContentToCommentAnimator.h"
 
-CGFloat kContentMediaViewOffset = 154;
+             CGFloat kContentMediaViewOffset                = 154.0f;
+static const CGFloat kDistanceBetweenTitleAndHR             =  14.5f;
+static const CGFloat kDistanceBetweenTitleAndCollapseButton =  42.5f;
 
 @import MediaPlayer;
 
@@ -58,8 +60,6 @@ CGFloat kContentMediaViewOffset = 154;
         [button setImage:[button.imageView.image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] forState:UIControlStateNormal];
         button.tintColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVContentTextColor];
     }
-    self.descriptionLabel.textColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVContentTextColor];
-    self.descriptionLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeading2Font];
     
     [self resetView];
 }
@@ -87,7 +87,7 @@ CGFloat kContentMediaViewOffset = 154;
     if (CGAffineTransformIsIdentity(self.mediaSuperview.transform))
     {
         self.mediaSuperview.frame = CGRectMake(CGRectGetMinX(self.view.bounds),
-                                               CGRectGetMaxY(self.topActionsView.frame),
+                                               kContentMediaViewOffset,
                                                CGRectGetWidth(self.view.bounds),
                                                320.0f);
     }
@@ -111,6 +111,11 @@ CGFloat kContentMediaViewOffset = 154;
     {
         self.appearing = NO;
         [self resetView];
+    }
+    
+    if ([self isTitleExpanded])
+    {
+        [self collapseTitleAnimated:NO];
     }
 }
 
@@ -149,7 +154,7 @@ CGFloat kContentMediaViewOffset = 154;
 
 - (BOOL)shouldAutorotate
 {
-    return YES;
+    return ![self isTitleExpanded];
 }
 
 - (NSUInteger)supportedInterfaceOrientations
@@ -220,6 +225,10 @@ CGFloat kContentMediaViewOffset = 154;
     {
         self.maskingView.alpha = 0;
         self.maskingView.hidden = NO;
+        if ([self isVideoLoaded])
+        {
+            [self.view bringSubviewToFront:self.mediaSuperview];
+        }
     }
 }
 
@@ -248,7 +257,110 @@ CGFloat kContentMediaViewOffset = 154;
     if (UIInterfaceOrientationIsPortrait(interfaceOrientation))
     {
         self.maskingView.hidden = YES;
+        [self.view insertSubview:self.mediaSuperview aboveSubview:self.backgroundImage];
     }
+}
+
+#pragma mark - Title Expand/Collapse
+
+- (void)expandTitleAnimated:(BOOL)animated
+{
+    UIView *temporaryTitleView = nil;
+    if (animated)
+    {
+        temporaryTitleView = [self.descriptionLabel snapshotViewAfterScreenUpdates:NO];
+        temporaryTitleView.frame = self.descriptionLabel.frame;
+        [self.descriptionLabel.superview addSubview:temporaryTitleView];
+        self.descriptionLabel.alpha = 0;
+    }
+    
+    void (^animations)(void) = ^(void)
+    {
+        self.expandedTitleMaskingView.alpha = 1.0f;
+        self.collapseButton.alpha = 1.0f;
+        self.topActionsViewHeightConstraint.constant = CGRectGetHeight(self.view.bounds) - CGRectGetMinY(self.topActionsView.frame);
+        [self.view layoutIfNeeded];
+        [self updateConstraintsForTextSize:self.descriptionLabel.locationForLastLineOfText];
+        [self.view layoutIfNeeded];
+        
+        self.descriptionLabel.alpha = 1.0f;
+        temporaryTitleView.alpha = 0;
+    };
+    void (^completion)(BOOL) = ^(BOOL finished)
+    {
+        self.collapsingOrExpanding = NO;
+        [temporaryTitleView removeFromSuperview];
+    };
+    
+    self.smallTextSize = self.descriptionLabel.locationForLastLineOfText;
+    self.collapsingOrExpanding = YES;
+    
+    [self.videoPlayer.player pause];
+    
+    if (animated)
+    {
+        [UIView animateWithDuration:0.2
+                              delay:0
+                            options:UIViewAnimationOptionCurveEaseInOut
+                         animations:animations
+                         completion:completion];
+    }
+    else
+    {
+        animations();
+        completion(YES);
+    }
+}
+
+- (void)collapseTitleAnimated:(BOOL)animated
+{
+    UIView *temporaryTitleView = nil;
+    if (animated)
+    {
+        temporaryTitleView = [self.descriptionLabel snapshotViewAfterScreenUpdates:NO];
+        temporaryTitleView.frame = self.descriptionLabel.frame;
+        [self.descriptionLabel.superview addSubview:temporaryTitleView];
+        self.descriptionLabel.alpha = 0;
+    }
+    
+    void (^animations)(void) = ^(void)
+    {
+        self.expandedTitleMaskingView.alpha = 0;
+        self.collapseButton.alpha = 0;
+        self.topActionsViewHeightConstraint.constant = kContentMediaViewOffset;
+        [self updateConstraintsForTextSize:self.smallTextSize];
+        [self.view layoutIfNeeded];
+        
+        self.descriptionLabel.alpha = 1.0f;
+        temporaryTitleView.alpha = 0;
+        
+    };
+    void (^completion)(BOOL) = ^(BOOL finished)
+    {
+        self.collapsingOrExpanding = NO;
+        [temporaryTitleView removeFromSuperview];
+    };
+    
+    self.collapsingOrExpanding = YES;
+    
+    if (animated)
+    {
+        [UIView animateWithDuration:0.2
+                              delay:0
+                            options:UIViewAnimationOptionCurveEaseInOut
+                         animations:animations
+                         completion:completion];
+    }
+    else
+    {
+        animations();
+        completion(YES);
+    }
+}
+
+- (BOOL)isTitleExpanded
+{
+    return self.topActionsViewHeightConstraint.constant > kContentMediaViewOffset;
 }
 
 #pragma mark -
@@ -271,6 +383,12 @@ CGFloat kContentMediaViewOffset = 154;
                                      placeholderImage:placeholderImage];
     self.descriptionLabel.text = _sequence.name;
     self.currentNode = [sequence firstNode];
+}
+
+- (void)updateConstraintsForTextSize:(CGFloat)textSize
+{
+    self.hrVerticalSpacingConstraint.constant = textSize + kDistanceBetweenTitleAndHR;
+    self.collapseButtonVerticalSpacingConstraint.constant = textSize + kDistanceBetweenTitleAndCollapseButton;
 }
 
 - (void)setCurrentNode:(VNode *)currentNode
@@ -303,19 +421,20 @@ CGFloat kContentMediaViewOffset = 154;
 
 - (void)setActionBarVC:(VActionBarViewController *)actionBarVC
 {
-    [_actionBarVC removeFromParentViewController];
+    [_actionBarVC willMoveToParentViewController:nil];
     [_actionBarVC.view removeFromSuperview];
+    [_actionBarVC removeFromParentViewController];
     _actionBarVC = actionBarVC;
     
     if (actionBarVC)
     {
         [self addChildViewController:actionBarVC];
-        [actionBarVC didMoveToParentViewController:self];
         [self.barContainerView addSubview:actionBarVC.view];
         
         [_actionBarVC animateInWithDuration:.2f
                                  completion:^(BOOL finished)
          {
+             [actionBarVC didMoveToParentViewController:self];
              if ([self.sequence isPoll])
                  [self pollAnimation];
          }];
@@ -405,6 +524,11 @@ CGFloat kContentMediaViewOffset = 154;
     [self.navigationController pushViewController:commentsTable animated:YES];
 }
 
+- (IBAction)pressedCollapse:(id)sender
+{
+    [self collapseTitleAnimated:YES];
+}
+
 #pragma mark - VInteractionManagerDelegate
 - (void)firedInteraction:(VInteraction*)interaction
 {
@@ -485,6 +609,21 @@ CGFloat kContentMediaViewOffset = 154;
              completion(finished);
          }
      }];
+}
+
+#pragma mark - VContentTitleTextViewDelegate methods
+
+- (void)textLayoutHappenedInContentTitleTextView:(VContentTitleTextView *)contentTitleTextView
+{
+    if (!self.collapsingOrExpanding)
+    {
+        [self updateConstraintsForTextSize:contentTitleTextView.locationForLastLineOfText];
+    }
+}
+
+- (void)seeMoreButtonTappedInContentTitleTextView:(VContentTitleTextView *)contentTitleTextView
+{
+    [self expandTitleAnimated:YES];
 }
 
 @end

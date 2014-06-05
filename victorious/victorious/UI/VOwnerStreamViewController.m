@@ -7,6 +7,7 @@
 //
 
 #import "VOwnerStreamViewController.h"
+#import "VThemeManager.h"
 #import "VConstants.h"
 
 @interface VOwnerStreamViewController ()
@@ -22,6 +23,8 @@
     dispatch_once(&onceToken, ^{
         UIViewController*   currentViewController = [[UIApplication sharedApplication] delegate].window.rootViewController;
         sharedInstance = (VOwnerStreamViewController*)[currentViewController.storyboard instantiateViewControllerWithIdentifier: kOwnerStreamStoryboardID];
+        
+        sharedInstance.title = [[VThemeManager sharedThemeManager] themedStringForKey:kVChannelName];
     });
     
     return sharedInstance;

@@ -74,6 +74,7 @@
     [NSFetchedResultsController deleteCacheWithName:self.fetchedResultsController.cacheName];
     
     self.fetchedResultsController = nil;
+    [self.tableView reloadData];
     
     [self performFetch];
     
@@ -95,7 +96,7 @@
 #pragma mark - UIScrollViewDelegate
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
-    if (scrollView.contentOffset.y > scrollView.contentSize.height * .75)
+    if (scrollView.contentOffset.y + CGRectGetHeight(scrollView.bounds) > scrollView.contentSize.height * .75)
     {
         [self loadNextPageAction];
     }

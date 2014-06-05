@@ -7,7 +7,10 @@
 //
 
 #import "VMessageViewController.h"
+
 #import "VObjectManager+DirectMessaging.h"
+#import "VObjectManager+SequenceFilters.h"
+
 #import "VMessageCell.h"
 #import "VMessage+RestKit.h"
 #import "VKeyboardBarViewController.h"
@@ -42,9 +45,6 @@ const   CGFloat     kMessageRowHeight           =   80;
     
     self.tableView.backgroundView = backgroundImageView;
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
-
-//    [self.tableView reloadData];
-//    [self refresh];
 }
 
 - (void)setConversation:(VConversation *)conversation
@@ -52,7 +52,6 @@ const   CGFloat     kMessageRowHeight           =   80;
     _conversation = conversation;
     
     [self refreshFetchController];
-    [self refresh:self.refreshControl];//always refresh when you go back to a thread
 }
 
 #pragma mark - fetched results controller
@@ -63,7 +62,7 @@ const   CGFloat     kMessageRowHeight           =   80;
     NSManagedObjectContext *context = manager.managedObjectStore.persistentStoreManagedObjectContext;
     
     NSFetchRequest *fetchRequest = [NSFetchRequest fetchRequestWithEntityName:[VMessage entityName]];
-    NSSortDescriptor *sort = [[NSSortDescriptor alloc] initWithKey:@"postedAt" ascending:NO];
+    NSSortDescriptor *sort = [[NSSortDescriptor alloc] initWithKey:@"postedAt" ascending:YES];
     
     NSPredicate* filterPredicate = [NSPredicate predicateWithFormat:@"conversation.remoteId = %@", self.conversation.remoteId];
     [fetchRequest setPredicate:filterPredicate];
@@ -84,30 +83,17 @@ const   CGFloat     kMessageRowHeight           =   80;
     VFailBlock fail = ^(NSOperation* operation, NSError* error)
     {
         NSLog(@"%@", error.localizedDescription);
-        
-        [self delayedRefresh];
+        [self.refreshControl endRefreshing];
     };
     
     VSuccessBlock success = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
     {
-        [self.tableView reloadData];
-        
-        if (self.tableView.contentSize.height > self.tableView.frame.size.height)
-        {
-            CGPoint offset = CGPointMake(self.tableView.contentOffset.x,
-                                         self.tableView.contentSize.height - self.tableView.frame.size.height);
-            [self.tableView setContentOffset:offset animated:YES];
-        }
-    
-        [[VObjectManager sharedManager] markConversationAsRead:self.conversation
-                                                  successBlock:nil
-                                                     failBlock:fail];
-        [self delayedRefresh];
+        [self.refreshControl endRefreshing];
     };
     
-    [[VObjectManager sharedManager] loadNextPageOfMessagesForConversation:self.conversation
-                                                             successBlock:success
-                                                                failBlock:fail];
+    [[VObjectManager sharedManager] loadNextPageOfConversation:self.conversation
+                                                  successBlock:success
+                                                     failBlock:fail];
 }
 
 - (void)delayedRefresh
@@ -120,15 +106,41 @@ const   CGFloat     kMessageRowHeight           =   80;
                    {
                        if (self.isViewLoaded && self.view.window)
                        {
-                           [self refresh:nil];
+                           [self loadNextPageAction];
                        }
                    });
 }
 
-
 - (void)loadNextPageAction
 {
-    //TODO: fill this in later
+    VFailBlock fail = ^(NSOperation* operation, NSError* error)
+    {
+        NSLog(@"%@", error.localizedDescription);
+        [self.refreshControl endRefreshing];
+        
+        [self delayedRefresh];
+    };
+    
+    VSuccessBlock success = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
+    {
+        [self.refreshControl endRefreshing];
+        
+        if (self.tableView.contentSize.height > self.tableView.frame.size.height)
+        {
+            CGPoint offset = CGPointMake(self.tableView.contentOffset.x,
+                                         self.tableView.contentSize.height - self.tableView.frame.size.height);
+            [self.tableView setContentOffset:offset animated:YES];
+        }
+        
+        [[VObjectManager sharedManager] markConversationAsRead:self.conversation
+                                                  successBlock:nil
+                                                     failBlock:fail];
+        [self delayedRefresh];
+    };
+    
+    [[VObjectManager sharedManager] refreshMessagesForConversation:self.conversation
+                                                      successBlock:success
+                                                         failBlock:fail];
 }
 
 #pragma mark - Table view data source
@@ -161,7 +173,7 @@ const   CGFloat     kMessageRowHeight           =   80;
     VMessage*   aMessage = [self.fetchedResultsController objectAtIndexPath:indexPath];
 
     CGFloat height = [VMessageCell frameSizeForMessageText:aMessage.text].height;
-    CGFloat yOffset = ![aMessage.thumbnailPath isEmpty] ? kMessageMediaCellYOffset : kMessageCellYOffset;
+    CGFloat yOffset = aMessage.thumbnailPath && ![aMessage.thumbnailPath isEmpty] ? kMessageMediaCellYOffset : kMessageCellYOffset;
     height = MAX(height + yOffset, kMessageMinCellHeight);
     
     return height;

@@ -53,6 +53,7 @@
     self.toolbarWithReset = @[cancelButton, flex, resetButton];
     self.toolbarWithoutReset = @[cancelButton, flex];
     
+    self.videoWillExpireLabel.text = NSLocalizedString(@"PostWillExpire", @"");
     [self.setExpirationView addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleSetExpirationTapGesture:)]];
     self.setExpirationView.userInteractionEnabled = YES;
     

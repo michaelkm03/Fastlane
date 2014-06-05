@@ -14,6 +14,9 @@
 #import "VUser.h"
 #import "VSequence.h"
 #import "VComment.h"
+#import "VMessage.h"
+#import "VConversation+RestKit.h"
+
 #import "VSequenceFilter+RestKit.h"
 #import "VCommentFilter+RestKit.h"
 
@@ -24,6 +27,8 @@
 #import "VUserManager.h"
 
 #import "VConstants.h"
+
+#import "NSString+VParseHelp.h"
 
 @interface VFilterCache : NSCache
 + (VFilterCache *)sharedCache;
@@ -96,8 +101,8 @@
 
 #pragma mark - Comment
 - (RKManagedObjectRequestOperation *)refreshCommentFilter:(VCommentFilter*)filter
-                                              successBlock:(VSuccessBlock)success
-                                                 failBlock:(VFailBlock)fail
+                                             successBlock:(VSuccessBlock)success
+                                                failBlock:(VFailBlock)fail
 {
     filter.currentPageNumber = @(0);
     return [self loadNextPageOfCommentFilter:filter
@@ -159,6 +164,104 @@
     };
     
     return [self loadNextPageOfFilter:filter successBlock:fullSuccessBlock failBlock:fail];
+}
+
+#pragma mark - Conversations
+
+- (RKManagedObjectRequestOperation *)refreshConversationListWithSuccessBlock:(VSuccessBlock)success
+                                                                   failBlock:(VFailBlock)fail
+{
+    VAbstractFilter* listFilter = [[VFilterCache sharedCache] filterForPath:@"/api/message/conversation_list"
+                                                                 entityName:[VAbstractFilter entityName]];
+    listFilter.currentPageNumber = @(0);
+    return [self loadNextPageOfConversationListWithSuccessBlock:success
+                                                      failBlock:fail];
+}
+
+- (RKManagedObjectRequestOperation *)loadNextPageOfConversationListWithSuccessBlock:(VSuccessBlock)success
+                                                                          failBlock:(VFailBlock)fail
+{
+    VAbstractFilter* listFilter = [[VFilterCache sharedCache] filterForPath:@"/api/message/conversation_list"
+                                                                 entityName:[VAbstractFilter entityName]];
+    
+    VSuccessBlock fullSuccessBlock = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
+    {
+        NSManagedObjectContext* context;
+        NSMutableArray* nonExistantUsers = [[NSMutableArray alloc] init];
+        for (VConversation* conversation in resultObjects)
+        {
+            //There should only be one message.  Its the current 'last message'
+            conversation.lastMessage = [conversation.messages anyObject];
+            
+            //Sometimes we get -1 for the current logged in user
+            if (!conversation.lastMessage.user && [conversation.lastMessage.senderUserId isEqual: @(-1)])
+                conversation.lastMessage.user = self.mainUser;
+            else if (conversation.lastMessage && !conversation.lastMessage.user)
+                [nonExistantUsers addObject:conversation.lastMessage.senderUserId];
+            
+            if (!conversation.filterAPIPath || [conversation.filterAPIPath isEmpty])
+            {
+                conversation.filterAPIPath = [@"/api/message/conversation/" stringByAppendingString:conversation.remoteId.stringValue];
+            }
+            
+            if (!conversation.user && conversation.other_interlocutor_user_id)
+                [nonExistantUsers addObject:conversation.other_interlocutor_user_id];
+            
+            context = conversation.managedObjectContext;
+        }
+        
+        [context saveToPersistentStore:nil];
+        
+        if ([nonExistantUsers count])
+            [[VObjectManager sharedManager] fetchUsers:nonExistantUsers
+                                      withSuccessBlock:success
+                                             failBlock:fail];
+        
+        else if (success)
+            success(operation, fullResponse, resultObjects);
+    };
+    
+    
+    return [self loadNextPageOfFilter:listFilter successBlock:fullSuccessBlock failBlock:fail];
+}
+
+#pragma mark - Message
+- (RKManagedObjectRequestOperation *)refreshMessagesForConversation:(VConversation*)conversation
+                                                       successBlock:(VSuccessBlock)success
+                                                          failBlock:(VFailBlock)fail
+{
+    conversation.currentPageNumber = @(0);
+    return [self loadNextPageOfConversation:conversation
+                               successBlock:success
+                                  failBlock:fail];
+}
+
+- (RKManagedObjectRequestOperation *)loadNextPageOfConversation:(VConversation*)conversation
+                                                   successBlock:(VSuccessBlock)success
+                                                      failBlock:(VFailBlock)fail
+{
+    VSuccessBlock fullSuccessBlock = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
+    {
+        //If this is the first page, break the relationship to all the old objects.
+        if ([conversation.currentPageNumber isEqualToNumber:@(0)])
+        {
+            NSPredicate* tempFilter = [NSPredicate predicateWithFormat:@"NOT (status CONTAINS %@)", kTemporaryContentStatus];
+            NSArray* filteredMessages = [[conversation.messages allObjects] filteredArrayUsingPredicate:tempFilter];
+            [conversation removeMessages:[NSSet setWithArray:filteredMessages]];
+        }
+        
+        for (VMessage* message in resultObjects)
+        {
+            VMessage* messageInContext = (VMessage*)[conversation.managedObjectContext objectWithID:message.objectID];
+            [conversation addMessagesObject:messageInContext];
+        }
+        
+        if (success)
+            success(operation, fullResponse, resultObjects);
+    };
+
+    
+    return [self loadNextPageOfFilter:conversation successBlock:fullSuccessBlock failBlock:fail];
 }
 
 #pragma mark - Sequence

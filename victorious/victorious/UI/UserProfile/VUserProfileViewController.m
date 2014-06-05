@@ -10,6 +10,7 @@
 #import "VConstants.h"
 #import "VUser.h"
 #import "UIViewController+VSideMenuViewController.h"
+#import "VLargeNumberFormatter.h"
 #import "VLoginViewController.h"
 #import "VObjectManager+Users.h"
 #import "VObjectManager+SequenceFilters.h"
@@ -32,6 +33,7 @@ const   CGFloat kVNavigationBarHeight = 44.0;
 
 @property   (nonatomic, strong) VUser*                  profile;
 @property   (nonatomic) BOOL                            isMe;
+@property   (nonatomic, strong) VLargeNumberFormatter*  largeNumberFormatter;
 
 @property (nonatomic, strong) UIView*                   shortContainerView;
 @property (nonatomic, strong) UIView*                   longContainerView;
@@ -85,6 +87,7 @@ const   CGFloat kVNavigationBarHeight = 44.0;
 
 - (void)viewDidLoad
 {
+    self.largeNumberFormatter = [[VLargeNumberFormatter alloc] init];
     self.isMe = (self.profile.remoteId.integerValue == [VObjectManager sharedManager].mainUser.remoteId.integerValue);
     
     if (self.isMe)
@@ -177,13 +180,13 @@ const   CGFloat kVNavigationBarHeight = 44.0;
     [[VObjectManager sharedManager] countOfFollowsForUser:self.profile
          successBlock:^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
          {
-             self.followersLabel.text = [self formattedStringForCount:[resultObjects[0] integerValue]];
-             self.followingLabel.text = [self formattedStringForCount:[resultObjects[1] integerValue]];
+             self.followersLabel.text = [self.largeNumberFormatter stringForInteger:[resultObjects[0] integerValue]];
+             self.followingLabel.text = [self.largeNumberFormatter stringForInteger:[resultObjects[1] integerValue]];
          }
          failBlock:^(NSOperation *operation, NSError *error)
          {
-             self.followersLabel.text = [self formattedStringForCount:0];
-             self.followingLabel.text = [self formattedStringForCount:0];
+             self.followersLabel.text = [self.largeNumberFormatter stringForInteger:0];
+             self.followingLabel.text = [self.largeNumberFormatter stringForInteger:0];
          }];
     
     if (!self.isMe)
@@ -431,31 +434,6 @@ const   CGFloat kVNavigationBarHeight = 44.0;
     return self.shortContainerView;
 }
 
-- (NSString *)formattedStringForCount:(CGFloat)count
-{
-    static  NSNumberFormatter*  formatter;
-    static  dispatch_once_t     onceToken;
-    static const char sUnits[] = { '\0', 'K', 'M', 'B' };
-    static int sMaxUnits = sizeof sUnits - 1;
-    
-    int multiplier = 1000;
-    int exponent = 0;
-    
-    dispatch_once(&onceToken, ^{
-        formatter = [[NSNumberFormatter alloc] init];
-        formatter.numberStyle = NSNumberFormatterDecimalStyle;
-        formatter.maximumFractionDigits = 2;
-    });
-    
-    while ((count >= multiplier) && (exponent < sMaxUnits))
-    {
-        count /= multiplier;
-        exponent++;
-    }
-    
-    return [NSString stringWithFormat:@"%@ %c", [formatter stringFromNumber:@(count)], sUnits[exponent]];
-}
-
 - (void)loginStateDidChange:(NSNotification *)notification
 {
     if ([VObjectManager sharedManager].mainUser)
@@ -619,12 +597,14 @@ const   CGFloat kVNavigationBarHeight = 44.0;
                                              successBlock:^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
                                               {
                                                   [self.refreshControl endRefreshing];
-                                                  
                                                   if (resultObjects.count > 0)
                                                   {
                                                       [UIView animateWithDuration:0.8 animations:^{
                                                           [self.tableView beginUpdates];
                                                           self.tableView.tableHeaderView = [self shortHeader];
+                                                          
+#warning - I just got a crash here: Terminating app due to uncaught exception 'NSInternalInconsistencyException', reason: 'Invalid update: invalid number of sections.  The number of sections contained in the table view after the update (0) must be equal to the number of sections contained in the table view before the update (1), plus or minus the number of sections inserted or deleted (0 inserted, 0 deleted).'  I think this is a race condition caused because the fetchedresultscontroller is also updating.  Gary can we talk about this tomorrow?
+                                                          
                                                           [self.tableView endUpdates];
                                                       }];
                                                   }

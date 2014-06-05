@@ -633,7 +633,8 @@ static __weak VCVideoPlayerViewController *_currentPlayer = nil;
         NSArray *loadedTimeRanges = change[NSKeyValueChangeNewKey];
         if ([loadedTimeRanges isKindOfClass:[NSArray class]])
         {
-            self.toolbarView.progressIndicator.loadedTimeRanges = loadedTimeRanges;
+            // commented out because the loadedTimeRanges value is unreliable
+//            self.toolbarView.progressIndicator.loadedTimeRanges = loadedTimeRanges;
         }
     }
 }

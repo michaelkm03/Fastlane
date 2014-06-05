@@ -91,6 +91,7 @@
     [self addResponseDescriptorsFromArray:[VUser descriptors]];
     [self addResponseDescriptorsFromArray:[VSequence descriptors]];
     [self addResponseDescriptorsFromArray:[VConversation descriptors]];
+    [self addResponseDescriptorsFromArray:[VMessage descriptors]];
     [self addResponseDescriptorsFromArray: @[errorDescriptor,
                                              verrorDescriptor,
                                              
@@ -98,7 +99,6 @@
                                              [VComment getAllDescriptor],
                                              [VComment getAllPaginationDescriptor],
                                              [VComment fetchDescriptor],
-                                             [VMessage descriptor],
                                              [VPollResult descriptor],
                                              [VPollResult createPollResultDescriptor],
                                              [VPollResult byUserDescriptor],
@@ -161,6 +161,7 @@
             NSMutableDictionary *JSON = [[NSJSONSerialization JSONObjectWithData:operation.HTTPRequestOperation.responseData options:0 error:nil] mutableCopy];
             if (![JSON[@"payload"] isKindOfClass:[NSDictionary class]])
             {
+                VLog(@"JSON before payload class check: %@", JSON[@"payload"]);
                 [JSON removeObjectForKey:@"payload"];
             }
             successBlock(operation, JSON, mappedObjects);

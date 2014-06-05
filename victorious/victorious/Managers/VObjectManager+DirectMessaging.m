@@ -17,6 +17,8 @@
 
 #import "VConversation+RestKit.h"
 
+#import "NSString+VParseHelp.h"
+
 @implementation VObjectManager (DirectMessaging)
 
 
@@ -53,6 +55,11 @@
                 newConversation.user = userInContext;
             }
             
+            if (!newConversation.filterAPIPath || [newConversation.filterAPIPath isEmpty])
+            {
+                newConversation.filterAPIPath = [@"/api/message/conversation/" stringByAppendingString:newConversation.remoteId.stringValue];
+            }
+            
             [newConversation.managedObjectContext saveToPersistentStore:nil];
             
             if (success)
@@ -68,81 +75,6 @@
           parameters:nil
         successBlock:success
            failBlock:fullFail];
-}
-
-- (RKManagedObjectRequestOperation *)loadNextPageOfConversations:(VSuccessBlock)success
-                                                       failBlock:(VFailBlock)fail
-{
-    NSString* path = @"/api/message/conversation_list";
-    
-    VSuccessBlock fullSuccess = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
-    {
-        NSManagedObjectContext* context;
-        NSMutableArray* nonExistantUsers = [[NSMutableArray alloc] init];
-        for (VConversation* conversation in resultObjects)
-        {
-            //There should only be one message.  Its the current 'last message'
-            conversation.lastMessage = [conversation.messages anyObject];
-            
-            //Sometimes we get -1 for the current logged in user
-            if (!conversation.lastMessage.user && [conversation.lastMessage.senderUserId isEqual: @(-1)])
-                conversation.lastMessage.user = self.mainUser;
-            else if (!conversation.lastMessage.user)
-                [nonExistantUsers addObject:conversation.lastMessage.senderUserId];
-            
-            if (!conversation.user)
-                [nonExistantUsers addObject:conversation.other_interlocutor_user_id];
-            
-            context = conversation.managedObjectContext;
-        }
-        
-        [context saveToPersistentStore:nil];
-        
-        if ([nonExistantUsers count])
-            [[VObjectManager sharedManager] fetchUsers:nonExistantUsers
-                                      withSuccessBlock:success
-                                             failBlock:fail];
-        
-        else if (success)
-            success(operation, fullResponse, resultObjects);
-    };
-    
-    return [self GET:path
-              object:nil
-          parameters:nil
-        successBlock:fullSuccess
-           failBlock:fail];
-}
-
-- (RKManagedObjectRequestOperation *)loadNextPageOfMessagesForConversation:(VConversation*)conversation
-                                                              successBlock:(VSuccessBlock)success
-                                                                 failBlock:(VFailBlock)fail
-{
-    if (!conversation)
-    {
-        if (fail)
-            fail(nil, nil);
-        return nil;
-    }
-    
-    NSString* path = [@"/api/message/conversation/" stringByAppendingString:conversation.remoteId.stringValue];
-    
-    VSuccessBlock fullSuccess = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
-    {
-        NSManagedObjectContext* context = ((NSManagedObject*)[resultObjects firstObject]).managedObjectContext;
-        VConversation* conversationInContext = (VConversation*)[context objectWithID:conversation.objectID];
-        [conversationInContext addMessages:[NSSet setWithArray:resultObjects]];
-        [conversationInContext.managedObjectContext saveToPersistentStore:nil];
-        
-        if (success)
-            success(operation, fullResponse, resultObjects);
-    };
-    
-    return [self GET:path
-              object:nil
-          parameters:nil
-        successBlock:fullSuccess
-           failBlock:fail];
 }
 
 - (RKManagedObjectRequestOperation *)markConversationAsRead:(VConversation*)conversation

@@ -82,9 +82,6 @@
     {
         [progressHUD hide:YES];
         
-//        [(VMessageViewController *)self.conversationTableViewController refresh];
-//        [self.conversationTableViewController.tableView reloadData];
-        
         VLog(@"Succeed with response: %@", fullResponse);
     };
     
@@ -95,7 +92,14 @@
                                                     failBlock:^(NSOperation* operation, NSError* error)
      {
          VLog(@"Failed in creating message with error: %@", error);
-        [progressHUD hide:YES];
+         [progressHUD hide:YES];
+         
+         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"UploadError", @"")
+                                                         message: NSLocalizedString(@"UploadErrorBody", @"")
+                                                        delegate:nil
+                                               cancelButtonTitle:NSLocalizedString(@"OK", nil)
+                                               otherButtonTitles:nil];
+         [alert show];
      }];
 }
 

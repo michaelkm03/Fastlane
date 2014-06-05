@@ -7,6 +7,7 @@
 //
 
 #import "VEmotiveBallisticsBarViewController.h"
+#import "VLargeNumberFormatter.h"
 
 #import "VConstants.h"
 #import "VObjectManager+Sequence.h"
@@ -24,7 +25,9 @@
 
 @property (strong, nonatomic) VVoteType* likeVote;
 @property (strong, nonatomic) VVoteType* dislikeVote;
-@property (strong, nonatomic) NSMutableDictionary* voteCounts;
+@property (strong, nonatomic) NSMutableDictionary* voteCounts; ///< Holds the new votes that have been cast by the user
+@property (strong, nonatomic) NSMutableDictionary* voteCountsForDisplay; ///< Holds the total of this user's votes and remote users' votes
+@property (strong, nonatomic) VLargeNumberFormatter *largeNumberFormatter;
 
 @end
 
@@ -42,10 +45,22 @@
     return sharedInstance;
 }
 
+- (void)awakeFromNib
+{
+    [super awakeFromNib];
+    
+    self.dislikeVote = [VVoteType dislikeVote];
+    self.likeVote = [VVoteType likeVote];
+    
+    self.voteCounts = [[NSMutableDictionary alloc] init];
+    self.voteCountsForDisplay = [[NSMutableDictionary alloc] init];
+    
+    self.largeNumberFormatter = [[VLargeNumberFormatter alloc] init];
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-	//Do any additional setup after loading the view.
     UIPanGestureRecognizer *postivePanGesture = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(handlePan:)];
     
     // Setting the swipe direction.
@@ -53,19 +68,12 @@
     
     UIPanGestureRecognizer *negativePanGesture = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(handlePan:)];
     [self.rightButton addGestureRecognizer:negativePanGesture];
-    
-    self.dislikeVote = [VVoteType dislikeVote];
-    self.likeVote = [VVoteType likeVote];
-    
-    self.voteCounts = [[NSMutableDictionary alloc] init];
 }
 
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    
-    self.leftLabel.text = [self.sequence voteCountForVoteID:self.likeVote.remoteId].stringValue;
-    self.rightLabel.text = [self.sequence voteCountForVoteID:self.dislikeVote.remoteId].stringValue;
+    [self updateVoteCountDisplay];
 }
 
 - (void)viewDidDisappear:(BOOL)animated
@@ -73,49 +81,51 @@
     [super viewDidDisappear:animated];
     
     NSArray* voteTypes = [self.voteCounts allKeys];
-    
-    NSArray* voteCounts = [self.voteCounts objectsForKeys:voteTypes notFoundMarker:[NSNull null]];
-    
-    __block NSManagedObjectContext* context;
-    [self.voteCounts enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop)
-    {
-        NSPredicate* sortPredicate = [NSPredicate predicateWithFormat:@"remoteId == %d", ((NSNumber*)key).integerValue];
-        
-        VVoteResult* vote = (VVoteResult*)[[[self.sequence.voteResults filteredSetUsingPredicate:sortPredicate] allObjects] firstObject];
-        vote.count = @(vote.count.integerValue + ((NSNumber*)obj).integerValue);
-        context = vote.managedObjectContext;
-    }];
-    [context saveToPersistentStore:nil];
-    
     if ([voteTypes count])
     {
+        NSArray* voteCounts = [self.voteCounts objectsForKeys:voteTypes notFoundMarker:[NSNull null]];
+        
+        __block NSManagedObjectContext* context = nil;
+        [self.voteCounts enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop)
+        {
+            NSPredicate* sortPredicate = [NSPredicate predicateWithFormat:@"remoteId == %d", ((NSNumber*)key).integerValue];
+            
+            VVoteResult* vote = (VVoteResult*)[[self.sequence.voteResults filteredSetUsingPredicate:sortPredicate] anyObject];
+            vote.count = @(vote.count.integerValue + ((NSNumber*)obj).integerValue);
+            context = vote.managedObjectContext;
+        }];
+        [context saveToPersistentStore:nil];
+        
         [[VObjectManager sharedManager] voteSequence:self.sequence
                                            voteTypes:voteTypes
                                           votecounts:voteCounts
-                                        successBlock:^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
-         {
-             VLog(@"Succeeded with objects: %@", resultObjects);
-             
-             //Update the sequence
-             [[VObjectManager sharedManager] fetchSequence:self.sequence.remoteId
-                                              successBlock:nil
-                                                 failBlock:nil];
-         }
-                                           failBlock:^(NSOperation* operation, NSError* error)
-         {
-             VLog(@"Failed with error: %@", error);
-         }];
+                                        successBlock:nil
+                                           failBlock:nil];
+        
+        [self.voteCounts removeAllObjects];
     }
-    
-    [self.voteCounts removeAllObjects];
 }
 
 - (void)setSequence:(VSequence *)sequence
 {
     [super setSequence:sequence];
+    
+    self.voteCountsForDisplay[self.likeVote.remoteId] = [self.sequence voteCountForVoteID:self.likeVote.remoteId];
+    self.voteCountsForDisplay[self.dislikeVote.remoteId] = [self.sequence voteCountForVoteID:self.dislikeVote.remoteId];
+    
+    if ([self isViewLoaded])
+    {
+        [self updateVoteCountDisplay];
+    }
+}
 
-    self.leftLabel.text = [self.sequence voteCountForVoteID:self.likeVote.remoteId].stringValue;
-    self.rightLabel.text = [self.sequence voteCountForVoteID:self.dislikeVote.remoteId].stringValue;
+- (void)updateVoteCountDisplay
+{
+    NSInteger likeVotes = [self.voteCountsForDisplay[self.likeVote.remoteId] integerValue];
+    NSInteger dislikeVotes = [self.voteCountsForDisplay[self.dislikeVote.remoteId] integerValue];
+    
+    self.leftLabel.text = [self.largeNumberFormatter stringForInteger:likeVotes];
+    self.rightLabel.text = [self.largeNumberFormatter stringForInteger:dislikeVotes];
 }
 
 #pragma mark - Actions
@@ -130,8 +140,9 @@
     CGFloat x = self.target.center.x + ([self randomFloat] * self.target.frame.size.width / 4);
     CGFloat y = self.target.center.y + ([self randomFloat] * self.target.frame.size.height / 4);
     
-    NSInteger voteCount = self.leftLabel.text.integerValue + 1;
-    self.leftLabel.text = @(voteCount).stringValue;
+    NSInteger voteCount = [self.voteCountsForDisplay[self.likeVote.remoteId] integerValue] + 1;
+    self.voteCountsForDisplay[self.likeVote.remoteId] = @(voteCount);
+    [self updateVoteCountDisplay];
     
     [self throwEmotive:self.leftButton toPoint:CGPointMake(x, y)];
     
@@ -151,8 +162,9 @@
     CGFloat x = self.target.center.x + ([self randomFloat] * self.target.frame.size.width / 4);
     CGFloat y = self.target.center.y + ([self randomFloat] * self.target.frame.size.height / 4);
     
-    NSInteger voteCount = self.rightLabel.text.integerValue + 1;
-    self.rightLabel.text = @(voteCount).stringValue;
+    NSInteger voteCount = [self.voteCountsForDisplay[self.dislikeVote.remoteId] integerValue] + 1;
+    self.voteCountsForDisplay[self.dislikeVote.remoteId] = @(voteCount);
+    [self updateVoteCountDisplay];
     
     [self throwEmotive:self.rightButton toPoint:CGPointMake(x, y)];
     
@@ -186,10 +198,12 @@
 
 - (void)throwEmotive:(UIButton*)emotive toPoint:(CGPoint)point
 {
-    point = [self.target convertPoint:point toView:self.view];
+    UIView *thrownImageSuperview = self.parentViewController.view ?: self.view;
+    
+    point = [self.target convertPoint:point toView:thrownImageSuperview];
     __block UIImageView* thrownImage = [[UIImageView alloc] initWithImage:emotive.imageView.image];
     thrownImage.frame = CGRectMake(0, 0, 110, 110);
-    thrownImage.center = emotive.center;
+    thrownImage.center = [emotive.superview convertPoint:emotive.center toView:thrownImageSuperview];
     
     NSMutableArray* emotiveAnimations = [[NSMutableArray alloc] initWithCapacity:13];
     for (int i = 0; i < 17; i++)
@@ -207,7 +221,7 @@
     
     thrownImage.contentMode = UIViewContentModeScaleAspectFit;
     
-    [self.view addSubview:thrownImage];
+    [thrownImageSuperview addSubview:thrownImage];
     [UIView animateWithDuration:.3f
                      animations:^
      {

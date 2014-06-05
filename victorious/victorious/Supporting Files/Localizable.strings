@@ -11,6 +11,7 @@
 "Home"                  =   "Home";
 "Community"             =   "Community";
 "Inbox"                 =   "Inbox";
+"Comments"              =   "Comments";
 
 "OKButton"              =   "OK";
 "CancelButton"          =   "Cancel";
@@ -70,7 +71,7 @@
 "Create an Image Post"  =   "Create an Image Post";
 "Create a Poll"         =   "Create a Poll";
 
-"NEW POLL"              =   "NEW POLL";
+"NEW POLL"              =   "New Poll";
 "Ask a question..."     =   "Ask a question...";
 "Vote this"             =   "Vote this";
 "Vote that"             =   "Vote that";
@@ -100,7 +101,10 @@
 "ReplaceVideo"          =   "Replace Video";
 
 "VideoPlayFailed"       =   "Failed to play video";
+"See More"              =   "See More";
+"..."                   =   "...";
 
+"PostWillExpire"        =   "Post Will Expire";
 "CancelExpiration"      =   "Cancel Expiration?";
 "CancelExirationConfirm" = "Are you sure you want to cancel out of setting an expiration date?";
 
@@ -141,7 +145,7 @@
 
 "ExpiresOn"             =   "Expires on %@";
 
-"me"                    =   "ME";
+"me"                    =   "Me";
 
 "editProfileButton"     =   "Edit Profile";
 "followers"             =   "Followers";

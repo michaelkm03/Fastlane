@@ -77,8 +77,8 @@
     self.backButton.tintColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVContentTextColor];
     
     self.titleLabel.textColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVContentTextColor];
-    self.titleLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeading1Font];
-    
+    self.titleLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeaderFont];
+    self.titleLabel.text =  NSLocalizedString(@"Comments", "");
     //Need to manually add this again so it appears over everything else.
     [self.view addSubview:self.backButton];
 }

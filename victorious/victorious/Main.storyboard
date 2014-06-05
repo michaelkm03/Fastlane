@@ -625,53 +625,6 @@
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                             </imageView>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Ruh-qb-vRD" userLabel="TopActionsView">
-                                <rect key="frame" x="0.0" y="0.0" width="320" height="154"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <subviews>
-                                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cfP-Ga-rbO" userLabel="Back Button">
-                                        <rect key="frame" x="20" y="20" width="33" height="33"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        <state key="normal" image="Close">
-                                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                        </state>
-                                        <connections>
-                                            <action selector="pressedBack:" destination="4V8-Qd-rfj" eventType="touchUpInside" id="xfl-RU-frG"/>
-                                        </connections>
-                                    </button>
-                                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Hjq-lN-vqT" userLabel="Comment Button">
-                                        <rect key="frame" x="144" y="20" width="33" height="33"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        <state key="normal" image="Comment">
-                                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                        </state>
-                                        <connections>
-                                            <action selector="pressedComment:" destination="4V8-Qd-rfj" eventType="touchUpInside" id="cqL-wp-zJk"/>
-                                        </connections>
-                                    </button>
-                                    <button hidden="YES" opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ohf-04-VVL" userLabel="More Button">
-                                        <rect key="frame" x="267" y="20" width="33" height="33"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        <state key="normal" image="More">
-                                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                        </state>
-                                        <connections>
-                                            <action selector="pressedMore:" destination="4V8-Qd-rfj" eventType="touchUpInside" id="pcB-RL-U4y"/>
-                                        </connections>
-                                    </button>
-                                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="280" translatesAutoresizingMaskIntoConstraints="NO" id="SVt-O0-Xbt">
-                                        <rect key="frame" x="20" y="61" width="280" height="73"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        <string key="text">12345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890</string>
-                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
-                                </subviews>
-                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="154" id="sAW-bE-Amq"/>
-                                </constraints>
-                            </view>
                             <view autoresizesSubviews="NO" opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="gdx-vD-Je7" userLabel="Media Superview">
                                 <rect key="frame" x="0.0" y="154" width="320" height="320"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -816,7 +769,91 @@
                                 </subviews>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                             </view>
-                            <view hidden="YES" alpha="0.0" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="NhC-7g-uaI" userLabel="Masking View">
+                            <view alpha="0.0" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="xqp-3V-NIb" userLabel="Expanded Title Masking View">
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="508"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" white="1" alpha="0.80000000000000004" colorSpace="calibratedWhite"/>
+                            </view>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Ruh-qb-vRD" userLabel="TopActionsView">
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="154"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <subviews>
+                                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cfP-Ga-rbO" userLabel="Back Button">
+                                        <rect key="frame" x="3" y="6" width="44" height="44"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <state key="normal" image="Close">
+                                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="pressedBack:" destination="4V8-Qd-rfj" eventType="touchUpInside" id="xfl-RU-frG"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Hjq-lN-vqT" userLabel="Comment Button">
+                                        <rect key="frame" x="138" y="6" width="44" height="44"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <state key="normal" image="Comment">
+                                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="pressedComment:" destination="4V8-Qd-rfj" eventType="touchUpInside" id="cqL-wp-zJk"/>
+                                        </connections>
+                                    </button>
+                                    <button hidden="YES" opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ohf-04-VVL" userLabel="More Button">
+                                        <rect key="frame" x="267" y="20" width="33" height="33"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <state key="normal" image="More">
+                                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="pressedMore:" destination="4V8-Qd-rfj" eventType="touchUpInside" id="pcB-RL-U4y"/>
+                                        </connections>
+                                    </button>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="W6u-ac-PS7" customClass="VContentTitleTextView">
+                                        <rect key="frame" x="20" y="56" width="280" height="81"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <connections>
+                                            <outlet property="delegate" destination="4V8-Qd-rfj" id="fLF-3s-wwA"/>
+                                        </connections>
+                                    </view>
+                                    <button opaque="NO" alpha="0.0" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" adjustsImageWhenHighlighted="NO" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="y1j-JX-UgX" userLabel="Collapse Button">
+                                        <rect key="frame" x="138" y="104" width="44" height="44"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="44" id="I1F-ze-izA"/>
+                                            <constraint firstAttribute="height" constant="44" id="Ko6-Vc-hwE"/>
+                                        </constraints>
+                                        <state key="normal" image="contentViewCollapse">
+                                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="pressedCollapse:" destination="4V8-Qd-rfj" eventType="touchUpInside" id="MOa-SN-X7p"/>
+                                        </connections>
+                                    </button>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="oLQ-sG-e7h" userLabel="Horizontal Rule">
+                                        <rect key="frame" x="111" y="70" width="98" height="1"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <color key="backgroundColor" red="0.42352941176470588" green="0.42352941176470588" blue="0.42352941176470588" alpha="1" colorSpace="calibratedRGB"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="1" id="EOU-E7-3A5"/>
+                                            <constraint firstAttribute="width" constant="98" id="Sdt-pR-DRh"/>
+                                        </constraints>
+                                    </view>
+                                </subviews>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstItem="y1j-JX-UgX" firstAttribute="top" secondItem="W6u-ac-PS7" secondAttribute="top" constant="48" id="3Vx-g6-swJ"/>
+                                    <constraint firstAttribute="bottom" secondItem="W6u-ac-PS7" secondAttribute="bottom" constant="17" id="8cb-XW-Hey"/>
+                                    <constraint firstAttribute="width" constant="320" id="ETB-xe-0eJ"/>
+                                    <constraint firstItem="W6u-ac-PS7" firstAttribute="leading" secondItem="Ruh-qb-vRD" secondAttribute="leading" constant="20" id="SDl-Ja-LrQ"/>
+                                    <constraint firstAttribute="centerX" secondItem="oLQ-sG-e7h" secondAttribute="centerX" id="Wil-np-eol"/>
+                                    <constraint firstAttribute="trailing" secondItem="W6u-ac-PS7" secondAttribute="trailing" constant="20" id="hSy-B8-sxf"/>
+                                    <constraint firstItem="oLQ-sG-e7h" firstAttribute="top" secondItem="W6u-ac-PS7" secondAttribute="top" constant="14" id="iFt-SH-hwh"/>
+                                    <constraint firstItem="W6u-ac-PS7" firstAttribute="top" secondItem="Ruh-qb-vRD" secondAttribute="top" constant="56" id="p2z-MA-0N5"/>
+                                    <constraint firstAttribute="height" constant="154" id="sAW-bE-Amq"/>
+                                    <constraint firstAttribute="centerX" secondItem="y1j-JX-UgX" secondAttribute="centerX" id="t9J-y3-lJn"/>
+                                </constraints>
+                            </view>
+                            <view hidden="YES" alpha="0.0" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="NhC-7g-uaI" userLabel="Video Playback Masking View">
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.90000000000000002" colorSpace="calibratedWhite"/>
@@ -824,15 +861,14 @@
                         </subviews>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstAttribute="trailing" secondItem="Ruh-qb-vRD" secondAttribute="trailing" id="B9D-Ow-Ftq"/>
                             <constraint firstItem="txR-W6-Q5A" firstAttribute="top" secondItem="NhC-7g-uaI" secondAttribute="bottom" placeholder="YES" id="EMS-9J-Hfd"/>
                             <constraint firstItem="NhC-7g-uaI" firstAttribute="leading" secondItem="82C-f9-lhe" secondAttribute="leading" id="GhU-u6-Riq"/>
-                            <constraint firstItem="Ruh-qb-vRD" firstAttribute="leading" secondItem="82C-f9-lhe" secondAttribute="leading" id="Tfl-w2-tW6"/>
+                            <constraint firstItem="gdx-vD-Je7" firstAttribute="top" secondItem="mB2-Kx-N90" secondAttribute="bottom" constant="154" placeholder="YES" id="eOF-Ue-ZDb"/>
                             <constraint firstItem="NhC-7g-uaI" firstAttribute="top" secondItem="mB2-Kx-N90" secondAttribute="bottom" placeholder="YES" id="h8I-x8-LCt"/>
                             <constraint firstItem="Ruh-qb-vRD" firstAttribute="top" secondItem="mB2-Kx-N90" secondAttribute="bottom" id="l5f-cX-Qkc"/>
                             <constraint firstAttribute="trailing" secondItem="NhC-7g-uaI" secondAttribute="trailing" id="lXB-Pj-4PK"/>
+                            <constraint firstAttribute="centerX" secondItem="Ruh-qb-vRD" secondAttribute="centerX" id="mv9-RC-Tvp"/>
                             <constraint firstItem="gdx-vD-Je7" firstAttribute="leading" secondItem="82C-f9-lhe" secondAttribute="leading" placeholder="YES" id="njQ-Wv-G0c"/>
-                            <constraint firstItem="gdx-vD-Je7" firstAttribute="top" secondItem="Ruh-qb-vRD" secondAttribute="bottom" placeholder="YES" id="uCA-FK-N9V"/>
                             <constraint firstAttribute="trailing" secondItem="gdx-vD-Je7" secondAttribute="trailing" placeholder="YES" id="xGF-cy-ikg"/>
                         </constraints>
                     </view>
@@ -840,11 +876,15 @@
                     <connections>
                         <outlet property="backgroundImage" destination="Xzc-fo-Pc8" id="bwb-2j-hZd"/>
                         <outlet property="barContainerView" destination="Pce-Lq-Sbm" id="n2G-fA-vJD"/>
-                        <outlet property="descriptionLabel" destination="SVt-O0-Xbt" id="CmB-GP-EVp"/>
+                        <outlet property="collapseButton" destination="y1j-JX-UgX" id="VXV-Sq-BK4"/>
+                        <outlet property="collapseButtonVerticalSpacingConstraint" destination="3Vx-g6-swJ" id="Sco-re-3yt"/>
+                        <outlet property="descriptionLabel" destination="W6u-ac-PS7" id="y5I-eh-o13"/>
+                        <outlet property="expandedTitleMaskingView" destination="xqp-3V-NIb" id="hKs-OL-PLd"/>
                         <outlet property="firstPollButton" destination="iB3-TF-e3b" id="uEc-eU-Jbu"/>
                         <outlet property="firstPollPlayIcon" destination="yMt-1L-zyw" id="QWi-P7-VYR"/>
                         <outlet property="firstResultView" destination="mU7-Gc-RdJ" id="Hap-rD-L8h"/>
                         <outlet property="firstSmallPreviewImage" destination="EVH-DQ-EKO" id="sqw-uo-jib"/>
+                        <outlet property="hrVerticalSpacingConstraint" destination="iFt-SH-hwh" id="jPg-Po-JMz"/>
                         <outlet property="maskingView" destination="NhC-7g-uaI" id="ei9-KA-VA0"/>
                         <outlet property="mediaSuperview" destination="gdx-vD-Je7" id="LOA-hP-psJ"/>
                         <outlet property="mediaView" destination="bEh-qP-DUl" id="GYP-nN-agT"/>
@@ -857,6 +897,7 @@
                         <outlet property="secondResultView" destination="eCc-fQ-PSZ" id="yOE-Ip-yhe"/>
                         <outlet property="secondSmallPreviewImage" destination="plb-mq-Tcq" id="Svf-fQ-dzq"/>
                         <outlet property="topActionsView" destination="Ruh-qb-vRD" id="Xpq-SD-fWy"/>
+                        <outlet property="topActionsViewHeightConstraint" destination="sAW-bE-Amq" id="5g7-yp-GVu"/>
                         <outletCollection property="buttonCollection" destination="Hjq-lN-vqT" id="ZjA-p7-HPE"/>
                         <outletCollection property="buttonCollection" destination="cfP-Ga-rbO" id="n2f-lD-0dx"/>
                         <outletCollection property="buttonCollection" destination="ohf-04-VVL" id="kXX-Zg-EL1"/>
@@ -1719,15 +1760,15 @@
                                     <action selector="pressedNegativeEmotive:" destination="fx3-Ym-Kt1" eventType="touchUpInside" id="EPI-Ma-XaL"/>
                                 </connections>
                             </button>
-                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="999" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="QOq-WJ-Ibw">
-                                <rect key="frame" x="110" y="20" width="40" height="20"/>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="999" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="QOq-WJ-Ibw" userLabel="Left Label">
+                                <rect key="frame" x="103" y="24" width="29" height="21"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="999" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="AjL-mD-Ekf">
-                                <rect key="frame" x="270" y="20" width="40" height="20"/>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="999" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="AjL-mD-Ekf" userLabel="Right Label">
+                                <rect key="frame" x="262" y="24" width="29" height="21"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -1735,6 +1776,12 @@
                             </label>
                         </subviews>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="6lz-Aw-KWC" firstAttribute="top" secondItem="AjL-mD-Ekf" secondAttribute="bottom" constant="15" id="2fj-zO-QrB"/>
+                            <constraint firstItem="QOq-WJ-Ibw" firstAttribute="left" secondItem="IWk-7d-MDp" secondAttribute="left" constant="103" id="SGa-69-yEt"/>
+                            <constraint firstItem="6lz-Aw-KWC" firstAttribute="top" secondItem="QOq-WJ-Ibw" secondAttribute="bottom" constant="15" id="fFd-kq-y8l"/>
+                            <constraint firstItem="AjL-mD-Ekf" firstAttribute="left" secondItem="IWk-7d-MDp" secondAttribute="left" constant="262" id="sL8-Yz-sZp"/>
+                        </constraints>
                     </view>
                     <nil key="simulatedStatusBarMetrics"/>
                     <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
@@ -1953,6 +2000,7 @@
         <image name="SearchIconSmall" width="20" height="20"/>
         <image name="Tomato" width="160" height="60"/>
         <image name="cameraButtonClose" width="24" height="24"/>
+        <image name="contentViewCollapse" width="40" height="40"/>
         <image name="createContentButton" width="27" height="27"/>
         <image name="refreshIcon" width="13" height="15"/>
     </resources>

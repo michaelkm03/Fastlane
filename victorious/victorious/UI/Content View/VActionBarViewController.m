@@ -25,9 +25,6 @@
 {
     [super viewDidLoad];
     
-    self.leftLabel.textAlignment = NSTextAlignmentCenter;
-    self.rightLabel.textAlignment = NSTextAlignmentCenter;
-    
     self.leftLabel.textColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVMainTextColor];
     self.leftLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVButton2Font];
     self.rightLabel.textColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVMainTextColor];
