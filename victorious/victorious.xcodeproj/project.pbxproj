@@ -21,6 +21,7 @@
 		03484C071930294D00403FB1 /* NSURL+MediaType.m in Sources */ = {isa = PBXBuildFile; fileRef = 03484C061930294D00403FB1 /* NSURL+MediaType.m */; };
 		03522780192173F0003FCD10 /* VElapsedTimeFormatterTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 0352277F192173F0003FCD10 /* VElapsedTimeFormatterTests.m */; };
 		0352278319219079003FCD10 /* VVideoDownloadProgressIndicatorView.m in Sources */ = {isa = PBXBuildFile; fileRef = 0352278219219079003FCD10 /* VVideoDownloadProgressIndicatorView.m */; };
+		035C2D751940071B0023FC05 /* VCVideoPlayerToolbarSlider.m in Sources */ = {isa = PBXBuildFile; fileRef = 035C2D741940071B0023FC05 /* VCVideoPlayerToolbarSlider.m */; };
 		036AE5ED18FF0C0600A74BDA /* VReachability.m in Sources */ = {isa = PBXBuildFile; fileRef = 036AE5EC18FF0C0600A74BDA /* VReachability.m */; };
 		03811D2E1934707B005687FF /* VImageSearchResultsFooterView.m in Sources */ = {isa = PBXBuildFile; fileRef = 03811D2D1934707B005687FF /* VImageSearchResultsFooterView.m */; };
 		03811D31193533D0005687FF /* UIAlertView+VBlocks.m in Sources */ = {isa = PBXBuildFile; fileRef = 03811D30193533D0005687FF /* UIAlertView+VBlocks.m */; };
@@ -327,6 +328,8 @@
 		0352277F192173F0003FCD10 /* VElapsedTimeFormatterTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VElapsedTimeFormatterTests.m; sourceTree = "<group>"; };
 		0352278119219079003FCD10 /* VVideoDownloadProgressIndicatorView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VVideoDownloadProgressIndicatorView.h; sourceTree = "<group>"; };
 		0352278219219079003FCD10 /* VVideoDownloadProgressIndicatorView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VVideoDownloadProgressIndicatorView.m; sourceTree = "<group>"; };
+		035C2D731940071B0023FC05 /* VCVideoPlayerToolbarSlider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VCVideoPlayerToolbarSlider.h; sourceTree = "<group>"; };
+		035C2D741940071B0023FC05 /* VCVideoPlayerToolbarSlider.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VCVideoPlayerToolbarSlider.m; sourceTree = "<group>"; };
 		036AE5EB18FF0C0600A74BDA /* VReachability.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VReachability.h; sourceTree = "<group>"; };
 		036AE5EC18FF0C0600A74BDA /* VReachability.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VReachability.m; sourceTree = "<group>"; };
 		03811D2C1934707B005687FF /* VImageSearchResultsFooterView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VImageSearchResultsFooterView.h; sourceTree = "<group>"; };
@@ -954,6 +957,8 @@
 				3F14C43E18BD2BD0001796B9 /* VCCamera.m */,
 				3F14C43718BD2BD0001796B9 /* VCAudioTools.h */,
 				3F14C43818BD2BD0001796B9 /* VCAudioTools.m */,
+				035C2D731940071B0023FC05 /* VCVideoPlayerToolbarSlider.h */,
+				035C2D741940071B0023FC05 /* VCVideoPlayerToolbarSlider.m */,
 				03F9D27F191D542300576AEE /* VCVideoPlayerToolbarView.h */,
 				03F9D280191D542300576AEE /* VCVideoPlayerToolbarView.m */,
 				03F9D282191D54F100576AEE /* VCVideoPlayerToolbarView.xib */,
@@ -2071,6 +2076,7 @@
 				03ABEE201937EC7F007931F9 /* VContentInputAccessoryView.m in Sources */,
 				03484BFB192E6E8C00403FB1 /* VVideoLightboxViewController.m in Sources */,
 				BE171E131868C211004E5202 /* VInteractionAction+RestKit.m in Sources */,
+				035C2D751940071B0023FC05 /* VCVideoPlayerToolbarSlider.m in Sources */,
 				03F9D281191D542300576AEE /* VCVideoPlayerToolbarView.m in Sources */,
 				BEB8DB07192BFF5300E0E3E6 /* VMessageCell.m in Sources */,
 				BED7F67A18E0BD5D00545DF6 /* UIImage+ImageCreation.m in Sources */,
