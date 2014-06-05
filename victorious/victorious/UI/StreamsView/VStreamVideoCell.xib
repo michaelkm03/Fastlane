@@ -47,8 +47,8 @@
                         </subviews>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     </view>
-                    <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="kVw-nx-K3l" userLabel="Overlay View">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="320"/>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="kVw-nx-K3l" userLabel="Overlay View">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="319"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hHd-Lm-ESF">
@@ -82,8 +82,8 @@
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" title=" 32" image="StreamComments"/>
                             </button>
-                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="280" translatesAutoresizingMaskIntoConstraints="NO" id="h1o-6t-QRB" userLabel="Description">
-                                <rect key="frame" x="20" y="240" width="280" height="60"/>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="280" translatesAutoresizingMaskIntoConstraints="NO" id="h1o-6t-QRB" userLabel="Description">
+                                <rect key="frame" x="20" y="278" width="280" height="21"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -112,8 +112,19 @@
                             </button>
                         </subviews>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstAttribute="trailing" secondItem="h1o-6t-QRB" secondAttribute="trailing" constant="20" id="QAI-dt-cFq"/>
+                            <constraint firstItem="h1o-6t-QRB" firstAttribute="leading" secondItem="kVw-nx-K3l" secondAttribute="leading" constant="20" id="f9s-Dm-zNx"/>
+                            <constraint firstAttribute="bottom" secondItem="h1o-6t-QRB" secondAttribute="bottom" constant="20" id="xiX-Zz-86n"/>
+                        </constraints>
                     </view>
                 </subviews>
+                <constraints>
+                    <constraint firstItem="kVw-nx-K3l" firstAttribute="leading" secondItem="ajZ-yg-NZB" secondAttribute="leading" id="PsL-qB-6Cx"/>
+                    <constraint firstAttribute="trailing" secondItem="kVw-nx-K3l" secondAttribute="trailing" id="RG5-2M-dZv"/>
+                    <constraint firstItem="kVw-nx-K3l" firstAttribute="top" secondItem="ajZ-yg-NZB" secondAttribute="top" id="ZVT-WG-5fq"/>
+                    <constraint firstAttribute="bottom" secondItem="kVw-nx-K3l" secondAttribute="bottom" id="igg-QH-bnt"/>
+                </constraints>
             </tableViewCellContentView>
             <connections>
                 <outlet property="animationBackgroundImage" destination="tq5-a6-OxG" id="NGO-vB-CGE"/>

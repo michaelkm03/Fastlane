@@ -44,12 +44,12 @@
                         </subviews>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     </view>
-                    <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Qyu-uO-lf5" userLabel="Overlay View">
-                        <rect key="frame" x="0.0" y="-1" width="320" height="214"/>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Qyu-uO-lf5" userLabel="Overlay View">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="213"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="280" translatesAutoresizingMaskIntoConstraints="NO" id="0rJ-Vq-OQb">
-                                <rect key="frame" x="20" y="145" width="280" height="60"/>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="280" translatesAutoresizingMaskIntoConstraints="NO" id="0rJ-Vq-OQb">
+                                <rect key="frame" x="20" y="172" width="280" height="21"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
@@ -108,12 +108,23 @@
                             </button>
                         </subviews>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstAttribute="trailing" secondItem="0rJ-Vq-OQb" secondAttribute="trailing" constant="20" id="RGb-zA-Vow"/>
+                            <constraint firstAttribute="bottom" secondItem="0rJ-Vq-OQb" secondAttribute="bottom" constant="20" id="lBp-Vo-p0y"/>
+                            <constraint firstItem="0rJ-Vq-OQb" firstAttribute="leading" secondItem="Qyu-uO-lf5" secondAttribute="leading" constant="20" id="xWu-cg-jCz"/>
+                        </constraints>
                     </view>
                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="PollBarOr" translatesAutoresizingMaskIntoConstraints="NO" id="Fse-X8-bIf">
                         <rect key="frame" x="128" y="71" width="65" height="72"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     </imageView>
                 </subviews>
+                <constraints>
+                    <constraint firstAttribute="trailing" secondItem="Qyu-uO-lf5" secondAttribute="trailing" id="7gL-G0-R2W"/>
+                    <constraint firstItem="Qyu-uO-lf5" firstAttribute="leading" secondItem="727-Cq-Kk2" secondAttribute="leading" id="ARI-iF-VRe"/>
+                    <constraint firstItem="Qyu-uO-lf5" firstAttribute="top" secondItem="727-Cq-Kk2" secondAttribute="top" id="VVx-2P-DSx"/>
+                    <constraint firstAttribute="bottom" secondItem="Qyu-uO-lf5" secondAttribute="bottom" id="ZQe-61-wuB"/>
+                </constraints>
             </tableViewCellContentView>
             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
             <connections>

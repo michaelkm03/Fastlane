@@ -39,8 +39,8 @@
                         </subviews>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     </view>
-                    <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="H2p-kS-Ucs" userLabel="Overlay View">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="320"/>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="H2p-kS-Ucs" userLabel="Overlay View">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="319"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Username" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4BA-qs-0sG">
@@ -62,8 +62,8 @@
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             </imageView>
-                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="280" translatesAutoresizingMaskIntoConstraints="NO" id="WLo-v6-MW0" userLabel="Description">
-                                <rect key="frame" x="20" y="240" width="280" height="60"/>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="280" translatesAutoresizingMaskIntoConstraints="NO" id="WLo-v6-MW0" userLabel="Description">
+                                <rect key="frame" x="20" y="278" width="280" height="21"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -104,8 +104,19 @@
                             </button>
                         </subviews>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstAttribute="bottom" secondItem="WLo-v6-MW0" secondAttribute="bottom" constant="20" id="TTm-KY-zwy"/>
+                            <constraint firstAttribute="trailing" secondItem="WLo-v6-MW0" secondAttribute="trailing" constant="20" id="fAI-FJ-3K6"/>
+                            <constraint firstItem="WLo-v6-MW0" firstAttribute="leading" secondItem="H2p-kS-Ucs" secondAttribute="leading" constant="20" id="n95-0X-R7c"/>
+                        </constraints>
                     </view>
                 </subviews>
+                <constraints>
+                    <constraint firstAttribute="trailing" secondItem="H2p-kS-Ucs" secondAttribute="trailing" id="2MC-w6-TZs"/>
+                    <constraint firstItem="H2p-kS-Ucs" firstAttribute="top" secondItem="tlv-KZ-xzf" secondAttribute="top" id="5Xk-P9-eRA"/>
+                    <constraint firstItem="H2p-kS-Ucs" firstAttribute="leading" secondItem="tlv-KZ-xzf" secondAttribute="leading" id="Hdc-q5-OTK"/>
+                    <constraint firstAttribute="bottom" secondItem="H2p-kS-Ucs" secondAttribute="bottom" id="Jhv-eE-URf"/>
+                </constraints>
             </tableViewCellContentView>
             <connections>
                 <outlet property="commentButton" destination="cLx-fR-OJL" id="53U-gB-3TI"/>
