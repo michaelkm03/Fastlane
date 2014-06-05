@@ -78,4 +78,6 @@
  */
 - (void)forceRotationBackToPortraitWithExtraAnimations:(void(^)(void))animations onCompletion:(void(^)(void))completion;
 
+- (BOOL)isTitleExpanded; ///< Returns YES if the full title is being displayed with a white overlay view beneath
+
 @end

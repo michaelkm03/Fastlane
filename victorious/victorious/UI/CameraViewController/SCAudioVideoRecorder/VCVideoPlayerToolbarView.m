@@ -6,7 +6,6 @@
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
-#import "UIImage+VSolidColor.h"
 #import "VCVideoPlayerToolbarView.h"
 
 @implementation VCVideoPlayerToolbarView
@@ -29,13 +28,6 @@
 {
     UIImage *pauseButton = [self.playButton imageForState:(UIControlStateSelected)];
     [self.playButton   setImage:pauseButton      forState:(UIControlStateSelected | UIControlStateHighlighted)];
-    
-    [self.slider setThumbImage:[[UIImage imageNamed:@"player-handle"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal]
-                      forState:UIControlStateNormal];
-    [self.slider setMinimumTrackImage:[UIImage v_imageWithColor:[UIColor colorWithRed:0 green:0 blue:0 alpha:0]]
-                             forState:UIControlStateNormal];
-    [self.slider setMaximumTrackImage:[UIImage v_imageWithColor:[UIColor colorWithRed:0 green:0 blue:0 alpha:0]]
-                             forState:UIControlStateNormal];
 }
 
 @end

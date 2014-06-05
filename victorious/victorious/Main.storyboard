@@ -769,7 +769,7 @@
                                 </subviews>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                             </view>
-                            <view alpha="0.0" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="xqp-3V-NIb" userLabel="Masking View">
+                            <view alpha="0.0" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="xqp-3V-NIb" userLabel="Expanded Title Masking View">
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="508"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" white="1" alpha="0.80000000000000004" colorSpace="calibratedWhite"/>
@@ -816,7 +816,7 @@
                                         </connections>
                                     </view>
                                     <button opaque="NO" alpha="0.0" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" adjustsImageWhenHighlighted="NO" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="y1j-JX-UgX" userLabel="Collapse Button">
-                                        <rect key="frame" x="137" y="104" width="44" height="44"/>
+                                        <rect key="frame" x="138" y="104" width="44" height="44"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="44" id="I1F-ze-izA"/>
@@ -843,16 +843,17 @@
                                 <constraints>
                                     <constraint firstItem="y1j-JX-UgX" firstAttribute="top" secondItem="W6u-ac-PS7" secondAttribute="top" constant="48" id="3Vx-g6-swJ"/>
                                     <constraint firstAttribute="bottom" secondItem="W6u-ac-PS7" secondAttribute="bottom" constant="17" id="8cb-XW-Hey"/>
+                                    <constraint firstAttribute="width" constant="320" id="ETB-xe-0eJ"/>
                                     <constraint firstItem="W6u-ac-PS7" firstAttribute="leading" secondItem="Ruh-qb-vRD" secondAttribute="leading" constant="20" id="SDl-Ja-LrQ"/>
                                     <constraint firstAttribute="centerX" secondItem="oLQ-sG-e7h" secondAttribute="centerX" id="Wil-np-eol"/>
                                     <constraint firstAttribute="trailing" secondItem="W6u-ac-PS7" secondAttribute="trailing" constant="20" id="hSy-B8-sxf"/>
                                     <constraint firstItem="oLQ-sG-e7h" firstAttribute="top" secondItem="W6u-ac-PS7" secondAttribute="top" constant="14" id="iFt-SH-hwh"/>
                                     <constraint firstItem="W6u-ac-PS7" firstAttribute="top" secondItem="Ruh-qb-vRD" secondAttribute="top" constant="56" id="p2z-MA-0N5"/>
                                     <constraint firstAttribute="height" constant="154" id="sAW-bE-Amq"/>
-                                    <constraint firstAttribute="centerX" secondItem="y1j-JX-UgX" secondAttribute="centerX" constant="1" id="t9J-y3-lJn"/>
+                                    <constraint firstAttribute="centerX" secondItem="y1j-JX-UgX" secondAttribute="centerX" id="t9J-y3-lJn"/>
                                 </constraints>
                             </view>
-                            <view hidden="YES" alpha="0.0" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="NhC-7g-uaI" userLabel="Masking View">
+                            <view hidden="YES" alpha="0.0" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="NhC-7g-uaI" userLabel="Video Playback Masking View">
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.90000000000000002" colorSpace="calibratedWhite"/>
@@ -860,14 +861,13 @@
                         </subviews>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstAttribute="trailing" secondItem="Ruh-qb-vRD" secondAttribute="trailing" id="B9D-Ow-Ftq"/>
                             <constraint firstItem="txR-W6-Q5A" firstAttribute="top" secondItem="NhC-7g-uaI" secondAttribute="bottom" placeholder="YES" id="EMS-9J-Hfd"/>
                             <constraint firstItem="NhC-7g-uaI" firstAttribute="leading" secondItem="82C-f9-lhe" secondAttribute="leading" id="GhU-u6-Riq"/>
-                            <constraint firstItem="Ruh-qb-vRD" firstAttribute="leading" secondItem="82C-f9-lhe" secondAttribute="leading" id="Tfl-w2-tW6"/>
                             <constraint firstItem="gdx-vD-Je7" firstAttribute="top" secondItem="mB2-Kx-N90" secondAttribute="bottom" constant="154" placeholder="YES" id="eOF-Ue-ZDb"/>
                             <constraint firstItem="NhC-7g-uaI" firstAttribute="top" secondItem="mB2-Kx-N90" secondAttribute="bottom" placeholder="YES" id="h8I-x8-LCt"/>
                             <constraint firstItem="Ruh-qb-vRD" firstAttribute="top" secondItem="mB2-Kx-N90" secondAttribute="bottom" id="l5f-cX-Qkc"/>
                             <constraint firstAttribute="trailing" secondItem="NhC-7g-uaI" secondAttribute="trailing" id="lXB-Pj-4PK"/>
+                            <constraint firstAttribute="centerX" secondItem="Ruh-qb-vRD" secondAttribute="centerX" id="mv9-RC-Tvp"/>
                             <constraint firstItem="gdx-vD-Je7" firstAttribute="leading" secondItem="82C-f9-lhe" secondAttribute="leading" placeholder="YES" id="njQ-Wv-G0c"/>
                             <constraint firstAttribute="trailing" secondItem="gdx-vD-Je7" secondAttribute="trailing" placeholder="YES" id="xGF-cy-ikg"/>
                         </constraints>
