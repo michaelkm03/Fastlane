@@ -17,7 +17,7 @@
 
 #import "VUserProfileViewController.h"
 
-//VConversationCell
+CGFloat const kVConversationCellHeight = 71;
 
 @implementation VConversationCell
 
@@ -33,7 +33,7 @@
     self.messageLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVLabel2Font];
     self.messageLabel.textColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVContentTextColor];
     
-    self.usernameLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeading3Font];
+    self.usernameLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVLabel2Font];
     self.usernameLabel.textColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
     
     self.profileImageButton.clipsToBounds = YES;
