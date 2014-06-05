@@ -38,7 +38,7 @@
     self.timeRemainingLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeading3Font];
     self.timeRemainingLabel.textColor = [UIColor grayColor];//[[VThemeManager sharedThemeManager] themedColorForKey:kVContentAccentColor];
     
-    self.dayLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeading3Font];
+    self.dayLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVLabel4Font];
     self.dayLabel.textColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
     
     self.countdownLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeaderFont];
