@@ -45,9 +45,6 @@ const   CGFloat     kMessageRowHeight           =   80;
     
     self.tableView.backgroundView = backgroundImageView;
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
-
-//    [self.tableView reloadData];
-//    [self refresh];
 }
 
 - (void)setConversation:(VConversation *)conversation
@@ -87,6 +84,39 @@ const   CGFloat     kMessageRowHeight           =   80;
     {
         NSLog(@"%@", error.localizedDescription);
         [self.refreshControl endRefreshing];
+    };
+    
+    VSuccessBlock success = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
+    {
+        [self.refreshControl endRefreshing];
+    };
+    
+    [[VObjectManager sharedManager] loadNextPageOfConversation:self.conversation
+                                                  successBlock:success
+                                                     failBlock:fail];
+}
+
+- (void)delayedRefresh
+{
+    return;
+    
+    double delayInSeconds = 1.0f;
+    dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
+    dispatch_after(popTime, dispatch_get_main_queue(), ^(void)
+                   {
+                       if (self.isViewLoaded && self.view.window)
+                       {
+                           [self loadNextPageAction];
+                       }
+                   });
+}
+
+- (void)loadNextPageAction
+{
+    VFailBlock fail = ^(NSOperation* operation, NSError* error)
+    {
+        NSLog(@"%@", error.localizedDescription);
+        [self.refreshControl endRefreshing];
         
         [self delayedRefresh];
     };
@@ -101,7 +131,7 @@ const   CGFloat     kMessageRowHeight           =   80;
                                          self.tableView.contentSize.height - self.tableView.frame.size.height);
             [self.tableView setContentOffset:offset animated:YES];
         }
-    
+        
         [[VObjectManager sharedManager] markConversationAsRead:self.conversation
                                                   successBlock:nil
                                                      failBlock:fail];
@@ -111,27 +141,6 @@ const   CGFloat     kMessageRowHeight           =   80;
     [[VObjectManager sharedManager] refreshMessagesForConversation:self.conversation
                                                       successBlock:success
                                                          failBlock:fail];
-}
-
-- (void)delayedRefresh
-{
-    return;
-    
-    double delayInSeconds = 1.0f;
-    dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
-    dispatch_after(popTime, dispatch_get_main_queue(), ^(void)
-                   {
-                       if (self.isViewLoaded && self.view.window)
-                       {
-                           [self refresh:nil];
-                       }
-                   });
-}
-
-
-- (void)loadNextPageAction
-{
-    //TODO: fill this in later
 }
 
 #pragma mark - Table view data source

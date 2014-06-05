@@ -74,6 +74,7 @@
     [NSFetchedResultsController deleteCacheWithName:self.fetchedResultsController.cacheName];
     
     self.fetchedResultsController = nil;
+    [self.tableView reloadData];
     
     [self performFetch];
     
