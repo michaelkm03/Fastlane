@@ -54,7 +54,7 @@ NSString*   const   kSignupErrorDomain =   @"VSignupErrorDomain";
     self.signupButton.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
     self.signupButton.layer.cornerRadius = 3.0;
     self.signupButton.titleLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeaderFont];
-    [self.signupButton setTitleColor:[UIColor colorWithWhite:0.14 alpha:1.0] forState:UIControlStateNormal];
+    [self.signupButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     
     self.emailTextField.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeaderFont];
     self.emailTextField.textColor = [UIColor colorWithWhite:0.14 alpha:1.0];
@@ -76,7 +76,7 @@ NSString*   const   kSignupErrorDomain =   @"VSignupErrorDomain";
     self.navigationController.navigationBar.shadowImage = [[UIImage alloc] init];
     self.navigationController.navigationBar.translucent = YES;
     [self.navigationController setNavigationBarHidden:NO animated:NO];
-
+    
     [self.emailTextField becomeFirstResponder];
 }
 

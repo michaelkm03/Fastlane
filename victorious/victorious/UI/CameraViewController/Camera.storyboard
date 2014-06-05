@@ -393,7 +393,7 @@
                                     <action selector="publish:" destination="1zz-KC-cVA" eventType="touchUpInside" id="Wok-j4-Gb7"/>
                                 </connections>
                             </button>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="pMb-yO-DtL" userLabel="Share Options Superview">
+                            <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="pMb-yO-DtL" userLabel="Share Options Superview">
                                 <rect key="frame" x="0.0" y="378" width="320" height="87"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <subviews>

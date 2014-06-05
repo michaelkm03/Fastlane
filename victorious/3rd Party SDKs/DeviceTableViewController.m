@@ -165,4 +165,11 @@ NSString *const CellIdForDeviceName = @"deviceName";
   [button setBackgroundImage:playImage forState:UIControlStateNormal];
 }
 
+#pragma mark - Actions
+
+- (IBAction)goBack:(id)sender
+{
+    [self.navigationController popViewControllerAnimated:YES];
+}
+
 @end

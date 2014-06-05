@@ -107,11 +107,6 @@ static const NSInteger kServerEnvironmentButtonIndex = 1;
     return NO;
 }
 
-- (UIStatusBarAnimation)preferredStatusBarUpdateAnimation
-{
-    return UIStatusBarAnimationSlide;
-}
-
 #pragma mark - Validation
 
 - (BOOL)shouldUpdateEmailAddress:(NSString *)emailAddress password:(NSString *)password username:(NSString *)username

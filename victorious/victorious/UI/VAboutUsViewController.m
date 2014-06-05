@@ -27,4 +27,11 @@
     self.versionLabel.text = [NSString stringWithFormat:@"%@ (%@)", appBuildString, appVersionString];
 }
 
+#pragma mark - Actions
+
+- (IBAction)goBack:(id)sender
+{
+    [self.navigationController popViewControllerAnimated:YES];
+}
+
 @end

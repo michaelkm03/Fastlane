@@ -193,6 +193,13 @@ NSString *const VMenuControllerDidSelectRowNotification = @"VMenuTableViewContro
         return 100.0;
 }
 
+- (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    UIView *customColorView = [[UIView alloc] init];
+    customColorView.backgroundColor = [UIColor blackColor];
+    cell.selectedBackgroundView =  customColorView;
+}
+
 #pragma mark - Actions
 
 - (IBAction)sendHelp:(id)sender

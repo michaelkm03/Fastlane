@@ -63,7 +63,8 @@
 
     self.usernameTextField.delegate = self;
     self.usernameTextField.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeaderFont];
-    self.usernameTextField.text = self.profile.name;
+    if (self.loginType != kVLoginTypeEmail)
+        self.usernameTextField.text = self.profile.name;
     self.usernameTextField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:self.usernameTextField.placeholder attributes:@{NSForegroundColorAttributeName : [UIColor colorWithWhite:0.14 alpha:1.0]}];
     
     self.locationTextField.delegate = self;
@@ -308,6 +309,8 @@
                                                           target:nil
                                                           action:nil];
     
+    [self.countDownLabel setTitleTextAttributes:@{NSForegroundColorAttributeName : [UIColor colorWithWhite:0.71 alpha:1.0]} forState:UIControlStateNormal];
+
     toolbar.items = @[flexibleSpace, self.countDownLabel];
     self.taglineTextView.inputAccessoryView = toolbar;
 }
