@@ -96,7 +96,7 @@ static const CGFloat kSeeMoreFontSizeRatio = 0.8f;
     paragraphStyle.alignment = NSTextAlignmentCenter;
     paragraphStyle.lineHeightMultiple = 1.1f;
     
-    return @{ NSFontAttributeName: [[VThemeManager sharedThemeManager] themedFontForKey:kVHeading2Font],
+    return @{ NSFontAttributeName: [[VThemeManager sharedThemeManager] themedFontForKey:kVHeaderFont],
               NSForegroundColorAttributeName: [[VThemeManager sharedThemeManager] themedColorForKey:kVContentTextColor],
               NSParagraphStyleAttributeName: paragraphStyle,
            };
@@ -104,7 +104,7 @@ static const CGFloat kSeeMoreFontSizeRatio = 0.8f;
 
 - (NSDictionary *)attributesForSeeMore
 {
-    UIFont *heading2font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeading2Font];
+    UIFont *heading2font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeaderFont];
     return @{ NSFontAttributeName: [heading2font fontWithSize:heading2font.pointSize * kSeeMoreFontSizeRatio],
               NSForegroundColorAttributeName: [UIColor colorWithRed:0.996f green:0.286f blue:0.286f alpha:1.0f],
            };
