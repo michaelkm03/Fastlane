@@ -30,7 +30,6 @@
     float yCenter = self.tableView.backgroundView.frame.size.height - self.bottomRefreshIndicator.frame.size.height;
     self.bottomRefreshIndicator.center = CGPointMake(self.tableView.backgroundView.center.x,
                                                      yCenter);
-    VLog(@"centery:%f centerx:%f", self.bottomRefreshIndicator.center.y, self.bottomRefreshIndicator.center.x);
 }
 
 - (void)didReceiveMemoryWarning

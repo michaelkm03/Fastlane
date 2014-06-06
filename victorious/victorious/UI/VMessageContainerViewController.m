@@ -81,8 +81,6 @@
     VSuccessBlock success = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
     {
         [progressHUD hide:YES];
-        
-        VLog(@"Succeed with response: %@", fullResponse);
     };
     
     [[VObjectManager sharedManager] sendMessageToConversation:self.conversation

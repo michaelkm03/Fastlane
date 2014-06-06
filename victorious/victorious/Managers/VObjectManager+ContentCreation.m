@@ -42,7 +42,6 @@
 {
     VSuccessBlock success = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
     {
-        VLog(@"Succeeded with objects: %@", resultObjects);
         if (completionBlock)
         {
             NSURL* remixURL = [NSURL URLWithString:fullResponse[@"payload"][@"mp4_url"]];
@@ -350,7 +349,6 @@
     
     VSuccessBlock fullSuccess = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
     {
-        VLog(@"Succeeded with objects: %@", resultObjects);
         VMessage* tempMessage;
         if ([fullResponse isKindOfClass:[NSDictionary class]])
         {
