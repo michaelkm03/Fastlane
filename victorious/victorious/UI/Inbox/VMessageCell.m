@@ -112,6 +112,7 @@ NSString* const kChatBubbleLeftImage = @"ChatBubbleLeft";
     height = MAX(self.messageLabel.frame.size.height + yOffset, kMessageMinCellHeight);
     
     self.bounds = CGRectMake(0, 0, self.frame.size.width, height);
+    [self.parentTableViewController.tableView layoutIfNeeded];
 }
 
 @end

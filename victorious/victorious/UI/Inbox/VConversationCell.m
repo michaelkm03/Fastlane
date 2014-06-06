@@ -61,7 +61,6 @@ CGFloat const kVConversationCellHeight = 71;
                                     forState:UIControlStateNormal];
     
     self.messageLabel.text = conversation.lastMessage.text;
-    [self.messageLabel sizeToFit];
     self.dateLabel.text = [conversation.lastMessage.postedAt timeSince];
     self.seen = conversation.lastMessage.isRead.boolValue;
 }
