@@ -255,6 +255,8 @@
 		BEA5BF59187E7E8E0014C3EF /* VObjectManager+DirectMessaging.m in Sources */ = {isa = PBXBuildFile; fileRef = BEA5BF58187E7E8E0014C3EF /* VObjectManager+DirectMessaging.m */; };
 		BEA5BF5F187F21770014C3EF /* VTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = BEA5BF5E187F21770014C3EF /* VTableViewCell.m */; };
 		BEA5BF71187FCBF10014C3EF /* VObjectManager+Users.m in Sources */ = {isa = PBXBuildFile; fileRef = BEA5BF70187FCBF10014C3EF /* VObjectManager+Users.m */; };
+		BEAA322019427ABE007774A4 /* VNoContentView.m in Sources */ = {isa = PBXBuildFile; fileRef = BEAA321F19427ABE007774A4 /* VNoContentView.m */; };
+		BEAA322219427AD3007774A4 /* VNoContentView.xib in Resources */ = {isa = PBXBuildFile; fileRef = BEAA322119427AD3007774A4 /* VNoContentView.xib */; };
 		BEAEBF1318D3A91C00C79AC7 /* VResultView.m in Sources */ = {isa = PBXBuildFile; fileRef = BEAEBF1218D3A91C00C79AC7 /* VResultView.m */; };
 		BEB4C29B187E038C004ECEEF /* VConversationCell.m in Sources */ = {isa = PBXBuildFile; fileRef = BEB4C296187E038C004ECEEF /* VConversationCell.m */; };
 		BEB4C29C187E038C004ECEEF /* VConversationCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = BEB4C297187E038C004ECEEF /* VConversationCell.xib */; };
@@ -759,6 +761,9 @@
 		BEA5BF5E187F21770014C3EF /* VTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VTableViewCell.m; path = UI/VTableViewCell.m; sourceTree = "<group>"; };
 		BEA5BF6F187FCBF10014C3EF /* VObjectManager+Users.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "VObjectManager+Users.h"; sourceTree = "<group>"; };
 		BEA5BF70187FCBF10014C3EF /* VObjectManager+Users.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "VObjectManager+Users.m"; sourceTree = "<group>"; };
+		BEAA321E19427ABE007774A4 /* VNoContentView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VNoContentView.h; path = UI/UIElements/VNoContentView.h; sourceTree = "<group>"; };
+		BEAA321F19427ABE007774A4 /* VNoContentView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VNoContentView.m; path = UI/UIElements/VNoContentView.m; sourceTree = "<group>"; };
+		BEAA322119427AD3007774A4 /* VNoContentView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VNoContentView.xib; sourceTree = "<group>"; };
 		BEAEBF1118D3A91C00C79AC7 /* VResultView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VResultView.h; path = UI/VResultView.h; sourceTree = "<group>"; };
 		BEAEBF1218D3A91C00C79AC7 /* VResultView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VResultView.m; path = UI/VResultView.m; sourceTree = "<group>"; };
 		BEB4C295187E038C004ECEEF /* VConversationCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VConversationCell.h; path = UI/Inbox/VConversationCell.h; sourceTree = "<group>"; };
@@ -1248,6 +1253,9 @@
 				BE185DE518E3826F001C447F /* VEphemeralTimerView.xib */,
 				3F0F1503191C20280030B33D /* VProgressiveImageView.h */,
 				3F0F1504191C20280030B33D /* VProgressiveImageView.m */,
+				BEAA321E19427ABE007774A4 /* VNoContentView.h */,
+				BEAA321F19427ABE007774A4 /* VNoContentView.m */,
+				BEAA322119427AD3007774A4 /* VNoContentView.xib */,
 			);
 			name = "UI Elements";
 			sourceTree = "<group>";
@@ -1966,6 +1974,7 @@
 				BE185DE618E3826F001C447F /* VEphemeralTimerView.xib in Resources */,
 				3F93489519215302002EA91F /* Profile.storyboard in Resources */,
 				3FA217D018A9BFC90066E893 /* video_thumb_mini@2x.png in Resources */,
+				BEAA322219427AD3007774A4 /* VNoContentView.xib in Resources */,
 				BE171D911868BE64004E5202 /* Images.xcassets in Resources */,
 				3FA217DE18AAFCFE0066E893 /* cast_outline_black.png in Resources */,
 				83B5A1241876447800659C73 /* Roboto-Regular.ttf in Resources */,
@@ -2146,6 +2155,7 @@
 				3F2194311941396800FA3407 /* VSignupTransitionAnimation.m in Sources */,
 				BE185DEE18E3B255001C447F /* VContentViewController+Videos.m in Sources */,
 				BEA5BF59187E7E8E0014C3EF /* VObjectManager+DirectMessaging.m in Sources */,
+				BEAA322019427ABE007774A4 /* VNoContentView.m in Sources */,
 				3FBCB9FB193558E400EB510C /* VInviteSuggestedTableViewController.m in Sources */,
 				3FBCB9DF192EC77400EB510C /* THPinInputCirclesView.m in Sources */,
 				3FD7FFBB18C14ED400945E5F /* VExpirationPickerTextField.m in Sources */,

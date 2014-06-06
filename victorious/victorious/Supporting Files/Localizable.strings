@@ -49,6 +49,9 @@
 "SMSFail"               =   "SMS failed to send";
 "CouldNotSend"          =   "Message was not sent";
 
+"NoMessagesTitle"       =   "NO MESSAGES YET";
+"NoMessagesMessage"     =   "You can send messages to anyone on the app!  Just go to their profile and click the compose icon in the top right corner.";
+
 "FacebookDeniedTitle"   =   "Could not access your Facebook account";
 "FacebookDenied"        =   "Please grant access to your Facebook account in Settings -> Facebook";
 

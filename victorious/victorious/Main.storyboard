@@ -1861,15 +1861,15 @@
                                 </subviews>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                             </view>
-                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Some really Long answer that hopefully will fit" textAlignment="right" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="115" translatesAutoresizingMaskIntoConstraints="NO" id="fBr-Do-fCE" userLabel="Left Label">
-                                <rect key="frame" x="10" y="5" width="115" height="50"/>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Some really Long answer that hopefully will fit" textAlignment="right" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" preferredMaxLayoutWidth="105" translatesAutoresizingMaskIntoConstraints="NO" id="fBr-Do-fCE" userLabel="Left Label">
+                                <rect key="frame" x="10" y="5" width="105" height="50"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Some really Long answer that hopefully will fit" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="115" translatesAutoresizingMaskIntoConstraints="NO" id="6ak-S4-RIj" userLabel="Right Label">
-                                <rect key="frame" x="195" y="5" width="115" height="50"/>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Some really Long answer that hopefully will fit" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" preferredMaxLayoutWidth="105" translatesAutoresizingMaskIntoConstraints="NO" id="6ak-S4-RIj" userLabel="Right Label">
+                                <rect key="frame" x="205" y="5" width="105" height="50"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
@@ -1958,43 +1958,14 @@
                                     <segue destination="Tfk-WC-tkh" kind="embed" id="K7n-ND-Df6"/>
                                 </connections>
                             </containerView>
-                            <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="9oH-sD-xSZ" userLabel="No Message View">
-                                <rect key="frame" x="0.0" y="60" width="320" height="508"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <subviews>
-                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="0Yc-pR-n3N">
-                                        <rect key="frame" x="135" y="139" width="50" height="50"/>
-                                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                                    </imageView>
-                                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="YOU HAVE NO MESSAGES AT THE MOMENT." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="237" translatesAutoresizingMaskIntoConstraints="NO" id="h4l-bU-BfI">
-                                        <rect key="frame" x="42" y="208" width="237" height="47"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                        <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
-                                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Nep-N4-P2c">
-                                        <rect key="frame" x="139" y="263" width="42" height="21"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                        <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
-                                </subviews>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
-                            </view>
                         </subviews>
                         <constraints>
                             <constraint firstItem="YFY-fR-cea" firstAttribute="top" secondItem="Zjp-f4-diu" secondAttribute="bottom" id="1bc-cC-1JT"/>
-                            <constraint firstItem="9oH-sD-xSZ" firstAttribute="top" secondItem="Zjp-f4-diu" secondAttribute="bottom" id="3gH-p3-Put"/>
-                            <constraint firstItem="ZXG-1i-7LC" firstAttribute="top" secondItem="9oH-sD-xSZ" secondAttribute="bottom" id="85C-uI-SmW"/>
                             <constraint firstAttribute="bottom" secondItem="YFY-fR-cea" secondAttribute="bottom" id="C9X-gd-VNt"/>
-                            <constraint firstItem="9oH-sD-xSZ" firstAttribute="leading" secondItem="vp3-HK-M7j" secondAttribute="leading" id="XGL-1A-npc"/>
                             <constraint firstItem="Zjp-f4-diu" firstAttribute="leading" secondItem="vp3-HK-M7j" secondAttribute="leading" id="Y4h-6w-h8Y"/>
                             <constraint firstItem="YFY-fR-cea" firstAttribute="leading" secondItem="vp3-HK-M7j" secondAttribute="leading" id="cS8-Jx-qoU"/>
                             <constraint firstItem="Zjp-f4-diu" firstAttribute="top" secondItem="vp3-HK-M7j" secondAttribute="top" id="jsf-R5-0x3"/>
                             <constraint firstAttribute="trailing" secondItem="Zjp-f4-diu" secondAttribute="trailing" id="kJ0-JP-Upm"/>
-                            <constraint firstAttribute="trailing" secondItem="9oH-sD-xSZ" secondAttribute="trailing" id="lWd-0w-pjH"/>
                             <constraint firstAttribute="trailing" secondItem="YFY-fR-cea" secondAttribute="trailing" id="pdT-Xb-ZkM"/>
                         </constraints>
                     </view>

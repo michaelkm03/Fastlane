@@ -16,6 +16,8 @@
 #import "VObjectManager+SequenceFilters.h"
 #import "VThemeManager.h"
 
+#import "VNoContentView.h"
+
 
 NS_ENUM(NSUInteger, VModeSelect)
 {
@@ -54,6 +56,13 @@ static  NSString*   kNewsCellViewIdentifier       =   @"VNewsCell";
     self.headerView.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVAccentColor];
 }
 
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    
+    [self setHasMessages:!self.fetchedResultsController.fetchedObjects.count];
+}
+
 #pragma mark - Overrides
 
 - (NSFetchedResultsController *)makeFetchedResultsController
@@ -88,6 +97,31 @@ static  NSString*   kNewsCellViewIdentifier       =   @"VNewsCell";
 }
 
 #pragma mark - UITabvleViewDataSource
+- (void)controllerDidChangeContent:(NSFetchedResultsController *)controller
+{
+    [self setHasMessages:!self.fetchedResultsController.fetchedObjects.count];
+
+    [super controllerDidChangeContent:controller];
+}
+
+- (void)setHasMessages:(BOOL)hasMessages
+{
+    if (hasMessages)
+    {
+        VNoContentView* noMessagesView = [VNoContentView noContentViewWithFrame:self.tableView.frame];
+        self.tableView.backgroundView = noMessagesView;
+        noMessagesView.titleLabel.text = NSLocalizedString(@"NoMessagesTitle", @"");
+        noMessagesView.messageLabel.text = NSLocalizedString(@"NoMessagesMessage", @"");
+        noMessagesView.iconImageView.image = [UIImage imageNamed:@"noMessageIcon"];
+        
+        self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+    }
+    else
+    {
+        self.tableView.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
+        self.tableView.backgroundView = nil;
+    }
+}
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
