@@ -58,6 +58,7 @@
     [self.videoPlayerViewController setItemURL:self.mediaURL withLoopCount:10];
     self.videoPlayerViewController.shouldLoop = YES;
     self.videoPlayerViewController.shouldShowToolbar = NO;
+    self.videoPlayerViewController.shouldFireAnalytics = NO;
 	[self.videoPlayerViewController.player play];
     
     [self.videoPlayerViewController.view addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTapToPlayAction:)]];

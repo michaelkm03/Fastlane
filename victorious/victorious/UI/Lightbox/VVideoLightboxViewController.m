@@ -31,6 +31,7 @@
     {
         self.previewImage = previewImage;
         self.videoURL = videoURL;
+        self.shouldFireAnalytics = YES;
     }
     return self;
 }
@@ -59,6 +60,8 @@
         self.videoPlayer = [[VCVideoPlayerViewController alloc] init];
         self.videoPlayer.delegate = self;
         self.videoPlayer.itemURL = self.videoURL;
+        self.videoPlayer.shouldFireAnalytics = self.shouldFireAnalytics;
+        self.videoPlayer.titleForAnalytics = self.titleForAnalytics;
         
         [self addChildViewController:self.videoPlayer];
         [self.contentSuperview addSubview:self.videoPlayer.view];
@@ -160,6 +163,24 @@
 - (void)setVideoURL:(NSURL *)videoURL
 {
     _videoURL = videoURL;
+}
+
+- (void)setTitleForAnalytics:(NSString *)titleForAnalytics
+{
+    _titleForAnalytics = [titleForAnalytics copy];
+    if (self.videoPlayer)
+    {
+        self.videoPlayer.titleForAnalytics = titleForAnalytics;
+    }
+}
+
+- (void)setShouldFireAnalytics:(BOOL)shouldFireAnalytics
+{
+    _shouldFireAnalytics = shouldFireAnalytics;
+    if (self.videoPlayer)
+    {
+        self.videoPlayer.shouldFireAnalytics = shouldFireAnalytics;
+    }
 }
 
 #pragma mark -

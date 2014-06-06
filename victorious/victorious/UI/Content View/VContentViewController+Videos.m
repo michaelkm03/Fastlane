@@ -62,6 +62,7 @@ static const char kVideoUnloadBlockKey;
     self.shouldPause = NO;
     self.videoPlayer = [[VCVideoPlayerViewController alloc] init];
     self.videoPlayer.delegate = self;
+    self.videoPlayer.titleForAnalytics = self.sequence.name;
     
     [self addChildViewController:self.videoPlayer];
     self.videoPlayer.view.translatesAutoresizingMaskIntoConstraints = NO;
@@ -315,6 +316,7 @@ static const char kVideoUnloadBlockKey;
         {
             if (![self isTitleExpanded])
             {
+                [[VAnalyticsRecorder sharedAnalyticsRecorder] sendEventWithCategory:kVAnalyticsEventCategoryVideo action:@"Start Video" label:self.sequence.name value:nil];
                 [self.videoPlayer.player play];
             }
         }
