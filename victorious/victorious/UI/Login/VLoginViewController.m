@@ -6,6 +6,7 @@
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
+#import "VAnalyticsRecorder.h"
 #import "VLoginViewController.h"
 #import "VConstants.h"
 #import "VUser.h"
@@ -95,9 +96,16 @@
     self.transitionPlaceholder.userInteractionEnabled = YES;
 }
 
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    [[VAnalyticsRecorder sharedAnalyticsRecorder] startAppView:@"Login"];
+}
+
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
+    [[VAnalyticsRecorder sharedAnalyticsRecorder] finishAppView];
     
     // Stop being the navigation controller's delegate
     if (self.navigationController.delegate == self)
@@ -186,6 +194,8 @@
     self.loginEmailButton.userInteractionEnabled = NO;
     self.transitionPlaceholder.userInteractionEnabled = NO;
 
+    [[VAnalyticsRecorder sharedAnalyticsRecorder] sendEventWithCategory:kVAnalyticsEventCategoryUserAccount action:@"Start Login Via Facebook" label:nil value:nil];
+    
     ACAccountStore *accountStore = [[ACAccountStore alloc] init];
     ACAccountType *facebookAccountType = [accountStore accountTypeWithAccountTypeIdentifier:ACAccountTypeIdentifierFacebook];
     [accountStore requestAccessToAccountsWithType:facebookAccountType
@@ -199,6 +209,7 @@
         {
             dispatch_async(dispatch_get_main_queue(), ^(void)
             {
+                [[VAnalyticsRecorder sharedAnalyticsRecorder] sendEventWithCategory:kVAnalyticsEventCategoryUserAccount action:@"Facebook Account Access Denied" label:nil value:nil];
                 [self facebookAccessDidFail:error];
             });
         }
@@ -208,6 +219,7 @@
             {
                 dispatch_async(dispatch_get_main_queue(), ^(void)
                 {
+                    [[VAnalyticsRecorder sharedAnalyticsRecorder] sendEventWithCategory:kVAnalyticsEventCategoryUserAccount action:@"Successful Login Via Facebook" label:nil value:nil];
                     self.profile = user;
                     if (created)
                     {
@@ -223,6 +235,7 @@
             {
                 dispatch_async(dispatch_get_main_queue(), ^(void)
                 {
+                    [[VAnalyticsRecorder sharedAnalyticsRecorder] sendEventWithCategory:kVAnalyticsEventCategoryUserAccount action:@"Failed Login Via Facebook" label:nil value:nil];
                     [self didFailWithError:error];
                 });
             }];
@@ -237,6 +250,8 @@
     self.loginEmailButton.userInteractionEnabled = NO;
     self.transitionPlaceholder.userInteractionEnabled = NO;
     
+    [[VAnalyticsRecorder sharedAnalyticsRecorder] sendEventWithCategory:kVAnalyticsEventCategoryUserAccount action:@"Start Login Via Twitter" label:nil value:nil];
+    
     ACAccountStore* account = [[ACAccountStore alloc] init];
     ACAccountType* accountType = [account accountTypeWithAccountTypeIdentifier:ACAccountTypeIdentifierTwitter];
     [account requestAccessToAccountsWithType:accountType options:nil completion:^(BOOL granted, NSError *error)
@@ -245,6 +260,7 @@
         {
             dispatch_async(dispatch_get_main_queue(), ^(void)
             {
+                [[VAnalyticsRecorder sharedAnalyticsRecorder] sendEventWithCategory:kVAnalyticsEventCategoryUserAccount action:@"Twitter Account Access Denied" label:nil value:nil];
                 [self twitterAccessDidFail:error];
             });
         }
@@ -255,6 +271,7 @@
             {
                 dispatch_async(dispatch_get_main_queue(), ^(void)
                 {
+                    [[VAnalyticsRecorder sharedAnalyticsRecorder] sendEventWithCategory:kVAnalyticsEventCategoryUserAccount action:@"User Has No Twitter Accounts" label:nil value:nil];
                     SLComposeViewController *composeViewController = [SLComposeViewController composeViewControllerForServiceType:SLServiceTypeTwitter];
                     [self presentViewController:composeViewController animated:NO completion:^{
                         [composeViewController dismissViewControllerAnimated:NO completion:nil];
@@ -265,6 +282,7 @@
             {
                 [[VUserManager sharedInstance] loginViaTwitterOnCompletion:^(VUser *user, BOOL created)
                 {
+                    [[VAnalyticsRecorder sharedAnalyticsRecorder] sendEventWithCategory:kVAnalyticsEventCategoryUserAccount action:@"Successful Login Via Twitter" label:nil value:nil];
                     self.profile = user;
                     if (created)
                     {
@@ -277,6 +295,7 @@
                 }
                                                                     onError:^(NSError *error)
                 {
+                    [[VAnalyticsRecorder sharedAnalyticsRecorder] sendEventWithCategory:kVAnalyticsEventCategoryUserAccount action:@"Failed Login Via Twitter" label:nil value:nil];
                     [self didFailWithError:error];
                 }];
             }
@@ -298,6 +317,7 @@
 
 - (IBAction)closeButtonClicked:(id)sender
 {
+    [[VAnalyticsRecorder sharedAnalyticsRecorder] sendEventWithCategory:kVAnalyticsEventCategoryNavigation action:@"Cancel Login" label:nil value:nil];
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 

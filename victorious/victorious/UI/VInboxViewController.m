@@ -6,6 +6,7 @@
 //  Copyright (c) 2013 Victorious Inc. All rights reserved.
 //
 
+#import "VAnalyticsRecorder.h"
 #import "VInboxViewController.h"
 #import "UIViewController+VSideMenuViewController.h"
 #import "VConversation+RestKit.h"
@@ -52,6 +53,18 @@ static  NSString*   kNewsCellViewIdentifier       =   @"VNewsCell";
 //    self.tableView.separatorColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVBackgroundColor];
     self.navigationController.navigationBar.barTintColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVAccentColor];
     self.headerView.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVAccentColor];
+}
+
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    [[VAnalyticsRecorder sharedAnalyticsRecorder] startAppView:@"Inbox"];
+}
+
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+    [[VAnalyticsRecorder sharedAnalyticsRecorder] finishAppView];
 }
 
 #pragma mark - Overrides

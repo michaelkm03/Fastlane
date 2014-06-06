@@ -6,6 +6,7 @@
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
+#import "VAnalyticsRecorder.h"
 #import "VEmotiveBallisticsBarViewController.h"
 #import "VLargeNumberFormatter.h"
 
@@ -137,6 +138,8 @@
         return;
     }
     
+    [[VAnalyticsRecorder sharedAnalyticsRecorder] sendEventWithCategory:kVAnalyticsEventCategoryInteraction action:@"Positive Emotive" label:self.sequence.name value:nil];
+    
     CGFloat x = self.target.center.x + ([self randomFloat] * self.target.frame.size.width / 4);
     CGFloat y = self.target.center.y + ([self randomFloat] * self.target.frame.size.height / 4);
     
@@ -158,6 +161,8 @@
         [self presentViewController:[VLoginViewController loginViewController] animated:YES completion:NULL];
         return;
     }
+    
+    [[VAnalyticsRecorder sharedAnalyticsRecorder] sendEventWithCategory:kVAnalyticsEventCategoryInteraction action:@"Negative Emotive" label:self.sequence.name value:nil];
     
     CGFloat x = self.target.center.x + ([self randomFloat] * self.target.frame.size.width / 4);
     CGFloat y = self.target.center.y + ([self randomFloat] * self.target.frame.size.height / 4);

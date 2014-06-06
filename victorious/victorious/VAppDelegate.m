@@ -11,6 +11,7 @@
 #import "VThemeManager.h"
 #import "VReachability.h"
 
+#import "VAnalyticsRecorder.h"
 #import "VObjectManager+Sequence.h"
 #import "VObjectManager+Login.h"
 #import "VUserManager.h"
@@ -73,6 +74,8 @@
     // Scan for devices.
     [self.chromecastDeviceController performScan:YES];
 
+    [[VAnalyticsRecorder sharedAnalyticsRecorder] startAnalytics];
+    
     NSURL*  openURL =   launchOptions[UIApplicationLaunchOptionsURLKey];
     if (openURL)
         [self handleOpenURL:openURL];

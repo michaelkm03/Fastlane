@@ -6,6 +6,7 @@
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
+#import "VAnalyticsRecorder.h"
 #import "VElapsedTimeFormatter.h"
 #import "VRemixSelectViewController.h"
 #import "VCVideoPlayerViewController.h"
@@ -77,6 +78,18 @@
     
     self.totalTimeLabel.text = [self.elapsedTimeFormatter stringForCMTime:[self.videoPlayerViewController playerItemDuration]];
     self.currentTimeLabel.text = [self.elapsedTimeFormatter stringForCMTime:CMTimeMakeWithSeconds(0, 1)];
+}
+
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    [[VAnalyticsRecorder sharedAnalyticsRecorder] startAppView:@"Remix Select"];
+}
+
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+    [[VAnalyticsRecorder sharedAnalyticsRecorder] finishAppView];
 }
 
 #pragma mark - Actions

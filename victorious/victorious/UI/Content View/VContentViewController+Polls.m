@@ -7,6 +7,7 @@
 //
 
 #import "NSURL+MediaType.h"
+#import "VAnalyticsRecorder.h"
 #import "VAnswer.h"
 #import "VContentViewController+Polls.h"
 #import "VContentViewController+Videos.h"
@@ -188,6 +189,7 @@
         self.imageRequestOperation = imageRequestOperation;
         [imageRequestOperation start];
     }
+    [[VAnalyticsRecorder sharedAnalyticsRecorder] sendEventWithCategory:kVAnalyticsEventCategoryNavigation action:@"Display Poll Media" label:self.sequence.name value:nil];
 }
 
 
@@ -226,6 +228,8 @@
         
         [resultView setProgress:progress animated:YES];
     }
+    
+    [[VAnalyticsRecorder sharedAnalyticsRecorder] sendEventWithCategory:kVAnalyticsEventCategoryInteraction action:@"Answered Poll" label:self.sequence.name value:nil];
 }
 
 - (VResultView*)resultViewForAnswerId:(NSNumber*)answerId

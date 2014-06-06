@@ -6,6 +6,7 @@
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
+#import "VAnalyticsRecorder.h"
 #import "VContentViewController+Images.h"
 #import "VContentViewController+Private.h"
 #import "VContentViewController+Videos.h"
@@ -337,6 +338,7 @@ static const char kVideoUnloadBlockKey;
         return;
     }
 
+    [[VAnalyticsRecorder sharedAnalyticsRecorder] sendEventWithCategory:kVAnalyticsEventCategoryNavigation action:@"Pressed Remix" label:self.sequence.name value:nil];
     UIViewController* remixVC = [VRemixSelectViewController remixViewControllerWithURL:[self.currentAsset.data mp4UrlFromM3U8] sequenceID:[self.sequence.remoteId integerValue] nodeID:[self.currentNode.remoteId integerValue]];
     [self presentViewController:remixVC animated:YES completion:
      ^{

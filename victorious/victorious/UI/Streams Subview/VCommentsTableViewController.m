@@ -6,6 +6,7 @@
 //  Copyright (c) 2013 Victorious, Inc. All rights reserved.
 //
 
+#import "VAnalyticsRecorder.h"
 #import "VCommentsTableViewController.h"
 #import "VConstants.h"
 #import "VThemeManager.h"
@@ -58,7 +59,7 @@ static NSString* CommentCache = @"CommentCache";
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
-    
+    [[VAnalyticsRecorder sharedAnalyticsRecorder] startAppView:@"Comments"];
     [self sortComments];
 }
 
@@ -444,6 +445,7 @@ static NSString* CommentCache = @"CommentCache";
     }
     self.newlyReadComments = nil;
     [super viewWillDisappear:animated];
+    [[VAnalyticsRecorder sharedAnalyticsRecorder] finishAppView];
 }
 
 - (BOOL)shouldPerformSegueWithIdentifier:(NSString *)identifier sender:(id)sender
