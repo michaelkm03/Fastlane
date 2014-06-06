@@ -77,7 +77,6 @@
     [[VObjectManager sharedManager] pollResultsForSequence:self.sequence
                                               successBlock:^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
      {
-         VLog(@"Succeeded with objects: %@", resultObjects);
      }
                                                  failBlock:^(NSOperation* operation, NSError* error)
      {
@@ -219,8 +218,6 @@
                                                         {
                                                             VLog(@"Failed with error: %@", error);
                                                         }];
-
-          VLog(@"Successfully answered: %@", resultObjects);
       }
                                      failBlock:^(NSOperation* operation, NSError* error)
       {

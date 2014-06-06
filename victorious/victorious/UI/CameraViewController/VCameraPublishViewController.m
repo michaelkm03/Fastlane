@@ -149,8 +149,6 @@
                                                mediaURL:self.mediaURL
                                            successBlock:^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
     {
-        VLog(@"Succeeded with objects: %@", resultObjects);
-        
         UIAlertView*    alert   = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"PublishSucceeded", @"")
                                                              message:NSLocalizedString(@"PublishSucceededDetail", @"")
                                                             delegate:nil

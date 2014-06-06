@@ -224,7 +224,6 @@ static NSString* CommentCache = @"CommentCache";
                                    successBlock:^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
                                    {
                                        //TODO:set upvote flag
-                                       VLog(@"resultObjects: %@", resultObjects);
                                    }
                                       failBlock:^(NSOperation* operation, NSError* error)
                                       {
@@ -253,7 +252,6 @@ static NSString* CommentCache = @"CommentCache";
                                       successBlock:^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
                                    {
                                        //TODO:set dislike flag)
-                                       VLog(@"resultObjects: %@", resultObjects);
                                    }
                                          failBlock:^(NSOperation* operation, NSError* error)
                                       {
@@ -267,7 +265,6 @@ static NSString* CommentCache = @"CommentCache";
                                      successBlock:^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
                                       {
                                           //TODO:update UI)
-                                          VLog(@"resultObjects: %@", resultObjects);
                                       }
                                         failBlock:^(NSOperation* operation, NSError* error)
                                          {
@@ -290,7 +287,6 @@ static NSString* CommentCache = @"CommentCache";
                                    successBlock:^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
                                        {
                                            //TODO:set flagged flag)
-                                           VLog(@"resultObjects: %@", resultObjects);
                                        }
                                       failBlock:^(NSOperation* operation, NSError* error)
                                           {

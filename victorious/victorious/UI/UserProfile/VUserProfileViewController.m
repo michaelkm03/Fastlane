@@ -479,8 +479,6 @@ const   CGFloat kVNavigationBarHeight = 44.0;
     [[VObjectManager sharedManager] conversationWithUser:self.profile
                                             successBlock:^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
     {
-        VLog(@"Succeeded with objects: %@", resultObjects);
-        
         VMessageContainerViewController*    composeController   = [[UIStoryboard storyboardWithName:@"Main" bundle:[NSBundle mainBundle]] instantiateViewControllerWithIdentifier:@"messageContainer"];
         composeController.conversation = [resultObjects firstObject];
         [self.navigationController pushViewController:composeController animated:YES];

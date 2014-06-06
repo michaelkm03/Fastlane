@@ -148,7 +148,6 @@
             [[VObjectManager sharedManager] fetchUsers:nonExistantUsers
                                       withSuccessBlock:^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
              {
-                 VLog(@"Succeeded with objects: %@", resultObjects);
                  paginationBlock();
              }
                                              failBlock:^(NSOperation* operation, NSError* error)
@@ -316,7 +315,6 @@
             [[VObjectManager sharedManager] fetchUsers:nonExistantUsers
                                       withSuccessBlock:^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
             {
-                VLog(@"Succeeded with objects: %@", resultObjects);
                 paginationBlock();
             }
                                              failBlock:^(NSOperation* operation, NSError* error)
@@ -358,8 +356,6 @@
     
     VSuccessBlock fullSuccess = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
     {
-        VLog(@"Succeeded with objects: %@", resultObjects);
-        
         dispatch_sync([VObjectManager paginationDispatchQueue], ^
                       {
                           filter.maxPageNumber = @(((NSString*)fullResponse[@"total_pages"]).integerValue);

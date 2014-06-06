@@ -142,7 +142,6 @@ static  NSString*   kNewsCellViewIdentifier       =   @"VNewsCell";
         [[VObjectManager sharedManager] deleteConversation:conversation
                                               successBlock:^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
         {
-            VLog(@"Succeeded with objects: %@", resultObjects);
             NSManagedObjectContext* context =   conversation.managedObjectContext;
             [context deleteObject:conversation];
             [context saveToPersistentStore:nil];

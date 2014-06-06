@@ -27,16 +27,21 @@
 #import "VUnreadConversation+RestKit.h"
 #import "VVoteType+RestKit.h"
 
+#define EnableRestKitLogs 0 // Set to "1" to see RestKit logging, but please remember to set it back to "0" before committing your changes.
+
 @implementation VObjectManager
 
 @synthesize mainUser;
 
 + (void)setupObjectManager
 {
-//#if DEBUG
+#if DEBUG && EnableRestKitLogs
     RKLogConfigureByName("RestKit/Network", RKLogLevelTrace);
-//    RKLogConfigureByName("RestKit/ObjectMapping", RKLogLevelTrace);
-//#endif
+    RKLogConfigureByName("RestKit/ObjectMapping", RKLogLevelTrace);
+#warning RestKit logging is enabled. Please remember to disable it when you're done debugging.
+#else
+    RKLogConfigureByName("*", RKLogLevelOff);
+#endif
     
     VObjectManager *manager = [self managerWithBaseURL:[[self currentEnvironment] baseURL]];
     
@@ -161,7 +166,6 @@
             NSMutableDictionary *JSON = [[NSJSONSerialization JSONObjectWithData:operation.HTTPRequestOperation.responseData options:0 error:nil] mutableCopy];
             if (![JSON[@"payload"] isKindOfClass:[NSDictionary class]])
             {
-                VLog(@"JSON before payload class check: %@", JSON[@"payload"]);
                 [JSON removeObjectForKey:@"payload"];
             }
             successBlock(operation, JSON, mappedObjects);
@@ -364,13 +368,6 @@
                              userAgent,
                              token,
                              RKStringFromRequestMethod(method)] SHA1HexDigest];
-    
-    VLog(@"sha1String before sha1: %@", [NSString stringWithFormat:@"%@%@%@%@%@",
-                                         currentDate,
-                                         path,
-                                         userAgent,
-                                         token,
-                                         RKStringFromRequestMethod(method)]);
     
     NSNumber* userID = mainUser.remoteId;
     sha1String = [NSString stringWithFormat:@"Basic %@:%@", userID, sha1String];
