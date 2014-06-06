@@ -52,6 +52,9 @@
 "NoMessagesTitle"       =   "NO MESSAGES YET";
 "NoMessagesMessage"     =   "You can send messages to anyone on the app!  Just go to their profile and click the compose icon in the top right corner.";
 
+"NoCommentsTitle"       =   "BE THE 1ST TO COMMENT!";
+"NoCommentsMessage"     =   "Post text, photo or video comments, and see what others say!";
+
 "FacebookDeniedTitle"   =   "Could not access your Facebook account";
 "FacebookDenied"        =   "Please grant access to your Facebook account in Settings -> Facebook";
 

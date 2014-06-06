@@ -28,6 +28,8 @@
 
 #import "UIImage+ImageCreation.h"
 
+#import "VNoContentView.h"
+
 
 @import Social;
 
@@ -66,6 +68,8 @@ static NSString* CommentCache = @"CommentCache";
 {
     _sequence = sequence;
     
+    [self setHasComments:self.sequence.commentCount.integerValue];
+    
     self.title = sequence.name;
     
     [self sortComments];
@@ -93,6 +97,10 @@ static NSString* CommentCache = @"CommentCache";
     {
         [self sortCommentsByDate];
 
+        //Only do the animation if we have comments.
+        if (![self.sortedComments count])
+            return;
+        
         __block CGRect frame = self.view.frame;
         frame.origin.x = CGRectGetWidth(self.view.frame);
         self.view.frame = frame;
@@ -130,6 +138,25 @@ static NSString* CommentCache = @"CommentCache";
 - (void)sortCommentsByPopular
 {
     //TODO: add sort by popular
+}
+
+- (void)setHasComments:(BOOL)hasComments
+{
+    if (!hasComments)
+    {
+        VNoContentView* noCommentsView = [VNoContentView noContentViewWithFrame:self.tableView.frame];
+        self.tableView.backgroundView = noCommentsView;
+        noCommentsView.titleLabel.text = NSLocalizedString(@"NoCommentsTitle", @"");
+        noCommentsView.messageLabel.text = NSLocalizedString(@"NoCommentsMessage", @"");
+        noCommentsView.iconImageView.image = [UIImage imageNamed:@"noCommentIcon"];
+        
+        self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+    }
+    else
+    {
+        self.tableView.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
+        self.tableView.backgroundView = nil;
+    }
 }
 
 #pragma mark - IBActions

@@ -7,7 +7,7 @@
 //
 
 #import "VNoContentView.h"
-
+#import "VThemeManager.h"
 
 @implementation VNoContentView
 
@@ -16,6 +16,8 @@
     VNoContentView* noContentView = [[[NSBundle mainBundle] loadNibNamed:@"VNoContentView" owner:self options:nil] objectAtIndex:0];
     
     noContentView.frame = frame;
+    noContentView.titleLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeading1Font];
+    noContentView.messageLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeading4Font];
     
     return noContentView;
 }
