@@ -63,7 +63,8 @@
 
     self.usernameTextField.delegate = self;
     self.usernameTextField.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeaderFont];
-    self.usernameTextField.text = self.profile.name;
+    if (self.loginType != kVLoginTypeEmail)
+        self.usernameTextField.text = self.profile.name;
     self.usernameTextField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:self.usernameTextField.placeholder attributes:@{NSForegroundColorAttributeName : [UIColor colorWithWhite:0.14 alpha:1.0]}];
     
     self.locationTextField.delegate = self;
@@ -95,6 +96,8 @@
     NSRange linkRange = [self.agreementText.text rangeOfString:[[VThemeManager sharedThemeManager] themedStringForKey:kVAgreementLinkText]];
     if (linkRange.length > 0)
     {
+        self.agreementText.linkAttributes = @{(NSString *)
+                                              kCTUnderlineStyleAttributeName : @(kCTUnderlineStyleSingle)};
         NSURL *url = [NSURL URLWithString:[[VThemeManager sharedThemeManager] themedStringForKey:kVAgreementLink]];
         [self.agreementText addLinkToURL:url withRange:linkRange];
     }
@@ -114,6 +117,8 @@
     self.navigationController.navigationBar.shadowImage = [[UIImage alloc] init];
     self.navigationController.navigationBar.translucent = YES;
     [self.navigationController setNavigationBarHidden:NO animated:NO];
+    
+    self.navigationItem.hidesBackButton = YES;
 
     [self.usernameTextField becomeFirstResponder];
     [self.locationManager startMonitoringSignificantLocationChanges];
@@ -308,6 +313,8 @@
                                                           target:nil
                                                           action:nil];
     
+    [self.countDownLabel setTitleTextAttributes:@{NSForegroundColorAttributeName : [UIColor colorWithWhite:0.71 alpha:1.0]} forState:UIControlStateNormal];
+
     toolbar.items = @[flexibleSpace, self.countDownLabel];
     self.taglineTextView.inputAccessoryView = toolbar;
 }

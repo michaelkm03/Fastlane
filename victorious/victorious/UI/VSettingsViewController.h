@@ -8,15 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-extern  NSString*   const   kAccountUpdateViewControllerDomain;
-
-NS_ENUM(NSUInteger, VAccountUpdateViewControllerErrorCode)
-{
-    VAccountUpdateViewControllerBadUsernameErrorCode,
-    VAccountUpdateViewControllerBadPasswordErrorCode,
-    VAccountUpdateViewControllerBadEmailAddressErrorCode
-};
-
 @interface VSettingsViewController : UITableViewController
 
 + (VSettingsViewController *)settingsViewController;

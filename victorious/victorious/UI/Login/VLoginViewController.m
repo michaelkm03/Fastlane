@@ -14,6 +14,7 @@
 #import "VProfileCreateViewController.h"
 #import "VUserManager.h"
 #import "VLoginTransitionAnimator.h"
+#import "VSignupTransitionAnimation.h"
 #import "UIImage+ImageCreation.h"
 
 @import Accounts;
@@ -35,6 +36,7 @@
 
 @property (nonatomic, assign)           VLoginType      loginType;
 @property (nonatomic, assign)           BOOL            animateToLogin;
+@property (nonatomic, assign)           BOOL            animateToSignup;
 @end
 
 @implementation VLoginViewController
@@ -86,6 +88,11 @@
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithImage:cancelButtonImage style:UIBarButtonItemStyleBordered target:self action:@selector(closeButtonClicked:)];
     
     self.navigationController.delegate = self;
+
+    self.facebookButton.userInteractionEnabled = YES;
+    self.twitterButton.userInteractionEnabled = YES;
+    self.loginEmailButton.userInteractionEnabled = YES;
+    self.transitionPlaceholder.userInteractionEnabled = YES;
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -285,11 +292,7 @@
 
 - (IBAction)signup:(id)sender
 {
-    self.facebookButton.userInteractionEnabled = NO;
-    self.twitterButton.userInteractionEnabled = NO;
-    self.loginEmailButton.userInteractionEnabled = NO;
-    self.transitionPlaceholder.userInteractionEnabled = NO;
-    
+    self.animateToSignup = YES;
     [self performSegueWithIdentifier:@"toSignup" sender:self];
 }
 
@@ -326,6 +329,15 @@
         self.animateToLogin = NO;
         
         VLoginTransitionAnimator*   animator = [[VLoginTransitionAnimator alloc] init];
+        animator.presenting = (operation == UINavigationControllerOperationPush);
+        return animator;
+    }
+    
+    if (self.animateToSignup)
+    {
+        self.animateToSignup = NO;
+        
+        VSignupTransitionAnimation* animator = [[VSignupTransitionAnimation alloc] init];
         animator.presenting = (operation == UINavigationControllerOperationPush);
         return animator;
     }

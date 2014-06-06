@@ -12,4 +12,12 @@
 @end
 
 @implementation VPrivacyPoliciesViewController
+
+#pragma mark - Actions
+
+- (IBAction)goBack:(id)sender
+{
+    [self.navigationController popViewControllerAnimated:YES];
+}
+
 @end

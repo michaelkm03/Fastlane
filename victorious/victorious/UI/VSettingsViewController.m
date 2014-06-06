@@ -6,37 +6,35 @@
 //  Copyright (c) 2014 Will Long. All rights reserved.
 //
 
-#import "VEnvironment.h"
+@import MessageUI;
+
 #import "VSettingsViewController.h"
 #import "UIViewController+VSideMenuViewController.h"
 #import "VWebContentViewController.h"
 #import "VThemeManager.h"
 #import "VObjectManager+Environment.h"
 #import "VObjectManager+Login.h"
-#import "VUser.h"
 #import "VUserManager.h"
-
+#import "VEnvironment.h"
 #import "VAppDelegate.h"
 #import "ChromecastDeviceController.h"
+#import "VLoginViewController.h"
 
-NSString*   const   kAccountUpdateViewControllerDomain =   @"VAccountUpdateViewControllerDomain";
+static const NSInteger kSettingsSectionIndex         = 0;
+static const NSInteger kChangePasswordIndex          = 0;
+static const NSInteger kChromecastButtonIndex        = 2;
+static const NSInteger kServerEnvironmentButtonIndex = 3;
 
-static const NSInteger kSettingsSectionIndex         = 1;
-static const NSInteger kChromecastButtonIndex        = 0;
-static const NSInteger kServerEnvironmentButtonIndex = 1;
-
-@interface VSettingsViewController ()   <UITextFieldDelegate, ChromecastControllerDelegate>
-@property (weak, nonatomic) IBOutlet UITextField *nameTextField;
-@property (weak, nonatomic) IBOutlet UITextField *emailAddressTextField;
-@property (weak, nonatomic) IBOutlet UITextField *passwordTextField;
+@interface VSettingsViewController ()   <ChromecastControllerDelegate, MFMailComposeViewControllerDelegate, UIAlertViewDelegate>
 @property (weak, nonatomic) IBOutlet UIButton *logoutButton;
-@property (weak, nonatomic) IBOutlet UIButton *saveChangesButton;
 @property (weak, nonatomic) IBOutlet UITableViewCell *serverEnvironmentCell;
 
 @property (nonatomic, weak) ChromecastDeviceController*     chromeCastController;
 @property (nonatomic, assign) BOOL    showChromeCastButton;
 @property (nonatomic, assign) BOOL    showEnvironmentSetting;
 
+@property (strong, nonatomic) IBOutletCollection(UILabel) NSArray* labels;
+@property (strong, nonatomic) IBOutletCollection(UILabel) NSArray* rightLabels;
 @end
 
 @implementation VSettingsViewController
@@ -49,33 +47,41 @@ static const NSInteger kServerEnvironmentButtonIndex = 1;
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-
-    self.nameTextField.delegate =   self;
-    self.emailAddressTextField.delegate =   self;
-    self.passwordTextField.delegate =   self;
     
-    BOOL    enabledState    = [VObjectManager sharedManager].isAuthorized;
-    self.logoutButton.enabled = enabledState;
-    [self.logoutButton setTitleColor:[UIColor lightGrayColor] forState:UIControlStateDisabled];
-    self.saveChangesButton.enabled = enabledState;
-    [self.saveChangesButton setTitleColor:[UIColor lightGrayColor] forState:UIControlStateDisabled];
-    self.nameTextField.enabled = enabledState;
-    self.emailAddressTextField.enabled = enabledState;
-    self.passwordTextField.enabled = enabledState;
+    self.tableView.backgroundColor = [UIColor colorWithWhite:0.97 alpha:1.0];
     
-    if (enabledState)
-    {
-        VUser*  mainUser = [VObjectManager sharedManager].mainUser;
-        
-        self.nameTextField.text = mainUser.name;
-        self.emailAddressTextField.text = mainUser.email;
-    }
+    [self.labels enumerateObjectsUsingBlock:^(UILabel *label, NSUInteger idx, BOOL *stop)
+     {
+         label.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeaderFont];
+     }];
+    [self.rightLabels enumerateObjectsUsingBlock:^(UILabel *label, NSUInteger idx, BOOL *stop)
+     {
+         label.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeading3Font];
+     }];
 }
 
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
     
+    if ([VObjectManager sharedManager].isAuthorized)
+    {
+        [self.logoutButton setTitle:NSLocalizedString(@"Logout", @"") forState:UIControlStateNormal];
+        [self.logoutButton setTitleColor:[UIColor colorWithWhite:0.14 alpha:1.0] forState:UIControlStateNormal];
+        self.logoutButton.layer.borderWidth = 2.0;
+        self.logoutButton.layer.cornerRadius = 3.0;
+        self.logoutButton.layer.borderColor = [UIColor colorWithWhite:0.14 alpha:1.0].CGColor;
+        self.logoutButton.backgroundColor = [UIColor clearColor];
+    }
+    else
+    {
+        [self.logoutButton setTitle:NSLocalizedString(@"Login", @"") forState:UIControlStateNormal];
+        [self.logoutButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+        self.logoutButton.layer.borderWidth = 0.0;
+        self.logoutButton.layer.cornerRadius = 0.0;
+        self.logoutButton.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
+    }
+
     self.chromeCastController = [VAppDelegate sharedAppDelegate].chromecastDeviceController;
     self.chromeCastController.delegate = self;
     
@@ -107,180 +113,30 @@ static const NSInteger kServerEnvironmentButtonIndex = 1;
     return NO;
 }
 
-- (UIStatusBarAnimation)preferredStatusBarUpdateAnimation
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return UIStatusBarAnimationSlide;
-}
-
-#pragma mark - Validation
-
-- (BOOL)shouldUpdateEmailAddress:(NSString *)emailAddress password:(NSString *)password username:(NSString *)username
-{
-    NSError*    theError;
-    
-    if (![self validateUsername:&username error:&theError])
-    {
-        UIAlertView*    alert   =   [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"InvalidCredentials", @"")
-                                                               message:theError.localizedDescription
-                                                              delegate:nil
-                                                     cancelButtonTitle:NSLocalizedString(@"OKButton", @"")
-                                                     otherButtonTitles:nil];
-        [alert show];
-        [[self view] endEditing:YES];
-        return NO;
-    }
-    
-    if (![self validateEmailAddress:&emailAddress error:&theError])
-    {
-        UIAlertView*    alert   =   [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"InvalidCredentials", @"")
-                                                               message:theError.localizedDescription
-                                                              delegate:nil
-                                                     cancelButtonTitle:NSLocalizedString(@"OKButton", @"")
-                                                     otherButtonTitles:nil];
-        [alert show];
-        [[self view] endEditing:YES];
-        return NO;
-    }
-    
-    if (![self validatePassword:&password error:&theError])
-    {
-        UIAlertView*    alert   =   [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"InvalidCredentials", @"")
-                                                               message:theError.localizedDescription
-                                                              delegate:nil
-                                                     cancelButtonTitle:NSLocalizedString(@"OKButton", @"")
-                                                     otherButtonTitles:nil];
-        [alert show];
-        [[self view] endEditing:YES];
-        return NO;
-    }
-    
-    return YES;
-}
-
-- (BOOL)validateUsername:(id *)ioValue error:(NSError * __autoreleasing *)outError
-{
-    if ((*ioValue == nil) || ([(NSString *)*ioValue length] < 8))
-    {
-        if (outError != NULL)
-        {
-            NSString *errorString = NSLocalizedString(@"UsernameValidation", @"Invalid Username");
-            NSDictionary*   userInfoDict = @{ NSLocalizedDescriptionKey : errorString };
-            *outError   =   [[NSError alloc] initWithDomain:kAccountUpdateViewControllerDomain
-                                                       code:VAccountUpdateViewControllerBadPasswordErrorCode
-                                                   userInfo:userInfoDict];
-        }
-        
-        return NO;
-    }
-    
-    return YES;
-}
-
-- (BOOL)validateEmailAddress:(id *)ioValue error:(NSError * __autoreleasing *)outError
-{
-    static  NSString *emailRegEx =
-    @"(?:[A-Za-z0-9!#$%\\&'*+/=?\\^_`{|}~-]+(?:\\.[A-Za-z0-9!#$%\\&'*+/=?\\^_`{|}"
-    @"~-]+)*|\"(?:[\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x21\\x23-\\x5b\\x5d-\\"
-    @"x7f]|\\\\[\\x01-\\x09\\x0b\\x0c\\x0e-\\x7f])*\")@(?:(?:[A-Za-z0-9](?:[a-"
-    @"z0-9-]*[A-Za-z0-9])?\\.)+[A-Za-z0-9](?:[A-Za-z0-9-]*[A-Za-z0-9])?|\\[(?:(?:25[0-5"
-    @"]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-"
-    @"9][0-9]?|[A-Za-z0-9-]*[A-Za-z0-9]:(?:[\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x21"
-    @"-\\x5a\\x53-\\x7f]|\\\\[\\x01-\\x09\\x0b\\x0c\\x0e-\\x7f])+)\\])";
-    
-    NSPredicate*  emailTest =   [NSPredicate predicateWithFormat:@"SELF MATCHES %@", emailRegEx];
-    if (!(*ioValue && [emailTest evaluateWithObject:*ioValue]))
-    {
-        if (outError != NULL)
-        {
-            NSString *errorString = NSLocalizedString(@"EmailValidation", @"Invalid Email Address");
-            NSDictionary*   userInfoDict = @{ NSLocalizedDescriptionKey : errorString };
-            *outError   =   [[NSError alloc] initWithDomain:kAccountUpdateViewControllerDomain
-                                                       code:VAccountUpdateViewControllerBadEmailAddressErrorCode
-                                                   userInfo:userInfoDict];
-        }
-        
-        return NO;
-    }
-    
-    return YES;
-}
-
-- (BOOL)validatePassword:(id *)ioValue error:(NSError * __autoreleasing *)outError
-{
-    if ((*ioValue == nil) || ([(NSString *)*ioValue length] < 8))
-    {
-        if (outError != NULL)
-        {
-            NSString *errorString = NSLocalizedString(@"PasswordValidation", @"Invalid Password");
-            NSDictionary*   userInfoDict = @{ NSLocalizedDescriptionKey : errorString };
-            *outError   =   [[NSError alloc] initWithDomain:kAccountUpdateViewControllerDomain
-                                                       code:VAccountUpdateViewControllerBadPasswordErrorCode
-                                                   userInfo:userInfoDict];
-        }
-        
-        return NO;
-    }
-    
-    return YES;
-}
-
-#pragma mark - State
-
-- (void)didUpdate
-{
-
-}
-
-- (void)didFailToUpdate:(NSError *)error
-{
-    UIAlertView*    alert   =   [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"AccountUpdateFail", @"")
-                                                           message:error.localizedDescription
-                                                          delegate:nil
-                                                 cancelButtonTitle:NSLocalizedString(@"OKButton", @"")
-                                                 otherButtonTitles:nil];
-    [alert show];
+    if (0 == indexPath.section && 1 == indexPath.row)
+        [self sendHelp:self];
 }
 
 #pragma mark - Actions
 
-- (IBAction)saveChangesClicked:(id)sender
-{
-    [[self view] endEditing:YES];
-    
-    if (YES == [self shouldUpdateEmailAddress:self.emailAddressTextField.text
-                                     password:self.passwordTextField.text
-                                     username:self.passwordTextField.text])
-    {
-        VSuccessBlock success = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
-        {
-            [self didUpdate];
-        };
-        
-        VFailBlock fail = ^(NSOperation* operation, NSError* error)
-        {
-            [self didFailToUpdate:error];
-        };
-
-        [[VObjectManager sharedManager] updateVictoriousWithEmail:self.emailAddressTextField.text
-                                                         password:self.passwordTextField.text
-                                                             name:self.nameTextField.text
-                                                  profileImageURL:nil
-                                                         location:nil
-                                                          tagline:nil
-                                                     successBlock:success
-                                                        failBlock:fail];
-    }
-}
-
 - (IBAction)logout:(id)sender
 {
-    [[VUserManager sharedInstance] logout];
+    if ([VObjectManager sharedManager].isAuthorized)
+    {
+        [[VUserManager sharedInstance] logout];
+        [self.logoutButton setTitle:NSLocalizedString(@"Login", @"") forState:UIControlStateNormal];
+        [self.logoutButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+        self.logoutButton.layer.borderWidth = 0.0;
+        self.logoutButton.layer.cornerRadius = 0.0;
+        self.logoutButton.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
+    }
+    else
+        [self presentViewController:[VLoginViewController loginViewController] animated:YES completion:NULL];
 
-    self.logoutButton.enabled = NO;
-    self.saveChangesButton.enabled = NO;
-    self.nameTextField.enabled = NO;
-    self.emailAddressTextField.enabled = NO;
-    self.passwordTextField.enabled = NO;
+    [self.tableView beginUpdates];
+    [self.tableView endUpdates];
 }
 
 - (IBAction)showMenu
@@ -306,25 +162,6 @@ static const NSInteger kServerEnvironmentButtonIndex = 1;
     {
         viewController.urlKeyPath = kVChannelURLAcknowledgements;
     }
-}
-
-#pragma mark - UITextFieldDelegate
-
-- (BOOL)textFieldShouldReturn:(UITextField *)textField
-{
-    if ([textField isEqual:self.nameTextField])
-        [self.emailAddressTextField becomeFirstResponder];
-    else if ([textField isEqual:self.emailAddressTextField])
-        [self.passwordTextField becomeFirstResponder];
-    else
-        [self.passwordTextField resignFirstResponder];
-    
-    return YES;
-}
-
-- (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
-{
-    [[self view] endEditing:YES];
 }
 
 #pragma mark - ChromecastControllerDelegate
@@ -395,8 +232,69 @@ static const NSInteger kServerEnvironmentButtonIndex = 1;
             return 0;
         }
     }
+    else if (kSettingsSectionIndex == indexPath.section && kChangePasswordIndex == indexPath.row)
+    {
+        if ([VObjectManager sharedManager].isAuthorized)
+            return self.tableView.rowHeight;
+        else
+            return 0;
+    }
     
     return self.tableView.rowHeight;
+}
+
+- (IBAction)sendHelp:(id)sender
+{
+    if ([MFMailComposeViewController canSendMail])
+    {
+        // The style is removed then re-applied so the mail compose view controller has the default appearance
+        [[VThemeManager sharedThemeManager] removeStyling];
+        
+        MFMailComposeViewController*    mailComposer = [[MFMailComposeViewController alloc] init];
+        mailComposer.mailComposeDelegate = self;
+        
+        [mailComposer setSubject:NSLocalizedString(@"HelpNeeded", @"Need Help")];
+        [mailComposer setToRecipients:@[[[VThemeManager sharedThemeManager] themedStringForKey:kVChannelURLSupport]]];
+        
+        //  Dismiss the menu controller first, since we want to be a child of the root controller
+        [self presentViewController:mailComposer animated:YES completion:nil];
+        [[VThemeManager sharedThemeManager] applyStyling];
+    }
+    else
+    {
+        UIAlertView*    alert   =   [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"NoEmail", @"Email not setup title")
+                                                               message:NSLocalizedString(@"NoEmailDetail", @"Email not setup")
+                                                              delegate:self
+                                                     cancelButtonTitle:NSLocalizedString(@"CancelButton", @"Cancel")
+                                                     otherButtonTitles:NSLocalizedString(@"SetupButton", @"Setup"), nil];
+        [alert show];
+    }
+}
+
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    if (alertView.cancelButtonIndex != buttonIndex)
+    {
+        // opening mailto: when there are no valid email accounts registered will open the mail app to setup an account
+        [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"mailto:"]];
+    }
+}
+
+#pragma mark - MFMailComposeViewControllerDelegate
+
+- (void)mailComposeController:(MFMailComposeViewController*)controller didFinishWithResult:(MFMailComposeResult)result error:(NSError*)error
+{
+    if (MFMailComposeResultFailed == result)
+    {
+        UIAlertView*    alert   =   [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"EmailFail", @"Unable to Email")
+                                                               message:error.localizedDescription
+                                                              delegate:nil
+                                                     cancelButtonTitle:NSLocalizedString(@"OKButton", @"OK")
+                                                     otherButtonTitles:nil];
+        [alert show];
+    }
+    
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 @end
