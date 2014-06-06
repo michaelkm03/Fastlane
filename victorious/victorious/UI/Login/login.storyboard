@@ -31,7 +31,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="DEt-dq-bzY">
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="DEt-dq-bzY">
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             </imageView>
@@ -68,6 +68,9 @@
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Log in With Facebook" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tgS-Dw-MLG">
                                 <rect key="frame" x="84" y="417" width="205" height="21"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="205" id="C4A-0F-Skn"/>
+                                </constraints>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                 <nil key="highlightedColor"/>
@@ -75,6 +78,9 @@
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Log in With Twitter" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3q4-yP-lYm">
                                 <rect key="frame" x="84" y="477" width="205" height="21"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="205" id="WeP-7U-spk"/>
+                                </constraints>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                 <nil key="highlightedColor"/>
@@ -111,9 +117,32 @@
                                     </label>
                                 </subviews>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="288" id="hf2-DK-V0B"/>
+                                    <constraint firstAttribute="height" constant="98" id="jfD-cL-Pdu"/>
+                                </constraints>
                             </view>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="c2n-re-bSf" firstAttribute="top" secondItem="Yoh-zd-utn" secondAttribute="bottom" constant="16" id="6yG-Mq-07d"/>
+                            <constraint firstItem="Yoh-zd-utn" firstAttribute="leading" secondItem="t4p-sF-3n6" secondAttribute="leading" id="8jN-Ol-bd0"/>
+                            <constraint firstItem="c2n-re-bSf" firstAttribute="centerY" secondItem="3q4-yP-lYm" secondAttribute="centerY" id="AaS-ea-qBF"/>
+                            <constraint firstItem="DEt-dq-bzY" firstAttribute="leading" secondItem="oJn-Cb-glm" secondAttribute="leading" id="I8r-pu-mXr"/>
+                            <constraint firstItem="Yoh-zd-utn" firstAttribute="centerY" secondItem="tgS-Dw-MLG" secondAttribute="centerY" id="LYm-fQ-6VL"/>
+                            <constraint firstAttribute="trailing" secondItem="DEt-dq-bzY" secondAttribute="trailing" id="O19-ZI-MKW"/>
+                            <constraint firstAttribute="trailing" secondItem="yeM-Dh-LIB" secondAttribute="trailing" constant="20" id="R6c-8q-PPO"/>
+                            <constraint firstItem="DEt-dq-bzY" firstAttribute="top" secondItem="oJn-Cb-glm" secondAttribute="top" id="Tea-LD-G1b"/>
+                            <constraint firstItem="yeM-Dh-LIB" firstAttribute="top" secondItem="c2n-re-bSf" secondAttribute="bottom" constant="8" id="br9-Zi-HcZ"/>
+                            <constraint firstItem="Yoh-zd-utn" firstAttribute="leading" secondItem="tgS-Dw-MLG" secondAttribute="leading" constant="-64" id="dWx-8A-Fee"/>
+                            <constraint firstItem="Yoh-zd-utn" firstAttribute="leading" secondItem="yeM-Dh-LIB" secondAttribute="leading" id="iGm-iW-Bx6"/>
+                            <constraint firstItem="9Aq-IC-kDE" firstAttribute="top" secondItem="DEt-dq-bzY" secondAttribute="bottom" id="kVr-H8-dtD"/>
+                            <constraint firstItem="yeM-Dh-LIB" firstAttribute="leading" secondItem="oJn-Cb-glm" secondAttribute="leading" constant="20" id="ofH-hD-SDS"/>
+                            <constraint firstItem="9Aq-IC-kDE" firstAttribute="top" secondItem="yeM-Dh-LIB" secondAttribute="bottom" constant="8" id="qk3-cg-REQ"/>
+                            <constraint firstItem="Yoh-zd-utn" firstAttribute="top" secondItem="t4p-sF-3n6" secondAttribute="bottom" constant="8" id="vZL-Wj-KE6"/>
+                            <constraint firstItem="Yoh-zd-utn" firstAttribute="leading" secondItem="c2n-re-bSf" secondAttribute="leading" id="vqi-GC-nqj"/>
+                            <constraint firstItem="c2n-re-bSf" firstAttribute="leading" secondItem="3q4-yP-lYm" secondAttribute="leading" constant="-64" id="x12-gh-eYt"/>
+                        </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="isi-ni-Mut"/>
                     <connections>
