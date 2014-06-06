@@ -56,6 +56,9 @@
     [self.trimControlContainer addSubview:self.trimSlider];
     
     [self.scrubber setThumbImage:[UIImage imageNamed:@"cameraScrubberIndicator"] forState:UIControlStateNormal];
+    
+    self.currentTimeLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVLabel3Font];
+    self.totalTimeLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVLabel3Font];
 }
 
 -(void)viewWillAppear:(BOOL)animated
@@ -202,6 +205,11 @@
             });
         }];
     }
+}
+
+- (IBAction)goBack:(id)sender
+{
+    [self.navigationController popViewControllerAnimated:YES];
 }
 
 #pragma mark - Navigation

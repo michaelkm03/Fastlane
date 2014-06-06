@@ -19,7 +19,7 @@
             </objects>
             <point key="canvasLocation" x="-373" y="84"/>
         </scene>
-        <!--Remix Select View Controller - SELECT-->
+        <!--Remix Select View Controller - Select-->
         <scene sceneID="5Zx-Yp-fgh">
             <objects>
                 <viewController id="iXn-fe-oA1" customClass="VRemixSelectViewController" sceneMemberID="viewController">
@@ -65,7 +65,7 @@
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <subviews>
                                     <slider opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="34Z-zI-nC7">
-                                        <rect key="frame" x="0.0" y="31" width="322" height="31"/>
+                                        <rect key="frame" x="17" y="31" width="290" height="31"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <color key="minimumTrackTintColor" red="0.99607843139999996" green="0.28627450980000002" blue="0.28627450980000002" alpha="1" colorSpace="calibratedRGB"/>
                                         <color key="maximumTrackTintColor" red="0.30980392159999998" green="0.30980392159999998" blue="0.30980392159999998" alpha="1" colorSpace="calibratedRGB"/>
@@ -89,7 +89,7 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
                     <toolbarItems/>
-                    <navigationItem key="navigationItem" title="SELECT" id="Uyd-gg-OYC">
+                    <navigationItem key="navigationItem" title="Select" id="Uyd-gg-OYC">
                         <barButtonItem key="leftBarButtonItem" image="cameraButtonClose" id="hs6-mu-6OT">
                             <connections>
                                 <action selector="closeButtonClicked:" destination="iXn-fe-oA1" id="GJD-D8-QTt"/>
@@ -113,7 +113,7 @@
             </objects>
             <point key="canvasLocation" x="57" y="84"/>
         </scene>
-        <!--Remix Trim View Controller - TRIM-->
+        <!--Remix Trim View Controller - Trim-->
         <scene sceneID="n0d-Gw-mVR">
             <objects>
                 <viewController storyboardIdentifier="remixTrim" useStoryboardIdentifierAsRestorationIdentifier="YES" id="uEv-AE-duX" customClass="VRemixTrimViewController" sceneMemberID="viewController">
@@ -197,7 +197,12 @@
                             </view>
                         </subviews>
                     </view>
-                    <navigationItem key="navigationItem" title="TRIM" id="oAM-sY-FT0">
+                    <navigationItem key="navigationItem" title="Trim" id="oAM-sY-FT0">
+                        <barButtonItem key="leftBarButtonItem" image="cameraButtonBack" id="Wxk-Ov-Iz6">
+                            <connections>
+                                <action selector="goBack:" destination="uEv-AE-duX" id="xgO-IH-SJj"/>
+                            </connections>
+                        </barButtonItem>
                         <barButtonItem key="rightBarButtonItem" image="cameraButtonNext" id="ZUw-i1-Ae7">
                             <connections>
                                 <action selector="nextButtonClicked:" destination="uEv-AE-duX" id="qKo-Tu-2T1"/>
@@ -222,7 +227,7 @@
             </objects>
             <point key="canvasLocation" x="482" y="84"/>
         </scene>
-        <!--Remix Stitch View Controller - STITCH-->
+        <!--Remix Stitch View Controller - Stitch-->
         <scene sceneID="te2-Fv-6MP">
             <objects>
                 <viewController storyboardIdentifier="remixStitch" useStoryboardIdentifierAsRestorationIdentifier="YES" id="vMj-SS-k4u" customClass="VRemixStitchViewController" sceneMemberID="viewController">
@@ -296,7 +301,7 @@
                             </view>
                         </subviews>
                     </view>
-                    <navigationItem key="navigationItem" title="STITCH" id="DLc-3A-J8B">
+                    <navigationItem key="navigationItem" title="Stitch" id="DLc-3A-J8B">
                         <barButtonItem key="rightBarButtonItem" image="cameraButtonNext" id="8ZA-Jm-6zK"/>
                     </navigationItem>
                     <connections>
@@ -319,6 +324,7 @@
     <resources>
         <image name="PlayCircle" width="52" height="52"/>
         <image name="PlayTriangle" width="52" height="52"/>
+        <image name="cameraButtonBack" width="22" height="17"/>
         <image name="cameraButtonClose" width="24" height="24"/>
         <image name="cameraButtonNext" width="24" height="24"/>
         <image name="cameraButtonNoLoop" width="106" height="59"/>

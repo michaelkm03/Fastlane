@@ -77,7 +77,7 @@
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zJf-AW-KyK" userLabel="Capture Button">
-                                        <rect key="frame" x="114" y="20" width="91" height="91"/>
+                                        <rect key="frame" x="114" y="10" width="91" height="91"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="91" id="UvB-nc-SvC"/>
@@ -91,7 +91,7 @@
                                         </connections>
                                     </button>
                                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="cameraButtonVideoRecording" translatesAutoresizingMaskIntoConstraints="NO" id="rJt-jY-pJI">
-                                        <rect key="frame" x="114" y="20" width="91" height="91"/>
+                                        <rect key="frame" x="114" y="10" width="91" height="91"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                     </imageView>
                                 </subviews>
@@ -100,21 +100,21 @@
                                     <constraint firstAttribute="centerY" secondItem="W9w-XF-uIU" secondAttribute="centerY" constant="-0.5" id="5WL-Ij-kNM"/>
                                     <constraint firstItem="zJf-AW-KyK" firstAttribute="centerX" secondItem="rJt-jY-pJI" secondAttribute="centerX" id="7h8-JY-9fI"/>
                                     <constraint firstItem="W9w-XF-uIU" firstAttribute="left" secondItem="abs-NM-eiT" secondAttribute="left" constant="20" id="A5R-gK-mQR"/>
-                                    <constraint firstItem="VjD-w5-TpN" firstAttribute="centerY" secondItem="zJf-AW-KyK" secondAttribute="centerY" constant="0.5" id="GgB-yd-nE8"/>
-                                    <constraint firstItem="oAC-V4-Jg0" firstAttribute="centerY" secondItem="zJf-AW-KyK" secondAttribute="centerY" constant="0.5" id="IkT-Gg-o3g"/>
+                                    <constraint firstItem="VjD-w5-TpN" firstAttribute="centerY" secondItem="zJf-AW-KyK" secondAttribute="centerY" constant="10.5" id="GgB-yd-nE8"/>
+                                    <constraint firstItem="oAC-V4-Jg0" firstAttribute="centerY" secondItem="zJf-AW-KyK" secondAttribute="centerY" constant="10.5" id="IkT-Gg-o3g"/>
                                     <constraint firstAttribute="centerX" secondItem="zJf-AW-KyK" secondAttribute="centerX" constant="0.5" id="Jez-18-voO"/>
                                     <constraint firstAttribute="right" secondItem="VjD-w5-TpN" secondAttribute="right" constant="20" id="N8D-7s-Ab5"/>
                                     <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="112" id="RNJ-fi-meW"/>
                                     <constraint firstAttribute="height" priority="250" constant="131" id="Ssz-30-ICj"/>
                                     <constraint firstItem="zJf-AW-KyK" firstAttribute="centerY" secondItem="rJt-jY-pJI" secondAttribute="centerY" id="XPh-c7-y60"/>
                                     <constraint firstItem="zJf-AW-KyK" firstAttribute="width" secondItem="rJt-jY-pJI" secondAttribute="width" id="d5b-8i-hB8"/>
-                                    <constraint firstAttribute="centerY" secondItem="zJf-AW-KyK" secondAttribute="centerY" id="iwR-gd-bbP"/>
+                                    <constraint firstAttribute="centerY" secondItem="zJf-AW-KyK" secondAttribute="centerY" constant="10" id="iwR-gd-bbP"/>
                                     <constraint firstItem="zJf-AW-KyK" firstAttribute="height" secondItem="rJt-jY-pJI" secondAttribute="height" id="nzd-CO-2xd"/>
                                     <constraint firstItem="oAC-V4-Jg0" firstAttribute="leading" secondItem="abs-NM-eiT" secondAttribute="leading" constant="20" id="w3t-cX-a5S"/>
                                 </constraints>
                             </view>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="cameraToolTipImage" translatesAutoresizingMaskIntoConstraints="NO" id="X12-kd-M68">
-                                <rect key="frame" x="85" y="427" width="150" height="31"/>
+                                <rect key="frame" x="85" y="417" width="150" height="31"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="31" id="SQ8-Ib-EOX"/>
@@ -217,7 +217,7 @@
                                         </connections>
                                     </button>
                                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="cameraButtonVideoDone" translatesAutoresizingMaskIntoConstraints="NO" id="fqE-H3-Ghu">
-                                        <rect key="frame" x="114" y="20" width="91" height="91"/>
+                                        <rect key="frame" x="114" y="10" width="91" height="91"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="91" id="qQp-ah-cjq"/>
@@ -231,7 +231,7 @@
                                     <constraint firstAttribute="centerY" secondItem="58y-q4-Eps" secondAttribute="centerY" constant="-0.5" id="XIN-l6-3Da"/>
                                     <constraint firstAttribute="height" priority="750" constant="131" id="ZQr-cu-Pg0"/>
                                     <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="112" id="aPK-Sa-in8"/>
-                                    <constraint firstAttribute="centerY" secondItem="fqE-H3-Ghu" secondAttribute="centerY" id="f4y-ys-baC"/>
+                                    <constraint firstAttribute="centerY" secondItem="fqE-H3-Ghu" secondAttribute="centerY" constant="10" id="f4y-ys-baC"/>
                                     <constraint firstItem="58y-q4-Eps" firstAttribute="left" secondItem="6bF-jL-IYC" secondAttribute="left" constant="20" id="tQa-vc-iKb"/>
                                 </constraints>
                             </view>

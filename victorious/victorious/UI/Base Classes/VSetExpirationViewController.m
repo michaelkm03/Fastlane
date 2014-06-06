@@ -57,6 +57,8 @@
     [self.setExpirationView addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleSetExpirationTapGesture:)]];
     self.setExpirationView.userInteractionEnabled = YES;
     
+    self.setExpirationTextField.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeading2Font];
+    
     [UIView animateWithDuration:0.6 animations:^{
         self.setExpirationTextField.alpha = 1.0;
         self.expirationLine1Label.alpha = 0.0;
