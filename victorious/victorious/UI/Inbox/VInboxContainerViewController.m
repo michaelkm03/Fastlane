@@ -12,7 +12,9 @@
 #import "VConstants.h"
 
 @interface VInboxContainerViewController ()
-
+@property (weak, nonatomic) IBOutlet UIView* noMessagesView;
+@property (weak, nonatomic) IBOutlet UILabel* noMessagesTitleLabel;
+@property (weak, nonatomic) IBOutlet UILabel* noMessagesMessageLabel;
 @end
 
 @implementation VInboxContainerViewController
@@ -25,6 +27,12 @@
     ((VInboxViewController*)container.tableViewController).delegate = container;
     
     return container;
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    self.headerLabel.text = NSLocalizedString(@"Inbox", nil);
 }
 
 //- (IBAction)changedFilterControls:(id)sender

@@ -198,7 +198,7 @@
             else if (conversation.lastMessage && !conversation.lastMessage.user)
                 [nonExistantUsers addObject:conversation.lastMessage.senderUserId];
             
-            if (!conversation.filterAPIPath || [conversation.filterAPIPath isEmpty])
+            if (conversation.remoteId && (!conversation.filterAPIPath || [conversation.filterAPIPath isEmpty]))
             {
                 conversation.filterAPIPath = [@"/api/message/conversation/" stringByAppendingString:conversation.remoteId.stringValue];
             }

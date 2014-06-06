@@ -52,8 +52,6 @@ static  NSString*   kNewsCellViewIdentifier       =   @"VNewsCell";
 //    self.tableView.separatorColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVBackgroundColor];
     self.navigationController.navigationBar.barTintColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVAccentColor];
     self.headerView.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVAccentColor];
-    
-    self.navigationItem.title = NSLocalizedString(@"Inbox", nil);
 }
 
 #pragma mark - Overrides

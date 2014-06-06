@@ -164,9 +164,10 @@
         {
             //Grab the response data, and make sure to process it... we must guarentee that the payload is a dictionary
             NSMutableDictionary *JSON = [[NSJSONSerialization JSONObjectWithData:operation.HTTPRequestOperation.responseData options:0 error:nil] mutableCopy];
-            if (![JSON[@"payload"] isKindOfClass:[NSDictionary class]])
+            id payload = JSON[@"payload"];
+            if (payload && ![payload isKindOfClass:[NSDictionary class]])
             {
-                [JSON removeObjectForKey:@"payload"];
+                JSON[@"payload"] = @{@"objects":payload};
             }
             successBlock(operation, JSON, mappedObjects);
         }
@@ -278,9 +279,11 @@
         NSError             *error                 = [self errorForResponse:responseObject];
         NSMutableDictionary *mutableResponseObject = [responseObject mutableCopy];
         
-        if (mutableResponseObject[@"payload"] && ![mutableResponseObject[@"payload"] isKindOfClass:[NSDictionary class]])
+        id payload = mutableResponseObject[@"payload"];
+        if (payload && ![payload isKindOfClass:[NSDictionary class]])
         {
-            [mutableResponseObject removeObjectForKey:@"payload"];
+            mutableResponseObject[@"payload"] = @{@"objects":payload};
+//            [mutableResponseObject removeObjectForKey:@"payload"];
         }
         
         if (error && failBlock)

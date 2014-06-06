@@ -121,11 +121,14 @@ const   CGFloat     kMessageRowHeight           =   80;
         [self delayedRefresh];
     };
     
+    NSInteger preRefreshCount = self.fetchedResultsController.fetchedObjects.count;
+    
     VSuccessBlock success = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
     {
         [self.refreshControl endRefreshing];
         
-        if (self.tableView.contentSize.height > self.tableView.frame.size.height)
+        if (preRefreshCount < self.fetchedResultsController.fetchedObjects.count &&
+            self.tableView.contentSize.height > self.tableView.frame.size.height)
         {
             CGPoint offset = CGPointMake(self.tableView.contentOffset.x,
                                          self.tableView.contentSize.height - self.tableView.frame.size.height);
