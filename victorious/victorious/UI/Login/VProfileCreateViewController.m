@@ -96,6 +96,8 @@
     NSRange linkRange = [self.agreementText.text rangeOfString:[[VThemeManager sharedThemeManager] themedStringForKey:kVAgreementLinkText]];
     if (linkRange.length > 0)
     {
+        self.agreementText.linkAttributes = @{(NSString *)
+                                              kCTUnderlineStyleAttributeName : @(kCTUnderlineStyleSingle)};
         NSURL *url = [NSURL URLWithString:[[VThemeManager sharedThemeManager] themedStringForKey:kVAgreementLink]];
         [self.agreementText addLinkToURL:url withRange:linkRange];
     }
@@ -115,6 +117,8 @@
     self.navigationController.navigationBar.shadowImage = [[UIImage alloc] init];
     self.navigationController.navigationBar.translucent = YES;
     [self.navigationController setNavigationBarHidden:NO animated:NO];
+    
+    self.navigationItem.hidesBackButton = YES;
 
     [self.usernameTextField becomeFirstResponder];
     [self.locationManager startMonitoringSignificantLocationChanges];

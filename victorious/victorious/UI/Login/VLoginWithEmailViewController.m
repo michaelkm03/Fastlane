@@ -71,6 +71,11 @@ NSString*   const   kVLoginErrorDomain =   @"VLoginErrorDomain";
     
     self.usernameTextField.delegate  =   self;
     self.passwordTextField.delegate  =   self;
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
     
     [self.navigationController setNavigationBarHidden:YES animated:NO];
 }

@@ -162,6 +162,8 @@
 "CannotVerify"          =   "Cannot Verify Account";
 "IncorrectCode"         =   "The 4-digit code used for account verfication is incorrect.";
 
+"IncorrectOldPassword"  =   "The current password is incorrect.";
+
 "Search for an image"   =   "Search for an image";
 "Pull up for more..."   =   "Pull up for more...";
 "No results"            =   "No results";
@@ -175,7 +177,8 @@
 "AccessContactsDenied"  =   "Access to Contacts Denied";
 "CantReadEmailAddresses" =  "You will need to allow this app to access your contacts in your Privacy Settings";
 
-
+"Logout"                =   "Log Out";
+"Login"                 =   "Log In";
 
 
 

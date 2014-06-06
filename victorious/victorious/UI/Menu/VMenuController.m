@@ -6,8 +6,6 @@
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
-@import MessageUI;
-
 #import "VMenuController.h"
 #import "VSideMenuViewController.h"
 #import "UIViewController+VSideMenuViewController.h"
@@ -43,7 +41,7 @@ typedef NS_ENUM(NSUInteger, VMenuControllerRow)
 
 NSString *const VMenuControllerDidSelectRowNotification = @"VMenuTableViewControllerDidSelectRowNotification";
 
-@interface VMenuController ()   <MFMailComposeViewControllerDelegate, UIAlertViewDelegate>
+@interface VMenuController ()
 @property (weak, nonatomic) IBOutlet VBadgeLabel *inboxBadgeLabel;
 @property (weak, nonatomic) IBOutlet UILabel *nameLabel;
 @property (strong, nonatomic) IBOutletCollection(UILabel) NSArray *labels;
@@ -93,6 +91,11 @@ NSString *const VMenuControllerDidSelectRowNotification = @"VMenuTableViewContro
     [super viewWillLayoutSubviews];
 
     self.view.frame = self.view.superview.bounds;
+}
+
+- (UIStatusBarStyle)preferredStatusBarStyle
+{
+    return UIStatusBarStyleLightContent;
 }
 
 #pragma mark - UITableViewDelegate
@@ -198,67 +201,6 @@ NSString *const VMenuControllerDidSelectRowNotification = @"VMenuTableViewContro
     UIView *customColorView = [[UIView alloc] init];
     customColorView.backgroundColor = [UIColor blackColor];
     cell.selectedBackgroundView =  customColorView;
-}
-
-#pragma mark - Actions
-
-- (IBAction)sendHelp:(id)sender
-{
-    if ([MFMailComposeViewController canSendMail])
-    {
-        // The style is removed then re-applied so the mail compose view controller has the default appearance
-        [[VThemeManager sharedThemeManager] removeStyling];
-
-        MFMailComposeViewController*    mailComposer = [[MFMailComposeViewController alloc] init];
-        mailComposer.mailComposeDelegate = self;
-        
-        [mailComposer setSubject:NSLocalizedString(@"HelpNeeded", @"Need Help")];
-        [mailComposer setToRecipients:@[[[VThemeManager sharedThemeManager] themedStringForKey:kVChannelURLSupport]]];
-
-        //  Dismiss the menu controller first, since we want to be a child of the root controller
-        [self presentViewController:mailComposer animated:YES completion:nil];
-        [[VThemeManager sharedThemeManager] applyStyling];
-    }
-    else
-    {
-        UIAlertView*    alert   =   [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"NoEmail", @"Email not setup title")
-                                                               message:NSLocalizedString(@"NoEmailDetail", @"Email not setup")
-                                                              delegate:self
-                                                     cancelButtonTitle:NSLocalizedString(@"CancelButton", @"Cancel")
-                                                     otherButtonTitles:NSLocalizedString(@"SetupButton", @"Setup"), nil];
-        [alert show];
-    }
-}
-
-- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
-{
-    if (alertView.cancelButtonIndex != buttonIndex)
-    {
-        // opening mailto: when there are no valid email accounts registered will open the mail app to setup an account
-        [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"mailto:"]];
-    }
-}
-    
-#pragma mark - MFMailComposeViewControllerDelegate
-
-- (void)mailComposeController:(MFMailComposeViewController*)controller didFinishWithResult:(MFMailComposeResult)result error:(NSError*)error
-{
-    if (MFMailComposeResultFailed == result)
-    {
-        UIAlertView*    alert   =   [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"EmailFail", @"Unable to Email")
-                                                               message:error.localizedDescription
-                                                              delegate:nil
-                                                     cancelButtonTitle:NSLocalizedString(@"OKButton", @"OK")
-                                                     otherButtonTitles:nil];
-        [alert show];
-    }
-
-    [self dismissViewControllerAnimated:YES completion:nil];
-}
-
-- (UIStatusBarStyle)preferredStatusBarStyle
-{
-    return UIStatusBarStyleLightContent;
 }
 
 @end

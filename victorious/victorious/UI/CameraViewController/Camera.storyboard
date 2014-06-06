@@ -450,11 +450,11 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="eIH-lg-ady" userLabel="Set Expiration Button">
-                                <rect key="frame" x="20" y="263" width="25" height="27"/>
+                                <rect key="frame" x="20" y="242" width="43" height="48"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="27" id="HiP-uC-18s"/>
-                                    <constraint firstAttribute="width" constant="25" id="Nik-mD-3X0"/>
+                                    <constraint firstAttribute="height" constant="48" id="HiP-uC-18s"/>
+                                    <constraint firstAttribute="width" constant="43" id="Nik-mD-3X0"/>
                                 </constraints>
                                 <state key="normal" image="cameraButtonStopwatch">
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
@@ -724,7 +724,7 @@
         <image name="cameraButtonOnOff" width="160" height="50"/>
         <image name="cameraButtonPhotoCapture" width="91" height="91"/>
         <image name="cameraButtonPhotoDone" width="91" height="91"/>
-        <image name="cameraButtonStopwatch" width="25" height="27"/>
+        <image name="cameraButtonStopwatch" width="43" height="48"/>
         <image name="cameraButtonSwitchToPhoto" width="34" height="34"/>
         <image name="cameraButtonVideoDone" width="91" height="91"/>
         <image name="cameraButtonVideoRecording" width="91" height="91"/>

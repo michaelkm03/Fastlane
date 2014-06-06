@@ -15,6 +15,7 @@
 #import "VUserManager.h"
 #import "VConstants.h"
 #import "UIImage+ImageEffects.h"
+#import "VSignupTransitionAnimation.h"
 
 NSString*   const   kSignupErrorDomain =   @"VSignupErrorDomain";
 
@@ -41,8 +42,6 @@ NSString*   const   kSignupErrorDomain =   @"VSignupErrorDomain";
     self.emailTextField.delegate = self;
     self.passwordTextField.delegate = self;
     self.confirmPasswordTextField.delegate = self;
-
-    [self.emailTextField becomeFirstResponder];
 
     self.cancelButton.layer.borderColor = [UIColor colorWithWhite:0.14 alpha:1.0].CGColor;
     self.cancelButton.layer.borderWidth = 2.0;
@@ -72,10 +71,12 @@ NSString*   const   kSignupErrorDomain =   @"VSignupErrorDomain";
 {
     [super viewWillAppear:animated];
     
-    [self.navigationController.navigationBar setBackgroundImage:[[UIImage alloc] init] forBarMetrics:UIBarMetricsDefault];
-    self.navigationController.navigationBar.shadowImage = [[UIImage alloc] init];
-    self.navigationController.navigationBar.translucent = YES;
-    [self.navigationController setNavigationBarHidden:NO animated:NO];
+    [self.navigationController setNavigationBarHidden:YES animated:NO];
+}
+
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
     
     [self.emailTextField becomeFirstResponder];
 }
@@ -262,6 +263,16 @@ NSString*   const   kSignupErrorDomain =   @"VSignupErrorDomain";
         profileViewController.profile = self.profile;
         profileViewController.loginType = kVLoginTypeEmail;
     }
+}
+
+- (id<UIViewControllerAnimatedTransitioning>) navigationController:(UINavigationController *)navigationController
+                                   animationControllerForOperation:(UINavigationControllerOperation)operation
+                                                fromViewController:(UIViewController *)fromVC
+                                                  toViewController:(UIViewController *)toVC
+{
+    VSignupTransitionAnimation*   animator = [[VSignupTransitionAnimation alloc] init];
+    animator.presenting = (operation == UINavigationControllerOperationPush);
+    return animator;
 }
 
 @end
