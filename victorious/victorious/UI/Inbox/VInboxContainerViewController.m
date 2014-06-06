@@ -21,7 +21,7 @@
 {
     UIViewController*   currentViewController = [[UIApplication sharedApplication] delegate].window.rootViewController;
     VInboxContainerViewController* container = (VInboxContainerViewController*)[currentViewController.storyboard instantiateViewControllerWithIdentifier: kInboxContainerID];
-    container.tableViewController = [VInboxViewController inboxViewController];
+//    container.tableViewController = [VInboxViewController inboxViewController];
     ((VInboxViewController*)container.tableViewController).delegate = container;
     
     return container;

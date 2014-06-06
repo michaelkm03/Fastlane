@@ -45,9 +45,12 @@
     
     [self.navigationController setNavigationBarHidden:YES animated:NO];
     
-    [self.tableContainerView addSubview:self.tableViewController.view];
-    [self addChildViewController:self.tableViewController];
-    [self.tableViewController didMoveToParentViewController:self];
+    if (self.tableViewController)
+    {
+        [self.tableContainerView addSubview:self.tableViewController.view];
+        [self addChildViewController:self.tableViewController];
+        [self.tableViewController didMoveToParentViewController:self];
+    }
     
     self.headerView.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVAccentColor];
     self.headerView.tintColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVMainTextColor];

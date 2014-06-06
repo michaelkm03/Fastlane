@@ -43,6 +43,8 @@ static  NSString*   kNewsCellViewIdentifier       =   @"VNewsCell";
 {
     [super viewDidLoad];
 
+    self.view.autoresizingMask = UIViewAutoresizingFlexibleWidth |UIViewAutoresizingFlexibleHeight;
+    
     self.modeSelectControl.selectedSegmentIndex = kMessageModeSelect;
     [self modeSelected:self.modeSelectControl];
     
