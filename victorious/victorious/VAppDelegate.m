@@ -18,6 +18,12 @@
 #import "VConstants.h"
 
 @import MediaPlayer;
+@import CoreLocation;
+
+@interface VAppDelegate ()  <CLLocationManagerDelegate>
+@property (nonatomic, strong) CLLocationManager*            locationManager;
+@property (nonatomic, strong) CLGeocoder*                   geoCoder;
+@end
 
 @implementation VAppDelegate
 
@@ -29,7 +35,7 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     srand48(time(0));
-    
+
 //    [application setMinimumBackgroundFetchInterval:UIApplicationBackgroundFetchIntervalMinimum];
 
     [[VThemeManager sharedThemeManager] applyStyling];
@@ -48,7 +54,10 @@
     [[VReachability reachabilityForInternetConnection] startNotifier];
 
     [VObjectManager setupObjectManager];
-    
+
+    [self initLocationForAPIHeader];
+    [self determineLocationForAPIHeader];
+
 #ifdef QA
     [TestFlight takeOff:[[NSBundle mainBundle] objectForInfoDictionaryKey:kTestflightQAToken]];
 #elif STAGING
@@ -91,7 +100,7 @@
 
 - (void)applicationWillEnterForeground:(UIApplication *)application
 {
-    // Called as part of the transition from the background to the inactive state; here you can undo many of the changes made on entering the background.
+    [self determineLocationForAPIHeader];
 }
 
 - (void)applicationDidBecomeActive:(UIApplication *)application
@@ -224,5 +233,45 @@
 {
     
 }
+
+#pragma mark - Location
+
+- (void)initLocationForAPIHeader
+{
+    if ([CLLocationManager locationServicesEnabled] && [CLLocationManager significantLocationChangeMonitoringAvailable])
+    {
+        self.locationManager = [[CLLocationManager alloc] init];
+        self.locationManager.delegate = self;
+    }
+}
+
+- (void)determineLocationForAPIHeader
+{
+    if ([CLLocationManager locationServicesEnabled] && [CLLocationManager significantLocationChangeMonitoringAvailable])
+    {
+        [self.locationManager startMonitoringSignificantLocationChanges];
+    }
+}
+
+#pragma mark - CCLocationManagerDelegate
+
+-(void)locationManager:(CLLocationManager *)manager didUpdateLocations:(NSArray *)locations
+{
+    [self.locationManager  stopMonitoringSignificantLocationChanges];
+    
+    CLLocation *location = [locations lastObject];
+    CLLocationDegrees  latitude = location.coordinate.latitude;
+    CLLocationDegrees  longitude = location.coordinate.longitude;
+    
+    self.geoCoder = [[CLGeocoder alloc] init];
+    [self.geoCoder reverseGeocodeLocation:location completionHandler:^(NSArray *placemarks, NSError *error)
+     {
+         CLPlacemark*       mapLocation = [placemarks firstObject];
+         NSString*          header = [NSString stringWithFormat:@"latitude:%#.4f, longitude:%#.4f, country:%@, iso_country_code:%@, state:%@, city:%@, postal_code:%@",
+                                      latitude, longitude, mapLocation.country, mapLocation.ISOcountryCode, mapLocation.administrativeArea, mapLocation.locality, mapLocation.postalCode];
+         [[[VObjectManager sharedManager] HTTPClient] setDefaultHeader:@"X-Geo-Location" value:header];
+     }];
+}
+
 
 @end
