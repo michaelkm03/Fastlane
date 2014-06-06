@@ -229,8 +229,6 @@
         
         [resultView setProgress:progress animated:YES];
     }
-    
-    [[VAnalyticsRecorder sharedAnalyticsRecorder] sendEventWithCategory:kVAnalyticsEventCategoryInteraction action:@"Answered Poll" label:self.sequence.name value:nil];
 }
 
 - (VResultView*)resultViewForAnswerId:(NSNumber*)answerId
