@@ -242,7 +242,12 @@
     }
 
     BOOL    isDeleteKey = ([text isEqualToString:@""]);
-    if ((textView.text.length >= VConstantsMessageLength) && (!isDeleteKey))
+    
+    NSInteger maxCharLength = VConstantsMessageLength;
+    if ([self.textView.inputAccessoryView isKindOfClass:[VContentInputAccessoryView class]])
+        maxCharLength = ((VContentInputAccessoryView*)self.textView.inputAccessoryView).maxCharacterLength;
+        
+    if ((textView.text.length >= maxCharLength) && (!isDeleteKey))
         return NO;
     
     return YES;

@@ -43,6 +43,8 @@ static  NSString*   kNewsCellViewIdentifier       =   @"VNewsCell";
 {
     [super viewDidLoad];
 
+    self.view.autoresizingMask = UIViewAutoresizingFlexibleWidth |UIViewAutoresizingFlexibleHeight;
+    
     self.modeSelectControl.selectedSegmentIndex = kMessageModeSelect;
     [self modeSelected:self.modeSelectControl];
     
@@ -120,6 +122,11 @@ static  NSString*   kNewsCellViewIdentifier       =   @"VNewsCell";
         return YES;
     else
         return NO;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return kVConversationCellHeight;
 }
 
 - (UITableViewCellEditingStyle)tableView:(UITableView *)tableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath

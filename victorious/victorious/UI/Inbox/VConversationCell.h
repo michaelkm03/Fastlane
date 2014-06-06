@@ -7,6 +7,9 @@
 //
 
 #import "VTableViewCell.h"
+
+extern CGFloat const kVConversationCellHeight;
+
 @class VConversation;
 
 @interface VConversationCell : VTableViewCell
