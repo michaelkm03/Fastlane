@@ -21,7 +21,7 @@
     [self registerCells];
     
     [self refreshFetchController];
-    
+    self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
     self.tableView.backgroundView = [[UIView alloc] initWithFrame:self.tableView.frame];
     self.bottomRefreshIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
     self.bottomRefreshIndicator.frame = CGRectMake(0, 0, 24, 24);

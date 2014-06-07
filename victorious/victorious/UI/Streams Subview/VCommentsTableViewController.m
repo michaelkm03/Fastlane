@@ -56,6 +56,8 @@ static NSString* CommentCache = @"CommentCache";
          forCellReuseIdentifier:kOtherCommentCellIdentifier];
 
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+    //This hides the seperators for empty cells
+    self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
 }
 
 - (void)viewDidAppear:(BOOL)animated
