@@ -267,10 +267,10 @@ static const char kVideoUnloadBlockKey;
                      animations:^(void)
     {
         NSLayoutConstraint *yConstraint = [NSLayoutConstraint constraintWithItem:self.videoPreviewView
-                                                                       attribute:NSLayoutAttributeCenterY
+                                                                       attribute:NSLayoutAttributeTop
                                                                        relatedBy:NSLayoutRelationEqual
                                                                           toItem:self.mediaView
-                                                                       attribute:NSLayoutAttributeCenterY
+                                                                       attribute:NSLayoutAttributeTop
                                                                       multiplier:1.0f
                                                                         constant:0.0f];
         NSLayoutConstraint *xConstraint = [NSLayoutConstraint constraintWithItem:self.videoPreviewView
