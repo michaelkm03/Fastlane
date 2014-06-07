@@ -94,7 +94,8 @@ static const CGFloat kSeeMoreFontSizeRatio = 0.8f;
 {
     NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
     paragraphStyle.alignment = NSTextAlignmentCenter;
-    paragraphStyle.lineHeightMultiple = 1.1f;
+    paragraphStyle.minimumLineHeight = 22.0f;
+    paragraphStyle.maximumLineHeight = 22.0f;
     
     return @{ NSFontAttributeName: [[VThemeManager sharedThemeManager] themedFontForKey:kVHeaderFont],
               NSForegroundColorAttributeName: [[VThemeManager sharedThemeManager] themedColorForKey:kVContentTextColor],
