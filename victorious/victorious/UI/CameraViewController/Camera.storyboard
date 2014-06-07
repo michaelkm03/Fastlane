@@ -478,10 +478,9 @@
                                 </connections>
                             </textView>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xvl-e7-PxB" userLabel="Expiration Label">
-                                <rect key="frame" x="53" y="266" width="247" height="21"/>
+                                <rect key="frame" x="63" y="266" width="237" height="21"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" constant="247" id="MjU-nz-19r"/>
                                     <constraint firstAttribute="height" constant="21" id="pjs-zj-Oxb"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" type="system" pointSize="12"/>
@@ -514,6 +513,7 @@
                             <constraint firstItem="rzj-9i-Pcg" firstAttribute="leading" secondItem="fcy-KG-Paj" secondAttribute="leading" constant="20" id="iFC-CQ-6xQ"/>
                             <constraint firstItem="yxx-6S-3iW" firstAttribute="top" secondItem="Fsz-Xd-hVx" secondAttribute="top" constant="-5" id="jWx-Bg-P4k"/>
                             <constraint firstItem="yxx-6S-3iW" firstAttribute="centerX" secondItem="g4C-sb-DOe" secondAttribute="centerX" id="mMP-7B-tEg"/>
+                            <constraint firstItem="xvl-e7-PxB" firstAttribute="leading" secondItem="eIH-lg-ady" secondAttribute="trailing" id="mdO-Zz-tNR"/>
                             <constraint firstItem="yxx-6S-3iW" firstAttribute="top" secondItem="g4C-sb-DOe" secondAttribute="top" constant="68" id="oMU-hZ-E2J"/>
                             <constraint firstItem="yxx-6S-3iW" firstAttribute="leading" secondItem="Fsz-Xd-hVx" secondAttribute="leading" constant="-5" id="qoS-Ca-Yvs"/>
                             <constraint firstItem="Gg4-zc-aun" firstAttribute="top" secondItem="wOt-la-SB9" secondAttribute="bottom" id="tAU-uU-nUD"/>
