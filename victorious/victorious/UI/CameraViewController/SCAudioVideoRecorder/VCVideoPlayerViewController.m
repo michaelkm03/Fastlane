@@ -2,6 +2,7 @@
 //  VCVideoPlayerViewController.m
 //
 
+#import "VAnalyticsRecorder.h"
 #import "VCVideoPlayerToolbarView.h"
 #import "VCVideoPlayerViewController.h"
 #import "VElapsedTimeFormatter.h"
@@ -22,6 +23,10 @@
 @property (nonatomic)         BOOL                      didPlayToEnd;
 @property (nonatomic, strong) NSTimer                  *toolbarHideTimer;
 @property (nonatomic, strong) NSDate                   *toolbarShowDate;
+@property (nonatomic)         BOOL                      startedVideo;          ///< These BOOLs prevent multiple notifications due to scrubbing of the video past the quarter-points
+@property (nonatomic)         BOOL                      finishedFirstQuartile;
+@property (nonatomic)         BOOL                      finishedMidpoint;
+@property (nonatomic)         BOOL                      finishedThirdQuartile;
 
 @end
 
@@ -43,28 +48,44 @@ static __weak VCVideoPlayerViewController *_currentPlayer = nil;
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self)
     {
-        self.shouldShowToolbar = YES;
-        self.shouldLoop = NO;
-        self.startTime = CMTimeMakeWithSeconds(0, 1);
-        self.player = [[AVPlayer alloc] init];
-        [self.player addObserver:self
-                      forKeyPath:NSStringFromSelector(@selector(currentItem))
-                         options:(NSKeyValueObservingOptionInitial | NSKeyValueObservingOptionNew)
-                         context:NULL];
-        [self.player addObserver:self
-                      forKeyPath:NSStringFromSelector(@selector(rate))
-                         options:(NSKeyValueObservingOptionOld | NSKeyValueObservingOptionNew)
-                         context:NULL];
-
-        VCVideoPlayerViewController * __weak weakSelf = self;
-        self.timeObserver = [self.player addPeriodicTimeObserverForInterval:CMTimeMake(1, 24)
-                                                                      queue:dispatch_get_main_queue()
-                                                                 usingBlock:^(CMTime time)
-        {
-            [weakSelf didPlayToTime:time];
-        }];
+        [self commonInit];
     }
     return self;
+}
+
+- (id)initWithCoder:(NSCoder *)aDecoder
+{
+    self = [super initWithCoder:aDecoder];
+    if (self)
+    {
+        [self commonInit];
+    }
+    return self;
+}
+
+- (void)commonInit
+{
+    self.shouldShowToolbar = YES;
+    self.shouldFireAnalytics = YES;
+    self.shouldLoop = NO;
+    self.startTime = CMTimeMakeWithSeconds(0, 1);
+    self.player = [[AVPlayer alloc] init];
+    [self.player addObserver:self
+                  forKeyPath:NSStringFromSelector(@selector(currentItem))
+                     options:(NSKeyValueObservingOptionInitial | NSKeyValueObservingOptionNew)
+                     context:NULL];
+    [self.player addObserver:self
+                  forKeyPath:NSStringFromSelector(@selector(rate))
+                     options:(NSKeyValueObservingOptionOld | NSKeyValueObservingOptionNew)
+                     context:NULL];
+    
+    VCVideoPlayerViewController * __weak weakSelf = self;
+    self.timeObserver = [self.player addPeriodicTimeObserverForInterval:CMTimeMake(1, 24)
+                                                                  queue:dispatch_get_main_queue()
+                                                             usingBlock:^(CMTime time)
+    {
+        [weakSelf didPlayToTime:time];
+    }];
 }
 
 - (void)dealloc
@@ -350,11 +371,12 @@ static __weak VCVideoPlayerViewController *_currentPlayer = nil;
 
 - (void)didPlayToTime:(CMTime)time
 {
+    Float64 durationInSeconds = CMTimeGetSeconds([self playerItemDuration]);
+    Float64 timeInSeconds     = CMTimeGetSeconds(time);
+    float percentElapsed      = timeInSeconds / durationInSeconds;
+
     if (!self.sliderTouchActive)
     {
-        Float64 durationInSeconds = CMTimeGetSeconds([self playerItemDuration]);
-        Float64 timeInSeconds     = CMTimeGetSeconds(time);
-        float percentElapsed    = timeInSeconds / durationInSeconds;
         self.toolbarView.slider.value = percentElapsed;
     }
     
@@ -367,6 +389,43 @@ static __weak VCVideoPlayerViewController *_currentPlayer = nil;
     if ([self.delegate respondsToSelector:@selector(videoPlayer:didPlayToTime:)])
     {
         [self.delegate videoPlayer:self didPlayToTime:time];
+    }
+    
+    if (!self.finishedFirstQuartile && percentElapsed >= 0.25f)
+    {
+        if ([self.delegate respondsToSelector:@selector(videoPlayerDidFinishFirstQuartile:)])
+        {
+            [self.delegate videoPlayerDidFinishFirstQuartile:self];
+        }
+        if (self.shouldFireAnalytics)
+        {
+            [[VAnalyticsRecorder sharedAnalyticsRecorder] sendEventWithCategory:kVAnalyticsEventCategoryVideo action:@"Video Play First Quartile" label:self.titleForAnalytics value:nil];
+        }
+        self.finishedFirstQuartile = YES;
+    }
+    if (!self.finishedMidpoint && percentElapsed >= 0.5f)
+    {
+        if ([self.delegate respondsToSelector:@selector(videoPlayerDidReachMidpoint:)])
+        {
+            [self.delegate videoPlayerDidReachMidpoint:self];
+        }
+        if (self.shouldFireAnalytics)
+        {
+            [[VAnalyticsRecorder sharedAnalyticsRecorder] sendEventWithCategory:kVAnalyticsEventCategoryVideo action:@"Video Play Halfway" label:self.titleForAnalytics value:nil];
+        }
+        self.finishedMidpoint = YES;
+    }
+    if (!self.finishedThirdQuartile && percentElapsed >= 0.75f)
+    {
+        if ([self.delegate respondsToSelector:@selector(videoPlayerDidFinishThirdQuartile:)])
+        {
+            [self.delegate videoPlayerDidFinishThirdQuartile:self];
+        }
+        if (self.shouldFireAnalytics)
+        {
+            [[VAnalyticsRecorder sharedAnalyticsRecorder] sendEventWithCategory:kVAnalyticsEventCategoryVideo action:@"Video Play Third Quartile" label:self.titleForAnalytics value:nil];
+        }
+        self.finishedThirdQuartile = YES;
     }
 
     if (CMTIME_IS_VALID(self.endTime) && CMTIME_COMPARE_INLINE(time, >=, self.endTime))
@@ -502,6 +561,14 @@ static __weak VCVideoPlayerViewController *_currentPlayer = nil;
             {
                 [self.delegate videoPlayerDidReachEndOfVideo:self];
             }
+            if (self.shouldFireAnalytics)
+            {
+                [[VAnalyticsRecorder sharedAnalyticsRecorder] sendEventWithCategory:kVAnalyticsEventCategoryVideo action:@"Video Play to End" label:self.titleForAnalytics value:nil];
+            }
+            self.startedVideo          = NO;
+            self.finishedFirstQuartile = NO;
+            self.finishedMidpoint      = NO;
+            self.finishedThirdQuartile = NO;
         }
     }
 }
@@ -526,6 +593,10 @@ static __weak VCVideoPlayerViewController *_currentPlayer = nil;
         AVPlayerItem *oldItem = change[NSKeyValueChangeOldKey];
         AVPlayerItem *newItem = change[NSKeyValueChangeNewKey];
         [self removeObserverFromOldPlayerItem:oldItem andAddObserverToPlayerItem:newItem];
+        self.startedVideo          = NO;
+        self.finishedFirstQuartile = NO;
+        self.finishedMidpoint      = NO;
+        self.finishedThirdQuartile = NO;
     }
     else if (object == self.player && [keyPath isEqualToString:NSStringFromSelector(@selector(rate))])
     {
@@ -561,6 +632,11 @@ static __weak VCVideoPlayerViewController *_currentPlayer = nil;
                             [self.player seekToTime:CMTimeMake(0, 1)];
                         }
                     }
+                }
+                if (!self.startedVideo)
+                {
+                    self.startedVideo = YES;
+                    [[VAnalyticsRecorder sharedAnalyticsRecorder] sendEventWithCategory:kVAnalyticsEventCategoryVideo action:@"Video Play Start" label:self.titleForAnalytics value:nil];
                 }
             }
             else if ([oldRate floatValue] != 0 && [newRate floatValue] == 0)
@@ -634,7 +710,7 @@ static __weak VCVideoPlayerViewController *_currentPlayer = nil;
         if ([loadedTimeRanges isKindOfClass:[NSArray class]])
         {
             // commented out because the loadedTimeRanges value is unreliable
-//            self.toolbarView.progressIndicator.loadedTimeRanges = loadedTimeRanges;
+            // self.toolbarView.progressIndicator.loadedTimeRanges = loadedTimeRanges;
         }
     }
 }

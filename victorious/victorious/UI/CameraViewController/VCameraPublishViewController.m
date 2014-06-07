@@ -8,6 +8,7 @@
 
 @import AVFoundation;
 
+#import "VAnalyticsRecorder.h"
 #import "VCameraPublishViewController.h"
 #import "VContentInputAccessoryView.h"
 #import "VSetExpirationViewController.h"
@@ -71,6 +72,18 @@
     [self.textView becomeFirstResponder];
 }
 
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    [[VAnalyticsRecorder sharedAnalyticsRecorder] startAppView:@"Camera Publish"];
+}
+
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+    [[VAnalyticsRecorder sharedAnalyticsRecorder] finishAppView];
+}
+
 - (BOOL)shouldAutorotate
 {
     return NO;
@@ -98,6 +111,7 @@
 
 - (IBAction)cancel:(id)sender
 {
+    [[VAnalyticsRecorder sharedAnalyticsRecorder] sendEventWithCategory:kVAnalyticsEventCategoryNavigation action:@"Camera Publish Cancelled" label:nil value:nil];
     if (self.completion)
     {
         self.completion(YES);
@@ -180,6 +194,8 @@
         }
     }
                                       shouldRemoveMedia:YES];
+    
+    [[VAnalyticsRecorder sharedAnalyticsRecorder] sendEventWithCategory:kVAnalyticsEventCategoryInteraction action:@"Post Content" label:self.textView.text value:nil];
     
     if (self.completion)
     {

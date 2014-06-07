@@ -6,6 +6,7 @@
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
+#import "VAnalyticsRecorder.h"
 #import "VRemixStitchViewController.h"
 #import "VCameraPublishViewController.h"
 #import "VCVideoPlayerViewController.h"
@@ -56,6 +57,18 @@
 
     UIImage*    nextButtonImage = [[UIImage imageNamed:@"cameraButtonNext"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithImage:nextButtonImage style:UIBarButtonItemStyleBordered target:self action:@selector(nextButtonClicked:)];
+}
+
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    [[VAnalyticsRecorder sharedAnalyticsRecorder] startAppView:@"Remix Stitch"];
+}
+
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+    [[VAnalyticsRecorder sharedAnalyticsRecorder] finishAppView];
 }
 
 #pragma mark - Actions

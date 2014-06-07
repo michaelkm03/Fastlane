@@ -6,6 +6,7 @@
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
+#import "VAnalyticsRecorder.h"
 #import "VImagePreviewViewController.h"
 #import "VCameraPublishViewController.h"
 #import "VConstants.h"
@@ -73,6 +74,7 @@
 
 - (IBAction)cancel:(id)sender
 {
+    [[VAnalyticsRecorder sharedAnalyticsRecorder] sendEventWithCategory:kVAnalyticsEventCategoryCamera action:@"Cancel Image Capture" label:nil value:nil];
     if (self.completionBlock)
     {
         self.completionBlock(NO, nil, nil);
@@ -83,11 +85,13 @@
 {
     if (!self.inTrashState)
     {
+        [[VAnalyticsRecorder sharedAnalyticsRecorder] sendEventWithCategory:kVAnalyticsEventCategoryCamera action:@"Trash" label:nil value:nil];
         self.inTrashState = YES;
         [self.trashAction setImage:[UIImage imageNamed:@"cameraButtonDeleteConfirm"] forState:UIControlStateNormal];
     }
     else
     {
+        [[VAnalyticsRecorder sharedAnalyticsRecorder] sendEventWithCategory:kVAnalyticsEventCategoryCamera action:@"Trash Confirm" label:nil value:nil];
         self.inTrashState = NO;
         [self.trashAction setImage:[UIImage imageNamed:@"cameraButtonDelete"] forState:UIControlStateNormal];
         [self performSegueWithIdentifier:@"unwindToCameraControllerFromPhoto" sender:self];

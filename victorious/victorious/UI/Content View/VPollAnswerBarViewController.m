@@ -10,6 +10,7 @@
 
 #import "VConstants.h"
 
+#import "VAnalyticsRecorder.h"
 #import "VSequence+Fetcher.h"
 #import "VNode+Fetcher.h"
 #import "VAnswer.h"
@@ -194,6 +195,7 @@
     }
     
     [self answerPollWithAnswer:chosenAnswer];
+    [[VAnalyticsRecorder sharedAnalyticsRecorder] sendEventWithCategory:kVAnalyticsEventCategoryInteraction action:@"Answered Poll" label:self.sequence.name value:nil];
 }
 
 - (void)answerPollWithAnswer:(VAnswer*)answer

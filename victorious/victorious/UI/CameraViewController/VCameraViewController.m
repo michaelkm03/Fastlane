@@ -9,6 +9,7 @@
 @import AVFoundation;
 @import AssetsLibrary;
 
+#import "VAnalyticsRecorder.h"
 #import "VCameraViewController.h"
 #import "VCCamera.h"
 #import "VCCameraFocusView.h"
@@ -203,6 +204,7 @@ const   NSTimeInterval  kAnimationDuration      =   0.4;
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
+    [[VAnalyticsRecorder sharedAnalyticsRecorder] startAppView:@"Camera"];
     
     if (self.camera.isReady)
     {
@@ -213,6 +215,12 @@ const   NSTimeInterval  kAnimationDuration      =   0.4;
     {
         NSLog(@"Not prepared yet");
     }
+}
+
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+    [[VAnalyticsRecorder sharedAnalyticsRecorder] finishAppView];
 }
 
 - (void)viewDidDisappear:(BOOL)animated
@@ -256,6 +264,7 @@ const   NSTimeInterval  kAnimationDuration      =   0.4;
 
 - (IBAction)nextAction:(id)sender
 {
+    [[VAnalyticsRecorder sharedAnalyticsRecorder] sendEventWithCategory:kVAnalyticsEventCategoryCamera action:@"Capture Video" label:nil value:nil];
     [self.camera stop];
 }
 
@@ -322,6 +331,7 @@ const   NSTimeInterval  kAnimationDuration      =   0.4;
 
 - (IBAction)capturePhoto:(id)sender
 {
+    [[VAnalyticsRecorder sharedAnalyticsRecorder] sendEventWithCategory:kVAnalyticsEventCategoryCamera action:@"Capture Photo" label:nil value:nil];
     [self.camera capturePhoto];
 }
 
@@ -329,6 +339,7 @@ const   NSTimeInterval  kAnimationDuration      =   0.4;
 {
     if (self.camera.sessionPreset == AVCaptureSessionPresetPhoto)
     {
+        [[VAnalyticsRecorder sharedAnalyticsRecorder] sendEventWithCategory:kVAnalyticsEventCategoryCamera action:@"Switch To Video Capture" label:nil value:nil];
         [self configureUIforVideoCaptureAnimated:YES completion:^(void)
         {
             self.camera.sessionPreset = self.videoQuality;
@@ -336,6 +347,7 @@ const   NSTimeInterval  kAnimationDuration      =   0.4;
     }
     else if (self.camera.sessionPreset == self.videoQuality)
     {
+        [[VAnalyticsRecorder sharedAnalyticsRecorder] sendEventWithCategory:kVAnalyticsEventCategoryCamera action:@"Switch To Photo Capture" label:nil value:nil];
         [self configureUIforPhotoCaptureAnimated:YES completion:^(void)
         {
             self.camera.sessionPreset = AVCaptureSessionPresetPhoto;
@@ -347,11 +359,13 @@ const   NSTimeInterval  kAnimationDuration      =   0.4;
 {
     if (!self.inTrashState)
     {
+        [[VAnalyticsRecorder sharedAnalyticsRecorder] sendEventWithCategory:kVAnalyticsEventCategoryCamera action:@"Trash" label:nil value:nil];
         [self.deleteButton setImage:[UIImage imageNamed:@"cameraButtonDeleteConfirm"] forState:UIControlStateNormal];
         self.inTrashState = YES;
     }
     else
     {
+        [[VAnalyticsRecorder sharedAnalyticsRecorder] sendEventWithCategory:kVAnalyticsEventCategoryCamera action:@"Trash Confirm" label:nil value:nil];
         [self.camera cancel];
         [self prepareCamera];
         [self updateProgressForSecond:0];
@@ -798,6 +812,7 @@ const   NSTimeInterval  kAnimationDuration      =   0.4;
     // Handle a still image picked from a photo album
     if (CFStringCompare((CFStringRef)mediaType, kUTTypeImage, 0) == kCFCompareEqualTo)
     {
+        [[VAnalyticsRecorder sharedAnalyticsRecorder] sendEventWithCategory:kVAnalyticsEventCategoryCamera action:@"Pick Image From Library" label:nil value:nil];
         UIImage* originalImage = (UIImage *)info[UIImagePickerControllerOriginalImage];
         [self audioVideoRecorder:nil capturedPhoto:@{VCAudioVideoRecorderPhotoImageKey : originalImage} error:nil];
     }
@@ -805,6 +820,7 @@ const   NSTimeInterval  kAnimationDuration      =   0.4;
     // Handle a movied picked from a photo album
     else if (CFStringCompare((CFStringRef)mediaType, kUTTypeMovie, 0) == kCFCompareEqualTo)
     {
+        [[VAnalyticsRecorder sharedAnalyticsRecorder] sendEventWithCategory:kVAnalyticsEventCategoryCamera action:@"Pick Video From Library" label:nil value:nil];
         NSURL* movieURL = info[UIImagePickerControllerMediaURL];
         [self audioVideoRecorder:nil didFinishRecordingAtUrl:movieURL error:nil];
     }

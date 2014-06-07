@@ -13,9 +13,11 @@
  */
 @interface VVideoLightboxViewController : VLightboxViewController
 
-@property (nonatomic, readonly) UIImage  *previewImage;
-@property (nonatomic, readonly) NSURL    *videoURL;
-@property (nonatomic, copy)     void    (^onVideoFinished)(void); ///< Called when the video plays through to the end
+@property (nonatomic, readonly) UIImage   *previewImage;
+@property (nonatomic, readonly) NSURL     *videoURL;
+@property (nonatomic, copy)     void     (^onVideoFinished)(void); ///< Called when the video plays through to the end
+@property (nonatomic, copy)     NSString  *titleForAnalytics; ///< If set, analytics events will use this property for the "label" parameter
+@property (nonatomic)           BOOL       shouldFireAnalytics; ///< Set to NO to disable analytics. YES by default.
 
 /**
  Creates a new instance of a video lightbox view controller.

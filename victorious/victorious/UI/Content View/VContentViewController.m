@@ -8,6 +8,7 @@
 
 #import "UIViewController+ForceOrientationChange.h"
 
+#import "VAnalyticsRecorder.h"
 #import "VContentViewController.h"
 #import "VContentViewController+Images.h"
 #import "VContentViewController+Private.h"
@@ -67,9 +68,11 @@ static const CGFloat kDistanceBetweenTitleAndCollapseButton =  42.5f;
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
+    [[VAnalyticsRecorder sharedAnalyticsRecorder] startAppView:@"Content"];
     
     if (!self.appearing)
     {
+        [[VAnalyticsRecorder sharedAnalyticsRecorder] sendEventWithCategory:kVAnalyticsEventCategoryNavigation action:@"Show Content" label:self.sequence.name value:nil];
         self.appearing = YES;
         [self.navigationController setNavigationBarHidden:YES animated:NO];
         [self updateActionBar];
@@ -138,6 +141,7 @@ static const CGFloat kDistanceBetweenTitleAndCollapseButton =  42.5f;
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
+    [[VAnalyticsRecorder sharedAnalyticsRecorder] finishAppView];
     
     if ([self isBeingDismissed] || [self isMovingFromParentViewController])
     {

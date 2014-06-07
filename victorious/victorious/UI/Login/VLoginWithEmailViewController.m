@@ -6,6 +6,7 @@
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
+#import "VAnalyticsRecorder.h"
 #import "VLoginWithEmailViewController.h"
 #import "VResetPasswordViewController.h"
 #import "VObjectManager+DirectMessaging.h"
@@ -189,6 +190,7 @@ NSString*   const   kVLoginErrorDomain =   @"VLoginErrorDomain";
 - (void)didLoginWithUser:(VUser*)mainUser
 {
     VLog(@"Succesfully logged in as: %@", mainUser);
+    [[VAnalyticsRecorder sharedAnalyticsRecorder] sendEventWithCategory:kVAnalyticsEventCategoryUserAccount action:@"Successful Login Via Email" label:nil value:nil];
     
     self.profile = mainUser;
     
@@ -197,6 +199,7 @@ NSString*   const   kVLoginErrorDomain =   @"VLoginErrorDomain";
 
 - (void)didFailWithError:(NSError*)error
 {
+    [[VAnalyticsRecorder sharedAnalyticsRecorder] sendEventWithCategory:kVAnalyticsEventCategoryUserAccount action:@"Failed Login Via Email" label:nil value:nil];
     UIAlertView*    alert   =   [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"LoginFail", @"")
                                                            message:error.localizedDescription
                                                           delegate:nil

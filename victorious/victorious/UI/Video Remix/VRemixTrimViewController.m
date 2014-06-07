@@ -8,6 +8,7 @@
 
 @import MediaPlayer;
 
+#import "VAnalyticsRecorder.h"
 #import "VElapsedTimeFormatter.h"
 #import "VRemixTrimViewController.h"
 #import "VRemixStitchViewController.h"
@@ -86,6 +87,7 @@
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
+    [[VAnalyticsRecorder sharedAnalyticsRecorder] startAppView:@"Remix Trim"];
     
     //  Disable iOS 7 Back Gesture
     self.navigationController.interactivePopGestureRecognizer.enabled = NO;
@@ -95,6 +97,7 @@
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
+    [[VAnalyticsRecorder sharedAnalyticsRecorder] finishAppView];
     
     //  Enable iOS 7 Back Gesture
     self.navigationController.interactivePopGestureRecognizer.enabled = YES;

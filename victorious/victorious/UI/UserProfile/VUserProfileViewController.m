@@ -6,6 +6,7 @@
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
+#import "VAnalyticsRecorder.h"
 #import "VUserProfileViewController.h"
 #import "VConstants.h"
 #import "VUser.h"
@@ -113,7 +114,7 @@ const   CGFloat kVNavigationBarHeight = 44.0;
 
 - (void)viewWillAppear:(BOOL)animated
 {
-    [super viewDidAppear:animated];
+    [super viewWillAppear:animated];
     
     [self.navigationController setNavigationBarHidden:NO animated:YES];
  
@@ -144,6 +145,18 @@ const   CGFloat kVNavigationBarHeight = 44.0;
     }
     if (fromInbox)
         self.navigationItem.rightBarButtonItem = nil;
+}
+
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    [[VAnalyticsRecorder sharedAnalyticsRecorder] startAppView:@"Profile"];
+}
+
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+    [[VAnalyticsRecorder sharedAnalyticsRecorder] finishAppView];
 }
 
 - (void)dealloc

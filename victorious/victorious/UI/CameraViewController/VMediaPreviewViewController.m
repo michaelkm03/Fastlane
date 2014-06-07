@@ -7,6 +7,7 @@
 //
 
 #import "NSURL+MediaType.h"
+#import "VAnalyticsRecorder.h"
 #import "VConstants.h"
 #import "VImagePreviewViewController.h"
 #import "VMediaPreviewViewController.h"
@@ -46,6 +47,18 @@
 - (BOOL)prefersStatusBarHidden
 {
     return YES;
+}
+
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    [[VAnalyticsRecorder sharedAnalyticsRecorder] startAppView:@"Camera Preview"];
+}
+
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+    [[VAnalyticsRecorder sharedAnalyticsRecorder] finishAppView];
 }
 
 @end

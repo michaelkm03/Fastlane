@@ -7,6 +7,7 @@
 //
 
 #import "NSURL+MediaType.h"
+#import "VAnalyticsRecorder.h"
 #import "VAnswer.h"
 #import "VContentViewController+Polls.h"
 #import "VContentViewController+Videos.h"
@@ -125,6 +126,7 @@
             [self dismissViewControllerAnimated:YES completion:nil];
         };
         lightbox.onVideoFinished = lightbox.onCloseButtonTapped;
+        lightbox.titleForAnalytics = self.sequence.name;
         [self presentViewController:lightbox animated:YES completion:nil];
     }
     else if ([contentURL v_hasImageExtension] && ![self.imageRequestOperation.request.URL isEqual:contentURL])
@@ -170,6 +172,7 @@
                     [weakSelf dismissViewControllerAnimated:YES completion:nil];
                 };
                 [weakSelf presentViewController:lightbox animated:YES completion:cleanup];
+                [[VAnalyticsRecorder sharedAnalyticsRecorder] sendEventWithCategory:kVAnalyticsEventCategoryNavigation action:@"Display Poll Image" label:self.sequence.name value:nil];
             }
         }
                                                      failure:^(AFHTTPRequestOperation *operation, NSError *error)

@@ -61,6 +61,7 @@ CGFloat const kMessageLabelWidth = 214;
         [self.parentTableViewController dismissViewControllerAnimated:YES completion:nil];
     };
     lightbox.onVideoFinished = lightbox.onCloseButtonTapped;
+    lightbox.titleForAnalytics = @"Video Comment";
     [self.parentTableViewController presentViewController:lightbox animated:YES completion:nil];
 }
 

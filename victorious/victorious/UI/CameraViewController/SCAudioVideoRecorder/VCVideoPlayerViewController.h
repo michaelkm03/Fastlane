@@ -17,6 +17,9 @@
 - (void)videoPlayerFailed:(VCVideoPlayerViewController *)videoPlayer;
 - (void)videoPlayerWillStartPlaying:(VCVideoPlayerViewController *)videoPlayer;
 - (void)videoPlayerWillStopPlaying:(VCVideoPlayerViewController *)videoPlayer;
+- (void)videoPlayerDidFinishFirstQuartile:(VCVideoPlayerViewController *)videoPlayer;
+- (void)videoPlayerDidReachMidpoint:(VCVideoPlayerViewController *)videoPlayer;
+- (void)videoPlayerDidFinishThirdQuartile:(VCVideoPlayerViewController *)videoPlayer;
 - (void)videoPlayerDidReachEndOfVideo:(VCVideoPlayerViewController *)videoPlayer;
 
 @end
@@ -37,6 +40,8 @@
 @property (nonatomic, readonly, getter = isPlaying) BOOL   playing; ///< YES if a video is playing
 @property (nonatomic)           BOOL                       shouldShowToolbar; ///< If NO, toolbar will never show.
 @property (nonatomic, readonly) UIView                    *overlayView; ///< A view to be displayed on top of the video player. Will not show if shouldShowToolbar is NO.
+@property (nonatomic, copy)     NSString                  *titleForAnalytics; ///< If set, analytics events will use this property for the "label" parameter
+@property (nonatomic)           BOOL                       shouldFireAnalytics; ///< Set to NO to disable analytics. YES by default.
 
 + (VCVideoPlayerViewController *)currentPlayer; ///< Returns a reference to a VCVideoPlayerViewController instance that is currently playing
 

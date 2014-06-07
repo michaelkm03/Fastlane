@@ -6,6 +6,7 @@
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
+#import "VAnalyticsRecorder.h"
 #import "VSideMenuViewController.h"
 #import "UIViewController+VSideMenuViewController.h"
 
@@ -148,6 +149,7 @@
         self.backgroundImageView.transform = CGAffineTransformMakeScale(1.7f, 1.7f);
     
     [self showMenuViewController];
+    [[VAnalyticsRecorder sharedAnalyticsRecorder] sendEventWithCategory:kVAnalyticsEventCategoryNavigation action:@"Show Side Menu" label:nil value:nil];
 }
 
 - (void)showMenuViewController

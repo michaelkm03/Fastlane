@@ -8,6 +8,7 @@
 
 @import MessageUI;
 
+#import "VAnalyticsRecorder.h"
 #import "VSettingsViewController.h"
 #import "UIViewController+VSideMenuViewController.h"
 #import "VWebContentViewController.h"
@@ -98,6 +99,18 @@ static const NSInteger kServerEnvironmentButtonIndex = 3;
     [self.navigationController setNavigationBarHidden:NO animated:YES];
 }
 
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    [[VAnalyticsRecorder sharedAnalyticsRecorder] startAppView:@"Settings"];
+}
+
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+    [[VAnalyticsRecorder sharedAnalyticsRecorder] finishAppView];
+}
+
 - (BOOL)shouldAutorotate
 {
     return NO;
@@ -125,6 +138,7 @@ static const NSInteger kServerEnvironmentButtonIndex = 3;
 {
     if ([VObjectManager sharedManager].isAuthorized)
     {
+        [[VAnalyticsRecorder sharedAnalyticsRecorder] sendEventWithCategory:kVAnalyticsEventCategoryUserAccount action:@"Log Out" label:nil value:nil];
         [[VUserManager sharedInstance] logout];
         [self.logoutButton setTitle:NSLocalizedString(@"Login", @"") forState:UIControlStateNormal];
         [self.logoutButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];

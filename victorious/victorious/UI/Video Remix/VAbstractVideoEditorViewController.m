@@ -26,6 +26,7 @@
 
     self.videoPlayerViewController = [[VCVideoPlayerViewController alloc] init];
     self.videoPlayerViewController.shouldShowToolbar = NO;
+    self.videoPlayerViewController.shouldFireAnalytics = NO;
     self.videoPlayerViewController.itemURL = self.sourceURL;
     self.videoPlayerViewController.delegate = self;
     
