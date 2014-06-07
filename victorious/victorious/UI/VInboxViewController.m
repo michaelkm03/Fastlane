@@ -60,7 +60,7 @@ static  NSString*   kNewsCellViewIdentifier       =   @"VNewsCell";
 {
     [super viewWillAppear:animated];
     
-    [self setHasMessages:!self.fetchedResultsController.fetchedObjects.count];
+    [self setHasMessages:self.fetchedResultsController.fetchedObjects.count];
 }
 
 #pragma mark - Overrides
@@ -99,14 +99,14 @@ static  NSString*   kNewsCellViewIdentifier       =   @"VNewsCell";
 #pragma mark - UITabvleViewDataSource
 - (void)controllerDidChangeContent:(NSFetchedResultsController *)controller
 {
-    [self setHasMessages:!self.fetchedResultsController.fetchedObjects.count];
+    [self setHasMessages:self.fetchedResultsController.fetchedObjects.count];
 
     [super controllerDidChangeContent:controller];
 }
 
 - (void)setHasMessages:(BOOL)hasMessages
 {
-    if (hasMessages)
+    if (!hasMessages)
     {
         VNoContentView* noMessagesView = [VNoContentView noContentViewWithFrame:self.tableView.frame];
         self.tableView.backgroundView = noMessagesView;

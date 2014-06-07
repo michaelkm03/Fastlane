@@ -55,6 +55,12 @@
 "NoCommentsTitle"       =   "BE THE 1ST TO COMMENT!";
 "NoCommentsMessage"     =   "Post text, photo or video comments, and see what others say!";
 
+"NoFollowersTitle"       =   "WOMP WOMP! NO ONE HAS FOLLOWED YOU YET";
+"NoFollowersMessage"     =   "Build your own following by engaging with the community through commenting, remixing or posting new content.";
+
+"NotFollowingTitle"       =   "RUH-ROH! YOU HAVEN’T FOLLOWED ANYONE YET";
+"NotFollowingMessage"     =   "Follow other people to see their content in your stream. It’s a great way to find new content or make new friends.";
+
 "FacebookDeniedTitle"   =   "Could not access your Facebook account";
 "FacebookDenied"        =   "Please grant access to your Facebook account in Settings -> Facebook";
 

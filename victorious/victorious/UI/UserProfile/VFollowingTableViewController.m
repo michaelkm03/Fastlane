@@ -11,6 +11,8 @@
 #import "VObjectManager+Users.h"
 #import "VUser.h"
 
+#import "VNoContentView.h"
+
 @interface VFollowingTableViewController ()
 @property (nonatomic, strong)   NSArray*    following;
 @end
@@ -62,17 +64,38 @@
     {
         NSSortDescriptor*   sort = [[NSSortDescriptor alloc] initWithKey:@"name" ascending:YES selector:@selector(localizedCaseInsensitiveCompare:)];
         self.following = [resultObjects sortedArrayUsingDescriptors:@[sort]];
+        [self setIsFollowing:self.following.count];
         [self.tableView reloadData];
     };
     
     VFailBlock followingFail = ^(NSOperation* operation, NSError* error)
     {
         self.following = [[NSArray alloc] init];
+        [self setIsFollowing:self.following.count];
     };
     
     [[VObjectManager sharedManager] requestFollowListForUser:self.profile
                                                 successBlock:followingSuccess
                                                    failBlock:followingFail];
+}
+
+- (void)setIsFollowing:(BOOL)isFollowing
+{
+    if (!isFollowing)
+    {
+        VNoContentView* notFollowingView = [VNoContentView noContentViewWithFrame:self.tableView.frame];
+        self.tableView.backgroundView = notFollowingView;
+        notFollowingView.titleLabel.text = NSLocalizedString(@"NotFollowingTitle", @"");
+        notFollowingView.messageLabel.text = NSLocalizedString(@"NotFollowingMessage", @"");
+        notFollowingView.iconImageView.image = [UIImage imageNamed:@"noFollowersIcon"];
+        
+        self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+    }
+    else
+    {
+        self.tableView.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
+        self.tableView.backgroundView = nil;
+    }
 }
 
 @end

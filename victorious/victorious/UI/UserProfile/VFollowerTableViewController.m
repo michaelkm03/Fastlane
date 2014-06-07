@@ -11,6 +11,7 @@
 #import "VObjectManager+Users.h"
 #import "VUser.h"
 #import "VThemeManager.h"
+#import "VNoContentView.h"
 
 @interface VFollowerTableViewController ()
 @property (nonatomic, strong)   NSArray*    followers;
@@ -64,17 +65,39 @@
     {
         NSSortDescriptor*   sort = [[NSSortDescriptor alloc] initWithKey:@"name" ascending:YES selector:@selector(localizedCaseInsensitiveCompare:)];
         self.followers = [resultObjects sortedArrayUsingDescriptors:@[sort]];
+        [self setHasFollowers:self.followers.count];
+        
         [self.tableView reloadData];
     };
     
     VFailBlock followerFail = ^(NSOperation* operation, NSError* error)
     {
         self.followers = [[NSArray alloc] init];
+        [self setHasFollowers:NO];
     };
 
     [[VObjectManager sharedManager] requestFollowerListForUser:self.profile
                                                   successBlock:followerSuccess
                                                      failBlock:followerFail];
+}
+
+- (void)setHasFollowers:(BOOL)hasFollowers
+{
+    if (!hasFollowers)
+    {
+        VNoContentView* noFollowersView = [VNoContentView noContentViewWithFrame:self.tableView.frame];
+        self.tableView.backgroundView = noFollowersView;
+        noFollowersView.titleLabel.text = NSLocalizedString(@"NoFollowersTitle", @"");
+        noFollowersView.messageLabel.text = NSLocalizedString(@"NoFollowersMessage", @"");
+        noFollowersView.iconImageView.image = [UIImage imageNamed:@"noFollowersIcon"];
+        
+        self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+    }
+    else
+    {
+        self.tableView.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
+        self.tableView.backgroundView = nil;
+    }
 }
 
 @end
