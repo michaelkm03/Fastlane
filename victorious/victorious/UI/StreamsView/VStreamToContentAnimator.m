@@ -53,7 +53,7 @@
                                                      CGRectGetWidth(topActionsFrame), CGRectGetHeight(topActionsFrame));
               
               contentVC.orImageView.hidden = ![contentVC.sequence isPoll];
-              contentVC.orImageView.center = [contentVC.pollPreviewView convertPoint:contentVC.pollPreviewView.center toView:contentVC.orContainerView];
+              contentVC.orImageView.center = [contentVC.pollPreviewView.superview convertPoint:contentVC.pollPreviewView.center toView:contentVC.orContainerView];
               
               contentVC.firstPollButton.alpha = 0;
               contentVC.secondPollButton.alpha = 0;

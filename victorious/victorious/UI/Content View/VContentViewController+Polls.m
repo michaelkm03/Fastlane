@@ -22,6 +22,23 @@
 #pragma mark - Animation
 - (void)pollAnimation
 {
+    self.orImageView.hidden = ![self.currentNode isPoll];
+
+    self.orAnimator = [[UIDynamicAnimator alloc] initWithReferenceView:self.orContainerView];
+    self.orAnimator.delegate = self;
+    
+    UIGravityBehavior* gravityBehavior = [[UIGravityBehavior alloc] initWithItems:@[self.orImageView]];
+    gravityBehavior.magnitude = 4;
+    [self.orAnimator addBehavior:gravityBehavior];
+    
+    UIDynamicItemBehavior *elasticityBehavior = [[UIDynamicItemBehavior alloc] initWithItems:@[self.orImageView]];
+    elasticityBehavior.elasticity = 0.2f;
+    [self.orAnimator addBehavior:elasticityBehavior];
+    
+    UICollisionBehavior* collisionBehavior = [[UICollisionBehavior alloc] initWithItems:@[self.orImageView]];
+    collisionBehavior.translatesReferenceBoundsIntoBoundary = YES;
+    [self.orAnimator addBehavior:collisionBehavior];
+    
     [UIView animateWithDuration:.2f
                      animations:^{
                          
@@ -30,24 +47,6 @@
                          
                          CGRect secondSmallFrame = self.secondSmallPreviewImage.frame;
                          self.secondSmallPreviewImage.frame = CGRectMake(CGRectGetMinX(secondSmallFrame) + 1.0f, CGRectGetMinY(secondSmallFrame), CGRectGetWidth(secondSmallFrame), CGRectGetHeight(secondSmallFrame));
-                         
-                         self.orImageView.hidden = ![self.currentNode isPoll];
-                         self.orImageView.center = CGPointMake(self.orImageView.center.x, self.pollPreviewView.center.y);
-                         self.orAnimator = [[UIDynamicAnimator alloc] initWithReferenceView:self.orContainerView];
-                         self.orAnimator.delegate = self;
-                         
-                         
-                         UIGravityBehavior* gravityBehavior = [[UIGravityBehavior alloc] initWithItems:@[self.orImageView]];
-                         gravityBehavior.magnitude = 4;
-                         [self.orAnimator addBehavior:gravityBehavior];
-                         
-                         UIDynamicItemBehavior *elasticityBehavior = [[UIDynamicItemBehavior alloc] initWithItems:@[self.orImageView]];
-                         elasticityBehavior.elasticity = 0.2f;
-                         [self.orAnimator addBehavior:elasticityBehavior];
-                         
-                         UICollisionBehavior* collisionBehavior = [[UICollisionBehavior alloc] initWithItems:@[self.orImageView]];
-                         collisionBehavior.translatesReferenceBoundsIntoBoundary = YES;
-                         [self.orAnimator addBehavior:collisionBehavior];
                      }];
 }
 
