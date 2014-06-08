@@ -383,8 +383,9 @@ static const CGFloat kDistanceBetweenTitleAndCollapseButton =  42.5f;
     _sequence = sequence;
 
     UIImage* placeholderImage = [UIImage resizeableImageWithColor:[[VThemeManager sharedThemeManager] themedColorForKey:kVBackgroundColor]];
-    [self.backgroundImage setLightBlurredImageWithURL:[[self.sequence initialImageURLs] firstObject]
-                                     placeholderImage:placeholderImage];
+    [self.backgroundImage setBlurredImageWithURL:[[self.sequence initialImageURLs] firstObject]
+                                placeholderImage:placeholderImage
+                                       tintColor:[[UIColor whiteColor] colorWithAlphaComponent:0.7f]];
     self.descriptionLabel.text = _sequence.name;
     self.currentNode = [sequence firstNode];
 }
