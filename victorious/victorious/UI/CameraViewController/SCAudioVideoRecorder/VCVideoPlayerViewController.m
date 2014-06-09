@@ -31,7 +31,7 @@
 @end
 
 static const CGFloat        kToolbarHeight            = 41.0f;
-static const NSTimeInterval kToolbarHideDelay         =  5.0;
+static const NSTimeInterval kToolbarHideDelay         =  2.0;
 static const NSTimeInterval kToolbarAnimationDuration =  0.2;
 
 static __weak VCVideoPlayerViewController *_currentPlayer = nil;
