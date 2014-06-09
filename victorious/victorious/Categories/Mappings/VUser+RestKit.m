@@ -62,7 +62,8 @@
                                                      pathPattern:@"/api/userinfo/fetch/:userId"
                                                          keyPath:@"payload"
                                                      statusCodes:RKStatusCodeIndexSetForClass(RKStatusCodeClassSuccessful)],
-             
+
+#warning remember to remove the old follow descriptors after testing
              [RKResponseDescriptor responseDescriptorWithMapping:[self entityMapping]
                                                           method:RKRequestMethodGET
                                                      pathPattern:@"/api/follow/subscribed_to_list/:userId"
@@ -75,6 +76,17 @@
                                                          keyPath:@"payload.users"
                                                      statusCodes:RKStatusCodeIndexSetForClass(RKStatusCodeClassSuccessful)],
              
+             [RKResponseDescriptor responseDescriptorWithMapping:[self entityMapping]
+                                                          method:RKRequestMethodGET
+                                                     pathPattern:@"/api/follow/subscribed_to_list/:userId/:page/:perpage"
+                                                         keyPath:@"payload.users"
+                                                     statusCodes:RKStatusCodeIndexSetForClass(RKStatusCodeClassSuccessful)],
+             
+             [RKResponseDescriptor responseDescriptorWithMapping:[self entityMapping]
+                                                          method:RKRequestMethodGET
+                                                     pathPattern:@"/api/follow/followers_list/:userId/:page/:perpage"
+                                                         keyPath:@"payload.users"
+                                                     statusCodes:RKStatusCodeIndexSetForClass(RKStatusCodeClassSuccessful)],
 
              [RKResponseDescriptor responseDescriptorWithMapping:[self entityMapping]
                                                           method:RKRequestMethodAny

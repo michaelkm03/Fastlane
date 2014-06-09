@@ -8,7 +8,7 @@
 
 #import "VFollowerTableViewController.h"
 #import "VFollowerTableViewCell.h"
-#import "VObjectManager+Users.h"
+#import "VObjectManager+Pagination.h"
 #import "VUser.h"
 #import "VThemeManager.h"
 #import "VNoContentView.h"
@@ -29,7 +29,7 @@
 //    self.tableView.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVSecondaryBackgroundColor];
 
     [self.tableView registerNib:[UINib nibWithNibName:@"followerCell" bundle:nil] forCellReuseIdentifier:@"followerCell"];
-    [self populateFollowersList];
+    [self refreshFollowersList];
 }
 
 #pragma mark - Table view data source
@@ -48,18 +48,26 @@
     return cell;
 }
 
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView
+{
+    if (scrollView.contentOffset.y + CGRectGetHeight(scrollView.bounds) > scrollView.contentSize.height * .75)
+    {
+        [self loadMoreFollowers];
+    }
+}
+
 - (IBAction)refresh:(id)sender
 {
     int64_t         delayInSeconds = 1.0f;
     dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
     dispatch_after(popTime, dispatch_get_main_queue(), ^(void)
     {
-        [self populateFollowersList];
+        [self refreshFollowersList];
         [self.refreshControl endRefreshing];
     });
 }
 
-- (void)populateFollowersList
+- (void)refreshFollowersList
 {
     VSuccessBlock followerSuccess = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
     {
@@ -72,13 +80,34 @@
     
     VFailBlock followerFail = ^(NSOperation* operation, NSError* error)
     {
-        self.followers = [[NSArray alloc] init];
-        [self setHasFollowers:NO];
+        if (error.code)
+        {
+            self.followers = [[NSArray alloc] init];
+            [self.tableView reloadData];
+            [self setHasFollowers:NO];
+        }
     };
 
-    [[VObjectManager sharedManager] requestFollowerListForUser:self.profile
-                                                  successBlock:followerSuccess
-                                                     failBlock:followerFail];
+    [[VObjectManager sharedManager] refreshFollowersForUser:self.profile
+                                               successBlock:followerSuccess
+                                                  failBlock:followerFail];
+}
+
+- (void)loadMoreFollowers
+{
+    VSuccessBlock followerSuccess = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
+    {
+        NSSortDescriptor*   sort = [[NSSortDescriptor alloc] initWithKey:@"name" ascending:YES selector:@selector(localizedCaseInsensitiveCompare:)];
+        NSSet* uniqueFollowers = [NSSet setWithArray:[self.followers arrayByAddingObjectsFromArray:resultObjects]];
+        self.followers = [[uniqueFollowers allObjects] sortedArrayUsingDescriptors:@[sort]];
+        [self setHasFollowers:self.followers.count];
+        
+        [self.tableView reloadData];
+    };
+    
+    [[VObjectManager sharedManager] loadNextPageOfFollowersForUser:self.profile
+                                                      successBlock:followerSuccess
+                                                         failBlock:nil];
 }
 
 - (void)setHasFollowers:(BOOL)hasFollowers

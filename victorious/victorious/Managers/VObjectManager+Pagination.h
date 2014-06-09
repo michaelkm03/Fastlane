@@ -29,6 +29,19 @@
                                                      successBlock:(VSuccessBlock)success
                                                         failBlock:(VFailBlock)fail;
 
+- (RKManagedObjectRequestOperation *)refreshFollowersForUser:(VUser*)user
+                                                successBlock:(VSuccessBlock)success
+                                                   failBlock:(VFailBlock)fail;
+- (RKManagedObjectRequestOperation *)loadNextPageOfFollowersForUser:(VUser*)user
+                                                       successBlock:(VSuccessBlock)success
+                                                          failBlock:(VFailBlock)fail;
+
+- (RKManagedObjectRequestOperation *)refreshFollowingsForUser:(VUser*)user
+                                                 successBlock:(VSuccessBlock)success
+                                                    failBlock:(VFailBlock)fail;
+- (RKManagedObjectRequestOperation *)loadNextPageOfFollowingsForUser:(VUser*)user
+                                                        successBlock:(VSuccessBlock)success
+                                                           failBlock:(VFailBlock)fail;
 
 - (RKManagedObjectRequestOperation *)refreshMessagesForConversation:(VConversation*)conversation
                                                        successBlock:(VSuccessBlock)success

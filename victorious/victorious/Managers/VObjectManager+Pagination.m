@@ -220,7 +220,6 @@
             success(operation, fullResponse, resultObjects);
     };
     
-    
     return [self loadNextPageOfFilter:listFilter successBlock:fullSuccessBlock failBlock:fail];
 }
 
@@ -259,8 +258,84 @@
             success(operation, fullResponse, resultObjects);
     };
 
-    
     return [self loadNextPageOfFilter:conversation successBlock:fullSuccessBlock failBlock:fail];
+}
+
+#pragma mark - Following
+- (RKManagedObjectRequestOperation *)refreshFollowersForUser:(VUser*)user
+                                                successBlock:(VSuccessBlock)success
+                                                   failBlock:(VFailBlock)fail
+{
+    VAbstractFilter* filter = [self followerFilterForUser:user];
+    filter.currentPageNumber = @(0);
+    return [self loadNextPageOfFollowersForUser:user
+                               successBlock:success
+                                  failBlock:fail];
+}
+
+- (RKManagedObjectRequestOperation *)loadNextPageOfFollowersForUser:(VUser*)user
+                                                       successBlock:(VSuccessBlock)success
+                                                          failBlock:(VFailBlock)fail
+{
+    VAbstractFilter* filter = [self followerFilterForUser:user];
+    
+    VSuccessBlock fullSuccessBlock = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
+    {
+        //If this is the first page, break the relationship to all the old objects.
+        if ([filter.currentPageNumber isEqualToNumber:@(0)])
+        {
+            [user removeFollowers:user.followers];
+        }
+        
+        for (VUser* follower in resultObjects)
+        {
+            VUser* followerInContext = (VUser*)[user.managedObjectContext objectWithID:follower.objectID];
+            [user addFollowersObject:followerInContext];
+        }
+        
+        if (success)
+            success(operation, fullResponse, resultObjects);
+    };
+    
+    return [self loadNextPageOfFilter:filter successBlock:fullSuccessBlock failBlock:fail];
+}
+
+- (RKManagedObjectRequestOperation *)refreshFollowingsForUser:(VUser*)user
+                                                successBlock:(VSuccessBlock)success
+                                                   failBlock:(VFailBlock)fail
+{
+    VAbstractFilter* filter = [self followingFilterForUser:user];
+    filter.currentPageNumber = @(0);
+    return [self loadNextPageOfFollowingsForUser:user
+                                    successBlock:success
+                                       failBlock:fail];
+}
+
+- (RKManagedObjectRequestOperation *)loadNextPageOfFollowingsForUser:(VUser*)user
+                                                       successBlock:(VSuccessBlock)success
+                                                          failBlock:(VFailBlock)fail
+{
+    VAbstractFilter* filter = [self followingFilterForUser:user];
+    
+    VSuccessBlock fullSuccessBlock = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
+    {
+        //If this is the first page, break the relationship to all the old objects.
+        if ([filter.currentPageNumber isEqualToNumber:@(0)])
+        {
+            [user removeFollowing:user.followers];
+        }
+        
+        for (VUser* follower in resultObjects)
+        {
+            VUser* followerInContext = (VUser*)[user.managedObjectContext objectWithID:follower.objectID];
+            [user addFollowingObject:followerInContext];
+        }
+        
+        if (success)
+            success(operation, fullResponse, resultObjects);
+    };
+    
+    return [self loadNextPageOfFilter:filter successBlock:fullSuccessBlock failBlock:fail];
 }
 
 #pragma mark - Sequence
@@ -391,6 +466,7 @@
     return [self GET:path object:nil parameters:nil successBlock:fullSuccess failBlock:fullFail];
 }
 
+#pragma mark - Filter Fetchers
 - (VSequenceFilter*)sequenceFilterForUser:(VUser*)user
 {
     NSString* apiPath = [@"/api/sequence/detail_list_by_user/" stringByAppendingString: user.remoteId.stringValue ?: @"0"];
@@ -423,6 +499,18 @@
 {
     NSString* apiPath = [@"/api/comment/all/" stringByAppendingString: sequence.remoteId.stringValue];
     return (VCommentFilter*)[[VFilterCache sharedCache] filterForPath:apiPath entityName:[VCommentFilter entityName]];
+}
+
+- (VAbstractFilter*)followerFilterForUser:(VUser*)user
+{
+    NSString* apiPath = [@"/api/follow/followers_list/" stringByAppendingString: user.remoteId.stringValue];
+    return (VAbstractFilter*)[[VFilterCache sharedCache] filterForPath:apiPath entityName:[VAbstractFilter entityName]];
+}
+
+- (VAbstractFilter*)followingFilterForUser:(VUser*)user
+{
+    NSString* apiPath = [@"/api/follow/subscribed_to_list/" stringByAppendingString: user.remoteId.stringValue];
+    return (VAbstractFilter*)[[VFilterCache sharedCache] filterForPath:apiPath entityName:[VAbstractFilter entityName]];
 }
 
 @end
