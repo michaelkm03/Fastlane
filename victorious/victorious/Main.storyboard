@@ -658,19 +658,27 @@
                                     <constraint firstAttribute="trailing" secondItem="bEh-qP-DUl" secondAttribute="trailing" placeholder="YES" id="dg4-LB-RYL"/>
                                 </constraints>
                             </view>
-                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="4Kr-fK-dGu" userLabel="Poll View">
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="4Kr-fK-dGu" userLabel="Poll View">
                                 <rect key="frame" x="0.0" y="154" width="320" height="214"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <subviews>
-                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="EVH-DQ-EKO" userLabel="left Image View">
+                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="EVH-DQ-EKO" userLabel="left Image View">
                                         <rect key="frame" x="0.0" y="0.0" width="160" height="214"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="214" id="DAT-km-egD"/>
+                                            <constraint firstAttribute="width" constant="160" id="dWm-D2-arz"/>
+                                        </constraints>
                                     </imageView>
-                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="plb-mq-Tcq" userLabel="right Image View">
+                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="plb-mq-Tcq" userLabel="right Image View">
                                         <rect key="frame" x="160" y="0.0" width="160" height="214"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="160" id="Kaz-0u-z6m"/>
+                                            <constraint firstAttribute="height" constant="214" id="yWO-Zj-NEX"/>
+                                        </constraints>
                                     </imageView>
                                     <view opaque="NO" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="yMt-1L-zyw" userLabel="First Poll Play Icon">
                                         <rect key="frame" x="54" y="81" width="52" height="52"/>
@@ -757,6 +765,13 @@
                                     </view>
                                 </subviews>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstItem="EVH-DQ-EKO" firstAttribute="top" secondItem="4Kr-fK-dGu" secondAttribute="top" id="6qH-mA-UJ3"/>
+                                    <constraint firstItem="plb-mq-Tcq" firstAttribute="top" secondItem="4Kr-fK-dGu" secondAttribute="top" id="AQf-9i-NRX"/>
+                                    <constraint firstAttribute="trailing" secondItem="plb-mq-Tcq" secondAttribute="trailing" id="gUA-aF-Kkf"/>
+                                    <constraint firstAttribute="height" constant="214" id="msk-HG-7Aj"/>
+                                    <constraint firstItem="EVH-DQ-EKO" firstAttribute="leading" secondItem="4Kr-fK-dGu" secondAttribute="leading" id="oL7-MF-TT0"/>
+                                </constraints>
                             </view>
                             <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Pce-Lq-Sbm" userLabel="Bar Container View">
                                 <rect key="frame" x="0.0" y="508" width="320" height="60"/>
@@ -869,6 +884,7 @@
                         <constraints>
                             <constraint firstItem="txR-W6-Q5A" firstAttribute="top" secondItem="NhC-7g-uaI" secondAttribute="bottom" placeholder="YES" id="EMS-9J-Hfd"/>
                             <constraint firstItem="NhC-7g-uaI" firstAttribute="leading" secondItem="82C-f9-lhe" secondAttribute="leading" id="GhU-u6-Riq"/>
+                            <constraint firstItem="4Kr-fK-dGu" firstAttribute="top" secondItem="mB2-Kx-N90" secondAttribute="bottom" constant="154" id="cjf-8S-WD0"/>
                             <constraint firstItem="gdx-vD-Je7" firstAttribute="top" secondItem="mB2-Kx-N90" secondAttribute="bottom" constant="154" placeholder="YES" id="eOF-Ue-ZDb"/>
                             <constraint firstItem="NhC-7g-uaI" firstAttribute="top" secondItem="mB2-Kx-N90" secondAttribute="bottom" placeholder="YES" id="h8I-x8-LCt"/>
                             <constraint firstItem="Ruh-qb-vRD" firstAttribute="top" secondItem="mB2-Kx-N90" secondAttribute="bottom" id="l5f-cX-Qkc"/>
@@ -876,6 +892,8 @@
                             <constraint firstAttribute="centerX" secondItem="Ruh-qb-vRD" secondAttribute="centerX" id="mv9-RC-Tvp"/>
                             <constraint firstItem="gdx-vD-Je7" firstAttribute="leading" secondItem="82C-f9-lhe" secondAttribute="leading" placeholder="YES" id="njQ-Wv-G0c"/>
                             <constraint firstAttribute="trailing" secondItem="gdx-vD-Je7" secondAttribute="trailing" placeholder="YES" id="xGF-cy-ikg"/>
+                            <constraint firstItem="4Kr-fK-dGu" firstAttribute="leading" secondItem="82C-f9-lhe" secondAttribute="leading" id="xuL-hB-6qp"/>
+                            <constraint firstAttribute="trailing" secondItem="4Kr-fK-dGu" secondAttribute="trailing" id="ylH-bg-Sdj"/>
                         </constraints>
                     </view>
                     <nil key="simulatedStatusBarMetrics"/>
@@ -892,6 +910,7 @@
                         <outlet property="firstResultView" destination="mU7-Gc-RdJ" id="Hap-rD-L8h"/>
                         <outlet property="firstSmallPreviewImage" destination="EVH-DQ-EKO" id="sqw-uo-jib"/>
                         <outlet property="hrVerticalSpacingConstraint" destination="iFt-SH-hwh" id="jPg-Po-JMz"/>
+                        <outlet property="leftSmallPreviewImageWidthConstraint" destination="dWm-D2-arz" id="6cw-Ze-803"/>
                         <outlet property="maskingView" destination="NhC-7g-uaI" id="ei9-KA-VA0"/>
                         <outlet property="mediaSuperview" destination="gdx-vD-Je7" id="LOA-hP-psJ"/>
                         <outlet property="mediaView" destination="bEh-qP-DUl" id="GYP-nN-agT"/>
@@ -899,6 +918,7 @@
                         <outlet property="orImageView" destination="jl7-9k-rKO" id="Sc8-0d-S6M"/>
                         <outlet property="pollPreviewView" destination="4Kr-fK-dGu" id="Jg8-mK-drW"/>
                         <outlet property="previewImage" destination="ZqV-fk-y5a" id="5zD-1U-pWm"/>
+                        <outlet property="rightSmallPreviewImageWidthConstraint" destination="Kaz-0u-z6m" id="6xw-sD-qqO"/>
                         <outlet property="secondPollButton" destination="6Fs-nG-V3a" id="rgi-QS-JVS"/>
                         <outlet property="secondPollPlayIcon" destination="ZyP-Vw-yAD" id="qSb-Jn-ofd"/>
                         <outlet property="secondResultView" destination="eCc-fQ-PSZ" id="yOE-Ip-yhe"/>

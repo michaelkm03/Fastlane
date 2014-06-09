@@ -118,7 +118,17 @@ static const CGFloat kSeeMoreFontSizeRatio = 0.8f;
         _text = text;
     }
     self.seeMoreTextAppended = NO;
-    [self.textStorage replaceCharactersInRange:NSMakeRange(0, self.textStorage.length) withAttributedString:[[NSAttributedString alloc] initWithString:text attributes:[self attributesForTitleText]]];
+    
+    NSAttributedString *newAttributedText;
+    if (text)
+    {
+        newAttributedText = [[NSAttributedString alloc] initWithString:text attributes:[self attributesForTitleText]];
+    }
+    else
+    {
+        newAttributedText = [[NSAttributedString alloc] initWithString:@""];
+    }
+    [self.textStorage replaceCharactersInRange:NSMakeRange(0, self.textStorage.length) withAttributedString:newAttributedText];
 }
 
 - (void)setLocationForLastLineOfText:(CGFloat)lastLineOfTextLocation

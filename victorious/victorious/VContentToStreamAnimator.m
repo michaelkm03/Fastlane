@@ -45,6 +45,14 @@
         [contentVC unloadVideoWithDuration:0.2f completion:nil];
     }
     
+    [UIView animateWithDuration:0.2f
+                     animations:^(void)
+    {
+        contentVC.leftSmallPreviewImageWidthConstraint.constant = 160.0f;
+        contentVC.rightSmallPreviewImageWidthConstraint.constant = 160.0f;
+        [contentVC.pollPreviewView layoutIfNeeded];
+    }];
+    
     [contentVC.actionBarVC animateOutWithDuration:.2f
                                        completion:^(BOOL finished)
                                         {
