@@ -132,7 +132,7 @@ static const CGFloat kDistanceBetweenTitleAndCollapseButton =  42.5f;
     [self.secondResultView setProgress:0 animated:NO];
     self.secondResultView.isVertical = YES;
     self.secondResultView.hidden = YES;
-    self.secondResultView.color = [[VThemeManager sharedThemeManager] themedColorForKey:kVAccentColor];
+    self.secondResultView.color = [[[VThemeManager sharedThemeManager] themedColorForKey:kVAccentColor] colorWithAlphaComponent:0.8f];
     
     self.firstPollPlayIcon.hidden = YES;
     self.secondPollPlayIcon.hidden = YES;
