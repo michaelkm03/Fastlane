@@ -74,7 +74,11 @@
      }
                      completion:^(BOOL finished)
      {
-         VStreamViewCell* selectedCell = (VStreamViewCell*) [streamVC.tableView cellForRowAtIndexPath:streamVC.tableView.indexPathForSelectedRow];
+         NSIndexPath* path = [streamVC.fetchedResultsController indexPathForObject:contentVC.sequence];
+         //Reselect the cell; it will be unselected if the fetched results controller was updated
+         [streamVC.tableView selectRowAtIndexPath:path animated:NO scrollPosition:UITableViewScrollPositionNone];
+         
+         VStreamViewCell* selectedCell = (VStreamViewCell*) [streamVC.tableView cellForRowAtIndexPath:path];
          [streamVC.tableView setContentOffset:CGPointMake(selectedCell.frame.origin.x,
                                                           selectedCell.frame.origin.y - kContentMediaViewOffset)
                                      animated:NO];
