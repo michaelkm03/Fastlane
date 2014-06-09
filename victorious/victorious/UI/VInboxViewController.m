@@ -57,13 +57,6 @@ static  NSString*   kNewsCellViewIdentifier       =   @"VNewsCell";
     self.headerView.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVAccentColor];
 }
 
-- (void)viewWillAppear:(BOOL)animated
-{
-    [super viewWillAppear:animated];
-    
-    [self setHasMessages:self.fetchedResultsController.fetchedObjects.count];
-}
-
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
