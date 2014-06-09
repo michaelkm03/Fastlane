@@ -1,12 +1,12 @@
 //
-//  VObjectManager+SequenceFilters.m
+//  VObjectManager+Pagination.m
 //  victorious
 //
 //  Created by Will Long on 4/24/14.
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
-#import "VObjectManager+SequenceFilters.h"
+#import "VObjectManager+Pagination.h"
 
 #import "VObjectManager+Private.h"
 #import "VObjectManager+Users.h"
@@ -37,7 +37,7 @@
 @end
 
 
-@implementation VObjectManager (SequenceFilters)
+@implementation VObjectManager (Pagination)
 
 + (dispatch_queue_t)paginationDispatchQueue
 {

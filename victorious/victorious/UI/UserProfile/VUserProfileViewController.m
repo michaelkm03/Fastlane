@@ -14,7 +14,7 @@
 #import "VLargeNumberFormatter.h"
 #import "VLoginViewController.h"
 #import "VObjectManager+Users.h"
-#import "VObjectManager+SequenceFilters.h"
+#import "VObjectManager+Pagination.h"
 #import "VStreamTableViewController+ContentCreation.h"
 #import "VObjectManager+DirectMessaging.h"
 #import "VProfileEditViewController.h"

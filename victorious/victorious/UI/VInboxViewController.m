@@ -14,7 +14,7 @@
 #import "VNewsViewController.h"
 #import "VConversationCell.h"
 #import "VObjectManager+DirectMessaging.h"
-#import "VObjectManager+SequenceFilters.h"
+#import "VObjectManager+Pagination.h"
 #import "VThemeManager.h"
 
 #import "VNoContentView.h"

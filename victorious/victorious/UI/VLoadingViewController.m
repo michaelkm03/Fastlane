@@ -11,7 +11,7 @@
 #import "VHomeStreamViewController.h"
 #import "VObjectManager+Login.h"
 #import "VObjectManager+Sequence.h"
-#import "VObjectManager+SequenceFilters.h"
+#import "VObjectManager+Pagination.h"
 #import "VReachability.h"
 #import "VThemeManager.h"
 #import "VUserManager.h"

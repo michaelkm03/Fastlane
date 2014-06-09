@@ -11,7 +11,7 @@
 #import "VObjectManager+Users.h"
 #import "VObjectManager+Sequence.h"
 #import "VObjectManager+DirectMessaging.h"
-#import "VObjectManager+SequenceFilters.h"
+#import "VObjectManager+Pagination.h"
 
 #import "VUser+RestKit.h"
 
