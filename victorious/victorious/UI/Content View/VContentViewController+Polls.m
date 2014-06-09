@@ -228,6 +228,12 @@
         
         [resultView setProgress:progress animated:YES];
     }
+    
+    [UIView animateWithDuration:0.5f
+                     animations:^(void)
+    {
+        self.answeredPollMaskingView.alpha = 1.0f;
+    }];
 }
 
 - (VResultView*)resultViewForAnswerId:(NSNumber*)answerId

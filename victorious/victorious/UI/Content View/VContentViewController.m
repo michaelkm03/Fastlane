@@ -136,6 +136,7 @@ static const CGFloat kDistanceBetweenTitleAndCollapseButton =  42.5f;
     
     self.firstPollPlayIcon.hidden = YES;
     self.secondPollPlayIcon.hidden = YES;
+    self.answeredPollMaskingView.alpha = 0;
 }
 
 - (void)viewWillDisappear:(BOOL)animated
