@@ -11,7 +11,7 @@
 	<key>channel.name</key>
 	<string>Anne Or Shine</string>
 	<key>channel.url.about</key>
-	<string>http://dev.getvictorious.com/api/static/about</string>
+	<string>http://dev.getvictorious.com/api/static/tos</string>
 	<key>channel.url.acknowledgements</key>
 	<string>http://dev.getvictorious.com/api/static/acknowledgments</string>
 	<key>channel.url.privacy</key>

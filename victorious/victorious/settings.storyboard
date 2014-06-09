@@ -235,10 +235,10 @@
             </objects>
             <point key="canvasLocation" x="-4828" y="-2426"/>
         </scene>
-        <!--About Us View Controller - Terms of Use-->
+        <!--View Controller - Terms of Use-->
         <scene sceneID="80e-2h-oqv">
             <objects>
-                <viewController storyboardIdentifier="aboutUs" useStoryboardIdentifierAsRestorationIdentifier="YES" id="uRj-bL-JcU" customClass="VAboutUsViewController" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="aboutUs" useStoryboardIdentifierAsRestorationIdentifier="YES" id="uRj-bL-JcU" customClass="VTOSViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="X30-bY-u4J"/>
                         <viewControllerLayoutGuide type="bottom" id="kNM-ik-iVo"/>
@@ -248,19 +248,19 @@
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <webView contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="51W-oM-UQD">
-                                <rect key="frame" x="0.0" y="138" width="320" height="430"/>
+                                <rect key="frame" x="0.0" y="65" width="320" height="430"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                 <dataDetectorType key="dataDetectorTypes" link="YES"/>
                             </webView>
-                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0jn-1k-CcI">
-                                <rect key="frame" x="20" y="80" width="280" height="21"/>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="HPo-fR-j5v">
+                                <rect key="frame" x="20" y="503" width="280" height="21"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2Ne-Si-Yj1">
-                                <rect key="frame" x="20" y="109" width="280" height="21"/>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0nW-XL-BWg">
+                                <rect key="frame" x="20" y="532" width="280" height="21"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
                                 <nil key="highlightedColor"/>
@@ -276,8 +276,8 @@
                         </barButtonItem>
                     </navigationItem>
                     <connections>
-                        <outlet property="applicationNameLabel" destination="0jn-1k-CcI" id="D3T-dn-gxS"/>
-                        <outlet property="versionLabel" destination="2Ne-Si-Yj1" id="6JL-8Q-Wkc"/>
+                        <outlet property="applicationNameLabel" destination="HPo-fR-j5v" id="gZn-w5-92n"/>
+                        <outlet property="versionLabel" destination="0nW-XL-BWg" id="q58-qe-oJr"/>
                         <outlet property="webView" destination="51W-oM-UQD" id="QGb-Nr-ubr"/>
                     </connections>
                 </viewController>

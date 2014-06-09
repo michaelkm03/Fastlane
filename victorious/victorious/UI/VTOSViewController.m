@@ -1,29 +1,28 @@
 //
-//  VAboutUsViewController.m
+//  VTOSViewController.m
 //  victorious
 //
 //  Created by Gary Philipp on 1/2/14.
 //  Copyright (c) 2014 Will Long. All rights reserved.
 //
 
-#import "VAboutUsViewController.h"
+#import "VTOSViewController.h"
 
-@interface VAboutUsViewController ()    <UIWebViewDelegate>
+@interface VTOSViewController ()    <UIWebViewDelegate>
 @property (nonatomic, weak) IBOutlet    UILabel*    applicationNameLabel;
 @property (nonatomic, weak) IBOutlet    UILabel*    versionLabel;
 @end
 
-@implementation VAboutUsViewController
+@implementation VTOSViewController
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
     
-    NSString*   appBuildString      =   [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleVersion"];
     NSString*   appVersionString    =   [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleShortVersionString"];
-
-    
     self.applicationNameLabel.text  =   [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleDisplayName"];
+    
+    NSString*   appBuildString      =   [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleVersion"];
     self.versionLabel.text = [NSString stringWithFormat:@"%@ (%@)", appBuildString, appVersionString];
 }
 

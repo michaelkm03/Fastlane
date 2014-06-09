@@ -1,5 +1,5 @@
 //
-//  VAboutUsViewController.h
+//  VTOSViewController.h
 //  victorious
 //
 //  Created by Gary Philipp on 1/2/14.
@@ -8,5 +8,5 @@
 
 #import "VWebContentViewController.h"
 
-@interface VAboutUsViewController : VWebContentViewController
+@interface VTOSViewController : VWebContentViewController
 @end
