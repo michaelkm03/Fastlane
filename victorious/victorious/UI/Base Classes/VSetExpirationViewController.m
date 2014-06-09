@@ -79,6 +79,8 @@
     self.expirationDate = nil;
     self.useAfterMode = YES;
     
+    self.setExpirationView.backgroundColor = [UIColor colorWithWhite:0.97 alpha:1.0];
+    
     self.view.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVBackgroundColor];
     [self.toolbar setBackgroundImage:[[UIImage alloc] init] forToolbarPosition:UIBarPositionAny barMetrics:UIBarMetricsDefault];
     [self.toolbar setShadowImage:[[UIImage alloc] init] forToolbarPosition:UIBarPositionAny];

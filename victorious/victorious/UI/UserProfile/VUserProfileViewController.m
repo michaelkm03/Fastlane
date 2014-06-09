@@ -230,8 +230,8 @@ const   CGFloat kVNavigationBarHeight = 44.0;
         
         self.profileCircleImageView = [[UIImageView alloc] initWithFrame:CGRectMake(120, 99, 80, 80)];
         self.profileCircleImageView.layer.cornerRadius = CGRectGetHeight(self.profileCircleImageView.bounds)/2;
-        self.profileCircleImageView.layer.borderWidth = 1.0;
-        self.profileCircleImageView.layer.borderColor = [UIColor whiteColor].CGColor;
+        self.profileCircleImageView.layer.borderWidth = 2.0;
+        self.profileCircleImageView.layer.borderColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVAccentColor].CGColor;
         self.profileCircleImageView.clipsToBounds = YES;
         [self.longContainerView addSubview:self.profileCircleImageView];
         
@@ -344,8 +344,8 @@ const   CGFloat kVNavigationBarHeight = 44.0;
         
         self.profileCircleImageView = [[UIImageView alloc] initWithFrame:CGRectMake(120, 25, 80, 80)];
         self.profileCircleImageView.layer.cornerRadius = CGRectGetHeight(self.profileCircleImageView.bounds)/2;
-        self.profileCircleImageView.layer.borderWidth = 1.0;
-        self.profileCircleImageView.layer.borderColor = [UIColor whiteColor].CGColor;
+        self.profileCircleImageView.layer.borderWidth = 2.0;
+        self.profileCircleImageView.layer.borderColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVAccentColor].CGColor;
         self.profileCircleImageView.clipsToBounds = YES;
         [self.shortContainerView addSubview:self.profileCircleImageView];
         
