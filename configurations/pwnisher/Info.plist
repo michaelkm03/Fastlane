@@ -42,7 +42,7 @@
 	<key>VictoriousAppID</key>
 	<integer>7</integer>
 	<key>StagingAppID</key>
-	<integer>1</integer>
+	<integer>7</integer>
 	<key>QAAppID</key>
 	<integer>1</integer>
 </dict>
