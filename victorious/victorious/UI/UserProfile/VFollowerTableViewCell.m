@@ -37,7 +37,6 @@
     self.profileLocation.text = profile.location;
     
     self.backgroundColor = [UIColor colorWithWhite:0.97 alpha:1.0];
-//  self.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVSecondaryBackgroundColor];
 
     self.followButton.hidden = YES;
     if (self.showButton)
