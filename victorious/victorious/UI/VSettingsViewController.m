@@ -147,7 +147,9 @@ static const NSInteger kServerEnvironmentButtonIndex = 3;
         self.logoutButton.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
     }
     else
+    {
         [self presentViewController:[VLoginViewController loginViewController] animated:YES completion:NULL];
+    }
 
     [self.tableView beginUpdates];
     [self.tableView endUpdates];
@@ -193,13 +195,9 @@ static const NSInteger kServerEnvironmentButtonIndex = 3;
         UITableViewCell*    cell = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:kChromecastButtonIndex inSection:kSettingsSectionIndex]];
 
         if (self.chromeCastController.deviceManager && self.chromeCastController.deviceManager.isConnected)
-        {
-            cell.detailTextLabel.text = [NSString stringWithFormat:@"Connected to %@", self.chromeCastController.deviceName];
-        }
+            cell.detailTextLabel.text = [NSString stringWithFormat:NSLocalizedString(@"ConnectedTo", @""), self.chromeCastController.deviceName];
         else
-        {
-            cell.detailTextLabel.text = @"Not Connected";
-        }
+            cell.detailTextLabel.text = NSLocalizedString(@"NotConnected", @"");
     }
     
     [self.tableView beginUpdates];
