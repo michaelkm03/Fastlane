@@ -16,8 +16,66 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="rt0-I5-ldA" userLabel="Close Button">
+                                <rect key="frame" x="10" y="9" width="44" height="45"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="45" id="pzm-w6-sEt"/>
+                                    <constraint firstAttribute="width" constant="44" id="qeP-4H-dOh"/>
+                                </constraints>
+                                <state key="normal" image="cameraButtonClose">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="closeAction:" destination="N4E-ak-ozN" eventType="touchUpInside" id="Qo7-9i-2vw"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fQI-xE-BeV" userLabel="Switch Camera Button">
+                                <rect key="frame" x="138" y="9" width="44" height="45"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="44" id="BsA-Rn-bcd"/>
+                                    <constraint firstAttribute="height" constant="45" id="CwP-OE-wbE"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                                <state key="normal" image="cameraButtonFlip">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="reverseCameraAction:" destination="N4E-ak-ozN" eventType="touchUpInside" id="l1E-gY-rYr"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" alpha="0.0" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="P0d-F9-FuH" userLabel="Next Button">
+                                <rect key="frame" x="267" y="9" width="44" height="45"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="45" id="ra6-8H-85K"/>
+                                    <constraint firstAttribute="width" constant="44" id="wHy-hi-vab"/>
+                                </constraints>
+                                <state key="normal" image="cameraButtonNext">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="nextAction:" destination="N4E-ak-ozN" eventType="touchUpInside" id="Frq-yF-r61"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" alpha="0.0" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="foI-4D-IyS" userLabel="Flash Button">
+                                <rect key="frame" x="267" y="9" width="44" height="45"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="44" id="W07-Jg-KII"/>
+                                    <constraint firstAttribute="height" constant="45" id="ZHc-Tz-z8m"/>
+                                </constraints>
+                                <state key="normal" image="cameraButtonFlashOff">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <state key="selected" image="cameraButtonFlashOn"/>
+                                <connections>
+                                    <action selector="switchFlashAction:" destination="N4E-ak-ozN" eventType="touchUpInside" id="2lr-GW-9dC"/>
+                                </connections>
+                            </button>
                             <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" progressViewStyle="bar" translatesAutoresizingMaskIntoConstraints="NO" id="2M1-U9-GGC">
-                                <rect key="frame" x="0.0" y="68" width="321" height="3"/>
+                                <rect key="frame" x="0.0" y="24" width="321" height="3"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="progressTintColor" red="0.99607843137254903" green="0.28627450980392155" blue="0.28627450980392155" alpha="1" colorSpace="calibratedRGB"/>
                             </progressView>
@@ -118,46 +176,36 @@
                         </subviews>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
+                            <constraint firstItem="P0d-F9-FuH" firstAttribute="top" secondItem="VHc-U1-zGw" secondAttribute="bottom" constant="9" id="0yB-Sx-48U"/>
+                            <constraint firstItem="foI-4D-IyS" firstAttribute="top" secondItem="VHc-U1-zGw" secondAttribute="bottom" constant="9" id="7HY-h8-Czb"/>
+                            <constraint firstItem="rt0-I5-ldA" firstAttribute="left" secondItem="AMw-cC-uUG" secondAttribute="left" constant="10" id="DT8-Jk-ijk"/>
                             <constraint firstItem="2M1-U9-GGC" firstAttribute="top" secondItem="VHc-U1-zGw" secondAttribute="bottom" priority="250" constant="24" id="FRD-fy-0nC"/>
                             <constraint firstItem="2M1-U9-GGC" firstAttribute="left" secondItem="AMw-cC-uUG" secondAttribute="left" id="HIS-Eh-cNC"/>
-                            <constraint firstItem="Cdq-4w-Bu5" firstAttribute="top" secondItem="VHc-U1-zGw" secondAttribute="bottom" priority="250" constant="28" id="KPf-i7-3hZ"/>
+                            <constraint firstItem="Cdq-4w-Bu5" firstAttribute="top" secondItem="VHc-U1-zGw" secondAttribute="bottom" priority="250" constant="72" id="KPf-i7-3hZ"/>
+                            <constraint firstAttribute="right" secondItem="foI-4D-IyS" secondAttribute="right" constant="10" id="Mra-0x-dRV"/>
                             <constraint firstItem="2M1-U9-GGC" firstAttribute="top" relation="greaterThanOrEqual" secondItem="VHc-U1-zGw" secondAttribute="bottom" id="Mtx-Md-HK3"/>
+                            <constraint firstAttribute="right" secondItem="P0d-F9-FuH" secondAttribute="right" constant="10" id="Myc-p1-nWw"/>
                             <constraint firstItem="zJf-AW-KyK" firstAttribute="top" secondItem="X12-kd-M68" secondAttribute="bottom" constant="8" id="Myi-uW-Hnb"/>
                             <constraint firstItem="Cdq-4w-Bu5" firstAttribute="top" relation="greaterThanOrEqual" secondItem="2M1-U9-GGC" secondAttribute="bottom" priority="900" constant="2" id="QIP-bh-RHp"/>
                             <constraint firstItem="abs-NM-eiT" firstAttribute="top" relation="greaterThanOrEqual" secondItem="Cdq-4w-Bu5" secondAttribute="bottom" id="Ujb-rf-uOh"/>
+                            <constraint firstItem="fQI-xE-BeV" firstAttribute="top" secondItem="VHc-U1-zGw" secondAttribute="bottom" constant="9" id="XZW-ew-dVe"/>
                             <constraint firstItem="X12-kd-M68" firstAttribute="centerX" secondItem="zJf-AW-KyK" secondAttribute="centerX" constant="0.5" id="Y6j-mr-SAR"/>
                             <constraint firstAttribute="centerX" secondItem="Cdq-4w-Bu5" secondAttribute="centerX" id="YNh-E5-lCq"/>
                             <constraint firstAttribute="right" secondItem="abs-NM-eiT" secondAttribute="right" id="de4-Ce-ltb"/>
+                            <constraint firstItem="rt0-I5-ldA" firstAttribute="top" secondItem="VHc-U1-zGw" secondAttribute="bottom" constant="9" id="f3m-B8-Kml"/>
+                            <constraint firstAttribute="centerX" secondItem="fQI-xE-BeV" secondAttribute="centerX" id="fJ3-zW-aD6"/>
                             <constraint firstAttribute="right" secondItem="2M1-U9-GGC" secondAttribute="right" id="mRI-hM-JfE"/>
                             <constraint firstItem="e2F-3b-vgF" firstAttribute="top" secondItem="abs-NM-eiT" secondAttribute="bottom" id="ua3-eR-hij"/>
                             <constraint firstItem="abs-NM-eiT" firstAttribute="left" secondItem="AMw-cC-uUG" secondAttribute="left" id="wvD-uc-4A8"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" id="8KH-nv-A57">
-                        <nil key="title"/>
-                        <barButtonItem key="leftBarButtonItem" image="cameraButtonClose" id="ezH-iI-8pA" userLabel="Close Button">
-                            <color key="tintColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                            <connections>
-                                <action selector="closeAction:" destination="N4E-ak-ozN" id="LxU-6m-Utb"/>
-                            </connections>
-                        </barButtonItem>
-                        <button key="titleView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="fQI-xE-BeV" userLabel="Switch Camera Button">
-                            <rect key="frame" x="142" y="4" width="36" height="36"/>
-                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            <fontDescription key="fontDescription" type="system" pointSize="15"/>
-                            <state key="normal" image="cameraButtonFlip">
-                                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                            </state>
-                            <connections>
-                                <action selector="reverseCameraAction:" destination="N4E-ak-ozN" eventType="touchUpInside" id="l1E-gY-rYr"/>
-                            </connections>
-                        </button>
-                    </navigationItem>
                     <nil key="simulatedStatusBarMetrics"/>
-                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" barStyle="black" prompted="NO"/>
+                    <nil key="simulatedTopBarMetrics"/>
                     <connections>
                         <outlet property="capturePhotoButton" destination="zJf-AW-KyK" id="jsV-GZ-cTi"/>
                         <outlet property="deleteButton" destination="oAC-V4-Jg0" id="62s-tg-lPW"/>
+                        <outlet property="flashButton" destination="foI-4D-IyS" id="Yuh-uU-u2a"/>
+                        <outlet property="nextButton" destination="P0d-F9-FuH" id="Wir-PA-wnL"/>
                         <outlet property="openAlbumButton" destination="W9w-XF-uIU" id="0Cs-b0-bYq"/>
                         <outlet property="previewView" destination="Cdq-4w-Bu5" id="uB4-J9-nz8"/>
                         <outlet property="progressView" destination="2M1-U9-GGC" id="GmO-02-loU"/>
@@ -716,7 +764,11 @@ and don't forget #hashtags</string>
         <image name="cameraButtonBack" width="22" height="17"/>
         <image name="cameraButtonClose" width="24" height="24"/>
         <image name="cameraButtonDelete" width="60" height="60"/>
+        <image name="cameraButtonFlashOff" width="24" height="32"/>
+        <image name="cameraButtonFlashOn" width="24" height="32"/>
         <image name="cameraButtonFlip" width="36" height="36"/>
+        <image name="cameraButtonNext" width="24" height="24"/>
+        <image name="cameraButtonOnOff" width="160" height="50"/>
         <image name="cameraButtonPhotoCapture" width="91" height="91"/>
         <image name="cameraButtonPhotoDone" width="91" height="91"/>
         <image name="cameraButtonStopwatch" width="43" height="48"/>
