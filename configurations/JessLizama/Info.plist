@@ -11,14 +11,14 @@
 		<dict>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>fb1374328719478033</string>
+				<string>fb582360511878683</string>
 			</array>
 		</dict>
 	</array>
 	<key>FacebookAppID</key>
-	<string>1374328719478033</string>
+	<string>582360511878683</string>
 	<key>FacebookDisplayName</key>
-	<string>VictoriousApp Dev</string>
+	<string>Jess Lizama</string>
 	<key>TestflightReleaseAppToken</key>
 	<string>c31250e1-8689-41af-80ec-8492aca17a07</string>
 	<key>TestflightQAAppToken</key>

@@ -1,5 +1,5 @@
 //
-//  VObjectManager+SequenceFilters.h
+//  VObjectManager+Pagination.h
 //  victorious
 //
 //  Created by Will Long on 4/24/14.
@@ -10,7 +10,7 @@
 
 @class VSequenceFilter, VCommentFilter, VSequence, VConversation;
 
-@interface VObjectManager (SequenceFilters)
+@interface VObjectManager (Pagination)
 
 - (RKManagedObjectRequestOperation *)refreshCommentFilter:(VCommentFilter*)filter
                                              successBlock:(VSuccessBlock)success
@@ -29,6 +29,19 @@
                                                      successBlock:(VSuccessBlock)success
                                                         failBlock:(VFailBlock)fail;
 
+- (RKManagedObjectRequestOperation *)refreshFollowersForUser:(VUser*)user
+                                                successBlock:(VSuccessBlock)success
+                                                   failBlock:(VFailBlock)fail;
+- (RKManagedObjectRequestOperation *)loadNextPageOfFollowersForUser:(VUser*)user
+                                                       successBlock:(VSuccessBlock)success
+                                                          failBlock:(VFailBlock)fail;
+
+- (RKManagedObjectRequestOperation *)refreshFollowingsForUser:(VUser*)user
+                                                 successBlock:(VSuccessBlock)success
+                                                    failBlock:(VFailBlock)fail;
+- (RKManagedObjectRequestOperation *)loadNextPageOfFollowingsForUser:(VUser*)user
+                                                        successBlock:(VSuccessBlock)success
+                                                           failBlock:(VFailBlock)fail;
 
 - (RKManagedObjectRequestOperation *)refreshMessagesForConversation:(VConversation*)conversation
                                                        successBlock:(VSuccessBlock)success

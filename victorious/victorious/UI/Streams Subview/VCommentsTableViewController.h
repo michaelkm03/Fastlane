@@ -17,6 +17,7 @@
 @property (nonatomic, weak) id<VCommentsTableViewControllerDelegate> delegate;
 
 - (void)sortComments;
+- (void)setHasComments:(BOOL)hasComments;
 
 @end
 

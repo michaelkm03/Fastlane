@@ -9,7 +9,7 @@
 #import "VMessageViewController.h"
 
 #import "VObjectManager+DirectMessaging.h"
-#import "VObjectManager+SequenceFilters.h"
+#import "VObjectManager+Pagination.h"
 
 #import "VMessageCell.h"
 #import "VMessage+RestKit.h"

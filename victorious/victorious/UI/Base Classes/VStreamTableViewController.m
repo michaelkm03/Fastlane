@@ -26,7 +26,7 @@
 
 //ObjectManager
 #import "VObjectManager+Sequence.h"
-#import "VObjectManager+SequenceFilters.h"
+#import "VObjectManager+Pagination.h"
 
 //Data Models
 #import "VSequence+RestKit.h"

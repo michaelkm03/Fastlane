@@ -133,42 +133,6 @@
 
 #pragma mark - Following
 
-- (RKManagedObjectRequestOperation *)requestFollowListForUser:(VUser *)user
-                                                 successBlock:(VSuccessBlock)success
-                                                    failBlock:(VFailBlock)fail
-{
-    NSString *path = [NSString stringWithFormat:@"/api/follow/subscribed_to_list/%d", [user.remoteId intValue]];
-    return [self GET:path
-              object:nil
-          parameters:nil
-        successBlock:^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
-    {
-        if (success)
-        {
-            success(operation, fullResponse, resultObjects);
-        }
-    }
-           failBlock:fail];
-}
-
-- (RKManagedObjectRequestOperation *)requestFollowerListForUser:(VUser *)user
-                                                   successBlock:(VSuccessBlock)success
-                                                      failBlock:(VFailBlock)fail
-{
-    NSString *path = [NSString stringWithFormat:@"/api/follow/followers_list/%d", [user.remoteId intValue]];
-    return [self GET:path
-              object:nil
-          parameters:nil
-        successBlock:^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
-            {
-                if (success)
-                {
-                    success(operation, fullResponse, resultObjects);
-                }
-            }
-           failBlock:fail];
-}
-
 - (RKManagedObjectRequestOperation *)followUser:(VUser *)user
                                    successBlock:(VSuccessBlock)success
                                       failBlock:(VFailBlock)fail

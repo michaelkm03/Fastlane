@@ -8,7 +8,7 @@
 
 #import "VFollowingTableViewController.h"
 #import "VFollowerTableViewCell.h"
-#import "VObjectManager+Users.h"
+#import "VObjectManager+Pagination.h"
 #import "VUser.h"
 
 #import "VNoContentView.h"
@@ -32,7 +32,7 @@
 //    self.tableView.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVSecondaryBackgroundColor];
     
     [self.tableView registerNib:[UINib nibWithNibName:@"followerCell" bundle:nil] forCellReuseIdentifier:@"followerCell"];
-    [self populateFollowingList];
+    [self refreshFollowingList];
 }
 
 #pragma mark - Table view data source
@@ -50,36 +50,66 @@
     return cell;
 }
 
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView
+{
+    if (scrollView.contentOffset.y + CGRectGetHeight(scrollView.bounds) > scrollView.contentSize.height * .75)
+    {
+        [self loadMoreFollowings];
+    }
+}
+
 - (IBAction)refresh:(id)sender
 {
     int64_t         delayInSeconds = 1.0f;
     dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
     dispatch_after(popTime, dispatch_get_main_queue(), ^(void)
     {
-        [self populateFollowingList];
+        [self refreshFollowingList];
         [self.refreshControl endRefreshing];
     });
 }
 
-- (void)populateFollowingList
+- (void)refreshFollowingList
 {
-    VSuccessBlock followingSuccess = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
+    VSuccessBlock followerSuccess = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
     {
         NSSortDescriptor*   sort = [[NSSortDescriptor alloc] initWithKey:@"name" ascending:YES selector:@selector(localizedCaseInsensitiveCompare:)];
         self.following = [resultObjects sortedArrayUsingDescriptors:@[sort]];
         [self setIsFollowing:self.following.count];
+        
         [self.tableView reloadData];
     };
     
-    VFailBlock followingFail = ^(NSOperation* operation, NSError* error)
+    VFailBlock followerFail = ^(NSOperation* operation, NSError* error)
     {
-        self.following = [[NSArray alloc] init];
-        [self setIsFollowing:self.following.count];
+        if (error.code)
+        {
+            self.following = [[NSArray alloc] init];
+            [self.tableView reloadData];
+            [self setIsFollowing:NO];
+        }
     };
     
-    [[VObjectManager sharedManager] requestFollowListForUser:self.profile
-                                                successBlock:followingSuccess
-                                                   failBlock:followingFail];
+    [[VObjectManager sharedManager] refreshFollowingsForUser:self.profile
+                                                successBlock:followerSuccess
+                                                   failBlock:followerFail];
+}
+
+- (void)loadMoreFollowings
+{
+    VSuccessBlock followerSuccess = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
+    {
+        NSSortDescriptor*   sort = [[NSSortDescriptor alloc] initWithKey:@"name" ascending:YES selector:@selector(localizedCaseInsensitiveCompare:)];
+        NSSet* uniqueFollowings = [NSSet setWithArray:[self.following arrayByAddingObjectsFromArray:resultObjects]];
+        self.following = [[uniqueFollowings allObjects] sortedArrayUsingDescriptors:@[sort]];
+        [self setIsFollowing:self.following.count];
+        
+        [self.tableView reloadData];
+    };
+    
+    [[VObjectManager sharedManager] loadNextPageOfFollowingsForUser:self.profile
+                                                       successBlock:followerSuccess
+                                                          failBlock:nil];
 }
 
 - (void)setIsFollowing:(BOOL)isFollowing

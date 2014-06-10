@@ -14,7 +14,7 @@
 #import "VNewsViewController.h"
 #import "VConversationCell.h"
 #import "VObjectManager+DirectMessaging.h"
-#import "VObjectManager+SequenceFilters.h"
+#import "VObjectManager+Pagination.h"
 #import "VThemeManager.h"
 
 #import "VNoContentView.h"
@@ -55,13 +55,6 @@ static  NSString*   kNewsCellViewIdentifier       =   @"VNewsCell";
 //    self.tableView.separatorColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVBackgroundColor];
     self.navigationController.navigationBar.barTintColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVAccentColor];
     self.headerView.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVAccentColor];
-}
-
-- (void)viewWillAppear:(BOOL)animated
-{
-    [super viewWillAppear:animated];
-    
-    [self setHasMessages:self.fetchedResultsController.fetchedObjects.count];
 }
 
 - (void)viewDidAppear:(BOOL)animated

@@ -14,7 +14,7 @@
 #import "VLoginViewController.h"
 #import "VCommentCell.h"
 
-#import "VObjectManager+SequenceFilters.h"
+#import "VObjectManager+Pagination.h"
 #import "VObjectManager+Comment.h"
 
 #import "UIActionSheet+VBlocks.h"

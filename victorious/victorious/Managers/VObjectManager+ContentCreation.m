@@ -9,7 +9,7 @@
 #import "VObjectManager+ContentCreation.h"
 
 #import "VObjectManager+Private.h"
-#import "VObjectManager+SequenceFilters.h"
+#import "VObjectManager+Pagination.h"
 
 #import "VHomeStreamViewController.h"
 #import "VCommunityStreamViewController.h"
