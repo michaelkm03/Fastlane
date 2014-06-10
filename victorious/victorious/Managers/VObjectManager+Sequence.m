@@ -76,6 +76,22 @@ NSString* const kPollResultsLoaded = @"kPollResultsLoaded";
            failBlock:fullFail];
 }
 
+#pragma mark - Flag
+
+
+- (RKManagedObjectRequestOperation *)flagSequence:(VSequence*)sequence
+                                     successBlock:(VSuccessBlock)success
+                                        failBlock:(VFailBlock)fail
+{
+    return [self POST:@"/api/sequence/flag"
+               object:nil
+           parameters:@{@"sequence_id" : sequence.remoteId.stringValue ?: [NSNull null]}
+         successBlock:success
+            failBlock:fail];
+}
+
+#pragma mark - Sharing
+
 - (RKManagedObjectRequestOperation *)shareSequence:(VSequence*)sequence
                                          shareType:(NSString*)type
                                       successBlock:(VSuccessBlock)success

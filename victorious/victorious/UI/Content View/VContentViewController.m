@@ -22,8 +22,12 @@
 #import "VActionBarViewController.h"
 #import "VEmotiveBallisticsBarViewController.h"
 
+#import "VObjectManager+Sequence.h"
+
 #import "VContentToStreamAnimator.h"
 #import "VContentToCommentAnimator.h"
+
+#import "UIActionSheet+VBlocks.h"
 
              CGFloat kContentMediaViewOffset                = 154.0f;
 static const CGFloat kDistanceBetweenTitleAndHR             =  14.5f;
@@ -515,7 +519,42 @@ static const CGFloat kDistanceBetweenTitleAndCollapseButton =  42.5f;
 #pragma mark - Button Actions
 - (IBAction)pressedMore:(id)sender
 {
-    //Specced but still no idea what its supposed to do
+    NSString *reportTitle = NSLocalizedString(@"Report Inappropriate", @"Comment report inappropriate button");
+    
+    UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil
+                                                    cancelButtonTitle:NSLocalizedString(@"Cancel", @"Cancel button")
+                                                       onCancelButton:nil
+                                               destructiveButtonTitle:reportTitle
+                                                  onDestructiveButton:^(void)
+                                  {
+                                      [[VObjectManager sharedManager] flagSequence:self.sequence
+                                                                     successBlock:^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
+                                       {
+                                           UIAlertView*    alert   =   [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"ReportedTitle", @"")
+                                                                                                  message:NSLocalizedString(@"ReportedMessage", @"")
+                                                                                                 delegate:nil
+                                                                                        cancelButtonTitle:NSLocalizedString(@"OKButton", @"")
+                                                                                        otherButtonTitles:nil];
+                                           [alert show];
+                                           
+                                       }
+                                                                        failBlock:^(NSOperation* operation, NSError* error)
+                                       {
+                                           VLog(@"Failed to flag sequence %@", self.sequence);
+                                           
+                                           //TODO: we may want to remove this later.
+                                           UIAlertView*    alert   =   [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"ReportedTitle", @"")
+                                                                                                  message:NSLocalizedString(@"ReportedMessage", @"")
+                                                                                                 delegate:nil
+                                                                                        cancelButtonTitle:NSLocalizedString(@"OKButton", @"")
+                                                                                        otherButtonTitles:nil];
+                                           [alert show];
+                                       }];
+                                  }
+                                           otherButtonTitlesAndBlocks:nil];
+    
+    UIWindow *window = [[[UIApplication sharedApplication] delegate] window];
+    [actionSheet showInView:window];
 }
 
 - (IBAction)pressedBack:(id)sender
