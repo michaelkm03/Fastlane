@@ -93,7 +93,7 @@ do
     fi
 
     pushd .. > /dev/null
-    ./build-scripts/apply-config.sh "$CONFIG" victorious.xcarchive
+    ./build-scripts/apply-config.sh "$CONFIG" -a victorious.xcarchive
     if [ $? != 0 ]; then
         echo "Error applying configuration for $CONFIG"
         popd > /dev/null

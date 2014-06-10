@@ -5,10 +5,15 @@
 ###########
 
 FOLDER=$1
-XCARCHIVE_PATH=$2
+A_FLAG=$2
+XCARCHIVE_PATH=$3
 
 if [ "$FOLDER" == "" ]; then
-    echo "Usage: $0 <folder> <archive path>"
+    echo "Usage: `basename $0` <folder> [-a <archive path>]"
+    echo ""
+    echo "If -a is specified, this script will modify an .xcarchive."
+    echo "Otherwise, the current source directory is modified."
+    echo ""
     exit 1
 fi
 
@@ -19,15 +24,18 @@ fi
 
 FOLDER="configurations/$FOLDER"
 
-if [ ! -d "$XCARCHIVE_PATH" ]; then
-    echo "Archive \"$XCARCHIVE_PATH\" not found"
-    exit 1
+if [ "$A_FLAG" == "-a" ]; then
+    if [ ! -d "$XCARCHIVE_PATH" ]; then
+        echo "Archive \"$XCARCHIVE_PATH\" not found"
+        exit 1
+    fi
+    DEST_PATH="$XCARCHIVE_PATH/Products/Applications/victorious.app"
+else
+    DEST_PATH="victorious/AppSpecific"
 fi
 
-APP_BUNDLE_PATH="$XCARCHIVE_PATH/Products/Applications/victorious.app"
-
-if [ ! -d "$APP_BUNDLE_PATH" ]; then
-    echo "App bundle not found at expected path: $APP_BUNDLE_PATH"
+if [ ! -d "$DEST_PATH" ]; then
+    echo "Nothing found at expected path: \"$DEST_PATH\""
     exit 1
 fi
 
@@ -36,9 +44,9 @@ fi
 
 copyFile(){
     if [ -a "$FOLDER/$1" ]; then
-        cp "$FOLDER/$1" "$APP_BUNDLE_PATH/$1"
-    elif [ -a "$APP_BUNDLE_PATH/$1" ]; then
-        rm "$APP_BUNDLE_PATH/$1"
+        cp "$FOLDER/$1" "$DEST_PATH/$1"
+    elif [ -a "$DEST_PATH/$1" ]; then
+        rm "$DEST_PATH/$1"
     fi
 }
 
@@ -52,37 +60,13 @@ copyFile "Icon-60@2x.png"
 
 ### Modify Info.plist
 
-PRODUCT_PREFIX=`/usr/libexec/PlistBuddy -c "Print ProductPrefix" "$APP_BUNDLE_PATH/Info.plist"`
-if [ $? != 0 ]; then
-    echo "ProductPrefix key not found in info.plist."
-    exit 1
-fi
-
-copyPListValue(){
-    local VAL=$(/usr/libexec/PlistBuddy -c "Print $1" "$FOLDER/Info.plist" | sed -e "s/\${ProductPrefix}/$PRODUCT_PREFIX/g")
-    if [ "$VAL" != "" ]; then
-        /usr/libexec/PlistBuddy -c "Set $1 $VAL" "$APP_BUNDLE_PATH/Info.plist"
+if [ "$A_FLAG" == "-a" ]; then
+    PRODUCT_PREFIX=`/usr/libexec/PlistBuddy -c "Print ProductPrefix" "$DEST_PATH/Info.plist"`
+    if [ $? != 0 ]; then
+        echo "ProductPrefix key not found in info.plist."
+        exit 1
     fi
-}
-
-# Make sure plist is readable
-/usr/libexec/PlistBuddy -c "Print" "$FOLDER/Info.plist" > /dev/null
-if [ $? != 0 ]; then
-    echo "Error reading \"$FOLDER/Info.plist\""
-    exit 1
+    ./build-scripts/copy-plist.sh "$FOLDER/Info.plist" "$DEST_PATH/Info.plist" -p "$PRODUCT_PREFIX"
+else
+    ./build-scripts/copy-plist.sh "$FOLDER/Info.plist" "$DEST_PATH/Info.plist"
 fi
-
-copyPListValue 'CFBundleDisplayName'
-copyPListValue 'CFBundleIdentifier'
-copyPListValue 'CFBundleURLTypes:0:CFBundleURLSchemes:0'
-copyPListValue 'CFBundleURLTypes:1:CFBundleURLSchemes:0'
-copyPListValue 'FacebookAppID'
-copyPListValue 'FacebookDisplayName'
-copyPListValue 'TWITTER_CONSUMER_KEY'
-copyPListValue 'TWITTER_CONSUMER_SECRET'
-copyPListValue 'TestflightReleaseAppToken'
-copyPListValue 'TestflightQAAppToken'
-copyPListValue 'TestflightStagingAppToken'
-copyPListValue 'VictoriousAppID'
-copyPListValue 'StagingAppID'
-copyPListValue 'QAAppID'
