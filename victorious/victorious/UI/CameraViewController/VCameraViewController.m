@@ -378,6 +378,7 @@ const   NSTimeInterval  kAnimationDuration      =   0.4;
         self.recordButton.alpha = 1.0;
         self.toolTipImageView.alpha = 0.0;
         self.flashButton.alpha = 0.0f;
+        self.progressView.alpha = 1.0f;
 
         if (self.inRecordVideoState)
         {
@@ -422,6 +423,7 @@ const   NSTimeInterval  kAnimationDuration      =   0.4;
         self.recordButton.alpha = 0.0f;
         self.toolTipImageView.alpha = 0.0f;
         self.nextButton.alpha = 0.0f;
+        self.progressView.alpha = 0.0f;
         [self configureFlashButton];
     };
     void (^fullCompletion)(BOOL) = ^(BOOL finished)
