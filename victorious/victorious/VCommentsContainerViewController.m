@@ -131,7 +131,7 @@
         [progressHUD hide:YES];
         
         [self.sequence.managedObjectContext saveToPersistentStore:nil];
-        
+        [(VCommentsTableViewController*)self.conversationTableViewController setHasComments:YES];
         [(VCommentsTableViewController *)self.conversationTableViewController sortComments];
     };
     
