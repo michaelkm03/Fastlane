@@ -79,7 +79,7 @@
 		3F71A7DB18D7C6D20048FF60 /* VRemixSliderRight.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F71A7D618D7C6D20048FF60 /* VRemixSliderRight.m */; };
 		3F71A7DC18D7C6D20048FF60 /* VRemixVideoRangeSlider.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F71A7D818D7C6D20048FF60 /* VRemixVideoRangeSlider.m */; };
 		3F919908187600720055FE37 /* VSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F919907187600720055FE37 /* VSettingsViewController.m */; };
-		3F91990B18761B0D0055FE37 /* VAboutUsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F91990A18761B0D0055FE37 /* VAboutUsViewController.m */; };
+		3F91990B18761B0D0055FE37 /* VTOSViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F91990A18761B0D0055FE37 /* VTOSViewController.m */; };
 		3F91991018761C720055FE37 /* VPrivacyPoliciesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F91990F18761C720055FE37 /* VPrivacyPoliciesViewController.m */; };
 		3F91991518761D1C0055FE37 /* VAcknowledgementsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F91991418761D1C0055FE37 /* VAcknowledgementsViewController.m */; };
 		3F91991A187CAF310055FE37 /* VMessageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F919919187CAF310055FE37 /* VMessageViewController.m */; };
@@ -453,8 +453,8 @@
 		3F71A7D818D7C6D20048FF60 /* VRemixVideoRangeSlider.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VRemixVideoRangeSlider.m; path = "UI/Video Remix/VRemixVideoRangeSlider.m"; sourceTree = "<group>"; };
 		3F919906187600720055FE37 /* VSettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VSettingsViewController.h; path = UI/VSettingsViewController.h; sourceTree = "<group>"; };
 		3F919907187600720055FE37 /* VSettingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VSettingsViewController.m; path = UI/VSettingsViewController.m; sourceTree = "<group>"; };
-		3F91990918761B0D0055FE37 /* VAboutUsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VAboutUsViewController.h; path = UI/VAboutUsViewController.h; sourceTree = "<group>"; };
-		3F91990A18761B0D0055FE37 /* VAboutUsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VAboutUsViewController.m; path = UI/VAboutUsViewController.m; sourceTree = "<group>"; };
+		3F91990918761B0D0055FE37 /* VTOSViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VTOSViewController.h; path = UI/VTOSViewController.h; sourceTree = "<group>"; };
+		3F91990A18761B0D0055FE37 /* VTOSViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VTOSViewController.m; path = UI/VTOSViewController.m; sourceTree = "<group>"; };
 		3F91990E18761C720055FE37 /* VPrivacyPoliciesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VPrivacyPoliciesViewController.h; path = UI/VPrivacyPoliciesViewController.h; sourceTree = "<group>"; };
 		3F91990F18761C720055FE37 /* VPrivacyPoliciesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VPrivacyPoliciesViewController.m; path = UI/VPrivacyPoliciesViewController.m; sourceTree = "<group>"; };
 		3F91991318761D1C0055FE37 /* VAcknowledgementsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VAcknowledgementsViewController.h; path = UI/VAcknowledgementsViewController.h; sourceTree = "<group>"; };
@@ -1270,8 +1270,8 @@
 				3F919907187600720055FE37 /* VSettingsViewController.m */,
 				3F21942C193EA49000FA3407 /* VChangePasswordViewController.h */,
 				3F21942D193EA49000FA3407 /* VChangePasswordViewController.m */,
-				3F91990918761B0D0055FE37 /* VAboutUsViewController.h */,
-				3F91990A18761B0D0055FE37 /* VAboutUsViewController.m */,
+				3F91990918761B0D0055FE37 /* VTOSViewController.h */,
+				3F91990A18761B0D0055FE37 /* VTOSViewController.m */,
 				3F91990E18761C720055FE37 /* VPrivacyPoliciesViewController.h */,
 				3F91990F18761C720055FE37 /* VPrivacyPoliciesViewController.m */,
 				3F91991318761D1C0055FE37 /* VAcknowledgementsViewController.h */,
@@ -2192,7 +2192,7 @@
 				3FDEDD0318CE47E80028E3F1 /* VRemixTrimViewController.m in Sources */,
 				3F91991518761D1C0055FE37 /* VAcknowledgementsViewController.m in Sources */,
 				3F14C45318BD2BD0001796B9 /* VCVideoEncoder.m in Sources */,
-				3F91990B18761B0D0055FE37 /* VAboutUsViewController.m in Sources */,
+				3F91990B18761B0D0055FE37 /* VTOSViewController.m in Sources */,
 				BE2D1E5519006E7500C6FF99 /* VContentToCommentAnimator.m in Sources */,
 				BEB52A7B18C02D6600AC5FE4 /* VEmotiveBallisticsBarViewController.m in Sources */,
 				BE55CD15188F316900FE619F /* VObjectManager.m in Sources */,

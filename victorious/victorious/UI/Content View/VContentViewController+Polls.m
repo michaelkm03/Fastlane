@@ -41,12 +41,9 @@
     
     [UIView animateWithDuration:.2f
                      animations:^{
-                         
-                         CGRect firstSmallFrame = self.firstSmallPreviewImage.frame;
-                         self.firstSmallPreviewImage.frame = CGRectMake(CGRectGetMinX(firstSmallFrame) - 1.0f, CGRectGetMinY(firstSmallFrame), CGRectGetWidth(firstSmallFrame), CGRectGetHeight(firstSmallFrame));
-                         
-                         CGRect secondSmallFrame = self.secondSmallPreviewImage.frame;
-                         self.secondSmallPreviewImage.frame = CGRectMake(CGRectGetMinX(secondSmallFrame) + 1.0f, CGRectGetMinY(secondSmallFrame), CGRectGetWidth(secondSmallFrame), CGRectGetHeight(secondSmallFrame));
+                         self.leftSmallPreviewImageWidthConstraint.constant = 159.0f;
+                         self.rightSmallPreviewImageWidthConstraint.constant = 159.0f;
+                         [self.pollPreviewView layoutIfNeeded];
                      }];
 }
 
@@ -228,6 +225,12 @@
         
         [resultView setProgress:progress animated:YES];
     }
+    
+    [UIView animateWithDuration:0.5f
+                     animations:^(void)
+    {
+        self.answeredPollMaskingView.alpha = 1.0f;
+    }];
 }
 
 - (VResultView*)resultViewForAnswerId:(NSNumber*)answerId

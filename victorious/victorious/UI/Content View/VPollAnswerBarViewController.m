@@ -67,8 +67,8 @@
     self.selectedHexImage.translatesAutoresizingMaskIntoConstraints = YES;
     self.selectedContainmentView.translatesAutoresizingMaskIntoConstraints = YES;
     
-    self.leftLabel.text = ((VAnswer*)[self.answers firstObject]).label;
-    self.rightLabel.text = ((VAnswer*)[self.answers lastObject]).label;
+    self.leftLabel.attributedText = [[NSAttributedString alloc] initWithString:[[self.answers firstObject] label] attributes:[self attributesForAnswerLabel]];
+    self.rightLabel.attributedText = [[NSAttributedString alloc] initWithString:[[self.answers lastObject] label] attributes:[self attributesForAnswerLabel]];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -90,12 +90,22 @@
     [super setSequence:sequence];
     
     self.answers = [[self.sequence firstNode] firstAnswers];
-    self.leftLabel.text = ((VAnswer*)[self.answers firstObject]).label;
-    self.rightLabel.text = ((VAnswer*)[self.answers lastObject]).label;
+    self.leftLabel.attributedText = [[NSAttributedString alloc] initWithString:[[self.answers firstObject] label] attributes:[self attributesForAnswerLabel]];
+    self.rightLabel.attributedText = [[NSAttributedString alloc] initWithString:[[self.answers lastObject] label] attributes:[self attributesForAnswerLabel]];
     
     self.orImageView.hidden = YES;
     
     self.selectedContainmentView.hidden = YES;
+}
+
+- (NSDictionary *)attributesForAnswerLabel
+{
+    NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
+    paragraphStyle.alignment = NSTextAlignmentCenter;
+    paragraphStyle.minimumLineHeight = 17.0f;
+    paragraphStyle.maximumLineHeight = 17.0f;
+    
+    return @{ NSParagraphStyleAttributeName: paragraphStyle };
 }
 
 - (void)checkIfAnswered

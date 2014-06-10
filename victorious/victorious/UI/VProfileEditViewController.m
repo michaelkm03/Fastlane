@@ -24,8 +24,11 @@
 {
     [super viewDidLoad];
 
-    [self.navigationController.navigationBar setBackIndicatorImage:[UIImage imageNamed:@"cameraButtonBack"]];
-    [self.navigationController.navigationBar setBackIndicatorTransitionMaskImage:[UIImage imageNamed:@"cameraButtonBack"]];
+    self.navigationItem.backBarButtonItem = nil;
+    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"cameraButtonBack"]
+                                                                             style:UIBarButtonItemStyleBordered
+                                                                            target:self
+                                                                            action:@selector(goBack:)];
 
     self.nameLabel.text = self.profile.name;
     
@@ -77,6 +80,13 @@
                                               otherButtonTitles:nil];
         [alert show];
     }];
+}
+
+#pragma mark - Actions
+
+- (IBAction)goBack:(id)sender
+{
+    [self.navigationController popViewControllerAnimated:YES];
 }
 
 @end

@@ -127,15 +127,16 @@ static const CGFloat kDistanceBetweenTitleAndCollapseButton =  42.5f;
     [self.firstResultView setProgress:0 animated:NO];
     self.firstResultView.isVertical = YES;
     self.firstResultView.hidden = YES;
-    self.firstResultView.color = [[VThemeManager sharedThemeManager] themedColorForKey:kVAccentColor];
+    self.firstResultView.color = [[[VThemeManager sharedThemeManager] themedColorForKey:kVAccentColor] colorWithAlphaComponent:0.8f];
     
     [self.secondResultView setProgress:0 animated:NO];
     self.secondResultView.isVertical = YES;
     self.secondResultView.hidden = YES;
-    self.secondResultView.color = [[VThemeManager sharedThemeManager] themedColorForKey:kVAccentColor];
+    self.secondResultView.color = [[[VThemeManager sharedThemeManager] themedColorForKey:kVAccentColor] colorWithAlphaComponent:0.8f];
     
     self.firstPollPlayIcon.hidden = YES;
     self.secondPollPlayIcon.hidden = YES;
+    self.answeredPollMaskingView.alpha = 0;
 }
 
 - (void)viewWillDisappear:(BOOL)animated
