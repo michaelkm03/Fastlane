@@ -39,7 +39,6 @@ typedef NS_ENUM(NSUInteger, VPlaybackSpeed)
 
 static NSUInteger const VConstantsMessageLength     = 140;
 static NSUInteger const VConstantsPollAnswerLength = 25;
-static NSUInteger const VConstantsForumTitleLength  = 65;
 
 static CGFloat const VConstantsMaximumVideoDuration = 15.0;
 
