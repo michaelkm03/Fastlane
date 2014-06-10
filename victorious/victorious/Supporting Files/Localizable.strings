@@ -192,6 +192,9 @@
 "Logout"                =   "Log Out";
 "Login"                 =   "Log In";
 
+"UserBannedTitle"       =   "You have been banned.";
+"UserBannedMessage"     =   "You account has been banned for violating our EULA";
+
 "AddDescription"        =   "Add a description... and don't forget #hashtags";
 "AddDescriptionAnchor"  =   "#hashtags";
 

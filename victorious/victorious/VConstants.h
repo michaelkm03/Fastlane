@@ -57,6 +57,7 @@ static NSUInteger const kVConversationDoesNotExistError = 5000;
 
 static NSUInteger const kVStillTranscodingError = 5500;
 static NSUInteger const kVAccountAlreadyExistsError = 1003;
+static NSUInteger const kVUserBannedError = 666;
 static NSUInteger const kVUnauthoizedError = 401;
 
 static NSUInteger  const   kDevAppID                = 1;
