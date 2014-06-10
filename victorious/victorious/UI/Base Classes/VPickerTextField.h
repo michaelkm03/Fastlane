@@ -6,8 +6,6 @@
 //  Copyright (c) 2014 Gary Philipp. All rights reserved.
 //
 
-@import CoreData;
-
 @class VPickerTextField;
 
 @protocol VPickerTextFieldDelegate <NSObject>
