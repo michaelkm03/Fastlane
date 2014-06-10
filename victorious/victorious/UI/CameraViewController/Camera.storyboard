@@ -12,7 +12,7 @@
                         <viewControllerLayoutGuide type="top" id="VHc-U1-zGw"/>
                         <viewControllerLayoutGuide type="bottom" id="e2F-3b-vgF"/>
                     </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="AMw-cC-uUG">
+                    <view key="view" contentMode="scaleToFill" placeholderIntrinsicWidth="320" placeholderIntrinsicHeight="568" id="AMw-cC-uUG">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
@@ -74,11 +74,14 @@
                                     <action selector="switchFlashAction:" destination="N4E-ak-ozN" eventType="touchUpInside" id="2lr-GW-9dC"/>
                                 </connections>
                             </button>
-                            <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" progressViewStyle="bar" translatesAutoresizingMaskIntoConstraints="NO" id="2M1-U9-GGC">
-                                <rect key="frame" x="0.0" y="24" width="321" height="3"/>
+                            <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="W3v-Ee-Cqf" userLabel="Progress View">
+                                <rect key="frame" x="0.0" y="64" width="321" height="8"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="progressTintColor" red="0.99607843137254903" green="0.28627450980392155" blue="0.28627450980392155" alpha="1" colorSpace="calibratedRGB"/>
-                            </progressView>
+                                <color key="backgroundColor" red="0.96862745098039216" green="0.27058823529411763" blue="0.23137254901960785" alpha="1" colorSpace="calibratedRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="8" id="Ixt-La-PKa"/>
+                                </constraints>
+                            </view>
                             <view contentMode="scaleAspectFit" translatesAutoresizingMaskIntoConstraints="NO" id="Cdq-4w-Bu5" userLabel="Preview View">
                                 <rect key="frame" x="0.0" y="72" width="320" height="320"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -179,22 +182,20 @@
                             <constraint firstItem="P0d-F9-FuH" firstAttribute="top" secondItem="VHc-U1-zGw" secondAttribute="bottom" constant="9" id="0yB-Sx-48U"/>
                             <constraint firstItem="foI-4D-IyS" firstAttribute="top" secondItem="VHc-U1-zGw" secondAttribute="bottom" constant="9" id="7HY-h8-Czb"/>
                             <constraint firstItem="rt0-I5-ldA" firstAttribute="left" secondItem="AMw-cC-uUG" secondAttribute="left" constant="10" id="DT8-Jk-ijk"/>
-                            <constraint firstItem="2M1-U9-GGC" firstAttribute="top" secondItem="VHc-U1-zGw" secondAttribute="bottom" priority="250" constant="24" id="FRD-fy-0nC"/>
-                            <constraint firstItem="2M1-U9-GGC" firstAttribute="left" secondItem="AMw-cC-uUG" secondAttribute="left" id="HIS-Eh-cNC"/>
+                            <constraint firstItem="W3v-Ee-Cqf" firstAttribute="width" secondItem="AMw-cC-uUG" secondAttribute="width" id="GMK-v4-ZNi"/>
                             <constraint firstItem="Cdq-4w-Bu5" firstAttribute="top" secondItem="VHc-U1-zGw" secondAttribute="bottom" priority="250" constant="72" id="KPf-i7-3hZ"/>
                             <constraint firstAttribute="right" secondItem="foI-4D-IyS" secondAttribute="right" constant="10" id="Mra-0x-dRV"/>
-                            <constraint firstItem="2M1-U9-GGC" firstAttribute="top" relation="greaterThanOrEqual" secondItem="VHc-U1-zGw" secondAttribute="bottom" id="Mtx-Md-HK3"/>
                             <constraint firstAttribute="right" secondItem="P0d-F9-FuH" secondAttribute="right" constant="10" id="Myc-p1-nWw"/>
                             <constraint firstItem="zJf-AW-KyK" firstAttribute="top" secondItem="X12-kd-M68" secondAttribute="bottom" constant="8" id="Myi-uW-Hnb"/>
-                            <constraint firstItem="Cdq-4w-Bu5" firstAttribute="top" relation="greaterThanOrEqual" secondItem="2M1-U9-GGC" secondAttribute="bottom" priority="900" constant="2" id="QIP-bh-RHp"/>
                             <constraint firstItem="abs-NM-eiT" firstAttribute="top" relation="greaterThanOrEqual" secondItem="Cdq-4w-Bu5" secondAttribute="bottom" id="Ujb-rf-uOh"/>
                             <constraint firstItem="fQI-xE-BeV" firstAttribute="top" secondItem="VHc-U1-zGw" secondAttribute="bottom" constant="9" id="XZW-ew-dVe"/>
                             <constraint firstItem="X12-kd-M68" firstAttribute="centerX" secondItem="zJf-AW-KyK" secondAttribute="centerX" constant="0.5" id="Y6j-mr-SAR"/>
                             <constraint firstAttribute="centerX" secondItem="Cdq-4w-Bu5" secondAttribute="centerX" id="YNh-E5-lCq"/>
                             <constraint firstAttribute="right" secondItem="abs-NM-eiT" secondAttribute="right" id="de4-Ce-ltb"/>
+                            <constraint firstItem="W3v-Ee-Cqf" firstAttribute="top" secondItem="VHc-U1-zGw" secondAttribute="bottom" constant="64" id="eU4-N9-plD"/>
                             <constraint firstItem="rt0-I5-ldA" firstAttribute="top" secondItem="VHc-U1-zGw" secondAttribute="bottom" constant="9" id="f3m-B8-Kml"/>
                             <constraint firstAttribute="centerX" secondItem="fQI-xE-BeV" secondAttribute="centerX" id="fJ3-zW-aD6"/>
-                            <constraint firstAttribute="right" secondItem="2M1-U9-GGC" secondAttribute="right" id="mRI-hM-JfE"/>
+                            <constraint firstItem="W3v-Ee-Cqf" firstAttribute="leading" secondItem="AMw-cC-uUG" secondAttribute="leading" id="qSp-kC-xNP"/>
                             <constraint firstItem="e2F-3b-vgF" firstAttribute="top" secondItem="abs-NM-eiT" secondAttribute="bottom" id="ua3-eR-hij"/>
                             <constraint firstItem="abs-NM-eiT" firstAttribute="left" secondItem="AMw-cC-uUG" secondAttribute="left" id="wvD-uc-4A8"/>
                         </constraints>
@@ -208,7 +209,8 @@
                         <outlet property="nextButton" destination="P0d-F9-FuH" id="Wir-PA-wnL"/>
                         <outlet property="openAlbumButton" destination="W9w-XF-uIU" id="0Cs-b0-bYq"/>
                         <outlet property="previewView" destination="Cdq-4w-Bu5" id="uB4-J9-nz8"/>
-                        <outlet property="progressView" destination="2M1-U9-GGC" id="GmO-02-loU"/>
+                        <outlet property="progressView" destination="W3v-Ee-Cqf" id="dT9-nq-gTj"/>
+                        <outlet property="progressViewWidthConstraint" destination="GMK-v4-ZNi" id="xIU-u4-shR"/>
                         <outlet property="recordButton" destination="rJt-jY-pJI" id="PNT-vz-h89"/>
                         <outlet property="switchCameraButton" destination="fQI-xE-BeV" id="Vk3-qf-zWV"/>
                         <outlet property="switchCameraModeButton" destination="VjD-w5-TpN" id="xnp-RB-MEL"/>
@@ -768,7 +770,6 @@ and don't forget #hashtags</string>
         <image name="cameraButtonFlashOn" width="24" height="32"/>
         <image name="cameraButtonFlip" width="36" height="36"/>
         <image name="cameraButtonNext" width="24" height="24"/>
-        <image name="cameraButtonOnOff" width="160" height="50"/>
         <image name="cameraButtonPhotoCapture" width="91" height="91"/>
         <image name="cameraButtonPhotoDone" width="91" height="91"/>
         <image name="cameraButtonStopwatch" width="43" height="48"/>

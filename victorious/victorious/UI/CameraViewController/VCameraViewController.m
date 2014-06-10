@@ -27,7 +27,8 @@ const   NSTimeInterval  kAnimationDuration      =   0.4;
 @property (nonatomic, weak) IBOutlet    UIButton*           nextButton;
 @property (nonatomic, weak) IBOutlet    UIButton*           flashButton;
 
-@property (nonatomic, weak) IBOutlet    UIProgressView*     progressView;
+@property (nonatomic, weak) IBOutlet    UIView*             progressView;
+@property (nonatomic, weak) IBOutlet    NSLayoutConstraint* progressViewWidthConstraint;
 @property (weak, nonatomic) IBOutlet    UIView*             previewView;
 
 @property (nonatomic, weak) IBOutlet    UIButton*           openAlbumButton;
@@ -616,7 +617,24 @@ const   NSTimeInterval  kAnimationDuration      =   0.4;
 
 - (void)updateProgressForSecond:(Float64)totalRecorded
 {
-    self.progressView.progress = totalRecorded / VConstantsMaximumVideoDuration;
+    if (!totalRecorded)
+    {
+        self.progressView.hidden = YES;
+        return;
+    }
+    
+    CGFloat progress = ABS(totalRecorded / VConstantsMaximumVideoDuration);
+    NSLayoutConstraint *newProgressConstraint = [NSLayoutConstraint constraintWithItem:self.progressView
+                                                                             attribute:NSLayoutAttributeWidth
+                                                                             relatedBy:NSLayoutRelationEqual
+                                                                                toItem:self.view
+                                                                             attribute:NSLayoutAttributeWidth
+                                                                            multiplier:progress
+                                                                              constant:0.0f];
+    [self.view removeConstraint:self.progressViewWidthConstraint];
+    [self.view addConstraint:newProgressConstraint];
+    self.progressViewWidthConstraint = newProgressConstraint;
+    self.progressView.hidden = NO;
 }
 
 #pragma mark - Navigation
