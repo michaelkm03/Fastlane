@@ -70,7 +70,9 @@ static NSString*   const   kTestflightQAToken       = @"TestflightQAAppToken";
 static NSString*   const   kTestflightStagingToken  = @"TestflightStagingAppToken";
 static NSString*   const   kTestflightReleaseToken  = @"TestflightReleaseAppToken";
 
-static NSString*   const   kRemoteIdKey = @"remoteId";
+static NSString*   const   kRemoteIdKey         = @"remoteId";
+static NSString*   const   kReleasedAtKey       = @"releasedAt";
+static NSString*   const   kDisplayOrderKey     = @"display_order";
 
 static NSString* const VConstantsMediaTypeYoutube   = @"youtube_video_id";
 static NSString* const VConstantsMediaTypeVideo     = @"video";
