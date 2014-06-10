@@ -27,4 +27,8 @@
                                             successBlock:(VSuccessBlock)success
                                                failBlock:(VFailBlock)fail;
 
+- (RKManagedObjectRequestOperation *) flagConversation:(VConversation*)conversation
+                                          successBlock:(VSuccessBlock)success
+                                             failBlock:(VFailBlock)fail;
+
 @end

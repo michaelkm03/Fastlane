@@ -114,10 +114,22 @@
                                                failBlock:(VFailBlock)fail
 {
     return [self POST:@"/api/message/delete_conversation"
-              object:conversation
+               object:conversation
            parameters:@{@"conversation_id" : conversation.remoteId}
-        successBlock:success
-           failBlock:fail];
+         successBlock:success
+            failBlock:fail];
+}
+
+
+- (RKManagedObjectRequestOperation *) flagConversation:(VConversation*)conversation
+                                            successBlock:(VSuccessBlock)success
+                                               failBlock:(VFailBlock)fail
+{
+    return [self POST:@"/api/message/flag"
+               object:conversation
+           parameters:@{@"conversation_id" : conversation.remoteId}
+         successBlock:success
+            failBlock:fail];
 }
 
 @end
