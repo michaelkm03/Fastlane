@@ -65,6 +65,16 @@
         self.expirationLine1Label.alpha = 0.0;
         self.expirationLine2Label.alpha = 0.0;
     }];
+    
+    self.afterButton.titleLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeading3Font];
+    self.afterButton.backgroundColor = [UIColor colorWithWhite:0.97 alpha:1.0];
+    [self.afterButton setTitleColor:[UIColor darkTextColor] forState:UIControlStateNormal];
+    self.onButton.titleLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeading3Font];
+    self.onButton.backgroundColor = [UIColor colorWithWhite:0.56 alpha:1.0];
+    [self.onButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    
+    self.doneButton.backgroundColor = [UIColor colorWithWhite:0.56 alpha:1.0];
+    [self.doneButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -153,16 +163,20 @@
 
 - (IBAction)afterButtonClicked:(id)sender
 {
-    [self.afterButton setImage:[UIImage imageNamed:@"cameraButtonAfterOn"] forState:UIControlStateNormal];
-    [self.onButton setImage:[UIImage imageNamed:@"cameraButtonOnOff"] forState:UIControlStateNormal];
+    self.afterButton.backgroundColor = [UIColor colorWithWhite:0.97 alpha:1.0];
+    [self.afterButton setTitleColor:[UIColor darkTextColor] forState:UIControlStateNormal];
+    self.onButton.backgroundColor = [UIColor colorWithWhite:0.56 alpha:1.0];
+    [self.onButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     
     self.useAfterMode = YES;
 }
 
 - (IBAction)onButtonClicked:(id)sender
 {
-    [self.afterButton setImage:[UIImage imageNamed:@"cameraButtonAfterOff"] forState:UIControlStateNormal];
-    [self.onButton setImage:[UIImage imageNamed:@"cameraButtonOnOn"] forState:UIControlStateNormal];
+    self.afterButton.backgroundColor = [UIColor colorWithWhite:0.56 alpha:1.0];
+    [self.afterButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    self.onButton.backgroundColor = [UIColor colorWithWhite:0.97 alpha:1.0];
+    [self.onButton setTitleColor:[UIColor darkTextColor] forState:UIControlStateNormal];
     
     self.useAfterMode = NO;
 }

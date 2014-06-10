@@ -487,9 +487,11 @@
                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Add a description..." lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Fsz-Xd-hVx">
-                                <rect key="frame" x="25" y="73" width="206" height="29"/>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="275" translatesAutoresizingMaskIntoConstraints="NO" id="Fsz-Xd-hVx" customClass="TTTAttributedLabel">
+                                <rect key="frame" x="25" y="73" width="275" height="58"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <string key="text">Add a description...
+and don't forget #hashtags</string>
                                 <fontDescription key="fontDescription" type="system" pointSize="24"/>
                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <nil key="highlightedColor"/>
@@ -499,6 +501,7 @@
                         <constraints>
                             <constraint firstItem="pMb-yO-DtL" firstAttribute="leading" secondItem="fcy-KG-Paj" secondAttribute="leading" id="4zM-KR-Ehh"/>
                             <constraint firstItem="wOt-la-SB9" firstAttribute="left" secondItem="fcy-KG-Paj" secondAttribute="left" id="5u9-jF-1Hr"/>
+                            <constraint firstItem="Fsz-Xd-hVx" firstAttribute="trailing" secondItem="yxx-6S-3iW" secondAttribute="trailing" id="ADj-VB-sQ7"/>
                             <constraint firstItem="pMb-yO-DtL" firstAttribute="top" secondItem="g4C-sb-DOe" secondAttribute="bottom" priority="730" constant="76" id="FDD-Gg-mtT"/>
                             <constraint firstItem="pMb-yO-DtL" firstAttribute="top" secondItem="rzj-9i-Pcg" secondAttribute="bottom" constant="7" id="G0o-k1-FCS"/>
                             <constraint firstItem="pMb-yO-DtL" firstAttribute="top" relation="greaterThanOrEqual" secondItem="g4C-sb-DOe" secondAttribute="bottom" constant="36" id="GVf-2r-wbM"/>
@@ -507,15 +510,15 @@
                             <constraint firstItem="g4C-sb-DOe" firstAttribute="top" secondItem="Twn-Vd-Vv9" secondAttribute="bottom" constant="-44" placeholder="YES" id="RO2-mp-X5c"/>
                             <constraint firstItem="wOt-la-SB9" firstAttribute="top" secondItem="pMb-yO-DtL" secondAttribute="bottom" priority="250" constant="43" id="Rns-JH-z0c"/>
                             <constraint firstItem="g4C-sb-DOe" firstAttribute="bottom" secondItem="xvl-e7-PxB" secondAttribute="bottom" constant="15" id="WYa-a2-xnL"/>
+                            <constraint firstItem="Fsz-Xd-hVx" firstAttribute="leading" secondItem="fcy-KG-Paj" secondAttribute="leading" constant="25" id="aKS-jx-RIx"/>
                             <constraint firstItem="eIH-lg-ady" firstAttribute="leading" secondItem="g4C-sb-DOe" secondAttribute="leading" constant="20" id="can-Pc-St6"/>
                             <constraint firstItem="wOt-la-SB9" firstAttribute="top" relation="greaterThanOrEqual" secondItem="pMb-yO-DtL" secondAttribute="bottom" constant="36" id="dIX-Ab-8lQ"/>
                             <constraint firstAttribute="right" secondItem="wOt-la-SB9" secondAttribute="right" id="hVE-mE-uPV"/>
                             <constraint firstItem="rzj-9i-Pcg" firstAttribute="leading" secondItem="fcy-KG-Paj" secondAttribute="leading" constant="20" id="iFC-CQ-6xQ"/>
-                            <constraint firstItem="yxx-6S-3iW" firstAttribute="top" secondItem="Fsz-Xd-hVx" secondAttribute="top" constant="-5" id="jWx-Bg-P4k"/>
                             <constraint firstItem="yxx-6S-3iW" firstAttribute="centerX" secondItem="g4C-sb-DOe" secondAttribute="centerX" id="mMP-7B-tEg"/>
                             <constraint firstItem="xvl-e7-PxB" firstAttribute="leading" secondItem="eIH-lg-ady" secondAttribute="trailing" id="mdO-Zz-tNR"/>
                             <constraint firstItem="yxx-6S-3iW" firstAttribute="top" secondItem="g4C-sb-DOe" secondAttribute="top" constant="68" id="oMU-hZ-E2J"/>
-                            <constraint firstItem="yxx-6S-3iW" firstAttribute="leading" secondItem="Fsz-Xd-hVx" secondAttribute="leading" constant="-5" id="qoS-Ca-Yvs"/>
+                            <constraint firstItem="Fsz-Xd-hVx" firstAttribute="top" secondItem="Twn-Vd-Vv9" secondAttribute="bottom" constant="29" id="rG5-uc-7nG"/>
                             <constraint firstItem="Gg4-zc-aun" firstAttribute="top" secondItem="wOt-la-SB9" secondAttribute="bottom" id="tAU-uU-nUD"/>
                             <constraint firstItem="eIH-lg-ady" firstAttribute="bottom" secondItem="g4C-sb-DOe" secondAttribute="bottom" constant="-12" id="tRY-fB-sFL"/>
                             <constraint firstItem="g4C-sb-DOe" firstAttribute="trailing" secondItem="xvl-e7-PxB" secondAttribute="trailing" constant="20" id="xgi-3c-ar4"/>
@@ -611,7 +614,7 @@
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="n3Z-m2-gIh">
                                 <rect key="frame" x="0.0" y="123" width="160" height="50"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <state key="normal" image="cameraButtonAfterOn">
+                                <state key="normal" title="After">
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <connections>
@@ -621,7 +624,7 @@
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="KGh-61-oX4">
                                 <rect key="frame" x="160" y="123" width="160" height="50"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <state key="normal" image="cameraButtonOnOff">
+                                <state key="normal" title="On">
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <connections>
@@ -716,12 +719,10 @@
         </scene>
     </scenes>
     <resources>
-        <image name="cameraButtonAfterOn" width="160" height="50"/>
         <image name="cameraButtonBack" width="22" height="17"/>
         <image name="cameraButtonClose" width="24" height="24"/>
         <image name="cameraButtonDelete" width="60" height="60"/>
         <image name="cameraButtonFlip" width="36" height="36"/>
-        <image name="cameraButtonOnOff" width="160" height="50"/>
         <image name="cameraButtonPhotoCapture" width="91" height="91"/>
         <image name="cameraButtonPhotoDone" width="91" height="91"/>
         <image name="cameraButtonStopwatch" width="43" height="48"/>

@@ -192,5 +192,6 @@
 "Logout"                =   "Log Out";
 "Login"                 =   "Log In";
 
-
+"AddDescription"        =   "Add a description... and don't forget #hashtags";
+"AddDescriptionAnchor"  =   "#hashtags";
 

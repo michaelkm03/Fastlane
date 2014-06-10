@@ -17,6 +17,7 @@
 #import "VConstants.h"
 #import "NSString+VParseHelp.h"
 #import "VThemeManager.h"
+#import "TTTAttributedLabel.h"
 
 @interface VCameraPublishViewController () <UITextViewDelegate, VSetExpirationDelegate>
 @property (nonatomic, weak) IBOutlet    UIImageView*    previewImageView;
@@ -27,7 +28,7 @@
 @property (nonatomic, weak) IBOutlet    UISwitch*       twitterButton;
 @property (nonatomic, weak) IBOutlet    UISwitch*       facebookButton;
 
-@property (nonatomic, weak) IBOutlet    UILabel*        textViewPlaceholderLabel;
+@property (nonatomic, weak) IBOutlet    TTTAttributedLabel* textViewPlaceholderLabel;
 
 @end
 
@@ -69,6 +70,19 @@
     UIBarButtonItem*    cancelButton = [[UIBarButtonItem alloc] initWithImage:cancelButtonImage style:UIBarButtonItemStyleBordered target:self action:@selector(cancel:)];
     self.navigationItem.rightBarButtonItem = cancelButton;
     
+    [self.textViewPlaceholderLabel setText:NSLocalizedString(@"AddDescription", @"") afterInheritingLabelAttributesAndConfiguringWithBlock:^NSMutableAttributedString *(NSMutableAttributedString *mutableAttributedString) {
+        NSRange hashtagRange = [[mutableAttributedString string] rangeOfString:NSLocalizedString(@"AddDescriptionAnchor", @"")];
+        
+        UIFont* headerFont = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeaderFont];
+        CTFontRef font = CTFontCreateWithName((__bridge CFStringRef)headerFont.fontName, headerFont.pointSize, NULL);
+        
+        [mutableAttributedString addAttribute:(NSString *)kCTFontAttributeName value:(__bridge id)font range:NSMakeRange(0, [mutableAttributedString length])];
+        [mutableAttributedString addAttribute:(NSString *)kCTForegroundColorAttributeName value:[[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor] range:hashtagRange];
+        
+        return mutableAttributedString;
+    }];
+    
+    self.textView.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeaderFont];
     [self.textView becomeFirstResponder];
 }
 
