@@ -21,8 +21,8 @@
 
 #import "VThemeManager.h"
 
-CGFloat const kCommentMinCellHeight = 55;
-CGFloat const kCommentCellYOffset = 28;
+CGFloat const kCommentMinCellHeight = 72;
+CGFloat const kCommentCellYOffset = 52;
 CGFloat const kCommentMediaCellYOffset = 236;
 
 @interface VCommentCell()
