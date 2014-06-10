@@ -173,7 +173,13 @@
         return;
     }
     
+    self.selectedSequence = [self.fetchedResultsController objectAtIndexPath:indexPath];
     VStreamViewCell* cell = (VStreamViewCell*)[tableView cellForRowAtIndexPath:indexPath];
+    
+    //Every time we go to the content view, update the sequence
+    [[VObjectManager sharedManager] fetchSequence:cell.sequence.remoteId
+                                     successBlock:nil
+                                        failBlock:nil];
     
     [self setBackgroundImageWithURL:[[cell.sequence initialImageURLs] firstObject]];
     [self.delegate streamWillDisappear];
@@ -191,7 +197,8 @@
 
 - (void)scrollViewDidEndScrollingAnimation:(UIScrollView *)scrollView
 {
-    VStreamViewCell* cell = (VStreamViewCell*)[self.tableView cellForRowAtIndexPath:self.tableView.indexPathForSelectedRow];
+    NSIndexPath* path = [self.fetchedResultsController indexPathForObject:self.selectedSequence];
+    VStreamViewCell* cell = (VStreamViewCell*)[self.tableView cellForRowAtIndexPath:path];
     if (cell)
     {
         self.tableView.userInteractionEnabled = YES;
@@ -397,7 +404,8 @@
 #pragma mark - VAnimation
 - (void)animateInWithDuration:(CGFloat)duration completion:(void (^)(BOOL finished))completion
 {
-    VStreamViewCell* selectedCell = (VStreamViewCell*) [self.tableView cellForRowAtIndexPath:self.tableView.indexPathForSelectedRow];
+    NSIndexPath* path = [self.fetchedResultsController indexPathForObject:self.selectedSequence];
+    VStreamViewCell* selectedCell = (VStreamViewCell*) [self.tableView cellForRowAtIndexPath:path];
     
     //If the tableview updates while we are in the content view it will reset the cells to their proper positions.
     //In this case, we reset them
@@ -463,8 +471,8 @@
               
               if (selectedCell)
               {
-                  //sanity check that we showed the overlay.
-                  [self.tableView deselectRowAtIndexPath:self.tableView.indexPathForSelectedRow animated:NO];
+                  [self.tableView deselectRowAtIndexPath:path animated:NO];
+                  self.selectedSequence = nil;
               }
               
               if (completion)
@@ -485,8 +493,9 @@
          self.navigationController.navigationBar.center = newNavCenter;
          
          NSMutableArray* repositionedCells = [[NSMutableArray alloc] init];
-
-         VStreamViewCell* selectedCell = (VStreamViewCell*) [self.tableView cellForRowAtIndexPath:self.tableView.indexPathForSelectedRow];
+         
+         NSIndexPath* path = [self.fetchedResultsController indexPathForObject:self.selectedSequence];
+         VStreamViewCell* selectedCell = (VStreamViewCell*) [self.tableView cellForRowAtIndexPath:path];
          CGFloat centerPoint = selectedCell ? selectedCell.center.y : self.tableView.center.y + self.tableView.contentOffset.y;
 
          for (VStreamViewCell* cell in [self.tableView visibleCells])

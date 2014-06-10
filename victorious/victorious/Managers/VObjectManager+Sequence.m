@@ -32,16 +32,6 @@ NSString* const kPollResultsLoaded = @"kPollResultsLoaded";
                                       successBlock:(VSuccessBlock)success
                                          failBlock:(VFailBlock)fail
 {
-    
-    VSequence* sequence = (VSequence*)[self objectForID:sequenceId idKey:kRemoteIdKey entityName:[VSequence entityName]];
-    if (sequence)
-    {
-        if (success)
-            success(nil, nil, @[sequence]);
-        
-        return nil;
-    }
-    
     return [self fetchSequenceByID:sequenceId
                       successBlock:success
                          failBlock:fail
