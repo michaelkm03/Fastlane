@@ -9,7 +9,7 @@
 	<key>agreement.text</key>
 	<string>I&apos;m at least 13 years old and agree to Terms of Service</string>
 	<key>channel.name</key>
-	<string>GT Channel</string>
+	<string>theRadBrad</string>
 	<key>channel.url.about</key>
 	<string>http://dev.getvictorious.com/api/static/about</string>
 	<key>channel.url.acknowledgements</key>
@@ -76,11 +76,11 @@
 	<key>color.link</key>
 	<dict>
 		<key>red</key>
-		<integer>233</integer>
+		<integer>183</integer>
 		<key>green</key>
-		<integer>32</integer>
+		<integer>107</integer>
 		<key>blue</key>
-		<integer>118</integer>
+		<integer>222</integer>
 		<key>alpha</key>
 		<integer>1</integer>
 	</dict>
@@ -98,106 +98,106 @@
 	<key>color.accent</key>
 	<dict>
 		<key>red</key>
-		<integer>44</integer>
+		<integer>3</integer>
 		<key>green</key>
-		<integer>45</integer>
+		<integer>30</integer>
 		<key>blue</key>
-		<integer>54</integer>
+		<integer>97</integer>
 		<key>alpha</key>
 		<integer>1</integer>
 	</dict>
 	<key>color.accent.secondary</key>
 	<dict>
 		<key>red</key>
-		<integer>37</integer>
+		<integer>3</integer>
 		<key>green</key>
-		<integer>38</integer>
+		<integer>26</integer>
 		<key>blue</key>
-		<integer>46</integer>
+		<integer>83</integer>
 		<key>alpha</key>
 		<integer>1</integer>
 	</dict>
 	<key>font.header</key>
 	<dict>
 		<key>fontName</key>
-		<string>Verdana</string>
+		<string>TrecuchetMS</string>
 		<key>fontSize</key>
 		<integer>18</integer>
 	</dict>
 	<key>font.heading1</key>
 	<dict>
 		<key>fontName</key>
-		<string>Verdana</string>
+		<string>TrecuchetMS</string>
 		<key>fontSize</key>
 		<integer>24</integer>
 	</dict>
 	<key>font.heading2</key>
 	<dict>
 		<key>fontName</key>
-		<string>Verdana</string>
+		<string>TrecuchetMS</string>
 		<key>fontSize</key>
 		<integer>20</integer>
 	</dict>
 	<key>font.heading3</key>
 	<dict>
 		<key>fontName</key>
-		<string>Verdana</string>
+		<string>TrecuchetMS</string>
 		<key>fontSize</key>
 		<integer>17</integer>
 	</dict>
 	<key>font.heading4</key>
 	<dict>
 		<key>fontName</key>
-		<string>Verdana</string>
+		<string>TrecuchetMS</string>
 		<key>fontSize</key>
 		<integer>15</integer>
 	</dict>
 	<key>font.paragraph</key>
 	<dict>
 		<key>fontName</key>
-		<string>Verdana</string>
+		<string>TrecuchetMS</string>
 		<key>fontSize</key>
 		<integer>13</integer>
 	</dict>
 	<key>font.label1</key>
 	<dict>
 		<key>fontName</key>
-		<string>Verdana-Bold</string>
+		<string>TrecuchetMS-Bold</string>
 		<key>fontSize</key>
 		<integer>13</integer>
 	</dict>
 	<key>font.label2</key>
 	<dict>
 		<key>fontName</key>
-		<string>Verdana</string>
+		<string>TrecuchetMS</string>
 		<key>fontSize</key>
 		<integer>12</integer>
 	</dict>
 	<key>font.label3</key>
 	<dict>
 		<key>fontName</key>
-		<string>Verdana</string>
+		<string>TrecuchetMS</string>
 		<key>fontSize</key>
 		<integer>11</integer>
 	</dict>
 	<key>font.label4</key>
 	<dict>
 		<key>fontName</key>
-		<string>Verdana</string>
+		<string>TrecuchetMS</string>
 		<key>fontSize</key>
 		<integer>10</integer>
 	</dict>
 	<key>font.button1</key>
 	<dict>
 		<key>fontName</key>
-		<string>Verdana-Bold</string>
+		<string>TrecuchetMS-Bold</string>
 		<key>fontSize</key>
 		<integer>25</integer>
 	</dict>
 	<key>font.button2</key>
 	<dict>
 		<key>fontName</key>
-		<string>Verdana-Bold</string>
+		<string>TrecuchetMS-Bold</string>
 		<key>fontSize</key>
 		<integer>17</integer>
 	</dict>
