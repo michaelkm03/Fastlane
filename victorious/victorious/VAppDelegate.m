@@ -57,7 +57,6 @@
     [VObjectManager setupObjectManager];
 
     [self initLocationForAPIHeader];
-    [self determineLocationForAPIHeader];
 
 #ifdef QA
     [TestFlight takeOff:[[NSBundle mainBundle] objectForInfoDictionaryKey:kTestflightQAToken]];

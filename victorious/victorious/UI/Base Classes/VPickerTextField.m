@@ -65,10 +65,8 @@
         self.toolbar.frame = frame;
 
         UIBarButtonItem *clearButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(clear:)];
-        clearButton.tintColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVAccentColor];
         UIBarButtonItem *flexibleSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
         UIBarButtonItem *doneButton =[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(done:)];
-        doneButton.tintColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVAccentColor];
         [self.toolbar setItems:@[clearButton, flexibleSpace, doneButton]];
     }
     
