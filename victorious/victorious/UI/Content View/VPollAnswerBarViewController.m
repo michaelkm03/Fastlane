@@ -189,6 +189,12 @@
 #pragma mark - Button actions
 -(IBAction)pressedAnswerButton:(id)sender
 {
+    if (![VObjectManager sharedManager].mainUser)
+    {
+        [self presentViewController:[VLoginViewController loginViewController] animated:YES completion:NULL];
+        return;
+    }
+    
     self.leftButton.userInteractionEnabled = NO;
     self.rightButton.userInteractionEnabled = NO;
     
@@ -210,12 +216,6 @@
 
 - (void)answerPollWithAnswer:(VAnswer*)answer
 {
-    if (![VObjectManager sharedManager].mainUser)
-    {
-        [self presentViewController:[VLoginViewController loginViewController] animated:YES completion:NULL];
-        return;
-    }
-
     [[VObjectManager sharedManager] answerPoll:self.sequence
                                      withAnswer:answer
                                   successBlock:^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
