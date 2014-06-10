@@ -24,11 +24,11 @@ const   NSTimeInterval  kAnimationDuration      =   0.4;
 @interface VCameraViewController () <VCCameraDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate>
 
 @property (nonatomic, weak) IBOutlet    UIButton*           switchCameraButton;
-@property (nonatomic, strong)           UIBarButtonItem*    nextButton;
-@property (nonatomic, strong)           UIBarButtonItem*    flashOnButton;
-@property (nonatomic, strong)           UIBarButtonItem*    flashOffButton;
+@property (nonatomic, weak) IBOutlet    UIButton*           nextButton;
+@property (nonatomic, weak) IBOutlet    UIButton*           flashButton;
 
-@property (nonatomic, weak) IBOutlet    UIProgressView*     progressView;
+@property (nonatomic, weak) IBOutlet    UIView*             progressView;
+@property (nonatomic, weak) IBOutlet    NSLayoutConstraint* progressViewWidthConstraint;
 @property (weak, nonatomic) IBOutlet    UIView*             previewView;
 
 @property (nonatomic, weak) IBOutlet    UIButton*           openAlbumButton;
@@ -143,23 +143,8 @@ const   NSTimeInterval  kAnimationDuration      =   0.4;
 		[self prepareCamera];
     }];
 
-    UIImage*    nextButtonImage = [[UIImage imageNamed:@"cameraButtonNext"]  imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
-    self.nextButton =   [[UIBarButtonItem alloc] initWithImage:nextButtonImage
-                                                         style:UIBarButtonItemStyleBordered
-                                                        target:self
-                                                        action:@selector(nextAction:)];
-
-    UIImage*    flashOnImage = [[UIImage imageNamed:@"cameraButtonFlashOn"]  imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
-    self.flashOnButton = [[UIBarButtonItem alloc] initWithImage:flashOnImage
-                                                          style:UIBarButtonItemStyleBordered
-                                                         target:self
-                                                         action:@selector(switchFlashAction:)];
-
-    UIImage*    flashOffImage = [[UIImage imageNamed:@"cameraButtonFlashOff"]  imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
-    self.flashOffButton = [[UIBarButtonItem alloc] initWithImage:flashOffImage
-                                                           style:UIBarButtonItemStyleBordered
-                                                          target:self
-                                                          action:@selector(switchFlashAction:)];
+    UIImage* flashOnImage = [self.flashButton imageForState:UIControlStateSelected];
+    [self.flashButton setImage:flashOnImage forState:(UIControlStateSelected | UIControlStateHighlighted)];
 
     [self.recordButton addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleRecordTapGesture:)]];
     [self.recordButton addGestureRecognizer:[[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(handleRecordLongTapGesture:)]];
@@ -168,8 +153,6 @@ const   NSTimeInterval  kAnimationDuration      =   0.4;
     self.focusView = [[VCCameraFocusView alloc] initWithFrame:self.previewView.bounds];
     self.focusView.camera = self.camera;
     [self.previewView addSubview:self.focusView];
-//    self.focusView.outsideFocusTargetImage = [UIImage imageNamed:@"capture_flip"];
-//    self.focusView.insideFocusTargetImage = [UIImage imageNamed:@"capture_flip"];
     
     if ([self.initialCaptureMode isEqualToString:AVCaptureSessionPresetPhoto])
     {
@@ -189,10 +172,7 @@ const   NSTimeInterval  kAnimationDuration      =   0.4;
 {
     [super viewWillAppear:animated];
     
-    self.view.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVBackgroundColor];
-    [self.navigationController.navigationBar setBackgroundImage:[[UIImage alloc] init] forBarMetrics:UIBarMetricsDefault];
-    self.navigationController.navigationBar.shadowImage = [[UIImage alloc] init];
-    self.navigationController.navigationBar.translucent = YES;
+    self.navigationController.navigationBarHidden = YES;
     
     self.inRecordVideoState = NO;
     self.inTrashState = NO;
@@ -260,6 +240,11 @@ const   NSTimeInterval  kAnimationDuration      =   0.4;
 - (IBAction)reverseCameraAction:(id)sender
 {
     [self.camera switchCamera];
+    [UIView animateWithDuration:kAnimationDuration
+                     animations:^(void)
+    {
+        [self configureFlashButton];
+    }];
 }
 
 - (IBAction)nextAction:(id)sender
@@ -274,15 +259,14 @@ const   NSTimeInterval  kAnimationDuration      =   0.4;
     {
         case VCFlashModeOff:
             self.camera.flashMode = VCFlashModeOn;
-            self.navigationItem.rightBarButtonItem = self.flashOnButton;
             break;
         case VCFlashModeOn:
             self.camera.flashMode = VCFlashModeOff;
-            self.navigationItem.rightBarButtonItem = self.flashOffButton;
             break;
         default:
             break;
     }
+    [self configureFlashButton];
 }
 
 - (IBAction)openAlbumAction:(id)sender
@@ -340,18 +324,14 @@ const   NSTimeInterval  kAnimationDuration      =   0.4;
     if (self.camera.sessionPreset == AVCaptureSessionPresetPhoto)
     {
         [[VAnalyticsRecorder sharedAnalyticsRecorder] sendEventWithCategory:kVAnalyticsEventCategoryCamera action:@"Switch To Video Capture" label:nil value:nil];
-        [self configureUIforVideoCaptureAnimated:YES completion:^(void)
-        {
-            self.camera.sessionPreset = self.videoQuality;
-        }];
+        self.camera.sessionPreset = self.videoQuality;
+        [self configureUIforVideoCaptureAnimated:YES completion:nil];
     }
     else if (self.camera.sessionPreset == self.videoQuality)
     {
         [[VAnalyticsRecorder sharedAnalyticsRecorder] sendEventWithCategory:kVAnalyticsEventCategoryCamera action:@"Switch To Photo Capture" label:nil value:nil];
-        [self configureUIforPhotoCaptureAnimated:YES completion:^(void)
-        {
-            self.camera.sessionPreset = AVCaptureSessionPresetPhoto;
-        }];
+        self.camera.sessionPreset = AVCaptureSessionPresetPhoto;
+        [self configureUIforPhotoCaptureAnimated:YES completion:nil];
     }
 }
 
@@ -373,12 +353,18 @@ const   NSTimeInterval  kAnimationDuration      =   0.4;
         self.inTrashState = NO;
         self.inRecordVideoState = NO;
         self.didSelectAssetFromLibrary = NO;
-        
-        self.navigationItem.rightBarButtonItem = nil;
-        self.openAlbumButton.alpha = 1.0;
-        self.deleteButton.alpha = 0.0;
 
-        [self.deleteButton setImage:[UIImage imageNamed:@"cameraButtonDelete"] forState:UIControlStateNormal];
+        [UIView animateWithDuration:kAnimationDuration
+                         animations:^(void)
+        {
+            self.nextButton.alpha = 0.0f;
+            self.openAlbumButton.alpha = 1.0f;
+            self.deleteButton.alpha = 0.0f;
+        }
+                         completion:^(BOOL finished)
+        {
+            [self.deleteButton setImage:[UIImage imageNamed:@"cameraButtonDelete"] forState:UIControlStateNormal];
+        }];
     }
 }
 
@@ -391,21 +377,22 @@ const   NSTimeInterval  kAnimationDuration      =   0.4;
         self.capturePhotoButton.alpha = 0.0;
         self.recordButton.alpha = 1.0;
         self.toolTipImageView.alpha = 0.0;
+        self.flashButton.alpha = 0.0f;
+        self.progressView.alpha = 1.0f;
+
+        if (self.inRecordVideoState)
+        {
+            self.nextButton.alpha = 1.0f;
+        }
+        else
+        {
+            self.nextButton.alpha = 0.0f;
+        }
     };
     void (^fullCompletion)(BOOL) = ^(BOOL finished)
     {
         [self.switchCameraModeButton setImage:[UIImage imageNamed:@"cameraButtonSwitchToPhoto"] forState:UIControlStateNormal];
-        self.camera.flashMode = VCFlashModeOff;
         [self setOpenAlbumButtonImageWithLatestPhoto:NO animated:animated];
-        
-        if (self.inRecordVideoState)
-        {
-            self.navigationItem.rightBarButtonItem = self.nextButton;
-        }
-        else
-        {
-            self.navigationItem.rightBarButtonItem = nil;
-        }
         
         if (completion)
         {
@@ -432,23 +419,16 @@ const   NSTimeInterval  kAnimationDuration      =   0.4;
 {
     void (^animations)(void) = ^(void)
     {
-        self.capturePhotoButton.alpha = 1.0;
-        self.recordButton.alpha = 0.0;
-        self.toolTipImageView.alpha = 0.0;
+        self.capturePhotoButton.alpha = 1.0f;
+        self.recordButton.alpha = 0.0f;
+        self.toolTipImageView.alpha = 0.0f;
+        self.nextButton.alpha = 0.0f;
+        self.progressView.alpha = 0.0f;
+        [self configureFlashButton];
     };
     void (^fullCompletion)(BOOL) = ^(BOOL finished)
     {
         [self.switchCameraModeButton setImage:[UIImage imageNamed:@"cameraButtonSwitchToVideo"] forState:UIControlStateNormal];
-        if ([UIImagePickerController isFlashAvailableForCameraDevice:UIImagePickerControllerCameraDeviceRear] ||
-            [UIImagePickerController isFlashAvailableForCameraDevice:UIImagePickerControllerCameraDeviceFront])
-        {
-            self.navigationItem.rightBarButtonItem = self.flashOffButton;
-        }
-        else
-        {
-            self.navigationItem.rightBarButtonItem = nil;
-        }
-        self.camera.flashMode = VCFlashModeOff;
         [self setOpenAlbumButtonImageWithLatestPhoto:YES animated:animated];
         if (completion)
         {
@@ -469,6 +449,32 @@ const   NSTimeInterval  kAnimationDuration      =   0.4;
         animations();
         fullCompletion(YES);
     }
+}
+
+- (void)configureFlashButton
+{
+    if (self.camera.sessionPreset != AVCaptureSessionPresetPhoto)
+    {
+        self.flashButton.alpha = 0.0f;
+        return;
+    }
+    
+    switch (self.camera.cameraDevice)
+    {
+        case VCCameraDeviceFront:
+            self.flashButton.alpha = [UIImagePickerController isFlashAvailableForCameraDevice:UIImagePickerControllerCameraDeviceFront] ? 1.0f : 0.0f;
+            break;
+            
+        case VCCameraDeviceBack:
+            self.flashButton.alpha = [UIImagePickerController isFlashAvailableForCameraDevice:UIImagePickerControllerCameraDeviceRear] ? 1.0f : 0.0f;
+            break;
+            
+        default:
+            self.flashButton.alpha = 0.0f;
+            break;
+    }
+    
+    self.flashButton.selected = self.camera.flashMode != VCFlashModeOff;
 }
 
 - (BOOL)cameraSupportsMedia:(NSString *)mediaType sourceType:(UIImagePickerControllerSourceType)sourceType
@@ -613,7 +619,24 @@ const   NSTimeInterval  kAnimationDuration      =   0.4;
 
 - (void)updateProgressForSecond:(Float64)totalRecorded
 {
-    self.progressView.progress = totalRecorded / VConstantsMaximumVideoDuration;
+    if (!totalRecorded)
+    {
+        self.progressView.hidden = YES;
+        return;
+    }
+    
+    CGFloat progress = ABS(totalRecorded / VConstantsMaximumVideoDuration);
+    NSLayoutConstraint *newProgressConstraint = [NSLayoutConstraint constraintWithItem:self.progressView
+                                                                             attribute:NSLayoutAttributeWidth
+                                                                             relatedBy:NSLayoutRelationEqual
+                                                                                toItem:self.view
+                                                                             attribute:NSLayoutAttributeWidth
+                                                                            multiplier:progress
+                                                                              constant:0.0f];
+    [self.view removeConstraint:self.progressViewWidthConstraint];
+    [self.view addConstraint:newProgressConstraint];
+    self.progressViewWidthConstraint = newProgressConstraint;
+    self.progressView.hidden = NO;
 }
 
 #pragma mark - Navigation
@@ -661,18 +684,20 @@ const   NSTimeInterval  kAnimationDuration      =   0.4;
     [self prepareCamera];
     [self updateProgressForSecond:0];
     
-    self.camera.flashMode = VCFlashModeOff;
-    
     if (self.camera.sessionPreset == AVCaptureSessionPresetPhoto)
-        self.navigationItem.rightBarButtonItem = self.flashOnButton;
+    {
+        [self configureFlashButton];
+    }
     else
-        self.navigationItem.rightBarButtonItem = nil;
+    {
+        self.flashButton.alpha = 0.0f;
+    }
     
     self.inTrashState = NO;
     self.inRecordVideoState = NO;
     self.didSelectAssetFromLibrary = NO;
     
-    self.navigationItem.rightBarButtonItem = nil;
+    self.nextButton.alpha = 0.0f;
     self.openAlbumButton.alpha = 1.0;
     self.deleteButton.alpha = 0.0;
 }
@@ -683,9 +708,13 @@ const   NSTimeInterval  kAnimationDuration      =   0.4;
 {
     if (!self.inRecordVideoState)
     {
-        self.navigationItem.rightBarButtonItem = self.nextButton;
-        self.openAlbumButton.alpha = 0.0;
-        self.deleteButton.alpha = 1.0;
+        [UIView animateWithDuration:kAnimationDuration
+                         animations:^(void)
+        {
+            self.nextButton.alpha = 1.0f;
+            self.openAlbumButton.alpha = 0.0;
+            self.deleteButton.alpha = 1.0;
+        }];
         self.inRecordVideoState = YES;
     }
 

@@ -41,6 +41,7 @@
 {
     UIToolbar *toolbar = [[UIToolbar alloc] init];
     toolbar.translatesAutoresizingMaskIntoConstraints = NO;
+    toolbar.backgroundColor = [UIColor whiteColor];
     [self addSubview:toolbar];
 
     //Default to the standard message length if no length is provided
