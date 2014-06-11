@@ -23,6 +23,7 @@
 #import "VThemeManager.h"
 #import "VObjectManager.h"
 
+#import "VAnalyticsRecorder.h"
 #import "VConstants.h"
 
 @interface VStreamContainerViewController () <VCreateSequenceDelegate>
@@ -73,7 +74,7 @@
     }
     
     [self.filterControls setSelectedSegmentIndex:VStreamRecentFilter];
-    [self changedFilterControls:self.filterControls];
+    [self changedFilterControls:nil];
 }
 
 - (IBAction)changedFilterControls:(id)sender
@@ -87,6 +88,32 @@
     [super changedFilterControls:sender];
     
     self.streamTable.filterType = self.filterControls.selectedSegmentIndex;
+    
+    if (sender) // sender is nil if this method is called directly (not in response to a user touch)
+    {
+        NSString *eventAction = nil;
+        switch (self.filterControls.selectedSegmentIndex) {
+            case VStreamHotFilter:
+                eventAction = @"Selected Filter: Hot";
+                break;
+                
+            case VStreamRecentFilter:
+                eventAction = @"Selected Filter: Recent";
+                break;
+                
+            case VStreamFollowingFilter:
+                eventAction = @"Selected Filter: Following";
+                break;
+                
+            default:
+                break;
+        }
+        
+        if (eventAction)
+        {
+            [[VAnalyticsRecorder sharedAnalyticsRecorder] sendEventWithCategory:kVAnalyticsEventCategoryNavigation action:eventAction label:nil value:nil];
+        }
+    }
 }
 
 #pragma mark - Content Creation
