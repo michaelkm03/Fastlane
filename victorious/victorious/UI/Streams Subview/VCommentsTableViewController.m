@@ -205,7 +205,7 @@ static NSString* CommentCache = @"CommentCache";
 //        [self.bottomRefreshIndicator startAnimating];
     }
 }
-
+//TODO: this is dead code?
 - (IBAction)shareSequence:(id)sender
 {
     if (![VObjectManager sharedManager].mainUser)
@@ -232,7 +232,7 @@ static NSString* CommentCache = @"CommentCache";
     
     [self presentViewController:activityViewController animated:YES completion:nil];
 }
-
+//TODO: this is dead code?
 - (IBAction)likeComment:(id)sender forEvent:(UIEvent *)event
 {
     if (![VObjectManager sharedManager].mainUser)
@@ -260,7 +260,7 @@ static NSString* CommentCache = @"CommentCache";
                                           VLog(@"Failed to like comment %@", comment);
                                       }];
 }
-
+//TODO: this is dead code?
 - (IBAction)dislikeComment:(id)sender forEvent:(UIEvent *)event
 {
     if (![VObjectManager sharedManager].mainUser)
@@ -288,7 +288,7 @@ static NSString* CommentCache = @"CommentCache";
                                           VLog(@"Failed to dislike comment %@", comment);
                                       }];
 }
-
+//TODO: this is dead code?
 - (void)unvoteComment:(VComment*)comment
 {
     [[VObjectManager sharedManager] unvoteComment:comment
@@ -302,6 +302,7 @@ static NSString* CommentCache = @"CommentCache";
                                          }];
 }
 
+//TODO: this is dead code?
 - (IBAction)flagComment:(id)sender forEvent:(UIEvent *)event
 {
     if (![VObjectManager sharedManager].mainUser)
