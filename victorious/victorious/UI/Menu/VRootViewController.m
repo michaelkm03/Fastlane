@@ -6,6 +6,7 @@
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
+#import "VForceUpgradeViewController.h"
 #import "VRootViewController.h"
 #import "VMenuController.h"
 #import "VThemeManager.h"
@@ -24,6 +25,19 @@
 
 @implementation VRootViewController
 
++ (instancetype)rootViewController
+{
+    VRootViewController *rootViewController = (VRootViewController *)[[[UIApplication sharedApplication] keyWindow] rootViewController];
+    if ([rootViewController isKindOfClass:self])
+    {
+        return rootViewController;
+    }
+    else
+    {
+        return nil;
+    }
+}
+
 - (void)awakeFromNib
 {
     if (IS_IPHONE_5)
@@ -36,6 +50,12 @@
     
     NSAssert([self.contentViewController isKindOfClass:[UINavigationController class]], @"contentController should be a UINavigationController");
     self.contentViewController.delegate = self;
+}
+
+- (void)presentForceUpgradeScreen
+{
+    VForceUpgradeViewController *forceUpgradeViewController = [[VForceUpgradeViewController alloc] init];
+    [self presentViewController:forceUpgradeViewController animated:YES completion:nil];
 }
 
 #pragma mark - UINavigationControllerDelegate methods
