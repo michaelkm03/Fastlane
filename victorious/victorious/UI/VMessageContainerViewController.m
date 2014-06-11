@@ -58,7 +58,7 @@
                                                                       successBlock:^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
                                        {
                                            UIAlertView*    alert   =   [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"ReportedTitle", @"")
-                                                                                                  message:NSLocalizedString(@"ReportedMessage", @"")
+                                                                                                  message:NSLocalizedString(@"ReportUserMessage", @"")
                                                                                                  delegate:nil
                                                                                         cancelButtonTitle:NSLocalizedString(@"OKButton", @"")
                                                                                         otherButtonTitles:nil];
@@ -71,7 +71,7 @@
                                            
                                            //TODO: we may want to remove this later.
                                            UIAlertView*    alert   =   [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"ReportedTitle", @"")
-                                                                                                  message:NSLocalizedString(@"ReportedMessage", @"")
+                                                                                                  message:NSLocalizedString(@"ReportUserMessage", @"")
                                                                                                  delegate:nil
                                                                                         cancelButtonTitle:NSLocalizedString(@"OKButton", @"")
                                                                                         otherButtonTitles:nil];

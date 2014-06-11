@@ -401,40 +401,57 @@ static NSString* CommentCache = @"CommentCache";
         [[VObjectManager sharedManager] flagComment:comment
                                        successBlock:^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
          {
-             //TODO:set flagged flag)
              VLog(@"resultObjects: %@", resultObjects);
+             
+             UIAlertView*    alert   =   [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"ReportedTitle", @"")
+                                                                    message:NSLocalizedString(@"ReportCommentMessage", @"")
+                                                                   delegate:nil
+                                                          cancelButtonTitle:NSLocalizedString(@"OKButton", @"")
+                                                          otherButtonTitles:nil];
+             [alert show];
+
          }
                                           failBlock:^(NSOperation* operation, NSError* error)
          {
              VLog(@"Failed to flag comment %@", comment);
+             
+             //TODO: we may want to remove this later.
+             UIAlertView*    alert   =   [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"ReportedTitle", @"")
+                                                                    message:NSLocalizedString(@"ReportCommentMessage", @"")
+                                                                   delegate:nil
+                                                          cancelButtonTitle:NSLocalizedString(@"OKButton", @"")
+                                                          otherButtonTitles:nil];
+             [alert show];
+
          }];
     }
-                                           otherButtonTitlesAndBlocks:thumbUpTitle, ^(void)
-    {
-        [[VObjectManager sharedManager] likeComment:comment
-                                       successBlock:^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
-        {
-            //TODO:update UI)
-            VLog(@"resultObjects: %@", resultObjects);
-        }
-                                          failBlock:^(NSOperation* operation, NSError* error)
-        {
-            VLog(@"Failed to dislike comment %@", comment);
-        }];
-    },
-                                  thumbDownTitle, ^(void)
-    {
-        [[VObjectManager sharedManager] dislikeComment:comment
-                                          successBlock:^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
-        {
-            //TODO:set dislike flag)
-            VLog(@"resultObjects: %@", resultObjects);
-        }
-                                             failBlock:^(NSOperation* operation, NSError* error)
-        {
-            VLog(@"Failed to dislike comment %@", comment);
-        }];
-    },
+                                           otherButtonTitlesAndBlocks:
+//                                  thumbUpTitle, ^(void)
+//    {
+//        [[VObjectManager sharedManager] likeComment:comment
+//                                       successBlock:^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
+//        {
+//            //TODO:update UI)
+//            VLog(@"resultObjects: %@", resultObjects);
+//        }
+//                                          failBlock:^(NSOperation* operation, NSError* error)
+//        {
+//            VLog(@"Failed to dislike comment %@", comment);
+//        }];
+//    },
+//                                  thumbDownTitle, ^(void)
+//    {
+//        [[VObjectManager sharedManager] dislikeComment:comment
+//                                          successBlock:^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
+//        {
+//            //TODO:set dislike flag)
+//            VLog(@"resultObjects: %@", resultObjects);
+//        }
+//                                             failBlock:^(NSOperation* operation, NSError* error)
+//        {
+//            VLog(@"Failed to dislike comment %@", comment);
+//        }];
+//    },
                                   reply, ^(void)
     {
         [self.delegate streamsCommentsController:self shouldReplyToUser:comment.user];

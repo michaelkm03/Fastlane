@@ -77,7 +77,9 @@
 
 "ReportInappropriate"   =   "Report Inappropriate";
 "ReportedTitle"         =   "Got it!";
-"ReportedMessage"       =   "This content will be reviewed within 24 hours";
+"ReportContentMessage"  =   "This content will be reviewed within 24 hours";
+"ReportCommentMessage"  =   "This comment will be reviewed within 24 hours";
+"ReportUserMessage"     =   "This user will be reviewed within 24 hours";
 
 "BlockUser"             =   "Block User";
 "CopyProfileURL"        =   "Copy Profile URL";

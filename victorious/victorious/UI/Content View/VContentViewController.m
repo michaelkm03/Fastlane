@@ -545,7 +545,7 @@ static const CGFloat kDistanceBetweenTitleAndCollapseButton =  42.5f;
                                                                      successBlock:^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
                                        {
                                            UIAlertView*    alert   =   [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"ReportedTitle", @"")
-                                                                                                  message:NSLocalizedString(@"ReportedMessage", @"")
+                                                                                                  message:NSLocalizedString(@"ReportContentMessage", @"")
                                                                                                  delegate:nil
                                                                                         cancelButtonTitle:NSLocalizedString(@"OKButton", @"")
                                                                                         otherButtonTitles:nil];
@@ -558,7 +558,7 @@ static const CGFloat kDistanceBetweenTitleAndCollapseButton =  42.5f;
                                            
                                            //TODO: we may want to remove this later.
                                            UIAlertView*    alert   =   [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"ReportedTitle", @"")
-                                                                                                  message:NSLocalizedString(@"ReportedMessage", @"")
+                                                                                                  message:NSLocalizedString(@"ReportContentMessage", @"")
                                                                                                  delegate:nil
                                                                                         cancelButtonTitle:NSLocalizedString(@"OKButton", @"")
                                                                                         otherButtonTitles:nil];
