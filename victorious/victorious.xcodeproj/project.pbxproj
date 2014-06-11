@@ -36,6 +36,7 @@
 		0385FEE618EF341D009FBD68 /* VImageSearchDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 0385FEE518EF341D009FBD68 /* VImageSearchDataSource.m */; };
 		0385FEE918EF41B4009FBD68 /* VImageSearchResult.m in Sources */ = {isa = PBXBuildFile; fileRef = 0385FEE818EF41B4009FBD68 /* VImageSearchResult.m */; };
 		0385FEEC18EF9748009FBD68 /* VImageSearchResultCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 0385FEEB18EF9748009FBD68 /* VImageSearchResultCell.m */; };
+		038E188C1947DDE900E35719 /* VForceUpgradeAnimatedTransition.m in Sources */ = {isa = PBXBuildFile; fileRef = 038E188B1947DDE900E35719 /* VForceUpgradeAnimatedTransition.m */; };
 		03943A78192570A500FA8A1F /* UINavigationController+RotationMethodForwarding.m in Sources */ = {isa = PBXBuildFile; fileRef = 03943A77192570A500FA8A1F /* UINavigationController+RotationMethodForwarding.m */; };
 		03A2AD971926B9460034EB80 /* UIViewController+ForceOrientationChange.m in Sources */ = {isa = PBXBuildFile; fileRef = 03A2AD961926B9460034EB80 /* UIViewController+ForceOrientationChange.m */; };
 		03A2AD9A1926C9300034EB80 /* DeviceTableViewController+RotationMethods.m in Sources */ = {isa = PBXBuildFile; fileRef = 03A2AD991926C9300034EB80 /* DeviceTableViewController+RotationMethods.m */; };
@@ -375,6 +376,8 @@
 		0385FEE818EF41B4009FBD68 /* VImageSearchResult.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VImageSearchResult.m; sourceTree = "<group>"; };
 		0385FEEA18EF9748009FBD68 /* VImageSearchResultCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VImageSearchResultCell.h; sourceTree = "<group>"; };
 		0385FEEB18EF9748009FBD68 /* VImageSearchResultCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VImageSearchResultCell.m; sourceTree = "<group>"; };
+		038E188A1947DDE900E35719 /* VForceUpgradeAnimatedTransition.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VForceUpgradeAnimatedTransition.h; sourceTree = "<group>"; };
+		038E188B1947DDE900E35719 /* VForceUpgradeAnimatedTransition.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VForceUpgradeAnimatedTransition.m; sourceTree = "<group>"; };
 		03943A76192570A500FA8A1F /* UINavigationController+RotationMethodForwarding.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "UINavigationController+RotationMethodForwarding.h"; path = "UI/UINavigationController+RotationMethodForwarding.h"; sourceTree = "<group>"; };
 		03943A77192570A500FA8A1F /* UINavigationController+RotationMethodForwarding.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "UINavigationController+RotationMethodForwarding.m"; path = "UI/UINavigationController+RotationMethodForwarding.m"; sourceTree = "<group>"; };
 		03A2AD951926B9460034EB80 /* UIViewController+ForceOrientationChange.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+ForceOrientationChange.h"; sourceTree = "<group>"; };
@@ -895,6 +898,8 @@
 				031D86C11947BBB600CDB814 /* VForceUpgradeViewController.h */,
 				031D86C21947BBB600CDB814 /* VForceUpgradeViewController.m */,
 				031D86C31947BBB600CDB814 /* VForceUpgradeViewController.xib */,
+				038E188A1947DDE900E35719 /* VForceUpgradeAnimatedTransition.h */,
+				038E188B1947DDE900E35719 /* VForceUpgradeAnimatedTransition.m */,
 			);
 			name = ForceUpgrade;
 			path = UI/ForceUpgrade;
@@ -2278,6 +2283,7 @@
 				3F9348A01922C539002EA91F /* VFollowingTableViewController.m in Sources */,
 				3F71A7DC18D7C6D20048FF60 /* VRemixVideoRangeSlider.m in Sources */,
 				03D638211918488F0084FFC8 /* VServerEnvironmentTableViewController.m in Sources */,
+				038E188C1947DDE900E35719 /* VForceUpgradeAnimatedTransition.m in Sources */,
 				3F0282381937D0AA0099259A /* VAbstractInviteTableViewController.m in Sources */,
 				BE185DF118E3B2C2001C447F /* VContentViewController+Images.m in Sources */,
 				03086AA718F38ABE00105FFB /* UIActionSheet+VBlocks.m in Sources */,

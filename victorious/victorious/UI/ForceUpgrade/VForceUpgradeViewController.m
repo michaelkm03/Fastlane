@@ -6,10 +6,11 @@
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
+#import "VForceUpgradeAnimatedTransition.h"
 #import "VForceUpgradeViewController.h"
 #import "VThemeManager.h"
 
-@interface VForceUpgradeViewController ()
+@interface VForceUpgradeViewController () <UIViewControllerTransitioningDelegate>
 
 @property (nonatomic, weak) IBOutlet UILabel *label;
 
@@ -50,6 +51,18 @@
 
     NSURL *appstoreURL = [NSURL URLWithString:appStoreString];
     [[UIApplication sharedApplication] openURL:appstoreURL];
+}
+
+- (id<UIViewControllerTransitioningDelegate>)transitioningDelegate
+{
+    return self;
+}
+
+#pragma mark - UIViewControllerTransitioningDelegate methods
+
+- (id<UIViewControllerAnimatedTransitioning>)animationControllerForPresentedController:(UIViewController *)presented presentingController:(UIViewController *)presenting sourceController:(UIViewController *)source
+{
+    return [[VForceUpgradeAnimatedTransition alloc] init];
 }
 
 @end
