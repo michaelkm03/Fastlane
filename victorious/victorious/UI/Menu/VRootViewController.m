@@ -21,6 +21,9 @@
 
 @interface VRootViewController () <UINavigationControllerDelegate>
 
+@property (nonatomic) BOOL appearing;
+@property (nonatomic) BOOL shouldPresentForceUpgradeScreenOnNextAppearance;
+
 @end
 
 @implementation VRootViewController
@@ -52,7 +55,36 @@
     self.contentViewController.delegate = self;
 }
 
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    self.appearing = YES;
+    if (self.shouldPresentForceUpgradeScreenOnNextAppearance)
+    {
+        self.shouldPresentForceUpgradeScreenOnNextAppearance = NO;
+        [self _presentForceUpgradeScreen];
+    }
+}
+
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+    self.appearing = NO;
+}
+
 - (void)presentForceUpgradeScreen
+{
+    if (self.appearing)
+    {
+        [self _presentForceUpgradeScreen];
+    }
+    else
+    {
+        self.shouldPresentForceUpgradeScreenOnNextAppearance = YES;
+    }
+}
+
+- (void)_presentForceUpgradeScreen
 {
     VForceUpgradeViewController *forceUpgradeViewController = [[VForceUpgradeViewController alloc] init];
     [self presentViewController:forceUpgradeViewController animated:YES completion:nil];
