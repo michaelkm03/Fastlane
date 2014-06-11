@@ -183,12 +183,6 @@ NSString *kStreamsWillCommentNotification = @"kStreamsWillCommentNotification";
     [self.parentTableViewController.navigationController pushViewController:profileViewController animated:YES];
 }
 
-- (void)prepareForReuse
-{
-    [super prepareForReuse];
-    [self showOverlays];
-}
-
 - (void) hideOverlays
 {
     self.overlayView.alpha = 0;
