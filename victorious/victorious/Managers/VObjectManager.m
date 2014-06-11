@@ -50,7 +50,7 @@
     //(this is the only non-dynamic header, so set it now)
     NSString *userAgent = ([manager HTTPClient].defaultHeaders)[@"User-Agent"];
     
-    NSString *buildNumber = @"50"; // [[NSBundle bundleForClass:[self class]] objectForInfoDictionaryKey:@"CFBundleVersion"];
+    NSString *buildNumber = [[NSBundle bundleForClass:[self class]] objectForInfoDictionaryKey:@"CFBundleVersion"];
     NSNumber* appID = [VObjectManager currentEnvironment].appID;
     userAgent = [NSString stringWithFormat:@"%@ aid:%@ uuid:%@ build:%@", userAgent, appID.stringValue, [[UIDevice currentDevice].identifierForVendor UUIDString], buildNumber];
     [[manager HTTPClient] setDefaultHeader:@"User-Agent" value:userAgent];
