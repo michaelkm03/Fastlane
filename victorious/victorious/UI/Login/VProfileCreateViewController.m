@@ -44,6 +44,11 @@
 
 @implementation VProfileCreateViewController
 
+- (void)dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -124,6 +129,20 @@
     [self.locationManager startMonitoringSignificantLocationChanges];
 }
 
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(keyboardWasShown:)
+                                                 name:UIKeyboardDidShowNotification
+                                               object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(keyboardWillHide:)
+                                                 name:UIKeyboardWillHideNotification
+                                               object:nil];
+}
+
 - (void)viewDidDisappear:(BOOL)animated
 {
     [super viewDidDisappear:animated];
@@ -184,6 +203,51 @@
         return NO;
     
     return YES;
+}
+
+- (void)keyboardWasShown:(NSNotification *)notification
+{
+    // Get the size of the keyboard.
+    CGRect keyboardFrame = [[[notification userInfo] objectForKey:UIKeyboardFrameBeginUserInfoKey] CGRectValue];
+    
+    NSTimeInterval animationDuration;
+    UIViewAnimationCurve animationCurve;
+    NSDictionary *userInfo = [notification userInfo];
+    
+    [userInfo[UIKeyboardAnimationCurveUserInfoKey] getValue:&animationCurve];
+    [userInfo[UIKeyboardAnimationDurationUserInfoKey] getValue:&animationDuration];
+    
+    CGFloat keyboardMinY = CGRectGetMinY(keyboardFrame);
+    CGFloat taglineMaxY = CGRectGetMaxY(self.taglineTextView.frame);
+    if (taglineMaxY > keyboardMinY)
+    {
+        [UIView animateWithDuration:animationDuration delay:0
+                            options:(animationCurve << 16) animations:^
+         {
+             self.view.frame = CGRectOffset(self.view.frame, 0, keyboardMinY - VConstantsInputAccessoryHeight - taglineMaxY);
+         }
+                         completion:nil];
+    }
+}
+
+- (void)keyboardWillHide:(NSNotification *)notification
+{
+    NSTimeInterval animationDuration;
+    UIViewAnimationCurve animationCurve;
+    NSDictionary *userInfo = [notification userInfo];
+    
+    [userInfo[UIKeyboardAnimationCurveUserInfoKey] getValue:&animationCurve];
+    [userInfo[UIKeyboardAnimationDurationUserInfoKey] getValue:&animationDuration];
+    
+    [UIView animateWithDuration:animationDuration delay:0
+                        options:(animationCurve << 16) animations:^
+     {
+         
+         CGRect frame = self.view.frame;
+         frame.origin = CGPointMake(0, 0);
+         self.view.frame = frame;
+     }
+                     completion:nil];
 }
 
 #pragma mark - TTTAttributedLabelDelegate
@@ -301,7 +365,7 @@
 
 - (void)createInputAccessoryView
 {
-    UIToolbar*  toolbar =   [[UIToolbar alloc] initWithFrame:CGRectMake(0, 0, self.view.bounds.size.width, 44)];
+    UIToolbar*  toolbar =   [[UIToolbar alloc] initWithFrame:CGRectMake(0, 0, self.view.bounds.size.width, VConstantsInputAccessoryHeight)];
     
     UIBarButtonItem*    flexibleSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace
                                                                                       target:nil
