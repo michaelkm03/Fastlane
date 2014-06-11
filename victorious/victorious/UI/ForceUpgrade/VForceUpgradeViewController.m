@@ -7,6 +7,7 @@
 //
 
 #import "VForceUpgradeViewController.h"
+#import "VThemeManager.h"
 
 @interface VForceUpgradeViewController ()
 
@@ -41,7 +42,14 @@
 
 - (IBAction)upgradeNowTapped:(id)sender
 {
-    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"itms-apps://itunes.com/apps"]];
+    NSString *appStoreString = [[VThemeManager sharedThemeManager] themedStringForKey:kVAppStoreURL];
+    if (!appStoreString || [appStoreString isEqualToString:@""])
+    {
+        appStoreString = @"itms-apps://itunes.com/apps";
+    }
+
+    NSURL *appstoreURL = [NSURL URLWithString:appStoreString];
+    [[UIApplication sharedApplication] openURL:appstoreURL];
 }
 
 @end
