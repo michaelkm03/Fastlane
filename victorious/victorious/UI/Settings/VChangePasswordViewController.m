@@ -111,7 +111,7 @@ NSString*   const   kAccountUpdateViewControllerDomain =   @"VAccountUpdateViewC
          {
              VSuccessBlock success = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
              {
-
+                 [self.navigationController popViewControllerAnimated:YES];
              };
              
              VFailBlock fail = ^(NSOperation* operation, NSError* error)
