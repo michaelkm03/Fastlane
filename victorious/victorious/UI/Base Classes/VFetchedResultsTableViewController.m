@@ -32,12 +32,6 @@
                                                      yCenter);
 }
 
-- (void)didReceiveMemoryWarning
-{
-    [super didReceiveMemoryWarning];
-    self.fetchedResultsController = nil;
-}
-
 #pragma mark - Accessors
 
 - (NSFetchedResultsController *)fetchedResultsController

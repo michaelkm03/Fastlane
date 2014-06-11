@@ -84,6 +84,7 @@
     if ([self.fetchedResultsController.fetchedObjects count] < 5)
         [self refresh:nil];
     else
+        // TODO: do we need this?
         [self.tableView reloadData]; //force a reload incase anything has changed
     
     CGRect navBarFrame = self.navigationController.navigationBar.frame;

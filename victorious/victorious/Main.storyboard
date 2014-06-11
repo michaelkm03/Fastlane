@@ -152,6 +152,11 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
+                            <containerView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="5Mf-9l-SXM">
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                            </containerView>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="uAX-J4-ubb" userLabel="Header View">
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="100"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -206,19 +211,14 @@
                                     <constraint firstAttribute="height" constant="100" id="sZf-P3-Cho"/>
                                 </constraints>
                             </view>
-                            <containerView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="5Mf-9l-SXM">
-                                <rect key="frame" x="0.0" y="100" width="320" height="468"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
-                            </containerView>
                         </subviews>
                         <constraints>
                             <constraint firstItem="5Mf-9l-SXM" firstAttribute="leading" secondItem="Pyo-eX-Cfs" secondAttribute="leading" id="0M6-6z-WCg"/>
                             <constraint firstItem="uAX-J4-ubb" firstAttribute="leading" secondItem="Pyo-eX-Cfs" secondAttribute="leading" id="BQV-Qu-pgd"/>
                             <constraint firstAttribute="trailing" secondItem="uAX-J4-ubb" secondAttribute="trailing" id="Ktc-GO-koe"/>
                             <constraint firstAttribute="trailing" secondItem="5Mf-9l-SXM" secondAttribute="trailing" id="Xpf-AX-Eop"/>
-                            <constraint firstItem="Ak4-0Q-P1S" firstAttribute="top" secondItem="5Mf-9l-SXM" secondAttribute="bottom" id="Zqw-D1-23t"/>
-                            <constraint firstItem="5Mf-9l-SXM" firstAttribute="top" secondItem="uAX-J4-ubb" secondAttribute="bottom" id="hzg-dc-dJt"/>
+                            <constraint firstItem="Ak4-0Q-P1S" firstAttribute="top" secondItem="5Mf-9l-SXM" secondAttribute="bottom" placeholder="YES" id="Zqw-D1-23t"/>
+                            <constraint firstItem="5Mf-9l-SXM" firstAttribute="top" secondItem="Oem-1Y-kAK" secondAttribute="bottom" placeholder="YES" id="fmD-8s-p8b"/>
                             <constraint firstItem="uAX-J4-ubb" firstAttribute="top" secondItem="Pyo-eX-Cfs" secondAttribute="top" id="sbd-TC-btl"/>
                         </constraints>
                     </view>
