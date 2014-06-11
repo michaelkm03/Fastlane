@@ -126,7 +126,7 @@
 {
     CGPoint translation = [scrollView.panGestureRecognizer translationInView:scrollView.superview];
     
-    if (translation.y < 0)
+    if (translation.y < 0 && scrollView.contentOffset.y > CGRectGetHeight(self.headerView.frame))
     {
         [UIView animateWithDuration:.2f animations:^
          {

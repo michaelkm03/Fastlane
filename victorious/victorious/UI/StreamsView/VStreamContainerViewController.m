@@ -41,6 +41,7 @@
     UIViewController*   currentViewController = [[UIApplication sharedApplication] delegate].window.rootViewController;
     VStreamContainerViewController* container = (VStreamContainerViewController*)[currentViewController.storyboard instantiateViewControllerWithIdentifier: kStreamContainerID];
     container.tableViewController = streamTable;
+    container.automaticallyAdjustsScrollViewInsets = NO;
     streamTable.delegate = container;
     
     return container;
@@ -55,14 +56,6 @@
 {
     [super viewDidLoad];
     
-    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.streamTable.view
-                                                          attribute:NSLayoutAttributeBottom
-                                                          relatedBy:NSLayoutRelationEqual
-                                                             toItem:self.view
-                                                          attribute:NSLayoutAttributeBottom
-                                                         multiplier:1.0
-                                                           constant:0]];
-
     self.createButton.hidden = [self.streamTable isKindOfClass:[VOwnerStreamViewController class]];
     self.createButton.tintColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVMainTextColor];
     UIImage* image = [self.createButton.currentImage imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
@@ -75,6 +68,15 @@
     
     [self.filterControls setSelectedSegmentIndex:VStreamRecentFilter];
     [self changedFilterControls:nil];
+    
+    UIView *tableContainerView = self.tableContainerView;
+    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[tableContainerView]|" options:0 metrics:nil views:NSDictionaryOfVariableBindings(tableContainerView)]];
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    self.tableViewController.tableView.contentInset = UIEdgeInsetsMake(CGRectGetHeight(self.headerView.frame), 0, 0, 0);
 }
 
 - (IBAction)changedFilterControls:(id)sender
