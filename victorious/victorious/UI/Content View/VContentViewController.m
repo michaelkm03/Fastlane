@@ -29,7 +29,7 @@
 
 #import "UIActionSheet+VBlocks.h"
 
-             CGFloat kContentMediaViewOffset                = 154.0f;
+static const CGFloat kMediaViewHeight                       = 320.0f;
 static const CGFloat kDistanceBetweenTitleAndHR             =  14.5f;
 static const CGFloat kDistanceBetweenTitleAndCollapseButton =  42.5f;
 
@@ -94,9 +94,9 @@ static const CGFloat kDistanceBetweenTitleAndCollapseButton =  42.5f;
     if (CGAffineTransformIsIdentity(self.mediaSuperview.transform))
     {
         self.mediaSuperview.frame = CGRectMake(CGRectGetMinX(self.view.bounds),
-                                               kContentMediaViewOffset,
+                                               CGRectGetMinY(self.barContainerView.frame) - kMediaViewHeight,
                                                CGRectGetWidth(self.view.bounds),
-                                               320.0f);
+                                               kMediaViewHeight);
     }
     else
     {
@@ -108,6 +108,13 @@ static const CGFloat kDistanceBetweenTitleAndCollapseButton =  42.5f;
                                                  CGRectGetMidY(self.view.bounds));
     }
     self.mediaView.frame = self.mediaSuperview.bounds;
+    
+    if (!self.titleExpanded)
+    {
+        self.topActionsViewHeightConstraint.constant = [self contentMediaViewOffset];
+    }
+    
+    [self.view layoutIfNeeded]; // Let auto-layout run again due to changing the frames above
 }
 
 - (void)viewDidDisappear:(BOOL)animated
@@ -303,6 +310,7 @@ static const CGFloat kDistanceBetweenTitleAndCollapseButton =  42.5f;
     
     self.smallTextSize = self.descriptionLabel.locationForLastLineOfText;
     self.collapsingOrExpanding = YES;
+    self.titleExpanded = YES;
     
     [self.videoPlayer.player pause];
     
@@ -336,7 +344,7 @@ static const CGFloat kDistanceBetweenTitleAndCollapseButton =  42.5f;
     {
         self.expandedTitleMaskingView.alpha = 0;
         self.collapseButton.alpha = 0;
-        self.topActionsViewHeightConstraint.constant = kContentMediaViewOffset;
+        self.topActionsViewHeightConstraint.constant = [self contentMediaViewOffset];
         [self updateConstraintsForTextSize:self.smallTextSize];
         [self.view layoutIfNeeded];
         
@@ -351,6 +359,7 @@ static const CGFloat kDistanceBetweenTitleAndCollapseButton =  42.5f;
     };
     
     self.collapsingOrExpanding = YES;
+    self.titleExpanded = NO;
     
     if (animated)
     {
@@ -369,7 +378,12 @@ static const CGFloat kDistanceBetweenTitleAndCollapseButton =  42.5f;
 
 - (BOOL)isTitleExpanded
 {
-    return self.topActionsViewHeightConstraint.constant > kContentMediaViewOffset;
+    return self.topActionsViewHeightConstraint.constant > [self contentMediaViewOffset];
+}
+
+- (CGFloat)contentMediaViewOffset
+{
+    return CGRectGetMinY(self.barContainerView.frame) - kMediaViewHeight;
 }
 
 #pragma mark -

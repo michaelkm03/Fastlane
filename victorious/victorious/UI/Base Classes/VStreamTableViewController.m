@@ -185,14 +185,14 @@
     [self setBackgroundImageWithURL:[[cell.sequence initialImageURLs] firstObject]];
     [self.delegate streamWillDisappear];
     
-    if (tableView.contentOffset.y == cell.frame.origin.y - kContentMediaViewOffset)
+    if (tableView.contentOffset.y == cell.frame.origin.y - 154.0f) // TODO: remove that hard-coded 154
     {
         [self.navigationController pushViewController:[VContentViewController sharedInstance] animated:YES];
     }
     else
     {
         self.tableView.userInteractionEnabled = NO;
-        [tableView setContentOffset:CGPointMake(cell.frame.origin.x, cell.frame.origin.y - kContentMediaViewOffset) animated:YES];
+        [tableView setContentOffset:CGPointMake(cell.frame.origin.x, cell.frame.origin.y - 154.0f) animated:YES]; // TODO: remove that hard-coded 154
     }
 }
 

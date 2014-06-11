@@ -88,7 +88,7 @@
          
          VStreamViewCell* selectedCell = (VStreamViewCell*) [streamVC.tableView cellForRowAtIndexPath:path];
          [streamVC.tableView setContentOffset:CGPointMake(selectedCell.frame.origin.x,
-                                                          selectedCell.frame.origin.y - kContentMediaViewOffset)
+                                                          selectedCell.frame.origin.y - [contentVC contentMediaViewOffset])
                                      animated:NO];
          
          [[context containerView] addSubview:toVC.view];

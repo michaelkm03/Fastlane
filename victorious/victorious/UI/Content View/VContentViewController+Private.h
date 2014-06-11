@@ -54,6 +54,7 @@
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint* collapseButtonVerticalSpacingConstraint;
 @property (nonatomic)                CGFloat             smallTextSize; ///< The size of the title text when collapsed into 3 lines
 @property (nonatomic)                BOOL                collapsingOrExpanding; ///< YES during the animation block for a title expand/collapse operation
+@property (nonatomic)                BOOL                titleExpanded; ///< YES if the title is expanded
 
 @property (strong, nonatomic) UIDynamicAnimator* orAnimator;
 
