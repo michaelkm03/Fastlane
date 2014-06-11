@@ -935,6 +935,7 @@
                         <outlet property="orContainerView" destination="81Y-P5-SQ9" id="Ben-7t-Jmg"/>
                         <outlet property="orImageView" destination="jl7-9k-rKO" id="Sc8-0d-S6M"/>
                         <outlet property="pollPreviewView" destination="4Kr-fK-dGu" id="Jg8-mK-drW"/>
+                        <outlet property="pollViewYConstraint" destination="cjf-8S-WD0" id="crw-3j-lDs"/>
                         <outlet property="previewImage" destination="ZqV-fk-y5a" id="5zD-1U-pWm"/>
                         <outlet property="rightSmallPreviewImageWidthConstraint" destination="Kaz-0u-z6m" id="6xw-sD-qqO"/>
                         <outlet property="secondPollButton" destination="6Fs-nG-V3a" id="rgi-QS-JVS"/>

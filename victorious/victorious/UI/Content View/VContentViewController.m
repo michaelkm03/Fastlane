@@ -29,7 +29,9 @@
 
 #import "UIActionSheet+VBlocks.h"
 
+static const CGFloat kMaximumContentViewOffset              = 154.0f;
 static const CGFloat kMediaViewHeight                       = 320.0f;
+static const CGFloat kBarContainerViewHeight                =  60.0f;
 static const CGFloat kDistanceBetweenTitleAndHR             =  14.5f;
 static const CGFloat kDistanceBetweenTitleAndCollapseButton =  42.5f;
 
@@ -94,7 +96,7 @@ static const CGFloat kDistanceBetweenTitleAndCollapseButton =  42.5f;
     if (CGAffineTransformIsIdentity(self.mediaSuperview.transform))
     {
         self.mediaSuperview.frame = CGRectMake(CGRectGetMinX(self.view.bounds),
-                                               CGRectGetMinY(self.barContainerView.frame) - kMediaViewHeight,
+                                               [self contentMediaViewOffset],
                                                CGRectGetWidth(self.view.bounds),
                                                kMediaViewHeight);
     }
@@ -109,6 +111,7 @@ static const CGFloat kDistanceBetweenTitleAndCollapseButton =  42.5f;
     }
     self.mediaView.frame = self.mediaSuperview.bounds;
     
+    self.pollViewYConstraint.constant = [self contentMediaViewOffset];
     if (!self.titleExpanded)
     {
         self.topActionsViewHeightConstraint.constant = [self contentMediaViewOffset];
@@ -383,7 +386,12 @@ static const CGFloat kDistanceBetweenTitleAndCollapseButton =  42.5f;
 
 - (CGFloat)contentMediaViewOffset
 {
-    return CGRectGetMinY(self.barContainerView.frame) - kMediaViewHeight;
+    return MIN(kMaximumContentViewOffset, CGRectGetMinY(self.barContainerView.frame) - kMediaViewHeight);
+}
+
++ (CGFloat)estimatedContentMediaViewOffsetForBounds:(CGRect)bounds
+{
+    return MIN(kMaximumContentViewOffset, CGRectGetHeight(bounds) - kBarContainerViewHeight - kMediaViewHeight);
 }
 
 #pragma mark -
