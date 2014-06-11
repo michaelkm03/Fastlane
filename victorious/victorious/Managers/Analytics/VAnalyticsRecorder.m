@@ -10,10 +10,9 @@
 #import "GAIDictionaryBuilder.h"
 #import "GAIFields.h"
 #import "VAnalyticsRecorder.h"
+#import "VConstants.h"
 
 #define EnableAnalyticsLogs 0 // Set to "1" to see analytics logging, but please remember to set it back to "0" before committing your changes.
-
-static NSString * const kTrackerID = @"UA-51702806-1";
 
 static NSString * const kVAnalyticsEventAppLaunch  = @"Cold Launch";
 static NSString * const kVAnalyticsEventAppSuspend = @"Suspend";
@@ -56,7 +55,8 @@ NSString * const kVAnalyticsEventCategoryCamera       = @"Camera";
         [[[GAI sharedInstance] logger] setLogLevel:kGAILogLevelVerbose];
 #warning Analytics logging is enabled. Please remember to disable it when you're done debugging.
 #endif
-        self.tracker = [[GAI sharedInstance] trackerWithTrackingId:kTrackerID];
+        NSString *trackerID = [[NSBundle bundleForClass:[self class]] objectForInfoDictionaryKey:kGAID];
+        self.tracker = [[GAI sharedInstance] trackerWithTrackingId:trackerID];
     }
     return self;
 }

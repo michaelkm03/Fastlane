@@ -71,6 +71,8 @@ static NSString*   const   kTestflightQAToken       = @"TestflightQAAppToken";
 static NSString*   const   kTestflightStagingToken  = @"TestflightStagingAppToken";
 static NSString*   const   kTestflightReleaseToken  = @"TestflightReleaseAppToken";
 
+static NSString*   const   kGAID                    = @"GAID";
+
 static NSString*   const   kRemoteIdKey         = @"remoteId";
 static NSString*   const   kReleasedAtKey       = @"releasedAt";
 static NSString*   const   kDisplayOrderKey     = @"display_order";
