@@ -352,7 +352,12 @@
         VMessage* tempMessage;
         if ([fullResponse isKindOfClass:[NSDictionary class]])
         {
-            conversation.remoteId = @([fullResponse[@"payload"][@"conversation_id"] integerValue]);
+            NSNumber* returnedId = @([fullResponse[@"payload"][@"conversation_id"] integerValue]);
+            if (![conversation.remoteId isEqualToNumber:returnedId])
+            {
+                conversation.remoteId = returnedId;
+                conversation.filterAPIPath = [@"/api/message/conversation/" stringByAppendingString:returnedId.stringValue];
+            }
             NSNumber* messageID = @([fullResponse[@"payload"][@"message_id"] integerValue]);
             
             tempMessage = [self newMessageWithID:messageID conversation:conversation text:text mediaURLPath:[mediaURL absoluteString]];
@@ -382,10 +387,13 @@
     tempMessage.postedAt = [NSDate dateWithTimeIntervalSinceNow:-1];
     tempMessage.thumbnailPath = [self localImageURLForVideo:mediaURLPath];
     
-    [conversation addMessagesObject:tempMessage];
-    
     VUser* userInContext = (VUser*)[tempMessage.managedObjectContext objectWithID:self.mainUser.objectID];
     [userInContext addMessagesObject:tempMessage];
+    
+    [conversation addMessagesObject:tempMessage];
+    if (!conversation.lastMessage)
+        conversation.lastMessage = tempMessage;
+    
     
     [tempMessage.managedObjectContext saveToPersistentStore:nil];
     

@@ -127,8 +127,16 @@
     progressHUD.labelText = NSLocalizedString(@"JustAMoment", @"");
     progressHUD.detailsLabelText = NSLocalizedString(@"PublishUpload", @"");
     
+    __block NSNumber* oldID = self.conversation.remoteId;
+    
     VSuccessBlock success = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
     {
+        if (![oldID isEqualToValue:self.conversation.remoteId])
+        {
+            //If the ID on the conversation changes we need to refresh the fetch controller with the new ID.
+            //This happens because we do not have the remote ID for the conversation until the first message is sent
+            [((VMessageViewController*)self.conversationTableViewController) refreshFetchController];
+        }
         [progressHUD hide:YES];
     };
     
