@@ -50,6 +50,7 @@
 @property (weak, nonatomic) IBOutlet UIView*      answeredPollMaskingView; ///< This view is normally hidden but unhides when a poll is answered
 @property (weak, nonatomic) IBOutlet UIButton*    collapseButton;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint* topActionsViewHeightConstraint;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint* pollViewYConstraint;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint* hrVerticalSpacingConstraint;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint* collapseButtonVerticalSpacingConstraint;
 @property (nonatomic)                CGFloat             smallTextSize; ///< The size of the title text when collapsed into 3 lines
