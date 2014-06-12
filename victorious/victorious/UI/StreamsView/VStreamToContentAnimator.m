@@ -30,7 +30,9 @@
                                                     : ((VStreamContainerViewController*)fromVC).streamTable;
     
     VContentViewController* contentVC = (VContentViewController*)[context viewControllerForKey:UITransitionContextToViewControllerKey];
-    VStreamViewCell* selectedCell = (VStreamViewCell*) [streamVC.tableView cellForRowAtIndexPath:streamVC.tableView.indexPathForSelectedRow];
+    
+    NSIndexPath* path = [streamVC.fetchedResultsController indexPathForObject:streamVC.selectedSequence];
+    VStreamViewCell* selectedCell = (VStreamViewCell*) [streamVC.tableView cellForRowAtIndexPath:path];
     
     streamVC.view.userInteractionEnabled = NO;
     contentVC.view.userInteractionEnabled = NO;

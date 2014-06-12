@@ -98,5 +98,7 @@
 	<string>${DefaultEnvironment}</string>
 	<key>ProductPrefix</key>
 	<string>${ProductPrefix}</string>
+	<key>GAID</key>
+	<string>UA-51702806-1</string>
 </dict>
 </plist>

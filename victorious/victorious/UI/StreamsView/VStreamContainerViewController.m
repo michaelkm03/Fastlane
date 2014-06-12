@@ -23,6 +23,7 @@
 #import "VThemeManager.h"
 #import "VObjectManager.h"
 
+#import "VAnalyticsRecorder.h"
 #import "VConstants.h"
 
 @interface VStreamContainerViewController () <VCreateSequenceDelegate>
@@ -40,6 +41,7 @@
     UIViewController*   currentViewController = [[UIApplication sharedApplication] delegate].window.rootViewController;
     VStreamContainerViewController* container = (VStreamContainerViewController*)[currentViewController.storyboard instantiateViewControllerWithIdentifier: kStreamContainerID];
     container.tableViewController = streamTable;
+    container.automaticallyAdjustsScrollViewInsets = NO;
     streamTable.delegate = container;
     
     return container;
@@ -54,14 +56,6 @@
 {
     [super viewDidLoad];
     
-    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.streamTable.view
-                                                          attribute:NSLayoutAttributeBottom
-                                                          relatedBy:NSLayoutRelationEqual
-                                                             toItem:self.view
-                                                          attribute:NSLayoutAttributeBottom
-                                                         multiplier:1.0
-                                                           constant:0]];
-
     self.createButton.hidden = [self.streamTable isKindOfClass:[VOwnerStreamViewController class]];
     self.createButton.tintColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVMainTextColor];
     UIImage* image = [self.createButton.currentImage imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
@@ -73,7 +67,16 @@
     }
     
     [self.filterControls setSelectedSegmentIndex:VStreamRecentFilter];
-    [self changedFilterControls:self.filterControls];
+    [self changedFilterControls:nil];
+    
+    UIView *tableContainerView = self.tableContainerView;
+    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[tableContainerView]|" options:0 metrics:nil views:NSDictionaryOfVariableBindings(tableContainerView)]];
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    self.tableViewController.tableView.contentInset = UIEdgeInsetsMake(CGRectGetHeight(self.headerView.frame), 0, 0, 0);
 }
 
 - (IBAction)changedFilterControls:(id)sender
@@ -87,6 +90,32 @@
     [super changedFilterControls:sender];
     
     self.streamTable.filterType = self.filterControls.selectedSegmentIndex;
+    
+    if (sender) // sender is nil if this method is called directly (not in response to a user touch)
+    {
+        NSString *eventAction = nil;
+        switch (self.filterControls.selectedSegmentIndex) {
+            case VStreamHotFilter:
+                eventAction = @"Selected Filter: Hot";
+                break;
+                
+            case VStreamRecentFilter:
+                eventAction = @"Selected Filter: Recent";
+                break;
+                
+            case VStreamFollowingFilter:
+                eventAction = @"Selected Filter: Following";
+                break;
+                
+            default:
+                break;
+        }
+        
+        if (eventAction)
+        {
+            [[VAnalyticsRecorder sharedAnalyticsRecorder] sendEventWithCategory:kVAnalyticsEventCategoryNavigation action:eventAction label:nil value:nil];
+        }
+    }
 }
 
 #pragma mark - Content Creation

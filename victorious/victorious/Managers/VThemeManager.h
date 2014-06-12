@@ -16,6 +16,7 @@ extern  NSString*   const   kVChannelURLPrivacy;
 extern  NSString*   const   kVChannelURLAcknowledgements;
 extern  NSString*   const   kVChannelURLSupport;
 extern  NSString*   const   kVChannelName;
+extern  NSString*   const   kVAppStoreURL;
 
 extern  NSString*   const   kVCaptureVideoQuality;
 extern  NSString*   const   kVExportVideoQuality;

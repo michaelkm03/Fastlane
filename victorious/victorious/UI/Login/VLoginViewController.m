@@ -177,12 +177,24 @@
     self.loginEmailButton.userInteractionEnabled = YES;
     self.transitionPlaceholder.userInteractionEnabled = YES;
 
-    UIAlertView*    alert   =   [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"LoginFail", @"")
-                                                           message:error.localizedDescription
-                                                          delegate:nil
-                                                 cancelButtonTitle:NSLocalizedString(@"OKButton", @"")
-                                                 otherButtonTitles:nil];
-    [alert show];
+    if(error.code == kVUserBannedError)
+    {
+        UIAlertView*    alert   =   [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"UserBannedTitle", @"")
+                                                               message:NSLocalizedString(@"UserBannedMessage", @"")
+                                                              delegate:nil
+                                                     cancelButtonTitle:NSLocalizedString(@"OKButton", @"")
+                                                     otherButtonTitles:nil];
+        [alert show];
+    }
+    else
+    {
+        UIAlertView*    alert   =   [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"LoginFail", @"")
+                                                               message:error.localizedDescription
+                                                              delegate:nil
+                                                     cancelButtonTitle:NSLocalizedString(@"OKButton", @"")
+                                                     otherButtonTitles:nil];
+        [alert show];
+    }
 }
 
 #pragma mark - Actions

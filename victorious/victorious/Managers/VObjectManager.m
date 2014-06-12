@@ -11,6 +11,7 @@
 #import "VObjectManager.h"
 #import "VObjectManager+Environment.h"
 #import "VObjectManager+Private.h"
+#import "VRootViewController.h"
 
 #import "VConstants.h"
 
@@ -49,8 +50,9 @@
     //(this is the only non-dynamic header, so set it now)
     NSString *userAgent = ([manager HTTPClient].defaultHeaders)[@"User-Agent"];
     
+    NSString *buildNumber = [[NSBundle bundleForClass:[self class]] objectForInfoDictionaryKey:@"CFBundleVersion"];
     NSNumber* appID = [VObjectManager currentEnvironment].appID;
-    userAgent = [NSString stringWithFormat:@"%@ aid:%@ uuid:%@", userAgent, appID.stringValue, [[UIDevice currentDevice].identifierForVendor UUIDString]];
+    userAgent = [NSString stringWithFormat:@"%@ aid:%@ uuid:%@ build:%@", userAgent, appID.stringValue, [[UIDevice currentDevice].identifierForVendor UUIDString], buildNumber];
     [[manager HTTPClient] setDefaultHeader:@"User-Agent" value:userAgent];
     
     NSURL *modelURL = [[NSBundle mainBundle] URLForResource:@"victoriOS" withExtension:@"momd"];
@@ -180,6 +182,10 @@
         {
             self.mainUser = nil;
             [self requestMethod:method object:object path:path parameters:parameters successBlock:successBlock failBlock:failBlock];
+        }
+        else if (rkErrorMessage.errorMessage.integerValue == kVUpgradeRequiredError)
+        {
+            [[VRootViewController rootViewController] presentForceUpgradeScreen];
         }
         else if (failBlock)
         {

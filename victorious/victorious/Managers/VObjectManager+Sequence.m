@@ -32,16 +32,6 @@ NSString* const kPollResultsLoaded = @"kPollResultsLoaded";
                                       successBlock:(VSuccessBlock)success
                                          failBlock:(VFailBlock)fail
 {
-    
-    VSequence* sequence = (VSequence*)[self objectForID:sequenceId idKey:kRemoteIdKey entityName:[VSequence entityName]];
-    if (sequence)
-    {
-        if (success)
-            success(nil, nil, @[sequence]);
-        
-        return nil;
-    }
-    
     return [self fetchSequenceByID:sequenceId
                       successBlock:success
                          failBlock:fail
@@ -85,6 +75,22 @@ NSString* const kPollResultsLoaded = @"kPollResultsLoaded";
         successBlock:success
            failBlock:fullFail];
 }
+
+#pragma mark - Flag
+
+
+- (RKManagedObjectRequestOperation *)flagSequence:(VSequence*)sequence
+                                     successBlock:(VSuccessBlock)success
+                                        failBlock:(VFailBlock)fail
+{
+    return [self POST:@"/api/sequence/flag"
+               object:nil
+           parameters:@{@"sequence_id" : sequence.remoteId.stringValue ?: [NSNull null]}
+         successBlock:success
+            failBlock:fail];
+}
+
+#pragma mark - Sharing
 
 - (RKManagedObjectRequestOperation *)shareSequence:(VSequence*)sequence
                                          shareType:(NSString*)type

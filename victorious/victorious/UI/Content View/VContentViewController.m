@@ -22,10 +22,16 @@
 #import "VActionBarViewController.h"
 #import "VEmotiveBallisticsBarViewController.h"
 
+#import "VObjectManager+Sequence.h"
+
 #import "VContentToStreamAnimator.h"
 #import "VContentToCommentAnimator.h"
 
-             CGFloat kContentMediaViewOffset                = 154.0f;
+#import "UIActionSheet+VBlocks.h"
+
+static const CGFloat kMaximumContentViewOffset              = 154.0f;
+static const CGFloat kMediaViewHeight                       = 320.0f;
+static const CGFloat kBarContainerViewHeight                =  60.0f;
 static const CGFloat kDistanceBetweenTitleAndHR             =  14.5f;
 static const CGFloat kDistanceBetweenTitleAndCollapseButton =  42.5f;
 
@@ -90,9 +96,9 @@ static const CGFloat kDistanceBetweenTitleAndCollapseButton =  42.5f;
     if (CGAffineTransformIsIdentity(self.mediaSuperview.transform))
     {
         self.mediaSuperview.frame = CGRectMake(CGRectGetMinX(self.view.bounds),
-                                               kContentMediaViewOffset,
+                                               [self contentMediaViewOffset],
                                                CGRectGetWidth(self.view.bounds),
-                                               320.0f);
+                                               kMediaViewHeight);
     }
     else
     {
@@ -104,6 +110,14 @@ static const CGFloat kDistanceBetweenTitleAndCollapseButton =  42.5f;
                                                  CGRectGetMidY(self.view.bounds));
     }
     self.mediaView.frame = self.mediaSuperview.bounds;
+    
+    self.pollViewYConstraint.constant = [self contentMediaViewOffset];
+    if (!self.titleExpanded)
+    {
+        self.topActionsViewHeightConstraint.constant = [self contentMediaViewOffset];
+    }
+    
+    [self.view layoutIfNeeded]; // Let auto-layout run again due to changing the frames above
 }
 
 - (void)viewDidDisappear:(BOOL)animated
@@ -299,6 +313,7 @@ static const CGFloat kDistanceBetweenTitleAndCollapseButton =  42.5f;
     
     self.smallTextSize = self.descriptionLabel.locationForLastLineOfText;
     self.collapsingOrExpanding = YES;
+    self.titleExpanded = YES;
     
     [self.videoPlayer.player pause];
     
@@ -332,7 +347,7 @@ static const CGFloat kDistanceBetweenTitleAndCollapseButton =  42.5f;
     {
         self.expandedTitleMaskingView.alpha = 0;
         self.collapseButton.alpha = 0;
-        self.topActionsViewHeightConstraint.constant = kContentMediaViewOffset;
+        self.topActionsViewHeightConstraint.constant = [self contentMediaViewOffset];
         [self updateConstraintsForTextSize:self.smallTextSize];
         [self.view layoutIfNeeded];
         
@@ -347,6 +362,7 @@ static const CGFloat kDistanceBetweenTitleAndCollapseButton =  42.5f;
     };
     
     self.collapsingOrExpanding = YES;
+    self.titleExpanded = NO;
     
     if (animated)
     {
@@ -365,7 +381,17 @@ static const CGFloat kDistanceBetweenTitleAndCollapseButton =  42.5f;
 
 - (BOOL)isTitleExpanded
 {
-    return self.topActionsViewHeightConstraint.constant > kContentMediaViewOffset;
+    return self.topActionsViewHeightConstraint.constant > [self contentMediaViewOffset];
+}
+
+- (CGFloat)contentMediaViewOffset
+{
+    return MIN(kMaximumContentViewOffset, CGRectGetMinY(self.barContainerView.frame) - kMediaViewHeight);
+}
+
++ (CGFloat)estimatedContentMediaViewOffsetForBounds:(CGRect)bounds
+{
+    return MIN(kMaximumContentViewOffset, CGRectGetHeight(bounds) - kBarContainerViewHeight - kMediaViewHeight);
 }
 
 #pragma mark -
@@ -515,7 +541,42 @@ static const CGFloat kDistanceBetweenTitleAndCollapseButton =  42.5f;
 #pragma mark - Button Actions
 - (IBAction)pressedMore:(id)sender
 {
-    //Specced but still no idea what its supposed to do
+    NSString *reportTitle = NSLocalizedString(@"Report Inappropriate", @"Comment report inappropriate button");
+    
+    UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil
+                                                    cancelButtonTitle:NSLocalizedString(@"Cancel", @"Cancel button")
+                                                       onCancelButton:nil
+                                               destructiveButtonTitle:reportTitle
+                                                  onDestructiveButton:^(void)
+                                  {
+                                      [[VObjectManager sharedManager] flagSequence:self.sequence
+                                                                     successBlock:^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
+                                       {
+                                           UIAlertView*    alert   =   [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"ReportedTitle", @"")
+                                                                                                  message:NSLocalizedString(@"ReportContentMessage", @"")
+                                                                                                 delegate:nil
+                                                                                        cancelButtonTitle:NSLocalizedString(@"OKButton", @"")
+                                                                                        otherButtonTitles:nil];
+                                           [alert show];
+                                           
+                                       }
+                                                                        failBlock:^(NSOperation* operation, NSError* error)
+                                       {
+                                           VLog(@"Failed to flag sequence %@", self.sequence);
+                                           
+                                           //TODO: we may want to remove this later.
+                                           UIAlertView*    alert   =   [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"ReportedTitle", @"")
+                                                                                                  message:NSLocalizedString(@"ReportContentMessage", @"")
+                                                                                                 delegate:nil
+                                                                                        cancelButtonTitle:NSLocalizedString(@"OKButton", @"")
+                                                                                        otherButtonTitles:nil];
+                                           [alert show];
+                                       }];
+                                  }
+                                           otherButtonTitlesAndBlocks:nil];
+    
+    UIWindow *window = [[[UIApplication sharedApplication] delegate] window];
+    [actionSheet showInView:window];
 }
 
 - (IBAction)pressedBack:(id)sender

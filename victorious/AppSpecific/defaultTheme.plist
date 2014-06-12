@@ -18,6 +18,8 @@
 	<string>http://dev.getvictorious.com/api/static/privacy</string>
 	<key>channel.url.support</key>
 	<string>support@getvictorious.com</string>
+	<key>appstore.url</key>
+	<string>itms-apps://itunes.com/apps</string>
 	<key>color</key>
 	<dict>
 		<key>red</key>

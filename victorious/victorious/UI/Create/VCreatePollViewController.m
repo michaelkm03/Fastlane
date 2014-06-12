@@ -203,19 +203,19 @@ static char KVOContext;
     else if ([self.questionTextView.text isEmpty])
         [self.postButton setEnabled:NO];
 
-    else if ([self.questionTextView.text length] > VConstantsForumTitleLength)
+    else if ([self.questionTextView.text length] > VConstantsMessageLength)
         [self.postButton setEnabled:NO];
     
     else if ([self.leftAnswerTextView.text isEmpty])
         [self.postButton setEnabled:NO];
 
-    else if ([self.leftAnswerTextView.text length] > VConstantsForumTitleLength)
+    else if ([self.leftAnswerTextView.text length] > VConstantsPollAnswerLength)
         [self.postButton setEnabled:NO];
     
     else if ([self.rightAnswerTextView.text isEmpty])
         [self.postButton setEnabled:NO];
 
-    else if ([self.rightAnswerTextView.text length] > VConstantsForumTitleLength)
+    else if ([self.rightAnswerTextView.text length] > VConstantsPollAnswerLength)
         [self.postButton setEnabled:NO];
 }
 

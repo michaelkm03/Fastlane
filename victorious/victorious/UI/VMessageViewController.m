@@ -32,7 +32,8 @@ const   CGFloat     kMessageRowHeight           =   80;
     [super viewDidLoad];
     
     UIImageView* backgroundImageView = [[UIImageView alloc] initWithFrame:self.tableView.backgroundView.frame];
-
+    backgroundImageView.contentMode = UIViewContentModeScaleAspectFill;
+    
     UIImage*    defaultBackgroundImage;
     if (IS_IPHONE_5)
         defaultBackgroundImage = [[[VThemeManager sharedThemeManager] themedImageForKey:kVMenuBackgroundImage5] applyLightEffect];

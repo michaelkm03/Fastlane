@@ -32,6 +32,7 @@ typedef NS_ENUM(NSInteger, VStreamFilter)
 
 @property (nonatomic) VStreamFilter filterType;
 
+@property (strong, nonatomic) VSequence* selectedSequence;
 @property (strong, nonatomic) NSArray* repositionedCells;;
 @property (weak, nonatomic) id<VStreamTableDelegate, UITableViewDelegate> delegate;
 

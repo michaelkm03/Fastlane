@@ -18,6 +18,7 @@ NSString*   const   kVChannelURLPrivacy                 =   @"channel.url.privac
 NSString*   const   kVChannelURLAcknowledgements        =   @"channel.url.acknowledgements";
 NSString*   const   kVChannelURLSupport                 =   @"channel.url.support";
 NSString*   const   kVChannelName                       =   @"channel.name";
+NSString*   const   kVAppStoreURL                       =   @"appstore.url";
 
 NSString*   const   kVCaptureVideoQuality               =   @"capture";
 NSString*   const   kVExportVideoQuality                =   @"remix";

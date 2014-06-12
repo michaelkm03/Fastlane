@@ -6,6 +6,7 @@
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
+#import "VForceUpgradeViewController.h"
 #import "VRootViewController.h"
 #import "VMenuController.h"
 #import "VThemeManager.h"
@@ -20,9 +21,25 @@
 
 @interface VRootViewController () <UINavigationControllerDelegate>
 
+@property (nonatomic) BOOL appearing;
+@property (nonatomic) BOOL shouldPresentForceUpgradeScreenOnNextAppearance;
+
 @end
 
 @implementation VRootViewController
+
++ (instancetype)rootViewController
+{
+    VRootViewController *rootViewController = (VRootViewController *)[[[UIApplication sharedApplication] keyWindow] rootViewController];
+    if ([rootViewController isKindOfClass:self])
+    {
+        return rootViewController;
+    }
+    else
+    {
+        return nil;
+    }
+}
 
 - (void)awakeFromNib
 {
@@ -36,6 +53,41 @@
     
     NSAssert([self.contentViewController isKindOfClass:[UINavigationController class]], @"contentController should be a UINavigationController");
     self.contentViewController.delegate = self;
+}
+
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    self.appearing = YES;
+    if (self.shouldPresentForceUpgradeScreenOnNextAppearance)
+    {
+        self.shouldPresentForceUpgradeScreenOnNextAppearance = NO;
+        [self _presentForceUpgradeScreen];
+    }
+}
+
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+    self.appearing = NO;
+}
+
+- (void)presentForceUpgradeScreen
+{
+    if (self.appearing)
+    {
+        [self _presentForceUpgradeScreen];
+    }
+    else
+    {
+        self.shouldPresentForceUpgradeScreenOnNextAppearance = YES;
+    }
+}
+
+- (void)_presentForceUpgradeScreen
+{
+    VForceUpgradeViewController *forceUpgradeViewController = [[VForceUpgradeViewController alloc] init];
+    [self presentViewController:forceUpgradeViewController animated:YES completion:nil];
 }
 
 #pragma mark - UINavigationControllerDelegate methods

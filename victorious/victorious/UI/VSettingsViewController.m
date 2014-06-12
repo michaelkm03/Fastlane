@@ -190,6 +190,9 @@ static const NSInteger kServerEnvironmentButtonIndex = 3;
 
 - (void)updateChromecastButton
 {
+    self.showChromeCastButton = NO;
+
+#if 0
     if (self.self.chromeCastController.deviceScanner.devices.count == 0)
     {
         self.showChromeCastButton = NO;
@@ -208,6 +211,7 @@ static const NSInteger kServerEnvironmentButtonIndex = 3;
     
     [self.tableView beginUpdates];
     [self.tableView endUpdates];
+#endif
 }
 
 - (void)didDiscoverDeviceOnNetwork

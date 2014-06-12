@@ -76,6 +76,11 @@
 "HelpNeeded"            =   "I need help with...";
 
 "ReportInappropriate"   =   "Report Inappropriate";
+"ReportedTitle"         =   "Got it!";
+"ReportContentMessage"  =   "This content will be reviewed within 24 hours";
+"ReportCommentMessage"  =   "This comment will be reviewed within 24 hours";
+"ReportUserMessage"     =   "This user will be reviewed within 24 hours";
+
 "BlockUser"             =   "Block User";
 "CopyProfileURL"        =   "Copy Profile URL";
 
@@ -191,6 +196,9 @@
 
 "Logout"                =   "Log Out";
 "Login"                 =   "Log In";
+
+"UserBannedTitle"       =   "You have been banned.";
+"UserBannedMessage"     =   "You account has been banned for violating our EULA";
 
 "AddDescription"        =   "Add a description... and don't forget #hashtags";
 "AddDescriptionAnchor"  =   "#hashtags";

@@ -9,4 +9,9 @@
 #import "VSideMenuViewController.h"
 
 @interface VRootViewController : VSideMenuViewController
+
++ (instancetype)rootViewController; ///< Convenient, typed alias for [[[UIApplication sharedApplication] keyWindow] rootViewController]
+
+- (void)presentForceUpgradeScreen;
+
 @end

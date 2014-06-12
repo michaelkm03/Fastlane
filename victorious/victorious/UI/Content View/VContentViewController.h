@@ -12,8 +12,6 @@
 
 @class VSequence, VEmotiveBallisticsBarViewController, VActionBarViewController;
 
-extern CGFloat kContentMediaViewOffset;
-
 @interface VContentViewController : UIViewController <VAnimation>
 
 @property (strong, nonatomic) VSequence* sequence;
@@ -38,5 +36,22 @@ extern CGFloat kContentMediaViewOffset;
 @property (weak, nonatomic) IBOutlet UIButton* secondPollButton;
 
 + (VContentViewController *)sharedInstance;
+
+/**
+ Returns the distance, in points, between
+ the top of the receiver's view and the
+ top of the media view contained within.
+ 
+ Make sure view has been laid out before
+ trusting this method. (try calling 
+ -layoutIfNeeded).
+ */
+- (CGFloat)contentMediaViewOffset;
+
+/**
+ Guesses what the result of calling -contentMediaViewOffset
+ will probably be with the given bounds.
+ */
++ (CGFloat)estimatedContentMediaViewOffsetForBounds:(CGRect)bounds;
 
 @end

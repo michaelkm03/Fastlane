@@ -39,7 +39,7 @@ typedef NS_ENUM(NSUInteger, VPlaybackSpeed)
 
 static NSUInteger const VConstantsMessageLength     = 140;
 static NSUInteger const VConstantsPollAnswerLength = 25;
-static NSUInteger const VConstantsForumTitleLength  = 65;
+static NSUInteger const VConstantsInputAccessoryHeight = 44.0;
 
 static CGFloat const VConstantsMaximumVideoDuration = 15.0;
 
@@ -57,7 +57,9 @@ static NSUInteger const kVConversationDoesNotExistError = 5000;
 
 static NSUInteger const kVStillTranscodingError = 5500;
 static NSUInteger const kVAccountAlreadyExistsError = 1003;
+static NSUInteger const kVUserBannedError = 1007;
 static NSUInteger const kVUnauthoizedError = 401;
+static NSUInteger const kVUpgradeRequiredError = 426;
 
 static NSUInteger  const   kDevAppID                = 1;
 static NSString*   const   kVictoriousAppIDKey      = @"VictoriousAppID";
@@ -70,7 +72,11 @@ static NSString*   const   kTestflightQAToken       = @"TestflightQAAppToken";
 static NSString*   const   kTestflightStagingToken  = @"TestflightStagingAppToken";
 static NSString*   const   kTestflightReleaseToken  = @"TestflightReleaseAppToken";
 
-static NSString*   const   kRemoteIdKey = @"remoteId";
+static NSString*   const   kGAID                    = @"GAID";
+
+static NSString*   const   kRemoteIdKey         = @"remoteId";
+static NSString*   const   kReleasedAtKey       = @"releasedAt";
+static NSString*   const   kDisplayOrderKey     = @"display_order";
 
 static NSString* const VConstantsMediaTypeYoutube   = @"youtube_video_id";
 static NSString* const VConstantsMediaTypeVideo     = @"video";
