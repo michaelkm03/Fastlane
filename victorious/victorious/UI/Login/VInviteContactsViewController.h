@@ -9,4 +9,5 @@
 #import "VAbstractInviteTableViewController.h"
 
 @interface VInviteContactsViewController : VAbstractInviteTableViewController
+@property (nonatomic, strong)   NSArray*    users;
 @end

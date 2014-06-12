@@ -11,7 +11,6 @@
 
 @interface VAbstractConnectViewController ()
 @property (nonatomic, weak)     IBOutlet    UILabel*        headlineLabel;
-@property (nonatomic, weak)     IBOutlet    UIButton*       connectButton;
 @property (nonatomic, weak)     IBOutlet    UILabel*        privacyLabel;
 @property (nonatomic, weak)     IBOutlet    UIView*         shadowView;
 @end

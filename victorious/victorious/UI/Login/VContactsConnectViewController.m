@@ -10,6 +10,8 @@
 
 #import "VContactsConnectViewController.h"
 #import "MBProgressHUD.h"
+#import "VObjectManager+Users.h"
+#import "VInviteContactsViewController.h"
 
 @interface VContactsConnectViewController ()
 @end
@@ -18,6 +20,8 @@
 
 - (IBAction)connect:(id)sender
 {
+    self.connectButton.userInteractionEnabled = NO;
+
     ABAddressBookRef        addressBook;
 
     switch (ABAddressBookGetAuthorizationStatus())
@@ -28,12 +32,14 @@
             [self getEmailAddresses:addressBook];
             if (NULL != addressBook)
                 CFRelease(addressBook);
+            self.connectButton.userInteractionEnabled = YES;
             break;
         }
             
         case kABAuthorizationStatusDenied:
         {
             [self showAccessAlert];
+            self.connectButton.userInteractionEnabled = YES;
             break;
         }
             
@@ -53,6 +59,7 @@
                         CFRelease(addressBook);
                 
                     [MBProgressHUD hideHUDForView:self.view animated:YES];
+                    self.connectButton.userInteractionEnabled = YES;
                 });
             });
         }
@@ -60,6 +67,7 @@
         case kABAuthorizationStatusRestricted:
         {
             [self showAccessAlert];
+            self.connectButton.userInteractionEnabled = YES;
             break;
         }
     }
@@ -67,8 +75,8 @@
 
 - (void)getEmailAddresses:(ABAddressBookRef)addressBook
 {
-    NSMutableArray*     allEmailAddresses = [[NSMutableArray alloc] init];
     NSArray*            allContacts = (__bridge_transfer NSArray *)ABAddressBookCopyArrayOfAllPeople(addressBook);
+    NSMutableArray*     allEmailAddresses = [[NSMutableArray alloc] initWithCapacity:allContacts.count];
 
     for (CFIndex i = 0; i < [allContacts count]; i++)
     {
@@ -83,9 +91,16 @@
         CFRelease(emailAddresses);
     }
     
-    //  API call of email addresses to server
-    //  if success, performSegue to list viewcontroller
-    [self performSegueWithIdentifier:@"toContactsList" sender:self];
+    [[VObjectManager sharedManager] findFriendsByEmails:allEmailAddresses
+                                       withSuccessBlock:^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
+                                       {
+                                           self.users = resultObjects;
+                                           [self performSegueWithIdentifier:@"toContactsList" sender:self];
+                                       }
+                                              failBlock:^(NSOperation* operation, NSError* error)
+                                              {
+                                                  // Failure
+                                              }];
 }
 
 - (void)showAccessAlert
@@ -104,7 +119,8 @@
 {
     if ([segue.identifier isEqualToString:@"toContactsList"])
     {
-        
+        VInviteContactsViewController*   contactsListViewController = (VInviteContactsViewController *)segue.destinationViewController;
+        contactsListViewController.users = self.users;
     }
 }
 
