@@ -8,8 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-extern  NSString*   const   kAccountUpdateViewControllerDomain;
-
 NS_ENUM(NSUInteger, VAccountUpdateViewControllerErrorCode)
 {
     VAccountUpdateViewControllerBadPasswordErrorCode

@@ -37,6 +37,9 @@ typedef NS_ENUM(NSUInteger, VPlaybackSpeed)
     kVPlaybackDoubleSpeed   =   2
 };
 
+static NSString* const kVictoriousErrorDomain = @"com.getvictorious.victoriOS";
+
+
 static NSUInteger const VConstantsMessageLength     = 140;
 static NSUInteger const VConstantsPollAnswerLength = 25;
 static NSUInteger const VConstantsInputAccessoryHeight = 44.0;

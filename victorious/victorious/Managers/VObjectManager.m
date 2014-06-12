@@ -159,7 +159,7 @@
         }
         else if (error.errorCode && failBlock)
         {
-            failBlock(operation, [NSError errorWithDomain:kVictoriousDomain code:error.errorCode
+            failBlock(operation, [NSError errorWithDomain:kVictoriousErrorDomain code:error.errorCode
                                                  userInfo:@{NSLocalizedDescriptionKey:[error.errorMessages componentsJoinedByString:@","]}]);
         }
         else if (!error.errorCode && successBlock)
@@ -317,7 +317,7 @@
         errorMessage = [(NSArray*)errorMessage componentsJoinedByString:@", "];
     }
     
-    return [NSError errorWithDomain:kVictoriousDomain code:[responseObject[@"error"] integerValue]
+    return [NSError errorWithDomain:kVictoriousErrorDomain code:[responseObject[@"error"] integerValue]
                            userInfo:@{NSLocalizedDescriptionKey: errorMessage}];
 }
 

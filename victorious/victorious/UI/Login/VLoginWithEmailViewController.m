@@ -20,8 +20,6 @@
 #import "THPinViewController.h"
 #import "UIAlertView+VBlocks.h"
 
-NSString*   const   kVLoginErrorDomain =   @"VLoginErrorDomain";
-
 @interface VLoginWithEmailViewController () <UITextFieldDelegate, UINavigationControllerDelegate, UIAlertViewDelegate, THPinViewControllerDelegate>
 @property (nonatomic, weak) IBOutlet    UITextField*    usernameTextField;
 @property (nonatomic, weak) IBOutlet    UITextField*    passwordTextField;
@@ -155,7 +153,7 @@ NSString*   const   kVLoginErrorDomain =   @"VLoginErrorDomain";
         {
             NSString *errorString = NSLocalizedString(@"EmailValidation", @"Invalid Email Address");
             NSDictionary*   userInfoDict = @{ NSLocalizedDescriptionKey : errorString };
-            *outError   =   [[NSError alloc] initWithDomain:kVLoginErrorDomain
+            *outError   =   [[NSError alloc] initWithDomain:kVictoriousErrorDomain
                                                        code:VLoginBadEmailAddressErrorCode
                                                    userInfo:userInfoDict];
         }
@@ -174,7 +172,7 @@ NSString*   const   kVLoginErrorDomain =   @"VLoginErrorDomain";
         {
             NSString *errorString = NSLocalizedString(@"PasswordValidation", @"Invalid Password");
             NSDictionary*   userInfoDict = @{ NSLocalizedDescriptionKey : errorString };
-            *outError   =   [[NSError alloc] initWithDomain:kVLoginErrorDomain
+            *outError   =   [[NSError alloc] initWithDomain:kVictoriousErrorDomain
                                                        code:VLoginBadPasswordErrorCode
                                                    userInfo:userInfoDict];
         }
@@ -211,8 +209,10 @@ NSString*   const   kVLoginErrorDomain =   @"VLoginErrorDomain";
     }
     else
     {
+        NSString*       message = [error.domain isEqualToString:kVictoriousErrorDomain] ? error.localizedDescription
+                                            : NSLocalizedString(@"LoginFailMessage", @"");
         UIAlertView*    alert   =   [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"LoginFail", @"")
-                                                               message:error.localizedDescription
+                                                               message:message
                                                               delegate:nil
                                                      cancelButtonTitle:NSLocalizedString(@"OKButton", @"")
                                                      otherButtonTitles:nil];

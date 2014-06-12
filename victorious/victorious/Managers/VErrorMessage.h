@@ -6,8 +6,6 @@
 //  Copyright (c) 2013 Victorious, Inc. All rights reserved.
 //
 
-extern NSString* const kVictoriousDomain;
-
 @interface VErrorMessage : NSObject
 
 @property (nonatomic, assign) NSInteger errorCode;

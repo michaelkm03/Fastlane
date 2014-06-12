@@ -33,6 +33,7 @@
 "PasswordNotMatching"   =   "Passwords do not match";
 "PollAlreadyAnswered"   =   "Poll result was already answered";
 "LoginFail"             =   "Login Failed";
+"LoginFailMessage"      =   "Opps!  Something has gone wrong.";
 "SignupFail"            =   "Account Creation Failed";
 "AccountUpdateFail"     =   "Account Update Failed";
 "ProfileSaveFail"       =   "Your profile information could not be saved because of a server error";
