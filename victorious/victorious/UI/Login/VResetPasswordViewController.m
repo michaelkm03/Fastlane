@@ -67,7 +67,7 @@
 {
     [[self view] endEditing:YES];
     
-    if ([self shouldUpdateProfile])
+    if ([self shouldUpdatePassword])
     {
         [[VObjectManager sharedManager] updateVictoriousWithEmail:nil
                                                          password:self.passwordTextField.text
@@ -93,7 +93,7 @@
 
 #pragma mark - Support
 
-- (BOOL)shouldUpdateProfile
+- (BOOL)shouldUpdatePassword
 {
     BOOL    isValid =   ((self.passwordTextField.text.length > 0) &&
                          (self.confirmPasswordTextField.text.length > 0) &&

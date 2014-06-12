@@ -7,4 +7,6 @@
 //
 
 @interface VAbstractConnectViewController : UIViewController
+@property (nonatomic, strong)   NSArray*    users;
+@property (nonatomic, weak)     UIButton*   connectButton;
 @end
