@@ -25,6 +25,18 @@
 @implementation VMessageContainerViewController
 @synthesize conversationTableViewController = _conversationTableViewController;
 
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
+    
+    UIBarButtonItem *flagButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"More"]
+                                                                       style:UIBarButtonItemStylePlain
+                                                                      target:self
+                                                                      action:@selector(flagConversation:)];
+    
+    self.navigationItem.rightBarButtonItems =  [@[flagButtonItem] arrayByAddingObjectsFromArray:self.navigationItem.rightBarButtonItems];
+}
+
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
@@ -35,13 +47,6 @@
     VMessageViewController* messageVC = (VMessageViewController*)self.conversationTableViewController;
     
     self.navigationItem.title = messageVC.conversation.user.name ? [@"@" stringByAppendingString:messageVC.conversation.user.name] : @"Message";
-    
-    UIBarButtonItem *flagButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"More"]
-                                                                         style:UIBarButtonItemStylePlain
-                                                                        target:self
-                                                                        action:@selector(flagConversation:)];
-    
-    self.navigationItem.rightBarButtonItems =  [@[flagButtonItem] arrayByAddingObjectsFromArray:self.navigationItem.rightBarButtonItems];
 }
 
 - (IBAction)flagConversation:(id)sender

@@ -53,8 +53,6 @@
 {
     [super viewDidLoad];
     
-    self.view.autoresizingMask = UIViewAutoresizingFlexibleWidth |UIViewAutoresizingFlexibleHeight;
-    
     self.tableView.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVSecondaryAccentColor];
     
     [[NSNotificationCenter defaultCenter]

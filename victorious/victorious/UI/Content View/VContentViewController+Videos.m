@@ -313,7 +313,7 @@ static const char kVideoUnloadBlockKey;
     {
         if (!self.shouldPause)
         {
-            if (![self isTitleExpanded])
+            if (![self isTitleExpanded] && self.appearing)
             {
                 [[VAnalyticsRecorder sharedAnalyticsRecorder] sendEventWithCategory:kVAnalyticsEventCategoryVideo action:@"Start Video" label:self.sequence.name value:nil];
                 [self.videoPlayer.player play];

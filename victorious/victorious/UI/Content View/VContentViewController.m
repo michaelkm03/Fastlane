@@ -75,12 +75,12 @@ static const CGFloat kDistanceBetweenTitleAndCollapseButton =  42.5f;
 {
     [super viewDidAppear:animated];
     [[VAnalyticsRecorder sharedAnalyticsRecorder] startAppView:@"Content"];
+    [self.navigationController setNavigationBarHidden:YES animated:NO];
+    self.appearing = YES;
     
-    if (!self.appearing)
+    if ([self isBeingPresented] || [self isMovingToParentViewController])
     {
         [[VAnalyticsRecorder sharedAnalyticsRecorder] sendEventWithCategory:kVAnalyticsEventCategoryNavigation action:@"Show Content" label:self.sequence.name value:nil];
-        self.appearing = YES;
-        [self.navigationController setNavigationBarHidden:YES animated:NO];
         [self updateActionBar];
     }
 }
@@ -126,7 +126,6 @@ static const CGFloat kDistanceBetweenTitleAndCollapseButton =  42.5f;
     
     if  ([self isBeingDismissed] || [self isMovingFromParentViewController])
     {
-        self.appearing = NO;
         [self resetView];
     }
     
@@ -157,6 +156,7 @@ static const CGFloat kDistanceBetweenTitleAndCollapseButton =  42.5f;
 {
     [super viewWillDisappear:animated];
     [[VAnalyticsRecorder sharedAnalyticsRecorder] finishAppView];
+    self.appearing = NO;
     
     if ([self isBeingDismissed] || [self isMovingFromParentViewController])
     {

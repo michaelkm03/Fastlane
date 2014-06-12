@@ -47,8 +47,15 @@
     
     if (self.tableViewController)
     {
-        [self.tableContainerView addSubview:self.tableViewController.view];
         [self addChildViewController:self.tableViewController];
+        
+        UIView *tableView = self.tableViewController.view;
+        tableView.translatesAutoresizingMaskIntoConstraints = NO;
+        [self.tableContainerView addSubview:tableView];
+        
+        [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[tableView]|" options:0 metrics:nil views:NSDictionaryOfVariableBindings(tableView)]];
+        [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[tableView]|" options:0 metrics:nil views:NSDictionaryOfVariableBindings(tableView)]];
+        
         [self.tableViewController didMoveToParentViewController:self];
     }
     
