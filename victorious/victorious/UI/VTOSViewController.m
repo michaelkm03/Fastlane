@@ -9,22 +9,9 @@
 #import "VTOSViewController.h"
 
 @interface VTOSViewController ()    <UIWebViewDelegate>
-@property (nonatomic, weak) IBOutlet    UILabel*    applicationNameLabel;
-@property (nonatomic, weak) IBOutlet    UILabel*    versionLabel;
 @end
 
 @implementation VTOSViewController
-
-- (void)viewDidLoad
-{
-    [super viewDidLoad];
-    
-    NSString*   appVersionString    =   [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleShortVersionString"];
-    self.applicationNameLabel.text  =   [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleDisplayName"];
-    
-    NSString*   appBuildString      =   [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleVersion"];
-    self.versionLabel.text = [NSString stringWithFormat:@"%@ (%@)", appBuildString, appVersionString];
-}
 
 #pragma mark - Actions
 

@@ -36,6 +36,8 @@ static const NSInteger kServerEnvironmentButtonIndex = 3;
 
 @property (strong, nonatomic) IBOutletCollection(UILabel) NSArray* labels;
 @property (strong, nonatomic) IBOutletCollection(UILabel) NSArray* rightLabels;
+
+@property (nonatomic, weak) IBOutlet    UILabel*    versionString;
 @end
 
 @implementation VSettingsViewController
@@ -59,6 +61,10 @@ static const NSInteger kServerEnvironmentButtonIndex = 3;
      {
          label.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeading3Font];
      }];
+    
+    NSString*   appVersionString    =   [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleShortVersionString"];
+    self.versionString.text = [NSString stringWithFormat:NSLocalizedString(@"Version", @""), appVersionString];
+    self.versionString.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVLabel3Font];
 }
 
 - (void)viewWillAppear:(BOOL)animated

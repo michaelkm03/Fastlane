@@ -198,3 +198,6 @@
 "NotConnected"          =   "Not Connected";
 "ConnectedTo"           =   "Connected to %@";
 
+"Version"               =   "Version %@";
+
+
