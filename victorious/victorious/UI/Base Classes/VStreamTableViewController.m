@@ -148,13 +148,21 @@
     NSManagedObjectContext *context = manager.managedObjectStore.persistentStoreManagedObjectContext;
     
     NSFetchRequest *fetchRequest = [NSFetchRequest fetchRequestWithEntityName:[VSequence entityName]];
-    NSString* sortKey = self.filterType == VStreamHotFilter ? kDisplayOrderKey : kReleasedAtKey;
-    NSSortDescriptor *sort = [[NSSortDescriptor alloc] initWithKey:sortKey ascending:NO];
+    
+    NSSortDescriptor* sort;
+    if (self.filterType == VStreamHotFilter)
+    {
+        sort = [[NSSortDescriptor alloc] initWithKey:kDisplayOrderKey ascending:YES];
+    }
+    else
+    {
+        sort = [[NSSortDescriptor alloc] initWithKey:kReleasedAtKey ascending:NO];
+    }
     
     NSPredicate* filterPredicate = [NSPredicate predicateWithFormat:@"ANY filters.filterAPIPath =[cd] %@", [self currentFilter].filterAPIPath];
     NSPredicate* datePredicate = [NSPredicate predicateWithFormat:@"(expiresAt >= %@) OR (expiresAt = nil)", [NSDate dateWithTimeIntervalSinceNow:0]];
     [fetchRequest setPredicate:[NSCompoundPredicate andPredicateWithSubpredicates:@[filterPredicate, datePredicate]]];
-//    [fetchRequest setPredicate:filterPredicate];
+
     [fetchRequest setSortDescriptors:@[sort]];
     [fetchRequest setFetchBatchSize:[self currentFilter].perPageNumber.integerValue];
     
