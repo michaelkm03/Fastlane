@@ -61,6 +61,14 @@
     return mapping;
 }
 
++ (RKEntityMapping *)entityMappingWithoutDisplayOrder
+{
+    RKEntityMapping *mapping = [self entityMapping];
+    RKPropertyMapping *pm = [mapping propertyMappingsBySourceKeyPath][@"display_order"];
+    [mapping removePropertyMapping:pm];
+    return mapping;
+}
+
 + (NSArray*)descriptors
 {
     return @[ [RKResponseDescriptor responseDescriptorWithMapping:[VSequence entityMapping]
@@ -93,7 +101,7 @@
                                                           keyPath:@"payload"
                                                       statusCodes:RKStatusCodeIndexSetForClass(RKStatusCodeClassSuccessful)],
               
-              [RKResponseDescriptor responseDescriptorWithMapping:[VSequence entityMapping]
+              [RKResponseDescriptor responseDescriptorWithMapping:[VSequence entityMappingWithoutDisplayOrder]
                                                            method:RKRequestMethodGET
                                                       pathPattern:@"/api/sequence/fetch/:sequence_id"
                                                           keyPath:@"payload"

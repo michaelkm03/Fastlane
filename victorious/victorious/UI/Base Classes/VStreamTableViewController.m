@@ -162,7 +162,6 @@
     NSPredicate* filterPredicate = [NSPredicate predicateWithFormat:@"ANY filters.filterAPIPath =[cd] %@", [self currentFilter].filterAPIPath];
     NSPredicate* datePredicate = [NSPredicate predicateWithFormat:@"(expiresAt >= %@) OR (expiresAt = nil)", [NSDate dateWithTimeIntervalSinceNow:0]];
     [fetchRequest setPredicate:[NSCompoundPredicate andPredicateWithSubpredicates:@[filterPredicate, datePredicate]]];
-
     [fetchRequest setSortDescriptors:@[sort]];
     [fetchRequest setFetchBatchSize:[self currentFilter].perPageNumber.integerValue];
     
