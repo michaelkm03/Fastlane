@@ -137,7 +137,7 @@
         <relationship name="voteResults" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="VoteResult" inverseName="sequence" inverseEntity="VoteResult" syncable="YES"/>
     </entity>
     <entity name="SequenceFilter" representedClassName="VSequenceFilter" parentEntity="AbstractFilter" syncable="YES">
-        <relationship name="sequences" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Sequence" inverseName="filters" inverseEntity="Sequence" syncable="YES"/>
+        <relationship name="sequences" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="Sequence" inverseName="filters" inverseEntity="Sequence" syncable="YES"/>
     </entity>
     <entity name="UnreadConversation" representedClassName="VUnreadConversation" syncable="YES">
         <attribute name="count" optional="YES" attributeType="Integer 32" minValueString="0" defaultValueString="0" syncable="YES"/>

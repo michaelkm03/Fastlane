@@ -361,9 +361,9 @@
             //If this is the first page, break the relationship to all the old objects.
             if ([filter.currentPageNumber isEqualToNumber:@(0)])
             {
-                NSPredicate* tempFilter = [NSPredicate predicateWithFormat:@"NOT (status CONTAINS %@)", kTemporaryContentStatus];
-                NSArray* filteredSequences = [[filter.sequences allObjects] filteredArrayUsingPredicate:tempFilter];
-                [filter removeSequences:[NSSet setWithArray:filteredSequences]];
+                NSPredicate* tempFilter = [NSPredicate predicateWithFormat:@"status CONTAINS %@", kTemporaryContentStatus];
+                NSOrderedSet* filteredSequences = [filter.sequences filteredOrderedSetUsingPredicate:tempFilter];
+                filter.sequences = filteredSequences;
             }
             
             for (VSequence* sequence in resultObjects)

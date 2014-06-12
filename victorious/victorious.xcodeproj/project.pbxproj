@@ -36,6 +36,7 @@
 		0385FEE618EF341D009FBD68 /* VImageSearchDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 0385FEE518EF341D009FBD68 /* VImageSearchDataSource.m */; };
 		0385FEE918EF41B4009FBD68 /* VImageSearchResult.m in Sources */ = {isa = PBXBuildFile; fileRef = 0385FEE818EF41B4009FBD68 /* VImageSearchResult.m */; };
 		0385FEEC18EF9748009FBD68 /* VImageSearchResultCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 0385FEEB18EF9748009FBD68 /* VImageSearchResultCell.m */; };
+		0388AE681949459A0098A393 /* VSequenceFilter+Setters.m in Sources */ = {isa = PBXBuildFile; fileRef = 0388AE671949459A0098A393 /* VSequenceFilter+Setters.m */; };
 		038E188C1947DDE900E35719 /* VForceUpgradeAnimatedTransition.m in Sources */ = {isa = PBXBuildFile; fileRef = 038E188B1947DDE900E35719 /* VForceUpgradeAnimatedTransition.m */; };
 		03943A78192570A500FA8A1F /* UINavigationController+RotationMethodForwarding.m in Sources */ = {isa = PBXBuildFile; fileRef = 03943A77192570A500FA8A1F /* UINavigationController+RotationMethodForwarding.m */; };
 		03A2AD971926B9460034EB80 /* UIViewController+ForceOrientationChange.m in Sources */ = {isa = PBXBuildFile; fileRef = 03A2AD961926B9460034EB80 /* UIViewController+ForceOrientationChange.m */; };
@@ -380,6 +381,8 @@
 		0385FEE818EF41B4009FBD68 /* VImageSearchResult.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VImageSearchResult.m; sourceTree = "<group>"; };
 		0385FEEA18EF9748009FBD68 /* VImageSearchResultCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VImageSearchResultCell.h; sourceTree = "<group>"; };
 		0385FEEB18EF9748009FBD68 /* VImageSearchResultCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VImageSearchResultCell.m; sourceTree = "<group>"; };
+		0388AE661949459A0098A393 /* VSequenceFilter+Setters.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "VSequenceFilter+Setters.h"; sourceTree = "<group>"; };
+		0388AE671949459A0098A393 /* VSequenceFilter+Setters.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "VSequenceFilter+Setters.m"; sourceTree = "<group>"; };
 		038E188A1947DDE900E35719 /* VForceUpgradeAnimatedTransition.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VForceUpgradeAnimatedTransition.h; sourceTree = "<group>"; };
 		038E188B1947DDE900E35719 /* VForceUpgradeAnimatedTransition.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VForceUpgradeAnimatedTransition.m; sourceTree = "<group>"; };
 		03943A76192570A500FA8A1F /* UINavigationController+RotationMethodForwarding.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "UINavigationController+RotationMethodForwarding.h"; path = "UI/UINavigationController+RotationMethodForwarding.h"; sourceTree = "<group>"; };
@@ -989,6 +992,15 @@
 			path = Reachability;
 			sourceTree = "<group>";
 		};
+		0388AE651949457E0098A393 /* Setters */ = {
+			isa = PBXGroup;
+			children = (
+				0388AE661949459A0098A393 /* VSequenceFilter+Setters.h */,
+				0388AE671949459A0098A393 /* VSequenceFilter+Setters.m */,
+			);
+			path = Setters;
+			sourceTree = "<group>";
+		};
 		3F0282391937D0B30099259A /* List */ = {
 			isa = PBXGroup;
 			children = (
@@ -1589,6 +1601,7 @@
 			children = (
 				BE171DAF1868C211004E5202 /* Fetchers */,
 				BE171DB61868C211004E5202 /* Mappings */,
+				0388AE651949457E0098A393 /* Setters */,
 				03484BFC192E9D2100403FB1 /* NSLayoutConstraint+CenterConstraints.h */,
 				03484BFD192E9D2100403FB1 /* NSLayoutConstraint+CenterConstraints.m */,
 				BE171E371868C266004E5202 /* NSString+VParseHelp.h */,
@@ -2334,6 +2347,7 @@
 				3F9B6657187F80780046F826 /* NSDate+timeSince.m in Sources */,
 				5FF9BE86189319730054694B /* VMenuController.m in Sources */,
 				3FF8C50418A59EAB00812968 /* VKeyboardBarContainerViewController.m in Sources */,
+				0388AE681949459A0098A393 /* VSequenceFilter+Setters.m in Sources */,
 				BE171E161868C211004E5202 /* VRule+RestKit.m in Sources */,
 				3F9B66741888C4B20046F826 /* VCommunityStreamViewController.m in Sources */,
 				3FF7B6DA18EE477D003831CD /* UIView+Masking.m in Sources */,
