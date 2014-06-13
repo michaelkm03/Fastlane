@@ -15,6 +15,7 @@
 #import "VLoginViewController.h"
 #import "VObjectManager+Users.h"
 #import "VObjectManager+Pagination.h"
+#import "VStreamTableDataSource.h"
 #import "VStreamTableViewController+ContentCreation.h"
 #import "VObjectManager+DirectMessaging.h"
 #import "VProfileEditViewController.h"
@@ -170,8 +171,9 @@ const   CGFloat kVNavigationBarHeight = 44.0;
 - (void)setProfile:(VUser *)profile
 {
     _profile = profile;
-    
-    [self refreshFetchController];
+    self.tableDataSource.filter = [[VObjectManager sharedManager] sequenceFilterForUser:self.profile];
+    [self.tableView reloadData];
+    [self refresh:nil];
 }
 
 #pragma mark - Support
@@ -597,48 +599,5 @@ const   CGFloat kVNavigationBarHeight = 44.0;
 }
 
 #pragma mark - VStreamTableViewController
-
-- (VSequenceFilter*)currentFilter
-{
-    return [[VObjectManager sharedManager] sequenceFilterForUser:self.profile];
-}
-
-- (IBAction)refresh:(UIRefreshControl *)sender
-{
-    [[VObjectManager sharedManager] refreshSequenceFilter:[self currentFilter]
-                                             successBlock:^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
-                                              {
-                                                  [self.refreshControl endRefreshing];
-                                                  if (resultObjects.count > 0)
-                                                  {
-                                                      [UIView animateWithDuration:0.8 animations:^{
-                                                          [self.tableView beginUpdates];
-                                                          self.tableView.tableHeaderView = [self shortHeader];
-                                                          
-#warning - I just got a crash here: Terminating app due to uncaught exception 'NSInternalInconsistencyException', reason: 'Invalid update: invalid number of sections.  The number of sections contained in the table view after the update (0) must be equal to the number of sections contained in the table view before the update (1), plus or minus the number of sections inserted or deleted (0 inserted, 0 deleted).'  I think this is a race condition caused because the fetchedresultscontroller is also updating.  Gary can we talk about this tomorrow?
-                                                          
-                                                          [self.tableView endUpdates];
-                                                      }];
-                                                  }
-                                                  else
-                                                  {
-                                                      [UIView animateWithDuration:0.8 animations:^{
-                                                          [self.tableView beginUpdates];
-                                                          self.tableView.tableHeaderView = [self longHeader];
-                                                          [self.tableView endUpdates];
-                                                      }];
-                                                 }
-                                              }
-                                              failBlock:^(NSOperation* operation, NSError* error)
-                                              {
-                                                  [self.refreshControl endRefreshing];
-                                                  [UIView animateWithDuration:0.8 animations:^{
-                                                      [self.tableView beginUpdates];
-                                                      self.tableView.tableHeaderView = [self longHeader];
-                                                      [self.tableView endUpdates];
-                                                  }];
-
-                                              }];
-}
 
 @end

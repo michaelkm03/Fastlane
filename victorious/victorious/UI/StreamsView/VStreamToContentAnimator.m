@@ -9,6 +9,7 @@
 #import "VStreamToContentAnimator.h"
 
 #import "VStreamContainerViewController.h"
+#import "VStreamTableDataSource.h"
 #import "VStreamTableViewController.h"
 #import "VStreamViewCell.h"
 
@@ -31,7 +32,7 @@
     
     VContentViewController* contentVC = (VContentViewController*)[context viewControllerForKey:UITransitionContextToViewControllerKey];
     
-    NSIndexPath* path = [streamVC.fetchedResultsController indexPathForObject:streamVC.selectedSequence];
+    NSIndexPath* path = [streamVC.tableDataSource indexPathForSequence:streamVC.selectedSequence];
     VStreamViewCell* selectedCell = (VStreamViewCell*) [streamVC.tableView cellForRowAtIndexPath:path];
     
     streamVC.view.userInteractionEnabled = NO;

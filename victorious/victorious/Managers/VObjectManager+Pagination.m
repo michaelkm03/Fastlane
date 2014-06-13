@@ -371,6 +371,7 @@
                 VSequence* sequenceInContext = (VSequence*)[filter.managedObjectContext objectWithID:sequence.objectID];
                 [filter addSequencesObject:sequenceInContext];
             }
+            [filter.managedObjectContext save:nil];
         
             if (success)
                 success(operation, fullResponse, resultObjects);

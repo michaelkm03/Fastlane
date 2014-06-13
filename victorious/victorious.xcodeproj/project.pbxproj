@@ -48,6 +48,7 @@
 		03D6381B191840570084FFC8 /* VEnvironment.m in Sources */ = {isa = PBXBuildFile; fileRef = 03D6381A191840570084FFC8 /* VEnvironment.m */; };
 		03D6381E191841220084FFC8 /* VObjectManager+Environment.m in Sources */ = {isa = PBXBuildFile; fileRef = 03D6381D191841220084FFC8 /* VObjectManager+Environment.m */; };
 		03D638211918488F0084FFC8 /* VServerEnvironmentTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 03D638201918488F0084FFC8 /* VServerEnvironmentTableViewController.m */; };
+		03D99C1E194A47C8002A6EAB /* VStreamTableDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 03D99C1D194A47C8002A6EAB /* VStreamTableDataSource.m */; };
 		03F9D281191D542300576AEE /* VCVideoPlayerToolbarView.m in Sources */ = {isa = PBXBuildFile; fileRef = 03F9D280191D542300576AEE /* VCVideoPlayerToolbarView.m */; };
 		03F9D283191D54F100576AEE /* VCVideoPlayerToolbarView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 03F9D282191D54F100576AEE /* VCVideoPlayerToolbarView.xib */; };
 		03F9D286191D77B000576AEE /* UIImage+VSolidColor.m in Sources */ = {isa = PBXBuildFile; fileRef = 03F9D285191D77B000576AEE /* UIImage+VSolidColor.m */; };
@@ -404,6 +405,8 @@
 		03D6381D191841220084FFC8 /* VObjectManager+Environment.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "VObjectManager+Environment.m"; sourceTree = "<group>"; };
 		03D6381F1918488F0084FFC8 /* VServerEnvironmentTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VServerEnvironmentTableViewController.h; path = UI/VServerEnvironmentTableViewController.h; sourceTree = "<group>"; };
 		03D638201918488F0084FFC8 /* VServerEnvironmentTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VServerEnvironmentTableViewController.m; path = UI/VServerEnvironmentTableViewController.m; sourceTree = "<group>"; };
+		03D99C1C194A47C8002A6EAB /* VStreamTableDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VStreamTableDataSource.h; path = UI/VStreamTableDataSource.h; sourceTree = "<group>"; };
+		03D99C1D194A47C8002A6EAB /* VStreamTableDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VStreamTableDataSource.m; path = UI/VStreamTableDataSource.m; sourceTree = "<group>"; };
 		03F9D27F191D542300576AEE /* VCVideoPlayerToolbarView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VCVideoPlayerToolbarView.h; sourceTree = "<group>"; };
 		03F9D280191D542300576AEE /* VCVideoPlayerToolbarView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VCVideoPlayerToolbarView.m; sourceTree = "<group>"; };
 		03F9D282191D54F100576AEE /* VCVideoPlayerToolbarView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VCVideoPlayerToolbarView.xib; sourceTree = "<group>"; };
@@ -1266,6 +1269,8 @@
 				3F9B66701888C4940046F826 /* VOwnerStreamViewController.m */,
 				3F9B66721888C4B20046F826 /* VCommunityStreamViewController.h */,
 				3F9B66731888C4B20046F826 /* VCommunityStreamViewController.m */,
+				03D99C1C194A47C8002A6EAB /* VStreamTableDataSource.h */,
+				03D99C1D194A47C8002A6EAB /* VStreamTableDataSource.m */,
 				BEE800E718FCC5C200A7CFD7 /* VStreamTableViewController+ContentCreation.h */,
 				BEE800E818FCC5C200A7CFD7 /* VStreamTableViewController+ContentCreation.m */,
 			);
@@ -2288,6 +2293,7 @@
 				0385FEE918EF41B4009FBD68 /* VImageSearchResult.m in Sources */,
 				3F71A7DB18D7C6D20048FF60 /* VRemixSliderRight.m in Sources */,
 				3F2194311941396800FA3407 /* VSignupTransitionAnimation.m in Sources */,
+				03D99C1E194A47C8002A6EAB /* VStreamTableDataSource.m in Sources */,
 				BE185DEE18E3B255001C447F /* VContentViewController+Videos.m in Sources */,
 				BEA5BF59187E7E8E0014C3EF /* VObjectManager+DirectMessaging.m in Sources */,
 				BEAA322019427ABE007774A4 /* VNoContentView.m in Sources */,

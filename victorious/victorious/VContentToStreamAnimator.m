@@ -9,6 +9,7 @@
 #import "VContentToStreamAnimator.h"
 
 #import "VStreamContainerViewController.h"
+#import "VStreamTableDataSource.h"
 #import "VStreamTableViewController.h"
 #import "VContentViewController.h"
 #import "VContentViewController+Videos.h"
@@ -82,7 +83,7 @@
      }
                      completion:^(BOOL finished)
      {
-         NSIndexPath* path = [streamVC.fetchedResultsController indexPathForObject:contentVC.sequence];
+         NSIndexPath* path = [streamVC.tableDataSource indexPathForSequence:contentVC.sequence];
          //Reselect the cell; it will be unselected if the fetched results controller was updated
          [streamVC.tableView selectRowAtIndexPath:path animated:NO scrollPosition:UITableViewScrollPositionNone];
          
