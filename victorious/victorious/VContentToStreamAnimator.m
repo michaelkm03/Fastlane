@@ -106,7 +106,7 @@
                    {
                        toVC.view.userInteractionEnabled = YES;
                        contentVC.view.userInteractionEnabled = YES;
-                       
+                       [[[(VStreamContainerViewController*)toVC tableViewController] tableView] setBackgroundView:nil];
                        [context completeTransition:![context transitionWasCancelled]];
                    }];
               }
