@@ -366,12 +366,13 @@
                 filter.sequences = filteredSequences;
             }
             
+            NSMutableOrderedSet *sequences = [filter.sequences mutableCopy];
             for (VSequence* sequence in resultObjects)
             {
                 VSequence* sequenceInContext = (VSequence*)[filter.managedObjectContext objectWithID:sequence.objectID];
-                [filter addSequencesObject:sequenceInContext];
+                [sequences addObject:sequenceInContext];
             }
-            [filter.managedObjectContext save:nil];
+            filter.sequences = sequences;
         
             if (success)
                 success(operation, fullResponse, resultObjects);

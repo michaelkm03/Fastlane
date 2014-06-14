@@ -10,9 +10,7 @@
 #import "VSequenceFilter.h"
 #import "VStreamTableDataSource.h"
 
-@interface VStreamTableDataSource ()
-
-@end
+static char KVOContext;
 
 @implementation VStreamTableDataSource
 
@@ -24,6 +22,31 @@
         self.filter = filter;
     }
     return self;
+}
+
+- (void)dealloc
+{
+    self.filter = nil;
+}
+
+- (void)setFilter:(VSequenceFilter *)filter
+{
+    if (filter == _filter)
+    {
+        return;
+    }
+    
+    if (_filter)
+    {
+        [_filter removeObserver:self forKeyPath:NSStringFromSelector(@selector(sequences)) context:&KVOContext];
+    }
+    
+    _filter = filter;
+    
+    if (filter)
+    {
+        [filter addObserver:self forKeyPath:NSStringFromSelector(@selector(sequences)) options:(NSKeyValueObservingOptionInitial | NSKeyValueObservingOptionNew) context:&KVOContext];
+    }
 }
 
 - (VSequence *)sequenceAtIndexPath:(NSIndexPath *)indexPath
@@ -47,7 +70,6 @@
     [[VObjectManager sharedManager] refreshSequenceFilter:self.filter
                                              successBlock:^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
     {
-        [self.tableView reloadData];
         if (successBlock)
         {
             successBlock();
@@ -67,7 +89,6 @@
     [[VObjectManager sharedManager] loadNextPageOfSequenceFilter:self.filter
                                                     successBlock:^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
     {
-        [self.tableView reloadData];
         if (successBlock)
         {
             successBlock();
@@ -98,6 +119,16 @@
 {
     VSequence *sequence = [self sequenceAtIndexPath:indexPath];
     return [self.delegate dataSource:self cellForSequence:sequence atIndexPath:indexPath];
+}
+
+#pragma mark - KVO
+
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
+{
+    if (object == self.filter && [keyPath isEqualToString:NSStringFromSelector(@selector(sequences))])
+    {
+        [self.tableView reloadData];
+    }
 }
 
 @end
