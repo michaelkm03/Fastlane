@@ -14,11 +14,23 @@
 				<string>fb582360511878683</string>
 			</array>
 		</dict>
+		<dict>
+			<key>CFBundleURLName</key>
+			<string>com.getvictorious.deeplinking.scheme</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>getvictorious</string>
+			</array>
+		</dict>
 	</array>
 	<key>FacebookAppID</key>
 	<string>582360511878683</string>
 	<key>FacebookDisplayName</key>
 	<string>Jess Lizama</string>
+	<key>TWITTER_CONSUMER_SECRET</key>
+	<string>damxXK28SCObMZ1CEMTLszm3v8mdRt0L1wuVnzXtH1E</string>
+	<key>TWITTER_CONSUMER_KEY</key>
+	<string>MhDYRpVPTaGQgWBT7ChmxQ</string>
 	<key>TestflightReleaseAppToken</key>
 	<string>c31250e1-8689-41af-80ec-8492aca17a07</string>
 	<key>TestflightQAAppToken</key>
