@@ -68,18 +68,7 @@
      addObserver:self selector:@selector(willCommentSequence:)
      name:kStreamsWillCommentNotification object:nil];
     
-    self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
-    
-    self.bottomRefreshIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
-    self.bottomRefreshIndicator.frame = CGRectMake(0, 0, 24, 24);
-    self.bottomRefreshIndicator.hidesWhenStopped = YES;
-    [self.tableView.backgroundView addSubview:self.bottomRefreshIndicator];
-    float yCenter = self.tableView.backgroundView.frame.size.height - self.bottomRefreshIndicator.frame.size.height;
-    self.bottomRefreshIndicator.center = CGPointMake(self.tableView.backgroundView.center.x,
-                                                     yCenter);
-    
     self.clearsSelectionOnViewWillAppear = NO;
-    self.bottomRefreshIndicator.color = [[VThemeManager sharedThemeManager] themedColorForKey:kVMainTextColor];
 }
 
 - (NSCache*)preloadImageCache
@@ -95,31 +84,16 @@
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
-
-    if ([self isBeingPresented] || [self isMovingToParentViewController])
+    if (!self.tableDataSource.count && !self.tableDataSource.filter.updating)
     {
         [self refresh:nil];
     }
-    
-    CGRect navBarFrame = self.navigationController.navigationBar.frame;
-    navBarFrame.origin.y = 0;
-    self.navigationController.navigationBar.frame = navBarFrame;
-    [[VThemeManager sharedThemeManager] applyNormalNavBarStyling];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
-    
     [self.preloadImageCache removeAllObjects];
-    
-    CGRect navBarFrame = self.navigationController.navigationBar.frame;
-    navBarFrame.origin.y = 0;
-    
-    [UIView animateWithDuration:.5f animations:^
-     {
-         self.navigationController.navigationBar.frame = navBarFrame;
-     }];
 }
 
 - (BOOL)shouldAutorotate
@@ -150,7 +124,7 @@
     [self.tableView reloadData];
     self.tableView.contentOffset = CGPointMake(-self.tableView.contentInset.left, -self.tableView.contentInset.top);
     
-    if (!self.tableDataSource.count)
+    if ([self isViewLoaded] && self.view.window && !self.tableDataSource.count)
     {
         [self refresh:nil];
     }
@@ -287,20 +261,39 @@
     }];
     
     [self.refreshControl beginRefreshing];
+    self.refreshControl.hidden = NO;
 }
 
 - (void)loadNextPageAction
 {
     [self.tableDataSource loadNextPageWithSuccess:^(void)
     {
-        [self.bottomRefreshIndicator stopAnimating];
+        [self hideBottomRefreshIndicator];
     }
                                           failure:^(NSError *error)
     {
-        [self.bottomRefreshIndicator stopAnimating];
+        [self hideBottomRefreshIndicator];
     }];
-    
+    [self showBottomRefreshIndicator];
+}
+
+- (void)showBottomRefreshIndicator
+{
+    if (!self.bottomRefreshIndicator)
+    {
+        self.bottomRefreshIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+        self.bottomRefreshIndicator.hidesWhenStopped = YES;
+        self.bottomRefreshIndicator.color = [[VThemeManager sharedThemeManager] themedColorForKey:kVMainTextColor];
+    }
+    self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, CGRectGetWidth(self.tableView.frame), CGRectGetHeight(self.bottomRefreshIndicator.frame) + 10.0f)];
+    [self.tableView.tableFooterView addSubview:self.bottomRefreshIndicator];
+    self.bottomRefreshIndicator.center = CGPointMake(CGRectGetMidX(self.tableView.tableFooterView.bounds), CGRectGetMidY(self.tableView.tableFooterView.bounds));
     [self.bottomRefreshIndicator startAnimating];
+}
+
+- (void)hideBottomRefreshIndicator
+{
+    self.tableView.tableFooterView = nil;
 }
 
 #pragma mark - Predicates
@@ -515,6 +508,24 @@
              completion(finished);
          }
      }];
+}
+
+#pragma mark - UIScrollViewDelegate
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView
+{
+    if (self.tableDataSource.filter.currentPageNumber.intValue < self.tableDataSource.filter.maxPageNumber.intValue &&
+        self.tableDataSource.count &&
+        ![[[self currentFilter] updating] boolValue] &&
+        scrollView.contentOffset.y + CGRectGetHeight(scrollView.bounds) > scrollView.contentSize.height * .75)
+    {
+        [self loadNextPageAction];
+    }
+    
+    // Notify the container about the scroll so it can handle the header
+    if ([self.delegate respondsToSelector:@selector(scrollViewDidScroll:)])
+    {
+        [self.delegate scrollViewDidScroll:scrollView];
+    }
 }
 
 @end

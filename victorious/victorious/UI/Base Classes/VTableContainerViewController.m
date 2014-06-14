@@ -45,7 +45,7 @@
     
     [self.navigationController setNavigationBarHidden:YES animated:NO];
     
-    if (self.tableViewController)
+    if (self.tableViewController && self.tableViewController.parentViewController != self)
     {
         [self addChildViewController:self.tableViewController];
         
@@ -57,6 +57,9 @@
         [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[tableView]|" options:0 metrics:nil views:NSDictionaryOfVariableBindings(tableView)]];
         
         [self.tableViewController didMoveToParentViewController:self];
+        
+        self.tableViewController.tableView.contentInset = UIEdgeInsetsMake(CGRectGetHeight(self.headerView.frame), 0, 0, 0);
+        self.tableViewController.tableView.contentOffset = CGPointMake(0.0f, -CGRectGetHeight(self.headerView.frame));
     }
     
     self.headerView.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVAccentColor];
