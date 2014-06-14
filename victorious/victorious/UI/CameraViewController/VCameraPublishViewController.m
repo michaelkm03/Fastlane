@@ -190,7 +190,16 @@
     {
         VLog(@"Failed with error: %@", error);
         
-        if (kVStillTranscodingError == error.code)
+        if(kVUserBannedError == error.code)
+        {
+            UIAlertView*    alert   =   [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"UserBannedTitle", @"")
+                                                                   message:NSLocalizedString(@"UserBannedMessage", @"")
+                                                                  delegate:nil
+                                                         cancelButtonTitle:NSLocalizedString(@"OKButton", @"")
+                                                         otherButtonTitles:nil];
+            [alert show];
+        }
+        else if (kVStillTranscodingError == error.code)
         {
             UIAlertView*    alert   = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"TranscodingMediaTitle", @"")
                                                                  message:NSLocalizedString(@"TranscodingMediaBody", @"")
