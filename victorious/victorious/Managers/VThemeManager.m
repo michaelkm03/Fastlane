@@ -105,7 +105,12 @@ NSString*   const   kVNewThemeKey                       =   @"kVNewTheme";
     
     [newTheme enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop)
      {
-         [[NSUserDefaults standardUserDefaults] setObject:obj forKey:key];
+         BOOL valid = YES;
+         if ([obj respondsToSelector:@selector(length)])
+             valid = ((NSString*)obj).length;
+         
+         if (obj && valid)
+             [[NSUserDefaults standardUserDefaults] setObject:obj forKey:key];
      }];
     
     [[NSUserDefaults standardUserDefaults] setObject:nil forKey:kVNewThemeKey];
@@ -262,10 +267,11 @@ NSString*   const   kVNewThemeKey                       =   @"kVNewTheme";
     if (0 == fontSize)
         fontSize = [UIFont systemFontSize];
     
-    if (0 == fontName.length)
+    UIFont* font = [UIFont fontWithName:fontName size:fontSize];
+    if (font)
+        return font;
+    else
         return [UIFont systemFontOfSize:fontSize];
-
-    return [UIFont fontWithName:fontName size:fontSize];
 }
 
 @end
