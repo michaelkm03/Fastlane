@@ -36,6 +36,7 @@ NSString* const kChatBubbleLeftImage = @"ChatBubbleLeft";
 
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint* messageHeightConstraint;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint* messageWidthConstraint;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint* mediaTopConstraint;
 
 @property (strong, nonatomic) NSLayoutConstraint* chatBottomConstraint;
 
@@ -104,6 +105,19 @@ NSString* const kChatBubbleLeftImage = @"ChatBubbleLeft";
                                                             multiplier:1.0
                                                               constant:kChatBubbleInset];
     [self addConstraint:self.chatBottomConstraint];
+    
+    UIView* topConstrainer = self.messageLabel.text.length ? self.messageLabel : self.chatBubble;
+    NSInteger topConstrainerAttribute = self.messageLabel.text.length ? NSLayoutAttributeBottom : NSLayoutAttributeTop;
+    
+    [self removeConstraint:self.mediaTopConstraint];
+    self.mediaTopConstraint = [NSLayoutConstraint constraintWithItem:self.mediaPreview
+                                                             attribute:NSLayoutAttributeTop
+                                                             relatedBy:NSLayoutRelationEqual
+                                                                toItem:topConstrainer
+                                                             attribute:topConstrainerAttribute
+                                                            multiplier:1.0
+                                                              constant:kChatBubbleInset];
+    [self addConstraint:self.mediaTopConstraint];
     
     CGFloat height = self.messageHeightConstraint.constant + (kChatBubbleInset * 2);
     height += self.previewImageUrl ? self.mediaPreview.frame.size.height + kChatBubbleInset: 0;

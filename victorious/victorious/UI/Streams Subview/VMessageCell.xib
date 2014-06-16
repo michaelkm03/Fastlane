@@ -82,7 +82,7 @@
                     <constraint firstItem="EzG-iN-xlM" firstAttribute="top" secondItem="evX-ID-lZS" secondAttribute="bottom" constant="5" id="P3x-UP-c9a"/>
                     <constraint firstItem="JsJ-0N-s41" firstAttribute="centerY" secondItem="Z4Q-lM-koN" secondAttribute="centerY" id="Qcs-mv-YGV"/>
                     <constraint firstItem="Rgs-9K-iBc" firstAttribute="leading" secondItem="evX-ID-lZS" secondAttribute="leading" id="RLN-6I-2zl"/>
-                    <constraint firstItem="Z4Q-lM-koN" firstAttribute="top" secondItem="y7x-B1-aa3" secondAttribute="bottom" constant="12" id="TcK-aB-f5f"/>
+                    <constraint firstItem="Z4Q-lM-koN" firstAttribute="top" secondItem="y7x-B1-aa3" secondAttribute="bottom" priority="900" constant="12" id="TcK-aB-f5f"/>
                     <constraint firstItem="y7x-B1-aa3" firstAttribute="leading" secondItem="0UZ-V6-0FV" secondAttribute="leading" constant="16" id="bny-XC-3JU"/>
                     <constraint firstItem="0UZ-V6-0FV" firstAttribute="leading" secondItem="evX-ID-lZS" secondAttribute="trailing" constant="5" id="ee1-7p-pAx"/>
                     <constraint firstItem="y7x-B1-aa3" firstAttribute="top" secondItem="0UZ-V6-0FV" secondAttribute="top" constant="12" id="fxX-ZJ-mOa"/>
@@ -94,6 +94,7 @@
                 <outlet property="chatBubble" destination="0UZ-V6-0FV" id="ECj-dg-rYb"/>
                 <outlet property="dateLabel" destination="EzG-iN-xlM" id="5U1-bf-ePa"/>
                 <outlet property="mediaPreview" destination="Z4Q-lM-koN" id="Aok-1K-JsF"/>
+                <outlet property="mediaTopConstraint" destination="TcK-aB-f5f" id="nuR-Ka-vy1"/>
                 <outlet property="messageHeightConstraint" destination="aZc-RW-4PR" id="sVQ-Hs-gte"/>
                 <outlet property="messageLabel" destination="y7x-B1-aa3" id="ZXv-6x-zIM"/>
                 <outlet property="messageWidthConstraint" destination="5Zr-JJ-uik" id="drI-dh-MyW"/>
