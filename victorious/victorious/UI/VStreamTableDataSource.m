@@ -6,6 +6,7 @@
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
+#import "NSIndexSet+Map.h"
 #import "VObjectManager+Pagination.h"
 #import "VSequenceFilter.h"
 #import "VStreamTableDataSource.h"
@@ -45,7 +46,7 @@ static char KVOContext;
     
     if (filter)
     {
-        [filter addObserver:self forKeyPath:NSStringFromSelector(@selector(sequences)) options:(NSKeyValueObservingOptionInitial | NSKeyValueObservingOptionNew) context:&KVOContext];
+        [filter addObserver:self forKeyPath:NSStringFromSelector(@selector(sequences)) options:(NSKeyValueObservingOptionPrior | NSKeyValueObservingOptionInitial | NSKeyValueObservingOptionNew | NSKeyValueObservingOptionOld) context:&KVOContext];
     }
 }
 
@@ -127,7 +128,41 @@ static char KVOContext;
 {
     if (object == self.filter && [keyPath isEqualToString:NSStringFromSelector(@selector(sequences))])
     {
-        [self.tableView reloadData];
+        NSKeyValueChange kind = [change[NSKeyValueChangeKindKey] unsignedIntegerValue];
+        
+        if (change[NSKeyValueChangeNotificationIsPriorKey])
+        {
+            if (kind == NSKeyValueChangeInsertion || kind == NSKeyValueChangeRemoval)
+            {
+                [self.tableView beginUpdates];
+            }
+            return;
+        }
+        
+        NSIndexSet *indexSet = change[NSKeyValueChangeIndexesKey];
+        NSArray *indexPaths;
+        if (indexSet)
+        {
+            indexPaths = [indexSet map:^(NSUInteger idx) { return [NSIndexPath indexPathForItem:idx inSection:0]; }];
+        }
+        
+        switch (kind)
+        {
+            case NSKeyValueChangeInsertion:
+                [self.tableView insertRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationAutomatic];
+                [self.tableView endUpdates];
+                break;
+                
+            case NSKeyValueChangeRemoval:
+                [self.tableView deleteRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationAutomatic];
+                [self.tableView endUpdates];
+                break;
+
+            case NSKeyValueChangeReplacement:
+            default:
+                [self.tableView reloadData];
+                break;
+        }
     }
 }
 

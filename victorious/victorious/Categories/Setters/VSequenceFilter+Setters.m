@@ -12,9 +12,20 @@
 
 - (void)addSequencesObject:(VSequence *)value
 {
-    NSMutableOrderedSet *sequences = [self.sequences mutableCopy];
+    NSMutableOrderedSet *sequences = [NSMutableOrderedSet orderedSetWithOrderedSet:[self primitiveValueForKey:@"sequences"]];
+    [self willChange:NSKeyValueChangeInsertion valuesAtIndexes:[NSIndexSet indexSetWithIndex:sequences.count] forKey:@"sequences"];
     [sequences addObject:value];
-    self.sequences = sequences;
+    [self setPrimitiveValue:sequences forKey:@"sequences"];
+    [self didChange:NSKeyValueChangeInsertion valuesAtIndexes:[NSIndexSet indexSetWithIndex:sequences.count] forKey:@"sequences"];
+}
+
+- (void)insertSequences:(NSArray *)value atIndexes:(NSIndexSet *)indexes
+{
+    [self willChange:NSKeyValueChangeInsertion valuesAtIndexes:indexes forKey:@"sequences"];
+    NSMutableOrderedSet *sequences = [NSMutableOrderedSet orderedSetWithOrderedSet:[self primitiveValueForKey:@"sequences"]];
+    [sequences insertObjects:value atIndexes:indexes];
+    [self setPrimitiveValue:sequences forKey:@"sequences"];
+    [self didChange:NSKeyValueChangeInsertion valuesAtIndexes:indexes forKey:@"sequences"];
 }
 
 @end

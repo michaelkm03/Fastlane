@@ -21,6 +21,7 @@
 		03484BFE192E9D2100403FB1 /* NSLayoutConstraint+CenterConstraints.m in Sources */ = {isa = PBXBuildFile; fileRef = 03484BFD192E9D2100403FB1 /* NSLayoutConstraint+CenterConstraints.m */; };
 		03484C041930129C00403FB1 /* VImageLightboxViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 03484C031930129C00403FB1 /* VImageLightboxViewController.m */; };
 		03484C071930294D00403FB1 /* NSURL+MediaType.m in Sources */ = {isa = PBXBuildFile; fileRef = 03484C061930294D00403FB1 /* NSURL+MediaType.m */; };
+		0350426A194F711A008D78A3 /* NSIndexSet+Map.m in Sources */ = {isa = PBXBuildFile; fileRef = 03504269194F711A008D78A3 /* NSIndexSet+Map.m */; };
 		03522780192173F0003FCD10 /* VElapsedTimeFormatterTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 0352277F192173F0003FCD10 /* VElapsedTimeFormatterTests.m */; };
 		0352278319219079003FCD10 /* VVideoDownloadProgressIndicatorView.m in Sources */ = {isa = PBXBuildFile; fileRef = 0352278219219079003FCD10 /* VVideoDownloadProgressIndicatorView.m */; };
 		035C2D751940071B0023FC05 /* VCVideoPlayerToolbarSlider.m in Sources */ = {isa = PBXBuildFile; fileRef = 035C2D741940071B0023FC05 /* VCVideoPlayerToolbarSlider.m */; };
@@ -345,6 +346,8 @@
 		03484C031930129C00403FB1 /* VImageLightboxViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VImageLightboxViewController.m; sourceTree = "<group>"; };
 		03484C051930294D00403FB1 /* NSURL+MediaType.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSURL+MediaType.h"; sourceTree = "<group>"; };
 		03484C061930294D00403FB1 /* NSURL+MediaType.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSURL+MediaType.m"; sourceTree = "<group>"; };
+		03504268194F711A008D78A3 /* NSIndexSet+Map.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSIndexSet+Map.h"; sourceTree = "<group>"; };
+		03504269194F711A008D78A3 /* NSIndexSet+Map.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSIndexSet+Map.m"; sourceTree = "<group>"; };
 		0352277F192173F0003FCD10 /* VElapsedTimeFormatterTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VElapsedTimeFormatterTests.m; sourceTree = "<group>"; };
 		0352278119219079003FCD10 /* VVideoDownloadProgressIndicatorView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VVideoDownloadProgressIndicatorView.h; sourceTree = "<group>"; };
 		0352278219219079003FCD10 /* VVideoDownloadProgressIndicatorView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VVideoDownloadProgressIndicatorView.m; sourceTree = "<group>"; };
@@ -1627,6 +1630,8 @@
 				03811D30193533D0005687FF /* UIAlertView+VBlocks.m */,
 				03A2AD951926B9460034EB80 /* UIViewController+ForceOrientationChange.h */,
 				03A2AD961926B9460034EB80 /* UIViewController+ForceOrientationChange.m */,
+				03504268194F711A008D78A3 /* NSIndexSet+Map.h */,
+				03504269194F711A008D78A3 /* NSIndexSet+Map.m */,
 				03484C051930294D00403FB1 /* NSURL+MediaType.h */,
 				03484C061930294D00403FB1 /* NSURL+MediaType.m */,
 				03811D3219353486005687FF /* VAlertViewBlockDelegate.h */,
@@ -2332,6 +2337,7 @@
 				3F0282381937D0AA0099259A /* VAbstractInviteTableViewController.m in Sources */,
 				BE185DF118E3B2C2001C447F /* VContentViewController+Images.m in Sources */,
 				03086AA718F38ABE00105FFB /* UIActionSheet+VBlocks.m in Sources */,
+				0350426A194F711A008D78A3 /* NSIndexSet+Map.m in Sources */,
 				BEF2C2A5188488C000AAE975 /* VUnreadConversation+RestKit.m in Sources */,
 				BE171E211868C211004E5202 /* VObjectManager+Sequence.m in Sources */,
 				BED4569718BD58DE00A67160 /* VAsset+Fetcher.m in Sources */,
