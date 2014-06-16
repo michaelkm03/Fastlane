@@ -116,7 +116,7 @@
     [self.tableView reloadData];
 }
 
-- (IBAction)invite:(id)sender
+- (NSArray *)inviteList
 {
     NSIndexSet* indexSet = [self.users indexesOfObjectsPassingTest:^BOOL(id obj, NSUInteger idx, BOOL *stop)
     {
@@ -124,23 +124,7 @@
         return value.boolValue;
     }];
     
-    NSArray*    inviteList = [self.users objectsAtIndexes:indexSet];
-    
-    [[VObjectManager sharedManager] inviteFriends:inviteList
-                                 withSuccessBlock:^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
-     {
-         NSIndexSet*    indexes = [self.users indexesOfObjectsPassingTest:^BOOL(id obj, NSUInteger idx, BOOL *stop)
-         {
-             return ![inviteList containsObject:obj];
-         }];
-         self.users = [self.users objectsAtIndexes:indexes];
-         
-         [self clearFollows:self];
-     }
-                                        failBlock:^(NSOperation* operation, NSError* error)
-     {
-                                     
-     }];
+    return [self.users objectsAtIndexes:indexSet];
 }
 
 #pragma mark - VInviteFriendTableViewCellDelegate

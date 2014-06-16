@@ -45,6 +45,25 @@
 
 - (IBAction)done:(id)sender
 {
+//   For each tab
+//   Get invitelists from each tab - Suggested, Contacts, Facebook, Twitter & Instagram (NOTE: Instagram not currently implemented)
+
+//    [[VObjectManager sharedManager] inviteFriends:inviteList
+//                                 withSuccessBlock:^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
+//     {
+//         NSIndexSet*    indexes = [self.users indexesOfObjectsPassingTest:^BOOL(id obj, NSUInteger idx, BOOL *stop)
+//                                   {
+//                                       return ![inviteList containsObject:obj];
+//                                   }];
+//         self.users = [self.users objectsAtIndexes:indexes];
+//         
+//         [self clearFollows:self];
+//     }
+//                                        failBlock:^(NSOperation* operation, NSError* error)
+//     {
+//         
+//     }];
+
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
