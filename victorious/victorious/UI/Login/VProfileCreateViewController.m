@@ -302,6 +302,12 @@
          }
                                                         failBlock:^(NSOperation* operation, NSError* error)
          {
+             UIAlertView*   alert   =   [[UIAlertView alloc] initWithTitle:@"Profile Update Failed"
+                                                                   message:error.localizedDescription
+                                                                  delegate:nil
+                                                         cancelButtonTitle:nil
+                                                         otherButtonTitles:NSLocalizedString(@"OKButton", @""), nil];
+             [alert show];
              VLog(@"Failed with error: %@", error);
          }];
     }
