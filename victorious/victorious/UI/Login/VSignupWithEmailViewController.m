@@ -17,8 +17,6 @@
 #import "UIImage+ImageEffects.h"
 #import "VSignupTransitionAnimation.h"
 
-NSString*   const   kSignupErrorDomain =   @"VSignupErrorDomain";
-
 @interface VSignupWithEmailViewController ()    <UITextFieldDelegate, TTTAttributedLabelDelegate>
 @property (weak, nonatomic) IBOutlet UITextField *emailTextField;
 @property (weak, nonatomic) IBOutlet UITextField *passwordTextField;
@@ -149,7 +147,7 @@ NSString*   const   kSignupErrorDomain =   @"VSignupErrorDomain";
         {
             NSString *errorString = NSLocalizedString(@"EmailValidation", @"Invalid Email Address");
             NSDictionary*   userInfoDict = @{ NSLocalizedDescriptionKey : errorString };
-            *outError   =   [[NSError alloc] initWithDomain:kSignupErrorDomain
+            *outError   =   [[NSError alloc] initWithDomain:kVictoriousErrorDomain
                                                        code:VSignUpBadEmailAddressErrorCode
                                                    userInfo:userInfoDict];
         }
@@ -168,7 +166,7 @@ NSString*   const   kSignupErrorDomain =   @"VSignupErrorDomain";
         {
             NSString *errorString = NSLocalizedString(@"PasswordValidation", @"Invalid Password");
             NSDictionary*   userInfoDict = @{ NSLocalizedDescriptionKey : errorString };
-            *outError   =   [[NSError alloc] initWithDomain:kSignupErrorDomain
+            *outError   =   [[NSError alloc] initWithDomain:kVictoriousErrorDomain
                                                        code:VSignupBadPasswordErrorCode
                                                    userInfo:userInfoDict];
         }

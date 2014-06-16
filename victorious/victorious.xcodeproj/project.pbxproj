@@ -300,6 +300,8 @@
 		BEF2C2A5188488C000AAE975 /* VUnreadConversation+RestKit.m in Sources */ = {isa = PBXBuildFile; fileRef = BEF2C2A4188488C000AAE975 /* VUnreadConversation+RestKit.m */; };
 		BEF2C2A818848B3B00AAE975 /* VUnreadConversation.m in Sources */ = {isa = PBXBuildFile; fileRef = BEF2C2A718848B3B00AAE975 /* VUnreadConversation.m */; };
 		BEF2C2B71886211000AAE975 /* VPollResult.m in Sources */ = {isa = PBXBuildFile; fileRef = BEF2C2B61886211000AAE975 /* VPollResult.m */; };
+		BEFA688A194B7CC7005A0189 /* VExperimentManager.m in Sources */ = {isa = PBXBuildFile; fileRef = BEFA6889194B7CC7005A0189 /* VExperimentManager.m */; };
+		BEFA688C194B9773005A0189 /* defaultExperiments.plist in Resources */ = {isa = PBXBuildFile; fileRef = BEFA688B194B9773005A0189 /* defaultExperiments.plist */; };
 		D1DAAA0B187A43BE009ADCB0 /* VProfileEditViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D1DAAA0A187A43BE009ADCB0 /* VProfileEditViewController.m */; };
 /* End PBXBuildFile section */
 
@@ -860,6 +862,9 @@
 		BEF2C2A718848B3B00AAE975 /* VUnreadConversation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VUnreadConversation.m; sourceTree = "<group>"; };
 		BEF2C2B51886211000AAE975 /* VPollResult.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VPollResult.h; sourceTree = "<group>"; };
 		BEF2C2B61886211000AAE975 /* VPollResult.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VPollResult.m; sourceTree = "<group>"; };
+		BEFA6888194B7CC7005A0189 /* VExperimentManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VExperimentManager.h; path = Experiments/VExperimentManager.h; sourceTree = "<group>"; };
+		BEFA6889194B7CC7005A0189 /* VExperimentManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VExperimentManager.m; path = Experiments/VExperimentManager.m; sourceTree = "<group>"; };
+		BEFA688B194B9773005A0189 /* defaultExperiments.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = defaultExperiments.plist; sourceTree = "<group>"; };
 		D1DAAA09187A43BE009ADCB0 /* VProfileEditViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VProfileEditViewController.h; path = UI/VProfileEditViewController.h; sourceTree = "<group>"; };
 		D1DAAA0A187A43BE009ADCB0 /* VProfileEditViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VProfileEditViewController.m; path = UI/VProfileEditViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -1683,6 +1688,7 @@
 		BE171DD91868C211004E5202 /* Managers */ = {
 			isa = PBXGroup;
 			children = (
+				BEFA6887194B7CAC005A0189 /* Experiments */,
 				035C2D801940F0D10023FC05 /* Analytics */,
 				BE7169D018D0F58C004966C3 /* InteractionManager */,
 				036AE5EA18FF0C0600A74BDA /* Reachability */,
@@ -1863,6 +1869,7 @@
 				03F9D28A19204CDC00576AEE /* Default-568h@2x.png */,
 				03F9D28B19204CDC00576AEE /* Default@2x.png */,
 				BE76FBE518E4DC1D009E6DD7 /* defaultTheme.plist */,
+				BEFA688B194B9773005A0189 /* defaultExperiments.plist */,
 				03F9D29419204D7700576AEE /* Icon-29@2x.png */,
 				03F9D29519204D7700576AEE /* Icon-40@2x.png */,
 				03F9D29619204D7700576AEE /* Icon-60@2x.png */,
@@ -1953,6 +1960,15 @@
 				BEE9C8BC18CE904B0095C737 /* VAnimation.h */,
 			);
 			name = Protocols;
+			sourceTree = "<group>";
+		};
+		BEFA6887194B7CAC005A0189 /* Experiments */ = {
+			isa = PBXGroup;
+			children = (
+				BEFA6888194B7CC7005A0189 /* VExperimentManager.h */,
+				BEFA6889194B7CC7005A0189 /* VExperimentManager.m */,
+			);
+			name = Experiments;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -2090,6 +2106,7 @@
 				3FA217DF18AAFCFE0066E893 /* cast_outline_black@2x.png in Resources */,
 				BE692B2A186E5ED800C71336 /* VStreamViewCell.xib in Resources */,
 				BEDF0FBF18DB783200750EF6 /* MuseoSans-300.otf in Resources */,
+				BEFA688C194B9773005A0189 /* defaultExperiments.plist in Resources */,
 				BE76FBE618E4DC1D009E6DD7 /* defaultTheme.plist in Resources */,
 				03F9D29819204D7700576AEE /* Icon-40@2x.png in Resources */,
 				03F9D28F19204CDC00576AEE /* Default-568h@2x.png in Resources */,
@@ -2411,6 +2428,7 @@
 				3FBCB9E1192EC77400EB510C /* THPinNumButton.m in Sources */,
 				3FA217E318AD87F40066E893 /* UIImageView+Blurring.m in Sources */,
 				BE171E111868C211004E5202 /* VComment+RestKit.m in Sources */,
+				BEFA688A194B7CC7005A0189 /* VExperimentManager.m in Sources */,
 				BE171E0E1868C211004E5202 /* VAnswerAction+RestKit.m in Sources */,
 				BEDF0FC618DBC93B00750EF6 /* VVoteType.m in Sources */,
 				3FD7FFC418C7EC2700945E5F /* VCCameraFocusTargetView.m in Sources */,

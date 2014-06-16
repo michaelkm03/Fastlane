@@ -8,8 +8,6 @@
 
 #import "VErrorMessage.h"
 
-NSString* const kVictoriousDomain = @"com.getvictorious.victoriOS";
-
 @implementation VErrorMessage
 
 + (RKObjectMapping *)objectMapping

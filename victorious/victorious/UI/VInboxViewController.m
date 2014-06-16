@@ -215,12 +215,14 @@ static  NSString*   kNewsCellViewIdentifier       =   @"VNewsCell";
     {
         NSLog(@"%@", error.localizedDescription);
         [self.refreshControl endRefreshing];
+        [self setHasMessages:self.fetchedResultsController.fetchedObjects.count];
     };
     
     VSuccessBlock success = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
     {
         [self.tableView reloadData];
         [self.refreshControl endRefreshing];
+        [self setHasMessages:self.fetchedResultsController.fetchedObjects.count];
     };
 
     [[VObjectManager sharedManager] refreshConversationListWithSuccessBlock:success failBlock:fail];

@@ -5,7 +5,7 @@
 	<key>CFBundleDisplayName</key>
 	<string>${ProductPrefix}Pwnisher</string>
 	<key>CFBundleIdentifier</key>
-	<string>com.getvictorious.${ProductPrefix}Pwnisher</string>
+	<string>com.getvictorious.${ProductPrefix}pwnisher</string>
 	<key>CFBundleName</key>
 	<string>${ProductPrefix}Pwnisher</string>
 	<key>CFBundleURLTypes</key>
@@ -40,7 +40,7 @@
 	<key>TestflightReleaseAppToken</key>
 	<string>fc66ea4a-6e4f-4e94-993f-fda2f16e45dd</string>
 	<key>VictoriousAppID</key>
-	<integer>7</integer>
+	<integer>8</integer>
 	<key>StagingAppID</key>
 	<integer>7</integer>
 	<key>QAAppID</key>

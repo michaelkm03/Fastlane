@@ -9,6 +9,8 @@
 
 #import "VCAudioTools.h"
 
+#import "VConstants.h"
+
 @import ImageIO;
 
 // photo dictionary key definitions
@@ -603,7 +605,7 @@ NSString * const VCAudioVideoRecorderPhotoThumbnailKey = @"VCAudioVideoRecorderP
 
 + (NSError*)createError:(NSString*)name
 {
-	return [NSError errorWithDomain:@"VCAudioVideoRecorder" code:500 userInfo:[NSDictionary dictionaryWithObject:name forKey:NSLocalizedDescriptionKey]];
+	return [NSError errorWithDomain:kVictoriousErrorDomain code:500 userInfo:[NSDictionary dictionaryWithObject:name forKey:NSLocalizedDescriptionKey]];
 }
 
 - (void)prepareWriterAtSourceTime:(CMTime)sourceTime fromEncoder:(VCDataEncoder*)encoder

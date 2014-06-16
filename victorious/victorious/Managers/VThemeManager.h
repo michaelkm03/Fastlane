@@ -18,9 +18,6 @@ extern  NSString*   const   kVChannelURLSupport;
 extern  NSString*   const   kVChannelName;
 extern  NSString*   const   kVAppStoreURL;
 
-extern  NSString*   const   kVCaptureVideoQuality;
-extern  NSString*   const   kVExportVideoQuality;
-
 extern  NSString*   const   kVAgreementText;
 extern  NSString*   const   kVAgreementLinkText;
 extern  NSString*   const   kVAgreementLink;
@@ -80,8 +77,5 @@ extern  NSString*   const   kVSecondaryLinkColor;
 - (NSURL *)themedImageURLForKey:(NSString *)key;
 - (UIImage *)themedImageForKey:(NSString *)key;
 - (UIFont *)themedFontForKey:(NSString *)key;
-
-- (NSString *)themedExportVideoQuality;
-- (NSString *)themedCapturedVideoQuality;
 
 @end

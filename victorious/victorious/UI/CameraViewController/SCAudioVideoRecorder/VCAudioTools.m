@@ -4,7 +4,10 @@
 
 @import AVFoundation;
 @import AudioToolbox;
+
 #import "VCAudioTools.h"
+
+#import "VConstants.h"
 
 @implementation VCAudioTools
 {
@@ -85,7 +88,7 @@
 			[userInfo setObject:subLocalizedDescription forKey:@"CauseLocalizedDescription"];
 			[userInfo setObject:[AVAssetExportSession allExportPresets] forKey:@"AllExportSessions"];
 			
-			error = [NSError errorWithDomain:@"VCAudioVideoRecorder" code:500 userInfo:userInfo];
+			error = [NSError errorWithDomain:kVictoriousErrorDomain code:500 userInfo:userInfo];
 		}
 				
 		completionBlock(error);

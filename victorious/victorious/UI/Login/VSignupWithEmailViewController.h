@@ -6,8 +6,6 @@
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
-extern  NSString*   const   kSignupErrorDomain;
-
 NS_ENUM(NSUInteger, VSignupErrorCode)
 {
     VSignupBadUsernameErrorCode,
