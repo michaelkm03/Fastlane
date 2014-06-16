@@ -7,6 +7,7 @@
 //
 
 #import "VInviteSuggestedTableViewController.h"
+#import "VObjectManager+users.h"
 
 @interface VInviteSuggestedTableViewController ()
 @end
@@ -16,7 +17,22 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    [self suggestedFollowers];
+}
+
+- (void)suggestedFollowers
+{
+    self.users = [[NSArray alloc] init];
     
+    [[VObjectManager sharedManager] listOfRecommendedFriendsWithSuccessBlock:^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
+        {
+            self.users = resultObjects;
+            [self refresh:self];
+        }
+        failBlock:^(NSOperation* operation, NSError* error)
+        {
+            // Failure
+        }];
 }
 
 @end

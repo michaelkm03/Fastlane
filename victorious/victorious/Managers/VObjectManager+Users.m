@@ -222,7 +222,19 @@
 - (RKManagedObjectRequestOperation *)listOfRecommendedFriendsWithSuccessBlock:(VSuccessBlock)success
                                                                     failBlock:(VFailBlock)fail
 {
-    return nil;
+    VSuccessBlock fullSuccess = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
+    {
+        if (success)
+        {
+            success(operation, fullResponse, resultObjects);
+        }
+    };
+    
+    return [self GET:@"api/friend/suggest"
+              object:nil
+          parameters:nil
+        successBlock:fullSuccess
+           failBlock:fail];
 }
 
 - (RKManagedObjectRequestOperation *)findFriendsByEmails:(NSArray *)emails

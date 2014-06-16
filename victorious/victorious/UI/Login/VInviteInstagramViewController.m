@@ -12,11 +12,4 @@
 @end
 
 @implementation VInviteInstagramViewController
-
-- (void)viewDidLoad
-{
-    [super viewDidLoad];
-
-}
-
 @end

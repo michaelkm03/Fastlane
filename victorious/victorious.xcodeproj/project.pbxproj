@@ -132,6 +132,8 @@
 		3FBCBA04193559DB00EB510C /* VInviteTwitterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3FBCBA03193559DB00EB510C /* VInviteTwitterViewController.m */; };
 		3FBCBA0719355A1C00EB510C /* VInviteInstagramViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3FBCBA0619355A1C00EB510C /* VInviteInstagramViewController.m */; };
 		3FBCBA08193561CC00EB510C /* VFollowFriendsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FC4DA6F189711EA006BA107 /* VFollowFriendsViewController.m */; };
+		3FCA803B194A8060001CF8BD /* VInviteFriendTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3FCA803A194A8060001CF8BD /* VInviteFriendTableViewCell.m */; };
+		3FCA803D194A8114001CF8BD /* inviteCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3FCA803C194A8114001CF8BD /* inviteCell.xib */; };
 		3FD7FFA918BFD64C00945E5F /* VImagePreviewViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3FD7FFA818BFD64C00945E5F /* VImagePreviewViewController.m */; };
 		3FD7FFAC18BFD67800945E5F /* VVideoPreviewViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3FD7FFAB18BFD67800945E5F /* VVideoPreviewViewController.m */; };
 		3FD7FFAF18BFD6EF00945E5F /* VCameraPublishViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3FD7FFAE18BFD6EF00945E5F /* VCameraPublishViewController.m */; };
@@ -548,6 +550,9 @@
 		3FBCBA03193559DB00EB510C /* VInviteTwitterViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VInviteTwitterViewController.m; path = UI/Login/VInviteTwitterViewController.m; sourceTree = "<group>"; };
 		3FBCBA0519355A1C00EB510C /* VInviteInstagramViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VInviteInstagramViewController.h; path = UI/Login/VInviteInstagramViewController.h; sourceTree = "<group>"; };
 		3FBCBA0619355A1C00EB510C /* VInviteInstagramViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VInviteInstagramViewController.m; path = UI/Login/VInviteInstagramViewController.m; sourceTree = "<group>"; };
+		3FCA8039194A8060001CF8BD /* VInviteFriendTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VInviteFriendTableViewCell.h; path = UI/Login/VInviteFriendTableViewCell.h; sourceTree = "<group>"; };
+		3FCA803A194A8060001CF8BD /* VInviteFriendTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VInviteFriendTableViewCell.m; path = UI/Login/VInviteFriendTableViewCell.m; sourceTree = "<group>"; };
+		3FCA803C194A8114001CF8BD /* inviteCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = inviteCell.xib; path = UI/Login/inviteCell.xib; sourceTree = "<group>"; };
 		3FD7FFA718BFD64C00945E5F /* VImagePreviewViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VImagePreviewViewController.h; path = UI/CameraViewController/VImagePreviewViewController.h; sourceTree = "<group>"; };
 		3FD7FFA818BFD64C00945E5F /* VImagePreviewViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VImagePreviewViewController.m; path = UI/CameraViewController/VImagePreviewViewController.m; sourceTree = "<group>"; };
 		3FD7FFAA18BFD67800945E5F /* VVideoPreviewViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VVideoPreviewViewController.h; path = UI/CameraViewController/VVideoPreviewViewController.h; sourceTree = "<group>"; };
@@ -994,6 +999,9 @@
 				3FBCBA03193559DB00EB510C /* VInviteTwitterViewController.m */,
 				3FBCBA0519355A1C00EB510C /* VInviteInstagramViewController.h */,
 				3FBCBA0619355A1C00EB510C /* VInviteInstagramViewController.m */,
+				3FCA8039194A8060001CF8BD /* VInviteFriendTableViewCell.h */,
+				3FCA803A194A8060001CF8BD /* VInviteFriendTableViewCell.m */,
+				3FCA803C194A8114001CF8BD /* inviteCell.xib */,
 			);
 			name = List;
 			sourceTree = "<group>";
@@ -2061,6 +2069,7 @@
 				3FBCB9DE192EC77400EB510C /* THPinViewController.strings in Resources */,
 				BEDF0FBE18DB783200750EF6 /* MuseoSans-100.otf in Resources */,
 				3FA217D718A9C38A0066E893 /* play_black.png in Resources */,
+				3FCA803D194A8114001CF8BD /* inviteCell.xib in Resources */,
 				3F9348A81922D124002EA91F /* followerCell.xib in Resources */,
 				5FC4DA5E18970A9F006BA107 /* login.storyboard in Resources */,
 				BE4055AC18A41F1F00092AE1 /* Localizable.strings in Resources */,
@@ -2333,6 +2342,7 @@
 				BEF2C29618845EF500AAE975 /* VPollResult+RestKit.m in Sources */,
 				3FBCBA011935598F00EB510C /* VInviteFacebookViewController.m in Sources */,
 				5FCC1E4A1899C94D00EB7699 /* VWebContentViewController.m in Sources */,
+				3FCA803B194A8060001CF8BD /* VInviteFriendTableViewCell.m in Sources */,
 				BEE604C1192D7D84003A0206 /* VInboxContainerViewController.m in Sources */,
 				BE2D1E661901F4D800C6FF99 /* VStreamToCommentAnimator.m in Sources */,
 				BEB52A7A18C02D6600AC5FE4 /* VContentViewController.m in Sources */,

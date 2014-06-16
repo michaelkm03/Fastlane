@@ -6,6 +6,10 @@
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
-@interface VAbstractInviteTableViewController : UITableViewController
+#import "VInviteFriendTableViewCell.h"
+
+@interface VAbstractInviteTableViewController : UITableViewController   <VInviteFriendTableViewCellDelegate>
 @property (nonatomic, strong)   NSArray*    users;
+
+- (IBAction)refresh:(id)sender;
 @end

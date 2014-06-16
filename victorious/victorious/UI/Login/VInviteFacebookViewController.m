@@ -12,11 +12,4 @@
 @end
 
 @implementation VInviteFacebookViewController
-
-- (void)viewDidLoad
-{
-    [super viewDidLoad];
-
-}
-
 @end

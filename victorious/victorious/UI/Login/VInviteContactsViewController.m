@@ -12,11 +12,4 @@
 @end
 
 @implementation VInviteContactsViewController
-
-- (void)viewDidLoad
-{
-    [super viewDidLoad];
-
-}
-
 @end
