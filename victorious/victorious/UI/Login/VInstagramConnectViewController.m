@@ -12,7 +12,7 @@
 
 - (IBAction)connect:(id)sender
 {
-    
+    //  Instagram SDK Support needed - see iOS 568
 }
 
 @end

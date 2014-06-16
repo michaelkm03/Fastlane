@@ -12,11 +12,4 @@
 @end
 
 @implementation VInviteTwitterViewController
-
-- (void)viewDidLoad
-{
-    [super viewDidLoad];
-
-}
-
 @end
