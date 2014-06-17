@@ -99,6 +99,8 @@ const   CGFloat kVNavigationBarHeight = 44.0;
     
     [super viewDidLoad];
     
+    self.tableView.tableHeaderView = [self longHeader];
+    
     if (self.isMe)
         [self addCreateButton];
     else if (!self.isMe)
@@ -467,6 +469,31 @@ const   CGFloat kVNavigationBarHeight = 44.0;
 }
 
 #pragma mark - Actions
+
+- (IBAction)refresh:(UIRefreshControl *)sender
+{
+    [self refreshWithCompletion:^(void)
+    {
+        if (self.tableDataSource.count)
+        {
+            [UIView animateWithDuration:0.8 animations:^(void)
+            {
+                [self.tableView beginUpdates];
+                self.tableView.tableHeaderView = [self shortHeader];
+                [self.tableView endUpdates];
+            }];
+        }
+        else
+        {
+            [UIView animateWithDuration:0.8 animations:^(void)
+            {
+                [self.tableView beginUpdates];
+                self.tableView.tableHeaderView = [self longHeader];
+                [self.tableView endUpdates];
+            }];
+        }
+    }];
+}
 
 - (IBAction)showMenu:(id)sender
 {

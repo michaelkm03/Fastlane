@@ -37,6 +37,6 @@ typedef NS_ENUM(NSInteger, VStreamFilter)
 @property (strong, nonatomic) NSArray* repositionedCells;;
 @property (weak, nonatomic) id<VStreamTableDelegate, UITableViewDelegate> delegate;
 
-- (IBAction)refresh:(UIRefreshControl *)sender;
+- (void)refreshWithCompletion:(void(^)(void))completionBlock;
 
 @end

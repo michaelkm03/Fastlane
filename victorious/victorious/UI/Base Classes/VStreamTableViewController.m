@@ -251,9 +251,18 @@
 #pragma mark - Refresh
 - (IBAction)refresh:(UIRefreshControl *)sender
 {
+    [self refreshWithCompletion:nil];
+}
+
+- (void)refreshWithCompletion:(void(^)(void))completionBlock
+{
     [self.tableDataSource refreshWithSuccess:^(void)
     {
         [self.refreshControl endRefreshing];
+        if (completionBlock)
+        {
+            completionBlock();
+        }
     }
                                      failure:^(NSError *error)
     {
