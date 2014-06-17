@@ -32,6 +32,11 @@
 
 @import AVFoundation;
 
+NSString * const VObjectManagerContentWillBeCreatedNotification = @"VObjectManagerContentWillBeCreatedNotification";
+NSString * const VObjectManagerContentWasCreatedNotification    = @"VObjectManagerContentWasCreatedNotification";
+NSString * const VObjectManagerContentFilterIDKey               = @"filterID";
+NSString * const VObjectManagerContentIndexKey                  = @"index";
+
 @implementation VObjectManager (ContentCreation)
 
 #pragma mark - Remix
@@ -162,6 +167,7 @@
                                                     name:name
                                              description:description
                                             mediaURLPath:[mediaUrl absoluteString]];
+        [self insertSequenceIntoFilters:newSequence];
         
         //Try to fetch the sequence
         [self fetchSequence:sequenceID successBlock:nil failBlock:nil];
@@ -206,19 +212,43 @@
 
     [self.mainUser addPostedSequencesObject:tempSequence];
     
+    return tempSequence;
+}
+
+- (void)insertSequenceIntoFilters:(VSequence *)tempSequence
+{
     //Add to home screen
     VSequenceFilter* homeFilter = [self sequenceFilterForCategories:[[VHomeStreamViewController sharedInstance] sequenceCategories]];
-    [(VSequenceFilter*)[tempSequence.managedObjectContext objectWithID:homeFilter.objectID] addSequencesObject:tempSequence];
+    [[NSNotificationCenter defaultCenter] postNotificationName:VObjectManagerContentWillBeCreatedNotification
+                                                        object:self
+                                                      userInfo:@{ VObjectManagerContentFilterIDKey: homeFilter.objectID,
+                                                                  VObjectManagerContentIndexKey:    @(0)
+                                                               }];
+    [(VSequenceFilter*)[tempSequence.managedObjectContext objectWithID:homeFilter.objectID] insertSequences:@[tempSequence] atIndexes:[NSIndexSet indexSetWithIndex:0]];
     
     //Add to community or owner (depends on user)
     NSArray* categoriesForSecondFilter = [self.mainUser isOwner] ? [[VOwnerStreamViewController sharedInstance] sequenceCategories]
                                                                  : [[VCommunityStreamViewController sharedInstance] sequenceCategories];
     VSequenceFilter* secondFilter = [self sequenceFilterForCategories:categoriesForSecondFilter];
-    [(VSequenceFilter*)[tempSequence.managedObjectContext objectWithID:secondFilter.objectID] addSequencesObject:tempSequence];
+    [[NSNotificationCenter defaultCenter] postNotificationName:VObjectManagerContentWillBeCreatedNotification
+                                                        object:self
+                                                      userInfo:@{ VObjectManagerContentFilterIDKey: secondFilter.objectID,
+                                                                  VObjectManagerContentIndexKey:    @(0)
+                                                               }];
+    [(VSequenceFilter*)[tempSequence.managedObjectContext objectWithID:secondFilter.objectID] insertSequences:@[tempSequence] atIndexes:[NSIndexSet indexSetWithIndex:0]];
 
     [tempSequence.managedObjectContext saveToPersistentStore:nil];
-    
-    return tempSequence;
+
+    [[NSNotificationCenter defaultCenter] postNotificationName:VObjectManagerContentWasCreatedNotification
+                                                        object:self
+                                                      userInfo:@{ VObjectManagerContentFilterIDKey: homeFilter.objectID,
+                                                                  VObjectManagerContentIndexKey:    @(0)
+                                                               }];
+    [[NSNotificationCenter defaultCenter] postNotificationName:VObjectManagerContentWasCreatedNotification
+                                                        object:self
+                                                      userInfo:@{ VObjectManagerContentFilterIDKey: secondFilter.objectID,
+                                                                  VObjectManagerContentIndexKey:    @(0)
+                                                               }];
 }
 
 - (VSequence*)newPollWithID:(NSNumber*)remoteID
@@ -250,7 +280,7 @@
     [node addInteractionsObject:interaction];
     [tempPoll addNodesObject:node];
     
-    [tempPoll.managedObjectContext saveToPersistentStore:nil];
+    [self insertSequenceIntoFilters:tempPoll];
     return tempPoll;
 }
 

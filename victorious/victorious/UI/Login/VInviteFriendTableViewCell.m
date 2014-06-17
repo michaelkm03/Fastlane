@@ -49,7 +49,7 @@
     if (self.shouldInvite)
     {
         [UIView transitionWithView:self.followButton
-                          duration:1.0
+                          duration:0.3
                            options:UIViewAnimationOptionTransitionFlipFromTop
                         animations:^{
                             [self.followButton setImage:[UIImage imageNamed:@"buttonFollow"] forState:UIControlStateNormal];
@@ -59,7 +59,7 @@
     else
     {
         [UIView transitionWithView:self.followButton
-                          duration:1.0
+                          duration:0.3
                            options:UIViewAnimationOptionTransitionFlipFromTop
                         animations:^{
                             [self.followButton setImage:[UIImage imageNamed:@"buttonFollowed"] forState:UIControlStateNormal];

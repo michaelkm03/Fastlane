@@ -46,7 +46,7 @@
 @property (weak, nonatomic) IBOutlet VResultView* firstResultView;
 @property (weak, nonatomic) IBOutlet VResultView* secondResultView;
 @property (weak, nonatomic) IBOutlet UIView*      maskingView; ///< This view is normally hidden but unhides during landspace video playback
-@property (weak, nonatomic) IBOutlet UIView*      expandedTitleMaskingView; ///< This view is normally hidden but unhides when the
+@property (weak, nonatomic) IBOutlet UIView*      expandedTitleMaskingView; ///< This view is normally hidden but unhides when the title label is expanded
 @property (weak, nonatomic) IBOutlet UIView*      answeredPollMaskingView; ///< This view is normally hidden but unhides when a poll is answered
 @property (weak, nonatomic) IBOutlet UIButton*    collapseButton;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint* topActionsViewHeightConstraint;

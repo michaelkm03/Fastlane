@@ -12,4 +12,6 @@
 @property (nonatomic, strong)   NSArray*    users;
 
 - (IBAction)refresh:(id)sender;
+
+- (NSArray *)inviteList;
 @end
