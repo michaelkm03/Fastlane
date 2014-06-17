@@ -13,6 +13,8 @@
 #import "VObjectManager+Users.h"
 #import "VInviteContactsViewController.h"
 
+#import <CommonCrypto/CommonHMAC.h>
+
 @interface VContactsConnectViewController ()
 @end
 
@@ -111,6 +113,35 @@
                                                  cancelButtonTitle:nil
                                                  otherButtonTitles:NSLocalizedString(@"OKButton", @""), nil];
     [alert show];
+}
+
+- (NSString *)hashedString:(NSString *)string
+{
+    const   int8_t      kSaltLength =   8;
+
+    uint8_t     salt[8];
+    SecRandomCopyBytes(kSecRandomDefault, kSaltLength, salt);
+
+    NSData*         input   =   [string dataUsingEncoding:NSUTF8StringEncoding];
+    
+    NSMutableData*  data    =   [NSMutableData dataWithLength:kSaltLength + input.length];
+    [data appendBytes:salt length:8];
+    [data appendData:input];
+    
+    uint8_t     digest[CC_SHA256_DIGEST_LENGTH];
+    CC_SHA256(data.bytes, data.length, digest);
+    
+    for (int i = 0; i < 999; i++)
+        CC_SHA256(digest, CC_SHA256_DIGEST_LENGTH, digest);
+    
+    NSMutableString*    output = [NSMutableString stringWithCapacity:CC_SHA256_DIGEST_LENGTH * 2];
+    for (int i = 0; i < 8; i++)
+        [output appendFormat:@"%02x", salt[i]];
+
+    for (int i = 0; i < CC_SHA256_DIGEST_LENGTH; i++)
+        [output appendFormat:@"%02x", digest[i]];
+    
+    return [NSString stringWithString:output];
 }
 
 #pragma mark - Navigation
