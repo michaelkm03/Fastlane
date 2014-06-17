@@ -121,7 +121,6 @@
     
     _filterType = filterType;
     self.tableDataSource.filter = [self currentFilter];
-    [self.tableView reloadData];
     self.tableView.contentOffset = CGPointMake(-self.tableView.contentInset.left, -self.tableView.contentInset.top);
     
     if ([self isViewLoaded] && self.view.window && !self.tableDataSource.count)
