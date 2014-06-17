@@ -63,10 +63,10 @@
 {
     NSArray* answers = [[self.sequence firstNode] firstAnswers];
     
-    [self.firstSmallPreviewImage setImageWithURL:[NSURL URLWithString:((VAnswer*)[answers firstObject]).thumbnailUrl]
-                                placeholderImage:self.backgroundImage.image];
-    [self.secondSmallPreviewImage setImageWithURL:[NSURL URLWithString:((VAnswer*)[answers lastObject]).thumbnailUrl]
-                                 placeholderImage:self.backgroundImage.image];
+    [self.firstSmallPreviewImage setImageWithURL:[NSURL URLWithString:((VAnswer*)[answers firstObject]).mediaUrl]
+                                placeholderImage:self.leftPollThumbnail];
+    [self.secondSmallPreviewImage setImageWithURL:[NSURL URLWithString:((VAnswer*)[answers lastObject]).mediaUrl]
+                                 placeholderImage:self.rightPollThumbnail];
  
     if ([((VAnswer*)[answers firstObject]).mediaUrl v_hasVideoExtension])
     {
@@ -91,28 +91,46 @@
 
 - (IBAction)playPoll:(UIButton *)sender
 {
+    if (self.collapsePollMedia)
+    {
+        [UIView animateWithDuration:0.2
+                         animations:^(void)
+        {
+            self.collapsePollMedia();
+        }
+                         completion:^(BOOL finished)
+        {
+            self.collapsePollMedia = nil;
+        }];
+        return;
+    }
+    
     NSArray* answers = [[self.sequence firstNode] firstAnswers];
     NSURL* contentURL;
     UIImageView *thumbnailView;
+    UIImageView *otherThumbnailView;
+    UIView *otherPlayIcon;
+    NSLayoutConstraint *thumbnailWidthConstraint;
+    NSLayoutConstraint *thumbnailHeightConstraint;
     if (sender == self.firstPollButton)
     {
         thumbnailView = self.firstSmallPreviewImage;
+        otherThumbnailView = self.secondSmallPreviewImage;
+        otherPlayIcon = self.secondPollPlayIcon;
+        thumbnailWidthConstraint = self.leftImageViewWidthConstraint;
+        thumbnailHeightConstraint = self.leftImageViewHeightConstraint;
         contentURL = [NSURL URLWithString:((VAnswer*)[answers firstObject]).mediaUrl];
     }
     else if (sender == self.secondPollButton)
     {
         thumbnailView = self.secondSmallPreviewImage;
+        otherThumbnailView = self.firstSmallPreviewImage;
+        otherPlayIcon = self.firstPollPlayIcon;
+        thumbnailWidthConstraint = self.rightImageViewWidthConstraint;
+        thumbnailHeightConstraint = self.rightImageViewHeightConstraint;
         contentURL = [NSURL URLWithString:((VAnswer*)[answers lastObject]).mediaUrl];
     }
 
-    [self.activityIndicator removeFromSuperview];
-    if (self.imageRequestOperation)
-    {
-        AFImageRequestOperation *oldImageRequest = self.imageRequestOperation;
-        self.imageRequestOperation = nil;
-        [oldImageRequest cancel];
-    }
-    
     if ([contentURL v_hasVideoExtension])
     {
         VVideoLightboxViewController *lightbox = [[VVideoLightboxViewController alloc] initWithPreviewImage:thumbnailView.image videoURL:contentURL];
@@ -125,70 +143,62 @@
         lightbox.titleForAnalytics = self.sequence.name;
         [self presentViewController:lightbox animated:YES completion:nil];
     }
-    else if ([contentURL v_hasImageExtension] && ![self.imageRequestOperation.request.URL isEqual:contentURL])
+    else if ([contentURL v_hasImageExtension])
     {
-        VActivityIndicatorView *activityIndicator = [[VActivityIndicatorView alloc] init];
-        activityIndicator.translatesAutoresizingMaskIntoConstraints = NO;
-        [self.pollPreviewView addSubview:activityIndicator];
-        [self.pollPreviewView addConstraint:[NSLayoutConstraint constraintWithItem:activityIndicator
-                                                                         attribute:NSLayoutAttributeCenterX
-                                                                         relatedBy:NSLayoutRelationEqual
-                                                                            toItem:thumbnailView
-                                                                         attribute:NSLayoutAttributeCenterX
-                                                                        multiplier:1.0f
-                                                                          constant:0.0f]];
-        [self.pollPreviewView addConstraint:[NSLayoutConstraint constraintWithItem:activityIndicator
-                                                                         attribute:NSLayoutAttributeCenterY
-                                                                         relatedBy:NSLayoutRelationEqual
-                                                                            toItem:thumbnailView
-                                                                         attribute:NSLayoutAttributeCenterY
-                                                                        multiplier:1.0f
-                                                                          constant:0.0f]];
-        [activityIndicator startAnimating];
-        self.activityIndicator = activityIndicator;
+        CGFloat previousWidth = thumbnailWidthConstraint.constant;
+        CGFloat previousHeight = thumbnailHeightConstraint.constant;
+        CGFloat previousPollMaskAlpha = self.answeredPollMaskingView.alpha;
+        
+        [self.pollPreviewView sendSubviewToBack:otherPlayIcon];
+        [self.pollPreviewView sendSubviewToBack:otherThumbnailView];
+        [UIView animateKeyframesWithDuration:0.2
+                                       delay:0
+                                     options:0
+                                  animations:^(void)
+        {
+            [UIView addKeyframeWithRelativeStartTime:0
+                                    relativeDuration:0.9
+                                          animations:^(void)
+            {
+                CGFloat width = CGRectGetWidth(self.pollPreviewView.frame);
+                thumbnailWidthConstraint.constant = width;
+                thumbnailHeightConstraint.constant = MIN(width * thumbnailView.image.size.height / thumbnailView.image.size.width,
+                                                         CGRectGetHeight(self.pollPreviewView.frame));
+                [self.pollPreviewView layoutIfNeeded];
+                self.firstResultView.alpha = 0;
+                self.secondResultView.alpha = 0;
+                self.answeredPollMaskingView.alpha = 0;
+            }];
+            [UIView addKeyframeWithRelativeStartTime:0.9
+                                    relativeDuration:0.1
+                                          animations:^(void)
+            {
+                otherThumbnailView.alpha = 0;
+                otherPlayIcon.alpha = 0;
+            }];
+        }
+                                  completion:nil];
         
         VContentViewController * __weak weakSelf = self;
-        void (^cleanup)(void) = ^(void)
+        self.collapsePollMedia = ^(void)
         {
-            [activityIndicator removeFromSuperview];
-            weakSelf.activityIndicator = nil;
-            weakSelf.imageRequestOperation = nil;
+            [UIView performWithoutAnimation:^(void)
+            {
+                otherPlayIcon.alpha = 1.0f;
+                otherThumbnailView.alpha = 1.0f;
+            }];
+            weakSelf.firstResultView.alpha = 1.0f;
+            weakSelf.secondResultView.alpha = 1.0f;
+            if (previousPollMaskAlpha)
+            {
+                weakSelf.answeredPollMaskingView.alpha = previousPollMaskAlpha;
+            }
+            thumbnailWidthConstraint.constant = previousWidth;
+            thumbnailHeightConstraint.constant = previousHeight;
+            [weakSelf.pollPreviewView layoutIfNeeded];
         };
-        
-        AFImageRequestOperation *imageRequestOperation = [[AFImageRequestOperation alloc] initWithRequest:[NSURLRequest requestWithURL:contentURL]];
-        [imageRequestOperation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject)
-        {
-            AFImageRequestOperation *imageRequestOperation = (AFImageRequestOperation *)operation;
-            if (operation == weakSelf.imageRequestOperation)
-            {
-                VImageLightboxViewController *lightbox = [[VImageLightboxViewController alloc] initWithImage:imageRequestOperation.responseImage];
-                [VLightboxTransitioningDelegate addNewTransitioningDelegateToLightboxController:lightbox referenceView:thumbnailView];
-                lightbox.onCloseButtonTapped = ^(void)
-                {
-                    [weakSelf dismissViewControllerAnimated:YES completion:nil];
-                };
-                [weakSelf presentViewController:lightbox animated:YES completion:cleanup];
-                [[VAnalyticsRecorder sharedAnalyticsRecorder] sendEventWithCategory:kVAnalyticsEventCategoryNavigation action:@"Display Poll Image" label:self.sequence.name value:nil];
-            }
-        }
-                                                     failure:^(AFHTTPRequestOperation *operation, NSError *error)
-        {
-            if (operation == weakSelf.imageRequestOperation)
-            {
-                UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil
-                                                                    message:NSLocalizedString(@"ImageDownloadFailed", @"")
-                                                                   delegate:nil
-                                                          cancelButtonTitle:NSLocalizedString(@"OKButton", @"")
-                                                          otherButtonTitles:nil];
-                [alertView show];
-                cleanup();
-            }
-        }];
-        self.imageRequestOperation = imageRequestOperation;
-        [imageRequestOperation start];
     }
 }
-
 
 #pragma mark - VPollAnswerBarDelegate
 - (void)answeredPollWithAnswerId:(NSNumber *)answerId
@@ -226,11 +236,24 @@
         [resultView setProgress:progress animated:YES];
     }
     
-    [UIView animateWithDuration:0.5f
-                     animations:^(void)
+    if (self.collapsePollMedia)
     {
-        self.answeredPollMaskingView.alpha = 1.0f;
-    }];
+        void (^previousCollapsePollMedia)() = self.collapsePollMedia;
+        VContentViewController * __weak weakSelf = self;
+        self.collapsePollMedia = ^(void)
+        {
+            previousCollapsePollMedia();
+            weakSelf.answeredPollMaskingView.alpha = 1.0f;
+        };
+    }
+    else
+    {
+        [UIView animateWithDuration:0.5f
+                         animations:^(void)
+        {
+            self.answeredPollMaskingView.alpha = 1.0f;
+        }];
+    }
 }
 
 - (VResultView*)resultViewForAnswerId:(NSNumber*)answerId

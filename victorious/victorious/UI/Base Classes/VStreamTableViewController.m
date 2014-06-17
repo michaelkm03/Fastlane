@@ -150,6 +150,13 @@
     self.selectedSequence = [self.tableDataSource sequenceAtIndexPath:indexPath];
     VStreamViewCell* cell = (VStreamViewCell*)[tableView cellForRowAtIndexPath:indexPath];
     
+    if ([cell isKindOfClass:[VStreamPollCell class]])
+    {
+        VStreamPollCell *pollCell = (VStreamPollCell *)cell;
+        [[VContentViewController sharedInstance] setLeftPollThumbnail:pollCell.previewImageView.image];
+        [[VContentViewController sharedInstance] setRightPollThumbnail:pollCell.previewImageTwo.image];
+    }
+    
     //Every time we go to the content view, update the sequence
     [[VObjectManager sharedManager] fetchSequence:cell.sequence.remoteId
                                      successBlock:nil

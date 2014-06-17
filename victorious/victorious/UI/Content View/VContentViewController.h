@@ -35,6 +35,9 @@
 @property (weak, nonatomic) IBOutlet UIButton* firstPollButton;
 @property (weak, nonatomic) IBOutlet UIButton* secondPollButton;
 
+@property (strong, nonatomic) UIImage *leftPollThumbnail;
+@property (strong, nonatomic) UIImage *rightPollThumbnail;
+
 + (VContentViewController *)sharedInstance;
 
 /**

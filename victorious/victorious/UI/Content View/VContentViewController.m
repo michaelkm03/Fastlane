@@ -581,7 +581,27 @@ static const CGFloat kDistanceBetweenTitleAndCollapseButton =  42.5f;
 
 - (IBAction)pressedBack:(id)sender
 {
-    [self.navigationController popViewControllerAnimated:YES];
+    void (^goBack)() = ^(void)
+    {
+        [self.navigationController popViewControllerAnimated:YES];
+    };
+    if (self.collapsePollMedia)
+    {
+        [UIView animateWithDuration:0.2
+                         animations:^(void)
+        {
+            self.collapsePollMedia();
+        }
+                         completion:^(BOOL finished)
+        {
+            self.collapsePollMedia = nil;
+            goBack();
+        }];
+    }
+    else
+    {
+        goBack();
+    }
 }
 
 - (IBAction)pressedComment:(id)sender
