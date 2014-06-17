@@ -598,6 +598,4 @@ const   CGFloat kVNavigationBarHeight = 44.0;
     }
 }
 
-#pragma mark - VStreamTableViewController
-
 @end
