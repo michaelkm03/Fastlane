@@ -13,6 +13,27 @@
 
 typedef void (^VRemixCompletionBlock) (BOOL completion, NSURL* remixMp4Url, NSError* error);
 
+/**
+ Notification posted when new content is created by the user and will be added to a filter
+ */
+extern NSString * const VObjectManagerContentWillBeCreatedNotification;
+
+/**
+ Notification posted when new content is created by the user and has been added to a filter
+ */
+extern NSString * const VObjectManagerContentWasCreatedNotification;
+
+/**
+ Notification.userInfo dictionary key specifying the filter to which
+ new content was/will be added. The value is a core data objectID.
+ */
+extern NSString * const VObjectManagerContentFilterIDKey;
+
+/**
+ Notification.userInfo dictionary key specifying the index where new content was/will be added
+ */
+extern NSString * const VObjectManagerContentIndexKey;
+
 @interface VObjectManager (ContentCreation)
 
 - (RKManagedObjectRequestOperation*)fetchRemixMP4UrlForSequenceID:(NSNumber*)sequenceID
@@ -56,5 +77,10 @@ typedef void (^VRemixCompletionBlock) (BOOL completion, NSURL* remixMp4Url, NSEr
                                              mediaURL:(NSURL*)mediaURL
                                          successBlock:(VSuccessBlock)success
                                             failBlock:(VFailBlock)fail;
+
+- (VSequence*)newSequenceWithID:(NSNumber*)remoteID
+                           name:(NSString*)name
+                    description:(NSString*)description
+                   mediaURLPath:(NSString*)mediaURLPath;
 
 @end

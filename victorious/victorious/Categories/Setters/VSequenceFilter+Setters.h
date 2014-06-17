@@ -1,5 +1,5 @@
 //
-//  VSequenceFilter.m
+//  VSequenceFilter+Setters.h
 //  victorious
 //
 //  Created by Josh Hinman on 6/11/14.
@@ -7,11 +7,7 @@
 //
 
 #import "VSequenceFilter.h"
-#import "VSequence.h"
 
-
-@implementation VSequenceFilter
-
-@dynamic sequences;
+@interface VSequenceFilter (Setters)
 
 @end
