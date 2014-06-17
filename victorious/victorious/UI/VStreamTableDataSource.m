@@ -7,11 +7,18 @@
 //
 
 #import "NSIndexSet+Map.h"
+#import "VObjectManager+ContentCreation.h"
 #import "VObjectManager+Pagination.h"
 #import "VSequenceFilter.h"
 #import "VStreamTableDataSource.h"
 
 static char KVOContext;
+
+@interface VStreamTableDataSource ()
+
+@property (nonatomic) BOOL insertingContent;
+
+@end
 
 @implementation VStreamTableDataSource
 
@@ -21,6 +28,8 @@ static char KVOContext;
     if (self)
     {
         self.filter = filter;
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(contentWillBeCreated:) name:VObjectManagerContentWillBeCreatedNotification object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(contentWasCreated:)    name:VObjectManagerContentWasCreatedNotification    object:nil];
     }
     return self;
 }
@@ -122,46 +131,38 @@ static char KVOContext;
     return [self.delegate dataSource:self cellForSequence:sequence atIndexPath:indexPath];
 }
 
+#pragma mark - NSNotification handlers
+
+- (void)contentWillBeCreated:(NSNotification *)notification
+{
+    if ([notification.userInfo[VObjectManagerContentFilterIDKey] isEqual:self.filter.objectID])
+    {
+        self.insertingContent = YES;
+        [self.tableView beginUpdates];
+    }
+}
+
+- (void)contentWasCreated:(NSNotification *)notification
+{
+    if ([notification.userInfo[VObjectManagerContentFilterIDKey] isEqual:self.filter.objectID])
+    {
+        NSUInteger index = [notification.userInfo[VObjectManagerContentIndexKey] unsignedIntegerValue];
+        
+        [self.tableView insertRowsAtIndexPaths:@[[NSIndexPath indexPathForItem:index inSection:0]] withRowAnimation:UITableViewRowAnimationAutomatic];
+        [self.tableView endUpdates];
+        self.insertingContent = NO;
+    }
+}
+
 #pragma mark - KVO
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
 {
     if (object == self.filter && [keyPath isEqualToString:NSStringFromSelector(@selector(sequences))])
     {
-        NSKeyValueChange kind = [change[NSKeyValueChangeKindKey] unsignedIntegerValue];
-        
-        if (change[NSKeyValueChangeNotificationIsPriorKey])
+        if (!self.insertingContent)
         {
-            if (kind == NSKeyValueChangeInsertion || kind == NSKeyValueChangeRemoval)
-            {
-                [self.tableView beginUpdates];
-            }
-            return;
-        }
-        
-        NSIndexSet *indexSet = change[NSKeyValueChangeIndexesKey];
-        NSArray *indexPaths;
-        if (indexSet)
-        {
-            indexPaths = [indexSet map:^(NSUInteger idx) { return [NSIndexPath indexPathForItem:idx inSection:0]; }];
-        }
-        
-        switch (kind)
-        {
-            case NSKeyValueChangeInsertion:
-                [self.tableView insertRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationAutomatic];
-                [self.tableView endUpdates];
-                break;
-                
-            case NSKeyValueChangeRemoval:
-                [self.tableView deleteRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationAutomatic];
-                [self.tableView endUpdates];
-                break;
-
-            case NSKeyValueChangeReplacement:
-            default:
-                [self.tableView reloadData];
-                break;
+            [self.tableView reloadData];
         }
     }
 }
