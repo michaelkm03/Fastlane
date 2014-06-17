@@ -349,7 +349,7 @@
 {
     UIImageView* newBackgroundView = [[UIImageView alloc] initWithFrame:self.tableView.backgroundView.frame];
     
-    UIImage* placeholderImage = [UIImage resizeableImageWithColor:[[VThemeManager sharedThemeManager] themedColorForKey:kVBackgroundColor]];
+    UIImage* placeholderImage = [UIImage resizeableImageWithColor:[[UIColor whiteColor] colorWithAlphaComponent:0.7f]];
     [newBackgroundView setBlurredImageWithURL:url
                              placeholderImage:placeholderImage
                                     tintColor:[[UIColor whiteColor] colorWithAlphaComponent:0.7f]];

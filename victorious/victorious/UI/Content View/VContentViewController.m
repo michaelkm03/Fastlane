@@ -409,7 +409,7 @@ static const CGFloat kDistanceBetweenTitleAndCollapseButton =  42.5f;
 {
     _sequence = sequence;
 
-    UIImage* placeholderImage = [UIImage resizeableImageWithColor:[[VThemeManager sharedThemeManager] themedColorForKey:kVBackgroundColor]];
+    UIImage* placeholderImage = [UIImage resizeableImageWithColor:[[UIColor whiteColor] colorWithAlphaComponent:0.7f]];
     [self.backgroundImage setBlurredImageWithURL:[[self.sequence initialImageURLs] firstObject]
                                 placeholderImage:placeholderImage
                                        tintColor:[[UIColor whiteColor] colorWithAlphaComponent:0.7f]];
