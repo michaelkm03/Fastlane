@@ -10,6 +10,7 @@
 
 #import "VObjectManager+Sequence.h"
 #import "VObjectManager+Users.h"
+#import "VObjectManager+Pagination.h"
 
 #import "VUser.h"
 
@@ -158,12 +159,36 @@
 
 - (void)handleCommentURL:(NSArray *)captures
 {
+    NSNumber* sequenceId = @(((NSString*)[captures firstObject]).intValue);
+    if (!sequenceId)
+        return;
     
-}
-
-- (void)handleOtherStuffURL:(NSArray *)captures
-{
-    
+    [[VObjectManager sharedManager] fetchSequence:sequenceId
+                                     successBlock:^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
+     {
+         VCommentsContainerViewController* commentsContainer = [VCommentsContainerViewController commentsContainerView];
+         VContentViewController* contentView = [VContentViewController sharedInstance];
+         VStreamContainerViewController* homeContainer = [VStreamContainerViewController containerForStreamTable:[VHomeStreamViewController sharedInstance]];
+         
+         VSequence* sequence = (VSequence*)[resultObjects firstObject];
+         contentView.sequence = sequence;
+         commentsContainer.sequence = sequence;
+         
+         VRootViewController* root = [VRootViewController rootViewController];
+         [root transitionToNavStack:@[homeContainer, contentView]];
+//         [homeContainer.navigationController pushViewController:contentView animated:NO];
+         [contentView.navigationController pushViewController:commentsContainer animated:YES];
+     }
+                                        failBlock:^(NSOperation* operation, NSError* error)
+     {
+         VLog(@"Failed with error: %@", error);
+         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Missing Content", nil)
+                                                         message:NSLocalizedString(@"Missing Content Message", nil)
+                                                        delegate:nil
+                                               cancelButtonTitle:NSLocalizedString(@"OK", nil)
+                                               otherButtonTitles:nil];
+         [alert show];
+     }];
 }
 
 @end

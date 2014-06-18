@@ -622,12 +622,29 @@ static const CGFloat kDistanceBetweenTitleAndCollapseButton =  42.5f;
 #pragma mark - Animations
 - (void)animateInWithDuration:(CGFloat)duration completion:(void (^)(BOOL finished))completion
 {
-    [UIView animateWithDuration:.25f
+    
+    CGRect topActionsFrame = self.topActionsView.frame;
+    self.topActionsView.frame = CGRectMake(CGRectGetMinX(topActionsFrame), CGRectGetMinY(self.mediaView.frame),
+                                                CGRectGetWidth(topActionsFrame), CGRectGetHeight(topActionsFrame));
+    
+    self.orImageView.hidden = ![self.sequence isPoll];
+    self.orImageView.center = [self.pollPreviewView.superview convertPoint:self.pollPreviewView.center toView:self.orContainerView];
+    
+    self.firstPollButton.alpha = 0;
+    self.secondPollButton.alpha = 0;
+    
+    self.topActionsView.alpha = 0;
+    [UIView animateWithDuration:duration
                      animations:^
      {
+         self.topActionsView.frame = CGRectMake(CGRectGetMinX(topActionsFrame), 0, CGRectGetWidth(topActionsFrame), CGRectGetHeight(topActionsFrame));
+         self.topActionsView.alpha = 1;
+         self.firstPollButton.alpha = 1;
+         self.secondPollButton.alpha = 1;
+         
          for (UIView* view in self.view.subviews)
          {
-             if ([view isKindOfClass:[UIImageView class]])
+             if (CGRectIntersectsRect(self.view.frame, view.frame) || [view isKindOfClass:[UIImageView class]])
                  continue;
              
              if (view.center.y > self.view.center.y)
@@ -642,6 +659,7 @@ static const CGFloat kDistanceBetweenTitleAndCollapseButton =  42.5f;
      }
                      completion:^(BOOL finished)
      {
+         self.view.userInteractionEnabled = YES;
          if (completion)
          {
              completion(finished);
@@ -656,7 +674,7 @@ static const CGFloat kDistanceBetweenTitleAndCollapseButton =  42.5f;
      {
          for (UIView* view in self.view.subviews)
          {
-             if ([view isKindOfClass:[UIImageView class]])
+             if (!CGRectIntersectsRect(self.view.frame, view.frame) || [view isKindOfClass:[UIImageView class]])
                  continue;
              
              if (view.center.y > self.view.center.y)
