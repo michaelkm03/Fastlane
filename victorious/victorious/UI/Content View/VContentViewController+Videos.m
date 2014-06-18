@@ -368,6 +368,14 @@ static const char kVideoUnloadBlockKey;
     }
 }
 
+- (IBAction)tappedPreviewImage:(UITapGestureRecognizer *)sender
+{
+    if (self.collapsePollMedia)
+    {
+        self.collapsePollMedia(YES, nil);
+    }
+}
+
 #pragma mark - Properties
 
 - (void)setVideoPreviewView:(UIView *)videoPreviewView
