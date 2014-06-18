@@ -207,51 +207,29 @@
     self.transitionPlaceholder.userInteractionEnabled = NO;
 
     [[VAnalyticsRecorder sharedAnalyticsRecorder] sendEventWithCategory:kVAnalyticsEventCategoryUserAccount action:@"Start Login Via Facebook" label:nil value:nil];
-    
-    ACAccountStore *accountStore = [[ACAccountStore alloc] init];
-    ACAccountType *facebookAccountType = [accountStore accountTypeWithAccountTypeIdentifier:ACAccountTypeIdentifierFacebook];
-    [accountStore requestAccessToAccountsWithType:facebookAccountType
-                                          options:@{
-                                                    ACFacebookAppIdKey: [[NSBundle mainBundle] objectForInfoDictionaryKey:kFacebookAppIDKey],
-                                                    ACFacebookPermissionsKey: @[@"email"] // Needed for first login
-                                                    }
-                                       completion:^(BOOL granted, NSError *error)
+    [[VUserManager sharedInstance] loginViaFacebookOnCompletion:^(VUser *user, BOOL created)
     {
-        if (!granted)
+        dispatch_async(dispatch_get_main_queue(), ^(void)
         {
-            dispatch_async(dispatch_get_main_queue(), ^(void)
+            [[VAnalyticsRecorder sharedAnalyticsRecorder] sendEventWithCategory:kVAnalyticsEventCategoryUserAccount action:@"Successful Login Via Facebook" label:nil value:nil];
+            self.profile = user;
+            if (created)
             {
-                [[VAnalyticsRecorder sharedAnalyticsRecorder] sendEventWithCategory:kVAnalyticsEventCategoryUserAccount action:@"Facebook Account Access Denied" label:nil value:nil];
-                [self facebookAccessDidFail:error];
-            });
-        }
-        else
-        {
-            [[VUserManager sharedInstance] loginViaFacebookOnCompletion:^(VUser *user, BOOL created)
-            {
-                dispatch_async(dispatch_get_main_queue(), ^(void)
-                {
-                    [[VAnalyticsRecorder sharedAnalyticsRecorder] sendEventWithCategory:kVAnalyticsEventCategoryUserAccount action:@"Successful Login Via Facebook" label:nil value:nil];
-                    self.profile = user;
-                    if (created)
-                    {
-                        [self performSegueWithIdentifier:@"toProfileWithFacebook" sender:self];
-                    }
-                    else
-                    {
-                        [self dismissViewControllerAnimated:YES completion:NULL];
-                    }
-                });
+                [self performSegueWithIdentifier:@"toProfileWithFacebook" sender:self];
             }
-                                                                 onError:^(NSError *error)
+            else
             {
-                dispatch_async(dispatch_get_main_queue(), ^(void)
-                {
-                    [[VAnalyticsRecorder sharedAnalyticsRecorder] sendEventWithCategory:kVAnalyticsEventCategoryUserAccount action:@"Failed Login Via Facebook" label:nil value:nil];
-                    [self didFailWithError:error];
-                });
-            }];
-        }
+                [self dismissViewControllerAnimated:YES completion:NULL];
+            }
+        });
+    }
+                                                         onError:^(NSError *error)
+    {
+        dispatch_async(dispatch_get_main_queue(), ^(void)
+        {
+            [[VAnalyticsRecorder sharedAnalyticsRecorder] sendEventWithCategory:kVAnalyticsEventCategoryUserAccount action:@"Failed Login Via Facebook" label:nil value:nil];
+            [self didFailWithError:error];
+        });
     }];
 }
 
