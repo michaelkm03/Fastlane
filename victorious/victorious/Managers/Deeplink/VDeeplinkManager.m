@@ -85,7 +85,6 @@
 
 - (void)showMissingContentAlert
 {
-    VLog(@"Failed with error: %@", error);
     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Missing Content", nil)
                                                     message:NSLocalizedString(@"Missing Content Message", nil)
                                                    delegate:nil
