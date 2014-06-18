@@ -39,19 +39,7 @@
 {
     srand48(time(0));
 
-//    [application setMinimumBackgroundFetchInterval:UIApplicationBackgroundFetchIntervalMinimum];
-
     [[VThemeManager sharedThemeManager] applyStyling];
-
-//    [application registerForRemoteNotificationTypes:(UIRemoteNotificationTypeBadge | UIRemoteNotificationTypeSound)];
-    
-//    UILocalNotification *localNotif = [launchOptions objectForKey:UIApplicationLaunchOptionsLocalNotificationKey];
-//    if (localNotif)
-//    {
-//        NSString *itemName = [localNotif.userInfo objectForKey:ToDoItemKey];
-//        [viewController displayItem:itemName];  // custom method
-//        app.applicationIconBadgeNumber = localNotif.applicationIconBadgeNumber-1;
-//    }
     
     [[AFNetworkActivityIndicatorManager sharedManager] setEnabled:YES];
     [[VReachability reachabilityForInternetConnection] startNotifier];
@@ -115,57 +103,5 @@
     [[VThemeManager sharedThemeManager] updateToNewTheme];
     [[VObjectManager sharedManager].managedObjectStore.persistentStoreManagedObjectContext saveToPersistentStore:nil];
 }
-
-//- (void)application:(UIApplication *)application performFetchWithCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler
-//{
-//    NSURLSessionConfiguration *sessionConfiguration = [NSURLSessionConfiguration defaultSessionConfiguration];
-//    NSURLSession *session = [NSURLSession sessionWithConfiguration:sessionConfiguration];
-//    
-//    NSURL *url = [[NSURL alloc] initWithString:@"http://yourserver.com/data.json"];
-//    NSURLSessionDataTask *task = [session dataTaskWithURL:url
-//                                        completionHandler:^(NSData *data, NSURLResponse *response, NSError *error)
-//    {
-//        if (error)
-//        {
-//            completionHandler(UIBackgroundFetchResultFailed);
-//            return;
-//        }
-//                                            
-//        // Parse response/data and determine whether new content was available
-//        BOOL hasNewData = NO;
-//        if (hasNewData)
-//        {
-//            completionHandler(UIBackgroundFetchResultNewData);
-//        }
-//        else
-//        {
-//            completionHandler(UIBackgroundFetchResultNoData);
-//        }
-//    }];
-//    
-//    // Start the task
-//    [task resume];
-//}
-
-//- (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo fetchCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler
-//{
-//    NSLog(@"Remote Notification userInfo is %@", userInfo);
-//    
-////    NSNumber *contentID = userInfo[@"content-id"];
-//    // Do something with the content ID
-//    completionHandler(UIBackgroundFetchResultNewData);
-//}
-
-//- (void)application:(UIApplication *)app didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)devToken
-//{
-////    const void *devTokenBytes = [devToken bytes];
-////    self.registered = YES;
-////    [self sendProviderDeviceToken:devTokenBytes]; // custom method
-//}
-
-//- (void)application:(UIApplication *)app didFailToRegisterForRemoteNotificationsWithError:(NSError *)err
-//{
-//    NSLog(@"Error in registration. Error: %@", err);
-//}
 
 @end
