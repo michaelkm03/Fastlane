@@ -642,7 +642,7 @@ NSTimeInterval kVContentPollAnimationDuration = 0.2;
                                                 CGRectGetWidth(topActionsFrame), CGRectGetHeight(topActionsFrame));
     
     self.orImageView.hidden = ![self.sequence isPoll];
-    self.orImageView.center = [self.pollPreviewView.superview convertPoint:self.pollPreviewView.center toView:self.orContainerView];
+    self.orImageView.center = CGPointMake(CGRectGetMidX(self.orContainerView.bounds), 107.0f);
     
     self.firstPollButton.alpha = 0;
     self.secondPollButton.alpha = 0;
