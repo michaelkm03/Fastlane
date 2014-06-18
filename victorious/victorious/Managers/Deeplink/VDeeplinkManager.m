@@ -76,7 +76,22 @@
             
             return;
         }
+        else
+        {
+            [self showMissingContentAlert];
+        }
     }
+}
+
+- (void)showMissingContentAlert
+{
+    VLog(@"Failed with error: %@", error);
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Missing Content", nil)
+                                                    message:NSLocalizedString(@"Missing Content Message", nil)
+                                                   delegate:nil
+                                          cancelButtonTitle:NSLocalizedString(@"OK", nil)
+                                          otherButtonTitles:nil];
+    [alert show];
 }
 
 - (NSDictionary *)deepLinkPatterns
@@ -93,7 +108,10 @@
 {
     NSNumber* sequenceId = @(((NSString*)[captures firstObject]).intValue);
     if (!sequenceId)
+    {
+        [self showMissingContentAlert];
         return;
+    }
     
     [[VObjectManager sharedManager] fetchSequence:sequenceId
                                      successBlock:^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
@@ -111,12 +129,7 @@
                                         failBlock:^(NSOperation* operation, NSError* error)
      {
          VLog(@"Failed with error: %@", error);
-         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Missing Content", nil)
-                                                         message:NSLocalizedString(@"Missing Content Message", nil)
-                                                        delegate:nil
-                                               cancelButtonTitle:NSLocalizedString(@"OK", nil)
-                                               otherButtonTitles:nil];
-         [alert show];
+         [self showMissingContentAlert];
      }];
 }
 
@@ -124,7 +137,10 @@
 {
     NSNumber* userID = @(((NSString*)[captures firstObject]).intValue);
     if (!userID)
+    {
+        [self showMissingContentAlert];
         return;
+    }
     
     [[VObjectManager sharedManager] fetchUser:(NSNumber *)userID
                              withSuccessBlock:^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
@@ -143,12 +159,7 @@
                                     failBlock:^(NSOperation* operation, NSError* error)
      {
          VLog(@"Failed with error: %@", error);
-         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Missing Content", nil)
-                                                         message:NSLocalizedString(@"Missing Content Message", nil)
-                                                        delegate:nil
-                                               cancelButtonTitle:NSLocalizedString(@"OK", nil)
-                                               otherButtonTitles:nil];
-         [alert show];
+         [self showMissingContentAlert];
      }];
 }
 
@@ -161,7 +172,10 @@
 {
     NSNumber* sequenceId = @(((NSString*)[captures firstObject]).intValue);
     if (!sequenceId)
+    {
+        [self showMissingContentAlert];
         return;
+    }
     
     [[VObjectManager sharedManager] fetchSequence:sequenceId
                                      successBlock:^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
@@ -176,18 +190,12 @@
          
          VRootViewController* root = [VRootViewController rootViewController];
          [root transitionToNavStack:@[homeContainer, contentView]];
-//         [homeContainer.navigationController pushViewController:contentView animated:NO];
          [contentView.navigationController pushViewController:commentsContainer animated:YES];
      }
                                         failBlock:^(NSOperation* operation, NSError* error)
      {
          VLog(@"Failed with error: %@", error);
-         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Missing Content", nil)
-                                                         message:NSLocalizedString(@"Missing Content Message", nil)
-                                                        delegate:nil
-                                               cancelButtonTitle:NSLocalizedString(@"OK", nil)
-                                               otherButtonTitles:nil];
-         [alert show];
+         [self showMissingContentAlert];
      }];
 }
 
