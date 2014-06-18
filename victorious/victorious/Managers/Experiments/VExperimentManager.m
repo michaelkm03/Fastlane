@@ -15,7 +15,7 @@ NSString*   const   kVExportVideoQuality                =   @"remix";
 
 @implementation VExperimentManager
 
-+ (VExperimentManager *)sharedManager
++ (instancetype)sharedManager
 {
     static  VExperimentManager*  sharedManager;
     static  dispatch_once_t onceToken;

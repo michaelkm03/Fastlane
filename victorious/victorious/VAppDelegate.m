@@ -13,8 +13,10 @@
 
 #import "VAnalyticsRecorder.h"
 #import "VObjectManager+Sequence.h"
+#import "VObjectManager+Users.h"
 #import "VObjectManager+Login.h"
 #import "VUserManager.h"
+#import "VDeeplinkManager.h"
 
 #import "VConstants.h"
 
@@ -75,14 +77,14 @@
     
     NSURL*  openURL =   launchOptions[UIApplicationLaunchOptionsURLKey];
     if (openURL)
-        [self handleOpenURL:openURL];
+        [[VDeeplinkManager sharedManager] handleOpenURL:openURL];
     
     return YES;
 }
 
 - (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation
 {
-    [self handleOpenURL:url];
+    [[VDeeplinkManager sharedManager] handleOpenURL:url];
     return YES;
 }
 
@@ -165,73 +167,5 @@
 //{
 //    NSLog(@"Error in registration. Error: %@", err);
 //}
-
-#pragma mark - Deep Linking
-
-- (void)handleOpenURL:(NSURL *)aURL
-{
-    NSString*   linkString = [aURL resourceSpecifier];
-    NSError*    error = NULL;
-
-    for (NSString* pattern in [[self deepLinkPatterns] allKeys])
-    {
-        NSRegularExpression*    regex = [NSRegularExpression regularExpressionWithPattern:pattern
-                                                                                  options:NSRegularExpressionCaseInsensitive
-                                                                                    error:&error];
-        
-        NSTextCheckingResult *result = [regex firstMatchInString:linkString
-                                                         options:NSMatchingAnchored
-                                                           range:NSMakeRange(0, linkString.length)];
-        
-        if (result)
-        {
-            NSMutableArray* captures = [NSMutableArray array];
-            for (int i=1; i < result.numberOfRanges; i++)
-            {
-                NSRange range = [result rangeAtIndex:i];
-                NSString*   capture = [linkString substringWithRange:range];
-                [captures addObject:capture];
-            }
-            
-            //  This may look ugly, but this provides greater type safety than simply calling performSelector, allowing ARC to perform correctly.
-            SEL selector = NSSelectorFromString([[self deepLinkPatterns] objectForKey:pattern]);
-            IMP imp = [self methodForSelector:selector];
-            void (*func)(id, SEL, NSArray *) = (void *)imp;
-            func(self, selector, captures);
-
-            return;
-        }
-    }
-}
-
-- (NSDictionary *)deepLinkPatterns
-{
-    return @{
-             @"//victorious/(\\d+)/sequence"                : @"handleSequenceURL:",
-             @"//victorious/(\\d+)/profile/(\\d+)"          : @"handleProfileURL:",
-             @"//victorious/(\\d+)/conversation"            : @"handleConversationURL:",
-             @"//victorious/(\\d+)/others/(\\d+)/review"    : @"handleOtherStuffURL:"
-             };
-}
-
-- (void)handleSequenceURL:(NSArray *)captures
-{
-    
-}
-
-- (void)handleProfileURL:(NSArray *)captures
-{
-    
-}
-
-- (void)handleConversationURL:(NSArray *)captures
-{
-    
-}
-
-- (void)handleOtherStuffURL:(NSArray *)captures
-{
-    
-}
 
 @end

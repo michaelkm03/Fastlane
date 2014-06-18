@@ -90,6 +90,17 @@
     [self presentViewController:forceUpgradeViewController animated:YES completion:nil];
 }
 
+- (void)transitionToNavStack:(NSArray*)navStack
+{
+    //Dismiss any modals in the stack or they will cover the new VC
+    for (UIViewController* vc in self.contentViewController.viewControllers)
+    {
+        [vc dismissViewControllerAnimated:NO completion:nil];
+    }
+    
+    self.contentViewController.viewControllers = navStack;
+}
+
 #pragma mark - UINavigationControllerDelegate methods
 
 - (id<UIViewControllerAnimatedTransitioning>)navigationController:(UINavigationController *)navigationController

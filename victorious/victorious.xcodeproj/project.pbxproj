@@ -238,6 +238,7 @@
 		BE5DE3F618DA72140047B67E /* VInteractionAction.m in Sources */ = {isa = PBXBuildFile; fileRef = BE5DE3F518DA72140047B67E /* VInteractionAction.m */; };
 		BE5DE3FC18DA730B0047B67E /* VVoteType+RestKit.m in Sources */ = {isa = PBXBuildFile; fileRef = BE5DE3FB18DA730B0047B67E /* VVoteType+RestKit.m */; };
 		BE6211AF192D65C300D5C74B /* VTableContainerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BE6211AE192D65C300D5C74B /* VTableContainerViewController.m */; };
+		BE6464E719511F360089A34F /* VDeeplinkManager.m in Sources */ = {isa = PBXBuildFile; fileRef = BE6464E619511F360089A34F /* VDeeplinkManager.m */; };
 		BE651D0E18AAD58A00069119 /* VLoadingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BE651D0D18AAD58A00069119 /* VLoadingViewController.m */; };
 		BE651D1018AC270900069119 /* VKeyboardBarViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BE651D0F18AC270900069119 /* VKeyboardBarViewController.m */; };
 		BE669C591937E43100EC45AE /* VSequence.m in Sources */ = {isa = PBXBuildFile; fileRef = BE669C581937E43100EC45AE /* VSequence.m */; };
@@ -751,6 +752,8 @@
 		BE5DE3FB18DA730B0047B67E /* VVoteType+RestKit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "VVoteType+RestKit.m"; sourceTree = "<group>"; };
 		BE6211AD192D65C300D5C74B /* VTableContainerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VTableContainerViewController.h; path = "UI/Base Classes/VTableContainerViewController.h"; sourceTree = "<group>"; };
 		BE6211AE192D65C300D5C74B /* VTableContainerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VTableContainerViewController.m; path = "UI/Base Classes/VTableContainerViewController.m"; sourceTree = "<group>"; };
+		BE6464E519511F360089A34F /* VDeeplinkManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VDeeplinkManager.h; path = Deeplink/VDeeplinkManager.h; sourceTree = "<group>"; };
+		BE6464E619511F360089A34F /* VDeeplinkManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VDeeplinkManager.m; path = Deeplink/VDeeplinkManager.m; sourceTree = "<group>"; };
 		BE651D0C18AAD58A00069119 /* VLoadingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VLoadingViewController.h; path = UI/VLoadingViewController.h; sourceTree = "<group>"; };
 		BE651D0D18AAD58A00069119 /* VLoadingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VLoadingViewController.m; path = UI/VLoadingViewController.m; sourceTree = "<group>"; };
 		BE651D0F18AC270900069119 /* VKeyboardBarViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VKeyboardBarViewController.m; sourceTree = "<group>"; };
@@ -1711,6 +1714,7 @@
 		BE171DD91868C211004E5202 /* Managers */ = {
 			isa = PBXGroup;
 			children = (
+				BE6464E419511F1B0089A34F /* Deeplink */,
 				BEFA6887194B7CAC005A0189 /* Experiments */,
 				035C2D801940F0D10023FC05 /* Analytics */,
 				BE7169D018D0F58C004966C3 /* InteractionManager */,
@@ -1815,6 +1819,15 @@
 				BEB52A8A18C80B8700AC5FE4 /* VContentToStreamAnimator.m */,
 			);
 			name = Animations;
+			sourceTree = "<group>";
+		};
+		BE6464E419511F1B0089A34F /* Deeplink */ = {
+			isa = PBXGroup;
+			children = (
+				BE6464E519511F360089A34F /* VDeeplinkManager.h */,
+				BE6464E619511F360089A34F /* VDeeplinkManager.m */,
+			);
+			name = Deeplink;
 			sourceTree = "<group>";
 		};
 		BE692B2B186E5EE000C71336 /* Cells */ = {
@@ -2293,6 +2306,7 @@
 				03086AAA18F60E3000105FFB /* VMediaPreviewViewController.m in Sources */,
 				BE6B95FC187C88F700CED4C9 /* VSequence+Fetcher.m in Sources */,
 				BED7F68018E1187800545DF6 /* VEphemeralTimerView.m in Sources */,
+				BE6464E719511F360089A34F /* VDeeplinkManager.m in Sources */,
 				BE40559418A1828D00092AE1 /* UIButton+VImageLoading.m in Sources */,
 				03484BFE192E9D2100403FB1 /* NSLayoutConstraint+CenterConstraints.m in Sources */,
 				0385FEE918EF41B4009FBD68 /* VImageSearchResult.m in Sources */,

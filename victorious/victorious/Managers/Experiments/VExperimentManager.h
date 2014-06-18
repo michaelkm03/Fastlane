@@ -13,7 +13,7 @@ extern  NSString*   const   kVExportVideoQuality;
 
 @interface VExperimentManager : NSObject
 
-+ (VExperimentManager *)sharedManager;
++ (instancetype)sharedManager;
 
 - (void)updateExperimentsWithDictionary:(NSDictionary *)dictionary;
 - (NSInteger)variantForExperiment:(NSString*)experimentKey;

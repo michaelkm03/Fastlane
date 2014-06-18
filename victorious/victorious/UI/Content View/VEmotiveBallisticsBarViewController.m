@@ -111,6 +111,9 @@
 {
     [super setSequence:sequence];
     
+    if (!sequence)
+        return;
+    
     self.voteCountsForDisplay[self.likeVote.remoteId] = [self.sequence voteCountForVoteID:self.likeVote.remoteId];
     self.voteCountsForDisplay[self.dislikeVote.remoteId] = [self.sequence voteCountForVoteID:self.dislikeVote.remoteId];
     

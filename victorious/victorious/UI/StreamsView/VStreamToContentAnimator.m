@@ -49,7 +49,11 @@
                           completion:^(BOOL finished)
           {
               [[context containerView] addSubview:contentVC.view];
-              contentVC.sequence = selectedCell.sequence;
+              
+              if (selectedCell)
+                  contentVC.sequence = selectedCell.sequence;
+              else
+                  contentVC.sequence = contentVC.sequence;
               
               CGRect topActionsFrame = contentVC.topActionsView.frame;
               contentVC.topActionsView.frame = CGRectMake(CGRectGetMinX(topActionsFrame), CGRectGetMinY(contentVC.mediaView.frame),

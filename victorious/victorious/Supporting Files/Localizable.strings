@@ -50,6 +50,9 @@
 "SMSFail"               =   "SMS failed to send";
 "CouldNotSend"          =   "Message was not sent";
 
+"Missing Content"           =   "Uh Oh!";
+"Missing Content Message"   =   "It looks like the content you're looking for is missing!";
+
 "NoMessagesTitle"       =   "NO MESSAGES YET";
 "NoMessagesMessage"     =   "You can send messages to anyone on the app!  Just go to their profile and click the compose icon in the top right corner.";
 
