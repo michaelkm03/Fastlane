@@ -172,7 +172,7 @@ static const char kVideoUnloadBlockKey;
     [closeButton addTarget:self action:@selector(pressedClose:) forControlEvents:UIControlEventTouchUpInside];
     closeButton.tintColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVMainTextColor];
     [self.videoPlayer.overlayView addSubview:closeButton];
-    [self.videoPlayer.overlayView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:[closeButton(==50)]-5-|"
+    [self.videoPlayer.overlayView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-5-[closeButton(==50)]"
                                                                                          options:0
                                                                                          metrics:nil
                                                                                            views:NSDictionaryOfVariableBindings(closeButton)]];
@@ -192,10 +192,14 @@ static const char kVideoUnloadBlockKey;
     return self.temporaryVideoPreviewConstraints.count;
 }
 
-- (void)unloadVideoWithDuration:(NSTimeInterval)duration completion:(void (^)(void))completion
+- (void)unloadVideoAnimated:(BOOL)animated withDuration:(NSTimeInterval)duration completion:(void (^)(void))completion
 {
     if (!self.videoPlayer && !self.temporaryVideoPreviewConstraints.count)
     {
+        if (completion)
+        {
+            completion();
+        }
         return;
     }
     
@@ -229,6 +233,7 @@ static const char kVideoUnloadBlockKey;
             self.temporaryVideoPreviewConstraints = nil;
             self.previewImage.alpha = 1.0f;
             self.videoPlayer.view.alpha = 0;
+            [self.mediaView layoutIfNeeded];
         };
         
         if (UIInterfaceOrientationIsLandscape(self.interfaceOrientation))
@@ -241,15 +246,19 @@ static const char kVideoUnloadBlockKey;
         }
         else
         {
-            [UIView animateWithDuration:duration
-                                  delay:0
-                                options:UIViewAnimationOptionCurveEaseInOut
-                             animations:^(void)
+            if (animated)
+            {
+                [UIView animateWithDuration:duration
+                                      delay:0
+                                    options:UIViewAnimationOptionCurveEaseInOut
+                                 animations:animations
+                                 completion:animationCompletion];
+            }
+            else
             {
                 animations();
-                [self.mediaView layoutIfNeeded];
+                animationCompletion(YES);
             }
-                             completion:animationCompletion];
         }
     }
     else
@@ -349,7 +358,14 @@ static const char kVideoUnloadBlockKey;
 
 - (IBAction)pressedClose:(id)sender
 {
-    [self unloadVideoWithDuration:kVideoPlayerAnimationDuration completion:nil];
+    if (self.collapsePollMedia)
+    {
+        self.collapsePollMedia(YES, nil);
+    }
+    else
+    {
+        [self unloadVideoAnimated:YES withDuration:kVideoPlayerAnimationDuration completion:nil];
+    }
 }
 
 #pragma mark - Properties
@@ -398,7 +414,7 @@ static const char kVideoUnloadBlockKey;
 
 - (void)videoPlayerFailed:(VCVideoPlayerViewController *)videoPlayer
 {
-    [self unloadVideoWithDuration:kVideoPlayerAnimationDuration completion:^(void)
+    [self unloadVideoAnimated:YES withDuration:kVideoPlayerAnimationDuration completion:^(void)
     {
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil
                                                         message:NSLocalizedString(@"VideoPlayFailed", @"")

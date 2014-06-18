@@ -86,22 +86,14 @@
     }
     
     self.pollPreviewView.hidden = NO;
-    self.previewImage.hidden = YES;
+    self.mediaSuperview.hidden = YES;
 }
 
 - (IBAction)playPoll:(UIButton *)sender
 {
     if (self.collapsePollMedia)
     {
-        [UIView animateWithDuration:0.2
-                         animations:^(void)
-        {
-            self.collapsePollMedia();
-        }
-                         completion:^(BOOL finished)
-        {
-            self.collapsePollMedia = nil;
-        }];
+        self.collapsePollMedia(YES, nil);
         return;
     }
     
@@ -109,6 +101,7 @@
     NSURL* contentURL;
     UIImageView *thumbnailView;
     UIImageView *otherThumbnailView;
+    UIView *playIcon;
     UIView *otherPlayIcon;
     NSLayoutConstraint *thumbnailWidthConstraint;
     NSLayoutConstraint *thumbnailHeightConstraint;
@@ -116,6 +109,7 @@
     {
         thumbnailView = self.firstSmallPreviewImage;
         otherThumbnailView = self.secondSmallPreviewImage;
+        playIcon = self.firstPollPlayIcon;
         otherPlayIcon = self.secondPollPlayIcon;
         thumbnailWidthConstraint = self.leftImageViewWidthConstraint;
         thumbnailHeightConstraint = self.leftImageViewHeightConstraint;
@@ -125,68 +119,89 @@
     {
         thumbnailView = self.secondSmallPreviewImage;
         otherThumbnailView = self.firstSmallPreviewImage;
+        playIcon = self.secondPollPlayIcon;
         otherPlayIcon = self.firstPollPlayIcon;
         thumbnailWidthConstraint = self.rightImageViewWidthConstraint;
         thumbnailHeightConstraint = self.rightImageViewHeightConstraint;
         contentURL = [NSURL URLWithString:((VAnswer*)[answers lastObject]).mediaUrl];
     }
 
-    if ([contentURL v_hasVideoExtension])
+    CGFloat previousWidth = thumbnailWidthConstraint.constant;
+    CGFloat previousHeight = thumbnailHeightConstraint.constant;
+    CGFloat previousPollMaskAlpha = self.answeredPollMaskingView.alpha;
+    
+    [self.pollPreviewView sendSubviewToBack:otherPlayIcon];
+    [self.pollPreviewView sendSubviewToBack:otherThumbnailView];
+    [UIView animateKeyframesWithDuration:kVContentPollAnimationDuration
+                                   delay:0
+                                 options:0
+                              animations:^(void)
     {
-        VVideoLightboxViewController *lightbox = [[VVideoLightboxViewController alloc] initWithPreviewImage:thumbnailView.image videoURL:contentURL];
-        [VLightboxTransitioningDelegate addNewTransitioningDelegateToLightboxController:lightbox referenceView:thumbnailView];
-        lightbox.onCloseButtonTapped = ^(void)
+        [UIView addKeyframeWithRelativeStartTime:0
+                                relativeDuration:0.9
+                                      animations:^(void)
         {
-            [self dismissViewControllerAnimated:YES completion:nil];
-        };
-        lightbox.onVideoFinished = lightbox.onCloseButtonTapped;
-        lightbox.titleForAnalytics = self.sequence.name;
-        [self presentViewController:lightbox animated:YES completion:nil];
-    }
-    else if ([contentURL v_hasImageExtension])
-    {
-        CGFloat previousWidth = thumbnailWidthConstraint.constant;
-        CGFloat previousHeight = thumbnailHeightConstraint.constant;
-        CGFloat previousPollMaskAlpha = self.answeredPollMaskingView.alpha;
-        
-        [self.pollPreviewView sendSubviewToBack:otherPlayIcon];
-        [self.pollPreviewView sendSubviewToBack:otherThumbnailView];
-        [UIView animateKeyframesWithDuration:0.2
-                                       delay:0
-                                     options:0
-                                  animations:^(void)
-        {
-            [UIView addKeyframeWithRelativeStartTime:0
-                                    relativeDuration:0.9
-                                          animations:^(void)
+            if ([contentURL v_hasVideoExtension])
+            {
+                thumbnailWidthConstraint.constant = CGRectGetWidth(self.previewImage.frame);
+                thumbnailHeightConstraint.constant = CGRectGetHeight(self.previewImage.frame);
+            }
+            else
             {
                 CGFloat width = CGRectGetWidth(self.pollPreviewView.frame);
                 thumbnailWidthConstraint.constant = width;
                 thumbnailHeightConstraint.constant = MIN(width * thumbnailView.image.size.height / thumbnailView.image.size.width,
                                                          CGRectGetHeight(self.pollPreviewView.frame));
-                [self.pollPreviewView layoutIfNeeded];
-                self.firstResultView.alpha = 0;
-                self.secondResultView.alpha = 0;
-                self.answeredPollMaskingView.alpha = 0;
-            }];
-            [UIView addKeyframeWithRelativeStartTime:0.9
-                                    relativeDuration:0.1
-                                          animations:^(void)
-            {
-                otherThumbnailView.alpha = 0;
-                otherPlayIcon.alpha = 0;
-            }];
-        }
-                                  completion:nil];
-        
-        VContentViewController * __weak weakSelf = self;
-        self.collapsePollMedia = ^(void)
+            }
+            [self.pollPreviewView layoutIfNeeded];
+            playIcon.alpha = 0;
+            self.firstResultView.alpha = 0;
+            self.secondResultView.alpha = 0;
+            self.answeredPollMaskingView.alpha = 0;
+        }];
+        [UIView addKeyframeWithRelativeStartTime:0.9
+                                relativeDuration:0.1
+                                      animations:^(void)
         {
-            [UIView performWithoutAnimation:^(void)
+            otherThumbnailView.alpha = 0;
+            otherPlayIcon.alpha = 0;
+        }];
+    }
+                              completion:^(BOOL complete)
+    {
+        if ([contentURL v_hasVideoExtension])
+        {
+            self.mediaSuperview.hidden = NO;
+            self.previewImage.image = thumbnailView.image;
+            self.pollPreviewView.hidden = YES;
+            [self playVideoAtURL:contentURL withPreviewView:self.previewImage];
+            VContentViewController * __weak weakSelf = self;
+            self.onVideoCompletionBlock = ^(void)
             {
-                otherPlayIcon.alpha = 1.0f;
-                otherThumbnailView.alpha = 1.0f;
-            }];
+                weakSelf.collapsePollMedia(YES, nil);
+            };
+        }
+    }];
+    
+    VContentViewController * __weak weakSelf = self;
+    self.collapsePollMedia = ^(BOOL animated, void (^completion)())
+    {
+        if ([contentURL v_hasVideoExtension])
+        {
+            weakSelf.mediaSuperview.hidden = YES;
+            weakSelf.pollPreviewView.hidden = NO;
+            thumbnailView.frame = weakSelf.previewImage.frame;
+            [weakSelf unloadVideoAnimated:NO withDuration:0 completion:nil];
+        }
+        
+        void (^firstKeyframe)() = ^(void)
+        {
+            otherPlayIcon.alpha = 1.0f;
+            otherThumbnailView.alpha = 1.0f;
+        };
+        void (^secondKeyframe)() = ^(void)
+        {
+            playIcon.alpha = 1.0f;
             weakSelf.firstResultView.alpha = 1.0f;
             weakSelf.secondResultView.alpha = 1.0f;
             if (previousPollMaskAlpha)
@@ -197,7 +212,38 @@
             thumbnailHeightConstraint.constant = previousHeight;
             [weakSelf.pollPreviewView layoutIfNeeded];
         };
-    }
+        void (^animationCompletion)(BOOL) = ^(BOOL finished)
+        {
+            if (completion)
+            {
+                completion();
+            }
+        };
+        
+        if (animated)
+        {
+            [UIView animateKeyframesWithDuration:kVContentPollAnimationDuration
+                                           delay:0
+                                         options:0
+                                      animations:^(void)
+            {
+                [UIView addKeyframeWithRelativeStartTime:0
+                                        relativeDuration:0.1
+                                              animations:firstKeyframe];
+                [UIView addKeyframeWithRelativeStartTime:0.1
+                                        relativeDuration:0.9
+                                              animations:secondKeyframe];
+            }
+                                      completion:animationCompletion];
+        }
+        else
+        {
+            firstKeyframe();
+            secondKeyframe();
+            animationCompletion(YES);
+        }
+        weakSelf.collapsePollMedia = nil;
+    };
 }
 
 #pragma mark - VPollAnswerBarDelegate
@@ -238,11 +284,11 @@
     
     if (self.collapsePollMedia)
     {
-        void (^previousCollapsePollMedia)() = self.collapsePollMedia;
+        void (^previousCollapsePollMedia)(BOOL, void(^)()) = self.collapsePollMedia;
         VContentViewController * __weak weakSelf = self;
-        self.collapsePollMedia = ^(void)
+        self.collapsePollMedia = ^(BOOL animated, void (^completion)())
         {
-            previousCollapsePollMedia();
+            previousCollapsePollMedia(animated, completion);
             weakSelf.answeredPollMaskingView.alpha = 1.0f;
         };
     }

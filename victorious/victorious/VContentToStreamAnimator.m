@@ -43,7 +43,7 @@
     
     if ([contentVC isVideoLoadingOrLoaded])
     {
-        [contentVC unloadVideoWithDuration:0.2f completion:nil];
+        [contentVC unloadVideoAnimated:YES withDuration:0.2f completion:nil];
     }
     
     [UIView animateWithDuration:0.2f

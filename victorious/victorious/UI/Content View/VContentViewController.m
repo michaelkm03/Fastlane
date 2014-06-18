@@ -35,6 +35,8 @@ static const CGFloat kBarContainerViewHeight                =  60.0f;
 static const CGFloat kDistanceBetweenTitleAndHR             =  14.5f;
 static const CGFloat kDistanceBetweenTitleAndCollapseButton =  42.5f;
 
+NSTimeInterval kVContentPollAnimationDuration = 0.2;
+
 @import MediaPlayer;
 
 @implementation VContentViewController
@@ -150,6 +152,7 @@ static const CGFloat kDistanceBetweenTitleAndCollapseButton =  42.5f;
     self.firstPollPlayIcon.hidden = YES;
     self.secondPollPlayIcon.hidden = YES;
     self.answeredPollMaskingView.alpha = 0;
+    self.mediaSuperview.hidden = NO;
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -587,16 +590,7 @@ static const CGFloat kDistanceBetweenTitleAndCollapseButton =  42.5f;
     };
     if (self.collapsePollMedia)
     {
-        [UIView animateWithDuration:0.2
-                         animations:^(void)
-        {
-            self.collapsePollMedia();
-        }
-                         completion:^(BOOL finished)
-        {
-            self.collapsePollMedia = nil;
-            goBack();
-        }];
+        self.collapsePollMedia(YES, ^{ goBack(); });
     }
     else
     {

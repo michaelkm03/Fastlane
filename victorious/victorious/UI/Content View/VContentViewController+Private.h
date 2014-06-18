@@ -28,6 +28,8 @@
 
 @import MediaPlayer;
 
+extern NSTimeInterval kVContentPollAnimationDuration;
+
 @interface VContentViewController ()  <UIWebViewDelegate, VContentTitleTextViewDelegate, VInteractionManagerDelegate, UIDynamicAnimatorDelegate, UINavigationControllerDelegate>
 
 @property (weak, nonatomic) IBOutlet UIImageView* backgroundImage;
@@ -71,7 +73,7 @@
 
 @property (strong, nonatomic) VActivityIndicatorView*  activityIndicator;
 
-@property (copy, nonatomic) void (^collapsePollMedia)(void); ///< Execute this block to collapse the poll media. If this block is nil, poll media is not expanded.
+@property (copy, nonatomic) void (^collapsePollMedia)(BOOL animated, void(^completion)()); ///< Execute this block to collapse the poll media. If poll media is not expanded, this block is nil.
 
 @property (strong, nonatomic) id<UIViewControllerTransitioningDelegate> transitionDelegate;
 
