@@ -76,11 +76,8 @@
             
             return;
         }
-        else
-        {
-            [self showMissingContentAlert];
-        }
     }
+    [self showMissingContentAlert];
 }
 
 - (void)showMissingContentAlert
@@ -164,7 +161,7 @@
 
 - (void)handleConversationURL:(NSArray *)captures
 {
-    
+    [self showMissingContentAlert];
 }
 
 - (void)handleCommentURL:(NSArray *)captures
