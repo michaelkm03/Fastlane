@@ -29,7 +29,7 @@
 + (instancetype)messageContainer
 {
     UIViewController*   currentViewController = [[UIApplication sharedApplication] delegate].window.rootViewController;
-    VMessageContainerViewController* container = (VMessageContainerViewController*)[currentViewController.storyboard instantiateViewControllerWithIdentifier: kInboxContainerID];
+    VMessageContainerViewController* container = (VMessageContainerViewController*)[currentViewController.storyboard instantiateViewControllerWithIdentifier: kMessageContainerID];
     
     return container;
 }

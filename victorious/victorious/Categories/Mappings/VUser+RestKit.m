@@ -62,6 +62,18 @@
                                                      pathPattern:@"/api/userinfo/fetch/:userId"
                                                          keyPath:@"payload"
                                                      statusCodes:RKStatusCodeIndexSetForClass(RKStatusCodeClassSuccessful)],
+             
+             [RKResponseDescriptor responseDescriptorWithMapping:[self entityMapping]
+                                                          method:RKRequestMethodAny
+                                                     pathPattern:@"/api/message/participants/:conversationId"
+                                                         keyPath:@"payload.other_user"
+                                                     statusCodes:RKStatusCodeIndexSetForClass(RKStatusCodeClassSuccessful)],
+             
+             [RKResponseDescriptor responseDescriptorWithMapping:[self entityMapping]
+                                                          method:RKRequestMethodAny
+                                                     pathPattern:@"/api/message/participants/:conversationId"
+                                                         keyPath:@"payload.me"
+                                                     statusCodes:RKStatusCodeIndexSetForClass(RKStatusCodeClassSuccessful)],
 
              [RKResponseDescriptor responseDescriptorWithMapping:[self entityMapping]
                                                           method:RKRequestMethodGET

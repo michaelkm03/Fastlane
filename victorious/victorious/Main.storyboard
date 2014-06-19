@@ -61,7 +61,7 @@
         <!--Message Container View Controller - Messages-->
         <scene sceneID="WQQ-cx-Z9d">
             <objects>
-                <viewController storyboardIdentifier="messageContainer" useStoryboardIdentifierAsRestorationIdentifier="YES" id="acE-Yl-HFc" customClass="VMessageContainerViewController" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="messagecontainer" useStoryboardIdentifierAsRestorationIdentifier="YES" id="acE-Yl-HFc" customClass="VMessageContainerViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="apj-Bv-lmT"/>
                         <viewControllerLayoutGuide type="bottom" id="RWl-oO-2Nk"/>
