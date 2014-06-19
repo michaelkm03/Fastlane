@@ -178,7 +178,11 @@
             VContentViewController * __weak weakSelf = self;
             self.onVideoCompletionBlock = ^(void)
             {
-                weakSelf.collapsePollMedia(YES, nil);
+                VContentViewController *strongSelf = weakSelf;
+                if (strongSelf && strongSelf.collapsePollMedia)
+                {
+                    strongSelf.collapsePollMedia(YES, nil);
+                }
             };
         }
     }];
