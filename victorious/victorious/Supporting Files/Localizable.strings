@@ -40,6 +40,7 @@
 "ProfileSave"           =   "Uploading your Profile";
 "ProfileIncomplete"     =   "Profile Incomplete";
 "ProfileRequired"       =   "You must complete your profile.";
+"ProfileUpdateFailed"   =   "Profile Update Failed";
 
 "WereSorry"             =   "We're Sorry";
 "ErrorOccured"          =   "For some reason we can't connect to the server.  Please try again later!";
