@@ -78,6 +78,9 @@
                             <state key="normal" title="Edit Button">
                                 <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                             </state>
+                            <connections>
+                                <action selector="pressedEditProfile:" destination="iN0-l3-epB" eventType="touchUpInside" id="y1L-ny-eXu"/>
+                            </connections>
                         </button>
                     </subviews>
                     <color key="backgroundColor" red="0.80000000000000004" green="0.80000000000000004" blue="0.80000000000000004" alpha="0.45000000000000001" colorSpace="calibratedRGB"/>

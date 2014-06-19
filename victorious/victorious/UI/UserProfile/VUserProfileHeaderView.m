@@ -43,14 +43,14 @@
     self.taglineLabel.textColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVMainTextColor];
     
     self.followersLabel.userInteractionEnabled = YES;
-    [self.followersLabel addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(showFollowers:)]];
+    [self.followersLabel addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(pressedFollowers:)]];
     self.followersLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeading3Font];
     
     self.followersHeader.text = NSLocalizedString(@"followers", @"");
     self.followersHeader.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVLabel4Font];
     
     self.followingLabel.userInteractionEnabled = YES;
-    [self.followingLabel addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(showFollowing:)]];
+    [self.followingLabel addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(pressedFollowering:)]];
     self.followingLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeading3Font];
     
     self.followingHeader.text = NSLocalizedString(@"following", @"");
@@ -99,7 +99,6 @@
     if (_user.remoteId.integerValue == [VObjectManager sharedManager].mainUser.remoteId.integerValue)
     {
         [self.editProfileButton setTitle:NSLocalizedString(@"editProfileButton", @"") forState:UIControlStateNormal];
-        [self.editProfileButton addTarget:self action:@selector(showProfileEdit:) forControlEvents:UIControlEventTouchUpInside];
         self.editProfileButton.layer.borderColor = [UIColor whiteColor].CGColor;
         self.editProfileButton.backgroundColor = [UIColor clearColor];
     }
@@ -119,7 +118,6 @@
             self.editProfileButton.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
         }
         
-        [self.editProfileButton addTarget:self action:@selector(followButtonAction:) forControlEvents:UIControlEventTouchUpInside];
         self.editProfileButton.layer.borderColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor].CGColor;
         
         if ([VObjectManager sharedManager].mainUser)
@@ -134,6 +132,24 @@
                                          failBlock:nil];
         }
     }
+}
+
+- (IBAction)pressedEditProfile:(id)sender
+{
+    if ([self.delegate respondsToSelector:@selector(editProfileHandler)])
+        [self.delegate editProfileHandler];
+}
+
+- (IBAction)pressedFollowers:(id)sender
+{
+    if ([self.delegate respondsToSelector:@selector(followerHandler)])
+        [self.delegate followerHandler];
+}
+
+-(IBAction)pressedFollowering:(id)sender
+{
+    if ([self.delegate respondsToSelector:@selector(followingHandler)])
+        [self.delegate followingHandler];
 }
 
 @end

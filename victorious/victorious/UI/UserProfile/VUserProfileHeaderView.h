@@ -10,6 +10,15 @@
 
 @class VUser;
 
+@protocol VUserProfileHeaderDelegate <NSObject>
+
+@required
+- (void)editProfileHandler;
+- (void)followerHandler;
+- (void)followingHandler;
+
+@end
+
 @interface VUserProfileHeaderView : UIView
 
 @property (nonatomic, weak) IBOutlet UIImageView* profileImageView;
@@ -29,6 +38,7 @@
 @property (nonatomic, strong) UIActivityIndicatorView* followButtonActivityIndicator;
 
 @property (nonatomic, strong) VUser* user;
+@property (nonatomic, strong) id<VUserProfileHeaderDelegate> delegate;
 
 + (instancetype)newViewWithFrame:(CGRect)frame;
 

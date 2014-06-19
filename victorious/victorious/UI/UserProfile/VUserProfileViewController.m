@@ -35,28 +35,12 @@ const   CGFloat kVLargeBottomBuffer = 193;
 const   CGFloat kVSmallBottomBuffer = 25;
 const   CGFloat kVSmallUserHeaderHeight = 316;
 
-@interface VUserProfileViewController ()
+@interface VUserProfileViewController () <VUserProfileHeaderDelegate>
 
 @property   (nonatomic, strong) VUser*                  profile;
-@property   (nonatomic) BOOL                            isMe;
 
-@property (nonatomic, strong) UIView*                   shortContainerView;
-@property (nonatomic, strong) UIView*                   longContainerView;
-
-@property (nonatomic, strong) UIImageView*              profileCircleImageView;
 @property (nonatomic, strong) UIImageView*              backgroundImageView;
-
-@property (nonatomic, strong) UILabel*                  nameLabel;
-@property (nonatomic, strong) UILabel*                  locationLabel;
-@property (nonatomic, strong) UILabel*                  taglineLabel;
-
-@property (nonatomic, strong) UILabel*                  followersLabel;
-@property (nonatomic, strong) UILabel*                  followersHeader;
-@property (nonatomic, strong) UILabel*                  followingLabel;
-@property (nonatomic, strong) UILabel*                  followingHeader;
-
-@property (nonatomic, strong) UIButton*                 editProfileButton;
-@property (nonatomic, strong) UIActivityIndicatorView*  followButtonActivityIndicator;
+@property   (nonatomic) BOOL                            isMe;
 
 @end
 
@@ -106,6 +90,7 @@ const   CGFloat kVSmallUserHeaderHeight = 316;
     VUserProfileHeaderView* headerView =  [VUserProfileHeaderView newViewWithFrame:CGRectMake(0, 0, screenWidth,
                                                                                               screenHeight - kVNavigationBarHeight)];
     headerView.user = self.profile;
+    headerView.delegate = self;
     self.tableView.tableHeaderView = headerView;
     
     if (self.isMe)
@@ -142,10 +127,6 @@ const   CGFloat kVSmallUserHeaderHeight = 316;
                            placeholderImage:defaultBackgroundImage
                                   tintColor:[UIColor colorWithWhite:0.0 alpha:0.5]];
     self.tableView.backgroundView = self.backgroundImageView;
-    
-    defaultBackgroundImage = self.profileCircleImageView.image ? self.profileCircleImageView.image : [UIImage imageNamed:@"profileGenericUser"];
-    [self.profileCircleImageView setImageWithURL:[NSURL URLWithString:self.profile.pictureUrl]
-                                placeholderImage:defaultBackgroundImage];
     
     //If we came from the inbox we can get into a loop with the compose button, so hide it
     BOOL fromInbox = NO;
@@ -224,10 +205,11 @@ const   CGFloat kVSmallUserHeaderHeight = 316;
                                      following:self.profile
                                   successBlock:^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
          {
+             VUserProfileHeaderView* header = (VUserProfileHeaderView*)self.tableView.tableHeaderView;
+
              if ([resultObjects[0] boolValue])
-                 self.editProfileButton.selected = YES;
-             //TODO: doublecheck
-//             [self setProfileData];
+                 header.editProfileButton.selected = YES;
+             header.user = header.user;
          }
                                      failBlock:nil];
     }
@@ -301,76 +283,75 @@ const   CGFloat kVSmallUserHeaderHeight = 316;
     }];
 }
 
-- (IBAction)showProfileEdit:(id)sender
-{
-    [self performSegueWithIdentifier:@"toEditProfile" sender:self];
-}
-
-- (IBAction)followButtonAction:(id)sender
+- (void)editProfileHandler
 {
     if (![VObjectManager sharedManager].mainUser)
     {
         [self presentViewController:[VLoginViewController loginViewController] animated:YES completion:NULL];
         return;
     }
-
-    self.editProfileButton.enabled = NO;
-    [self.followButtonActivityIndicator startAnimating];
-
-    if (self.editProfileButton.selected)
-    {
-        [[VObjectManager sharedManager] unfollowUser:self.profile
-                                        successBlock:^(NSOperation *operation, id fullResponse, NSArray *objects)
-         {
-             self.editProfileButton.enabled = YES;
-             self.editProfileButton.selected = NO;
-             [self.followButtonActivityIndicator stopAnimating];
-             //TODO:doublecheck
-//             [self setProfileData];
-         }
-                                           failBlock:^(NSOperation *operation, NSError *error)
-         {
-             self.editProfileButton.enabled = YES;
-             [self.followButtonActivityIndicator stopAnimating];
-             UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil
-                                                             message:NSLocalizedString(@"UnfollowError", @"")
-                                                            delegate:nil
-                                                   cancelButtonTitle:NSLocalizedString(@"OKButton", @"")
-                                                   otherButtonTitles:nil];
-             [alert show];
-         }];
-    }
+    
+    if (self.isMe)
+        [self performSegueWithIdentifier:@"toEditProfile" sender:self];
+    
     else
     {
-        [[VObjectManager sharedManager] followUser:self.profile
-                                      successBlock:^(NSOperation *operation, id fullResponse, NSArray *objects)
-         {
-             self.editProfileButton.enabled = YES;
-             self.editProfileButton.selected = YES;
-             [self.followButtonActivityIndicator stopAnimating];
-             //TODO:doublecheck
-//             [self setProfileData];
-         }
-                                         failBlock:^(NSOperation *operation, NSError *error)
-         {
-             self.editProfileButton.enabled = YES;
-             [self.followButtonActivityIndicator stopAnimating];
-             UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil
-                                                             message:NSLocalizedString(@"FollowError", @"")
-                                                            delegate:nil
-                                                   cancelButtonTitle:NSLocalizedString(@"OKButton", @"")
-                                                   otherButtonTitles:nil];
-             [alert show];
-         }];
+        VUserProfileHeaderView* header = (VUserProfileHeaderView*)self.tableView.tableHeaderView;
+        [header.followButtonActivityIndicator startAnimating];
+        
+        if (header.editProfileButton.selected)
+        {
+            [[VObjectManager sharedManager] unfollowUser:self.profile
+                                            successBlock:^(NSOperation *operation, id fullResponse, NSArray *objects)
+             {
+                 header.editProfileButton.enabled = YES;
+                 header.editProfileButton.selected = NO;
+                 [header.followButtonActivityIndicator stopAnimating];
+                 header.user = header.user;
+             }
+                                               failBlock:^(NSOperation *operation, NSError *error)
+             {
+                 header.editProfileButton.enabled = YES;
+                 [header.followButtonActivityIndicator stopAnimating];
+                 UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil
+                                                                 message:NSLocalizedString(@"UnfollowError", @"")
+                                                                delegate:nil
+                                                       cancelButtonTitle:NSLocalizedString(@"OKButton", @"")
+                                                       otherButtonTitles:nil];
+                 [alert show];
+             }];
+        }
+        else
+        {
+            [[VObjectManager sharedManager] followUser:self.profile
+                                          successBlock:^(NSOperation *operation, id fullResponse, NSArray *objects)
+             {
+                 header.editProfileButton.enabled = YES;
+                 header.editProfileButton.selected = YES;
+                 [header.followButtonActivityIndicator stopAnimating];
+                  header.user = header.user;
+             }
+                                             failBlock:^(NSOperation *operation, NSError *error)
+             {
+                 header.editProfileButton.enabled = YES;
+                 [header.followButtonActivityIndicator stopAnimating];
+                 UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil
+                                                                 message:NSLocalizedString(@"FollowError", @"")
+                                                                delegate:nil
+                                                       cancelButtonTitle:NSLocalizedString(@"OKButton", @"")
+                                                       otherButtonTitles:nil];
+                 [alert show];
+             }];
+        }
     }
 }
 
-- (IBAction)showFollowers:(id)sender
+- (void)followerHandler
 {
     [self performSegueWithIdentifier:@"toFollowers" sender:self];
 }
 
-- (IBAction)showFollowing:(id)sender
+- (void)followingHandler
 {
     [self performSegueWithIdentifier:@"toFollowing" sender:self];
 }
