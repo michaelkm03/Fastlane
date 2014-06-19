@@ -25,6 +25,15 @@
 @implementation VMessageContainerViewController
 @synthesize conversationTableViewController = _conversationTableViewController;
 
+
++ (instancetype)messageContainer
+{
+    UIViewController*   currentViewController = [[UIApplication sharedApplication] delegate].window.rootViewController;
+    VMessageContainerViewController* container = (VMessageContainerViewController*)[currentViewController.storyboard instantiateViewControllerWithIdentifier: kInboxContainerID];
+    
+    return container;
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];

@@ -11,6 +11,7 @@
 #import "VObjectManager+Sequence.h"
 #import "VObjectManager+Users.h"
 #import "VObjectManager+Pagination.h"
+#import "VObjectManager+DirectMessaging.h"
 
 #import "VUser.h"
 
@@ -20,6 +21,7 @@
 #import "VContentViewController.h"
 #import "VUserProfileViewController.h"
 #import "VInboxContainerViewController.h"
+#import "VMessageContainerViewController.h"
 #import "VCommentsContainerViewController.h"
 #import "UIViewController+VSideMenuViewController.h"
 
@@ -161,7 +163,31 @@
 
 - (void)handleConversationURL:(NSArray *)captures
 {
-    [self showMissingContentAlert];
+    NSNumber* conversationId = @(((NSString*)[captures firstObject]).intValue);
+    if (!conversationId)
+    {
+        [self showMissingContentAlert];
+        return;
+    }
+    
+    [[VObjectManager sharedManager] conversationByID:conversationId
+                                        successBlock:^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
+     {
+         VInboxContainerViewController* inbox = [VInboxContainerViewController inboxContainer];
+         VMessageContainerViewController* messageVC = [VMessageContainerViewController messageContainer];
+         
+         VConversation* conversation = (VConversation*)[resultObjects firstObject];
+         messageVC.conversation = conversation;
+         
+         VRootViewController* root = [VRootViewController rootViewController];
+         [root transitionToNavStack:@[inbox]];
+         [inbox.navigationController pushViewController:messageVC animated:YES];
+     }
+                                           failBlock:^(NSOperation* operation, NSError* error)
+     {
+         VLog(@"Failed with error: %@", error);
+         [self showMissingContentAlert];
+     }];
 }
 
 - (void)handleCommentURL:(NSArray *)captures

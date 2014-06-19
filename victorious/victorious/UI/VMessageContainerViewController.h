@@ -12,4 +12,7 @@
 
 @interface VMessageContainerViewController : VKeyboardBarContainerViewController
 @property (nonatomic, readwrite, strong)    VConversation*  conversation;
+
++ (instancetype)messageContainer;
+
 @end
