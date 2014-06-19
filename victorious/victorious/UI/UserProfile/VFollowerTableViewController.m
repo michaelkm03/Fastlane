@@ -12,6 +12,7 @@
 #import "VUser.h"
 #import "VThemeManager.h"
 #import "VNoContentView.h"
+#import "VUserProfileViewController.h"
 
 @interface VFollowerTableViewController ()
 @property (nonatomic, strong)   NSArray*    followers;
@@ -56,6 +57,13 @@
     cell.showButton = YES;
     cell.owner = self.profile;
     return cell;
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    VUser*  user = self.followers[indexPath.row];
+    VUserProfileViewController* profileVC   =   [VUserProfileViewController userProfileWithFollowerOrFollowing:user];
+    [self.navigationController pushViewController:profileVC animated:YES];
 }
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
