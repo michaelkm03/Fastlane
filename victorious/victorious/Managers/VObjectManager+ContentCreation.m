@@ -236,7 +236,17 @@ NSString * const VObjectManagerContentIndexKey                  = @"index";
                                                                   VObjectManagerContentIndexKey:    @(0)
                                                                }];
     [(VSequenceFilter*)[tempSequence.managedObjectContext objectWithID:secondFilter.objectID] insertSequences:@[tempSequence] atIndexes:[NSIndexSet indexSetWithIndex:0]];
+    
+    //Add to home screen
+    VSequenceFilter* profileFilter = [self sequenceFilterForUser:self.mainUser];
+    [[NSNotificationCenter defaultCenter] postNotificationName:VObjectManagerContentWillBeCreatedNotification
+                                                        object:self
+                                                      userInfo:@{ VObjectManagerContentFilterIDKey: homeFilter.objectID,
+                                                                  VObjectManagerContentIndexKey:    @(0)
+                                                                  }];
+    [(VSequenceFilter*)[tempSequence.managedObjectContext objectWithID:profileFilter.objectID] insertSequences:@[tempSequence] atIndexes:[NSIndexSet indexSetWithIndex:0]];
 
+    
     [tempSequence.managedObjectContext saveToPersistentStore:nil];
 
     [[NSNotificationCenter defaultCenter] postNotificationName:VObjectManagerContentWasCreatedNotification
