@@ -74,8 +74,8 @@
 "TwitterDeniedTitle"    =   "Could not access your Twitter account";
 "TwitterDenied"         =   "Please grant access to your Twitter account in Settings -> Twitter";
 
-"NoTwitterTitle"        =   "Can't find a Twitter Account!";
-"NoTwitterMessage"      =   "Please log into the device settings and add a new twitter account";
+"NoTwitterTitle"        =   "Can't find a Twitter account!";
+"NoTwitterMessage"      =   "Please open your device settings and add a new Twitter account";
 
 "HelpNeeded"            =   "I need help with...";
 

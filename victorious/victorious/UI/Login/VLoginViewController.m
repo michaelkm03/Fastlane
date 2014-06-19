@@ -89,11 +89,6 @@
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithImage:cancelButtonImage style:UIBarButtonItemStyleBordered target:self action:@selector(closeButtonClicked:)];
     
     self.navigationController.delegate = self;
-
-    self.facebookButton.userInteractionEnabled = YES;
-    self.twitterButton.userInteractionEnabled = YES;
-    self.loginEmailButton.userInteractionEnabled = YES;
-    self.transitionPlaceholder.userInteractionEnabled = YES;
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -172,11 +167,6 @@
 
 - (void)didFailWithError:(NSError*)error
 {
-    self.facebookButton.userInteractionEnabled = YES;
-    self.twitterButton.userInteractionEnabled = YES;
-    self.loginEmailButton.userInteractionEnabled = YES;
-    self.transitionPlaceholder.userInteractionEnabled = YES;
-
     if(error.code == kVUserBannedError)
     {
         UIAlertView*    alert   =   [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"UserBannedTitle", @"")
@@ -201,11 +191,7 @@
 
 - (IBAction)facebookClicked:(id)sender
 {
-    self.facebookButton.userInteractionEnabled = NO;
-    self.twitterButton.userInteractionEnabled = NO;
-    self.loginEmailButton.userInteractionEnabled = NO;
-    self.transitionPlaceholder.userInteractionEnabled = NO;
-
+    [self disableButtons];
     [[VAnalyticsRecorder sharedAnalyticsRecorder] sendEventWithCategory:kVAnalyticsEventCategoryUserAccount action:@"Start Login Via Facebook" label:nil value:nil];
     [[VUserManager sharedInstance] loginViaFacebookOnCompletion:^(VUser *user, BOOL created)
     {
@@ -229,17 +215,14 @@
         {
             [[VAnalyticsRecorder sharedAnalyticsRecorder] sendEventWithCategory:kVAnalyticsEventCategoryUserAccount action:@"Failed Login Via Facebook" label:nil value:nil];
             [self didFailWithError:error];
+            [self enableButtons];
         });
     }];
 }
 
 - (IBAction)twitterClicked:(id)sender
 {
-    self.facebookButton.userInteractionEnabled = NO;
-    self.twitterButton.userInteractionEnabled = NO;
-    self.loginEmailButton.userInteractionEnabled = NO;
-    self.transitionPlaceholder.userInteractionEnabled = NO;
-    
+    [self disableButtons];
     [[VAnalyticsRecorder sharedAnalyticsRecorder] sendEventWithCategory:kVAnalyticsEventCategoryUserAccount action:@"Start Login Via Twitter" label:nil value:nil];
     
     ACAccountStore* account = [[ACAccountStore alloc] init];
@@ -251,6 +234,7 @@
             dispatch_async(dispatch_get_main_queue(), ^(void)
             {
                 [[VAnalyticsRecorder sharedAnalyticsRecorder] sendEventWithCategory:kVAnalyticsEventCategoryUserAccount action:@"Twitter Account Access Denied" label:nil value:nil];
+                [self enableButtons];
                 [self twitterAccessDidFail:error];
             });
         }
@@ -262,10 +246,13 @@
                 dispatch_async(dispatch_get_main_queue(), ^(void)
                 {
                     [[VAnalyticsRecorder sharedAnalyticsRecorder] sendEventWithCategory:kVAnalyticsEventCategoryUserAccount action:@"User Has No Twitter Accounts" label:nil value:nil];
-                    SLComposeViewController *composeViewController = [SLComposeViewController composeViewControllerForServiceType:SLServiceTypeTwitter];
-                    [self presentViewController:composeViewController animated:NO completion:^{
-                        [composeViewController dismissViewControllerAnimated:NO completion:nil];
-                    }];
+                    [self enableButtons];
+                    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"NoTwitterTitle", @"")
+                                                                    message:NSLocalizedString(@"NoTwitterMessage", @"")
+                                                                   delegate:nil
+                                                          cancelButtonTitle:NSLocalizedString(@"OKButton", @"")
+                                                          otherButtonTitles:nil];
+                    [alert show];
                 });
             }
             else
@@ -286,11 +273,28 @@
                                                                     onError:^(NSError *error)
                 {
                     [[VAnalyticsRecorder sharedAnalyticsRecorder] sendEventWithCategory:kVAnalyticsEventCategoryUserAccount action:@"Failed Login Via Twitter" label:nil value:nil];
+                    [self enableButtons];
                     [self didFailWithError:error];
                 }];
             }
         }
     }];
+}
+
+- (void)disableButtons
+{
+    self.facebookButton.enabled = NO;
+    self.twitterButton.enabled = NO;
+    self.loginEmailButton.userInteractionEnabled = NO;
+    self.transitionPlaceholder.userInteractionEnabled = NO;
+}
+
+- (void)enableButtons
+{
+    self.facebookButton.enabled = YES;
+    self.twitterButton.enabled = YES;
+    self.loginEmailButton.userInteractionEnabled = YES;
+    self.transitionPlaceholder.userInteractionEnabled = YES;
 }
 
 - (IBAction)emailClicked:(id)sender
