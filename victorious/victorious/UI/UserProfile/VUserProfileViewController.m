@@ -148,6 +148,18 @@ const   CGFloat kVSmallUserHeaderHeight = 316;
                                   tintColor:[UIColor colorWithWhite:0.0 alpha:0.5]];
     self.tableView.backgroundView = self.backgroundImageView;
     
+    if (self.tableDataSource.count)
+    {
+        [UIView animateWithDuration:0.5 animations:^(void)
+         {
+             [self setHeaderBuffer:kVSmallBottomBuffer];
+         }
+                         completion:^(BOOL finished)
+         {
+             [self setHeaderHeight:kVSmallUserHeaderHeight];
+         }];
+    }
+    
     //If we came from the inbox we can get into a loop with the compose button, so hide it
     BOOL fromInbox = NO;
     for (UIViewController* vc in self.navigationController.viewControllers)
