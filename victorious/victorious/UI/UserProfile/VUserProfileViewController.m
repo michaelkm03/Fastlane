@@ -180,9 +180,11 @@ const   CGFloat kVSmallUserHeaderHeight = 316;
 - (void)setProfile:(VUser *)profile
 {
     _profile = profile;
-    self.tableDataSource.filter = [[VObjectManager sharedManager] sequenceFilterForUser:self.profile];
-    [self.tableView reloadData];
-    [self refresh:nil];
+    self.currentFilter = [[VObjectManager sharedManager] sequenceFilterForUser:self.profile];
+    if ([self isViewLoaded])
+    {
+        [self refresh:nil];
+    }
 }
 
 #pragma mark - Support

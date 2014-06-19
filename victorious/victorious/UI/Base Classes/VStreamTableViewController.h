@@ -27,10 +27,10 @@ typedef NS_ENUM(NSInteger, VStreamFilter)
 @interface VStreamTableViewController : UITableViewController <VAnimation, VCreateSequenceDelegate>
 
 - (NSArray*)sequenceCategories;
-- (VSequenceFilter*)currentFilter;
 - (NSString*)streamName;
 
-@property (nonatomic) VStreamFilter filterType;
+@property (nonatomic)         VStreamFilter    filterType;
+@property (nonatomic, strong) VSequenceFilter *currentFilter;
 
 @property (strong, nonatomic, readonly) VStreamTableDataSource* tableDataSource;
 @property (strong, nonatomic) VSequence* selectedSequence;

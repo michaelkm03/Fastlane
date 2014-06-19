@@ -268,6 +268,9 @@ static const char kVideoUnloadBlockKey;
         self.activityIndicator = nil;
         animationCompletion(YES);
     }
+    
+    self.onVideoCompletionBlock = nil;
+    self.onVideoUnloadBlock = nil;
 }
 
 - (void)animateVideoOpenToAspectRatio:(CGFloat)aspectRatio

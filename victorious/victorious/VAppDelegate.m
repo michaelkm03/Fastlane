@@ -12,6 +12,7 @@
 #import "VReachability.h"
 
 #import "VAnalyticsRecorder.h"
+#import "VFacebookManager.h"
 #import "VObjectManager+Sequence.h"
 #import "VObjectManager+Users.h"
 #import "VObjectManager+Login.h"
@@ -72,6 +73,12 @@
 
 - (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation
 {
+    if ([[VFacebookManager sharedFacebookManager] canOpenURL:url])
+    {
+        [[VFacebookManager sharedFacebookManager] openUrl:url];
+        return YES;
+    }
+    
     [[VDeeplinkManager sharedManager] handleOpenURL:url];
     return YES;
 }
