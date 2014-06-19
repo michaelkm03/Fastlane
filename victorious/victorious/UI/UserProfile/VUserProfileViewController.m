@@ -26,6 +26,8 @@
 #import "VThemeManager.h"
 #import "VObjectManager+Login.h"
 
+#import "VObjectManager+ContentCreation.h"
+
 #import "VInboxContainerViewController.h"
 
 #import "VUserProfileHeaderView.h"
@@ -115,7 +117,12 @@ const   CGFloat kVSmallUserHeaderHeight = 316;
                                                                                  action:@selector(composeMessage:)];
     
     self.tableView.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVContentTextColor];
-
+    
+    [self.currentFilter addObserver:self
+                         forKeyPath:@"sequences"
+                            options:NSKeyValueObservingOptionNew
+                            context:nil];
+    
     if (![VObjectManager sharedManager].mainUser)
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(loginStateDidChange:) name:kLoggedInChangedNotification object:nil];
 }
@@ -392,6 +399,36 @@ const   CGFloat kVSmallUserHeaderHeight = 316;
     {
         VFollowingTableViewController*   controller = (VFollowingTableViewController *)segue.destinationViewController;
         controller.profile = self.profile;
+    }
+}
+
+#pragma mark - KVO
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
+{
+    if (object == self.currentFilter && [keyPath isEqualToString:NSStringFromSelector(@selector(sequences))])
+    {
+        if (self.tableDataSource.count)
+        {
+            [UIView animateWithDuration:0.5 animations:^(void)
+             {
+                 [self setHeaderBuffer:kVSmallBottomBuffer];
+             }
+                             completion:^(BOOL finished)
+             {
+                 [self setHeaderHeight:kVSmallUserHeaderHeight];
+             }];
+        }
+        else
+        {
+            [UIView animateWithDuration:0.5 animations:^(void)
+             {
+                 [self setHeaderBuffer:kVLargeBottomBuffer];
+             }
+                             completion:^(BOOL finished)
+             {
+                 [self setHeaderHeight:[UIScreen mainScreen].bounds.size.height];
+             }];
+        }
     }
 }
 
