@@ -626,40 +626,8 @@
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                             </imageView>
-                            <view autoresizesSubviews="NO" opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="gdx-vD-Je7" userLabel="Media Superview">
-                                <rect key="frame" x="0.0" y="154" width="320" height="320"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <subviews>
-                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="bEh-qP-DUl" userLabel="Media View">
-                                        <rect key="frame" x="0.0" y="0.0" width="320" height="320"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        <subviews>
-                                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="ZqV-fk-y5a" userLabel="Preview Image">
-                                                <rect key="frame" x="0.0" y="0.0" width="320" height="320"/>
-                                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                            </imageView>
-                                        </subviews>
-                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                        <constraints>
-                                            <constraint firstAttribute="width" secondItem="ZqV-fk-y5a" secondAttribute="width" priority="750" id="1ih-Ct-aqq"/>
-                                            <constraint firstAttribute="centerY" secondItem="ZqV-fk-y5a" secondAttribute="centerY" priority="750" id="L0H-3o-mJH"/>
-                                            <constraint firstAttribute="centerX" secondItem="ZqV-fk-y5a" secondAttribute="centerX" priority="750" id="U5o-zo-MM0"/>
-                                            <constraint firstAttribute="height" secondItem="ZqV-fk-y5a" secondAttribute="height" priority="750" id="bCg-Wg-6SM"/>
-                                        </constraints>
-                                    </view>
-                                </subviews>
-                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                <constraints>
-                                    <constraint firstItem="bEh-qP-DUl" firstAttribute="leading" secondItem="gdx-vD-Je7" secondAttribute="leading" placeholder="YES" id="6VY-d8-pAj"/>
-                                    <constraint firstAttribute="bottom" secondItem="bEh-qP-DUl" secondAttribute="bottom" placeholder="YES" id="8Tf-Id-q1r"/>
-                                    <constraint firstAttribute="height" constant="320" placeholder="YES" id="H63-zh-766"/>
-                                    <constraint firstItem="bEh-qP-DUl" firstAttribute="top" secondItem="gdx-vD-Je7" secondAttribute="top" placeholder="YES" id="b4x-bQ-SqW"/>
-                                    <constraint firstAttribute="trailing" secondItem="bEh-qP-DUl" secondAttribute="trailing" placeholder="YES" id="dg4-LB-RYL"/>
-                                </constraints>
-                            </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="4Kr-fK-dGu" userLabel="Poll View">
-                                <rect key="frame" x="0.0" y="154" width="320" height="214"/>
+                                <rect key="frame" x="0.0" y="154" width="320" height="320"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <subviews>
                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="EVH-DQ-EKO" userLabel="left Image View">
@@ -680,7 +648,7 @@
                                             <constraint firstAttribute="height" constant="214" id="yWO-Zj-NEX"/>
                                         </constraints>
                                     </imageView>
-                                    <view opaque="NO" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="yMt-1L-zyw" userLabel="First Poll Play Icon">
+                                    <view opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="yMt-1L-zyw" userLabel="First Poll Play Icon">
                                         <rect key="frame" x="54" y="81" width="52" height="52"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <subviews>
@@ -703,8 +671,12 @@
                                         <accessibility key="accessibilityConfiguration">
                                             <accessibilityTraits key="traits" none="YES" notEnabled="YES"/>
                                         </accessibility>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="52" id="PzX-Q2-E2T"/>
+                                            <constraint firstAttribute="width" constant="52" id="WJG-BL-foh"/>
+                                        </constraints>
                                     </view>
-                                    <view opaque="NO" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ZyP-Vw-yAD" userLabel="Second Poll Play Icon">
+                                    <view opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ZyP-Vw-yAD" userLabel="Second Poll Play Icon">
                                         <rect key="frame" x="214" y="81" width="52" height="52"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <subviews>
@@ -727,13 +699,17 @@
                                         <accessibility key="accessibilityConfiguration">
                                             <accessibilityTraits key="traits" none="YES" notEnabled="YES"/>
                                         </accessibility>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="52" id="8q4-Ry-2Nu"/>
+                                            <constraint firstAttribute="height" constant="52" id="bRA-2Y-oCh"/>
+                                        </constraints>
                                     </view>
                                     <view alpha="0.0" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="sGp-KC-jtT" userLabel="Poll Result White Overlay View">
                                         <rect key="frame" x="0.0" y="0.0" width="320" height="214"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <color key="backgroundColor" white="1" alpha="0.10000000000000001" colorSpace="calibratedWhite"/>
                                     </view>
-                                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="iB3-TF-e3b" userLabel="First Poll Button">
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="iB3-TF-e3b" userLabel="First Poll Button">
                                         <rect key="frame" x="0.0" y="0.0" width="160" height="214"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <state key="normal">
@@ -743,8 +719,8 @@
                                             <action selector="playPoll:" destination="4V8-Qd-rfj" eventType="touchUpInside" id="3VJ-Ij-lFP"/>
                                         </connections>
                                     </button>
-                                    <button opaque="NO" tag="1" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6Fs-nG-V3a" userLabel="Second Poll Button">
-                                        <rect key="frame" x="160" y="0.0" width="160" height="213"/>
+                                    <button opaque="NO" tag="1" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6Fs-nG-V3a" userLabel="Second Poll Button">
+                                        <rect key="frame" x="160" y="-1" width="160" height="215"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <state key="normal">
                                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
@@ -766,11 +742,58 @@
                                 </subviews>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <constraints>
+                                    <constraint firstItem="6Fs-nG-V3a" firstAttribute="centerX" secondItem="plb-mq-Tcq" secondAttribute="centerX" id="0Ng-K2-jgD"/>
+                                    <constraint firstItem="6Fs-nG-V3a" firstAttribute="height" secondItem="plb-mq-Tcq" secondAttribute="height" id="6bo-no-0Ud"/>
                                     <constraint firstItem="EVH-DQ-EKO" firstAttribute="top" secondItem="4Kr-fK-dGu" secondAttribute="top" id="6qH-mA-UJ3"/>
                                     <constraint firstItem="plb-mq-Tcq" firstAttribute="top" secondItem="4Kr-fK-dGu" secondAttribute="top" id="AQf-9i-NRX"/>
+                                    <constraint firstItem="iB3-TF-e3b" firstAttribute="centerY" secondItem="EVH-DQ-EKO" secondAttribute="centerY" id="FEE-4i-ESD"/>
+                                    <constraint firstItem="iB3-TF-e3b" firstAttribute="height" secondItem="EVH-DQ-EKO" secondAttribute="height" id="Iyr-jc-Ale"/>
+                                    <constraint firstItem="yMt-1L-zyw" firstAttribute="centerY" secondItem="EVH-DQ-EKO" secondAttribute="centerY" id="R9k-ya-Vee"/>
+                                    <constraint firstItem="yMt-1L-zyw" firstAttribute="centerX" secondItem="EVH-DQ-EKO" secondAttribute="centerX" id="TaM-eF-2b5"/>
+                                    <constraint firstItem="6Fs-nG-V3a" firstAttribute="centerY" secondItem="plb-mq-Tcq" secondAttribute="centerY" constant="-0.5" id="ZRo-zp-nca"/>
                                     <constraint firstAttribute="trailing" secondItem="plb-mq-Tcq" secondAttribute="trailing" id="gUA-aF-Kkf"/>
-                                    <constraint firstAttribute="height" constant="214" id="msk-HG-7Aj"/>
+                                    <constraint firstItem="6Fs-nG-V3a" firstAttribute="width" secondItem="plb-mq-Tcq" secondAttribute="width" id="jpY-Gh-Cpj"/>
+                                    <constraint firstItem="iB3-TF-e3b" firstAttribute="width" secondItem="EVH-DQ-EKO" secondAttribute="width" id="kOB-PX-m7O"/>
+                                    <constraint firstAttribute="height" constant="320" id="msk-HG-7Aj"/>
                                     <constraint firstItem="EVH-DQ-EKO" firstAttribute="leading" secondItem="4Kr-fK-dGu" secondAttribute="leading" id="oL7-MF-TT0"/>
+                                    <constraint firstItem="ZyP-Vw-yAD" firstAttribute="centerX" secondItem="plb-mq-Tcq" secondAttribute="centerX" id="ogy-gf-VBk"/>
+                                    <constraint firstItem="iB3-TF-e3b" firstAttribute="centerX" secondItem="EVH-DQ-EKO" secondAttribute="centerX" id="rQo-s6-cUU"/>
+                                    <constraint firstItem="ZyP-Vw-yAD" firstAttribute="centerY" secondItem="plb-mq-Tcq" secondAttribute="centerY" id="wVH-A2-ccI"/>
+                                </constraints>
+                            </view>
+                            <view autoresizesSubviews="NO" opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="gdx-vD-Je7" userLabel="Media Superview">
+                                <rect key="frame" x="0.0" y="154" width="320" height="320"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <subviews>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="bEh-qP-DUl" userLabel="Media View">
+                                        <rect key="frame" x="0.0" y="0.0" width="320" height="320"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <subviews>
+                                            <imageView clipsSubviews="YES" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="ZqV-fk-y5a" userLabel="Preview Image">
+                                                <rect key="frame" x="0.0" y="0.0" width="320" height="320"/>
+                                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                                <connections>
+                                                    <outletCollection property="gestureRecognizers" destination="EiR-3c-9nT" appends="YES" id="C4B-Qm-t0r"/>
+                                                </connections>
+                                            </imageView>
+                                        </subviews>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" secondItem="ZqV-fk-y5a" secondAttribute="width" priority="750" id="1ih-Ct-aqq"/>
+                                            <constraint firstAttribute="centerY" secondItem="ZqV-fk-y5a" secondAttribute="centerY" priority="750" id="L0H-3o-mJH"/>
+                                            <constraint firstAttribute="centerX" secondItem="ZqV-fk-y5a" secondAttribute="centerX" priority="750" id="U5o-zo-MM0"/>
+                                            <constraint firstAttribute="height" secondItem="ZqV-fk-y5a" secondAttribute="height" priority="750" id="bCg-Wg-6SM"/>
+                                        </constraints>
+                                    </view>
+                                </subviews>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstItem="bEh-qP-DUl" firstAttribute="leading" secondItem="gdx-vD-Je7" secondAttribute="leading" placeholder="YES" id="6VY-d8-pAj"/>
+                                    <constraint firstAttribute="bottom" secondItem="bEh-qP-DUl" secondAttribute="bottom" placeholder="YES" id="8Tf-Id-q1r"/>
+                                    <constraint firstAttribute="height" constant="320" placeholder="YES" id="H63-zh-766"/>
+                                    <constraint firstItem="bEh-qP-DUl" firstAttribute="top" secondItem="gdx-vD-Je7" secondAttribute="top" placeholder="YES" id="b4x-bQ-SqW"/>
+                                    <constraint firstAttribute="trailing" secondItem="bEh-qP-DUl" secondAttribute="trailing" placeholder="YES" id="dg4-LB-RYL"/>
                                 </constraints>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Pce-Lq-Sbm" userLabel="Bar Container View">
@@ -928,6 +951,8 @@
                         <outlet property="firstResultView" destination="mU7-Gc-RdJ" id="Hap-rD-L8h"/>
                         <outlet property="firstSmallPreviewImage" destination="EVH-DQ-EKO" id="sqw-uo-jib"/>
                         <outlet property="hrVerticalSpacingConstraint" destination="iFt-SH-hwh" id="jPg-Po-JMz"/>
+                        <outlet property="leftImageViewHeightConstraint" destination="DAT-km-egD" id="cR6-7g-3sG"/>
+                        <outlet property="leftImageViewWidthConstraint" destination="dWm-D2-arz" id="VQ6-nU-7S0"/>
                         <outlet property="leftSmallPreviewImageWidthConstraint" destination="dWm-D2-arz" id="6cw-Ze-803"/>
                         <outlet property="maskingView" destination="NhC-7g-uaI" id="ei9-KA-VA0"/>
                         <outlet property="mediaSuperview" destination="gdx-vD-Je7" id="LOA-hP-psJ"/>
@@ -937,6 +962,8 @@
                         <outlet property="pollPreviewView" destination="4Kr-fK-dGu" id="Jg8-mK-drW"/>
                         <outlet property="pollViewYConstraint" destination="cjf-8S-WD0" id="crw-3j-lDs"/>
                         <outlet property="previewImage" destination="ZqV-fk-y5a" id="5zD-1U-pWm"/>
+                        <outlet property="rightImageViewHeightConstraint" destination="yWO-Zj-NEX" id="iw8-Li-jMN"/>
+                        <outlet property="rightImageViewWidthConstraint" destination="Kaz-0u-z6m" id="OWb-gI-2lJ"/>
                         <outlet property="rightSmallPreviewImageWidthConstraint" destination="Kaz-0u-z6m" id="6xw-sD-qqO"/>
                         <outlet property="secondPollButton" destination="6Fs-nG-V3a" id="rgi-QS-JVS"/>
                         <outlet property="secondPollPlayIcon" destination="ZyP-Vw-yAD" id="qSb-Jn-ofd"/>
@@ -950,6 +977,11 @@
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="J2i-Hn-xg3" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <tapGestureRecognizer id="EiR-3c-9nT" userLabel="Preview Image Tap Gesture">
+                    <connections>
+                        <action selector="tappedPreviewImage:" destination="4V8-Qd-rfj" id="f3f-nA-WJx"/>
+                    </connections>
+                </tapGestureRecognizer>
             </objects>
             <point key="canvasLocation" x="-2102" y="-1302"/>
         </scene>

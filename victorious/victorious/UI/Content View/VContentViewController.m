@@ -35,6 +35,8 @@ static const CGFloat kBarContainerViewHeight                =  60.0f;
 static const CGFloat kDistanceBetweenTitleAndHR             =  14.5f;
 static const CGFloat kDistanceBetweenTitleAndCollapseButton =  42.5f;
 
+NSTimeInterval kVContentPollAnimationDuration = 0.2;
+
 @import MediaPlayer;
 
 @implementation VContentViewController
@@ -150,6 +152,7 @@ static const CGFloat kDistanceBetweenTitleAndCollapseButton =  42.5f;
     self.firstPollPlayIcon.hidden = YES;
     self.secondPollPlayIcon.hidden = YES;
     self.answeredPollMaskingView.alpha = 0;
+    self.mediaSuperview.hidden = NO;
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -581,7 +584,18 @@ static const CGFloat kDistanceBetweenTitleAndCollapseButton =  42.5f;
 
 - (IBAction)pressedBack:(id)sender
 {
-    [self.navigationController popViewControllerAnimated:YES];
+    void (^goBack)() = ^(void)
+    {
+        [self.navigationController popViewControllerAnimated:YES];
+    };
+    if (self.collapsePollMedia)
+    {
+        self.collapsePollMedia(YES, ^{ goBack(); });
+    }
+    else
+    {
+        goBack();
+    }
 }
 
 - (IBAction)pressedComment:(id)sender
@@ -622,12 +636,29 @@ static const CGFloat kDistanceBetweenTitleAndCollapseButton =  42.5f;
 #pragma mark - Animations
 - (void)animateInWithDuration:(CGFloat)duration completion:(void (^)(BOOL finished))completion
 {
-    [UIView animateWithDuration:.25f
+    
+    CGRect topActionsFrame = self.topActionsView.frame;
+    self.topActionsView.frame = CGRectMake(CGRectGetMinX(topActionsFrame), CGRectGetMinY(self.mediaView.frame),
+                                                CGRectGetWidth(topActionsFrame), CGRectGetHeight(topActionsFrame));
+    
+    self.orImageView.hidden = ![self.sequence isPoll];
+    self.orImageView.center = CGPointMake(CGRectGetMidX(self.orContainerView.bounds), 107.0f);
+    
+    self.firstPollButton.alpha = 0;
+    self.secondPollButton.alpha = 0;
+    
+    self.topActionsView.alpha = 0;
+    [UIView animateWithDuration:duration
                      animations:^
      {
+         self.topActionsView.frame = CGRectMake(CGRectGetMinX(topActionsFrame), 0, CGRectGetWidth(topActionsFrame), CGRectGetHeight(topActionsFrame));
+         self.topActionsView.alpha = 1;
+         self.firstPollButton.alpha = 1;
+         self.secondPollButton.alpha = 1;
+         
          for (UIView* view in self.view.subviews)
          {
-             if ([view isKindOfClass:[UIImageView class]])
+             if (CGRectIntersectsRect(self.view.frame, view.frame) || [view isKindOfClass:[UIImageView class]])
                  continue;
              
              if (view.center.y > self.view.center.y)
@@ -642,6 +673,7 @@ static const CGFloat kDistanceBetweenTitleAndCollapseButton =  42.5f;
      }
                      completion:^(BOOL finished)
      {
+         self.view.userInteractionEnabled = YES;
          if (completion)
          {
              completion(finished);
@@ -656,7 +688,7 @@ static const CGFloat kDistanceBetweenTitleAndCollapseButton =  42.5f;
      {
          for (UIView* view in self.view.subviews)
          {
-             if ([view isKindOfClass:[UIImageView class]])
+             if (!CGRectIntersectsRect(self.view.frame, view.frame) || [view isKindOfClass:[UIImageView class]])
                  continue;
              
              if (view.center.y > self.view.center.y)

@@ -36,7 +36,7 @@
     self.pollPreviewView.hidden = YES;
     if ([self isVideoLoadingOrLoaded])
     {
-        [self unloadVideoWithDuration:0 completion:nil];
+        [self unloadVideoAnimated:NO withDuration:0 completion:nil];
     }
 }
 

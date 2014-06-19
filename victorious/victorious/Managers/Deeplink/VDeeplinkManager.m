@@ -10,6 +10,7 @@
 
 #import "VObjectManager+Sequence.h"
 #import "VObjectManager+Users.h"
+#import "VObjectManager+Pagination.h"
 
 #import "VUser.h"
 
@@ -76,6 +77,17 @@
             return;
         }
     }
+    [self showMissingContentAlert];
+}
+
+- (void)showMissingContentAlert
+{
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Missing Content", nil)
+                                                    message:NSLocalizedString(@"Missing Content Message", nil)
+                                                   delegate:nil
+                                          cancelButtonTitle:NSLocalizedString(@"OK", nil)
+                                          otherButtonTitles:nil];
+    [alert show];
 }
 
 - (NSDictionary *)deepLinkPatterns
@@ -92,7 +104,10 @@
 {
     NSNumber* sequenceId = @(((NSString*)[captures firstObject]).intValue);
     if (!sequenceId)
+    {
+        [self showMissingContentAlert];
         return;
+    }
     
     [[VObjectManager sharedManager] fetchSequence:sequenceId
                                      successBlock:^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
@@ -110,12 +125,7 @@
                                         failBlock:^(NSOperation* operation, NSError* error)
      {
          VLog(@"Failed with error: %@", error);
-         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Missing Content", nil)
-                                                         message:NSLocalizedString(@"Missing Content Message", nil)
-                                                        delegate:nil
-                                               cancelButtonTitle:NSLocalizedString(@"OK", nil)
-                                               otherButtonTitles:nil];
-         [alert show];
+         [self showMissingContentAlert];
      }];
 }
 
@@ -123,7 +133,10 @@
 {
     NSNumber* userID = @(((NSString*)[captures firstObject]).intValue);
     if (!userID)
+    {
+        [self showMissingContentAlert];
         return;
+    }
     
     [[VObjectManager sharedManager] fetchUser:(NSNumber *)userID
                              withSuccessBlock:^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
@@ -142,28 +155,44 @@
                                     failBlock:^(NSOperation* operation, NSError* error)
      {
          VLog(@"Failed with error: %@", error);
-         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Missing Content", nil)
-                                                         message:NSLocalizedString(@"Missing Content Message", nil)
-                                                        delegate:nil
-                                               cancelButtonTitle:NSLocalizedString(@"OK", nil)
-                                               otherButtonTitles:nil];
-         [alert show];
+         [self showMissingContentAlert];
      }];
 }
 
 - (void)handleConversationURL:(NSArray *)captures
 {
-    
+    [self showMissingContentAlert];
 }
 
 - (void)handleCommentURL:(NSArray *)captures
 {
+    NSNumber* sequenceId = @(((NSString*)[captures firstObject]).intValue);
+    if (!sequenceId)
+    {
+        [self showMissingContentAlert];
+        return;
+    }
     
-}
-
-- (void)handleOtherStuffURL:(NSArray *)captures
-{
-    
+    [[VObjectManager sharedManager] fetchSequence:sequenceId
+                                     successBlock:^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
+     {
+         VCommentsContainerViewController* commentsContainer = [VCommentsContainerViewController commentsContainerView];
+         VContentViewController* contentView = [VContentViewController sharedInstance];
+         VStreamContainerViewController* homeContainer = [VStreamContainerViewController containerForStreamTable:[VHomeStreamViewController sharedInstance]];
+         
+         VSequence* sequence = (VSequence*)[resultObjects firstObject];
+         contentView.sequence = sequence;
+         commentsContainer.sequence = sequence;
+         
+         VRootViewController* root = [VRootViewController rootViewController];
+         [root transitionToNavStack:@[homeContainer, contentView]];
+         [contentView.navigationController pushViewController:commentsContainer animated:YES];
+     }
+                                        failBlock:^(NSOperation* operation, NSError* error)
+     {
+         VLog(@"Failed with error: %@", error);
+         [self showMissingContentAlert];
+     }];
 }
 
 @end

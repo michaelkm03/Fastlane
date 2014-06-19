@@ -59,6 +59,7 @@
     
     self.tableDataSource = [[VStreamTableDataSource alloc] initWithFilter:[self currentFilter]];
     self.tableDataSource.delegate = self;
+    self.tableDataSource.filter = self.currentFilter;
     self.tableDataSource.tableView = self.tableView;
     self.tableView.dataSource = self.tableDataSource;
     self.tableView.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVSecondaryAccentColor];
@@ -84,7 +85,7 @@
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
-    if (!self.tableDataSource.count && !self.tableDataSource.filter.updating)
+    if (!self.tableDataSource.count && !self.tableDataSource.filter.updating.boolValue)
     {
         [self refresh:nil];
     }
@@ -120,12 +121,41 @@
     }
     
     _filterType = filterType;
-    self.tableDataSource.filter = [self currentFilter];
+    
+    switch (self.filterType)
+    {
+        case VStreamHotFilter:
+            self.currentFilter = [self hotFilter];
+            break;
+            
+        case VStreamRecentFilter:
+            self.currentFilter = [self defaultFilter];
+            break;
+            
+        case VStreamFollowingFilter:
+            self.currentFilter = [self followingFilter];
+            break;
+            
+        default:
+            VLog(@"Unknown filter type, using default filter");
+            self.currentFilter = [self defaultFilter];
+            break;
+    }
+    
     self.tableView.contentOffset = CGPointMake(-self.tableView.contentInset.left, -self.tableView.contentInset.top);
     
     if ([self isViewLoaded] && self.view.window && !self.tableDataSource.count)
     {
         [self refresh:nil];
+    }
+}
+
+- (void)setCurrentFilter:(VSequenceFilter *)currentFilter
+{
+    _currentFilter = currentFilter;
+    if ([self isViewLoaded])
+    {
+        self.tableDataSource.filter = currentFilter;
     }
 }
 
@@ -149,6 +179,13 @@
     
     self.selectedSequence = [self.tableDataSource sequenceAtIndexPath:indexPath];
     VStreamViewCell* cell = (VStreamViewCell*)[tableView cellForRowAtIndexPath:indexPath];
+    
+    if ([cell isKindOfClass:[VStreamPollCell class]])
+    {
+        VStreamPollCell *pollCell = (VStreamPollCell *)cell;
+        [[VContentViewController sharedInstance] setLeftPollThumbnail:pollCell.previewImageView.image];
+        [[VContentViewController sharedInstance] setRightPollThumbnail:pollCell.previewImageTwo.image];
+    }
     
     //Every time we go to the content view, update the sequence
     [[VObjectManager sharedManager] fetchSequence:cell.sequence.remoteId
@@ -305,21 +342,6 @@
 }
 
 #pragma mark - Predicates
-- (VSequenceFilter*)currentFilter
-{
-    switch (self.filterType) {
-        case VStreamHotFilter:
-            return [self hotFilter];
-        case VStreamRecentFilter:
-            return [self defaultFilter];
-        case VStreamFollowingFilter:
-            return [self followingFilter];
-            
-        default:
-            VLog(@"Unknown filter type, using default filter");
-            return [self defaultFilter];
-    }
-}
 
 - (VSequenceFilter*)defaultFilter
 {

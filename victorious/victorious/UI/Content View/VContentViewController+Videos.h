@@ -38,6 +38,6 @@ const NSTimeInterval kVideoPlayerAnimationDuration; ///< The duration to be used
 - (void)pauseVideo; ///< Pause a playing video or prevent a loading video from starting to play
 - (BOOL)isVideoLoadingOrLoaded; ///< Returns YES if -playVideoAtURL:withPreviewView: has been called without a subsequent -unloadVideoWithDuration:
 - (BOOL)isVideoLoaded; ///< Returns YES if the video player has been animated into view
-- (void)unloadVideoWithDuration:(NSTimeInterval)duration completion:(void(^)(void))completion; ///< Undoes the changes that -loadVideo makes.
+- (void)unloadVideoAnimated:(BOOL)animated withDuration:(NSTimeInterval)duration completion:(void(^)(void))completion; ///< Undoes the changes that -loadVideo makes.
 
 @end

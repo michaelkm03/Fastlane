@@ -50,6 +50,8 @@
 		03D6381E191841220084FFC8 /* VObjectManager+Environment.m in Sources */ = {isa = PBXBuildFile; fileRef = 03D6381D191841220084FFC8 /* VObjectManager+Environment.m */; };
 		03D638211918488F0084FFC8 /* VServerEnvironmentTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 03D638201918488F0084FFC8 /* VServerEnvironmentTableViewController.m */; };
 		03D99C1E194A47C8002A6EAB /* VStreamTableDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 03D99C1D194A47C8002A6EAB /* VStreamTableDataSource.m */; };
+		03F80AA119523B2600E876F7 /* FacebookSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 03F80AA019523B2600E876F7 /* FacebookSDK.framework */; };
+		03F80AA419523E3D00E876F7 /* VFacebookManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 03F80AA319523E3D00E876F7 /* VFacebookManager.m */; };
 		03F9D281191D542300576AEE /* VCVideoPlayerToolbarView.m in Sources */ = {isa = PBXBuildFile; fileRef = 03F9D280191D542300576AEE /* VCVideoPlayerToolbarView.m */; };
 		03F9D283191D54F100576AEE /* VCVideoPlayerToolbarView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 03F9D282191D54F100576AEE /* VCVideoPlayerToolbarView.xib */; };
 		03F9D286191D77B000576AEE /* UIImage+VSolidColor.m in Sources */ = {isa = PBXBuildFile; fileRef = 03F9D285191D77B000576AEE /* UIImage+VSolidColor.m */; };
@@ -238,6 +240,8 @@
 		BE5DE3FC18DA730B0047B67E /* VVoteType+RestKit.m in Sources */ = {isa = PBXBuildFile; fileRef = BE5DE3FB18DA730B0047B67E /* VVoteType+RestKit.m */; };
 		BE6211AF192D65C300D5C74B /* VTableContainerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BE6211AE192D65C300D5C74B /* VTableContainerViewController.m */; };
 		BE6464E719511F360089A34F /* VDeeplinkManager.m in Sources */ = {isa = PBXBuildFile; fileRef = BE6464E619511F360089A34F /* VDeeplinkManager.m */; };
+		BE6464EA195253970089A34F /* VUserProfileHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = BE6464E9195253970089A34F /* VUserProfileHeaderView.m */; };
+		BE6464EC195253BB0089A34F /* VUserProfileHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = BE6464EB195253BB0089A34F /* VUserProfileHeaderView.xib */; };
 		BE651D0E18AAD58A00069119 /* VLoadingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BE651D0D18AAD58A00069119 /* VLoadingViewController.m */; };
 		BE651D1018AC270900069119 /* VKeyboardBarViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BE651D0F18AC270900069119 /* VKeyboardBarViewController.m */; };
 		BE669C591937E43100EC45AE /* VSequence.m in Sources */ = {isa = PBXBuildFile; fileRef = BE669C581937E43100EC45AE /* VSequence.m */; };
@@ -410,6 +414,9 @@
 		03D638201918488F0084FFC8 /* VServerEnvironmentTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VServerEnvironmentTableViewController.m; path = UI/VServerEnvironmentTableViewController.m; sourceTree = "<group>"; };
 		03D99C1C194A47C8002A6EAB /* VStreamTableDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VStreamTableDataSource.h; path = UI/VStreamTableDataSource.h; sourceTree = "<group>"; };
 		03D99C1D194A47C8002A6EAB /* VStreamTableDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VStreamTableDataSource.m; path = UI/VStreamTableDataSource.m; sourceTree = "<group>"; };
+		03F80AA019523B2600E876F7 /* FacebookSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FacebookSDK.framework; path = "3rd Party SDKs/FacebookSDK.framework"; sourceTree = "<group>"; };
+		03F80AA219523E3D00E876F7 /* VFacebookManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VFacebookManager.h; path = UI/Login/VFacebookManager.h; sourceTree = "<group>"; };
+		03F80AA319523E3D00E876F7 /* VFacebookManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VFacebookManager.m; path = UI/Login/VFacebookManager.m; sourceTree = "<group>"; };
 		03F9D27F191D542300576AEE /* VCVideoPlayerToolbarView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VCVideoPlayerToolbarView.h; sourceTree = "<group>"; };
 		03F9D280191D542300576AEE /* VCVideoPlayerToolbarView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VCVideoPlayerToolbarView.m; sourceTree = "<group>"; };
 		03F9D282191D54F100576AEE /* VCVideoPlayerToolbarView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VCVideoPlayerToolbarView.xib; sourceTree = "<group>"; };
@@ -751,6 +758,9 @@
 		BE6211AE192D65C300D5C74B /* VTableContainerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VTableContainerViewController.m; path = "UI/Base Classes/VTableContainerViewController.m"; sourceTree = "<group>"; };
 		BE6464E519511F360089A34F /* VDeeplinkManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VDeeplinkManager.h; path = Deeplink/VDeeplinkManager.h; sourceTree = "<group>"; };
 		BE6464E619511F360089A34F /* VDeeplinkManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VDeeplinkManager.m; path = Deeplink/VDeeplinkManager.m; sourceTree = "<group>"; };
+		BE6464E8195253970089A34F /* VUserProfileHeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VUserProfileHeaderView.h; path = UI/UserProfile/VUserProfileHeaderView.h; sourceTree = "<group>"; };
+		BE6464E9195253970089A34F /* VUserProfileHeaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VUserProfileHeaderView.m; path = UI/UserProfile/VUserProfileHeaderView.m; sourceTree = "<group>"; };
+		BE6464EB195253BB0089A34F /* VUserProfileHeaderView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VUserProfileHeaderView.xib; sourceTree = "<group>"; };
 		BE651D0C18AAD58A00069119 /* VLoadingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VLoadingViewController.h; path = UI/VLoadingViewController.h; sourceTree = "<group>"; };
 		BE651D0D18AAD58A00069119 /* VLoadingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VLoadingViewController.m; path = UI/VLoadingViewController.m; sourceTree = "<group>"; };
 		BE651D0F18AC270900069119 /* VKeyboardBarViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VKeyboardBarViewController.m; sourceTree = "<group>"; };
@@ -891,6 +901,7 @@
 				0361057D19411AA10069D49E /* libGoogleAnalyticsServices.a in Frameworks */,
 				BE171D801868BE64004E5202 /* CoreData.framework in Frameworks */,
 				BE171D7E1868BE64004E5202 /* UIKit.framework in Frameworks */,
+				03F80AA119523B2600E876F7 /* FacebookSDK.framework in Frameworks */,
 				BE171D7A1868BE64004E5202 /* Foundation.framework in Frameworks */,
 				6A3C7ABA603A4FEEA4B31670 /* libPods.a in Frameworks */,
 			);
@@ -1244,6 +1255,8 @@
 				3F02824A1937D3830099259A /* Login */,
 				3F02824B1937D3890099259A /* Reset Password */,
 				3FBCB9E91935561B00EB510C /* Invite Friends */,
+				03F80AA219523E3D00E876F7 /* VFacebookManager.h */,
+				03F80AA319523E3D00E876F7 /* VFacebookManager.m */,
 				3F53E0C118A485D400089C20 /* VUserManager.h */,
 				3F53E0C218A485D400089C20 /* VUserManager.m */,
 			);
@@ -1304,6 +1317,9 @@
 				3F93489219215302002EA91F /* Profile.storyboard */,
 				3F93489319215302002EA91F /* VUserProfileViewController.h */,
 				3F93489419215302002EA91F /* VUserProfileViewController.m */,
+				BE6464E8195253970089A34F /* VUserProfileHeaderView.h */,
+				BE6464E9195253970089A34F /* VUserProfileHeaderView.m */,
+				BE6464EB195253BB0089A34F /* VUserProfileHeaderView.xib */,
 				D1DAAA09187A43BE009ADCB0 /* VProfileEditViewController.h */,
 				D1DAAA0A187A43BE009ADCB0 /* VProfileEditViewController.m */,
 				3F93489B1922C522002EA91F /* VFollowerTableViewController.h */,
@@ -1540,6 +1556,7 @@
 		BE171D781868BE64004E5202 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				03F80AA019523B2600E876F7 /* FacebookSDK.framework */,
 				BE12084C1919A3C200CDDF27 /* GoogleCast.framework */,
 				BE171D791868BE64004E5202 /* Foundation.framework */,
 				BE171D7B1868BE64004E5202 /* CoreGraphics.framework */,
@@ -2132,6 +2149,7 @@
 				BEB4C2A0187E0778004ECEEF /* VCommentCell.xib in Resources */,
 				BE692B28186E5ED800C71336 /* VStreamVideoCell.xib in Resources */,
 				03F9D283191D54F100576AEE /* VCVideoPlayerToolbarView.xib in Resources */,
+				BE6464EC195253BB0089A34F /* VUserProfileHeaderView.xib in Resources */,
 				83ABAFAF18709DE30069556C /* Roboto-Light.ttf in Resources */,
 				83CC444A187DDCA8000C480C /* Roboto-Black.ttf in Resources */,
 				3FA217DF18AAFCFE0066E893 /* cast_outline_black@2x.png in Resources */,
@@ -2377,6 +2395,7 @@
 				BE171E0C1868C211004E5202 /* VNode+Fetcher.m in Sources */,
 				BE5C7382187E37C700A3340D /* VMessage+RestKit.m in Sources */,
 				3FDEDD0C18CE5E180028E3F1 /* VAbstractVideoEditorViewController.m in Sources */,
+				BE6464EA195253970089A34F /* VUserProfileHeaderView.m in Sources */,
 				3F0282491937D2780099259A /* VInstagramConnectViewController.m in Sources */,
 				3F033874192AE4A500DCD36A /* VLoginTransitionAnimator.m in Sources */,
 				3F71A7D918D7C6D20048FF60 /* VRemixResizableBubble.m in Sources */,
@@ -2428,6 +2447,7 @@
 				838511C418762DF3007E0316 /* VBadgeLabel.m in Sources */,
 				3F9B666818887D910046F826 /* VFetchedResultsTableViewController.m in Sources */,
 				BE438E0E18F35A2700F5DF29 /* VUser.m in Sources */,
+				03F80AA419523E3D00E876F7 /* VFacebookManager.m in Sources */,
 				BE171E1B1868C211004E5202 /* VUser+RestKit.m in Sources */,
 				03484BF8192D2B4400403FB1 /* VLightboxDismissAnimator.m in Sources */,
 				BE5C736A187E36E800A3340D /* VRule.m in Sources */,

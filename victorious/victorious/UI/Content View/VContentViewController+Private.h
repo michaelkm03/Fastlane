@@ -28,6 +28,8 @@
 
 @import MediaPlayer;
 
+extern NSTimeInterval kVContentPollAnimationDuration;
+
 @interface VContentViewController ()  <UIWebViewDelegate, VContentTitleTextViewDelegate, VInteractionManagerDelegate, UIDynamicAnimatorDelegate, UINavigationControllerDelegate>
 
 @property (weak, nonatomic) IBOutlet UIImageView* backgroundImage;
@@ -57,6 +59,11 @@
 @property (nonatomic)                BOOL                collapsingOrExpanding; ///< YES during the animation block for a title expand/collapse operation
 @property (nonatomic)                BOOL                titleExpanded; ///< YES if the title is expanded
 
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint* leftImageViewHeightConstraint;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint* leftImageViewWidthConstraint;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint* rightImageViewHeightConstraint;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint* rightImageViewWidthConstraint;
+
 @property (strong, nonatomic) UIDynamicAnimator* orAnimator;
 
 @property (strong, nonatomic) VCVideoPlayerViewController* videoPlayer;
@@ -65,7 +72,8 @@
 @property (strong, nonatomic) VInteractionManager* interactionManager;
 
 @property (strong, nonatomic) VActivityIndicatorView*  activityIndicator;
-@property (strong, nonatomic) AFImageRequestOperation* imageRequestOperation;
+
+@property (copy, nonatomic) void (^collapsePollMedia)(BOOL animated, void(^completion)()); ///< Execute this block to collapse the poll media. If poll media is not expanded, this block is nil.
 
 @property (strong, nonatomic) id<UIViewControllerTransitioningDelegate> transitionDelegate;
 
