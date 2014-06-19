@@ -239,6 +239,8 @@
 		BE5DE3FC18DA730B0047B67E /* VVoteType+RestKit.m in Sources */ = {isa = PBXBuildFile; fileRef = BE5DE3FB18DA730B0047B67E /* VVoteType+RestKit.m */; };
 		BE6211AF192D65C300D5C74B /* VTableContainerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BE6211AE192D65C300D5C74B /* VTableContainerViewController.m */; };
 		BE6464E719511F360089A34F /* VDeeplinkManager.m in Sources */ = {isa = PBXBuildFile; fileRef = BE6464E619511F360089A34F /* VDeeplinkManager.m */; };
+		BE6464EA195253970089A34F /* VUserProfileHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = BE6464E9195253970089A34F /* VUserProfileHeaderView.m */; };
+		BE6464EC195253BB0089A34F /* VUserProfileHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = BE6464EB195253BB0089A34F /* VUserProfileHeaderView.xib */; };
 		BE651D0E18AAD58A00069119 /* VLoadingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BE651D0D18AAD58A00069119 /* VLoadingViewController.m */; };
 		BE651D1018AC270900069119 /* VKeyboardBarViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BE651D0F18AC270900069119 /* VKeyboardBarViewController.m */; };
 		BE669C591937E43100EC45AE /* VSequence.m in Sources */ = {isa = PBXBuildFile; fileRef = BE669C581937E43100EC45AE /* VSequence.m */; };
@@ -754,6 +756,9 @@
 		BE6211AE192D65C300D5C74B /* VTableContainerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VTableContainerViewController.m; path = "UI/Base Classes/VTableContainerViewController.m"; sourceTree = "<group>"; };
 		BE6464E519511F360089A34F /* VDeeplinkManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VDeeplinkManager.h; path = Deeplink/VDeeplinkManager.h; sourceTree = "<group>"; };
 		BE6464E619511F360089A34F /* VDeeplinkManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VDeeplinkManager.m; path = Deeplink/VDeeplinkManager.m; sourceTree = "<group>"; };
+		BE6464E8195253970089A34F /* VUserProfileHeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VUserProfileHeaderView.h; path = UI/UserProfile/VUserProfileHeaderView.h; sourceTree = "<group>"; };
+		BE6464E9195253970089A34F /* VUserProfileHeaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VUserProfileHeaderView.m; path = UI/UserProfile/VUserProfileHeaderView.m; sourceTree = "<group>"; };
+		BE6464EB195253BB0089A34F /* VUserProfileHeaderView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VUserProfileHeaderView.xib; sourceTree = "<group>"; };
 		BE651D0C18AAD58A00069119 /* VLoadingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VLoadingViewController.h; path = UI/VLoadingViewController.h; sourceTree = "<group>"; };
 		BE651D0D18AAD58A00069119 /* VLoadingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VLoadingViewController.m; path = UI/VLoadingViewController.m; sourceTree = "<group>"; };
 		BE651D0F18AC270900069119 /* VKeyboardBarViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VKeyboardBarViewController.m; sourceTree = "<group>"; };
@@ -1307,6 +1312,9 @@
 				3F93489219215302002EA91F /* Profile.storyboard */,
 				3F93489319215302002EA91F /* VUserProfileViewController.h */,
 				3F93489419215302002EA91F /* VUserProfileViewController.m */,
+				BE6464E8195253970089A34F /* VUserProfileHeaderView.h */,
+				BE6464E9195253970089A34F /* VUserProfileHeaderView.m */,
+				BE6464EB195253BB0089A34F /* VUserProfileHeaderView.xib */,
 				D1DAAA09187A43BE009ADCB0 /* VProfileEditViewController.h */,
 				D1DAAA0A187A43BE009ADCB0 /* VProfileEditViewController.m */,
 				3F93489B1922C522002EA91F /* VFollowerTableViewController.h */,
@@ -2137,6 +2145,7 @@
 				BEB4C2A0187E0778004ECEEF /* VCommentCell.xib in Resources */,
 				BE692B28186E5ED800C71336 /* VStreamVideoCell.xib in Resources */,
 				03F9D283191D54F100576AEE /* VCVideoPlayerToolbarView.xib in Resources */,
+				BE6464EC195253BB0089A34F /* VUserProfileHeaderView.xib in Resources */,
 				83ABAFAF18709DE30069556C /* Roboto-Light.ttf in Resources */,
 				83CC444A187DDCA8000C480C /* Roboto-Black.ttf in Resources */,
 				3FA217DF18AAFCFE0066E893 /* cast_outline_black@2x.png in Resources */,
@@ -2383,6 +2392,7 @@
 				BE171E0C1868C211004E5202 /* VNode+Fetcher.m in Sources */,
 				BE5C7382187E37C700A3340D /* VMessage+RestKit.m in Sources */,
 				3FDEDD0C18CE5E180028E3F1 /* VAbstractVideoEditorViewController.m in Sources */,
+				BE6464EA195253970089A34F /* VUserProfileHeaderView.m in Sources */,
 				3F0282491937D2780099259A /* VInstagramConnectViewController.m in Sources */,
 				3F033874192AE4A500DCD36A /* VLoginTransitionAnimator.m in Sources */,
 				3F71A7D918D7C6D20048FF60 /* VRemixResizableBubble.m in Sources */,
