@@ -72,6 +72,19 @@ const   CGFloat kVSmallUserHeaderHeight = 316;
     return viewController;
 }
 
++ (instancetype)userProfileWithFollowerOrFollowing:(VUser*)aUser
+{
+    VUserProfileViewController*   viewController  =   [[UIStoryboard storyboardWithName:@"Profile" bundle:nil] instantiateInitialViewController];
+    
+    viewController.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"cameraButtonBack"]
+                                                                                       style:UIBarButtonItemStyleBordered
+                                                                                      target:self
+                                                                                      action:@selector(goBack:)];
+    viewController.profile = aUser;
+    
+    return viewController;
+}
+
 #pragma mark - LifeCycle
 
 - (void)viewDidLoad
@@ -252,6 +265,11 @@ const   CGFloat kVSmallUserHeaderHeight = 316;
 }
 
 - (IBAction)close:(id)sender
+{
+    [self.navigationController popViewControllerAnimated:YES];
+}
+
+- (IBAction)goBack:(id)sender
 {
     [self.navigationController popViewControllerAnimated:YES];
 }

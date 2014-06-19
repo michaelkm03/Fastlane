@@ -10,6 +10,7 @@
 #import "VFollowerTableViewCell.h"
 #import "VObjectManager+Pagination.h"
 #import "VUser.h"
+#import "VUserProfileViewController.h"
 
 #import "VNoContentView.h"
 
@@ -54,6 +55,13 @@
     cell.profile = self.following[indexPath.row];
     cell.showButton = NO;
     return cell;
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    VUser*  user = self.following[indexPath.row];
+    VUserProfileViewController* profileVC   =   [VUserProfileViewController userProfileWithFollowerOrFollowing:user];
+    [self.navigationController pushViewController:profileVC animated:YES];
 }
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
