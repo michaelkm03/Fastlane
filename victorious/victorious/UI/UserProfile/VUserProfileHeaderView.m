@@ -57,6 +57,7 @@
     self.followingHeader.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVLabel4Font];
     
     self.editProfileButton.titleLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVButton2Font];
+    self.editProfileButton.titleLabel.textColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
     self.editProfileButton.layer.cornerRadius = 3.0;
     self.editProfileButton.layer.borderWidth = 2.0;
     
@@ -117,8 +118,6 @@
             self.editProfileButton.layer.borderColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor].CGColor;
             self.editProfileButton.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
         }
-        
-        self.editProfileButton.layer.borderColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor].CGColor;
         
         if ([VObjectManager sharedManager].mainUser)
         {
