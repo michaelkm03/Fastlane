@@ -310,7 +310,7 @@ const   CGFloat kVSmallUserHeaderHeight = 316;
     [[VObjectManager sharedManager] conversationWithUser:self.profile
                                             successBlock:^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
     {
-        VMessageContainerViewController*    composeController   = [[UIStoryboard storyboardWithName:@"Main" bundle:[NSBundle mainBundle]] instantiateViewControllerWithIdentifier:@"messageContainer"];
+        VMessageContainerViewController*    composeController   = [VMessageContainerViewController messageContainer];
         composeController.conversation = [resultObjects firstObject];
         [self.navigationController pushViewController:composeController animated:YES];
     }
