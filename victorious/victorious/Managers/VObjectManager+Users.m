@@ -230,7 +230,7 @@
         }
     };
     
-    return [self GET:@"api/friend/suggest"
+    return [self GET:@"/api/friend/suggest"
               object:nil
           parameters:nil
         successBlock:fullSuccess
@@ -251,7 +251,7 @@
         }
     };
     
-    return [self POST:@"api/follow/find_by_email"
+    return [self POST:@"/api/follow/find_by_email"
                object:nil
            parameters:parameters
          successBlock:fullSuccess
@@ -269,15 +269,15 @@
     switch (selector)
     {
         case kVFacebookSocialSelector:
-            path = [@"api/friend/find/facebook/%@" stringByAppendingPathComponent:token];
+            path = [@"/api/friend/find/facebook" stringByAppendingPathComponent:token];
             break;
             
         case kVTwitterSocialSelector:
-            path = [[@"api/friend/find/facebook/%@" stringByAppendingPathComponent:token] stringByAppendingPathComponent:secret];
+            path = [[@"/api/friend/find/twitter" stringByAppendingPathComponent:token] stringByAppendingPathComponent:secret];
             break;
             
         case kVInstagramSocialSelector:
-            path = [@"api/friend/find/instagram/%@" stringByAppendingPathComponent:token];
+            path = [@"/api/friend/find/instagram" stringByAppendingPathComponent:token];
             break;
             
         default:
@@ -313,7 +313,7 @@
         }
     };
     
-    return [self POST:@"api/follow/batchadd"
+    return [self POST:@"/api/follow/batchadd"
                object:nil
            parameters:parameters
          successBlock:fullSuccess

@@ -119,25 +119,25 @@
 
              [RKResponseDescriptor responseDescriptorWithMapping:[self entityMapping]
                                                           method:RKRequestMethodAny
-                                                     pathPattern:@"api/friend/find_by_email"
+                                                     pathPattern:@"/api/friend/find_by_email"
                                                          keyPath:@"payload"
                                                      statusCodes:RKStatusCodeIndexSetForClass(RKStatusCodeClassSuccessful)],
              
              [RKResponseDescriptor responseDescriptorWithMapping:[self entityMapping]
                                                           method:RKRequestMethodAny
-                                                     pathPattern:@"api/friend/find/facebook/:token"
+                                                     pathPattern:@"/api/friend/find/facebook/:token"
                                                          keyPath:@"payload"
                                                      statusCodes:RKStatusCodeIndexSetForClass(RKStatusCodeClassSuccessful)],
 
              [RKResponseDescriptor responseDescriptorWithMapping:[self entityMapping]
                                                           method:RKRequestMethodAny
-                                                     pathPattern:@"api/friend/find/instagram/:token/:secret"
+                                                     pathPattern:@"/api/friend/find/instagram/:token/:secret"
                                                          keyPath:@"payload"
                                                      statusCodes:RKStatusCodeIndexSetForClass(RKStatusCodeClassSuccessful)],
 
              [RKResponseDescriptor responseDescriptorWithMapping:[self entityMapping]
                                                           method:RKRequestMethodAny
-                                                     pathPattern:@"api/friend/find/twitter"
+                                                     pathPattern:@"/api/friend/find/twitter"
                                                          keyPath:@"payload"
                                                      statusCodes:RKStatusCodeIndexSetForClass(RKStatusCodeClassSuccessful)]
              ];
