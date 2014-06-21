@@ -50,6 +50,8 @@
 		03D6381E191841220084FFC8 /* VObjectManager+Environment.m in Sources */ = {isa = PBXBuildFile; fileRef = 03D6381D191841220084FFC8 /* VObjectManager+Environment.m */; };
 		03D638211918488F0084FFC8 /* VServerEnvironmentTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 03D638201918488F0084FFC8 /* VServerEnvironmentTableViewController.m */; };
 		03D99C1E194A47C8002A6EAB /* VStreamTableDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 03D99C1D194A47C8002A6EAB /* VStreamTableDataSource.m */; };
+		03E8D7931954ECF000F67ABF /* FindFriends.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 03E8D78B1954ECF000F67ABF /* FindFriends.storyboard */; };
+		03E8D7961954ECF000F67ABF /* VFindFriendsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 03E8D7921954ECF000F67ABF /* VFindFriendsViewController.m */; };
 		03F80AA119523B2600E876F7 /* FacebookSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 03F80AA019523B2600E876F7 /* FacebookSDK.framework */; };
 		03F80AA419523E3D00E876F7 /* VFacebookManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 03F80AA319523E3D00E876F7 /* VFacebookManager.m */; };
 		03F9D281191D542300576AEE /* VCVideoPlayerToolbarView.m in Sources */ = {isa = PBXBuildFile; fileRef = 03F9D280191D542300576AEE /* VCVideoPlayerToolbarView.m */; };
@@ -407,6 +409,9 @@
 		03D638201918488F0084FFC8 /* VServerEnvironmentTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VServerEnvironmentTableViewController.m; path = UI/VServerEnvironmentTableViewController.m; sourceTree = "<group>"; };
 		03D99C1C194A47C8002A6EAB /* VStreamTableDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VStreamTableDataSource.h; path = UI/VStreamTableDataSource.h; sourceTree = "<group>"; };
 		03D99C1D194A47C8002A6EAB /* VStreamTableDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VStreamTableDataSource.m; path = UI/VStreamTableDataSource.m; sourceTree = "<group>"; };
+		03E8D78B1954ECF000F67ABF /* FindFriends.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = FindFriends.storyboard; sourceTree = "<group>"; };
+		03E8D7911954ECF000F67ABF /* VFindFriendsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VFindFriendsViewController.h; sourceTree = "<group>"; };
+		03E8D7921954ECF000F67ABF /* VFindFriendsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VFindFriendsViewController.m; sourceTree = "<group>"; };
 		03F80AA019523B2600E876F7 /* FacebookSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FacebookSDK.framework; path = "3rd Party SDKs/FacebookSDK.framework"; sourceTree = "<group>"; };
 		03F80AA219523E3D00E876F7 /* VFacebookManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VFacebookManager.h; path = UI/Login/VFacebookManager.h; sourceTree = "<group>"; };
 		03F80AA319523E3D00E876F7 /* VFacebookManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VFacebookManager.m; path = UI/Login/VFacebookManager.m; sourceTree = "<group>"; };
@@ -994,6 +999,17 @@
 			path = Setters;
 			sourceTree = "<group>";
 		};
+		03E8D78A1954ECF000F67ABF /* Find Friends */ = {
+			isa = PBXGroup;
+			children = (
+				03E8D78B1954ECF000F67ABF /* FindFriends.storyboard */,
+				03E8D7911954ECF000F67ABF /* VFindFriendsViewController.h */,
+				03E8D7921954ECF000F67ABF /* VFindFriendsViewController.m */,
+			);
+			name = "Find Friends";
+			path = "UI/Login/Find Friends";
+			sourceTree = "<group>";
+		};
 		3F0282391937D0B30099259A /* List */ = {
 			isa = PBXGroup;
 			children = (
@@ -1230,6 +1246,7 @@
 			isa = PBXGroup;
 			children = (
 				5FC4DA5D18970A9F006BA107 /* login.storyboard */,
+				03E8D78A1954ECF000F67ABF /* Find Friends */,
 				3F02824A1937D3830099259A /* Login */,
 				3F02824B1937D3890099259A /* Reset Password */,
 				3FBCB9E91935561B00EB510C /* Invite Friends */,
@@ -2111,6 +2128,7 @@
 				BEDF0FBF18DB783200750EF6 /* MuseoSans-300.otf in Resources */,
 				BEFA688C194B9773005A0189 /* defaultExperiments.plist in Resources */,
 				BE76FBE618E4DC1D009E6DD7 /* defaultTheme.plist in Resources */,
+				03E8D7931954ECF000F67ABF /* FindFriends.storyboard in Resources */,
 				03F9D29819204D7700576AEE /* Icon-40@2x.png in Resources */,
 				03F9D28F19204CDC00576AEE /* Default-568h@2x.png in Resources */,
 				3FA217CE18A9BFC90066E893 /* cast_solid_custom@2x.png in Resources */,
@@ -2415,6 +2433,7 @@
 				3F91991018761C720055FE37 /* VPrivacyPoliciesViewController.m in Sources */,
 				BEB4C29B187E038C004ECEEF /* VConversationCell.m in Sources */,
 				BE9181DB19098E280071E7AF /* VObjectManager+Pagination.m in Sources */,
+				03E8D7961954ECF000F67ABF /* VFindFriendsViewController.m in Sources */,
 				BE7169D318D0F5B5004966C3 /* VInteractionManager.m in Sources */,
 				03D6381B191840570084FFC8 /* VEnvironment.m in Sources */,
 				BE89ECDB19105DB8009DD407 /* VAnswer.m in Sources */,
