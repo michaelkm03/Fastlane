@@ -46,28 +46,58 @@
 
 - (IBAction)follow:(id)sender
 {
-    if (self.shouldInvite)
+    [self setShouldInvite:!self.shouldInvite animated:YES];
+}
+
+- (void)setShouldInvite:(BOOL)shouldInvite
+{
+    [self setShouldInvite:shouldInvite animated:NO];
+}
+
+- (void)setShouldInvite:(BOOL)shouldInvite animated:(BOOL)animated
+{
+    if (shouldInvite)
     {
-        [UIView transitionWithView:self.followButton
-                          duration:0.3
-                           options:UIViewAnimationOptionTransitionFlipFromTop
-                        animations:^{
-                            [self.followButton setImage:[UIImage imageNamed:@"buttonFollow"] forState:UIControlStateNormal];
-                        } completion:nil];
-        [self.delegate cellDidSelectUninvite:self];
+        void (^animations)() = ^(void)
+        {
+            [self.followButton setImage:[UIImage imageNamed:@"buttonFollowed"] forState:UIControlStateNormal];
+        };
+        if (animated)
+        {
+            [UIView transitionWithView:self.followButton
+                              duration:0.3
+                               options:UIViewAnimationOptionTransitionFlipFromTop
+                            animations:animations
+                            completion:nil];
+        }
+        else
+        {
+            animations();
+        }
+        [self.delegate cellDidSelectInvite:self];
     }
     else
     {
-        [UIView transitionWithView:self.followButton
-                          duration:0.3
-                           options:UIViewAnimationOptionTransitionFlipFromTop
-                        animations:^{
-                            [self.followButton setImage:[UIImage imageNamed:@"buttonFollowed"] forState:UIControlStateNormal];
-                        } completion:nil];
-        [self.delegate cellDidSelectInvite:self];
-    }
+        void (^animations)() = ^(void)
+        {
+            [self.followButton setImage:[UIImage imageNamed:@"buttonFollow"] forState:UIControlStateNormal];
+        };
+        if (animated)
+        {
 
-    self.shouldInvite = !self.shouldInvite;
+            [UIView transitionWithView:self.followButton
+                              duration:0.3
+                               options:UIViewAnimationOptionTransitionFlipFromTop
+                            animations:animations
+                            completion:nil];
+        }
+        else
+        {
+            animations();
+        }
+        [self.delegate cellDidSelectUninvite:self];
+    }
+    _shouldInvite = shouldInvite;
 }
 
 @end

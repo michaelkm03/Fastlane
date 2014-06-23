@@ -40,6 +40,11 @@
 		0388AE681949459A0098A393 /* VSequenceFilter+Setters.m in Sources */ = {isa = PBXBuildFile; fileRef = 0388AE671949459A0098A393 /* VSequenceFilter+Setters.m */; };
 		038E188C1947DDE900E35719 /* VForceUpgradeAnimatedTransition.m in Sources */ = {isa = PBXBuildFile; fileRef = 038E188B1947DDE900E35719 /* VForceUpgradeAnimatedTransition.m */; };
 		03943A78192570A500FA8A1F /* UINavigationController+RotationMethodForwarding.m in Sources */ = {isa = PBXBuildFile; fileRef = 03943A77192570A500FA8A1F /* UINavigationController+RotationMethodForwarding.m */; };
+		0394548B1955079E00AB1C4B /* FindFriendsTableView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0394548A1955079E00AB1C4B /* FindFriendsTableView.xib */; };
+		0394548E1955095700AB1C4B /* VFindFriendsTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 0394548D1955095700AB1C4B /* VFindFriendsTableView.m */; };
+		03945492195510CE00AB1C4B /* VFindFriendsTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 03945491195510CE00AB1C4B /* VFindFriendsTableViewController.m */; };
+		03945495195511B800AB1C4B /* VSuggestedFriendsTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 03945494195511B800AB1C4B /* VSuggestedFriendsTableViewController.m */; };
+		0394549E1955226C00AB1C4B /* VFindContactsTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0394549D1955226C00AB1C4B /* VFindContactsTableViewController.m */; };
 		03A2AD971926B9460034EB80 /* UIViewController+ForceOrientationChange.m in Sources */ = {isa = PBXBuildFile; fileRef = 03A2AD961926B9460034EB80 /* UIViewController+ForceOrientationChange.m */; };
 		03A2AD9A1926C9300034EB80 /* DeviceTableViewController+RotationMethods.m in Sources */ = {isa = PBXBuildFile; fileRef = 03A2AD991926C9300034EB80 /* DeviceTableViewController+RotationMethods.m */; };
 		03ABEE201937EC7F007931F9 /* VContentInputAccessoryView.m in Sources */ = {isa = PBXBuildFile; fileRef = 03ABEE1F1937EC7F007931F9 /* VContentInputAccessoryView.m */; };
@@ -390,6 +395,15 @@
 		038E188B1947DDE900E35719 /* VForceUpgradeAnimatedTransition.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VForceUpgradeAnimatedTransition.m; sourceTree = "<group>"; };
 		03943A76192570A500FA8A1F /* UINavigationController+RotationMethodForwarding.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "UINavigationController+RotationMethodForwarding.h"; path = "UI/UINavigationController+RotationMethodForwarding.h"; sourceTree = "<group>"; };
 		03943A77192570A500FA8A1F /* UINavigationController+RotationMethodForwarding.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "UINavigationController+RotationMethodForwarding.m"; path = "UI/UINavigationController+RotationMethodForwarding.m"; sourceTree = "<group>"; };
+		0394548A1955079E00AB1C4B /* FindFriendsTableView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FindFriendsTableView.xib; sourceTree = "<group>"; };
+		0394548C1955095700AB1C4B /* VFindFriendsTableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VFindFriendsTableView.h; sourceTree = "<group>"; };
+		0394548D1955095700AB1C4B /* VFindFriendsTableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VFindFriendsTableView.m; sourceTree = "<group>"; };
+		03945490195510CE00AB1C4B /* VFindFriendsTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VFindFriendsTableViewController.h; sourceTree = "<group>"; };
+		03945491195510CE00AB1C4B /* VFindFriendsTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VFindFriendsTableViewController.m; sourceTree = "<group>"; };
+		03945493195511B800AB1C4B /* VSuggestedFriendsTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VSuggestedFriendsTableViewController.h; sourceTree = "<group>"; };
+		03945494195511B800AB1C4B /* VSuggestedFriendsTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VSuggestedFriendsTableViewController.m; sourceTree = "<group>"; };
+		0394549C1955226C00AB1C4B /* VFindContactsTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VFindContactsTableViewController.h; sourceTree = "<group>"; };
+		0394549D1955226C00AB1C4B /* VFindContactsTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VFindContactsTableViewController.m; sourceTree = "<group>"; };
 		03A2AD951926B9460034EB80 /* UIViewController+ForceOrientationChange.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+ForceOrientationChange.h"; sourceTree = "<group>"; };
 		03A2AD961926B9460034EB80 /* UIViewController+ForceOrientationChange.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+ForceOrientationChange.m"; sourceTree = "<group>"; };
 		03A2AD981926C9300034EB80 /* DeviceTableViewController+RotationMethods.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "DeviceTableViewController+RotationMethods.h"; path = "UI/DeviceTableViewController+RotationMethods.h"; sourceTree = "<group>"; };
@@ -999,10 +1013,27 @@
 			path = Setters;
 			sourceTree = "<group>";
 		};
+		0394548F19550ECC00AB1C4B /* Table View Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				0394549C1955226C00AB1C4B /* VFindContactsTableViewController.h */,
+				0394549D1955226C00AB1C4B /* VFindContactsTableViewController.m */,
+				03945490195510CE00AB1C4B /* VFindFriendsTableViewController.h */,
+				03945491195510CE00AB1C4B /* VFindFriendsTableViewController.m */,
+				03945493195511B800AB1C4B /* VSuggestedFriendsTableViewController.h */,
+				03945494195511B800AB1C4B /* VSuggestedFriendsTableViewController.m */,
+			);
+			path = "Table View Controllers";
+			sourceTree = "<group>";
+		};
 		03E8D78A1954ECF000F67ABF /* Find Friends */ = {
 			isa = PBXGroup;
 			children = (
 				03E8D78B1954ECF000F67ABF /* FindFriends.storyboard */,
+				0394548A1955079E00AB1C4B /* FindFriendsTableView.xib */,
+				0394548F19550ECC00AB1C4B /* Table View Controllers */,
+				0394548C1955095700AB1C4B /* VFindFriendsTableView.h */,
+				0394548D1955095700AB1C4B /* VFindFriendsTableView.m */,
 				03E8D7911954ECF000F67ABF /* VFindFriendsViewController.h */,
 				03E8D7921954ECF000F67ABF /* VFindFriendsViewController.m */,
 			);
@@ -2084,6 +2115,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0394548B1955079E00AB1C4B /* FindFriendsTableView.xib in Resources */,
 				3FA217D818A9C38A0066E893 /* play_black@2x.png in Resources */,
 				3FF8B7981868EE7E00806EA0 /* Main.storyboard in Resources */,
 				03F9D29919204D7700576AEE /* Icon-60@2x.png in Resources */,
@@ -2248,7 +2280,9 @@
 				3FD7FFA918BFD64C00945E5F /* VImagePreviewViewController.m in Sources */,
 				3FD7FFBE18C5360800945E5F /* VExpirationDatePicker.m in Sources */,
 				BEF2C2B71886211000AAE975 /* VPollResult.m in Sources */,
+				03945495195511B800AB1C4B /* VSuggestedFriendsTableViewController.m in Sources */,
 				0385FEE618EF341D009FBD68 /* VImageSearchDataSource.m in Sources */,
+				0394548E1955095700AB1C4B /* VFindFriendsTableView.m in Sources */,
 				BE171E201868C211004E5202 /* VObjectManager+Login.m in Sources */,
 				BEA31EE9192292F300A90A10 /* VComment+Fetcher.m in Sources */,
 				5FF9BE7F1893143D0054694B /* UIViewController+VSideMenuViewController.m in Sources */,
@@ -2375,6 +2409,7 @@
 				5F51F81A189AEBF800A546D1 /* VAbstractProfileEditViewController.m in Sources */,
 				3F14C44D18BD2BD0001796B9 /* VCAudioTools.m in Sources */,
 				3F0282401937D23E0099259A /* VContactsConnectViewController.m in Sources */,
+				03945492195510CE00AB1C4B /* VFindFriendsTableViewController.m in Sources */,
 				BEF2C2A818848B3B00AAE975 /* VUnreadConversation.m in Sources */,
 				03484BF1192D284100403FB1 /* VLightboxDisplayAnimator.m in Sources */,
 				BEF2C29618845EF500AAE975 /* VPollResult+RestKit.m in Sources */,
@@ -2389,6 +2424,7 @@
 				3F0282461937D2660099259A /* VTwitterConnectViewController.m in Sources */,
 				3F9B666E1888C4390046F826 /* VHomeStreamViewController.m in Sources */,
 				BED4569418BD581800A67160 /* UIWebView+VYoutubeLoading.m in Sources */,
+				0394549E1955226C00AB1C4B /* VFindContactsTableViewController.m in Sources */,
 				3F93489D1922C522002EA91F /* VFollowerTableViewController.m in Sources */,
 				BE5C7379187E36E800A3340D /* VNodeAction.m in Sources */,
 				BE171E1F1868C211004E5202 /* VObjectManager+Comment.m in Sources */,

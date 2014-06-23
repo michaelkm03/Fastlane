@@ -251,7 +251,7 @@
         }
     };
     
-    return [self POST:@"/api/follow/find_by_email"
+    return [self POST:@"/api/friend/find_by_email"
                object:nil
            parameters:parameters
          successBlock:fullSuccess
