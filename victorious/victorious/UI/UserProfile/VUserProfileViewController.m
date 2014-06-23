@@ -136,10 +136,8 @@ const   CGFloat kVSmallUserHeaderHeight = 316;
     UIImage*    defaultBackgroundImage;
     if (self.backgroundImageView.image)
         defaultBackgroundImage = self.backgroundImageView.image;
-    else if (IS_IPHONE_5)
-        defaultBackgroundImage = [[[VThemeManager sharedThemeManager] themedImageForKey:kVMenuBackgroundImage5] applyLightEffect];
     else
-        defaultBackgroundImage = [[[VThemeManager sharedThemeManager] themedImageForKey:kVMenuBackgroundImage] applyLightEffect];
+        defaultBackgroundImage = [[[VThemeManager sharedThemeManager] themedBackgroundImageForDevice] applyLightEffect];
     
     self.backgroundImageView = [[UIImageView alloc] initWithFrame:self.view.frame];
     self.backgroundImageView.contentMode = UIViewContentModeScaleAspectFill;

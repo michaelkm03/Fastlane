@@ -44,11 +44,8 @@
     self.cameraButton.layer.shouldRasterize = YES;
     self.cameraButton.clipsToBounds = YES;
 
-    UIImage*    backgroundImage;
-    if (IS_IPHONE_5)
-        backgroundImage = [[[VThemeManager sharedThemeManager] themedImageForKey:kVMenuBackgroundImage5] applyBlurWithRadius:0 tintColor:[UIColor colorWithWhite:0.0 alpha:0.3] saturationDeltaFactor:1.8 maskImage:nil];
-    else
-        backgroundImage = [[[VThemeManager sharedThemeManager] themedImageForKey:kVMenuBackgroundImage] applyBlurWithRadius:0 tintColor:[UIColor colorWithWhite:0.0 alpha:0.3] saturationDeltaFactor:1.8 maskImage:nil];
+    UIImage*    backgroundImage = [[[VThemeManager sharedThemeManager] themedBackgroundImageForDevice]
+                                   applyBlurWithRadius:0 tintColor:[UIColor colorWithWhite:0.0 alpha:0.3] saturationDeltaFactor:1.8 maskImage:nil];
 
     NSURL*  imageURL    =   [NSURL URLWithString:self.profile.pictureUrl];
     [self.profileImageView setImageWithURL:imageURL placeholderImage:backgroundImage];

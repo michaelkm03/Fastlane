@@ -8,6 +8,8 @@
 
 #import "VThemeManager.h"
 
+#import "VConstants.h"
+
 #pragma mark - new theme constants
 NSString*   const   kVThemeManagerThemeDidChange        =   @"VThemeManagerThemeDidChange";
 
@@ -219,6 +221,15 @@ NSString*   const   kVNewThemeKey                       =   @"kVNewTheme";
 }
 
 #pragma mark - Other
+
+- (UIImage*)themedBackgroundImageForDevice
+{
+    
+    if (IS_IPHONE_5)
+        return [self themedImageForKey:kVMenuBackgroundImage5];
+    else
+        return [self themedImageForKey:kVMenuBackgroundImage];
+}
 
 - (UIColor *)themedColorForKey:(NSString *)key
 {
