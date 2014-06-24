@@ -87,6 +87,8 @@ static NSString * const kFollowCellReuseID = @"followerCell";
             {
                 self.tableView.tableView.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
                 [self.tableView.tableView reloadData];
+                self.tableView.clearButton.hidden = NO;
+                self.tableView.selectAllButton.hidden = NO;
             }
             else
             {
@@ -96,6 +98,8 @@ static NSString * const kFollowCellReuseID = @"followerCell";
                 noFollowersView.messageLabel.text = NSLocalizedString(@"NoFriendsDetail", @"");
                 noFollowersView.iconImageView.image = [UIImage imageNamed:@"noFollowersIcon"];
                 self.tableView.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+                self.tableView.clearButton.hidden = YES;
+                self.tableView.selectAllButton.hidden = YES;
             }
             
             break;
@@ -171,7 +175,7 @@ static NSString * const kFollowCellReuseID = @"followerCell";
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return 44.0f;
+    return 50.0f;
 }
 
 #pragma mark - UITableViewDataSource methods

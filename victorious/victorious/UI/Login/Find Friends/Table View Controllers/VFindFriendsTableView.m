@@ -41,6 +41,12 @@
     self.connectButton.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
     self.retryButton.titleLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVButton2Font];
     self.retryButton.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
+    self.clearButton.layer.borderColor = [[UIColor colorWithRed:0.4f green:0.4f blue:0.4f alpha:1.0f] CGColor];
+    self.clearButton.layer.borderWidth = 1.5f;
+    self.clearButton.layer.cornerRadius = 3.0f;
+    self.selectAllButton.layer.borderColor = [[UIColor colorWithRed:0.4f green:0.4f blue:0.4f alpha:1.0f] CGColor];
+    self.selectAllButton.layer.borderWidth = 1.5f;
+    self.selectAllButton.layer.cornerRadius = 3.0f;
 }
 
 @end
