@@ -31,6 +31,7 @@
 		0361058A194154F40069D49E /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 03610589194154F40069D49E /* SystemConfiguration.framework */; };
 		036AC8F71958FD9F0086856B /* FindFriendsTableView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 036AC8F41958FD9F0086856B /* FindFriendsTableView.xib */; };
 		036AC8F81958FD9F0086856B /* VFindFriendsTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 036AC8F61958FD9F0086856B /* VFindFriendsTableView.m */; };
+		036AC8FB1958FF320086856B /* VFindFacebookFriendsTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 036AC8FA1958FF320086856B /* VFindFacebookFriendsTableViewController.m */; };
 		036AE5ED18FF0C0600A74BDA /* VReachability.m in Sources */ = {isa = PBXBuildFile; fileRef = 036AE5EC18FF0C0600A74BDA /* VReachability.m */; };
 		03811D2E1934707B005687FF /* VImageSearchResultsFooterView.m in Sources */ = {isa = PBXBuildFile; fileRef = 03811D2D1934707B005687FF /* VImageSearchResultsFooterView.m */; };
 		03811D31193533D0005687FF /* UIAlertView+VBlocks.m in Sources */ = {isa = PBXBuildFile; fileRef = 03811D30193533D0005687FF /* UIAlertView+VBlocks.m */; };
@@ -376,6 +377,8 @@
 		036AC8F41958FD9F0086856B /* FindFriendsTableView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FindFriendsTableView.xib; sourceTree = "<group>"; };
 		036AC8F51958FD9F0086856B /* VFindFriendsTableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VFindFriendsTableView.h; sourceTree = "<group>"; };
 		036AC8F61958FD9F0086856B /* VFindFriendsTableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VFindFriendsTableView.m; sourceTree = "<group>"; };
+		036AC8F91958FF320086856B /* VFindFacebookFriendsTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VFindFacebookFriendsTableViewController.h; sourceTree = "<group>"; };
+		036AC8FA1958FF320086856B /* VFindFacebookFriendsTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VFindFacebookFriendsTableViewController.m; sourceTree = "<group>"; };
 		036AE5EB18FF0C0600A74BDA /* VReachability.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VReachability.h; sourceTree = "<group>"; };
 		036AE5EC18FF0C0600A74BDA /* VReachability.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VReachability.m; sourceTree = "<group>"; };
 		03811D2C1934707B005687FF /* VImageSearchResultsFooterView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VImageSearchResultsFooterView.h; sourceTree = "<group>"; };
@@ -1019,6 +1022,8 @@
 				036AC8F41958FD9F0086856B /* FindFriendsTableView.xib */,
 				0394549C1955226C00AB1C4B /* VFindContactsTableViewController.h */,
 				0394549D1955226C00AB1C4B /* VFindContactsTableViewController.m */,
+				036AC8F91958FF320086856B /* VFindFacebookFriendsTableViewController.h */,
+				036AC8FA1958FF320086856B /* VFindFacebookFriendsTableViewController.m */,
 				036AC8F51958FD9F0086856B /* VFindFriendsTableView.h */,
 				036AC8F61958FD9F0086856B /* VFindFriendsTableView.m */,
 				03945490195510CE00AB1C4B /* VFindFriendsTableViewController.h */,
@@ -2455,6 +2460,7 @@
 				03484BF8192D2B4400403FB1 /* VLightboxDismissAnimator.m in Sources */,
 				BE5C736A187E36E800A3340D /* VRule.m in Sources */,
 				3FA217C218A9B5160066E893 /* CastViewController.m in Sources */,
+				036AC8FB1958FF320086856B /* VFindFacebookFriendsTableViewController.m in Sources */,
 				BE6211AF192D65C300D5C74B /* VTableContainerViewController.m in Sources */,
 				3F21942E193EA49000FA3407 /* VChangePasswordViewController.m in Sources */,
 				BE651D1018AC270900069119 /* VKeyboardBarViewController.m in Sources */,

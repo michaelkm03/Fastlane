@@ -7,6 +7,7 @@
 //
 
 #import "VFindContactsTableViewController.h"
+#import "VFindFacebookFriendsTableViewController.h"
 #import "VFindFriendsViewController.h"
 #import "VSuggestedFriendsTableViewController.h"
 #import "VThemeManager.h"
@@ -153,6 +154,7 @@ typedef NS_ENUM(NSInteger, VSlideDirection)
 {
     self.suggestedFriendsInnerViewController = [[VSuggestedFriendsTableViewController alloc] init];
     self.contactsInnerViewController = [[VFindContactsTableViewController alloc] init];
+    self.facebookInnerViewController = [[VFindFacebookFriendsTableViewController alloc] init];
 }
 
 #pragma mark - Button Actions
@@ -193,7 +195,21 @@ typedef NS_ENUM(NSInteger, VSlideDirection)
 
 - (IBAction)pressedFacebook:(id)sender
 {
+    if (self.innerViewController == self.facebookInnerViewController)
+    {
+        return;
+    }
     
+    VSlideDirection direction;
+    if (self.innerViewController == self.suggestedFriendsInnerViewController || self.innerViewController == self.contactsInnerViewController)
+    {
+        direction = VSlideDirectionLeft;
+    }
+    else
+    {
+        direction = VSlideDirectionRight;
+    }
+    [self setInnerViewController:self.facebookInnerViewController slideDirection:direction];
 }
 
 - (IBAction)pressedTwitter:(id)sender
