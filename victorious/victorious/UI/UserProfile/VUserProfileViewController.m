@@ -118,11 +118,6 @@ const   CGFloat kVSmallUserHeaderHeight = 316;
     
     self.tableView.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVContentTextColor];
     
-    [self.currentFilter addObserver:self
-                         forKeyPath:@"sequences"
-                            options:NSKeyValueObservingOptionNew
-                            context:nil];
-    
     if (![VObjectManager sharedManager].mainUser)
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(loginStateDidChange:) name:kLoggedInChangedNotification object:nil];
 }
@@ -204,8 +199,8 @@ const   CGFloat kVSmallUserHeaderHeight = 316;
 {
     VUserProfileHeaderView* header = (VUserProfileHeaderView*)self.tableView.tableHeaderView;
     
-    CGFloat bufferDiff = buffer - header.bottomBufferConstraint.constant;
-    CGPoint newOffset = CGPointMake(self.tableView.contentOffset.x, self.tableView.contentOffset.y - bufferDiff);
+    CGFloat bufferDiff = header.bottomBufferConstraint.constant - buffer;
+    CGPoint newOffset = CGPointMake(self.tableView.contentOffset.x, self.tableView.contentOffset.y + bufferDiff);
     self.tableView.contentOffset = newOffset;
     
     header.bottomBufferConstraint.constant = buffer;
@@ -412,6 +407,16 @@ const   CGFloat kVSmallUserHeaderHeight = 316;
     }
 }
 
+- (IBAction)createButtonAction:(id)sender
+{
+    [self.currentFilter addObserver:self
+                         forKeyPath:@"sequences"
+                            options:NSKeyValueObservingOptionNew
+                            context:nil];
+    
+    [super createButtonAction:sender];
+}
+
 #pragma mark - KVO
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
 {
@@ -436,10 +441,12 @@ const   CGFloat kVSmallUserHeaderHeight = 316;
              }
                              completion:^(BOOL finished)
              {
-                 [self setHeaderHeight:[UIScreen mainScreen].bounds.size.height];
+                 [self setHeaderHeight:[UIScreen mainScreen].bounds.size.height - kVNavigationBarHeight];
              }];
         }
     }
+    
+    [self.currentFilter removeObserver:self forKeyPath:NSStringFromSelector(@selector(sequences))];
 }
 
 @end
