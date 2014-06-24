@@ -208,6 +208,9 @@
 "FindFBFriends"         =   "Add your friends from Facebook by connecting your account";
 "Connect to Facebook"   =   "Connect to Facebook";
 
+"FindTwitterFriends"    =   "Add your friends from Twitter by connecting your account";
+"Connect to Twitter"    =   "Connect to Twitter";
+
 "Logout"                =   "Log Out";
 "Login"                 =   "Log In";
 

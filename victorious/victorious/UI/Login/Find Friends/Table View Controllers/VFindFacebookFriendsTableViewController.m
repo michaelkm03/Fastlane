@@ -11,10 +11,6 @@
 #import "VFacebookManager.h"
 #import "VObjectManager+Users.h"
 
-@interface VFindFacebookFriendsTableViewController ()
-
-@end
-
 @implementation VFindFacebookFriendsTableViewController
 
 - (void)viewDidLoad
