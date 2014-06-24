@@ -33,6 +33,7 @@
 		036AC8F81958FD9F0086856B /* VFindFriendsTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 036AC8F61958FD9F0086856B /* VFindFriendsTableView.m */; };
 		036AC8FB1958FF320086856B /* VFindFacebookFriendsTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 036AC8FA1958FF320086856B /* VFindFacebookFriendsTableViewController.m */; };
 		036AC8FE1959EA060086856B /* VFindTwitterFriendsTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 036AC8FD1959EA060086856B /* VFindTwitterFriendsTableViewController.m */; };
+		036AC9041959FB080086856B /* VFindInstagramFriendsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 036AC9031959FB080086856B /* VFindInstagramFriendsViewController.m */; };
 		036AE5ED18FF0C0600A74BDA /* VReachability.m in Sources */ = {isa = PBXBuildFile; fileRef = 036AE5EC18FF0C0600A74BDA /* VReachability.m */; };
 		03811D2E1934707B005687FF /* VImageSearchResultsFooterView.m in Sources */ = {isa = PBXBuildFile; fileRef = 03811D2D1934707B005687FF /* VImageSearchResultsFooterView.m */; };
 		03811D31193533D0005687FF /* UIAlertView+VBlocks.m in Sources */ = {isa = PBXBuildFile; fileRef = 03811D30193533D0005687FF /* UIAlertView+VBlocks.m */; };
@@ -382,6 +383,8 @@
 		036AC8FA1958FF320086856B /* VFindFacebookFriendsTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VFindFacebookFriendsTableViewController.m; sourceTree = "<group>"; };
 		036AC8FC1959EA060086856B /* VFindTwitterFriendsTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VFindTwitterFriendsTableViewController.h; sourceTree = "<group>"; };
 		036AC8FD1959EA060086856B /* VFindTwitterFriendsTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VFindTwitterFriendsTableViewController.m; sourceTree = "<group>"; };
+		036AC9021959FB080086856B /* VFindInstagramFriendsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VFindInstagramFriendsViewController.h; sourceTree = "<group>"; };
+		036AC9031959FB080086856B /* VFindInstagramFriendsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VFindInstagramFriendsViewController.m; sourceTree = "<group>"; };
 		036AE5EB18FF0C0600A74BDA /* VReachability.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VReachability.h; sourceTree = "<group>"; };
 		036AE5EC18FF0C0600A74BDA /* VReachability.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VReachability.m; sourceTree = "<group>"; };
 		03811D2C1934707B005687FF /* VImageSearchResultsFooterView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VImageSearchResultsFooterView.h; sourceTree = "<group>"; };
@@ -1031,6 +1034,8 @@
 				036AC8F61958FD9F0086856B /* VFindFriendsTableView.m */,
 				03945490195510CE00AB1C4B /* VFindFriendsTableViewController.h */,
 				03945491195510CE00AB1C4B /* VFindFriendsTableViewController.m */,
+				036AC9021959FB080086856B /* VFindInstagramFriendsViewController.h */,
+				036AC9031959FB080086856B /* VFindInstagramFriendsViewController.m */,
 				036AC8FC1959EA060086856B /* VFindTwitterFriendsTableViewController.h */,
 				036AC8FD1959EA060086856B /* VFindTwitterFriendsTableViewController.m */,
 				03945493195511B800AB1C4B /* VSuggestedFriendsTableViewController.h */,
@@ -2346,6 +2351,7 @@
 				3FD7FFBB18C14ED400945E5F /* VExpirationPickerTextField.m in Sources */,
 				BE669C591937E43100EC45AE /* VSequence.m in Sources */,
 				3F4863FA1869184000F77346 /* VInboxViewController.m in Sources */,
+				036AC9041959FB080086856B /* VFindInstagramFriendsViewController.m in Sources */,
 				5FC4DA731897121F006BA107 /* VSignupWithEmailViewController.m in Sources */,
 				3FBCBA0719355A1C00EB510C /* VInviteInstagramViewController.m in Sources */,
 				BE9181EB1909D38A0071E7AF /* VSequenceFilter.m in Sources */,

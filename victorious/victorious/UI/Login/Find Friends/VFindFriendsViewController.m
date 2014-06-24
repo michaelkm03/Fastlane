@@ -9,6 +9,7 @@
 #import "VFindContactsTableViewController.h"
 #import "VFindFacebookFriendsTableViewController.h"
 #import "VFindFriendsViewController.h"
+#import "VFindInstagramFriendsViewController.h"
 #import "VFindTwitterFriendsTableViewController.h"
 #import "VSuggestedFriendsTableViewController.h"
 #import "VThemeManager.h"
@@ -157,6 +158,7 @@ typedef NS_ENUM(NSInteger, VSlideDirection)
     self.contactsInnerViewController = [[VFindContactsTableViewController alloc] init];
     self.facebookInnerViewController = [[VFindFacebookFriendsTableViewController alloc] init];
     self.twitterInnerViewController = [[VFindTwitterFriendsTableViewController alloc] init];
+    self.instagramInnerViewController = [[VFindInstagramFriendsViewController alloc] init];
 }
 
 #pragma mark - Button Actions
@@ -235,7 +237,11 @@ typedef NS_ENUM(NSInteger, VSlideDirection)
 
 - (IBAction)pressedInstagram:(id)sender
 {
-    
+    if (self.innerViewController == self.instagramInnerViewController)
+    {
+        return;
+    }
+    [self setInnerViewController:self.instagramInnerViewController slideDirection:VSlideDirectionLeft];
 }
 
 @end
