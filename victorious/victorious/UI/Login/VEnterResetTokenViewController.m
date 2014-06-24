@@ -28,6 +28,12 @@
 
 @implementation VEnterResetTokenViewController
 
++ (instancetype)enterResetTokenViewController
+{
+    UIStoryboard*   storyboard  =   [UIStoryboard storyboardWithName:@"login" bundle:nil];
+    return [storyboard instantiateViewControllerWithIdentifier:kEnterResetTokenID];
+}
+
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
@@ -61,6 +67,17 @@
     // Do any additional setup after loading the view.
 }
 
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+
+    if (self.userToken)
+    {
+        self.codeField.text = self.userToken;
+        self.userToken = nil;
+        [self textFieldShouldReturn:self.codeField];
+    }
+}
 
 - (IBAction)pressedBack:(id)sender
 {

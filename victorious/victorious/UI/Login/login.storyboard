@@ -994,7 +994,7 @@
         <!--Enter Reset Token View Controller-->
         <scene sceneID="IYY-ro-qga">
             <objects>
-                <viewController storyboardIdentifier="content" id="Q74-bM-qRI" customClass="VEnterResetTokenViewController" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="enterresettoken" id="Q74-bM-qRI" customClass="VEnterResetTokenViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="Oa0-XC-rQE"/>
                         <viewControllerLayoutGuide type="bottom" id="v0J-bn-tge"/>
