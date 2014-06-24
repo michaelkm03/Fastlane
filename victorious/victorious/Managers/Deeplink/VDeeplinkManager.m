@@ -239,7 +239,7 @@
     enterTokenVC.deviceToken = deviceToken;
     enterTokenVC.userToken = userToken;
     
-    [root.navigationController pushViewController:enterTokenVC animated:YES];
+    [root.contentViewController pushViewController:enterTokenVC animated:YES];
 }
 
 
