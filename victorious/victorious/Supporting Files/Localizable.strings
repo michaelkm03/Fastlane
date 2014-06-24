@@ -52,7 +52,7 @@
 "CouldNotSend"          =   "Message was not sent";
 
 "Missing Content"           =   "Uh Oh!";
-"Missing Content Message"   =   "It looks like the content you're looking for is missing!";
+"Missing Content Message"   =   "We can't find what you're looking for!";
 
 "NoMessagesTitle"       =   "NO MESSAGES YET";
 "NoMessagesMessage"     =   "You can send messages to anyone on the app!  Just go to their profile and click the compose icon in the top right corner.";
@@ -178,9 +178,12 @@
 "ResetPasswordPrompt"   =   "Please enter your e-mail address";
 "ResetPasswordPlaceholder" = "E-mail Address";
 
+"EnterResetCodeMessage" =   "An email was sent to this address containing reset password instructions.";
+"EnterCodeTitle"        =   "ENTER CODE";
+"ResendEmail"           =   "Resend Email";
+
 "EmailNotFound"         =   "That E-mail address was not found. Please check that you are using the e-mail account you used to create this account.";
 "Thanks"                =   "Thanks!";
-"EmailSent"             =   "An e-mail was sent to this address which contains a 4-digit code to use to verify your account.";
 "CannotVerify"          =   "Cannot Verify Account";
 "IncorrectCode"         =   "The 4-digit code used for account verfication is incorrect.";
 

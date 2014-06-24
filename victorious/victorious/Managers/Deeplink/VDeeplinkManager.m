@@ -24,6 +24,7 @@
 #import "VMessageContainerViewController.h"
 #import "VCommentsContainerViewController.h"
 #import "UIViewController+VSideMenuViewController.h"
+#import "VEnterResetTokenViewController.h"
 
 @implementation VDeeplinkManager
 
@@ -98,7 +99,8 @@
              @"//content/(\\d+)"                : @"handleContentURL:",
              @"//comment/(\\d+)"                : @"handleCommentURL:",
              @"//profile/(\\d+)"                : @"handleProfileURL:",
-             @"//inbox/(\\d+)"                  : @"handleConversationURL:"
+             @"//inbox/(\\d+)"                  : @"handleConversationURL:",
+             @"//resetpassword/([a-zA-Z0-9]+)/([a-zA-Z0-9]+)"   : @"handleResetPasswordURL:"
              };
 }
 
@@ -220,5 +222,25 @@
          [self showMissingContentAlert];
      }];
 }
+
+
+- (void)handleResetPasswordURL:(NSArray *)captures
+{
+    NSString* userToken = ((NSString*)[captures firstObject]);
+    NSString* deviceToken = (NSString*)[captures lastObject];
+    if (!userToken || !deviceToken)
+    {
+        [self showMissingContentAlert];
+        return;
+    }
+    
+    VRootViewController* root = [VRootViewController rootViewController];
+    VEnterResetTokenViewController* enterTokenVC = [VEnterResetTokenViewController enterResetTokenViewController];
+    enterTokenVC.deviceToken = deviceToken;
+    enterTokenVC.userToken = userToken;
+    
+    [root.contentViewController pushViewController:enterTokenVC animated:YES];
+}
+
 
 @end

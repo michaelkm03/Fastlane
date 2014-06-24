@@ -256,12 +256,12 @@
                         <outlet property="passwordTextField" destination="3pO-cP-eTE" id="g2J-cP-u9B"/>
                         <outlet property="transitionPlaceholder" destination="nwd-XK-Yuq" id="yXS-dG-e45"/>
                         <outlet property="usernameTextField" destination="Jbh-n4-soS" id="sa1-3r-n9Y"/>
-                        <segue destination="uvb-TU-XJY" kind="push" identifier="toResetPassword" id="f9J-AA-czU"/>
+                        <segue destination="Q74-bM-qRI" kind="push" identifier="toEnterResetToken" id="E4c-Xm-9lW"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="AQe-iH-88j" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="815" y="-519"/>
+            <point key="canvasLocation" x="815" y="-699"/>
         </scene>
         <!--Reset Password View Controller-->
         <scene sceneID="dl9-g7-8V5">
@@ -345,7 +345,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="btI-78-6NP" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1465" y="-695"/>
+            <point key="canvasLocation" x="1845" y="-699"/>
         </scene>
         <!--Invite Suggested Table View Controller-->
         <scene sceneID="ZeD-34-nH1">
@@ -991,8 +991,90 @@
             </objects>
             <point key="canvasLocation" x="4110" y="1397"/>
         </scene>
+        <!--Enter Reset Token View Controller-->
+        <scene sceneID="IYY-ro-qga">
+            <objects>
+                <viewController storyboardIdentifier="enterresettoken" id="Q74-bM-qRI" customClass="VEnterResetTokenViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="Oa0-XC-rQE"/>
+                        <viewControllerLayoutGuide type="bottom" id="v0J-bn-tge"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="4VT-qs-8Hr">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <subviews>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hJA-Pd-VfH" userLabel="Back Button">
+                                <rect key="frame" x="3" y="6" width="44" height="45"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" image="Close">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="pressedBack:" destination="Q74-bM-qRI" eventType="touchUpInside" id="rWd-9f-Mbh"/>
+                                </connections>
+                            </button>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Thanks!" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="Lji-XP-yck">
+                                <rect key="frame" x="60" y="37" width="200" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="22"/>
+                                <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="An email was sent to this address containing a code to verify your account" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" preferredMaxLayoutWidth="280" translatesAutoresizingMaskIntoConstraints="NO" id="sxb-gV-KJX">
+                                <rect key="frame" x="20" y="75" width="280" height="80"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="ENTER CODE" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="CGW-Kx-wFZ">
+                                <rect key="frame" x="73" y="163" width="175" height="21"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Eus-qL-qzu">
+                                <rect key="frame" x="59" y="192" width="202" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits" returnKeyType="done"/>
+                                <connections>
+                                    <outlet property="delegate" destination="Q74-bM-qRI" id="gZD-MP-mM6"/>
+                                </connections>
+                            </textField>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ssT-3o-lsn">
+                                <rect key="frame" x="73" y="230" width="175" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" name="HelveticaNeue-Bold" family="Helvetica Neue" pointSize="15"/>
+                                <state key="normal" title="Resend Email"/>
+                                <connections>
+                                    <action selector="pressedResend:" destination="Q74-bM-qRI" eventType="touchUpInside" id="Au2-AJ-y0u"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                    </view>
+                    <navigationItem key="navigationItem" id="Jjo-Gf-qdP"/>
+                    <nil key="simulatedStatusBarMetrics"/>
+                    <nil key="simulatedTopBarMetrics"/>
+                    <connections>
+                        <outlet property="codeField" destination="Eus-qL-qzu" id="ndR-xL-dYg"/>
+                        <outlet property="enterCodeLabel" destination="CGW-Kx-wFZ" id="ZeB-kf-uX5"/>
+                        <outlet property="messageLabel" destination="sxb-gV-KJX" id="F7I-Sg-thg"/>
+                        <outlet property="resendButton" destination="ssT-3o-lsn" id="4d3-hP-sam"/>
+                        <outlet property="titleLabel" destination="Lji-XP-yck" id="1Tp-71-Rk4"/>
+                        <segue destination="uvb-TU-XJY" kind="push" identifier="toResetPassword" id="CP0-Gn-lB1"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="A1h-V7-CoE" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <tapGestureRecognizer id="dle-oC-Vjm" userLabel="Preview Image Tap Gesture"/>
+            </objects>
+            <point key="canvasLocation" x="1303" y="-699"/>
+        </scene>
     </scenes>
     <resources>
+        <image name="Close" width="17" height="17"/>
         <image name="createAvatar" width="80" height="80"/>
         <image name="inviteContacts" width="26" height="25"/>
         <image name="inviteFacebook" width="13" height="24"/>
