@@ -89,6 +89,7 @@ static NSString * const kFollowCellReuseID = @"followerCell";
                 [self.tableView.tableView reloadData];
                 self.tableView.clearButton.hidden = NO;
                 self.tableView.selectAllButton.hidden = NO;
+                [self selectAllRows];
             }
             else
             {
@@ -161,6 +162,8 @@ static NSString * const kFollowCellReuseID = @"followerCell";
     }];
 }
 
+#pragma mark - Button Actions
+
 - (IBAction)connectButtonTapped:(id)sender
 {
     [self _connectToSocialNetworkWithPossibleUserInteraction:YES];
@@ -171,11 +174,45 @@ static NSString * const kFollowCellReuseID = @"followerCell";
     [self _loadFriendsFromSocialNetwork];
 }
 
+- (IBAction)clearButtonTapped:(id)sender
+{
+    NSArray *selectedIndexPaths = [self.tableView.tableView indexPathsForSelectedRows];
+    for (NSIndexPath *indexPath in selectedIndexPaths)
+    {
+        [self.tableView.tableView deselectRowAtIndexPath:indexPath animated:YES];
+    }
+}
+
+- (IBAction)selectAllButtonTapped:(id)sender
+{
+    [self selectAllRows];
+}
+
+- (void)selectAllRows
+{
+    for (NSInteger n = 0; n < self.users.count; n++)
+    {
+        [self.tableView.tableView selectRowAtIndexPath:[NSIndexPath indexPathForItem:n inSection:0] animated:YES scrollPosition:UITableViewScrollPositionNone];
+    }
+}
+
 #pragma mark - UITableViewDelegate methods
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     return 50.0f;
+}
+
+- (NSIndexPath *)tableView:(UITableView *)tableView willSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    [tableView selectRowAtIndexPath:indexPath animated:YES scrollPosition:UITableViewScrollPositionNone];
+    return nil;
+}
+
+- (NSIndexPath *)tableView:(UITableView *)tableView willDeselectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    return nil;
 }
 
 #pragma mark - UITableViewDataSource methods

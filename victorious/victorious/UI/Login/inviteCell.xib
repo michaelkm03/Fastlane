@@ -51,36 +51,31 @@
                             <constraint firstItem="G5K-7H-rF2" firstAttribute="leading" secondItem="r9g-eu-gf2" secondAttribute="leading" id="r3t-ag-0t8"/>
                         </constraints>
                     </view>
-                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Wpp-5x-pTJ" userLabel="Un/Follow Button">
+                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="DCb-d9-tuC" userLabel="Un/Follow Icon">
                         <rect key="frame" x="261" y="11" width="42" height="27"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        <state key="normal" image="buttonFollow">
-                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                        </state>
-                        <connections>
-                            <action selector="follow:" destination="afQ-rA-05v" eventType="touchUpInside" id="HBw-Eu-hmx"/>
-                        </connections>
-                    </button>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="42" id="BfH-wQ-w9T"/>
+                            <constraint firstAttribute="height" constant="27" id="QZB-ad-FaX"/>
+                        </constraints>
+                    </imageView>
                 </subviews>
                 <constraints>
-                    <constraint firstAttribute="centerY" secondItem="Wpp-5x-pTJ" secondAttribute="centerY" constant="0.5" id="19U-VX-Dkh"/>
+                    <constraint firstAttribute="centerY" secondItem="DCb-d9-tuC" secondAttribute="centerY" constant="0.5" id="BH0-8t-dJc"/>
                     <constraint firstAttribute="centerY" secondItem="1CM-za-AlC" secondAttribute="centerY" constant="-0.5" id="Ken-zi-p3y"/>
-                    <constraint firstAttribute="trailing" secondItem="Wpp-5x-pTJ" secondAttribute="trailing" constant="17" id="Pzn-x7-vwy"/>
                     <constraint firstItem="r9g-eu-gf2" firstAttribute="leading" secondItem="jwz-bZ-rDa" secondAttribute="leading" constant="65" id="YoW-Fp-ANB"/>
                     <constraint firstAttribute="centerY" secondItem="r9g-eu-gf2" secondAttribute="centerY" id="agg-tJ-5Zv"/>
                     <constraint firstItem="1CM-za-AlC" firstAttribute="leading" secondItem="jwz-bZ-rDa" secondAttribute="leading" constant="20" id="gcv-0R-Yei"/>
+                    <constraint firstAttribute="trailing" secondItem="DCb-d9-tuC" secondAttribute="trailing" constant="17" id="if8-Dz-nEm"/>
                 </constraints>
             </tableViewCellContentView>
             <color key="backgroundColor" red="0.97254901960784312" green="0.97254901960784312" blue="0.97254901960784312" alpha="1" colorSpace="calibratedRGB"/>
             <connections>
-                <outlet property="followButton" destination="Wpp-5x-pTJ" id="rxB-G9-8qW"/>
+                <outlet property="followIcon" destination="DCb-d9-tuC" id="rUn-Pg-E4Y"/>
                 <outlet property="profileImage" destination="1CM-za-AlC" id="NLt-HB-PPr"/>
                 <outlet property="profileLocation" destination="G5K-7H-rF2" id="upt-tl-i6O"/>
                 <outlet property="profileName" destination="5fj-5f-CB3" id="W6i-4n-DXK"/>
             </connections>
         </tableViewCell>
     </objects>
-    <resources>
-        <image name="buttonFollow" width="42" height="27"/>
-    </resources>
 </document>
