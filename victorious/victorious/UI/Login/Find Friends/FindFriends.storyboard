@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6154.21" systemVersion="13D65" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="9uz-5b-W5V">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="5056" systemVersion="13D65" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="9uz-5b-W5V">
     <dependencies>
         <deployment defaultVersion="1792" identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6153.13"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3733"/>
     </dependencies>
     <scenes>
         <!--Find Friends-->
@@ -31,6 +31,21 @@
                                         </state>
                                         <connections>
                                             <action selector="pressedBack:" destination="9uz-5b-W5V" eventType="touchUpInside" id="zkX-XV-Ya3"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6pT-4a-AGI">
+                                        <rect key="frame" x="0.0" y="0.0" width="56" height="56"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="56" id="7rq-cd-Gef"/>
+                                            <constraint firstAttribute="width" constant="56" id="O4u-JQ-emm"/>
+                                        </constraints>
+                                        <state key="normal" title="Invite">
+                                            <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="pressedInvite:" destination="9uz-5b-W5V" eventType="touchUpInside" id="xTd-as-hCv"/>
                                         </connections>
                                     </button>
                                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Find Friends" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cfs-vL-vt7">
@@ -148,6 +163,8 @@
                                 </subviews>
                                 <color key="backgroundColor" red="0.21176470588235294" green="0.14509803921568626" blue="0.30588235294117649" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
+                                    <constraint firstItem="6pT-4a-AGI" firstAttribute="left" secondItem="aSZ-dD-gh8" secondAttribute="left" id="5tP-dj-6BI"/>
+                                    <constraint firstItem="6pT-4a-AGI" firstAttribute="top" secondItem="aSZ-dD-gh8" secondAttribute="top" id="FnE-gm-HXp"/>
                                     <constraint firstAttribute="centerX" secondItem="cfs-vL-vt7" secondAttribute="centerX" constant="-0.5" id="MI3-tn-Lg4"/>
                                     <constraint firstItem="fjY-M8-C3E" firstAttribute="top" secondItem="aSZ-dD-gh8" secondAttribute="top" id="QFk-aa-hrv"/>
                                     <constraint firstItem="3jG-Uv-3gX" firstAttribute="leading" secondItem="aSZ-dD-gh8" secondAttribute="leading" id="dgV-Da-FAo"/>
@@ -183,6 +200,7 @@
                         <outlet property="containerView" destination="fD6-wb-WxZ" id="h56-hz-IAY"/>
                         <outlet property="doneButton" destination="fjY-M8-C3E" id="kR5-PZ-OX9"/>
                         <outlet property="headerView" destination="aSZ-dD-gh8" id="ecU-Xn-VTA"/>
+                        <outlet property="inviteButton" destination="6pT-4a-AGI" id="hM7-Tp-n1M"/>
                         <outlet property="titleLabel" destination="cfs-vL-vt7" id="aAD-JI-1LS"/>
                         <outletCollection property="socialNetworkButtons" destination="KFZ-T9-Rj0" id="sDf-M4-We5"/>
                         <outletCollection property="socialNetworkButtons" destination="Jks-qk-3sl" id="gci-m6-ws2"/>

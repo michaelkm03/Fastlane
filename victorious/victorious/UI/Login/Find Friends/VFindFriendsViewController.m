@@ -6,6 +6,7 @@
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
+#import "UIActionSheet+VBlocks.h"
 #import "VFindContactsTableViewController.h"
 #import "VFindFacebookFriendsTableViewController.h"
 #import "VFindFriendsViewController.h"
@@ -14,6 +15,8 @@
 #import "VSuggestedFriendsTableViewController.h"
 #import "VThemeManager.h"
 
+@import MessageUI;
+
 typedef NS_ENUM(NSInteger, VSlideDirection)
 {
     VSlideDirectionNone = 0, ///< Use this to disable animation
@@ -21,12 +24,13 @@ typedef NS_ENUM(NSInteger, VSlideDirection)
     VSlideDirectionRight
 };
 
-@interface VFindFriendsViewController ()
+@interface VFindFriendsViewController () <MFMailComposeViewControllerDelegate, MFMessageComposeViewControllerDelegate>
 
 @property (nonatomic, weak)   IBOutlet UIView   *headerView;
 @property (nonatomic, weak)   IBOutlet UILabel  *titleLabel;
 @property (nonatomic, weak)   IBOutlet UIView   *buttonsSuperview;
 @property (nonatomic, weak)   IBOutlet UIButton *backButton;
+@property (nonatomic, weak)   IBOutlet UIButton *inviteButton;
 @property (nonatomic, weak)   IBOutlet UIButton *doneButton;
 @property (nonatomic, strong) IBOutletCollection(UIButton) NSArray *socialNetworkButtons;
 @property (nonatomic, weak)   IBOutlet UIView   *containerView;
@@ -75,7 +79,8 @@ typedef NS_ENUM(NSInteger, VSlideDirection)
 {
     [super viewWillAppear:animated];
     self.navigationController.navigationBarHidden = YES;
-    self.backButton.hidden = self.navigationController.viewControllers.count <= 1;
+    self.inviteButton.hidden = ![MFMailComposeViewController canSendMail] && ![MFMessageComposeViewController canSendText];
+    self.backButton.hidden = !self.inviteButton.hidden || self.navigationController.viewControllers.count <= 1;
     self.doneButton.hidden = !self.presentingViewController;
     if (!self.innerViewController)
     {
@@ -168,6 +173,28 @@ typedef NS_ENUM(NSInteger, VSlideDirection)
     [self.navigationController popViewControllerAnimated:YES];
 }
 
+- (IBAction)pressedInvite:(id)sender
+{
+    UIActionSheet *sheet = [[UIActionSheet alloc] initWithTitle:NSLocalizedString(@"InviteYourFriends", @"")
+                                              cancelButtonTitle:NSLocalizedString(@"CancelButton", @"")
+                                                 onCancelButton:nil
+                                         destructiveButtonTitle:nil
+                                            onDestructiveButton:nil
+                                     otherButtonTitlesAndBlocks:nil];
+
+    if ([MFMailComposeViewController canSendMail])
+    {
+        [sheet addButtonWithTitle:NSLocalizedString(@"InviteUsingEmail", @"")
+                            block:^{ [self inviteViaMail]; }];
+    }
+    if ([MFMessageComposeViewController canSendText])
+    {
+        [sheet addButtonWithTitle:NSLocalizedString(@"InviteUsingSMS", @"")
+                            block:^{ [self inviteViaMessage]; }];
+    }
+    [sheet showInView:self.view];
+}
+
 - (IBAction)pressedDone:(id)sender
 {
     [self dismissViewControllerAnimated:YES completion:nil];
@@ -242,6 +269,67 @@ typedef NS_ENUM(NSInteger, VSlideDirection)
         return;
     }
     [self setInnerViewController:self.instagramInnerViewController slideDirection:VSlideDirectionLeft];
+}
+
+#pragma mark - Invite
+
+- (void)inviteViaMail
+{
+    if ([MFMailComposeViewController canSendMail])
+    {
+        // The style is removed then re-applied so the mail compose view controller has the default appearance
+        [[VThemeManager sharedThemeManager] removeStyling];
+        
+        MFMailComposeViewController *mailComposer = [[MFMailComposeViewController alloc] init];
+        mailComposer.mailComposeDelegate = self;
+        
+        [mailComposer setSubject:NSLocalizedString(@"InviteFriendsSubject", @"")];
+        [mailComposer setMessageBody:NSLocalizedString(@"InviteFriendsBody", @"") isHTML:NO];
+        
+        [self presentViewController:mailComposer animated:YES completion:^(void)
+        {
+        }];
+    }
+}
+
+- (void)inviteViaMessage
+{
+    if ([MFMessageComposeViewController canSendText])
+    {
+        // The style is removed then re-applied so the mail compose view controller has the default appearance
+        [[VThemeManager sharedThemeManager] removeStyling];
+        
+        MFMessageComposeViewController *messageComposer = [[MFMessageComposeViewController alloc] init];
+        messageComposer.messageComposeDelegate = self;
+        messageComposer.body = NSLocalizedString(@"InviteFriendsBody", @"");
+        
+        if ([MFMessageComposeViewController canSendSubject])
+        {
+            messageComposer.subject = NSLocalizedString(@"InviteFriendsSubject", @"");
+        }
+        
+        [self presentViewController:messageComposer animated:YES completion:nil];
+    }
+}
+
+#pragma mark - MFMailComposeViewControllerDelegate methods
+
+- (void)mailComposeController:(MFMailComposeViewController *)controller didFinishWithResult:(MFMailComposeResult)result error:(NSError *)error
+{
+    [self dismissViewControllerAnimated:YES completion:^(void)
+    {
+        [[VThemeManager sharedThemeManager] applyStyling];
+    }];
+}
+
+#pragma mark - MFMessageComposeViewControllerDelegate methods
+
+- (void)messageComposeViewController:(MFMessageComposeViewController *)controller didFinishWithResult:(MessageComposeResult)result
+{
+    [self dismissViewControllerAnimated:YES completion:^(void)
+    {
+        [[VThemeManager sharedThemeManager] applyStyling];
+    }];
 }
 
 @end
