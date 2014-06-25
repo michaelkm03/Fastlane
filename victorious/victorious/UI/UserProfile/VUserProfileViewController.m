@@ -329,6 +329,7 @@ const   CGFloat kVSmallUserHeaderHeight = 316;
         VUserProfileHeaderView* header = (VUserProfileHeaderView*)self.tableView.tableHeaderView;
         [header.followButtonActivityIndicator startAnimating];
         
+        //TODO: this is repetative, create a "ChangeFollowing" api call that intelligently figures out which API to call.
         if (header.editProfileButton.selected)
         {
             [[VObjectManager sharedManager] unfollowUser:self.profile
@@ -343,11 +344,23 @@ const   CGFloat kVSmallUserHeaderHeight = 316;
              {
                  header.editProfileButton.enabled = YES;
                  [header.followButtonActivityIndicator stopAnimating];
-                 UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil
-                                                                 message:NSLocalizedString(@"UnfollowError", @"")
-                                                                delegate:nil
-                                                       cancelButtonTitle:NSLocalizedString(@"OKButton", @"")
-                                                       otherButtonTitles:nil];
+                 
+                 NSString *title, *message;
+                 if(error.code == kVUserBannedError)
+                 {
+                     title = NSLocalizedString(@"UserBannedTitle", @"");
+                     message = NSLocalizedString(@"UserBannedMessage", @"");
+                 }
+                 else
+                 {
+                     message = NSLocalizedString(@"UnfollowError", @"");
+                 }
+                 
+                 UIAlertView*    alert   =   [[UIAlertView alloc] initWithTitle:title
+                                                                        message:message
+                                                                       delegate:nil
+                                                              cancelButtonTitle:NSLocalizedString(@"OKButton", @"")
+                                                              otherButtonTitles:nil];
                  [alert show];
              }];
         }
@@ -365,11 +378,23 @@ const   CGFloat kVSmallUserHeaderHeight = 316;
              {
                  header.editProfileButton.enabled = YES;
                  [header.followButtonActivityIndicator stopAnimating];
-                 UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil
-                                                                 message:NSLocalizedString(@"FollowError", @"")
-                                                                delegate:nil
-                                                       cancelButtonTitle:NSLocalizedString(@"OKButton", @"")
-                                                       otherButtonTitles:nil];
+                 
+                 NSString *title, *message;
+                 if(error.code == kVUserBannedError)
+                 {
+                     title = NSLocalizedString(@"UserBannedTitle", @"");
+                     message = NSLocalizedString(@"UserBannedMessage", @"");
+                 }
+                 else
+                 {
+                     message = NSLocalizedString(@"UnfollowError", @"");
+                 }
+                 
+                 UIAlertView*    alert   =   [[UIAlertView alloc] initWithTitle:title
+                                                                        message:message
+                                                                       delegate:nil
+                                                              cancelButtonTitle:NSLocalizedString(@"OKButton", @"")
+                                                              otherButtonTitles:nil];
                  [alert show];
              }];
         }
