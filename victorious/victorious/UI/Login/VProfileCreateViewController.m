@@ -12,8 +12,10 @@
 #import "VUser.h"
 #import "TTTAttributedLabel.h"
 #import "VThemeManager.h"
+#import "VSettingManager.h"
+
 #import "VObjectManager+Login.h"
-#import "VObjectManager+Environment.h"
+
 #import "VConstants.h"
 #import "UIImageView+Blurring.h"
 #import "UIImage+ImageEffects.h"
@@ -103,7 +105,7 @@
     {
         self.agreementText.linkAttributes = @{(NSString *)
                                               kCTUnderlineStyleAttributeName : @(kCTUnderlineStyleSingle)};
-        NSURL *url = [VObjectManager addExtensionToBaseURL:kVToSExtension];
+        NSURL *url = [[VSettingManager sharedManager] urlForKey:kVTermsOfServiceURL];
         [self.agreementText addLinkToURL:url withRange:linkRange];
     }
     

@@ -6,18 +6,28 @@
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
-#import "VExperimentManager.h"
+#import "VSettingManager.h"
 #import <AVFoundation/AVAssetExportSession.h>
 #import <AVFoundation/AVCaptureSession.h>
 
+#import "VObjectManager+Environment.h"
+
+//Settings
 NSString*   const   kVCaptureVideoQuality               =   @"capture";
 NSString*   const   kVExportVideoQuality                =   @"remix";
 
-@implementation VExperimentManager
+//URLs
+NSString*   const   kVTermsOfServiceURL                 =   @"url.tos";
+NSString*   const   kVAppStoreURL                       =   @"url.appstore";
+NSString*   const   kVPrivacyUrl                        =   @"url.privacy";
+
+NSString*   const   kVChannelURLSupport                 =   @"email.support";
+
+@implementation VSettingManager
 
 + (instancetype)sharedManager
 {
-    static  VExperimentManager*  sharedManager;
+    static  VSettingManager*  sharedManager;
     static  dispatch_once_t onceToken;
     
     dispatch_once(&onceToken,
@@ -33,19 +43,39 @@ NSString*   const   kVExportVideoQuality                =   @"remix";
     self    =   [super init];
     if (self)
     {
-        NSURL*  defaultExperimentsURL =   [[NSBundle mainBundle] URLForResource:@"defaultExperiments" withExtension:@"plist"];
+        NSURL*  defaultExperimentsURL =   [[NSBundle mainBundle] URLForResource:@"defaultSettings" withExtension:@"plist"];
         [[NSUserDefaults standardUserDefaults] registerDefaults:[NSDictionary dictionaryWithContentsOfURL:defaultExperimentsURL]];
     }
     
     return self;
 }
 
-- (void)updateExperimentsWithDictionary:(NSDictionary *)dictionary
+- (void)updateSettingsWithDictionary:(NSDictionary *)dictionary
 {
     [dictionary enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop)
      {
          [[NSUserDefaults standardUserDefaults] setObject:obj forKey:key];
      }];
+}
+
+- (NSURL*)urlForKey:(NSString*)key
+{
+    NSString* path = [[NSUserDefaults standardUserDefaults] objectForKey:key];
+    
+    NSURL* url;
+    
+    //If it contains :// its a valid URL
+    if ([path rangeOfString:@"://"].length)
+        url = [NSURL URLWithString:path];
+    else
+        url = [VObjectManager addExtensionToBaseURL:path];
+    
+    return url;
+}
+
+- (NSString*)emailForKey:(NSString*)key
+{
+    return nil;
 }
 
 - (NSInteger)variantForExperiment:(NSString*)experimentKey

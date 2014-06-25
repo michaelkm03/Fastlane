@@ -13,6 +13,7 @@
 #import "UIViewController+VSideMenuViewController.h"
 #import "VWebContentViewController.h"
 #import "VThemeManager.h"
+#import "VSettingManager.h"
 #import "VObjectManager+Environment.h"
 #import "VObjectManager+Login.h"
 #import "VUserManager.h"
@@ -174,11 +175,11 @@ static const NSInteger kServerEnvironmentButtonIndex = 3;
     
     if ([segue.identifier isEqualToString:@"toAboutUs"])
     {
-        viewController.urlKeyPath = kVChannelURLAbout;
+        viewController.urlKeyPath = [[VSettingManager sharedManager] urlForKey:kVTermsOfServiceURL].absoluteString;
     }
     else if ([segue.identifier isEqualToString:@"toPrivacyPolicies"])
     {
-        viewController.urlKeyPath = kVChannelURLPrivacy;
+        viewController.urlKeyPath = [[VSettingManager sharedManager] urlForKey:kVTermsOfServiceURL].absoluteString;
     }
 }
 

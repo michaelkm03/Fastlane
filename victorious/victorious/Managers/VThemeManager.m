@@ -13,12 +13,7 @@
 #pragma mark - new theme constants
 NSString*   const   kVThemeManagerThemeDidChange        =   @"VThemeManagerThemeDidChange";
 
-NSString*   const   kVChannelURLAbout                   =   @"channel.url.about";
-NSString*   const   kVChannelURLPrivacy                 =   @"channel.url.privacy";
-NSString*   const   kVChannelURLAcknowledgements        =   @"channel.url.acknowledgements";
-NSString*   const   kVChannelURLSupport                 =   @"channel.url.support";
 NSString*   const   kVChannelName                       =   @"channel.name";
-NSString*   const   kVAppStoreURL                       =   @"appstore.url";
 
 NSString*   const   kVMenuBackgroundImage               =   @"Default";
 NSString*   const   kVMenuBackgroundImage5              =   @"Default-568h";

@@ -11,12 +11,7 @@
 extern  NSString*   const   kVThemeManagerThemeDidChange;
 
 #pragma mark - New Theme Constants
-extern  NSString*   const   kVChannelURLAbout;
-extern  NSString*   const   kVChannelURLPrivacy;
-extern  NSString*   const   kVChannelURLAcknowledgements;
-extern  NSString*   const   kVChannelURLSupport;
 extern  NSString*   const   kVChannelName;
-extern  NSString*   const   kVAppStoreURL;
 
 extern  NSString*   const   kVMenuBackgroundImage;
 extern  NSString*   const   kVMenuBackgroundImage5;

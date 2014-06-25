@@ -19,7 +19,7 @@
 #import "VPollResult+RestKit.h"
 
 #import "VThemeManager.h"
-#import "VExperimentManager.h"
+#import "VSettingManager.h"
 #import "VUserManager.h"
 
 @implementation VObjectManager (Login)
@@ -41,7 +41,7 @@ NSString *kLoggedInChangedNotification = @"LoggedInChangedNotification";
         
         NSDictionary* videoQuality = payload[@"video_quality"];
         if ([videoQuality isKindOfClass:[NSDictionary class]])
-            [[VExperimentManager sharedManager] updateExperimentsWithDictionary:videoQuality];
+            [[VSettingManager sharedManager] updateSettingsWithDictionary:videoQuality];
         
         if (success)
             success(operation, fullResponse, resultObjects);

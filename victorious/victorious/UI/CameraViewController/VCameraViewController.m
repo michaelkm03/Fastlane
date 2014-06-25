@@ -17,7 +17,7 @@
 #import "VImagePreviewViewController.h"
 #import "VVideoPreviewViewController.h"
 #import "UIImage+Cropping.h"
-#import "VExperimentManager.h"
+#import "VSettingManager.h"
 
 const   NSTimeInterval  kAnimationDuration      =   0.4;
 
@@ -112,7 +112,7 @@ const   NSTimeInterval  kAnimationDuration      =   0.4;
 {
     self.allowVideo = YES;
     self.allowPhotos = YES;
-    self.videoQuality = [[VExperimentManager sharedManager] captureVideoQuality];
+    self.videoQuality = [[VSettingManager sharedManager] captureVideoQuality];
     self.initialCaptureMode = self.videoQuality;
 }
 
