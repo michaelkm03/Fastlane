@@ -15,14 +15,21 @@
 
 @implementation VWebContentViewController
 
-- (void)viewDidLoad
+- (void)viewWillAppear:(BOOL)animated
 {
-    [super viewDidLoad];
+    [super viewWillAppear:animated];
+    
+    [self.navigationController setNavigationBarHidden:NO animated:YES];
     
     self.webView.delegate    =   self;
     
-    NSURL*  webContentURL  =   [[VThemeManager sharedThemeManager] themedURLForKey:self.urlKeyPath];
-    [self.webView loadRequest:[NSURLRequest requestWithURL:webContentURL]];
+    if (!self.explicitRequest)
+    {
+        NSURL*  webContentURL  =   [[VThemeManager sharedThemeManager] themedURLForKey:self.urlKeyPath];
+        self.explicitRequest = [NSURLRequest requestWithURL:webContentURL];
+    }
+    
+    [self.webView loadRequest:self.explicitRequest];
 }
 
 - (void)webViewDidStartLoad:(UIWebView *)webView

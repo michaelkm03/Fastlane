@@ -48,12 +48,12 @@
     
     //Add the App ID to the User-Agent field
     //(this is the only non-dynamic header, so set it now)
-    NSString *userAgent = ([manager HTTPClient].defaultHeaders)[@"User-Agent"];
+    NSString *userAgent = ([manager HTTPClient].defaultHeaders)[kVUserAgentHeader];
     
     NSString *buildNumber = [[NSBundle bundleForClass:[self class]] objectForInfoDictionaryKey:@"CFBundleVersion"];
     NSNumber* appID = [VObjectManager currentEnvironment].appID;
     userAgent = [NSString stringWithFormat:@"%@ aid:%@ uuid:%@ build:%@", userAgent, appID.stringValue, [[UIDevice currentDevice].identifierForVendor UUIDString], buildNumber];
-    [[manager HTTPClient] setDefaultHeader:@"User-Agent" value:userAgent];
+    [[manager HTTPClient] setDefaultHeader:kVUserAgentHeader value:userAgent];
     
     NSURL *modelURL = [[NSBundle mainBundle] URLForResource:@"victoriOS" withExtension:@"momd"];
     NSManagedObjectModel *managedObjectModel = [[NSManagedObjectModel alloc] initWithContentsOfURL:modelURL];
@@ -366,7 +366,7 @@
     AFHTTPClient* client = [self HTTPClient];
     
     NSString *currentDate = [self rFC2822DateTimeString];
-    NSString* userAgent = (client.defaultHeaders)[@"User-Agent"];
+    NSString* userAgent = (client.defaultHeaders)[kVUserAgentHeader];
     
     NSString* token = self.mainUser.token ? self.mainUser.token : @"";
     

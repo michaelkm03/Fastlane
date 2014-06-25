@@ -22,7 +22,6 @@ NSString*   const   kVAppStoreURL                       =   @"appstore.url";
 
 NSString*   const   kVAgreementText                     =   @"agreement.text";
 NSString*   const   kVAgreementLinkText                 =   @"agreement.linkText";
-NSString*   const   kVAgreementLink                     =   @"agreement.link";
 
 NSString*   const   kVMenuBackgroundImage               =   @"Default";
 NSString*   const   kVMenuBackgroundImage5              =   @"Default-568h";

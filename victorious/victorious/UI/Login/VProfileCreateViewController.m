@@ -17,6 +17,8 @@
 #import "UIImageView+Blurring.h"
 #import "UIImage+ImageEffects.h"
 
+#import "VWebContentViewController.h"
+
 @import CoreLocation;
 @import AddressBookUI;
 
@@ -100,7 +102,7 @@
     {
         self.agreementText.linkAttributes = @{(NSString *)
                                               kCTUnderlineStyleAttributeName : @(kCTUnderlineStyleSingle)};
-        NSURL *url = [NSURL URLWithString:[[VThemeManager sharedThemeManager] themedStringForKey:kVAgreementLink]];
+        NSURL *url = [NSURL URLWithString:kVAgreementLink];
         [self.agreementText addLinkToURL:url withRange:linkRange];
     }
     
@@ -251,7 +253,15 @@
 
 - (void)attributedLabel:(TTTAttributedLabel *)label didSelectLinkWithURL:(NSURL *)url
 {
-    [[UIApplication sharedApplication] openURL:url];
+    VWebContentViewController* webContentVC = [[[NSBundle mainBundle] loadNibNamed:NSStringFromClass([VWebContentViewController class]) owner:self options:nil] objectAtIndex:0];
+    
+    NSMutableURLRequest* request = [NSMutableURLRequest requestWithURL:url];
+    NSString *userAgent = ([[VObjectManager sharedManager] HTTPClient].defaultHeaders)[kVUserAgentHeader];
+    [request addValue:userAgent forHTTPHeaderField:kVUserAgentHeader];
+    webContentVC.explicitRequest = request;
+    
+    webContentVC.title = [[VThemeManager sharedThemeManager] themedStringForKey:kVAgreementLinkText];
+    [self.navigationController pushViewController:webContentVC animated:YES];
 }
 
 #pragma mark - CCLocationManagerDelegate

@@ -20,7 +20,6 @@ extern  NSString*   const   kVAppStoreURL;
 
 extern  NSString*   const   kVAgreementText;
 extern  NSString*   const   kVAgreementLinkText;
-extern  NSString*   const   kVAgreementLink;
 
 extern  NSString*   const   kVMenuBackgroundImage;
 extern  NSString*   const   kVMenuBackgroundImage5;
