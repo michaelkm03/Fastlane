@@ -185,7 +185,7 @@
 "EmailNotFound"         =   "That E-mail address was not found. Please check that you are using the e-mail account you used to create this account.";
 "Thanks"                =   "Thanks!";
 "CannotVerify"          =   "Cannot Verify Account";
-"IncorrectCode"         =   "The 4-digit code used for account verfication is incorrect.";
+"IncorrectCode"         =   "The code used for account verfication is incorrect.";
 
 "IncorrectOldPassword"  =   "The current password is incorrect.";
 
