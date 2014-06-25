@@ -108,7 +108,7 @@ static char kActionSheetDelegateKey;
     return self;
 }
 
-- (void)addButtonWithTitle:(NSString *)title block:(void (^)(void))block
+- (NSInteger)addButtonWithTitle:(NSString *)title block:(void (^)(void))block
 {
     VActionSheetBlockDelegate *delegate = objc_getAssociatedObject(self, &kActionSheetDelegateKey);
     if (delegate)
@@ -118,6 +118,11 @@ static char kActionSheetDelegateKey;
         {
             delegate.otherBlocks[@(index)] = [block copy];
         }
+        return index;
+    }
+    else
+    {
+        return 0;
     }
 }
 

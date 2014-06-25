@@ -175,8 +175,13 @@ typedef NS_ENUM(NSInteger, VSlideDirection)
 
 - (IBAction)pressedInvite:(id)sender
 {
+    if (![MFMailComposeViewController canSendMail] && ![MFMessageComposeViewController canSendText])
+    {
+        return;
+    }
+    
     UIActionSheet *sheet = [[UIActionSheet alloc] initWithTitle:NSLocalizedString(@"InviteYourFriends", @"")
-                                              cancelButtonTitle:NSLocalizedString(@"CancelButton", @"")
+                                              cancelButtonTitle:nil
                                                  onCancelButton:nil
                                          destructiveButtonTitle:nil
                                             onDestructiveButton:nil
@@ -187,11 +192,16 @@ typedef NS_ENUM(NSInteger, VSlideDirection)
         [sheet addButtonWithTitle:NSLocalizedString(@"InviteUsingEmail", @"")
                             block:^{ [self inviteViaMail]; }];
     }
+    
     if ([MFMessageComposeViewController canSendText])
     {
         [sheet addButtonWithTitle:NSLocalizedString(@"InviteUsingSMS", @"")
                             block:^{ [self inviteViaMessage]; }];
     }
+    
+    NSInteger cancelButtonIndex = [sheet addButtonWithTitle:NSLocalizedString(@"CancelButton", @"") block:nil];
+    sheet.cancelButtonIndex = cancelButtonIndex;
+    
     [sheet showInView:self.view];
 }
 
