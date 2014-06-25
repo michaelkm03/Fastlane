@@ -18,7 +18,7 @@
     
     // Since suggested friends doesn't require authorization, these should never be seen.
     // But just in case, let's set them to something sane
-    self.tableView.connectPromptLabel.text = @"Suggested Friends";
+    [self.tableView setConnectPromptLabelText:@"Suggested Friends"];
     [self.tableView.connectButton setTitle:@"Suggested Friends" forState:UIControlStateNormal];
 }
 

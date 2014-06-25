@@ -16,8 +16,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
-    self.tableView.connectPromptLabel.text = NSLocalizedString(@"FindFBFriends", @"");
+    [self.tableView setConnectPromptLabelText:NSLocalizedString(@"FindFBFriends", @"")];
     [self.tableView.connectButton setTitle:NSLocalizedString(@"Connect to Facebook", @"") forState:UIControlStateNormal];
 }
 

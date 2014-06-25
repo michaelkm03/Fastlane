@@ -13,9 +13,8 @@
 
 - (void)viewDidLoad
 {
-    [super viewDidLoad];
-    
-    self.tableView.connectPromptLabel.text = NSLocalizedString(@"FindInstagramFriends", @"");
+    [super viewDidLoad];    
+    [self.tableView setConnectPromptLabelText:NSLocalizedString(@"FindInstagramFriends", @"")];
     [self.tableView.connectButton setTitle:NSLocalizedString(@"Connect to Instagram", @"") forState:UIControlStateNormal];
 }
 

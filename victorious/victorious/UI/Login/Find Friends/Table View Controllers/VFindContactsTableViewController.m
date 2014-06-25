@@ -31,8 +31,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
-    self.tableView.connectPromptLabel.text = NSLocalizedString(@"FindContacts", @"");
+    [self.tableView setConnectPromptLabelText:NSLocalizedString(@"FindContacts", @"")];
     [self.tableView.connectButton setTitle:NSLocalizedString(@"Access Your Contacts", @"") forState:UIControlStateNormal];
 }
 

@@ -12,6 +12,7 @@
 
 @interface VFindFriendsTableView ()
 
+@property (nonatomic, weak) IBOutlet UILabel                *connectPromptLabel;
 @property (nonatomic, weak) IBOutlet VActivityIndicatorView *activityIndicator;
 
 @end
@@ -35,7 +36,6 @@
 - (void)awakeFromNib
 {
     [self.activityIndicator startAnimating];
-    self.connectPromptLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeaderFont];
     self.errorLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeaderFont];
     self.connectButton.titleLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVButton2Font];
     self.connectButton.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
@@ -47,6 +47,20 @@
     self.selectAllButton.layer.borderColor = [[UIColor colorWithRed:0.4f green:0.4f blue:0.4f alpha:1.0f] CGColor];
     self.selectAllButton.layer.borderWidth = 1.5f;
     self.selectAllButton.layer.cornerRadius = 3.0f;
+}
+
+- (void)setConnectPromptLabelText:(NSString *)text
+{
+    self.connectPromptLabel.attributedText = [[NSAttributedString alloc] initWithString:[text uppercaseStringWithLocale:[NSLocale currentLocale]] attributes:[self connectPromptLabelTextAttributes]];
+}
+
+- (NSDictionary *)connectPromptLabelTextAttributes
+{
+    NSMutableParagraphStyle *paragraph = [[NSMutableParagraphStyle alloc] init];
+    paragraph.minimumLineHeight = 30.0f;
+    paragraph.maximumLineHeight = 30.0f;
+    paragraph.alignment = NSTextAlignmentCenter;
+    return @{ NSParagraphStyleAttributeName: paragraph, NSFontAttributeName: [[VThemeManager sharedThemeManager] themedFontForKey:kVHeaderFont] };
 }
 
 @end

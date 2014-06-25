@@ -21,8 +21,9 @@
  Disconnected View Subviews
  */
 ///@{
-@property (nonatomic, weak) IBOutlet UILabel  *connectPromptLabel;
 @property (nonatomic, weak) IBOutlet UIButton *connectButton;
+
+- (void)setConnectPromptLabelText:(NSString *)text;
 ///@}
 
 /**
