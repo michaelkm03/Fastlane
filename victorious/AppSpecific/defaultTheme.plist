@@ -2,12 +2,6 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>agreement.link</key>
-	<string>http://dev.getvictorious.com/api/static/tos</string>
-	<key>agreement.linkText</key>
-	<string>Terms of Service</string>
-	<key>agreement.text</key>
-	<string>I&apos;m at least 13 years old and agree to Terms of Service</string>
 	<key>channel.name</key>
 	<string>Anne Or Shine</string>
 	<key>channel.url.about</key>

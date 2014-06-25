@@ -40,7 +40,7 @@ typedef NS_ENUM(NSUInteger, VPlaybackSpeed)
 static NSString* const kVictoriousErrorDomain   = @"com.getvictorious.victoriOS";
 
 static NSString* const kVUserAgentHeader        = @"User-Agent";
-static NSString* const kVAgreementLink          = @"http://dev.getvictorious.com/api/tos";
+static NSString* const kVToSExtension           = @"/api/tos";
 
 static NSUInteger const VConstantsMessageLength     = 140;
 static NSUInteger const VConstantsPollAnswerLength = 25;

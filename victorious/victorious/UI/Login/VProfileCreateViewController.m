@@ -13,6 +13,7 @@
 #import "TTTAttributedLabel.h"
 #import "VThemeManager.h"
 #import "VObjectManager+Login.h"
+#import "VObjectManager+Environment.h"
 #import "VConstants.h"
 #import "UIImageView+Blurring.h"
 #import "UIImage+ImageEffects.h"
@@ -96,13 +97,13 @@
     
     self.agreementText.delegate = self;
     self.agreementText.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVLabel2Font];
-    [self.agreementText setText:[[VThemeManager sharedThemeManager] themedStringForKey:kVAgreementText]];
-    NSRange linkRange = [self.agreementText.text rangeOfString:[[VThemeManager sharedThemeManager] themedStringForKey:kVAgreementLinkText]];
+    [self.agreementText setText:NSLocalizedString(@"ToSAgreement", @"")];
+    NSRange linkRange = [self.agreementText.text rangeOfString:NSLocalizedString(@"ToSText", @"")];
     if (linkRange.length > 0)
     {
         self.agreementText.linkAttributes = @{(NSString *)
                                               kCTUnderlineStyleAttributeName : @(kCTUnderlineStyleSingle)};
-        NSURL *url = [NSURL URLWithString:kVAgreementLink];
+        NSURL *url = [VObjectManager addExtensionToBaseURL:kVToSExtension];
         [self.agreementText addLinkToURL:url withRange:linkRange];
     }
     
@@ -260,7 +261,7 @@
     [request addValue:userAgent forHTTPHeaderField:kVUserAgentHeader];
     webContentVC.explicitRequest = request;
     
-    webContentVC.title = [[VThemeManager sharedThemeManager] themedStringForKey:kVAgreementLinkText];
+    webContentVC.title = NSLocalizedString(@"ToSText", @"");
     [self.navigationController pushViewController:webContentVC animated:YES];
 }
 
