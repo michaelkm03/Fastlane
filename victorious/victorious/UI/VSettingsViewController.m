@@ -180,10 +180,6 @@ static const NSInteger kServerEnvironmentButtonIndex = 3;
     {
         viewController.urlKeyPath = kVChannelURLPrivacy;
     }
-    else if ([segue.identifier isEqualToString:@"toAcknowledgements"])
-    {
-        viewController.urlKeyPath = kVChannelURLAcknowledgements;
-    }
 }
 
 #pragma mark - ChromecastControllerDelegate
