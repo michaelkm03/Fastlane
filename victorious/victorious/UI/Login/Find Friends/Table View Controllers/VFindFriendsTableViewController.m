@@ -231,7 +231,6 @@ static NSString * const kFollowCellReuseID = @"followerCell";
 {
     VInviteFriendTableViewCell *cell = (VInviteFriendTableViewCell *)[tableView dequeueReusableCellWithIdentifier:kFollowCellReuseID];
     cell.profile = self.users[indexPath.row];
-    cell.shouldInvite = YES;
     return cell;
 }
 
