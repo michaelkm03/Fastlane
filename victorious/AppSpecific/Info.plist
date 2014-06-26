@@ -39,7 +39,7 @@
 			<string>com.getvictorious.deeplinking.scheme</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>mp</string>
+				<string>${ProductPrefix}mp</string>
 			</array>
 		</dict>
 	</array>

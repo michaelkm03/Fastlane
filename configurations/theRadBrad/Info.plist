@@ -21,7 +21,7 @@
 			<string>com.getvictorious.deeplinking.scheme</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>getvictorious</string>
+				<string>${ProductPrefix}theradbrad</string>
 			</array>
 		</dict>
 	</array>
