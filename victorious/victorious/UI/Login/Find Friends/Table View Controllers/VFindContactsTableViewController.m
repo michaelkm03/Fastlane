@@ -145,12 +145,13 @@
 
 - (void)loadFriendsFromSocialNetworkWithCompletion:(void (^)(NSArray *, NSError *))completionBlock
 {
+    if (!completionBlock)
+    {
+        return;
+    }
     if (!self.addressBook)
     {
-        if (completionBlock)
-        {
-            completionBlock(nil, nil);
-        }
+        completionBlock(nil, nil);
         return;
     }
     
@@ -170,21 +171,22 @@
         CFRelease(emailAddresses);
     }
     
-    [[VObjectManager sharedManager] findFriendsByEmails:allEmailAddresses
-                                       withSuccessBlock:^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
+    if (allEmailAddresses.count)
     {
-        if (completionBlock)
+        [[VObjectManager sharedManager] findFriendsByEmails:allEmailAddresses
+                                           withSuccessBlock:^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
         {
             completionBlock(resultObjects, nil);
         }
-    }
-                                              failBlock:^(NSOperation* operation, NSError* error)
-    {
-        if (completionBlock)
+                                                  failBlock:^(NSOperation* operation, NSError* error)
         {
             completionBlock(nil, error);
-        }
-    }];
+        }];
+    }
+    else
+    {
+        completionBlock(@[], nil);
+    }
 }
 
 @end
