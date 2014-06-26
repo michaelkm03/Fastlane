@@ -25,7 +25,7 @@
  a receiver that has been initialized with the block initalizer,
  otherwise it will have no effect.
  */
-- (void)addButtonWithTitle:(NSString *)title block:(void(^)(void))block;
+- (NSInteger)addButtonWithTitle:(NSString *)title block:(void(^)(void))block;
 
 /**
  Sets a block to be called when the action sheet is cancelled.

@@ -13,45 +13,69 @@
                 <rect key="frame" x="0.0" y="0.0" width="320" height="50"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="1CM-za-AlC">
+                    <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="1CM-za-AlC">
                         <rect key="frame" x="20" y="9" width="32" height="33"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="33" id="Vgy-mj-ZbA"/>
+                            <constraint firstAttribute="width" constant="32" id="na7-PM-s7o"/>
+                        </constraints>
                     </imageView>
-                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5fj-5f-CB3">
-                        <rect key="frame" x="67" y="3" width="183" height="21"/>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="r9g-eu-gf2" userLabel="Labels Superview">
+                        <rect key="frame" x="65" y="10" width="98" height="31"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                        <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                        <nil key="highlightedColor"/>
-                    </label>
-                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="G5K-7H-rF2">
-                        <rect key="frame" x="66" y="25" width="184" height="21"/>
+                        <subviews>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="John Appleseed" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5fj-5f-CB3" userLabel="Name Label">
+                                <rect key="frame" x="0.0" y="0.0" width="98" height="16"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Cupertino, CA" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="G5K-7H-rF2" userLabel="Location Label">
+                                <rect key="frame" x="0.0" y="17" width="98" height="14"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="11"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstAttribute="trailing" secondItem="G5K-7H-rF2" secondAttribute="trailing" priority="750" id="687-D6-eLx"/>
+                            <constraint firstItem="5fj-5f-CB3" firstAttribute="leading" secondItem="r9g-eu-gf2" secondAttribute="leading" id="7iW-Hz-aDb"/>
+                            <constraint firstItem="5fj-5f-CB3" firstAttribute="top" secondItem="r9g-eu-gf2" secondAttribute="top" id="Hkd-lq-sd6"/>
+                            <constraint firstAttribute="trailing" secondItem="5fj-5f-CB3" secondAttribute="trailing" priority="750" id="Lgb-4y-MVb"/>
+                            <constraint firstItem="G5K-7H-rF2" firstAttribute="top" secondItem="5fj-5f-CB3" secondAttribute="bottom" constant="1" id="jzK-wn-fok"/>
+                            <constraint firstAttribute="bottom" secondItem="G5K-7H-rF2" secondAttribute="bottom" id="qbm-hz-4nk"/>
+                            <constraint firstItem="G5K-7H-rF2" firstAttribute="leading" secondItem="r9g-eu-gf2" secondAttribute="leading" id="r3t-ag-0t8"/>
+                        </constraints>
+                    </view>
+                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="DCb-d9-tuC" userLabel="Un/Follow Icon">
+                        <rect key="frame" x="261" y="11" width="42" height="27"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                        <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                        <nil key="highlightedColor"/>
-                    </label>
-                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Wpp-5x-pTJ">
-                        <rect key="frame" x="258" y="11" width="42" height="27"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        <state key="normal" image="buttonFollow">
-                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                        </state>
-                        <connections>
-                            <action selector="follow:" destination="afQ-rA-05v" eventType="touchUpInside" id="HBw-Eu-hmx"/>
-                        </connections>
-                    </button>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="42" id="BfH-wQ-w9T"/>
+                            <constraint firstAttribute="height" constant="27" id="QZB-ad-FaX"/>
+                        </constraints>
+                    </imageView>
                 </subviews>
+                <constraints>
+                    <constraint firstAttribute="centerY" secondItem="DCb-d9-tuC" secondAttribute="centerY" constant="0.5" id="BH0-8t-dJc"/>
+                    <constraint firstAttribute="centerY" secondItem="1CM-za-AlC" secondAttribute="centerY" constant="-0.5" id="Ken-zi-p3y"/>
+                    <constraint firstItem="r9g-eu-gf2" firstAttribute="leading" secondItem="jwz-bZ-rDa" secondAttribute="leading" constant="65" id="YoW-Fp-ANB"/>
+                    <constraint firstAttribute="centerY" secondItem="r9g-eu-gf2" secondAttribute="centerY" id="agg-tJ-5Zv"/>
+                    <constraint firstItem="1CM-za-AlC" firstAttribute="leading" secondItem="jwz-bZ-rDa" secondAttribute="leading" constant="20" id="gcv-0R-Yei"/>
+                    <constraint firstAttribute="trailing" secondItem="DCb-d9-tuC" secondAttribute="trailing" constant="17" id="if8-Dz-nEm"/>
+                </constraints>
             </tableViewCellContentView>
+            <color key="backgroundColor" red="0.97254901960784312" green="0.97254901960784312" blue="0.97254901960784312" alpha="1" colorSpace="calibratedRGB"/>
             <connections>
-                <outlet property="followButton" destination="Wpp-5x-pTJ" id="rxB-G9-8qW"/>
+                <outlet property="followIcon" destination="DCb-d9-tuC" id="rUn-Pg-E4Y"/>
                 <outlet property="profileImage" destination="1CM-za-AlC" id="NLt-HB-PPr"/>
                 <outlet property="profileLocation" destination="G5K-7H-rF2" id="upt-tl-i6O"/>
                 <outlet property="profileName" destination="5fj-5f-CB3" id="W6i-4n-DXK"/>
             </connections>
         </tableViewCell>
     </objects>
-    <resources>
-        <image name="buttonFollow" width="42" height="27"/>
-    </resources>
 </document>

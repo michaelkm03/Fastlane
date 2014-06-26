@@ -199,8 +199,20 @@
 "InviteFriendsSubject"  =   "Invite Friends";
 "InviteFriendsBody"     =   "Invite........................";
 
-"AccessContactsDenied"  =   "Access to Contacts Denied";
-"CantReadEmailAddresses" =  "You will need to allow this app to access your contacts in your Privacy Settings";
+"FindContacts"          =   "Search and invite your friends from your contacts";
+"Access Your Contacts"  =   "Access Your Contacts";
+
+"AccessContactsDenied"  =   "To search for friends using your address book, please grant access by going to Settings -> Privacy -> Contacts";
+"AccessContactsRestricted" =  "Unable access contacts due to restrictions on your device.";
+
+"FindFBFriends"         =   "Add your friends from Facebook by connecting your account";
+"Connect to Facebook"   =   "Connect to Facebook";
+
+"FindTwitterFriends"    =   "Add your friends from Twitter by connecting your account";
+"Connect to Twitter"    =   "Connect to Twitter";
+
+"FindInstagramFriends"  =   "Add your friends from Instagram";
+"Connect to Instagram"  =   "Connect to Instagram";
 
 "Logout"                =   "Log Out";
 "Login"                 =   "Log In";

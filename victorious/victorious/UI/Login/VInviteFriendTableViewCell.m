@@ -15,16 +15,13 @@
 @property (nonatomic, weak)     IBOutlet    UIImageView*        profileImage;
 @property (nonatomic, weak)     IBOutlet    UILabel*            profileName;
 @property (nonatomic, weak)     IBOutlet    UILabel*            profileLocation;
-@property (nonatomic, weak)     IBOutlet    UIButton*           followButton;
+@property (nonatomic, weak)     IBOutlet    UIImageView*        followIcon;
 @end
 
 @implementation VInviteFriendTableViewCell
 
-- (void)setProfile:(VUser *)profile
+- (void)awakeFromNib
 {
-    _profile = profile;
-    
-    [self.profileImage setImageWithURL:[NSURL URLWithString:profile.pictureUrl] placeholderImage:[UIImage imageNamed:@"profileGenericUser"]];
     self.profileImage.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVAccentColor];
     self.profileImage.layer.cornerRadius = CGRectGetHeight(self.profileImage.bounds)/2;
     self.profileImage.layer.borderWidth = 1.0;
@@ -32,42 +29,50 @@
     self.profileImage.clipsToBounds = YES;
     
     self.profileName.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVLabel1Font];
-    self.profileName.text = profile.name;
     self.profileLocation.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVLabel3Font];
-    self.profileLocation.text = profile.location;
-    
-    self.backgroundColor = [UIColor colorWithWhite:0.97 alpha:1.0];
-    
-    if (self.shouldInvite)
-        [self.followButton setImage:[UIImage imageNamed:@"buttonFollowed"] forState:UIControlStateNormal];
-    else
-        [self.followButton setImage:[UIImage imageNamed:@"buttonFollow"] forState:UIControlStateNormal];
 }
 
-- (IBAction)follow:(id)sender
+- (void)setProfile:(VUser *)profile
 {
-    if (self.shouldInvite)
+    _profile = profile;
+    
+    [self.profileImage setImageWithURL:[NSURL URLWithString:profile.pictureUrl] placeholderImage:[UIImage imageNamed:@"profileGenericUser"]];
+    self.profileName.text = profile.name;
+    self.profileLocation.text = profile.location;
+}
+
+- (void)setSelected:(BOOL)selected animated:(BOOL)animated
+{
+    if (self.selected == selected)
     {
-        [UIView transitionWithView:self.followButton
+        return;
+    }
+    
+    [super setSelected:selected animated:animated];
+    
+    void (^animations)() = ^(void)
+    {
+        if (selected)
+        {
+            self.followIcon.image = [UIImage imageNamed:@"buttonFollowed"];
+        }
+        else
+        {
+            self.followIcon.image = [UIImage imageNamed:@"buttonFollow"];
+        }
+    };
+    if (animated)
+    {
+        [UIView transitionWithView:self.followIcon
                           duration:0.3
-                           options:UIViewAnimationOptionTransitionFlipFromTop
-                        animations:^{
-                            [self.followButton setImage:[UIImage imageNamed:@"buttonFollow"] forState:UIControlStateNormal];
-                        } completion:nil];
-        [self.delegate cellDidSelectUninvite:self];
+                           options:(selected ? UIViewAnimationOptionTransitionFlipFromTop : UIViewAnimationOptionTransitionFlipFromBottom)
+                        animations:animations
+                        completion:nil];
     }
     else
     {
-        [UIView transitionWithView:self.followButton
-                          duration:0.3
-                           options:UIViewAnimationOptionTransitionFlipFromTop
-                        animations:^{
-                            [self.followButton setImage:[UIImage imageNamed:@"buttonFollowed"] forState:UIControlStateNormal];
-                        } completion:nil];
-        [self.delegate cellDidSelectInvite:self];
+        animations();
     }
-
-    self.shouldInvite = !self.shouldInvite;
 }
 
 @end
