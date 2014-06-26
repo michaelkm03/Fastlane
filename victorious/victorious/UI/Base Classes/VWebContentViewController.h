@@ -6,7 +6,7 @@
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
-@interface VWebContentViewController : UIViewController
+@interface VWebContentViewController : UIViewController <UIWebViewDelegate>
 
 @property (nonatomic, strong) NSString*     urlKeyPath;
 @property (nonatomic, strong) NSString*     htmlString;

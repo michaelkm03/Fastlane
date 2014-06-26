@@ -14,8 +14,10 @@ extern  NSString*   const   kVExportVideoQuality;
 
 //URLs
 extern  NSString*   const   kVTermsOfServiceURL;
-extern  NSString*   const   kVChannelURLSupport;
+extern  NSString*   const   kVPrivacyUrl;
+
 extern  NSString*   const   kVAppStoreURL;
+extern  NSString*   const   kVChannelURLSupport;
 
 @interface VSettingManager : NSObject
 

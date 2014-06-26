@@ -9,7 +9,7 @@
 #import "VWebContentViewController.h"
 #import "VThemeManager.h"
 
-@interface VWebContentViewController () <UIWebViewDelegate>
+@interface VWebContentViewController ()
 @property (weak, nonatomic) IBOutlet UIWebView* webView;
 @end
 
@@ -26,16 +26,24 @@
     [[VThemeManager sharedThemeManager] applyNormalNavBarStyling];
     
     self.webView.delegate    =   self;
-    
-    if (!self.htmlString)
+    if (self.htmlString)
+    {
+        [self.webView loadHTMLString:self.htmlString baseURL:nil];
+    }
+    else if (self.urlKeyPath)
     {
         NSURL*  webContentURL  =   [[VThemeManager sharedThemeManager] themedURLForKey:self.urlKeyPath];
         [self.webView loadRequest:[NSURLRequest requestWithURL:webContentURL]];
     }
-    else
-    {
-        [self.webView loadHTMLString:self.htmlString baseURL:nil];
-    }
+}
+
+- (void)setHtmlString:(NSString *)htmlString
+{
+    if ([htmlString isEqualToString:htmlString])
+        return;
+    
+    _htmlString = htmlString;
+    [self.webView loadHTMLString:_htmlString baseURL:nil];
 }
 
 - (void)webViewDidStartLoad:(UIWebView *)webView

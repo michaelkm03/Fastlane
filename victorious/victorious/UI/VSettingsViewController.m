@@ -22,6 +22,8 @@
 #import "ChromecastDeviceController.h"
 #import "VLoginViewController.h"
 
+#import "VObjectManager+Websites.h"
+
 static const NSInteger kSettingsSectionIndex         = 0;
 static const NSInteger kChangePasswordIndex          = 0;
 static const NSInteger kChromecastButtonIndex        = 2;
@@ -175,11 +177,19 @@ static const NSInteger kServerEnvironmentButtonIndex = 3;
     
     if ([segue.identifier isEqualToString:@"toAboutUs"])
     {
-        viewController.urlKeyPath = [[VSettingManager sharedManager] urlForKey:kVTermsOfServiceURL].absoluteString;
+        viewController.title = NSLocalizedString(@"ToSText", @"");
+        
+        [[VObjectManager sharedManager] fetchToSWithCompletionBlock:^(NSOperation *completion, NSString *htmlString, NSError *error)
+         {
+             if (!error)
+                 viewController.htmlString = htmlString;
+             else
+                 [viewController webView:nil didFailLoadWithError:error];
+         }];
     }
     else if ([segue.identifier isEqualToString:@"toPrivacyPolicies"])
     {
-        viewController.urlKeyPath = [[VSettingManager sharedManager] urlForKey:kVTermsOfServiceURL].absoluteString;
+        viewController.urlKeyPath = [[VSettingManager sharedManager] urlForKey:kVPrivacyUrl].absoluteString;
     }
 }
 

@@ -11,6 +11,7 @@
 #import <AVFoundation/AVCaptureSession.h>
 
 #import "VObjectManager+Environment.h"
+#import "VEnvironment.h"
 
 //Settings
 NSString*   const   kVCaptureVideoQuality               =   @"capture";
@@ -68,7 +69,7 @@ NSString*   const   kVChannelURLSupport                 =   @"email.support";
     if ([path rangeOfString:@"://"].length)
         url = [NSURL URLWithString:path];
     else
-        url = [VObjectManager addExtensionToBaseURL:path];
+        url = [[VObjectManager currentEnvironment].baseURL URLByAppendingPathComponent:path];
     
     return url;
 }

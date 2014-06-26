@@ -18,6 +18,5 @@
 + (VEnvironment *)currentEnvironment;
 + (void)setCurrentEnvironment:(VEnvironment *)newEnvironment;
 + (NSArray *)allEnvironments; ///< array of VEnvironment objects
-+ (NSURL*)addExtensionToBaseURL:(NSString*)extensions;
 
 @end

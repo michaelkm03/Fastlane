@@ -4,12 +4,6 @@
 <dict>
 	<key>channel.name</key>
 	<string>Anne Or Shine</string>
-	<key>channel.url.about</key>
-	<string>http://dev.getvictorious.com/api/static/tos</string>
-	<key>channel.url.acknowledgements</key>
-	<string>http://dev.getvictorious.com/api/static/acknowledgments</string>
-	<key>channel.url.privacy</key>
-	<string>http://dev.getvictorious.com/api/static/privacy</string>
 	<key>channel.url.support</key>
 	<string>support@getvictorious.com</string>
 	<key>color</key>

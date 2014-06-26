@@ -64,11 +64,4 @@ static NSString * const kCurrentEnvironmentKey = @"com.victorious.VObjectManager
     return allEnvironments;
 }
 
-+ (NSURL*)addExtensionToBaseURL:(NSString*)extensions
-{
-    NSString* path = [VObjectManager currentEnvironment].baseURL.absoluteString;
-    [path stringByAppendingPathExtension:extensions];
-    return [NSURL URLWithString:path];
-}
-
 @end
