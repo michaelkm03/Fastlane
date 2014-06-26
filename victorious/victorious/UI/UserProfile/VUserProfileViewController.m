@@ -143,14 +143,7 @@ const   CGFloat kVSmallUserHeaderHeight = 316;
     
     if (self.tableDataSource.count)
     {
-        [UIView animateWithDuration:0.5 animations:^(void)
-         {
-             [self setHeaderBuffer:kVSmallBottomBuffer];
-         }
-                         completion:^(BOOL finished)
-         {
-             [self setHeaderHeight:kVSmallUserHeaderHeight];
-         }];
+        [self animateHeaderWithDuration:.5 buffer:kVSmallBottomBuffer height:kVSmallUserHeaderHeight];
     }
     
     //If we came from the inbox we can get into a loop with the compose button, so hide it
@@ -195,33 +188,6 @@ const   CGFloat kVSmallUserHeaderHeight = 316;
 
 #pragma mark - Support
 
-- (void)setHeaderBuffer:(CGFloat)buffer
-{
-    VUserProfileHeaderView* header = (VUserProfileHeaderView*)self.tableView.tableHeaderView;
-    
-    CGFloat bufferDiff = header.bottomBufferConstraint.constant - buffer;
-    CGPoint newOffset = CGPointMake(self.tableView.contentOffset.x, self.tableView.contentOffset.y + bufferDiff);
-    self.tableView.contentOffset = newOffset;
-    
-    header.bottomBufferConstraint.constant = buffer;
-    [self.tableView layoutIfNeeded];
-}
-
-- (void)setHeaderHeight:(CGFloat)height
-{
-    VUserProfileHeaderView* header = (VUserProfileHeaderView*)self.tableView.tableHeaderView;
-    
-    CGFloat heightDiff = header.frame.size.height - height;
-    
-    CGRect frame = header.frame;
-    frame.size.height = height;
-    header.frame = frame;
-    self.tableView.tableHeaderView = header;
-    
-    CGPoint newOffset = CGPointMake(self.tableView.contentOffset.x, self.tableView.contentOffset.y - heightDiff);
-    self.tableView.contentOffset = newOffset;
-}
-
 - (void)loginStateDidChange:(NSNotification *)notification
 {
     if ([VObjectManager sharedManager].mainUser)
@@ -248,25 +214,12 @@ const   CGFloat kVSmallUserHeaderHeight = 316;
     {
         if (self.tableDataSource.count)
         {
-            [UIView animateWithDuration:0.5 animations:^(void)
-            {
-                [self setHeaderBuffer:kVSmallBottomBuffer];
-            }
-             completion:^(BOOL finished)
-            {
-                [self setHeaderHeight:kVSmallUserHeaderHeight];
-            }];
+            [self animateHeaderWithDuration:.5 buffer:kVSmallBottomBuffer height:kVSmallUserHeaderHeight];
         }
         else
         {
-            [UIView animateWithDuration:0.5 animations:^(void)
-             {
-                 [self setHeaderBuffer:kVLargeBottomBuffer];
-             }
-                             completion:^(BOOL finished)
-             {
-                 [self setHeaderHeight:[UIScreen mainScreen].bounds.size.height];
-             }];
+            [self animateHeaderWithDuration:.5 buffer:kVLargeBottomBuffer
+                                     height:[UIScreen mainScreen].bounds.size.height - kVNavigationBarHeight];
         }
     }];
 }
@@ -329,74 +282,48 @@ const   CGFloat kVSmallUserHeaderHeight = 316;
         VUserProfileHeaderView* header = (VUserProfileHeaderView*)self.tableView.tableHeaderView;
         [header.followButtonActivityIndicator startAnimating];
         
-        //TODO: this is repetative, create a "ChangeFollowing" api call that intelligently figures out which API to call.
+        VFailBlock fail = ^(NSOperation *operation, NSError *error)
+        {
+            header.editProfileButton.enabled = YES;
+            [header.followButtonActivityIndicator stopAnimating];
+            
+            NSString *title, *message;
+            if(error.code == kVUserBannedError)
+            {
+                title = NSLocalizedString(@"UserBannedTitle", @"");
+                message = NSLocalizedString(@"UserBannedMessage", @"");
+            }
+            else
+            {
+                message = NSLocalizedString(@"UnfollowError", @"");
+            }
+            
+            UIAlertView*    alert   =   [[UIAlertView alloc] initWithTitle:title
+                                                                   message:message
+                                                                  delegate:nil
+                                                         cancelButtonTitle:NSLocalizedString(@"OKButton", @"")
+                                                         otherButtonTitles:nil];
+            [alert show];
+        };
+        VSuccessBlock success = ^(NSOperation *operation, id fullResponse, NSArray *objects)
+        {
+            header.editProfileButton.enabled = YES;
+            header.editProfileButton.selected = YES;
+            [header.followButtonActivityIndicator stopAnimating];
+            header.user = header.user;
+        };
+        
         if (header.editProfileButton.selected)
         {
             [[VObjectManager sharedManager] unfollowUser:self.profile
-                                            successBlock:^(NSOperation *operation, id fullResponse, NSArray *objects)
-             {
-                 header.editProfileButton.enabled = YES;
-                 header.editProfileButton.selected = NO;
-                 [header.followButtonActivityIndicator stopAnimating];
-                 header.user = header.user;
-             }
-                                               failBlock:^(NSOperation *operation, NSError *error)
-             {
-                 header.editProfileButton.enabled = YES;
-                 [header.followButtonActivityIndicator stopAnimating];
-                 
-                 NSString *title, *message;
-                 if(error.code == kVUserBannedError)
-                 {
-                     title = NSLocalizedString(@"UserBannedTitle", @"");
-                     message = NSLocalizedString(@"UserBannedMessage", @"");
-                 }
-                 else
-                 {
-                     message = NSLocalizedString(@"UnfollowError", @"");
-                 }
-                 
-                 UIAlertView*    alert   =   [[UIAlertView alloc] initWithTitle:title
-                                                                        message:message
-                                                                       delegate:nil
-                                                              cancelButtonTitle:NSLocalizedString(@"OKButton", @"")
-                                                              otherButtonTitles:nil];
-                 [alert show];
-             }];
+                                            successBlock:success
+                                               failBlock:fail];
         }
         else
         {
             [[VObjectManager sharedManager] followUser:self.profile
-                                          successBlock:^(NSOperation *operation, id fullResponse, NSArray *objects)
-             {
-                 header.editProfileButton.enabled = YES;
-                 header.editProfileButton.selected = YES;
-                 [header.followButtonActivityIndicator stopAnimating];
-                  header.user = header.user;
-             }
-                                             failBlock:^(NSOperation *operation, NSError *error)
-             {
-                 header.editProfileButton.enabled = YES;
-                 [header.followButtonActivityIndicator stopAnimating];
-                 
-                 NSString *title, *message;
-                 if(error.code == kVUserBannedError)
-                 {
-                     title = NSLocalizedString(@"UserBannedTitle", @"");
-                     message = NSLocalizedString(@"UserBannedMessage", @"");
-                 }
-                 else
-                 {
-                     message = NSLocalizedString(@"UnfollowError", @"");
-                 }
-                 
-                 UIAlertView*    alert   =   [[UIAlertView alloc] initWithTitle:title
-                                                                        message:message
-                                                                       delegate:nil
-                                                              cancelButtonTitle:NSLocalizedString(@"OKButton", @"")
-                                                              otherButtonTitles:nil];
-                 [alert show];
-             }];
+                                          successBlock:success
+                                             failBlock:fail];
         }
     }
 }
@@ -442,6 +369,33 @@ const   CGFloat kVSmallUserHeaderHeight = 316;
     [super createButtonAction:sender];
 }
 
+- (void)animateHeaderWithDuration:(CGFloat)duration buffer:(CGFloat)buffer height:(CGFloat)height
+{
+    VUserProfileHeaderView* header = (VUserProfileHeaderView*)self.tableView.tableHeaderView;
+    CGFloat heightDiff = header.frame.size.height - height;
+    
+    VLog(@"height:%f buffer:%f", height, buffer);
+
+    [UIView animateWithDuration:duration animations:^(void)
+     {
+         CGPoint newOffset = CGPointMake(self.tableView.contentOffset.x, self.tableView.contentOffset.y + heightDiff);
+         self.tableView.contentOffset = newOffset;
+         
+         header.bottomBufferConstraint.constant = buffer;
+         [self.tableView layoutIfNeeded];
+     }
+                     completion:^(BOOL finished)
+     {
+         CGRect frame = header.frame;
+         frame.size.height = height;
+         header.frame = frame;
+         self.tableView.tableHeaderView = header;
+         
+         CGPoint newOffset = CGPointMake(self.tableView.contentOffset.x, self.tableView.contentOffset.y - heightDiff);
+         self.tableView.contentOffset = newOffset;
+     }];
+}
+
 #pragma mark - KVO
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
 {
@@ -449,25 +403,12 @@ const   CGFloat kVSmallUserHeaderHeight = 316;
     {
         if (self.tableDataSource.count)
         {
-            [UIView animateWithDuration:0.5 animations:^(void)
-             {
-                 [self setHeaderBuffer:kVSmallBottomBuffer];
-             }
-                             completion:^(BOOL finished)
-             {
-                 [self setHeaderHeight:kVSmallUserHeaderHeight];
-             }];
+            [self animateHeaderWithDuration:.5 buffer:kVSmallBottomBuffer height:kVSmallUserHeaderHeight];
         }
         else
         {
-            [UIView animateWithDuration:0.5 animations:^(void)
-             {
-                 [self setHeaderBuffer:kVLargeBottomBuffer];
-             }
-                             completion:^(BOOL finished)
-             {
-                 [self setHeaderHeight:[UIScreen mainScreen].bounds.size.height - kVNavigationBarHeight];
-             }];
+            [self animateHeaderWithDuration:.5 buffer:kVLargeBottomBuffer
+                                     height:[UIScreen mainScreen].bounds.size.height - kVNavigationBarHeight];
         }
     }
     
