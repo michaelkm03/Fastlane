@@ -10,9 +10,4 @@
 
 @interface VFindFriendsViewController : UIViewController
 
-/**
- Adds a view controller as a child view controller.
- */
-- (void)setInnerViewController:(UIViewController *)viewController;
-
 @end

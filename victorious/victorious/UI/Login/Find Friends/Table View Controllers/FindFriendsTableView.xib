@@ -79,6 +79,10 @@
                             </state>
                             <connections>
                                 <action selector="clearButtonTapped:" destination="-1" eventType="touchUpInside" id="FT2-jv-jqD"/>
+                                <action selector="makeButtonClear:" destination="-1" eventType="touchUpInside" id="ccW-2Y-Uj1"/>
+                                <action selector="makeButtonClear:" destination="-1" eventType="touchDragExit" id="qlH-wB-Rb1"/>
+                                <action selector="makeButtonGray:" destination="-1" eventType="touchDragEnter" id="KR1-ag-5bq"/>
+                                <action selector="makeButtonGray:" destination="-1" eventType="touchDown" id="R0P-iv-aVb"/>
                             </connections>
                         </button>
                         <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hcw-4q-StV">
@@ -94,6 +98,10 @@
                                 <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                             </state>
                             <connections>
+                                <action selector="makeButtonClear:" destination="-1" eventType="touchDragExit" id="IOV-CP-VeT"/>
+                                <action selector="makeButtonClear:" destination="-1" eventType="touchUpInside" id="T1z-3j-Ptc"/>
+                                <action selector="makeButtonGray:" destination="-1" eventType="touchDragEnter" id="JAu-ar-XPU"/>
+                                <action selector="makeButtonGray:" destination="-1" eventType="touchDown" id="qyM-6Y-xGY"/>
                                 <action selector="selectAllButtonTapped:" destination="-1" eventType="touchUpInside" id="HJ6-f1-WbE"/>
                             </connections>
                         </button>

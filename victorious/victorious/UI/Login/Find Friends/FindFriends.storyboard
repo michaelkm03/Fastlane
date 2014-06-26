@@ -71,95 +71,6 @@
                                             <action selector="pressedDone:" destination="9uz-5b-W5V" eventType="touchUpInside" id="7k2-8l-QWx"/>
                                         </connections>
                                     </button>
-                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="3jG-Uv-3gX" userLabel="Buttons Superview">
-                                        <rect key="frame" x="0.0" y="56" width="320" height="49"/>
-                                        <subviews>
-                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" adjustsImageWhenHighlighted="NO" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="KFZ-T9-Rj0" userLabel="Suggested Button">
-                                                <rect key="frame" x="0.0" y="1" width="64" height="48"/>
-                                                <color key="backgroundColor" red="0.18431372549019609" green="0.12941176470588234" blue="0.27058823529411763" alpha="1" colorSpace="calibratedRGB"/>
-                                                <constraints>
-                                                    <constraint firstAttribute="width" constant="64" id="1Jf-52-vBc"/>
-                                                    <constraint firstAttribute="height" constant="48" id="my8-EZ-ZWY"/>
-                                                </constraints>
-                                                <state key="normal" image="inviteSuggested">
-                                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                                </state>
-                                                <connections>
-                                                    <action selector="pressedSuggestedFriends:" destination="9uz-5b-W5V" eventType="touchUpInside" id="0Eu-eT-cO1"/>
-                                                </connections>
-                                            </button>
-                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" adjustsImageWhenHighlighted="NO" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Jks-qk-3sl" userLabel="Contacts Button">
-                                                <rect key="frame" x="65" y="1" width="64" height="48"/>
-                                                <color key="backgroundColor" red="0.1843137255" green="0.12941176469999999" blue="0.27058823529999998" alpha="1" colorSpace="calibratedRGB"/>
-                                                <constraints>
-                                                    <constraint firstAttribute="height" constant="48" id="vRF-7x-y1d"/>
-                                                    <constraint firstAttribute="width" constant="64" id="xND-g0-Sqx"/>
-                                                </constraints>
-                                                <state key="normal" image="inviteContacts">
-                                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                                </state>
-                                                <connections>
-                                                    <action selector="pressedContacts:" destination="9uz-5b-W5V" eventType="touchUpInside" id="v5N-LM-0Cg"/>
-                                                </connections>
-                                            </button>
-                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" adjustsImageWhenHighlighted="NO" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="V7C-dz-xoy" userLabel="Facebook Button">
-                                                <rect key="frame" x="130" y="1" width="64" height="48"/>
-                                                <color key="backgroundColor" red="0.1843137255" green="0.12941176469999999" blue="0.27058823529999998" alpha="1" colorSpace="calibratedRGB"/>
-                                                <constraints>
-                                                    <constraint firstAttribute="height" constant="48" id="hNH-yl-iwq"/>
-                                                    <constraint firstAttribute="width" constant="64" id="p07-FC-9lf"/>
-                                                </constraints>
-                                                <state key="normal" image="inviteFacebook">
-                                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                                </state>
-                                                <connections>
-                                                    <action selector="pressedFacebook:" destination="9uz-5b-W5V" eventType="touchUpInside" id="ITC-aT-jmy"/>
-                                                </connections>
-                                            </button>
-                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" adjustsImageWhenHighlighted="NO" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="eVk-1M-NkN" userLabel="Twitter Button">
-                                                <rect key="frame" x="195" y="1" width="64" height="48"/>
-                                                <color key="backgroundColor" red="0.1843137255" green="0.12941176469999999" blue="0.27058823529999998" alpha="1" colorSpace="calibratedRGB"/>
-                                                <constraints>
-                                                    <constraint firstAttribute="height" constant="48" id="X6q-13-gdU"/>
-                                                    <constraint firstAttribute="width" constant="64" id="g94-YW-qKF"/>
-                                                </constraints>
-                                                <state key="normal" image="inviteTwitter">
-                                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                                </state>
-                                                <connections>
-                                                    <action selector="pressedTwitter:" destination="9uz-5b-W5V" eventType="touchUpInside" id="Ijy-TX-uPt"/>
-                                                </connections>
-                                            </button>
-                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" adjustsImageWhenHighlighted="NO" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="wiT-FO-PG4" userLabel="Instagram Button">
-                                                <rect key="frame" x="260" y="1" width="64" height="48"/>
-                                                <color key="backgroundColor" red="0.1843137255" green="0.12941176469999999" blue="0.27058823529999998" alpha="1" colorSpace="calibratedRGB"/>
-                                                <constraints>
-                                                    <constraint firstAttribute="width" constant="64" id="p7Y-JV-xuk"/>
-                                                    <constraint firstAttribute="height" constant="48" id="xvu-Ol-SSU"/>
-                                                </constraints>
-                                                <state key="normal" image="inviteInstagram">
-                                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                                </state>
-                                                <connections>
-                                                    <action selector="pressedInstagram:" destination="9uz-5b-W5V" eventType="touchUpInside" id="krD-R8-LRE"/>
-                                                </connections>
-                                            </button>
-                                        </subviews>
-                                        <color key="backgroundColor" white="1" alpha="0.14999999999999999" colorSpace="custom" customColorSpace="calibratedWhite"/>
-                                        <constraints>
-                                            <constraint firstItem="KFZ-T9-Rj0" firstAttribute="left" secondItem="3jG-Uv-3gX" secondAttribute="left" id="4wF-XL-CvQ"/>
-                                            <constraint firstAttribute="bottom" secondItem="V7C-dz-xoy" secondAttribute="bottom" id="E4N-C4-3Of"/>
-                                            <constraint firstAttribute="height" constant="49" id="JJX-kM-GmE"/>
-                                            <constraint firstItem="eVk-1M-NkN" firstAttribute="left" secondItem="V7C-dz-xoy" secondAttribute="right" constant="1" id="NeN-HF-6aj"/>
-                                            <constraint firstItem="V7C-dz-xoy" firstAttribute="left" secondItem="Jks-qk-3sl" secondAttribute="right" constant="1" id="XUJ-iY-cE9"/>
-                                            <constraint firstItem="wiT-FO-PG4" firstAttribute="left" secondItem="eVk-1M-NkN" secondAttribute="right" constant="1" id="agH-Oh-tp6"/>
-                                            <constraint firstAttribute="bottom" secondItem="KFZ-T9-Rj0" secondAttribute="bottom" id="baP-JH-IWM"/>
-                                            <constraint firstAttribute="bottom" secondItem="Jks-qk-3sl" secondAttribute="bottom" id="cHU-S3-BvA"/>
-                                            <constraint firstAttribute="bottom" secondItem="wiT-FO-PG4" secondAttribute="bottom" id="ca8-7C-fsK"/>
-                                            <constraint firstItem="Jks-qk-3sl" firstAttribute="left" secondItem="KFZ-T9-Rj0" secondAttribute="right" constant="1" id="mbe-9L-Gd1"/>
-                                            <constraint firstAttribute="bottom" secondItem="eVk-1M-NkN" secondAttribute="bottom" id="qfc-jY-HRf"/>
-                                        </constraints>
-                                    </view>
                                 </subviews>
                                 <color key="backgroundColor" red="0.21176470588235294" green="0.14509803921568626" blue="0.30588235294117649" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
@@ -167,9 +78,6 @@
                                     <constraint firstItem="6pT-4a-AGI" firstAttribute="top" secondItem="aSZ-dD-gh8" secondAttribute="top" id="FnE-gm-HXp"/>
                                     <constraint firstAttribute="centerX" secondItem="cfs-vL-vt7" secondAttribute="centerX" constant="-0.5" id="MI3-tn-Lg4"/>
                                     <constraint firstItem="fjY-M8-C3E" firstAttribute="top" secondItem="aSZ-dD-gh8" secondAttribute="top" id="QFk-aa-hrv"/>
-                                    <constraint firstItem="3jG-Uv-3gX" firstAttribute="leading" secondItem="aSZ-dD-gh8" secondAttribute="leading" id="dgV-Da-FAo"/>
-                                    <constraint firstAttribute="trailing" secondItem="3jG-Uv-3gX" secondAttribute="trailing" id="h98-Oc-aFb"/>
-                                    <constraint firstAttribute="bottom" secondItem="3jG-Uv-3gX" secondAttribute="bottom" id="iQN-an-kCL"/>
                                     <constraint firstItem="yo0-QQ-L3X" firstAttribute="left" secondItem="aSZ-dD-gh8" secondAttribute="left" id="oC5-Sx-4pD"/>
                                     <constraint firstAttribute="height" constant="105" id="qzN-mX-0RF"/>
                                     <constraint firstItem="cfs-vL-vt7" firstAttribute="top" secondItem="aSZ-dD-gh8" secondAttribute="top" id="sSW-ix-KuP"/>
@@ -177,14 +85,14 @@
                                     <constraint firstItem="yo0-QQ-L3X" firstAttribute="top" secondItem="aSZ-dD-gh8" secondAttribute="top" id="vJb-Zs-MEz"/>
                                 </constraints>
                             </view>
-                            <containerView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="fD6-wb-WxZ">
-                                <rect key="frame" x="0.0" y="105" width="320" height="463"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                            <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="fD6-wb-WxZ">
+                                <rect key="frame" x="0.0" y="56" width="320" height="512"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                             </containerView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="fD6-wb-WxZ" firstAttribute="top" secondItem="aSZ-dD-gh8" secondAttribute="bottom" id="1lL-WC-t3S"/>
+                            <constraint firstItem="fD6-wb-WxZ" firstAttribute="top" secondItem="aSZ-dD-gh8" secondAttribute="bottom" constant="-49" id="1lL-WC-t3S"/>
                             <constraint firstItem="HG1-if-isY" firstAttribute="top" secondItem="fD6-wb-WxZ" secondAttribute="bottom" id="1pb-yM-pxT"/>
                             <constraint firstItem="fD6-wb-WxZ" firstAttribute="leading" secondItem="SQx-d2-N8N" secondAttribute="leading" id="4qi-oR-L4l"/>
                             <constraint firstAttribute="trailing" secondItem="fD6-wb-WxZ" secondAttribute="trailing" id="LDj-y0-HtD"/>
@@ -196,27 +104,11 @@
                     <nil key="simulatedStatusBarMetrics"/>
                     <connections>
                         <outlet property="backButton" destination="yo0-QQ-L3X" id="26n-S2-rVc"/>
-                        <outlet property="buttonsSuperview" destination="3jG-Uv-3gX" id="5Iz-hE-7NY"/>
                         <outlet property="containerView" destination="fD6-wb-WxZ" id="h56-hz-IAY"/>
                         <outlet property="doneButton" destination="fjY-M8-C3E" id="kR5-PZ-OX9"/>
                         <outlet property="headerView" destination="aSZ-dD-gh8" id="ecU-Xn-VTA"/>
                         <outlet property="inviteButton" destination="6pT-4a-AGI" id="hM7-Tp-n1M"/>
                         <outlet property="titleLabel" destination="cfs-vL-vt7" id="aAD-JI-1LS"/>
-                        <outletCollection property="socialNetworkButtons" destination="KFZ-T9-Rj0" id="sDf-M4-We5"/>
-                        <outletCollection property="socialNetworkButtons" destination="Jks-qk-3sl" id="gci-m6-ws2"/>
-                        <outletCollection property="socialNetworkButtonHeightConstraints" destination="my8-EZ-ZWY" id="5lR-T7-58z"/>
-                        <outletCollection property="socialNetworkButtonHeightConstraints" destination="vRF-7x-y1d" id="NST-tV-q0N"/>
-                        <outletCollection property="socialNetworkButtonHeightConstraints" destination="hNH-yl-iwq" id="Ym1-IF-SGv"/>
-                        <outletCollection property="socialNetworkButtonHeightConstraints" destination="X6q-13-gdU" id="5qG-Mh-Dos"/>
-                        <outletCollection property="socialNetworkButtonHeightConstraints" destination="xvu-Ol-SSU" id="sAF-qZ-jtz"/>
-                        <outletCollection property="socialNetworkButtonSpacingConstraints" destination="mbe-9L-Gd1" id="1Sn-W7-JAr"/>
-                        <outletCollection property="socialNetworkButtonSpacingConstraints" destination="XUJ-iY-cE9" id="NI0-M1-47S"/>
-                        <outletCollection property="socialNetworkButtonSpacingConstraints" destination="NeN-HF-6aj" id="YfZ-Tu-W5d"/>
-                        <outletCollection property="socialNetworkButtonSpacingConstraints" destination="agH-Oh-tp6" id="gMr-eA-Um5"/>
-                        <outletCollection property="socialNetworkButtons" destination="V7C-dz-xoy" id="eSL-Hw-Ahg"/>
-                        <outletCollection property="socialNetworkButtons" destination="eVk-1M-NkN" id="Vjw-3s-tCU"/>
-                        <outletCollection property="socialNetworkButtons" destination="wiT-FO-PG4" id="JRX-lw-zzd"/>
-                        <outletCollection property="socialNetworkButtons" destination="wiT-FO-PG4" id="Wlv-rm-ZdD"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="lq7-Dz-Zta" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -226,11 +118,6 @@
     </scenes>
     <resources>
         <image name="cameraButtonBack" width="22" height="17"/>
-        <image name="inviteContacts" width="26" height="25"/>
-        <image name="inviteFacebook" width="13" height="24"/>
-        <image name="inviteInstagram" width="24" height="24"/>
-        <image name="inviteSuggested" width="27" height="20"/>
-        <image name="inviteTwitter" width="23" height="20"/>
     </resources>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
         <simulatedStatusBarMetrics key="statusBar"/>

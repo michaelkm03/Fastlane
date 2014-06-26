@@ -13,32 +13,22 @@
 #import "VFindInstagramFriendsViewController.h"
 #import "VFindTwitterFriendsTableViewController.h"
 #import "VSuggestedFriendsTableViewController.h"
+#import "VTabBarViewController.h"
+#import "VTabInfo.h"
 #import "VThemeManager.h"
 
 @import MessageUI;
-
-typedef NS_ENUM(NSInteger, VSlideDirection)
-{
-    VSlideDirectionNone = 0, ///< Use this to disable animation
-    VSlideDirectionLeft,
-    VSlideDirectionRight
-};
 
 @interface VFindFriendsViewController () <MFMailComposeViewControllerDelegate, MFMessageComposeViewControllerDelegate>
 
 @property (nonatomic, weak)   IBOutlet UIView   *headerView;
 @property (nonatomic, weak)   IBOutlet UILabel  *titleLabel;
-@property (nonatomic, weak)   IBOutlet UIView   *buttonsSuperview;
 @property (nonatomic, weak)   IBOutlet UIButton *backButton;
 @property (nonatomic, weak)   IBOutlet UIButton *inviteButton;
 @property (nonatomic, weak)   IBOutlet UIButton *doneButton;
-@property (nonatomic, strong) IBOutletCollection(UIButton) NSArray *socialNetworkButtons;
 @property (nonatomic, weak)   IBOutlet UIView   *containerView;
-@property (nonatomic, strong) UIViewController  *innerViewController;
 
-@property (nonatomic, strong) IBOutletCollection(NSLayoutConstraint) NSArray *socialNetworkButtonHeightConstraints;
-@property (nonatomic, strong) IBOutletCollection(NSLayoutConstraint) NSArray *socialNetworkButtonSpacingConstraints;
-
+@property (nonatomic, strong) VTabBarViewController           *tabBarViewController;
 @property (nonatomic, strong) VFindFriendsTableViewController *suggestedFriendsInnerViewController;
 @property (nonatomic, strong) VFindFriendsTableViewController *contactsInnerViewController;
 @property (nonatomic, strong) VFindFriendsTableViewController *facebookInnerViewController;
@@ -53,7 +43,7 @@ typedef NS_ENUM(NSInteger, VSlideDirection)
 
 - (void)awakeFromNib
 {
-    [self createInnerViewControllers];
+    self.tabBarViewController = [[VTabBarViewController alloc] init];
 }
 
 - (void)viewDidLoad
@@ -61,18 +51,16 @@ typedef NS_ENUM(NSInteger, VSlideDirection)
     [super viewDidLoad];
     self.headerView.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVAccentColor];
     self.titleLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVButton2Font];
-    for (UIButton *button in self.socialNetworkButtons)
-    {
-        button.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVSecondaryAccentColor];
-    }
-    for (NSLayoutConstraint *heightConstraint in self.socialNetworkButtonHeightConstraints)
-    {
-        heightConstraint.constant = 48.5f;
-    }
-    for (NSLayoutConstraint *spacingConstraint in self.socialNetworkButtonSpacingConstraints)
-    {
-        spacingConstraint.constant = 0.5f;
-    }
+    
+    [self addChildViewController:self.tabBarViewController];
+    self.tabBarViewController.view.frame = self.containerView.bounds;
+    self.tabBarViewController.view.translatesAutoresizingMaskIntoConstraints = YES;
+    self.tabBarViewController.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+    [self.containerView addSubview:self.tabBarViewController.view];
+    [self.tabBarViewController didMoveToParentViewController:self];
+    
+    self.tabBarViewController.buttonBackgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVSecondaryAccentColor];
+    [self addInnerViewControllersToTabController:self.tabBarViewController];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -82,10 +70,6 @@ typedef NS_ENUM(NSInteger, VSlideDirection)
     self.inviteButton.hidden = ![MFMailComposeViewController canSendMail] && ![MFMessageComposeViewController canSendText];
     self.backButton.hidden = !self.inviteButton.hidden || self.navigationController.viewControllers.count <= 1;
     self.doneButton.hidden = !self.presentingViewController;
-    if (!self.innerViewController)
-    {
-        [self setInnerViewController:self.suggestedFriendsInnerViewController];
-    }
 }
 
 - (BOOL)prefersStatusBarHidden
@@ -100,70 +84,19 @@ typedef NS_ENUM(NSInteger, VSlideDirection)
 
 #pragma mark -
 
-- (void)setInnerViewController:(UIViewController *)viewController
-{
-    [self setInnerViewController:viewController slideDirection:VSlideDirectionNone];
-}
-
-- (void)setInnerViewController:(UIViewController *)newViewController slideDirection:(VSlideDirection)direction
-{
-    UIViewController *oldViewController = self.innerViewController;
-    if (!newViewController || oldViewController == newViewController)
-    {
-        return;
-    }
-    
-    [self addChildViewController:newViewController];
-    [oldViewController willMoveToParentViewController:nil];
-
-    newViewController.view.frame = CGRectMake(direction == VSlideDirectionRight ? -CGRectGetWidth(self.containerView.bounds) * 0.5f :
-                                                                                   CGRectGetWidth(self.containerView.bounds) * 0.5f,
-                                              CGRectGetMinY(self.containerView.bounds),
-                                              CGRectGetWidth(self.containerView.bounds),
-                                              CGRectGetHeight(self.containerView.bounds));
-    newViewController.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-    newViewController.view.alpha = 0;
-    [self.containerView addSubview:newViewController.view];
-
-    void (^animations)() = ^(void)
-    {
-        newViewController.view.alpha = 1.0f;
-        newViewController.view.frame = self.containerView.bounds;
-        oldViewController.view.frame = CGRectMake(direction == VSlideDirectionRight ?  CGRectGetWidth(self.containerView.bounds) * 0.5f :
-                                                                                      -CGRectGetWidth(self.containerView.bounds) * 0.5f,
-                                                  CGRectGetMinY(self.containerView.bounds),
-                                                  CGRectGetWidth(self.containerView.bounds),
-                                                  CGRectGetHeight(self.containerView.bounds));
-        oldViewController.view.alpha = 0;
-    };
-    void (^completion)(BOOL) = ^(BOOL finished)
-    {
-        oldViewController.view.alpha = 1.0f;
-        [oldViewController.view removeFromSuperview];
-        [oldViewController removeFromParentViewController];
-        [newViewController didMoveToParentViewController:self];
-    };
-    
-    if (direction == VSlideDirectionNone)
-    {
-        animations();
-        completion(YES);
-    }
-    else
-    {
-        [UIView animateWithDuration:0.2 animations:animations completion:completion];
-    }
-    
-    _innerViewController = newViewController;
-}
-
-- (void)createInnerViewControllers
+- (void)addInnerViewControllersToTabController:(VTabBarViewController *)tabViewController
 {
     self.suggestedFriendsInnerViewController = [[VSuggestedFriendsTableViewController alloc] init];
     self.contactsInnerViewController = [[VFindContactsTableViewController alloc] init];
     self.facebookInnerViewController = [[VFindFacebookFriendsTableViewController alloc] init];
     self.twitterInnerViewController = [[VFindTwitterFriendsTableViewController alloc] init];
     self.instagramInnerViewController = [[VFindInstagramFriendsViewController alloc] init];
+    
+    tabViewController.viewControllers = @[v_newTab(self.suggestedFriendsInnerViewController, [UIImage imageNamed:@"inviteSuggested"]),
+                                          v_newTab(self.contactsInnerViewController, [UIImage imageNamed:@"inviteContacts"]),
+                                          v_newTab(self.facebookInnerViewController, [UIImage imageNamed:@"inviteFacebook"]),
+                                          v_newTab(self.twitterInnerViewController, [UIImage imageNamed:@"inviteTwitter"]),
+                                          v_newTab(self.instagramInnerViewController, [UIImage imageNamed:@"inviteInstagram"])];
 }
 
 #pragma mark - Button Actions
@@ -208,77 +141,6 @@ typedef NS_ENUM(NSInteger, VSlideDirection)
 - (IBAction)pressedDone:(id)sender
 {
     [self dismissViewControllerAnimated:YES completion:nil];
-}
-
-- (IBAction)pressedSuggestedFriends:(id)sender
-{
-    if (self.innerViewController == self.suggestedFriendsInnerViewController)
-    {
-        return;
-    }
-    [self setInnerViewController:self.suggestedFriendsInnerViewController slideDirection:VSlideDirectionRight];
-}
-
-- (IBAction)pressedContacts:(id)sender
-{
-    if (self.innerViewController == self.contactsInnerViewController)
-    {
-        return;
-    }
-    
-    VSlideDirection direction = VSlideDirectionRight;
-    if (self.innerViewController == self.suggestedFriendsInnerViewController)
-    {
-        direction = VSlideDirectionLeft;
-    }
-    [self setInnerViewController:self.contactsInnerViewController slideDirection:direction];
-}
-
-- (IBAction)pressedFacebook:(id)sender
-{
-    if (self.innerViewController == self.facebookInnerViewController)
-    {
-        return;
-    }
-    
-    VSlideDirection direction;
-    if (self.innerViewController == self.suggestedFriendsInnerViewController || self.innerViewController == self.contactsInnerViewController)
-    {
-        direction = VSlideDirectionLeft;
-    }
-    else
-    {
-        direction = VSlideDirectionRight;
-    }
-    [self setInnerViewController:self.facebookInnerViewController slideDirection:direction];
-}
-
-- (IBAction)pressedTwitter:(id)sender
-{
-    if (self.innerViewController == self.twitterInnerViewController)
-    {
-        return;
-    }
-    
-    VSlideDirection direction;
-    if (self.innerViewController == self.instagramInnerViewController)
-    {
-        direction = VSlideDirectionRight;
-    }
-    else
-    {
-        direction = VSlideDirectionLeft;
-    }
-    [self setInnerViewController:self.twitterInnerViewController slideDirection:direction];
-}
-
-- (IBAction)pressedInstagram:(id)sender
-{
-    if (self.innerViewController == self.instagramInnerViewController)
-    {
-        return;
-    }
-    [self setInnerViewController:self.instagramInnerViewController slideDirection:VSlideDirectionLeft];
 }
 
 #pragma mark - Invite

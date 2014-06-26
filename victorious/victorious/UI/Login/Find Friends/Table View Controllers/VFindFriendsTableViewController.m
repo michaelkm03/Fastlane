@@ -196,6 +196,24 @@ static NSString * const kFollowCellReuseID = @"followerCell";
     }
 }
 
+- (IBAction)makeButtonGray:(UIButton *)sender
+{
+    [UIView animateWithDuration:0.3
+                     animations:^(void)
+    {
+        sender.backgroundColor = [[UIColor blackColor] colorWithAlphaComponent:0.3f];
+    }];
+}
+
+- (IBAction)makeButtonClear:(UIButton *)sender
+{
+    [UIView animateWithDuration:0.3
+                     animations:^(void)
+    {
+        sender.backgroundColor = [UIColor clearColor];
+    }];
+}
+
 #pragma mark - UITableViewDelegate methods
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
