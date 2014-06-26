@@ -199,9 +199,7 @@ const   CGFloat kVSmallUserHeaderHeight = 316;
                                   successBlock:^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
          {
              VUserProfileHeaderView* header = (VUserProfileHeaderView*)self.tableView.tableHeaderView;
-
-             if ([resultObjects[0] boolValue])
-                 header.editProfileButton.selected = YES;
+             header.editProfileButton.selected = [resultObjects[0] boolValue];
              header.user = header.user;
          }
                                      failBlock:nil];
