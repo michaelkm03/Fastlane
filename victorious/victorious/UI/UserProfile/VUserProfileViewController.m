@@ -310,7 +310,7 @@ const   CGFloat kVSmallUserHeaderHeight = 316;
         VSuccessBlock success = ^(NSOperation *operation, id fullResponse, NSArray *objects)
         {
             header.editProfileButton.enabled = YES;
-            header.editProfileButton.selected = YES;
+            header.editProfileButton.selected = !header.editProfileButton.selected;
             [header.followButtonActivityIndicator stopAnimating];
             header.user = header.user;
         };
