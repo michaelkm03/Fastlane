@@ -126,6 +126,8 @@ const   CGFloat kVSmallUserHeaderHeight = 316;
 {
     [super viewWillAppear:animated];
     
+    self.tableView.contentOffset = CGPointZero;
+    
     [self.navigationController setNavigationBarHidden:NO animated:YES];
  
     UIImage*    defaultBackgroundImage;
@@ -373,6 +375,8 @@ const   CGFloat kVSmallUserHeaderHeight = 316;
 {
     VUserProfileHeaderView* header = (VUserProfileHeaderView*)self.tableView.tableHeaderView;
     CGFloat heightDiff = header.frame.size.height - height;
+    if (!heightDiff)
+        return;
     
     VLog(@"height:%f buffer:%f", height, buffer);
 
@@ -391,8 +395,7 @@ const   CGFloat kVSmallUserHeaderHeight = 316;
          header.frame = frame;
          self.tableView.tableHeaderView = header;
          
-         CGPoint newOffset = CGPointMake(self.tableView.contentOffset.x, self.tableView.contentOffset.y - heightDiff);
-         self.tableView.contentOffset = newOffset;
+         self.tableView.contentOffset = CGPointMake(0, -kVNavigationBarHeight);
      }];
 }
 
