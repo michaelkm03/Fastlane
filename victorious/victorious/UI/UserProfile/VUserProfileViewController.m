@@ -37,6 +37,8 @@ const   CGFloat kVLargeBottomBuffer = 149;
 const   CGFloat kVSmallBottomBuffer = 25;
 const   CGFloat kVSmallUserHeaderHeight = 316;
 
+static void * VUserProfileViewContext = &VUserProfileViewContext;
+
 @interface VUserProfileViewController () <VUserProfileHeaderDelegate>
 
 @property   (nonatomic, strong) VUser*                  profile;
@@ -353,7 +355,7 @@ const   CGFloat kVSmallUserHeaderHeight = 316;
     [self.currentFilter addObserver:self
                          forKeyPath:@"sequences"
                             options:NSKeyValueObservingOptionNew
-                            context:nil];
+                            context:VUserProfileViewContext];
     
     [super createButtonAction:sender];
 }
@@ -389,6 +391,9 @@ const   CGFloat kVSmallUserHeaderHeight = 316;
 #pragma mark - KVO
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
 {
+    if (context != VUserProfileViewContext)
+        return;
+    
     if (object == self.currentFilter && [keyPath isEqualToString:NSStringFromSelector(@selector(sequences))])
     {
         if (self.tableDataSource.count)

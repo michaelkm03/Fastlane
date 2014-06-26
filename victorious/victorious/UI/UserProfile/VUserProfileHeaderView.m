@@ -14,6 +14,7 @@
 #import "VObjectManager+Users.h"
 #import "VLargeNumberFormatter.h"
 
+static void * VProfileHeaderContext = &VProfileHeaderContext;
 
 @implementation VUserProfileHeaderView
 
@@ -73,7 +74,7 @@
     [self.editProfileButton addObserver:self
                          forKeyPath:@"selected"
                             options:NSKeyValueObservingOptionNew
-                            context:nil];
+                            context:VProfileHeaderContext];
 }
 
 - (void)setUser:(VUser *)user
@@ -149,6 +150,9 @@
 #pragma mark - KVO
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
 {
+    if (context != VProfileHeaderContext)
+        return;
+    
     if (object == self.editProfileButton && [keyPath isEqualToString:@"selected"])
     {
         if (self.editProfileButton.selected)
