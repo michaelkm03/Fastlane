@@ -49,7 +49,7 @@ NSString * const VObjectManagerContentIndexKey                  = @"index";
     {
         if (completionBlock)
         {
-            NSURL* remixURL = [NSURL URLWithString:fullResponse[@"payload"][@"mp4_url"]];
+            NSURL* remixURL = [NSURL URLWithString:fullResponse[kVPayloadKey][@"mp4_url"]];
             completionBlock(YES, remixURL, nil);
         }
     };
@@ -97,7 +97,7 @@ NSString * const VObjectManagerContentIndexKey                  = @"index";
     VSuccessBlock fullSuccess = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
     {
         
-        NSDictionary* payload = fullResponse[@"payload"];
+        NSDictionary* payload = fullResponse[kVPayloadKey];
         
         NSNumber* sequenceID = payload[@"sequence_id"];
         VSequence* newSequence = [self newPollWithID:sequenceID
@@ -160,7 +160,7 @@ NSString * const VObjectManagerContentIndexKey                  = @"index";
     
     VSuccessBlock fullSuccess = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
     {
-        NSDictionary* payload = fullResponse[@"payload"];
+        NSDictionary* payload = fullResponse[kVPayloadKey];
         
         NSNumber* sequenceID = payload[@"sequence_id"];
         VSequence* newSequence = [self newSequenceWithID:sequenceID
@@ -318,7 +318,7 @@ NSString * const VObjectManagerContentIndexKey                  = @"index";
     VSuccessBlock fullSuccess = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
     {
         
-        NSDictionary* payload = fullResponse[@"payload"];
+        NSDictionary* payload = fullResponse[kVPayloadKey];
         NSNumber* commentID = @([payload[@"id"] integerValue]);
         
         VComment* tempComment = [self newCommentWithID:commentID onSequence:sequence text:text mediaURLPath:[mediaURL absoluteString]];
@@ -392,13 +392,13 @@ NSString * const VObjectManagerContentIndexKey                  = @"index";
         VMessage* tempMessage;
         if ([fullResponse isKindOfClass:[NSDictionary class]])
         {
-            NSNumber* returnedId = @([fullResponse[@"payload"][@"conversation_id"] integerValue]);
+            NSNumber* returnedId = @([fullResponse[kVPayloadKey][@"conversation_id"] integerValue]);
             if (![conversation.remoteId isEqualToNumber:returnedId])
             {
                 conversation.remoteId = returnedId;
                 conversation.filterAPIPath = [@"/api/message/conversation/" stringByAppendingString:returnedId.stringValue];
             }
-            NSNumber* messageID = @([fullResponse[@"payload"][@"message_id"] integerValue]);
+            NSNumber* messageID = @([fullResponse[kVPayloadKey][@"message_id"] integerValue]);
             
             tempMessage = [self newMessageWithID:messageID conversation:conversation text:text mediaURLPath:[mediaURL absoluteString]];
             resultObjects = @[tempMessage];

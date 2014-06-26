@@ -183,7 +183,7 @@
     {
         if (success)
         {
-            NSArray* results = @[fullResponse[@"payload"][@"followers"], fullResponse[@"payload"][@"subscribed_to"]];
+            NSArray* results = @[fullResponse[kVPayloadKey][@"followers"], fullResponse[kVPayloadKey][@"subscribed_to"]];
             
             if (success)
                 success(operation, fullResponse, results);
@@ -204,7 +204,7 @@
 {
     VSuccessBlock fullSuccess = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
     {
-        NSArray*    results = @[fullResponse[@"payload"][@"relationship_exists"]];
+        NSArray*    results = @[fullResponse[kVPayloadKey][@"relationship_exists"]];
         
         if (success)
             success(operation, fullResponse, results);

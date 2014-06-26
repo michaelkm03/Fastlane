@@ -41,6 +41,8 @@ static NSString* const kVictoriousErrorDomain   = @"com.getvictorious.victoriOS"
 
 static NSString* const kVUserAgentHeader        = @"User-Agent";
 
+static NSString* const kVPayloadKey             = @"payload";
+
 static NSUInteger const VConstantsMessageLength     = 140;
 static NSUInteger const VConstantsPollAnswerLength = 25;
 static NSUInteger const VConstantsInputAccessoryHeight = 44.0;

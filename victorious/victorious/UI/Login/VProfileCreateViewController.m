@@ -15,6 +15,7 @@
 #import "VSettingManager.h"
 
 #import "VObjectManager+Login.h"
+#import "VObjectManager+Websites.h"
 
 #import "VConstants.h"
 #import "UIImageView+Blurring.h"
@@ -256,15 +257,17 @@
 
 - (void)attributedLabel:(TTTAttributedLabel *)label didSelectLinkWithURL:(NSURL *)url
 {
-    VWebContentViewController* webContentVC = [[[NSBundle mainBundle] loadNibNamed:NSStringFromClass([VWebContentViewController class]) owner:self options:nil] objectAtIndex:0];
-    
-    NSMutableURLRequest* request = [NSMutableURLRequest requestWithURL:url];
-    NSString *userAgent = ([[VObjectManager sharedManager] HTTPClient].defaultHeaders)[kVUserAgentHeader];
-    [request addValue:userAgent forHTTPHeaderField:kVUserAgentHeader];
-    webContentVC.explicitRequest = request;
-    
-    webContentVC.title = NSLocalizedString(@"ToSText", @"");
-    [self.navigationController pushViewController:webContentVC animated:YES];
+    [[VObjectManager sharedManager] fetchToSWithCompletionBlock:^(NSOperation *completion, NSString *htmlString, NSError *error)
+    {
+        if (!error)
+        {
+            VWebContentViewController* webContentVC = [[[NSBundle mainBundle] loadNibNamed:NSStringFromClass([VWebContentViewController class])
+                                                                                     owner:self options:nil] objectAtIndex:0];
+            webContentVC.htmlString = htmlString;
+            webContentVC.title = NSLocalizedString(@"ToSText", @"");
+            [self.navigationController pushViewController:webContentVC animated:YES];
+        }
+    }];
 }
 
 #pragma mark - CCLocationManagerDelegate

@@ -19,17 +19,23 @@
 {
     [super viewWillAppear:animated];
     
+    self.navigationController.navigationBar.shadowImage = nil;
+    self.navigationController.navigationBar.translucent = NO;
     [self.navigationController setNavigationBarHidden:NO animated:YES];
+    
+    [[VThemeManager sharedThemeManager] applyNormalNavBarStyling];
     
     self.webView.delegate    =   self;
     
-    if (!self.explicitRequest)
+    if (!self.htmlString)
     {
         NSURL*  webContentURL  =   [[VThemeManager sharedThemeManager] themedURLForKey:self.urlKeyPath];
-        self.explicitRequest = [NSURLRequest requestWithURL:webContentURL];
+        [self.webView loadRequest:[NSURLRequest requestWithURL:webContentURL]];
     }
-    
-    [self.webView loadRequest:self.explicitRequest];
+    else
+    {
+        [self.webView loadHTMLString:self.htmlString baseURL:nil];
+    }
 }
 
 - (void)webViewDidStartLoad:(UIWebView *)webView

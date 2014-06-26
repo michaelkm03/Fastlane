@@ -33,7 +33,7 @@ NSString *kLoggedInChangedNotification = @"LoggedInChangedNotification";
     VSuccessBlock fullSuccess = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
     {
         
-        NSDictionary* payload = fullResponse[@"payload"];
+        NSDictionary* payload = fullResponse[kVPayloadKey];
         
         NSDictionary* newTheme = payload[@"appearance"];
         if (newTheme && [newTheme isKindOfClass:[NSDictionary class]])
@@ -339,7 +339,7 @@ NSString *kLoggedInChangedNotification = @"LoggedInChangedNotification";
     {
         if (success)
         {
-            NSArray* results = @[fullResponse[@"payload"][@"device_token"]];
+            NSArray* results = @[fullResponse[kVPayloadKey][@"device_token"]];
             
             if (success)
                 success(operation, fullResponse, results);

@@ -297,6 +297,7 @@
 		BEE800E918FCC5C200A7CFD7 /* VStreamTableViewController+ContentCreation.m in Sources */ = {isa = PBXBuildFile; fileRef = BEE800E818FCC5C200A7CFD7 /* VStreamTableViewController+ContentCreation.m */; };
 		BEE9C8B618CE4A6B0095C737 /* VPollAnswerBarViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BEE9C8B518CE4A6B0095C737 /* VPollAnswerBarViewController.m */; };
 		BEEABB75195A6D0400721735 /* VWebContentViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = BEEABB74195A6D0400721735 /* VWebContentViewController.xib */; };
+		BEEABB7E195B883400721735 /* VObjectManager+Websites.m in Sources */ = {isa = PBXBuildFile; fileRef = BEEABB7D195B883400721735 /* VObjectManager+Websites.m */; };
 		BEF2C29618845EF500AAE975 /* VPollResult+RestKit.m in Sources */ = {isa = PBXBuildFile; fileRef = BEF2C29518845EF500AAE975 /* VPollResult+RestKit.m */; };
 		BEF2C2A5188488C000AAE975 /* VUnreadConversation+RestKit.m in Sources */ = {isa = PBXBuildFile; fileRef = BEF2C2A4188488C000AAE975 /* VUnreadConversation+RestKit.m */; };
 		BEF2C2A818848B3B00AAE975 /* VUnreadConversation.m in Sources */ = {isa = PBXBuildFile; fileRef = BEF2C2A718848B3B00AAE975 /* VUnreadConversation.m */; };
@@ -851,6 +852,8 @@
 		BEE9C8B518CE4A6B0095C737 /* VPollAnswerBarViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VPollAnswerBarViewController.m; path = "UI/Content View/VPollAnswerBarViewController.m"; sourceTree = "<group>"; };
 		BEE9C8BC18CE904B0095C737 /* VAnimation.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = VAnimation.h; path = Protocols/VAnimation.h; sourceTree = SOURCE_ROOT; };
 		BEEABB74195A6D0400721735 /* VWebContentViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VWebContentViewController.xib; sourceTree = "<group>"; };
+		BEEABB7C195B883400721735 /* VObjectManager+Websites.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "VObjectManager+Websites.h"; sourceTree = "<group>"; };
+		BEEABB7D195B883400721735 /* VObjectManager+Websites.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "VObjectManager+Websites.m"; sourceTree = "<group>"; };
 		BEF2C29418845EF500AAE975 /* VPollResult+RestKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "VPollResult+RestKit.h"; sourceTree = "<group>"; };
 		BEF2C29518845EF500AAE975 /* VPollResult+RestKit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "VPollResult+RestKit.m"; sourceTree = "<group>"; };
 		BEF2C2A3188488C000AAE975 /* VUnreadConversation+RestKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "VUnreadConversation+RestKit.h"; sourceTree = "<group>"; };
@@ -1857,6 +1860,8 @@
 				BE9181DA19098E280071E7AF /* VObjectManager+Pagination.m */,
 				BE2E5B731914201A003282A6 /* VObjectManager+ContentCreation.h */,
 				BE2E5B741914201A003282A6 /* VObjectManager+ContentCreation.m */,
+				BEEABB7C195B883400721735 /* VObjectManager+Websites.h */,
+				BEEABB7D195B883400721735 /* VObjectManager+Websites.m */,
 			);
 			name = VObjectManager;
 			sourceTree = "<group>";
@@ -2383,6 +2388,7 @@
 				BE171E141868C211004E5202 /* VNode+RestKit.m in Sources */,
 				BE7D2E8E18EB65ED009E488E /* VVoteResult+RestKit.m in Sources */,
 				3F14C45418BD2BD0001796B9 /* VCVideoPlayerViewController.m in Sources */,
+				BEEABB7E195B883400721735 /* VObjectManager+Websites.m in Sources */,
 				BE171E121868C211004E5202 /* VInteraction+RestKit.m in Sources */,
 				036AE5ED18FF0C0600A74BDA /* VReachability.m in Sources */,
 				035C2D831940F1B40023FC05 /* VAnalyticsRecorder.m in Sources */,
