@@ -11,7 +11,7 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="HqL-SU-35F">
-                    <rect key="frame" x="120" y="99" width="80" height="80"/>
+                    <rect key="frame" x="120" y="143" width="80" height="80"/>
                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                     <constraints>
                         <constraint firstAttribute="width" constant="80" id="0T3-iJ-iMz"/>
@@ -19,14 +19,14 @@
                     </constraints>
                 </imageView>
                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Some really long user name" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hml-7T-io9">
-                    <rect key="frame" x="0.0" y="196" width="320" height="21"/>
+                    <rect key="frame" x="0.0" y="240" width="320" height="21"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                     <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                     <nil key="highlightedColor"/>
                 </label>
                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Location Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="S4j-eS-daM">
-                    <rect key="frame" x="0.0" y="225" width="320" height="25"/>
+                    <rect key="frame" x="0.0" y="269" width="320" height="25"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="25" id="FYK-xA-pFC"/>
@@ -36,7 +36,7 @@
                     <nil key="highlightedColor"/>
                 </label>
                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Tagline Label" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="248" translatesAutoresizingMaskIntoConstraints="NO" id="BwN-vC-fs2">
-                    <rect key="frame" x="36" y="255" width="248" height="60"/>
+                    <rect key="frame" x="36" y="299" width="248" height="60"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="60" id="Kba-Yg-3jk"/>
@@ -95,7 +95,7 @@
                 <constraint firstItem="hml-7T-io9" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="Eya-U8-XSA"/>
                 <constraint firstAttribute="trailing" secondItem="hml-7T-io9" secondAttribute="trailing" id="FdE-3p-aOK"/>
                 <constraint firstAttribute="centerX" secondItem="HqL-SU-35F" secondAttribute="centerX" id="N9c-oY-anG"/>
-                <constraint firstItem="Ym4-vc-saC" firstAttribute="top" secondItem="BwN-vC-fs2" secondAttribute="bottom" constant="193" id="P8M-GZ-tFV"/>
+                <constraint firstItem="Ym4-vc-saC" firstAttribute="top" secondItem="BwN-vC-fs2" secondAttribute="bottom" constant="149" id="P8M-GZ-tFV"/>
                 <constraint firstAttribute="trailing" secondItem="S4j-eS-daM" secondAttribute="trailing" id="bxf-i0-s4J"/>
                 <constraint firstAttribute="trailing" secondItem="BwN-vC-fs2" secondAttribute="trailing" constant="36" id="fSH-FK-53d"/>
                 <constraint firstAttribute="trailing" secondItem="Ym4-vc-saC" secondAttribute="trailing" id="iS6-ss-pJa"/>
