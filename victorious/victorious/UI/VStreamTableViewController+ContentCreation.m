@@ -110,12 +110,7 @@
         NSLog(@"%@", error);
         NSString *title, *message;
         
-        if(kVUserBannedError == error.code)
-        {
-            title = NSLocalizedString(@"UserBannedTitle", @"");
-            message = NSLocalizedString(@"UserBannedMessage", @"");
-        }
-        else if (kVStillTranscodingError == error.code)
+        if (kVStillTranscodingError == error.code)
         {
             title = NSLocalizedString(@"TranscodingMediaTitle", @"");
             message = NSLocalizedString(@"TranscodingMediaBody", @"");

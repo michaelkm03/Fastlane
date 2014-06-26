@@ -187,6 +187,15 @@
         {
             [[VRootViewController rootViewController] presentForceUpgradeScreen];
         }
+        else if(rkErrorMessage.errorMessage.integerValue  == kVUserBannedError)
+        {
+            UIAlertView*    alert   =   [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"UserBannedTitle", @"")
+                                                                   message:NSLocalizedString(@"UserBannedMessage", @"")
+                                                                  delegate:nil
+                                                         cancelButtonTitle:NSLocalizedString(@"OKButton", @"")
+                                                         otherButtonTitles:nil];
+            [alert show];
+        }
         else if (failBlock)
         {
             failBlock(operation, error);

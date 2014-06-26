@@ -289,19 +289,8 @@ const   CGFloat kVSmallUserHeaderHeight = 316;
             header.editProfileButton.enabled = YES;
             [header.followButtonActivityIndicator stopAnimating];
             
-            NSString *title, *message;
-            if(error.code == kVUserBannedError)
-            {
-                title = NSLocalizedString(@"UserBannedTitle", @"");
-                message = NSLocalizedString(@"UserBannedMessage", @"");
-            }
-            else
-            {
-                message = NSLocalizedString(@"UnfollowError", @"");
-            }
-            
-            UIAlertView*    alert   =   [[UIAlertView alloc] initWithTitle:title
-                                                                   message:message
+            UIAlertView*    alert   =   [[UIAlertView alloc] initWithTitle:nil
+                                                                   message:NSLocalizedString(@"UnfollowError", @"")
                                                                   delegate:nil
                                                          cancelButtonTitle:NSLocalizedString(@"OKButton", @"")
                                                          otherButtonTitles:nil];

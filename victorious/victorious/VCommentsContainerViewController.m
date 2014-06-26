@@ -141,16 +141,6 @@
     VFailBlock fail = ^(NSOperation* operation, NSError* error)
     {
         [progressHUD hide:YES];
-        
-        if(error.code == kVUserBannedError)
-        {
-            UIAlertView*    alert   =   [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"UserBannedTitle", @"")
-                                                                   message:NSLocalizedString(@"UserBannedMessage", @"")
-                                                                  delegate:nil
-                                                         cancelButtonTitle:NSLocalizedString(@"OKButton", @"")
-                                                         otherButtonTitles:nil];
-            [alert show];
-        }
     };
 
     [[VObjectManager sharedManager] addCommentWithText:text

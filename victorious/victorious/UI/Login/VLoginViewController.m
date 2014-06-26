@@ -164,16 +164,7 @@
 
 - (void)didFailWithError:(NSError*)error
 {
-    if(error.code == kVUserBannedError)
-    {
-        UIAlertView*    alert   =   [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"UserBannedTitle", @"")
-                                                               message:NSLocalizedString(@"UserBannedMessage", @"")
-                                                              delegate:nil
-                                                     cancelButtonTitle:NSLocalizedString(@"OKButton", @"")
-                                                     otherButtonTitles:nil];
-        [alert show];
-    }
-    else
+    if(error.code != kVUserBannedError)
     {
         UIAlertView*    alert   =   [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"LoginFail", @"")
                                                                message:error.localizedDescription
