@@ -433,6 +433,9 @@
     
     VSuccessBlock fullSuccess = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
     {
+        if (success)
+            success(operation, fullResponse, resultObjects);
+        
         dispatch_sync([VObjectManager paginationDispatchQueue], ^
                       {
                           filter.maxPageNumber = @(((NSString*)fullResponse[@"total_pages"]).integerValue);
@@ -440,9 +443,6 @@
                           filter.updating = [NSNumber numberWithBool:NO];
                           [[VFilterCache sharedCache] setObject:filter forKey:filter.filterAPIPath];
                       });
-        
-        if (success)
-            success(operation, fullResponse, resultObjects);
         
         [filter.managedObjectContext saveToPersistentStore:nil];
     };
