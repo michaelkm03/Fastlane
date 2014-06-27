@@ -109,19 +109,6 @@ static const NSInteger kCharacterLimit = 255;
 
 #pragma mark - UITextViewDelegate methods
 
-- (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text
-{
-    BOOL isDeleteKey = [text isEqualToString:@""];
-    if (textView.text.length >= kCharacterLimit && !isDeleteKey)
-    {
-        return NO;
-    }
-    else
-    {
-        return YES;
-    }
-}
-
 - (BOOL)textViewShouldBeginEditing:(UITextView *)textView
 {
     if (![VObjectManager sharedManager].mainUser)

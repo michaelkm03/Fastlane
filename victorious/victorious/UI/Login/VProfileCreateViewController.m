@@ -200,10 +200,6 @@
         return NO;
     }
     
-    BOOL    isDeleteKey = ([text isEqualToString:@""]);
-    if ((textView.text.length >= VConstantsMessageLength) && (!isDeleteKey))
-        return NO;
-    
     return YES;
 }
 

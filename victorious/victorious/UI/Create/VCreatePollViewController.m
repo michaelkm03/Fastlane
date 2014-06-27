@@ -422,25 +422,12 @@ static char KVOContext;
 
 - (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text
 {
-    NSInteger maxLength = textView == self.questionTextView ? VConstantsMessageLength : VConstantsPollAnswerLength;
-    
     if ([text isEqualToString:@"\n"])
     {
         [textView resignFirstResponder];
         return NO;
     }
-    else
-    {
-        BOOL isDeleteKey = [text isEqualToString:@""];
-        if (textView.text.length >= maxLength && !isDeleteKey)
-        {
-            return NO;
-        }
-        else
-        {
-            return YES;
-        }
-    }
+    return YES;
 }
 
 - (void)textViewDidChange:(UITextView *)textView

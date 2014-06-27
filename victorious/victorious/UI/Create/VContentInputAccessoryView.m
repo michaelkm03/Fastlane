@@ -110,6 +110,7 @@
         numberFormatter = [[NSNumberFormatter alloc] init];
         numberFormatter.numberStyle = NSNumberFormatterDecimalStyle;
     });
+    characterCount = MIN(characterCount, self.maxCharacterLength);
     return [numberFormatter stringFromNumber:@((NSInteger)self.maxCharacterLength - characterCount)];
 }
 
@@ -151,7 +152,7 @@
         }
         
         self.hashtagButton.enabled = text.length < self.maxCharacterLength;
-        self.countDownLabel.title = [self charactersRemainingForCharacterCount: MIN(text.length, self.maxCharacterLength)];
+        self.countDownLabel.title = [self charactersRemainingForCharacterCount: text.length];
     }
 }
 
