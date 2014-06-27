@@ -241,7 +241,7 @@ NSString * const VObjectManagerContentIndexKey                  = @"index";
     VSequenceFilter* profileFilter = [self sequenceFilterForUser:self.mainUser];
     [[NSNotificationCenter defaultCenter] postNotificationName:VObjectManagerContentWillBeCreatedNotification
                                                         object:self
-                                                      userInfo:@{ VObjectManagerContentFilterIDKey: homeFilter.objectID,
+                                                      userInfo:@{ VObjectManagerContentFilterIDKey: profileFilter.objectID,
                                                                   VObjectManagerContentIndexKey:    @(0)
                                                                   }];
     [(VSequenceFilter*)[tempSequence.managedObjectContext objectWithID:profileFilter.objectID] insertSequences:@[tempSequence] atIndexes:[NSIndexSet indexSetWithIndex:0]];
@@ -253,12 +253,17 @@ NSString * const VObjectManagerContentIndexKey                  = @"index";
                                                         object:self
                                                       userInfo:@{ VObjectManagerContentFilterIDKey: homeFilter.objectID,
                                                                   VObjectManagerContentIndexKey:    @(0)
-                                                               }];
+                                                                  }];
     [[NSNotificationCenter defaultCenter] postNotificationName:VObjectManagerContentWasCreatedNotification
                                                         object:self
                                                       userInfo:@{ VObjectManagerContentFilterIDKey: secondFilter.objectID,
                                                                   VObjectManagerContentIndexKey:    @(0)
-                                                               }];
+                                                                  }];
+    [[NSNotificationCenter defaultCenter] postNotificationName:VObjectManagerContentWasCreatedNotification
+                                                        object:self
+                                                      userInfo:@{ VObjectManagerContentFilterIDKey: profileFilter.objectID,
+                                                                  VObjectManagerContentIndexKey:    @(0)
+                                                                  }];
 }
 
 - (VSequence*)newPollWithID:(NSNumber*)remoteID
