@@ -60,12 +60,6 @@
     
     self.setExpirationTextField.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeading2Font];
     
-    [UIView animateWithDuration:0.6 animations:^{
-        self.setExpirationTextField.alpha = 1.0;
-        self.expirationLine1Label.alpha = 0.0;
-        self.expirationLine2Label.alpha = 0.0;
-    }];
-    
     self.afterButton.titleLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeading3Font];
     self.afterButton.backgroundColor = [UIColor colorWithWhite:0.97 alpha:1.0];
     [self.afterButton setTitleColor:[UIColor darkTextColor] forState:UIControlStateNormal];
@@ -151,12 +145,6 @@
 - (IBAction)reset:(id)sender
 {
     [self.toolbar setItems:self.toolbarWithoutReset animated:YES];
-    
-    [UIView animateWithDuration:0.6 animations:^{
-        self.setExpirationTextField.alpha = 1.0;
-        self.expirationLine1Label.alpha = 0.0;
-        self.expirationLine2Label.alpha = 0.0;
-    }];
 
     self.expirationDate = nil;
 }
@@ -203,25 +191,48 @@
         [self.expirationDatePicker becomeFirstResponder];
 }
 
+- (void)setExpirationDate:(NSDate *)expirationDate
+{
+    if([expirationDate isEqualToDate:_expirationDate])
+        return;
+    
+    _expirationDate = expirationDate;
+    
+    if (expirationDate)
+    {
+        [UIView animateWithDuration:0.6 animations:
+         ^{
+            self.setExpirationTextField.alpha = 0.0;
+            self.expirationLine1Label.alpha = 1.0;
+            self.expirationLine2Label.alpha = 1.0;
+        }];
+        
+        self.expirationLine1Label.text = [NSDateFormatter localizedStringFromDate:expirationDate dateStyle:NSDateFormatterMediumStyle timeStyle:NSDateFormatterNoStyle];
+        self.expirationLine2Label.text = [NSDateFormatter localizedStringFromDate:expirationDate dateStyle:NSDateFormatterNoStyle timeStyle:NSDateFormatterShortStyle];
+        
+        [self.doneButton setTitle:@"Done" forState:UIControlStateNormal];
+        [self.toolbar setItems:self.toolbarWithReset animated:YES];
+        
+        self.afterButton.userInteractionEnabled = YES;
+        self.onButton.userInteractionEnabled = YES;
+    }
+    else
+    {
+        [UIView animateWithDuration:0.6 animations:
+         ^{
+            self.setExpirationTextField.alpha = 1.0;
+            self.expirationLine1Label.alpha = 0.0;
+            self.expirationLine2Label.alpha = 0.0;
+        }];
+    }
+    
+}
+
 #pragma mark - Delegates
 
 - (void)pickerTextField:(VPickerTextField *)pickerTextField didSelectExpirationDate:(NSDate *)expirationDate
 {
-    [UIView animateWithDuration:0.6 animations:^{
-        self.setExpirationTextField.alpha = 0.0;
-        self.expirationLine1Label.alpha = 1.0;
-        self.expirationLine2Label.alpha = 1.0;
-    }];
-    
-    self.expirationLine1Label.text = [NSDateFormatter localizedStringFromDate:expirationDate dateStyle:NSDateFormatterMediumStyle timeStyle:NSDateFormatterNoStyle];
-    self.expirationLine2Label.text = [NSDateFormatter localizedStringFromDate:expirationDate dateStyle:NSDateFormatterNoStyle timeStyle:NSDateFormatterShortStyle];
-    
     self.expirationDate = expirationDate;
-    [self.doneButton setTitle:@"Done" forState:UIControlStateNormal];
-    [self.toolbar setItems:self.toolbarWithReset animated:YES];
-    
-    self.afterButton.userInteractionEnabled = YES;
-    self.onButton.userInteractionEnabled = YES;
 }
 
 - (void)pickerTextField:(VPickerTextField *)pickerTextField didSelectRow:(NSInteger)row inComponent:(NSInteger)component
@@ -231,21 +242,8 @@
 
 - (void)datePicker:(VExpirationDatePicker *)datePicker didSelectExpirationDate:(NSDate *)expirationDate
 {
-    [UIView animateWithDuration:0.6 animations:^{
-        self.setExpirationTextField.alpha = 0.0;
-        self.expirationLine1Label.alpha = 1.0;
-        self.expirationLine2Label.alpha = 1.0;
-    }];
-    
-    self.expirationLine1Label.text = [NSDateFormatter localizedStringFromDate:expirationDate dateStyle:NSDateFormatterMediumStyle timeStyle:NSDateFormatterNoStyle];
-    self.expirationLine2Label.text = [NSDateFormatter localizedStringFromDate:expirationDate dateStyle:NSDateFormatterNoStyle timeStyle:NSDateFormatterShortStyle];
-
     self.expirationDate = expirationDate;
-    [self.doneButton setTitle:@"Done" forState:UIControlStateNormal];
-    [self.toolbar setItems:self.toolbarWithReset animated:YES];
-    
-    self.afterButton.userInteractionEnabled = YES;
-    self.onButton.userInteractionEnabled = YES;
 }
+
 
 @end
