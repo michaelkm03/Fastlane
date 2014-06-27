@@ -40,6 +40,12 @@
 
 @implementation VFindFriendsViewController
 
++ (VFindFriendsViewController *)newFindFriendsViewController
+{
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"login" bundle:nil];
+    return [storyboard instantiateViewControllerWithIdentifier:@"VFindFriendsViewController"];
+}
+
 #pragma mark - View Lifecycle
 
 - (void)awakeFromNib

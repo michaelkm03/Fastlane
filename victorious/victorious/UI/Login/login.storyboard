@@ -350,7 +350,6 @@
         <!--Profile Create View Controller - Edit Profile-->
         <scene sceneID="n2v-Tj-rFs">
             <objects>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="46v-Ci-MIV" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <viewController id="a0y-4a-uKe" customClass="VProfileCreateViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="NqE-Ur-2Nw"/>
@@ -456,6 +455,7 @@
                         <segue destination="qXP-WV-BMp" kind="push" identifier="toFollowFriends" id="1xo-ua-4V8"/>
                     </connections>
                 </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="46v-Ci-MIV" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1465" y="9"/>
         </scene>
@@ -636,7 +636,7 @@
         <!--Find Friends-->
         <scene sceneID="lTq-NW-HWb">
             <objects>
-                <viewController id="qXP-WV-BMp" userLabel="Find Friends" customClass="VFindFriendsViewController" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="VFindFriendsViewController" id="qXP-WV-BMp" userLabel="Find Friends" customClass="VFindFriendsViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="xx2-g0-nqh"/>
                         <viewControllerLayoutGuide type="bottom" id="qW9-9s-Kfq"/>
