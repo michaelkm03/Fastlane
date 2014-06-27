@@ -99,6 +99,7 @@
     resetAlert.alertViewStyle = UIAlertViewStylePlainTextInput;
     [resetAlert textFieldAtIndex:0].placeholder = NSLocalizedString(@"ResetPasswordPlaceholder", @"");
     [resetAlert textFieldAtIndex:0].keyboardType = UIKeyboardTypeEmailAddress;
+    [resetAlert textFieldAtIndex:0].returnKeyType = UIReturnKeyDone;
     [resetAlert show];
 }
 

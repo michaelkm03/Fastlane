@@ -175,7 +175,7 @@
 "follow"                =   "Follow";
 
 "ResetPassword"         =   "Reset Password";
-"ResetPasswordPrompt"   =   "Please enter your e-mail address";
+"ResetPasswordPrompt"   =   "Please enter your e-mail address.";
 "ResetPasswordPlaceholder" = "E-mail Address";
 
 "EnterResetCodeMessage" =   "An email was sent to this address containing reset password instructions.";
