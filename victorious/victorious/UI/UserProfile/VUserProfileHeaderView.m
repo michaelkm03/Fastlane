@@ -126,6 +126,10 @@ static void * VProfileHeaderContext = &VProfileHeaderContext;
              }
                                          failBlock:nil];
         }
+        else
+        {
+            self.editProfileButton.selected = NO;
+        }
     }
 }
 
