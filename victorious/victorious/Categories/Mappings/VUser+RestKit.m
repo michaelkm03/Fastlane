@@ -143,7 +143,7 @@
 
              [RKResponseDescriptor responseDescriptorWithMapping:[self entityMapping]
                                                           method:RKRequestMethodAny
-                                                     pathPattern:@"/api/friend/find/twitter"
+                                                     pathPattern:@"/api/friend/find/twitter/:token/:secret"
                                                          keyPath:@"payload"
                                                      statusCodes:RKStatusCodeIndexSetForClass(RKStatusCodeClassSuccessful)]
              ];

@@ -501,8 +501,25 @@
                                         </tableViewCellContentView>
                                         <color key="backgroundColor" white="1" alpha="0.0" colorSpace="calibratedWhite"/>
                                     </tableViewCell>
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="BXM-vF-yaw">
+                                        <rect key="frame" x="0.0" y="290" width="320" height="44"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="BXM-vF-yaw" id="B75-XA-myN">
+                                            <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Find Friends" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="Kcg-vg-HCp">
+                                                    <rect key="frame" x="20" y="5" width="280" height="35"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                    <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                        </tableViewCellContentView>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                    </tableViewCell>
                                     <tableViewCell tag="6" contentMode="scaleToFill" selectionStyle="default" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" rowHeight="45" id="Jyg-k6-dhs">
-                                        <rect key="frame" x="0.0" y="290" width="320" height="45"/>
+                                        <rect key="frame" x="0.0" y="334" width="320" height="45"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Jyg-k6-dhs" id="xH0-0r-gem">
                                             <rect key="frame" x="0.0" y="0.0" width="320" height="45"/>
@@ -538,6 +555,7 @@
                         <outletCollection property="labels" destination="liW-Wt-Sy1" id="Jxg-sJ-PNK"/>
                         <outletCollection property="labels" destination="ds5-08-fik" id="vjJ-cW-ezU"/>
                         <outletCollection property="labels" destination="rNr-Dn-A7l" id="6aK-v4-C4d"/>
+                        <outletCollection property="labels" destination="Kcg-vg-HCp" id="jrQ-or-op8"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="LfI-h8-Jr9" userLabel="First Responder" sceneMemberID="firstResponder"/>
