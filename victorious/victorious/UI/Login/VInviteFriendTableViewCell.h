@@ -8,9 +8,7 @@
 
 @class VUser;
 
-#import "VTableViewCell.h"
-
-@interface VInviteFriendTableViewCell : VTableViewCell
+@interface VInviteFriendTableViewCell : UITableViewCell
 @property (nonatomic, strong)   VUser*  profile;
 
 @end

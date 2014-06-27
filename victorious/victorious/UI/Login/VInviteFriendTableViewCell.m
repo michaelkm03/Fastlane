@@ -54,7 +54,7 @@
     {
         if (selected)
         {
-            self.followIcon.image = [UIImage imageNamed:@"buttonFollowed"];
+            self.followIcon.image = [UIImage imageNamed:@"buttonFollowedRed"];
         }
         else
         {
