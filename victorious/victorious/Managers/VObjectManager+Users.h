@@ -65,7 +65,7 @@ typedef NS_ENUM(NSUInteger, VSocialSelector)
                                         withSuccessBlock:(VSuccessBlock)success
                                                failBlock:(VFailBlock)fail;
 
-- (RKManagedObjectRequestOperation *)inviteFriends:(NSArray*)friendIDs
-                                  withSuccessBlock:(VSuccessBlock)success
-                                         failBlock:(VFailBlock)fail;
+- (RKManagedObjectRequestOperation *)followUsers:(NSArray /* VUser */ *)users
+                                withSuccessBlock:(VSuccessBlock)success
+                                       failBlock:(VFailBlock)fail;
 @end

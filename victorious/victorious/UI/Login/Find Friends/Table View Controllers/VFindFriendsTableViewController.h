@@ -48,4 +48,10 @@ typedef NS_ENUM(NSInteger, VFindFriendsTableViewState)
  */
 - (void)loadFriendsFromSocialNetworkWithCompletion:(void (^)(NSArray*, NSError*))completionBlock;
 
+/**
+ Returns a set of VUser objects, one for
+ each user selected in the table view.
+ */
+- (NSArray *)selectedUsers;
+
 @end

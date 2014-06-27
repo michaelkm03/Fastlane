@@ -299,11 +299,11 @@
             failBlock:fail];
 }
 
-- (RKManagedObjectRequestOperation *)inviteFriends:(NSArray*)friendIDs
-                                  withSuccessBlock:(VSuccessBlock)success
-                                         failBlock:(VFailBlock)fail
+- (RKManagedObjectRequestOperation *)followUsers:(NSArray *)users
+                                withSuccessBlock:(VSuccessBlock)success
+                                       failBlock:(VFailBlock)fail
 {
-    NSDictionary *parameters = @{ @"target_user_ids": [friendIDs valueForKey:@"remoteId"] };
+    NSDictionary *parameters = @{ @"target_user_ids": [users valueForKey:@"remoteId"] };
     
     VSuccessBlock fullSuccess = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
     {

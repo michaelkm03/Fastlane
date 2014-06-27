@@ -10,6 +10,7 @@
 #import "VFindFriendsTableView.h"
 #import "VInviteFriendTableViewCell.h"
 #import "VNoContentView.h"
+#import "NSArray+VMap.h"
 
 static NSString * const kFollowCellReuseID = @"followerCell";
 
@@ -159,6 +160,15 @@ static NSString * const kFollowCellReuseID = @"followerCell";
             self.users = users;
             self.state = VFindFriendsTableViewStateLoaded;
         }
+    }];
+}
+
+- (NSArray *)selectedUsers
+{
+    NSArray *indexPaths = [self.tableView.tableView indexPathsForSelectedRows];
+    return [indexPaths v_map:^id (id o)
+    {
+        return self.users[[o row]];
     }];
 }
 
