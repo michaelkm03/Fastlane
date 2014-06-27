@@ -140,8 +140,18 @@
     if (notification.object == self.textInputView)
     {
         NSString *text = [notification.object text];
+
+        if (text.length > self.maxCharacterLength)
+        {
+            UITextPosition *beginning = self.textInputView.beginningOfDocument;
+            UITextPosition *start = [self.textInputView positionFromPosition:beginning offset:self.maxCharacterLength];
+            UITextPosition *end = [self.textInputView positionFromPosition:start offset:text.length - self.maxCharacterLength];
+            UITextRange *textRange = [self.textInputView textRangeFromPosition:start toPosition:end];
+            [self.textInputView replaceRange:textRange withText:@""];
+        }
+        
         self.hashtagButton.enabled = text.length < self.maxCharacterLength;
-        self.countDownLabel.title = [self charactersRemainingForCharacterCount:text.length];
+        self.countDownLabel.title = [self charactersRemainingForCharacterCount: MIN(text.length, self.maxCharacterLength)];
     }
 }
 
