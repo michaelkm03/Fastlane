@@ -28,7 +28,7 @@
 #import "VUnreadConversation+RestKit.h"
 #import "VVoteType+RestKit.h"
 
-#define EnableRestKitLogs 0 // Set to "1" to see RestKit logging, but please remember to set it back to "0" before committing your changes.
+#define EnableRestKitLogs 1 // Set to "1" to see RestKit logging, but please remember to set it back to "0" before committing your changes.
 
 @implementation VObjectManager
 
@@ -157,11 +157,6 @@
             self.mainUser = nil;
             [self requestMethod:method object:object path:path parameters:parameters successBlock:successBlock failBlock:failBlock];
         }
-        else if (error.errorCode && failBlock)
-        {
-            failBlock(operation, [NSError errorWithDomain:kVictoriousErrorDomain code:error.errorCode
-                                                 userInfo:@{NSLocalizedDescriptionKey:[error.errorMessages componentsJoinedByString:@","]}]);
-        }
         else if (!error.errorCode && successBlock)
         {
             //Grab the response data, and make sure to process it... we must guarentee that the payload is a dictionary
@@ -173,6 +168,15 @@
             }
             successBlock(operation, JSON, mappedObjects);
         }
+        else if (error.errorCode)
+        {
+            NSError* nsError = [NSError errorWithDomain:kVictoriousErrorDomain code:error.errorCode
+                                             userInfo:@{NSLocalizedDescriptionKey:[error.errorMessages componentsJoinedByString:@","]}];
+            [self defaultErrorHandlingForCode:nsError.code];
+            
+            if (failBlock)
+                failBlock(operation, nsError);
+        }
     };
     
     VFailBlock rkFailBlock = ^(NSOperation* operation, NSError* error)
@@ -183,28 +187,35 @@
             self.mainUser = nil;
             [self requestMethod:method object:object path:path parameters:parameters successBlock:successBlock failBlock:failBlock];
         }
-        else if (rkErrorMessage.errorMessage.integerValue == kVUpgradeRequiredError)
+        else
         {
-            [[VRootViewController rootViewController] presentForceUpgradeScreen];
-        }
-        else if(rkErrorMessage.errorMessage.integerValue  == kVUserBannedError)
-        {
-            UIAlertView*    alert   =   [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"UserBannedTitle", @"")
-                                                                   message:NSLocalizedString(@"UserBannedMessage", @"")
-                                                                  delegate:nil
-                                                         cancelButtonTitle:NSLocalizedString(@"OKButton", @"")
-                                                         otherButtonTitles:nil];
-            [alert show];
-        }
-        else if (failBlock)
-        {
-            failBlock(operation, error);
+            [self defaultErrorHandlingForCode:rkErrorMessage.errorMessage.integerValue];
+            
+            if (failBlock)
+                failBlock(operation, error);
         }
     };
     
     [requestOperation setCompletionBlockWithSuccess:rkSuccessBlock failure:rkFailBlock];
     [requestOperation start];
     return requestOperation;
+}
+
+- (void)defaultErrorHandlingForCode:(NSInteger)errorCode
+{
+    if (errorCode == kVUpgradeRequiredError)
+    {
+        [[VRootViewController rootViewController] presentForceUpgradeScreen];
+    }
+    else if(errorCode == kVUserBannedError)
+    {
+        UIAlertView*    alert   =   [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"UserBannedTitle", @"")
+                                                               message:NSLocalizedString(@"UserBannedMessage", @"")
+                                                              delegate:nil
+                                                     cancelButtonTitle:NSLocalizedString(@"OKButton", @"")
+                                                     otherButtonTitles:nil];
+        [alert show];
+    }
 }
 
 - (RKManagedObjectRequestOperation *)GET:(NSString *)path
@@ -298,14 +309,16 @@
         if (payload && ![payload isKindOfClass:[NSDictionary class]])
         {
             mutableResponseObject[kVPayloadKey] = @{@"objects":payload};
-//            [mutableResponseObject removeObjectForKey:kVPayloadKey];
         }
-        
-        if (error && failBlock)
-            failBlock(operation, error);
-        
+
         if (!error && successBlock)
             successBlock(operation, mutableResponseObject, nil);
+        else
+        {
+            [self defaultErrorHandlingForCode:error.code];
+            if (failBlock)
+                failBlock(operation, error);
+        }
     };
     
     AFHTTPRequestOperation *operation = [self.HTTPClient HTTPRequestOperationWithRequest:request

@@ -218,7 +218,7 @@
 "Login"                 =   "Log In";
 
 "UserBannedTitle"       =   "Ruh Roh!";
-"UserBannedMessage"     =   "Unfortunately, you're a banned community member. You'll still be able to log in and view content, but will not be able to post or interact with others.";
+"UserBannedMessage"     =   "Unfortunately, you're a banned community member. You'll still be able to view content, but will not be able to post or interact with others.";
 
 "AddDescription"        =   "Add a description... and don't forget #hashtags";
 "AddDescriptionAnchor"  =   "#hashtags";
