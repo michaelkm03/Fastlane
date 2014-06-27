@@ -12,6 +12,7 @@
 #import "VFindFriendsViewController.h"
 #import "VFindInstagramFriendsViewController.h"
 #import "VFindTwitterFriendsTableViewController.h"
+#import "VObjectManager+Users.h"
 #import "VSuggestedFriendsTableViewController.h"
 #import "VTabBarViewController.h"
 #import "VTabInfo.h"
@@ -140,6 +141,16 @@
 
 - (IBAction)pressedDone:(id)sender
 {
+    NSMutableSet *newFriends = [[NSMutableSet alloc] init];
+    [newFriends addObjectsFromArray:[self.suggestedFriendsInnerViewController selectedUsers]];
+    [newFriends addObjectsFromArray:[self.contactsInnerViewController         selectedUsers]];
+    [newFriends addObjectsFromArray:[self.facebookInnerViewController         selectedUsers]];
+    [newFriends addObjectsFromArray:[self.twitterInnerViewController          selectedUsers]];
+    [newFriends addObjectsFromArray:[self.instagramInnerViewController        selectedUsers]];
+    [[VObjectManager sharedManager] followUsers:[newFriends allObjects]
+                               withSuccessBlock:nil
+                                      failBlock:nil];
+    
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 

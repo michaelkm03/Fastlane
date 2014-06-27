@@ -186,18 +186,8 @@ static NSString * const kKeychainServiceName          = @"com.getvictorious.VUse
         }
          
         NSString *responseStr = [[NSString alloc] initWithData:responseData encoding:NSUTF8StringEncoding];
-         
-        NSArray *parts = [responseStr componentsSeparatedByString:@"&"];
-        NSMutableDictionary* parsedData = [[NSMutableDictionary alloc] initWithCapacity:[parts count]];
-        for (NSString* part in parts)
-        {
-            NSArray* data = [part componentsSeparatedByString:@"="];
-            if ([data count] < 2)
-                continue;
-             
-            [parsedData setObject:data[1] forKey:data[0]];
-        }
-         
+        NSDictionary *parsedData = RKDictionaryFromURLEncodedStringWithEncoding(responseStr, NSUTF8StringEncoding);
+
         NSString* oauthToken = [parsedData objectForKey:@"oauth_token"];
         NSString* tokenSecret = [parsedData objectForKey:@"oauth_token_secret"];
         NSString* twitterId = [parsedData objectForKey:@"user_id"];
