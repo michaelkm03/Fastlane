@@ -209,6 +209,7 @@
     }
     else if(errorCode == kVUserBannedError)
     {
+        self.mainUser = nil;
         UIAlertView*    alert   =   [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"UserBannedTitle", @"")
                                                                message:NSLocalizedString(@"UserBannedMessage", @"")
                                                               delegate:nil
