@@ -114,6 +114,13 @@
                                                                             fromViewController:fromVC
                                                                               toViewController:toVC];
     }
+    else if ([toVC respondsToSelector:@selector(navigationController:animationControllerForOperation:fromViewController:toViewController:)])
+    {
+        return [(UIViewController<UINavigationControllerDelegate>*)toVC navigationController:navigationController
+                                                               animationControllerForOperation:operation
+                                                                            fromViewController:fromVC
+                                                                              toViewController:toVC];
+    }
     else
     {
         return nil;

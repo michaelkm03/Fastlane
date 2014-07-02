@@ -8,6 +8,7 @@
 
 #import "VAnalyticsRecorder.h"
 #import "VLoginWithEmailViewController.h"
+#import "VLoginViewController.h"
 #import "VResetPasswordViewController.h"
 #import "VEnterResetTokenViewController.h"
 #import "VObjectManager+DirectMessaging.h"
@@ -332,6 +333,12 @@
     else if ([toVC isKindOfClass:[VEnterResetTokenViewController class]])
     {
         ((VEnterResetTokenViewController*)toVC).deviceToken = self.deviceToken;
+    }
+    else if ([toVC isKindOfClass:[VLoginViewController class]])
+    {
+        VLoginTransitionAnimator*   animator = [[VLoginTransitionAnimator alloc] init];
+        animator.presenting = (operation == UINavigationControllerOperationPush);
+        return animator;
     }
     return nil;
 }

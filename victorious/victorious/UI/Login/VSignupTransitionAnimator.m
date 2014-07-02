@@ -56,13 +56,16 @@
     }
     else
     {
+        toViewController.view.frame = [self rectForPresentedState:transitionContext];
+        [containerView insertSubview:toViewController.view belowSubview:fromViewController.view];
+        
         [UIView animateWithDuration:duration animations:^{
             fromViewController.view.frame = [self rectForDismissedState:transitionContext];
          }
          completion:^(BOOL finished)
          {
              [transitionContext completeTransition:YES];
-             [fromViewController.view removeFromSuperview];
+//             [fromViewController.view removeFromSuperview];
          }];
     }
 }
