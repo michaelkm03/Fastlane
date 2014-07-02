@@ -43,10 +43,9 @@
 
 - (void)awakeFromNib
 {
-    if (IS_IPHONE_5)
-        self.backgroundImage = [[[VThemeManager sharedThemeManager] themedImageForKey:kVMenuBackgroundImage5] applyBlurWithRadius:25 tintColor:[UIColor colorWithWhite:0.0 alpha:0.75] saturationDeltaFactor:1.8 maskImage:nil];
-    else
-        self.backgroundImage = [[[VThemeManager sharedThemeManager] themedImageForKey:kVMenuBackgroundImage] applyBlurWithRadius:25 tintColor:[UIColor colorWithWhite:0.0 alpha:0.75] saturationDeltaFactor:1.8 maskImage:nil];
+    self.backgroundImage = [[[VThemeManager sharedThemeManager] themedBackgroundImageForDevice]
+                            applyBlurWithRadius:25 tintColor:[UIColor colorWithWhite:0.0 alpha:0.75] saturationDeltaFactor:1.8 maskImage:nil];
+
 
     self.menuViewController = [self.storyboard instantiateViewControllerWithIdentifier:NSStringFromClass([VMenuController class])];
     self.contentViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"contentController"];
@@ -90,6 +89,17 @@
     [self presentViewController:forceUpgradeViewController animated:YES completion:nil];
 }
 
+- (void)transitionToNavStack:(NSArray*)navStack
+{
+    //Dismiss any modals in the stack or they will cover the new VC
+    for (UIViewController* vc in self.contentViewController.viewControllers)
+    {
+        [vc dismissViewControllerAnimated:NO completion:nil];
+    }
+    
+    self.contentViewController.viewControllers = navStack;
+}
+
 #pragma mark - UINavigationControllerDelegate methods
 
 - (id<UIViewControllerAnimatedTransitioning>)navigationController:(UINavigationController *)navigationController
@@ -100,6 +110,13 @@
     if ([fromVC respondsToSelector:@selector(navigationController:animationControllerForOperation:fromViewController:toViewController:)])
     {
         return [(UIViewController<UINavigationControllerDelegate>*)fromVC navigationController:navigationController
+                                                               animationControllerForOperation:operation
+                                                                            fromViewController:fromVC
+                                                                              toViewController:toVC];
+    }
+    else if ([toVC respondsToSelector:@selector(navigationController:animationControllerForOperation:fromViewController:toViewController:)])
+    {
+        return [(UIViewController<UINavigationControllerDelegate>*)toVC navigationController:navigationController
                                                                animationControllerForOperation:operation
                                                                             fromViewController:fromVC
                                                                               toViewController:toVC];

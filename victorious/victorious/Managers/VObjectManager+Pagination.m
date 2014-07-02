@@ -361,16 +361,18 @@
             //If this is the first page, break the relationship to all the old objects.
             if ([filter.currentPageNumber isEqualToNumber:@(0)])
             {
-                NSPredicate* tempFilter = [NSPredicate predicateWithFormat:@"NOT (status CONTAINS %@)", kTemporaryContentStatus];
-                NSArray* filteredSequences = [[filter.sequences allObjects] filteredArrayUsingPredicate:tempFilter];
-                [filter removeSequences:[NSSet setWithArray:filteredSequences]];
+                NSPredicate* tempFilter = [NSPredicate predicateWithFormat:@"status CONTAINS %@", kTemporaryContentStatus];
+                NSOrderedSet* filteredSequences = [filter.sequences filteredOrderedSetUsingPredicate:tempFilter];
+                filter.sequences = filteredSequences;
             }
             
+            NSMutableOrderedSet *sequences = [filter.sequences mutableCopy];
             for (VSequence* sequence in resultObjects)
             {
                 VSequence* sequenceInContext = (VSequence*)[filter.managedObjectContext objectWithID:sequence.objectID];
-                [filter addSequencesObject:sequenceInContext];
+                [sequences addObject:sequenceInContext];
             }
+            filter.sequences = sequences;
         
             if (success)
                 success(operation, fullResponse, resultObjects);
@@ -431,6 +433,9 @@
     
     VSuccessBlock fullSuccess = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
     {
+        if (success)
+            success(operation, fullResponse, resultObjects);
+        
         dispatch_sync([VObjectManager paginationDispatchQueue], ^
                       {
                           filter.maxPageNumber = @(((NSString*)fullResponse[@"total_pages"]).integerValue);
@@ -438,9 +443,6 @@
                           filter.updating = [NSNumber numberWithBool:NO];
                           [[VFilterCache sharedCache] setObject:filter forKey:filter.filterAPIPath];
                       });
-        
-        if (success)
-            success(operation, fullResponse, resultObjects);
         
         [filter.managedObjectContext saveToPersistentStore:nil];
     };

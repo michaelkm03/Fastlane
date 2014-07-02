@@ -15,8 +15,11 @@
 #import "VProfileCreateViewController.h"
 #import "VUserManager.h"
 #import "VLoginTransitionAnimator.h"
-#import "VSignupTransitionAnimation.h"
+#import "VSignupTransitionAnimator.h"
 #import "UIImage+ImageCreation.h"
+
+#import "VLoginWithEmailViewController.h"
+#import "VSignupWithEmailViewController.h"
 
 @import Accounts;
 @import Social;
@@ -36,8 +39,6 @@
 @property (nonatomic, weak) IBOutlet    UIButton*       loginEmailButton;
 
 @property (nonatomic, assign)           VLoginType      loginType;
-@property (nonatomic, assign)           BOOL            animateToLogin;
-@property (nonatomic, assign)           BOOL            animateToSignup;
 @end
 
 @implementation VLoginViewController
@@ -52,11 +53,8 @@
 {
     [super viewDidLoad];
 
-    UIImage*    backgroundImage;
-    if (IS_IPHONE_5)
-        backgroundImage = [[[VThemeManager sharedThemeManager] themedImageForKey:kVMenuBackgroundImage5] applyBlurWithRadius:0 tintColor:[UIColor colorWithWhite:0.0 alpha:0.3] saturationDeltaFactor:1.8 maskImage:nil];
-    else
-        backgroundImage = [[[VThemeManager sharedThemeManager] themedImageForKey:kVMenuBackgroundImage] applyBlurWithRadius:0 tintColor:[UIColor colorWithWhite:0.0 alpha:0.3] saturationDeltaFactor:1.8 maskImage:nil];
+    UIImage*    backgroundImage = [[[VThemeManager sharedThemeManager] themedBackgroundImageForDevice]
+                                   applyBlurWithRadius:0 tintColor:[UIColor colorWithWhite:0.0 alpha:0.3] saturationDeltaFactor:1.8 maskImage:nil];
     
     self.backgroundImageView.image = backgroundImage;
     [self addGradientToImageView:self.backgroundImageView];
@@ -89,11 +87,6 @@
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithImage:cancelButtonImage style:UIBarButtonItemStyleBordered target:self action:@selector(closeButtonClicked:)];
     
     self.navigationController.delegate = self;
-
-    self.facebookButton.userInteractionEnabled = YES;
-    self.twitterButton.userInteractionEnabled = YES;
-    self.loginEmailButton.userInteractionEnabled = YES;
-    self.transitionPlaceholder.userInteractionEnabled = YES;
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -172,21 +165,7 @@
 
 - (void)didFailWithError:(NSError*)error
 {
-    self.facebookButton.userInteractionEnabled = YES;
-    self.twitterButton.userInteractionEnabled = YES;
-    self.loginEmailButton.userInteractionEnabled = YES;
-    self.transitionPlaceholder.userInteractionEnabled = YES;
-
-    if(error.code == kVUserBannedError)
-    {
-        UIAlertView*    alert   =   [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"UserBannedTitle", @"")
-                                                               message:NSLocalizedString(@"UserBannedMessage", @"")
-                                                              delegate:nil
-                                                     cancelButtonTitle:NSLocalizedString(@"OKButton", @"")
-                                                     otherButtonTitles:nil];
-        [alert show];
-    }
-    else
+    if(error.code != kVUserBannedError)
     {
         UIAlertView*    alert   =   [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"LoginFail", @"")
                                                                message:error.localizedDescription
@@ -201,67 +180,38 @@
 
 - (IBAction)facebookClicked:(id)sender
 {
-    self.facebookButton.userInteractionEnabled = NO;
-    self.twitterButton.userInteractionEnabled = NO;
-    self.loginEmailButton.userInteractionEnabled = NO;
-    self.transitionPlaceholder.userInteractionEnabled = NO;
-
+    [self disableButtons];
     [[VAnalyticsRecorder sharedAnalyticsRecorder] sendEventWithCategory:kVAnalyticsEventCategoryUserAccount action:@"Start Login Via Facebook" label:nil value:nil];
-    
-    ACAccountStore *accountStore = [[ACAccountStore alloc] init];
-    ACAccountType *facebookAccountType = [accountStore accountTypeWithAccountTypeIdentifier:ACAccountTypeIdentifierFacebook];
-    [accountStore requestAccessToAccountsWithType:facebookAccountType
-                                          options:@{
-                                                    ACFacebookAppIdKey: [[NSBundle mainBundle] objectForInfoDictionaryKey:kFacebookAppIDKey],
-                                                    ACFacebookPermissionsKey: @[@"email"] // Needed for first login
-                                                    }
-                                       completion:^(BOOL granted, NSError *error)
+    [[VUserManager sharedInstance] loginViaFacebookOnCompletion:^(VUser *user, BOOL created)
     {
-        if (!granted)
+        dispatch_async(dispatch_get_main_queue(), ^(void)
         {
-            dispatch_async(dispatch_get_main_queue(), ^(void)
+            [[VAnalyticsRecorder sharedAnalyticsRecorder] sendEventWithCategory:kVAnalyticsEventCategoryUserAccount action:@"Successful Login Via Facebook" label:nil value:nil];
+            self.profile = user;
+            if (created)
             {
-                [[VAnalyticsRecorder sharedAnalyticsRecorder] sendEventWithCategory:kVAnalyticsEventCategoryUserAccount action:@"Facebook Account Access Denied" label:nil value:nil];
-                [self facebookAccessDidFail:error];
-            });
-        }
-        else
-        {
-            [[VUserManager sharedInstance] loginViaFacebookOnCompletion:^(VUser *user, BOOL created)
-            {
-                dispatch_async(dispatch_get_main_queue(), ^(void)
-                {
-                    [[VAnalyticsRecorder sharedAnalyticsRecorder] sendEventWithCategory:kVAnalyticsEventCategoryUserAccount action:@"Successful Login Via Facebook" label:nil value:nil];
-                    self.profile = user;
-                    if (created)
-                    {
-                        [self performSegueWithIdentifier:@"toProfileWithFacebook" sender:self];
-                    }
-                    else
-                    {
-                        [self dismissViewControllerAnimated:YES completion:NULL];
-                    }
-                });
+                [self performSegueWithIdentifier:@"toProfileWithFacebook" sender:self];
             }
-                                                                 onError:^(NSError *error)
+            else
             {
-                dispatch_async(dispatch_get_main_queue(), ^(void)
-                {
-                    [[VAnalyticsRecorder sharedAnalyticsRecorder] sendEventWithCategory:kVAnalyticsEventCategoryUserAccount action:@"Failed Login Via Facebook" label:nil value:nil];
-                    [self didFailWithError:error];
-                });
-            }];
-        }
+                [self dismissViewControllerAnimated:YES completion:NULL];
+            }
+        });
+    }
+                                                         onError:^(NSError *error)
+    {
+        dispatch_async(dispatch_get_main_queue(), ^(void)
+        {
+            [[VAnalyticsRecorder sharedAnalyticsRecorder] sendEventWithCategory:kVAnalyticsEventCategoryUserAccount action:@"Failed Login Via Facebook" label:nil value:nil];
+            [self didFailWithError:error];
+            [self enableButtons];
+        });
     }];
 }
 
 - (IBAction)twitterClicked:(id)sender
 {
-    self.facebookButton.userInteractionEnabled = NO;
-    self.twitterButton.userInteractionEnabled = NO;
-    self.loginEmailButton.userInteractionEnabled = NO;
-    self.transitionPlaceholder.userInteractionEnabled = NO;
-    
+    [self disableButtons];
     [[VAnalyticsRecorder sharedAnalyticsRecorder] sendEventWithCategory:kVAnalyticsEventCategoryUserAccount action:@"Start Login Via Twitter" label:nil value:nil];
     
     ACAccountStore* account = [[ACAccountStore alloc] init];
@@ -273,6 +223,7 @@
             dispatch_async(dispatch_get_main_queue(), ^(void)
             {
                 [[VAnalyticsRecorder sharedAnalyticsRecorder] sendEventWithCategory:kVAnalyticsEventCategoryUserAccount action:@"Twitter Account Access Denied" label:nil value:nil];
+                [self enableButtons];
                 [self twitterAccessDidFail:error];
             });
         }
@@ -284,10 +235,13 @@
                 dispatch_async(dispatch_get_main_queue(), ^(void)
                 {
                     [[VAnalyticsRecorder sharedAnalyticsRecorder] sendEventWithCategory:kVAnalyticsEventCategoryUserAccount action:@"User Has No Twitter Accounts" label:nil value:nil];
-                    SLComposeViewController *composeViewController = [SLComposeViewController composeViewControllerForServiceType:SLServiceTypeTwitter];
-                    [self presentViewController:composeViewController animated:NO completion:^{
-                        [composeViewController dismissViewControllerAnimated:NO completion:nil];
-                    }];
+                    [self enableButtons];
+                    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"NoTwitterTitle", @"")
+                                                                    message:NSLocalizedString(@"NoTwitterMessage", @"")
+                                                                   delegate:nil
+                                                          cancelButtonTitle:NSLocalizedString(@"OKButton", @"")
+                                                          otherButtonTitles:nil];
+                    [alert show];
                 });
             }
             else
@@ -308,6 +262,7 @@
                                                                     onError:^(NSError *error)
                 {
                     [[VAnalyticsRecorder sharedAnalyticsRecorder] sendEventWithCategory:kVAnalyticsEventCategoryUserAccount action:@"Failed Login Via Twitter" label:nil value:nil];
+                    [self enableButtons];
                     [self didFailWithError:error];
                 }];
             }
@@ -315,15 +270,29 @@
     }];
 }
 
+- (void)disableButtons
+{
+    self.facebookButton.enabled = NO;
+    self.twitterButton.enabled = NO;
+    self.loginEmailButton.userInteractionEnabled = NO;
+    self.transitionPlaceholder.userInteractionEnabled = NO;
+}
+
+- (void)enableButtons
+{
+    self.facebookButton.enabled = YES;
+    self.twitterButton.enabled = YES;
+    self.loginEmailButton.userInteractionEnabled = YES;
+    self.transitionPlaceholder.userInteractionEnabled = YES;
+}
+
 - (IBAction)emailClicked:(id)sender
 {
-    self.animateToLogin = YES;
     [self performSegueWithIdentifier:@"toEmailLogin" sender:self];
 }
 
 - (IBAction)signup:(id)sender
 {
-    self.animateToSignup = YES;
     [self performSegueWithIdentifier:@"toSignup" sender:self];
 }
 
@@ -356,20 +325,16 @@
                                                fromViewController:(UIViewController *)fromVC
                                                  toViewController:(UIViewController *)toVC
 {
-    if (self.animateToLogin)
+    if ([toVC isKindOfClass:[VLoginWithEmailViewController class]])
     {
-        self.animateToLogin = NO;
-        
         VLoginTransitionAnimator*   animator = [[VLoginTransitionAnimator alloc] init];
         animator.presenting = (operation == UINavigationControllerOperationPush);
         return animator;
     }
     
-    if (self.animateToSignup)
+    if ([toVC isKindOfClass:[VSignupWithEmailViewController class]])
     {
-        self.animateToSignup = NO;
-        
-        VSignupTransitionAnimation* animator = [[VSignupTransitionAnimation alloc] init];
+        VSignupTransitionAnimator* animator = [[VSignupTransitionAnimator alloc] init];
         animator.presenting = (operation == UINavigationControllerOperationPush);
         return animator;
     }

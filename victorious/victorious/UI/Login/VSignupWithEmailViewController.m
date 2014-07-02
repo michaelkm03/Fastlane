@@ -15,11 +15,9 @@
 #import "VUserManager.h"
 #import "VConstants.h"
 #import "UIImage+ImageEffects.h"
-#import "VSignupTransitionAnimation.h"
+#import "VSignupTransitionAnimator.h"
 
-NSString*   const   kSignupErrorDomain =   @"VSignupErrorDomain";
-
-@interface VSignupWithEmailViewController ()    <UITextFieldDelegate, TTTAttributedLabelDelegate>
+@interface VSignupWithEmailViewController ()    <UITextFieldDelegate, UINavigationControllerDelegate, TTTAttributedLabelDelegate>
 @property (weak, nonatomic) IBOutlet UITextField *emailTextField;
 @property (weak, nonatomic) IBOutlet UITextField *passwordTextField;
 @property (weak, nonatomic) IBOutlet UITextField *confirmPasswordTextField;
@@ -34,10 +32,7 @@ NSString*   const   kSignupErrorDomain =   @"VSignupErrorDomain";
 {
     [super viewDidLoad];
 
-    if (IS_IPHONE_5)
-        self.view.layer.contents = (id)[[[VThemeManager sharedThemeManager] themedImageForKey:kVMenuBackgroundImage5] applyBlurWithRadius:25 tintColor:[UIColor colorWithWhite:1.0 alpha:0.7] saturationDeltaFactor:1.8 maskImage:nil].CGImage;
-    else
-        self.view.layer.contents = (id)[[[VThemeManager sharedThemeManager] themedImageForKey:kVMenuBackgroundImage] applyBlurWithRadius:25 tintColor:[UIColor colorWithWhite:1.0 alpha:0.7] saturationDeltaFactor:1.8 maskImage:nil].CGImage;
+    self.view.layer.contents = (id)[[[VThemeManager sharedThemeManager] themedBackgroundImageForDevice] applyBlurWithRadius:25 tintColor:[UIColor colorWithWhite:1.0 alpha:0.7] saturationDeltaFactor:1.8 maskImage:nil].CGImage;
 
     self.emailTextField.delegate = self;
     self.passwordTextField.delegate = self;
@@ -74,11 +69,23 @@ NSString*   const   kSignupErrorDomain =   @"VSignupErrorDomain";
     [self.navigationController setNavigationBarHidden:YES animated:NO];
 }
 
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+    
+    // Stop being the navigation controller's delegate
+    if (self.navigationController.delegate == self)
+    {
+        self.navigationController.delegate = nil;
+    }
+}
+
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
     
     [self.emailTextField becomeFirstResponder];
+    self.navigationController.delegate = self;
 }
 
 - (BOOL)prefersStatusBarHidden
@@ -149,7 +156,7 @@ NSString*   const   kSignupErrorDomain =   @"VSignupErrorDomain";
         {
             NSString *errorString = NSLocalizedString(@"EmailValidation", @"Invalid Email Address");
             NSDictionary*   userInfoDict = @{ NSLocalizedDescriptionKey : errorString };
-            *outError   =   [[NSError alloc] initWithDomain:kSignupErrorDomain
+            *outError   =   [[NSError alloc] initWithDomain:kVictoriousErrorDomain
                                                        code:VSignUpBadEmailAddressErrorCode
                                                    userInfo:userInfoDict];
         }
@@ -168,7 +175,7 @@ NSString*   const   kSignupErrorDomain =   @"VSignupErrorDomain";
         {
             NSString *errorString = NSLocalizedString(@"PasswordValidation", @"Invalid Password");
             NSDictionary*   userInfoDict = @{ NSLocalizedDescriptionKey : errorString };
-            *outError   =   [[NSError alloc] initWithDomain:kSignupErrorDomain
+            *outError   =   [[NSError alloc] initWithDomain:kVictoriousErrorDomain
                                                        code:VSignupBadPasswordErrorCode
                                                    userInfo:userInfoDict];
         }
@@ -273,7 +280,7 @@ NSString*   const   kSignupErrorDomain =   @"VSignupErrorDomain";
                                                 fromViewController:(UIViewController *)fromVC
                                                   toViewController:(UIViewController *)toVC
 {
-    VSignupTransitionAnimation*   animator = [[VSignupTransitionAnimation alloc] init];
+    VSignupTransitionAnimator*   animator = [[VSignupTransitionAnimator alloc] init];
     animator.presenting = (operation == UINavigationControllerOperationPush);
     return animator;
 }

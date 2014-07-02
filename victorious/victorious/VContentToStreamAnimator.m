@@ -9,6 +9,7 @@
 #import "VContentToStreamAnimator.h"
 
 #import "VStreamContainerViewController.h"
+#import "VStreamTableDataSource.h"
 #import "VStreamTableViewController.h"
 #import "VContentViewController.h"
 #import "VContentViewController+Videos.h"
@@ -42,7 +43,7 @@
     
     if ([contentVC isVideoLoadingOrLoaded])
     {
-        [contentVC unloadVideoWithDuration:0.2f completion:nil];
+        [contentVC unloadVideoAnimated:YES withDuration:0.2f completion:nil];
     }
     
     [UIView animateWithDuration:0.2f
@@ -82,7 +83,7 @@
      }
                      completion:^(BOOL finished)
      {
-         NSIndexPath* path = [streamVC.fetchedResultsController indexPathForObject:contentVC.sequence];
+         NSIndexPath* path = [streamVC.tableDataSource indexPathForSequence:contentVC.sequence];
          //Reselect the cell; it will be unselected if the fetched results controller was updated
          [streamVC.tableView selectRowAtIndexPath:path animated:NO scrollPosition:UITableViewScrollPositionNone];
          
@@ -106,7 +107,7 @@
                    {
                        toVC.view.userInteractionEnabled = YES;
                        contentVC.view.userInteractionEnabled = YES;
-                       
+                       [[[(VStreamContainerViewController*)toVC tableViewController] tableView] setBackgroundView:nil];
                        [context completeTransition:![context transitionWasCancelled]];
                    }];
               }

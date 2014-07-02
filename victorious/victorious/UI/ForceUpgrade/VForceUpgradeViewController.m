@@ -8,7 +8,7 @@
 
 #import "VForceUpgradeAnimatedTransition.h"
 #import "VForceUpgradeViewController.h"
-#import "VThemeManager.h"
+#import "VSettingManager.h"
 
 @interface VForceUpgradeViewController () <UIViewControllerTransitioningDelegate>
 
@@ -43,13 +43,12 @@
 
 - (IBAction)upgradeNowTapped:(id)sender
 {
-    NSString *appStoreString = [[VThemeManager sharedThemeManager] themedStringForKey:kVAppStoreURL];
-    if (!appStoreString || [appStoreString isEqualToString:@""])
+    NSURL *appstoreURL = [[VSettingManager sharedManager] urlForKey:kVAppStoreURL];
+    if (!appstoreURL || [appstoreURL.absoluteString isEqualToString:@""])
     {
-        appStoreString = @"itms-apps://itunes.com/apps";
+        appstoreURL = [NSURL URLWithString:@"itms-apps://itunes.com/apps"];
     }
-
-    NSURL *appstoreURL = [NSURL URLWithString:appStoreString];
+    
     [[UIApplication sharedApplication] openURL:appstoreURL];
 }
 

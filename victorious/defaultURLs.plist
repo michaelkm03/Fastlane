@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>channel.url.privacy</key>
+	<string>http://dev.getvictorious.com/api/static/privacy</string>
+	<key>channel.url.acknowledgements</key>
+	<string>http://dev.getvictorious.com/api/static/acknowledgments</string>
+	<key>channel.url.about</key>
+	<string>http://dev.getvictorious.com/api/static/tos</string>
+	<key>channel.url.support</key>
+	<string>support@getvictorious.com</string>
+	<key>appstore.url</key>
+	<string>itms-apps://itunes.com/apps</string>
+	<key>image.emptyprofile</key>
+	<string>http://dev.getvictorious.com/api/static/privacy</string>
+	<key>image.launchImage</key>
+	<string>http://dev.getvictorious.com/api/static/privacy</string>
+</dict>
+</plist>

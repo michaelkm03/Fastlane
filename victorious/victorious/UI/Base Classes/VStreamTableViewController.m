@@ -6,6 +6,7 @@
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
+#import "VStreamTableDataSource.h"
 #import "VStreamTableViewController.h"
 #import "UIViewController+VSideMenuViewController.h"
 #import "VConstants.h"
@@ -36,10 +37,13 @@
 
 #import "VThemeManager.h"
 
-@interface VStreamTableViewController() <UIViewControllerTransitioningDelegate, UINavigationControllerDelegate>
-@property (strong, nonatomic) id<UIViewControllerTransitioningDelegate> transitionDelegate;
+@interface VStreamTableViewController() <UIViewControllerTransitioningDelegate, UINavigationControllerDelegate, VStreamTableDataDelegate>
 
+@property (strong, nonatomic, readwrite) VStreamTableDataSource* tableDataSource;
+@property (strong, nonatomic) id<UIViewControllerTransitioningDelegate> transitionDelegate;
+@property (strong, nonatomic) UIActivityIndicatorView* bottomRefreshIndicator;
 @property (strong, nonatomic) NSCache* preloadImageCache;
+
 @end
 
 @implementation VStreamTableViewController
@@ -53,16 +57,19 @@
 {
     [super viewDidLoad];
     
+    self.tableDataSource = [[VStreamTableDataSource alloc] initWithFilter:[self currentFilter]];
+    self.tableDataSource.delegate = self;
+    self.tableDataSource.filter = self.currentFilter;
+    self.tableDataSource.tableView = self.tableView;
+    self.tableView.dataSource = self.tableDataSource;
     self.tableView.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVSecondaryAccentColor];
+    [self registerCells];
     
     [[NSNotificationCenter defaultCenter]
      addObserver:self selector:@selector(willCommentSequence:)
      name:kStreamsWillCommentNotification object:nil];
     
-    self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
-    
     self.clearsSelectionOnViewWillAppear = NO;
-    self.bottomRefreshIndicator.color = [[VThemeManager sharedThemeManager] themedColorForKey:kVMainTextColor];
 }
 
 - (NSCache*)preloadImageCache
@@ -78,32 +85,16 @@
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
-    
-    if ([self.fetchedResultsController.fetchedObjects count] < 5)
+    if (!self.tableDataSource.count && !self.tableDataSource.filter.updating.boolValue)
+    {
         [self refresh:nil];
-    else
-        // TODO: do we need this?
-        [self.tableView reloadData]; //force a reload incase anything has changed
-    
-    CGRect navBarFrame = self.navigationController.navigationBar.frame;
-    navBarFrame.origin.y = 0;
-    self.navigationController.navigationBar.frame = navBarFrame;
-    [[VThemeManager sharedThemeManager] applyNormalNavBarStyling];
+    }
 }
 
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
-    
     [self.preloadImageCache removeAllObjects];
-    
-    CGRect navBarFrame = self.navigationController.navigationBar.frame;
-    navBarFrame.origin.y = 0;
-    
-    [UIView animateWithDuration:.5f animations:^
-     {
-         self.navigationController.navigationBar.frame = navBarFrame;
-     }];
 }
 
 - (BOOL)shouldAutorotate
@@ -125,12 +116,47 @@
 - (void)setFilterType:(VStreamFilter)filterType
 {
     if (_filterType == filterType)
+    {
         return;
+    }
     
-    dispatch_barrier_async(dispatch_get_main_queue(), ^{
-        _filterType = filterType;
-        [self refreshFetchController];
-    });
+    _filterType = filterType;
+    
+    switch (self.filterType)
+    {
+        case VStreamHotFilter:
+            self.currentFilter = [self hotFilter];
+            break;
+            
+        case VStreamRecentFilter:
+            self.currentFilter = [self defaultFilter];
+            break;
+            
+        case VStreamFollowingFilter:
+            self.currentFilter = [self followingFilter];
+            break;
+            
+        default:
+            VLog(@"Unknown filter type, using default filter");
+            self.currentFilter = [self defaultFilter];
+            break;
+    }
+    
+    self.tableView.contentOffset = CGPointMake(-self.tableView.contentInset.left, -self.tableView.contentInset.top);
+    
+    if ([self isViewLoaded] && self.view.window && !self.tableDataSource.count)
+    {
+        [self refresh:nil];
+    }
+}
+
+- (void)setCurrentFilter:(VSequenceFilter *)currentFilter
+{
+    _currentFilter = currentFilter;
+    if ([self isViewLoaded])
+    {
+        self.tableDataSource.filter = currentFilter;
+    }
 }
 
 - (void)didReceiveMemoryWarning
@@ -140,48 +166,26 @@
     self.preloadImageCache = nil;
 }
 
-- (NSFetchedResultsController *)makeFetchedResultsController
-{
-    RKObjectManager* manager = [RKObjectManager sharedManager];
-    NSManagedObjectContext *context = manager.managedObjectStore.persistentStoreManagedObjectContext;
-    
-    NSFetchRequest *fetchRequest = [NSFetchRequest fetchRequestWithEntityName:[VSequence entityName]];
-    
-    NSSortDescriptor* sort;
-    if (self.filterType == VStreamHotFilter)
-    {
-        sort = [[NSSortDescriptor alloc] initWithKey:kDisplayOrderKey ascending:YES];
-    }
-    else
-    {
-        sort = [[NSSortDescriptor alloc] initWithKey:kReleasedAtKey ascending:NO];
-    }
-    
-    NSPredicate* filterPredicate = [NSPredicate predicateWithFormat:@"ANY filters.filterAPIPath =[cd] %@", [self currentFilter].filterAPIPath];
-    NSPredicate* datePredicate = [NSPredicate predicateWithFormat:@"(expiresAt >= %@) OR (expiresAt = nil)", [NSDate dateWithTimeIntervalSinceNow:0]];
-    [fetchRequest setPredicate:[NSCompoundPredicate andPredicateWithSubpredicates:@[filterPredicate, datePredicate]]];
-    [fetchRequest setSortDescriptors:@[sort]];
-    [fetchRequest setFetchBatchSize:[self currentFilter].perPageNumber.integerValue];
-    
-    return [[NSFetchedResultsController alloc] initWithFetchRequest:fetchRequest
-                                               managedObjectContext:context
-                                                 sectionNameKeyPath:nil
-                                                          cacheName:fetchRequest.entityName];
-}
-
 #pragma mark - UITableViewDelegate
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    VSequence* sequence = [self.fetchedResultsController objectAtIndexPath:indexPath];
+    VSequence* sequence = [self.tableDataSource sequenceAtIndexPath:indexPath];
     if ([sequence isTemporarySequence] || [sequence.expiresAt timeIntervalSinceNow] < 0)
     {
         [self.tableView deselectRowAtIndexPath:indexPath animated:NO];
         return;
     }
     
-    self.selectedSequence = [self.fetchedResultsController objectAtIndexPath:indexPath];
+    self.selectedSequence = [self.tableDataSource sequenceAtIndexPath:indexPath];
     VStreamViewCell* cell = (VStreamViewCell*)[tableView cellForRowAtIndexPath:indexPath];
+    
+    if ([cell isKindOfClass:[VStreamPollCell class]])
+    {
+        VStreamPollCell *pollCell = (VStreamPollCell *)cell;
+        [[VContentViewController sharedInstance] setLeftPollThumbnail:pollCell.previewImageView.image];
+        [[VContentViewController sharedInstance] setRightPollThumbnail:pollCell.previewImageTwo.image];
+    }
     
     //Every time we go to the content view, update the sequence
     [[VObjectManager sharedManager] fetchSequence:cell.sequence.remoteId
@@ -205,9 +209,7 @@
 
 - (void)scrollViewDidEndScrollingAnimation:(UIScrollView *)scrollView
 {
-    NSIndexPath* path = [self.fetchedResultsController indexPathForObject:self.selectedSequence];
-    VStreamViewCell* cell = (VStreamViewCell*)[self.tableView cellForRowAtIndexPath:path];
-    if (cell)
+    if (self.selectedSequence)
     {
         self.tableView.userInteractionEnabled = YES;
         [self.navigationController pushViewController:[VContentViewController sharedInstance] animated:YES];
@@ -217,7 +219,7 @@
 #pragma mark - Cells
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    VSequence* sequence = (VSequence*)[self.fetchedResultsController objectAtIndexPath:indexPath];
+    VSequence* sequence = [self.tableDataSource sequenceAtIndexPath:indexPath];
 
     NSUInteger cellHeight;
     
@@ -230,34 +232,33 @@
     return cellHeight;
 }
 
-- (VStreamViewCell*)tableView:(UITableView *)tableView streamViewCellForIndex:(NSIndexPath*)indexPath
+- (UITableViewCell *)dataSource:(VStreamTableDataSource *)dataSource cellForSequence:(VSequence *)sequence atIndexPath:(NSIndexPath *)indexPath
 {
-    VSequence* sequence = (VSequence*)[self.fetchedResultsController objectAtIndexPath:indexPath];
-
-    if ([sequence isPoll])
-        return [tableView dequeueReusableCellWithIdentifier:kStreamDoublePollCellIdentifier
-                                               forIndexPath:indexPath];
-
-    else if ([sequence isVideo])
-        return [tableView dequeueReusableCellWithIdentifier:kStreamVideoCellIdentifier
-                                               forIndexPath:indexPath];
-
-    else
-        return [tableView dequeueReusableCellWithIdentifier:kStreamViewCellIdentifier
-                                               forIndexPath:indexPath];
-}
-
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    VStreamViewCell *cell = [self tableView:tableView streamViewCellForIndex:indexPath];
-    VSequence *info = [self.fetchedResultsController objectAtIndexPath:indexPath];
-    ((VStreamViewCell*)cell).parentTableViewController = self;
-    [((VStreamViewCell*)cell) setSequence:info];
+    VStreamViewCell *cell;
     
-    if ([self.fetchedResultsController.fetchedObjects count] > indexPath.row + 2)
+    if ([sequence isPoll])
+    {
+        cell = [dataSource.tableView dequeueReusableCellWithIdentifier:kStreamDoublePollCellIdentifier
+                                                          forIndexPath:indexPath];
+    }
+    else if ([sequence isVideo])
+    {
+        cell = [dataSource.tableView dequeueReusableCellWithIdentifier:kStreamVideoCellIdentifier
+                                                          forIndexPath:indexPath];
+    }
+    else
+    {
+        cell = [dataSource.tableView dequeueReusableCellWithIdentifier:kStreamViewCellIdentifier
+                                                          forIndexPath:indexPath];
+    }
+    
+    cell.parentTableViewController = self;
+    [cell setSequence:sequence];
+    
+    if ([dataSource count] > indexPath.row + 2)
     {
         NSIndexPath* preloadPath = [NSIndexPath indexPathForRow:indexPath.row + 2 inSection:indexPath.section];
-        VSequence* preloadSequence = [self.fetchedResultsController objectAtIndexPath:preloadPath];
+        VSequence* preloadSequence = [dataSource sequenceAtIndexPath:preloadPath];
         
         for (NSURL* imageUrl in [preloadSequence initialImageURLs])
         {
@@ -286,57 +287,61 @@
 #pragma mark - Refresh
 - (IBAction)refresh:(UIRefreshControl *)sender
 {
+    [self refreshWithCompletion:nil];
+}
 
-    RKManagedObjectRequestOperation* operation = [[VObjectManager sharedManager] refreshSequenceFilter:[self currentFilter]
-                                             successBlock:^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
-     {
-         [sender endRefreshing];
-     }
-                                                failBlock:^(NSOperation* operation, NSError* error)
-     {
-         [sender endRefreshing];
-     }];
-    
-    if (operation)
+- (void)refreshWithCompletion:(void(^)(void))completionBlock
+{
+    [self.tableDataSource refreshWithSuccess:^(void)
     {
-        [sender endRefreshing];
+        [self.refreshControl endRefreshing];
+        if (completionBlock)
+        {
+            completionBlock();
+        }
     }
+                                     failure:^(NSError *error)
+    {
+        [self.refreshControl endRefreshing];
+    }];
+    
+    [self.refreshControl beginRefreshing];
+    self.refreshControl.hidden = NO;
 }
 
 - (void)loadNextPageAction
 {
-    RKManagedObjectRequestOperation* operation = [[VObjectManager sharedManager] loadNextPageOfSequenceFilter:[self currentFilter]
-                                             successBlock:^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
-     {
-         [self.bottomRefreshIndicator stopAnimating];
-     }
-                                                failBlock:^(NSOperation* operation, NSError* error)
-     {
-         [self.bottomRefreshIndicator stopAnimating];
-     }];
-    
-    if (operation)
+    [self.tableDataSource loadNextPageWithSuccess:^(void)
     {
-        [self.bottomRefreshIndicator startAnimating];
+        [self hideBottomRefreshIndicator];
     }
+                                          failure:^(NSError *error)
+    {
+        [self hideBottomRefreshIndicator];
+    }];
+    [self showBottomRefreshIndicator];
+}
+
+- (void)showBottomRefreshIndicator
+{
+    if (!self.bottomRefreshIndicator)
+    {
+        self.bottomRefreshIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+        self.bottomRefreshIndicator.hidesWhenStopped = YES;
+        self.bottomRefreshIndicator.color = [[VThemeManager sharedThemeManager] themedColorForKey:kVMainTextColor];
+    }
+    self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, CGRectGetWidth(self.tableView.frame), CGRectGetHeight(self.bottomRefreshIndicator.frame) + 10.0f)];
+    [self.tableView.tableFooterView addSubview:self.bottomRefreshIndicator];
+    self.bottomRefreshIndicator.center = CGPointMake(CGRectGetMidX(self.tableView.tableFooterView.bounds), CGRectGetMidY(self.tableView.tableFooterView.bounds));
+    [self.bottomRefreshIndicator startAnimating];
+}
+
+- (void)hideBottomRefreshIndicator
+{
+    self.tableView.tableFooterView = nil;
 }
 
 #pragma mark - Predicates
-- (VSequenceFilter*)currentFilter
-{
-    switch (self.filterType) {
-        case VStreamHotFilter:
-            return [self hotFilter];
-        case VStreamRecentFilter:
-            return [self defaultFilter];
-        case VStreamFollowingFilter:
-            return [self followingFilter];
-            
-        default:
-            VLog(@"Unknown filter type, using default filter");
-            return [self defaultFilter];
-    }
-}
 
 - (VSequenceFilter*)defaultFilter
 {
@@ -366,7 +371,7 @@
 {
     UIImageView* newBackgroundView = [[UIImageView alloc] initWithFrame:self.tableView.backgroundView.frame];
     
-    UIImage* placeholderImage = [UIImage resizeableImageWithColor:[[VThemeManager sharedThemeManager] themedColorForKey:kVBackgroundColor]];
+    UIImage* placeholderImage = [UIImage resizeableImageWithColor:[[UIColor whiteColor] colorWithAlphaComponent:0.7f]];
     [newBackgroundView setBlurredImageWithURL:url
                              placeholderImage:placeholderImage
                                     tintColor:[[UIColor whiteColor] colorWithAlphaComponent:0.7f]];
@@ -412,7 +417,7 @@
 #pragma mark - VAnimation
 - (void)animateInWithDuration:(CGFloat)duration completion:(void (^)(BOOL finished))completion
 {
-    NSIndexPath* path = [self.fetchedResultsController indexPathForObject:self.selectedSequence];
+    NSIndexPath* path = [self.tableDataSource indexPathForSequence:self.selectedSequence];
     VStreamViewCell* selectedCell = (VStreamViewCell*) [self.tableView cellForRowAtIndexPath:path];
     
     //If the tableview updates while we are in the content view it will reset the cells to their proper positions.
@@ -502,7 +507,7 @@
          
          NSMutableArray* repositionedCells = [[NSMutableArray alloc] init];
          
-         NSIndexPath* path = [self.fetchedResultsController indexPathForObject:self.selectedSequence];
+         NSIndexPath* path = [self.tableDataSource indexPathForSequence:self.selectedSequence];
          VStreamViewCell* selectedCell = (VStreamViewCell*) [self.tableView cellForRowAtIndexPath:path];
          CGFloat centerPoint = selectedCell ? selectedCell.center.y : self.tableView.center.y + self.tableView.contentOffset.y;
 
@@ -535,5 +540,22 @@
      }];
 }
 
+#pragma mark - UIScrollViewDelegate
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView
+{
+    if (self.tableDataSource.filter.currentPageNumber.intValue < self.tableDataSource.filter.maxPageNumber.intValue &&
+        self.tableDataSource.count &&
+        ![[[self currentFilter] updating] boolValue] &&
+        scrollView.contentOffset.y + CGRectGetHeight(scrollView.bounds) > scrollView.contentSize.height * .75)
+    {
+        [self loadNextPageAction];
+    }
+    
+    // Notify the container about the scroll so it can handle the header
+    if ([self.delegate respondsToSelector:@selector(scrollViewDidScroll:)])
+    {
+        [self.delegate scrollViewDidScroll:scrollView];
+    }
+}
 
 @end

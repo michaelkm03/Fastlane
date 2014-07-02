@@ -9,6 +9,7 @@
 #import "VObjectManager+DirectMessaging.h"
 #import "VObjectManager+Users.h"
 #import "VObjectManager+Private.h"
+#import "VObjectManager+Pagination.h"
 
 #import "VMessage.h"
 #import "VUser.h"
@@ -75,6 +76,31 @@
           parameters:nil
         successBlock:success
            failBlock:fullFail];
+}
+
+- (RKManagedObjectRequestOperation *)conversationByID:(NSNumber*)conversationID
+                                         successBlock:(VSuccessBlock)success
+                                            failBlock:(VFailBlock)fail
+{
+    VSuccessBlock fullSuccess = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
+    {
+        for (VUser* user in resultObjects)
+        {
+            if ([user.remoteId isEqualToNumber:self.mainUser.remoteId])
+                continue;
+            
+            [self conversationWithUser:user
+                          successBlock:success
+                             failBlock:fail];
+        }
+    };
+    
+    return [self GET:[@"/api/message/participants/" stringByAppendingString:conversationID.stringValue]
+              object:nil
+          parameters:nil
+        successBlock:fullSuccess
+           failBlock:fail];
+    
 }
 
 - (RKManagedObjectRequestOperation *)markConversationAsRead:(VConversation*)conversation

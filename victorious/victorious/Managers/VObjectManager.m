@@ -48,12 +48,12 @@
     
     //Add the App ID to the User-Agent field
     //(this is the only non-dynamic header, so set it now)
-    NSString *userAgent = ([manager HTTPClient].defaultHeaders)[@"User-Agent"];
+    NSString *userAgent = ([manager HTTPClient].defaultHeaders)[kVUserAgentHeader];
     
     NSString *buildNumber = [[NSBundle bundleForClass:[self class]] objectForInfoDictionaryKey:@"CFBundleVersion"];
     NSNumber* appID = [VObjectManager currentEnvironment].appID;
     userAgent = [NSString stringWithFormat:@"%@ aid:%@ uuid:%@ build:%@", userAgent, appID.stringValue, [[UIDevice currentDevice].identifierForVendor UUIDString], buildNumber];
-    [[manager HTTPClient] setDefaultHeader:@"User-Agent" value:userAgent];
+    [[manager HTTPClient] setDefaultHeader:kVUserAgentHeader value:userAgent];
     
     NSURL *modelURL = [[NSBundle mainBundle] URLForResource:@"victoriOS" withExtension:@"momd"];
     NSManagedObjectModel *managedObjectModel = [[NSManagedObjectModel alloc] initWithContentsOfURL:modelURL];
@@ -157,21 +157,25 @@
             self.mainUser = nil;
             [self requestMethod:method object:object path:path parameters:parameters successBlock:successBlock failBlock:failBlock];
         }
-        else if (error.errorCode && failBlock)
-        {
-            failBlock(operation, [NSError errorWithDomain:kVictoriousDomain code:error.errorCode
-                                                 userInfo:@{NSLocalizedDescriptionKey:[error.errorMessages componentsJoinedByString:@","]}]);
-        }
         else if (!error.errorCode && successBlock)
         {
             //Grab the response data, and make sure to process it... we must guarentee that the payload is a dictionary
             NSMutableDictionary *JSON = [[NSJSONSerialization JSONObjectWithData:operation.HTTPRequestOperation.responseData options:0 error:nil] mutableCopy];
-            id payload = JSON[@"payload"];
+            id payload = JSON[kVPayloadKey];
             if (payload && ![payload isKindOfClass:[NSDictionary class]])
             {
-                JSON[@"payload"] = @{@"objects":payload};
+                JSON[kVPayloadKey] = @{@"objects":payload};
             }
             successBlock(operation, JSON, mappedObjects);
+        }
+        else if (error.errorCode)
+        {
+            NSError* nsError = [NSError errorWithDomain:kVictoriousErrorDomain code:error.errorCode
+                                             userInfo:@{NSLocalizedDescriptionKey:[error.errorMessages componentsJoinedByString:@","]}];
+            [self defaultErrorHandlingForCode:nsError.code];
+            
+            if (failBlock)
+                failBlock(operation, nsError);
         }
     };
     
@@ -183,19 +187,36 @@
             self.mainUser = nil;
             [self requestMethod:method object:object path:path parameters:parameters successBlock:successBlock failBlock:failBlock];
         }
-        else if (rkErrorMessage.errorMessage.integerValue == kVUpgradeRequiredError)
+        else
         {
-            [[VRootViewController rootViewController] presentForceUpgradeScreen];
-        }
-        else if (failBlock)
-        {
-            failBlock(operation, error);
+            [self defaultErrorHandlingForCode:rkErrorMessage.errorMessage.integerValue];
+            
+            if (failBlock)
+                failBlock(operation, error);
         }
     };
     
     [requestOperation setCompletionBlockWithSuccess:rkSuccessBlock failure:rkFailBlock];
     [requestOperation start];
     return requestOperation;
+}
+
+- (void)defaultErrorHandlingForCode:(NSInteger)errorCode
+{
+    if (errorCode == kVUpgradeRequiredError)
+    {
+        [[VRootViewController rootViewController] presentForceUpgradeScreen];
+    }
+    else if(errorCode == kVUserBannedError)
+    {
+        self.mainUser = nil;
+        UIAlertView*    alert   =   [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"UserBannedTitle", @"")
+                                                               message:NSLocalizedString(@"UserBannedMessage", @"")
+                                                              delegate:nil
+                                                     cancelButtonTitle:NSLocalizedString(@"OKButton", @"")
+                                                     otherButtonTitles:nil];
+        [alert show];
+    }
 }
 
 - (RKManagedObjectRequestOperation *)GET:(NSString *)path
@@ -285,18 +306,20 @@
         NSError             *error                 = [self errorForResponse:responseObject];
         NSMutableDictionary *mutableResponseObject = [responseObject mutableCopy];
         
-        id payload = mutableResponseObject[@"payload"];
+        id payload = mutableResponseObject[kVPayloadKey];
         if (payload && ![payload isKindOfClass:[NSDictionary class]])
         {
-            mutableResponseObject[@"payload"] = @{@"objects":payload};
-//            [mutableResponseObject removeObjectForKey:@"payload"];
+            mutableResponseObject[kVPayloadKey] = @{@"objects":payload};
         }
-        
-        if (error && failBlock)
-            failBlock(operation, error);
-        
+
         if (!error && successBlock)
             successBlock(operation, mutableResponseObject, nil);
+        else
+        {
+            [self defaultErrorHandlingForCode:error.code];
+            if (failBlock)
+                failBlock(operation, error);
+        }
     };
     
     AFHTTPRequestOperation *operation = [self.HTTPClient HTTPRequestOperationWithRequest:request
@@ -317,7 +340,7 @@
         errorMessage = [(NSArray*)errorMessage componentsJoinedByString:@", "];
     }
     
-    return [NSError errorWithDomain:kVictoriousDomain code:[responseObject[@"error"] integerValue]
+    return [NSError errorWithDomain:kVictoriousErrorDomain code:[responseObject[@"error"] integerValue]
                            userInfo:@{NSLocalizedDescriptionKey: errorMessage}];
 }
 
@@ -366,7 +389,7 @@
     AFHTTPClient* client = [self HTTPClient];
     
     NSString *currentDate = [self rFC2822DateTimeString];
-    NSString* userAgent = (client.defaultHeaders)[@"User-Agent"];
+    NSString* userAgent = (client.defaultHeaders)[kVUserAgentHeader];
     
     NSString* token = self.mainUser.token ? self.mainUser.token : @"";
     

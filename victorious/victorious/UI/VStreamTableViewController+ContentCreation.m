@@ -108,27 +108,25 @@
     VFailBlock fail = ^(NSOperation* operation, NSError* error)
     {
         NSLog(@"%@", error);
+        NSString *title, *message;
         
         if (kVStillTranscodingError == error.code)
         {
-            UIAlertView*    alert   = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"TranscodingMediaTitle", @"")
-                                                                 message:NSLocalizedString(@"TranscodingMediaBody", @"")
-                                                                delegate:nil
-                                                       cancelButtonTitle:nil
-                                                       otherButtonTitles:NSLocalizedString(@"OKButton", @""), nil];
-            [alert show];
+            title = NSLocalizedString(@"TranscodingMediaTitle", @"");
+            message = NSLocalizedString(@"TranscodingMediaBody", @"");
         }
         else
         {
-            UIAlertView* alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"PollUploadTitle", @"")
-                                                            message:error.localizedDescription
-                                                           delegate:nil
-                                                  cancelButtonTitle:nil
-                                                  otherButtonTitles:NSLocalizedString(@"OKButton", @""), nil];
-            [alert show];
+            title = NSLocalizedString(@"PollUploadTitle", @"");
+            message = error.localizedDescription;
         }
+        UIAlertView* alert = [[UIAlertView alloc] initWithTitle:title
+                                                        message:message
+                                                       delegate:nil
+                                              cancelButtonTitle:nil
+                                              otherButtonTitles:NSLocalizedString(@"OKButton", @""), nil];
+        [alert show];
     };
-    
     [[VObjectManager sharedManager] createPollWithName:question
                                            description:@"<none>"
                                               question:question

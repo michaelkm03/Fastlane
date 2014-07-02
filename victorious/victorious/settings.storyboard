@@ -151,32 +151,12 @@
                                             <segue destination="lSu-os-HMa" kind="push" identifier="toPrivacyPolicies" id="dbw-tl-K2f"/>
                                         </connections>
                                     </tableViewCell>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="blue" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" textLabel="OBJ-T4-Rzk" style="IBUITableViewCellStyleDefault" id="QOv-hj-MEN">
-                                        <rect key="frame" x="0.0" y="411" width="320" height="44"/>
-                                        <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="QOv-hj-MEN" id="8vQ-5Y-zOs">
-                                            <rect key="frame" x="0.0" y="0.0" width="287" height="43"/>
-                                            <autoresizingMask key="autoresizingMask"/>
-                                            <subviews>
-                                                <label opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="left" text="Acknowledgements" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="OBJ-T4-Rzk">
-                                                    <rect key="frame" x="15" y="0.0" width="270" height="43"/>
-                                                    <autoresizingMask key="autoresizingMask"/>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="18"/>
-                                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
-                                            </subviews>
-                                        </tableViewCellContentView>
-                                        <connections>
-                                            <segue destination="dl4-7M-Mqq" kind="push" identifier="toAcknowledgements" id="AzF-lt-2ej"/>
-                                        </connections>
-                                    </tableViewCell>
                                 </cells>
                             </tableViewSection>
                             <tableViewSection headerTitle="" id="xUJ-hV-E4y">
                                 <cells>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" id="MMB-GP-mk8">
-                                        <rect key="frame" x="0.0" y="475" width="320" height="44"/>
+                                        <rect key="frame" x="0.0" y="431" width="320" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="MMB-GP-mk8" id="1b6-aa-YNy">
                                             <rect key="frame" x="0.0" y="0.0" width="320" height="43"/>
@@ -200,7 +180,7 @@
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                     </tableViewCell>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" id="M6S-Qq-jZK">
-                                        <rect key="frame" x="0.0" y="519" width="320" height="44"/>
+                                        <rect key="frame" x="0.0" y="475" width="320" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="M6S-Qq-jZK" id="Gcj-EI-Wy4">
                                             <rect key="frame" x="0.0" y="0.0" width="320" height="43"/>
@@ -246,7 +226,6 @@
                         <outletCollection property="labels" destination="jjo-ti-snK" id="cwJ-QK-caw"/>
                         <outletCollection property="labels" destination="mrn-LJ-NES" id="x2D-yn-sx3"/>
                         <outletCollection property="labels" destination="vRt-M4-9nW" id="uzK-GU-C7F"/>
-                        <outletCollection property="labels" destination="OBJ-T4-Rzk" id="dnD-lh-UDs"/>
                         <outletCollection property="rightLabels" destination="krN-Xu-bYv" id="Xq8-8d-m4l"/>
                         <outletCollection property="rightLabels" destination="U7G-Km-0yw" id="XgP-fu-OiJ"/>
                     </connections>
@@ -477,42 +456,6 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Imd-KZ-Wo5" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-4096" y="-2235"/>
-        </scene>
-        <!--Acknowledgements View Controller - Acknowledgements-->
-        <scene sceneID="V4j-ga-IPY">
-            <objects>
-                <viewController storyboardIdentifier="acknowledgements" useStoryboardIdentifierAsRestorationIdentifier="YES" id="dl4-7M-Mqq" customClass="VAcknowledgementsViewController" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="1vD-Hi-T41"/>
-                        <viewControllerLayoutGuide type="bottom" id="GGz-Rc-04t"/>
-                    </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="h6b-RH-xBl">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        <subviews>
-                            <webView contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="mBA-0t-SEN">
-                                <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
-                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                                <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
-                                <dataDetectorType key="dataDetectorTypes" link="YES"/>
-                            </webView>
-                        </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
-                    </view>
-                    <navigationItem key="navigationItem" title="Acknowledgements" id="KII-vN-Gv7">
-                        <barButtonItem key="leftBarButtonItem" image="cameraButtonBack" id="Ql0-Md-Il2">
-                            <connections>
-                                <action selector="goBack:" destination="dl4-7M-Mqq" id="KuS-mx-rnT"/>
-                            </connections>
-                        </barButtonItem>
-                    </navigationItem>
-                    <connections>
-                        <outlet property="webView" destination="mBA-0t-SEN" id="EHa-8D-oRH"/>
-                    </connections>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="NEr-yp-fHc" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="-3836" y="-1339"/>
         </scene>
         <!--Device Table View Controller - Connect to-->
         <scene sceneID="gk5-OQ-hKG">

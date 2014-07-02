@@ -8,14 +8,19 @@
 
 #import "VProfileCreateViewController.h"
 #import "VCameraViewController.h"
-#import "VFollowFriendsViewController.h"
 #import "VUser.h"
 #import "TTTAttributedLabel.h"
 #import "VThemeManager.h"
+#import "VSettingManager.h"
+
 #import "VObjectManager+Login.h"
+#import "VObjectManager+Websites.h"
+
 #import "VConstants.h"
 #import "UIImageView+Blurring.h"
 #import "UIImage+ImageEffects.h"
+
+#import "VWebContentViewController.h"
 
 @import CoreLocation;
 @import AddressBookUI;
@@ -53,10 +58,7 @@
 {
     [super viewDidLoad];
 
-    if (IS_IPHONE_5)
-        self.view.layer.contents = (id)[[[VThemeManager sharedThemeManager] themedImageForKey:kVMenuBackgroundImage5] applyBlurWithRadius:25 tintColor:[UIColor colorWithWhite:1.0 alpha:0.7] saturationDeltaFactor:1.8 maskImage:nil].CGImage;
-    else
-        self.view.layer.contents = (id)[[[VThemeManager sharedThemeManager] themedImageForKey:kVMenuBackgroundImage] applyBlurWithRadius:25 tintColor:[UIColor colorWithWhite:1.0 alpha:0.7] saturationDeltaFactor:1.8 maskImage:nil].CGImage;
+    self.view.layer.contents = (id)[[[VThemeManager sharedThemeManager] themedBackgroundImageForDevice] applyBlurWithRadius:25 tintColor:[UIColor colorWithWhite:1.0 alpha:0.7] saturationDeltaFactor:1.8 maskImage:nil].CGImage;
     
     self.profileImageView.layer.masksToBounds = YES;
     self.profileImageView.layer.cornerRadius = CGRectGetHeight(self.profileImageView.bounds)/2;
@@ -97,13 +99,13 @@
     
     self.agreementText.delegate = self;
     self.agreementText.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVLabel2Font];
-    [self.agreementText setText:[[VThemeManager sharedThemeManager] themedStringForKey:kVAgreementText]];
-    NSRange linkRange = [self.agreementText.text rangeOfString:[[VThemeManager sharedThemeManager] themedStringForKey:kVAgreementLinkText]];
+    [self.agreementText setText:NSLocalizedString(@"ToSAgreement", @"")];
+    NSRange linkRange = [self.agreementText.text rangeOfString:NSLocalizedString(@"ToSText", @"")];
     if (linkRange.length > 0)
     {
         self.agreementText.linkAttributes = @{(NSString *)
                                               kCTUnderlineStyleAttributeName : @(kCTUnderlineStyleSingle)};
-        NSURL *url = [NSURL URLWithString:[[VThemeManager sharedThemeManager] themedStringForKey:kVAgreementLink]];
+        NSURL *url = [[VSettingManager sharedManager] urlForKey:kVTermsOfServiceURL];
         [self.agreementText addLinkToURL:url withRange:linkRange];
     }
     
@@ -198,10 +200,6 @@
         return NO;
     }
     
-    BOOL    isDeleteKey = ([text isEqualToString:@""]);
-    if ((textView.text.length >= VConstantsMessageLength) && (!isDeleteKey))
-        return NO;
-    
     return YES;
 }
 
@@ -254,7 +252,17 @@
 
 - (void)attributedLabel:(TTTAttributedLabel *)label didSelectLinkWithURL:(NSURL *)url
 {
-    [[UIApplication sharedApplication] openURL:url];
+    [[VObjectManager sharedManager] fetchToSWithCompletionBlock:^(NSOperation *completion, NSString *htmlString, NSError *error)
+    {
+        if (!error)
+        {
+            VWebContentViewController* webContentVC = [[[NSBundle mainBundle] loadNibNamed:NSStringFromClass([VWebContentViewController class])
+                                                                                     owner:self options:nil] objectAtIndex:0];
+            webContentVC.htmlString = htmlString;
+            webContentVC.title = NSLocalizedString(@"ToSText", @"");
+            [self.navigationController pushViewController:webContentVC animated:YES];
+        }
+    }];
 }
 
 #pragma mark - CCLocationManagerDelegate
@@ -296,9 +304,7 @@
                                                           tagline:self.taglineTextView.text
                                                      successBlock:^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
          {
-#warning Temporary to prevent someone from going into invite friends. We will re-open this we finish App Store release, and we finish the implementation for this
-//             [self performSegueWithIdentifier:@"toInviteFriends" sender:self];
-             [self dismissViewControllerAnimated:YES completion:nil];
+             [self performSegueWithIdentifier:@"toFollowFriends" sender:self];
          }
                                                         failBlock:^(NSOperation* operation, NSError* error)
          {

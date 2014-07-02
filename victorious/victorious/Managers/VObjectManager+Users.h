@@ -8,6 +8,13 @@
 
 #import "VObjectManager.h"
 
+typedef NS_ENUM(NSUInteger, VSocialSelector)
+{
+    kVFacebookSocialSelector,
+    kVTwitterSocialSelector,
+    kVInstagramSocialSelector
+};
+
 @interface VObjectManager (Users)
 
 - (RKManagedObjectRequestOperation *)fetchUser:(NSNumber*)userId
@@ -28,9 +35,6 @@
                                                     withSuccessBlock:(VSuccessBlock)success
                                                            failBlock:(VFailBlock)fail;
 
-- (RKManagedObjectRequestOperation *)listOfRecommendedFriendsWithSuccessBlock:(VSuccessBlock)success
-                                                                    failBlock:(VFailBlock)fail;
-
 - (RKManagedObjectRequestOperation *)followUser:(VUser *)user
                                    successBlock:(VSuccessBlock)success
                                       failBlock:(VFailBlock)fail;
@@ -48,8 +52,20 @@
                                successBlock:(VSuccessBlock)success
                                   failBlock:(VFailBlock)fail;
 
-- (RKManagedObjectRequestOperation *)inviteFriends:(NSArray*)friendIDs
-                                  withSuccessBlock:(VSuccessBlock)success
-                                         failBlock:(VFailBlock)fail;
+- (RKManagedObjectRequestOperation *)listOfRecommendedFriendsWithSuccessBlock:(VSuccessBlock)success
+                                                                    failBlock:(VFailBlock)fail;
 
+- (RKManagedObjectRequestOperation *)findFriendsByEmails:(NSArray *)emails
+                                        withSuccessBlock:(VSuccessBlock)success
+                                               failBlock:(VFailBlock)fail;
+
+- (RKManagedObjectRequestOperation *)findFriendsBySocial:(VSocialSelector)selector
+                                                   token:(NSString *)token
+                                                  secret:(NSString *)secret
+                                        withSuccessBlock:(VSuccessBlock)success
+                                               failBlock:(VFailBlock)fail;
+
+- (RKManagedObjectRequestOperation *)followUsers:(NSArray /* VUser */ *)users
+                                withSuccessBlock:(VSuccessBlock)success
+                                       failBlock:(VFailBlock)fail;
 @end

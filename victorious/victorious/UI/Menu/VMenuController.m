@@ -6,6 +6,7 @@
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
+#import "VFindFriendsViewController.h"
 #import "VMenuController.h"
 #import "VSideMenuViewController.h"
 #import "UIViewController+VSideMenuViewController.h"
@@ -36,7 +37,8 @@ typedef NS_ENUM(NSUInteger, VMenuControllerRow)
     VMenuRowCommunityChannel    =   2,
     VMenuRowInbox               =   0,
     VMenuRowProfile             =   1,
-    VMenuRowSettings            =   2
+    VMenuRowFindFriends         =   2,
+    VMenuRowSettings            =   3
 };
 
 NSString *const VMenuControllerDidSelectRowNotification = @"VMenuTableViewControllerDidSelectRowNotification";
@@ -159,6 +161,21 @@ NSString *const VMenuControllerDidSelectRowNotification = @"VMenuTableViewContro
                 }
             break;
             
+            case VMenuRowFindFriends:
+                if (![VObjectManager sharedManager].authorized)
+                {
+                    [self presentViewController:[VLoginViewController loginViewController] animated:YES completion:nil];
+                    [self.sideMenuViewController hideMenuViewController];
+                }
+                else
+                {
+                    [self presentViewController:[VFindFriendsViewController newFindFriendsViewController] animated:YES completion:^(void)
+                    {
+                        [self.sideMenuViewController hideMenuViewController];
+                    }];
+                }
+            break;
+                
             case VMenuRowSettings:
                 navigationController.viewControllers = @[[VSettingsViewController settingsViewController]];
                 [self.sideMenuViewController hideMenuViewController];

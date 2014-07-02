@@ -9,20 +9,41 @@
 #import "VWebContentViewController.h"
 #import "VThemeManager.h"
 
-@interface VWebContentViewController () <UIWebViewDelegate>
+@interface VWebContentViewController ()
 @property (weak, nonatomic) IBOutlet UIWebView* webView;
 @end
 
 @implementation VWebContentViewController
 
-- (void)viewDidLoad
+- (void)viewWillAppear:(BOOL)animated
 {
-    [super viewDidLoad];
+    [super viewWillAppear:animated];
+    
+    self.navigationController.navigationBar.shadowImage = nil;
+    self.navigationController.navigationBar.translucent = NO;
+    [self.navigationController setNavigationBarHidden:NO animated:YES];
+    
+    [[VThemeManager sharedThemeManager] applyNormalNavBarStyling];
     
     self.webView.delegate    =   self;
+    if (self.htmlString)
+    {
+        [self.webView loadHTMLString:self.htmlString baseURL:nil];
+    }
+    else if (self.urlKeyPath)
+    {
+        NSURL*  webContentURL  =   [[VThemeManager sharedThemeManager] themedURLForKey:self.urlKeyPath];
+        [self.webView loadRequest:[NSURLRequest requestWithURL:webContentURL]];
+    }
+}
+
+- (void)setHtmlString:(NSString *)htmlString
+{
+    if ([htmlString isEqualToString:htmlString])
+        return;
     
-    NSURL*  webContentURL  =   [[VThemeManager sharedThemeManager] themedURLForKey:self.urlKeyPath];
-    [self.webView loadRequest:[NSURLRequest requestWithURL:webContentURL]];
+    _htmlString = htmlString;
+    [self.webView loadHTMLString:_htmlString baseURL:nil];
 }
 
 - (void)webViewDidStartLoad:(UIWebView *)webView

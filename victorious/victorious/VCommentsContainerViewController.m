@@ -121,6 +121,9 @@
 
 - (void)keyboardBar:(VKeyboardBarViewController *)keyboardBar didComposeWithText:(NSString *)text mediaURL:(NSURL *)mediaURL
 {
+    if ((!text || !text.length) && (!mediaURL || !mediaURL.absoluteString.length))
+        return;
+    
     MBProgressHUD*  progressHUD =   [MBProgressHUD showHUDAddedTo:self.view animated:YES];
     progressHUD.labelText = NSLocalizedString(@"JustAMoment", @"");
     progressHUD.detailsLabelText = NSLocalizedString(@"PublishUpload", @"");

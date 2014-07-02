@@ -19,6 +19,7 @@
 #import "VPollResult+RestKit.h"
 
 #import "VThemeManager.h"
+#import "VSettingManager.h"
 #import "VUserManager.h"
 
 @implementation VObjectManager (Login)
@@ -32,21 +33,15 @@ NSString *kLoggedInChangedNotification = @"LoggedInChangedNotification";
     VSuccessBlock fullSuccess = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
     {
         
-        NSDictionary* payload = fullResponse[@"payload"];
+        NSDictionary* payload = fullResponse[kVPayloadKey];
         
         NSDictionary* newTheme = payload[@"appearance"];
         if (newTheme && [newTheme isKindOfClass:[NSDictionary class]])
             [[VThemeManager sharedThemeManager] setTheme:newTheme];
         
         NSDictionary* videoQuality = payload[@"video_quality"];
-        if (videoQuality && [videoQuality isKindOfClass:[NSDictionary class]])
-        {
-            [videoQuality enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop)
-             {
-                 [[NSUserDefaults standardUserDefaults] setObject:obj forKey:key];
-             }];
-
-        }
+        if ([videoQuality isKindOfClass:[NSDictionary class]])
+            [[VSettingManager sharedManager] updateSettingsWithDictionary:videoQuality];
         
         if (success)
             success(operation, fullResponse, resultObjects);
@@ -344,7 +339,7 @@ NSString *kLoggedInChangedNotification = @"LoggedInChangedNotification";
     {
         if (success)
         {
-            NSArray* results = @[fullResponse[@"payload"][@"device_token"]];
+            NSArray* results = @[fullResponse[kVPayloadKey][@"device_token"]];
             
             if (success)
                 success(operation, fullResponse, results);

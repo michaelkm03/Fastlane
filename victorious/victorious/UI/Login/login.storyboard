@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="5056" systemVersion="13D65" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="Lsc-qm-Ib8">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="5056" systemVersion="13E28" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="Lsc-qm-Ib8">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3733"/>
     </dependencies>
@@ -256,12 +256,12 @@
                         <outlet property="passwordTextField" destination="3pO-cP-eTE" id="g2J-cP-u9B"/>
                         <outlet property="transitionPlaceholder" destination="nwd-XK-Yuq" id="yXS-dG-e45"/>
                         <outlet property="usernameTextField" destination="Jbh-n4-soS" id="sa1-3r-n9Y"/>
-                        <segue destination="uvb-TU-XJY" kind="push" identifier="toResetPassword" id="f9J-AA-czU"/>
+                        <segue destination="Q74-bM-qRI" kind="push" identifier="toEnterResetToken" id="E4c-Xm-9lW"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="AQe-iH-88j" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="815" y="-519"/>
+            <point key="canvasLocation" x="815" y="-699"/>
         </scene>
         <!--Reset Password View Controller-->
         <scene sceneID="dl9-g7-8V5">
@@ -345,151 +345,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="btI-78-6NP" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1465" y="-695"/>
-        </scene>
-        <!--Invite Suggested Table View Controller-->
-        <scene sceneID="ZeD-34-nH1">
-            <objects>
-                <tableViewController storyboardIdentifier="inviteSuggested" useStoryboardIdentifierAsRestorationIdentifier="YES" id="UU7-Qa-Uex" customClass="VInviteSuggestedTableViewController" sceneMemberID="viewController">
-                    <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="0GI-iR-esi">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                        <view key="tableHeaderView" contentMode="scaleToFill" id="5IO-3g-bWP">
-                            <rect key="frame" x="0.0" y="64" width="320" height="55"/>
-                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            <subviews>
-                                <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="PGZ-m9-gUo">
-                                    <rect key="frame" x="20" y="10" width="127" height="34"/>
-                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                    <state key="normal" title="Clear">
-                                        <color key="titleColor" cocoaTouchSystemColor="darkTextColor"/>
-                                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                    </state>
-                                </button>
-                                <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dPK-um-P15">
-                                    <rect key="frame" x="173" y="10" width="127" height="34"/>
-                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                    <state key="normal" title="Select All">
-                                        <color key="titleColor" cocoaTouchSystemColor="darkTextColor"/>
-                                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                    </state>
-                                </button>
-                            </subviews>
-                            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
-                        </view>
-                        <prototypes>
-                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" id="Dus-Fl-p9w">
-                                <rect key="frame" x="0.0" y="141" width="320" height="44"/>
-                                <autoresizingMask key="autoresizingMask"/>
-                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Dus-Fl-p9w" id="WFQ-ap-7mr">
-                                    <rect key="frame" x="0.0" y="0.0" width="320" height="43"/>
-                                    <autoresizingMask key="autoresizingMask"/>
-                                </tableViewCellContentView>
-                            </tableViewCell>
-                        </prototypes>
-                        <connections>
-                            <outlet property="dataSource" destination="UU7-Qa-Uex" id="xVd-4r-Qyw"/>
-                            <outlet property="delegate" destination="UU7-Qa-Uex" id="Ffu-Bd-gYq"/>
-                        </connections>
-                    </tableView>
-                    <tabBarItem key="tabBarItem" title="" image="inviteSuggested" id="65L-3x-EUz"/>
-                    <connections>
-                        <outlet property="clearButton" destination="PGZ-m9-gUo" id="Kjd-lt-IKb"/>
-                        <outlet property="selectAllButton" destination="dPK-um-P15" id="NUT-HN-zjO"/>
-                    </connections>
-                </tableViewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="AVD-Jq-wGh" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="4115" y="-1615"/>
-        </scene>
-        <!--Contacts Connect View Controller-->
-        <scene sceneID="nHD-aA-FzU">
-            <objects>
-                <viewController storyboardIdentifier="contactsConnect" useStoryboardIdentifierAsRestorationIdentifier="YES" id="YHb-Ow-X0P" customClass="VContactsConnectViewController" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="xs1-ZE-wzF"/>
-                        <viewControllerLayoutGuide type="bottom" id="UTN-S6-Gfr"/>
-                    </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="6Q4-Mg-Icd">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        <subviews>
-                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="DlQ-YE-QmH">
-                                <rect key="frame" x="0.0" y="0.0" width="320" height="365"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <subviews>
-                                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="SEARCH AND FOLLOW YOUR FRIENDS FROM YOUR CONTACTS" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="4" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="280" translatesAutoresizingMaskIntoConstraints="NO" id="vQf-qd-FzQ">
-                                        <rect key="frame" x="20" y="83" width="280" height="110"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="23"/>
-                                        <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
-                                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Khh-h2-6hX">
-                                        <rect key="frame" x="20" y="233" width="280" height="47"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        <state key="normal" title="Access Your Contacts">
-                                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                        </state>
-                                        <connections>
-                                            <action selector="connect:" destination="YHb-Ow-X0P" eventType="touchUpInside" id="5PN-PL-eSx"/>
-                                        </connections>
-                                    </button>
-                                </subviews>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
-                            </view>
-                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="279" translatesAutoresizingMaskIntoConstraints="NO" id="pKe-cA-dAY">
-                                <rect key="frame" x="20" y="382" width="279" height="51"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <string key="text">Your contacts are safe with us! In order to find your friends, we need to send your contacts information to our servers using a secure connection.</string>
-                                <fontDescription key="fontDescription" type="system" pointSize="11"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                        </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
-                    </view>
-                    <tabBarItem key="tabBarItem" title="" image="inviteContacts" id="wSb-dm-ZQY"/>
-                    <connections>
-                        <outlet property="connectButton" destination="Khh-h2-6hX" id="55Y-fY-ahy"/>
-                        <outlet property="headlineLabel" destination="vQf-qd-FzQ" id="JwJ-O8-gbV"/>
-                        <outlet property="privacyLabel" destination="pKe-cA-dAY" id="hlT-l8-mDW"/>
-                        <outlet property="shadowView" destination="DlQ-YE-QmH" id="anv-l9-KVo"/>
-                        <segue destination="8t2-v3-KFI" kind="push" identifier="toContactsList" id="qFr-sL-WKn"/>
-                    </connections>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="VRo-Rw-a05" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="3611" y="-875"/>
-        </scene>
-        <!--Invite Contacts View Controller-->
-        <scene sceneID="9vP-Kl-Pza">
-            <objects>
-                <tableViewController storyboardIdentifier="inviteContacts" useStoryboardIdentifierAsRestorationIdentifier="YES" id="8t2-v3-KFI" customClass="VInviteContactsViewController" sceneMemberID="viewController">
-                    <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="viK-gf-eu8">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                        <prototypes>
-                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" id="QZ8-hD-e0r">
-                                <rect key="frame" x="0.0" y="86" width="320" height="44"/>
-                                <autoresizingMask key="autoresizingMask"/>
-                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="QZ8-hD-e0r" id="Fxv-kY-4cN">
-                                    <rect key="frame" x="0.0" y="0.0" width="320" height="43"/>
-                                    <autoresizingMask key="autoresizingMask"/>
-                                </tableViewCellContentView>
-                            </tableViewCell>
-                        </prototypes>
-                        <connections>
-                            <outlet property="dataSource" destination="8t2-v3-KFI" id="WsF-T4-svT"/>
-                            <outlet property="delegate" destination="8t2-v3-KFI" id="WZl-gL-fjZ"/>
-                        </connections>
-                    </tableView>
-                    <navigationItem key="navigationItem" id="5hs-SG-Ehe"/>
-                </tableViewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="WEV-ge-8qj" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="4110" y="-875"/>
+            <point key="canvasLocation" x="1845" y="-699"/>
         </scene>
         <!--Profile Create View Controller - Edit Profile-->
         <scene sceneID="n2v-Tj-rFs">
@@ -512,7 +368,7 @@
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="tintColor" cocoaTouchSystemColor="darkTextColor"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <textInputTraits key="textInputTraits" autocorrectionType="no" keyboardType="emailAddress" returnKeyType="next"/>
+                                <textInputTraits key="textInputTraits" autocorrectionType="no" returnKeyType="next"/>
                             </textField>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" alpha="0.15000000596046448" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gPW-lo-bG3">
                                 <rect key="frame" x="17" y="179" width="288" height="1"/>
@@ -596,46 +452,12 @@
                         <outlet property="tagLinePlaceholderLabel" destination="kzi-75-z6l" id="ckt-sK-4Dc"/>
                         <outlet property="taglineTextView" destination="XNN-n4-drt" id="nGm-Sm-Xc1"/>
                         <outlet property="usernameTextField" destination="qGa-ti-Owy" id="ObJ-7B-zBh"/>
-                        <segue destination="ymg-1n-Q0V" kind="push" identifier="toInviteFriends" id="r3f-CD-KsL"/>
+                        <segue destination="qXP-WV-BMp" kind="push" identifier="toFollowFriends" id="1xo-ua-4V8"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="46v-Ci-MIV" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1465" y="9"/>
-        </scene>
-        <!--Follow Friends View Controller - Follow Friends-->
-        <scene sceneID="AKA-Am-tva">
-            <objects>
-                <tabBarController storyboardIdentifier="followFriends" definesPresentationContext="YES" useStoryboardIdentifierAsRestorationIdentifier="YES" id="ymg-1n-Q0V" customClass="VFollowFriendsViewController" sceneMemberID="viewController">
-                    <navigationItem key="navigationItem" title="Follow Friends" id="xZK-NL-Kmt">
-                        <barButtonItem key="leftBarButtonItem" title="Invite" id="t04-1S-Sow">
-                            <connections>
-                                <action selector="invite:" destination="ymg-1n-Q0V" id="Z5c-9d-Fkl"/>
-                            </connections>
-                        </barButtonItem>
-                        <barButtonItem key="rightBarButtonItem" style="done" systemItem="done" id="2Md-om-0Wr">
-                            <connections>
-                                <action selector="done:" destination="ymg-1n-Q0V" id="oJU-Sg-LuL"/>
-                            </connections>
-                        </barButtonItem>
-                    </navigationItem>
-                    <nil key="simulatedBottomBarMetrics"/>
-                    <tabBar key="tabBar" contentMode="scaleToFill" id="ONI-L4-98b">
-                        <rect key="frame" x="129" y="330" width="163" height="49"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                    </tabBar>
-                    <connections>
-                        <segue destination="UU7-Qa-Uex" kind="relationship" relationship="viewControllers" id="met-vb-5Pf"/>
-                        <segue destination="YHb-Ow-X0P" kind="relationship" relationship="viewControllers" id="kuR-oc-vER"/>
-                        <segue destination="qYP-He-4MC" kind="relationship" relationship="viewControllers" id="hub-qX-NHd"/>
-                        <segue destination="g0R-D6-Hau" kind="relationship" relationship="viewControllers" id="VPt-K2-kyz"/>
-                        <segue destination="kcY-bp-M2E" kind="relationship" relationship="viewControllers" id="lnB-oB-Cj2"/>
-                    </connections>
-                </tabBarController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="KT9-jx-Wa4" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="1943" y="12"/>
         </scene>
         <!--Signup With Email View Controller-->
         <scene sceneID="zqJ-MV-vh3">
@@ -730,275 +552,203 @@
             </objects>
             <point key="canvasLocation" x="815" y="507"/>
         </scene>
-        <!--Facebook Connect View Controller-->
-        <scene sceneID="IQK-e7-1we">
+        <!--Enter Reset Token View Controller-->
+        <scene sceneID="IYY-ro-qga">
             <objects>
-                <viewController storyboardIdentifier="facebookConnect" useStoryboardIdentifierAsRestorationIdentifier="YES" id="qYP-He-4MC" customClass="VFacebookConnectViewController" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="enterresettoken" id="Q74-bM-qRI" customClass="VEnterResetTokenViewController" sceneMemberID="viewController">
                     <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="Hqs-QF-yjT"/>
-                        <viewControllerLayoutGuide type="bottom" id="Dde-Be-EY4"/>
+                        <viewControllerLayoutGuide type="top" id="Oa0-XC-rQE"/>
+                        <viewControllerLayoutGuide type="bottom" id="v0J-bn-tge"/>
                     </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="sx9-FD-wRt">
+                    <view key="view" contentMode="scaleToFill" id="4VT-qs-8Hr">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="YCE-Vr-64A">
-                                <rect key="frame" x="0.0" y="0.0" width="320" height="365"/>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hJA-Pd-VfH" userLabel="Back Button">
+                                <rect key="frame" x="3" y="6" width="44" height="45"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <subviews>
-                                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="ADD YOUR FRIENDS FROM FACEBOOK BY CONNECTING YOUR ACCOUNT" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="4" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="280" translatesAutoresizingMaskIntoConstraints="NO" id="FZC-t1-zSY">
-                                        <rect key="frame" x="20" y="83" width="280" height="110"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="23"/>
-                                        <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
-                                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gSB-Ld-6rX">
-                                        <rect key="frame" x="20" y="233" width="280" height="47"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        <state key="normal" title="Connected to Facebook">
-                                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                        </state>
-                                        <connections>
-                                            <action selector="connect:" destination="qYP-He-4MC" eventType="touchUpInside" id="RNi-6U-cUG"/>
-                                        </connections>
-                                    </button>
-                                </subviews>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
-                            </view>
-                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="We don't store your passwords and will never post anything without your permission" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="279" translatesAutoresizingMaskIntoConstraints="NO" id="RGD-tD-LEM">
-                                <rect key="frame" x="20" y="382" width="279" height="51"/>
+                                <state key="normal" image="Close">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="pressedBack:" destination="Q74-bM-qRI" eventType="touchUpInside" id="rWd-9f-Mbh"/>
+                                </connections>
+                            </button>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Thanks!" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="Lji-XP-yck">
+                                <rect key="frame" x="60" y="37" width="200" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="11"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="22"/>
+                                <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="An email was sent to this address containing a code to verify your account" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" preferredMaxLayoutWidth="280" translatesAutoresizingMaskIntoConstraints="NO" id="sxb-gV-KJX">
+                                <rect key="frame" x="20" y="75" width="280" height="80"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="ENTER CODE" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="CGW-Kx-wFZ">
+                                <rect key="frame" x="73" y="163" width="175" height="21"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Eus-qL-qzu">
+                                <rect key="frame" x="59" y="192" width="202" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits" returnKeyType="done"/>
+                                <connections>
+                                    <outlet property="delegate" destination="Q74-bM-qRI" id="gZD-MP-mM6"/>
+                                </connections>
+                            </textField>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ssT-3o-lsn">
+                                <rect key="frame" x="73" y="230" width="175" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" name="HelveticaNeue-Bold" family="Helvetica Neue" pointSize="15"/>
+                                <state key="normal" title="Resend Email"/>
+                                <connections>
+                                    <action selector="pressedResend:" destination="Q74-bM-qRI" eventType="touchUpInside" id="Au2-AJ-y0u"/>
+                                </connections>
+                            </button>
                         </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     </view>
-                    <tabBarItem key="tabBarItem" image="inviteFacebook" id="zWq-He-hJd"/>
+                    <navigationItem key="navigationItem" id="Jjo-Gf-qdP"/>
+                    <nil key="simulatedStatusBarMetrics"/>
+                    <nil key="simulatedTopBarMetrics"/>
                     <connections>
-                        <outlet property="connectButton" destination="gSB-Ld-6rX" id="mRe-Vz-UJZ"/>
-                        <outlet property="headlineLabel" destination="FZC-t1-zSY" id="rg0-ev-P2D"/>
-                        <outlet property="privacyLabel" destination="RGD-tD-LEM" id="j9m-O1-JEP"/>
-                        <outlet property="shadowView" destination="YCE-Vr-64A" id="7df-It-Cuh"/>
-                        <segue destination="Xbo-fp-d7e" kind="push" identifier="toFacebookList" id="tLH-al-vui"/>
+                        <outlet property="codeField" destination="Eus-qL-qzu" id="ndR-xL-dYg"/>
+                        <outlet property="enterCodeLabel" destination="CGW-Kx-wFZ" id="ZeB-kf-uX5"/>
+                        <outlet property="messageLabel" destination="sxb-gV-KJX" id="F7I-Sg-thg"/>
+                        <outlet property="resendButton" destination="ssT-3o-lsn" id="4d3-hP-sam"/>
+                        <outlet property="titleLabel" destination="Lji-XP-yck" id="1Tp-71-Rk4"/>
+                        <segue destination="uvb-TU-XJY" kind="push" identifier="toResetPassword" id="CP0-Gn-lB1"/>
                     </connections>
                 </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="83D-Ug-OQ9" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="A1h-V7-CoE" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <tapGestureRecognizer id="dle-oC-Vjm" userLabel="Preview Image Tap Gesture"/>
             </objects>
-            <point key="canvasLocation" x="3603" y="-115"/>
+            <point key="canvasLocation" x="1303" y="-699"/>
         </scene>
-        <!--Twitter Connect View Controller-->
-        <scene sceneID="8cf-eU-Eq4">
+        <!--Find Friends-->
+        <scene sceneID="lTq-NW-HWb">
             <objects>
-                <viewController storyboardIdentifier="twitterConnect" useStoryboardIdentifierAsRestorationIdentifier="YES" id="g0R-D6-Hau" customClass="VTwitterConnectViewController" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="VFindFriendsViewController" id="qXP-WV-BMp" userLabel="Find Friends" customClass="VFindFriendsViewController" sceneMemberID="viewController">
                     <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="qXj-wF-zvw"/>
-                        <viewControllerLayoutGuide type="bottom" id="2Ki-s4-dap"/>
+                        <viewControllerLayoutGuide type="top" id="xx2-g0-nqh"/>
+                        <viewControllerLayoutGuide type="bottom" id="qW9-9s-Kfq"/>
                     </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="vZA-za-6m8">
+                    <view key="view" contentMode="scaleToFill" id="jhe-Kn-knr">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="KM1-rr-iHF">
-                                <rect key="frame" x="0.0" y="0.0" width="320" height="365"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Tg4-SM-Gi4" userLabel="Header View">
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="105"/>
                                 <subviews>
-                                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="ADD YOUR FRIENDS FROM TWITTER BY CONNECTING YOUR ACCOUNT" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="4" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="280" translatesAutoresizingMaskIntoConstraints="NO" id="A4V-oY-wij">
-                                        <rect key="frame" x="20" y="83" width="280" height="110"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="23"/>
-                                        <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
-                                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="B1K-hK-fQl">
-                                        <rect key="frame" x="20" y="233" width="280" height="47"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        <state key="normal" title="Connect to Twitter">
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8up-xd-D5l" userLabel="Back Button">
+                                        <rect key="frame" x="0.0" y="0.0" width="56" height="56"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="56" id="od1-nu-itx"/>
+                                            <constraint firstAttribute="height" constant="56" id="sfy-Os-pLd"/>
+                                        </constraints>
+                                        <state key="normal" image="cameraButtonBack">
                                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                         </state>
                                         <connections>
-                                            <action selector="connect:" destination="g0R-D6-Hau" eventType="touchUpInside" id="DSZ-xN-7BH"/>
+                                            <action selector="pressedBack:" destination="qXP-WV-BMp" eventType="touchUpInside" id="8JT-72-QSA"/>
                                         </connections>
                                     </button>
-                                </subviews>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
-                            </view>
-                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="We don't store your passwords and will never post anything without your permission" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="279" translatesAutoresizingMaskIntoConstraints="NO" id="24k-md-HNE">
-                                <rect key="frame" x="20" y="382" width="279" height="51"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="11"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                        </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
-                    </view>
-                    <tabBarItem key="tabBarItem" title="" image="inviteTwitter" id="py5-PY-9n0"/>
-                    <connections>
-                        <outlet property="connectButton" destination="B1K-hK-fQl" id="sAq-hT-A0o"/>
-                        <outlet property="headlineLabel" destination="A4V-oY-wij" id="BTV-kQ-w2q"/>
-                        <outlet property="privacyLabel" destination="24k-md-HNE" id="XLD-vy-hNH"/>
-                        <outlet property="shadowView" destination="KM1-rr-iHF" id="Li4-eA-IIp"/>
-                        <segue destination="jiA-9J-QOE" kind="push" identifier="toTwitterList" id="f21-kc-MfO"/>
-                    </connections>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="smQ-Yh-0MA" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="3603" y="621"/>
-        </scene>
-        <!--Instagram Connect View Controller-->
-        <scene sceneID="9G6-HY-RnF">
-            <objects>
-                <viewController storyboardIdentifier="instagramConnect" useStoryboardIdentifierAsRestorationIdentifier="YES" id="kcY-bp-M2E" customClass="VInstagramConnectViewController" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="hcN-DA-zOr"/>
-                        <viewControllerLayoutGuide type="bottom" id="kDU-UJ-hQS"/>
-                    </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="ubW-i1-nKv">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        <subviews>
-                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="DNJ-9b-CeR">
-                                <rect key="frame" x="0.0" y="0.0" width="320" height="365"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <subviews>
-                                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="ADD YOUR FRIENDS FROM INSTAGRAM BY CONNECTING YOUR ACCOUNT" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="4" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="280" translatesAutoresizingMaskIntoConstraints="NO" id="J23-r2-EV2">
-                                        <rect key="frame" x="20" y="83" width="280" height="110"/>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="AQr-df-rJr">
+                                        <rect key="frame" x="0.0" y="0.0" width="56" height="56"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="23"/>
-                                        <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
-                                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="sJK-ec-EJY">
-                                        <rect key="frame" x="20" y="233" width="280" height="47"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        <state key="normal" title="Connect to Instagram">
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="56" id="phy-Su-mdq"/>
+                                            <constraint firstAttribute="width" constant="56" id="x7d-xT-lRJ"/>
+                                        </constraints>
+                                        <state key="normal" title="Invite">
+                                            <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                         </state>
                                         <connections>
-                                            <action selector="connect:" destination="kcY-bp-M2E" eventType="touchUpInside" id="brA-Z8-oCX"/>
+                                            <action selector="pressedInvite:" destination="qXP-WV-BMp" eventType="touchUpInside" id="Oqb-cS-1n9"/>
+                                        </connections>
+                                    </button>
+                                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Find Friends" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nNU-ow-QSQ">
+                                        <rect key="frame" x="111" y="0.0" width="100" height="56"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="56" id="wHo-aD-AaR"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" name="STHeitiTC-Light" family="Heiti TC" pointSize="18"/>
+                                        <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3dI-fH-6bk" userLabel="Done Button">
+                                        <rect key="frame" x="264" y="0.0" width="56" height="56"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="56" id="Lnb-tf-fP1"/>
+                                            <constraint firstAttribute="width" constant="56" id="txD-4p-bWY"/>
+                                        </constraints>
+                                        <state key="normal" title="Done">
+                                            <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="pressedDone:" destination="qXP-WV-BMp" eventType="touchUpInside" id="RFB-Bt-l5t"/>
                                         </connections>
                                     </button>
                                 </subviews>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                                <color key="backgroundColor" red="0.21176470589999999" green="0.1450980392" blue="0.30588235289999999" alpha="1" colorSpace="calibratedRGB"/>
+                                <constraints>
+                                    <constraint firstItem="AQr-df-rJr" firstAttribute="top" secondItem="Tg4-SM-Gi4" secondAttribute="top" id="0KJ-cR-ADo"/>
+                                    <constraint firstItem="nNU-ow-QSQ" firstAttribute="top" secondItem="Tg4-SM-Gi4" secondAttribute="top" id="GWi-Me-OBL"/>
+                                    <constraint firstItem="8up-xd-D5l" firstAttribute="left" secondItem="Tg4-SM-Gi4" secondAttribute="left" id="I4c-YV-w9p"/>
+                                    <constraint firstItem="3dI-fH-6bk" firstAttribute="top" secondItem="Tg4-SM-Gi4" secondAttribute="top" id="OBx-dc-2B5"/>
+                                    <constraint firstItem="8up-xd-D5l" firstAttribute="top" secondItem="Tg4-SM-Gi4" secondAttribute="top" id="UBW-ac-wFX"/>
+                                    <constraint firstAttribute="centerX" secondItem="nNU-ow-QSQ" secondAttribute="centerX" constant="-0.5" id="Ud4-7H-qsC"/>
+                                    <constraint firstAttribute="height" constant="105" id="sGy-AW-b6a"/>
+                                    <constraint firstAttribute="right" secondItem="3dI-fH-6bk" secondAttribute="right" id="xAz-QU-amf"/>
+                                    <constraint firstItem="AQr-df-rJr" firstAttribute="left" secondItem="Tg4-SM-Gi4" secondAttribute="left" id="z3c-aU-E75"/>
+                                </constraints>
                             </view>
-                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="We don't store your passwords and will never post anything without your permission" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="279" translatesAutoresizingMaskIntoConstraints="NO" id="BPH-X8-Cl6">
-                                <rect key="frame" x="20" y="382" width="279" height="51"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="11"/>
-                                <nil key="highlightedColor"/>
-                            </label>
+                            <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="RuM-Vh-XTe">
+                                <rect key="frame" x="0.0" y="56" width="320" height="512"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                            </containerView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstAttribute="trailing" secondItem="Tg4-SM-Gi4" secondAttribute="trailing" id="3H9-mx-grY"/>
+                            <constraint firstAttribute="trailing" secondItem="RuM-Vh-XTe" secondAttribute="trailing" id="BMO-yG-5ns"/>
+                            <constraint firstItem="RuM-Vh-XTe" firstAttribute="leading" secondItem="jhe-Kn-knr" secondAttribute="leading" id="QCN-8z-5J1"/>
+                            <constraint firstItem="Tg4-SM-Gi4" firstAttribute="top" secondItem="jhe-Kn-knr" secondAttribute="top" id="drO-Jk-vNd"/>
+                            <constraint firstItem="qW9-9s-Kfq" firstAttribute="top" secondItem="RuM-Vh-XTe" secondAttribute="bottom" id="gSx-yP-mf1"/>
+                            <constraint firstItem="RuM-Vh-XTe" firstAttribute="top" secondItem="Tg4-SM-Gi4" secondAttribute="bottom" constant="-49" id="sgf-hZ-L8Q"/>
+                            <constraint firstItem="Tg4-SM-Gi4" firstAttribute="leading" secondItem="jhe-Kn-knr" secondAttribute="leading" id="yOl-iO-2FA"/>
+                        </constraints>
                     </view>
-                    <tabBarItem key="tabBarItem" title="" image="inviteInstagram" id="yDh-hH-0Oh"/>
+                    <navigationItem key="navigationItem" id="NwV-bN-un0"/>
+                    <nil key="simulatedStatusBarMetrics"/>
                     <connections>
-                        <outlet property="connectButton" destination="sJK-ec-EJY" id="HAR-qM-yVY"/>
-                        <outlet property="headlineLabel" destination="J23-r2-EV2" id="CrD-Lb-suc"/>
-                        <outlet property="privacyLabel" destination="BPH-X8-Cl6" id="J01-oA-Mio"/>
-                        <outlet property="shadowView" destination="DNJ-9b-CeR" id="dtv-oU-JO2"/>
-                        <segue destination="cJa-rc-LX2" kind="push" identifier="toInstagramList" id="d77-PJ-Tj0"/>
+                        <outlet property="backButton" destination="8up-xd-D5l" id="RWi-kj-TLU"/>
+                        <outlet property="containerView" destination="RuM-Vh-XTe" id="L2h-Zm-k3c"/>
+                        <outlet property="doneButton" destination="3dI-fH-6bk" id="XKN-aA-V5C"/>
+                        <outlet property="headerView" destination="Tg4-SM-Gi4" id="Vox-Lr-lcU"/>
+                        <outlet property="inviteButton" destination="AQr-df-rJr" id="nwP-Xw-kWE"/>
+                        <outlet property="titleLabel" destination="nNU-ow-QSQ" id="1Dg-Bt-Ky1"/>
                     </connections>
                 </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="i1l-hO-Gtk" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="GuL-57-XII" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3603" y="1397"/>
-        </scene>
-        <!--Invite Facebook View Controller-->
-        <scene sceneID="aOG-ej-x3V">
-            <objects>
-                <tableViewController storyboardIdentifier="inviteFacebook" useStoryboardIdentifierAsRestorationIdentifier="YES" id="Xbo-fp-d7e" customClass="VInviteFacebookViewController" sceneMemberID="viewController">
-                    <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="MuP-3O-boi">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                        <prototypes>
-                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" id="GgQ-IH-yBr">
-                                <rect key="frame" x="0.0" y="86" width="320" height="44"/>
-                                <autoresizingMask key="autoresizingMask"/>
-                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="GgQ-IH-yBr" id="h2G-CH-5g8">
-                                    <rect key="frame" x="0.0" y="0.0" width="320" height="43"/>
-                                    <autoresizingMask key="autoresizingMask"/>
-                                </tableViewCellContentView>
-                            </tableViewCell>
-                        </prototypes>
-                        <connections>
-                            <outlet property="dataSource" destination="Xbo-fp-d7e" id="PQj-BP-tKY"/>
-                            <outlet property="delegate" destination="Xbo-fp-d7e" id="LTA-CT-SEL"/>
-                        </connections>
-                    </tableView>
-                    <navigationItem key="navigationItem" id="FRg-gn-2XU"/>
-                </tableViewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="wI5-d3-sWp" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="4110" y="-115"/>
-        </scene>
-        <!--Invite Twitter View Controller-->
-        <scene sceneID="Ngo-8P-Ppz">
-            <objects>
-                <tableViewController storyboardIdentifier="inviteTwitter" useStoryboardIdentifierAsRestorationIdentifier="YES" id="jiA-9J-QOE" customClass="VInviteTwitterViewController" sceneMemberID="viewController">
-                    <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="iqd-ow-5Tt">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                        <prototypes>
-                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" id="rSm-5T-san">
-                                <rect key="frame" x="0.0" y="86" width="320" height="44"/>
-                                <autoresizingMask key="autoresizingMask"/>
-                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="rSm-5T-san" id="1Jx-70-ekn">
-                                    <rect key="frame" x="0.0" y="0.0" width="320" height="43"/>
-                                    <autoresizingMask key="autoresizingMask"/>
-                                </tableViewCellContentView>
-                            </tableViewCell>
-                        </prototypes>
-                        <connections>
-                            <outlet property="dataSource" destination="jiA-9J-QOE" id="QVQ-Lr-QgT"/>
-                            <outlet property="delegate" destination="jiA-9J-QOE" id="QuS-ab-RBf"/>
-                        </connections>
-                    </tableView>
-                    <navigationItem key="navigationItem" id="xOh-DJ-RBR"/>
-                </tableViewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="mUa-XV-SA4" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="4110" y="621"/>
-        </scene>
-        <!--Invite Instagram View Controller-->
-        <scene sceneID="Kr1-It-eql">
-            <objects>
-                <tableViewController storyboardIdentifier="inviteInstagram" useStoryboardIdentifierAsRestorationIdentifier="YES" id="cJa-rc-LX2" customClass="VInviteInstagramViewController" sceneMemberID="viewController">
-                    <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="Axg-Zh-Ffg">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                        <prototypes>
-                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" id="M1G-O1-woc">
-                                <rect key="frame" x="0.0" y="86" width="320" height="44"/>
-                                <autoresizingMask key="autoresizingMask"/>
-                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="M1G-O1-woc" id="AHt-cV-CQu">
-                                    <rect key="frame" x="0.0" y="0.0" width="320" height="43"/>
-                                    <autoresizingMask key="autoresizingMask"/>
-                                </tableViewCellContentView>
-                            </tableViewCell>
-                        </prototypes>
-                        <connections>
-                            <outlet property="dataSource" destination="cJa-rc-LX2" id="FDi-ud-UHy"/>
-                            <outlet property="delegate" destination="cJa-rc-LX2" id="TBG-Kz-fm0"/>
-                        </connections>
-                    </tableView>
-                    <navigationItem key="navigationItem" id="W50-hV-oXT"/>
-                </tableViewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="qJ8-10-trp" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="4110" y="1397"/>
+            <point key="canvasLocation" x="1953" y="9"/>
         </scene>
     </scenes>
     <resources>
+        <image name="Close" width="17" height="17"/>
+        <image name="cameraButtonBack" width="22" height="17"/>
         <image name="createAvatar" width="80" height="80"/>
-        <image name="inviteContacts" width="26" height="25"/>
-        <image name="inviteFacebook" width="13" height="24"/>
-        <image name="inviteInstagram" width="24" height="24"/>
-        <image name="inviteSuggested" width="27" height="20"/>
-        <image name="inviteTwitter" width="23" height="20"/>
         <image name="loginFacebook" width="288" height="42"/>
         <image name="loginTwitter" width="288" height="42"/>
     </resources>

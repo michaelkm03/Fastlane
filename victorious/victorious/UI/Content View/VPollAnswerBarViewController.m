@@ -216,30 +216,41 @@
 
 - (void)answerPollWithAnswer:(VAnswer*)answer
 {
+    VSuccessBlock success = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
+    {
+        
+        [[VObjectManager sharedManager] pollResultsForSequence:self.sequence
+                                                  successBlock:^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
+         {
+             [self.delegate answeredPollWithAnswerId:answer.remoteId];
+             [self answerAnimationForAnswerID:answer.remoteId];
+         }
+                                                     failBlock:^(NSOperation* operation, NSError* error)
+         {
+             VLog(@"Failed with error: %@", error);
+         }];
+    };
+    
     [[VObjectManager sharedManager] answerPoll:self.sequence
                                      withAnswer:answer
-                                  successBlock:^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
-      {
-          [[VObjectManager sharedManager] pollResultsForSequence:self.sequence
-                                                    successBlock:^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
-                                                    {
-                                                        [self.delegate answeredPollWithAnswerId:answer.remoteId];
-                                                        [self answerAnimationForAnswerID:answer.remoteId];
-                                                    }
-                                                       failBlock:^(NSOperation* operation, NSError* error)
-                                                        {
-                                                            VLog(@"Failed with error: %@", error);
-                                                        }];
-      }
+                                  successBlock:success
                                      failBlock:^(NSOperation* operation, NSError* error)
       {
           //Error 1005 is "Poll result was already recorded.
           //If we get anything else... lie and say we already answered
-          [[[UIAlertView alloc] initWithTitle:NSLocalizedString(@"PollAlreadyAnswered", @"")
-                                      message:error.localizedDescription
-                                     delegate:nil
-                            cancelButtonTitle:NSLocalizedString(@"OKButton", @"")
-                            otherButtonTitles:nil] show];
+          if ([error.domain isEqualToString:kVictoriousErrorDomain])
+          {
+              [[[UIAlertView alloc] initWithTitle:NSLocalizedString(@"PollAlreadyAnswered", @"")
+                                          message:error.localizedDescription
+                                         delegate:nil
+                                cancelButtonTitle:NSLocalizedString(@"OKButton", @"")
+                                otherButtonTitles:nil] show];
+          }
+          else
+          {
+              //This is a solution to a bad UX experience. A user will answer a poll and get a non-victorious error, and fail for no reason.  They'll continue to attempt to answer, but server will start responding with real "Poll already answered" errors, and get stuck in that flow until they leave and return to the poll.
+              success(nil, nil, nil);
+          }
 
           VLog(@"Failed to answer with error: %@", error);
       }];

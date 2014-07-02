@@ -8,7 +8,6 @@
 
 #import "VObjectManager.h"
 
-
 @interface VObjectManager ()
 
 @property (nonatomic, strong) NSCache* objectCache;

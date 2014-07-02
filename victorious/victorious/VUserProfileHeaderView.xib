@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="5056" systemVersion="13D65" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3733"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="iN0-l3-epB" customClass="VUserProfileHeaderView">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="HqL-SU-35F">
+                    <rect key="frame" x="120" y="143" width="80" height="80"/>
+                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="80" id="0T3-iJ-iMz"/>
+                        <constraint firstAttribute="height" constant="80" id="6ft-Dj-IWu"/>
+                    </constraints>
+                </imageView>
+                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Some really long user name" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hml-7T-io9">
+                    <rect key="frame" x="0.0" y="240" width="320" height="21"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Location Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="S4j-eS-daM">
+                    <rect key="frame" x="0.0" y="269" width="320" height="25"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="25" id="FYK-xA-pFC"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                    <color key="textColor" red="0.80000000000000004" green="0.80000000000000004" blue="0.80000000000000004" alpha="1" colorSpace="calibratedRGB"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Tagline Label" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="248" translatesAutoresizingMaskIntoConstraints="NO" id="BwN-vC-fs2">
+                    <rect key="frame" x="36" y="299" width="248" height="60"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="60" id="Kba-Yg-3jk"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Ym4-vc-saC">
+                    <rect key="frame" x="0.0" y="508" width="320" height="60"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <subviews>
+                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="0" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="q8v-dq-SUo">
+                            <rect key="frame" x="0.0" y="10" width="100" height="21"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="0" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Wpx-X0-5Jf">
+                            <rect key="frame" x="220" y="10" width="100" height="21"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Followers" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="M55-46-8vZ">
+                            <rect key="frame" x="0.0" y="30" width="100" height="21"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Following" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FfM-Pc-jJD">
+                            <rect key="frame" x="220" y="30" width="100" height="21"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="sNC-Lw-hXp">
+                            <rect key="frame" x="105" y="13" width="110" height="34"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <state key="normal" title="Edit Button">
+                                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                            </state>
+                            <connections>
+                                <action selector="pressedEditProfile:" destination="iN0-l3-epB" eventType="touchUpInside" id="y1L-ny-eXu"/>
+                            </connections>
+                        </button>
+                    </subviews>
+                    <color key="backgroundColor" red="0.80000000000000004" green="0.80000000000000004" blue="0.80000000000000004" alpha="0.45000000000000001" colorSpace="calibratedRGB"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="60" id="rPj-Ir-2AL"/>
+                    </constraints>
+                </view>
+            </subviews>
+            <color key="backgroundColor" red="0.0" green="0.0" blue="0.8870894160583942" alpha="0.0" colorSpace="calibratedRGB"/>
+            <constraints>
+                <constraint firstItem="S4j-eS-daM" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="5yZ-Mo-8bM"/>
+                <constraint firstItem="hml-7T-io9" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="Eya-U8-XSA"/>
+                <constraint firstAttribute="trailing" secondItem="hml-7T-io9" secondAttribute="trailing" id="FdE-3p-aOK"/>
+                <constraint firstAttribute="centerX" secondItem="HqL-SU-35F" secondAttribute="centerX" id="N9c-oY-anG"/>
+                <constraint firstItem="Ym4-vc-saC" firstAttribute="top" secondItem="BwN-vC-fs2" secondAttribute="bottom" constant="149" id="P8M-GZ-tFV"/>
+                <constraint firstAttribute="trailing" secondItem="S4j-eS-daM" secondAttribute="trailing" id="bxf-i0-s4J"/>
+                <constraint firstAttribute="trailing" secondItem="BwN-vC-fs2" secondAttribute="trailing" constant="36" id="fSH-FK-53d"/>
+                <constraint firstAttribute="trailing" secondItem="Ym4-vc-saC" secondAttribute="trailing" id="iS6-ss-pJa"/>
+                <constraint firstItem="Ym4-vc-saC" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="jHa-Nh-rZ2"/>
+                <constraint firstItem="S4j-eS-daM" firstAttribute="top" secondItem="hml-7T-io9" secondAttribute="bottom" constant="8" id="jfO-8V-XP2"/>
+                <constraint firstItem="hml-7T-io9" firstAttribute="top" secondItem="HqL-SU-35F" secondAttribute="bottom" constant="17" id="kh6-xi-MzB"/>
+                <constraint firstItem="BwN-vC-fs2" firstAttribute="top" secondItem="S4j-eS-daM" secondAttribute="bottom" constant="5" id="ucy-tg-qkT"/>
+                <constraint firstAttribute="bottom" secondItem="Ym4-vc-saC" secondAttribute="bottom" id="v1z-9b-ZVb"/>
+                <constraint firstItem="BwN-vC-fs2" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="36" id="zMt-XM-xeB"/>
+            </constraints>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <connections>
+                <outlet property="bottomBufferConstraint" destination="P8M-GZ-tFV" id="17G-gS-H7S"/>
+                <outlet property="editProfileButton" destination="sNC-Lw-hXp" id="rjp-n3-Mhj"/>
+                <outlet property="followersHeader" destination="M55-46-8vZ" id="BaO-3B-1s1"/>
+                <outlet property="followersLabel" destination="q8v-dq-SUo" id="Pb6-7x-DSK"/>
+                <outlet property="followingHeader" destination="FfM-Pc-jJD" id="bOf-A7-ZQv"/>
+                <outlet property="followingLabel" destination="Wpx-X0-5Jf" id="Lyx-8G-0d9"/>
+                <outlet property="locationLabel" destination="S4j-eS-daM" id="aLe-Lj-xec"/>
+                <outlet property="nameLabel" destination="hml-7T-io9" id="kO0-EN-Kii"/>
+                <outlet property="profileImageView" destination="HqL-SU-35F" id="2Fr-8c-eL8"/>
+                <outlet property="taglineLabel" destination="BwN-vC-fs2" id="7ns-oC-EEN"/>
+            </connections>
+        </view>
+    </objects>
+</document>

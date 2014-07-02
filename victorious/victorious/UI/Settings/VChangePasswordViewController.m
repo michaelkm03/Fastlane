@@ -10,8 +10,7 @@
 #import "VObjectManager+Login.h"
 #import "VUser.h"
 #import "VThemeManager.h"
-
-NSString*   const   kAccountUpdateViewControllerDomain =   @"VAccountUpdateViewControllerDomain";
+#import "VConstants.h"
 
 @interface VChangePasswordViewController () <UITextFieldDelegate>
 @property (weak, nonatomic) IBOutlet UITextField*   oldPasswordTextField;
@@ -85,7 +84,7 @@ NSString*   const   kAccountUpdateViewControllerDomain =   @"VAccountUpdateViewC
         {
             NSString *errorString = NSLocalizedString(@"PasswordValidation", @"Invalid Password");
             NSDictionary*   userInfoDict = @{ NSLocalizedDescriptionKey : errorString };
-            *outError   =   [[NSError alloc] initWithDomain:kAccountUpdateViewControllerDomain
+            *outError   =   [[NSError alloc] initWithDomain:kVictoriousErrorDomain
                                                        code:VAccountUpdateViewControllerBadPasswordErrorCode
                                                    userInfo:userInfoDict];
         }

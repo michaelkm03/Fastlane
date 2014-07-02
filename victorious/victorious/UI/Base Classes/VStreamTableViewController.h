@@ -6,11 +6,11 @@
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
-#import "VFetchedResultsTableViewController.h"
-
 #import "VCreatePollViewController.h"
 #import "VAnimation.h"
 #import "VSequenceFilter.h"
+
+@class VStreamTableDataSource;
 
 typedef NS_ENUM(NSInteger, VStreamFilter)
 {
@@ -24,16 +24,19 @@ typedef NS_ENUM(NSInteger, VStreamFilter)
 - (void)streamWillDisappear;
 @end
 
-@interface VStreamTableViewController : VFetchedResultsTableViewController <VAnimation, VCreateSequenceDelegate>
+@interface VStreamTableViewController : UITableViewController <VAnimation, VCreateSequenceDelegate>
 
 - (NSArray*)sequenceCategories;
-- (VSequenceFilter*)currentFilter;
 - (NSString*)streamName;
 
-@property (nonatomic) VStreamFilter filterType;
+@property (nonatomic)         VStreamFilter    filterType;
+@property (nonatomic, strong) VSequenceFilter *currentFilter;
 
+@property (strong, nonatomic, readonly) VStreamTableDataSource* tableDataSource;
 @property (strong, nonatomic) VSequence* selectedSequence;
 @property (strong, nonatomic) NSArray* repositionedCells;;
 @property (weak, nonatomic) id<VStreamTableDelegate, UITableViewDelegate> delegate;
+
+- (void)refreshWithCompletion:(void(^)(void))completionBlock;
 
 @end

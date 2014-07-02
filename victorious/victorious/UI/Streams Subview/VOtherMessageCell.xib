@@ -13,7 +13,7 @@
                 <rect key="frame" x="0.0" y="0.0" width="320" height="254"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" image="ChatBubble" translatesAutoresizingMaskIntoConstraints="NO" id="EL4-cX-Dok">
+                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ChatBubble" translatesAutoresizingMaskIntoConstraints="NO" id="EL4-cX-Dok">
                         <rect key="frame" x="21" y="10" width="242" height="40"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     </imageView>
@@ -83,7 +83,7 @@
                     <constraint firstItem="CWw-hg-GSB" firstAttribute="centerX" secondItem="wD6-xk-K18" secondAttribute="centerX" id="h4r-Du-sCH"/>
                     <constraint firstItem="EL4-cX-Dok" firstAttribute="top" secondItem="eAW-cc-13j" secondAttribute="top" constant="10" id="mf2-hb-xi3"/>
                     <constraint firstItem="wD6-xk-K18" firstAttribute="centerX" secondItem="We0-sR-GmK" secondAttribute="centerX" id="oW1-Sg-E5M"/>
-                    <constraint firstItem="wD6-xk-K18" firstAttribute="top" secondItem="We0-sR-GmK" secondAttribute="bottom" constant="12" id="odA-WO-kvl"/>
+                    <constraint firstItem="wD6-xk-K18" firstAttribute="top" secondItem="We0-sR-GmK" secondAttribute="bottom" priority="900" constant="12" id="odA-WO-kvl"/>
                     <constraint firstItem="mlx-Sx-ed0" firstAttribute="top" secondItem="CJX-gU-fJU" secondAttribute="bottom" constant="5" id="v1z-Hs-5Ih"/>
                     <constraint firstItem="We0-sR-GmK" firstAttribute="top" secondItem="EL4-cX-Dok" secondAttribute="top" constant="12" id="xok-MG-Dxz"/>
                 </constraints>
@@ -93,6 +93,7 @@
                 <outlet property="chatBubble" destination="EL4-cX-Dok" id="CGa-hB-g7t"/>
                 <outlet property="dateLabel" destination="mlx-Sx-ed0" id="5tM-mA-JkR"/>
                 <outlet property="mediaPreview" destination="wD6-xk-K18" id="CZf-He-aUK"/>
+                <outlet property="mediaTopConstraint" destination="odA-WO-kvl" id="Qzm-J8-s5S"/>
                 <outlet property="messageHeightConstraint" destination="UD3-gZ-MRg" id="4gK-4M-IgW"/>
                 <outlet property="messageLabel" destination="We0-sR-GmK" id="rGl-gq-8aW"/>
                 <outlet property="messageWidthConstraint" destination="kPo-6V-vEb" id="8zP-hz-OMY"/>

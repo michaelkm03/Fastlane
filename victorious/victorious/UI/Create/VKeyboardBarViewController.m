@@ -9,9 +9,12 @@
 @import AVFoundation;
 
 #import "VCameraViewController.h"
+#import "VContentInputAccessoryView.h"
 #import "VObjectManager+Comment.h"
 #import "VKeyboardBarViewController.h"
 #import "VLoginViewController.h"
+
+static const NSInteger kCharacterLimit = 255;
 
 @interface VKeyboardBarViewController() <UITextViewDelegate>
 
@@ -32,6 +35,12 @@
 {
     [super viewDidLoad];
     [self.textView addObserver:self forKeyPath:NSStringFromSelector(@selector(contentSize)) options:0 context:nil];
+    
+    VContentInputAccessoryView *inputAccessoryView = [[VContentInputAccessoryView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, CGRectGetWidth(self.view.bounds), 44.0f)];
+    inputAccessoryView.textInputView = self.textView;
+    inputAccessoryView.maxCharacterLength = kCharacterLimit;
+    inputAccessoryView.tintColor = [UIColor colorWithRed:0.85f green:0.86f blue:0.87f alpha:1.0f];
+    self.textView.inputAccessoryView = inputAccessoryView;
 }
 
 - (void)viewWillLayoutSubviews

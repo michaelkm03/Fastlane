@@ -10,7 +10,7 @@
 #import "VRemixStitchViewController.h"
 #import "VCameraPublishViewController.h"
 #import "VCVideoPlayerViewController.h"
-#import "VThemeManager.h"
+#import "VSettingManager.h"
 #import "VConstants.h"
 #import "UIView+Masking.h"
 #import "VCameraViewController.h"
@@ -246,7 +246,7 @@
     NSURL*      target  =   [NSURL fileURLWithPath:[[NSTemporaryDirectory() stringByAppendingPathComponent:@"stitchedMovieSegment"] stringByAppendingPathExtension:@"mp4"] isDirectory:NO];
     [[NSFileManager defaultManager] removeItemAtURL:target error:nil];
     
-    NSString*   videoQuality = [[VThemeManager sharedThemeManager] themedExportVideoQuality];
+    NSString*   videoQuality = [[VSettingManager sharedManager] exportVideoQuality];
 
     self.exportSession  = [[AVAssetExportSession alloc] initWithAsset:mutableComposition presetName:videoQuality];
     self.exportSession.outputURL = target;

@@ -389,8 +389,9 @@ static NSString* CommentCache = @"CommentCache";
 {
     VComment *comment = [self.sortedComments objectAtIndex:indexPath.row];
     NSString *reportTitle = NSLocalizedString(@"Report Inappropriate", @"Comment report inappropriate button");
-    NSString *thumbUpTitle = NSLocalizedString(@"Thumbs Up", @"Comment thumbs up button");
-    NSString *thumbDownTitle = NSLocalizedString(@"Thumbs Down", @"Comment thumbs down button");
+    //TODO: remove thumbs up and down if we are not going to use them
+//    NSString *thumbUpTitle = NSLocalizedString(@"Thumbs Up", @"Comment thumbs up button");
+//    NSString *thumbDownTitle = NSLocalizedString(@"Thumbs Down", @"Comment thumbs down button");
     NSString *reply = NSLocalizedString(@"Reply", @"Comment reply button");
     
     UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil

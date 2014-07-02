@@ -183,7 +183,7 @@
     {
         if (success)
         {
-            NSArray* results = @[fullResponse[@"payload"][@"followers"], fullResponse[@"payload"][@"subscribed_to"]];
+            NSArray* results = @[fullResponse[kVPayloadKey][@"followers"], fullResponse[kVPayloadKey][@"subscribed_to"]];
             
             if (success)
                 success(operation, fullResponse, results);
@@ -204,7 +204,7 @@
 {
     VSuccessBlock fullSuccess = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
     {
-        NSArray*    results = @[fullResponse[@"payload"][@"relationship_exists"]];
+        NSArray*    results = @[fullResponse[kVPayloadKey][@"relationship_exists"]];
         
         if (success)
             success(operation, fullResponse, results);
@@ -222,14 +222,102 @@
 - (RKManagedObjectRequestOperation *)listOfRecommendedFriendsWithSuccessBlock:(VSuccessBlock)success
                                                                     failBlock:(VFailBlock)fail
 {
-    return nil;
+    VSuccessBlock fullSuccess = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
+    {
+        if (success)
+        {
+            success(operation, fullResponse, resultObjects);
+        }
+    };
+    
+    return [self GET:@"/api/friend/suggest"
+              object:nil
+          parameters:nil
+        successBlock:fullSuccess
+           failBlock:fail];
 }
 
-- (RKManagedObjectRequestOperation *)inviteFriends:(NSArray*)friendIDs
-                                  withSuccessBlock:(VSuccessBlock)success
-                                         failBlock:(VFailBlock)fail
+- (RKManagedObjectRequestOperation *)findFriendsByEmails:(NSArray *)emails
+                                        withSuccessBlock:(VSuccessBlock)success
+                                               failBlock:(VFailBlock)fail
 {
-    return nil;
+    NSDictionary *parameters = @{ @"emails": emails };
+    
+    VSuccessBlock fullSuccess = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
+    {
+        if (success)
+        {
+            success(operation, fullResponse, resultObjects);
+        }
+    };
+    
+    return [self POST:@"/api/friend/find_by_email"
+               object:nil
+           parameters:parameters
+         successBlock:fullSuccess
+            failBlock:fail];
+}
+
+- (RKManagedObjectRequestOperation *)findFriendsBySocial:(VSocialSelector)selector
+                                                   token:(NSString *)token
+                                                  secret:(NSString *)secret
+                                        withSuccessBlock:(VSuccessBlock)success
+                                               failBlock:(VFailBlock)fail
+{
+    NSString*       path;
+
+    switch (selector)
+    {
+        case kVFacebookSocialSelector:
+            path = [@"/api/friend/find/facebook" stringByAppendingPathComponent:token];
+            break;
+            
+        case kVTwitterSocialSelector:
+            path = [[@"/api/friend/find/twitter" stringByAppendingPathComponent:token] stringByAppendingPathComponent:secret];
+            break;
+            
+        case kVInstagramSocialSelector:
+            path = [@"/api/friend/find/instagram" stringByAppendingPathComponent:token];
+            break;
+            
+        default:
+            break;
+    }
+    
+    VSuccessBlock fullSuccess = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
+    {
+        if (success)
+        {
+            success(operation, fullResponse, resultObjects);
+        }
+    };
+    
+    return [self GET:path
+               object:nil
+           parameters:nil
+         successBlock:fullSuccess
+            failBlock:fail];
+}
+
+- (RKManagedObjectRequestOperation *)followUsers:(NSArray *)users
+                                withSuccessBlock:(VSuccessBlock)success
+                                       failBlock:(VFailBlock)fail
+{
+    NSDictionary *parameters = @{ @"target_user_ids": [users valueForKey:@"remoteId"] };
+    
+    VSuccessBlock fullSuccess = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
+    {
+        if (success)
+        {
+            success(operation, fullResponse, resultObjects);
+        }
+    };
+    
+    return [self POST:@"/api/follow/batchadd"
+               object:nil
+           parameters:parameters
+         successBlock:fullSuccess
+            failBlock:fail];
 }
 
 #pragma mark - helpers

@@ -16,6 +16,10 @@
                           successBlock:(VSuccessBlock)success
                              failBlock:(VFailBlock)fail;
 
+- (RKManagedObjectRequestOperation *)conversationByID:(NSNumber*)conversationID
+                                         successBlock:(VSuccessBlock)success
+                                            failBlock:(VFailBlock)fail;
+
 - (RKManagedObjectRequestOperation *)markConversationAsRead:(VConversation*)conversation
                                                successBlock:(VSuccessBlock)success
                                                   failBlock:(VFailBlock)fail;

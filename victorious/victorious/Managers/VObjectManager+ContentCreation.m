@@ -32,6 +32,11 @@
 
 @import AVFoundation;
 
+NSString * const VObjectManagerContentWillBeCreatedNotification = @"VObjectManagerContentWillBeCreatedNotification";
+NSString * const VObjectManagerContentWasCreatedNotification    = @"VObjectManagerContentWasCreatedNotification";
+NSString * const VObjectManagerContentFilterIDKey               = @"filterID";
+NSString * const VObjectManagerContentIndexKey                  = @"index";
+
 @implementation VObjectManager (ContentCreation)
 
 #pragma mark - Remix
@@ -44,7 +49,7 @@
     {
         if (completionBlock)
         {
-            NSURL* remixURL = [NSURL URLWithString:fullResponse[@"payload"][@"mp4_url"]];
+            NSURL* remixURL = [NSURL URLWithString:fullResponse[kVPayloadKey][@"mp4_url"]];
             completionBlock(YES, remixURL, nil);
         }
     };
@@ -92,7 +97,7 @@
     VSuccessBlock fullSuccess = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
     {
         
-        NSDictionary* payload = fullResponse[@"payload"];
+        NSDictionary* payload = fullResponse[kVPayloadKey];
         
         NSNumber* sequenceID = payload[@"sequence_id"];
         VSequence* newSequence = [self newPollWithID:sequenceID
@@ -155,13 +160,14 @@
     
     VSuccessBlock fullSuccess = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
     {
-        NSDictionary* payload = fullResponse[@"payload"];
+        NSDictionary* payload = fullResponse[kVPayloadKey];
         
         NSNumber* sequenceID = payload[@"sequence_id"];
         VSequence* newSequence = [self newSequenceWithID:sequenceID
                                                     name:name
                                              description:description
                                             mediaURLPath:[mediaUrl absoluteString]];
+        [self insertSequenceIntoFilters:newSequence];
         
         //Try to fetch the sequence
         [self fetchSequence:sequenceID successBlock:nil failBlock:nil];
@@ -206,19 +212,58 @@
 
     [self.mainUser addPostedSequencesObject:tempSequence];
     
+    return tempSequence;
+}
+
+- (void)insertSequenceIntoFilters:(VSequence *)tempSequence
+{
     //Add to home screen
     VSequenceFilter* homeFilter = [self sequenceFilterForCategories:[[VHomeStreamViewController sharedInstance] sequenceCategories]];
-    [(VSequenceFilter*)[tempSequence.managedObjectContext objectWithID:homeFilter.objectID] addSequencesObject:tempSequence];
+    [[NSNotificationCenter defaultCenter] postNotificationName:VObjectManagerContentWillBeCreatedNotification
+                                                        object:self
+                                                      userInfo:@{ VObjectManagerContentFilterIDKey: homeFilter.objectID,
+                                                                  VObjectManagerContentIndexKey:    @(0)
+                                                               }];
+    [(VSequenceFilter*)[tempSequence.managedObjectContext objectWithID:homeFilter.objectID] insertSequences:@[tempSequence] atIndexes:[NSIndexSet indexSetWithIndex:0]];
     
     //Add to community or owner (depends on user)
     NSArray* categoriesForSecondFilter = [self.mainUser isOwner] ? [[VOwnerStreamViewController sharedInstance] sequenceCategories]
                                                                  : [[VCommunityStreamViewController sharedInstance] sequenceCategories];
     VSequenceFilter* secondFilter = [self sequenceFilterForCategories:categoriesForSecondFilter];
-    [(VSequenceFilter*)[tempSequence.managedObjectContext objectWithID:secondFilter.objectID] addSequencesObject:tempSequence];
-
-    [tempSequence.managedObjectContext saveToPersistentStore:nil];
+    [[NSNotificationCenter defaultCenter] postNotificationName:VObjectManagerContentWillBeCreatedNotification
+                                                        object:self
+                                                      userInfo:@{ VObjectManagerContentFilterIDKey: secondFilter.objectID,
+                                                                  VObjectManagerContentIndexKey:    @(0)
+                                                               }];
+    [(VSequenceFilter*)[tempSequence.managedObjectContext objectWithID:secondFilter.objectID] insertSequences:@[tempSequence] atIndexes:[NSIndexSet indexSetWithIndex:0]];
     
-    return tempSequence;
+    //Add to home screen
+    VSequenceFilter* profileFilter = [self sequenceFilterForUser:self.mainUser];
+    [[NSNotificationCenter defaultCenter] postNotificationName:VObjectManagerContentWillBeCreatedNotification
+                                                        object:self
+                                                      userInfo:@{ VObjectManagerContentFilterIDKey: profileFilter.objectID,
+                                                                  VObjectManagerContentIndexKey:    @(0)
+                                                                  }];
+    [(VSequenceFilter*)[tempSequence.managedObjectContext objectWithID:profileFilter.objectID] insertSequences:@[tempSequence] atIndexes:[NSIndexSet indexSetWithIndex:0]];
+
+    
+    [tempSequence.managedObjectContext saveToPersistentStore:nil];
+
+    [[NSNotificationCenter defaultCenter] postNotificationName:VObjectManagerContentWasCreatedNotification
+                                                        object:self
+                                                      userInfo:@{ VObjectManagerContentFilterIDKey: homeFilter.objectID,
+                                                                  VObjectManagerContentIndexKey:    @(0)
+                                                                  }];
+    [[NSNotificationCenter defaultCenter] postNotificationName:VObjectManagerContentWasCreatedNotification
+                                                        object:self
+                                                      userInfo:@{ VObjectManagerContentFilterIDKey: secondFilter.objectID,
+                                                                  VObjectManagerContentIndexKey:    @(0)
+                                                                  }];
+    [[NSNotificationCenter defaultCenter] postNotificationName:VObjectManagerContentWasCreatedNotification
+                                                        object:self
+                                                      userInfo:@{ VObjectManagerContentFilterIDKey: profileFilter.objectID,
+                                                                  VObjectManagerContentIndexKey:    @(0)
+                                                                  }];
 }
 
 - (VSequence*)newPollWithID:(NSNumber*)remoteID
@@ -250,7 +295,7 @@
     [node addInteractionsObject:interaction];
     [tempPoll addNodesObject:node];
     
-    [tempPoll.managedObjectContext saveToPersistentStore:nil];
+    [self insertSequenceIntoFilters:tempPoll];
     return tempPoll;
 }
 
@@ -278,7 +323,7 @@
     VSuccessBlock fullSuccess = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
     {
         
-        NSDictionary* payload = fullResponse[@"payload"];
+        NSDictionary* payload = fullResponse[kVPayloadKey];
         NSNumber* commentID = @([payload[@"id"] integerValue]);
         
         VComment* tempComment = [self newCommentWithID:commentID onSequence:sequence text:text mediaURLPath:[mediaURL absoluteString]];
@@ -352,13 +397,13 @@
         VMessage* tempMessage;
         if ([fullResponse isKindOfClass:[NSDictionary class]])
         {
-            NSNumber* returnedId = @([fullResponse[@"payload"][@"conversation_id"] integerValue]);
+            NSNumber* returnedId = @([fullResponse[kVPayloadKey][@"conversation_id"] integerValue]);
             if (![conversation.remoteId isEqualToNumber:returnedId])
             {
                 conversation.remoteId = returnedId;
                 conversation.filterAPIPath = [@"/api/message/conversation/" stringByAppendingString:returnedId.stringValue];
             }
-            NSNumber* messageID = @([fullResponse[@"payload"][@"message_id"] integerValue]);
+            NSNumber* messageID = @([fullResponse[kVPayloadKey][@"message_id"] integerValue]);
             
             tempMessage = [self newMessageWithID:messageID conversation:conversation text:text mediaURLPath:[mediaURL absoluteString]];
             resultObjects = @[tempMessage];

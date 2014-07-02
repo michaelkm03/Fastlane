@@ -34,11 +34,7 @@ const   CGFloat     kMessageRowHeight           =   80;
     UIImageView* backgroundImageView = [[UIImageView alloc] initWithFrame:self.tableView.backgroundView.frame];
     backgroundImageView.contentMode = UIViewContentModeScaleAspectFill;
     
-    UIImage*    defaultBackgroundImage;
-    if (IS_IPHONE_5)
-        defaultBackgroundImage = [[[VThemeManager sharedThemeManager] themedImageForKey:kVMenuBackgroundImage5] applyLightEffect];
-    else
-        defaultBackgroundImage = [[[VThemeManager sharedThemeManager] themedImageForKey:kVMenuBackgroundImage] applyLightEffect];
+    UIImage*    defaultBackgroundImage = [[[VThemeManager sharedThemeManager] themedBackgroundImageForDevice] applyLightEffect];
     
     [backgroundImageView setBlurredImageWithURL:[NSURL URLWithString:self.conversation.user.pictureUrl]
                                     placeholderImage:defaultBackgroundImage

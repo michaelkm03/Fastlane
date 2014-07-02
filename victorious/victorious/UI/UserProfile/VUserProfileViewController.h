@@ -14,5 +14,6 @@
 
 + (instancetype)userProfileWithSelf;
 + (instancetype)userProfileWithUser:(VUser*)aUser;
++ (instancetype)userProfileWithFollowerOrFollowing:(VUser*)aUser;
 
 @end

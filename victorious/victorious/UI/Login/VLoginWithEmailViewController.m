@@ -8,7 +8,9 @@
 
 #import "VAnalyticsRecorder.h"
 #import "VLoginWithEmailViewController.h"
+#import "VLoginViewController.h"
 #import "VResetPasswordViewController.h"
+#import "VEnterResetTokenViewController.h"
 #import "VObjectManager+DirectMessaging.h"
 #import "VObjectManager+Sequence.h"
 #import "VObjectManager+Login.h"
@@ -17,12 +19,9 @@
 #import "VThemeManager.h"
 #import "UIImage+ImageEffects.h"
 #import "VLoginTransitionAnimator.h"
-#import "THPinViewController.h"
 #import "UIAlertView+VBlocks.h"
 
-NSString*   const   kVLoginErrorDomain =   @"VLoginErrorDomain";
-
-@interface VLoginWithEmailViewController () <UITextFieldDelegate, UINavigationControllerDelegate, UIAlertViewDelegate, THPinViewControllerDelegate>
+@interface VLoginWithEmailViewController () <UITextFieldDelegate, UINavigationControllerDelegate, UIAlertViewDelegate>
 @property (nonatomic, weak) IBOutlet    UITextField*    usernameTextField;
 @property (nonatomic, weak) IBOutlet    UITextField*    passwordTextField;
 @property (nonatomic, weak) IBOutlet    UIButton*       loginButton;
@@ -44,10 +43,7 @@ NSString*   const   kVLoginErrorDomain =   @"VLoginErrorDomain";
 {
     [super viewDidLoad];
 
-    if (IS_IPHONE_5)
-        self.view.layer.contents = (id)[[[VThemeManager sharedThemeManager] themedImageForKey:kVMenuBackgroundImage5] applyBlurWithRadius:25 tintColor:[UIColor colorWithWhite:1.0 alpha:0.7] saturationDeltaFactor:1.8 maskImage:nil].CGImage;
-    else
-        self.view.layer.contents = (id)[[[VThemeManager sharedThemeManager] themedImageForKey:kVMenuBackgroundImage] applyBlurWithRadius:25 tintColor:[UIColor colorWithWhite:1.0 alpha:0.7] saturationDeltaFactor:1.8 maskImage:nil].CGImage;
+    self.view.layer.contents = (id)[[[VThemeManager sharedThemeManager] themedBackgroundImageForDevice] applyBlurWithRadius:25 tintColor:[UIColor colorWithWhite:1.0 alpha:0.7] saturationDeltaFactor:1.8 maskImage:nil].CGImage;
 
     self.usernameTextField.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeaderFont];
     self.usernameTextField.textColor = [UIColor colorWithWhite:0.14 alpha:1.0];
@@ -155,7 +151,7 @@ NSString*   const   kVLoginErrorDomain =   @"VLoginErrorDomain";
         {
             NSString *errorString = NSLocalizedString(@"EmailValidation", @"Invalid Email Address");
             NSDictionary*   userInfoDict = @{ NSLocalizedDescriptionKey : errorString };
-            *outError   =   [[NSError alloc] initWithDomain:kVLoginErrorDomain
+            *outError   =   [[NSError alloc] initWithDomain:kVictoriousErrorDomain
                                                        code:VLoginBadEmailAddressErrorCode
                                                    userInfo:userInfoDict];
         }
@@ -174,7 +170,7 @@ NSString*   const   kVLoginErrorDomain =   @"VLoginErrorDomain";
         {
             NSString *errorString = NSLocalizedString(@"PasswordValidation", @"Invalid Password");
             NSDictionary*   userInfoDict = @{ NSLocalizedDescriptionKey : errorString };
-            *outError   =   [[NSError alloc] initWithDomain:kVLoginErrorDomain
+            *outError   =   [[NSError alloc] initWithDomain:kVictoriousErrorDomain
                                                        code:VLoginBadPasswordErrorCode
                                                    userInfo:userInfoDict];
         }
@@ -200,19 +196,12 @@ NSString*   const   kVLoginErrorDomain =   @"VLoginErrorDomain";
 - (void)didFailWithError:(NSError*)error
 {
     [[VAnalyticsRecorder sharedAnalyticsRecorder] sendEventWithCategory:kVAnalyticsEventCategoryUserAccount action:@"Failed Login Via Email" label:nil value:nil];
-    if(error.code == kVUserBannedError)
+    if(error.code != kVUserBannedError)
     {
-        UIAlertView*    alert   =   [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"UserBannedTitle", @"")
-                                                               message:NSLocalizedString(@"UserBannedMessage", @"")
-                                                              delegate:nil
-                                                     cancelButtonTitle:NSLocalizedString(@"OKButton", @"")
-                                                     otherButtonTitles:nil];
-        [alert show];
-    }
-    else
-    {
+        NSString*       message = [error.domain isEqualToString:kVictoriousErrorDomain] ? error.localizedDescription
+                                            : NSLocalizedString(@"LoginFailMessage", @"");
         UIAlertView*    alert   =   [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"LoginFail", @"")
-                                                               message:error.localizedDescription
+                                                               message:message
                                                               delegate:nil
                                                      cancelButtonTitle:NSLocalizedString(@"OKButton", @"")
                                                      otherButtonTitles:nil];
@@ -268,6 +257,7 @@ NSString*   const   kVLoginErrorDomain =   @"VLoginErrorDomain";
     self.resetAlert.alertViewStyle = UIAlertViewStylePlainTextInput;
     [self.resetAlert textFieldAtIndex:0].placeholder = NSLocalizedString(@"ResetPasswordPlaceholder", @"");
     [self.resetAlert textFieldAtIndex:0].keyboardType = UIKeyboardTypeEmailAddress;
+    [self.resetAlert textFieldAtIndex:0].returnKeyType = UIReturnKeyDone;
     [self.resetAlert show];
 }
 
@@ -277,19 +267,11 @@ NSString*   const   kVLoginErrorDomain =   @"VLoginErrorDomain";
     {
         if (buttonIndex == alertView.firstOtherButtonIndex)
         {
-            self.thanksAlert   =   [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Thanks", @"")
-                                                              message:NSLocalizedString(@"EmailSent", @"")
-                                                             delegate:self
-                                                    cancelButtonTitle:nil
-                                                    otherButtonTitles:NSLocalizedString(@"OKButton", @""), nil];
-            [self.thanksAlert show];
-
             [[VObjectManager sharedManager] requestPasswordResetForEmail:[alertView textFieldAtIndex:0].text
                                                             successBlock:^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
              {
                  self.deviceToken = resultObjects[0];
-                 if (self.alertDismissed)
-                     [self presentPINController];
+                 [self performSegueWithIdentifier:@"toEnterResetToken" sender:self];
              }
                                                                failBlock:^(NSOperation* operation, NSError* error)
              {
@@ -305,34 +287,12 @@ NSString*   const   kVLoginErrorDomain =   @"VLoginErrorDomain";
     else if (alertView == self.thanksAlert)
     {
         if (self.deviceToken)
-            [self presentPINController];
+            [self performSegueWithIdentifier:@"toEnterResetToken" sender:self];
+
         else
             self.alertDismissed = YES;
     }
     
-}
-
-#pragma mark - Support
-
-- (void)presentPINController
-{
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.4f * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
-        THPinViewController *pinViewController = [[THPinViewController alloc] initWithDelegate:self];
-        pinViewController.promptTitle = @"Enter PIN";
-        pinViewController.promptColor = [UIColor colorWithWhite:0.0 alpha:0.6];
-        pinViewController.view.tintColor = [UIColor colorWithWhite:0.0 alpha:0.6];
-        pinViewController.hideLetters = YES;
-
-        if (IS_IPHONE_5)
-            pinViewController.backgroundImage = [[[VThemeManager sharedThemeManager] themedImageForKey:kVMenuBackgroundImage5] applyBlurWithRadius:25 tintColor:[UIColor colorWithWhite:1.0 alpha:0.7] saturationDeltaFactor:1.8 maskImage:nil];
-        else
-            pinViewController.backgroundImage = [[[VThemeManager sharedThemeManager] themedImageForKey:kVMenuBackgroundImage] applyBlurWithRadius:25 tintColor:[UIColor colorWithWhite:1.0 alpha:0.7] saturationDeltaFactor:1.8 maskImage:nil];
-
-        self.modalPresentationStyle = UIModalPresentationCurrentContext;
-        pinViewController.translucentBackground = YES;
-        
-        [self presentViewController:pinViewController animated:YES completion:nil];
-    });
 }
 
 #pragma mark - UITextFieldDelegate
@@ -357,48 +317,6 @@ NSString*   const   kVLoginErrorDomain =   @"VLoginErrorDomain";
     [[self view] endEditing:YES];
 }
 
-#pragma mark - THPinViewControllerDelegate
-
-- (NSUInteger)pinLengthForPinViewController:(THPinViewController *)pinViewController
-{
-    return 4;
-}
-
-- (BOOL)pinViewController:(THPinViewController *)pinViewController isPinValid:(NSString *)pin
-{
-    self.userToken = pin;
-    return YES;
-}
-
-- (BOOL)userCanRetryInPinViewController:(THPinViewController *)pinViewController
-{
-    return NO;
-}
-
-- (void)pinViewControllerWillDismissAfterPinEntryWasSuccessful:(THPinViewController *)pinViewController
-{
-    [[VObjectManager sharedManager] resetPasswordWithUserToken:self.userToken
-                                                   deviceToken:self.deviceToken
-                                                  successBlock:^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
-     {
-         [self performSegueWithIdentifier:@"toResetPassword" sender:self];
-     }
-                                                     failBlock:^(NSOperation* operation, NSError* error)
-     {
-         UIAlertView*    alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"CannotVerify", @"")
-                                                            message:NSLocalizedString(@"IncorrectCode", @"")
-                                                           delegate:nil
-                                                  cancelButtonTitle:nil
-                                                  otherButtonTitles:NSLocalizedString(@"OKButton", @""), nil];
-         [alert show];
-     }];
-}
-
-- (void)pinViewControllerWillDismissAfterPinEntryWasCancelled:(THPinViewController *)pinViewController
-{
-    
-}
-
 #pragma mark - Navigation
 
 - (id<UIViewControllerAnimatedTransitioning>) navigationController:(UINavigationController *)navigationController
@@ -406,9 +324,23 @@ NSString*   const   kVLoginErrorDomain =   @"VLoginErrorDomain";
                                                 fromViewController:(UIViewController *)fromVC
                                                   toViewController:(UIViewController *)toVC
 {
-    VLoginTransitionAnimator*   animator = [[VLoginTransitionAnimator alloc] init];
-    animator.presenting = (operation == UINavigationControllerOperationPush);
-    return animator;
+    if ([toVC isKindOfClass:[VResetPasswordViewController class]])
+    {
+        VLoginTransitionAnimator*   animator = [[VLoginTransitionAnimator alloc] init];
+        animator.presenting = (operation == UINavigationControllerOperationPush);
+        return animator;
+    }
+    else if ([toVC isKindOfClass:[VEnterResetTokenViewController class]])
+    {
+        ((VEnterResetTokenViewController*)toVC).deviceToken = self.deviceToken;
+    }
+    else if ([toVC isKindOfClass:[VLoginViewController class]])
+    {
+        VLoginTransitionAnimator*   animator = [[VLoginTransitionAnimator alloc] init];
+        animator.presenting = (operation == UINavigationControllerOperationPush);
+        return animator;
+    }
+    return nil;
 }
 
 @end

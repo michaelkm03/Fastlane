@@ -33,12 +33,14 @@
 "PasswordNotMatching"   =   "Passwords do not match";
 "PollAlreadyAnswered"   =   "Poll result was already answered";
 "LoginFail"             =   "Login Failed";
+"LoginFailMessage"      =   "Opps!  Something has gone wrong.";
 "SignupFail"            =   "Account Creation Failed";
 "AccountUpdateFail"     =   "Account Update Failed";
 "ProfileSaveFail"       =   "Your profile information could not be saved because of a server error";
 "ProfileSave"           =   "Uploading your Profile";
 "ProfileIncomplete"     =   "Profile Incomplete";
 "ProfileRequired"       =   "You must complete your profile.";
+"ProfileUpdateFailed"   =   "Profile Update Failed";
 
 "WereSorry"             =   "We're Sorry";
 "ErrorOccured"          =   "For some reason we can't connect to the server.  Please try again later!";
@@ -48,6 +50,9 @@
 "EmailFail"             =   "E-mail failed to send";
 "SMSFail"               =   "SMS failed to send";
 "CouldNotSend"          =   "Message was not sent";
+
+"Missing Content"           =   "Uh Oh!";
+"Missing Content Message"   =   "We can't find what you're looking for!";
 
 "NoMessagesTitle"       =   "NO MESSAGES YET";
 "NoMessagesMessage"     =   "You can send messages to anyone on the app!  Just go to their profile and click the compose icon in the top right corner.";
@@ -70,8 +75,8 @@
 "TwitterDeniedTitle"    =   "Could not access your Twitter account";
 "TwitterDenied"         =   "Please grant access to your Twitter account in Settings -> Twitter";
 
-"NoTwitterTitle"        =   "Can't find a Twitter Account!";
-"NoTwitterMessage"      =   "Please log into the device settings and add a new twitter account";
+"NoTwitterTitle"        =   "Can't find a Twitter account!";
+"NoTwitterMessage"      =   "Please open your device settings and add a new Twitter account";
 
 "HelpNeeded"            =   "I need help with...";
 
@@ -170,14 +175,17 @@
 "follow"                =   "Follow";
 
 "ResetPassword"         =   "Reset Password";
-"ResetPasswordPrompt"   =   "Please enter your e-mail address";
+"ResetPasswordPrompt"   =   "Please enter your e-mail address.";
 "ResetPasswordPlaceholder" = "E-mail Address";
+
+"EnterResetCodeMessage" =   "An email was sent to this address containing reset password instructions.";
+"EnterCodeTitle"        =   "ENTER CODE";
+"ResendEmail"           =   "Resend Email";
 
 "EmailNotFound"         =   "That E-mail address was not found. Please check that you are using the e-mail account you used to create this account.";
 "Thanks"                =   "Thanks!";
-"EmailSent"             =   "An e-mail was sent to this address which contains a 4-digit code to use to verify your account.";
 "CannotVerify"          =   "Cannot Verify Account";
-"IncorrectCode"         =   "The 4-digit code used for account verfication is incorrect.";
+"IncorrectCode"         =   "The code used for account verification is incorrect.";
 
 "IncorrectOldPassword"  =   "The current password is incorrect.";
 
@@ -191,14 +199,26 @@
 "InviteFriendsSubject"  =   "Invite Friends";
 "InviteFriendsBody"     =   "Invite........................";
 
-"AccessContactsDenied"  =   "Access to Contacts Denied";
-"CantReadEmailAddresses" =  "You will need to allow this app to access your contacts in your Privacy Settings";
+"FindContacts"          =   "Search and invite your friends from your contacts";
+"Access Your Contacts"  =   "Access Your Contacts";
+
+"AccessContactsDenied"  =   "To search for friends using your address book, please grant access by going to Settings -> Privacy -> Contacts";
+"AccessContactsRestricted" =  "Unable access contacts due to restrictions on your device.";
+
+"FindFBFriends"         =   "Add your friends from Facebook by connecting your account";
+"Connect to Facebook"   =   "Connect to Facebook";
+
+"FindTwitterFriends"    =   "Add your friends from Twitter by connecting your account";
+"Connect to Twitter"    =   "Connect to Twitter";
+
+"FindInstagramFriends"  =   "Add your friends from Instagram";
+"Connect to Instagram"  =   "Connect to Instagram";
 
 "Logout"                =   "Log Out";
 "Login"                 =   "Log In";
 
-"UserBannedTitle"       =   "You have been banned.";
-"UserBannedMessage"     =   "You account has been banned for violating our EULA";
+"UserBannedTitle"       =   "Ruh Roh!";
+"UserBannedMessage"     =   "Unfortunately, you're a banned community member. You'll still be able to view content, but will not be able to post or interact with others.";
 
 "AddDescription"        =   "Add a description... and don't forget #hashtags";
 "AddDescriptionAnchor"  =   "#hashtags";
@@ -208,4 +228,9 @@
 
 "Version"               =   "Version %@";
 
+"ToSText"               =   "Terms of Service";
+"ToSAgreement"          =   "I'm at least 13 years old and agree to Terms of Service";
+
+"NoFriends"             =   "No Matches";
+"NoFriendsDetail"       =   "We could not find any of your friends who use our app. Go ahead and invite them!";
 

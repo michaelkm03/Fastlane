@@ -46,14 +46,7 @@ static const NSUInteger kRetryAttempts = 5;
 {
     [super viewDidLoad];
     
-    if (IS_IPHONE_5)
-    {
-        self.backgroundImageView.image = (id)[[VThemeManager sharedThemeManager] themedImageForKey:kVMenuBackgroundImage5];
-    }
-    else
-    {
-        self.backgroundImageView.image = (id)[[VThemeManager sharedThemeManager] themedImageForKey:kVMenuBackgroundImage];
-    }
+    self.backgroundImageView.image = [[VThemeManager sharedThemeManager] themedBackgroundImageForDevice];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reachabilityChanged:) name:kVReachabilityChangedNotification object:nil];
 }

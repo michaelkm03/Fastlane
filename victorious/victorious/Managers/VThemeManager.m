@@ -7,25 +7,13 @@
 //
 
 #import "VThemeManager.h"
-#import <AVFoundation/AVAssetExportSession.h>
-#import <AVFoundation/AVCaptureSession.h>
+
+#import "VConstants.h"
 
 #pragma mark - new theme constants
 NSString*   const   kVThemeManagerThemeDidChange        =   @"VThemeManagerThemeDidChange";
 
-NSString*   const   kVChannelURLAbout                   =   @"channel.url.about";
-NSString*   const   kVChannelURLPrivacy                 =   @"channel.url.privacy";
-NSString*   const   kVChannelURLAcknowledgements        =   @"channel.url.acknowledgements";
-NSString*   const   kVChannelURLSupport                 =   @"channel.url.support";
 NSString*   const   kVChannelName                       =   @"channel.name";
-NSString*   const   kVAppStoreURL                       =   @"appstore.url";
-
-NSString*   const   kVCaptureVideoQuality               =   @"capture";
-NSString*   const   kVExportVideoQuality                =   @"remix";
-
-NSString*   const   kVAgreementText                     =   @"agreement.text";
-NSString*   const   kVAgreementLinkText                 =   @"agreement.linkText";
-NSString*   const   kVAgreementLink                     =   @"agreement.link";
 
 NSString*   const   kVMenuBackgroundImage               =   @"Default";
 NSString*   const   kVMenuBackgroundImage5              =   @"Default-568h";
@@ -110,7 +98,12 @@ NSString*   const   kVNewThemeKey                       =   @"kVNewTheme";
     
     [newTheme enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop)
      {
-         [[NSUserDefaults standardUserDefaults] setObject:obj forKey:key];
+         BOOL valid = YES;
+         if ([obj respondsToSelector:@selector(length)])
+             valid = ((NSString*)obj).length;
+         
+         if (obj && valid)
+             [[NSUserDefaults standardUserDefaults] setObject:obj forKey:key];
      }];
     
     [[NSUserDefaults standardUserDefaults] setObject:nil forKey:kVNewThemeKey];
@@ -220,6 +213,15 @@ NSString*   const   kVNewThemeKey                       =   @"kVNewTheme";
 
 #pragma mark - Other
 
+- (UIImage*)themedBackgroundImageForDevice
+{
+    
+    if (IS_IPHONE_5)
+        return [self themedImageForKey:kVMenuBackgroundImage5];
+    else
+        return [self themedImageForKey:kVMenuBackgroundImage];
+}
+
 - (UIColor *)themedColorForKey:(NSString *)key
 {
     NSDictionary*   colorDictionary =   [self themedValueForKey:key];
@@ -267,37 +269,11 @@ NSString*   const   kVNewThemeKey                       =   @"kVNewTheme";
     if (0 == fontSize)
         fontSize = [UIFont systemFontSize];
     
-    if (0 == fontName.length)
+    UIFont* font = [UIFont fontWithName:fontName size:fontSize];
+    if (font)
+        return font;
+    else
         return [UIFont systemFontOfSize:fontSize];
-
-    return [UIFont fontWithName:fontName size:fontSize];
 }
 
-- (NSString *)themedExportVideoQuality
-{
-    NSString*   value   =   [self themedStringForKey:kVExportVideoQuality];
-    
-    if ([value isEqualToString:@"low"])
-        return  AVAssetExportPresetLowQuality;
-    else if ([value isEqualToString:@"medium"])
-        return  AVAssetExportPresetMediumQuality;
-    else if ([value isEqualToString:@"high"])
-        return  AVAssetExportPresetHighestQuality;
-    else
-        return AVAssetExportPresetMediumQuality;
-}
-
-- (NSString *)themedCapturedVideoQuality
-{
-    NSString*   value   =   [self themedStringForKey:kVCaptureVideoQuality];
-
-    if ([value isEqualToString:@"low"])
-        return  AVCaptureSessionPresetLow;
-    else if ([value isEqualToString:@"medium"])
-        return  AVCaptureSessionPresetMedium;
-    else if ([value isEqualToString:@"high"])
-        return  AVCaptureSessionPresetHigh;
-    else
-        return AVCaptureSessionPresetMedium;
-}
 @end

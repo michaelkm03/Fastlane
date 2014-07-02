@@ -7,6 +7,7 @@
 //
 
 #import "TWAPIManager.h"
+#import "VFacebookManager.h"
 #import "VObjectManager+Login.h"
 #import "VUser.h"
 #import "VUserManager.h"
@@ -48,7 +49,7 @@ static NSString * const kKeychainServiceName          = @"com.getvictorious.VUse
     {
         case kVLastLoginTypeFacebook:
         {
-            [self loginViaFacebookAccountWithIdentifier:identifier onCompletion:completion onError:errorBlock];
+            [self loginViaFacebookWithStoredToken:YES onCompletion:completion onError:errorBlock];
             break;
         }
             
@@ -80,87 +81,65 @@ static NSString * const kKeychainServiceName          = @"com.getvictorious.VUse
 
 - (void)loginViaFacebookOnCompletion:(VUserManagerLoginCompletionBlock)completion onError:(VUserManagerLoginErrorBlock)errorBlock
 {
-    [self loginViaFacebookAccountWithIdentifier:nil onCompletion:completion onError:errorBlock];
+    [self loginViaFacebookWithStoredToken:NO onCompletion:completion onError:errorBlock];
 }
 
-- (void)loginViaFacebookAccountWithIdentifier:(NSString *)identifier onCompletion:(VUserManagerLoginCompletionBlock)completion onError:(VUserManagerLoginErrorBlock)errorBlock
+- (void)loginViaFacebookWithStoredToken:(BOOL)stored onCompletion:(VUserManagerLoginCompletionBlock)completion onError:(VUserManagerLoginErrorBlock)errorBlock
 {
-    ACAccountStore *accountStore = [[ACAccountStore alloc] init];
-    ACAccountType *accountType = [accountStore accountTypeWithAccountTypeIdentifier:ACAccountTypeIdentifierFacebook];
-    
-    if (!accountType.accessGranted)
+    void (^successBlock)() = ^(void)
     {
-        if (errorBlock)
+        __block BOOL created = YES;
+        VSuccessBlock success = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
         {
-            errorBlock(nil);
-        }
-        return;
-    }
+            VUser *user = [resultObjects firstObject];
+            if ([user isKindOfClass:[VUser class]])
+            {
+                [[NSUserDefaults standardUserDefaults] setInteger:kVLastLoginTypeFacebook forKey:kLastLoginTypeUserDefaultsKey];
+                if (completion)
+                {
+                    completion(user, created);
+                }
+            }
+            else if (errorBlock)
+            {
+                errorBlock(nil);
+            }
+        };
+        VFailBlock failed = ^(NSOperation* operation, NSError* error)
+        {
+            if (error.code == kVAccountAlreadyExistsError)
+            {
+                created = NO;
+                [[VObjectManager sharedManager] loginToFacebookWithToken:[[VFacebookManager sharedFacebookManager] accessToken]
+                                                            SuccessBlock:success
+                                                               failBlock:^(NSOperation* operation, NSError* error)
+                {
+                    if (errorBlock)
+                    {
+                        errorBlock(error);
+                    }
+                }];
+            }
+            else if (errorBlock)
+            {
+                errorBlock(error);
+            }
+        };
+        [[VObjectManager sharedManager] createFacebookWithToken:[[VFacebookManager sharedFacebookManager] accessToken]
+                                                   SuccessBlock:success
+                                                      failBlock:failed];
+    };
 
-    ACAccount *facebookAccount;
-    if (identifier)
+    if (stored)
     {
-        facebookAccount = [accountStore accountWithIdentifier:identifier];
+        [[VFacebookManager sharedFacebookManager] loginWithStoredTokenOnSuccess:successBlock onFailure:errorBlock];
     }
     else
     {
-        NSArray *accounts = [accountStore accountsWithAccountType:accountType];
-        facebookAccount = [accounts lastObject];
+        [[VFacebookManager sharedFacebookManager] loginWithBehavior:FBSessionLoginBehaviorUseSystemAccountIfPresent
+                                                          onSuccess:successBlock
+                                                          onFailure:errorBlock];
     }
-    
-    if (!facebookAccount)
-    {
-        if (errorBlock)
-        {
-            errorBlock(nil);
-        }
-        return;
-    }
-    
-    ACAccountCredential *fbCredential = [facebookAccount credential];
-    NSString *accessToken = [fbCredential oauthToken];
-    
-    __block BOOL created = YES;
-    VSuccessBlock success = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
-    {
-        VUser *user = [resultObjects firstObject];
-        if ([user isKindOfClass:[VUser class]])
-        {
-            [[NSUserDefaults standardUserDefaults] setInteger:kVLastLoginTypeFacebook   forKey:kLastLoginTypeUserDefaultsKey];
-            [[NSUserDefaults standardUserDefaults] setObject:facebookAccount.identifier forKey:kAccountIdentifierDefaultsKey];
-            if (completion)
-            {
-                completion(user, created);
-            }
-        }
-        else if (errorBlock)
-        {
-            errorBlock(nil);
-        }
-    };
-    VFailBlock failed = ^(NSOperation* operation, NSError* error)
-    {
-        if (error.code == kVAccountAlreadyExistsError)
-        {
-            created = NO;
-            [[VObjectManager sharedManager] loginToFacebookWithToken:accessToken
-                                                        SuccessBlock:success
-                                                           failBlock:^(NSOperation* operation, NSError* error)
-             {
-                 if (errorBlock)
-                 {
-                     errorBlock(error);
-                 }
-             }];
-        }
-        else if (errorBlock)
-        {
-            errorBlock(error);
-        }
-    };
-    [[VObjectManager sharedManager] createFacebookWithToken:accessToken
-                                               SuccessBlock:success
-                                                  failBlock:failed];
 }
 
 - (void)loginViaTwitterOnCompletion:(VUserManagerLoginCompletionBlock)completion onError:(VUserManagerLoginErrorBlock)errorBlock
@@ -207,18 +186,8 @@ static NSString * const kKeychainServiceName          = @"com.getvictorious.VUse
         }
          
         NSString *responseStr = [[NSString alloc] initWithData:responseData encoding:NSUTF8StringEncoding];
-         
-        NSArray *parts = [responseStr componentsSeparatedByString:@"&"];
-        NSMutableDictionary* parsedData = [[NSMutableDictionary alloc] initWithCapacity:[parts count]];
-        for (NSString* part in parts)
-        {
-            NSArray* data = [part componentsSeparatedByString:@"="];
-            if ([data count] < 2)
-                continue;
-             
-            [parsedData setObject:data[1] forKey:data[0]];
-        }
-         
+        NSDictionary *parsedData = RKDictionaryFromURLEncodedStringWithEncoding(responseStr, NSUTF8StringEncoding);
+
         NSString* oauthToken = [parsedData objectForKey:@"oauth_token"];
         NSString* tokenSecret = [parsedData objectForKey:@"oauth_token_secret"];
         NSString* twitterId = [parsedData objectForKey:@"user_id"];
