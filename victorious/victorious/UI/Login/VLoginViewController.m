@@ -18,6 +18,9 @@
 #import "VSignupTransitionAnimator.h"
 #import "UIImage+ImageCreation.h"
 
+#import "VLoginWithEmailViewController.h"
+#import "VSignupWithEmailViewController.h"
+
 @import Accounts;
 @import Social;
 
@@ -36,8 +39,6 @@
 @property (nonatomic, weak) IBOutlet    UIButton*       loginEmailButton;
 
 @property (nonatomic, assign)           VLoginType      loginType;
-@property (nonatomic, assign)           BOOL            animateToLogin;
-@property (nonatomic, assign)           BOOL            animateToSignup;
 @end
 
 @implementation VLoginViewController
@@ -287,13 +288,11 @@
 
 - (IBAction)emailClicked:(id)sender
 {
-    self.animateToLogin = YES;
     [self performSegueWithIdentifier:@"toEmailLogin" sender:self];
 }
 
 - (IBAction)signup:(id)sender
 {
-    self.animateToSignup = YES;
     [self performSegueWithIdentifier:@"toSignup" sender:self];
 }
 
@@ -326,19 +325,15 @@
                                                fromViewController:(UIViewController *)fromVC
                                                  toViewController:(UIViewController *)toVC
 {
-    if (self.animateToLogin)
+    if ([toVC isKindOfClass:[VLoginWithEmailViewController class]])
     {
-        self.animateToLogin = NO;
-        
         VLoginTransitionAnimator*   animator = [[VLoginTransitionAnimator alloc] init];
         animator.presenting = (operation == UINavigationControllerOperationPush);
         return animator;
     }
     
-    if (self.animateToSignup)
+    if ([toVC isKindOfClass:[VSignupWithEmailViewController class]])
     {
-        self.animateToSignup = NO;
-        
         VSignupTransitionAnimator* animator = [[VSignupTransitionAnimator alloc] init];
         animator.presenting = (operation == UINavigationControllerOperationPush);
         return animator;
