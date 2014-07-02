@@ -37,37 +37,33 @@ typedef NS_ENUM(NSUInteger, VPlaybackSpeed)
     kVPlaybackDoubleSpeed   =   2
 };
 
-static NSString* const kVictoriousErrorDomain   = @"com.getvictorious.victoriOS";
+#pragma mark - UI constants
+static NSUInteger const VConstantsMessageLength         = 140;
+static NSUInteger const VConstantsPollAnswerLength      = 25;
+static NSUInteger const VConstantsInputAccessoryHeight  = 44.0;
 
-static NSString* const kVUserAgentHeader        = @"User-Agent";
-
-static NSString* const kVPayloadKey             = @"payload";
-
-static NSUInteger const VConstantsMessageLength     = 140;
-static NSUInteger const VConstantsPollAnswerLength = 25;
-static NSUInteger const VConstantsInputAccessoryHeight = 44.0;
-
-static CGFloat const VConstantsMaximumVideoDuration = 15.0;
-
-static NSUInteger const kFeaturedTableCellHeight = 180;
+static NSUInteger const kFeaturedTableCellHeight    = 180;
 static NSUInteger const kStreamDoublePollCellHeight = 214;
-static NSUInteger const kStreamPollCellHeight = 320;
-static NSUInteger const kStreamYoutubeCellHeight = 180;
-static NSUInteger const kStreamViewCellHeight = 320;
+static NSUInteger const kStreamPollCellHeight       = 320;
+static NSUInteger const kStreamYoutubeCellHeight    = 180;
+static NSUInteger const kStreamViewCellHeight       = 320;
 
-//TODO: update these 2 with real numbers
-static NSUInteger const kStreamCommentHeaderHeight = 80;
-static NSUInteger const kStreamCommentCellHeight = 110;
+#pragma mark - Error Codes
+static NSString*  const kVictoriousErrorDomain          = @"com.getvictorious.victoriOS";
 
+static NSUInteger const kVStillTranscodingError         = 5500;
 static NSUInteger const kVConversationDoesNotExistError = 5000;
 
-static NSUInteger const kVStillTranscodingError = 5500;
-static NSUInteger const kVAccountAlreadyExistsError = 1003;
-static NSUInteger const kVUserBannedError = 1007;
-static NSUInteger const kVUnauthoizedError = 401;
-static NSUInteger const kVUpgradeRequiredError = 426;
+static NSUInteger const kVAccountAlreadyExistsError     = 1003;
+static NSUInteger const kVPollAlreadyAnsweredError      = 1005;
+static NSUInteger const kVUserBannedError               = 1007;
 
+static NSUInteger const kVUpgradeRequiredError          = 426;
+static NSUInteger const kVUnauthoizedError              = 401;
+
+#pragma mark - App ID keys
 static NSUInteger  const   kDevAppID                = 1;
+
 static NSString*   const   kVictoriousAppIDKey      = @"VictoriousAppID";
 static NSString*   const   kStagingAppIDKey         = @"StagingAppID";
 static NSString*   const   kQAAppIDKey              = @"QAAppID";
@@ -80,10 +76,14 @@ static NSString*   const   kTestflightReleaseToken  = @"TestflightReleaseAppToke
 
 static NSString*   const   kGAID                    = @"GAID";
 
-static NSString*   const   kRemoteIdKey         = @"remoteId";
-static NSString*   const   kReleasedAtKey       = @"releasedAt";
-static NSString*   const   kDisplayOrderKey     = @"display_order";
+#pragma mark - API Payload keys
+static NSString*    const   kVUserAgentHeader    = @"User-Agent";
+static NSString*    const   kVPayloadKey         = @"payload";
+static NSString*    const   kRemoteIdKey         = @"remoteId";
+static NSString*    const   kReleasedAtKey       = @"releasedAt";
+static NSString*    const   kDisplayOrderKey     = @"display_order";
 
+#pragma mark - Media Constants
 static NSString* const VConstantsMediaTypeYoutube   = @"youtube_video_id";
 static NSString* const VConstantsMediaTypeVideo     = @"video";
 static NSString* const VConstantsMediaTypeImage     = @"image";
@@ -95,28 +95,28 @@ static NSString* const VConstantMediaExtensionJPEG      = @"jpeg";
 static NSString* const VConstantMediaExtensionMOV       = @"mov";
 static NSString* const VConstantMediaExtensionMP4       = @"mp4";
 
+static CGFloat const VConstantsMaximumVideoDuration = 15.0;
+
 static const CGFloat VConstantJPEGCompressionQuality    = 0.8f;
 
+#pragma mark - Sequence Categories
 static NSString*   const   kVOwnerPollCategory  = @"owner_poll";
 static NSString*   const   kVOwnerImageCategory = @"owner_image";
 static NSString*   const   kVOwnerVideoCategory = @"owner_video";
 static NSString*   const   kVOwnerRemixCategory = @"owner_video_remix";
 
-static NSString*   const   kVUGCPollCategory = @"ugc_poll";
+static NSString*   const   kVUGCPollCategory  = @"ugc_poll";
 static NSString*   const   kVUGCImageCategory = @"ugc_image";
 static NSString*   const   kVUGCVideoCategory = @"ugc_video";
 static NSString*   const   kVUGCRemixCategory = @"ugc_video_remix";
 
-static NSString*   const   kFeaturedCategory = @"featured";
+static NSString*   const   kTemporaryContentStatus = @"temp";
 
+#pragma mark - Access Levels
 static NSString*   const   kOwnerAccessLevel = @"api_owner";
 static NSString*   const   kUserAccessLevel = @"api_user";
 
-static NSString*   const   kTemporaryContentStatus = @"temp";
-
-static NSString*   const   kSearchCache = @"SearchCache";
-static NSString*   const   kVPagedFetchCache = @"PagedFetchCache";
-
+#pragma mark - Storyboard IDs
 static NSString*   const   kHomeStreamStoryboardID              = @"homestream";
 static NSString*   const   kOwnerStreamStoryboardID             = @"ownerstream";
 static NSString*   const   kCommunityStreamStoryboardID         = @"communitystream";
@@ -124,19 +124,14 @@ static NSString*   const   kStreamContainerID                   = @"streamcontai
 static NSString*   const   kInboxContainerID                    = @"inboxcontainer";
 static NSString*   const   kMessageContainerID                  = @"messagecontainer";
 static NSString*   const   kEnterResetTokenID                   = @"enterresettoken";
-
 static NSString*   const   kContentViewStoryboardID             = @"content";
-
 static NSString*   const   kEmotiveBallisticsBarStoryboardID    = @"emotiveballistics";
 static NSString*   const   kPollAnswerBarStoryboardID           = @"pollanswerbar";
 static NSString*   const   kCommentsContainerStoryboardID       = @"commentscontainer";
 static NSString*   const   kKeyboardBarStoryboardID             = @"keyboardbar";
 
-
+#pragma mark - Segue IDs
 static NSString*   const   kStreamContentSegueStoryboardID      = @"streamcontent";
 static NSString*   const   kContentCommentSegueStoryboardID     = @"contentcomment";
-
 static NSString*   const   kStreamCommentSegueID                = @"streamcomment";
-
-static NSString*   const   kUnwindToContentSegueID              = @"unwindToContentView";
 
