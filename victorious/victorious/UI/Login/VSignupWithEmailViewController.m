@@ -15,7 +15,7 @@
 #import "VUserManager.h"
 #import "VConstants.h"
 #import "UIImage+ImageEffects.h"
-#import "VSignupTransitionAnimation.h"
+#import "VSignupTransitionAnimator.h"
 
 @interface VSignupWithEmailViewController ()    <UITextFieldDelegate, TTTAttributedLabelDelegate>
 @property (weak, nonatomic) IBOutlet UITextField *emailTextField;
@@ -268,7 +268,7 @@
                                                 fromViewController:(UIViewController *)fromVC
                                                   toViewController:(UIViewController *)toVC
 {
-    VSignupTransitionAnimation*   animator = [[VSignupTransitionAnimation alloc] init];
+    VSignupTransitionAnimator*   animator = [[VSignupTransitionAnimator alloc] init];
     animator.presenting = (operation == UINavigationControllerOperationPush);
     return animator;
 }

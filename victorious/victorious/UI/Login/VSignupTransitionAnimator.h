@@ -8,6 +8,6 @@
 
 #import <Foundation/Foundation.h>
 
-@interface VSignupTransitionAnimation : NSObject    <UIViewControllerAnimatedTransitioning>
+@interface VSignupTransitionAnimator : NSObject    <UIViewControllerAnimatedTransitioning>
 @property (nonatomic)   BOOL    presenting;
 @end

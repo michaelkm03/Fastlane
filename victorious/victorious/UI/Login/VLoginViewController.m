@@ -15,7 +15,7 @@
 #import "VProfileCreateViewController.h"
 #import "VUserManager.h"
 #import "VLoginTransitionAnimator.h"
-#import "VSignupTransitionAnimation.h"
+#import "VSignupTransitionAnimator.h"
 #import "UIImage+ImageCreation.h"
 
 @import Accounts;
@@ -339,7 +339,7 @@
     {
         self.animateToSignup = NO;
         
-        VSignupTransitionAnimation* animator = [[VSignupTransitionAnimation alloc] init];
+        VSignupTransitionAnimator* animator = [[VSignupTransitionAnimator alloc] init];
         animator.presenting = (operation == UINavigationControllerOperationPush);
         return animator;
     }

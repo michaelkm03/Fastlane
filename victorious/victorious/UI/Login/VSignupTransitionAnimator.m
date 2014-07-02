@@ -6,9 +6,9 @@
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
-#import "VSignupTransitionAnimation.h"
+#import "VSignupTransitionAnimator.h"
 
-@implementation VSignupTransitionAnimation
+@implementation VSignupTransitionAnimator
 
 - (CGRect)rectForDismissedState:(id)transitionContext
 {
