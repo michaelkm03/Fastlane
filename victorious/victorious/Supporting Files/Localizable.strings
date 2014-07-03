@@ -66,6 +66,8 @@
 "NotFollowingTitle"     =   "RUH-ROH! YOU HAVEN'T FOLLOWED ANYONE YET";
 "NotFollowingMessage"   =   "Follow other people to see their content in your stream. It's a great way to find new content or make new friends.";
 
+
+"Facebook"              =   "Facebook";
 "FacebookDeniedTitle"   =   "Could not access your Facebook account";
 "FacebookDenied"        =   "Please grant access to your Facebook account in Settings -> Facebook";
 

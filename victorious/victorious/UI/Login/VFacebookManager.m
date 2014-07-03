@@ -134,6 +134,34 @@
     return [[[FBSession activeSession] accessTokenData] accessToken];
 }
 
+#pragma mark - Sharing
+- (void)shareLink:(NSURL*)link
+      description:(NSString*)description
+             name:(NSString*)name
+       previewUrl:(NSURL*)previewUrl
+{
+    FBLinkShareParams *params = [[FBLinkShareParams alloc] init];
+    params.link = link;
+    
+    // If the Facebook app is installed and we can present the share dialog
+    if ([FBDialogs canPresentShareDialogWithParams:params])
+    {
+        // Present the share dialog
+        [FBDialogs presentShareDialogWithLink:link
+                                         name:name
+                                      caption:nil
+                                  description:description
+                                      picture:previewUrl
+                                  clientState:nil
+                                      handler:nil];
+    }
+    else
+    {
+        // Present the feed dialog
+    }
+}
+
+
 #pragma mark - NSNotifications
 
 - (void)applicationDidBecomeActive:(NSNotification *)notification

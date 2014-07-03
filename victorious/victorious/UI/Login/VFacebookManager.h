@@ -48,4 +48,11 @@
  */
 - (NSString *)accessToken;
 
+/**
+ Presents the FB share dialog is the native app is install, else defaults to the web based flow
+ */
+- (void)shareLink:(NSURL*)link
+      description:(NSString*)description
+             name:(NSString*)name
+       previewUrl:(NSURL*)previewUrl;
 @end

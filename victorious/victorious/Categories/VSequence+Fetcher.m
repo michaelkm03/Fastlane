@@ -97,4 +97,9 @@
     return @(0);
 }
 
+- (NSURL*)deeplinkForContentView
+{
+    return [NSURL URLWithString:@""];
+}
+
 @end

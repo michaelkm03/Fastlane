@@ -29,7 +29,7 @@
 
 #import "UIActionSheet+VBlocks.h"
 
-#import "VSequence+UIActivityItemSource.h"
+#import "VFacebookActivity.h"
 
 static const CGFloat kMaximumContentViewOffset              = 154.0f;
 static const CGFloat kMediaViewHeight                       = 320.0f;
@@ -625,9 +625,10 @@ NSTimeInterval kVContentPollAnimationDuration = 0.2;
 
 - (IBAction)pressedShare:(id)sender
 {
+    VFacebookActivity* fbActivity = [[VFacebookActivity alloc] init];
+
     UIActivityViewController *activityViewController =
-    [[UIActivityViewController alloc] initWithActivityItems:@[self.sequence]
-                                      applicationActivities:nil];
+        [[UIActivityViewController alloc] initWithActivityItems:@[self.sequence] applicationActivities:@[fbActivity]];
     
     [self.navigationController presentViewController:activityViewController
                                        animated:YES
