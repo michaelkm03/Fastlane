@@ -780,7 +780,7 @@
                                 </constraints>
                             </view>
                             <view autoresizesSubviews="NO" opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="gdx-vD-Je7" userLabel="Media Superview">
-                                <rect key="frame" x="0.0" y="154" width="320" height="320"/>
+                                <rect key="frame" x="0.0" y="153" width="320" height="320"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="bEh-qP-DUl" userLabel="Media View">
@@ -823,7 +823,7 @@
                                 </constraints>
                             </view>
                             <view userInteractionEnabled="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="81Y-P5-SQ9" userLabel="Or Container View">
-                                <rect key="frame" x="0.0" y="154" width="320" height="414"/>
+                                <rect key="frame" x="0.0" y="153" width="320" height="415"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <subviews>
                                     <imageView userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="PollBarOr" translatesAutoresizingMaskIntoConstraints="NO" id="jl7-9k-rKO">
@@ -897,8 +897,8 @@
                                             <action selector="pressedShare:" destination="4V8-Qd-rfj" eventType="touchUpInside" id="ebn-66-d2m"/>
                                         </connections>
                                     </button>
-                                    <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="lkK-8n-fRh">
-                                        <rect key="frame" x="106" y="62" width="108" height="40"/>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="lkK-8n-fRh">
+                                        <rect key="frame" x="105" y="62" width="110" height="40"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="40" id="X0A-be-PJQ"/>
@@ -985,9 +985,9 @@
                             <constraint firstItem="xqp-3V-NIb" firstAttribute="leading" secondItem="82C-f9-lhe" secondAttribute="leading" id="N5p-dC-n0i"/>
                             <constraint firstAttribute="trailing" secondItem="81Y-P5-SQ9" secondAttribute="trailing" id="Ofc-el-3Lf"/>
                             <constraint firstAttribute="trailing" secondItem="Xzc-fo-Pc8" secondAttribute="trailing" id="QrV-5R-9aq"/>
+                            <constraint firstItem="gdx-vD-Je7" firstAttribute="top" secondItem="aAT-JQ-9wh" secondAttribute="bottom" id="TLD-cy-xHA"/>
                             <constraint firstItem="xqp-3V-NIb" firstAttribute="top" secondItem="mB2-Kx-N90" secondAttribute="bottom" id="XEh-9f-3nO"/>
                             <constraint firstItem="4Kr-fK-dGu" firstAttribute="top" secondItem="mB2-Kx-N90" secondAttribute="bottom" constant="154" id="cjf-8S-WD0"/>
-                            <constraint firstItem="gdx-vD-Je7" firstAttribute="top" secondItem="mB2-Kx-N90" secondAttribute="bottom" constant="154" placeholder="YES" id="eOF-Ue-ZDb"/>
                             <constraint firstItem="81Y-P5-SQ9" firstAttribute="leading" secondItem="82C-f9-lhe" secondAttribute="leading" id="g52-mZ-mqx"/>
                             <constraint firstItem="NhC-7g-uaI" firstAttribute="top" secondItem="mB2-Kx-N90" secondAttribute="bottom" placeholder="YES" id="h8I-x8-LCt"/>
                             <constraint firstItem="Xzc-fo-Pc8" firstAttribute="leading" secondItem="82C-f9-lhe" secondAttribute="leading" id="jPc-jb-yfD"/>

@@ -29,6 +29,8 @@
 
 #import "UIActionSheet+VBlocks.h"
 
+#import "VSequence+UIActivityItemSource.h"
+
 static const CGFloat kMaximumContentViewOffset              = 154.0f;
 static const CGFloat kMediaViewHeight                       = 320.0f;
 static const CGFloat kBarContainerViewHeight                =  60.0f;
@@ -623,7 +625,16 @@ NSTimeInterval kVContentPollAnimationDuration = 0.2;
 
 - (IBAction)pressedShare:(id)sender
 {
-//    [self collapseTitleAnimated:YES];
+    UIActivityViewController *activityViewController =
+    [[UIActivityViewController alloc] initWithActivityItems:@[self.sequence]
+                                      applicationActivities:nil];
+    
+    [self.navigationController presentViewController:activityViewController
+                                       animated:YES
+                                     completion:^{
+                                         
+                                     }];
+
 }
 
 - (IBAction)pressedRepost:(id)sender

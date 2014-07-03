@@ -296,6 +296,8 @@
 		BEDF0FC318DBC93A00750EF6 /* VAsset.m in Sources */ = {isa = PBXBuildFile; fileRef = BEDF0FC218DBC93A00750EF6 /* VAsset.m */; };
 		BEDF0FC618DBC93B00750EF6 /* VVoteType.m in Sources */ = {isa = PBXBuildFile; fileRef = BEDF0FC518DBC93B00750EF6 /* VVoteType.m */; };
 		BEDF0FC918DBCB5500750EF6 /* VVoteType+Fetcher.m in Sources */ = {isa = PBXBuildFile; fileRef = BEDF0FC818DBCB5500750EF6 /* VVoteType+Fetcher.m */; };
+		BEE4154D1965DC35001D070C /* VSequence+UIActivityItemSource.m in Sources */ = {isa = PBXBuildFile; fileRef = BEE4154C1965DC35001D070C /* VSequence+UIActivityItemSource.m */; };
+		BEE415501965FC92001D070C /* UIActivityViewController+VStatusBarHandling.m in Sources */ = {isa = PBXBuildFile; fileRef = BEE4154F1965FC92001D070C /* UIActivityViewController+VStatusBarHandling.m */; };
 		BEE604C1192D7D84003A0206 /* VInboxContainerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BEE604C0192D7D84003A0206 /* VInboxContainerViewController.m */; };
 		BEE800E918FCC5C200A7CFD7 /* VStreamTableViewController+ContentCreation.m in Sources */ = {isa = PBXBuildFile; fileRef = BEE800E818FCC5C200A7CFD7 /* VStreamTableViewController+ContentCreation.m */; };
 		BEE9C8B618CE4A6B0095C737 /* VPollAnswerBarViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BEE9C8B518CE4A6B0095C737 /* VPollAnswerBarViewController.m */; };
@@ -847,6 +849,10 @@
 		BEDF0FC518DBC93B00750EF6 /* VVoteType.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VVoteType.m; sourceTree = "<group>"; };
 		BEDF0FC718DBCB5500750EF6 /* VVoteType+Fetcher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "VVoteType+Fetcher.h"; sourceTree = "<group>"; };
 		BEDF0FC818DBCB5500750EF6 /* VVoteType+Fetcher.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "VVoteType+Fetcher.m"; sourceTree = "<group>"; };
+		BEE4154B1965DC35001D070C /* VSequence+UIActivityItemSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "VSequence+UIActivityItemSource.h"; sourceTree = "<group>"; };
+		BEE4154C1965DC35001D070C /* VSequence+UIActivityItemSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "VSequence+UIActivityItemSource.m"; sourceTree = "<group>"; };
+		BEE4154E1965FC92001D070C /* UIActivityViewController+VStatusBarHandling.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIActivityViewController+VStatusBarHandling.h"; sourceTree = "<group>"; };
+		BEE4154F1965FC92001D070C /* UIActivityViewController+VStatusBarHandling.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIActivityViewController+VStatusBarHandling.m"; sourceTree = "<group>"; };
 		BEE604BF192D7D84003A0206 /* VInboxContainerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VInboxContainerViewController.h; path = UI/Inbox/VInboxContainerViewController.h; sourceTree = "<group>"; };
 		BEE604C0192D7D84003A0206 /* VInboxContainerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VInboxContainerViewController.m; path = UI/Inbox/VInboxContainerViewController.m; sourceTree = "<group>"; };
 		BEE800E718FCC5C200A7CFD7 /* VStreamTableViewController+ContentCreation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "VStreamTableViewController+ContentCreation.h"; path = "UI/VStreamTableViewController+ContentCreation.h"; sourceTree = "<group>"; };
@@ -1600,6 +1606,10 @@
 				03484C061930294D00403FB1 /* NSURL+MediaType.m */,
 				03811D3219353486005687FF /* VAlertViewBlockDelegate.h */,
 				03811D3319353486005687FF /* VAlertViewBlockDelegate.m */,
+				BEE4154B1965DC35001D070C /* VSequence+UIActivityItemSource.h */,
+				BEE4154C1965DC35001D070C /* VSequence+UIActivityItemSource.m */,
+				BEE4154E1965FC92001D070C /* UIActivityViewController+VStatusBarHandling.h */,
+				BEE4154F1965FC92001D070C /* UIActivityViewController+VStatusBarHandling.m */,
 			);
 			path = Categories;
 			sourceTree = "<group>";
@@ -2231,6 +2241,7 @@
 				0385FEE618EF341D009FBD68 /* VImageSearchDataSource.m in Sources */,
 				BE171E201868C211004E5202 /* VObjectManager+Login.m in Sources */,
 				BEA31EE9192292F300A90A10 /* VComment+Fetcher.m in Sources */,
+				BEE415501965FC92001D070C /* UIActivityViewController+VStatusBarHandling.m in Sources */,
 				5FF9BE7F1893143D0054694B /* UIViewController+VSideMenuViewController.m in Sources */,
 				BE24782F193E9E8E0074191C /* VAbstractFilter+RestKit.m in Sources */,
 				031D86C41947BBB600CDB814 /* VForceUpgradeViewController.m in Sources */,
@@ -2291,6 +2302,7 @@
 				BEB52A8B18C80B8700AC5FE4 /* VContentToStreamAnimator.m in Sources */,
 				BE171E391868C266004E5202 /* NSManagedObject+RestKit.m in Sources */,
 				036AC8FE1959EA060086856B /* VFindTwitterFriendsTableViewController.m in Sources */,
+				BEE4154D1965DC35001D070C /* VSequence+UIActivityItemSource.m in Sources */,
 				3F14C45018BD2BD0001796B9 /* VCCameraFocusView.m in Sources */,
 				BED7F66518E0A6F800545DF6 /* TWAPIManager.m in Sources */,
 				03CF151A195B699700F6477B /* VTabInfo.m in Sources */,
