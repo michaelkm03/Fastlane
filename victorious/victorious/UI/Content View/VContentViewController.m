@@ -32,7 +32,6 @@
 static const CGFloat kMaximumContentViewOffset              = 154.0f;
 static const CGFloat kMediaViewHeight                       = 320.0f;
 static const CGFloat kBarContainerViewHeight                =  60.0f;
-static const CGFloat kDistanceBetweenTitleAndHR             =  14.5f;
 static const CGFloat kDistanceBetweenTitleAndCollapseButton =  42.5f;
 
 NSTimeInterval kVContentPollAnimationDuration = 0.2;
@@ -64,10 +63,17 @@ NSTimeInterval kVContentPollAnimationDuration = 0.2;
     UIView *maskingView = self.maskingView;
     [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[maskingView]|" options:0 metrics:nil views:NSDictionaryOfVariableBindings(maskingView)]];
     
-    for (UIButton* button in self.buttonCollection)
+    for (UIButton* button in [self.navButtonCollection arrayByAddingObjectsFromArray:self.actionButtonCollection])
     {
         [button setImage:[button.imageView.image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] forState:UIControlStateNormal];
         button.tintColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVContentTextColor];
+    }
+    
+    for (UIButton* button in self.actionButtonCollection)
+    {
+        [button.layer setBorderWidth:1.0];
+        [button.layer setBorderColor:[[UIColor colorWithWhite:.4 alpha:.2] CGColor]];
+        button.titleLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVLabel2Font];
     }
     
     [self resetView];
@@ -116,7 +122,7 @@ NSTimeInterval kVContentPollAnimationDuration = 0.2;
     self.pollViewYConstraint.constant = [self contentMediaViewOffset];
     if (!self.titleExpanded)
     {
-        self.topActionsViewHeightConstraint.constant = [self contentMediaViewOffset];
+        self.topActionsViewHeightConstraint.constant = [self contentMediaViewOffset] - CGRectGetHeight(self.topActionsView.frame);
     }
     
     [self.view layoutIfNeeded]; // Let auto-layout run again due to changing the frames above
@@ -305,8 +311,11 @@ NSTimeInterval kVContentPollAnimationDuration = 0.2;
         [self updateConstraintsForTextSize:self.descriptionLabel.locationForLastLineOfText];
         [self.view layoutIfNeeded];
         
+        for (UIButton* button in self.actionButtonCollection)
+            button.alpha = 0.0f;
+        
         self.descriptionLabel.alpha = 1.0f;
-        temporaryTitleView.alpha = 0;
+        temporaryTitleView.alpha = 0.0f;
     };
     void (^completion)(BOOL) = ^(BOOL finished)
     {
@@ -353,6 +362,9 @@ NSTimeInterval kVContentPollAnimationDuration = 0.2;
         self.topActionsViewHeightConstraint.constant = [self contentMediaViewOffset];
         [self updateConstraintsForTextSize:self.smallTextSize];
         [self.view layoutIfNeeded];
+        
+        for (UIButton* button in self.actionButtonCollection)
+            button.alpha = 1.0f;
         
         self.descriptionLabel.alpha = 1.0f;
         temporaryTitleView.alpha = 0;
@@ -422,7 +434,6 @@ NSTimeInterval kVContentPollAnimationDuration = 0.2;
 
 - (void)updateConstraintsForTextSize:(CGFloat)textSize
 {
-    self.hrVerticalSpacingConstraint.constant = textSize + kDistanceBetweenTitleAndHR;
     self.collapseButtonVerticalSpacingConstraint.constant = textSize + kDistanceBetweenTitleAndCollapseButton;
 }
 
@@ -608,6 +619,16 @@ NSTimeInterval kVContentPollAnimationDuration = 0.2;
 - (IBAction)pressedCollapse:(id)sender
 {
     [self collapseTitleAnimated:YES];
+}
+
+- (IBAction)pressedShare:(id)sender
+{
+//    [self collapseTitleAnimated:YES];
+}
+
+- (IBAction)pressedRepost:(id)sender
+{
+//    [self collapseTitleAnimated:YES];
 }
 
 #pragma mark - VInteractionManagerDelegate

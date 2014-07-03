@@ -36,7 +36,8 @@ extern NSTimeInterval kVContentPollAnimationDuration;
 @property (weak, nonatomic) IBOutlet VContentTitleTextView* descriptionLabel;
 @property (weak, nonatomic) IBOutlet UIView* barContainerView;
 
-@property (strong, nonatomic) IBOutletCollection(UIButton) NSArray* buttonCollection;
+@property (strong, nonatomic) IBOutletCollection(UIButton) NSArray* navButtonCollection;
+@property (strong, nonatomic) IBOutletCollection(UIButton) NSArray* actionButtonCollection;
 
 /**
  These constraints are set on the preview image only while a video is being played
@@ -53,7 +54,6 @@ extern NSTimeInterval kVContentPollAnimationDuration;
 @property (weak, nonatomic) IBOutlet UIButton*    collapseButton;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint* topActionsViewHeightConstraint;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint* pollViewYConstraint;
-@property (weak, nonatomic) IBOutlet NSLayoutConstraint* hrVerticalSpacingConstraint;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint* collapseButtonVerticalSpacingConstraint;
 @property (nonatomic)                CGFloat             smallTextSize; ///< The size of the title text when collapsed into 3 lines
 @property (nonatomic)                BOOL                collapsingOrExpanding; ///< YES during the animation block for a title expand/collapse operation
