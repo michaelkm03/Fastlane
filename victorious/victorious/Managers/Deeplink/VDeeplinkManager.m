@@ -14,6 +14,7 @@
 #import "VObjectManager+DirectMessaging.h"
 
 #import "VUser.h"
+#import "VSequence.h"
 
 #import "VHomeStreamViewController.h"
 #import "VStreamContainerViewController.h"
@@ -25,6 +26,8 @@
 #import "VCommentsContainerViewController.h"
 #import "UIViewController+VSideMenuViewController.h"
 #import "VEnterResetTokenViewController.h"
+
+static NSString* const kVContentDeeplinkScheme = @"//content/";
 
 @implementation VDeeplinkManager
 
@@ -242,5 +245,12 @@
     [root.contentViewController pushViewController:enterTokenVC animated:YES];
 }
 
+
+#pragma mark - Deeplink generation
+-(NSURL*)contentDeeplinkForSequence:(VSequence *)sequence
+{
+    //TODO: Fetch the actual deeplink prefix from the info.plist
+    return [NSURL URLWithString:[[@"qa-mp:" stringByAppendingString:kVContentDeeplinkScheme] stringByAppendingPathComponent:sequence.remoteId.stringValue]];
+}
 
 @end

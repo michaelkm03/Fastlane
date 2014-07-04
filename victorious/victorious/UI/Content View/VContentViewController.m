@@ -30,6 +30,7 @@
 #import "UIActionSheet+VBlocks.h"
 
 #import "VFacebookActivity.h"
+#import "VDeeplinkManager.h"
 
 static const CGFloat kMaximumContentViewOffset              = 154.0f;
 static const CGFloat kMediaViewHeight                       = 320.0f;
@@ -627,8 +628,16 @@ NSTimeInterval kVContentPollAnimationDuration = 0.2;
 {
     VFacebookActivity* fbActivity = [[VFacebookActivity alloc] init];
 
+    NSURL* deeplinkURL = [[VDeeplinkManager sharedManager] contentDeeplinkForSequence:self.sequence];
+    UIImage* previewImage = self.previewImage.image;
+    
     UIActivityViewController *activityViewController =
-        [[UIActivityViewController alloc] initWithActivityItems:@[self.sequence] applicationActivities:@[fbActivity]];
+        [[UIActivityViewController alloc] initWithActivityItems:@[self.sequence,
+                                                                  NSLocalizedString(@"CheckOutContent", nil),
+                                                                  previewImage, deeplinkURL]
+                                          applicationActivities:@[fbActivity]];
+    
+    activityViewController.excludedActivityTypes = @[UIActivityTypePostToFacebook];
     
     [self.navigationController presentViewController:activityViewController
                                        animated:YES
