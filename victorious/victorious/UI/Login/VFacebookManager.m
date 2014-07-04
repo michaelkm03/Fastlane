@@ -158,7 +158,67 @@
     else
     {
         // Present the feed dialog
+        // Put together the dialog parameters
+        NSDictionary *params = @{
+                                 @"name":           name?:@"",
+                                 @"description":    description?:@"",
+                                 @"link":           link.absoluteString?:@"",
+                                 @"picture":        previewUrl.absoluteString?:@""
+                                 };
+        // Show the feed dialog
+        [FBWebDialogs presentFeedDialogModallyWithSession:nil
+                                               parameters:params
+                                                  handler:^(FBWebDialogResult result, NSURL *resultURL, NSError *error)
+         {
+             if (error)
+             {
+                 // An error occurred, we need to handle the error
+                 // See: https://developers.facebook.com/docs/ios/errors
+                 NSLog(@"Error publishing story: %@", error.description);
+             }
+             else
+             {
+                 if (result == FBWebDialogResultDialogNotCompleted)
+                 {
+                     // User cancelled.
+                     NSLog(@"User cancelled.");
+                 }
+                 else
+                 {
+                     // Handle the publish feed callback
+                     NSDictionary *urlParams = [self parseURLParams:[resultURL query]];
+                     
+                     if (![urlParams valueForKey:@"post_id"])
+                     {
+                         // User cancelled.
+                         NSLog(@"User cancelled.");
+                         
+                     }
+                     else
+                     {
+                         // User clicked the Share button
+                         NSString *result = [NSString stringWithFormat: @"Posted story, id: %@", [urlParams valueForKey:@"post_id"]];
+                         NSLog(@"result %@", result);
+                     }
+                 }
+             }
+         }];
     }
+}
+
+// A function for parsing URL parameters returned by the Feed Dialog.
+- (NSDictionary*)parseURLParams:(NSString *)query
+{
+    NSArray *pairs = [query componentsSeparatedByString:@"&"];
+    NSMutableDictionary *params = [[NSMutableDictionary alloc] init];
+    for (NSString *pair in pairs)
+    {
+        NSArray *kv = [pair componentsSeparatedByString:@"="];
+        NSString *val =
+        [kv[1] stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+        params[kv[0]] = val;
+    }
+    return params;
 }
 
 
