@@ -9,6 +9,7 @@
 #import "VFacebookManager.h"
 
 #import <FacebookSDK/FacebookSDK.h>
+#import "RKURLEncodedSerialization.h"
 
 @implementation VFacebookManager
 
@@ -186,7 +187,7 @@
                  else
                  {
                      // Handle the publish feed callback
-                     NSDictionary *urlParams = [self parseURLParams:[resultURL query]];
+                     NSDictionary *urlParams = RKDictionaryFromURLEncodedStringWithEncoding([resultURL query] , NSUTF8StringEncoding);
                      
                      if (![urlParams valueForKey:@"post_id"])
                      {
@@ -205,22 +206,6 @@
          }];
     }
 }
-
-// A function for parsing URL parameters returned by the Feed Dialog.
-- (NSDictionary*)parseURLParams:(NSString *)query
-{
-    NSArray *pairs = [query componentsSeparatedByString:@"&"];
-    NSMutableDictionary *params = [[NSMutableDictionary alloc] init];
-    for (NSString *pair in pairs)
-    {
-        NSArray *kv = [pair componentsSeparatedByString:@"="];
-        NSString *val =
-        [kv[1] stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
-        params[kv[0]] = val;
-    }
-    return params;
-}
-
 
 #pragma mark - NSNotifications
 
