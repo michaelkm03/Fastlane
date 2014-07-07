@@ -29,6 +29,7 @@ static NSString * const kFollowCellReuseID = @"followerCell";
     if (self)
     {
         _state = VFindFriendsTableViewStatePreConnect;
+        _shouldAutoselectNewFriends = YES;
     }
     return self;
 }
@@ -90,7 +91,10 @@ static NSString * const kFollowCellReuseID = @"followerCell";
                 [self.tableView.tableView reloadData];
                 self.tableView.clearButton.hidden = NO;
                 self.tableView.selectAllButton.hidden = NO;
-                [self selectAllRows];
+                if (self.shouldAutoselectNewFriends)
+                {
+                    [self selectAllRows];
+                }
             }
             else
             {

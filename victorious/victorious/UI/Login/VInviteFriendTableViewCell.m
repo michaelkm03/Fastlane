@@ -15,13 +15,19 @@
 @property (nonatomic, weak)     IBOutlet    UIImageView*        profileImage;
 @property (nonatomic, weak)     IBOutlet    UILabel*            profileName;
 @property (nonatomic, weak)     IBOutlet    UILabel*            profileLocation;
-@property (nonatomic, weak)     IBOutlet    UIImageView*        followIcon;
+@property (nonatomic, weak)     IBOutlet    UIImageView*        followIconImageView;
+@property (nonatomic, strong)               UIImage*            followIcon;
+@property (nonatomic, strong)               UIImage*            unfollowIcon;
 @end
 
 @implementation VInviteFriendTableViewCell
 
 - (void)awakeFromNib
 {
+    self.followIcon   = [UIImage imageNamed:@"buttonFollowedRed"];
+    self.unfollowIcon = [UIImage imageNamed:@"buttonFollow"];
+    self.followIconImageView.image = self.unfollowIcon;
+    
     self.profileImage.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVAccentColor];
     self.profileImage.layer.cornerRadius = CGRectGetHeight(self.profileImage.bounds)/2;
     self.profileImage.layer.borderWidth = 1.0;
@@ -54,16 +60,16 @@
     {
         if (selected)
         {
-            self.followIcon.image = [UIImage imageNamed:@"buttonFollowedRed"];
+            self.followIconImageView.image = self.followIcon;
         }
         else
         {
-            self.followIcon.image = [UIImage imageNamed:@"buttonFollow"];
+            self.followIconImageView.image = self.unfollowIcon;
         }
     };
     if (animated)
     {
-        [UIView transitionWithView:self.followIcon
+        [UIView transitionWithView:self.followIconImageView
                           duration:0.3
                            options:(selected ? UIViewAnimationOptionTransitionFlipFromTop : UIViewAnimationOptionTransitionFlipFromBottom)
                         animations:animations
@@ -73,6 +79,11 @@
     {
         animations();
     }
+}
+
+- (void)prepareForReuse
+{
+    self.followIconImageView.image = self.unfollowIcon;
 }
 
 @end
