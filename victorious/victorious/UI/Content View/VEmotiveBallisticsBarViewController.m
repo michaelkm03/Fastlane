@@ -216,11 +216,15 @@
     NSMutableArray* emotiveAnimations = [[NSMutableArray alloc] initWithCapacity:13];
     for (int i = 0; i < 17; i++)
     {
+        UIImage* nextImage;
         if (emotive == self.leftButton && i<13)
-            [emotiveAnimations addObject:[UIImage imageNamed:[@"Heart" stringByAppendingString:@(i).stringValue]]];
+            nextImage = [UIImage imageNamed:[@"Heart" stringByAppendingString:@(i).stringValue]];
         
         else if (emotive == self.rightButton)
-            [emotiveAnimations addObject:[UIImage imageNamed:[@"Tomato" stringByAppendingString:@(i).stringValue]]];
+            nextImage = [UIImage imageNamed:[@"Tomato" stringByAppendingString:@(i).stringValue]];
+        
+        if (nextImage)
+            [emotiveAnimations addObject:nextImage];
     }
     
     thrownImage.animationImages = emotiveAnimations;
