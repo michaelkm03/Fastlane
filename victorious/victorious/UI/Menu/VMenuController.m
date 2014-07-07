@@ -169,7 +169,9 @@ NSString *const VMenuControllerDidSelectRowNotification = @"VMenuTableViewContro
                 }
                 else
                 {
-                    [self presentViewController:[VFindFriendsViewController newFindFriendsViewController] animated:YES completion:^(void)
+                    VFindFriendsViewController *ffvc = [VFindFriendsViewController newFindFriendsViewController];
+                    [ffvc setShouldAutoselectNewFriends:NO];
+                    [self presentViewController:ffvc animated:YES completion:^(void)
                     {
                         [self.sideMenuViewController hideMenuViewController];
                     }];
