@@ -148,6 +148,8 @@ NSTimeInterval kVContentPollAnimationDuration = 0.2;
 
 - (void)resetView
 {
+    self.previewImage.image = nil;
+    
     [self.firstResultView setProgress:0 animated:NO];
     self.firstResultView.isVertical = YES;
     self.firstResultView.hidden = YES;
@@ -629,7 +631,7 @@ NSTimeInterval kVContentPollAnimationDuration = 0.2;
     VFacebookActivity* fbActivity = [[VFacebookActivity alloc] init];
 
     NSURL* deeplinkURL = [[VDeeplinkManager sharedManager] contentDeeplinkForSequence:self.sequence];
-    UIImage* previewImage = self.previewImage.image;
+    UIImage* previewImage = self.previewImage.image ?: self.leftPollThumbnail;
     
     UIActivityViewController *activityViewController =
         [[UIActivityViewController alloc] initWithActivityItems:@[self.sequence,
