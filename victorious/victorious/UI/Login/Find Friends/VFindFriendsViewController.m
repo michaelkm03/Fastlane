@@ -50,6 +50,7 @@
 
 - (void)awakeFromNib
 {
+    _shouldAutoselectNewFriends = YES;
     self.tabBarViewController = [[VTabBarViewController alloc] init];
 }
 
@@ -91,6 +92,18 @@
 
 #pragma mark -
 
+- (void)setShouldAutoselectNewFriends:(BOOL)shouldAutoselectNewFriends
+{
+    _shouldAutoselectNewFriends = shouldAutoselectNewFriends;
+    if ([self isViewLoaded])
+    {
+        for (VFindFriendsTableViewController *tableViewController in self.tabBarViewController.viewControllers)
+        {
+            tableViewController.shouldAutoselectNewFriends = shouldAutoselectNewFriends;
+        }
+    }
+}
+
 - (void)addInnerViewControllersToTabController:(VTabBarViewController *)tabViewController
 {
     self.suggestedFriendsInnerViewController = [[VSuggestedFriendsTableViewController alloc] init];
@@ -98,6 +111,12 @@
     self.facebookInnerViewController = [[VFindFacebookFriendsTableViewController alloc] init];
     self.twitterInnerViewController = [[VFindTwitterFriendsTableViewController alloc] init];
     self.instagramInnerViewController = [[VFindInstagramFriendsViewController alloc] init];
+    
+    self.suggestedFriendsInnerViewController.shouldAutoselectNewFriends = self.shouldAutoselectNewFriends;
+    self.contactsInnerViewController.shouldAutoselectNewFriends = self.shouldAutoselectNewFriends;
+    self.facebookInnerViewController.shouldAutoselectNewFriends = self.shouldAutoselectNewFriends;
+    self.twitterInnerViewController.shouldAutoselectNewFriends = self.shouldAutoselectNewFriends;
+    self.instagramInnerViewController.shouldAutoselectNewFriends = self.shouldAutoselectNewFriends;
     
     tabViewController.viewControllers = @[v_newTab(self.suggestedFriendsInnerViewController, [UIImage imageNamed:@"inviteSuggested"]),
                                           v_newTab(self.contactsInnerViewController, [UIImage imageNamed:@"inviteContacts"]),
