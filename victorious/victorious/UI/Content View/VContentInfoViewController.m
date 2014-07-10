@@ -15,6 +15,12 @@
 #import "VObjectManager+Sequence.h"
 #import "VConstants.h"
 
+typedef NS_ENUM(NSUInteger, VContentCountType) {
+    VRemixCount = 0,
+    VRepostCount,
+    VCommentCount
+};
+
 @interface VContentInfoViewController () <UITableViewDataSource>
 
 @property (nonatomic, weak) IBOutlet UILabel* nameLabel;
@@ -22,10 +28,6 @@
 
 @property (nonatomic, weak) IBOutlet UIImageView* profileImageView;
 @property (nonatomic, weak) IBOutlet UIImageView* backgroundImageView;
-
-@property (nonatomic, weak) IBOutlet UITableViewCell* remixTableCell;
-@property (nonatomic, weak) IBOutlet UITableViewCell* repostTableCell;
-@property (nonatomic, weak) IBOutlet UITableViewCell* commentTableCell;
 
 @property (nonatomic, weak) IBOutlet UIButton* reportButton;
 
@@ -65,18 +67,6 @@
     self.createdByLabel.textColor = secondaryLinkColor;
     self.createdByLabel.text = NSLocalizedString(@"CreatedBy", nil);
     
-    self.remixTableCell.textLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeading3Font];
-    self.remixTableCell.textLabel.textColor = secondaryLinkColor;
-    self.remixTableCell.textLabel.text = [@"0" stringByAppendingString:NSLocalizedString(@"remixes", nil)];
-    
-    self.repostTableCell.textLabel.font = self.remixTableCell.textLabel.font;
-    self.repostTableCell.textLabel.textColor = secondaryLinkColor;
-    self.repostTableCell.textLabel.text = [@"0" stringByAppendingString:NSLocalizedString(@"resposts", nil)];
-    
-    self.commentTableCell.textLabel.font = self.remixTableCell.textLabel.font;
-    self.commentTableCell.textLabel.textColor = secondaryLinkColor;
-    self.commentTableCell.textLabel.text = [@"0" stringByAppendingString:NSLocalizedString(@"comments", nil)];
-    
     self.backgroundImageView.image = self.backgroundImage;
     self.sequence = self.sequence;
     
@@ -99,39 +89,97 @@
     self.nameLabel.text = sequence.user.name;
     [self.profileImageView setImageWithURL:[NSURL URLWithString:sequence.user.pictureUrl] placeholderImage:[UIImage imageNamed:@"profile_full"]];
     
-    UIColor* secondaryLinkColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVSecondaryLinkColor];
-    UIColor* linkColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
+    [self.tableView reloadData];
+}
 
+#pragma mark - UITableView
+
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
+{
+    return 1;
+}
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
+    return 3;
+}
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    UITableViewCell* cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"contentinfo"];
+    
     NSMutableAttributedString* attributedText;
     NSInteger countLength;
+    UIImage* image;
     
-    countLength = sequence.remixCount.stringValue.length;
-    attributedText = [[NSMutableAttributedString alloc] initWithString:
-                      [sequence.remixCount.stringValue stringByAppendingString:NSLocalizedString(@"remixes", nil)]];
-    [attributedText addAttribute:NSForegroundColorAttributeName value:linkColor
-                    range:NSMakeRange(0, countLength)];
-    [attributedText addAttribute:NSForegroundColorAttributeName value:secondaryLinkColor
-                    range:NSMakeRange(countLength, attributedText.length - countLength)];
-    [self.remixTableCell.textLabel setAttributedText:attributedText];
+    switch (indexPath.row)
+    {
+        case VRemixCount:
+            image = [UIImage imageNamed:@"infoRemixIcon"];
+            countLength = self.sequence.remixCount.stringValue.length;
+            attributedText = [[NSMutableAttributedString alloc] initWithString: [[self.sequence.remixCount.stringValue stringByAppendingString:@" "]
+                                                                                 stringByAppendingString:NSLocalizedString(@"remixes", nil)]];
+            break;
+            
+        case VRepostCount:
+            image = [UIImage imageNamed:@"infoRepostIcon"];
+            countLength = self.sequence.remixCount.stringValue.length;
+            attributedText = [[NSMutableAttributedString alloc] initWithString: [[@"0" stringByAppendingString:@" "]
+                                                                                 stringByAppendingString:NSLocalizedString(@"reposts", nil)]];
+            break;
+            
+        case VCommentCount:
+            image = [UIImage imageNamed:@"infoCommentIcon"];
+            countLength = self.sequence.commentCount.stringValue.length;
+            attributedText = [[NSMutableAttributedString alloc] initWithString: [[self.sequence.commentCount.stringValue stringByAppendingString:@" "]
+                                                                                 stringByAppendingString:NSLocalizedString(@"comments", nil)]];
+            break;
+            
+            
+        default:
+            countLength = 0;
+            break;
+    };
     
-    countLength = sequence.commentCount.stringValue.length;
-    attributedText = [[NSMutableAttributedString alloc] initWithString:
-                      [sequence.commentCount.stringValue stringByAppendingString:NSLocalizedString(@"comments", nil)]];
-    [attributedText addAttribute:NSForegroundColorAttributeName value:linkColor
+    [attributedText addAttribute:NSForegroundColorAttributeName value: [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor]
                            range:NSMakeRange(0, countLength)];
-    [attributedText addAttribute:NSForegroundColorAttributeName value:secondaryLinkColor
-                           range:NSMakeRange(countLength, attributedText.length - countLength)];
-    [self.commentTableCell.textLabel setAttributedText:attributedText];
     
-    countLength = sequence.remixCount.stringValue.length;
-    attributedText = [[NSMutableAttributedString alloc] initWithString:
-                      [@"0" stringByAppendingString:NSLocalizedString(@"resposts", nil)]];
-    [attributedText addAttribute:NSForegroundColorAttributeName value:linkColor
-                           range:NSMakeRange(0, countLength)];
-    [attributedText addAttribute:NSForegroundColorAttributeName value:secondaryLinkColor
+    [attributedText addAttribute:NSForegroundColorAttributeName value: [[VThemeManager sharedThemeManager] themedColorForKey:kVSecondaryLinkColor]
                            range:NSMakeRange(countLength, attributedText.length - countLength)];
-    [self.repostTableCell.textLabel setAttributedText:attributedText];
+    
+    [attributedText addAttribute:NSFontAttributeName value:[[VThemeManager sharedThemeManager] themedFontForKey:kVHeading3Font]
+                           range:NSMakeRange(0, attributedText.length)];
+    
+    [cell.textLabel setAttributedText:attributedText];
+    cell.imageView.image = image;
+    cell.backgroundColor = [UIColor clearColor];
+    cell.selectionStyle = UITableViewCellSelectionStyleNone;
+    cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+    
+    return cell;
 }
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    
+    switch (indexPath.row)
+    {
+        case VRemixCount:
+            break;
+            
+        case VRepostCount:
+            break;
+            
+        case VCommentCount:
+            break;
+            
+        default:
+            break;
+    };
+  
+}
+
+#pragma mark - Actions
 
 - (IBAction)pressedReport:(id)sender
 {
@@ -170,4 +218,5 @@
 {
     [self dismissViewControllerAnimated:YES completion:nil];
 }
+
 @end
