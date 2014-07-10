@@ -15,6 +15,8 @@
 #import "VContentViewController+Polls.h"
 #import "VContentViewController+Videos.h"
 
+#import "VContentInfoViewController.h"
+
 #import "VCommentsContainerViewController.h"
 
 #import "UIImageView+Blurring.h"
@@ -560,42 +562,11 @@ NSTimeInterval kVContentPollAnimationDuration = 0.2;
 #pragma mark - Button Actions
 - (IBAction)pressedMore:(id)sender
 {
-    NSString *reportTitle = NSLocalizedString(@"Report Inappropriate", @"Comment report inappropriate button");
-    
-    UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil
-                                                    cancelButtonTitle:NSLocalizedString(@"Cancel", @"Cancel button")
-                                                       onCancelButton:nil
-                                               destructiveButtonTitle:reportTitle
-                                                  onDestructiveButton:^(void)
-                                  {
-                                      [[VObjectManager sharedManager] flagSequence:self.sequence
-                                                                     successBlock:^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
-                                       {
-                                           UIAlertView*    alert   =   [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"ReportedTitle", @"")
-                                                                                                  message:NSLocalizedString(@"ReportContentMessage", @"")
-                                                                                                 delegate:nil
-                                                                                        cancelButtonTitle:NSLocalizedString(@"OKButton", @"")
-                                                                                        otherButtonTitles:nil];
-                                           [alert show];
-                                           
-                                       }
-                                                                        failBlock:^(NSOperation* operation, NSError* error)
-                                       {
-                                           VLog(@"Failed to flag sequence %@", self.sequence);
-                                           
-                                           //TODO: we may want to remove this later.
-                                           UIAlertView*    alert   =   [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"ReportedTitle", @"")
-                                                                                                  message:NSLocalizedString(@"ReportContentMessage", @"")
-                                                                                                 delegate:nil
-                                                                                        cancelButtonTitle:NSLocalizedString(@"OKButton", @"")
-                                                                                        otherButtonTitles:nil];
-                                           [alert show];
-                                       }];
-                                  }
-                                           otherButtonTitlesAndBlocks:nil];
-    
-    UIWindow *window = [[[UIApplication sharedApplication] delegate] window];
-    [actionSheet showInView:window];
+    VContentInfoViewController* contentInfo = [VContentInfoViewController sharedInstance];
+    contentInfo.sequence = self.sequence;
+    contentInfo.backgroundImage = self.backgroundImage.image;
+    contentInfo.modalTransitionStyle = UIModalTransitionStyleFlipHorizontal;
+    [self.navigationController presentViewController:contentInfo animated:YES completion:nil];
 }
 
 - (IBAction)pressedBack:(id)sender
