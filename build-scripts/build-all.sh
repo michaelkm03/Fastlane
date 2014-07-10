@@ -9,11 +9,12 @@
 SCHEME=$1
 CONFIGURATION=$2
 PROVISIONING_PROFILE=$3
-APP_NAME=$4
 CODESIGN_ID="iPhone Distribution: Victorious Inc. (82T26U698A)"
 
+shift 3
+
 if [ "$SCHEME" == "" -o "$PROVISIONING_PROFILE" == "" -o "$CONFIGURATION" == "" ]; then
-    echo "Usage: `basename $0` <scheme> <configuration> <provisioning profile UUID> [app name (optional)]"
+    echo "Usage: `basename $0` <scheme> <configuration> <provisioning profile UUID> [app name(s) (optional)]"
     exit 1
 fi
 
@@ -52,11 +53,6 @@ if [ -a "victorious.app.dSYM.zip" ]; then
 fi
 
 
-### Get Configurations
-
-CONFIGS=`find configurations -type d -depth 1 -exec basename {} \;`
-
-
 ### Change to project folder
 
 pushd victorious > /dev/null
@@ -83,44 +79,49 @@ else
 fi
 
 
+### Change back to top folder
+
+popd > /dev/null
+
+
 ### Package the individual apps
 
-IFS=$'\n'
-for CONFIG in $CONFIGS
-do
-    if [ "$APP_NAME" != "" -a "$CONFIG" != "$APP_NAME" ]; then
-        continue
-    fi
-
-    pushd .. > /dev/null
-    ./build-scripts/apply-config.sh "$CONFIG" -a victorious.xcarchive
+applyConfiguration(){
+    ./build-scripts/apply-config.sh "$1" -a victorious.xcarchive
     if [ $? != 0 ]; then
-        echo "Error applying configuration for $CONFIG"
-        popd > /dev/null
-        popd > /dev/null
+        echo "Error applying configuration for $1"
         exit 1
     fi
-    popd > /dev/null
 
-    codesign -f -vvv -s "$CODESIGN_ID" "../victorious.xcarchive/Products/Applications/victorious.app"
+    codesign -f -vvv -s "$CODESIGN_ID" "victorious.xcarchive/Products/Applications/victorious.app"
     CODESIGNRESULT=$?
 
     if [ $CODESIGNRESULT != 0 ]; then
         echo "Codesign failed."
-        popd > /dev/null
         exit $CODESIGNRESULT
     fi
 
-    xcodebuild -exportArchive -exportFormat ipa -archivePath "../victorious.xcarchive" \
-               -exportPath "../products/$CONFIG" -exportSigningIdentity "$CODESIGN_ID"
+    xcodebuild -exportArchive -exportFormat ipa -archivePath "victorious.xcarchive" \
+               -exportPath "products/$CONFIG" -exportSigningIdentity "$CODESIGN_ID"
     EXPORTRESULT=$?
 
     if [ $EXPORTRESULT == 0 ]; then
-        cp ../victorious.app.dSYM.zip "../products/$CONFIG.app.dSYM.zip"
+        cp victorious.app.dSYM.zip "products/$CONFIG.app.dSYM.zip"
     else
-        popd > /dev/null
         exit $EXPORTRESULT
     fi
-done
+}
 
-popd > /dev/null
+if [ $# == 0 ]; then
+    CONFIGS=`find configurations -type d -depth 1 -exec basename {} \;`
+    IFS=$'\n'
+    for CONFIG in $CONFIGS
+    do
+        applyConfiguration $CONFIG
+    done
+else
+    for CONFIG in $@
+    do
+        applyConfiguration $CONFIG
+    done
+fi
