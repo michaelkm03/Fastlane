@@ -106,7 +106,7 @@ applyConfiguration(){
     EXPORTRESULT=$?
 
     if [ $EXPORTRESULT == 0 ]; then
-        cp ../victorious.app.dSYM.zip "products/$CONFIG.app.dSYM.zip"
+        cp victorious.app.dSYM.zip "products/$CONFIG.app.dSYM.zip"
     else
         exit $EXPORTRESULT
     fi
