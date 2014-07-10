@@ -2164,6 +2164,9 @@
                                         <state key="normal" image="Comment">
                                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                         </state>
+                                        <connections>
+                                            <action selector="pressedComment:" destination="6RC-8Y-M8f" eventType="touchUpInside" id="4fp-Hz-Sbg"/>
+                                        </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="a2O-5Y-rq1" userLabel="More Button">
                                         <rect key="frame" x="271" y="7" width="44" height="44"/>

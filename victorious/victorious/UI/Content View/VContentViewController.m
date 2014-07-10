@@ -639,6 +639,15 @@ NSTimeInterval kVContentPollAnimationDuration = 0.2;
          [self.navigationController popViewControllerAnimated:YES];
      }];
 }
+
+- (void)willCommentFromInfo
+{
+    [self dismissViewControllerAnimated:YES
+                             completion:
+     ^{
+         [self pressedComment:nil];
+     }];
+}
 #pragma mark - VInteractionManagerDelegate
 - (void)firedInteraction:(VInteraction*)interaction
 {

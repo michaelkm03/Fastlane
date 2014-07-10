@@ -16,9 +16,9 @@
 #import "VConstants.h"
 
 typedef NS_ENUM(NSUInteger, VContentCountType) {
-    VRemixCount = 0,
-    VRepostCount,
-    VCommentCount
+    VRemixCountInfo = 0,
+    VRepostCountInfo,
+    VCommentCountInfo
 };
 
 @interface VContentInfoViewController () <UITableViewDataSource>
@@ -114,21 +114,21 @@ typedef NS_ENUM(NSUInteger, VContentCountType) {
     
     switch (indexPath.row)
     {
-        case VRemixCount:
+        case VRemixCountInfo:
             image = [UIImage imageNamed:@"infoRemixIcon"];
             countLength = self.sequence.remixCount.stringValue.length;
             attributedText = [[NSMutableAttributedString alloc] initWithString: [[self.sequence.remixCount.stringValue stringByAppendingString:@" "]
                                                                                  stringByAppendingString:NSLocalizedString(@"remixes", nil)]];
             break;
             
-        case VRepostCount:
+        case VRepostCountInfo:
             image = [UIImage imageNamed:@"infoRepostIcon"];
             countLength = self.sequence.remixCount.stringValue.length;
             attributedText = [[NSMutableAttributedString alloc] initWithString: [[@"0" stringByAppendingString:@" "]
                                                                                  stringByAppendingString:NSLocalizedString(@"reposts", nil)]];
             break;
             
-        case VCommentCount:
+        case VCommentCountInfo:
             image = [UIImage imageNamed:@"infoCommentIcon"];
             countLength = self.sequence.commentCount.stringValue.length;
             attributedText = [[NSMutableAttributedString alloc] initWithString: [[self.sequence.commentCount.stringValue stringByAppendingString:@" "]
@@ -164,13 +164,14 @@ typedef NS_ENUM(NSUInteger, VContentCountType) {
     
     switch (indexPath.row)
     {
-        case VRemixCount:
+        case VRemixCountInfo:
             break;
             
-        case VRepostCount:
+        case VRepostCountInfo:
             break;
             
-        case VCommentCount:
+        case VCommentCountInfo:
+            [self pressedComment:nil];
             break;
             
         default:
@@ -217,6 +218,12 @@ typedef NS_ENUM(NSUInteger, VContentCountType) {
 - (IBAction)pressedFlip:(id)sender
 {
     [self dismissViewControllerAnimated:YES completion:nil];
+}
+
+- (IBAction)pressedComment:(id)sender
+{
+    if ([self.delegate respondsToSelector:@selector(willCommentFromInfo)])
+        [self.delegate willCommentFromInfo];
 }
 
 @end

@@ -13,6 +13,7 @@
 @protocol VContentInfoDelegate <NSObject>
 
 - (void)didCloseFromInfo;
+- (void)willCommentFromInfo;
 
 @end
 
