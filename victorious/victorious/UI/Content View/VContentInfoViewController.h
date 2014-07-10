@@ -10,11 +10,17 @@
 
 #import <UIKit/UIKit.h>
 
+@protocol VContentInfoDelegate <NSObject>
+
+- (void)didCloseFromInfo;
+
+@end
+
 @interface VContentInfoViewController : UIViewController
 
 @property (nonatomic, strong) VSequence* sequence;
-
 @property (nonatomic, strong) UIImage* backgroundImage;
+@property (nonatomic, weak) id<VContentInfoDelegate> delegate;
 
 + (VContentInfoViewController *)sharedInstance;
 

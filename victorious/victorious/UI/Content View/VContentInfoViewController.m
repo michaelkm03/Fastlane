@@ -29,6 +29,8 @@
 
 @property (nonatomic, weak) IBOutlet UIButton* reportButton;
 
+@property (nonatomic, weak) IBOutlet UITableView* tableView;
+
 @end
 
 @implementation VContentInfoViewController
@@ -160,7 +162,12 @@
 
 - (IBAction)pressedBack:(id)sender
 {
-    [self dismissViewControllerAnimated:YES completion:nil];
+    if ([self.delegate respondsToSelector:@selector(didCloseFromInfo)])
+        [self.delegate didCloseFromInfo];
 }
 
+- (IBAction)pressedFlip:(id)sender
+{
+    [self dismissViewControllerAnimated:YES completion:nil];
+}
 @end

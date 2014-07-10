@@ -2039,7 +2039,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="xDv-wZ-8yQ" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1967" y="-614"/>
+            <point key="canvasLocation" x="-2327" y="-460"/>
         </scene>
         <!--Inbox Container View Controller-->
         <scene sceneID="2GS-53-SxR">
@@ -2171,6 +2171,9 @@
                                         <state key="normal" image="flipReverseIcon">
                                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                         </state>
+                                        <connections>
+                                            <action selector="pressedFlip:" destination="6RC-8Y-M8f" eventType="touchUpInside" id="g1C-ts-KCr"/>
+                                        </connections>
                                     </button>
                                 </subviews>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>

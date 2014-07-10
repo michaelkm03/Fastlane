@@ -43,6 +43,10 @@ NSTimeInterval kVContentPollAnimationDuration = 0.2;
 
 @import MediaPlayer;
 
+@interface VContentViewController() <VContentInfoDelegate>
+
+@end
+
 @implementation VContentViewController
 
 + (VContentViewController *)sharedInstance
@@ -560,15 +564,6 @@ NSTimeInterval kVContentPollAnimationDuration = 0.2;
 }
 
 #pragma mark - Button Actions
-- (IBAction)pressedMore:(id)sender
-{
-    VContentInfoViewController* contentInfo = [VContentInfoViewController sharedInstance];
-    contentInfo.sequence = self.sequence;
-    contentInfo.backgroundImage = self.backgroundImage.image;
-    contentInfo.modalTransitionStyle = UIModalTransitionStyleFlipHorizontal;
-    [self.navigationController presentViewController:contentInfo animated:YES completion:nil];
-}
-
 - (IBAction)pressedBack:(id)sender
 {
     void (^goBack)() = ^(void)
@@ -625,6 +620,25 @@ NSTimeInterval kVContentPollAnimationDuration = 0.2;
 //    [self collapseTitleAnimated:YES];
 }
 
+- (IBAction)pressedMore:(id)sender
+{
+    VContentInfoViewController* contentInfo = [VContentInfoViewController sharedInstance];
+    contentInfo.sequence = self.sequence;
+    contentInfo.backgroundImage = self.backgroundImage.image;
+    contentInfo.delegate = self;
+    contentInfo.modalTransitionStyle = UIModalTransitionStyleFlipHorizontal;
+    [self.navigationController presentViewController:contentInfo animated:YES completion:nil];
+}
+
+#pragma mark - VContentInfoDelegate
+- (void)didCloseFromInfo
+{
+    [self dismissViewControllerAnimated:YES
+                             completion:
+     ^{
+         [self.navigationController popViewControllerAnimated:YES];
+     }];
+}
 #pragma mark - VInteractionManagerDelegate
 - (void)firedInteraction:(VInteraction*)interaction
 {
