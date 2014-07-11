@@ -32,7 +32,7 @@ fi
 ios profiles:download "$PROVISIONING_PROFILE_NAME" --type distribution
 
 if [ $? != 0 ]; then
-    echo "Unable to download provisioning profile \"$PROVISIONING_PROFILE_PATH\""
+    echo "Unable to download provisioning profile \"$PROVISIONING_PROFILE_NAME\""
     exit 1
 fi
 
