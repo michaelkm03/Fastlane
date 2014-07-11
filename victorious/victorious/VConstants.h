@@ -121,12 +121,16 @@ static NSString*   const   kHomeStreamStoryboardID              = @"homestream";
 static NSString*   const   kOwnerStreamStoryboardID             = @"ownerstream";
 static NSString*   const   kCommunityStreamStoryboardID         = @"communitystream";
 static NSString*   const   kStreamContainerID                   = @"streamcontainer";
+
 static NSString*   const   kInboxContainerID                    = @"inboxcontainer";
 static NSString*   const   kMessageContainerID                  = @"messagecontainer";
 static NSString*   const   kEnterResetTokenID                   = @"enterresettoken";
+
 static NSString*   const   kContentViewStoryboardID             = @"content";
+static NSString*   const   kContentInfoStoryboardID             = @"contentInfo";
 static NSString*   const   kEmotiveBallisticsBarStoryboardID    = @"emotiveballistics";
 static NSString*   const   kPollAnswerBarStoryboardID           = @"pollanswerbar";
+
 static NSString*   const   kCommentsContainerStoryboardID       = @"commentscontainer";
 static NSString*   const   kKeyboardBarStoryboardID             = @"keyboardbar";
 

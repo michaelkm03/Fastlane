@@ -237,3 +237,9 @@
 "NoFriends"             =   "No Matches";
 "NoFriendsDetail"       =   "We could not find any of your friends who use our app. Go ahead and invite them!";
 
+
+"Report/Flag"           =   "Report/Flag";
+"CreatedBy"             =   "CREATED BY";
+"remixes"               =   "remixes";
+"reposts"               =   "reposts";
+"comments"              =   "comments";

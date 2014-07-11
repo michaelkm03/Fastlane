@@ -305,6 +305,7 @@
 		BEF2C2A5188488C000AAE975 /* VUnreadConversation+RestKit.m in Sources */ = {isa = PBXBuildFile; fileRef = BEF2C2A4188488C000AAE975 /* VUnreadConversation+RestKit.m */; };
 		BEF2C2A818848B3B00AAE975 /* VUnreadConversation.m in Sources */ = {isa = PBXBuildFile; fileRef = BEF2C2A718848B3B00AAE975 /* VUnreadConversation.m */; };
 		BEF2C2B71886211000AAE975 /* VPollResult.m in Sources */ = {isa = PBXBuildFile; fileRef = BEF2C2B61886211000AAE975 /* VPollResult.m */; };
+		BEFE1322196B82BF003B33DC /* VContentInfoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BEFE1321196B82BF003B33DC /* VContentInfoViewController.m */; };
 		D1DAAA0B187A43BE009ADCB0 /* VProfileEditViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D1DAAA0A187A43BE009ADCB0 /* VProfileEditViewController.m */; };
 /* End PBXBuildFile section */
 
@@ -868,6 +869,8 @@
 		BEF2C2A718848B3B00AAE975 /* VUnreadConversation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VUnreadConversation.m; sourceTree = "<group>"; };
 		BEF2C2B51886211000AAE975 /* VPollResult.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VPollResult.h; sourceTree = "<group>"; };
 		BEF2C2B61886211000AAE975 /* VPollResult.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VPollResult.m; sourceTree = "<group>"; };
+		BEFE1320196B82BF003B33DC /* VContentInfoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VContentInfoViewController.h; path = "UI/Content View/VContentInfoViewController.h"; sourceTree = "<group>"; };
+		BEFE1321196B82BF003B33DC /* VContentInfoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VContentInfoViewController.m; path = "UI/Content View/VContentInfoViewController.m"; sourceTree = "<group>"; };
 		D1DAAA09187A43BE009ADCB0 /* VProfileEditViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VProfileEditViewController.h; path = UI/VProfileEditViewController.h; sourceTree = "<group>"; };
 		D1DAAA0A187A43BE009ADCB0 /* VProfileEditViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VProfileEditViewController.m; path = UI/VProfileEditViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -1946,6 +1949,8 @@
 				BE185DED18E3B255001C447F /* VContentViewController+Videos.m */,
 				BE185DEF18E3B2C2001C447F /* VContentViewController+Images.h */,
 				BE185DF018E3B2C2001C447F /* VContentViewController+Images.m */,
+				BEFE1320196B82BF003B33DC /* VContentInfoViewController.h */,
+				BEFE1321196B82BF003B33DC /* VContentInfoViewController.m */,
 			);
 			name = "Content View";
 			sourceTree = "<group>";
@@ -2231,6 +2236,7 @@
 				BE185DEA18E3AF55001C447F /* VContentViewController+Polls.m in Sources */,
 				5FF9BE83189318CD0054694B /* VRootViewController.m in Sources */,
 				BEB4C29D187E038C004ECEEF /* VNewsCell.m in Sources */,
+				BEFE1322196B82BF003B33DC /* VContentInfoViewController.m in Sources */,
 				03ABEE201937EC7F007931F9 /* VContentInputAccessoryView.m in Sources */,
 				03484BFB192E6E8C00403FB1 /* VVideoLightboxViewController.m in Sources */,
 				BE171E131868C211004E5202 /* VInteractionAction+RestKit.m in Sources */,

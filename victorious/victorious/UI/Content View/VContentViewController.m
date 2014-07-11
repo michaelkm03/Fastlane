@@ -15,6 +15,8 @@
 #import "VContentViewController+Polls.h"
 #import "VContentViewController+Videos.h"
 
+#import "VContentInfoViewController.h"
+
 #import "VCommentsContainerViewController.h"
 
 #import "UIImageView+Blurring.h"
@@ -40,6 +42,10 @@ static const CGFloat kDistanceBetweenTitleAndCollapseButton =  42.5f;
 NSTimeInterval kVContentPollAnimationDuration = 0.2;
 
 @import MediaPlayer;
+
+@interface VContentViewController() <VContentInfoDelegate>
+
+@end
 
 @implementation VContentViewController
 
@@ -558,46 +564,6 @@ NSTimeInterval kVContentPollAnimationDuration = 0.2;
 }
 
 #pragma mark - Button Actions
-- (IBAction)pressedMore:(id)sender
-{
-    NSString *reportTitle = NSLocalizedString(@"Report Inappropriate", @"Comment report inappropriate button");
-    
-    UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil
-                                                    cancelButtonTitle:NSLocalizedString(@"Cancel", @"Cancel button")
-                                                       onCancelButton:nil
-                                               destructiveButtonTitle:reportTitle
-                                                  onDestructiveButton:^(void)
-                                  {
-                                      [[VObjectManager sharedManager] flagSequence:self.sequence
-                                                                     successBlock:^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
-                                       {
-                                           UIAlertView*    alert   =   [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"ReportedTitle", @"")
-                                                                                                  message:NSLocalizedString(@"ReportContentMessage", @"")
-                                                                                                 delegate:nil
-                                                                                        cancelButtonTitle:NSLocalizedString(@"OKButton", @"")
-                                                                                        otherButtonTitles:nil];
-                                           [alert show];
-                                           
-                                       }
-                                                                        failBlock:^(NSOperation* operation, NSError* error)
-                                       {
-                                           VLog(@"Failed to flag sequence %@", self.sequence);
-                                           
-                                           //TODO: we may want to remove this later.
-                                           UIAlertView*    alert   =   [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"ReportedTitle", @"")
-                                                                                                  message:NSLocalizedString(@"ReportContentMessage", @"")
-                                                                                                 delegate:nil
-                                                                                        cancelButtonTitle:NSLocalizedString(@"OKButton", @"")
-                                                                                        otherButtonTitles:nil];
-                                           [alert show];
-                                       }];
-                                  }
-                                           otherButtonTitlesAndBlocks:nil];
-    
-    UIWindow *window = [[[UIApplication sharedApplication] delegate] window];
-    [actionSheet showInView:window];
-}
-
 - (IBAction)pressedBack:(id)sender
 {
     void (^goBack)() = ^(void)
@@ -654,6 +620,34 @@ NSTimeInterval kVContentPollAnimationDuration = 0.2;
 //    [self collapseTitleAnimated:YES];
 }
 
+- (IBAction)pressedMore:(id)sender
+{
+    VContentInfoViewController* contentInfo = [VContentInfoViewController sharedInstance];
+    contentInfo.sequence = self.sequence;
+    contentInfo.backgroundImage = self.backgroundImage.image;
+    contentInfo.delegate = self;
+    contentInfo.modalTransitionStyle = UIModalTransitionStyleFlipHorizontal;
+    [self.navigationController presentViewController:contentInfo animated:YES completion:nil];
+}
+
+#pragma mark - VContentInfoDelegate
+- (void)didCloseFromInfo
+{
+    [self dismissViewControllerAnimated:YES
+                             completion:
+     ^{
+         [self.navigationController popViewControllerAnimated:YES];
+     }];
+}
+
+- (void)willCommentFromInfo
+{
+    [self dismissViewControllerAnimated:YES
+                             completion:
+     ^{
+         [self pressedComment:nil];
+     }];
+}
 #pragma mark - VInteractionManagerDelegate
 - (void)firedInteraction:(VInteraction*)interaction
 {
