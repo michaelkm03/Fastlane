@@ -3,30 +3,19 @@
 # Builds, archives, and exports all the apps in the 'configurations' folder.
 # IPA and DSYM files will be placed in the 'products' folder.
 #
-# Requires Shenzhen: see https://github.com/nomad/shenzhen
+# Requires Shenzhen:  see https://github.com/nomad/shenzhen
+# Requires Cupertino: see https://github.com/nomad/cupertino
 ###########
 
 SCHEME=$1
 CONFIGURATION=$2
-PROVISIONING_PROFILE=$3
+PROVISIONING_PROFILE_NAME="Victorious Ad Hoc 1/15/14"
 CODESIGN_ID="iPhone Distribution: Victorious Inc. (82T26U698A)"
 
-shift 3
+shift 2
 
-if [ "$SCHEME" == "" -o "$PROVISIONING_PROFILE" == "" -o "$CONFIGURATION" == "" ]; then
-    echo "Usage: `basename $0` <scheme> <configuration> <provisioning profile UUID> [app name(s) (optional)]"
-    exit 1
-fi
-
-PROVISIONING_PROFILE_PATH="$HOME/Library/MobileDevice/Provisioning Profiles/$PROVISIONING_PROFILE.mobileprovision"
-if [ ! -f "$PROVISIONING_PROFILE_PATH" ]; then
-    echo "Provisioning profile $PROVISIONING_PROFILE_PATH not found."
-    exit 1
-fi
-
-PROVISIONING_PROFILE_NAME=`/usr/libexec/PlistBuddy -c 'Print :Name' /dev/stdin <<< $(security cms -D -i "$PROVISIONING_PROFILE_PATH")`
-if [ "$PROVISIONING_PROFILE_NAME" == "" ]; then
-    echo "Provisioning profile $PROVISIONING_PROFILE_PATH could not be read."
+if [ "$SCHEME" == "" -o "$PROVISIONING_PROFILE_NAME" == "" -o "$CONFIGURATION" == "" ]; then
+    echo "Usage: `basename $0` <scheme> <configuration> [app name(s) (optional)]"
     exit 1
 fi
 
@@ -34,6 +23,22 @@ if [ "$APP_NAME" != "" -a ! -d "configurations/$APP_NAME" ]; then
     echo "App $APP_NAME not found."
     exit 1
 fi
+
+
+### Find and update provisioning profile
+# If this step fails or hangs, you may need to store or update the dev center credentials
+# in the keychain. Use the "ios login" command.
+
+ios profiles:download "$PROVISIONING_PROFILE_NAME" --type distribution
+
+if [ $? != 0 ]; then
+    echo "Unable to download provisioning profile \"$PROVISIONING_PROFILE_PATH\""
+    exit 1
+fi
+
+PROVISIONING_PROFILE_PATH=$(find . -iname *.mobileprovision -depth 1 -print -quit)
+PROVISIONING_PROFILE_UUID=`/usr/libexec/PlistBuddy -c 'Print :UUID' /dev/stdin <<< $(security cms -D -i "$PROVISIONING_PROFILE_PATH")`
+mv "$PROVISIONING_PROFILE_PATH" "$HOME/Library/MobileDevice/Provisioning Profiles/$PROVISIONING_PROFILE_UUID.mobileprovision"
 
 
 ### Clean products folder
@@ -66,7 +71,7 @@ xcodebuild -workspace victorious.xcworkspace -scheme $SCHEME -destination generi
 ### Build
 
 xcodebuild -workspace victorious.xcworkspace -scheme "$SCHEME" -destination generic/platform=iOS \
-           -archivePath "../victorious.xcarchive" PROVISIONING_PROFILE="$PROVISIONING_PROFILE" \
+           -archivePath "../victorious.xcarchive" PROVISIONING_PROFILE="$PROVISIONING_PROFILE_UUID" \
            CODE_SIGN_IDENTITY="$CODESIGN_ID" archive
 BUILDRESULT=$?
 if [ $BUILDRESULT == 0 ]; then
