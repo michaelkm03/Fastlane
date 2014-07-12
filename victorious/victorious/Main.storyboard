@@ -880,6 +880,14 @@
                                     <constraint firstAttribute="height" constant="51" id="sAW-bE-Amq"/>
                                 </constraints>
                             </view>
+                            <containerView contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="FR4-4c-csb">
+                                <rect key="frame" x="0.0" y="52" width="320" height="102"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                                <connections>
+                                    <segue destination="nfe-aV-fE2" kind="embed" id="EXS-6R-VMb"/>
+                                </connections>
+                            </containerView>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="aAT-JQ-9wh" customClass="VContentTitleView">
                                 <rect key="frame" x="0.0" y="51" width="320" height="102"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -1741,7 +1749,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="cZZ-Yn-Uhj" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1502" y="-1349"/>
+            <point key="canvasLocation" x="-974" y="-1303"/>
         </scene>
         <!--Home Stream View Controller - Home-->
         <scene sceneID="PlQ-Kr-rTc">
@@ -2272,7 +2280,83 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="GF9-og-NEh" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <tapGestureRecognizer id="Tsf-EC-KW8" userLabel="Preview Image Tap Gesture"/>
             </objects>
-            <point key="canvasLocation" x="-1967" y="-1296"/>
+            <point key="canvasLocation" x="-1714" y="-979"/>
+        </scene>
+        <!--Realtime Comment View Controller-->
+        <scene sceneID="jba-sd-GYd">
+            <objects>
+                <viewController automaticallyAdjustsScrollViewInsets="NO" id="nfe-aV-fE2" customClass="VRealtimeCommentViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="iag-8c-5ir"/>
+                        <viewControllerLayoutGuide type="bottom" id="aH9-be-Dbt"/>
+                    </layoutGuides>
+                    <view key="view" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="yfW-m5-Vp8">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="102"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="rAp-Md-bdw" userLabel="Progress Bar View">
+                                <rect key="frame" x="0.0" y="81" width="0.0" height="21"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" white="1" alpha="0.80000000000000004" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                            </view>
+                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="D2r-h0-JAN" userLabel="Progress Background View">
+                                <rect key="frame" x="0.0" y="81" width="320" height="21"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                <color key="backgroundColor" white="1" alpha="0.35000000000000003" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                            </view>
+                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="6Vh-qS-PfT" userLabel="Comment Background View">
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="74"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <subviews>
+                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="profile_thumb" translatesAutoresizingMaskIntoConstraints="NO" id="2Na-HK-39F" userLabel="Profile Image View ">
+                                        <rect key="frame" x="10" y="10" width="32" height="32"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                    </imageView>
+                                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="1d" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="xns-a2-wTW" userLabel="Time Label">
+                                        <rect key="frame" x="280" y="10" width="40" height="21"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Kat Treadwell at 0:16" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="X9m-ba-mCG" userLabel="Name Label">
+                                        <rect key="frame" x="47" y="10" width="199" height="21"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Abcd Abcd Abcd Abcd Abcd Abcd Abcd Abcd " lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" preferredMaxLayoutWidth="198" translatesAutoresizingMaskIntoConstraints="NO" id="78A-YU-Zgf" userLabel="Comment Label">
+                                        <rect key="frame" x="50" y="31" width="198" height="36"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Wqa-e7-cZf" userLabel="Media Image View">
+                                        <rect key="frame" x="245" y="0.0" width="75" height="75"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                    </imageView>
+                                </subviews>
+                                <color key="backgroundColor" white="1" alpha="0.35000000000000003" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                            </view>
+                        </subviews>
+                        <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                    <toolbarItems/>
+                    <connections>
+                        <outlet property="commentBackgroundView" destination="6Vh-qS-PfT" id="eXM-g6-rFW"/>
+                        <outlet property="commentLabel" destination="78A-YU-Zgf" id="ZXL-hI-h0t"/>
+                        <outlet property="mediaImageView" destination="Wqa-e7-cZf" id="6fw-lB-Y2a"/>
+                        <outlet property="nameLabel" destination="X9m-ba-mCG" id="SpL-2R-X69"/>
+                        <outlet property="profileImageView" destination="2Na-HK-39F" id="Dcp-bY-F3O"/>
+                        <outlet property="progressBackgroundView" destination="D2r-h0-JAN" id="ugx-nY-LWM"/>
+                        <outlet property="progressBarView" destination="rAp-Md-bdw" id="cnk-bQ-SAG"/>
+                        <outlet property="timeLabel" destination="xns-a2-wTW" id="Dyh-c8-zZd"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="6GB-7q-tBp" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-1775" y="-1463"/>
         </scene>
     </scenes>
     <resources>
@@ -2297,6 +2381,7 @@
         <image name="contentViewCollapse" width="40" height="40"/>
         <image name="createContentButton" width="27" height="27"/>
         <image name="flipReverseIcon" width="23" height="20"/>
+        <image name="profile_thumb" width="32" height="32"/>
         <image name="refreshIcon" width="13" height="15"/>
         <image name="remixIcon" width="22" height="18"/>
         <image name="reportIcon" width="18" height="16"/>

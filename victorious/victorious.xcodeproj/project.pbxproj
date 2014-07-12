@@ -306,6 +306,7 @@
 		BEF2C2A818848B3B00AAE975 /* VUnreadConversation.m in Sources */ = {isa = PBXBuildFile; fileRef = BEF2C2A718848B3B00AAE975 /* VUnreadConversation.m */; };
 		BEF2C2B71886211000AAE975 /* VPollResult.m in Sources */ = {isa = PBXBuildFile; fileRef = BEF2C2B61886211000AAE975 /* VPollResult.m */; };
 		BEFE1322196B82BF003B33DC /* VContentInfoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BEFE1321196B82BF003B33DC /* VContentInfoViewController.m */; };
+		BEFE132E196F6B6F003B33DC /* VRealtimeCommentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BEFE132D196F6B6F003B33DC /* VRealtimeCommentViewController.m */; };
 		D1DAAA0B187A43BE009ADCB0 /* VProfileEditViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D1DAAA0A187A43BE009ADCB0 /* VProfileEditViewController.m */; };
 /* End PBXBuildFile section */
 
@@ -871,6 +872,8 @@
 		BEF2C2B61886211000AAE975 /* VPollResult.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VPollResult.m; sourceTree = "<group>"; };
 		BEFE1320196B82BF003B33DC /* VContentInfoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VContentInfoViewController.h; path = "UI/Content View/VContentInfoViewController.h"; sourceTree = "<group>"; };
 		BEFE1321196B82BF003B33DC /* VContentInfoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VContentInfoViewController.m; path = "UI/Content View/VContentInfoViewController.m"; sourceTree = "<group>"; };
+		BEFE132C196F6B6F003B33DC /* VRealtimeCommentViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VRealtimeCommentViewController.h; path = UI/RealtimeComments/VRealtimeCommentViewController.h; sourceTree = "<group>"; };
+		BEFE132D196F6B6F003B33DC /* VRealtimeCommentViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VRealtimeCommentViewController.m; path = UI/RealtimeComments/VRealtimeCommentViewController.m; sourceTree = "<group>"; };
 		D1DAAA09187A43BE009ADCB0 /* VProfileEditViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VProfileEditViewController.h; path = UI/VProfileEditViewController.h; sourceTree = "<group>"; };
 		D1DAAA0A187A43BE009ADCB0 /* VProfileEditViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VProfileEditViewController.m; path = UI/VProfileEditViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -1936,6 +1939,7 @@
 		BED4568918BC4CD700A67160 /* Content View */ = {
 			isa = PBXGroup;
 			children = (
+				BEFE132B196F6AED003B33DC /* RealtimeComments */,
 				BE185DF218E3B85D001C447F /* ActionBars */,
 				BE46E69118CA73EC00974DAF /* Animations */,
 				03ABEE2119395AF6007931F9 /* VContentTitleTextView.h */,
@@ -1991,6 +1995,15 @@
 				BE7B6A8D195C997300A0E80A /* VSettingManager.m */,
 			);
 			name = Settings;
+			sourceTree = "<group>";
+		};
+		BEFE132B196F6AED003B33DC /* RealtimeComments */ = {
+			isa = PBXGroup;
+			children = (
+				BEFE132C196F6B6F003B33DC /* VRealtimeCommentViewController.h */,
+				BEFE132D196F6B6F003B33DC /* VRealtimeCommentViewController.m */,
+			);
+			name = RealtimeComments;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -2359,6 +2372,7 @@
 				3FF8C50418A59EAB00812968 /* VKeyboardBarContainerViewController.m in Sources */,
 				0388AE681949459A0098A393 /* VSequenceFilter+Setters.m in Sources */,
 				BE171E161868C211004E5202 /* VRule+RestKit.m in Sources */,
+				BEFE132E196F6B6F003B33DC /* VRealtimeCommentViewController.m in Sources */,
 				3F9B66741888C4B20046F826 /* VCommunityStreamViewController.m in Sources */,
 				3FF7B6DA18EE477D003831CD /* UIView+Masking.m in Sources */,
 				BE185DF518E3BB54001C447F /* VActionBarViewController.m in Sources */,
