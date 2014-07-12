@@ -8,6 +8,12 @@
 	<string>${ProductPrefix}victorious</string>
 	<key>CFBundleExecutable</key>
 	<string>${EXECUTABLE_NAME}</string>
+	<key>CFBundleIconFiles</key>
+	<array>
+		<string>Icon-29</string>
+		<string>Icon-40</string>
+		<string>Icon-60</string>
+	</array>
 	<key>CFBundleIdentifier</key>
 	<string>com.getvictorious.${ProductPrefix}victorious</string>
 	<key>CFBundleInfoDictionaryVersion</key>
@@ -16,12 +22,6 @@
 	<string>${PRODUCT_NAME}</string>
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
-	<key>CFBundleIconFiles</key>
-	<array>
-		<string>Icon-29</string>
-		<string>Icon-40</string>
-		<string>Icon-60</string>
-	</array>
 	<key>CFBundleShortVersionString</key>
 	<string>1.0</string>
 	<key>CFBundleSignature</key>
@@ -39,7 +39,7 @@
 			<string>com.getvictorious.deeplinking.scheme</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>${ProductPrefix}mp</string>
+				<string>${ProductPrefix}victorious</string>
 			</array>
 		</dict>
 	</array>
@@ -49,18 +49,26 @@
 	<string>1374328719478033</string>
 	<key>FacebookDisplayName</key>
 	<string>VictoriousApp Dev</string>
+	<key>GAID</key>
+	<string>UA-51702806-1</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+	<key>ProductPrefix</key>
+	<string>${ProductPrefix}</string>
+	<key>QAAppID</key>
+	<integer>1</integer>
+	<key>StagingAppID</key>
+	<integer>1</integer>
 	<key>TWITTER_CONSUMER_KEY</key>
 	<string>MhDYRpVPTaGQgWBT7ChmxQ</string>
 	<key>TWITTER_CONSUMER_SECRET</key>
 	<string>damxXK28SCObMZ1CEMTLszm3v8mdRt0L1wuVnzXtH1E</string>
 	<key>TestflightQAAppToken</key>
-	<string>8ebdaa55-4d8e-41ee-a1a0-5938e9772611</string>
+	<string>553ddcc2-00e7-4c93-987b-f552eba89273</string>
 	<key>TestflightReleaseAppToken</key>
-	<string>ac3f1322-d0f7-4002-8119-81be50e1c5f2</string>
+	<string>02101c7d-4a01-4a44-8e8a-26dca03554aa</string>
 	<key>TestflightStagingAppToken</key>
-	<string>b52a2a45-9c10-4526-a915-a5b65972e9b3</string>
+	<string>cabc9a4e-9385-49a7-8d5f-bedd539b60d6</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>Roboto-Light.ttf</string>
@@ -89,16 +97,8 @@
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
 	<key>VictoriousAppID</key>
-	<integer>2</integer>
-	<key>StagingAppID</key>
-	<integer>2</integer>
-	<key>QAAppID</key>
-	<integer>2</integer>
+	<integer>1</integer>
 	<key>VictoriousServerEnvironment</key>
 	<string>${DefaultEnvironment}</string>
-	<key>ProductPrefix</key>
-	<string>${ProductPrefix}</string>
-	<key>GAID</key>
-	<string>UA-51702806-1</string>
 </dict>
 </plist>
