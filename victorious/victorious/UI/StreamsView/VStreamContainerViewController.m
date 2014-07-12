@@ -133,6 +133,10 @@
         return;
     }
     
+    [[VAnalyticsRecorder sharedAnalyticsRecorder] sendEventWithCategory:kVAnalyticsEventCategoryInteraction
+                                                                 action:@"Create Button Tapped"
+                                                                  label:nil
+                                                                  value:nil];
     UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil
                                                     cancelButtonTitle:NSLocalizedString(@"Cancel", @"Cancel button")
                                                        onCancelButton:nil
@@ -141,14 +145,26 @@
                                            otherButtonTitlesAndBlocks:
                                   NSLocalizedString(@"Create a Video Post", @""), ^(void)
                                   {
+                                      [[VAnalyticsRecorder sharedAnalyticsRecorder] sendEventWithCategory:kVAnalyticsEventCategoryNavigation
+                                                                                                   action:@"Selected Create Video Post"
+                                                                                                    label:nil
+                                                                                                    value:nil];
                                       [self presentCameraViewController:[VCameraViewController cameraViewController]];
                                   },
                                   NSLocalizedString(@"Create an Image Post", @""), ^(void)
                                   {
+                                      [[VAnalyticsRecorder sharedAnalyticsRecorder] sendEventWithCategory:kVAnalyticsEventCategoryNavigation
+                                                                                                   action:@"Selected Create Image Post"
+                                                                                                    label:nil
+                                                                                                    value:nil];
                                       [self presentCameraViewController:[VCameraViewController cameraViewControllerStartingWithStillCapture]];
                                   },
                                   NSLocalizedString(@"Create a Poll", @""), ^(void)
                                   {
+                                      [[VAnalyticsRecorder sharedAnalyticsRecorder] sendEventWithCategory:kVAnalyticsEventCategoryNavigation
+                                                                                                   action:@"Selected Create Poll"
+                                                                                                    label:nil
+                                                                                                    value:nil];
                                       VCreatePollViewController *createViewController = [VCreatePollViewController newCreatePollViewControllerWithDelegate:self];
                                       [self.navigationController pushViewController:createViewController animated:YES];
                                   }, nil];
