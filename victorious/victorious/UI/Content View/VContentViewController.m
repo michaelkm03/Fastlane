@@ -168,6 +168,9 @@ NSTimeInterval kVContentPollAnimationDuration = 0.2;
 {
     self.previewImage.image = nil;
     
+    self.realtimeCommentsContainer.alpha = 0;
+    self.contentTitleView.alpha = 1;
+    
     [self.firstResultView setProgress:0 animated:NO];
     self.firstResultView.isVertical = YES;
     self.firstResultView.hidden = YES;

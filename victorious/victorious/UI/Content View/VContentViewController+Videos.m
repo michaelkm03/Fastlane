@@ -417,6 +417,9 @@ static const char kVideoUnloadBlockKey;
 
 - (void)videoPlayerWasTapped
 {
+    if ([self.sequence isPoll])
+        return;
+    
     [self flipHeaderWithDuration:.25f completion:nil];
 }
 
