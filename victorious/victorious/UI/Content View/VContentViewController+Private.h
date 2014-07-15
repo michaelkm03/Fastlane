@@ -93,4 +93,6 @@ extern NSTimeInterval kVContentPollAnimationDuration;
 
 - (BOOL)isTitleExpanded; ///< Returns YES if the full title is being displayed with a white overlay view beneath
 
+- (void)flipHeaderWithDuration:(CGFloat)duration completion:(void (^)(BOOL finished))completion;
+
 @end

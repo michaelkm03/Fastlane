@@ -415,6 +415,11 @@ static const char kVideoUnloadBlockKey;
 
 #pragma mark - VCVideoPlayerDelegate methods
 
+- (void)videoPlayerWasTapped
+{
+    [self flipHeaderWithDuration:.25f completion:nil];
+}
+
 - (void)videoPlayer:(VCVideoPlayerViewController *)videoPlayer didPlayToTime:(CMTime)time
 {
     self.realtimeCommentVC.endTime = CMTimeGetSeconds([videoPlayer playerItemDuration]);

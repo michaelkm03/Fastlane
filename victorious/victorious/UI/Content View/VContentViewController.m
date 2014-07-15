@@ -630,7 +630,6 @@ NSTimeInterval kVContentPollAnimationDuration = 0.2;
 - (IBAction)pressedRepost:(id)sender
 {
 //    [self collapseTitleAnimated:YES];
-    [self flipHeaderWithDuration:.5f completion:nil];
 }
 
 - (IBAction)pressedMore:(id)sender
