@@ -26,13 +26,13 @@ CGFloat const kMessageLabelWidth = 214;
 {
     [super awakeFromNib];
     
-    self.dateLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVParagraphFont];
+    self.dateLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVLabel3Font];
     self.dateLabel.textColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVContentTextColor];
     
-    self.messageLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeading3Font];
+    self.messageLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVParagraphFont];
     self.messageLabel.textColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVContentTextColor];
     
-    self.nameLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVLabel1Font];
+    self.nameLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVLabel2Font];
     self.nameLabel.textColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
     
     self.profileImageButton.clipsToBounds = YES;

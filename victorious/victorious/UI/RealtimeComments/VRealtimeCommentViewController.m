@@ -53,9 +53,14 @@ static const CGFloat kVRealtimeCommentTimeout = 1.0f;
     commentSelectionRecognizer.numberOfTapsRequired = 1;
     [self.progressBackgroundView addGestureRecognizer:commentSelectionRecognizer];
     
+    self.profileImageView.layer.cornerRadius = CGRectGetHeight(self.profileImageView.bounds)/2;
+    
     self.progressBarImageViews = [[NSMutableArray alloc] init];
     self.arrowImageView.image = [self.arrowImageView.image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
     self.arrowImageView.tintColor = self.commentBackgroundView.backgroundColor;
+    
+    self.commentLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVParagraphFont];
+    self.timeLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVLabel3Font];
 }
 
 #pragma mark - Comment Selection
