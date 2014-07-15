@@ -72,6 +72,11 @@ typedef NS_ENUM(NSInteger, GCKErrorCode) {
   GCKErrorCodeInvalidMediaPlayerState = 95,
 
   /**
+   * Error code indicating that the application session ID was not valid.
+   */
+  GCKErrorCodeInvalidApplicationSessionID = 96,
+
+  /**
    * Error code indicating that an unknown, unexpected error has occurred.
    */
   GCKErrorCodeUnknown = 99,

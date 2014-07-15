@@ -122,7 +122,6 @@
 		3FA217D618A9C38A0066E893 /* pause_black@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3FA217D218A9C38A0066E893 /* pause_black@2x.png */; };
 		3FA217D718A9C38A0066E893 /* play_black.png in Resources */ = {isa = PBXBuildFile; fileRef = 3FA217D318A9C38A0066E893 /* play_black.png */; };
 		3FA217D818A9C38A0066E893 /* play_black@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3FA217D418A9C38A0066E893 /* play_black@2x.png */; };
-		3FA217D918AAC1960066E893 /* GoogleCast.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3FA217B518A9AD9B0066E893 /* GoogleCast.framework */; };
 		3FA217DE18AAFCFE0066E893 /* cast_outline_black.png in Resources */ = {isa = PBXBuildFile; fileRef = 3FA217DC18AAFCFE0066E893 /* cast_outline_black.png */; };
 		3FA217DF18AAFCFE0066E893 /* cast_outline_black@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3FA217DD18AAFCFE0066E893 /* cast_outline_black@2x.png */; };
 		3FA217E318AD87F40066E893 /* UIImageView+Blurring.m in Sources */ = {isa = PBXBuildFile; fileRef = 3FA217E218AD87F40066E893 /* UIImageView+Blurring.m */; };
@@ -523,7 +522,6 @@
 		3F9B66701888C4940046F826 /* VOwnerStreamViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VOwnerStreamViewController.m; path = UI/VOwnerStreamViewController.m; sourceTree = "<group>"; };
 		3F9B66721888C4B20046F826 /* VCommunityStreamViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VCommunityStreamViewController.h; path = UI/VCommunityStreamViewController.h; sourceTree = "<group>"; };
 		3F9B66731888C4B20046F826 /* VCommunityStreamViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VCommunityStreamViewController.m; path = UI/VCommunityStreamViewController.m; sourceTree = "<group>"; };
-		3FA217B518A9AD9B0066E893 /* GoogleCast.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GoogleCast.framework; path = "3rd Party SDKs/GoogleCast.framework"; sourceTree = "<group>"; };
 		3FA217B918A9ADF10066E893 /* ChromecastDeviceController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ChromecastDeviceController.h; path = "3rd Party SDKs/ChromecastDeviceController.h"; sourceTree = SOURCE_ROOT; };
 		3FA217BA18A9ADF10066E893 /* ChromecastDeviceController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ChromecastDeviceController.m; path = "3rd Party SDKs/ChromecastDeviceController.m"; sourceTree = SOURCE_ROOT; };
 		3FA217BC18A9B5160066E893 /* CastViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CastViewController.h; path = "3rd Party SDKs/CastViewController.h"; sourceTree = SOURCE_ROOT; };
@@ -622,7 +620,7 @@
 		83D897401881F19D00BD5B8B /* VCommentsContainerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VCommentsContainerViewController.h; sourceTree = "<group>"; };
 		83D897411881F19D00BD5B8B /* VCommentsContainerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VCommentsContainerViewController.m; sourceTree = "<group>"; };
 		83DC42FC187CDDE600E768E2 /* VConstants.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VConstants.h; sourceTree = "<group>"; };
-		BE12084C1919A3C200CDDF27 /* GoogleCast.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = GoogleCast.framework; sourceTree = "<group>"; };
+		BE12084C1919A3C200CDDF27 /* GoogleCast.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GoogleCast.framework; path = "3rd Party SDKs/GoogleCast.framework"; sourceTree = "<group>"; };
 		BE171D761868BE64004E5202 /* victorious.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = victorious.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		BE171D791868BE64004E5202 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		BE171D7B1868BE64004E5202 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -885,7 +883,6 @@
 				0361058A194154F40069D49E /* SystemConfiguration.framework in Frameworks */,
 				03610584194140AA0069D49E /* libsqlite3.dylib in Frameworks */,
 				BE12084D1919A3C200CDDF27 /* GoogleCast.framework in Frameworks */,
-				3FA217D918AAC1960066E893 /* GoogleCast.framework in Frameworks */,
 				BE171D7C1868BE64004E5202 /* CoreGraphics.framework in Frameworks */,
 				0361057D19411AA10069D49E /* libGoogleAnalyticsServices.a in Frameworks */,
 				BE171D801868BE64004E5202 /* CoreData.framework in Frameworks */,
@@ -1527,7 +1524,6 @@
 				BE171D971868BE64004E5202 /* XCTest.framework */,
 				662F0867152745B2B2F08301 /* libPods.a */,
 				03610583194140AA0069D49E /* libsqlite3.dylib */,
-				3FA217B518A9AD9B0066E893 /* GoogleCast.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
