@@ -23,6 +23,7 @@
 
 #import "VActionBarViewController.h"
 #import "VEmotiveBallisticsBarViewController.h"
+#import "VRealtimeCommentViewController.h"
 
 #import "VObjectManager+Sequence.h"
 
@@ -44,6 +45,8 @@ NSTimeInterval kVContentPollAnimationDuration = 0.2;
 @import MediaPlayer;
 
 @interface VContentViewController() <VContentInfoDelegate>
+
+@property (nonatomic) BOOL isViewingTitle;
 
 @end
 
@@ -83,6 +86,15 @@ NSTimeInterval kVContentPollAnimationDuration = 0.2;
         [button.layer setBorderWidth:1.0];
         [button.layer setBorderColor:[[UIColor colorWithWhite:.4 alpha:.2] CGColor]];
         button.titleLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVLabel2Font];
+    }
+    
+    for (UIViewController* vc in self.childViewControllers)
+    {
+        if ([vc isKindOfClass:[VRealtimeCommentViewController class]])
+        {
+            self.realtimeCommentVC = (VRealtimeCommentViewController*)vc;
+            break;
+        }
     }
     
     [self resetView];
@@ -618,6 +630,7 @@ NSTimeInterval kVContentPollAnimationDuration = 0.2;
 - (IBAction)pressedRepost:(id)sender
 {
 //    [self collapseTitleAnimated:YES];
+    [self flipHeaderWithDuration:.5f completion:nil];
 }
 
 - (IBAction)pressedMore:(id)sender
@@ -672,6 +685,20 @@ NSTimeInterval kVContentPollAnimationDuration = 0.2;
 }
 
 #pragma mark - Animations
+
+- (void)flipHeaderWithDuration:(CGFloat)duration completion:(void (^)(BOOL finished))completion
+{
+    [UIView animateWithDuration:duration
+                     animations:
+     ^{
+         self.realtimeCommentsContainer.alpha = !self.isViewingTitle ? 0 : 1;
+         self.contentTitleView.alpha = self.isViewingTitle ? 0 : 1;
+     }
+                     completion:completion];
+    
+    self.isViewingTitle = !self.isViewingTitle;
+}
+
 - (void)animateInWithDuration:(CGFloat)duration completion:(void (^)(BOOL finished))completion
 {
     

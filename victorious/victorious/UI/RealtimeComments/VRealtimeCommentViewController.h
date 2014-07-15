@@ -13,7 +13,7 @@
 
 @property (nonatomic, strong) NSArray* comments;
 
-@property (nonatomic) CMTime currentTime;
-@property (nonatomic) CMTime endTime;
+@property (nonatomic) CGFloat currentTime; ///Current time of the media
+@property (nonatomic) CGFloat endTime;  ///End time of the media.  Defaults to CGFloatMax if not defined (to avoid divide by 0 crashes)
 
 @end

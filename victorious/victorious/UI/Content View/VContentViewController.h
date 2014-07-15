@@ -10,7 +10,7 @@
 
 #import "VAnimation.h"
 
-@class VSequence, VEmotiveBallisticsBarViewController, VActionBarViewController;
+@class VSequence, VEmotiveBallisticsBarViewController, VActionBarViewController, VRealtimeCommentViewController;
 
 @interface VContentViewController : UIViewController <VAnimation>
 
@@ -22,6 +22,8 @@
 @property (weak, nonatomic) IBOutlet UIView* mediaSuperview;
 @property (weak, nonatomic) IBOutlet UIView* mediaView;
 @property (weak, nonatomic) IBOutlet UIView* topActionsView;
+@property (weak, nonatomic) IBOutlet UIView* contentTitleView;
+@property (weak, nonatomic) IBOutlet UIView* realtimeCommentsContainer;
 
 @property (weak, nonatomic) IBOutlet UIImageView* orImageView;
 @property (weak, nonatomic) IBOutlet UIImageView* previewImage;

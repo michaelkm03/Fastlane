@@ -514,6 +514,9 @@ static __weak VCVideoPlayerViewController *_currentPlayer = nil;
             [self startToolbarTimer];
         }
         [self toggleToolbarHidden];
+        
+        if ([self.delegate respondsToSelector:@selector(videoPlayerWasTapped)])
+            [self.delegate videoPlayerWasTapped];
     }
 }
 

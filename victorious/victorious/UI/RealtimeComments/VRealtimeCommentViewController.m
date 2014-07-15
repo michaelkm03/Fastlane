@@ -31,6 +31,8 @@ static char VRealtimeCommentKVOContext;
 
 @property (nonatomic, strong) VComment* currentComment;
 
+@property (nonatomic)   BOOL didSelectComment;
+
 @end
 
 @implementation VRealtimeCommentViewController
@@ -39,8 +41,27 @@ static char VRealtimeCommentKVOContext;
 {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
+    
+    UITapGestureRecognizer *commentSelectionRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self
+                                                                                                action:@selector(respondToCommentSelection:)];
+    commentSelectionRecognizer.numberOfTapsRequired = 1;
+    [self.progressBackgroundView addGestureRecognizer:commentSelectionRecognizer];
 }
 
+#pragma mark - Comment Selection
+- (IBAction)respondToCommentSelection:(UITapGestureRecognizer *)recognizer
+{
+    
+}
+
+#pragma mark - Getters
+
+- (CGFloat)endTime
+{
+    return (isnan(_endTime) || _endTime == 0) ? CGFLOAT_MAX : _endTime;
+}
+
+#pragma mark - Setters
 - (void)setComments:(NSArray *)comments
 {
     _comments = comments;
@@ -48,29 +69,29 @@ static char VRealtimeCommentKVOContext;
 #warning Sort the comments so they are guarenteed to be in the right order
 }
 
-- (void)setCurrentTime:(CMTime)currentTime
+- (void)setCurrentTime:(CGFloat)currentTime
 {
-//    CMTime* oldTime = _currentTime;
+    CGFloat oldTime = _currentTime;
     _currentTime = currentTime;
-    
-    CGFloat currentSecond = (CGFloat)currentTime.value / (CGFloat)currentTime.timescale;
-    CGFloat endSecond = (CGFloat)self.endTime.value / (CGFloat)self.endTime.timescale;
-    
-    CGRect frame = self.progressBarView.frame;
-    frame.size.width = (currentSecond / endSecond) * self.progressBackgroundView.frame.size.width;
-    self.progressBarView.frame = frame;
     
     VComment* currentComment;
     for (VComment* comment in self.comments)
     {
-        CMTime startTime = CMTimeMake(0, 1);
-        if (CMTimeCompare(startTime, currentTime) <= 0 )
+        CGFloat startTime = 0;
+        if (startTime < currentTime)
             currentComment = comment;
         else
             break;
     }
     
-    self.currentComment = currentComment;
+    [UIView animateWithDuration:currentTime - oldTime
+                     animations:
+     ^{
+         CGRect frame = self.progressBarView.frame;
+         frame.size.width = (currentTime / self.endTime) * self.progressBackgroundView.frame.size.width;
+         self.progressBarView.frame = frame;
+     }
+                     completion:nil];
 }
 
 - (void)setCurrentComment:(VComment *)currentComment

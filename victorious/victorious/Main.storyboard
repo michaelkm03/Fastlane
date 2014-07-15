@@ -880,15 +880,15 @@
                                     <constraint firstAttribute="height" constant="51" id="sAW-bE-Amq"/>
                                 </constraints>
                             </view>
-                            <containerView contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="FR4-4c-csb">
+                            <containerView alpha="0.0" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="FR4-4c-csb">
                                 <rect key="frame" x="0.0" y="52" width="320" height="102"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <connections>
                                     <segue destination="nfe-aV-fE2" kind="embed" id="EXS-6R-VMb"/>
                                 </connections>
                             </containerView>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="aAT-JQ-9wh" customClass="VContentTitleView">
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="aAT-JQ-9wh">
                                 <rect key="frame" x="0.0" y="51" width="320" height="102"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <subviews>
@@ -1017,6 +1017,7 @@
                         <outlet property="barContainerView" destination="Pce-Lq-Sbm" id="n2G-fA-vJD"/>
                         <outlet property="collapseButton" destination="2TL-Vb-eja" id="TMf-Cw-jen"/>
                         <outlet property="collapseButtonVerticalSpacingConstraint" destination="1cy-d4-8n9" id="hWR-Vb-0Rc"/>
+                        <outlet property="contentTitleView" destination="aAT-JQ-9wh" id="ZDr-Ef-TGR"/>
                         <outlet property="descriptionLabel" destination="kYi-kX-anM" id="RPT-Me-7Ga"/>
                         <outlet property="expandedTitleMaskingView" destination="xqp-3V-NIb" id="hKs-OL-PLd"/>
                         <outlet property="firstPollButton" destination="iB3-TF-e3b" id="uEc-eU-Jbu"/>
@@ -1034,6 +1035,7 @@
                         <outlet property="pollPreviewView" destination="4Kr-fK-dGu" id="Jg8-mK-drW"/>
                         <outlet property="pollViewYConstraint" destination="cjf-8S-WD0" id="crw-3j-lDs"/>
                         <outlet property="previewImage" destination="ZqV-fk-y5a" id="5zD-1U-pWm"/>
+                        <outlet property="realtimeCommentsContainer" destination="FR4-4c-csb" id="3gI-AH-uQR"/>
                         <outlet property="rightImageViewHeightConstraint" destination="yWO-Zj-NEX" id="iw8-Li-jMN"/>
                         <outlet property="rightImageViewWidthConstraint" destination="Kaz-0u-z6m" id="OWb-gI-2lJ"/>
                         <outlet property="rightSmallPreviewImageWidthConstraint" destination="Kaz-0u-z6m" id="6xw-sD-qqO"/>
@@ -2304,7 +2306,7 @@
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <color key="backgroundColor" white="1" alpha="0.35000000000000003" colorSpace="custom" customColorSpace="calibratedWhite"/>
                             </view>
-                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="6Vh-qS-PfT" userLabel="Comment Background View">
+                            <view alpha="0.0" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="6Vh-qS-PfT" userLabel="Comment Background View">
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="74"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <subviews>
@@ -2340,7 +2342,7 @@
                                 <color key="backgroundColor" white="1" alpha="0.35000000000000003" colorSpace="custom" customColorSpace="calibratedWhite"/>
                             </view>
                         </subviews>
-                        <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     </view>
                     <toolbarItems/>
                     <connections>

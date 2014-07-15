@@ -21,6 +21,7 @@
 - (void)videoPlayerDidReachMidpoint:(VCVideoPlayerViewController *)videoPlayer;
 - (void)videoPlayerDidFinishThirdQuartile:(VCVideoPlayerViewController *)videoPlayer;
 - (void)videoPlayerDidReachEndOfVideo:(VCVideoPlayerViewController *)videoPlayer;
+- (void)videoPlayerWasTapped;
 
 @end
 

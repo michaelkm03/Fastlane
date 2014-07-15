@@ -14,6 +14,8 @@
 #import "VLoginViewController.h"
 #import "VRemixSelectViewController.h"
 
+#import "VRealtimeCommentViewController.h"
+
 #import <objc/runtime.h>
 
 const NSTimeInterval kVideoPlayerAnimationDuration = 0.2;
@@ -413,6 +415,12 @@ static const char kVideoUnloadBlockKey;
 
 #pragma mark - VCVideoPlayerDelegate methods
 
+- (void)videoPlayer:(VCVideoPlayerViewController *)videoPlayer didPlayToTime:(CMTime)time
+{
+    self.realtimeCommentVC.endTime = CMTimeGetSeconds([videoPlayer playerItemDuration]);
+    self.realtimeCommentVC.currentTime = CMTimeGetSeconds(time);
+}
+
 - (void)videoPlayerReadyToPlay:(VCVideoPlayerViewController *)videoPlayer
 {
     [self.activityIndicator stopAnimating];
@@ -438,6 +446,9 @@ static const char kVideoUnloadBlockKey;
 
 - (void)videoPlayerDidReachEndOfVideo:(VCVideoPlayerViewController *)videoPlayer
 {
+    self.realtimeCommentVC.endTime = CMTimeGetSeconds([videoPlayer playerItemDuration]);
+    self.realtimeCommentVC.currentTime = CMTimeGetSeconds([videoPlayer playerItemDuration]);
+    
     if (self.onVideoCompletionBlock)
     {
         self.onVideoCompletionBlock();
