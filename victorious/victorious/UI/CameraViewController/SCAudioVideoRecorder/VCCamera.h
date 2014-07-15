@@ -96,7 +96,7 @@ typedef enum
 
 // Set an activeFormat that supports the requested framerate
 // This does not change the framerate
-- (BOOL)setActiveFormatThatSupportsFrameRate:(NSInteger)frameRate width:(NSInteger)width andHeight:(NSInteger)height error:(NSError**)error;
+- (BOOL)setActiveFormatThatSupportsFrameRate:(int32_t)frameRate width:(int32_t)width andHeight:(int32_t)height error:(NSError**)error;
 
 // Switch between back and front camera
 - (void) switchCamera;
@@ -110,7 +110,7 @@ typedef enum
 - (void)beginSessionConfiguration;
 - (void)commitSessionConfiguration;
 
-@property (assign, nonatomic) NSInteger frameRate;
+@property (assign, nonatomic) int32_t frameRate;
 
 // preview
 @property (weak, nonatomic) UIView * previewView;

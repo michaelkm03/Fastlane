@@ -386,8 +386,8 @@
 - (NSString *)timeToStr:(CGFloat)time
 {
     // time - seconds
-    NSInteger min = floor(time / 60);
-    NSInteger sec = floor(time - min * 60);
+    int32_t min = floor(time / 60);
+    int32_t sec = floor(time - min * 60);
     NSString *minStr = [NSString stringWithFormat:min >= 10 ? @"%i" : @"0%i", min];
     NSString *secStr = [NSString stringWithFormat:sec >= 10 ? @"%i" : @"0%i", sec];
     return [NSString stringWithFormat:@"%@:%@", minStr, secStr];

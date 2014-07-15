@@ -500,7 +500,7 @@ typedef UIView View;
     return NO;
 }
 
-- (void)setFrameRate:(NSInteger)framePerSeconds
+- (void)setFrameRate:(int32_t)framePerSeconds
 {
     CMTime fps = CMTimeMake(1, framePerSeconds);
     
@@ -562,11 +562,11 @@ typedef UIView View;
     }
 }
 
-- (NSInteger)frameRate
+- (int32_t)frameRate
 {
     AVCaptureDeviceInput * deviceInput = self.currentVideoDeviceInput;
     
-    NSInteger framerate = 0;
+    int32_t framerate = 0;
     
     if (deviceInput != nil)
     {
@@ -602,7 +602,7 @@ typedef UIView View;
     return NO;
 }
 
-- (BOOL)setActiveFormatThatSupportsFrameRate:(NSInteger)frameRate width:(NSInteger)width andHeight:(NSInteger)height error:(NSError *__autoreleasing *)error
+- (BOOL)setActiveFormatThatSupportsFrameRate:(int32_t)frameRate width:(int32_t)width andHeight:(int32_t)height error:(NSError *__autoreleasing *)error
 {
     AVCaptureDevice * device = self.currentDevice;
     CMVideoDimensions dimensions;
@@ -624,7 +624,7 @@ typedef UIView View;
             {
                 if ([self formatInRange:format frameRate:frameRate dimensions:dimensions])
                 {
-                    NSInteger oldFrameRate = self.frameRate;
+                    int32_t oldFrameRate = self.frameRate;
                     if ([device lockForConfiguration:error])
                     {
                         device.activeFormat = format;

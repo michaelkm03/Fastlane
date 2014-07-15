@@ -2552,7 +2552,6 @@
 				ProductPrefix = "staging-";
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;
-				VALID_ARCHS = "armv7 armv7s";
 			};
 			name = Staging;
 		};
@@ -2634,7 +2633,6 @@
 				ONLY_ACTIVE_ARCH = YES;
 				ProductPrefix = "debug-";
 				SDKROOT = iphoneos;
-				VALID_ARCHS = "armv7 armv7s";
 			};
 			name = Debug;
 		};
@@ -2674,7 +2672,6 @@
 				ProductPrefix = "";
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;
-				VALID_ARCHS = "armv7 armv7s";
 			};
 			name = Release;
 		};
@@ -2804,7 +2801,6 @@
 				ONLY_ACTIVE_ARCH = NO;
 				ProductPrefix = "qa-";
 				SDKROOT = iphoneos;
-				VALID_ARCHS = "armv7 armv7s";
 			};
 			name = QA;
 		};
