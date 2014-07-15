@@ -456,6 +456,8 @@ NSTimeInterval kVContentPollAnimationDuration = 0.2;
                                        tintColor:[[UIColor whiteColor] colorWithAlphaComponent:0.7f]];
     self.descriptionLabel.text = _sequence.name;
     self.currentNode = [sequence firstNode];
+
+    self.realtimeCommentVC.comments = [self.sequence.comments allObjects];
 }
 
 - (void)updateConstraintsForTextSize:(CGFloat)textSize
