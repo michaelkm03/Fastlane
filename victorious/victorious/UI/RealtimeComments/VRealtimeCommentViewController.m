@@ -15,8 +15,6 @@
 
 #import "NSDate+timeSince.h"
 
-static char VRealtimeCommentKVOContext;
-
 static const CGFloat kVRealtimeCommentTimeout = 1.0f;
 
 @interface VRealtimeCommentViewController ()
@@ -54,6 +52,7 @@ static const CGFloat kVRealtimeCommentTimeout = 1.0f;
     [self.progressBackgroundView addGestureRecognizer:commentSelectionRecognizer];
     
     self.profileImageView.layer.cornerRadius = CGRectGetHeight(self.profileImageView.bounds)/2;
+    self.profileImageView.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
     
     self.progressBarImageViews = [[NSMutableArray alloc] init];
     self.arrowImageView.image = [self.arrowImageView.image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
@@ -113,6 +112,7 @@ static const CGFloat kVRealtimeCommentTimeout = 1.0f;
         UIImageView* progressBarImage = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, imageHeight, imageHeight)];
         progressBarImage.layer.cornerRadius = CGRectGetHeight(progressBarImage.bounds)/2;
         progressBarImage.clipsToBounds = YES;
+        progressBarImage.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
 
         CGFloat xCenter = self.progressBackgroundView.frame.size.width - imageHeight;
         xCenter = xCenter * (startTime / self.endTime);

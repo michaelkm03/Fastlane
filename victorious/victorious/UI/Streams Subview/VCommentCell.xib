@@ -35,14 +35,14 @@
                             <constraint firstAttribute="width" constant="190" id="ag4-sC-gy5"/>
                         </constraints>
                     </imageView>
-                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="kz3-f7-Kav">
-                        <rect key="frame" x="11" y="12" width="48" height="48"/>
+                    <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="kz3-f7-Kav">
+                        <rect key="frame" x="11" y="10" width="48" height="48"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="48" id="RvL-5M-4Vl"/>
                             <constraint firstAttribute="width" constant="48" id="gi8-GJ-wl5"/>
                         </constraints>
-                        <state key="normal" image="profile_thumb">
+                        <state key="normal" backgroundImage="profile_full">
                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                         </state>
                         <connections>
@@ -112,6 +112,6 @@
     <resources>
         <image name="Play" width="33" height="33"/>
         <image name="StreamDate" width="13" height="13"/>
-        <image name="profile_thumb" width="32" height="32"/>
+        <image name="profile_full" width="80" height="80"/>
     </resources>
 </document>
