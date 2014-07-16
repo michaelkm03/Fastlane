@@ -189,7 +189,13 @@ static const CGFloat kVRealtimeCommentTimeout = 1.0f;
     
     self.mediaImageView.hidden = !currentComment.thumbnailUrl;
     if (currentComment.thumbnailUrl && currentComment.thumbnailUrl.length)
+    {
+        self.mediaImageView.alpha = 1;
         [self.mediaImageView setImageWithURL:[NSURL URLWithString:currentComment.thumbnailUrl]];
+    }
+    else
+        self.mediaImageView.alpha = 0;
+    
 }
 
 @end
