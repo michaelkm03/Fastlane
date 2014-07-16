@@ -11,9 +11,15 @@
 #import "VComment+Fetcher.h"
 #import "VUser.h"
 
+#import "VConstants.h"
 #import "VThemeManager.h"
 
+#import "UIButton+VImageLoading.h"
 #import "NSDate+timeSince.h"
+
+#import "VVideoLightboxViewController.h"
+#import "VImageLightboxViewController.h"
+#import "VLightboxTransitioningDelegate.h"
 
 static const CGFloat kVRealtimeCommentTimeout = 1.0f;
 
@@ -24,8 +30,10 @@ static const CGFloat kVRealtimeCommentTimeout = 1.0f;
 @property (nonatomic, weak) IBOutlet UIView* commentBackgroundView;
 
 @property (nonatomic, weak) IBOutlet UIImageView* profileImageView;
-@property (nonatomic, weak) IBOutlet UIImageView* mediaImageView;
 @property (nonatomic, weak) IBOutlet UIImageView* arrowImageView;
+
+@property (nonatomic, weak) IBOutlet UIImageView* playButtonImageView;
+@property (nonatomic, weak) IBOutlet UIButton* mediaButton;
 
 @property (nonatomic, weak) IBOutlet UILabel* timeLabel;
 @property (nonatomic, weak) IBOutlet UILabel* nameLabel;
@@ -187,15 +195,37 @@ static const CGFloat kVRealtimeCommentTimeout = 1.0f;
                        range:NSMakeRange(0, fullString.length)];
     self.nameLabel.attributedText = nameString;
     
-    self.mediaImageView.hidden = !currentComment.thumbnailUrl;
+    self.playButtonImageView.hidden = !currentComment.mediaType || ![currentComment.mediaType isEqualToString:VConstantsMediaTypeVideo];
     if (currentComment.thumbnailUrl && currentComment.thumbnailUrl.length)
     {
-        self.mediaImageView.alpha = 1;
-        [self.mediaImageView setImageWithURL:[NSURL URLWithString:currentComment.thumbnailUrl]];
+        self.mediaButton.alpha = 1;
+        [self.mediaButton setImageWithURL:[NSURL URLWithString:currentComment.thumbnailUrl] placeholderImage:nil forState:UIControlStateNormal];
     }
     else
-        self.mediaImageView.alpha = 0;
-    
+        self.mediaButton.alpha = 0;
+}
+
+- (IBAction)pressedMedia:(id)sender
+{
+    VLightboxViewController* lightbox;
+    if ([self.currentComment.mediaType isEqualToString:VConstantsMediaTypeVideo])
+    {
+        lightbox = [[VVideoLightboxViewController alloc] initWithPreviewImage:self.mediaButton.imageView.image
+                                                                     videoURL:[NSURL URLWithString: self.currentComment.mediaUrl]];
+        [VLightboxTransitioningDelegate addNewTransitioningDelegateToLightboxController:lightbox referenceView:self.mediaButton];
+        
+        ((VVideoLightboxViewController*)lightbox).onVideoFinished = lightbox.onCloseButtonTapped;
+        ((VVideoLightboxViewController*)lightbox).titleForAnalytics = @"Video Comment";
+    }
+    else if ([self.currentComment.mediaType isEqualToString:VConstantsMediaTypeImage])
+    {
+        
+    }
+    lightbox.onCloseButtonTapped = ^(void)
+    {
+        [self.parentViewController dismissViewControllerAnimated:YES completion:nil];
+    };
+    [self.parentViewController presentViewController:lightbox animated:YES completion:nil];
 }
 
 @end
