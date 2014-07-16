@@ -210,6 +210,7 @@ static const CGFloat kVRealtimeCommentTimeout = 1.0f;
     if ([self.delegate respondsToSelector:@selector(willShowRTCMedia)])
         [self.delegate willShowRTCMedia];
     
+    
     VLightboxViewController* lightbox;
     if ([self.currentComment.mediaType isEqualToString:VConstantsMediaTypeVideo])
     {
@@ -230,8 +231,13 @@ static const CGFloat kVRealtimeCommentTimeout = 1.0f;
         
         [self.parentViewController dismissViewControllerAnimated:YES completion:nil];
     };
+    
     [VLightboxTransitioningDelegate addNewTransitioningDelegateToLightboxController:lightbox referenceView:self.mediaButton];
-    [self.parentViewController presentViewController:lightbox animated:YES completion:nil];
+    
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(.25 * NSEC_PER_SEC)), dispatch_get_main_queue(),
+                   ^{
+                       [self.parentViewController presentViewController:lightbox animated:YES completion:nil];
+                   });
 }
 
 @end
