@@ -68,8 +68,8 @@ static const CGFloat kVRealtimeCommentTimeout = 1.0f;
 {
     CGPoint location = [recognizer locationInView:self.progressBackgroundView];
     CGFloat timeAtTouch = (location.x / self.progressBackgroundView.frame.size.width) * self.endTime;
-    self.currentComment = [self commentAtTime:timeAtTouch];
     self.didSelectComment = YES;
+    self.currentComment = [self commentAtTime:timeAtTouch];
 }
 
 - (VComment*)commentAtTime:(CGFloat)time
@@ -169,7 +169,10 @@ static const CGFloat kVRealtimeCommentTimeout = 1.0f;
     _currentComment = currentComment;
     
     if (!currentComment)
+    {
+        self.didSelectComment = NO;
         return;
+    }
     
     [self.profileImageView setImageWithURL:[NSURL URLWithString:_currentComment.user.pictureUrl] placeholderImage:[UIImage imageNamed:@"profile_full"]];
     self.timeLabel.text = [_currentComment.postedAt timeSince];
