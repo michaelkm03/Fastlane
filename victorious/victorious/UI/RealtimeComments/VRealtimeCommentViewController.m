@@ -66,7 +66,25 @@ static const CGFloat kVRealtimeCommentTimeout = 1.0f;
 #pragma mark - Comment Selection
 - (IBAction)respondToCommentSelection:(UITapGestureRecognizer *)recognizer
 {
-    
+    CGPoint location = [recognizer locationInView:self.progressBackgroundView];
+    CGFloat timeAtTouch = (location.x / self.progressBackgroundView.frame.size.width) * self.endTime;
+    self.currentComment = [self commentAtTime:timeAtTouch];
+    self.didSelectComment = YES;
+}
+
+- (VComment*)commentAtTime:(CGFloat)time
+{
+    VComment* currentComment;
+    for (VComment* comment in self.comments)
+    {
+#warning replace this with real start time
+        CGFloat startTime = [self.comments indexOfObject:comment] * (self.endTime / self.comments.count);
+        if (startTime < time && time-startTime < kVRealtimeCommentTimeout)
+            currentComment = comment;
+        else if (startTime > time)
+            break;
+    }
+    return currentComment;
 }
 
 #pragma mark - Getters
@@ -89,6 +107,7 @@ static const CGFloat kVRealtimeCommentTimeout = 1.0f;
     
     for (VComment* comment in comments)
     {
+        #warning replace this with real start time
         CGFloat startTime = [self.comments indexOfObject:comment] * (self.endTime / self.comments.count);
         CGFloat imageHeight = self.progressBackgroundView.frame.size.height * .75;
         UIImageView* progressBarImage = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, imageHeight, imageHeight)];
@@ -115,17 +134,8 @@ static const CGFloat kVRealtimeCommentTimeout = 1.0f;
     CGFloat oldTime = _currentTime;
     _currentTime = currentTime;
     
-    VComment* currentComment;
-    for (VComment* comment in self.comments)
-    {
-        CGFloat startTime = [self.comments indexOfObject:comment] * (self.endTime / self.comments.count);
-        if (startTime < currentTime && currentTime-startTime < kVRealtimeCommentTimeout)
-            currentComment = comment;
-        else if (startTime > currentTime)
-            break;
-    }
-    
-    self.currentComment = currentComment;
+    if (!self.didSelectComment)
+        self.currentComment = [self commentAtTime:currentTime];
     
     [UIView animateWithDuration:currentTime - oldTime
                      animations:
@@ -174,9 +184,9 @@ static const CGFloat kVRealtimeCommentTimeout = 1.0f;
                        range:NSMakeRange(0, fullString.length)];
     self.nameLabel.attributedText = nameString;
     
-    self.mediaImageView.hidden = !currentComment.mediaUrl;
-    if (currentComment.mediaUrl && currentComment.mediaType.length)
-        [self.mediaImageView setImageWithURL:currentComment.mediaUrl];
+    self.mediaImageView.hidden = !currentComment.thumbnailUrl;
+    if (currentComment.thumbnailUrl && currentComment.thumbnailUrl.length)
+        [self.mediaImageView setImageWithURL:[NSURL URLWithString:currentComment.thumbnailUrl]];
 }
 
 @end
