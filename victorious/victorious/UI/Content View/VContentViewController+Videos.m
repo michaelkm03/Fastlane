@@ -145,6 +145,12 @@ static const char kVideoUnloadBlockKey;
     }
 }
 
+- (void)resumeVideo
+{
+    if ([self.videoPlayer.player rate] == 0.0)
+        [self.videoPlayer.player play];
+}
+
 - (void)addRemixButtonToVideoPlayer
 {
     UIButton *remixButton = [UIButton buttonWithType:UIButtonTypeCustom];

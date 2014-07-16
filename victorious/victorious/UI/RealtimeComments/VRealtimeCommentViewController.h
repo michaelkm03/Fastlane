@@ -9,7 +9,16 @@
 #import <UIKit/UIKit.h>
 @import AVFoundation;
 
+@protocol VRealtimeCommentDelegate <NSObject>
+
+- (void)willShowRTCMedia;
+- (void)didFinishedRTCMedia;
+
+@end
+
 @interface VRealtimeCommentViewController : UIViewController
+
+@property (nonatomic, weak) id<VRealtimeCommentDelegate> delegate;
 
 @property (nonatomic, strong) NSArray* comments;
 

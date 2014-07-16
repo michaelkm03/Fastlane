@@ -207,24 +207,30 @@ static const CGFloat kVRealtimeCommentTimeout = 1.0f;
 
 - (IBAction)pressedMedia:(id)sender
 {
+    if ([self.delegate respondsToSelector:@selector(willShowRTCMedia)])
+        [self.delegate willShowRTCMedia];
+    
     VLightboxViewController* lightbox;
     if ([self.currentComment.mediaType isEqualToString:VConstantsMediaTypeVideo])
     {
         lightbox = [[VVideoLightboxViewController alloc] initWithPreviewImage:self.mediaButton.imageView.image
                                                                      videoURL:[NSURL URLWithString: self.currentComment.mediaUrl]];
-        [VLightboxTransitioningDelegate addNewTransitioningDelegateToLightboxController:lightbox referenceView:self.mediaButton];
         
         ((VVideoLightboxViewController*)lightbox).onVideoFinished = lightbox.onCloseButtonTapped;
-        ((VVideoLightboxViewController*)lightbox).titleForAnalytics = @"Video Comment";
+        ((VVideoLightboxViewController*)lightbox).titleForAnalytics = @"Video Realtime Comment";
     }
     else if ([self.currentComment.mediaType isEqualToString:VConstantsMediaTypeImage])
     {
-        
+        lightbox = [[VImageLightboxViewController alloc] initWithImage:self.mediaButton.imageView.image];
     }
     lightbox.onCloseButtonTapped = ^(void)
     {
+        if ([self.delegate respondsToSelector:@selector(didFinishedRTCMedia)])
+            [self.delegate didFinishedRTCMedia];
+        
         [self.parentViewController dismissViewControllerAnimated:YES completion:nil];
     };
+    [VLightboxTransitioningDelegate addNewTransitioningDelegateToLightboxController:lightbox referenceView:self.mediaButton];
     [self.parentViewController presentViewController:lightbox animated:YES completion:nil];
 }
 

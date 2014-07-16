@@ -44,7 +44,7 @@ NSTimeInterval kVContentPollAnimationDuration = 0.2;
 
 @import MediaPlayer;
 
-@interface VContentViewController() <VContentInfoDelegate>
+@interface VContentViewController() <VContentInfoDelegate, VRealtimeCommentDelegate>
 
 @property (nonatomic) BOOL isViewingTitle;
 
@@ -93,6 +93,7 @@ NSTimeInterval kVContentPollAnimationDuration = 0.2;
         if ([vc isKindOfClass:[VRealtimeCommentViewController class]])
         {
             self.realtimeCommentVC = (VRealtimeCommentViewController*)vc;
+            self.realtimeCommentVC.delegate = self;
             break;
         }
     }
@@ -777,6 +778,18 @@ NSTimeInterval kVContentPollAnimationDuration = 0.2;
              completion(finished);
          }
      }];
+}
+
+#pragma mark - VRealtimeCommentDelegate methods
+
+-(void)willShowRTCMedia
+{
+    [self pauseVideo];
+}
+
+- (void)didFinishedRTCMedia
+{
+    [self resumeVideo];
 }
 
 #pragma mark - VContentTitleTextViewDelegate methods
