@@ -21,6 +21,8 @@
 
 #import "VConstants.h"
 
+#import <Crashlytics/Crashlytics.h>
+
 @import MediaPlayer;
 @import CoreLocation;
 
@@ -38,15 +40,7 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-    srand48(time(0));
-
-    [[VThemeManager sharedThemeManager] applyStyling];
-    
-    [[AFNetworkActivityIndicatorManager sharedManager] setEnabled:YES];
-    [[VReachability reachabilityForInternetConnection] startNotifier];
-
-    [VObjectManager setupObjectManager];
-
+    [TestFlight setOptions:@{ TFOptionReportCrashes: @NO }];
 #ifdef QA
     [TestFlight takeOff:[[NSBundle mainBundle] objectForInfoDictionaryKey:kTestflightQAToken]];
 #elif STAGING
@@ -56,6 +50,15 @@
     [TestFlight takeOff:[[NSBundle mainBundle] objectForInfoDictionaryKey:kTestflightReleaseToken]];
 #endif
     
+    [Crashlytics startWithAPIKey:@"58f61748f3d33b03387e43014fdfff29c5a1da73"];
+    
+    [[VThemeManager sharedThemeManager] applyStyling];
+    
+    [[AFNetworkActivityIndicatorManager sharedManager] setEnabled:YES];
+    [[VReachability reachabilityForInternetConnection] startNotifier];
+
+    [VObjectManager setupObjectManager];
+
     // Initialize the chromecast device controller.
     self.chromecastDeviceController = [[ChromecastDeviceController alloc] init];
     
