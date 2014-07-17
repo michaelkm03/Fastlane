@@ -4,12 +4,15 @@
 ###########
 
 TF_DISTRO_LIST="$1"
+shift
 
-CONFIGS=`find configurations -type d -depth 1 -exec basename {} \;`
+CONFIGS=`find products -type f -iname *.ipa -depth 1 -exec basename {} \;`
 IFS=$'\n'
 for CONFIG in $CONFIGS
 do
-    build-scripts/upload-to-testflight.sh "$CONFIG" "$TF_DISTRO_LIST"
+    CONFIG="${CONFIG%.*}"
+    IFS=" "
+    build-scripts/upload-to-testflight.sh "$CONFIG" "$TF_DISTRO_LIST" $*
     if [ $? != 0 ]; then
         FAILED="yes"
     fi
