@@ -14,6 +14,19 @@ CODESIGN_ID="iPhone Distribution: Victorious Inc. (82T26U698A)"
 
 shift 2
 
+# Default App ID key: the plist key that contains the app ID that corresponds to the configuration we're building.
+if [ "$CONFIGURATION" == "Release" ]; then
+    DEFAULT_APP_ID_KEY="VictoriousAppID"
+elif [ "$CONFIGURATION" == "Staging" ]; then
+    DEFAULT_APP_ID_KEY="StagingAppID"
+elif [ "$CONFIGURATION" == "QA" ]; then
+    DEFAULT_APP_ID_KEY="QAAppID"
+else
+    DEFAULT_APP_ID_KEY=""
+fi
+
+echo "DEFAULT_APP_ID_KEY: $DEFAULT_APP_ID_KEY"
+
 if [ "$SCHEME" == "" -o "$PROVISIONING_PROFILE_NAME" == "" -o "$CONFIGURATION" == "" ]; then
     echo "Usage: `basename $0` <scheme> <configuration> [app name(s) (optional)]"
     exit 1
@@ -122,7 +135,12 @@ if [ $# == 0 ]; then
     IFS=$'\n'
     for CONFIG in $CONFIGS
     do
-        applyConfiguration $CONFIG
+        if [ "$DEFAULT_APP_ID_KEY" != "" ]; then
+            DEFAULT_APP_ID=$(/usr/libexec/PlistBuddy -c "Print $DEFAULT_APP_ID_KEY" "configurations/$CONFIG/Info.plist")
+            if [ "$DEFAULT_APP_ID" != "0" ]; then # don't build apps with app ID of 0
+                applyConfiguration $CONFIG
+            fi
+        fi
     done
 else
     for CONFIG in $@
