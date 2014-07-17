@@ -28,7 +28,6 @@
                                   @"media_url" : VSelectorName(mediaUrl),
                                   @"likes" : VSelectorName(likes),
                                   @"dislikes" : VSelectorName(dislikes),
-                                  @"shares" : VSelectorName(shares),
                                   @"flags" : VSelectorName(flags),
                                   @"posted_at" : VSelectorName(postedAt),
                                   @"thumbnail_url" : VSelectorName(thumbnailUrl)
