@@ -38,7 +38,7 @@
 	<key>TestflightStagingAppToken</key>
 	<string>39907803-9e14-4967-bac2-e079046065c9</string>
 	<key>VictoriousAppID</key>
-	<integer>1</integer>
+	<integer>0</integer>
 	<key>StagingAppID</key>
 	<integer>8</integer>
 	<key>QAAppID</key>

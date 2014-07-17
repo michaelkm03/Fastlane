@@ -40,10 +40,10 @@
 	<key>TestflightStagingAppToken</key>
 	<string>09c9a65c-e592-4fc0-8a32-c9c50e67ade2</string>
 	<key>VictoriousAppID</key>
-	<integer>1</integer>
+	<integer>0</integer>
 	<key>StagingAppID</key>
 	<integer>15</integer>
 	<key>QAAppID</key>
-	<integer>1</integer>
+	<integer>0</integer>
 </dict>
 </plist>

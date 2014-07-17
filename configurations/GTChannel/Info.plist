@@ -40,9 +40,9 @@
 	<key>VictoriousAppID</key>
 	<integer>9</integer>
 	<key>StagingAppID</key>
-	<integer>1</integer>
+	<integer>0</integer>
 	<key>QAAppID</key>
-	<integer>1</integer>
+	<integer>0</integer>
 	<key>GAID</key>
 	<string>UA-51702806-4</string>
 </dict>
