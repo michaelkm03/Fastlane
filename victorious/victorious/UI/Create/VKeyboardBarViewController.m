@@ -41,6 +41,7 @@ static const NSInteger kCharacterLimit = 255;
     inputAccessoryView.maxCharacterLength = kCharacterLimit;
     inputAccessoryView.tintColor = [UIColor colorWithRed:0.85f green:0.86f blue:0.87f alpha:1.0f];
     self.textView.inputAccessoryView = inputAccessoryView;
+    self.promptLabel.textColor = [UIColor lightGrayColor];
 }
 
 - (void)viewWillLayoutSubviews
