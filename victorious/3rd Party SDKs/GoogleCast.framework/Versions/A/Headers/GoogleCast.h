@@ -1,4 +1,6 @@
-// Copyright 2013 Google Inc.
+// Cast SDK v2.1.0
+// Build 529, generated on 2014-03-18 13:34.
+// Copyright 2013-2014 Google Inc.
 
 
 #import <GoogleCast/GCKApplicationMetadata.h>
@@ -17,5 +19,4 @@
 #import <GoogleCast/GCKMediaMetadata.h>
 #import <GoogleCast/GCKMediaStatus.h>
 #import <GoogleCast/GCKNSDictionary+TypedValueLookup.h>
-#import <GoogleCast/GCKReceiverControlChannel.h>
 #import <GoogleCast/GCKSenderApplicationInfo.h>

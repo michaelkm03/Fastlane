@@ -248,6 +248,14 @@ typedef NS_ENUM(NSInteger, GCKMediaControlChannelResumeState) {
 - (void)mediaControlChannelDidUpdateMetadata:(GCKMediaControlChannel *)mediaControlChannel;
 
 /**
+ * Called when a request succeeds.
+ *
+ * @param requestID The request ID that failed. This is the ID returned when the request was made.
+ */
+- (void)mediaControlChannel:(GCKMediaControlChannel *)mediaControlChannel
+    requestDidCompleteWithID:(NSInteger)requestID;
+
+/**
  * Called when a request fails.
  *
  * @param requestID The request ID that failed. This is the ID returned when the request was made.

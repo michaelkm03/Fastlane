@@ -182,11 +182,11 @@
 
 - (NSString*)getFormattedTime:(NSTimeInterval)timeInSeconds
 {
-  NSInteger seconds = (NSInteger) round(timeInSeconds);
-  NSInteger hours = seconds / (60 * 60);
+  int32_t seconds = (int32_t) round(timeInSeconds);
+  int32_t hours = seconds / (60 * 60);
   seconds %= (60 * 60);
 
-  NSInteger minutes = seconds / 60;
+  int32_t minutes = seconds / 60;
   seconds %= 60;
 
   if (hours > 0)

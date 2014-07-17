@@ -463,7 +463,7 @@
     if (nextPageNumber > filter.maxPageNumber.integerValue)
         nextPageNumber = filter.maxPageNumber.integerValue;
     
-    NSString* path = [filter.filterAPIPath stringByAppendingFormat:@"/%d/%d", nextPageNumber, filter.perPageNumber.integerValue];
+    NSString* path = [filter.filterAPIPath stringByAppendingFormat:@"/%ld/%ld", (long)nextPageNumber, (long)filter.perPageNumber.integerValue];
     
     return [self GET:path object:nil parameters:nil successBlock:fullSuccess failBlock:fullFail];
 }

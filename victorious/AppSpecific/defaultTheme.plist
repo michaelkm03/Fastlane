@@ -2,8 +2,20 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>agreement.link</key>
+	<string>http://dev.getvictorious.com/api/static/tos</string>
+	<key>agreement.linkText</key>
+	<string>Terms of Service</string>
+	<key>agreement.text</key>
+	<string>I&apos;m at least 13 years old and agree to Terms of Service</string>
 	<key>channel.name</key>
-	<string>Anne Or Shine</string>
+	<string>Michelle Phan</string>
+	<key>channel.url.about</key>
+	<string>http://dev.getvictorious.com/api/static/about</string>
+	<key>channel.url.acknowledgements</key>
+	<string>http://dev.getvictorious.com/api/static/acknowledgments</string>
+	<key>channel.url.privacy</key>
+	<string>http://dev.getvictorious.com/api/static/privacy</string>
 	<key>channel.url.support</key>
 	<string>support@getvictorious.com</string>
 	<key>color</key>
@@ -64,11 +76,11 @@
 	<key>color.link</key>
 	<dict>
 		<key>red</key>
-		<integer>252</integer>
+		<integer>236</integer>
 		<key>green</key>
-		<integer>4</integer>
+		<integer>52</integer>
 		<key>blue</key>
-		<integer>120</integer>
+		<integer>112</integer>
 		<key>alpha</key>
 		<integer>1</integer>
 	</dict>
@@ -86,108 +98,112 @@
 	<key>color.accent</key>
 	<dict>
 		<key>red</key>
-		<integer>229</integer>
+		<integer>161</integer>
 		<key>green</key>
-		<integer>206</integer>
+		<integer>132</integer>
 		<key>blue</key>
-		<integer>10</integer>
+		<integer>114</integer>
 		<key>alpha</key>
 		<integer>1</integer>
 	</dict>
 	<key>color.accent.secondary</key>
 	<dict>
 		<key>red</key>
-		<integer>195</integer>
+		<integer>137</integer>
 		<key>green</key>
-		<integer>175</integer>
+		<integer>112</integer>
 		<key>blue</key>
-		<integer>9</integer>
+		<integer>97</integer>
 		<key>alpha</key>
 		<integer>1</integer>
 	</dict>
 	<key>font.header</key>
 	<dict>
 		<key>fontName</key>
-		<string>Cochin-Italic</string>
+		<string>STHeitiSC-Light</string>
 		<key>fontSize</key>
 		<integer>18</integer>
 	</dict>
 	<key>font.heading1</key>
 	<dict>
 		<key>fontName</key>
-		<string>Cochin</string>
+		<string>STHeitiSC-Light</string>
 		<key>fontSize</key>
 		<integer>24</integer>
 	</dict>
 	<key>font.heading2</key>
 	<dict>
 		<key>fontName</key>
-		<string>Cochin</string>
+		<string>STHeitiSC-Light</string>
 		<key>fontSize</key>
 		<integer>20</integer>
 	</dict>
 	<key>font.heading3</key>
 	<dict>
 		<key>fontName</key>
-		<string>Cochin</string>
+		<string>STHeitiSC-Medium</string>
 		<key>fontSize</key>
 		<integer>17</integer>
 	</dict>
 	<key>font.heading4</key>
 	<dict>
 		<key>fontName</key>
-		<string>Cochin</string>
+		<string>STHeitiSC-Light</string>
 		<key>fontSize</key>
 		<integer>15</integer>
 	</dict>
 	<key>font.paragraph</key>
 	<dict>
 		<key>fontName</key>
-		<string>Cochin</string>
+		<string>STHeitiSC-Light</string>
 		<key>fontSize</key>
 		<integer>13</integer>
 	</dict>
 	<key>font.label1</key>
 	<dict>
 		<key>fontName</key>
-		<string>Cochin-Bold</string>
+		<string>STHeitiSC-Medium</string>
 		<key>fontSize</key>
 		<integer>13</integer>
 	</dict>
 	<key>font.label2</key>
 	<dict>
 		<key>fontName</key>
-		<string>Cochin</string>
+		<string>STHeitiSC-Light</string>
 		<key>fontSize</key>
 		<integer>12</integer>
 	</dict>
 	<key>font.label3</key>
 	<dict>
 		<key>fontName</key>
-		<string>Cochin</string>
+		<string>STHeitiSC-Light</string>
 		<key>fontSize</key>
 		<integer>11</integer>
 	</dict>
 	<key>font.label4</key>
 	<dict>
 		<key>fontName</key>
-		<string>Cochin</string>
+		<string>STHeitiSC-Light</string>
 		<key>fontSize</key>
 		<integer>10</integer>
 	</dict>
 	<key>font.button1</key>
 	<dict>
 		<key>fontName</key>
-		<string>Cochin-Bold</string>
+		<string>STHeitiSC-Medium</string>
 		<key>fontSize</key>
 		<integer>25</integer>
 	</dict>
 	<key>font.button2</key>
 	<dict>
 		<key>fontName</key>
-		<string>Cochin-Bold</string>
+		<string>STHeitiSC-Medium</string>
 		<key>fontSize</key>
 		<integer>17</integer>
 	</dict>
+	<key>image.emptyprofile</key>
+	<string>http://dev.getvictorious.com/api/static/privacy</string>
+	<key>image.launchImage</key>
+	<string>http://dev.getvictorious.com/api/static/privacy</string>
 </dict>
 </plist>

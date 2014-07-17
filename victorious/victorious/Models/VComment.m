@@ -2,7 +2,7 @@
 //  VComment.m
 //  victorious
 //
-//  Created by Will Long on 5/12/14.
+//  Created by Will Long on 7/16/14.
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
@@ -24,12 +24,11 @@
 @dynamic postedAt;
 @dynamic remoteId;
 @dynamic sequenceId;
-@dynamic shares;
 @dynamic text;
 @dynamic thumbnailUrl;
 @dynamic userId;
+@dynamic filters;
 @dynamic sequence;
 @dynamic user;
-@dynamic filters;
 
 @end

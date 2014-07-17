@@ -12,6 +12,8 @@
 #import "VAnalyticsRecorder.h"
 #import "VConstants.h"
 
+#import <Crashlytics/Crashlytics.h>
+
 #define EnableAnalyticsLogs 0 // Set to "1" to see analytics logging, but please remember to set it back to "0" before committing your changes.
 
 static NSString * const kVAnalyticsEventAppLaunch  = @"Cold Launch";
@@ -77,6 +79,7 @@ NSString * const kVAnalyticsEventCategoryCamera       = @"Camera";
 {
     [self.tracker set:kGAIScreenName value:screenName];
     [self.tracker send:[[GAIDictionaryBuilder createAppView] build]];
+    CLSLog(@"AppView: %@", screenName);
 }
 
 - (void)finishAppView
@@ -88,6 +91,18 @@ NSString * const kVAnalyticsEventCategoryCamera       = @"Camera";
 {
     GAIDictionaryBuilder *eventDictionary = [GAIDictionaryBuilder createEventWithCategory:category action:action label:label value:value];
     [self.tracker send:[eventDictionary build]];
+    
+    NSString *labelLog = @"";
+    if (label && ![label isEqualToString:@""])
+    {
+        labelLog = [NSString stringWithFormat:@" (%@)", label];
+    }
+    NSString *valueLog = @"";
+    if (value)
+    {
+        valueLog = [NSString stringWithFormat:@" (%@)", value];
+    }
+    CLSLog(@"%@/%@%@%@", category, action, labelLog, valueLog);
 }
 
 #pragma mark - NSNotification handlers

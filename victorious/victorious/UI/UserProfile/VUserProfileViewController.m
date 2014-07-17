@@ -128,6 +128,7 @@ static void * VUserProfileViewContext = &VUserProfileViewContext;
 {
     [super viewWillAppear:animated];
     
+    ((VUserProfileHeaderView*)self.tableView.tableHeaderView).user = self.profile;
     self.tableView.contentOffset = CGPointZero;
     
     [self.navigationController setNavigationBarHidden:NO animated:YES];

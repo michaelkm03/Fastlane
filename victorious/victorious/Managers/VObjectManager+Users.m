@@ -210,7 +210,7 @@
             success(operation, fullResponse, results);
     };
     
-    return [self GET:[NSString stringWithFormat:@"/api/follow/is_follower/%d/%d", [follower.remoteId integerValue], [user.remoteId integerValue]]
+    return [self GET:[NSString stringWithFormat:@"/api/follow/is_follower/%d/%d", [follower.remoteId intValue], [user.remoteId intValue]]
               object:nil
           parameters:nil
         successBlock:fullSuccess
