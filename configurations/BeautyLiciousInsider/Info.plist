@@ -38,6 +38,6 @@
 	<key>StagingAppID</key>
 	<integer>22</integer>
 	<key>QAAppID</key>
-	<integer>1</integer>
+	<integer>0</integer>
 </dict>
 </plist>
