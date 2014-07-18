@@ -10,6 +10,4 @@
 
 @interface VVideoPreviewViewController : VMediaPreviewViewController
 
-+ (VVideoPreviewViewController *)videoPreviewViewController;
-
 @end

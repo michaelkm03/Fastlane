@@ -11,7 +11,20 @@
 #import "VConstants.h"
 #import "VImagePreviewViewController.h"
 #import "VMediaPreviewViewController.h"
+#import "VThemeManager.h"
 #import "VVideoPreviewViewController.h"
+
+static const NSTimeInterval   kAnimationDuration = 0.2;
+static       NSString * const kNibName           = @"MediaPreview";
+
+@interface VMediaPreviewViewController ()
+
+@property (nonatomic, strong)        NSURL       *mediaURL;
+@property (nonatomic, weak) IBOutlet UIImageView *deleteButton;
+@property (nonatomic, weak) IBOutlet UIImageView *deleteConfirmationButton;
+@property (nonatomic, weak) IBOutlet UIButton    *doneButton;
+
+@end
 
 @implementation VMediaPreviewViewController
 
@@ -20,18 +33,33 @@
     VMediaPreviewViewController *previewViewController = nil;
     if ([mediaURL v_hasImageExtension])
     {
-        previewViewController = [VImagePreviewViewController imagePreviewViewController];
+        previewViewController = [[VImagePreviewViewController alloc] initWithNibName:kNibName bundle:nil];
     }
     else if ([mediaURL v_hasVideoExtension])
     {
-        previewViewController = [VVideoPreviewViewController videoPreviewViewController];
+        previewViewController = [[VVideoPreviewViewController alloc] initWithNibName:kNibName bundle:nil];
     }
     
     if (previewViewController)
     {
-        previewViewController->_mediaURL = mediaURL;
+        previewViewController.mediaURL = mediaURL;
     }
     return previewViewController;
+}
+
+#pragma mark - View Lifecycle
+
+- (void)viewDidLoad
+{
+    UIImage *doneButtonImage = [self.doneButton imageForState:UIControlStateNormal];
+    doneButtonImage = [doneButtonImage imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+    [self.doneButton setImage:doneButtonImage forState:UIControlStateNormal];
+    self.doneButton.tintColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
+}
+
+- (void)viewDidLayoutSubviews
+{
+    [super viewDidLayoutSubviews];
 }
 
 - (BOOL)shouldAutorotate
@@ -49,6 +77,12 @@
     return YES;
 }
 
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    self.navigationController.navigationBarHidden = YES;
+}
+
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
@@ -59,6 +93,100 @@
 {
     [super viewWillDisappear:animated];
     [[VAnalyticsRecorder sharedAnalyticsRecorder] finishAppView];
+}
+
+#pragma mark -
+
+- (UIView *)previewImage
+{
+    NSAssert(NO, @"previewImage not implemented in %@", NSStringFromClass([self class]));
+    return nil;
+}
+
+#pragma mark - Actions
+
+- (IBAction)doneTapped:(UIButton *)sender
+{
+    if (self.completionBlock)
+    {
+        self.completionBlock(YES, [self previewImage], self.mediaURL);
+    }
+}
+
+- (IBAction)deleteTapped:(id)sender
+{
+    [[VAnalyticsRecorder sharedAnalyticsRecorder] sendEventWithCategory:kVAnalyticsEventCategoryCamera action:@"Trash" label:nil value:nil];
+    CGRect deleteButtonBounds = self.deleteButton.bounds;
+    CGRect deleteConfirmationBounds = self.deleteConfirmationButton.bounds;
+    self.deleteConfirmationButton.bounds = deleteButtonBounds;
+    self.deleteConfirmationButton.transform = CGAffineTransformMakeRotation(3.0 * M_PI_2);
+    self.deleteConfirmationButton.alpha = 0;
+    self.deleteConfirmationButton.hidden = NO;
+    [UIView animateWithDuration:kAnimationDuration
+                     animations:^(void)
+    {
+        self.deleteButton.transform = CGAffineTransformMakeRotation(M_PI_2);
+        self.deleteButton.alpha = 0;
+        self.deleteButton.bounds = deleteConfirmationBounds;
+        self.deleteConfirmationButton.transform = CGAffineTransformIdentity;
+        self.deleteConfirmationButton.alpha = 1.0f;
+        self.deleteConfirmationButton.bounds = deleteConfirmationBounds;
+    }
+                     completion:^(BOOL finished)
+    {
+        self.deleteButton.transform = CGAffineTransformIdentity;
+        self.deleteButton.hidden = YES;
+        self.deleteButton.alpha = 1.0f;
+        self.deleteButton.bounds = deleteButtonBounds;
+    }];
+}
+
+- (IBAction)deleteConfirmationTapped:(id)sender
+{
+    [[VAnalyticsRecorder sharedAnalyticsRecorder] sendEventWithCategory:kVAnalyticsEventCategoryCamera action:@"Trash Confirm" label:nil value:nil];
+    [self.navigationController popViewControllerAnimated:YES];
+}
+
+- (IBAction)mediaPreviewTapped:(id)sender
+{
+    if (self.deleteConfirmationButton.hidden)
+    {
+        return;
+    }
+    
+    [[VAnalyticsRecorder sharedAnalyticsRecorder] sendEventWithCategory:kVAnalyticsEventCategoryCamera action:@"Trash Canceled" label:nil value:nil];
+    CGRect deleteButtonBounds = self.deleteButton.bounds;
+    CGRect deleteConfirmationBounds = self.deleteConfirmationButton.bounds;
+    self.deleteButton.bounds = deleteConfirmationBounds;
+    self.deleteButton.transform = CGAffineTransformMakeRotation(M_PI_2);
+    self.deleteButton.alpha = 0;
+    self.deleteButton.hidden = NO;
+    [UIView animateWithDuration:kAnimationDuration
+                     animations:^(void)
+    {
+        self.deleteConfirmationButton.transform = CGAffineTransformMakeRotation(3.0 * M_PI_2);
+        self.deleteConfirmationButton.alpha = 0;
+        self.deleteConfirmationButton.bounds = deleteButtonBounds;
+        self.deleteButton.transform = CGAffineTransformIdentity;
+        self.deleteButton.alpha = 1.0f;
+        self.deleteButton.bounds = deleteButtonBounds;
+    }
+                     completion:^(BOOL finished)
+    {
+        self.deleteConfirmationButton.transform = CGAffineTransformIdentity;
+        self.deleteConfirmationButton.hidden = YES;
+        self.deleteConfirmationButton.alpha = 1.0f;
+        self.deleteConfirmationButton.bounds = deleteConfirmationBounds;
+    }];
+}
+
+- (IBAction)cancelTapped:(id)sender
+{
+    [[VAnalyticsRecorder sharedAnalyticsRecorder] sendEventWithCategory:kVAnalyticsEventCategoryCamera action:@"Cancel Media Capture" label:nil value:nil];
+    if (self.completionBlock)
+    {
+        self.completionBlock(NO, nil, nil);
+    }
 }
 
 @end

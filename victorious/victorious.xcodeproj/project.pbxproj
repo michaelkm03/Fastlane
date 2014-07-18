@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		03086AA718F38ABE00105FFB /* UIActionSheet+VBlocks.m in Sources */ = {isa = PBXBuildFile; fileRef = 03086AA618F38ABE00105FFB /* UIActionSheet+VBlocks.m */; };
 		03086AAA18F60E3000105FFB /* VMediaPreviewViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 03086AA918F60E3000105FFB /* VMediaPreviewViewController.m */; };
+		03093193197747600035CECA /* MediaPreview.xib in Resources */ = {isa = PBXBuildFile; fileRef = 03093192197747600035CECA /* MediaPreview.xib */; };
 		031D86C41947BBB600CDB814 /* VForceUpgradeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 031D86C21947BBB600CDB814 /* VForceUpgradeViewController.m */; };
 		031D86C51947BBB600CDB814 /* VForceUpgradeViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 031D86C31947BBB600CDB814 /* VForceUpgradeViewController.xib */; };
 		032948AA1970BE2E00208FBA /* Crashlytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 032948A91970BE2E00208FBA /* Crashlytics.framework */; };
@@ -326,6 +327,7 @@
 		03086AA618F38ABE00105FFB /* UIActionSheet+VBlocks.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIActionSheet+VBlocks.m"; sourceTree = "<group>"; };
 		03086AA818F60E3000105FFB /* VMediaPreviewViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VMediaPreviewViewController.h; path = UI/CameraViewController/VMediaPreviewViewController.h; sourceTree = "<group>"; };
 		03086AA918F60E3000105FFB /* VMediaPreviewViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VMediaPreviewViewController.m; path = UI/CameraViewController/VMediaPreviewViewController.m; sourceTree = "<group>"; };
+		03093192197747600035CECA /* MediaPreview.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = MediaPreview.xib; path = UI/CameraViewController/MediaPreview.xib; sourceTree = "<group>"; };
 		031D86C11947BBB600CDB814 /* VForceUpgradeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VForceUpgradeViewController.h; sourceTree = "<group>"; };
 		031D86C21947BBB600CDB814 /* VForceUpgradeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VForceUpgradeViewController.m; sourceTree = "<group>"; };
 		031D86C31947BBB600CDB814 /* VForceUpgradeViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VForceUpgradeViewController.xib; sourceTree = "<group>"; };
@@ -1129,6 +1131,7 @@
 				3FD7FFAA18BFD67800945E5F /* VVideoPreviewViewController.h */,
 				3FD7FFAB18BFD67800945E5F /* VVideoPreviewViewController.m */,
 				3FA217ED18BC3A3A0066E893 /* Camera.storyboard */,
+				03093192197747600035CECA /* MediaPreview.xib */,
 			);
 			name = Capture;
 			sourceTree = "<group>";
@@ -2135,6 +2138,7 @@
 				BE185DE618E3826F001C447F /* VEphemeralTimerView.xib in Resources */,
 				3F93489519215302002EA91F /* Profile.storyboard in Resources */,
 				3FA217D018A9BFC90066E893 /* video_thumb_mini@2x.png in Resources */,
+				03093193197747600035CECA /* MediaPreview.xib in Resources */,
 				BEAA322219427AD3007774A4 /* VNoContentView.xib in Resources */,
 				BE171D911868BE64004E5202 /* Images.xcassets in Resources */,
 				3FA217DE18AAFCFE0066E893 /* cast_outline_black.png in Resources */,

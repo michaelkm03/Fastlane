@@ -13,11 +13,9 @@
 #import "VThemeManager.h"
 
 @interface VImagePreviewViewController ()
-@property (nonatomic, weak) IBOutlet    UIImageView*    previewImageView;
-@property (nonatomic, weak) IBOutlet    UIImageView*    doneButtonView;
-@property (nonatomic, weak) IBOutlet    UIButton*       trashAction;
 
-@property (nonatomic)                   BOOL            inTrashState;
+@property (nonatomic, weak) UIImageView *previewImageView;
+
 @end
 
 @implementation VImagePreviewViewController
@@ -25,30 +23,21 @@
     UIImage *_photo;
 }
 
-+ (VImagePreviewViewController *)imagePreviewViewController
-{
-    return [[UIStoryboard storyboardWithName:@"Camera" bundle:nil] instantiateViewControllerWithIdentifier:NSStringFromClass(self)];
-}
-
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-	
-    [self.doneButtonView addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleDoneTapGesture:)]];
-    self.doneButtonView.userInteractionEnabled = YES;
-}
-
-- (void)viewWillAppear:(BOOL)animated
-{
-    [super viewWillAppear:animated];
-    
-    self.previewImageView.image = self.photo;
-    
-    self.view.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVBackgroundColor];
-    self.navigationController.navigationBarHidden = YES;
-    
-    self.inTrashState = NO;
-    self.trashAction.imageView.image = [UIImage imageNamed:@"cameraButtonDelete"];
+    UIImageView *previewImageView = [[UIImageView alloc] initWithImage:self.photo];
+    previewImageView.translatesAutoresizingMaskIntoConstraints = NO;
+    [self.previewImageSuperview addSubview:previewImageView];
+    [self.previewImageSuperview addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[previewImageView]|"
+                                                                                       options:0
+                                                                                       metrics:nil
+                                                                                         views:NSDictionaryOfVariableBindings(previewImageView)]];
+    [self.previewImageSuperview addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[previewImageView]|"
+                                                                                       options:0
+                                                                                       metrics:nil
+                                                                                         views:NSDictionaryOfVariableBindings(previewImageView)]];
+    self.previewImageView = previewImageView;
 }
 
 - (UIImage *)photo
@@ -60,40 +49,9 @@
     return _photo;
 }
 
-#pragma mark - Actions
-
-- (void)handleDoneTapGesture:(UIGestureRecognizer *)gesture
+- (UIImage *)previewImage
 {
-    if (self.completionBlock)
-    {
-        self.completionBlock(YES, self.photo, self.mediaURL);
-    }
-}
-
-- (IBAction)cancel:(id)sender
-{
-    [[VAnalyticsRecorder sharedAnalyticsRecorder] sendEventWithCategory:kVAnalyticsEventCategoryCamera action:@"Cancel Image Capture" label:nil value:nil];
-    if (self.completionBlock)
-    {
-        self.completionBlock(NO, nil, nil);
-    }
-}
-
-- (IBAction)deleteAction:(id)sender
-{
-    if (!self.inTrashState)
-    {
-        [[VAnalyticsRecorder sharedAnalyticsRecorder] sendEventWithCategory:kVAnalyticsEventCategoryCamera action:@"Trash" label:nil value:nil];
-        self.inTrashState = YES;
-        [self.trashAction setImage:[UIImage imageNamed:@"cameraButtonDeleteConfirm"] forState:UIControlStateNormal];
-    }
-    else
-    {
-        [[VAnalyticsRecorder sharedAnalyticsRecorder] sendEventWithCategory:kVAnalyticsEventCategoryCamera action:@"Trash Confirm" label:nil value:nil];
-        self.inTrashState = NO;
-        [self.trashAction setImage:[UIImage imageNamed:@"cameraButtonDelete"] forState:UIControlStateNormal];
-        [self performSegueWithIdentifier:@"unwindToCameraControllerFromPhoto" sender:self];
-    }
+    return self.photo;
 }
 
 @end
