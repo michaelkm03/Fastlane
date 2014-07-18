@@ -28,8 +28,8 @@
 	<key>VictoriousAppID</key>
 	<integer>10</integer>
 	<key>StagingAppID</key>
-	<integer>1</integer>
+	<integer>0</integer>
 	<key>QAAppID</key>
-	<integer>1</integer>
+	<integer>0</integer>
 </dict>
 </plist>

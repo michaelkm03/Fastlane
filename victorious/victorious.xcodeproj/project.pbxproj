@@ -122,6 +122,7 @@
 		3FA217D618A9C38A0066E893 /* pause_black@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3FA217D218A9C38A0066E893 /* pause_black@2x.png */; };
 		3FA217D718A9C38A0066E893 /* play_black.png in Resources */ = {isa = PBXBuildFile; fileRef = 3FA217D318A9C38A0066E893 /* play_black.png */; };
 		3FA217D818A9C38A0066E893 /* play_black@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3FA217D418A9C38A0066E893 /* play_black@2x.png */; };
+		3FA217D918AAC1960066E893 /* GoogleCast.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3FA217B518A9AD9B0066E893 /* GoogleCast.framework */; };
 		3FA217DE18AAFCFE0066E893 /* cast_outline_black.png in Resources */ = {isa = PBXBuildFile; fileRef = 3FA217DC18AAFCFE0066E893 /* cast_outline_black.png */; };
 		3FA217DF18AAFCFE0066E893 /* cast_outline_black@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3FA217DD18AAFCFE0066E893 /* cast_outline_black@2x.png */; };
 		3FA217E318AD87F40066E893 /* UIImageView+Blurring.m in Sources */ = {isa = PBXBuildFile; fileRef = 3FA217E218AD87F40066E893 /* UIImageView+Blurring.m */; };
@@ -170,6 +171,7 @@
 		83CC444A187DDCA8000C480C /* Roboto-Black.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 83CC4449187DDCA8000C480C /* Roboto-Black.ttf */; };
 		83D897421881F19D00BD5B8B /* VCommentsContainerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 83D897411881F19D00BD5B8B /* VCommentsContainerViewController.m */; };
 		BE12084D1919A3C200CDDF27 /* GoogleCast.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BE12084C1919A3C200CDDF27 /* GoogleCast.framework */; };
+		BE1421B519774A3300448F49 /* VComment.m in Sources */ = {isa = PBXBuildFile; fileRef = BE1421B419774A3300448F49 /* VComment.m */; };
 		BE171D7A1868BE64004E5202 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BE171D791868BE64004E5202 /* Foundation.framework */; };
 		BE171D7C1868BE64004E5202 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BE171D7B1868BE64004E5202 /* CoreGraphics.framework */; };
 		BE171D7E1868BE64004E5202 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BE171D7D1868BE64004E5202 /* UIKit.framework */; };
@@ -257,7 +259,6 @@
 		BE89D984192141E000D97E7F /* VSequenceFilter+RestKit.m in Sources */ = {isa = PBXBuildFile; fileRef = BE89D983192141E000D97E7F /* VSequenceFilter+RestKit.m */; };
 		BE89D98D1921531400D97E7F /* VAbstractFilter.m in Sources */ = {isa = PBXBuildFile; fileRef = BE89D98C1921531400D97E7F /* VAbstractFilter.m */; };
 		BE89D9901921907200D97E7F /* VCommentFilter.m in Sources */ = {isa = PBXBuildFile; fileRef = BE89D98F1921907200D97E7F /* VCommentFilter.m */; };
-		BE89D9931921907200D97E7F /* VComment.m in Sources */ = {isa = PBXBuildFile; fileRef = BE89D9921921907200D97E7F /* VComment.m */; };
 		BE89D9961921908F00D97E7F /* VCommentFilter+RestKit.m in Sources */ = {isa = PBXBuildFile; fileRef = BE89D9951921908F00D97E7F /* VCommentFilter+RestKit.m */; };
 		BE89ECDB19105DB8009DD407 /* VAnswer.m in Sources */ = {isa = PBXBuildFile; fileRef = BE89ECDA19105DB8009DD407 /* VAnswer.m */; };
 		BE8C6F4F18B56E70009CFB1C /* VStreamPollCell.m in Sources */ = {isa = PBXBuildFile; fileRef = BE8C6F4E18B56E70009CFB1C /* VStreamPollCell.m */; };
@@ -523,6 +524,7 @@
 		3F9B66701888C4940046F826 /* VOwnerStreamViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VOwnerStreamViewController.m; path = UI/VOwnerStreamViewController.m; sourceTree = "<group>"; };
 		3F9B66721888C4B20046F826 /* VCommunityStreamViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VCommunityStreamViewController.h; path = UI/VCommunityStreamViewController.h; sourceTree = "<group>"; };
 		3F9B66731888C4B20046F826 /* VCommunityStreamViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VCommunityStreamViewController.m; path = UI/VCommunityStreamViewController.m; sourceTree = "<group>"; };
+		3FA217B518A9AD9B0066E893 /* GoogleCast.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GoogleCast.framework; path = "3rd Party SDKs/GoogleCast.framework"; sourceTree = "<group>"; };
 		3FA217B918A9ADF10066E893 /* ChromecastDeviceController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ChromecastDeviceController.h; path = "3rd Party SDKs/ChromecastDeviceController.h"; sourceTree = SOURCE_ROOT; };
 		3FA217BA18A9ADF10066E893 /* ChromecastDeviceController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ChromecastDeviceController.m; path = "3rd Party SDKs/ChromecastDeviceController.m"; sourceTree = SOURCE_ROOT; };
 		3FA217BC18A9B5160066E893 /* CastViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CastViewController.h; path = "3rd Party SDKs/CastViewController.h"; sourceTree = SOURCE_ROOT; };
@@ -621,7 +623,9 @@
 		83D897401881F19D00BD5B8B /* VCommentsContainerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VCommentsContainerViewController.h; sourceTree = "<group>"; };
 		83D897411881F19D00BD5B8B /* VCommentsContainerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VCommentsContainerViewController.m; sourceTree = "<group>"; };
 		83DC42FC187CDDE600E768E2 /* VConstants.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VConstants.h; sourceTree = "<group>"; };
-		BE12084C1919A3C200CDDF27 /* GoogleCast.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GoogleCast.framework; path = "3rd Party SDKs/GoogleCast.framework"; sourceTree = "<group>"; };
+		BE12084C1919A3C200CDDF27 /* GoogleCast.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = GoogleCast.framework; sourceTree = "<group>"; };
+		BE1421B319774A3300448F49 /* VComment.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VComment.h; sourceTree = "<group>"; };
+		BE1421B419774A3300448F49 /* VComment.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VComment.m; sourceTree = "<group>"; };
 		BE171D761868BE64004E5202 /* victorious.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = victorious.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		BE171D791868BE64004E5202 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		BE171D7B1868BE64004E5202 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -779,8 +783,6 @@
 		BE89D98C1921531400D97E7F /* VAbstractFilter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VAbstractFilter.m; sourceTree = "<group>"; };
 		BE89D98E1921907200D97E7F /* VCommentFilter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VCommentFilter.h; sourceTree = "<group>"; };
 		BE89D98F1921907200D97E7F /* VCommentFilter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VCommentFilter.m; sourceTree = "<group>"; };
-		BE89D9911921907200D97E7F /* VComment.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VComment.h; sourceTree = "<group>"; };
-		BE89D9921921907200D97E7F /* VComment.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VComment.m; sourceTree = "<group>"; };
 		BE89D9941921908F00D97E7F /* VCommentFilter+RestKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "VCommentFilter+RestKit.h"; sourceTree = "<group>"; };
 		BE89D9951921908F00D97E7F /* VCommentFilter+RestKit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "VCommentFilter+RestKit.m"; sourceTree = "<group>"; };
 		BE89ECD919105DB8009DD407 /* VAnswer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VAnswer.h; sourceTree = "<group>"; };
@@ -886,6 +888,7 @@
 				0361058A194154F40069D49E /* SystemConfiguration.framework in Frameworks */,
 				03610584194140AA0069D49E /* libsqlite3.dylib in Frameworks */,
 				BE12084D1919A3C200CDDF27 /* GoogleCast.framework in Frameworks */,
+				3FA217D918AAC1960066E893 /* GoogleCast.framework in Frameworks */,
 				BE171D7C1868BE64004E5202 /* CoreGraphics.framework in Frameworks */,
 				0361057D19411AA10069D49E /* libGoogleAnalyticsServices.a in Frameworks */,
 				BE171D801868BE64004E5202 /* CoreData.framework in Frameworks */,
@@ -1527,6 +1530,7 @@
 				BE171D971868BE64004E5202 /* XCTest.framework */,
 				662F0867152745B2B2F08301 /* libPods.a */,
 				03610583194140AA0069D49E /* libsqlite3.dylib */,
+				3FA217B518A9AD9B0066E893 /* GoogleCast.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -1708,12 +1712,12 @@
 				BECEDFCF1937A78900FAB9D0 /* VMessage.h */,
 				BECEDFD01937A78900FAB9D0 /* VMessage.m */,
 				BE171E411868CEA0004E5202 /* victoriOS.xcdatamodeld */,
+				BE1421B319774A3300448F49 /* VComment.h */,
+				BE1421B419774A3300448F49 /* VComment.m */,
 				BE24782A193E735A0074191C /* VConversation.h */,
 				BE24782B193E735A0074191C /* VConversation.m */,
 				BE669C571937E43100EC45AE /* VSequence.h */,
 				BE669C581937E43100EC45AE /* VSequence.m */,
-				BE89D9911921907200D97E7F /* VComment.h */,
-				BE89D9921921907200D97E7F /* VComment.m */,
 				BE89D98E1921907200D97E7F /* VCommentFilter.h */,
 				BE89D98F1921907200D97E7F /* VCommentFilter.m */,
 				BE89D98B1921531400D97E7F /* VAbstractFilter.h */,
@@ -2260,7 +2264,6 @@
 				03484BF5192D28CC00403FB1 /* VLightboxTransitioningDelegate.m in Sources */,
 				03484C071930294D00403FB1 /* NSURL+MediaType.m in Sources */,
 				BE171E0F1868C211004E5202 /* VAsset+RestKit.m in Sources */,
-				BE89D9931921907200D97E7F /* VComment.m in Sources */,
 				BE185DEA18E3AF55001C447F /* VContentViewController+Polls.m in Sources */,
 				5FF9BE83189318CD0054694B /* VRootViewController.m in Sources */,
 				BEB4C29D187E038C004ECEEF /* VNewsCell.m in Sources */,
@@ -2349,6 +2352,7 @@
 				BED7F66518E0A6F800545DF6 /* TWAPIManager.m in Sources */,
 				03CF151A195B699700F6477B /* VTabInfo.m in Sources */,
 				3FBCB9C5192E9A7400EB510C /* VResetPasswordViewController.m in Sources */,
+				BE1421B519774A3300448F49 /* VComment.m in Sources */,
 				3F919908187600720055FE37 /* VSettingsViewController.m in Sources */,
 				BE692B53186E60B300C71336 /* VCommentsTableViewController.m in Sources */,
 				3FF7B6D718EE4009003831CD /* UIImage+Masking.m in Sources */,
@@ -2566,6 +2570,7 @@
 				ProductPrefix = "staging-";
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;
+				VALID_ARCHS = "armv7 armv7s";
 			};
 			name = Staging;
 		};
@@ -2647,6 +2652,7 @@
 				ONLY_ACTIVE_ARCH = YES;
 				ProductPrefix = "debug-";
 				SDKROOT = iphoneos;
+				VALID_ARCHS = "armv7 armv7s";
 			};
 			name = Debug;
 		};
@@ -2686,6 +2692,7 @@
 				ProductPrefix = "";
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;
+				VALID_ARCHS = "armv7 armv7s";
 			};
 			name = Release;
 		};
@@ -2815,6 +2822,7 @@
 				ONLY_ACTIVE_ARCH = NO;
 				ProductPrefix = "qa-";
 				SDKROOT = iphoneos;
+				VALID_ARCHS = "armv7 armv7s";
 			};
 			name = QA;
 		};

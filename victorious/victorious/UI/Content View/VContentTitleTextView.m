@@ -111,6 +111,14 @@ static const CGFloat kSeeMoreFontSizeRatio = 0.8f;
            };
 }
 
+-(NSDictionary *)attributeForHashTag
+{
+    UIFont *tag2font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeaderFont];
+    return @{ NSFontAttributeName: [tag2font fontWithSize:tag2font.pointSize * kSeeMoreFontSizeRatio],
+              NSForegroundColorAttributeName: [UIColor colorWithRed:0.996f green:0.081f blue:0.075f alpha:1.0f],
+             };
+}
+
 - (void)setText:(NSString *)text
 {
     if (![_text isEqualToString:text])
@@ -119,14 +127,14 @@ static const CGFloat kSeeMoreFontSizeRatio = 0.8f;
     }
     self.seeMoreTextAppended = NO;
     
-    NSAttributedString *newAttributedText;
+    NSMutableAttributedString *newAttributedText;
     if (text)
     {
-        newAttributedText = [[NSAttributedString alloc] initWithString:text attributes:[self attributesForTitleText]];
+        newAttributedText = [[NSMutableAttributedString alloc] initWithString:text attributes:[self attributesForTitleText]];
     }
     else
     {
-        newAttributedText = [[NSAttributedString alloc] initWithString:@""];
+        newAttributedText = [[NSMutableAttributedString alloc] initWithString:@""];
     }
     [self.textStorage replaceCharactersInRange:NSMakeRange(0, self.textStorage.length) withAttributedString:newAttributedText];
 }

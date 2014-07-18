@@ -105,10 +105,6 @@ static const char kVideoUnloadBlockKey;
     {
         [self addCloseButtonToVideoPlayer];
     }
-    else
-    {
-        [self addRemixButtonToVideoPlayer];
-    }
     
     [self.videoPlayer setItemURL:contentURL];
     
@@ -149,25 +145,6 @@ static const char kVideoUnloadBlockKey;
 {
     if ([self.videoPlayer.player rate] == 0.0)
         [self.videoPlayer.player play];
-}
-
-- (void)addRemixButtonToVideoPlayer
-{
-    UIButton *remixButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    remixButton.translatesAutoresizingMaskIntoConstraints = NO;
-    remixButton.backgroundColor = [UIColor clearColor];
-    [remixButton setImage:[[UIImage imageNamed:@"cameraButtonRemix"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal]
-                 forState:UIControlStateNormal];
-    [remixButton addTarget:self action:@selector(pressedRemix:) forControlEvents:UIControlEventTouchUpInside];
-    [self.videoPlayer.overlayView addSubview:remixButton];
-    [self.videoPlayer.overlayView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:[remixButton(==49)]-6-|"
-                                                                                         options:0
-                                                                                         metrics:nil
-                                                                                           views:NSDictionaryOfVariableBindings(remixButton)]];
-    [self.videoPlayer.overlayView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-1-[remixButton(==50)]"
-                                                                                         options:0
-                                                                                         metrics:nil
-                                                                                           views:NSDictionaryOfVariableBindings(remixButton)]];
 }
 
 - (void)addCloseButtonToVideoPlayer
