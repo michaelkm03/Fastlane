@@ -198,17 +198,17 @@ NSString*   const   kVNewThemeKey                       =   @"kVNewTheme";
 
 - (id)themedValueForKey:(NSString *)key
 {
-    return [[NSUserDefaults standardUserDefaults] objectForKey:key];
+    return [[NSUserDefaults standardUserDefaults] objectForKey:key] ?: [NSNull null];
 }
 
 - (NSString *)themedStringForKey:(NSString *)key
 {
-    return [[NSUserDefaults standardUserDefaults] stringForKey:key];
+    return [[NSUserDefaults standardUserDefaults] stringForKey:key] ?: @"";
 }
 
 - (NSURL *)themedURLForKey:(NSString *)key
 {
-    return [[NSUserDefaults standardUserDefaults] URLForKey:key];
+    return [[NSUserDefaults standardUserDefaults] URLForKey:key] ?: [NSURL URLWithString:@""];
 }
 
 #pragma mark - Other
@@ -226,7 +226,7 @@ NSString*   const   kVNewThemeKey                       =   @"kVNewTheme";
 {
     NSDictionary*   colorDictionary =   [self themedValueForKey:key];
     if (nil == colorDictionary)
-        return nil;
+        return [UIColor clearColor];
 
     CGFloat         red             =   [colorDictionary[@"red"] doubleValue] / 255.0;
     CGFloat         green           =   [colorDictionary[@"green"] doubleValue] / 255.0;
@@ -252,7 +252,7 @@ NSString*   const   kVNewThemeKey                       =   @"kVNewTheme";
     NSURL*  url =   [self themedURLForKey:key];
     if (nil == url)
         url     =   [[NSBundle mainBundle] URLForResource:key withExtension:@"png"];
-    return url;
+    return url ?: [NSURL URLWithString:@""];
 }
 
 - (UIImage *)themedImageForKey:(NSString *)key
