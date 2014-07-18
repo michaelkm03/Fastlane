@@ -28,6 +28,8 @@
 @property (nonatomic)         BOOL                      finishedMidpoint;
 @property (nonatomic)         BOOL                      finishedThirdQuartile;
 
+@property (nonatomic, readwrite) CMTime                 currentTime;
+
 @end
 
 static const CGFloat        kToolbarHeight            = 41.0f;
@@ -374,6 +376,8 @@ static __weak VCVideoPlayerViewController *_currentPlayer = nil;
     Float64 durationInSeconds = CMTimeGetSeconds([self playerItemDuration]);
     Float64 timeInSeconds     = CMTimeGetSeconds(time);
     float percentElapsed      = timeInSeconds / durationInSeconds;
+    
+    self.currentTime = time;
 
     if (!self.sliderTouchActive)
     {

@@ -327,7 +327,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dxU-B0-nHs" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1561" y="-1679"/>
+            <point key="canvasLocation" x="-1763" y="-1658"/>
         </scene>
         <!--Comments Table View Controller-->
         <scene sceneID="fSF-nY-54B">
@@ -880,12 +880,20 @@
                                     <constraint firstAttribute="height" constant="51" id="sAW-bE-Amq"/>
                                 </constraints>
                             </view>
-                            <containerView alpha="0.0" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="FR4-4c-csb">
+                            <containerView alpha="0.0" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="FR4-4c-csb" userLabel="RTC Container View">
                                 <rect key="frame" x="0.0" y="52" width="320" height="102"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <connections>
                                     <segue destination="nfe-aV-fE2" kind="embed" id="EXS-6R-VMb"/>
+                                </connections>
+                            </containerView>
+                            <containerView contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="GTs-yl-vMe" userLabel="Keyboard Container View">
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                <connections>
+                                    <segue destination="Xnc-VI-aqb" kind="embed" id="8w7-gq-4Sa"/>
                                 </connections>
                             </containerView>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="aAT-JQ-9wh">
@@ -1024,6 +1032,7 @@
                         <outlet property="firstPollPlayIcon" destination="yMt-1L-zyw" id="QWi-P7-VYR"/>
                         <outlet property="firstResultView" destination="mU7-Gc-RdJ" id="Hap-rD-L8h"/>
                         <outlet property="firstSmallPreviewImage" destination="EVH-DQ-EKO" id="sqw-uo-jib"/>
+                        <outlet property="keyboardBarContainer" destination="GTs-yl-vMe" id="CPf-Zf-hDK"/>
                         <outlet property="leftImageViewHeightConstraint" destination="DAT-km-egD" id="cR6-7g-3sG"/>
                         <outlet property="leftImageViewWidthConstraint" destination="dWm-D2-arz" id="VQ6-nU-7S0"/>
                         <outlet property="leftSmallPreviewImageWidthConstraint" destination="dWm-D2-arz" id="6cw-Ze-803"/>
@@ -2376,7 +2385,25 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="6GB-7q-tBp" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1775" y="-1463"/>
+            <point key="canvasLocation" x="-1763" y="-1262"/>
+        </scene>
+        <!--View Controller-->
+        <scene sceneID="bXa-gX-VNZ">
+            <objects>
+                <viewController automaticallyAdjustsScrollViewInsets="NO" id="S5d-ZW-37g" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="3Aj-Uw-PGe"/>
+                        <viewControllerLayoutGuide type="bottom" id="aEw-rN-C6M"/>
+                    </layoutGuides>
+                    <view key="view" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="5qL-sP-RL4">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                    <toolbarItems/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="qMB-ge-VcP" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
         </scene>
     </scenes>
     <resources>

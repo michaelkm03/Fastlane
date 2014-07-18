@@ -131,7 +131,8 @@ static const NSInteger kCharacterLimit = 255;
 {
     if (object == self.textView && [keyPath isEqualToString:NSStringFromSelector(@selector(contentSize))])
     {
-        [self.delegate keyboardBar:self wouldLikeToBeResizedToHeight:(14.0f + self.textView.contentSize.height)];
+        if ([self.delegate respondsToSelector:@selector(keyboardBar:wouldLikeToBeResizedToHeight:)])
+            [self.delegate keyboardBar:self wouldLikeToBeResizedToHeight:(14.0f + self.textView.contentSize.height)];
     }
 }
 

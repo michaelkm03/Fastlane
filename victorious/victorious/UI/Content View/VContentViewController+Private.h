@@ -28,6 +28,8 @@
 
 @import MediaPlayer;
 
+@class VKeyboardBarViewController, VRealtimeCommentViewController;
+
 extern NSTimeInterval kVContentPollAnimationDuration;
 
 @interface VContentViewController ()  <UIWebViewDelegate, VContentTitleTextViewDelegate, VInteractionManagerDelegate, UIDynamicAnimatorDelegate, UINavigationControllerDelegate>
@@ -67,6 +69,7 @@ extern NSTimeInterval kVContentPollAnimationDuration;
 @property (strong, nonatomic) UIDynamicAnimator* orAnimator;
 
 @property (weak, nonatomic) VRealtimeCommentViewController* realtimeCommentVC;
+@property (weak, nonatomic) VKeyboardBarViewController* keyboardBarVC;
 
 @property (strong, nonatomic) VCVideoPlayerViewController* videoPlayer;
 @property (strong, nonatomic) VNode* currentNode;

@@ -44,7 +44,7 @@ NSTimeInterval kVContentPollAnimationDuration = 0.2;
 
 @import MediaPlayer;
 
-@interface VContentViewController() <VContentInfoDelegate, VRealtimeCommentDelegate>
+@interface VContentViewController() <VContentInfoDelegate, VRealtimeCommentDelegate, VKeyboardBarDelegate>
 
 @property (nonatomic) BOOL isViewingTitle;
 
@@ -94,9 +94,15 @@ NSTimeInterval kVContentPollAnimationDuration = 0.2;
         {
             self.realtimeCommentVC = (VRealtimeCommentViewController*)vc;
             self.realtimeCommentVC.delegate = self;
-            break;
+        }
+        else if ([vc isKindOfClass:[VKeyboardBarViewController class]])
+        {
+            self.keyboardBarVC = (VKeyboardBarViewController*)vc;
+            self.keyboardBarVC.delegate = self;
         }
     }
+    
+    self.keyboardBarContainer.hidden = YES;
     
     [self resetView];
 }
@@ -600,9 +606,24 @@ NSTimeInterval kVContentPollAnimationDuration = 0.2;
 
 - (IBAction)pressedComment:(id)sender
 {
-    VCommentsContainerViewController* commentsTable = [VCommentsContainerViewController commentsContainerView];
-    commentsTable.sequence = self.sequence;
-    [self.navigationController pushViewController:commentsTable animated:YES];
+    if (![self.sequence isVideo])
+    {
+        VCommentsContainerViewController* commentsTable = [VCommentsContainerViewController commentsContainerView];
+        commentsTable.sequence = self.sequence;
+        [self.navigationController pushViewController:commentsTable animated:YES];
+    }
+    else
+    {
+        self.keyboardBarContainer.hidden = NO;
+        self.keyboardBarContainer.alpha = 0;
+//        CGFloat currentTime = CMTimeGetSeconds(self.videoPlayer.currentTime);
+        self.keyboardBarVC.promptLabel.text = NSLocalizedString(@"leaveAComment", nil);
+        
+        [UIView animateWithDuration:.25 animations:
+         ^{
+             self.keyboardBarContainer.alpha = 1;
+         }];
+    }
 }
 
 - (IBAction)pressedCollapse:(id)sender
@@ -778,6 +799,12 @@ NSTimeInterval kVContentPollAnimationDuration = 0.2;
              completion(finished);
          }
      }];
+}
+
+#pragma mark - VKeyboardBarDelegate Methods
+- (void)keyboardBar:(VKeyboardBarViewController *)keyboardBar didComposeWithText:(NSString *)text mediaURL:(NSURL *)mediaURL
+{
+#warning this should probably post to server
 }
 
 #pragma mark - VRealtimeCommentDelegate methods
