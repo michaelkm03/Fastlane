@@ -50,6 +50,11 @@ typedef NS_ENUM(NSUInteger, VContentCountType) {
     return sharedInstance;
 }
 
+- (BOOL)prefersStatusBarHidden
+{
+    return YES;
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
