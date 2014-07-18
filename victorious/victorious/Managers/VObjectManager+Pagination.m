@@ -120,12 +120,14 @@
         {
             
             //If this is the first page, break the relationship to all the old objects.
+            
             if ([filter.currentPageNumber isEqualToNumber:@(0)])
             {
                 NSPredicate* tempFilter = [NSPredicate predicateWithFormat:@"NOT (mediaType CONTAINS %@)", kTemporaryContentStatus];
                 NSArray* filteredSequences = [[filter.comments allObjects] filteredArrayUsingPredicate:tempFilter];
                 [filter removeComments:[NSSet setWithArray:filteredSequences]];
             }
+            
             
             for (VComment* comment in resultObjects)
             {
@@ -240,13 +242,6 @@
 {
     VSuccessBlock fullSuccessBlock = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
     {
-        //If this is the first page, break the relationship to all the old objects.
-        if ([conversation.currentPageNumber isEqualToNumber:@(0)])
-        {
-            NSPredicate* tempFilter = [NSPredicate predicateWithFormat:@"NOT (status CONTAINS %@)", kTemporaryContentStatus];
-            NSArray* filteredMessages = [[conversation.messages allObjects] filteredArrayUsingPredicate:tempFilter];
-            [conversation removeMessages:[NSSet setWithArray:filteredMessages]];
-        }
         
         for (VMessage* message in resultObjects)
         {

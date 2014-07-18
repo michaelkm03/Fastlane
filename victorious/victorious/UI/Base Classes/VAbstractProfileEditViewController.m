@@ -117,9 +117,30 @@
     self.tagLinePlaceholderLabel.hidden = ([textView.text length] > 0);
 }
 
+
+-(void)textViewDidBeginEditing:(UITextView *)textView
+{
+    if (textView == self.taglineTextView)
+    {
+        CGPoint point = self.tableView.contentOffset;
+        point.y += self.tableView.rowHeight;
+        
+        [UIView animateWithDuration:.5 animations:^{
+            self.tableView.contentOffset = point;
+        }];
+        
+    }
+}
+
 - (void)textViewDidEndEditing:(UITextView *)textView
 {
     self.tagLinePlaceholderLabel.hidden = ([textView.text length] > 0);
+    CGPoint point = self.tableView.contentOffset;
+    point.y -= self.tableView.rowHeight;
+    
+    [UIView animateWithDuration:.5 animations:^{
+        self.tableView.contentOffset = point;
+    }];
 }
 
 @end
