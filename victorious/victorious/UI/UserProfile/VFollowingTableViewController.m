@@ -60,8 +60,8 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     VUser*  user = self.following[indexPath.row];
-    VUserProfileViewController* profileVC   =   [VUserProfileViewController userProfileWithFollowerOrFollowing:user];
-    [self.navigationController pushViewController:profileVC animated:YES];
+    VUserProfileViewController* profileViewController = [VUserProfileViewController userProfileWithUser:user];
+    [self.navigationController pushViewController:profileViewController animated:YES];
 }
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
