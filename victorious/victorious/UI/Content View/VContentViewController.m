@@ -813,7 +813,9 @@ NSTimeInterval kVContentPollAnimationDuration = 0.2;
 #pragma mark - VKeyboardBarDelegate Methods
 - (void)keyboardBar:(VKeyboardBarViewController *)keyboardBar didComposeWithText:(NSString *)text mediaURL:(NSURL *)mediaURL
 {
-#warning this should probably post to server
+    VLog(@"A thing");
+    [self didCancelKeyboardBar:keyboardBar];
+//#warning this should probably post to server
 }
 - (void)didCancelKeyboardBar:(VKeyboardBarViewController *)keyboardBar
 {

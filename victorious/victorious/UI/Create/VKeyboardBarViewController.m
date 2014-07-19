@@ -42,6 +42,7 @@ static const NSInteger kCharacterLimit = 255;
     inputAccessoryView.tintColor = [UIColor colorWithRed:0.85f green:0.86f blue:0.87f alpha:1.0f];
     self.textView.inputAccessoryView = inputAccessoryView;
     self.promptLabel.textColor = [UIColor lightGrayColor];
+    self.textView.returnKeyType = UIReturnKeySend;
 }
 
 - (void)viewWillLayoutSubviews
@@ -68,6 +69,7 @@ static const NSInteger kCharacterLimit = 255;
     [self.mediaButton setImage:[UIImage imageNamed:@"MessageCamera"] forState:UIControlStateNormal];
     self.textView.text = nil;
     self.mediaURL = nil;
+    [self textViewDidChange:self.textView];
 }
 
 - (IBAction)cancelButtonAction:(id)sender
@@ -124,6 +126,11 @@ static const NSInteger kCharacterLimit = 255;
 
 #pragma mark - UITextViewDelegate methods
 
+- (void)textViewDidEndEditing:(UITextView *)textView
+{
+    [self sendButtonAction:textView];
+}
+
 - (BOOL)textViewShouldBeginEditing:(UITextView *)textView
 {
     if (![VObjectManager sharedManager].mainUser)
@@ -134,10 +141,22 @@ static const NSInteger kCharacterLimit = 255;
     return YES;
 }
 
+- (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text
+
+{
+    if ([text isEqualToString:@"\n"] && self.textView.returnKeyType == UIReturnKeySend)
+    {
+        [self sendButtonAction:textView];
+        return NO;
+    }
+    return YES;
+}
+
 - (void)textViewDidChange:(UITextView *)textView
 {
     self.promptLabel.hidden = ![textView.text isEqualToString:@""];
 }
+
 
 #pragma mark - KVO
 
