@@ -61,10 +61,24 @@ static const NSInteger kCharacterLimit = 255;
     }
     
     [self.textView resignFirstResponder];
-    [self.delegate keyboardBar:self didComposeWithText:self.textView.text mediaURL:self.mediaURL];
+
+    if ([self.delegate respondsToSelector:@selector(keyboardBar:didComposeWithText:mediaURL:)])
+        [self.delegate keyboardBar:self didComposeWithText:self.textView.text mediaURL:self.mediaURL];
+    
     [self.mediaButton setImage:[UIImage imageNamed:@"MessageCamera"] forState:UIControlStateNormal];
     self.textView.text = nil;
     self.mediaURL = nil;
+}
+
+- (IBAction)cancelButtonAction:(id)sender
+{
+    [self.textView resignFirstResponder];
+    [self.mediaButton setImage:[UIImage imageNamed:@"MessageCamera"] forState:UIControlStateNormal];
+    self.textView.text = nil;
+    self.mediaURL = nil;
+    
+    if ([self.delegate respondsToSelector:@selector(didCancelKeyboardBar:)])
+        [self.delegate didCancelKeyboardBar:self];
 }
 
 - (void)cameraPressed:(id)sender

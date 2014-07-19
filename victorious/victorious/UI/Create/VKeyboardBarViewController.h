@@ -11,11 +11,10 @@
 @protocol VKeyboardBarDelegate <NSObject>
 
 @required
-
-- (void)keyboardBar:(VKeyboardBarViewController *)keyboardBar didComposeWithText:(NSString *)text mediaURL:(NSURL *)mediaURL;
 @optional
+- (void)keyboardBar:(VKeyboardBarViewController *)keyboardBar didComposeWithText:(NSString *)text mediaURL:(NSURL *)mediaURL;
 - (void)keyboardBar:(VKeyboardBarViewController *)keyboardBar wouldLikeToBeResizedToHeight:(CGFloat)height;
-
+- (void)didCancelKeyboardBar:(VKeyboardBarViewController *)keyboardBar;
 @end
 
 @interface VKeyboardBarViewController : UIViewController

@@ -102,6 +102,8 @@ NSTimeInterval kVContentPollAnimationDuration = 0.2;
         }
     }
     
+    self.isViewingTitle = YES;
+    
     self.keyboardBarContainer.hidden = YES;
     
     [self resetView];
@@ -618,11 +620,18 @@ NSTimeInterval kVContentPollAnimationDuration = 0.2;
         self.keyboardBarContainer.alpha = 0;
 //        CGFloat currentTime = CMTimeGetSeconds(self.videoPlayer.currentTime);
         self.keyboardBarVC.promptLabel.text = NSLocalizedString(@"leaveAComment", nil);
-        
+
+        if (self.isViewingTitle)
+            [self flipHeaderWithDuration:.25f completion:nil];
+   
         [UIView animateWithDuration:.25 animations:
          ^{
              self.keyboardBarContainer.alpha = 1;
-         }];
+         }
+         completion:^(BOOL finished)
+        {
+            [self.keyboardBarVC becomeFirstResponder];
+        }];
     }
 }
 
@@ -806,7 +815,17 @@ NSTimeInterval kVContentPollAnimationDuration = 0.2;
 {
 #warning this should probably post to server
 }
-
+- (void)didCancelKeyboardBar:(VKeyboardBarViewController *)keyboardBar
+{
+    [UIView animateWithDuration:.25 animations:
+     ^{
+         self.keyboardBarContainer.alpha = 0;
+     }
+                     completion:^(BOOL finished)
+     {
+         self.keyboardBarContainer.hidden = YES;
+     }];
+}
 #pragma mark - VRealtimeCommentDelegate methods
 
 -(void)willShowRTCMedia
