@@ -45,6 +45,11 @@ static const NSInteger kCharacterLimit = 255;
     self.textView.returnKeyType = UIReturnKeySend;
 }
 
+- (void)setHideAccessoryBar:(BOOL)hideAccessoryBar
+{
+    self.textView.inputAccessoryView.hidden = hideAccessoryBar;
+}
+
 - (void)viewWillLayoutSubviews
 {
     [super viewWillLayoutSubviews];

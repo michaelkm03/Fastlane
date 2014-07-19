@@ -99,6 +99,7 @@ NSTimeInterval kVContentPollAnimationDuration = 0.2;
         {
             self.keyboardBarVC = (VKeyboardBarViewController*)vc;
             self.keyboardBarVC.delegate = self;
+            self.keyboardBarVC.hideAccessoryBar = YES;
         }
     }
     

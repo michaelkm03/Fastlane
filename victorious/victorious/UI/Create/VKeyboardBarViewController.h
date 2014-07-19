@@ -23,6 +23,8 @@
 @property (nonatomic, strong) NSAttributedString       *textViewText;
 @property (nonatomic, weak)   IBOutlet UILabel         *promptLabel;
 
+@property (nonatomic)   BOOL hideAccessoryBar;
+
 - (IBAction)cameraPressed:(id)sender;
 - (BOOL)becomeFirstResponder; ///< Tells the keyboard bar view controller to make its internal text view the first responder
 
