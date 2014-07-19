@@ -117,6 +117,9 @@ NSTimeInterval kVContentPollAnimationDuration = 0.2;
     [self.navigationController setNavigationBarHidden:YES animated:NO];
     self.appearing = YES;
     
+#warning test flow should probably remove
+    self.realtimeCommentVC.comments = [self.sequence.comments allObjects];
+    
     if ([self isBeingPresented] || [self isMovingToParentViewController])
     {
         [[VAnalyticsRecorder sharedAnalyticsRecorder] sendEventWithCategory:kVAnalyticsEventCategoryNavigation action:@"Show Content" label:self.sequence.name value:nil];
