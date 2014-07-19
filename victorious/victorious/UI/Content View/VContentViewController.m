@@ -611,9 +611,7 @@ NSTimeInterval kVContentPollAnimationDuration = 0.2;
 {
     if (![self.sequence isVideo])
     {
-        VCommentsContainerViewController* commentsTable = [VCommentsContainerViewController commentsContainerView];
-        commentsTable.sequence = self.sequence;
-        [self.navigationController pushViewController:commentsTable animated:YES];
+        [self goToCommentView];
     }
     else
     {
@@ -634,6 +632,13 @@ NSTimeInterval kVContentPollAnimationDuration = 0.2;
             [self.keyboardBarVC becomeFirstResponder];
         }];
     }
+}
+
+- (void)goToCommentView
+{
+    VCommentsContainerViewController* commentsTable = [VCommentsContainerViewController commentsContainerView];
+    commentsTable.sequence = self.sequence;
+    [self.navigationController pushViewController:commentsTable animated:YES];
 }
 
 - (IBAction)pressedCollapse:(id)sender
@@ -694,7 +699,7 @@ NSTimeInterval kVContentPollAnimationDuration = 0.2;
     [self dismissViewControllerAnimated:YES
                              completion:
      ^{
-         [self pressedComment:nil];
+         [self goToCommentView];
      }];
 }
 #pragma mark - VInteractionManagerDelegate
