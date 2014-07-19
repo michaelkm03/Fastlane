@@ -43,6 +43,7 @@
         <attribute name="sequenceId" attributeType="Integer 64" minValueString="0" syncable="YES"/>
         <attribute name="text" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="thumbnailUrl" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="timeInMedia" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
         <attribute name="userId" attributeType="Integer 64" minValueString="0" syncable="YES"/>
         <relationship name="filters" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="CommentFilter" inverseName="comments" inverseEntity="CommentFilter" syncable="YES"/>
         <relationship name="sequence" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Sequence" inverseName="comments" inverseEntity="Sequence" syncable="YES"/>
@@ -177,7 +178,7 @@
         <element name="Answer" positionX="727" positionY="99" width="128" height="193"/>
         <element name="AnswerAction" positionX="718" positionY="330" width="128" height="75"/>
         <element name="Asset" positionX="655" positionY="-360" width="128" height="118"/>
-        <element name="Comment" positionX="1035" positionY="-576" width="128" height="283"/>
+        <element name="Comment" positionX="1035" positionY="-576" width="128" height="298"/>
         <element name="CommentFilter" positionX="862" positionY="-468" width="128" height="58"/>
         <element name="Conversation" positionX="1395" positionY="-477" width="128" height="118"/>
         <element name="Interaction" positionX="646" positionY="-208" width="128" height="208"/>

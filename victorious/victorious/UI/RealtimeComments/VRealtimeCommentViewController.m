@@ -21,7 +21,7 @@
 #import "VImageLightboxViewController.h"
 #import "VLightboxTransitioningDelegate.h"
 
-static const CGFloat kVRealtimeCommentTimeout = 1.0f;
+static const CGFloat kVRealtimeCommentTimeout = 2.0f;
 
 @interface VRealtimeCommentViewController ()
 
@@ -40,8 +40,6 @@ static const CGFloat kVRealtimeCommentTimeout = 1.0f;
 @property (nonatomic, weak) IBOutlet UILabel* commentLabel;
 
 @property (nonatomic, strong) VComment* currentComment;
-#warning remove this array, its only purpose is to store the hacky times
-@property (nonatomic, strong) NSMutableArray* commentTimes;
 
 @property (nonatomic, strong) NSMutableArray* progressBarImageViews;
 
@@ -70,8 +68,6 @@ static const CGFloat kVRealtimeCommentTimeout = 1.0f;
     
     self.commentLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVParagraphFont];
     self.timeLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVLabel3Font];
-    
-    self.commentTimes = [[NSMutableArray alloc] init];
 }
 
 #pragma mark - Comment Selection
@@ -88,8 +84,7 @@ static const CGFloat kVRealtimeCommentTimeout = 1.0f;
     VComment* currentComment;
     for (VComment* comment in self.comments)
     {
-#warning replace this with real start time
-        CGFloat startTime = ((NSString*)[self.commentTimes objectAtIndex:[self.comments indexOfObject:comment]]).floatValue;
+        CGFloat startTime = comment.timeInMedia.floatValue;
         if (startTime < time && time-startTime < kVRealtimeCommentTimeout)
             currentComment = comment;
         else if (startTime > time)
@@ -108,21 +103,28 @@ static const CGFloat kVRealtimeCommentTimeout = 1.0f;
 #pragma mark - Setters
 - (void)setComments:(NSArray *)comments
 {
-    _comments = comments;
-    
-#warning Sort the comments so they are guarenteed to be in the right order
-    
     for (UIImageView* imageView in self.progressBarImageViews)
         [imageView removeFromSuperview];
     [self.progressBarImageViews removeAllObjects];
-    [self.commentTimes removeAllObjects];
+    
+    #warning replace this with real start time
+    for (VComment* comment in comments)
+    {
+        if (comment.timeInMedia.floatValue <= 0.0f || comment.timeInMedia.floatValue > self.endTime)
+        {
+            CGFloat rand = (((float) (arc4random() % ((unsigned)RAND_MAX + 1)) / RAND_MAX) * 2) -1;
+            CGFloat startTime = self.endTime * rand;
+            comment.timeInMedia = @(startTime);
+        }
+    }
+    
+    NSSortDescriptor*   sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"timeInMedia" ascending:YES];
+    
+    _comments = [comments sortedArrayUsingDescriptors:@[sortDescriptor]];
     
     for (VComment* comment in comments)
     {
-        #warning replace this with real start time
-        CGFloat rand = (((float) (arc4random() % ((unsigned)RAND_MAX + 1)) / RAND_MAX) * 2) -1;
-        CGFloat startTime = self.endTime * rand;
-        [self.commentTimes insertObject:[NSString stringWithFormat: @"%.2f", startTime] atIndex:[self.comments indexOfObject:comment]];
+        CGFloat startTime = comment.timeInMedia.floatValue;
         
         CGFloat imageHeight = self.progressBackgroundView.frame.size.height * .75;
         UIImageView* progressBarImage = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, imageHeight, imageHeight)];
