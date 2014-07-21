@@ -962,7 +962,7 @@
                                 <constraints>
                                     <constraint firstItem="2TL-Vb-eja" firstAttribute="top" secondItem="kYi-kX-anM" secondAttribute="top" constant="48" id="1cy-d4-8n9"/>
                                     <constraint firstItem="qbm-gr-rvF" firstAttribute="leading" secondItem="lkK-8n-fRh" secondAttribute="trailing" constant="-1" id="8GY-1G-hrv"/>
-                                    <constraint firstItem="lkK-8n-fRh" firstAttribute="leading" secondItem="IQa-Xx-665" secondAttribute="trailing" constant="-1" id="LTN-1s-uZb"/>
+                                    <constraint firstItem="IQa-Xx-665" firstAttribute="trailing" secondItem="lkK-8n-fRh" secondAttribute="leading" constant="1" id="LTN-1s-uZb"/>
                                     <constraint firstAttribute="bottom" secondItem="qbm-gr-rvF" secondAttribute="bottom" id="M7t-LH-vlf"/>
                                     <constraint firstAttribute="height" constant="102" id="N5Q-YY-0EG"/>
                                     <constraint firstAttribute="bottom" secondItem="lkK-8n-fRh" secondAttribute="bottom" id="TNv-xi-ewC"/>
@@ -1045,6 +1045,9 @@
                         <outlet property="pollViewYConstraint" destination="cjf-8S-WD0" id="crw-3j-lDs"/>
                         <outlet property="previewImage" destination="ZqV-fk-y5a" id="5zD-1U-pWm"/>
                         <outlet property="realtimeCommentsContainer" destination="FR4-4c-csb" id="3gI-AH-uQR"/>
+                        <outlet property="remixButton" destination="lkK-8n-fRh" id="ffP-Ri-FL0"/>
+                        <outlet property="repostButton" destination="qbm-gr-rvF" id="CWg-L0-u5w"/>
+                        <outlet property="repostButtonLeadingConstraint" destination="8GY-1G-hrv" id="bdO-2H-eF7"/>
                         <outlet property="rightImageViewHeightConstraint" destination="yWO-Zj-NEX" id="iw8-Li-jMN"/>
                         <outlet property="rightImageViewWidthConstraint" destination="Kaz-0u-z6m" id="OWb-gI-2lJ"/>
                         <outlet property="rightSmallPreviewImageWidthConstraint" destination="Kaz-0u-z6m" id="6xw-sD-qqO"/>
@@ -1052,6 +1055,8 @@
                         <outlet property="secondPollPlayIcon" destination="ZyP-Vw-yAD" id="qSb-Jn-ofd"/>
                         <outlet property="secondResultView" destination="eCc-fQ-PSZ" id="yOE-Ip-yhe"/>
                         <outlet property="secondSmallPreviewImage" destination="plb-mq-Tcq" id="Svf-fQ-dzq"/>
+                        <outlet property="shareButton" destination="IQa-Xx-665" id="mJH-uE-5l3"/>
+                        <outlet property="shareButtonTrailingConstraint" destination="LTN-1s-uZb" id="0Wp-da-58R"/>
                         <outlet property="topActionsView" destination="Ruh-qb-vRD" id="Xpq-SD-fWy"/>
                         <outlet property="topActionsViewHeightConstraint" destination="N5Q-YY-0EG" id="w8Q-36-NyT"/>
                         <outletCollection property="navButtonCollection" destination="Hjq-lN-vqT" id="SJS-QD-zN0"/>
