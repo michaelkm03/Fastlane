@@ -50,6 +50,8 @@
 		03945492195510CE00AB1C4B /* VFindFriendsTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 03945491195510CE00AB1C4B /* VFindFriendsTableViewController.m */; };
 		03945495195511B800AB1C4B /* VSuggestedFriendsTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 03945494195511B800AB1C4B /* VSuggestedFriendsTableViewController.m */; };
 		0394549E1955226C00AB1C4B /* VFindContactsTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0394549D1955226C00AB1C4B /* VFindContactsTableViewController.m */; };
+		039D2FD3197D938900DFBE60 /* VPhotoFilterSerializationTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 039D2FD2197D938900DFBE60 /* VPhotoFilterSerializationTests.m */; };
+		039D2FD6197D93C600DFBE60 /* filters.xml in Resources */ = {isa = PBXBuildFile; fileRef = 039D2FD5197D93C600DFBE60 /* filters.xml */; };
 		03A2AD971926B9460034EB80 /* UIViewController+ForceOrientationChange.m in Sources */ = {isa = PBXBuildFile; fileRef = 03A2AD961926B9460034EB80 /* UIViewController+ForceOrientationChange.m */; };
 		03A2AD9A1926C9300034EB80 /* DeviceTableViewController+RotationMethods.m in Sources */ = {isa = PBXBuildFile; fileRef = 03A2AD991926C9300034EB80 /* DeviceTableViewController+RotationMethods.m */; };
 		03ABEE201937EC7F007931F9 /* VContentInputAccessoryView.m in Sources */ = {isa = PBXBuildFile; fileRef = 03ABEE1F1937EC7F007931F9 /* VContentInputAccessoryView.m */; };
@@ -75,6 +77,9 @@
 		03F9D29719204D7700576AEE /* Icon-29@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 03F9D29419204D7700576AEE /* Icon-29@2x.png */; };
 		03F9D29819204D7700576AEE /* Icon-40@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 03F9D29519204D7700576AEE /* Icon-40@2x.png */; };
 		03F9D29919204D7700576AEE /* Icon-60@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 03F9D29619204D7700576AEE /* Icon-60@2x.png */; };
+		03FDA099197A092400405361 /* VPhotoFilterSerialization.m in Sources */ = {isa = PBXBuildFile; fileRef = 03FDA096197A092400405361 /* VPhotoFilterSerialization.m */; };
+		03FDA09C197A093A00405361 /* VPhotoFilter.m in Sources */ = {isa = PBXBuildFile; fileRef = 03FDA09B197A093A00405361 /* VPhotoFilter.m */; };
+		03FDA09F197A0AEC00405361 /* CIImage+VImage.m in Sources */ = {isa = PBXBuildFile; fileRef = 03FDA09E197A0AEC00405361 /* CIImage+VImage.m */; };
 		0742CD6B32FA44679FBE8716 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 662F0867152745B2B2F08301 /* libPods.a */; };
 		3F033874192AE4A500DCD36A /* VLoginTransitionAnimator.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F033873192AE4A500DCD36A /* VLoginTransitionAnimator.m */; };
 		3F14C44C18BD2BD0001796B9 /* VCAudioEncoder.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F14C43618BD2BD0001796B9 /* VCAudioEncoder.m */; };
@@ -412,6 +417,8 @@
 		03945494195511B800AB1C4B /* VSuggestedFriendsTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VSuggestedFriendsTableViewController.m; sourceTree = "<group>"; };
 		0394549C1955226C00AB1C4B /* VFindContactsTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VFindContactsTableViewController.h; sourceTree = "<group>"; };
 		0394549D1955226C00AB1C4B /* VFindContactsTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VFindContactsTableViewController.m; sourceTree = "<group>"; };
+		039D2FD2197D938900DFBE60 /* VPhotoFilterSerializationTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VPhotoFilterSerializationTests.m; sourceTree = "<group>"; };
+		039D2FD5197D93C600DFBE60 /* filters.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = filters.xml; sourceTree = "<group>"; };
 		03A2AD951926B9460034EB80 /* UIViewController+ForceOrientationChange.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+ForceOrientationChange.h"; sourceTree = "<group>"; };
 		03A2AD961926B9460034EB80 /* UIViewController+ForceOrientationChange.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+ForceOrientationChange.m"; sourceTree = "<group>"; };
 		03A2AD981926C9300034EB80 /* DeviceTableViewController+RotationMethods.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "DeviceTableViewController+RotationMethods.h"; path = "UI/DeviceTableViewController+RotationMethods.h"; sourceTree = "<group>"; };
@@ -454,6 +461,12 @@
 		03F9D29419204D7700576AEE /* Icon-29@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Icon-29@2x.png"; path = "AppSpecific/Icon-29@2x.png"; sourceTree = "<group>"; };
 		03F9D29519204D7700576AEE /* Icon-40@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Icon-40@2x.png"; path = "AppSpecific/Icon-40@2x.png"; sourceTree = "<group>"; };
 		03F9D29619204D7700576AEE /* Icon-60@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Icon-60@2x.png"; path = "AppSpecific/Icon-60@2x.png"; sourceTree = "<group>"; };
+		03FDA095197A092400405361 /* VPhotoFilterSerialization.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VPhotoFilterSerialization.h; sourceTree = "<group>"; };
+		03FDA096197A092400405361 /* VPhotoFilterSerialization.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VPhotoFilterSerialization.m; sourceTree = "<group>"; };
+		03FDA09A197A093A00405361 /* VPhotoFilter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VPhotoFilter.h; sourceTree = "<group>"; };
+		03FDA09B197A093A00405361 /* VPhotoFilter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VPhotoFilter.m; sourceTree = "<group>"; };
+		03FDA09D197A0AEC00405361 /* CIImage+VImage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "CIImage+VImage.h"; sourceTree = "<group>"; };
+		03FDA09E197A0AEC00405361 /* CIImage+VImage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "CIImage+VImage.m"; sourceTree = "<group>"; };
 		33ACD3CBAF2C419D97FB901A /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = "<group>"; };
 		3F033872192AE4A500DCD36A /* VLoginTransitionAnimator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VLoginTransitionAnimator.h; path = UI/Login/VLoginTransitionAnimator.h; sourceTree = "<group>"; };
 		3F033873192AE4A500DCD36A /* VLoginTransitionAnimator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VLoginTransitionAnimator.m; path = UI/Login/VLoginTransitionAnimator.m; sourceTree = "<group>"; };
@@ -1038,6 +1051,14 @@
 			path = "Table View Controllers";
 			sourceTree = "<group>";
 		};
+		039D2FD4197D93C600DFBE60 /* Test Data */ = {
+			isa = PBXGroup;
+			children = (
+				039D2FD5197D93C600DFBE60 /* filters.xml */,
+			);
+			path = "Test Data";
+			sourceTree = "<group>";
+		};
 		03E8D78A1954ECF000F67ABF /* Find Friends */ = {
 			isa = PBXGroup;
 			children = (
@@ -1051,6 +1072,18 @@
 			);
 			name = "Find Friends";
 			path = "UI/Login/Find Friends";
+			sourceTree = "<group>";
+		};
+		03FDA090197A08FE00405361 /* Photo Filters */ = {
+			isa = PBXGroup;
+			children = (
+				03FDA09A197A093A00405361 /* VPhotoFilter.h */,
+				03FDA09B197A093A00405361 /* VPhotoFilter.m */,
+				03FDA095197A092400405361 /* VPhotoFilterSerialization.h */,
+				03FDA096197A092400405361 /* VPhotoFilterSerialization.m */,
+			);
+			name = "Photo Filters";
+			path = "UI/CameraViewController/Photo Filters";
 			sourceTree = "<group>";
 		};
 		3F02824A1937D3830099259A /* Login */ = {
@@ -1122,6 +1155,7 @@
 		3F1AA53018CFEFFC0022D16B /* Capture */ = {
 			isa = PBXGroup;
 			children = (
+				03FDA090197A08FE00405361 /* Photo Filters */,
 				3FA217EA18BC365E0066E893 /* VCameraViewController.h */,
 				3FA217EB18BC365E0066E893 /* VCameraViewController.m */,
 				3FD7FFA718BFD64C00945E5F /* VImagePreviewViewController.h */,
@@ -1571,8 +1605,10 @@
 			isa = PBXGroup;
 			children = (
 				BE171D9F1868BE64004E5202 /* Supporting Files */,
+				039D2FD4197D93C600DFBE60 /* Test Data */,
 				0352277F192173F0003FCD10 /* VElapsedTimeFormatterTests.m */,
 				03CA03CD193F95FC002CFB37 /* VLargeNumberFormatterTests.m */,
+				039D2FD2197D938900DFBE60 /* VPhotoFilterSerializationTests.m */,
 			);
 			path = victoriousTests;
 			sourceTree = "<group>";
@@ -1592,6 +1628,8 @@
 				BE171DAF1868C211004E5202 /* Fetchers */,
 				BE171DB61868C211004E5202 /* Mappings */,
 				0388AE651949457E0098A393 /* Setters */,
+				03FDA09D197A0AEC00405361 /* CIImage+VImage.h */,
+				03FDA09E197A0AEC00405361 /* CIImage+VImage.m */,
 				03CF151E195CFBE600F6477B /* NSArray+VMap.h */,
 				03CF151F195CFBE600F6477B /* NSArray+VMap.m */,
 				03484BFC192E9D2100403FB1 /* NSLayoutConstraint+CenterConstraints.h */,
@@ -2164,6 +2202,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				BE171DA31868BE64004E5202 /* InfoPlist.strings in Resources */,
+				039D2FD6197D93C600DFBE60 /* filters.xml in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2373,6 +2412,7 @@
 				BE185DF118E3B2C2001C447F /* VContentViewController+Images.m in Sources */,
 				03086AA718F38ABE00105FFB /* UIActionSheet+VBlocks.m in Sources */,
 				0350426A194F711A008D78A3 /* NSIndexSet+Map.m in Sources */,
+				03FDA099197A092400405361 /* VPhotoFilterSerialization.m in Sources */,
 				BEF2C2A5188488C000AAE975 /* VUnreadConversation+RestKit.m in Sources */,
 				BE171E211868C211004E5202 /* VObjectManager+Sequence.m in Sources */,
 				BED4569718BD58DE00A67160 /* VAsset+Fetcher.m in Sources */,
@@ -2385,6 +2425,7 @@
 				3FF7B6DD18F4A668003831CD /* VRemixSelectViewController.m in Sources */,
 				BEF09B00197A02670086B542 /* VComment.m in Sources */,
 				03811D31193533D0005687FF /* UIAlertView+VBlocks.m in Sources */,
+				03FDA09C197A093A00405361 /* VPhotoFilter.m in Sources */,
 				0352278319219079003FCD10 /* VVideoDownloadProgressIndicatorView.m in Sources */,
 				83D897421881F19D00BD5B8B /* VCommentsContainerViewController.m in Sources */,
 				BE171E151868C211004E5202 /* VNodeAction+RestKit.m in Sources */,
@@ -2466,6 +2507,7 @@
 				3F21942E193EA49000FA3407 /* VChangePasswordViewController.m in Sources */,
 				BE651D1018AC270900069119 /* VKeyboardBarViewController.m in Sources */,
 				BEB8DB03192BE81000E0E3E6 /* VAbstractCommentCell.m in Sources */,
+				03FDA09F197A0AEC00405361 /* CIImage+VImage.m in Sources */,
 				3FD7FFAC18BFD67800945E5F /* VVideoPreviewViewController.m in Sources */,
 				BE7B6A91195C998300A0E80A /* VObjectManager+Websites.m in Sources */,
 				03D6381E191841220084FFC8 /* VObjectManager+Environment.m in Sources */,
@@ -2508,6 +2550,7 @@
 			files = (
 				03CA03CE193F95FC002CFB37 /* VLargeNumberFormatterTests.m in Sources */,
 				03522780192173F0003FCD10 /* VElapsedTimeFormatterTests.m in Sources */,
+				039D2FD3197D938900DFBE60 /* VPhotoFilterSerializationTests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
