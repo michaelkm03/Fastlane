@@ -10,6 +10,8 @@
 	<string>itms-apps://itunes.com/apps</string>
 	<key>url.privacy</key>
 	<string>/api/static/privacy</string>
+	<key>realtimeComments</key>
+	<false/>
 	<key>url.tos</key>
 	<string>/api/tos</string>
 </dict>

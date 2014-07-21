@@ -11,6 +11,7 @@
 //Settings
 extern  NSString*   const   kVCaptureVideoQuality;
 extern  NSString*   const   kVExportVideoQuality;
+extern  NSString*   const   kVRealtimeCommentsEnabled;
 
 //URLs
 extern  NSString*   const   kVTermsOfServiceURL;
@@ -25,6 +26,7 @@ extern  NSString*   const   kVChannelURLSupport;
 
 - (void)updateSettingsWithDictionary:(NSDictionary *)dictionary;
 - (NSInteger)variantForExperiment:(NSString*)experimentKey;
+- (BOOL)settingEnabledForKey:(NSString*)settingKey;
 
 - (NSURL*)urlForKey:(NSString*)key;
 

@@ -34,6 +34,7 @@
 
 #import "VFacebookActivity.h"
 #import "VDeeplinkManager.h"
+#import "VSettingManager.h"
 
 static const CGFloat kMaximumContentViewOffset              = 154.0f;
 static const CGFloat kMediaViewHeight                       = 320.0f;
@@ -667,7 +668,7 @@ NSTimeInterval kVContentPollAnimationDuration = 0.2;
 
 - (IBAction)pressedComment:(id)sender
 {
-    if (![self.sequence isVideo])
+    if (![self.sequence isVideo] || ![[VSettingManager sharedManager] settingEnabledForKey:kVRealtimeCommentsEnabled])
     {
         [self goToCommentView];
     }
@@ -787,6 +788,9 @@ NSTimeInterval kVContentPollAnimationDuration = 0.2;
 
 - (void)flipHeaderWithDuration:(CGFloat)duration completion:(void (^)(BOOL finished))completion
 {
+    if (![[VSettingManager sharedManager] settingEnabledForKey:kVRealtimeCommentsEnabled])
+        return;
+    
     [UIView animateWithDuration:duration
                      animations:
      ^{
@@ -879,7 +883,7 @@ NSTimeInterval kVContentPollAnimationDuration = 0.2;
 {
     VLog(@"A thing");
     [self didCancelKeyboardBar:keyboardBar];
-//#warning this should probably post to server
+#warning this should probably post to server
 }
 - (void)didCancelKeyboardBar:(VKeyboardBarViewController *)keyboardBar
 {

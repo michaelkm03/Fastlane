@@ -17,6 +17,8 @@
 NSString*   const   kVCaptureVideoQuality               =   @"capture";
 NSString*   const   kVExportVideoQuality                =   @"remix";
 
+NSString*   const   kVRealtimeCommentsEnabled           =   @"realtimeComments";
+
 //URLs
 NSString*   const   kVTermsOfServiceURL                 =   @"url.tos";
 NSString*   const   kVAppStoreURL                       =   @"url.appstore";
@@ -77,6 +79,11 @@ NSString*   const   kVChannelURLSupport                 =   @"email.support";
 - (NSString*)emailForKey:(NSString*)key
 {
     return nil;
+}
+
+- (BOOL)settingEnabledForKey:(NSString*)settingKey
+{
+    return [[[NSUserDefaults standardUserDefaults] objectForKey:settingKey] boolValue];
 }
 
 - (NSInteger)variantForExperiment:(NSString*)experimentKey
