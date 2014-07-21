@@ -244,4 +244,4 @@
 "reposts"               =   "reposts";
 "comments"              =   "comments";
 
-"leaveAComment"         =   "Leave a comment at ";
+"leaveACommentFormat"   =   "Leave a comment at %@";

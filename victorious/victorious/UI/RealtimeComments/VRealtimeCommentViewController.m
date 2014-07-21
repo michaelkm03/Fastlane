@@ -112,8 +112,7 @@ static const CGFloat kVRealtimeCommentTimeout = 2.0f;
     {
         if (comment.timeInMedia.floatValue <= 0.0f || comment.timeInMedia.floatValue > self.endTime)
         {
-            CGFloat rand = (((float) (arc4random() % ((unsigned)RAND_MAX + 1)) / RAND_MAX) * 2) -1;
-            CGFloat startTime = self.endTime * rand;
+            CGFloat startTime = self.endTime * drand48();
             comment.timeInMedia = @(startTime);
         }
     }

@@ -32,6 +32,8 @@
 
 #import "UIActionSheet+VBlocks.h"
 
+#import "VElapsedTimeFormatter.h"
+
 #import "VFacebookActivity.h"
 #import "VDeeplinkManager.h"
 #import "VSettingManager.h"
@@ -48,6 +50,7 @@ NSTimeInterval kVContentPollAnimationDuration = 0.2;
 @interface VContentViewController() <VContentInfoDelegate, VRealtimeCommentDelegate, VKeyboardBarDelegate>
 
 @property (nonatomic) BOOL isViewingTitle;
+@property (nonatomic) VElapsedTimeFormatter* timeFormatter;
 
 @end
 
@@ -69,6 +72,8 @@ NSTimeInterval kVContentPollAnimationDuration = 0.2;
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+ 
+    self.timeFormatter = [[VElapsedTimeFormatter alloc] init];
     
     self.mediaSuperview.translatesAutoresizingMaskIntoConstraints = YES; // these two views need to opt-out of Auto Layout.
     self.mediaView.translatesAutoresizingMaskIntoConstraints = YES;      // their frames are set in -layoutMediaSuperview.
@@ -118,8 +123,8 @@ NSTimeInterval kVContentPollAnimationDuration = 0.2;
     [self.navigationController setNavigationBarHidden:YES animated:NO];
     self.appearing = YES;
     
-#warning test flow should probably remove
-    self.realtimeCommentVC.comments = [self.sequence.comments allObjects];
+    if ([self.currentAsset isVideo] && [[VSettingManager sharedManager] settingEnabledForKey:kVRealtimeCommentsEnabled])
+        [self flipHeaderWithDuration:.25f completion:nil];
     
     if ([self isBeingPresented] || [self isMovingToParentViewController])
     {
@@ -676,8 +681,8 @@ NSTimeInterval kVContentPollAnimationDuration = 0.2;
     {
         self.keyboardBarContainer.hidden = NO;
         self.keyboardBarContainer.alpha = 0;
-//        CGFloat currentTime = CMTimeGetSeconds(self.videoPlayer.currentTime);
-        self.keyboardBarVC.promptLabel.text = NSLocalizedString(@"leaveAComment", nil);
+        self.keyboardBarVC.promptLabel.text = [NSString stringWithFormat:NSLocalizedString(@"leaveACommentFormat", nil),
+                                               [self.timeFormatter stringForCMTime:self.videoPlayer.currentTime]];
 
         if (self.isViewingTitle)
             [self flipHeaderWithDuration:.25f completion:nil];
