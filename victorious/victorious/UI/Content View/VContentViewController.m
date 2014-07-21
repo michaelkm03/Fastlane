@@ -118,8 +118,8 @@ NSTimeInterval kVContentPollAnimationDuration = 0.2;
     [self.navigationController setNavigationBarHidden:YES animated:NO];
     self.appearing = YES;
     
-#warning test flow should probably remove
-    self.realtimeCommentVC.comments = [self.sequence.comments allObjects];
+    if ([self.currentAsset isVideo] && [[VSettingManager sharedManager] settingEnabledForKey:kVRealtimeCommentsEnabled])
+        [self flipHeaderWithDuration:.25f completion:nil];
     
     if ([self isBeingPresented] || [self isMovingToParentViewController])
     {
