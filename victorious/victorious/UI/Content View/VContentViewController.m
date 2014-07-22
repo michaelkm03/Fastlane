@@ -51,6 +51,8 @@ NSTimeInterval kVContentPollAnimationDuration = 0.2;
 
 @property (nonatomic) BOOL isViewingTitle;
 @property (nonatomic) VElapsedTimeFormatter* timeFormatter;
+@property (nonatomic) BOOL keyboardOverlapsMedia;
+@property (nonatomic) BOOL isShowingKeyboard;
 
 @end
 
@@ -145,10 +147,20 @@ NSTimeInterval kVContentPollAnimationDuration = 0.2;
 {
     if (CGAffineTransformIsIdentity(self.mediaSuperview.transform))
     {
-        self.mediaSuperview.frame = CGRectMake(CGRectGetMinX(self.view.bounds),
-                                               [self contentMediaViewOffset],
-                                               CGRectGetWidth(self.view.bounds),
-                                               kMediaViewHeight);
+        if (self.keyboardOverlapsMedia)
+        {
+            self.mediaSuperview.frame = CGRectMake(CGRectGetMinX(self.view.bounds),
+                                                   CGRectGetMaxY(self.keyboardBarContainer.frame),
+                                                   CGRectGetWidth(self.view.bounds),
+                                                   kMediaViewHeight);
+        }
+        else
+        {
+            self.mediaSuperview.frame = CGRectMake(CGRectGetMinX(self.view.bounds),
+                                                   [self contentMediaViewOffset],
+                                                   CGRectGetWidth(self.view.bounds),
+                                                   kMediaViewHeight);
+        }
     }
     else
     {
@@ -229,7 +241,7 @@ NSTimeInterval kVContentPollAnimationDuration = 0.2;
 
 - (BOOL)shouldAutorotate
 {
-    return ![self isTitleExpanded];
+    return ![self isTitleExpanded] && !self.isShowingKeyboard;
 }
 
 - (NSUInteger)supportedInterfaceOrientations
@@ -888,10 +900,10 @@ NSTimeInterval kVContentPollAnimationDuration = 0.2;
 #pragma mark - VKeyboardBarDelegate Methods
 - (void)keyboardBar:(VKeyboardBarViewController *)keyboardBar didComposeWithText:(NSString *)text mediaURL:(NSURL *)mediaURL
 {
-    VLog(@"A thing");
     [self didCancelKeyboardBar:keyboardBar];
 #warning this should probably post to server
 }
+
 - (void)didCancelKeyboardBar:(VKeyboardBarViewController *)keyboardBar
 {
     [UIView animateWithDuration:.25 animations:
@@ -907,33 +919,18 @@ NSTimeInterval kVContentPollAnimationDuration = 0.2;
 - (void)keyboardWillShow:(NSNotification*)notification
 {
     CGRect keyboardEndFrame = [[notification.userInfo objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue];
-    CGRect videoFrame = [self.view convertRect:self.videoPlayer.view.frame fromView:self.mediaSuperview];
-
-    [self.view removeConstraint:self.mediaSuperviewTopConstraint];
+    CGRect videoFrame = [self.view convertRect:self.videoPlayer.view.frame fromView:self.mediaView];
+    self.videoPlayer.view.layer.borderColor = [UIColor greenColor].CGColor;
+    self.videoPlayer.view.layer.borderWidth = 3;
     
-    if (CGRectGetMaxY(videoFrame) > CGRectGetMinY(keyboardEndFrame))
-    {
-        self.mediaSuperviewTopConstraint = [NSLayoutConstraint constraintWithItem:self.mediaSuperview
-                                                                        attribute:NSLayoutAttributeTop
-                                                                        relatedBy:NSLayoutRelationEqual
-                                                                           toItem:self.keyboardBarContainer
-                                                                        attribute:NSLayoutAttributeBottom
-                                                                       multiplier:1.0f
-                                                                         constant:0];
-    }
+    if (CGRectIntersectsRect(keyboardEndFrame, videoFrame))
+        self.keyboardOverlapsMedia = YES;
     else
-    {
-        self.mediaSuperviewTopConstraint = [NSLayoutConstraint constraintWithItem:self.mediaSuperview
-                                                                        attribute:NSLayoutAttributeTop
-                                                                        relatedBy:NSLayoutRelationEqual
-                                                                           toItem:self.realtimeCommentsContainer
-                                                                        attribute:NSLayoutAttributeBottom
-                                                                       multiplier:1.0f
-                                                                         constant:0];
-    }
+        self.keyboardOverlapsMedia = NO;
     
+    self.isShowingKeyboard = YES;
     
-    [self.view addConstraint:self.mediaSuperviewTopConstraint];
+    [self.view setNeedsLayout];
     
     [UIView beginAnimations:nil context:NULL];
     [UIView setAnimationDuration:[notification.userInfo[UIKeyboardAnimationDurationUserInfoKey] doubleValue]];
@@ -947,16 +944,9 @@ NSTimeInterval kVContentPollAnimationDuration = 0.2;
 
 - (void)keyboardWillHide:(NSNotification*)notification
 {
-    
-    [self.view removeConstraint:self.mediaSuperviewTopConstraint];
-    self.mediaSuperviewTopConstraint = [NSLayoutConstraint constraintWithItem:self.mediaSuperview
-                                                                    attribute:NSLayoutAttributeTop
-                                                                    relatedBy:NSLayoutRelationEqual
-                                                                       toItem:self.realtimeCommentsContainer
-                                                                    attribute:NSLayoutAttributeBottom
-                                                                   multiplier:1.0f
-                                                                     constant:0];
-    [self.view addConstraint:self.mediaSuperviewTopConstraint];
+    self.isShowingKeyboard = NO;
+    self.keyboardOverlapsMedia = NO;
+    [self.view setNeedsLayout];
     
     [UIView beginAnimations:nil context:NULL];
     [UIView setAnimationDuration:[notification.userInfo[UIKeyboardAnimationDurationUserInfoKey] doubleValue]];
