@@ -691,6 +691,10 @@ NSTimeInterval kVContentPollAnimationDuration = 0.2;
     {
         [self goToCommentView];
     }
+    else if(![self isVideoLoaded])
+    {
+        return;
+    }
     else
     {
         self.keyboardBarContainer.hidden = NO;

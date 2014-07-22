@@ -36,18 +36,34 @@ static const NSInteger kCharacterLimit = 255;
     [super viewDidLoad];
     [self.textView addObserver:self forKeyPath:NSStringFromSelector(@selector(contentSize)) options:0 context:nil];
     
-    VContentInputAccessoryView *inputAccessoryView = [[VContentInputAccessoryView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, CGRectGetWidth(self.view.bounds), 44.0f)];
-    inputAccessoryView.textInputView = self.textView;
-    inputAccessoryView.maxCharacterLength = kCharacterLimit;
-    inputAccessoryView.tintColor = [UIColor colorWithRed:0.85f green:0.86f blue:0.87f alpha:1.0f];
-    self.textView.inputAccessoryView = inputAccessoryView;
+    [self addAccessoryBar];
+    
     self.promptLabel.textColor = [UIColor lightGrayColor];
     self.textView.returnKeyType = UIReturnKeySend;
 }
 
+
+
+- (void)addAccessoryBar
+{
+    VContentInputAccessoryView *inputAccessoryView = [[VContentInputAccessoryView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, CGRectGetWidth(self.view.bounds), 44.0f)];
+    inputAccessoryView.textInputView = self.textView;
+    inputAccessoryView.maxCharacterLength = kCharacterLimit;
+    inputAccessoryView.tintColor = [UIColor colorWithRed:0.85f green:0.86f blue:0.87f alpha:1.0f];
+
+    self.textView.inputAccessoryView = inputAccessoryView;
+}
+
 - (void)setHideAccessoryBar:(BOOL)hideAccessoryBar
 {
-    self.textView.inputAccessoryView.hidden = hideAccessoryBar;
+    if (hideAccessoryBar && self.textView.inputAccessoryView)
+    {
+        self.textView.inputAccessoryView = nil;
+    }
+    else if (!hideAccessoryBar && !self.textView.inputAccessoryView)
+    {
+        [self addAccessoryBar];
+    }
 }
 
 - (void)viewWillLayoutSubviews
