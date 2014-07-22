@@ -66,6 +66,8 @@ extern NSTimeInterval kVContentPollAnimationDuration;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint* rightImageViewHeightConstraint;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint* rightImageViewWidthConstraint;
 
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint* mediaSuperviewTopConstraint;
+
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint* shareButtonTrailingConstraint;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint* repostButtonLeadingConstraint;
 @property (weak, nonatomic) IBOutlet UIButton* remixButton;

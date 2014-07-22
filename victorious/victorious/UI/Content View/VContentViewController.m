@@ -108,7 +108,9 @@ NSTimeInterval kVContentPollAnimationDuration = 0.2;
             self.keyboardBarVC.hideAccessoryBar = YES;
         }
     }
-    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
+
     self.isViewingTitle = YES;
     
     self.keyboardBarContainer.hidden = YES;
@@ -900,6 +902,70 @@ NSTimeInterval kVContentPollAnimationDuration = 0.2;
      {
          self.keyboardBarContainer.hidden = YES;
      }];
+}
+
+- (void)keyboardWillShow:(NSNotification*)notification
+{
+    CGRect keyboardEndFrame = [[notification.userInfo objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue];
+    CGRect videoFrame = [self.view convertRect:self.videoPlayer.view.frame fromView:self.mediaSuperview];
+
+    [self.view removeConstraint:self.mediaSuperviewTopConstraint];
+    
+    if (CGRectGetMaxY(videoFrame) > CGRectGetMinY(keyboardEndFrame))
+    {
+        self.mediaSuperviewTopConstraint = [NSLayoutConstraint constraintWithItem:self.mediaSuperview
+                                                                        attribute:NSLayoutAttributeTop
+                                                                        relatedBy:NSLayoutRelationEqual
+                                                                           toItem:self.keyboardBarContainer
+                                                                        attribute:NSLayoutAttributeBottom
+                                                                       multiplier:1.0f
+                                                                         constant:0];
+    }
+    else
+    {
+        self.mediaSuperviewTopConstraint = [NSLayoutConstraint constraintWithItem:self.mediaSuperview
+                                                                        attribute:NSLayoutAttributeTop
+                                                                        relatedBy:NSLayoutRelationEqual
+                                                                           toItem:self.realtimeCommentsContainer
+                                                                        attribute:NSLayoutAttributeBottom
+                                                                       multiplier:1.0f
+                                                                         constant:0];
+    }
+    
+    
+    [self.view addConstraint:self.mediaSuperviewTopConstraint];
+    
+    [UIView beginAnimations:nil context:NULL];
+    [UIView setAnimationDuration:[notification.userInfo[UIKeyboardAnimationDurationUserInfoKey] doubleValue]];
+    [UIView setAnimationCurve:[notification.userInfo[UIKeyboardAnimationCurveUserInfoKey] integerValue]];
+    [UIView setAnimationBeginsFromCurrentState:YES];
+    
+    [self.view layoutIfNeeded];
+    
+    [UIView commitAnimations];
+}
+
+- (void)keyboardWillHide:(NSNotification*)notification
+{
+    
+    [self.view removeConstraint:self.mediaSuperviewTopConstraint];
+    self.mediaSuperviewTopConstraint = [NSLayoutConstraint constraintWithItem:self.mediaSuperview
+                                                                    attribute:NSLayoutAttributeTop
+                                                                    relatedBy:NSLayoutRelationEqual
+                                                                       toItem:self.realtimeCommentsContainer
+                                                                    attribute:NSLayoutAttributeBottom
+                                                                   multiplier:1.0f
+                                                                     constant:0];
+    [self.view addConstraint:self.mediaSuperviewTopConstraint];
+    
+    [UIView beginAnimations:nil context:NULL];
+    [UIView setAnimationDuration:[notification.userInfo[UIKeyboardAnimationDurationUserInfoKey] doubleValue]];
+    [UIView setAnimationCurve:[notification.userInfo[UIKeyboardAnimationCurveUserInfoKey] integerValue]];
+    [UIView setAnimationBeginsFromCurrentState:YES];
+    
+    [self.view layoutIfNeeded];
+    
+    [UIView commitAnimations];
 }
 #pragma mark - VRealtimeCommentDelegate methods
 

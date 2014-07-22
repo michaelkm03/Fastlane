@@ -779,6 +779,17 @@
                                     <constraint firstItem="ZyP-Vw-yAD" firstAttribute="centerY" secondItem="plb-mq-Tcq" secondAttribute="centerY" id="wVH-A2-ccI"/>
                                 </constraints>
                             </view>
+                            <containerView alpha="0.0" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="FR4-4c-csb" userLabel="RTC Container View">
+                                <rect key="frame" x="0.0" y="52" width="320" height="102"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="102" id="jLn-P6-pUV"/>
+                                </constraints>
+                                <connections>
+                                    <segue destination="nfe-aV-fE2" kind="embed" id="EXS-6R-VMb"/>
+                                </connections>
+                            </containerView>
                             <view autoresizesSubviews="NO" opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="gdx-vD-Je7" userLabel="Media Superview">
                                 <rect key="frame" x="0.0" y="154" width="320" height="320"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -880,14 +891,6 @@
                                     <constraint firstAttribute="height" constant="51" id="sAW-bE-Amq"/>
                                 </constraints>
                             </view>
-                            <containerView alpha="0.0" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="FR4-4c-csb" userLabel="RTC Container View">
-                                <rect key="frame" x="0.0" y="52" width="320" height="102"/>
-                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                <connections>
-                                    <segue destination="nfe-aV-fE2" kind="embed" id="EXS-6R-VMb"/>
-                                </connections>
-                            </containerView>
                             <containerView contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="GTs-yl-vMe" userLabel="Keyboard Container View">
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -988,22 +991,23 @@
                         <constraints>
                             <constraint firstItem="Pce-Lq-Sbm" firstAttribute="leading" secondItem="82C-f9-lhe" secondAttribute="leading" id="46D-2V-sJO"/>
                             <constraint firstItem="Xzc-fo-Pc8" firstAttribute="top" secondItem="mB2-Kx-N90" secondAttribute="bottom" id="5KP-4I-G0J"/>
-                            <constraint firstItem="81Y-P5-SQ9" firstAttribute="top" secondItem="gdx-vD-Je7" secondAttribute="top" id="6sM-y5-dVW"/>
                             <constraint firstItem="aAT-JQ-9wh" firstAttribute="top" secondItem="mB2-Kx-N90" secondAttribute="bottom" constant="51" id="7RR-z7-dHm"/>
                             <constraint firstItem="Pce-Lq-Sbm" firstAttribute="top" secondItem="xqp-3V-NIb" secondAttribute="bottom" id="8CJ-Qs-zAk"/>
                             <constraint firstItem="txR-W6-Q5A" firstAttribute="top" secondItem="Xzc-fo-Pc8" secondAttribute="bottom" id="AmN-9c-QFq"/>
                             <constraint firstItem="txR-W6-Q5A" firstAttribute="top" secondItem="81Y-P5-SQ9" secondAttribute="bottom" id="BQp-e0-jeV"/>
                             <constraint firstItem="txR-W6-Q5A" firstAttribute="top" secondItem="NhC-7g-uaI" secondAttribute="bottom" placeholder="YES" id="EMS-9J-Hfd"/>
+                            <constraint firstItem="FR4-4c-csb" firstAttribute="leading" secondItem="82C-f9-lhe" secondAttribute="leading" id="EhC-ZZ-Cm5"/>
                             <constraint firstItem="aAT-JQ-9wh" firstAttribute="leading" secondItem="82C-f9-lhe" secondAttribute="leading" id="GMG-QR-lKo"/>
                             <constraint firstItem="NhC-7g-uaI" firstAttribute="leading" secondItem="82C-f9-lhe" secondAttribute="leading" id="GhU-u6-Riq"/>
                             <constraint firstAttribute="trailing" secondItem="Pce-Lq-Sbm" secondAttribute="trailing" id="GlD-Pt-1y7"/>
                             <constraint firstAttribute="trailing" secondItem="aAT-JQ-9wh" secondAttribute="trailing" id="HLF-h0-bgS"/>
                             <constraint firstItem="xqp-3V-NIb" firstAttribute="leading" secondItem="82C-f9-lhe" secondAttribute="leading" id="N5p-dC-n0i"/>
                             <constraint firstAttribute="trailing" secondItem="81Y-P5-SQ9" secondAttribute="trailing" id="Ofc-el-3Lf"/>
+                            <constraint firstAttribute="trailing" secondItem="FR4-4c-csb" secondAttribute="trailing" id="Pfc-Mm-25y"/>
                             <constraint firstAttribute="trailing" secondItem="Xzc-fo-Pc8" secondAttribute="trailing" id="QrV-5R-9aq"/>
+                            <constraint firstItem="81Y-P5-SQ9" firstAttribute="top" secondItem="FR4-4c-csb" secondAttribute="bottom" id="QwK-fd-OL2"/>
                             <constraint firstItem="xqp-3V-NIb" firstAttribute="top" secondItem="mB2-Kx-N90" secondAttribute="bottom" id="XEh-9f-3nO"/>
                             <constraint firstItem="4Kr-fK-dGu" firstAttribute="top" secondItem="mB2-Kx-N90" secondAttribute="bottom" constant="154" id="cjf-8S-WD0"/>
-                            <constraint firstItem="gdx-vD-Je7" firstAttribute="top" secondItem="mB2-Kx-N90" secondAttribute="bottom" constant="154" placeholder="YES" id="eOF-Ue-ZDb"/>
                             <constraint firstItem="81Y-P5-SQ9" firstAttribute="leading" secondItem="82C-f9-lhe" secondAttribute="leading" id="g52-mZ-mqx"/>
                             <constraint firstItem="NhC-7g-uaI" firstAttribute="top" secondItem="mB2-Kx-N90" secondAttribute="bottom" placeholder="YES" id="h8I-x8-LCt"/>
                             <constraint firstItem="Xzc-fo-Pc8" firstAttribute="leading" secondItem="82C-f9-lhe" secondAttribute="leading" id="jPc-jb-yfD"/>
@@ -1013,6 +1017,8 @@
                             <constraint firstAttribute="centerX" secondItem="Ruh-qb-vRD" secondAttribute="centerX" id="mv9-RC-Tvp"/>
                             <constraint firstItem="gdx-vD-Je7" firstAttribute="leading" secondItem="82C-f9-lhe" secondAttribute="leading" placeholder="YES" id="njQ-Wv-G0c"/>
                             <constraint firstAttribute="trailing" secondItem="xqp-3V-NIb" secondAttribute="trailing" id="ocz-kM-J5W"/>
+                            <constraint firstItem="FR4-4c-csb" firstAttribute="top" secondItem="Ruh-qb-vRD" secondAttribute="bottom" constant="1" id="u9h-7V-7vO"/>
+                            <constraint firstItem="gdx-vD-Je7" firstAttribute="top" secondItem="FR4-4c-csb" secondAttribute="bottom" id="x2M-Xo-dNl"/>
                             <constraint firstAttribute="trailing" secondItem="gdx-vD-Je7" secondAttribute="trailing" placeholder="YES" id="xGF-cy-ikg"/>
                             <constraint firstItem="4Kr-fK-dGu" firstAttribute="leading" secondItem="82C-f9-lhe" secondAttribute="leading" id="xuL-hB-6qp"/>
                             <constraint firstAttribute="trailing" secondItem="4Kr-fK-dGu" secondAttribute="trailing" id="ylH-bg-Sdj"/>
@@ -1038,6 +1044,7 @@
                         <outlet property="leftSmallPreviewImageWidthConstraint" destination="dWm-D2-arz" id="6cw-Ze-803"/>
                         <outlet property="maskingView" destination="NhC-7g-uaI" id="ei9-KA-VA0"/>
                         <outlet property="mediaSuperview" destination="gdx-vD-Je7" id="LOA-hP-psJ"/>
+                        <outlet property="mediaSuperviewTopConstraint" destination="x2M-Xo-dNl" id="d3I-wn-FGn"/>
                         <outlet property="mediaView" destination="bEh-qP-DUl" id="GYP-nN-agT"/>
                         <outlet property="orContainerView" destination="81Y-P5-SQ9" id="Ben-7t-Jmg"/>
                         <outlet property="orImageView" destination="jl7-9k-rKO" id="Sc8-0d-S6M"/>
