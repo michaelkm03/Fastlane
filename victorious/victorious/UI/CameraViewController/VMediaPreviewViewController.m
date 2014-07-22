@@ -19,7 +19,6 @@ static       NSString * const kNibName           = @"MediaPreview";
 
 @interface VMediaPreviewViewController ()
 
-@property (nonatomic, strong)        NSURL       *mediaURL;
 @property (nonatomic, weak) IBOutlet UIImageView *deleteButton;
 @property (nonatomic, weak) IBOutlet UIImageView *deleteConfirmationButton;
 @property (nonatomic, weak) IBOutlet UIButton    *doneButton;
@@ -33,18 +32,23 @@ static       NSString * const kNibName           = @"MediaPreview";
     VMediaPreviewViewController *previewViewController = nil;
     if ([mediaURL v_hasImageExtension])
     {
-        previewViewController = [[VImagePreviewViewController alloc] initWithNibName:kNibName bundle:nil];
+        previewViewController = [[VImagePreviewViewController alloc] initWithMediaURL:mediaURL];
     }
     else if ([mediaURL v_hasVideoExtension])
     {
-        previewViewController = [[VVideoPreviewViewController alloc] initWithNibName:kNibName bundle:nil];
-    }
-    
-    if (previewViewController)
-    {
-        previewViewController.mediaURL = mediaURL;
+        previewViewController = [[VVideoPreviewViewController alloc] initWithMediaURL:mediaURL];
     }
     return previewViewController;
+}
+
+- (instancetype)initWithMediaURL:(NSURL *)mediaURL
+{
+    self = [super initWithNibName:kNibName bundle:nil];
+    if (self)
+    {
+        _mediaURL = mediaURL;
+    }
+    return self;
 }
 
 #pragma mark - View Lifecycle
@@ -103,10 +107,16 @@ static       NSString * const kNibName           = @"MediaPreview";
     return nil;
 }
 
+- (void)willComplete
+{
+    // This method intentionally left blank
+}
+
 #pragma mark - Actions
 
 - (IBAction)doneTapped:(UIButton *)sender
 {
+    [self willComplete];
     if (self.completionBlock)
     {
         self.completionBlock(YES, [self previewImage], self.mediaURL);

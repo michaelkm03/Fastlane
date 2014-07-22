@@ -19,7 +19,13 @@
         [filter setValue:filteredImage forKey:kCIInputImageKey];
         filteredImage = filter.outputImage;
     }
-    return [UIImage imageWithCIImage:filteredImage];
+    
+    CIContext *context = [CIContext contextWithOptions:@{}];
+    CGImageRef finishedImage = [context createCGImage:filteredImage
+                                             fromRect:CGRectMake(0, 0, sourceImage.size.width * sourceImage.scale, sourceImage.size.height * sourceImage.scale)];
+    UIImage *retVal = [UIImage imageWithCGImage:finishedImage];
+    CGImageRelease(finishedImage);
+    return retVal;
 }
 
 @end

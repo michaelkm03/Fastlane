@@ -6,6 +6,7 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="VMediaPreviewViewController">
             <connections>
+                <outlet property="bottomButtonSuperview" destination="WvZ-i9-om5" id="i4I-wx-y66"/>
                 <outlet property="deleteButton" destination="Ngr-rk-yqb" id="G9S-0h-HdY"/>
                 <outlet property="deleteConfirmationButton" destination="B32-yp-Osx" id="era-Dd-ycr"/>
                 <outlet property="doneButton" destination="Iav-QV-jZV" id="7wo-HD-lwo"/>
@@ -19,7 +20,7 @@
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <subviews>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="pf9-6i-vTV" userLabel="Preview Image Superview">
-                    <rect key="frame" x="0.0" y="72" width="320" height="320"/>
+                    <rect key="frame" x="0.0" y="0.0" width="320" height="320"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     <gestureRecognizers/>
@@ -119,15 +120,14 @@
             </subviews>
             <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
             <constraints>
-                <constraint firstItem="pf9-6i-vTV" firstAttribute="top" secondItem="vpx-Qx-C0m" secondAttribute="bottom" constant="8" id="1kD-Hd-9hN"/>
                 <constraint firstItem="vpx-Qx-C0m" firstAttribute="top" secondItem="U2J-br-FWr" secondAttribute="top" id="BSa-gq-qcC"/>
                 <constraint firstAttribute="bottom" secondItem="WvZ-i9-om5" secondAttribute="bottom" id="CbU-Yl-3Jk"/>
+                <constraint firstItem="pf9-6i-vTV" firstAttribute="top" secondItem="U2J-br-FWr" secondAttribute="top" id="Cbb-qV-Uls"/>
                 <constraint firstAttribute="trailing" secondItem="vpx-Qx-C0m" secondAttribute="trailing" id="Hb1-tG-kiy"/>
                 <constraint firstItem="vpx-Qx-C0m" firstAttribute="leading" secondItem="U2J-br-FWr" secondAttribute="leading" id="Jpj-Mk-OgD"/>
                 <constraint firstAttribute="centerX" secondItem="pf9-6i-vTV" secondAttribute="centerX" id="Lfl-4y-hGQ"/>
                 <constraint firstItem="WvZ-i9-om5" firstAttribute="left" secondItem="U2J-br-FWr" secondAttribute="left" id="VWH-N6-v2C"/>
                 <constraint firstItem="WvZ-i9-om5" firstAttribute="top" relation="greaterThanOrEqual" secondItem="pf9-6i-vTV" secondAttribute="bottom" id="YUS-Wt-nhs"/>
-                <constraint firstItem="pf9-6i-vTV" firstAttribute="top" relation="greaterThanOrEqual" secondItem="vpx-Qx-C0m" secondAttribute="bottom" constant="4" id="bUF-3K-0ta"/>
                 <constraint firstAttribute="right" secondItem="WvZ-i9-om5" secondAttribute="right" id="dJ2-WZ-XTE"/>
             </constraints>
         </view>

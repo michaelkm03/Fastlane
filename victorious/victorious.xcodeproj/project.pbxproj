@@ -50,6 +50,7 @@
 		03945492195510CE00AB1C4B /* VFindFriendsTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 03945491195510CE00AB1C4B /* VFindFriendsTableViewController.m */; };
 		03945495195511B800AB1C4B /* VSuggestedFriendsTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 03945494195511B800AB1C4B /* VSuggestedFriendsTableViewController.m */; };
 		0394549E1955226C00AB1C4B /* VFindContactsTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0394549D1955226C00AB1C4B /* VFindContactsTableViewController.m */; };
+		039B05D2197DC6260081C455 /* filters.xml in Resources */ = {isa = PBXBuildFile; fileRef = 039B05D1197DC6260081C455 /* filters.xml */; };
 		039D2FD3197D938900DFBE60 /* VPhotoFilterSerializationTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 039D2FD2197D938900DFBE60 /* VPhotoFilterSerializationTests.m */; };
 		039D2FD6197D93C600DFBE60 /* filters.xml in Resources */ = {isa = PBXBuildFile; fileRef = 039D2FD5197D93C600DFBE60 /* filters.xml */; };
 		03A2AD971926B9460034EB80 /* UIViewController+ForceOrientationChange.m in Sources */ = {isa = PBXBuildFile; fileRef = 03A2AD961926B9460034EB80 /* UIViewController+ForceOrientationChange.m */; };
@@ -77,6 +78,8 @@
 		03F9D29719204D7700576AEE /* Icon-29@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 03F9D29419204D7700576AEE /* Icon-29@2x.png */; };
 		03F9D29819204D7700576AEE /* Icon-40@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 03F9D29519204D7700576AEE /* Icon-40@2x.png */; };
 		03F9D29919204D7700576AEE /* Icon-60@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 03F9D29619204D7700576AEE /* Icon-60@2x.png */; };
+		03FDA097197A092400405361 /* VPhotoFilterCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 03FDA092197A092400405361 /* VPhotoFilterCollectionViewCell.m */; };
+		03FDA098197A092400405361 /* VPhotoFilterCollectionViewDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 03FDA094197A092400405361 /* VPhotoFilterCollectionViewDataSource.m */; };
 		03FDA099197A092400405361 /* VPhotoFilterSerialization.m in Sources */ = {isa = PBXBuildFile; fileRef = 03FDA096197A092400405361 /* VPhotoFilterSerialization.m */; };
 		03FDA09C197A093A00405361 /* VPhotoFilter.m in Sources */ = {isa = PBXBuildFile; fileRef = 03FDA09B197A093A00405361 /* VPhotoFilter.m */; };
 		03FDA09F197A0AEC00405361 /* CIImage+VImage.m in Sources */ = {isa = PBXBuildFile; fileRef = 03FDA09E197A0AEC00405361 /* CIImage+VImage.m */; };
@@ -417,6 +420,7 @@
 		03945494195511B800AB1C4B /* VSuggestedFriendsTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VSuggestedFriendsTableViewController.m; sourceTree = "<group>"; };
 		0394549C1955226C00AB1C4B /* VFindContactsTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VFindContactsTableViewController.h; sourceTree = "<group>"; };
 		0394549D1955226C00AB1C4B /* VFindContactsTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VFindContactsTableViewController.m; sourceTree = "<group>"; };
+		039B05D1197DC6260081C455 /* filters.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = filters.xml; sourceTree = "<group>"; };
 		039D2FD2197D938900DFBE60 /* VPhotoFilterSerializationTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VPhotoFilterSerializationTests.m; sourceTree = "<group>"; };
 		039D2FD5197D93C600DFBE60 /* filters.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = filters.xml; sourceTree = "<group>"; };
 		03A2AD951926B9460034EB80 /* UIViewController+ForceOrientationChange.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+ForceOrientationChange.h"; sourceTree = "<group>"; };
@@ -461,6 +465,10 @@
 		03F9D29419204D7700576AEE /* Icon-29@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Icon-29@2x.png"; path = "AppSpecific/Icon-29@2x.png"; sourceTree = "<group>"; };
 		03F9D29519204D7700576AEE /* Icon-40@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Icon-40@2x.png"; path = "AppSpecific/Icon-40@2x.png"; sourceTree = "<group>"; };
 		03F9D29619204D7700576AEE /* Icon-60@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Icon-60@2x.png"; path = "AppSpecific/Icon-60@2x.png"; sourceTree = "<group>"; };
+		03FDA091197A092400405361 /* VPhotoFilterCollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VPhotoFilterCollectionViewCell.h; sourceTree = "<group>"; };
+		03FDA092197A092400405361 /* VPhotoFilterCollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VPhotoFilterCollectionViewCell.m; sourceTree = "<group>"; };
+		03FDA093197A092400405361 /* VPhotoFilterCollectionViewDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VPhotoFilterCollectionViewDataSource.h; sourceTree = "<group>"; };
+		03FDA094197A092400405361 /* VPhotoFilterCollectionViewDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VPhotoFilterCollectionViewDataSource.m; sourceTree = "<group>"; };
 		03FDA095197A092400405361 /* VPhotoFilterSerialization.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VPhotoFilterSerialization.h; sourceTree = "<group>"; };
 		03FDA096197A092400405361 /* VPhotoFilterSerialization.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VPhotoFilterSerialization.m; sourceTree = "<group>"; };
 		03FDA09A197A093A00405361 /* VPhotoFilter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VPhotoFilter.h; sourceTree = "<group>"; };
@@ -1077,8 +1085,13 @@
 		03FDA090197A08FE00405361 /* Photo Filters */ = {
 			isa = PBXGroup;
 			children = (
+				039B05D1197DC6260081C455 /* filters.xml */,
 				03FDA09A197A093A00405361 /* VPhotoFilter.h */,
 				03FDA09B197A093A00405361 /* VPhotoFilter.m */,
+				03FDA091197A092400405361 /* VPhotoFilterCollectionViewCell.h */,
+				03FDA092197A092400405361 /* VPhotoFilterCollectionViewCell.m */,
+				03FDA093197A092400405361 /* VPhotoFilterCollectionViewDataSource.h */,
+				03FDA094197A092400405361 /* VPhotoFilterCollectionViewDataSource.m */,
 				03FDA095197A092400405361 /* VPhotoFilterSerialization.h */,
 				03FDA096197A092400405361 /* VPhotoFilterSerialization.m */,
 			);
@@ -2188,6 +2201,7 @@
 				83ABAFAF18709DE30069556C /* Roboto-Light.ttf in Resources */,
 				83CC444A187DDCA8000C480C /* Roboto-Black.ttf in Resources */,
 				3FA217DF18AAFCFE0066E893 /* cast_outline_black@2x.png in Resources */,
+				039B05D2197DC6260081C455 /* filters.xml in Resources */,
 				BE692B2A186E5ED800C71336 /* VStreamViewCell.xib in Resources */,
 				BEDF0FBF18DB783200750EF6 /* MuseoSans-300.otf in Resources */,
 				BE76FBE618E4DC1D009E6DD7 /* defaultTheme.plist in Resources */,
@@ -2394,6 +2408,7 @@
 				3F14C45018BD2BD0001796B9 /* VCCameraFocusView.m in Sources */,
 				BED7F66518E0A6F800545DF6 /* TWAPIManager.m in Sources */,
 				03CF151A195B699700F6477B /* VTabInfo.m in Sources */,
+				03FDA097197A092400405361 /* VPhotoFilterCollectionViewCell.m in Sources */,
 				3FBCB9C5192E9A7400EB510C /* VResetPasswordViewController.m in Sources */,
 				3F919908187600720055FE37 /* VSettingsViewController.m in Sources */,
 				BE692B53186E60B300C71336 /* VCommentsTableViewController.m in Sources */,
@@ -2493,6 +2508,7 @@
 				BE5DE3FC18DA730B0047B67E /* VVoteType+RestKit.m in Sources */,
 				BE171E431868CEA0004E5202 /* victoriOS.xcdatamodeld in Sources */,
 				03484BF2192D284100403FB1 /* VLightboxViewController.m in Sources */,
+				03FDA098197A092400405361 /* VPhotoFilterCollectionViewDataSource.m in Sources */,
 				BEE800E918FCC5C200A7CFD7 /* VStreamTableViewController+ContentCreation.m in Sources */,
 				838511C418762DF3007E0316 /* VBadgeLabel.m in Sources */,
 				3F9B666818887D910046F826 /* VFetchedResultsTableViewController.m in Sources */,

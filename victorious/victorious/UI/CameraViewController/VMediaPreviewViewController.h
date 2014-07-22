@@ -16,15 +16,27 @@ typedef void (^VMediaCaptureCompletion)(BOOL finished, UIImage *previewImage, NS
  */
 @interface VMediaPreviewViewController : UIViewController
 
-@property (nonatomic, readonly)      NSURL  *mediaURL;
+@property (nonatomic, strong)        NSURL  *mediaURL;
 @property (nonatomic, weak) IBOutlet UIView *previewImageSuperview;
+@property (nonatomic, weak) IBOutlet UIView *bottomButtonSuperview;
 
 /**
  A completion block to call when the user has finished previewing media
  */
 @property (nonatomic, copy) VMediaCaptureCompletion completionBlock;
 
+/**
+ Create a new preview view controller for the given media.
+ */
 + (VMediaPreviewViewController *)previewViewControllerForMediaAtURL:(NSURL *)mediaURL;
+
+/**
+ Designated initializer to give subclasses a good place to 
+ do their initialization with the media URL (which is 
+ readonly and thus can't change later). If you're not a
+ subclass, please use the class constructor instead.
+ */
+- (instancetype)initWithMediaURL:(NSURL *)mediaURL;
 
 /**
  This method should not be called directly; subclassses override
@@ -32,6 +44,13 @@ typedef void (^VMediaCaptureCompletion)(BOOL finished, UIImage *previewImage, NS
  VMediaCaptureCompletion block as the previewImage argument.
  */
 - (UIImage *)previewImage;
+
+/**
+ Subclasses can override this if they need to make changes to the
+ mediaURL before it gets passed on to the completion block. No
+ need to call super.
+ */
+- (void)willComplete;
 
 /**
  Subclasses should call this method when the user taps the media preview 
