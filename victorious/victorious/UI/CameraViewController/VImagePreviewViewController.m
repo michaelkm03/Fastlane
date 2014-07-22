@@ -6,95 +6,133 @@
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
+#import "UIImage+Cropping.h"
 #import "VAnalyticsRecorder.h"
-#import "VImagePreviewViewController.h"
 #import "VCameraPublishViewController.h"
 #import "VConstants.h"
+#import "VImagePreviewViewController.h"
+#import "VPhotoFilter.h"
+#import "VPhotoFilterCollectionViewCell.h"
+#import "VPhotoFilterCollectionViewDataSource.h"
 #import "VThemeManager.h"
 
-@interface VImagePreviewViewController ()
-@property (nonatomic, weak) IBOutlet    UIImageView*    previewImageView;
-@property (nonatomic, weak) IBOutlet    UIImageView*    doneButtonView;
-@property (nonatomic, weak) IBOutlet    UIButton*       trashAction;
+@interface VImagePreviewViewController () <UICollectionViewDelegate>
 
-@property (nonatomic)                   BOOL            inTrashState;
+@property (nonatomic, weak)   UIImageView                          *previewImageView;
+@property (nonatomic, weak)   UICollectionView                     *filterCollectionView;
+@property (nonatomic, strong) VPhotoFilterCollectionViewDataSource *filterDataSource;
+@property (nonatomic, strong) NSURL                                *filteredMediaURL;
+@property (nonatomic)         BOOL                                  mediaURLneedsUpdating; ///< YES if the mediaURL does not point to a current version of the image
+
 @end
 
 @implementation VImagePreviewViewController
 {
-    UIImage *_photo;
+    UIImage *_originalImage;
+    UIImage *_filteredImage;
 }
 
-+ (VImagePreviewViewController *)imagePreviewViewController
+- (instancetype)initWithMediaURL:(NSURL *)mediaURL
 {
-    return [[UIStoryboard storyboardWithName:@"Camera" bundle:nil] instantiateViewControllerWithIdentifier:NSStringFromClass(self)];
+    self = [super initWithMediaURL:mediaURL];
+    if (self)
+    {
+        _originalImage = _filteredImage = [UIImage imageWithData:[NSData dataWithContentsOfURL:self.mediaURL]]; // self.mediaURL *should* be a local file URL.
+    }
+    return self;
 }
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-	
-    [self.doneButtonView addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleDoneTapGesture:)]];
-    self.doneButtonView.userInteractionEnabled = YES;
-}
-
-- (void)viewWillAppear:(BOOL)animated
-{
-    [super viewWillAppear:animated];
+    UIImageView *previewImageView = [[UIImageView alloc] initWithImage:[self previewImage]];
+    previewImageView.translatesAutoresizingMaskIntoConstraints = NO;
+    [self.previewImageSuperview addSubview:previewImageView];
+    [self.previewImageSuperview addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[previewImageView]|"
+                                                                                       options:0
+                                                                                       metrics:nil
+                                                                                         views:NSDictionaryOfVariableBindings(previewImageView)]];
+    [self.previewImageSuperview addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[previewImageView]|"
+                                                                                       options:0
+                                                                                       metrics:nil
+                                                                                         views:NSDictionaryOfVariableBindings(previewImageView)]];
+    self.previewImageView = previewImageView;
     
-    self.previewImageView.image = self.photo;
+    UICollectionViewFlowLayout *flowLayout = [[UICollectionViewFlowLayout alloc] init];
+    flowLayout.scrollDirection = UICollectionViewScrollDirectionHorizontal;
+    flowLayout.itemSize = CGSizeMake(71.0f, 107.0f);
+    flowLayout.minimumInteritemSpacing = 0;
+    flowLayout.minimumLineSpacing = 0;
+    UICollectionView *filterCollectionView = [[UICollectionView alloc] initWithFrame:CGRectZero collectionViewLayout:flowLayout];
+    filterCollectionView.translatesAutoresizingMaskIntoConstraints = NO;
+    filterCollectionView.backgroundColor = [UIColor whiteColor];
+    [filterCollectionView registerClass:[VPhotoFilterCollectionViewCell class] forCellWithReuseIdentifier:kPhotoFilterCellIdentifier];
+    [self.view addSubview:filterCollectionView];
     
-    self.view.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVBackgroundColor];
-    self.navigationController.navigationBarHidden = YES;
-    
-    self.inTrashState = NO;
-    self.trashAction.imageView.image = [UIImage imageNamed:@"cameraButtonDelete"];
+    UIView *bottomButtonSuperview = self.bottomButtonSuperview;
+    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[filterCollectionView]|"
+                                                                      options:0
+                                                                      metrics:nil
+                                                                        views:NSDictionaryOfVariableBindings(filterCollectionView)]];
+    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[filterCollectionView(==107)][bottomButtonSuperview]"
+                                                                      options:0
+                                                                      metrics:nil
+                                                                        views:NSDictionaryOfVariableBindings(filterCollectionView, bottomButtonSuperview)]];
+    self.filterCollectionView = filterCollectionView;
+    self.filterDataSource = [[VPhotoFilterCollectionViewDataSource alloc] init];
+    self.filterDataSource.sourceImage = [self.previewImage squareImageScaledToSize:63.0f];
+    self.filterCollectionView.dataSource = self.filterDataSource;
+    self.filterCollectionView.delegate = self;
+    [self.filterCollectionView selectItemAtIndexPath:[NSIndexPath indexPathForItem:0 inSection:kVOriginalImageSectionIndex]
+                                            animated:NO
+                                      scrollPosition:UICollectionViewScrollPositionLeft];
 }
 
-- (UIImage *)photo
+- (UIImage *)previewImage
 {
-    if (!_photo)
-    {
-        _photo = [UIImage imageWithData:[NSData dataWithContentsOfURL:self.mediaURL]]; // self.mediaURL *should* be a local file URL.
-    }
-    return _photo;
+    return _filteredImage;
 }
 
-#pragma mark - Actions
-
-- (void)handleDoneTapGesture:(UIGestureRecognizer *)gesture
+- (void)willComplete
 {
-    if (self.completionBlock)
+    if (self.mediaURLneedsUpdating)
     {
-        self.completionBlock(YES, self.photo, self.mediaURL);
-    }
-}
-
-- (IBAction)cancel:(id)sender
-{
-    [[VAnalyticsRecorder sharedAnalyticsRecorder] sendEventWithCategory:kVAnalyticsEventCategoryCamera action:@"Cancel Image Capture" label:nil value:nil];
-    if (self.completionBlock)
-    {
-        self.completionBlock(NO, nil, nil);
+        NSURL *originalMediaURL = self.mediaURL;
+        NSData *filteredImageData = UIImageJPEGRepresentation(_filteredImage, VConstantJPEGCompressionQuality);
+        NSURL *tempDirectory = [NSURL fileURLWithPath:NSTemporaryDirectory() isDirectory:YES];
+        NSURL *tempFile = [[tempDirectory URLByAppendingPathComponent:[[NSUUID UUID] UUIDString]] URLByAppendingPathExtension:VConstantMediaExtensionJPG];
+        if ([filteredImageData writeToURL:tempFile atomically:NO])
+        {
+            self.mediaURL = tempFile;
+            [[NSFileManager defaultManager] removeItemAtURL:originalMediaURL error:nil];
+            self.mediaURLneedsUpdating = NO;
+        }
     }
 }
 
-- (IBAction)deleteAction:(id)sender
+#pragma mark - UICollectionViewDelegate methods
+
+- (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (!self.inTrashState)
+    [super mediaPreviewTapped:nil];
+    self.mediaURLneedsUpdating = YES;
+    if (indexPath.section == kVOriginalImageSectionIndex)
     {
-        [[VAnalyticsRecorder sharedAnalyticsRecorder] sendEventWithCategory:kVAnalyticsEventCategoryCamera action:@"Trash" label:nil value:nil];
-        self.inTrashState = YES;
-        [self.trashAction setImage:[UIImage imageNamed:@"cameraButtonDeleteConfirm"] forState:UIControlStateNormal];
+        self.previewImageView.image = _filteredImage = _originalImage;
     }
-    else
+    else if (indexPath.section == kVPhotoFiltersSectionIndex)
     {
-        [[VAnalyticsRecorder sharedAnalyticsRecorder] sendEventWithCategory:kVAnalyticsEventCategoryCamera action:@"Trash Confirm" label:nil value:nil];
-        self.inTrashState = NO;
-        [self.trashAction setImage:[UIImage imageNamed:@"cameraButtonDelete"] forState:UIControlStateNormal];
-        [self performSegueWithIdentifier:@"unwindToCameraControllerFromPhoto" sender:self];
+        dispatch_async(dispatch_get_main_queue(), ^(void)
+        {
+            VPhotoFilter *filter = [self.filterDataSource filterAtIndexPath:indexPath];
+            self.previewImageView.image = _filteredImage = [filter imageByFilteringImage:_originalImage];
+        });
     }
+}
+
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView
+{
+    [super mediaPreviewTapped:nil];
 }
 
 @end
-

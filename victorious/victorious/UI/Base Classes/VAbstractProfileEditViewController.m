@@ -100,6 +100,11 @@
 
 #pragma mark - UITextFieldDelegate
 
+-(void)textFieldDidBeginEditing:(UITextField *)textField
+{
+    [textField setTintColor:[UIColor blueColor]];
+}
+
 - (BOOL)textFieldShouldReturn:(UITextField *)textField
 {
     if ([textField isEqual:self.usernameTextField])
@@ -127,6 +132,7 @@
         
         [UIView animateWithDuration:.5 animations:^{
             self.tableView.contentOffset = point;
+            [textView setTintColor:[UIColor blueColor]];
         }];
         
     }

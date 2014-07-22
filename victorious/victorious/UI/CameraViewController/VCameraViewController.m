@@ -174,10 +174,6 @@ const   NSTimeInterval  kAnimationDuration      =   0.4;
     
     self.navigationController.navigationBarHidden = YES;
     
-    self.inRecordVideoState = NO;
-    self.inTrashState = NO;
-    self.didSelectAssetFromLibrary = NO;
-
     [self setOpenAlbumButtonImageWithLatestPhoto:[self.camera.sessionPreset isEqualToString:AVCaptureSessionPresetPhoto] animated:NO];
 }
 
@@ -185,6 +181,11 @@ const   NSTimeInterval  kAnimationDuration      =   0.4;
 {
     [super viewDidAppear:animated];
     [[VAnalyticsRecorder sharedAnalyticsRecorder] startAppView:@"Camera"];
+    
+    if (self.inRecordVideoState)
+    {
+        [self clearRecordedVideoAnimated:NO];
+    }
     
     if (self.camera.isReady)
     {
@@ -346,25 +347,7 @@ const   NSTimeInterval  kAnimationDuration      =   0.4;
     else
     {
         [[VAnalyticsRecorder sharedAnalyticsRecorder] sendEventWithCategory:kVAnalyticsEventCategoryCamera action:@"Trash Confirm" label:nil value:nil];
-        [self.camera cancel];
-        [self prepareCamera];
-        [self updateProgressForSecond:0];
-        
-        self.inTrashState = NO;
-        self.inRecordVideoState = NO;
-        self.didSelectAssetFromLibrary = NO;
-
-        [UIView animateWithDuration:kAnimationDuration
-                         animations:^(void)
-        {
-            self.nextButton.alpha = 0.0f;
-            self.openAlbumButton.alpha = 1.0f;
-            self.deleteButton.alpha = 0.0f;
-        }
-                         completion:^(BOOL finished)
-        {
-            [self.deleteButton setImage:[UIImage imageNamed:@"cameraButtonDelete"] forState:UIControlStateNormal];
-        }];
+        [self clearRecordedVideoAnimated:YES];
     }
 }
 
@@ -639,6 +622,38 @@ const   NSTimeInterval  kAnimationDuration      =   0.4;
     self.progressView.hidden = NO;
 }
 
+- (void)clearRecordedVideoAnimated:(BOOL)animated
+{
+    [self.camera cancel];
+    [self prepareCamera];
+    [self updateProgressForSecond:0];
+    
+    self.inTrashState = NO;
+    self.inRecordVideoState = NO;
+    self.didSelectAssetFromLibrary = NO;
+
+    void (^animations)() = ^(void)
+    {
+        self.nextButton.alpha = 0.0f;
+        self.openAlbumButton.alpha = 1.0f;
+        self.deleteButton.alpha = 0.0f;
+    };
+    void (^completion)(BOOL) = ^(BOOL finished)
+    {
+        [self.deleteButton setImage:[UIImage imageNamed:@"cameraButtonDelete"] forState:UIControlStateNormal];
+    };
+    
+    if (animated)
+    {
+        [UIView animateWithDuration:kAnimationDuration animations:animations completion:completion];
+    }
+    else
+    {
+        animations();
+        completion(YES);
+    }
+}
+
 #pragma mark - Navigation
 
 - (void)moveToPreviewViewControllerWithContentURL:(NSURL *)contentURL
@@ -676,30 +691,6 @@ const   NSTimeInterval  kAnimationDuration      =   0.4;
     };
 
     [self.navigationController pushViewController:previewViewController animated:YES];
-}
-
-- (IBAction)unwindToCameraController:(UIStoryboardSegue*)sender
-{
-    [self.camera cancel];
-    [self prepareCamera];
-    [self updateProgressForSecond:0];
-    
-    if (self.camera.sessionPreset == AVCaptureSessionPresetPhoto)
-    {
-        [self configureFlashButton];
-    }
-    else
-    {
-        self.flashButton.alpha = 0.0f;
-    }
-    
-    self.inTrashState = NO;
-    self.inRecordVideoState = NO;
-    self.didSelectAssetFromLibrary = NO;
-    
-    self.nextButton.alpha = 0.0f;
-    self.openAlbumButton.alpha = 1.0;
-    self.deleteButton.alpha = 0.0;
 }
 
 #pragma mark - SCAudioVideoRecorderDelegate
