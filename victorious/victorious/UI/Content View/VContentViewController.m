@@ -919,9 +919,8 @@ NSTimeInterval kVContentPollAnimationDuration = 0.2;
 - (void)keyboardWillShow:(NSNotification*)notification
 {
     CGRect keyboardEndFrame = [[notification.userInfo objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue];
+    keyboardEndFrame = [self.view convertRect:keyboardEndFrame fromView:self.view.window];
     CGRect videoFrame = [self.view convertRect:self.videoPlayer.view.frame fromView:self.mediaView];
-    self.videoPlayer.view.layer.borderColor = [UIColor greenColor].CGColor;
-    self.videoPlayer.view.layer.borderWidth = 3;
     
     if (CGRectIntersectsRect(keyboardEndFrame, videoFrame))
         self.keyboardOverlapsMedia = YES;
