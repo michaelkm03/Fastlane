@@ -115,7 +115,7 @@
 "FollowError"           =   "There was an error following this user.";
 "UnfollowError"         =   "There was an error unfollowing this user.";
 
-"Original"              =   "Original";
+"Normal"                =   "Normal";
 
 "PublishUpload"         =   "Your content is being uploaded.";
 

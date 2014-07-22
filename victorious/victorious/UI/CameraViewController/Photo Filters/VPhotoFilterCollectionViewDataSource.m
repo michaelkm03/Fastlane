@@ -93,7 +93,7 @@ const NSUInteger kVPhotoFiltersSectionIndex  = 1;
     if (indexPath.section == kVOriginalImageSectionIndex)
     {
         VPhotoFilterCollectionViewCell *cell = (VPhotoFilterCollectionViewCell *)[collectionView dequeueReusableCellWithReuseIdentifier:kPhotoFilterCellIdentifier forIndexPath:indexPath];
-        cell.label.text = NSLocalizedString(@"Original", @"");
+        cell.label.text = [NSLocalizedString(@"Normal", @"") uppercaseStringWithLocale:[NSLocale currentLocale]];
         cell.imageView.image = self.sourceImage;
         return cell;
     }
@@ -101,7 +101,7 @@ const NSUInteger kVPhotoFiltersSectionIndex  = 1;
     {
         VPhotoFilter *filter = [self filterAtIndexPath:indexPath];
         VPhotoFilterCollectionViewCell *cell = (VPhotoFilterCollectionViewCell *)[collectionView dequeueReusableCellWithReuseIdentifier:kPhotoFilterCellIdentifier forIndexPath:indexPath];
-        cell.label.text = filter.name;
+        cell.label.text = [filter.name uppercaseStringWithLocale:[NSLocale currentLocale]];
         UIImage *image = [self.filteredImages objectForKey:indexPath];
         if (!image)
         {

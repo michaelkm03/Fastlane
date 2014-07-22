@@ -61,7 +61,7 @@
                     <rect key="frame" x="0.0" y="427" width="320" height="141"/>
                     <subviews>
                         <imageView hidden="YES" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="cameraPreviewDeleteConfirmation" translatesAutoresizingMaskIntoConstraints="NO" id="B32-yp-Osx" userLabel="Delete Confirmation Button">
-                            <rect key="frame" x="20" y="41" width="60" height="60"/>
+                            <rect key="frame" x="26" y="41" width="60" height="60"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <gestureRecognizers/>
                             <constraints>
@@ -73,7 +73,7 @@
                             </connections>
                         </imageView>
                         <imageView opaque="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="cameraPreviewDelete" translatesAutoresizingMaskIntoConstraints="NO" id="Ngr-rk-yqb" userLabel="Delete Button">
-                            <rect key="frame" x="27" y="48" width="47" height="47"/>
+                            <rect key="frame" x="33" y="48" width="47" height="47"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <gestureRecognizers/>
                             <constraints>
@@ -109,11 +109,11 @@
                     <constraints>
                         <constraint firstAttribute="height" priority="750" constant="141" id="5sz-ec-pNP"/>
                         <constraint firstAttribute="centerX" secondItem="Iav-QV-jZV" secondAttribute="centerX" id="O1D-D1-DWC"/>
-                        <constraint firstItem="B32-yp-Osx" firstAttribute="centerX" secondItem="Ngr-rk-yqb" secondAttribute="centerX" constant="-0.5" id="VLM-xo-1vh"/>
+                        <constraint firstItem="B32-yp-Osx" firstAttribute="centerX" secondItem="Ngr-rk-yqb" secondAttribute="centerX" id="VLM-xo-1vh"/>
                         <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="112" id="h7L-ST-eb7"/>
                         <constraint firstAttribute="centerY" secondItem="B32-yp-Osx" secondAttribute="centerY" constant="-0.5" id="kkM-K1-DNs"/>
                         <constraint firstItem="B32-yp-Osx" firstAttribute="centerY" secondItem="Ngr-rk-yqb" secondAttribute="centerY" constant="-0.5" id="nSB-iO-rfi"/>
-                        <constraint firstItem="B32-yp-Osx" firstAttribute="left" secondItem="WvZ-i9-om5" secondAttribute="left" constant="20" id="qBw-48-OSt"/>
+                        <constraint firstItem="B32-yp-Osx" firstAttribute="left" secondItem="WvZ-i9-om5" secondAttribute="left" constant="26" id="qBw-48-OSt"/>
                         <constraint firstAttribute="centerY" secondItem="Iav-QV-jZV" secondAttribute="centerY" id="yJY-uD-EwI"/>
                     </constraints>
                 </view>

@@ -50,7 +50,7 @@
     
     self.label = [[UILabel alloc] init];
     self.label.translatesAutoresizingMaskIntoConstraints = NO;
-    self.label.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVLabel1Font];
+    self.label.font = [UIFont fontWithName:@"MuseoSans-500" size:11.0f]; // TODO: ask carly if this should be a themed font
     self.label.textColor = [UIColor colorWithRed:0.137f green:0.137f blue:0.137f alpha:1.0f];
     self.label.numberOfLines = 0;
     self.label.textAlignment = NSTextAlignmentCenter;
@@ -64,21 +64,21 @@
                                                         toItem:nil
                                                      attribute:NSLayoutAttributeNotAnAttribute
                                                     multiplier:1.0f
-                                                      constant:63.0f]];
+                                                      constant:62.0f]];
     [self addConstraint:[NSLayoutConstraint constraintWithItem:self.imageView
                                                      attribute:NSLayoutAttributeWidth
                                                      relatedBy:NSLayoutRelationEqual
                                                         toItem:nil
                                                      attribute:NSLayoutAttributeNotAnAttribute
                                                     multiplier:1.0f
-                                                      constant:63.0f]];
+                                                      constant:62.0f]];
     [self addConstraint:[NSLayoutConstraint constraintWithItem:self.imageView
                                                      attribute:NSLayoutAttributeCenterY
                                                      relatedBy:NSLayoutRelationEqual
                                                         toItem:self
                                                      attribute:NSLayoutAttributeCenterY
                                                     multiplier:1.0f
-                                                      constant:-19.0f]];
+                                                      constant:-9.0f]];
     [self addConstraint:[NSLayoutConstraint constraintWithItem:self.imageView
                                                      attribute:NSLayoutAttributeCenterX
                                                      relatedBy:NSLayoutRelationEqual
