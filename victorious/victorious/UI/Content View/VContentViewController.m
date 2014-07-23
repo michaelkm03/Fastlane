@@ -122,6 +122,9 @@ NSTimeInterval kVContentPollAnimationDuration = 0.2;
 
 - (void)viewDidAppear:(BOOL)animated
 {
+#warning remove this, its hacky demo code so the comments will be reloaded when coming back from comments view
+    self.realtimeCommentVC.comments = [self.sequence.comments allObjects];
+    
     [super viewDidAppear:animated];
     [[VAnalyticsRecorder sharedAnalyticsRecorder] startAppView:@"Content"];
     [self.navigationController setNavigationBarHidden:YES animated:NO];
