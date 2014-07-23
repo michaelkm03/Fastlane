@@ -19,6 +19,10 @@
 
 #import "VCommentsContainerViewController.h"
 
+#import "VHashTagContainerViewController.h"
+
+#import "VHashTagStreamViewController.h"
+
 #import "UIImageView+Blurring.h"
 
 #import "VActionBarViewController.h"
@@ -782,7 +786,7 @@ NSTimeInterval kVContentPollAnimationDuration = 0.2;
     {
         return [[VContentToStreamAnimator alloc] init];
     }
-    else if (operation == UINavigationControllerOperationPush)
+    else if ([toVC isKindOfClass:[VCommentsContainerViewController class]])
     {
         return [[VContentToCommentAnimator alloc] init];
     }
@@ -926,6 +930,20 @@ NSTimeInterval kVContentPollAnimationDuration = 0.2;
 - (void)seeMoreButtonTappedInContentTitleTextView:(VContentTitleTextView *)contentTitleTextView
 {
     [self expandTitleAnimated:YES];
+}
+
+- (void)hashTagButtonTappedInContentTitleTextView:(VContentTitleTextView *)contentTitleTextView withTag:(NSString *)tag
+{
+    NSLog(@"\n\n-----------\n#%@ Hash Tag Tapped!\n-----------\n\n",[tag uppercaseString]);
+    
+    VHashTagContainerViewController *tableContainer = [VHashTagContainerViewController hashTagContainerView];
+    tableContainer.sequence = self.sequence;
+    tableContainer.hashTag = tag;
+
+    
+    [self.navigationController pushViewController:tableContainer animated:YES];
+    //[self presentViewController:tableContainer animated:YES completion:nil];
+
 }
 
 @end

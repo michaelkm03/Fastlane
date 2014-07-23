@@ -8,6 +8,7 @@
 
 #import "VContentTitleTextView.h"
 #import "VThemeManager.h"
+#import "VHashTags.h"
 
 @interface VContentTitleTextView () <NSLayoutManagerDelegate>
 
@@ -18,6 +19,7 @@
 @property (nonatomic)         BOOL                seeMoreTextAppended;
 @property (nonatomic)         CGSize              sizeDuringLastTextLayout;
 @property (nonatomic)         NSRange             seeMoreRange;
+@property (nonatomic, strong) NSDictionary       *hashTags;
 
 @end
 
@@ -113,9 +115,12 @@ static const CGFloat kSeeMoreFontSizeRatio = 0.8f;
 
 -(NSDictionary *)attributeForHashTag
 {
-    UIFont *tag2font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeaderFont];
-    return @{ NSFontAttributeName: [tag2font fontWithSize:tag2font.pointSize * kSeeMoreFontSizeRatio],
-              NSForegroundColorAttributeName: [UIColor colorWithRed:0.996f green:0.081f blue:0.075f alpha:1.0f],
+    NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
+    paragraphStyle.alignment = NSTextAlignmentLeft;
+    
+    return @{ NSFontAttributeName: [[VThemeManager sharedThemeManager] themedFontForKey:kVHeaderFont],
+              NSForegroundColorAttributeName: [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor],
+              NSParagraphStyleAttributeName: paragraphStyle,
              };
 }
 
@@ -130,7 +135,17 @@ static const CGFloat kSeeMoreFontSizeRatio = 0.8f;
     NSMutableAttributedString *newAttributedText;
     if (text)
     {
-        newAttributedText = [[NSMutableAttributedString alloc] initWithString:text attributes:[self attributesForTitleText]];
+        self.hashTags = [[NSDictionary alloc] init];
+        self.hashTags = [[VHashTags sharedManager] detectHashTags:text];
+        if ([self.hashTags count] > 0)
+        {
+            newAttributedText = [[NSMutableAttributedString alloc] initWithString:text attributes:[self attributesForTitleText]];
+            newAttributedText = [[VHashTags sharedManager] formatHashTags:newAttributedText withDictionary:self.hashTags];
+        }
+        else
+        {
+            newAttributedText = [[NSMutableAttributedString alloc] initWithString:text attributes:[self attributesForTitleText]];
+        }
     }
     else
     {
@@ -143,6 +158,50 @@ static const CGFloat kSeeMoreFontSizeRatio = 0.8f;
 {
     _locationForLastLineOfText = lastLineOfTextLocation;
 }
+
+
+#pragma mark - Hash Tag Detecting / Formatting
+/*
+-(NSMutableAttributedString*)formatTag:(NSString*)hashTag
+{
+    NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc] initWithString:hashTag attributes:[self attributeForHashTag]];
+    return attributedString;
+}
+
+-(NSMutableAttributedString*)formatHashTags:(NSMutableAttributedString*)fieldText
+{
+    NSMutableAttributedString *attributedTag = [[NSMutableAttributedString alloc] initWithString:@""];
+    for (NSString *tag in [self.hashTags allKeys]) {
+        NSValue *val = [self.hashTags valueForKey:tag];
+        NSRange oldRange = [val rangeValue];
+        NSRange newRange = {oldRange.location-1,oldRange.length+1};
+        
+        NSString *tagText = [NSString stringWithFormat:@"#%@",tag];
+        
+        attributedTag = [self formatTag:tagText];
+        
+        [fieldText replaceCharactersInRange:newRange withAttributedString:attributedTag];
+    }
+    return fieldText;
+}
+
+-(BOOL)detectHashTags:(NSString*)fieldText
+{
+    BOOL haveTag = NO;
+    self.hashTags = [[NSMutableDictionary alloc] init];
+    NSError *error = nil;
+    NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:@"#(\\w+)" options:0 error:&error];
+    NSArray *tags = [regex matchesInString:fieldText options:0 range:NSMakeRange(0, fieldText.length)];
+    for (NSTextCheckingResult *tag in tags) {
+        NSRange wordRange = [tag rangeAtIndex:1];
+        NSString* word = [fieldText substringWithRange:wordRange];
+        haveTag = YES;
+        
+        [self.hashTags setObject:[NSValue valueWithRange:wordRange] forKey:word];
+    }
+    return haveTag;
+}
+*/
 
 #pragma mark - See More button positioning
 
@@ -189,6 +248,8 @@ static const CGFloat kSeeMoreFontSizeRatio = 0.8f;
 
 - (void)textTapped:(UITapGestureRecognizer *)tap
 {
+    NSString *fieldText = self.textView.text;
+    
     CGPoint tapPoint = [tap locationInView:self.textView];
     NSUInteger glyph = [self.layoutManager glyphIndexForPoint:tapPoint inTextContainer:self.textView.textContainer];
     NSUInteger character = [self.layoutManager characterIndexForGlyphAtIndex:glyph];
@@ -198,6 +259,26 @@ static const CGFloat kSeeMoreFontSizeRatio = 0.8f;
         if ([self.delegate respondsToSelector:@selector(seeMoreButtonTappedInContentTitleTextView:)])
         {
             [self.delegate seeMoreButtonTappedInContentTitleTextView:self];
+        }
+    }
+    else
+    {
+        self.hashTags = [[NSDictionary alloc] init];
+        self.hashTags = [[VHashTags sharedManager] detectHashTags:fieldText];
+        if ([self.hashTags count] > 0)
+        {
+            for (NSString *tag in [self.hashTags allKeys]) {
+                NSValue *val = [self.hashTags valueForKey:tag];
+                NSRange tagRange = [val rangeValue];
+                if (NSLocationInRange(character, tagRange))
+                {
+                    if ([self.delegate respondsToSelector:@selector(hashTagButtonTappedInContentTitleTextView:withTag:)])
+                    {
+                        [self.delegate hashTagButtonTappedInContentTitleTextView:self withTag:tag];
+                        break;
+                    }
+                }
+            }
         }
     }
 }

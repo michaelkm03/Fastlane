@@ -58,6 +58,7 @@
 - (VSequenceFilter*)sequenceFilterForUser:(VUser*)user;
 - (VSequenceFilter*)sequenceFilterForCategories:(NSArray*)categories;
 - (VSequenceFilter*)hotSequenceFilterForStream:(NSString*)streamName;
+- (VSequenceFilter*)sequenceFilterForHashTag:(NSString*)hashTag;
 - (VSequenceFilter*)followerSequenceFilterForStream:(NSString*)streamName user:(VUser*)user;
 
 - (VCommentFilter*)commentFilterForSequence:(VSequence*)sequence;
