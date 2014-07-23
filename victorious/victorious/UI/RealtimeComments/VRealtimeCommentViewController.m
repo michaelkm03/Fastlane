@@ -193,8 +193,7 @@ static const CGFloat kVRealtimeCommentTimeout = 2.0f;
         return;
     }
     
-    [self.profileImageView setImageWithURL:[NSURL URLWithString:_currentComment.user.pictureUrl]
-                          placeholderImage:[UIImage resizeableImageWithColor:[UIColor clearColor]]];
+    [self.profileImageView setImageWithURL:[NSURL URLWithString:_currentComment.user.pictureUrl] placeholderImage:[UIImage imageNamed:@"profile_full"]];
     self.timeLabel.text = [_currentComment.postedAt timeSince];
     
     self.commentLabel.text = currentComment.text;
@@ -211,7 +210,9 @@ static const CGFloat kVRealtimeCommentTimeout = 2.0f;
     if (currentComment.thumbnailUrl && currentComment.thumbnailUrl.length)
     {
         self.mediaButton.alpha = 1;
-        [self.mediaButton setImageWithURL:[NSURL URLWithString:currentComment.thumbnailUrl] placeholderImage:nil forState:UIControlStateNormal];
+        [self.mediaButton setImageWithURL:[NSURL URLWithString:currentComment.thumbnailUrl]
+                         placeholderImage:[UIImage resizeableImageWithColor:[UIColor clearColor]]
+                                 forState:UIControlStateNormal];
     }
     else
         self.mediaButton.alpha = 0;
