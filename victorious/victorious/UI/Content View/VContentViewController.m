@@ -49,7 +49,7 @@ NSTimeInterval kVContentPollAnimationDuration = 0.2;
 
 @interface VContentViewController() <VContentInfoDelegate, VRealtimeCommentDelegate, VKeyboardBarDelegate>
 
-@property (nonatomic) BOOL isViewingTitle;
+@property (nonatomic, readonly) BOOL isViewingTitle;
 @property (nonatomic) VElapsedTimeFormatter* timeFormatter;
 @property (nonatomic) BOOL keyboardOverlapsMedia;
 @property (nonatomic) BOOL isShowingKeyboard;
@@ -112,8 +112,6 @@ NSTimeInterval kVContentPollAnimationDuration = 0.2;
     }
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
-
-    self.isViewingTitle = YES;
     
     self.keyboardBarContainer.hidden = YES;
     
@@ -130,8 +128,12 @@ NSTimeInterval kVContentPollAnimationDuration = 0.2;
     [self.navigationController setNavigationBarHidden:YES animated:NO];
     self.appearing = YES;
     
-    if ([self.currentAsset isVideo] && [[VSettingManager sharedManager] settingEnabledForKey:kVRealtimeCommentsEnabled])
-        [self flipHeaderWithDuration:.25f completion:nil];
+    if ([self.currentAsset isVideo]
+        && [[VSettingManager sharedManager] settingEnabledForKey:kVRealtimeCommentsEnabled]
+        && [self.realtimeCommentVC.comments count])
+        [self showRTC];
+    else
+        [self hideRTC];
     
     if ([self isBeingPresented] || [self isMovingToParentViewController])
     {
@@ -238,6 +240,11 @@ NSTimeInterval kVContentPollAnimationDuration = 0.2;
 - (BOOL)prefersStatusBarHidden
 {
     return YES;
+}
+
+- (BOOL)isViewingTitle
+{
+    return self.contentTitleView.alpha;
 }
 
 #pragma mark - Rotation
@@ -705,8 +712,7 @@ NSTimeInterval kVContentPollAnimationDuration = 0.2;
         self.keyboardBarVC.promptLabel.text = [NSString stringWithFormat:NSLocalizedString(@"leaveACommentFormat", nil),
                                                [self.timeFormatter stringForCMTime:self.videoPlayer.currentTime]];
 
-        if (self.isViewingTitle)
-            [self flipHeaderWithDuration:.25f completion:nil];
+        [self showRTC];
    
         [UIView animateWithDuration:.25 animations:
          ^{
@@ -812,11 +818,24 @@ NSTimeInterval kVContentPollAnimationDuration = 0.2;
 
 #pragma mark - Animations
 
-- (void)flipHeaderWithDuration:(CGFloat)duration completion:(void (^)(BOOL finished))completion
+- (void)showRTC
 {
-    if (![[VSettingManager sharedManager] settingEnabledForKey:kVRealtimeCommentsEnabled])
+    if (![[VSettingManager sharedManager] settingEnabledForKey:kVRealtimeCommentsEnabled] || !self.isViewingTitle)
         return;
     
+    [self flipHeaderWithDuration:.25f completion:nil];
+}
+
+- (void)hideRTC
+{
+    if (self.isViewingTitle)
+        return;
+    
+    [self flipHeaderWithDuration:.25f completion:nil];
+}
+
+- (void)flipHeaderWithDuration:(CGFloat)duration completion:(void (^)(BOOL finished))completion
+{
     [UIView animateWithDuration:duration
                      animations:
      ^{
@@ -824,8 +843,6 @@ NSTimeInterval kVContentPollAnimationDuration = 0.2;
          self.contentTitleView.alpha = self.isViewingTitle ? 0 : 1;
      }
                      completion:completion];
-    
-    self.isViewingTitle = !self.isViewingTitle;
 }
 
 - (void)animateInWithDuration:(CGFloat)duration completion:(void (^)(BOOL finished))completion
