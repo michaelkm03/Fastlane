@@ -123,7 +123,7 @@ static const CGFloat kVRealtimeCommentTimeout = 2.0f;
     
     _comments = [comments sortedArrayUsingDescriptors:@[sortDescriptor]];
     
-    for (VComment* comment in comments)
+    for (VComment* comment in _comments)
     {
         CGFloat startTime = comment.timeInMedia.floatValue;
         
