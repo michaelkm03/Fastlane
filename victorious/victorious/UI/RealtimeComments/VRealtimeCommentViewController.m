@@ -21,6 +21,8 @@
 #import "VImageLightboxViewController.h"
 #import "VLightboxTransitioningDelegate.h"
 
+#import "UIImage+ImageCreation.h"
+
 static const CGFloat kVRealtimeCommentTimeout = 2.0f;
 
 @interface VRealtimeCommentViewController ()
@@ -191,7 +193,8 @@ static const CGFloat kVRealtimeCommentTimeout = 2.0f;
         return;
     }
     
-    [self.profileImageView setImageWithURL:[NSURL URLWithString:_currentComment.user.pictureUrl] placeholderImage:[UIImage imageNamed:@"profile_full"]];
+    [self.profileImageView setImageWithURL:[NSURL URLWithString:_currentComment.user.pictureUrl]
+                          placeholderImage:[UIImage resizeableImageWithColor:[UIColor clearColor]]];
     self.timeLabel.text = [_currentComment.postedAt timeSince];
     
     self.commentLabel.text = currentComment.text;
