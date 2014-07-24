@@ -16,6 +16,7 @@
 #import "VObjectManager+Sequence.h"
 #import "VObjectManager+Users.h"
 #import "VObjectManager+Login.h"
+#import "VSessionTimer.h"
 #import "VUserManager.h"
 #import "VDeeplinkManager.h"
 
@@ -61,6 +62,7 @@
     [self.chromecastDeviceController performScan:YES];
 
     [[VAnalyticsRecorder sharedAnalyticsRecorder] startAnalytics];
+    [[VSessionTimer sharedSessionTimer] start];
     
     NSURL*  openURL =   launchOptions[UIApplicationLaunchOptionsURLKey];
     if (openURL)
