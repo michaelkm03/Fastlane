@@ -26,11 +26,6 @@
 @import MediaPlayer;
 @import CoreLocation;
 
-@interface VAppDelegate ()  <CLLocationManagerDelegate>
-@property (nonatomic, strong) CLLocationManager*            locationManager;
-@property (nonatomic, strong) CLGeocoder*                   geoCoder;
-@end
-
 @implementation VAppDelegate
 
 + (VAppDelegate*) sharedAppDelegate
