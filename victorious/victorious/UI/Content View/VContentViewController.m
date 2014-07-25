@@ -780,7 +780,7 @@ NSTimeInterval kVContentPollAnimationDuration = 0.2;
 #pragma mark - VContentInfoDelegate
 - (void)didCloseFromInfo
 {
-    [self.navigationController popViewControllerAnimated:YES];
+//    [self.navigationController popViewControllerAnimated:YES];
     [self.navigationController popViewControllerAnimated:YES];
 }
 
@@ -804,12 +804,18 @@ NSTimeInterval kVContentPollAnimationDuration = 0.2;
                                                 fromViewController:(UIViewController*)fromVC
                                                   toViewController:(UIViewController*)toVC
 {
-    if ([toVC isKindOfClass:[VContentInfoViewController class]] && operation == UINavigationControllerOperationPush)
+    if ([toVC isKindOfClass:[VContentInfoViewController class]])
     {
+        BOOL isPush = operation == UINavigationControllerOperationPush;
         VContentToInfoAnimator* animator = [[VContentToInfoAnimator alloc] init];
-        animator.movingChildVC = self.videoPlayer;
         animator.fromChildContainerView = self.mediaView;
-        animator.toChildContainerView = ((VContentInfoViewController*)toVC).mediaContainerView;
+        animator.toChildContainerView = isPush ? ((VContentInfoViewController*)toVC).mediaContainerView : self.mediaSuperview;
+        
+        if (self.videoPlayer)
+            animator.movingChildVC = self.videoPlayer;
+        else
+            animator.movingImage = self.previewImage.image;
+        
         return animator;
     }
     if (operation == UINavigationControllerOperationPop)

@@ -45,6 +45,7 @@ typedef NS_ENUM(NSUInteger, VContentCountType) {
                   ^{
                       UIViewController*   currentViewController = [[UIApplication sharedApplication] delegate].window.rootViewController;
                       sharedInstance = (VContentInfoViewController*)[currentViewController.storyboard instantiateViewControllerWithIdentifier: kContentInfoStoryboardID];
+                      [sharedInstance view];//Initialize all the IBOutlets
                   });
     
     return sharedInstance;

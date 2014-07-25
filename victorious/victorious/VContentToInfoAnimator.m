@@ -17,7 +17,7 @@
 
 - (NSTimeInterval)transitionDuration:(id <UIViewControllerContextTransitioning>)transitionContext
 {
-    return 5.0f;
+    return 1.0f;
 }
 
 - (void)animateTransition:(id<UIViewControllerContextTransitioning>)context
@@ -25,49 +25,43 @@
     UIViewController* toVC = (VContentInfoViewController*)[context viewControllerForKey:UITransitionContextToViewControllerKey];
     UIViewController* fromVC = (VContentViewController*)[context viewControllerForKey:UITransitionContextFromViewControllerKey];
     
-    [[context containerView] insertSubview:toVC.view belowSubview:fromVC.view];
+    UIView* fromSnapshot = [fromVC.view resizableSnapshotViewFromRect:fromVC.view.bounds
+                                                   afterScreenUpdates:NO
+                                                        withCapInsets:UIEdgeInsetsZero];
+    
+    [[context containerView] addSubview:toVC.view];
+    [[context containerView] addSubview:fromSnapshot];
     
     if (self.movingChildVC)
     {
-        CGRect childFrameInSuperview = [[context containerView] convertRect:self.fromChildContainerView.frame fromView:self.fromChildContainerView.superview];
-        self.fromChildContainerView.frame = childFrameInSuperview;
-
-        [self.fromChildContainerView removeFromSuperview];
-        [[context containerView] addSubview:self.fromChildContainerView];
+        
+        self.movingChildVC.view.frame = self.toChildContainerView.bounds;
+        [self.toChildContainerView addSubview:self.movingChildVC.view];
+        [self.movingChildVC willMoveToParentViewController:toVC];
         [toVC addChildViewController:self.movingChildVC];
         [self.movingChildVC didMoveToParentViewController:toVC];
     }
+    else if (self.movingImage)
+    {
+        UIImageView* imageView = [[UIImageView alloc] initWithFrame:self.toChildContainerView.bounds];
+        imageView.image = [self.movingImage resizableImageWithCapInsets:UIEdgeInsetsZero];
+        imageView.contentMode = UIViewContentModeScaleAspectFit;
+        [self.toChildContainerView addSubview:imageView];
+    }
     
-    CGFloat duration = [self transitionDuration:context];
-    
-    [UIView animateWithDuration:duration/4
-                     animations:
-     ^{
-         self.fromChildContainerView.transform = CGAffineTransformScale(self.fromChildContainerView.transform, 1.1, 1.1);
-     }
-                     completion:^(BOOL finished)
-     {
-         fromVC.view.alpha = 0;
-         [UIView transitionFromView:fromVC.view
-                             toView:toVC.view
-                           duration:duration/2
-                            options:self.isPresenting ? UIViewAnimationOptionTransitionFlipFromLeft : UIViewAnimationOptionTransitionFlipFromRight
-                         completion:
-          ^(BOOL finished){
-              
-              [UIView animateWithDuration:duration/4
-                               animations:
-               ^{
-                   self.movingChildVC.view.frame = [[context containerView] convertRect:self.toChildContainerView.frame fromView:toVC.view];
-               }
-                               completion:
-               ^(BOOL finished) {
-                   [self.toChildContainerView addSubview:self.movingChildVC.view];
-                   self.movingChildVC.view.frame = self.toChildContainerView.bounds;
-                   [context completeTransition:![context transitionWasCancelled]];
-               }];
-          }];
-     }];
+    UIView* toSnapshot = [toVC.view resizableSnapshotViewFromRect:toVC.view.bounds
+                                                 afterScreenUpdates:NO
+                                                      withCapInsets:UIEdgeInsetsZero];
+    [[context containerView] insertSubview:toSnapshot belowSubview:fromSnapshot];
+
+    [UIView transitionFromView:fromSnapshot
+                        toView:toSnapshot
+                      duration:[self transitionDuration:context]
+                       options:self.isPresenting ? UIViewAnimationOptionTransitionFlipFromLeft : UIViewAnimationOptionTransitionFlipFromRight
+                    completion:^(BOOL finished)
+    {
+        [context completeTransition:![context transitionWasCancelled]];
+    }];
 }
 
 @end
