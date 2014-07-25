@@ -222,7 +222,7 @@ typedef NS_ENUM(NSUInteger, VContentCountType) {
 
 - (IBAction)pressedFlip:(id)sender
 {
-    [self dismissViewControllerAnimated:YES completion:nil];
+    [self.navigationController popViewControllerAnimated:YES];
 }
 
 - (IBAction)pressedComment:(id)sender

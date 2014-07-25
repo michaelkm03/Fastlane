@@ -29,6 +29,7 @@
 
 #import "VContentToStreamAnimator.h"
 #import "VContentToCommentAnimator.h"
+#import "VContentToInfoAnimator.h"
 
 #import "UIActionSheet+VBlocks.h"
 
@@ -771,18 +772,16 @@ NSTimeInterval kVContentPollAnimationDuration = 0.2;
     contentInfo.sequence = self.sequence;
     contentInfo.backgroundImage = self.backgroundImage.image;
     contentInfo.delegate = self;
-    contentInfo.modalTransitionStyle = UIModalTransitionStyleFlipHorizontal;
-    [self.navigationController presentViewController:contentInfo animated:YES completion:nil];
+//    contentInfo.modalTransitionStyle = UIModalTransitionStyleFlipHorizontal;
+//    [self.navigationController presentViewController:contentInfo animated:YES completion:nil];
+    [self.navigationController pushViewController:contentInfo animated:YES];
 }
 
 #pragma mark - VContentInfoDelegate
 - (void)didCloseFromInfo
 {
-    [self dismissViewControllerAnimated:YES
-                             completion:
-     ^{
-         [self.navigationController popViewControllerAnimated:YES];
-     }];
+    [self.navigationController popViewControllerAnimated:YES];
+    [self.navigationController popViewControllerAnimated:YES];
 }
 
 - (void)willCommentFromInfo
@@ -805,6 +804,14 @@ NSTimeInterval kVContentPollAnimationDuration = 0.2;
                                                 fromViewController:(UIViewController*)fromVC
                                                   toViewController:(UIViewController*)toVC
 {
+    if ([toVC isKindOfClass:[VContentInfoViewController class]] && operation == UINavigationControllerOperationPush)
+    {
+        VContentToInfoAnimator* animator = [[VContentToInfoAnimator alloc] init];
+        animator.movingChildVC = self.videoPlayer;
+        animator.fromChildContainerView = self.mediaView;
+        animator.toChildContainerView = ((VContentInfoViewController*)toVC).mediaContainerView;
+        return animator;
+    }
     if (operation == UINavigationControllerOperationPop)
     {
         return [[VContentToStreamAnimator alloc] init];

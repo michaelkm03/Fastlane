@@ -2270,6 +2270,11 @@
                                     <action selector="pressedReport:" destination="6RC-8Y-M8f" eventType="touchUpInside" id="gyx-Oi-tLU"/>
                                 </connections>
                             </button>
+                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="XTe-PL-TNh">
+                                <rect key="frame" x="98" y="395" width="125" height="125"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                            </view>
                         </subviews>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         <constraints>
@@ -2293,6 +2298,7 @@
                     <connections>
                         <outlet property="backgroundImageView" destination="WVO-ad-Baw" id="0gS-Sb-5cH"/>
                         <outlet property="createdByLabel" destination="u8Y-fB-Jfk" id="yVS-76-rWb"/>
+                        <outlet property="mediaContainerView" destination="XTe-PL-TNh" id="JfR-uX-QLp"/>
                         <outlet property="nameLabel" destination="nDc-I6-m2x" id="ntb-LY-7dI"/>
                         <outlet property="profileImageView" destination="dkM-vK-YNS" id="LN3-ib-pvu"/>
                         <outlet property="reportButton" destination="kRQ-dc-PaR" id="tD3-NQ-Z51"/>

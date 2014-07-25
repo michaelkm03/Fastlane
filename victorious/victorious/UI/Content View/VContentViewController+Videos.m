@@ -24,6 +24,7 @@ static const char kShouldPauseKey;
 static const char kVideoPreviewViewKey;
 static const char kVideoCompletionBlockKey;
 static const char kVideoUnloadBlockKey;
+static const char kVideoPlayerKey;
 
 @interface VContentViewController (VideosPrivate)
 
@@ -374,6 +375,16 @@ static const char kVideoUnloadBlockKey;
 - (UIView *)videoPreviewView
 {
     return objc_getAssociatedObject(self, &kVideoPreviewViewKey);
+}
+
+- (void)setVideoPlayer:(VCVideoPlayerViewController *)videoPlayer
+{
+    objc_setAssociatedObject(self, &kVideoPlayerKey, videoPlayer, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+}
+
+- (VCVideoPlayerViewController *)videoPlayer
+{
+    return objc_getAssociatedObject(self, &kVideoPlayerKey);
 }
 
 - (void)setOnVideoCompletionBlock:(void (^)(void))completion

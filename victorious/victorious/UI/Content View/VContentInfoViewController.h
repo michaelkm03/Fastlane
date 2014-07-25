@@ -21,6 +21,7 @@
 
 @property (nonatomic, strong) VSequence* sequence;
 @property (nonatomic, strong) UIImage* backgroundImage;
+@property (nonatomic, weak) IBOutlet UIView* mediaContainerView;
 @property (nonatomic, weak) id<VContentInfoDelegate> delegate;
 
 + (VContentInfoViewController *)sharedInstance;

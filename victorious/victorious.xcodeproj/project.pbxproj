@@ -218,6 +218,7 @@
 		BE185DEE18E3B255001C447F /* VContentViewController+Videos.m in Sources */ = {isa = PBXBuildFile; fileRef = BE185DED18E3B255001C447F /* VContentViewController+Videos.m */; };
 		BE185DF118E3B2C2001C447F /* VContentViewController+Images.m in Sources */ = {isa = PBXBuildFile; fileRef = BE185DF018E3B2C2001C447F /* VContentViewController+Images.m */; };
 		BE185DF518E3BB54001C447F /* VActionBarViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BE185DF418E3BB54001C447F /* VActionBarViewController.m */; };
+		BE1A9F16198087700070BB7D /* VContentToInfoAnimator.m in Sources */ = {isa = PBXBuildFile; fileRef = BE1A9F15198087700070BB7D /* VContentToInfoAnimator.m */; };
 		BE24782C193E735A0074191C /* VConversation.m in Sources */ = {isa = PBXBuildFile; fileRef = BE24782B193E735A0074191C /* VConversation.m */; };
 		BE24782F193E9E8E0074191C /* VAbstractFilter+RestKit.m in Sources */ = {isa = PBXBuildFile; fileRef = BE24782E193E9E8E0074191C /* VAbstractFilter+RestKit.m */; };
 		BE2D1E5519006E7500C6FF99 /* VContentToCommentAnimator.m in Sources */ = {isa = PBXBuildFile; fileRef = BE2D1E5419006E7500C6FF99 /* VContentToCommentAnimator.m */; };
@@ -711,6 +712,8 @@
 		BE185DF018E3B2C2001C447F /* VContentViewController+Images.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "VContentViewController+Images.m"; path = "UI/Content View/VContentViewController+Images.m"; sourceTree = "<group>"; };
 		BE185DF318E3BB54001C447F /* VActionBarViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VActionBarViewController.h; path = "UI/Content View/VActionBarViewController.h"; sourceTree = "<group>"; };
 		BE185DF418E3BB54001C447F /* VActionBarViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VActionBarViewController.m; path = "UI/Content View/VActionBarViewController.m"; sourceTree = "<group>"; };
+		BE1A9F14198087700070BB7D /* VContentToInfoAnimator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VContentToInfoAnimator.h; sourceTree = "<group>"; };
+		BE1A9F15198087700070BB7D /* VContentToInfoAnimator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VContentToInfoAnimator.m; sourceTree = "<group>"; };
 		BE24782A193E735A0074191C /* VConversation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VConversation.h; sourceTree = "<group>"; };
 		BE24782B193E735A0074191C /* VConversation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VConversation.m; sourceTree = "<group>"; };
 		BE24782D193E9E8E0074191C /* VAbstractFilter+RestKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "VAbstractFilter+RestKit.h"; sourceTree = "<group>"; };
@@ -1849,6 +1852,8 @@
 				BE2D1E5419006E7500C6FF99 /* VContentToCommentAnimator.m */,
 				BEB52A8918C80B8700AC5FE4 /* VContentToStreamAnimator.h */,
 				BEB52A8A18C80B8700AC5FE4 /* VContentToStreamAnimator.m */,
+				BE1A9F14198087700070BB7D /* VContentToInfoAnimator.h */,
+				BE1A9F15198087700070BB7D /* VContentToInfoAnimator.m */,
 			);
 			name = Animations;
 			sourceTree = "<group>";
@@ -2476,6 +2481,7 @@
 				03945492195510CE00AB1C4B /* VFindFriendsTableViewController.m in Sources */,
 				BEF2C2A818848B3B00AAE975 /* VUnreadConversation.m in Sources */,
 				03484BF1192D284100403FB1 /* VLightboxDisplayAnimator.m in Sources */,
+				BE1A9F16198087700070BB7D /* VContentToInfoAnimator.m in Sources */,
 				BEF2C29618845EF500AAE975 /* VPollResult+RestKit.m in Sources */,
 				5FCC1E4A1899C94D00EB7699 /* VWebContentViewController.m in Sources */,
 				3FCA803B194A8060001CF8BD /* VInviteFriendTableViewCell.m in Sources */,
