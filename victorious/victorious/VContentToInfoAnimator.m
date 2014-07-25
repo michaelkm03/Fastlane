@@ -44,20 +44,15 @@
     else if (self.movingImage)
     {
         UIImageView* imageView = [[UIImageView alloc] initWithFrame:self.toChildContainerView.bounds];
-        imageView.image = [self.movingImage resizableImageWithCapInsets:UIEdgeInsetsZero];
         imageView.contentMode = UIViewContentModeScaleAspectFit;
         [self.toChildContainerView addSubview:imageView];
+        [imageView setImage:[self.movingImage resizableImageWithCapInsets:UIEdgeInsetsZero]];
     }
-    
-    UIView* toSnapshot = [toVC.view resizableSnapshotViewFromRect:toVC.view.bounds
-                                                 afterScreenUpdates:NO
-                                                      withCapInsets:UIEdgeInsetsZero];
-    [[context containerView] insertSubview:toSnapshot belowSubview:fromSnapshot];
 
     [UIView transitionFromView:fromSnapshot
-                        toView:toSnapshot
+                        toView:toVC.view
                       duration:[self transitionDuration:context]
-                       options:self.isPresenting ? UIViewAnimationOptionTransitionFlipFromLeft : UIViewAnimationOptionTransitionFlipFromRight
+                       options:!self.isPresenting ? UIViewAnimationOptionTransitionFlipFromLeft : UIViewAnimationOptionTransitionFlipFromRight
                     completion:^(BOOL finished)
     {
         [context completeTransition:![context transitionWasCancelled]];

@@ -804,12 +804,12 @@ NSTimeInterval kVContentPollAnimationDuration = 0.2;
                                                 fromViewController:(UIViewController*)fromVC
                                                   toViewController:(UIViewController*)toVC
 {
-    if ([toVC isKindOfClass:[VContentInfoViewController class]])
+    if ([toVC isKindOfClass:[VContentInfoViewController class]] || [fromVC isKindOfClass:[VContentInfoViewController class]])
     {
-        BOOL isPush = operation == UINavigationControllerOperationPush;
         VContentToInfoAnimator* animator = [[VContentToInfoAnimator alloc] init];
-        animator.fromChildContainerView = self.mediaView;
-        animator.toChildContainerView = isPush ? ((VContentInfoViewController*)toVC).mediaContainerView : self.mediaSuperview;
+        animator.isPresenting = operation == UINavigationControllerOperationPush;
+        animator.fromChildContainerView =  self.mediaView;
+        animator.toChildContainerView = animator.isPresenting ? ((VContentInfoViewController*)toVC).mediaContainerView : self.mediaSuperview;
         
         if (self.videoPlayer)
             animator.movingChildVC = self.videoPlayer;
@@ -818,11 +818,11 @@ NSTimeInterval kVContentPollAnimationDuration = 0.2;
         
         return animator;
     }
-    if (operation == UINavigationControllerOperationPop)
+    if (operation == UINavigationControllerOperationPop && [fromVC isKindOfClass:[self class]])
     {
         return [[VContentToStreamAnimator alloc] init];
     }
-    else if (operation == UINavigationControllerOperationPush)
+    else if (operation == UINavigationControllerOperationPush && [toVC isKindOfClass:[VCommentsContainerViewController class]])
     {
         return [[VContentToCommentAnimator alloc] init];
     }
