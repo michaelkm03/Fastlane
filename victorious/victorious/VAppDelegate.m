@@ -13,6 +13,7 @@
 
 #import "VAnalyticsRecorder.h"
 #import "VFacebookManager.h"
+#import "VObjectManager+Analytics.h"
 #import "VObjectManager+Sequence.h"
 #import "VObjectManager+Users.h"
 #import "VObjectManager+Login.h"
@@ -26,6 +27,8 @@
 
 @import MediaPlayer;
 @import CoreLocation;
+
+static NSString * const kAppInstalledDefaultsKey = @"com.victorious.VAppDelegate.AppInstalled";
 
 @implementation VAppDelegate
 
@@ -63,12 +66,32 @@
 
     [[VAnalyticsRecorder sharedAnalyticsRecorder] startAnalytics];
     [[VSessionTimer sharedSessionTimer] start];
+    [self reportFirstInstall];
     
     NSURL*  openURL =   launchOptions[UIApplicationLaunchOptionsURLKey];
     if (openURL)
         [[VDeeplinkManager sharedManager] handleOpenURL:openURL];
     
     return YES;
+}
+
+- (void)reportFirstInstall
+{
+    NSNumber *firstInstall = [[NSUserDefaults standardUserDefaults] valueForKey:kAppInstalledDefaultsKey];
+    if (![firstInstall boolValue])
+    {
+        NSDictionary *installEvent = [[VObjectManager sharedManager] dictionaryForInstallEventWithDate:[NSDate date]];
+        [[VObjectManager sharedManager] addEvents:@[installEvent]
+                                     successBlock:^(NSOperation *operation, id result, NSArray *resultObjects)
+        {
+            [[NSUserDefaults standardUserDefaults] setObject:@(YES) forKey:kAppInstalledDefaultsKey];
+        }
+                                        failBlock:^(NSOperation *operation, NSError *error)
+        {
+            NSLog(@"Error reporting install event: %@", [error localizedDescription]);
+        }];
+        [[NSUserDefaults standardUserDefaults] setValue:@(YES) forKey:kAppInstalledDefaultsKey];
+    }
 }
 
 - (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation
