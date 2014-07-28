@@ -32,23 +32,14 @@
     [[context containerView] addSubview:toVC.view];
     [[context containerView] addSubview:fromSnapshot];
     
-    if (self.movingChildVC)
-    {
-        
-        self.movingChildVC.view.frame = self.toChildContainerView.bounds;
-        [self.toChildContainerView addSubview:self.movingChildVC.view];
-        [self.movingChildVC willMoveToParentViewController:toVC];
-        [toVC addChildViewController:self.movingChildVC];
-        [self.movingChildVC didMoveToParentViewController:toVC];
-    }
-    else if (self.movingImage)
+    if (self.movingImage)
     {
         UIImageView* imageView = [[UIImageView alloc] initWithFrame:self.toChildContainerView.bounds];
         imageView.contentMode = UIViewContentModeScaleAspectFit;
         [self.toChildContainerView addSubview:imageView];
         [imageView setImage:[self.movingImage resizableImageWithCapInsets:UIEdgeInsetsZero]];
     }
-
+    
     [UIView transitionFromView:fromSnapshot
                         toView:toVC.view
                       duration:[self transitionDuration:context]

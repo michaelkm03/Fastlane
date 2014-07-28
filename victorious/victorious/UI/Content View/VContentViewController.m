@@ -768,7 +768,7 @@ NSTimeInterval kVContentPollAnimationDuration = 0.2;
 
 - (IBAction)pressedMore:(id)sender
 {
-    VContentInfoViewController* contentInfo = [VContentInfoViewController sharedInstance];
+    VContentInfoViewController* contentInfo = [[VContentInfoViewController alloc] init];
     contentInfo.sequence = self.sequence;
     contentInfo.backgroundImage = self.backgroundImage.image;
     contentInfo.delegate = self;
@@ -811,9 +811,7 @@ NSTimeInterval kVContentPollAnimationDuration = 0.2;
         animator.fromChildContainerView =  self.mediaView;
         animator.toChildContainerView = animator.isPresenting ? ((VContentInfoViewController*)toVC).mediaContainerView : self.mediaSuperview;
         
-        if (self.videoPlayer)
-            animator.movingChildVC = self.videoPlayer;
-        else
+        if (animator.isPresenting)
             animator.movingImage = self.previewImage.image;
         
         return animator;

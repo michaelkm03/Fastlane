@@ -37,18 +37,13 @@ typedef NS_ENUM(NSUInteger, VContentCountType) {
 
 @implementation VContentInfoViewController
 
-+ (VContentInfoViewController *)sharedInstance
+- (id)init
 {
-    static  VContentInfoViewController*   sharedInstance;
-    static  dispatch_once_t         onceToken;
-    dispatch_once(&onceToken,
-                  ^{
-                      UIViewController*   currentViewController = [[UIApplication sharedApplication] delegate].window.rootViewController;
-                      sharedInstance = (VContentInfoViewController*)[currentViewController.storyboard instantiateViewControllerWithIdentifier: kContentInfoStoryboardID];
-                      [sharedInstance view];//Initialize all the IBOutlets
-                  });
+    UIViewController*   currentViewController = [[UIApplication sharedApplication] delegate].window.rootViewController;
+    self = (VContentInfoViewController*)[currentViewController.storyboard instantiateViewControllerWithIdentifier: kContentInfoStoryboardID];
+    [self view];//Initialize all the IBOutlets
     
-    return sharedInstance;
+    return self;
 }
 
 - (BOOL)prefersStatusBarHidden

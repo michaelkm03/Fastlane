@@ -26,6 +26,4 @@
 
 @property (strong, nonatomic) UIViewController* mediaVC;///<View controller displaying the media for the sequence. Note: can be nil if the media is only a view on content screen (e.g. any image view)
 
-+ (VContentInfoViewController *)sharedInstance;
-
 @end
