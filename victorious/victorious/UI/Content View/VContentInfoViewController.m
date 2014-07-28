@@ -56,6 +56,15 @@ typedef NS_ENUM(NSUInteger, VContentCountType) {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     
+    [UIView animateWithDuration:0.0f animations:^
+     {
+         [self.view updateConstraints];
+     }
+                     completion:^(BOOL finished)
+    {
+        self.mediaContainerView.hidden = CGRectIntersectsRect(self.mediaContainerView.frame, self.tableView.frame);
+    }];
+    
     UIColor* secondaryLinkColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVSecondaryLinkColor];
     
     self.nameLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeading2Font];
@@ -74,6 +83,11 @@ typedef NS_ENUM(NSUInteger, VContentCountType) {
     self.profileImageView.layer.cornerRadius = CGRectGetHeight(self.profileImageView.bounds)/2;
     self.profileImageView.layer.borderWidth = 2.0;
     self.profileImageView.layer.borderColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVAccentColor].CGColor;
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
 }
 
 - (void)setBackgroundImage:(UIImage *)backgroundImage

@@ -29,9 +29,6 @@
                                                    afterScreenUpdates:NO
                                                         withCapInsets:UIEdgeInsetsZero];
     
-    [[context containerView] addSubview:toVC.view];
-    [[context containerView] addSubview:fromSnapshot];
-    
     if (self.movingImage)
     {
         UIImageView* imageView = [[UIImageView alloc] initWithFrame:self.toChildContainerView.bounds];
@@ -39,15 +36,24 @@
         [self.toChildContainerView addSubview:imageView];
         [imageView setImage:[self.movingImage resizableImageWithCapInsets:UIEdgeInsetsZero]];
     }
+
+    [[context containerView] addSubview:toVC.view];
+    [toVC.view layoutSubviews];
     
-    [UIView transitionFromView:fromSnapshot
-                        toView:toVC.view
-                      duration:[self transitionDuration:context]
-                       options:!self.isPresenting ? UIViewAnimationOptionTransitionFlipFromLeft : UIViewAnimationOptionTransitionFlipFromRight
-                    completion:^(BOOL finished)
-    {
-        [context completeTransition:![context transitionWasCancelled]];
-    }];
+    [[context containerView] addSubview:fromSnapshot];
+    
+    //TODO: unhacky this
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(.1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        
+        [UIView transitionFromView:fromSnapshot
+                            toView:toVC.view
+                          duration:[self transitionDuration:context]
+                           options:!self.isPresenting ? UIViewAnimationOptionTransitionFlipFromLeft : UIViewAnimationOptionTransitionFlipFromRight
+                        completion:^(BOOL finished)
+         {
+             [context completeTransition:![context transitionWasCancelled]];
+         }];
+    });
 }
 
 @end
