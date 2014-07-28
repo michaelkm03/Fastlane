@@ -10,8 +10,4 @@
 
 @interface VImagePreviewViewController : VMediaPreviewViewController
 
-@property (nonatomic, readonly) UIImage *photo;
-
-+ (VImagePreviewViewController *)imagePreviewViewController;
-
 @end

@@ -21,6 +21,8 @@
 #import "VImageLightboxViewController.h"
 #import "VLightboxTransitioningDelegate.h"
 
+#import "UIImage+ImageCreation.h"
+
 static const CGFloat kVRealtimeCommentTimeout = 2.0f;
 
 @interface VRealtimeCommentViewController ()
@@ -121,7 +123,7 @@ static const CGFloat kVRealtimeCommentTimeout = 2.0f;
     
     _comments = [comments sortedArrayUsingDescriptors:@[sortDescriptor]];
     
-    for (VComment* comment in comments)
+    for (VComment* comment in _comments)
     {
         CGFloat startTime = comment.timeInMedia.floatValue;
         
@@ -208,7 +210,9 @@ static const CGFloat kVRealtimeCommentTimeout = 2.0f;
     if (currentComment.thumbnailUrl && currentComment.thumbnailUrl.length)
     {
         self.mediaButton.alpha = 1;
-        [self.mediaButton setImageWithURL:[NSURL URLWithString:currentComment.thumbnailUrl] placeholderImage:nil forState:UIControlStateNormal];
+        [self.mediaButton setImageWithURL:[NSURL URLWithString:currentComment.thumbnailUrl]
+                         placeholderImage:[UIImage resizeableImageWithColor:[UIColor clearColor]]
+                                 forState:UIControlStateNormal];
     }
     else
         self.mediaButton.alpha = 0;

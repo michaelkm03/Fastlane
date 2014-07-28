@@ -10,7 +10,7 @@
 
 @implementation UIImage (Cropping)
 
-- (UIImage *)squareImageScaledToSize:(NSUInteger)newSize
+- (UIImage *)squareImageScaledToSize:(CGFloat)newSize
 {
     double ratio;
     double delta;

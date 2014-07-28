@@ -53,8 +53,10 @@ NSTimeInterval kVContentPollAnimationDuration = 0.2;
 
 @interface VContentViewController() <VContentInfoDelegate, VRealtimeCommentDelegate, VKeyboardBarDelegate>
 
-@property (nonatomic) BOOL isViewingTitle;
+@property (nonatomic, readonly) BOOL isViewingTitle;
 @property (nonatomic) VElapsedTimeFormatter* timeFormatter;
+@property (nonatomic) BOOL keyboardOverlapsMedia;
+@property (nonatomic) BOOL isShowingKeyboard;
 
 @end
 
@@ -109,8 +111,8 @@ NSTimeInterval kVContentPollAnimationDuration = 0.2;
             self.keyboardBarVC.hideAccessoryBar = YES;
         }
     }
-    
-    self.isViewingTitle = YES;
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
     
     self.keyboardBarContainer.hidden = YES;
     
@@ -119,13 +121,20 @@ NSTimeInterval kVContentPollAnimationDuration = 0.2;
 
 - (void)viewDidAppear:(BOOL)animated
 {
+#warning remove this, its hacky demo code so the comments will be reloaded when coming back from comments view
+    self.realtimeCommentVC.comments = [self.sequence.comments allObjects];
+    
     [super viewDidAppear:animated];
     [[VAnalyticsRecorder sharedAnalyticsRecorder] startAppView:@"Content"];
     [self.navigationController setNavigationBarHidden:YES animated:NO];
     self.appearing = YES;
     
-    if ([self.currentAsset isVideo] && [[VSettingManager sharedManager] settingEnabledForKey:kVRealtimeCommentsEnabled])
-        [self flipHeaderWithDuration:.25f completion:nil];
+    if ([self.currentAsset isVideo]
+        && [[VSettingManager sharedManager] settingEnabledForKey:kVRealtimeCommentsEnabled]
+        && [self.realtimeCommentVC.comments count])
+        [self showRTC];
+    else
+        [self hideRTC];
     
     if ([self isBeingPresented] || [self isMovingToParentViewController])
     {
@@ -144,10 +153,20 @@ NSTimeInterval kVContentPollAnimationDuration = 0.2;
 {
     if (CGAffineTransformIsIdentity(self.mediaSuperview.transform))
     {
-        self.mediaSuperview.frame = CGRectMake(CGRectGetMinX(self.view.bounds),
-                                               [self contentMediaViewOffset],
-                                               CGRectGetWidth(self.view.bounds),
-                                               kMediaViewHeight);
+        if (self.keyboardOverlapsMedia)
+        {
+            self.mediaSuperview.frame = CGRectMake(CGRectGetMinX(self.view.bounds),
+                                                   CGRectGetMaxY(self.keyboardBarContainer.frame),
+                                                   CGRectGetWidth(self.view.bounds),
+                                                   kMediaViewHeight);
+        }
+        else
+        {
+            self.mediaSuperview.frame = CGRectMake(CGRectGetMinX(self.view.bounds),
+                                                   [self contentMediaViewOffset],
+                                                   CGRectGetWidth(self.view.bounds),
+                                                   kMediaViewHeight);
+        }
     }
     else
     {
@@ -224,11 +243,16 @@ NSTimeInterval kVContentPollAnimationDuration = 0.2;
     return YES;
 }
 
+- (BOOL)isViewingTitle
+{
+    return self.contentTitleView.alpha;
+}
+
 #pragma mark - Rotation
 
 - (BOOL)shouldAutorotate
 {
-    return ![self isTitleExpanded];
+    return ![self isTitleExpanded] && !self.isShowingKeyboard;
 }
 
 - (NSUInteger)supportedInterfaceOrientations
@@ -678,6 +702,10 @@ NSTimeInterval kVContentPollAnimationDuration = 0.2;
     {
         [self goToCommentView];
     }
+    else if(![self isVideoLoaded])
+    {
+        return;
+    }
     else
     {
         self.keyboardBarContainer.hidden = NO;
@@ -685,8 +713,7 @@ NSTimeInterval kVContentPollAnimationDuration = 0.2;
         self.keyboardBarVC.promptLabel.text = [NSString stringWithFormat:NSLocalizedString(@"leaveACommentFormat", nil),
                                                [self.timeFormatter stringForCMTime:self.videoPlayer.currentTime]];
 
-        if (self.isViewingTitle)
-            [self flipHeaderWithDuration:.25f completion:nil];
+        [self showRTC];
    
         [UIView animateWithDuration:.25 animations:
          ^{
@@ -792,11 +819,24 @@ NSTimeInterval kVContentPollAnimationDuration = 0.2;
 
 #pragma mark - Animations
 
-- (void)flipHeaderWithDuration:(CGFloat)duration completion:(void (^)(BOOL finished))completion
+- (void)showRTC
 {
-    if (![[VSettingManager sharedManager] settingEnabledForKey:kVRealtimeCommentsEnabled])
+    if (![[VSettingManager sharedManager] settingEnabledForKey:kVRealtimeCommentsEnabled] || !self.isViewingTitle)
         return;
     
+    [self flipHeaderWithDuration:.25f completion:nil];
+}
+
+- (void)hideRTC
+{
+    if (self.isViewingTitle)
+        return;
+    
+    [self flipHeaderWithDuration:.25f completion:nil];
+}
+
+- (void)flipHeaderWithDuration:(CGFloat)duration completion:(void (^)(BOOL finished))completion
+{
     [UIView animateWithDuration:duration
                      animations:
      ^{
@@ -804,8 +844,6 @@ NSTimeInterval kVContentPollAnimationDuration = 0.2;
          self.contentTitleView.alpha = self.isViewingTitle ? 0 : 1;
      }
                      completion:completion];
-    
-    self.isViewingTitle = !self.isViewingTitle;
 }
 
 - (void)animateInWithDuration:(CGFloat)duration completion:(void (^)(BOOL finished))completion
@@ -887,10 +925,10 @@ NSTimeInterval kVContentPollAnimationDuration = 0.2;
 #pragma mark - VKeyboardBarDelegate Methods
 - (void)keyboardBar:(VKeyboardBarViewController *)keyboardBar didComposeWithText:(NSString *)text mediaURL:(NSURL *)mediaURL
 {
-    VLog(@"A thing");
     [self didCancelKeyboardBar:keyboardBar];
 #warning this should probably post to server
 }
+
 - (void)didCancelKeyboardBar:(VKeyboardBarViewController *)keyboardBar
 {
     [UIView animateWithDuration:.25 animations:
@@ -901,6 +939,47 @@ NSTimeInterval kVContentPollAnimationDuration = 0.2;
      {
          self.keyboardBarContainer.hidden = YES;
      }];
+}
+
+- (void)keyboardWillShow:(NSNotification*)notification
+{
+    CGRect keyboardEndFrame = [[notification.userInfo objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue];
+    keyboardEndFrame = [self.view convertRect:keyboardEndFrame fromView:self.view.window];
+    CGRect videoFrame = [self.view convertRect:self.videoPlayer.view.frame fromView:self.mediaView];
+    
+    if (CGRectIntersectsRect(keyboardEndFrame, videoFrame))
+        self.keyboardOverlapsMedia = YES;
+    else
+        self.keyboardOverlapsMedia = NO;
+    
+    self.isShowingKeyboard = YES;
+    
+    [self.view setNeedsLayout];
+    
+    [UIView beginAnimations:nil context:NULL];
+    [UIView setAnimationDuration:[notification.userInfo[UIKeyboardAnimationDurationUserInfoKey] doubleValue]];
+    [UIView setAnimationCurve:[notification.userInfo[UIKeyboardAnimationCurveUserInfoKey] integerValue]];
+    [UIView setAnimationBeginsFromCurrentState:YES];
+    
+    [self.view layoutIfNeeded];
+    
+    [UIView commitAnimations];
+}
+
+- (void)keyboardWillHide:(NSNotification*)notification
+{
+    self.isShowingKeyboard = NO;
+    self.keyboardOverlapsMedia = NO;
+    [self.view setNeedsLayout];
+    
+    [UIView beginAnimations:nil context:NULL];
+    [UIView setAnimationDuration:[notification.userInfo[UIKeyboardAnimationDurationUserInfoKey] doubleValue]];
+    [UIView setAnimationCurve:[notification.userInfo[UIKeyboardAnimationCurveUserInfoKey] integerValue]];
+    [UIView setAnimationBeginsFromCurrentState:YES];
+    
+    [self.view layoutIfNeeded];
+    
+    [UIView commitAnimations];
 }
 #pragma mark - VRealtimeCommentDelegate methods
 

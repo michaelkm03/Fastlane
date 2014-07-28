@@ -23,8 +23,6 @@
 
 #import "VThemeManager.h"
 
-static NSString* kOrIconImage = @"orIconImage";
-
 @import MediaPlayer;
 
 @interface VStreamPollCell ()

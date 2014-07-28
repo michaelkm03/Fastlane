@@ -43,7 +43,6 @@
 @property (nonatomic, readonly) UIView                    *overlayView; ///< A view to be displayed on top of the video player. Will not show if shouldShowToolbar is NO.
 @property (nonatomic, copy)     NSString                  *titleForAnalytics; ///< If set, analytics events will use this property for the "label" parameter
 @property (nonatomic)           BOOL                       shouldFireAnalytics; ///< Set to NO to disable analytics. YES by default.
-
 @property (nonatomic, readonly) CMTime                     currentTime;
 
 + (VCVideoPlayerViewController *)currentPlayer; ///< Returns a reference to a VCVideoPlayerViewController instance that is currently playing
@@ -56,7 +55,5 @@
 - (void)setItemURL:(NSURL *)itemURL withLoopCount:(NSUInteger)loopCount;
 
 - (CMTime)playerItemDuration;
-
-
 
 @end
