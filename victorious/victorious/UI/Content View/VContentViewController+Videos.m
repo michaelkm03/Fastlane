@@ -10,11 +10,11 @@
 #import "VContentViewController+Images.h"
 #import "VContentViewController+Private.h"
 #import "VContentViewController+Videos.h"
+#import "VObjectManager+Analytics.h"
 #import "VObjectManager+Users.h"
 #import "VLoginViewController.h"
-#import "VRemixSelectViewController.h"
-
 #import "VRealtimeCommentViewController.h"
+#import "VRemixSelectViewController.h"
 
 #import <objc/runtime.h>
 
@@ -456,6 +456,14 @@ static const char kVideoPlayerKey;
         self.onVideoCompletionBlock();
         self.onVideoCompletionBlock = nil;
     }
+}
+
+- (void)videoPlayerWillStopPlaying:(VCVideoPlayerViewController *)videoPlayer
+{
+    NSDictionary *event = [[VObjectManager sharedManager] dictionaryForSequenceViewWithDate:[NSDate date]
+                                                                                     length:CMTimeGetSeconds(videoPlayer.currentTime)
+                                                                                   sequence:self.sequence];
+    [[VObjectManager sharedManager] addEvents:@[event] successBlock:nil failBlock:nil];
 }
 
 @end
