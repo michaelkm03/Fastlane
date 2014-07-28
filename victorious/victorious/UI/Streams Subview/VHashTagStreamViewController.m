@@ -6,12 +6,26 @@
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
-#import "VAnalyticsRecorder.h"
+#import "VStreamTableDataSource.h"
 #import "VHashTagStreamViewController.h"
+
+#import "VAnalyticsRecorder.h"
 #import "VConstants.h"
-#import "VSequence+Fetcher.h"
 #import "VStreamTableViewController+ContentCreation.h"
+
+//Cells
+#import "VStreamViewCell.h"
+#import "VStreamPollCell.h"
+
+//ObjectManager
+#import "VObjectManager+Sequence.h"
 #import "VObjectManager+Pagination.h"
+
+//Data Models
+#import "VSequence+RestKit.h"
+#import "VSequence+Fetcher.h"
+#import "VNode+Fetcher.h"
+#import "VAsset.h"
 
 #import "VThemeManager.h"
 
@@ -30,24 +44,25 @@
 @end
 @implementation VHashTagStreamViewController
 
-+ (VHashTagStreamViewController *)sharedInstance
+-(id)init
 {
-    static  VHashTagStreamViewController *sharedInstance;
-    static  dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
-        UIViewController*   currentViewController = [[UIApplication sharedApplication] delegate].window.rootViewController;
-        sharedInstance = (VHashTagStreamViewController*)[currentViewController.storyboard instantiateViewControllerWithIdentifier: kHashTagStreamStoryboardID];
-    });
-    
-    return sharedInstance;
+    return [self initWithHashTag:@""];
 }
 
-+ (instancetype)hashTagViewController
+-(id)initWithHashTag:(NSString*)hashTag
 {
-    UIViewController*   currentViewController = [[UIApplication sharedApplication] delegate].window.rootViewController;
-    VHashTagStreamViewController* tagsContainerViewController = (VHashTagStreamViewController*)[currentViewController.storyboard instantiateViewControllerWithIdentifier: kHashTagStreamStoryboardID];
     
-    return tagsContainerViewController;
+    self = [super init];
+    if (self)
+    {
+        UIViewController*   currentViewController = [[UIApplication sharedApplication] delegate].window.rootViewController;
+        self = (VHashTagStreamViewController*)[currentViewController.storyboard instantiateViewControllerWithIdentifier: kHashTagStreamStoryboardID];
+        [self setHashTag:hashTag];
+        NSString *titleText = [NSString stringWithFormat:@"#%@",hashTag];
+        self.title = NSLocalizedString(titleText, nil);
+
+    }
+    return self;
 }
 
 - (void)setHashTag:(NSString *)hashTag
@@ -77,6 +92,8 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    self.view.autoresizingMask = UIViewAutoresizingFlexibleWidth |UIViewAutoresizingFlexibleHeight;
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -95,5 +112,7 @@
 {
     return @"hashtag";
 }
+
+
 
 @end

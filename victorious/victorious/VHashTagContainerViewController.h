@@ -8,12 +8,12 @@
 
 #import "VAnimation.h"
 #import "VTableContainerViewController.h"
+#import "VStreamContainerViewController.h"
 
-@class VSequence;
+@class VSequence, VHashTagStreamViewController;
 
-@interface VHashTagContainerViewController : VTableContainerViewController
+@interface VHashTagContainerViewController : VStreamContainerViewController
 @property (nonatomic, strong) VSequence *sequence;
 @property (nonatomic, strong) NSString *hashTag;
-+ (instancetype)hashTagContainerView;
-
+@property (nonatomic, strong) IBOutlet VHashTagStreamViewController *streamViewController;
 @end

@@ -9,7 +9,16 @@
 #import <Foundation/Foundation.h>
 
 @interface VHashTags : NSObject
-+ (instancetype)sharedManager;
+
+
+/**
+ Returns an attributed string with a single hash tag highlighted using the proper app theme
+ 
+ @param hashTag The string that contains a hash tag to be formatted.
+ 
+ @return A NSMutableAttributedString object that contains the property formatted text string.
+ */
++(NSMutableAttributedString*)formatTag:(NSString*)hashTag;
 
 /**
  Returns an attributed string with hash tags highlighted using the proper app theme
@@ -19,7 +28,7 @@
  
  @return A NSMutableAttributedString object that contains the property formatted text string.
  */
--(NSMutableAttributedString*)formatHashTags:(NSMutableAttributedString*)fieldText withDictionary:(NSDictionary*)tagDictionary;
++(NSMutableAttributedString*)formatHashTags:(NSMutableAttributedString*)fieldText withDictionary:(NSDictionary*)tagDictionary;
 
 
 /**
@@ -29,6 +38,6 @@
  
  @return An NSDictionary object containing any found tags. (Otherwise return nil)
  */
--(NSDictionary*)detectHashTags:(NSString*)fieldText;
++(NSDictionary*)detectHashTags:(NSString*)fieldText;
 
 @end

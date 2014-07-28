@@ -152,12 +152,11 @@ NSString *kStreamsWillCommentNotification = @"kStreamsWillCommentNotification";
     
     self.usernameLabel.text = self.sequence.user.name;
 
-    //self.descriptionLabel.text = self.sequence.name;
     NSString *text = self.sequence.name;
     NSMutableAttributedString *newAttributedCellText = [[NSMutableAttributedString alloc] initWithString:text attributes:[self attributesForCellText]];
-    self.hashTags = [[VHashTags sharedManager] detectHashTags:text];
+    self.hashTags = [VHashTags detectHashTags:text];
     if ([self.hashTags count] > 0) {
-        newAttributedCellText = [[VHashTags sharedManager] formatHashTags:newAttributedCellText withDictionary:self.hashTags];
+        newAttributedCellText = [VHashTags formatHashTags:newAttributedCellText withDictionary:self.hashTags];
     }
     self.descriptionLabel.attributedText = newAttributedCellText;
     self.dateLabel.text = [self.sequence.releasedAt timeSince];

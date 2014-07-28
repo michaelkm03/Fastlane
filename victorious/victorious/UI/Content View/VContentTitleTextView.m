@@ -136,11 +136,11 @@ static const CGFloat kSeeMoreFontSizeRatio = 0.8f;
     if (text)
     {
         self.hashTags = [[NSDictionary alloc] init];
-        self.hashTags = [[VHashTags sharedManager] detectHashTags:text];
+        self.hashTags = [VHashTags detectHashTags:text];
         if ([self.hashTags count] > 0)
         {
             newAttributedText = [[NSMutableAttributedString alloc] initWithString:text attributes:[self attributesForTitleText]];
-            newAttributedText = [[VHashTags sharedManager] formatHashTags:newAttributedText withDictionary:self.hashTags];
+            newAttributedText = [VHashTags formatHashTags:newAttributedText withDictionary:self.hashTags];
         }
         else
         {
@@ -159,49 +159,6 @@ static const CGFloat kSeeMoreFontSizeRatio = 0.8f;
     _locationForLastLineOfText = lastLineOfTextLocation;
 }
 
-
-#pragma mark - Hash Tag Detecting / Formatting
-/*
--(NSMutableAttributedString*)formatTag:(NSString*)hashTag
-{
-    NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc] initWithString:hashTag attributes:[self attributeForHashTag]];
-    return attributedString;
-}
-
--(NSMutableAttributedString*)formatHashTags:(NSMutableAttributedString*)fieldText
-{
-    NSMutableAttributedString *attributedTag = [[NSMutableAttributedString alloc] initWithString:@""];
-    for (NSString *tag in [self.hashTags allKeys]) {
-        NSValue *val = [self.hashTags valueForKey:tag];
-        NSRange oldRange = [val rangeValue];
-        NSRange newRange = {oldRange.location-1,oldRange.length+1};
-        
-        NSString *tagText = [NSString stringWithFormat:@"#%@",tag];
-        
-        attributedTag = [self formatTag:tagText];
-        
-        [fieldText replaceCharactersInRange:newRange withAttributedString:attributedTag];
-    }
-    return fieldText;
-}
-
--(BOOL)detectHashTags:(NSString*)fieldText
-{
-    BOOL haveTag = NO;
-    self.hashTags = [[NSMutableDictionary alloc] init];
-    NSError *error = nil;
-    NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:@"#(\\w+)" options:0 error:&error];
-    NSArray *tags = [regex matchesInString:fieldText options:0 range:NSMakeRange(0, fieldText.length)];
-    for (NSTextCheckingResult *tag in tags) {
-        NSRange wordRange = [tag rangeAtIndex:1];
-        NSString* word = [fieldText substringWithRange:wordRange];
-        haveTag = YES;
-        
-        [self.hashTags setObject:[NSValue valueWithRange:wordRange] forKey:word];
-    }
-    return haveTag;
-}
-*/
 
 #pragma mark - See More button positioning
 
@@ -264,7 +221,7 @@ static const CGFloat kSeeMoreFontSizeRatio = 0.8f;
     else
     {
         self.hashTags = [[NSDictionary alloc] init];
-        self.hashTags = [[VHashTags sharedManager] detectHashTags:fieldText];
+        self.hashTags = [VHashTags detectHashTags:fieldText];
         if ([self.hashTags count] > 0)
         {
             for (NSString *tag in [self.hashTags allKeys]) {

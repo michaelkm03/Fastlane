@@ -16,5 +16,6 @@
 @property (nonatomic, readonly) VStreamTableViewController* streamTable;
 
 + (instancetype)containerForStreamTable:(VStreamTableViewController*)streamTable;
++ (instancetype)containerForHashTagStream:(VStreamTableViewController*)streamTable withHashTag:(NSString*)hashTag;
 
 @end

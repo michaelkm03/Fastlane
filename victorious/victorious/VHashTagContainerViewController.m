@@ -36,26 +36,32 @@
 @property (weak, nonatomic) IBOutlet UILabel* titleLabel;
 @property (strong, nonatomic) IBOutlet UIImageView* backgroundImage;
 
-@property (nonatomic, strong) IBOutlet VHashTagStreamViewController *streamViewController;
+
 
 @end
 
 @implementation VHashTagContainerViewController
 
 
-+ (instancetype)hashTagContainerView
+-(id) init
 {
-    UIViewController *currentViewController = [[UIApplication sharedApplication] delegate].window.rootViewController;
-    VHashTagContainerViewController* tagsContainer = (VHashTagContainerViewController*)[currentViewController.storyboard instantiateViewControllerWithIdentifier: kHashTagsContainerStoryboardID];
-    //((VHashTagStreamViewController*)tagsContainer.tableViewController).delegate = tagsContainer;
-    
-    return tagsContainer;
-
+    self = [super init];
+    if (self)
+    {
+        UIViewController *currentViewController = [[UIApplication sharedApplication] delegate].window.rootViewController;
+        self = (VHashTagContainerViewController*)[currentViewController.storyboard instantiateViewControllerWithIdentifier: kHashTagsContainerStoryboardID];
+    }
+    return self;
 }
 
 - (void)setHashTag:(NSString *)hashTag
 {
     _hashTag = hashTag;
+    self.streamViewController = [[VHashTagStreamViewController alloc] initWithHashTag:hashTag];
+    self.streamViewController.sequence = self.sequence;
+
+    [self.streamViewController setHashTag:hashTag];
+    self.tableViewController = self.streamViewController;
 }
 
 - (void)setSequence:(VSequence *)sequence
@@ -104,25 +110,6 @@
     [self.navigationController popViewControllerAnimated:YES];
 }
 
-- (id<UIViewControllerAnimatedTransitioning>) navigationController:(UINavigationController *)navigationController
-                                   animationControllerForOperation:(UINavigationControllerOperation)operation
-                                                fromViewController:(UIViewController*)fromVC
-                                                  toViewController:(UIViewController*)toVC
-{
-    if (operation == UINavigationControllerOperationPop
-        && [toVC isKindOfClass:[VContentViewController class]])
-    {
-        VCommentToContentAnimator* animator = [[VCommentToContentAnimator alloc] init];
-        return animator;
-    }
-    else if (operation == UINavigationControllerOperationPop
-             && [toVC isKindOfClass:[VStreamContainerViewController class]])
-    {
-        VCommentToStreamAnimator* animator = [[VCommentToStreamAnimator alloc] init];
-        return animator;
-    }
-    return nil;
-}
 
 #pragma mark - VAnimation
 
@@ -220,13 +207,4 @@
 }
 
 
-#pragma mark - Segues
-
--(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
-{
-    if ([segue.destinationViewController isKindOfClass:[VHashTagStreamViewController class]])
-    {
-        self.streamViewController = segue.destinationViewController;
-    }
-}
 @end

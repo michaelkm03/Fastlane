@@ -14,6 +14,7 @@
 #import "VHomeStreamViewController.h"
 #import "VOwnerStreamViewController.h"
 #import "VCommunityStreamViewController.h"
+#import "VHashTagStreamViewController.h"
 
 #import "VCameraViewController.h"
 #import "VCameraPublishViewController.h"
@@ -40,6 +41,17 @@
 {
     UIViewController*   currentViewController = [[UIApplication sharedApplication] delegate].window.rootViewController;
     VStreamContainerViewController* container = (VStreamContainerViewController*)[currentViewController.storyboard instantiateViewControllerWithIdentifier: kStreamContainerID];
+    container.tableViewController = streamTable;
+    container.automaticallyAdjustsScrollViewInsets = NO;
+    streamTable.delegate = container;
+    
+    return container;
+}
+
++ (instancetype)containerForHashTagStream:(VStreamTableViewController *)streamTable withHashTag:(NSString *)hashTag
+{
+    UIViewController*   currentViewController = [[UIApplication sharedApplication] delegate].window.rootViewController;
+    VStreamContainerViewController* container = (VStreamContainerViewController*)[currentViewController.storyboard instantiateViewControllerWithIdentifier: kHashTagsContainerStoryboardID];
     container.tableViewController = streamTable;
     container.automaticallyAdjustsScrollViewInsets = NO;
     streamTable.delegate = container;

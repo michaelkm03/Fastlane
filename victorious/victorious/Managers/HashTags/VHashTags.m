@@ -12,27 +12,20 @@
 
 @interface VHashTags ()
 
--(NSMutableAttributedString*)formatTag:(NSString*)hashTag;
--(NSDictionary *)attributeForHashTag;
++(NSDictionary *)attributeForHashTag;
 
 @end
 
 @implementation VHashTags
 
-+ (instancetype)sharedManager
+
++(NSMutableAttributedString*)formatTag:(NSString*)hashTag
 {
-    static  VHashTags*  sharedManager;
-    static  dispatch_once_t onceToken;
-    
-    dispatch_once(&onceToken,
-                  ^{
-                      sharedManager = [[self alloc] init];
-                  });
-    
-    return sharedManager;
+    NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc] initWithString:hashTag attributes:[self attributeForHashTag]];
+    return attributedString;
 }
 
--(NSDictionary *)attributeForHashTag
++(NSDictionary *)attributeForHashTag
 {
     NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
     paragraphStyle.alignment = NSTextAlignmentLeft;
@@ -43,7 +36,7 @@
               };
 }
 
--(NSDictionary*)detectHashTags:(NSString*)fieldText
++(NSDictionary*)detectHashTags:(NSString*)fieldText
 {
     BOOL haveTag = NO;
     NSMutableDictionary *dictionary = [[NSMutableDictionary alloc] init];
@@ -61,7 +54,7 @@
 
 }
 
--(NSMutableAttributedString*)formatHashTags:(NSMutableAttributedString*)fieldText withDictionary:(NSDictionary*)tagDictionary
++(NSMutableAttributedString*)formatHashTags:(NSMutableAttributedString*)fieldText withDictionary:(NSDictionary*)tagDictionary
 {
     NSMutableAttributedString *attributedTag = [[NSMutableAttributedString alloc] initWithString:@""];
     for (NSString *tag in [tagDictionary allKeys]) {
@@ -79,11 +72,6 @@
 
 }
 
--(NSMutableAttributedString*)formatTag:(NSString*)hashTag
-{
-    NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc] initWithString:hashTag attributes:[self attributeForHashTag]];
-    return attributedString;
-}
 
 
 

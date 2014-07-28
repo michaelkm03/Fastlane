@@ -60,18 +60,15 @@ NSTimeInterval kVContentPollAnimationDuration = 0.2;
 
 @implementation VContentViewController
 
-+ (VContentViewController *)sharedInstance
+-(id)init
 {
-    static  VContentViewController*   sharedInstance;
-    static  dispatch_once_t         onceToken;
-    dispatch_once(&onceToken,
-    ^{
-        UIViewController*   currentViewController = [[UIApplication sharedApplication] delegate].window.rootViewController;
-        sharedInstance = (VContentViewController*)[currentViewController.storyboard instantiateViewControllerWithIdentifier: kContentViewStoryboardID];
-    });
-    
-    return sharedInstance;
+    UIViewController *currentViewController = [[UIApplication sharedApplication] delegate].window.rootViewController;
+    self = (VContentViewController*)[currentViewController.storyboard instantiateViewControllerWithIdentifier: kContentViewStoryboardID];
+
+    return self;
+
 }
+
 
 - (void)viewDidLoad
 {
@@ -934,16 +931,11 @@ NSTimeInterval kVContentPollAnimationDuration = 0.2;
 
 - (void)hashTagButtonTappedInContentTitleTextView:(VContentTitleTextView *)contentTitleTextView withTag:(NSString *)tag
 {
-    NSLog(@"\n\n-----------\n#%@ Hash Tag Tapped!\n-----------\n\n",[tag uppercaseString]);
+    VHashTagContainerViewController *container = [[VHashTagContainerViewController alloc] init];
+    container.sequence = self.sequence;
+    container.hashTag = tag;
     
-    VHashTagContainerViewController *tableContainer = [VHashTagContainerViewController hashTagContainerView];
-    tableContainer.sequence = self.sequence;
-    tableContainer.hashTag = tag;
-
-    
-    [self.navigationController pushViewController:tableContainer animated:YES];
-    //[self presentViewController:tableContainer animated:YES completion:nil];
-
+    [self.navigationController pushViewController:container animated:YES];
 }
 
 @end
