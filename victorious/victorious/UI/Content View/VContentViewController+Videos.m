@@ -15,6 +15,7 @@
 #import "VLoginViewController.h"
 #import "VRealtimeCommentViewController.h"
 #import "VRemixSelectViewController.h"
+#import "VSettingManager.h"
 
 #import <objc/runtime.h>
 
@@ -411,7 +412,7 @@ static const char kVideoPlayerKey;
 
 - (void)videoPlayerWasTapped
 {
-    if ([self.sequence isPoll])
+    if (![[VSettingManager sharedManager] settingEnabledForKey:kVRealtimeCommentsEnabled]  || [self.sequence isPoll])
         return;
     
     [self flipHeaderWithDuration:.25f completion:nil];
