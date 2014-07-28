@@ -33,6 +33,7 @@
 
 #import "VContentToStreamAnimator.h"
 #import "VContentToCommentAnimator.h"
+#import "VContentToInfoAnimator.h"
 
 #import "UIActionSheet+VBlocks.h"
 
@@ -768,22 +769,20 @@ NSTimeInterval kVContentPollAnimationDuration = 0.2;
 
 - (IBAction)pressedMore:(id)sender
 {
-    VContentInfoViewController* contentInfo = [VContentInfoViewController sharedInstance];
+    VContentInfoViewController* contentInfo = [[VContentInfoViewController alloc] init];
     contentInfo.sequence = self.sequence;
     contentInfo.backgroundImage = self.backgroundImage.image;
     contentInfo.delegate = self;
-    contentInfo.modalTransitionStyle = UIModalTransitionStyleFlipHorizontal;
-    [self.navigationController presentViewController:contentInfo animated:YES completion:nil];
+//    contentInfo.modalTransitionStyle = UIModalTransitionStyleFlipHorizontal;
+//    [self.navigationController presentViewController:contentInfo animated:YES completion:nil];
+    [self.navigationController pushViewController:contentInfo animated:YES];
 }
 
 #pragma mark - VContentInfoDelegate
 - (void)didCloseFromInfo
 {
-    [self dismissViewControllerAnimated:YES
-                             completion:
-     ^{
-         [self.navigationController popViewControllerAnimated:YES];
-     }];
+//    [self.navigationController popViewControllerAnimated:YES];
+    [self.navigationController popViewControllerAnimated:YES];
 }
 
 - (void)willCommentFromInfo
@@ -806,11 +805,23 @@ NSTimeInterval kVContentPollAnimationDuration = 0.2;
                                                 fromViewController:(UIViewController*)fromVC
                                                   toViewController:(UIViewController*)toVC
 {
-    if (operation == UINavigationControllerOperationPop)
+    if ([toVC isKindOfClass:[VContentInfoViewController class]] || [fromVC isKindOfClass:[VContentInfoViewController class]])
+    {
+        VContentToInfoAnimator* animator = [[VContentToInfoAnimator alloc] init];
+        animator.isPresenting = operation == UINavigationControllerOperationPush;
+        animator.fromChildContainerView =  self.mediaView;
+        animator.toChildContainerView = animator.isPresenting ? ((VContentInfoViewController*)toVC).mediaContainerView : self.mediaSuperview;
+        
+        if (animator.isPresenting)
+            animator.movingImage = self.previewImage.image;
+        
+        return animator;
+    }
+    if (operation == UINavigationControllerOperationPop && [fromVC isKindOfClass:[self class]])
     {
         return [[VContentToStreamAnimator alloc] init];
     }
-    else if ([toVC isKindOfClass:[VCommentsContainerViewController class]])
+    else if (operation == UINavigationControllerOperationPush && [toVC isKindOfClass:[VCommentsContainerViewController class]])
     {
         return [[VContentToCommentAnimator alloc] init];
     }

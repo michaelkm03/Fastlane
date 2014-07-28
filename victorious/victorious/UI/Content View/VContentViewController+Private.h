@@ -77,7 +77,6 @@ extern NSTimeInterval kVContentPollAnimationDuration;
 @property (weak, nonatomic) VRealtimeCommentViewController* realtimeCommentVC;
 @property (weak, nonatomic) VKeyboardBarViewController* keyboardBarVC;
 
-@property (strong, nonatomic) VCVideoPlayerViewController* videoPlayer;
 @property (strong, nonatomic) VNode* currentNode;
 @property (strong, nonatomic) VAsset* currentAsset;
 @property (strong, nonatomic) VInteractionManager* interactionManager;

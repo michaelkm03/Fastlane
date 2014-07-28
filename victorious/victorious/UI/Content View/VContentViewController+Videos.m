@@ -15,6 +15,7 @@
 #import "VLoginViewController.h"
 #import "VRealtimeCommentViewController.h"
 #import "VRemixSelectViewController.h"
+#import "VSettingManager.h"
 
 #import <objc/runtime.h>
 
@@ -24,6 +25,7 @@ static const char kShouldPauseKey;
 static const char kVideoPreviewViewKey;
 static const char kVideoCompletionBlockKey;
 static const char kVideoUnloadBlockKey;
+static const char kVideoPlayerKey;
 
 @interface VContentViewController (VideosPrivate)
 
@@ -376,6 +378,16 @@ static const char kVideoUnloadBlockKey;
     return objc_getAssociatedObject(self, &kVideoPreviewViewKey);
 }
 
+- (void)setVideoPlayer:(VCVideoPlayerViewController *)videoPlayer
+{
+    objc_setAssociatedObject(self, &kVideoPlayerKey, videoPlayer, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+}
+
+- (VCVideoPlayerViewController *)videoPlayer
+{
+    return objc_getAssociatedObject(self, &kVideoPlayerKey);
+}
+
 - (void)setOnVideoCompletionBlock:(void (^)(void))completion
 {
     objc_setAssociatedObject(self, &kVideoCompletionBlockKey, [completion copy], OBJC_ASSOCIATION_RETAIN_NONATOMIC);
@@ -400,7 +412,7 @@ static const char kVideoUnloadBlockKey;
 
 - (void)videoPlayerWasTapped
 {
-    if ([self.sequence isPoll])
+    if (![[VSettingManager sharedManager] settingEnabledForKey:kVRealtimeCommentsEnabled]  || [self.sequence isPoll])
         return;
     
     [self flipHeaderWithDuration:.25f completion:nil];

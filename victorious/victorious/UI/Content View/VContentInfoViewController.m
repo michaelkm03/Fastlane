@@ -37,17 +37,13 @@ typedef NS_ENUM(NSUInteger, VContentCountType) {
 
 @implementation VContentInfoViewController
 
-+ (VContentInfoViewController *)sharedInstance
+- (id)init
 {
-    static  VContentInfoViewController*   sharedInstance;
-    static  dispatch_once_t         onceToken;
-    dispatch_once(&onceToken,
-                  ^{
-                      UIViewController*   currentViewController = [[UIApplication sharedApplication] delegate].window.rootViewController;
-                      sharedInstance = (VContentInfoViewController*)[currentViewController.storyboard instantiateViewControllerWithIdentifier: kContentInfoStoryboardID];
-                  });
+    UIViewController*   currentViewController = [[UIApplication sharedApplication] delegate].window.rootViewController;
+    self = (VContentInfoViewController*)[currentViewController.storyboard instantiateViewControllerWithIdentifier: kContentInfoStoryboardID];
+    [self view];//Initialize all the IBOutlets
     
-    return sharedInstance;
+    return self;
 }
 
 - (BOOL)prefersStatusBarHidden
@@ -59,6 +55,15 @@ typedef NS_ENUM(NSUInteger, VContentCountType) {
 {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
+    
+    [UIView animateWithDuration:0.0f animations:^
+     {
+         [self.view updateConstraints];
+     }
+                     completion:^(BOOL finished)
+    {
+        self.mediaContainerView.hidden = CGRectIntersectsRect(self.mediaContainerView.frame, self.tableView.frame);
+    }];
     
     UIColor* secondaryLinkColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVSecondaryLinkColor];
     
@@ -78,6 +83,11 @@ typedef NS_ENUM(NSUInteger, VContentCountType) {
     self.profileImageView.layer.cornerRadius = CGRectGetHeight(self.profileImageView.bounds)/2;
     self.profileImageView.layer.borderWidth = 2.0;
     self.profileImageView.layer.borderColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVAccentColor].CGColor;
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
 }
 
 - (void)setBackgroundImage:(UIImage *)backgroundImage
@@ -222,7 +232,7 @@ typedef NS_ENUM(NSUInteger, VContentCountType) {
 
 - (IBAction)pressedFlip:(id)sender
 {
-    [self dismissViewControllerAnimated:YES completion:nil];
+    [self.navigationController popViewControllerAnimated:YES];
 }
 
 - (IBAction)pressedComment:(id)sender

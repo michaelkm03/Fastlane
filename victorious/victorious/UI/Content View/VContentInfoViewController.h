@@ -21,8 +21,9 @@
 
 @property (nonatomic, strong) VSequence* sequence;
 @property (nonatomic, strong) UIImage* backgroundImage;
+@property (nonatomic, weak) IBOutlet UIView* mediaContainerView;
 @property (nonatomic, weak) id<VContentInfoDelegate> delegate;
 
-+ (VContentInfoViewController *)sharedInstance;
+@property (strong, nonatomic) UIViewController* mediaVC;///<View controller displaying the media for the sequence. Note: can be nil if the media is only a view on content screen (e.g. any image view)
 
 @end
