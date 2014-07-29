@@ -71,15 +71,6 @@ NSString *kStreamsWillCommentNotification = @"kStreamsWillCommentNotification";
 
     [self.commentButton setTitleEdgeInsets:UIEdgeInsetsMake(0, 5, 0, 0)];
     
-    NSString* parentUserString;
-    if ([self.sequence isRepost])
-        parentUserString = [NSString stringWithFormat:NSLocalizedString(@"repostedFromFormat", nil), self.sequence.parentUser.name];
-
-    if ([self.sequence isRemix])
-        parentUserString = [NSString stringWithFormat:NSLocalizedString(@"remixedFromFormat", nil), self.sequence.parentUser.name];
-    
-    self.parentLabel.text = parentUserString;
-    
     self.ephemeralTimerView = [[[NSBundle mainBundle] loadNibNamed:NSStringFromClass([VEphemeralTimerView class]) owner:self options:nil] firstObject];
     self.ephemeralTimerView.delegate = self;
     self.ephemeralTimerView.center = self.center;
@@ -152,6 +143,15 @@ NSString *kStreamsWillCommentNotification = @"kStreamsWillCommentNotification";
     self.descriptionLabel.text = self.sequence.name;
     self.dateLabel.text = [self.sequence.releasedAt timeSince];
     [self.commentButton setTitle:self.sequence.commentCount.stringValue forState:UIControlStateNormal];
+    
+    NSString* parentUserString;
+    if ([self.sequence isRepost] && self.sequence.parentUser)
+        parentUserString = [NSString stringWithFormat:NSLocalizedString(@"repostedFromFormat", nil), self.sequence.parentUser.name];
+    
+    if ([self.sequence isRemix] && self.sequence.parentUser)
+        parentUserString = [NSString stringWithFormat:NSLocalizedString(@"remixedFromFormat", nil), self.sequence.parentUser.name];
+    
+    self.parentLabel.text = parentUserString;
     
     if (_sequence.expiresAt)
     {
