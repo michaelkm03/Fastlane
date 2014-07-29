@@ -826,12 +826,12 @@ NSTimeInterval kVContentPollAnimationDuration = 0.2;
     }
     
     
-     if ([toVC isKindOfClass:[VHashTagStreamViewController class]] || [fromVC isKindOfClass:[VHashTagStreamViewController class]])
-     {
-         return [[VContentToHashTagStreamAnimator alloc] init];
-     
-     }
-     
+//    if ([toVC isKindOfClass:[VHashTagContainerViewController class]] || [fromVC isKindOfClass:[VHashTagContainerViewController class]] || [toVC isKindOfClass:[VHashTagStreamViewController class]] || [fromVC isKindOfClass:[VHashTagStreamViewController class]])
+//    {
+//        return [[VContentToHashTagStreamAnimator alloc] init];
+//        
+//    }
+    
     
     if (operation == UINavigationControllerOperationPop && [fromVC isKindOfClass:[self class]])
     {
