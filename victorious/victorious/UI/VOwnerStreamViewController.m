@@ -50,6 +50,6 @@
 
 - (NSArray*)sequenceCategories
 {
-    return @[kVOwnerPollCategory, kVOwnerImageCategory, kVOwnerVideoCategory, kVOwnerRemixCategory];
+    return VOwnerCategories();
 }
 @end

@@ -246,4 +246,7 @@
 "reposts"               =   "reposts";
 "comments"              =   "comments";
 
+"repostedFromFormat"      =   "Repost from %@";
+"remixedFromFormat"       =   "Remix from %@";
+
 "leaveACommentFormat"   =   "Leave a comment at %@";

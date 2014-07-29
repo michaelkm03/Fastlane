@@ -19,6 +19,9 @@
 - (BOOL)isOwnerContent;
 - (BOOL)isTemporarySequence;
 
+- (BOOL)isRemix;
+- (BOOL)isRepost;
+
 - (VNode*)firstNode;
 
 - (NSArray*)initialImageURLs;

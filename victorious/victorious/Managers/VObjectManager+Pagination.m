@@ -421,6 +421,10 @@
             {
                 [nonExistantUsers addObject:sequence.createdBy];
             }
+            if (sequence.parentUserId && !sequence.parentUser)
+            {
+                [nonExistantUsers addObject:sequence.parentUserId];
+            }
         }
         if ([nonExistantUsers count])
         {

@@ -21,8 +21,11 @@
 
 - (BOOL)isPoll
 {
-    return [self.category isEqualToString:kVOwnerPollCategory] ||
-        [self.category isEqualToString:kVUGCPollCategory];
+    for (NSString* category in VPollCategories())
+        if ([self.category isEqualToString:category])
+            return true;
+    
+    return false;
 }
 
 - (BOOL)isQuiz
@@ -32,24 +35,47 @@
 
 - (BOOL)isImage
 {
-    return [self.category isEqualToString:kVOwnerImageCategory] ||
-        [self.category isEqualToString:kVUGCImageCategory];
+    for (NSString* category in VImageCategories())
+        if ([self.category isEqualToString:category])
+            return true;
+    
+    return false;
 }
 
 - (BOOL)isVideo
 {
-    return [self.category isEqualToString:kVOwnerVideoCategory] ||
-        [self.category isEqualToString:kVUGCVideoCategory] ||
-        [self.category isEqualToString:kVOwnerRemixCategory] ||
-        [self.category isEqualToString:kVUGCRemixCategory];
+    for (NSString* category in VVideoCategories())
+        if ([self.category isEqualToString:category])
+            return true;
+    
+    return false;
 }
 
 - (BOOL)isOwnerContent
 {
-    return [self.category isEqualToString:kVOwnerImageCategory] ||
-    [self.category isEqualToString:kVOwnerPollCategory] ||
-    [self.category isEqualToString:kVOwnerVideoCategory] ||
-    [self.category isEqualToString:kVOwnerRemixCategory];
+    for (NSString* category in VOwnerCategories())
+        if ([self.category isEqualToString:category])
+            return true;
+    
+    return false;
+}
+
+- (BOOL)isRepost
+{
+    for (NSString* category in VRepostCategories())
+        if ([self.category isEqualToString:category])
+            return true;
+    
+    return false;
+}
+
+- (BOOL)isRemix
+{
+    for (NSString* category in VRemixCategories())
+        if ([self.category isEqualToString:category])
+            return true;
+    
+    return false;
 }
 
 - (BOOL)isTemporarySequence

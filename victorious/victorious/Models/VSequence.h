@@ -2,7 +2,7 @@
 //  VSequence.h
 //  victorious
 //
-//  Created by Will Long on 7/28/14.
+//  Created by Will Long on 7/29/14.
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
@@ -27,14 +27,17 @@
 @property (nonatomic, retain) NSNumber * remoteId;
 @property (nonatomic, retain) NSString * sequenceDescription;
 @property (nonatomic, retain) NSString * status;
+@property (nonatomic, retain) NSNumber * parentUserId;
+@property (nonatomic, retain) NSNumber * repostCount;
 @property (nonatomic, retain) NSSet *comments;
 @property (nonatomic, retain) NSSet *filters;
 @property (nonatomic, retain) NSSet *nodes;
 @property (nonatomic, retain) NSSet *pollResults;
+@property (nonatomic, retain) NSSet *remixers;
+@property (nonatomic, retain) NSSet *reposters;
 @property (nonatomic, retain) VUser *user;
 @property (nonatomic, retain) NSSet *voteResults;
-@property (nonatomic, retain) NSSet *reposters;
-@property (nonatomic, retain) NSSet *remixers;
+@property (nonatomic, retain) VUser *parentUser;
 @end
 
 @interface VSequence (CoreDataGeneratedAccessors)
@@ -59,19 +62,19 @@
 - (void)addPollResults:(NSSet *)values;
 - (void)removePollResults:(NSSet *)values;
 
-- (void)addVoteResultsObject:(VVoteResult *)value;
-- (void)removeVoteResultsObject:(VVoteResult *)value;
-- (void)addVoteResults:(NSSet *)values;
-- (void)removeVoteResults:(NSSet *)values;
+- (void)addRemixersObject:(VUser *)value;
+- (void)removeRemixersObject:(VUser *)value;
+- (void)addRemixers:(NSSet *)values;
+- (void)removeRemixers:(NSSet *)values;
 
 - (void)addRepostersObject:(VUser *)value;
 - (void)removeRepostersObject:(VUser *)value;
 - (void)addReposters:(NSSet *)values;
 - (void)removeReposters:(NSSet *)values;
 
-- (void)addRemixersObject:(VUser *)value;
-- (void)removeRemixersObject:(VUser *)value;
-- (void)addRemixers:(NSSet *)values;
-- (void)removeRemixers:(NSSet *)values;
+- (void)addVoteResultsObject:(VVoteResult *)value;
+- (void)removeVoteResultsObject:(VVoteResult *)value;
+- (void)addVoteResults:(NSSet *)values;
+- (void)removeVoteResults:(NSSet *)values;
 
 @end

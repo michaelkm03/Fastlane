@@ -56,10 +56,7 @@
 
 - (NSArray*)sequenceCategories
 {
-    return @[kVOwnerPollCategory, kVUGCPollCategory,
-             kVOwnerImageCategory, kVUGCImageCategory,
-             kVOwnerVideoCategory, kVUGCVideoCategory,
-             kVOwnerRemixCategory, kVUGCRemixCategory];
+    return [VUGCCategories() arrayByAddingObjectsFromArray:VOwnerCategories()];
 }
 
 @end
