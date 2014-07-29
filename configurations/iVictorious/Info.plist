@@ -34,10 +34,12 @@
 	<key>TestflightStagingAppToken</key>
 	<string>c2e02537-3da4-4ae0-99fe-77df4cec3d38</string>
 	<key>VictoriousAppID</key>
-	<integer>11</integer>
+	<integer>0</integer>
 	<key>StagingAppID</key>
 	<integer>24</integer>
 	<key>QAAppID</key>
 	<integer>7</integer>
+	<key>GAID</key>
+	<string>UA-51702806-5</string>
 </dict>
 </plist>
