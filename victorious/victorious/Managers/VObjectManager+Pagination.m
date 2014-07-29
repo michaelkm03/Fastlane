@@ -333,6 +333,46 @@
     return [self loadNextPageOfFilter:filter successBlock:fullSuccessBlock failBlock:fail];
 }
 
+#pragma mark - Repost
+
+- (RKManagedObjectRequestOperation *)refreshRepostersForSequence:(VSequence*)sequence
+                                                  successBlock:(VSuccessBlock)success
+                                                     failBlock:(VFailBlock)fail
+{
+    VAbstractFilter* filter = [self repostFilterForSequence:sequence];
+    filter.currentPageNumber = @(0);
+    return [self loadNextPageOfRepostsForSequence:sequence
+                                     successBlock:success
+                                        failBlock:fail];
+}
+
+- (RKManagedObjectRequestOperation *)loadNextPageOfRepostersForSequence:(VSequence*)sequence
+                                                         successBlock:(VSuccessBlock)success
+                                                            failBlock:(VFailBlock)fail
+{
+    VAbstractFilter* filter = [self repostFilterForSequence:sequence];
+    
+    VSuccessBlock fullSuccessBlock = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
+    {
+        //If this is the first page, break the relationship to all the old objects.
+        if ([filter.currentPageNumber isEqualToNumber:@(0)])
+        {
+            [sequence removeReposters:sequence.reposters];
+        }
+        
+        for (VUser* reposter in resultObjects)
+        {
+            VUser* reposterInContext = (VUser*)[sequence.managedObjectContext objectWithID:reposter.objectID];
+            [sequence addRepostersObject:reposterInContext];
+        }
+        
+        if (success)
+            success(operation, fullResponse, resultObjects);
+    };
+    
+    return [self loadNextPageOfFilter:filter successBlock:fullSuccessBlock failBlock:fail];
+}
+
 #pragma mark - Sequence
 - (RKManagedObjectRequestOperation *)refreshSequenceFilter:(VSequenceFilter*)filter
                                               successBlock:(VSuccessBlock)success
@@ -507,6 +547,12 @@
 - (VAbstractFilter*)followingFilterForUser:(VUser*)user
 {
     NSString* apiPath = [@"/api/follow/subscribed_to_list/" stringByAppendingString: user.remoteId.stringValue];
+    return (VAbstractFilter*)[[VFilterCache sharedCache] filterForPath:apiPath entityName:[VAbstractFilter entityName]];
+}
+
+- (VAbstractFilter*)repostFilterForSequence:(VSequence*)sequence
+{
+    NSString* apiPath = [@"/api/repost/all/" stringByAppendingString: sequence.remoteId.stringValue];
     return (VAbstractFilter*)[[VFilterCache sharedCache] filterForPath:apiPath entityName:[VAbstractFilter entityName]];
 }
 

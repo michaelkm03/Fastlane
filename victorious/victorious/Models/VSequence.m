@@ -2,7 +2,7 @@
 //  VSequence.m
 //  victorious
 //
-//  Created by Will Long on 5/29/14.
+//  Created by Will Long on 7/28/14.
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
@@ -37,5 +37,7 @@
 @dynamic pollResults;
 @dynamic user;
 @dynamic voteResults;
+@dynamic reposters;
+@dynamic remixers;
 
 @end

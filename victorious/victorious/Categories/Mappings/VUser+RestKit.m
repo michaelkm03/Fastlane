@@ -86,6 +86,12 @@
                                                      pathPattern:@"/api/follow/followers_list/:userId/:page/:perpage"
                                                          keyPath:@"payload.users"
                                                      statusCodes:RKStatusCodeIndexSetForClass(RKStatusCodeClassSuccessful)],
+             
+             [RKResponseDescriptor responseDescriptorWithMapping:[self entityMapping]
+                                                          method:RKRequestMethodGET
+                                                     pathPattern:@"/api/repost/all/:sequenceId/:page/:perpage"
+                                                         keyPath:@"payload.users"
+                                                     statusCodes:RKStatusCodeIndexSetForClass(RKStatusCodeClassSuccessful)],
 
              [RKResponseDescriptor responseDescriptorWithMapping:[self entityMapping]
                                                           method:RKRequestMethodAny
