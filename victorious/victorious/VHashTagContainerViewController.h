@@ -16,4 +16,7 @@
 @property (nonatomic, strong) VSequence *sequence;
 @property (nonatomic, strong) NSString *hashTag;
 @property (nonatomic, strong) IBOutlet VHashTagStreamViewController *streamViewController;
+
+- (void)animateInWithDuration:(CGFloat)duration completion:(void (^)(BOOL finished))completion;
+
 @end

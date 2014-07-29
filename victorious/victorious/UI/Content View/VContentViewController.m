@@ -34,6 +34,7 @@
 #import "VContentToStreamAnimator.h"
 #import "VContentToCommentAnimator.h"
 #import "VContentToInfoAnimator.h"
+#import "VContentToHashTagStreamAnimator.h"
 
 #import "UIActionSheet+VBlocks.h"
 
@@ -817,6 +818,15 @@ NSTimeInterval kVContentPollAnimationDuration = 0.2;
         
         return animator;
     }
+    
+    
+     if ([toVC isKindOfClass:[VHashTagStreamViewController class]] || [fromVC isKindOfClass:[VHashTagStreamViewController class]])
+     {
+         return [[VContentToHashTagStreamAnimator alloc] init];
+     
+     }
+     
+    
     if (operation == UINavigationControllerOperationPop && [fromVC isKindOfClass:[self class]])
     {
         return [[VContentToStreamAnimator alloc] init];

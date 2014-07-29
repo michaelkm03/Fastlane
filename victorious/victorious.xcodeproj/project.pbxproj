@@ -322,6 +322,7 @@
 		BEFE132E196F6B6F003B33DC /* VRealtimeCommentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BEFE132D196F6B6F003B33DC /* VRealtimeCommentViewController.m */; };
 		D1DAAA0B187A43BE009ADCB0 /* VProfileEditViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D1DAAA0A187A43BE009ADCB0 /* VProfileEditViewController.m */; };
 		DB344E01197DD06E006CFAE4 /* VHashTagStreamViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DB344E00197DD06E006CFAE4 /* VHashTagStreamViewController.m */; };
+		DB58EF1D19870A8F00D2A07F /* VContentToHashTagStreamAnimator.m in Sources */ = {isa = PBXBuildFile; fileRef = DB58EF1C19870A8F00D2A07F /* VContentToHashTagStreamAnimator.m */; };
 		DB8D3A0F197EF767005DD36D /* VHashTagContainerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DB8D3A0E197EF767005DD36D /* VHashTagContainerViewController.m */; };
 		DB8D3A1319803A03005DD36D /* VHashTags.m in Sources */ = {isa = PBXBuildFile; fileRef = DB8D3A1219803A03005DD36D /* VHashTags.m */; };
 /* End PBXBuildFile section */
@@ -915,6 +916,8 @@
 		D1DAAA0A187A43BE009ADCB0 /* VProfileEditViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VProfileEditViewController.m; path = UI/VProfileEditViewController.m; sourceTree = "<group>"; };
 		DB344DFF197DD06E006CFAE4 /* VHashTagStreamViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VHashTagStreamViewController.h; path = "UI/Streams Subview/VHashTagStreamViewController.h"; sourceTree = "<group>"; };
 		DB344E00197DD06E006CFAE4 /* VHashTagStreamViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VHashTagStreamViewController.m; path = "UI/Streams Subview/VHashTagStreamViewController.m"; sourceTree = "<group>"; };
+		DB58EF1B19870A8F00D2A07F /* VContentToHashTagStreamAnimator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VContentToHashTagStreamAnimator.h; path = Animations/VContentToHashTagStreamAnimator.h; sourceTree = "<group>"; };
+		DB58EF1C19870A8F00D2A07F /* VContentToHashTagStreamAnimator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VContentToHashTagStreamAnimator.m; path = Animations/VContentToHashTagStreamAnimator.m; sourceTree = "<group>"; };
 		DB8D3A0D197EF767005DD36D /* VHashTagContainerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VHashTagContainerViewController.h; sourceTree = "<group>"; };
 		DB8D3A0E197EF767005DD36D /* VHashTagContainerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VHashTagContainerViewController.m; sourceTree = "<group>"; };
 		DB8D3A1119803A03005DD36D /* VHashTags.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VHashTags.h; sourceTree = "<group>"; };
@@ -1876,6 +1879,8 @@
 				BEB52A8A18C80B8700AC5FE4 /* VContentToStreamAnimator.m */,
 				BE1A9F14198087700070BB7D /* VContentToInfoAnimator.h */,
 				BE1A9F15198087700070BB7D /* VContentToInfoAnimator.m */,
+				DB58EF1B19870A8F00D2A07F /* VContentToHashTagStreamAnimator.h */,
+				DB58EF1C19870A8F00D2A07F /* VContentToHashTagStreamAnimator.m */,
 			);
 			name = Animations;
 			sourceTree = "<group>";
@@ -2403,6 +2408,7 @@
 				3F14C44F18BD2BD0001796B9 /* VCCamera.m in Sources */,
 				3FA217C318A9B5160066E893 /* DeviceTableViewController.m in Sources */,
 				3FD7FFC118C69B2200945E5F /* VSetExpirationViewController.m in Sources */,
+				DB58EF1D19870A8F00D2A07F /* VContentToHashTagStreamAnimator.m in Sources */,
 				3F91991A187CAF310055FE37 /* VMessageViewController.m in Sources */,
 				BE46E69A18CA751F00974DAF /* VCommentToContentAnimator.m in Sources */,
 				BE448FC919589F9700EB8682 /* VEnterResetTokenViewController.m in Sources */,
