@@ -65,6 +65,7 @@ CGFloat const kCommentMediaCellYOffset = 236;
     self.dateLabel.text = [comment.postedAt timeSince];
     self.nameLabel.text = comment.user.name;
     self.messageLabel.text = comment.text;
+    
     self.mediaUrl = comment.mediaUrl ? [NSURL URLWithString:comment.mediaUrl] : nil;
     self.previewImageUrl = [comment previewImageURL];
     self.user = comment.user;
