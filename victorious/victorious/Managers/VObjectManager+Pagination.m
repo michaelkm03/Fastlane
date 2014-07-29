@@ -341,7 +341,7 @@
 {
     VAbstractFilter* filter = [self repostFilterForSequence:sequence];
     filter.currentPageNumber = @(0);
-    return [self loadNextPageOfRepostsForSequence:sequence
+    return [self loadNextPageOfRepostersForSequence:sequence
                                      successBlock:success
                                         failBlock:fail];
 }
