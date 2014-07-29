@@ -45,13 +45,9 @@
 
 -(id) init
 {
-    self = [super init];
-    if (self)
-    {
-        UIViewController *currentViewController = [[UIApplication sharedApplication] delegate].window.rootViewController;
-        self = (VHashTagContainerViewController*)[currentViewController.storyboard instantiateViewControllerWithIdentifier: kHashTagsContainerStoryboardID];
-    }
-    return self;
+    UIViewController *currentViewController = [[UIApplication sharedApplication] delegate].window.rootViewController;
+    return (VHashTagContainerViewController*)[currentViewController.storyboard instantiateViewControllerWithIdentifier: kHashTagsContainerStoryboardID];
+    
 }
 
 - (void)setHashTag:(NSString *)hashTag

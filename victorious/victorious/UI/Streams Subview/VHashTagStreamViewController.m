@@ -58,8 +58,6 @@
         UIViewController*   currentViewController = [[UIApplication sharedApplication] delegate].window.rootViewController;
         self = (VHashTagStreamViewController*)[currentViewController.storyboard instantiateViewControllerWithIdentifier: kHashTagStreamStoryboardID];
         [self setHashTag:hashTag];
-        NSString *titleText = [NSString stringWithFormat:@"#%@",hashTag];
-        self.title = NSLocalizedString(titleText, nil);
 
     }
     return self;
