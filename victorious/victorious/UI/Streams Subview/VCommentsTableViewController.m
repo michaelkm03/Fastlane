@@ -372,7 +372,6 @@ static NSString* CommentCache = @"CommentCache";
 {
     VComment* comment = (VComment*)[self.sortedComments objectAtIndex:indexPath.row];
     [self.newlyReadComments addObject:[NSString stringWithFormat:@"%@", comment.remoteId]];
-
 }
 
 #pragma mark - UITableViewDelegate

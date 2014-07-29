@@ -527,6 +527,12 @@
     return (VSequenceFilter*)[[VFilterCache sharedCache] filterForPath:apiPath entityName:[VSequenceFilter entityName]];
 }
 
+- (VSequenceFilter*)sequenceFilterForHashTag:(NSString*)hashTag
+{
+    NSString* apiPath = [@"/api/sequence/detail_list_by_hashtag/" stringByAppendingString: hashTag];
+    return (VSequenceFilter*)[[VFilterCache sharedCache] filterForPath:apiPath entityName:[VSequenceFilter entityName]];
+}
+
 - (VSequenceFilter*)followerSequenceFilterForStream:(NSString*)streamName user:(VUser*)user
 {
     user = user ?: self.mainUser;

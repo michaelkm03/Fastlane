@@ -149,7 +149,7 @@ static const NSInteger kCharacterLimit = 255;
 
 - (void)textViewDidEndEditing:(UITextView *)textView
 {
-    [self sendButtonAction:textView];
+    //[self sendButtonAction:textView];
 }
 
 - (BOOL)textViewShouldBeginEditing:(UITextView *)textView

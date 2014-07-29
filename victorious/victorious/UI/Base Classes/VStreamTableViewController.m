@@ -43,6 +43,7 @@
 @property (strong, nonatomic) id<UIViewControllerTransitioningDelegate> transitionDelegate;
 @property (strong, nonatomic) UIActivityIndicatorView* bottomRefreshIndicator;
 @property (strong, nonatomic) NSCache* preloadImageCache;
+@property (strong, nonatomic) VContentViewController *contentViewController;
 
 @end
 
@@ -170,6 +171,9 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    
+    self.contentViewController = [[VContentViewController alloc] init];
+    
     VSequence* sequence = [self.tableDataSource sequenceAtIndexPath:indexPath];
     if ([sequence isTemporarySequence] || [sequence.expiresAt timeIntervalSinceNow] < 0)
     {
@@ -183,8 +187,8 @@
     if ([cell isKindOfClass:[VStreamPollCell class]])
     {
         VStreamPollCell *pollCell = (VStreamPollCell *)cell;
-        [[VContentViewController sharedInstance] setLeftPollThumbnail:pollCell.previewImageView.image];
-        [[VContentViewController sharedInstance] setRightPollThumbnail:pollCell.previewImageTwo.image];
+        [self.contentViewController setLeftPollThumbnail:pollCell.previewImageView.image];
+        [self.contentViewController setRightPollThumbnail:pollCell.previewImageTwo.image];
     }
     
     //Every time we go to the content view, update the sequence
@@ -195,10 +199,11 @@
     [self setBackgroundImageWithURL:[[cell.sequence initialImageURLs] firstObject]];
     [self.delegate streamWillDisappear];
     
+    
     CGFloat contentMediaViewOffset = [VContentViewController estimatedContentMediaViewOffsetForBounds:self.view.bounds];
     if (tableView.contentOffset.y == cell.frame.origin.y - contentMediaViewOffset)
     {
-        [self.navigationController pushViewController:[VContentViewController sharedInstance] animated:YES];
+        [self.navigationController pushViewController:self.contentViewController animated:YES];
     }
     else
     {
@@ -212,7 +217,7 @@
     if (self.selectedSequence)
     {
         self.tableView.userInteractionEnabled = YES;
-        [self.navigationController pushViewController:[VContentViewController sharedInstance] animated:YES];
+        [self.navigationController pushViewController:self.contentViewController animated:YES];
     }
 }
 

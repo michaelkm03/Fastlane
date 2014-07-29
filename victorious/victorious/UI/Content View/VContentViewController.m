@@ -19,6 +19,10 @@
 
 #import "VCommentsContainerViewController.h"
 
+#import "VHashTagContainerViewController.h"
+
+#import "VHashTagStreamViewController.h"
+
 #import "UIImageView+Blurring.h"
 
 #import "VActionBarViewController.h"
@@ -30,6 +34,7 @@
 #import "VContentToStreamAnimator.h"
 #import "VContentToCommentAnimator.h"
 #import "VContentToInfoAnimator.h"
+#import "VContentToHashTagStreamAnimator.h"
 
 #import "UIActionSheet+VBlocks.h"
 
@@ -59,18 +64,15 @@ NSTimeInterval kVContentPollAnimationDuration = 0.2;
 
 @implementation VContentViewController
 
-+ (VContentViewController *)sharedInstance
+-(id)init
 {
-    static  VContentViewController*   sharedInstance;
-    static  dispatch_once_t         onceToken;
-    dispatch_once(&onceToken,
-    ^{
-        UIViewController*   currentViewController = [[UIApplication sharedApplication] delegate].window.rootViewController;
-        sharedInstance = (VContentViewController*)[currentViewController.storyboard instantiateViewControllerWithIdentifier: kContentViewStoryboardID];
-    });
-    
-    return sharedInstance;
+    UIViewController *currentViewController = [[UIApplication sharedApplication] delegate].window.rootViewController;
+    self = (VContentViewController*)[currentViewController.storyboard instantiateViewControllerWithIdentifier: kContentViewStoryboardID];
+
+    return self;
+
 }
+
 
 - (void)viewDidLoad
 {
@@ -822,6 +824,7 @@ NSTimeInterval kVContentPollAnimationDuration = 0.2;
         
         return animator;
     }
+    
     if (operation == UINavigationControllerOperationPop && [fromVC isKindOfClass:[self class]])
     {
         return [[VContentToStreamAnimator alloc] init];
@@ -1022,6 +1025,15 @@ NSTimeInterval kVContentPollAnimationDuration = 0.2;
 - (void)seeMoreButtonTappedInContentTitleTextView:(VContentTitleTextView *)contentTitleTextView
 {
     [self expandTitleAnimated:YES];
+}
+
+- (void)hashTagButtonTappedInContentTitleTextView:(VContentTitleTextView *)contentTitleTextView withTag:(NSString *)tag
+{
+    VHashTagContainerViewController *container = [[VHashTagContainerViewController alloc] init];
+    container.sequence = self.sequence;
+    container.hashTag = tag;
+    
+    [self.navigationController pushViewController:container animated:YES];
 }
 
 @end

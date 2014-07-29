@@ -6,8 +6,16 @@
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
-#import "VHomeStreamViewController.h"
+#import "VStreamContainerViewController.h"
 
-@interface VHashTagStreamViewController : VHomeStreamViewController
+@class VSequence;
+
+@interface VHashTagStreamViewController : VStreamTableViewController
+
+@property (nonatomic, strong) VSequence *sequence;
+@property (nonatomic, strong) NSString *hashTag;
+-(id)initWithHashTag:(NSString*)hashTag;
+//+ (instancetype)containerForStreamTable:(VStreamTableViewController *)streamTable andHashTag:(NSString*)hashTag;
+
 
 @end

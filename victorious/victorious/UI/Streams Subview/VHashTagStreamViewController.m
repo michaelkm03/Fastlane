@@ -6,44 +6,111 @@
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
+#import "VStreamTableDataSource.h"
 #import "VHashTagStreamViewController.h"
 
-@interface VHashTagStreamViewController ()
+#import "VAnalyticsRecorder.h"
+#import "VConstants.h"
+#import "VStreamTableViewController+ContentCreation.h"
+
+//Cells
+#import "VStreamViewCell.h"
+#import "VStreamPollCell.h"
+
+//ObjectManager
+#import "VObjectManager+Sequence.h"
+#import "VObjectManager+Pagination.h"
+
+//Data Models
+#import "VSequence+RestKit.h"
+#import "VSequence+Fetcher.h"
+#import "VNode+Fetcher.h"
+#import "VAsset.h"
+
+#import "VThemeManager.h"
+
+#import "UIImageView+Blurring.h"
+#import "UIImage+ImageCreation.h"
+
+#import "MBProgressHUD.h"
+
+@interface VHashTagStreamViewController () <UINavigationControllerDelegate>
+@property (weak, nonatomic) IBOutlet UIButton* backButton;
+@property (weak, nonatomic) IBOutlet UILabel* titleLabel;
+
+@property (strong, nonatomic) IBOutlet UIImageView* backgroundImage;
+
 
 @end
-
 @implementation VHashTagStreamViewController
 
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
+-(id)init
 {
-    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
-    if (self) {
-        // Custom initialization
+    return [self initWithHashTag:@""];
+}
+
+-(id)initWithHashTag:(NSString*)hashTag
+{
+    
+    self = [super init];
+    if (self)
+    {
+        UIViewController*   currentViewController = [[UIApplication sharedApplication] delegate].window.rootViewController;
+        self = (VHashTagStreamViewController*)[currentViewController.storyboard instantiateViewControllerWithIdentifier: kHashTagStreamStoryboardID];
+        [self setHashTag:hashTag];
+
     }
     return self;
+}
+
+- (void)setHashTag:(NSString *)hashTag
+{
+    _hashTag = hashTag;
+    
+    self.currentFilter = [[VObjectManager sharedManager] sequenceFilterForHashTag:hashTag];
+    
+    [self refreshWithCompletion:nil];
+}
+
+- (void)setSequence:(VSequence *)sequence
+{
+    _sequence = sequence;
+    
+    [self.backgroundImage removeFromSuperview];
+    UIImageView* newBackgroundView = [[UIImageView alloc] initWithFrame:self.view.frame];
+    
+    UIImage* placeholderImage = [UIImage resizeableImageWithColor:[[VThemeManager sharedThemeManager] themedColorForKey:kVBackgroundColor]];
+    [newBackgroundView setLightBlurredImageWithURL:[[self.sequence initialImageURLs] firstObject]
+                                  placeholderImage:placeholderImage];
+    
+    self.backgroundImage = newBackgroundView;
+    [self.view insertSubview:self.backgroundImage atIndex:0];
 }
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    // Do any additional setup after loading the view.
+    
+    self.view.autoresizingMask = UIViewAutoresizingFlexibleWidth |UIViewAutoresizingFlexibleHeight;
 }
 
-- (void)didReceiveMemoryWarning
+- (void)viewDidAppear:(BOOL)animated
 {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
+    [super viewDidAppear:animated];
+    [[VAnalyticsRecorder sharedAnalyticsRecorder] startAppView:@"Hash Tage Search Stream"];
 }
 
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
+- (void)viewWillDisappear:(BOOL)animated
 {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
+    [super viewWillDisappear:animated];
+    [[VAnalyticsRecorder sharedAnalyticsRecorder] finishAppView];
 }
-*/
+
+- (NSString*)streamName
+{
+    return @"hashtag";
+}
+
+
 
 @end

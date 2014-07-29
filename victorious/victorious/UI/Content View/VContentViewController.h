@@ -41,7 +41,7 @@
 @property (strong, nonatomic) UIImage *leftPollThumbnail;
 @property (strong, nonatomic) UIImage *rightPollThumbnail;
 
-+ (VContentViewController *)sharedInstance;
+//+ (VContentViewController *)sharedInstance;
 
 /**
  Returns the distance, in points, between

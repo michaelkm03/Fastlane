@@ -100,6 +100,12 @@
               
               [RKResponseDescriptor responseDescriptorWithMapping:[VSequence entityMapping]
                                                            method:RKRequestMethodGET
+                                                      pathPattern:@"/api/sequence/detail_list_by_hashtag/:hashtag/:page/:perpage"
+                                                          keyPath:@"payload"
+                                                      statusCodes:RKStatusCodeIndexSetForClass(RKStatusCodeClassSuccessful)],
+              
+              [RKResponseDescriptor responseDescriptorWithMapping:[VSequence entityMapping]
+                                                           method:RKRequestMethodGET
                                                       pathPattern:@"/api/sequence/follows_detail_list_by_stream/:userid/:stream/:page/:perpage"
                                                           keyPath:@"payload"
                                                       statusCodes:RKStatusCodeIndexSetForClass(RKStatusCodeClassSuccessful)],

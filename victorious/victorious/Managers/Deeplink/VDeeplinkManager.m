@@ -119,7 +119,7 @@ static NSString* const kVContentDeeplinkScheme = @"//content/";
     [[VObjectManager sharedManager] fetchSequence:sequenceId
                                      successBlock:^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
      {
-         VContentViewController* contentView = [VContentViewController sharedInstance];
+         VContentViewController* contentView = [[VContentViewController alloc] init];
          VStreamContainerViewController* homeContainer = [VStreamContainerViewController containerForStreamTable:[VHomeStreamViewController sharedInstance]];
          
          VSequence* sequence = (VSequence*)[resultObjects firstObject];
@@ -208,7 +208,7 @@ static NSString* const kVContentDeeplinkScheme = @"//content/";
                                      successBlock:^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
      {
          VCommentsContainerViewController* commentsContainer = [VCommentsContainerViewController commentsContainerView];
-         VContentViewController* contentView = [VContentViewController sharedInstance];
+         VContentViewController* contentView = [[VContentViewController alloc] init];
          VStreamContainerViewController* homeContainer = [VStreamContainerViewController containerForStreamTable:[VHomeStreamViewController sharedInstance]];
          
          VSequence* sequence = (VSequence*)[resultObjects firstObject];

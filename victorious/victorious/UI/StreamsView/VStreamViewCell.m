@@ -13,6 +13,8 @@
 #import "NSDate+timeSince.h"
 #import "VUser.h"
 
+#import "VHashTags.h"
+
 #import "VUserProfileViewController.h"
 
 #import "VSequence+Fetcher.h"
@@ -49,6 +51,8 @@ NSString *kStreamsWillCommentNotification = @"kStreamsWillCommentNotification";
 
 @property (strong, nonatomic) VEphemeralTimerView* ephemeralTimerView;
 
+@property (nonatomic, strong) NSDictionary *hashTags;
+
 @end
 
 @implementation VStreamViewCell
@@ -60,6 +64,8 @@ NSString *kStreamsWillCommentNotification = @"kStreamsWillCommentNotification";
     self.originalHeight = self.frame.size.height;
     
     self.commentViews = [[NSMutableArray alloc] init];
+    
+    self.hashTags = [[NSDictionary alloc] init];
     
     self.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVBackgroundColor];
     
@@ -93,6 +99,13 @@ NSString *kStreamsWillCommentNotification = @"kStreamsWillCommentNotification";
 {
     self.profileImageButton.layer.cornerRadius = CGRectGetHeight(self.profileImageButton.bounds)/2;
     self.profileImageButton.clipsToBounds = YES;
+}
+
+- (NSDictionary *)attributesForCellText
+{
+    return @{ NSFontAttributeName: [[VThemeManager sharedThemeManager] themedFontForKey:kVHeading2Font],
+              NSForegroundColorAttributeName: [[VThemeManager sharedThemeManager] themedColorForKey:kVMainTextColor],
+              };
 }
 
 - (void)setSequence:(VSequence *)sequence
@@ -140,7 +153,14 @@ NSString *kStreamsWillCommentNotification = @"kStreamsWillCommentNotification";
         self.playButtonImage.hidden = YES;
     
     self.usernameLabel.text = self.sequence.user.name;
-    self.descriptionLabel.text = self.sequence.name;
+
+    NSString *text = self.sequence.name;
+    NSMutableAttributedString *newAttributedCellText = [[NSMutableAttributedString alloc] initWithString:text attributes:[self attributesForCellText]];
+    self.hashTags = [VHashTags detectHashTags:text];
+    if ([self.hashTags count] > 0) {
+        newAttributedCellText = [VHashTags formatHashTags:newAttributedCellText withDictionary:self.hashTags];
+    }
+    self.descriptionLabel.attributedText = newAttributedCellText;
     self.dateLabel.text = [self.sequence.releasedAt timeSince];
     [self.commentButton setTitle:self.sequence.commentCount.stringValue forState:UIControlStateNormal];
     

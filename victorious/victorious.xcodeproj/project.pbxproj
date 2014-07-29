@@ -322,6 +322,10 @@
 		BEFE1322196B82BF003B33DC /* VContentInfoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BEFE1321196B82BF003B33DC /* VContentInfoViewController.m */; };
 		BEFE132E196F6B6F003B33DC /* VRealtimeCommentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BEFE132D196F6B6F003B33DC /* VRealtimeCommentViewController.m */; };
 		D1DAAA0B187A43BE009ADCB0 /* VProfileEditViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D1DAAA0A187A43BE009ADCB0 /* VProfileEditViewController.m */; };
+		DB344E01197DD06E006CFAE4 /* VHashTagStreamViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DB344E00197DD06E006CFAE4 /* VHashTagStreamViewController.m */; };
+		DB58EF1D19870A8F00D2A07F /* VContentToHashTagStreamAnimator.m in Sources */ = {isa = PBXBuildFile; fileRef = DB58EF1C19870A8F00D2A07F /* VContentToHashTagStreamAnimator.m */; };
+		DB8D3A0F197EF767005DD36D /* VHashTagContainerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DB8D3A0E197EF767005DD36D /* VHashTagContainerViewController.m */; };
+		DB8D3A1319803A03005DD36D /* VHashTags.m in Sources */ = {isa = PBXBuildFile; fileRef = DB8D3A1219803A03005DD36D /* VHashTags.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -912,6 +916,14 @@
 		BEFE132D196F6B6F003B33DC /* VRealtimeCommentViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VRealtimeCommentViewController.m; path = UI/RealtimeComments/VRealtimeCommentViewController.m; sourceTree = "<group>"; };
 		D1DAAA09187A43BE009ADCB0 /* VProfileEditViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VProfileEditViewController.h; path = UI/VProfileEditViewController.h; sourceTree = "<group>"; };
 		D1DAAA0A187A43BE009ADCB0 /* VProfileEditViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VProfileEditViewController.m; path = UI/VProfileEditViewController.m; sourceTree = "<group>"; };
+		DB344DFF197DD06E006CFAE4 /* VHashTagStreamViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VHashTagStreamViewController.h; path = "UI/Streams Subview/VHashTagStreamViewController.h"; sourceTree = "<group>"; };
+		DB344E00197DD06E006CFAE4 /* VHashTagStreamViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VHashTagStreamViewController.m; path = "UI/Streams Subview/VHashTagStreamViewController.m"; sourceTree = "<group>"; };
+		DB58EF1B19870A8F00D2A07F /* VContentToHashTagStreamAnimator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VContentToHashTagStreamAnimator.h; path = Animations/VContentToHashTagStreamAnimator.h; sourceTree = "<group>"; };
+		DB58EF1C19870A8F00D2A07F /* VContentToHashTagStreamAnimator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VContentToHashTagStreamAnimator.m; path = Animations/VContentToHashTagStreamAnimator.m; sourceTree = "<group>"; };
+		DB8D3A0D197EF767005DD36D /* VHashTagContainerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VHashTagContainerViewController.h; sourceTree = "<group>"; };
+		DB8D3A0E197EF767005DD36D /* VHashTagContainerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VHashTagContainerViewController.m; sourceTree = "<group>"; };
+		DB8D3A1119803A03005DD36D /* VHashTags.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VHashTags.h; sourceTree = "<group>"; };
+		DB8D3A1219803A03005DD36D /* VHashTags.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VHashTags.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -1350,6 +1362,8 @@
 				03D99C1D194A47C8002A6EAB /* VStreamTableDataSource.m */,
 				BEE800E718FCC5C200A7CFD7 /* VStreamTableViewController+ContentCreation.h */,
 				BEE800E818FCC5C200A7CFD7 /* VStreamTableViewController+ContentCreation.m */,
+				DB344DFF197DD06E006CFAE4 /* VHashTagStreamViewController.h */,
+				DB344E00197DD06E006CFAE4 /* VHashTagStreamViewController.m */,
 			);
 			name = Streams;
 			sourceTree = "<group>";
@@ -1433,6 +1447,8 @@
 				5F51F819189AEBF800A546D1 /* VAbstractProfileEditViewController.m */,
 				BE6211AD192D65C300D5C74B /* VTableContainerViewController.h */,
 				BE6211AE192D65C300D5C74B /* VTableContainerViewController.m */,
+				DB8D3A0D197EF767005DD36D /* VHashTagContainerViewController.h */,
+				DB8D3A0E197EF767005DD36D /* VHashTagContainerViewController.m */,
 			);
 			name = "Base Classes";
 			sourceTree = "<group>";
@@ -1760,6 +1776,7 @@
 		BE171DD91868C211004E5202 /* Managers */ = {
 			isa = PBXGroup;
 			children = (
+				DB8D3A10198039BD005DD36D /* HashTags */,
 				BE6464E419511F1B0089A34F /* Deeplink */,
 				BEFA6887194B7CAC005A0189 /* Settings */,
 				035C2D801940F0D10023FC05 /* Analytics */,
@@ -1865,6 +1882,8 @@
 				BEB52A8A18C80B8700AC5FE4 /* VContentToStreamAnimator.m */,
 				BE1A9F14198087700070BB7D /* VContentToInfoAnimator.h */,
 				BE1A9F15198087700070BB7D /* VContentToInfoAnimator.m */,
+				DB58EF1B19870A8F00D2A07F /* VContentToHashTagStreamAnimator.h */,
+				DB58EF1C19870A8F00D2A07F /* VContentToHashTagStreamAnimator.m */,
 			);
 			name = Animations;
 			sourceTree = "<group>";
@@ -2080,6 +2099,15 @@
 				BEFE132D196F6B6F003B33DC /* VRealtimeCommentViewController.m */,
 			);
 			name = RealtimeComments;
+			sourceTree = "<group>";
+		};
+		DB8D3A10198039BD005DD36D /* HashTags */ = {
+			isa = PBXGroup;
+			children = (
+				DB8D3A1119803A03005DD36D /* VHashTags.h */,
+				DB8D3A1219803A03005DD36D /* VHashTags.m */,
+			);
+			path = HashTags;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -2384,6 +2412,7 @@
 				3F14C44F18BD2BD0001796B9 /* VCCamera.m in Sources */,
 				3FA217C318A9B5160066E893 /* DeviceTableViewController.m in Sources */,
 				3FD7FFC118C69B2200945E5F /* VSetExpirationViewController.m in Sources */,
+				DB58EF1D19870A8F00D2A07F /* VContentToHashTagStreamAnimator.m in Sources */,
 				3F91991A187CAF310055FE37 /* VMessageViewController.m in Sources */,
 				BE46E69A18CA751F00974DAF /* VCommentToContentAnimator.m in Sources */,
 				BE448FC919589F9700EB8682 /* VEnterResetTokenViewController.m in Sources */,
@@ -2440,6 +2469,7 @@
 				3F71A7DA18D7C6D20048FF60 /* VRemixSliderLeft.m in Sources */,
 				3F9348A01922C539002EA91F /* VFollowingTableViewController.m in Sources */,
 				3F71A7DC18D7C6D20048FF60 /* VRemixVideoRangeSlider.m in Sources */,
+				DB8D3A1319803A03005DD36D /* VHashTags.m in Sources */,
 				03D638211918488F0084FFC8 /* VServerEnvironmentTableViewController.m in Sources */,
 				038E188C1947DDE900E35719 /* VForceUpgradeAnimatedTransition.m in Sources */,
 				BE185DF118E3B2C2001C447F /* VContentViewController+Images.m in Sources */,
@@ -2483,6 +2513,7 @@
 				3F033874192AE4A500DCD36A /* VLoginTransitionAnimator.m in Sources */,
 				3F71A7D918D7C6D20048FF60 /* VRemixResizableBubble.m in Sources */,
 				BEA5BF5F187F21770014C3EF /* VTableViewCell.m in Sources */,
+				DB344E01197DD06E006CFAE4 /* VHashTagStreamViewController.m in Sources */,
 				BE7B6A8E195C997300A0E80A /* VSettingManager.m in Sources */,
 				3F9B665A18848B750046F826 /* VMessageContainerViewController.m in Sources */,
 				BE24782C193E735A0074191C /* VConversation.m in Sources */,
@@ -2551,6 +2582,7 @@
 				D1DAAA0B187A43BE009ADCB0 /* VProfileEditViewController.m in Sources */,
 				BE2D1E5D19006EAC00C6FF99 /* VStreamToContentAnimator.m in Sources */,
 				BE2E5B751914201A003282A6 /* VObjectManager+ContentCreation.m in Sources */,
+				DB8D3A0F197EF767005DD36D /* VHashTagContainerViewController.m in Sources */,
 				BECEDFD11937A78900FAB9D0 /* VMessage.m in Sources */,
 				BE89D9901921907200D97E7F /* VCommentFilter.m in Sources */,
 				3F91991018761C720055FE37 /* VPrivacyPoliciesViewController.m in Sources */,
