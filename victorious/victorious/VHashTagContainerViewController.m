@@ -102,7 +102,7 @@
 
 - (BOOL)prefersStatusBarHidden
 {
-    return NO;
+    return YES;
 }
 
 - (IBAction)pressedBackButton:(id)sender
