@@ -528,10 +528,16 @@ NSTimeInterval kVContentPollAnimationDuration = 0.2;
     
     _currentAsset = nil; //we changed nodes, so we're not on an asset
     if ([self.currentNode isQuiz])
+    {
+        [self hideRemixButton];
         [self loadQuiz];
+    }
     
     else if ([self.currentNode isPoll])
+    {
+        [self hideRemixButton];
         [self loadPoll];
+    }
     
     else
         [self loadNextAsset];

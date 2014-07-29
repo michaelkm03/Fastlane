@@ -2,7 +2,7 @@
 //  VSequence.h
 //  victorious
 //
-//  Created by Will Long on 5/29/14.
+//  Created by Will Long on 7/28/14.
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
@@ -33,6 +33,8 @@
 @property (nonatomic, retain) NSSet *pollResults;
 @property (nonatomic, retain) VUser *user;
 @property (nonatomic, retain) NSSet *voteResults;
+@property (nonatomic, retain) NSSet *reposters;
+@property (nonatomic, retain) NSSet *remixers;
 @end
 
 @interface VSequence (CoreDataGeneratedAccessors)
@@ -61,5 +63,15 @@
 - (void)removeVoteResultsObject:(VVoteResult *)value;
 - (void)addVoteResults:(NSSet *)values;
 - (void)removeVoteResults:(NSSet *)values;
+
+- (void)addRepostersObject:(VUser *)value;
+- (void)removeRepostersObject:(VUser *)value;
+- (void)addReposters:(NSSet *)values;
+- (void)removeReposters:(NSSet *)values;
+
+- (void)addRemixersObject:(VUser *)value;
+- (void)removeRemixersObject:(VUser *)value;
+- (void)addRemixers:(NSSet *)values;
+- (void)removeRemixers:(NSSet *)values;
 
 @end

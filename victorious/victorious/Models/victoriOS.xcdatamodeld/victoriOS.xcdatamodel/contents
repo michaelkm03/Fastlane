@@ -133,6 +133,8 @@
         <relationship name="filters" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="SequenceFilter" inverseName="sequences" inverseEntity="SequenceFilter" syncable="YES"/>
         <relationship name="nodes" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="Node" inverseName="sequence" inverseEntity="Node" syncable="YES"/>
         <relationship name="pollResults" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="PollResult" inverseName="sequence" inverseEntity="PollResult" syncable="YES"/>
+        <relationship name="remixers" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="User" inverseName="remixedSequences" inverseEntity="User" syncable="YES"/>
+        <relationship name="reposters" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="User" inverseName="repostedSequences" inverseEntity="User" syncable="YES"/>
         <relationship name="user" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="User" inverseName="postedSequences" inverseEntity="User" syncable="YES"/>
         <relationship name="voteResults" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="VoteResult" inverseName="sequence" inverseEntity="VoteResult" syncable="YES"/>
     </entity>
@@ -160,6 +162,8 @@
         <relationship name="messages" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Message" inverseName="user" inverseEntity="Message" syncable="YES"/>
         <relationship name="pollResults" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="PollResult" inverseName="user" inverseEntity="PollResult" syncable="YES"/>
         <relationship name="postedSequences" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Sequence" inverseName="user" inverseEntity="Sequence" syncable="YES"/>
+        <relationship name="remixedSequences" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Sequence" inverseName="remixers" inverseEntity="Sequence" syncable="YES"/>
+        <relationship name="repostedSequences" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Sequence" inverseName="reposters" inverseEntity="Sequence" syncable="YES"/>
         <relationship name="unreadConversation" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="UnreadConversation" inverseName="user" inverseEntity="UnreadConversation" syncable="YES"/>
     </entity>
     <entity name="VoteResult" representedClassName="VVoteResult" syncable="YES">
@@ -188,10 +192,10 @@
         <element name="NodeAction" positionX="835" positionY="-9" width="128" height="90"/>
         <element name="PollResult" positionX="1222" positionY="-45" width="128" height="118"/>
         <element name="Rule" positionX="567" positionY="99" width="128" height="75"/>
-        <element name="Sequence" positionX="1015" positionY="-208" width="128" height="343"/>
+        <element name="Sequence" positionX="1015" positionY="-208" width="128" height="373"/>
         <element name="SequenceFilter" positionX="855" positionY="-274" width="128" height="58"/>
         <element name="UnreadConversation" positionX="1206" positionY="-513" width="128" height="73"/>
-        <element name="User" positionX="1222" positionY="-412" width="128" height="298"/>
+        <element name="User" positionX="1222" positionY="-409" width="128" height="328"/>
         <element name="VoteResult" positionX="864" positionY="99" width="128" height="88"/>
         <element name="VoteType" positionX="504" positionY="-486" width="128" height="103"/>
     </elements>

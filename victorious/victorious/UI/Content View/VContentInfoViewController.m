@@ -8,7 +8,7 @@
 
 #import "VContentInfoViewController.h"
 
-#import "VSequence.h"
+#import "VSequence+Fetcher.h"
 #import "VUser.h"
 
 #import "VThemeManager.h"
@@ -21,7 +21,7 @@ typedef NS_ENUM(NSUInteger, VContentCountType) {
     VCommentCountInfo
 };
 
-@interface VContentInfoViewController () <UITableViewDataSource>
+@interface VContentInfoViewController () <UITableViewDataSource, UITableViewDelegate>
 
 @property (nonatomic, weak) IBOutlet UILabel* nameLabel;
 @property (nonatomic, weak) IBOutlet UILabel* createdByLabel;
@@ -83,6 +83,8 @@ typedef NS_ENUM(NSUInteger, VContentCountType) {
     self.profileImageView.layer.cornerRadius = CGRectGetHeight(self.profileImageView.bounds)/2;
     self.profileImageView.layer.borderWidth = 2.0;
     self.profileImageView.layer.borderColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVAccentColor].CGColor;
+    
+    self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.tableView.frame.size.width, 0)];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -109,6 +111,20 @@ typedef NS_ENUM(NSUInteger, VContentCountType) {
 
 #pragma mark - UITableView
 
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    switch (indexPath.row)
+    {
+        case VRemixCountInfo:
+            if ([self.sequence isPoll])
+                return 0;
+            
+        default:
+            return self.tableView.rowHeight;
+            break;
+    };
+}
+
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
     return 1;
@@ -119,9 +135,11 @@ typedef NS_ENUM(NSUInteger, VContentCountType) {
     return 3;
 }
 
+
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     UITableViewCell* cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"contentinfo"];
+    cell.clipsToBounds = YES;
     
     NSMutableAttributedString* attributedText;
     NSInteger countLength;
