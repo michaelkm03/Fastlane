@@ -25,8 +25,6 @@ else
     DEFAULT_APP_ID_KEY=""
 fi
 
-echo "DEFAULT_APP_ID_KEY: $DEFAULT_APP_ID_KEY"
-
 if [ "$SCHEME" == "" -o "$PROVISIONING_PROFILE_NAME" == "" -o "$CONFIGURATION" == "" ]; then
     echo "Usage: `basename $0` <scheme> <configuration> [app name(s) (optional)]"
     exit 1
