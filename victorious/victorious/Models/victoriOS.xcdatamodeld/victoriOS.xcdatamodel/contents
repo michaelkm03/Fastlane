@@ -123,15 +123,18 @@
         <attribute name="gameStatus" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="isComplete" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="parentUserId" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
         <attribute name="previewImage" optional="YES" attributeType="Transformable" syncable="YES"/>
         <attribute name="releasedAt" optional="YES" attributeType="Date" syncable="YES"/>
         <attribute name="remixCount" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
         <attribute name="remoteId" attributeType="Integer 64" minValueString="0" indexed="YES" syncable="YES"/>
+        <attribute name="repostCount" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
         <attribute name="sequenceDescription" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="status" attributeType="String" syncable="YES"/>
         <relationship name="comments" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="Comment" inverseName="sequence" inverseEntity="Comment" syncable="YES"/>
         <relationship name="filters" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="SequenceFilter" inverseName="sequences" inverseEntity="SequenceFilter" syncable="YES"/>
         <relationship name="nodes" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="Node" inverseName="sequence" inverseEntity="Node" syncable="YES"/>
+        <relationship name="parentUser" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="User" inverseName="childSequences" inverseEntity="User" syncable="YES"/>
         <relationship name="pollResults" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="PollResult" inverseName="sequence" inverseEntity="PollResult" syncable="YES"/>
         <relationship name="remixers" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="User" inverseName="remixedSequences" inverseEntity="User" syncable="YES"/>
         <relationship name="reposters" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="User" inverseName="repostedSequences" inverseEntity="User" syncable="YES"/>
@@ -155,6 +158,7 @@
         <attribute name="tagline" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="token" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="tokenUpdatedAt" optional="YES" attributeType="Date" syncable="YES"/>
+        <relationship name="childSequences" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Sequence" inverseName="parentUser" inverseEntity="Sequence" syncable="YES"/>
         <relationship name="comments" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Comment" inverseName="user" inverseEntity="Comment" syncable="YES"/>
         <relationship name="conversations" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Conversation" inverseName="user" inverseEntity="Conversation" syncable="YES"/>
         <relationship name="followers" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="User" inverseName="following" inverseEntity="User" syncable="YES"/>
@@ -178,25 +182,25 @@
         <attribute name="remoteId" attributeType="Integer 32" minValueString="0" defaultValueString="0" syncable="YES"/>
     </entity>
     <elements>
-        <element name="AbstractFilter" positionX="693" positionY="-558" width="128" height="118"/>
+        <element name="AbstractFilter" positionX="990" positionY="-747" width="128" height="118"/>
         <element name="Answer" positionX="727" positionY="99" width="128" height="193"/>
         <element name="AnswerAction" positionX="718" positionY="330" width="128" height="75"/>
         <element name="Asset" positionX="655" positionY="-360" width="128" height="118"/>
         <element name="Comment" positionX="1035" positionY="-576" width="128" height="298"/>
         <element name="CommentFilter" positionX="862" positionY="-468" width="128" height="58"/>
-        <element name="Conversation" positionX="1395" positionY="-477" width="128" height="118"/>
+        <element name="Conversation" positionX="1530" positionY="-468" width="128" height="118"/>
         <element name="Interaction" positionX="646" positionY="-208" width="128" height="208"/>
         <element name="InteractionAction" positionX="495" positionY="-162" width="128" height="105"/>
-        <element name="Message" positionX="1447" positionY="-280" width="128" height="193"/>
+        <element name="Message" positionX="1582" positionY="-271" width="128" height="193"/>
         <element name="Node" positionX="817" positionY="-180" width="128" height="133"/>
         <element name="NodeAction" positionX="835" positionY="-9" width="128" height="90"/>
-        <element name="PollResult" positionX="1222" positionY="-45" width="128" height="118"/>
+        <element name="PollResult" positionX="1582" positionY="-36" width="128" height="118"/>
         <element name="Rule" positionX="567" positionY="99" width="128" height="75"/>
-        <element name="Sequence" positionX="1015" positionY="-208" width="128" height="373"/>
+        <element name="Sequence" positionX="1060" positionY="-181" width="128" height="418"/>
         <element name="SequenceFilter" positionX="855" positionY="-274" width="128" height="58"/>
-        <element name="UnreadConversation" positionX="1206" positionY="-513" width="128" height="73"/>
-        <element name="User" positionX="1222" positionY="-409" width="128" height="328"/>
-        <element name="VoteResult" positionX="864" positionY="99" width="128" height="88"/>
-        <element name="VoteType" positionX="504" positionY="-486" width="128" height="103"/>
+        <element name="UnreadConversation" positionX="1251" positionY="-459" width="128" height="73"/>
+        <element name="User" positionX="1314" positionY="-342" width="128" height="343"/>
+        <element name="VoteResult" positionX="864" positionY="164" width="128" height="88"/>
+        <element name="VoteType" positionX="666" positionY="-585" width="128" height="103"/>
     </elements>
 </model>

@@ -2,7 +2,7 @@
 //  VUser.m
 //  victorious
 //
-//  Created by Will Long on 7/28/14.
+//  Created by Will Long on 7/29/14.
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
@@ -34,8 +34,9 @@
 @dynamic messages;
 @dynamic pollResults;
 @dynamic postedSequences;
-@dynamic unreadConversation;
-@dynamic repostedSequences;
 @dynamic remixedSequences;
+@dynamic repostedSequences;
+@dynamic unreadConversation;
+@dynamic childSequences;
 
 @end

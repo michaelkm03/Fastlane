@@ -2,7 +2,7 @@
 //  VUser.h
 //  victorious
 //
-//  Created by Will Long on 7/28/14.
+//  Created by Will Long on 7/29/14.
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
@@ -29,9 +29,10 @@
 @property (nonatomic, retain) NSSet *messages;
 @property (nonatomic, retain) NSSet *pollResults;
 @property (nonatomic, retain) NSSet *postedSequences;
-@property (nonatomic, retain) VUnreadConversation *unreadConversation;
-@property (nonatomic, retain) VSequence *repostedSequences;
 @property (nonatomic, retain) NSSet *remixedSequences;
+@property (nonatomic, retain) VSequence *repostedSequences;
+@property (nonatomic, retain) VUnreadConversation *unreadConversation;
+@property (nonatomic, retain) NSSet *childSequences;
 @end
 
 @interface VUser (CoreDataGeneratedAccessors)
@@ -75,5 +76,10 @@
 - (void)removeRemixedSequencesObject:(VSequence *)value;
 - (void)addRemixedSequences:(NSSet *)values;
 - (void)removeRemixedSequences:(NSSet *)values;
+
+- (void)addChildSequencesObject:(VSequence *)value;
+- (void)removeChildSequencesObject:(VSequence *)value;
+- (void)addChildSequences:(NSSet *)values;
+- (void)removeChildSequences:(NSSet *)values;
 
 @end

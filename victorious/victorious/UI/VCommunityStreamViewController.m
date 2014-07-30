@@ -52,7 +52,7 @@
 
 - (NSArray*)sequenceCategories
 {
-    return @[kVUGCPollCategory, kVUGCImageCategory, kVUGCVideoCategory, kVUGCRemixCategory];
+    return VUGCCategories();
 }
 
 @end

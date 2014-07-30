@@ -66,6 +66,9 @@
 "NotFollowingTitle"     =   "RUH-ROH! YOU HAVEN'T FOLLOWED ANYONE YET";
 "NotFollowingMessage"   =   "Follow other people to see their content in your stream. It's a great way to find new content or make new friends.";
 
+"NoRepostersTitle"      =   "BE THE 1st TO REPOST!";
+"NoRepostersMessage"    =   "Share this content with all of your followers!";
+
 "CheckOutContent"       =   "Check out this awesome post!";
 
 "Facebook"              =   "Facebook";
@@ -244,6 +247,10 @@
 "CreatedBy"             =   "CREATED BY";
 "remixes"               =   "remixes";
 "reposts"               =   "reposts";
+"REPOSTS"               =   "REPOSTS";
 "comments"              =   "comments";
+
+"repostedFromFormat"      =   "Repost from %@";
+"remixedFromFormat"       =   "Remix from %@";
 
 "leaveACommentFormat"   =   "Leave a comment at %@";

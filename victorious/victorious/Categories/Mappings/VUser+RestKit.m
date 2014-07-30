@@ -42,8 +42,9 @@
     [mapping addConnectionForRelationship:@"comments" connectedBy:@{@"remoteId" : @"userId"}];
     [mapping addConnectionForRelationship:@"conversations" connectedBy:@{@"remoteId" : @"other_interlocutor_user_id"}];
     [mapping addConnectionForRelationship:@"messages" connectedBy:@{@"remoteId" : @"senderUserId"}];
-//    [mapping addConnectionForRelationship:@"pollResults" connectedBy:@{@"remoteId" : @"other_interlocutor_user_id"}];
+    //    [mapping addConnectionForRelationship:@"pollResults" connectedBy:@{@"remoteId" : @"other_interlocutor_user_id"}];
     [mapping addConnectionForRelationship:@"postedSequences" connectedBy:@{@"remoteId" : @"createdBy"}];
+    [mapping addConnectionForRelationship:@"childSequences" connectedBy:@{@"remoteId" : @"parentUserId"}];
 
     return mapping;
 }
@@ -90,7 +91,7 @@
              [RKResponseDescriptor responseDescriptorWithMapping:[self entityMapping]
                                                           method:RKRequestMethodGET
                                                      pathPattern:@"/api/repost/all/:sequenceId/:page/:perpage"
-                                                         keyPath:@"payload.users"
+                                                         keyPath:@"payload"
                                                      statusCodes:RKStatusCodeIndexSetForClass(RKStatusCodeClassSuccessful)],
 
              [RKResponseDescriptor responseDescriptorWithMapping:[self entityMapping]

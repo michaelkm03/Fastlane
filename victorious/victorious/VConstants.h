@@ -100,15 +100,29 @@ static CGFloat const VConstantsMaximumVideoDuration = 15.0;
 static const CGFloat VConstantJPEGCompressionQuality    = 0.8f;
 
 #pragma mark - Sequence Categories
-static NSString*   const   kVOwnerPollCategory  = @"owner_poll";
-static NSString*   const   kVOwnerImageCategory = @"owner_image";
-static NSString*   const   kVOwnerVideoCategory = @"owner_video";
-static NSString*   const   kVOwnerRemixCategory = @"owner_video_remix";
 
-static NSString*   const   kVUGCPollCategory  = @"ugc_poll";
-static NSString*   const   kVUGCImageCategory = @"ugc_image";
-static NSString*   const   kVUGCVideoCategory = @"ugc_video";
-static NSString*   const   kVUGCRemixCategory = @"ugc_video_remix";
+//NOTE: If you add categories, add them all to the necessary C functions in this section
+static NSString*   const   kVOwnerPollCategory          = @"owner_poll";
+static NSString*   const   kVOwnerImageCategory         = @"owner_image";
+static NSString*   const   kVOwnerImageRepostCategory   = @"owner_image_repost";
+static NSString*   const   kVOwnerVideoCategory         = @"owner_video";
+static NSString*   const   kVOwnerVideoRemixCategory    = @"owner_video_remix";
+static NSString*   const   kVOwnerVideoRepostCategory 	= @"owner_video_repost";
+
+static NSString*   const   kVUGCPollCategory            = @"ugc_poll";
+static NSString*   const   kVUGCImageCategory           = @"ugc_image";
+static NSString*   const   kVUGCImageRepostCategory     = @"ugc_image_repost";
+static NSString*   const   kVUGCVideoCategory           = @"ugc_video";
+static NSString*   const   kVUGCVideoRemixCategory      = @"ugc_video_remix";
+static NSString*   const   kVUGCVideoRepostCategory     = @"ugc_video_repost";
+
+NSArray* VOwnerCategories();
+NSArray* VUGCCategories();
+NSArray* VImageCategories();
+NSArray* VVideoCategories();
+NSArray* VPollCategories();
+NSArray* VRepostCategories();
+NSArray* VRemixCategories();
 
 static NSString*   const   kTemporaryContentStatus = @"temp";
 

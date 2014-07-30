@@ -33,9 +33,11 @@
                                   @"status"         :   VSelectorName(status),
                                   @"is_complete"    :   VSelectorName(isComplete),
                                   @"game_status"    :   VSelectorName(gameStatus),
-                                  @"expires_at"     :   VSelectorName(expiresAt),
-                                  @"sequence_counts.comments"    : VSelectorName(commentCount),
-                                  @"sequence_counts.remixes"      : VSelectorName(remixCount)
+//                                  @"expires_at"     :   VSelectorName(expiresAt),
+                                  @"parent_user_id" :   VSelectorName(parentUserId),
+                                  @"sequence_counts.comments"   : VSelectorName(commentCount),
+                                  @"sequence_counts.remixes"    : VSelectorName(remixCount),
+                                  @"sequence_counts.reposts"    : VSelectorName(repostCount)
                                   };
 
     RKEntityMapping *mapping = [RKEntityMapping
@@ -56,6 +58,7 @@
     [mapping addPropertyMapping:voteResultMapping];
     
     [mapping addConnectionForRelationship:@"user" connectedBy:@{@"createdBy" : @"remoteId"}];
+    [mapping addConnectionForRelationship:@"parentUser" connectedBy:@{@"parentUserId" : @"remoteId"}];
     [mapping addConnectionForRelationship:@"comments" connectedBy:@{@"remoteId" : @"sequenceId"}];
 
     return mapping;
