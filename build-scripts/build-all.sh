@@ -9,7 +9,7 @@
 
 SCHEME=$1
 CONFIGURATION=$2
-PROVISIONING_PROFILE_NAME="Victorious Ad Hoc 1/15/14"
+DEFAULT_PROVISIONING_PROFILE_NAME="Victorious Ad Hoc 1/15/14"
 CODESIGN_ID="iPhone Distribution: Victorious Inc. (82T26U698A)"
 
 shift 2
@@ -25,7 +25,7 @@ else
     DEFAULT_APP_ID_KEY=""
 fi
 
-if [ "$SCHEME" == "" -o "$PROVISIONING_PROFILE_NAME" == "" -o "$CONFIGURATION" == "" ]; then
+if [ "$SCHEME" == "" -o "$CONFIGURATION" == "" ]; then
     echo "Usage: `basename $0` <scheme> <configuration> [app name(s) (optional)]"
     exit 1
 fi
@@ -40,16 +40,16 @@ fi
 # If this step fails or hangs, you may need to store or update the dev center credentials
 # in the keychain. Use the "ios login" command.
 
-ios profiles:download "$PROVISIONING_PROFILE_NAME" --type distribution
+ios profiles:download "$DEFAULT_PROVISIONING_PROFILE_NAME" --type distribution
 
 if [ $? != 0 ]; then
-    echo "Unable to download provisioning profile \"$PROVISIONING_PROFILE_NAME\""
+    echo "Unable to download provisioning profile \"$DEFAULT_PROVISIONING_PROFILE_NAME\""
     exit 1
 fi
 
 PROVISIONING_PROFILE_PATH=$(find . -iname *.mobileprovision -depth 1 -print -quit)
-PROVISIONING_PROFILE_UUID=`/usr/libexec/PlistBuddy -c 'Print :UUID' /dev/stdin <<< $(security cms -D -i "$PROVISIONING_PROFILE_PATH")`
-mv "$PROVISIONING_PROFILE_PATH" "$HOME/Library/MobileDevice/Provisioning Profiles/$PROVISIONING_PROFILE_UUID.mobileprovision"
+DEFAULT_PROVISIONING_PROFILE_UUID=`/usr/libexec/PlistBuddy -c 'Print :UUID' /dev/stdin <<< $(security cms -D -i "$PROVISIONING_PROFILE_PATH")`
+mv "$PROVISIONING_PROFILE_PATH" "$HOME/Library/MobileDevice/Provisioning Profiles/$DEFAULT_PROVISIONING_PROFILE_UUID.mobileprovision"
 
 
 ### Clean products folder
@@ -82,7 +82,7 @@ xcodebuild -workspace victorious.xcworkspace -scheme $SCHEME -destination generi
 ### Build
 
 xcodebuild -workspace victorious.xcworkspace -scheme "$SCHEME" -destination generic/platform=iOS \
-           -archivePath "../victorious.xcarchive" PROVISIONING_PROFILE="$PROVISIONING_PROFILE_UUID" \
+           -archivePath "../victorious.xcarchive" PROVISIONING_PROFILE="$DEFAULT_PROVISIONING_PROFILE_UUID" \
            CODE_SIGN_IDENTITY="$CODESIGN_ID" archive
 BUILDRESULT=$?
 if [ $BUILDRESULT == 0 ]; then
@@ -107,6 +107,25 @@ applyConfiguration(){
     if [ $? != 0 ]; then
         echo "Error applying configuration for $1"
         exit 1
+    fi
+
+    # Copy standard provisioning profile
+    cp "$HOME/Library/MobileDevice/Provisioning Profiles/$DEFAULT_PROVISIONING_PROFILE_UUID.mobileprovision" "victorious.xcarchive/Products/Applications/victorious.app/embedded.mobileprovision"
+
+    # Check for special provisioning profile
+    PLIST_FILE="configurations/$1/codesigning.plist"
+    if [ -e "$PLIST_FILE" ]; then
+        CUSTOM_PROVISIONING_PROFILE=$(/usr/libexec/PlistBuddy -c "Print ProvisioningProfiles:$CONFIGURATION" "$PLIST_FILE")
+        if [ $? == 0 ]; then
+            ios profiles:download "$CUSTOM_PROVISIONING_PROFILE" --type distribution
+            if [ $? != 0 ]; then
+                echo "Unable to download provisioning profile \"$CUSTOM_PROVISIONING_PROFILE\" for app \"$1\""
+                exit 1
+            fi
+            CPP_PATH=$(find . -iname *.mobileprovision -depth 1 -print -quit)
+            CPP_UUID=`/usr/libexec/PlistBuddy -c 'Print :UUID' /dev/stdin <<< $(security cms -D -i "$CPP_PATH")`
+            mv "$CPP_PATH" "victorious.xcarchive/Products/Applications/victorious.app/embedded.mobileprovision"
+        fi
     fi
 
     codesign -f -vvv -s "$CODESIGN_ID" "victorious.xcarchive/Products/Applications/victorious.app"
