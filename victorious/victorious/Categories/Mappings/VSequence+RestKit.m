@@ -33,7 +33,7 @@
                                   @"status"         :   VSelectorName(status),
                                   @"is_complete"    :   VSelectorName(isComplete),
                                   @"game_status"    :   VSelectorName(gameStatus),
-                                  @"expires_at"     :   VSelectorName(expiresAt),
+//                                  @"expires_at"     :   VSelectorName(expiresAt),
                                   @"parent_user_id" :   VSelectorName(parentUserId),
                                   @"sequence_counts.comments"   : VSelectorName(commentCount),
                                   @"sequence_counts.remixes"    : VSelectorName(remixCount),
