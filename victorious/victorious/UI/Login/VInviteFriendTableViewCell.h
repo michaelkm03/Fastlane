@@ -6,6 +6,8 @@
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
+static NSString * const kFollowCellReuseID = @"followerCell";
+
 @class VUser;
 
 @interface VInviteFriendTableViewCell : UITableViewCell

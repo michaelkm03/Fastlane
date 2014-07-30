@@ -8,6 +8,8 @@
 
 #import "VContentInfoViewController.h"
 
+#import "VReposterTableViewController.h"
+
 #import "VSequence+Fetcher.h"
 #import "VUser.h"
 
@@ -90,6 +92,8 @@ typedef NS_ENUM(NSUInteger, VContentCountType) {
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+
+    [self.navigationController setNavigationBarHidden:YES animated:NO];
 }
 
 - (void)setBackgroundImage:(UIImage *)backgroundImage
@@ -156,8 +160,8 @@ typedef NS_ENUM(NSUInteger, VContentCountType) {
             
         case VRepostCountInfo:
             image = [UIImage imageNamed:@"infoRepostIcon"];
-            countLength = self.sequence.remixCount.stringValue.length;
-            attributedText = [[NSMutableAttributedString alloc] initWithString: [[@"0" stringByAppendingString:@" "]
+            countLength = self.sequence.repostCount.stringValue.length;
+            attributedText = [[NSMutableAttributedString alloc] initWithString: [[self.sequence.repostCount.stringValue stringByAppendingString:@" "]
                                                                                  stringByAppendingString:NSLocalizedString(@"reposts", nil)]];
             break;
             
@@ -201,6 +205,7 @@ typedef NS_ENUM(NSUInteger, VContentCountType) {
             break;
             
         case VRepostCountInfo:
+            [self pressedReposts:nil];
             break;
             
         case VCommentCountInfo:
@@ -257,6 +262,13 @@ typedef NS_ENUM(NSUInteger, VContentCountType) {
 {
     if ([self.delegate respondsToSelector:@selector(willCommentFromInfo)])
         [self.delegate willCommentFromInfo];
+}
+
+- (IBAction)pressedReposts:(id)sender
+{
+    VReposterTableViewController* vc = [[VReposterTableViewController alloc] init];
+    vc.sequence = self.sequence;
+    [self.navigationController pushViewController:vc animated:YES];
 }
 
 @end

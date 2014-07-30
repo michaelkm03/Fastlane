@@ -12,8 +12,6 @@
 #import "VNoContentView.h"
 #import "NSArray+VMap.h"
 
-static NSString * const kFollowCellReuseID = @"followerCell";
-
 @interface VFindFriendsTableViewController () <UITableViewDataSource, UITableViewDelegate>
 
 @property (nonatomic, readwrite) VFindFriendsTableViewState  state;

@@ -91,7 +91,7 @@
              [RKResponseDescriptor responseDescriptorWithMapping:[self entityMapping]
                                                           method:RKRequestMethodGET
                                                      pathPattern:@"/api/repost/all/:sequenceId/:page/:perpage"
-                                                         keyPath:@"payload.users"
+                                                         keyPath:@"payload"
                                                      statusCodes:RKStatusCodeIndexSetForClass(RKStatusCodeClassSuccessful)],
 
              [RKResponseDescriptor responseDescriptorWithMapping:[self entityMapping]

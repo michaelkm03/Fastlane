@@ -315,6 +315,7 @@
 		BEF185D9198827FB007FB4BC /* VUser.m in Sources */ = {isa = PBXBuildFile; fileRef = BEF185D8198827FB007FB4BC /* VUser.m */; };
 		BEF185E519883899007FB4BC /* VSequence.m in Sources */ = {isa = PBXBuildFile; fileRef = BEF185E419883899007FB4BC /* VSequence.m */; };
 		BEF185E719884C13007FB4BC /* VConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = BEF185E619884C13007FB4BC /* VConstants.m */; };
+		BEF185EE19887C77007FB4BC /* VReposterTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BEF185ED19887C77007FB4BC /* VReposterTableViewController.m */; };
 		BEF2C29618845EF500AAE975 /* VPollResult+RestKit.m in Sources */ = {isa = PBXBuildFile; fileRef = BEF2C29518845EF500AAE975 /* VPollResult+RestKit.m */; };
 		BEF2C2A5188488C000AAE975 /* VUnreadConversation+RestKit.m in Sources */ = {isa = PBXBuildFile; fileRef = BEF2C2A4188488C000AAE975 /* VUnreadConversation+RestKit.m */; };
 		BEF2C2A818848B3B00AAE975 /* VUnreadConversation.m in Sources */ = {isa = PBXBuildFile; fileRef = BEF2C2A718848B3B00AAE975 /* VUnreadConversation.m */; };
@@ -902,6 +903,8 @@
 		BEF185E319883899007FB4BC /* VSequence.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VSequence.h; sourceTree = "<group>"; };
 		BEF185E419883899007FB4BC /* VSequence.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VSequence.m; sourceTree = "<group>"; };
 		BEF185E619884C13007FB4BC /* VConstants.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VConstants.m; sourceTree = "<group>"; };
+		BEF185EC19887C77007FB4BC /* VReposterTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VReposterTableViewController.h; path = "UI/Content Info/VReposterTableViewController.h"; sourceTree = "<group>"; };
+		BEF185ED19887C77007FB4BC /* VReposterTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VReposterTableViewController.m; path = "UI/Content Info/VReposterTableViewController.m"; sourceTree = "<group>"; };
 		BEF2C29418845EF500AAE975 /* VPollResult+RestKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "VPollResult+RestKit.h"; sourceTree = "<group>"; };
 		BEF2C29518845EF500AAE975 /* VPollResult+RestKit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "VPollResult+RestKit.m"; sourceTree = "<group>"; };
 		BEF2C2A3188488C000AAE975 /* VUnreadConversation+RestKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "VUnreadConversation+RestKit.h"; sourceTree = "<group>"; };
@@ -1289,6 +1292,7 @@
 				3F9B665D188878DB0046F826 /* Login */,
 				3F9B665E188878EC0046F826 /* Menu */,
 				3F9B665F188879060046F826 /* Streams */,
+				BEF185E819887A17007FB4BC /* Content Info */,
 				BED4568918BC4CD700A67160 /* Content View */,
 				BE692B2C186E5FD900C71336 /* Comment View */,
 				3F9B6660188879130046F826 /* Inbox */,
@@ -2048,8 +2052,6 @@
 				BE185DED18E3B255001C447F /* VContentViewController+Videos.m */,
 				BE185DEF18E3B2C2001C447F /* VContentViewController+Images.h */,
 				BE185DF018E3B2C2001C447F /* VContentViewController+Images.m */,
-				BEFE1320196B82BF003B33DC /* VContentInfoViewController.h */,
-				BEFE1321196B82BF003B33DC /* VContentInfoViewController.m */,
 			);
 			name = "Content View";
 			sourceTree = "<group>";
@@ -2081,6 +2083,17 @@
 				BEE9C8BC18CE904B0095C737 /* VAnimation.h */,
 			);
 			name = Protocols;
+			sourceTree = "<group>";
+		};
+		BEF185E819887A17007FB4BC /* Content Info */ = {
+			isa = PBXGroup;
+			children = (
+				BEFE1320196B82BF003B33DC /* VContentInfoViewController.h */,
+				BEFE1321196B82BF003B33DC /* VContentInfoViewController.m */,
+				BEF185EC19887C77007FB4BC /* VReposterTableViewController.h */,
+				BEF185ED19887C77007FB4BC /* VReposterTableViewController.m */,
+			);
+			name = "Content Info";
 			sourceTree = "<group>";
 		};
 		BEFA6887194B7CAC005A0189 /* Settings */ = {
@@ -2566,6 +2579,7 @@
 				838511C418762DF3007E0316 /* VBadgeLabel.m in Sources */,
 				3F9B666818887D910046F826 /* VFetchedResultsTableViewController.m in Sources */,
 				03F80AA419523E3D00E876F7 /* VFacebookManager.m in Sources */,
+				BEF185EE19887C77007FB4BC /* VReposterTableViewController.m in Sources */,
 				BE171E1B1868C211004E5202 /* VUser+RestKit.m in Sources */,
 				03484BF8192D2B4400403FB1 /* VLightboxDismissAnimator.m in Sources */,
 				BE5C736A187E36E800A3340D /* VRule.m in Sources */,
