@@ -147,11 +147,6 @@ static const NSInteger kCharacterLimit = 255;
 
 #pragma mark - UITextViewDelegate methods
 
-- (void)textViewDidEndEditing:(UITextView *)textView
-{
-    //[self sendButtonAction:textView];
-}
-
 - (BOOL)textViewShouldBeginEditing:(UITextView *)textView
 {
     if (![VObjectManager sharedManager].mainUser)
