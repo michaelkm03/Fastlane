@@ -302,7 +302,6 @@
 		BEDF0FBE18DB783200750EF6 /* MuseoSans-100.otf in Resources */ = {isa = PBXBuildFile; fileRef = BEDF0FBB18DB783200750EF6 /* MuseoSans-100.otf */; };
 		BEDF0FBF18DB783200750EF6 /* MuseoSans-300.otf in Resources */ = {isa = PBXBuildFile; fileRef = BEDF0FBC18DB783200750EF6 /* MuseoSans-300.otf */; };
 		BEDF0FC018DB783200750EF6 /* MuseoSans-500.otf in Resources */ = {isa = PBXBuildFile; fileRef = BEDF0FBD18DB783200750EF6 /* MuseoSans-500.otf */; };
-		BEDF0FC318DBC93A00750EF6 /* VAsset.m in Sources */ = {isa = PBXBuildFile; fileRef = BEDF0FC218DBC93A00750EF6 /* VAsset.m */; };
 		BEDF0FC618DBC93B00750EF6 /* VVoteType.m in Sources */ = {isa = PBXBuildFile; fileRef = BEDF0FC518DBC93B00750EF6 /* VVoteType.m */; };
 		BEDF0FC918DBCB5500750EF6 /* VVoteType+Fetcher.m in Sources */ = {isa = PBXBuildFile; fileRef = BEDF0FC818DBCB5500750EF6 /* VVoteType+Fetcher.m */; };
 		BEE415501965FC92001D070C /* UIActivityViewController+VStatusBarHandling.m in Sources */ = {isa = PBXBuildFile; fileRef = BEE4154F1965FC92001D070C /* UIActivityViewController+VStatusBarHandling.m */; };
@@ -310,12 +309,13 @@
 		BEE604C1192D7D84003A0206 /* VInboxContainerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BEE604C0192D7D84003A0206 /* VInboxContainerViewController.m */; };
 		BEE800E918FCC5C200A7CFD7 /* VStreamTableViewController+ContentCreation.m in Sources */ = {isa = PBXBuildFile; fileRef = BEE800E818FCC5C200A7CFD7 /* VStreamTableViewController+ContentCreation.m */; };
 		BEE9C8B618CE4A6B0095C737 /* VPollAnswerBarViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BEE9C8B518CE4A6B0095C737 /* VPollAnswerBarViewController.m */; };
-		BEF09B00197A02670086B542 /* VComment.m in Sources */ = {isa = PBXBuildFile; fileRef = BEF09AFF197A02670086B542 /* VComment.m */; };
 		BEF185D9198827FB007FB4BC /* VUser.m in Sources */ = {isa = PBXBuildFile; fileRef = BEF185D8198827FB007FB4BC /* VUser.m */; };
 		BEF185E519883899007FB4BC /* VSequence.m in Sources */ = {isa = PBXBuildFile; fileRef = BEF185E419883899007FB4BC /* VSequence.m */; };
 		BEF185E719884C13007FB4BC /* VConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = BEF185E619884C13007FB4BC /* VConstants.m */; };
 		BEF185EE19887C77007FB4BC /* VReposterTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BEF185ED19887C77007FB4BC /* VReposterTableViewController.m */; };
 		BEF185F319899702007FB4BC /* victoriOS.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = BEF185F119899702007FB4BC /* victoriOS.xcdatamodeld */; };
+		BEF185F619899A94007FB4BC /* VComment.m in Sources */ = {isa = PBXBuildFile; fileRef = BEF185F519899A94007FB4BC /* VComment.m */; };
+		BEF185F919899A94007FB4BC /* VAsset.m in Sources */ = {isa = PBXBuildFile; fileRef = BEF185F819899A94007FB4BC /* VAsset.m */; };
 		BEF2C29618845EF500AAE975 /* VPollResult+RestKit.m in Sources */ = {isa = PBXBuildFile; fileRef = BEF2C29518845EF500AAE975 /* VPollResult+RestKit.m */; };
 		BEF2C2A5188488C000AAE975 /* VUnreadConversation+RestKit.m in Sources */ = {isa = PBXBuildFile; fileRef = BEF2C2A4188488C000AAE975 /* VUnreadConversation+RestKit.m */; };
 		BEF2C2A818848B3B00AAE975 /* VUnreadConversation.m in Sources */ = {isa = PBXBuildFile; fileRef = BEF2C2A718848B3B00AAE975 /* VUnreadConversation.m */; };
@@ -875,8 +875,6 @@
 		BEDF0FBB18DB783200750EF6 /* MuseoSans-100.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "MuseoSans-100.otf"; sourceTree = "<group>"; };
 		BEDF0FBC18DB783200750EF6 /* MuseoSans-300.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "MuseoSans-300.otf"; sourceTree = "<group>"; };
 		BEDF0FBD18DB783200750EF6 /* MuseoSans-500.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "MuseoSans-500.otf"; sourceTree = "<group>"; };
-		BEDF0FC118DBC93A00750EF6 /* VAsset.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VAsset.h; sourceTree = "<group>"; };
-		BEDF0FC218DBC93A00750EF6 /* VAsset.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VAsset.m; sourceTree = "<group>"; };
 		BEDF0FC418DBC93B00750EF6 /* VVoteType.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VVoteType.h; sourceTree = "<group>"; };
 		BEDF0FC518DBC93B00750EF6 /* VVoteType.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VVoteType.m; sourceTree = "<group>"; };
 		BEDF0FC718DBCB5500750EF6 /* VVoteType+Fetcher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "VVoteType+Fetcher.h"; sourceTree = "<group>"; };
@@ -892,8 +890,6 @@
 		BEE9C8B418CE4A6B0095C737 /* VPollAnswerBarViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VPollAnswerBarViewController.h; path = "UI/Content View/VPollAnswerBarViewController.h"; sourceTree = "<group>"; };
 		BEE9C8B518CE4A6B0095C737 /* VPollAnswerBarViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VPollAnswerBarViewController.m; path = "UI/Content View/VPollAnswerBarViewController.m"; sourceTree = "<group>"; };
 		BEE9C8BC18CE904B0095C737 /* VAnimation.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = VAnimation.h; path = Protocols/VAnimation.h; sourceTree = SOURCE_ROOT; };
-		BEF09AFE197A02670086B542 /* VComment.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VComment.h; sourceTree = "<group>"; };
-		BEF09AFF197A02670086B542 /* VComment.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VComment.m; sourceTree = "<group>"; };
 		BEF185D7198827FB007FB4BC /* VUser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VUser.h; sourceTree = "<group>"; };
 		BEF185D8198827FB007FB4BC /* VUser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VUser.m; sourceTree = "<group>"; };
 		BEF185E319883899007FB4BC /* VSequence.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VSequence.h; sourceTree = "<group>"; };
@@ -902,6 +898,10 @@
 		BEF185EC19887C77007FB4BC /* VReposterTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VReposterTableViewController.h; path = "UI/Content Info/VReposterTableViewController.h"; sourceTree = "<group>"; };
 		BEF185ED19887C77007FB4BC /* VReposterTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VReposterTableViewController.m; path = "UI/Content Info/VReposterTableViewController.m"; sourceTree = "<group>"; };
 		BEF185F219899702007FB4BC /* victoriOS.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = victoriOS.xcdatamodel; sourceTree = "<group>"; };
+		BEF185F419899A94007FB4BC /* VComment.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VComment.h; sourceTree = "<group>"; };
+		BEF185F519899A94007FB4BC /* VComment.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VComment.m; sourceTree = "<group>"; };
+		BEF185F719899A94007FB4BC /* VAsset.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VAsset.h; sourceTree = "<group>"; };
+		BEF185F819899A94007FB4BC /* VAsset.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VAsset.m; sourceTree = "<group>"; };
 		BEF2C29418845EF500AAE975 /* VPollResult+RestKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "VPollResult+RestKit.h"; sourceTree = "<group>"; };
 		BEF2C29518845EF500AAE975 /* VPollResult+RestKit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "VPollResult+RestKit.m"; sourceTree = "<group>"; };
 		BEF2C2A3188488C000AAE975 /* VUnreadConversation+RestKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "VUnreadConversation+RestKit.h"; sourceTree = "<group>"; };
@@ -1792,14 +1792,16 @@
 			isa = PBXGroup;
 			children = (
 				BEF185F119899702007FB4BC /* victoriOS.xcdatamodeld */,
+				BEF185F719899A94007FB4BC /* VAsset.h */,
+				BEF185F819899A94007FB4BC /* VAsset.m */,
+				BEF185F419899A94007FB4BC /* VComment.h */,
+				BEF185F519899A94007FB4BC /* VComment.m */,
 				BE9181E91909D38A0071E7AF /* VSequenceFilter.h */,
 				BE9181EA1909D38A0071E7AF /* VSequenceFilter.m */,
 				BE89ECD919105DB8009DD407 /* VAnswer.h */,
 				BE89ECDA19105DB8009DD407 /* VAnswer.m */,
 				BECEDFCF1937A78900FAB9D0 /* VMessage.h */,
 				BECEDFD01937A78900FAB9D0 /* VMessage.m */,
-				BEF09AFE197A02670086B542 /* VComment.h */,
-				BEF09AFF197A02670086B542 /* VComment.m */,
 				BEF185E319883899007FB4BC /* VSequence.h */,
 				BEF185E419883899007FB4BC /* VSequence.m */,
 				BEF185D7198827FB007FB4BC /* VUser.h */,
@@ -1812,8 +1814,6 @@
 				BE89D98C1921531400D97E7F /* VAbstractFilter.m */,
 				BE6C15231880A31A00469BA8 /* VAnswerAction.h */,
 				BE6C15241880A31A00469BA8 /* VAnswerAction.m */,
-				BEDF0FC118DBC93A00750EF6 /* VAsset.h */,
-				BEDF0FC218DBC93A00750EF6 /* VAsset.m */,
 				BE5C733E187E36CF00A3340D /* VInteraction.h */,
 				BE5C733F187E36CF00A3340D /* VInteraction.m */,
 				BE5DE3F418DA72140047B67E /* VInteractionAction.h */,
@@ -2437,7 +2437,6 @@
 				BE5DE3F618DA72140047B67E /* VInteractionAction.m in Sources */,
 				BE8C6F4F18B56E70009CFB1C /* VStreamPollCell.m in Sources */,
 				3FD7FFAF18BFD6EF00945E5F /* VCameraPublishViewController.m in Sources */,
-				BEDF0FC318DBC93A00750EF6 /* VAsset.m in Sources */,
 				03086AAA18F60E3000105FFB /* VMediaPreviewViewController.m in Sources */,
 				BE6B95FC187C88F700CED4C9 /* VSequence+Fetcher.m in Sources */,
 				BED7F68018E1187800545DF6 /* VEphemeralTimerView.m in Sources */,
@@ -2480,6 +2479,7 @@
 				3F71A7DA18D7C6D20048FF60 /* VRemixSliderLeft.m in Sources */,
 				3F9348A01922C539002EA91F /* VFollowingTableViewController.m in Sources */,
 				3F71A7DC18D7C6D20048FF60 /* VRemixVideoRangeSlider.m in Sources */,
+				BEF185F919899A94007FB4BC /* VAsset.m in Sources */,
 				DB8D3A1319803A03005DD36D /* VHashTags.m in Sources */,
 				03D638211918488F0084FFC8 /* VServerEnvironmentTableViewController.m in Sources */,
 				038E188C1947DDE900E35719 /* VForceUpgradeAnimatedTransition.m in Sources */,
@@ -2497,7 +2497,6 @@
 				BE171D8C1868BE64004E5202 /* VAppDelegate.m in Sources */,
 				5FC4DA671897111B006BA107 /* VLoginViewController.m in Sources */,
 				3FF7B6DD18F4A668003831CD /* VRemixSelectViewController.m in Sources */,
-				BEF09B00197A02670086B542 /* VComment.m in Sources */,
 				03811D31193533D0005687FF /* UIAlertView+VBlocks.m in Sources */,
 				03FDA09C197A093A00405361 /* VPhotoFilter.m in Sources */,
 				0352278319219079003FCD10 /* VVideoDownloadProgressIndicatorView.m in Sources */,
@@ -2613,6 +2612,7 @@
 				BE171E3A1868C266004E5202 /* NSString+VParseHelp.m in Sources */,
 				3F9B666B1888BE6A0046F826 /* VStreamTableViewController.m in Sources */,
 				3FA217E318AD87F40066E893 /* UIImageView+Blurring.m in Sources */,
+				BEF185F619899A94007FB4BC /* VComment.m in Sources */,
 				0350BCEE19804F580072A714 /* VSessionTimer.m in Sources */,
 				BE171E111868C211004E5202 /* VComment+RestKit.m in Sources */,
 				BE171E0E1868C211004E5202 /* VAnswerAction+RestKit.m in Sources */,

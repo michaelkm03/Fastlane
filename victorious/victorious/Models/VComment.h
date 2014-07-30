@@ -2,14 +2,14 @@
 //  VComment.h
 //  victorious
 //
-//  Created by Will Long on 7/18/14.
+//  Created by Will Long on 7/30/14.
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
 #import <Foundation/Foundation.h>
 #import <CoreData/CoreData.h>
 
-@class VCommentFilter, VSequence, VUser;
+@class VAsset, VCommentFilter, VSequence, VUser;
 
 @interface VComment : NSManagedObject
 
@@ -25,11 +25,13 @@
 @property (nonatomic, retain) NSNumber * sequenceId;
 @property (nonatomic, retain) NSString * text;
 @property (nonatomic, retain) NSString * thumbnailUrl;
-@property (nonatomic, retain) NSNumber * userId;
 @property (nonatomic, retain) NSNumber * timeInMedia;
+@property (nonatomic, retain) NSNumber * userId;
+@property (nonatomic, retain) NSNumber * realtime;
 @property (nonatomic, retain) NSSet *filters;
 @property (nonatomic, retain) VSequence *sequence;
 @property (nonatomic, retain) VUser *user;
+@property (nonatomic, retain) VAsset *asset;
 @end
 
 @interface VComment (CoreDataGeneratedAccessors)
