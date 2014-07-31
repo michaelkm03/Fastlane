@@ -30,6 +30,7 @@
 #import "VRealtimeCommentViewController.h"
 
 #import "VObjectManager+Sequence.h"
+#import "VObjectManager+Comment.h"
 #import "VObjectManager+ContentCreation.h"
 
 #import "VContentToStreamAnimator.h"
@@ -130,8 +131,6 @@ NSTimeInterval kVContentPollAnimationDuration = 0.2;
 
 - (void)viewDidAppear:(BOOL)animated
 {
-    self.realtimeCommentVC.comments = [self.currentAsset.comments allObjects];
-    
     [super viewDidAppear:animated];
     [[VAnalyticsRecorder sharedAnalyticsRecorder] startAppView:@"Content"];
     [self.navigationController setNavigationBarHidden:YES animated:NO];
@@ -519,8 +518,6 @@ NSTimeInterval kVContentPollAnimationDuration = 0.2;
                                        tintColor:[[UIColor whiteColor] colorWithAlphaComponent:0.7f]];
     self.descriptionLabel.text = _sequence.name;
     self.currentNode = [sequence firstNode];
-
-    self.realtimeCommentVC.comments = [self.sequence.comments allObjects];
 }
 
 - (void)updateConstraintsForTextSize:(CGFloat)textSize
@@ -690,6 +687,13 @@ NSTimeInterval kVContentPollAnimationDuration = 0.2;
         [self loadImage]; // load the video thumbnail
         [self playVideoAtURL:[NSURL URLWithString:self.currentAsset.data] withPreviewView:self.previewImage];
         [self showRemixButton];
+        
+        [[VObjectManager sharedManager] fetchFiltedRealtimeCommentForAssetId:self.currentAsset.remoteId.integerValue
+                                                                successBlock:^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
+        {
+            self.realtimeCommentVC.comments = [self.currentAsset.comments allObjects];
+        }
+                                                                 failBlock:nil];
     }
     else //Default case: we assume it's an image and hope it works out
     {

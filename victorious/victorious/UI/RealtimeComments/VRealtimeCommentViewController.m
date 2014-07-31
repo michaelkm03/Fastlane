@@ -47,6 +47,8 @@ static const CGFloat kVRealtimeCommentTimeout = 2.0f;
 
 @property (nonatomic)   BOOL didSelectComment;
 
+@property (nonatomic)   BOOL needsCommentLayout;
+
 @end
 
 @implementation VRealtimeCommentViewController
@@ -95,14 +97,15 @@ static const CGFloat kVRealtimeCommentTimeout = 2.0f;
     return currentComment;
 }
 
-#pragma mark - Getters
-
-- (CGFloat)endTime
+#pragma mark - Setters
+- (void)setEndTime:(CGFloat)endTime
 {
-    return (isnan(_endTime) || _endTime == 0) ? CGFLOAT_MAX : _endTime;
+    _endTime = (isnan(_endTime) || _endTime == 0) ? CGFLOAT_MIN : _endTime;
+    
+    if (self.needsCommentLayout && _endTime > 0)
+        self.comments = self.comments;
 }
 
-#pragma mark - Setters
 - (void)setComments:(NSArray *)comments
 {
     for (UIImageView* imageView in self.progressBarImageViews)
@@ -112,6 +115,13 @@ static const CGFloat kVRealtimeCommentTimeout = 2.0f;
     NSSortDescriptor*   sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"realtime" ascending:YES];
     
     _comments = [comments sortedArrayUsingDescriptors:@[sortDescriptor]];
+
+    //If the end time is less than 0 the true endtime has not been set yet.
+    if (self.endTime < 0)
+    {
+        self.needsCommentLayout = YES;
+        return;
+    }
     
     for (VComment* comment in _comments)
     {
@@ -134,7 +144,7 @@ static const CGFloat kVRealtimeCommentTimeout = 2.0f;
         [self.progressBackgroundView addSubview:progressBarImage];
         [self.progressBarImageViews addObject:progressBarImage];
         
-        VLog(@"Frame: %@", NSStringFromCGRect(progressBarImage.frame));
+        VLog(@"Time: %f Frame: %@", startTime, NSStringFromCGRect(progressBarImage.frame));
     }
 }
 

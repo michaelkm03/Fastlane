@@ -78,6 +78,12 @@
               
               [RKResponseDescriptor responseDescriptorWithMapping:[self entityMapping]
                                                            method:RKRequestMethodPOST | RKRequestMethodGET
+                                                      pathPattern:@"/api/comment/all_by_asset_filtered/:asset_id"
+                                                          keyPath:@"payload"
+                                                      statusCodes:RKStatusCodeIndexSetForClass(RKStatusCodeClassSuccessful)],
+              
+              [RKResponseDescriptor responseDescriptorWithMapping:[self entityMapping]
+                                                           method:RKRequestMethodPOST | RKRequestMethodGET
                                                       pathPattern:@"/api/comment/all_by_asset/:asset_id"
                                                           keyPath:@"payload"
                                                       statusCodes:RKStatusCodeIndexSetForClass(RKStatusCodeClassSuccessful)],

@@ -40,6 +40,17 @@
     return comment;
 }
 
+- (RKManagedObjectRequestOperation *)fetchFiltedRealtimeCommentForAssetId:(NSInteger)assetId
+                                                           successBlock:(VSuccessBlock)success
+                                                              failBlock:(VFailBlock)fail
+{
+    return [self GET:[@"/api/comment/all_by_asset_filtered/" stringByAppendingString:@(assetId).stringValue]
+              object:nil
+          parameters:nil
+        successBlock:success
+           failBlock:fail];
+}
+
 
 - (RKManagedObjectRequestOperation *)fetchCommentByID:(NSInteger)commentID
                                          successBlock:(VSuccessBlock)success
