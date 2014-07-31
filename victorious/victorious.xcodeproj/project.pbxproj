@@ -10,6 +10,7 @@
 		03086AA718F38ABE00105FFB /* UIActionSheet+VBlocks.m in Sources */ = {isa = PBXBuildFile; fileRef = 03086AA618F38ABE00105FFB /* UIActionSheet+VBlocks.m */; };
 		03086AAA18F60E3000105FFB /* VMediaPreviewViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 03086AA918F60E3000105FFB /* VMediaPreviewViewController.m */; };
 		03093193197747600035CECA /* MediaPreview.xib in Resources */ = {isa = PBXBuildFile; fileRef = 03093192197747600035CECA /* MediaPreview.xib */; };
+		0310DC4B1989A6AB0092DF50 /* NSString+VStringWithData.m in Sources */ = {isa = PBXBuildFile; fileRef = 0310DC4A1989A6AB0092DF50 /* NSString+VStringWithData.m */; };
 		031D86C41947BBB600CDB814 /* VForceUpgradeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 031D86C21947BBB600CDB814 /* VForceUpgradeViewController.m */; };
 		031D86C51947BBB600CDB814 /* VForceUpgradeViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 031D86C31947BBB600CDB814 /* VForceUpgradeViewController.xib */; };
 		032948AA1970BE2E00208FBA /* Crashlytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 032948A91970BE2E00208FBA /* Crashlytics.framework */; };
@@ -356,6 +357,8 @@
 		03086AA818F60E3000105FFB /* VMediaPreviewViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VMediaPreviewViewController.h; path = UI/CameraViewController/VMediaPreviewViewController.h; sourceTree = "<group>"; };
 		03086AA918F60E3000105FFB /* VMediaPreviewViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VMediaPreviewViewController.m; path = UI/CameraViewController/VMediaPreviewViewController.m; sourceTree = "<group>"; };
 		03093192197747600035CECA /* MediaPreview.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = MediaPreview.xib; path = UI/CameraViewController/MediaPreview.xib; sourceTree = "<group>"; };
+		0310DC491989A6AB0092DF50 /* NSString+VStringWithData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+VStringWithData.h"; sourceTree = "<group>"; };
+		0310DC4A1989A6AB0092DF50 /* NSString+VStringWithData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+VStringWithData.m"; sourceTree = "<group>"; };
 		031D86C11947BBB600CDB814 /* VForceUpgradeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VForceUpgradeViewController.h; sourceTree = "<group>"; };
 		031D86C21947BBB600CDB814 /* VForceUpgradeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VForceUpgradeViewController.m; sourceTree = "<group>"; };
 		031D86C31947BBB600CDB814 /* VForceUpgradeViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VForceUpgradeViewController.xib; sourceTree = "<group>"; };
@@ -1719,6 +1722,8 @@
 				03484BFD192E9D2100403FB1 /* NSLayoutConstraint+CenterConstraints.m */,
 				BE171E371868C266004E5202 /* NSString+VParseHelp.h */,
 				BE171E381868C266004E5202 /* NSString+VParseHelp.m */,
+				0310DC491989A6AB0092DF50 /* NSString+VStringWithData.h */,
+				0310DC4A1989A6AB0092DF50 /* NSString+VStringWithData.m */,
 				83BD06F9186BE4B2007742D1 /* UIImage+ImageEffects.h */,
 				83BD06FA186BE4B2007742D1 /* UIImage+ImageEffects.m */,
 				03F9D284191D77B000576AEE /* UIImage+VSolidColor.h */,
@@ -2610,6 +2615,7 @@
 				BE171E161868C211004E5202 /* VRule+RestKit.m in Sources */,
 				BEFE132E196F6B6F003B33DC /* VRealtimeCommentViewController.m in Sources */,
 				3FF7B6DA18EE477D003831CD /* UIView+Masking.m in Sources */,
+				0310DC4B1989A6AB0092DF50 /* NSString+VStringWithData.m in Sources */,
 				BE185DF518E3BB54001C447F /* VActionBarViewController.m in Sources */,
 				03811D3419353486005687FF /* VAlertViewBlockDelegate.m in Sources */,
 				BE171E1E1868C211004E5202 /* VErrorMessage.m in Sources */,
@@ -2805,7 +2811,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 33ACD3CBAF2C419D97FB901A /* Pods.xcconfig */;
 			buildSettings = {
-				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -2820,7 +2826,7 @@
 					"$(SRCROOT)/3rd\\ Party\\ SDKs/GoogleAnalytics",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE = "0FC270EE-12B6-444A-B426-1D310391A522";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Staging;
@@ -2927,7 +2933,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 33ACD3CBAF2C419D97FB901A /* Pods.xcconfig */;
 			buildSettings = {
-				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -2947,7 +2953,7 @@
 					Reveal,
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE = "0FC270EE-12B6-444A-B426-1D310391A522";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -2956,7 +2962,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 33ACD3CBAF2C419D97FB901A /* Pods.xcconfig */;
 			buildSettings = {
-				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -2971,7 +2977,7 @@
 					"$(SRCROOT)/3rd\\ Party\\ SDKs/GoogleAnalytics",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE = "0FC270EE-12B6-444A-B426-1D310391A522";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;
@@ -3062,8 +3068,8 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 33ACD3CBAF2C419D97FB901A /* Pods.xcconfig */;
 			buildSettings = {
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Distribution";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Victorious Inc. (82T26U698A)";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)/3rd\\ Party\\ SDKs/**",
@@ -3077,7 +3083,7 @@
 					"$(SRCROOT)/3rd\\ Party\\ SDKs/GoogleAnalytics",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE = "0FC270EE-12B6-444A-B426-1D310391A522";
 				WRAPPER_EXTENSION = app;
 			};
 			name = QA;

@@ -6,6 +6,7 @@
 //  Copyright (c) 2013 Victorious Inc. All rights reserved.
 //
 
+#import "NSString+VStringWithData.h"
 #import "VAppDelegate.h"
 #import <TestFlightSDK/TestFlight.h>
 #import "VThemeManager.h"
@@ -69,6 +70,8 @@ static NSString * const kAppInstalledDefaultsKey = @"com.victorious.VAppDelegate
     [[VSessionTimer sharedSessionTimer] start];
     [self reportFirstInstall];
     
+    [[UIApplication sharedApplication] registerForRemoteNotificationTypes:(UIRemoteNotificationTypeAlert | UIRemoteNotificationTypeBadge | UIRemoteNotificationTypeSound)];
+    
     NSURL*  openURL =   launchOptions[UIApplicationLaunchOptionsURLKey];
     if (openURL)
         [[VDeeplinkManager sharedManager] handleOpenURL:openURL];
@@ -105,6 +108,16 @@ static NSString * const kAppInstalledDefaultsKey = @"com.victorious.VAppDelegate
     
     [[VDeeplinkManager sharedManager] handleOpenURL:url];
     return YES;
+}
+
+- (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken
+{
+    NSLog(@"Registered for push notifications with token: %@", [NSString v_stringWithData:deviceToken]);
+}
+
+- (void)application:(UIApplication *)application didFailToRegisterForRemoteNotificationsWithError:(NSError *)error
+{
+    NSLog(@"Error registering for push notifications: %@", [error localizedDescription]);
 }
 
 - (void)applicationWillResignActive:(UIApplication *)application
