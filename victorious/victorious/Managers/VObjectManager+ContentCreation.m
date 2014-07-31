@@ -310,13 +310,13 @@ NSString * const VObjectManagerContentIndexKey                  = @"index";
                                              failBlock:(VFailBlock)fail
 {
     return [self addCommentWithText:text
-                    mediaURL:mediaURL
-                  toSequence:asset.node.sequence
-                       asset:asset
-                   andParent:nil
-                      atTime:time
-                successBlock:success
-                   failBlock:fail];
+                           mediaURL:mediaURL
+                         toSequence:asset.node.sequence
+                              asset:asset
+                          andParent:nil
+                             atTime:time
+                       successBlock:success
+                          failBlock:fail];
 }
 
 - (AFHTTPRequestOperation *)addCommentWithText:(NSString*)text
@@ -331,11 +331,20 @@ NSString * const VObjectManagerContentIndexKey                  = @"index";
                          toSequence:sequence
                               asset:nil
                           andParent:parent
-                             atTime:nil
+                             atTime:@(-1)
                        successBlock:success
                           failBlock:fail];
 }
 
+/**
+ Creates a new comment
+ @param text Text of the comment.  May be nil is media URL is not nil.
+ @param mediaURL URL of media to be posted.  May be nil is text is not nil.
+ @param sequence Sequence that comment was posted on
+ @param asset Asset that comment was posted on
+ @param parent Parent comment that is being replied to
+ @param time Timestamp in seconds to post the realtime comment.  Use negative values for invalid times
+ */
 - (AFHTTPRequestOperation *)addCommentWithText:(NSString*)text
                                       mediaURL:(NSURL*)mediaURL
                                     toSequence:(VSequence*)sequence
@@ -349,14 +358,17 @@ NSString * const VObjectManagerContentIndexKey                  = @"index";
     NSString* type = [extension isEqualToString:VConstantMediaExtensionMOV] || [extension isEqualToString:VConstantMediaExtensionMP4] ? @"video" : @"image";
     NSMutableDictionary* parameters = [@{@"sequence_id" : sequence.remoteId.stringValue ?: [NSNull null],
                                          @"parent_id" : parent.remoteId.stringValue ?: [NSNull null],
-                                         @"asset_id" :   asset.remoteId ?: [NSNull null],
-                                         @"realtime" :  time ?: [NSNull null],
                                          @"text" : text ?: [NSNull null]} mutableCopy];
     NSDictionary *allURLs;
     if (mediaURL && type)
     {
         [parameters setObject:type forKey:@"media_type"];
         allURLs = @{@"media_data":mediaURL};
+    }
+    if (time >= 0 && asset.remoteId)
+    {
+        [parameters setObject:asset.remoteId forKey:@"asset_id"];
+        [parameters setObject:time forKey:@"realtime"];
     }
     
     VSuccessBlock fullSuccess = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)

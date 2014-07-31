@@ -77,7 +77,7 @@ Creates a new realtime comment
  @param text Text of the comment.  May be nil is media URL is not nil.
  @param mediaURL URL of media to be posted.  May be nil is text is not nil.
  @param asset Asset that comment was posted on
- @param timestamp in seconds to post the realtime comment.  Use negative values for invalid times
+ @param time Timestamp in seconds to post the realtime comment.  Use negative values for invalid times
  */
 - (AFHTTPRequestOperation *)addRealtimeCommentWithText:(NSString*)text
                                               mediaURL:(NSURL*)mediaURL
