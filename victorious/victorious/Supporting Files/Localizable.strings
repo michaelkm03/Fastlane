@@ -120,6 +120,10 @@
 
 "Normal"                =   "Normal";
 
+"ClosePreviewConfirm"   =   "Are you sure you want to close the window? Your creation will be lost.";
+"Stay"                  =   "Stay";
+"Close"                 =   "Close";
+
 "PublishUpload"         =   "Your content is being uploaded.";
 
 "PublishSucceeded"      =   "Publish Succeeded";
