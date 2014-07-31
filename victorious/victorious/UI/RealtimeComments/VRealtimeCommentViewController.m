@@ -148,9 +148,8 @@ static const CGFloat kVRealtimeCommentTimeout = 2.0f;
 
         [self.progressBackgroundView addSubview:progressBarImage];
         [self.progressBarImageViews addObject:progressBarImage];
-        
-        VLog(@"Time: %f Frame: %@", startTime, NSStringFromCGRect(progressBarImage.frame));
     }
+    self.needsCommentLayout = NO;
 }
 
 - (void)setCurrentTime:(CGFloat)currentTime

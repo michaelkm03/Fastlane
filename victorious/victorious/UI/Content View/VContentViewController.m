@@ -692,6 +692,7 @@ NSTimeInterval kVContentPollAnimationDuration = 0.2;
                                                                 successBlock:^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
         {
             self.realtimeCommentVC.comments = [self.currentAsset.comments allObjects];
+            [self showRTC];
         }
                                                                  failBlock:nil];
     }

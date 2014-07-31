@@ -9,6 +9,7 @@
 #import "VObjectManager+Comment.h"
 #import "VObjectManager+Private.h"
 #import "VObjectManager+Sequence.h"
+#import "VObjectManager+Users.h"
 
 #import "VUser.h"
 #import "VConstants.h"
@@ -44,13 +45,28 @@
                                                            successBlock:(VSuccessBlock)success
                                                               failBlock:(VFailBlock)fail
 {
+    VSuccessBlock fullSuccess = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
+    {
+        NSMutableArray* nonExistantUsers = [[NSMutableArray alloc] init];
+        for (VComment* comment in resultObjects)
+        {
+            if (!comment.user )
+                [nonExistantUsers addObject:comment.userId];
+        }
+        if ([nonExistantUsers count])
+            [[VObjectManager sharedManager] fetchUsers:nonExistantUsers
+                                      withSuccessBlock:success
+                                             failBlock:fail];
+        else if (success)
+            success(operation, fullResponse, resultObjects);
+    };
+    
     return [self GET:[@"/api/comment/all_by_asset_filtered/" stringByAppendingString:@(assetId).stringValue]
               object:nil
           parameters:nil
-        successBlock:success
+        successBlock:fullSuccess
            failBlock:fail];
 }
-
 
 - (RKManagedObjectRequestOperation *)fetchCommentByID:(NSInteger)commentID
                                          successBlock:(VSuccessBlock)success
