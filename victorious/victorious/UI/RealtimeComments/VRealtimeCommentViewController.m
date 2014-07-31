@@ -58,6 +58,8 @@ static const CGFloat kVRealtimeCommentTimeout = 2.0f;
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     
+    self.endTime = CGFLOAT_MIN;
+    
     UITapGestureRecognizer *commentSelectionRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self
                                                                                                 action:@selector(respondToCommentSelection:)];
     commentSelectionRecognizer.numberOfTapsRequired = 1;
@@ -100,7 +102,10 @@ static const CGFloat kVRealtimeCommentTimeout = 2.0f;
 #pragma mark - Setters
 - (void)setEndTime:(CGFloat)endTime
 {
-    _endTime = (isnan(_endTime) || _endTime == 0) ? CGFLOAT_MIN : _endTime;
+    if (isnan(endTime) || endTime < 1)
+        _endTime = -1;
+    else
+        _endTime = endTime;
     
     if (self.needsCommentLayout && _endTime > 0)
         self.comments = self.comments;
