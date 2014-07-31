@@ -361,24 +361,29 @@ NSString * const VObjectManagerContentIndexKey                  = @"index";
     
     VSuccessBlock fullSuccess = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
     {
-        VComment* tempComment;
+        VComment* newComment;
         
         if ([[resultObjects firstObject] isKindOfClass:[VComment class]])
         {
-            tempComment = [resultObjects firstObject];
+            newComment = [resultObjects firstObject];
         }
         else
         {
             NSDictionary* payload = fullResponse[kVPayloadKey];
             NSNumber* commentID = @([payload[@"id"] integerValue]);
             
-            tempComment = [self newCommentWithID:commentID onSequence:sequence text:text mediaURLPath:[mediaURL absoluteString]];
+            newComment = [self newCommentWithID:commentID onSequence:sequence text:text mediaURLPath:[mediaURL absoluteString]];
             
             [self fetchCommentByID:[payload[@"id"] integerValue] successBlock:nil failBlock:nil];
         }
         
+        if (asset)
+        {
+            [asset addCommentsObject: newComment];
+        }
+        
         if (success)
-            success(operation, fullResponse, @[tempComment]);
+            success(operation, fullResponse, @[newComment]);
     };
     
     return [self uploadURLs:allURLs

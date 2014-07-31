@@ -11,7 +11,7 @@
 #import <Foundation/Foundation.h>
 
 /**
- A formatter for creating strings (e.g. "4:59", "0:04", etc) from CMTime objects
+ A formatter for creating strings (e.g. "4:59", "0:04", etc)
  */
 @interface VElapsedTimeFormatter : NSObject
 
@@ -20,4 +20,8 @@
  */
 - (NSString *)stringForCMTime:(CMTime)time;
 
+/**
+ Returns a string describing the value in the seconds argument.
+ */
+- (NSString*)stringForSeconds:(Float64)seconds;
 @end

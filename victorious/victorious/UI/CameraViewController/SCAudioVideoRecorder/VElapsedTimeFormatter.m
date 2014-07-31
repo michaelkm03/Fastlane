@@ -36,4 +36,29 @@
     }
 }
 
+- (NSString*)stringForSeconds:(Float64)seconds
+{
+    NSString *separator = NSLocalizedString(@"TimeSeparator", @"");
+    
+    if (time >= 0)
+    {
+        Float64 minutes = floor(seconds / 60.0);
+        seconds -= minutes * 60.0;
+        if (minutes >= 60.0)
+        {
+            Float64 hours = floor(minutes / 60.0);
+            minutes -= hours * 60.0;
+            return [NSString stringWithFormat:@"%.0f%@%02.0f%@%02.0f", hours, separator, minutes, separator, round(seconds)];
+        }
+        else
+        {
+            return [NSString stringWithFormat:@"%.0f%@%02.0f", minutes, separator, round(seconds)];
+        }
+    }
+    else
+    {
+        return NSLocalizedString(@"InvalidTimePlaceholder", @"");
+    }
+}
+
 @end

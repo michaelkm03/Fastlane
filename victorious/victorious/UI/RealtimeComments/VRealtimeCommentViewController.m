@@ -23,6 +23,8 @@
 
 #import "UIImage+ImageCreation.h"
 
+#import "VElapsedTimeFormatter.h"
+
 static const CGFloat kVRealtimeCommentTimeout = 2.0f;
 
 @interface VRealtimeCommentViewController ()
@@ -41,6 +43,8 @@ static const CGFloat kVRealtimeCommentTimeout = 2.0f;
 @property (nonatomic, weak) IBOutlet UILabel* nameLabel;
 @property (nonatomic, weak) IBOutlet UILabel* commentLabel;
 
+@property (nonatomic) VElapsedTimeFormatter* timeFormatter;
+
 @property (nonatomic, strong) VComment* currentComment;
 
 @property (nonatomic, strong) NSMutableArray* progressBarImageViews;
@@ -58,7 +62,9 @@ static const CGFloat kVRealtimeCommentTimeout = 2.0f;
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     
-    self.endTime = CGFLOAT_MIN;
+    self.endTime = -1;
+    
+    self.timeFormatter = [[VElapsedTimeFormatter alloc] init];
     
     UITapGestureRecognizer *commentSelectionRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self
                                                                                                 action:@selector(respondToCommentSelection:)];
@@ -202,7 +208,9 @@ static const CGFloat kVRealtimeCommentTimeout = 2.0f;
     
     self.commentLabel.text = currentComment.text;
     
-    NSString* fullString = currentComment.user.name ?: @"";
+    NSString* fullString = [NSString stringWithFormat:NSLocalizedString(@"RTCUserPostedAtSyntax", nil),
+                            currentComment.user.name ?: @"", [self.timeFormatter stringForSeconds:currentComment.realtime.floatValue]];
+    
     NSMutableAttributedString* nameString = [[NSMutableAttributedString alloc] initWithString:fullString];
     [nameString addAttribute:NSForegroundColorAttributeName value: [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor]
                        range:NSMakeRange(0, currentComment.user.name.length)];
