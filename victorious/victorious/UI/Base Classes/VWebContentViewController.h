@@ -8,7 +8,7 @@
 
 @interface VWebContentViewController : UIViewController <UIWebViewDelegate>
 
-@property (nonatomic, strong) NSString*     urlKeyPath;
+@property (nonatomic, strong) NSURL*     urlKeyPath;
 @property (nonatomic, strong) NSString*     htmlString;
 
 @end

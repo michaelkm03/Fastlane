@@ -32,8 +32,7 @@
     }
     else if (self.urlKeyPath)
     {
-        NSURL*  webContentURL  =   [[VThemeManager sharedThemeManager] themedURLForKey:self.urlKeyPath];
-        [self.webView loadRequest:[NSURLRequest requestWithURL:webContentURL]];
+        [self.webView loadRequest:[NSURLRequest requestWithURL:self.urlKeyPath]];
     }
 }
 

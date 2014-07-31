@@ -189,7 +189,7 @@ static const NSInteger kServerEnvironmentButtonIndex = 3;
     }
     else if ([segue.identifier isEqualToString:@"toPrivacyPolicies"])
     {
-        viewController.urlKeyPath = [[VSettingManager sharedManager] urlForKey:kVPrivacyUrl].absoluteString;
+        viewController.urlKeyPath = [[VSettingManager sharedManager] urlForKey:kVPrivacyUrl];
     }
 }
 
