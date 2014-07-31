@@ -30,6 +30,7 @@
 #import "VRealtimeCommentViewController.h"
 
 #import "VObjectManager+Sequence.h"
+#import "VObjectManager+ContentCreation.h"
 
 #import "VContentToStreamAnimator.h"
 #import "VContentToCommentAnimator.h"
@@ -60,6 +61,11 @@ NSTimeInterval kVContentPollAnimationDuration = 0.2;
 @property (nonatomic) BOOL keyboardOverlapsMedia;
 @property (nonatomic) BOOL isShowingKeyboard;
 
+@property (nonatomic) BOOL willComment; ///<Set to true when the comment button was pressed in info vc;
+@property (nonatomic) BOOL willClose; ///<Set to true when the close button was pressed in info vc;
+
+@property (nonatomic) NSInteger commentTime;
+
 @end
 
 @implementation VContentViewController
@@ -70,7 +76,6 @@ NSTimeInterval kVContentPollAnimationDuration = 0.2;
     self = (VContentViewController*)[currentViewController.storyboard instantiateViewControllerWithIdentifier: kContentViewStoryboardID];
 
     return self;
-
 }
 
 
@@ -82,6 +87,8 @@ NSTimeInterval kVContentPollAnimationDuration = 0.2;
     
     self.mediaSuperview.translatesAutoresizingMaskIntoConstraints = YES; // these two views need to opt-out of Auto Layout.
     self.mediaView.translatesAutoresizingMaskIntoConstraints = YES;      // their frames are set in -layoutMediaSuperview.
+    
+    self.commentTime = -1;
 
     UIView *maskingView = self.maskingView;
     [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[maskingView]|" options:0 metrics:nil views:NSDictionaryOfVariableBindings(maskingView)]];
@@ -123,8 +130,7 @@ NSTimeInterval kVContentPollAnimationDuration = 0.2;
 
 - (void)viewDidAppear:(BOOL)animated
 {
-#warning remove this, its hacky demo code so the comments will be reloaded when coming back from comments view
-    self.realtimeCommentVC.comments = [self.sequence.comments allObjects];
+    self.realtimeCommentVC.comments = [self.currentAsset.comments allObjects];
     
     [super viewDidAppear:animated];
     [[VAnalyticsRecorder sharedAnalyticsRecorder] startAppView:@"Content"];
@@ -142,6 +148,17 @@ NSTimeInterval kVContentPollAnimationDuration = 0.2;
     {
         [[VAnalyticsRecorder sharedAnalyticsRecorder] sendEventWithCategory:kVAnalyticsEventCategoryNavigation action:@"Show Content" label:self.sequence.name value:nil];
         [self updateActionBar];
+    }
+    
+    if (self.willComment)
+    {
+        self.willComment = NO;
+        [self goToCommentView];
+    }
+    else if (self.willClose)
+    {
+        self.willClose = NO;
+        [self.navigationController popViewControllerAnimated:YES];
     }
 }
 
@@ -718,6 +735,8 @@ NSTimeInterval kVContentPollAnimationDuration = 0.2;
     {
         self.keyboardBarContainer.hidden = NO;
         self.keyboardBarContainer.alpha = 0;
+        
+        self.commentTime = CMTIME_IS_VALID(self.videoPlayer.currentTime) ? CMTimeGetSeconds(self.videoPlayer.currentTime) : -1;
         self.keyboardBarVC.promptLabel.text = [NSString stringWithFormat:NSLocalizedString(@"leaveACommentFormat", nil),
                                                [self.timeFormatter stringForCMTime:self.videoPlayer.currentTime]];
 
@@ -788,17 +807,12 @@ NSTimeInterval kVContentPollAnimationDuration = 0.2;
 #pragma mark - VContentInfoDelegate
 - (void)didCloseFromInfo
 {
-//    [self.navigationController popViewControllerAnimated:YES];
-    [self.navigationController popViewControllerAnimated:YES];
+    self.willClose = YES;
 }
 
 - (void)willCommentFromInfo
 {
-    [self dismissViewControllerAnimated:YES
-                             completion:
-     ^{
-         [self goToCommentView];
-     }];
+    self.willComment = YES;
 }
 #pragma mark - VInteractionManagerDelegate
 - (void)firedInteraction:(VInteraction*)interaction
@@ -945,7 +959,22 @@ NSTimeInterval kVContentPollAnimationDuration = 0.2;
 - (void)keyboardBar:(VKeyboardBarViewController *)keyboardBar didComposeWithText:(NSString *)text mediaURL:(NSURL *)mediaURL
 {
     [self didCancelKeyboardBar:keyboardBar];
-#warning this should probably post to server
+    
+    [[VObjectManager sharedManager] addRealtimeCommentWithText:text
+                                                      mediaURL:mediaURL
+                                                       toAsset:self.currentAsset
+                                                        atTime:@(self.commentTime)
+                                                  successBlock:^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
+    {
+        VLog(@"Succeeded with objects: %@", resultObjects);
+        self.realtimeCommentVC.comments = [self.currentAsset.comments allObjects];
+    }
+                                                     failBlock:^(NSOperation* operation, NSError* error)
+    {
+        VLog(@"Failed with error: %@", error);
+    }];
+    
+    self.commentTime = -1;
 }
 
 - (void)didCancelKeyboardBar:(VKeyboardBarViewController *)keyboardBar

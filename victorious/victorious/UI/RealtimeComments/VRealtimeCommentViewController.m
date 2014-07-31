@@ -86,7 +86,7 @@ static const CGFloat kVRealtimeCommentTimeout = 2.0f;
     VComment* currentComment;
     for (VComment* comment in self.comments)
     {
-        CGFloat startTime = comment.timeInMedia.floatValue;
+        CGFloat startTime = comment.realtime.floatValue;
         if (startTime < time && time-startTime < kVRealtimeCommentTimeout)
             currentComment = comment;
         else if (startTime > time)
@@ -109,23 +109,13 @@ static const CGFloat kVRealtimeCommentTimeout = 2.0f;
         [imageView removeFromSuperview];
     [self.progressBarImageViews removeAllObjects];
     
-    #warning replace this with real start time
-    for (VComment* comment in comments)
-    {
-        if (comment.timeInMedia.floatValue <= 0.0f || comment.timeInMedia.floatValue > self.endTime)
-        {
-            CGFloat startTime = self.endTime * drand48();
-            comment.timeInMedia = @(startTime);
-        }
-    }
-    
-    NSSortDescriptor*   sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"timeInMedia" ascending:YES];
+    NSSortDescriptor*   sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"realtime" ascending:YES];
     
     _comments = [comments sortedArrayUsingDescriptors:@[sortDescriptor]];
     
     for (VComment* comment in _comments)
     {
-        CGFloat startTime = comment.timeInMedia.floatValue;
+        CGFloat startTime = comment.realtime.floatValue;
         
         CGFloat imageHeight = self.progressBackgroundView.frame.size.height * .75;
         UIImageView* progressBarImage = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, imageHeight, imageHeight)];

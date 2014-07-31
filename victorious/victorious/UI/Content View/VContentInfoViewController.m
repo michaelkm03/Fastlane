@@ -251,6 +251,8 @@ typedef NS_ENUM(NSUInteger, VContentCountType) {
 {
     if ([self.delegate respondsToSelector:@selector(didCloseFromInfo)])
         [self.delegate didCloseFromInfo];
+
+    [self.navigationController popViewControllerAnimated:YES];
 }
 
 - (IBAction)pressedFlip:(id)sender
@@ -262,6 +264,8 @@ typedef NS_ENUM(NSUInteger, VContentCountType) {
 {
     if ([self.delegate respondsToSelector:@selector(willCommentFromInfo)])
         [self.delegate willCommentFromInfo];
+    
+    [self.navigationController popViewControllerAnimated:YES];
 }
 
 - (IBAction)pressedReposts:(id)sender

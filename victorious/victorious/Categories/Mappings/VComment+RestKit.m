@@ -30,7 +30,9 @@
                                   @"dislikes" : VSelectorName(dislikes),
                                   @"flags" : VSelectorName(flags),
                                   @"posted_at" : VSelectorName(postedAt),
-                                  @"thumbnail_url" : VSelectorName(thumbnailUrl)
+                                  @"thumbnail_url" : VSelectorName(thumbnailUrl),
+                                  @"realtime" : VSelectorName(realtime),
+                                  @"asset_id" : VSelectorName(assetId)
                                   };
 
     RKEntityMapping *mapping = [RKEntityMapping
@@ -42,47 +44,56 @@
     [mapping addAttributeMappingsFromDictionary:propertyMap];
 
     [mapping addConnectionForRelationship:@"user" connectedBy:@{@"userId" : @"remoteId"}];
+    [mapping addConnectionForRelationship:@"asset" connectedBy:@{@"assetId" : @"remoteId"}];
     [mapping addConnectionForRelationship:@"sequence" connectedBy:@{@"sequenceId" : @"remoteId"}];
 
     return mapping;
 }
 
-+ (RKResponseDescriptor*)descriptor
++ (NSArray*)descriptors
 {
-    return [RKResponseDescriptor responseDescriptorWithMapping:[self entityMapping]
+    return @[ [RKResponseDescriptor responseDescriptorWithMapping:[self entityMapping]
                                                         method:RKRequestMethodPOST | RKRequestMethodGET
                                                    pathPattern:@"/api/comment/:apicall"
                                                        keyPath:@"payload"
-                                                   statusCodes:RKStatusCodeIndexSetForClass(RKStatusCodeClassSuccessful)];
+                                                   statusCodes:RKStatusCodeIndexSetForClass(RKStatusCodeClassSuccessful)],
+               
+               [RKResponseDescriptor responseDescriptorWithMapping:[self entityMapping]
+                                                            method:RKRequestMethodGET
+                                                       pathPattern:@"/api/comment/fetch/:commentid"
+                                                           keyPath:@"payload"
+                                                       statusCodes:RKStatusCodeIndexSetForClass(RKStatusCodeClassSuccessful)],
+              
+              [RKResponseDescriptor responseDescriptorWithMapping:[self entityMapping]
+                                                           method:RKRequestMethodPOST | RKRequestMethodGET
+                                                      pathPattern:@"/api/comment/all/:sequenceid"
+                                                          keyPath:@"payload"
+                                                      statusCodes:RKStatusCodeIndexSetForClass(RKStatusCodeClassSuccessful)],
+              
+              [RKResponseDescriptor responseDescriptorWithMapping:[self entityMapping]
+                                                           method:RKRequestMethodPOST | RKRequestMethodGET
+                                                      pathPattern:@"/api/comment/all/:sequenceid/:page/:perpage"
+                                                          keyPath:@"payload"
+                                                      statusCodes:RKStatusCodeIndexSetForClass(RKStatusCodeClassSuccessful)],
+              
+              [RKResponseDescriptor responseDescriptorWithMapping:[self entityMapping]
+                                                           method:RKRequestMethodPOST | RKRequestMethodGET
+                                                      pathPattern:@"/api/comment/all_by_asset/:asset_id"
+                                                          keyPath:@"payload"
+                                                      statusCodes:RKStatusCodeIndexSetForClass(RKStatusCodeClassSuccessful)],
+              
+              [RKResponseDescriptor responseDescriptorWithMapping:[self entityMapping]
+                                                           method:RKRequestMethodPOST | RKRequestMethodGET
+                                                      pathPattern:@"/api/comment/all_by_asset/:asset_id/:page/:perpage"
+                                                          keyPath:@"payload"
+                                                      statusCodes:RKStatusCodeIndexSetForClass(RKStatusCodeClassSuccessful)],
+              
+              [RKResponseDescriptor responseDescriptorWithMapping:[self entityMapping]
+                                                           method:RKRequestMethodPOST | RKRequestMethodGET
+                                                      pathPattern:@"/api/comment/add"
+                                                          keyPath:@"payload"
+                                                      statusCodes:RKStatusCodeIndexSetForClass(RKStatusCodeClassSuccessful)]
+               ];
 }
-
-+ (RKResponseDescriptor*)fetchDescriptor
-{
-    return [RKResponseDescriptor responseDescriptorWithMapping:[self entityMapping]
-                                                        method:RKRequestMethodGET
-                                                   pathPattern:@"/api/comment/fetch/:commentid"
-                                                       keyPath:@"payload"
-                                                   statusCodes:RKStatusCodeIndexSetForClass(RKStatusCodeClassSuccessful)];
-}
-
-
-+ (RKResponseDescriptor*)getAllDescriptor
-{
-    return [RKResponseDescriptor responseDescriptorWithMapping:[self entityMapping]
-                                                        method:RKRequestMethodPOST | RKRequestMethodGET
-                                                   pathPattern:@"/api/comment/all/:sequenceid"
-                                                       keyPath:@"payload"
-                                                   statusCodes:RKStatusCodeIndexSetForClass(RKStatusCodeClassSuccessful)];
-}
-
-+ (RKResponseDescriptor*)getAllPaginationDescriptor
-{
-    return [RKResponseDescriptor responseDescriptorWithMapping:[self entityMapping]
-                                                        method:RKRequestMethodPOST | RKRequestMethodGET
-                                                   pathPattern:@"/api/comment/all/:sequenceid/:page/:perpage"
-                                                       keyPath:@"payload"
-                                                   statusCodes:RKStatusCodeIndexSetForClass(RKStatusCodeClassSuccessful)];
-}
-
 
 @end

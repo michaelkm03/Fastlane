@@ -99,13 +99,11 @@
     [self addResponseDescriptorsFromArray:[VSequence descriptors]];
     [self addResponseDescriptorsFromArray:[VConversation descriptors]];
     [self addResponseDescriptorsFromArray:[VMessage descriptors]];
+    [self addResponseDescriptorsFromArray:[VComment descriptors]];
+    
     [self addResponseDescriptorsFromArray: @[errorDescriptor,
                                              verrorDescriptor,
                                              
-                                             [VComment descriptor],
-                                             [VComment getAllDescriptor],
-                                             [VComment getAllPaginationDescriptor],
-                                             [VComment fetchDescriptor],
                                              [VPollResult descriptor],
                                              [VPollResult createPollResultDescriptor],
                                              [VPollResult byUserDescriptor],

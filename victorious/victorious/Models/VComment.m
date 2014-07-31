@@ -1,9 +1,9 @@
 //
 //  VComment.m
-//  victorious
+//  Pods
 //
 //  Created by Will Long on 7/30/14.
-//  Copyright (c) 2014 Victorious. All rights reserved.
+//
 //
 
 #import "VComment.h"
@@ -27,9 +27,9 @@
 @dynamic sequenceId;
 @dynamic text;
 @dynamic thumbnailUrl;
-@dynamic timeInMedia;
 @dynamic userId;
 @dynamic realtime;
+@dynamic assetId;
 @dynamic filters;
 @dynamic sequence;
 @dynamic user;

@@ -33,6 +33,7 @@
         <relationship name="node" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Node" inverseName="assets" inverseEntity="Node" syncable="YES"/>
     </entity>
     <entity name="Comment" representedClassName="VComment" syncable="YES">
+        <attribute name="assetId" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
         <attribute name="dislikes" optional="YES" attributeType="Integer 32" minValueString="0" syncable="YES"/>
         <attribute name="display_order" attributeType="Integer 32" minValueString="0" syncable="YES"/>
         <attribute name="flags" optional="YES" attributeType="Integer 32" minValueString="0" syncable="YES"/>
@@ -46,7 +47,6 @@
         <attribute name="sequenceId" attributeType="Integer 64" minValueString="0" syncable="YES"/>
         <attribute name="text" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="thumbnailUrl" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="timeInMedia" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
         <attribute name="userId" attributeType="Integer 64" minValueString="0" syncable="YES"/>
         <relationship name="asset" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Asset" inverseName="comments" inverseEntity="Asset" syncable="YES"/>
         <relationship name="filters" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="CommentFilter" inverseName="comments" inverseEntity="CommentFilter" syncable="YES"/>

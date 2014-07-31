@@ -9,7 +9,7 @@
 #import "VObjectManager.h"
 #import "VConstants.h"
 
-@class VSequence, VComment, VConversation;
+@class VSequence, VComment, VConversation, VAsset;
 
 typedef void (^VRemixCompletionBlock) (BOOL completion, NSURL* remixMp4Url, NSError* error);
 
@@ -71,6 +71,20 @@ extern NSString * const VObjectManagerContentIndexKey;
                                   successBlock:(VSuccessBlock)success
                                      failBlock:(VFailBlock)fail;
 
+
+/**
+Creates a new realtime comment
+ @param text Text of the comment.  May be nil is media URL is not nil.
+ @param mediaURL URL of media to be posted.  May be nil is text is not nil.
+ @param asset Asset that comment was posted on
+ @param timestamp in seconds to post the realtime comment.  Use negative values for invalid times
+ */
+- (AFHTTPRequestOperation *)addRealtimeCommentWithText:(NSString*)text
+                                              mediaURL:(NSURL*)mediaURL
+                                                toAsset:(VAsset*)asset
+                                                atTime:(NSNumber*)time
+                                          successBlock:(VSuccessBlock)success
+                                             failBlock:(VFailBlock)fail;
 
 - (AFHTTPRequestOperation *)sendMessageToConversation:(VConversation*)conversation
                                              withText:(NSString*)text

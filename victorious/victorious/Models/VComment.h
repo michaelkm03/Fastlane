@@ -1,9 +1,9 @@
 //
 //  VComment.h
-//  victorious
+//  Pods
 //
 //  Created by Will Long on 7/30/14.
-//  Copyright (c) 2014 Victorious. All rights reserved.
+//
 //
 
 #import <Foundation/Foundation.h>
@@ -25,9 +25,9 @@
 @property (nonatomic, retain) NSNumber * sequenceId;
 @property (nonatomic, retain) NSString * text;
 @property (nonatomic, retain) NSString * thumbnailUrl;
-@property (nonatomic, retain) NSNumber * timeInMedia;
 @property (nonatomic, retain) NSNumber * userId;
 @property (nonatomic, retain) NSNumber * realtime;
+@property (nonatomic, retain) NSNumber * assetId;
 @property (nonatomic, retain) NSSet *filters;
 @property (nonatomic, retain) VSequence *sequence;
 @property (nonatomic, retain) VUser *user;

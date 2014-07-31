@@ -21,7 +21,8 @@
                                   @"node_id" : VSelectorName(nodeId),
                                   @"display_order" : VSelectorName(display_order),
                                   @"type" : VSelectorName(type),
-                                  @"data" : VSelectorName(data)
+                                  @"data" : VSelectorName(data),
+                                  @"asset_id" : VSelectorName(remoteId)
                                   };
     
     RKEntityMapping *mapping = [RKEntityMapping
@@ -31,6 +32,8 @@
     mapping.identificationAttributes = @[ VSelectorName(display_order), VSelectorName(nodeId) ];
     
     [mapping addAttributeMappingsFromDictionary:propertyMap];
+
+    [mapping addConnectionForRelationship:@"comments" connectedBy:@{@"remoteId" : @"assetId"}];
     
     return mapping;
 }

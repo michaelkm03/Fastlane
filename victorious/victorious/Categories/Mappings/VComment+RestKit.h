@@ -11,9 +11,6 @@
 
 @interface VComment (RestKit)
 
-+ (RKResponseDescriptor*)descriptor;
-+ (RKResponseDescriptor*)getAllDescriptor;
-+ (RKResponseDescriptor*)getAllPaginationDescriptor;
-+ (RKResponseDescriptor*)fetchDescriptor;
++ (NSArray*)descriptors;
 
 @end

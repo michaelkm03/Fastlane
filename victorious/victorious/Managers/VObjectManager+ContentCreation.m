@@ -26,6 +26,7 @@
 #import "VSequenceFilter.h"
 #import "VCommentFilter.h"
 #import "VComment.h"
+#import "VAsset.h"
 #import "VMessage+RestKit.h"
 #import "VConversation.h"
 #import "VUser+Fetcher.h"
@@ -301,6 +302,23 @@ NSString * const VObjectManagerContentIndexKey                  = @"index";
 
 #pragma mark - Comment
 
+- (AFHTTPRequestOperation *)addRealtimeCommentWithText:(NSString*)text
+                                              mediaURL:(NSURL*)mediaURL
+                                                toAsset:(VAsset *)asset
+                                                atTime:(NSNumber*)time
+                                          successBlock:(VSuccessBlock)success
+                                             failBlock:(VFailBlock)fail
+{
+    return [self addCommentWithText:text
+                    mediaURL:mediaURL
+                  toSequence:asset.node.sequence
+                       asset:asset
+                   andParent:nil
+                      atTime:time
+                successBlock:success
+                   failBlock:fail];
+}
+
 - (AFHTTPRequestOperation *)addCommentWithText:(NSString*)text
                                       mediaURL:(NSURL*)mediaURL
                                     toSequence:(VSequence*)sequence
@@ -308,10 +326,31 @@ NSString * const VObjectManagerContentIndexKey                  = @"index";
                                   successBlock:(VSuccessBlock)success
                                      failBlock:(VFailBlock)fail
 {
+    return [self addCommentWithText:text
+                           mediaURL:mediaURL
+                         toSequence:sequence
+                              asset:nil
+                          andParent:parent
+                             atTime:nil
+                       successBlock:success
+                          failBlock:fail];
+}
+
+- (AFHTTPRequestOperation *)addCommentWithText:(NSString*)text
+                                      mediaURL:(NSURL*)mediaURL
+                                    toSequence:(VSequence*)sequence
+                                         asset:(VAsset*)asset
+                                     andParent:(VComment*)parent
+                                        atTime:(NSNumber*)time
+                                  successBlock:(VSuccessBlock)success
+                                     failBlock:(VFailBlock)fail
+{
     NSString* extension = [[mediaURL pathExtension] lowercaseStringWithLocale:[NSLocale localeWithLocaleIdentifier:@"en_US_POSIX"]];
     NSString* type = [extension isEqualToString:VConstantMediaExtensionMOV] || [extension isEqualToString:VConstantMediaExtensionMP4] ? @"video" : @"image";
     NSMutableDictionary* parameters = [@{@"sequence_id" : sequence.remoteId.stringValue ?: [NSNull null],
                                          @"parent_id" : parent.remoteId.stringValue ?: [NSNull null],
+                                         @"asset_id" :   asset.remoteId ?: [NSNull null],
+                                         @"realtime" :  time ?: [NSNull null],
                                          @"text" : text ?: [NSNull null]} mutableCopy];
     NSDictionary *allURLs;
     if (mediaURL && type)
@@ -322,15 +361,21 @@ NSString * const VObjectManagerContentIndexKey                  = @"index";
     
     VSuccessBlock fullSuccess = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
     {
+        VComment* tempComment;
         
-        NSDictionary* payload = fullResponse[kVPayloadKey];
-        NSNumber* commentID = @([payload[@"id"] integerValue]);
-        
-        VComment* tempComment = [self newCommentWithID:commentID onSequence:sequence text:text mediaURLPath:[mediaURL absoluteString]];
-        
-        [self fetchCommentByID:[payload[@"id"] integerValue]
-                  successBlock:nil
-                     failBlock:nil];
+        if ([[resultObjects firstObject] isKindOfClass:[VComment class]])
+        {
+            tempComment = [resultObjects firstObject];
+        }
+        else
+        {
+            NSDictionary* payload = fullResponse[kVPayloadKey];
+            NSNumber* commentID = @([payload[@"id"] integerValue]);
+            
+            tempComment = [self newCommentWithID:commentID onSequence:sequence text:text mediaURLPath:[mediaURL absoluteString]];
+            
+            [self fetchCommentByID:[payload[@"id"] integerValue] successBlock:nil failBlock:nil];
+        }
         
         if (success)
             success(operation, fullResponse, @[tempComment]);
