@@ -151,13 +151,20 @@ NSTimeInterval kVContentPollAnimationDuration = 0.2;
     
     if (self.willComment)
     {
-        self.willComment = NO;
-        [self goToCommentView];
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(.1 * NSEC_PER_SEC)), dispatch_get_main_queue(),
+                       ^{
+                           self.willComment = NO;
+                           [self goToCommentView];
+                       });
+
     }
     else if (self.willClose)
     {
-        self.willClose = NO;
-        [self.navigationController popViewControllerAnimated:YES];
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(.1 * NSEC_PER_SEC)), dispatch_get_main_queue(),
+                       ^{
+                           self.willClose = NO;
+                           [self.navigationController popViewControllerAnimated:YES];
+                       });
     }
 }
 
