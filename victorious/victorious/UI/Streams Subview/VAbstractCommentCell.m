@@ -31,7 +31,7 @@ CGFloat const kMessageLabelWidth = 214;
     
     self.messageLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVParagraphFont];
     self.messageLabel.textColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVMainTextColor];
-    
+
     self.nameLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVLabel2Font];
     self.nameLabel.textColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
     
