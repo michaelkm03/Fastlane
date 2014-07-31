@@ -13,7 +13,7 @@
  An instance of VPhotoFilter contains a list of CIFilter instances
  and a means to easily apply those filters to a UIImage.
  */
-@interface VPhotoFilter : NSObject
+@interface VPhotoFilter : NSObject <NSCopying>
 
 @property (nonatomic, copy) NSString               *name;       ///< The filter's catchy name
 @property (nonatomic, copy) NSArray /* CIFilter */ *components; ///< The CIFilter objects that define this filter

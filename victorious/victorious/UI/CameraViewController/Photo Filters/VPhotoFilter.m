@@ -11,6 +11,19 @@
 
 @implementation VPhotoFilter
 
+- (id)copyWithZone:(NSZone *)zone
+{
+    VPhotoFilter *copy = [[VPhotoFilter alloc] init];
+    copy.name = self.name;
+    NSMutableArray *components = [[NSMutableArray alloc] initWithCapacity:self.components.count];
+    for (id component in self.components)
+    {
+        [components addObject:[component copy]];
+    }
+    copy.components = components;
+    return copy;
+}
+
 - (UIImage *)imageByFilteringImage:(UIImage *)sourceImage
 {
     CIImage *filteredImage = [CIImage v_imageWithUImage:sourceImage];

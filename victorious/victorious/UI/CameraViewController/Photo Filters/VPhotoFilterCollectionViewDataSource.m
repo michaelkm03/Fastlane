@@ -105,10 +105,27 @@ const NSUInteger kVPhotoFiltersSectionIndex  = 1;
         UIImage *image = [self.filteredImages objectForKey:indexPath];
         if (!image)
         {
-            image = [filter imageByFilteringImage:self.sourceImage];
-            [self.filteredImages setObject:image forKey:indexPath];
+            VPhotoFilter *filterCopy = [filter copy];
+            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^(void)
+            {
+                UIImage *filteredImage = [filterCopy imageByFilteringImage:self.sourceImage];
+                if (filteredImage)
+                {
+                    dispatch_async(dispatch_get_main_queue(), ^(void)
+                    {
+                        [self.filteredImages setObject:filteredImage forKey:indexPath];
+                        if ([[collectionView indexPathForCell:cell] isEqual:indexPath])
+                        {
+                            cell.imageView.image = filteredImage;
+                        }
+                    });
+                }
+            });
         }
-        cell.imageView.image = image;
+        else
+        {
+            cell.imageView.image = image;
+        }
         return cell;
     }
     else
