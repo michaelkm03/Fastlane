@@ -39,7 +39,7 @@
 
 - (void)setHtmlString:(NSString *)htmlString
 {
-    if ([htmlString isEqualToString:htmlString])
+    if ([_htmlString isEqualToString:htmlString])
         return;
     
     _htmlString = htmlString;
