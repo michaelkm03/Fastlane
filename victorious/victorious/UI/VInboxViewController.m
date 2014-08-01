@@ -55,6 +55,7 @@ static  NSString*   kNewsCellViewIdentifier       =   @"VNewsCell";
 //    self.tableView.separatorColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVBackgroundColor];
     self.navigationController.navigationBar.barTintColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVAccentColor];
     self.headerView.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVAccentColor];
+    
 }
 
 - (void)viewDidAppear:(BOOL)animated

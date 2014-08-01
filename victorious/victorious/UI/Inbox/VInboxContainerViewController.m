@@ -15,6 +15,7 @@
 @property (weak, nonatomic) IBOutlet UIView* noMessagesView;
 @property (weak, nonatomic) IBOutlet UILabel* noMessagesTitleLabel;
 @property (weak, nonatomic) IBOutlet UILabel* noMessagesMessageLabel;
+
 @end
 
 @implementation VInboxContainerViewController
@@ -33,10 +34,13 @@
 {
     [super viewWillAppear:animated];
     self.headerLabel.text = NSLocalizedString(@"Inbox", nil);
+    [self.filterControls setSelectedSegmentIndex:0];
 }
 
-//- (IBAction)changedFilterControls:(id)sender
-//{
+- (IBAction)changedFilterControls:(id)sender
+{
+    NSLog(@"\n\n-----\nchanging filter\n-----\n\n");
+    
 //    if (self.filterControls.selectedSegmentIndex == VStreamFollowingFilter && ![VObjectManager sharedManager].mainUser)
 //    {
 //        [self.filterControls setSelectedSegmentIndex:self.streamTable.filterType];
@@ -46,6 +50,6 @@
 //    [super changedFilterControls:sender];
 //    
 //    self.streamTable.filterType = self.filterControls.selectedSegmentIndex;
-//}
+}
 
 @end

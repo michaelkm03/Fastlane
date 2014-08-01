@@ -88,6 +88,13 @@
     [self.sideMenuViewController presentMenuViewController];
 }
 
+#pragma mark - Content Creation
+
+- (IBAction)createButtonAction:(id)sender
+{
+    NSLog(@"\n\n------\nCreate Button Tapped\n------\n\n");
+}
+
 #pragma mark - Header
 
 - (BOOL)isHeaderVisible

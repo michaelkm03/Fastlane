@@ -59,6 +59,7 @@ NSString* const kChatBubbleLeftImage = @"ChatBubbleLeft";
     
     self.dateLabel.text = [message.postedAt timeSince];
     self.nameLabel.text = message.user.name;
+    self.messageLabel.textColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVContentTextColor];
     self.messageLabel.text = message.text;
     self.mediaUrl = ![message.mediaPath isEmpty] ? [NSURL URLWithString:message.mediaPath] : nil;
     self.previewImageUrl = ![message.thumbnailPath isEmpty] ? [NSURL URLWithString:message.thumbnailPath] : nil;
