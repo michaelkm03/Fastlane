@@ -11,10 +11,6 @@
 #import "VObjectManager+Private.h"
 #import "VObjectManager+Pagination.h"
 
-#import "VHomeStreamViewController.h"
-#import "VCommunityStreamViewController.h"
-#import "VOwnerStreamViewController.h"
-
 //Probably can remove these after we manually create the sequences
 #import "VObjectManager+Sequence.h"
 #import "VObjectManager+Comment.h"
@@ -235,7 +231,7 @@ NSString * const VObjectManagerContentIndexKey                  = @"index";
 - (void)insertSequenceIntoFilters:(VSequence *)tempSequence
 {
     //Add to home screen
-    VSequenceFilter* homeFilter = [self sequenceFilterForCategories:[[VHomeStreamViewController sharedInstance] sequenceCategories]];
+    VSequenceFilter* homeFilter = [self sequenceFilterForCategories:[VUGCCategories() arrayByAddingObjectsFromArray:VOwnerCategories()]];
     [[NSNotificationCenter defaultCenter] postNotificationName:VObjectManagerContentWillBeCreatedNotification
                                                         object:self
                                                       userInfo:@{ VObjectManagerContentFilterIDKey: homeFilter.objectID,
@@ -244,8 +240,8 @@ NSString * const VObjectManagerContentIndexKey                  = @"index";
     [(VSequenceFilter*)[tempSequence.managedObjectContext objectWithID:homeFilter.objectID] insertSequences:@[tempSequence] atIndexes:[NSIndexSet indexSetWithIndex:0]];
     
     //Add to community or owner (depends on user)
-    NSArray* categoriesForSecondFilter = [self.mainUser isOwner] ? [[VOwnerStreamViewController sharedInstance] sequenceCategories]
-                                                                 : [[VCommunityStreamViewController sharedInstance] sequenceCategories];
+    NSArray* categoriesForSecondFilter = [self.mainUser isOwner] ? VOwnerCategories()
+                                                                 : VUGCCategories();
     VSequenceFilter* secondFilter = [self sequenceFilterForCategories:categoriesForSecondFilter];
     [[NSNotificationCenter defaultCenter] postNotificationName:VObjectManagerContentWillBeCreatedNotification
                                                         object:self

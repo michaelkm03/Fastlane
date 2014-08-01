@@ -20,9 +20,7 @@
 #import "VSequenceFilter+RestKit.h"
 #import "VCommentFilter+RestKit.h"
 
-#import "VHomeStreamViewController.h"
-#import "VOwnerStreamViewController.h"
-#import "VCommunityStreamViewController.h"
+#import "VStreamTableViewController.h"
 
 #import "VUserManager.h"
 
@@ -70,9 +68,6 @@
     }
     [context saveToPersistentStore:nil];
     
-    NSArray* defaultCategories = [[VHomeStreamViewController sharedInstance] sequenceCategories];
-    VSequenceFilter* defaultFilter = [self sequenceFilterForCategories:defaultCategories];
-    
     VSuccessBlock fullSuccess = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
     {
         if (success)
@@ -80,20 +75,16 @@
             success(operation, fullResponse, resultObjects);
         }
         
-        NSArray* ownerCategories = [[VOwnerStreamViewController sharedInstance] sequenceCategories];
-        VSequenceFilter* ownerFilter = [self sequenceFilterForCategories:ownerCategories];
-        [self refreshSequenceFilter:ownerFilter
+        [self refreshSequenceFilter:[VStreamTableViewController ownerStream].currentFilter
                        successBlock:nil
                           failBlock:nil];
         
-        NSArray* communityCategories = [[VCommunityStreamViewController sharedInstance] sequenceCategories];
-        VSequenceFilter* communityFilter = [self sequenceFilterForCategories:communityCategories];
-        [self refreshSequenceFilter:communityFilter
+        [self refreshSequenceFilter:[VStreamTableViewController communityStream].currentFilter
                        successBlock:nil
                           failBlock:nil];
     };
     
-    return [self refreshSequenceFilter:defaultFilter
+    return [self refreshSequenceFilter:[VStreamTableViewController homeStream].currentFilter
                           successBlock:fullSuccess
                              failBlock:fail];
 }

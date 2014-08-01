@@ -119,9 +119,6 @@
 		3F9B665A18848B750046F826 /* VMessageContainerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F9B665918848B750046F826 /* VMessageContainerViewController.m */; };
 		3F9B666818887D910046F826 /* VFetchedResultsTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F9B666718887D910046F826 /* VFetchedResultsTableViewController.m */; };
 		3F9B666B1888BE6A0046F826 /* VStreamTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F9B666A1888BE6A0046F826 /* VStreamTableViewController.m */; };
-		3F9B666E1888C4390046F826 /* VHomeStreamViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F9B666D1888C4390046F826 /* VHomeStreamViewController.m */; };
-		3F9B66711888C4940046F826 /* VOwnerStreamViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F9B66701888C4940046F826 /* VOwnerStreamViewController.m */; };
-		3F9B66741888C4B20046F826 /* VCommunityStreamViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F9B66731888C4B20046F826 /* VCommunityStreamViewController.m */; };
 		3FA217BB18A9ADF10066E893 /* ChromecastDeviceController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3FA217BA18A9ADF10066E893 /* ChromecastDeviceController.m */; };
 		3FA217C218A9B5160066E893 /* CastViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3FA217BD18A9B5160066E893 /* CastViewController.m */; };
 		3FA217C318A9B5160066E893 /* DeviceTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3FA217BF18A9B5160066E893 /* DeviceTableViewController.m */; };
@@ -554,12 +551,6 @@
 		3F9B666718887D910046F826 /* VFetchedResultsTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VFetchedResultsTableViewController.m; path = "UI/Base Classes/VFetchedResultsTableViewController.m"; sourceTree = "<group>"; };
 		3F9B66691888BE6A0046F826 /* VStreamTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VStreamTableViewController.h; path = "UI/Base Classes/VStreamTableViewController.h"; sourceTree = "<group>"; };
 		3F9B666A1888BE6A0046F826 /* VStreamTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VStreamTableViewController.m; path = "UI/Base Classes/VStreamTableViewController.m"; sourceTree = "<group>"; };
-		3F9B666C1888C4390046F826 /* VHomeStreamViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VHomeStreamViewController.h; path = UI/VHomeStreamViewController.h; sourceTree = "<group>"; };
-		3F9B666D1888C4390046F826 /* VHomeStreamViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VHomeStreamViewController.m; path = UI/VHomeStreamViewController.m; sourceTree = "<group>"; };
-		3F9B666F1888C4940046F826 /* VOwnerStreamViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VOwnerStreamViewController.h; path = UI/VOwnerStreamViewController.h; sourceTree = "<group>"; };
-		3F9B66701888C4940046F826 /* VOwnerStreamViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VOwnerStreamViewController.m; path = UI/VOwnerStreamViewController.m; sourceTree = "<group>"; };
-		3F9B66721888C4B20046F826 /* VCommunityStreamViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VCommunityStreamViewController.h; path = UI/VCommunityStreamViewController.h; sourceTree = "<group>"; };
-		3F9B66731888C4B20046F826 /* VCommunityStreamViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VCommunityStreamViewController.m; path = UI/VCommunityStreamViewController.m; sourceTree = "<group>"; };
 		3FA217B518A9AD9B0066E893 /* GoogleCast.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GoogleCast.framework; path = "3rd Party SDKs/GoogleCast.framework"; sourceTree = "<group>"; };
 		3FA217B918A9ADF10066E893 /* ChromecastDeviceController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ChromecastDeviceController.h; path = "3rd Party SDKs/ChromecastDeviceController.h"; sourceTree = SOURCE_ROOT; };
 		3FA217BA18A9ADF10066E893 /* ChromecastDeviceController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ChromecastDeviceController.m; path = "3rd Party SDKs/ChromecastDeviceController.m"; sourceTree = SOURCE_ROOT; };
@@ -1353,14 +1344,12 @@
 			children = (
 				BE692B2B186E5EE000C71336 /* Cells */,
 				BEB52A8218C54C9A00AC5FE4 /* animations */,
-				3F9B666C1888C4390046F826 /* VHomeStreamViewController.h */,
-				3F9B666D1888C4390046F826 /* VHomeStreamViewController.m */,
-				3F9B666F1888C4940046F826 /* VOwnerStreamViewController.h */,
-				3F9B66701888C4940046F826 /* VOwnerStreamViewController.m */,
-				3F9B66721888C4B20046F826 /* VCommunityStreamViewController.h */,
-				3F9B66731888C4B20046F826 /* VCommunityStreamViewController.m */,
 				03D99C1C194A47C8002A6EAB /* VStreamTableDataSource.h */,
 				03D99C1D194A47C8002A6EAB /* VStreamTableDataSource.m */,
+				3F9B66691888BE6A0046F826 /* VStreamTableViewController.h */,
+				3F9B666A1888BE6A0046F826 /* VStreamTableViewController.m */,
+				BE31757A19257592007DAC76 /* VStreamContainerViewController.h */,
+				BE31757B19257592007DAC76 /* VStreamContainerViewController.m */,
 				BEE800E718FCC5C200A7CFD7 /* VStreamTableViewController+ContentCreation.h */,
 				BEE800E818FCC5C200A7CFD7 /* VStreamTableViewController+ContentCreation.m */,
 				DB344DFF197DD06E006CFAE4 /* VHashTagStreamViewController.h */,
@@ -1438,10 +1427,6 @@
 				BEA5BF5E187F21770014C3EF /* VTableViewCell.m */,
 				3F9B666618887D910046F826 /* VFetchedResultsTableViewController.h */,
 				3F9B666718887D910046F826 /* VFetchedResultsTableViewController.m */,
-				3F9B66691888BE6A0046F826 /* VStreamTableViewController.h */,
-				3F9B666A1888BE6A0046F826 /* VStreamTableViewController.m */,
-				BE31757A19257592007DAC76 /* VStreamContainerViewController.h */,
-				BE31757B19257592007DAC76 /* VStreamContainerViewController.m */,
 				5FCC1E481899C94D00EB7699 /* VWebContentViewController.h */,
 				5FCC1E491899C94D00EB7699 /* VWebContentViewController.m */,
 				5F51F818189AEBF800A546D1 /* VAbstractProfileEditViewController.h */,
@@ -2491,7 +2476,6 @@
 				BE171E211868C211004E5202 /* VObjectManager+Sequence.m in Sources */,
 				BED4569718BD58DE00A67160 /* VAsset+Fetcher.m in Sources */,
 				5FC4DA6A18971155006BA107 /* VLoginWithEmailViewController.m in Sources */,
-				3F9B66711888C4940046F826 /* VOwnerStreamViewController.m in Sources */,
 				BE89D9961921908F00D97E7F /* VCommentFilter+RestKit.m in Sources */,
 				3F14C44E18BD2BD0001796B9 /* VCAudioVideoRecorder.m in Sources */,
 				BE171D8C1868BE64004E5202 /* VAppDelegate.m in Sources */,
@@ -2510,7 +2494,6 @@
 				0388AE681949459A0098A393 /* VSequenceFilter+Setters.m in Sources */,
 				BE171E161868C211004E5202 /* VRule+RestKit.m in Sources */,
 				BEFE132E196F6B6F003B33DC /* VRealtimeCommentViewController.m in Sources */,
-				3F9B66741888C4B20046F826 /* VCommunityStreamViewController.m in Sources */,
 				3FF7B6DA18EE477D003831CD /* UIView+Masking.m in Sources */,
 				BE185DF518E3BB54001C447F /* VActionBarViewController.m in Sources */,
 				03811D3419353486005687FF /* VAlertViewBlockDelegate.m in Sources */,
@@ -2546,7 +2529,6 @@
 				BEB52A7A18C02D6600AC5FE4 /* VContentViewController.m in Sources */,
 				BE651D0E18AAD58A00069119 /* VLoadingViewController.m in Sources */,
 				03F9D289191DC71700576AEE /* VElapsedTimeFormatter.m in Sources */,
-				3F9B666E1888C4390046F826 /* VHomeStreamViewController.m in Sources */,
 				BED4569418BD581800A67160 /* UIWebView+VYoutubeLoading.m in Sources */,
 				0394549E1955226C00AB1C4B /* VFindContactsTableViewController.m in Sources */,
 				3F93489D1922C522002EA91F /* VFollowerTableViewController.m in Sources */,

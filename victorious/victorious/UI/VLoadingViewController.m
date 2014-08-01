@@ -8,7 +8,6 @@
 #import "VLoadingViewController.h"
 
 #import "VStreamContainerViewController.h"
-#import "VHomeStreamViewController.h"
 #import "VObjectManager+Login.h"
 #import "VObjectManager+Sequence.h"
 #import "VObjectManager+Pagination.h"
@@ -168,11 +167,11 @@ static const NSUInteger kRetryAttempts = 5;
             
             [[VUserManager sharedInstance] loginViaSavedCredentialsOnCompletion:^(VUser *user, BOOL created)
              {
-                 [self.navigationController pushViewController:[VStreamContainerViewController containerForStreamTable:[VHomeStreamViewController sharedInstance]] animated:YES];
+                 [self.navigationController pushViewController:[VStreamContainerViewController containerForStreamTable:[VStreamTableViewController homeStream]] animated:YES];
              }
                                                                         onError:^(NSError *error)
              {
-                 [self.navigationController pushViewController:[VStreamContainerViewController containerForStreamTable:[VHomeStreamViewController sharedInstance]] animated:YES];
+                 [self.navigationController pushViewController:[VStreamContainerViewController containerForStreamTable:[VStreamTableViewController homeStream]] animated:YES];
              }];
         }
                                                       failBlock:^(NSOperation* operation, NSError* error)

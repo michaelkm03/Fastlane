@@ -12,6 +12,7 @@
 
 @property (nonatomic, weak) IBOutlet UILabel* headerLabel;
 @property (nonatomic, weak) IBOutlet UIButton* menuButton;
+@property (nonatomic, weak) IBOutlet UIButton* backButton;
 @property (nonatomic, weak) IBOutlet UIView* headerView;
 @property (nonatomic, weak) IBOutlet UISegmentedControl* filterControls;
 @property (nonatomic, weak) IBOutlet NSLayoutConstraint* headerYConstraint;

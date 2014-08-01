@@ -135,6 +135,7 @@ static NSString*   const   kHomeStreamStoryboardID              = @"homestream";
 static NSString*   const   kOwnerStreamStoryboardID             = @"ownerstream";
 static NSString*   const   kCommunityStreamStoryboardID         = @"communitystream";
 static NSString*   const   kStreamContainerID                   = @"streamcontainer";
+static NSString*   const   kModalStreamContainerID              = @"modalstreamcontainer";
 static NSString*   const   kHashTagStreamStoryboardID           = @"hashtagstream";
 static NSString*   const   kStreamStoryboardID                  = @"streamtable";
 

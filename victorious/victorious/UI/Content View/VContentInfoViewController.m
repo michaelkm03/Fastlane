@@ -269,8 +269,8 @@ typedef NS_ENUM(NSUInteger, VContentCountType) {
 - (IBAction)pressedRemixes:(id)sender
 {
     VSequenceFilter* filter = [[VObjectManager sharedManager] remixFilterforSequence:self.sequence];
-    VStreamTableViewController* stream = [VStreamTableViewController streamWithDefaultFilter:filter title:@"Remix"];
-    [self.navigationController pushViewController:[VStreamContainerViewController containerForStreamTable:stream] animated:YES];
+    VStreamTableViewController* stream = [VStreamTableViewController streamWithDefaultFilter:filter name:@"remix" title:@"Remix"];
+    [self.navigationController pushViewController:[VStreamContainerViewController modalContainerForStreamTable:stream] animated:YES];
 }
 
 - (IBAction)pressedComment:(id)sender

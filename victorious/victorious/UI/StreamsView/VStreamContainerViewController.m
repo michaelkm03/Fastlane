@@ -11,9 +11,6 @@
 
 #import "VLoginViewController.h"
 
-#import "VHomeStreamViewController.h"
-#import "VOwnerStreamViewController.h"
-#import "VCommunityStreamViewController.h"
 #import "VHashTagStreamViewController.h"
 
 #import "VCameraViewController.h"
@@ -48,6 +45,17 @@
     return container;
 }
 
++ (instancetype)modalContainerForStreamTable:(VStreamTableViewController*)streamTable
+{
+    UIViewController*   currentViewController = [[UIApplication sharedApplication] delegate].window.rootViewController;
+    VStreamContainerViewController* container = (VStreamContainerViewController*)[currentViewController.storyboard instantiateViewControllerWithIdentifier: kModalStreamContainerID];
+    container.tableViewController = streamTable;
+    container.automaticallyAdjustsScrollViewInsets = NO;
+    streamTable.delegate = container;
+    
+    return container;
+}
+
 + (instancetype)containerForHashTagStream:(VStreamTableViewController *)streamTable withHashTag:(NSString *)hashTag
 {
     UIViewController*   currentViewController = [[UIApplication sharedApplication] delegate].window.rootViewController;
@@ -68,12 +76,12 @@
 {
     [super viewDidLoad];
     
-    self.createButton.hidden = [self.streamTable isKindOfClass:[VOwnerStreamViewController class]];
+    self.createButton.hidden = [self.streamTable.defaultFilter.filterAPIPath isEqualToString:[VStreamTableViewController ownerStream].defaultFilter.filterAPIPath];
     self.createButton.tintColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVMainTextColor];
     UIImage* image = [self.createButton.currentImage imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
     [self.createButton setImage:image forState:UIControlStateNormal];
     
-    if (![self.streamTable isKindOfClass:[VHomeStreamViewController class]])
+    if (![self.streamTable.defaultFilter.filterAPIPath isEqualToString:[VStreamTableViewController homeStream].defaultFilter.filterAPIPath])
     {
         [self.filterControls removeSegmentAtIndex:VStreamFollowingFilter animated:NO];
     }
