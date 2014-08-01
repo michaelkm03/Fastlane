@@ -110,6 +110,12 @@
                                                           keyPath:@"payload"
                                                       statusCodes:RKStatusCodeIndexSetForClass(RKStatusCodeClassSuccessful)],
               
+              [RKResponseDescriptor responseDescriptorWithMapping:[VSequence entityMapping]
+                                                           method:RKRequestMethodGET
+                                                      pathPattern:@"/api/sequence/remixes_by_sequence/:sequenceID/:page/:perpage"
+                                                          keyPath:@"payload"
+                                                      statusCodes:RKStatusCodeIndexSetForClass(RKStatusCodeClassSuccessful)],
+              
               [RKResponseDescriptor responseDescriptorWithMapping:[VSequence entityMappingWithoutDisplayOrder]
                                                            method:RKRequestMethodGET
                                                       pathPattern:@"/api/sequence/fetch/:sequence_id"

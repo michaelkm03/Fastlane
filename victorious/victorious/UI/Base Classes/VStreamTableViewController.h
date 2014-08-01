@@ -39,4 +39,6 @@ typedef NS_ENUM(NSInteger, VStreamFilter)
 
 - (void)refreshWithCompletion:(void(^)(void))completionBlock;
 
++ (instancetype)streamWithDefaultFilter:(VSequenceFilter*)filter title:(NSString*)title;
+
 @end

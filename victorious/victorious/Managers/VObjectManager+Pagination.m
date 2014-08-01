@@ -508,6 +508,12 @@
 }
 
 #pragma mark - Filter Fetchers
+- (VSequenceFilter*)remixFilterforSequence:(VSequence*)sequence
+{
+    NSString* apiPath = [@"/api/sequence/remixes_by_sequence/" stringByAppendingString: sequence.remoteId.stringValue ?: @"0"];
+    return (VSequenceFilter*)[[VFilterCache sharedCache] filterForPath:apiPath entityName:[VSequenceFilter entityName]];
+}
+
 - (VSequenceFilter*)sequenceFilterForUser:(VUser*)user
 {
     NSString* apiPath = [@"/api/sequence/detail_list_by_user/" stringByAppendingString: user.remoteId.stringValue ?: @"0"];

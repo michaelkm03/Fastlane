@@ -45,9 +45,23 @@
 @property (strong, nonatomic) NSCache* preloadImageCache;
 @property (strong, nonatomic) VContentViewController *contentViewController;
 
+@property (strong, nonatomic) VSequenceFilter* defaultFilter;
+
 @end
 
 @implementation VStreamTableViewController
+
++ (instancetype)streamWithDefaultFilter:(VSequenceFilter*)filter title:(NSString*)title
+{
+    UIViewController*   currentViewController = [[UIApplication sharedApplication] delegate].window.rootViewController;
+    VStreamTableViewController* stream = (VStreamTableViewController*)[currentViewController.storyboard instantiateViewControllerWithIdentifier: kStreamStoryboardID];
+    
+    stream.title = title;
+    stream.defaultFilter = filter;
+    stream.currentFilter = filter;
+    
+    return stream;
+}
 
 - (void)dealloc
 {
@@ -350,7 +364,7 @@
 
 - (VSequenceFilter*)defaultFilter
 {
-    return [[VObjectManager sharedManager] sequenceFilterForCategories:[self sequenceCategories]];
+    return _defaultFilter ?: [[VObjectManager sharedManager] sequenceFilterForCategories:[self sequenceCategories]];
 }
 - (VSequenceFilter*)hotFilter
 {
