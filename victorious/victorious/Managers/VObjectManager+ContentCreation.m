@@ -184,6 +184,22 @@ NSString * const VObjectManagerContentIndexKey                  = @"index";
                   failBlock:fail];
 }
 
+- (RKManagedObjectRequestOperation * )repostNode:(VNode*)node
+                        withDescription:(NSString*)description
+                           successBlock:(VSuccessBlock)success
+                              failBlock:(VFailBlock)fail
+{
+    NSDictionary* parameters = @{@"parent_node_id":node.remoteId ?: [NSNull null],
+                                 @"description":description ?: [NSNull null]};
+    
+    return [self POST:@"/api/repost/create"
+               object:nil
+           parameters:parameters
+         successBlock:success
+            failBlock:fail];
+}
+
+
 - (NSString*)stringForLoopType:(VLoopType)type
 {
     if (type == kVLoopRepeat)

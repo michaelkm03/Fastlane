@@ -9,7 +9,7 @@
 #import "VObjectManager.h"
 #import "VConstants.h"
 
-@class VSequence, VComment, VConversation, VAsset;
+@class VSequence, VComment, VConversation, VAsset, VNode;
 
 typedef void (^VRemixCompletionBlock) (BOOL completion, NSURL* remixMp4Url, NSError* error);
 
@@ -91,6 +91,11 @@ Creates a new realtime comment
                                              mediaURL:(NSURL*)mediaURL
                                          successBlock:(VSuccessBlock)success
                                             failBlock:(VFailBlock)fail;
+
+- (RKManagedObjectRequestOperation * )repostNode:(VNode*)node
+                                 withDescription:(NSString*)description
+                                    successBlock:(VSuccessBlock)success
+                                       failBlock:(VFailBlock)fail;
 
 - (VSequence*)newSequenceWithID:(NSNumber*)remoteID
                            name:(NSString*)name
