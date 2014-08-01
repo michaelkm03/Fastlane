@@ -7,6 +7,7 @@
 //
 
 #import "NSURL+MediaType.h"
+#import "UIActionSheet+VBlocks.h"
 #import "VAnalyticsRecorder.h"
 #import "VConstants.h"
 #import "VImagePreviewViewController.h"
@@ -116,6 +117,13 @@ static       NSString * const kNibName           = @"MediaPreview";
 
 - (IBAction)doneTapped:(UIButton *)sender
 {
+    // if we're in step one of the two-step delete confirmation flow, tapping the "done" button should cancel the delete
+    if (!self.deleteConfirmationButton.hidden)
+    {
+        [self mediaPreviewTapped:nil];
+        return;
+    }
+
     [self willComplete];
     if (self.completionBlock)
     {
@@ -192,11 +200,20 @@ static       NSString * const kNibName           = @"MediaPreview";
 
 - (IBAction)cancelTapped:(id)sender
 {
-    [[VAnalyticsRecorder sharedAnalyticsRecorder] sendEventWithCategory:kVAnalyticsEventCategoryCamera action:@"Cancel Media Capture" label:nil value:nil];
-    if (self.completionBlock)
+    UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:NSLocalizedString(@"ClosePreviewConfirm", @"")
+                                                    cancelButtonTitle:NSLocalizedString(@"Stay", @"")
+                                                       onCancelButton:nil
+                                               destructiveButtonTitle:NSLocalizedString(@"Close", @"")
+                                                  onDestructiveButton:^(void)
     {
-        self.completionBlock(NO, nil, nil);
+        [[VAnalyticsRecorder sharedAnalyticsRecorder] sendEventWithCategory:kVAnalyticsEventCategoryCamera action:@"Cancel Media Capture" label:nil value:nil];
+        if (self.completionBlock)
+        {
+            self.completionBlock(NO, nil, nil);
+        }
     }
+                                           otherButtonTitlesAndBlocks:nil];
+    [actionSheet showInView:self.view];
 }
 
 @end

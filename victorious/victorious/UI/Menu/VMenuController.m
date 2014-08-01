@@ -37,8 +37,8 @@ typedef NS_ENUM(NSUInteger, VMenuControllerRow)
     VMenuRowCommunityChannel    =   2,
     VMenuRowInbox               =   0,
     VMenuRowProfile             =   1,
-    VMenuRowFindFriends         =   2,
-    VMenuRowSettings            =   3
+    VMenuRowFindFriends         =   5,  // PUT THIS NUMBER TO CORRECT VALUE ONCE WE RE-INTRODUCE THE FIND FRIENDS FEATURE
+    VMenuRowSettings            =   2
 };
 
 NSString *const VMenuControllerDidSelectRowNotification = @"VMenuTableViewControllerDidSelectRowNotification";

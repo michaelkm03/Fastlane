@@ -304,7 +304,8 @@
                                                           tagline:self.taglineTextView.text
                                                      successBlock:^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
          {
-             [self performSegueWithIdentifier:@"toFollowFriends" sender:self];
+             //[self performSegueWithIdentifier:@"toFollowFriends" sender:self];
+             [self dismissViewControllerAnimated:YES completion:nil];
          }
                                                         failBlock:^(NSOperation* operation, NSError* error)
          {
