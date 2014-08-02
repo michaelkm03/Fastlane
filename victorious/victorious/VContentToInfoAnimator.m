@@ -32,9 +32,14 @@
     if (self.movingImage)
     {
         UIImageView* imageView = [[UIImageView alloc] initWithFrame:self.toChildContainerView.bounds];
-        imageView.contentMode = UIViewContentModeScaleAspectFit;
+        
+        UIGraphicsBeginImageContext(imageView.frame.size);
+        [self.movingImage drawInRect:CGRectMake(0,0,imageView.frame.size.width,imageView.frame.size.height)];
+        UIImage* newImage = UIGraphicsGetImageFromCurrentImageContext();
+        UIGraphicsEndImageContext();
+    
+        [imageView setImage:newImage];
         [self.toChildContainerView addSubview:imageView];
-        [imageView setImage:[self.movingImage resizableImageWithCapInsets:UIEdgeInsetsZero]];
     }
 
     [[context containerView] addSubview:toVC.view];
