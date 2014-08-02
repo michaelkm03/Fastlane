@@ -60,7 +60,7 @@
 {
     VSequenceFilter* defaultFilter = [[VObjectManager sharedManager] sequenceFilterForCategories:
                                       [VUGCCategories() arrayByAddingObjectsFromArray:VOwnerCategories()]];
-    VStreamTableViewController* stream = [self streamWithDefaultFilter:defaultFilter name:@"home" title:NSLocalizedString(@"HomeTitle", nil)];
+    VStreamTableViewController* stream = [self streamWithDefaultFilter:defaultFilter name:@"home" title:NSLocalizedString(@"Home", nil)];
     [stream addCreateButton];
     return  stream;
 }
@@ -68,7 +68,7 @@
 + (instancetype)communityStream
 {
     VSequenceFilter* defaultFilter = [[VObjectManager sharedManager] sequenceFilterForCategories:VUGCCategories()];
-    VStreamTableViewController* stream = [self streamWithDefaultFilter:defaultFilter name:@"ugc" title:NSLocalizedString(@"UGCTitle", nil)];
+    VStreamTableViewController* stream = [self streamWithDefaultFilter:defaultFilter name:@"ugc" title:NSLocalizedString(@"Community", nil)];
     [stream addCreateButton];
     return  stream;
 }
