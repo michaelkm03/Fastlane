@@ -93,7 +93,7 @@ Creates a new realtime comment
                                             failBlock:(VFailBlock)fail;
 
 - (RKManagedObjectRequestOperation * )repostNode:(VNode*)node
-                                 withDescription:(NSString*)description
+                                        withName:(NSString*)name
                                     successBlock:(VSuccessBlock)success
                                        failBlock:(VFailBlock)fail;
 

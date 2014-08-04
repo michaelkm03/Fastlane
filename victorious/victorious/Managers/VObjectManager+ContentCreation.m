@@ -181,12 +181,12 @@ NSString * const VObjectManagerContentIndexKey                  = @"index";
 }
 
 - (RKManagedObjectRequestOperation * )repostNode:(VNode*)node
-                        withDescription:(NSString*)description
-                           successBlock:(VSuccessBlock)success
-                              failBlock:(VFailBlock)fail
+                                        withName:(NSString*)name
+                                    successBlock:(VSuccessBlock)success
+                                       failBlock:(VFailBlock)fail
 {
     NSDictionary* parameters = @{@"parent_node_id":node.remoteId ?: [NSNull null],
-                                 @"description":description ?: [NSNull null]};
+                                 @"name":name ?: [NSNull null]};
     
     return [self POST:@"/api/repost/create"
                object:nil

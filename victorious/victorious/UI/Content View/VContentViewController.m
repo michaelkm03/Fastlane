@@ -810,7 +810,7 @@ NSTimeInterval kVContentPollAnimationDuration = 0.2;
                                            otherButtonTitlesAndBlocks:NSLocalizedString(@"Repost", nil),  ^(void)
                                   {
                                       [[VObjectManager sharedManager] repostNode:self.currentNode
-                                                                 withDescription:self.sequence.name
+                                                                        withName:self.sequence.name
                                                                     successBlock:nil
                                                                        failBlock:nil];
                                   }, nil];
