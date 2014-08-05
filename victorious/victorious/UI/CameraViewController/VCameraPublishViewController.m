@@ -21,6 +21,7 @@
 
 #import "VShareView.h"
 
+#import "UIImage+ImageCreation.h"
 #import "UIAlertView+VBlocks.h"
 
 @interface VCameraPublishViewController () <UITextViewDelegate, VSetExpirationDelegate>
@@ -40,10 +41,18 @@
 
 @property (nonatomic, weak) IBOutlet    UIView*         sharesSuperview;
 
+@property (nonatomic, weak) IBOutlet    NSLayoutConstraint* captionViewHeightConstraint;
 @property (nonatomic, retain) IBOutletCollection(UIButton) NSArray *captionButtons;
+@property (nonatomic, retain) IBOutletCollection(UIButton) NSArray *captionLabels;
 
+@property (nonatomic, weak) IBOutlet    UILabel*        captionLabel;
+@property (nonatomic, weak) IBOutlet    UILabel*        memeLabel;
+@property (nonatomic, weak) IBOutlet    UILabel*        secretLabel;
 
 @end
+
+static NSString* kSecretFont = @"PT_Sans-Narrow-Web-Regular";
+static NSString* kMemeFont = @"Impact";
 
 static const CGFloat kShareMargin = 6.0f;
 
@@ -74,13 +83,22 @@ static const CGFloat kShareMargin = 6.0f;
     self.shareToLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVLabel2Font];
     self.shareToLabel.textColor = [UIColor colorWithRed:.6f green:.6f blue:.6f alpha:1.0f];
     
+    UIImage* selectedImage = [UIImage resizeableImageWithColor:[UIColor colorWithRed:.9 green:.91 blue:.92 alpha:1]];
+    UIImage* unselectedImage = [UIImage resizeableImageWithColor:[UIColor colorWithRed:.96 green:.97 blue:.98 alpha:1]];
     for (UIButton* button in self.captionButtons)
     {
         button.tintColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVSecondaryLinkColor];
         [button.titleLabel setFont:[[VThemeManager sharedThemeManager] themedFontForKey:kVHeading4Font]];
+        [button setBackgroundImage:selectedImage forState:UIControlStateSelected];
+        [button setBackgroundImage:unselectedImage forState:UIControlStateNormal];
         button.layer.borderWidth = 1;
         button.layer.borderColor = [UIColor colorWithRed:.8 green:.82 blue:.85 alpha:1].CGColor;
     }
+    
+    self.captionLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeading1Font];
+    self.secretLabel.font = [UIFont fontWithName:kSecretFont size:20];
+    self.memeLabel.font = [UIFont fontWithName:kMemeFont size:24];
+    
     [self initShareViews];
 }
 
@@ -141,6 +159,11 @@ static const CGFloat kShareMargin = 6.0f;
     UIImage*    cancelButtonImage = [[UIImage imageNamed:@"cameraButtonClose"]  imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
     UIBarButtonItem*    cancelButton = [[UIBarButtonItem alloc] initWithImage:cancelButtonImage style:UIBarButtonItemStyleBordered target:self action:@selector(cancel:)];
     self.navigationItem.rightBarButtonItem = cancelButton;
+    
+    NSString* mediaExtension = [[self.mediaURL absoluteString] pathExtension];
+    if ([mediaExtension isEqualToString:VConstantMediaExtensionMOV]
+        || [mediaExtension isEqualToString:VConstantMediaExtensionMP4])
+        self.captionViewHeightConstraint.constant = 0;
     
     [self.textViewPlaceholderLabel setText:NSLocalizedString(@"AddDescription", @"") afterInheritingLabelAttributesAndConfiguringWithBlock:^NSMutableAttributedString *(NSMutableAttributedString *mutableAttributedString) {
         NSRange hashtagRange = [[mutableAttributedString string] rangeOfString:NSLocalizedString(@"AddDescriptionAnchor", @"")];
