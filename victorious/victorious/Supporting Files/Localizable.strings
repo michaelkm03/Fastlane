@@ -21,6 +21,7 @@
 "NoButton"              =   "No";
 "BackButton"            =   "Back";
 "Exit"                  =   "Exit";
+"Publish"               =   "Publish";
 
 "TimeSeparator"         =   ":";
 "InvalidTimePlaceholder"=   "-:--";
@@ -130,8 +131,8 @@
 "PublishSucceeded"      =   "Publish Succeeded";
 "PublishSucceededDetail"    =   "Your media has been submitted to the server";
 
-"PublishDescriptionRequired" = "Description Required";
-"PublishDescription"    =   "You need to enter a description for your media.";
+"PublishDescriptionRequired" = "Text Needed";
+"PublishDescription"    =   "Please enter the caption for your content.";
 
 "ReplaceVideo"          =   "Replace Video";
 

@@ -26,8 +26,12 @@
 @interface VCameraPublishViewController () <UITextViewDelegate, VSetExpirationDelegate>
 @property (nonatomic, weak) IBOutlet    UIImageView*    previewImageView;
 
+@property (nonatomic, weak) IBOutlet    UIButton*       publishButton;
+
 @property (nonatomic, weak) IBOutlet    UIButton*       durationButton;
 @property (nonatomic, weak) IBOutlet    UILabel*        expiresOnLabel;
+
+@property (nonatomic, weak) IBOutlet    UILabel*        shareToLabel;
 
 @property (nonatomic, weak) IBOutlet    UISwitch*       twitterButton;
 @property (nonatomic, weak) IBOutlet    UISwitch*       facebookButton;
@@ -62,6 +66,14 @@ static const CGFloat kShareMargin = 6.0f;
     contentInputAccessory.tintColor = [UIColor colorWithRed:0.85f green:0.86f blue:0.87f alpha:1.0f];
     self.textView.inputAccessoryView = contentInputAccessory;
     
+    self.publishButton.titleLabel.textColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVMainTextColor];
+    self.publishButton.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
+    self.publishButton.titleLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVButton1Font];
+    self.publishButton.titleLabel.text = NSLocalizedString(@"Publish", nil);
+    
+    self.shareToLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVLabel2Font];
+    self.shareToLabel.textColor = [UIColor colorWithRed:.6f green:.6f blue:.6f alpha:1.0f];
+    
     for (UIButton* button in self.captionButtons)
     {
         button.tintColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVSecondaryLinkColor];
@@ -79,18 +91,24 @@ static const CGFloat kShareMargin = 6.0f;
 //                             NSLocalizedString(@"tumblr", nil),
                              NSLocalizedString(@"saveToLibrary", nil)];
     
-    NSArray* shareImages = @[[UIImage imageNamed:@"shareIcon"],
-                             [UIImage imageNamed:@"shareIcon"],
-//                             [UIImage imageNamed:@"shareIcon"],
-                             [UIImage imageNamed:@"shareIcon"]];
+    NSArray* shareImages = @[[UIImage imageNamed:@"share-btn-fb"],
+                             [UIImage imageNamed:@"share-btn-twitter"],
+//                             [UIImage imageNamed:@"share-btn-tumblr"],
+                             [UIImage imageNamed:@"share-btn-library"]];
     
-    NSAssert(shareNames.count == shareImages.count, @"There should be an equal number of these...");
+    NSArray* shareColors = @[[UIColor colorWithRed:.23f green:.35f blue:.6f alpha:1.0f],
+                             [UIColor colorWithRed:.1f green:.7f blue:.91f alpha:1.0f],
+//                             [UIColor colorWithRed:.17f green:.28f blue:.38f alpha:1],
+                             [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor]];
+    
+    NSAssert(shareNames.count == shareImages.count && shareImages.count == shareColors.count, @"There should be an equal number of these...");
     
     NSMutableArray* shareViews = [[NSMutableArray alloc] init];
     
     for (int i=0; i<[shareNames count];i++)
     {
         VShareView* shareView = [[VShareView alloc] initWithTitle:shareNames[i] image:shareImages[i]];
+        shareView.selectedColor = shareColors[i];
         
         CGFloat shareViewWidth = shareView.frame.size.width;
         CGFloat widthOfShareViews = (shareNames.count * shareViewWidth) + ((shareNames.count - 1) * kShareMargin);

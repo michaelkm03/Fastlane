@@ -27,7 +27,7 @@
     if (self)
     {
         self.defaultColor = [UIColor colorWithRed:.6f green:.6f blue:.6f alpha:1.0f];
-        self.selectedColor = [UIColor blueColor];
+        self.selectedColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
         self.iconImageView.image = [image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
         self.titleLabel.text = title;
     }
@@ -71,7 +71,7 @@
 {
     [super awakeFromNib];
     
-    self.titleLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVLabel4Font];
+    self.titleLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVLabel3Font];
 }
 
 @end

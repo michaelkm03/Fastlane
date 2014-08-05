@@ -307,14 +307,14 @@ and don't forget #hashtags</string>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <subviews>
                                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="SHARE TO" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="quq-i9-xCf">
-                                        <rect key="frame" x="20" y="27" width="280" height="21"/>
+                                        <rect key="frame" x="20" y="19" width="280" height="21"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                         <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="bLE-SQ-PqX">
-                                        <rect key="frame" x="0.0" y="59" width="320" height="67"/>
+                                        <rect key="frame" x="0.0" y="51" width="320" height="67"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         <constraints>
@@ -328,7 +328,7 @@ and don't forget #hashtags</string>
                                     <constraint firstAttribute="trailing" secondItem="bLE-SQ-PqX" secondAttribute="trailing" id="HZO-tP-9qT"/>
                                     <constraint firstAttribute="trailing" secondItem="quq-i9-xCf" secondAttribute="trailing" constant="20" id="TMU-l4-xnc"/>
                                     <constraint firstItem="quq-i9-xCf" firstAttribute="leading" secondItem="Q7R-Zp-i10" secondAttribute="leading" constant="20" id="kfc-7U-nPv"/>
-                                    <constraint firstAttribute="centerY" secondItem="bLE-SQ-PqX" secondAttribute="centerY" constant="-20" id="smL-qj-paw"/>
+                                    <constraint firstAttribute="centerY" secondItem="bLE-SQ-PqX" secondAttribute="centerY" constant="-12" id="smL-qj-paw"/>
                                     <constraint firstItem="quq-i9-xCf" firstAttribute="bottom" secondItem="bLE-SQ-PqX" secondAttribute="top" constant="-11" id="zI8-Sv-sqV"/>
                                 </constraints>
                             </view>
@@ -365,6 +365,8 @@ and don't forget #hashtags</string>
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
                     <connections>
                         <outlet property="previewImageView" destination="g4C-sb-DOe" id="rxc-kH-gXC"/>
+                        <outlet property="publishButton" destination="wOt-la-SB9" id="Pbk-8V-Al6"/>
+                        <outlet property="shareToLabel" destination="quq-i9-xCf" id="xXy-Z7-ki7"/>
                         <outlet property="sharesSuperview" destination="bLE-SQ-PqX" id="qUM-oJ-7eF"/>
                         <outlet property="textView" destination="yxx-6S-3iW" id="CEE-rw-I3h"/>
                         <outlet property="textViewPlaceholderLabel" destination="Fsz-Xd-hVx" id="eaY-Ix-3Cl"/>
