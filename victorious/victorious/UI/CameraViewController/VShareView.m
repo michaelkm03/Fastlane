@@ -8,24 +8,70 @@
 
 #import "VShareView.h"
 
+#import "VThemeManager.h"
+#import "UIImage+ImageCreation.h"
+
+@interface VShareView()
+
+@property (nonatomic, strong) IBOutlet UIButton* shareButton;
+@property (nonatomic, strong) IBOutlet UILabel* titleLabel;
+@property (nonatomic, strong) IBOutlet UIImageView* iconImageView;
+
+@end
+
 @implementation VShareView
 
-- (id)initWithFrame:(CGRect)frame
+- (id)initWithTitle:(NSString*)title image:(UIImage*)image
 {
-    self = [super initWithFrame:frame];
-    if (self) {
-        // Initialization code
+    self = [[[NSBundle mainBundle] loadNibNamed:NSStringFromClass([self class]) owner:self options:nil] firstObject];
+    if (self)
+    {
+        self.defaultColor = [UIColor colorWithRed:.6f green:.6f blue:.6f alpha:1.0f];
+        self.selectedColor = [UIColor blueColor];
+        self.iconImageView.image = [image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+        self.titleLabel.text = title;
     }
     return self;
 }
 
-/*
-// Only override drawRect: if you perform custom drawing.
-// An empty implementation adversely affects performance during animation.
-- (void)drawRect:(CGRect)rect
+- (void)setSelectedColor:(UIColor *)selectedColor
 {
-    // Drawing code
+    _selectedColor = selectedColor;
+    
+    UIImage* image = [self.shareButton backgroundImageForState:UIControlStateSelected];
+    [self.shareButton setBackgroundImage:[image vImageWithColor:selectedColor] forState:UIControlStateSelected];
+    
+    [self updateColors];
 }
-*/
+
+- (void)setDefaultColor:(UIColor *)defaultColor
+{
+    _defaultColor = defaultColor;
+    
+    UIImage* image = [self.shareButton backgroundImageForState:UIControlStateNormal];
+    [self.shareButton setBackgroundImage:[image vImageWithColor:defaultColor] forState:UIControlStateNormal];
+    
+    [self updateColors];
+}
+
+- (void)updateColors
+{
+    UIColor* currentColor = self.shareButton.selected ? self.selectedColor : self.defaultColor;
+    self.titleLabel.textColor = currentColor;
+    self.iconImageView.tintColor = currentColor;
+}
+
+- (IBAction)pressedShareButton:(id)sender
+{
+    self.shareButton.selected = !self.shareButton.selected;
+    [self updateColors];
+}
+
+- (void)awakeFromNib
+{
+    [super awakeFromNib];
+    
+    self.titleLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVLabel4Font];
+}
 
 @end

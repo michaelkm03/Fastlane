@@ -19,6 +19,8 @@
 #import "VThemeManager.h"
 #import "TTTAttributedLabel.h"
 
+#import "VShareView.h"
+
 @interface VCameraPublishViewController () <UITextViewDelegate, VSetExpirationDelegate>
 @property (nonatomic, weak) IBOutlet    UIImageView*    previewImageView;
 
@@ -30,7 +32,14 @@
 
 @property (nonatomic, weak) IBOutlet    TTTAttributedLabel* textViewPlaceholderLabel;
 
+@property (nonatomic, weak) IBOutlet    UIView*         sharesSuperview;
+
+@property (nonatomic, retain) IBOutletCollection(UIButton) NSArray *captionButtons;
+
+
 @end
+
+static const CGFloat kShareMargin = 6.0f;
 
 @implementation VCameraPublishViewController
 
@@ -50,6 +59,47 @@
     contentInputAccessory.textInputView = self.textView;
     contentInputAccessory.tintColor = [UIColor colorWithRed:0.85f green:0.86f blue:0.87f alpha:1.0f];
     self.textView.inputAccessoryView = contentInputAccessory;
+    
+    for (UIButton* button in self.captionButtons)
+    {
+        button.tintColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVSecondaryLinkColor];
+        [button.titleLabel setFont:[[VThemeManager sharedThemeManager] themedFontForKey:kVHeading4Font]];
+        button.layer.borderWidth = 1;
+        button.layer.borderColor = [UIColor colorWithRed:.8 green:.82 blue:.85 alpha:1].CGColor;
+    }
+    [self initShareViews];
+}
+
+- (void)initShareViews
+{
+    NSArray* shareNames = @[NSLocalizedString(@"facebook", nil),
+                             NSLocalizedString(@"twitter", nil),
+//                             NSLocalizedString(@"tumblr", nil),
+                             NSLocalizedString(@"saveToLibrary", nil)];
+    
+    NSArray* shareImages = @[[UIImage imageNamed:@"shareIcon"],
+                             [UIImage imageNamed:@"shareIcon"],
+//                             [UIImage imageNamed:@"shareIcon"],
+                             [UIImage imageNamed:@"shareIcon"]];
+    
+    NSAssert(shareNames.count == shareImages.count, @"There should be an equal number of these...");
+    
+    NSMutableArray* shareViews = [[NSMutableArray alloc] init];
+    
+    for (int i=0; i<[shareNames count];i++)
+    {
+        VShareView* shareView = [[VShareView alloc] initWithTitle:shareNames[i] image:shareImages[i]];
+        
+        CGFloat shareViewWidth = shareView.frame.size.width;
+        CGFloat widthOfShareViews = (shareNames.count * shareViewWidth) + ((shareNames.count - 1) * kShareMargin);
+        CGFloat superviewMargin = (self.sharesSuperview.frame.size.width - widthOfShareViews) / 2;
+        CGFloat xCenter = superviewMargin + (shareViewWidth / 2) + (i * shareViewWidth) + (i * kShareMargin);
+        
+        shareView.center = CGPointMake(xCenter, self.sharesSuperview.frame.size.height / 2);
+        
+        [shareViews addObject:shareView];
+        [self.sharesSuperview addSubview:shareView];
+    }
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -85,7 +135,7 @@
     }];
     
     self.textView.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeaderFont];
-    [self.textView becomeFirstResponder];
+//    [self.textView becomeFirstResponder];
 }
 
 - (void)viewDidAppear:(BOOL)animated

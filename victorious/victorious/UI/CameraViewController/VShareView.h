@@ -10,4 +10,9 @@
 
 @interface VShareView : UIView
 
+@property (nonatomic, strong) UIColor* defaultColor;
+@property (nonatomic, strong) UIColor* selectedColor;
+
+- (id)initWithTitle:(NSString*)title image:(UIImage*)image;
+
 @end

@@ -260,3 +260,8 @@
 "remixedFromFormat"       =   "Remix from %@";
 
 "leaveACommentFormat"   =   "Leave a comment at %@";
+
+"facebook"              =   "facebook";
+"twitter"               =   "twitter";
+"tumblr"                =   "tumblr";
+"saveToLibrary"         =   "save to library";
