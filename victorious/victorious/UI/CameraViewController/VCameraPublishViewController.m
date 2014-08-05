@@ -21,6 +21,8 @@
 
 #import "VShareView.h"
 
+#import "UIAlertView+VBlocks.h"
+
 @interface VCameraPublishViewController () <UITextViewDelegate, VSetExpirationDelegate>
 @property (nonatomic, weak) IBOutlet    UIImageView*    previewImageView;
 
@@ -177,11 +179,25 @@ static const CGFloat kShareMargin = 6.0f;
 
 - (IBAction)cancel:(id)sender
 {
-    [[VAnalyticsRecorder sharedAnalyticsRecorder] sendEventWithCategory:kVAnalyticsEventCategoryNavigation action:@"Camera Publish Cancelled" label:nil value:nil];
-    if (self.completion)
-    {
-        self.completion(YES);
-    }
+    UIAlertView* alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"areYouSure", nil)
+                                                    message:NSLocalizedString(@"contentIsntPublished", nil)
+                                          cancelButtonTitle:NSLocalizedString(@"CancelButton", nil)
+                                             onCancelButton:nil
+                                 otherButtonTitlesAndBlocks:NSLocalizedString(@"Exit", nil), ^(void)
+                          {
+                              [[VAnalyticsRecorder sharedAnalyticsRecorder] sendEventWithCategory:kVAnalyticsEventCategoryNavigation
+                                                                                           action:@"Camera Publish Cancelled"
+                                                                                            label:nil
+                                                                                            value:nil];
+                              if (self.completion)
+                              {
+                                  self.completion(YES);
+                              }
+                          },
+                          
+                          nil];
+    
+    [alert show];
 }
 
 - (IBAction)hashButtonClicked:(id)sender

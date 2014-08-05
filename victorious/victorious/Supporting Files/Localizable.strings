@@ -20,6 +20,7 @@
 "YesButton"             =   "Yes";
 "NoButton"              =   "No";
 "BackButton"            =   "Back";
+"Exit"                  =   "Exit";
 
 "TimeSeparator"         =   ":";
 "InvalidTimePlaceholder"=   "-:--";
@@ -265,3 +266,6 @@
 "twitter"               =   "twitter";
 "tumblr"                =   "tumblr";
 "saveToLibrary"         =   "save to library";
+
+"areYouSure"            =   "Are You Sure?";
+"contentIsntPublished"  =   "Your content hasn't been published yet! If you exit now, all changes will be lost.";
