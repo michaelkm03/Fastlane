@@ -162,7 +162,8 @@ NSString *kStreamsWillCommentNotification = @"kStreamsWillCommentNotification";
     }
     self.descriptionLabel.attributedText = newAttributedCellText;
     self.dateLabel.text = [self.sequence.releasedAt timeSince];
-    [self.commentButton setTitle:self.sequence.commentCount.stringValue forState:UIControlStateNormal];
+    NSString* commentCount = self.sequence.commentCount.integerValue ? self.sequence.commentCount.stringValue : @"";
+    [self.commentButton setTitle:commentCount forState:UIControlStateNormal];
     
     NSString* parentUserString;
     if ([self.sequence isRepost] && self.sequence.parentUser)
