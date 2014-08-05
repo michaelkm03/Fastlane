@@ -136,7 +136,7 @@
 {
     [super viewDidAppear:animated];
     
-    [[VAnalyticsRecorder sharedAnalyticsRecorder] startAppView:[@"Stream - " stringByAppendingString:self.streamName]];
+    [[VAnalyticsRecorder sharedAnalyticsRecorder] startAppView:self.viewName];
     
     if (!self.tableDataSource.count && !self.tableDataSource.filter.updating.boolValue)
     {
@@ -169,6 +169,17 @@
 }
 
 #pragma mark - Properties
+
+- (NSString *)viewName
+{
+    NSString *viewName = @"Stream";
+    if (self.streamName)
+    {
+        viewName = [NSString stringWithFormat:@"Stream - %@", self.streamName];
+    }
+    return viewName;
+}
+
 - (void)setFilterType:(VStreamFilter)filterType
 {
     if (_filterType == filterType)
