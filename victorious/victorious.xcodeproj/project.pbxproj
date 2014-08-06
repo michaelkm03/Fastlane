@@ -325,6 +325,7 @@
 		D1DAAA0B187A43BE009ADCB0 /* VProfileEditViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D1DAAA0A187A43BE009ADCB0 /* VProfileEditViewController.m */; };
 		DB344E01197DD06E006CFAE4 /* VHashTagStreamViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DB344E00197DD06E006CFAE4 /* VHashTagStreamViewController.m */; };
 		DB58EF1D19870A8F00D2A07F /* VContentToHashTagStreamAnimator.m in Sources */ = {isa = PBXBuildFile; fileRef = DB58EF1C19870A8F00D2A07F /* VContentToHashTagStreamAnimator.m */; };
+		DB58EF3219904EEB00D2A07F /* VUserSearchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DB58EF3119904EEB00D2A07F /* VUserSearchViewController.m */; };
 		DB8D3A0F197EF767005DD36D /* VHashTagContainerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DB8D3A0E197EF767005DD36D /* VHashTagContainerViewController.m */; };
 		DB8D3A1319803A03005DD36D /* VHashTags.m in Sources */ = {isa = PBXBuildFile; fileRef = DB8D3A1219803A03005DD36D /* VHashTags.m */; };
 /* End PBXBuildFile section */
@@ -920,6 +921,8 @@
 		DB344E00197DD06E006CFAE4 /* VHashTagStreamViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VHashTagStreamViewController.m; path = "UI/Streams Subview/VHashTagStreamViewController.m"; sourceTree = "<group>"; };
 		DB58EF1B19870A8F00D2A07F /* VContentToHashTagStreamAnimator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VContentToHashTagStreamAnimator.h; path = Animations/VContentToHashTagStreamAnimator.h; sourceTree = "<group>"; };
 		DB58EF1C19870A8F00D2A07F /* VContentToHashTagStreamAnimator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VContentToHashTagStreamAnimator.m; path = Animations/VContentToHashTagStreamAnimator.m; sourceTree = "<group>"; };
+		DB58EF3019904EEB00D2A07F /* VUserSearchViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VUserSearchViewController.h; sourceTree = "<group>"; };
+		DB58EF3119904EEB00D2A07F /* VUserSearchViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VUserSearchViewController.m; sourceTree = "<group>"; };
 		DB8D3A0D197EF767005DD36D /* VHashTagContainerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VHashTagContainerViewController.h; sourceTree = "<group>"; };
 		DB8D3A0E197EF767005DD36D /* VHashTagContainerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VHashTagContainerViewController.m; sourceTree = "<group>"; };
 		DB8D3A1119803A03005DD36D /* VHashTags.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VHashTags.h; sourceTree = "<group>"; };
@@ -1283,6 +1286,7 @@
 		3F9B665B188878C60046F826 /* UI */ = {
 			isa = PBXGroup;
 			children = (
+				DB58EF1E1990027F00D2A07F /* Search */,
 				3FF8B7971868EE7E00806EA0 /* Main.storyboard */,
 				3F9B665C188878D00046F826 /* Common */,
 				031D86C01947BB9800CDB814 /* ForceUpgrade */,
@@ -2111,6 +2115,32 @@
 			name = RealtimeComments;
 			sourceTree = "<group>";
 		};
+		DB58EF1E1990027F00D2A07F /* Search */ = {
+			isa = PBXGroup;
+			children = (
+				DB58EF20199002DB00D2A07F /* Animations */,
+				DB58EF1F199002C900D2A07F /* Cells */,
+				DB58EF3019904EEB00D2A07F /* VUserSearchViewController.h */,
+				DB58EF3119904EEB00D2A07F /* VUserSearchViewController.m */,
+			);
+			name = Search;
+			path = UI/Search;
+			sourceTree = "<group>";
+		};
+		DB58EF1F199002C900D2A07F /* Cells */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Cells;
+			sourceTree = "<group>";
+		};
+		DB58EF20199002DB00D2A07F /* Animations */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Animations;
+			sourceTree = "<group>";
+		};
 		DB8D3A10198039BD005DD36D /* HashTags */ = {
 			isa = PBXGroup;
 			children = (
@@ -2572,6 +2602,7 @@
 				03484BF2192D284100403FB1 /* VLightboxViewController.m in Sources */,
 				03FDA098197A092400405361 /* VPhotoFilterCollectionViewDataSource.m in Sources */,
 				BEE800E918FCC5C200A7CFD7 /* VStreamTableViewController+ContentCreation.m in Sources */,
+				DB58EF3219904EEB00D2A07F /* VUserSearchViewController.m in Sources */,
 				838511C418762DF3007E0316 /* VBadgeLabel.m in Sources */,
 				3F9B666818887D910046F826 /* VFetchedResultsTableViewController.m in Sources */,
 				03F80AA419523E3D00E876F7 /* VFacebookManager.m in Sources */,

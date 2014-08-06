@@ -12,5 +12,6 @@
 
 + (instancetype)inboxViewController;
 
+- (void)toggleFilterControl:(NSInteger)idx;
 
 @end

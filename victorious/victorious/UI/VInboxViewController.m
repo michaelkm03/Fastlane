@@ -8,6 +8,8 @@
 
 #import "VAnalyticsRecorder.h"
 #import "VInboxViewController.h"
+#import "VUserSearchViewController.h"
+#import "VLoginViewController.h"
 #import "UIViewController+VSideMenuViewController.h"
 #import "VConversation+RestKit.h"
 #import "VMessageContainerViewController.h"
@@ -22,8 +24,8 @@
 
 NS_ENUM(NSUInteger, VModeSelect)
 {
-    kMessageModeSelect,
-    kNewsModeSelect
+    kMessageModeSelect  = 0,
+    kNewsModeSelect     = 1
 };
 
 static  NSString*   kMessageCellViewIdentifier    =   @"VConversationCell";
@@ -68,6 +70,27 @@ static  NSString*   kNewsCellViewIdentifier       =   @"VNewsCell";
 {
     [super viewWillDisappear:animated];
     [[VAnalyticsRecorder sharedAnalyticsRecorder] finishAppView];
+}
+
+#pragma mark - Segmented Control
+- (void)toggleFilterControl:(NSInteger)idx
+{
+    VModeSelect = idx;
+    NSLog(@"\n\n-----\nSelected Index = %d\n-----\n\n",VModeSelect);
+    
+    if (![VObjectManager sharedManager].mainUser)
+    {
+        [self presentViewController:[VLoginViewController loginViewController] animated:YES completion:NULL];
+    }
+    
+    if (VModeSelect == kMessageModeSelect)
+    {
+        
+    }
+    else
+    {
+        
+    }
 }
 
 #pragma mark - Overrides
@@ -233,6 +256,8 @@ static  NSString*   kNewsCellViewIdentifier       =   @"VNewsCell";
 {
     [[VObjectManager sharedManager] loadNextPageOfConversationListWithSuccessBlock:nil failBlock:nil];
 }
+
+
 
 #pragma mark - Navigation
 

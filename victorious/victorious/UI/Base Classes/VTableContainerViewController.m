@@ -7,6 +7,7 @@
 //
 
 #import "VTableContainerViewController.h"
+#import "VUserSearchViewController.h"
 
 #import "UIViewController+VSideMenuViewController.h"
 
@@ -90,10 +91,12 @@
 
 #pragma mark - Content Creation
 
-- (IBAction)createButtonAction:(id)sender
+- (IBAction)userSearchAction:(id)sender
 {
-    NSLog(@"\n\n------\nCreate Button Tapped\n------\n\n");
+    VUserSearchViewController *userSearch = [VUserSearchViewController sharedInstance];
+    [self presentViewController:userSearch animated:YES completion:nil];
 }
+
 
 #pragma mark - Header
 
