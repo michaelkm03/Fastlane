@@ -8,7 +8,6 @@
 
 #import "VUserSearchViewController.h"
 
-#import "NSString+URLEncode.h"
 #import "VAnalyticsRecorder.h"
 #import "VConstants.h"
 
