@@ -256,7 +256,7 @@
                                     <action selector="publish:" destination="1zz-KC-cVA" eventType="touchUpInside" id="Wok-j4-Gb7"/>
                                 </connections>
                             </button>
-                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="yxx-6S-3iW" userLabel="Description Text View">
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" scrollEnabled="NO" translatesAutoresizingMaskIntoConstraints="NO" id="yxx-6S-3iW" userLabel="Description Text View">
                                 <rect key="frame" x="20" y="229" width="280" height="53"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
@@ -266,7 +266,7 @@
                                     <outlet property="delegate" destination="1zz-KC-cVA" id="5VY-zf-1uj"/>
                                 </connections>
                             </textView>
-                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="280" translatesAutoresizingMaskIntoConstraints="NO" id="Fsz-Xd-hVx" customClass="TTTAttributedLabel">
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" preferredMaxLayoutWidth="280" translatesAutoresizingMaskIntoConstraints="NO" id="Fsz-Xd-hVx" customClass="TTTAttributedLabel">
                                 <rect key="frame" x="20" y="229" width="280" height="53"/>
                                 <string key="text">Add a description...
 and don't forget #hashtags</string>

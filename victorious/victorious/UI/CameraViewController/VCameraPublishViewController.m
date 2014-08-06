@@ -49,6 +49,8 @@
 @property (nonatomic, retain) IBOutletCollection(UIButton) NSArray *captionButtons;
 @property (nonatomic, retain) IBOutletCollection(UIButton) NSArray *captionLabels;
 
+@property (nonatomic, strong) NSDictionary* typingAttributes;
+
 @property (nonatomic, weak) IBOutlet UIButton* captionButton;
 @property (nonatomic, weak) IBOutlet UIButton* memeButton;
 @property (nonatomic, weak) IBOutlet UIButton* secretButton;
@@ -232,8 +234,13 @@ static const CGFloat kShareMargin = 34.0f;
     {
         [self.view removeConstraint:self.secretTextViewYConstraint];
         [self.view addConstraint:self.originalTextViewYConstraint];
-        self.textView.font = [UIFont fontWithName:kMemeFont size:24];
-        self.textView.textAlignment = NSTextAlignmentCenter;
+        
+        self.typingAttributes = @{
+                                  NSFontAttributeName : [UIFont fontWithName:kMemeFont size:48],
+                                  NSForegroundColorAttributeName : [UIColor whiteColor],
+                                  NSStrokeColorAttributeName : [UIColor blackColor],
+                                  NSStrokeWidthAttributeName : [NSNumber numberWithFloat:-5.0]
+                                  };
     }
     else if ((UIButton*)sender == self.secretButton)
     {
@@ -241,6 +248,7 @@ static const CGFloat kShareMargin = 34.0f;
         [self.view addConstraint:self.originalTextViewYConstraint];
         self.textView.font = [UIFont fontWithName:kSecretFont size:20];
         self.textView.textAlignment = NSTextAlignmentCenter;
+        self.typingAttributes = nil;
     }
     else if ((UIButton*)sender == self.captionButton)
     {
@@ -248,6 +256,7 @@ static const CGFloat kShareMargin = 34.0f;
         [self.view addConstraint:self.secretTextViewYConstraint];
         self.textView.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeading1Font];
         self.textView.textAlignment = NSTextAlignmentLeft;
+        self.typingAttributes = nil;
     }
     
     self.captionPlaceholderLabel.font = self.textView.font;
@@ -419,6 +428,12 @@ static const CGFloat kShareMargin = 34.0f;
 - (void)textViewDidChange:(UITextView *)textView
 {
     self.captionPlaceholderLabel.hidden = ([textView.text length] > 0);
+    
+    if (self.typingAttributes)
+    {
+        NSAttributedString *str = [[NSAttributedString alloc] initWithString:self.textView.text attributes:self.typingAttributes];
+        self.textView.attributedText = str;
+    }
 }
 
 - (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text
