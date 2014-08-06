@@ -49,7 +49,7 @@
 @property (nonatomic, retain) IBOutletCollection(UIButton) NSArray *captionButtons;
 @property (nonatomic, retain) IBOutletCollection(UIButton) NSArray *captionLabels;
 
-@property (nonatomic, strong) NSDictionary* typingAttributes;
+@property (nonatomic, strong) NSMutableDictionary* typingAttributes;
 
 @property (nonatomic, weak) IBOutlet UIButton* captionButton;
 @property (nonatomic, weak) IBOutlet UIButton* memeButton;
@@ -235,12 +235,16 @@ static const CGFloat kShareMargin = 34.0f;
         [self.view removeConstraint:self.secretTextViewYConstraint];
         [self.view addConstraint:self.originalTextViewYConstraint];
         
-        self.typingAttributes = @{
-                                  NSFontAttributeName : [UIFont fontWithName:kMemeFont size:48],
+        NSMutableParagraphStyle *paragraphStyle = NSMutableParagraphStyle.new;
+        paragraphStyle.alignment                = NSTextAlignmentCenter;
+
+        self.typingAttributes = [@{
+                                  NSParagraphStyleAttributeName : paragraphStyle,
+                                  NSFontAttributeName : [UIFont fontWithName:kMemeFont size:self.textView.frame.size.height],
                                   NSForegroundColorAttributeName : [UIColor whiteColor],
                                   NSStrokeColorAttributeName : [UIColor blackColor],
                                   NSStrokeWidthAttributeName : [NSNumber numberWithFloat:-5.0]
-                                  };
+                                  } mutableCopy];
     }
     else if ((UIButton*)sender == self.secretButton)
     {
@@ -427,12 +431,28 @@ static const CGFloat kShareMargin = 34.0f;
 
 - (void)textViewDidChange:(UITextView *)textView
 {
-    self.captionPlaceholderLabel.hidden = ([textView.text length] > 0);
-    
     if (self.typingAttributes)
     {
+        CGFloat maxFontSize = ((UIFont*)self.typingAttributes[NSFontAttributeName]).pointSize;
+        
+        while (((CGSize) [self.textView sizeThatFits:self.textView.frame.size]).height > self.textView.frame.size.height)
+        {
+            CGFloat newFontSize = self.textView.font.pointSize-1;
+            
+            if (newFontSize < maxFontSize/2)
+                break;
+
+            UIFont* font = [self.typingAttributes[NSFontAttributeName] fontWithSize:newFontSize];
+            self.typingAttributes[NSFontAttributeName] = font;
+            self.textView.font = font;
+        }
+    
         NSAttributedString *str = [[NSAttributedString alloc] initWithString:self.textView.text attributes:self.typingAttributes];
         self.textView.attributedText = str;
+    }
+    else
+    {
+        self.captionPlaceholderLabel.hidden = ([textView.text length] > 0);
     }
 }
 
@@ -442,6 +462,11 @@ static const CGFloat kShareMargin = 34.0f;
     {
         [textView resignFirstResponder];
         return NO;
+    }
+    if ([text isEqualToString:@""])
+    {
+        UIFont* font = [self.typingAttributes[NSFontAttributeName] fontWithSize:self.textView.frame.size.height];
+        self.typingAttributes[NSFontAttributeName] = font;
     }
 
     return YES;
