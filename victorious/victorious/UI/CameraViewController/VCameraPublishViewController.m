@@ -37,24 +37,28 @@
 @property (nonatomic, weak) IBOutlet    UISwitch*       twitterButton;
 @property (nonatomic, weak) IBOutlet    UISwitch*       facebookButton;
 
-@property (nonatomic, weak) IBOutlet    TTTAttributedLabel* textViewPlaceholderLabel;
+@property (nonatomic, weak) IBOutlet    TTTAttributedLabel* captionPlaceholderLabel;
 
 @property (nonatomic, weak) IBOutlet    UIView*         sharesSuperview;
 
+@property (nonatomic, strong) IBOutlet  NSLayoutConstraint* originalTextViewYConstraint;//This is intentionally strong
+@property (nonatomic, strong)           NSLayoutConstraint* secretTextViewYConstraint;
+
 @property (nonatomic, weak) IBOutlet    NSLayoutConstraint* captionViewHeightConstraint;
+
 @property (nonatomic, retain) IBOutletCollection(UIButton) NSArray *captionButtons;
 @property (nonatomic, retain) IBOutletCollection(UIButton) NSArray *captionLabels;
 
-@property (nonatomic, weak) IBOutlet    UILabel*        captionLabel;
-@property (nonatomic, weak) IBOutlet    UILabel*        memeLabel;
-@property (nonatomic, weak) IBOutlet    UILabel*        secretLabel;
+@property (nonatomic, weak) IBOutlet UIButton* captionButton;
+@property (nonatomic, weak) IBOutlet UIButton* memeButton;
+@property (nonatomic, weak) IBOutlet UIButton* secretButton;
 
 @end
 
 static NSString* kSecretFont = @"PT_Sans-Narrow-Web-Regular";
 static NSString* kMemeFont = @"Impact";
 
-static const CGFloat kShareMargin = 6.0f;
+static const CGFloat kShareMargin = 34.0f;
 
 @implementation VCameraPublishViewController
 
@@ -95,12 +99,20 @@ static const CGFloat kShareMargin = 6.0f;
         button.layer.borderColor = [UIColor colorWithRed:.8 green:.82 blue:.85 alpha:1].CGColor;
     }
     
-    self.captionLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeading1Font];
-    self.secretLabel.font = [UIFont fontWithName:kSecretFont size:20];
-    self.memeLabel.font = [UIFont fontWithName:kMemeFont size:24];
+    self.captionButton.selected = YES;
     
+    self.secretTextViewYConstraint = [NSLayoutConstraint constraintWithItem:self.textView
+                                                                attribute:NSLayoutAttributeCenterY
+                                                                relatedBy:NSLayoutRelationEqual
+                                                                   toItem:self.previewImageView
+                                                                attribute:NSLayoutAttributeCenterY
+                                                               multiplier:1.0
+                                                                 constant:0.0];
+
     [self initShareViews];
 }
+
+
 
 - (void)initShareViews
 {
@@ -165,10 +177,10 @@ static const CGFloat kShareMargin = 6.0f;
         || [mediaExtension isEqualToString:VConstantMediaExtensionMP4])
         self.captionViewHeightConstraint.constant = 0;
     
-    [self.textViewPlaceholderLabel setText:NSLocalizedString(@"AddDescription", @"") afterInheritingLabelAttributesAndConfiguringWithBlock:^NSMutableAttributedString *(NSMutableAttributedString *mutableAttributedString) {
+    [self.captionPlaceholderLabel setText:NSLocalizedString(@"AddDescription", @"") afterInheritingLabelAttributesAndConfiguringWithBlock:^NSMutableAttributedString *(NSMutableAttributedString *mutableAttributedString) {
         NSRange hashtagRange = [[mutableAttributedString string] rangeOfString:NSLocalizedString(@"AddDescriptionAnchor", @"")];
         
-        UIFont* headerFont = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeaderFont];
+        UIFont* headerFont = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeading1Font];
         CTFontRef font = CTFontCreateWithName((__bridge CFStringRef)headerFont.fontName, headerFont.pointSize, NULL);
         
         [mutableAttributedString addAttribute:(NSString *)kCTFontAttributeName value:(__bridge id)font range:NSMakeRange(0, [mutableAttributedString length])];
@@ -178,7 +190,6 @@ static const CGFloat kShareMargin = 6.0f;
     }];
     
     self.textView.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeaderFont];
-//    [self.textView becomeFirstResponder];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -209,6 +220,41 @@ static const CGFloat kShareMargin = 6.0f;
 }
 
 #pragma mark - Actions
+
+- (IBAction)changeCaptionType:(id)sender
+{
+    for (UIButton* button in self.captionButtons)
+    {
+        button.selected = (button == (UIButton*)sender);
+    }
+    
+    if ((UIButton*)sender == self.memeButton)
+    {
+        [self.view removeConstraint:self.secretTextViewYConstraint];
+        [self.view addConstraint:self.originalTextViewYConstraint];
+        self.textView.font = [UIFont fontWithName:kMemeFont size:24];
+        self.textView.textAlignment = NSTextAlignmentCenter;
+    }
+    else if ((UIButton*)sender == self.secretButton)
+    {
+        [self.view removeConstraint:self.secretTextViewYConstraint];
+        [self.view addConstraint:self.originalTextViewYConstraint];
+        self.textView.font = [UIFont fontWithName:kSecretFont size:20];
+        self.textView.textAlignment = NSTextAlignmentCenter;
+    }
+    else if ((UIButton*)sender == self.captionButton)
+    {
+        [self.view removeConstraint:self.originalTextViewYConstraint];
+        [self.view addConstraint:self.secretTextViewYConstraint];
+        self.textView.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeading1Font];
+        self.textView.textAlignment = NSTextAlignmentLeft;
+    }
+    
+    self.captionPlaceholderLabel.font = self.textView.font;
+    self.captionPlaceholderLabel.textAlignment = self.textView.textAlignment;
+    
+    [self.textView becomeFirstResponder];
+}
 
 - (IBAction)goBack:(id)sender
 {
@@ -365,9 +411,14 @@ static const CGFloat kShareMargin = 6.0f;
 
 #pragma mark - UITextViewDelegate
 
+- (void)textViewDidBeginEditing:(UITextView *)textView
+{
+    self.captionPlaceholderLabel.hidden = YES;
+}
+
 - (void)textViewDidChange:(UITextView *)textView
 {
-    self.textViewPlaceholderLabel.hidden = ([textView.text length] > 0);
+    self.captionPlaceholderLabel.hidden = ([textView.text length] > 0);
 }
 
 - (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text
@@ -383,7 +434,7 @@ static const CGFloat kShareMargin = 6.0f;
 
 - (void)textViewDidEndEditing:(UITextView *)textView
 {
-    self.textViewPlaceholderLabel.hidden = ([textView.text length] > 0);
+    self.captionPlaceholderLabel.hidden = ([textView.text length] > 0);
 }
 
 #pragma mark - Navigation

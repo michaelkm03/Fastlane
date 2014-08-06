@@ -77,6 +77,8 @@
 		<string>MuseoSans-100.otf</string>
 		<string>MuseoSans-300.otf</string>
 		<string>MuseoSans-500.otf</string>
+		<string>PT_Sans-Narrow-Web-Regular.ttf</string>
+		<string>Impact.ttf</string>
 	</array>
 	<key>UIMainStoryboardFile</key>
 	<string>Main</string>
