@@ -8,17 +8,18 @@
 
 #import "VAbstractCommentCell.h"
 
-@class VMessage;
+@class VCommentTextAndMediaView;
 
-static NSString *kMessageCellIdentifier = @"VMessageCell";
-static NSString *kOtherMessageCellIdentifier = @"VOtherMessageCell";
+extern NSString * const kVMessageCellNibName;
 
-extern CGFloat const kMessageCellYOffset;
-extern CGFloat const kMessageMediaCellYOffset;
-extern CGFloat const kMessageMinCellHeight;
+@interface VMessageCell : UITableViewCell
 
-@interface VMessageCell : VAbstractCommentCell
+@property (nonatomic, weak) IBOutlet VCommentTextAndMediaView *commentTextView;
+@property (nonatomic, weak) IBOutlet UIButton                 *profileImageButton;
+@property (nonatomic, weak) IBOutlet UILabel                  *timeLabel;
 
-@property (strong, nonatomic) VMessage* message;
+@property (nonatomic, readonly) UIColor *alernateChatBubbleTintColor; ///< The tint color used for the user's own messages
+
++ (CGFloat)estimatedHeightWithWidth:(CGFloat)width text:(NSString *)text;
 
 @end

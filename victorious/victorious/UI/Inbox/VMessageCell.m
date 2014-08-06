@@ -6,39 +6,17 @@
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
+#import "VCommentTextAndMediaView.h"
 #import "VMessageCell.h"
 
-#import "VConstants.h"
-#import "VMessage.h"
-#import "VUser+RestKit.h"
-#import "NSDate+timeSince.h"
-#import "UIButton+VImageLoading.h"
-#import "UIImage+ImageCreation.h"
-#import "VThemeManager.h"
-#import "VObjectManager.h"
-#import "NSString+VParseHelp.h"
+NSString * const kVMessageCellNibName = @"VMessageCell";
 
-@import MediaPlayer;
+static const CGFloat      kMinimumCellHeight = 71.0f;
+static const UIEdgeInsets kTextInsets        = { 24.0f, 74.0f, 24.0f, 32.0f };
 
-CGFloat const kMessageMinCellHeight = 60;
-CGFloat const kMessageCellYOffset = 41;
-CGFloat const kMessageMediaCellYOffset = 238;
-CGFloat const kChatBubbleInset = 12;
-CGFloat const kChatBubbleArrowPadding = 9;
-CGFloat const kProfilePadding = 27;
+@interface VMessageCell ()
 
-NSString* const kChatBubbleRightImage = @"ChatBubbleRight";
-NSString* const kChatBubbleLeftImage = @"ChatBubbleLeft";
-
-@interface VMessageCell()
-
-@property (weak, nonatomic) IBOutlet UIImageView *chatBubble;
-
-@property (weak, nonatomic) IBOutlet NSLayoutConstraint* messageHeightConstraint;
-@property (weak, nonatomic) IBOutlet NSLayoutConstraint* messageWidthConstraint;
-@property (weak, nonatomic) IBOutlet NSLayoutConstraint* mediaTopConstraint;
-
-@property (strong, nonatomic) NSLayoutConstraint* chatBottomConstraint;
+@property (nonatomic, weak) IBOutlet UIImageView *chatBubble;
 
 @end
 
@@ -47,87 +25,26 @@ NSString* const kChatBubbleLeftImage = @"ChatBubbleLeft";
 - (void)awakeFromNib
 {
     [super awakeFromNib];
-    
-    self.message = self.message;
+    self.chatBubble.image = [[[UIImage imageNamed:@"ChatBubble"] resizableImageWithCapInsets:UIEdgeInsetsMake(5.0f, 5.0f, 5.0f, 4.0f) resizingMode:UIImageResizingModeTile] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+    self.timeLabel.font = [UIFont fontWithName:@"MuseoSans-100" size:11.125f];
 }
 
-- (void)setMessage:(VMessage *)message
++ (CGFloat)estimatedHeightWithWidth:(CGFloat)width text:(NSString *)text
 {
-    self.mpController = nil;
-    
-    _message = message;
-    
-    self.dateLabel.text = [message.postedAt timeSince];
-    self.nameLabel.text = message.user.name;
-    self.messageLabel.textColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVContentTextColor];
-    self.messageLabel.text = message.text;
-    self.mediaUrl = ![message.mediaPath isEmpty] ? [NSURL URLWithString:message.mediaPath] : nil;
-    self.previewImageUrl = ![message.thumbnailPath isEmpty] ? [NSURL URLWithString:message.thumbnailPath] : nil;
-    self.user = message.user;
-    if ([self.user.remoteId isEqualToNumber:[VObjectManager sharedManager].mainUser.remoteId])
-    {
-        self.chatBubble.transform = CGAffineTransformMakeScale(-1, 1);
-    }
-    else
-    {
-        self.chatBubble.transform = CGAffineTransformMakeScale(1, 1);
-    }
-    
-    [self.profileImageButton setImageWithURL:[NSURL URLWithString:self.user.pictureUrl]
-                            placeholderImage:[UIImage imageNamed:@"profile_thumb"]
-                                    forState:UIControlStateNormal];
-    if (self.previewImageUrl)
-    {
-        self.playButton.hidden = !([[self.mediaUrl pathExtension] isEqualToString:VConstantMediaExtensionM3U8]);
-        self.mediaPreview.hidden = NO;
-        [self.mediaPreview setImageWithURL:self.previewImageUrl
-                          placeholderImage:[UIImage resizeableImageWithColor:
-                                            [[VThemeManager sharedThemeManager] themedColorForKey:kVBackgroundColor]]];
-    }
-    else
-    {
-        self.mediaUrl = nil;
-        self.mediaPreview.hidden = YES;
-        self.playButton.hidden = YES;
-    }
-    
-    CGFloat mediaWidth = self.mediaPreview.hidden ? 0 : self.mediaPreview.bounds.size.width;
-    CGSize size = [VAbstractCommentCell frameSizeForMessageText:self.messageLabel.text];
-    self.messageHeightConstraint.constant = size.height;
-    self.messageWidthConstraint.constant = MAX(size.width, mediaWidth);
-    
-    UIView* bottomConstrainer = self.previewImageUrl ? self.mediaPreview : self.messageLabel;
-    [self removeConstraint:self.chatBottomConstraint];
-    self.chatBottomConstraint = [NSLayoutConstraint constraintWithItem:self.chatBubble
-                                                             attribute:NSLayoutAttributeBottom
-                                                             relatedBy:NSLayoutRelationEqual
-                                                                toItem:bottomConstrainer
-                                                             attribute:NSLayoutAttributeBottom
-                                                            multiplier:1.0
-                                                              constant:kChatBubbleInset];
-    [self addConstraint:self.chatBottomConstraint];
-    
-    UIView* topConstrainer = self.messageLabel.text.length ? self.messageLabel : self.chatBubble;
-    NSInteger topConstrainerAttribute = self.messageLabel.text.length ? NSLayoutAttributeBottom : NSLayoutAttributeTop;
-    
-    [self removeConstraint:self.mediaTopConstraint];
-    self.mediaTopConstraint = [NSLayoutConstraint constraintWithItem:self.mediaPreview
-                                                             attribute:NSLayoutAttributeTop
-                                                             relatedBy:NSLayoutRelationEqual
-                                                                toItem:topConstrainer
-                                                             attribute:topConstrainerAttribute
-                                                            multiplier:1.0
-                                                              constant:kChatBubbleInset];
-    [self addConstraint:self.mediaTopConstraint];
-    
-    CGFloat height = self.messageHeightConstraint.constant + (kChatBubbleInset * 2);
-    height += self.previewImageUrl ? self.mediaPreview.frame.size.height + kChatBubbleInset: 0;
-    
-    CGFloat yOffset = self.previewImageUrl ? kMessageMediaCellYOffset : kMessageCellYOffset;
-    height = MAX(self.messageLabel.frame.size.height + yOffset, kMessageMinCellHeight);
-    
-    self.bounds = CGRectMake(0, 0, self.frame.size.width, height);
-    [self.parentTableViewController.tableView layoutIfNeeded];
+    return MAX([VCommentTextAndMediaView estimatedHeightWithWidth:(width - kTextInsets.left - kTextInsets.right) text:text] +
+                kTextInsets.top +
+                kTextInsets.bottom,
+               kMinimumCellHeight);
+}
+
+- (UIColor *)alernateChatBubbleTintColor
+{
+    return [UIColor colorWithRed:0.914f green:0.914f blue:0.914f alpha:1.0f];
+}
+
+- (void)prepareForReuse
+{
+    self.chatBubble.tintColor = [UIColor whiteColor];
 }
 
 @end

@@ -3,12 +3,12 @@
     {
       "idiom" : "universal",
       "scale" : "1x",
-      "filename" : "speech-bubble.png"
+      "filename" : "clock_icon.png"
     },
     {
       "idiom" : "universal",
       "scale" : "2x",
-      "filename" : "speech-bubble@2x.png"
+      "filename" : "clock_icon@2x.png"
     }
   ],
   "info" : {

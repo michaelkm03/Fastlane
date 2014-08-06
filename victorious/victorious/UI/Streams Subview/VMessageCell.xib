@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="5056" systemVersion="13D65" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="5056" systemVersion="13E28" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3733"/>
     </dependencies>
@@ -14,21 +14,26 @@
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ChatBubble" translatesAutoresizingMaskIntoConstraints="NO" id="0UZ-V6-0FV">
-                        <rect key="frame" x="57" y="10" width="242" height="40"/>
+                        <rect key="frame" x="62" y="12" width="238" height="228"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     </imageView>
-                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="StreamDate" translatesAutoresizingMaskIntoConstraints="NO" id="Rgs-9K-iBc" userLabel="Time Image">
-                        <rect key="frame" x="20" y="237" width="13" height="13"/>
+                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ChatBubbleArrow" translatesAutoresizingMaskIntoConstraints="NO" id="4pX-El-Czj">
+                        <rect key="frame" x="55" y="205" width="7" height="13"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     </imageView>
-                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="date" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="EzG-iN-xlM" userLabel="Time Label">
-                        <rect key="frame" x="35" y="237" width="23" height="14"/>
+                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="conversationClock" translatesAutoresizingMaskIntoConstraints="NO" id="Rgs-9K-iBc" userLabel="Clock Image">
+                        <rect key="frame" x="20" y="232" width="9" height="9"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    </imageView>
+                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="12h" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="EzG-iN-xlM" userLabel="Time Label">
+                        <rect key="frame" x="31" y="230" width="20" height="14"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <fontDescription key="fontDescription" style="UICTFontTextStyleCaption1"/>
+                        <color key="textColor" red="0.27058823529411763" green="0.27058823529411763" blue="0.27058823529411763" alpha="1" colorSpace="calibratedRGB"/>
                         <nil key="highlightedColor"/>
                     </label>
-                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="evX-ID-lZS">
-                        <rect key="frame" x="20" y="200" width="32" height="32"/>
+                    <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="evX-ID-lZS" userLabel="Profile Image Button">
+                        <rect key="frame" x="20" y="195" width="32" height="32"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <constraints>
                             <constraint firstAttribute="width" constant="32" id="64J-jJ-snI"/>
@@ -37,78 +42,51 @@
                         <state key="normal" backgroundImage="profile_thumb">
                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                         </state>
-                        <connections>
-                            <action selector="profileButtonAction:" destination="FjT-zX-vN4" eventType="touchUpInside" id="7yf-mI-y3p"/>
-                        </connections>
+                        <userDefinedRuntimeAttributes>
+                            <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                <integer key="value" value="16"/>
+                            </userDefinedRuntimeAttribute>
+                        </userDefinedRuntimeAttributes>
                     </button>
-                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Z4Q-lM-koN">
-                        <rect key="frame" x="85" y="58" width="190" height="190"/>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="cZf-lH-dIj" customClass="VCommentTextAndMediaView">
+                        <rect key="frame" x="74" y="24" width="214" height="204"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        <constraints>
-                            <constraint firstAttribute="height" constant="190" id="LRQ-Rf-HFN"/>
-                            <constraint firstAttribute="width" constant="190" id="k16-MO-Yhr"/>
-                        </constraints>
-                    </imageView>
-                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="JsJ-0N-s41">
-                        <rect key="frame" x="164" y="136" width="33" height="33"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        <state key="normal" image="Play">
-                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                        </state>
-                        <connections>
-                            <action selector="playVideo:" destination="FjT-zX-vN4" eventType="touchUpInside" id="MHh-gk-LUf"/>
-                        </connections>
-                    </button>
-                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="message" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="214" translatesAutoresizingMaskIntoConstraints="NO" id="y7x-B1-aa3" userLabel="Message label">
-                        <rect key="frame" x="73" y="22" width="214" height="24"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        <constraints>
-                            <constraint firstAttribute="width" constant="214" id="5Zr-JJ-uik"/>
-                            <constraint firstAttribute="height" constant="24" id="aZc-RW-4PR"/>
-                        </constraints>
-                        <fontDescription key="fontDescription" type="system" pointSize="16"/>
-                        <nil key="highlightedColor"/>
-                    </label>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                    </view>
                 </subviews>
                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                 <constraints>
-                    <constraint firstItem="0UZ-V6-0FV" firstAttribute="top" secondItem="OCU-v7-M0N" secondAttribute="top" constant="10" id="0T1-QP-b5E"/>
-                    <constraint firstItem="JsJ-0N-s41" firstAttribute="centerX" secondItem="Z4Q-lM-koN" secondAttribute="centerX" id="16j-WD-4GZ"/>
-                    <constraint firstItem="0UZ-V6-0FV" firstAttribute="trailing" secondItem="y7x-B1-aa3" secondAttribute="trailing" constant="12" id="AfH-ov-xyO"/>
+                    <constraint firstItem="0UZ-V6-0FV" firstAttribute="top" secondItem="OCU-v7-M0N" secondAttribute="top" constant="12" id="0T1-QP-b5E"/>
+                    <constraint firstItem="Rgs-9K-iBc" firstAttribute="top" secondItem="evX-ID-lZS" secondAttribute="bottom" constant="5" id="4Wm-vn-FFV"/>
+                    <constraint firstItem="0UZ-V6-0FV" firstAttribute="top" secondItem="cZf-lH-dIj" secondAttribute="top" constant="-12" id="5TD-Hy-3te"/>
+                    <constraint firstAttribute="right" secondItem="0UZ-V6-0FV" secondAttribute="right" constant="20" id="DX0-Tg-YoA"/>
                     <constraint firstItem="EzG-iN-xlM" firstAttribute="leading" secondItem="Rgs-9K-iBc" secondAttribute="trailing" constant="2" id="EhR-p7-OQP"/>
+                    <constraint firstItem="0UZ-V6-0FV" firstAttribute="bottom" secondItem="Rgs-9K-iBc" secondAttribute="bottom" constant="-1" id="H8m-7Q-wO9"/>
                     <constraint firstItem="evX-ID-lZS" firstAttribute="leading" secondItem="OCU-v7-M0N" secondAttribute="leading" constant="20" id="Lze-SD-Bwh"/>
-                    <constraint firstItem="Z4Q-lM-koN" firstAttribute="centerX" secondItem="y7x-B1-aa3" secondAttribute="centerX" id="Omd-Ur-l11"/>
-                    <constraint firstAttribute="bottom" secondItem="evX-ID-lZS" secondAttribute="bottom" constant="20" id="P1g-yI-pet"/>
-                    <constraint firstItem="EzG-iN-xlM" firstAttribute="top" secondItem="evX-ID-lZS" secondAttribute="bottom" constant="5" id="P3x-UP-c9a"/>
-                    <constraint firstItem="JsJ-0N-s41" firstAttribute="centerY" secondItem="Z4Q-lM-koN" secondAttribute="centerY" id="Qcs-mv-YGV"/>
+                    <constraint firstItem="4pX-El-Czj" firstAttribute="centerY" secondItem="evX-ID-lZS" secondAttribute="centerY" id="OCN-E8-WSe"/>
                     <constraint firstItem="Rgs-9K-iBc" firstAttribute="leading" secondItem="evX-ID-lZS" secondAttribute="leading" id="RLN-6I-2zl"/>
-                    <constraint firstItem="Z4Q-lM-koN" firstAttribute="top" secondItem="y7x-B1-aa3" secondAttribute="bottom" priority="900" constant="12" id="TcK-aB-f5f"/>
-                    <constraint firstItem="y7x-B1-aa3" firstAttribute="leading" secondItem="0UZ-V6-0FV" secondAttribute="leading" constant="16" id="bny-XC-3JU"/>
-                    <constraint firstItem="0UZ-V6-0FV" firstAttribute="leading" secondItem="evX-ID-lZS" secondAttribute="trailing" constant="5" id="ee1-7p-pAx"/>
-                    <constraint firstItem="y7x-B1-aa3" firstAttribute="top" secondItem="0UZ-V6-0FV" secondAttribute="top" constant="12" id="fxX-ZJ-mOa"/>
+                    <constraint firstAttribute="bottom" secondItem="0UZ-V6-0FV" secondAttribute="bottom" constant="12" id="c8v-bw-eNu"/>
+                    <constraint firstItem="0UZ-V6-0FV" firstAttribute="leading" secondItem="cZf-lH-dIj" secondAttribute="leading" constant="-12" id="fME-cZ-t7T"/>
+                    <constraint firstItem="0UZ-V6-0FV" firstAttribute="bottom" secondItem="cZf-lH-dIj" secondAttribute="bottom" constant="12" id="pJu-wJ-oEF"/>
+                    <constraint firstItem="0UZ-V6-0FV" firstAttribute="trailing" secondItem="cZf-lH-dIj" secondAttribute="trailing" constant="12" id="plA-Sr-r0t"/>
+                    <constraint firstItem="0UZ-V6-0FV" firstAttribute="left" secondItem="OCU-v7-M0N" secondAttribute="left" constant="62" id="tFB-CP-IaT"/>
                     <constraint firstItem="EzG-iN-xlM" firstAttribute="centerY" secondItem="Rgs-9K-iBc" secondAttribute="centerY" id="twX-Tt-S3A"/>
+                    <constraint firstItem="0UZ-V6-0FV" firstAttribute="left" secondItem="4pX-El-Czj" secondAttribute="right" id="wWd-Xb-Cmy"/>
                 </constraints>
             </tableViewCellContentView>
             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
             <connections>
-                <outlet property="chatBubble" destination="0UZ-V6-0FV" id="ECj-dg-rYb"/>
-                <outlet property="dateLabel" destination="EzG-iN-xlM" id="5U1-bf-ePa"/>
-                <outlet property="mediaPreview" destination="Z4Q-lM-koN" id="Aok-1K-JsF"/>
-                <outlet property="mediaTopConstraint" destination="TcK-aB-f5f" id="nuR-Ka-vy1"/>
-                <outlet property="messageHeightConstraint" destination="aZc-RW-4PR" id="sVQ-Hs-gte"/>
-                <outlet property="messageLabel" destination="y7x-B1-aa3" id="ZXv-6x-zIM"/>
-                <outlet property="messageWidthConstraint" destination="5Zr-JJ-uik" id="drI-dh-MyW"/>
-                <outlet property="playButton" destination="JsJ-0N-s41" id="7Kw-hE-Rgz"/>
-                <outlet property="profileImageButton" destination="evX-ID-lZS" id="xSf-ub-HxJ"/>
-                <outletCollection property="labels" destination="EzG-iN-xlM" id="xh4-Um-ywf"/>
-                <outletCollection property="labels" destination="y7x-B1-aa3" id="ueK-Qs-ehy"/>
+                <outlet property="chatBubble" destination="0UZ-V6-0FV" id="tjg-eU-eez"/>
+                <outlet property="commentTextView" destination="cZf-lH-dIj" id="Epv-B0-ezy"/>
+                <outlet property="profileImageButton" destination="evX-ID-lZS" id="lgw-ZL-fXF"/>
+                <outlet property="timeLabel" destination="EzG-iN-xlM" id="i3C-tu-ey0"/>
             </connections>
         </tableViewCell>
     </objects>
     <resources>
-        <image name="ChatBubble" width="23" height="47"/>
-        <image name="Play" width="33" height="33"/>
-        <image name="StreamDate" width="13" height="13"/>
+        <image name="ChatBubble" width="12" height="12"/>
+        <image name="ChatBubbleArrow" width="7" height="13"/>
+        <image name="conversationClock" width="9" height="9"/>
         <image name="profile_thumb" width="32" height="32"/>
     </resources>
 </document>
