@@ -132,6 +132,11 @@
 {
 }
 
+- (IBAction)pressedBackButton:(id)sender
+{
+    [self.navigationController popViewControllerAnimated:YES];
+}
+
 #pragma mark UITableViewDelegate
 
 - (void)streamWillDisappear

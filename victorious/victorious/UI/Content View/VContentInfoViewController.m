@@ -10,11 +10,16 @@
 
 #import "VReposterTableViewController.h"
 
+#import "VStreamContainerViewController.h"
+#import "VStreamTableViewController.h"
+
 #import "VSequence+Fetcher.h"
 #import "VUser.h"
 
 #import "VThemeManager.h"
 #import "VObjectManager+Sequence.h"
+#import "VObjectManager+Pagination.h"
+
 #import "VConstants.h"
 
 typedef NS_ENUM(NSUInteger, VContentCountType) {
@@ -202,6 +207,7 @@ typedef NS_ENUM(NSUInteger, VContentCountType) {
     switch (indexPath.row)
     {
         case VRemixCountInfo:
+            [self pressedRemixes:nil];
             break;
             
         case VRepostCountInfo:
@@ -258,6 +264,13 @@ typedef NS_ENUM(NSUInteger, VContentCountType) {
 - (IBAction)pressedFlip:(id)sender
 {
     [self.navigationController popViewControllerAnimated:YES];
+}
+
+- (IBAction)pressedRemixes:(id)sender
+{
+    VSequenceFilter* filter = [[VObjectManager sharedManager] remixFilterforSequence:self.sequence];
+    VStreamTableViewController* stream = [VStreamTableViewController streamWithDefaultFilter:filter name:@"remix" title:@"Remix"];
+    [self.navigationController pushViewController:[VStreamContainerViewController modalContainerForStreamTable:stream] animated:YES];
 }
 
 - (IBAction)pressedComment:(id)sender

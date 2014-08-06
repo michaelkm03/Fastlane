@@ -32,6 +32,8 @@
 
 #import "VUserProfileViewController.h"
 
+#import "VLargeNumberFormatter.h"
+
 NSString *kStreamsWillCommentNotification = @"kStreamsWillCommentNotification";
 
 @interface VStreamViewCell() <VEphemeralTimerViewDelegate>
@@ -55,11 +57,16 @@ NSString *kStreamsWillCommentNotification = @"kStreamsWillCommentNotification";
 
 @end
 
+static VLargeNumberFormatter* largeNumberFormatter;
+
 @implementation VStreamViewCell
 
 - (void)awakeFromNib
 {
     [super awakeFromNib];
+    
+    if (!largeNumberFormatter)
+        largeNumberFormatter = [[VLargeNumberFormatter alloc] init];
     
     self.originalHeight = self.frame.size.height;
     
@@ -162,7 +169,8 @@ NSString *kStreamsWillCommentNotification = @"kStreamsWillCommentNotification";
     }
     self.descriptionLabel.attributedText = newAttributedCellText;
     self.dateLabel.text = [self.sequence.releasedAt timeSince];
-    [self.commentButton setTitle:self.sequence.commentCount.stringValue forState:UIControlStateNormal];
+    NSString* commentCount = self.sequence.commentCount.integerValue ? [largeNumberFormatter stringForInteger:self.sequence.commentCount.integerValue] : @"";
+    [self.commentButton setTitle:commentCount forState:UIControlStateNormal];
     
     NSString* parentUserString;
     if ([self.sequence isRepost] && self.sequence.parentUser)

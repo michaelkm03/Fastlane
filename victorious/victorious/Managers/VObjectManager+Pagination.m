@@ -20,9 +20,7 @@
 #import "VSequenceFilter+RestKit.h"
 #import "VCommentFilter+RestKit.h"
 
-#import "VHomeStreamViewController.h"
-#import "VOwnerStreamViewController.h"
-#import "VCommunityStreamViewController.h"
+#import "VStreamTableViewController.h"
 
 #import "VUserManager.h"
 
@@ -50,6 +48,25 @@
     return paginationDispatchQueue;
 }
 
+- (void)unlockPageFilters
+{
+    NSManagedObjectContext* context = [VObjectManager sharedManager].managedObjectStore.persistentStoreManagedObjectContext;
+    NSFetchRequest *request = [[NSFetchRequest alloc] initWithEntityName:[VAbstractFilter entityName]];
+    
+    NSError *error = nil;
+    NSArray* objects = [context executeFetchRequest:request error:&error];
+    if (error != nil)
+    {
+        VLog(@"Error occured in sequence filter fetch: %@", error);
+    }
+    
+    for (VAbstractFilter* filter in objects)
+    {
+        filter.updating = @(NO);
+    }
+    [context saveToPersistentStore:nil];
+}
+
 - (RKManagedObjectRequestOperation *)loadInitialSequenceFilterWithSuccessBlock:(VSuccessBlock)success
                                                                      failBlock:(VFailBlock)fail
 {
@@ -70,9 +87,6 @@
     }
     [context saveToPersistentStore:nil];
     
-    NSArray* defaultCategories = [[VHomeStreamViewController sharedInstance] sequenceCategories];
-    VSequenceFilter* defaultFilter = [self sequenceFilterForCategories:defaultCategories];
-    
     VSuccessBlock fullSuccess = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
     {
         if (success)
@@ -80,20 +94,16 @@
             success(operation, fullResponse, resultObjects);
         }
         
-        NSArray* ownerCategories = [[VOwnerStreamViewController sharedInstance] sequenceCategories];
-        VSequenceFilter* ownerFilter = [self sequenceFilterForCategories:ownerCategories];
-        [self refreshSequenceFilter:ownerFilter
+        [self refreshSequenceFilter:[VStreamTableViewController ownerStream].currentFilter
                        successBlock:nil
                           failBlock:nil];
         
-        NSArray* communityCategories = [[VCommunityStreamViewController sharedInstance] sequenceCategories];
-        VSequenceFilter* communityFilter = [self sequenceFilterForCategories:communityCategories];
-        [self refreshSequenceFilter:communityFilter
+        [self refreshSequenceFilter:[VStreamTableViewController communityStream].currentFilter
                        successBlock:nil
                           failBlock:nil];
     };
     
-    return [self refreshSequenceFilter:defaultFilter
+    return [self refreshSequenceFilter:[VStreamTableViewController homeStream].currentFilter
                           successBlock:fullSuccess
                              failBlock:fail];
 }
@@ -508,6 +518,12 @@
 }
 
 #pragma mark - Filter Fetchers
+- (VSequenceFilter*)remixFilterforSequence:(VSequence*)sequence
+{
+    NSString* apiPath = [@"/api/sequence/remixes_by_sequence/" stringByAppendingString: sequence.remoteId.stringValue ?: @"0"];
+    return (VSequenceFilter*)[[VFilterCache sharedCache] filterForPath:apiPath entityName:[VSequenceFilter entityName]];
+}
+
 - (VSequenceFilter*)sequenceFilterForUser:(VUser*)user
 {
     NSString* apiPath = [@"/api/sequence/detail_list_by_user/" stringByAppendingString: user.remoteId.stringValue ?: @"0"];

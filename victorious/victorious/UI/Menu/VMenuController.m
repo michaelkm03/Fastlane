@@ -18,9 +18,6 @@
 #import "VUnreadConversation+RestKit.h"
 
 #import "VLoginViewController.h"
-#import "VHomeStreamViewController.h"
-#import "VOwnerStreamViewController.h"
-#import "VCommunityStreamViewController.h"
 #import "VStreamContainerViewController.h"
 
 #import "VUserProfileViewController.h"
@@ -113,17 +110,17 @@ NSString *const VMenuControllerDidSelectRowNotification = @"VMenuTableViewContro
         switch (indexPath.row)
         {
             case VMenuRowHome:
-                navigationController.viewControllers = @[[VStreamContainerViewController containerForStreamTable:[VHomeStreamViewController sharedInstance]]];
+                navigationController.viewControllers = @[[VStreamContainerViewController containerForStreamTable:[VStreamTableViewController homeStream]]];
                 [self.sideMenuViewController hideMenuViewController];
             break;
             
             case VMenuRowOwnerChannel:
-                navigationController.viewControllers = @[[VStreamContainerViewController containerForStreamTable:[VOwnerStreamViewController sharedInstance]]];
+                navigationController.viewControllers = @[[VStreamContainerViewController containerForStreamTable:[VStreamTableViewController ownerStream]]];
                 [self.sideMenuViewController hideMenuViewController];
             break;
             
             case VMenuRowCommunityChannel:
-                navigationController.viewControllers = @[[VStreamContainerViewController containerForStreamTable:[VCommunityStreamViewController sharedInstance]]];
+                navigationController.viewControllers = @[[VStreamContainerViewController containerForStreamTable:[VStreamTableViewController communityStream]]];
                 [self.sideMenuViewController hideMenuViewController];
             break;
                 

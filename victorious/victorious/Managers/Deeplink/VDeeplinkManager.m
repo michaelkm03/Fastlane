@@ -16,7 +16,6 @@
 #import "VUser.h"
 #import "VSequence.h"
 
-#import "VHomeStreamViewController.h"
 #import "VStreamContainerViewController.h"
 #import "VRootViewController.h"
 #import "VContentViewController.h"
@@ -120,7 +119,7 @@ static NSString* const kVContentDeeplinkScheme = @"//content/";
                                      successBlock:^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
      {
          VContentViewController* contentView = [[VContentViewController alloc] init];
-         VStreamContainerViewController* homeContainer = [VStreamContainerViewController containerForStreamTable:[VHomeStreamViewController sharedInstance]];
+         VStreamContainerViewController* homeContainer = [VStreamContainerViewController containerForStreamTable:[VStreamTableViewController homeStream]];
          
          VSequence* sequence = (VSequence*)[resultObjects firstObject];
          contentView.sequence = sequence;
@@ -154,7 +153,7 @@ static NSString* const kVContentDeeplinkScheme = @"//content/";
          else
              profileVC = [VUserProfileViewController userProfileWithUser:[resultObjects firstObject]];
          
-         VStreamContainerViewController* homeContainer = [VStreamContainerViewController containerForStreamTable:[VHomeStreamViewController sharedInstance]];
+         VStreamContainerViewController* homeContainer = [VStreamContainerViewController containerForStreamTable:[VStreamTableViewController homeStream]];
          VRootViewController* root = [VRootViewController rootViewController];
          [root transitionToNavStack:@[homeContainer]];
          [homeContainer.navigationController pushViewController:profileVC animated:YES];
@@ -209,7 +208,7 @@ static NSString* const kVContentDeeplinkScheme = @"//content/";
      {
          VCommentsContainerViewController* commentsContainer = [VCommentsContainerViewController commentsContainerView];
          VContentViewController* contentView = [[VContentViewController alloc] init];
-         VStreamContainerViewController* homeContainer = [VStreamContainerViewController containerForStreamTable:[VHomeStreamViewController sharedInstance]];
+         VStreamContainerViewController* homeContainer = [VStreamContainerViewController containerForStreamTable:[VStreamTableViewController homeStream]];
          
          VSequence* sequence = (VSequence*)[resultObjects firstObject];
          contentView.sequence = sequence;

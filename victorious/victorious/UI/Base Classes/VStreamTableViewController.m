@@ -8,6 +8,7 @@
 
 #import "VStreamTableDataSource.h"
 #import "VStreamTableViewController.h"
+#import "VStreamTableViewController+ContentCreation.h"
 #import "UIViewController+VSideMenuViewController.h"
 #import "VConstants.h"
 
@@ -35,6 +36,8 @@
 #import "VNode+Fetcher.h"
 #import "VAsset.h"
 
+#import "VAnalyticsRecorder.h"
+
 #import "VThemeManager.h"
 
 @interface VStreamTableViewController() <UIViewControllerTransitioningDelegate, UINavigationControllerDelegate, VStreamTableDataDelegate>
@@ -45,9 +48,55 @@
 @property (strong, nonatomic) NSCache* preloadImageCache;
 @property (strong, nonatomic) VContentViewController *contentViewController;
 
+@property (strong, nonatomic) VSequenceFilter* defaultFilter;
+
+@property (strong, nonatomic) NSString* streamName;
+
 @end
 
 @implementation VStreamTableViewController
+
++ (instancetype)homeStream
+{
+    VSequenceFilter* defaultFilter = [[VObjectManager sharedManager] sequenceFilterForCategories:
+                                      [VUGCCategories() arrayByAddingObjectsFromArray:VOwnerCategories()]];
+    VStreamTableViewController* stream = [self streamWithDefaultFilter:defaultFilter name:@"home" title:NSLocalizedString(@"Home", nil)];
+    [stream addCreateButton];
+    return  stream;
+}
+
++ (instancetype)communityStream
+{
+    VSequenceFilter* defaultFilter = [[VObjectManager sharedManager] sequenceFilterForCategories:VUGCCategories()];
+    VStreamTableViewController* stream = [self streamWithDefaultFilter:defaultFilter name:@"ugc" title:NSLocalizedString(@"Community", nil)];
+    [stream addCreateButton];
+    return  stream;
+}
+
++ (instancetype)ownerStream
+{
+    VSequenceFilter* defaultFilter = [[VObjectManager sharedManager] sequenceFilterForCategories:VOwnerCategories()];
+    return [self streamWithDefaultFilter:defaultFilter name:@"owner" title:[[VThemeManager sharedThemeManager] themedStringForKey:kVChannelName]];
+}
+
++ (instancetype)hashtagStreamWithHashtag:(NSString*)hashtag
+{
+    VSequenceFilter* defaultFilter = [[VObjectManager sharedManager] sequenceFilterForHashTag:hashtag];
+    return [self streamWithDefaultFilter:defaultFilter name:@"hashtag" title:[@"#" stringByAppendingString:hashtag]];
+}
+
++ (instancetype)streamWithDefaultFilter:(VSequenceFilter*)filter name:(NSString*)name title:(NSString*)title
+{
+    UIViewController*   currentViewController = [[UIApplication sharedApplication] delegate].window.rootViewController;
+    VStreamTableViewController* stream = (VStreamTableViewController*)[currentViewController.storyboard instantiateViewControllerWithIdentifier: kStreamStoryboardID];
+    
+    stream.streamName = name;
+    stream.title = title;
+    stream.defaultFilter = filter;
+    stream.currentFilter = filter;
+    
+    return stream;
+}
 
 - (void)dealloc
 {
@@ -86,6 +135,9 @@
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
+    
+    [[VAnalyticsRecorder sharedAnalyticsRecorder] startAppView:self.viewName];
+    
     if (!self.tableDataSource.count && !self.tableDataSource.filter.updating.boolValue)
     {
         [self refresh:nil];
@@ -95,6 +147,9 @@
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
+
+    [[VAnalyticsRecorder sharedAnalyticsRecorder] finishAppView];
+    
     [self.preloadImageCache removeAllObjects];
 }
 
@@ -114,6 +169,17 @@
 }
 
 #pragma mark - Properties
+
+- (NSString *)viewName
+{
+    NSString *viewName = @"Stream";
+    if (self.streamName)
+    {
+        viewName = [NSString stringWithFormat:@"Stream - %@", self.streamName];
+    }
+    return viewName;
+}
+
 - (void)setFilterType:(VStreamFilter)filterType
 {
     if (_filterType == filterType)
@@ -350,20 +416,15 @@
 
 - (VSequenceFilter*)defaultFilter
 {
-    return [[VObjectManager sharedManager] sequenceFilterForCategories:[self sequenceCategories]];
+    return _defaultFilter ?: [[VObjectManager sharedManager] sequenceFilterForCategories:[self sequenceCategories]];
 }
 - (VSequenceFilter*)hotFilter
 {
-    return [[VObjectManager sharedManager] hotSequenceFilterForStream:[self streamName]];
+    return [[VObjectManager sharedManager] hotSequenceFilterForStream:self.streamName];
 }
 - (VSequenceFilter*)followingFilter
 {
-    return [[VObjectManager sharedManager] followerSequenceFilterForStream:[self streamName] user:nil];
-}
-
-- (NSString*)streamName
-{
-    return @"home";
+    return [[VObjectManager sharedManager] followerSequenceFilterForStream:self.streamName user:nil];
 }
 
 - (NSArray*)sequenceCategories

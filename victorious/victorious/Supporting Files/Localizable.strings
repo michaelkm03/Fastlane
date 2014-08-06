@@ -253,6 +253,7 @@
 "remixes"               =   "remixes";
 "reposts"               =   "reposts";
 "REPOSTS"               =   "REPOSTS";
+"Repost"                =   "Repost";
 "comments"              =   "comments";
 
 "repostedFromFormat"      =   "Repost from %@";

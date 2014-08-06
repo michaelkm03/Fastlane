@@ -65,6 +65,8 @@
                                                                           failBlock:(VFailBlock)fail;
 
 #pragma mark Filters
+- (void)unlockPageFilters;
+- (VSequenceFilter*)remixFilterforSequence:(VSequence*)sequence;
 - (VSequenceFilter*)sequenceFilterForUser:(VUser*)user;
 - (VSequenceFilter*)sequenceFilterForCategories:(NSArray*)categories;
 - (VSequenceFilter*)hotSequenceFilterForStream:(NSString*)streamName;

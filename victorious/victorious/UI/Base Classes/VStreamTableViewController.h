@@ -26,17 +26,23 @@ typedef NS_ENUM(NSInteger, VStreamFilter)
 
 @interface VStreamTableViewController : UITableViewController <VAnimation, VCreateSequenceDelegate>
 
-- (NSArray*)sequenceCategories;
-- (NSString*)streamName;
-
 @property (nonatomic)         VStreamFilter    filterType;
 @property (nonatomic, strong) VSequenceFilter *currentFilter;
+@property (nonatomic, readonly) VSequenceFilter* defaultFilter;
 
 @property (strong, nonatomic, readonly) VStreamTableDataSource* tableDataSource;
 @property (strong, nonatomic) VSequence* selectedSequence;
 @property (strong, nonatomic) NSArray* repositionedCells;;
 @property (weak, nonatomic) id<VStreamTableDelegate, UITableViewDelegate> delegate;
+@property (nonatomic, readonly) NSString *viewName; ///< The view name that will be sent to the analytics server, can be overridden by subclasses
 
 - (void)refreshWithCompletion:(void(^)(void))completionBlock;
+
++ (instancetype)homeStream;
++ (instancetype)communityStream;
++ (instancetype)ownerStream;
++ (instancetype)hashtagStreamWithHashtag:(NSString*)hashtag;
+
++ (instancetype)streamWithDefaultFilter:(VSequenceFilter*)filter name:(NSString*)name title:(NSString*)title;
 
 @end

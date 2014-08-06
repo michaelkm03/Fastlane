@@ -93,23 +93,9 @@
     self.view.autoresizingMask = UIViewAutoresizingFlexibleWidth |UIViewAutoresizingFlexibleHeight;
 }
 
-- (void)viewDidAppear:(BOOL)animated
-{
-    [super viewDidAppear:animated];
-    [[VAnalyticsRecorder sharedAnalyticsRecorder] startAppView:@"Hash Tage Search Stream"];
-}
-
-- (void)viewWillDisappear:(BOOL)animated
-{
-    [super viewWillDisappear:animated];
-    [[VAnalyticsRecorder sharedAnalyticsRecorder] finishAppView];
-}
-
 - (NSString*)streamName
 {
     return @"hashtag";
 }
-
-
 
 @end
