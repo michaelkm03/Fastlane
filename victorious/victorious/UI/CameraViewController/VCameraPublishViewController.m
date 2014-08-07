@@ -43,6 +43,7 @@
 
 @property (nonatomic, strong) IBOutlet  NSLayoutConstraint* originalTextViewYConstraint;//This is intentionally strong
 @property (nonatomic, strong)           NSLayoutConstraint* secretTextViewYConstraint;
+@property (nonatomic, strong)           NSLayoutConstraint* memeTextViewYConstraint;
 
 @property (nonatomic, weak) IBOutlet    NSLayoutConstraint* captionViewHeightConstraint;
 
@@ -104,12 +105,20 @@ static const CGFloat kShareMargin = 34.0f;
     self.captionButton.selected = YES;
     
     self.secretTextViewYConstraint = [NSLayoutConstraint constraintWithItem:self.textView
-                                                                attribute:NSLayoutAttributeCenterY
+                                                                  attribute:NSLayoutAttributeCenterY
+                                                                  relatedBy:NSLayoutRelationEqual
+                                                                     toItem:self.previewImageView
+                                                                  attribute:NSLayoutAttributeCenterY
+                                                                 multiplier:1.0
+                                                                   constant:0.0];
+    
+    self.memeTextViewYConstraint = [NSLayoutConstraint constraintWithItem:self.originalTextViewYConstraint.firstItem
+                                                                attribute:self.originalTextViewYConstraint.firstAttribute
                                                                 relatedBy:NSLayoutRelationEqual
-                                                                   toItem:self.previewImageView
-                                                                attribute:NSLayoutAttributeCenterY
-                                                               multiplier:1.0
-                                                                 constant:0.0];
+                                                                   toItem:self.originalTextViewYConstraint.secondItem
+                                                                attribute:self.originalTextViewYConstraint.secondAttribute
+                                                               multiplier:self.originalTextViewYConstraint.multiplier
+                                                                 constant:self.originalTextViewYConstraint.constant];
 
     [self initShareViews];
 }
@@ -233,7 +242,8 @@ static const CGFloat kShareMargin = 34.0f;
     if ((UIButton*)sender == self.memeButton)
     {
         [self.view removeConstraint:self.secretTextViewYConstraint];
-        [self.view addConstraint:self.originalTextViewYConstraint];
+        [self.view removeConstraint:self.originalTextViewYConstraint];
+        [self.view addConstraint:self.memeTextViewYConstraint];
         
         NSMutableParagraphStyle *paragraphStyle = NSMutableParagraphStyle.new;
         paragraphStyle.alignment                = NSTextAlignmentCenter;
@@ -249,6 +259,7 @@ static const CGFloat kShareMargin = 34.0f;
     else if ((UIButton*)sender == self.secretButton)
     {
         [self.view removeConstraint:self.secretTextViewYConstraint];
+        [self.view removeConstraint:self.memeTextViewYConstraint];
         [self.view addConstraint:self.originalTextViewYConstraint];
         self.textView.font = [UIFont fontWithName:kSecretFont size:20];
         self.textView.textAlignment = NSTextAlignmentCenter;
@@ -257,6 +268,7 @@ static const CGFloat kShareMargin = 34.0f;
     else if ((UIButton*)sender == self.captionButton)
     {
         [self.view removeConstraint:self.originalTextViewYConstraint];
+        [self.view removeConstraint:self.memeTextViewYConstraint];
         [self.view addConstraint:self.secretTextViewYConstraint];
         self.textView.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeading1Font];
         self.textView.textAlignment = NSTextAlignmentLeft;
@@ -433,22 +445,25 @@ static const CGFloat kShareMargin = 34.0f;
 {
     if (self.typingAttributes)
     {
-        CGFloat maxFontSize = ((UIFont*)self.typingAttributes[NSFontAttributeName]).pointSize;
+        self.textView.font = [self.typingAttributes[NSFontAttributeName] fontWithSize:self.textView.frame.size.height];
         
-        while (((CGSize) [self.textView sizeThatFits:self.textView.frame.size]).height > self.textView.frame.size.height)
+        CGFloat realHeight = ((CGSize) [self.textView sizeThatFits:self.textView.frame.size]).height;
+        while (realHeight > self.textView.frame.size.height)
         {
-            CGFloat newFontSize = self.textView.font.pointSize-1;
+            CGFloat newFontSize = self.textView.font.pointSize-2;
             
-            if (newFontSize < maxFontSize/2)
+            if (newFontSize < self.textView.frame.size.height/5)
                 break;
 
-            UIFont* font = [self.typingAttributes[NSFontAttributeName] fontWithSize:newFontSize];
-            self.typingAttributes[NSFontAttributeName] = font;
-            self.textView.font = font;
+            self.textView.font = [self.textView.font fontWithSize:newFontSize];;
+            realHeight = ((CGSize) [self.textView sizeThatFits:self.textView.frame.size]).height;
         }
+        self.typingAttributes[NSFontAttributeName] = self.textView.font;
     
         NSAttributedString *str = [[NSAttributedString alloc] initWithString:self.textView.text attributes:self.typingAttributes];
         self.textView.attributedText = str;
+        
+        self.memeTextViewYConstraint.constant = self.originalTextViewYConstraint.constant - self.textView.frame.size.height + realHeight;
     }
     else
     {
@@ -462,11 +477,6 @@ static const CGFloat kShareMargin = 34.0f;
     {
         [textView resignFirstResponder];
         return NO;
-    }
-    if ([text isEqualToString:@""])
-    {
-        UIFont* font = [self.typingAttributes[NSFontAttributeName] fontWithSize:self.textView.frame.size.height];
-        self.typingAttributes[NSFontAttributeName] = font;
     }
 
     return YES;
