@@ -312,7 +312,6 @@
 		BEE800E918FCC5C200A7CFD7 /* VStreamTableViewController+ContentCreation.m in Sources */ = {isa = PBXBuildFile; fileRef = BEE800E818FCC5C200A7CFD7 /* VStreamTableViewController+ContentCreation.m */; };
 		BEE9C8B618CE4A6B0095C737 /* VPollAnswerBarViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BEE9C8B518CE4A6B0095C737 /* VPollAnswerBarViewController.m */; };
 		BEF185D9198827FB007FB4BC /* VUser.m in Sources */ = {isa = PBXBuildFile; fileRef = BEF185D8198827FB007FB4BC /* VUser.m */; };
-		BEF185E519883899007FB4BC /* VSequence.m in Sources */ = {isa = PBXBuildFile; fileRef = BEF185E419883899007FB4BC /* VSequence.m */; };
 		BEF185E719884C13007FB4BC /* VConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = BEF185E619884C13007FB4BC /* VConstants.m */; };
 		BEF185EE19887C77007FB4BC /* VReposterTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BEF185ED19887C77007FB4BC /* VReposterTableViewController.m */; };
 		BEF185F319899702007FB4BC /* victoriOS.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = BEF185F119899702007FB4BC /* victoriOS.xcdatamodeld */; };
@@ -322,6 +321,7 @@
 		BEF2C2A5188488C000AAE975 /* VUnreadConversation+RestKit.m in Sources */ = {isa = PBXBuildFile; fileRef = BEF2C2A4188488C000AAE975 /* VUnreadConversation+RestKit.m */; };
 		BEF2C2A818848B3B00AAE975 /* VUnreadConversation.m in Sources */ = {isa = PBXBuildFile; fileRef = BEF2C2A718848B3B00AAE975 /* VUnreadConversation.m */; };
 		BEF2C2B71886211000AAE975 /* VPollResult.m in Sources */ = {isa = PBXBuildFile; fileRef = BEF2C2B61886211000AAE975 /* VPollResult.m */; };
+		BEF428071994127500F66BB7 /* VSequence.m in Sources */ = {isa = PBXBuildFile; fileRef = BEF428061994127500F66BB7 /* VSequence.m */; };
 		BEFE1322196B82BF003B33DC /* VContentInfoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BEFE1321196B82BF003B33DC /* VContentInfoViewController.m */; };
 		BEFE132E196F6B6F003B33DC /* VRealtimeCommentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BEFE132D196F6B6F003B33DC /* VRealtimeCommentViewController.m */; };
 		D1DAAA0B187A43BE009ADCB0 /* VProfileEditViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D1DAAA0A187A43BE009ADCB0 /* VProfileEditViewController.m */; };
@@ -895,8 +895,6 @@
 		BEE9C8BC18CE904B0095C737 /* VAnimation.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = VAnimation.h; path = Protocols/VAnimation.h; sourceTree = SOURCE_ROOT; };
 		BEF185D7198827FB007FB4BC /* VUser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VUser.h; sourceTree = "<group>"; };
 		BEF185D8198827FB007FB4BC /* VUser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VUser.m; sourceTree = "<group>"; };
-		BEF185E319883899007FB4BC /* VSequence.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VSequence.h; sourceTree = "<group>"; };
-		BEF185E419883899007FB4BC /* VSequence.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VSequence.m; sourceTree = "<group>"; };
 		BEF185E619884C13007FB4BC /* VConstants.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VConstants.m; sourceTree = "<group>"; };
 		BEF185EC19887C77007FB4BC /* VReposterTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VReposterTableViewController.h; path = "UI/Content Info/VReposterTableViewController.h"; sourceTree = "<group>"; };
 		BEF185ED19887C77007FB4BC /* VReposterTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VReposterTableViewController.m; path = "UI/Content Info/VReposterTableViewController.m"; sourceTree = "<group>"; };
@@ -913,6 +911,8 @@
 		BEF2C2A718848B3B00AAE975 /* VUnreadConversation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VUnreadConversation.m; sourceTree = "<group>"; };
 		BEF2C2B51886211000AAE975 /* VPollResult.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VPollResult.h; sourceTree = "<group>"; };
 		BEF2C2B61886211000AAE975 /* VPollResult.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VPollResult.m; sourceTree = "<group>"; };
+		BEF428051994127500F66BB7 /* VSequence.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VSequence.h; sourceTree = "<group>"; };
+		BEF428061994127500F66BB7 /* VSequence.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VSequence.m; sourceTree = "<group>"; };
 		BEFE1320196B82BF003B33DC /* VContentInfoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VContentInfoViewController.h; path = "UI/Content View/VContentInfoViewController.h"; sourceTree = "<group>"; };
 		BEFE1321196B82BF003B33DC /* VContentInfoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VContentInfoViewController.m; path = "UI/Content View/VContentInfoViewController.m"; sourceTree = "<group>"; };
 		BEFE132C196F6B6F003B33DC /* VRealtimeCommentViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VRealtimeCommentViewController.h; path = UI/RealtimeComments/VRealtimeCommentViewController.h; sourceTree = "<group>"; };
@@ -1796,6 +1796,8 @@
 			isa = PBXGroup;
 			children = (
 				BEF185F119899702007FB4BC /* victoriOS.xcdatamodeld */,
+				BEF428051994127500F66BB7 /* VSequence.h */,
+				BEF428061994127500F66BB7 /* VSequence.m */,
 				BEF186031989BD33007FB4BC /* VAsset.h */,
 				BEF186041989BD33007FB4BC /* VAsset.m */,
 				BEF185FA1989A908007FB4BC /* VComment.h */,
@@ -1806,8 +1808,6 @@
 				BE89ECDA19105DB8009DD407 /* VAnswer.m */,
 				BECEDFCF1937A78900FAB9D0 /* VMessage.h */,
 				BECEDFD01937A78900FAB9D0 /* VMessage.m */,
-				BEF185E319883899007FB4BC /* VSequence.h */,
-				BEF185E419883899007FB4BC /* VSequence.m */,
 				BEF185D7198827FB007FB4BC /* VUser.h */,
 				BEF185D8198827FB007FB4BC /* VUser.m */,
 				BE24782A193E735A0074191C /* VConversation.h */,
@@ -2393,7 +2393,6 @@
 				BE171E131868C211004E5202 /* VInteractionAction+RestKit.m in Sources */,
 				035C2D751940071B0023FC05 /* VCVideoPlayerToolbarSlider.m in Sources */,
 				03F9D281191D542300576AEE /* VCVideoPlayerToolbarView.m in Sources */,
-				BEF185E519883899007FB4BC /* VSequence.m in Sources */,
 				BEB8DB07192BFF5300E0E3E6 /* VMessageCell.m in Sources */,
 				BED7F67A18E0BD5D00545DF6 /* UIImage+ImageCreation.m in Sources */,
 				BEA5BF71187FCBF10014C3EF /* VObjectManager+Users.m in Sources */,
@@ -2548,6 +2547,7 @@
 				3FCA803B194A8060001CF8BD /* VInviteFriendTableViewCell.m in Sources */,
 				BEF185E719884C13007FB4BC /* VConstants.m in Sources */,
 				BEE604C1192D7D84003A0206 /* VInboxContainerViewController.m in Sources */,
+				BEF428071994127500F66BB7 /* VSequence.m in Sources */,
 				BEF185D9198827FB007FB4BC /* VUser.m in Sources */,
 				BE2D1E661901F4D800C6FF99 /* VStreamToCommentAnimator.m in Sources */,
 				BEB52A7A18C02D6600AC5FE4 /* VContentViewController.m in Sources */,
@@ -2728,6 +2728,7 @@
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
+				VALID_ARCHS = "armv7 armv7s arm64";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Staging;
@@ -2850,6 +2851,7 @@
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
+				VALID_ARCHS = "armv7 armv7s arm64";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -2874,6 +2876,7 @@
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
+				VALID_ARCHS = "armv7 armv7s arm64";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;
@@ -2980,6 +2983,7 @@
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
+				VALID_ARCHS = "armv7 armv7s arm64";
 				WRAPPER_EXTENSION = app;
 			};
 			name = QA;

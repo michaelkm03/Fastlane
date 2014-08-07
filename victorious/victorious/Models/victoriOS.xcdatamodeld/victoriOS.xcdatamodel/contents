@@ -127,6 +127,7 @@
         <attribute name="gameStatus" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="isComplete" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="nameEmbeddedInContent" optional="YES" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
         <attribute name="parentUserId" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
         <attribute name="previewImage" optional="YES" attributeType="Transformable" syncable="YES"/>
         <attribute name="releasedAt" optional="YES" attributeType="Date" syncable="YES"/>
@@ -200,7 +201,7 @@
         <element name="NodeAction" positionX="835" positionY="-9" width="128" height="90"/>
         <element name="PollResult" positionX="1582" positionY="-36" width="128" height="118"/>
         <element name="Rule" positionX="567" positionY="99" width="128" height="75"/>
-        <element name="Sequence" positionX="1060" positionY="-181" width="128" height="418"/>
+        <element name="Sequence" positionX="1060" positionY="-181" width="128" height="433"/>
         <element name="SequenceFilter" positionX="855" positionY="-274" width="128" height="58"/>
         <element name="UnreadConversation" positionX="1251" positionY="-459" width="128" height="73"/>
         <element name="User" positionX="1314" positionY="-342" width="128" height="343"/>
