@@ -20,6 +20,6 @@ extern NSString * const kVMessageCellNibName;
 
 @property (nonatomic, readonly) UIColor *alernateChatBubbleTintColor; ///< The tint color used for the user's own messages
 
-+ (CGFloat)estimatedHeightWithWidth:(CGFloat)width text:(NSString *)text;
++ (CGFloat)estimatedHeightWithWidth:(CGFloat)width text:(NSString *)text withMedia:(BOOL)hasMedia;
 
 @end

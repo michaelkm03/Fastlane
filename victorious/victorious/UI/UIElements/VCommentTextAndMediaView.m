@@ -7,7 +7,9 @@
 //
 
 #import "VCommentTextAndMediaView.h"
+#import "VLightboxTransitioningDelegate.h"
 #import "VThemeManager.h"
+#import "VVideoLightboxViewController.h"
 
 #ifdef __LP64__
 #define CEIL(a) ceil(a)
@@ -15,9 +17,15 @@
 #define CEIL(a) ceilf(a)
 #endif
 
+static const CGFloat kSpacingBetweenTextAndMedia = 10.0f;
+
 @interface VCommentTextAndMediaView ()
 
-@property (nonatomic, weak) UILabel *textLabel;
+@property (nonatomic, weak)      UILabel            *textLabel;
+@property (nonatomic)            BOOL                addedConstraints;
+@property (nonatomic, weak)      UIButton           *mediaButton;
+@property (nonatomic, readwrite) UIImageView        *mediaThumbnailView;
+@property (nonatomic, readwrite) UIImageView        *playIcon;
 
 @end
 
@@ -50,15 +58,116 @@
     textLabel.backgroundColor = [UIColor clearColor];
     textLabel.numberOfLines = 0;
     [self addSubview:textLabel];
-    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[textLabel]|"
-                                                                 options:0
-                                                                 metrics:nil
-                                                                   views:NSDictionaryOfVariableBindings(textLabel)]];
-    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[textLabel]|"
-                                                                 options:0
-                                                                 metrics:nil
-                                                                   views:NSDictionaryOfVariableBindings(textLabel)]];
     self.textLabel = textLabel;
+    
+    UIImageView *mediaThumbnailView = [[UIImageView alloc] init];
+    mediaThumbnailView.translatesAutoresizingMaskIntoConstraints = NO;
+    mediaThumbnailView.clipsToBounds = YES;
+    mediaThumbnailView.contentMode = UIViewContentModeScaleAspectFill;
+    mediaThumbnailView.backgroundColor = [UIColor colorWithRed:0.5 green:0.5 blue:0.5 alpha:0.5f];
+    [self addSubview:mediaThumbnailView];
+    self.mediaThumbnailView = mediaThumbnailView;
+    
+    UIImageView *playIcon = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"Play"]];
+    playIcon.translatesAutoresizingMaskIntoConstraints = NO;
+    playIcon.hidden = YES;
+    [self addSubview:playIcon];
+    self.playIcon = playIcon;
+    
+    UIButton *mediaButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    mediaButton.translatesAutoresizingMaskIntoConstraints = NO;
+    mediaButton.adjustsImageWhenHighlighted = NO;
+    mediaButton.clipsToBounds = YES;
+    [mediaButton addTarget:self action:@selector(mediaTapped:) forControlEvents:UIControlEventTouchUpInside];
+    [self addSubview:mediaButton];
+    self.mediaButton = mediaButton;
+}
+
+- (void)layoutSubviews
+{
+    [super layoutSubviews];
+    self.textLabel.preferredMaxLayoutWidth = CGRectGetWidth(self.bounds);
+    [super layoutSubviews];
+}
+
+- (void)updateConstraints
+{
+    UILabel *textLabel = self.textLabel;
+    UIButton *mediaButton = self.mediaButton;
+    UIImageView *mediaThumbnailView = self.mediaThumbnailView;
+    UIImageView *playIcon = self.playIcon;
+    
+    if (!self.addedConstraints)
+    {
+        [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[textLabel]"
+                                                                     options:0
+                                                                     metrics:nil
+                                                                       views:NSDictionaryOfVariableBindings(textLabel)]];
+        [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[textLabel]|"
+                                                                     options:0
+                                                                     metrics:nil
+                                                                       views:NSDictionaryOfVariableBindings(textLabel)]];
+        [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[mediaButton]|"
+                                                                     options:0
+                                                                     metrics:nil
+                                                                       views:NSDictionaryOfVariableBindings(mediaButton)]];
+        [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[mediaButton]|"
+                                                                     options:0
+                                                                     metrics:nil
+                                                                       views:NSDictionaryOfVariableBindings(mediaButton)]];
+        [self addConstraint:[NSLayoutConstraint constraintWithItem:mediaThumbnailView
+                                                         attribute:NSLayoutAttributeLeading
+                                                         relatedBy:NSLayoutRelationEqual
+                                                            toItem:mediaButton
+                                                         attribute:NSLayoutAttributeLeading
+                                                        multiplier:1.0f
+                                                          constant:0.0f]];
+        [self addConstraint:[NSLayoutConstraint constraintWithItem:mediaButton
+                                                         attribute:NSLayoutAttributeHeight
+                                                         relatedBy:NSLayoutRelationEqual
+                                                            toItem:mediaButton
+                                                         attribute:NSLayoutAttributeWidth
+                                                        multiplier:1.0f
+                                                          constant:0.0f]];
+        [self addConstraint:[NSLayoutConstraint constraintWithItem:mediaThumbnailView
+                                                         attribute:NSLayoutAttributeTrailing
+                                                         relatedBy:NSLayoutRelationEqual
+                                                            toItem:mediaButton
+                                                         attribute:NSLayoutAttributeTrailing
+                                                        multiplier:1.0f
+                                                          constant:0.0f]];
+        [self addConstraint:[NSLayoutConstraint constraintWithItem:mediaThumbnailView
+                                                         attribute:NSLayoutAttributeTop
+                                                         relatedBy:NSLayoutRelationEqual
+                                                            toItem:mediaButton
+                                                         attribute:NSLayoutAttributeTop
+                                                        multiplier:1.0f
+                                                          constant:0.0f]];
+        [self addConstraint:[NSLayoutConstraint constraintWithItem:mediaThumbnailView
+                                                         attribute:NSLayoutAttributeBottom
+                                                         relatedBy:NSLayoutRelationEqual
+                                                            toItem:mediaButton
+                                                         attribute:NSLayoutAttributeBottom
+                                                        multiplier:1.0f
+                                                          constant:0.0f]];
+        [self addConstraint:[NSLayoutConstraint constraintWithItem:playIcon
+                                                         attribute:NSLayoutAttributeCenterX
+                                                         relatedBy:NSLayoutRelationEqual
+                                                            toItem:mediaThumbnailView
+                                                         attribute:NSLayoutAttributeCenterX
+                                                        multiplier:1.0f
+                                                          constant:0.0f]];
+        [self addConstraint:[NSLayoutConstraint constraintWithItem:playIcon
+                                                         attribute:NSLayoutAttributeCenterY
+                                                         relatedBy:NSLayoutRelationEqual
+                                                            toItem:mediaThumbnailView
+                                                         attribute:NSLayoutAttributeCenterY
+                                                        multiplier:1.0f
+                                                          constant:0.0f]];
+        self.addedConstraints = YES;
+    }
+    
+    [super updateConstraints];
 }
 
 #pragma mark - Properties
@@ -67,6 +176,16 @@
 {
     _text = [text copy];
     self.textLabel.attributedText = [[NSAttributedString alloc] initWithString:(text ?: @"") attributes:[[self class] attributesForText]];
+}
+
+#pragma mark - Actions
+
+- (void)mediaTapped:(UIButton *)sender
+{
+    if (self.onMediaTapped)
+    {
+        self.onMediaTapped();
+    }
 }
 
 #pragma mark -
@@ -84,7 +203,7 @@
            };
 }
 
-+ (CGFloat)estimatedHeightWithWidth:(CGFloat)width text:(NSString *)text
++ (CGFloat)estimatedHeightWithWidth:(CGFloat)width text:(NSString *)text withMedia:(BOOL)hasMedia
 {
     if (!text)
     {
@@ -95,7 +214,38 @@
                                              options:NSStringDrawingUsesLineFragmentOrigin
                                           attributes:[self attributesForText]
                                              context:[[NSStringDrawingContext alloc] init]];
-    return CEIL(CGRectGetHeight(boundingRect));
+    CGFloat mediaSize = hasMedia ? width + kSpacingBetweenTextAndMedia : 0.0f;
+    return CEIL(CGRectGetHeight(boundingRect)) + mediaSize;
+}
+
+- (void(^)(void))standardMediaTapHandlerWithMediaURL:(NSURL *)mediaURL presentingViewController:(UIViewController *)presentingViewController
+{
+    typeof(self) __weak weakSelf = self;
+    return ^(void)
+    {
+        typeof(weakSelf) __strong strongSelf = weakSelf;
+        if (strongSelf)
+        {
+            VVideoLightboxViewController *lightbox = [[VVideoLightboxViewController alloc] initWithPreviewImage:strongSelf.mediaThumbnailView.image videoURL:mediaURL];
+            [VLightboxTransitioningDelegate addNewTransitioningDelegateToLightboxController:lightbox referenceView:strongSelf.mediaThumbnailView];
+            lightbox.onCloseButtonTapped = ^(void)
+            {
+                [presentingViewController dismissViewControllerAnimated:YES completion:nil];
+            };
+            lightbox.onVideoFinished = lightbox.onCloseButtonTapped;
+            lightbox.titleForAnalytics = @"Video Comment";
+            [presentingViewController presentViewController:lightbox animated:YES completion:nil];
+        }
+    };
+}
+
+- (void)resetView
+{
+    self.text = @"";
+    self.mediaThumbnailView.hidden = NO;
+    self.mediaThumbnailView.image = nil;
+    self.onMediaTapped = nil;
+    self.playIcon.hidden = YES;
 }
 
 @end

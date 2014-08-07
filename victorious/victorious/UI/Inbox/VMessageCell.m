@@ -29,9 +29,9 @@ static const UIEdgeInsets kTextInsets        = { 24.0f, 74.0f, 24.0f, 32.0f };
     self.timeLabel.font = [UIFont fontWithName:@"MuseoSans-100" size:11.125f];
 }
 
-+ (CGFloat)estimatedHeightWithWidth:(CGFloat)width text:(NSString *)text
++ (CGFloat)estimatedHeightWithWidth:(CGFloat)width text:(NSString *)text withMedia:(BOOL)hasMedia
 {
-    return MAX([VCommentTextAndMediaView estimatedHeightWithWidth:(width - kTextInsets.left - kTextInsets.right) text:text] +
+    return MAX([VCommentTextAndMediaView estimatedHeightWithWidth:(width - kTextInsets.left - kTextInsets.right) text:text withMedia:hasMedia] +
                 kTextInsets.top +
                 kTextInsets.bottom,
                kMinimumCellHeight);
@@ -45,6 +45,7 @@ static const UIEdgeInsets kTextInsets        = { 24.0f, 74.0f, 24.0f, 32.0f };
 - (void)prepareForReuse
 {
     self.chatBubble.tintColor = [UIColor whiteColor];
+    [self.commentTextView resetView];
 }
 
 @end

@@ -7,6 +7,7 @@
 //
 
 #import "NSString+VParseHelp.h"
+#import "NSURL+MediaType.h"
 #import "UIButton+VImageLoading.h"
 #import "UIImage+ImageEffects.h"
 #import "UIImageView+Blurring.h"
@@ -21,9 +22,6 @@
 #import "VObjectManager.h"
 #import "VThemeManager.h"
 #import "VUser+RestKit.h"
-
-const   CGFloat     kMessageRowWithMediaHeight  =   280.0;
-const   CGFloat     kMessageRowHeight           =   80;
 
 @implementation VMessageViewController
 
@@ -150,6 +148,22 @@ const   CGFloat     kMessageRowHeight           =   80;
     VMessage *message = [self.fetchedResultsController objectAtIndexPath:indexPath];
 
     cell.commentTextView.text = message.text;
+    BOOL hasMedia = [message.thumbnailPath isKindOfClass:[NSString class]] && ![message.thumbnailPath isEqualToString:@""];
+    if (hasMedia)
+    {
+        cell.commentTextView.mediaThumbnailView.hidden = NO;
+        [cell.commentTextView.mediaThumbnailView setImageWithURL:[NSURL URLWithString:message.thumbnailPath]];
+        if ([message.mediaPath v_hasVideoExtension])
+        {
+            cell.commentTextView.onMediaTapped = [cell.commentTextView standardMediaTapHandlerWithMediaURL:[NSURL URLWithString:message.mediaPath] presentingViewController:self];
+            cell.commentTextView.playIcon.hidden = NO;
+        }
+    }
+    else
+    {
+        cell.commentTextView.mediaThumbnailView.hidden = YES;
+    }
+    
     NSURL *pictureURL = [NSURL URLWithString:message.user.pictureUrl];
     if (pictureURL)
     {
@@ -163,12 +177,13 @@ const   CGFloat     kMessageRowHeight           =   80;
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     VMessage *message = [self.fetchedResultsController objectAtIndexPath:indexPath];
-    return [VMessageCell estimatedHeightWithWidth:CGRectGetWidth(tableView.bounds) text:message.text];
+    BOOL hasMedia = [message.thumbnailPath isKindOfClass:[NSString class]] && ![message.thumbnailPath isEqualToString:@""];
+    return [VMessageCell estimatedHeightWithWidth:CGRectGetWidth(tableView.bounds) text:message.text withMedia:hasMedia];
 }
 
 - (CGFloat)tableView:(UITableView *)tableView estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return [VMessageCell estimatedHeightWithWidth:CGRectGetWidth(tableView.bounds) text:@"Lorem ipsum dolor sit amet"];
+    return [VMessageCell estimatedHeightWithWidth:CGRectGetWidth(tableView.bounds) text:@"Lorem ipsum dolor sit amet" withMedia:NO];
 }
 
 - (void)registerCells

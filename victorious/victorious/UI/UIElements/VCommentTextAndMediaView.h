@@ -15,8 +15,29 @@
  */
 @interface VCommentTextAndMediaView : UIView
 
-@property (nonatomic, copy) NSString *text;
+@property (nonatomic, copy)           NSString     *text;
+@property (nonatomic, weak, readonly) UIImageView  *mediaThumbnailView;
+@property (nonatomic, weak, readonly) UIImageView  *playIcon; ///< Default is hidden. Show for video content
+@property (nonatomic, copy)           void        (^onMediaTapped)(); ///< Called when the user taps the media icon
 
-+ (CGFloat)estimatedHeightWithWidth:(CGFloat)width text:(NSString *)text;
+/**
+ Returns the ideal height for instances of this view
+ given specific width, text, and whether or not
+ we need room for a media thumbnail.
+ */
++ (CGFloat)estimatedHeightWithWidth:(CGFloat)width text:(NSString *)text withMedia:(BOOL)hasMedia;
+
+/**
+ Returns a block that, when invoked, presents the standard media player, 
+ playing the given mediaURL, from the given view controller.
+ 
+ @return a block that can be assigned to the onMediaTapped property
+ */
+- (void(^)(void))standardMediaTapHandlerWithMediaURL:(NSURL *)mediaURL presentingViewController:(UIViewController *)presentingViewController;
+
+/**
+ Removes common customizations (text, images, etc) and returns this view to a pristine state.
+ */
+- (void)resetView;
 
 @end
