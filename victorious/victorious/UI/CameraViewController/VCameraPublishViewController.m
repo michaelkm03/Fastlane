@@ -24,6 +24,9 @@
 #import "UIImage+ImageCreation.h"
 #import "UIAlertView+VBlocks.h"
 
+#import "VCompositeSnapshotController.h"
+
+
 @interface VCameraPublishViewController () <UITextViewDelegate, VSetExpirationDelegate>
 @property (nonatomic, weak) IBOutlet    UIImageView*    previewImageView;
 
@@ -56,6 +59,9 @@
 @property (nonatomic, weak) IBOutlet UIButton* memeButton;
 @property (nonatomic, weak) IBOutlet UIButton* secretButton;
 
+@property (nonatomic) VCaptionType captionType;
+@property (nonatomic, strong) VCompositeSnapshotController* snapshotController;
+
 @end
 
 static NSString* kSecretFont = @"PT_Sans-Narrow-Web-Regular";
@@ -81,6 +87,8 @@ static const CGFloat kShareMargin = 34.0f;
     contentInputAccessory.textInputView = self.textView;
     contentInputAccessory.tintColor = [UIColor colorWithRed:0.85f green:0.86f blue:0.87f alpha:1.0f];
     self.textView.inputAccessoryView = contentInputAccessory;
+    
+    self.snapshotController = [[VCompositeSnapshotController alloc] init];
     
     self.publishButton.titleLabel.textColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVMainTextColor];
     self.publishButton.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
@@ -248,6 +256,7 @@ static const CGFloat kShareMargin = 34.0f;
         NSMutableParagraphStyle *paragraphStyle = NSMutableParagraphStyle.new;
         paragraphStyle.alignment                = NSTextAlignmentCenter;
 
+        self.captionType = vMemeCaption;
         self.typingAttributes = [@{
                                   NSParagraphStyleAttributeName : paragraphStyle,
                                   NSFontAttributeName : [UIFont fontWithName:kMemeFont size:self.textView.frame.size.height],
@@ -264,6 +273,7 @@ static const CGFloat kShareMargin = 34.0f;
         self.textView.font = [UIFont fontWithName:kSecretFont size:20];
         self.textView.textAlignment = NSTextAlignmentCenter;
         self.typingAttributes = nil;
+        self.captionType = VSecretCaption;
     }
     else if ((UIButton*)sender == self.captionButton)
     {
@@ -273,6 +283,7 @@ static const CGFloat kShareMargin = 34.0f;
         self.textView.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeading1Font];
         self.textView.textAlignment = NSTextAlignmentLeft;
         self.typingAttributes = nil;
+        self.captionType = vNormalCaption;
     }
     
     self.captionPlaceholderLabel.font = self.textView.font;
@@ -323,8 +334,6 @@ static const CGFloat kShareMargin = 34.0f;
 
 - (IBAction)publish:(id)sender
 {
-    VLog (@"Publishing");
-    
     if ([self.textView.text isEmpty])
     {
         UIAlertView*    alert   = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"PublishDescriptionRequired", @"")
@@ -335,6 +344,23 @@ static const CGFloat kShareMargin = 34.0f;
         [alert show];
         return;
     }
+  
+    
+    if (self.captionType == vMemeCaption || self.captionType == VSecretCaption)
+    {
+        UIImage* image = [self.snapshotController snapshotOfMainView:self.previewImageView subViews:@[self.textView]];
+        
+        NSURL *originalMediaURL = self.mediaURL;
+        NSData *filteredImageData = UIImageJPEGRepresentation(image, VConstantJPEGCompressionQuality);
+        NSURL *tempDirectory = [NSURL fileURLWithPath:NSTemporaryDirectory() isDirectory:YES];
+        NSURL *tempFile = [[tempDirectory URLByAppendingPathComponent:[[NSUUID UUID] UUIDString]] URLByAppendingPathExtension:VConstantMediaExtensionJPG];
+        if ([filteredImageData writeToURL:tempFile atomically:NO])
+        {
+            self.mediaURL = tempFile;
+            [[NSFileManager defaultManager] removeItemAtURL:originalMediaURL error:nil];
+        }
+    }
+    
     
     VShareOptions shareOptions = self.useFacebook ? kVShareToFacebook : kVShareNone;
     shareOptions = self.useTwitter ? shareOptions | kVShareToTwitter : shareOptions;
@@ -349,6 +375,7 @@ static const CGFloat kShareMargin = 34.0f;
     
     [[VObjectManager sharedManager] uploadMediaWithName:self.textView.text
                                             description:self.textView.text
+                                            captionType:self.captionType
                                               expiresAt:self.expirationDateString
                                            parentNodeId:@(self.parentID)
                                                   speed:playbackSpeed

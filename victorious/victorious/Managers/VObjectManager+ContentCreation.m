@@ -120,6 +120,7 @@ NSString * const VObjectManagerContentIndexKey                  = @"index";
 
 - (AFHTTPRequestOperation * )uploadMediaWithName:(NSString*)name
                                      description:(NSString*)description
+                                     captionType:(VCaptionType)type
                                        expiresAt:(NSString*)expiresAt
                                     parentNodeId:(NSNumber*)parentNodeId
                                            speed:(CGFloat)speed
@@ -143,6 +144,11 @@ NSString * const VObjectManagerContentIndexKey                  = @"index";
         parameters[@"share_facebook"] = @"1";
     if (shareOptions & kVShareToTwitter)
         parameters[@"share_twitter"] = @"1";
+
+    if (type == vMemeCaption)
+        parameters[@"subcategory"] = @"meme";
+    else if (type == VSecretCaption)
+        parameters[@"subcategory"] = @"secret";
     
     if (parentNodeId && ![parentNodeId isEqualToNumber:@(0)])
     {

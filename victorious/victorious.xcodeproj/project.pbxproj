@@ -224,6 +224,7 @@
 		BE2D1E5D19006EAC00C6FF99 /* VStreamToContentAnimator.m in Sources */ = {isa = PBXBuildFile; fileRef = BE2D1E5C19006EAC00C6FF99 /* VStreamToContentAnimator.m */; };
 		BE2D1E661901F4D800C6FF99 /* VStreamToCommentAnimator.m in Sources */ = {isa = PBXBuildFile; fileRef = BE2D1E651901F4D800C6FF99 /* VStreamToCommentAnimator.m */; };
 		BE2E5B751914201A003282A6 /* VObjectManager+ContentCreation.m in Sources */ = {isa = PBXBuildFile; fileRef = BE2E5B741914201A003282A6 /* VObjectManager+ContentCreation.m */; };
+		BE2FC9091993E80F00F282AF /* VCompositeSnapshotController.m in Sources */ = {isa = PBXBuildFile; fileRef = BE2FC9081993E80F00F282AF /* VCompositeSnapshotController.m */; };
 		BE31757C19257592007DAC76 /* VStreamContainerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BE31757B19257592007DAC76 /* VStreamContainerViewController.m */; };
 		BE40559418A1828D00092AE1 /* UIButton+VImageLoading.m in Sources */ = {isa = PBXBuildFile; fileRef = BE40559318A1828D00092AE1 /* UIButton+VImageLoading.m */; };
 		BE4055AC18A41F1F00092AE1 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = BE4055A618A41F1F00092AE1 /* Localizable.strings */; };
@@ -733,6 +734,8 @@
 		BE2D1E651901F4D800C6FF99 /* VStreamToCommentAnimator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VStreamToCommentAnimator.m; path = UI/StreamsView/VStreamToCommentAnimator.m; sourceTree = "<group>"; };
 		BE2E5B731914201A003282A6 /* VObjectManager+ContentCreation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "VObjectManager+ContentCreation.h"; sourceTree = "<group>"; };
 		BE2E5B741914201A003282A6 /* VObjectManager+ContentCreation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "VObjectManager+ContentCreation.m"; sourceTree = "<group>"; };
+		BE2FC9071993E80F00F282AF /* VCompositeSnapshotController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VCompositeSnapshotController.h; path = UI/CameraViewController/VCompositeSnapshotController.h; sourceTree = "<group>"; };
+		BE2FC9081993E80F00F282AF /* VCompositeSnapshotController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VCompositeSnapshotController.m; path = UI/CameraViewController/VCompositeSnapshotController.m; sourceTree = "<group>"; };
 		BE31757A19257592007DAC76 /* VStreamContainerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VStreamContainerViewController.h; path = UI/StreamsView/VStreamContainerViewController.h; sourceTree = "<group>"; };
 		BE31757B19257592007DAC76 /* VStreamContainerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VStreamContainerViewController.m; path = UI/StreamsView/VStreamContainerViewController.m; sourceTree = "<group>"; };
 		BE40559218A1828D00092AE1 /* UIButton+VImageLoading.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIButton+VImageLoading.h"; sourceTree = "<group>"; };
@@ -1211,6 +1214,8 @@
 		3F1AA53218CFF0180022D16B /* Common */ = {
 			isa = PBXGroup;
 			children = (
+				BE2FC9071993E80F00F282AF /* VCompositeSnapshotController.h */,
+				BE2FC9081993E80F00F282AF /* VCompositeSnapshotController.m */,
 				3FD7FFAD18BFD6EF00945E5F /* VCameraPublishViewController.h */,
 				3FD7FFAE18BFD6EF00945E5F /* VCameraPublishViewController.m */,
 				3FD7FFBF18C69B2200945E5F /* VSetExpirationViewController.h */,
@@ -2479,6 +2484,7 @@
 				0345285419244E9700D0B1D1 /* VActivityIndicatorView.m in Sources */,
 				3FDEDD0618CE48210028E3F1 /* VRemixStitchViewController.m in Sources */,
 				3F71A7DA18D7C6D20048FF60 /* VRemixSliderLeft.m in Sources */,
+				BE2FC9091993E80F00F282AF /* VCompositeSnapshotController.m in Sources */,
 				3F9348A01922C539002EA91F /* VFollowingTableViewController.m in Sources */,
 				3F71A7DC18D7C6D20048FF60 /* VRemixVideoRangeSlider.m in Sources */,
 				BEF186051989BD33007FB4BC /* VAsset.m in Sources */,
