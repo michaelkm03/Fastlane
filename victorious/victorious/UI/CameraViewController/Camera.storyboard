@@ -89,7 +89,7 @@
                                     <constraint firstAttribute="bottom" secondItem="P0d-F9-FuH" secondAttribute="bottom" id="xea-u1-peE"/>
                                 </constraints>
                             </view>
-                            <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="W3v-Ee-Cqf" userLabel="Progress View">
+                            <view hidden="YES" contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="W3v-Ee-Cqf" userLabel="Progress View">
                                 <rect key="frame" x="0.0" y="64" width="321" height="8"/>
                                 <color key="backgroundColor" red="0.96862745098039216" green="0.27058823529411763" blue="0.23137254901960785" alpha="1" colorSpace="calibratedRGB"/>
                             </view>

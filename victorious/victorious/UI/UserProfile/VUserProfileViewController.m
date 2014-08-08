@@ -162,24 +162,17 @@ static void * VUserProfileViewContext = &VUserProfileViewContext;
         self.navigationItem.rightBarButtonItem = nil;
 }
 
-- (void)viewDidAppear:(BOOL)animated
-{
-    [super viewDidAppear:animated];
-    [[VAnalyticsRecorder sharedAnalyticsRecorder] startAppView:@"Profile"];
-}
-
-- (void)viewWillDisappear:(BOOL)animated
-{
-    [super viewWillDisappear:animated];
-    [[VAnalyticsRecorder sharedAnalyticsRecorder] finishAppView];
-}
-
 - (void)dealloc
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self name:kLoggedInChangedNotification object:nil];
 }
 
 #pragma mark - Accessors
+
+- (NSString *)viewName
+{
+    return @"Profile";
+}
 
 - (void)setProfile:(VUser *)profile
 {

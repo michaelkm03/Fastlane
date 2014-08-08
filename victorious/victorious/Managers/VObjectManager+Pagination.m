@@ -48,6 +48,25 @@
     return paginationDispatchQueue;
 }
 
+- (void)unlockPageFilters
+{
+    NSManagedObjectContext* context = [VObjectManager sharedManager].managedObjectStore.persistentStoreManagedObjectContext;
+    NSFetchRequest *request = [[NSFetchRequest alloc] initWithEntityName:[VAbstractFilter entityName]];
+    
+    NSError *error = nil;
+    NSArray* objects = [context executeFetchRequest:request error:&error];
+    if (error != nil)
+    {
+        VLog(@"Error occured in sequence filter fetch: %@", error);
+    }
+    
+    for (VAbstractFilter* filter in objects)
+    {
+        filter.updating = @(NO);
+    }
+    [context saveToPersistentStore:nil];
+}
+
 - (RKManagedObjectRequestOperation *)loadInitialSequenceFilterWithSuccessBlock:(VSuccessBlock)success
                                                                      failBlock:(VFailBlock)fail
 {

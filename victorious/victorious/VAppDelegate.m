@@ -17,6 +17,7 @@
 #import "VObjectManager+Sequence.h"
 #import "VObjectManager+Users.h"
 #import "VObjectManager+Login.h"
+#import "VObjectManager+Pagination.h"
 #import "VSessionTimer.h"
 #import "VUserManager.h"
 #import "VDeeplinkManager.h"
@@ -116,11 +117,11 @@ static NSString * const kAppInstalledDefaultsKey = @"com.victorious.VAppDelegate
 {
     [[VThemeManager sharedThemeManager] updateToNewTheme];
     [[VObjectManager sharedManager].managedObjectStore.persistentStoreManagedObjectContext saveToPersistentStore:nil];
+    [[VObjectManager sharedManager] unlockPageFilters];
 }
 
 - (void)applicationWillEnterForeground:(UIApplication *)application
 {
-
 }
 
 - (void)applicationDidBecomeActive:(UIApplication *)application
@@ -132,6 +133,7 @@ static NSString * const kAppInstalledDefaultsKey = @"com.victorious.VAppDelegate
 {
     [[VThemeManager sharedThemeManager] updateToNewTheme];
     [[VObjectManager sharedManager].managedObjectStore.persistentStoreManagedObjectContext saveToPersistentStore:nil];
+    [[VObjectManager sharedManager] unlockPageFilters];
 }
 
 @end
