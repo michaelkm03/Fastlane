@@ -40,7 +40,7 @@
 
 - (void)setSeen:(BOOL)seen
 {
-    // PUT IN ROUTINE FOR WHAT HAPPENS ONCE NOTIFICATION HAS BEEN SEEN
+#warning PUT IN ROUTINE FOR WHAT HAPPENS ONCE NOTIFICATION HAS BEEN SEEN
 }
 
 - (void)setNotifcation:(VNotification *)notifcation

@@ -124,9 +124,6 @@ static  NSString*   kNewsCellViewIdentifier       =   @"VNewsCell";
 {
     [self.tableView registerNib:[UINib nibWithNibName:kMessageCellViewIdentifier bundle:nil] forCellReuseIdentifier:kMessageCellViewIdentifier];
     [self.searchDisplayController.searchResultsTableView registerNib:[UINib nibWithNibName:kMessageCellViewIdentifier bundle:nil] forCellReuseIdentifier:kMessageCellViewIdentifier];
-
-//  [self.tableView registerNib:[UINib nibWithNibName:kNewsCellViewIdentifier bundle:nil] forCellReuseIdentifier:kNewsCellViewIdentifier];
-//  [self.searchDisplayController.searchResultsTableView registerNib:[UINib nibWithNibName:kNewsCellViewIdentifier bundle:nil] forCellReuseIdentifier:kNewsCellViewIdentifier];
 }
 
 #pragma mark - UITabvleViewDataSource
@@ -141,13 +138,6 @@ static  NSString*   kNewsCellViewIdentifier       =   @"VNewsCell";
 {
     if (!hasMessages)
     {
-        /*
-        VNoContentView* noMessagesView = [VNoContentView noContentViewWithFrame:self.tableView.frame];
-        self.tableView.backgroundView = noMessagesView;
-        noMessagesView.titleLabel.text = NSLocalizedString(@"NoMessagesTitle", @"");
-        noMessagesView.messageLabel.text = NSLocalizedString(@"NoMessagesMessage", @"");
-        noMessagesView.iconImageView.image = [UIImage imageNamed:@"noMessageIcon"];
-        */
         self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     }
     else

@@ -82,7 +82,6 @@
     
     // SETUP SEARCH FIELD
     self.searchField.delegate = self;
-    //[self.searchField addTarget:self action:@selector(typingTimerCheck:) forControlEvents:UIControlEventEditingChanged];
     [self.searchField addTarget:self action:@selector(runUserSearch:) forControlEvents:UIControlEventEditingChanged];
     [self.searchField setTextColor:[[VThemeManager sharedThemeManager] themedColorForKey:kVContentTextColor]];
     [self.searchField setTintColor:[UIColor grayColor]];
@@ -169,7 +168,6 @@
 
 -(IBAction)closeButtonAction:(id)sender
 {
-    //[self dismissViewControllerAnimated:YES completion:nil];
     [self.navigationController popViewControllerAnimated:YES];
 }
 
@@ -288,19 +286,7 @@
 {
     return 50.0f;
 }
-/*
-- (NSIndexPath *)tableView:(UITableView *)tableView willSelectRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    [tableView selectRowAtIndexPath:indexPath animated:YES scrollPosition:UITableViewScrollPositionNone];
-    return nil;
-}
 
-- (NSIndexPath *)tableView:(UITableView *)tableView willDeselectRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    return nil;
-}
-*/
 #pragma mark - UITextFieldDelegate
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField
@@ -313,25 +299,15 @@
 -(BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
 {
     BOOL ans = YES;
-
-    /*
-    NSLog(@"%@",string);
-    if (string.length > 0)
-    {
-        [self characterCheck:nil];
-    }
-    */
     return ans;
 }
 -(BOOL)textFieldShouldBeginEditing:(UITextField *)textField
 {
-    NSLog(@"\n\n-----\nEditing Started\n-----\n\n");
     return YES;
 }
 
 -(BOOL)textFieldShouldEndEditing:(UITextField *)textField
 {
-    NSLog(@"\n\n-----\nEditing Stopped\n-----\n\n");
     return YES;
 }
 
