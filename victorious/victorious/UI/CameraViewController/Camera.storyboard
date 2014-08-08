@@ -257,9 +257,9 @@
                                 </connections>
                             </button>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" preferredMaxLayoutWidth="280" translatesAutoresizingMaskIntoConstraints="NO" id="Fsz-Xd-hVx" customClass="TTTAttributedLabel">
-                                <rect key="frame" x="20" y="202" width="280" height="80"/>
+                                <rect key="frame" x="20" y="192" width="280" height="90"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="80" id="Lpp-fh-Uw2"/>
+                                    <constraint firstAttribute="height" constant="90" id="Lpp-fh-Uw2"/>
                                 </constraints>
                                 <string key="text">Add a description...
 and don't forget #hashtags</string>
@@ -268,7 +268,7 @@ and don't forget #hashtags</string>
                                 <nil key="highlightedColor"/>
                             </label>
                             <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" scrollEnabled="NO" translatesAutoresizingMaskIntoConstraints="NO" id="yxx-6S-3iW" userLabel="Description Text View">
-                                <rect key="frame" x="20" y="202" width="280" height="80"/>
+                                <rect key="frame" x="20" y="192" width="280" height="90"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="24"/>

@@ -111,6 +111,7 @@ static const CGFloat kShareMargin = 34.0f;
     }
     
     self.captionButton.selected = YES;
+    [self setDefaultCaptionText];
     
     self.secretTextViewYConstraint = [NSLayoutConstraint constraintWithItem:self.textView
                                                                   attribute:NSLayoutAttributeCenterY
@@ -196,19 +197,35 @@ static const CGFloat kShareMargin = 34.0f;
         || [mediaExtension isEqualToString:VConstantMediaExtensionMP4])
         self.captionViewHeightConstraint.constant = 0;
     
-    [self.captionPlaceholderLabel setText:NSLocalizedString(@"AddDescription", @"") afterInheritingLabelAttributesAndConfiguringWithBlock:^NSMutableAttributedString *(NSMutableAttributedString *mutableAttributedString) {
-        NSRange hashtagRange = [[mutableAttributedString string] rangeOfString:NSLocalizedString(@"AddDescriptionAnchor", @"")];
-        
-        UIFont* headerFont = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeading1Font];
-        CTFontRef font = CTFontCreateWithName((__bridge CFStringRef)headerFont.fontName, headerFont.pointSize, NULL);
-        
-        [mutableAttributedString addAttribute:(NSString *)kCTFontAttributeName value:(__bridge id)font range:NSMakeRange(0, [mutableAttributedString length])];
-        [mutableAttributedString addAttribute:(NSString *)kCTForegroundColorAttributeName value:[[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor] range:hashtagRange];
-        
-        return mutableAttributedString;
-    }];
-    
     self.textView.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeaderFont];
+}
+
+- (void)setDefaultCaptionText
+{
+    if (self.captionType == vNormalCaption)
+    {
+        [self.captionPlaceholderLabel setText:NSLocalizedString(@"AddDescription", @"") afterInheritingLabelAttributesAndConfiguringWithBlock:^NSMutableAttributedString *(NSMutableAttributedString *mutableAttributedString) {
+            NSRange hashtagRange = [[mutableAttributedString string] rangeOfString:NSLocalizedString(@"AddDescriptionAnchor", @"")];
+            
+            UIFont* headerFont = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeading1Font];
+            CTFontRef font = CTFontCreateWithName((__bridge CFStringRef)headerFont.fontName, headerFont.pointSize, NULL);
+            
+            [mutableAttributedString addAttribute:(NSString *)kCTFontAttributeName value:(__bridge id)font range:NSMakeRange(0, [mutableAttributedString length])];
+            [mutableAttributedString addAttribute:(NSString *)kCTForegroundColorAttributeName value:[[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor] range:hashtagRange];
+            
+            return mutableAttributedString;
+        }];
+        return;
+    }
+
+    NSMutableDictionary* placeholderAttributes = [self.typingAttributes mutableCopy];
+    if (self.captionType == vMemeCaption)
+    {
+        placeholderAttributes[NSFontAttributeName] = [placeholderAttributes[NSFontAttributeName] fontWithSize:24];
+    }
+    
+    self.captionPlaceholderLabel.attributedText = [[NSAttributedString alloc] initWithString:NSLocalizedString(@"InsertTextHere", nil)
+                                                                                  attributes:placeholderAttributes];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -309,6 +326,8 @@ static const CGFloat kShareMargin = 34.0f;
     
     self.captionPlaceholderLabel.font = self.textView.font;
     self.captionPlaceholderLabel.textAlignment = self.textView.textAlignment;
+    
+    [self setDefaultCaptionText];
     
     [self.textView becomeFirstResponder];
 }
@@ -504,6 +523,8 @@ static const CGFloat kShareMargin = 34.0f;
             realHeight = ((CGSize) [self.textView sizeThatFits:self.textView.frame.size]).height;
         }
         self.typingAttributes[NSFontAttributeName] = self.textView.font;
+        self.captionPlaceholderLabel.attributedText = [[NSAttributedString alloc] initWithString:self.captionPlaceholderLabel.attributedText.string
+                                                                                      attributes:self.typingAttributes];
         
         NSAttributedString *str = [[NSAttributedString alloc] initWithString:self.textView.text attributes:self.typingAttributes];
         self.textView.attributedText = str;
@@ -536,6 +557,8 @@ static const CGFloat kShareMargin = 34.0f;
 - (void)textViewDidEndEditing:(UITextView *)textView
 {
     self.captionPlaceholderLabel.hidden = ([textView.text length] > 0);
+    
+    [self setDefaultCaptionText];
 }
 
 #pragma mark - Navigation

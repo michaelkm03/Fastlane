@@ -236,6 +236,7 @@
 
 "AddDescription"        =   "Add a description... and don't forget #hashtags";
 "AddDescriptionAnchor"  =   "#hashtags";
+"InsertTextHere"        =   "Insert Text Here";
 
 "NotConnected"          =   "Not Connected";
 "ConnectedTo"           =   "Connected to %@";
