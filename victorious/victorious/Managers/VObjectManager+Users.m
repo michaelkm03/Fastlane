@@ -258,6 +258,29 @@
             failBlock:fail];
 }
 
+- (RKManagedObjectRequestOperation *)findUsersBySearchString:(NSString *)search_string
+                                        withSuccessBlock:(VSuccessBlock)success
+                                               failBlock:(VFailBlock)fail
+{
+    VSuccessBlock fullSuccess = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
+    {
+        if (success)
+        {
+            success(operation, fullResponse, resultObjects);
+        }
+    };
+    
+    
+    NSDictionary *params = @{ @"search": search_string };
+    
+    return [self POST:@"/api/userinfo/search"
+               object:nil
+           parameters:params
+         successBlock:fullSuccess
+            failBlock:fail];
+}
+
+
 - (RKManagedObjectRequestOperation *)findFriendsBySocial:(VSocialSelector)selector
                                                    token:(NSString *)token
                                                   secret:(NSString *)secret

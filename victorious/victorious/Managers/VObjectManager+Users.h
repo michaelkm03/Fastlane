@@ -68,4 +68,9 @@ typedef NS_ENUM(NSUInteger, VSocialSelector)
 - (RKManagedObjectRequestOperation *)followUsers:(NSArray /* VUser */ *)users
                                 withSuccessBlock:(VSuccessBlock)success
                                        failBlock:(VFailBlock)fail;
+
+- (RKManagedObjectRequestOperation *)findUsersBySearchString:(NSString *)search_string
+                                            withSuccessBlock:(VSuccessBlock)success
+                                                   failBlock:(VFailBlock)fail;
+
 @end

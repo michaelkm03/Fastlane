@@ -2,12 +2,13 @@
 //  VMessage.m
 //  victorious
 //
-//  Created by Will Long on 5/29/14.
+//  Created by Lawrence Leach on 8/7/14.
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
 #import "VMessage.h"
 #import "VConversation.h"
+#import "VNotification.h"
 #import "VUser.h"
 
 
@@ -23,5 +24,6 @@
 @dynamic conversation;
 @dynamic lastMessageInverse;
 @dynamic user;
+@dynamic notification;
 
 @end

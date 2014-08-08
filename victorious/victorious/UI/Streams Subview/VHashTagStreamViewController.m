@@ -37,11 +37,10 @@
 @interface VHashTagStreamViewController () <UINavigationControllerDelegate>
 @property (weak, nonatomic) IBOutlet UIButton* backButton;
 @property (weak, nonatomic) IBOutlet UILabel* titleLabel;
-
 @property (strong, nonatomic) IBOutlet UIImageView* backgroundImage;
 
-
 @end
+
 @implementation VHashTagStreamViewController
 
 -(id)init

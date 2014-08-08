@@ -64,6 +64,14 @@
 - (RKManagedObjectRequestOperation *)loadNextPageOfConversationListWithSuccessBlock:(VSuccessBlock)success
                                                                           failBlock:(VFailBlock)fail;
 
+#pragma mark Notifications
+- (RKManagedObjectRequestOperation *)refreshListOfNotificationsWithSuccessBlock:(VSuccessBlock)success
+                                                                      failBlock:(VFailBlock)fail;
+- (RKManagedObjectRequestOperation *)loadNextPageOfNotificationsListWithSuccessBlock:(VSuccessBlock)success
+                                                                           failBlock:(VFailBlock)fail;
+
+
+
 #pragma mark Filters
 - (void)unlockPageFilters;
 - (VSequenceFilter*)remixFilterforSequence:(VSequence*)sequence;

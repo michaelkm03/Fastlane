@@ -50,6 +50,7 @@
         <attribute name="userId" attributeType="Integer 64" minValueString="0" syncable="YES"/>
         <relationship name="asset" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Asset" inverseName="comments" inverseEntity="Asset" syncable="YES"/>
         <relationship name="filters" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="CommentFilter" inverseName="comments" inverseEntity="CommentFilter" syncable="YES"/>
+        <relationship name="notification" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Notification" inverseName="comment" inverseEntity="Notification" syncable="YES"/>
         <relationship name="sequence" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Sequence" inverseName="comments" inverseEntity="Sequence" syncable="YES"/>
         <relationship name="user" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="User" inverseName="comments" inverseEntity="User" syncable="YES"/>
     </entity>
@@ -92,6 +93,7 @@
         <attribute name="thumbnailPath" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="conversation" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Conversation" inverseName="messages" inverseEntity="Conversation" syncable="YES"/>
         <relationship name="lastMessageInverse" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Conversation" inverseName="lastMessage" inverseEntity="Conversation" syncable="YES"/>
+        <relationship name="notification" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Notification" inverseName="message" inverseEntity="Notification" syncable="YES"/>
         <relationship name="user" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="User" inverseName="messages" inverseEntity="User" syncable="YES"/>
     </entity>
     <entity name="Node" representedClassName="VNode" syncable="YES">
@@ -106,6 +108,15 @@
         <attribute name="lostGotoNode" optional="YES" attributeType="Integer 64" minValueString="0" syncable="YES"/>
         <attribute name="wonGotoNode" optional="YES" attributeType="Integer 64" minValueString="0" syncable="YES"/>
         <relationship name="node" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Node" inverseName="nodeAction" inverseEntity="Node" syncable="YES"/>
+    </entity>
+    <entity name="Notification" representedClassName="VNotification" syncable="YES">
+        <attribute name="notifyType" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="postedAt" optional="YES" attributeType="Date" syncable="YES"/>
+        <attribute name="remoteId" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <attribute name="userId" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
+        <relationship name="comment" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Comment" inverseName="notification" inverseEntity="Comment" syncable="YES"/>
+        <relationship name="message" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Message" inverseName="notification" inverseEntity="Message" syncable="YES"/>
+        <relationship name="user" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="User" inverseName="notifications" inverseEntity="User" syncable="YES"/>
     </entity>
     <entity name="PollResult" representedClassName="VPollResult" syncable="YES">
         <attribute name="answerId" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
@@ -168,6 +179,7 @@
         <relationship name="followers" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="User" inverseName="following" inverseEntity="User" syncable="YES"/>
         <relationship name="following" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="User" inverseName="followers" inverseEntity="User" syncable="YES"/>
         <relationship name="messages" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Message" inverseName="user" inverseEntity="Message" syncable="YES"/>
+        <relationship name="notifications" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Notification" inverseName="user" inverseEntity="Notification" syncable="YES"/>
         <relationship name="pollResults" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="PollResult" inverseName="user" inverseEntity="PollResult" syncable="YES"/>
         <relationship name="postedSequences" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Sequence" inverseName="user" inverseEntity="Sequence" syncable="YES"/>
         <relationship name="remixedSequences" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Sequence" inverseName="remixers" inverseEntity="Sequence" syncable="YES"/>
@@ -190,12 +202,12 @@
         <element name="Answer" positionX="727" positionY="99" width="128" height="193"/>
         <element name="AnswerAction" positionX="718" positionY="330" width="128" height="75"/>
         <element name="Asset" positionX="630" positionY="-414" width="128" height="148"/>
-        <element name="Comment" positionX="1035" positionY="-576" width="128" height="328"/>
+        <element name="Comment" positionX="1035" positionY="-576" width="128" height="343"/>
         <element name="CommentFilter" positionX="844" positionY="-463" width="128" height="58"/>
         <element name="Conversation" positionX="1530" positionY="-468" width="128" height="118"/>
         <element name="Interaction" positionX="646" positionY="-208" width="128" height="208"/>
         <element name="InteractionAction" positionX="495" positionY="-162" width="128" height="105"/>
-        <element name="Message" positionX="1582" positionY="-271" width="128" height="193"/>
+        <element name="Message" positionX="1582" positionY="-271" width="128" height="208"/>
         <element name="Node" positionX="817" positionY="-180" width="128" height="133"/>
         <element name="NodeAction" positionX="835" positionY="-9" width="128" height="90"/>
         <element name="PollResult" positionX="1582" positionY="-36" width="128" height="118"/>
@@ -203,8 +215,9 @@
         <element name="Sequence" positionX="1060" positionY="-181" width="128" height="418"/>
         <element name="SequenceFilter" positionX="855" positionY="-274" width="128" height="58"/>
         <element name="UnreadConversation" positionX="1251" positionY="-459" width="128" height="73"/>
-        <element name="User" positionX="1314" positionY="-342" width="128" height="343"/>
+        <element name="User" positionX="1314" positionY="-342" width="128" height="358"/>
         <element name="VoteResult" positionX="864" positionY="164" width="128" height="88"/>
         <element name="VoteType" positionX="666" positionY="-585" width="128" height="103"/>
+        <element name="Notification" positionX="1582" positionY="135" width="128" height="148"/>
     </elements>
 </model>
