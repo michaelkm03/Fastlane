@@ -138,17 +138,14 @@ static const CGFloat kShareMargin = 34.0f;
 {
     NSArray* shareNames = @[NSLocalizedString(@"facebook", nil),
                              NSLocalizedString(@"twitter", nil),
-//                             NSLocalizedString(@"tumblr", nil),
                              NSLocalizedString(@"saveToLibrary", nil)];
     
     NSArray* shareImages = @[[UIImage imageNamed:@"share-btn-fb"],
                              [UIImage imageNamed:@"share-btn-twitter"],
-//                             [UIImage imageNamed:@"share-btn-tumblr"],
                              [UIImage imageNamed:@"share-btn-library"]];
     
     NSArray* shareColors = @[[UIColor colorWithRed:.23f green:.35f blue:.6f alpha:1.0f],
                              [UIColor colorWithRed:.1f green:.7f blue:.91f alpha:1.0f],
-//                             [UIColor colorWithRed:.17f green:.28f blue:.38f alpha:1],
                              [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor]];
     
     NSAssert(shareNames.count == shareImages.count && shareImages.count == shareColors.count, @"There should be an equal number of these...");
