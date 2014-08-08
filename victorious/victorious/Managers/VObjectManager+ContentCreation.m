@@ -120,6 +120,7 @@ NSString * const VObjectManagerContentIndexKey                  = @"index";
 
 - (AFHTTPRequestOperation * )uploadMediaWithName:(NSString*)name
                                      description:(NSString*)description
+                                     captionType:(VCaptionType)type
                                        expiresAt:(NSString*)expiresAt
                                     parentNodeId:(NSNumber*)parentNodeId
                                            speed:(CGFloat)speed
@@ -143,6 +144,11 @@ NSString * const VObjectManagerContentIndexKey                  = @"index";
         parameters[@"share_facebook"] = @"1";
     if (shareOptions & kVShareToTwitter)
         parameters[@"share_twitter"] = @"1";
+
+    if (type == vMemeCaption)
+        parameters[@"subcategory"] = @"meme";
+    else if (type == VSecretCaption)
+        parameters[@"subcategory"] = @"secret";
     
     if (parentNodeId && ![parentNodeId isEqualToNumber:@(0)])
     {
@@ -181,12 +187,12 @@ NSString * const VObjectManagerContentIndexKey                  = @"index";
 }
 
 - (RKManagedObjectRequestOperation * )repostNode:(VNode*)node
-                        withDescription:(NSString*)description
-                           successBlock:(VSuccessBlock)success
-                              failBlock:(VFailBlock)fail
+                                        withName:(NSString*)name
+                                    successBlock:(VSuccessBlock)success
+                                       failBlock:(VFailBlock)fail
 {
     NSDictionary* parameters = @{@"parent_node_id":node.remoteId ?: [NSNull null],
-                                 @"description":description ?: [NSNull null]};
+                                 @"name":name ?: [NSNull null]};
     
     return [self POST:@"/api/repost/create"
                object:nil

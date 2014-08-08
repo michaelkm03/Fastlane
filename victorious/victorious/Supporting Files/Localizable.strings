@@ -20,6 +20,8 @@
 "YesButton"             =   "Yes";
 "NoButton"              =   "No";
 "BackButton"            =   "Back";
+"Exit"                  =   "Exit";
+"Publish"               =   "Publish";
 
 "TimeSeparator"         =   ":";
 "InvalidTimePlaceholder"=   "-:--";
@@ -129,8 +131,8 @@
 "PublishSucceeded"      =   "Publish Succeeded";
 "PublishSucceededDetail"    =   "Your media has been submitted to the server";
 
-"PublishDescriptionRequired" = "Description Required";
-"PublishDescription"    =   "You need to enter a description for your media.";
+"PublishDescriptionRequired" = "Text Needed";
+"PublishDescription"    =   "Please enter the caption for your content.";
 
 "ReplaceVideo"          =   "Replace Video";
 
@@ -234,6 +236,7 @@
 
 "AddDescription"        =   "Add a description... and don't forget #hashtags";
 "AddDescriptionAnchor"  =   "#hashtags";
+"InsertTextHere"        =   "Insert Text Here";
 
 "NotConnected"          =   "Not Connected";
 "ConnectedTo"           =   "Connected to %@";
@@ -260,3 +263,11 @@
 "remixedFromFormat"       =   "Remix from %@";
 
 "leaveACommentFormat"   =   "Leave a comment at %@";
+
+"facebook"              =   "facebook";
+"twitter"               =   "twitter";
+"tumblr"                =   "tumblr";
+"saveToLibrary"         =   "save to library";
+
+"areYouSure"            =   "Are You Sure?";
+"contentIsntPublished"  =   "Your content hasn't been published yet! If you exit now, all changes will be lost.";

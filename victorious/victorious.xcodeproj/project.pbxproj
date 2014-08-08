@@ -224,12 +224,17 @@
 		BE2D1E5D19006EAC00C6FF99 /* VStreamToContentAnimator.m in Sources */ = {isa = PBXBuildFile; fileRef = BE2D1E5C19006EAC00C6FF99 /* VStreamToContentAnimator.m */; };
 		BE2D1E661901F4D800C6FF99 /* VStreamToCommentAnimator.m in Sources */ = {isa = PBXBuildFile; fileRef = BE2D1E651901F4D800C6FF99 /* VStreamToCommentAnimator.m */; };
 		BE2E5B751914201A003282A6 /* VObjectManager+ContentCreation.m in Sources */ = {isa = PBXBuildFile; fileRef = BE2E5B741914201A003282A6 /* VObjectManager+ContentCreation.m */; };
+		BE2FC9091993E80F00F282AF /* VCompositeSnapshotController.m in Sources */ = {isa = PBXBuildFile; fileRef = BE2FC9081993E80F00F282AF /* VCompositeSnapshotController.m */; };
 		BE31757C19257592007DAC76 /* VStreamContainerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BE31757B19257592007DAC76 /* VStreamContainerViewController.m */; };
 		BE40559418A1828D00092AE1 /* UIButton+VImageLoading.m in Sources */ = {isa = PBXBuildFile; fileRef = BE40559318A1828D00092AE1 /* UIButton+VImageLoading.m */; };
 		BE4055AC18A41F1F00092AE1 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = BE4055A618A41F1F00092AE1 /* Localizable.strings */; };
 		BE4055AD18A41F1F00092AE1 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = BE4055A718A41F1F00092AE1 /* main.m */; };
 		BE448FC919589F9700EB8682 /* VEnterResetTokenViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BE448FC819589F9700EB8682 /* VEnterResetTokenViewController.m */; };
 		BE46E69A18CA751F00974DAF /* VCommentToContentAnimator.m in Sources */ = {isa = PBXBuildFile; fileRef = BE46E69918CA751F00974DAF /* VCommentToContentAnimator.m */; };
+		BE559E7019900881003E579A /* VShareView.m in Sources */ = {isa = PBXBuildFile; fileRef = BE559E6F19900881003E579A /* VShareView.m */; };
+		BE559E72199008AA003E579A /* VShareView.xib in Resources */ = {isa = PBXBuildFile; fileRef = BE559E71199008AA003E579A /* VShareView.xib */; };
+		BE559E7A19917B7C003E579A /* Impact in Resources */ = {isa = PBXBuildFile; fileRef = BE559E7719917B7C003E579A /* Impact */; };
+		BE559E7B19917B7C003E579A /* PTSans-Narrow in Resources */ = {isa = PBXBuildFile; fileRef = BE559E7819917B7C003E579A /* PTSans-Narrow */; };
 		BE55CD15188F316900FE619F /* VObjectManager.m in Sources */ = {isa = PBXBuildFile; fileRef = BE55CD13188F316900FE619F /* VObjectManager.m */; };
 		BE5C7340187E36CF00A3340D /* VInteraction.m in Sources */ = {isa = PBXBuildFile; fileRef = BE5C733F187E36CF00A3340D /* VInteraction.m */; };
 		BE5C735B187E36E700A3340D /* VNode.m in Sources */ = {isa = PBXBuildFile; fileRef = BE5C735A187E36E700A3340D /* VNode.m */; };
@@ -734,6 +739,8 @@
 		BE2D1E651901F4D800C6FF99 /* VStreamToCommentAnimator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VStreamToCommentAnimator.m; path = UI/StreamsView/VStreamToCommentAnimator.m; sourceTree = "<group>"; };
 		BE2E5B731914201A003282A6 /* VObjectManager+ContentCreation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "VObjectManager+ContentCreation.h"; sourceTree = "<group>"; };
 		BE2E5B741914201A003282A6 /* VObjectManager+ContentCreation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "VObjectManager+ContentCreation.m"; sourceTree = "<group>"; };
+		BE2FC9071993E80F00F282AF /* VCompositeSnapshotController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VCompositeSnapshotController.h; path = UI/CameraViewController/VCompositeSnapshotController.h; sourceTree = "<group>"; };
+		BE2FC9081993E80F00F282AF /* VCompositeSnapshotController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VCompositeSnapshotController.m; path = UI/CameraViewController/VCompositeSnapshotController.m; sourceTree = "<group>"; };
 		BE31757A19257592007DAC76 /* VStreamContainerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VStreamContainerViewController.h; path = UI/StreamsView/VStreamContainerViewController.h; sourceTree = "<group>"; };
 		BE31757B19257592007DAC76 /* VStreamContainerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VStreamContainerViewController.m; path = UI/StreamsView/VStreamContainerViewController.m; sourceTree = "<group>"; };
 		BE40559218A1828D00092AE1 /* UIButton+VImageLoading.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIButton+VImageLoading.h"; sourceTree = "<group>"; };
@@ -746,6 +753,11 @@
 		BE449DBF18E4F6A1008411F1 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = AppSpecific/Info.plist; sourceTree = "<group>"; };
 		BE46E69818CA751F00974DAF /* VCommentToContentAnimator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VCommentToContentAnimator.h; path = "UI/Content View/VCommentToContentAnimator.h"; sourceTree = "<group>"; };
 		BE46E69918CA751F00974DAF /* VCommentToContentAnimator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VCommentToContentAnimator.m; path = "UI/Content View/VCommentToContentAnimator.m"; sourceTree = "<group>"; };
+		BE559E6E19900881003E579A /* VShareView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VShareView.h; path = UI/CameraViewController/VShareView.h; sourceTree = "<group>"; };
+		BE559E6F19900881003E579A /* VShareView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VShareView.m; path = UI/CameraViewController/VShareView.m; sourceTree = "<group>"; };
+		BE559E71199008AA003E579A /* VShareView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = VShareView.xib; path = UI/CameraViewController/VShareView.xib; sourceTree = "<group>"; };
+		BE559E7719917B7C003E579A /* Impact */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Impact; sourceTree = "<group>"; };
+		BE559E7819917B7C003E579A /* PTSans-Narrow */ = {isa = PBXFileReference; lastKnownFileType = folder; path = "PTSans-Narrow"; sourceTree = "<group>"; };
 		BE55CD12188F316900FE619F /* VObjectManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VObjectManager.h; sourceTree = "<group>"; };
 		BE55CD13188F316900FE619F /* VObjectManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VObjectManager.m; sourceTree = "<group>"; };
 		BE55CD14188F316900FE619F /* VObjectManager+Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "VObjectManager+Private.h"; sourceTree = "<group>"; };
@@ -1216,6 +1228,8 @@
 		3F1AA53218CFF0180022D16B /* Common */ = {
 			isa = PBXGroup;
 			children = (
+				BE2FC9071993E80F00F282AF /* VCompositeSnapshotController.h */,
+				BE2FC9081993E80F00F282AF /* VCompositeSnapshotController.m */,
 				3FD7FFAD18BFD6EF00945E5F /* VCameraPublishViewController.h */,
 				3FD7FFAE18BFD6EF00945E5F /* VCameraPublishViewController.m */,
 				3FD7FFBF18C69B2200945E5F /* VSetExpirationViewController.h */,
@@ -1224,6 +1238,9 @@
 				3FD7FFBA18C14ED400945E5F /* VExpirationPickerTextField.m */,
 				3FD7FFBC18C5360800945E5F /* VExpirationDatePicker.h */,
 				3FD7FFBD18C5360800945E5F /* VExpirationDatePicker.m */,
+				BE559E6E19900881003E579A /* VShareView.h */,
+				BE559E6F19900881003E579A /* VShareView.m */,
+				BE559E71199008AA003E579A /* VShareView.xib */,
 			);
 			name = Common;
 			sourceTree = "<group>";
@@ -1560,6 +1577,8 @@
 		83ABAF9A18709DE30069556C /* Fonts */ = {
 			isa = PBXGroup;
 			children = (
+				BE559E7719917B7C003E579A /* Impact */,
+				BE559E7819917B7C003E579A /* PTSans-Narrow */,
 				BEDF0FBA18DB77E400750EF6 /* MuseoSans */,
 				83ABAF9B18709DE30069556C /* Roboto */,
 			);
@@ -2247,6 +2266,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BE559E7A19917B7C003E579A /* Impact in Resources */,
 				036AC8F71958FD9F0086856B /* FindFriendsTableView.xib in Resources */,
 				3FA217D818A9C38A0066E893 /* play_black@2x.png in Resources */,
 				3FF8B7981868EE7E00806EA0 /* Main.storyboard in Resources */,
@@ -2287,6 +2307,7 @@
 				BEB4C2A0187E0778004ECEEF /* VCommentCell.xib in Resources */,
 				BE692B28186E5ED800C71336 /* VStreamVideoCell.xib in Resources */,
 				03F9D283191D54F100576AEE /* VCVideoPlayerToolbarView.xib in Resources */,
+				BE559E72199008AA003E579A /* VShareView.xib in Resources */,
 				BE6464EC195253BB0089A34F /* VUserProfileHeaderView.xib in Resources */,
 				83ABAFAF18709DE30069556C /* Roboto-Light.ttf in Resources */,
 				83CC444A187DDCA8000C480C /* Roboto-Black.ttf in Resources */,
@@ -2296,6 +2317,7 @@
 				BEDF0FBF18DB783200750EF6 /* MuseoSans-300.otf in Resources */,
 				BE76FBE618E4DC1D009E6DD7 /* defaultTheme.plist in Resources */,
 				03F9D29819204D7700576AEE /* Icon-40@2x.png in Resources */,
+				BE559E7B19917B7C003E579A /* PTSans-Narrow in Resources */,
 				03F9D28F19204CDC00576AEE /* Default-568h@2x.png in Resources */,
 				3FA217CE18A9BFC90066E893 /* cast_solid_custom@2x.png in Resources */,
 			);
@@ -2513,10 +2535,12 @@
 				0345285419244E9700D0B1D1 /* VActivityIndicatorView.m in Sources */,
 				3FDEDD0618CE48210028E3F1 /* VRemixStitchViewController.m in Sources */,
 				3F71A7DA18D7C6D20048FF60 /* VRemixSliderLeft.m in Sources */,
+				BE2FC9091993E80F00F282AF /* VCompositeSnapshotController.m in Sources */,
 				3F9348A01922C539002EA91F /* VFollowingTableViewController.m in Sources */,
 				3F71A7DC18D7C6D20048FF60 /* VRemixVideoRangeSlider.m in Sources */,
 				BEF186051989BD33007FB4BC /* VAsset.m in Sources */,
 				DB8D3A1319803A03005DD36D /* VHashTags.m in Sources */,
+				BE559E7019900881003E579A /* VShareView.m in Sources */,
 				03D638211918488F0084FFC8 /* VServerEnvironmentTableViewController.m in Sources */,
 				038E188C1947DDE900E35719 /* VForceUpgradeAnimatedTransition.m in Sources */,
 				BE185DF118E3B2C2001C447F /* VContentViewController+Images.m in Sources */,

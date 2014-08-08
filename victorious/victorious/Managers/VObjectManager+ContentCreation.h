@@ -34,6 +34,13 @@ extern NSString * const VObjectManagerContentFilterIDKey;
  */
 extern NSString * const VObjectManagerContentIndexKey;
 
+typedef NS_ENUM(NSUInteger, VCaptionType)
+{
+    vNormalCaption = 0,
+    vMemeCaption,
+    VSecretCaption
+};
+
 @interface VObjectManager (ContentCreation)
 
 - (RKManagedObjectRequestOperation*)fetchRemixMP4UrlForSequenceID:(NSNumber*)sequenceID
@@ -53,6 +60,7 @@ extern NSString * const VObjectManagerContentIndexKey;
 
 - (AFHTTPRequestOperation * )uploadMediaWithName:(NSString*)name
                                      description:(NSString*)description
+                                     captionType:(VCaptionType)type
                                        expiresAt:(NSString*)expiresAt
                                     parentNodeId:(NSNumber*)parentNodeId
                                            speed:(CGFloat)speed
@@ -93,7 +101,7 @@ Creates a new realtime comment
                                             failBlock:(VFailBlock)fail;
 
 - (RKManagedObjectRequestOperation * )repostNode:(VNode*)node
-                                 withDescription:(NSString*)description
+                                        withName:(NSString*)name
                                     successBlock:(VSuccessBlock)success
                                        failBlock:(VFailBlock)fail;
 

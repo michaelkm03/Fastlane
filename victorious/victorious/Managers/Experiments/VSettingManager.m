@@ -17,7 +17,8 @@
 NSString*   const   kVCaptureVideoQuality               =   @"capture";
 NSString*   const   kVExportVideoQuality                =   @"remix";
 
-NSString*   const   kVRealtimeCommentsEnabled           =   @"realtimeComments";
+NSString*   const   kVRealtimeCommentsEnabled           =   @"realtimeCommentsEnabled";
+NSString*   const   kVMemeAndSecretEnabled              =   @"memeAndSecretEnabled";
 
 //URLs
 NSString*   const   kVTermsOfServiceURL                 =   @"url.tos";

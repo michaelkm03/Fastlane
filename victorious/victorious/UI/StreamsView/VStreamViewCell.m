@@ -161,13 +161,19 @@ static VLargeNumberFormatter* largeNumberFormatter;
     
     self.usernameLabel.text = self.sequence.user.name;
 
-    NSString *text = self.sequence.name;
-    NSMutableAttributedString *newAttributedCellText = [[NSMutableAttributedString alloc] initWithString:text attributes:[self attributesForCellText]];
-    self.hashTags = [VHashTags detectHashTags:text];
-    if ([self.hashTags count] > 0) {
-        newAttributedCellText = [VHashTags formatHashTags:newAttributedCellText withDictionary:self.hashTags];
+    if (!self.sequence.nameEmbeddedInContent.boolValue)
+    {
+        NSString *text = self.sequence.name;
+        NSMutableAttributedString *newAttributedCellText = [[NSMutableAttributedString alloc] initWithString:text attributes:[self attributesForCellText]];
+        self.hashTags = [VHashTags detectHashTags:text];
+        if ([self.hashTags count] > 0) {
+            newAttributedCellText = [VHashTags formatHashTags:newAttributedCellText withDictionary:self.hashTags];
+        }
+        self.descriptionLabel.attributedText = newAttributedCellText;
     }
-    self.descriptionLabel.attributedText = newAttributedCellText;
+    
+    self.descriptionLabel.hidden = self.sequence.nameEmbeddedInContent.boolValue;
+    
     self.dateLabel.text = [self.sequence.releasedAt timeSince];
     NSString* commentCount = self.sequence.commentCount.integerValue ? [largeNumberFormatter stringForInteger:self.sequence.commentCount.integerValue] : @"";
     [self.commentButton setTitle:commentCount forState:UIControlStateNormal];
