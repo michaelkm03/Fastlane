@@ -205,125 +205,6 @@ static NSString* CommentCache = @"CommentCache";
 //        [self.bottomRefreshIndicator startAnimating];
     }
 }
-//TODO: this is dead code?
-- (IBAction)shareSequence:(id)sender
-{
-    if (![VObjectManager sharedManager].mainUser)
-    {
-        [self presentViewController:[VLoginViewController loginViewController] animated:YES completion:NULL];
-        return;
-    }
-    
-    NSURL* deepLink = [NSURL URLWithString:@"http://www.google.com"];
-    UIImage* image = [UIImage imageNamed:@"avatar.jpg"];
-    NSString* text = @"Some text";
-    NSArray* itemsToShare = @[deepLink, image, text];
-
-    UIActivityViewController*   activityViewController = [[UIActivityViewController alloc] initWithActivityItems:itemsToShare
-                                                                                           applicationActivities:nil];
-    activityViewController.modalTransitionStyle =   UIModalTransitionStyleCoverVertical;
-    activityViewController.completionHandler    =   ^(NSString *activityType, BOOL completed)
-    {
-        if (completed)
-        {
-            //  send server
-        }
-    };
-    
-    [self presentViewController:activityViewController animated:YES completion:nil];
-}
-//TODO: this is dead code?
-- (IBAction)likeComment:(id)sender forEvent:(UIEvent *)event
-{
-    if (![VObjectManager sharedManager].mainUser)
-    {
-        [self presentViewController:[VLoginViewController loginViewController] animated:YES completion:NULL];
-        return;
-    }
-    
-    NSIndexPath *indexPath = [self.tableView indexPathForRowAtPoint:[[[event touchesForView:sender] anyObject] locationInView:self.tableView]];
-    VComment *comment = [self.sortedComments objectAtIndex:indexPath.row];
-    
-    //    if (comment.vote = @"dislike")
-    //    {
-    //        [self unvoteComment:comment];
-    //        return;
-    //    }
-    
-    [[VObjectManager sharedManager] likeComment:comment
-                                   successBlock:^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
-                                   {
-                                       //TODO:set upvote flag
-                                   }
-                                      failBlock:^(NSOperation* operation, NSError* error)
-                                      {
-                                          VLog(@"Failed to like comment %@", comment);
-                                      }];
-}
-//TODO: this is dead code?
-- (IBAction)dislikeComment:(id)sender forEvent:(UIEvent *)event
-{
-    if (![VObjectManager sharedManager].mainUser)
-    {
-        [self presentViewController:[VLoginViewController loginViewController] animated:YES completion:NULL];
-        return;
-    }
-    
-    NSIndexPath *indexPath = [self.tableView indexPathForRowAtPoint:[[[event touchesForView:sender] anyObject] locationInView:self.tableView]];
-    VComment *comment = [self.sortedComments objectAtIndex:indexPath.row];
-    
-//    if (comment.vote = @"dislike")
-//    {
-//        [self unvoteComment:comment];
-//        return;
-//    }
-    
-    [[VObjectManager sharedManager] dislikeComment:comment
-                                      successBlock:^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
-                                   {
-                                       //TODO:set dislike flag)
-                                   }
-                                         failBlock:^(NSOperation* operation, NSError* error)
-                                      {
-                                          VLog(@"Failed to dislike comment %@", comment);
-                                      }];
-}
-//TODO: this is dead code?
-- (void)unvoteComment:(VComment*)comment
-{
-    [[VObjectManager sharedManager] unvoteComment:comment
-                                     successBlock:^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
-                                      {
-                                          //TODO:update UI)
-                                      }
-                                        failBlock:^(NSOperation* operation, NSError* error)
-                                         {
-                                             VLog(@"Failed to dislike comment %@", comment);
-                                         }];
-}
-
-//TODO: this is dead code?
-- (IBAction)flagComment:(id)sender forEvent:(UIEvent *)event
-{
-    if (![VObjectManager sharedManager].mainUser)
-    {
-        [self presentViewController:[VLoginViewController loginViewController] animated:YES completion:NULL];
-        return;
-    }
-    
-    NSIndexPath *indexPath = [self.tableView indexPathForRowAtPoint:[[[event touchesForView:sender] anyObject] locationInView:self.tableView]];
-    VComment *comment = [self.sortedComments objectAtIndex:indexPath.row];
-    
-    [[VObjectManager sharedManager] flagComment:comment
-                                   successBlock:^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
-                                       {
-                                           //TODO:set flagged flag)
-                                       }
-                                      failBlock:^(NSOperation* operation, NSError* error)
-                                          {
-                                              VLog(@"Failed to flag comment %@", comment);
-                                          }];
-}
 
 #pragma mark - Table view data source
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
@@ -388,9 +269,6 @@ static NSString* CommentCache = @"CommentCache";
 {
     VComment *comment = [self.sortedComments objectAtIndex:indexPath.row];
     NSString *reportTitle = NSLocalizedString(@"Report Inappropriate", @"Comment report inappropriate button");
-    //TODO: remove thumbs up and down if we are not going to use them
-//    NSString *thumbUpTitle = NSLocalizedString(@"Thumbs Up", @"Comment thumbs up button");
-//    NSString *thumbDownTitle = NSLocalizedString(@"Thumbs Down", @"Comment thumbs down button");
     NSString *reply = NSLocalizedString(@"Reply", @"Comment reply button");
     
     UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil
@@ -427,32 +305,6 @@ static NSString* CommentCache = @"CommentCache";
          }];
     }
                                            otherButtonTitlesAndBlocks:
-//                                  thumbUpTitle, ^(void)
-//    {
-//        [[VObjectManager sharedManager] likeComment:comment
-//                                       successBlock:^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
-//        {
-//            //TODO:update UI)
-//            VLog(@"resultObjects: %@", resultObjects);
-//        }
-//                                          failBlock:^(NSOperation* operation, NSError* error)
-//        {
-//            VLog(@"Failed to dislike comment %@", comment);
-//        }];
-//    },
-//                                  thumbDownTitle, ^(void)
-//    {
-//        [[VObjectManager sharedManager] dislikeComment:comment
-//                                          successBlock:^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
-//        {
-//            //TODO:set dislike flag)
-//            VLog(@"resultObjects: %@", resultObjects);
-//        }
-//                                             failBlock:^(NSOperation* operation, NSError* error)
-//        {
-//            VLog(@"Failed to dislike comment %@", comment);
-//        }];
-//    },
                                   reply, ^(void)
     {
         [self.delegate streamsCommentsController:self shouldReplyToUser:comment.user];
