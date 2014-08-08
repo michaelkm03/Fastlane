@@ -28,6 +28,7 @@
 #import "VActionBarViewController.h"
 #import "VEmotiveBallisticsBarViewController.h"
 #import "VRealtimeCommentViewController.h"
+#import "VLoginViewController.h"
 
 #import "VObjectManager+Sequence.h"
 #import "VObjectManager+Comment.h"
@@ -802,6 +803,12 @@ NSTimeInterval kVContentPollAnimationDuration = 0.2;
 
 - (IBAction)pressedRepost:(id)sender
 {
+    if (![VObjectManager sharedManager].mainUser)
+    {
+        [self presentViewController:[VLoginViewController loginViewController] animated:YES completion:NULL];
+        return;
+    }
+    
     UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil
                                                     cancelButtonTitle:NSLocalizedString(@"Cancel", @"Cancel button")
                                                        onCancelButton:nil
@@ -811,8 +818,14 @@ NSTimeInterval kVContentPollAnimationDuration = 0.2;
                                   {
                                       [[VObjectManager sharedManager] repostNode:self.currentNode
                                                                         withName:self.sequence.name
-                                                                    successBlock:nil
-                                                                       failBlock:nil];
+                                                                    successBlock:^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
+                                      {
+                                          VLog(@"Succeeded with objects: %@", resultObjects);
+                                      }
+                                                                       failBlock:^(NSOperation* operation, NSError* error)
+                                      {
+                                          VLog(@"Failed with error: %@", error);
+                                      }];
                                   }, nil];
     
     [actionSheet showInView:self.view];
