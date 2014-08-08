@@ -286,7 +286,6 @@
 		BEB52A8B18C80B8700AC5FE4 /* VContentToStreamAnimator.m in Sources */ = {isa = PBXBuildFile; fileRef = BEB52A8A18C80B8700AC5FE4 /* VContentToStreamAnimator.m */; };
 		BEB8DB03192BE81000E0E3E6 /* VAbstractCommentCell.m in Sources */ = {isa = PBXBuildFile; fileRef = BEB8DB02192BE81000E0E3E6 /* VAbstractCommentCell.m */; };
 		BEB8DB07192BFF5300E0E3E6 /* VMessageCell.m in Sources */ = {isa = PBXBuildFile; fileRef = BEB8DB06192BFF5300E0E3E6 /* VMessageCell.m */; };
-		BECEDFD11937A78900FAB9D0 /* VMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = BECEDFD01937A78900FAB9D0 /* VMessage.m */; };
 		BED4569418BD581800A67160 /* UIWebView+VYoutubeLoading.m in Sources */ = {isa = PBXBuildFile; fileRef = BED4569318BD581800A67160 /* UIWebView+VYoutubeLoading.m */; };
 		BED4569718BD58DE00A67160 /* VAsset+Fetcher.m in Sources */ = {isa = PBXBuildFile; fileRef = BED4569618BD58DE00A67160 /* VAsset+Fetcher.m */; };
 		BED7F66518E0A6F800545DF6 /* TWAPIManager.m in Sources */ = {isa = PBXBuildFile; fileRef = BED7F66418E0A6F800545DF6 /* TWAPIManager.m */; };
@@ -306,12 +305,10 @@
 		BEE604C1192D7D84003A0206 /* VInboxContainerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BEE604C0192D7D84003A0206 /* VInboxContainerViewController.m */; };
 		BEE800E918FCC5C200A7CFD7 /* VStreamTableViewController+ContentCreation.m in Sources */ = {isa = PBXBuildFile; fileRef = BEE800E818FCC5C200A7CFD7 /* VStreamTableViewController+ContentCreation.m */; };
 		BEE9C8B618CE4A6B0095C737 /* VPollAnswerBarViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BEE9C8B518CE4A6B0095C737 /* VPollAnswerBarViewController.m */; };
-		BEF185D9198827FB007FB4BC /* VUser.m in Sources */ = {isa = PBXBuildFile; fileRef = BEF185D8198827FB007FB4BC /* VUser.m */; };
 		BEF185E519883899007FB4BC /* VSequence.m in Sources */ = {isa = PBXBuildFile; fileRef = BEF185E419883899007FB4BC /* VSequence.m */; };
 		BEF185E719884C13007FB4BC /* VConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = BEF185E619884C13007FB4BC /* VConstants.m */; };
 		BEF185EE19887C77007FB4BC /* VReposterTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BEF185ED19887C77007FB4BC /* VReposterTableViewController.m */; };
 		BEF185F319899702007FB4BC /* victoriOS.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = BEF185F119899702007FB4BC /* victoriOS.xcdatamodeld */; };
-		BEF185FC1989A908007FB4BC /* VComment.m in Sources */ = {isa = PBXBuildFile; fileRef = BEF185FB1989A908007FB4BC /* VComment.m */; };
 		BEF186051989BD33007FB4BC /* VAsset.m in Sources */ = {isa = PBXBuildFile; fileRef = BEF186041989BD33007FB4BC /* VAsset.m */; };
 		BEF2C29618845EF500AAE975 /* VPollResult+RestKit.m in Sources */ = {isa = PBXBuildFile; fileRef = BEF2C29518845EF500AAE975 /* VPollResult+RestKit.m */; };
 		BEF2C2A5188488C000AAE975 /* VUnreadConversation+RestKit.m in Sources */ = {isa = PBXBuildFile; fileRef = BEF2C2A4188488C000AAE975 /* VUnreadConversation+RestKit.m */; };
@@ -323,6 +320,13 @@
 		DB344E01197DD06E006CFAE4 /* VHashTagStreamViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DB344E00197DD06E006CFAE4 /* VHashTagStreamViewController.m */; };
 		DB58EF1D19870A8F00D2A07F /* VContentToHashTagStreamAnimator.m in Sources */ = {isa = PBXBuildFile; fileRef = DB58EF1C19870A8F00D2A07F /* VContentToHashTagStreamAnimator.m */; };
 		DB58EF3219904EEB00D2A07F /* VUserSearchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DB58EF3119904EEB00D2A07F /* VUserSearchViewController.m */; };
+		DB58EF41199401E500D2A07F /* VNotification+RestKit.m in Sources */ = {isa = PBXBuildFile; fileRef = DB58EF40199401E500D2A07F /* VNotification+RestKit.m */; };
+		DB58EF44199403B300D2A07F /* VComment.m in Sources */ = {isa = PBXBuildFile; fileRef = DB58EF43199403B300D2A07F /* VComment.m */; };
+		DB58EF47199403B400D2A07F /* VMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = DB58EF46199403B400D2A07F /* VMessage.m */; };
+		DB58EF4D199403B400D2A07F /* VUser.m in Sources */ = {isa = PBXBuildFile; fileRef = DB58EF4C199403B400D2A07F /* VUser.m */; };
+		DB58EF501994174900D2A07F /* VNotification.m in Sources */ = {isa = PBXBuildFile; fileRef = DB58EF4F1994174900D2A07F /* VNotification.m */; };
+		DB58EF54199422F500D2A07F /* VNotificationCell.m in Sources */ = {isa = PBXBuildFile; fileRef = DB58EF52199422F500D2A07F /* VNotificationCell.m */; };
+		DB58EF55199422F500D2A07F /* VNotificationCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = DB58EF53199422F500D2A07F /* VNotificationCell.xib */; };
 		DB8D3A0F197EF767005DD36D /* VHashTagContainerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DB8D3A0E197EF767005DD36D /* VHashTagContainerViewController.m */; };
 		DB8D3A1319803A03005DD36D /* VHashTags.m in Sources */ = {isa = PBXBuildFile; fileRef = DB8D3A1219803A03005DD36D /* VHashTags.m */; };
 /* End PBXBuildFile section */
@@ -844,8 +848,6 @@
 		BEB8DB02192BE81000E0E3E6 /* VAbstractCommentCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VAbstractCommentCell.m; path = "UI/Streams Subview/VAbstractCommentCell.m"; sourceTree = "<group>"; };
 		BEB8DB05192BFF5300E0E3E6 /* VMessageCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VMessageCell.h; path = UI/Inbox/VMessageCell.h; sourceTree = "<group>"; };
 		BEB8DB06192BFF5300E0E3E6 /* VMessageCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VMessageCell.m; path = UI/Inbox/VMessageCell.m; sourceTree = "<group>"; };
-		BECEDFCF1937A78900FAB9D0 /* VMessage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VMessage.h; sourceTree = "<group>"; };
-		BECEDFD01937A78900FAB9D0 /* VMessage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VMessage.m; sourceTree = "<group>"; };
 		BED4569218BD581800A67160 /* UIWebView+VYoutubeLoading.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIWebView+VYoutubeLoading.h"; sourceTree = "<group>"; };
 		BED4569318BD581800A67160 /* UIWebView+VYoutubeLoading.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIWebView+VYoutubeLoading.m"; sourceTree = "<group>"; };
 		BED4569518BD58DE00A67160 /* VAsset+Fetcher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "VAsset+Fetcher.h"; sourceTree = "<group>"; };
@@ -882,16 +884,12 @@
 		BEE9C8B418CE4A6B0095C737 /* VPollAnswerBarViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VPollAnswerBarViewController.h; path = "UI/Content View/VPollAnswerBarViewController.h"; sourceTree = "<group>"; };
 		BEE9C8B518CE4A6B0095C737 /* VPollAnswerBarViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VPollAnswerBarViewController.m; path = "UI/Content View/VPollAnswerBarViewController.m"; sourceTree = "<group>"; };
 		BEE9C8BC18CE904B0095C737 /* VAnimation.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = VAnimation.h; path = Protocols/VAnimation.h; sourceTree = SOURCE_ROOT; };
-		BEF185D7198827FB007FB4BC /* VUser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VUser.h; sourceTree = "<group>"; };
-		BEF185D8198827FB007FB4BC /* VUser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VUser.m; sourceTree = "<group>"; };
 		BEF185E319883899007FB4BC /* VSequence.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VSequence.h; sourceTree = "<group>"; };
 		BEF185E419883899007FB4BC /* VSequence.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VSequence.m; sourceTree = "<group>"; };
 		BEF185E619884C13007FB4BC /* VConstants.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VConstants.m; sourceTree = "<group>"; };
 		BEF185EC19887C77007FB4BC /* VReposterTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VReposterTableViewController.h; path = "UI/Content Info/VReposterTableViewController.h"; sourceTree = "<group>"; };
 		BEF185ED19887C77007FB4BC /* VReposterTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VReposterTableViewController.m; path = "UI/Content Info/VReposterTableViewController.m"; sourceTree = "<group>"; };
 		BEF185F219899702007FB4BC /* victoriOS.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = victoriOS.xcdatamodel; sourceTree = "<group>"; };
-		BEF185FA1989A908007FB4BC /* VComment.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VComment.h; sourceTree = "<group>"; };
-		BEF185FB1989A908007FB4BC /* VComment.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VComment.m; sourceTree = "<group>"; };
 		BEF186031989BD33007FB4BC /* VAsset.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VAsset.h; sourceTree = "<group>"; };
 		BEF186041989BD33007FB4BC /* VAsset.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VAsset.m; sourceTree = "<group>"; };
 		BEF2C29418845EF500AAE975 /* VPollResult+RestKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "VPollResult+RestKit.h"; sourceTree = "<group>"; };
@@ -914,6 +912,19 @@
 		DB58EF1C19870A8F00D2A07F /* VContentToHashTagStreamAnimator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VContentToHashTagStreamAnimator.m; path = Animations/VContentToHashTagStreamAnimator.m; sourceTree = "<group>"; };
 		DB58EF3019904EEB00D2A07F /* VUserSearchViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VUserSearchViewController.h; sourceTree = "<group>"; };
 		DB58EF3119904EEB00D2A07F /* VUserSearchViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VUserSearchViewController.m; sourceTree = "<group>"; };
+		DB58EF3F199401E500D2A07F /* VNotification+RestKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "VNotification+RestKit.h"; sourceTree = "<group>"; };
+		DB58EF40199401E500D2A07F /* VNotification+RestKit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "VNotification+RestKit.m"; sourceTree = "<group>"; };
+		DB58EF42199403B300D2A07F /* VComment.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VComment.h; sourceTree = "<group>"; };
+		DB58EF43199403B300D2A07F /* VComment.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VComment.m; sourceTree = "<group>"; };
+		DB58EF45199403B400D2A07F /* VMessage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VMessage.h; sourceTree = "<group>"; };
+		DB58EF46199403B400D2A07F /* VMessage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VMessage.m; sourceTree = "<group>"; };
+		DB58EF4B199403B400D2A07F /* VUser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VUser.h; sourceTree = "<group>"; };
+		DB58EF4C199403B400D2A07F /* VUser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VUser.m; sourceTree = "<group>"; };
+		DB58EF4E1994174900D2A07F /* VNotification.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VNotification.h; sourceTree = "<group>"; };
+		DB58EF4F1994174900D2A07F /* VNotification.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VNotification.m; sourceTree = "<group>"; };
+		DB58EF51199422F500D2A07F /* VNotificationCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VNotificationCell.h; path = UI/Inbox/VNotificationCell.h; sourceTree = "<group>"; };
+		DB58EF52199422F500D2A07F /* VNotificationCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VNotificationCell.m; path = UI/Inbox/VNotificationCell.m; sourceTree = "<group>"; };
+		DB58EF53199422F500D2A07F /* VNotificationCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = VNotificationCell.xib; path = UI/Inbox/VNotificationCell.xib; sourceTree = "<group>"; };
 		DB8D3A0D197EF767005DD36D /* VHashTagContainerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VHashTagContainerViewController.h; sourceTree = "<group>"; };
 		DB8D3A0E197EF767005DD36D /* VHashTagContainerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VHashTagContainerViewController.m; sourceTree = "<group>"; };
 		DB8D3A1119803A03005DD36D /* VHashTags.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VHashTags.h; sourceTree = "<group>"; };
@@ -1759,6 +1770,8 @@
 				BE5DE3FB18DA730B0047B67E /* VVoteType+RestKit.m */,
 				BE24782D193E9E8E0074191C /* VAbstractFilter+RestKit.h */,
 				BE24782E193E9E8E0074191C /* VAbstractFilter+RestKit.m */,
+				DB58EF3F199401E500D2A07F /* VNotification+RestKit.h */,
+				DB58EF40199401E500D2A07F /* VNotification+RestKit.m */,
 			);
 			path = Mappings;
 			sourceTree = "<group>";
@@ -1781,20 +1794,22 @@
 			isa = PBXGroup;
 			children = (
 				BEF185F119899702007FB4BC /* victoriOS.xcdatamodeld */,
+				DB58EF4E1994174900D2A07F /* VNotification.h */,
+				DB58EF4F1994174900D2A07F /* VNotification.m */,
+				DB58EF4B199403B400D2A07F /* VUser.h */,
+				DB58EF4C199403B400D2A07F /* VUser.m */,
+				DB58EF45199403B400D2A07F /* VMessage.h */,
+				DB58EF46199403B400D2A07F /* VMessage.m */,
+				DB58EF42199403B300D2A07F /* VComment.h */,
+				DB58EF43199403B300D2A07F /* VComment.m */,
 				BEF186031989BD33007FB4BC /* VAsset.h */,
 				BEF186041989BD33007FB4BC /* VAsset.m */,
-				BEF185FA1989A908007FB4BC /* VComment.h */,
-				BEF185FB1989A908007FB4BC /* VComment.m */,
 				BE9181E91909D38A0071E7AF /* VSequenceFilter.h */,
 				BE9181EA1909D38A0071E7AF /* VSequenceFilter.m */,
 				BE89ECD919105DB8009DD407 /* VAnswer.h */,
 				BE89ECDA19105DB8009DD407 /* VAnswer.m */,
-				BECEDFCF1937A78900FAB9D0 /* VMessage.h */,
-				BECEDFD01937A78900FAB9D0 /* VMessage.m */,
 				BEF185E319883899007FB4BC /* VSequence.h */,
 				BEF185E419883899007FB4BC /* VSequence.m */,
-				BEF185D7198827FB007FB4BC /* VUser.h */,
-				BEF185D8198827FB007FB4BC /* VUser.m */,
 				BE24782A193E735A0074191C /* VConversation.h */,
 				BE24782B193E735A0074191C /* VConversation.m */,
 				BE89D98E1921907200D97E7F /* VCommentFilter.h */,
@@ -2006,6 +2021,9 @@
 				BEB8DB06192BFF5300E0E3E6 /* VMessageCell.m */,
 				BE185DE318E354E5001C447F /* VMessageCell.xib */,
 				831C58F71884BD11007C167C /* VOtherMessageCell.xib */,
+				DB58EF51199422F500D2A07F /* VNotificationCell.h */,
+				DB58EF52199422F500D2A07F /* VNotificationCell.m */,
+				DB58EF53199422F500D2A07F /* VNotificationCell.xib */,
 			);
 			name = Cells;
 			sourceTree = "<group>";
@@ -2263,6 +2281,7 @@
 				03093193197747600035CECA /* MediaPreview.xib in Resources */,
 				BEAA322219427AD3007774A4 /* VNoContentView.xib in Resources */,
 				BE171D911868BE64004E5202 /* Images.xcassets in Resources */,
+				DB58EF55199422F500D2A07F /* VNotificationCell.xib in Resources */,
 				3FA217DE18AAFCFE0066E893 /* cast_outline_black.png in Resources */,
 				83B5A1241876447800659C73 /* Roboto-Regular.ttf in Resources */,
 				BEB4C2A0187E0778004ECEEF /* VCommentCell.xib in Resources */,
@@ -2444,6 +2463,7 @@
 				0385FEE018EE0A94009FBD68 /* VImageSearchViewController.m in Sources */,
 				BE89D981192141D600D97E7F /* VUser+Fetcher.m in Sources */,
 				BE89D98D1921531400D97E7F /* VAbstractFilter.m in Sources */,
+				DB58EF501994174900D2A07F /* VNotification.m in Sources */,
 				03A2AD9A1926C9300034EB80 /* DeviceTableViewController+RotationMethods.m in Sources */,
 				BEF185F319899702007FB4BC /* victoriOS.xcdatamodeld in Sources */,
 				BED7F67418E0A8E900545DF6 /* OAuthCore.m in Sources */,
@@ -2483,6 +2503,7 @@
 				03FDA097197A092400405361 /* VPhotoFilterCollectionViewCell.m in Sources */,
 				3FBCB9C5192E9A7400EB510C /* VResetPasswordViewController.m in Sources */,
 				3F919908187600720055FE37 /* VSettingsViewController.m in Sources */,
+				DB58EF4D199403B400D2A07F /* VUser.m in Sources */,
 				BE692B53186E60B300C71336 /* VCommentsTableViewController.m in Sources */,
 				3FF7B6D718EE4009003831CD /* UIImage+Masking.m in Sources */,
 				3F9348A31922C944002EA91F /* VFollowerTableViewCell.m in Sources */,
@@ -2554,8 +2575,8 @@
 				3FCA803B194A8060001CF8BD /* VInviteFriendTableViewCell.m in Sources */,
 				BEF185E719884C13007FB4BC /* VConstants.m in Sources */,
 				BEE604C1192D7D84003A0206 /* VInboxContainerViewController.m in Sources */,
-				BEF185D9198827FB007FB4BC /* VUser.m in Sources */,
 				BE2D1E661901F4D800C6FF99 /* VStreamToCommentAnimator.m in Sources */,
+				DB58EF47199403B400D2A07F /* VMessage.m in Sources */,
 				BEB52A7A18C02D6600AC5FE4 /* VContentViewController.m in Sources */,
 				BE651D0E18AAD58A00069119 /* VLoadingViewController.m in Sources */,
 				03F9D289191DC71700576AEE /* VElapsedTimeFormatter.m in Sources */,
@@ -2581,6 +2602,7 @@
 				BED7F67318E0A8E900545DF6 /* OAuth+Additions.m in Sources */,
 				BE692B29186E5ED800C71336 /* VStreamViewCell.m in Sources */,
 				BE5DE3FC18DA730B0047B67E /* VVoteType+RestKit.m in Sources */,
+				DB58EF54199422F500D2A07F /* VNotificationCell.m in Sources */,
 				03484BF2192D284100403FB1 /* VLightboxViewController.m in Sources */,
 				03FDA098197A092400405361 /* VPhotoFilterCollectionViewDataSource.m in Sources */,
 				BEE800E918FCC5C200A7CFD7 /* VStreamTableViewController+ContentCreation.m in Sources */,
@@ -2588,6 +2610,7 @@
 				838511C418762DF3007E0316 /* VBadgeLabel.m in Sources */,
 				3F9B666818887D910046F826 /* VFetchedResultsTableViewController.m in Sources */,
 				03F80AA419523E3D00E876F7 /* VFacebookManager.m in Sources */,
+				DB58EF41199401E500D2A07F /* VNotification+RestKit.m in Sources */,
 				BEF185EE19887C77007FB4BC /* VReposterTableViewController.m in Sources */,
 				BE171E1B1868C211004E5202 /* VUser+RestKit.m in Sources */,
 				03484BF8192D2B4400403FB1 /* VLightboxDismissAnimator.m in Sources */,
@@ -2606,7 +2629,6 @@
 				BE2D1E5D19006EAC00C6FF99 /* VStreamToContentAnimator.m in Sources */,
 				BE2E5B751914201A003282A6 /* VObjectManager+ContentCreation.m in Sources */,
 				DB8D3A0F197EF767005DD36D /* VHashTagContainerViewController.m in Sources */,
-				BECEDFD11937A78900FAB9D0 /* VMessage.m in Sources */,
 				BE89D9901921907200D97E7F /* VCommentFilter.m in Sources */,
 				3F91991018761C720055FE37 /* VPrivacyPoliciesViewController.m in Sources */,
 				BEB4C29B187E038C004ECEEF /* VConversationCell.m in Sources */,
@@ -2625,7 +2647,7 @@
 				BE171E3A1868C266004E5202 /* NSString+VParseHelp.m in Sources */,
 				3F9B666B1888BE6A0046F826 /* VStreamTableViewController.m in Sources */,
 				3FA217E318AD87F40066E893 /* UIImageView+Blurring.m in Sources */,
-				BEF185FC1989A908007FB4BC /* VComment.m in Sources */,
+				DB58EF44199403B300D2A07F /* VComment.m in Sources */,
 				0350BCEE19804F580072A714 /* VSessionTimer.m in Sources */,
 				BE171E111868C211004E5202 /* VComment+RestKit.m in Sources */,
 				BE171E0E1868C211004E5202 /* VAnswerAction+RestKit.m in Sources */,

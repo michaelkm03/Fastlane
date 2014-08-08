@@ -12,9 +12,11 @@
 #import "VLoginViewController.h"
 #import "UIViewController+VSideMenuViewController.h"
 #import "VConversation+RestKit.h"
+#import "VNotification+RestKit.h"
 #import "VMessageContainerViewController.h"
 #import "VNewsViewController.h"
 #import "VConversationCell.h"
+#import "VNotificationCell.h"
 #import "VObjectManager+DirectMessaging.h"
 #import "VObjectManager+Pagination.h"
 #import "VThemeManager.h"
@@ -24,8 +26,8 @@
 
 NS_ENUM(NSUInteger, VModeSelect)
 {
-    kMessageModeSelect  = 0,
-    kNewsModeSelect     = 1
+    kMessageModeSelect      = 0,
+    kNotificationModeSelect = 1
 };
 
 static  NSString*   kMessageCellViewIdentifier    =   @"VConversationCell";
@@ -83,14 +85,8 @@ static  NSString*   kNewsCellViewIdentifier       =   @"VNewsCell";
         [self presentViewController:[VLoginViewController loginViewController] animated:YES completion:NULL];
     }
     
-    if (VModeSelect == kMessageModeSelect)
-    {
-        
-    }
-    else
-    {
-        
-    }
+    self.fetchedResultsController = nil;
+    [self performFetch];
 }
 
 #pragma mark - Overrides
@@ -101,13 +97,20 @@ static  NSString*   kNewsCellViewIdentifier       =   @"VNewsCell";
     NSManagedObjectContext *context = manager.managedObjectStore.persistentStoreManagedObjectContext;
     
     NSFetchRequest *fetchRequest = nil;
+    NSSortDescriptor *sort = [[NSSortDescriptor alloc] init];
     
-    if (kMessageModeSelect == self.modeSelectControl.selectedSegmentIndex)
+    if (VModeSelect == kMessageModeSelect)
+    {
         fetchRequest = [NSFetchRequest fetchRequestWithEntityName:[VConversation entityName]];
-    else if (kNewsModeSelect == self.modeSelectControl.selectedSegmentIndex)
-        fetchRequest = [NSFetchRequest fetchRequestWithEntityName:[VConversation entityName]];
+        sort = [NSSortDescriptor sortDescriptorWithKey:@"lastMessage.postedAt" ascending:NO];
+    }
+    else if (VModeSelect == kNotificationModeSelect)
+    {
+        
+        fetchRequest = [NSFetchRequest fetchRequestWithEntityName:[VNotification entityName]];
+        sort = [NSSortDescriptor sortDescriptorWithKey:@"postedAt" ascending:NO];
+    }
 
-    NSSortDescriptor *sort = [[NSSortDescriptor alloc] initWithKey:@"lastMessage.postedAt" ascending:NO];
     [fetchRequest setSortDescriptors:@[sort]];
     [fetchRequest setFetchBatchSize:50];
     
@@ -138,12 +141,13 @@ static  NSString*   kNewsCellViewIdentifier       =   @"VNewsCell";
 {
     if (!hasMessages)
     {
+        /*
         VNoContentView* noMessagesView = [VNoContentView noContentViewWithFrame:self.tableView.frame];
         self.tableView.backgroundView = noMessagesView;
         noMessagesView.titleLabel.text = NSLocalizedString(@"NoMessagesTitle", @"");
         noMessagesView.messageLabel.text = NSLocalizedString(@"NoMessagesMessage", @"");
         noMessagesView.iconImageView.image = [UIImage imageNamed:@"noMessageIcon"];
-        
+        */
         self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     }
     else
@@ -166,11 +170,10 @@ static  NSString*   kNewsCellViewIdentifier       =   @"VNewsCell";
     }
     else
     {
-//        cell = [tableView dequeueReusableCellWithIdentifier:kNewsCellViewIdentifier forIndexPath:indexPath];
         theCell = [tableView dequeueReusableCellWithIdentifier:kMessageCellViewIdentifier forIndexPath:indexPath];
-        VConversation*  info    =   [self.fetchedResultsController objectAtIndexPath:indexPath];
-        [(VConversationCell *)theCell setConversation:info];
-        ((VConversationCell*)theCell).parentTableViewController = self;
+        VNotification *info = [self.fetchedResultsController objectAtIndexPath:indexPath];
+        [(VNotificationCell *)theCell setNotifcation:info];
+        ((VNotificationCell*)theCell).parentTableViewController = self;
     }
 
     return theCell;
@@ -237,9 +240,10 @@ static  NSString*   kNewsCellViewIdentifier       =   @"VNewsCell";
 {
     VFailBlock fail = ^(NSOperation* operation, NSError* error)
     {
+        [self.tableView reloadData];
         NSLog(@"%@", error.localizedDescription);
         [self.refreshControl endRefreshing];
-        [self setHasMessages:self.fetchedResultsController.fetchedObjects.count];
+        [self setHasMessages:0];
     };
     
     VSuccessBlock success = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
@@ -249,7 +253,14 @@ static  NSString*   kNewsCellViewIdentifier       =   @"VNewsCell";
         [self setHasMessages:self.fetchedResultsController.fetchedObjects.count];
     };
 
-    [[VObjectManager sharedManager] refreshConversationListWithSuccessBlock:success failBlock:fail];
+    if (VModeSelect == kMessageModeSelect)
+    {
+        [[VObjectManager sharedManager] refreshConversationListWithSuccessBlock:success failBlock:fail];
+    }
+    else if (VModeSelect == kNotificationModeSelect)
+    {
+        [[VObjectManager sharedManager] refreshListOfNotificationsWithSuccessBlock:success failBlock:fail];
+    }
 }
 
 - (void)loadNextPageAction

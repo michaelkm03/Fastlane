@@ -16,16 +16,23 @@
 
 //Cells
 #import "VInviteFriendTableViewCell.h"
+#import "VFollowerTableViewCell.h"
+
 #import "VUser.h"
 
 //ObjectManager
+#import "VObjectManager+DirectMessaging.h"
 #import "VObjectManager+Users.h"
+
 
 //Data Models
 #import "VSequence+RestKit.h"
 #import "VSequence+Fetcher.h"
 #import "VNode+Fetcher.h"
 #import "VAsset.h"
+
+#import "VLoginViewController.h"
+#import "VMessageContainerViewController.h"
 
 #import "VThemeManager.h"
 
@@ -49,6 +56,7 @@
 @property (nonatomic) BOOL haveSearchResults;
 @property (nonatomic, weak) NSTimer *typeDelay;
 @property (nonatomic, assign) NSInteger charCount;
+@property (nonatomic, strong) VUser *selectedUser;
 
 @property (nonatomic, strong) IBOutlet UITableView *tableView;
 
@@ -72,11 +80,14 @@
 {
     [super viewDidLoad];
     
+    // SETUP SEARCH FIELD
     self.searchField.delegate = self;
     //[self.searchField addTarget:self action:@selector(typingTimerCheck:) forControlEvents:UIControlEventEditingChanged];
-    [self.searchField addTarget:self action:@selector(characterCheck:) forControlEvents:UIControlEventEditingChanged];
+    [self.searchField addTarget:self action:@selector(runUserSearch:) forControlEvents:UIControlEventEditingChanged];
     [self.searchField setTextColor:[[VThemeManager sharedThemeManager] themedColorForKey:kVContentTextColor]];
     [self.searchField setTintColor:[UIColor grayColor]];
+    [self.searchField sizeToFit];
+    [self.searchField layoutIfNeeded];
     
     // NO RESULTS VIEW
     self.noResultsView.hidden = YES;
@@ -87,36 +98,20 @@
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
     self.tableView.backgroundColor = [UIColor colorWithWhite:0.97 alpha:1.0];
-    [self.tableView registerNib:[UINib nibWithNibName:@"inviteCell" bundle:nil] forCellReuseIdentifier:@"followerCell"];
+    [self.tableView registerNib:[UINib nibWithNibName:@"followerCell" bundle:nil] forCellReuseIdentifier:@"followerCell"];
     self.tableView.hidden = YES;
 
     // SET CHAR COUNTER
     self.charCount = 0;
+    
+    // SET THE SEARCH FIELD ACTIVE
+    [self.searchField becomeFirstResponder];
 }
 
--(void)characterCheck:(id)sender
+-(void)viewWillAppear:(BOOL)animated
 {
-    
-    self.charCount++;
-    
-    if (self.charCount == 3)
-    {
-        self.charCount = 0;
-        [self runUserSearch:nil];
-    }
-}
-
--(void)typingTimerCheck:(id)sender
-{
-    if (self.typeDelay)
-    {
-        if ([self.typeDelay isValid])
-        {
-            [self.typeDelay invalidate];
-        }
-        self.typeDelay = nil;
-    }
-    self.typeDelay = [NSTimer scheduledTimerWithTimeInterval:1.0f target:self selector:@selector(runUserSearch:) userInfo:nil repeats:NO];
+    [super viewWillAppear:animated];
+    [self.navigationController setNavigationBarHidden:YES];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -147,15 +142,68 @@
     return YES;
 }
 
+-(void)characterCheck:(id)sender
+{
+    
+    self.charCount++;
+    
+    if (self.charCount == 3)
+    {
+        self.charCount = 0;
+        [self runUserSearch:nil];
+    }
+}
+
+-(void)typingTimerCheck:(id)sender
+{
+    if (self.typeDelay)
+    {
+        if ([self.typeDelay isValid])
+        {
+            [self.typeDelay invalidate];
+        }
+        self.typeDelay = nil;
+    }
+    self.typeDelay = [NSTimer scheduledTimerWithTimeInterval:1.0f target:self selector:@selector(runUserSearch:) userInfo:nil repeats:NO];
+}
+
 -(IBAction)closeButtonAction:(id)sender
 {
-    [self dismissViewControllerAnimated:YES
-                             completion:nil];
+    //[self dismissViewControllerAnimated:YES completion:nil];
+    [self.navigationController popViewControllerAnimated:YES];
+}
+
+-(void)composeMessageToUser:(VUser*)profile
+{
+    if (![VObjectManager sharedManager].mainUser)
+    {
+        [self presentViewController:[VLoginViewController loginViewController] animated:YES completion:NULL];
+        return;
+    }
+    
+    VSuccessBlock successBlock = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
+    {
+        VMessageContainerViewController*    composeController   = [VMessageContainerViewController messageContainer];
+        composeController.conversation = [resultObjects firstObject];
+        [self.navigationController pushViewController:composeController animated:YES];
+    };
+    
+    VFailBlock failBlock = ^(NSOperation* operation, NSError* error)
+    {
+        VLog(@"Failed with error: %@", error);
+    };
+    
+    
+    // START CONVERSATION WITH SELECTED USER
+    [[VObjectManager sharedManager] conversationWithUser:profile
+                                            successBlock:successBlock
+                                               failBlock:failBlock
+     ];
+
 }
 
 -(void)runUserSearch:(id)sender
 {
-    [self.activityIndicatorView startAnimating];
     
     VSuccessBlock searchSuccess = ^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
     {
@@ -183,9 +231,19 @@
         });
     };
 
-    [[VObjectManager sharedManager] findUsersBySearchString:self.searchField.text
-                                           withSuccessBlock:searchSuccess
-                                                  failBlock:searchFail];
+    if ([self.searchField.text length] > 0)
+    {
+        [self.activityIndicatorView startAnimating];
+        [[VObjectManager sharedManager] findUsersBySearchString:self.searchField.text
+                                               withSuccessBlock:searchSuccess
+                                                      failBlock:searchFail];
+    }
+    else
+    {
+        self.foundUsers = [[NSArray alloc] init];
+        self.tableView.hidden = YES;
+        
+    }
 }
 
 -(void)setHaveSearchResults:(BOOL)haveSearchResults
@@ -215,17 +273,22 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    VInviteFriendTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"followerCell" forIndexPath:indexPath];
+    VFollowerTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"followerCell" forIndexPath:indexPath];
     cell.profile = self.foundUsers[indexPath.row];
-    //cell.showButton = YES;
     return cell;
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    VUser *profile = self.foundUsers[indexPath.row];
+    [self composeMessageToUser:profile];
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     return 50.0f;
 }
-
+/*
 - (NSIndexPath *)tableView:(UITableView *)tableView willSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     [tableView selectRowAtIndexPath:indexPath animated:YES scrollPosition:UITableViewScrollPositionNone];
@@ -237,7 +300,7 @@
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     return nil;
 }
-
+*/
 #pragma mark - UITextFieldDelegate
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField

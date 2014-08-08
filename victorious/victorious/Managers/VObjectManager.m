@@ -27,6 +27,7 @@
 #import "VMessage+RestKit.h"
 #import "VUnreadConversation+RestKit.h"
 #import "VVoteType+RestKit.h"
+#import "VNotification+RestKit.h"
 
 #define EnableRestKitLogs 0 // Set to "1" to see RestKit logging, but please remember to set it back to "0" before committing your changes.
 
@@ -100,6 +101,7 @@
     [self addResponseDescriptorsFromArray:[VConversation descriptors]];
     [self addResponseDescriptorsFromArray:[VMessage descriptors]];
     [self addResponseDescriptorsFromArray:[VComment descriptors]];
+    [self addResponseDescriptorsFromArray:[VNotification descriptors]];
     
     [self addResponseDescriptorsFromArray: @[errorDescriptor,
                                              verrorDescriptor,

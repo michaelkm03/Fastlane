@@ -2,14 +2,14 @@
 //  VUser.h
 //  victorious
 //
-//  Created by Will Long on 7/29/14.
+//  Created by Lawrence Leach on 8/7/14.
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
 #import <Foundation/Foundation.h>
 #import <CoreData/CoreData.h>
 
-@class VComment, VConversation, VMessage, VPollResult, VSequence, VUnreadConversation, VUser;
+@class VComment, VConversation, VMessage, VNotification, VPollResult, VSequence, VUnreadConversation, VUser;
 
 @interface VUser : NSManagedObject
 
@@ -22,6 +22,7 @@
 @property (nonatomic, retain) NSString * tagline;
 @property (nonatomic, retain) NSString * token;
 @property (nonatomic, retain) NSDate * tokenUpdatedAt;
+@property (nonatomic, retain) NSSet *childSequences;
 @property (nonatomic, retain) NSSet *comments;
 @property (nonatomic, retain) NSSet *conversations;
 @property (nonatomic, retain) NSSet *followers;
@@ -32,10 +33,15 @@
 @property (nonatomic, retain) NSSet *remixedSequences;
 @property (nonatomic, retain) VSequence *repostedSequences;
 @property (nonatomic, retain) VUnreadConversation *unreadConversation;
-@property (nonatomic, retain) NSSet *childSequences;
+@property (nonatomic, retain) VNotification *notifications;
 @end
 
 @interface VUser (CoreDataGeneratedAccessors)
+
+- (void)addChildSequencesObject:(VSequence *)value;
+- (void)removeChildSequencesObject:(VSequence *)value;
+- (void)addChildSequences:(NSSet *)values;
+- (void)removeChildSequences:(NSSet *)values;
 
 - (void)addCommentsObject:(VComment *)value;
 - (void)removeCommentsObject:(VComment *)value;
@@ -76,10 +82,5 @@
 - (void)removeRemixedSequencesObject:(VSequence *)value;
 - (void)addRemixedSequences:(NSSet *)values;
 - (void)removeRemixedSequences:(NSSet *)values;
-
-- (void)addChildSequencesObject:(VSequence *)value;
-- (void)removeChildSequencesObject:(VSequence *)value;
-- (void)addChildSequences:(NSSet *)values;
-- (void)removeChildSequences:(NSSet *)values;
 
 @end

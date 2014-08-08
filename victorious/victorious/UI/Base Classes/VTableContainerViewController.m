@@ -94,7 +94,7 @@
 - (IBAction)userSearchAction:(id)sender
 {
     VUserSearchViewController *userSearch = [VUserSearchViewController sharedInstance];
-    [self presentViewController:userSearch animated:YES completion:nil];
+    [self.navigationController pushViewController:userSearch animated:YES];
 }
 
 

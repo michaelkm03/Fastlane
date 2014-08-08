@@ -177,6 +177,29 @@
     return [self loadNextPageOfFilter:filter successBlock:fullSuccessBlock failBlock:fail];
 }
 
+#pragma mark - Notifications
+
+- (RKManagedObjectRequestOperation *)refreshListOfNotificationsWithSuccessBlock:(VSuccessBlock)success
+                                                                   failBlock:(VFailBlock)fail
+{
+    VAbstractFilter* listFilter = [[VFilterCache sharedCache] filterForPath:@"/api/message/notification_list"
+                                                                 entityName:[VAbstractFilter entityName]];
+    listFilter.currentPageNumber = @(0);
+    return [self loadNextPageOfNotificationsListWithSuccessBlock:success
+                                                      failBlock:fail];
+}
+
+- (RKManagedObjectRequestOperation *)loadNextPageOfNotificationsListWithSuccessBlock:(VSuccessBlock)success
+                                                                          failBlock:(VFailBlock)fail
+{
+    VAbstractFilter* listFilter = [[VFilterCache sharedCache] filterForPath:@"/api/message/notification_list"
+                                                                 entityName:[VAbstractFilter entityName]];
+    
+    
+    return [self loadNextPageOfFilter:listFilter successBlock:success failBlock:fail];
+}
+
+
 #pragma mark - Conversations
 
 - (RKManagedObjectRequestOperation *)refreshConversationListWithSuccessBlock:(VSuccessBlock)success
