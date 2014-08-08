@@ -25,7 +25,7 @@
 #import "UIAlertView+VBlocks.h"
 
 #import "VCompositeSnapshotController.h"
-
+#import "VSettingManager.h"
 
 @interface VCameraPublishViewController () <UITextViewDelegate, VSetExpirationDelegate>
 @property (nonatomic, weak) IBOutlet    UIImageView*    previewImageView;
@@ -193,7 +193,8 @@ static const CGFloat kShareMargin = 34.0f;
     self.navigationItem.rightBarButtonItem = cancelButton;
     
     NSString* mediaExtension = [[self.mediaURL absoluteString] pathExtension];
-    if ([mediaExtension isEqualToString:VConstantMediaExtensionMOV]
+    if ( ![[VSettingManager sharedManager] settingEnabledForKey:kVMemeAndSecretEnabled]
+        || [mediaExtension isEqualToString:VConstantMediaExtensionMOV]
         || [mediaExtension isEqualToString:VConstantMediaExtensionMP4])
         self.captionViewHeightConstraint.constant = 0;
     

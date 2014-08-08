@@ -6,7 +6,9 @@
 	<string>medium</string>
 	<key>remix</key>
 	<string>medium</string>
-	<key>realtimeComments</key>
+	<key>realtimeCommentsEnabled</key>
+	<true/>
+	<key>memeAndSecretEnabled</key>
 	<true/>
 	<key>url.appstore</key>
 	<string>itms-apps://itunes.com/apps</string>
