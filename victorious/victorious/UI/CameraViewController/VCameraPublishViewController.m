@@ -64,7 +64,7 @@
 
 @end
 
-static NSString* kSecretFont = @"PT_Sans-Narrow-Web-Regular";
+static NSString* kSecretFont = @"PTSans-Narrow";
 static NSString* kMemeFont = @"Impact";
 
 static const CGFloat kShareMargin = 34.0f;
@@ -255,36 +255,57 @@ static const CGFloat kShareMargin = 34.0f;
         
         NSMutableParagraphStyle *paragraphStyle = NSMutableParagraphStyle.new;
         paragraphStyle.alignment                = NSTextAlignmentCenter;
-
-        self.captionType = vMemeCaption;
         self.typingAttributes = [@{
                                   NSParagraphStyleAttributeName : paragraphStyle,
                                   NSFontAttributeName : [UIFont fontWithName:kMemeFont size:self.textView.frame.size.height],
                                   NSForegroundColorAttributeName : [UIColor whiteColor],
                                   NSStrokeColorAttributeName : [UIColor blackColor],
-                                  NSStrokeWidthAttributeName : [NSNumber numberWithFloat:-5.0]
+                                  NSStrokeWidthAttributeName : @(-5.0)
                                   } mutableCopy];
+        
+        self.captionType = vMemeCaption;
     }
     else if ((UIButton*)sender == self.secretButton)
-    {
-        [self.view removeConstraint:self.secretTextViewYConstraint];
-        [self.view removeConstraint:self.memeTextViewYConstraint];
-        [self.view addConstraint:self.originalTextViewYConstraint];
-        self.textView.font = [UIFont fontWithName:kSecretFont size:20];
-        self.textView.textAlignment = NSTextAlignmentCenter;
-        self.typingAttributes = nil;
-        self.captionType = VSecretCaption;
-    }
-    else if ((UIButton*)sender == self.captionButton)
     {
         [self.view removeConstraint:self.originalTextViewYConstraint];
         [self.view removeConstraint:self.memeTextViewYConstraint];
         [self.view addConstraint:self.secretTextViewYConstraint];
-        self.textView.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVHeading1Font];
-        self.textView.textAlignment = NSTextAlignmentLeft;
-        self.typingAttributes = nil;
+        
+        NSMutableParagraphStyle *paragraphStyle = NSMutableParagraphStyle.new;
+        paragraphStyle.alignment                = NSTextAlignmentCenter;
+        self.typingAttributes = [@{
+                                   NSParagraphStyleAttributeName : paragraphStyle,
+                                   NSFontAttributeName : [UIFont fontWithName:kSecretFont size:20],
+                                   NSForegroundColorAttributeName : [UIColor whiteColor],
+                                   NSStrokeColorAttributeName : [UIColor whiteColor],
+                                   NSStrokeWidthAttributeName : @(0)
+                                   } mutableCopy];
+        
+        self.captionType = VSecretCaption;
+        
+    }
+    else if ((UIButton*)sender == self.captionButton)
+    {
+        [self.view removeConstraint:self.secretTextViewYConstraint];
+        [self.view removeConstraint:self.memeTextViewYConstraint];
+        [self.view addConstraint:self.originalTextViewYConstraint];
+        
+        NSMutableParagraphStyle *paragraphStyle = NSMutableParagraphStyle.new;
+        paragraphStyle.alignment                = NSTextAlignmentLeft;
+        self.typingAttributes = [@{
+                                   NSParagraphStyleAttributeName : paragraphStyle,
+                                   NSFontAttributeName : [[VThemeManager sharedThemeManager] themedFontForKey:kVHeading1Font],
+                                   NSForegroundColorAttributeName : [UIColor whiteColor],
+                                   NSStrokeColorAttributeName : [UIColor whiteColor],
+                                   NSStrokeWidthAttributeName : @(0)
+                                   } mutableCopy];
+
         self.captionType = vNormalCaption;
     }
+    
+    self.textView.attributedText = [[NSAttributedString alloc] initWithString:self.textView.text attributes:self.typingAttributes];
+    self.textView.font = self.typingAttributes[NSFontAttributeName];
+    [self textViewDidChange:self.textView];
     
     self.captionPlaceholderLabel.font = self.textView.font;
     self.captionPlaceholderLabel.textAlignment = self.textView.textAlignment;
@@ -360,7 +381,6 @@ static const CGFloat kShareMargin = 34.0f;
             [[NSFileManager defaultManager] removeItemAtURL:originalMediaURL error:nil];
         }
     }
-    
     
     VShareOptions shareOptions = self.useFacebook ? kVShareToFacebook : kVShareNone;
     shareOptions = self.useTwitter ? shareOptions | kVShareToTwitter : shareOptions;
@@ -439,9 +459,7 @@ static const CGFloat kShareMargin = 34.0f;
 - (void)setExpirationViewController:(VSetExpirationViewController *)viewController didSelectDate:(NSDate *)expirationDate
 {
     self.expirationDateString = [self stringForRFC2822Date:expirationDate];
-    self.expiresOnLabel.text = [NSString stringWithFormat:NSLocalizedString(@"ExpiresOn", @""), [NSDateFormatter localizedStringFromDate:expirationDate
-                                                                                                                               dateStyle:NSDateFormatterLongStyle
-                                                                                                                               timeStyle:NSDateFormatterShortStyle]];
+    self.expiresOnLabel.text = [NSString stringWithFormat:NSLocalizedString(@"ExpiresOn", @""), [NSDateFormatter localizedStringFromDate:expirationDate dateStyle:NSDateFormatterLongStyle timeStyle:NSDateFormatterShortStyle]];
 }
 
 #pragma mark - Support
@@ -470,7 +488,7 @@ static const CGFloat kShareMargin = 34.0f;
 
 - (void)textViewDidChange:(UITextView *)textView
 {
-    if (self.typingAttributes)
+    if (self.captionType == vMemeCaption)
     {
         self.textView.font = [self.typingAttributes[NSFontAttributeName] fontWithSize:self.textView.frame.size.height];
         
@@ -481,12 +499,12 @@ static const CGFloat kShareMargin = 34.0f;
             
             if (newFontSize < self.textView.frame.size.height/5)
                 break;
-
+            
             self.textView.font = [self.textView.font fontWithSize:newFontSize];;
             realHeight = ((CGSize) [self.textView sizeThatFits:self.textView.frame.size]).height;
         }
         self.typingAttributes[NSFontAttributeName] = self.textView.font;
-    
+        
         NSAttributedString *str = [[NSAttributedString alloc] initWithString:self.textView.text attributes:self.typingAttributes];
         self.textView.attributedText = str;
         
