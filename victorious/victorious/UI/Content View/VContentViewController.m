@@ -818,14 +818,8 @@ NSTimeInterval kVContentPollAnimationDuration = 0.2;
                                   {
                                       [[VObjectManager sharedManager] repostNode:self.currentNode
                                                                         withName:self.sequence.name
-                                                                    successBlock:^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
-                                      {
-                                          VLog(@"Succeeded with objects: %@", resultObjects);
-                                      }
-                                                                       failBlock:^(NSOperation* operation, NSError* error)
-                                      {
-                                          VLog(@"Failed with error: %@", error);
-                                      }];
+                                                                    successBlock:nil
+                                                                       failBlock:nil];
                                   }, nil];
     
     [actionSheet showInView:self.view];
