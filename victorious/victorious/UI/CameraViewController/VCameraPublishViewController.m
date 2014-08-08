@@ -510,6 +510,12 @@ static const CGFloat kShareMargin = 34.0f;
         
         self.memeTextViewYConstraint.constant = self.originalTextViewYConstraint.constant - self.textView.frame.size.height + realHeight;
     }
+    else if (self.captionType == VSecretCaption)
+    {
+        CGFloat realHeight = ((CGSize) [self.textView sizeThatFits:self.textView.frame.size]).height;
+        
+        self.secretTextViewYConstraint.constant = (self.textView.frame.size.height - realHeight) / 2;
+    }
     else
     {
         self.captionPlaceholderLabel.hidden = ([textView.text length] > 0);
