@@ -16,7 +16,11 @@ static const UIEdgeInsets kTextInsets        = { 24.0f, 74.0f, 24.0f, 32.0f };
 
 @interface VMessageCell ()
 
-@property (nonatomic, weak) IBOutlet UIImageView *chatBubble;
+@property (nonatomic, weak, readwrite) IBOutlet VCommentTextAndMediaView *commentTextView;
+@property (nonatomic, weak, readwrite) IBOutlet UILabel                  *timeLabel;
+@property (nonatomic, weak, readwrite) IBOutlet UIImageView              *profileImageView;
+@property (nonatomic, weak, readwrite) IBOutlet UIImageView              *chatBubble;
+@property (nonatomic, weak, readwrite) IBOutlet UIButton                 *profileImageButton;
 
 @end
 
@@ -42,10 +46,19 @@ static const UIEdgeInsets kTextInsets        = { 24.0f, 74.0f, 24.0f, 32.0f };
     return [UIColor colorWithRed:0.914f green:0.914f blue:0.914f alpha:1.0f];
 }
 
+- (IBAction)profileImageTapped:(UIButton *)sender
+{
+    if (self.onProfileImageTapped)
+    {
+        self.onProfileImageTapped();
+    }
+}
+
 - (void)prepareForReuse
 {
     self.chatBubble.tintColor = [UIColor whiteColor];
     [self.commentTextView resetView];
+    self.profileImageView.image = [UIImage imageNamed:@"profile_thumb"];
 }
 
 @end

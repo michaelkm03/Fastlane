@@ -32,21 +32,29 @@
                         <color key="textColor" red="0.27058823529411763" green="0.27058823529411763" blue="0.27058823529411763" alpha="1" colorSpace="calibratedRGB"/>
                         <nil key="highlightedColor"/>
                     </label>
-                    <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="evX-ID-lZS" userLabel="Profile Image Button">
+                    <imageView opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="profile_thumb" translatesAutoresizingMaskIntoConstraints="NO" id="BIt-V7-16K" userLabel="Profile Image View">
+                        <rect key="frame" x="20" y="195" width="32" height="32"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <userDefinedRuntimeAttributes>
+                            <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                <integer key="value" value="16"/>
+                            </userDefinedRuntimeAttribute>
+                        </userDefinedRuntimeAttributes>
+                    </imageView>
+                    <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="evX-ID-lZS" userLabel="Profile Button">
                         <rect key="frame" x="20" y="195" width="32" height="32"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <constraints>
                             <constraint firstAttribute="width" constant="32" id="64J-jJ-snI"/>
                             <constraint firstAttribute="height" constant="32" id="s0Y-jy-KtY"/>
                         </constraints>
-                        <state key="normal" backgroundImage="profile_thumb">
+                        <state key="normal">
                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                         </state>
-                        <userDefinedRuntimeAttributes>
-                            <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
-                                <integer key="value" value="16"/>
-                            </userDefinedRuntimeAttribute>
-                        </userDefinedRuntimeAttributes>
+                        <connections>
+                            <action selector="profileImageTapped:" destination="FjT-zX-vN4" eventType="touchUpInside" id="TDE-ID-4D6"/>
+                        </connections>
                     </button>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="cZf-lH-dIj" customClass="VCommentTextAndMediaView">
                         <rect key="frame" x="74" y="24" width="214" height="204"/>
@@ -57,6 +65,7 @@
                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                 <constraints>
                     <constraint firstItem="0UZ-V6-0FV" firstAttribute="top" secondItem="OCU-v7-M0N" secondAttribute="top" constant="12" id="0T1-QP-b5E"/>
+                    <constraint firstItem="BIt-V7-16K" firstAttribute="top" secondItem="evX-ID-lZS" secondAttribute="top" id="0io-lg-2hq"/>
                     <constraint firstItem="Rgs-9K-iBc" firstAttribute="top" secondItem="evX-ID-lZS" secondAttribute="bottom" constant="5" id="4Wm-vn-FFV"/>
                     <constraint firstItem="0UZ-V6-0FV" firstAttribute="top" secondItem="cZf-lH-dIj" secondAttribute="top" constant="-12" id="5TD-Hy-3te"/>
                     <constraint firstAttribute="right" secondItem="0UZ-V6-0FV" secondAttribute="right" constant="20" id="DX0-Tg-YoA"/>
@@ -64,11 +73,14 @@
                     <constraint firstItem="0UZ-V6-0FV" firstAttribute="bottom" secondItem="Rgs-9K-iBc" secondAttribute="bottom" constant="-1" id="H8m-7Q-wO9"/>
                     <constraint firstItem="evX-ID-lZS" firstAttribute="leading" secondItem="OCU-v7-M0N" secondAttribute="leading" constant="20" id="Lze-SD-Bwh"/>
                     <constraint firstItem="4pX-El-Czj" firstAttribute="centerY" secondItem="evX-ID-lZS" secondAttribute="centerY" id="OCN-E8-WSe"/>
+                    <constraint firstItem="BIt-V7-16K" firstAttribute="leading" secondItem="evX-ID-lZS" secondAttribute="leading" id="REf-s8-8CV"/>
                     <constraint firstItem="Rgs-9K-iBc" firstAttribute="leading" secondItem="evX-ID-lZS" secondAttribute="leading" id="RLN-6I-2zl"/>
+                    <constraint firstItem="BIt-V7-16K" firstAttribute="trailing" secondItem="evX-ID-lZS" secondAttribute="trailing" id="YMd-lB-XlE"/>
                     <constraint firstAttribute="bottom" secondItem="0UZ-V6-0FV" secondAttribute="bottom" constant="12" id="c8v-bw-eNu"/>
                     <constraint firstItem="0UZ-V6-0FV" firstAttribute="leading" secondItem="cZf-lH-dIj" secondAttribute="leading" constant="-12" id="fME-cZ-t7T"/>
                     <constraint firstItem="0UZ-V6-0FV" firstAttribute="bottom" secondItem="cZf-lH-dIj" secondAttribute="bottom" constant="12" id="pJu-wJ-oEF"/>
                     <constraint firstItem="0UZ-V6-0FV" firstAttribute="trailing" secondItem="cZf-lH-dIj" secondAttribute="trailing" constant="12" id="plA-Sr-r0t"/>
+                    <constraint firstItem="BIt-V7-16K" firstAttribute="bottom" secondItem="evX-ID-lZS" secondAttribute="bottom" id="r3z-cg-fYs"/>
                     <constraint firstItem="0UZ-V6-0FV" firstAttribute="left" secondItem="OCU-v7-M0N" secondAttribute="left" constant="62" id="tFB-CP-IaT"/>
                     <constraint firstItem="EzG-iN-xlM" firstAttribute="centerY" secondItem="Rgs-9K-iBc" secondAttribute="centerY" id="twX-Tt-S3A"/>
                     <constraint firstItem="0UZ-V6-0FV" firstAttribute="left" secondItem="4pX-El-Czj" secondAttribute="right" id="wWd-Xb-Cmy"/>
@@ -79,6 +91,7 @@
                 <outlet property="chatBubble" destination="0UZ-V6-0FV" id="tjg-eU-eez"/>
                 <outlet property="commentTextView" destination="cZf-lH-dIj" id="Epv-B0-ezy"/>
                 <outlet property="profileImageButton" destination="evX-ID-lZS" id="lgw-ZL-fXF"/>
+                <outlet property="profileImageView" destination="BIt-V7-16K" id="aGS-AR-r5F"/>
                 <outlet property="timeLabel" destination="EzG-iN-xlM" id="i3C-tu-ey0"/>
             </connections>
         </tableViewCell>

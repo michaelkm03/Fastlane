@@ -14,9 +14,10 @@ extern NSString * const kVMessageCellNibName;
 
 @interface VMessageCell : UITableViewCell
 
-@property (nonatomic, weak) IBOutlet VCommentTextAndMediaView *commentTextView;
-@property (nonatomic, weak) IBOutlet UIButton                 *profileImageButton;
-@property (nonatomic, weak) IBOutlet UILabel                  *timeLabel;
+@property (nonatomic, weak, readonly) IBOutlet VCommentTextAndMediaView  *commentTextView;
+@property (nonatomic, weak, readonly) IBOutlet UILabel                   *timeLabel;
+@property (nonatomic, weak, readonly) IBOutlet UIImageView               *profileImageView;
+@property (nonatomic, copy)                    void                     (^onProfileImageTapped)();
 
 @property (nonatomic, readonly) UIColor *alernateChatBubbleTintColor; ///< The tint color used for the user's own messages
 

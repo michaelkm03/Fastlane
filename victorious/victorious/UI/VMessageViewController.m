@@ -22,6 +22,7 @@
 #import "VObjectManager.h"
 #import "VThemeManager.h"
 #import "VUser+RestKit.h"
+#import "VUserProfileViewController.h"
 
 @implementation VMessageViewController
 
@@ -167,8 +168,13 @@
     NSURL *pictureURL = [NSURL URLWithString:message.user.pictureUrl];
     if (pictureURL)
     {
-        [cell.profileImageButton setImageWithURL:pictureURL placeholderImage:nil forState:UIControlStateNormal];
+        [cell.profileImageView setImageWithURL:pictureURL];
     }
+    cell.onProfileImageTapped = ^(void)
+    {
+        VUserProfileViewController* profileViewController = [VUserProfileViewController userProfileWithUser:message.user];
+        [self.navigationController pushViewController:profileViewController animated:YES];
+    };
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
 
     return cell;
