@@ -1088,11 +1088,6 @@ NSTimeInterval kVContentPollAnimationDuration = 0.2;
 
 - (void)hashTagButtonTappedInContentTitleTextView:(VContentTitleTextView *)contentTitleTextView withTag:(NSString *)tag
 {
-#warning this should probably be removed (along with hashtag container / table view)  Leaving until lawrence can double check.
-//    VHashTagContainerViewController *container = [[VHashTagContainerViewController alloc] init];
-//    container.sequence = self.sequence;
-//    container.hashTag = tag;
-    
     VStreamContainerViewController* container =[VStreamContainerViewController modalContainerForStreamTable:[VStreamTableViewController hashtagStreamWithHashtag:tag]];
     
     [self.navigationController pushViewController:container animated:YES];

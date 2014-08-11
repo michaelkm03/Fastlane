@@ -124,11 +124,13 @@ static       NSString * const kNibName           = @"MediaPreview";
         return;
     }
 
+    self.doneButton.userInteractionEnabled = NO;
     [self willComplete];
     if (self.completionBlock)
     {
         self.completionBlock(YES, [self previewImage], self.mediaURL);
     }
+    self.doneButton.userInteractionEnabled = YES;
 }
 
 - (IBAction)deleteTapped:(id)sender

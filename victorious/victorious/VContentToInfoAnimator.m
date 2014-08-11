@@ -13,6 +13,8 @@
 #import "VContentViewController.h"
 #import "VContentViewController+Videos.h"
 
+#import "UIImage+ImageCreation.h"
+
 @implementation VContentToInfoAnimator
 
 - (NSTimeInterval)transitionDuration:(id <UIViewControllerContextTransitioning>)transitionContext
@@ -32,13 +34,7 @@
     if (self.movingImage)
     {
         UIImageView* imageView = [[UIImageView alloc] initWithFrame:self.toChildContainerView.bounds];
-        
-        UIGraphicsBeginImageContext(imageView.frame.size);
-        [self.movingImage drawInRect:CGRectMake(0,0,imageView.frame.size.width,imageView.frame.size.height)];
-        UIImage* newImage = UIGraphicsGetImageFromCurrentImageContext();
-        UIGraphicsEndImageContext();
-    
-        [imageView setImage:newImage];
+        [imageView setImage:[self.movingImage scaleToSize:imageView.frame.size]];
         [self.toChildContainerView addSubview:imageView];
     }
 
