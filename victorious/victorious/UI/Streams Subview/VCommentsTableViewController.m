@@ -8,6 +8,7 @@
 
 #import "VAnalyticsRecorder.h"
 #import "VCommentsTableViewController.h"
+#import "VCommentTextAndMediaView.h"
 #import "VConstants.h"
 #import "VThemeManager.h"
 
@@ -16,9 +17,13 @@
 
 #import "VObjectManager+Pagination.h"
 #import "VObjectManager+Comment.h"
+#import "VUser.h"
+#import "VUserProfileViewController.h"
 
 #import "UIActionSheet+VBlocks.h"
+#import "NSDate+timeSince.h"
 #import "NSString+VParseHelp.h"
+#import "NSURL+MediaType.h"
 
 #import "VSequence+Fetcher.h"
 #import "VNode+Fetcher.h"
@@ -34,7 +39,7 @@
 
 @import Social;
 
-@interface VCommentsTableViewController () //<UINavigationControllerDelegate>
+@interface VCommentsTableViewController ()
 
 @property (nonatomic, strong) NSMutableArray* newlyReadComments;
 @property (nonatomic, strong) NSArray* sortedComments;
@@ -42,7 +47,7 @@
 
 @end
 
-static NSString* CommentCache = @"CommentCache";
+static NSString* CommentCache           = @"CommentCache";
 
 @implementation VCommentsTableViewController
 
@@ -50,10 +55,8 @@ static NSString* CommentCache = @"CommentCache";
 {
     [super viewDidLoad];
     
-    [self.tableView registerNib:[UINib nibWithNibName:kCommentCellIdentifier bundle:nil]
-         forCellReuseIdentifier:kCommentCellIdentifier];
-    [self.tableView registerNib:[UINib nibWithNibName:kOtherCommentCellIdentifier bundle:nil]
-         forCellReuseIdentifier:kOtherCommentCellIdentifier];
+    [self.tableView registerNib:[UINib nibWithNibName:kVCommentCellNibName bundle:nil]
+         forCellReuseIdentifier:kVCommentCellNibName];
 
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     //This hides the seperators for empty cells
@@ -219,32 +222,49 @@ static NSString* CommentCache = @"CommentCache";
 
 - (CGFloat)tableView:(UITableView *)tableView estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    VComment *comment = [self.sortedComments objectAtIndex:indexPath.row];
-    return [comment.mediaUrl length] ? kEstimatedCommentRowWithMediaHeight : kEstimatedCommentRowHeight;
+    return [VCommentCell estimatedHeightWithWidth:CGRectGetWidth(tableView.bounds) text:@"Lorem ipsum dolor sit amet" withMedia:NO];
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     VComment* comment = (VComment*)[self.sortedComments objectAtIndex:indexPath.row];
-
-    CGSize textSize = [VCommentCell frameSizeForMessageText:comment.text];
-    CGFloat height = textSize.height;
-    CGFloat yOffset = [comment hasMedia] ? kCommentMediaCellYOffset : kCommentCellYOffset;
-    height = MAX(height + yOffset, kCommentMinCellHeight);
-
-    return height;
+    return [VCommentCell estimatedHeightWithWidth:CGRectGetWidth(tableView.bounds) text:comment.text withMedia:comment.hasMedia];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    UITableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:kCommentCellIdentifier forIndexPath:indexPath];
-    
+    VCommentCell *cell = [tableView dequeueReusableCellWithIdentifier:kVCommentCellNibName forIndexPath:indexPath];
     VComment *comment = [self.sortedComments objectAtIndex:indexPath.row];
-    [(VCommentCell*)cell setComment:comment];
-    ((VCommentCell*)cell).parentTableViewController = self;
     
-    [cell setNeedsLayout];
-    [cell layoutIfNeeded];
+    cell.timeLabel.text = [comment.postedAt timeSince];
+    cell.usernameLabel.text = comment.user.name;
+    cell.commentTextView.text = comment.text;
+    if (comment.hasMedia)
+    {
+        cell.commentTextView.mediaThumbnailView.hidden = NO;
+        [cell.commentTextView.mediaThumbnailView setImageWithURL:comment.previewImageURL];
+        if ([comment.mediaUrl isKindOfClass:[NSString class]] && [comment.mediaUrl v_hasVideoExtension])
+        {
+            cell.commentTextView.onMediaTapped = [cell.commentTextView standardMediaTapHandlerWithMediaURL:[NSURL URLWithString:comment.mediaUrl] presentingViewController:self];
+            cell.commentTextView.playIcon.hidden = NO;
+        }
+    }
+    else
+    {
+        cell.commentTextView.mediaThumbnailView.hidden = YES;
+    }
+    
+    NSURL *pictureURL = [NSURL URLWithString:comment.user.pictureUrl];
+    if (pictureURL)
+    {
+        [cell.profileImageView setImageWithURL:pictureURL];
+    }
+    cell.onProfileImageTapped = ^(void)
+    {
+        VUserProfileViewController* profileViewController = [VUserProfileViewController userProfileWithUser:comment.user];
+        [self.navigationController pushViewController:profileViewController animated:YES];
+    };
+    cell.selectionStyle = UITableViewCellSelectionStyleNone;
     
     return cell;
 }

@@ -6,8 +6,6 @@
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
-#import "VAbstractCommentCell.h"
-
 @class VCommentTextAndMediaView;
 
 extern NSString * const kVMessageCellNibName;

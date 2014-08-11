@@ -64,7 +64,7 @@ static const CGFloat kSpacingBetweenTextAndMedia = 10.0f;
     mediaThumbnailView.translatesAutoresizingMaskIntoConstraints = NO;
     mediaThumbnailView.clipsToBounds = YES;
     mediaThumbnailView.contentMode = UIViewContentModeScaleAspectFill;
-    mediaThumbnailView.backgroundColor = [UIColor colorWithRed:0.5 green:0.5 blue:0.5 alpha:0.5f];
+    mediaThumbnailView.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVBackgroundColor];
     [self addSubview:mediaThumbnailView];
     self.mediaThumbnailView = mediaThumbnailView;
     
@@ -198,7 +198,7 @@ static const CGFloat kSpacingBetweenTextAndMedia = 10.0f;
     paragraphStyle.maximumLineHeight = 20.0f;
     
     return @{ NSFontAttributeName: [UIFont systemFontOfSize:17.0f],
-              NSForegroundColorAttributeName: [[VThemeManager sharedThemeManager] themedColorForKey:kVSecondaryLinkColor],
+              NSForegroundColorAttributeName: [UIColor colorWithRed:0.137f green:0.137f blue:0.137f alpha:1.0f],
               NSParagraphStyleAttributeName: paragraphStyle,
            };
 }

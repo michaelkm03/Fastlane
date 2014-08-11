@@ -290,7 +290,6 @@
 		BEB52A7A18C02D6600AC5FE4 /* VContentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BEB52A7718C02D6600AC5FE4 /* VContentViewController.m */; };
 		BEB52A7B18C02D6600AC5FE4 /* VEmotiveBallisticsBarViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BEB52A7918C02D6600AC5FE4 /* VEmotiveBallisticsBarViewController.m */; };
 		BEB52A8B18C80B8700AC5FE4 /* VContentToStreamAnimator.m in Sources */ = {isa = PBXBuildFile; fileRef = BEB52A8A18C80B8700AC5FE4 /* VContentToStreamAnimator.m */; };
-		BEB8DB03192BE81000E0E3E6 /* VAbstractCommentCell.m in Sources */ = {isa = PBXBuildFile; fileRef = BEB8DB02192BE81000E0E3E6 /* VAbstractCommentCell.m */; };
 		BEB8DB07192BFF5300E0E3E6 /* VMessageCell.m in Sources */ = {isa = PBXBuildFile; fileRef = BEB8DB06192BFF5300E0E3E6 /* VMessageCell.m */; };
 		BED4569418BD581800A67160 /* UIWebView+VYoutubeLoading.m in Sources */ = {isa = PBXBuildFile; fileRef = BED4569318BD581800A67160 /* UIWebView+VYoutubeLoading.m */; };
 		BED4569718BD58DE00A67160 /* VAsset+Fetcher.m in Sources */ = {isa = PBXBuildFile; fileRef = BED4569618BD58DE00A67160 /* VAsset+Fetcher.m */; };
@@ -859,8 +858,6 @@
 		BEB52A7918C02D6600AC5FE4 /* VEmotiveBallisticsBarViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VEmotiveBallisticsBarViewController.m; path = "UI/Content View/VEmotiveBallisticsBarViewController.m"; sourceTree = "<group>"; };
 		BEB52A8918C80B8700AC5FE4 /* VContentToStreamAnimator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VContentToStreamAnimator.h; sourceTree = "<group>"; };
 		BEB52A8A18C80B8700AC5FE4 /* VContentToStreamAnimator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VContentToStreamAnimator.m; sourceTree = "<group>"; };
-		BEB8DB01192BE81000E0E3E6 /* VAbstractCommentCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VAbstractCommentCell.h; path = "UI/Streams Subview/VAbstractCommentCell.h"; sourceTree = "<group>"; };
-		BEB8DB02192BE81000E0E3E6 /* VAbstractCommentCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VAbstractCommentCell.m; path = "UI/Streams Subview/VAbstractCommentCell.m"; sourceTree = "<group>"; };
 		BEB8DB05192BFF5300E0E3E6 /* VMessageCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VMessageCell.h; path = UI/Inbox/VMessageCell.h; sourceTree = "<group>"; };
 		BEB8DB06192BFF5300E0E3E6 /* VMessageCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VMessageCell.m; path = UI/Inbox/VMessageCell.m; sourceTree = "<group>"; };
 		BED4569218BD581800A67160 /* UIWebView+VYoutubeLoading.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIWebView+VYoutubeLoading.h"; sourceTree = "<group>"; };
@@ -1896,8 +1893,6 @@
 				BE692B34186E60B300C71336 /* VCommentCell.h */,
 				BE692B35186E60B300C71336 /* VCommentCell.m */,
 				BEB4C29F187E0778004ECEEF /* VCommentCell.xib */,
-				BEB8DB01192BE81000E0E3E6 /* VAbstractCommentCell.h */,
-				BEB8DB02192BE81000E0E3E6 /* VAbstractCommentCell.m */,
 			);
 			name = Cell;
 			sourceTree = "<group>";
@@ -2666,7 +2661,6 @@
 				BE6211AF192D65C300D5C74B /* VTableContainerViewController.m in Sources */,
 				3F21942E193EA49000FA3407 /* VChangePasswordViewController.m in Sources */,
 				BE651D1018AC270900069119 /* VKeyboardBarViewController.m in Sources */,
-				BEB8DB03192BE81000E0E3E6 /* VAbstractCommentCell.m in Sources */,
 				03FDA09F197A0AEC00405361 /* CIImage+VImage.m in Sources */,
 				3FD7FFAC18BFD67800945E5F /* VVideoPreviewViewController.m in Sources */,
 				BE7B6A91195C998300A0E80A /* VObjectManager+Websites.m in Sources */,
