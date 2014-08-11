@@ -157,6 +157,7 @@
     
     self.playButton.alpha = 1.0;
     self.playCircle.alpha = 1.0;
+    self.takeImageSnapShotButton.alpha = 1.0;
     self.animatingPlayButton = YES;
     [self firstAnimation];
 }
@@ -190,6 +191,7 @@
     self.animatingPlayButton = NO;
     self.playButton.alpha = 0.0;
     self.playCircle.alpha = 0.0;
+    self.takeImageSnapShotButton.alpha = 0.0;
 }
 
 #pragma mark - SCVideoPlayerDelegate
