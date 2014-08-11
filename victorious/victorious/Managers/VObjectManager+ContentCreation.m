@@ -129,7 +129,6 @@ NSString * const VObjectManagerContentIndexKey                  = @"index";
                                         mediaURL:(NSURL*)mediaUrl
                                     successBlock:(VSuccessBlock)success
                                        failBlock:(VFailBlock)fail
-                               shouldRemoveMedia:(BOOL)shouldRemoveMedia
 {
     if (!mediaUrl)
         return nil;

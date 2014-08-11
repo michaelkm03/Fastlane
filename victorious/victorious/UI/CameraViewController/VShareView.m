@@ -34,6 +34,11 @@
     return self;
 }
 
+- (BOOL)selected
+{
+    return self.shareButton.selected;
+}
+
 - (void)setSelectedColor:(UIColor *)selectedColor
 {
     _selectedColor = selectedColor;

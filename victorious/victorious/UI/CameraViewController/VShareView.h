@@ -13,6 +13,7 @@
 @property (nonatomic, strong) UIColor* defaultColor;
 @property (nonatomic, strong) UIColor* selectedColor;
 
+- (BOOL)selected;
 - (id)initWithTitle:(NSString*)title image:(UIImage*)image;
 
 @end

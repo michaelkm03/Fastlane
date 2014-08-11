@@ -59,6 +59,10 @@
 @property (nonatomic, weak) IBOutlet UIButton* memeButton;
 @property (nonatomic, weak) IBOutlet UIButton* secretButton;
 
+@property (nonatomic, strong) VShareView* saveToCameraView;
+@property (nonatomic, strong) VShareView* shareToTwitterView;
+@property (nonatomic, strong) VShareView* shareToFacebookView;
+
 @property (nonatomic) VCaptionType captionType;
 @property (nonatomic, strong) VCompositeSnapshotController* snapshotController;
 
@@ -136,35 +140,31 @@ static const CGFloat kShareMargin = 34.0f;
 
 - (void)initShareViews
 {
-    NSArray* shareNames = @[NSLocalizedString(@"facebook", nil),
-                             NSLocalizedString(@"twitter", nil),
-                             NSLocalizedString(@"saveToLibrary", nil)];
+    self.shareToFacebookView = [[VShareView alloc] initWithTitle:NSLocalizedString(@"facebook", nil)
+                                                          image:[UIImage imageNamed:@"share-btn-fb"]];
+    self.shareToFacebookView.selectedColor = [UIColor colorWithRed:.23f green:.35f blue:.6f alpha:1.0f];
     
-    NSArray* shareImages = @[[UIImage imageNamed:@"share-btn-fb"],
-                             [UIImage imageNamed:@"share-btn-twitter"],
-                             [UIImage imageNamed:@"share-btn-library"]];
+    self.shareToTwitterView = [[VShareView alloc] initWithTitle:NSLocalizedString(@"twitter", nil)
+                                                          image:[UIImage imageNamed:@"share-btn-twitter"]];
+    self.shareToTwitterView.selectedColor = [UIColor colorWithRed:.1f green:.7f blue:.91f alpha:1.0f];
     
-    NSArray* shareColors = @[[UIColor colorWithRed:.23f green:.35f blue:.6f alpha:1.0f],
-                             [UIColor colorWithRed:.1f green:.7f blue:.91f alpha:1.0f],
-                             [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor]];
+    self.saveToCameraView = [[VShareView alloc] initWithTitle:NSLocalizedString(@"saveToLibrary", nil)
+                                                          image:[UIImage imageNamed:@"share-btn-library"]];
+    self.saveToCameraView.selectedColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
     
-    NSAssert(shareNames.count == shareImages.count && shareImages.count == shareColors.count, @"There should be an equal number of these...");
+    NSArray* shareViews = @[self.shareToFacebookView, self.shareToTwitterView, self.saveToCameraView];
     
-    NSMutableArray* shareViews = [[NSMutableArray alloc] init];
-    
-    for (int i=0; i<[shareNames count];i++)
+    for (int i=0; i<shareViews.count;i++)
     {
-        VShareView* shareView = [[VShareView alloc] initWithTitle:shareNames[i] image:shareImages[i]];
-        shareView.selectedColor = shareColors[i];
+        UIView* shareView = shareViews[i];
         
         CGFloat shareViewWidth = shareView.frame.size.width;
-        CGFloat widthOfShareViews = (shareNames.count * shareViewWidth) + ((shareNames.count - 1) * kShareMargin);
+        CGFloat widthOfShareViews = (shareViews.count * shareViewWidth) + ((shareViews.count - 1) * kShareMargin);
         CGFloat superviewMargin = (self.sharesSuperview.frame.size.width - widthOfShareViews) / 2;
         CGFloat xCenter = superviewMargin + (shareViewWidth / 2) + (i * shareViewWidth) + (i * kShareMargin);
         
         shareView.center = CGPointMake(xCenter, self.sharesSuperview.frame.size.height / 2);
         
-        [shareViews addObject:shareView];
         [self.sharesSuperview addSubview:shareView];
     }
 }
@@ -297,7 +297,6 @@ static const CGFloat kShareMargin = 34.0f;
                                    } mutableCopy];
         
         self.captionType = VSecretCaption;
-        
     }
     else if ((UIButton*)sender == self.captionButton)
     {
@@ -399,8 +398,8 @@ static const CGFloat kShareMargin = 34.0f;
         }
     }
     
-    VShareOptions shareOptions = self.useFacebook ? kVShareToFacebook : kVShareNone;
-    shareOptions = self.useTwitter ? shareOptions | kVShareToTwitter : shareOptions;
+    VShareOptions shareOptions = /*self.useFacebook ? kVShareToFacebook :*/ kVShareNone;
+//    shareOptions = self.useTwitter ? shareOptions | kVShareToTwitter : shareOptions;
     
     CGFloat playbackSpeed;
     if (self.playBackSpeed == kVPlaybackNormalSpeed)
@@ -450,25 +449,29 @@ static const CGFloat kShareMargin = 34.0f;
                                                   otherButtonTitles:NSLocalizedString(@"OKButton", @""), nil];
             [alert show];
         }
-    }
-                                      shouldRemoveMedia:YES];
+    }];
     
     [[VAnalyticsRecorder sharedAnalyticsRecorder] sendEventWithCategory:kVAnalyticsEventCategoryInteraction action:@"Post Content" label:self.textView.text value:nil];
+    
+    if (self.saveToCameraView.selected && !self.didSelectAssetFromLibrary)
+    {
+        NSString *mediaExtension = [self.mediaURL pathExtension];
+        
+        if ([mediaExtension isEqualToString:VConstantMediaExtensionMP4])
+        {
+            UISaveVideoAtPathToSavedPhotosAlbum([self.mediaURL path], nil, nil, nil);
+        }
+        else if ([mediaExtension isEqualToString:VConstantMediaExtensionPNG])
+        {
+            UIImage*    photo = [UIImage imageWithData:[NSData dataWithContentsOfURL:self.mediaURL]];
+            UIImageWriteToSavedPhotosAlbum(photo, nil, nil, nil);
+        }
+    }
     
     if (self.completion)
     {
         self.completion(YES);
     }
-}
-
-- (IBAction)twitterClicked:(id)sender
-{
-    self.useTwitter = self.twitterButton.on;
-}
-
-- (IBAction)facebookClicked:(id)sender
-{
-    self.useFacebook = self.facebookButton.on;
 }
 
 #pragma mark - Delegates

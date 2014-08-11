@@ -68,8 +68,7 @@ typedef NS_ENUM(NSUInteger, VCaptionType)
                                     shareOptions:(VShareOptions)shareOptions
                                         mediaURL:(NSURL*)mediaUrl
                                     successBlock:(VSuccessBlock)success
-                                       failBlock:(VFailBlock)fail
-                               shouldRemoveMedia:(BOOL)shouldRemoveMedia;
+                                       failBlock:(VFailBlock)fail;
 
 
 - (AFHTTPRequestOperation *)addCommentWithText:(NSString*)text

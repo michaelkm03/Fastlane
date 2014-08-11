@@ -195,6 +195,7 @@
 {
     UINavigationController *navigationController = [[UINavigationController alloc] init];
     UINavigationController * __weak weakNav = navigationController;
+    VCameraViewController * __weak weakCamera = cameraViewController;
     cameraViewController.completionBlock = ^(BOOL finished, UIImage *previewImage, NSURL *capturedMediaURL)
     {
         if (!finished || !capturedMediaURL)
@@ -206,6 +207,7 @@
             VCameraPublishViewController *publishViewController = [VCameraPublishViewController cameraPublishViewController];
             publishViewController.previewImage = previewImage;
             publishViewController.mediaURL = capturedMediaURL;
+            publishViewController.didSelectAssetFromLibrary = weakCamera.didSelectAssetFromLibrary;
             publishViewController.completion = ^(BOOL complete)
             {
                 if (complete)
