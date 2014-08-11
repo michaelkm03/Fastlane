@@ -11,8 +11,10 @@
 
 NSString * const kVMessageCellNibName = @"VMessageCell";
 
-static const CGFloat      kMinimumCellHeight = 71.0f;
-static const UIEdgeInsets kTextInsets        = { 24.0f, 74.0f, 24.0f, 32.0f };
+static const CGFloat      kMinimumCellHeight    = 71.0f;
+static const UIEdgeInsets kTextInsets           = { 24.0f, 74.0f, 24.0f, 32.0f };
+static NSString * const   kChatBubbleArrowLeft  = @"ChatBubbleArrowLeft";
+static NSString * const   kChatBubbleArrowRight = @"ChatBubbleArrowRight";
 
 @interface VMessageCell ()
 
@@ -20,7 +22,10 @@ static const UIEdgeInsets kTextInsets        = { 24.0f, 74.0f, 24.0f, 32.0f };
 @property (nonatomic, weak, readwrite) IBOutlet UILabel                  *timeLabel;
 @property (nonatomic, weak, readwrite) IBOutlet UIImageView              *profileImageView;
 @property (nonatomic, weak, readwrite) IBOutlet UIImageView              *chatBubble;
+@property (nonatomic, weak, readwrite) IBOutlet UIImageView              *chatBubbleArrow;
 @property (nonatomic, weak, readwrite) IBOutlet UIButton                 *profileImageButton;
+@property (nonatomic, weak, readwrite) IBOutlet UIView                   *profileImageSuperview; ///< The superview for both profileImageView and timeLabel
+@property (nonatomic, strong)                   NSArray                  *resettableConstraints; ///< Constraints that are set in -updateConstraints
 
 @end
 
@@ -41,7 +46,82 @@ static const UIEdgeInsets kTextInsets        = { 24.0f, 74.0f, 24.0f, 32.0f };
                kMinimumCellHeight);
 }
 
-- (UIColor *)alernateChatBubbleTintColor
+- (void)updateConstraints
+{
+    if (!self.resettableConstraints)
+    {
+        if (self.profileImageOnRight)
+        {
+            self.resettableConstraints = @[
+                [NSLayoutConstraint constraintWithItem:self.chatBubble
+                                             attribute:NSLayoutAttributeRight
+                                             relatedBy:NSLayoutRelationEqual
+                                                toItem:self.chatBubbleArrow
+                                             attribute:NSLayoutAttributeLeft
+                                            multiplier:1.0f
+                                              constant:0.0f],
+                [NSLayoutConstraint constraintWithItem:self.contentView
+                                             attribute:NSLayoutAttributeRight
+                                             relatedBy:NSLayoutRelationEqual
+                                                toItem:self.profileImageSuperview
+                                             attribute:NSLayoutAttributeRight
+                                            multiplier:1.0f
+                                              constant:20.0f],
+                [NSLayoutConstraint constraintWithItem:self.contentView
+                                             attribute:NSLayoutAttributeRight
+                                             relatedBy:NSLayoutRelationEqual
+                                                toItem:self.chatBubble
+                                             attribute:NSLayoutAttributeRight
+                                            multiplier:1.0f
+                                              constant:62.0f],
+                [NSLayoutConstraint constraintWithItem:self.chatBubble
+                                             attribute:NSLayoutAttributeLeft
+                                             relatedBy:NSLayoutRelationEqual
+                                                toItem:self.contentView
+                                             attribute:NSLayoutAttributeLeft
+                                            multiplier:1.0f
+                                              constant:20.0f],
+            ];
+        }
+        else
+        {
+            self.resettableConstraints = @[
+                [NSLayoutConstraint constraintWithItem:self.chatBubble
+                                             attribute:NSLayoutAttributeLeft
+                                             relatedBy:NSLayoutRelationEqual
+                                                toItem:self.chatBubbleArrow
+                                             attribute:NSLayoutAttributeRight
+                                            multiplier:1.0f
+                                              constant:0.0f],
+                [NSLayoutConstraint constraintWithItem:self.profileImageSuperview
+                                             attribute:NSLayoutAttributeLeft
+                                             relatedBy:NSLayoutRelationEqual
+                                                toItem:self.contentView
+                                             attribute:NSLayoutAttributeLeft
+                                            multiplier:1.0f
+                                              constant:20.0f],
+                [NSLayoutConstraint constraintWithItem:self.chatBubble
+                                             attribute:NSLayoutAttributeLeft
+                                             relatedBy:NSLayoutRelationEqual
+                                                toItem:self.contentView
+                                             attribute:NSLayoutAttributeLeft
+                                            multiplier:1.0f
+                                              constant:62.0f],
+                [NSLayoutConstraint constraintWithItem:self.contentView
+                                             attribute:NSLayoutAttributeRight
+                                             relatedBy:NSLayoutRelationEqual
+                                                toItem:self.chatBubble
+                                             attribute:NSLayoutAttributeRight
+                                            multiplier:1.0f
+                                              constant:20.0f],
+            ];
+        }
+        [self.contentView addConstraints:self.resettableConstraints];
+    }
+    [super updateConstraints];
+}
+
+- (UIColor *)alternateChatBubbleTintColor
 {
     return [UIColor colorWithRed:0.914f green:0.914f blue:0.914f alpha:1.0f];
 }
@@ -54,11 +134,35 @@ static const UIEdgeInsets kTextInsets        = { 24.0f, 74.0f, 24.0f, 32.0f };
     }
 }
 
+- (void)setProfileImageOnRight:(BOOL)profileImageOnRight
+{
+    _profileImageOnRight = profileImageOnRight;
+    if (self.resettableConstraints)
+    {
+        [self.contentView removeConstraints:self.resettableConstraints];
+        self.resettableConstraints = nil;
+    }
+    [self setNeedsUpdateConstraints];
+    if (profileImageOnRight)
+    {
+        self.chatBubbleArrow.image = [[UIImage imageNamed:kChatBubbleArrowRight] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+        self.chatBubble.tintColor = [self alternateChatBubbleTintColor];
+        self.chatBubbleArrow.tintColor = [self alternateChatBubbleTintColor];
+    }
+    else
+    {
+        self.chatBubbleArrow.image = [[UIImage imageNamed:kChatBubbleArrowLeft] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+        self.chatBubble.tintColor = [UIColor whiteColor];
+        self.chatBubbleArrow.tintColor = [UIColor whiteColor];
+    }
+}
+
 - (void)prepareForReuse
 {
     self.chatBubble.tintColor = [UIColor whiteColor];
     [self.commentTextView resetView];
     self.profileImageView.image = [UIImage imageNamed:@"profile_thumb"];
+    self.profileImageOnRight = NO;
 }
 
 @end

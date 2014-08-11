@@ -6,6 +6,7 @@
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
+#import "NSDate+timeSince.h"
 #import "NSString+VParseHelp.h"
 #import "NSURL+MediaType.h"
 #import "UIButton+VImageLoading.h"
@@ -148,7 +149,14 @@
     VMessageCell *cell = [tableView dequeueReusableCellWithIdentifier:kVMessageCellNibName forIndexPath:indexPath];
     VMessage *message = [self.fetchedResultsController objectAtIndexPath:indexPath];
 
+    cell.timeLabel.text = [message.postedAt timeSince];
     cell.commentTextView.text = message.text;
+    
+    if ([message.user isEqualToUser:[[VObjectManager sharedManager] mainUser]])
+    {
+        cell.profileImageOnRight = YES;
+    }
+    
     BOOL hasMedia = [message.thumbnailPath isKindOfClass:[NSString class]] && ![message.thumbnailPath isEqualToString:@""];
     if (hasMedia)
     {
