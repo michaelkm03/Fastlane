@@ -18,7 +18,8 @@
  */
 @property (nonatomic, strong) BOOL(^selectionBlock)();
 
-- (BOOL)selected;
+@property (nonatomic) BOOL selected;
+
 - (id)initWithTitle:(NSString*)title image:(UIImage*)image;
 
 @end

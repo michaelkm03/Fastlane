@@ -7,6 +7,7 @@
 //
 
 @import AVFoundation;
+@import AssetsLibrary;
 
 #import "VAnalyticsRecorder.h"
 #import "VCameraPublishViewController.h"
@@ -26,6 +27,13 @@
 
 #import "VCompositeSnapshotController.h"
 #import "VSettingManager.h"
+
+#import "VFacebookManager.h"
+
+
+static NSString* kVSaveToCameraRollDisabledKey = @"saveToCameraKey";
+static NSString* kVShareToFacebookDisabledKey  = @"shareToFBKey";
+static NSString* kVShareToTwitterDisabledKey = @"shareToTwtrKey";
 
 @interface VCameraPublishViewController () <UITextViewDelegate, VSetExpirationDelegate>
 @property (nonatomic, weak) IBOutlet    UIImageView*    previewImageView;
@@ -143,18 +151,17 @@ static const CGFloat kShareMargin = 34.0f;
     self.shareToFacebookView = [[VShareView alloc] initWithTitle:NSLocalizedString(@"facebook", nil)
                                                           image:[UIImage imageNamed:@"share-btn-fb"]];
     self.shareToFacebookView.selectedColor = [UIColor colorWithRed:.23f green:.35f blue:.6f alpha:1.0f];
+    self.shareToFacebookView.selected = ![[NSUserDefaults standardUserDefaults] boolForKey:kVShareToFacebookDisabledKey];
     
     self.shareToTwitterView = [[VShareView alloc] initWithTitle:NSLocalizedString(@"twitter", nil)
                                                           image:[UIImage imageNamed:@"share-btn-twitter"]];
     self.shareToTwitterView.selectedColor = [UIColor colorWithRed:.1f green:.7f blue:.91f alpha:1.0f];
+    self.shareToTwitterView.selected = ![[NSUserDefaults standardUserDefaults] boolForKey:kVShareToTwitterDisabledKey];
     
     self.saveToCameraView = [[VShareView alloc] initWithTitle:NSLocalizedString(@"saveToLibrary", nil)
                                                           image:[UIImage imageNamed:@"share-btn-library"]];
     self.saveToCameraView.selectedColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
-    self.saveToCameraView.selectionBlock = ^(void)
-    {
-        return YES;
-    };
+    self.saveToCameraView.selected = ![[NSUserDefaults standardUserDefaults] boolForKey:kVSaveToCameraRollDisabledKey];
     
     NSArray* shareViews = @[self.shareToFacebookView, self.shareToTwitterView, self.saveToCameraView];
     
@@ -176,10 +183,10 @@ static const CGFloat kShareMargin = 34.0f;
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    
+    self.previewImageView.image = self.previewImage;
     if (self.previewImage)
     {
-        self.previewImageView.image = [self.previewImage applyDarkEffect];
+        self.previewImageView.image = [self.previewImage applyBlurWithRadius:0 tintColor:[UIColor colorWithWhite:0.11 alpha:0.73] saturationDeltaFactor:1.8 maskImage:nil];
     }
 
     self.view.backgroundColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVBackgroundColor];
@@ -240,6 +247,9 @@ static const CGFloat kShareMargin = 34.0f;
 {
     [super viewWillDisappear:animated];
     [[VAnalyticsRecorder sharedAnalyticsRecorder] finishAppView];
+    [[NSUserDefaults standardUserDefaults] setBool:!self.shareToTwitterView.selected forKey:kVShareToTwitterDisabledKey];
+    [[NSUserDefaults standardUserDefaults] setBool:!self.shareToFacebookView.selected forKey:kVShareToFacebookDisabledKey];
+    [[NSUserDefaults standardUserDefaults] setBool:!self.saveToCameraView.selected forKey:kVSaveToCameraRollDisabledKey];
 }
 
 - (BOOL)shouldAutorotate
@@ -465,7 +475,9 @@ static const CGFloat kShareMargin = 34.0f;
         {
             UISaveVideoAtPathToSavedPhotosAlbum([self.mediaURL path], nil, nil, nil);
         }
-        else if ([mediaExtension isEqualToString:VConstantMediaExtensionPNG])
+        else if ([mediaExtension isEqualToString:VConstantMediaExtensionPNG]
+                 || [mediaExtension isEqualToString:VConstantMediaExtensionJPG]
+                 || [mediaExtension isEqualToString:VConstantMediaExtensionJPEG])
         {
             UIImage*    photo = [UIImage imageWithData:[NSData dataWithContentsOfURL:self.mediaURL]];
             UIImageWriteToSavedPhotosAlbum(photo, nil, nil, nil);
