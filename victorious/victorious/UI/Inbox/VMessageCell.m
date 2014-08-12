@@ -46,6 +46,13 @@ static NSString * const   kChatBubbleArrowRight = @"ChatBubbleArrowRight";
                kMinimumCellHeight);
 }
 
+- (void)layoutSubviews
+{
+    [super layoutSubviews];
+    self.commentTextView.preferredMaxLayoutWidth = CGRectGetWidth(self.contentView.bounds) - kTextInsets.left - kTextInsets.right;
+    [super layoutSubviews]; // two-pass layout because we're changing the preferredMaxLayoutWidth, above, which means constraints need to be re-calculated.
+}
+
 - (void)updateConstraints
 {
     if (!self.resettableConstraints)
@@ -76,7 +83,7 @@ static NSString * const   kChatBubbleArrowRight = @"ChatBubbleArrowRight";
                                               constant:62.0f],
                 [NSLayoutConstraint constraintWithItem:self.chatBubble
                                              attribute:NSLayoutAttributeLeft
-                                             relatedBy:NSLayoutRelationEqual
+                                             relatedBy:NSLayoutRelationGreaterThanOrEqual
                                                 toItem:self.contentView
                                              attribute:NSLayoutAttributeLeft
                                             multiplier:1.0f
@@ -109,7 +116,7 @@ static NSString * const   kChatBubbleArrowRight = @"ChatBubbleArrowRight";
                                               constant:62.0f],
                 [NSLayoutConstraint constraintWithItem:self.contentView
                                              attribute:NSLayoutAttributeRight
-                                             relatedBy:NSLayoutRelationEqual
+                                             relatedBy:NSLayoutRelationGreaterThanOrEqual
                                                 toItem:self.chatBubble
                                              attribute:NSLayoutAttributeRight
                                             multiplier:1.0f

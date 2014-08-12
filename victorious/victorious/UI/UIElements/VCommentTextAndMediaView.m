@@ -86,8 +86,11 @@ static const CGFloat kSpacingBetweenTextAndMedia = 10.0f;
 - (void)layoutSubviews
 {
     [super layoutSubviews];
-    self.textLabel.preferredMaxLayoutWidth = CGRectGetWidth(self.bounds);
-    [super layoutSubviews];
+    if (!self.preferredMaxLayoutWidth)
+    {
+        self.textLabel.preferredMaxLayoutWidth = CGRectGetWidth(self.bounds);
+        [super layoutSubviews]; // two-pass layout because we're changing the preferredMaxLayoutWidth, above, which means constraints need to be re-calculated.
+    }
 }
 
 - (void)updateConstraints
@@ -170,12 +173,40 @@ static const CGFloat kSpacingBetweenTextAndMedia = 10.0f;
     [super updateConstraints];
 }
 
+- (CGSize)intrinsicContentSize
+{
+    CGSize labelSize = self.textLabel.intrinsicContentSize;
+    if (self.hasMedia)
+    {
+        CGFloat mediaThumbnailSize = MAX(labelSize.width, self.preferredMaxLayoutWidth); // CGFloat instead of CGSize because it's a square thumbnail
+        return CGSizeMake(MAX(labelSize.width, mediaThumbnailSize), labelSize.height + kSpacingBetweenTextAndMedia + mediaThumbnailSize);
+    }
+    else
+    {
+        return labelSize;
+    }
+}
+
 #pragma mark - Properties
 
 - (void)setText:(NSString *)text
 {
     _text = [text copy];
     self.textLabel.attributedText = [[NSAttributedString alloc] initWithString:(text ?: @"") attributes:[[self class] attributesForText]];
+    [self invalidateIntrinsicContentSize];
+}
+
+- (void)setPreferredMaxLayoutWidth:(CGFloat)preferredMaxLayoutWidth
+{
+    _preferredMaxLayoutWidth = preferredMaxLayoutWidth;
+    self.textLabel.preferredMaxLayoutWidth = preferredMaxLayoutWidth;
+    [self invalidateIntrinsicContentSize];
+}
+
+- (void)setHasMedia:(BOOL)hasMedia
+{
+    _hasMedia = hasMedia;
+    [self invalidateIntrinsicContentSize];
 }
 
 #pragma mark - Actions
@@ -244,6 +275,7 @@ static const CGFloat kSpacingBetweenTextAndMedia = 10.0f;
     self.text = @"";
     self.mediaThumbnailView.hidden = NO;
     self.mediaThumbnailView.image = nil;
+    self.hasMedia = NO;
     self.onMediaTapped = nil;
     self.playIcon.hidden = YES;
 }

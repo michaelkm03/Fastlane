@@ -160,6 +160,7 @@
     BOOL hasMedia = [message.thumbnailPath isKindOfClass:[NSString class]] && ![message.thumbnailPath isEqualToString:@""];
     if (hasMedia)
     {
+        cell.commentTextView.hasMedia = YES;
         cell.commentTextView.mediaThumbnailView.hidden = NO;
         [cell.commentTextView.mediaThumbnailView setImageWithURL:[NSURL URLWithString:message.thumbnailPath]];
         if ([message.mediaPath v_hasVideoExtension])

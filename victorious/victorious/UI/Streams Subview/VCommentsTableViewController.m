@@ -236,6 +236,7 @@ static NSString* CommentCache           = @"CommentCache";
     cell.commentTextView.text = comment.text;
     if (comment.hasMedia)
     {
+        cell.commentTextView.hasMedia = YES;
         cell.commentTextView.mediaThumbnailView.hidden = NO;
         [cell.commentTextView.mediaThumbnailView setImageWithURL:comment.previewImageURL];
         if ([comment.mediaUrl isKindOfClass:[NSString class]] && [comment.mediaUrl v_hasVideoExtension])
