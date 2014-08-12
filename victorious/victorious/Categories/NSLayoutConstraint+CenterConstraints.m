@@ -12,6 +12,7 @@
 
 + (NSArray *)v_constraintsToScaleAndCenterView:(UIView *)view withinView:(UIView *)superview withAspectRatio:(CGFloat)aspectRatio
 {
+    NSAssert(!isnan(aspectRatio), @"aspectRatio should be a valid float");
     NSLayoutConstraint *yConstraint = [NSLayoutConstraint constraintWithItem:view
                                                                    attribute:NSLayoutAttributeCenterY
                                                                    relatedBy:NSLayoutRelationEqual

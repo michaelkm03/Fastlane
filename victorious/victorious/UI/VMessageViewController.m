@@ -6,24 +6,24 @@
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
+#import "NSDate+timeSince.h"
+#import "NSString+VParseHelp.h"
+#import "NSURL+MediaType.h"
+#import "UIButton+VImageLoading.h"
+#import "UIImage+ImageEffects.h"
+#import "UIImageView+Blurring.h"
+#import "VCommentTextAndMediaView.h"
+#import "VConstants.h"
+#import "VKeyboardBarViewController.h"
 #import "VMessageViewController.h"
-
-#import "VObjectManager+DirectMessaging.h"
-#import "VObjectManager+Pagination.h"
-
 #import "VMessageCell.h"
 #import "VMessage+RestKit.h"
-#import "VKeyboardBarViewController.h"
-#import "VThemeManager.h"
+#import "VObjectManager+DirectMessaging.h"
+#import "VObjectManager+Pagination.h"
 #import "VObjectManager.h"
+#import "VThemeManager.h"
 #import "VUser+RestKit.h"
-#import "UIImageView+Blurring.h"
-#import "UIImage+ImageEffects.h"
-#import "NSString+VParseHelp.h"
-#import "VConstants.h"
-
-const   CGFloat     kMessageRowWithMediaHeight  =   280.0;
-const   CGFloat     kMessageRowHeight           =   80;
+#import "VUserProfileViewController.h"
 
 @implementation VMessageViewController
 
@@ -36,9 +36,8 @@ const   CGFloat     kMessageRowHeight           =   80;
     
     UIImage*    defaultBackgroundImage = [[[VThemeManager sharedThemeManager] themedBackgroundImageForDevice] applyLightEffect];
     
-    [backgroundImageView setBlurredImageWithURL:[NSURL URLWithString:self.conversation.user.pictureUrl]
-                                    placeholderImage:defaultBackgroundImage
-                                           tintColor:[UIColor colorWithWhite:0.0 alpha:0.5]];
+    [backgroundImageView setLightBlurredImageWithURL:[NSURL URLWithString:self.conversation.user.pictureUrl]
+                                    placeholderImage:defaultBackgroundImage];
     
     self.tableView.backgroundView = backgroundImageView;
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
@@ -95,7 +94,7 @@ const   CGFloat     kMessageRowHeight           =   80;
 
 - (void)delayedRefresh
 {
-    return;
+    return; // TODO
     
     double delayInSeconds = 1.0f;
     dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
@@ -112,7 +111,7 @@ const   CGFloat     kMessageRowHeight           =   80;
 {
     VFailBlock fail = ^(NSOperation* operation, NSError* error)
     {
-        NSLog(@"%@", error.localizedDescription);
+        NSLog(@"Failed to load next page: %@", error.localizedDescription);
         [self.refreshControl endRefreshing];
         
         [self delayedRefresh];
@@ -147,44 +146,60 @@ const   CGFloat     kMessageRowHeight           =   80;
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    UITableViewCell *cell = nil;
-    VMessage*   aMessage = [self.fetchedResultsController objectAtIndexPath:indexPath];
-    if([aMessage.user isEqualToUser:[VObjectManager sharedManager].mainUser])
+    VMessageCell *cell = [tableView dequeueReusableCellWithIdentifier:kVMessageCellNibName forIndexPath:indexPath];
+    VMessage *message = [self.fetchedResultsController objectAtIndexPath:indexPath];
+
+    cell.timeLabel.text = [message.postedAt timeSince];
+    cell.commentTextView.text = message.text;
+    
+    if ([message.user isEqualToUser:[[VObjectManager sharedManager] mainUser]])
     {
-        cell = [tableView dequeueReusableCellWithIdentifier:kOtherMessageCellIdentifier forIndexPath:indexPath];
-    }else
-    {
-        cell = [tableView dequeueReusableCellWithIdentifier:kMessageCellIdentifier forIndexPath:indexPath];
+        cell.profileImageOnRight = YES;
     }
     
-    [(VMessageCell *)cell setMessage:aMessage];
-    [(VMessageCell *)cell setParentTableViewController:self];
+    BOOL hasMedia = [message.thumbnailPath isKindOfClass:[NSString class]] && ![message.thumbnailPath isEqualToString:@""];
+    if (hasMedia)
+    {
+        cell.commentTextView.hasMedia = YES;
+        cell.commentTextView.mediaThumbnailView.hidden = NO;
+        [cell.commentTextView.mediaThumbnailView setImageWithURL:[NSURL URLWithString:message.thumbnailPath]];
+        if ([message.mediaPath v_hasVideoExtension])
+        {
+            cell.commentTextView.onMediaTapped = [cell.commentTextView standardMediaTapHandlerWithMediaURL:[NSURL URLWithString:message.mediaPath] presentingViewController:self];
+            cell.commentTextView.playIcon.hidden = NO;
+        }
+    }
+    else
+    {
+        cell.commentTextView.mediaThumbnailView.hidden = YES;
+    }
     
+    NSURL *pictureURL = [NSURL URLWithString:message.user.pictureUrl];
+    if (pictureURL)
+    {
+        [cell.profileImageView setImageWithURL:pictureURL];
+    }
+    cell.onProfileImageTapped = ^(void)
+    {
+        VUserProfileViewController* profileViewController = [VUserProfileViewController userProfileWithUser:message.user];
+        [self.navigationController pushViewController:profileViewController animated:YES];
+    };
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
-    
-    [cell setNeedsDisplay];
-    [cell layoutIfNeeded];
-    
+
     return cell;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    VMessage*   aMessage = [self.fetchedResultsController objectAtIndexPath:indexPath];
-
-    CGFloat height = [VMessageCell frameSizeForMessageText:aMessage.text].height;
-    CGFloat yOffset = aMessage.thumbnailPath && ![aMessage.thumbnailPath isEmpty] ? kMessageMediaCellYOffset : kMessageCellYOffset;
-    height = MAX(height + yOffset, kMessageMinCellHeight);
-    
-    return height;
+    VMessage *message = [self.fetchedResultsController objectAtIndexPath:indexPath];
+    BOOL hasMedia = [message.thumbnailPath isKindOfClass:[NSString class]] && ![message.thumbnailPath isEqualToString:@""];
+    return [VMessageCell estimatedHeightWithWidth:CGRectGetWidth(tableView.bounds) text:message.text withMedia:hasMedia];
 }
 
 - (void)registerCells
 {
-    [self.tableView registerNib:[UINib nibWithNibName:kMessageCellIdentifier bundle:nil]
-         forCellReuseIdentifier:kMessageCellIdentifier];
-    [self.tableView registerNib:[UINib nibWithNibName:kOtherMessageCellIdentifier bundle:nil]
-         forCellReuseIdentifier:kOtherMessageCellIdentifier];
+    [self.tableView registerNib:[UINib nibWithNibName:kVMessageCellNibName bundle:nil]
+         forCellReuseIdentifier:kVMessageCellNibName];
 }
 
 @end

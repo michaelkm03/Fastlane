@@ -19,7 +19,7 @@
 @property (nonatomic, retain) NSNumber * flags;
 @property (nonatomic, retain) NSNumber * likes;
 @property (nonatomic, retain) NSString * mediaType;
-@property (nonatomic, retain) id mediaUrl;
+@property (nonatomic, retain) NSString * mediaUrl;
 @property (nonatomic, retain) NSNumber * parentId;
 @property (nonatomic, retain) NSDate * postedAt;
 @property (nonatomic, retain) NSNumber * realtime;
