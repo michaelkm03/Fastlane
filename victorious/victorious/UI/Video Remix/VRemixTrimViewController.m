@@ -16,6 +16,7 @@
 #import "VCameraPublishViewController.h"
 #import "VMediaPreviewViewController.h"
 #import "VRemixVideoRangeSlider.h"
+#import "UIImage+Cropping.h"
 #import "VThemeManager.h"
 #import "MBProgressHUD.h"
 
@@ -230,6 +231,8 @@
     CMTime actualTime;
     NSError *error = nil;
     
+    
+    
     // Create A File Target
     NSURL *target = [NSURL fileURLWithPath:[[NSTemporaryDirectory() stringByAppendingPathComponent:@"trimmedMovieSnapShot"] stringByAppendingPathExtension:@"jpg"] isDirectory:NO];
     [[NSFileManager defaultManager] removeItemAtURL:target error:nil];
@@ -237,15 +240,15 @@
     // Create an AVAssetImageGenerator
     AVAsset *anAsset = [[AVURLAsset alloc] initWithURL:self.sourceURL options:nil];
     AVAssetImageGenerator *imgGen = [[AVAssetImageGenerator alloc] initWithAsset:anAsset];
-    imgGen.appliesPreferredTrackTransform = YES;
+    //imgGen.appliesPreferredTrackTransform = YES;
 
     // Using The AVAssetImageGenerator, Capture the Video Frame and Store it In A UIImage
     CGImageRef imgRef = [imgGen copyCGImageAtTime:currentTime actualTime:&actualTime error:&error];
-    UIImage *thumb = [[UIImage alloc] initWithCGImage:imgRef];
+    UIImage *thumb = [[[UIImage alloc] initWithCGImage:imgRef] squareImageScaledToSize:640.0];
     CGImageRelease(imgRef);
     
     // Write the Captured Image to Disk
-    [UIImageJPEGRepresentation(thumb, 1.0) writeToURL:target atomically:YES];
+    [UIImageJPEGRepresentation(thumb, VConstantJPEGCompressionQuality) writeToURL:target atomically:YES];
     self.targetURL = target;
     
     VMediaPreviewViewController *previewViewController = [VMediaPreviewViewController previewViewControllerForMediaAtURL:target];

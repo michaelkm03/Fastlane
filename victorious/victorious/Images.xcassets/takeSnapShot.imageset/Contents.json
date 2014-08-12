@@ -3,12 +3,12 @@
     {
       "idiom" : "universal",
       "scale" : "1x",
-      "filename" : "take-a-photo-icon.png"
+      "filename" : "takeSnapShot.png"
     },
     {
       "idiom" : "universal",
       "scale" : "2x",
-      "filename" : "take-a-photo-icon@2x.png"
+      "filename" : "takeSnapShot@2x.png"
     }
   ],
   "info" : {
