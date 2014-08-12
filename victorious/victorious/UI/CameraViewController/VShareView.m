@@ -68,7 +68,11 @@
 
 - (IBAction)pressedShareButton:(id)sender
 {
-    self.shareButton.selected = !self.shareButton.selected;
+    if (!self.selectionBlock)
+        self.shareButton.selected = !self.shareButton.selected;
+    else
+        self.shareButton.selected = self.selectionBlock();
+    
     [self updateColors];
 }
 

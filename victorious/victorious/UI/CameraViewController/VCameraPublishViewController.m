@@ -151,6 +151,10 @@ static const CGFloat kShareMargin = 34.0f;
     self.saveToCameraView = [[VShareView alloc] initWithTitle:NSLocalizedString(@"saveToLibrary", nil)
                                                           image:[UIImage imageNamed:@"share-btn-library"]];
     self.saveToCameraView.selectedColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
+    self.saveToCameraView.selectionBlock = ^(void)
+    {
+        return YES;
+    };
     
     NSArray* shareViews = @[self.shareToFacebookView, self.shareToTwitterView, self.saveToCameraView];
     
@@ -398,8 +402,8 @@ static const CGFloat kShareMargin = 34.0f;
         }
     }
     
-    VShareOptions shareOptions = /*self.useFacebook ? kVShareToFacebook :*/ kVShareNone;
-//    shareOptions = self.useTwitter ? shareOptions | kVShareToTwitter : shareOptions;
+    VShareOptions shareOptions = self.shareToFacebookView.selected ? kVShareToFacebook : kVShareNone;
+    shareOptions = self.shareToTwitterView.selected ? shareOptions | kVShareToTwitter : shareOptions;
     
     CGFloat playbackSpeed;
     if (self.playBackSpeed == kVPlaybackNormalSpeed)
