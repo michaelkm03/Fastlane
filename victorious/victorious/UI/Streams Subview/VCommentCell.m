@@ -9,25 +9,20 @@
 @import MediaPlayer;
 
 #import "VCommentCell.h"
-#import "VConstants.h"
-
-#import "VComment+Fetcher.h"
-#import "VUser+RestKit.h"
-
-#import "NSDate+timeSince.h"
-
-#import "UIButton+VImageLoading.h"
-#import "UIImage+ImageCreation.h"
-
+#import "VCommentTextAndMediaView.h"
 #import "VThemeManager.h"
 
-CGFloat const kCommentMinCellHeight = 72;
-CGFloat const kCommentCellYOffset = 52;
-CGFloat const kCommentMediaCellYOffset = 236;
+NSString * const kVCommentCellNibName = @"VCommentCell";
+
+static const CGFloat      kMinimumCellHeight = 45.0f;
+static const UIEdgeInsets kTextInsets        = { 39.0f, 66.0f, 11.0f, 25.0f };
 
 @interface VCommentCell()
 
-@property (strong, nonatomic) UIImageView *chatBubble;
+@property (nonatomic, weak, readwrite) IBOutlet VCommentTextAndMediaView *commentTextView;
+@property (nonatomic, weak, readwrite) IBOutlet UILabel                  *timeLabel;
+@property (nonatomic, weak, readwrite) IBOutlet UIImageView              *profileImageView;
+@property (nonatomic, weak, readwrite) IBOutlet UIButton                 *profileImageButton;
 
 @end
 
@@ -36,61 +31,30 @@ CGFloat const kCommentMediaCellYOffset = 236;
 - (void)awakeFromNib
 {
     [super awakeFromNib];
-    self.comment = self.comment;
+    self.timeLabel.font = [UIFont fontWithName:@"MuseoSans-100" size:11.0f];
+    self.usernameLabel.textColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
 }
 
-- (void)layoutSubviews
++ (CGFloat)estimatedHeightWithWidth:(CGFloat)width text:(NSString *)text withMedia:(BOOL)hasMedia
 {
-    [super layoutSubviews];
-    
-    self.comment = self.comment;
-    CGFloat yOffset = [self.comment previewImageURL] ? kCommentMediaCellYOffset : kCommentCellYOffset;
-    
-    CGSize size = [VAbstractCommentCell frameSizeForMessageText:self.messageLabel.text];
-    self.messageLabel.frame = CGRectMake(CGRectGetMinX(self.messageLabel.frame), CGRectGetMinY(self.messageLabel.frame),
-                                         size.width, size.height);
-    [self.messageLabel sizeToFit];
-    
-    CGFloat height = MAX(self.messageLabel.frame.size.height + yOffset, kCommentMinCellHeight);
-    self.bounds = CGRectMake(0, 0, self.frame.size.width, height);
+    return MAX([VCommentTextAndMediaView estimatedHeightWithWidth:(width - kTextInsets.left - kTextInsets.right) text:text withMedia:hasMedia] +
+               kTextInsets.top +
+               kTextInsets.bottom,
+               kMinimumCellHeight);
 }
 
-- (void)setComment:(VComment *)comment
+- (IBAction)profileImageTapped:(UIButton *)sender
 {
-    self.mpController = nil;
-    
-    _comment = comment;
-    NSString* mediaType;
-    
-    self.dateLabel.text = [comment.postedAt timeSince];
-    self.nameLabel.text = comment.user.name;
-    self.messageLabel.text = comment.text;
-    
-    self.mediaUrl = comment.mediaUrl ? [NSURL URLWithString:comment.mediaUrl] : nil;
-    self.previewImageUrl = [comment previewImageURL];
-    self.user = comment.user;
-    
-    mediaType = comment.mediaType;
-    
-    [self.profileImageButton setImageWithURL:[NSURL URLWithString:self.user.pictureUrl]
-                            placeholderImage:[UIImage imageNamed:@"profile_thumb"]
-                                    forState:UIControlStateNormal];
-    if (self.previewImageUrl)
+    if (self.onProfileImageTapped)
     {
-        self.mediaPreview.hidden = NO;
-        
-        self.playButton.hidden = ![mediaType isEqualToString:VConstantsMediaTypeVideo];
-        
-        [self.mediaPreview setImageWithURL:self.previewImageUrl
-                          placeholderImage:[UIImage resizeableImageWithColor:
-                                            [[VThemeManager sharedThemeManager] themedColorForKey:kVBackgroundColor]]];
+        self.onProfileImageTapped();
     }
-    else
-    {
-        self.mediaUrl = nil;
-        self.mediaPreview.hidden = YES;
-        self.playButton.hidden = YES;
-    }
+}
+
+- (void)prepareForReuse
+{
+    [self.commentTextView resetView];
+    self.profileImageView.image = [UIImage imageNamed:@"profile_thumb"];
 }
 
 @end

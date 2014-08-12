@@ -12,8 +12,9 @@
  Displays a view with a lightbox effect on top of a
  background view, which is usually a snapshot of 
  the presenting view. This is a base class--you
- probably want to use its subclass,
- VVideoLightboxViewController.
+ probably want to use one of its subclasses,
+ either VVideoLightboxViewController or
+ VImageLightboxViewController
  */
 @interface VLightboxViewController : UIViewController
 
