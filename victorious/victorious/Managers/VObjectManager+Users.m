@@ -100,11 +100,13 @@
 }
 
 - (RKManagedObjectRequestOperation *)attachAccountToFacebookWithToken:(NSString*)accessToken
+                                                  forceAccountUpdate:(BOOL)forceAccountUpdate
                                                      withSuccessBlock:(VSuccessBlock)success
                                                             failBlock:(VFailBlock)fail
 {
     
-    NSDictionary *parameters = @{@"facebook_access_token":   accessToken ?: @""};
+    NSDictionary *parameters = @{@"facebook_access_token":  accessToken ?: @"",
+                                 @"force_update":           [NSNumber numberWithBool:forceAccountUpdate]};
     
     return [self POST:@"/api/socialconnect/facebook"
                object:nil
@@ -116,13 +118,15 @@
 - (RKManagedObjectRequestOperation *)attachAccountToTwitterWithToken:(NSString*)accessToken
                                                         accessSecret:(NSString*)accessSecret
                                                            twitterId:(NSString*)twitterId
+                                                 forceAccountUpdate:(BOOL)forceAccountUpdate
                                                     withSuccessBlock:(VSuccessBlock)success
                                                            failBlock:(VFailBlock)fail
 {
     
     NSDictionary *parameters = @{@"access_token":   accessToken ?: @"",
                                  @"access_secret":  accessSecret ?: @"",
-                                 @"twitter_id":     twitterId ?: @""};
+                                 @"twitter_id":     twitterId ?: @"",
+                                 @"force_update":   [NSNumber numberWithBool:forceAccountUpdate]};
     
     return [self POST:@"/api/socialconnect/twitter"
                object:nil

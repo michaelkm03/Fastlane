@@ -146,7 +146,7 @@ NSString * const VObjectManagerContentIndexKey                  = @"index";
 
     if (type == vMemeCaption)
         parameters[@"subcategory"] = @"meme";
-    else if (type == VSecretCaption)
+    else if (type == VQuoteCaption)
         parameters[@"subcategory"] = @"secret";
     
     if (parentNodeId && ![parentNodeId isEqualToNumber:@(0)])

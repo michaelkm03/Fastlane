@@ -392,7 +392,7 @@ and don't forget #hashtags</string>
                         <outlet property="originalTextViewYConstraint" destination="E09-YE-b6a" id="yUS-nZ-dgx"/>
                         <outlet property="previewImageView" destination="g4C-sb-DOe" id="rxc-kH-gXC"/>
                         <outlet property="publishButton" destination="wOt-la-SB9" id="Pbk-8V-Al6"/>
-                        <outlet property="secretButton" destination="byc-3g-q5D" id="9aJ-TU-xuj"/>
+                        <outlet property="quoteButton" destination="byc-3g-q5D" id="Oqk-6c-cjG"/>
                         <outlet property="shareToLabel" destination="quq-i9-xCf" id="xXy-Z7-ki7"/>
                         <outlet property="sharesSuperview" destination="bLE-SQ-PqX" id="qUM-oJ-7eF"/>
                         <outlet property="textView" destination="yxx-6S-3iW" id="CEE-rw-I3h"/>

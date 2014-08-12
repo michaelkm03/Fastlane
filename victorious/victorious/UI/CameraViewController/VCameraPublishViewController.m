@@ -15,6 +15,7 @@
 #import "VSetExpirationViewController.h"
 #import "UIImage+ImageEffects.h"
 #import "VObjectManager+ContentCreation.h"
+#import "VObjectManager+Users.h"
 #import "VConstants.h"
 #import "NSString+VParseHelp.h"
 #import "VThemeManager.h"
@@ -53,7 +54,7 @@ static NSString* kVShareToTwitterDisabledKey = @"shareToTwtrKey";
 @property (nonatomic, weak) IBOutlet    UIView*         sharesSuperview;
 
 @property (nonatomic, strong) IBOutlet  NSLayoutConstraint* originalTextViewYConstraint;//This is intentionally strong
-@property (nonatomic, strong)           NSLayoutConstraint* secretTextViewYConstraint;
+@property (nonatomic, strong)           NSLayoutConstraint* quoteTextViewYConstraint;
 @property (nonatomic, strong)           NSLayoutConstraint* memeTextViewYConstraint;
 
 @property (nonatomic, weak) IBOutlet    NSLayoutConstraint* captionViewHeightConstraint;
@@ -65,7 +66,7 @@ static NSString* kVShareToTwitterDisabledKey = @"shareToTwtrKey";
 
 @property (nonatomic, weak) IBOutlet UIButton* captionButton;
 @property (nonatomic, weak) IBOutlet UIButton* memeButton;
-@property (nonatomic, weak) IBOutlet UIButton* secretButton;
+@property (nonatomic, weak) IBOutlet UIButton* quoteButton;
 
 @property (nonatomic, strong) VShareView* saveToCameraView;
 @property (nonatomic, strong) VShareView* shareToTwitterView;
@@ -76,7 +77,7 @@ static NSString* kVShareToTwitterDisabledKey = @"shareToTwtrKey";
 
 @end
 
-static NSString* kSecretFont = @"PTSans-Narrow";
+static NSString* kQuoteFont = @"PTSans-Narrow";
 static NSString* kMemeFont = @"Impact";
 
 static const CGFloat kShareMargin = 34.0f;
@@ -125,7 +126,7 @@ static const CGFloat kShareMargin = 34.0f;
     self.captionButton.selected = YES;
     [self setDefaultCaptionText];
     
-    self.secretTextViewYConstraint = [NSLayoutConstraint constraintWithItem:self.textView
+    self.quoteTextViewYConstraint = [NSLayoutConstraint constraintWithItem:self.textView
                                                                   attribute:NSLayoutAttributeCenterY
                                                                   relatedBy:NSLayoutRelationEqual
                                                                      toItem:self.previewImageView
@@ -148,23 +149,57 @@ static const CGFloat kShareMargin = 34.0f;
 
 - (void)initShareViews
 {
+//SETUP FACEBOOK SHARE
     self.shareToFacebookView = [[VShareView alloc] initWithTitle:NSLocalizedString(@"facebook", nil)
                                                           image:[UIImage imageNamed:@"share-btn-fb"]];
     self.shareToFacebookView.selectedColor = [UIColor colorWithRed:.23f green:.35f blue:.6f alpha:1.0f];
-    self.shareToFacebookView.selected = ![[NSUserDefaults standardUserDefaults] boolForKey:kVShareToFacebookDisabledKey];
-    
+    if ([[VFacebookManager sharedFacebookManager] isSessionValid])
+        self.shareToFacebookView.selected = ![[NSUserDefaults standardUserDefaults] boolForKey:kVShareToFacebookDisabledKey] && [[VFacebookManager sharedFacebookManager] isSessionValid];
+    else if (![[VFacebookManager sharedFacebookManager] isSessionValid])
+    {
+        self.shareToFacebookView.selected = NO;
+        __weak VShareView* weakFBShare = self.shareToFacebookView;
+        
+        self.shareToFacebookView.selectionBlock = ^()
+        {
+            __block BOOL loggedIn = NO;
+            [[VFacebookManager sharedFacebookManager] loginWithBehavior:FBSessionLoginBehaviorWithFallbackToWebView
+                                                              onSuccess:^
+             {
+                 [[VObjectManager sharedManager] attachAccountToFacebookWithToken:[[VFacebookManager sharedFacebookManager] accessToken]
+                                                               forceAccountUpdate:YES
+                                                                 withSuccessBlock:^(NSOperation* operation, id fullResponse, NSArray* resultObjects)
+                 {
+                     loggedIn = YES;
+                     weakFBShare.selectionBlock = nil;
+                 }
+                                                                        failBlock:^(NSOperation* operation, NSError* error)
+                 {
+                     loggedIn = NO;
+                 }];
+             }
+                                                              onFailure:^(NSError *error)
+             {
+                 loggedIn = NO;
+             }];
+            return loggedIn;
+        };
+    }
+
+//SETUP TWITTER SHARE
     self.shareToTwitterView = [[VShareView alloc] initWithTitle:NSLocalizedString(@"twitter", nil)
                                                           image:[UIImage imageNamed:@"share-btn-twitter"]];
     self.shareToTwitterView.selectedColor = [UIColor colorWithRed:.1f green:.7f blue:.91f alpha:1.0f];
     self.shareToTwitterView.selected = ![[NSUserDefaults standardUserDefaults] boolForKey:kVShareToTwitterDisabledKey];
     
+//SETUP SAVE TO CAMERA
     self.saveToCameraView = [[VShareView alloc] initWithTitle:NSLocalizedString(@"saveToLibrary", nil)
                                                           image:[UIImage imageNamed:@"share-btn-library"]];
     self.saveToCameraView.selectedColor = [[VThemeManager sharedThemeManager] themedColorForKey:kVLinkColor];
     self.saveToCameraView.selected = ![[NSUserDefaults standardUserDefaults] boolForKey:kVSaveToCameraRollDisabledKey];
     
+//LAYOUT SHARE VIEWS
     NSArray* shareViews = @[self.shareToFacebookView, self.shareToTwitterView, self.saveToCameraView];
-    
     for (int i=0; i<shareViews.count;i++)
     {
         UIView* shareView = shareViews[i];
@@ -201,7 +236,7 @@ static const CGFloat kShareMargin = 34.0f;
     self.navigationItem.rightBarButtonItem = cancelButton;
     
     NSString* mediaExtension = [[self.mediaURL absoluteString] pathExtension];
-    if ( ![[VSettingManager sharedManager] settingEnabledForKey:kVMemeAndSecretEnabled]
+    if ( ![[VSettingManager sharedManager] settingEnabledForKey:kVMemeAndQuoteEnabled]
         || [mediaExtension isEqualToString:VConstantMediaExtensionMOV]
         || [mediaExtension isEqualToString:VConstantMediaExtensionMP4])
         self.captionViewHeightConstraint.constant = 0;
@@ -278,7 +313,7 @@ static const CGFloat kShareMargin = 34.0f;
     
     if ((UIButton*)sender == self.memeButton)
     {
-        [self.view removeConstraint:self.secretTextViewYConstraint];
+        [self.view removeConstraint:self.quoteTextViewYConstraint];
         [self.view removeConstraint:self.originalTextViewYConstraint];
         [self.view addConstraint:self.memeTextViewYConstraint];
         
@@ -294,27 +329,27 @@ static const CGFloat kShareMargin = 34.0f;
         
         self.captionType = vMemeCaption;
     }
-    else if ((UIButton*)sender == self.secretButton)
+    else if ((UIButton*)sender == self.quoteButton)
     {
         [self.view removeConstraint:self.originalTextViewYConstraint];
         [self.view removeConstraint:self.memeTextViewYConstraint];
-        [self.view addConstraint:self.secretTextViewYConstraint];
+        [self.view addConstraint:self.quoteTextViewYConstraint];
         
         NSMutableParagraphStyle *paragraphStyle = NSMutableParagraphStyle.new;
         paragraphStyle.alignment                = NSTextAlignmentCenter;
         self.typingAttributes = [@{
                                    NSParagraphStyleAttributeName : paragraphStyle,
-                                   NSFontAttributeName : [UIFont fontWithName:kSecretFont size:20],
+                                   NSFontAttributeName : [UIFont fontWithName:kQuoteFont size:20],
                                    NSForegroundColorAttributeName : [UIColor whiteColor],
                                    NSStrokeColorAttributeName : [UIColor whiteColor],
                                    NSStrokeWidthAttributeName : @(0)
                                    } mutableCopy];
         
-        self.captionType = VSecretCaption;
+        self.captionType = VQuoteCaption;
     }
     else if ((UIButton*)sender == self.captionButton)
     {
-        [self.view removeConstraint:self.secretTextViewYConstraint];
+        [self.view removeConstraint:self.quoteTextViewYConstraint];
         [self.view removeConstraint:self.memeTextViewYConstraint];
         [self.view addConstraint:self.originalTextViewYConstraint];
         
@@ -397,7 +432,7 @@ static const CGFloat kShareMargin = 34.0f;
     }
   
     
-    if (self.captionType == vMemeCaption || self.captionType == VSecretCaption)
+    if (self.captionType == vMemeCaption || self.captionType == VQuoteCaption)
     {
         UIImage* image = [self.snapshotController snapshotOfMainView:self.previewImageView subViews:@[self.textView]];
         
@@ -548,11 +583,11 @@ static const CGFloat kShareMargin = 34.0f;
         
         self.memeTextViewYConstraint.constant = self.originalTextViewYConstraint.constant - self.textView.frame.size.height + realHeight;
     }
-    else if (self.captionType == VSecretCaption)
+    else if (self.captionType == VQuoteCaption)
     {
         CGFloat realHeight = ((CGSize) [self.textView sizeThatFits:self.textView.frame.size]).height;
         
-        self.secretTextViewYConstraint.constant = (self.textView.frame.size.height - realHeight) / 2;
+        self.quoteTextViewYConstraint.constant = (self.textView.frame.size.height - realHeight) / 2;
     }
     else
     {

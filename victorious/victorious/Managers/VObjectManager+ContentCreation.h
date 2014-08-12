@@ -38,7 +38,7 @@ typedef NS_ENUM(NSUInteger, VCaptionType)
 {
     vNormalCaption = 0,
     vMemeCaption,
-    VSecretCaption
+    VQuoteCaption
 };
 
 @interface VObjectManager (ContentCreation)
