@@ -14,6 +14,7 @@
 #import "VRemixStitchViewController.h"
 #import "VCVideoPlayerViewController.h"
 #import "VCameraPublishViewController.h"
+#import "VMediaPreviewViewController.h"
 #import "VRemixVideoRangeSlider.h"
 #import "VThemeManager.h"
 #import "MBProgressHUD.h"
@@ -247,28 +248,40 @@
     [UIImageJPEGRepresentation(thumb, 1.0) writeToURL:target atomically:YES];
     self.targetURL = target;
     
-    // Push the Captured Image to the Publish Screen
-    VCameraPublishViewController *publishViewController = [VCameraPublishViewController cameraPublishViewController];
-    publishViewController.mediaURL = self.targetURL;
-    publishViewController.playBackSpeed = self.playBackSpeed;
-    publishViewController.playbackLooping = self.playbackLooping;
-    publishViewController.parentID = self.parentID;
-    publishViewController.previewImage = thumb;
-    publishViewController.completion = ^(BOOL complete)
+    VMediaPreviewViewController *previewViewController = [VMediaPreviewViewController previewViewControllerForMediaAtURL:target];
+    previewViewController.mediaURL = self.targetURL;
+    previewViewController.completionBlock = ^(BOOL finished, UIImage *previewImage, NSURL *capturedMediaURL)
     {
-        if (complete)
+        
+        if (finished)
         {
-            [self dismissViewControllerAnimated:YES completion:nil];
-        }
-        else
-        {
-            [self.navigationController popViewControllerAnimated:YES];
+            // Push the Captured Image to the Publish Screen
+            VCameraPublishViewController *publishViewController = [VCameraPublishViewController cameraPublishViewController];
+            publishViewController.mediaURL = capturedMediaURL;
+            publishViewController.playBackSpeed = self.playBackSpeed;
+            publishViewController.playbackLooping = self.playbackLooping;
+            publishViewController.parentID = self.parentID;
+            publishViewController.previewImage = previewImage;
+            publishViewController.completion = ^(BOOL complete)
+            {
+                if (complete)
+                {
+                    [self dismissViewControllerAnimated:YES completion:nil];
+                }
+                else
+                {
+                    [self.navigationController popViewControllerAnimated:YES];
+                }
+            };
+            
+            // Push the Publish Screen onto the Navigation Stack
+            [self.navigationController pushViewController:publishViewController animated:YES];
+
         }
     };
 
-    // Push the Publish Screen onto the Navigation Stack
-    [self.navigationController pushViewController:publishViewController animated:YES];
-
+    [self.navigationController pushViewController:previewViewController animated:YES];
+    
 }
 
 #pragma mark - Navigation

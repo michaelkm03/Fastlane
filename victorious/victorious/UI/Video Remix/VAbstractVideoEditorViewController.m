@@ -45,6 +45,9 @@
                                                                                      views:NSDictionaryOfVariableBindings(videoPlayerView)]];
     [self.videoPlayerViewController didMoveToParentViewController:self];
     [self.videoPlayerViewController.view addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTapToPlayAction:)]];
+    
+    // Set the Alpha for the Snapshot Button
+    self.takeImageSnapShotButton.alpha = 1.0;
 }
 
 -(void)viewWillAppear:(BOOL)animated
@@ -157,7 +160,6 @@
     
     self.playButton.alpha = 1.0;
     self.playCircle.alpha = 1.0;
-    self.takeImageSnapShotButton.alpha = 1.0;
     self.animatingPlayButton = YES;
     [self firstAnimation];
 }
@@ -191,7 +193,6 @@
     self.animatingPlayButton = NO;
     self.playButton.alpha = 0.0;
     self.playCircle.alpha = 0.0;
-    self.takeImageSnapShotButton.alpha = 0.0;
 }
 
 #pragma mark - SCVideoPlayerDelegate

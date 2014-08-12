@@ -19,7 +19,7 @@
             </objects>
             <point key="canvasLocation" x="-373" y="84"/>
         </scene>
-        <!--Remix Select View Controller - Select-->
+        <!--Remix Select View Controller - Select Clip-->
         <scene sceneID="5Zx-Yp-fgh">
             <objects>
                 <viewController id="iXn-fe-oA1" customClass="VRemixSelectViewController" sceneMemberID="viewController">
@@ -89,7 +89,7 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
                     <toolbarItems/>
-                    <navigationItem key="navigationItem" title="Select" id="Uyd-gg-OYC">
+                    <navigationItem key="navigationItem" title="Select Clip" id="Uyd-gg-OYC">
                         <barButtonItem key="leftBarButtonItem" image="cameraButtonClose" id="hs6-mu-6OT">
                             <connections>
                                 <action selector="closeButtonClicked:" destination="iXn-fe-oA1" id="GJD-D8-QTt"/>
